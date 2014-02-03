@@ -64,7 +64,6 @@ public class HakuPermissionServiceImpl extends AbstractPermissionService impleme
     @Override
     public boolean userCanUpdateApplication(Application application) {
         String userOid = SecurityContextHolder.getContext().getAuthentication().getName();
-        System.out.println("permissinCheck, userOid: "+userOid);
         if (userOid == null || userOid.equals(application.getPersonOid())) {
             return false;
         }

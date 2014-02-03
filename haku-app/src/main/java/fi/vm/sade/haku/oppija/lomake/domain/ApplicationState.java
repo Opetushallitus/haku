@@ -27,8 +27,7 @@ public class ApplicationState {
 
     private final Application application;
     private final String phaseId;
-    private Map<String, String> answers = new HashMap<String, String>();
-
+    private final Map<String, String> answers = new HashMap<String, String>();
     private final Map<String, I18nText> errors = new HashMap<String, I18nText>();
 
     public ApplicationState(final Application application, final String phaseId) {

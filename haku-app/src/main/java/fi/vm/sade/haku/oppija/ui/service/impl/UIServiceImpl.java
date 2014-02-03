@@ -16,19 +16,22 @@
 
 package fi.vm.sade.haku.oppija.ui.service.impl;
 
-import com.google.common.base.Strings;
-import com.google.common.collect.Lists;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
+import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
+import fi.vm.sade.haku.oppija.hakemus.domain.util.ApplicationUtil;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
+import fi.vm.sade.haku.oppija.lomake.domain.ApplicationState;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Titled;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.gradegrid.GradeGrid;
 import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
+import fi.vm.sade.haku.oppija.lomake.service.UserSession;
 import fi.vm.sade.haku.oppija.lomake.util.ElementTree;
 import fi.vm.sade.haku.oppija.ui.service.ModelResponse;
 import fi.vm.sade.haku.oppija.ui.service.UIService;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -44,40 +47,63 @@ public class UIServiceImpl implements UIService {
     private final ApplicationService applicationService;
     private final ApplicationSystemService applicationSystemService;
     private final String koulutusinformaatioBaseUrl;
-
+    private final UserSession userSession;
 
     @Autowired
     public UIServiceImpl(final ApplicationService applicationService,
                          final ApplicationSystemService applicationSystemService,
+                         final UserSession userSession,
                          @Value("${koulutusinformaatio.base.url}") final String koulutusinformaatioBaseUrl) {
         this.applicationService = applicationService;
         this.applicationSystemService = applicationSystemService;
+        this.userSession = userSession;
         this.koulutusinformaatioBaseUrl = koulutusinformaatioBaseUrl;
     }
 
-
     @Override
-    public ModelResponse getApplicationPrint(final String oid) throws ResourceNotFoundException {
-        Application application = applicationService.getApplicationByOid(oid);
-        ApplicationSystem activeApplicationSystem = applicationSystemService.getActiveApplicationSystem(application.getApplicationSystemId());
-        List<String> discretionaryAttachmentAOIds = getDiscretionaryAttachmentAOIds(application);
+    public ModelResponse getCompleteApplication(final String applicationSystemId, final String oid) throws ResourceNotFoundException {
+        ApplicationSystem activeApplicationSystem = applicationSystemService.getActiveApplicationSystem(applicationSystemId);
+        Application application = applicationService.getSubmittedApplication(applicationSystemId, oid);
+        List<String> discretionaryAttachmentAOIds = ApplicationUtil.getDiscretionaryAttachmentAOIds(application);
         return new ModelResponse(application, activeApplicationSystem, discretionaryAttachmentAOIds, koulutusinformaatioBaseUrl);
     }
 
     @Override
-    public ModelResponse getApplicationPrint(final String applicationSystemId, final String oid) throws ResourceNotFoundException {
-        ApplicationSystem activeApplicationSystem = applicationSystemService.getActiveApplicationSystem(applicationSystemId);
-        Application application = applicationService.getSubmittedApplication(applicationSystemId, oid);
-        List<String> discretionaryAttachmentAOIds = getDiscretionaryAttachmentAOIds(application);
-        return new ModelResponse(application, activeApplicationSystem, discretionaryAttachmentAOIds, koulutusinformaatioBaseUrl);
+    public ModelResponse getAllApplicationSystems(String... includeFields) {
+        ModelResponse modelResponse = new ModelResponse();
+        modelResponse.addObjectToModel(ModelResponse.APPLICATION_SYSTEMS,
+                applicationSystemService.getAllApplicationSystems(includeFields));
+        return modelResponse;
     }
 
     @Override
-    public ModelResponse getApplicationComplete(final String applicationSystemId, final String oid) throws ResourceNotFoundException {
+    public ModelResponse getPreview(String applicationSystemId) {
         ApplicationSystem activeApplicationSystem = applicationSystemService.getActiveApplicationSystem(applicationSystemId);
-        Application application = applicationService.getSubmittedApplication(applicationSystemId, oid);
-        List<String> discretionaryAttachmentAOIds = getDiscretionaryAttachmentAOIds(application);
-        return new ModelResponse(application, activeApplicationSystem, discretionaryAttachmentAOIds, koulutusinformaatioBaseUrl);
+        Application application = applicationService.getApplication(applicationSystemId);
+        ModelResponse modelResponse = new ModelResponse();
+        modelResponse.addAnswers(application.getVastauksetMerged());
+        modelResponse.setElement(activeApplicationSystem.getForm());
+        return modelResponse;
+    }
+
+    @Override
+    public ModelResponse getPhase(String applicationSystemId, String phaseId) {
+        ApplicationSystem activeApplicationSystem = applicationSystemService.getActiveApplicationSystem(applicationSystemId);
+        Form form = activeApplicationSystem.getForm();
+        ElementTree elementTree = new ElementTree(form);
+        Element phase = elementTree.getChildById(phaseId);
+        Application application = applicationService.getApplication(applicationSystemId);
+        elementTree.checkPhaseTransfer(application.getPhaseId(), phaseId);
+        ModelResponse modelResponse = new ModelResponse(activeApplicationSystem);
+        modelResponse.addAnswers(userSession.populateWithPrefillData(application.getVastauksetMerged()));
+        modelResponse.setElement(phase);
+        modelResponse.setKoulutusinformaatioBaseUrl(koulutusinformaatioBaseUrl);
+        return modelResponse;
+    }
+
+    @Override
+    public void storePrefilledAnswers(String applicationSystemId, Map<String, String> answers) {
+        userSession.addPrefillData(applicationSystemId, answers);
     }
 
     @Override
@@ -86,7 +112,6 @@ public class UIServiceImpl implements UIService {
 
         Map<String, Object> model = new HashMap<String, Object>();
         Element theme = new ElementTree(activeApplicationSystem.getForm()).getChildById(elementId);
-        model.put("theme", theme);
         List<Element> listsOfTitledElements = new ArrayList<Element>();
         for (Element tElement : theme.getChildren()) {
             if (tElement instanceof Titled) {
@@ -94,31 +119,65 @@ public class UIServiceImpl implements UIService {
             }
         }
         listsOfTitledElements.add(theme);
+        model.put("theme", theme);
         model.put("listsOfTitledElements", listsOfTitledElements);
         return model;
     }
 
-    private List<String> getDiscretionaryAttachmentAOIds(final Application application) {
-        //AOs requiring attachments
-        List<String> discretionaryAttachmentAOs = Lists.newArrayList();
-        Map<String, String> answers = application.getVastauksetMerged();
-        int i = 1;
-        while (true) {
-            String key = String.format(OppijaConstants.PREFERENCE_ID, i);
-            if (answers.containsKey(key)) {
-                String aoId = answers.get(key);
-                String discretionaryKey = String.format(OppijaConstants.PREFERENCE_DISCRETIONARY, i);
-                if (!Strings.isNullOrEmpty(aoId) && answers.containsKey(discretionaryKey)) {
-                    String discretionaryValue = answers.get(discretionaryKey);
-                    if (!Strings.isNullOrEmpty(discretionaryValue) && Boolean.parseBoolean(discretionaryValue)) {
-                        discretionaryAttachmentAOs.add(aoId);
-                    }
-                }
-            } else {
-                break;
-            }
-            ++i;
+    @Override
+    public Map<String, Object> getAdditionalLanguageRow(String applicationSystemId, String gradeGridId) {
+        Form activeForm = applicationSystemService.getActiveApplicationSystem(applicationSystemId).getForm();
+        Element element = new ElementTree(activeForm).getChildById(gradeGridId);
+        GradeGrid gradeGrid = (GradeGrid) element;
+        Map<String, Object> model = new HashMap<String, Object>();
+        model.put(ModelResponse.ELEMENT, gradeGrid);
+        model.put(ModelResponse.TEMPLATE, "gradegrid/additionalLanguageRow");
+        return model;
+    }
+
+    @Override
+    public ModelResponse updateRules(String applicationSystemId, String phaseId, String elementId, Map<String, String> currentAnswers) {
+        ApplicationSystem activeApplicationSystem = applicationSystemService.getActiveApplicationSystem(applicationSystemId);
+        Form activeForm = activeApplicationSystem.getForm();
+        Map<String, String> values = applicationService.getApplication(applicationSystemId).getVastauksetMerged();
+        values.putAll(currentAnswers);
+        ModelResponse modelResponse = new ModelResponse();
+        modelResponse.addAnswers(values);
+        modelResponse.setElement(new ElementTree(activeForm).getChildById(elementId));
+        modelResponse.setForm(activeForm);
+        modelResponse.setApplicationSystemId(applicationSystemId);
+        modelResponse.setKoulutusinformaatioBaseUrl(koulutusinformaatioBaseUrl);
+        return modelResponse;
+    }
+
+    @Override
+    public ModelResponse getPhaseElement(String applicationSystemId, String phaseId, String elementId) {
+        Form activeForm = applicationSystemService.getActiveApplicationSystem(applicationSystemId).getForm();
+        Application application = applicationService.getApplication(applicationSystemId);
+        ElementTree elementTree = new ElementTree(activeForm);
+        elementTree.checkPhaseTransfer(application.getPhaseId(), phaseId);
+        ModelResponse modelResponse = new ModelResponse(application, activeForm, elementTree.getChildById(elementId));
+        modelResponse.addAnswers(userSession.populateWithPrefillData(application.getVastauksetMerged()));
+        modelResponse.setApplicationSystemId(applicationSystemId);
+        modelResponse.setKoulutusinformaatioBaseUrl(koulutusinformaatioBaseUrl);
+        return modelResponse;
+    }
+
+    @Override
+    public ModelResponse savePhase(String applicationSystemId, String phaseId, Map<String, String> answers) {
+        Form activeForm = applicationSystemService.getActiveApplicationSystem(applicationSystemId).getForm();
+        ApplicationState applicationState = applicationService.saveApplicationPhase(
+                new ApplicationPhase(applicationSystemId, phaseId, answers));
+        ModelResponse modelResponse = new ModelResponse();
+        modelResponse.setApplicationState(applicationState);
+        if (!applicationState.isValid()) {
+            modelResponse.setApplicationState(applicationState);
+            modelResponse.setApplicationSystemId(applicationSystemId);
+            modelResponse.setElement(new ElementTree(activeForm).getChildById(phaseId));
+            modelResponse.setForm(activeForm);
+            modelResponse.setKoulutusinformaatioBaseUrl(koulutusinformaatioBaseUrl);
         }
-        return discretionaryAttachmentAOs;
+        return modelResponse;
+
     }
 }

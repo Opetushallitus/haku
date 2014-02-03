@@ -311,7 +311,7 @@ public class OfficerController {
     @Path("/hakemus/{oid}/print")
     @Produces(MEDIA_TYPE_TEXT_HTML_UTF8)
     public Viewable applicationPrintView(@PathParam(OID_PATH_PARAM) final String oid) throws ResourceNotFoundException {
-        ModelResponse modelResponse = uiService.getApplicationPrint(oid);
+        ModelResponse modelResponse = officerUIService.getApplicationPrint(oid);
         return new Viewable(APPLICATION_PRINT_VIEW, modelResponse.getModel());
     }
 

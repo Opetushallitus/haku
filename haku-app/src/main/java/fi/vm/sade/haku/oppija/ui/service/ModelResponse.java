@@ -37,6 +37,7 @@ public class ModelResponse {
 
     public ModelResponse(final Application application) {
         setApplication(application);
+
     }
 
     public ModelResponse(final Application application, final Form form) {
@@ -68,6 +69,11 @@ public class ModelResponse {
         setErrorMessages(validationResult.getErrorMessages());
         setKoulutusinformaatioBaseUrl(koulutusinformaatioBaseUrl);
 
+    }
+
+    public ModelResponse(final ApplicationSystem applicationSystem) {
+        setForm(applicationSystem.getForm());
+        setApplicationSystemId(applicationSystem.getId());
     }
 
     public final Map<String, Object> getModel() {
@@ -135,6 +141,18 @@ public class ModelResponse {
         this.addObjectToModel(APPLICATION_SYSTEM_ID, asid);
     }
 
+    public void setApplicationState(final ApplicationState applicationState) {
+        this.setErrorMessages(applicationState.getErrors());
+        for (Map.Entry<String, Object> entry : applicationState.getModelObjects().entrySet()) {
+            this.addObjectToModel(entry.getKey(), entry.getValue());
+        }
+        this.addObjectToModel(APPLICATION_PHASE_ID, getPhaseId());
+    }
+
+    public String getPhaseId() {
+        return model.get(APPLICATION_PHASE_ID).toString();
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("ModelResponse{");
@@ -142,12 +160,5 @@ public class ModelResponse {
         sb.append(", model=").append(model);
         sb.append('}');
         return sb.toString();
-    }
-
-    public void setApplicationState(final ApplicationState applicationState) {
-        this.setErrorMessages(applicationState.getErrors());
-        for (Map.Entry<String, Object> entry : applicationState.getModelObjects().entrySet()) {
-            this.addObjectToModel(entry.getKey(), entry.getValue());
-        }
     }
 }
