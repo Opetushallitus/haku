@@ -5,6 +5,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import fi.vm.sade.generic.rest.CachingRestClient;
+import fi.vm.sade.haku.oppija.common.suoritusrekisteri.OpiskelijaDTO;
 import fi.vm.sade.haku.oppija.common.suoritusrekisteri.SuoritusDTO;
 import fi.vm.sade.haku.oppija.common.suoritusrekisteri.SuoritusrekisteriService;
 import org.apache.commons.io.IOUtils;
@@ -76,6 +77,42 @@ public class SuoritusrekisteriServiceImpl implements SuoritusrekisteriService {
         }
 
         return suoritukset;
+    }
+
+    @Override
+    public List<OpiskelijaDTO> getOpiskelijat(String personOid, String hakuvuosi, String hakukausi) {
+        CachingRestClient cachingRestClient = getCachingRestClient();
+        String response;
+        try {
+            InputStream is = cachingRestClient.get("/rest/v1/opiskelijat"
+                    +"?henkilo="+personOid
+                    +"&vuosi="+hakuvuosi
+                    +"&kausi="+hakukausi);
+            response = IOUtils.toString(is);
+            log.debug("Got response: {}", response);
+        } catch (IOException e) {
+            log.error("Fetching opiskelija failed: {}", e);
+            return null;
+        }
+
+        JsonArray elements = new JsonParser().parse(response).getAsJsonArray();
+        ArrayList<OpiskelijaDTO> opiskelijat = new ArrayList<OpiskelijaDTO>(elements.size());
+        for (int i = 0; i < elements.size(); i++) {
+            JsonObject elem = elements.get(i).getAsJsonObject();
+            JsonElement oppilaitos = elem.get("oppilaitosOid");
+            JsonElement luokkataso = elem.get("luokkataso");
+            JsonElement luokka = elem.get("luokka");
+            JsonElement henkiloOid = elem.get("henkiloOid");
+
+            OpiskelijaDTO opiskelija = new OpiskelijaDTO();
+            opiskelija.setOppilaitosOid(jsonElementToString(oppilaitos));
+            opiskelija.setLuokkataso(jsonElementToString(luokkataso));
+            opiskelija.setLuokka(jsonElementToString(luokka));
+            opiskelija.setHenkiloOid(jsonElementToString(henkiloOid));
+            opiskelijat.add(opiskelija);
+        }
+
+        return opiskelijat;
     }
 
     private String jsonElementToString(JsonElement elem) {
