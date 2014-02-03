@@ -201,7 +201,10 @@ public class KoodistoServiceImpl implements KoodistoService {
         List<Organization> orgs = organisaatioService.findByOppilaitosnumero(lukioNumerot);
         for (Organization org : orgs) {
             LOGGER.debug("Lukiokoodit, orgOid: " + org.getOid());
-            opts.add(new Option(org.getName(), org.getOid()));
+            List<String> types = org.getTypes();
+            if (types.contains("Oppilaitos")) {
+                opts.add(new Option(org.getName(), org.getOid()));
+            }
         }
         return opts;
     }

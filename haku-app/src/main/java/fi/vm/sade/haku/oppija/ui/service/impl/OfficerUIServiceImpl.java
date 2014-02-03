@@ -299,14 +299,19 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         LOGGER.debug("Fetching schools with term: '{}', got {} organizations", term, orgs.size());
         int resultCount = 20;
         for (Organization org : orgs) {
-            if (--resultCount < 0) {
-                break;
+            // This IF is stupid, but necessary. Asking organisaatioService for 'oppilaitos' returns also
+            // organisaatios with type of 'opetuspiste' and 'oppisopimustoimipiste'.
+            if (!org.getTypes().contains("Oppilaitos")) {
+                continue;
             }
             I18nText name = org.getName();
             Map<String, Object> school = new HashMap<String, Object>();
             school.put("name", name.getTranslations());
             school.put("dataId", org.getOid());
             schools.add(school);
+            if (--resultCount < 0) {
+                break;
+            }
         }
         return schools;
     }
