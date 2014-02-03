@@ -1,5 +1,6 @@
 package fi.vm.sade.haku.oppija.ui.service.impl;
 
+import com.google.common.base.Joiner;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 import fi.vm.sade.haku.oppija.common.organisaatio.Organization;
@@ -301,6 +302,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         for (Organization org : orgs) {
             // This IF is stupid, but necessary. Asking organisaatioService for 'oppilaitos' returns also
             // organisaatios with type of 'opetuspiste' and 'oppisopimustoimipiste'.
+            LOGGER.debug("Org: "+org.getOid()+" Types: [" + Joiner.on(",").join(org.getTypes()) + "]");
             if (!org.getTypes().contains("Oppilaitos")) {
                 continue;
             }
