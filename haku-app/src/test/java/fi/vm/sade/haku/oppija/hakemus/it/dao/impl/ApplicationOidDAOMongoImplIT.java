@@ -36,7 +36,6 @@ import static org.junit.Assert.*;
 public class ApplicationOidDAOMongoImplIT extends AbstractDAOTest {
 
     @Autowired
-    @Qualifier("applicationOidDAOMongoImpl")
     private ApplicationOidDAOMongoImpl applicationOidDAOMongo;
 
 

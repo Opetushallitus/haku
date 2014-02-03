@@ -16,17 +16,14 @@
 
 package fi.vm.sade.haku.oppija.hakemus.it.dao;
 
-import com.google.common.collect.Lists;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.mongodb.util.JSON;
 import fi.vm.sade.haku.oppija.common.dao.AbstractDAOTest;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
-import fi.vm.sade.haku.oppija.lomake.domain.ApplicationState;
 import fi.vm.sade.haku.oppija.lomake.domain.User;
 import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundExceptionRuntime;
-import fi.vm.sade.haku.oppija.hakemus.service.HakuPermissionService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import org.apache.commons.io.IOUtils;
 import org.junit.Before;
@@ -48,7 +45,6 @@ import java.util.List;
 
 import static java.lang.ClassLoader.getSystemResourceAsStream;
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:spring/test-context.xml")
@@ -81,22 +77,7 @@ public class ApplicationDAOMongoImplIT extends AbstractDAOTest {
         } catch (Exception e) {
             LOGGER.error("Error set up test", e);
         }
-
         this.applicationSystemId = ElementUtil.randomId();
-        HakuPermissionService hakuPermissionService = mock(HakuPermissionService.class);
-        when(hakuPermissionService.userCanReadApplications(anyList())).thenReturn(Lists.newArrayList("1.2.246.562.10.84682192491"));
-        applicationDAO.setHakuPermissionService(hakuPermissionService);
-
-        this.applicationSystemId = ElementUtil.randomId();
-    }
-
-    @Test
-    public void testTallennaVaihe() {
-        final HashMap<String, String> vaiheenVastaukset = new HashMap<String, String>();
-        vaiheenVastaukset.put("avain", ARVO);
-        final Application application1 = new Application(TEST_USER, new ApplicationPhase(applicationSystemId, TEST_PHASE, vaiheenVastaukset));
-        final ApplicationState application = applicationDAO.tallennaVaihe(new ApplicationState(application1, TEST_PHASE));
-        assertEquals(ARVO, application.getApplication().getVastauksetMerged().get("avain"));
     }
 
     @Test
@@ -114,7 +95,10 @@ public class ApplicationDAOMongoImplIT extends AbstractDAOTest {
 
     @Test
     public void testFindAll() throws Exception {
-        testTallennaVaihe();
+        final HashMap<String, String> vaiheenVastaukset = new HashMap<String, String>();
+        vaiheenVastaukset.put("avain", ARVO);
+        final Application application = new Application(TEST_USER, new ApplicationPhase(applicationSystemId, TEST_PHASE, vaiheenVastaukset));
+        applicationDAO.save(application);
         List<Application> listOfApplications = applicationDAO.find(new Application(applicationSystemId, TEST_USER));
         assertEquals(1, listOfApplications.size());
     }
@@ -137,44 +121,6 @@ public class ApplicationDAOMongoImplIT extends AbstractDAOTest {
         List<Application> applications = applicationDAO.findByApplicationOption(aoids);
         assertEquals(2, applications.size());
     }
-//
-//    @Test
-//    public void testFindByHetuActive() {
-//        ApplicationSearchResultDTO applications = applicationDAO.findByApplicantSsn("050998-957M",
-//                new ApplicationQueryParameters(Arrays.asList(Application.State.ACTIVE.toString()), null, null, null, null, 0,
-//                        Integer.MAX_VALUE));
-//        assertEquals(2, applications.getResults().size());
-//        assertEquals(2, applications.getTotalCount());
-//    }
-//
-//    @Test
-//    public void testFindByHetuPassive() {
-//        ApplicationSearchResultDTO applications = applicationDAO.findByApplicantSsn("050998-957M",
-//                new ApplicationQueryParameters(Arrays.asList(Application.State.PASSIVE.toString()), null, null, null, null, 0,
-//                        Integer.MAX_VALUE));
-//        assertEquals(1, applications.getResults().size());
-//    }
-
-//    @Test
-//    public void testFindByName() {
-//        // Heikki
-//        ApplicationSearchResultDTO applications = applicationDAO.findByApplicantName("Heikki", new ApplicationQueryParameters(
-//                null, null, null, null, null, 0, Integer.MAX_VALUE));
-//        assertEquals(1, applications.getResults().size());
-//        // Hessu * 2
-//        applications = applicationDAO.findByApplicantName("Hessu", new ApplicationQueryParameters(null, null, null, null, null, 0,
-//                Integer.MAX_VALUE));
-//        assertEquals(2, applications.getResults().size());
-//        // Hessut ja Heikki
-//        applications = applicationDAO.findByApplicantName("he", new ApplicationQueryParameters(null, null, null, null, null, 0,
-//                Integer.MAX_VALUE));
-//        assertEquals(3, applications.getResults().size());
-//        // Hessu, active
-//        ApplicationQueryParameters activeParameters = new ApplicationQueryParameters(Arrays.asList(Application.State.ACTIVE.toString()),
-//                null, null, null, null, 0, Integer.MAX_VALUE);
-//        applications = applicationDAO.findByApplicantName("Hessu", activeParameters);
-//        assertEquals(1, applications.getResults().size());
-//    }
 
     @Test
     public void testCheckIfExistsBySocialSecurityNumber() {

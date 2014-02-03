@@ -16,12 +16,12 @@
 
 package fi.vm.sade.haku.oppija.common.selenium;
 
+import com.mongodb.BasicDBObject;
 import fi.vm.sade.haku.oppija.common.it.TomcatContainerBase;
 import fi.vm.sade.haku.oppija.lomake.ApplicationSystemHelper;
 import fi.vm.sade.haku.oppija.lomake.SeleniumContainer;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import org.apache.commons.io.FileUtils;
-import org.junit.After;
 import org.junit.Before;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.Select;
@@ -32,6 +32,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import static fi.vm.sade.haku.oppija.hakemus.it.dao.impl.ApplicationOidDAOMongoImpl.SEQUENCE_FIELD;
+import static fi.vm.sade.haku.oppija.hakemus.it.dao.impl.ApplicationOidDAOMongoImpl.SEQUENCE_NAME;
 
 public abstract class AbstractSeleniumBase extends TomcatContainerBase {
 
@@ -45,13 +48,11 @@ public abstract class AbstractSeleniumBase extends TomcatContainerBase {
     @Before
     public void before() {
         mongoTemplate.getDb().dropDatabase();
+        mongoTemplate.getCollection(SEQUENCE_NAME)
+                .insert(new BasicDBObject(SEQUENCE_FIELD, Long.valueOf(0)));
         seleniumContainer.logout();
     }
 
-    @After
-    public void after() throws Exception {
-        mongoTemplate.getDb().dropDatabase();
-    }
 
     protected ApplicationSystemHelper updateApplicationSystem(final ApplicationSystem applicationSystem) {
         adminResourceClient.updateApplicationSystem(applicationSystem);
@@ -91,6 +92,7 @@ public abstract class AbstractSeleniumBase extends TomcatContainerBase {
             driver.findElement(new By.ById(id)).click();
         }
     }
+
     protected String getTrimmedTextById(final String id) {
         return seleniumContainer.getDriver().findElement(By.id(id)).getText().trim();
     }

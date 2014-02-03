@@ -20,8 +20,6 @@ import com.mongodb.DBObject;
 import fi.vm.sade.haku.oppija.common.dao.BaseDAO;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
-import fi.vm.sade.haku.oppija.lomake.domain.ApplicationState;
-import fi.vm.sade.haku.oppija.hakemus.service.HakuPermissionService;
 
 import java.util.List;
 
@@ -31,7 +29,6 @@ import java.util.List;
  * @author Hannu Lyytikainen
  */
 public interface ApplicationDAO extends BaseDAO<Application> {
-    ApplicationState tallennaVaihe(ApplicationState state);
 
     Application findDraftApplication(Application application);
 
@@ -91,8 +88,6 @@ public interface ApplicationDAO extends BaseDAO<Application> {
      * @return true if application already exists, false otherwise
      */
     boolean checkIfExistsBySocialSecurityNumberAndAo(String asId, String ssn, String aoId);
-
-    void setHakuPermissionService(HakuPermissionService hakuPermissionService);
 
     /**
      * Updates key/value of the application by oid

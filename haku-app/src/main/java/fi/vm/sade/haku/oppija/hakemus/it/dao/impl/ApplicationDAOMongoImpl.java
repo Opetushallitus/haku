@@ -32,7 +32,6 @@ import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationDAO;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationQueryParameters;
 import fi.vm.sade.haku.oppija.hakemus.service.HakuPermissionService;
-import fi.vm.sade.haku.oppija.lomake.domain.ApplicationState;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.SocialSecurityNumber;
 import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundExceptionRuntime;
 import fi.vm.sade.haku.oppija.lomake.service.EncrypterService;
@@ -47,7 +46,10 @@ import org.springframework.stereotype.Service;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.StringTokenizer;
 import java.util.regex.Pattern;
 
 import static org.apache.commons.lang.StringUtils.isEmpty;
@@ -126,28 +128,6 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         this.dbObjectToSearchResultItem = dbObjectToSearchResultItem;
         this.authenticationService = authenticationService;
         this.hakuPermissionService = hakuPermissionService;
-    }
-
-    @Override
-    public ApplicationState tallennaVaihe(ApplicationState state) {
-
-        Application queryApplication = new Application(state.getApplication().getApplicationSystemId(), state.getApplication().getUser(),
-                state.getApplication().getOid());
-        final DBObject query = toDBObject.apply(queryApplication);
-
-        DBObject one = getCollection().findOne(query);
-        if (one != null) {
-            queryApplication = fromDBObject.apply(one);
-        }
-        Application uusiApplication = state.getApplication();
-        Map<String, String> answersMerged = uusiApplication.getVastauksetMerged();
-        queryApplication.addVaiheenVastaukset(state.getPhaseId(), answersMerged);
-        queryApplication.setPhaseId(uusiApplication.getPhaseId());
-
-        one = toDBObject.apply(queryApplication);
-        getCollection().update(query, one, true, false);
-
-        return state;
     }
 
     @Override
@@ -375,7 +355,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         if (state != null && !state.isEmpty()) {
             if (state.size() == 1 && "NOT_IDENTIFIED".equals(state.get(0))) {
                 stateQuery = QueryBuilder.start(FIELD_STUDENT_OID).exists(false).get();
-            } else  if (state.size() == 1 && "NO_SSN".equals(state.get(0))) {
+            } else if (state.size() == 1 && "NO_SSN".equals(state.get(0))) {
                 stateQuery = QueryBuilder.start(FIELD_SSN).exists(false).get();
             } else {
                 stateQuery = QueryBuilder.start(FIELD_APPLICATION_STATE).in(state).get();
@@ -478,11 +458,6 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
 
     private DBObject newOIdExistDBObject() {
         return QueryBuilder.start(FIELD_APPLICATION_OID).exists(true).get();
-    }
-
-    @Override
-    public void setHakuPermissionService(HakuPermissionService hakuPermissionService) {
-        this.hakuPermissionService = hakuPermissionService;
     }
 
     @Override
