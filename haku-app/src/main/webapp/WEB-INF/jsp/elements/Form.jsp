@@ -68,10 +68,10 @@
         <div id="sitecontent">
             <div class="content">
                 <a href="https://opintopolku.fi"><fmt:message key="lomake.lisaakoulutuksia"/></a>
-                <h1><haku:i18nText value="${form.i18nText}"/> - <fmt:message key="form.title"/></h1>
+                <h1><haku:i18nText value="${element.i18nText}"/> - <fmt:message key="form.title"/></h1>
                 <ul class="form-steps">
                     <c:set var="pastPhases" value="true" scope="request"/>
-                    <c:forEach var="phase" items="${form.children}" varStatus="status">
+                    <c:forEach var="phase" items="${element.children}" varStatus="status">
                         <li>
                             <c:if test="${pastPhases}">
                                 <a id="nav-${phase.id}" href="${phase.id}">
@@ -82,12 +82,12 @@
                     </c:forEach>
                     <li>
                         <a class="current"><span class="index"><c:out
-                                value="${fn:length(form.children) + 1}"/></span><fmt:message
+                                value="${fn:length(element.children) + 1}"/></span><fmt:message
                                 key="lomake.esikatselu"/></a>
                     </li>
                     <li>
                         <span>
-                            <span class="index"><c:out value="${fn:length(form.children) + 2}"/></span>
+                            <span class="index"><c:out value="${fn:length(element.children) + 2}"/></span>
                             <fmt:message key="lomake.valmis"/>
                         </span>
                     </li>

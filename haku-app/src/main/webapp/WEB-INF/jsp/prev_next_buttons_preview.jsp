@@ -17,9 +17,7 @@
   ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   ~ European Union Public Licence for more details.
   --%>
-<fmt:setBundle basename="messages" scope="application"/>
-
-<c:forEach var="item" items="${form.children}" varStatus="status">
+<c:forEach var="item" items="${element.children}" varStatus="status">
     <c:if test="${(status.last)}">
         <div class="float-left">
             <form method="get" action="${item.id}">
@@ -31,7 +29,6 @@
             </form>
         </div>
     </c:if>
-
 </c:forEach>
 <div class="float-right">
     <button class="right" name="nav-send" data-po-show="areyousure" value="true">
