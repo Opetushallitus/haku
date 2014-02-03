@@ -36,11 +36,6 @@ public class KoodistoServiceMockImplTest {
     }
 
     @Test
-    public void testGetSubjects() throws Exception {
-        assertEquals(koodistoServiceMock.listOfSubjects, koodistoServiceMock.getSubjects());
-    }
-
-    @Test
     public void testGetGradeRanges() throws Exception {
         assertEquals(koodistoServiceMock.listOfGradeGrades, koodistoServiceMock.getGradeRanges());
     }

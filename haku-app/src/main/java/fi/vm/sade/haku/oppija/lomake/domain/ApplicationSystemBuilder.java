@@ -3,6 +3,7 @@ package fi.vm.sade.haku.oppija.lomake.domain;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ApplicationSystemBuilder {
@@ -16,7 +17,6 @@ public class ApplicationSystemBuilder {
     private List<Element> applicationCompleteElements;
 
     public ApplicationSystemBuilder() {
-        // NOP
     }
 
     public ApplicationSystemBuilder addId(String id) {

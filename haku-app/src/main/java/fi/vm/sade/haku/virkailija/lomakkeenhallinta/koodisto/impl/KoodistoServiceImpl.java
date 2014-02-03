@@ -59,6 +59,7 @@ public class KoodistoServiceImpl implements KoodistoService {
     public static final String CODE_GENDER = "sukupuoli";
     public static final String CODE_HAKUKAUSI = "kausi";
     private static final String CODE_KOULUNUMERO = "oppilaitosnumero";
+    private static final String CODE_HAKUKOHDE = "hakukohteet";
 
     private static final String LUKIO = "15";
     private static final String LUKIO_JA_PERUSKOULU = "19";
@@ -190,6 +191,7 @@ public class KoodistoServiceImpl implements KoodistoService {
                         || LUKIO_JA_PERUSKOULU.equals(arvo))
                         || KANSANOPISTO.equals(arvo)) {
                     lukioNumerot.add(koodi.getKoodiArvo());
+                    LOGGER.debug("Lukiokoodit: " + koodi.getKoodiArvo());
                     break;
                 }
             }
@@ -198,9 +200,18 @@ public class KoodistoServiceImpl implements KoodistoService {
         List<Option> opts = new ArrayList<Option>(lukioNumerot.size());
         List<Organization> orgs = organisaatioService.findByOppilaitosnumero(lukioNumerot);
         for (Organization org : orgs) {
-            opts.add(new Option(org.getName(), org.getOid()));
+            LOGGER.debug("Lukiokoodit, orgOid: " + org.getOid());
+            List<String> types = org.getTypes();
+            if (types.contains("OPPILAITOS")) {
+                opts.add(new Option(org.getName(), org.getOid()));
+            }
         }
         return opts;
+    }
+
+    @Override
+    public List<Option> getHakukohdekoodit() {
+        return codesToOptions(CODE_HAKUKOHDE);
     }
 
     private List<Option> codesToOptions(final String codeName) {

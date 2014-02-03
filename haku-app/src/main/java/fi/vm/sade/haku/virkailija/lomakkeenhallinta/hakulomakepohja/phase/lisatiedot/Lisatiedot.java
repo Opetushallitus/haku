@@ -173,8 +173,6 @@ public class Lisatiedot {
 
         TextArea saavutukset = new TextArea("saavutukset",
                 createI18NText("form.lisatiedot.urheilija.saavutukset.saavutukset", mbn.getFormMessages()));
-        saavutukset.addAttribute("cols", "60");
-        saavutukset.addAttribute("rows", "4");
         saavutukset.addAttribute("maxlength", "2000");
         saavutukset.setInline(true);
         saavutukset.setHelp(createI18NText("form.lisatiedot.urheilija.saavutukset.saavutukset.help", mbn.getFormMessages()));

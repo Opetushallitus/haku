@@ -4,11 +4,13 @@ import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import fi.vm.sade.haku.oppija.common.organisaatio.Organization;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.impl.TranslationsUtil;
 import fi.vm.sade.organisaatio.api.model.types.OrganisaatioTyyppi;
 import fi.vm.sade.organisaatio.api.search.OrganisaatioPerustieto;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 public class OrganisaatioPerustietoToOrganizationFunction implements
         Function<OrganisaatioPerustieto, Organization> {
@@ -28,6 +30,8 @@ public class OrganisaatioPerustietoToOrganizationFunction implements
         final Date startDate = input.getAlkuPvm();
         final Date endDate = input.getLakkautusPvm();
 
-        return new Organization(new I18nText(input.getNimi()), oid, parentOid, types, startDate, endDate);
+        Map<String, String> nimiTranslations = TranslationsUtil.createTranslationsMap(input.getNimi());
+        return new Organization(new I18nText(nimiTranslations), oid, parentOid, types,
+                startDate, endDate);
     }
 }

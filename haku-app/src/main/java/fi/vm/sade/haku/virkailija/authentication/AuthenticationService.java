@@ -18,9 +18,6 @@ package fi.vm.sade.haku.virkailija.authentication;
 
 import java.util.List;
 
-/**
- * @author Hannu Lyytikainen
- */
 public interface AuthenticationService {
 
     String addPerson(Person person);

@@ -76,8 +76,6 @@ public abstract class DummyModelBaseItTest extends AbstractSeleniumBase {
                 Select select = new Select(element);
                 if (select.getOptions().size() > 6) {
                     select.selectByIndex(6);
-                } else {
-                    select.selectByIndex(2);
                 }
             }
         }

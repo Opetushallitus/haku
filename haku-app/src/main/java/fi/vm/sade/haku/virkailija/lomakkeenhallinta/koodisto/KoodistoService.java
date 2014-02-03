@@ -54,4 +54,6 @@ public interface KoodistoService {
     List<Code> getCodes(String koodistoUrl, int version);
 
     List<Option> getLukioKoulukoodit();
+
+    List<Option> getHakukohdekoodit();
 }

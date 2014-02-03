@@ -45,9 +45,9 @@ public class FormGeneratorImpl implements FormGenerator {
             } else {
                 if (as.getHakukausiUri().equals(OppijaConstants.HAKUKAUSI_SYKSY)) {
                     form = YhteishakuSyksy.generateForm(as, koodistoService);
-                    applicationCompleteElements = YhteishakuSyksy.generateApplicationCompleteElements();
+                    applicationCompleteElements = YhteishakuSyksy.createApplicationCompleteElements();
                 } else if (as.getHakukausiUri().equals(OppijaConstants.HAKUKAUSI_KEVAT)) {
-                    form = YhteishakuKevat.generateForm(as, koodistoService, organisaatioService);
+                    form = YhteishakuKevat.generateForm(as, koodistoService);
                     applicationCompleteElements = YhteishakuKevat.generateApplicationCompleteElements();
                 } else {
                     //skip

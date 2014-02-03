@@ -45,7 +45,8 @@ public class ApplicationSystem implements Serializable {
     public ApplicationSystem(final String id, final Form form, final I18nText name,
                              final List<ApplicationPeriod> applicationPeriods,
                              final String applicationSystemType, Integer hakukausiVuosi,
-                             final String hakukausiUri, final List<Element> applicationCompleteElements) {
+                             final String hakukausiUri,
+                             final List<Element> applicationCompleteElements) {
         Preconditions.checkNotNull(id);
         Preconditions.checkNotNull(name);
         this.id = id;

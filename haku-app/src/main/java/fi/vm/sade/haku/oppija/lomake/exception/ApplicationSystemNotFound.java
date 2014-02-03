@@ -20,6 +20,10 @@ public class ApplicationSystemNotFound extends RuntimeException {
     private static final long serialVersionUID = -8188728650814173417L;
 
     public ApplicationSystemNotFound(final String id) {
-        super("Application system " + id + " not found");
+        super(String.format("Application system %s not found", id));
+    }
+
+    public ApplicationSystemNotFound(final String msgFormat, final String id) {
+        super(String.format(msgFormat, id));
     }
 }

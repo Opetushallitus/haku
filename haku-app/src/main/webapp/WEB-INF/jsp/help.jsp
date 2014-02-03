@@ -1,3 +1,4 @@
+<%@ page session="false"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
@@ -19,7 +20,7 @@
   --%>
 
 <!DOCTYPE html>
-<fmt:setBundle basename="messages" scope="session"/>
+<fmt:setBundle basename="messages" scope="application"/>
 <html>
 <head>
     <title><haku:i18nText value="${it.theme.i18nText}"/></title>

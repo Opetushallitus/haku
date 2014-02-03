@@ -33,9 +33,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @Profile("default")
@@ -83,6 +81,20 @@ public class OrganizationServiceImpl implements OrganizationService {
     @Override
     public List<String> findParentOids(final String organizationOid) {
         return service.findParentOids(organizationOid);
+    }
+
+    @Override
+    public Organization findByOid(String oid) {
+        Set<String> singleOid = Collections.singleton(oid);
+        List<Organization> orgs = Lists.newArrayList(Lists.transform(service.findByOidSet(singleOid),
+                new OrganisaatioPerustietoToOrganizationFunction()));
+        if (orgs.size() == 1) {
+            return orgs.get(0);
+        } else if (orgs.size() > 1) {
+            LOG.error("Got more than organizations for single oid: {}", oid);
+            throw new RuntimeException("Got more than organizations for single oid");
+        }
+        return null;
     }
 
     @Override

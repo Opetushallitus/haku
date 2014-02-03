@@ -126,7 +126,7 @@ public class ApplicationDAOMongoImplIT extends AbstractDAOTest {
     }
 
     @Test(expected = ResourceNotFoundExceptionRuntime.class)
-    public void testFindPendingApplicationNotFound() throws Exception {
+    public void testfindDraftApplicationNotFound() throws Exception {
         applicationDAO.findDraftApplication(new Application(applicationSystemId, TEST_USER));
     }
 

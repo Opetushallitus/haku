@@ -1,3 +1,4 @@
+<%@ page session="false"%>
 <%@ taglib prefix="haku" tagdir="/WEB-INF/tags" %>
 <%--
   ~ Copyright (c) 2012 The Finnish Board of Education - Opetushallitus

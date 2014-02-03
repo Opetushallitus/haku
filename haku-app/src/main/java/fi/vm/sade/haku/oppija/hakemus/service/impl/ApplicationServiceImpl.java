@@ -16,11 +16,10 @@
 
 package fi.vm.sade.haku.oppija.hakemus.service.impl;
 
-import com.mongodb.DBObject;
-import com.mongodb.QueryBuilder;
 import fi.vm.sade.authentication.service.GenericFault;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
-import fi.vm.sade.haku.oppija.common.suoritusrekisteri.SuoritusDTO;
+import fi.vm.sade.haku.oppija.common.suoritusrekisteri.OpiskelijaDTO;
+import fi.vm.sade.haku.oppija.common.suoritusrekisteri.SuoritusrekisteriService;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationNote;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
@@ -30,13 +29,11 @@ import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationQueryParameters;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationOidService;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.haku.oppija.hakemus.service.HakuPermissionService;
-import fi.vm.sade.haku.oppija.common.suoritusrekisteri.SuoritusrekisteriService;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationState;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.User;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.PreferenceRow;
 import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
 import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundExceptionRuntime;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
@@ -48,7 +45,6 @@ import fi.vm.sade.haku.oppija.lomake.validation.ValidationInput;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationResult;
 import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
 import fi.vm.sade.haku.virkailija.authentication.PersonBuilder;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,8 +52,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
-import java.util.regex.Pattern;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static org.apache.commons.lang.StringUtils.*;
 
@@ -71,14 +69,6 @@ public class ApplicationServiceImpl implements ApplicationService {
     private final ApplicationOidService applicationOidService;
     private final UserSession userSession;
     private final FormService formService;
-    private static final String SOCIAL_SECURITY_NUMBER_PATTERN = "([0-9]{6}.[0-9]{3}([0-9]|[a-z]|[A-Z]))";
-    private static final String DATE_OF_BIRTH_PATTERN = "[0-9]{6}";
-    private static final String OID_PATTERN = "^[0-9]+.[0-9]+.[0-9]+.[0-9]+.[0-9]+.[0-9]+$";
-    private static final String SHORT_OID_PATTERN = "^[0-9]{11}$";
-    private final Pattern socialSecurityNumberPattern;
-    private final Pattern dobPattern;
-    private final Pattern oidPattern;
-    private final Pattern shortOidPattern;
     private final AuthenticationService authenticationService;
     private final OrganizationService organizationService;
     private final HakuPermissionService hakuPermissionService;
@@ -107,11 +97,6 @@ public class ApplicationServiceImpl implements ApplicationService {
         this.applicationSystemService = applicationSystemService;
         this.suoritusrekisteriService = suoritusrekisteriService;
         this.elementTreeValidator = elementTreeValidator;
-
-        this.socialSecurityNumberPattern = Pattern.compile(SOCIAL_SECURITY_NUMBER_PATTERN);
-        this.dobPattern = Pattern.compile(DATE_OF_BIRTH_PATTERN);
-        this.oidPattern = Pattern.compile(OID_PATTERN);
-        this.shortOidPattern = Pattern.compile(SHORT_OID_PATTERN);
     }
 
 
@@ -213,20 +198,6 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public Application addPersonOid(String applicationOid) {
-        DBObject query = QueryBuilder.start("oid").is(applicationOid).get();
-        List<Application> applications = applicationDAO.find(query);
-        return addPersonOid(applications.get(0));
-    }
-
-    @Override
-    public Application checkStudentOid(String applicationOid) {
-        DBObject query = QueryBuilder.start("oid").is(applicationOid).get();
-        List<Application> applications = applicationDAO.find(query);
-        return checkStudentOid(applications.get(0));
-    }
-
-    @Override
     public Application checkStudentOid(Application application) {
         String personOid = application.getPersonOid();
 
@@ -305,12 +276,12 @@ public class ApplicationServiceImpl implements ApplicationService {
         ApplicationSystem as = applicationSystemService.getApplicationSystem(application.getApplicationSystemId());
         Integer hakukausiVuosi = as.getHakukausiVuosi();
         String hakukausi = as.getHakukausiUri();
-        List<SuoritusDTO> suoritukset = suoritusrekisteriService.getSuoritukset(personOid,
+        List<OpiskelijaDTO> opiskelijat = suoritusrekisteriService.getOpiskelijat(personOid,
                 String.valueOf(hakukausiVuosi), hakukausi);
 
-        if (suoritukset.size() > 0) {
-            String sendingSchool = suoritukset.get(0).getOppilaitosOid();
-            String sendingClass = suoritukset.get(0).getLuokka();
+        if (opiskelijat.size() > 0) {
+            String sendingSchool = opiskelijat.get(0).getOppilaitosOid();
+            String sendingClass = opiskelijat.get(0).getLuokka();
             Map<String, String> answers = new HashMap<String, String>(
                     application.getPhaseAnswers(OppijaConstants.PHASE_EDUCATION));
             if (isNotEmpty(sendingSchool)) {
@@ -323,18 +294,6 @@ public class ApplicationServiceImpl implements ApplicationService {
         }
         return application;
 
-    }
-
-    @Override
-    public Application getPendingApplication(String applicationSystemId, String oid) throws ResourceNotFoundException {
-        final User user = userSession.getUser();
-        Application application = new Application(applicationSystemId, user, oid);
-        if (!user.isKnown()) {
-            application.removeUser();
-        }
-
-        List<Application> listOfApplications = applicationDAO.find(application);
-        return listOfApplications.get(0);
     }
 
     @Override
@@ -376,28 +335,6 @@ public class ApplicationServiceImpl implements ApplicationService {
         Application current = getApplication(query);
         current.setAdditionalInfo(additionalInfo);
         applicationDAO.update(query, current);
-    }
-
-    @Override
-    public List<String> getApplicationPreferenceOids(String applicationOid) throws ResourceNotFoundException {
-        Application application = getApplication(applicationOid);
-        return getApplicationPreferenceOids(application);
-    }
-
-    @Override
-    public List<String> getApplicationPreferenceOids(Application application) {
-        List<String> oids = new ArrayList<String>();
-        final Form activeForm = formService.getForm(application.getApplicationSystemId());
-        Map<String, PreferenceRow> preferenceRows = ElementUtil.findElementsByType(activeForm,
-                PreferenceRow.class);
-        Map<String, String> answers = application.getVastauksetMerged();
-        for (PreferenceRow pr : preferenceRows.values()) {
-            String oid = answers.get(pr.getEducationOidInputId());
-            if (oid != null && !oid.trim().isEmpty()) {
-                oids.add(oid);
-            }
-        }
-        return oids;
     }
 
     @Override
