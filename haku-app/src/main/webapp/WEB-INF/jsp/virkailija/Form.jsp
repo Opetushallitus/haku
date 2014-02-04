@@ -97,41 +97,44 @@
             <h3><c:out value="${answers['Etunimet']}" escapeXml="true"/>&nbsp;<c:out
                     value="${answers['Sukunimi']}" escapeXml="true"/></h3>
             <table class="margin-top-2">
+                <c:if test="${application.state eq 'ACTIVE'}">
+                    <fmt:message key="virkailija.hakemus.tila.voimassa" var="msg"/>
+                </c:if>
+                <c:if test="${application.state eq 'PASSIVE'}">
+                    <fmt:message key="virkailija.hakemus.tila.peruttu" var="msg"/>
+                </c:if>
+                <c:if test="${application.state eq 'INCOMPLETE'}">
+                    <fmt:message key="virkailija.hakemus.tila.puutteellinen" var="msg"/>
+                </c:if>
                 <tr>
                     <haku:infoCell key="virkailija.hakemus.hakemusnro" value="${application.oid}" cellId="infocell_oid"/>
 
-                    <c:if test="${application.state eq 'ACTIVE'}">
-                        <fmt:message key="virkailija.hakemus.tila.voimassa" var="msg"/>
-                    </c:if>
-                    <c:if test="${application.state eq 'PASSIVE'}">
-                        <fmt:message key="virkailija.hakemus.tila.peruttu" var="msg"/>
-                    </c:if>
-                    <c:if test="${application.state eq 'INCOMPLETE'}">
-                        <fmt:message key="virkailija.hakemus.tila.puutteellinen" var="msg"/>
-                    </c:if>
-                    <haku:infoCell key="virkailija.hakemus.hakemuksen.tila" value='${msg}'/>
-
-                    <haku:infoCell key="virkailija.hakemus.puhelin" value="${answers['matkapuhelinnumero1']}"/>
-                </tr>
-                <tr>
                     <haku:infoCell key="virkailija.hakemus.henkilotunnus" value="${answers['Henkilotunnus']}"/>
-                    <haku:infoCell key="virkailija.hakemus.henkilonumero" value="${application.personOid}" cellId="infocell_henkilonumero"/>
-                    <haku:infoCell key="virkailija.hakemus.sahkoposti" value="${answers['Sähköposti']}"/>
-                </tr>
-                <tr>
-                    <td></td>
-                    <haku:infoCell key="virkailija.hakemus.oppijanumero" value="${application.studentOid}" cellId="infocell_oppijanumero"/>
-                    <haku:infoCell key="virkailija.vaihe.aidinkieli" value="${answers['aidinkieli']}"/>
-                </tr>
-                <tr>
-                    <td></td>
+
                     <td>
                         <span class="bold"><fmt:message key="virkailija.hakemus.lahtokoulu"/>:</span>
                         <span><haku:i18nText value="${it.sendingSchool}" />&nbsp;<c:out value="${it.sendingClass}" /></span>
                     </td>
-                    <td></td>
                 </tr>
+                <tr>
+                    <haku:infoCell key="virkailija.hakemus.hakemuksen.tila" value='${msg}'/>
 
+                    <haku:infoCell key="virkailija.hakemus.henkilonumero" value="${application.personOid}" cellId="infocell_henkilonumero"/>
+
+                    <haku:infoCell key="virkailija.vaihe.aidinkieli" value="${answers['aidinkieli']}"/>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+
+                    <haku:infoCell key="virkailija.hakemus.oppijanumero" value="${application.studentOid}" cellId="infocell_oppijanumero"/>
+
+                    <haku:infoCell key="virkailija.hakemus.puhelin" value="${answers['matkapuhelinnumero1']}"/>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <haku:infoCell key="virkailija.hakemus.sahkoposti" value="${answers['Sähköposti']}"/>
+                </tr>
             </table>
         </div>
 
