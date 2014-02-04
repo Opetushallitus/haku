@@ -17,9 +17,11 @@
 package fi.vm.sade.haku.oppija.lomake.validation;
 
 import fi.vm.sade.haku.oppija.lomake.dao.impl.FormServiceMockImpl;
+import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.TextQuestion;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
+import fi.vm.sade.haku.oppija.lomake.util.ElementTree;
 import fi.vm.sade.haku.oppija.lomake.validation.validators.RequiredFieldValidator;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormGeneratorMock;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.impl.KoodistoServiceMockImpl;
@@ -43,14 +45,15 @@ public class ElementTreeValidatorTest {
     private TextQuestion textQuestion;
     private FormServiceMockImpl formModelDummyMemoryDao;
     private ElementTreeValidator elementTreeValidator;
+    private ApplicationSystemService applicationSystemServiceMock;
 
     @Before
     public void setUp() throws Exception {
         textQuestion = new TextQuestion("id", createI18NAsIs("title"));
         FormGeneratorMock formGeneratorMock = new FormGeneratorMock(new KoodistoServiceMockImpl(), ASID);
-        ApplicationSystemService mock = mock(ApplicationSystemService.class);
-        when(mock.getApplicationSystem(anyString())).thenReturn(formGeneratorMock.createApplicationSystem());
-        formModelDummyMemoryDao = new FormServiceMockImpl(mock);
+        applicationSystemServiceMock = mock(ApplicationSystemService.class);
+        when(applicationSystemServiceMock.getApplicationSystem(anyString())).thenReturn(formGeneratorMock.createApplicationSystem());
+        formModelDummyMemoryDao = new FormServiceMockImpl(applicationSystemServiceMock);
         SsnUniqueConcreteValidator ssnUniqueConcreteValidator = mock(SsnUniqueConcreteValidator.class);
         SsnAndPreferenceUniqueConcreteValidator ssnAndPreferenceUniqueConcreteValidator = mock(SsnAndPreferenceUniqueConcreteValidator.class);
         PreferenceConcreteValidator preferenceConcreteValidator = mock(PreferenceConcreteValidator.class);
@@ -96,7 +99,8 @@ public class ElementTreeValidatorTest {
     }
 
     private void testAsuinmaa(final String asuinmaa, final int errorCount) {
-        Element phase = formModelDummyMemoryDao.getFirstPhase(ASID);
+        ApplicationSystem applicationSystem = applicationSystemServiceMock.getApplicationSystem(ASID);
+        Element phase = ElementTree.getFirstChild(applicationSystem.getForm());
         HashMap<String, String> values = fillFormWithoutAsuinmaa();
         values.put("asuinmaa", asuinmaa);
         ValidationResult validationResult = elementTreeValidator.validate(new ValidationInput(phase, values, null, null));

@@ -90,7 +90,7 @@ public class ModelResponse {
     public void setApplication(final Application application) {
         this.addObjectToModel(APPLICATION, application);
         this.addObjectToModel(APPLICATION_SYSTEM_ID, application.getApplicationSystemId());
-        this.addObjectToModel(OID, application.getOid());
+        setOid(application.getOid());
         this.addObjectToModel(APPLICATION_PHASE_ID, application.getPhaseId());
         this.addObjectToModel(ANSWERS, application.getVastauksetMerged());
     }
@@ -149,6 +149,14 @@ public class ModelResponse {
         this.addObjectToModel(APPLICATION_PHASE_ID, getPhaseId());
     }
 
+    public String getOid() {
+        return model.get(OID).toString();
+    }
+
+    public void setOid(final String oid) {
+        this.addObjectToModel(OID, oid);
+    }
+
     public String getPhaseId() {
         return model.get(APPLICATION_PHASE_ID).toString();
     }
@@ -160,5 +168,9 @@ public class ModelResponse {
         sb.append(", model=").append(model);
         sb.append('}');
         return sb.toString();
+    }
+
+    public Application getApplication() {
+        return (Application) model.get(APPLICATION);
     }
 }

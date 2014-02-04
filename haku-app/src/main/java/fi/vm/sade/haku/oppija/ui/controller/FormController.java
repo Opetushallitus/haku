@@ -17,12 +17,7 @@
 package fi.vm.sade.haku.oppija.ui.controller;
 
 import com.sun.jersey.api.view.Viewable;
-import fi.vm.sade.haku.oppija.hakemus.domain.Application;
-import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
-import fi.vm.sade.haku.oppija.lomake.service.FormService;
-import fi.vm.sade.haku.oppija.lomake.service.UserSession;
 import fi.vm.sade.haku.oppija.ui.common.RedirectToFormViewPath;
 import fi.vm.sade.haku.oppija.ui.common.RedirectToPendingViewPath;
 import fi.vm.sade.haku.oppija.ui.common.RedirectToPhaseViewPath;
@@ -31,7 +26,6 @@ import fi.vm.sade.haku.oppija.ui.service.UIService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import javax.ws.rs.*;
@@ -58,19 +52,10 @@ public class FormController {
     private static final String PHASE_ID_PATH_PARAM = "phaseId";
     public static final String ELEMENT_ID_PATH_PARAM = "elementId";
 
-    private final FormService formService;
-    private final ApplicationService applicationService;
-    private final UserSession userSession;
     private final UIService uiService;
 
     @Autowired
-    public FormController(@Qualifier("formServiceImpl") final FormService formService,
-                          final ApplicationService applicationService,
-                          final UserSession userSession,
-                          final UIService uiService) {
-        this.formService = formService;
-        this.applicationService = applicationService;
-        this.userSession = userSession;
+    public FormController(final UIService uiService) {
         this.uiService = uiService;
     }
 
@@ -84,20 +69,10 @@ public class FormController {
 
     @GET
     @Path("/{applicationSystemId}")
-    public Response getApplication(
-            @PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId) throws URISyntaxException {
-        LOGGER.debug("RedirectToLastPhase {}", new Object[]{applicationSystemId});
-        Application application = userSession.getApplication(applicationSystemId);
-        if (application.isNew()) {
-            Element firstPhase = formService.getFirstPhase(applicationSystemId);
-            return Response.seeOther(new URI(
-                    new RedirectToPhaseViewPath(applicationSystemId, firstPhase.getId()).getPath())).build();
-
-        } else {
-            return Response.seeOther(new URI(
-                    new RedirectToPhaseViewPath(applicationSystemId,
-                            application.getPhaseId()).getPath())).build();
-        }
+    public Response getApplication(@PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId) throws URISyntaxException {
+        LOGGER.debug("getApplication {}", new Object[]{applicationSystemId});
+        ModelResponse modelResponse = uiService.getApplication(applicationSystemId);
+        return Response.seeOther(new URI(new RedirectToPhaseViewPath(applicationSystemId, modelResponse.getPhaseId()).getPath())).build();
     }
 
     @POST
@@ -159,8 +134,8 @@ public class FormController {
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED + CHARSET_UTF_8)
     public Response submitApplication(@PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId) throws URISyntaxException {
         LOGGER.debug("submitApplication {}", new Object[]{applicationSystemId});
-        String oid = applicationService.submitApplication(applicationSystemId);
-        RedirectToPendingViewPath redirectToPendingViewPath = new RedirectToPendingViewPath(applicationSystemId, oid);
+        ModelResponse modelResponse = uiService.submitApplication(applicationSystemId);
+        RedirectToPendingViewPath redirectToPendingViewPath = new RedirectToPendingViewPath(applicationSystemId, modelResponse.getOid());
         return Response.seeOther(new URI(redirectToPendingViewPath.getPath())).build();
     }
 

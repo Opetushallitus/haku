@@ -16,16 +16,9 @@
 
 package fi.vm.sade.haku.oppija.lomake.service;
 
-import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
 
-import java.util.List;
-
 public interface FormService {
-
-    Element getFirstPhase(final String applicationSystemId);
-
-    Element getLastPhase(final String applicationSystemId);
 
     Form getForm(final String applicationSystemId);
 

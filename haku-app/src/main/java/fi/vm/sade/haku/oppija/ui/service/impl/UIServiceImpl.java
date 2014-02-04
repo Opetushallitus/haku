@@ -89,8 +89,7 @@ public class UIServiceImpl implements UIService {
     @Override
     public ModelResponse getPhase(String applicationSystemId, String phaseId) {
         ApplicationSystem activeApplicationSystem = applicationSystemService.getActiveApplicationSystem(applicationSystemId);
-        Form form = activeApplicationSystem.getForm();
-        ElementTree elementTree = new ElementTree(form);
+        ElementTree elementTree = new ElementTree(activeApplicationSystem.getForm());
         Element phase = elementTree.getChildById(phaseId);
         Application application = applicationService.getApplication(applicationSystemId);
         elementTree.checkPhaseTransfer(application.getPhaseId(), phaseId);
@@ -137,8 +136,7 @@ public class UIServiceImpl implements UIService {
 
     @Override
     public ModelResponse updateRules(String applicationSystemId, String phaseId, String elementId, Map<String, String> currentAnswers) {
-        ApplicationSystem activeApplicationSystem = applicationSystemService.getActiveApplicationSystem(applicationSystemId);
-        Form activeForm = activeApplicationSystem.getForm();
+        Form activeForm = applicationSystemService.getActiveApplicationSystem(applicationSystemId).getForm();
         Map<String, String> values = applicationService.getApplication(applicationSystemId).getVastauksetMerged();
         values.putAll(currentAnswers);
         ModelResponse modelResponse = new ModelResponse();
@@ -179,5 +177,22 @@ public class UIServiceImpl implements UIService {
         }
         return modelResponse;
 
+    }
+
+    @Override
+    public ModelResponse submitApplication(final String applicationSystemId) {
+        ModelResponse modelResponse = new ModelResponse();
+        modelResponse.setOid(applicationService.submitApplication(applicationSystemId));
+        return modelResponse;
+    }
+
+    @Override
+    public ModelResponse getApplication(String applicationSystemId) {
+        Application application = userSession.getApplication(applicationSystemId);
+        if (application.isNew()) {
+            Form activeForm = applicationSystemService.getActiveApplicationSystem(applicationSystemId).getForm();
+            application.setPhaseId(ElementTree.getFirstChild(activeForm).getId());
+        }
+        return new ModelResponse(application);
     }
 }

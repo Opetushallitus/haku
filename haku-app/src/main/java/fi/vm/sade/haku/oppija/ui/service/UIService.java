@@ -18,7 +18,6 @@ package fi.vm.sade.haku.oppija.ui.service;
 
 import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
 
-import javax.ws.rs.core.MultivaluedMap;
 import java.util.Map;
 
 public interface UIService {
@@ -42,4 +41,8 @@ public interface UIService {
     ModelResponse getPhaseElement(final String applicationSystemId, final String phaseId, final String elementId);
 
     ModelResponse savePhase(final String applicationSystemId, final String phaseId, Map<String, String> answers);
+
+    ModelResponse submitApplication(final String applicationSystemId);
+
+    ModelResponse getApplication(final String applicationSystemId);
 }

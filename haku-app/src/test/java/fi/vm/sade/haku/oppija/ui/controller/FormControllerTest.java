@@ -50,10 +50,8 @@ import static org.mockito.Mockito.when;
 public class FormControllerTest {
 
     public static final String ASID = "dummyAsid";
-    public static final String OID = "1.1.1";
     private static final String FIRST_PHASE_ID = "henkilotiedot";
     private static final String APPLICATION_SYSTEM_ID = ASID;
-    public static final String TEST_PHASE = "test_phase";
     public static final String PHASE_TITLE = "title";
     public static final Phase PHASE = new Phase(FIRST_PHASE_ID, createI18NAsIs(PHASE_TITLE), false);
     public static final Form FORM = new Form("id", createI18NAsIs("title"));
@@ -62,7 +60,6 @@ public class FormControllerTest {
     private ApplicationService applicationService;
     private FormService formService;
     private Application application;
-    private ApplicationState applicationState;
     private ModelResponse modelResponse;
 
     @Before
@@ -72,43 +69,16 @@ public class FormControllerTest {
         modelResponse = new ModelResponse(this.application);
         this.applicationService = mock(ApplicationService.class);
         this.formService = mock(FormService.class);
-        UserSession userSession = mock(UserSession.class);
         UIService uiService = mock(UIService.class);
         when(uiService.getPhase(APPLICATION_SYSTEM_ID, FIRST_PHASE_ID)).thenReturn(modelResponse);
         when(uiService.savePhase(Matchers.<String>any(), Matchers.<String>any(), Matchers.<Map>any())).thenReturn(modelResponse);
-        this.formController = new FormController(formService, applicationService, userSession, uiService);
+        this.formController = new FormController(uiService);
 
         FORM.addChild(PHASE);
         when(applicationService.getApplication(Matchers.<String>any())).thenReturn(this.application);
 
-        when(formService.getFirstPhase(APPLICATION_SYSTEM_ID)).thenReturn(PHASE);
         when(formService.getActiveForm(APPLICATION_SYSTEM_ID)).thenReturn(FORM);
-        when(userSession.getApplication(Matchers.<String>any())).thenReturn(this.application);
-        when(applicationService.saveApplicationPhase(Matchers.<ApplicationPhase>any())).thenReturn(applicationState);
     }
-
-    private String resolveRedirectPath(Response response) {
-        return ((URI) response.getMetadata().get("Location").get(0)).getPath();
-    }
-
-    @Test
-    public void testGetFormAndRedirectToFirstCategory() throws Exception {
-        this.application.setPhaseId(TEST_PHASE);
-        String expected = new RedirectToPhaseViewPath(APPLICATION_SYSTEM_ID, TEST_PHASE).getPath();
-        Response response = formController.getApplication(APPLICATION_SYSTEM_ID);
-        String actual = ((URI) response.getMetadata().get("Location").get(0)).getPath();
-        assertEquals(expected, actual);
-    }
-
-    @Test
-    public void testGetFormAndRedirectToFirstCategoryNew() throws Exception {
-        application.setPhaseId(null);
-        when(formService.getFirstPhase(APPLICATION_SYSTEM_ID)).thenReturn(new Phase(FIRST_PHASE_ID, createI18NAsIs("title"), false));
-        String expected = "/lomake/" + APPLICATION_SYSTEM_ID + "/" + FIRST_PHASE_ID;
-        Response response = formController.getApplication(APPLICATION_SYSTEM_ID);
-        assertEquals(expected, resolveRedirectPath(response));
-    }
-
 
     @Test(expected = NullPointerException.class)
     public void testGetFormAndRedirectToFirstCategoryNullApplicationId() throws Exception {
@@ -132,15 +102,6 @@ public class FormControllerTest {
     public void testGetCategoryWrongView() throws Exception {
         Viewable viewable = formController.getPhase(APPLICATION_SYSTEM_ID, FIRST_PHASE_ID);
         assertNotSame(null, viewable.getTemplateName());
-    }
-
-    @Test()
-    public void sendInvalid() throws Exception {
-        when(applicationService.submitApplication(Matchers.<String>any())).thenReturn(OID);
-        Response response = formController.submitApplication(APPLICATION_SYSTEM_ID);
-        RedirectToPendingViewPath redirectToPendingViewPath = new RedirectToPendingViewPath(APPLICATION_SYSTEM_ID, OID);
-        String actual = ((URI) response.getMetadata().get("Location").get(0)).getPath();
-        assertEquals(redirectToPendingViewPath.getPath(), actual);
     }
 
     @Test

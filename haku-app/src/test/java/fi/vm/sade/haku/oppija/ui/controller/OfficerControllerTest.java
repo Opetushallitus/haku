@@ -69,7 +69,6 @@ public class OfficerControllerTest {
         when(applicationService.getApplication(OID)).thenReturn(app);
 
         Phase phase = new Phase(PREVIEW_PHASE, createI18NAsIs(PREVIEW_PHASE), true);
-        when(formService.getLastPhase(ASID)).thenReturn(phase);
 
         Form form = new Form("yhteishaku", createI18NAsIs("yhteishaku"));
         form.addChild(new Phase("henkilotiedot", createI18NAsIs("henkilotiedot"), false));
