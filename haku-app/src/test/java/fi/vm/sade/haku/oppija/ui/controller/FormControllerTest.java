@@ -25,7 +25,6 @@ import fi.vm.sade.haku.oppija.lomake.domain.ApplicationState;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Phase;
-import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.haku.oppija.lomake.service.FormService;
 import fi.vm.sade.haku.oppija.lomake.service.UserSession;
 import fi.vm.sade.haku.oppija.ui.common.RedirectToPendingViewPath;
@@ -51,62 +50,35 @@ import static org.mockito.Mockito.when;
 public class FormControllerTest {
 
     public static final String ASID = "dummyAsid";
-    public static final String OID = "1.1.1";
     private static final String FIRST_PHASE_ID = "henkilotiedot";
     private static final String APPLICATION_SYSTEM_ID = ASID;
-    public static final String TEST_PHASE = "test_phase";
     public static final String PHASE_TITLE = "title";
     public static final Phase PHASE = new Phase(FIRST_PHASE_ID, createI18NAsIs(PHASE_TITLE), false);
     public static final Form FORM = new Form("id", createI18NAsIs("title"));
+
     private FormController formController;
     private ApplicationService applicationService;
     private FormService formService;
     private Application application;
-    private ApplicationState applicationState;
-    private ApplicationSystemService applicationSystemService;
+    private ModelResponse modelResponse;
 
     @Before
     public void setUp() throws Exception {
-
+        this.application = new Application();
+        application.setPhaseId(FIRST_PHASE_ID);
+        modelResponse = new ModelResponse(this.application);
         this.applicationService = mock(ApplicationService.class);
         this.formService = mock(FormService.class);
-        this.applicationSystemService = mock(ApplicationSystemService.class);
-        UserSession userSession = mock(UserSession.class);
         UIService uiService = mock(UIService.class);
-        this.formController = new FormController(formService, applicationService, userSession, "", uiService, applicationSystemService);
-        this.application = new Application();
+        when(uiService.getPhase(APPLICATION_SYSTEM_ID, FIRST_PHASE_ID)).thenReturn(modelResponse);
+        when(uiService.savePhase(Matchers.<String>any(), Matchers.<String>any(), Matchers.<Map>any())).thenReturn(modelResponse);
+        this.formController = new FormController(uiService);
+
         FORM.addChild(PHASE);
         when(applicationService.getApplication(Matchers.<String>any())).thenReturn(this.application);
-        when(formService.getFirstPhase(APPLICATION_SYSTEM_ID)).thenReturn(PHASE);
+
         when(formService.getActiveForm(APPLICATION_SYSTEM_ID)).thenReturn(FORM);
-        when(userSession.getApplication(Matchers.<String>any())).thenReturn(this.application);
-        applicationState = new ApplicationState(application, FIRST_PHASE_ID);
-        application.setPhaseId(FIRST_PHASE_ID);
-        when(applicationService.saveApplicationPhase(Matchers.<ApplicationPhase>any())).thenReturn(applicationState);
     }
-
-    private String resolveRedirectPath(Response response) {
-        return ((URI) response.getMetadata().get("Location").get(0)).getPath();
-    }
-
-    @Test
-    public void testGetFormAndRedirectToFirstCategory() throws Exception {
-        this.application.setPhaseId(TEST_PHASE);
-        String expected = new RedirectToPhaseViewPath(APPLICATION_SYSTEM_ID, TEST_PHASE).getPath();
-        Response response = formController.getApplication(APPLICATION_SYSTEM_ID);
-        String actual = ((URI) response.getMetadata().get("Location").get(0)).getPath();
-        assertEquals(expected, actual);
-    }
-
-    @Test
-    public void testGetFormAndRedirectToFirstCategoryNew() throws Exception {
-        application.setPhaseId(null);
-        when(formService.getFirstPhase(APPLICATION_SYSTEM_ID)).thenReturn(new Phase(FIRST_PHASE_ID, createI18NAsIs("title"), false));
-        String expected = "/lomake/" + APPLICATION_SYSTEM_ID + "/" + FIRST_PHASE_ID;
-        Response response = formController.getApplication(APPLICATION_SYSTEM_ID);
-        assertEquals(expected, resolveRedirectPath(response));
-    }
-
 
     @Test(expected = NullPointerException.class)
     public void testGetFormAndRedirectToFirstCategoryNullApplicationId() throws Exception {
@@ -115,16 +87,9 @@ public class FormControllerTest {
 
     @SuppressWarnings("rawtypes")
     @Test
-    public void testGetCategoryMVCategory() throws Exception {
+    public void testGetPhaseModelSize() throws Exception {
         Viewable viewable = formController.getPhase(APPLICATION_SYSTEM_ID, FIRST_PHASE_ID);
-        assertEquals(FIRST_PHASE_ID, ((Phase) ((Map) viewable.getModel()).get(ModelResponse.ELEMENT)).getId());
-    }
-
-    @SuppressWarnings("rawtypes")
-    @Test
-    public void testGetCategoryModelSize() throws Exception {
-        Viewable viewable = formController.getPhase(APPLICATION_SYSTEM_ID, FIRST_PHASE_ID);
-        assertEquals(7, ((Map) viewable.getModel()).size());
+        assertEquals(4, ((Map) viewable.getModel()).size());
     }
 
     @Test
@@ -139,26 +104,17 @@ public class FormControllerTest {
         assertNotSame(null, viewable.getTemplateName());
     }
 
-    @Test()
-    public void sendInvalid() throws Exception {
-        when(applicationService.submitApplication(Matchers.<String>any())).thenReturn(OID);
-        Response response = formController.submitApplication(APPLICATION_SYSTEM_ID);
-        RedirectToPendingViewPath redirectToPendingViewPath = new RedirectToPendingViewPath(APPLICATION_SYSTEM_ID, OID);
-        String actual = ((URI) response.getMetadata().get("Location").get(0)).getPath();
-        assertEquals(redirectToPendingViewPath.getPath(), actual);
-    }
-
     @Test
-    public void testSaveCategoryInvalid() throws Exception {
+    public void testSavePhaseInvalid() throws Exception {
         HashMap<String, I18nText> errorMessages = new HashMap<String, I18nText>();
         errorMessages.put("", ElementUtil.createI18NText("", "form_messages_yhteishaku_syksy"));
-        applicationState.addError(errorMessages);
+        this.modelResponse.setErrorMessages(errorMessages);
         Viewable viewable = (Viewable) formController.savePhase(APPLICATION_SYSTEM_ID, FIRST_PHASE_ID, new MultivaluedMapImpl()).getEntity();
         assertEquals(FormController.ROOT_VIEW, viewable.getTemplateName());
     }
 
     @Test
-    public void testSaveCategoryValid() throws Exception {
+    public void testSavePhaseValid() throws Exception {
         Response response = formController.savePhase(APPLICATION_SYSTEM_ID, FIRST_PHASE_ID, new MultivaluedMapImpl());
         String actual = ((URI) response.getMetadata().get("Location").get(0)).getPath();
         assertEquals(new RedirectToPhaseViewPath(APPLICATION_SYSTEM_ID, FIRST_PHASE_ID).getPath(), actual);

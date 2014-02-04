@@ -28,11 +28,4 @@ public interface ApplicationOidService {
      * @return oid
      */
     String generateNewOid();
-
-    /**
-     * Return oid-prefix for applications.
-     *
-     * @return
-     */
-    String getOidPrefix();
 }

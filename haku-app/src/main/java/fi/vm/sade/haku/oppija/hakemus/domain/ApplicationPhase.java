@@ -16,8 +16,8 @@
 
 package fi.vm.sade.haku.oppija.hakemus.domain;
 
+import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
-import org.apache.commons.lang.Validate;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -29,9 +29,9 @@ public class ApplicationPhase {
     private final Map<String, String> answers = new HashMap<String, String>();
 
     public ApplicationPhase(final String applicationSystemId, final String phaseId, final Map<String, String> answers) {
-        Validate.notNull(applicationSystemId, "applicationSystemId is null");
-        Validate.notNull(phaseId, "phaseId is null");
-        Validate.notNull(answers, "answers is null");
+        Preconditions.checkNotNull(applicationSystemId, "applicationSystemId is null");
+        Preconditions.checkNotNull(phaseId, "phaseId is null");
+        Preconditions.checkNotNull(answers, "answers is null");
         this.applicationSystemId = applicationSystemId;
         this.phaseId = phaseId;
         this.answers.putAll(answers);

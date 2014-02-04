@@ -20,74 +20,48 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationOidDAO;
+import fi.vm.sade.haku.oppija.lomake.exception.ConfigurationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 
-/**
- * Mongodb implementation of ApplicationOidDAO
- *
- * @author Mikko Majapuro
- */
-@Service("applicationOidDAOMongoImpl")
+@Service
 public class ApplicationOidDAOMongoImpl implements ApplicationOidDAO {
 
-    private static final String SEQUENCE_FIELD = "seq";
-    private static final String SEQUENCE_NAME = "applicationsequence";
-    private final MongoTemplate mongoTemplate;
+    public static final String SEQUENCE_FIELD = "seq";
+    public static final String SEQUENCE_NAME = "applicationsequence";
     private final String oidPrefix;
+    private final DBCollection sequenceCollection;
+    private final DBObject update = new BasicDBObject("$inc", new BasicDBObject(SEQUENCE_FIELD, 1));
+    public static final BasicDBObject EMPTY_QUERY = new BasicDBObject();
 
     @Autowired
     public ApplicationOidDAOMongoImpl(final MongoTemplate mongoTemplate,
                                       @Value("${application.oid.prefix}") final String oidPrefix) {
-        this.mongoTemplate = mongoTemplate;
-        this.oidPrefix = oidPrefix;
+        this.oidPrefix = oidPrefix + ".";
+        sequenceCollection = mongoTemplate.getCollection(SEQUENCE_NAME);
     }
 
     @Override
     public String generateNewOid() {
-        DBCollection seq = getSequence();
-        DBObject change = new BasicDBObject(SEQUENCE_FIELD, 1);
-        DBObject update = new BasicDBObject("$inc", change); // the $inc here is a mongodb command for increment
-
-        // Atomically updates the sequence field and returns the value for you
-        final BasicDBObject query = new BasicDBObject();
-
-        DBObject res;
-
-        if (seq.getCount(query) == 0) {
-            DBObject initialObject = new BasicDBObject();
-            initialObject.put("seq", Long.valueOf(0));
-            seq.insert(initialObject);
-            res = seq.findOne(query);
-        } else {
-            res = seq.findAndModify(query, new BasicDBObject(), new BasicDBObject(), false, update, true, true);
-        }
-
-        return oidPrefix + "." + formatOid(res.get(SEQUENCE_FIELD).toString());
+        String seq = sequenceCollection.findAndModify(EMPTY_QUERY,
+                EMPTY_QUERY,
+                EMPTY_QUERY,
+                false, update, true, true).get(SEQUENCE_FIELD).toString();
+        return oidPrefix + formatOid(seq);
     }
 
-    @Override
-    public String getOidPrefix() {
-        return oidPrefix;
+    public final String formatOid(final String oid) {
+        return String.format("%011d", Integer.valueOf(oid + checksum(oid)));
     }
 
-    protected DBCollection getSequence() {
-        return mongoTemplate.getCollection(SEQUENCE_NAME);
-    }
-
-    String formatOid(String oid) {
-        oid = oid + checksum(oid);
-        return String.format("%011d", Integer.valueOf(oid));
-    }
-
-    String checksum(String oid) {
+    private static final String checksum(final String oid) {
         int sum = 0;
         int[] multipliers = new int[]{7, 3, 1}; //NOSONAR
         int multiplierIndex = 0;
         for (int i = oid.length() - 1; i >= 0; i--) {
-            int curr = Integer.valueOf(String.valueOf(oid.charAt(i)));
+            int curr = Character.getNumericValue(oid.charAt(i));
             sum += curr * multipliers[multiplierIndex % 3]; //NOSONAR
             multiplierIndex++;
         }

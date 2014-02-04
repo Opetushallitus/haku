@@ -52,4 +52,6 @@ public interface OfficerUIService {
     List<Map<String, Object>> getSchools(String term);
 
     List<Map<String,Object>> getPreferences(String term);
+
+    ModelResponse getApplicationPrint(final String oid) throws ResourceNotFoundException;
 }

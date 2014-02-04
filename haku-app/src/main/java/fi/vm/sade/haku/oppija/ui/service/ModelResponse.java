@@ -37,6 +37,7 @@ public class ModelResponse {
 
     public ModelResponse(final Application application) {
         setApplication(application);
+
     }
 
     public ModelResponse(final Application application, final Form form) {
@@ -70,6 +71,11 @@ public class ModelResponse {
 
     }
 
+    public ModelResponse(final ApplicationSystem applicationSystem) {
+        setForm(applicationSystem.getForm());
+        setApplicationSystemId(applicationSystem.getId());
+    }
+
     public final Map<String, Object> getModel() {
         model.put(ERROR_MESSAGES, ImmutableMap.copyOf(errors));
         return ImmutableMap.copyOf(model);
@@ -84,7 +90,7 @@ public class ModelResponse {
     public void setApplication(final Application application) {
         this.addObjectToModel(APPLICATION, application);
         this.addObjectToModel(APPLICATION_SYSTEM_ID, application.getApplicationSystemId());
-        this.addObjectToModel(OID, application.getOid());
+        setOid(application.getOid());
         this.addObjectToModel(APPLICATION_PHASE_ID, application.getPhaseId());
         this.addObjectToModel(ANSWERS, application.getVastauksetMerged());
     }
@@ -135,6 +141,26 @@ public class ModelResponse {
         this.addObjectToModel(APPLICATION_SYSTEM_ID, asid);
     }
 
+    public void setApplicationState(final ApplicationState applicationState) {
+        this.setErrorMessages(applicationState.getErrors());
+        for (Map.Entry<String, Object> entry : applicationState.getModelObjects().entrySet()) {
+            this.addObjectToModel(entry.getKey(), entry.getValue());
+        }
+        this.addObjectToModel(APPLICATION_PHASE_ID, getPhaseId());
+    }
+
+    public String getOid() {
+        return model.get(OID).toString();
+    }
+
+    public void setOid(final String oid) {
+        this.addObjectToModel(OID, oid);
+    }
+
+    public String getPhaseId() {
+        return model.get(APPLICATION_PHASE_ID).toString();
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("ModelResponse{");
@@ -144,10 +170,7 @@ public class ModelResponse {
         return sb.toString();
     }
 
-    public void setApplicationState(final ApplicationState applicationState) {
-        this.setErrorMessages(applicationState.getErrors());
-        for (Map.Entry<String, Object> entry : applicationState.getModelObjects().entrySet()) {
-            this.addObjectToModel(entry.getKey(), entry.getValue());
-        }
+    public Application getApplication() {
+        return (Application) model.get(APPLICATION);
     }
 }

@@ -20,32 +20,29 @@ import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
 
 import java.util.Map;
 
-/**
- * @author Mikko Majapuro
- */
 public interface UIService {
 
-    /**
-     * OFFICER USE ONLY
-     * Builds the model of the officer application print view.
-     *
-     * @param oid application oid
-     * @return ui service response containing model data
-     * @throws ResourceNotFoundException
-     */
-    ModelResponse getApplicationPrint(final String oid) throws ResourceNotFoundException;
+    ModelResponse getCompleteApplication(final String applicationSystemId, final String oid) throws ResourceNotFoundException;
 
-    /**
-     * Can be used to build the model of the user application sent/complete print view
-     *
-     * @param applicationSystemId
-     * @param oid
-     * @return
-     * @throws ResourceNotFoundException
-     */
-    ModelResponse getApplicationPrint(final String applicationSystemId, final String oid) throws ResourceNotFoundException;
+    ModelResponse getAllApplicationSystems(final String... includeFields);
 
-    ModelResponse getApplicationComplete(final String applicationSystemId, final String oid) throws ResourceNotFoundException;
+    ModelResponse getPreview(final String applicationSystemId);
+
+    ModelResponse getPhase(final String applicationSystemId, final String phaseId);
+
+    void storePrefilledAnswers(final String applicationSystemId, final Map<String, String> answers);
 
     Map<String, Object> getElementHelp(final String applicationSystemId, final String elementId) throws ResourceNotFoundException;
+
+    Map<String,Object> getAdditionalLanguageRow(final String applicationSystemId, final String gradeGridId);
+
+    ModelResponse updateRules(final String applicationSystemId, final String phaseId, final String elementId, Map<String, String> currentAnswers);
+
+    ModelResponse getPhaseElement(final String applicationSystemId, final String phaseId, final String elementId);
+
+    ModelResponse savePhase(final String applicationSystemId, final String phaseId, Map<String, String> answers);
+
+    ModelResponse submitApplication(final String applicationSystemId);
+
+    ModelResponse getApplication(final String applicationSystemId);
 }

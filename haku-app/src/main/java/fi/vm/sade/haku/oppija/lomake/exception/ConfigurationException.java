@@ -4,6 +4,10 @@ public class ConfigurationException extends RuntimeException {
 
     private static final long serialVersionUID = -7119415673005159216L;
 
+    public ConfigurationException(String message) {
+        super(message);
+    }
+
     public ConfigurationException(final Throwable cause) {
         super(cause);
     }

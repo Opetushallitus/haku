@@ -49,27 +49,6 @@ public class FormServiceMockImpl implements FormService {
     }
 
     @Override
-    public Element getFirstPhase(final String applicationSystemId) {
-        Form activeForm = getActiveForm(applicationSystemId);
-        Element firstPhase = Iterables.getFirst(activeForm.getChildren(), null);
-        if (firstPhase instanceof Phase) {
-            return firstPhase;
-        }
-        throw new ResourceNotFoundExceptionRuntime("Last phase not found");
-    }
-
-    @Override
-    public Element getLastPhase(String applicationSystemId) {
-        Form activeForm = getActiveForm(applicationSystemId);
-        Element lastPhase = Iterables.getLast(activeForm.getChildren(), null);
-        if (lastPhase instanceof Phase) {
-            return lastPhase;
-        }
-        throw new ResourceNotFoundExceptionRuntime("Last phase not found");
-    }
-
-
-    @Override
     public Form getForm(final String applicationSystemId) {
         ApplicationSystem applicationSystem = applicationSystemService.getApplicationSystem(applicationSystemId);
         return applicationSystem.getForm();
