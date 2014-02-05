@@ -17,6 +17,8 @@
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.osaaminen;
 
 import com.google.common.base.CaseFormat;
+import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableList;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Phase;
@@ -28,7 +30,11 @@ import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionComplexRule;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.*;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ExprUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.*;
 
@@ -41,21 +47,6 @@ public class OsaaminenPhaseYhteishakuKevat {
     public static final String RELATED_ELEMENT_ID = "POHJAKOULUTUS";
     public static final String ARVOSANAT_THEME_ID = "arvosanatTheme";
 
-    private static final String[] PREFERENCE_IDS = new String[]{
-            "preference1-Koulutus-id-lang",
-            "preference2-Koulutus-id-lang",
-            "preference3-Koulutus-id-lang",
-            "preference4-Koulutus-id-lang",
-            "preference5-Koulutus-id-lang"
-    };
-
-    private static final String[] PREFERENCE_EDUCATION_DEGREES = new String[]{
-            "preference1-Koulutus-educationDegree",
-            "preference2-Koulutus-educationDegree",
-            "preference3-Koulutus-educationDegree",
-            "preference4-Koulutus-educationDegree",
-            "preference5-Koulutus-educationDegree"
-    };
 
     private static final String[] LANGUAGE_QUESTIONS_PK = new String[]{
             "aidinkieli",
@@ -65,14 +56,14 @@ public class OsaaminenPhaseYhteishakuKevat {
             "aidinkieli",
             "lukion_kieli"
     };
-    private static final String[] BASE_EDUCATION_PK = new String[] {
+    private static final String[] BASE_EDUCATION_PK = new String[]{
             OppijaConstants.PERUSKOULU,
             OppijaConstants.OSITTAIN_YKSILOLLISTETTY,
             OppijaConstants.ERITYISOPETUKSEN_YKSILOLLISTETTY,
             OppijaConstants.YKSILOLLISTETTY
     };
 
-    private static final String[] BASE_EDUCATION_KESK_ULK = new String[] {
+    private static final String[] BASE_EDUCATION_KESK_ULK = new String[]{
             OppijaConstants.KESKEYTYNYT,
             OppijaConstants.ULKOMAINEN_TUTKINTO
     };
@@ -87,29 +78,29 @@ public class OsaaminenPhaseYhteishakuKevat {
 
     private static Element createKielitaitokysymyksetTheme() {
 
-        Expr haettuAmmatilliseenKoulutukseen = atLeastOneVariableEqualsToValue("32", PREFERENCE_EDUCATION_DEGREES);
         //PK
-        Expr pohjakoulutusOnPK = atLeastOneValueEqualsToVariable(OppijaConstants.ELEMENT_ID_BASE_EDUCATION, BASE_EDUCATION_PK);
+        Expr pohjakoulutusOnPK = ExprUtil.atLeastOneValueEqualsToVariable(OppijaConstants.ELEMENT_ID_BASE_EDUCATION, BASE_EDUCATION_PK);
 
-        Expr suomiOnAidinkieliTaiKouluSuomeksiPK = atLeastOneVariableEqualsToValue("FI", LANGUAGE_QUESTIONS_PK);
-        Expr ruotsiOnAidinkieliTaiKouluRuotsiksiPK = atLeastOneVariableEqualsToValue("SV", LANGUAGE_QUESTIONS_PK);
-        Expr saameOnAidinkieliTaiKouluSaameksiPK = atLeastOneVariableEqualsToValue("SE", LANGUAGE_QUESTIONS_PK);
-        Expr viittomaOnAidinkieliTaiKouluViittomaksiPK = atLeastOneVariableEqualsToValue("VK", LANGUAGE_QUESTIONS_PK);
+        Expr suomiOnAidinkieliTaiKouluSuomeksiPK = ExprUtil.atLeastOneVariableEqualsToValue("FI", LANGUAGE_QUESTIONS_PK);
+        Expr ruotsiOnAidinkieliTaiKouluRuotsiksiPK = ExprUtil.atLeastOneVariableEqualsToValue("SV", LANGUAGE_QUESTIONS_PK);
+        Expr saameOnAidinkieliTaiKouluSaameksiPK = ExprUtil.atLeastOneVariableEqualsToValue("SE", LANGUAGE_QUESTIONS_PK);
+        Expr viittomaOnAidinkieliTaiKouluViittomaksiPK = ExprUtil.atLeastOneVariableEqualsToValue("VK", LANGUAGE_QUESTIONS_PK);
 
-        Expr haettuSuomenkieliseenKoulutukseen = atLeastOneVariableEqualsToValue("FI", PREFERENCE_IDS);
-        Expr haettuRuotsinkieliseenKoulutukseen = atLeastOneVariableEqualsToValue("SV", PREFERENCE_IDS);
-        Expr haettuSaamenkieliseenKoulutukseen = atLeastOneVariableEqualsToValue("SE", PREFERENCE_IDS);
-        Expr haettuViittomakieliseenKoulutukseen = atLeastOneVariableEqualsToValue("VK", PREFERENCE_IDS);
+        Expr haettuSuomenkieliseenAmmatilliseenKoulutukseen = haettuAmmatilliseenOppilaitokseenKielella(OppijaConstants.EDUCATION_LANGUAGE_FI, 5);
+        Expr haettuRuotsinkieliseenAmmatilliseenKoulutukseen = haettuAmmatilliseenOppilaitokseenKielella(OppijaConstants.EDUCATION_LANGUAGE_SV, 5);
+        Expr haettuSaamenkieliseenAmmatilliseenKoulutukseen = haettuAmmatilliseenOppilaitokseenKielella(OppijaConstants.EDUCATION_LANGUAGE_SE, 5);
+        Expr haettuViittomakieliseenAmmatilliseenKoulutukseen = haettuAmmatilliseenOppilaitokseenKielella(OppijaConstants.EDUCATION_LANGUAGE_VE, 5);
 
-        Expr kysytaankoSuomiPK = new And(new And(haettuSuomenkieliseenKoulutukseen, pohjakoulutusOnPK), new Not(suomiOnAidinkieliTaiKouluSuomeksiPK));
-        Expr kysytaankoRuotsiPK = new And(new And(haettuRuotsinkieliseenKoulutukseen, pohjakoulutusOnPK), new Not(ruotsiOnAidinkieliTaiKouluRuotsiksiPK));
-        Expr kysytaankoSaamePK = new And(new And(haettuSaamenkieliseenKoulutukseen, pohjakoulutusOnPK), new Not(saameOnAidinkieliTaiKouluSaameksiPK));
-        Expr kysytaankoViittomaPK = new And(new And(haettuViittomakieliseenKoulutukseen, pohjakoulutusOnPK), new Not(viittomaOnAidinkieliTaiKouluViittomaksiPK));
+        Expr kysytaankoSuomiPK = new And(new And(haettuSuomenkieliseenAmmatilliseenKoulutukseen, pohjakoulutusOnPK), new Not(suomiOnAidinkieliTaiKouluSuomeksiPK));
+        Expr kysytaankoRuotsiPK = new And(new And(haettuRuotsinkieliseenAmmatilliseenKoulutukseen, pohjakoulutusOnPK), new Not(ruotsiOnAidinkieliTaiKouluRuotsiksiPK));
+        Expr kysytaankoSaamePK = new And(new And(haettuSaamenkieliseenAmmatilliseenKoulutukseen, pohjakoulutusOnPK), new Not(saameOnAidinkieliTaiKouluSaameksiPK));
+        Expr kysytaankoViittomaPK = new And(new And(haettuViittomakieliseenAmmatilliseenKoulutukseen, pohjakoulutusOnPK), new Not(viittomaOnAidinkieliTaiKouluViittomaksiPK));
 
         RelatedQuestionComplexRule naytetaankoSuomiPK = new RelatedQuestionComplexRule(ElementUtil.randomId(), kysytaankoSuomiPK);
         RelatedQuestionComplexRule naytetaankoRuotsiPK = new RelatedQuestionComplexRule(ElementUtil.randomId(), kysytaankoRuotsiPK);
         RelatedQuestionComplexRule naytetaankoSaamePK = new RelatedQuestionComplexRule(ElementUtil.randomId(), kysytaankoSaamePK);
         RelatedQuestionComplexRule naytetaankoViittomaPK = new RelatedQuestionComplexRule(ElementUtil.randomId(), kysytaankoViittomaPK);
+
         naytetaankoSuomiPK.addChild(createKielitutkinto("peruskoulun_paattotodistus_vahintaan_seitseman_fi", FORM_MESSAGES, FORM_ERRORS),
                 createKielitutkinto("yleinen_kielitutkinto_fi", FORM_MESSAGES, FORM_ERRORS),
                 createKielitutkinto("valtionhallinnon_kielitutkinto_fi", FORM_MESSAGES, FORM_ERRORS));
@@ -124,23 +115,24 @@ public class OsaaminenPhaseYhteishakuKevat {
                 createKielitutkinto("valtionhallinnon_kielitutkinto_vk", FORM_MESSAGES, FORM_ERRORS));
 
         //YO
-        Expr pohjakoulutusOnYO = atLeastOneValueEqualsToVariable(OppijaConstants.ELEMENT_ID_BASE_EDUCATION, OppijaConstants.YLIOPPILAS);
+        Expr pohjakoulutusOnYO = ExprUtil.atLeastOneValueEqualsToVariable(OppijaConstants.ELEMENT_ID_BASE_EDUCATION, OppijaConstants.YLIOPPILAS);
 
-        Expr suomiOnAidinkieliTaiKouluSuomeksiYO = atLeastOneVariableEqualsToValue("FI", LANGUAGE_QUESTIONS_YO);
-        Expr ruotsiOnAidinkieliTaiKouluRuotsiksiYO = atLeastOneVariableEqualsToValue("SV", LANGUAGE_QUESTIONS_YO);
-        Expr saameOnAidinkieliTaiKouluSaameksiYO = atLeastOneVariableEqualsToValue("SE", LANGUAGE_QUESTIONS_YO);
-        Expr viittomaOnAidinkieliTaiKouluViittomaksiYO = atLeastOneVariableEqualsToValue("VK", LANGUAGE_QUESTIONS_YO);
+        Expr suomiOnAidinkieliTaiKouluSuomeksiYO = ExprUtil.atLeastOneVariableEqualsToValue("FI", LANGUAGE_QUESTIONS_YO);
+        Expr ruotsiOnAidinkieliTaiKouluRuotsiksiYO = ExprUtil.atLeastOneVariableEqualsToValue("SV", LANGUAGE_QUESTIONS_YO);
+        Expr saameOnAidinkieliTaiKouluSaameksiYO = ExprUtil.atLeastOneVariableEqualsToValue("SE", LANGUAGE_QUESTIONS_YO);
+        Expr viittomaOnAidinkieliTaiKouluViittomaksiYO = ExprUtil.atLeastOneVariableEqualsToValue("VK", LANGUAGE_QUESTIONS_YO);
 
-        Expr kysytaankoSuomiYO = new And(new And(haettuSuomenkieliseenKoulutukseen, pohjakoulutusOnYO), new Not(suomiOnAidinkieliTaiKouluSuomeksiYO));
-        Expr kysytaankoRuotsiYO = new And(new And(haettuRuotsinkieliseenKoulutukseen, pohjakoulutusOnYO), new Not(ruotsiOnAidinkieliTaiKouluRuotsiksiYO));
-        Expr kysytaankoSaameYO = new And(new And(haettuSaamenkieliseenKoulutukseen, pohjakoulutusOnYO), new Not(saameOnAidinkieliTaiKouluSaameksiYO));
-        Expr kysytaankoViittomaYO = new And(new And(haettuViittomakieliseenKoulutukseen, pohjakoulutusOnYO), new Not(viittomaOnAidinkieliTaiKouluViittomaksiYO));
+        Expr kysytaankoSuomiYO = new And(new And(haettuSuomenkieliseenAmmatilliseenKoulutukseen, pohjakoulutusOnYO), new Not(suomiOnAidinkieliTaiKouluSuomeksiYO));
+        Expr kysytaankoRuotsiYO = new And(new And(haettuRuotsinkieliseenAmmatilliseenKoulutukseen, pohjakoulutusOnYO), new Not(ruotsiOnAidinkieliTaiKouluRuotsiksiYO));
+        Expr kysytaankoSaameYO = new And(new And(haettuSaamenkieliseenAmmatilliseenKoulutukseen, pohjakoulutusOnYO), new Not(saameOnAidinkieliTaiKouluSaameksiYO));
+        Expr kysytaankoViittomaYO = new And(new And(haettuViittomakieliseenAmmatilliseenKoulutukseen, pohjakoulutusOnYO), new Not(viittomaOnAidinkieliTaiKouluViittomaksiYO));
 
 
         RelatedQuestionComplexRule naytetaankoSuomiYO = new RelatedQuestionComplexRule(ElementUtil.randomId(), kysytaankoSuomiYO);
         RelatedQuestionComplexRule naytetaankoRuotsiYO = new RelatedQuestionComplexRule(ElementUtil.randomId(), kysytaankoRuotsiYO);
         RelatedQuestionComplexRule naytetaankoSaameYO = new RelatedQuestionComplexRule(ElementUtil.randomId(), kysytaankoSaameYO);
         RelatedQuestionComplexRule naytetaankoViittomaYO = new RelatedQuestionComplexRule(ElementUtil.randomId(), kysytaankoViittomaYO);
+
         naytetaankoSuomiYO.addChild(createKielitutkinto("lukion_paattotodistus_vahintaan_seitseman_fi", FORM_MESSAGES, FORM_ERRORS),
                 createKielitutkinto("yleinen_kielitutkinto_fi", FORM_MESSAGES, FORM_ERRORS),
                 createKielitutkinto("valtionhallinnon_kielitutkinto_fi", FORM_MESSAGES, FORM_ERRORS));
@@ -156,7 +148,7 @@ public class OsaaminenPhaseYhteishakuKevat {
 
 
         //KESKEYTTANYT TAI ULKOMAILLA SUORITTANUT
-        Expr pohjakoulutusOnKeskUlk = atLeastOneValueEqualsToVariable(OppijaConstants.ELEMENT_ID_BASE_EDUCATION,
+        Expr pohjakoulutusOnKeskUlk = ExprUtil.atLeastOneValueEqualsToVariable(OppijaConstants.ELEMENT_ID_BASE_EDUCATION,
                 BASE_EDUCATION_KESK_ULK);
 
         Expr suomiOnAidinkieliKeskUlk = new Equals(new Variable("aidinkieli"), new Value("FI"));
@@ -164,10 +156,10 @@ public class OsaaminenPhaseYhteishakuKevat {
         Expr saameOnAidinkieliKeskUlk = new Equals(new Variable("aidinkieli"), new Value("SE"));
         Expr viittomaOnAidinkieliKeskUlk = new Equals(new Variable("aidinkieli"), new Value("VK"));
 
-        Expr kysytaankoSuomiKeskUlk = new And(new And(haettuSuomenkieliseenKoulutukseen, pohjakoulutusOnKeskUlk), new Not(suomiOnAidinkieliKeskUlk));
-        Expr kysytaankoRuotsiKeskUlk = new And(new And(haettuRuotsinkieliseenKoulutukseen, pohjakoulutusOnKeskUlk), new Not(ruotsiOnAidinkieliKeskUlk));
-        Expr kysytaankoSaameKeskUlk = new And(new And(haettuSaamenkieliseenKoulutukseen, pohjakoulutusOnKeskUlk), new Not(saameOnAidinkieliKeskUlk));
-        Expr kysytaankoViittomaKeskUlk = new And(new And(haettuViittomakieliseenKoulutukseen, pohjakoulutusOnKeskUlk), new Not(viittomaOnAidinkieliKeskUlk));
+        Expr kysytaankoSuomiKeskUlk = new And(new And(haettuSuomenkieliseenAmmatilliseenKoulutukseen, pohjakoulutusOnKeskUlk), new Not(suomiOnAidinkieliKeskUlk));
+        Expr kysytaankoRuotsiKeskUlk = new And(new And(haettuRuotsinkieliseenAmmatilliseenKoulutukseen, pohjakoulutusOnKeskUlk), new Not(ruotsiOnAidinkieliKeskUlk));
+        Expr kysytaankoSaameKeskUlk = new And(new And(haettuSaamenkieliseenAmmatilliseenKoulutukseen, pohjakoulutusOnKeskUlk), new Not(saameOnAidinkieliKeskUlk));
+        Expr kysytaankoViittomaKeskUlk = new And(new And(haettuViittomakieliseenAmmatilliseenKoulutukseen, pohjakoulutusOnKeskUlk), new Not(viittomaOnAidinkieliKeskUlk));
 
 
         RelatedQuestionComplexRule naytetaankoSuomiKeskUlk = new RelatedQuestionComplexRule(ElementUtil.randomId(), kysytaankoSuomiKeskUlk);
@@ -184,10 +176,10 @@ public class OsaaminenPhaseYhteishakuKevat {
                 createKielitutkinto("valtionhallinnon_kielitutkinto_vk", FORM_MESSAGES, FORM_ERRORS));
 
 
-        Expr naytetaankoKielitaitoteema = new And(new Or(new Or(new Or(new Or(new Or(new Or(new Or(new Or(new Or(new Or(new Or(kysytaankoSuomiPK,
-                kysytaankoRuotsiPK), kysytaankoSuomiYO), kysytaankoRuotsiYO), kysytaankoSuomiKeskUlk), kysytaankoRuotsiKeskUlk),
-                kysytaankoSaamePK), kysytaankoSaameYO), kysytaankoSaameKeskUlk), kysytaankoViittomaPK), kysytaankoViittomaYO),
-                kysytaankoViittomaKeskUlk), haettuAmmatilliseenKoulutukseen);
+        Expr naytetaankoKielitaitoteema = ExprUtil.reduceToOr(ImmutableList.of(kysytaankoSuomiPK,
+                        kysytaankoRuotsiPK, kysytaankoSuomiYO, kysytaankoRuotsiYO, kysytaankoSuomiKeskUlk, kysytaankoRuotsiKeskUlk,
+                        kysytaankoSaamePK, kysytaankoSaameYO, kysytaankoSaameKeskUlk, kysytaankoViittomaPK, kysytaankoViittomaYO,
+                        kysytaankoViittomaKeskUlk));
 
         RelatedQuestionComplexRule naytetaankoTeema = new RelatedQuestionComplexRule(ElementUtil.randomId(), naytetaankoKielitaitoteema);
         Theme kielitaitokysymyksetTheme =
@@ -211,8 +203,8 @@ public class OsaaminenPhaseYhteishakuKevat {
     }
 
     private static Theme createArvosanatTheme(final KoodistoService koodistoService, final String formMessages,
-                                             final String formErrors, final String verboseHelps,
-                                             final Integer hakuvuosi) {
+                                              final String formErrors, final String verboseHelps,
+                                              final Integer hakuvuosi) {
         Theme arvosanatTheme = new Theme(
                 ARVOSANAT_THEME_ID,
                 createI18NText("form.arvosanat.otsikko", formMessages),
@@ -227,7 +219,7 @@ public class OsaaminenPhaseYhteishakuKevat {
         grid_pk.setHelp(createI18NText("form.arvosanat.help", formMessages));
         Expr vanhaPkTodistus = new And(
                 new Not(new Equals(new Variable("PK_PAATTOTODISTUSVUOSI"), new Value(String.valueOf(hakuvuosi)))),
-                atLeastOneValueEqualsToVariable(RELATED_ELEMENT_ID, OppijaConstants.PERUSKOULU,
+                ExprUtil.atLeastOneValueEqualsToVariable(RELATED_ELEMENT_ID, OppijaConstants.PERUSKOULU,
                         OppijaConstants.ERITYISOPETUKSEN_YKSILOLLISTETTY, OppijaConstants.YKSILOLLISTETTY, OppijaConstants.OSITTAIN_YKSILOLLISTETTY));
         RelatedQuestionComplexRule relatedQuestionPk = new RelatedQuestionComplexRule("rule_grade_pk", vanhaPkTodistus);
         relatedQuestionPk.addChild(grid_pk);
@@ -237,7 +229,7 @@ public class OsaaminenPhaseYhteishakuKevat {
         grid_yo.setHelp(createI18NText("form.arvosanat.help", formMessages));
         Expr vanhaYoTodistus = new And(
                 new Not(new Equals(new Variable("lukioPaattotodistusVuosi"), new Value(String.valueOf(hakuvuosi)))),
-                atLeastOneValueEqualsToVariable(RELATED_ELEMENT_ID, OppijaConstants.YLIOPPILAS));
+                ExprUtil.atLeastOneValueEqualsToVariable(RELATED_ELEMENT_ID, OppijaConstants.YLIOPPILAS));
         RelatedQuestionComplexRule relatedQuestionYo = new RelatedQuestionComplexRule("rule_grade_yo", vanhaYoTodistus);
         relatedQuestionYo.addChild(grid_yo);
         arvosanatTheme.addChild(relatedQuestionYo);
@@ -265,11 +257,24 @@ public class OsaaminenPhaseYhteishakuKevat {
         arvosanatTheme.addChild(eiNaytetaYo);
 
         RelatedQuestionComplexRule eiNayteta = new RelatedQuestionComplexRule("rule_grade_no",
-                atLeastOneValueEqualsToVariable(RELATED_ELEMENT_ID, "5", OppijaConstants.KESKEYTYNYT, OppijaConstants.ULKOMAINEN_TUTKINTO));
+                ExprUtil.atLeastOneValueEqualsToVariable(RELATED_ELEMENT_ID, "5", OppijaConstants.KESKEYTYNYT, OppijaConstants.ULKOMAINEN_TUTKINTO));
         eiNayteta.addChild(new Text("nogradegrid", createI18NText("form.arvosanat.eiKysyta", formMessages)));
         arvosanatTheme.addChild(eiNayteta);
 
         return arvosanatTheme;
 
+    }
+
+    public static Expr haettuAmmatilliseenOppilaitokseenKielella(String educationDegreeLang, int count) {
+        Preconditions.checkArgument(count > 0);
+        List<Expr> exprs = new ArrayList<Expr>(count);
+        for (int i = 1; i <= count; i++) {
+            exprs.add(
+                    new And(
+                            new Equals(new Variable(String.format(OppijaConstants.EDUCATION_VOCATIONAL, i)), new Value("true")),
+                            new Equals(new Variable(String.format(OppijaConstants.EDUCATION_LANGUAGE, i)), new Value(educationDegreeLang)))
+            );
+        }
+        return ExprUtil.reduceToOr(exprs);
     }
 }

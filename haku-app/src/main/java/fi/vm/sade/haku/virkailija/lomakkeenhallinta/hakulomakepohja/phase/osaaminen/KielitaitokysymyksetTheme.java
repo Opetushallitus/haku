@@ -1,26 +1,24 @@
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.osaaminen;
 
 import com.google.common.base.CaseFormat;
+import com.google.common.base.Preconditions;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Theme;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Radio;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionComplexRule;
-import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.And;
-import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.Expr;
-import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.Not;
-import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.Or;
+import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.*;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ExprUtil;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.osaaminen.OsaaminenPhaseYhteishakuKevat.haettuAmmatilliseenOppilaitokseenKielella;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.*;
 
 public final class KielitaitokysymyksetTheme {
-    private static final String[] PREFERENCE_IDS = new String[]{
-            "preference1-Koulutus-id-lang",
-            "preference2-Koulutus-id-lang",
-            "preference3-Koulutus-id-lang",
-            "preference4-Koulutus-id-lang",
-            "preference5-Koulutus-id-lang"
-    };
+
     private static final String[] LANGUAGE_QUESTIONS = new String[]{
             "aidinkieli",
             "perusopetuksen_kieli",
@@ -31,16 +29,14 @@ public final class KielitaitokysymyksetTheme {
     }
 
     public static Element createKielitaitokysymyksetTheme(final String formMessages, final String formErrors, final String verboseHelps) {
-        Expr suomiOnAidinkieliTaiKouluSuomeksi = atLeastOneVariableEqualsToValue("FI", LANGUAGE_QUESTIONS);
-        Expr ruotsiOnAidinkieliTaiKouluRuotsiksi = atLeastOneVariableEqualsToValue("SV", LANGUAGE_QUESTIONS);
+        Expr suomiOnAidinkieliTaiKouluSuomeksi = ExprUtil.atLeastOneVariableEqualsToValue("FI", LANGUAGE_QUESTIONS);
+        Expr ruotsiOnAidinkieliTaiKouluRuotsiksi = ExprUtil.atLeastOneVariableEqualsToValue("SV", LANGUAGE_QUESTIONS);
 
+        Expr haettuSuomenkieliseenAmmatilliseenKoulutukseen = haettuAmmatilliseenOppilaitokseenKielella(OppijaConstants.EDUCATION_LANGUAGE_FI, 5);
+        Expr haettuRuotsinkieliseenAmmatilliseenKoulutukseen = haettuAmmatilliseenOppilaitokseenKielella(OppijaConstants.EDUCATION_LANGUAGE_SV, 5);
 
-        Expr haettuSuomenkieliseenKoulutukseen = atLeastOneVariableEqualsToValue("FI", PREFERENCE_IDS);
-        Expr haettuRuotsinkieliseenKoulutukseen = atLeastOneVariableEqualsToValue("SV", PREFERENCE_IDS);
-
-
-        Expr kysytaankoSuomi = new And(haettuSuomenkieliseenKoulutukseen, new Not(suomiOnAidinkieliTaiKouluSuomeksi));
-        Expr kysytaankoRuotsi = new And(haettuRuotsinkieliseenKoulutukseen, new Not(ruotsiOnAidinkieliTaiKouluRuotsiksi));
+        Expr kysytaankoSuomi = new And(haettuSuomenkieliseenAmmatilliseenKoulutukseen, new Not(suomiOnAidinkieliTaiKouluSuomeksi));
+        Expr kysytaankoRuotsi = new And(haettuRuotsinkieliseenAmmatilliseenKoulutukseen, new Not(ruotsiOnAidinkieliTaiKouluRuotsiksi));
 
         Expr naytetaankoKielitaitoteema = new Or(kysytaankoSuomi, kysytaankoRuotsi);
 
@@ -60,6 +56,7 @@ public final class KielitaitokysymyksetTheme {
         ElementUtil.setVerboseHelp(kielitaitokysymyksetTheme, "form.kielitaito.otsikko.verboseHelp", verboseHelps);
         return naytetaankoTeema;
     }
+
 
     private static Radio createKielitutkinto(final String id, final String formMessages, final String formErrors) {
         Radio radio = new Radio(id,
