@@ -234,18 +234,6 @@ public class OsaaminenPhaseYhteishakuKevat {
         relatedQuestionYo.addChild(grid_yo);
         arvosanatTheme.addChild(relatedQuestionYo);
 
-        // Ei kysytä arvosanoja
-
-//        Expr tuorePkTodistus = new Equals(new Variable("PK_PAATTOTODISTUSVUOSI"), new Value(String.valueOf(hakuvuosi)));
-//        Expr tuoreYoTodistus = new Equals(new Variable("lukioPaattotodistusVuosi"), new Value(String.valueOf(hakuvuosi)));
-//        Expr eiTutkintoa = atLeastOneValueEqualsToVariable(RELATED_ELEMENT_ID, "5", OppijaConstants.KESKEYTYNYT, OppijaConstants.ULKOMAINEN_TUTKINTO);
-//
-//        RelatedQuestionComplexRule eiNayteta = new RelatedQuestionComplexRule("rule_grade_no",
-//                new Or(eiTutkintoa, new Or(tuorePkTodistus, tuoreYoTodistus)));
-//
-//        eiNayteta.addChild(new Text("nogradegrid", createI18NText("form.arvosanat.eiKysyta", formMessages)));
-//
-//        arvosanatTheme.addChild(eiNayteta);
         RelatedQuestionComplexRule eiNaytetaPk = new RelatedQuestionComplexRule("rule_grade_no_pk",
                 new Equals(new Variable("PK_PAATTOTODISTUSVUOSI"), new Value(String.valueOf(hakuvuosi))));
         eiNaytetaPk.addChild(new Text("nogradegrid", createI18NText("form.arvosanat.eiKysyta.pk", formMessages)));
@@ -271,7 +259,7 @@ public class OsaaminenPhaseYhteishakuKevat {
         for (int i = 1; i <= count; i++) {
             exprs.add(
                     new And(
-                            new Equals(new Variable(String.format(OppijaConstants.EDUCATION_VOCATIONAL, i)), new Value("true")),
+                            new Equals(new Variable(String.format(OppijaConstants.EDUCATION_VOCATIONAL, i)), new Value(ElementUtil.KYLLA)),
                             new Equals(new Variable(String.format(OppijaConstants.EDUCATION_LANGUAGE, i)), new Value(educationDegreeLang)))
             );
         }
