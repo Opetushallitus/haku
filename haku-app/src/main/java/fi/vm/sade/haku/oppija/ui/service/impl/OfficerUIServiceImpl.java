@@ -118,7 +118,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         modelResponse.addObjectToModel("preview", "esikatselu".equals(phaseId));
         modelResponse.addObjectToModel("virkailijaEditAllowed", hakuPermissionService.userCanUpdateApplication(application));
         modelResponse.addObjectToModel("virkailijaDeleteAllowed", hakuPermissionService.userCanDeleteApplication(application));
-        modelResponse.addObjectToModel("postProcessAllowed", hakuPermissionService.userCanUpdateApplication(application));
+        modelResponse.addObjectToModel("postProcessAllowed", hakuPermissionService.userCanPostProcess(application));
         modelResponse.addObjectToModel("applicationSystem", as);
 
         String sendingSchoolOid = application.getVastauksetMerged().get("lahtokoulu");

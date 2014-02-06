@@ -42,6 +42,7 @@ public final class OppijaConstants {
     element ids, can be used to retrieve specific information from an application
     */
     public static final String ELEMENT_ID_FIRST_NAMES = "Etunimet";
+
     public static final String ELEMENT_ID_NICKNAME = "Kutsumanimi";
     public static final String ELEMENT_ID_LAST_NAME = "Sukunimi";
     public static final String ELEMENT_ID_SOCIAL_SECURITY_NUMBER = "Henkilotunnus";
@@ -54,36 +55,42 @@ public final class OppijaConstants {
     public static final String ELEMENT_ID_NATIONALITY = "kansalaisuus";
     public static final String ELEMENT_ID_FIRST_LANGUAGE = "äidinkieli";
     public static final String ELEMENT_ID_CONTACT_LANGUAGE = "asiointikieli";
-
     public static final String ELEMENT_ID_BASE_EDUCATION = "POHJAKOULUTUS";
 
     public static final String PHASE_EDUCATION = "koulutustausta";
 
     public static final String PREFERENCE_ID = "preference%d-Koulutus-id";
+
     public static final String PREFERENCE_NAME = "preference%d-Koulutus";
     public static final String PREFERENCE_ORGANIZATION = "preference%d-Opetuspiste";
+    public static final String EDUCATION_CODE_KEY =  PREFERENCE_ID + "-educationcode";
+    public static final String EDUCATION_VOCATIONAL =  PREFERENCE_ID + "-vocational";
+    public static final String EDUCATION_LANGUAGE =  PREFERENCE_ID + "-lang";
+    public static final String EDUCATION_LANGUAGE_FI =  "FI";
+    public static final String EDUCATION_LANGUAGE_SV = "SV";
+    public static final String EDUCATION_LANGUAGE_SE = "SE";
+    public static final String EDUCATION_LANGUAGE_VE = "VE";
+
     public static final String PREFERENCE_DISCRETIONARY = "preference%d-discretionary";
 
     public static final String NATIONALITY_CODE_FI = "FIN";
-
     public static final String PERUSKOULU = "1";
     public static final String YLIOPPILAS = "9";
     public static final String OSITTAIN_YKSILOLLISTETTY = "2";
     public static final String ERITYISOPETUKSEN_YKSILOLLISTETTY = "3";
     public static final String YKSILOLLISTETTY = "6";
     public static final String KESKEYTYNYT = "7";
+
     public static final String ULKOMAINEN_TUTKINTO = "0";
-
     public static final String VARSINAINEN_HAKU = "hakutyyppi_01";
+
     public static final String LISA_HAKU = "hakutyyppi_03";
-
     public static final String HAKUKAUSI_SYKSY = "kausi_s";
-    public static final String HAKUKAUSI_KEVAT = "kausi_k";
 
+    public static final String HAKUKAUSI_KEVAT = "kausi_k";
     public static final String EDUCATION_CODE_MUSIIKKI = "koulutus_321204";
     public static final String EDUCATION_CODE_TANSSI   = "koulutus_321501";
-    public static final String EDUCATION_CODE_LIIKUNTA = "koulutus_381203";
 
-    public static final String EDUCATION_CODE_KEY =  PREFERENCE_ID + "-educationcode";
+    public static final String EDUCATION_CODE_LIIKUNTA = "koulutus_381203";
 
 }

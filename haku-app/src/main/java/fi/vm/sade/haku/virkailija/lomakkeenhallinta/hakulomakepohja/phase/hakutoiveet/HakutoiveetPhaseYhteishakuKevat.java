@@ -42,6 +42,7 @@ public class HakutoiveetPhaseYhteishakuKevat {
     private static final String FORM_MESSAGES = "form_messages_yhteishaku_kevat";
     private static final String FORM_ERRORS = "form_errors_yhteishaku_kevat";
     private static final String FORM_VERBOSE_HELP = "form_verboseHelp_yhteishaku_kevat";
+    public static final String TODISTUSTENPUUTTUMINEN = "todistustenpuuttuminen";
 
 
     public static Phase create() {
@@ -111,7 +112,7 @@ public class HakutoiveetPhaseYhteishakuKevat {
         discretionaryFollowUp.addOption(createI18NText("form.hakutoiveet.harkinnanvarainen.perustelu.todistustenvertailuvaikeudet",
                 FORM_MESSAGES), "todistustenvertailuvaikeudet");
         discretionaryFollowUp.addOption(createI18NText("form.hakutoiveet.harkinnanvarainen.perustelu.todistustenpuuttuminen",
-                FORM_MESSAGES), "todistustenpuuttuminen");
+                FORM_MESSAGES), TODISTUSTENPUUTTUMINEN);
         addRequiredValidator(discretionaryFollowUp, FORM_ERRORS);
 
 
@@ -131,20 +132,27 @@ public class HakutoiveetPhaseYhteishakuKevat {
         discretionaryRule2.addChild(discretionaryRule);
 
         RelatedQuestionComplexRule KoulutusValittu = new RelatedQuestionComplexRule(
-                ElementUtil.randomId(),
-                new Equals(new Variable(index + "-Koulutus-id"), new Not(new Value(""))));
+                ElementUtil.randomId(), new Not(new Equals(new Variable(index + "-Koulutus-id"), new Value(""))));
 
         RelatedQuestionComplexRule keskeytynytTaiUlkomainenRule =
                 createVarEqualsToValueRule("POHJAKOULUTUS", KESKEYTYNYT, ULKOMAINEN_TUTKINTO);
 
-        HiddenValue hiddenValue = new HiddenValue(discretionary.getId(), ElementUtil.KYLLA);
-        ElementUtil.addRequiredValidator(hiddenValue, FORM_MESSAGES);
-        hiddenValue.setValidator(
-                new RegexFieldValidator(hiddenValue.getId(),
+        HiddenValue hiddenDiscretionary = new HiddenValue(discretionary.getId(), ElementUtil.KYLLA);
+        ElementUtil.addRequiredValidator(hiddenDiscretionary, FORM_MESSAGES);
+        hiddenDiscretionary.setValidator(
+                new RegexFieldValidator(hiddenDiscretionary.getId(),
                         ElementUtil.createI18NText("yleinen.virheellinenArvo", FORM_ERRORS),
                         ElementUtil.KYLLA));
 
-        keskeytynytTaiUlkomainenRule.addChild(hiddenValue);
+        HiddenValue hiddenDiscretionaryFollowUp = new HiddenValue(discretionaryFollowUp.getId(), TODISTUSTENPUUTTUMINEN);
+        ElementUtil.addRequiredValidator(hiddenDiscretionaryFollowUp, FORM_MESSAGES);
+        hiddenDiscretionaryFollowUp.setValidator(
+                new RegexFieldValidator(hiddenDiscretionaryFollowUp.getId(),
+                        ElementUtil.createI18NText("yleinen.virheellinenArvo", FORM_ERRORS),
+                        TODISTUSTENPUUTTUMINEN));
+
+
+        keskeytynytTaiUlkomainenRule.addChild(hiddenDiscretionary, hiddenDiscretionaryFollowUp);
         KoulutusValittu.addChild(keskeytynytTaiUlkomainenRule);
 
         return new Element[]{discretionaryRule2, KoulutusValittu};

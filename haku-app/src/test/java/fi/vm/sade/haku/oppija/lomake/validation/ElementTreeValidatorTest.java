@@ -43,7 +43,6 @@ public class ElementTreeValidatorTest {
 
     private static final String ASID = "dummyAsid";
     private TextQuestion textQuestion;
-    private FormServiceMockImpl formModelDummyMemoryDao;
     private ElementTreeValidator elementTreeValidator;
     private ApplicationSystemService applicationSystemServiceMock;
 
@@ -53,7 +52,6 @@ public class ElementTreeValidatorTest {
         FormGeneratorMock formGeneratorMock = new FormGeneratorMock(new KoodistoServiceMockImpl(), ASID);
         applicationSystemServiceMock = mock(ApplicationSystemService.class);
         when(applicationSystemServiceMock.getApplicationSystem(anyString())).thenReturn(formGeneratorMock.createApplicationSystem());
-        formModelDummyMemoryDao = new FormServiceMockImpl(applicationSystemServiceMock);
         SsnUniqueConcreteValidator ssnUniqueConcreteValidator = mock(SsnUniqueConcreteValidator.class);
         SsnAndPreferenceUniqueConcreteValidator ssnAndPreferenceUniqueConcreteValidator = mock(SsnAndPreferenceUniqueConcreteValidator.class);
         PreferenceConcreteValidator preferenceConcreteValidator = mock(PreferenceConcreteValidator.class);
