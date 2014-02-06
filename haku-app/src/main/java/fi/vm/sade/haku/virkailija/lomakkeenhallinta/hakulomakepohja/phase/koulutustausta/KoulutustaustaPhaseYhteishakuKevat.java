@@ -27,7 +27,9 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.CheckBox;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.DropdownSelect;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Radio;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.TextQuestion;
+import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionComplexRule;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionRule;
+import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.*;
 import fi.vm.sade.haku.oppija.lomake.validation.validators.AlwaysFailsValidator;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.domain.Code;
@@ -176,10 +178,12 @@ public final class KoulutustaustaPhaseYhteishakuKevat {
         addYesAndIDontOptions(koulutuspaikkaAmmatillisenTutkintoon, FORM_MESSAGES);
         addRequiredValidator(koulutuspaikkaAmmatillisenTutkintoon, FORM_ERRORS);
 
-        pkKysymyksetRule.addChild(paattotodistusvuosiPeruskoulu);
-        pkKysymyksetRule.addChild(suorittanutGroup);
-        pkKysymyksetRule.addChild(koulutuspaikkaAmmatillisenTutkintoon);
-        pkKysymyksetRule.addChild(paattotodistusvuosiPeruskouluRule);
+        Expr kysytaankoKoulutuspaikka = new Not(new Equals(new Variable(paattotodistusvuosiPeruskoulu.getId()), new Value(String.valueOf(hakuvuosi))));
+        RelatedQuestionComplexRule onkoTodistusSaatuKuluneenaVuonna = new RelatedQuestionComplexRule(ElementUtil.randomId(), kysytaankoKoulutuspaikka);
+        onkoTodistusSaatuKuluneenaVuonna.addChild(koulutuspaikkaAmmatillisenTutkintoon);
+
+        pkKysymyksetRule.addChild(paattotodistusvuosiPeruskoulu, suorittanutGroup,
+                onkoTodistusSaatuKuluneenaVuonna, paattotodistusvuosiPeruskouluRule);
 
         TextQuestion lukioPaattotodistusVuosi = new TextQuestion("lukioPaattotodistusVuosi",
                 createI18NText("form.koulutustausta.lukio.paattotodistusvuosi", FORM_MESSAGES));
