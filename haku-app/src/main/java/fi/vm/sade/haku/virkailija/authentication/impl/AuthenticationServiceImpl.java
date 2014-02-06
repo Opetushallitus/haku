@@ -72,7 +72,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         log.debug("start addPerson, {}", System.currentTimeMillis() / 1000);
 
-        String realHetuUrl = getClientHelper().getRealUrl("/resources/henkilo/byHetu/" +
+        String realHetuUrl = getClientHelper().getRealUrl("byHetu/" +
                 person.getSocialSecurityNumber());
 
         HttpClient client = new HttpClient();

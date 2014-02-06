@@ -94,7 +94,6 @@ public class ApplicationServiceImplTest {
         when(applicationDAO.findAllQueried(eq(OID), eq(applicationQueryParameters))).thenReturn(searchResultDTO);
         when(applicationDAO.findAllQueried(eq(SHORT_OID), eq(applicationQueryParameters))).thenReturn(searchResultDTO);
         when(applicationDAO.find(any(Application.class))).thenReturn(Lists.newArrayList(application));
-        when(applicationOidService.getOidPrefix()).thenReturn("1.2.3.4.5");
         when(authenticationService.addPerson(any(Person.class))).thenReturn(PERSON_OID);
         when(applicationDAO.findByApplicationSystemAndApplicationOption(eq(AS_ID), eq(AO_ID))).thenReturn(Lists.newArrayList(application));
         when(hakuPermissionService.userCanReadApplication(any(Application.class))).thenReturn(true);

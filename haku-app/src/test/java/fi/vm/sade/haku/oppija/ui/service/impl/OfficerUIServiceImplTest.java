@@ -85,7 +85,6 @@ public class OfficerUIServiceImplTest {
         when(applicationService.getApplicationByOid(OID)).thenReturn(application);
         when(formService.getForm(any(String.class))).thenReturn(form);
         when(formService.getActiveForm(any(String.class))).thenReturn(form);
-        when(formService.getLastPhase(any(String.class))).thenReturn(phase);
         when(hakuPermissionService.userCanUpdateApplication(any(Application.class))).thenReturn(true);
         User officerUser = new User("1.2.246.562.24.00000000001");
         when(userSession.getUser()).thenReturn(officerUser);

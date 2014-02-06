@@ -1,3 +1,5 @@
+/* color */
+/* font-size */
 /***  Functions
 ************************************************/
 /* Pagination styles from twitter bootstrap */
@@ -151,3 +153,27 @@
 .pagination-mini ul > li > span {
   padding: 0 6px;
   font-size: 10.5px; }
+
+.ui-autocomplete {
+  margin: 10px 0;
+  padding: 0;
+  list-style-type: none;
+  background: #FFFFFF;
+  border: 1px solid #ccc;
+  width: 300px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -o-border-radius: 3px;
+  -ms-border-radius: 3px;
+  border-radius: 3px; }
+  .ui-autocomplete .ui-menu-item a {
+    display: block;
+    padding: 6px 10px;
+    border-bottom: solid 1px #bfe4f1;
+    color: #3e3e3e;
+    text-decoration: none; }
+    .ui-autocomplete .ui-menu-item a:hover {
+      background: #bfe4f1;
+      cursor: pointer; }
+  .ui-autocomplete .ui-menu-item:last-child a {
+    border-bottom: none; }

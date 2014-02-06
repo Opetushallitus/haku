@@ -21,26 +21,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-/**
- * @author Mikko Majapuro
- */
 @Service
 public class ApplicationOidServiceImpl implements ApplicationOidService {
 
     private final ApplicationOidDAO applicationOidDAO;
 
     @Autowired
-    public ApplicationOidServiceImpl(@Qualifier("applicationOidDAOMongoImpl") ApplicationOidDAO applicationOidDAO) {
+    public ApplicationOidServiceImpl(final ApplicationOidDAO applicationOidDAO) {
         this.applicationOidDAO = applicationOidDAO;
     }
 
     @Override
     public String generateNewOid() {
         return applicationOidDAO.generateNewOid();
-    }
-
-    @Override
-    public String getOidPrefix() {
-        return applicationOidDAO.getOidPrefix();
     }
 }

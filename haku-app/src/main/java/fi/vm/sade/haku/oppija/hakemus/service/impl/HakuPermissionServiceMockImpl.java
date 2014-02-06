@@ -32,4 +32,9 @@ public class HakuPermissionServiceMockImpl implements HakuPermissionService {
     public boolean userCanDeleteApplication(Application application) {
         return true;
     }
+
+    @Override
+    public boolean userCanPostProcess(Application application) {
+        return true;
+    }
 }

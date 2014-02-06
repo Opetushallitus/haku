@@ -8,6 +8,7 @@ import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
 import fi.vm.sade.haku.oppija.hakemus.aspect.LoggerAspect;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
+import fi.vm.sade.haku.oppija.hakemus.domain.util.ApplicationUtil;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.haku.oppija.hakemus.service.HakuPermissionService;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
@@ -117,7 +118,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         modelResponse.addObjectToModel("preview", "esikatselu".equals(phaseId));
         modelResponse.addObjectToModel("virkailijaEditAllowed", hakuPermissionService.userCanUpdateApplication(application));
         modelResponse.addObjectToModel("virkailijaDeleteAllowed", hakuPermissionService.userCanDeleteApplication(application));
-        modelResponse.addObjectToModel("postProcessAllowed", hakuPermissionService.userCanUpdateApplication(application));
+        modelResponse.addObjectToModel("postProcessAllowed", hakuPermissionService.userCanPostProcess(application));
         modelResponse.addObjectToModel("applicationSystem", as);
 
         String sendingSchoolOid = application.getVastauksetMerged().get("lahtokoulu");
@@ -197,7 +198,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     public ModelResponse getOrganizationAndLearningInstitutions() {
         ModelResponse modelResponse = new ModelResponse();
 
-        List<Option> organizationTypes =  new ArrayList<Option>();
+        List<Option> organizationTypes = new ArrayList<Option>();
         for (OrganisaatioTyyppi ot : OrganisaatioTyyppi.values()) {
             organizationTypes.add(new Option(ElementUtil.createI18NAsIs(ot.value()), ot.value()));
         }
@@ -256,23 +257,23 @@ public class OfficerUIServiceImpl implements OfficerUIService {
             if (apps[i].equals(selectedApplication)) {
                 curr = i + 1;
                 if (i >= 1) {
-                    prev = apps[i-1];
+                    prev = apps[i - 1];
                 }
                 if (i <= apps.length - 2) {
-                    next = apps[i+1];
+                    next = apps[i + 1];
                 }
                 break;
             }
         }
 
         String prevApplicant = null;
-        if (null!=prev) {
+        if (null != prev) {
             Application prevApp = applicationService.getApplicationByOid(prev);
             Map<String, String> prevHenk = prevApp.getPhaseAnswers("henkilotiedot");
             prevApplicant = prevHenk.get("Etunimet") + " " + prevHenk.get("Sukunimi");
         }
         String nextApplicant = null;
-        if (null!=next) {
+        if (null != next) {
             Application nextApp = applicationService.getApplicationByOid(next);
             Map<String, String> nextHenk = nextApp.getPhaseAnswers("henkilotiedot");
             nextApplicant = nextHenk.get("Etunimet") + " " + nextHenk.get("Sukunimi");
@@ -324,7 +325,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         List<Option> preferences = koodistoService.getHakukohdekoodit();
         List<Map<String, Object>> matchingPreferences = new ArrayList<Map<String, Object>>(20);
         Iterator<Option> prefIterator = preferences.iterator();
-        while(prefIterator.hasNext() && matchingPreferences.size() <= 20) {
+        while (prefIterator.hasNext() && matchingPreferences.size() <= 20) {
             Option pref = prefIterator.next();
             Map<String, String> translations = pref.getI18nText().getTranslations();
             for (String tran : translations.values()) {
@@ -380,6 +381,14 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         application = applicationService.addSendingSchool(application);
         application.activate();
         applicationService.update(new Application(oid), application);
+    }
+
+    @Override
+    public ModelResponse getApplicationPrint(final String oid) throws ResourceNotFoundException {
+        Application application = applicationService.getApplicationByOid(oid);
+        ApplicationSystem activeApplicationSystem = applicationSystemService.getActiveApplicationSystem(application.getApplicationSystemId());
+        List<String> discretionaryAttachmentAOIds = ApplicationUtil.getDiscretionaryAttachmentAOIds(application);
+        return new ModelResponse(application, activeApplicationSystem, discretionaryAttachmentAOIds, koulutusinformaatioBaseUrl);
     }
 
 }

@@ -25,8 +25,8 @@ public class RedirectToPendingViewPath implements ViewPath {
     private final String path;
 
     public RedirectToPendingViewPath(final String applicationSystemId, final String oid) {
-        Preconditions.checkNotNull(applicationSystemId);
-        Preconditions.checkNotNull(oid);
+        Preconditions.checkNotNull(applicationSystemId, "Application system id is null");
+        Preconditions.checkNotNull(oid, "Phase oid is null");
         Joiner joiner = Joiner.on("/").skipNulls();
         path = joiner.join(REDIRECT_LOMAKE, applicationSystemId, VALMIS_VIEW, oid);
     }

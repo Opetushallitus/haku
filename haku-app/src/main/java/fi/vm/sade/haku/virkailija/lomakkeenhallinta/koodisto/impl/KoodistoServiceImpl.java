@@ -202,7 +202,7 @@ public class KoodistoServiceImpl implements KoodistoService {
         for (Organization org : orgs) {
             LOGGER.debug("Lukiokoodit, orgOid: " + org.getOid());
             List<String> types = org.getTypes();
-            if (types.contains("OPPILAITOS")) {
+            if (types.contains("Oppilaitos")) {
                 opts.add(new Option(org.getName(), org.getOid()));
             }
         }

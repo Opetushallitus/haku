@@ -50,17 +50,17 @@ public class ApplicationPhaseTest {
         applicationPhase.getAnswers().put(ID, ID);
     }
 
-    @Test(expected = java.lang.IllegalArgumentException.class)
+    @Test(expected = NullPointerException.class)
     public void testConstructNullApplicationSystemId() throws Exception {
         new ApplicationPhase(null, ID, answers);
     }
 
-    @Test(expected = java.lang.IllegalArgumentException.class)
+    @Test(expected = NullPointerException.class)
     public void testConstructNullPhaseId() throws Exception {
         new ApplicationPhase(AS_ID, null, answers);
     }
 
-    @Test(expected = java.lang.IllegalArgumentException.class)
+    @Test(expected = NullPointerException.class)
     public void testConstructNullAnswers() throws Exception {
         new ApplicationPhase(AS_ID, ID, null);
     }

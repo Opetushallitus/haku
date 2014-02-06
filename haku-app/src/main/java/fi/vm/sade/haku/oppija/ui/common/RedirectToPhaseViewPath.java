@@ -24,8 +24,8 @@ public class RedirectToPhaseViewPath implements ViewPath {
     private final String path;
 
     public RedirectToPhaseViewPath(final String applicationSystemId, final String phaseId) {
-        Preconditions.checkNotNull(applicationSystemId);
-        Preconditions.checkNotNull(phaseId);
+        Preconditions.checkNotNull(applicationSystemId, "Application system id is null");
+        Preconditions.checkNotNull(phaseId, "Phase id is null");
         Joiner joiner = Joiner.on("/").skipNulls();
         this.path = joiner.join(REDIRECT_LOMAKE, applicationSystemId, phaseId);
     }

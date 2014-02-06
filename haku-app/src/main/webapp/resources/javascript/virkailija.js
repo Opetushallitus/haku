@@ -131,7 +131,7 @@ $(document).ready(function () {
 
     $('input#application-preference').autocomplete({
         minLength : 1,
-        dealy : 500,
+        delay : 500,
         source: function(req, res) {
             $.get(page_settings.contextPath + "/virkailija/autocomplete/preference?term="+encodeURI(req.term),
                 function(data) {

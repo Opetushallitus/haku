@@ -57,25 +57,5 @@ public class FormServiceImpl implements FormService {
         }
         return form;
     }
-
-    @Override
-    public Element getFirstPhase(final String applicationSystemId) {
-        Form activeForm = getActiveForm(applicationSystemId);
-        Element firstPhase = Iterables.getFirst(activeForm.getChildren(), null);
-        if (firstPhase instanceof Phase) {
-            return firstPhase;
-        }
-        throw new ResourceNotFoundExceptionRuntime("Last phase not found");
-    }
-
-    @Override
-    public Element getLastPhase(final String applicationSystemId) {
-        Form activeForm = getForm(applicationSystemId);
-        Element lastPhase = Iterables.getLast(activeForm.getChildren(), null);
-        if (lastPhase instanceof Phase) {
-            return lastPhase;
-        }
-        throw new ResourceNotFoundExceptionRuntime("Last phase not found");
-    }
 }
 

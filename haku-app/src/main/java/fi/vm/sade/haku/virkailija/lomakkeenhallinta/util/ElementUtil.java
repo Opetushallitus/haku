@@ -35,7 +35,6 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Question;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Radio;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.TextQuestion;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionComplexRule;
-import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.*;
 import fi.vm.sade.haku.oppija.lomake.validation.Validator;
 import fi.vm.sade.haku.oppija.lomake.validation.validators.*;
 import org.apache.commons.lang3.Validate;
@@ -296,48 +295,10 @@ public final class ElementUtil {
     }
 
 
-    //
-    // Refactor to use Operator factory or in the future high order function.
-    //
-    public static Expr atLeastOneVariableEqualsToValue(final String value, final String... ids) {
-        if (ids.length == 1) {
-            return new Equals(new Variable(ids[0]), new Value(value));
-        } else {
-            Expr current = null;
-            Expr equal;
-            for (String id : ids) {
-                equal = new Equals(new Variable(id), new Value(value));
-                if (current == null) {
-                    current = new Equals(new Variable(id), new Value(value));
-                } else {
-                    current = new Or(current, equal);
-                }
-            }
-            return current;
-        }
-    }
-
-    public static Expr atLeastOneValueEqualsToVariable(final String variable, final String... values) {
-        if (values.length == 1) {
-            return new Equals(new Value(values[0]), new Variable(variable));
-        } else {
-            Expr current = null;
-            Expr equal;
-            for (String value : values) {
-                equal = new Equals(new Variable(variable), new Value(value));
-                if (current == null) {
-                    current = equal;
-                } else {
-                    current = new Or(current, equal);
-                }
-            }
-            return current;
-        }
-    }
-
     public static RelatedQuestionComplexRule createVarEqualsToValueRule(final String name, final String... values) {
         return new RelatedQuestionComplexRule(
                 ElementUtil.randomId(),
-                atLeastOneValueEqualsToVariable(name, values));
+                ExprUtil.atLeastOneValueEqualsToVariable(name, values));
     }
+
 }

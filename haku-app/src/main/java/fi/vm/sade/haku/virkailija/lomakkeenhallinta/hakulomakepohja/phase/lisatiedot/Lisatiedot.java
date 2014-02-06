@@ -14,6 +14,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.OlderThan;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.Value;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.MessageBundleNames;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ExprUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.*;
@@ -25,7 +26,7 @@ public class Lisatiedot {
     public static final String TYOKOKEMUS_PATTERN = "^$|^([0-9]|[1-9][0-9]|[1-9][0-9][0-9]|1000)$";
 
     static RelatedQuestionComplexRule createTyokokemus(final MessageBundleNames mbn) {
-        Expr isEducation32 = atLeastOneVariableEqualsToValue(REQUIRED_EDUCATION_DEGREE, OppijaConstants.AO_EDUCATION_DEGREE_KEYS);
+        Expr isEducation32 = ExprUtil.atLeastOneVariableEqualsToValue(REQUIRED_EDUCATION_DEGREE, OppijaConstants.AO_EDUCATION_DEGREE_KEYS);
         Expr olderThan16 = new OlderThan(new Value(AGE_WORK_EXPERIENCE));
         Expr rules = new And(isEducation32, olderThan16);
 
@@ -86,7 +87,7 @@ public class Lisatiedot {
                 createI18NText("form.lisatiedot.urheilija", mbn.getFormMessages()), true);
         ElementUtil.setVerboseHelp(urheilijanLisakysymyksetTeema, "form.lisatiedot.urheilija.verboseHelp", mbn.getFormVerboseHelp());
 
-        Expr onkoUrheilija = atLeastOneVariableEqualsToValue(ElementUtil.KYLLA,
+        Expr onkoUrheilija = ExprUtil.atLeastOneVariableEqualsToValue(ElementUtil.KYLLA,
                 "preference1_urheilijan_ammatillisen_koulutuksen_lisakysymys",
                 "preference1_urheilijalinjan_lisakysymys",
                 "preference2_urheilijan_ammatillisen_koulutuksen_lisakysymys",
