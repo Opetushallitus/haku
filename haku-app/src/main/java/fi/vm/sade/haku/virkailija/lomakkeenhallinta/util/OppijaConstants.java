@@ -15,16 +15,14 @@
  */
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.util;
 
-import com.google.common.collect.Sets;
-
-import java.util.Set;
-
 /**
  * Holds information that is needed about the form or application structure.
  *
  * @author Hannu Lyytikainen
  */
 public final class OppijaConstants {
+
+
 
     private OppijaConstants() {
         // Utility class, no need for instances
@@ -42,9 +40,12 @@ public final class OppijaConstants {
     element ids, can be used to retrieve specific information from an application
     */
     public static final String ELEMENT_ID_FIRST_NAMES = "Etunimet";
+    public static final String ELEMENT_ID_FIRST_NAMES_USER = ELEMENT_ID_FIRST_NAMES + "_user";
 
     public static final String ELEMENT_ID_NICKNAME = "Kutsumanimi";
+    public static final String ELEMENT_ID_NICKNAME_USER = ELEMENT_ID_NICKNAME + "_user";
     public static final String ELEMENT_ID_LAST_NAME = "Sukunimi";
+    public static final String ELEMENT_ID_LAST_NAME_USER = ELEMENT_ID_LAST_NAME + "_user";
     public static final String ELEMENT_ID_SOCIAL_SECURITY_NUMBER = "Henkilotunnus";
     public static final String ELEMENT_ID_EMAIL = "Sähköposti";
     public static final String ELEMENT_ID_SEX = "Sukupuoli";

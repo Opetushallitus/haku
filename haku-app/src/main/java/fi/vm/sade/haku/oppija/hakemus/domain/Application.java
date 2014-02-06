@@ -22,6 +22,7 @@ import com.google.common.collect.Maps;
 import fi.vm.sade.haku.oppija.lomake.domain.ObjectIdDeserializer;
 import fi.vm.sade.haku.oppija.lomake.domain.ObjectIdSerializer;
 import fi.vm.sade.haku.oppija.lomake.domain.User;
+import fi.vm.sade.haku.virkailija.authentication.Person;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.codehaus.jackson.annotate.JsonCreator;
 import org.codehaus.jackson.annotate.JsonIgnore;
@@ -29,13 +30,18 @@ import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.annotate.JsonTypeInfo;
 import org.codehaus.jackson.map.annotate.JsonDeserialize;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import javax.ws.rs.HEAD;
 import java.io.Serializable;
 import java.util.*;
 
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_EMPTY)
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 public class Application implements Serializable {
+
+    private static final Logger log = LoggerFactory.getLogger(Application.class);
 
     public enum State {
         ACTIVE, PASSIVE, INCOMPLETE, SUBMITTED
@@ -265,6 +271,43 @@ public class Application implements Serializable {
         return null != this.studentIdentificationDone ? this.studentIdentificationDone: true;
     }
 
+    @JsonIgnore
+    public Application modifyPersonalData(Person person) {
+        Map<String, String> henkilotiedot = new HashMap<String, String>(getPhaseAnswers("henkilotiedot"));
+        henkilotiedot = updateHenkilotiedotField(henkilotiedot, person.getFirstNames(),
+                OppijaConstants.ELEMENT_ID_FIRST_NAMES,OppijaConstants.ELEMENT_ID_FIRST_NAMES_USER);
+        henkilotiedot = updateHenkilotiedotField(henkilotiedot, person.getLastName(),
+                OppijaConstants.ELEMENT_ID_LAST_NAME,OppijaConstants.ELEMENT_ID_LAST_NAME_USER);
+        henkilotiedot = updateHenkilotiedotField(henkilotiedot, person.getNickName(),
+                OppijaConstants.ELEMENT_ID_NICKNAME,OppijaConstants.ELEMENT_ID_NICKNAME_USER);
+        updateFullName();
+        String personOid = person.getPersonOid();
+        if (personOid != null) {
+            setPersonOid(personOid);
+        }
+        addVaiheenVastaukset("henkilotiedot", henkilotiedot);
+        return this;
+    }
+
+    private Map<String, String> updateHenkilotiedotField(Map<String, String> henkilotiedot, String newValue, String field, String fieldUser) {
+        if (newValue == null) {
+            return henkilotiedot;
+        }
+
+        String value = henkilotiedot.get(field);
+        String valueByUser = henkilotiedot.get(fieldUser);
+
+        if (valueByUser == null) {
+            valueByUser = value;
+        }
+        value = newValue;
+
+        henkilotiedot.put(field, value);
+        henkilotiedot.put(fieldUser, valueByUser);
+
+        return henkilotiedot;
+
+    }
 
     public Map<String, Map<String, String>> getAnswers() {
         return answers;

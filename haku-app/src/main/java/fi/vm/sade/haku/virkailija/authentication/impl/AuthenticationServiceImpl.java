@@ -24,8 +24,11 @@ import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
 import fi.vm.sade.haku.virkailija.authentication.Person;
 import fi.vm.sade.haku.virkailija.authentication.PersonJsonAdapter;
 import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.methods.*;
+import org.apache.commons.httpclient.methods.GetMethod;
+import org.apache.commons.httpclient.methods.PutMethod;
 import org.apache.commons.io.IOUtils;
+import org.apache.http.HttpResponse;
+import org.apache.http.impl.client.BasicResponseHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -33,10 +36,10 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import javax.ws.rs.HEAD;
 import javax.ws.rs.core.MediaType;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -68,48 +71,41 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     private Gson gson;
 
-    public String addPerson(Person person) {
-
-        log.debug("start addPerson, {}", System.currentTimeMillis() / 1000);
-
-        String realHetuUrl = getClientHelper().getRealUrl("byHetu/" +
-                person.getSocialSecurityNumber());
-
-        HttpClient client = new HttpClient();
-        log.info("Getting person from " + realHetuUrl);
-        GetMethod get = new GetMethod(realHetuUrl);
-        try {
-            log.debug("execute getByHetu addPerson, {}", System.currentTimeMillis() / 1000);
-            client.executeMethod(get);
-        } catch (IOException e) {
-            log.error("Checking hetu failed due to: " + e.toString());
-            return null;
-        }
-
-        int status = get.getStatusCode();
+    public Person addPerson(Person person) {
 
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.registerTypeAdapter(Person.class, new PersonJsonAdapter());
         gson = gsonBuilder.create();
+
         String responseString = null;
-        if (status == 404) {
-            responseString = createHenkilo(client, person);
-        } else if (status == 200) {
+        try {
+            responseString = getCachingRestClient().getAsString("/resources/henkilo/byHetu/"+person.getSocialSecurityNumber());
+        } catch (CachingRestClient.HttpException hte) {
+            log.debug("HttpException: "+hte.getStatusCode());
             try {
-                responseString = get.getResponseBodyAsString();
+                if (hte.getStatusCode() == 404) {
+                    String personJson = gson.toJson(person, Person.class);
+                    CachingRestClient client = getCachingRestClient();
+                    HttpResponse response = client.post("/resources/henkilo", MediaType.APPLICATION_JSON, personJson);
+                    BasicResponseHandler handler = new BasicResponseHandler();
+                    String oid = handler.handleResponse(response);
+                    responseString = getCachingRestClient().getAsString("/resources/henkilo/"+oid);
+                } else {
+                    log.warn("Something unexpected happened while fetching person: " + hte.getErrorContent());
+                }
             } catch (IOException e) {
-                // It's because I'm lazy
-                throw new RuntimeException(e);
+                log.error("Fetching or creating person failed: ", e);
+                return null;
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        } else {
-            log.error("Checking hetu failed due to: " + get.getStatusCode() + get.getStatusText());
+        } catch (IOException e) {
+            log.error("Fetching or creating person failed: ", e);
             return null;
         }
 
-        JsonObject henkiloJson = new JsonParser().parse(responseString).getAsJsonObject();
-
-        log.debug("endAddPerson, {}", System.currentTimeMillis() / 1000);
-        return henkiloJson.get("oidHenkilo").getAsString();
+        Person newPerson = gson.fromJson(responseString, Person.class);
+        return newPerson;
     }
 
     @Override
@@ -195,30 +191,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         return null;
 
-    }
-
-
-    private String createHenkilo(HttpClient client, Person person) {
-
-        log.debug("start createHenkilo, {}", System.currentTimeMillis() / 1000);
-        String henkiloResource = targetService + "/resources/henkilo";
-
-        String responseString = null;
-        PostMethod post = new PostMethod(henkiloResource);
-        try {
-            RequestEntity entity = new StringRequestEntity(gson.toJson(person, Person.class), MediaType.APPLICATION_JSON + ";charset=UTF-8", "UTF-8");
-            post.setRequestEntity(entity);
-            client.executeMethod(post);
-            responseString = post.getResponseBodyAsString();
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            log.error("Creating person failed due to: " + e.toString());
-        }
-        log.debug("createHenkilo responseString: {}", responseString);
-
-        log.debug("end createHenkilo, {}", System.currentTimeMillis() / 1000);
-        return responseString;
     }
 
     private HttpClientHelper getClientHelper() {

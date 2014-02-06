@@ -44,6 +44,7 @@ import fi.vm.sade.haku.oppija.lomake.validation.ElementTreeValidator;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationInput;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationResult;
 import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
+import fi.vm.sade.haku.virkailija.authentication.Person;
 import fi.vm.sade.haku.virkailija.authentication.PersonBuilder;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.slf4j.Logger;
@@ -52,6 +53,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import javax.ws.rs.HEAD;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -189,7 +191,9 @@ public class ApplicationServiceImpl implements ApplicationService {
 
         try {
             application.setLastAutomatedProcessingTime(System.currentTimeMillis());
-            application.setPersonOid(this.authenticationService.addPerson(personBuilder.get()));
+            Person personBefore = personBuilder.get();
+            Person personAfter = authenticationService.addPerson(personBefore);
+            application = application.modifyPersonalData(personAfter);
         } catch (GenericFault fail) {
             LOGGER.info(fail.getMessage());
         } catch (Exception e) {
@@ -278,10 +282,9 @@ public class ApplicationServiceImpl implements ApplicationService {
         ApplicationSystem as = applicationSystemService.getApplicationSystem(application.getApplicationSystemId());
         Integer hakukausiVuosi = as.getHakukausiVuosi();
         String hakukausi = as.getHakukausiUri();
-        List<OpiskelijaDTO> opiskelijat = suoritusrekisteriService.getOpiskelijat(personOid,
-                String.valueOf(hakukausiVuosi), hakukausi);
+        List<OpiskelijaDTO> opiskelijat = suoritusrekisteriService.getOpiskelijat(personOid);
 
-        if (opiskelijat.size() > 0) {
+        if (opiskelijat != null && opiskelijat.size() > 0) {
             String sendingSchool = opiskelijat.get(0).getOppilaitosOid();
             String sendingClass = opiskelijat.get(0).getLuokka();
             Map<String, String> answers = new HashMap<String, String>(
@@ -434,7 +437,13 @@ public class ApplicationServiceImpl implements ApplicationService {
     private Application getApplication(final Application queryApplication) throws ResourceNotFoundException {
 
         LOGGER.debug("Entering ApplicationServiceImpl.getApplication()");
-        List<Application> listOfApplications = applicationDAO.find(queryApplication);
+        List<Application> listOfApplications;
+        try {
+            listOfApplications = applicationDAO.find(queryApplication);
+        } catch (IllegalArgumentException iae) {
+            LOGGER.error("Error getting application: ", iae);
+            throw new ResourceNotFoundException(iae);
+        }
         if (listOfApplications.isEmpty()) {
             throw new ResourceNotFoundException("Could not find application " + queryApplication.getOid());
         }
