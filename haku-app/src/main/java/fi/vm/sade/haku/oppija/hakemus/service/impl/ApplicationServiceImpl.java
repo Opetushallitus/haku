@@ -159,6 +159,7 @@ public class ApplicationServiceImpl implements ApplicationService {
             application.setReceived(new Date());
             addNote(application, "Hakemus vastaanotettu", false);
             application.setLastAutomatedProcessingTime(System.currentTimeMillis());
+            application.submitted();
             this.applicationDAO.save(application);
             this.userSession.removeApplication(application);
             return application.getOid();
@@ -397,8 +398,8 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public Application getNextWithoutPersonOid() {
-        Application application = applicationDAO.getNextWithoutPersonOid();
+    public Application getNextSubmittedApplication() {
+        Application application = applicationDAO.getNextSubmittedApplication();
         if (application != null) {
             application.setLastAutomatedProcessingTime(System.currentTimeMillis());
             applicationDAO.save(application);

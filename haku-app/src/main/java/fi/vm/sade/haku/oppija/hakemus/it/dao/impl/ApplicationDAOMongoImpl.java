@@ -486,11 +486,12 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     }
 
     @Override
-    public Application getNextWithoutPersonOid() {
+    public Application getNextSubmittedApplication() {
         DBObject query = new BasicDBObject();
+
         query.put(FIELD_PERSON_OID, new BasicDBObject("$exists", false));
         query.put(FIELD_APPLICATION_OID, new BasicDBObject("$exists", true));
-        query.put(FIELD_APPLICATION_STATE, new BasicDBObject("$exists", false));
+        query.put(FIELD_APPLICATION_STATE, Application.State.SUBMITTED.toString());
 
         DBObject sortBy = new BasicDBObject(FIELD_LAST_AUTOMATED_PROCESSING_TIME, 1);
 

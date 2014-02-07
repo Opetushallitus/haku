@@ -87,7 +87,7 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
      * @param sendMail
      */
     public void processApplications(boolean sendMail) {
-        Application application = applicationService.getNextWithoutPersonOid();
+        Application application = applicationService.getNextSubmittedApplication();
 
         while (application != null) {
             application = applicationService.fillLOPChain(application, false);
@@ -102,7 +102,7 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
                     LOGGER.info("Error process applications", e);
                 }
             }
-            application = applicationService.getNextWithoutPersonOid();
+            application = applicationService.getNextSubmittedApplication();
         }
     }
 
