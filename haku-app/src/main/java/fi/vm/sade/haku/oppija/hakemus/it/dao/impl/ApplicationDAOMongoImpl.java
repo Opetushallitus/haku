@@ -101,6 +101,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     private static final String FIELD_SSN = "answers.henkilotiedot.Henkilotunnus";
     private static final String EXISTS = "$exists";
     private static final String FIELD_STUDENT_OID = "studentOid";
+    private static final String FIELD_STUDENT_IDENTIFICATION_DONE = "studentIdentificationDone";
     private final EncrypterService shaEncrypter;
     private final DBObjectToSearchResultItem dbObjectToSearchResultItem;
 
@@ -474,7 +475,9 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         query.put(FIELD_APPLICATION_OID, new BasicDBObject("$exists", true));
         query.put(FIELD_PERSON_OID, new BasicDBObject("$exists", true));
         query.put(FIELD_STUDENT_OID, new BasicDBObject("$exists", false));
+        query.put(FIELD_APPLICATION_STATE, Application.State.ACTIVE.toString());
         query.put("answers.henkilotiedot.Henkilotunnus", new BasicDBObject("$exists", true));
+        query.put(FIELD_STUDENT_IDENTIFICATION_DONE, Boolean.FALSE.toString());
 
         DBObject sortBy = new BasicDBObject(FIELD_LAST_AUTOMATED_PROCESSING_TIME, 1);
 
