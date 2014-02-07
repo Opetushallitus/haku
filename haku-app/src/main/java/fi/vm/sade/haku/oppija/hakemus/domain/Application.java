@@ -38,7 +38,7 @@ import java.util.*;
 public class Application implements Serializable {
 
     public enum State {
-        ACTIVE, PASSIVE, INCOMPLETE
+        ACTIVE, PASSIVE, INCOMPLETE, SUBMITTED
     }
 
     private static final long serialVersionUID = -7491168801255850954L;
@@ -55,9 +55,8 @@ public class Application implements Serializable {
     private User user;
     private String phaseId;
     private String personOid;
-    private Long personOidChecked;
     private String studentOid;
-    private Long studentOidChecked;
+    private Long lastAutomatedProcessingTime;
     private Date received;
 
     private String fullName;
@@ -144,6 +143,11 @@ public class Application implements Serializable {
     }
 
     @JsonIgnore
+    public void submitted() {
+        state = State.SUBMITTED;
+    }
+
+    @JsonIgnore
     public boolean isActive() {
         return state != null && state.equals(State.ACTIVE);
     }
@@ -156,6 +160,11 @@ public class Application implements Serializable {
     @JsonIgnore
     public boolean isIncomplete() {
         return state != null && state.equals(State.INCOMPLETE);
+    }
+
+    @JsonIgnore
+    public boolean isSubmitted() {
+        return state != null && state.equals(State.SUBMITTED);
     }
 
     // final, koska kutsutaan rakentajasta
@@ -308,20 +317,12 @@ public class Application implements Serializable {
         this.studentOid = studentOid;
     }
 
-    public Long getPersonOidChecked() {
-        return personOidChecked;
+    public Long getLastAutomatedProcessingTime() {
+        return lastAutomatedProcessingTime;
     }
 
-    public void setPersonOidChecked(Long personOidChecked) {
-        this.personOidChecked = personOidChecked;
-    }
-
-    public Long getStudentOidChecked() {
-        return studentOidChecked;
-    }
-
-    public void setStudentOidChecked(Long studentOidChecked) {
-        this.studentOidChecked = studentOidChecked;
+    public void setLastAutomatedProcessingTime(Long lastAutomatedProcessingTime) {
+        this.lastAutomatedProcessingTime = lastAutomatedProcessingTime;
     }
 
     public void setFullname(String fullName) {

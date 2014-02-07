@@ -106,7 +106,7 @@ public interface ApplicationService {
      *
      * @return Application or null
      */
-    Application getNextWithoutPersonOid();
+    Application getNextSubmittedApplication();
 
     /**
      * Set proper user for this application. If user can be authenticated, activate application. Otherwise, set

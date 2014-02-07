@@ -87,7 +87,7 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
      * @param sendMail
      */
     public void processApplications(boolean sendMail) {
-        Application application = applicationService.getNextWithoutPersonOid();
+        Application application = applicationService.getNextSubmittedApplication();
 
         while (application != null) {
             application = applicationService.fillLOPChain(application, false);
@@ -102,7 +102,7 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
                     LOGGER.info("Error process applications", e);
                 }
             }
-            application = applicationService.getNextWithoutPersonOid();
+            application = applicationService.getNextSubmittedApplication();
         }
     }
 
@@ -110,16 +110,7 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
         Application application = applicationService.getNextWithoutStudentOid();
         LOGGER.debug("Starting processIdentification, application: {} {}",
                 application != null ? application.getOid() : "null", System.currentTimeMillis());
-
-        Long endTime = System.currentTimeMillis() + (1000 * 10);
-
-        while (application != null && System.currentTimeMillis() < endTime) {
-            Long lastChecked = application.getStudentOidChecked();
-            if (lastChecked == null || lastChecked == 0) {
-                applicationService.checkStudentOid(application);
-            }
-            application = applicationService.getNextWithoutStudentOid();
-        }
+        applicationService.checkStudentOid(application);
     }
 
     private void sendMail(Application application) throws EmailException {
