@@ -51,6 +51,7 @@ public class Application implements Serializable {
 
     private String oid;
     private State state;
+    private Boolean studentIdentificationDone;
     private String applicationSystemId;
     private User user;
     private String phaseId;
@@ -245,6 +246,22 @@ public class Application implements Serializable {
         }
     }
 
+    @JsonIgnore
+    public void studentIdentificationDone() {
+        this.studentIdentificationDone = Boolean.TRUE;
+    }
+
+    @JsonIgnore
+    public void flagStudentIdentificationRequired() {
+        this.studentIdentificationDone = Boolean.FALSE;
+    }
+
+    @JsonIgnore
+    public boolean isStudentIdentificationDone() {
+        return null != this.studentIdentificationDone ? this.studentIdentificationDone: true;
+    }
+
+
     public Map<String, Map<String, String>> getAnswers() {
         return answers;
     }
@@ -272,6 +289,10 @@ public class Application implements Serializable {
     public State getState() {
         return this.state;
     }
+
+    public void setStudentIdentificationDone(Boolean studentIdentificationDone) {this.studentIdentificationDone = studentIdentificationDone;}
+
+    public Boolean getStudentIdentificationDone() {return this.studentIdentificationDone;}
 
     public String getPhaseId() {
         return phaseId;

@@ -160,6 +160,7 @@ public class ApplicationServiceImpl implements ApplicationService {
             addNote(application, "Hakemus vastaanotettu", false);
             application.setLastAutomatedProcessingTime(System.currentTimeMillis());
             application.submitted();
+            application.flagStudentIdentificationRequired();
             this.applicationDAO.save(application);
             this.userSession.removeApplication(application);
             return application.getOid();
@@ -211,6 +212,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         if (isNotEmpty(personOid) && isEmpty(studentOid)) {
             studentOid = authenticationService.checkStudentOid(application.getPersonOid());
             application.setStudentOid(studentOid);
+            application.studentIdentificationDone();
         }
 
         application.setLastAutomatedProcessingTime(System.currentTimeMillis());
