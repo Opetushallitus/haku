@@ -148,8 +148,7 @@ public class OsaaminenPhaseYhteishakuKevat {
 
 
         //KESKEYTTANYT TAI ULKOMAILLA SUORITTANUT
-        Expr pohjakoulutusOnKeskUlk = ExprUtil.atLeastOneValueEqualsToVariable(OppijaConstants.ELEMENT_ID_BASE_EDUCATION,
-                BASE_EDUCATION_KESK_ULK);
+        Expr pohjakoulutusOnKeskUlk = createPohjakoilutusUlkomainenTaiKeskeyttanyt();
 
         Expr suomiOnAidinkieliKeskUlk = new Equals(new Variable("aidinkieli"), new Value("FI"));
         Expr ruotsiOnAidinkieliKeskUlk = new Equals(new Variable("aidinkieli"), new Value("SV"));
@@ -177,9 +176,9 @@ public class OsaaminenPhaseYhteishakuKevat {
 
 
         Expr naytetaankoKielitaitoteema = ExprUtil.reduceToOr(ImmutableList.of(kysytaankoSuomiPK,
-                        kysytaankoRuotsiPK, kysytaankoSuomiYO, kysytaankoRuotsiYO, kysytaankoSuomiKeskUlk, kysytaankoRuotsiKeskUlk,
-                        kysytaankoSaamePK, kysytaankoSaameYO, kysytaankoSaameKeskUlk, kysytaankoViittomaPK, kysytaankoViittomaYO,
-                        kysytaankoViittomaKeskUlk));
+                kysytaankoRuotsiPK, kysytaankoSuomiYO, kysytaankoRuotsiYO, kysytaankoSuomiKeskUlk, kysytaankoRuotsiKeskUlk,
+                kysytaankoSaamePK, kysytaankoSaameYO, kysytaankoSaameKeskUlk, kysytaankoViittomaPK, kysytaankoViittomaYO,
+                kysytaankoViittomaKeskUlk));
 
         RelatedQuestionComplexRule naytetaankoTeema = new RelatedQuestionComplexRule(ElementUtil.randomId(), naytetaankoKielitaitoteema);
         Theme kielitaitokysymyksetTheme =
@@ -191,6 +190,11 @@ public class OsaaminenPhaseYhteishakuKevat {
         naytetaankoTeema.addChild(kielitaitokysymyksetTheme);
 
         return naytetaankoTeema;
+    }
+
+    public static Expr createPohjakoilutusUlkomainenTaiKeskeyttanyt() {
+        return ExprUtil.atLeastOneValueEqualsToVariable(OppijaConstants.ELEMENT_ID_BASE_EDUCATION,
+                BASE_EDUCATION_KESK_ULK);
     }
 
     private static Radio createKielitutkinto(final String id, final String formMessages, final String formErrors) {
