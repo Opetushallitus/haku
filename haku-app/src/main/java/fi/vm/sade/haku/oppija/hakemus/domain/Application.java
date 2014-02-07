@@ -38,7 +38,7 @@ import java.util.*;
 public class Application implements Serializable {
 
     public enum State {
-        ACTIVE, PASSIVE, INCOMPLETE
+        ACTIVE, PASSIVE, INCOMPLETE, SUBMITTED
     }
 
     private static final long serialVersionUID = -7491168801255850954L;
@@ -143,6 +143,11 @@ public class Application implements Serializable {
     }
 
     @JsonIgnore
+    public void submitted() {
+        state = State.SUBMITTED;
+    }
+
+    @JsonIgnore
     public boolean isActive() {
         return state != null && state.equals(State.ACTIVE);
     }
@@ -155,6 +160,11 @@ public class Application implements Serializable {
     @JsonIgnore
     public boolean isIncomplete() {
         return state != null && state.equals(State.INCOMPLETE);
+    }
+
+    @JsonIgnore
+    public boolean isSubmitted() {
+        return state != null && state.equals(State.SUBMITTED);
     }
 
     // final, koska kutsutaan rakentajasta
