@@ -475,7 +475,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         query.put("studentOid", new BasicDBObject("$exists", false));
         query.put("answers.henkilotiedot.Henkilotunnus", new BasicDBObject("$exists", true));
 
-        DBObject sortBy = new BasicDBObject("studentOidChecked", 1);
+        DBObject sortBy = new BasicDBObject("lastAutomatedProcessingTime", 1);
 
         DBCursor cursor = getCollection().find(query).sort(sortBy).limit(1);
         if (!cursor.hasNext()) {
@@ -491,7 +491,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         query.put("oid", new BasicDBObject("$exists", true));
         query.put("state", new BasicDBObject("$exists", false));
 
-        DBObject sortBy = new BasicDBObject("personOidChecked", 1);
+        DBObject sortBy = new BasicDBObject("lastAutomatedProcessingTime", 1);
 
         DBCursor cursor = getCollection().find(query).sort(sortBy).limit(1);
         if (!cursor.hasNext()) {

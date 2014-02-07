@@ -55,9 +55,8 @@ public class Application implements Serializable {
     private User user;
     private String phaseId;
     private String personOid;
-    private Long personOidChecked;
     private String studentOid;
-    private Long studentOidChecked;
+    private Long lastAutomatedProcessingTime;
     private Date received;
 
     private String fullName;
@@ -308,20 +307,12 @@ public class Application implements Serializable {
         this.studentOid = studentOid;
     }
 
-    public Long getPersonOidChecked() {
-        return personOidChecked;
+    public Long getLastAutomatedProcessingTime() {
+        return lastAutomatedProcessingTime;
     }
 
-    public void setPersonOidChecked(Long personOidChecked) {
-        this.personOidChecked = personOidChecked;
-    }
-
-    public Long getStudentOidChecked() {
-        return studentOidChecked;
-    }
-
-    public void setStudentOidChecked(Long studentOidChecked) {
-        this.studentOidChecked = studentOidChecked;
+    public void setLastAutomatedProcessingTime(Long lastAutomatedProcessingTime) {
+        this.lastAutomatedProcessingTime = lastAutomatedProcessingTime;
     }
 
     public void setFullname(String fullName) {
