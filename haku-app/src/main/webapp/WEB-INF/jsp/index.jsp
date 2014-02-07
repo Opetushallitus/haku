@@ -21,6 +21,7 @@
 
 <!DOCTYPE html>
 <html>
+<fmt:setLocale value="es_ES"/>
 <fmt:setBundle basename="messages" scope="application"/>
 <jsp:include page="top/head.jsp"/>
 <body>
