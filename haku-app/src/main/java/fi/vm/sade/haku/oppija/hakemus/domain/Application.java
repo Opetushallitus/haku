@@ -282,6 +282,9 @@ public class Application implements Serializable {
                 OppijaConstants.ELEMENT_ID_NICKNAME,OppijaConstants.ELEMENT_ID_NICKNAME_USER);
         updateFullName();
         String personOid = person.getPersonOid();
+
+        log.debug("Modifying personal data: "+person);
+
         if (personOid != null) {
             setPersonOid(personOid);
         }

@@ -53,7 +53,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import javax.ws.rs.HEAD;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -192,8 +191,17 @@ public class ApplicationServiceImpl implements ApplicationService {
         try {
             application.setLastAutomatedProcessingTime(System.currentTimeMillis());
             Person personBefore = personBuilder.get();
-            Person personAfter = authenticationService.addPerson(personBefore);
+            LOGGER.debug("Calling addPerson");
+            Person personAfter = null;
+            try {
+                personAfter = authenticationService.addPerson(personBefore);
+            } catch(Throwable t) {
+                LOGGER.debug("Unexpected happened: "+t);
+            }
+            LOGGER.debug("Called addPerson");
+            LOGGER.debug("Calling modifyPersonalData");
             application = application.modifyPersonalData(personAfter);
+            LOGGER.debug("Called modifyPersonalData");
         } catch (GenericFault fail) {
             LOGGER.info(fail.getMessage());
         } catch (Exception e) {

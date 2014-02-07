@@ -5,7 +5,6 @@ import fi.vm.sade.authentication.service.types.dto.SukupuoliType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.ws.rs.HEAD;
 import java.lang.reflect.Type;
 
 import static org.apache.commons.lang3.StringUtils.isEmpty;
@@ -124,6 +123,7 @@ public class PersonJsonAdapter implements JsonSerializer<Person>, JsonDeserializ
                 .setPersonOid(getJsonString(personJson, "oidHenkilo"))
                 .setNoSocialSecurityNumber(getJsonBoolean(personJson, "eiSuomalaistaHetua"));
 
+        log.debug("Deserialized basic info");
         String sex = getJsonString(personJson, "sukupuoli");
         if (sex != null && sex.equals("MIES")) {
             personBuilder.setSex(SukupuoliType.MIES.value());

@@ -15,6 +15,8 @@
  */
 package fi.vm.sade.haku.virkailija.authentication;
 
+import javax.ws.rs.HEAD;
+
 /**
  * @author Hannu Lyytikainen
  */
