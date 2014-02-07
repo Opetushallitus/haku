@@ -95,6 +95,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     private static final String FIELD_APPLICATION_SYSTEM_ID = "applicationSystemId";
     private static final String FIELD_PERSON_OID = "personOid";
     private static final String FIELD_APPLICATION_STATE = "state";
+    private static final String FIELD_LAST_AUTOMATED_PROCESSING_TIME = "lastAutomatedProcessingTime";
     private static final String FIELD_SENDING_SCHOOL = "answers.koulutustausta.lahtokoulu";
     private static final String FIELD_SENDING_CLASS = "answers.koulutustausta.lahtoluokka";
     private static final String FIELD_SSN = "answers.henkilotiedot.Henkilotunnus";
@@ -462,7 +463,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
 
     @Override
     public void updateKeyValue(String oid, String key, String value) {
-        DBObject query = new BasicDBObject("oid", oid);
+        DBObject query = new BasicDBObject(FIELD_APPLICATION_OID, oid);
         DBObject update = new BasicDBObject("$set", new BasicDBObject(key, value));
         getCollection().findAndModify(query, update);
     }
@@ -470,12 +471,12 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     @Override
     public Application getNextWithoutStudentOid() {
         DBObject query = new BasicDBObject();
-        query.put("oid", new BasicDBObject("$exists", true));
-        query.put("personOid", new BasicDBObject("$exists", true));
-        query.put("studentOid", new BasicDBObject("$exists", false));
+        query.put(FIELD_APPLICATION_OID, new BasicDBObject("$exists", true));
+        query.put(FIELD_PERSON_OID, new BasicDBObject("$exists", true));
+        query.put(FIELD_STUDENT_OID, new BasicDBObject("$exists", false));
         query.put("answers.henkilotiedot.Henkilotunnus", new BasicDBObject("$exists", true));
 
-        DBObject sortBy = new BasicDBObject("lastAutomatedProcessingTime", 1);
+        DBObject sortBy = new BasicDBObject(FIELD_LAST_AUTOMATED_PROCESSING_TIME, 1);
 
         DBCursor cursor = getCollection().find(query).sort(sortBy).limit(1);
         if (!cursor.hasNext()) {
@@ -487,11 +488,11 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     @Override
     public Application getNextWithoutPersonOid() {
         DBObject query = new BasicDBObject();
-        query.put("personOid", new BasicDBObject("$exists", false));
-        query.put("oid", new BasicDBObject("$exists", true));
-        query.put("state", new BasicDBObject("$exists", false));
+        query.put(FIELD_PERSON_OID, new BasicDBObject("$exists", false));
+        query.put(FIELD_APPLICATION_OID, new BasicDBObject("$exists", true));
+        query.put(FIELD_APPLICATION_STATE, new BasicDBObject("$exists", false));
 
-        DBObject sortBy = new BasicDBObject("lastAutomatedProcessingTime", 1);
+        DBObject sortBy = new BasicDBObject(FIELD_LAST_AUTOMATED_PROCESSING_TIME, 1);
 
         DBCursor cursor = getCollection().find(query).sort(sortBy).limit(1);
         if (!cursor.hasNext()) {
