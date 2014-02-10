@@ -1499,6 +1499,12 @@ footer {
   max-width: 960px;
   margin: 0px auto; }
 
+.navigation-container {
+  width: auto;
+  max-width: 1170px;
+  margin: 0px auto;
+  position: relative; }
+
 footer {
   margin-top: 220px;
   margin-bottom: 20px; }
@@ -2074,6 +2080,12 @@ label, .label {
   margin-left: 24px;
   padding-bottom: 5px; }
 
+.field-container-radio p.small {
+  width: 480px;
+  margin-bottom: 2.5em;
+  margin-top: 0.3em;
+  margin-left: 1.4em; }
+
 /*** Mandatory
 ************************************************/
 .required:after {
@@ -2143,24 +2155,32 @@ label, .label {
     border-right: 1px solid #e1e1e1; }
 .application-basket thead tr th,
 .application-basket thead tr td,
-.application-basket tbody tr td {
+.application-basket tbody tr td,
+.application-basket tbody tr th {
   border: none;
   vertical-align: top;
   padding: 1em 1em;
   background-color: #fcfcfc; }
 .application-basket tbody tr:nth-child(even) td {
   background-color: #ffffff; }
+.application-basket tbody tr th {
+  font-weight: bold;
+  text-align: left; }
 .application-basket thead tr td,
-.application-basket tbody tr td {
+.application-basket tbody tr td,
+.application-basket tbody tr th {
   border-right: 2px solid #f6f6f6; }
   .application-basket thead tr td:first-child,
-  .application-basket tbody tr td:first-child {
+  .application-basket tbody tr td:first-child,
+  .application-basket tbody tr th:first-child {
     border-left: 1px solid #e1e1e1; }
   .application-basket thead tr td.last,
-  .application-basket tbody tr td.last {
+  .application-basket tbody tr td.last,
+  .application-basket tbody tr th.last {
     border-right: 1px solid #e1e1e1; }
   .application-basket thead tr td.basket-remove,
-  .application-basket tbody tr td.basket-remove {
+  .application-basket tbody tr td.basket-remove,
+  .application-basket tbody tr th.basket-remove {
     width: 1px; }
 .application-basket tbody tr.last td {
   border-bottom: 1px solid #e1e1e1; }
@@ -2178,22 +2198,57 @@ label, .label {
     -o-border-bottom-right-radius: 5px;
     -ms-border-bottom-right-radius: 5px;
     border-bottom-right-radius: 5px; }
-.application-basket tbody tr.first td {
+.application-basket tbody tr.first td, .application-basket tbody tr.first th {
   border-top: 1px solid #e1e1e1; }
-  .application-basket tbody tr.first td:first-child {
+  .application-basket tbody tr.first td:first-child, .application-basket tbody tr.first th:first-child {
     border-left: 1px solid #e1e1e1;
     -moz-border-top-left-radius: 5px;
     -webkit-border-top-left-radius: 5px;
     -o-border-top-left-radius: 5px;
     -ms-border-top-left-radius: 5px;
     border-top-left-radius: 5px; }
-  .application-basket tbody tr.first td.last {
+  .application-basket tbody tr.first td.last, .application-basket tbody tr.first th.last {
     border-right: 1px solid #e1e1e1;
     -moz-border-top-right-radius: 5px;
     -webkit-border-top-right-radius: 5px;
     -o-border-top-right-radius: 5px;
     -ms-border-top-right-radius: 5px;
     border-top-right-radius: 5px; }
+.application-basket tbody tr td.table-container {
+  padding: 1em 0; }
+.application-basket table.sub {
+  border: none;
+  border-spacing: 0;
+  width: 100%;
+  border-collapse: collapse; }
+  .application-basket table.sub tbody tr td {
+    background: none;
+    padding: 0 1em 10px; }
+  .application-basket table.sub thead tr td,
+  .application-basket table.sub tbody tr td {
+    border-right: none; }
+    .application-basket table.sub thead tr td:first-child,
+    .application-basket table.sub tbody tr td:first-child {
+      border-left: none; }
+    .application-basket table.sub thead tr td.last,
+    .application-basket table.sub tbody tr td.last {
+      border-right: none; }
+  .application-basket table.sub tbody tr:nth-child(even) td {
+    background: none; }
+  .application-basket table.sub tbody tr td {
+    border-bottom: none; }
+  .application-basket table.sub tbody tr.last td {
+    border-bottom: none; }
+    .application-basket table.sub tbody tr.last td:first-child {
+      border-left: none; }
+    .application-basket table.sub tbody tr.last td.last {
+      border-right: none; }
+  .application-basket table.sub tbody tr.first td {
+    border-top: none; }
+    .application-basket table.sub tbody tr.first td:first-child {
+      border-left: none; }
+    .application-basket table.sub tbody tr.first td.last {
+      border-right: none; }
 .application-basket .action-area {
   line-height: 2em; }
   .application-basket .action-area a {
@@ -2259,10 +2314,15 @@ table.striped {
   -o-text-shadow: 1px 1px 1px white;
   -ms-text-shadow: 1px 1px 1px white;
   text-shadow: 1px 1px 1px white; }
+  .notification.large {
+    background-size: 28px 29px;
+    padding-left: 70px; }
   .notification.warning {
     background-image: url(../img/icon-notification-small.png);
     background-color: #fee7a5;
     color: #730d02; }
+    .notification.warning.large {
+      background-image: url(../img/icon-notification.png); }
   .notification.info {
     color: #333;
     background-color: #c2e6f1;
@@ -2359,6 +2419,18 @@ table.striped {
   cursor: pointer;
   color: transparent;
   font-size: 0px; }
+
+/*  Näytä lisää -tekstikomponentti */
+.extendable-content {
+  -webkit-transition: height 0.2s ease;
+  -moz-transition: height 0.2s ease;
+  -o-transition: height 0.2s ease;
+  -ms-transition: height 0.2s ease;
+  transition: height 0.2s ease; }
+
+.ao-block {
+  border-bottom: 1px solid #dddddd;
+  margin-bottom: 2em; }
 
 .remove {
   display: inline-block;
@@ -2648,6 +2720,69 @@ a.button {
     background-position: left -84px; }
     a.button:disabled span span {
       background-position: right -196px; }
+
+.buttongroup .button {
+  position: relative;
+  overflow: visible;
+  display: inline-block;
+  padding: 0.25em;
+  width: 30px;
+  border: 1px solid #dba000;
+  margin: 0;
+  color: #333333;
+  text-decoration: none;
+  text-align: center;
+  white-space: nowrap;
+  cursor: pointer;
+  outline: none;
+  background-color: #fecf4c;
+  box-shadow: inset 0px 1px 1px 0px #ffe6a2;
+  background-clip: padding-box;
+  float: left;
+  margin-left: -1px; }
+  .buttongroup .button:hover, .buttongroup .button:focus {
+    -webkit-box-shadow: inset 0px 1px 1px 0px #ffeba2;
+    -moz-box-shadow: inset 0px 1px 1px 0px #ffeba2;
+    -o-box-shadow: inset 0px 1px 1px 0px #ffeba2;
+    -ms-box-shadow: inset 0px 1px 1px 0px #ffeba2;
+    box-shadow: inset 0px 1px 1px 0px #ffeba2;
+    background: #fecf4c 100%;
+    background: -webkit-gradient(linear, left top, left bottom, from(#feba00 0%), to(#fecf4c 100%));
+    background: -webkit-linear-gradient(top, #feba00 0%, #fecf4c 100%);
+    background: -moz-linear-gradient(top, #feba00 0%, #fecf4c 100%);
+    background: -ms-linear-gradient(top, #feba00 0%, #fecf4c 100%);
+    background: -o-linear-gradient(top, #feba00 0%, #fecf4c 100%);
+    background: linear-gradient(top, #feba00 0%, #fecf4c 100%);
+    -ms-filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#fffeba00,endColorstr=#fffecf4c,GradientType=0);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#fffeba00,endColorstr=#fffecf4c,GradientType=0); }
+  .buttongroup .button:active, .buttongroup .button.active {
+    -webkit-box-shadow: inset 0px 1px 0px 0px #bcae87;
+    -moz-box-shadow: inset 0px 1px 0px 0px #bcae87;
+    -o-box-shadow: inset 0px 1px 0px 0px #bcae87;
+    -ms-box-shadow: inset 0px 1px 0px 0px #bcae87;
+    box-shadow: inset 0px 1px 0px 0px #bcae87;
+    background: #e3a300 89%;
+    background: -webkit-gradient(linear, left top, left bottom, from(#bf8a02 25%), to(#e3a300 89%));
+    background: -webkit-linear-gradient(top, #bf8a02 25%, #e3a300 89%);
+    background: -moz-linear-gradient(top, #bf8a02 25%, #e3a300 89%);
+    background: -ms-linear-gradient(top, #bf8a02 25%, #e3a300 89%);
+    background: -o-linear-gradient(top, #bf8a02 25%, #e3a300 89%);
+    background: linear-gradient(top, #bf8a02 25%, #e3a300 89%);
+    -ms-filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#bf8a02,endColorstr=#e3a300,GradientType=0);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#bf8a02,endColorstr=#e3a300,GradientType=0);
+    box-shadow: none; }
+  .buttongroup .button:first-child {
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px; }
+  .buttongroup .button:last-child {
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px; }
+.buttongroup:after {
+  visibility: hidden;
+  display: block;
+  content: "";
+  clear: both;
+  height: 0; }
 
 /* CSS only buttons */
 /*
