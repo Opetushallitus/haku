@@ -29,6 +29,8 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
 
 import java.util.List;
 
+import static com.google.common.collect.Lists.newArrayList;
+
 public class YhteishakuKevat {
 
     private static final String FORM_MESSAGES = "form_messages_yhteishaku_kevat";
@@ -50,5 +52,9 @@ public class YhteishakuKevat {
     public static List<Element> generateApplicationCompleteElements() {
         return ValmisPhase.create(FORM_MESSAGES, "form.valmis.muutoksentekeminen.p1",
                 "form.valmis.muutoksentekeminen.p2", "form.valmis.muutoksentekeminen.p3");
+    }
+
+    public static List<Element> createAdditionalInformationElements() {
+        return newArrayList(ValmisPhase.createAdditionalInformationElements(FORM_MESSAGES));
     }
 }

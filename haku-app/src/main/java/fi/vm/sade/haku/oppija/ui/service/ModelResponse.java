@@ -26,6 +26,7 @@ public class ModelResponse {
     public static final String FORM = "form";
     public static final String DISCRETIONARY_ATTACHMENT_AO_IDS = "discretionaryAttachmentAOIds";
     public static final String APPLICATION_COMPLETE_ELEMENTS = "applicationCompleteElements";
+    public static final String ADDITIONAL_INFORMATION_ELEMENTS = "additionalInformationElements";
     public static final String APPLICATION_SYSTEMS = "applicationSystems";
 
 
@@ -56,6 +57,7 @@ public class ModelResponse {
                          final String koulutusinformaatioBaseUrl) {
         this(application, applicationSystem.getForm());
         setApplicationCompleteElements(applicationSystem.getApplicationCompleteElements());
+        setApplicationInformationElements(applicationSystem.getAdditionalInformationElements());
         setDiscretionaryAttachmentAOIds(discretionaryAttachmentAOIds);
         setKoulutusinformaatioBaseUrl(koulutusinformaatioBaseUrl);
     }
@@ -135,6 +137,10 @@ public class ModelResponse {
 
     public void setApplicationCompleteElements(final List<Element> applicationCompleteElements) {
         this.addObjectToModel(APPLICATION_COMPLETE_ELEMENTS, applicationCompleteElements);
+    }
+
+    public void setApplicationInformationElements(final List<Element> applicationInformationElements) {
+        this.addObjectToModel(ADDITIONAL_INFORMATION_ELEMENTS, applicationInformationElements);
     }
 
     public void setApplicationSystemId(final String asid) {
