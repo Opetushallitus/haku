@@ -56,8 +56,12 @@ public class Application implements Serializable {
     private User user;
     private String phaseId;
     private String personOid;
+    @Deprecated
+    private Long personOidChecked;
     private String studentOid;
     private Long lastAutomatedProcessingTime;
+    @Deprecated
+    private Long studentOidChecked;
     private Date received;
 
     private String fullName;
@@ -344,6 +348,26 @@ public class Application implements Serializable {
 
     public void setLastAutomatedProcessingTime(Long lastAutomatedProcessingTime) {
         this.lastAutomatedProcessingTime = lastAutomatedProcessingTime;
+    }
+
+    @Deprecated
+    public Long getPersonOidChecked() {
+        return personOidChecked;
+    }
+
+    @Deprecated
+    public void setPersonOidChecked(Long personOidChecked) {
+        this.personOidChecked = personOidChecked;
+    }
+
+    @Deprecated
+    public Long getStudentOidChecked() {
+        return studentOidChecked;
+    }
+
+    @Deprecated
+    public void setStudentOidChecked(Long studentOidChecked) {
+        this.studentOidChecked = studentOidChecked;
     }
 
     public void setFullname(String fullName) {
