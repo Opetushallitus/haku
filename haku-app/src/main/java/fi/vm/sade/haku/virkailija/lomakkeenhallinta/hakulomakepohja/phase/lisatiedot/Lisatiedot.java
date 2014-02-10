@@ -8,27 +8,27 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Radio;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.TextArea;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.TextQuestion;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionComplexRule;
-import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.And;
-import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.Expr;
-import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.OlderThan;
-import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.Value;
+import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.*;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.MessageBundleNames;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ExprUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.osaaminen.OsaaminenPhaseYhteishakuKevat.createPohjakoilutusUlkomainenTaiKeskeyttanyt;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.*;
 
 public class Lisatiedot {
 
     public static final String REQUIRED_EDUCATION_DEGREE = "32";
-    public static final String AGE_WORK_EXPERIENCE = "16";
+    public static final String MIN_AGE_REQUIRED_TO_WORK_EXPERIENCE_AGE = "16";
     public static final String TYOKOKEMUS_PATTERN = "^$|^([0-9]|[1-9][0-9]|[1-9][0-9][0-9]|1000)$";
 
     static RelatedQuestionComplexRule createTyokokemus(final MessageBundleNames mbn) {
         Expr isEducation32 = ExprUtil.atLeastOneVariableEqualsToValue(REQUIRED_EDUCATION_DEGREE, OppijaConstants.AO_EDUCATION_DEGREE_KEYS);
-        Expr olderThan16 = new OlderThan(new Value(AGE_WORK_EXPERIENCE));
-        Expr rules = new And(isEducation32, olderThan16);
+        Expr olderThan16 = new OlderThan(new Value(MIN_AGE_REQUIRED_TO_WORK_EXPERIENCE_AGE));
+        Expr pohjakoulutusKeskeyttanytTaiUlkomaillasuoritettu = createPohjakoilutusUlkomainenTaiKeskeyttanyt();
+
+        Expr rules = new And(new Not(pohjakoulutusKeskeyttanytTaiUlkomaillasuoritettu), new And(isEducation32, olderThan16));
 
         Theme workExperienceTheme = new Theme("WorkExperienceTheme", createI18NText("form.lisatiedot.tyokokemus", mbn.getFormMessages()), true);
         workExperienceTheme.setHelp(createI18NText("form.tyokokemus.help", mbn.getFormMessages()));

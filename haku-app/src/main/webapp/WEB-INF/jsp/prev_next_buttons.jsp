@@ -1,4 +1,3 @@
-<%@ page session="true"%>
 <%@ page pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
@@ -17,8 +16,6 @@
   ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   ~ European Union Public Licence for more details.
   --%>
-
-<fmt:setBundle basename="messages" scope="application"/>
 
 <c:forEach var="item" items="${form.children}" varStatus="status">
     <c:if test="${(item eq vaihe)}">

@@ -1,4 +1,3 @@
-<%@ page session="true"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
@@ -94,6 +93,7 @@
                         <c:set var="element" value="${cElement}" scope="request"/>
                         <jsp:include page="/WEB-INF/jsp/valmis/${element.type}.jsp"/>
                     </c:forEach>
+
                 </div>
             </section>
         </section>

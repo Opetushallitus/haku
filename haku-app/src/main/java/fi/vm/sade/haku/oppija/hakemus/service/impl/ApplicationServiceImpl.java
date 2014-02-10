@@ -158,8 +158,9 @@ public class ApplicationServiceImpl implements ApplicationService {
             application.resetUser();
             application.setReceived(new Date());
             addNote(application, "Hakemus vastaanotettu", false);
-            application.setPersonOidChecked(System.currentTimeMillis());
-            application.setStudentOidChecked(System.currentTimeMillis());
+            application.setLastAutomatedProcessingTime(System.currentTimeMillis());
+            application.submitted();
+            application.flagStudentIdentificationRequired();
             this.applicationDAO.save(application);
             this.userSession.removeApplication(application);
             return application.getOid();
@@ -187,7 +188,7 @@ public class ApplicationServiceImpl implements ApplicationService {
                 .setSecurityOrder(false);
 
         try {
-            application.setPersonOidChecked(System.currentTimeMillis());
+            application.setLastAutomatedProcessingTime(System.currentTimeMillis());
             application.setPersonOid(this.authenticationService.addPerson(personBuilder.get()));
         } catch (GenericFault fail) {
             LOGGER.info(fail.getMessage());
@@ -211,9 +212,10 @@ public class ApplicationServiceImpl implements ApplicationService {
         if (isNotEmpty(personOid) && isEmpty(studentOid)) {
             studentOid = authenticationService.checkStudentOid(application.getPersonOid());
             application.setStudentOid(studentOid);
+            application.studentIdentificationDone();
         }
 
-        application.setStudentOidChecked(System.currentTimeMillis());
+        application.setLastAutomatedProcessingTime(System.currentTimeMillis());
         applicationDAO.save(application);
         return application;
     }
@@ -398,10 +400,10 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public Application getNextWithoutPersonOid() {
-        Application application = applicationDAO.getNextWithoutPersonOid();
+    public Application getNextSubmittedApplication() {
+        Application application = applicationDAO.getNextSubmittedApplication();
         if (application != null) {
-            application.setPersonOidChecked(System.currentTimeMillis());
+            application.setLastAutomatedProcessingTime(System.currentTimeMillis());
             applicationDAO.save(application);
         }
         return application;
@@ -411,7 +413,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     public Application getNextWithoutStudentOid() {
         Application application = applicationDAO.getNextWithoutStudentOid();
         if (application != null) {
-            application.setStudentOidChecked(System.currentTimeMillis());
+            application.setLastAutomatedProcessingTime(System.currentTimeMillis());
             applicationDAO.save(application);
         }
         return application;

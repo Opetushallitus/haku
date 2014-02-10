@@ -21,15 +21,12 @@ import java.util.List;
 public class FormGeneratorImpl implements FormGenerator {
     private final KoodistoService koodistoService;
     private final HakuService hakuService;
-    private final OrganizationService organisaatioService;
 
     @Autowired
     public FormGeneratorImpl(final KoodistoService koodistoService,
-                             final HakuService hakuService,
-                             final OrganizationService organisaatioService) {
+                             final HakuService hakuService) {
         this.koodistoService = koodistoService;
         this.hakuService = hakuService;
-        this.organisaatioService = organisaatioService;
     }
 
     @Override
@@ -39,16 +36,20 @@ public class FormGeneratorImpl implements FormGenerator {
         for (ApplicationSystem as : applicationSystems) {
             Form form = null;
             List<Element> applicationCompleteElements;
+            List<Element> additionalPrintElements;
             if (as.getApplicationSystemType().equals(OppijaConstants.LISA_HAKU)) {
                 form = LisahakuSyksy.generateForm(as, koodistoService);
                 applicationCompleteElements = LisahakuSyksy.generateApplicationCompleteElements();
+                additionalPrintElements = LisahakuSyksy.createAdditionalInformationElements();
             } else {
                 if (as.getHakukausiUri().equals(OppijaConstants.HAKUKAUSI_SYKSY)) {
                     form = YhteishakuSyksy.generateForm(as, koodistoService);
                     applicationCompleteElements = YhteishakuSyksy.createApplicationCompleteElements();
+                    additionalPrintElements = YhteishakuSyksy.createAdditionalInformationElements();
                 } else if (as.getHakukausiUri().equals(OppijaConstants.HAKUKAUSI_KEVAT)) {
                     form = YhteishakuKevat.generateForm(as, koodistoService);
                     applicationCompleteElements = YhteishakuKevat.generateApplicationCompleteElements();
+                    additionalPrintElements = YhteishakuKevat.createAdditionalInformationElements();
                 } else {
                     //skip
                     continue;
@@ -60,6 +61,7 @@ public class FormGeneratorImpl implements FormGenerator {
                     .addHakukausiUri(as.getHakukausiUri())
                     .addHakukausiVuosi(as.getHakukausiVuosi())
                     .addApplicationCompleteElements(applicationCompleteElements)
+                    .addAdditionalInformationElements(additionalPrintElements)
                     .get());
         }
         return asList;

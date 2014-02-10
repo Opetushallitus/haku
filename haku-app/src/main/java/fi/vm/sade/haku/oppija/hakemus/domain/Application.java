@@ -38,7 +38,7 @@ import java.util.*;
 public class Application implements Serializable {
 
     public enum State {
-        ACTIVE, PASSIVE, INCOMPLETE
+        ACTIVE, PASSIVE, INCOMPLETE, SUBMITTED
     }
 
     private static final long serialVersionUID = -7491168801255850954L;
@@ -51,12 +51,16 @@ public class Application implements Serializable {
 
     private String oid;
     private State state;
+    private Boolean studentIdentificationDone;
     private String applicationSystemId;
     private User user;
     private String phaseId;
     private String personOid;
+    @Deprecated
     private Long personOidChecked;
     private String studentOid;
+    private Long lastAutomatedProcessingTime;
+    @Deprecated
     private Long studentOidChecked;
     private Date received;
 
@@ -144,6 +148,11 @@ public class Application implements Serializable {
     }
 
     @JsonIgnore
+    public void submitted() {
+        state = State.SUBMITTED;
+    }
+
+    @JsonIgnore
     public boolean isActive() {
         return state != null && state.equals(State.ACTIVE);
     }
@@ -156,6 +165,11 @@ public class Application implements Serializable {
     @JsonIgnore
     public boolean isIncomplete() {
         return state != null && state.equals(State.INCOMPLETE);
+    }
+
+    @JsonIgnore
+    public boolean isSubmitted() {
+        return state != null && state.equals(State.SUBMITTED);
     }
 
     // final, koska kutsutaan rakentajasta
@@ -236,6 +250,22 @@ public class Application implements Serializable {
         }
     }
 
+    @JsonIgnore
+    public void studentIdentificationDone() {
+        this.studentIdentificationDone = Boolean.TRUE;
+    }
+
+    @JsonIgnore
+    public void flagStudentIdentificationRequired() {
+        this.studentIdentificationDone = Boolean.FALSE;
+    }
+
+    @JsonIgnore
+    public boolean isStudentIdentificationDone() {
+        return null != this.studentIdentificationDone ? this.studentIdentificationDone: true;
+    }
+
+
     public Map<String, Map<String, String>> getAnswers() {
         return answers;
     }
@@ -263,6 +293,10 @@ public class Application implements Serializable {
     public State getState() {
         return this.state;
     }
+
+    public void setStudentIdentificationDone(Boolean studentIdentificationDone) {this.studentIdentificationDone = studentIdentificationDone;}
+
+    public Boolean getStudentIdentificationDone() {return this.studentIdentificationDone;}
 
     public String getPhaseId() {
         return phaseId;
@@ -308,18 +342,30 @@ public class Application implements Serializable {
         this.studentOid = studentOid;
     }
 
+    public Long getLastAutomatedProcessingTime() {
+        return lastAutomatedProcessingTime;
+    }
+
+    public void setLastAutomatedProcessingTime(Long lastAutomatedProcessingTime) {
+        this.lastAutomatedProcessingTime = lastAutomatedProcessingTime;
+    }
+
+    @Deprecated
     public Long getPersonOidChecked() {
         return personOidChecked;
     }
 
+    @Deprecated
     public void setPersonOidChecked(Long personOidChecked) {
         this.personOidChecked = personOidChecked;
     }
 
+    @Deprecated
     public Long getStudentOidChecked() {
         return studentOidChecked;
     }
 
+    @Deprecated
     public void setStudentOidChecked(Long studentOidChecked) {
         this.studentOidChecked = studentOidChecked;
     }
