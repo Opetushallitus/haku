@@ -93,6 +93,7 @@
                         <c:set var="element" value="${cElement}" scope="request"/>
                         <jsp:include page="/WEB-INF/jsp/valmis/${element.type}.jsp"/>
                     </c:forEach>
+
                 </div>
             </section>
         </section>

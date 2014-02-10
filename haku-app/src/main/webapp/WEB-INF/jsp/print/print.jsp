@@ -42,6 +42,12 @@
     <haku:viewChilds element="${element}"/>
 </c:forEach>
 
+<c:forEach var="additionalInformationElement" items="${it.additionalInformationElements}">
+    <hr>
+    <c:set var="element" value="${additionalInformationElement}" scope="request"/>
+    <haku:viewChilds element="${element}"/>
+</c:forEach>
+
 <jsp:include page="../print/discretionaryAttachments.jsp"/>
 <hr class="strong">
 <footer>
