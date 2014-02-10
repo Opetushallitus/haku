@@ -70,6 +70,7 @@ public final class OppijaConstants {
     public static final String EDUCATION_LANGUAGE_SV = "SV";
     public static final String EDUCATION_LANGUAGE_SE = "SE";
     public static final String EDUCATION_LANGUAGE_VE = "VE";
+    public static final String EDUCATION_LANGUAGE_EI_SUORITUSTA = "97";
 
     public static final String PREFERENCE_DISCRETIONARY = "preference%d-discretionary";
 

@@ -17,18 +17,22 @@ import java.util.*;
 public final class UniqValuesValidator extends FieldValidator {
 
     private final List<String> keys;
+    private final List<String> skipValues;
     @Transient
     private final Predicate<Map.Entry<String, String>> notNullKeyValue;
 
     @PersistenceConstructor
     public UniqValuesValidator(@JsonProperty(value = "fieldName") final String fieldName,
                                @JsonProperty(value = "keys") final List<String> keys,
+                               @JsonProperty(value = "skipValues") final List<String> skipValues,
                                @JsonProperty(value = "errorMessage") final I18nText errorMessage) {
         super(fieldName, errorMessage);
         Preconditions.checkNotNull(fieldName);
         Preconditions.checkNotNull(keys);
+        Preconditions.checkNotNull(skipValues);
         Preconditions.checkNotNull(errorMessage);
         this.keys = ImmutableList.copyOf(keys);
+        this.skipValues = ImmutableList.copyOf(skipValues);
         this.notNullKeyValue = new NotNullKeyValues(keys);
     }
 
@@ -42,10 +46,6 @@ public final class UniqValuesValidator extends FieldValidator {
         return new ValidationResult();
     }
 
-    public List<String> getKeys() {
-        return keys;
-    }
-
     private final class NotNullKeyValues implements Predicate<Map.Entry<String, String>> {
         private final List<String> keys = new ArrayList<String>();
 
@@ -55,7 +55,8 @@ public final class UniqValuesValidator extends FieldValidator {
 
         @Override
         public boolean apply(Map.Entry<String, String> entry) {
-            return entry.getValue() != null && keys.contains(entry.getKey());
+            String value = entry.getValue();
+            return value != null && keys.contains(entry.getKey()) && !skipValues.contains(value);
 
         }
     }

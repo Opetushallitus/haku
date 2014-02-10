@@ -1,5 +1,6 @@
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.osaaminen;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
@@ -10,6 +11,7 @@ import fi.vm.sade.haku.oppija.lomake.validation.validators.UniqValuesValidator;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.osaaminen.predicate.IdEndsWith;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.function.ElementToId;
 
 import java.util.ArrayList;
@@ -69,7 +71,9 @@ public class GradesTable {
                 new ElementToId());
         gradeGrid.setValidator(
                 new UniqValuesValidator(
-                        gradeGrid.getId(), uniqLanguagesIds,
+                        gradeGrid.getId(),
+                        uniqLanguagesIds,
+                        ImmutableList.of(OppijaConstants.EDUCATION_LANGUAGE_EI_SUORITUSTA),
                         ElementUtil.createI18NText("yleinen.kielet.samoja", formErrors)));
         return gradeGrid;
     }
@@ -164,7 +168,6 @@ public class GradesTable {
                 ElementUtil.setDefaultOption("FI", subjectLanguages);
             } else {
                 subjectLanguages = new ArrayList<Option>();
-                subjectLanguages.add(new Option(ElementUtil.createI18NAsIs(""), ""));
                 subjectLanguages.addAll(gradeGridHelper.getSubjectLanguages());
             }
             GradeGridOptionQuestion child = new GradeGridOptionQuestion(id + "_OPPIAINE", subjectLanguages, false, true);
