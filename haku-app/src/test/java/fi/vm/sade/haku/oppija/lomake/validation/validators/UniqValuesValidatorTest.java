@@ -9,6 +9,7 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,7 +24,7 @@ public class UniqValuesValidatorTest {
 
     @Before
     public void setUp() throws Exception {
-        uniqValuesValidator = new UniqValuesValidator(ID, ImmutableList.of("AI", "BI"), MSG_KEY);
+        uniqValuesValidator = new UniqValuesValidator(ID, ImmutableList.of("AI", "BI"), Collections.EMPTY_LIST, MSG_KEY);
     }
 
     @Test
@@ -35,7 +36,6 @@ public class UniqValuesValidatorTest {
 
     @Test
     public void testValidateTrue() throws Exception {
-        UniqValuesValidator uniqValuesValidator = new UniqValuesValidator(ID, ImmutableList.of("AI", "BI"), MSG_KEY);
         ValidationResult validate = uniqValuesValidator.validate(new ValidationInput(null, ImmutableMap.of("AI", "1", "BI", "2"),
                 null, null));
         assertFalse(validate.hasErrors());
@@ -43,7 +43,6 @@ public class UniqValuesValidatorTest {
 
     @Test
     public void testValidateFalseNullValues() throws Exception {
-        UniqValuesValidator uniqValuesValidator = new UniqValuesValidator(ID, ImmutableList.of("AI", "BI"), MSG_KEY);
         Map<String, String> values = new HashMap<String, String>(1);
         values.put("AI", "a");
         values.put("BI", "b");

@@ -18,6 +18,7 @@ package fi.vm.sade.haku.virkailija.authentication.impl;
 import com.google.common.collect.Lists;
 import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
 import fi.vm.sade.haku.virkailija.authentication.Person;
+import fi.vm.sade.haku.virkailija.authentication.PersonBuilder;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
@@ -34,8 +35,10 @@ public class AuthenticationServiceMockImpl implements AuthenticationService {
     public static final int RANGE_SIZE = 1000000000;
     private static final String OID_PREFIX = "1.2.246.562.24.";
 
-    public String addPerson(Person person) {
-        return OID_PREFIX + String.format("%011d", Math.round(Math.random() * RANGE_SIZE));
+    public Person addPerson(Person person) {
+        PersonBuilder builder = PersonBuilder.start(person)
+                .setPersonOid(OID_PREFIX + String.format("%011d", Math.round(Math.random() * RANGE_SIZE)));
+        return builder.get();
     }
 
     @Override

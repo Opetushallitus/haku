@@ -20,7 +20,7 @@ import java.util.List;
 
 public interface AuthenticationService {
 
-    String addPerson(Person person);
+    Person addPerson(Person person);
 
     List<String> getOrganisaatioHenkilo();
 

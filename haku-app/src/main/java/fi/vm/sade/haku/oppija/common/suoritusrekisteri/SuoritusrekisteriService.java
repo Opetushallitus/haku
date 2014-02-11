@@ -6,5 +6,5 @@ public interface SuoritusrekisteriService {
 
     List<SuoritusDTO> getSuoritukset(String personOid, String hakuvuosi, String hakukausi);
 
-    List<OpiskelijaDTO> getOpiskelijat(String personOid, String hakuvuosi, String hakukausi);
+    List<OpiskelijaDTO> getOpiskelijat(String personOid);
 }

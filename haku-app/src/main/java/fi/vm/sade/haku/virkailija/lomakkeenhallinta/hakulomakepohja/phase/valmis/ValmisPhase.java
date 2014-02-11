@@ -54,6 +54,9 @@ public class ValmisPhase {
             muutoksenTekeminen.addChild(new Text("muutoksenTekeminenP" + (i + 1), createI18NText(paragraphs[i], formMessages)));
         }
         elements.add(muutoksenTekeminen);
+
+        elements.add(new Text("palaute", createI18NText("form.valmis.palaute", formMessages)));
+
         elements.add(new Link("backLink", createI18NAsIs("https://opintopolku.fi"), createI18NText("form.valmis.takaisin.opintopolkuun.linkki",
                 formMessages)));
 
