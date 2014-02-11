@@ -40,7 +40,7 @@
         <springProfileName>default</springProfileName>
 
         <authentication-api.version>8.0</authentication-api.version>
-        <generic-common.version>8.0</generic-common.version>
+        <generic-common.version>9.0-SNAPSHOT</generic-common.version>
         <koodisto-api.version>8.1</koodisto-api.version>
         <koulutusinformaatio-api.version>8.1</koulutusinformaatio-api.version>
         <log-client.version>8.0</log-client.version>
