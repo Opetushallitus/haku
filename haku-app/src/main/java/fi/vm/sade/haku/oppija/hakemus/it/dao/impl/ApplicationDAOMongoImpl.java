@@ -146,7 +146,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     @Override
     public Application findDraftApplication(final Application application) {
         final DBObject query = toDBObject.apply(application);
-        query.put(FIELD_APPLICATION_OID, new BasicDBObject(EXISTS, false));
+        query.put(FIELD_APPLICATION_OID, null);
         return findOneApplication(query);
     }
 
