@@ -23,6 +23,7 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.QueryBuilder;
+import com.mongodb.ReadPreference;
 import fi.vm.sade.haku.oppija.common.dao.AbstractDAOMongoImpl;
 import fi.vm.sade.haku.oppija.hakemus.converter.ApplicationToDBObjectFunction;
 import fi.vm.sade.haku.oppija.hakemus.converter.DBObjectToApplicationFunction;
@@ -344,7 +345,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         LOG.debug("Ordering: {}, {}", orderBy, orderDir);
         LOG.debug("Query: {}", query);
         final DBCursor dbCursor = getCollection().find(query).sort(new BasicDBObject(orderBy, orderDir))
-                .skip(start).limit(rows);
+                .skip(start).limit(rows).setReadPreference(ReadPreference.secondaryPreferred());
         LOG.debug("Matches: {}", dbCursor.count());
         return new ApplicationSearchResultDTO(dbCursor.count(), Lists.newArrayList(Iterables.transform(dbCursor, dbObjectToSearchResultItem)));
     }
