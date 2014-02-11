@@ -17,6 +17,8 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -26,6 +28,8 @@ import java.util.List;
 public class SuoritusrekisteriServiceImpl implements SuoritusrekisteriService {
 
     final Logger log = LoggerFactory.getLogger(SuoritusrekisteriServiceImpl.class);
+
+    private final static DateFormat ISO8601 = new SimpleDateFormat("yyyyMMdd'T'HHmmss'Z'");;
 
     @Value("${web.url.cas}")
     private String casUrl;
@@ -80,14 +84,14 @@ public class SuoritusrekisteriServiceImpl implements SuoritusrekisteriService {
     }
 
     @Override
-    public List<OpiskelijaDTO> getOpiskelijat(String personOid, String hakuvuosi, String hakukausi) {
+    public List<OpiskelijaDTO> getOpiskelijat(String personOid) {
         CachingRestClient cachingRestClient = getCachingRestClient();
         String response;
+        String date = ISO8601.format(new Date());
         try {
             InputStream is = cachingRestClient.get("/rest/v1/opiskelijat"
                     +"?henkilo="+personOid
-                    +"&vuosi="+hakuvuosi
-                    +"&kausi="+hakukausi);
+                    +"&paiva="+date);
             response = IOUtils.toString(is);
             log.debug("Got response: {}", response);
         } catch (IOException e) {

@@ -110,7 +110,9 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
         Application application = applicationService.getNextWithoutStudentOid();
         LOGGER.debug("Starting processIdentification, application: {} {}",
                 application != null ? application.getOid() : "null", System.currentTimeMillis());
-        applicationService.checkStudentOid(application);
+        if (application != null) {
+            applicationService.checkStudentOid(application);
+        }
     }
 
     private void sendMail(Application application) throws EmailException {

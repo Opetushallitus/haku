@@ -15,6 +15,8 @@
  */
 package fi.vm.sade.haku.virkailija.authentication;
 
+import javax.ws.rs.HEAD;
+
 /**
  * @author Hannu Lyytikainen
  */
@@ -32,10 +34,12 @@ public class Person {
     private String language;
     private String nationality;
     private String contactLanguage;
+    private String personOid;
 
     public Person(String firstNames, String nickName, String lastName, String socialSecurityNumber,
                   boolean noSocialSecurityNumber, String email, String sex, String homeCity,
-                  boolean securityOrder, String language, String nationality, String contactLanguage) {
+                  boolean securityOrder, String language, String nationality, String contactLanguage,
+                  String personOid) {
         this.firstNames = firstNames;
         this.nickName = nickName;
         this.lastName = lastName;
@@ -48,6 +52,7 @@ public class Person {
         this.language = language;
         this.nationality = nationality;
         this.contactLanguage = contactLanguage;
+        this.personOid = personOid;
     }
 
     public String getFirstNames() {
@@ -96,5 +101,28 @@ public class Person {
 
     public String getContactLanguage() {
         return contactLanguage;
+    }
+
+    public String getPersonOid() {
+        return personOid;
+    }
+
+    public String toString() {
+        StringBuilder sb = new StringBuilder()
+                .append("firstNames: ").append(firstNames)
+                .append(" nickName: ").append(nickName)
+                .append(" lastName: ").append(lastName)
+                .append(" socialSecurityNumber: ").append(socialSecurityNumber)
+                .append(" noSocialSecurityNumber: ").append(noSocialSecurityNumber)
+                .append(" email: ").append(email)
+                .append(" sex: ").append(sex)
+                .append(" homeCity: ").append(homeCity)
+                .append(" securityOrder: ").append(securityOrder)
+                .append(" language: ").append(language)
+                .append(" nationality: ").append(nationality)
+                .append(" contactLanguage: ").append(contactLanguage)
+                .append(" personOid: ").append(personOid);
+        return sb.toString();
+
     }
 }
