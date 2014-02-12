@@ -168,7 +168,10 @@ public final class KoulutustaustaPhaseYhteishakuKevat {
         addYesAndIDontOptions(koulutuspaikkaAmmatillisenTutkintoon, FORM_MESSAGES);
         addRequiredValidator(koulutuspaikkaAmmatillisenTutkintoon, FORM_ERRORS);
 
-        Expr kysytaankoKoulutuspaikka = new Not(new Equals(new Variable(paattotodistusvuosiPeruskoulu.getId()), new Value(String.valueOf(hakuvuosi))));
+
+        Expr vuosiSyotetty = new Regexp(paattotodistusvuosiPeruskoulu.getId(), PAATTOTODISTUSVUOSI_PATTERN);
+        Expr kysytaankoKoulutuspaikka = new And(new Not(new Equals(new Variable(paattotodistusvuosiPeruskoulu.getId()), new Value(String.valueOf(hakuvuosi)))), vuosiSyotetty);
+
         RelatedQuestionComplexRule onkoTodistusSaatuKuluneenaVuonna = new RelatedQuestionComplexRule(ElementUtil.randomId(), kysytaankoKoulutuspaikka);
         onkoTodistusSaatuKuluneenaVuonna.addChild(koulutuspaikkaAmmatillisenTutkintoon);
 
