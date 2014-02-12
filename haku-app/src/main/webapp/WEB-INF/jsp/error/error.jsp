@@ -25,14 +25,16 @@
     <meta charset="utf-8"/>
     <title>Opintopolku.fi</title>
     <link rel="stylesheet" href="${contextPath}/resources/css/oppija.css" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=PT+Sans+Narrow:700|PT+Serif:400italic" rel="stylesheet" type="text/css">
-    <haku:icons contextPath="${contextPath}"/>
+    <link href="https://fonts.googleapis.com/css?family=PT+Sans+Narrow:700|PT+Serif:400italic" rel="stylesheet"
+          type="text/css">
+    <haku:icons/>
 </head>
 <body class="front-page" style="margin:10px 50px;">
 <header>
     <div class="logo-bg">
         <div class="container">
-            <a id="home-link" href="/"><img src="${contextPath}/resources/img/Opintopolku_FI_logo.png" alt="Opintopolku.fi"/></a>
+            <a id="home-link" href="/"><img src="${contextPath}/resources/img/Opintopolku_FI_logo.png"
+                                            alt="Opintopolku.fi"/></a>
 
         </div>
     </div>
@@ -41,7 +43,8 @@
 
 <p>Palaa takaisin <a href="/">opintopolku.fi-palveluun</a> ja hae koulutukseen uudelleen.</p>
 
-<p>Mikäli etenit jo hakulomakkeen lähettämiseen saakka, etkä ehtinyt saada tulostetta hakulomakkeestasi, voit pyytää sitä Opintopolun neuvontapalvelusta:</p>
+<p>Mikäli etenit jo hakulomakkeen lähettämiseen saakka, etkä ehtinyt saada tulostetta hakulomakkeestasi, voit pyytää
+    sitä Opintopolun neuvontapalvelusta:</p>
 
 <p>neuvonta@opintopolku.fi</p>
 
@@ -54,6 +57,6 @@ PL 380<br/>
 <footer style="width: 100%;bottom: 0; position: fixed; float: right">${it.timestamp} &nbsp;${it.error_id}</footer>
 <!-- Piwik -->
 <script src="${contextPath}/resources/piwik/piwik.js" type="text/javascript"></script>
- <!-- End Piwik Code -->
+<!-- End Piwik Code -->
 </body>
 </html>
