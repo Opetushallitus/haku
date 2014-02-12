@@ -78,16 +78,19 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         String responseString = null;
         try {
             responseString = getCachingRestClient().getAsString("/resources/henkilo/byHetu/"+person.getSocialSecurityNumber());
+            log.debug("Person found: "+responseString);
         } catch (CachingRestClient.HttpException hte) {
             log.debug("HttpException: "+hte.getStatusCode());
             try {
                 if (hte.getStatusCode() == 404) {
+                    log.debug("Person not found, creating");
                     String personJson = gson.toJson(person, Person.class);
                     CachingRestClient client = getCachingRestClient();
                     HttpResponse response = client.post("/resources/henkilo", MediaType.APPLICATION_JSON, personJson);
                     BasicResponseHandler handler = new BasicResponseHandler();
                     String oid = handler.handleResponse(response);
                     responseString = getCachingRestClient().getAsString("/resources/henkilo/"+oid);
+                    log.debug("Created person: "+responseString);
                 } else {
                     log.warn("Something unexpected happened while fetching person: " + hte.getErrorContent());
                 }
