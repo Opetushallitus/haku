@@ -72,11 +72,6 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     private static final String FIELD_AO_KOULUTUS_ID_3 = "answers.hakutoiveet.preference3-Koulutus-id-aoIdentifier";
     private static final String FIELD_AO_KOULUTUS_ID_4 = "answers.hakutoiveet.preference4-Koulutus-id-aoIdentifier";
     private static final String FIELD_AO_KOULUTUS_ID_5 = "answers.hakutoiveet.preference5-Koulutus-id-aoIdentifier";
-    private static final String FIELD_AO_KOULUTUS_1 = "answers.hakutoiveet.preference1-Koulutus";
-    private static final String FIELD_AO_KOULUTUS_2 = "answers.hakutoiveet.preference2-Koulutus";
-    private static final String FIELD_AO_KOULUTUS_3 = "answers.hakutoiveet.preference3-Koulutus";
-    private static final String FIELD_AO_KOULUTUS_4 = "answers.hakutoiveet.preference4-Koulutus";
-    private static final String FIELD_AO_KOULUTUS_5 = "answers.hakutoiveet.preference5-Koulutus";
     private static final String FIELD_LOP_1 = "answers.hakutoiveet.preference1-Opetuspiste-id";
     private static final String FIELD_LOP_2 = "answers.hakutoiveet.preference2-Opetuspiste-id";
     private static final String FIELD_LOP_3 = "answers.hakutoiveet.preference3-Opetuspiste-id";
@@ -282,23 +277,13 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     }
 
     private QueryBuilder queryByPreference(String preference) {
-        QueryBuilder aoCode = new QueryBuilder().start().or(
+        return new QueryBuilder().start().or(
                 QueryBuilder.start(FIELD_AO_KOULUTUS_ID_1).is(preference).get(),
                 QueryBuilder.start(FIELD_AO_KOULUTUS_ID_2).is(preference).get(),
                 QueryBuilder.start(FIELD_AO_KOULUTUS_ID_3).is(preference).get(),
                 QueryBuilder.start(FIELD_AO_KOULUTUS_ID_4).is(preference).get(),
                 QueryBuilder.start(FIELD_AO_KOULUTUS_ID_5).is(preference).get()
         );
-        Pattern preferencePattern = Pattern.compile(preference, Pattern.CASE_INSENSITIVE);
-        QueryBuilder aoName = new QueryBuilder().start().or(
-                QueryBuilder.start(FIELD_AO_KOULUTUS_1).regex(preferencePattern).get(),
-                QueryBuilder.start(FIELD_AO_KOULUTUS_2).regex(preferencePattern).get(),
-                QueryBuilder.start(FIELD_AO_KOULUTUS_3).regex(preferencePattern).get(),
-                QueryBuilder.start(FIELD_AO_KOULUTUS_4).regex(preferencePattern).get(),
-                QueryBuilder.start(FIELD_AO_KOULUTUS_5).regex(preferencePattern).get()
-        );
-
-        return new QueryBuilder().start().or(aoCode.get(), aoName.get());
     }
 
     private QueryBuilder queryByLearningOpportunityProviderOid(String lopOid) {
