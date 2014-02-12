@@ -50,7 +50,7 @@ public class OfficerIT extends DummyModelBaseItTest {
         WebElement editLink = editLinks.get(1);
         editLink.click();
         clickByNameAndValue(KYSYMYS_POHJAKOULUTUS, TUTKINTO_YLIOPPILAS);
-        driver.findElement(new By.ByClassName("save")).click();
+        seleniumContainer.getDriver().findElement(new By.ByClassName("save")).click();
         checkApplicationState("Puutteellinen");
     }
 
@@ -80,8 +80,8 @@ public class OfficerIT extends DummyModelBaseItTest {
         WebElement editLink = editLinks.get(4);
         editLink.click();
         findByIdAndClick("lupaMarkkinointi");
-        driver.findElement(new By.ByClassName("save")).click();
-        selenium.typeKeys("note-text", "Uusi kommentti");
+        seleniumContainer.getDriver().findElement(new By.ByClassName("save")).click();
+        type("note-text", "Uusi kommentti");
         findByIdAndClick("note-create");
         passivate();
 
@@ -103,10 +103,10 @@ public class OfficerIT extends DummyModelBaseItTest {
 
     @Test
     public void testOrganization() throws Exception {
-        driver.findElement(new By.ByClassName("label")).click();
-        selenium.typeKeys("searchString", "Espoo");
-        driver.findElement(new By.ById("search-organizations")).click();
-        driver.findElement(new By.ById("1.2.246.562.10.10108401950"));
+        seleniumContainer.getDriver().findElement(new By.ByClassName("label")).click();
+        type("searchString", "Espoo");
+        findByIdAndClick("search-organizations");
+        findById("1.2.246.562.10.10108401950");
         findByIdAndClick("search-organizations");
         findById("1.2.246.562.10.10108401950");
     }
@@ -149,15 +149,15 @@ public class OfficerIT extends DummyModelBaseItTest {
     @Test
     public void testCreateNewApplicationAndSetPersonOid() {
         findByIdAndClick("create-application");
-        Select asSelect = new Select(driver.findElement(By.id("asSelect")));
+        Select asSelect = new Select(findElementById("asSelect"));
         asSelect.selectByIndex(0);
         findByIdAndClick("submit_confirm");
         String oid = getTrimmedTextById("_infocell_oid");
         findByIdAndClick("back");
         activate(oid);
-        driver.findElement(new By.ByLinkText(oid)).click();
-        driver.findElement(new By.ByLinkText("Lisää oppijanumero")).click();
-        WebElement element = driver.findElement(By.id("addStudentOidForm"));
+        clickLinkByText(oid);
+        clickLinkByText("Lisää oppijanumero");
+        WebElement element = seleniumContainer.getDriver().findElement(By.id("addStudentOidForm"));
         element.submit();
         String personOid = getTrimmedTextById("_infocell_henkilonumero");
         String studentOid = getTrimmedTextById("_infocell_oppijanumero");
@@ -172,6 +172,7 @@ public class OfficerIT extends DummyModelBaseItTest {
         applicationLink.click();
         WebElement printLink = findByClassName("print").get(0);
 
+        WebDriver driver = seleniumContainer.getDriver();
         final int windowsBefore = driver.getWindowHandles().size();
         printLink.click();
         ExpectedCondition<Boolean> windowCondition = new ExpectedCondition<Boolean>() {
@@ -186,7 +187,7 @@ public class OfficerIT extends DummyModelBaseItTest {
 
         driver.switchTo().window(newTab.get(1));
         assertTrue(driver.getCurrentUrl().contains("print"));
-        assertTrue(selenium.isTextPresent("Korhonen"));
+        assertTrue(isTextPresent("Korhonen"));
         driver.close();
         driver.switchTo().window(newTab.get(0));
     }
@@ -194,7 +195,7 @@ public class OfficerIT extends DummyModelBaseItTest {
     private List<WebElement> SearchByTerm(final String term) {
         enterSearchTerm(term);
         clickSearch();
-        selenium.waitForCondition("selenium.browserbot.getCurrentWindow().document.getElementsByClassName('application-link')", "1000");
+        seleniumContainer.getSelenium().waitForCondition("selenium.browserbot.getCurrentWindow().document.getElementsByClassName('application-link')", "1000");
         return findByClassName("application-link");
     }
 
@@ -202,17 +203,18 @@ public class OfficerIT extends DummyModelBaseItTest {
         enterSearchTerm(term);
         selectState(state);
         clickSearch();
-        selenium.waitForCondition("selenium.browserbot.getCurrentWindow().document.getElementsByClassName('application-link')", "1000");
+        seleniumContainer.getSelenium().waitForCondition("selenium.browserbot.getCurrentWindow().document.getElementsByClassName('application-link')", "1000");
         return findByClassName("application-link");
     }
 
     private void selectState(Application.State state) {
-        Select stateSelect = new Select(driver.findElement(By.id("application-state")));
+        Select stateSelect = new Select(seleniumContainer.getDriver().findElement(By.id("application-state")));
         stateSelect.selectByValue(state == null ? "" : state.toString());
     }
 
     private WebElement checkApplicationState(String applicationState) {
-        return driver.findElement(By.xpath("//*[contains(.,'" + applicationState + "')]"));
+
+        return seleniumContainer.getDriver().findElement(By.xpath("//*[contains(.,'" + applicationState + "')]"));
     }
 
     private void enterSearchTerm(final String term) {
@@ -221,7 +223,7 @@ public class OfficerIT extends DummyModelBaseItTest {
 
     private void clearSearch() {
         findByIdAndClick("reset-search");
-        WebElement element = driver.findElement(new By.ById("hakukausiVuosi"));
+        WebElement element = findElementById("hakukausiVuosi");
         element.clear();
         setValue("hakukausi", "");
         setValue("application-state", "");
@@ -257,13 +259,13 @@ public class OfficerIT extends DummyModelBaseItTest {
 
     private void passivate() {
         findByIdAndClick("passivateApplication");
-        selenium.typeKeys("passivation-reason", "reason");
+        type("passivation-reason", "reason");
         findByIdAndClick("submit_confirm");
     }
 
     private List<WebElement> searchByPreference(final String preference) {
         clearSearch();
-        selenium.typeKeys("application-preference", preference);
+        type("application-preference", preference);
         clickSearch();
         return findByClassName("application-link");
     }
@@ -286,5 +288,11 @@ public class OfficerIT extends DummyModelBaseItTest {
     private void shouldNotFindByTerm(final String term) {
         clearSearch();
         assertTrue("Application not", SearchByTerm(term).isEmpty());
+    }
+
+    protected void elementsPresent(String... locations) {
+        for (String location : locations) {
+            assertTrue("Could not find element " + location, seleniumContainer.getSelenium().isElementPresent(location));
+        }
     }
 }

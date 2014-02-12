@@ -19,12 +19,6 @@ package fi.vm.sade.haku.oppija.ui.selenium;
 import com.google.common.collect.ImmutableMap;
 import fi.vm.sade.haku.oppija.common.selenium.DummyModelBaseItTest;
 import org.junit.Test;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-
-import java.util.List;
-
-import static org.junit.Assert.assertTrue;
 
 /**
  * @author Hannu Lyytikainen
@@ -34,7 +28,7 @@ public class WorkExperienceThemeIT extends DummyModelBaseItTest {
     @Test
     public void testWorkExperienceShown() {
         gotoHakutoiveet("010113-668B");
-        driver.findElement(By.xpath("//option[@data-id='1.2.246.562.14.79893512065']")).click();
+        click("//option[@data-id='1.2.246.562.14.79893512065']");
         fillOut(defaultValues.preference1);
 
         nextPhase();
@@ -51,15 +45,14 @@ public class WorkExperienceThemeIT extends DummyModelBaseItTest {
     @Test
     public void testWorkExperienceNotShown() {
         gotoHakutoiveet("010113A668B");
-        driver.findElement(By.xpath("//option[@data-id='1.2.246.562.14.79893512065']")).click();
+        click("//option[@data-id='1.2.246.562.14.79893512065']");
         clickByNameAndValue("preference1-discretionary", "false");
 
         nextPhase();
         select();
         nextPhase();
 
-        List<WebElement> tyokokemuskuukaudet = driver.findElements(new By.ById("TYOKOKEMUSKUUKAUDET"));
-        assertTrue("tyokokemuskuukaudet should not be present", tyokokemuskuukaudet.isEmpty());
+        elementsPresent("TYOKOKEMUSKUUKAUDET");
     }
 
     private void gotoHakutoiveet(final String hetu) {
@@ -72,7 +65,7 @@ public class WorkExperienceThemeIT extends DummyModelBaseItTest {
         nextPhase();
 
         setValue("preference1-Opetuspiste", "Esp");
-        driver.findElement(By.linkText("FAKTIA, Espoo op")).click();
-    }
 
+        clickLinkByText("FAKTIA, Espoo op");
+    }
 }

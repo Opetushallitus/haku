@@ -44,15 +44,14 @@ public class AdditionalGradeQuestionIT extends DummyModelBaseItTest {
         // select a LOI
 
         setValue("preference1-Opetuspiste", "Esp");
-        driver.findElement(By.linkText(DefaultValues.OPETUSPISTE)).click();
-        driver.findElement(By.xpath("//option[@data-id='1.2.246.562.14.79893512065']")).click();
+        clickLinkByText(DefaultValues.OPETUSPISTE);
+        click("//option[@data-id='1.2.246.562.14.79893512065']");
         fillOut(defaultValues.preference1);
 
         nextPhase();
-        driver.findElement(By.xpath("//table[@id='gradegrid-table']"));
-        assertTrue(driver.findElements(By.xpath("//table[@id='gradegrid-table']/tbody/tr")).size() > 10);
+        elementsPresent("//table[@id='gradegrid-table']");
+        assertTrue(seleniumContainer.getDriver().findElements(By.xpath("//table[@id='gradegrid-table']/tbody/tr")).size() > 10);
 
 
     }
-
 }

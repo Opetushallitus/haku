@@ -34,8 +34,9 @@ public class GradeGridIT extends DummyModelBaseItTest {
         fillOut(defaultValues.koulutustausta_lk);
         nextPhase();
         setValue("preference1-Opetuspiste", "Esp");
-        driver.findElement(By.linkText(DefaultValues.OPETUSPISTE)).click();
-        driver.findElement(By.xpath("//option[@data-id='1.2.246.562.14.79893512065']")).click();
+
+        clickLinkByText(DefaultValues.OPETUSPISTE);
+        seleniumContainer.getDriver().findElement(By.xpath("//option[@data-id='1.2.246.562.14.79893512065']")).click();
 
         fillOut(defaultValues.preference1);
 

@@ -22,7 +22,6 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.koulut
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedCondition;
@@ -32,12 +31,14 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.util.ArrayList;
 
 import static fi.vm.sade.haku.oppija.ui.selenium.DefaultValues.*;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class LomakeIT extends DummyModelBaseItTest {
 
     @Test
     public void submitApplication() throws Exception {
+        WebDriver driver = seleniumContainer.getDriver();
 
         navigateToFirstPhase();
         setValue("Sukunimi", "Ankka ");
@@ -48,16 +49,11 @@ public class LomakeIT extends DummyModelBaseItTest {
         setValue("matkapuhelinnumero1", "0501000100");
         setValue("aidinkieli", "FI");
 
-        try {
-            driver.findElement(By.id("puhelinnumero2"));
-            fail();
-        } catch (NoSuchElementException nsee) {
-            // As expected
-        }
+        elementsNotPresentByName("puhelinnumero2");
 
-        driver.findElement(By.id("addPuhelinnumero2Rule-link")).click();
-        driver.findElement(By.id("matkapuhelinnumero2"));
-        selenium.typeKeys("matkapuhelinnumero2", "09-123 456");
+        findByIdAndClick("addPuhelinnumero2Rule-link");
+        findById("matkapuhelinnumero2");
+        type("matkapuhelinnumero2", "09-123 456");
 
         nextPhase();
 
@@ -67,39 +63,40 @@ public class LomakeIT extends DummyModelBaseItTest {
         setValue("kotikunta", "jalasjarvi");
 
         findById("Postinumero");
-        selenium.typeKeys("lahiosoite", "Katu 1");
-        selenium.typeKeys("Postinumero", "00100");
+        type("lahiosoite", "Katu 1");
+        type("Postinumero", "00100");
 
         nextPhase();
 
         testHAK123AandHAK124();
         clickByNameAndValue(KYSYMYS_POHJAKOULUTUS, TUTKINTO_YLIOPPILAS);
         findById("lukioPaattotodistusVuosi");
-        selenium.typeKeys("lukioPaattotodistusVuosi", "2012");
+        type("lukioPaattotodistusVuosi", "2012");
         clickByNameAndValue("ammatillinenTutkintoSuoritettu", "false");
         setValue("lukion_kieli", "FI");
         nextPhase();
 
         setValue("preference1-Opetuspiste", "sturen");
-        driver.findElement(By.linkText("Stadin ammattiopisto, Sturenkadun toimipaikka")).click();
+        clickLinkByText("Stadin ammattiopisto, Sturenkadun toimipaikka");
         driver.findElement(By.xpath("//option[@data-id='1.2.246.562.5.20176855623']")).click();
-        driver.findElement(new By.ByClassName("left")).click();
+        prevPhase();
 
         clickByNameAndValue(KYSYMYS_POHJAKOULUTUS, TUTKINTO_PERUSKOULU);
 
         findById("PK_PAATTOTODISTUSVUOSI");
-        selenium.typeKeys("PK_PAATTOTODISTUSVUOSI", "2013");
+        type("PK_PAATTOTODISTUSVUOSI", "2013");
 
         findByIdAndClick("LISAKOULUTUS_KYMPPI", "LISAKOULUTUS_VAMMAISTEN", "LISAKOULUTUS_TALOUS", "LISAKOULUTUS_AMMATTISTARTTI");
         clickByNameAndValue("KOULUTUSPAIKKA_AMMATILLISEEN_TUTKINTOON", "false");
         setValue("perusopetuksen_kieli", "FI");
         nextPhase();
 
-        assertTrue(selenium.isTextPresent("ristiriita"));
+        assertTrue("Warning text 'ristiriita' not found", !findByClassName("warning").isEmpty());
 
         //Skip toimipiste
         setValue("preference1-Opetuspiste", "Esp");
-        driver.findElement(By.linkText("FAKTIA, Espoo op")).click();
+        clickLinkByText("FAKTIA, Espoo op");
+
         driver.findElement(By.xpath("//option[@data-id='1.2.246.562.14.79893512065']")).click();
 
         fillOut(defaultValues.getPreference1(ImmutableMap.of("preference1-discretionary", "true")));
@@ -122,7 +119,7 @@ public class LomakeIT extends DummyModelBaseItTest {
 
         // Ei mene läpi, työkokemus syöttämättä
 
-        selenium.typeKeys("TYOKOKEMUSKUUKAUDET", "1001");
+        type("TYOKOKEMUSKUUKAUDET", "1001");
         nextPhase();
         // Ei mene läpi, työkokemus > 1000 kuukautta
         nextPhase();
@@ -164,7 +161,7 @@ public class LomakeIT extends DummyModelBaseItTest {
         ArrayList<String> newTab = new ArrayList<String>(driver.getWindowHandles());
         driver.switchTo().window(newTab.get(1));
         assertTrue(driver.getCurrentUrl().contains("tulostus"));
-        assertTrue(selenium.isTextPresent("Ankka"));
+        assertTrue(isTextPresent("Ankka"));
         driver.close();
         driver.switchTo().window(newTab.get(0));
 
@@ -180,5 +177,11 @@ public class LomakeIT extends DummyModelBaseItTest {
         findById(KoulutustaustaPhaseYhteishakuSyksy.TUTKINTO_KESKEYTNYT_NOTIFICATION_ID);
         clickByNameAndValue(KYSYMYS_POHJAKOULUTUS, TUTKINTO_ULKOMAINEN_TUTKINTO);
         findById(KoulutustaustaPhaseYhteishakuSyksy.TUTKINTO_ULKOMAILLA_NOTIFICATION_ID);
+    }
+
+    protected void elementsPresent(String... locations) {
+        for (String location : locations) {
+            assertTrue("Could not find element " + location, seleniumContainer.getSelenium().isElementPresent(location));
+        }
     }
 }

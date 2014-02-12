@@ -16,7 +16,6 @@
 
 package fi.vm.sade.haku.oppija.ui.selenium;
 
-import com.thoughtworks.selenium.Selenium;
 import fi.vm.sade.haku.oppija.common.selenium.AbstractSeleniumBase;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
@@ -73,11 +72,10 @@ public class HakutoiveetIT extends AbstractSeleniumBase {
         final WebDriver driver = seleniumContainer.getDriver();
         seleniumContainer.navigate(getHakutoiveetPath());
         driver.findElement(By.id("preference1-Opetuspiste"));
-        Selenium s = seleniumContainer.getSelenium();
-        s.typeKeys("preference1-Opetuspiste", "Esp");
+        type("preference1-Opetuspiste", "Esp");
         driver.findElement(By.linkText("FAKTIA, Espoo op")).click();
         driver.findElement(By.xpath("//option[@value='Kaivosalan perustutkinto, pk']")).click();
-        s.isTextPresent("Kaivosalan perustutkinto, Kaivosalan koulutusohjelma");
+        isTextPresent("Kaivosalan perustutkinto, Kaivosalan koulutusohjelma");
 
         clickByNameAndValue("preference1_urheilijan_ammatillisen_koulutuksen_lisakysymys", "true");
         clickByNameAndValue("preference1_sora_terveys", "false");
@@ -90,11 +88,10 @@ public class HakutoiveetIT extends AbstractSeleniumBase {
     public void testEducationPreferenceNoAdditionalQuestion() throws InterruptedException {
         final WebDriver driver = seleniumContainer.getDriver();
         seleniumContainer.navigate(getHakutoiveetPath());
-        Selenium s = seleniumContainer.getSelenium();
-        s.typeKeys("preference1-Opetuspiste", "Eso");
+        type("preference1-Opetuspiste", "Eso");
         driver.findElement(By.linkText("FAKTIA, Espoo op")).click();
         driver.findElement(By.xpath("//option[@value='Kaivosalan perustutkinto, pk']")).click();
-        s.isTextPresent("Kaivosalan perustutkinto, Kaivosalan koulutusohjelma");
+        isTextPresent("Kaivosalan perustutkinto, Kaivosalan koulutusohjelma");
         driver.findElement(By.xpath("//button[@name='nav-next']")).click();
     }
 
