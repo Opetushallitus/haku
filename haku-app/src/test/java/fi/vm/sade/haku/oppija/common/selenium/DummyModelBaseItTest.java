@@ -117,7 +117,7 @@ public abstract class DummyModelBaseItTest extends AbstractSeleniumBase {
         }
     }
 
-    protected void elementsNotPresentBy(String... locations) {
+    protected void elementsNotPresent(String... locations) {
         for (String location : locations) {
             assertFalse("Found element " + location, seleniumContainer.getSelenium().isElementPresent(location));
         }

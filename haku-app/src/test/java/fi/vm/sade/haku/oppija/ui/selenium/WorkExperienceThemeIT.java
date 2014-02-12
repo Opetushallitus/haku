@@ -52,7 +52,7 @@ public class WorkExperienceThemeIT extends DummyModelBaseItTest {
         select();
         nextPhase();
 
-        elementsPresent("TYOKOKEMUSKUUKAUDET");
+        elementsNotPresent("TYOKOKEMUSKUUKAUDET");
     }
 
     private void gotoHakutoiveet(final String hetu) {
