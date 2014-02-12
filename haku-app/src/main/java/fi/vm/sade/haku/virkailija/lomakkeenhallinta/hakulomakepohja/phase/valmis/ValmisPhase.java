@@ -1,5 +1,6 @@
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.valmis;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
@@ -9,13 +10,16 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.TitledGroup;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.Answer;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.DiscretionaryAttachments;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.Print;
-import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionRule;
-import org.apache.commons.lang3.StringUtils;
+import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionComplexRule;
+import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.Expr;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ExprUtil;
 
 import java.util.List;
 import java.util.Set;
 
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.*;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ExprUtil.atLeastOneVariableEqualsToValue;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.*;
 
 public class ValmisPhase {
@@ -28,7 +32,7 @@ public class ValmisPhase {
     public static List<Element> create(final String formMessages, final String... paragraphs) {
         List<Element> elements = Lists.newArrayList();
 
-        RelatedQuestionRule emailRule = new RelatedQuestionRule("emailRule", "Sähköposti", REGEX_NON_EMPTY, false);
+        RelatedQuestionComplexRule emailRule = ElementUtil.createRegexpRule("Sähköposti", REGEX_NON_EMPTY);
         Text emailP1 = new Text("emailP1", createI18NText("form.valmis.sinulleonlahetettyvahvistussahkopostiisi",
                 formMessages));
         emailP1.addChild(new Answer("Sähköposti"));
@@ -64,13 +68,14 @@ public class ValmisPhase {
     }
 
     public static List<Element> createAdditionalInformationElements(String formMessages) {
-        RelatedQuestionRule athleteRule = new RelatedQuestionRule("athleteRule",
-                Lists.newArrayList("preference1_urheilijan_ammatillisen_koulutuksen_lisakysymys", "preference1_urheilijalinjan_lisakysymys",
+
+        RelatedQuestionComplexRule athleteRule = new RelatedQuestionComplexRule("athleteRule",
+                atLeastOneVariableEqualsToValue(ElementUtil.KYLLA,
+                        "preference1_urheilijan_ammatillisen_koulutuksen_lisakysymys", "preference1_urheilijalinjan_lisakysymys",
                         "preference2_urheilijan_ammatillisen_koulutuksen_lisakysymys", "preference2_urheilijalinjan_lisakysymys",
                         "preference3_urheilijan_ammatillisen_koulutuksen_lisakysymys", "preference3_urheilijalinjan_lisakysymys",
                         "preference4_urheilijan_ammatillisen_koulutuksen_lisakysymys", "preference4_urheilijalinjan_lisakysymys",
-                        "preference5_urheilijan_ammatillisen_koulutuksen_lisakysymys", "preference5_urheilijalinjan_lisakysymys"),
-                "^true", false);
+                        "preference5_urheilijan_ammatillisen_koulutuksen_lisakysymys", "preference5_urheilijalinjan_lisakysymys"));
         TitledGroup athleteGroup = new TitledGroup("atheleteGroup", createI18NText("form.valmis.haeturheilijana.header", formMessages));
 
         athleteGroup.addChild(new Text("athleteP1", createI18NText("form.valmis.haeturheilijana", formMessages)));
@@ -81,13 +86,27 @@ public class ValmisPhase {
         athleteRule.addChild(athleteGroup);
 
         //Hait musiikki-, tanssi- tai liikunta-alan koulutukseen.
-        Element musiikkiTanssiLiikuntaRule = new RelatedQuestionRule("musiikkiTanssiLiikuntaRule",
-                Lists.newArrayList(String.format(EDUCATION_CODE_KEY, 1),
-                        String.format(EDUCATION_CODE_KEY, 2),
-                        String.format(EDUCATION_CODE_KEY, 3),
-                        String.format(EDUCATION_CODE_KEY, 4),
-                        String.format(EDUCATION_CODE_KEY, 5)),
-                StringUtils.join(MUSIIKKI_TANSSI_LIIKUNTA_EDUCATION_CODES, "|"), false);
+        Expr isMusiikki = atLeastOneVariableEqualsToValue(EDUCATION_CODE_MUSIIKKI,
+                String.format(EDUCATION_CODE_KEY, 1),
+                String.format(EDUCATION_CODE_KEY, 2),
+                String.format(EDUCATION_CODE_KEY, 3),
+                String.format(EDUCATION_CODE_KEY, 4),
+                String.format(EDUCATION_CODE_KEY, 5));
+        Expr isTanssi = atLeastOneVariableEqualsToValue(EDUCATION_CODE_TANSSI,
+                String.format(EDUCATION_CODE_KEY, 1),
+                String.format(EDUCATION_CODE_KEY, 2),
+                String.format(EDUCATION_CODE_KEY, 3),
+                String.format(EDUCATION_CODE_KEY, 4),
+                String.format(EDUCATION_CODE_KEY, 5));
+        Expr isLiiKunta = atLeastOneVariableEqualsToValue(EDUCATION_CODE_LIIKUNTA,
+                String.format(EDUCATION_CODE_KEY, 1),
+                String.format(EDUCATION_CODE_KEY, 2),
+                String.format(EDUCATION_CODE_KEY, 3),
+                String.format(EDUCATION_CODE_KEY, 4),
+                String.format(EDUCATION_CODE_KEY, 5));
+
+        Element musiikkiTanssiLiikuntaRule = new RelatedQuestionComplexRule("musiikkiTanssiLiikuntaRule",
+                ExprUtil.reduceToOr(ImmutableList.of(isMusiikki, isTanssi, isLiiKunta)));
         TitledGroup musiikkiTanssiLiikuntaGroup = new TitledGroup("mtlGroup", createI18NText("form.valmis.musiikkitanssiliikunta.header", formMessages));
         musiikkiTanssiLiikuntaGroup.addChild(new Text(randomId(), createI18NText("form.valmis.musiikkitanssiliikunta", formMessages)));
         musiikkiTanssiLiikuntaRule.addChild(musiikkiTanssiLiikuntaGroup);

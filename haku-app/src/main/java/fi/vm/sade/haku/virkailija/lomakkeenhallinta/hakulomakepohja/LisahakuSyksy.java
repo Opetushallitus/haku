@@ -29,8 +29,6 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
 
 import java.util.List;
 
-import static com.google.common.collect.Lists.newArrayList;
-
 public class LisahakuSyksy {
 
     private static final String FORM_MESSAGES = "form_messages_lisahaku_syksy";
@@ -56,6 +54,6 @@ public class LisahakuSyksy {
     }
 
     public static List<Element> createAdditionalInformationElements() {
-        return newArrayList(ValmisPhase.createAdditionalInformationElements(FORM_MESSAGES));
+        return ValmisPhase.createAdditionalInformationElements(FORM_MESSAGES);
     }
 }

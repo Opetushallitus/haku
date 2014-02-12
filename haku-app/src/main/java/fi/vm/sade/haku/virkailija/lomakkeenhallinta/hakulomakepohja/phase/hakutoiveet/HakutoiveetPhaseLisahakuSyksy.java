@@ -16,7 +16,6 @@
 
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.hakutoiveet;
 
-import com.google.common.collect.ImmutableList;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.HiddenValue;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Phase;
@@ -25,11 +24,12 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.Popup;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.SinglePreference;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.DropdownSelect;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Radio;
-import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionRule;
+import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionComplexRule;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.*;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.*;
 
 public class HakutoiveetPhaseLisahakuSyksy {
     public static final String DISCRETIONARY_EDUCATION_DEGREE = "32";
@@ -83,34 +83,30 @@ public class HakutoiveetPhaseLisahakuSyksy {
                 FORM_MESSAGES), "sosiaalisetsyyt");
         addRequiredValidator(discretionaryFollowUp, FORM_ERRORS);
 
-        RelatedQuestionRule discretionaryFollowUpRule = new RelatedQuestionRule(index + "-discretionary-follow-up-rule",
-                ImmutableList.of(discretionary.getId()), Boolean.TRUE.toString().toLowerCase(), false);
+        RelatedQuestionComplexRule discretionaryFollowUpRule =
+                ElementUtil.createRuleIfVariableIsTrue(index + "-discretionary-follow-up-rule", discretionary.getId());
         discretionaryFollowUpRule.addChild(discretionaryFollowUp);
 
         discretionary.addChild(discretionaryFollowUpRule);
 
-        RelatedQuestionRule discretionaryRule = new RelatedQuestionRule(index + "-discretionary-rule",
-                ImmutableList.of(index + "-Koulutus-educationDegree"), DISCRETIONARY_EDUCATION_DEGREE, false);
-        RelatedQuestionRule discretionaryRule2 = new RelatedQuestionRule(index + "-discretionary-rule2",
-                ImmutableList.of("POHJAKOULUTUS"), "(" + OppijaConstants.PERUSKOULU + "|" + OppijaConstants.YLIOPPILAS + "|" +
-                OppijaConstants.OSITTAIN_YKSILOLLISTETTY + "|" + OppijaConstants.ERITYISOPETUKSEN_YKSILOLLISTETTY +
-                "|" + OppijaConstants.YKSILOLLISTETTY + ")", false);
+        RelatedQuestionComplexRule discretionaryRule = createVarEqualsToValueRule(index + "-Koulutus-educationDegree", DISCRETIONARY_EDUCATION_DEGREE);
+
+        RelatedQuestionComplexRule discretionaryRule2 = createVarEqualsToValueRule("POHJAKOULUTUS",
+                PERUSKOULU, YLIOPPILAS, OSITTAIN_YKSILOLLISTETTY, ERITYISOPETUKSEN_YKSILOLLISTETTY, YKSILOLLISTETTY);
         discretionaryRule.addChild(discretionary);
         discretionaryRule2.addChild(discretionaryRule);
 
-        RelatedQuestionRule discretionaryRule3 = new RelatedQuestionRule(index + "-discretionary-rule3",
-                ImmutableList.of("POHJAKOULUTUS"), "(" + OppijaConstants.KESKEYTYNYT + "|" + OppijaConstants.ULKOMAINEN_TUTKINTO + ")", false);
-        discretionaryRule3.addChild(new HiddenValue(discretionary.getId(), ElementUtil.KYLLA));
+        RelatedQuestionComplexRule pohjakoulutusKeskeytynytTaiUlkomainen = createVarEqualsToValueRule("POHJAKOULUTUS", KESKEYTYNYT, ULKOMAINEN_TUTKINTO);
+        pohjakoulutusKeskeytynytTaiUlkomainen.addChild(new HiddenValue(discretionary.getId(), ElementUtil.KYLLA));
 
-        return new Element[]{discretionaryRule2, discretionaryRule3};
+        return new Element[]{discretionaryRule2, pohjakoulutusKeskeytynytTaiUlkomainen};
 
     }
 
     public static Element createSoraQuestions(final String index) {
         // sora-kysymykset
 
-        RelatedQuestionRule hasSora = new RelatedQuestionRule(index + "_sora_rule",
-                ImmutableList.of(index + "-Koulutus-id-sora"), ElementUtil.KYLLA, false);
+        RelatedQuestionComplexRule hasSora = ElementUtil.createRuleIfVariableIsTrue(index + "_sora_rule", index + "-Koulutus-id-sora");
 
         Radio sora1 = new Radio(index + "_sora_terveys", createI18NText("form.sora.terveys", FORM_MESSAGES));
         sora1.addOption(createI18NText("form.yleinen.ei", FORM_MESSAGES), ElementUtil.EI);
@@ -135,8 +131,9 @@ public class HakutoiveetPhaseLisahakuSyksy {
                 createI18NText("form.hakutoiveet.urheilijan.ammatillisen.koulutuksen.lisakysymys", FORM_MESSAGES));
         addDefaultTrueFalseOptions(radio, FORM_MESSAGES);
         addRequiredValidator(radio, FORM_ERRORS);
-        RelatedQuestionRule hasQuestion = new RelatedQuestionRule(radio.getId() + "_related_question_rule",
-                ImmutableList.of(index + "-Koulutus-id-athlete"), ElementUtil.KYLLA, false);
+
+        RelatedQuestionComplexRule hasQuestion =
+                ElementUtil.createRuleIfVariableIsTrue(radio.getId() + "_related_question_rule", index + "-Koulutus-id-athlete");
 
         hasQuestion.addChild(radio);
         return hasQuestion;

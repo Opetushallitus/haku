@@ -23,7 +23,6 @@ package fi.vm.sade.haku.virkailija.lomakkeenhallinta.util;
 public final class OppijaConstants {
 
 
-
     private OppijaConstants() {
         // Utility class, no need for instances
     }
@@ -64,10 +63,10 @@ public final class OppijaConstants {
 
     public static final String PREFERENCE_NAME = "preference%d-Koulutus";
     public static final String PREFERENCE_ORGANIZATION = "preference%d-Opetuspiste";
-    public static final String EDUCATION_CODE_KEY =  PREFERENCE_ID + "-educationcode";
-    public static final String EDUCATION_VOCATIONAL =  PREFERENCE_ID + "-vocational";
-    public static final String EDUCATION_LANGUAGE =  PREFERENCE_ID + "-lang";
-    public static final String EDUCATION_LANGUAGE_FI =  "FI";
+    public static final String EDUCATION_CODE_KEY = PREFERENCE_ID + "-educationcode";
+    public static final String EDUCATION_VOCATIONAL = PREFERENCE_ID + "-vocational";
+    public static final String EDUCATION_LANGUAGE = PREFERENCE_ID + "-lang";
+    public static final String EDUCATION_LANGUAGE_FI = "FI";
     public static final String EDUCATION_LANGUAGE_SV = "SV";
     public static final String EDUCATION_LANGUAGE_SE = "SE";
     public static final String EDUCATION_LANGUAGE_VE = "VE";
@@ -76,6 +75,7 @@ public final class OppijaConstants {
     public static final String PREFERENCE_DISCRETIONARY = "preference%d-discretionary";
 
     public static final String NATIONALITY_CODE_FI = "FIN";
+    public static final String ULKOMAINEN_TUTKINTO = "0";
     public static final String PERUSKOULU = "1";
     public static final String YLIOPPILAS = "9";
     public static final String OSITTAIN_YKSILOLLISTETTY = "2";
@@ -83,7 +83,6 @@ public final class OppijaConstants {
     public static final String YKSILOLLISTETTY = "6";
     public static final String KESKEYTYNYT = "7";
 
-    public static final String ULKOMAINEN_TUTKINTO = "0";
     public static final String VARSINAINEN_HAKU = "hakutyyppi_01";
 
     public static final String LISA_HAKU = "hakutyyppi_03";
@@ -91,7 +90,7 @@ public final class OppijaConstants {
 
     public static final String HAKUKAUSI_KEVAT = "kausi_k";
     public static final String EDUCATION_CODE_MUSIIKKI = "koulutus_321204";
-    public static final String EDUCATION_CODE_TANSSI   = "koulutus_321501";
+    public static final String EDUCATION_CODE_TANSSI = "koulutus_321501";
 
     public static final String EDUCATION_CODE_LIIKUNTA = "koulutus_381203";
 

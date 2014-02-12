@@ -23,9 +23,8 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.PostalCode;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.SocialSecurityNumber;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.*;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.AddElementRule;
-import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionRule;
+import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionComplexRule;
 import fi.vm.sade.haku.oppija.lomake.validation.validators.ContainedInOtherFieldValidator;
-import fi.vm.sade.haku.oppija.lomake.validation.validators.DateOfBirthValidator;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
@@ -47,6 +46,7 @@ public final class
     private static final String FORM_MESSAGES = "form_messages_yhteishaku_kevat";
     private static final String FORM_ERRORS = "form_errors_yhteishaku_kevat";
     private static final String FORM_VERBOSE_HELP = "form_verboseHelp_yhteishaku_kevat";
+    public static final String EMPTY_OR_FIN_PATTERN = "^$|^FIN$";
 
     private HenkilotiedotPhaseYhteishakuKevat() {
     }
@@ -126,7 +126,7 @@ public final class
                         sukupuoli.getI18nText(), male, female, sukupuoli.getId(), henkilotunnus);
         addApplicationUniqueValidator(henkilotunnus, OppijaConstants.VARSINAINEN_HAKU);
 
-        RelatedQuestionRule hetuRule = new RelatedQuestionRule("hetuRule", kansalaisuus.getId(), "^$|^FIN$", true);
+        RelatedQuestionComplexRule hetuRule = createRegexpRule(kansalaisuus, EMPTY_OR_FIN_PATTERN);
         hetuRule.addChild(socialSecurityNumber);
         henkilotiedotRyhma.addChild(hetuRule);
 
@@ -136,13 +136,11 @@ public final class
         addDefaultTrueFalseOptions(onkoSinullaSuomalainenHetu, FORM_MESSAGES);
         setRequiredInlineAndVerboseHelp(onkoSinullaSuomalainenHetu, "form.henkilotiedot.hetu.onkoSuomalainen.verboseHelp",
                 FORM_VERBOSE_HELP, FORM_ERRORS);
-        RelatedQuestionRule suomalainenHetuRule = new RelatedQuestionRule("suomalainenHetuRule",
-                onkoSinullaSuomalainenHetu.getId(), "^true$", false);
+        RelatedQuestionComplexRule suomalainenHetuRule = createRuleIfVariableIsTrue("suomalainenHetuRule", onkoSinullaSuomalainenHetu.getId());
         suomalainenHetuRule.addChild(socialSecurityNumber);
         onkoSinullaSuomalainenHetu.addChild(suomalainenHetuRule);
 
-        RelatedQuestionRule eiSuomalaistaHetuaRule = new RelatedQuestionRule("eiSuomalaistaHetuaRule",
-                onkoSinullaSuomalainenHetu.getId(), "^false$", false);
+        RelatedQuestionComplexRule eiSuomalaistaHetuaRule = createRuleIfVariableIsFalse("suomalainenHetuRule", onkoSinullaSuomalainenHetu.getId());
         eiSuomalaistaHetuaRule.addChild(sukupuoli);
 
         DateQuestion syntymaaika = new DateQuestion("syntymaaika", createI18NText("form.henkilotiedot.syntymaaika",
@@ -176,8 +174,7 @@ public final class
 
         onkoSinullaSuomalainenHetu.addChild(eiSuomalaistaHetuaRule);
 
-        RelatedQuestionRule ulkomaalaisenTunnisteetRule = new RelatedQuestionRule("ulkomaalaisenTunnisteetRule",
-                kansalaisuus.getId(), NOT_FI, false);
+        RelatedQuestionComplexRule ulkomaalaisenTunnisteetRule = createRegexpRule(kansalaisuus, NOT_FI);
         ulkomaalaisenTunnisteetRule.addChild(onkoSinullaSuomalainenHetu);
         henkilotiedotRyhma.addChild(ulkomaalaisenTunnisteetRule);
 
@@ -233,7 +230,7 @@ public final class
         setRequiredInlineAndVerboseHelp(asuinmaa, "form.henkilotiedot.asuinmaa.verboseHelp", FORM_VERBOSE_HELP,
                 FORM_ERRORS);
 
-        RelatedQuestionRule asuinmaaFI = new RelatedQuestionRule("rule1", asuinmaa.getId(), "FIN", true);
+        RelatedQuestionComplexRule asuinmaaFI = ElementUtil.createRegexpRule(asuinmaa, EMPTY_OR_FIN_PATTERN);
         Question lahiosoite = createRequiredTextQuestion("lahiosoite", "form.henkilotiedot.lahiosoite", FORM_MESSAGES,
                 FORM_ERRORS, 40);
         lahiosoite.setInline(true);
@@ -263,8 +260,7 @@ public final class
         ensisijainenOsoite.setInline(true);
         asuinmaaFI.addChild(ensisijainenOsoite);*/
 
-        RelatedQuestionRule relatedQuestionRule2 =
-                new RelatedQuestionRule("rule2", asuinmaa.getId(), NOT_FI, false);
+        RelatedQuestionComplexRule relatedQuestionRule2 = ElementUtil.createRegexpRule(asuinmaa, NOT_FI);
         Question osoiteUlkomaa = createRequiredTextQuestion("osoiteUlkomaa", "form.henkilotiedot.osoite", FORM_MESSAGES,
                 FORM_ERRORS, 40);
         osoiteUlkomaa.setInline(true);

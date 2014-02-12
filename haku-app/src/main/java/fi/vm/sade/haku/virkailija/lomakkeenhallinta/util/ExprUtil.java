@@ -61,4 +61,12 @@ public final class ExprUtil {
             return result;
         }
     }
+
+    public static Expr isAnswerTrue(final String id) {
+        return new Equals(new Variable(id), Value.TRUE);
+    }
+
+    public static Expr isAnswerFalse(final String id) {
+        return new Equals(new Variable(id), Value.FALSE);
+    }
 }
