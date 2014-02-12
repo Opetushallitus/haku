@@ -9,6 +9,11 @@ Hakutoiveesi:
 $preference
 
 #end
+#if ($discretionary)
+
+todo
+
+#end
 #if ($athlete)
 
 Haet urheilijana ammatilliseen koulutukseen. Lisätietoja löydät osoitteesta

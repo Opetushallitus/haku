@@ -9,6 +9,11 @@ Dina ansökningsönskemål:
 $preference
 
 #end
+#if ($discretionary)
+
+todo
+
+#end
 #if ($athlete)
 
 Du söker till yrkesutbildning som idrottare. Tilläggsuppgifter hittar du på adressen
