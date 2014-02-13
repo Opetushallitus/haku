@@ -87,6 +87,7 @@ public class LomakeIT extends DummyModelBaseItTest {
         type("PK_PAATTOTODISTUSVUOSI", "2013");
 
         findByIdAndClick("LISAKOULUTUS_KYMPPI", "LISAKOULUTUS_VAMMAISTEN", "LISAKOULUTUS_TALOUS", "LISAKOULUTUS_AMMATTISTARTTI");
+        screenshot("koulutuspaikka");
         clickByNameAndValue("KOULUTUSPAIKKA_AMMATILLISEEN_TUTKINTOON", "false");
         setValue("perusopetuksen_kieli", "FI");
         nextPhase();

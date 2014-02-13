@@ -15,8 +15,6 @@
  */
 package fi.vm.sade.haku.virkailija.authentication;
 
-import javax.ws.rs.HEAD;
-
 /**
  * @author Hannu Lyytikainen
  */
@@ -35,11 +33,12 @@ public class Person {
     private String nationality;
     private String contactLanguage;
     private String personOid;
+    private String studentOid;
 
     public Person(String firstNames, String nickName, String lastName, String socialSecurityNumber,
                   boolean noSocialSecurityNumber, String email, String sex, String homeCity,
                   boolean securityOrder, String language, String nationality, String contactLanguage,
-                  String personOid) {
+                  String personOid, String studentOid) {
         this.firstNames = firstNames;
         this.nickName = nickName;
         this.lastName = lastName;
@@ -53,6 +52,7 @@ public class Person {
         this.nationality = nationality;
         this.contactLanguage = contactLanguage;
         this.personOid = personOid;
+        this.studentOid = studentOid;
     }
 
     public String getFirstNames() {
@@ -106,6 +106,9 @@ public class Person {
     public String getPersonOid() {
         return personOid;
     }
+    public String getStudentOid() {
+        return studentOid;
+    }
 
     public String toString() {
         StringBuilder sb = new StringBuilder()
@@ -121,7 +124,8 @@ public class Person {
                 .append(" language: ").append(language)
                 .append(" nationality: ").append(nationality)
                 .append(" contactLanguage: ").append(contactLanguage)
-                .append(" personOid: ").append(personOid);
+                .append(" personOid: ").append(personOid)
+                .append(" studentOid: ").append(studentOid);
         return sb.toString();
 
     }

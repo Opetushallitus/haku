@@ -47,12 +47,12 @@ public class AuthenticationServiceMockImpl implements AuthenticationService {
     }
 
     @Override
-    public String getStudentOid(String personOid) {
-        return personOid;
+    public Person getStudentOid(String personOid) {
+        return PersonBuilder.start().setStudentOid(personOid).get();
     }
 
     @Override
-    public String checkStudentOid(String personOid) {
-        return personOid;
+    public Person checkStudentOid(String personOid) {
+        return PersonBuilder.start().setStudentOid(personOid).get();
     }
 }
