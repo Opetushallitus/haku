@@ -26,7 +26,7 @@
 <html>
 <head>
     <haku:meta/>
-    <haku:icons contextPath="${contextPath}"/>
+    <haku:icons/>
     <title><fmt:message key="virkailija.haku.hakijatiedot"/></title>
     <script src="${contextPath}/resources/jquery/jquery.min.js" type="text/javascript"></script>
     <script src="${contextPath}/resources/jquery/jquery-ui-1.8.23.custom.min.js" type="text/javascript"></script>
@@ -56,7 +56,9 @@
 </script>
 <div id="viewport">
     <div id="overlay">
-        <jsp:include page="createApplication.jsp"/>
+        <c:if test="${it.applicationEnterAllowed}">
+            <jsp:include page="createApplication.jsp"/>
+        </c:if>
     </div>
     <div id="app-container">
 

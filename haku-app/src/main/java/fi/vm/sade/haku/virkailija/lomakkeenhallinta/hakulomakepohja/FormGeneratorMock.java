@@ -52,12 +52,12 @@ public class FormGeneratorMock implements FormGenerator {
     }
 
     public ApplicationSystem createApplicationSystem() {
-        Form form = YhteishakuSyksy.generateForm(generateInitialApplicationSystemBuilder()
+        Form form = YhteishakuKevat.generateForm(generateInitialApplicationSystemBuilder()
                 .get(), koodistoService);
         return generateInitialApplicationSystemBuilder().addForm(form).get();
     }
 
-    private ApplicationSystemBuilder generateInitialApplicationSystemBuilder(){
+    private ApplicationSystemBuilder generateInitialApplicationSystemBuilder() {
         final Calendar instance = Calendar.getInstance();
         instance.roll(Calendar.YEAR, -1);
         Date start = new Date(instance.getTimeInMillis());

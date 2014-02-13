@@ -18,12 +18,14 @@ package fi.vm.sade.haku.oppija.lomake.it;
 
 import com.google.common.collect.ImmutableMap;
 import fi.vm.sade.haku.oppija.common.selenium.DummyModelBaseItTest;
+import fi.vm.sade.haku.oppija.hakemus.ApplicationGenerator;
 import org.junit.Test;
 import org.openqa.selenium.By;
 
 import static fi.vm.sade.haku.oppija.ui.selenium.DefaultValues.KYSYMYS_POHJAKOULUTUS;
 import static fi.vm.sade.haku.oppija.ui.selenium.DefaultValues.TUTKINTO_PERUSKOULU;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class HAK305IT extends DummyModelBaseItTest {
 
@@ -53,7 +55,7 @@ public class HAK305IT extends DummyModelBaseItTest {
         elementsNotPresentByName("yleinen_kielitutkinto_sv", "valtionhallinnon_kielitutkinto_sv",
                 "yleinen_kielitutkinto_fi", "valtionhallinnon_kielitutkinto_sv");
 
-        driver.findElement(new By.ById("nav-henkilotiedot")).click();
+        findByIdAndClick("nav-henkilotiedot");
         setNativeLanguage(NATIVE_LANGUAGE_SV);
         nextPhase(); // Koulutustausta
         setPerusopetuksenKieli(NATIVE_LANGUAGE_SV);
@@ -62,13 +64,14 @@ public class HAK305IT extends DummyModelBaseItTest {
 
         clickByNameAndValue("yleinen_kielitutkinto_fi", "true");
         clickByNameAndValue("valtionhallinnon_kielitutkinto_fi", "true");
+        clickByNameAndValue("peruskoulun_paattotodistus_vahintaan_seitseman_fi", "true");
         nextPhase();
         fillInRestOfThePhasesAndCheckTheOID();
     }
 
 
     private void fillInArvosanatTheme() {
-        driver.findElement(new By.ById("arvosanatTheme"));
+        findById("arvosanatTheme");
         select();
         selectByValue("PK_AI_OPPIAINE", "FI");
         selectByValue("PK_A1_OPPIAINE", "EN");
@@ -79,8 +82,7 @@ public class HAK305IT extends DummyModelBaseItTest {
     private void fillInRestOfThePhasesAndCheckTheOID() {
         // Lisätiedot
         clickAllElementsByXPath("//input[@type='checkbox']");
-
-        screenshot("HAK305");
+        //screenshot("HAK305");
         setValue("TYOKOKEMUSKUUKAUDET", "2");
         clickByNameAndValue("asiointikieli", "suomi");
         nextPhase();
@@ -89,8 +91,8 @@ public class HAK305IT extends DummyModelBaseItTest {
         nextPhase();
         findByIdAndClick("submit_confirm");
 
-        String oid = driver.findElement(new By.ByClassName("number")).getText();
-        assertFalse(oid.startsWith("1.2.3.4.5"));
+        String oid = seleniumContainer.getDriver().findElement(new By.ByClassName("number")).getText();
+        assertFalse(oid.startsWith(ApplicationGenerator.oidPrefix));
     }
 
 
@@ -99,19 +101,18 @@ public class HAK305IT extends DummyModelBaseItTest {
     }
 
     private void fillOutTheKoulutustaustaPhase(final String opetuskieli) {
-        clickByNameAndValue(KYSYMYS_POHJAKOULUTUS, TUTKINTO_PERUSKOULU);
-        clickByNameAndValue("KOULUTUSPAIKKA_AMMATILLISEEN_TUTKINTOON", "false");
-        findByIdAndClick("LISAKOULUTUS_KYMPPI");
-        findById("PK_PAATTOTODISTUSVUOSI");
-        setPerusopetuksenKieli(opetuskieli);
+        setValue(KYSYMYS_POHJAKOULUTUS, TUTKINTO_PERUSKOULU);
         setValue("PK_PAATTOTODISTUSVUOSI", "2012");
+        setValue("LISAKOULUTUS_KYMPPI", "true");
+        setValue("KOULUTUSPAIKKA_AMMATILLISEEN_TUTKINTOON", "false");
+        setPerusopetuksenKieli(opetuskieli);
     }
 
     private void fillInTheHakutoiveetPhase() {
-        driver.findElement(By.id("preference1-Opetuspiste"));
-        selenium.typeKeys("preference1-Opetuspiste", "Esp");
-        driver.findElement(By.linkText("FAKTIA, Espoo op")).click();
-        driver.findElement(By.xpath("//option[@value='Kaivosalan perustutkinto, pk']")).click();
+        findById("preference1-Opetuspiste");
+        typeWithoutTab("preference1-Opetuspiste", "Esp");
+        clickLinkByText("FAKTIA, Espoo op");
+        click("//option[@value='Kaivosalan perustutkinto, pk']");
         fillOut(defaultValues.preference1);
     }
 
@@ -122,5 +123,11 @@ public class HAK305IT extends DummyModelBaseItTest {
 
     private void setNativeLanguage(final String aidinkieli) {
         setValue("aidinkieli", aidinkieli);
+    }
+
+    protected void elementsPresent(String... locations) {
+        for (String location : locations) {
+            assertTrue("Could not find element " + location, seleniumContainer.getSelenium().isElementPresent(location));
+        }
     }
 }

@@ -2,6 +2,7 @@
 <%@ taglib prefix="haku" tagdir="/WEB-INF/tags" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib prefix="virkailija" tagdir="/WEB-INF/tags/virkailija" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%--
   ~ Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
   ~
@@ -21,8 +22,10 @@
 <fieldset>
     <legend class="h3"><fmt:message key="virkailija.lisakysymys.otsikko"/></legend>
     <hr/>
+    <sec:authorize access="hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_CRUD')">
     <virkailija:EditButton url="${pageContext.request.contextPath}/virkailija/hakemus/${oid}/additionalInfo"
                            application="${it.application}"/>
+    </sec:authorize>
     <table class="form-summary-table width-50">
         <tbody>
         <c:forEach var="data" items="${additionalInfo}">

@@ -16,18 +16,15 @@
 
 package fi.vm.sade.haku.oppija.ui.controller;
 
+import com.google.common.collect.Lists;
 import com.sun.jersey.api.view.Viewable;
 import com.sun.jersey.core.util.MultivaluedMapImpl;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
-import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
-import fi.vm.sade.haku.oppija.lomake.domain.ApplicationState;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Phase;
 import fi.vm.sade.haku.oppija.lomake.service.FormService;
-import fi.vm.sade.haku.oppija.lomake.service.UserSession;
-import fi.vm.sade.haku.oppija.ui.common.RedirectToPendingViewPath;
 import fi.vm.sade.haku.oppija.ui.common.RedirectToPhaseViewPath;
 import fi.vm.sade.haku.oppija.ui.service.ModelResponse;
 import fi.vm.sade.haku.oppija.ui.service.UIService;
@@ -53,7 +50,8 @@ public class FormControllerTest {
     private static final String FIRST_PHASE_ID = "henkilotiedot";
     private static final String APPLICATION_SYSTEM_ID = ASID;
     public static final String PHASE_TITLE = "title";
-    public static final Phase PHASE = new Phase(FIRST_PHASE_ID, createI18NAsIs(PHASE_TITLE), false);
+    public static final Phase PHASE = new Phase(FIRST_PHASE_ID, createI18NAsIs(PHASE_TITLE), false,
+            Lists.newArrayList("APP_HAKEMUS_READ_UPDATE", "APP_HAKEMUS_CRUD", "APP_HAKEMUS_OPO"));
     public static final Form FORM = new Form("id", createI18NAsIs("title"));
 
     private FormController formController;

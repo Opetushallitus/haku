@@ -567,4 +567,17 @@ $(document).ready(function () {
         }
     });
 
+    $('#notApplied').click(function() {
+        var school = $('#sendingSchoolOid').val();
+        var clazz = $('#sendingClass').val();
+        var as = $('#application-system').val();
+        if (school && as) {
+            var url = location.protocol+"//"+location.host+"/suoritusrekisteri/#/eihakeneet?haku="+as
+                +"&oppilaitos="+school
+                + (clazz !== "" ? "&luokka="+clazz : "");
+            window.location.href=url;
+        } else {
+            alert('Koulu ja haku ovat pakollisia tietoja')
+        }
+    });
 });

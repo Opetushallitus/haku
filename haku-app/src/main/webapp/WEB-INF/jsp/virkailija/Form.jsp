@@ -4,6 +4,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="haku" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="virkailija" tagdir="/WEB-INF/tags/virkailija" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%--
   ~ Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
   ~
@@ -32,7 +33,7 @@
 <html>
 <head>
     <haku:meta/>
-    <haku:icons contextPath="${contextPath}"/>
+    <haku:icons/>
     <link rel="stylesheet" href="${contextPath}/resources/jquery-ui-theme/jquery-ui-1.8.23.custom.css" type="text/css">
     <link href="${contextPath}/resources/css/oppija.css" type="text/css" rel="stylesheet">
     <link href="${contextPath}/resources/css/virkailija.css" type="text/css" rel="stylesheet">
@@ -51,19 +52,20 @@
 
 </head>
 <body>
-    <c:if test="${not empty it.applicationList}">
+<c:if test="${not empty it.applicationList}">
     <script type="text/javascript">
-        var previousApplication  = '${it.previousApplication}';
-        var nextApplication  = '${it.nextApplication}';
+        var previousApplication = '${it.previousApplication}';
+        var nextApplication = '${it.nextApplication}';
     </script>
     <form method="POST" id="open-applications"
-            action="${pageContext.request.contextPath}/virkailija/hakemus/multiple">
+          action="${pageContext.request.contextPath}/virkailija/hakemus/multiple">
         <input type="hidden" name="applicationList" id="applicationList" value="${it.applicationList}"/>
-        <input type="hidden" name="selectedApplication" id="selectedApplication" />
+        <input type="hidden" name="selectedApplication" id="selectedApplication"/>
     </form>
-    </c:if>
+</c:if>
 
 <div id="viewport">
+
     <div id="overlay">
         <c:choose>
             <c:when test="${preview}">
@@ -78,24 +80,28 @@
                     </c:otherwise>
                 </c:choose>
                 <c:choose>
-                    <c:when test="${empty application.studentOid}">
-                        <jsp:include page="addStudentOid.jsp" />
+                    <c:when test="${it.postProcessAllowed and empty application.studentOid and not empty application.personOid}">
+                        <jsp:include page="addStudentOid.jsp"/>
                     </c:when>
                 </c:choose>
                 <c:if test="${it.postProcessAllowed}">
-                    <jsp:include page="postProcess.jsp" />
+                    <jsp:include page="postProcess.jsp"/>
                 </c:if>
             </c:when>
         </c:choose>
     </div>
-
     <div id="wrapper" class="virkailija">
 
-        <virkailija:headerButtons oid="${application.oid}" preview="${preview}" applicationSystem="${applicationSystem}"/>
+        <virkailija:headerButtons oid="${application.oid}" preview="${preview}"
+                                  applicationSystem="${applicationSystem}"/>
 
         <div class="grid16-16">
             <h3><c:out value="${answers['Etunimet']}" escapeXml="true"/>&nbsp;<c:out
-                    value="${answers['Sukunimi']}" escapeXml="true"/></h3>
+                    value="${answers['Sukunimi']}" escapeXml="true"/>
+                <c:if test="${not empty answers['Etunimet_user'] or not empty answers['Sukunimi_user']}">
+                    &nbsp;<span title="<c:out value="${answers['Etunimet_user']}" />&nbsp;<c:out value="${answers['Sukunimi_user']}" />">[*]</span>
+                </c:if>
+                    </h3>
             <table class="margin-top-2">
                 <c:if test="${application.state eq 'ACTIVE'}">
                     <fmt:message key="virkailija.hakemus.tila.voimassa" var="msg"/>
@@ -107,26 +113,30 @@
                     <fmt:message key="virkailija.hakemus.tila.puutteellinen" var="msg"/>
                 </c:if>
                 <tr>
-                    <haku:infoCell key="virkailija.hakemus.hakemusnro" value="${application.oid}" cellId="infocell_oid"/>
+                    <haku:infoCell key="virkailija.hakemus.hakemusnro" value="${application.oid}"
+                                   cellId="infocell_oid"/>
 
                     <haku:infoCell key="virkailija.hakemus.henkilotunnus" value="${answers['Henkilotunnus']}"/>
 
                     <td>
                         <span class="bold"><fmt:message key="virkailija.hakemus.lahtokoulu"/>:</span>
-                        <span><haku:i18nText value="${it.sendingSchool}" />&nbsp;<c:out value="${it.sendingClass}" /></span>
+                        <span><haku:i18nText value="${it.sendingSchool}"/>&nbsp;<c:out
+                                value="${it.sendingClass}"/></span>
                     </td>
                 </tr>
                 <tr>
                     <haku:infoCell key="virkailija.hakemus.hakemuksen.tila" value='${msg}'/>
 
-                    <haku:infoCell key="virkailija.hakemus.henkilonumero" value="${application.personOid}" cellId="infocell_henkilonumero"/>
+                    <haku:infoCell key="virkailija.hakemus.henkilonumero" value="${application.personOid}"
+                                   cellId="infocell_henkilonumero"/>
 
                     <haku:infoCell key="virkailija.vaihe.aidinkieli" value="${answers['aidinkieli']}"/>
                 </tr>
                 <tr>
                     <td>&nbsp;</td>
 
-                    <haku:infoCell key="virkailija.hakemus.oppijanumero" value="${application.studentOid}" cellId="infocell_oppijanumero"/>
+                    <haku:infoCell key="virkailija.hakemus.oppijanumero" value="${application.studentOid}"
+                                   cellId="infocell_oppijanumero"/>
 
                     <haku:infoCell key="virkailija.hakemus.puhelin" value="${answers['matkapuhelinnumero1']}"/>
                 </tr>
@@ -162,7 +172,7 @@
                             </div>
                         </c:when>
                         <c:otherwise>
-                            <c:set var="virkailijaEdit" value="true" scope="request" />
+                            <c:set var="virkailijaEdit" value="true" scope="request"/>
                             <form id="form-${it.element.id}" class="form" method="post">
                                 <c:forEach var="child" items="${it.element.children}">
                                     <c:set var="element" value="${child}" scope="request"/>

@@ -69,10 +69,13 @@ public class ApplicationToDBObjectFunction implements Function<Application, DBOb
                 if (!Strings.isNullOrEmpty(hetu)) {
                     hetu = hetu.toUpperCase();
                     henkilotiedot.put(SocialSecurityNumber.HENKILOTUNNUS, hetu);
+                    henkilotiedot.put(SocialSecurityNumber.HENKILOTUNNUS, aesEncypter.encrypt(hetu));
+                    henkilotiedot.put(SocialSecurityNumber.HENKILOTUNNUS_HASH, shaEncrypter.encrypt(hetu));
+                } else {
+                    henkilotiedot.remove(SocialSecurityNumber.HENKILOTUNNUS);
+                    henkilotiedot.remove(SocialSecurityNumber.HENKILOTUNNUS_HASH);
                 }
                 henkilotiedot.put("syntymaaika", ssnToDateOfBirth(hetu));
-                henkilotiedot.put(SocialSecurityNumber.HENKILOTUNNUS, aesEncypter.encrypt(hetu));
-                henkilotiedot.put(SocialSecurityNumber.HENKILOTUNNUS_HASH, shaEncrypter.encrypt(hetu));
             }
         }
         final BasicDBObject basicDBObject = new BasicDBObject(m);

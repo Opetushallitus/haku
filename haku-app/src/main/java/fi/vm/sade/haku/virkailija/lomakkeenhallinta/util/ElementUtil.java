@@ -35,6 +35,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Question;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Radio;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.TextQuestion;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionComplexRule;
+import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.Regexp;
 import fi.vm.sade.haku.oppija.lomake.validation.Validator;
 import fi.vm.sade.haku.oppija.lomake.validation.validators.*;
 import org.apache.commons.lang3.Validate;
@@ -155,7 +156,7 @@ public final class ElementUtil {
     }
 
     public static TextQuestion createRequiredTextQuestion(final String id, final String name, final String bundleName,
-                                                      final String errorBundleName, final int size) {
+                                                          final String errorBundleName, final int size) {
         TextQuestion textQuestion = new TextQuestion(id, createI18NText(name, bundleName));
         addRequiredValidator(textQuestion, errorBundleName);
         addSizeAttribute(textQuestion, size);
@@ -295,10 +296,27 @@ public final class ElementUtil {
     }
 
 
-    public static RelatedQuestionComplexRule createVarEqualsToValueRule(final String name, final String... values) {
+    public static RelatedQuestionComplexRule createVarEqualsToValueRule(final String variable, final String... values) {
         return new RelatedQuestionComplexRule(
                 ElementUtil.randomId(),
-                ExprUtil.atLeastOneValueEqualsToVariable(name, values));
+                ExprUtil.atLeastOneValueEqualsToVariable(variable, values));
     }
+
+    public static RelatedQuestionComplexRule createRuleIfVariableIsTrue(final String ruleId, final String variable) {
+        return new RelatedQuestionComplexRule(ruleId, ExprUtil.isAnswerTrue(variable));
+    }
+
+    public static RelatedQuestionComplexRule createRuleIfVariableIsFalse(final String ruleId, final String variable) {
+        return new RelatedQuestionComplexRule(ruleId, ExprUtil.isAnswerTrue(variable));
+    }
+
+    public static RelatedQuestionComplexRule createRegexpRule(final Element element, final String pattern) {
+        return createRegexpRule(element.getId(), pattern);
+    }
+
+    public static RelatedQuestionComplexRule createRegexpRule(final String variable, final String pattern) {
+        return new RelatedQuestionComplexRule(ElementUtil.randomId(), new Regexp(variable, pattern));
+    }
+
 
 }

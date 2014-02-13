@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib prefix="haku" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ attribute name="oid" required="true" type="java.lang.String" %>
 <%@ attribute name="preview" required="true" type="java.lang.Boolean" %>
 <%@ attribute name="applicationSystem" required="false" type="fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem" %>
@@ -17,6 +18,7 @@
             <a id="back" href="${contextPath}/virkailija/hakemus/${oid}/" class="button small back"></a>
         </c:otherwise>
     </c:choose>
+    <sec:authorize access="hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_CRUD')">
     <c:choose>
         <c:when test="${!application.passive}">
             <c:if test="${it.virkailijaDeleteAllowed}">
@@ -30,7 +32,7 @@
         </c:otherwise>
     </c:choose>
     <c:choose>
-        <c:when test="${empty application.studentOid}">
+        <c:when test="${it.postProcessAllowed and empty application.studentOid and not empty application.personOid}">
             <a href="#" id="addStudentOid" data-po-show="addStudentOid" class="button small">
                 <fmt:message key="virkailija.hakemus.lisaa.oppijanumero" />
             </a>
@@ -41,7 +43,7 @@
             <fmt:message key="virkailija.hakemus.postProcess" />
         </a>
     </c:if>
-
+    </sec:authorize>
     <a href="${contextPath}/virkailija/hakemus/${oid}/print" class="button small print" target="_blank"><fmt:message
     key="lomake.valmis.button.tulosta"/></a>
 </div>

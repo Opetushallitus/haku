@@ -23,6 +23,7 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.QueryBuilder;
+import com.mongodb.ReadPreference;
 import fi.vm.sade.haku.oppija.common.dao.AbstractDAOMongoImpl;
 import fi.vm.sade.haku.oppija.hakemus.converter.ApplicationToDBObjectFunction;
 import fi.vm.sade.haku.oppija.hakemus.converter.DBObjectToApplicationFunction;
@@ -71,11 +72,6 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     private static final String FIELD_AO_KOULUTUS_ID_3 = "answers.hakutoiveet.preference3-Koulutus-id-aoIdentifier";
     private static final String FIELD_AO_KOULUTUS_ID_4 = "answers.hakutoiveet.preference4-Koulutus-id-aoIdentifier";
     private static final String FIELD_AO_KOULUTUS_ID_5 = "answers.hakutoiveet.preference5-Koulutus-id-aoIdentifier";
-    private static final String FIELD_AO_KOULUTUS_1 = "answers.hakutoiveet.preference1-Koulutus";
-    private static final String FIELD_AO_KOULUTUS_2 = "answers.hakutoiveet.preference2-Koulutus";
-    private static final String FIELD_AO_KOULUTUS_3 = "answers.hakutoiveet.preference3-Koulutus";
-    private static final String FIELD_AO_KOULUTUS_4 = "answers.hakutoiveet.preference4-Koulutus";
-    private static final String FIELD_AO_KOULUTUS_5 = "answers.hakutoiveet.preference5-Koulutus";
     private static final String FIELD_LOP_1 = "answers.hakutoiveet.preference1-Opetuspiste-id";
     private static final String FIELD_LOP_2 = "answers.hakutoiveet.preference2-Opetuspiste-id";
     private static final String FIELD_LOP_3 = "answers.hakutoiveet.preference3-Opetuspiste-id";
@@ -97,6 +93,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     private static final String FIELD_APPLICATION_STATE = "state";
     private static final String FIELD_LAST_AUTOMATED_PROCESSING_TIME = "lastAutomatedProcessingTime";
     private static final String FIELD_SENDING_SCHOOL = "answers.koulutustausta.lahtokoulu";
+    private static final String FIELD_SENDING_SCHOOL_PARENTS = "answers.koulutustausta.lahtokoulu-parents";
     private static final String FIELD_SENDING_CLASS = "answers.koulutustausta.lahtoluokka";
     private static final String FIELD_SSN = "answers.henkilotiedot.Henkilotunnus";
     private static final String EXISTS = "$exists";
@@ -145,7 +142,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     @Override
     public Application findDraftApplication(final Application application) {
         final DBObject query = toDBObject.apply(application);
-        query.put(FIELD_APPLICATION_OID, new BasicDBObject(EXISTS, false));
+        query.put(FIELD_APPLICATION_OID, null);
         return findOneApplication(query);
     }
 
@@ -251,10 +248,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
             );
         } else {
             queries.add(
-                    QueryBuilder.start().or(
-                            QueryBuilder.start("fullName").regex(Pattern.compile("^" + token.toLowerCase())).get(),
-                            QueryBuilder.start("fullName").regex(Pattern.compile(token.toLowerCase())).get()
-                    ).get()
+                    QueryBuilder.start("fullName").regex(Pattern.compile(token.toLowerCase())).get()
             );
         }
         return queries;
@@ -281,23 +275,13 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     }
 
     private QueryBuilder queryByPreference(String preference) {
-        QueryBuilder aoCode = new QueryBuilder().start().or(
+        return new QueryBuilder().start().or(
                 QueryBuilder.start(FIELD_AO_KOULUTUS_ID_1).is(preference).get(),
                 QueryBuilder.start(FIELD_AO_KOULUTUS_ID_2).is(preference).get(),
                 QueryBuilder.start(FIELD_AO_KOULUTUS_ID_3).is(preference).get(),
                 QueryBuilder.start(FIELD_AO_KOULUTUS_ID_4).is(preference).get(),
                 QueryBuilder.start(FIELD_AO_KOULUTUS_ID_5).is(preference).get()
         );
-        Pattern preferencePattern = Pattern.compile(preference, Pattern.CASE_INSENSITIVE);
-        QueryBuilder aoName = new QueryBuilder().start().or(
-                QueryBuilder.start(FIELD_AO_KOULUTUS_1).regex(preferencePattern).get(),
-                QueryBuilder.start(FIELD_AO_KOULUTUS_2).regex(preferencePattern).get(),
-                QueryBuilder.start(FIELD_AO_KOULUTUS_3).regex(preferencePattern).get(),
-                QueryBuilder.start(FIELD_AO_KOULUTUS_4).regex(preferencePattern).get(),
-                QueryBuilder.start(FIELD_AO_KOULUTUS_5).regex(preferencePattern).get()
-        );
-
-        return new QueryBuilder().start().or(aoCode.get(), aoName.get());
     }
 
     private QueryBuilder queryByLearningOpportunityProviderOid(String lopOid) {
@@ -344,7 +328,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         LOG.debug("Ordering: {}, {}", orderBy, orderDir);
         LOG.debug("Query: {}", query);
         final DBCursor dbCursor = getCollection().find(query).sort(new BasicDBObject(orderBy, orderDir))
-                .skip(start).limit(rows);
+                .skip(start).limit(rows).setReadPreference(ReadPreference.secondaryPreferred());
         LOG.debug("Matches: {}", dbCursor.count());
         return new ApplicationSearchResultDTO(dbCursor.count(), Lists.newArrayList(Iterables.transform(dbCursor, dbObjectToSearchResultItem)));
     }
@@ -409,8 +393,8 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
 
     private ArrayList<DBObject> filterByOrganization() {
 
-        List<String> orgs = authenticationService.getOrganisaatioHenkilo();
-        orgs = hakuPermissionService.userCanReadApplications(orgs);
+        List<String> henkOrgs = authenticationService.getOrganisaatioHenkilo();
+        List<String> orgs = hakuPermissionService.userCanReadApplications(henkOrgs);
 
         LOG.debug("OrganisaatioHenkilo.canRead().count() == {} ", orgs.size());
         ArrayList<DBObject> queries = new ArrayList<DBObject>(orgs.size());
@@ -423,8 +407,16 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
                     QueryBuilder.start(FIELD_LOP_PARENTS_3).regex(orgPattern).get(),
                     QueryBuilder.start(FIELD_LOP_PARENTS_4).regex(orgPattern).get(),
                     QueryBuilder.start(FIELD_LOP_PARENTS_5).regex(orgPattern).get(),
-                    QueryBuilder.start(FIELD_LOP_PARENTS_1).exists(false).get()) // Empty applications
+                    QueryBuilder.start(FIELD_LOP_PARENTS_1).is(null).get()) // Empty applications
                     .get());
+        }
+
+        List<String> opoOrgs = hakuPermissionService.userHasOpoRole(henkOrgs);
+        if (!opoOrgs.isEmpty()) {
+            for (String opoOrg : opoOrgs) {
+                Pattern opoOrgPattern = Pattern.compile(opoOrg);
+                queries.add(QueryBuilder.start(FIELD_SENDING_SCHOOL_PARENTS).regex(opoOrgPattern).get());
+            }
         }
 
         LOG.debug("queries: {}", queries.size());

@@ -18,18 +18,19 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
     <meta charset="utf-8"/>
-    <haku:icons contextPath="${contextPath}"/>
+    <haku:icons/>
     <link href="${contextPath}/resources/css/hakemus-print.css" type="text/css" rel="stylesheet"/>
     <script src="${contextPath}/resources/jquery/jquery.min.js" type="text/javascript"></script>
     <script src="${contextPath}/resources/jquery/xdr.js"></script>
-    <title><fmt:message key="lomake.opintopolku"/> - <fmt:message key="form.title"/> - <fmt:message key="lomake.tulostus"/></title>
+    <title><fmt:message key="lomake.opintopolku"/> - <fmt:message key="form.title"/> - <fmt:message
+            key="lomake.tulostus"/></title>
 </head>
 <body>
 <header>
     <h1><haku:i18nText value="${form.i18nText}"/></h1>
 
     <h2><c:out value="${answers['Etunimet']}" escapeXml="true"/>&nbsp;<c:out value="${answers['Sukunimi']}"
-                                                                                  escapeXml="true"/></h2>
+                                                                             escapeXml="true"/></h2>
 
     <p><fmt:message key="lomake.tulostus.vastaanotettu"/>&nbsp;
         <time><fmt:formatDate value="${application.received}" pattern="yyyy-MM-dd HH:mm:ss"/></time>

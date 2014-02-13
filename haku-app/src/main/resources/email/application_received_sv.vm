@@ -9,6 +9,13 @@ Dina ansökningsönskemål:
 $preference
 
 #end
+#if ($discretionary)
+
+Du sökte till utbildningen genom antagning på basis av utbildningsanordnarens prövning.
+Du bör skicka följande bilagor till läroanstalten under ansökningstiden: en utskrift av
+din ansökan och de bilagor samt motiveringar som du hänvisar till.
+
+#end
 #if ($athlete)
 
 Du söker till yrkesutbildning som idrottare. Tilläggsuppgifter hittar du på adressen
@@ -25,7 +32,7 @@ på läroanstaltens hemsida kontrollera om det förutom den egentliga gemensamma
 #end
 
 Ge respons om hur studieninfo.fi fungerade genom att svara på en kort enkät
-på adressen https://www.survette.com/35424-28747-671. Du kan svara fram till 27.3.2014.
+på adressen https://www.survette.com/35424-28747-671@vastaaja1&vastaaja2. Du kan svara fram till 27.3.2014.
 
 Detta är ett automatiskt meddelande. Svara inte på detta meddelande. Om du vill
 ändra på dina ansökningsönskemål, kontakta Studieinfos ansökningsrådgivning

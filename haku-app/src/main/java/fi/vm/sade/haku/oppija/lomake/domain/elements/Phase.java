@@ -17,19 +17,40 @@
 package fi.vm.sade.haku.oppija.lomake.domain.elements;
 
 
+import com.google.common.collect.ImmutableList;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
+import org.springframework.data.annotation.Transient;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Phase extends Titled {
 
     private static final long serialVersionUID = 1369853692287570194L;
     private boolean preview;
+    private List<String> editAllowedByRoles = new ArrayList<String>();
 
-    public Phase(final String id, final I18nText i18nText, final boolean preview) {
+    public Phase(final String id, final I18nText i18nText, final boolean preview, final List<String> editAllowedByRoles) {
         super(id, i18nText);
         this.preview = preview;
+        this.editAllowedByRoles = editAllowedByRoles;
     }
 
     public boolean isPreview() {
         return preview;
+    }
+
+    public List<String> getEditAllowedByRoles() {
+        return ImmutableList.copyOf(editAllowedByRoles);
+    }
+
+    @Transient
+    public boolean isEditAllowedByRoles(List<String> roles) {
+        for (String role : roles) {
+            if (editAllowedByRoles.contains(role)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

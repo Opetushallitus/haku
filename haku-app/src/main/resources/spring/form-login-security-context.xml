@@ -40,6 +40,7 @@
                 <user name="nobody" password="nobody" authorities="ROLE_NOBODY"/>
                 <user name="admin" password="admin" authorities="ROLE_APP_HAKEMUS_CRUD"/>
                 <user name="officer" password="officer" authorities="ROLE_APP_HAKEMUS_CRUD"/>
+                <user name="opo" password="opo" authorities="ROLE_APP_HAKEMUS_OPO"/>
             </user-service>
         </authentication-provider>
     </authentication-manager>

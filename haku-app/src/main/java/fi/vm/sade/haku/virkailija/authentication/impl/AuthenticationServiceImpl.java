@@ -23,9 +23,6 @@ import fi.vm.sade.haku.oppija.common.HttpClientHelper;
 import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
 import fi.vm.sade.haku.virkailija.authentication.Person;
 import fi.vm.sade.haku.virkailija.authentication.PersonJsonAdapter;
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.methods.GetMethod;
-import org.apache.commons.httpclient.methods.PutMethod;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.impl.client.BasicResponseHandler;
@@ -78,16 +75,19 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         String responseString = null;
         try {
             responseString = getCachingRestClient().getAsString("/resources/henkilo/byHetu/"+person.getSocialSecurityNumber());
+            log.debug("Person found: "+responseString);
         } catch (CachingRestClient.HttpException hte) {
             log.debug("HttpException: "+hte.getStatusCode());
             try {
                 if (hte.getStatusCode() == 404) {
+                    log.debug("Person not found, creating");
                     String personJson = gson.toJson(person, Person.class);
                     CachingRestClient client = getCachingRestClient();
                     HttpResponse response = client.post("/resources/henkilo", MediaType.APPLICATION_JSON, personJson);
                     BasicResponseHandler handler = new BasicResponseHandler();
                     String oid = handler.handleResponse(response);
                     responseString = getCachingRestClient().getAsString("/resources/henkilo/"+oid);
+                    log.debug("Created person: "+responseString);
                 } else {
                     log.warn("Something unexpected happened while fetching person: " + hte.getErrorContent());
                 }
@@ -145,48 +145,45 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public String getStudentOid(String personOid) {
-        String url = getClientHelper().getRealUrl(personOid + "/yksiloi");
-        HttpClient client = new HttpClient();
-        PutMethod put = new PutMethod(url);
+    public Person getStudentOid(String personOid) {
+
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.registerTypeAdapter(Person.class, new PersonJsonAdapter());
+        gson = gsonBuilder.create();
+
         try {
-            client.executeMethod(put);
-            return personOid;
+            HttpResponse response = getCachingRestClient()
+                    .put("/resources/henkilo/"+personOid+"/yksiloi", MediaType.APPLICATION_JSON, null);
+            BasicResponseHandler handler = new BasicResponseHandler();
+            String responseString = handler.handleResponse(response);
+            log.debug("Person found: "+responseString);
+            Person newPerson = gson.fromJson(responseString, Person.class);
+            return newPerson;
+        } catch (CachingRestClient.HttpException hte) {
+            // Nothing to do
         } catch (IOException e) {
-            log.error("Getting studentOid for {} failed due to: {}", personOid, e.toString());
-            return null;
+            log.error("Error fetching person: "+e.getMessage());
         }
+        return null;
     }
 
     @Override
-    public String checkStudentOid(String personOid) {
-        String url = getClientHelper().getRealUrl(personOid);
-        HttpClient client = new HttpClient();
-        GetMethod get = new GetMethod(url);
+    public Person checkStudentOid(String personOid) {
+
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.registerTypeAdapter(Person.class, new PersonJsonAdapter());
+        gson = gsonBuilder.create();
+
         try {
-            client.executeMethod(get);
+            String responseString = getCachingRestClient().getAsString("/resources/henkilo/"+personOid);
+            log.debug("Person found: "+responseString);
+            Person newPerson = gson.fromJson(responseString, Person.class);
+            return newPerson;
+        } catch (CachingRestClient.HttpException hte) {
+            // Nothing to do
         } catch (IOException e) {
-            log.error("Getting studentOid for {} failed due to: {}", personOid, e.toString());
-            return null;
+            log.error("Error fetching person: "+e.getMessage());
         }
-
-        int status = get.getStatusCode();
-        if (status == 200) {
-            String responseString = null;
-            try {
-                responseString = get.getResponseBodyAsString();
-            } catch (IOException e) {
-                // It's because I'm lazy
-                throw new RuntimeException(e);
-            }
-            JsonObject henkiloJson = new JsonParser().parse(responseString).getAsJsonObject();
-            String oid = null;
-            if (!henkiloJson.get("oppijanumero").isJsonNull()) {
-                oid = henkiloJson.get("oppijanumero").getAsString();
-            }
-            return oid;
-        }
-
         return null;
 
     }

@@ -16,6 +16,7 @@
 
 package fi.vm.sade.haku.oppija.lomake.domain.builders;
 
+import com.google.common.collect.Lists;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
@@ -35,7 +36,8 @@ public class FormModelBuilder { // TODO rename to application system builder
     public static final String FORM_ID = "form";
 
     private ApplicationSystem applicationSystem;
-    private Phase phase = new Phase(PHASE_ID, createI18NAsIs(PHASE_ID), false);
+    private Phase phase = new Phase(PHASE_ID, createI18NAsIs(PHASE_ID), false,
+            Lists.newArrayList("APP_HAKEMUS_READ_UPDATE", "APP_HAKEMUS_CRUD", "APP_HAKEMUS_OPO"));
     private Theme theme = new Theme(THEME_ID, createI18NAsIs(THEME_ID), true);
 
     private FormBuilder formBuilder =

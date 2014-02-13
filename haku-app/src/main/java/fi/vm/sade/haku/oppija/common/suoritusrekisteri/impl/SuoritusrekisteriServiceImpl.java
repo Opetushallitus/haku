@@ -45,6 +45,20 @@ public class SuoritusrekisteriServiceImpl implements SuoritusrekisteriService {
 
     @Override
     public List<SuoritusDTO> getSuoritukset(String personOid, String hakuvuosi, String hakukausi) {
+
+//        {
+//            "komoto": {
+//                "oid":"",
+//                "komo":"",
+//                "tarjoaja":"1.2.246.562.10.27450788669"
+//            },
+//            "henkiloOid":"1.2.246.562.24.50227402431",
+//            "valmistuminen":"2014-06-05T00:00:00Z",
+//            "tila":"KESKEN",
+//            "yksilollistaminen":"Ei"
+//        }
+
+
         CachingRestClient cachingRestClient = getCachingRestClient();
         String response;
         try {
@@ -85,6 +99,15 @@ public class SuoritusrekisteriServiceImpl implements SuoritusrekisteriService {
 
     @Override
     public List<OpiskelijaDTO> getOpiskelijat(String personOid) {
+//        {
+//            "oppilaitosOid": "1.2.246.562.10.27450788669",
+//            "luokkataso": "9",
+//            "luokka": "9A",
+//            "henkiloOid":"1.2.246.562.24.50227402431",
+//            "alkuPaiva": "2014-01-01T00:00:00Z",
+//            "loppuPaiva": "2014-06-05T00:00:00Z"
+//        }
+
         CachingRestClient cachingRestClient = getCachingRestClient();
         String response;
         String date = ISO8601.format(new Date());

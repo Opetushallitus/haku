@@ -32,15 +32,17 @@ public class HAK153IT extends DummyModelBaseItTest {
         nextPhase();
         fillOut(defaultValues.koulutustausta_pk);
         nextPhase();
-        selenium.typeKeys("preference1-Opetuspiste", "Esp");
-        driver.findElement(By.linkText("FAKTIA, Espoo op")).click();
-        driver.findElement(By.xpath("//option[@data-sora='true' and @data-id='1.2.246.562.14.673437691210']")).click();
+        typeWithoutTab("preference1-Opetuspiste", "Esp");
+        clickLinkByText("FAKTIA, Espoo op");
+        seleniumContainer.getDriver().findElement(By.xpath("//*[@data-sora='true']")).click();
         findByXPath("//a[@href='#' and @data-po-show='sora-popup' and @class='popup-link']");
-        driver.findElement(By.xpath("//option[@data-sora='false' and @data-id='1.2.246.562.14.71344129359']")).click();
-        boolean soraNotFound = driver.findElements(By.xpath("//a[@href='#' and @data-po-show='sora-popup' and @class='popup-link']")).isEmpty();
-        findByXPath("//option[@data-athlete='true' and @data-id='1.2.246.562.14.71344129359']");
+        seleniumContainer.getDriver().findElement(By.xpath("//*[@data-sora='false']")).click();
+        boolean soraNotFound = seleniumContainer.getDriver().findElements(By.xpath("//a[@href='#' and @data-po-show='sora-popup' and @class='popup-link']")).isEmpty();
+        seleniumContainer.getDriver().findElement(By.xpath("//*[@data-athlete='true']")).click();
         clickByNameAndValue("preference1_urheilijan_ammatillisen_koulutuksen_lisakysymys", "false");
         clickByNameAndValue("preference1_urheilijan_ammatillisen_koulutuksen_lisakysymys", "true");
         assertTrue(soraNotFound);
     }
+
+
 }

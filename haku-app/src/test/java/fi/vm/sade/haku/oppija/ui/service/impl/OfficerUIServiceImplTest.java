@@ -1,11 +1,13 @@
 package fi.vm.sade.haku.oppija.ui.service.impl;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
 import fi.vm.sade.haku.oppija.hakemus.aspect.LoggerAspect;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
+import fi.vm.sade.haku.oppija.hakemus.service.HakuPermissionService;
 import fi.vm.sade.haku.oppija.lomake.domain.User;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Phase;
@@ -14,7 +16,6 @@ import fi.vm.sade.haku.oppija.lomake.service.FormService;
 import fi.vm.sade.haku.oppija.lomake.service.UserSession;
 import fi.vm.sade.haku.oppija.lomake.validation.ElementTreeValidator;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidatorFactory;
-import fi.vm.sade.haku.oppija.hakemus.service.HakuPermissionService;
 import fi.vm.sade.haku.oppija.ui.service.ModelResponse;
 import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
@@ -24,6 +25,7 @@ import org.junit.Test;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -48,7 +50,8 @@ public class OfficerUIServiceImplTest {
     private UserSession userSession;
 
     private Application application;
-    private Phase phase = new Phase(ID, ElementUtil.createI18NAsIs("title"), false);
+    private Phase phase = new Phase(ID, ElementUtil.createI18NAsIs("title"), false,
+            Lists.newArrayList("APP_HAKEMUS_READ_UPDATE", "APP_HAKEMUS_CRUD", "APP_HAKEMUS_OPO"));
 
     private Form form;
 
@@ -85,7 +88,9 @@ public class OfficerUIServiceImplTest {
         when(applicationService.getApplicationByOid(OID)).thenReturn(application);
         when(formService.getForm(any(String.class))).thenReturn(form);
         when(formService.getActiveForm(any(String.class))).thenReturn(form);
-        when(hakuPermissionService.userCanUpdateApplication(any(Application.class))).thenReturn(true);
+        Map<String, Boolean> phasesToEdit = new HashMap<String, Boolean>();
+        phasesToEdit.put(ID, true);
+        when(hakuPermissionService.userHasEditRoleToPhases(any(Application.class), any(Form.class))).thenReturn(phasesToEdit);
         User officerUser = new User("1.2.246.562.24.00000000001");
         when(userSession.getUser()).thenReturn(officerUser);
     }
@@ -112,7 +117,7 @@ public class OfficerUIServiceImplTest {
     @Test
     public void testGetOrganizationAndLearningInstitutions() throws Exception {
         ModelResponse modelResponse = officerUIService.getOrganizationAndLearningInstitutions();
-        assertEquals("Model size does not match", 7, modelResponse.getModel().size());
+        assertEquals("Model size does not match", 8, modelResponse.getModel().size());
     }
 
     @Test
