@@ -30,7 +30,7 @@
         </c:otherwise>
     </c:choose>
     <c:choose>
-        <c:when test="${empty application.studentOid}">
+        <c:when test="${it.postProcessAllowed and empty application.studentOid and not empty application.personOid}">
             <a href="#" id="addStudentOid" data-po-show="addStudentOid" class="button small">
                 <fmt:message key="virkailija.hakemus.lisaa.oppijanumero" />
             </a>
