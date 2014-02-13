@@ -30,7 +30,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
     <meta charset="utf-8"/>
-    <haku:icons contextPath="${contextPath}"/>
+    <haku:icons/>
     <link rel="stylesheet" href="${contextPath}/resources/css/oppija.css" type="text/css">
     <!--[if lt IE 9]>
     <link href="${contextPath}/resources/css/ie.css" type="text/css" rel="stylesheet"/>
@@ -60,7 +60,8 @@
             });
         });
     </script>
-    <title><fmt:message key="lomake.opintopolku"/> - <fmt:message key="form.title"/> - <haku:i18nText value="${vaihe.i18nText}"/></title>
+    <title><fmt:message key="lomake.opintopolku"/> - <fmt:message key="form.title"/> - <haku:i18nText
+            value="${vaihe.i18nText}"/></title>
 </head>
 <body>
 <div id="viewport">
@@ -68,6 +69,7 @@
         <div id="sitecontent">
             <div class="content">
                 <a href="https://opintopolku.fi"><fmt:message key="lomake.lisaakoulutuksia"/></a>
+
                 <h1><haku:i18nText value="${form.i18nText}"/> - <fmt:message key="form.title"/></h1>
                 <ul class="form-steps">
                     <c:set var="pastPhases" value="true" scope="request"/>
@@ -91,7 +93,8 @@
                     </c:forEach>
                     <li>
                         <span>
-                            <span class="index"><c:out value="${fn:length(form.children) + 1}"/></span><fmt:message key="lomake.esikatselu"/></span>
+                            <span class="index"><c:out value="${fn:length(form.children) + 1}"/></span><fmt:message
+                                key="lomake.esikatselu"/></span>
                     </li>
                     <li>
                         <span>
@@ -132,7 +135,7 @@
 </div>
 <!-- Piwik -->
 <script src="${contextPath}/resources/piwik/piwik.js" type="text/javascript"></script>
- <!-- End Piwik Code -->
+<!-- End Piwik Code -->
 </body>
 </html>
 

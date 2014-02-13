@@ -20,18 +20,28 @@ package fi.vm.sade.haku.oppija.ui.it;
 import fi.vm.sade.haku.oppija.common.selenium.DummyModelBaseItTest;
 import org.junit.Test;
 
+import static org.junit.Assert.assertTrue;
+
 public class FormIT extends DummyModelBaseItTest {
 
     @Test
     public void testApplicationSystem() {
-        String url = getBaseUrl() + "lomake";
-        driver.get(url);
+
+        navigateTo(getBaseUrl() + "lomake");
+
         findById(ASID);
     }
+
 
     @Test
     public void testPhase() throws Exception {
         navigateToFirstPhase();
         findById("nav-henkilotiedot");
+    }
+
+    protected void elementsPresent(String... locations) {
+        for (String location : locations) {
+            assertTrue("Could not find element " + location, seleniumContainer.getSelenium().isElementPresent(location));
+        }
     }
 }

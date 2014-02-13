@@ -28,7 +28,6 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.PreferenceTable;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.DropdownSelect;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Radio;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionComplexRule;
-import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionRule;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.*;
 import fi.vm.sade.haku.oppija.lomake.validation.validators.RegexFieldValidator;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
@@ -164,8 +163,7 @@ public class HakutoiveetPhaseYhteishakuKevat {
     public static Element createSoraQuestions(final String index) {
         // sora-kysymykset
 
-        RelatedQuestionRule hasSora = new RelatedQuestionRule(index + "_sora_rule",
-                ImmutableList.of(index + "-Koulutus-id-sora"), ElementUtil.KYLLA, false);
+        RelatedQuestionComplexRule hasSora = ElementUtil.createRuleIfVariableIsTrue(index + "_sora_rule", index + "-Koulutus-id-sora");
 
         Radio sora1 = new Radio(index + "_sora_terveys", createI18NText("form.sora.terveys", FORM_MESSAGES));
         sora1.addOption(createI18NText("form.yleinen.ei", FORM_MESSAGES), ElementUtil.EI);
@@ -208,9 +206,8 @@ public class HakutoiveetPhaseYhteishakuKevat {
                 createI18NText("form.hakutoiveet.kaksoistutkinnon.lisakysymys", FORM_MESSAGES));
         addDefaultTrueFalseOptions(radio, FORM_MESSAGES);
         addRequiredValidator(radio, FORM_ERRORS);
-        RelatedQuestionRule hasQuestion = new RelatedQuestionRule(radio.getId() + "_related_question_rule",
-                ImmutableList.of(index + "-Koulutus-id-kaksoistutkinto"), ElementUtil.KYLLA, false);
-
+        RelatedQuestionComplexRule hasQuestion =
+                ElementUtil.createRuleIfVariableIsTrue(radio.getId() + "_related_question_rule", index + "-Koulutus-id-kaksoistutkinto");
         hasQuestion.addChild(radio);
         return hasQuestion;
     }

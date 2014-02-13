@@ -23,12 +23,13 @@
 <fmt:setBundle basename="messages" scope="application"/>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" scope="request"/>
 <c:set var="preview" value="true" scope="request"/>
+<c:set var="phaseCount" value="${fn:length(element.children) + 1}" scope="request"/>
 
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
     <meta charset="utf-8"/>
-    <haku:icons contextPath="${contextPath}"/>
+    <haku:icons/>
     <link rel="stylesheet" href="${contextPath}/resources/css/oppija.css" type="text/css">
     <!--[if lt IE 9]>
     <link href="${contextPath}/resources/css/ie.css" type="text/css" rel="stylesheet"/>
@@ -41,24 +42,9 @@
     <script src="${contextPath}/resources/jquery/xdr.js"></script>
     <script src="${contextPath}/resources/javascript/rules.js"></script>
     <script src="${contextPath}/resources/javascript/master.js"></script>
-    <script>
-        function pastPhase(phaseId) {
-            $('#form-${vaihe.id}').append('<input type="hidden" name="phaseId" value="' + phaseId + '" />');
-            $('#form-${vaihe.id}').submit();
-        }
-        $(document).ready(function () {
-            $("form input:text").each(function () {
-                $(this).keypress(function (event) {
-                    if (event.keyCode == 13) {
-                        event.preventDefault();
-                        return false;
-                    }
-                    return true;
-                })
-            });
-        });
-    </script>
-    <title><fmt:message key="lomake.opintopolku"/> - <fmt:message key="form.title"/> - <fmt:message key="lomake.esikatselu"/></title>
+
+    <title><fmt:message key="lomake.opintopolku"/> - <fmt:message key="form.title"/> - <fmt:message
+            key="lomake.esikatselu"/></title>
 </head>
 <body>
 <div id="viewport">
@@ -67,6 +53,7 @@
         <div id="sitecontent">
             <div class="content">
                 <a href="https://opintopolku.fi"><fmt:message key="lomake.lisaakoulutuksia"/></a>
+
                 <h1><haku:i18nText value="${element.i18nText}"/> - <fmt:message key="form.title"/></h1>
                 <ul class="form-steps">
                     <c:set var="pastPhases" value="true" scope="request"/>
@@ -81,12 +68,12 @@
                     </c:forEach>
                     <li>
                         <a class="current"><span class="index"><c:out
-                                value="${fn:length(element.children) + 1}"/></span><fmt:message
+                                value="${phaseCount + 1}"/></span><fmt:message
                                 key="lomake.esikatselu"/></a>
                     </li>
                     <li>
                         <span>
-                            <span class="index"><c:out value="${fn:length(element.children) + 2}"/></span>
+                            <span class="index"><c:out value="${phaseCount + 2}"/></span>
                             <fmt:message key="lomake.valmis"/>
                         </span>
                     </li>
@@ -97,7 +84,7 @@
             <div class="form">
                 <jsp:include page="../prev_next_buttons_preview.jsp"/>
                 <div class="phase-help">
-                    <div class="help-text"><fmt:message key="form.esikatselu.help" /></div>
+                    <div class="help-text"><fmt:message key="form.esikatselu.help"/></div>
                 </div>
                 <div class="clear"></div>
                 <c:forEach var="child" items="${element.children}">
@@ -111,7 +98,7 @@
 </div>
 <!-- Piwik -->
 <script src="${contextPath}/resources/piwik/piwik.js" type="text/javascript"></script>
- <!-- End Piwik Code -->
+<!-- End Piwik Code -->
 </body>
 </html>
 

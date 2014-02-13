@@ -40,7 +40,7 @@ public class SeleniumContainer {
         this.webDriverBaseUrl = webDriverBaseUrl;
         this.webDriver = new FirefoxDriver();
         this.selenium = new WebDriverBackedSelenium(this.webDriver, this.webDriverBaseUrl);
-        this.webDriver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
+        this.webDriver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
     }
 
     @PreDestroy

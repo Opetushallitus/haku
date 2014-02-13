@@ -222,8 +222,8 @@ public class ApplicationServiceImpl implements ApplicationService {
         String studentOid = application.getStudentOid();
 
         if (isNotEmpty(personOid) && isEmpty(studentOid)) {
-            studentOid = authenticationService.checkStudentOid(application.getPersonOid());
-            application.setStudentOid(studentOid);
+            Person person = authenticationService.checkStudentOid(application.getPersonOid());
+            application.modifyPersonalData(person);
             application.studentIdentificationDone();
         }
 

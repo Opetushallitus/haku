@@ -63,6 +63,7 @@
                             <input id="sendingClass" size="4" type="text" name="sendingClass"/>
                             <input id="sendingSchoolOid" type="hidden"/>
                         </div>
+                        <a href="#" id="notApplied" class="button small"><fmt:message key="virkailija.hakemus.haeEiHakeneet"/></a>
                     </td>
                 </tr>
                 <tr>
@@ -159,8 +160,11 @@
 
             <input id="open-application" class="button secondary small" type="button"
                    value="<fmt:message key="virkailija.hakemus.avaa"/>"/>
+
+            <c:if test="${it.applicationEnterAllowed}">
             <input id="create-application" data-po-show="createApplication" class="button secondary small" type="submit"
                    value="<fmt:message key="virkailija.hakemus.syota"/>"/>
+            </c:if>
 
             <table id="application-table" class="virkailija-table-1">
                 <thead>

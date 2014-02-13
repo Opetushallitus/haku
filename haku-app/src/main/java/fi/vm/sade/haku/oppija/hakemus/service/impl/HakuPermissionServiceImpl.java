@@ -133,6 +133,11 @@ public class HakuPermissionServiceImpl extends AbstractPermissionService impleme
         return false;
     }
 
+    @Override
+    public boolean userCanEnterApplication() {
+        return checkAccess(getRootOrgOid(), getCreateReadUpdateDeleteRole());
+    }
+
     @SuppressWarnings("deprecation")
     private boolean userCanAccessApplication(Application application, String... roles) {
         if (checkAccess(getRootOrgOid(), roles)) {

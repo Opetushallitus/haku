@@ -47,4 +47,9 @@ public class HakuPermissionServiceMockImpl implements HakuPermissionService {
     public boolean userCanPostProcess(Application application) {
         return true;
     }
+
+    @Override
+    public boolean userCanEnterApplication() {
+        return true;
+    }
 }

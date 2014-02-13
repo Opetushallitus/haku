@@ -248,10 +248,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
             );
         } else {
             queries.add(
-                    QueryBuilder.start().or(
-                            QueryBuilder.start("fullName").regex(Pattern.compile("^" + token.toLowerCase())).get(),
-                            QueryBuilder.start("fullName").regex(Pattern.compile(token.toLowerCase())).get()
-                    ).get()
+                    QueryBuilder.start("fullName").regex(Pattern.compile(token.toLowerCase())).get()
             );
         }
         return queries;
@@ -410,7 +407,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
                     QueryBuilder.start(FIELD_LOP_PARENTS_3).regex(orgPattern).get(),
                     QueryBuilder.start(FIELD_LOP_PARENTS_4).regex(orgPattern).get(),
                     QueryBuilder.start(FIELD_LOP_PARENTS_5).regex(orgPattern).get(),
-                    QueryBuilder.start(FIELD_LOP_PARENTS_1).exists(false).get()) // Empty applications
+                    QueryBuilder.start(FIELD_LOP_PARENTS_1).is(null).get()) // Empty applications
                     .get());
         }
 

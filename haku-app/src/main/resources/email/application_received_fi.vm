@@ -9,6 +9,12 @@ Hakutoiveesi:
 $preference
 
 #end
+#if ($discretionary)
+
+Hait harkintaan perustuvassa valinnassa. Sinun tulee toimittaa hakuajan päättymiseen mennessä
+oppilaitokseen seuraavat tiedot: tulostettu hakemus sekä perustelut ja todistukset, joihin vetoat.
+
+#end
 #if ($athlete)
 
 Haet urheilijana ammatilliseen koulutukseen. Lisätietoja löydät osoitteesta

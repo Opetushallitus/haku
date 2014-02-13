@@ -32,11 +32,6 @@ import java.io.IOException;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.*;
 
 
-/**
- * @author jukka
- * @version 10/3/123:25 PM}
- * @since 1.1
- */
 public class SocialSecurityNumberIT extends AbstractSeleniumBase {
     private ApplicationSystemHelper applicationSystemHelper;
 

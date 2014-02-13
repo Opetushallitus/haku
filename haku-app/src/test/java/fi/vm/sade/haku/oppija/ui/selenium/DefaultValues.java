@@ -45,6 +45,7 @@ public final class DefaultValues {
         koulutustausta_pk.put("POHJAKOULUTUS", "1");
         koulutustausta_pk.put("PK_PAATTOTODISTUSVUOSI", "2012");
         koulutustausta_pk.put("KOULUTUSPAIKKA_AMMATILLISEEN_TUTKINTOON", "false");
+        koulutustausta_pk.put("LISAKOULUTUS_KYMPPI", "true");
         koulutustausta_pk.put("perusopetuksen_kieli", "FI");
 
         lisatiedot.put("TYOKOKEMUSKUUKAUDET", "10");

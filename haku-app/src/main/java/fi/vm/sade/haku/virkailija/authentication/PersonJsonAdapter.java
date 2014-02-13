@@ -13,67 +13,28 @@ public class PersonJsonAdapter implements JsonSerializer<Person>, JsonDeserializ
 
     private static Logger log = LoggerFactory.getLogger(PersonJsonAdapter.class);
 
-// byHetu
 //    {
-//            "etunimet": "aa",
-//            "syntymaaika": null,
-//            "passinnumero": null,
-//            "hetu": "123456-789",
-//            "kutsumanimi": "aa",
-//            "oidHenkilo": "1.2.246.562.24.71944845619",
-//            "oppijanumero": null,
-//            "sukunimi": "AA",
-//            "sukupuoli": null,
-//            "turvakielto": null,
-//            "henkiloTyyppi": "OPPIJA",
-//            "eiSuomalaistaHetua": false,
-//            "passivoitu": false,
-//            "yksiloity": false,
-//            "kayttajatiedot": {
-//            "username": "",
-//            "kielisyys": [ {
-//                "kieliKoodi": "fi",
-//                "kieliTyyppi": "suomi" }
-//            ],
-//            "kansalaisuus": [ { "kansalaisuusKoodi": "Suomi" } ]
-//    }
-
-//    by oid
-//    {
-//        "id": 1,
-//            "etunimet": "ROOT",
-//            "syntymaaika": null,
-//            "passinnumero": null,
-//            "hetu": null,
-//            "kutsumanimi": "ROOT",
-//            "oidHenkilo": "1.2.246.562.24.00000000001",
-//            "oppijanumero": null,
-//            "sukunimi": "USER",
-//            "sukupuoli": "MIES",
-//            "turvakielto": false,
-//            "henkiloTyyppi": "VIRKAILIJA",
-//            "eiSuomalaistaHetua": false,
-//            "passivoitu": false,
-//            "yksiloity": true,
-//            "asiointiKieli": {
-//                "kieliKoodi": "fi",
-//                "kieliTyyppi": "suomi"
-//            },
+//        "id": 93342,
+//        "etunimet": "Ville Valtteri",
+//        "syntymaaika": null,
+//        "passinnumero": null,
+//        "hetu": "201298-995Y",
+//        "kutsumanimi": "Ville",
+//        "oidHenkilo": "1.2.246.562.24.50227402431",
+//        "oppijanumero": null,
+//        "sukunimi": "Virtanen",
+//        "sukupuoli": "MIES",
+//        "turvakielto": null,
+//        "henkiloTyyppi": "OPPIJA",
+//        "eiSuomalaistaHetua": false,
+//        "passivoitu": false,
+//        "yksiloity": false,
+//        "duplicate": false,
+//        "asiointiKieli": null,
 //        "yksilointitieto": null,
-//            "kayttajatiedot": {
-//        "username": "ophadmin"
-//    },
-//        "kielisyys": [
-//        {
-//            "kieliKoodi": "fi",
-//                "kieliTyyppi": "suomi"
-//        }
-//        ],
-//        "kansalaisuus": [
-//        {
-//            "kansalaisuusKoodi": "Suomi"
-//        }
-//        ],
+//        "kayttajatiedot": null,
+//        "kielisyys": [],
+//        "kansalaisuus": [],
 //        "yhteystiedotRyhma": []
 //    }
 
@@ -121,6 +82,7 @@ public class PersonJsonAdapter implements JsonSerializer<Person>, JsonDeserializ
                 .setLastName(getJsonString(personJson, "sukunimi"))
                 .setSocialSecurityNumber(getJsonString(personJson, "hetu"))
                 .setPersonOid(getJsonString(personJson, "oidHenkilo"))
+                .setStudentOid(getJsonString(personJson, "oppijanumero"))
                 .setNoSocialSecurityNumber(getJsonBoolean(personJson, "eiSuomalaistaHetua"));
 
         log.debug("Deserialized basic info");

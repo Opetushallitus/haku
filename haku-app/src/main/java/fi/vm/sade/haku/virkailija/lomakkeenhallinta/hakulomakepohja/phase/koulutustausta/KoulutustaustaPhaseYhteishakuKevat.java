@@ -29,7 +29,6 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.DropdownSelect;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Radio;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.TextQuestion;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionComplexRule;
-import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionRule;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.*;
 import fi.vm.sade.haku.oppija.lomake.validation.validators.AlwaysFailsValidator;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
@@ -47,8 +46,6 @@ public final class KoulutustaustaPhaseYhteishakuKevat {
     public static final String TUTKINTO_ULKOMAILLA_NOTIFICATION_ID = "tutkinto7-notification";
     public static final String TUTKINTO_KESKEYTNYT_NOTIFICATION_ID = "tutkinto5-notification";
 
-    public static final String TUTKINTO_KESKEYTYNYT_RULE = "tutkinto_7_rule";
-    public static final String TUTKINTO_ULKOMAILLA_RULE = "tutkinto_0_rule";
     public static final String PAATTOTODISTUSVUOSI_PATTERN = "^(19[0-9][0-9]|200[0-9]|201[0-4])$";
 
     private static final String FORM_MESSAGES = "form_messages_yhteishaku_kevat";
@@ -128,11 +125,9 @@ public final class KoulutustaustaPhaseYhteishakuKevat {
                 createI18NText("form.koulutustausta.keskeytynyt.huom", FORM_MESSAGES),
                 Notification.NotificationType.INFO);
 
-        RelatedQuestionRule keskeytynytRule = new RelatedQuestionRule(TUTKINTO_KESKEYTYNYT_RULE,
-                millatutkinnolla.getId(), KESKEYTYNYT, false);
+        RelatedQuestionComplexRule keskeytynytRule = createVarEqualsToValueRule(millatutkinnolla.getId(), KESKEYTYNYT);
 
-        RelatedQuestionRule ulkomaillaSuoritettuTutkintoRule = new RelatedQuestionRule(TUTKINTO_ULKOMAILLA_RULE,
-                millatutkinnolla.getId(), ULKOMAINEN_TUTKINTO, false);
+        RelatedQuestionComplexRule ulkomaillaSuoritettuTutkintoRule = createVarEqualsToValueRule(millatutkinnolla.getId(), ULKOMAINEN_TUTKINTO);
 
         ulkomaillaSuoritettuTutkintoRule.addChild(tutkintoUlkomaillaNotification);
         keskeytynytRule.addChild(tutkintoKeskeytynytNotification);
@@ -164,22 +159,20 @@ public final class KoulutustaustaPhaseYhteishakuKevat {
                         FORM_MESSAGES))
         );
 
-        RelatedQuestionRule pkKysymyksetRule = new RelatedQuestionRule("rule3", millatutkinnolla.getId(), "("
-                + PERUSKOULU + "|"
-                + OSITTAIN_YKSILOLLISTETTY + "|"
-                + ERITYISOPETUKSEN_YKSILOLLISTETTY + "|"
-                + YKSILOLLISTETTY + ")", false);
+        RelatedQuestionComplexRule pkKysymyksetRule = createVarEqualsToValueRule(millatutkinnolla.getId(),
+                PERUSKOULU, OSITTAIN_YKSILOLLISTETTY, ERITYISOPETUKSEN_YKSILOLLISTETTY, YKSILOLLISTETTY);
 
-        RelatedQuestionRule paattotodistusvuosiPeruskouluRule = new RelatedQuestionRule("rule8",
-                paattotodistusvuosiPeruskoulu.getId(), "^(19[0-9][0-9]|200[0-9]|201[0-1])$", false);
+        RelatedQuestionComplexRule paattotodistusvuosiPeruskouluRule = createRegexpRule(paattotodistusvuosiPeruskoulu.getId(), "^(19[0-9][0-9]|200[0-9]|201[0-1])$");
 
-        Radio koulutuspaikkaAmmatillisenTutkintoon = new Radio(
-                "KOULUTUSPAIKKA_AMMATILLISEEN_TUTKINTOON",
+        Radio koulutuspaikkaAmmatillisenTutkintoon = new Radio("KOULUTUSPAIKKA_AMMATILLISEEN_TUTKINTOON",
                 createI18NText("form.koulutustausta.ammatillinenKoulutuspaikka", FORM_MESSAGES));
         addYesAndIDontOptions(koulutuspaikkaAmmatillisenTutkintoon, FORM_MESSAGES);
         addRequiredValidator(koulutuspaikkaAmmatillisenTutkintoon, FORM_ERRORS);
 
-        Expr kysytaankoKoulutuspaikka = new Not(new Equals(new Variable(paattotodistusvuosiPeruskoulu.getId()), new Value(String.valueOf(hakuvuosi))));
+
+        Expr vuosiSyotetty = new Regexp(paattotodistusvuosiPeruskoulu.getId(), PAATTOTODISTUSVUOSI_PATTERN);
+        Expr kysytaankoKoulutuspaikka = new And(new Not(new Equals(new Variable(paattotodistusvuosiPeruskoulu.getId()), new Value(String.valueOf(hakuvuosi)))), vuosiSyotetty);
+
         RelatedQuestionComplexRule onkoTodistusSaatuKuluneenaVuonna = new RelatedQuestionComplexRule(ElementUtil.randomId(), kysytaankoKoulutuspaikka);
         onkoTodistusSaatuKuluneenaVuonna.addChild(koulutuspaikkaAmmatillisenTutkintoon);
 
@@ -196,7 +189,7 @@ public final class KoulutustaustaPhaseYhteishakuKevat {
         lukioPaattotodistusVuosi.addAttribute("maxlength", "4");
         lukioPaattotodistusVuosi.setInline(true);
 
-        RelatedQuestionRule tuoreYoTodistus = new RelatedQuestionRule("tuoreYoTodistus", lukioPaattotodistusVuosi.getId(), String.valueOf(hakuvuosi), false);
+        RelatedQuestionComplexRule tuoreYoTodistus = createVarEqualsToValueRule(lukioPaattotodistusVuosi.getId(), String.valueOf(hakuvuosi));
         DropdownSelect lahtokoulu = new DropdownSelect("lahtokoulu", ElementUtil.createI18NText("form.koulutustausta.lukio.oppilaitos", FORM_MESSAGES), "");
         lahtokoulu.addOption(ElementUtil.createI18NText("form.koulutustausta.lukio.valitseOppilaitos", FORM_MESSAGES, true), "");
         lahtokoulu.addOptions(koodistoService.getLukioKoulukoodit());
@@ -218,7 +211,7 @@ public final class KoulutustaustaPhaseYhteishakuKevat {
         lukioGroup.addChild(lukioPaattotodistusVuosi);
         lukioGroup.addChild(ylioppilastutkinto);
 
-        RelatedQuestionRule lukioRule = new RelatedQuestionRule("rule7", millatutkinnolla.getId(), YLIOPPILAS, false);
+        RelatedQuestionComplexRule lukioRule = createVarEqualsToValueRule(millatutkinnolla.getId(), YLIOPPILAS);
         lukioRule.addChild(lukioGroup);
 
         lukioRule.addChild(tuoreYoTodistus);
@@ -235,8 +228,7 @@ public final class KoulutustaustaPhaseYhteishakuKevat {
 
         paattotodistusvuosiPeruskouluRule.addChild(suorittanutAmmatillisenTutkinnon);
 
-        RelatedQuestionRule suorittanutTutkinnonRule = new RelatedQuestionRule(ElementUtil.randomId(),
-                suorittanutAmmatillisenTutkinnon.getId(), "^true", false);
+        RelatedQuestionComplexRule suorittanutTutkinnonRule = createRuleIfVariableIsTrue(ElementUtil.randomId(), suorittanutAmmatillisenTutkinnon.getId());
         Notification warning = new Notification(
                 ElementUtil.randomId(),
                 createI18NText("form.koulutustausta.ammatillinenSuoritettu.huom", FORM_MESSAGES),
@@ -253,8 +245,8 @@ public final class KoulutustaustaPhaseYhteishakuKevat {
 
         lukioRule.addChild(suorittanutAmmatillisenTutkinnonLukio);
 
-        RelatedQuestionRule suorittanutTutkinnonLukioRule = new RelatedQuestionRule(ElementUtil.randomId(),
-                suorittanutAmmatillisenTutkinnonLukio.getId(), "^true", false);
+        RelatedQuestionComplexRule suorittanutTutkinnonLukioRule = createRuleIfVariableIsTrue(ElementUtil.randomId(),
+                suorittanutAmmatillisenTutkinnonLukio.getId());
         Notification warningLukio = new Notification(
                 ElementUtil.randomId(),
                 createI18NText("form.koulutustausta.ammatillinenSuoritettu.lukio.huom", FORM_MESSAGES),
