@@ -43,7 +43,7 @@ public class AdditionalGradeQuestionIT extends DummyModelBaseItTest {
 
         // select a LOI
 
-        setValue("preference1-Opetuspiste", "Esp");
+        typeWithoutTab("preference1-Opetuspiste", "Esp");
         clickLinkByText(DefaultValues.OPETUSPISTE);
         click("//option[@data-id='1.2.246.562.14.79893512065']");
         fillOut(defaultValues.preference1);

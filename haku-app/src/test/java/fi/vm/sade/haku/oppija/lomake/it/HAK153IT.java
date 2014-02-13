@@ -32,7 +32,7 @@ public class HAK153IT extends DummyModelBaseItTest {
         nextPhase();
         fillOut(defaultValues.koulutustausta_pk);
         nextPhase();
-        setValue("preference1-Opetuspiste", "Esp");
+        typeWithoutTab("preference1-Opetuspiste", "Esp");
         clickLinkByText("FAKTIA, Espoo op");
         seleniumContainer.getDriver().findElement(By.xpath("//*[@data-sora='true']")).click();
         findByXPath("//a[@href='#' and @data-po-show='sora-popup' and @class='popup-link']");

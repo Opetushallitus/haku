@@ -101,17 +101,16 @@ public class HAK305IT extends DummyModelBaseItTest {
     }
 
     private void fillOutTheKoulutustaustaPhase(final String opetuskieli) {
-        clickByNameAndValue(KYSYMYS_POHJAKOULUTUS, TUTKINTO_PERUSKOULU);
-        clickByNameAndValue("KOULUTUSPAIKKA_AMMATILLISEEN_TUTKINTOON", "false");
-        findByIdAndClick("LISAKOULUTUS_KYMPPI");
-        findById("PK_PAATTOTODISTUSVUOSI");
-        setPerusopetuksenKieli(opetuskieli);
+        setValue(KYSYMYS_POHJAKOULUTUS, TUTKINTO_PERUSKOULU);
         setValue("PK_PAATTOTODISTUSVUOSI", "2012");
+        setValue("LISAKOULUTUS_KYMPPI", "true");
+        setValue("KOULUTUSPAIKKA_AMMATILLISEEN_TUTKINTOON", "false");
+        setPerusopetuksenKieli(opetuskieli);
     }
 
     private void fillInTheHakutoiveetPhase() {
         findById("preference1-Opetuspiste");
-        type("preference1-Opetuspiste", "Esp");
+        typeWithoutTab("preference1-Opetuspiste", "Esp");
         clickLinkByText("FAKTIA, Espoo op");
         click("//option[@value='Kaivosalan perustutkinto, pk']");
         fillOut(defaultValues.preference1);
