@@ -97,7 +97,11 @@
 
         <div class="grid16-16">
             <h3><c:out value="${answers['Etunimet']}" escapeXml="true"/>&nbsp;<c:out
-                    value="${answers['Sukunimi']}" escapeXml="true"/></h3>
+                    value="${answers['Sukunimi']}" escapeXml="true"/>
+                <c:if test="${not empty answers['Etunimet_user'] or not empty answers['Sukunimi_user']}">
+                    &nbsp;<span title="<c:out value="${answers['Etunimet_user']}" />&nbsp;<c:out value="${answers['Sukunimi_user']}" />">[*]</span>
+                </c:if>
+                    </h3>
             <table class="margin-top-2">
                 <c:if test="${application.state eq 'ACTIVE'}">
                     <fmt:message key="virkailija.hakemus.tila.voimassa" var="msg"/>
