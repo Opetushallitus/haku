@@ -56,7 +56,9 @@
 </script>
 <div id="viewport">
     <div id="overlay">
-        <jsp:include page="createApplication.jsp"/>
+        <c:if test="${it.applicationEnterAllowed}">
+            <jsp:include page="createApplication.jsp"/>
+        </c:if>
     </div>
     <div id="app-container">
 
