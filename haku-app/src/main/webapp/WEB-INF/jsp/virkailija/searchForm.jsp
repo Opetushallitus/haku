@@ -63,6 +63,7 @@
                             <input id="sendingClass" size="4" type="text" name="sendingClass"/>
                             <input id="sendingSchoolOid" type="hidden"/>
                         </div>
+                        <a href="#" id="notApplied" class="button small"><fmt:message key="virkailija.hakemus.haeEiHakeneet"/></a>
                     </td>
                 </tr>
                 <tr>
