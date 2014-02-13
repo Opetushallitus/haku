@@ -79,11 +79,9 @@ public abstract class AbstractSeleniumBase extends TomcatContainerBase {
 
     protected void clickByNameAndValue(final String name, final String value) {
         seleniumContainer.getSelenium().click("//*[@name='" + name + "' and @value='" + value + "']");
-        seleniumContainer.getSelenium().click("//*[@name='" + name + "' and @value='" + value + "']");
-        seleniumContainer.getSelenium().click("//*[@name='" + name + "' and @value='" + value + "']");
     }
 
-    protected WebElement waitAndFind(final By by) {
+    protected WebElement findBy(final By by) {
         WebDriver driver = seleniumContainer.getDriver();
         return driver.findElement(by);
     }
@@ -104,12 +102,16 @@ public abstract class AbstractSeleniumBase extends TomcatContainerBase {
         return seleniumContainer.getSelenium().getText("//*[@id = '" + id + "']").trim();
     }
 
-    protected void type(final String locator, final String text) {
-        seleniumContainer.getSelenium().typeKeys(locator, text);
+    protected void type(final String locator, final String text, boolean includeTab) {
+        seleniumContainer.getSelenium().typeKeys(locator, text + ((includeTab) ? "\t" : ""));
+    }
+
+    protected void typeWithoutTab(final String locator, final String text) {
+        type(locator, text, false);
     }
 
     protected void selectByValue(final String id, final String value) {
-        Select select = new Select(waitAndFind(new By.ById(id)));
+        Select select = new Select(findBy(new By.ById(id)));
         select.selectByValue(value);
     }
 
@@ -119,12 +121,12 @@ public abstract class AbstractSeleniumBase extends TomcatContainerBase {
 
     protected void findById(final String... ids) {
         for (String id : ids) {
-            waitAndFind(new By.ById(id));
+            findBy(new By.ById(id));
         }
     }
 
     protected WebElement findByXPath(final String xpath) {
-        return waitAndFind(By.xpath(xpath));
+        return findBy(By.xpath(xpath));
     }
 
 

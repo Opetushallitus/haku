@@ -64,8 +64,7 @@ public class WorkExperienceThemeIT extends DummyModelBaseItTest {
 
         nextPhase();
 
-        setValue("preference1-Opetuspiste", "Esp");
-
+        typeWithoutTab("preference1-Opetuspiste", "Esp");
         clickLinkByText("FAKTIA, Espoo op");
     }
 }

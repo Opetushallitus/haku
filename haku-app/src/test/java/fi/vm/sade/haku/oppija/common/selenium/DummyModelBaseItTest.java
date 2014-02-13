@@ -63,10 +63,12 @@ public abstract class DummyModelBaseItTest extends AbstractSeleniumBase {
                 if ("radio".equals(type)) {
                     clickByNameAndValue(id, value);
                 } else if ("checkbox".equals(type)) {
-                    element.click();
+                    click(id);
                 } else {
-                    seleniumContainer.getSelenium().typeKeys(id, value);
+                    type(id, value, true);
                 }
+            } else {
+                type(id, value, true);
             }
         }
 

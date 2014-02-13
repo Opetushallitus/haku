@@ -53,7 +53,7 @@ public class LomakeIT extends DummyModelBaseItTest {
 
         findByIdAndClick("addPuhelinnumero2Rule-link");
         findById("matkapuhelinnumero2");
-        type("matkapuhelinnumero2", "09-123 456");
+        setValue("matkapuhelinnumero2", "09-123 456");
 
         nextPhase();
 
@@ -63,20 +63,20 @@ public class LomakeIT extends DummyModelBaseItTest {
         setValue("kotikunta", "jalasjarvi");
 
         findById("Postinumero");
-        type("lahiosoite", "Katu 1");
-        type("Postinumero", "00100");
+        setValue("lahiosoite", "Katu 1");
+        setValue("Postinumero", "00100");
 
         nextPhase();
 
         testHAK123AandHAK124();
         clickByNameAndValue(KYSYMYS_POHJAKOULUTUS, TUTKINTO_YLIOPPILAS);
         findById("lukioPaattotodistusVuosi");
-        type("lukioPaattotodistusVuosi", "2012");
+        setValue("lukioPaattotodistusVuosi", "2012");
         clickByNameAndValue("ammatillinenTutkintoSuoritettu", "false");
         setValue("lukion_kieli", "FI");
         nextPhase();
 
-        setValue("preference1-Opetuspiste", "sturen");
+        typeWithoutTab("preference1-Opetuspiste", "sturen");
         clickLinkByText("Stadin ammattiopisto, Sturenkadun toimipaikka");
         driver.findElement(By.xpath("//option[@data-id='1.2.246.562.5.20176855623']")).click();
         prevPhase();
@@ -84,18 +84,17 @@ public class LomakeIT extends DummyModelBaseItTest {
         clickByNameAndValue(KYSYMYS_POHJAKOULUTUS, TUTKINTO_PERUSKOULU);
 
         findById("PK_PAATTOTODISTUSVUOSI");
-        type("PK_PAATTOTODISTUSVUOSI", "2013");
+        setValue("PK_PAATTOTODISTUSVUOSI", "2013");
 
         findByIdAndClick("LISAKOULUTUS_KYMPPI", "LISAKOULUTUS_VAMMAISTEN", "LISAKOULUTUS_TALOUS", "LISAKOULUTUS_AMMATTISTARTTI");
-        screenshot("koulutuspaikka");
-        clickByNameAndValue("KOULUTUSPAIKKA_AMMATILLISEEN_TUTKINTOON", "false");
         setValue("perusopetuksen_kieli", "FI");
+        setValue("KOULUTUSPAIKKA_AMMATILLISEEN_TUTKINTOON", "false");
         nextPhase();
 
         assertTrue("Warning text 'ristiriita' not found", !findByClassName("warning").isEmpty());
 
         //Skip toimipiste
-        setValue("preference1-Opetuspiste", "Esp");
+        typeWithoutTab("preference1-Opetuspiste", "Esp");
         clickLinkByText("FAKTIA, Espoo op");
 
         driver.findElement(By.xpath("//option[@data-id='1.2.246.562.14.79893512065']")).click();
@@ -120,7 +119,7 @@ public class LomakeIT extends DummyModelBaseItTest {
 
         // Ei mene läpi, työkokemus syöttämättä
 
-        type("TYOKOKEMUSKUUKAUDET", "1001");
+        setValue("TYOKOKEMUSKUUKAUDET", "1001");
         nextPhase();
         // Ei mene läpi, työkokemus > 1000 kuukautta
         nextPhase();

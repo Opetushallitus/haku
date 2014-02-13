@@ -81,7 +81,7 @@ public class OfficerIT extends DummyModelBaseItTest {
         editLink.click();
         findByIdAndClick("lupaMarkkinointi");
         seleniumContainer.getDriver().findElement(new By.ByClassName("save")).click();
-        type("note-text", "Uusi kommentti");
+        setValue("note-text", "Uusi kommentti");
         findByIdAndClick("note-create");
         passivate();
 
@@ -104,7 +104,7 @@ public class OfficerIT extends DummyModelBaseItTest {
     @Test
     public void testOrganization() throws Exception {
         seleniumContainer.getDriver().findElement(new By.ByClassName("label")).click();
-        type("searchString", "Espoo");
+        setValue("searchString", "Espoo");
         findByIdAndClick("search-organizations");
         findById("1.2.246.562.10.10108401950");
         findByIdAndClick("search-organizations");
@@ -259,13 +259,13 @@ public class OfficerIT extends DummyModelBaseItTest {
 
     private void passivate() {
         findByIdAndClick("passivateApplication");
-        type("passivation-reason", "reason");
+        setValue("passivation-reason", "reason");
         findByIdAndClick("submit_confirm");
     }
 
     private List<WebElement> searchByPreference(final String preference) {
         clearSearch();
-        type("application-preference", preference);
+        setValue("application-preference", preference);
         clickSearch();
         return findByClassName("application-link");
     }
