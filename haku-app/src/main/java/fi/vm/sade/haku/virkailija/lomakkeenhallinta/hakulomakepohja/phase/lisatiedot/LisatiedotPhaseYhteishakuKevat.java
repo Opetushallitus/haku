@@ -16,6 +16,7 @@
 
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.lisatiedot;
 
+import com.google.common.collect.Lists;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Phase;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.MessageBundleNames;
 
@@ -35,7 +36,8 @@ public final class LisatiedotPhaseYhteishakuKevat {
     }
 
     public static Phase create() {
-        Phase lisatiedot = new Phase("lisatiedot", createI18NText("form.lisatiedot.otsikko", FORM_MESSAGES), false);
+        Phase lisatiedot = new Phase("lisatiedot", createI18NText("form.lisatiedot.otsikko", FORM_MESSAGES), false,
+                Lists.newArrayList("APP_HAKEMUS_READ_UPDATE", "APP_HAKEMUS_CRUD", "APP_HAKEMUS_OPO"));
         lisatiedot.addChild(createTyokokemus(MESSAGE_BUNDLE_NAMES));
         lisatiedot.addChild(createLupatiedot(MESSAGE_BUNDLE_NAMES));
         lisatiedot.addChild(createUrheilijanLisakysymykset(MESSAGE_BUNDLE_NAMES));

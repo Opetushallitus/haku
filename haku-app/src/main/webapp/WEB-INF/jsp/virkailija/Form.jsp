@@ -4,6 +4,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="haku" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="virkailija" tagdir="/WEB-INF/tags/virkailija" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%--
   ~ Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
   ~
@@ -64,6 +65,7 @@
     </c:if>
 
 <div id="viewport">
+
     <div id="overlay">
         <c:choose>
             <c:when test="${preview}">
@@ -88,7 +90,6 @@
             </c:when>
         </c:choose>
     </div>
-
     <div id="wrapper" class="virkailija">
 
         <virkailija:headerButtons oid="${application.oid}" preview="${preview}" applicationSystem="${applicationSystem}"/>

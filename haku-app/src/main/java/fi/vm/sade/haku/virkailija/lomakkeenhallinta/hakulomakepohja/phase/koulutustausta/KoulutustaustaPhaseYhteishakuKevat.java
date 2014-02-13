@@ -17,6 +17,7 @@
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.koulutustausta;
 
 import com.google.common.base.Function;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Notification;
@@ -59,7 +60,7 @@ public final class KoulutustaustaPhaseYhteishakuKevat {
 
     public static Phase create(final KoodistoService koodistoService, ApplicationSystem as) {
         Phase koulutustausta = new Phase("koulutustausta", createI18NText("form.koulutustausta.otsikko",
-                FORM_MESSAGES), false);
+                FORM_MESSAGES), false, Lists.newArrayList("APP_HAKEMUS_READ_UPDATE", "APP_HAKEMUS_CRUD", "APP_HAKEMUS_OPO"));
         Theme koulutustaustaRyhma = new Theme("KoulutustaustaGrp", createI18NText("form.koulutustausta.otsikko",
                 FORM_MESSAGES), true);
         koulutustausta.addChild(koulutustaustaRyhma);

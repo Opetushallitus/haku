@@ -17,6 +17,7 @@
 package fi.vm.sade.haku.oppija.ui.selenium;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
 import fi.vm.sade.haku.oppija.common.selenium.DummyModelBaseItTest;
 import fi.vm.sade.haku.oppija.lomake.ApplicationSystemHelper;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
@@ -54,7 +55,8 @@ public class PostalCodeIT extends DummyModelBaseItTest {
     public void init() throws IOException {
         Form form = new Form(randomId(), createI18NAsIs(randomId()));
         applicationSystem = ElementUtil.createActiveApplicationSystem(randomId(), form);
-        Phase phase = new Phase(randomId(), createI18NAsIs(randomId()), false);
+        Phase phase = new Phase(randomId(), createI18NAsIs(randomId()), false,
+                Lists.newArrayList("APP_HAKEMUS_READ_UPDATE", "APP_HAKEMUS_CRUD", "APP_HAKEMUS_OPO"));
         form.addChild(phase);
 
         Theme theme = new Theme(randomId(), createI18NAsIs(randomId()), true);

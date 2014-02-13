@@ -116,7 +116,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         ModelResponse modelResponse =
                 new ModelResponse(application, form, element, validationResult, koulutusinformaatioBaseUrl);
         modelResponse.addObjectToModel("preview", "esikatselu".equals(phaseId));
-        modelResponse.addObjectToModel("virkailijaEditAllowed", hakuPermissionService.userCanUpdateApplication(application));
+        modelResponse.addObjectToModel("phaseEditAllowed", hakuPermissionService.userHasEditRoleToPhases(application, form));
         modelResponse.addObjectToModel("virkailijaDeleteAllowed", hakuPermissionService.userCanDeleteApplication(application));
         modelResponse.addObjectToModel("postProcessAllowed", hakuPermissionService.userCanPostProcess(application));
         modelResponse.addObjectToModel("applicationSystem", as);
@@ -154,12 +154,13 @@ public class OfficerUIServiceImpl implements OfficerUIService {
             throw new ResourceNotFoundException("Passive application");
         }
 
-        checkUpdatePermission(application);
+        final Form form = formService.getForm(application.getApplicationSystemId());
+        checkUpdatePermission(application, form, applicationPhase.getPhaseId());
 
         loggerAspect.logUpdateApplication(application, applicationPhase);
 
         application.addVaiheenVastaukset(applicationPhase.getPhaseId(), applicationPhase.getAnswers());
-        final Form form = formService.getForm(application.getApplicationSystemId());
+
         Map<String, String> allAnswers = application.getVastauksetMergedIgnoringPhase(applicationPhase.getPhaseId());
         allAnswers.putAll(applicationPhase.getAnswers());
         ValidationResult formValidationResult = elementTreeValidator.validate(new ValidationInput(form,
@@ -181,8 +182,9 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         return new ModelResponse(application, form, phase, phaseValidationResult, koulutusinformaatioBaseUrl);
     }
 
-    private void checkUpdatePermission(Application application) throws ResourceNotFoundException {
-        if (!hakuPermissionService.userCanUpdateApplication(application)) {
+    private void checkUpdatePermission(Application application, Form form, String phaseId) throws ResourceNotFoundException {
+        Boolean permission = hakuPermissionService.userHasEditRoleToPhases(application, form).get(phaseId);
+        if (permission == null || !permission) {
             throw new ResourceNotFoundException("User can not update application " + application.getOid());
         }
     }

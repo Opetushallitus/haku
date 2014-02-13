@@ -93,6 +93,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     private static final String FIELD_APPLICATION_STATE = "state";
     private static final String FIELD_LAST_AUTOMATED_PROCESSING_TIME = "lastAutomatedProcessingTime";
     private static final String FIELD_SENDING_SCHOOL = "answers.koulutustausta.lahtokoulu";
+    private static final String FIELD_SENDING_SCHOOL_PARENTS = "answers.koulutustausta.lahtokoulu-parents";
     private static final String FIELD_SENDING_CLASS = "answers.koulutustausta.lahtoluokka";
     private static final String FIELD_SSN = "answers.henkilotiedot.Henkilotunnus";
     private static final String EXISTS = "$exists";
@@ -395,8 +396,8 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
 
     private ArrayList<DBObject> filterByOrganization() {
 
-        List<String> orgs = authenticationService.getOrganisaatioHenkilo();
-        orgs = hakuPermissionService.userCanReadApplications(orgs);
+        List<String> henkOrgs = authenticationService.getOrganisaatioHenkilo();
+        List<String> orgs = hakuPermissionService.userCanReadApplications(henkOrgs);
 
         LOG.debug("OrganisaatioHenkilo.canRead().count() == {} ", orgs.size());
         ArrayList<DBObject> queries = new ArrayList<DBObject>(orgs.size());
@@ -411,6 +412,14 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
                     QueryBuilder.start(FIELD_LOP_PARENTS_5).regex(orgPattern).get(),
                     QueryBuilder.start(FIELD_LOP_PARENTS_1).exists(false).get()) // Empty applications
                     .get());
+        }
+
+        List<String> opoOrgs = hakuPermissionService.userHasOpoRole(henkOrgs);
+        if (!opoOrgs.isEmpty()) {
+            for (String opoOrg : opoOrgs) {
+                Pattern opoOrgPattern = Pattern.compile(opoOrg);
+                queries.add(QueryBuilder.start(FIELD_SENDING_SCHOOL_PARENTS).regex(opoOrgPattern).get());
+            }
         }
 
         LOG.debug("queries: {}", queries.size());

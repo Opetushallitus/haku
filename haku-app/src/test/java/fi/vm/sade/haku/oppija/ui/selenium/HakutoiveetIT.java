@@ -16,6 +16,7 @@
 
 package fi.vm.sade.haku.oppija.ui.selenium;
 
+import com.google.common.collect.Lists;
 import com.thoughtworks.selenium.Selenium;
 import fi.vm.sade.haku.oppija.common.selenium.AbstractSeleniumBase;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
@@ -50,7 +51,8 @@ public class HakutoiveetIT extends AbstractSeleniumBase {
     public void init() throws IOException {
         Form form = new Form("lomake", createI18NAsIs("yhteishaku"));
         activeApplicationSystem = createActiveApplicationSystem(ASID, form);
-        Phase hakutoiveet = new Phase("hakutoiveet", createI18NAsIs("Hakutoiveet"), false);
+        Phase hakutoiveet = new Phase("hakutoiveet", createI18NAsIs("Hakutoiveet"), false,
+                Lists.newArrayList("APP_HAKEMUS_READ_UPDATE", "APP_HAKEMUS_CRUD"));
         form.addChild(hakutoiveet);
 
 

@@ -50,6 +50,7 @@ public final class OppijaConstants {
     public static final String ELEMENT_ID_EMAIL = "Sähköposti";
     public static final String ELEMENT_ID_SEX = "Sukupuoli";
     public static final String ELEMENT_ID_SENDING_SCHOOL = "lahtokoulu";
+    public static final String ELEMENT_ID_SENDING_SCHOOL_PARENTS = "lahtokoulu-parents";
     public static final String ELEMENT_ID_SENDING_CLASS = "lahtoluokka";
     public static final String ELEMENT_ID_HOME_CITY = "kotikunta";
     public static final String ELEMENT_ID_LANGUAGE = "äidinkieli";

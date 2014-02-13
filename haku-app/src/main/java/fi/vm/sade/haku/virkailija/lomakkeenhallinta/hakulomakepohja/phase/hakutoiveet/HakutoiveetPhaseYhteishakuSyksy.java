@@ -17,6 +17,7 @@
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.hakutoiveet;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.HiddenValue;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Phase;
@@ -44,7 +45,8 @@ public class HakutoiveetPhaseYhteishakuSyksy {
     public static Phase create() {
 
         // Hakutoiveet
-        Phase hakutoiveet = new Phase(HAKUTOIVEET_PHASE_ID, createI18NText("form.hakutoiveet.otsikko", FORM_MESSAGES), false);
+        Phase hakutoiveet = new Phase(HAKUTOIVEET_PHASE_ID, createI18NText("form.hakutoiveet.otsikko", FORM_MESSAGES), false,
+                Lists.newArrayList("APP_HAKEMUS_READ_UPDATE", "APP_HAKEMUS_CRUD"));
 
         hakutoiveet.addChild(createHakutoiveetTheme());
         return hakutoiveet;
