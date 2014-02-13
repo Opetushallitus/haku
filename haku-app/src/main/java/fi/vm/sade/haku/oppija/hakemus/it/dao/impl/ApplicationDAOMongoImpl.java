@@ -247,10 +247,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
             );
         } else {
             queries.add(
-                    QueryBuilder.start().or(
-                            QueryBuilder.start("fullName").regex(Pattern.compile("^" + token.toLowerCase())).get(),
-                            QueryBuilder.start("fullName").regex(Pattern.compile(token.toLowerCase())).get()
-                    ).get()
+                    QueryBuilder.start("fullName").regex(Pattern.compile(token.toLowerCase())).get()
             );
         }
         return queries;
