@@ -361,7 +361,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     @Override
     public void update(final Application queryApplication, final Application application) {
-        // application.updateFullName();
+        // application.updateNameMetadata();
         this.applicationDAO.update(queryApplication, application);
     }
 
