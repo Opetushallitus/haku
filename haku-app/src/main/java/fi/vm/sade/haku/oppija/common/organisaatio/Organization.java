@@ -87,6 +87,10 @@ public class Organization {
         return parentOid;
     }
 
+    public void setParentOid(String parentOid) {
+        this.parentOid = parentOid;
+    }
+
     public Date getStartDate() {
         return startDate;
     }

@@ -32,6 +32,7 @@ import org.springframework.stereotype.Component;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -61,7 +62,18 @@ public class OrganizationResource {
     }
 
     private List<Map<String, Object>> toMap(final List<Organization> listOfOrganization) {
-        Collection<Organization> roots = Collections2.filter(listOfOrganization, new Predicate<Organization>() {
+        Map<String, Organization> orgs = new HashMap<String, Organization>(listOfOrganization.size());
+        for (Organization org : listOfOrganization) {
+            orgs.put(org.getOid(), org);
+        }
+
+        for (Organization org : orgs.values()) {
+            if (!orgs.containsKey(org.getParentOid())) {
+                org.setParentOid(ORGANIZATION_ROOT_ID);
+            }
+        }
+
+        Collection<Organization> roots = Collections2.filter(orgs.values(), new Predicate<Organization>() {
             @Override
             public boolean apply(final Organization organization) {
                 return ORGANIZATION_ROOT_ID.equals(organization.getParentOid());
