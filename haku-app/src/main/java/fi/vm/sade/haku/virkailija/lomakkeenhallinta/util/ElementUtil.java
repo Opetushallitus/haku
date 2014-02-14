@@ -151,10 +151,6 @@ public final class ElementUtil {
         }
     }
 
-    public static String orStr(String... values) {
-        return "(" + Joiner.on('|').skipNulls().join(values) + ")";
-    }
-
     public static TextQuestion createRequiredTextQuestion(final String id, final String name, final String bundleName,
                                                           final String errorBundleName, final int size) {
         TextQuestion textQuestion = new TextQuestion(id, createI18NText(name, bundleName));
@@ -168,8 +164,10 @@ public final class ElementUtil {
         return element;
     }
 
-    public static Element addMaxLengthAttribute(final Element element, final int size) {
-        element.addAttribute("maxlength", String.valueOf(size));
+    public static Element addMaxLengthAttributeAndLengthValidator(final Element element, final int maxlength, final String bundleName) {
+        element.addAttribute("maxlength", String.valueOf(maxlength));
+        element.setValidator(new LengthValidator(element.getId(),
+                createI18NText("yleinen.virheellinenArvo", bundleName), maxlength));
         return element;
     }
 
