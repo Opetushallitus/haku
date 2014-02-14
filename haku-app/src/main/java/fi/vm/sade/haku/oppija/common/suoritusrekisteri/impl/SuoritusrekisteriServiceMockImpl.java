@@ -29,7 +29,7 @@ public class SuoritusrekisteriServiceMockImpl implements SuoritusrekisteriServic
     @Override
     public List<OpiskelijaDTO> getOpiskelijat(String personOid) {
         List<OpiskelijaDTO> suoritukset = new ArrayList<OpiskelijaDTO>(1);
-        OpiskelijaDTO opiskelija = new OpiskelijaDTO("1.2.246.562.10.43523490233", "9", "9A", personOid);
+        OpiskelijaDTO opiskelija = new OpiskelijaDTO("1.2.246.562.10.27450788669", "9", "9A", personOid);
         suoritukset.add(opiskelija);
         return suoritukset;
     }
