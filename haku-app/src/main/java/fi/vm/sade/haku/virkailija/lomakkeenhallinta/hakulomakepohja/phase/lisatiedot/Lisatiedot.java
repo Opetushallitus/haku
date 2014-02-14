@@ -9,6 +9,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.TextArea;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.TextQuestion;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionComplexRule;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.*;
+import fi.vm.sade.haku.oppija.lomake.validation.validators.LengthValidator;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.MessageBundleNames;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ExprUtil;
@@ -175,6 +176,8 @@ public class Lisatiedot {
         TextArea saavutukset = new TextArea("saavutukset",
                 createI18NText("form.lisatiedot.urheilija.saavutukset.saavutukset", mbn.getFormMessages()));
         saavutukset.addAttribute("maxlength", "2000");
+        saavutukset.setValidator(new LengthValidator(saavutukset.getId(),
+                createI18NText("yleinen.virheellinenArvo", mbn.getFormMessages()), 2000));
         saavutukset.setInline(true);
         saavutukset.setHelp(createI18NText("form.lisatiedot.urheilija.saavutukset.saavutukset.help", mbn.getFormMessages()));
         saavutuksetGroup.addChild(saavutukset);
