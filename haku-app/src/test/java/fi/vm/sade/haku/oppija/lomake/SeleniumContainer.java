@@ -41,6 +41,7 @@ public class SeleniumContainer {
         this.webDriver = new FirefoxDriver();
         this.selenium = new WebDriverBackedSelenium(this.webDriver, this.webDriverBaseUrl);
         this.webDriver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+        this.selenium.setSpeed("1");
     }
 
     @PreDestroy
