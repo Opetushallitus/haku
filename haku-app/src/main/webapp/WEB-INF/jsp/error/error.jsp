@@ -40,20 +40,34 @@
     </div>
 </header>
 <p>Tapahtui odottamaton virhe. Pahoittelemme tapahtunutta.</p>
-
 <p>Palaa takaisin <a href="/">opintopolku.fi-palveluun</a> ja hae koulutukseen uudelleen.</p>
-
-<p>Mikäli etenit jo hakulomakkeen lähettämiseen saakka, etkä ehtinyt saada tulostetta hakulomakkeestasi, voit pyytää
-    sitä Opintopolun neuvontapalvelusta:</p>
-
+<p>Mikäli etenit jo hakulomakkeen lähettämiseen saakka, etkä ehtinyt saada tulostetta hakulomakkeestasi, voit pyytääsitä Opintopolun neuvontapalvelusta:</p>
 <p>neuvonta@opintopolku.fi</p>
-
 <p>puhelin: 02 9533 1010</p>
-
 Ohjaus- ja neuvontapalvelut<br/>
 Opetushallitus<br/>
 PL 380<br/>
 00531 Helsinki<br/>
+
+<hr class="margin-top-2"/>
+<div class="logo-bg">
+        <div class="container">
+            <a id="home-link" href="/"><img src="${contextPath}/resources/img/Opintopolku_SV_logo.png"
+                                            alt="Studieinfo.fi"/></a>
+
+        </div>
+    </div>
+
+<p>Ett oväntat fel uppstod. Vi beklagar situationen.</p>
+<p>Gå tillbaka till <a href="/">studienfo.fi-tjänsten</a> och ansök till utbildningen på nytt.</p>
+<p>Om du redan hann skicka din ansökningsblankett, men inte hann få en utskrift av din ansökningsblankett, kan du vid behov be om en utskrift från Studieinfos ansökningstjänst:</p>
+<p>info@studieinfo.fi</p>
+<p>telefon: 029 533 1010</p>
+Studieinfos ansökningstjänst<br />
+Utbildningsstyrelsen<br />
+PB 380<br />
+00531 Helsingfors<br />
+
 <footer style="width: 100%;bottom: 0; position: fixed; float: right">${it.timestamp} &nbsp;${it.error_id}</footer>
 <!-- Piwik -->
 <script src="${contextPath}/resources/piwik/piwik.js" type="text/javascript"></script>
