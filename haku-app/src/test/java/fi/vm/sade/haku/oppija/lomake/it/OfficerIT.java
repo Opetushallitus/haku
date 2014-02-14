@@ -230,7 +230,7 @@ public class OfficerIT extends DummyModelBaseItTest {
     }
 
     private void clickSearch() {
-        findByIdAndClick("search-applications");
+        click("search-applications");
     }
 
     private void activate(String oid) {
@@ -242,8 +242,8 @@ public class OfficerIT extends DummyModelBaseItTest {
                 break;
             }
         }
-        findByIdAndClick("postProcessApplication");
-        findByIdAndClick("submit-dialog");
+        click("postProcessApplication");
+        click("submit-dialog");
 
         navigateToPath("virkailija", "hakemus", oid, "activate");
         List<WebElement> passivateApplication = getById("passivateApplication");
@@ -251,10 +251,10 @@ public class OfficerIT extends DummyModelBaseItTest {
             List<WebElement> activateApplication = getById("activateApplication");
             if (!activateApplication.isEmpty()) {
                 activateApplication.get(0).click();
-                findByIdAndClick("confirm-activation");
+                click("confirm-activation");
             }
         }
-        findByIdAndClick("back");
+        click("back");
     }
 
     private void passivate() {
