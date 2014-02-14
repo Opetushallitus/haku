@@ -1,4 +1,4 @@
-<%@ page session="false"%>
+<%@ page session="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="haku" tagdir="/WEB-INF/tags" %>
 <%--
@@ -18,12 +18,14 @@
   --%>
 <c:set var="styleBaseClass" value="${element.inline ? 'form-row' : 'form-item'}"/>
 <div class="${styleBaseClass}-checkbox">
-<!-- <div> -->
-	<c:if test="${styleBaseClass=='form-row'}"><div class="${styleBaseClass}-label">&#8302;</div></c:if>
+    <c:if test="${styleBaseClass=='form-row'}">
+        <div class="${styleBaseClass}-label">&#8302;</div>
+    </c:if>
     <div class="${styleBaseClass}-content">
         <div class="field-container-checkbox">
             <input type="checkbox"
-                   name="${element.id}" ${(element.value eq answers[element.id]) ? "checked=\"checked\"" : ""} ${element.attributeString} value="${element.value}"/>
+                   name="${element.id}" ${(element.value eq answers[element.id]) ? "checked=\"checked\"" : ""} ${element.attributeString}
+                   value="${element.value}"/>
             <label for="${element.id}"><haku:i18nText value="${element.i18nText}"/></label>
             <haku:errorMessage id="${element.id}" additionalClass="margin-top-1"/>
         </div>

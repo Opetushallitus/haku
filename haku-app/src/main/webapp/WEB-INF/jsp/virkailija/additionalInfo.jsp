@@ -27,7 +27,7 @@
 <html>
 <head>
     <haku:meta/>
-    <haku:icons contextPath="${contextPath}"/>
+    <haku:icons/>
     <link rel="stylesheet"
           href="${contextPath}/resources/jquery-ui-theme/jquery-ui-1.8.23.custom.css"
           type="text/css">

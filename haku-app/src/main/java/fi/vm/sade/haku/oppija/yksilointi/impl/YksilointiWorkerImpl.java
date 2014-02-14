@@ -16,6 +16,7 @@
 package fi.vm.sade.haku.oppija.yksilointi.impl;
 
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
+import fi.vm.sade.haku.oppija.hakemus.domain.util.ApplicationUtil;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.haku.oppija.lomake.service.FormService;
@@ -156,9 +157,14 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
         ctx.put("applicationDate", applicationDate);
         ctx.put("preferences", getPreferences(application));
         ctx.put("athlete", isAthlete(application));
+        ctx.put("discretionary", isDiscretionary(application));
         ctx.put("musiikkiTanssiLiikuntaEducationCode", isMusiikkiTanssiLiikuntaEducationCode(application));
 
         return ctx;
+    }
+
+    private boolean isDiscretionary(final Application application) {
+        return !ApplicationUtil.getDiscretionaryAttachmentAOIds(application).isEmpty();
     }
 
     private Object getPreferences(Application application) {

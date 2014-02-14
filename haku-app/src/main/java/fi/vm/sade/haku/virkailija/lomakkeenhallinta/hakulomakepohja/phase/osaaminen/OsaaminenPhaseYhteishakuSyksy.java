@@ -16,6 +16,7 @@
 
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.osaaminen;
 
+import com.google.common.collect.Lists;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Phase;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
 
@@ -28,7 +29,8 @@ public class OsaaminenPhaseYhteishakuSyksy {
     private static final String FORM_VERBOSE_HELP = "form_verboseHelp_yhteishaku_syksy";
 
     public static Phase create(final KoodistoService koodistoService) {
-        Phase osaaminen = new Phase("osaaminen", createI18NText("form.osaaminen.otsikko", FORM_MESSAGES), false);
+        Phase osaaminen = new Phase("osaaminen", createI18NText("form.osaaminen.otsikko", FORM_MESSAGES), false,
+                Lists.newArrayList("APP_HAKEMUS_READ_UPDATE", "APP_HAKEMUS_CRUD", "APP_HAKEMUS_OPO"));
         osaaminen.addChild(ArvosanatTheme.createArvosanatTheme(koodistoService, FORM_MESSAGES, FORM_ERRORS, FORM_VERBOSE_HELP));
         osaaminen.addChild(KielitaitokysymyksetTheme.createKielitaitokysymyksetTheme(FORM_MESSAGES, FORM_ERRORS, FORM_VERBOSE_HELP));
         return osaaminen;

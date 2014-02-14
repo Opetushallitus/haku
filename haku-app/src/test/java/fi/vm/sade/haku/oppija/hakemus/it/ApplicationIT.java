@@ -33,8 +33,7 @@ import java.io.IOException;
 import java.util.List;
 
 import static java.lang.ClassLoader.getSystemResourceAsStream;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 public class ApplicationIT extends DummyModelBaseItTest {
 
@@ -84,7 +83,7 @@ public class ApplicationIT extends DummyModelBaseItTest {
     public void testGetApplication() throws IOException {
         navigateToPath("applications/1.2.246.562.11.00000010003/");
         screenshot("getApplication");
-        String response = selenium.getBodyText();
+        String response = getBodyText();
         ObjectMapper mapper = new ObjectMapper();
         Application application = mapper.readValue(response, new TypeReference<Application>() {
         });
@@ -92,11 +91,20 @@ public class ApplicationIT extends DummyModelBaseItTest {
         assertEquals("1.2.246.562.11.00000010003", application.getOid());
     }
 
+    private String getBodyText() {
+        return seleniumContainer.getSelenium().getBodyText();
+    }
+
     private ApplicationSearchResultDTO responseToSearchResult() throws IOException {
-        String response = selenium.getBodyText();
+        String response = getBodyText();
         ObjectMapper mapper = new ObjectMapper();
         return mapper.readValue(response, new TypeReference<ApplicationSearchResultDTO>() {
         });
     }
 
+    protected void elementsPresent(String... locations) {
+        for (String location : locations) {
+            assertTrue("Could not find element " + location, seleniumContainer.getSelenium().isElementPresent(location));
+        }
+    }
 }

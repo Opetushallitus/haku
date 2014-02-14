@@ -5,11 +5,6 @@
     <short-name>/functions</short-name>
     <info>Tag library for functions</info>
     <function>
-        <name>evaluate</name>
-        <function-class>fi.vm.sade.haku.oppija.lomake.domain.rules.RegexRule</function-class>
-        <function-signature>boolean evaluate( java.lang.String, java.lang.String )</function-signature>
-    </function>
-    <function>
         <name>toNameSelectorString</name>
         <function-class>fi.vm.sade.haku.oppija.lomake.domain.rules.RegexRule</function-class>
         <function-signature>java.lang.String toNameSelectorString(java.lang.Iterable)</function-signature>

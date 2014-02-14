@@ -35,6 +35,7 @@ import java.util.List;
 
 import static fi.vm.sade.haku.oppija.hakemus.it.dao.impl.ApplicationOidDAOMongoImpl.SEQUENCE_FIELD;
 import static fi.vm.sade.haku.oppija.hakemus.it.dao.impl.ApplicationOidDAOMongoImpl.SEQUENCE_NAME;
+import static org.junit.Assert.assertTrue;
 
 public abstract class AbstractSeleniumBase extends TomcatContainerBase {
 
@@ -53,6 +54,9 @@ public abstract class AbstractSeleniumBase extends TomcatContainerBase {
         seleniumContainer.logout();
     }
 
+    protected void navigateTo(String url) {
+        seleniumContainer.getDriver().get(url);
+    }
 
     protected ApplicationSystemHelper updateApplicationSystem(final ApplicationSystem applicationSystem) {
         adminResourceClient.updateApplicationSystem(applicationSystem);
@@ -73,45 +77,58 @@ public abstract class AbstractSeleniumBase extends TomcatContainerBase {
         }
     }
 
-    protected WebElement findByNameAndValue(final String name, final String value) {
-        return findByTagAndNameAndValue("input", name, value);
-    }
-
-    protected WebElement findByTagAndNameAndValue(final String tag, final String name, final String value) {
-        WebDriver driver = seleniumContainer.getDriver();
-        return driver.findElement(new By.ByXPath("//" + tag + "[@name='" + name + "' and @value='" + value + "']"));
-    }
-
     protected void clickByNameAndValue(final String name, final String value) {
-        findByNameAndValue(name, value).click();
+        seleniumContainer.getSelenium().click("//*[@name='" + name + "' and @value='" + value + "']");
+    }
+
+    protected WebElement findBy(final By by) {
+        WebDriver driver = seleniumContainer.getDriver();
+        return driver.findElement(by);
     }
 
     protected void findByIdAndClick(final String... ids) {
-        WebDriver driver = seleniumContainer.getDriver();
         for (String id : ids) {
-            driver.findElement(new By.ById(id)).click();
+            seleniumContainer.getSelenium().click("//*[@id = '" + id + "']");
+        }
+    }
+
+    protected void click(final String... locations) {
+        for (String location : locations) {
+            seleniumContainer.getSelenium().click(location);
         }
     }
 
     protected String getTrimmedTextById(final String id) {
-        return seleniumContainer.getDriver().findElement(By.id(id)).getText().trim();
+        return seleniumContainer.getSelenium().getText("//*[@id = '" + id + "']").trim();
+    }
+
+    protected void type(final String locator, final String text, boolean includeTab) {
+        seleniumContainer.getSelenium().typeKeys(locator, text + ((includeTab) ? "\t" : ""));
+    }
+
+    protected void typeWithoutTab(final String locator, final String text) {
+        type(locator, text, false);
     }
 
     protected void selectByValue(final String id, final String value) {
-        Select select = new Select(seleniumContainer.getDriver().findElement(new By.ById(id)));
+        Select select = new Select(findBy(new By.ById(id)));
         select.selectByValue(value);
     }
 
+    protected WebElement findElementById(final String id) {
+        return seleniumContainer.getDriver().findElement(By.id(id));
+    }
+
     protected void findById(final String... ids) {
-        WebDriver driver = seleniumContainer.getDriver();
         for (String id : ids) {
-            driver.findElement(new By.ById(id));
+            findBy(new By.ById(id));
         }
     }
 
     protected WebElement findByXPath(final String xpath) {
-        return seleniumContainer.getDriver().findElement(By.xpath(xpath));
+        return findBy(By.xpath(xpath));
     }
+
 
     protected List<WebElement> findByClassName(final String... classNames) {
         List<WebElement> elements = new ArrayList<WebElement>();
@@ -121,4 +138,17 @@ public abstract class AbstractSeleniumBase extends TomcatContainerBase {
         return elements;
     }
 
+    protected void elementsPresent(String... locations) {
+        for (String location : locations) {
+            assertTrue("Could not find element " + location, seleniumContainer.getSelenium().isElementPresent(location));
+        }
+    }
+
+    protected boolean isTextPresent(final String text) {
+        return seleniumContainer.getSelenium().isTextPresent(text);
+    }
+
+    protected void clickLinkByText(final String text) {
+        seleniumContainer.getDriver().findElement(By.linkText(text)).click();
+    }
 }

@@ -17,6 +17,7 @@
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.hakutoiveet;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.HiddenValue;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Phase;
@@ -27,7 +28,6 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.PreferenceTable;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.DropdownSelect;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Radio;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionComplexRule;
-import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionRule;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.*;
 import fi.vm.sade.haku.oppija.lomake.validation.validators.RegexFieldValidator;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
@@ -48,7 +48,8 @@ public class HakutoiveetPhaseYhteishakuKevat {
     public static Phase create() {
 
         // Hakutoiveet
-        Phase hakutoiveet = new Phase(HAKUTOIVEET_PHASE_ID, createI18NText("form.hakutoiveet.otsikko", FORM_MESSAGES), false);
+        Phase hakutoiveet = new Phase(HAKUTOIVEET_PHASE_ID, createI18NText("form.hakutoiveet.otsikko", FORM_MESSAGES), false,
+                Lists.newArrayList("APP_HAKEMUS_READ_UPDATE", "APP_HAKEMUS_CRUD"));
 
         hakutoiveet.addChild(createHakutoiveetTheme());
         return hakutoiveet;
@@ -162,8 +163,7 @@ public class HakutoiveetPhaseYhteishakuKevat {
     public static Element createSoraQuestions(final String index) {
         // sora-kysymykset
 
-        RelatedQuestionRule hasSora = new RelatedQuestionRule(index + "_sora_rule",
-                ImmutableList.of(index + "-Koulutus-id-sora"), ElementUtil.KYLLA, false);
+        RelatedQuestionComplexRule hasSora = ElementUtil.createRuleIfVariableIsTrue(index + "_sora_rule", index + "-Koulutus-id-sora");
 
         Radio sora1 = new Radio(index + "_sora_terveys", createI18NText("form.sora.terveys", FORM_MESSAGES));
         sora1.addOption(createI18NText("form.yleinen.ei", FORM_MESSAGES), ElementUtil.EI);
@@ -206,9 +206,8 @@ public class HakutoiveetPhaseYhteishakuKevat {
                 createI18NText("form.hakutoiveet.kaksoistutkinnon.lisakysymys", FORM_MESSAGES));
         addDefaultTrueFalseOptions(radio, FORM_MESSAGES);
         addRequiredValidator(radio, FORM_ERRORS);
-        RelatedQuestionRule hasQuestion = new RelatedQuestionRule(radio.getId() + "_related_question_rule",
-                ImmutableList.of(index + "-Koulutus-id-kaksoistutkinto"), ElementUtil.KYLLA, false);
-
+        RelatedQuestionComplexRule hasQuestion =
+                ElementUtil.createRuleIfVariableIsTrue(radio.getId() + "_related_question_rule", index + "-Koulutus-id-kaksoistutkinto");
         hasQuestion.addChild(radio);
         return hasQuestion;
     }

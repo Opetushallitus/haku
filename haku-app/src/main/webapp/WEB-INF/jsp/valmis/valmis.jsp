@@ -39,8 +39,9 @@
     <link href="${contextPath}/resources/css/ie.css" type="text/css" rel="stylesheet"/>
     <![endif]-->
     <link rel="stylesheet" href="${contextPath}/resources/jquery-ui-theme/jquery-ui-1.8.23.custom.css" type="text/css">
-    <title><fmt:message key="lomake.opintopolku"/> - <fmt:message key="form.title"/> - <fmt:message key="lomake.valmis"/></title>
-    <haku:icons contextPath="${contextPath}"/>
+    <title><fmt:message key="lomake.opintopolku"/> - <fmt:message key="form.title"/> - <fmt:message
+            key="lomake.valmis"/></title>
+    <haku:icons/>
 </head>
 <body>
 <div id="viewport">
@@ -86,7 +87,8 @@
                     <h3 class="h2"><fmt:message key="lomake.valmis.hakemuksesionvastaanotettu"/></h3>
 
                     <p class="application-number">
-                        <fmt:message key="lomake.valmis.hakulomakenumerosi"/>: <span class="number"><c:out value="${ f:formatOid(application.oid)}"/></span>
+                        <fmt:message key="lomake.valmis.hakulomakenumerosi"/>: <span class="number"><c:out
+                            value="${ f:formatOid(application.oid)}"/></span>
                     </p>
 
                     <c:forEach var="cElement" items="${completeElements}">

@@ -1,9 +1,16 @@
 package fi.vm.sade.haku.oppija.hakemus.service.impl;
 
+import com.google.common.base.Strings;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import fi.vm.sade.generic.service.AbstractPermissionService;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.service.HakuPermissionService;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.Phase;
 import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import fi.vm.sade.security.OrganisationHierarchyAuthorizer;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -14,6 +21,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -24,6 +32,7 @@ public class HakuPermissionServiceImpl extends AbstractPermissionService impleme
     public static final int MAX_NUMBER_OF_PREFERENCES = 5;
     private AuthenticationService authenticationService;
     private static final Logger LOG = LoggerFactory.getLogger(HakuPermissionServiceImpl.class);
+    private static final String ROLE_OPO = "APP_HAKEMUS_OPO";
 
     @Autowired
     public HakuPermissionServiceImpl(AuthenticationService authenticationService,
@@ -56,17 +65,47 @@ public class HakuPermissionServiceImpl extends AbstractPermissionService impleme
     }
 
     @Override
-    public boolean userCanReadApplication(Application application) {
-        return userCanAccessApplication(application, getReadRole(), getReadUpdateRole(), getCreateReadUpdateDeleteRole());
+    public List<String> userHasOpoRole(List<String> organizations) {
+        if (organizations == null || organizations.isEmpty()) {
+            organizations = authenticationService.getOrganisaatioHenkilo();
+        }
+        List<String> opoOrg = new ArrayList<String>();
+        for (String organization : organizations) {
+            if (checkAccess(organization, getOpoRole())) {
+                opoOrg.add(organization);
+            }
+        }
+        return opoOrg;
     }
 
     @Override
-    public boolean userCanUpdateApplication(Application application) {
+    public boolean userCanReadApplication(Application application) {
+        return userCanAccessApplication(application, getReadRole(), getReadUpdateRole(), getCreateReadUpdateDeleteRole()) ||
+                userHasOpoRoleToSendingSchool(application);
+    }
+
+    @Override
+    public Map<String, Boolean> userHasEditRoleToPhases(Application application, Form form) {
         String userOid = SecurityContextHolder.getContext().getAuthentication().getName();
         if (userOid == null || userOid.equals(application.getPersonOid())) {
-            return false;
+            return Maps.newHashMap();
         }
-        return userCanAccessApplication(application, getReadUpdateRole(), getCreateReadUpdateDeleteRole());
+        Map<String, Boolean> phasesToEdit = Maps.newHashMap();
+        List<String> userRolesToApplication = Lists.newArrayList();
+        if (userCanAccessApplication(application, getReadUpdateRole())) {
+            userRolesToApplication.add(getReadUpdateRole());
+        }
+        if (userCanAccessApplication(application, getCreateReadUpdateDeleteRole())) {
+            userRolesToApplication.add(getCreateReadUpdateDeleteRole());
+        }
+        if (userHasOpoRoleToSendingSchool(application)) {
+            userRolesToApplication.add(getOpoRole());
+        }
+        for (Element element : form.getChildren()) {
+            Phase phase = (Phase) element;
+            phasesToEdit.put(phase.getId(), phase.isEditAllowedByRoles(userRolesToApplication));
+        }
+        return phasesToEdit;
     }
 
     @Override
@@ -77,6 +116,26 @@ public class HakuPermissionServiceImpl extends AbstractPermissionService impleme
     @Override
     public boolean userCanPostProcess(Application application) {
         return checkAccess(getRootOrgOid(), getReadUpdateRole(), getCreateReadUpdateDeleteRole());
+    }
+
+    public final String getOpoRole() {
+        return ROLE_OPO;
+    }
+
+    private boolean userHasOpoRoleToSendingSchool(Application application) {
+        Map<String, String> answers = new HashMap<String, String>(application.getPhaseAnswers(OppijaConstants.PHASE_EDUCATION));
+        if (answers.containsKey(OppijaConstants.ELEMENT_ID_SENDING_SCHOOL)) {
+            String organization = answers.get(OppijaConstants.ELEMENT_ID_SENDING_SCHOOL);
+            if (!Strings.isNullOrEmpty(organization)) {
+                return checkAccess(organization, getOpoRole());
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean userCanEnterApplication() {
+        return checkAccess(getRootOrgOid(), getCreateReadUpdateDeleteRole());
     }
 
     @SuppressWarnings("deprecation")

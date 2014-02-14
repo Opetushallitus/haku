@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%--
   ~ Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
   ~
@@ -20,12 +21,13 @@
 <fieldset id="notes">
     <legend class="h3"><fmt:message key="virkailija.hakemus.kommentit"/></legend>
 
-    <form action="${contextPath}/virkailija/hakemus/${application.oid}/addNote" method="post">
-        <textarea name="note-text" id="note-text"></textarea>
-        <input id="note-create" class="button primary small" type="submit"
-               value="<fmt:message key="virkailija.hakemus.kommentit.uusi"/>"/>
-    </form>
-
+    <sec:authorize access="hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_CRUD')">
+        <form action="${contextPath}/virkailija/hakemus/${application.oid}/addNote" method="post">
+            <textarea name="note-text" id="note-text"></textarea>
+            <input id="note-create" class="button primary small" type="submit"
+                   value="<fmt:message key="virkailija.hakemus.kommentit.uusi"/>"/>
+        </form>
+    </sec:authorize>
     <c:forEach var="note" items="${application.notes}">
         <div class="note-content">
             <span class="note-date"><fmt:formatDate value="${note.added}" pattern="dd.MM.yyyy HH:mm:ss"/></span>

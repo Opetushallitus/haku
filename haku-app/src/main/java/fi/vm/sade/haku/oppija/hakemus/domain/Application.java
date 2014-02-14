@@ -33,9 +33,10 @@ import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.ws.rs.HEAD;
 import java.io.Serializable;
 import java.util.*;
+
+import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_EMPTY)
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -282,12 +283,14 @@ public class Application implements Serializable {
                 OppijaConstants.ELEMENT_ID_NICKNAME,OppijaConstants.ELEMENT_ID_NICKNAME_USER);
         updateFullName();
         String personOid = person.getPersonOid();
-
-        log.debug("Modifying personal data: "+person);
-
-        if (personOid != null) {
+        if (isNotEmpty(personOid)) {
             setPersonOid(personOid);
         }
+        String studentOid = person.getStudentOid();
+        if (isNotEmpty(studentOid)) {
+            setStudentOid(studentOid);
+        }
+
         addVaiheenVastaukset("henkilotiedot", henkilotiedot);
         return this;
     }

@@ -15,6 +15,7 @@ public final class PersonBuilder {
     private String nationality;
     private String contactLanguage;
     private String personOid;
+    private String studentOid;
 
     private PersonBuilder() {
 
@@ -39,13 +40,14 @@ public final class PersonBuilder {
                 .setLanguage(person.getLanguage())
                 .setNationality(person.getNationality())
                 .setContactLanguage(person.getContactLanguage())
-                .setPersonOid(person.getPersonOid());
+                .setPersonOid(person.getPersonOid())
+                .setStudentOid(person.getStudentOid());
         return builder;
     }
 
     public Person get() {
         return new Person(firstNames, nickName, lastName, socialSecurityNumber, noSocialSecurityNumber, email, sex,
-                homeCity, securityOrder, language, nationality, contactLanguage, personOid);
+                homeCity, securityOrder, language, nationality, contactLanguage, personOid, studentOid);
     }
 
     public String getFirstNames() {
@@ -162,6 +164,14 @@ public final class PersonBuilder {
 
     public PersonBuilder setPersonOid(String personOid) {
         this.personOid = personOid;
+        return this;
+    }
+    public String getStudentOid() {
+        return studentOid;
+    }
+
+    public PersonBuilder setStudentOid(String studentOid) {
+        this.studentOid = studentOid;
         return this;
     }
 }

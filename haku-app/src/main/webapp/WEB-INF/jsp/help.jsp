@@ -1,4 +1,4 @@
-<%@ page session="false"%>
+<%@ page session="false" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
@@ -26,7 +26,7 @@
     <title><haku:i18nText value="${it.theme.i18nText}"/></title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <link href="${pageContext.request.contextPath}/resources/css/oppija.css" type="text/css" rel="stylesheet"/>
-    <haku:icons contextPath="${pageContext.request.contextPath}"/>
+    <haku:icons/>
 </head>
 <body>
 <div id="viewport">

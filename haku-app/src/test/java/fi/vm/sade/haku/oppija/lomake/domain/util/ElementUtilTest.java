@@ -17,6 +17,7 @@
 package fi.vm.sade.haku.oppija.lomake.domain.util;
 
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Lists;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Phase;
@@ -58,7 +59,8 @@ public class ElementUtilTest {
     @Test
     public void testFindElementsByType() {
         Form form = new Form("form", new I18nText(ImmutableMap.of("fi", "form")));
-        Phase phase = new Phase("phase", new I18nText(ImmutableMap.of("fi", "phase")), false);
+        Phase phase = new Phase("phase", new I18nText(ImmutableMap.of("fi", "phase")), false,
+                Lists.newArrayList("APP_HAKEMUS_READ_UPDATE", "APP_HAKEMUS_CRUD", "APP_HAKEMUS_OPO"));
         Theme theme = new Theme("theme", new I18nText(ImmutableMap.of("fi", "theme")), true);
         phase.addChild(theme);
         TextQuestion tq1 = new TextQuestion("text1", new I18nText(ImmutableMap.of("fi", "text1")));
@@ -76,7 +78,8 @@ public class ElementUtilTest {
     @Test
     public void testFindElementsByTypeAsList() {
         Form form = new Form("form", new I18nText(ImmutableMap.of("fi", "form")));
-        Phase phase = new Phase("phase", new I18nText(ImmutableMap.of("fi", "phase")), false);
+        Phase phase = new Phase("phase", new I18nText(ImmutableMap.of("fi", "phase")), false,
+                Lists.newArrayList("APP_HAKEMUS_READ_UPDATE", "APP_HAKEMUS_CRUD", "APP_HAKEMUS_OPO"));
         Theme theme = new Theme("theme", new I18nText(ImmutableMap.of("fi", "theme")), true);
         phase.addChild(theme);
         TextQuestion tq1 = new TextQuestion("text1", new I18nText(ImmutableMap.of("fi", "text1")));

@@ -222,8 +222,8 @@ public class ApplicationServiceImpl implements ApplicationService {
         String studentOid = application.getStudentOid();
 
         if (isNotEmpty(personOid) && isEmpty(studentOid)) {
-            studentOid = authenticationService.checkStudentOid(application.getPersonOid());
-            application.setStudentOid(studentOid);
+            Person person = authenticationService.checkStudentOid(application.getPersonOid());
+            application.modifyPersonalData(person);
             application.studentIdentificationDone();
         }
 
@@ -299,6 +299,10 @@ public class ApplicationServiceImpl implements ApplicationService {
                     application.getPhaseAnswers(OppijaConstants.PHASE_EDUCATION));
             if (isNotEmpty(sendingSchool)) {
                 answers.put(OppijaConstants.ELEMENT_ID_SENDING_SCHOOL, sendingSchool);
+                List<String> parentOids = organizationService.findParentOids(sendingSchool);
+                parentOids.add(OPH_ORGANIZATION);
+                parentOids.add(sendingSchool);
+                answers.put(OppijaConstants.ELEMENT_ID_SENDING_SCHOOL_PARENTS, join(parentOids, ","));
             }
             if (isNotEmpty(sendingClass)) {
                 answers.put(OppijaConstants.ELEMENT_ID_SENDING_CLASS, sendingClass);

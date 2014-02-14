@@ -174,34 +174,6 @@ $(document).ready(function () {
     popover.build();
 
 });
-var relatedRule = {
-
-    getChildrenAndAppendToDom: function (childIds, domElement) {
-        var url = document.URL.split("?")[0];
-        for (var id in childIds) {
-            $.get(url + '/' + childIds[id],
-                function (data) {
-                    domElement.append(data);
-                }
-            );
-        }
-    },
-
-    changeState: function ($this, ruleChilds, childIds, expression) {
-        if ($this.is(':checkbox') && $this.is(':checked')) {
-            if ($.trim(ruleChilds.html()) === "") {
-                this.getChildrenAndAppendToDom(childIds, ruleChilds);
-            }
-        }
-        else if (!$this.is(':checkbox') && $this.val().search(expression) !== -1) {
-            if ($.trim(ruleChilds.html()) === "") {
-                this.getChildrenAndAppendToDom(childIds, ruleChilds);
-            }
-        } else {
-            ruleChilds.html("");
-        }
-    }
-}
 
 var complexRule = {
     init: function (ruleData) {

@@ -39,10 +39,6 @@ public final class RegexRule {
     private RegexRule() {
     }
 
-    public static boolean evaluate(final String value, final String expression) {
-        return value != null && value.matches(expression);
-    }
-
     public static String toNameSelectorString(final Iterable<String> listOfStrings) {
         Iterable<String> selectors = Iterables.transform(listOfStrings, new Function<String, String>() {
             @Override

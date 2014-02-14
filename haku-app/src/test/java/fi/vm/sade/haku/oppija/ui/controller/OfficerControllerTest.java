@@ -16,6 +16,7 @@
 
 package fi.vm.sade.haku.oppija.ui.controller;
 
+import com.google.common.collect.Lists;
 import com.sun.jersey.api.view.Viewable;
 import com.sun.jersey.core.util.MultivaluedMapImpl;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
@@ -27,8 +28,8 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.Phase;
 import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
 import fi.vm.sade.haku.oppija.lomake.service.FormService;
 import fi.vm.sade.haku.oppija.lomake.service.UserSession;
-import fi.vm.sade.haku.oppija.ui.service.OfficerUIService;
 import fi.vm.sade.haku.oppija.ui.service.ModelResponse;
+import fi.vm.sade.haku.oppija.ui.service.OfficerUIService;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -36,14 +37,14 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.createI18NAsIs;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * @author Mikko Majapuro
@@ -68,10 +69,12 @@ public class OfficerControllerTest {
         app.setPhaseId("valmis");
         when(applicationService.getApplication(OID)).thenReturn(app);
 
-        Phase phase = new Phase(PREVIEW_PHASE, createI18NAsIs(PREVIEW_PHASE), true);
+        Phase phase = new Phase(PREVIEW_PHASE, createI18NAsIs(PREVIEW_PHASE), true,
+                Lists.newArrayList("APP_HAKEMUS_READ_UPDATE", "APP_HAKEMUS_CRUD", "APP_HAKEMUS_OPO"));
 
         Form form = new Form("yhteishaku", createI18NAsIs("yhteishaku"));
-        form.addChild(new Phase("henkilotiedot", createI18NAsIs("henkilotiedot"), false));
+        form.addChild(new Phase("henkilotiedot", createI18NAsIs("henkilotiedot"), false,
+                Lists.newArrayList("APP_HAKEMUS_READ_UPDATE", "APP_HAKEMUS_CRUD", "APP_HAKEMUS_OPO")));
         form.addChild(phase);
         when(formService.getActiveForm(ASID)).thenReturn(form);
 

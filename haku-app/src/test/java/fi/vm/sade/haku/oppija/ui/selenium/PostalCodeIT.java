@@ -17,6 +17,7 @@
 package fi.vm.sade.haku.oppija.ui.selenium;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
 import fi.vm.sade.haku.oppija.common.selenium.DummyModelBaseItTest;
 import fi.vm.sade.haku.oppija.lomake.ApplicationSystemHelper;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
@@ -31,10 +32,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
 import java.io.IOException;
-import java.util.concurrent.TimeUnit;
 
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.createI18NAsIs;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.randomId;
@@ -55,7 +56,8 @@ public class PostalCodeIT extends DummyModelBaseItTest {
     public void init() throws IOException {
         Form form = new Form(randomId(), createI18NAsIs(randomId()));
         applicationSystem = ElementUtil.createActiveApplicationSystem(randomId(), form);
-        Phase phase = new Phase(randomId(), createI18NAsIs(randomId()), false);
+        Phase phase = new Phase(randomId(), createI18NAsIs(randomId()), false,
+                Lists.newArrayList("APP_HAKEMUS_READ_UPDATE", "APP_HAKEMUS_CRUD", "APP_HAKEMUS_OPO"));
         form.addChild(phase);
 
         Theme theme = new Theme(randomId(), createI18NAsIs(randomId()), true);
@@ -74,8 +76,8 @@ public class PostalCodeIT extends DummyModelBaseItTest {
     @Ignore
     public void testPostalCode() throws InterruptedException, IOException {
         ApplicationSystemHelper applicationSystemHelper1 = new ApplicationSystemHelper(applicationSystem);
+        WebDriver driver = seleniumContainer.getDriver();
         driver.get(getBaseUrl() + applicationSystemHelper1.getStartUrl());
-        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 
         setValue(postalCode.getId(), POST_CODE);
         setValue(textQuestion.getId(), randomId());
@@ -88,5 +90,11 @@ public class PostalCodeIT extends DummyModelBaseItTest {
         setValue(textQuestion.getId(), randomId());
         firefoxDriver.executeScript("$('input:text.postal-code').blur()");
         assertTrue(findByXPath("//span[@class='post-office']").getText().trim().equals(POST_OFFICE2));
+    }
+
+    protected void elementsPresent(String... locations) {
+        for (String location : locations) {
+            assertTrue("Could not find element " + location, seleniumContainer.getSelenium().isElementPresent(location));
+        }
     }
 }
