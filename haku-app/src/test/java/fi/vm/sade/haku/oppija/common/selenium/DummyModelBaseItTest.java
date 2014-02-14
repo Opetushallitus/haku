@@ -50,26 +50,21 @@ public abstract class DummyModelBaseItTest extends AbstractSeleniumBase {
     }
 
     protected void setValue(final String id, final String value) {
-        List<WebElement> elements = seleniumContainer.getDriver().findElements(new By.ByName(id));
-        if (elements.size() > 1) {
-            clickByNameAndValue(id, value);
-        } else {
-            WebElement element = elements.get(0);
-            String tagName = element.getTagName();
-            if ("select".equals(tagName)) {
-                new Select(element).selectByValue(value);
-            } else if ("input".equals(tagName)) {
-                String type = element.getAttribute("type");
-                if ("radio".equals(type)) {
-                    clickByNameAndValue(id, value);
-                } else if ("checkbox".equals(type)) {
-                    click(id);
-                } else {
-                    type(id, value, true);
-                }
+        WebElement element = seleniumContainer.getDriver().findElement(new By.ByName(id));
+        String tagName = element.getTagName();
+        if ("select".equals(tagName)) {
+            new Select(element).selectByValue(value);
+        } else if ("input".equals(tagName)) {
+            String type = element.getAttribute("type");
+            if ("radio".equals(type)) {
+                clickByNameAndValue(id, value);
+            } else if ("checkbox".equals(type)) {
+                click(id);
             } else {
                 type(id, value, true);
             }
+        } else {
+            type(id, value, true);
         }
 
     }
