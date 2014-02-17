@@ -187,6 +187,7 @@ var preferenceRow = {
                 $educationDegreeEducationCode = $("#" + this.id + "-id-educationcode"),
                 selectedId, educationDegree, value = $(this).val(),
                 preferenceRowId = this.id.split("-")[0];
+            $(this).parent().find(".warning").hide();
             $(this).children().removeAttr("selected");
             $(this).children("option[value='" + value + "']").attr("selected", "selected");
             var selectedOption = $("#" + this.id + " option:selected");

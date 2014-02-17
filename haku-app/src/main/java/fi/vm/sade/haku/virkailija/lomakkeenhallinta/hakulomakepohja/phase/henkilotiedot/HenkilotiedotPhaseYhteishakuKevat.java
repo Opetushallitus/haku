@@ -137,11 +137,11 @@ public final class
         addDefaultTrueFalseOptions(onkoSinullaSuomalainenHetu, FORM_MESSAGES);
         setRequiredInlineAndVerboseHelp(onkoSinullaSuomalainenHetu, "form.henkilotiedot.hetu.onkoSuomalainen.verboseHelp",
                 FORM_VERBOSE_HELP, FORM_ERRORS);
-        RelatedQuestionComplexRule suomalainenHetuRule = createRuleIfVariableIsTrue("suomalainenHetuRule", onkoSinullaSuomalainenHetu.getId());
+        RelatedQuestionComplexRule suomalainenHetuRule = createRuleIfVariableIsTrue("onSuomalainenHetu", onkoSinullaSuomalainenHetu.getId());
         suomalainenHetuRule.addChild(socialSecurityNumber);
         onkoSinullaSuomalainenHetu.addChild(suomalainenHetuRule);
 
-        RelatedQuestionComplexRule eiSuomalaistaHetuaRule = createRuleIfVariableIsFalse("suomalainenHetuRule", onkoSinullaSuomalainenHetu.getId());
+        RelatedQuestionComplexRule eiSuomalaistaHetuaRule = createRuleIfVariableIsFalse("eiOleSuomalaistaHetua", onkoSinullaSuomalainenHetu.getId());
         eiSuomalaistaHetuaRule.addChild(sukupuoli);
 
         DateQuestion syntymaaika = new DateQuestion("syntymaaika", createI18NText("form.henkilotiedot.syntymaaika",
