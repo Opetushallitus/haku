@@ -314,6 +314,11 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
+    public Application getNextRedo() {
+        return applicationDAO.getNextRedo();
+    }
+
+    @Override
     public List<Application> getApplicationsByApplicationOption(List<String> applicationOptionIds) {
         return applicationDAO.findByApplicationOption(applicationOptionIds);
     }

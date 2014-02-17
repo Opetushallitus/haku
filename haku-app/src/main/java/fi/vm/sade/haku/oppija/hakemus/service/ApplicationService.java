@@ -148,4 +148,6 @@ public interface ApplicationService {
     Application getSubmittedApplication(final String applicationSystemId, final String oid);
 
     Application addSendingSchool(Application application);
+
+    Application getNextRedo();
 }

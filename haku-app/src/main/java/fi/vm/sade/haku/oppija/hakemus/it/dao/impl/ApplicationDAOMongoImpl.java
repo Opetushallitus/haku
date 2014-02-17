@@ -99,6 +99,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     private static final String EXISTS = "$exists";
     private static final String FIELD_STUDENT_OID = "studentOid";
     private static final String FIELD_STUDENT_IDENTIFICATION_DONE = "studentIdentificationDone";
+    private static final String FIELD_REDO_POSTPROCESS = "redoPostProcess";
     private final EncrypterService shaEncrypter;
     private final DBObjectToSearchResultItem dbObjectToSearchResultItem;
 
@@ -494,6 +495,18 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
 
         DBObject sortBy = new BasicDBObject(FIELD_LAST_AUTOMATED_PROCESSING_TIME, 1);
 
+        DBCursor cursor = getCollection().find(query).sort(sortBy).limit(1);
+        if (!cursor.hasNext()) {
+            return null;
+        }
+        return fromDBObject.apply(cursor.next());
+    }
+
+    @Override
+    public Application getNextRedo() {
+
+        DBObject query = QueryBuilder.start(FIELD_REDO_POSTPROCESS).in(Lists.newArrayList("FULL", "NOMAIL")).get();
+        DBObject sortBy = new BasicDBObject(FIELD_LAST_AUTOMATED_PROCESSING_TIME, 1);
         DBCursor cursor = getCollection().find(query).sort(sortBy).limit(1);
         if (!cursor.hasNext()) {
             return null;

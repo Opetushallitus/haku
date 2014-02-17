@@ -70,6 +70,7 @@ public class Application implements Serializable {
     @Deprecated
     private Long studentOidChecked;
     private Date received;
+    private String redoPostProcess;
 
     private String fullName;
 
@@ -417,6 +418,14 @@ public class Application implements Serializable {
     @Deprecated
     public void setStudentOidChecked(Long studentOidChecked) {
         this.studentOidChecked = studentOidChecked;
+    }
+
+    public void setRedoPostProcess(String redoPostProcess) {
+        this.redoPostProcess = redoPostProcess;
+    }
+
+    public String getRedoPostProcess() {
+        return redoPostProcess;
     }
 
     public void setFullname(String fullName) {
