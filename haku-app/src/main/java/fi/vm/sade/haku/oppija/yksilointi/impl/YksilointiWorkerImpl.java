@@ -128,6 +128,7 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
                     application = applicationService.fillLOPChain(application, false);
                     application = applicationService.addPersonOid(application);
                     application = applicationService.addSendingSchool(application);
+                    application.setRedoPostProcess(null);
                     applicationService.update(new Application(application.getOid()), application);
                 }
                 if (sendMail && redo == "FULL") {
