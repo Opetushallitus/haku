@@ -86,6 +86,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                     HttpResponse response = client.post("/resources/henkilo", MediaType.APPLICATION_JSON, personJson);
                     BasicResponseHandler handler = new BasicResponseHandler();
                     String oid = handler.handleResponse(response);
+                    log.debug("Got oid: ", oid);
                     responseString = getCachingRestClient().getAsString("/resources/henkilo/"+oid);
                     log.debug("Created person: "+responseString);
                 } else {
