@@ -98,10 +98,12 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     private static final String FIELD_SSN = "answers.henkilotiedot.Henkilotunnus";
     private static final String FIELD_DATE_OF_BIRTH = "answers.henkilotiedot.syntymaaika";
     private static final String FIELD_FULL_NAME = "fullName";
+    private static final String FIELD_SEARCH_NAMES = "searchNames";
     private static final String EXISTS = "$exists";
     private static final String FIELD_STUDENT_OID = "studentOid";
     private static final String FIELD_STUDENT_IDENTIFICATION_DONE = "studentIdentificationDone";
     private static final String FIELD_REDO_POSTPROCESS = "redoPostProcess";
+    private static final String REGEX_LINE_BEGIN = "^";
     private final EncrypterService shaEncrypter;
     private final DBObjectToSearchResultItem dbObjectToSearchResultItem;
 
@@ -251,7 +253,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
             );
         } else {
             queries.add(
-                    QueryBuilder.start(FIELD_FULL_NAME).regex(Pattern.compile(token.toLowerCase())).get()
+                    QueryBuilder.start(FIELD_SEARCH_NAMES).regex(Pattern.compile(REGEX_LINE_BEGIN + token.toLowerCase())).get()
             );
         }
         return queries;
