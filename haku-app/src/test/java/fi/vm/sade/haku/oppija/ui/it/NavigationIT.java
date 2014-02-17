@@ -122,7 +122,7 @@ public class NavigationIT extends DummyModelBaseItTest {
         nextPhase();
         nextPhase();
         nextPhase();
-        findByIdAndClick("submit_confirm");
+        click("submit_confirm");
 
         elementsPresent("//li/span/span[contains(text(),'1')]");
         elementsPresent("//li/span/span[contains(text(),'2')]");
