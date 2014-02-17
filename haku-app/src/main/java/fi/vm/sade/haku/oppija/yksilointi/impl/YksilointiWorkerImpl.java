@@ -117,11 +117,14 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
     }
 
     public void redoPostprocess(boolean sendMail) {
+        LOGGER.debug("Beginning redoprocess");
         Application application = applicationService.getNextRedo();
         while (application != null) {
+            LOGGER.debug("Reprocessing application "+application.getOid());
             String redo = application.getRedoPostProcess();
+            LOGGER.debug("Reprocessing application, redo: "+redo);
             if (redo != null) {
-                if (redo == "FULL" || redo == "NOMAIL") {
+                if ("FULL".equals(redo) || "NOMAIL".equals(redo)) {
                     application = applicationService.fillLOPChain(application, false);
                     application = applicationService.addPersonOid(application);
                     application = applicationService.addSendingSchool(application);
