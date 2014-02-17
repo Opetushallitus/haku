@@ -1,5 +1,6 @@
-<%@ page session="false"%>
+<%@ page session="false" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="haku" tagdir="/WEB-INF/tags" %>
 <%--
   ~ Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
@@ -20,21 +21,37 @@
     <c:if test="${not element.selected}">
         <option value="">&nbsp;</option>
     </c:if>
+    <c:set var="tmp_selected_value" value="${answers[element.id]}"/>
+
+    <c:if test="${tmp_selected_value eq null && element.defaultValueAttribute != null && (not (requestScope[element.defaultValueAttribute] eq null))}">
+        <c:set var="tmp_selected_value" value="${fn:toUpperCase(requestScope[element.defaultValueAttribute])}"/>
+    </c:if>
+
+    <c:if test="${tmp_selected_value eq null}">
+        <c:forEach var="option" items="${element.options}">
+            <c:if test="${option.defaultOption}">
+                <c:set var="tmp_selected_value" value="${option.value}"/>
+            </c:if>
+        </c:forEach>
+    </c:if>
     <c:choose>
         <c:when test="${element.sortByText}">
             <c:forEach var="option" items="${element.optionsSortedByText[requestScope['fi_vm_sade_oppija_language']]}">
                 <c:set value="${element.id}.${option.id}" var="optionId" scope="page"/>
-                <option value="${option.value}" ${(answers[element.id] eq option.value or (answers[element.id] eq null and option.defaultOption)) ? "selected=\"selected\" " : " "}><haku:i18nText value="${option.i18nText}"/>&nbsp;</option>
+                <option value="${option.value}" ${tmp_selected_value eq option.value ? "selected=\"selected\" " : " "} >
+                    <haku:i18nText value="${option.i18nText}"/>&nbsp;</option>
             </c:forEach>
         </c:when>
         <c:otherwise>
             <c:forEach var="option" items="${element.options}">
                 <c:set value="${element.id}.${option.id}" var="optionId" scope="page"/>
-                <option value="${option.value}" ${(answers[element.id] eq option.value or (answers[element.id] eq null and option.defaultOption)) ? "selected=\"selected\" " : " "}><haku:i18nText value="${option.i18nText}"/>&nbsp;</option>
+                <option value="${option.value}" ${tmp_selected_value eq option.value ? "selected=\"selected\" " : " "} >
+                    <haku:i18nText value="${option.i18nText}"/>&nbsp;</option>
             </c:forEach>
         </c:otherwise>
     </c:choose>
 </select>
+<c:remove var="tmp_selected_value"/>
 <script>
     $(document).ready(function () {
         if (${not (answers[element.id] eq null)}) {
