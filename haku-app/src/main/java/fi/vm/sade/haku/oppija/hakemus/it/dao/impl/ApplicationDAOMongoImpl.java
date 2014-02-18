@@ -62,6 +62,8 @@ import static org.apache.commons.lang.StringUtils.isEmpty;
 @Service("applicationDAOMongoImpl")
 public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> implements ApplicationDAO {
 
+    @Value("${mongodb.ensureIndex:true}")
+    private boolean ensureIndex;
 
     private static final Logger LOG = LoggerFactory.getLogger(ApplicationDAOMongoImpl.class);
     private static final String INDEX_APPLICATION_OID = "index_oid";
@@ -542,6 +544,11 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
 
     @PostConstruct
     public void ensureIndexes(){
+
+        if (!ensureIndex) {
+            return;
+        }
+
         createIndex(INDEX_APPLICATION_OID, false, FIELD_APPLICATION_OID);
         createIndex(INDEX_SSN, false, FIELD_SSN);
         createIndex(INDEX_SSN_DIGEST, false, FIELD_SSN_DIGEST);
