@@ -37,6 +37,7 @@
     <link rel="stylesheet" href="${contextPath}/resources/jquery-ui-theme/jquery-ui-1.8.23.custom.css" type="text/css">
     <link href="${contextPath}/resources/css/oppija.css" type="text/css" rel="stylesheet">
     <link href="${contextPath}/resources/css/virkailija.css" type="text/css" rel="stylesheet">
+    <link href="${contextPath}/resources/css/hakemus.css" type="text/css" rel="stylesheet"/>
     <script src="${contextPath}/resources/jquery/jquery.min.js" type="text/javascript"></script>
     <script src="${contextPath}/resources/jquery/jquery-ui-1.8.23.custom.min.js" type="text/javascript"></script>
     <script src="${contextPath}/resources/jquery/jquery.ui.datepicker-fi.js" type="text/javascript"></script>
