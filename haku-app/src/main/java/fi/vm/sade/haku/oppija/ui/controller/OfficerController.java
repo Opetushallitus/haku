@@ -42,7 +42,10 @@ import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static javax.ws.rs.core.Response.ok;
 import static javax.ws.rs.core.Response.seeOther;
@@ -159,6 +162,7 @@ public class OfficerController {
 
         LOGGER.debug("getPreview {}, {}, {}", new String[]{applicationSystemId, phaseId, oid});
         ModelResponse modelResponse = officerUIService.getValidatedApplication(oid, phaseId);
+
         return new Viewable(DEFAULT_VIEW, modelResponse.getModel()); // TODO remove hardcoded Phase
     }
 

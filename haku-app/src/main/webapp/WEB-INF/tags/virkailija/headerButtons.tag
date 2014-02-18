@@ -54,21 +54,15 @@
 
     <div class="margin-vertical-2">
         <div class="float-left">
-        <c:if test="${not empty it.previousApplication}">
-            <a href="#" id="previousApplication">&lt;&nbsp;Edellinen (${it.previousApplicant})</a>
-        </c:if>
+            <a href="#" id="previousApplication"></a>
         </div>
 
         <div class="float-right">
-        <c:if test="${not empty it.nextApplication}">
-            <a href="#" id="nextApplication">(${it.nextApplicant})&nbsp;Seuraava&nbsp;&gt;</a>
-        </c:if>
+            <a href="#" id="nextApplication"></a>
         </div>
 
         <div class="align-center margin-auto width-25">
-        <c:if test="${not empty it.selectedApplication}">
-            ${it.currentApplication} / ${it.applicationCount}
-        </c:if>
+            <span id="applicationCount"></span>
         </div>
     </div>
 
