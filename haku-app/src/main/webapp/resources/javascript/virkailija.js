@@ -552,7 +552,7 @@ $(document).ready(function () {
     });
 
     $('#application-table-header-applicationOid').click(function (event) {
-        applicationSearch.sort($(this), 'applicationOid');
+        applicationSearch.sort($(this), 'oid');
     });
 
     $('#application-table-header-state').click(function (event) {
