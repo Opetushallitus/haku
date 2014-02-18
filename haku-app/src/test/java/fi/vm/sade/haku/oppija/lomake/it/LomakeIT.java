@@ -88,7 +88,7 @@ public class LomakeIT extends DummyModelBaseItTest {
 
         findByIdAndClick("LISAKOULUTUS_KYMPPI", "LISAKOULUTUS_VAMMAISTEN", "LISAKOULUTUS_TALOUS", "LISAKOULUTUS_AMMATTISTARTTI");
         setValue("perusopetuksen_kieli", "FI");
-        setValue("KOULUTUSPAIKKA_AMMATILLISEEN_TUTKINTOON", "false");
+        setValue("KOULUTUSPAIKKA_AMMATILLISEEN_TUTKINTOON", "false", true);
         nextPhase();
 
         assertTrue("Warning text 'ristiriita' not found", !findByClassName("warning").isEmpty());

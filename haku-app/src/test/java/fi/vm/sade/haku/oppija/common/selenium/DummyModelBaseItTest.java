@@ -9,8 +9,11 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.List;
 import java.util.Map;
@@ -49,8 +52,17 @@ public abstract class DummyModelBaseItTest extends AbstractSeleniumBase {
         }
     }
 
+    protected void setValue(final String id, final String value, final boolean wait) {
+        if (wait) {
+            new WebDriverWait(seleniumContainer.getDriver(), 10)
+                    .until(ExpectedConditions.presenceOfElementLocated(By.name(id)));
+        }
+        setValue(id, value);
+    }
+
     protected void setValue(final String id, final String value) {
-        WebElement element = seleniumContainer.getDriver().findElement(new By.ByName(id));
+        WebDriver webDriver = seleniumContainer.getDriver();
+        WebElement element = webDriver.findElement(new By.ByName(id));
         String tagName = element.getTagName();
         if ("select".equals(tagName)) {
             new Select(element).selectByValue(value);
