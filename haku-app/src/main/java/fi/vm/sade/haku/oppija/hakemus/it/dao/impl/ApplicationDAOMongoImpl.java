@@ -44,6 +44,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -61,7 +62,21 @@ import static org.apache.commons.lang.StringUtils.isEmpty;
 @Service("applicationDAOMongoImpl")
 public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> implements ApplicationDAO {
 
+
     private static final Logger LOG = LoggerFactory.getLogger(ApplicationDAOMongoImpl.class);
+    private static final String INDEX_APPLICATION_OID = "index_oid";
+    private static final String INDEX_SSN = "index_Henkilotunnus";
+    private static final String INDEX_SSN_DIGEST = "index_Henkilotunnus_digest";
+    private static final String INDEX_DATE_OF_BIRTH = "index_syntymaaika";
+    private static final String INDEX_PERSON_OID = "index_personOid";
+    private static final String INDEX_STUDENT_OID = "index_studentOid";
+    private static final String INDEX_STATE = "index_state";
+    private static final String INDEX_STUDENT_IDENTIFICATION_DONE = "index_studentIdentificationDone";
+    private static final String INDEX_SENDING_SCHOOL = "index_lahtokoulu";
+    private static final String INDEX_SENDING_CLASS = "index_lahtoluokka";
+    private static final String INDEX_SEARCH_NAMES = "index_searchNames";
+    private static final String INDEX_REDO_POSTPROCESS = "index_redoPostProcess";
+
     private static final String FIELD_AO_1 = "answers.hakutoiveet.preference1-Koulutus-id";
     private static final String FIELD_AO_2 = "answers.hakutoiveet.preference2-Koulutus-id";
     private static final String FIELD_AO_3 = "answers.hakutoiveet.preference3-Koulutus-id";
@@ -96,10 +111,13 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     private static final String FIELD_SENDING_SCHOOL_PARENTS = "answers.koulutustausta.lahtokoulu-parents";
     private static final String FIELD_SENDING_CLASS = "answers.koulutustausta.lahtoluokka";
     private static final String FIELD_SSN = "answers.henkilotiedot.Henkilotunnus";
+    private static final String FIELD_SSN_DIGEST = "answers.henkilotiedot.Henkilotunnus_digest";
     private static final String FIELD_DATE_OF_BIRTH = "answers.henkilotiedot.syntymaaika";
     private static final String FIELD_FULL_NAME = "fullName";
     private static final String FIELD_SEARCH_NAMES = "searchNames";
     private static final String EXISTS = "$exists";
+    private static final String OPTION_SPARSE = "sparse";
+    private static final String OPTION_NAME= "name";
     private static final String FIELD_STUDENT_OID = "studentOid";
     private static final String FIELD_STUDENT_IDENTIFICATION_DONE = "studentIdentificationDone";
     private static final String FIELD_REDO_POSTPROCESS = "redoPostProcess";
@@ -227,7 +245,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
             } else if (HETU_PATTERN.matcher(token).matches()) {
                 String encryptedSsn = shaEncrypter.encrypt(token.toUpperCase());
                 queries.add(
-                        QueryBuilder.start("answers.henkilotiedot.Henkilotunnus_digest").is(encryptedSsn).get()
+                        QueryBuilder.start(FIELD_SSN_DIGEST).is(encryptedSsn).get()
                 );
             } else { // Name or date of birth
                 queries = addDobOrNameQuery(queries, token);
@@ -520,5 +538,46 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
 
     private boolean resultNotEmpty(final DBObject query) {
         return getCollection().find(query).limit(1).size() > 0;
+    }
+
+    @PostConstruct
+    public void ensureIndexes(){
+        createIndex(INDEX_APPLICATION_OID, false, FIELD_APPLICATION_OID);
+        createIndex(INDEX_SSN, false, FIELD_SSN);
+        createIndex(INDEX_SSN_DIGEST, false, FIELD_SSN_DIGEST);
+        createIndex(INDEX_DATE_OF_BIRTH, false, FIELD_DATE_OF_BIRTH);
+        createIndex(INDEX_PERSON_OID, false, FIELD_PERSON_OID);
+        createIndex(INDEX_STUDENT_OID, false, FIELD_STUDENT_OID);
+        createIndex(INDEX_STATE, false, FIELD_APPLICATION_STATE, FIELD_LAST_AUTOMATED_PROCESSING_TIME);
+        createIndex(INDEX_STUDENT_IDENTIFICATION_DONE, true, FIELD_APPLICATION_STATE, FIELD_STUDENT_IDENTIFICATION_DONE, FIELD_LAST_AUTOMATED_PROCESSING_TIME);
+        createIndex(INDEX_SENDING_SCHOOL, true, FIELD_SENDING_SCHOOL, FIELD_SENDING_CLASS);
+        createIndex(INDEX_SENDING_CLASS, true, FIELD_SENDING_CLASS);
+        createIndex(INDEX_SEARCH_NAMES, false, FIELD_SEARCH_NAMES);
+        createIndex(INDEX_REDO_POSTPROCESS, true, FIELD_REDO_POSTPROCESS);
+
+        // Preference Indexes
+        createPreferenceIndexes("preference1", false, FIELD_LOP_1, FIELD_DISCRETIONARY_1, FIELD_AO_1, FIELD_AO_KOULUTUS_ID_1);
+        createPreferenceIndexes("preference2", true, FIELD_LOP_2, FIELD_DISCRETIONARY_2, FIELD_AO_2, FIELD_AO_KOULUTUS_ID_2);
+        createPreferenceIndexes("preference3", true, FIELD_LOP_3, FIELD_DISCRETIONARY_3, FIELD_AO_3, FIELD_AO_KOULUTUS_ID_3);
+        createPreferenceIndexes("preference4", true, FIELD_LOP_4, FIELD_DISCRETIONARY_4, FIELD_AO_4, FIELD_AO_KOULUTUS_ID_4);
+        createPreferenceIndexes("preference5", true, FIELD_LOP_5, FIELD_DISCRETIONARY_5, FIELD_AO_5, FIELD_AO_KOULUTUS_ID_5);
+    }
+
+    private void createPreferenceIndexes(String preference, Boolean sparsePossible, String lopField, String discretionaryField, String fieldAo, String fieldAoIdentifier){
+        createIndex("index_ " + preference + "_lop", sparsePossible.booleanValue(), lopField);
+        createIndex("index_ " + preference + "_discretionary", true, discretionaryField);
+        createIndex("index_ " + preference + "_ao", sparsePossible.booleanValue(), fieldAo);
+        createIndex("index_ " + preference + "_ao_identifier", sparsePossible.booleanValue(), fieldAoIdentifier);
+    }
+
+    private void createIndex(String name, Boolean isSparse, String... fields){
+        final DBObject options = new BasicDBObject(OPTION_NAME, name);
+        options.put(OPTION_SPARSE, isSparse.booleanValue());
+
+        final DBObject index = new BasicDBObject();
+        for (String field : fields) {
+            index.put(field, 1);
+        }
+        getCollection().ensureIndex(index, options);
     }
 }

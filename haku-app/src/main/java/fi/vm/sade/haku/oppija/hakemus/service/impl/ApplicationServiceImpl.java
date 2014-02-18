@@ -30,7 +30,6 @@ import fi.vm.sade.haku.oppija.hakemus.service.ApplicationOidService;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.haku.oppija.hakemus.service.HakuPermissionService;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationState;
-import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.User;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
@@ -195,8 +194,8 @@ public class ApplicationServiceImpl implements ApplicationService {
             Person personAfter = null;
             try {
                 personAfter = authenticationService.addPerson(personBefore);
-            } catch(Throwable t) {
-                LOGGER.debug("Unexpected happened: "+t);
+            } catch (Throwable t) {
+                LOGGER.debug("Unexpected happened: " + t);
             }
             LOGGER.debug("Called addPerson");
             LOGGER.debug("Calling modifyPersonalData");
@@ -287,9 +286,6 @@ public class ApplicationServiceImpl implements ApplicationService {
             return application;
         }
 
-        ApplicationSystem as = applicationSystemService.getApplicationSystem(application.getApplicationSystemId());
-        Integer hakukausiVuosi = as.getHakukausiVuosi();
-        String hakukausi = as.getHakukausiUri();
         List<OpiskelijaDTO> opiskelijat = suoritusrekisteriService.getOpiskelijat(personOid);
 
         if (opiskelijat != null && opiskelijat.size() > 0) {
