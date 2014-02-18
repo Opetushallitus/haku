@@ -44,7 +44,7 @@
     <script src="${contextPath}/resources/jquery/xdr.js"></script>
     <script src="${contextPath}/resources/javascript/rules.js" type="text/javascript"></script>
     <script src="${contextPath}/resources/javascript/master.js" type="text/javascript"></script>
-    <script src="${contextPath}/resources/javascript/jquery.cookie.js" type="text/javascript"></script>
+    <script src="${contextPath}/resources/jquery/jquery.cookie.js" type="text/javascript"></script>
     <script src="${contextPath}/resources/javascript/virkailija/application.js" type="text/javascript"></script>
     <script type="text/javascript" src="/virkailija-raamit/apply-raamit.js"></script>
     <title><fmt:message key="virkailija.otsikko"/></title>
@@ -53,43 +53,38 @@
 
 </head>
 <body>
-<c:if test="${not empty it.applicationList}">
-    <script type="text/javascript">
-        var previousApplication = '${it.previousApplication}';
-        var nextApplication = '${it.nextApplication}';
-    </script>
-    <form method="POST" id="open-applications"
-          action="${pageContext.request.contextPath}/virkailija/hakemus/multiple">
-        <input type="hidden" name="applicationList" id="applicationList" value="${it.applicationList}"/>
-        <input type="hidden" name="selectedApplication" id="selectedApplication"/>
-    </form>
-</c:if>
+<script type="text/javascript">
+    var page_settings = {
+        contextPath: "${pageContext.request.contextPath}",
+        applicationOid: "${oid}",
+        lang: "${requestScope['fi_vm_sade_oppija_language']}",
+        preview: "${preview}"
+    }
+</script>
 
 <div id="viewport">
 
     <div id="overlay">
-        <c:choose>
-            <c:when test="${preview}">
-                <c:choose>
-                    <c:when test="${application.passive}">
-                        <jsp:include page="confirmActivation.jsp"/>
-                    </c:when>
-                    <c:otherwise>
-                        <c:if test="${it.virkailijaDeleteAllowed}">
-                            <jsp:include page="confirmPassivation.jsp"/>
-                        </c:if>
-                    </c:otherwise>
-                </c:choose>
-                <c:choose>
-                    <c:when test="${it.postProcessAllowed and empty application.studentOid and not empty application.personOid}">
-                        <jsp:include page="addStudentOid.jsp"/>
-                    </c:when>
-                </c:choose>
-                <c:if test="${it.postProcessAllowed}">
-                    <jsp:include page="postProcess.jsp"/>
-                </c:if>
-            </c:when>
-        </c:choose>
+        <c:if test="${preview}">
+            <c:choose>
+                <c:when test="${application.passive}">
+                    <jsp:include page="confirmActivation.jsp"/>
+                </c:when>
+                <c:otherwise>
+                    <c:if test="${it.virkailijaDeleteAllowed}">
+                        <jsp:include page="confirmPassivation.jsp"/>
+                    </c:if>
+                </c:otherwise>
+            </c:choose>
+            <c:choose>
+                <c:when test="${it.postProcessAllowed and empty application.studentOid and not empty application.personOid}">
+                    <jsp:include page="addStudentOid.jsp"/>
+                </c:when>
+            </c:choose>
+            <c:if test="${it.postProcessAllowed}">
+                <jsp:include page="postProcess.jsp"/>
+            </c:if>
+        </c:if>
     </div>
     <div id="wrapper" class="virkailija">
 

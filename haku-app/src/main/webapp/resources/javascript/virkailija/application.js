@@ -2,8 +2,8 @@
 
 $(document).ready(function() {
 
-var cookieName = 'hakemukset_last_search';
-var cookiePath = '/haku-app/virkailija/';
+    var cookieName = 'hakemukset_last_search';
+    var cookiePath = '/haku-app/virkailija/';
 
 /* ****************************************************************************
  * Application additional info
@@ -59,20 +59,89 @@ var cookiePath = '/haku-app/virkailija/';
  * Application navigation
  */
 
-    $('#previousApplication').click(function () {
-        var selectedApplication = previousApplication;
-        if (selectedApplication) {
-            $('#selectedApplication').val(selectedApplication);
-            $('#open-applications').submit();
-        }
-    });
+    var applicationNavigation = {
 
-    $('#nextApplication').click(function () {
-        var selectedApplication = nextApplication;
-        if (selectedApplication) {
-            $('#selectedApplication').val(selectedApplication);
-            $('#open-applications').submit();
+        initLink : function(oid, elementId, prev) {
+            var id = elementId;
+            $.getJSON(page_settings.contextPath + "/applications/" + oid,
+                function (data) {
+                    var etunimet = data.answers.henkilotiedot.Etunimet;
+                    var sukunimi = data.answers.henkilotiedot.Sukunimi;
+                    var linkText = prev ?
+                        "&lt;&nbsp;Edellinen ("+sukunimi + " " + etunimet+")" :
+                        "("+sukunimi + " " + etunimet+")&nbsp;Seuraava&nbsp;&gt;";
+                    $('#'+elementId).text(linkText);
+                    $('#'+elementId).attr('href', page_settings.contextPath + "/virkailija/hakemus/" + oid);
+                }
+            )
+        },
+
+        init : function() {
+
+            $.cookie.path = cookiePath;
+            $.cookie.json = true;
+
+            var lastSearch = $.cookie(cookieName);
+            if (!lastSearch) {
+                return;
+            }
+            var previousApplication = undefined;
+            var nextApplication = undefined;
+            var applicationList = lastSearch.applicationList;
+            if (typeof applicationList !== "string") {
+                return;
+            }
+            var applicationArray = applicationList.split(',');
+            if (applicationArray.length == 0) {
+                return;
+            }
+            var i = 0;
+            for (i = 0; i < applicationArray.length; i++) {
+                var curr = applicationArray[i];
+                var oid = page_settings.applicationOid;
+                if (curr !== page_settings.applicationOid) {
+                    continue;
+                }
+                if (i > 0) {
+                    previousApplication = applicationArray[i-1];
+                }
+                if (i < applicationArray.length - 1) {
+                    nextApplication = applicationArray[i+1];
+                }
+                break;
+            }
+            i++
+
+            $('#applicationCount').text("" + i + " / " + applicationArray.length);
+
+            if (previousApplication) {
+                $.getJSON(page_settings.contextPath + "/applications/" + previousApplication,
+                      function (data) {
+                          var etunimet = data.answers.henkilotiedot.Etunimet;
+                          var sukunimi = data.answers.henkilotiedot.Sukunimi;
+                          var linkText = "< Edellinen ("+sukunimi + " " + etunimet+")";
+                          $('#previousApplication').text(linkText);
+                          $('#previousApplication').attr('href', page_settings.contextPath + "/virkailija/hakemus/" + previousApplication);
+                      }
+                )
+            }
+            if (nextApplication) {
+                $.getJSON(page_settings.contextPath + "/applications/" + nextApplication,
+                    function (data) {
+                        var etunimet = data.answers.henkilotiedot.Etunimet;
+                        var sukunimi = data.answers.henkilotiedot.Sukunimi;
+                        var linkText = "("+sukunimi + " " + etunimet+") Seuraava >";
+                        $('#nextApplication').text(linkText);
+                        $('#nextApplication').attr('href', page_settings.contextPath + "/virkailija/hakemus/" + nextApplication);
+                    }
+                )
+            }
+
         }
-    });
+    }
+
+    if (page_settings.preview === "true") {
+        applicationNavigation.init();
+    }
 
 });
