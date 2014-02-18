@@ -33,6 +33,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import javax.ws.rs.HEAD;
 import javax.ws.rs.core.MediaType;
 import java.io.IOException;
 import java.io.InputStream;

@@ -19,10 +19,13 @@ public class OlderThan extends Expr {
 
     @Override
     public boolean evaluate(final Map<String, String> context) {
-        String leftValue = getLeft().getValue(context);
         String dateOfBirth = getDateOfBirth(context);
-        String pattern = "dd.MM.yyyy";
-        DateTime dateTime = DateTime.parse(dateOfBirth, DateTimeFormat.forPattern(pattern));
-        return Integer.parseInt(leftValue) <= Years.yearsBetween(new LocalDate(dateTime), new LocalDate()).getYears();
+        if (dateOfBirth == null) {
+            return false;
+        } else {
+            DateTime dateTime = DateTime.parse(dateOfBirth, DateTimeFormat.forPattern("dd.MM.yyyy"));
+            return Integer.parseInt(getLeft().getValue(context)) <= Years.yearsBetween(new LocalDate(dateTime), new LocalDate()).getYears();
+        }
+
     }
 }

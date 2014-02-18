@@ -70,7 +70,7 @@ public class ApplicationGenerator {
         application.addVaiheenVastaukset("hakutoiveet", hakutoiveet);
         application.addVaiheenVastaukset("koulutustausta", koulutustausta);
         application.addVaiheenVastaukset("osaaminen", osaaminen);
-        application.updateFullName();
+        application.updateNameMetadata();
 
         application.setOid(oidDao.generateNewOid());
         application.setApplicationSystemId("1.2.246.562.5.2013060313080811526781");

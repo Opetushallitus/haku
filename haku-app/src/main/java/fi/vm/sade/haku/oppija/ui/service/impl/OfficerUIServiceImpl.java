@@ -177,6 +177,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         String noteText = "Päivitetty vaihetta '" + applicationPhase.getPhaseId() + "'";
         this.applicationService.addNote(application, noteText, false);
         this.applicationService.fillLOPChain(application, false);
+        this.applicationService.addSendingSchool(application);
         this.applicationService.update(queryApplication, application);
         application.setPhaseId(applicationPhase.getPhaseId());
         return new ModelResponse(application, form, phase, phaseValidationResult, koulutusinformaatioBaseUrl);

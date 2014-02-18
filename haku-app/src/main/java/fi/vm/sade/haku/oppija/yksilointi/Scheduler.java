@@ -55,6 +55,14 @@ public class Scheduler {
         }
     }
 
+    public void redoPostprocess() {
+        if (run) {
+            LOGGER.debug("Running identification scheduler {}", System.currentTimeMillis());
+            worker.redoPostprocess(sendMail);
+            LOGGER.debug("Finished running identification scheduler {}", System.currentTimeMillis());
+        }
+    }
+
     public void setRun(boolean run) {
         this.run = run;
     }

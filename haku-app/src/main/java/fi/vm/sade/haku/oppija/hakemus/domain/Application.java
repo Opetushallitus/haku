@@ -70,8 +70,10 @@ public class Application implements Serializable {
     @Deprecated
     private Long studentOidChecked;
     private Date received;
+    private String redoPostProcess;
 
     private String fullName;
+    private HashSet<String> searchNames = new HashSet<String>();
 
     private Map<String, Map<String, String>> answers = new HashMap<String, Map<String, String>>();
     private Map<String, String> meta = new HashMap<String, String>();
@@ -86,7 +88,7 @@ public class Application implements Serializable {
         this(applicationSystemId, user);
         if (answers != null) {
             this.answers = answers;
-            updateFullName();
+            updateNameMetadata();
         }
         if (additionalInfo != null) {
             this.additionalInfo = additionalInfo;
@@ -184,7 +186,7 @@ public class Application implements Serializable {
         this.phaseId = answers.get(VAIHE_ID);
         Map<String, String> answersWithoutPhaseId = ImmutableMap.copyOf(Maps.filterKeys(answers, Predicates.not(Predicates.equalTo(VAIHE_ID))));
         this.answers.put(phaseId, answersWithoutPhaseId);
-        updateFullName();
+        updateNameMetadata();
         return this;
     }
 
@@ -244,15 +246,38 @@ public class Application implements Serializable {
     }
 
     @JsonIgnore
-    public void updateFullName() {
+    public void updateNameMetadata() {
         Map<String, String> henkilotiedot = getPhaseAnswers("henkilotiedot");
         if (henkilotiedot != null) {
             String lastName = henkilotiedot.get(OppijaConstants.ELEMENT_ID_LAST_NAME);
             String firstNames = henkilotiedot.get(OppijaConstants.ELEMENT_ID_FIRST_NAMES);
-            if (lastName != null) {
-                fullName = lastName.toLowerCase() + " " + firstNames.toLowerCase();
-            } else {
-                fullName = "";
+            String callingName = henkilotiedot.get(OppijaConstants.ELEMENT_ID_NICKNAME);
+            updateFullName(lastName, firstNames);
+            updateSearchNames(lastName, firstNames, callingName);
+        }
+    }
+
+    private void updateFullName(String lastName, String firstNames) {
+        if (lastName != null) {
+            fullName = lastName.toLowerCase() + " " + firstNames.toLowerCase();
+        } else {
+            fullName = "";
+        }
+    }
+
+    private void updateSearchNames(String... names){
+        if (names == null || names.length < 1)
+            return;
+
+        for (String name : names){
+            if(name == null || name.isEmpty())
+                continue;
+            for (String searchName : name.split(" ")){
+                searchName = searchName.toLowerCase();
+                addSearchName(searchName);
+                for (String namePart : searchName.split("-")){
+                    addSearchName(namePart);
+                }
             }
         }
     }
@@ -281,7 +306,7 @@ public class Application implements Serializable {
                 OppijaConstants.ELEMENT_ID_LAST_NAME,OppijaConstants.ELEMENT_ID_LAST_NAME_USER);
         henkilotiedot = updateHenkilotiedotField(henkilotiedot, person.getNickName(),
                 OppijaConstants.ELEMENT_ID_NICKNAME,OppijaConstants.ELEMENT_ID_NICKNAME_USER);
-        updateFullName();
+        updateNameMetadata();
         String personOid = person.getPersonOid();
         if (isNotEmpty(personOid)) {
             setPersonOid(personOid);
@@ -419,6 +444,14 @@ public class Application implements Serializable {
         this.studentOidChecked = studentOidChecked;
     }
 
+    public void setRedoPostProcess(String redoPostProcess) {
+        this.redoPostProcess = redoPostProcess;
+    }
+
+    public String getRedoPostProcess() {
+        return redoPostProcess;
+    }
+
     public void setFullname(String fullName) {
         this.fullName = fullName;
     }
@@ -433,6 +466,16 @@ public class Application implements Serializable {
 
     public void addNote(ApplicationNote note) {
         notes.add(0, note);
+    }
+
+    public Set<String> getSearchNames(){
+        return this.searchNames;
+    }
+
+    public void addSearchName(String searchName){
+        if (searchName != null && !searchName.isEmpty()){
+            this.searchNames.add(searchName);
+        }
     }
 
 }

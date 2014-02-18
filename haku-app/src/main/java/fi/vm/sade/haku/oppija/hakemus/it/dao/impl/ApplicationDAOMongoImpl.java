@@ -96,9 +96,14 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     private static final String FIELD_SENDING_SCHOOL_PARENTS = "answers.koulutustausta.lahtokoulu-parents";
     private static final String FIELD_SENDING_CLASS = "answers.koulutustausta.lahtoluokka";
     private static final String FIELD_SSN = "answers.henkilotiedot.Henkilotunnus";
+    private static final String FIELD_DATE_OF_BIRTH = "answers.henkilotiedot.syntymaaika";
+    private static final String FIELD_FULL_NAME = "fullName";
+    private static final String FIELD_SEARCH_NAMES = "searchNames";
     private static final String EXISTS = "$exists";
     private static final String FIELD_STUDENT_OID = "studentOid";
     private static final String FIELD_STUDENT_IDENTIFICATION_DONE = "studentIdentificationDone";
+    private static final String FIELD_REDO_POSTPROCESS = "redoPostProcess";
+    private static final String REGEX_LINE_BEGIN = "^";
     private final EncrypterService shaEncrypter;
     private final DBObjectToSearchResultItem dbObjectToSearchResultItem;
 
@@ -244,11 +249,11 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         }
         if (dob != null) {
             queries.add(
-                    QueryBuilder.start("answers.henkilotiedot.syntymaaika").is(FORM_DATE.format(dob)).get()
+                    QueryBuilder.start(FIELD_DATE_OF_BIRTH).is(FORM_DATE.format(dob)).get()
             );
         } else {
             queries.add(
-                    QueryBuilder.start("fullName").regex(Pattern.compile(token.toLowerCase())).get()
+                    QueryBuilder.start(FIELD_SEARCH_NAMES).regex(Pattern.compile(REGEX_LINE_BEGIN + token.toLowerCase())).get()
             );
         }
         return queries;
@@ -464,11 +469,11 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     @Override
     public Application getNextWithoutStudentOid() {
         DBObject query = new BasicDBObject();
-        query.put(FIELD_APPLICATION_OID, new BasicDBObject("$exists", true));
-        query.put(FIELD_PERSON_OID, new BasicDBObject("$exists", true));
-        query.put(FIELD_STUDENT_OID, new BasicDBObject("$exists", false));
+        query.put(FIELD_APPLICATION_OID, new BasicDBObject(EXISTS, true));
+        query.put(FIELD_PERSON_OID, new BasicDBObject(EXISTS, true));
+        query.put(FIELD_STUDENT_OID, new BasicDBObject(EXISTS, false));
         query.put(FIELD_APPLICATION_STATE, Application.State.ACTIVE.toString());
-        query.put("answers.henkilotiedot.Henkilotunnus", new BasicDBObject("$exists", true));
+        query.put(FIELD_SSN, new BasicDBObject(EXISTS, true));
         query.put(FIELD_STUDENT_IDENTIFICATION_DONE, Boolean.FALSE.toString());
 
         DBObject sortBy = new BasicDBObject(FIELD_LAST_AUTOMATED_PROCESSING_TIME, 1);
@@ -494,6 +499,18 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
 
         DBObject sortBy = new BasicDBObject(FIELD_LAST_AUTOMATED_PROCESSING_TIME, 1);
 
+        DBCursor cursor = getCollection().find(query).sort(sortBy).limit(1);
+        if (!cursor.hasNext()) {
+            return null;
+        }
+        return fromDBObject.apply(cursor.next());
+    }
+
+    @Override
+    public Application getNextRedo() {
+
+        DBObject query = QueryBuilder.start(FIELD_REDO_POSTPROCESS).in(Lists.newArrayList("FULL", "NOMAIL")).get();
+        DBObject sortBy = new BasicDBObject(FIELD_LAST_AUTOMATED_PROCESSING_TIME, 1);
         DBCursor cursor = getCollection().find(query).sort(sortBy).limit(1);
         if (!cursor.hasNext()) {
             return null;

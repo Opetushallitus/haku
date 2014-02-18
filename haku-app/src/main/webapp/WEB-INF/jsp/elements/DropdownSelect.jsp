@@ -1,4 +1,4 @@
-<%@ page session="false"%>
+<%@ page session="false" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="haku" tagdir="/WEB-INF/tags" %>
@@ -24,24 +24,12 @@
     <haku:label element="${element}" styleBaseClass="${styleBaseClass}"/>
 
     <div class="${styleBaseClass}-content">
-        <select ${element.attributeString}>
-            <c:set var="tmp_selected_value" value="${answers[element.id]}" />
 
-            <c:if test="${tmp_selected_value eq null && element.defaultValueAttribute != null && (not (requestScope[element.defaultValueAttribute] eq null))}">
-                <c:set var="tmp_selected_value" value="${fn:toUpperCase(requestScope[element.defaultValueAttribute])}"/>
-            </c:if>
-            <c:if test="${tmp_selected_value eq null}">
-                <c:forEach var="option" items="${element.options}">
-                    <c:if test="${option.defaultOption}">
-                        <c:set var="tmp_selected_value" value="${option.value}"/>
-                    </c:if>
-                </c:forEach>
-            </c:if>
-            <c:forEach var="option" items="${element.optionsSortedByText[requestScope['fi_vm_sade_oppija_language']]}">
-                <c:set value="${element.id}.${option.id}" var="optionId" scope="page"/>
-                <option value="${option.value}" ${tmp_selected_value eq option.value ? "selected=\"selected\" " : " "} ><haku:i18nText value="${option.i18nText}"/>&nbsp;</option>
-            </c:forEach>
-            <c:remove var="tmp_selected_value"/>
+        <select ${element.attributeString}>
+            <haku:setSelectedValue element="${element}"/>
+            <c:set var="options" value="${element.optionsSortedByText[requestScope['fi_vm_sade_oppija_language']]}"/>
+            <haku:options options="${options}"/>
+            <c:remove var="selected_value" scope="request"/>
         </select>
         <haku:errorMessage id="${element.id}" additionalClass="margin-top-1"/>
         <haku:help element="${element}"/>

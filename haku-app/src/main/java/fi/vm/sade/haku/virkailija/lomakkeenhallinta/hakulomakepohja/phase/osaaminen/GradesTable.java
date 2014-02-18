@@ -87,22 +87,22 @@ public class GradesTable {
 
 
         GradeGridOptionQuestion addLangs =
-                new GradeGridOptionQuestion(id + OPPIAINE_SUFFIX, languages, false, true);
+                new GradeGridOptionQuestion(id + OPPIAINE_SUFFIX, languages, false, true, null);
         ElementUtil.setDisabled(addLangs);
 
         GradeGridOptionQuestion grades =
-                new GradeGridOptionQuestion(id, gradeGridHelper.getGradeRanges(), false, false);
+                new GradeGridOptionQuestion(id, gradeGridHelper.getGradeRanges(), false, false, null);
         ElementUtil.setDisabled(grades);
 
         GradeGridOptionQuestion gradesSelected = null;
         GradeGridOptionQuestion gradesSelected2 = null;
         if (gradeGridHelper.isComprehensiveSchool()) {
             gradesSelected =
-                    new GradeGridOptionQuestion(id + "_VAL1", gradeRangesWithDefault, true, false);
+                    new GradeGridOptionQuestion(id + "_VAL1", gradeRangesWithDefault, true, false, null);
             ElementUtil.setDisabled(gradesSelected);
 
             gradesSelected2 =
-                    new GradeGridOptionQuestion(id + "_VAL2", gradeRangesWithDefault, true, false);
+                    new GradeGridOptionQuestion(id + "_VAL2", gradeRangesWithDefault, true, false, null);
             ElementUtil.setDisabled(gradesSelected2);
         }
 
@@ -163,20 +163,21 @@ public class GradesTable {
 
         if (subjectRow.isLanguage() || language) {
             List<Option> subjectLanguages;
+            GradeGridOptionQuestion child;
             if (literature) {
                 subjectLanguages = gradeGridHelper.getLanguageAndLiterature();
-                ElementUtil.setDefaultOption("FI", subjectLanguages);
+                child = new GradeGridOptionQuestion(id + "_OPPIAINE", subjectLanguages, false, true, "fi_vm_sade_oppija_language");
             } else {
                 subjectLanguages = new ArrayList<Option>();
                 subjectLanguages.addAll(gradeGridHelper.getSubjectLanguages());
+                child = new GradeGridOptionQuestion(id + "_OPPIAINE", subjectLanguages, false, true, null);
             }
-            GradeGridOptionQuestion child = new GradeGridOptionQuestion(id + "_OPPIAINE", subjectLanguages, false, true);
             ElementUtil.addRequiredValidator(child, formErrors);
             columns[1].addChild(child);
         } else {
             columns[0].addAttribute("colspan", "2");
         }
-        GradeGridOptionQuestion child1 = new GradeGridOptionQuestion(id, gradeGridHelper.getGradeRanges(), false, false);
+        GradeGridOptionQuestion child1 = new GradeGridOptionQuestion(id, gradeGridHelper.getGradeRanges(), false, false, null);
         ElementUtil.addRequiredValidator(child1, formErrors);
         columns[2].addChild(child1);
 
@@ -186,11 +187,11 @@ public class GradesTable {
         }
         gradeGridRow.addChild(columns[2]);
         if (gradeGridHelper.isComprehensiveSchool()) {
-            GradeGridOptionQuestion gradeGridOptionQuestion = new GradeGridOptionQuestion(id + "_VAL1", gradeGridHelper.getGradeRangesWithDefault(), true, false);
+            GradeGridOptionQuestion gradeGridOptionQuestion = new GradeGridOptionQuestion(id + "_VAL1", gradeGridHelper.getGradeRangesWithDefault(), true, false, null);
             ElementUtil.addRequiredValidator(gradeGridOptionQuestion, formErrors);
             columns[3].addChild(gradeGridOptionQuestion);
 
-            GradeGridOptionQuestion child2 = new GradeGridOptionQuestion(id + "_VAL2", gradeGridHelper.getGradeRangesWithDefault(), true, false);
+            GradeGridOptionQuestion child2 = new GradeGridOptionQuestion(id + "_VAL2", gradeGridHelper.getGradeRangesWithDefault(), true, false, null);
             ElementUtil.addRequiredValidator(child2, formErrors);
             columns[4].addChild(child2);
 
