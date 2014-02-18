@@ -1,5 +1,6 @@
-<%@ page session="false"%>
+<%@ page session="false" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="haku" tagdir="/WEB-INF/tags" %>
 <%--
   ~ Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
@@ -16,25 +17,22 @@
   ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   ~ European Union Public Licence for more details.
   --%>
+<haku:setSelectedValue element="${element}"/>
 <select ${element.attributeString}>
     <c:if test="${not element.selected}">
         <option value="">&nbsp;</option>
     </c:if>
     <c:choose>
         <c:when test="${element.sortByText}">
-            <c:forEach var="option" items="${element.optionsSortedByText[requestScope['fi_vm_sade_oppija_language']]}">
-                <c:set value="${element.id}.${option.id}" var="optionId" scope="page"/>
-                <option value="${option.value}" ${(answers[element.id] eq option.value or (answers[element.id] eq null and option.defaultOption)) ? "selected=\"selected\" " : " "}><haku:i18nText value="${option.i18nText}"/>&nbsp;</option>
-            </c:forEach>
+            <c:set var="options" value="${element.optionsSortedByText[requestScope['fi_vm_sade_oppija_language']]}"/>
         </c:when>
         <c:otherwise>
-            <c:forEach var="option" items="${element.options}">
-                <c:set value="${element.id}.${option.id}" var="optionId" scope="page"/>
-                <option value="${option.value}" ${(answers[element.id] eq option.value or (answers[element.id] eq null and option.defaultOption)) ? "selected=\"selected\" " : " "}><haku:i18nText value="${option.i18nText}"/>&nbsp;</option>
-            </c:forEach>
+            <c:set var="options" value="${element.options}"/>
         </c:otherwise>
     </c:choose>
+    <haku:options options="${options}"/>
 </select>
+<c:remove var="selected_value" scope="request"/>
 <script>
     $(document).ready(function () {
         if (${not (answers[element.id] eq null)}) {

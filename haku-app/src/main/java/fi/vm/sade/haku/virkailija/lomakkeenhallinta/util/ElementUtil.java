@@ -305,7 +305,7 @@ public final class ElementUtil {
     }
 
     public static RelatedQuestionComplexRule createRuleIfVariableIsFalse(final String ruleId, final String variable) {
-        return new RelatedQuestionComplexRule(ruleId, ExprUtil.isAnswerTrue(variable));
+        return new RelatedQuestionComplexRule(ruleId, ExprUtil.isAnswerFalse(variable));
     }
 
     public static RelatedQuestionComplexRule createRegexpRule(final Element element, final String pattern) {

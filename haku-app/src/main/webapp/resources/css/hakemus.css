@@ -177,3 +177,6 @@
       cursor: pointer; }
   .ui-autocomplete .ui-menu-item:last-child a {
     border-bottom: none; }
+
+.button.small {
+  color: #3e3e3e; }

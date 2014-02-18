@@ -116,6 +116,34 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
         }
     }
 
+    public void redoPostprocess(boolean sendMail) {
+        LOGGER.debug("Beginning redoprocess");
+        Application application = applicationService.getNextRedo();
+        while (application != null) {
+            LOGGER.debug("Reprocessing application "+application.getOid());
+            String redo = application.getRedoPostProcess();
+            LOGGER.debug("Reprocessing application, redo: "+redo);
+            if (redo != null) {
+                if ("FULL".equals(redo) || "NOMAIL".equals(redo)) {
+                    application = applicationService.fillLOPChain(application, false);
+                    application = applicationService.addPersonOid(application);
+                    application = applicationService.addSendingSchool(application);
+                    application.setRedoPostProcess("DONE");
+                    applicationService.update(new Application(application.getOid()), application);
+                    LOGGER.debug("Reprocessing "+application.getOid()+" done");
+                }
+                if (sendMail && redo == "FULL") {
+                    try {
+                        sendMail(application);
+                    } catch (EmailException e) {
+                        LOGGER.info("Error process applications", e);
+                    }
+                }
+            }
+            application = applicationService.getNextRedo();
+        }
+    }
+
     private void sendMail(Application application) throws EmailException {
         Map<String, String> answers = application.getVastauksetMerged();
         String email = answers.get(OppijaConstants.ELEMENT_ID_EMAIL);

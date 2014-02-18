@@ -13,6 +13,7 @@ public class GradeGridOptionQuestion extends Element {
     private final List<Option> options;
     private final boolean selected;
     private final boolean sortByText;
+    private final String defaultValueAttribute;
     @Transient
     private Map<String, List<Option>> optionsSortedByText;
 
@@ -20,7 +21,8 @@ public class GradeGridOptionQuestion extends Element {
     public GradeGridOptionQuestion(final String id,
                                    final List<Option> options,
                                    final boolean selected,
-                                   final Boolean sortByText) {
+                                   final Boolean sortByText,
+                                   final String defaultValueAttribute) {
         super(id);
         addAttribute("name", id);
         Preconditions.checkNotNull(options);
@@ -28,6 +30,7 @@ public class GradeGridOptionQuestion extends Element {
         this.options = options;
         this.selected = selected;
         this.sortByText = sortByText != null ? sortByText.booleanValue() : false;
+        this.defaultValueAttribute = defaultValueAttribute;
     }
 
     public List<Option> getOptions() {
@@ -48,6 +51,10 @@ public class GradeGridOptionQuestion extends Element {
 
     public boolean isSortByText() {
         return sortByText;
+    }
+
+    public String getDefaultValueAttribute() {
+        return defaultValueAttribute;
     }
 
     private void initSortedOptions() {

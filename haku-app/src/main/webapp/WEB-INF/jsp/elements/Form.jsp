@@ -24,6 +24,7 @@
 <c:set var="contextPath" value="${pageContext.request.contextPath}" scope="request"/>
 <c:set var="preview" value="true" scope="request"/>
 <c:set var="phaseCount" value="${fn:length(element.children) + 1}" scope="request"/>
+<c:set var="form" value="${element}" scope="request"/>
 
 <html>
 <head>

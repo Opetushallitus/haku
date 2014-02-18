@@ -20,4 +20,6 @@ public interface YksilointiWorker {
     void processApplications(boolean sendMail);
 
     void processIdentification();
+
+    void redoPostprocess(boolean sendMail);
 }
