@@ -52,4 +52,9 @@ public class HakuPermissionServiceMockImpl implements HakuPermissionService {
     public boolean userCanEnterApplication() {
         return true;
     }
+
+    @Override
+    public boolean userCanSearchBySendingSchool() {
+        return true;
+    }
 }

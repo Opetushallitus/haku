@@ -62,6 +62,8 @@ import static org.apache.commons.lang.StringUtils.isEmpty;
 @Service("applicationDAOMongoImpl")
 public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> implements ApplicationDAO {
 
+    @Value("${mongodb.ensureIndex:true}")
+    private boolean ensureIndex;
 
     private static final Logger LOG = LoggerFactory.getLogger(ApplicationDAOMongoImpl.class);
     private static final String INDEX_APPLICATION_OID = "index_oid";
@@ -110,6 +112,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     private static final String FIELD_SENDING_SCHOOL = "answers.koulutustausta.lahtokoulu";
     private static final String FIELD_SENDING_SCHOOL_PARENTS = "answers.koulutustausta.lahtokoulu-parents";
     private static final String FIELD_SENDING_CLASS = "answers.koulutustausta.lahtoluokka";
+    private static final String FIELD_CLASS_LEVEL = "answers.koulutustausta.luokkataso";
     private static final String FIELD_SSN = "answers.henkilotiedot.Henkilotunnus";
     private static final String FIELD_SSN_DIGEST = "answers.henkilotiedot.Henkilotunnus_digest";
     private static final String FIELD_DATE_OF_BIRTH = "answers.henkilotiedot.syntymaaika";
@@ -406,7 +409,10 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
 
         String sendingClass = applicationQueryParameters.getSendingClass();
         if (!isEmpty(sendingClass)) {
-            filters.add(QueryBuilder.start(FIELD_SENDING_CLASS).is(sendingClass.toUpperCase()).get());
+            filters.add(QueryBuilder.start().or(
+                    QueryBuilder.start(FIELD_SENDING_CLASS).is(sendingClass.toUpperCase()).get(),
+                    QueryBuilder.start(FIELD_CLASS_LEVEL).is(sendingClass.toUpperCase()).get()
+            ).get());
         }
 
         filters.add(newOIdExistDBObject());
@@ -542,6 +548,11 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
 
     @PostConstruct
     public void ensureIndexes(){
+
+        if (!ensureIndex) {
+            return;
+        }
+
         createIndex(INDEX_APPLICATION_OID, false, FIELD_APPLICATION_OID);
         createIndex(INDEX_SSN, false, FIELD_SSN);
         createIndex(INDEX_SSN_DIGEST, false, FIELD_SSN_DIGEST);
