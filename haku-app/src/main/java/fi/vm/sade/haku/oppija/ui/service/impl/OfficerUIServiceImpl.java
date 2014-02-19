@@ -212,6 +212,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         modelResponse.addObjectToModel("learningInstitutionTypes", koodistoService.getLearningInstitutionTypes());
         modelResponse.addObjectToModel("hakukausiOptions", koodistoService.getHakukausi());
         modelResponse.addObjectToModel("applicationEnterAllowed", hakuPermissionService.userCanEnterApplication());
+        modelResponse.addObjectToModel("sendingSchoolAllowed", hakuPermissionService.userCanSearchBySendingSchool());
         Calendar today = GregorianCalendar.getInstance();
         String semester = "kausi_k";
         if (syyskausi.contains(Integer.valueOf(today.get(Calendar.MONTH)))) {

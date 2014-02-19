@@ -291,6 +291,8 @@ public class ApplicationServiceImpl implements ApplicationService {
         if (opiskelijat != null && opiskelijat.size() > 0) {
             String sendingSchool = opiskelijat.get(0).getOppilaitosOid();
             String sendingClass = opiskelijat.get(0).getLuokka();
+            String classLevel = opiskelijat.get(0).getLuokkataso();
+
             Map<String, String> answers = new HashMap<String, String>(
                     application.getPhaseAnswers(OppijaConstants.PHASE_EDUCATION));
             if (isNotEmpty(sendingSchool)) {
@@ -302,6 +304,9 @@ public class ApplicationServiceImpl implements ApplicationService {
             }
             if (isNotEmpty(sendingClass)) {
                 answers.put(OppijaConstants.ELEMENT_ID_SENDING_CLASS, sendingClass);
+            }
+            if (isNotEmpty(classLevel)) {
+                answers.put(OppijaConstants.ELEMENT_ID_CLASS_LEVEL, classLevel);
             }
             application.addVaiheenVastaukset(OppijaConstants.PHASE_EDUCATION, answers);
         }

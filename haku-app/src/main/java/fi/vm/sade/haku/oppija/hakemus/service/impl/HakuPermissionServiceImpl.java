@@ -138,6 +138,16 @@ public class HakuPermissionServiceImpl extends AbstractPermissionService impleme
         return checkAccess(getRootOrgOid(), getCreateReadUpdateDeleteRole());
     }
 
+    @Override
+    public boolean userCanSearchBySendingSchool() {
+        if (checkAccess(getRootOrgOid(), getReadRole(), getReadUpdateRole(), getCreateReadUpdateDeleteRole(),
+                getOpoRole())) {
+            // OPH users can access anything
+            return true;
+        }
+        return userHasOpoRole(null).size() > 0;
+    }
+
     @SuppressWarnings("deprecation")
     private boolean userCanAccessApplication(Application application, String... roles) {
         if (checkAccess(getRootOrgOid(), roles)) {
