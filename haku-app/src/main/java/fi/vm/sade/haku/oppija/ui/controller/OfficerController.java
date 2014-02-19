@@ -324,7 +324,7 @@ public class OfficerController {
     @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED + CHARSET_UTF_8)
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_CRUD')")
-    public Viewable addStudentOid(@PathParam(OID_PATH_PARAM) final String oid) throws IOException, ResourceNotFoundException {
+    public Viewable addStudentOid(@PathParam(OID_PATH_PARAM) final String oid) throws ResourceNotFoundException {
         officerUIService.addStudentOid(oid);
         ModelResponse modelResponse = officerUIService.getValidatedApplication(oid, PHASE_ID_PREVIEW);
         return new Viewable(DEFAULT_VIEW, modelResponse.getModel());
