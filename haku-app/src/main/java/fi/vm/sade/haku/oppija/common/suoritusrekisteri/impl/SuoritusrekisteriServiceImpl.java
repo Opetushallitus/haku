@@ -29,7 +29,7 @@ public class SuoritusrekisteriServiceImpl implements SuoritusrekisteriService {
 
     final Logger log = LoggerFactory.getLogger(SuoritusrekisteriServiceImpl.class);
 
-    private final static DateFormat ISO8601 = new SimpleDateFormat("yyyyMMdd'T'HHmmss'Z'");;
+    private final static DateFormat ISO8601 = new SimpleDateFormat("yyyyMMdd'T000000Z'");
 
     @Value("${web.url.cas}")
     private String casUrl;
