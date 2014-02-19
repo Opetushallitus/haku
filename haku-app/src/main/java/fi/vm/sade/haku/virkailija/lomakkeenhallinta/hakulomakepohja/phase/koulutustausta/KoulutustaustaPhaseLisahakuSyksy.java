@@ -161,7 +161,7 @@ public final class KoulutustaustaPhaseLisahakuSyksy {
         Radio koulutuspaikkaAmmatillisenTutkintoon = new Radio(
                 "KOULUTUSPAIKKA_AMMATILLISEEN_TUTKINTOON",
                 createI18NText("form.koulutustausta.ammatillinenKoulutuspaikka", FORM_MESSAGES));
-        addYesAndIDontOptions(koulutuspaikkaAmmatillisenTutkintoon, FORM_MESSAGES);
+        addDefaultTrueFalseOptions(koulutuspaikkaAmmatillisenTutkintoon, FORM_MESSAGES);
         addRequiredValidator(koulutuspaikkaAmmatillisenTutkintoon, FORM_ERRORS);
 
         pkKysymyksetRule.addChild(paattotodistusvuosiPeruskoulu);

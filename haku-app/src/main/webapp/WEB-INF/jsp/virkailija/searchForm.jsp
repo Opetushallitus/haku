@@ -56,14 +56,21 @@
                         </div>
                     </td>
                     <td>
-                        <label for="sendingSchool"><fmt:message key="virkailija.hakemus.lahtokoulu"/></label>
+                        <c:choose>
+                            <c:when test="${it.sendingSchoolAllowed}">
+                                <label for="sendingSchool"><fmt:message key="virkailija.hakemus.lahtokoulu"/></label>
 
-                        <div class="field-search-containerbox">
-                            <input id="sendingSchool" type="text" name="sendingSchool"/>
-                            <input id="sendingClass" size="4" type="text" name="sendingClass"/>
-                            <input id="sendingSchoolOid" type="hidden"/>
-                        </div>
-                        <a href="#" id="notApplied" class="button small"><fmt:message key="virkailija.hakemus.haeEiHakeneet"/></a>
+                                <div class="field-search-containerbox">
+                                    <input id="sendingSchool" type="text" name="sendingSchool"/>
+                                    <input id="sendingClass" size="4" type="text" name="sendingClass"/>
+                                    <input id="sendingSchoolOid" type="hidden"/>
+                                </div>
+                                <a href="#" id="notApplied" class="button small"><fmt:message key="virkailija.hakemus.haeEiHakeneet"/></a>
+                            </c:when>
+                            <c:otherwise>
+                                &nbsp;
+                            </c:otherwise>
+                        </c:choose>
                     </td>
                 </tr>
                 <tr>
