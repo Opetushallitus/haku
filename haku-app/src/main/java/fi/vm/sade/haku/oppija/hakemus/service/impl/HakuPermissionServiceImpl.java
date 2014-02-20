@@ -140,13 +140,12 @@ public class HakuPermissionServiceImpl extends AbstractPermissionService impleme
 
     @Override
     public boolean userCanSearchBySendingSchool() {
-        return true;
-//        if (checkAccess(getRootOrgOid(), getReadRole(), getReadUpdateRole(), getCreateReadUpdateDeleteRole(),
-//                getOpoRole())) {
-//            // OPH users can access anything
-//            return true;
-//        }
-//        return userHasOpoRole(null).size() > 0;
+        if (checkAccess(getRootOrgOid(), getReadRole(), getReadUpdateRole(), getCreateReadUpdateDeleteRole(),
+                getOpoRole())) {
+            // OPH users can access anything
+            return true;
+        }
+        return userHasOpoRole(null).size() > 0;
     }
 
     @SuppressWarnings("deprecation")
