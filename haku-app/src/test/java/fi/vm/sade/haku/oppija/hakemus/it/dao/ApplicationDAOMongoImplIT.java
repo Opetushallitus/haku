@@ -109,11 +109,6 @@ public class ApplicationDAOMongoImplIT extends AbstractDAOTest {
         assertTrue(applications.isEmpty());
     }
 
-    @Test(expected = ResourceNotFoundExceptionRuntime.class)
-    public void testfindDraftApplicationNotFound() throws Exception {
-        applicationDAO.findDraftApplication(new Application(applicationSystemId, TEST_USER));
-    }
-
     @Test
     public void testFindByApplicationOption() {
         List<String> aoids = new ArrayList<String>();

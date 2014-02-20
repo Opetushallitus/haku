@@ -30,8 +30,6 @@ import java.util.List;
  */
 public interface ApplicationDAO extends BaseDAO<Application> {
 
-    Application findDraftApplication(Application application);
-
     /**
      * Return list of applications that match given model application, state and
      *
