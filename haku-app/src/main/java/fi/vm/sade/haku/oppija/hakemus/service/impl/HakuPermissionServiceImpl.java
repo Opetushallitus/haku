@@ -31,7 +31,7 @@ public class HakuPermissionServiceImpl extends AbstractPermissionService impleme
 
     public static final int MAX_NUMBER_OF_PREFERENCES = 5;
     private AuthenticationService authenticationService;
-    private static final Logger LOG = LoggerFactory.getLogger(HakuPermissionServiceImpl.class);
+    private static final Logger log = LoggerFactory.getLogger(HakuPermissionServiceImpl.class);
     private static final String ROLE_OPO = "APP_HAKEMUS_OPO";
 
     @Autowired
@@ -51,9 +51,9 @@ public class HakuPermissionServiceImpl extends AbstractPermissionService impleme
 
         List<String> readble = new ArrayList<String>();
         for (String organization : organizations) {
-            LOG.debug("Calling checkAccess({}, {})", organization, getReadRole());
+            log.debug("Calling checkAccess({}, {})", organization, getReadRole());
             if (checkAccess(organization, getReadRole())) {
-                LOG.debug("Can read");
+                log.debug("Can read");
                 readble.add(organization);
             } else if (checkAccess(organization, getReadUpdateRole())) {
                 readble.add(organization);
@@ -71,6 +71,7 @@ public class HakuPermissionServiceImpl extends AbstractPermissionService impleme
         }
         List<String> opoOrg = new ArrayList<String>();
         for (String organization : organizations) {
+            log.debug("checking opo-role against organization "+organization);
             if (checkAccess(organization, getOpoRole())) {
                 opoOrg.add(organization);
             }
@@ -166,7 +167,7 @@ public class HakuPermissionServiceImpl extends AbstractPermissionService impleme
 
             if (StringUtils.isNotEmpty(organization) &&
                     checkAccess(organization, roles)) {
-                LOG.debug("User can read application, org: {}", organization);
+                log.debug("User can read application, org: {}", organization);
                 return true;
             }
         }
