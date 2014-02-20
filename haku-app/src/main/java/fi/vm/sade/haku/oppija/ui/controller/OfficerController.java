@@ -287,8 +287,7 @@ public class OfficerController {
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED + CHARSET_UTF_8)
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_CRUD')")
     public Viewable postProcess(@PathParam(OID_PATH_PARAM) final String oid) throws IOException, ResourceNotFoundException {
-        officerUIService.postProcess(oid);
-        ModelResponse modelResponse = officerUIService.getValidatedApplication(oid, PHASE_ID_PREVIEW);
+        ModelResponse modelResponse = officerUIService.postProcess(oid);
         return new Viewable(DEFAULT_VIEW, modelResponse.getModel());
     }
 
@@ -324,9 +323,9 @@ public class OfficerController {
     @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED + CHARSET_UTF_8)
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_CRUD')")
+
     public Viewable addStudentOid(@PathParam(OID_PATH_PARAM) final String oid) throws ResourceNotFoundException {
-        officerUIService.addStudentOid(oid);
-        ModelResponse modelResponse = officerUIService.getValidatedApplication(oid, PHASE_ID_PREVIEW);
+        ModelResponse modelResponse = officerUIService.addStudentOid(oid);
         return new Viewable(DEFAULT_VIEW, modelResponse.getModel());
     }
 
@@ -334,22 +333,6 @@ public class OfficerController {
     @Path("/hakemus/applicationSystems")
     @Produces(MediaType.APPLICATION_JSON)
     public List<Map<String, String>> getApplicationSystems() {
-        return getApplicationSystems("", "");
-    }
-
-    @GET
-    @Path("/hakemus/applicationSystems/{year}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public List<Map<String, String>> getApplicationSystems(@PathParam("year") String year) {
-        return getApplicationSystems(year, "");
-
-    }
-
-    @GET
-    @Path("/hakemus/applicationSystems/{year}/{semester}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public List<Map<String, String>> getApplicationSystems(@PathParam("year") String year,
-                                                           @PathParam("semester") String semester) {
 
         List<ApplicationSystem> applicationSystemList = officerUIService.getApplicationSystems();
         List<Map<String, String>> applicationSystems = new ArrayList<Map<String, String>>(applicationSystemList.size());

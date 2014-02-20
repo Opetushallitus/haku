@@ -41,11 +41,6 @@ public class KoodistoServiceMockImplTest {
     }
 
     @Test
-    public void testGetOrganizationTypes() throws Exception {
-        assertEquals(koodistoServiceMock.listOfOrganizationTypes, koodistoServiceMock.getOrganizationtypes());
-    }
-
-    @Test
     public void testGetLearningInstitutionTypes() throws Exception {
         assertEquals(koodistoServiceMock.listOfLearningInstitutionTypes,
                 koodistoServiceMock.getLearningInstitutionTypes());

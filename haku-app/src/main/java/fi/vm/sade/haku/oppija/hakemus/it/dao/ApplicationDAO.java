@@ -30,8 +30,6 @@ import java.util.List;
  */
 public interface ApplicationDAO extends BaseDAO<Application> {
 
-    Application findDraftApplication(Application application);
-
     /**
      * Return list of applications that match given model application, state and
      *
@@ -39,14 +37,6 @@ public interface ApplicationDAO extends BaseDAO<Application> {
      * @return
      */
     List<Application> find(Application application);
-
-    /**
-     * Return list of applications that match given query
-     *
-     * @param query
-     * @return
-     */
-    List<Application> find(DBObject query);
 
     /**
      * Finds all the applications related to given application system and application option.
@@ -57,16 +47,6 @@ public interface ApplicationDAO extends BaseDAO<Application> {
      * @return list of applications
      */
     List<Application> findByApplicationSystemAndApplicationOption(String asId, String aoId);
-
-    /**
-     * Returns applications that apply to this application option, ie.
-     * applications where one of the selected application options is the
-     * one given as parameter.
-     *
-     * @param aoIds list of application option identifiers
-     * @return list of applications or an empty list if none are found
-     */
-    List<Application> findByApplicationOption(List<String> aoIds);
 
     /**
      * Checks if submitted application already exists by specified social security number and

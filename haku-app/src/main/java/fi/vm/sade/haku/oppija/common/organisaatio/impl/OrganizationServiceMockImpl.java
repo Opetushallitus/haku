@@ -44,8 +44,6 @@ import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 @Profile(value = {"dev", "it"})
 public class OrganizationServiceMockImpl implements OrganizationService {
 
-    private static final Logger log = LoggerFactory.getLogger(OrganizationServiceMockImpl.class);
-
     /**
      * Predicate that matches organization name.
      */
