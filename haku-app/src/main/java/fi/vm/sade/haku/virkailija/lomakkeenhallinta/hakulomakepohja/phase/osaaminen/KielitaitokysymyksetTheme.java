@@ -20,8 +20,8 @@ public final class KielitaitokysymyksetTheme {
 
     private static final String[] LANGUAGE_QUESTIONS = new String[]{
             "aidinkieli",
-            "perusopetuksen_kieli",
-            "lukion_kieli",
+            OppijaConstants.PERUSOPETUS_KIELI,
+            OppijaConstants.LUKIO_KIELI,
     };
 
     private KielitaitokysymyksetTheme() {

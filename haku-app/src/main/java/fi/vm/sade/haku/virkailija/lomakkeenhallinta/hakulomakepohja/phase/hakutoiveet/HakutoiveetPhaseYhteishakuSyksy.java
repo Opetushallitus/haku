@@ -16,7 +16,6 @@
 
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.hakutoiveet;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.HiddenValue;
@@ -116,7 +115,7 @@ public class HakutoiveetPhaseYhteishakuSyksy {
                 createVarEqualsToValueRule(index + "-Koulutus-educationDegree", DISCRETIONARY_EDUCATION_DEGREE);
 
         RelatedQuestionComplexRule discretionaryRule2 = createVarEqualsToValueRule("POHJAKOULUTUS",
-                PERUSKOULU, YLIOPPILAS, OSITTAIN_YKSILOLLISTETTY, ERITYISOPETUKSEN_YKSILOLLISTETTY, YKSILOLLISTETTY);
+                PERUSKOULU, YLIOPPILAS, OSITTAIN_YKSILOLLISTETTY, ALUEITTAIN_YKSILOLLISTETTY, YKSILOLLISTETTY);
 
         discretionaryRule.addChild(discretionary);
         discretionaryRule2.addChild(discretionaryRule);

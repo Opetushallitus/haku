@@ -16,9 +16,11 @@
 
 package fi.vm.sade.haku.oppija.hakemus.service.impl;
 
+import com.google.common.collect.Lists;
 import fi.vm.sade.authentication.service.GenericFault;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
 import fi.vm.sade.haku.oppija.common.suoritusrekisteri.OpiskelijaDTO;
+import fi.vm.sade.haku.oppija.common.suoritusrekisteri.SuoritusDTO;
 import fi.vm.sade.haku.oppija.common.suoritusrekisteri.SuoritusrekisteriService;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationNote;
@@ -52,10 +54,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.apache.commons.lang.StringUtils.*;
 
@@ -287,7 +286,99 @@ public class ApplicationServiceImpl implements ApplicationService {
         }
 
         List<OpiskelijaDTO> opiskelijat = suoritusrekisteriService.getOpiskelijat(personOid);
+        application = handleOpiskelijat(application, opiskelijat);
 
+        List<SuoritusDTO> suoritukset = suoritusrekisteriService.getSuoritukset(personOid);
+        application = handleSuoritukset(application, suoritukset);
+        return application;
+
+    }
+
+    private Application handleSuoritukset(Application application, List<SuoritusDTO> suoritukset) {
+        if (suoritukset != null && suoritukset.size() > 0) {
+            SuoritusDTO suoritus = suoritukset.get(0);
+            Map<String, String> answers = new HashMap<String, String>(
+                    application.getPhaseAnswers(OppijaConstants.PHASE_EDUCATION));
+            String pohjakoulutus = String.valueOf(suoritus.getPohjakoulutus());
+
+            if (OppijaConstants.YLIOPPILAS.equals(pohjakoulutus)) {
+                answers = handleYlioppilas(answers, suoritus.getSuorituskieli(), suoritus.getValmistuminen());
+                application.addVaiheenVastaukset(OppijaConstants.PHASE_EDUCATION, answers);
+            } else if (OppijaConstants.PERUSKOULU.equals(pohjakoulutus)
+                    || OppijaConstants.YKSILOLLISTETTY.equals(pohjakoulutus)
+                    || OppijaConstants.OSITTAIN_YKSILOLLISTETTY.equals(pohjakoulutus)
+                    || OppijaConstants.ALUEITTAIN_YKSILOLLISTETTY.equals(pohjakoulutus)) {
+
+                answers = handlePeruskoulu(answers, suoritus.getPohjakoulutus(), suoritus.getSuorituskieli(),
+                        suoritus.getValmistuminen());
+                application.addVaiheenVastaukset(OppijaConstants.PHASE_EDUCATION, answers);
+
+            } else if (OppijaConstants.ULKOMAINEN_TUTKINTO.equals(pohjakoulutus)) {
+                answers = handleUlkomainen(answers);
+                application.addVaiheenVastaukset(OppijaConstants.PHASE_EDUCATION, answers);
+            }
+        }
+        return application;
+    }
+
+    private Map<String, String> handleUlkomainen(Map<String, String> answers) {
+        answers = moveUserAnswers(answers, OppijaConstants.ELEMENT_ID_BASE_EDUCATION);
+        answers.put(OppijaConstants.ELEMENT_ID_BASE_EDUCATION, OppijaConstants.ULKOMAINEN_TUTKINTO);
+        return answers;
+    }
+
+    private Map<String, String> handlePeruskoulu(Map<String, String> answers, Integer pohjakoulutus,
+                                                 String suorituskieli, Date valmistuminen) {
+
+        answers = moveUserAnswers(answers, OppijaConstants.ELEMENT_ID_BASE_EDUCATION, OppijaConstants.PERUSOPETUS_KIELI,
+                OppijaConstants.PERUSOPETUS_PAATTOTODISTUSVUOSI);
+
+        Calendar cal = GregorianCalendar.getInstance();
+        cal.setTime(valmistuminen);
+
+        answers.put(OppijaConstants.ELEMENT_ID_BASE_EDUCATION, String.valueOf(pohjakoulutus));
+        answers.put(OppijaConstants.PERUSOPETUS_KIELI, suorituskieli);
+        answers.put(OppijaConstants.PERUSOPETUS_PAATTOTODISTUSVUOSI, String.valueOf(cal.get(Calendar.YEAR)));
+
+        return answers;
+    }
+
+    private Map<String, String> handleYlioppilas(Map<String, String> answers, String kieli, Date valmistuminen) {
+        answers = moveUserAnswers(answers, OppijaConstants.ELEMENT_ID_BASE_EDUCATION, OppijaConstants.YLIOPPILASTUTKINTO,
+                OppijaConstants.LUKIO_PAATTOTODISTUS_VUOSI, OppijaConstants.LUKIO_KIELI);
+
+        Calendar cal = GregorianCalendar.getInstance();
+        cal.setTime(valmistuminen);
+
+        answers.put(OppijaConstants.ELEMENT_ID_BASE_EDUCATION, OppijaConstants.YLIOPPILAS);
+        answers.put(OppijaConstants.YLIOPPILASTUTKINTO, OppijaConstants.YLIOPPILASTUTKINTO_FI);
+        answers.put(OppijaConstants.LUKIO_KIELI, kieli);
+        answers.put(OppijaConstants.LUKIO_PAATTOTODISTUS_VUOSI, String.valueOf(cal.get(Calendar.YEAR)));
+        return answers;
+    }
+
+    private Map<String, String> moveUserAnswers(Map<String, String> answers, String... keys) {
+        ArrayList<String> keyList = Lists.newArrayList(keys);
+        ArrayList<String> userKeys = new ArrayList<String>(keys.length);
+        for (Map.Entry<String, String> entry : answers.entrySet()) {
+            String key = entry.getKey();
+            if (!keyList.contains(key)) {
+                continue;
+            }
+            String userKey = key + "_user";
+            if (!answers.containsKey(userKey)) {
+                userKeys.add(key);
+            }
+        }
+        for (String key : userKeys) {
+            String value = answers.get(key);
+            answers.put(key + "_user", value);
+        }
+        return answers;
+    }
+
+
+    private Application handleOpiskelijat(Application application, List<OpiskelijaDTO> opiskelijat) {
         if (opiskelijat != null && opiskelijat.size() > 0) {
             String sendingSchool = opiskelijat.get(0).getOppilaitosOid();
             String sendingClass = opiskelijat.get(0).getLuokka();
@@ -311,7 +402,6 @@ public class ApplicationServiceImpl implements ApplicationService {
             application.addVaiheenVastaukset(OppijaConstants.PHASE_EDUCATION, answers);
         }
         return application;
-
     }
 
     @Override

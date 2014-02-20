@@ -1,6 +1,7 @@
 package fi.vm.sade.haku.oppija.ui.selenium;
 
 import com.google.common.collect.Maps;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -38,15 +39,15 @@ public final class DefaultValues {
         henkilotiedot.put("Postinumero", "00100");
 
         koulutustausta_lk.put("POHJAKOULUTUS", "9");
-        koulutustausta_lk.put("lukioPaattotodistusVuosi", "2012");
+        koulutustausta_lk.put(OppijaConstants.LUKIO_PAATTOTODISTUS_VUOSI, "2012");
         koulutustausta_lk.put("ammatillinenTutkintoSuoritettu", "false");
-        koulutustausta_lk.put("lukion_kieli", "FI");
+        koulutustausta_lk.put(OppijaConstants.LUKIO_KIELI, "FI");
 
         koulutustausta_pk.put("POHJAKOULUTUS", "1");
-        koulutustausta_pk.put("PK_PAATTOTODISTUSVUOSI", "2012");
+        koulutustausta_pk.put(OppijaConstants.PERUSOPETUS_PAATTOTODISTUSVUOSI, "2012");
         koulutustausta_pk.put("KOULUTUSPAIKKA_AMMATILLISEEN_TUTKINTOON", "false");
         koulutustausta_pk.put("LISAKOULUTUS_KYMPPI", "true");
-        koulutustausta_pk.put("perusopetuksen_kieli", "FI");
+        koulutustausta_pk.put(OppijaConstants.PERUSOPETUS_KIELI, "FI");
 
         lisatiedot.put("TYOKOKEMUSKUUKAUDET", "10");
         lisatiedot.put("asiointikieli", "suomi");

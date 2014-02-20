@@ -51,16 +51,16 @@ public class OsaaminenPhaseYhteishakuKevat {
 
     private static final String[] LANGUAGE_QUESTIONS_PK = new String[]{
             "aidinkieli",
-            "perusopetuksen_kieli"
+            OppijaConstants.PERUSOPETUS_KIELI
     };
     private static final String[] LANGUAGE_QUESTIONS_YO = new String[]{
             "aidinkieli",
-            "lukion_kieli"
+            OppijaConstants.LUKIO_KIELI
     };
     private static final String[] BASE_EDUCATION_PK = new String[]{
             OppijaConstants.PERUSKOULU,
             OppijaConstants.OSITTAIN_YKSILOLLISTETTY,
-            OppijaConstants.ERITYISOPETUKSEN_YKSILOLLISTETTY,
+            OppijaConstants.ALUEITTAIN_YKSILOLLISTETTY,
             OppijaConstants.YKSILOLLISTETTY
     };
 
@@ -224,9 +224,9 @@ public class OsaaminenPhaseYhteishakuKevat {
         GradeGrid grid_pk = gradesTablePK.createGradeGrid("grid_pk", formMessages, formErrors, verboseHelps);
         grid_pk.setHelp(createI18NText("form.arvosanat.help", formMessages));
         Expr vanhaPkTodistus = new And(
-                new Not(new Equals(new Variable("PK_PAATTOTODISTUSVUOSI"), new Value(String.valueOf(hakuvuosi)))),
+                new Not(new Equals(new Variable(OppijaConstants.PERUSOPETUS_PAATTOTODISTUSVUOSI), new Value(String.valueOf(hakuvuosi)))),
                 ExprUtil.atLeastOneValueEqualsToVariable(RELATED_ELEMENT_ID, OppijaConstants.PERUSKOULU,
-                        OppijaConstants.ERITYISOPETUKSEN_YKSILOLLISTETTY, OppijaConstants.YKSILOLLISTETTY, OppijaConstants.OSITTAIN_YKSILOLLISTETTY));
+                        OppijaConstants.ALUEITTAIN_YKSILOLLISTETTY, OppijaConstants.YKSILOLLISTETTY, OppijaConstants.OSITTAIN_YKSILOLLISTETTY));
         RelatedQuestionComplexRule relatedQuestionPk = new RelatedQuestionComplexRule("rule_grade_pk", vanhaPkTodistus);
         relatedQuestionPk.addChild(grid_pk);
         arvosanatTheme.addChild(relatedQuestionPk);
@@ -234,14 +234,14 @@ public class OsaaminenPhaseYhteishakuKevat {
         GradeGrid grid_yo = gradesTableYO.createGradeGrid("grid_yo", formMessages, formErrors, verboseHelps);
         grid_yo.setHelp(createI18NText("form.arvosanat.help", formMessages));
         Expr vanhaYoTodistus = new And(
-                new Not(new Equals(new Variable("lukioPaattotodistusVuosi"), new Value(String.valueOf(hakuvuosi)))),
+                new Not(new Equals(new Variable(OppijaConstants.LUKIO_PAATTOTODISTUS_VUOSI), new Value(String.valueOf(hakuvuosi)))),
                 ExprUtil.atLeastOneValueEqualsToVariable(RELATED_ELEMENT_ID, OppijaConstants.YLIOPPILAS));
         RelatedQuestionComplexRule relatedQuestionYo = new RelatedQuestionComplexRule("rule_grade_yo", vanhaYoTodistus);
         relatedQuestionYo.addChild(grid_yo);
         arvosanatTheme.addChild(relatedQuestionYo);
 
         RelatedQuestionComplexRule eiNaytetaPk = new RelatedQuestionComplexRule("rule_grade_no_pk",
-                new Equals(new Variable("PK_PAATTOTODISTUSVUOSI"), new Value(String.valueOf(hakuvuosi))));
+                new Equals(new Variable(OppijaConstants.PERUSOPETUS_PAATTOTODISTUSVUOSI), new Value(String.valueOf(hakuvuosi))));
         eiNaytetaPk.addChild(new Text("nogradegrid", createI18NText("form.arvosanat.eiKysyta.pk", formMessages)));
         arvosanatTheme.addChild(eiNaytetaPk);
 
