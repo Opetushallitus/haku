@@ -18,7 +18,7 @@ var childLONames = {};
 var lopCache = {};
 var preferenceRow = {
     populateSelectInput: function (orgId, selectInputId, isInit, providerInputId) {
-        setTimeout(function() {
+        
             $.getJSON(sortabletable_settings.koulutusinformaatioBaseUrl + "/ao/search/" + sortabletable_settings.applicationSystemId + "/" + orgId,
             {
                 baseEducation: sortabletable_settings.baseEducation,
@@ -67,7 +67,6 @@ var preferenceRow = {
                     $selectInput.after(warning);
                 }
             });
-        }, 0); // timeout required by IE 9
     },
 
     clearSelectInput: function (selectInputId) {
@@ -206,4 +205,6 @@ var preferenceRow = {
         });
     }
 };
+
 preferenceRow.init();
+
