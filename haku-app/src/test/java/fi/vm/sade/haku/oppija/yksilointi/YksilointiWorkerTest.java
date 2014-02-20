@@ -32,10 +32,6 @@ public class YksilointiWorkerTest extends AbstractDAOTest {
 
     public static final Logger LOGGER = LoggerFactory.getLogger(YksilointiWorkerTest.class);
 
-    //@Autowired
-    //@Qualifier("applicationDAOMongoImpl")
-    private ApplicationDAO applicationDAO;
-
     protected static List<DBObject> applicationTestDataObject;
 
     //@SuppressWarnings("unchecked")

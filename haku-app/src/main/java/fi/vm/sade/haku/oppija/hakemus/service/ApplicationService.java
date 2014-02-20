@@ -48,15 +48,6 @@ public interface ApplicationService {
     String submitApplication(final String applicationSystemId);
 
     /**
-     * Returns all applications where one of the selected application options is the
-     * one given as parameter.
-     *
-     * @param applicationOptionIds list of application option ids
-     * @return list of applications
-     */
-    List<Application> getApplicationsByApplicationOption(List<String> applicationOptionIds);
-
-    /**
      * Return applications that match to given search term. Term is matched against
      * - applications' OID
      * - applicants' ID

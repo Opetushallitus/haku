@@ -51,7 +51,6 @@ public class ApplicationResourceTest {
     private ApplicationSystemService applicationSystemService;
     private ApplicationResource applicationResource;
     private Application application;
-    private ConversionService conversionService;
 
     private final String OID = "1.2.3.4.5.100";
     private final String INVALID_OID = "1.2.3.4.5.999";
@@ -62,7 +61,6 @@ public class ApplicationResourceTest {
     public void setUp() {
         this.applicationService = mock(ApplicationService.class);
         this.applicationSystemService = mock(ApplicationSystemService.class);
-        this.conversionService = mock(ConversionService.class);
 
 
         Map<String, String> phase1 = new HashMap<String, String>();
@@ -93,7 +91,6 @@ public class ApplicationResourceTest {
         applications.add(this.application);
         ApplicationSearchResultDTO searchResultDTO = new ApplicationSearchResultDTO(1, Lists.newArrayList(new ApplicationSearchResultItemDTO()));
         ApplicationSearchResultDTO emptySearchResultDTO = new ApplicationSearchResultDTO(0, null);
-        when(applicationService.getApplicationsByApplicationOption(anyList())).thenReturn(applications);
         when(applicationService.findApplications(eq(OID), any(ApplicationQueryParameters.class))).thenReturn(searchResultDTO);
         when(applicationService.findApplications(eq(INVALID_OID), any(ApplicationQueryParameters.class))).thenReturn(emptySearchResultDTO);
         when(applicationSystemService.findByYearAndSemester(any(String.class), any(String.class))).thenReturn(asIds);
@@ -197,7 +194,7 @@ public class ApplicationResourceTest {
         public String query;
         public ApplicationQueryParameters param;
         public ApplicationServiceMock() {
-            super(null,null,null,null,null,null,null,null,null,null);
+            super(null,null,null,null,null,null,null,null,null);
         }
 
         @Override

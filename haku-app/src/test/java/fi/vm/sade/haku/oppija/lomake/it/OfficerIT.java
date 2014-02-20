@@ -121,14 +121,6 @@ public class OfficerIT extends DummyModelBaseItTest {
         //testSearchByPreference();
     }
 
-
-    private void testSearchByPreference() {
-        assertFalse("Applications not found", searchByPreference("vosala").isEmpty());
-        assertFalse("Applications not found", searchByPreference("123").isEmpty());
-        assertTrue("Applications found", searchByPreference("notfound").isEmpty());
-
-    }
-
     private void testSearchByTermAndState() throws Exception {
         shouldFindByTerm("topi");
         shouldNotFindByTermAndState("topi", Application.State.PASSIVE);

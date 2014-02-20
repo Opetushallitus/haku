@@ -16,11 +16,9 @@
 
 package fi.vm.sade.haku.oppija.hakemus.service.impl;
 
-import com.google.common.collect.Lists;
 import fi.vm.sade.authentication.service.GenericFault;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
 import fi.vm.sade.haku.oppija.common.suoritusrekisteri.OpiskelijaDTO;
-import fi.vm.sade.haku.oppija.common.suoritusrekisteri.SuoritusDTO;
 import fi.vm.sade.haku.oppija.common.suoritusrekisteri.SuoritusrekisteriService;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationNote;
@@ -37,7 +35,6 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
 import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundExceptionRuntime;
-import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.haku.oppija.lomake.service.FormService;
 import fi.vm.sade.haku.oppija.lomake.service.UserSession;
 import fi.vm.sade.haku.oppija.lomake.util.ElementTree;
@@ -54,7 +51,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static org.apache.commons.lang.StringUtils.*;
 
@@ -71,7 +71,6 @@ public class ApplicationServiceImpl implements ApplicationService {
     private final AuthenticationService authenticationService;
     private final OrganizationService organizationService;
     private final HakuPermissionService hakuPermissionService;
-    private final ApplicationSystemService applicationSystemService;
     private final SuoritusrekisteriService suoritusrekisteriService;
     private final ElementTreeValidator elementTreeValidator;
 
@@ -83,7 +82,6 @@ public class ApplicationServiceImpl implements ApplicationService {
                                   AuthenticationService authenticationService,
                                   OrganizationService organizationService,
                                   HakuPermissionService hakuPermissionService,
-                                  ApplicationSystemService applicationSystemService,
                                   SuoritusrekisteriService suoritusrekisteriService, ElementTreeValidator elementTreeValidator) {
 
         this.applicationDAO = applicationDAO;
@@ -93,7 +91,6 @@ public class ApplicationServiceImpl implements ApplicationService {
         this.authenticationService = authenticationService;
         this.organizationService = organizationService;
         this.hakuPermissionService = hakuPermissionService;
-        this.applicationSystemService = applicationSystemService;
         this.suoritusrekisteriService = suoritusrekisteriService;
         this.elementTreeValidator = elementTreeValidator;
     }
@@ -286,99 +283,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         }
 
         List<OpiskelijaDTO> opiskelijat = suoritusrekisteriService.getOpiskelijat(personOid);
-        application = handleOpiskelijat(application, opiskelijat);
 
-        List<SuoritusDTO> suoritukset = suoritusrekisteriService.getSuoritukset(personOid);
-        application = handleSuoritukset(application, suoritukset);
-        return application;
-
-    }
-
-    private Application handleSuoritukset(Application application, List<SuoritusDTO> suoritukset) {
-        if (suoritukset != null && suoritukset.size() > 0) {
-            SuoritusDTO suoritus = suoritukset.get(0);
-            Map<String, String> answers = new HashMap<String, String>(
-                    application.getPhaseAnswers(OppijaConstants.PHASE_EDUCATION));
-            String pohjakoulutus = String.valueOf(suoritus.getPohjakoulutus());
-
-            if (OppijaConstants.YLIOPPILAS.equals(pohjakoulutus)) {
-                answers = handleYlioppilas(answers, suoritus.getSuorituskieli(), suoritus.getValmistuminen());
-                application.addVaiheenVastaukset(OppijaConstants.PHASE_EDUCATION, answers);
-            } else if (OppijaConstants.PERUSKOULU.equals(pohjakoulutus)
-                    || OppijaConstants.YKSILOLLISTETTY.equals(pohjakoulutus)
-                    || OppijaConstants.OSITTAIN_YKSILOLLISTETTY.equals(pohjakoulutus)
-                    || OppijaConstants.ALUEITTAIN_YKSILOLLISTETTY.equals(pohjakoulutus)) {
-
-                answers = handlePeruskoulu(answers, suoritus.getPohjakoulutus(), suoritus.getSuorituskieli(),
-                        suoritus.getValmistuminen());
-                application.addVaiheenVastaukset(OppijaConstants.PHASE_EDUCATION, answers);
-
-            } else if (OppijaConstants.ULKOMAINEN_TUTKINTO.equals(pohjakoulutus)) {
-                answers = handleUlkomainen(answers);
-                application.addVaiheenVastaukset(OppijaConstants.PHASE_EDUCATION, answers);
-            }
-        }
-        return application;
-    }
-
-    private Map<String, String> handleUlkomainen(Map<String, String> answers) {
-        answers = moveUserAnswers(answers, OppijaConstants.ELEMENT_ID_BASE_EDUCATION);
-        answers.put(OppijaConstants.ELEMENT_ID_BASE_EDUCATION, OppijaConstants.ULKOMAINEN_TUTKINTO);
-        return answers;
-    }
-
-    private Map<String, String> handlePeruskoulu(Map<String, String> answers, Integer pohjakoulutus,
-                                                 String suorituskieli, Date valmistuminen) {
-
-        answers = moveUserAnswers(answers, OppijaConstants.ELEMENT_ID_BASE_EDUCATION, OppijaConstants.PERUSOPETUS_KIELI,
-                OppijaConstants.PERUSOPETUS_PAATTOTODISTUSVUOSI);
-
-        Calendar cal = GregorianCalendar.getInstance();
-        cal.setTime(valmistuminen);
-
-        answers.put(OppijaConstants.ELEMENT_ID_BASE_EDUCATION, String.valueOf(pohjakoulutus));
-        answers.put(OppijaConstants.PERUSOPETUS_KIELI, suorituskieli);
-        answers.put(OppijaConstants.PERUSOPETUS_PAATTOTODISTUSVUOSI, String.valueOf(cal.get(Calendar.YEAR)));
-
-        return answers;
-    }
-
-    private Map<String, String> handleYlioppilas(Map<String, String> answers, String kieli, Date valmistuminen) {
-        answers = moveUserAnswers(answers, OppijaConstants.ELEMENT_ID_BASE_EDUCATION, OppijaConstants.YLIOPPILASTUTKINTO,
-                OppijaConstants.LUKIO_PAATTOTODISTUS_VUOSI, OppijaConstants.LUKIO_KIELI);
-
-        Calendar cal = GregorianCalendar.getInstance();
-        cal.setTime(valmistuminen);
-
-        answers.put(OppijaConstants.ELEMENT_ID_BASE_EDUCATION, OppijaConstants.YLIOPPILAS);
-        answers.put(OppijaConstants.YLIOPPILASTUTKINTO, OppijaConstants.YLIOPPILASTUTKINTO_FI);
-        answers.put(OppijaConstants.LUKIO_KIELI, kieli);
-        answers.put(OppijaConstants.LUKIO_PAATTOTODISTUS_VUOSI, String.valueOf(cal.get(Calendar.YEAR)));
-        return answers;
-    }
-
-    private Map<String, String> moveUserAnswers(Map<String, String> answers, String... keys) {
-        ArrayList<String> keyList = Lists.newArrayList(keys);
-        ArrayList<String> userKeys = new ArrayList<String>(keys.length);
-        for (Map.Entry<String, String> entry : answers.entrySet()) {
-            String key = entry.getKey();
-            if (!keyList.contains(key)) {
-                continue;
-            }
-            String userKey = key + "_user";
-            if (!answers.containsKey(userKey)) {
-                userKeys.add(key);
-            }
-        }
-        for (String key : userKeys) {
-            String value = answers.get(key);
-            answers.put(key + "_user", value);
-        }
-        return answers;
-    }
-
-
-    private Application handleOpiskelijat(Application application, List<OpiskelijaDTO> opiskelijat) {
         if (opiskelijat != null && opiskelijat.size() > 0) {
             String sendingSchool = opiskelijat.get(0).getOppilaitosOid();
             String sendingClass = opiskelijat.get(0).getLuokka();
@@ -402,16 +307,12 @@ public class ApplicationServiceImpl implements ApplicationService {
             application.addVaiheenVastaukset(OppijaConstants.PHASE_EDUCATION, answers);
         }
         return application;
+
     }
 
     @Override
     public Application getNextRedo() {
         return applicationDAO.getNextRedo();
-    }
-
-    @Override
-    public List<Application> getApplicationsByApplicationOption(List<String> applicationOptionIds) {
-        return applicationDAO.findByApplicationOption(applicationOptionIds);
     }
 
     @Override
@@ -452,9 +353,9 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     @Override
     public void update(final Application queryApplication, final Application application) {
-        // application.updateNameMetadata();
         this.applicationDAO.update(queryApplication, application);
     }
+
 
     @Override
     public String getApplicationKeyValue(String applicationOid, String key) throws ResourceNotFoundException {
@@ -542,7 +443,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         return application;
     }
 
-    private Application getApplication(final Application queryApplication) throws ResourceNotFoundException {
+    public Application getApplication(final Application queryApplication) {
 
         LOGGER.debug("Entering ApplicationServiceImpl.getApplication()");
         List<Application> listOfApplications;
@@ -550,19 +451,19 @@ public class ApplicationServiceImpl implements ApplicationService {
             listOfApplications = applicationDAO.find(queryApplication);
         } catch (IllegalArgumentException iae) {
             LOGGER.error("Error getting application: ", iae);
-            throw new ResourceNotFoundException(iae);
+            throw new ResourceNotFoundExceptionRuntime("Error getting application", iae);
         }
         if (listOfApplications.isEmpty()) {
-            throw new ResourceNotFoundException("Could not find application " + queryApplication.getOid());
+            throw new ResourceNotFoundExceptionRuntime("Could not find application " + queryApplication.getOid());
         }
         if (listOfApplications.size() > 1) {
-            throw new ResourceNotFoundException("Found multiple applications with oid " + queryApplication.getOid());
+            throw new ResourceNotFoundExceptionRuntime("Found multiple applications with oid " + queryApplication.getOid());
         }
 
         Application application = listOfApplications.get(0);
 
         if (!hakuPermissionService.userCanReadApplication(application)) {
-            throw new ResourceNotFoundException("User is not allowed to read application " + application.getOid());
+            throw new ResourceNotFoundExceptionRuntime("User is not allowed to read application " + application.getOid());
         }
         return application;
     }
