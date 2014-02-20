@@ -39,6 +39,7 @@ public class OfficerIT extends DummyModelBaseItTest {
         navigateToPath("virkailija", "hakemus");
     }
 
+
     @Test
     public void testSearchAndModify() throws Exception {
         clearSearch();
@@ -50,10 +51,11 @@ public class OfficerIT extends DummyModelBaseItTest {
         WebElement editLink = editLinks.get(1);
         editLink.click();
         clickByNameAndValue(KYSYMYS_POHJAKOULUTUS, TUTKINTO_YLIOPPILAS);
+        screenshot("tsam1");
         seleniumContainer.getDriver().findElement(new By.ByClassName("save")).click();
+        screenshot("tsam2");
         checkApplicationState("Puutteellinen");
     }
-
 
     @Test
     public void testEditControls() {
@@ -80,7 +82,9 @@ public class OfficerIT extends DummyModelBaseItTest {
         WebElement editLink = editLinks.get(4);
         editLink.click();
         findByIdAndClick("lupaMarkkinointi");
+        screenshot("mark1");
         seleniumContainer.getDriver().findElement(new By.ByClassName("save")).click();
+        screenshot("mark2");
         setValue("note-text", "Uusi kommentti");
         findByIdAndClick("note-create");
         passivate();

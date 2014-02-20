@@ -17,6 +17,7 @@
 package fi.vm.sade.haku.oppija.ui.selenium;
 
 import fi.vm.sade.haku.oppija.common.selenium.DummyModelBaseItTest;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.junit.Test;
 
 import static fi.vm.sade.haku.oppija.ui.selenium.DefaultValues.*;
@@ -32,9 +33,9 @@ public class EducationBackgroundIT extends DummyModelBaseItTest {
         nextPhase();
 
         clickByNameAndValue(KYSYMYS_POHJAKOULUTUS, TUTKINTO_PERUSKOULU);
-        elementsPresentByName("PK_PAATTOTODISTUSVUOSI");
+        elementsPresentByName(OppijaConstants.PERUSOPETUS_PAATTOTODISTUSVUOSI);
         clickByNameAndValue(KYSYMYS_POHJAKOULUTUS, TUTKINTO_YLIOPPILAS);
-        elementsPresentByName("lukioPaattotodistusVuosi");
+        elementsPresentByName(OppijaConstants.LUKIO_PAATTOTODISTUS_VUOSI);
 
 
     }

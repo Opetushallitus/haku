@@ -307,6 +307,12 @@ public class Application implements Serializable {
         henkilotiedot = updateHenkilotiedotField(henkilotiedot, person.getNickName(),
                 OppijaConstants.ELEMENT_ID_NICKNAME,OppijaConstants.ELEMENT_ID_NICKNAME_USER);
         updateNameMetadata();
+
+        henkilotiedot = updateHenkilotiedotField(henkilotiedot, person.getContactLanguage(),
+                OppijaConstants.ELEMENT_ID_CONTACT_LANGUAGE, OppijaConstants.ELEMENT_ID_CONTACT_LANGUAGE_USER);
+        henkilotiedot = updateHenkilotiedotField(henkilotiedot, person.getHomeCity(),
+                OppijaConstants.ELEMENT_ID_HOME_CITY, OppijaConstants.ELEMENT_ID_HOME_CITY_USER);
+
         String personOid = person.getPersonOid();
         if (isNotEmpty(personOid)) {
             setPersonOid(personOid);
@@ -330,11 +336,11 @@ public class Application implements Serializable {
 
         if (valueByUser == null) {
             valueByUser = value;
+            henkilotiedot.put(fieldUser, valueByUser);
         }
         value = newValue;
 
         henkilotiedot.put(field, value);
-        henkilotiedot.put(fieldUser, valueByUser);
 
         return henkilotiedot;
 
