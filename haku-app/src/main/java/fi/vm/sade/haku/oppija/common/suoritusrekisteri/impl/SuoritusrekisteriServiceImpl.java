@@ -134,6 +134,7 @@ public class SuoritusrekisteriServiceImpl implements SuoritusrekisteriService {
     }
 
     private SuoritusDTO suoritusJsonToDTO(JsonObject elem) {
+        log.debug("suoritusJsonToDTO, json ", elem.toString());
         JsonElement oppilaitos = elem.get("oppilaitosOid");
         JsonElement tila = elem.get("tila");
         JsonElement luokkataso = elem.get("luokkataso");
@@ -185,6 +186,8 @@ public class SuoritusrekisteriServiceImpl implements SuoritusrekisteriService {
             }
         }
 
+
+        log.debug("suoritusJsonToDTO, dto ", suoritus.toString());
         return suoritus;
     }
 

@@ -101,4 +101,18 @@ public class SuoritusDTO {
     public Integer getPohjakoulutus() {
         return pohjakoulutus;
     }
+
+    public String toString() {
+        StringBuilder builder = new StringBuilder()
+                .append("{")
+                .append(" oppilaitosOid :").append(oppilaitosOid)
+                .append(" valmistuminen :").append(valmistuminen)
+                .append(" tila :").append(tila)
+                .append(" luokkataso :").append(luokkataso)
+                .append(" luokka :").append(luokka)
+                .append(" henkiloOid :").append(henkiloOid)
+                .append(" suorituskieli :").append(suorituskieli)
+                .append(" pohjakoulutus :").append(pohjakoulutus);
+        return builder.toString();
+    }
 }
