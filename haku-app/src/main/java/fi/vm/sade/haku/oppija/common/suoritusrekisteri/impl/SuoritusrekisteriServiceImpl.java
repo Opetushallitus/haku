@@ -114,7 +114,7 @@ public class SuoritusrekisteriServiceImpl implements SuoritusrekisteriService {
         String date = ISO8601.format(new Date());
         try {
             InputStream is = cachingRestClient.get("/rest/v1/suoritukset"
-                    +"?henkiloOid="+personOid
+                    +"?henkilo="+personOid
                     +"&paiva="+date);
             response = IOUtils.toString(is);
             log.debug("Got response: {}", response);
