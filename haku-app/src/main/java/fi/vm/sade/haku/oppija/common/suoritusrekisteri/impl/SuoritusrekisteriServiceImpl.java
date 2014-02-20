@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -29,7 +30,8 @@ public class SuoritusrekisteriServiceImpl implements SuoritusrekisteriService {
 
     final Logger log = LoggerFactory.getLogger(SuoritusrekisteriServiceImpl.class);
 
-    private final static DateFormat ISO8601 = new SimpleDateFormat("yyyyMMdd'T'HHmmss'Z'");;
+    private final static DateFormat ISO8601 = new SimpleDateFormat("yyyyMMdd'T000000Z'");
+    private final static DateFormat VALMISTUMINEN_FMT = new SimpleDateFormat("dd.MM.yyyy");
 
     @Value("${web.url.cas}")
     private String casUrl;
@@ -43,59 +45,6 @@ public class SuoritusrekisteriServiceImpl implements SuoritusrekisteriService {
 
     private static CachingRestClient cachingRestClient;
 
-    @Override
-    public List<SuoritusDTO> getSuoritukset(String personOid, String hakuvuosi, String hakukausi) {
-
-//        {
-//            "komoto": {
-//                "oid":"",
-//                "komo":"",
-//                "tarjoaja":"1.2.246.562.10.27450788669"
-//            },
-//            "henkiloOid":"1.2.246.562.24.50227402431",
-//            "valmistuminen":"2014-06-05T00:00:00Z",
-//            "tila":"KESKEN",
-//            "yksilollistaminen":"Ei"
-//        }
-
-
-        CachingRestClient cachingRestClient = getCachingRestClient();
-        String response;
-        try {
-            InputStream is = cachingRestClient.get("/rest/v1/suoritukset"
-                    +"?henkiloOid="+personOid
-                    +"&arvioituValmistumisvuosi="+hakuvuosi
-                    +"&arvioituValmistumiskausi="+hakukausi);
-            response = IOUtils.toString(is);
-            log.debug("Got response: {}", response);
-        } catch (IOException e) {
-            log.error("Fetching koulu failed: {}", e);
-            return null;
-        }
-        JsonArray elements = new JsonParser().parse(response).getAsJsonArray();
-        ArrayList<SuoritusDTO> suoritukset = new ArrayList<SuoritusDTO>(elements.size());
-        for (int i = 0; i < elements.size(); i++) {
-            JsonObject elem = elements.get(i).getAsJsonObject();
-            JsonElement oppilaitos = elem.get("oppilaitosOid");
-            JsonElement arvioituValmistuminen = elem.get("arvioituValmistuminen");
-            JsonElement tila = elem.get("tila");
-            JsonElement luokkataso = elem.get("luokkataso");
-            JsonElement luokka = elem.get("luokka");
-            JsonElement henkiloOid = elem.get("henkiloOid");
-
-            SuoritusDTO suoritus = new SuoritusDTO();
-            suoritus.setOppilaitosOid(jsonElementToString(oppilaitos));
-            suoritus.setArvioituValmistuminen(arvioituValmistuminen != null && !arvioituValmistuminen.isJsonNull()
-                    ? new Date(elem.get("arvioituValmistuminen").getAsLong()) : null);
-            suoritus.setTila(jsonElementToString(tila));
-            suoritus.setLuokkataso(jsonElementToString(luokkataso));
-            suoritus.setLuokka(jsonElementToString(luokka));
-            suoritus.setHenkiloOid(jsonElementToString(henkiloOid));
-            suoritukset.add(suoritus);
-        }
-
-        return suoritukset;
-    }
 
     @Override
     public List<OpiskelijaDTO> getOpiskelijat(String personOid) {
@@ -140,6 +89,103 @@ public class SuoritusrekisteriServiceImpl implements SuoritusrekisteriService {
         }
 
         return opiskelijat;
+    }
+
+    @Override
+    public List<SuoritusDTO> getSuoritukset(String personOid) {
+
+//        {
+//            "id": "7514285c-921b-44a9-b9d7-511d0eb39160",
+//            "komoto": {
+//                "oid": "FIXME",
+//                "komo": "ulkomainen",
+//                "tarjoaja": "1.2.246.562.10.38593981046"
+//            },
+//            "tila": "KESKEN",
+//            "valmistuminen": "30.05.2014",
+//            "henkiloOid": "1.2.246.562.24.50387424171",
+//            "yksilollistaminen": "Ei",
+//            "suoritusKieli": "AR"
+//        },
+
+
+        CachingRestClient cachingRestClient = getCachingRestClient();
+        String response;
+        String date = ISO8601.format(new Date());
+        try {
+            InputStream is = cachingRestClient.get("/rest/v1/suoritukset"
+                    +"?henkiloOid="+personOid
+                    +"&paiva="+date);
+            response = IOUtils.toString(is);
+            log.debug("Got response: {}", response);
+        } catch (IOException e) {
+            log.error("Fetching koulu failed: {}", e);
+            return null;
+        }
+        JsonArray elements = new JsonParser().parse(response).getAsJsonArray();
+        ArrayList<SuoritusDTO> suoritukset = new ArrayList<SuoritusDTO>(elements.size());
+        for (int i = 0; i < elements.size(); i++) {
+            JsonObject elem = elements.get(i).getAsJsonObject();
+            SuoritusDTO suoritus = suoritusJsonToDTO(elem);
+            suoritukset.add(suoritus);
+        }
+
+        return suoritukset;
+    }
+
+    private SuoritusDTO suoritusJsonToDTO(JsonObject elem) {
+        JsonElement oppilaitos = elem.get("oppilaitosOid");
+        JsonElement tila = elem.get("tila");
+        JsonElement luokkataso = elem.get("luokkataso");
+        JsonElement luokka = elem.get("luokka");
+        JsonElement henkiloOid = elem.get("henkiloOid");
+        JsonElement suoritusKieli = elem.get("suoritusKieli");
+        JsonElement komoto = elem.get("komoto");
+
+        SuoritusDTO suoritus = new SuoritusDTO();
+        suoritus.setOppilaitosOid(jsonElementToString(oppilaitos));
+        suoritus.setTila(jsonElementToString(tila));
+        suoritus.setLuokkataso(jsonElementToString(luokkataso));
+        suoritus.setLuokka(jsonElementToString(luokka));
+        suoritus.setHenkiloOid(jsonElementToString(henkiloOid));
+        suoritus.setSuorituskieli(jsonElementToString(suoritusKieli));
+
+        try {
+            Date valmistuminen = VALMISTUMINEN_FMT.parse(jsonElementToString(elem.get("valmistuminen")));
+            suoritus.setValmistuminen(valmistuminen);
+        } catch (ParseException e) {
+            log.info("Parsing valmistuminen date failed: " + e);
+        }
+
+        if (komoto != null && komoto.isJsonObject()) {
+            JsonObject komotoObj = (JsonObject) komoto;
+            String komo = jsonElementToString(komotoObj.get("komo"));
+
+            if ("ulkomainen".equals(komo)) {
+//            0: Suoritus.komoto.komo = "ulkomainen"
+                suoritus.setPohjakoulutus(0);
+            } else if ("lukio".equals(komo)) {
+//            9: Suoritus.komoto.komo = "lukio"
+                suoritus.setPohjakoulutus(9);
+            } else if ("peruskoulu".equals(komo)) {
+                String yksilollistaminen = jsonElementToString(elem.get("yksilollistaminen"));
+//            1: Suoritus.komoto.komo = "peruskoulu", yksilollistaminen = "Ei"
+//            2: Suoritus.komoto.komo = "peruskoulu", yksilollistaminen = "Osittain"
+//            3: Suoritus.komoto.komo = "peruskoulu", yksilollistaminen = "Alueittain"
+//            6: Suoritus.komoto.komo = "peruskoulu", yksilollistaminen = "Kokonaan"
+                if ("Ei".equals(yksilollistaminen)) {
+                    suoritus.setPohjakoulutus(1);
+                } else if ("Osittain".equals(yksilollistaminen)) {
+                    suoritus.setPohjakoulutus(2);
+                } else if ("Alueittain".equals(yksilollistaminen)) {
+                    suoritus.setPohjakoulutus(3);
+                } else if ("Kokonaan".equals(yksilollistaminen)) {
+                    suoritus.setPohjakoulutus(6);
+                }
+            }
+        }
+
+        return suoritus;
     }
 
     private String jsonElementToString(JsonElement elem) {

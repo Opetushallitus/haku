@@ -42,6 +42,7 @@ public final class PersonBuilder {
                 .setContactLanguage(person.getContactLanguage())
                 .setPersonOid(person.getPersonOid())
                 .setStudentOid(person.getStudentOid());
+
         return builder;
     }
 
@@ -174,4 +175,6 @@ public final class PersonBuilder {
         this.studentOid = studentOid;
         return this;
     }
+
+
 }

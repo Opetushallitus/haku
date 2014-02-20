@@ -14,28 +14,25 @@ public class PersonJsonAdapter implements JsonSerializer<Person>, JsonDeserializ
     private static Logger log = LoggerFactory.getLogger(PersonJsonAdapter.class);
 
 //    {
-//        "id": 93342,
-//        "etunimet": "Ville Valtteri",
-//        "syntymaaika": null,
-//        "passinnumero": null,
-//        "hetu": "201298-995Y",
-//        "kutsumanimi": "Ville",
-//        "oidHenkilo": "1.2.246.562.24.50227402431",
+//        "id": 73628,
+//        "etunimet": "Asiakas",
+//        "hetu": "240582-988J",
+//        "kotikunta": null,
+//        "kutsumanimi": "Asiakas",
+//        "oidHenkilo": "1.2.246.562.24.30165282063",
 //        "oppijanumero": null,
-//        "sukunimi": "Virtanen",
-//        "sukupuoli": "MIES",
+//        "sukunimi": "Testi",
+//        "sukupuoli": null,
 //        "turvakielto": null,
+//        "kayttajatunnus": "240582-988J",
 //        "henkiloTyyppi": "OPPIJA",
 //        "eiSuomalaistaHetua": false,
 //        "passivoitu": false,
 //        "yksiloity": false,
-//        "duplicate": false,
 //        "asiointiKieli": null,
 //        "yksilointitieto": null,
-//        "kayttajatiedot": null,
 //        "kielisyys": [],
-//        "kansalaisuus": [],
-//        "yhteystiedotRyhma": []
+//        "kansalaisuus": []
 //    }
 
 
@@ -83,7 +80,9 @@ public class PersonJsonAdapter implements JsonSerializer<Person>, JsonDeserializ
                 .setSocialSecurityNumber(getJsonString(personJson, "hetu"))
                 .setPersonOid(getJsonString(personJson, "oidHenkilo"))
                 .setStudentOid(getJsonString(personJson, "oppijanumero"))
-                .setNoSocialSecurityNumber(getJsonBoolean(personJson, "eiSuomalaistaHetua"));
+                .setNoSocialSecurityNumber(getJsonBoolean(personJson, "eiSuomalaistaHetua"))
+                .setHomeCity(getJsonString(personJson, "kotikunta"))
+                .setContactLanguage(getJsonString(personJson, "asiointikieli"));
 
         log.debug("Deserialized basic info");
         String sex = getJsonString(personJson, "sukupuoli");
@@ -97,11 +96,6 @@ public class PersonJsonAdapter implements JsonSerializer<Person>, JsonDeserializ
         if (securityOrder != null) {
             personBuilder.setSecurityOrder(securityOrder.booleanValue());
         }
-
-//        personBuilder.setEmail();
-//        personBuilder.setHomeCity();
-//        personBuilder.setLanguage();
-//        personBuilder.setNationality();
 
         return personBuilder.get();
 

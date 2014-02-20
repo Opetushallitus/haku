@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface SuoritusrekisteriService {
 
-    List<SuoritusDTO> getSuoritukset(String personOid, String hakuvuosi, String hakukausi);
+    List<SuoritusDTO> getSuoritukset(String personOid);
 
     List<OpiskelijaDTO> getOpiskelijat(String personOid);
 }

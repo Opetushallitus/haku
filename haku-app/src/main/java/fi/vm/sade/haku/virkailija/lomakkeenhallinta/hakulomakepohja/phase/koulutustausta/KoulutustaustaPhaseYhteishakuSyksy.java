@@ -32,6 +32,7 @@ import fi.vm.sade.haku.oppija.lomake.validation.validators.AlwaysFailsValidator;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.domain.Code;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 
 import java.util.List;
 import java.util.Map;
@@ -94,7 +95,7 @@ public final class KoulutustaustaPhaseYhteishakuSyksy {
         millatutkinnolla
                 .addOption(
                         createI18NText("form.koulutustausta.erityisopetuksenYksilollistetty", FORM_MESSAGES),
-                        ERITYISOPETUKSEN_YKSILOLLISTETTY,
+                        ALUEITTAIN_YKSILOLLISTETTY,
                         createI18NText("form.koulutustausta.erityisopetuksenYksilollistetty.help", FORM_MESSAGES));
         millatutkinnolla
                 .addOption(
@@ -132,7 +133,7 @@ public final class KoulutustaustaPhaseYhteishakuSyksy {
         millatutkinnolla.addChild(ulkomaillaSuoritettuTutkintoRule);
         millatutkinnolla.addChild(keskeytynytRule);
 
-        TextQuestion paattotodistusvuosiPeruskoulu = new TextQuestion("PK_PAATTOTODISTUSVUOSI",
+        TextQuestion paattotodistusvuosiPeruskoulu = new TextQuestion(OppijaConstants.PERUSOPETUS_PAATTOTODISTUSVUOSI,
                 createI18NText("form.koulutustausta.paattotodistusvuosi", FORM_MESSAGES));
         paattotodistusvuosiPeruskoulu.addAttribute("placeholder", "vvvv");
         addRequiredValidator(paattotodistusvuosiPeruskoulu, FORM_ERRORS);
@@ -154,14 +155,14 @@ public final class KoulutustaustaPhaseYhteishakuSyksy {
         );
 
         RelatedQuestionComplexRule pkKysymyksetRule = createVarEqualsToValueRule(millatutkinnolla.getId(),
-                PERUSKOULU, OSITTAIN_YKSILOLLISTETTY, ERITYISOPETUKSEN_YKSILOLLISTETTY, YKSILOLLISTETTY);
+                PERUSKOULU, OSITTAIN_YKSILOLLISTETTY, ALUEITTAIN_YKSILOLLISTETTY, YKSILOLLISTETTY);
 
         RelatedQuestionComplexRule paattotodistusvuosiPeruskouluRule = createRegexpRule(paattotodistusvuosiPeruskoulu.getId(), "^(19[0-9][0-9]|200[0-9]|201[0-1])$");
 
         Radio koulutuspaikkaAmmatillisenTutkintoon = new Radio(
                 "KOULUTUSPAIKKA_AMMATILLISEEN_TUTKINTOON",
                 createI18NText("form.koulutustausta.ammatillinenKoulutuspaikka", FORM_MESSAGES));
-        addYesAndIDontOptions(koulutuspaikkaAmmatillisenTutkintoon, FORM_MESSAGES);
+        addDefaultTrueFalseOptions(koulutuspaikkaAmmatillisenTutkintoon, FORM_MESSAGES);
         addRequiredValidator(koulutuspaikkaAmmatillisenTutkintoon, FORM_ERRORS);
 
         pkKysymyksetRule.addChild(paattotodistusvuosiPeruskoulu);
@@ -169,7 +170,7 @@ public final class KoulutustaustaPhaseYhteishakuSyksy {
         pkKysymyksetRule.addChild(koulutuspaikkaAmmatillisenTutkintoon);
         pkKysymyksetRule.addChild(paattotodistusvuosiPeruskouluRule);
 
-        TextQuestion lukioPaattotodistusVuosi = new TextQuestion("lukioPaattotodistusVuosi",
+        TextQuestion lukioPaattotodistusVuosi = new TextQuestion(OppijaConstants.LUKIO_PAATTOTODISTUS_VUOSI,
                 createI18NText("form.koulutustausta.lukio.paattotodistusvuosi", FORM_MESSAGES));
         lukioPaattotodistusVuosi.addAttribute("placeholder", "vvvv");
         addRequiredValidator(lukioPaattotodistusVuosi, FORM_ERRORS);
@@ -179,9 +180,10 @@ public final class KoulutustaustaPhaseYhteishakuSyksy {
         lukioPaattotodistusVuosi.addAttribute("maxlength", "4");
         lukioPaattotodistusVuosi.setInline(true);
 
-        DropdownSelect ylioppilastutkinto = new DropdownSelect("ylioppilastutkinto",
+        DropdownSelect ylioppilastutkinto = new DropdownSelect(OppijaConstants.YLIOPPILASTUTKINTO,
                 createI18NText("form.koulutustausta.lukio.yotutkinto", FORM_MESSAGES), null);
-        ylioppilastutkinto.addOption(createI18NText("form.koulutustausta.lukio.yotutkinto.fi", FORM_MESSAGES), "fi");
+        ylioppilastutkinto.addOption(createI18NText("form.koulutustausta.lukio.yotutkinto.fi", FORM_MESSAGES),
+                OppijaConstants.YLIOPPILASTUTKINTO_FI);
         ylioppilastutkinto.addOption(createI18NText("form.koulutustausta.lukio.yotutkinto.ib", FORM_MESSAGES), "ib");
         ylioppilastutkinto.addOption(createI18NText("form.koulutustausta.lukio.yotutkinto.eb", FORM_MESSAGES), "eb");
         ylioppilastutkinto.addOption(createI18NText("form.koulutustausta.lukio.yotutkinto.rp", FORM_MESSAGES), "rp");
@@ -220,7 +222,7 @@ public final class KoulutustaustaPhaseYhteishakuSyksy {
 
         suorittanutAmmatillisenTutkinnon.addChild(suorittanutTutkinnonRule);
 
-        DropdownSelect perusopetuksenKieli = new DropdownSelect("perusopetuksen_kieli",
+        DropdownSelect perusopetuksenKieli = new DropdownSelect(OppijaConstants.PERUSOPETUS_KIELI,
                 createI18NText("form.koulutustausta.perusopetuksenKieli", FORM_MESSAGES), null);
         perusopetuksenKieli.addOption(ElementUtil.createI18NAsIs(""), "");
         perusopetuksenKieli.addOptions(koodistoService.getTeachingLanguages());
@@ -228,7 +230,7 @@ public final class KoulutustaustaPhaseYhteishakuSyksy {
         setVerboseHelp(perusopetuksenKieli, "form.koulutustausta.perusopetuksenKieli.verboseHelp", FORM_VERBOSE_HELP);
         pkKysymyksetRule.addChild(perusopetuksenKieli);
 
-        DropdownSelect lukionKieli = new DropdownSelect("lukion_kieli",
+        DropdownSelect lukionKieli = new DropdownSelect(OppijaConstants.LUKIO_KIELI,
                 createI18NText("form.koulutustausta.lukionKieli", FORM_MESSAGES), null);
         lukionKieli.addOption(ElementUtil.createI18NAsIs(""), "");
         lukionKieli.addOptions(koodistoService.getLanguages());
