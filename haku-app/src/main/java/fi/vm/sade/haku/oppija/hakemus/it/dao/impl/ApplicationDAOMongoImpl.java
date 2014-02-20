@@ -19,11 +19,7 @@ package fi.vm.sade.haku.oppija.hakemus.it.dao.impl;
 import com.google.common.base.Strings;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
-import com.mongodb.BasicDBObject;
-import com.mongodb.DBCursor;
-import com.mongodb.DBObject;
-import com.mongodb.QueryBuilder;
-import com.mongodb.ReadPreference;
+import com.mongodb.*;
 import fi.vm.sade.haku.oppija.common.dao.AbstractDAOMongoImpl;
 import fi.vm.sade.haku.oppija.hakemus.converter.ApplicationToDBObjectFunction;
 import fi.vm.sade.haku.oppija.hakemus.converter.DBObjectToApplicationFunction;
@@ -116,11 +112,10 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     private static final String FIELD_SSN = "answers.henkilotiedot.Henkilotunnus";
     private static final String FIELD_SSN_DIGEST = "answers.henkilotiedot.Henkilotunnus_digest";
     private static final String FIELD_DATE_OF_BIRTH = "answers.henkilotiedot.syntymaaika";
-    private static final String FIELD_FULL_NAME = "fullName";
     private static final String FIELD_SEARCH_NAMES = "searchNames";
     private static final String EXISTS = "$exists";
     private static final String OPTION_SPARSE = "sparse";
-    private static final String OPTION_NAME= "name";
+    private static final String OPTION_NAME = "name";
     private static final String FIELD_STUDENT_OID = "studentOid";
     private static final String FIELD_STUDENT_IDENTIFICATION_DONE = "studentIdentificationDone";
     private static final String FIELD_REDO_POSTPROCESS = "redoPostProcess";
@@ -161,18 +156,6 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     }
 
     @Override
-    public List<Application> find(DBObject query) {
-        return findApplications(query);
-    }
-
-    @Override
-    public Application findDraftApplication(final Application application) {
-        final DBObject query = toDBObject.apply(application);
-        query.put(FIELD_APPLICATION_OID, null);
-        return findOneApplication(query);
-    }
-
-    @Override
     public List<Application> findByApplicationSystemAndApplicationOption(String asId, String aoId) {
         DBObject dbObject = QueryBuilder.start().and(queryByPreference(Lists.newArrayList(aoId)).get(),
                 newOIdExistDBObject(),
@@ -180,14 +163,6 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
                 QueryBuilder.start(FIELD_APPLICATION_STATE).in(Lists.newArrayList(
                         Application.State.ACTIVE.toString(), Application.State.INCOMPLETE.toString())).get()).get();
         return findApplications(dbObject);
-    }
-
-    public List<Application> findByApplicationOption(List<String> aoIds) {
-        DBObject query = QueryBuilder.start().and(queryByPreference(aoIds).get(),
-                newOIdExistDBObject(),
-                QueryBuilder.start(FIELD_APPLICATION_STATE).is(Application.State.ACTIVE.toString()).get()).get();
-
-        return findApplications(query);
     }
 
     @Override
@@ -333,15 +308,6 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
                 QueryBuilder.start(FIELD_DISCRETIONARY_4).is(Boolean.TRUE.toString()).get(),
                 QueryBuilder.start(FIELD_DISCRETIONARY_5).is(Boolean.TRUE.toString()).get()
         );
-    }
-
-    private Application findOneApplication(DBObject query) {
-        DBObject result = getCollection().findOne(query);
-        if (result != null) {
-            return fromDBObject.apply(result);
-        } else {
-            throw new ResourceNotFoundExceptionRuntime("Application not found " + query);
-        }
     }
 
     private List<Application> findApplications(DBObject dbObject) {
@@ -547,7 +513,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     }
 
     @PostConstruct
-    public void ensureIndexes(){
+    public void ensureIndexes() {
 
         if (!ensureIndex) {
             return;
@@ -574,14 +540,14 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         createPreferenceIndexes("preference5", true, FIELD_LOP_5, FIELD_DISCRETIONARY_5, FIELD_AO_5, FIELD_AO_KOULUTUS_ID_5);
     }
 
-    private void createPreferenceIndexes(String preference, Boolean sparsePossible, String lopField, String discretionaryField, String fieldAo, String fieldAoIdentifier){
+    private void createPreferenceIndexes(String preference, Boolean sparsePossible, String lopField, String discretionaryField, String fieldAo, String fieldAoIdentifier) {
         createIndex("index_ " + preference + "_lop", sparsePossible.booleanValue(), lopField);
         createIndex("index_ " + preference + "_discretionary", true, discretionaryField);
         createIndex("index_ " + preference + "_ao", sparsePossible.booleanValue(), fieldAo);
         createIndex("index_ " + preference + "_ao_identifier", sparsePossible.booleanValue(), fieldAoIdentifier);
     }
 
-    private void createIndex(String name, Boolean isSparse, String... fields){
+    private void createIndex(String name, Boolean isSparse, String... fields) {
         final DBObject options = new BasicDBObject(OPTION_NAME, name);
         options.put(OPTION_SPARSE, isSparse.booleanValue());
 

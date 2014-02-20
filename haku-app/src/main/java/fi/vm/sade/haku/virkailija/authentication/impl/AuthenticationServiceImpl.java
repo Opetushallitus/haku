@@ -19,7 +19,6 @@ package fi.vm.sade.haku.virkailija.authentication.impl;
 import com.google.gson.*;
 import fi.vm.sade.generic.rest.CachingRestClient;
 import fi.vm.sade.haku.RemoteServiceException;
-import fi.vm.sade.haku.oppija.common.HttpClientHelper;
 import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
 import fi.vm.sade.haku.virkailija.authentication.Person;
 import fi.vm.sade.haku.virkailija.authentication.PersonJsonAdapter;
@@ -61,8 +60,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private String clientAppUser;
     @Value("${haku.app.password.to.usermanagement}")
     private String clientAppPass;
-
-    private HttpClientHelper clientHelper;
 
     private CachingRestClient cachingRestClient;
 
@@ -186,12 +183,5 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
         return null;
 
-    }
-
-    private HttpClientHelper getClientHelper() {
-        if (this.clientHelper == null) {
-            this.clientHelper = new HttpClientHelper(casUrl, targetService, "/resources/henkilo/", clientAppUser, clientAppPass);
-        }
-        return this.clientHelper;
     }
 }

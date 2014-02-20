@@ -225,11 +225,6 @@ public class KoodistoServiceMockImpl implements KoodistoService {
     }
 
     @Override
-    public List<Option> getOrganizationtypes() {
-        return this.listOfOrganizationTypes;
-    }
-
-    @Override
     public List<Option> getCountries() {
         return this.listOfCountries;
     }

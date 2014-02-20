@@ -80,18 +80,18 @@ public class ApplicationDAOMongoImplIT extends AbstractDAOTest {
         this.applicationSystemId = ElementUtil.randomId();
     }
 
-    @Test
-    public void testFindPersonOidExists() {
-        BasicDBObject query = new BasicDBObject();
-        query.put("personOid", new BasicDBObject("$exists", false));
-        List<Application> notExists = applicationDAO.find(query);
-        assertEquals(2, notExists.size());
-
-        query = new BasicDBObject();
-        query.put("personOid", new BasicDBObject("$exists", true));
-        List<Application> exists = applicationDAO.find(query);
-        assertEquals(1, exists.size());
-    }
+//    @Test
+//    public void testFindPersonOidExists() {
+//        BasicDBObject query = new BasicDBObject();
+//        query.put("personOid", new BasicDBObject("$exists", false));
+//        List<Application> notExists = applicationDAO.find(query);
+//        assertEquals(2, notExists.size());
+//
+//        query = new BasicDBObject();
+//        query.put("personOid", new BasicDBObject("$exists", true));
+//        List<Application> exists = applicationDAO.find(query);
+//        assertEquals(1, exists.size());
+//    }
 
     @Test
     public void testFindAll() throws Exception {
@@ -107,19 +107,6 @@ public class ApplicationDAOMongoImplIT extends AbstractDAOTest {
     public void testFindAllNotFound() throws Exception {
         List<Application> applications = applicationDAO.find(new Application(applicationSystemId, TEST_USER));
         assertTrue(applications.isEmpty());
-    }
-
-    @Test(expected = ResourceNotFoundExceptionRuntime.class)
-    public void testfindDraftApplicationNotFound() throws Exception {
-        applicationDAO.findDraftApplication(new Application(applicationSystemId, TEST_USER));
-    }
-
-    @Test
-    public void testFindByApplicationOption() {
-        List<String> aoids = new ArrayList<String>();
-        aoids.add("776");
-        List<Application> applications = applicationDAO.findByApplicationOption(aoids);
-        assertEquals(2, applications.size());
     }
 
     @Test

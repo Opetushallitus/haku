@@ -123,11 +123,6 @@ public class KoodistoServiceImpl implements KoodistoService {
     }
 
     @Override
-    public List<Option> getOrganizationtypes() {
-        return urisToOptions(CODE_ORGANIZATION_TYPES, true);
-    }
-
-    @Override
     public List<Option> getCountries() {
         return codesToOptions(CODE_COUNTRIES);
     }

@@ -51,7 +51,6 @@ public class ApplicationServiceImplTest {
     ApplicationDAO applicationDAO;
     ApplicationOidService applicationOidService;
     Application application;
-    FormService formService;
     AuthenticationService authenticationService;
     OrganizationService organizationService;
     HakuPermissionService hakuPermissionService;
@@ -60,14 +59,12 @@ public class ApplicationServiceImplTest {
     String SSN = "250584-3847";
     String OID = "1.2.3.4.5.12345678901";
     String SHORT_OID = "12345678901";
-    String PERSON_OID = "9.8.7.6.5";
     String NAME = "Test Example";
     String AS_ID = "1.2.246.562.5.741585101110";
     String AO_ID = "1.2.246.562.14.299022856910";
     Map<String, String> answerMap;
     private ApplicationQueryParameters applicationQueryParameters;
     private ApplicationServiceImpl service;
-    private ApplicationSystemService applicationSystemService;
     private ElementTreeValidator elementTreeValidator;
 
     @Before
@@ -79,11 +76,9 @@ public class ApplicationServiceImplTest {
         application.addVaiheenVastaukset("test", answers);
         applicationDAO = mock(ApplicationDAO.class);
         applicationOidService = mock(ApplicationOidService.class);
-        formService = mock(FormService.class);
         authenticationService = new AuthenticationServiceMockImpl();
         organizationService = mock(OrganizationService.class);
         hakuPermissionService = mock(HakuPermissionService.class);
-        applicationSystemService = mock(ApplicationSystemService.class);
         suoritusrekisteriService = mock(SuoritusrekisteriService.class);
         ValidatorFactory validatorFactory = mock(ValidatorFactory.class);
         elementTreeValidator = new ElementTreeValidator(validatorFactory);
@@ -101,7 +96,7 @@ public class ApplicationServiceImplTest {
 //        when(suoritusrekisteriService.getLahtoluokka(any(String.class))).thenReturn("9A");
 
         service = new ApplicationServiceImpl(applicationDAO, null, null, applicationOidService, authenticationService, organizationService,
-                hakuPermissionService, applicationSystemService, suoritusrekisteriService, elementTreeValidator);
+                hakuPermissionService, suoritusrekisteriService, elementTreeValidator);
 
         answerMap = new HashMap<String, String>();
         answerMap.put(OppijaConstants.ELEMENT_ID_FIRST_NAMES, "Etunimi");

@@ -54,11 +54,6 @@ public class KoodistoServiceImplTest {
     }
 
     @Test
-    public void testGetOrganizationTypes() throws Exception {
-        assertFalse(koodistoService.getOrganizationtypes().isEmpty());
-    }
-
-    @Test
     public void testGetLearningInstitutionTypes() throws Exception {
         assertFalse(koodistoService.getLearningInstitutionTypes().isEmpty());
     }

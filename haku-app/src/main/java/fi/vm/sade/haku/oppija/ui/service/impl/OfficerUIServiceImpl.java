@@ -7,6 +7,7 @@ import fi.vm.sade.haku.oppija.common.organisaatio.Organization;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
 import fi.vm.sade.haku.oppija.hakemus.aspect.LoggerAspect;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
+import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationNote;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.haku.oppija.hakemus.domain.util.ApplicationUtil;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
@@ -44,6 +45,7 @@ import java.util.*;
 public class OfficerUIServiceImpl implements OfficerUIService {
 
     public static final Logger LOGGER = LoggerFactory.getLogger(OfficerUIServiceImpl.class);
+    public static final String PHASE_ID_PREVIEW = "esikatselu";
 
     private final ApplicationService applicationService;
     private final FormService formService;
@@ -108,14 +110,14 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         ValidationResult validationResult = elementTreeValidator.validate(new ValidationInput(form, application.getVastauksetMerged(),
                 oid, application.getApplicationSystemId()));
         Element element = form;
-        if (!"esikatselu".equals(phaseId)) {
+        if (!PHASE_ID_PREVIEW.equals(phaseId)) {
             element = new ElementTree(form).getChildById(application.getPhaseId());
         }
         String asId = application.getApplicationSystemId();
         ApplicationSystem as = applicationSystemService.getApplicationSystem(asId);
         ModelResponse modelResponse =
                 new ModelResponse(application, form, element, validationResult, koulutusinformaatioBaseUrl);
-        modelResponse.addObjectToModel("preview", "esikatselu".equals(phaseId));
+        modelResponse.addObjectToModel("preview", PHASE_ID_PREVIEW.equals(phaseId));
         modelResponse.addObjectToModel("phaseEditAllowed", hakuPermissionService.userHasEditRoleToPhases(application, form));
         modelResponse.addObjectToModel("virkailijaDeleteAllowed", hakuPermissionService.userCanDeleteApplication(application));
         modelResponse.addObjectToModel("postProcessAllowed", hakuPermissionService.userCanPostProcess(application));
@@ -147,8 +149,8 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     public ModelResponse updateApplication(final String oid, final ApplicationPhase applicationPhase, User user)
             throws ResourceNotFoundException {
 
-        Application queryApplication = new Application(oid);
         Application application = this.applicationService.getApplicationByOid(oid);
+        Application queryApplication = new Application(oid, application.getVersion());
         Application.State state = application.getState();
         if (state != null && state.equals(Application.State.PASSIVE)) {
             throw new ResourceNotFoundException("Passive application");
@@ -159,10 +161,12 @@ public class OfficerUIServiceImpl implements OfficerUIService {
 
         loggerAspect.logUpdateApplication(application, applicationPhase);
 
-        application.addVaiheenVastaukset(applicationPhase.getPhaseId(), applicationPhase.getAnswers());
+        Map<String, String> newPhaseAnswers = applicationPhase.getAnswers();
+        application.addVaiheenVastaukset(applicationPhase.getPhaseId(), newPhaseAnswers);
 
         Map<String, String> allAnswers = application.getVastauksetMergedIgnoringPhase(applicationPhase.getPhaseId());
-        allAnswers.putAll(applicationPhase.getAnswers());
+
+        allAnswers.putAll(newPhaseAnswers);
         ValidationResult formValidationResult = elementTreeValidator.validate(new ValidationInput(form,
                 allAnswers, oid, application.getApplicationSystemId()));
         if (formValidationResult.hasErrors()) {
@@ -308,7 +312,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         for (Organization org : orgs) {
             // This IF is stupid, but necessary. Asking organisaatioService for 'oppilaitos' returns also
             // organisaatios with type of 'opetuspiste' and 'oppisopimustoimipiste'.
-            LOGGER.debug("Org: "+org.getOid()+" Types: [" + Joiner.on(",").join(org.getTypes()) + "]");
+            LOGGER.debug("Org: " + org.getOid() + " Types: [" + Joiner.on(",").join(org.getTypes()) + "]");
             if (!org.getTypes().contains("OPPILAITOS")) {
                 continue;
             }
@@ -365,7 +369,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     }
 
     @Override
-    public void addStudentOid(String oid) throws ResourceNotFoundException {
+    public ModelResponse addStudentOid(String oid) throws ResourceNotFoundException {
         Application application = applicationService.getApplicationByOid(oid);
         String studentOid = application.getPersonOid();
         if (!Strings.isNullOrEmpty(application.getStudentOid())) {
@@ -375,17 +379,21 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         }
         authenticationService.getStudentOid(studentOid);
         application.setStudentOid(studentOid);
-        applicationService.addNote(application, "Oppijanumero syötetty", true);
+        application.addNote(new ApplicationNote("Oppijanumero syötetty", new Date(), userSession.getUser().getUserName()));
+        Application queryApplication = new Application(oid);
+        applicationService.update(queryApplication, application);
+        return getValidatedApplication(oid, PHASE_ID_PREVIEW);
     }
 
     @Override
-    public void postProcess(String oid) throws ResourceNotFoundException {
+    public ModelResponse postProcess(String oid) throws ResourceNotFoundException {
         Application application = applicationService.getApplicationByOid(oid);
         application = applicationService.fillLOPChain(application, false);
         application = applicationService.addPersonOid(application);
         application = applicationService.addSendingSchool(application);
         application.activate();
         applicationService.update(new Application(oid), application);
+        return getValidatedApplication(oid, PHASE_ID_PREVIEW);
     }
 
     @Override
