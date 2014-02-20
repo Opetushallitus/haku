@@ -41,9 +41,9 @@ public interface OfficerUIService {
 
     Application createApplication(final String asId);
 
-    void addStudentOid(final String oid) throws ResourceNotFoundException;
+    ModelResponse addStudentOid(final String oid) throws ResourceNotFoundException;
 
-    void postProcess(final String oid) throws ResourceNotFoundException;
+    ModelResponse postProcess(final String oid) throws ResourceNotFoundException;
 
     Application activateApplication(String oid, String reason) throws ResourceNotFoundException;
 

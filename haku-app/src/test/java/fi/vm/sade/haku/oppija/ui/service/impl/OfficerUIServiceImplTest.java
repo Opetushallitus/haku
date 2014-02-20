@@ -1,6 +1,5 @@
 package fi.vm.sade.haku.oppija.ui.service.impl;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
 import fi.vm.sade.haku.oppija.hakemus.aspect.LoggerAspect;
@@ -24,7 +23,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
@@ -35,7 +33,6 @@ import static org.mockito.Mockito.*;
 public class OfficerUIServiceImplTest {
 
     private static final String OID = "1.2.3.4.5";
-    private static final List<String> OIDS = ImmutableList.of("1", "2");
     public static final String ID = "id";
 
     private OfficerUIServiceImpl officerUIService;

@@ -30,6 +30,8 @@ public interface ApplicationService {
 
     Application getApplication(final String applicationSystemId);
 
+    Application getApplication(final Application queryApplication);
+
     Application getApplicationByOid(final String oid) throws ResourceNotFoundException;
 
     /**
