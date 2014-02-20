@@ -19,6 +19,7 @@ package fi.vm.sade.haku.oppija.lomake.it;
 import com.google.common.collect.ImmutableMap;
 import fi.vm.sade.haku.oppija.common.selenium.DummyModelBaseItTest;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.koulutustausta.KoulutustaustaPhaseYhteishakuSyksy;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 import org.openqa.selenium.By;
@@ -70,10 +71,10 @@ public class LomakeIT extends DummyModelBaseItTest {
 
         testHAK123AandHAK124();
         clickByNameAndValue(KYSYMYS_POHJAKOULUTUS, TUTKINTO_YLIOPPILAS);
-        findById("lukioPaattotodistusVuosi");
-        setValue("lukioPaattotodistusVuosi", "2012");
+        findById(OppijaConstants.LUKIO_PAATTOTODISTUS_VUOSI);
+        setValue(OppijaConstants.LUKIO_PAATTOTODISTUS_VUOSI, "2012");
         clickByNameAndValue("ammatillinenTutkintoSuoritettu", "false");
-        setValue("lukion_kieli", "FI");
+        setValue(OppijaConstants.LUKIO_KIELI, "FI");
         nextPhase();
 
         typeWithoutTab("preference1-Opetuspiste", "sturen");
@@ -83,11 +84,11 @@ public class LomakeIT extends DummyModelBaseItTest {
 
         clickByNameAndValue(KYSYMYS_POHJAKOULUTUS, TUTKINTO_PERUSKOULU);
 
-        findById("PK_PAATTOTODISTUSVUOSI");
-        setValue("PK_PAATTOTODISTUSVUOSI", "2013");
+        findById(OppijaConstants.PERUSOPETUS_PAATTOTODISTUSVUOSI);
+        setValue(OppijaConstants.PERUSOPETUS_PAATTOTODISTUSVUOSI, "2013");
 
         findByIdAndClick("LISAKOULUTUS_KYMPPI", "LISAKOULUTUS_VAMMAISTEN", "LISAKOULUTUS_TALOUS", "LISAKOULUTUS_AMMATTISTARTTI");
-        setValue("perusopetuksen_kieli", "FI");
+        setValue(OppijaConstants.PERUSOPETUS_KIELI, "FI");
         setValue("KOULUTUSPAIKKA_AMMATILLISEEN_TUTKINTOON", "false", true);
         nextPhase();
 

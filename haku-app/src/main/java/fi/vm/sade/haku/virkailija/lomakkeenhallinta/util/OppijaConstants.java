@@ -53,10 +53,12 @@ public final class OppijaConstants {
     public static final String ELEMENT_ID_SENDING_CLASS = "lahtoluokka";
     public static final String ELEMENT_ID_CLASS_LEVEL = "luokkataso";
     public static final String ELEMENT_ID_HOME_CITY = "kotikunta";
+    public static final String ELEMENT_ID_HOME_CITY_USER = "kotikunta_user";
     public static final String ELEMENT_ID_LANGUAGE = "äidinkieli";
     public static final String ELEMENT_ID_NATIONALITY = "kansalaisuus";
     public static final String ELEMENT_ID_FIRST_LANGUAGE = "äidinkieli";
     public static final String ELEMENT_ID_CONTACT_LANGUAGE = "asiointikieli";
+    public static final String ELEMENT_ID_CONTACT_LANGUAGE_USER = "asiointikieli";
     public static final String ELEMENT_ID_BASE_EDUCATION = "POHJAKOULUTUS";
 
     public static final String PHASE_EDUCATION = "koulutustausta";
@@ -81,9 +83,17 @@ public final class OppijaConstants {
     public static final String PERUSKOULU = "1";
     public static final String YLIOPPILAS = "9";
     public static final String OSITTAIN_YKSILOLLISTETTY = "2";
-    public static final String ERITYISOPETUKSEN_YKSILOLLISTETTY = "3";
+    public static final String ALUEITTAIN_YKSILOLLISTETTY = "3";
     public static final String YKSILOLLISTETTY = "6";
     public static final String KESKEYTYNYT = "7";
+
+    public static final String YLIOPPILASTUTKINTO = "ylioppilastutkinto";
+    public static final String YLIOPPILASTUTKINTO_FI = "fi";
+    public static final String LUKIO_PAATTOTODISTUS_VUOSI = "lukioPaattotodistusVuosi";
+    public static final String LUKIO_KIELI = "lukion_kieli";
+
+    public static final String PERUSOPETUS_KIELI = "perusopetuksen_kieli";
+    public static final String PERUSOPETUS_PAATTOTODISTUSVUOSI = "PK_PAATTOTODISTUSVUOSI";
 
     public static final String VARSINAINEN_HAKU = "hakutyyppi_01";
 

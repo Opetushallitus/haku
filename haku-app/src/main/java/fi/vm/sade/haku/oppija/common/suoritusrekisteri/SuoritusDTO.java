@@ -5,28 +5,33 @@ import java.util.Date;
 public class SuoritusDTO {
 
     private String oppilaitosOid;
-    private Date arvioituValmistuminen;
+    private Date valmistuminen;
     private String tila;
     private String luokkataso;
     private String luokka;
     private String henkiloOid;
+    private String suorituskieli;
+    private Integer pohjakoulutus;
 
 //    {
 //        "oppilaitosOid": "1.2.246.562.10.15523794103",
-//            "arvioituValmistuminen": 1401829200000,
+//            "valmistuminen": 1401829200000,
 //            "tila": "KESKEN",
 //            "luokkataso": "9",
 //            "luokka": "9F",
 //            "henkiloOid": null
 //    }
 
-    public SuoritusDTO(String oppilaitosOid, Date arvioituValmistuminen, String tila, String luokkataso, String luokka, String henkiloOid) {
+    public SuoritusDTO(String oppilaitosOid, Date valmistuminen, String tila, String luokkataso, String luokka,
+                       String henkiloOid, Integer pohjakoulutus, String suorituskieli) {
         this.oppilaitosOid = oppilaitosOid;
-        this.arvioituValmistuminen = arvioituValmistuminen;
+        this.valmistuminen = valmistuminen;
         this.tila = tila;
         this.luokkataso = luokkataso;
         this.luokka = luokka;
         this.henkiloOid = henkiloOid;
+        this.pohjakoulutus = pohjakoulutus;
+        this.suorituskieli = suorituskieli;
     }
 
     public SuoritusDTO() {
@@ -41,12 +46,12 @@ public class SuoritusDTO {
         this.oppilaitosOid = oppilaitosOid;
     }
 
-    public Date getArvioituValmistuminen() {
-        return arvioituValmistuminen;
+    public Date getValmistuminen() {
+        return valmistuminen;
     }
 
-    public void setArvioituValmistuminen(Date arvioituValmistuminen) {
-        this.arvioituValmistuminen = arvioituValmistuminen;
+    public void setValmistuminen(Date valmistuminen) {
+        this.valmistuminen = valmistuminen;
     }
 
     public String getTila() {
@@ -81,4 +86,33 @@ public class SuoritusDTO {
         this.henkiloOid = henkiloOid;
     }
 
+    public void setSuorituskieli(String suorituskieli) {
+        this.suorituskieli = suorituskieli;
+    }
+
+    public String getSuorituskieli() {
+        return suorituskieli;
+    }
+
+    public void setPohjakoulutus(Integer pohjakoulutus) {
+        this.pohjakoulutus = pohjakoulutus;
+    }
+
+    public Integer getPohjakoulutus() {
+        return pohjakoulutus;
+    }
+
+    public String toString() {
+        StringBuilder builder = new StringBuilder()
+                .append("{")
+                .append(" oppilaitosOid :").append(oppilaitosOid)
+                .append(" valmistuminen :").append(valmistuminen)
+                .append(" tila :").append(tila)
+                .append(" luokkataso :").append(luokkataso)
+                .append(" luokka :").append(luokka)
+                .append(" henkiloOid :").append(henkiloOid)
+                .append(" suorituskieli :").append(suorituskieli)
+                .append(" pohjakoulutus :").append(pohjakoulutus);
+        return builder.toString();
+    }
 }

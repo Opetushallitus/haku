@@ -66,9 +66,9 @@ public class OfficerController {
     public static final String APPLICATION_SYSTEM_ID_PATH_PARAM = "applicationSystemId";
     public static final String ADDITIONAL_INFO_VIEW = "/virkailija/additionalInfo";
     public static final String SEARCH_INDEX_VIEW = "/virkailija/searchIndex";
-    public static final String MEDIA_TYPE_TEXT_HTML_UTF8 = MediaType.TEXT_HTML + ";charset=UTF-8";
-    public static final String APPLICATION_PRINT_VIEW = "/print/print";
     public static final String CHARSET_UTF_8 = ";charset=UTF-8";
+    public static final String MEDIA_TYPE_TEXT_HTML_UTF8 = MediaType.TEXT_HTML + CHARSET_UTF_8;
+    public static final String APPLICATION_PRINT_VIEW = "/print/print";
     public static final String PHASE_ID_PREVIEW = "esikatselu";
 
     @Autowired
@@ -83,7 +83,7 @@ public class OfficerController {
 
     @GET
     @Path("/hakemus/")
-    @Produces(MediaType.TEXT_HTML + ";charset=UTF-8")
+    @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
     public Viewable search() {
         ModelResponse modelResponse = officerUIService.getOrganizationAndLearningInstitutions();
         return new Viewable(SEARCH_INDEX_VIEW, modelResponse.getModel());
@@ -91,7 +91,7 @@ public class OfficerController {
 
     @POST
     @Path("/hakemus/new")
-    @Consumes(MediaType.APPLICATION_FORM_URLENCODED + ";charset=UTF-8")
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED + CHARSET_UTF_8)
     @Produces(MEDIA_TYPE_TEXT_HTML_UTF8)
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_CRUD')")
     public Response newApplication(final MultivaluedMap<String, String> multiValues) throws URISyntaxException, ResourceNotFoundException {
@@ -209,7 +209,7 @@ public class OfficerController {
 
     @POST
     @Path("/hakemus/{oid}/additionalInfo")
-    @Consumes(MediaType.APPLICATION_FORM_URLENCODED + ";charset=UTF-8")
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED + CHARSET_UTF_8)
     @Produces(MEDIA_TYPE_TEXT_HTML_UTF8)
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_CRUD')")
     public Response saveAdditionalInfo(@PathParam(OID_PATH_PARAM) final String oid,
@@ -243,8 +243,8 @@ public class OfficerController {
 
     @POST
     @Path("/hakemus/{oid}/activate")
-    @Produces(MediaType.TEXT_HTML + ";charset=UTF-8")
-    @Consumes(MediaType.APPLICATION_FORM_URLENCODED + ";charset=UTF-8")
+    @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED + CHARSET_UTF_8)
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_CRUD')")
     public Viewable activate(@PathParam(OID_PATH_PARAM) final String oid,
                              final MultivaluedMap<String, String> multiValues) throws IOException, ResourceNotFoundException {
@@ -263,8 +263,8 @@ public class OfficerController {
 
     @POST
     @Path("/hakemus/{oid}/passivate")
-    @Produces(MediaType.TEXT_HTML + ";charset=UTF-8")
-    @Consumes(MediaType.APPLICATION_FORM_URLENCODED + ";charset=UTF-8")
+    @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED + CHARSET_UTF_8)
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_CRUD')")
     public Viewable passivate(@PathParam(OID_PATH_PARAM) final String oid,
                               final MultivaluedMap<String, String> multiValues) throws IOException, ResourceNotFoundException {
@@ -284,7 +284,7 @@ public class OfficerController {
     @POST
     @Path("/hakemus/{oid}/postProcess")
     @Produces(MEDIA_TYPE_TEXT_HTML_UTF8)
-    @Consumes(MediaType.APPLICATION_FORM_URLENCODED + ";charset=UTF-8")
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED + CHARSET_UTF_8)
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_CRUD')")
     public Viewable postProcess(@PathParam(OID_PATH_PARAM) final String oid) throws IOException, ResourceNotFoundException {
         officerUIService.postProcess(oid);
@@ -294,8 +294,8 @@ public class OfficerController {
 
     @POST
     @Path("/hakemus/{oid}/addNote")
-    @Produces(MediaType.TEXT_HTML + ";charset=UTF-8")
-    @Consumes(MediaType.APPLICATION_FORM_URLENCODED + ";charset=UTF-8")
+    @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED + CHARSET_UTF_8)
     public Viewable addNote(@PathParam(OID_PATH_PARAM) final String oid,
                             final MultivaluedMap<String, String> multiValues) throws IOException, ResourceNotFoundException {
         for (Map.Entry<String, List<String>> entry : multiValues.entrySet()) {
@@ -321,10 +321,10 @@ public class OfficerController {
 
     @POST
     @Path("/hakemus/{oid}/addStudentOid")
-    @Produces(MediaType.TEXT_HTML + ";charset=UTF-8")
-    @Consumes(MediaType.APPLICATION_FORM_URLENCODED + ";charset=UTF-8")
+    @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED + CHARSET_UTF_8)
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_CRUD')")
-    public Viewable addStudentOid(@PathParam(OID_PATH_PARAM) final String oid) throws IOException, ResourceNotFoundException {
+    public Viewable addStudentOid(@PathParam(OID_PATH_PARAM) final String oid) throws ResourceNotFoundException {
         officerUIService.addStudentOid(oid);
         ModelResponse modelResponse = officerUIService.getValidatedApplication(oid, PHASE_ID_PREVIEW);
         return new Viewable(DEFAULT_VIEW, modelResponse.getModel());
@@ -336,6 +336,7 @@ public class OfficerController {
     public List<Map<String, String>> getApplicationSystems() {
         return getApplicationSystems("", "");
     }
+
     @GET
     @Path("/hakemus/applicationSystems/{year}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -343,11 +344,12 @@ public class OfficerController {
         return getApplicationSystems(year, "");
 
     }
+
     @GET
     @Path("/hakemus/applicationSystems/{year}/{semester}")
     @Produces(MediaType.APPLICATION_JSON)
     public List<Map<String, String>> getApplicationSystems(@PathParam("year") String year,
-                                                                  @PathParam("semester") String semester) {
+                                                           @PathParam("semester") String semester) {
 
         List<ApplicationSystem> applicationSystemList = officerUIService.getApplicationSystems();
         List<Map<String, String>> applicationSystems = new ArrayList<Map<String, String>>(applicationSystemList.size());
@@ -361,7 +363,7 @@ public class OfficerController {
             for (Map.Entry<String, String> translation : translations.entrySet()) {
                 String key = translation.getKey();
                 String val = translation.getValue();
-                applicationSystem.put("name_"+key, val);
+                applicationSystem.put("name_" + key, val);
             }
             applicationSystems.add(applicationSystem);
         }
