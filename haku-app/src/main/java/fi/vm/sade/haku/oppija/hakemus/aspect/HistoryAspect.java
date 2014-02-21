@@ -19,7 +19,7 @@ package fi.vm.sade.haku.oppija.hakemus.aspect;
 
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.Change;
-import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
+import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationDAO;
 import fi.vm.sade.haku.oppija.lomake.service.UserSession;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
@@ -48,14 +48,14 @@ public class HistoryAspect {
 
     public static final Logger LOGGER = LoggerFactory.getLogger(HistoryAspect.class);
     private final UserSession userSession;
-    private final ApplicationService applicationService;
+    private final ApplicationDAO applicationDAO;
     private final Boolean disableHistory;
 
     @Autowired
-    public HistoryAspect(final UserSession userSession, final ApplicationService applicationService,
+    public HistoryAspect(final UserSession userSession, final ApplicationDAO applicationDAO,
                          @Value("${disableHistory:false}") String disableHistory) {
         this.userSession = userSession;
-        this.applicationService = applicationService;
+        this.applicationDAO = applicationDAO;
         this.disableHistory = Boolean.valueOf(disableHistory);
     }
 
@@ -63,7 +63,7 @@ public class HistoryAspect {
     public void addChangeHistoryToApplication(final Application queryApplication, final Application application) {
         LOGGER.debug("addChangeHistoryToApplication");
         if (!disableHistory) {
-            Application oldApplication = applicationService.getApplication(queryApplication);
+            Application oldApplication = applicationDAO.find(queryApplication).get(0);
             Map<String, String> oldAnswers = oldApplication.getVastauksetMerged();
             Map<String, String> newAnswers = application.getVastauksetMerged();
             List<Map<String, String>> changes = ApplicationDiffUtil.oldAndNewAnswersToListOfChanges(oldAnswers, newAnswers);
