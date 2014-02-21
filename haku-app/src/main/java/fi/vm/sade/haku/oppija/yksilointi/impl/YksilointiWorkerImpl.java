@@ -53,6 +53,11 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
 
     private Map<String, Template> templateMap;
 
+    @Value("${scheduler.skipSendingSchool.automatic:false}")
+    private boolean skipSendingSchoolAutomatic;
+    @Value("${scheduler.skipSendingSchool.manual:false}")
+    private boolean skipSendingSchoolManual;
+
     @Value("${email.smtp.debug:false}")
     private boolean smtpDebug;
 
@@ -93,7 +98,9 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
         while (application != null) {
             application = applicationService.fillLOPChain(application, false);
             application = applicationService.addPersonOid(application);
-            application = applicationService.addSendingSchool(application);
+            if (!skipSendingSchoolAutomatic) {
+                application = applicationService.addSendingSchool(application);
+            }
             application.activate();
             applicationService.update(new Application(application.getOid()), application);
             if (sendMail) {
@@ -127,7 +134,9 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
                 if ("FULL".equals(redo) || "NOMAIL".equals(redo)) {
                     application = applicationService.fillLOPChain(application, false);
                     application = applicationService.addPersonOid(application);
-                    application = applicationService.addSendingSchool(application);
+                    if (!skipSendingSchoolManual) {
+                        application = applicationService.addSendingSchool(application);
+                    }
                     application.setRedoPostProcess("DONE");
                     applicationService.update(new Application(application.getOid()), application);
                     LOGGER.debug("Reprocessing "+application.getOid()+" done");
