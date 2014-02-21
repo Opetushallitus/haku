@@ -143,11 +143,6 @@
             </table>
         </div>
     </form>
-    <form method="POST" id="open-applications"
-          action="${pageContext.request.contextPath}/virkailija/hakemus/multiple">
-        <input type="hidden" name="applicationList" id="applicationList"/>
-        <input type="hidden" name="selectedApplication" id="selectedApplication"/>
-    </form>
 </section>
 <section class="grid16-16 margin-top-2">
     <div class="tabs">
@@ -165,7 +160,7 @@
 
             <div class="clear"></div>
 
-            <input id="open-application" class="button secondary small" type="button"
+            <input id="open-selected" class="button secondary small" type="button"
                    value="<fmt:message key="virkailija.hakemus.avaa"/>"/>
 
             <c:if test="${it.applicationEnterAllowed}">
