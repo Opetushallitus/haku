@@ -21,9 +21,7 @@ import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationQueryParameters;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationState;
-import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
 
-import java.util.List;
 import java.util.Map;
 
 public interface ApplicationService {
@@ -32,7 +30,7 @@ public interface ApplicationService {
 
     Application getApplication(final Application queryApplication);
 
-    Application getApplicationByOid(final String oid) throws ResourceNotFoundException;
+    Application getApplicationByOid(final String oid);
 
     /**
      * Save answers of a single form phase. Phase is saved to the currently modified application of the user session.
@@ -68,9 +66,8 @@ public interface ApplicationService {
      *
      * @param oid            application oid
      * @param additionalInfo additional info key value pairs
-     * @throws ResourceNotFoundException
      */
-    void saveApplicationAdditionalInfo(final String oid, final Map<String, String> additionalInfo) throws ResourceNotFoundException;
+    void saveApplicationAdditionalInfo(final String oid, final Map<String, String> additionalInfo);
 
     void update(final Application queryApplication, final Application application);
 
@@ -80,9 +77,8 @@ public interface ApplicationService {
      * @param applicationOid application oid
      * @param key
      * @return value of the key
-     * @throws ResourceNotFoundException
      */
-    String getApplicationKeyValue(final String applicationOid, final String key) throws ResourceNotFoundException;
+    String getApplicationKeyValue(final String applicationOid, final String key);
 
     /**
      * Puts a additional information key value pair to the application
@@ -90,9 +86,8 @@ public interface ApplicationService {
      * @param applicationOid application oid
      * @param key            key of the additional information
      * @param value          value of the key
-     * @throws ResourceNotFoundException
      */
-    void putApplicationAdditionalInfoKeyValue(final String applicationOid, final String key, final String value) throws ResourceNotFoundException;
+    void putApplicationAdditionalInfoKeyValue(final String applicationOid, final String key, final String value);
 
     /**
      * Finds next application without user oid. Returns matching application or null, if none found.
@@ -110,16 +105,6 @@ public interface ApplicationService {
      */
     Application addPersonOid(Application application);
 
-    /**
-     * Set proper user for this application. If user can be authenticated, activate application. Otherwise, set
-     * application as incomplete.
-     *
-     * @param oid of application to process
-     * @return processed application
-     */
-
-    Application passivateApplication(String oid);
-
     Application checkStudentOid(Application application);
 
     /**
@@ -133,8 +118,6 @@ public interface ApplicationService {
     Application fillLOPChain(Application application, boolean save);
 
     Application getNextWithoutStudentOid();
-
-    void addNote(final Application application, final String noteText, final boolean persist);
 
     Application activateApplication(String oid);
 

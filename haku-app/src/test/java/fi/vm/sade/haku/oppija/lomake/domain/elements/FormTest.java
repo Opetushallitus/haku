@@ -17,7 +17,7 @@
 package fi.vm.sade.haku.oppija.lomake.domain.elements;
 
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.TextQuestion;
-import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundExceptionRuntime;
+import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
 import fi.vm.sade.haku.oppija.lomake.util.ElementTree;
 import org.junit.Test;
 
@@ -38,7 +38,7 @@ public class FormTest {
         assertEquals(expectedElement, actualElement);
     }
 
-    @Test(expected = ResourceNotFoundExceptionRuntime.class)
+    @Test(expected = ResourceNotFoundException.class)
     public void testGetElementByIdNotFound() throws Exception {
         form.addChild(expectedElement);
         elementTree.getChildById(ID_TO_GET + "2");

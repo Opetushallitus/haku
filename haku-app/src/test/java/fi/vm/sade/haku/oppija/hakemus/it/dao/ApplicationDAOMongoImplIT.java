@@ -16,14 +16,12 @@
 
 package fi.vm.sade.haku.oppija.hakemus.it.dao;
 
-import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.mongodb.util.JSON;
 import fi.vm.sade.haku.oppija.common.dao.AbstractDAOTest;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.haku.oppija.lomake.domain.User;
-import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundExceptionRuntime;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import org.apache.commons.io.IOUtils;
 import org.junit.Before;
@@ -39,7 +37,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 

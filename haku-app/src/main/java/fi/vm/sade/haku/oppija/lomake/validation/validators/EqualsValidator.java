@@ -22,8 +22,6 @@ import fi.vm.sade.haku.oppija.lomake.validation.ValidationInput;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationResult;
 import org.apache.commons.lang3.Validate;
 
-import java.util.Map;
-
 public class EqualsValidator extends FieldValidator {
 
     private final String validValue;

@@ -2,7 +2,7 @@ package fi.vm.sade.haku.oppija.lomake.util;
 
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.exception.ElementNotFound;
-import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundExceptionRuntime;
+import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -93,7 +93,7 @@ public final class ElementTree {
     public static final Element getFirstChild(final Element element) {
         List<Element> children = element.getChildren();
         if (children.isEmpty()) {
-            throw new ResourceNotFoundExceptionRuntime("First child not found");
+            throw new ResourceNotFoundException("First child not found");
         } else {
             return children.get(0);
         }

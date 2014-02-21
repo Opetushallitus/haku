@@ -90,7 +90,7 @@ public class LoggerAspect {
             AnswersDifference answersDifference = new AnswersDifference(diffAnswers);
             List<Difference> differences = answersDifference.getDifferences();
             Tapahtuma tapahtuma = new Tapahtuma();
-            tapahtuma.setTarget("hakemus: " + application.getOid() +", vaihe: " + applicationPhase.getPhaseId());
+            tapahtuma.setTarget("hakemus: " + application.getOid() + ", vaihe: " + applicationPhase.getPhaseId());
             tapahtuma.setTimestamp(new Date());
             tapahtuma.setUserActsForUser(userSession.getUser().getUserName());
             tapahtuma.setType("Hakemuksen muokkaus");

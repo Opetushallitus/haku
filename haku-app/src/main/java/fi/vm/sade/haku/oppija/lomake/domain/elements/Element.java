@@ -92,7 +92,7 @@ public abstract class Element implements Serializable {
         if (!attributes.containsKey(key)) {
             this.attributes.put(key, value);
         } else
-            throw new UnsupportedOperationException("Attribute \""+key + "\" already set");
+            throw new UnsupportedOperationException("Attribute \"" + key + "\" already set");
     }
 
     public List<Validator> getValidators() {

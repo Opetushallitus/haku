@@ -21,7 +21,6 @@ import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
-import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
 import fi.vm.sade.haku.oppija.lomake.service.FormService;
 import fi.vm.sade.haku.oppija.lomake.service.UserSession;
 import fi.vm.sade.haku.oppija.ui.common.MultivaluedMapUtil;
@@ -39,7 +38,6 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
-import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -94,7 +92,7 @@ public class OfficerController {
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED + CHARSET_UTF_8)
     @Produces(MEDIA_TYPE_TEXT_HTML_UTF8)
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_CRUD')")
-    public Response newApplication(final MultivaluedMap<String, String> multiValues) throws URISyntaxException, ResourceNotFoundException {
+    public Response newApplication(final MultivaluedMap<String, String> multiValues) throws URISyntaxException {
         LOGGER.debug("newApplication");
         final String asId = multiValues.getFirst("asId");
         Application application = officerUIService.createApplication(asId);
@@ -105,14 +103,13 @@ public class OfficerController {
     @Path("/hakemus/{applicationSystemId}/{phaseId}/{elementId}/help")
     @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
     public Viewable getFormHelp(@PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId,
-                                @PathParam(ELEMENT_ID_PATH_PARAM) final String elementId) throws ResourceNotFoundException {
+                                @PathParam(ELEMENT_ID_PATH_PARAM) final String elementId) {
         return new Viewable(VERBOSE_HELP_VIEW, uiService.getElementHelp(applicationSystemId, elementId));
     }
 
     @GET
     @Path("/hakemus/{oid}")
-    public Response redirectToLastPhase(@PathParam(OID_PATH_PARAM) final String oid)
-            throws ResourceNotFoundException, URISyntaxException {
+    public Response redirectToLastPhase(@PathParam(OID_PATH_PARAM) final String oid) throws URISyntaxException {
         LOGGER.debug("redirectToLastPhase {}", new Object[]{oid});
         Application application = officerUIService.getApplicationWithLastPhase(oid);
         URI path = UriUtil.pathSegmentsToUri(VIRKAILIJA_HAKEMUS_VIEW,
@@ -126,7 +123,7 @@ public class OfficerController {
     @Path("/hakemus/multiple")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(MEDIA_TYPE_TEXT_HTML_UTF8)
-    public Viewable openApplications(final MultivaluedMap<String, String> multiValues) throws ResourceNotFoundException {
+    public Viewable openApplications(final MultivaluedMap<String, String> multiValues) {
         LOGGER.debug("Opening multiple applications");
         Map<String, String> values = MultivaluedMapUtil.toSingleValueMap(multiValues);
         String applicationList = values.get("applicationList");
@@ -145,8 +142,7 @@ public class OfficerController {
     public Viewable getPreviewElement(@PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId,
                                       @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
                                       @PathParam(OID_PATH_PARAM) final String oid,
-                                      @PathParam("elementId") final String elementId)
-            throws ResourceNotFoundException {
+                                      @PathParam("elementId") final String elementId) {
         LOGGER.debug("getPreviewElement {}, {}, {}", new String[]{applicationSystemId, phaseId, oid});
         ModelResponse modelResponse = officerUIService.getApplicationElement(oid, phaseId, elementId, true);
         return new Viewable("/elements/Root", modelResponse.getModel()); // TODO remove hardcoded Phase
@@ -157,8 +153,7 @@ public class OfficerController {
     @Produces(MEDIA_TYPE_TEXT_HTML_UTF8)
     public Viewable getPreview(@PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId,
                                @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
-                               @PathParam(OID_PATH_PARAM) final String oid)
-            throws ResourceNotFoundException, IOException {
+                               @PathParam(OID_PATH_PARAM) final String oid) {
 
         LOGGER.debug("getPreview {}, {}, {}", new String[]{applicationSystemId, phaseId, oid});
         ModelResponse modelResponse = officerUIService.getValidatedApplication(oid, phaseId);
@@ -175,7 +170,7 @@ public class OfficerController {
                                 @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
                                 @PathParam(OID_PATH_PARAM) final String oid,
                                 final MultivaluedMap<String, String> multiValues)
-            throws URISyntaxException, ResourceNotFoundException {
+            throws URISyntaxException {
 
         LOGGER.debug("updatePhase {}, {}, {}", new String[]{applicationSystemId, phaseId, oid});
 
@@ -200,8 +195,7 @@ public class OfficerController {
                                @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
                                @PathParam(OID_PATH_PARAM) final String oid,
                                @PathParam("elementId") final String elementId,
-                               final MultivaluedMap<String, String> multiValues)
-            throws ResourceNotFoundException {
+                               final MultivaluedMap<String, String> multiValues) {
         ModelResponse modelResponse = officerUIService.getApplicationElement(oid, phaseId, elementId, false);
         modelResponse.addAnswers(MultivaluedMapUtil.toSingleValueMap(multiValues));
         return new Viewable("/elements/Root", modelResponse.getModel());
@@ -213,8 +207,7 @@ public class OfficerController {
     @Produces(MEDIA_TYPE_TEXT_HTML_UTF8)
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_CRUD')")
     public Response saveAdditionalInfo(@PathParam(OID_PATH_PARAM) final String oid,
-                                       final MultivaluedMap<String, String> multiValues)
-            throws URISyntaxException, ResourceNotFoundException {
+                                       final MultivaluedMap<String, String> multiValues) throws URISyntaxException {
         LOGGER.debug("saveAdditionalInfo {}, {}", new Object[]{oid, multiValues});
         officerUIService.saveApplicationAdditionalInfo(oid, MultivaluedMapUtil.toSingleValueMap(multiValues));
         return seeOther(UriUtil.pathSegmentsToUri(VIRKAILIJA_HAKEMUS_VIEW, oid, "")).build();
@@ -223,8 +216,7 @@ public class OfficerController {
     @GET
     @Path("/hakemus/{oid}/additionalInfo")
     @Produces(MEDIA_TYPE_TEXT_HTML_UTF8)
-    public Viewable getAdditionalInfo(@PathParam(OID_PATH_PARAM) final String oid)
-            throws ResourceNotFoundException, IOException {
+    public Viewable getAdditionalInfo(@PathParam(OID_PATH_PARAM) final String oid) {
         LOGGER.debug("getAdditionalInfo  {}, {}", new Object[]{oid});
         ModelResponse modelResponse = officerUIService.getAdditionalInfo(oid);
         return new Viewable(ADDITIONAL_INFO_VIEW, modelResponse.getModel());
@@ -234,8 +226,7 @@ public class OfficerController {
     @Path("/hakemus/{oid}/activate")
     @Produces(MEDIA_TYPE_TEXT_HTML_UTF8)
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_CRUD')")
-    public Response activate(@PathParam(OID_PATH_PARAM) final String oid)
-            throws URISyntaxException, ResourceNotFoundException {
+    public Response activate(@PathParam(OID_PATH_PARAM) final String oid) throws URISyntaxException {
         LOGGER.debug("Entering GET activate");
         officerUIService.addPersonAndAuthenticate(oid);
         return seeOther(UriUtil.pathSegmentsToUri(VIRKAILIJA_HAKEMUS_VIEW, oid, "")).build();
@@ -246,8 +237,7 @@ public class OfficerController {
     @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED + CHARSET_UTF_8)
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_CRUD')")
-    public Viewable activate(@PathParam(OID_PATH_PARAM) final String oid,
-                             final MultivaluedMap<String, String> multiValues) throws IOException, ResourceNotFoundException {
+    public Viewable activate(@PathParam(OID_PATH_PARAM) final String oid, final MultivaluedMap<String, String> multiValues) {
         for (Map.Entry<String, List<String>> entry : multiValues.entrySet()) {
             LOGGER.debug("activation " + entry.getKey() + " -> " + entry.getValue());
         }
@@ -267,7 +257,7 @@ public class OfficerController {
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED + CHARSET_UTF_8)
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_CRUD')")
     public Viewable passivate(@PathParam(OID_PATH_PARAM) final String oid,
-                              final MultivaluedMap<String, String> multiValues) throws IOException, ResourceNotFoundException {
+                              final MultivaluedMap<String, String> multiValues) {
         for (Map.Entry<String, List<String>> entry : multiValues.entrySet()) {
             LOGGER.debug("passivation " + entry.getKey() + " -> " + entry.getValue());
         }
@@ -286,7 +276,7 @@ public class OfficerController {
     @Produces(MEDIA_TYPE_TEXT_HTML_UTF8)
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED + CHARSET_UTF_8)
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_CRUD')")
-    public Viewable postProcess(@PathParam(OID_PATH_PARAM) final String oid) throws IOException, ResourceNotFoundException {
+    public Viewable postProcess(@PathParam(OID_PATH_PARAM) final String oid) {
         ModelResponse modelResponse = officerUIService.postProcess(oid);
         return new Viewable(DEFAULT_VIEW, modelResponse.getModel());
     }
@@ -296,7 +286,7 @@ public class OfficerController {
     @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED + CHARSET_UTF_8)
     public Viewable addNote(@PathParam(OID_PATH_PARAM) final String oid,
-                            final MultivaluedMap<String, String> multiValues) throws IOException, ResourceNotFoundException {
+                            final MultivaluedMap<String, String> multiValues) {
         for (Map.Entry<String, List<String>> entry : multiValues.entrySet()) {
             LOGGER.debug("passivation " + entry.getKey() + " -> " + entry.getValue());
         }
@@ -313,7 +303,7 @@ public class OfficerController {
     @GET
     @Path("/hakemus/{oid}/print")
     @Produces(MEDIA_TYPE_TEXT_HTML_UTF8)
-    public Viewable applicationPrintView(@PathParam(OID_PATH_PARAM) final String oid) throws ResourceNotFoundException {
+    public Viewable applicationPrintView(@PathParam(OID_PATH_PARAM) final String oid) {
         ModelResponse modelResponse = officerUIService.getApplicationPrint(oid);
         return new Viewable(APPLICATION_PRINT_VIEW, modelResponse.getModel());
     }
@@ -324,7 +314,7 @@ public class OfficerController {
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED + CHARSET_UTF_8)
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_CRUD')")
 
-    public Viewable addStudentOid(@PathParam(OID_PATH_PARAM) final String oid) throws ResourceNotFoundException {
+    public Viewable addStudentOid(@PathParam(OID_PATH_PARAM) final String oid) {
         ModelResponse modelResponse = officerUIService.addStudentOid(oid);
         return new Viewable(DEFAULT_VIEW, modelResponse.getModel());
     }

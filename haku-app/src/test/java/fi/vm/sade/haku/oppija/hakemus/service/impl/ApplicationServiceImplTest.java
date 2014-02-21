@@ -11,8 +11,6 @@ import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationQueryParameters;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationOidService;
 import fi.vm.sade.haku.oppija.hakemus.service.HakuPermissionService;
 import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
-import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
-import fi.vm.sade.haku.oppija.lomake.service.FormService;
 import fi.vm.sade.haku.oppija.lomake.validation.ElementTreeValidator;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidatorFactory;
 import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
@@ -145,7 +143,7 @@ public class ApplicationServiceImplTest {
     }
 
     @Test
-    public void testSaveApplicationAdditionalInfo() throws ResourceNotFoundException {
+    public void testSaveApplicationAdditionalInfo() {
         Map<String, String> additionalInfo = new HashMap<String, String>();
         additionalInfo.put("key", "value");
         service.saveApplicationAdditionalInfo(OID, additionalInfo);
@@ -153,31 +151,31 @@ public class ApplicationServiceImplTest {
     }
 
     @Test
-    public void testGetApplicationKeyValue() throws ResourceNotFoundException {
+    public void testGetApplicationKeyValue()  {
         String value = service.getApplicationKeyValue(OID, "avain");
         assertNotNull(value);
         assertEquals("arvo", value);
     }
 
     @Test(expected = ResourceNotFoundException.class)
-    public void testGetApplicationKeyValueKeyNotExists() throws ResourceNotFoundException {
+    public void testGetApplicationKeyValueKeyNotExists() {
         service.getApplicationKeyValue(OID, "nonExistingKey");
     }
 
     @Test
-    public void testPutApplicationAdditionalInfoKeyValue() throws ResourceNotFoundException {
+    public void testPutApplicationAdditionalInfoKeyValue()  {
         service.putApplicationAdditionalInfoKeyValue(OID, "key", "value");
         verify(applicationDAO, times(1)).updateKeyValue(eq(OID), eq("additionalInfo.key"), eq("value"));
     }
 
     @Test
-    public void testPutApplicationAdditionalInfoKeyValueIllegalKey() throws ResourceNotFoundException {
+    public void testPutApplicationAdditionalInfoKeyValueIllegalKey() {
         service.putApplicationAdditionalInfoKeyValue(OID, "avain", "value");
         verify(applicationDAO, times(1)).updateKeyValue(eq(OID), eq("additionalInfo.avain"), eq("value"));
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testPutApplicationAdditionalInfoKeyValueNullValue() throws ResourceNotFoundException {
+    public void testPutApplicationAdditionalInfoKeyValueNullValue() {
         service.putApplicationAdditionalInfoKeyValue(OID, "key", null);
     }
 

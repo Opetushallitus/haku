@@ -2,11 +2,8 @@ package fi.vm.sade.haku.oppija.lomake.service.impl;
 
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.exception.ApplicationSystemNotFound;
-import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundExceptionRuntime;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.haku.oppija.repository.ApplicationSystemRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;

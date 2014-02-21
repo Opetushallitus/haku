@@ -17,7 +17,6 @@
 package fi.vm.sade.haku.oppija.ui.controller;
 
 import com.sun.jersey.api.view.Viewable;
-import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
 import fi.vm.sade.haku.oppija.ui.common.RedirectToFormViewPath;
 import fi.vm.sade.haku.oppija.ui.common.RedirectToPendingViewPath;
 import fi.vm.sade.haku.oppija.ui.common.RedirectToPhaseViewPath;
@@ -161,7 +160,7 @@ public class FormController {
     @Path("/{applicationSystemId}/valmis/{oid}")
     @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
     public Viewable getComplete(@PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId,
-                                @PathParam("oid") final String oid) throws ResourceNotFoundException {
+                                @PathParam("oid") final String oid) {
 
         LOGGER.debug("getComplete {}, {}", new Object[]{applicationSystemId});
         ModelResponse response = uiService.getCompleteApplication(applicationSystemId, oid);
@@ -172,7 +171,7 @@ public class FormController {
     @Path("/{applicationSystemId}/tulostus/{oid}")
     @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
     public Viewable getPrint(@PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId,
-                             @PathParam("oid") final String oid) throws ResourceNotFoundException {
+                             @PathParam("oid") final String oid)  {
         LOGGER.debug("getPrint {}, {}", new Object[]{applicationSystemId, oid});
         ModelResponse modelResponse = uiService.getCompleteApplication(applicationSystemId, oid);
         return new Viewable(PRINT_VIEW, modelResponse.getModel());
@@ -182,7 +181,7 @@ public class FormController {
     @Path("/{applicationSystemId}/{elementId}/help")
     @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
     public Viewable getFormHelp(@PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId,
-                                @PathParam(ELEMENT_ID_PATH_PARAM) final String elementId) throws ResourceNotFoundException {
+                                @PathParam(ELEMENT_ID_PATH_PARAM) final String elementId) {
         return new Viewable(VERBOSE_HELP_VIEW, uiService.getElementHelp(applicationSystemId, elementId));
     }
 

@@ -20,7 +20,6 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationOidDAO;
-import fi.vm.sade.haku.oppija.lomake.exception.ConfigurationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.mongodb.core.MongoTemplate;
