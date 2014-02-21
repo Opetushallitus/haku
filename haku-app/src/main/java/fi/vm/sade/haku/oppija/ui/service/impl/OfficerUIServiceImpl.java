@@ -178,7 +178,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
                 allAnswers, oid, application.getApplicationSystemId()));
 
         String noteText = "Päivitetty vaihetta '" + applicationPhase.getPhaseId() + "'";
-        application.addNote(new ApplicationNote(noteText, new Date(), userSession.getUser().getUserName()));
+        application.addNote(createNote(noteText));
         this.applicationService.fillLOPChain(application, false);
         this.applicationService.addSendingSchool(application);
         this.applicationService.update(queryApplication, application);
@@ -351,7 +351,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     @Override
     public void passivateApplication(final String oid, final String reason) {
         Application application = applicationService.getApplicationByOid(oid);
-        application.addNote(new ApplicationNote("Hakemus passivoitu: " + reason, new Date(), userSession.getUser().getUserName()));
+        application.addNote(createNote("Hakemus passivoitu: " + reason));
         application.passivate();
         applicationService.update(new Application(oid), application);
     }
@@ -359,7 +359,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     @Override
     public void addNote(String applicationOid, String note) {
         Application application = applicationService.getApplicationByOid(applicationOid);
-        application.addNote(new ApplicationNote(note, new Date(), userSession.getUser().getUserName()));
+        application.addNote(createNote(note));
         applicationService.update(new Application(applicationOid), application);
     }
 
@@ -379,7 +379,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         }
         authenticationService.getStudentOid(studentOid);
         application.setStudentOid(studentOid);
-        application.addNote(new ApplicationNote("Oppijanumero syötetty", new Date(), userSession.getUser().getUserName()));
+        application.addNote(createNote("Oppijanumero syötetty"));
         Application queryApplication = new Application(oid);
         applicationService.update(queryApplication, application);
         return getValidatedApplication(oid, PHASE_ID_PREVIEW);
@@ -402,6 +402,10 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         ApplicationSystem activeApplicationSystem = applicationSystemService.getActiveApplicationSystem(application.getApplicationSystemId());
         List<String> discretionaryAttachmentAOIds = ApplicationUtil.getDiscretionaryAttachmentAOIds(application);
         return new ModelResponse(application, activeApplicationSystem, discretionaryAttachmentAOIds, koulutusinformaatioBaseUrl);
+    }
+
+    private ApplicationNote createNote(String note) {
+        return new ApplicationNote(note, new Date(), userSession.getUser().getUserName());
     }
 
 }
