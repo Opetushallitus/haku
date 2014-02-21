@@ -38,7 +38,7 @@ public class PersonJsonAdapter implements JsonSerializer<Person>, JsonDeserializ
 
     @Override
     public JsonElement serialize(Person person, Type typeOfSrc, JsonSerializationContext context) {
-        log.debug("Serializing person {"+person+"}");
+        log.debug("Serializing person {" + person + "}");
         JsonObject personJson = new JsonObject();
         personJson.add("etunimet", new JsonPrimitive(person.getFirstNames()));
         personJson.add("kutsumanimi", new JsonPrimitive(person.getNickName()));
@@ -50,7 +50,7 @@ public class PersonJsonAdapter implements JsonSerializer<Person>, JsonDeserializ
 
         String hetu = person.getSocialSecurityNumber();
         if (!isEmpty(hetu)) {
-            log.debug("Has hetu: "+hetu);
+            log.debug("Has hetu: " + hetu);
             personJson.add("hetu", new JsonPrimitive(hetu));
             personJson.add("eiSuomalaistaHetua", new JsonPrimitive(false));
         } else {
@@ -60,7 +60,7 @@ public class PersonJsonAdapter implements JsonSerializer<Person>, JsonDeserializ
 
         String sex = person.getSex();
         if (!isEmpty(sex)) {
-            log.debug("Sex defined: "+sex);
+            log.debug("Sex defined: " + sex);
             personJson.add("sukupuoli", new JsonPrimitive(sex.equals(SukupuoliType.MIES.value()) ? "MIES" : "NAINEN"));
         }
 

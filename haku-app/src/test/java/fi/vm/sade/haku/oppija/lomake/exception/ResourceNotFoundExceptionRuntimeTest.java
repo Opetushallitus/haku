@@ -27,13 +27,13 @@ public class ResourceNotFoundExceptionRuntimeTest {
 
     @Test
     public void testMessage() throws Exception {
-        ResourceNotFoundExceptionRuntime resourceNotFoundExceptionRuntime = new ResourceNotFoundExceptionRuntime(MESSAGE);
+        ResourceNotFoundException resourceNotFoundExceptionRuntime = new ResourceNotFoundException(MESSAGE);
         assertEquals(MESSAGE, resourceNotFoundExceptionRuntime.getMessage());
     }
 
     @Test
     public void testException() throws Exception {
-        ResourceNotFoundExceptionRuntime resourceNotFoundExceptionRuntime = new ResourceNotFoundExceptionRuntime(MESSAGE, EXCEPTION);
+        ResourceNotFoundException resourceNotFoundExceptionRuntime = new ResourceNotFoundException(MESSAGE, EXCEPTION);
         assertEquals(EXCEPTION, resourceNotFoundExceptionRuntime.getCause());
     }
 }

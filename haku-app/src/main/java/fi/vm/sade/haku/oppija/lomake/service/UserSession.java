@@ -32,7 +32,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @Component
 @Scope(value = "session", proxyMode = ScopedProxyMode.TARGET_CLASS)
-public class UserSession implements Serializable{
+public class UserSession implements Serializable {
 
     private static final long serialVersionUID = 8093993846121110534L;
 

@@ -28,7 +28,6 @@ import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.core.convert.ConversionService;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,7 +35,6 @@ import java.util.Map;
 
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyList;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Matchers.isNull;
@@ -140,18 +138,18 @@ public class ApplicationResourceTest {
     }
 
     @Test
-    public void testPutApplicationAdditionalInfoKeyValue() throws ResourceNotFoundException {
+    public void testPutApplicationAdditionalInfoKeyValue() {
         applicationResource.putApplicationAdditionalInfoKeyValue(OID, "newKey", "value");
         verify(applicationService, times(1)).putApplicationAdditionalInfoKeyValue(eq(OID), eq("newKey"), eq("value"));
     }
 
     @Test(expected = JSONException.class)
-    public void testPutApplicationAdditionalInfoKeyValueIllegalKey() throws ResourceNotFoundException {
+    public void testPutApplicationAdditionalInfoKeyValueIllegalKey() {
         applicationResource.putApplicationAdditionalInfoKeyValue(OID, "key", "value");
     }
 
     @Test(expected = JSONException.class)
-    public void testPutApplicationAdditionalInfoKeyValueNullValue() throws ResourceNotFoundException {
+    public void testPutApplicationAdditionalInfoKeyValueNullValue() {
         applicationResource.putApplicationAdditionalInfoKeyValue(OID, "newKey", null);
     }
 
@@ -193,8 +191,9 @@ public class ApplicationResourceTest {
 
         public String query;
         public ApplicationQueryParameters param;
+
         public ApplicationServiceMock() {
-            super(null,null,null,null,null,null,null,null,null);
+            super(null, null, null, null, null, null, null, null, null);
         }
 
         @Override

@@ -13,22 +13,17 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * European Union Public Licence for more details.
  */
+
 package fi.vm.sade.haku.oppija.lomake.exception;
 
-/**
- * Thrown when a requested resource is not found.
- *
- * @author Hannu Lyytikainen
- */
-public class ResourceNotFoundException extends Exception {
+public class ResourceNotFoundException extends RuntimeException {
+    private static final long serialVersionUID = -8188728650814173417L;
 
-    private static final long serialVersionUID = 6713047877279434439L;
-
-    public ResourceNotFoundException(Throwable t) {
-        super(t);
+    public ResourceNotFoundException(final String message) {
+        super(message);
     }
 
-    public ResourceNotFoundException(String message) {
-        super(message);
+    public ResourceNotFoundException(final String message, final Exception exception) {
+        super(message, exception);
     }
 }

@@ -55,7 +55,7 @@ public class OrganizationResource {
                                                 @QueryParam("learningInstitutionType") final String learningInstitutionType,
                                                 @QueryParam("onlyPassive") @DefaultValue("false") final boolean onlyPassive) {
         LOGGER.debug("Search organizations q: {}, orgType: {}, loiType: {}, passive: {}",
-                new String[] {searchString, organizationType, learningInstitutionType, String.valueOf(onlyPassive)});
+                new String[]{searchString, organizationType, learningInstitutionType, String.valueOf(onlyPassive)});
         List<Organization> listOfOrganization = getOrganizations(searchString, organizationType,
                 learningInstitutionType, onlyPassive);
         return toMap(listOfOrganization);
