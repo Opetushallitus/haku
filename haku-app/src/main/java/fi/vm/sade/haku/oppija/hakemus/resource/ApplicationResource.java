@@ -92,7 +92,7 @@ public class ApplicationResource {
                 Application app = applicationService.getApplicationByOid(oid);
                 result.add(app);
             } catch (ResourceNotFoundException e) {
-                throw new JSONException(Response.Status.NOT_FOUND, "Could not find requested application with oid: "+oid, e);
+                throw new JSONException(Response.Status.NOT_FOUND, "Could not find requested application with oid: " + oid, e);
             }
         }
         return result;

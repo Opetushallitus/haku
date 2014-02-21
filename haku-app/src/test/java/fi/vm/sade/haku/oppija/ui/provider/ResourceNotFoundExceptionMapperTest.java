@@ -16,7 +16,7 @@
 
 package fi.vm.sade.haku.oppija.ui.provider;
 
-import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundExceptionRuntime;
+import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -24,14 +24,14 @@ import javax.ws.rs.core.Response;
 
 import static org.junit.Assert.assertTrue;
 
-public class ResourceNotFoundExceptionRuntimeMapperTest {
+public class ResourceNotFoundExceptionMapperTest {
 
-    public static final ResourceNotFoundExceptionRuntime MESSAGE = new ResourceNotFoundExceptionRuntime("message");
-    private ResourceNotFoundExceptionRuntimeMapper resourceNotFoundExceptionRuntimeMapper;
+    public static final ResourceNotFoundException MESSAGE = new ResourceNotFoundException("message");
+    private ResourceNotFoundExceptionMapper resourceNotFoundExceptionRuntimeMapper;
 
     @Before
     public void setUp() throws Exception {
-        resourceNotFoundExceptionRuntimeMapper = new ResourceNotFoundExceptionRuntimeMapper();
+        resourceNotFoundExceptionRuntimeMapper = new ResourceNotFoundExceptionMapper();
     }
 
     @Test

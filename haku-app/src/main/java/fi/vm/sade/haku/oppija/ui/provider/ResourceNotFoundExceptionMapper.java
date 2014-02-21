@@ -18,7 +18,7 @@ package fi.vm.sade.haku.oppija.ui.provider;
 
 import com.google.common.collect.ImmutableMap;
 import com.sun.jersey.api.view.Viewable;
-import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundExceptionRuntime;
+import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -33,8 +33,8 @@ import java.util.UUID;
 
 @Provider
 @Component
-public class ResourceNotFoundExceptionRuntimeMapper implements ExceptionMapper<ResourceNotFoundExceptionRuntime> {
-    public static final Logger LOGGER = LoggerFactory.getLogger(ResourceNotFoundExceptionRuntimeMapper.class);
+public class ResourceNotFoundExceptionMapper implements ExceptionMapper<ResourceNotFoundException> {
+    public static final Logger LOGGER = LoggerFactory.getLogger(ResourceNotFoundExceptionMapper.class);
     public static final String ERROR_PAGE = "/error/error";
     public static final String MODEL_STACK_TRACE = "stackTrace";
     public static final String MODEL_MESSAGE = "message";
@@ -42,7 +42,7 @@ public class ResourceNotFoundExceptionRuntimeMapper implements ExceptionMapper<R
     public static final String ERROR_TIMESTAMP = "timestamp";
 
     @Override
-    public Response toResponse(ResourceNotFoundExceptionRuntime exception) {
+    public Response toResponse(ResourceNotFoundException exception) {
         String timestamp = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(new Date());
         String uuid = UUID.randomUUID().toString();
         LOGGER.error("Error: " + uuid, exception);

@@ -167,6 +167,7 @@ public final class PersonBuilder {
         this.personOid = personOid;
         return this;
     }
+
     public String getStudentOid() {
         return studentOid;
     }

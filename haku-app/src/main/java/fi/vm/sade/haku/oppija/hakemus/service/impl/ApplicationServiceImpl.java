@@ -34,7 +34,6 @@ import fi.vm.sade.haku.oppija.lomake.domain.User;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
-import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundExceptionRuntime;
 import fi.vm.sade.haku.oppija.lomake.service.FormService;
 import fi.vm.sade.haku.oppija.lomake.service.UserSession;
 import fi.vm.sade.haku.oppija.lomake.util.ElementTree;
@@ -150,10 +149,9 @@ public class ApplicationServiceImpl implements ApplicationService {
             if (!user.isKnown()) {
                 application.removeUser();
             }
-
             application.resetUser();
             application.setReceived(new Date());
-            addNote(application, "Hakemus vastaanotettu", false);
+            application.addNote(new ApplicationNote("Hakemus vastaanotettu", new Date(), userSession.getUser().getUserName()));
             application.setLastAutomatedProcessingTime(System.currentTimeMillis());
             application.submitted();
             application.flagStudentIdentificationRequired();
@@ -228,18 +226,6 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public Application passivateApplication(String applicationOid) {
-        Application query = new Application();
-        query.setOid(applicationOid);
-        List<Application> apps = applicationDAO.find(query);
-        Application application = apps.get(0);
-        application.passivate();
-        Application queryApplication = new Application(applicationOid);
-        applicationDAO.update(queryApplication, application);
-        return application;
-    }
-
-    @Override
     public Application activateApplication(String applicationOid) {
         Application query = new Application();
         query.setOid(applicationOid);
@@ -252,19 +238,6 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public void addNote(final Application application, final String noteText, final boolean persist) {
-        addNoteToApplicationObject(application, noteText);
-        if (persist) {
-            Application query = new Application(application.getOid());
-            applicationDAO.update(query, application);
-        }
-    }
-
-    private void addNoteToApplicationObject(final Application application, final String noteText) {
-        application.addNote(new ApplicationNote(noteText, new Date(), userSession.getUser().getUserName()));
-    }
-
-    @Override
     public Application getSubmittedApplication(final String applicationSystemId, final String oid) {
         Application submittedApplication = userSession.getSubmittedApplication();
         if (submittedApplication != null &&
@@ -272,7 +245,7 @@ public class ApplicationServiceImpl implements ApplicationService {
                 submittedApplication.getOid().equals(oid)) {
             return submittedApplication;
         }
-        throw new ResourceNotFoundExceptionRuntime("Could not found submitted application");
+        throw new ResourceNotFoundException("Could not found submitted application");
     }
 
     @Override
@@ -310,10 +283,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     }
 
-    @Override
-    public Application getNextRedo() {
-        return applicationDAO.getNextRedo();
-    }
+
 
     @Override
     public Application getApplication(final String applicationSystemId) {
@@ -332,7 +302,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public Application getApplicationByOid(String oid) throws ResourceNotFoundException {
+    public Application getApplicationByOid(String oid) {
         return getApplication(new Application(oid));
     }
 
@@ -343,8 +313,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public void saveApplicationAdditionalInfo(String oid, Map<String, String> additionalInfo)
-            throws ResourceNotFoundException {
+    public void saveApplicationAdditionalInfo(String oid, Map<String, String> additionalInfo) {
         Application query = new Application(oid);
         Application current = getApplication(query);
         current.setAdditionalInfo(additionalInfo);
@@ -358,7 +327,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 
 
     @Override
-    public String getApplicationKeyValue(String applicationOid, String key) throws ResourceNotFoundException {
+    public String getApplicationKeyValue(String applicationOid, String key) {
         Application application = getApplication(new Application(applicationOid));
         if (application.getAdditionalInfo().containsKey(key)) {
             return application.getAdditionalInfo().get(key);
@@ -371,8 +340,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public void putApplicationAdditionalInfoKeyValue(String applicationOid, String key, String value)
-            throws ResourceNotFoundException {
+    public void putApplicationAdditionalInfoKeyValue(String applicationOid, String key, String value) {
         if (value == null) {
             throw new IllegalArgumentException("Value can't be null");
         } else {
@@ -412,32 +380,12 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public Application getNextSubmittedApplication() {
-        Application application = applicationDAO.getNextSubmittedApplication();
-        if (application != null) {
-            application.setLastAutomatedProcessingTime(System.currentTimeMillis());
-            applicationDAO.save(application);
-        }
-        return application;
-    }
-
-    @Override
-    public Application getNextWithoutStudentOid() {
-        Application application = applicationDAO.getNextWithoutStudentOid();
-        if (application != null) {
-            application.setLastAutomatedProcessingTime(System.currentTimeMillis());
-            applicationDAO.save(application);
-        }
-        return application;
-    }
-
-    @Override
     public Application officerCreateNewApplication(String asId) {
         Application application = new Application();
         application.setApplicationSystemId(asId);
         application.setReceived(new Date());
         application.setState(Application.State.INCOMPLETE);
-        addNote(application, "Hakemus vastaanotettu", false);
+        application.addNote(new ApplicationNote("Hakemus vastaanotettu", new Date(), userSession.getUser().getUserName()));
         application.setOid(applicationOidService.generateNewOid());
         this.applicationDAO.save(application);
         return application;
@@ -451,22 +399,20 @@ public class ApplicationServiceImpl implements ApplicationService {
             listOfApplications = applicationDAO.find(queryApplication);
         } catch (IllegalArgumentException iae) {
             LOGGER.error("Error getting application: ", iae);
-            throw new ResourceNotFoundExceptionRuntime("Error getting application", iae);
+            throw new ResourceNotFoundException("Error getting application", iae);
         }
         if (listOfApplications.isEmpty()) {
-            throw new ResourceNotFoundExceptionRuntime("Could not find application " + queryApplication.getOid());
+            throw new ResourceNotFoundException("Could not find application " + queryApplication.getOid());
         }
         if (listOfApplications.size() > 1) {
-            throw new ResourceNotFoundExceptionRuntime("Found multiple applications with oid " + queryApplication.getOid());
+            throw new ResourceNotFoundException("Found multiple applications with oid " + queryApplication.getOid());
         }
 
         Application application = listOfApplications.get(0);
 
         if (!hakuPermissionService.userCanReadApplication(application)) {
-            throw new ResourceNotFoundExceptionRuntime("User is not allowed to read application " + application.getOid());
+            throw new ResourceNotFoundException("User is not allowed to read application " + application.getOid());
         }
         return application;
     }
-
-
 }

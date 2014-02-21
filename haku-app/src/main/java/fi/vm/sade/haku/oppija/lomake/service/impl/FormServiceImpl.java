@@ -17,12 +17,9 @@
 package fi.vm.sade.haku.oppija.lomake.service.impl;
 
 
-import com.google.common.collect.Iterables;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.Phase;
-import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundExceptionRuntime;
+import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.haku.oppija.lomake.service.FormService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +39,7 @@ public class FormServiceImpl implements FormService {
     @Override
     public Form getActiveForm(String applicationSystemId) {
         if (applicationSystemId == null) {
-            throw new ResourceNotFoundExceptionRuntime("Application system not found");
+            throw new ResourceNotFoundException("Application system not found");
         }
         final ApplicationSystem applicationSystem = applicationSystemService.getActiveApplicationSystem(applicationSystemId);
         return applicationSystem.getForm();
@@ -53,7 +50,7 @@ public class FormServiceImpl implements FormService {
         final ApplicationSystem applicationSystem = applicationSystemService.getApplicationSystem(applicationSystemId);
         Form form = applicationSystem.getForm();
         if (form == null) {
-            throw new ResourceNotFoundExceptionRuntime("Form not found");
+            throw new ResourceNotFoundException("Form not found");
         }
         return form;
     }
