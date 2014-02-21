@@ -90,13 +90,6 @@ public interface ApplicationService {
     void putApplicationAdditionalInfoKeyValue(final String applicationOid, final String key, final String value);
 
     /**
-     * Finds next application without user oid. Returns matching application or null, if none found.
-     *
-     * @return Application or null
-     */
-    Application getNextSubmittedApplication();
-
-    /**
      * Set proper user for this application. If user can be authenticated, activate application. Otherwise, set
      * application as incomplete.
      *
@@ -117,13 +110,10 @@ public interface ApplicationService {
 
     Application fillLOPChain(Application application, boolean save);
 
-    Application getNextWithoutStudentOid();
-
     Application activateApplication(String oid);
 
     Application getSubmittedApplication(final String applicationSystemId, final String oid);
 
     Application addSendingSchool(Application application);
 
-    Application getNextRedo();
 }

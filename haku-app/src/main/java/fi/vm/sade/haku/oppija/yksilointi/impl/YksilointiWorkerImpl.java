@@ -17,6 +17,7 @@ package fi.vm.sade.haku.oppija.yksilointi.impl;
 
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.util.ApplicationUtil;
+import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationDAO;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.haku.oppija.lomake.service.FormService;
@@ -48,7 +49,8 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
 
     public static final Logger LOGGER = LoggerFactory.getLogger(YksilointiWorkerImpl.class);
     public static final String TRUE = "true";
-    private ApplicationService applicationService;
+    private final ApplicationService applicationService;
+    private final ApplicationDAO applicationDAO;
     private FormService formService;
 
     private Map<String, Template> templateMap;
@@ -69,9 +71,10 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
     private String replyTo;
 
     @Autowired
-    public YksilointiWorkerImpl(ApplicationService applicationService, FormService formService) {
+    public YksilointiWorkerImpl(ApplicationService applicationService, FormService formService, ApplicationDAO applicationDAO) {
         this.applicationService = applicationService;
         this.formService = formService;
+        this.applicationDAO = applicationDAO;
 
         VelocityEngine velocityEngine = new VelocityEngine();
         velocityEngine.setProperty(VelocityEngine.INPUT_ENCODING, "UTF-8");
@@ -93,7 +96,7 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
      * @param sendMail
      */
     public void processApplications(boolean sendMail) {
-        Application application = applicationService.getNextSubmittedApplication();
+        Application application = getNextSubmittedApplication();
 
         while (application != null) {
             application = applicationService.fillLOPChain(application, false);
@@ -102,7 +105,8 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
                 application = applicationService.addSendingSchool(application);
             }
             application.activate();
-            applicationService.update(new Application(application.getOid()), application);
+            this.applicationDAO.update(new Application(application.getOid()), application);
+            //applicationService.update(, application);
             if (sendMail) {
                 try {
                     sendMail(application);
@@ -110,12 +114,12 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
                     LOGGER.info("Error process applications", e);
                 }
             }
-            application = applicationService.getNextSubmittedApplication();
+            application = getNextSubmittedApplication();
         }
     }
 
     public void processIdentification() {
-        Application application = applicationService.getNextWithoutStudentOid();
+        Application application = getNextWithoutStudentOid();
         LOGGER.debug("Starting processIdentification, application: {} {}",
                 application != null ? application.getOid() : "null", System.currentTimeMillis());
         if (application != null) {
@@ -125,11 +129,11 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
 
     public void redoPostprocess(boolean sendMail) {
         LOGGER.debug("Beginning redoprocess");
-        Application application = applicationService.getNextRedo();
+        Application application = getNextRedo();
         while (application != null) {
-            LOGGER.debug("Reprocessing application "+application.getOid());
+            LOGGER.debug("Reprocessing application " + application.getOid());
             String redo = application.getRedoPostProcess();
-            LOGGER.debug("Reprocessing application, redo: "+redo);
+            LOGGER.debug("Reprocessing application, redo: " + redo);
             if (redo != null) {
                 if ("FULL".equals(redo) || "NOMAIL".equals(redo)) {
                     application = applicationService.fillLOPChain(application, false);
@@ -139,7 +143,7 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
                     }
                     application.setRedoPostProcess("DONE");
                     applicationService.update(new Application(application.getOid()), application);
-                    LOGGER.debug("Reprocessing "+application.getOid()+" done");
+                    LOGGER.debug("Reprocessing " + application.getOid() + " done");
                 }
                 if (sendMail && redo == "FULL") {
                     try {
@@ -149,7 +153,7 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
                     }
                 }
             }
-            application = applicationService.getNextRedo();
+            application = getNextRedo();
         }
     }
 
@@ -272,5 +276,27 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
         email.addTo(toAddress);
         email.setCharset("utf-8");
         return email;
+    }
+
+    private Application getNextSubmittedApplication() {
+        Application application = applicationDAO.getNextSubmittedApplication();
+        return setLastAutomatedProcessingTimeAndSave(application);
+    }
+
+    private Application getNextWithoutStudentOid() {
+        Application application = applicationDAO.getNextWithoutStudentOid();
+        return setLastAutomatedProcessingTimeAndSave(application);
+    }
+
+    public Application getNextRedo() {
+        return applicationDAO.getNextRedo();
+    }
+
+    private Application setLastAutomatedProcessingTimeAndSave(final Application application) {
+        if (application != null) {
+            application.setLastAutomatedProcessingTime(System.currentTimeMillis());
+            applicationDAO.save(application);
+        }
+        return application;
     }
 }

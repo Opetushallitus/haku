@@ -283,10 +283,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     }
 
-    @Override
-    public Application getNextRedo() {
-        return applicationDAO.getNextRedo();
-    }
+
 
     @Override
     public Application getApplication(final String applicationSystemId) {
@@ -378,26 +375,6 @@ public class ApplicationServiceImpl implements ApplicationService {
             if (save) {
                 this.applicationDAO.save(application);
             }
-        }
-        return application;
-    }
-
-    @Override
-    public Application getNextSubmittedApplication() {
-        Application application = applicationDAO.getNextSubmittedApplication();
-        if (application != null) {
-            application.setLastAutomatedProcessingTime(System.currentTimeMillis());
-            applicationDAO.save(application);
-        }
-        return application;
-    }
-
-    @Override
-    public Application getNextWithoutStudentOid() {
-        Application application = applicationDAO.getNextWithoutStudentOid();
-        if (application != null) {
-            application.setLastAutomatedProcessingTime(System.currentTimeMillis());
-            applicationDAO.save(application);
         }
         return application;
     }
