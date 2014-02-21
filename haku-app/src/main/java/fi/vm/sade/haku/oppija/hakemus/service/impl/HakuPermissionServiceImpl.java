@@ -17,7 +17,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -82,8 +81,6 @@ public class HakuPermissionServiceImpl extends AbstractPermissionService impleme
 
     @Override
     public boolean userCanReadApplication(Application application) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        log.debug("userCanReadApplication, user oid: "+auth.getName());
         return userCanAccessApplication(application, getReadRole(), getReadUpdateRole(), getCreateReadUpdateDeleteRole()) ||
                 userHasOpoRoleToSendingSchool(application);
     }
