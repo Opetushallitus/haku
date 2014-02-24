@@ -110,8 +110,6 @@ public interface ApplicationService {
 
     Application fillLOPChain(Application application, boolean save);
 
-    Application activateApplication(String oid);
-
     Application getSubmittedApplication(final String applicationSystemId, final String oid);
 
     Application addSendingSchool(Application application);
