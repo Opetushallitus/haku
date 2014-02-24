@@ -108,7 +108,6 @@ public class SuoritusrekisteriServiceImpl implements SuoritusrekisteriService {
 //            "suoritusKieli": "AR"
 //        },
 
-
         CachingRestClient cachingRestClient = getCachingRestClient();
         String response;
         String date = ISO8601.format(new Date());
