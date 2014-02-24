@@ -224,18 +224,6 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public Application activateApplication(String applicationOid) {
-        Application query = new Application();
-        query.setOid(applicationOid);
-        List<Application> apps = applicationDAO.find(query);
-        Application application = apps.get(0);
-        application.activate();
-        Application queryApplication = new Application(applicationOid);
-        applicationDAO.update(queryApplication, application);
-        return application;
-    }
-
-    @Override
     public Application getSubmittedApplication(final String applicationSystemId, final String oid) {
         Application submittedApplication = userSession.getSubmittedApplication();
         if (submittedApplication != null &&
@@ -339,7 +327,6 @@ public class ApplicationServiceImpl implements ApplicationService {
         }
         return answers;
     }
-
 
     @Override
     public Application getApplication(final String applicationSystemId) {

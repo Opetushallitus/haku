@@ -246,10 +246,12 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     }
 
     @Override
-    public Application activateApplication(String oid, String reason) {
-        reason = "Hakemus aktivoitu: " + reason;
-        addNote(oid, reason);
-        return applicationService.activateApplication(oid);
+    public void activateApplication(String oid, String reason) {
+        Application application = applicationService.getApplicationByOid(oid);
+        ApplicationNote note = createNote("Hakemus aktivoitu: " + reason);
+        application.addNote(note);
+        application.activate();
+        applicationService.update(new Application(oid), application);
     }
 
     @Override
