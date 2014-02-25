@@ -23,7 +23,7 @@
 <fmt:setBundle basename="messages" scope="application"/>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" scope="request"/>
 <c:set var="preview" value="true" scope="request"/>
-<c:set var="phaseCount" value="${fn:length(element.children) + 1}" scope="request"/>
+<c:set var="phaseCount" value="${fn:length(element.children)}" scope="request"/>
 <c:set var="form" value="${element}" scope="request"/>
 
 <html>
@@ -68,14 +68,11 @@
                         </li>
                     </c:forEach>
                     <li>
-                        <a class="current"><span class="index"><c:out
-                                value="${phaseCount + 1}"/></span><fmt:message
-                                key="lomake.esikatselu"/></a>
+                        <a class="current"><span class="index"><c:out value="${phaseCount + 1}"/></span><fmt:message key="lomake.esikatselu"/></a>
                     </li>
                     <li>
                         <span>
-                            <span class="index"><c:out value="${phaseCount + 2}"/></span>
-                            <fmt:message key="lomake.valmis"/>
+                            <span class="index"><c:out value="${phaseCount + 2}"/></span><fmt:message key="lomake.valmis"/>
                         </span>
                     </li>
                 </ul>
