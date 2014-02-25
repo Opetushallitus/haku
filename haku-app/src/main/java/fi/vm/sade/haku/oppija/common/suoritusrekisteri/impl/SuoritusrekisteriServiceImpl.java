@@ -49,12 +49,12 @@ public class SuoritusrekisteriServiceImpl implements SuoritusrekisteriService {
     @Override
     public List<OpiskelijaDTO> getOpiskelijat(String personOid) {
 //        {
-//            "oppilaitosOid": "1.2.246.562.10.27450788669",
-//            "luokkataso": "9",
-//            "luokka": "9A",
-//            "henkiloOid":"1.2.246.562.24.50227402431",
-//            "alkuPaiva": "2014-01-01T00:00:00Z",
-//            "loppuPaiva": "2014-06-05T00:00:00Z"
+//            "id":"671a9c6a-3329-4761-a6e5-908da0e98898",
+//            "oppilaitosOid":"1.2.246.562.10.16470831229",
+//            "luokkataso":"10",
+//            "luokka":"10Y",
+//            "henkiloOid":"1.2.246.562.24.59031586696",
+//            "alkuPaiva":"2011-07-31T21:00:00.000Z"
 //        }
 
         CachingRestClient cachingRestClient = getCachingRestClient();
@@ -95,19 +95,18 @@ public class SuoritusrekisteriServiceImpl implements SuoritusrekisteriService {
     public List<SuoritusDTO> getSuoritukset(String personOid) {
 
 //        {
-//            "id": "7514285c-921b-44a9-b9d7-511d0eb39160",
+//            "id":"e482944f-6195-41d6-a456-3637c217096d",
 //            "komoto": {
-//                "oid": "FIXME",
-//                "komo": "ulkomainen",
-//                "tarjoaja": "1.2.246.562.10.38593981046"
+//                "oid":"komotoid",
+//                "komo":"peruskoulu",
+//                "tarjoaja":"1.2.246.562.10.89047714871"
 //            },
-//            "tila": "KESKEN",
-//            "valmistuminen": "30.05.2014",
-//            "henkiloOid": "1.2.246.562.24.50387424171",
-//            "yksilollistaminen": "Ei",
-//            "suoritusKieli": "AR"
-//        },
-
+//            "tila":"KESKEN",
+//            "valmistuminen":"30.05.2014",
+//            "henkiloOid":"1.2.246.562.24.23805003946",
+//            "yksilollistaminen":"Osittain",
+//            "suoritusKieli":"AM"
+//        }
 
         CachingRestClient cachingRestClient = getCachingRestClient();
         String response;
@@ -135,19 +134,13 @@ public class SuoritusrekisteriServiceImpl implements SuoritusrekisteriService {
 
     private SuoritusDTO suoritusJsonToDTO(JsonObject elem) {
         log.debug("suoritusJsonToDTO, json ", elem.toString());
-        JsonElement oppilaitos = elem.get("oppilaitosOid");
         JsonElement tila = elem.get("tila");
-        JsonElement luokkataso = elem.get("luokkataso");
-        JsonElement luokka = elem.get("luokka");
         JsonElement henkiloOid = elem.get("henkiloOid");
         JsonElement suoritusKieli = elem.get("suoritusKieli");
         JsonElement komoto = elem.get("komoto");
 
         SuoritusDTO suoritus = new SuoritusDTO();
-        suoritus.setOppilaitosOid(jsonElementToString(oppilaitos));
         suoritus.setTila(jsonElementToString(tila));
-        suoritus.setLuokkataso(jsonElementToString(luokkataso));
-        suoritus.setLuokka(jsonElementToString(luokka));
         suoritus.setHenkiloOid(jsonElementToString(henkiloOid));
         suoritus.setSuorituskieli(jsonElementToString(suoritusKieli));
 
@@ -207,5 +200,9 @@ public class SuoritusrekisteriServiceImpl implements SuoritusrekisteriService {
             cachingRestClient.setPassword(clientAppPass);
         }
         return cachingRestClient;
+    }
+
+    protected void setCachingRestClient(CachingRestClient cachingRestClient) {
+        this.cachingRestClient = cachingRestClient;
     }
 }

@@ -2,6 +2,8 @@ package fi.vm.sade.haku.oppija.hakemus.service.impl;
 
 import com.google.common.collect.Lists;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
+import fi.vm.sade.haku.oppija.common.suoritusrekisteri.OpiskelijaDTO;
+import fi.vm.sade.haku.oppija.common.suoritusrekisteri.SuoritusDTO;
 import fi.vm.sade.haku.oppija.common.suoritusrekisteri.SuoritusrekisteriService;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
@@ -19,11 +21,9 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.*;
@@ -196,5 +196,67 @@ public class ApplicationServiceImplTest {
         application.addVaiheenVastaukset("henkilotiedot", answerMap);
         application = service.addPersonOid(application);
         assertNotNull("PersonOid should not be null", application.getPersonOid());
+    }
+
+    @Test
+    public void testSendingSchool() {
+        OpiskelijaDTO opiskelija = new OpiskelijaDTO("oppilaitos", "9", "9A", "henkiloOid");
+        SuoritusDTO suoritus = new SuoritusDTO(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24), "KESKEN",
+                "henkiloOid", Integer.valueOf(OppijaConstants.PERUSKOULU), "SV");
+
+        List<OpiskelijaDTO> opiskelijat = Lists.newArrayList(opiskelija);
+        List<SuoritusDTO> suoritukset = Lists.newArrayList(suoritus);
+        when(suoritusrekisteriService.getOpiskelijat(any(String.class))).thenReturn(opiskelijat);
+        when(suoritusrekisteriService.getSuoritukset(any(String.class))).thenReturn(suoritukset);
+
+        Application application = new Application();
+        application.setPersonOid("1.2.3");
+        Map<String, String> koulutustausta = new HashMap<String, String>();
+        koulutustausta.put(OppijaConstants.ELEMENT_ID_BASE_EDUCATION, OppijaConstants.YLIOPPILAS);
+        koulutustausta.put(OppijaConstants.LUKIO_KIELI, "FI");
+        koulutustausta.put(OppijaConstants.LUKIO_PAATTOTODISTUS_VUOSI, "2013");
+        application.addVaiheenVastaukset(OppijaConstants.PHASE_EDUCATION, koulutustausta);
+        application = service.addSendingSchool(application);
+        koulutustausta = application.getPhaseAnswers(OppijaConstants.PHASE_EDUCATION);
+
+        assertEquals("SV", koulutustausta.get(OppijaConstants.PERUSOPETUS_KIELI));
+        assertEquals("FI", koulutustausta.get(OppijaConstants.LUKIO_KIELI));
+        assertEquals(OppijaConstants.PERUSKOULU, koulutustausta.get(OppijaConstants.ELEMENT_ID_BASE_EDUCATION));
+        assertEquals(OppijaConstants.YLIOPPILAS, koulutustausta.get(OppijaConstants.ELEMENT_ID_BASE_EDUCATION_USER));
+        assertEquals("9", koulutustausta.get(OppijaConstants.ELEMENT_ID_CLASS_LEVEL));
+        assertNull(koulutustausta.get(OppijaConstants.ELEMENT_ID_CLASS_LEVEL + "_user"));
+        assertEquals("9A", koulutustausta.get(OppijaConstants.ELEMENT_ID_SENDING_CLASS));
+        assertEquals("oppilaitos", koulutustausta.get(OppijaConstants.ELEMENT_ID_SENDING_SCHOOL));
+    }
+
+    @Test
+    public void testSendingSchoolEqual() {
+        OpiskelijaDTO opiskelija = new OpiskelijaDTO("oppilaitos", "9", "9A", "henkiloOid");
+        SuoritusDTO suoritus = new SuoritusDTO(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24), "KESKEN",
+                "henkiloOid", Integer.valueOf(OppijaConstants.PERUSKOULU), "SV");
+
+        List<OpiskelijaDTO> opiskelijat = Lists.newArrayList(opiskelija);
+        List<SuoritusDTO> suoritukset = Lists.newArrayList(suoritus);
+        when(suoritusrekisteriService.getOpiskelijat(any(String.class))).thenReturn(opiskelijat);
+        when(suoritusrekisteriService.getSuoritukset(any(String.class))).thenReturn(suoritukset);
+
+        Calendar cal = GregorianCalendar.getInstance();
+
+        Application application = new Application();
+        application.setPersonOid("1.2.3");
+        Map<String, String> koulutustausta = new HashMap<String, String>();
+        koulutustausta.put(OppijaConstants.ELEMENT_ID_BASE_EDUCATION, OppijaConstants.PERUSKOULU);
+        koulutustausta.put(OppijaConstants.LUKIO_KIELI, "SV");
+        koulutustausta.put(OppijaConstants.LUKIO_PAATTOTODISTUS_VUOSI, String.valueOf(cal.get(Calendar.YEAR)));
+        application.addVaiheenVastaukset(OppijaConstants.PHASE_EDUCATION, koulutustausta);
+        application = service.addSendingSchool(application);
+        koulutustausta = application.getPhaseAnswers(OppijaConstants.PHASE_EDUCATION);
+
+        assertEquals("SV", koulutustausta.get(OppijaConstants.LUKIO_KIELI));
+        assertEquals(OppijaConstants.PERUSKOULU, koulutustausta.get(OppijaConstants.ELEMENT_ID_BASE_EDUCATION));
+        assertEquals("oppilaitos", koulutustausta.get(OppijaConstants.ELEMENT_ID_SENDING_SCHOOL));
+        assertNull(koulutustausta.get(OppijaConstants.LUKIO_KIELI + "_user"));
+        assertNull(koulutustausta.get(OppijaConstants.ELEMENT_ID_SENDING_SCHOOL + "_user"));
+        assertNull(koulutustausta.get(OppijaConstants.ELEMENT_ID_BASE_EDUCATION + "_user"));
     }
 }

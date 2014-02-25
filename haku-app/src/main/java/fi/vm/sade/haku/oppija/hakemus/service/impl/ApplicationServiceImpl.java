@@ -19,6 +19,7 @@ package fi.vm.sade.haku.oppija.hakemus.service.impl;
 import fi.vm.sade.authentication.service.GenericFault;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
 import fi.vm.sade.haku.oppija.common.suoritusrekisteri.OpiskelijaDTO;
+import fi.vm.sade.haku.oppija.common.suoritusrekisteri.SuoritusDTO;
 import fi.vm.sade.haku.oppija.common.suoritusrekisteri.SuoritusrekisteriService;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationNote;
@@ -50,10 +51,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.apache.commons.lang.StringUtils.*;
 
@@ -255,15 +253,23 @@ public class ApplicationServiceImpl implements ApplicationService {
             return application;
         }
 
+        List<SuoritusDTO> suoritukset = suoritusrekisteriService.getSuoritukset(personOid);
         List<OpiskelijaDTO> opiskelijat = suoritusrekisteriService.getOpiskelijat(personOid);
 
-        if (opiskelijat != null && opiskelijat.size() > 0) {
-            String sendingSchool = opiskelijat.get(0).getOppilaitosOid();
-            String sendingClass = opiskelijat.get(0).getLuokka();
-            String classLevel = opiskelijat.get(0).getLuokkataso();
+        if (suoritukset != null && suoritukset.size() > 0 && opiskelijat != null && opiskelijat.size() > 0) {
+            SuoritusDTO suoritus = suoritukset.get(0);
+            OpiskelijaDTO opiskelija = opiskelijat.get(0);
+
+            String sendingSchool = opiskelija.getOppilaitosOid();
+            String sendingClass = opiskelija.getLuokka();
+            String classLevel = opiskelija.getLuokkataso();
+            String baseEducation = String.valueOf(suoritus.getPohjakoulutus());
+            String language = suoritus.getSuorituskieli();
+            Date valmistuminen = suoritus.getValmistuminen();
 
             Map<String, String> answers = new HashMap<String, String>(
                     application.getPhaseAnswers(OppijaConstants.PHASE_EDUCATION));
+
             if (isNotEmpty(sendingSchool)) {
                 answers.put(OppijaConstants.ELEMENT_ID_SENDING_SCHOOL, sendingSchool);
                 List<String> parentOids = organizationService.findParentOids(sendingSchool);
@@ -272,17 +278,57 @@ public class ApplicationServiceImpl implements ApplicationService {
                 answers.put(OppijaConstants.ELEMENT_ID_SENDING_SCHOOL_PARENTS, join(parentOids, ","));
             }
             if (isNotEmpty(sendingClass)) {
-                answers.put(OppijaConstants.ELEMENT_ID_SENDING_CLASS, sendingClass);
+                answers = addRegisterValue(answers, OppijaConstants.ELEMENT_ID_SENDING_CLASS, sendingClass);
             }
             if (isNotEmpty(classLevel)) {
-                answers.put(OppijaConstants.ELEMENT_ID_CLASS_LEVEL, classLevel);
+                answers = addRegisterValue(answers, OppijaConstants.ELEMENT_ID_CLASS_LEVEL, classLevel);
+            }
+            if (isNotEmpty(baseEducation)) {
+                answers = addRegisterValue(answers, OppijaConstants.ELEMENT_ID_BASE_EDUCATION, baseEducation);
+                if (isNotEmpty(language)) {
+                    if (baseEducation.equals(OppijaConstants.YLIOPPILAS)) {
+                        answers = addRegisterValue(answers, OppijaConstants.LUKIO_KIELI, language);
+                    } else if (baseEducation.equals(OppijaConstants.PERUSKOULU)
+                            || baseEducation.equals(OppijaConstants.YKSILOLLISTETTY)
+                            || baseEducation.equals(OppijaConstants.ALUEITTAIN_YKSILOLLISTETTY)
+                            || baseEducation.equals(OppijaConstants.OSITTAIN_YKSILOLLISTETTY)) {
+                        answers = addRegisterValue(answers, OppijaConstants.PERUSOPETUS_KIELI, language);
+                    }
+                }
+                if (valmistuminen != null) {
+                    Calendar cal = GregorianCalendar.getInstance();
+                    cal.setTime(valmistuminen);
+                    String year = String.valueOf(cal.get(Calendar.YEAR));
+                    if (baseEducation.equals(OppijaConstants.YLIOPPILAS)) {
+                        answers = addRegisterValue(answers, OppijaConstants.LUKIO_PAATTOTODISTUS_VUOSI, year);
+                    } else if (baseEducation.equals(OppijaConstants.PERUSKOULU)
+                            || baseEducation.equals(OppijaConstants.YKSILOLLISTETTY)
+                            || baseEducation.equals(OppijaConstants.ALUEITTAIN_YKSILOLLISTETTY)
+                            || baseEducation.equals(OppijaConstants.OSITTAIN_YKSILOLLISTETTY)) {
+                        answers = addRegisterValue(answers, OppijaConstants.PERUSOPETUS_PAATTOTODISTUSVUOSI, year);
+                    }
+                }
             }
             application.addVaiheenVastaukset(OppijaConstants.PHASE_EDUCATION, answers);
         }
+
         return application;
 
     }
 
+    private Map<String, String> addRegisterValue(Map<String, String> answers, String key, String value) {
+        String valueForm = answers.get(key);
+        if (isEmpty(valueForm)) {
+            answers.put(key, value);
+        } else if (!value.equals(valueForm)) {
+            String valueUser = answers.get(key+"_user");
+            if (isEmpty(valueUser)) {
+                answers.put(key+"_user", valueForm);
+            }
+            answers.put(key, value);
+        }
+        return answers;
+    }
 
 
     @Override
