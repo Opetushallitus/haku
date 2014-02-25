@@ -18,6 +18,7 @@ package fi.vm.sade.haku.oppija.hakemus.service.impl;
 
 import fi.vm.sade.authentication.service.GenericFault;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
+import fi.vm.sade.haku.oppija.common.suoritusrekisteri.OpiskelijaDTO;
 import fi.vm.sade.haku.oppija.common.suoritusrekisteri.SuoritusDTO;
 import fi.vm.sade.haku.oppija.common.suoritusrekisteri.SuoritusrekisteriService;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
@@ -253,15 +254,17 @@ public class ApplicationServiceImpl implements ApplicationService {
         }
 
         List<SuoritusDTO> suoritukset = suoritusrekisteriService.getSuoritukset(personOid);
+        List<OpiskelijaDTO> opiskelijat = suoritusrekisteriService.getOpiskelijat(personOid);
 
-        if (suoritukset != null && suoritukset.size() > 0) {
+        if (suoritukset != null && suoritukset.size() > 0 && opiskelijat != null && opiskelijat.size() > 0) {
             SuoritusDTO suoritus = suoritukset.get(0);
+            OpiskelijaDTO opiskelija = opiskelijat.get(0);
+
+            String sendingSchool = opiskelija.getOppilaitosOid();
+            String sendingClass = opiskelija.getLuokka();
+            String classLevel = opiskelija.getLuokkataso();
             String baseEducation = String.valueOf(suoritus.getPohjakoulutus());
-            String sendingClass = suoritus.getLuokka();
-            String classLevel = suoritus.getLuokkataso();
-            String sendingSchool = suoritus.getOppilaitosOid();
             String language = suoritus.getSuorituskieli();
-            String tila = suoritus.getTila();
             Date valmistuminen = suoritus.getValmistuminen();
 
             Map<String, String> answers = new HashMap<String, String>(
