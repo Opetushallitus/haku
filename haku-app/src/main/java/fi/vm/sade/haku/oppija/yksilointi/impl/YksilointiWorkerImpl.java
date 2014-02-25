@@ -142,7 +142,7 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
                         application = applicationService.addSendingSchool(application);
                     }
                     application.setRedoPostProcess("DONE");
-                    applicationService.update(new Application(application.getOid()), application);
+                    this.applicationDAO.update(new Application(application.getOid()), application);
                     LOGGER.debug("Reprocessing " + application.getOid() + " done");
                 }
                 if (sendMail && redo == "FULL") {
