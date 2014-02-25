@@ -331,17 +331,21 @@ public class Application implements Serializable {
             return henkilotiedot;
         }
 
-        String value = henkilotiedot.get(field);
-        String valueByUser = henkilotiedot.get(fieldUser);
-
-        if (valueByUser == null) {
-            valueByUser = value;
-            henkilotiedot.put(fieldUser, valueByUser);
+        String value = null;
+        if (henkilotiedot.containsKey(field)) {
+            value = henkilotiedot.get(field);
         }
-        value = newValue;
 
-        henkilotiedot.put(field, value);
+        String valueByUser = null;
+        if (henkilotiedot.containsKey(fieldUser)) {
+            valueByUser = henkilotiedot.get(fieldUser);
+        }
 
+        if (valueByUser == null && value != null) {
+            henkilotiedot.put(fieldUser, value);
+        }
+
+        henkilotiedot.put(field, newValue);
         return henkilotiedot;
 
     }
