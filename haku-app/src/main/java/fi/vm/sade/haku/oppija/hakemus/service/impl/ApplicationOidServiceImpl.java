@@ -18,7 +18,6 @@ package fi.vm.sade.haku.oppija.hakemus.service.impl;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationOidDAO;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationOidService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 @Service

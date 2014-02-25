@@ -16,7 +16,6 @@
 
 package fi.vm.sade.haku.oppija.hakemus.it.dao;
 
-import com.mongodb.DBObject;
 import fi.vm.sade.haku.oppija.common.dao.BaseDAO;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;

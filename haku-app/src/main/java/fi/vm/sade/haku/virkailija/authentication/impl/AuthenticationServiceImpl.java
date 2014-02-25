@@ -72,10 +72,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         String responseString = null;
         try {
-            responseString = getCachingRestClient().getAsString("/resources/henkilo/byHetu/"+person.getSocialSecurityNumber());
-            log.debug("Person found: "+responseString);
+            responseString = getCachingRestClient().getAsString("/resources/henkilo/byHetu/" + person.getSocialSecurityNumber());
+            log.debug("Person found: " + responseString);
         } catch (CachingRestClient.HttpException hte) {
-            log.debug("HttpException: "+hte.getStatusCode());
+            log.debug("HttpException: " + hte.getStatusCode());
             try {
                 if (hte.getStatusCode() == 404) {
                     log.debug("Person not found, creating");
@@ -85,6 +85,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                     BasicResponseHandler handler = new BasicResponseHandler();
                     responseString = handler.handleResponse(response);
                     log.debug("Created person: "+responseString);
+
                 } else {
                     log.warn("Something unexpected happened while fetching person: " + hte.getErrorContent());
                 }
@@ -150,16 +151,16 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         try {
             HttpResponse response = getCachingRestClient()
-                    .put("/resources/henkilo/"+personOid+"/yksiloi", MediaType.APPLICATION_JSON, null);
+                    .put("/resources/henkilo/" + personOid + "/yksiloi", MediaType.APPLICATION_JSON, null);
             BasicResponseHandler handler = new BasicResponseHandler();
             String responseString = handler.handleResponse(response);
-            log.debug("Person found: "+responseString);
+            log.debug("Person found: " + responseString);
             Person newPerson = gson.fromJson(responseString, Person.class);
             return newPerson;
         } catch (CachingRestClient.HttpException hte) {
             // Nothing to do
         } catch (IOException e) {
-            log.error("Error fetching person: "+e.getMessage());
+            log.error("Error fetching person: " + e.getMessage());
         }
         return null;
     }
@@ -172,14 +173,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         gson = gsonBuilder.create();
 
         try {
-            String responseString = getCachingRestClient().getAsString("/resources/henkilo/"+personOid);
-            log.debug("Person found: "+responseString);
+            String responseString = getCachingRestClient().getAsString("/resources/henkilo/" + personOid);
+            log.debug("Person found: " + responseString);
             Person newPerson = gson.fromJson(responseString, Person.class);
             return newPerson;
         } catch (CachingRestClient.HttpException hte) {
             // Nothing to do
         } catch (IOException e) {
-            log.error("Error fetching person: "+e.getMessage());
+            log.error("Error fetching person: " + e.getMessage());
         }
         return null;
 

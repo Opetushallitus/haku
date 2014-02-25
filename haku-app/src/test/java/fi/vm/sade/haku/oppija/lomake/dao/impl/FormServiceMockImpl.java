@@ -16,19 +16,12 @@
 
 package fi.vm.sade.haku.oppija.lomake.dao.impl;
 
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.Phase;
 import fi.vm.sade.haku.oppija.lomake.exception.ApplicationSystemNotFound;
-import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundExceptionRuntime;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.haku.oppija.lomake.service.FormService;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.List;
 
 public class FormServiceMockImpl implements FormService {
 
