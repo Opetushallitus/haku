@@ -24,6 +24,7 @@
 <c:set var="vaihe" value="${element}" scope="request"/>
 <c:set var="errorMessages" value="${it.errorMessages}" scope="request"/>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" scope="request"/>
+<c:set var="phaseCount" value="${fn:length(form.children)}" scope="request"/>
 <c:set var="preview" value="${vaihe.preview}" scope="request"/>
 
 <html>
@@ -93,12 +94,12 @@
                     </c:forEach>
                     <li>
                         <span>
-                            <span class="index"><c:out value="${fn:length(form.children) + 1}"/></span><fmt:message
+                            <span class="index"><c:out value="${phaseCount + 1}"/></span><fmt:message
                                 key="lomake.esikatselu"/></span>
                     </li>
                     <li>
                         <span>
-                            <span class="index"><c:out value="${fn:length(form.children) + 2}"/></span>
+                            <span class="index"><c:out value="${phaseCount + 2}"/></span>
                             <fmt:message key="lomake.valmis"/>
                         </span>
                     </li>
