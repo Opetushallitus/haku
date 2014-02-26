@@ -251,7 +251,7 @@ public class ApplicationServiceImpl implements ApplicationService {
             String sendingSchool = opiskelija.getOppilaitosOid();
             String sendingClass = opiskelija.getLuokka();
             String classLevel = opiskelija.getLuokkataso();
-            String baseEducation = String.valueOf(suoritus.getPohjakoulutus());
+            Integer baseEducationInt = suoritus.getPohjakoulutus();
             String language = suoritus.getSuorituskieli();
             Date valmistuminen = suoritus.getValmistuminen();
 
@@ -271,7 +271,8 @@ public class ApplicationServiceImpl implements ApplicationService {
             if (isNotEmpty(classLevel)) {
                 answers = addRegisterValue(answers, OppijaConstants.ELEMENT_ID_CLASS_LEVEL, classLevel);
             }
-            if (isNotEmpty(baseEducation)) {
+            if (baseEducationInt != null) {
+                String baseEducation = String.valueOf(baseEducationInt);
                 answers = addRegisterValue(answers, OppijaConstants.ELEMENT_ID_BASE_EDUCATION, baseEducation);
                 if (isNotEmpty(language)) {
                     if (baseEducation.equals(OppijaConstants.YLIOPPILAS)) {
