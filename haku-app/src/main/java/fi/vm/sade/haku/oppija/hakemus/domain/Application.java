@@ -30,6 +30,8 @@ import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.annotate.JsonTypeInfo;
 import org.codehaus.jackson.map.annotate.JsonDeserialize;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
 import java.util.*;
@@ -40,6 +42,8 @@ import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 public class Application implements Serializable {
 
+    @JsonIgnore
+    private static final Logger log = LoggerFactory.getLogger(Application.class);
 
     public enum State {
         ACTIVE, PASSIVE, INCOMPLETE, SUBMITTED;
@@ -344,6 +348,8 @@ public class Application implements Serializable {
         if (valueByUser == null && value != null) {
             henkilotiedot.put(fieldUser, value);
         }
+
+        log.info("Updating henkilotiedot oid: "+oid+" "+field+": "+String.valueOf(value)+" -> "+newValue);
 
         henkilotiedot.put(field, newValue);
         return henkilotiedot;
