@@ -284,7 +284,6 @@ public class ApplicationServiceImpl implements ApplicationService {
                 if (isNotEmpty(language)) {
                     if (baseEducation.equals(OppijaConstants.YLIOPPILAS)) {
                         answers = addRegisterValue(oid, answers, OppijaConstants.LUKIO_KIELI, language);
-
                     } else if (baseEducation.equals(OppijaConstants.PERUSKOULU)
                             || baseEducation.equals(OppijaConstants.YKSILOLLISTETTY)
                             || baseEducation.equals(OppijaConstants.ALUEITTAIN_YKSILOLLISTETTY)
