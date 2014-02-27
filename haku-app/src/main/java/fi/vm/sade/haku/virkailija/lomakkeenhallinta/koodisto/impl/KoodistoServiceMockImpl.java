@@ -156,6 +156,7 @@ public class KoodistoServiceMockImpl implements KoodistoService {
         this.listOfHakukohdekoodit =
                 ImmutableList.of(
                         new Option(createI18NAsIs("Kaivosalan perustutkinto, pk"), "123"),
+                        new Option(createI18NAsIs("Kone- ja metallialan perustutkinto, pk"), "857"),
                         new Option(createI18NAsIs("Notfound"), "xxx")
                 );
 

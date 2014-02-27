@@ -50,6 +50,7 @@ import java.util.StringTokenizer;
 import java.util.regex.Pattern;
 
 import static org.apache.commons.lang.StringUtils.isEmpty;
+import static org.apache.commons.lang.StringUtils.isNotEmpty;
 
 /**
  * @author Hannu Lyytikainen
@@ -284,6 +285,27 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         );
     }
 
+    private QueryBuilder queryByLopAndPreference(String preference, String lopOid) {
+            return QueryBuilder.start().or(
+                queryByLopAndPreference(FIELD_AO_KOULUTUS_ID_1, FIELD_LOP_1, FIELD_LOP_PARENTS_1, preference, lopOid).get(),
+                queryByLopAndPreference(FIELD_AO_KOULUTUS_ID_2, FIELD_LOP_2, FIELD_LOP_PARENTS_2, preference, lopOid).get(),
+                queryByLopAndPreference(FIELD_AO_KOULUTUS_ID_3, FIELD_LOP_3, FIELD_LOP_PARENTS_3, preference, lopOid).get(),
+                queryByLopAndPreference(FIELD_AO_KOULUTUS_ID_4, FIELD_LOP_4, FIELD_LOP_PARENTS_4, preference, lopOid).get(),
+                queryByLopAndPreference(FIELD_AO_KOULUTUS_ID_5, FIELD_LOP_5, FIELD_LOP_PARENTS_5, preference, lopOid).get()
+        );
+    }
+
+    private QueryBuilder queryByLopAndPreference(String koulutusField, String lopField, String lopParentsField,
+                                                 String preference, String lopOid) {
+        return QueryBuilder.start().and(
+                QueryBuilder.start(koulutusField).is(preference).get(),
+                QueryBuilder.start().or(
+                        QueryBuilder.start(lopField).is(lopOid).get(),
+                        QueryBuilder.start(lopParentsField).regex(Pattern.compile(lopOid)).get()
+                ).get()
+        );
+    }
+
     private QueryBuilder queryByLearningOpportunityProviderOid(String lopOid) {
         return QueryBuilder.start().or(
                 QueryBuilder.start(FIELD_LOP_1).is(lopOid).get(),
@@ -344,8 +366,17 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         }
 
         String preference = applicationQueryParameters.getAoId();
-        if (!isEmpty(preference)) {
-            filters.add(queryByPreference(preference).get());
+        String lopOid = applicationQueryParameters.getLopOid();
+
+        if (isNotEmpty(lopOid) && isNotEmpty(preference)) {
+            filters.add(queryByLopAndPreference(preference, lopOid).get());
+        } else {
+            if (!isEmpty(lopOid)) {
+                filters.add(queryByLearningOpportunityProviderOid(lopOid).get());
+            }
+            if (!isEmpty(preference)) {
+                filters.add(queryByPreference(preference).get());
+            }
         }
 
         String aoOid = applicationQueryParameters.getAoOid();
@@ -353,10 +384,6 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
             filters.add(queryByPreference(Lists.newArrayList(aoOid)).get());
         }
 
-        String lopOid = applicationQueryParameters.getLopOid();
-        if (!isEmpty(lopOid)) {
-            filters.add(queryByLearningOpportunityProviderOid(lopOid).get());
-        }
 
         List<String> asIds = applicationQueryParameters.getAsIds();
         if (!asIds.isEmpty()) {
