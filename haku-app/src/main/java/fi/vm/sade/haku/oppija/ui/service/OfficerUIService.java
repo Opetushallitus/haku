@@ -40,7 +40,7 @@ public interface OfficerUIService {
 
     ModelResponse postProcess(final String oid);
 
-    Application activateApplication(String oid, String reason);
+    void activateApplication(String oid, String reason);
 
     ModelResponse getMultipleApplicationResponse(String applicationList, String selectedApplication);
 

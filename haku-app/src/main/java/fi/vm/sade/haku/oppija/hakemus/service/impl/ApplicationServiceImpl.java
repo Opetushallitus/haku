@@ -224,18 +224,6 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public Application activateApplication(String applicationOid) {
-        Application query = new Application();
-        query.setOid(applicationOid);
-        List<Application> apps = applicationDAO.find(query);
-        Application application = apps.get(0);
-        application.activate();
-        Application queryApplication = new Application(applicationOid);
-        applicationDAO.update(queryApplication, application);
-        return application;
-    }
-
-    @Override
     public Application getSubmittedApplication(final String applicationSystemId, final String oid) {
         Application submittedApplication = userSession.getSubmittedApplication();
         if (submittedApplication != null &&
@@ -263,14 +251,17 @@ public class ApplicationServiceImpl implements ApplicationService {
             String sendingSchool = opiskelija.getOppilaitosOid();
             String sendingClass = opiskelija.getLuokka();
             String classLevel = opiskelija.getLuokkataso();
-            String baseEducation = String.valueOf(suoritus.getPohjakoulutus());
+            Integer baseEducationInt = suoritus.getPohjakoulutus();
             String language = suoritus.getSuorituskieli();
             Date valmistuminen = suoritus.getValmistuminen();
 
             Map<String, String> answers = new HashMap<String, String>(
                     application.getPhaseAnswers(OppijaConstants.PHASE_EDUCATION));
 
+            String oid = application.getOid();
             if (isNotEmpty(sendingSchool)) {
+                LOGGER.info("Updating koulutustausta oid: "+String.valueOf(application.getOid())
+                        +" lahtokoulu: "+sendingSchool);
                 answers.put(OppijaConstants.ELEMENT_ID_SENDING_SCHOOL, sendingSchool);
                 List<String> parentOids = organizationService.findParentOids(sendingSchool);
                 parentOids.add(OPH_ORGANIZATION);
@@ -278,21 +269,26 @@ public class ApplicationServiceImpl implements ApplicationService {
                 answers.put(OppijaConstants.ELEMENT_ID_SENDING_SCHOOL_PARENTS, join(parentOids, ","));
             }
             if (isNotEmpty(sendingClass)) {
-                answers = addRegisterValue(answers, OppijaConstants.ELEMENT_ID_SENDING_CLASS, sendingClass);
+                answers = addRegisterValue(oid, answers, OppijaConstants.ELEMENT_ID_SENDING_CLASS, sendingClass);
+                LOGGER.info("Updating koulutustausta oid: "+String.valueOf(application.getOid())
+                        +" lahtoluokka: "+sendingClass);
             }
             if (isNotEmpty(classLevel)) {
-                answers = addRegisterValue(answers, OppijaConstants.ELEMENT_ID_CLASS_LEVEL, classLevel);
+                answers = addRegisterValue(oid, answers, OppijaConstants.ELEMENT_ID_CLASS_LEVEL, classLevel);
+                LOGGER.info("Updating koulutustausta oid: "+String.valueOf(application.getOid())
+                        +" luokkataso: "+classLevel);
             }
-            if (isNotEmpty(baseEducation)) {
-                answers = addRegisterValue(answers, OppijaConstants.ELEMENT_ID_BASE_EDUCATION, baseEducation);
+            if (baseEducationInt != null) {
+                String baseEducation = String.valueOf(baseEducationInt);
+                answers = addRegisterValue(oid, answers, OppijaConstants.ELEMENT_ID_BASE_EDUCATION, baseEducation);
                 if (isNotEmpty(language)) {
                     if (baseEducation.equals(OppijaConstants.YLIOPPILAS)) {
-                        answers = addRegisterValue(answers, OppijaConstants.LUKIO_KIELI, language);
+                        answers = addRegisterValue(oid, answers, OppijaConstants.LUKIO_KIELI, language);
                     } else if (baseEducation.equals(OppijaConstants.PERUSKOULU)
                             || baseEducation.equals(OppijaConstants.YKSILOLLISTETTY)
                             || baseEducation.equals(OppijaConstants.ALUEITTAIN_YKSILOLLISTETTY)
                             || baseEducation.equals(OppijaConstants.OSITTAIN_YKSILOLLISTETTY)) {
-                        answers = addRegisterValue(answers, OppijaConstants.PERUSOPETUS_KIELI, language);
+                        answers = addRegisterValue(oid, answers, OppijaConstants.PERUSOPETUS_KIELI, language);
                     }
                 }
                 if (valmistuminen != null) {
@@ -300,12 +296,12 @@ public class ApplicationServiceImpl implements ApplicationService {
                     cal.setTime(valmistuminen);
                     String year = String.valueOf(cal.get(Calendar.YEAR));
                     if (baseEducation.equals(OppijaConstants.YLIOPPILAS)) {
-                        answers = addRegisterValue(answers, OppijaConstants.LUKIO_PAATTOTODISTUS_VUOSI, year);
+                        answers = addRegisterValue(oid, answers, OppijaConstants.LUKIO_PAATTOTODISTUS_VUOSI, year);
                     } else if (baseEducation.equals(OppijaConstants.PERUSKOULU)
                             || baseEducation.equals(OppijaConstants.YKSILOLLISTETTY)
                             || baseEducation.equals(OppijaConstants.ALUEITTAIN_YKSILOLLISTETTY)
                             || baseEducation.equals(OppijaConstants.OSITTAIN_YKSILOLLISTETTY)) {
-                        answers = addRegisterValue(answers, OppijaConstants.PERUSOPETUS_PAATTOTODISTUSVUOSI, year);
+                        answers = addRegisterValue(oid, answers, OppijaConstants.PERUSOPETUS_PAATTOTODISTUSVUOSI, year);
                     }
                 }
             }
@@ -316,12 +312,13 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     }
 
-    private Map<String, String> addRegisterValue(Map<String, String> answers, String key, String value) {
+    private Map<String, String> addRegisterValue(String oid, Map<String, String> answers, String key, String value) {
         String valueForm = answers.get(key);
         if (isEmpty(valueForm)) {
             answers.put(key, value);
         } else if (!value.equals(valueForm)) {
             String valueUser = answers.get(key+"_user");
+            LOGGER.info("Updating application oid:"+oid+" "+key+": "+valueUser+" -> "+value);
             if (isEmpty(valueUser)) {
                 answers.put(key+"_user", valueForm);
             }
@@ -329,7 +326,6 @@ public class ApplicationServiceImpl implements ApplicationService {
         }
         return answers;
     }
-
 
     @Override
     public Application getApplication(final String applicationSystemId) {
@@ -387,6 +383,8 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     @Override
     public void putApplicationAdditionalInfoKeyValue(String applicationOid, String key, String value) {
+        //access application to verify permissions
+        getApplication(new Application(applicationOid));
         if (value == null) {
             throw new IllegalArgumentException("Value can't be null");
         } else {

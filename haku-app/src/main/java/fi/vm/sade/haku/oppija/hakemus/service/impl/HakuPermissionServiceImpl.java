@@ -33,6 +33,8 @@ public class HakuPermissionServiceImpl extends AbstractPermissionService impleme
     private AuthenticationService authenticationService;
     private static final Logger log = LoggerFactory.getLogger(HakuPermissionServiceImpl.class);
     private static final String ROLE_OPO = "APP_HAKEMUS_OPO";
+    private static final String ROLE_LISATIETORU = "APP_HAKEMUS_LISATIETORU";
+    private static final String ROLE_LISATIETOCRUD = "APP_HAKEMUS_LISATIETOCRUD";
 
     @Autowired
     public HakuPermissionServiceImpl(AuthenticationService authenticationService,
@@ -59,6 +61,10 @@ public class HakuPermissionServiceImpl extends AbstractPermissionService impleme
                 readble.add(organization);
             } else if (checkAccess(organization, getCreateReadUpdateDeleteRole())) {
                 readble.add(organization);
+            } else if (checkAccess(organization, getRoleLisatietoRU())) {
+                readble.add(organization);
+            } else if (checkAccess(organization, getRoleLisatietoCRUD())) {
+                readble.add(organization);
             }
         }
         return readble;
@@ -81,7 +87,8 @@ public class HakuPermissionServiceImpl extends AbstractPermissionService impleme
 
     @Override
     public boolean userCanReadApplication(Application application) {
-        return userCanAccessApplication(application, getReadRole(), getReadUpdateRole(), getCreateReadUpdateDeleteRole()) ||
+        return userCanAccessApplication(application, getReadRole(), getReadUpdateRole(), getCreateReadUpdateDeleteRole(),
+                getRoleLisatietoRU(), getRoleLisatietoCRUD()) ||
                 userHasOpoRoleToSendingSchool(application);
     }
 
@@ -121,6 +128,14 @@ public class HakuPermissionServiceImpl extends AbstractPermissionService impleme
 
     public final String getOpoRole() {
         return ROLE_OPO;
+    }
+
+    public static String getRoleLisatietoRU() {
+        return ROLE_LISATIETORU;
+    }
+
+    public static String getRoleLisatietoCRUD() {
+        return ROLE_LISATIETOCRUD;
     }
 
     private boolean userHasOpoRoleToSendingSchool(Application application) {
