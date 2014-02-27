@@ -396,6 +396,8 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     @Override
     public void putApplicationAdditionalInfoKeyValue(String applicationOid, String key, String value) {
+        //access application to verify permissions
+        getApplication(new Application(applicationOid));
         if (value == null) {
             throw new IllegalArgumentException("Value can't be null");
         } else {
