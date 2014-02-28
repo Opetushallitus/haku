@@ -591,7 +591,9 @@ $(document).ready(function () {
                 $.cookie(cookieName, lastSearch);
             }
         }
-        location.href = page_settings.contextPath + "/virkailija/hakemus/"+selectedApplication+"/"
+        if (selectedApplication) {
+            location.href = page_settings.contextPath + "/virkailija/hakemus/"+selectedApplication+"/"
+        }
     });
 
     $('#notApplied').click(function() {
