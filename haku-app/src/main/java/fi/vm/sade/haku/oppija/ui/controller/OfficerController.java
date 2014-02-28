@@ -276,8 +276,10 @@ public class OfficerController {
     @Produces(MEDIA_TYPE_TEXT_HTML_UTF8)
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED + CHARSET_UTF_8)
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_CRUD')")
-    public Viewable postProcess(@PathParam(OID_PATH_PARAM) final String oid) {
-        ModelResponse modelResponse = officerUIService.postProcess(oid);
+    public Viewable postProcess(@PathParam(OID_PATH_PARAM) final String oid,
+                                final MultivaluedMap<String, String> multiValues) {
+        boolean email = Boolean.valueOf(multiValues.get("email").get(0));
+        ModelResponse modelResponse = officerUIService.postProcess(oid, email);
         return new Viewable(DEFAULT_VIEW, modelResponse.getModel());
     }
 

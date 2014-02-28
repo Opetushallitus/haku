@@ -20,7 +20,7 @@ public class DateOfBirthValidatorTest {
 
     @Test
     public void testValidDate() throws Exception {
-        DateOfBirthValidator dobValidator = new DateOfBirthValidator(FIELD_NAME, TEXT);
+        DateOfBirthValidator dobValidator = new DateOfBirthValidator(FIELD_NAME, TEXT, "form_errors_yhteishaku_kevat");
         ValidationResult validate = dobValidator.validate(new ValidationInput(null, ImmutableMap.of(FIELD_NAME, VALID_DATE),
           null, null));
         assertFalse(validate.hasErrors());
@@ -28,14 +28,14 @@ public class DateOfBirthValidatorTest {
     }
     @Test
     public void testFutureDate() throws Exception {
-        DateOfBirthValidator dobValidator = new DateOfBirthValidator(FIELD_NAME, TEXT);
+        DateOfBirthValidator dobValidator = new DateOfBirthValidator(FIELD_NAME, TEXT, "form_errors_yhteishaku_kevat");
         ValidationResult validationResult = dobValidator.validate(new ValidationInput(null, ImmutableMap.of(FIELD_NAME, FUTURE_DATE),
           null, null));
         assertTrue(validationResult.hasErrors());
     }
     @Test
     public void testInvalidDate() throws Exception {
-        DateOfBirthValidator dobValidator = new DateOfBirthValidator(FIELD_NAME, TEXT);
+        DateOfBirthValidator dobValidator = new DateOfBirthValidator(FIELD_NAME, TEXT, "form_errors_yhteishaku_kevat");
         ValidationResult validate = dobValidator.validate(new ValidationInput(null, ImmutableMap.of(FIELD_NAME, INVALID_DATE),
           null, null));
         assertTrue(validate.hasErrors());
