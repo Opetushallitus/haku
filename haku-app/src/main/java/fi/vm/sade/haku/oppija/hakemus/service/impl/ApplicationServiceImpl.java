@@ -263,10 +263,6 @@ public class ApplicationServiceImpl implements ApplicationService {
                 LOGGER.info("Updating koulutustausta oid: "+String.valueOf(application.getOid())
                         +" lahtokoulu: "+sendingSchool);
                 answers.put(OppijaConstants.ELEMENT_ID_SENDING_SCHOOL, sendingSchool);
-                List<String> parentOids = organizationService.findParentOids(sendingSchool);
-                parentOids.add(OPH_ORGANIZATION);
-                parentOids.add(sendingSchool);
-                answers.put(OppijaConstants.ELEMENT_ID_SENDING_SCHOOL_PARENTS, join(parentOids, ","));
             }
             if (isNotEmpty(sendingClass)) {
                 answers = addRegisterValue(oid, answers, OppijaConstants.ELEMENT_ID_SENDING_CLASS, sendingClass);
@@ -305,7 +301,17 @@ public class ApplicationServiceImpl implements ApplicationService {
                     }
                 }
             }
+
             application.addVaiheenVastaukset(OppijaConstants.PHASE_EDUCATION, answers);
+        }
+
+        Map<String, String> answers = application.getPhaseAnswers(OppijaConstants.PHASE_EDUCATION);
+        if (answers.containsKey(OppijaConstants.ELEMENT_ID_SENDING_SCHOOL)) {
+            String sendingSchool = answers.get(OppijaConstants.ELEMENT_ID_SENDING_SCHOOL);
+            List<String> parentOids = organizationService.findParentOids(sendingSchool);
+            parentOids.add(OPH_ORGANIZATION);
+            parentOids.add(sendingSchool);
+            answers.put(OppijaConstants.ELEMENT_ID_SENDING_SCHOOL_PARENTS, join(parentOids, ","));
         }
 
         return application;
