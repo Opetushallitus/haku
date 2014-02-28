@@ -388,12 +388,9 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     }
 
     @Override
-    public ModelResponse postProcess(String oid) {
+    public ModelResponse postProcess(String oid, boolean email) {
         Application application = applicationService.getApplicationByOid(oid);
-        application = applicationService.fillLOPChain(application, false);
-        application = applicationService.addPersonOid(application);
-        application = applicationService.addSendingSchool(application);
-        application.activate();
+        application.setRedoPostProcess(email ? "FULL" : "NOMAIL");
         applicationService.update(new Application(oid), application);
         return getValidatedApplication(oid, PHASE_ID_PREVIEW);
     }

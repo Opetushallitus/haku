@@ -18,11 +18,14 @@
                     </p>
                 </div>
                 <div>
-                    <button class="small" name="nav-send" value="true" data-po-hide="postProcess">
+                    <button class="small" name="nav-send" value="true" data-po-hide="postProcessApplicationDialog">
                         <fmt:message key="virkailija.hakemus.syota.peru"/>
                     </button>
-                    <button id="submit-dialog" class="primary set-right small" type="submit">
-                        <fmt:message key="virkailija.hakemus.syota.laheta"/>
+                    <button id="submit-dialog" class="primary set-right small" name="email" value="true" type="submit">
+                        <fmt:message key="virkailija.hakemus.syota.lahetaEmail"/>
+                    </button>
+                    <button id="submit-dialog" class="primary set-right small" name="email" value="false" type="submit">
+                        <fmt:message key="virkailija.hakemus.syota.lahetaEiEmail"/>
                     </button>
                 </div>
                 <div class="clear"></div>
