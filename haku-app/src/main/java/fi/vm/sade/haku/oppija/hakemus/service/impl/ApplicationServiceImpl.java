@@ -305,13 +305,14 @@ public class ApplicationServiceImpl implements ApplicationService {
             application.addVaiheenVastaukset(OppijaConstants.PHASE_EDUCATION, answers);
         }
 
-        Map<String, String> answers = application.getPhaseAnswers(OppijaConstants.PHASE_EDUCATION);
+        Map<String, String> answers = new HashMap<String, String>(application.getPhaseAnswers(OppijaConstants.PHASE_EDUCATION));
         if (answers.containsKey(OppijaConstants.ELEMENT_ID_SENDING_SCHOOL)) {
             String sendingSchool = answers.get(OppijaConstants.ELEMENT_ID_SENDING_SCHOOL);
             List<String> parentOids = organizationService.findParentOids(sendingSchool);
             parentOids.add(OPH_ORGANIZATION);
             parentOids.add(sendingSchool);
             answers.put(OppijaConstants.ELEMENT_ID_SENDING_SCHOOL_PARENTS, join(parentOids, ","));
+            application.addVaiheenVastaukset(OppijaConstants.PHASE_EDUCATION, answers);
         }
 
         return application;
