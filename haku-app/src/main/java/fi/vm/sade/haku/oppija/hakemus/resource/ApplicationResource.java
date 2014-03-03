@@ -74,7 +74,9 @@ public class ApplicationResource {
     public Application getApplicationByOid(@PathParam(OID) String oid) {
         LOGGER.debug("Getting application by oid : {}", oid);
         try {
-            return applicationService.getApplicationByOid(oid);
+            Application application = applicationService.getApplicationByOid(oid);
+            LOGGER.debug("Got applicatoin by oid : {}", application.getOid());
+            return application;
         } catch (ResourceNotFoundException e) {
             throw new JSONException(Response.Status.NOT_FOUND, "Could not find requested application", e);
         }
