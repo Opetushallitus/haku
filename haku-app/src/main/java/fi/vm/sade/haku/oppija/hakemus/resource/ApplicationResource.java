@@ -17,6 +17,7 @@
 package fi.vm.sade.haku.oppija.hakemus.resource;
 
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
+import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationAdditionalDataDTO;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationQueryParameters;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
@@ -196,5 +197,23 @@ public class ApplicationResource {
         }
     }
 
+    @GET
+    @Path("additionalData/{asId}/{aoId}")
+    @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
+    @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_READ', 'ROLE_APP_HAKEMUS_CRUD', 'ROLE_APP_HAKEMUS_LISATIETORU', 'ROLE_APP_HAKEMUS_LISATIETOCRUD')")
+    public List<ApplicationAdditionalDataDTO> getApplicationAdditionalData(@PathParam("asId") String asId,
+                                                                           @PathParam("aoId") String aoId) {
+         return applicationService.findApplicationAdditionalData(asId, aoId);
+    }
 
+    @PUT
+    @Path("additionalData/{asId}/{aoId}")
+    @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
+    @Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
+    @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_CRUD', 'ROLE_APP_HAKEMUS_LISATIETORU', 'ROLE_APP_HAKEMUS_LISATIETOCRUD')")
+    public void putApplicationAdditionalData(@PathParam("asId") String asId,
+                                             @PathParam("aoId") String aoId,
+                                             List<ApplicationAdditionalDataDTO> additionalData) {
+        applicationService.saveApplicationAdditionalInfo(additionalData);
+    }
 }

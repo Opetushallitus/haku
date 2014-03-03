@@ -173,6 +173,20 @@ public class HakuPermissionServiceImpl extends AbstractPermissionService impleme
         return userHasOpoRole(null).size() > 0;
     }
 
+    @Override
+    public boolean userCanEditApplicationAdditionalData(Application application) {
+        if (userCanAccessApplication(application, getRoleLisatietoCRUD())) {
+            return true;
+        } else if (userCanAccessApplication(application, getRoleLisatietoRU())) {
+           return true;
+        } else if (userCanAccessApplication(application, getReadUpdateRole())) {
+            return true;
+        } else if (userCanAccessApplication(application, getCreateReadUpdateDeleteRole())) {
+            return true;
+        }
+        return false;
+    }
+
     @SuppressWarnings("deprecation")
     private boolean userCanAccessApplication(Application application, String... roles) {
         if (checkAccess(getRootOrgOid(), roles)) {
