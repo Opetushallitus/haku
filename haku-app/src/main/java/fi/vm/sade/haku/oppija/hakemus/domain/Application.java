@@ -296,10 +296,6 @@ public class Application implements Serializable {
         this.studentIdentificationDone = Boolean.FALSE;
     }
 
-    public boolean isStudentIdentificationDone() {
-        return null != this.studentIdentificationDone ? this.studentIdentificationDone : true;
-    }
-
     @JsonIgnore
     public Application modifyPersonalData(Person person) {
         Map<String, String> henkilotiedot = new HashMap<String, String>(getPhaseAnswers("henkilotiedot"));
@@ -385,6 +381,10 @@ public class Application implements Serializable {
 
     public void setStudentIdentificationDone(Boolean studentIdentificationDone) {
         this.studentIdentificationDone = studentIdentificationDone;
+    }
+
+    public Boolean getStudentIdentificationDone() {
+        return this.studentIdentificationDone;
     }
 
     public String getPhaseId() {
