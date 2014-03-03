@@ -387,6 +387,11 @@ public class Application implements Serializable {
         return this.studentIdentificationDone;
     }
 
+    @JsonIgnore
+    public Boolean isStudentIdentificationDone() {
+        return studentIdentificationDone != null ? studentIdentificationDone : Boolean.TRUE;
+    }
+
     public String getPhaseId() {
         return phaseId;
     }
