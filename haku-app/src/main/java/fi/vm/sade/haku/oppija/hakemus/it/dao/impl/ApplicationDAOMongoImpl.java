@@ -159,11 +159,13 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
 
     @Override
     public List<Application> findByApplicationSystemAndApplicationOption(String asId, String aoId) {
+        ArrayList<DBObject> orgFilter = filterByOrganization();
         DBObject dbObject = QueryBuilder.start().and(queryByPreference(Lists.newArrayList(aoId)).get(),
                 newOIdExistDBObject(),
                 new BasicDBObject(FIELD_APPLICATION_SYSTEM_ID, asId),
                 QueryBuilder.start(FIELD_APPLICATION_STATE).in(Lists.newArrayList(
-                        Application.State.ACTIVE.toString(), Application.State.INCOMPLETE.toString())).get()).get();
+                        Application.State.ACTIVE.toString(), Application.State.INCOMPLETE.toString())).get(),
+                QueryBuilder.start().or(orgFilter.toArray(new DBObject[orgFilter.size()])).get()).get();
         return findApplications(dbObject);
     }
 

@@ -16,14 +16,17 @@
 
 package fi.vm.sade.haku.oppija.hakemus.service.impl;
 
+import com.google.common.collect.Lists;
 import fi.vm.sade.authentication.service.GenericFault;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
 import fi.vm.sade.haku.oppija.common.suoritusrekisteri.OpiskelijaDTO;
 import fi.vm.sade.haku.oppija.common.suoritusrekisteri.SuoritusDTO;
 import fi.vm.sade.haku.oppija.common.suoritusrekisteri.SuoritusrekisteriService;
+import fi.vm.sade.haku.oppija.hakemus.converter.ApplicationToAdditionalDataDTO;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationNote;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
+import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationAdditionalDataDTO;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationDAO;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationQueryParameters;
@@ -368,9 +371,19 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
+    public void saveApplicationAdditionalInfo(List<ApplicationAdditionalDataDTO> applicationAdditionalData) {
+        if (applicationAdditionalData != null) {
+            for (ApplicationAdditionalDataDTO data : applicationAdditionalData) {
+                saveApplicationAdditionalInfo(data.getOid(), data.getAdditionalData());
+            }
+        }
+    }
+
+    @Override
     public void saveApplicationAdditionalInfo(String oid, Map<String, String> additionalInfo) {
         Application query = new Application(oid);
         Application current = getApplication(query);
+        hakuPermissionService.userCanEditApplicationAdditionalData(current);
         current.setAdditionalInfo(additionalInfo);
         applicationDAO.update(query, current);
     }
@@ -403,6 +416,12 @@ public class ApplicationServiceImpl implements ApplicationService {
         } else {
             applicationDAO.updateKeyValue(applicationOid, "additionalInfo." + key, value);
         }
+    }
+
+    @Override
+    public List<ApplicationAdditionalDataDTO> findApplicationAdditionalData(final String applicationSystemId, final String aoId) {
+        List<Application> applications = applicationDAO.findByApplicationSystemAndApplicationOption(applicationSystemId, aoId);
+        return Lists.transform(applications, new ApplicationToAdditionalDataDTO());
     }
 
     @Override
