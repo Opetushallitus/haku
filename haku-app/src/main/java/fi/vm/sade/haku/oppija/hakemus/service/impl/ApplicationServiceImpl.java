@@ -448,11 +448,15 @@ public class ApplicationServiceImpl implements ApplicationService {
         List<Application> listOfApplications;
         try {
             listOfApplications = applicationDAO.find(queryApplication);
+            LOGGER.debug("Got "+listOfApplications.size()+" applications");
         } catch (IllegalArgumentException iae) {
             LOGGER.error("Error getting application: ", iae);
             throw new ResourceNotFoundException("Error getting application", iae);
+        } catch(RuntimeException t) {
+            LOGGER.error("Getting application failed: "+t);
+            throw t;
         }
-        if (listOfApplications.isEmpty()) {
+        if (listOfApplications == null || listOfApplications.isEmpty()) {
             throw new ResourceNotFoundException("Could not find application " + queryApplication.getOid());
         }
         if (listOfApplications.size() > 1) {

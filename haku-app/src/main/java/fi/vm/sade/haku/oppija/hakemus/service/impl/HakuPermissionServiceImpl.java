@@ -87,9 +87,18 @@ public class HakuPermissionServiceImpl extends AbstractPermissionService impleme
 
     @Override
     public boolean userCanReadApplication(Application application) {
-        return userCanAccessApplication(application, getReadRole(), getReadUpdateRole(), getCreateReadUpdateDeleteRole(),
-                getRoleLisatietoRU(), getRoleLisatietoCRUD()) ||
-                userHasOpoRoleToSendingSchool(application);
+        log.debug("Checking access for application: "+application.getOid());
+        boolean canRead = userCanAccessApplication(application, getReadRole(), getReadUpdateRole(), getCreateReadUpdateDeleteRole(),
+                getRoleLisatietoRU(), getRoleLisatietoCRUD());
+        if (canRead) {
+            log.debug("Can read, "+application.getOid());
+            return canRead;
+        }
+        boolean opo = userHasOpoRoleToSendingSchool(application);
+        if (opo) {
+            log.debug("Can read, opo "+application.getOid());
+        }
+        return opo;
     }
 
     @Override
