@@ -295,8 +295,7 @@ public class Application implements Serializable {
     public void flagStudentIdentificationRequired() {
         this.studentIdentificationDone = Boolean.FALSE;
     }
-
-    @JsonIgnore
+    
     public boolean isStudentIdentificationDone() {
         return null != this.studentIdentificationDone ? this.studentIdentificationDone : true;
     }
@@ -388,6 +387,7 @@ public class Application implements Serializable {
         this.studentIdentificationDone = studentIdentificationDone;
     }
 
+    @JsonIgnore
     public Boolean getStudentIdentificationDone() {
         return this.studentIdentificationDone;
     }
