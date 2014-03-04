@@ -113,6 +113,8 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     private static final String FIELD_SSN_DIGEST = "answers.henkilotiedot.Henkilotunnus_digest";
     private static final String FIELD_DATE_OF_BIRTH = "answers.henkilotiedot.syntymaaika";
     private static final String FIELD_SEARCH_NAMES = "searchNames";
+    private static final String FIELD_RECEIVED = "received";
+    private static final String FIELD_UPDATED = "updated";
     private static final String EXISTS = "$exists";
     private static final String OPTION_SPARSE = "sparse";
     private static final String OPTION_NAME = "name";
@@ -286,7 +288,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     }
 
     private QueryBuilder queryByLopAndPreference(String preference, String lopOid) {
-            return QueryBuilder.start().or(
+        return QueryBuilder.start().or(
                 queryByLopAndPreference(FIELD_AO_KOULUTUS_ID_1, FIELD_LOP_1, FIELD_LOP_PARENTS_1, preference, lopOid).get(),
                 queryByLopAndPreference(FIELD_AO_KOULUTUS_ID_2, FIELD_LOP_2, FIELD_LOP_PARENTS_2, preference, lopOid).get(),
                 queryByLopAndPreference(FIELD_AO_KOULUTUS_ID_3, FIELD_LOP_3, FIELD_LOP_PARENTS_3, preference, lopOid).get(),
@@ -431,6 +433,22 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
             ).get());
         }
 
+        Date updatedAfter = applicationQueryParameters.getUpdatedAfter();
+        if (updatedAfter != null) {
+            filters.add(
+                    QueryBuilder.start().or(
+                            QueryBuilder.start().and(
+                                    QueryBuilder.start(FIELD_UPDATED).exists(false).get(),
+                                    QueryBuilder.start(FIELD_RECEIVED).greaterThanEquals(updatedAfter.getTime()).get()
+                            ).get(),
+                            QueryBuilder.start().and(
+                                    QueryBuilder.start(FIELD_UPDATED).exists(true).get(),
+                                    QueryBuilder.start(FIELD_UPDATED).greaterThanEquals(updatedAfter.getTime()).get()
+                            ).get()
+                    ).get()
+            );
+        }
+
         filters.add(newOIdExistDBObject());
 
         return filters.toArray(new DBObject[filters.size()]);
@@ -504,6 +522,9 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         DBObject query = new BasicDBObject(FIELD_APPLICATION_OID, oid);
         DBObject update = new BasicDBObject("$set", new BasicDBObject(key, value));
         getCollection().findAndModify(query, update);
+
+        DBObject updateTimestamp = new BasicDBObject("$set", new BasicDBObject(FIELD_UPDATED, new Date()));
+        getCollection().findAndModify(query, updateTimestamp);
     }
 
     @Override
@@ -606,5 +627,17 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
             index.put(field, 1);
         }
         getCollection().ensureIndex(index, options);
+    }
+
+    @Override
+    public void update(Application o, Application n) {
+        n.setUpdated(new Date());
+        super.update(o, n);
+    }
+
+    @Override
+    public void save(Application application) {
+        application.setUpdated(new Date());
+        super.save(application);
     }
 }
