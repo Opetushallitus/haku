@@ -18,10 +18,10 @@ package fi.vm.sade.haku.oppija.hakemus.service;
 
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
+import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationAdditionalDataDTO;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationQueryParameters;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationState;
-import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
 
 import java.util.List;
 import java.util.Map;
@@ -30,7 +30,9 @@ public interface ApplicationService {
 
     Application getApplication(final String applicationSystemId);
 
-    Application getApplicationByOid(final String oid) throws ResourceNotFoundException;
+    Application getApplication(final Application queryApplication);
+
+    Application getApplicationByOid(final String oid);
 
     /**
      * Save answers of a single form phase. Phase is saved to the currently modified application of the user session.
@@ -48,15 +50,6 @@ public interface ApplicationService {
     String submitApplication(final String applicationSystemId);
 
     /**
-     * Returns all applications where one of the selected application options is the
-     * one given as parameter.
-     *
-     * @param applicationOptionIds list of application option ids
-     * @return list of applications
-     */
-    List<Application> getApplicationsByApplicationOption(List<String> applicationOptionIds);
-
-    /**
      * Return applications that match to given search term. Term is matched against
      * - applications' OID
      * - applicants' ID
@@ -69,15 +62,18 @@ public interface ApplicationService {
      */
     ApplicationSearchResultDTO findApplications(final String term, final ApplicationQueryParameters applicationQueryParameters);
 
+    List<ApplicationAdditionalDataDTO> findApplicationAdditionalData(final String applicationSystemId, final String aoId);
+
+    void saveApplicationAdditionalInfo(final List<ApplicationAdditionalDataDTO> applicationAdditionalData);
+
 
     /**
      * Saves additional info key value pairs to the application
      *
      * @param oid            application oid
      * @param additionalInfo additional info key value pairs
-     * @throws ResourceNotFoundException
      */
-    void saveApplicationAdditionalInfo(final String oid, final Map<String, String> additionalInfo) throws ResourceNotFoundException;
+    void saveApplicationAdditionalInfo(final String oid, final Map<String, String> additionalInfo);
 
     void update(final Application queryApplication, final Application application);
 
@@ -87,9 +83,8 @@ public interface ApplicationService {
      * @param applicationOid application oid
      * @param key
      * @return value of the key
-     * @throws ResourceNotFoundException
      */
-    String getApplicationKeyValue(final String applicationOid, final String key) throws ResourceNotFoundException;
+    String getApplicationKeyValue(final String applicationOid, final String key);
 
     /**
      * Puts a additional information key value pair to the application
@@ -97,16 +92,8 @@ public interface ApplicationService {
      * @param applicationOid application oid
      * @param key            key of the additional information
      * @param value          value of the key
-     * @throws ResourceNotFoundException
      */
-    void putApplicationAdditionalInfoKeyValue(final String applicationOid, final String key, final String value) throws ResourceNotFoundException;
-
-    /**
-     * Finds next application without user oid. Returns matching application or null, if none found.
-     *
-     * @return Application or null
-     */
-    Application getNextSubmittedApplication();
+    void putApplicationAdditionalInfoKeyValue(final String applicationOid, final String key, final String value);
 
     /**
      * Set proper user for this application. If user can be authenticated, activate application. Otherwise, set
@@ -116,16 +103,6 @@ public interface ApplicationService {
      * @return processed application
      */
     Application addPersonOid(Application application);
-
-    /**
-     * Set proper user for this application. If user can be authenticated, activate application. Otherwise, set
-     * application as incomplete.
-     *
-     * @param oid of application to process
-     * @return processed application
-     */
-
-    Application passivateApplication(String oid);
 
     Application checkStudentOid(Application application);
 
@@ -139,15 +116,8 @@ public interface ApplicationService {
 
     Application fillLOPChain(Application application, boolean save);
 
-    Application getNextWithoutStudentOid();
-
-    void addNote(final Application application, final String noteText, final boolean persist);
-
-    Application activateApplication(String oid);
-
     Application getSubmittedApplication(final String applicationSystemId, final String oid);
 
     Application addSendingSchool(Application application);
 
-    Application getNextRedo();
 }

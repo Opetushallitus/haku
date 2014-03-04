@@ -26,8 +26,6 @@ import fi.vm.sade.haku.oppija.lomake.exception.ConfigurationException;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.organisaatio.api.search.OrganisaatioSearchCriteria;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
@@ -43,8 +41,6 @@ import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 @Service
 @Profile(value = {"dev", "it"})
 public class OrganizationServiceMockImpl implements OrganizationService {
-
-    private static final Logger log = LoggerFactory.getLogger(OrganizationServiceMockImpl.class);
 
     /**
      * Predicate that matches organization name.

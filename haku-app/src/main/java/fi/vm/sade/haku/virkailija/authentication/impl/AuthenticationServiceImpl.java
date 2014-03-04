@@ -19,7 +19,6 @@ package fi.vm.sade.haku.virkailija.authentication.impl;
 import com.google.gson.*;
 import fi.vm.sade.generic.rest.CachingRestClient;
 import fi.vm.sade.haku.RemoteServiceException;
-import fi.vm.sade.haku.oppija.common.HttpClientHelper;
 import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
 import fi.vm.sade.haku.virkailija.authentication.Person;
 import fi.vm.sade.haku.virkailija.authentication.PersonJsonAdapter;
@@ -61,8 +60,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Value("${haku.app.password.to.usermanagement}")
     private String clientAppPass;
 
-    private HttpClientHelper clientHelper;
-
     private CachingRestClient cachingRestClient;
 
     private Gson gson;
@@ -74,10 +71,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         String responseString = null;
         try {
-            responseString = getCachingRestClient().getAsString("/resources/henkilo/byHetu/"+person.getSocialSecurityNumber());
-            log.debug("Person found: "+responseString);
+            responseString = getCachingRestClient().getAsString("/resources/henkilo/byHetu/" + person.getSocialSecurityNumber());
+            log.debug("Person found: " + responseString);
         } catch (CachingRestClient.HttpException hte) {
-            log.debug("HttpException: "+hte.getStatusCode());
+            log.debug("HttpException: " + hte.getStatusCode());
             try {
                 if (hte.getStatusCode() == 404) {
                     log.debug("Person not found, creating");
@@ -87,8 +84,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                     BasicResponseHandler handler = new BasicResponseHandler();
                     String oid = handler.handleResponse(response);
                     log.debug("Got oid: ", oid);
-                    responseString = getCachingRestClient().getAsString("/resources/henkilo/"+oid);
-                    log.debug("Created person: "+responseString);
+                    responseString = getCachingRestClient().getAsString("/resources/henkilo/" + oid);
+                    log.debug("Created person: " + responseString);
                 } else {
                     log.warn("Something unexpected happened while fetching person: " + hte.getErrorContent());
                 }
@@ -154,16 +151,16 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         try {
             HttpResponse response = getCachingRestClient()
-                    .put("/resources/henkilo/"+personOid+"/yksiloi", MediaType.APPLICATION_JSON, null);
+                    .put("/resources/henkilo/" + personOid + "/yksiloi", MediaType.APPLICATION_JSON, null);
             BasicResponseHandler handler = new BasicResponseHandler();
             String responseString = handler.handleResponse(response);
-            log.debug("Person found: "+responseString);
+            log.debug("Person found: " + responseString);
             Person newPerson = gson.fromJson(responseString, Person.class);
             return newPerson;
         } catch (CachingRestClient.HttpException hte) {
             // Nothing to do
         } catch (IOException e) {
-            log.error("Error fetching person: "+e.getMessage());
+            log.error("Error fetching person: " + e.getMessage());
         }
         return null;
     }
@@ -176,23 +173,16 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         gson = gsonBuilder.create();
 
         try {
-            String responseString = getCachingRestClient().getAsString("/resources/henkilo/"+personOid);
-            log.debug("Person found: "+responseString);
+            String responseString = getCachingRestClient().getAsString("/resources/henkilo/" + personOid);
+            log.debug("Person found: " + responseString);
             Person newPerson = gson.fromJson(responseString, Person.class);
             return newPerson;
         } catch (CachingRestClient.HttpException hte) {
             // Nothing to do
         } catch (IOException e) {
-            log.error("Error fetching person: "+e.getMessage());
+            log.error("Error fetching person: " + e.getMessage());
         }
         return null;
 
-    }
-
-    private HttpClientHelper getClientHelper() {
-        if (this.clientHelper == null) {
-            this.clientHelper = new HttpClientHelper(casUrl, targetService, "/resources/henkilo/", clientAppUser, clientAppPass);
-        }
-        return this.clientHelper;
     }
 }

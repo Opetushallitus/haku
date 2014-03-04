@@ -31,7 +31,7 @@ public final class ArvosanatTheme {
         GradesTable gradesTableYO = new GradesTable(koodistoService, false, formMessages, formErrors, verboseHelps);
 
         RelatedQuestionComplexRule relatedQuestionPK = createVarEqualsToValueRule(POHJAKOULUTUS_ID,
-                PERUSKOULU, OSITTAIN_YKSILOLLISTETTY, ERITYISOPETUKSEN_YKSILOLLISTETTY, YKSILOLLISTETTY);
+                PERUSKOULU, OSITTAIN_YKSILOLLISTETTY, ALUEITTAIN_YKSILOLLISTETTY, YKSILOLLISTETTY);
 
 
         GradeGrid grid_pk = gradesTablePK.createGradeGrid("grid_pk", formMessages, formErrors, verboseHelps);

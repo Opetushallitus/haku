@@ -16,13 +16,17 @@
 
 package fi.vm.sade.haku.oppija.hakemus.service.impl;
 
+import com.google.common.collect.Lists;
 import fi.vm.sade.authentication.service.GenericFault;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
 import fi.vm.sade.haku.oppija.common.suoritusrekisteri.OpiskelijaDTO;
+import fi.vm.sade.haku.oppija.common.suoritusrekisteri.SuoritusDTO;
 import fi.vm.sade.haku.oppija.common.suoritusrekisteri.SuoritusrekisteriService;
+import fi.vm.sade.haku.oppija.hakemus.converter.ApplicationToAdditionalDataDTO;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationNote;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
+import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationAdditionalDataDTO;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationDAO;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationQueryParameters;
@@ -34,8 +38,6 @@ import fi.vm.sade.haku.oppija.lomake.domain.User;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
-import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundExceptionRuntime;
-import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.haku.oppija.lomake.service.FormService;
 import fi.vm.sade.haku.oppija.lomake.service.UserSession;
 import fi.vm.sade.haku.oppija.lomake.util.ElementTree;
@@ -52,10 +54,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.apache.commons.lang.StringUtils.*;
 
@@ -72,7 +71,6 @@ public class ApplicationServiceImpl implements ApplicationService {
     private final AuthenticationService authenticationService;
     private final OrganizationService organizationService;
     private final HakuPermissionService hakuPermissionService;
-    private final ApplicationSystemService applicationSystemService;
     private final SuoritusrekisteriService suoritusrekisteriService;
     private final ElementTreeValidator elementTreeValidator;
 
@@ -84,7 +82,6 @@ public class ApplicationServiceImpl implements ApplicationService {
                                   AuthenticationService authenticationService,
                                   OrganizationService organizationService,
                                   HakuPermissionService hakuPermissionService,
-                                  ApplicationSystemService applicationSystemService,
                                   SuoritusrekisteriService suoritusrekisteriService, ElementTreeValidator elementTreeValidator) {
 
         this.applicationDAO = applicationDAO;
@@ -94,7 +91,6 @@ public class ApplicationServiceImpl implements ApplicationService {
         this.authenticationService = authenticationService;
         this.organizationService = organizationService;
         this.hakuPermissionService = hakuPermissionService;
-        this.applicationSystemService = applicationSystemService;
         this.suoritusrekisteriService = suoritusrekisteriService;
         this.elementTreeValidator = elementTreeValidator;
     }
@@ -154,10 +150,9 @@ public class ApplicationServiceImpl implements ApplicationService {
             if (!user.isKnown()) {
                 application.removeUser();
             }
-
             application.resetUser();
             application.setReceived(new Date());
-            addNote(application, "Hakemus vastaanotettu", false);
+            application.addNote(new ApplicationNote("Hakemus vastaanotettu", new Date(), userSession.getUser().getUserName()));
             application.setLastAutomatedProcessingTime(System.currentTimeMillis());
             application.submitted();
             application.flagStudentIdentificationRequired();
@@ -232,43 +227,6 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public Application passivateApplication(String applicationOid) {
-        Application query = new Application();
-        query.setOid(applicationOid);
-        List<Application> apps = applicationDAO.find(query);
-        Application application = apps.get(0);
-        application.passivate();
-        Application queryApplication = new Application(applicationOid);
-        applicationDAO.update(queryApplication, application);
-        return application;
-    }
-
-    @Override
-    public Application activateApplication(String applicationOid) {
-        Application query = new Application();
-        query.setOid(applicationOid);
-        List<Application> apps = applicationDAO.find(query);
-        Application application = apps.get(0);
-        application.activate();
-        Application queryApplication = new Application(applicationOid);
-        applicationDAO.update(queryApplication, application);
-        return application;
-    }
-
-    @Override
-    public void addNote(final Application application, final String noteText, final boolean persist) {
-        addNoteToApplicationObject(application, noteText);
-        if (persist) {
-            Application query = new Application(application.getOid());
-            applicationDAO.update(query, application);
-        }
-    }
-
-    private void addNoteToApplicationObject(final Application application, final String noteText) {
-        application.addNote(new ApplicationNote(noteText, new Date(), userSession.getUser().getUserName()));
-    }
-
-    @Override
     public Application getSubmittedApplication(final String applicationSystemId, final String oid) {
         Application submittedApplication = userSession.getSubmittedApplication();
         if (submittedApplication != null &&
@@ -276,7 +234,7 @@ public class ApplicationServiceImpl implements ApplicationService {
                 submittedApplication.getOid().equals(oid)) {
             return submittedApplication;
         }
-        throw new ResourceNotFoundExceptionRuntime("Could not found submitted application");
+        throw new ResourceNotFoundException("Could not found submitted application");
     }
 
     @Override
@@ -286,42 +244,97 @@ public class ApplicationServiceImpl implements ApplicationService {
             return application;
         }
 
+        List<SuoritusDTO> suoritukset = suoritusrekisteriService.getSuoritukset(personOid);
         List<OpiskelijaDTO> opiskelijat = suoritusrekisteriService.getOpiskelijat(personOid);
 
-        if (opiskelijat != null && opiskelijat.size() > 0) {
-            String sendingSchool = opiskelijat.get(0).getOppilaitosOid();
-            String sendingClass = opiskelijat.get(0).getLuokka();
-            String classLevel = opiskelijat.get(0).getLuokkataso();
+        if (suoritukset != null && suoritukset.size() > 0 && opiskelijat != null && opiskelijat.size() > 0) {
+            SuoritusDTO suoritus = suoritukset.get(0);
+            OpiskelijaDTO opiskelija = opiskelijat.get(0);
+
+            String sendingSchool = opiskelija.getOppilaitosOid();
+            String sendingClass = opiskelija.getLuokka();
+            String classLevel = opiskelija.getLuokkataso();
+            Integer baseEducationInt = suoritus.getPohjakoulutus();
+            String language = suoritus.getSuorituskieli();
+            Date valmistuminen = suoritus.getValmistuminen();
 
             Map<String, String> answers = new HashMap<String, String>(
                     application.getPhaseAnswers(OppijaConstants.PHASE_EDUCATION));
+
+            String oid = application.getOid();
             if (isNotEmpty(sendingSchool)) {
+                LOGGER.info("Updating koulutustausta oid: "+String.valueOf(application.getOid())
+                        +" lahtokoulu: "+sendingSchool);
                 answers.put(OppijaConstants.ELEMENT_ID_SENDING_SCHOOL, sendingSchool);
-                List<String> parentOids = organizationService.findParentOids(sendingSchool);
-                parentOids.add(OPH_ORGANIZATION);
-                parentOids.add(sendingSchool);
-                answers.put(OppijaConstants.ELEMENT_ID_SENDING_SCHOOL_PARENTS, join(parentOids, ","));
             }
             if (isNotEmpty(sendingClass)) {
-                answers.put(OppijaConstants.ELEMENT_ID_SENDING_CLASS, sendingClass);
+                answers = addRegisterValue(oid, answers, OppijaConstants.ELEMENT_ID_SENDING_CLASS, sendingClass);
+                LOGGER.info("Updating koulutustausta oid: "+String.valueOf(application.getOid())
+                        +" lahtoluokka: "+sendingClass);
             }
             if (isNotEmpty(classLevel)) {
-                answers.put(OppijaConstants.ELEMENT_ID_CLASS_LEVEL, classLevel);
+                answers = addRegisterValue(oid, answers, OppijaConstants.ELEMENT_ID_CLASS_LEVEL, classLevel);
+                LOGGER.info("Updating koulutustausta oid: "+String.valueOf(application.getOid())
+                        +" luokkataso: "+classLevel);
             }
+            if (baseEducationInt != null) {
+                String baseEducation = String.valueOf(baseEducationInt);
+                answers = addRegisterValue(oid, answers, OppijaConstants.ELEMENT_ID_BASE_EDUCATION, baseEducation);
+                if (isNotEmpty(language)) {
+                    if (baseEducation.equals(OppijaConstants.YLIOPPILAS)) {
+                        answers = addRegisterValue(oid, answers, OppijaConstants.LUKIO_KIELI, language);
+                    } else if (baseEducation.equals(OppijaConstants.PERUSKOULU)
+                            || baseEducation.equals(OppijaConstants.YKSILOLLISTETTY)
+                            || baseEducation.equals(OppijaConstants.ALUEITTAIN_YKSILOLLISTETTY)
+                            || baseEducation.equals(OppijaConstants.OSITTAIN_YKSILOLLISTETTY)) {
+                        answers = addRegisterValue(oid, answers, OppijaConstants.PERUSOPETUS_KIELI, language);
+                    }
+                }
+                if (valmistuminen != null) {
+                    Calendar cal = GregorianCalendar.getInstance();
+                    cal.setTime(valmistuminen);
+                    String year = String.valueOf(cal.get(Calendar.YEAR));
+                    if (baseEducation.equals(OppijaConstants.YLIOPPILAS)) {
+                        answers = addRegisterValue(oid, answers, OppijaConstants.LUKIO_PAATTOTODISTUS_VUOSI, year);
+                    } else if (baseEducation.equals(OppijaConstants.PERUSKOULU)
+                            || baseEducation.equals(OppijaConstants.YKSILOLLISTETTY)
+                            || baseEducation.equals(OppijaConstants.ALUEITTAIN_YKSILOLLISTETTY)
+                            || baseEducation.equals(OppijaConstants.OSITTAIN_YKSILOLLISTETTY)) {
+                        answers = addRegisterValue(oid, answers, OppijaConstants.PERUSOPETUS_PAATTOTODISTUSVUOSI, year);
+                    }
+                }
+            }
+
             application.addVaiheenVastaukset(OppijaConstants.PHASE_EDUCATION, answers);
         }
+
+        Map<String, String> answers = new HashMap<String, String>(application.getPhaseAnswers(OppijaConstants.PHASE_EDUCATION));
+        if (answers.containsKey(OppijaConstants.ELEMENT_ID_SENDING_SCHOOL)) {
+            String sendingSchool = answers.get(OppijaConstants.ELEMENT_ID_SENDING_SCHOOL);
+            List<String> parentOids = organizationService.findParentOids(sendingSchool);
+            parentOids.add(OPH_ORGANIZATION);
+            parentOids.add(sendingSchool);
+            answers.put(OppijaConstants.ELEMENT_ID_SENDING_SCHOOL_PARENTS, join(parentOids, ","));
+            application.addVaiheenVastaukset(OppijaConstants.PHASE_EDUCATION, answers);
+        }
+
         return application;
 
     }
 
-    @Override
-    public Application getNextRedo() {
-        return applicationDAO.getNextRedo();
-    }
-
-    @Override
-    public List<Application> getApplicationsByApplicationOption(List<String> applicationOptionIds) {
-        return applicationDAO.findByApplicationOption(applicationOptionIds);
+    private Map<String, String> addRegisterValue(String oid, Map<String, String> answers, String key, String value) {
+        String valueForm = answers.get(key);
+        if (isEmpty(valueForm)) {
+            answers.put(key, value);
+        } else if (!value.equals(valueForm)) {
+            String valueUser = answers.get(key+"_user");
+            LOGGER.info("Updating application oid:"+oid+" "+key+": "+valueUser+" -> "+value);
+            if (isEmpty(valueUser)) {
+                answers.put(key+"_user", valueForm);
+            }
+            answers.put(key, value);
+        }
+        return answers;
     }
 
     @Override
@@ -341,7 +354,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public Application getApplicationByOid(String oid) throws ResourceNotFoundException {
+    public Application getApplicationByOid(String oid) {
         return getApplication(new Application(oid));
     }
 
@@ -352,22 +365,31 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public void saveApplicationAdditionalInfo(String oid, Map<String, String> additionalInfo)
-            throws ResourceNotFoundException {
+    public void saveApplicationAdditionalInfo(List<ApplicationAdditionalDataDTO> applicationAdditionalData) {
+        if (applicationAdditionalData != null) {
+            for (ApplicationAdditionalDataDTO data : applicationAdditionalData) {
+                saveApplicationAdditionalInfo(data.getOid(), data.getAdditionalData());
+            }
+        }
+    }
+
+    @Override
+    public void saveApplicationAdditionalInfo(String oid, Map<String, String> additionalInfo) {
         Application query = new Application(oid);
         Application current = getApplication(query);
+        hakuPermissionService.userCanEditApplicationAdditionalData(current);
         current.setAdditionalInfo(additionalInfo);
         applicationDAO.update(query, current);
     }
 
     @Override
     public void update(final Application queryApplication, final Application application) {
-        // application.updateNameMetadata();
         this.applicationDAO.update(queryApplication, application);
     }
 
+
     @Override
-    public String getApplicationKeyValue(String applicationOid, String key) throws ResourceNotFoundException {
+    public String getApplicationKeyValue(String applicationOid, String key) {
         Application application = getApplication(new Application(applicationOid));
         if (application.getAdditionalInfo().containsKey(key)) {
             return application.getAdditionalInfo().get(key);
@@ -380,13 +402,20 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public void putApplicationAdditionalInfoKeyValue(String applicationOid, String key, String value)
-            throws ResourceNotFoundException {
+    public void putApplicationAdditionalInfoKeyValue(String applicationOid, String key, String value) {
+        //access application to verify permissions
+        getApplication(new Application(applicationOid));
         if (value == null) {
             throw new IllegalArgumentException("Value can't be null");
         } else {
             applicationDAO.updateKeyValue(applicationOid, "additionalInfo." + key, value);
         }
+    }
+
+    @Override
+    public List<ApplicationAdditionalDataDTO> findApplicationAdditionalData(final String applicationSystemId, final String aoId) {
+        List<Application> applications = applicationDAO.findByApplicationSystemAndApplicationOption(applicationSystemId, aoId);
+        return Lists.transform(applications, new ApplicationToAdditionalDataDTO());
     }
 
     @Override
@@ -421,48 +450,32 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public Application getNextSubmittedApplication() {
-        Application application = applicationDAO.getNextSubmittedApplication();
-        if (application != null) {
-            application.setLastAutomatedProcessingTime(System.currentTimeMillis());
-            applicationDAO.save(application);
-        }
-        return application;
-    }
-
-    @Override
-    public Application getNextWithoutStudentOid() {
-        Application application = applicationDAO.getNextWithoutStudentOid();
-        if (application != null) {
-            application.setLastAutomatedProcessingTime(System.currentTimeMillis());
-            applicationDAO.save(application);
-        }
-        return application;
-    }
-
-    @Override
     public Application officerCreateNewApplication(String asId) {
         Application application = new Application();
         application.setApplicationSystemId(asId);
         application.setReceived(new Date());
         application.setState(Application.State.INCOMPLETE);
-        addNote(application, "Hakemus vastaanotettu", false);
+        application.addNote(new ApplicationNote("Hakemus vastaanotettu", new Date(), userSession.getUser().getUserName()));
         application.setOid(applicationOidService.generateNewOid());
         this.applicationDAO.save(application);
         return application;
     }
 
-    private Application getApplication(final Application queryApplication) throws ResourceNotFoundException {
+    public Application getApplication(final Application queryApplication) {
 
         LOGGER.debug("Entering ApplicationServiceImpl.getApplication()");
         List<Application> listOfApplications;
         try {
             listOfApplications = applicationDAO.find(queryApplication);
+            LOGGER.debug("Got "+listOfApplications.size()+" applications");
         } catch (IllegalArgumentException iae) {
             LOGGER.error("Error getting application: ", iae);
-            throw new ResourceNotFoundException(iae);
+            throw new ResourceNotFoundException("Error getting application", iae);
+        } catch(RuntimeException t) {
+            LOGGER.error("Getting application failed: "+t);
+            throw t;
         }
-        if (listOfApplications.isEmpty()) {
+        if (listOfApplications == null || listOfApplications.isEmpty()) {
             throw new ResourceNotFoundException("Could not find application " + queryApplication.getOid());
         }
         if (listOfApplications.size() > 1) {
@@ -476,6 +489,4 @@ public class ApplicationServiceImpl implements ApplicationService {
         }
         return application;
     }
-
-
 }

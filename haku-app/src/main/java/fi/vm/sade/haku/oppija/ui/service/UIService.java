@@ -16,13 +16,11 @@
 
 package fi.vm.sade.haku.oppija.ui.service;
 
-import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
-
 import java.util.Map;
 
 public interface UIService {
 
-    ModelResponse getCompleteApplication(final String applicationSystemId, final String oid) throws ResourceNotFoundException;
+    ModelResponse getCompleteApplication(final String applicationSystemId, final String oid);
 
     ModelResponse getAllApplicationSystems(final String... includeFields);
 
@@ -32,9 +30,9 @@ public interface UIService {
 
     void storePrefilledAnswers(final String applicationSystemId, final Map<String, String> answers);
 
-    Map<String, Object> getElementHelp(final String applicationSystemId, final String elementId) throws ResourceNotFoundException;
+    Map<String, Object> getElementHelp(final String applicationSystemId, final String elementId);
 
-    Map<String,Object> getAdditionalLanguageRow(final String applicationSystemId, final String gradeGridId);
+    Map<String, Object> getAdditionalLanguageRow(final String applicationSystemId, final String gradeGridId);
 
     ModelResponse updateRules(final String applicationSystemId, final String phaseId, final String elementId, Map<String, String> currentAnswers);
 

@@ -19,6 +19,7 @@ package fi.vm.sade.haku.oppija.lomake.it;
 import com.google.common.collect.ImmutableMap;
 import fi.vm.sade.haku.oppija.common.selenium.DummyModelBaseItTest;
 import fi.vm.sade.haku.oppija.hakemus.ApplicationGenerator;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.junit.Test;
 import org.openqa.selenium.By;
 
@@ -102,7 +103,7 @@ public class HAK305IT extends DummyModelBaseItTest {
 
     private void fillOutTheKoulutustaustaPhase(final String opetuskieli) {
         setValue(KYSYMYS_POHJAKOULUTUS, TUTKINTO_PERUSKOULU);
-        setValue("PK_PAATTOTODISTUSVUOSI", "2012");
+        setValue(OppijaConstants.PERUSOPETUS_PAATTOTODISTUSVUOSI, "2012");
         setValue("LISAKOULUTUS_KYMPPI", "true");
         setValue("KOULUTUSPAIKKA_AMMATILLISEEN_TUTKINTOON", "false");
         setPerusopetuksenKieli(opetuskieli);
@@ -118,7 +119,7 @@ public class HAK305IT extends DummyModelBaseItTest {
 
 
     private void setPerusopetuksenKieli(final String opetuskieli) {
-        setValue("perusopetuksen_kieli", opetuskieli);
+        setValue(OppijaConstants.PERUSOPETUS_KIELI, opetuskieli);
     }
 
     private void setNativeLanguage(final String aidinkieli) {

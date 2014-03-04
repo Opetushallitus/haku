@@ -26,7 +26,6 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Titled;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.gradegrid.GradeGrid;
-import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.haku.oppija.lomake.service.UserSession;
 import fi.vm.sade.haku.oppija.lomake.util.ElementTree;
@@ -61,7 +60,7 @@ public class UIServiceImpl implements UIService {
     }
 
     @Override
-    public ModelResponse getCompleteApplication(final String applicationSystemId, final String oid) throws ResourceNotFoundException {
+    public ModelResponse getCompleteApplication(final String applicationSystemId, final String oid) {
         ApplicationSystem activeApplicationSystem = applicationSystemService.getActiveApplicationSystem(applicationSystemId);
         Application application = applicationService.getSubmittedApplication(applicationSystemId, oid);
         List<String> discretionaryAttachmentAOIds = ApplicationUtil.getDiscretionaryAttachmentAOIds(application);
@@ -106,7 +105,7 @@ public class UIServiceImpl implements UIService {
     }
 
     @Override
-    public Map<String, Object> getElementHelp(final String applicationSystemId, final String elementId) throws ResourceNotFoundException {
+    public Map<String, Object> getElementHelp(final String applicationSystemId, final String elementId) {
         ApplicationSystem activeApplicationSystem = applicationSystemService.getActiveApplicationSystem(applicationSystemId);
 
         Map<String, Object> model = new HashMap<String, Object>();

@@ -19,11 +19,7 @@ package fi.vm.sade.haku.oppija.hakemus.it.dao.impl;
 import com.google.common.base.Strings;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
-import com.mongodb.BasicDBObject;
-import com.mongodb.DBCursor;
-import com.mongodb.DBObject;
-import com.mongodb.QueryBuilder;
-import com.mongodb.ReadPreference;
+import com.mongodb.*;
 import fi.vm.sade.haku.oppija.common.dao.AbstractDAOMongoImpl;
 import fi.vm.sade.haku.oppija.hakemus.converter.ApplicationToDBObjectFunction;
 import fi.vm.sade.haku.oppija.hakemus.converter.DBObjectToApplicationFunction;
@@ -34,7 +30,6 @@ import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationDAO;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationQueryParameters;
 import fi.vm.sade.haku.oppija.hakemus.service.HakuPermissionService;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.SocialSecurityNumber;
-import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundExceptionRuntime;
 import fi.vm.sade.haku.oppija.lomake.service.EncrypterService;
 import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
 import org.slf4j.Logger;
@@ -55,6 +50,7 @@ import java.util.StringTokenizer;
 import java.util.regex.Pattern;
 
 import static org.apache.commons.lang.StringUtils.isEmpty;
+import static org.apache.commons.lang.StringUtils.isNotEmpty;
 
 /**
  * @author Hannu Lyytikainen
@@ -116,11 +112,10 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     private static final String FIELD_SSN = "answers.henkilotiedot.Henkilotunnus";
     private static final String FIELD_SSN_DIGEST = "answers.henkilotiedot.Henkilotunnus_digest";
     private static final String FIELD_DATE_OF_BIRTH = "answers.henkilotiedot.syntymaaika";
-    private static final String FIELD_FULL_NAME = "fullName";
     private static final String FIELD_SEARCH_NAMES = "searchNames";
     private static final String EXISTS = "$exists";
     private static final String OPTION_SPARSE = "sparse";
-    private static final String OPTION_NAME= "name";
+    private static final String OPTION_NAME = "name";
     private static final String FIELD_STUDENT_OID = "studentOid";
     private static final String FIELD_STUDENT_IDENTIFICATION_DONE = "studentIdentificationDone";
     private static final String FIELD_REDO_POSTPROCESS = "redoPostProcess";
@@ -161,33 +156,15 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     }
 
     @Override
-    public List<Application> find(DBObject query) {
-        return findApplications(query);
-    }
-
-    @Override
-    public Application findDraftApplication(final Application application) {
-        final DBObject query = toDBObject.apply(application);
-        query.put(FIELD_APPLICATION_OID, null);
-        return findOneApplication(query);
-    }
-
-    @Override
     public List<Application> findByApplicationSystemAndApplicationOption(String asId, String aoId) {
+        ArrayList<DBObject> orgFilter = filterByOrganization();
         DBObject dbObject = QueryBuilder.start().and(queryByPreference(Lists.newArrayList(aoId)).get(),
                 newOIdExistDBObject(),
                 new BasicDBObject(FIELD_APPLICATION_SYSTEM_ID, asId),
                 QueryBuilder.start(FIELD_APPLICATION_STATE).in(Lists.newArrayList(
-                        Application.State.ACTIVE.toString(), Application.State.INCOMPLETE.toString())).get()).get();
+                        Application.State.ACTIVE.toString(), Application.State.INCOMPLETE.toString())).get(),
+                QueryBuilder.start().or(orgFilter.toArray(new DBObject[orgFilter.size()])).get()).get();
         return findApplications(dbObject);
-    }
-
-    public List<Application> findByApplicationOption(List<String> aoIds) {
-        DBObject query = QueryBuilder.start().and(queryByPreference(aoIds).get(),
-                newOIdExistDBObject(),
-                QueryBuilder.start(FIELD_APPLICATION_STATE).is(Application.State.ACTIVE.toString()).get()).get();
-
-        return findApplications(query);
     }
 
     @Override
@@ -310,6 +287,27 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         );
     }
 
+    private QueryBuilder queryByLopAndPreference(String preference, String lopOid) {
+            return QueryBuilder.start().or(
+                queryByLopAndPreference(FIELD_AO_KOULUTUS_ID_1, FIELD_LOP_1, FIELD_LOP_PARENTS_1, preference, lopOid).get(),
+                queryByLopAndPreference(FIELD_AO_KOULUTUS_ID_2, FIELD_LOP_2, FIELD_LOP_PARENTS_2, preference, lopOid).get(),
+                queryByLopAndPreference(FIELD_AO_KOULUTUS_ID_3, FIELD_LOP_3, FIELD_LOP_PARENTS_3, preference, lopOid).get(),
+                queryByLopAndPreference(FIELD_AO_KOULUTUS_ID_4, FIELD_LOP_4, FIELD_LOP_PARENTS_4, preference, lopOid).get(),
+                queryByLopAndPreference(FIELD_AO_KOULUTUS_ID_5, FIELD_LOP_5, FIELD_LOP_PARENTS_5, preference, lopOid).get()
+        );
+    }
+
+    private QueryBuilder queryByLopAndPreference(String koulutusField, String lopField, String lopParentsField,
+                                                 String preference, String lopOid) {
+        return QueryBuilder.start().and(
+                QueryBuilder.start(koulutusField).is(preference).get(),
+                QueryBuilder.start().or(
+                        QueryBuilder.start(lopField).is(lopOid).get(),
+                        QueryBuilder.start(lopParentsField).regex(Pattern.compile(lopOid)).get()
+                ).get()
+        );
+    }
+
     private QueryBuilder queryByLearningOpportunityProviderOid(String lopOid) {
         return QueryBuilder.start().or(
                 QueryBuilder.start(FIELD_LOP_1).is(lopOid).get(),
@@ -333,15 +331,6 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
                 QueryBuilder.start(FIELD_DISCRETIONARY_4).is(Boolean.TRUE.toString()).get(),
                 QueryBuilder.start(FIELD_DISCRETIONARY_5).is(Boolean.TRUE.toString()).get()
         );
-    }
-
-    private Application findOneApplication(DBObject query) {
-        DBObject result = getCollection().findOne(query);
-        if (result != null) {
-            return fromDBObject.apply(result);
-        } else {
-            throw new ResourceNotFoundExceptionRuntime("Application not found " + query);
-        }
     }
 
     private List<Application> findApplications(DBObject dbObject) {
@@ -379,8 +368,17 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         }
 
         String preference = applicationQueryParameters.getAoId();
-        if (!isEmpty(preference)) {
-            filters.add(queryByPreference(preference).get());
+        String lopOid = applicationQueryParameters.getLopOid();
+
+        if (isNotEmpty(lopOid) && isNotEmpty(preference)) {
+            filters.add(queryByLopAndPreference(preference, lopOid).get());
+        } else {
+            if (!isEmpty(lopOid)) {
+                filters.add(queryByLearningOpportunityProviderOid(lopOid).get());
+            }
+            if (!isEmpty(preference)) {
+                filters.add(queryByPreference(preference).get());
+            }
         }
 
         String aoOid = applicationQueryParameters.getAoOid();
@@ -388,10 +386,6 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
             filters.add(queryByPreference(Lists.newArrayList(aoOid)).get());
         }
 
-        String lopOid = applicationQueryParameters.getLopOid();
-        if (!isEmpty(lopOid)) {
-            filters.add(queryByLearningOpportunityProviderOid(lopOid).get());
-        }
 
         List<String> asIds = applicationQueryParameters.getAsIds();
         if (!asIds.isEmpty()) {
@@ -547,7 +541,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     }
 
     @PostConstruct
-    public void ensureIndexes(){
+    public void ensureIndexes() {
 
         if (!ensureIndex) {
             return;
@@ -574,14 +568,14 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         createPreferenceIndexes("preference5", true, FIELD_LOP_5, FIELD_DISCRETIONARY_5, FIELD_AO_5, FIELD_AO_KOULUTUS_ID_5);
     }
 
-    private void createPreferenceIndexes(String preference, Boolean sparsePossible, String lopField, String discretionaryField, String fieldAo, String fieldAoIdentifier){
+    private void createPreferenceIndexes(String preference, Boolean sparsePossible, String lopField, String discretionaryField, String fieldAo, String fieldAoIdentifier) {
         createIndex("index_ " + preference + "_lop", sparsePossible.booleanValue(), lopField);
         createIndex("index_ " + preference + "_discretionary", true, discretionaryField);
         createIndex("index_ " + preference + "_ao", sparsePossible.booleanValue(), fieldAo);
         createIndex("index_ " + preference + "_ao_identifier", sparsePossible.booleanValue(), fieldAoIdentifier);
     }
 
-    private void createIndex(String name, Boolean isSparse, String... fields){
+    private void createIndex(String name, Boolean isSparse, String... fields) {
         final DBObject options = new BasicDBObject(OPTION_NAME, name);
         options.put(OPTION_SPARSE, isSparse.booleanValue());
 

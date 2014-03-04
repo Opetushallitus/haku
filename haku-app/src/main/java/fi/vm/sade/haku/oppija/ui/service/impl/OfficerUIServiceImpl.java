@@ -7,6 +7,7 @@ import fi.vm.sade.haku.oppija.common.organisaatio.Organization;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
 import fi.vm.sade.haku.oppija.hakemus.aspect.LoggerAspect;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
+import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationNote;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.haku.oppija.hakemus.domain.util.ApplicationUtil;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
@@ -44,6 +45,7 @@ import java.util.*;
 public class OfficerUIServiceImpl implements OfficerUIService {
 
     public static final Logger LOGGER = LoggerFactory.getLogger(OfficerUIServiceImpl.class);
+    public static final String PHASE_ID_PREVIEW = "esikatselu";
 
     private final ApplicationService applicationService;
     private final FormService formService;
@@ -90,7 +92,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
             final String oid,
             final String phaseId,
             final String elementId,
-            final boolean validate) throws ResourceNotFoundException {
+            final boolean validate) {
         Application application = this.applicationService.getApplicationByOid(oid);
         application.setPhaseId(phaseId); // TODO active applications does not have phaseId?
         Form form = this.formService.getForm(application.getApplicationSystemId());
@@ -101,21 +103,21 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     }
 
     @Override
-    public ModelResponse getValidatedApplication(final String oid, final String phaseId) throws ResourceNotFoundException {
+    public ModelResponse getValidatedApplication(final String oid, final String phaseId) {
         Application application = this.applicationService.getApplicationByOid(oid);
         application.setPhaseId(phaseId); // TODO active applications does not have phaseId?
         Form form = this.formService.getForm(application.getApplicationSystemId());
         ValidationResult validationResult = elementTreeValidator.validate(new ValidationInput(form, application.getVastauksetMerged(),
                 oid, application.getApplicationSystemId()));
         Element element = form;
-        if (!"esikatselu".equals(phaseId)) {
+        if (!PHASE_ID_PREVIEW.equals(phaseId)) {
             element = new ElementTree(form).getChildById(application.getPhaseId());
         }
         String asId = application.getApplicationSystemId();
         ApplicationSystem as = applicationSystemService.getApplicationSystem(asId);
         ModelResponse modelResponse =
                 new ModelResponse(application, form, element, validationResult, koulutusinformaatioBaseUrl);
-        modelResponse.addObjectToModel("preview", "esikatselu".equals(phaseId));
+        modelResponse.addObjectToModel("preview", PHASE_ID_PREVIEW.equals(phaseId));
         modelResponse.addObjectToModel("phaseEditAllowed", hakuPermissionService.userHasEditRoleToPhases(application, form));
         modelResponse.addObjectToModel("virkailijaDeleteAllowed", hakuPermissionService.userCanDeleteApplication(application));
         modelResponse.addObjectToModel("postProcessAllowed", hakuPermissionService.userCanPostProcess(application));
@@ -139,16 +141,15 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     }
 
     @Override
-    public ModelResponse getAdditionalInfo(String oid) throws ResourceNotFoundException {
+    public ModelResponse getAdditionalInfo(String oid) {
         return new ModelResponse(applicationService.getApplicationByOid(oid));
     }
 
     @Override
-    public ModelResponse updateApplication(final String oid, final ApplicationPhase applicationPhase, User user)
-            throws ResourceNotFoundException {
+    public ModelResponse updateApplication(final String oid, final ApplicationPhase applicationPhase, User user) {
 
-        Application queryApplication = new Application(oid);
         Application application = this.applicationService.getApplicationByOid(oid);
+        Application queryApplication = new Application(oid, application.getVersion());
         Application.State state = application.getState();
         if (state != null && state.equals(Application.State.PASSIVE)) {
             throw new ResourceNotFoundException("Passive application");
@@ -159,10 +160,12 @@ public class OfficerUIServiceImpl implements OfficerUIService {
 
         loggerAspect.logUpdateApplication(application, applicationPhase);
 
-        application.addVaiheenVastaukset(applicationPhase.getPhaseId(), applicationPhase.getAnswers());
+        Map<String, String> newPhaseAnswers = applicationPhase.getAnswers();
+        application.addVaiheenVastaukset(applicationPhase.getPhaseId(), newPhaseAnswers);
 
         Map<String, String> allAnswers = application.getVastauksetMergedIgnoringPhase(applicationPhase.getPhaseId());
-        allAnswers.putAll(applicationPhase.getAnswers());
+
+        allAnswers.putAll(newPhaseAnswers);
         ValidationResult formValidationResult = elementTreeValidator.validate(new ValidationInput(form,
                 allAnswers, oid, application.getApplicationSystemId()));
         if (formValidationResult.hasErrors()) {
@@ -175,7 +178,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
                 allAnswers, oid, application.getApplicationSystemId()));
 
         String noteText = "Päivitetty vaihetta '" + applicationPhase.getPhaseId() + "'";
-        this.applicationService.addNote(application, noteText, false);
+        application.addNote(createNote(noteText));
         this.applicationService.fillLOPChain(application, false);
         this.applicationService.addSendingSchool(application);
         this.applicationService.update(queryApplication, application);
@@ -183,7 +186,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         return new ModelResponse(application, form, phase, phaseValidationResult, koulutusinformaatioBaseUrl);
     }
 
-    private void checkUpdatePermission(Application application, Form form, String phaseId) throws ResourceNotFoundException {
+    private void checkUpdatePermission(Application application, Form form, String phaseId) {
         Boolean permission = hakuPermissionService.userHasEditRoleToPhases(application, form).get(phaseId);
         if (permission == null || !permission) {
             throw new ResourceNotFoundException("User can not update application " + application.getOid());
@@ -191,7 +194,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     }
 
     @Override
-    public Application getApplicationWithLastPhase(final String oid) throws ResourceNotFoundException {
+    public Application getApplicationWithLastPhase(final String oid) {
         Application application = applicationService.getApplicationByOid(oid);
         application.setPhaseId("esikatselu");
         return application;
@@ -229,12 +232,12 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     }
 
     @Override
-    public void saveApplicationAdditionalInfo(final String oid, final Map<String, String> additionalInfo) throws ResourceNotFoundException {
+    public void saveApplicationAdditionalInfo(final String oid, final Map<String, String> additionalInfo) {
         applicationService.saveApplicationAdditionalInfo(oid, additionalInfo);
     }
 
     @Override
-    public void addPersonAndAuthenticate(String oid) throws ResourceNotFoundException {
+    public void addPersonAndAuthenticate(String oid) {
         Application application = applicationService.getApplicationByOid(oid);
         applicationService.fillLOPChain(application, false);
         applicationService.addPersonOid(application);
@@ -243,15 +246,16 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     }
 
     @Override
-    public Application activateApplication(String oid, String reason) throws ResourceNotFoundException {
-        reason = "Hakemus aktivoitu: " + reason;
-        addNote(oid, reason);
-        return applicationService.activateApplication(oid);
+    public void activateApplication(String oid, String reason) {
+        Application application = applicationService.getApplicationByOid(oid);
+        ApplicationNote note = createNote("Hakemus aktivoitu: " + reason);
+        application.addNote(note);
+        application.activate();
+        applicationService.update(new Application(oid), application);
     }
 
     @Override
-    public ModelResponse getMultipleApplicationResponse(String applicationList, String selectedApplication)
-            throws ResourceNotFoundException {
+    public ModelResponse getMultipleApplicationResponse(String applicationList, String selectedApplication) {
         Application application = applicationService.getApplicationByOid(selectedApplication);
 
         String[] apps = applicationList.split(",");
@@ -308,7 +312,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         for (Organization org : orgs) {
             // This IF is stupid, but necessary. Asking organisaatioService for 'oppilaitos' returns also
             // organisaatios with type of 'opetuspiste' and 'oppisopimustoimipiste'.
-            LOGGER.debug("Org: "+org.getOid()+" Types: [" + Joiner.on(",").join(org.getTypes()) + "]");
+            LOGGER.debug("Org: " + org.getOid() + " Types: [" + Joiner.on(",").join(org.getTypes()) + "]");
             if (!org.getTypes().contains("OPPILAITOS")) {
                 continue;
             }
@@ -347,16 +351,18 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     }
 
     @Override
-    public Application passivateApplication(String oid, String reason) throws ResourceNotFoundException {
-        reason = "Hakemus passivoitu: " + reason;
-        addNote(oid, reason);
-        return applicationService.passivateApplication(oid);
+    public void passivateApplication(final String oid, final String reason) {
+        Application application = applicationService.getApplicationByOid(oid);
+        application.addNote(createNote("Hakemus passivoitu: " + reason));
+        application.passivate();
+        applicationService.update(new Application(oid), application);
     }
 
     @Override
-    public void addNote(String applicationOid, String note) throws ResourceNotFoundException {
+    public void addNote(String applicationOid, String note) {
         Application application = applicationService.getApplicationByOid(applicationOid);
-        applicationService.addNote(application, note, true);
+        application.addNote(createNote(note));
+        applicationService.update(new Application(applicationOid), application);
     }
 
     @Override
@@ -365,7 +371,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     }
 
     @Override
-    public void addStudentOid(String oid) throws ResourceNotFoundException {
+    public ModelResponse addStudentOid(String oid) {
         Application application = applicationService.getApplicationByOid(oid);
         String studentOid = application.getPersonOid();
         if (!Strings.isNullOrEmpty(application.getStudentOid())) {
@@ -375,25 +381,30 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         }
         authenticationService.getStudentOid(studentOid);
         application.setStudentOid(studentOid);
-        applicationService.addNote(application, "Oppijanumero syötetty", true);
+        application.addNote(createNote("Oppijanumero syötetty"));
+        Application queryApplication = new Application(oid);
+        applicationService.update(queryApplication, application);
+        return getValidatedApplication(oid, PHASE_ID_PREVIEW);
     }
 
     @Override
-    public void postProcess(String oid) throws ResourceNotFoundException {
+    public ModelResponse postProcess(String oid, boolean email) {
         Application application = applicationService.getApplicationByOid(oid);
-        application = applicationService.fillLOPChain(application, false);
-        application = applicationService.addPersonOid(application);
-        application = applicationService.addSendingSchool(application);
-        application.activate();
+        application.setRedoPostProcess(email ? "FULL" : "NOMAIL");
         applicationService.update(new Application(oid), application);
+        return getValidatedApplication(oid, PHASE_ID_PREVIEW);
     }
 
     @Override
-    public ModelResponse getApplicationPrint(final String oid) throws ResourceNotFoundException {
+    public ModelResponse getApplicationPrint(final String oid) {
         Application application = applicationService.getApplicationByOid(oid);
         ApplicationSystem activeApplicationSystem = applicationSystemService.getActiveApplicationSystem(application.getApplicationSystemId());
         List<String> discretionaryAttachmentAOIds = ApplicationUtil.getDiscretionaryAttachmentAOIds(application);
         return new ModelResponse(application, activeApplicationSystem, discretionaryAttachmentAOIds, koulutusinformaatioBaseUrl);
+    }
+
+    private ApplicationNote createNote(String note) {
+        return new ApplicationNote(note, new Date(), userSession.getUser().getUserName());
     }
 
 }

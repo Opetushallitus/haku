@@ -23,8 +23,6 @@ import fi.vm.sade.haku.oppija.lomake.validation.ValidationResult;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.Validate;
 
-import java.util.Map;
-
 public class ContainedInOtherFieldValidator extends FieldValidator {
 
     private final String otherFieldName;

@@ -25,7 +25,6 @@ import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.haku.oppija.lomake.domain.User;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Phase;
-import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
 import fi.vm.sade.haku.oppija.lomake.service.FormService;
 import fi.vm.sade.haku.oppija.lomake.service.UserSession;
 import fi.vm.sade.haku.oppija.ui.service.ModelResponse;
@@ -94,19 +93,19 @@ public class OfficerControllerTest {
     }
 
     @Test
-    public void testUpdatePhase() throws URISyntaxException, ResourceNotFoundException {
+    public void testUpdatePhase() throws URISyntaxException {
         Response response = officerController.updatePhase(ASID, "henkilotiedot", OID, new MultivaluedMapImpl());
         assertEquals(Response.Status.SEE_OTHER.getStatusCode(), response.getStatus());
     }
 
     @Test
-    public void testGetAdditionalInfo() throws ResourceNotFoundException, IOException {
+    public void testGetAdditionalInfo() throws IOException {
         Viewable viewable = officerController.getAdditionalInfo(OID);
         assertEquals(OfficerController.ADDITIONAL_INFO_VIEW, viewable.getTemplateName());
     }
 
     @Test
-    public void testSaveAdditionalInfo() throws ResourceNotFoundException, URISyntaxException, IOException {
+    public void testSaveAdditionalInfo() throws URISyntaxException, IOException {
         MultivaluedMap<String, String> additionalInfo = new MultivaluedMapImpl();
         additionalInfo.put("key", newArrayList("value"));
         Response response = officerController.saveAdditionalInfo(OID, additionalInfo);

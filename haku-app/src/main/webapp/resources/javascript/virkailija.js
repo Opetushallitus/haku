@@ -567,6 +567,35 @@ $(document).ready(function () {
         }
     });
 
+    $('#open-selected').click(function () {
+        var applicationList = '';
+        var selectedApplication = null;
+        $('input.check-application').each(function (index) {
+            if ($(this).is(":checked")) {
+                var application = $(this).attr('id').replace(/^.*-/g, '').replace(/_/g, '.');
+                applicationList += application + ',';
+                if (!selectedApplication) {
+                    selectedApplication = application;
+                }
+            }
+        });
+        applicationList = applicationList.substring(0, applicationList.length - 1);
+        if (selectedApplication) {
+            $.cookie.path = cookiePath;
+            $.cookie.json = true;
+            var lastSearch = $.cookie(cookieName);
+            if (lastSearch) {
+                lastSearch.applicationList = applicationList;
+                lastSearch.checkAllApplications = $('#check-all-applications').prop('checked');
+                $.removeCookie(cookieName);
+                $.cookie(cookieName, lastSearch);
+            }
+        }
+        if (selectedApplication) {
+            location.href = page_settings.contextPath + "/virkailija/hakemus/"+selectedApplication+"/"
+        }
+    });
+
     $('#notApplied').click(function() {
         var school = $('#sendingSchoolOid').val();
         var clazz = $('#sendingClass').val();

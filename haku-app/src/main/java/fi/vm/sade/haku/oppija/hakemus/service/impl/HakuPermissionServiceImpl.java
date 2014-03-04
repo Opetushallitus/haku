@@ -31,8 +31,10 @@ public class HakuPermissionServiceImpl extends AbstractPermissionService impleme
 
     public static final int MAX_NUMBER_OF_PREFERENCES = 5;
     private AuthenticationService authenticationService;
-    private static final Logger LOG = LoggerFactory.getLogger(HakuPermissionServiceImpl.class);
+    private static final Logger log = LoggerFactory.getLogger(HakuPermissionServiceImpl.class);
     private static final String ROLE_OPO = "APP_HAKEMUS_OPO";
+    private static final String ROLE_LISATIETORU = "APP_HAKEMUS_LISATIETORU";
+    private static final String ROLE_LISATIETOCRUD = "APP_HAKEMUS_LISATIETOCRUD";
 
     @Autowired
     public HakuPermissionServiceImpl(AuthenticationService authenticationService,
@@ -51,13 +53,17 @@ public class HakuPermissionServiceImpl extends AbstractPermissionService impleme
 
         List<String> readble = new ArrayList<String>();
         for (String organization : organizations) {
-            LOG.debug("Calling checkAccess({}, {})", organization, getReadRole());
+            log.debug("Calling checkAccess({}, {})", organization, getReadRole());
             if (checkAccess(organization, getReadRole())) {
-                LOG.debug("Can read");
+                log.debug("Can read");
                 readble.add(organization);
             } else if (checkAccess(organization, getReadUpdateRole())) {
                 readble.add(organization);
             } else if (checkAccess(organization, getCreateReadUpdateDeleteRole())) {
+                readble.add(organization);
+            } else if (checkAccess(organization, getRoleLisatietoRU())) {
+                readble.add(organization);
+            } else if (checkAccess(organization, getRoleLisatietoCRUD())) {
                 readble.add(organization);
             }
         }
@@ -71,6 +77,7 @@ public class HakuPermissionServiceImpl extends AbstractPermissionService impleme
         }
         List<String> opoOrg = new ArrayList<String>();
         for (String organization : organizations) {
+            log.debug("checking opo-role against organization "+organization);
             if (checkAccess(organization, getOpoRole())) {
                 opoOrg.add(organization);
             }
@@ -80,8 +87,18 @@ public class HakuPermissionServiceImpl extends AbstractPermissionService impleme
 
     @Override
     public boolean userCanReadApplication(Application application) {
-        return userCanAccessApplication(application, getReadRole(), getReadUpdateRole(), getCreateReadUpdateDeleteRole()) ||
-                userHasOpoRoleToSendingSchool(application);
+        log.debug("Checking access for application: "+application.getOid());
+        boolean canRead = userCanAccessApplication(application, getReadRole(), getReadUpdateRole(), getCreateReadUpdateDeleteRole(),
+                getRoleLisatietoRU(), getRoleLisatietoCRUD());
+        if (canRead) {
+            log.debug("Can read, "+application.getOid());
+            return canRead;
+        }
+        boolean opo = userHasOpoRoleToSendingSchool(application);
+        if (opo) {
+            log.debug("Can read, opo "+application.getOid());
+        }
+        return opo;
     }
 
     @Override
@@ -122,6 +139,14 @@ public class HakuPermissionServiceImpl extends AbstractPermissionService impleme
         return ROLE_OPO;
     }
 
+    public static String getRoleLisatietoRU() {
+        return ROLE_LISATIETORU;
+    }
+
+    public static String getRoleLisatietoCRUD() {
+        return ROLE_LISATIETOCRUD;
+    }
+
     private boolean userHasOpoRoleToSendingSchool(Application application) {
         Map<String, String> answers = new HashMap<String, String>(application.getPhaseAnswers(OppijaConstants.PHASE_EDUCATION));
         if (answers.containsKey(OppijaConstants.ELEMENT_ID_SENDING_SCHOOL)) {
@@ -140,13 +165,26 @@ public class HakuPermissionServiceImpl extends AbstractPermissionService impleme
 
     @Override
     public boolean userCanSearchBySendingSchool() {
-        return true;
-//        if (checkAccess(getRootOrgOid(), getReadRole(), getReadUpdateRole(), getCreateReadUpdateDeleteRole(),
-//                getOpoRole())) {
-//            // OPH users can access anything
-//            return true;
-//        }
-//        return userHasOpoRole(null).size() > 0;
+        if (checkAccess(getRootOrgOid(), getReadRole(), getReadUpdateRole(), getCreateReadUpdateDeleteRole(),
+                getOpoRole())) {
+            // OPH users can access anything
+            return true;
+        }
+        return userHasOpoRole(null).size() > 0;
+    }
+
+    @Override
+    public boolean userCanEditApplicationAdditionalData(Application application) {
+        if (userCanAccessApplication(application, getRoleLisatietoCRUD())) {
+            return true;
+        } else if (userCanAccessApplication(application, getRoleLisatietoRU())) {
+           return true;
+        } else if (userCanAccessApplication(application, getReadUpdateRole())) {
+            return true;
+        } else if (userCanAccessApplication(application, getCreateReadUpdateDeleteRole())) {
+            return true;
+        }
+        return false;
     }
 
     @SuppressWarnings("deprecation")
@@ -167,7 +205,7 @@ public class HakuPermissionServiceImpl extends AbstractPermissionService impleme
 
             if (StringUtils.isNotEmpty(organization) &&
                     checkAccess(organization, roles)) {
-                LOG.debug("User can read application, org: {}", organization);
+                log.debug("User can read application, org: {}", organization);
                 return true;
             }
         }

@@ -33,8 +33,11 @@ public class DateOfBirthValidator extends FieldValidator {
     public static final String DATE_OF_BIRTH_NOT_A_DATE_ERROR = "henkilotiedot.syntymaaika.eipaivamaara";
     public static final String DATE_OF_BIRTH_FORMAT = "dd.MM.yyyy";
 
-    public DateOfBirthValidator(final String fieldName,  final I18nText errorMessage) {
+    private String bundleName;
+
+    public DateOfBirthValidator(final String fieldName, final I18nText errorMessage, String bundleName) {
         super(fieldName, errorMessage);
+        this.bundleName = bundleName;
     }
 
     @Override
@@ -46,11 +49,15 @@ public class DateOfBirthValidator extends FieldValidator {
             dateOfBirth = (new SimpleDateFormat(DATE_OF_BIRTH_FORMAT)).parse(dateOfBirthString);
         } catch (ParseException e) {
             result = new ValidationResult(fieldName, ElementUtil.createI18NText(DATE_OF_BIRTH_NOT_A_DATE_ERROR,
-              "form_errors_yhteishaku_kevat"));
+                    bundleName));
+        } catch (NullPointerException e) {
+            // Ei syntymäaikaa
+            result = new ValidationResult(fieldName, ElementUtil.createI18NText(DATE_OF_BIRTH_NOT_A_DATE_ERROR,
+                    bundleName));
         }
         if (dateOfBirth != null && dateOfBirth.after(new Date())) {
             result = new ValidationResult(fieldName, ElementUtil.createI18NText(DATE_OF_BIRTH_IN_FUTURE_ERROR,
-              "form_errors_yhteishaku_kevat"));
+                    bundleName));
         }
         return result;
     }

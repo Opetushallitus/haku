@@ -22,8 +22,6 @@ import fi.vm.sade.haku.oppija.lomake.validation.ValidationInput;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationResult;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.Map;
-
 public class RequiredFieldValidator extends FieldValidator {
     public RequiredFieldValidator(final String fieldName, final I18nText errorMessage) {
         super(fieldName, errorMessage);

@@ -28,7 +28,6 @@ import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.core.convert.ConversionService;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,7 +35,6 @@ import java.util.Map;
 
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyList;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Matchers.isNull;
@@ -51,7 +49,6 @@ public class ApplicationResourceTest {
     private ApplicationSystemService applicationSystemService;
     private ApplicationResource applicationResource;
     private Application application;
-    private ConversionService conversionService;
 
     private final String OID = "1.2.3.4.5.100";
     private final String INVALID_OID = "1.2.3.4.5.999";
@@ -62,7 +59,6 @@ public class ApplicationResourceTest {
     public void setUp() {
         this.applicationService = mock(ApplicationService.class);
         this.applicationSystemService = mock(ApplicationSystemService.class);
-        this.conversionService = mock(ConversionService.class);
 
 
         Map<String, String> phase1 = new HashMap<String, String>();
@@ -93,7 +89,6 @@ public class ApplicationResourceTest {
         applications.add(this.application);
         ApplicationSearchResultDTO searchResultDTO = new ApplicationSearchResultDTO(1, Lists.newArrayList(new ApplicationSearchResultItemDTO()));
         ApplicationSearchResultDTO emptySearchResultDTO = new ApplicationSearchResultDTO(0, null);
-        when(applicationService.getApplicationsByApplicationOption(anyList())).thenReturn(applications);
         when(applicationService.findApplications(eq(OID), any(ApplicationQueryParameters.class))).thenReturn(searchResultDTO);
         when(applicationService.findApplications(eq(INVALID_OID), any(ApplicationQueryParameters.class))).thenReturn(emptySearchResultDTO);
         when(applicationSystemService.findByYearAndSemester(any(String.class), any(String.class))).thenReturn(asIds);
@@ -143,18 +138,18 @@ public class ApplicationResourceTest {
     }
 
     @Test
-    public void testPutApplicationAdditionalInfoKeyValue() throws ResourceNotFoundException {
+    public void testPutApplicationAdditionalInfoKeyValue() {
         applicationResource.putApplicationAdditionalInfoKeyValue(OID, "newKey", "value");
         verify(applicationService, times(1)).putApplicationAdditionalInfoKeyValue(eq(OID), eq("newKey"), eq("value"));
     }
 
     @Test(expected = JSONException.class)
-    public void testPutApplicationAdditionalInfoKeyValueIllegalKey() throws ResourceNotFoundException {
+    public void testPutApplicationAdditionalInfoKeyValueIllegalKey() {
         applicationResource.putApplicationAdditionalInfoKeyValue(OID, "key", "value");
     }
 
     @Test(expected = JSONException.class)
-    public void testPutApplicationAdditionalInfoKeyValueNullValue() throws ResourceNotFoundException {
+    public void testPutApplicationAdditionalInfoKeyValueNullValue() {
         applicationResource.putApplicationAdditionalInfoKeyValue(OID, "newKey", null);
     }
 
@@ -196,8 +191,9 @@ public class ApplicationResourceTest {
 
         public String query;
         public ApplicationQueryParameters param;
+
         public ApplicationServiceMock() {
-            super(null,null,null,null,null,null,null,null,null,null);
+            super(null, null, null, null, null, null, null, null, null);
         }
 
         @Override

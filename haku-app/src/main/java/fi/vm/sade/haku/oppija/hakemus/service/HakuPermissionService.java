@@ -23,4 +23,6 @@ public interface HakuPermissionService {
     boolean userCanEnterApplication();
 
     boolean userCanSearchBySendingSchool();
+
+    boolean userCanEditApplicationAdditionalData(Application application);
 }

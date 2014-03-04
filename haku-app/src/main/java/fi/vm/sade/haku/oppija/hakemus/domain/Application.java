@@ -42,10 +42,11 @@ import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 public class Application implements Serializable {
 
+    @JsonIgnore
     private static final Logger log = LoggerFactory.getLogger(Application.class);
 
     public enum State {
-        ACTIVE, PASSIVE, INCOMPLETE, SUBMITTED
+        ACTIVE, PASSIVE, INCOMPLETE, SUBMITTED;
     }
 
     private static final long serialVersionUID = -7491168801255850954L;
@@ -79,6 +80,8 @@ public class Application implements Serializable {
     private Map<String, String> meta = new HashMap<String, String>();
     private Map<String, String> additionalInfo = new HashMap<String, String>();
     private LinkedList<ApplicationNote> notes = new LinkedList<ApplicationNote>();
+    private List<Change> history = new ArrayList<Change>();
+    private Integer version;
 
     @JsonCreator
     public Application(@JsonProperty(value = "applicationSystemId") final String applicationSystemId,
@@ -109,6 +112,12 @@ public class Application implements Serializable {
         this.oid = oid;
     }
 
+    @JsonIgnore
+    public Application(final String oid, final Integer version) {
+        this.oid = oid;
+        this.version = version;
+    }
+
 
     @JsonIgnore
     public Application(@JsonProperty(value = "applicationSystemId") final String applicationSystemId,
@@ -128,11 +137,6 @@ public class Application implements Serializable {
 
     public Application(final User user, final ApplicationPhase phase) {
         this(phase.getApplicationSystemId(), user);
-        addVaiheenVastaukset(phase.getPhaseId(), phase.getAnswers());
-    }
-
-    public Application(final String oid, final ApplicationPhase phase) {
-        this(phase.getApplicationSystemId(), oid);
         addVaiheenVastaukset(phase.getPhaseId(), phase.getAnswers());
     }
 
@@ -265,17 +269,17 @@ public class Application implements Serializable {
         }
     }
 
-    private void updateSearchNames(String... names){
+    private void updateSearchNames(String... names) {
         if (names == null || names.length < 1)
             return;
 
-        for (String name : names){
-            if(name == null || name.isEmpty())
+        for (String name : names) {
+            if (name == null || name.isEmpty())
                 continue;
-            for (String searchName : name.split(" ")){
+            for (String searchName : name.split(" ")) {
                 searchName = searchName.toLowerCase();
                 addSearchName(searchName);
-                for (String namePart : searchName.split("-")){
+                for (String namePart : searchName.split("-")) {
                     addSearchName(namePart);
                 }
             }
@@ -293,20 +297,21 @@ public class Application implements Serializable {
     }
 
     @JsonIgnore
-    public boolean isStudentIdentificationDone() {
-        return null != this.studentIdentificationDone ? this.studentIdentificationDone: true;
-    }
-
-    @JsonIgnore
     public Application modifyPersonalData(Person person) {
         Map<String, String> henkilotiedot = new HashMap<String, String>(getPhaseAnswers("henkilotiedot"));
         henkilotiedot = updateHenkilotiedotField(henkilotiedot, person.getFirstNames(),
-                OppijaConstants.ELEMENT_ID_FIRST_NAMES,OppijaConstants.ELEMENT_ID_FIRST_NAMES_USER);
+                OppijaConstants.ELEMENT_ID_FIRST_NAMES, OppijaConstants.ELEMENT_ID_FIRST_NAMES_USER);
         henkilotiedot = updateHenkilotiedotField(henkilotiedot, person.getLastName(),
-                OppijaConstants.ELEMENT_ID_LAST_NAME,OppijaConstants.ELEMENT_ID_LAST_NAME_USER);
+                OppijaConstants.ELEMENT_ID_LAST_NAME, OppijaConstants.ELEMENT_ID_LAST_NAME_USER);
         henkilotiedot = updateHenkilotiedotField(henkilotiedot, person.getNickName(),
-                OppijaConstants.ELEMENT_ID_NICKNAME,OppijaConstants.ELEMENT_ID_NICKNAME_USER);
+                OppijaConstants.ELEMENT_ID_NICKNAME, OppijaConstants.ELEMENT_ID_NICKNAME_USER);
         updateNameMetadata();
+
+        henkilotiedot = updateHenkilotiedotField(henkilotiedot, person.getContactLanguage(),
+                OppijaConstants.ELEMENT_ID_CONTACT_LANGUAGE, OppijaConstants.ELEMENT_ID_CONTACT_LANGUAGE_USER);
+        henkilotiedot = updateHenkilotiedotField(henkilotiedot, person.getHomeCity(),
+                OppijaConstants.ELEMENT_ID_HOME_CITY, OppijaConstants.ELEMENT_ID_HOME_CITY_USER);
+
         String personOid = person.getPersonOid();
         if (isNotEmpty(personOid)) {
             setPersonOid(personOid);
@@ -325,17 +330,23 @@ public class Application implements Serializable {
             return henkilotiedot;
         }
 
-        String value = henkilotiedot.get(field);
-        String valueByUser = henkilotiedot.get(fieldUser);
-
-        if (valueByUser == null) {
-            valueByUser = value;
+        String value = null;
+        if (henkilotiedot.containsKey(field)) {
+            value = henkilotiedot.get(field);
         }
-        value = newValue;
 
-        henkilotiedot.put(field, value);
-        henkilotiedot.put(fieldUser, valueByUser);
+        String valueByUser = null;
+        if (henkilotiedot.containsKey(fieldUser)) {
+            valueByUser = henkilotiedot.get(fieldUser);
+        }
 
+        if (valueByUser == null && value != null) {
+            henkilotiedot.put(fieldUser, value);
+        }
+
+        log.info("Updating henkilotiedot oid: "+oid+" "+field+": "+String.valueOf(value)+" -> "+newValue);
+
+        henkilotiedot.put(field, newValue);
         return henkilotiedot;
 
     }
@@ -368,9 +379,13 @@ public class Application implements Serializable {
         return this.state;
     }
 
-    public void setStudentIdentificationDone(Boolean studentIdentificationDone) {this.studentIdentificationDone = studentIdentificationDone;}
+    public void setStudentIdentificationDone(Boolean studentIdentificationDone) {
+        this.studentIdentificationDone = studentIdentificationDone;
+    }
 
-    public Boolean getStudentIdentificationDone() {return this.studentIdentificationDone;}
+    public Boolean getStudentIdentificationDone() {
+        return this.studentIdentificationDone;
+    }
 
     public String getPhaseId() {
         return phaseId;
@@ -468,14 +483,30 @@ public class Application implements Serializable {
         notes.add(0, note);
     }
 
-    public Set<String> getSearchNames(){
+    public List<Change> getHistory() {
+        return history;
+    }
+
+    public Set<String> getSearchNames() {
         return this.searchNames;
     }
 
-    public void addSearchName(String searchName){
-        if (searchName != null && !searchName.isEmpty()){
+    public void addSearchName(String searchName) {
+        if (searchName != null && !searchName.isEmpty()) {
             this.searchNames.add(searchName);
         }
+    }
+
+    public void addHistory(final Change change) {
+        if (this.history == null) {
+            this.history = new LinkedList<Change>();
+        }
+        this.history.add(0, change);
+        this.version = this.history.size();
+    }
+
+    public Integer getVersion() {
+        return version;
     }
 
 }

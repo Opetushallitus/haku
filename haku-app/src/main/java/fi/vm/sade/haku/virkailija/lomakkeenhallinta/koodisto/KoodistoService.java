@@ -33,8 +33,6 @@ public interface KoodistoService {
 
     List<Option> getLearningInstitutionTypes();
 
-    List<Option> getOrganizationtypes();
-
     List<Option> getCountries();
 
     List<Option> getNationalities();

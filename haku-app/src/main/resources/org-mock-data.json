@@ -39,6 +39,42 @@
         "endDate": null,
         "name": {
             "translations": {
+                "fi": "Ylä-Savon ammattiopisto, Iisalmi"
+            }
+        },
+        "oid": "1.2.246.562.10.69764449356",
+        "types": ["OPETUSPISTE"],
+        "parentOid": "1.2.246.562.10.16712896824",
+        "startDate": 1353362400000
+    },
+    {
+        "endDate": null,
+        "name": {
+            "translations": {
+                "fi": "Ylä-Savon ammattiopisto"
+            }
+        },
+        "oid": "1.2.246.562.10.16712896824",
+        "types": ["OPPILAITOS"],
+        "parentOid": "1.2.246.562.10.20080445206",
+        "startDate": 1353362400000
+    },
+    {
+        "endDate": null,
+        "name": {
+            "translations": {
+                "fi": "Ylä-Savon koulutuskuntayhtymä"
+            }
+        },
+        "oid": "1.2.246.562.10.20080445206",
+        "types": ["KOULUTUSTOIMIJA"],
+        "parentOid": "1.2.246.562.10.00000000001",
+        "startDate": 1353362400000
+    },
+    {
+        "endDate": null,
+        "name": {
+            "translations": {
                 "fi": "Espoon kaupungin työväenopisto op"
             }
         },

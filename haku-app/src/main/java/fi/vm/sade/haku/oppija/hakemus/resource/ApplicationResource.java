@@ -17,6 +17,7 @@
 package fi.vm.sade.haku.oppija.hakemus.resource;
 
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
+import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationAdditionalDataDTO;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationQueryParameters;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
@@ -74,10 +75,31 @@ public class ApplicationResource {
     public Application getApplicationByOid(@PathParam(OID) String oid) {
         LOGGER.debug("Getting application by oid : {}", oid);
         try {
-            return applicationService.getApplicationByOid(oid);
+            Application application = applicationService.getApplicationByOid(oid);
+            LOGGER.debug("Got applicatoin by oid : {}", application.getOid());
+            return application;
         } catch (ResourceNotFoundException e) {
             throw new JSONException(Response.Status.NOT_FOUND, "Could not find requested application", e);
         }
+    }
+
+    @GET
+    @Path("list")
+    @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
+    @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_READ', 'ROLE_APP_HAKEMUS_CRUD', 'ROLE_APP_HAKEMUS_OPO')")
+    public List<Application> getApplicationsByOids(@QueryParam("oid") List<String> oids) {
+        List<Application> result = new ArrayList<Application>();
+        for (String oid : oids) {
+            LOGGER.debug("Getting application by oid : {}", oid);
+            try {
+                Application app = applicationService.getApplicationByOid(oid);
+                result.add(app);
+            } catch (ResourceNotFoundException e) {
+                throw new JSONException(Response.Status.NOT_FOUND, "Could not find requested application with oid: " + oid, e);
+            }
+        }
+        return result;
+
     }
 
     @GET
@@ -143,7 +165,7 @@ public class ApplicationResource {
     @GET
     @Path("{oid}/{key}")
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
-    @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_READ', 'ROLE_APP_HAKEMUS_CRUD')")
+    @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_READ', 'ROLE_APP_HAKEMUS_CRUD', 'ROLE_APP_HAKEMUS_LISATIETORU', 'ROLE_APP_HAKEMUS_LISATIETOCRUD')")
     public Map<String, String> getApplicationKeyValue(@PathParam(OID) String oid, @PathParam("key") String key) {
         Map<String, String> keyValue = new HashMap<String, String>();
 
@@ -160,7 +182,7 @@ public class ApplicationResource {
     @Path("{oid}/{key}")
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     @Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
-    @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_CRUD')")
+    @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_CRUD', 'ROLE_APP_HAKEMUS_LISATIETORU', 'ROLE_APP_HAKEMUS_LISATIETOCRUD')")
     public void putApplicationAdditionalInfoKeyValue(@PathParam(OID) String oid,
                                                      @PathParam("key") String key,
                                                      @QueryParam("value") String value) {
@@ -175,5 +197,23 @@ public class ApplicationResource {
         }
     }
 
+    @GET
+    @Path("additionalData/{asId}/{aoId}")
+    @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
+    @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_READ', 'ROLE_APP_HAKEMUS_CRUD', 'ROLE_APP_HAKEMUS_LISATIETORU', 'ROLE_APP_HAKEMUS_LISATIETOCRUD')")
+    public List<ApplicationAdditionalDataDTO> getApplicationAdditionalData(@PathParam("asId") String asId,
+                                                                           @PathParam("aoId") String aoId) {
+         return applicationService.findApplicationAdditionalData(asId, aoId);
+    }
 
+    @PUT
+    @Path("additionalData/{asId}/{aoId}")
+    @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
+    @Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
+    @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_CRUD', 'ROLE_APP_HAKEMUS_LISATIETORU', 'ROLE_APP_HAKEMUS_LISATIETOCRUD')")
+    public void putApplicationAdditionalData(@PathParam("asId") String asId,
+                                             @PathParam("aoId") String aoId,
+                                             List<ApplicationAdditionalDataDTO> additionalData) {
+        applicationService.saveApplicationAdditionalInfo(additionalData);
+    }
 }

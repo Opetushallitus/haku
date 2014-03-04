@@ -16,14 +16,12 @@
 
 package fi.vm.sade.haku.oppija.hakemus.it.dao;
 
-import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.mongodb.util.JSON;
 import fi.vm.sade.haku.oppija.common.dao.AbstractDAOTest;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.haku.oppija.lomake.domain.User;
-import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundExceptionRuntime;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import org.apache.commons.io.IOUtils;
 import org.junit.Before;
@@ -39,7 +37,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -80,18 +77,18 @@ public class ApplicationDAOMongoImplIT extends AbstractDAOTest {
         this.applicationSystemId = ElementUtil.randomId();
     }
 
-    @Test
-    public void testFindPersonOidExists() {
-        BasicDBObject query = new BasicDBObject();
-        query.put("personOid", new BasicDBObject("$exists", false));
-        List<Application> notExists = applicationDAO.find(query);
-        assertEquals(2, notExists.size());
-
-        query = new BasicDBObject();
-        query.put("personOid", new BasicDBObject("$exists", true));
-        List<Application> exists = applicationDAO.find(query);
-        assertEquals(1, exists.size());
-    }
+//    @Test
+//    public void testFindPersonOidExists() {
+//        BasicDBObject query = new BasicDBObject();
+//        query.put("personOid", new BasicDBObject("$exists", false));
+//        List<Application> notExists = applicationDAO.find(query);
+//        assertEquals(2, notExists.size());
+//
+//        query = new BasicDBObject();
+//        query.put("personOid", new BasicDBObject("$exists", true));
+//        List<Application> exists = applicationDAO.find(query);
+//        assertEquals(1, exists.size());
+//    }
 
     @Test
     public void testFindAll() throws Exception {
@@ -107,19 +104,6 @@ public class ApplicationDAOMongoImplIT extends AbstractDAOTest {
     public void testFindAllNotFound() throws Exception {
         List<Application> applications = applicationDAO.find(new Application(applicationSystemId, TEST_USER));
         assertTrue(applications.isEmpty());
-    }
-
-    @Test(expected = ResourceNotFoundExceptionRuntime.class)
-    public void testfindDraftApplicationNotFound() throws Exception {
-        applicationDAO.findDraftApplication(new Application(applicationSystemId, TEST_USER));
-    }
-
-    @Test
-    public void testFindByApplicationOption() {
-        List<String> aoids = new ArrayList<String>();
-        aoids.add("776");
-        List<Application> applications = applicationDAO.findByApplicationOption(aoids);
-        assertEquals(2, applications.size());
     }
 
     @Test

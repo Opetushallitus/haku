@@ -31,7 +31,6 @@ public final class TestObjectCreator {
 
     public static final String LYHYT_NIMI_2 = "toinen nimi";
     public static final String NIMI_2 = "toinen pitkä nimi";
-    public static final String KOODI_KOODI_URI_AND_ARVO_2 = "toinen koodi arvo";
     public static final KieliType LANG_2 = KieliType.SV;
 
     public static KoodiMetadataType createKoodiMetadataType() {

@@ -6,13 +6,13 @@ import java.util.Map;
 
 public class Difference {
     private final String key;
-    private final String newValue;
     private final String oldValue;
+    private final String newValue;
 
-    public Difference(String key, String newValue, String oldValue) {
+    public Difference(String key, String oldValue, String newValue) {
         this.key = key;
-        this.newValue = newValue;
         this.oldValue = oldValue;
+        this.newValue = newValue;
     }
 
     public Difference(Map.Entry<String, MapDifference.ValueDifference<String>> entryDiffering) {
@@ -25,11 +25,11 @@ public class Difference {
         return key;
     }
 
-    public String getNewValue() {
-        return newValue;
-    }
-
     public String getOldValue() {
         return oldValue;
+    }
+
+    public String getNewValue() {
+        return newValue;
     }
 }

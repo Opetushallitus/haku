@@ -123,11 +123,6 @@ public class KoodistoServiceImpl implements KoodistoService {
     }
 
     @Override
-    public List<Option> getOrganizationtypes() {
-        return urisToOptions(CODE_ORGANIZATION_TYPES, true);
-    }
-
-    @Override
     public List<Option> getCountries() {
         return codesToOptions(CODE_COUNTRIES);
     }
@@ -188,7 +183,7 @@ public class KoodistoServiceImpl implements KoodistoService {
                         || OPPILAITOSTYYPPI_KANSANOPISTO.equals(uri))
                         &&
                         (LUKIO.equals(arvo)
-                        || LUKIO_JA_PERUSKOULU.equals(arvo))
+                                || LUKIO_JA_PERUSKOULU.equals(arvo))
                         || KANSANOPISTO.equals(arvo)) {
                     lukioNumerot.add(koodi.getKoodiArvo());
                     LOGGER.debug("Lukiokoodit: " + koodi.getKoodiArvo());
