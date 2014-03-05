@@ -22,7 +22,6 @@ package fi.vm.sade.haku.virkailija.lomakkeenhallinta.util;
  */
 public final class OppijaConstants {
 
-
     private OppijaConstants() {
         // Utility class, no need for instances
     }
@@ -63,6 +62,7 @@ public final class OppijaConstants {
     public static final String ELEMENT_ID_BASE_EDUCATION_USER = "POHJAKOULUTUS_user";
 
     public static final String PHASE_EDUCATION = "koulutustausta";
+    public static final String PHASE_APPLICATION_OPTIONS = "hakutoiveet";
 
     public static final String PREFERENCE_ID = "preference%d-Koulutus-id";
 

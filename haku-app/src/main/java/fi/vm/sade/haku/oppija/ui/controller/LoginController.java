@@ -36,7 +36,7 @@ import static javax.ws.rs.core.Response.seeOther;
 
 @Component
 @Path("user")
-@Profile(value = {"dev", "it"})
+@Profile(value = {"dev", "it", "devluokka"})
 public class LoginController {
 
     public static final String TOP_LOGIN_VIEW = "/top/login";

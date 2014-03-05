@@ -52,6 +52,17 @@
         <import resource="classpath:/META-INF/spring/logger-context.xml"/>
     </beans>
 
+    <beans profile="devluokka">
+        <context:property-placeholder
+                location="classpath:haku.properties, classpath:ext.properties,
+                    file:///${user.home:''}/oph-configuration/haku.properties,
+                    file:///${user.home:''}/oph-configuration/common.properties"
+                ignore-resource-not-found="true" properties-ref="devProps"/>
+        <bean id="devProps" class="org.springframework.beans.factory.config.PropertiesFactoryBean"/>
+        <import resource="form-login-security-context.xml"/>
+        <import resource="classpath:/META-INF/spring/logger-mock-context.xml"/>
+    </beans>
+
     <beans profile="dev">
         <context:property-placeholder
                 location="classpath:haku.properties, classpath:ext.properties,

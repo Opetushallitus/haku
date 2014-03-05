@@ -41,7 +41,7 @@ import java.util.List;
  * @author Mikko Majapuro
  */
 @Service
-@Profile("default")
+@Profile(value = {"default", "devluokka"})
 public class HakuServiceImpl implements HakuService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(HakuServiceImpl.class);
