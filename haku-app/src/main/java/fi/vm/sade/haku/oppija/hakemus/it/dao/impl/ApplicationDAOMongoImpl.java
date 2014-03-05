@@ -415,14 +415,8 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         if (updatedAfter != null) {
             filters.add(
                     QueryBuilder.start().or(
-                            QueryBuilder.start().and(
-                                    QueryBuilder.start(FIELD_UPDATED).exists(false).get(),
-                                    QueryBuilder.start(FIELD_RECEIVED).greaterThanEquals(updatedAfter.getTime()).get()
-                            ).get(),
-                            QueryBuilder.start().and(
-                                    QueryBuilder.start(FIELD_UPDATED).exists(true).get(),
-                                    QueryBuilder.start(FIELD_UPDATED).greaterThanEquals(updatedAfter.getTime()).get()
-                            ).get()
+                            QueryBuilder.start(FIELD_RECEIVED).greaterThanEquals(updatedAfter.getTime()).get(),
+                            QueryBuilder.start(FIELD_UPDATED).greaterThanEquals(updatedAfter.getTime()).get()
                     ).get()
             );
         }
