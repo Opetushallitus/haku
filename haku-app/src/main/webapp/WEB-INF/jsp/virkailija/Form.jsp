@@ -46,6 +46,7 @@
     <script src="${contextPath}/resources/javascript/master.js" type="text/javascript"></script>
     <script src="${contextPath}/resources/jquery/jquery.cookie.js" type="text/javascript"></script>
     <script src="${contextPath}/resources/javascript/virkailija/application.js" type="text/javascript"></script>
+    <script src="${contextPath}/resources/javascript/virkailija/tabs.js" type="text/javascript"></script>
     <script type="text/javascript" src="/virkailija-raamit/apply-raamit.js"></script>
     <title><fmt:message key="virkailija.otsikko"/></title>
 
@@ -149,6 +150,8 @@
             <div class="tabs">
                 <a href="#" data-tabs-group="applicationtabs" data-tabs-id="application"
                    class="tab current"><span>Hakemus</span></a>
+                <a href="#" data-tabs-group="applicationtabs" data-tabs-id="valinta"
+                   class="tab"><span>Valinta</span></a>
             </div>
 
             <div class="tabsheets">
@@ -183,6 +186,11 @@
 
                     <hr/>
 
+                </section>
+
+                <section id="application" class="tabsheet" data-tabs-group="applicationtabs" data-tabs-id="valinta"
+                         style="display: none">
+                    <p>here be the valinta</p>
                 </section>
 
             </div>
