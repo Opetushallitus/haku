@@ -2702,10 +2702,10 @@
         "startDate": 631144800000
     },
     {
-        "endDate": null,
+        "endDate": 694216800001,
         "name": {
             "translations": {
-                "fi": "Tampereen Rudolf Steiner-koulu"
+                "fi": "Tampereen Rudolf Steiner-koulu (lakkautettu)"
             }
         },
         "oid": "1.2.246.562.10.59057515068",
@@ -2714,10 +2714,10 @@
         "startDate": 694216800000
     },
     {
-        "endDate": null,
+        "endDate": 1353362400001,
         "name": {
             "translations": {
-                "fi": "Tampereen Rudolf Steiner-koulu, Espoo op"
+                "fi": "Tampereen Rudolf Steiner-koulu, Espoo op (lakkautettu)"
             }
         },
         "oid": "1.2.246.562.10.20732855658",

@@ -64,14 +64,39 @@ public class OrganizationServiceMockImpl implements OrganizationService {
         }
     }
 
-    static class OrgIncludePassivePredicate implements Predicate<Organization> {
+    static class OrgIncludeOnlyPassivePredicate implements Predicate<Organization> {
 
+        private boolean onlyPassive;
 
-        public OrgIncludePassivePredicate() {
+        public OrgIncludeOnlyPassivePredicate(boolean onlyPassive) {
+            this.onlyPassive = onlyPassive;
         }
 
         public boolean apply(Organization org) {
-            return org.getStartDate().before(new Date());
+            if (!onlyPassive) {
+                return true;
+            } else {
+                return org.getStartDate().before(new Date()) &&
+                        (org.getEndDate() != null && org.getEndDate().before(new Date()));
+            }
+        }
+    }
+
+    static class OrgIncludeOnlyActivePredicate implements Predicate<Organization> {
+
+        private boolean onlyActive;
+
+        public OrgIncludeOnlyActivePredicate(boolean onlyActive) {
+            this.onlyActive = onlyActive;
+        }
+
+        public boolean apply(Organization org) {
+            if (!onlyActive) {
+                return true;
+            } else {
+                return org.getStartDate().before(new Date()) &&
+                        (org.getEndDate() == null || org.getEndDate().after(new Date()));
+            }
         }
     }
 
@@ -198,7 +223,8 @@ public class OrganizationServiceMockImpl implements OrganizationService {
         @SuppressWarnings("unchecked")
         final Predicate<Organization> predicate = Predicates.and(new OrgNamePredicate(criteria.getSearchStr()),
                 new OrgTypePredicate(criteria.getOrganisaatioTyyppi()),
-                new OrgIncludePassivePredicate());
+                new OrgIncludeOnlyActivePredicate(criteria.isVainAktiiviset()),
+                new OrgIncludeOnlyPassivePredicate(criteria.isVainLakkautetut()));
         return Lists.newArrayList(Iterables.filter(orgs, predicate));
     }
 
