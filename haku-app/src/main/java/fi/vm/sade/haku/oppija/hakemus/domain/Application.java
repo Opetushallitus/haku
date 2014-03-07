@@ -72,6 +72,7 @@ public class Application implements Serializable {
     @Deprecated
     private Long studentOidChecked;
     private Date received;
+    private Date updated;
     private String redoPostProcess;
 
     private String fullName;
@@ -423,6 +424,12 @@ public class Application implements Serializable {
     public Date getReceived() {
         return received;
     }
+
+    public void setUpdated(Date updated) {
+        this.updated = updated;
+    }
+
+    public Date getUpdated() { return updated; }
 
     public String getStudentOid() {
         return studentOid;

@@ -627,7 +627,7 @@
         </dependency>
 
         <dependency>
-            <groupId>fi.vm.sade.auth</groupId>
+            <groupId>fi.vm.sade.authentication</groupId>
             <artifactId>authentication-api</artifactId>
             <version>${authentication-api.version}</version>
         </dependency>
