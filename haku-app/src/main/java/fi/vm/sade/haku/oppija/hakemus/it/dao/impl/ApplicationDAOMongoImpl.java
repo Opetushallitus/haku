@@ -309,6 +309,27 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         );
     }
 
+    private QueryBuilder queryByLopAndDiscretionary(String lopOid) {
+        return QueryBuilder.start().or(
+                queryByLopAndDiscretionary(FIELD_DISCRETIONARY_1, FIELD_LOP_1, FIELD_LOP_PARENTS_1, lopOid).get(),
+                queryByLopAndDiscretionary(FIELD_DISCRETIONARY_2, FIELD_LOP_2, FIELD_LOP_PARENTS_2, lopOid).get(),
+                queryByLopAndDiscretionary(FIELD_DISCRETIONARY_3, FIELD_LOP_3, FIELD_LOP_PARENTS_3, lopOid).get(),
+                queryByLopAndDiscretionary(FIELD_DISCRETIONARY_4, FIELD_LOP_4, FIELD_LOP_PARENTS_4, lopOid).get(),
+                queryByLopAndDiscretionary(FIELD_DISCRETIONARY_5, FIELD_LOP_5, FIELD_LOP_PARENTS_5, lopOid).get()
+        );
+    }
+
+    private QueryBuilder queryByLopAndDiscretionary(String fieldDiscretionary, String fieldLop, String fieldLopParents,
+                                                    String lopOid) {
+        return QueryBuilder.start().and(
+                QueryBuilder.start(fieldDiscretionary).is(Boolean.TRUE.toString()).get(),
+                QueryBuilder.start().or(
+                        QueryBuilder.start(fieldLop).is(lopOid).get(),
+                        QueryBuilder.start(fieldLopParents).regex(Pattern.compile(lopOid)).get()
+                ).get()
+        );
+    }
+
     private List<Application> findApplications(DBObject dbObject) {
         final DBCursor dbCursor = getCollection().find(dbObject);
         return Lists.newArrayList(Iterables.transform(dbCursor, fromDBObject));
@@ -363,7 +384,10 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
             filters.add(QueryBuilder.start(FIELD_APPLICATION_SYSTEM_ID).in(asIds).get());
         }
 
-        if (applicationQueryParameters.isDiscretionaryOnly()) {
+        boolean discretionaryOnly = applicationQueryParameters.isDiscretionaryOnly();
+        if (isNotEmpty(lopOid) && discretionaryOnly) {
+            filters.add(queryByLopAndDiscretionary(lopOid).get());
+        } else if (discretionaryOnly) {
             filters.add(queryDiscretionaryOnly().get());
         }
 
