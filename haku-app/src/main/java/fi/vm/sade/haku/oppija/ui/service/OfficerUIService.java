@@ -38,7 +38,7 @@ public interface OfficerUIService {
 
     ModelResponse addStudentOid(final String oid);
 
-    ModelResponse postProcess(final String oid);
+    ModelResponse postProcess(final String oid, final boolean email);
 
     void activateApplication(String oid, String reason);
 

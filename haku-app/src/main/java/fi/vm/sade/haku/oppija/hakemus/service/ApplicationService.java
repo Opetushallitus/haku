@@ -18,10 +18,12 @@ package fi.vm.sade.haku.oppija.hakemus.service;
 
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
+import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationAdditionalDataDTO;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationQueryParameters;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationState;
 
+import java.util.List;
 import java.util.Map;
 
 public interface ApplicationService {
@@ -59,6 +61,10 @@ public interface ApplicationService {
      * @return
      */
     ApplicationSearchResultDTO findApplications(final String term, final ApplicationQueryParameters applicationQueryParameters);
+
+    List<ApplicationAdditionalDataDTO> findApplicationAdditionalData(final String applicationSystemId, final String aoId);
+
+    void saveApplicationAdditionalInfo(final List<ApplicationAdditionalDataDTO> applicationAdditionalData);
 
 
     /**

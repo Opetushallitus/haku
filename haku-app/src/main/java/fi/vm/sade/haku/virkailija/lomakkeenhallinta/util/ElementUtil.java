@@ -185,7 +185,7 @@ public final class ElementUtil {
 
     public static Validator createDateOfBirthValidator(final String id, final String bundleName) {
         return new DateOfBirthValidator(id,
-                ElementUtil.createI18NText(DateOfBirthValidator.DATE_OF_BIRTH_GENERIC_ERROR_MESSAGE, bundleName));
+                ElementUtil.createI18NText(DateOfBirthValidator.DATE_OF_BIRTH_GENERIC_ERROR_MESSAGE, bundleName), bundleName);
     }
 
     public static void addRequiredValidator(final Element element, final String bundleName) {

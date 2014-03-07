@@ -20,6 +20,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import javax.ws.rs.HEAD;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -87,9 +88,18 @@ public class HakuPermissionServiceImpl extends AbstractPermissionService impleme
 
     @Override
     public boolean userCanReadApplication(Application application) {
-        return userCanAccessApplication(application, getReadRole(), getReadUpdateRole(), getCreateReadUpdateDeleteRole(),
-                getRoleLisatietoRU(), getRoleLisatietoCRUD()) ||
-                userHasOpoRoleToSendingSchool(application);
+        log.debug("Checking access for application: "+application.getOid());
+        boolean canRead = userCanAccessApplication(application, getReadRole(), getReadUpdateRole(), getCreateReadUpdateDeleteRole(),
+                getRoleLisatietoRU(), getRoleLisatietoCRUD());
+        if (canRead) {
+            log.debug("Can read, "+application.getOid());
+            return canRead;
+        }
+        boolean opo = userHasOpoRoleToSendingSchool(application);
+        if (opo) {
+            log.debug("Can read, opo "+application.getOid());
+        }
+        return opo;
     }
 
     @Override
@@ -162,6 +172,20 @@ public class HakuPermissionServiceImpl extends AbstractPermissionService impleme
             return true;
         }
         return userHasOpoRole(null).size() > 0;
+    }
+
+    @Override
+    public boolean userCanEditApplicationAdditionalData(Application application) {
+        if (userCanAccessApplication(application, getRoleLisatietoCRUD())) {
+            return true;
+        } else if (userCanAccessApplication(application, getRoleLisatietoRU())) {
+           return true;
+        } else if (userCanAccessApplication(application, getReadUpdateRole())) {
+            return true;
+        } else if (userCanAccessApplication(application, getCreateReadUpdateDeleteRole())) {
+            return true;
+        }
+        return false;
     }
 
     @SuppressWarnings("deprecation")
