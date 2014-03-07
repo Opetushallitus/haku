@@ -9,6 +9,7 @@ import fi.vm.sade.haku.oppija.hakemus.aspect.LoggerAspect;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationNote;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
+import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationOptionDTO;
 import fi.vm.sade.haku.oppija.hakemus.domain.util.ApplicationUtil;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.haku.oppija.hakemus.service.HakuPermissionService;
@@ -31,6 +32,7 @@ import fi.vm.sade.haku.oppija.ui.service.OfficerUIService;
 import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
+import fi.vm.sade.haku.virkailija.valinta.ValintaService;
 import fi.vm.sade.organisaatio.api.model.types.OrganisaatioTyyppi;
 import fi.vm.sade.organisaatio.api.search.OrganisaatioSearchCriteria;
 import org.slf4j.Logger;
@@ -57,6 +59,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     private final ApplicationSystemService applicationSystemService;
     private final AuthenticationService authenticationService;
     private final OrganizationService organizationService;
+    private final ValintaService valintaService;
     private final UserSession userSession;
 
     private static final List<Integer> syyskausi = ImmutableList.of(Calendar.JULY, Calendar.AUGUST, Calendar.SEPTEMBER,
@@ -73,6 +76,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
                                 final ApplicationSystemService applicationSystemService,
                                 final AuthenticationService authenticationService,
                                 final OrganizationService organizationService,
+                                final ValintaService valintaService,
                                 final UserSession userSession) {
         this.applicationService = applicationService;
         this.formService = formService;
@@ -84,6 +88,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         this.applicationSystemService = applicationSystemService;
         this.authenticationService = authenticationService;
         this.organizationService = organizationService;
+        this.valintaService = valintaService;
         this.userSession = userSession;
     }
 
@@ -123,6 +128,8 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         modelResponse.addObjectToModel("postProcessAllowed", hakuPermissionService.userCanPostProcess(application));
         modelResponse.addObjectToModel("applicationSystem", as);
 
+        modelResponse.addObjectToModel("hakukohteet", getHakukohteet(application));
+
         String sendingSchoolOid = application.getVastauksetMerged().get("lahtokoulu");
         if (sendingSchoolOid != null) {
             Organization sendingSchool = organizationService.findByOid(sendingSchoolOid);
@@ -138,6 +145,14 @@ public class OfficerUIServiceImpl implements OfficerUIService {
             modelResponse.setErrorMessages(errors);
         }
         return modelResponse;
+    }
+
+    private List<ApplicationOptionDTO> getHakukohteet(Application application) {
+        List<ApplicationOptionDTO> osallistuminen = valintaService.getValintakoeOsallistuminen(application);
+
+        return osallistuminen;
+
+
     }
 
     @Override

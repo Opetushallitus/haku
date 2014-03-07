@@ -8,7 +8,6 @@ $(document).ready(function() {
         $('div.tabsheets section[data-tabs-group="'+tabGroup+'"]').hide();
         $('div.tabs a[data-tabs-id="'+tabId+'"]').addClass('current');
         $('div.tabsheets section[data-tabs-id="'+tabId+'"]').show();
-
     });
 
 });

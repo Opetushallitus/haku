@@ -157,40 +157,15 @@
             <div class="tabsheets">
                 <section id="application" class="tabsheet" data-tabs-group="applicationtabs" data-tabs-id="application"
                          style="display: block">
-                    <haku:messages messages="${errorMessages}" additionalClass="warning"/>
-                    <c:choose>
-                        <c:when test="${preview}">
-                            <c:set var="virkailijaPreview" value="true" scope="request"/>
-                            <div class="form">
-                                <c:forEach var="child" items="${form.children}">
-                                    <c:set var="element" value="${child}" scope="request"/>
-                                    <jsp:include page="../elements/${child.type}Preview.jsp"/>
-                                </c:forEach>
-                                <jsp:include page="./additionalInfoPreview.jsp"/>
-                                <jsp:include page="./notes.jsp"/>
-                            </div>
-                        </c:when>
-                        <c:otherwise>
-                            <c:set var="virkailijaEdit" value="true" scope="request"/>
-                            <form id="form-${it.element.id}" class="form" method="post">
-                                <c:forEach var="child" items="${it.element.children}">
-                                    <c:set var="element" value="${child}" scope="request"/>
-                                    <jsp:include page="../elements/${child.type}.jsp"/>
-                                </c:forEach>
-                                <button class="save" name="vaiheId" type="submit" value="${it.element.id}">
-                                    <span><span><fmt:message key="lomake.button.save"/></span></span>
-                                </button>
-                            </form>
-                        </c:otherwise>
-                    </c:choose>
 
-                    <hr/>
+                    <jsp:include page="hakemusTab.jsp"/>
 
                 </section>
 
-                <section id="application" class="tabsheet" data-tabs-group="applicationtabs" data-tabs-id="valinta"
+                <section id="valinta" class="tabsheet" data-tabs-group="applicationtabs" data-tabs-id="valinta"
                          style="display: none">
-                    <p>here be the valinta</p>
+
+                    <jsp:include page="valintaTab.jsp"/>
                 </section>
 
             </div>
