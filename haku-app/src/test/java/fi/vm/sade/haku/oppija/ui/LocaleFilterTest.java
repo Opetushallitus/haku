@@ -18,6 +18,9 @@ package fi.vm.sade.haku.oppija.ui;
 
 import com.sun.jersey.core.util.MultivaluedMapImpl;
 import com.sun.jersey.spi.container.ContainerRequest;
+import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
+import fi.vm.sade.haku.virkailija.authentication.Person;
+import fi.vm.sade.haku.virkailija.authentication.PersonBuilder;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -35,20 +38,40 @@ public class LocaleFilterTest {
     private HttpSession session;
     private ContainerRequest containerRequest;
     private LocaleFilter localeFilter;
+    private AuthenticationService authenticationService;
+
+    private Person langFi;
+    private Person langSv;
 
     @Before
     public void setUp() throws Exception {
         this.httpServletRequest = mock(HttpServletRequest.class);
         this.session = mock(HttpSession.class);
         this.containerRequest = mock(ContainerRequest.class);
-        when(httpServletRequest.getSession()).thenReturn(session);
-        localeFilter = new LocaleFilter(httpServletRequest);
+        this.authenticationService = mock(AuthenticationService.class);
 
+        MultivaluedMap<String, String> cookieMap = new MultivaluedMapImpl();
+
+        langFi = PersonBuilder.start().setContactLanguage("fi").get();
+        langSv = PersonBuilder.start().setContactLanguage("sv").get();
+
+        when(httpServletRequest.getSession()).thenReturn(session);
+        when(containerRequest.getCookieNameValueMap()).thenReturn(cookieMap);
+        localeFilter = new LocaleFilter(httpServletRequest);
+        localeFilter.setAuthenticationService(authenticationService);
     }
 
     @Test
-    public void testFilterFi() throws Exception {
+    public void testFilterFiParam() throws Exception {
         putLangParameter("fi");
+        assertEquals("Container request changed", this.containerRequest, localeFilter.filter(containerRequest));
+    }
+
+    @Test
+    public void testPersonFi() throws Exception {
+        when(authenticationService.getCurrentHenkilo()).thenReturn(langFi);
+        MultivaluedMap<String, String> queryParameters = new MultivaluedMapImpl();
+        when(containerRequest.getQueryParameters()).thenReturn(queryParameters);
         assertEquals("Container request changed", this.containerRequest, localeFilter.filter(containerRequest));
     }
 

@@ -29,6 +29,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -59,6 +60,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private String clientAppUser;
     @Value("${haku.app.password.to.usermanagement}")
     private String clientAppPass;
+
+    @Value("${user.oid.prefix}")
+    private String userOidPrefix;
 
     private CachingRestClient cachingRestClient;
 
@@ -129,6 +133,38 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         } catch (IOException e) {
             throw new RemoteServiceException(url, e);
         }
+    }
+
+    @Override
+    public Person getCurrentHenkilo() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth == null) {
+            return null;
+        }
+        String personOid = auth.getName();
+
+        if (personOid == null || !personOid.startsWith(userOidPrefix)) {
+            return null;
+        }
+        return getHenkilo(personOid);
+    }
+
+    @Override
+    public Person getHenkilo(String personOid) {
+        String url = "/resources/henkilo/" + personOid;
+        Person person = null;
+        try {
+            CachingRestClient cachingRestClient = getCachingRestClient();
+            String personJson = cachingRestClient.getAsString(url);
+
+            GsonBuilder gsonBuilder = new GsonBuilder();
+            gsonBuilder.registerTypeAdapter(Person.class, new PersonJsonAdapter());
+            gson = gsonBuilder.create();
+            person = gson.fromJson(personJson, Person.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return person;
     }
 
     private synchronized CachingRestClient getCachingRestClient() {
