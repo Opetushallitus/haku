@@ -22,6 +22,7 @@
     <link href="${contextPath}/resources/css/hakemus-print.css" type="text/css" rel="stylesheet"/>
     <script src="${contextPath}/resources/jquery/jquery.min.js" type="text/javascript"></script>
     <script src="${contextPath}/resources/jquery/xdr.js"></script>
+    <script src="${contextPath}/resources/javascript/printfix.js"></script>
     <title><fmt:message key="lomake.opintopolku"/> - <fmt:message key="form.title"/> - <fmt:message
             key="lomake.tulostus"/></title>
 </head>
