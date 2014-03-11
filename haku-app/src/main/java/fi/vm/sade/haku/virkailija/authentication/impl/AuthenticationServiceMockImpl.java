@@ -47,6 +47,30 @@ public class AuthenticationServiceMockImpl implements AuthenticationService {
     }
 
     @Override
+    public Person getCurrentHenkilo() {
+        return PersonBuilder.start()
+                .setContactLanguage("fi")
+                .setFirstNames("Etu Nimet")
+                .setHomeCity("Kotikunta")
+                .setLanguage("fi")
+                .setLastName("Sukunimi")
+                .setNationality("fi")
+                .setNickName("Etu")
+                .setNoSocialSecurityNumber(false)
+                .setPersonOid("1.2.246.562.24.00000000001")
+                .setSecurityOrder(false)
+                .setSex("MIES")
+                .setSocialSecurityNumber("110794-354D")
+                .setStudentOid("1.2.246.562.24.00000000001")
+                .get();
+    }
+
+    @Override
+    public Person getHenkilo(String personOid) {
+        return getCurrentHenkilo();
+    }
+
+    @Override
     public Person getStudentOid(String personOid) {
         return PersonBuilder.start().setStudentOid(personOid).get();
     }
