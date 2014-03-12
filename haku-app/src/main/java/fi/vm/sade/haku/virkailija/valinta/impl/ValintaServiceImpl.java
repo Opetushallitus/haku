@@ -34,14 +34,14 @@ public class ValintaServiceImpl implements ValintaService {
     @Value("${web.url.cas}")
     private String casUrl;
 
-    @Value("${cas.service.valintalaskenta}")
+    @Value("${cas.service.valintalaskenta-service}")
     private String targetServiceValinta;
     @Value("${haku.app.username.to.valintalaskenta}")
     private String clientAppUserValinta;
     @Value("${haku.app.password.to.valintalaskenta}")
     private String clientAppPassValinta;
 
-    @Value("${cas.service.sijoittelu}")
+    @Value("${cas.service.sijoittelu-service}")
     private String targetServiceSijoittelu;
     @Value("${haku.app.username.to.sijoittelu}")
     private String clientAppUserSijoittelu;
