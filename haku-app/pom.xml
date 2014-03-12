@@ -644,6 +644,12 @@
             <version>${valintaperusteet.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>fi.vm.sade.sijoittelu</groupId>
+            <artifactId>sijoittelu-tulos-api</artifactId>
+            <version>${valintaperusteet.version}</version>
+        </dependency>
+
         <!-- security -->
         <dependency>
             <groupId>net.sf.ehcache</groupId>

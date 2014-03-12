@@ -20,6 +20,7 @@ import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.valinta.ValintaService;
+import fi.vm.sade.haku.virkailija.valinta.impl.ValintaServiceMockImpl;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -70,7 +71,7 @@ public class OfficerUIServiceImplTest {
         elementTreeValidator = new ElementTreeValidator(validatorFactory);
         authenticationService = mock(AuthenticationService.class);
         organizationService = mock(OrganizationService.class);
-        valintaService = mock(ValintaService.class);
+        valintaService = new ValintaServiceMockImpl(); //mock(ValintaService.class);
         userSession = mock(UserSession.class);
 
         officerUIService = new OfficerUIServiceImpl(

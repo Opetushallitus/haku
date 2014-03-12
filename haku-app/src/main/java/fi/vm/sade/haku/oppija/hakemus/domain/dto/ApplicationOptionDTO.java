@@ -50,9 +50,6 @@ public class ApplicationOptionDTO {
     }
 
     public void addTest(ValintakoeDTO test) {
-        if (tests == null) {
-            tests = new ArrayList<ValintakoeDTO>();
-        }
         tests.add(test);
     }
 
