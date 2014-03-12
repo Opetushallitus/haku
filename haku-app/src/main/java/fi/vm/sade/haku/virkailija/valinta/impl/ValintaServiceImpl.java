@@ -11,6 +11,8 @@ import fi.vm.sade.sijoittelu.tulos.dto.raportointi.HakijaDTO;
 import fi.vm.sade.valintalaskenta.domain.dto.valintakoe.HakutoiveDTO;
 import fi.vm.sade.valintalaskenta.domain.dto.valintakoe.ValintakoeOsallistuminenDTO;
 import fi.vm.sade.valintalaskenta.domain.dto.valintakoe.ValintakoeValinnanvaiheDTO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
@@ -30,6 +32,8 @@ import static org.apache.commons.lang3.StringUtils.isNotBlank;
 @Profile("default")
 //@Profile("dev")
 public class ValintaServiceImpl implements ValintaService {
+
+    private static final Logger log = LoggerFactory.getLogger(ValintaServiceImpl.class);
 
     @Value("${web.url.cas}")
     private String casUrl;
@@ -188,6 +192,12 @@ public class ValintaServiceImpl implements ValintaService {
             cachingRestClientValinta.setCasService(targetServiceValinta);
             cachingRestClientValinta.setUsername(clientAppUserValinta);
             cachingRestClientValinta.setPassword(clientAppPassValinta);
+            log.debug("getCachingRestClientValinta "
+                    +"carUrl: "+casUrl
+                    +" casService: "+targetServiceValinta
+                    +" username: "+clientAppUserValinta
+                    +" password: "+clientAppPassValinta
+            );
         }
         return cachingRestClientValinta;
     }
@@ -199,6 +209,13 @@ public class ValintaServiceImpl implements ValintaService {
             cachingRestClientSijoittelu.setCasService(targetServiceSijoittelu);
             cachingRestClientSijoittelu.setUsername(clientAppUserSijoittelu);
             cachingRestClientSijoittelu.setPassword(clientAppPassSijoittelu);
+
+            log.debug("getCachingRestClientSijoittelu "
+                    +"carUrl: "+casUrl
+                    +" casService: "+targetServiceSijoittelu
+                    +" username: "+clientAppUserSijoittelu
+                    +" password: "+clientAppPassSijoittelu
+            );
         }
         return cachingRestClientSijoittelu;
     }
