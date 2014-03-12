@@ -102,8 +102,6 @@ public class ValintaServiceImpl implements ValintaService {
     @Override
     public HakijaDTO getHakija(String asOid, String applicationOid) {
 
-        // Tulee sijoittelusta, sinne
-
         String url = "/resources/sijoittelu/" + asOid + "/sijoitteluajo/latest/hakemus/" + applicationOid;
 
         String response = null;
@@ -114,11 +112,14 @@ public class ValintaServiceImpl implements ValintaService {
         } catch (NullPointerException npe) {
             // Nothing found with asOid/applicationOid
             npe.printStackTrace();
-            return null;
+            return new HakijaDTO();
         }
 
         Gson gson = new Gson();
         HakijaDTO hakijaDTO = gson.fromJson(response, HakijaDTO.class);
+        if (hakijaDTO == null) {
+            hakijaDTO = new HakijaDTO();
+        }
         return hakijaDTO;
 
     }
