@@ -71,21 +71,23 @@ public class ValintaServiceImpl implements ValintaService {
             ao.setOpetuspiste(kohde.get("opetuspiste"));
             ao.setOpetuspisteOid(kohde.get("opetuspiste-id"));
 
-            HakutoiveDTO hakutoiveDTO = hakutoiveMap.get(aoOid);
-            for (ValintakoeValinnanvaiheDTO vaihe : hakutoiveDTO.getValinnanVaiheet()) {
-                for (fi.vm.sade.valintalaskenta.domain.dto.valintakoe.ValintakoeDTO valintakoe : vaihe.getValintakokeet()) {
-                    ValintakoeDTO valintakoeDTO = new ValintakoeDTO(valintakoe);
-                    String scoreStr = additionalInfo.get(valintakoeDTO.getTunniste());
-                    BigDecimal score = null;
-                    if (isNotBlank(scoreStr)) {
-                        try {
-                            score = new BigDecimal(scoreStr);
-                        } catch (NumberFormatException nfe) {
-                            // NOP
+            if (hakutoiveMap.containsKey(aoOid)) {
+                HakutoiveDTO hakutoiveDTO = hakutoiveMap.get(aoOid);
+                for (ValintakoeValinnanvaiheDTO vaihe : hakutoiveDTO.getValinnanVaiheet()) {
+                    for (fi.vm.sade.valintalaskenta.domain.dto.valintakoe.ValintakoeDTO valintakoe : vaihe.getValintakokeet()) {
+                        ValintakoeDTO valintakoeDTO = new ValintakoeDTO(valintakoe);
+                        String scoreStr = additionalInfo.get(valintakoeDTO.getTunniste());
+                        BigDecimal score = null;
+                        if (isNotBlank(scoreStr)) {
+                            try {
+                                score = new BigDecimal(scoreStr);
+                            } catch (NumberFormatException nfe) {
+                                // NOP
+                            }
                         }
+                        valintakoeDTO.setScore(score);
+                        ao.addTest(valintakoeDTO);
                     }
-                    valintakoeDTO.setScore(score);
-                    ao.addTest(valintakoeDTO);
                 }
             }
             aoList.add(ao);
