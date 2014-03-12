@@ -70,60 +70,59 @@ public class ValintaServiceMockImpl implements ValintaService {
 
     @Override
     public HakijaDTO getHakija(String asOid, String application) {
-        String response = "\n" +
-                "\n" +
-                "{\n" +
-                "  \"hakemusOid\": \"1.2.246.562.11.00000005610\",\n" +
-                "  \"etunimi\": \"Neea V\",\n" +
-                "  \"sukunimi\": \"Ylävuori\",\n" +
-                "  \"hakutoiveet\": [\n" +
-                "    {\n" +
-                "      \"hakutoive\": 2,\n" +
-                "      \"hakukohdeOid\": \"1.2.246.562.5.85532589612\",\n" +
-                "      \"tarjoajaOid\": \"1.2.246.562.10.60222091211\",\n" +
-                "      \"pistetiedot\": [\n" +
-                "        {\n" +
-                "          \"tunniste\": \"kielikoe_fi\",\n" +
-                "          \"arvo\": null,\n" +
-                "          \"laskennallinenArvo\": \"false\",\n" +
-                "          \"osallistuminen\": \"MERKITSEMATTA\"\n" +
-                "        },\n" +
-                "        {\n" +
-                "          \"tunniste\": \"1_2_246_562_5_85532589612_urheilija_lisapiste\",\n" +
-                "          \"arvo\": null,\n" +
-                "          \"laskennallinenArvo\": \"0.0\",\n" +
-                "          \"osallistuminen\": \"MERKITSEMATTA\"\n" +
-                "        },\n" +
-                "        {\n" +
-                "          \"tunniste\": \"Eläintenhoidon koulutusohjelma, pk (Maatalousalan perustutkinto), pääsykoe\",\n" +
-                "          \"arvo\": \"10\",\n" +
-                "          \"laskennallinenArvo\": \"10\",\n" +
-                "          \"osallistuminen\": \"OSALLISTUI\"\n" +
-                "        }\n" +
-                "      ],\n" +
-                "      \"hakutoiveenValintatapajonot\": [\n" +
-                "        {\n" +
-                "          \"valintatapajonoPrioriteetti\": 2,\n" +
-                "          \"valintatapajonoOid\": \"1392297586537-8212850468668966009\",\n" +
-                "          \"valintatapajonoNimi\": \"Varsinaisen valinnanvaiheen valintatapajono\",\n" +
-                "          \"jonosija\": 16,\n" +
-                "          \"paasyJaSoveltuvuusKokeenTulos\": null,\n" +
-                "          \"varasijanNumero\": null,\n" +
-                "          \"tila\": \"HYVAKSYTTY\",\n" +
-                "          \"vastaanottotieto\": \"VASTAANOTTANUT_POISSAOLEVA\",\n" +
-                "          \"hyvaksyttyHarkinnanvaraisesti\": false,\n" +
-                "          \"tasasijaJonosija\": 1,\n" +
-                "          \"pisteet\": 18,\n" +
-                "          \"alinHyvaksyttyPistemaara\": 18,\n" +
-                "          \"hakeneet\": 209,\n" +
-                "          \"hyvaksytty\": 1,\n" +
-                "          \"varalla\": 0\n" +
-                "        }\n" +
-                "      ]\n" +
-                "    }\n" +
-                "  ]\n" +
-                "}\n" +
-                "\n";
+        String response = "{"+
+                "\"hakemusOid\": \"1.2.246.562.11.00000005610\","+
+                "\"etunimi\": \"Neea V\","+
+                "\"sukunimi\": \"Ylävuori\","+
+                "\"hakutoiveet\": ["+
+                "{"+
+                "\"hakutoive\": 2,"+
+                "\"hakukohdeOid\": \"1.2.246.562.5.85532589612\","+
+                "\"tarjoajaOid\": \"1.2.246.562.10.60222091211\","+
+                "\"pistetiedot\": ["+
+                "{"+
+                "\"tunniste\": \"kielikoe_fi\","+
+                "\"arvo\": null,"+
+                "\"laskennallinenArvo\": \"false\","+
+                "\"osallistuminen\": \"MERKITSEMATTA\""+
+                "},"+
+                "{"+
+                "\"tunniste\": \"1_2_246_562_5_85532589612_urheilija_lisapiste\","+
+                "\"arvo\": null,"+
+                "\"laskennallinenArvo\": \"0.0\","+
+                "\"osallistuminen\": \"MERKITSEMATTA\""+
+                "},"+
+                "{"+
+                "\"tunniste\": \"Eläintenhoidon koulutusohjelma, pk (Maatalousalan perustutkinto), pääsykoe\","+
+                "\"arvo\": \"10\","+
+                "\"laskennallinenArvo\": \"10\","+
+                "\"osallistuminen\": \"OSALLISTUI\""+
+                "}"+
+                "],"+
+                "\"hakutoiveenValintatapajonot\": ["+
+                "{"+
+                "\"valintatapajonoPrioriteetti\": 2,"+
+                "\"valintatapajonoOid\": \"1392297586537-8212850468668966009\","+
+                "\"valintatapajonoNimi\": \"Varsinaisen valinnanvaiheen valintatapajono\","+
+                "\"jonosija\": 16,"+
+                "\"paasyJaSoveltuvuusKokeenTulos\": null,"+
+                "\"varasijanNumero\": null,"+
+                "\"tila\": \"HYVAKSYTTY\","+
+                "\"tilanKuvaukset\": {},"+
+                "\"vastaanottotieto\": \"ILMOITETTU\","+
+                "\"hyvaksyttyHarkinnanvaraisesti\": false,"+
+                "\"tasasijaJonosija\": 1,"+
+                "\"pisteet\": 18,"+
+                "\"alinHyvaksyttyPistemaara\": 18,"+
+                "\"hakeneet\": 209,"+
+                "\"hyvaksytty\": 1,"+
+                "\"varalla\": 0"+
+                "}"+
+                "]"+
+                "}"+
+                "]"+
+                "}"+
+                "";
 
         Gson gson = new Gson();
         HakijaDTO hakijaDTO = gson.fromJson(response, HakijaDTO.class);
@@ -131,27 +130,75 @@ public class ValintaServiceMockImpl implements ValintaService {
     }
 
     private ValintakoeOsallistuminenDTO getOsallistuminen(String applicationOid) {
+
         String response = "\n" +
                 "\n" +
                 "{\n" +
                 "  \"hakuOid\": \"1.2.246.562.5.2013080813081926341927\",\n" +
-                "  \"hakemusOid\": \"1.2.246.562.11.00000033242\",\n" +
-                "  \"hakijaOid\": \"1.2.246.562.24.23524180014\",\n" +
-                "  \"etunimi\": \"Asiakas\",\n" +
-                "  \"sukunimi\": \"Testi\",\n" +
-                "  \"createdAt\": 1394109497901,\n" +
+                "  \"hakemusOid\": \"1.2.246.562.11.00000005610\",\n" +
+                "  \"hakijaOid\": \"1.2.246.562.24.85139828495\",\n" +
+                "  \"etunimi\": \"Neea V\",\n" +
+                "  \"sukunimi\": \"Ylävuori\",\n" +
+                "  \"createdAt\": 1394457863526,\n" +
                 "  \"hakutoiveet\": [\n" +
                 "    {\n" +
-                "      \"hakukohdeOid\": \"1.2.246.562.5.97567996844\",\n" +
+                "      \"hakukohdeOid\": \"1.2.246.562.5.27721348947\",\n" +
                 "      \"valinnanVaiheet\": [\n" +
                 "        {\n" +
-                "          \"valinnanVaiheOid\": \"1394108382067-3464927667073476446\",\n" +
+                "          \"valinnanVaiheOid\": \"13935724862225830800449735537001\",\n" +
                 "          \"valinnanVaiheJarjestysluku\": 1,\n" +
                 "          \"valintakokeet\": [\n" +
                 "            {\n" +
-                "              \"valintakoeOid\": \"1394108382210-8388953053505017947\",\n" +
-                "              \"valintakoeTunniste\": \"Sosiaali- ja terveysalan perustutkinto, pk, pääsykoe\",\n" +
-                "              \"nimi\": \"Sosiaali- ja terveysalan perustutkinto, pk, pääsykoe\",\n" +
+                "              \"valintakoeOid\": \"1393572486402-781819533309627936\",\n" +
+                "              \"valintakoeTunniste\": \"kielikoe_fi\",\n" +
+                "              \"nimi\": \"Kielikoe\",\n" +
+                "              \"aktiivinen\": false,\n" +
+                "              \"osallistuminenTulos\": {\n" +
+                "                \"osallistuminen\": \"EI_OSALLISTU\",\n" +
+                "                \"kuvaus\": null,\n" +
+                "                \"laskentaTila\": \"HYVAKSYTTAVISSA\",\n" +
+                "                \"laskentaTulos\": false\n" +
+                "              }\n" +
+                "            },\n" +
+                "            {\n" +
+                "              \"valintakoeOid\": \"1393572486407-6573882988271963639\",\n" +
+                "              \"valintakoeTunniste\": \"1_2_246_562_5_27721348947_urheilija_lisapiste\",\n" +
+                "              \"nimi\": \"Urheilijalisäpiste\",\n" +
+                "              \"aktiivinen\": false,\n" +
+                "              \"osallistuminenTulos\": {\n" +
+                "                \"osallistuminen\": \"EI_OSALLISTU\",\n" +
+                "                \"kuvaus\": null,\n" +
+                "                \"laskentaTila\": \"HYVAKSYTTAVISSA\",\n" +
+                "                \"laskentaTulos\": false\n" +
+                "              }\n" +
+                "            }\n" +
+                "          ]\n" +
+                "        }\n" +
+                "      ]\n" +
+                "    },\n" +
+                "    {\n" +
+                "      \"hakukohdeOid\": \"1.2.246.562.5.85532589612\",\n" +
+                "      \"valinnanVaiheet\": [\n" +
+                "        {\n" +
+                "          \"valinnanVaiheOid\": \"1393571255074-7307039926365334377\",\n" +
+                "          \"valinnanVaiheJarjestysluku\": 1,\n" +
+                "          \"valintakokeet\": [\n" +
+                "            {\n" +
+                "              \"valintakoeOid\": \"1393571255124-1391351671714830435\",\n" +
+                "              \"valintakoeTunniste\": \"kielikoe_fi\",\n" +
+                "              \"nimi\": \"Kielikoe\",\n" +
+                "              \"aktiivinen\": false,\n" +
+                "              \"osallistuminenTulos\": {\n" +
+                "                \"osallistuminen\": \"EI_OSALLISTU\",\n" +
+                "                \"kuvaus\": null,\n" +
+                "                \"laskentaTila\": \"HYVAKSYTTAVISSA\",\n" +
+                "                \"laskentaTulos\": false\n" +
+                "              }\n" +
+                "            },\n" +
+                "            {\n" +
+                "              \"valintakoeOid\": \"1393571255129-2346891365985056247\",\n" +
+                "              \"valintakoeTunniste\": \"Eläintenhoidon koulutusohjelma, pk (Maatalousalan perustutkinto), pääsykoe\",\n" +
+                "              \"nimi\": \"Eläintenhoidon koulutusohjelma, pk (Maatalousalan perustutkinto), pääsykoe\",\n" +
                 "              \"aktiivinen\": false,\n" +
                 "              \"osallistuminenTulos\": {\n" +
                 "                \"osallistuminen\": \"OSALLISTUU\",\n" +
@@ -161,9 +208,32 @@ public class ValintaServiceMockImpl implements ValintaService {
                 "              }\n" +
                 "            },\n" +
                 "            {\n" +
-                "              \"valintakoeOid\": \"1394108382216-3431392441284793574\",\n" +
-                "              \"valintakoeTunniste\": \"1_2_246_562_5_97567996844_urheilija_lisapiste\",\n" +
+                "              \"valintakoeOid\": \"1393571255127-4738960705361812063\",\n" +
+                "              \"valintakoeTunniste\": \"1_2_246_562_5_85532589612_urheilija_lisapiste\",\n" +
                 "              \"nimi\": \"Urheilijalisäpiste\",\n" +
+                "              \"aktiivinen\": false,\n" +
+                "              \"osallistuminenTulos\": {\n" +
+                "                \"osallistuminen\": \"EI_OSALLISTU\",\n" +
+                "                \"kuvaus\": null,\n" +
+                "                \"laskentaTila\": \"HYVAKSYTTAVISSA\",\n" +
+                "                \"laskentaTulos\": false\n" +
+                "              }\n" +
+                "            }\n" +
+                "          ]\n" +
+                "        }\n" +
+                "      ]\n" +
+                "    },\n" +
+                "    {\n" +
+                "      \"hakukohdeOid\": \"1.2.246.562.5.259898287910\",\n" +
+                "      \"valinnanVaiheet\": [\n" +
+                "        {\n" +
+                "          \"valinnanVaiheOid\": \"13935726727442102404043665568624\",\n" +
+                "          \"valinnanVaiheJarjestysluku\": 1,\n" +
+                "          \"valintakokeet\": [\n" +
+                "            {\n" +
+                "              \"valintakoeOid\": \"1393572672977792870099537023149\",\n" +
+                "              \"valintakoeTunniste\": \"kielikoe_fi\",\n" +
+                "              \"nimi\": \"Kielikoe\",\n" +
                 "              \"aktiivinen\": false,\n" +
                 "              \"osallistuminenTulos\": {\n" +
                 "                \"osallistuminen\": \"EI_OSALLISTU\",\n" +
@@ -173,15 +243,38 @@ public class ValintaServiceMockImpl implements ValintaService {
                 "              }\n" +
                 "            },\n" +
                 "            {\n" +
-                "              \"valintakoeOid\": \"1394108382206-7586292685555339694\",\n" +
-                "              \"valintakoeTunniste\": \"kielikoe_fi\",\n" +
-                "              \"nimi\": \"Kielikoe\",\n" +
+                "              \"valintakoeOid\": \"1393572672971-3745941139794590770\",\n" +
+                "              \"valintakoeTunniste\": \"1_2_246_562_5_259898287910_urheilija_lisapiste\",\n" +
+                "              \"nimi\": \"Urheilijalisäpiste\",\n" +
                 "              \"aktiivinen\": false,\n" +
                 "              \"osallistuminenTulos\": {\n" +
                 "                \"osallistuminen\": \"EI_OSALLISTU\",\n" +
                 "                \"kuvaus\": null,\n" +
                 "                \"laskentaTila\": \"HYVAKSYTTAVISSA\",\n" +
                 "                \"laskentaTulos\": false\n" +
+                "              }\n" +
+                "            }\n" +
+                "          ]\n" +
+                "        }\n" +
+                "      ]\n" +
+                "    },\n" +
+                "    {\n" +
+                "      \"hakukohdeOid\": \"1.2.246.562.5.37175137688\",\n" +
+                "      \"valinnanVaiheet\": [\n" +
+                "        {\n" +
+                "          \"valinnanVaiheOid\": \"13935705656376300801256576588350\",\n" +
+                "          \"valinnanVaiheJarjestysluku\": 1,\n" +
+                "          \"valintakokeet\": [\n" +
+                "            {\n" +
+                "              \"valintakoeOid\": \"1393570565721-4424479167527568504\",\n" +
+                "              \"valintakoeTunniste\": \"1_2_246_562_5_37175137688_paasykoe\",\n" +
+                "              \"nimi\": \"Pääsykoe\",\n" +
+                "              \"aktiivinen\": false,\n" +
+                "              \"osallistuminenTulos\": {\n" +
+                "                \"osallistuminen\": \"OSALLISTUU\",\n" +
+                "                \"kuvaus\": null,\n" +
+                "                \"laskentaTila\": \"HYVAKSYTTAVISSA\",\n" +
+                "                \"laskentaTulos\": true\n" +
                 "              }\n" +
                 "            }\n" +
                 "          ]\n" +
@@ -200,6 +293,8 @@ public class ValintaServiceMockImpl implements ValintaService {
         });
 
         Gson gson = builder.create();
+
+        //gson = new Gson();
 
         ValintakoeOsallistuminenDTO osallistuminenDTO = gson.fromJson(response, ValintakoeOsallistuminenDTO.class);
         return osallistuminenDTO;
