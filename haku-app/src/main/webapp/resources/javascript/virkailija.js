@@ -74,6 +74,8 @@ $(document).ready(function () {
                                 name = as['name_sv'];
                             } else if (as['name_en']) {
                                 name = as['name_en'];
+                            } else {
+                                name = '???';
                             }
                         }
 
