@@ -111,6 +111,10 @@ public class ValintaServiceImpl implements ValintaService {
             response = getCachingRestClientSijoittelu().getAsString(url);
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (NullPointerException npe) {
+            // Nothing found with asOid/applicationOid
+            npe.printStackTrace();
+            return null;
         }
 
         Gson gson = new Gson();
@@ -193,10 +197,10 @@ public class ValintaServiceImpl implements ValintaService {
             cachingRestClientValinta.setUsername(clientAppUserValinta);
             cachingRestClientValinta.setPassword(clientAppPassValinta);
             log.debug("getCachingRestClientValinta "
-                    +"carUrl: "+casUrl
-                    +" casService: "+targetServiceValinta
-                    +" username: "+clientAppUserValinta
-                    +" password: "+clientAppPassValinta
+                    + "carUrl: " + casUrl
+                    + " casService: " + targetServiceValinta
+                    + " username: " + clientAppUserValinta
+                    + " password: " + clientAppPassValinta
             );
         }
         return cachingRestClientValinta;
