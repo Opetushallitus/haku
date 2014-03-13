@@ -29,8 +29,7 @@ import static org.apache.commons.lang3.StringUtils.isNotBlank;
 //import fi.vm.sade.valintalaskenta.domain.dto.valintakoe.ValintakoeValinnanvaiheDTO;
 
 @Service
-@Profile("default")
-//@Profile("dev")
+@Profile(value = {"default", "devluokka"})
 public class ValintaServiceImpl implements ValintaService {
 
     private static final Logger log = LoggerFactory.getLogger(ValintaServiceImpl.class);
@@ -141,6 +140,9 @@ public class ValintaServiceImpl implements ValintaService {
         });
         Gson gson = builder.create();
         ValintakoeOsallistuminenDTO osallistuminenDTO = gson.fromJson(response, ValintakoeOsallistuminenDTO.class);
+        if (osallistuminenDTO == null) {
+            osallistuminenDTO = new ValintakoeOsallistuminenDTO();
+        }
         return osallistuminenDTO;
     }
 

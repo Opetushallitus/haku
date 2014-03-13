@@ -30,7 +30,7 @@ import org.springframework.stereotype.Component;
  * @author Mikko Majapuro
  */
 @Component
-@Profile("default")
+@Profile(value = {"default", "devluokka"})
 public class PreferenceConcreteValidatorImpl extends PreferenceConcreteValidator {
 
     public static final String ERROR_STR = "Preference validation error key={}, values={}, applicationOption={}";

@@ -43,8 +43,7 @@ import java.util.List;
  * @author Hannu Lyytikainen
  */
 @Service
-@Profile("default")
-//@Profile("dev")
+@Profile(value = {"default"})
 public class AuthenticationServiceImpl implements AuthenticationService {
 
     final Logger log = LoggerFactory.getLogger(AuthenticationServiceImpl.class);

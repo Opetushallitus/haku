@@ -25,7 +25,7 @@ import java.util.Date;
 import java.util.List;
 
 @Service
-@Profile("default")
+@Profile(value = {"default", "devluokka"})
 public class SuoritusrekisteriServiceImpl implements SuoritusrekisteriService {
 
     final Logger log = LoggerFactory.getLogger(SuoritusrekisteriServiceImpl.class);

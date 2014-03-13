@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-
 @Service
 @Profile(value = {"dev", "it"})
 public class SuoritusrekisteriServiceMockImpl implements SuoritusrekisteriService {

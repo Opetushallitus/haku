@@ -21,7 +21,6 @@ import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 @Service
 @Profile(value = {"dev", "it"})
-//@Profile("it")
 public class ValintaServiceMockImpl implements ValintaService {
 
     @Override
