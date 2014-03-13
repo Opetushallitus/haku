@@ -9,6 +9,7 @@ import fi.vm.sade.haku.oppija.hakemus.aspect.LoggerAspect;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationNote;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
+import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationOptionDTO;
 import fi.vm.sade.haku.oppija.hakemus.domain.util.ApplicationUtil;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.haku.oppija.hakemus.service.HakuPermissionService;
@@ -31,14 +32,19 @@ import fi.vm.sade.haku.oppija.ui.service.OfficerUIService;
 import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
+import fi.vm.sade.haku.virkailija.valinta.ValintaService;
 import fi.vm.sade.organisaatio.api.model.types.OrganisaatioTyyppi;
 import fi.vm.sade.organisaatio.api.search.OrganisaatioSearchCriteria;
+import fi.vm.sade.sijoittelu.tulos.dto.raportointi.HakijaDTO;
+import fi.vm.sade.sijoittelu.tulos.dto.raportointi.HakutoiveDTO;
+import fi.vm.sade.sijoittelu.tulos.dto.raportointi.HakutoiveenValintatapajonoDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.*;
 
 @Service
@@ -57,6 +63,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     private final ApplicationSystemService applicationSystemService;
     private final AuthenticationService authenticationService;
     private final OrganizationService organizationService;
+    private final ValintaService valintaService;
     private final UserSession userSession;
 
     private static final List<Integer> syyskausi = ImmutableList.of(Calendar.JULY, Calendar.AUGUST, Calendar.SEPTEMBER,
@@ -73,6 +80,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
                                 final ApplicationSystemService applicationSystemService,
                                 final AuthenticationService authenticationService,
                                 final OrganizationService organizationService,
+                                final ValintaService valintaService,
                                 final UserSession userSession) {
         this.applicationService = applicationService;
         this.formService = formService;
@@ -84,6 +92,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         this.applicationSystemService = applicationSystemService;
         this.authenticationService = authenticationService;
         this.organizationService = organizationService;
+        this.valintaService = valintaService;
         this.userSession = userSession;
     }
 
@@ -123,6 +132,10 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         modelResponse.addObjectToModel("postProcessAllowed", hakuPermissionService.userCanPostProcess(application));
         modelResponse.addObjectToModel("applicationSystem", as);
 
+        List<ApplicationOptionDTO> hakukohteet = valintaService.getValintakoeOsallistuminen(application);
+        hakukohteet = getValintatiedot(hakukohteet, application);
+        modelResponse.addObjectToModel("hakukohteet", hakukohteet);
+
         String sendingSchoolOid = application.getVastauksetMerged().get("lahtokoulu");
         if (sendingSchoolOid != null) {
             Organization sendingSchool = organizationService.findByOid(sendingSchoolOid);
@@ -138,6 +151,46 @@ public class OfficerUIServiceImpl implements OfficerUIService {
             modelResponse.setErrorMessages(errors);
         }
         return modelResponse;
+    }
+
+    private List<ApplicationOptionDTO> getValintatiedot(List<ApplicationOptionDTO> hakukohteet, Application application) {
+        HakijaDTO hakijaDTO = valintaService.getHakija(application.getApplicationSystemId(), application.getOid());
+        Set<HakutoiveDTO> hakutoiveet = hakijaDTO.getHakutoiveet();
+        Map<String, HakutoiveDTO> hakutoiveMap = new HashMap<String, HakutoiveDTO>();
+        Iterator<HakutoiveDTO> hakutoiveIterator = hakutoiveet.iterator();
+        while (hakutoiveIterator.hasNext()) {
+            HakutoiveDTO hakutoive = hakutoiveIterator.next();
+            hakutoiveMap.put(hakutoive.getHakukohdeOid(), hakutoive);
+        }
+        for (ApplicationOptionDTO ao : hakukohteet) {
+            String aoOid = ao.getOid();
+            if (!hakutoiveMap.containsKey(aoOid)) {
+                continue;
+            }
+            HakutoiveDTO hakutoive = hakutoiveMap.get(aoOid);
+            List<HakutoiveenValintatapajonoDTO> jonot = hakutoive.getHakutoiveenValintatapajonot();
+            Collections.sort(jonot, new Comparator<HakutoiveenValintatapajonoDTO>() {
+                @Override
+                public int compare(HakutoiveenValintatapajonoDTO jono, HakutoiveenValintatapajonoDTO other) {
+                    int prioJono = jono.getValintatapajonoPrioriteetti() != null
+                            ? jono.getValintatapajonoPrioriteetti().intValue()
+                            : Integer.MAX_VALUE;
+                    int prioOther = other.getValintatapajonoPrioriteetti() != null
+                            ? other.getValintatapajonoPrioriteetti().intValue()
+                            : Integer.MAX_VALUE;
+                    return prioJono - prioOther;
+                }
+            });
+            HakutoiveenValintatapajonoDTO jono = jonot.get(jonot.size() - 1);
+            String vastaanottotieto = jono.getVastaanottotieto().toString();
+            String tila = jono.getTila().toString();
+            BigDecimal pisteet = jono.getPisteet();
+
+            ao.setTotalScore(pisteet.doubleValue());
+            ao.setIlmoittautuminen(vastaanottotieto);
+            ao.setSijoittelunTulos(tila);
+        }
+        return hakukohteet;
     }
 
     @Override

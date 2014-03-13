@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-@Profile(value = {"dev", "it"})
+@Profile(value = {"dev", "it", "devluokka"})
 public class HakuPermissionServiceMockImpl implements HakuPermissionService {
     @Override
     public List<String> userCanReadApplications(List<String> organizations) {

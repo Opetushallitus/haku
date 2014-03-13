@@ -69,11 +69,13 @@ $(document).ready(function () {
 
                         if (!name) {
                             if (as['name_fi']) {
-                                name = name_fi;
+                                name = as['name_fi'];
                             } else if (as['name_sv']) {
-                                name = name_sv;
+                                name = as['name_sv'];
                             } else if (as['name_en']) {
-                                name = name_en;
+                                name = as['name_en'];
+                            } else {
+                                name = '???';
                             }
                         }
 

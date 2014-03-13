@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-@Profile("default")
+@Profile(value = {"default"})
 public class HakuPermissionServiceImpl extends AbstractPermissionService implements HakuPermissionService {
 
     public static final int MAX_NUMBER_OF_PREFERENCES = 5;

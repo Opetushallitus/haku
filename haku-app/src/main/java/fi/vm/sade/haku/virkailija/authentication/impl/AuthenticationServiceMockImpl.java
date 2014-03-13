@@ -28,8 +28,7 @@ import java.util.List;
  * @author Hannu Lyytikainen
  */
 @Service
-@Profile(value = {"dev", "it"})
-//@Profile(value = {"it"})
+@Profile(value = {"dev", "it", "devluokka"})
 public class AuthenticationServiceMockImpl implements AuthenticationService {
 
     public static final int RANGE_SIZE = 1000000000;
@@ -44,6 +43,30 @@ public class AuthenticationServiceMockImpl implements AuthenticationService {
     @Override
     public List<String> getOrganisaatioHenkilo() {
         return Lists.newArrayList("1.2.246.562.10.84682192491", "1.2.246.562.10.00000000001", "1.2.246.562.10.94550468022");
+    }
+
+    @Override
+    public Person getCurrentHenkilo() {
+        return PersonBuilder.start()
+                .setContactLanguage("fi")
+                .setFirstNames("Etu Nimet")
+                .setHomeCity("Kotikunta")
+                .setLanguage("fi")
+                .setLastName("Sukunimi")
+                .setNationality("fi")
+                .setNickName("Etu")
+                .setNoSocialSecurityNumber(false)
+                .setPersonOid("1.2.246.562.24.00000000001")
+                .setSecurityOrder(false)
+                .setSex("MIES")
+                .setSocialSecurityNumber("110794-354D")
+                .setStudentOid("1.2.246.562.24.00000000001")
+                .get();
+    }
+
+    @Override
+    public Person getHenkilo(String personOid) {
+        return getCurrentHenkilo();
     }
 
     @Override

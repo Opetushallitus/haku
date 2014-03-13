@@ -268,11 +268,13 @@ public class ApplicationServiceImpl implements ApplicationService {
                 answers.put(OppijaConstants.ELEMENT_ID_SENDING_SCHOOL, sendingSchool);
             }
             if (isNotEmpty(sendingClass)) {
+                sendingClass = sendingClass.toUpperCase();
                 answers = addRegisterValue(oid, answers, OppijaConstants.ELEMENT_ID_SENDING_CLASS, sendingClass);
                 LOGGER.info("Updating koulutustausta oid: "+String.valueOf(application.getOid())
                         +" lahtoluokka: "+sendingClass);
             }
             if (isNotEmpty(classLevel)) {
+                classLevel = classLevel.toUpperCase();
                 answers = addRegisterValue(oid, answers, OppijaConstants.ELEMENT_ID_CLASS_LEVEL, classLevel);
                 LOGGER.info("Updating koulutustausta oid: "+String.valueOf(application.getOid())
                         +" luokkataso: "+classLevel);
