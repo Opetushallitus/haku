@@ -298,11 +298,6 @@ public class Application implements Serializable {
     }
 
     @JsonIgnore
-    public boolean isStudentIdentificationDone() {
-        return null != this.studentIdentificationDone ? this.studentIdentificationDone : true;
-    }
-
-    @JsonIgnore
     public Application modifyPersonalData(Person person) {
         Map<String, String> henkilotiedot = new HashMap<String, String>(getPhaseAnswers("henkilotiedot"));
         henkilotiedot = updateHenkilotiedotField(henkilotiedot, person.getFirstNames(),
