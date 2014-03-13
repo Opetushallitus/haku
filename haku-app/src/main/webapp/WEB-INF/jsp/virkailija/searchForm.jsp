@@ -102,7 +102,8 @@
                         </div>
                         <div class="field-search-containerbox">
                             <input type="checkbox" id="discretionary-only"/>
-                            <label for="discretionary-only">Näytä vain harkinnanvaraisesti hakeneet</label>
+                            <label for="discretionary-only"><fmt:message
+                                    key="virkailija.hakemus.vain.harkinnanvaraiset"/></label>
                         </div>
                     </td>
                     <td>
