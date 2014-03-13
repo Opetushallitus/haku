@@ -22,6 +22,7 @@ import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.util.*;
 
+import static org.apache.commons.lang3.StringUtils.isEmpty;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 //import fi.vm.sade.valintalaskenta.domain.dto.valintakoe.HakutoiveDTO;
@@ -158,6 +159,17 @@ public class ValintaServiceImpl implements ValintaService {
                 Map<String, String> kohde = parseEntry(kohteet, index, entry);
                 kohteet.put(index, kohde);
             }
+        }
+
+        List<Integer> toRemove = new ArrayList<Integer>();
+        for (Map.Entry<Integer, Map<String, String>> entry : kohteet.entrySet()) {
+            Map<String, String> kohde = entry.getValue();
+            if (!kohde.containsKey("Koulutus-id") || isEmpty(kohde.get("Koulutus-id"))) {
+                toRemove.add(entry.getKey());
+            }
+        }
+        for (Integer i : toRemove) {
+            kohteet.remove(i);
         }
 
         ArrayList<Map<String, String>> kohteetList = new ArrayList<Map<String, String>>(kohteet.size());
