@@ -61,8 +61,12 @@ public final class OppijaConstants {
     public static final String ELEMENT_ID_BASE_EDUCATION = "POHJAKOULUTUS";
     public static final String ELEMENT_ID_BASE_EDUCATION_USER = "POHJAKOULUTUS_user";
 
+    public static final String PHASE_PERSONAL = "henkilotiedot";
     public static final String PHASE_EDUCATION = "koulutustausta";
     public static final String PHASE_APPLICATION_OPTIONS = "hakutoiveet";
+    public static final String PHASE_GRADES = "osaaminen";
+    public static final String PHASE_MISC = "lisatiedot";
+    public static final String PHASE_PREVIEW = "esikatselu";
 
     public static final String PREFERENCE_ID = "preference%d-Koulutus-id";
 

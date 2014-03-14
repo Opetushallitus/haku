@@ -68,7 +68,7 @@
                         </li>
                     </c:forEach>
                     <li>
-                        <a class="current"><span class="index"><c:out value="${phaseCount + 1}"/></span><fmt:message key="lomake.esikatselu"/></a>
+                        <a id="nav-esikatselu" class="current"><span class="index"><c:out value="${phaseCount + 1}"/></span><fmt:message key="lomake.esikatselu"/></a>
                     </li>
                     <li>
                         <span>
