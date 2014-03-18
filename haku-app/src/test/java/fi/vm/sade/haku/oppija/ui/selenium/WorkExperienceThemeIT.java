@@ -18,6 +18,7 @@ package fi.vm.sade.haku.oppija.ui.selenium;
 
 import com.google.common.collect.ImmutableMap;
 import fi.vm.sade.haku.oppija.common.selenium.DummyModelBaseItTest;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.junit.Test;
 
 /**
@@ -31,14 +32,14 @@ public class WorkExperienceThemeIT extends DummyModelBaseItTest {
         click("//option[@data-id='1.2.246.562.14.79893512065']");
         fillOut(defaultValues.preference1);
 
-        nextPhase();
+        nextPhase(OppijaConstants.PHASE_GRADES);
 
         select();
         selectByValue("PK_AI_OPPIAINE", "FI");
         selectByValue("PK_A1_OPPIAINE", "EN");
         selectByValue("PK_B1_OPPIAINE", "SE");
 
-        nextPhase();
+        nextPhase(OppijaConstants.PHASE_MISC);
         findById("TYOKOKEMUSKUUKAUDET");
     }
 
@@ -47,10 +48,17 @@ public class WorkExperienceThemeIT extends DummyModelBaseItTest {
         gotoHakutoiveet("010113A668B");
         click("//option[@data-id='1.2.246.562.14.79893512065']");
         clickByNameAndValue("preference1-discretionary", "false");
+        clickByNameAndValue("preference1_sora_terveys", "false");
+        clickByNameAndValue("preference1_sora_oikeudenMenetys", "false");
+        clickByNameAndValue("preference1_urheilijan_ammatillisen_koulutuksen_lisakysymys", "false");
 
-        nextPhase();
+        nextPhase(OppijaConstants.PHASE_GRADES);
         select();
-        nextPhase();
+        selectByValue("PK_AI_OPPIAINE", "FI");
+        selectByValue("PK_A1_OPPIAINE", "EN");
+        selectByValue("PK_B1_OPPIAINE", "SE");
+        screenshot("workexp");
+        nextPhase(OppijaConstants.PHASE_MISC);
 
         elementsNotPresent("TYOKOKEMUSKUUKAUDET");
     }
@@ -59,10 +67,10 @@ public class WorkExperienceThemeIT extends DummyModelBaseItTest {
         navigateToFirstPhase();
         fillOut(defaultValues.getHenkilotiedot(ImmutableMap.of("Henkilotunnus", hetu)));
 
-        nextPhase();
+        nextPhase(OppijaConstants.PHASE_EDUCATION);
         fillOut(defaultValues.koulutustausta_pk);
 
-        nextPhase();
+        nextPhase(OppijaConstants.PHASE_APPLICATION_OPTIONS);
 
         typeWithoutTab("preference1-Opetuspiste", "Esp");
         clickLinkByText("FAKTIA, Espoo op");

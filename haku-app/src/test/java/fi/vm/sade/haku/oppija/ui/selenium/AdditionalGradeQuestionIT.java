@@ -17,6 +17,7 @@
 package fi.vm.sade.haku.oppija.ui.selenium;
 
 import fi.vm.sade.haku.oppija.common.selenium.DummyModelBaseItTest;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.junit.Test;
 import org.openqa.selenium.By;
 
@@ -35,11 +36,11 @@ public class AdditionalGradeQuestionIT extends DummyModelBaseItTest {
 
         fillOut(defaultValues.henkilotiedot);
 
-        nextPhase();
+        nextPhase(OppijaConstants.PHASE_EDUCATION);
 
         fillOut(defaultValues.koulutustausta_pk);
 
-        nextPhase();
+        nextPhase(OppijaConstants.PHASE_APPLICATION_OPTIONS);
 
         // select a LOI
 
@@ -48,7 +49,7 @@ public class AdditionalGradeQuestionIT extends DummyModelBaseItTest {
         click("//option[@data-id='1.2.246.562.14.79893512065']");
         fillOut(defaultValues.preference1);
 
-        nextPhase();
+        nextPhase(OppijaConstants.PHASE_GRADES);
         elementsPresent("//table[@id='gradegrid-table']");
         assertTrue(seleniumContainer.getDriver().findElements(By.xpath("//table[@id='gradegrid-table']/tbody/tr")).size() > 10);
 

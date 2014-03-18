@@ -17,6 +17,7 @@
 package fi.vm.sade.haku.oppija.ui.selenium;
 
 import fi.vm.sade.haku.oppija.common.selenium.DummyModelBaseItTest;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.junit.Test;
 import org.openqa.selenium.By;
 
@@ -30,9 +31,9 @@ public class GradeGridIT extends DummyModelBaseItTest {
     public void testAddLanguage() {
         navigateToFirstPhase();
         fillOut(defaultValues.henkilotiedot);
-        nextPhase();
+        nextPhase(OppijaConstants.PHASE_EDUCATION);
         fillOut(defaultValues.koulutustausta_lk);
-        nextPhase();
+        nextPhase(OppijaConstants.PHASE_APPLICATION_OPTIONS);
         typeWithoutTab("preference1-Opetuspiste", "Esp");
 
         clickLinkByText(DefaultValues.OPETUSPISTE);
@@ -40,7 +41,7 @@ public class GradeGridIT extends DummyModelBaseItTest {
 
         fillOut(defaultValues.preference1);
 
-        nextPhase();
+        nextPhase(OppijaConstants.PHASE_GRADES);
 
         findByIdAndClick("nativeLanguage");
         findByIdAndClick("additionalLanguages");

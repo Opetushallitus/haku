@@ -17,6 +17,7 @@
 package fi.vm.sade.haku.oppija.lomake.it;
 
 import fi.vm.sade.haku.oppija.common.selenium.DummyModelBaseItTest;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.junit.Test;
 import org.openqa.selenium.By;
 
@@ -29,9 +30,9 @@ public class HAK153IT extends DummyModelBaseItTest {
     public void testSoraAndUrheilijanLisakysymys() {
         navigateToFirstPhase();
         fillOut(defaultValues.henkilotiedot);
-        nextPhase();
+        nextPhase(OppijaConstants.PHASE_EDUCATION);
         fillOut(defaultValues.koulutustausta_pk);
-        nextPhase();
+        nextPhase(OppijaConstants.PHASE_APPLICATION_OPTIONS);
         typeWithoutTab("preference1-Opetuspiste", "Esp");
         clickLinkByText("FAKTIA, Espoo op");
         seleniumContainer.getDriver().findElement(By.xpath("//*[@data-sora='true']")).click();
