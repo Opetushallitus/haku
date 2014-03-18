@@ -631,13 +631,7 @@
             <artifactId>authentication-api</artifactId>
             <version>${authentication-api.version}</version>
         </dependency>
-
-        <dependency>
-            <groupId>fi.vm.sade.authentication</groupId>
-            <artifactId>authentication-api</artifactId>
-            <version>${authentication-api.version}</version>
-        </dependency>
-
+        
         <dependency>
             <groupId>fi.vm.sade.valintaperusteet</groupId>
             <artifactId>valintalaskenta-domain</artifactId>
