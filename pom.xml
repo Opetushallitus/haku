@@ -39,14 +39,14 @@
 
         <springProfileName>default</springProfileName>
 
-        <authentication-api.version>9.0</authentication-api.version>
+        <authentication-api.version>1.0-SNAPSHOT</authentication-api.version>
         <generic-common.version>9.0-SNAPSHOT</generic-common.version>
         <koodisto-api.version>9.0-SNAPSHOT</koodisto-api.version>
         <koulutusinformaatio-api.version>9.0-SNAPSHOT</koulutusinformaatio-api.version>
         <log-client.version>8.0</log-client.version>
         <organisaatio-api.version>9.0</organisaatio-api.version>
         <organisaatio-solr-client.version>9.0</organisaatio-solr-client.version>
-        <tarjonta-api.version>9.0</tarjonta-api.version>
+        <tarjonta-api.version>9.0-SNAPSHOT</tarjonta-api.version>
         <valintaperusteet.version>1.0-SNAPSHOT</valintaperusteet.version>
     </properties>
 
