@@ -21,6 +21,9 @@ import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationDAO;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.haku.oppija.lomake.service.FormService;
+import fi.vm.sade.haku.oppija.lomake.validation.ElementTreeValidator;
+import fi.vm.sade.haku.oppija.lomake.validation.ValidationInput;
+import fi.vm.sade.haku.oppija.lomake.validation.ValidationResult;
 import fi.vm.sade.haku.oppija.yksilointi.YksilointiWorker;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.apache.commons.mail.Email;
@@ -51,9 +54,13 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
     public static final String TRUE = "true";
     private final ApplicationService applicationService;
     private final ApplicationDAO applicationDAO;
+    private final ElementTreeValidator elementTreeValidator;
     private FormService formService;
 
     private Map<String, Template> templateMap;
+
+    @Value("${scheduler.maxBatchSize:10}")
+    private int maxBatchSize;
 
     @Value("${scheduler.skipSendingSchool.automatic:false}")
     private boolean skipSendingSchoolAutomatic;
@@ -71,10 +78,12 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
     private String replyTo;
 
     @Autowired
-    public YksilointiWorkerImpl(ApplicationService applicationService, FormService formService, ApplicationDAO applicationDAO) {
+    public YksilointiWorkerImpl(ApplicationService applicationService, FormService formService, ApplicationDAO applicationDAO,
+                                ElementTreeValidator elementTreeValidator) {
         this.applicationService = applicationService;
         this.formService = formService;
         this.applicationDAO = applicationDAO;
+        this.elementTreeValidator = elementTreeValidator;
 
         VelocityEngine velocityEngine = new VelocityEngine();
         velocityEngine.setProperty(VelocityEngine.INPUT_ENCODING, "UTF-8");
@@ -97,14 +106,14 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
      */
     public void processApplications(boolean sendMail) {
         Application application = getNextSubmittedApplication();
-
-        while (application != null) {
+        int count = 0;
+        while (application != null && ++count < maxBatchSize) {
             application = applicationService.fillLOPChain(application, false);
             application = applicationService.addPersonOid(application);
             if (!skipSendingSchoolAutomatic) {
                 application = applicationService.addSendingSchool(application);
             }
-            application.activate();
+            application = validateApplication(application);
             this.applicationDAO.update(new Application(application.getOid()), application);
             //applicationService.update(, application);
             if (sendMail) {
@@ -130,7 +139,8 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
     public void redoPostprocess(boolean sendMail) {
         LOGGER.debug("Beginning redoprocess");
         Application application = getNextRedo();
-        while (application != null) {
+        int count = 0;
+        while (application != null && ++count < maxBatchSize) {
             LOGGER.debug("Reprocessing application " + application.getOid());
             String redo = application.getRedoPostProcess();
             LOGGER.debug("Reprocessing application, redo: " + redo);
@@ -141,6 +151,7 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
                     if (!skipSendingSchoolManual) {
                         application = applicationService.addSendingSchool(application);
                     }
+                    application = validateApplication(application);
                     application.setRedoPostProcess("DONE");
                     this.applicationDAO.update(new Application(application.getOid()), application);
                     LOGGER.debug("Reprocessing " + application.getOid() + " done");
@@ -155,6 +166,20 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
             }
             application = getNextRedo();
         }
+    }
+
+    private Application validateApplication(Application application) {
+        Map<String, String> allAnswers = application.getVastauksetMerged();
+        Form form = formService.getForm(application.getApplicationSystemId());
+        ValidationInput validationInput = new ValidationInput(form, allAnswers,
+                application.getOid(), application.getApplicationSystemId());
+        ValidationResult formValidationResult = elementTreeValidator.validate(validationInput);
+        if (formValidationResult.hasErrors()) {
+            application.incomplete();
+        } else {
+            application.activate();
+        }
+        return application;
     }
 
     private void sendMail(Application application) throws EmailException {

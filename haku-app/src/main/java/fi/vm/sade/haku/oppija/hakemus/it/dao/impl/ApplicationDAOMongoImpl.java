@@ -534,12 +534,15 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         query.put(FIELD_STUDENT_IDENTIFICATION_DONE, Boolean.FALSE.toString());
 
         DBObject sortBy = new BasicDBObject(FIELD_LAST_AUTOMATED_PROCESSING_TIME, 1);
-        DBObject hint = new BasicDBObject();
-        hint.put(FIELD_APPLICATION_STATE, 1);
-        hint.put(FIELD_STUDENT_IDENTIFICATION_DONE, 1);
-        hint.put(FIELD_LAST_AUTOMATED_PROCESSING_TIME, 1);
 
-        DBCursor cursor = getCollection().find(query).sort(sortBy).hint(hint).limit(1);
+        DBCursor cursor = getCollection().find(query).sort(sortBy).limit(1);
+        if (ensureIndex) {
+            DBObject hint = new BasicDBObject();
+            hint.put(FIELD_APPLICATION_STATE, 1);
+            hint.put(FIELD_STUDENT_IDENTIFICATION_DONE, 1);
+            hint.put(FIELD_LAST_AUTOMATED_PROCESSING_TIME, 1);
+            cursor.hint(hint);
+        }
         if (!cursor.hasNext()) {
             return null;
         }

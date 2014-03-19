@@ -24,7 +24,7 @@
                 <c:set var="element" value="${child}" scope="request"/>
                 <jsp:include page="../elements/${child.type}.jsp"/>
             </c:forEach>
-            <button class="save" name="vaiheId" type="submit" value="${it.element.id}">
+            <button class="save" name="phaseId" type="submit" value="${it.element.id}">
                 <span><span><fmt:message key="lomake.button.save"/></span></span>
             </button>
         </form>
