@@ -16,6 +16,7 @@
   ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   ~ European Union Public Licence for more details.
   --%>
+<a name="${element.id}"></a>
 <c:forEach var="option" items="${element.options}">
     <c:if test="${(answers[element.id] eq option.value)}">
         <haku:i18nText value="${option.i18nText}"/>

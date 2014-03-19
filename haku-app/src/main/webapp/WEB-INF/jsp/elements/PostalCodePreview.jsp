@@ -18,7 +18,7 @@
   --%>
 
 <tr>
-    <td class="label"><haku:i18nText value="${option.i18nText}"/></td>
+    <td class="label"><a name="${element.id}"></a><haku:i18nText value="${option.i18nText}"/></td>
     <td><c:out value="${answers[element.id]}"/>&nbsp;<haku:i18nText
             value="${element.data[answers[element.id]].i18nText}"/></td>
 </tr>

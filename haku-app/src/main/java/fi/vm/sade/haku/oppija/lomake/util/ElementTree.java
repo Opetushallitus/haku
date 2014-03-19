@@ -62,7 +62,7 @@ public final class ElementTree {
         ArrayList<Element> allChildren = new ArrayList<Element>();
         for (Element child : element.getChildren()) {
             allChildren.add(child);
-            getAllChildren(child);
+            allChildren.addAll(getAllChildren(child));
         }
         return allChildren;
     }

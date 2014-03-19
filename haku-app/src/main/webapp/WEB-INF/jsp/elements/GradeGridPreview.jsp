@@ -18,7 +18,7 @@
   ~ European Union Public Licence for more details.
   --%>
 <tr>
-    <td colspan="2"><fmt:message key="lomake.component.gradegrid.subjectTitle"/></td>
+    <td colspan="2"><a name="${element.id}"></a><fmt:message key="lomake.component.gradegrid.subjectTitle"/></td>
     <c:choose>
         <c:when test="${element.extraColumn}">
             <td><fmt:message key="lomake.component.gradegrid.commonSubjectColumnTitle"/></td>
