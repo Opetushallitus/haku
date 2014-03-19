@@ -61,6 +61,8 @@ public class DBObjectToSearchResultItem implements Function<DBObject, Applicatio
                     if (henkilotiedot.containsKey(SocialSecurityNumber.HENKILOTUNNUS)) {
                         final String hetu = henkilotiedot.get(SocialSecurityNumber.HENKILOTUNNUS);
                         item.setSsn(encrypterService.decrypt(hetu));
+                    } else if (henkilotiedot.containsKey(OppijaConstants.ELEMENT_ID_DATE_OF_BIRTH)) {
+                        item.setSsn(henkilotiedot.get(OppijaConstants.ELEMENT_ID_DATE_OF_BIRTH));
                     }
                 }
             }

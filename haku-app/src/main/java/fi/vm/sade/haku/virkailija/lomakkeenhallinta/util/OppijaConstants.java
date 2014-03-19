@@ -45,6 +45,7 @@ public final class OppijaConstants {
     public static final String ELEMENT_ID_LAST_NAME = "Sukunimi";
     public static final String ELEMENT_ID_LAST_NAME_USER = ELEMENT_ID_LAST_NAME + "_user";
     public static final String ELEMENT_ID_SOCIAL_SECURITY_NUMBER = "Henkilotunnus";
+    public static final String ELEMENT_ID_DATE_OF_BIRTH = "syntymaaika";
     public static final String ELEMENT_ID_EMAIL = "Sähköposti";
     public static final String ELEMENT_ID_SEX = "Sukupuoli";
     public static final String ELEMENT_ID_SENDING_SCHOOL = "lahtokoulu";
