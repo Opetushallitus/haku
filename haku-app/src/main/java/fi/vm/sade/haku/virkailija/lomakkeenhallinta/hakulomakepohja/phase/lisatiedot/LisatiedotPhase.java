@@ -56,7 +56,7 @@ public class LisatiedotPhase {
         tyokokemuskuukaudet
                 .setHelp(createI18NText("form.tyokokemus.kuukausina.help", formMessagesBundle));
         tyokokemuskuukaudet.setValidator(createRegexValidator(tyokokemuskuukaudet.getId(), TYOKOKEMUS_PATTERN,
-                formErrorsBundle));
+                formErrorsBundle, "lisatiedot.tyokokemus.virhe"));
         addSizeAttribute(tyokokemuskuukaudet, 8);
         tyokokemuskuukaudet.addAttribute("maxlength", "4");
         setVerboseHelp(tyokokemuskuukaudet, "form.tyokokemus.kuukausina.verboseHelp", formVerboseHelpBundle);
