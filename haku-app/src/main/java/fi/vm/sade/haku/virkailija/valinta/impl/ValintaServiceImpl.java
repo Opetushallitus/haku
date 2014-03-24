@@ -17,7 +17,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
-import javax.ws.rs.HEAD;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.math.BigDecimal;
@@ -106,9 +105,10 @@ public class ValintaServiceImpl implements ValintaService {
             response = getCachingRestClientSijoittelu().getAsString(url);
         } catch (IOException e) {
             e.printStackTrace();
+            return new HakijaDTO();
         } catch (NullPointerException npe) {
             // Nothing found with asOid/applicationOid
-            npe.printStackTrace();
+            log.warn("Got NPE with asOid: {} appOid: {}", asOid, applicationOid);
             return new HakijaDTO();
         }
 

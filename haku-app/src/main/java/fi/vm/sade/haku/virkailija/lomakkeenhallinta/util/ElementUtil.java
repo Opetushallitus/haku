@@ -20,7 +20,6 @@ import com.google.common.base.Joiner;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Lists;
-import fi.vm.sade.authentication.service.types.dto.HenkiloTyyppiType;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationPeriod;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystemBuilder;
@@ -173,8 +172,13 @@ public final class ElementUtil {
     }
 
     public static Validator createRegexValidator(final String id, final String pattern, final String bundleName) {
+        return createRegexValidator(id, pattern, bundleName, "yleinen.virheellinenArvo");
+    }
+
+    public static Validator createRegexValidator(final String id, final String pattern, final String bundleName,
+                                                 final String messageKey) {
         return new RegexFieldValidator(id,
-                ElementUtil.createI18NText("yleinen.virheellinenArvo", bundleName),
+                ElementUtil.createI18NText(messageKey, bundleName),
                 pattern);
     }
 

@@ -223,6 +223,7 @@ public final class
         Element postinumero = new PostalCode("Postinumero", createI18NText("form.henkilotiedot.postinumero",
           formMessagesBundle), koodistoService.getPostOffices());
         addSizeAttribute(postinumero, 5);
+        postinumero.addAttribute("placeholder", "00000");
         postinumero.addAttribute("maxlength", "5");
         postinumero.setValidator(createRegexValidator(postinumero.getId(), POSTINUMERO_PATTERN, formErrorsBundle));
         addRequiredValidator(postinumero, formErrorsBundle);

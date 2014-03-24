@@ -16,4 +16,5 @@
   ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   ~ European Union Public Licence for more details.
   --%>
+<a name="${element.id}"></a>
 <haku:i18nText value="${element.i18nText}"/>

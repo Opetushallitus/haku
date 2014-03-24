@@ -4,7 +4,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib prefix="haku" tagdir="/WEB-INF/tags" %>
 
-<haku:messages messages="${errorMessages}" additionalClass="warning"/>
+<haku:messages messages="${errorMessages}" additionalClass="warning" form="${it.form}"/>
 <c:choose>
     <c:when test="${preview}">
         <c:set var="virkailijaPreview" value="true" scope="request"/>
@@ -24,7 +24,7 @@
                 <c:set var="element" value="${child}" scope="request"/>
                 <jsp:include page="../elements/${child.type}.jsp"/>
             </c:forEach>
-            <button class="save" name="vaiheId" type="submit" value="${it.element.id}">
+            <button class="save" name="phaseId" type="submit" value="${it.element.id}">
                 <span><span><fmt:message key="lomake.button.save"/></span></span>
             </button>
         </form>

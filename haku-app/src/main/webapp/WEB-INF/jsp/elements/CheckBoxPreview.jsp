@@ -39,7 +39,7 @@
             <td colspan="2">
                 <input type="checkbox" name="${element.id}"
                        disabled="disabled" ${(answers[element.id] eq element.value) ? "checked=\"checked\"" : ""} value="${element.value}"/>
-                <label><haku:i18nText value="${element.i18nText}"/></label>
+                <label><a name="${element.id}"></a><haku:i18nText value="${element.i18nText}"/></label>
             </td>
         </tr>
     </c:otherwise>
