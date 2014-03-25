@@ -160,13 +160,17 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         Iterator<HakutoiveDTO> hakutoiveIterator = hakutoiveet.iterator();
         while (hakutoiveIterator.hasNext()) {
             HakutoiveDTO hakutoive = hakutoiveIterator.next();
+            LOGGER.debug("Putting hakutoive {}", hakutoive.getHakukohdeOid());
             hakutoiveMap.put(hakutoive.getHakukohdeOid(), hakutoive);
         }
         for (ApplicationOptionDTO ao : hakukohteet) {
             String aoOid = ao.getOid();
+            LOGGER.debug("aoOid: {}", aoOid);
             if (!hakutoiveMap.containsKey(aoOid)) {
+                LOGGER.debug("ao not in map");
                 continue;
             }
+            LOGGER.debug("Map contained ao");
             HakutoiveDTO hakutoive = hakutoiveMap.get(aoOid);
             List<HakutoiveenValintatapajonoDTO> jonot = hakutoive.getHakutoiveenValintatapajonot();
             Collections.sort(jonot, new Comparator<HakutoiveenValintatapajonoDTO>() {
