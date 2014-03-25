@@ -186,7 +186,7 @@ public class ValintaServiceImpl implements ValintaService {
                     log.debug("kohde '{}' -> '{}'", e.getKey(), e.getValue());
                 }
             }
-            if (!kohde.containsKey("Koulutus-id") || isEmpty(kohde.get("Koulutus-id"))) {
+            if (!kohde.containsKey("koulutus-id") || isEmpty(kohde.get("koulutus-id"))) {
                 toRemove.add(entry.getKey());
             }
         }
