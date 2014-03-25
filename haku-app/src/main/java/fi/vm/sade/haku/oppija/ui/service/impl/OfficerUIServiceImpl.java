@@ -35,6 +35,8 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.valinta.ValintaService;
 import fi.vm.sade.organisaatio.api.model.types.OrganisaatioTyyppi;
 import fi.vm.sade.organisaatio.api.search.OrganisaatioSearchCriteria;
+import fi.vm.sade.sijoittelu.tulos.dto.HakemuksenTila;
+import fi.vm.sade.sijoittelu.tulos.dto.ValintatuloksenTila;
 import fi.vm.sade.sijoittelu.tulos.dto.raportointi.HakijaDTO;
 import fi.vm.sade.sijoittelu.tulos.dto.raportointi.HakutoiveDTO;
 import fi.vm.sade.sijoittelu.tulos.dto.raportointi.HakutoiveenValintatapajonoDTO;
@@ -186,8 +188,10 @@ public class OfficerUIServiceImpl implements OfficerUIService {
                 }
             });
             HakutoiveenValintatapajonoDTO jono = jonot.get(jonot.size() - 1);
-            String vastaanottotieto = jono.getVastaanottotieto().toString();
-            String tila = jono.getTila().toString();
+            ValintatuloksenTila v = jono.getVastaanottotieto();
+            String vastaanottotieto = v != null ? v.toString() : "";
+            HakemuksenTila h = jono.getTila();
+            String tila = h != null ? h.toString() : "";
             BigDecimal pisteet = jono.getPisteet();
 
             ao.setTotalScore(pisteet.doubleValue());
