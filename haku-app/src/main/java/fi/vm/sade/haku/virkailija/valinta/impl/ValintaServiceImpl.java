@@ -56,17 +56,6 @@ public class ValintaServiceImpl implements ValintaService {
         Map<String, String> additionalInfo = application.getAdditionalInfo();
         List<Map<String, String>> hakukohteet = getHakukohteet(application);
 
-        log.debug("Getting valintakoeosallistuminen for aos:");
-        if (log.isDebugEnabled()) {
-            int i = 0;
-            for (Map<String, String> hakukohdeMap : hakukohteet) {
-                ++i;
-                for (Map.Entry<String, String> entry : hakukohdeMap.entrySet()) {
-                    log.debug("AO {} '{}' -> '{}'", String.valueOf(i), entry.getKey(), entry.getValue());
-                }
-            }
-        }
-
         ValintakoeOsallistuminenDTO osallistuminen = getOsallistuminen(application.getOid());
         List<ApplicationOptionDTO> aoList = new ArrayList<ApplicationOptionDTO>(hakukohteet.size());
         Map<String, HakutoiveDTO> hakutoiveMap = new HashMap<String, HakutoiveDTO>();
@@ -110,12 +99,11 @@ public class ValintaServiceImpl implements ValintaService {
     public HakijaDTO getHakija(String asOid, String applicationOid) {
 
         String url = "/resources/sijoittelu/" + asOid + "/sijoitteluajo/latest/hakemus/" + applicationOid;
+        log.debug("Getting hakemus, url: {}", url);
 
-        log.debug("Getting application from sijoittelu, url: {}", url);
         String response = null;
         try {
             response = getCachingRestClientSijoittelu().getAsString(url);
-            log.debug("Got response: {}", response);
         } catch (IOException e) {
             e.printStackTrace();
             return new HakijaDTO();
@@ -144,7 +132,6 @@ public class ValintaServiceImpl implements ValintaService {
         String response = null;
         try {
             response = getCachingRestClientValinta().getAsString(url);
-            log.debug("Got response: {}", response);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -168,7 +155,6 @@ public class ValintaServiceImpl implements ValintaService {
         Map<Integer, Map<String, String>> kohteet = new HashMap<Integer, Map<String, String>>();
         for (Map.Entry<String, String> entry : toiveet.entrySet()) {
             String key = entry.getKey();
-            log.debug("Getting applicationOptions, key: {}", key);
             if (key.indexOf("-") > 0) {
                 Integer index = Integer.parseInt(key.substring(0, key.indexOf("-")).replaceAll("[^0-9]", ""));
 
@@ -180,14 +166,8 @@ public class ValintaServiceImpl implements ValintaService {
         List<Integer> toRemove = new ArrayList<Integer>();
         for (Map.Entry<Integer, Map<String, String>> entry : kohteet.entrySet()) {
             Map<String, String> kohde = entry.getValue();
-            log.debug("Checking kohde {}", entry.getKey());
-            if (log.isDebugEnabled()) {
-                for (Map.Entry<String, String> e : kohde.entrySet()) {
-                    log.debug("kohde '{}' -> '{}'", e.getKey(), e.getValue());
-                }
-            }
+
             if (!kohde.containsKey("koulutus-id") || isEmpty(kohde.get("koulutus-id"))) {
-                log.debug("Removing kohde {}", entry.getKey());
                 toRemove.add(entry.getKey());
             }
         }
@@ -197,7 +177,6 @@ public class ValintaServiceImpl implements ValintaService {
 
         ArrayList<Map<String, String>> kohteetList = new ArrayList<Map<String, String>>(kohteet.size());
         for (Map.Entry<Integer, Map<String, String>> entry : kohteet.entrySet()) {
-            log.debug("Adding kohde '{}'", entry.getKey().intValue());
             kohteetList.add(entry.getKey().intValue() - 1, entry.getValue());
         }
         return kohteetList;
