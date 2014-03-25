@@ -56,6 +56,17 @@ public class ValintaServiceImpl implements ValintaService {
         Map<String, String> additionalInfo = application.getAdditionalInfo();
         List<Map<String, String>> hakukohteet = getHakukohteet(application);
 
+        log.debug("Getting valintakoeosallistuminen for aos:");
+        if (log.isDebugEnabled()) {
+            int i = 0;
+            for (Map<String, String> hakukohdeMap : hakukohteet) {
+                ++i;
+                for (Map.Entry<String, String> entry : hakukohdeMap.entrySet()) {
+                    log.debug("AO {} '{}' -> '{}'", String.valueOf(i), entry.getKey(), entry.getValue());
+                }
+            }
+        }
+
         ValintakoeOsallistuminenDTO osallistuminen = getOsallistuminen(application.getOid());
         List<ApplicationOptionDTO> aoList = new ArrayList<ApplicationOptionDTO>(hakukohteet.size());
         Map<String, HakutoiveDTO> hakutoiveMap = new HashMap<String, HakutoiveDTO>();
@@ -100,9 +111,11 @@ public class ValintaServiceImpl implements ValintaService {
 
         String url = "/resources/sijoittelu/" + asOid + "/sijoitteluajo/latest/hakemus/" + applicationOid;
 
+        log.debug("Getting application from sijoittelu, url: {}", url);
         String response = null;
         try {
             response = getCachingRestClientSijoittelu().getAsString(url);
+            log.debug("Got response: {}", response);
         } catch (IOException e) {
             e.printStackTrace();
             return new HakijaDTO();
@@ -124,9 +137,11 @@ public class ValintaServiceImpl implements ValintaService {
     private ValintakoeOsallistuminenDTO getOsallistuminen(String applicationOid) {
 
         String url = "/resources/valintakoe/hakemus/" + applicationOid;
+        log.debug("Getting valintakoeosallistuminen, url: {}", url);
         String response = null;
         try {
             response = getCachingRestClientValinta().getAsString(url);
+            log.debug("Got response: {}", response);
         } catch (IOException e) {
             e.printStackTrace();
         }
