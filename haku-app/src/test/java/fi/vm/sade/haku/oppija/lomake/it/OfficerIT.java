@@ -150,6 +150,7 @@ public class OfficerIT extends DummyModelBaseItTest {
         findByIdAndClick("submit_confirm");
         String oid = getTrimmedTextById("_infocell_oid");
         findByIdAndClick("back");
+        screenshot("cookie");
         activate(oid);
         clickLinkByText(oid);
         clickLinkByText("Lisää oppijanumero");
