@@ -165,6 +165,7 @@ public class ValintaServiceImpl implements ValintaService {
         Map<Integer, Map<String, String>> kohteet = new HashMap<Integer, Map<String, String>>();
         for (Map.Entry<String, String> entry : toiveet.entrySet()) {
             String key = entry.getKey();
+            log.debug("Getting applicationOptions, key: {}", key);
             if (key.indexOf("-") > 0) {
                 Integer index = Integer.parseInt(key.substring(0, key.indexOf("-")).replaceAll("[^0-9]", ""));
 
@@ -176,6 +177,12 @@ public class ValintaServiceImpl implements ValintaService {
         List<Integer> toRemove = new ArrayList<Integer>();
         for (Map.Entry<Integer, Map<String, String>> entry : kohteet.entrySet()) {
             Map<String, String> kohde = entry.getValue();
+            log.debug("Checking kohde {}", entry.getKey());
+            if (log.isDebugEnabled()) {
+                for (Map.Entry<String, String> e : kohde.entrySet()) {
+                    log.debug("kohde '{}' -> '{}'", e.getKey(), e.getValue());
+                }
+            }
             if (!kohde.containsKey("Koulutus-id") || isEmpty(kohde.get("Koulutus-id"))) {
                 toRemove.add(entry.getKey());
             }
