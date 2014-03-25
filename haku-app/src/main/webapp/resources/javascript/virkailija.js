@@ -69,11 +69,13 @@ $(document).ready(function () {
 
                         if (!name) {
                             if (as['name_fi']) {
-                                name = name_fi;
+                                name = as['name_fi'];
                             } else if (as['name_sv']) {
-                                name = name_sv;
+                                name = as['name_sv'];
                             } else if (as['name_en']) {
-                                name = name_en;
+                                name = as['name_en'];
+                            } else {
+                                name = '???';
                             }
                         }
 
@@ -362,7 +364,7 @@ $(document).ready(function () {
                 $('#application-preference').val(obj.aoid);
                 $('#application-preference-code').val(obj.aoid);
                 $('#lopoid').val(obj.lopoid);
-                $('#lop-title').text(obj.lopTitle);
+                $('#lop-title').text(obj.lopTitle.replace('ThisIsStupidButNecessary', '&'));
                 $('#application-system').val(obj.asId);
                 $('#hakukausiVuosi').val(obj.asYear);
                 $('#hakukausi').val(obj.asSemester);
@@ -389,6 +391,7 @@ $(document).ready(function () {
                 addParameter(obj, 'discretionaryOnly', '#discretionary-only');
                 var lopTitle = $('#lop-title').text();
                 if (lopTitle) {
+                    lopTitle = lopTitle.replace('&', 'ThisIsStupidButNecessary');
                     obj['lopTitle'] = lopTitle;
                 }
                 if ($('#orgsearch').hasClass('expand')) {

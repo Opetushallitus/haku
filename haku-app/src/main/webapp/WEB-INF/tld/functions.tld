@@ -4,11 +4,13 @@
     <tlib-version>1.0</tlib-version>
     <short-name>/functions</short-name>
     <info>Tag library for functions</info>
+    <!--
     <function>
         <name>toNameSelectorString</name>
         <function-class>fi.vm.sade.haku.oppija.lomake.domain.rules.RegexRule</function-class>
         <function-signature>java.lang.String toNameSelectorString(java.lang.Iterable)</function-signature>
     </function>
+    -->
     <function>
         <name>tochildIdList</name>
         <function-class>fi.vm.sade.haku.oppija.lomake.domain.rules.RegexRule</function-class>
@@ -20,12 +22,13 @@
         <function-class>fi.vm.sade.haku.oppija.lomake.domain.rules.RegexRule</function-class>
         <function-signature>java.lang.String setToList(java.util.Set)</function-signature>
     </function>
-
+    <!--
     <function>
         <name>toCommaSeparatedString</name>
         <function-class>fi.vm.sade.haku.oppija.lomake.domain.rules.RegexRule</function-class>
         <function-signature>java.lang.String toCommaSeparatedString(java.lang.Iterable)</function-signature>
     </function>
+    -->
     <function>
         <name>children</name>
         <function-class>fi.vm.sade.haku.oppija.lomake.domain.rules.RegexRule</function-class>
@@ -39,11 +42,13 @@
         <function-signature>java.util.List getAllChildren(fi.vm.sade.haku.oppija.lomake.domain.elements.Element)
         </function-signature>
     </function>
+    <!--
     <function>
         <name>dod</name>
         <function-class>fi.vm.sade.haku.oppija.lomake.domain.rules.RegexRule</function-class>
         <function-signature>java.lang.String getDateOfBirth(java.util.Map)</function-signature>
     </function>
+    -->
     <function>
         <name>formatOid</name>
         <function-class>fi.vm.sade.haku.oppija.lomake.util.StringUtil</function-class>

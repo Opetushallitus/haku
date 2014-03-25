@@ -172,8 +172,13 @@ public final class ElementUtil {
     }
 
     public static Validator createRegexValidator(final String id, final String pattern, final String bundleName) {
+        return createRegexValidator(id, pattern, bundleName, "yleinen.virheellinenArvo");
+    }
+
+    public static Validator createRegexValidator(final String id, final String pattern, final String bundleName,
+                                                 final String messageKey) {
         return new RegexFieldValidator(id,
-                ElementUtil.createI18NText("yleinen.virheellinenArvo", bundleName),
+                ElementUtil.createI18NText(messageKey, bundleName),
                 pattern);
     }
 
@@ -196,11 +201,19 @@ public final class ElementUtil {
                         ElementUtil.createI18NText("yleinen.pakollinen", bundleName)));
     }
 
-    public static void addApplicationUniqueValidator(final Element element, final String asType) {
+    public static void addUniqueApplicationValidator(final Element element, final String asType){
         if (OppijaConstants.LISA_HAKU.equals(asType)) {
             element.setValidator(new SsnAndPreferenceUniqueValidator());
         } else {
+           //skip
+        }
+    }
+
+    public static void addUniqueApplicantValidator(final Element element, final String asType){
+        if (OppijaConstants.VARSINAINEN_HAKU.equals(asType)) {
             element.setValidator(new SsnUniqueValidator());
+        } else {
+            //skip
         }
     }
 

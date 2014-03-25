@@ -22,6 +22,7 @@
     <link href="${contextPath}/resources/css/hakemus-print.css" type="text/css" rel="stylesheet"/>
     <script src="${contextPath}/resources/jquery/jquery.min.js" type="text/javascript"></script>
     <script src="${contextPath}/resources/jquery/xdr.js"></script>
+    <script src="${contextPath}/resources/javascript/printfix.js"></script>
     <title><fmt:message key="lomake.opintopolku"/> - <fmt:message key="form.title"/> - <fmt:message
             key="lomake.tulostus"/></title>
 </head>
@@ -33,7 +34,7 @@
                                                                              escapeXml="true"/></h2>
 
     <p><fmt:message key="lomake.tulostus.vastaanotettu"/>&nbsp;
-        <time><fmt:formatDate value="${application.received}" pattern="yyyy-MM-dd HH:mm:ss"/></time>
+        <time><fmt:formatDate value="${application.received}" pattern="dd.MM.yyyy HH:mm"/></time>
     </p>
     <div class="application-number"><fmt:message key="virkailija.hakemus.hakemusnro"/>&nbsp;<c:out
             value="${f:formatOid(application.oid)}" escapeXml="true"/></div>

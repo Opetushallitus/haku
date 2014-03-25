@@ -116,11 +116,12 @@ public class ApplicationResource {
                                                        @QueryParam("discretionaryOnly") Boolean discretionaryOnly,
                                                        @QueryParam("sendingSchoolOid") String sendingSchoolOid,
                                                        @QueryParam("sendingClass") String sendingClass,
+                                                       @QueryParam("updatedAfter") DateParam updatedAfter,
                                                        @DefaultValue(value = "0") @QueryParam("start") int start,
                                                        @DefaultValue(value = "100") @QueryParam("rows") int rows) {
 
         return findApplicationsOrdered("fullName", "asc", query, state, aoid, lopoid, asId, asSemester, asYear, aoOid,
-                discretionaryOnly, sendingSchoolOid, sendingClass, start, rows);
+                discretionaryOnly, sendingSchoolOid, sendingClass, updatedAfter, start, rows);
     }
 
     @GET
@@ -140,6 +141,7 @@ public class ApplicationResource {
                                                               @QueryParam("discretionaryOnly") Boolean discretionaryOnly,
                                                               @QueryParam("sendingSchoolOid") String sendingSchoolOid,
                                                               @QueryParam("sendingClass") String sendingClass,
+                                                              @QueryParam("updatedAfter") DateParam updatedAfter,
                                                               @DefaultValue(value = "0") @QueryParam("start") int start,
                                                               @DefaultValue(value = "100") @QueryParam("rows") int rows) {
 //        LOGGER.debug("Finding applications q:{}, state:{}, aoid:{}, lopoid:{}, asId:{}, aoOid:{}, start:{}, rows: {}, " +
@@ -159,7 +161,7 @@ public class ApplicationResource {
         }
         return applicationService.findApplications(
                 query, new ApplicationQueryParameters(state, asIds, aoid, lopoid, aoOid, discretionaryOnly,
-                sendingSchoolOid, sendingClass, start, rows, orderBy, realOrderDir));
+                sendingSchoolOid, sendingClass, updatedAfter != null ? updatedAfter.getDate() : null, start, rows, orderBy, realOrderDir));
     }
 
     @GET
@@ -203,7 +205,7 @@ public class ApplicationResource {
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_READ', 'ROLE_APP_HAKEMUS_CRUD', 'ROLE_APP_HAKEMUS_LISATIETORU', 'ROLE_APP_HAKEMUS_LISATIETOCRUD')")
     public List<ApplicationAdditionalDataDTO> getApplicationAdditionalData(@PathParam("asId") String asId,
                                                                            @PathParam("aoId") String aoId) {
-         return applicationService.findApplicationAdditionalData(asId, aoId);
+        return applicationService.findApplicationAdditionalData(asId, aoId);
     }
 
     @PUT

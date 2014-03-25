@@ -19,6 +19,8 @@ import fi.vm.sade.haku.oppija.ui.service.ModelResponse;
 import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
+import fi.vm.sade.haku.virkailija.valinta.ValintaService;
+import fi.vm.sade.haku.virkailija.valinta.impl.ValintaServiceMockImpl;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -44,6 +46,7 @@ public class OfficerUIServiceImplTest {
     private ElementTreeValidator elementTreeValidator;
     private AuthenticationService authenticationService;
     private OrganizationService organizationService;
+    private ValintaService valintaService;
     private UserSession userSession;
 
     private Application application;
@@ -68,6 +71,7 @@ public class OfficerUIServiceImplTest {
         elementTreeValidator = new ElementTreeValidator(validatorFactory);
         authenticationService = mock(AuthenticationService.class);
         organizationService = mock(OrganizationService.class);
+        valintaService = new ValintaServiceMockImpl(); //mock(ValintaService.class);
         userSession = mock(UserSession.class);
 
         officerUIService = new OfficerUIServiceImpl(
@@ -79,7 +83,9 @@ public class OfficerUIServiceImplTest {
                 elementTreeValidator,
                 mock(ApplicationSystemService.class),
                 authenticationService,
-                organizationService, userSession);
+                organizationService,
+                valintaService,
+                userSession);
         form.addChild(phase);
         when(applicationService.getApplication(OID)).thenReturn(application);
         when(applicationService.getApplicationByOid(OID)).thenReturn(application);

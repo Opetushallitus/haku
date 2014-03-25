@@ -20,28 +20,30 @@ import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.hakutoiveet.HakutoiveetPhaseLisahakuSyksy;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.henkilotiedot.HenkilotiedotPhaseLisahakuSyksy;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.koulutustausta.KoulutustaustaPhaseLisahakuSyksy;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.lisatiedot.LisatiedotPhaseLisahakuSyksy;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.osaaminen.OsaaminenPhaseLisahakuSyksy;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.henkilotiedot.HenkilotiedotPhase;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.koulutustausta.KoulutustaustaPhase;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.lisatiedot.LisatiedotPhase;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.osaaminen.OsaaminenPhaseSyksy;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.valmis.ValmisPhase;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 
 import java.util.List;
 
 public class LisahakuSyksy {
 
     private static final String FORM_MESSAGES = "form_messages_lisahaku_syksy";
-
+    private static final String FORM_ERRORS = "form_errors_lisahaku_syksy";
+    private static final String FORM_VERBOSE_HELP = "form_verboseHelp_lisahaku_syksy";
 
     public static Form generateForm(final ApplicationSystem as, final KoodistoService koodistoService) {
         try {
             Form form = new Form(as.getId(), as.getName());
-            form.addChild(HenkilotiedotPhaseLisahakuSyksy.create(koodistoService));
-            form.addChild(KoulutustaustaPhaseLisahakuSyksy.create(koodistoService));
+            form.addChild(HenkilotiedotPhase.create(OppijaConstants.LISA_HAKU, koodistoService, FORM_MESSAGES, FORM_ERRORS, FORM_VERBOSE_HELP));
+            form.addChild(KoulutustaustaPhase.create(koodistoService, as, FORM_MESSAGES, FORM_ERRORS, FORM_VERBOSE_HELP));
             form.addChild(HakutoiveetPhaseLisahakuSyksy.create());
-            form.addChild(OsaaminenPhaseLisahakuSyksy.create(koodistoService));
-            form.addChild(LisatiedotPhaseLisahakuSyksy.create());
+            form.addChild(OsaaminenPhaseSyksy.create(koodistoService, FORM_MESSAGES, FORM_ERRORS, FORM_VERBOSE_HELP));
+            form.addChild(LisatiedotPhase.create(FORM_MESSAGES, FORM_ERRORS,FORM_VERBOSE_HELP));
             return form;
         } catch (Exception e) {
             throw new RuntimeException(LisahakuSyksy.class.getCanonicalName() + " init failed", e);

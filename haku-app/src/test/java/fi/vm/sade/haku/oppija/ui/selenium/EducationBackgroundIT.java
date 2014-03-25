@@ -30,7 +30,7 @@ public class EducationBackgroundIT extends DummyModelBaseItTest {
 
         fillOut(defaultValues.henkilotiedot);
 
-        nextPhase();
+        nextPhase(OppijaConstants.PHASE_EDUCATION);
 
         clickByNameAndValue(KYSYMYS_POHJAKOULUTUS, TUTKINTO_PERUSKOULU);
         elementsPresentByName(OppijaConstants.PERUSOPETUS_PAATTOTODISTUSVUOSI);

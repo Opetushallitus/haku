@@ -65,7 +65,7 @@ public class HakutoiveetPhaseLisahakuSyksy {
         hakutoiveetTheme.addChild(singlePreference);
         ElementUtil.setVerboseHelp(singlePreference, "form.hakutoiveet.otsikko.lisahaku.verboseHelp", FORM_VERBOSE_HELP);
         ElementUtil.addPreferenceValidator(singlePreference);
-        addApplicationUniqueValidator(singlePreference, OppijaConstants.LISA_HAKU);
+        addUniqueApplicationValidator(singlePreference, OppijaConstants.LISA_HAKU);
         return hakutoiveetTheme;
     }
 

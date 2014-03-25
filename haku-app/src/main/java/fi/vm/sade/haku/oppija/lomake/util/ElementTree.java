@@ -44,7 +44,14 @@ public final class ElementTree {
     public boolean isValidationNeeded(final String currentId, final String nextId) {
         List<Element> children = root.getChildren();
         if (children.get(children.size() - 1).getId().equals(currentId)) {
-            return true;
+            // Last phase needs special treatment
+            Element nextPhase = null;
+            try {
+                nextPhase = getChildById(nextId);
+            } catch (ElementNotFound enf) {
+                // Apparently there's no next phase.
+                return true;
+            }
         }
         int nextIndex = children.indexOf(getChildById(nextId));
         int currentIndex = children.indexOf(getChildById(currentId));
@@ -55,7 +62,7 @@ public final class ElementTree {
         ArrayList<Element> allChildren = new ArrayList<Element>();
         for (Element child : element.getChildren()) {
             allChildren.add(child);
-            getAllChildren(child);
+            allChildren.addAll(getAllChildren(child));
         }
         return allChildren;
     }

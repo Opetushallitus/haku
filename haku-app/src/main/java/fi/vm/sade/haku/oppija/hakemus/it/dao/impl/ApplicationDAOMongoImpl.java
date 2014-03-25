@@ -113,6 +113,8 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     private static final String FIELD_SSN_DIGEST = "answers.henkilotiedot.Henkilotunnus_digest";
     private static final String FIELD_DATE_OF_BIRTH = "answers.henkilotiedot.syntymaaika";
     private static final String FIELD_SEARCH_NAMES = "searchNames";
+    private static final String FIELD_RECEIVED = "received";
+    private static final String FIELD_UPDATED = "updated";
     private static final String EXISTS = "$exists";
     private static final String OPTION_SPARSE = "sparse";
     private static final String OPTION_NAME = "name";
@@ -288,7 +290,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     }
 
     private QueryBuilder queryByLopAndPreference(String preference, String lopOid) {
-            return QueryBuilder.start().or(
+        return QueryBuilder.start().or(
                 queryByLopAndPreference(FIELD_AO_KOULUTUS_ID_1, FIELD_LOP_1, FIELD_LOP_PARENTS_1, preference, lopOid).get(),
                 queryByLopAndPreference(FIELD_AO_KOULUTUS_ID_2, FIELD_LOP_2, FIELD_LOP_PARENTS_2, preference, lopOid).get(),
                 queryByLopAndPreference(FIELD_AO_KOULUTUS_ID_3, FIELD_LOP_3, FIELD_LOP_PARENTS_3, preference, lopOid).get(),
@@ -330,6 +332,27 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
                 QueryBuilder.start(FIELD_DISCRETIONARY_3).is(Boolean.TRUE.toString()).get(),
                 QueryBuilder.start(FIELD_DISCRETIONARY_4).is(Boolean.TRUE.toString()).get(),
                 QueryBuilder.start(FIELD_DISCRETIONARY_5).is(Boolean.TRUE.toString()).get()
+        );
+    }
+
+    private QueryBuilder queryByLopAndDiscretionary(String lopOid) {
+        return QueryBuilder.start().or(
+                queryByLopAndDiscretionary(FIELD_DISCRETIONARY_1, FIELD_LOP_1, FIELD_LOP_PARENTS_1, lopOid).get(),
+                queryByLopAndDiscretionary(FIELD_DISCRETIONARY_2, FIELD_LOP_2, FIELD_LOP_PARENTS_2, lopOid).get(),
+                queryByLopAndDiscretionary(FIELD_DISCRETIONARY_3, FIELD_LOP_3, FIELD_LOP_PARENTS_3, lopOid).get(),
+                queryByLopAndDiscretionary(FIELD_DISCRETIONARY_4, FIELD_LOP_4, FIELD_LOP_PARENTS_4, lopOid).get(),
+                queryByLopAndDiscretionary(FIELD_DISCRETIONARY_5, FIELD_LOP_5, FIELD_LOP_PARENTS_5, lopOid).get()
+        );
+    }
+
+    private QueryBuilder queryByLopAndDiscretionary(String fieldDiscretionary, String fieldLop, String fieldLopParents,
+                                                    String lopOid) {
+        return QueryBuilder.start().and(
+                QueryBuilder.start(fieldDiscretionary).is(Boolean.TRUE.toString()).get(),
+                QueryBuilder.start().or(
+                        QueryBuilder.start(fieldLop).is(lopOid).get(),
+                        QueryBuilder.start(fieldLopParents).regex(Pattern.compile(lopOid)).get()
+                ).get()
         );
     }
 
@@ -392,7 +415,10 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
             filters.add(QueryBuilder.start(FIELD_APPLICATION_SYSTEM_ID).in(asIds).get());
         }
 
-        if (applicationQueryParameters.isDiscretionaryOnly()) {
+        boolean discretionaryOnly = applicationQueryParameters.isDiscretionaryOnly();
+        if (isNotEmpty(lopOid) && discretionaryOnly) {
+            filters.add(queryByLopAndDiscretionary(lopOid).get());
+        } else if (discretionaryOnly) {
             filters.add(queryDiscretionaryOnly().get());
         }
 
@@ -407,6 +433,16 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
                     QueryBuilder.start(FIELD_SENDING_CLASS).is(sendingClass.toUpperCase()).get(),
                     QueryBuilder.start(FIELD_CLASS_LEVEL).is(sendingClass.toUpperCase()).get()
             ).get());
+        }
+
+        Date updatedAfter = applicationQueryParameters.getUpdatedAfter();
+        if (updatedAfter != null) {
+            filters.add(
+                    QueryBuilder.start().or(
+                            QueryBuilder.start(FIELD_RECEIVED).greaterThanEquals(updatedAfter.getTime()).get(),
+                            QueryBuilder.start(FIELD_UPDATED).greaterThanEquals(updatedAfter.getTime()).get()
+                    ).get()
+            );
         }
 
         filters.add(newOIdExistDBObject());
@@ -482,6 +518,9 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         DBObject query = new BasicDBObject(FIELD_APPLICATION_OID, oid);
         DBObject update = new BasicDBObject("$set", new BasicDBObject(key, value));
         getCollection().findAndModify(query, update);
+
+        DBObject updateTimestamp = new BasicDBObject("$set", new BasicDBObject(FIELD_UPDATED, new Date()));
+        getCollection().findAndModify(query, updateTimestamp);
     }
 
     @Override
@@ -495,12 +534,15 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         query.put(FIELD_STUDENT_IDENTIFICATION_DONE, Boolean.FALSE.toString());
 
         DBObject sortBy = new BasicDBObject(FIELD_LAST_AUTOMATED_PROCESSING_TIME, 1);
-        DBObject hint = new BasicDBObject();
-        hint.put(FIELD_APPLICATION_STATE, 1);
-        hint.put(FIELD_STUDENT_IDENTIFICATION_DONE, 1);
-        hint.put(FIELD_LAST_AUTOMATED_PROCESSING_TIME, 1);
 
-        DBCursor cursor = getCollection().find(query).sort(sortBy).hint(hint).limit(1);
+        DBCursor cursor = getCollection().find(query).sort(sortBy).limit(1);
+        if (ensureIndex) {
+            DBObject hint = new BasicDBObject();
+            hint.put(FIELD_APPLICATION_STATE, 1);
+            hint.put(FIELD_STUDENT_IDENTIFICATION_DONE, 1);
+            hint.put(FIELD_LAST_AUTOMATED_PROCESSING_TIME, 1);
+            cursor.hint(hint);
+        }
         if (!cursor.hasNext()) {
             return null;
         }
@@ -584,5 +626,17 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
             index.put(field, 1);
         }
         getCollection().ensureIndex(index, options);
+    }
+
+    @Override
+    public void update(Application o, Application n) {
+        n.setUpdated(new Date());
+        super.update(o, n);
+    }
+
+    @Override
+    public void save(Application application) {
+        application.setUpdated(new Date());
+        super.save(application);
     }
 }

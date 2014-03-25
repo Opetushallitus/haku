@@ -36,7 +36,7 @@ import java.io.IOException;
 import java.util.*;
 
 @Service
-@Profile("default")
+@Profile(value = {"default", "devluokka"})
 public class OrganizationServiceImpl implements OrganizationService {
 
     private static final Logger LOG = LoggerFactory.getLogger(OrganizationServiceImpl.class);

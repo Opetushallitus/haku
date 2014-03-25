@@ -22,17 +22,13 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
 
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.createI18NText;
 
-public class OsaaminenPhaseLisahakuSyksy {
+public class OsaaminenPhaseSyksy {
 
-    private static final String FORM_MESSAGES = "form_messages_lisahaku_syksy";
-    private static final String FORM_ERRORS = "form_errors_lisahaku_syksy";
-    private static final String FORM_VERBOSE_HELP = "form_verboseHelp_lisahaku_syksy";
-
-    public static Phase create(final KoodistoService koodistoService) {
-        Phase osaaminen = new Phase("osaaminen", createI18NText("form.osaaminen.otsikko", FORM_MESSAGES), false,
+    public static Phase create(final KoodistoService koodistoService, final String formMessagesBundle, final String formErrorsBundle, final String formVerboseHelpBundle) {
+        Phase osaaminen = new Phase("osaaminen", createI18NText("form.osaaminen.otsikko", formMessagesBundle), false,
                 Lists.newArrayList("APP_HAKEMUS_READ_UPDATE", "APP_HAKEMUS_CRUD", "APP_HAKEMUS_OPO"));
-        osaaminen.addChild(ArvosanatTheme.createArvosanatTheme(koodistoService, FORM_MESSAGES, FORM_ERRORS, FORM_VERBOSE_HELP));
-        osaaminen.addChild(KielitaitokysymyksetTheme.createKielitaitokysymyksetTheme(FORM_MESSAGES, FORM_ERRORS, FORM_VERBOSE_HELP));
+        osaaminen.addChild(ArvosanatTheme.createArvosanatTheme(koodistoService, formMessagesBundle, formErrorsBundle, formVerboseHelpBundle));
+        osaaminen.addChild(KielitaitokysymyksetTheme.createKielitaitokysymyksetTheme(formMessagesBundle, formErrorsBundle, formVerboseHelpBundle));
         return osaaminen;
     }
 }

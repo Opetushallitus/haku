@@ -16,6 +16,7 @@
 
 package fi.vm.sade.haku.oppija.hakemus.it.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import static org.apache.commons.lang3.StringUtils.isEmpty;
@@ -29,6 +30,7 @@ public class ApplicationQueryParameters {
     private final boolean discretionaryOnly;
     private final String sendingSchool;
     private final String sendingClass;
+    private final Date updatedAfter;
     private final int start;
     private final int rows;
     private String orderBy;
@@ -36,7 +38,7 @@ public class ApplicationQueryParameters {
 
     public ApplicationQueryParameters(final List<String> state, final List<String> asIds, final String aoId,
                                       final String lopOid, final String aoOid, final Boolean discretionaryOnly,
-                                      final String sendingSchool, final String sendingClass,
+                                      final String sendingSchool, final String sendingClass, final Date updatedAfter,
                                       final int start, final int rows, final String orderBy, final int orderDir) {
         this.lopOid = isEmpty(lopOid) ? null : lopOid;
         this.asIds = asIds;
@@ -46,6 +48,7 @@ public class ApplicationQueryParameters {
         this.discretionaryOnly = discretionaryOnly == null ? false : discretionaryOnly;
         this.sendingSchool = sendingSchool;
         this.sendingClass = sendingClass;
+        this.updatedAfter = updatedAfter;
         this.start = start;
         this.rows = rows;
         this.orderBy = orderBy;
@@ -95,4 +98,6 @@ public class ApplicationQueryParameters {
     public String getSendingSchool() {return sendingSchool; }
 
     public String getSendingClass() {return sendingClass; }
+
+    public Date getUpdatedAfter() { return updatedAfter; }
 }
