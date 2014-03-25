@@ -187,6 +187,7 @@ public class ValintaServiceImpl implements ValintaService {
                 }
             }
             if (!kohde.containsKey("koulutus-id") || isEmpty(kohde.get("koulutus-id"))) {
+                log.debug("Removing kohde {}", entry.getKey());
                 toRemove.add(entry.getKey());
             }
         }
@@ -196,6 +197,7 @@ public class ValintaServiceImpl implements ValintaService {
 
         ArrayList<Map<String, String>> kohteetList = new ArrayList<Map<String, String>>(kohteet.size());
         for (Map.Entry<Integer, Map<String, String>> entry : kohteet.entrySet()) {
+            log.debug("Adding kohde '{}'", entry.getKey().intValue());
             kohteetList.add(entry.getKey().intValue() - 1, entry.getValue());
         }
         return kohteetList;
