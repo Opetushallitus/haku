@@ -125,9 +125,12 @@ public class ValintaServiceImpl implements ValintaService {
             return new HakijaDTO();
         }
 
-        Gson gson = new Gson();
+        GsonBuilder builder = new GsonBuilder().serializeNulls();
+        Gson gson = builder.create();
+
         HakijaDTO hakijaDTO = gson.fromJson(response, HakijaDTO.class);
         if (hakijaDTO == null) {
+            log.debug("hakijaDTO == null");
             hakijaDTO = new HakijaDTO();
         }
         return hakijaDTO;
