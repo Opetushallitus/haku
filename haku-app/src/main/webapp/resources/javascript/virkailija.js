@@ -364,13 +364,13 @@ $(document).ready(function () {
                 $('#application-preference').val(obj.aoid);
                 $('#application-preference-code').val(obj.aoid);
                 $('#lopoid').val(obj.lopoid);
-                $('#lop-title').text(obj.lopTitle.replace('ThisIsStupidButNecessary', '&'));
                 $('#application-system').val(obj.asId);
                 $('#hakukausiVuosi').val(obj.asYear);
                 $('#hakukausi').val(obj.asSemester);
                 $('#sendingSchoolOid').val(obj.sendingSchoolOid);
                 $('#sendingClass').val(obj.sendingClass);
                 $('#discretionary-only').prop('checked', obj.discretionaryOnly);
+                $('#lop-title').text(obj.lopTitle ? objlopTitle.replace('ThisIsStupidButNecessary', '&') : undefined);
                 if (obj.orgSearchExpanded) {
                     orgSearchDialog.expand();
                 }
