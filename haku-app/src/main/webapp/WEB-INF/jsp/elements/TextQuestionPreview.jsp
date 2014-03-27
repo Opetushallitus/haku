@@ -1,4 +1,4 @@
-<%@ page session="false"%>
+<%@ page session="false" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="haku" tagdir="/WEB-INF/tags" %>
 <%--
@@ -16,7 +16,6 @@
   ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   ~ European Union Public Licence for more details.
   --%>
-
 <tr>
     <c:choose>
         <c:when test="${element.inline or print}">
@@ -24,7 +23,8 @@
             <td><c:out value="${answers[element.id]}"/></td>
         </c:when>
         <c:otherwise>
-            <td class="label"><a name="${element.id}"></a><span><haku:i18nText value="${element.i18nText}"/>:</span></td>
+            <td class="label"><a name="${element.id}"></a><span><haku:i18nText value="${element.i18nText}"/>:</span>
+            </td>
             <td><c:out value="${answers[element.id]}"/></td>
         </c:otherwise>
     </c:choose>
