@@ -21,12 +21,14 @@ import fi.vm.sade.haku.oppija.lomake.validation.FieldValidator;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationInput;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationResult;
 import org.apache.commons.lang3.Validate;
+import org.springframework.data.annotation.Transient;
 
 import java.util.regex.Pattern;
 
 public class RegexFieldValidator extends FieldValidator {
 
     private final String pattern;
+    @Transient
     private final Pattern compiledPattern;
 
     public RegexFieldValidator(final String fieldName,
