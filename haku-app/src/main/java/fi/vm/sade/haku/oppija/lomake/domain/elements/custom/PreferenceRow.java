@@ -18,8 +18,6 @@ package fi.vm.sade.haku.oppija.lomake.domain.elements.custom;
 
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Question;
-import fi.vm.sade.haku.oppija.lomake.validation.validators.RequiredFieldValidator;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.springframework.data.annotation.Transient;
 
@@ -92,17 +90,5 @@ public class PreferenceRow extends Question {
     @Transient
     public String getEducationOidInputId() {
         return educationInputId + "-id";
-    }
-
-    @Override
-    public void addAttribute(final String key, final String value) {
-        if ("required".equals(key)) {
-            setValidator(new RequiredFieldValidator(learningInstitutionInputId, ElementUtil.createI18NText("yleinen.pakollinen",
-                    "form_errors_yhteishaku_kevat")));
-            setValidator(new RequiredFieldValidator(educationInputId, ElementUtil.createI18NText("yleinen.pakollinen",
-                    "form_errors_yhteishaku_kevat")));
-        } else {
-            super.addAttribute(key, value);
-        }
     }
 }
