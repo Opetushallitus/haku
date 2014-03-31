@@ -530,7 +530,6 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         query.put(FIELD_PERSON_OID, new BasicDBObject(EXISTS, true));
         query.put(FIELD_STUDENT_OID, new BasicDBObject(EXISTS, false));
         query.put(FIELD_APPLICATION_STATE, Application.State.ACTIVE.toString());
-        query.put(FIELD_SSN, new BasicDBObject(EXISTS, true));
         query.put(FIELD_STUDENT_IDENTIFICATION_DONE, Boolean.FALSE.toString());
 
         DBObject sortBy = new BasicDBObject(FIELD_LAST_AUTOMATED_PROCESSING_TIME, 1);
