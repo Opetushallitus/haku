@@ -33,6 +33,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * An aspect that handel different logging operations.
@@ -64,22 +65,25 @@ public class LoggerAspect {
      * as application data in data store.
      */
     @AfterReturning(pointcut = "execution(* fi.vm.sade.haku.oppija.hakemus.service.ApplicationService.submitApplication(..)) && args(applicationSystemId,..)",
-            returning = "oid")
-    public void logSubmitApplication(final String applicationSystemId, final String oid) {
+            returning = "application")
+    public void logSubmitApplication(final String applicationSystemId, final Application application) {
         try {
             Tapahtuma t = new Tapahtuma();
 
             t.setTarget("Haku: " + applicationSystemId
-                    + ", käyttäjä: " + userSession.getUser().getUserName() + ", hakemus oid: " + oid);
+                    + ", käyttäjä: " + userSession.getUser().getUserName() + ", hakemus oid: " + application.getOid());
             t.setTimestamp(new Date());
             t.setUserActsForUser("" + userSession.getUser().getUserName());
             t.setType("Hakemus lähetetty");
             t.setUser("Hakemus Service");
-            t.addValueChange("STATE", "DRAFT", "SUBMITTED");
+            Map<String, String> answers = application.getVastauksetMerged();
+            for (Map.Entry<String, String> answer : answers.entrySet()) {
+                t.addValueChange(answer.getKey(), null, answer.getValue());
+            }
             LOGGER.debug(t.toString());
             logger.log(t);
         } catch (Exception e) {
-            LOGGER.warn("Could not log laitaVireille event");
+            LOGGER.warn("Could not log submit application event");
         }
     }
 

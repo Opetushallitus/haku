@@ -16,6 +16,7 @@
 
 package fi.vm.sade.haku.oppija.hakemus.aspect;
 
+import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.lomake.service.mock.UserSessionMock;
 import fi.vm.sade.log.client.Logger;
 import fi.vm.sade.log.model.Tapahtuma;
@@ -32,7 +33,7 @@ public class LoggerAspectTest {
 
     @Test
     public void testlogSubmitApplication() throws Exception {
-        LOGGER_ASPECT.logSubmitApplication("aid", "oid");
+        LOGGER_ASPECT.logSubmitApplication("aid", new Application("oid"));
     }
 
     @Test
