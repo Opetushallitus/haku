@@ -48,7 +48,7 @@ import static fi.vm.sade.haku.oppija.lomake.domain.I18nText.LANGS;
 
 public final class ElementUtil {
 
-    public static final String ISO88591_NAME_REGEX = "^$|^[a-zA-ZÀ-ÖØ-öø-ÿ]$|^[a-zA-ZÀ-ÖØ-öø-ÿ][a-zA-ZÀ-ÖØ-öø-ÿ ,-.]*(?:[a-zA-ZÀ-ÖØ-öø-ÿ]+$)$";
+    public static final String ISO88591_NAME_REGEX = "^$|^[a-zA-ZÀ-ÖØ-öø-ÿ]$|^[a-zA-ZÀ-ÖØ-öø-ÿ][a-zA-ZÀ-ÖØ-öø-ÿ ,-.']*(?:[a-zA-ZÀ-ÖØ-öø-ÿ]+$)$";
     public static final String EMAIL_REGEX = "^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$|^$";
 
     public static final String KYLLA = Boolean.TRUE.toString().toLowerCase();
