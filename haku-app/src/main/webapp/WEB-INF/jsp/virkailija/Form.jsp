@@ -113,7 +113,14 @@
                     <haku:infoCell key="virkailija.hakemus.hakemusnro" value="${application.oid}"
                                    cellId="infocell_oid"/>
 
-                    <haku:infoCell key="virkailija.hakemus.henkilotunnus" value="${answers['Henkilotunnus']}"/>
+                    <c:choose>
+                        <c:when test="${not empty answers['Henkilotunnus']}">
+                            <haku:infoCell key="virkailija.hakemus.henkilotunnus" value="${answers['Henkilotunnus']}"/>
+                        </c:when>
+                        <c:otherwise>
+                            <haku:infoCell key="virkailija.hakemus.henkilotunnus" value="${answers['syntymaaika']}"/>
+                        </c:otherwise>
+                    </c:choose>
 
                     <td>
                         <span class="bold"><fmt:message key="virkailija.hakemus.lahtokoulu"/>:</span>
