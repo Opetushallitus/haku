@@ -116,29 +116,42 @@ $(document).ready(function() {
 
             if (previousApplication) {
                 $.getJSON(page_settings.contextPath + "/applications/" + previousApplication,
-                      function (data) {
-                          var etunimet = data.answers.henkilotiedot.Etunimet;
-                          var sukunimi = data.answers.henkilotiedot.Sukunimi;
-                          var linkText = "< Edellinen ("+sukunimi + " " + etunimet+")";
-                          $('#previousApplication').text(linkText);
-                          $('#previousApplication').attr('href', page_settings.contextPath + "/virkailija/hakemus/" + previousApplication);
-                      }
+                    function (data) {
+                        var etunimet = data.answers.henkilotiedot.Etunimet;
+                        var sukunimi = data.answers.henkilotiedot.Sukunimi;
+                        var linkText = "< Edellinen ("+sukunimi + " " + etunimet+")";
+                        $('#previousApplication').text(linkText);
+                        var prevApplicationUrl = page_settings.contextPath + "/virkailija/hakemus/" + previousApplication;
+                        $(document).bind('keypress', 'j', function() { location.href = prevApplicationUrl });
+                        $('#previousApplication').attr('href', prevApplicationUrl);
+                    }
                 )
             }
             if (nextApplication) {
+                $(document).bind('keypress', 'l', function() {$('#nextApplication').click() });
                 $.getJSON(page_settings.contextPath + "/applications/" + nextApplication,
                     function (data) {
                         var etunimet = data.answers.henkilotiedot.Etunimet;
                         var sukunimi = data.answers.henkilotiedot.Sukunimi;
                         var linkText = "("+sukunimi + " " + etunimet+") Seuraava >";
                         $('#nextApplication').text(linkText);
-                        $('#nextApplication').attr('href', page_settings.contextPath + "/virkailija/hakemus/" + nextApplication);
+                        var nextApplicationUrl = page_settings.contextPath + "/virkailija/hakemus/" + nextApplication
+                        $(document).bind('keypress', 'k', function() { location.href = nextApplicationUrl });
+                        $('#nextApplication').attr('href', nextApplicationUrl);
                     }
                 )
             }
 
         }
     }
+
+    /* ************************************************************************
+     * Hotkey init
+     */
+
+    $(document).bind('keypress', '1', function() { $('#applicationTab').click() });
+    $(document).bind('keypress', '2', function() { $('#valintaTab').click() });
+    $(document).bind('keypress', 'b', function() { location.href = $('#back').attr('href') });
 
     if (page_settings.preview === "true") {
         applicationNavigation.init();

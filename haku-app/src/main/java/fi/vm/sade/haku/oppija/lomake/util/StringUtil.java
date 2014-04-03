@@ -13,4 +13,11 @@ public final class StringUtil {
         }
         return oid;
     }
+
+    public static String safeToString(Object o) {
+        if (o == null) {
+            return "";
+        }
+        return o.toString();
+    }
 }

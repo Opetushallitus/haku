@@ -45,6 +45,7 @@
     <script src="${contextPath}/resources/javascript/rules.js" type="text/javascript"></script>
     <script src="${contextPath}/resources/javascript/master.js" type="text/javascript"></script>
     <script src="${contextPath}/resources/jquery/jquery.cookie.js" type="text/javascript"></script>
+    <script src="${contextPath}/resources/jquery/jquery.hotkeys.js" type="text/javascript"></script>
     <script src="${contextPath}/resources/javascript/virkailija/application.js" type="text/javascript"></script>
     <script src="${contextPath}/resources/javascript/virkailija/tabs.js" type="text/javascript"></script>
     <script type="text/javascript" src="/virkailija-raamit/apply-raamit.js"></script>
@@ -156,9 +157,9 @@
         <section class="grid16-16 margin-top-2">
 
             <div class="tabs">
-                <a href="#" data-tabs-group="applicationtabs" data-tabs-id="application"
+                <a href="#" data-tabs-group="applicationtabs" data-tabs-id="application" id="applicationTab"
                    class="tab current"><span>Hakemus</span></a>
-                <a href="#" data-tabs-group="applicationtabs" data-tabs-id="valinta"
+                <a href="#" data-tabs-group="applicationtabs" data-tabs-id="valinta" id="valintaTab"
                    class="tab"><span>Valinta</span></a>
             </div>
 

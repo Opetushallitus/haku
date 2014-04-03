@@ -1,14 +1,11 @@
 package fi.vm.sade.haku.virkailija.valinta;
 
-import fi.vm.sade.haku.oppija.hakemus.domain.Application;
-import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationOptionDTO;
 import fi.vm.sade.sijoittelu.tulos.dto.raportointi.HakijaDTO;
-
-import java.util.List;
+import fi.vm.sade.valintalaskenta.domain.dto.HakemusDTO;
 
 public interface ValintaService {
 
-    List<ApplicationOptionDTO> getValintakoeOsallistuminen(Application application);
+    HakemusDTO getHakemus(String asOid, String applicationOid);
 
     HakijaDTO getHakija(String asOid, String application);
 }
