@@ -225,7 +225,7 @@ public final class
         addSizeAttribute(postinumero, 5);
         postinumero.addAttribute("placeholder", "00000");
         postinumero.addAttribute("maxlength", "5");
-        postinumero.setValidator(createRegexValidator(postinumero.getId(), POSTINUMERO_PATTERN, formErrorsBundle));
+        postinumero.setValidator(createRegexValidator(postinumero.getId(), POSTINUMERO_PATTERN, formErrorsBundle, "f"));
         addRequiredValidator(postinumero, formErrorsBundle);
         postinumero.setHelp(createI18NText("form.henkilotiedot.postinumero.help", formMessagesBundle));
         asuinmaaFI.addChild(postinumero);

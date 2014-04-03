@@ -13,7 +13,6 @@
                 <c:set var="element" value="${child}" scope="request"/>
                 <jsp:include page="../elements/${child.type}Preview.jsp"/>
             </c:forEach>
-            <jsp:include page="./additionalInfoPreview.jsp"/>
             <jsp:include page="./notes.jsp"/>
         </div>
     </c:when>
