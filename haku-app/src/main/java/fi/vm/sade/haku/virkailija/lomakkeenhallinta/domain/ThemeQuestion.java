@@ -1,11 +1,27 @@
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain;
 
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
+import fi.vm.sade.haku.oppija.lomake.domain.ObjectIdDeserializer;
+import fi.vm.sade.haku.oppija.lomake.domain.ObjectIdSerializer;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
+import org.bson.types.ObjectId;
+import org.codehaus.jackson.annotate.JsonCreator;
+import org.codehaus.jackson.annotate.JsonProperty;
+import org.codehaus.jackson.annotate.JsonSubTypes;
 import org.codehaus.jackson.annotate.JsonTypeInfo;
+import org.codehaus.jackson.map.annotate.JsonDeserialize;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
+
+@JsonSerialize(include = JsonSerialize.Inclusion.NON_EMPTY)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonSubTypes({
+  @JsonSubTypes.Type(value = ThemeTextQuestion.class, name = "TEXT_QUESTION")
+})
 public abstract class ThemeQuestion implements ConfiguredElement {
 
     public enum Theme {
@@ -13,7 +29,7 @@ public abstract class ThemeQuestion implements ConfiguredElement {
     }
 
     public enum Type {
-        TEXT
+        TEXT_QUESTION
     }
 
     @JsonProperty(value = "_id")
@@ -27,10 +43,10 @@ public abstract class ThemeQuestion implements ConfiguredElement {
     protected Theme theme;
 
     //user ident oid
-    protected String creatorOid;
+    protected String creatorPersonOid;
 
     // organization oid
-    protected String ownerOrganization;
+    protected String ownerOrganizationOid;
 
     // Type of question
     protected Type type;
