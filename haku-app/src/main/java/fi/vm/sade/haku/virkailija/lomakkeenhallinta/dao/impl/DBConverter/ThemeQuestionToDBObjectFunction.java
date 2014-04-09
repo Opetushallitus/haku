@@ -1,11 +1,10 @@
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.dao.impl.DBConverter;
 
 import com.google.common.base.Function;
-import com.google.common.base.Strings;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.SocialSecurityNumber;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain.ThemeQuestion;
+import org.bson.types.ObjectId;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.SerializationConfig;
 import org.springframework.stereotype.Service;
@@ -14,6 +13,8 @@ import java.util.Map;
 
 @Service
 public class ThemeQuestionToDBObjectFunction implements Function<ThemeQuestion, DBObject>{
+
+    private static final String THEMEQUESTION_ID = "_id";
 
     @Override
     public DBObject apply(ThemeQuestion themeQuestion) {
@@ -24,6 +25,12 @@ public class ThemeQuestionToDBObjectFunction implements Function<ThemeQuestion, 
 
         @SuppressWarnings("rawtypes")
         final Map m = mapper.convertValue(themeQuestion, Map.class);
+
+        //Dirty hack
+        Object id = m.get(THEMEQUESTION_ID);
+        if (null != id && id instanceof String) {
+            m.put(THEMEQUESTION_ID, new ObjectId(id.toString()));
+        }
         final BasicDBObject basicDBObject = new BasicDBObject(m);
         return basicDBObject;
     }

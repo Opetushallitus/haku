@@ -1,13 +1,8 @@
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
-import fi.vm.sade.haku.oppija.lomake.domain.ObjectIdDeserializer;
-import fi.vm.sade.haku.oppija.lomake.domain.ObjectIdSerializer;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
+import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.dao.impl.DBConverter.ComplexObjectIdDeserializer;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.dao.impl.DBConverter.SimpleObjectIdSerializer;
 import org.bson.types.ObjectId;
 import org.codehaus.jackson.annotate.JsonCreator;
 import org.codehaus.jackson.annotate.JsonProperty;
@@ -16,60 +11,86 @@ import org.codehaus.jackson.annotate.JsonTypeInfo;
 import org.codehaus.jackson.map.annotate.JsonDeserialize;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
+import java.util.HashMap;
+import java.util.Map;
+
 
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_EMPTY)
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonSubTypes({
-  @JsonSubTypes.Type(value = ThemeTextQuestion.class, name = "TEXT_QUESTION")
+  @JsonSubTypes.Type(value = ThemeTextQuestion.class, name = "TextQuestion")
 })
 public abstract class ThemeQuestion implements ConfiguredElement {
 
-    public enum Theme {
-        HENKILOTIEDOT, KOULUTUSTAUSTA, HAKUTOIVEET, ARVOSANAT, KIELITAITO, TYOKOKEMUS, MOTIVAATIO, LIITTEET, LUPATIEDOT
-    }
-
-    public enum Type {
-        TEXT_QUESTION
-    }
-
-    @JsonProperty(value = "_id")
     // ThemeQuestion oid
-    protected org.bson.types.ObjectId id;
+    @JsonProperty(value = "_id")
+    @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL, using = SimpleObjectIdSerializer.class)
+    @JsonDeserialize(using = ComplexObjectIdDeserializer.class)
+    private org.bson.types.ObjectId id;
 
     //Application System oid
-    protected String applicationSystemId;
+    private String applicationSystemId;
 
     // Where the question is to be displayed
-    protected Theme theme;
+    private String theme;
 
     //user ident oid
-    protected String creatorPersonOid;
+    private String creatorPersonOid;
 
     // organization oid
-    protected String ownerOrganizationOid;
+    private String ownerOrganizationOid;
 
     // Type of question
-    protected Type type;
+    private String type;
 
-    // Parameters for the question
-    protected Map<String, String> parameters;
+    // Message text
+    private I18nText messageText;
+
+    // Help text
+    private I18nText helpText;
+
+    // Verbose help text
+    private I18nText verboseHelpText;
 
     // Attached to learning opportunity Identifier
-    protected String learningOpportunityProviderId;
+    private String learningOpportunityProviderId;
 
-    @JsonCreator
+    // Validators for the question
+    private Map<String, String> validators;
+
     protected ThemeQuestion() {
-        this.parameters = new HashMap<String, String>();
+        this.validators = new HashMap<String, String>();
     }
 
-    protected ThemeQuestion(String applicationSystemId, Theme theme, String creatorPersonOid, String ownerOrganizationOid, Type type, Map<String, String> parameters, String learningOpportunityProviderId) {
+    protected ThemeQuestion(String type){
+        this.type = type;
+    }
+
+    @JsonCreator
+    protected ThemeQuestion(@JsonProperty(value = "applicationSystemId") String applicationSystemId,
+                            @JsonProperty(value = "theme")String theme,
+                            @JsonProperty(value = "type")String type,
+                            @JsonProperty(value = "learningOpportunityProviderId")String learningOpportunityProviderId,
+                            @JsonProperty(value = "validators")Map<String,String> validators ) {
+        this.applicationSystemId =  applicationSystemId;
+        this.theme = theme;
+        this.type = type;
+        this.learningOpportunityProviderId = learningOpportunityProviderId;
+        this.validators = new HashMap<String,String>(validators);
+    }
+
+    protected ThemeQuestion(String applicationSystemId, String theme, String creatorPersonOid,
+      String ownerOrganizationOid,
+      String type,
+      String learningOpportunityProviderId,
+      Map<String,String> validators ) {
         this.applicationSystemId =  applicationSystemId;
         this.theme = theme;
         this.creatorPersonOid = creatorPersonOid;
         this.ownerOrganizationOid = ownerOrganizationOid;
         this.type = type;
-        this.parameters = new HashMap<String, String>(parameters);
         this.learningOpportunityProviderId = learningOpportunityProviderId;
+        this.validators = new HashMap<String,String>();
     }
 
     public ObjectId getId() {
@@ -80,15 +101,19 @@ public abstract class ThemeQuestion implements ConfiguredElement {
         this.id = id;
     }
 
-    public String getApplicationSystem() {
+    public String getApplicationSystemId() {
         return applicationSystemId;
     }
-    
-    public Theme getTheme() {
+
+    public void setApplicationSystemId(String applicationSystemId) {
+        this.applicationSystemId = applicationSystemId;
+    }
+
+    public String getTheme() {
         return theme;
     }
 
-    public void setTheme(Theme theme) {
+    public void setTheme(String theme) {
         this.theme = theme;
     }
 
@@ -108,25 +133,68 @@ public abstract class ThemeQuestion implements ConfiguredElement {
         this.ownerOrganizationOid = ownerOrganizationOid;
     }
 
-    public Type getType() {
+    public String getType() {
         return type;
     }
 
-    public Map<String, String> getParameters() {
-        return parameters;
+    public void setType(String type) {
+        this.type = type;
     }
 
-    public String getLearningOpportunityProviderId(){
+    public I18nText getMessageText() {
+        return messageText;
+    }
+
+    public void setMessageText(I18nText messageText) {
+        this.messageText = messageText;
+    }
+
+    public I18nText getHelpText() {
+        return helpText;
+    }
+
+    public void setHelpText(I18nText helpText) {
+        this.helpText = helpText;
+    }
+
+    public I18nText getVerboseHelpText() {
+        return verboseHelpText;
+    }
+
+    public void setVerboseHelpText(I18nText verboseHelpText) {
+        this.verboseHelpText = verboseHelpText;
+    }
+
+    public String getLearningOpportunityProviderId() {
         return learningOpportunityProviderId;
     }
 
-
-    // Try to remove these
-    public void setParameters(Map<String, String> parameters) {
-        this.parameters = new HashMap<String, String>(parameters);
+    public void setLearningOpportunityProviderId(String learningOpportunityProviderId) {
+        this.learningOpportunityProviderId = learningOpportunityProviderId;
     }
-    
-    public void setType(Type type) {
-        this.type = type;
+
+    public Map<String, String> getValidators() {
+        return validators;
+    }
+
+    public void setValidators(Map<String, String> validators) {
+        this.validators = validators;
+    }
+
+    @Override
+    public String toString() {
+        return "ThemeQuestion{" +
+          "id=" + id +
+          ", applicationSystemId='" + applicationSystemId + '\'' +
+          ", theme='" + theme + '\'' +
+          ", creatorPersonOid='" + creatorPersonOid + '\'' +
+          ", ownerOrganizationOid='" + ownerOrganizationOid + '\'' +
+          ", type='" + type + '\'' +
+          ", messageText=" + messageText +
+          ", helpText=" + helpText +
+          ", verboseHelpText=" + verboseHelpText +
+          ", learningOpportunityProviderId='" + learningOpportunityProviderId + '\'' +
+          ", validators=" + validators +
+          '}';
     }
 }

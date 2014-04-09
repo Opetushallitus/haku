@@ -16,63 +16,86 @@
 
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.resources;
 
-import fi.vm.sade.haku.oppija.hakemus.domain.Application;
-import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationAdditionalDataDTO;
-import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
-import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationQueryParameters;
-import fi.vm.sade.haku.oppija.hakemus.resource.DateParam;
-import fi.vm.sade.haku.oppija.hakemus.resource.JSONException;
-import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
-import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
-import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain.dto.ThemeQuestionDTO;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.dao.ThemeQuestionDAO;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.dao.ThemeQuestionQueryParameters;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.dao.impl.DBConverter.SimpleObjectIdSerializer;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain.ThemeQuestion;
+import org.bson.types.ObjectId;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 
 @Controller
-@Path("/themequestion")
+@Path("/lomakkeenhallinta/themequestion")
 public class ThemeQuestionResource {
 
     public static final String CHARSET_UTF_8 = ";charset=UTF-8";
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ThemeQuestionResource.class);
 
-    public ThemeQuestionResource() {
+
+    private final ThemeQuestionDAO themeQuestionDAO;
+
+    @Autowired
+    public ThemeQuestionResource(ThemeQuestionDAO themeQuestionDAO) {
+        this.themeQuestionDAO = themeQuestionDAO;
     }
 
-    //TODO: Fix with real implemenetation
     @GET
-    @Path("{oid}")
+    @Path("question/{themeQuestionId}")
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
-    public Application getThemedQuestionByOid(@PathParam("oid") String oid) {
-        LOGGER.debug("Getting application by oid : {}", oid);
-        throw new JSONException(Response.Status.NOT_FOUND, "Not implemented", null);
+    public ThemeQuestion getThemedQuestionByOid(@PathParam("themeQuestionId") String themeQuestionId) {
+        LOGGER.debug("Getting question by: {}", themeQuestionId);
+        return themeQuestionDAO.findById(themeQuestionId);
     }
 
-    //TODO: Fix with real implemenetation
+    @GET
+    @Path("{applicationSystemId}")
+    @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
+    public List<ThemeQuestion> getThemeQuestionsByApplicationSystem(@PathParam("applicationSystemId") String applicationSystemId){
+        ThemeQuestionQueryParameters tqq = new ThemeQuestionQueryParameters();
+        tqq.setApplicationSystemId(applicationSystemId);
+        List<ThemeQuestion> themeQuestions = themeQuestionDAO.query(tqq);
+        return themeQuestions;
+    }
+
+
+    @GET
+    @Path("{applicationSystemId}/{learningOpportunityProviderId}")
+    @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
+    @JsonSerialize(using= SimpleObjectIdSerializer.class,
+      as=ObjectId.class)
+    public List<ThemeQuestion> getThemeQuestion(@PathParam("applicationSystemId") String applicationSystemId, @PathParam("learningOpportunityProviderId") String learningOpportunityProviderId) {
+        ThemeQuestionQueryParameters tqq = new ThemeQuestionQueryParameters();
+        tqq.setApplicationSystemId(applicationSystemId);
+        tqq.setLearningOpportunityProviderId(learningOpportunityProviderId);
+        List<ThemeQuestion> themeQuestions = themeQuestionDAO.query(tqq);
+        return themeQuestions;
+    }
+
+    @GET
+    @Path("{applicationSystemId}/{learningOpportunityProviderId}/{themeQuestionId}")
+    @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
+    public ThemeQuestion getThemedQuestionByPath(@PathParam("themeQuestionId") String themeQuestionId) {
+        LOGGER.debug("Getting question by: {}", themeQuestionId);
+        return themeQuestionDAO.findById(themeQuestionId);
+    }
+
     @POST
-    @Path("{oid}/{theme}/{type}")
+    @Path("{applicationSystemId}/{learningOpportunityProviderId}")
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     @Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
-    public void postThemeQuestion(@PathParam("oid") String oid,
-                                    @PathParam("theme") String theme,
-                                    @PathParam("type") String type,
-                                    List<ThemeQuestionDTO> questionParameters) {
-        throw new JSONException(Response.Status.NOT_FOUND, "Not implemented", null);
+    public void postThemeQuestion(@PathParam("applicationSystemId") String applicationSystemId,
+                                    @PathParam("learningOpportunityProviderId") String learningOpportunityProviderId,
+                                    ThemeQuestion themeQuestion) {
+        LOGGER.debug("Got " + themeQuestion);
+        themeQuestionDAO.save(themeQuestion);
     }
 }
