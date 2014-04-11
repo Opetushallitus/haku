@@ -8,7 +8,7 @@
 
 <div>
     <div class="grid-16">
-        <h2><c:out value="${ao.opetuspiste}"/></h2>
+        <h2><c:out value="${ao.index}" /> &nbsp; <c:out value="${ao.opetuspiste}"/></h2>
         <h3><c:out value="${ao.name}"/></h3>
     </div>
     <div class="clear"></div>
@@ -16,38 +16,30 @@
         <table>
             <tr>
                 <td>Valinnan kokonaispisteet</td>
-                <td><fmt:formatNumber value="${ao.totalScore}" maxFractionDigits="2"/></td>
+                <td><fmt:formatNumber value="${ao.yhteispisteet}" maxFractionDigits="2"/></td>
             </tr>
             <tr>
                 <td>Sijoittelun tulos</td>
-                <td>${ao.sijoittelunTulos}</td>
-            </tr>
-            <tr>
-                <td>Hylkäyksen syy</td>
-                <td>${ao.hylkayksenSyy}</td>
+                <td><haku:i18nText value="${ao.sijoittelunTulosText}" /></td>
             </tr>
             <tr>
                 <td>Vastaanottotieto</td>
-                <td>${ao.vastaanottoTieto}</td>
-            </tr>
-            <tr>
-                <td>Ilmoittautumistieto</td>
-                <td>${ao.ilmoittautuminen}</td>
+                <td><haku:i18nText value="${ao.vastaanottoTietoText}" /></td>
             </tr>
         </table>
     </div>
     <div class="grid16-7 .offset-left-16-7">
-        <table>
+        <table class="striped">
             <tr>
                 <th>&nbsp;</th>
                 <th>Kutsuttu</th>
                 <th>Pisteet</th>
             </tr>
-        <c:forEach var="test" items="${ao.tests}">
+        <c:forEach var="test" items="${ao.pistetiedot}">
             <tr>
-                <td><c:out value="${test.nimi}"/></td>
-                <td><c:out value="${test.osallistuminen}"/></td>
-                <td><c:out value="${test.score}"/></td>
+                <td><haku:i18nText value="${test.nimi}"/></td>
+                <td><haku:i18nText value="${test.osallistuminenText}" /></td>
+                <td><c:out value="${test.pisteet}"/></td>
             </tr>
         </c:forEach>
         </table>

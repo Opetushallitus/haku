@@ -31,12 +31,9 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.*;
 
-public final class
-  HenkilotiedotPhase {
+public final class HenkilotiedotPhase {
 
-    public static final String MOBILE_PHONE_PATTERN =
-            "^$|^(?!\\+358|0)[\\+]?[0-9\\-\\s]+$|^(\\+358|0)[\\-\\s]*((4[\\-\\s]*[0-6])|50)[0-9\\-\\s]*$";
-    public static final String PHONE_PATTERN = "^$|^\\+?[0-9\\-\\s]+$";
+    public static final String PHONE_PATTERN = "^$|^([0-9\\(\\)\\/\\+ \\-]*)$";
     private static final String NOT_FI = "^((?!FIN)[A-Z]{3})$";
     public static final String AIDINKIELI_ID = "aidinkieli";
     private static final String HETU_PATTERN = "^([0-9]{6}.[0-9]{3}([0-9]|[a-z]|[A-Z]))$";
@@ -179,7 +176,7 @@ public final class
         puhelinnumero1.setHelp(createI18NText("form.henkilotiedot.matkapuhelinnumero.help",
           formMessagesBundle));
         addSizeAttribute(puhelinnumero1, 30);
-        puhelinnumero1.setValidator(createRegexValidator(puhelinnumero1.getId(), MOBILE_PHONE_PATTERN, formErrorsBundle));
+        puhelinnumero1.setValidator(createRegexValidator(puhelinnumero1.getId(), PHONE_PATTERN, formErrorsBundle));
         ElementUtil.setVerboseHelp(puhelinnumero1, "form.henkilotiedot.matkapuhelinnumero.verboseHelp", formVerboseHelpBundle);
         puhelinnumero1.setInline(true);
         henkilotiedotRyhma.addChild(puhelinnumero1);

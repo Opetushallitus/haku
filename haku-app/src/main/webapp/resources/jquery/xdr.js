@@ -26,10 +26,10 @@ if ( window.XDomainRequest ) {
 						callback( 0, "timeout" );
 					};
 					xdr.timeout = s.xdrTimeout || Number.MAX_VALUE;
-					
+
 					setTimeout(function() {
 						xdr.send( ( s.hasContent && s.data ) || null );
-					}, 0);
+					}, 500);
 				},
 				abort: function() {
 					if ( xdr ) {
