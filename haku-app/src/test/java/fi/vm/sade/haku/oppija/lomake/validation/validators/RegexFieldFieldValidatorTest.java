@@ -28,6 +28,7 @@ public class RegexFieldFieldValidatorTest {
             "etunimi, sukunimi",
             "etunimi-sukunimi",
             "\u00C0",
+            "nimi.",
             "\u00D6");
     private final List<String> listOfInvalidNames = ImmutableList.of(
             ",etunimi sukunimi",
@@ -35,7 +36,6 @@ public class RegexFieldFieldValidatorTest {
             " etunimi sukunimi",
             "nimi-",
             "nimi ",
-            "nimi.",
             " ",
             "                          ",
             "\"",
