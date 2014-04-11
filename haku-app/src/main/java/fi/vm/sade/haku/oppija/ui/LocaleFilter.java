@@ -16,22 +16,33 @@
 
 package fi.vm.sade.haku.oppija.ui;
 
+import com.sun.jersey.api.core.InjectParam;
 import com.sun.jersey.spi.container.ContainerRequest;
 import com.sun.jersey.spi.container.ContainerRequestFilter;
+import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
+import fi.vm.sade.haku.virkailija.authentication.Person;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.jstl.core.Config;
+import javax.ws.rs.HEAD;
 import javax.ws.rs.core.Context;
 import java.util.Locale;
 
 public class LocaleFilter implements ContainerRequestFilter {
+
+    private static final Logger log = LoggerFactory.getLogger(LocaleFilter.class);
 
     private static final Locale DEFAULT_LOCALE = new Locale("fi");
     public static final String LANGUAGE_COOKIE_KEY = "i18next";
     public static final String LANGUAGE_QUERY_PARAMETER_KEY = "lang";
 
     final HttpServletRequest httpServletRequest;
+
+    @InjectParam
+    AuthenticationService authenticationService;
 
     public LocaleFilter(@Context final HttpServletRequest httpServletRequest) {
         this.httpServletRequest = httpServletRequest;
@@ -40,13 +51,38 @@ public class LocaleFilter implements ContainerRequestFilter {
     @Override
     public ContainerRequest filter(ContainerRequest containerRequest) {
         HttpSession session = httpServletRequest.getSession();
-        String lang = getLangQueryParameter(containerRequest);
+
+        String lang = getLanguage(containerRequest);
+
         Locale currentLocale = (Locale) Config.get(session, Config.FMT_LOCALE);
         Locale newLocale = getNewLocale(lang, currentLocale);
         Config.set(session, Config.FMT_LOCALE, newLocale);
         Config.set(session, Config.FMT_FALLBACK_LOCALE, DEFAULT_LOCALE);
         httpServletRequest.setAttribute("fi_vm_sade_oppija_language", newLocale.getLanguage());
         return containerRequest;
+    }
+
+    public String getLanguage(ContainerRequest containerRequest) {
+        String lang = containerRequest.getCookieNameValueMap().getFirst(LANGUAGE_COOKIE_KEY);
+        log.debug("Cookie lang: " + lang);
+        Person person = authenticationService.getCurrentHenkilo();
+        String personOid = person != null ? person.getPersonOid() : "null";
+        log.debug("Got person: " + personOid);
+        if (person != null) {
+            String contactLang = person.getContactLanguage();
+            log.debug("Person contactLang: " + contactLang);
+            if ("fi".equals(contactLang) || "sv".equals(contactLang)) {
+                lang = contactLang;
+            }
+        }
+
+        String paramLang = containerRequest.getQueryParameters().getFirst(LANGUAGE_QUERY_PARAMETER_KEY);
+        log.debug("Param lang: " + paramLang);
+        if (paramLang != null) {
+            lang = paramLang;
+        }
+        log.debug("Returning lang: " + lang);
+        return lang;
     }
 
     private Locale getNewLocale(final String lang, final Locale currentLocale) {
@@ -61,11 +97,7 @@ public class LocaleFilter implements ContainerRequestFilter {
         return locale;
     }
 
-    private String getLangQueryParameter(final ContainerRequest containerRequest) {
-        String lang = containerRequest.getQueryParameters().getFirst(LANGUAGE_QUERY_PARAMETER_KEY);
-        if (lang != null) {
-            return lang;
-        }
-        return containerRequest.getCookieNameValueMap().getFirst(LANGUAGE_COOKIE_KEY);
+    public void setAuthenticationService(AuthenticationService authenticationService) {
+        this.authenticationService = authenticationService;
     }
 }

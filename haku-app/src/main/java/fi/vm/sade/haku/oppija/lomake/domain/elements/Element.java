@@ -152,12 +152,10 @@ public abstract class Element implements Serializable {
     public final String getAttributeString() {
         StringBuilder builder = new StringBuilder();
         for (Map.Entry<String, String> attr : attributes.entrySet()) {
-            if (!"required".equals(attr.getKey())) {
-                builder.append(attr.getKey());
-                builder.append("=\"");
-                builder.append(attr.getValue());
-                builder.append("\" ");
-            }
+            builder.append(attr.getKey());
+            builder.append("=\"");
+            builder.append(attr.getValue());
+            builder.append("\" ");
         }
         return builder.toString();
     }

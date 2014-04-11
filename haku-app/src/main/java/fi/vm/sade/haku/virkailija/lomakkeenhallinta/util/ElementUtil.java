@@ -48,7 +48,7 @@ import static fi.vm.sade.haku.oppija.lomake.domain.I18nText.LANGS;
 
 public final class ElementUtil {
 
-    public static final String ISO88591_NAME_REGEX = "^$|^[a-zA-ZÀ-ÖØ-öø-ÿ]$|^[a-zA-ZÀ-ÖØ-öø-ÿ][a-zA-ZÀ-ÖØ-öø-ÿ ,-]*(?:[a-zA-ZÀ-ÖØ-öø-ÿ]+$)$";
+    public static final String ISO88591_NAME_REGEX = "^$|^[a-zA-ZÀ-ÖØ-öø-ÿ ,-.']$|^[a-zA-ZÀ-ÖØ-öø-ÿ ,-.'][a-zA-ZÀ-ÖØ-öø-ÿ ,-.']*(?:[a-zA-ZÀ-ÖØ-öø-ÿ ,-.']+$)$";
     public static final String EMAIL_REGEX = "^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$|^$";
 
     public static final String KYLLA = Boolean.TRUE.toString().toLowerCase();
@@ -172,8 +172,13 @@ public final class ElementUtil {
     }
 
     public static Validator createRegexValidator(final String id, final String pattern, final String bundleName) {
+        return createRegexValidator(id, pattern, bundleName, "yleinen.virheellinenArvo");
+    }
+
+    public static Validator createRegexValidator(final String id, final String pattern, final String bundleName,
+                                                 final String messageKey) {
         return new RegexFieldValidator(id,
-                ElementUtil.createI18NText("yleinen.virheellinenArvo", bundleName),
+                ElementUtil.createI18NText(messageKey, bundleName),
                 pattern);
     }
 
@@ -189,18 +194,25 @@ public final class ElementUtil {
     }
 
     public static void addRequiredValidator(final Element element, final String bundleName) {
-        element.addAttribute("required", "required");
         element.setValidator(
                 new RequiredFieldValidator(
                         element.getId(),
                         ElementUtil.createI18NText("yleinen.pakollinen", bundleName)));
     }
 
-    public static void addApplicationUniqueValidator(final Element element, final String asType) {
+    public static void addUniqueApplicationValidator(final Element element, final String asType) {
         if (OppijaConstants.LISA_HAKU.equals(asType)) {
             element.setValidator(new SsnAndPreferenceUniqueValidator());
         } else {
+            //skip
+        }
+    }
+
+    public static void addUniqueApplicantValidator(final Element element, final String asType) {
+        if (OppijaConstants.VARSINAINEN_HAKU.equals(asType)) {
             element.setValidator(new SsnUniqueValidator());
+        } else {
+            //skip
         }
     }
 

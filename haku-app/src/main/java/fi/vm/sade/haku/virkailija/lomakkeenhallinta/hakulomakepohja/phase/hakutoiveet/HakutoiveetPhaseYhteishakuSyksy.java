@@ -27,6 +27,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.PreferenceTable;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.DropdownSelect;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Radio;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionComplexRule;
+import fi.vm.sade.haku.oppija.lomake.validation.validators.RequiredFieldValidator;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.*;
@@ -60,7 +61,8 @@ public class HakutoiveetPhaseYhteishakuSyksy {
                 new PreferenceTable("preferencelist", createI18NText("form.hakutoiveet.otsikko", FORM_MESSAGES));
 
         PreferenceRow pr1 = createI18NPreferenceRow("preference1", "1");
-        pr1.addAttribute("required", "required");
+        pr1.setValidator(new RequiredFieldValidator(pr1.getLearningInstitutionInputId(), ElementUtil.createI18NText("yleinen.pakollinen", "form_errors_yhteishaku_kevat")));
+        pr1.setValidator(new RequiredFieldValidator(pr1.getEducationInputId(), ElementUtil.createI18NText("yleinen.pakollinen", "form_errors_yhteishaku_kevat")));
         PreferenceRow pr2 = createI18NPreferenceRow("preference2", "2");
         PreferenceRow pr3 = createI18NPreferenceRow("preference3", "3");
         PreferenceRow pr4 = createI18NPreferenceRow("preference4", "4");

@@ -7,7 +7,7 @@
 <jsp:include page="/WEB-INF/jsp/elements/TextQuestionPreview.jsp"/>
 
 <tr>
-    <td class="label"><haku:i18nText value="${ssnElement.sexI18nText}"/></td>
+    <td class="label"><a name="${element.id}"></a><haku:i18nText value="${ssnElement.sexI18nText}"/></td>
     <td>
         <c:if test="${answers[ssnElement.sexId] eq ssnElement.maleOption.value}">
             <haku:i18nText value="${ssnElement.maleOption.i18nText}"/>

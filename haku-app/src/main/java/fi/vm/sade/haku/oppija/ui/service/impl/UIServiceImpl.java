@@ -181,7 +181,7 @@ public class UIServiceImpl implements UIService {
     @Override
     public ModelResponse submitApplication(final String applicationSystemId) {
         ModelResponse modelResponse = new ModelResponse();
-        modelResponse.setOid(applicationService.submitApplication(applicationSystemId));
+        modelResponse.setApplication(applicationService.submitApplication(applicationSystemId));
         return modelResponse;
     }
 

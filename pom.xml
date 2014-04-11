@@ -20,7 +20,7 @@
         <jersey.version>1.17.1</jersey.version>
         <servlet.version>3.0.1</servlet.version>
         <mongo-driver.version>2.10.1</mongo-driver.version>
-        <slf4j.version>1.6.1</slf4j.version>
+        <slf4j.version>1.7.6</slf4j.version>
         <log4j.version>1.2.17</log4j.version>
         <cxf.version>2.7.3</cxf.version>
         <cxf-common-utilities.version>2.5.9</cxf-common-utilities.version>
@@ -39,14 +39,15 @@
 
         <springProfileName>default</springProfileName>
 
-        <authentication-api.version>9.0</authentication-api.version>
+        <authentication-api.version>1.0-SNAPSHOT</authentication-api.version>
         <generic-common.version>9.0-SNAPSHOT</generic-common.version>
         <koodisto-api.version>9.0-SNAPSHOT</koodisto-api.version>
-        <koulutusinformaatio-api.version>9.0</koulutusinformaatio-api.version>
+        <koulutusinformaatio-api.version>9.0-SNAPSHOT</koulutusinformaatio-api.version>
         <log-client.version>8.0</log-client.version>
         <organisaatio-api.version>9.0</organisaatio-api.version>
         <organisaatio-solr-client.version>9.0</organisaatio-solr-client.version>
-        <tarjonta-api.version>9.0</tarjonta-api.version>
+        <tarjonta-api.version>9.0-SNAPSHOT</tarjonta-api.version>
+        <valintaperusteet.version>1.0-SNAPSHOT</valintaperusteet.version>
     </properties>
 
     <repositories>

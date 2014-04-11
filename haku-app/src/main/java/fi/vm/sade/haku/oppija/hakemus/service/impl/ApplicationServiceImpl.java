@@ -136,7 +136,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public String submitApplication(final String applicationSystemId) {
+    public Application submitApplication(final String applicationSystemId) {
         final User user = userSession.getUser();
         Application application = userSession.getApplication(applicationSystemId);
         Form form = formService.getForm(applicationSystemId);
@@ -158,7 +158,7 @@ public class ApplicationServiceImpl implements ApplicationService {
             application.flagStudentIdentificationRequired();
             this.applicationDAO.save(application);
             this.userSession.removeApplication(application);
-            return application.getOid();
+            return application;
         } else {
             throw new IllegalStateException("Could not send the application ");
         }
@@ -268,11 +268,13 @@ public class ApplicationServiceImpl implements ApplicationService {
                 answers.put(OppijaConstants.ELEMENT_ID_SENDING_SCHOOL, sendingSchool);
             }
             if (isNotEmpty(sendingClass)) {
+                sendingClass = sendingClass.toUpperCase();
                 answers = addRegisterValue(oid, answers, OppijaConstants.ELEMENT_ID_SENDING_CLASS, sendingClass);
                 LOGGER.info("Updating koulutustausta oid: "+String.valueOf(application.getOid())
                         +" lahtoluokka: "+sendingClass);
             }
             if (isNotEmpty(classLevel)) {
+                classLevel = classLevel.toUpperCase();
                 answers = addRegisterValue(oid, answers, OppijaConstants.ELEMENT_ID_CLASS_LEVEL, classLevel);
                 LOGGER.info("Updating koulutustausta oid: "+String.valueOf(application.getOid())
                         +" luokkataso: "+classLevel);

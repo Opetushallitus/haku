@@ -18,6 +18,7 @@ package fi.vm.sade.haku.oppija.ui.it;
 
 import fi.vm.sade.haku.oppija.common.selenium.DummyModelBaseItTest;
 import fi.vm.sade.haku.oppija.ui.selenium.DefaultValues;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -39,7 +40,7 @@ public class NavigationIT extends DummyModelBaseItTest {
         elementsPresent("//button[@class='right']");
         elementsNotPresent("//button[@class='left']");
         fillOut(defaultValues.henkilotiedot);
-        nextPhase();
+        nextPhase(OppijaConstants.PHASE_EDUCATION);
 
         elementsPresent("//a[@id='nav-henkilotiedot']");
         elementsPresent("//a[@id='nav-koulutustausta']");
@@ -52,7 +53,7 @@ public class NavigationIT extends DummyModelBaseItTest {
         elementsPresent("//button[@class='right']");
         elementsPresent("//button[@class='left']");
         fillOut(defaultValues.koulutustausta_pk);
-        nextPhase();
+        nextPhase(OppijaConstants.PHASE_APPLICATION_OPTIONS);
 
         elementsPresent("//a[@id='nav-henkilotiedot']");
         elementsPresent("//a[@id='nav-koulutustausta']");
@@ -71,7 +72,7 @@ public class NavigationIT extends DummyModelBaseItTest {
 
         fillOut(defaultValues.preference1);
 
-        nextPhase();
+        nextPhase(OppijaConstants.PHASE_GRADES);
 
         select();
         selectByValue("PK_A1_OPPIAINE", "EN");
@@ -85,7 +86,7 @@ public class NavigationIT extends DummyModelBaseItTest {
         elementsPresent("//li/span/span[contains(text(),'7')]");
         elementsPresent("//button[@class='right']");
         elementsPresent("//button[@class='left']");
-        nextPhase();
+        nextPhase(OppijaConstants.PHASE_MISC);
 
         elementsPresent("//a[@id='nav-henkilotiedot']");
         elementsPresent("//a[@id='nav-koulutustausta']");
@@ -98,7 +99,7 @@ public class NavigationIT extends DummyModelBaseItTest {
         elementsPresent("//button[@class='left']");
 
         fillOut(defaultValues.lisatiedot);
-        nextPhase();
+        nextPhase("esikatselu");
         elementsPresent("//a[@id='nav-henkilotiedot']");
         elementsPresent("//a[@id='nav-koulutustausta']");
         elementsPresent("//a[@id='nav-hakutoiveet']");
@@ -110,18 +111,18 @@ public class NavigationIT extends DummyModelBaseItTest {
         elementsPresent("//button[@class='right']");
         elementsPresent("//button[@class='left']");
 
-        nextPhase();
+        nextPhase(OppijaConstants.PHASE_PREVIEW);
         back();
         back();
         back();
         back();
         back();
-        nextPhase();
-        nextPhase();
-        nextPhase();
-        nextPhase();
-        nextPhase();
-        nextPhase();
+        nextPhase(OppijaConstants.PHASE_EDUCATION);
+        nextPhase(OppijaConstants.PHASE_APPLICATION_OPTIONS);
+        nextPhase(OppijaConstants.PHASE_GRADES);
+        nextPhase(OppijaConstants.PHASE_MISC);
+        nextPhase(OppijaConstants.PHASE_PREVIEW);
+        nextPhase(OppijaConstants.PHASE_PREVIEW);
         click("submit_confirm");
 
         elementsPresent("//li/span/span[contains(text(),'1')]");

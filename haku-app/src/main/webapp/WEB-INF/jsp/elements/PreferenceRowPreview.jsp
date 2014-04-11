@@ -25,7 +25,7 @@
 <c:set value="${element.id}-Koulutus-id-aoIdentifier" var="aoIdentifier" scope="page"/>
 <c:if test="${not empty answers[selectHiddenInputId]}">
     <tr>
-        <td class="padding-top-3"><span class="margin-right-5 bold"><c:out value="${index}"/></span></td>
+        <td class="padding-top-3"><a name="${element.id}"></a><span class="margin-right-5 bold"><c:out value="${index}"/></span></td>
         <td class="sublabel padding-top-3"><haku:i18nText value="${element.learningInstitutionLabel}"/></td>
         <td class="bold padding-top-3"><c:out value="${answers[textInputId]}"/></td>
     </tr>

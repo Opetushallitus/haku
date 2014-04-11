@@ -134,7 +134,7 @@ public class FormController {
     public Response submitApplication(@PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId) throws URISyntaxException {
         LOGGER.debug("submitApplication {}", new Object[]{applicationSystemId});
         ModelResponse modelResponse = uiService.submitApplication(applicationSystemId);
-        RedirectToPendingViewPath redirectToPendingViewPath = new RedirectToPendingViewPath(applicationSystemId, modelResponse.getOid());
+        RedirectToPendingViewPath redirectToPendingViewPath = new RedirectToPendingViewPath(applicationSystemId, modelResponse.getApplication().getOid());
         return Response.seeOther(new URI(redirectToPendingViewPath.getPath())).build();
     }
 
@@ -171,7 +171,7 @@ public class FormController {
     @Path("/{applicationSystemId}/tulostus/{oid}")
     @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
     public Viewable getPrint(@PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId,
-                             @PathParam("oid") final String oid)  {
+                             @PathParam("oid") final String oid) {
         LOGGER.debug("getPrint {}, {}", new Object[]{applicationSystemId, oid});
         ModelResponse modelResponse = uiService.getCompleteApplication(applicationSystemId, oid);
         return new Viewable(PRINT_VIEW, modelResponse.getModel());

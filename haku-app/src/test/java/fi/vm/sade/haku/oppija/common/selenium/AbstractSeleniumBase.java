@@ -103,6 +103,11 @@ public abstract class AbstractSeleniumBase extends TomcatContainerBase {
         return seleniumContainer.getSelenium().getText("//*[@id = '" + id + "']").trim();
     }
 
+    protected String getTrimmedTextById(final String id, final String screenshot) {
+        screenshot(screenshot);
+        return seleniumContainer.getSelenium().getText("//*[@id = '" + id + "']").trim();
+    }
+
     protected void type(final String locator, final String text, boolean includeTab) {
         seleniumContainer.getSelenium().typeKeys(locator, text + ((includeTab) ? "\t" : ""));
     }

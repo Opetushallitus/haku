@@ -18,6 +18,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.util.List;
 import java.util.Map;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.fail;
 
@@ -38,12 +39,20 @@ public abstract class DummyModelBaseItTest extends AbstractSeleniumBase {
         seleniumContainer.getSelenium().goBack();
     }
 
-    protected void nextPhase() {
+    protected void nextPhase(String expectedPhase) {
         seleniumContainer.getDriver().findElement(new By.ByClassName("right")).click();
+        expectPhase(expectedPhase);
     }
 
-    protected void prevPhase() {
+    protected void prevPhase(String expectedPhase) {
         seleniumContainer.getDriver().findElement(new By.ByClassName("left")).click();
+        expectPhase(expectedPhase);
+    }
+
+    protected void expectPhase(String expected) {
+        WebElement form = findBy(By.id("nav-"+expected));
+        String clazz = form.getAttribute("class");
+        assertEquals("current", clazz);
     }
 
     private void clickAllElements(List<WebElement> elements) {

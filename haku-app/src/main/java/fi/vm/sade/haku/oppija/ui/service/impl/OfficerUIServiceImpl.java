@@ -9,6 +9,8 @@ import fi.vm.sade.haku.oppija.hakemus.aspect.LoggerAspect;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationNote;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
+import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationOptionDTO;
+import fi.vm.sade.haku.oppija.hakemus.domain.dto.Pistetieto;
 import fi.vm.sade.haku.oppija.hakemus.domain.util.ApplicationUtil;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.haku.oppija.hakemus.service.HakuPermissionService;
@@ -31,15 +33,29 @@ import fi.vm.sade.haku.oppija.ui.service.OfficerUIService;
 import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
+import fi.vm.sade.haku.virkailija.valinta.ValintaService;
 import fi.vm.sade.organisaatio.api.model.types.OrganisaatioTyyppi;
 import fi.vm.sade.organisaatio.api.search.OrganisaatioSearchCriteria;
+import fi.vm.sade.sijoittelu.tulos.dto.PistetietoDTO;
+import fi.vm.sade.sijoittelu.tulos.dto.raportointi.HakijaDTO;
+import fi.vm.sade.sijoittelu.tulos.dto.raportointi.HakutoiveDTO;
+import fi.vm.sade.sijoittelu.tulos.dto.raportointi.HakutoiveenValintatapajonoDTO;
+import fi.vm.sade.valintalaskenta.domain.dto.*;
+import fi.vm.sade.valintalaskenta.domain.dto.valintakoe.ValintakoeDTO;
+import fi.vm.sade.valintalaskenta.domain.valintakoe.Osallistuminen;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.*;
+
+import static org.apache.commons.lang3.StringUtils.isBlank;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 @Service
 public class OfficerUIServiceImpl implements OfficerUIService {
@@ -57,7 +73,10 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     private final ApplicationSystemService applicationSystemService;
     private final AuthenticationService authenticationService;
     private final OrganizationService organizationService;
+    private final ValintaService valintaService;
     private final UserSession userSession;
+
+    private static final DecimalFormat PISTE_FMT = new DecimalFormat("#.##");
 
     private static final List<Integer> syyskausi = ImmutableList.of(Calendar.JULY, Calendar.AUGUST, Calendar.SEPTEMBER,
             Calendar.OCTOBER, Calendar.NOVEMBER, Calendar.DECEMBER);
@@ -73,6 +92,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
                                 final ApplicationSystemService applicationSystemService,
                                 final AuthenticationService authenticationService,
                                 final OrganizationService organizationService,
+                                final ValintaService valintaService,
                                 final UserSession userSession) {
         this.applicationService = applicationService;
         this.formService = formService;
@@ -84,6 +104,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         this.applicationSystemService = applicationSystemService;
         this.authenticationService = authenticationService;
         this.organizationService = organizationService;
+        this.valintaService = valintaService;
         this.userSession = userSession;
     }
 
@@ -123,6 +144,8 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         modelResponse.addObjectToModel("postProcessAllowed", hakuPermissionService.userCanPostProcess(application));
         modelResponse.addObjectToModel("applicationSystem", as);
 
+        modelResponse.addObjectToModel("hakukohteet", getValintatiedot(application));
+
         String sendingSchoolOid = application.getVastauksetMerged().get("lahtokoulu");
         if (sendingSchoolOid != null) {
             Organization sendingSchool = organizationService.findByOid(sendingSchoolOid);
@@ -139,6 +162,134 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         }
         return modelResponse;
     }
+
+    private List<ApplicationOptionDTO> getValintatiedot(Application application) {
+        HakijaDTO hakijaDTO = valintaService.getHakija(application.getApplicationSystemId(), application.getOid());
+        HakemusDTO hakemusDTO = valintaService.getHakemus(application.getApplicationSystemId(), application.getOid());
+        Map<String, String> aoAnswers = application.getPhaseAnswers(OppijaConstants.PHASE_APPLICATION_OPTIONS);
+
+        Map<String, HakutoiveDTO> hakijaMap = new HashMap<String, HakutoiveDTO>();
+        for (HakutoiveDTO hakutoiveDTO : hakijaDTO.getHakutoiveet()) {
+            hakijaMap.put(hakutoiveDTO.getHakukohdeOid(), hakutoiveDTO);
+        }
+        Map<String, HakukohdeDTO> hakemusMap = new HashMap<String, HakukohdeDTO>();
+        for (HakukohdeDTO hakukohdeDTO : hakemusDTO.getHakukohteet()) {
+            hakemusMap.put(hakukohdeDTO.getOid(), hakukohdeDTO);
+        }
+
+        List<ApplicationOptionDTO> aos = new ArrayList<ApplicationOptionDTO>(5);
+        for (int i = 1; i < 100; i++) {
+            String aoPrefix = String.format("preference%d-", i);
+            String aoKey = String.format("%sKoulutus-id", aoPrefix);
+            if (!aoAnswers.containsKey(aoKey) || isBlank(aoAnswers.get(aoKey))) {
+                break;
+            }
+            aos.add(createApplicationOption(i, aoAnswers, aoPrefix,
+                    hakijaMap.get(aoAnswers.get(aoKey)), hakemusMap.get(aoAnswers.get(aoKey))));
+        }
+        return aos;
+    }
+
+    private ApplicationOptionDTO createApplicationOption(int index, Map<String, String> applicatioOptions, String aoPrefix,
+                                                         HakutoiveDTO hakutoive, HakukohdeDTO hakukohde) {
+        ApplicationOptionDTO ao = buildBasicAo(index, applicatioOptions, aoPrefix);
+
+        if (hakutoive == null || hakukohde == null) {
+            return ao;
+        }
+
+        ao = addAdditionalApplicationOptionData(ao, hakutoive);
+
+        // Lisätään pistetiedot valintakokeista ja kaikkien käytetyn valintatapajonon jonosijoista.
+        for (ValinnanvaiheDTO vaihe : hakukohde.getValinnanvaihe()) {
+            for (ValintakoeDTO koe : vaihe.getValintakokeet()) {
+                ao.addPistetieto(buildPistetieto(hakutoive, koe));
+            }
+
+            for (ValintatapajonoDTO valintatapajonoDTO : vaihe.getValintatapajono()) {
+                if (valintatapajonoDTO.getOid().equals(ao.getJonoId())) {
+                    for (JonosijaDTO jonosijaDTO : valintatapajonoDTO.getJonosijat()) {
+                        for (FunktioTulosDTO funktioTulosDTO : jonosijaDTO.getFunktioTulokset()) {
+                            ao.addPistetieto(buildPistetieto(funktioTulosDTO));
+                        }
+                    }
+                }
+            }
+        }
+        ao.sortPistetiedot();
+        return ao;
+    }
+
+    private Pistetieto buildPistetieto(HakutoiveDTO hakutoive, ValintakoeDTO koe) {
+        Pistetieto pistetieto = null;
+        for (PistetietoDTO pistetietoDTO : hakutoive.getPistetiedot()) {
+            if (pistetietoDTO.getTunniste().equals(koe.getValintakoeTunniste())) {
+                pistetieto = new Pistetieto(pistetietoDTO);
+                break;
+            }
+        }
+        if (pistetieto == null) {
+            pistetieto = new Pistetieto();
+        }
+        pistetieto.setNimi(ElementUtil.createI18NAsIs(koe.getNimi()));
+        Osallistuminen osallistuminen = koe.getOsallistuminenTulos().getOsallistuminen();
+        if (osallistuminen.equals(Osallistuminen.EI_OSALLISTU)) {
+            pistetieto.setPisteet(null);
+        }
+        pistetieto.setOsallistuminen(osallistuminen);
+        return pistetieto;
+    }
+
+    private ApplicationOptionDTO addAdditionalApplicationOptionData(ApplicationOptionDTO ao, HakutoiveDTO hakutoive) {
+        List<HakutoiveenValintatapajonoDTO> jonot = hakutoive.getHakutoiveenValintatapajonot();
+        Collections.sort(jonot, new Comparator<HakutoiveenValintatapajonoDTO>() {
+            @Override
+            public int compare(HakutoiveenValintatapajonoDTO jono, HakutoiveenValintatapajonoDTO other) {
+                return jono.getValintatapajonoPrioriteetti() - other.getValintatapajonoPrioriteetti();
+            }
+        });
+        HakutoiveenValintatapajonoDTO jono = jonot.get(0);
+        BigDecimal pisteet = jono.getPisteet();
+        ao.setJonoId(jono.getValintatapajonoOid());
+        ao.setYhteispisteet(pisteet != null ? PISTE_FMT.format(pisteet) : "");
+        ao.setSijoittelunTulos(jono.getTila());
+        ao.setVastaanottoTieto(jono.getVastaanottotieto());
+
+        return ao;
+    }
+
+    private ApplicationOptionDTO buildBasicAo(int index, Map<String, String> applicatioOptions, String aoPrefix) {
+        ApplicationOptionDTO ao = new ApplicationOptionDTO();
+        String aoOid = applicatioOptions.get(String.format("%sKoulutus-id", aoPrefix));
+
+        ao.setIndex(index);
+        ao.setOpetuspiste(applicatioOptions.get(String.format("%sOpetuspiste", aoPrefix)));
+        ao.setOpetuspisteOid(applicatioOptions.get(String.format("%sOpetuspiste-id", aoPrefix)));
+        ao.setName(applicatioOptions.get(String.format("%sKoulutus", aoPrefix)));
+        ao.setOid(aoOid);
+        return ao;
+    }
+
+    private Pistetieto buildPistetieto(FunktioTulosDTO funktioTulosDTO) {
+        Pistetieto pistetieto = new Pistetieto();
+        pistetieto.setId(funktioTulosDTO.getTunniste());
+        pistetieto.setNimi(buildFunktioNimet(funktioTulosDTO));
+        pistetieto.setPisteet(funktioTulosDTO.getArvo());
+        pistetieto.setOsallistuminen(null);
+        return pistetieto;
+    }
+
+    private I18nText buildFunktioNimet(FunktioTulosDTO funktioTulosDTO) {
+        String nimiFi = isNotBlank(funktioTulosDTO.getNimiFi()) ? funktioTulosDTO.getNimiFi() : funktioTulosDTO.getTunniste();
+        String nimiSv = isNotBlank(funktioTulosDTO.getNimiSv()) ? funktioTulosDTO.getNimiSv() : funktioTulosDTO.getTunniste();
+        String nimiEn = isNotBlank(funktioTulosDTO.getNimiEn()) ? funktioTulosDTO.getNimiEn() : funktioTulosDTO.getTunniste();
+        Map<String, String> funktioNimet = new HashMap<String, String>(3);
+        funktioNimet.put("fi", nimiFi);
+        funktioNimet.put("sv", nimiSv);
+        funktioNimet.put("en", nimiEn);
+        return new I18nText(funktioNimet);
+    }
+
 
     @Override
     public ModelResponse getAdditionalInfo(String oid) {
@@ -398,7 +549,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     @Override
     public ModelResponse getApplicationPrint(final String oid) {
         Application application = applicationService.getApplicationByOid(oid);
-        ApplicationSystem activeApplicationSystem = applicationSystemService.getActiveApplicationSystem(application.getApplicationSystemId());
+        ApplicationSystem activeApplicationSystem = applicationSystemService.getApplicationSystem(application.getApplicationSystemId());
         List<String> discretionaryAttachmentAOIds = ApplicationUtil.getDiscretionaryAttachmentAOIds(application);
         return new ModelResponse(application, activeApplicationSystem, discretionaryAttachmentAOIds, koulutusinformaatioBaseUrl);
     }
@@ -406,5 +557,4 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     private ApplicationNote createNote(String note) {
         return new ApplicationNote(note, new Date(), userSession.getUser().getUserName());
     }
-
 }

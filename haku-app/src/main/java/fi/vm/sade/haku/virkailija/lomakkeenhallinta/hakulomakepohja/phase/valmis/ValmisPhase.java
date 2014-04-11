@@ -50,9 +50,7 @@ public class ValmisPhase {
 
         elements.addAll(createAdditionalInformationElements(formMessages));
 
-
-        TitledGroup muutoksenTekeminen = new TitledGroup("muutoksenTekeminen", createI18NText("form.valmis.muutoksentekeminen",
-                formMessages));
+        TitledGroup muutoksenTekeminen = new TitledGroup("muutoksenTekeminen", createI18NText("form.valmis.muutoksentekeminen", formMessages));
 
         for (int i = 0; i < paragraphs.length; i++) {
             muutoksenTekeminen.addChild(new Text("muutoksenTekeminenP" + (i + 1), createI18NText(paragraphs[i], formMessages)));

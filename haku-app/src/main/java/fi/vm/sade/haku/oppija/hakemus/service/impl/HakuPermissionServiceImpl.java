@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-@Profile("default")
+@Profile(value = {"default"})
 public class HakuPermissionServiceImpl extends AbstractPermissionService implements HakuPermissionService {
 
     public static final int MAX_NUMBER_OF_PREFERENCES = 5;
@@ -199,10 +199,6 @@ public class HakuPermissionServiceImpl extends AbstractPermissionService impleme
         for (int i = 1; i <= MAX_NUMBER_OF_PREFERENCES; i++) {
             String id = "preference" + i + "-Opetuspiste-id";
             String organization = answers.get(id);
-
-            if (i == 1 && StringUtils.isEmpty(organization)) {
-                return true; // Anyone can read empty application
-            }
 
             if (StringUtils.isNotEmpty(organization) &&
                     checkAccess(organization, roles)) {

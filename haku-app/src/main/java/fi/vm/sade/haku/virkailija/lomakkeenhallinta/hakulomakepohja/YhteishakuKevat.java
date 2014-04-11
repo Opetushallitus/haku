@@ -20,12 +20,13 @@ import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.hakutoiveet.HakutoiveetPhaseYhteishakuKevat;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.henkilotiedot.HenkilotiedotPhaseYhteishakuKevat;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.koulutustausta.KoulutustaustaPhaseYhteishakuKevat;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.lisatiedot.LisatiedotPhaseYhteishakuKevat;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.henkilotiedot.HenkilotiedotPhase;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.koulutustausta.KoulutustaustaPhase;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.lisatiedot.LisatiedotPhase;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.osaaminen.OsaaminenPhaseYhteishakuKevat;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.valmis.ValmisPhase;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 
 import java.util.List;
 
@@ -34,15 +35,17 @@ import static com.google.common.collect.Lists.newArrayList;
 public class YhteishakuKevat {
 
     private static final String FORM_MESSAGES = "form_messages_yhteishaku_kevat";
+    private static final String FORM_ERRORS = "form_errors_yhteishaku_kevat";
+    private static final String FORM_VERBOSE_HELP = "form_verboseHelp_yhteishaku_kevat";
 
     public static Form generateForm(final ApplicationSystem as, final KoodistoService koodistoService) {
         try {
             Form form = new Form(as.getId(), as.getName());
-            form.addChild(HenkilotiedotPhaseYhteishakuKevat.create(koodistoService));
-            form.addChild(KoulutustaustaPhaseYhteishakuKevat.create(koodistoService, as));
+            form.addChild(HenkilotiedotPhase.create(OppijaConstants.VARSINAINEN_HAKU, koodistoService, FORM_MESSAGES, FORM_ERRORS, FORM_VERBOSE_HELP));
+            form.addChild(KoulutustaustaPhase.create(koodistoService, as, FORM_MESSAGES, FORM_ERRORS, FORM_VERBOSE_HELP));
             form.addChild(HakutoiveetPhaseYhteishakuKevat.create());
             form.addChild(OsaaminenPhaseYhteishakuKevat.create(koodistoService, as));
-            form.addChild(LisatiedotPhaseYhteishakuKevat.create());
+            form.addChild(LisatiedotPhase.create(FORM_MESSAGES, FORM_ERRORS,FORM_VERBOSE_HELP));
             return form;
         } catch (Exception e) {
             throw new RuntimeException(YhteishakuKevat.class.getCanonicalName() + " init failed", e);

@@ -69,11 +69,13 @@ $(document).ready(function () {
 
                         if (!name) {
                             if (as['name_fi']) {
-                                name = name_fi;
+                                name = as['name_fi'];
                             } else if (as['name_sv']) {
-                                name = name_sv;
+                                name = as['name_sv'];
                             } else if (as['name_en']) {
-                                name = name_en;
+                                name = as['name_en'];
+                            } else {
+                                name = '???';
                             }
                         }
 
@@ -362,13 +364,13 @@ $(document).ready(function () {
                 $('#application-preference').val(obj.aoid);
                 $('#application-preference-code').val(obj.aoid);
                 $('#lopoid').val(obj.lopoid);
-                $('#lop-title').text(obj.lopTitle);
                 $('#application-system').val(obj.asId);
                 $('#hakukausiVuosi').val(obj.asYear);
                 $('#hakukausi').val(obj.asSemester);
                 $('#sendingSchoolOid').val(obj.sendingSchoolOid);
                 $('#sendingClass').val(obj.sendingClass);
                 $('#discretionary-only').prop('checked', obj.discretionaryOnly);
+                $('#lop-title').text(obj.lopTitle ? objlopTitle.replace('ThisIsStupidButNecessary', '&') : undefined);
                 if (obj.orgSearchExpanded) {
                     orgSearchDialog.expand();
                 }
@@ -389,6 +391,7 @@ $(document).ready(function () {
                 addParameter(obj, 'discretionaryOnly', '#discretionary-only');
                 var lopTitle = $('#lop-title').text();
                 if (lopTitle) {
+                    lopTitle = lopTitle.replace('&', 'ThisIsStupidButNecessary');
                     obj['lopTitle'] = lopTitle;
                 }
                 if ($('#orgsearch').hasClass('expand')) {
@@ -609,4 +612,107 @@ $(document).ready(function () {
             alert('Koulu ja haku ovat pakollisia tietoja')
         }
     });
+
+    $(document).bind('keypress', 'a', function() { $('#check-all-applications').click()});
+    $(document).bind('keypress', 'o', function() { $('#open-selected').click()});
+
+
+    $(document).bind('keypress', 'j', function() {
+        var firstApplication = false;
+        var checkedApplication = false;
+        var checkThis = false;
+        $('.check-application').each(function() {
+            if (!firstApplication) {
+                firstApplication = $(this).attr('id');
+            }
+            if ($(this).prop('checked')) {
+                checkedApplication = $(this).attr('id');
+            } else if (checkedApplication && !checkThis) {
+                checkThis = $(this).attr('id');
+            }
+            $(this).prop('checked', false);
+        });
+        if (checkedApplication) {
+            $('#'+checkedApplication).prop('checked', false);
+        }
+        if (checkThis) {
+            $('#'+checkThis).prop('checked', true);
+        } else {
+            $('#'+firstApplication).prop('checked', true);
+        }
+    });
+
+    $(document).bind('keypress', 'shift+j', function() {
+        var firstApplication = false;
+        var checkedApplications = false;
+        var checkThis = false;
+        $('.check-application').each(function(index) {
+            if (!firstApplication) {
+                firstApplication = $(this).attr('id');
+            }
+            if ($(this).prop('checked')) {
+                checkedApplications = checkedApplications + ',' + $(this).attr('id');
+            } else if (checkedApplications && !checkThis) {
+                checkThis = $(this).attr('id');
+            }
+            $(this).prop('checked', false);
+        });
+        if (!checkedApplications && !checkThis) {
+            $('#'+firstApplication).prop('checked', true);
+        } else {
+            $('#'+checkThis).prop('checked', true);
+            var checkThese = checkedApplications.split(',');
+            for (var i = 0; i < checkThese.length; i++) {
+                $('#'+checkThese[i]).prop('checked', true);
+            }
+        }
+    });
+
+    $(document).bind('keypress', 'k', function() {
+        var lastApplication = false;
+        var checkedApplication = false;
+        var checkThis = false;
+        $('.check-application').each(function() {
+            if ($(this).prop('checked') && !checkThis) {
+                checkedApplication = $(this).attr('id');
+                checkThis = lastApplication;
+            }
+            lastApplication = $(this).attr('id');
+            $(this).prop('checked', false);
+        });
+        if (checkedApplication) {
+            $('#'+checkedApplication).prop('checked', false);
+        }
+        if (checkThis) {
+            $('#'+checkThis).prop('checked', true);
+        } else {
+            $('#'+lastApplication).prop('checked', true);
+        }
+    });
+
+    $(document).bind('keypress', 'shift+k', function() {
+        var lastApplication = false;
+        var checkedApplications = false;
+        var checkThis = false;
+        $('.check-application').each(function() {
+            if ($(this).prop('checked') && !checkThis) {
+                checkThis = lastApplication;
+            }
+            if ($(this).prop('checked')) {
+                checkedApplications = checkedApplications + ',' + $(this).attr('id');
+            }
+            lastApplication = $(this).attr('id');
+            $(this).prop('checked', false);
+        });
+        if (!checkedApplications && !checkThis) {
+            $('#'+lastApplication).prop('checked', true);
+        } else {
+            $('#'+checkThis).prop('checked', true);
+            var checkThese = checkedApplications.split(',');
+            for (var i = 0; i < checkThese.length; i++) {
+                $('#'+checkThese[i]).prop('checked', true);
+            }
+        }
+    });
+
 });

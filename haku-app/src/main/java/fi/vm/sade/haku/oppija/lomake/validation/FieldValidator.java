@@ -18,11 +18,14 @@ package fi.vm.sade.haku.oppija.lomake.validation;
 
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import org.apache.commons.lang3.Validate;
+import org.springframework.data.annotation.Transient;
 
 public abstract class FieldValidator implements Validator {
     protected final String fieldName;
     protected final I18nText errorMessage;
+    @Transient
     protected ValidationResult validValidationResult;
+    @Transient
     protected ValidationResult invalidValidationResult;
 
     protected FieldValidator(final String fieldName, final I18nText errorMessage) {

@@ -22,7 +22,6 @@ package fi.vm.sade.haku.virkailija.lomakkeenhallinta.util;
  */
 public final class OppijaConstants {
 
-
     private OppijaConstants() {
         // Utility class, no need for instances
     }
@@ -46,6 +45,7 @@ public final class OppijaConstants {
     public static final String ELEMENT_ID_LAST_NAME = "Sukunimi";
     public static final String ELEMENT_ID_LAST_NAME_USER = ELEMENT_ID_LAST_NAME + "_user";
     public static final String ELEMENT_ID_SOCIAL_SECURITY_NUMBER = "Henkilotunnus";
+    public static final String ELEMENT_ID_DATE_OF_BIRTH = "syntymaaika";
     public static final String ELEMENT_ID_EMAIL = "Sähköposti";
     public static final String ELEMENT_ID_SEX = "Sukupuoli";
     public static final String ELEMENT_ID_SENDING_SCHOOL = "lahtokoulu";
@@ -62,7 +62,12 @@ public final class OppijaConstants {
     public static final String ELEMENT_ID_BASE_EDUCATION = "POHJAKOULUTUS";
     public static final String ELEMENT_ID_BASE_EDUCATION_USER = "POHJAKOULUTUS_user";
 
+    public static final String PHASE_PERSONAL = "henkilotiedot";
     public static final String PHASE_EDUCATION = "koulutustausta";
+    public static final String PHASE_APPLICATION_OPTIONS = "hakutoiveet";
+    public static final String PHASE_GRADES = "osaaminen";
+    public static final String PHASE_MISC = "lisatiedot";
+    public static final String PHASE_PREVIEW = "esikatselu";
 
     public static final String PREFERENCE_ID = "preference%d-Koulutus-id";
 

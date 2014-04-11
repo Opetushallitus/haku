@@ -45,7 +45,9 @@
     <script src="${contextPath}/resources/javascript/rules.js" type="text/javascript"></script>
     <script src="${contextPath}/resources/javascript/master.js" type="text/javascript"></script>
     <script src="${contextPath}/resources/jquery/jquery.cookie.js" type="text/javascript"></script>
+    <script src="${contextPath}/resources/jquery/jquery.hotkeys.js" type="text/javascript"></script>
     <script src="${contextPath}/resources/javascript/virkailija/application.js" type="text/javascript"></script>
+    <script src="${contextPath}/resources/javascript/virkailija/tabs.js" type="text/javascript"></script>
     <script type="text/javascript" src="/virkailija-raamit/apply-raamit.js"></script>
     <title><fmt:message key="virkailija.otsikko"/></title>
 
@@ -95,9 +97,10 @@
             <h3><c:out value="${answers['Etunimet']}" escapeXml="true"/>&nbsp;<c:out
                     value="${answers['Sukunimi']}" escapeXml="true"/>
                 <c:if test="${not empty answers['Etunimet_user'] or not empty answers['Sukunimi_user']}">
-                    &nbsp;<span title="<c:out value="${answers['Etunimet_user']}" />&nbsp;<c:out value="${answers['Sukunimi_user']}" />">[*]</span>
+                    &nbsp;<span title="<c:out value="${answers['Etunimet_user']}"/>&nbsp;<c:out
+                        value="${answers['Sukunimi_user']}"/>">[*]</span>
                 </c:if>
-                    </h3>
+            </h3>
             <table class="margin-top-2">
                 <c:if test="${application.state eq 'ACTIVE'}">
                     <fmt:message key="virkailija.hakemus.tila.voimassa" var="msg"/>
@@ -112,7 +115,14 @@
                     <haku:infoCell key="virkailija.hakemus.hakemusnro" value="${application.oid}"
                                    cellId="infocell_oid"/>
 
-                    <haku:infoCell key="virkailija.hakemus.henkilotunnus" value="${answers['Henkilotunnus']}"/>
+                    <c:choose>
+                        <c:when test="${not empty answers['Henkilotunnus']}">
+                            <haku:infoCell key="virkailija.hakemus.henkilotunnus" value="${answers['Henkilotunnus']}"/>
+                        </c:when>
+                        <c:otherwise>
+                            <haku:infoCell key="virkailija.hakemus.henkilotunnus" value="${answers['syntymaaika']}"/>
+                        </c:otherwise>
+                    </c:choose>
 
                     <td>
                         <span class="bold"><fmt:message key="virkailija.hakemus.lahtokoulu"/>:</span>
@@ -147,42 +157,24 @@
         <section class="grid16-16 margin-top-2">
 
             <div class="tabs">
-                <a href="#" data-tabs-group="applicationtabs" data-tabs-id="application"
+                <a href="#" data-tabs-group="applicationtabs" data-tabs-id="application" id="applicationTab"
                    class="tab current"><span>Hakemus</span></a>
+                <a href="#" data-tabs-group="applicationtabs" data-tabs-id="valinta" id="valintaTab"
+                   class="tab"><span>Valinta</span></a>
             </div>
 
             <div class="tabsheets">
                 <section id="application" class="tabsheet" data-tabs-group="applicationtabs" data-tabs-id="application"
                          style="display: block">
-                    <haku:messages messages="${errorMessages}" additionalClass="warning"/>
-                    <c:choose>
-                        <c:when test="${preview}">
-                            <c:set var="virkailijaPreview" value="true" scope="request"/>
-                            <div class="form">
-                                <c:forEach var="child" items="${form.children}">
-                                    <c:set var="element" value="${child}" scope="request"/>
-                                    <jsp:include page="../elements/${child.type}Preview.jsp"/>
-                                </c:forEach>
-                                <jsp:include page="./additionalInfoPreview.jsp"/>
-                                <jsp:include page="./notes.jsp"/>
-                            </div>
-                        </c:when>
-                        <c:otherwise>
-                            <c:set var="virkailijaEdit" value="true" scope="request"/>
-                            <form id="form-${it.element.id}" class="form" method="post">
-                                <c:forEach var="child" items="${it.element.children}">
-                                    <c:set var="element" value="${child}" scope="request"/>
-                                    <jsp:include page="../elements/${child.type}.jsp"/>
-                                </c:forEach>
-                                <button class="save" name="vaiheId" type="submit" value="${it.element.id}">
-                                    <span><span><fmt:message key="lomake.button.save"/></span></span>
-                                </button>
-                            </form>
-                        </c:otherwise>
-                    </c:choose>
 
-                    <hr/>
+                    <jsp:include page="hakemusTab.jsp"/>
 
+                </section>
+
+                <section id="valinta" class="tabsheet" data-tabs-group="applicationtabs" data-tabs-id="valinta"
+                         style="display: none">
+
+                    <jsp:include page="valintaTab.jsp"/>
                 </section>
 
             </div>

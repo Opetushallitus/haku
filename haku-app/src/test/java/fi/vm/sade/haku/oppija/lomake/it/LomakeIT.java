@@ -18,7 +18,7 @@ package fi.vm.sade.haku.oppija.lomake.it;
 
 import com.google.common.collect.ImmutableMap;
 import fi.vm.sade.haku.oppija.common.selenium.DummyModelBaseItTest;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.koulutustausta.KoulutustaustaPhaseYhteishakuSyksy;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.koulutustausta.KoulutustaustaPhase;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
@@ -42,6 +42,8 @@ public class LomakeIT extends DummyModelBaseItTest {
         WebDriver driver = seleniumContainer.getDriver();
 
         navigateToFirstPhase();
+        WebElement form = findBy(By.id("form-henkilotiedot"));
+        assertTrue(form.isDisplayed());
         setValue("Sukunimi", "Ankka ");
         setValue("Etunimet", " Aku Kalle");
         setValue("Kutsumanimi", " AKu");
@@ -56,7 +58,7 @@ public class LomakeIT extends DummyModelBaseItTest {
         findById("matkapuhelinnumero2");
         setValue("matkapuhelinnumero2", "09-123 456");
 
-        nextPhase();
+        nextPhase("henkilotiedot");
 
         findByClassName("notification");
 
@@ -67,7 +69,7 @@ public class LomakeIT extends DummyModelBaseItTest {
         setValue("lahiosoite", "Katu 1");
         setValue("Postinumero", "00100");
 
-        nextPhase();
+        nextPhase(OppijaConstants.PHASE_EDUCATION);
 
         testHAK123AandHAK124();
         clickByNameAndValue(KYSYMYS_POHJAKOULUTUS, TUTKINTO_YLIOPPILAS);
@@ -75,12 +77,12 @@ public class LomakeIT extends DummyModelBaseItTest {
         setValue(OppijaConstants.LUKIO_PAATTOTODISTUS_VUOSI, "2012");
         clickByNameAndValue("ammatillinenTutkintoSuoritettu", "false");
         setValue(OppijaConstants.LUKIO_KIELI, "FI");
-        nextPhase();
+        nextPhase(OppijaConstants.PHASE_APPLICATION_OPTIONS);
 
         typeWithoutTab("preference1-Opetuspiste", "sturen");
         clickLinkByText("Stadin ammattiopisto, Sturenkadun toimipaikka");
         driver.findElement(By.xpath("//option[@data-id='1.2.246.562.5.20176855623']")).click();
-        prevPhase();
+        prevPhase(OppijaConstants.PHASE_EDUCATION);
 
         clickByNameAndValue(KYSYMYS_POHJAKOULUTUS, TUTKINTO_PERUSKOULU);
 
@@ -90,7 +92,7 @@ public class LomakeIT extends DummyModelBaseItTest {
         findByIdAndClick("LISAKOULUTUS_KYMPPI", "LISAKOULUTUS_VAMMAISTEN", "LISAKOULUTUS_TALOUS", "LISAKOULUTUS_AMMATTISTARTTI");
         setValue(OppijaConstants.PERUSOPETUS_KIELI, "FI");
         setValue("KOULUTUSPAIKKA_AMMATILLISEEN_TUTKINTOON", "false", true);
-        nextPhase();
+        nextPhase(OppijaConstants.PHASE_APPLICATION_OPTIONS);
 
         assertTrue("Warning text 'ristiriita' not found", !findByClassName("warning").isEmpty());
 
@@ -105,38 +107,41 @@ public class LomakeIT extends DummyModelBaseItTest {
         Select followUpSelect = new Select(driver.findElement(new By.ByName("preference1-discretionary-follow-up")));
         followUpSelect.selectByIndex(1);
 
-        nextPhase();
+        nextPhase(OppijaConstants.PHASE_GRADES);
 
         select();
         selectByValue("PK_AI_OPPIAINE", "FI");
         selectByValue("PK_A1_OPPIAINE", "EN");
         selectByValue("PK_B1_OPPIAINE", "SE");
 
-        nextPhase();
+        nextPhase(OppijaConstants.PHASE_MISC);
+        prevPhase(OppijaConstants.PHASE_GRADES);
+        nextPhase(OppijaConstants.PHASE_MISC);
 
-        nextPhase();
         // Lisätiedot
-        clickAllElementsByXPath("//input[@type='checkbox']");
+
+        nextPhase(OppijaConstants.PHASE_MISC);
 
         // Ei mene läpi, työkokemus syöttämättä
+        clickAllElementsByXPath("//input[@type='checkbox']");
 
         setValue("TYOKOKEMUSKUUKAUDET", "1001");
-        nextPhase();
+        nextPhase(OppijaConstants.PHASE_MISC);
         // Ei mene läpi, työkokemus > 1000 kuukautta
-        nextPhase();
+        nextPhase(OppijaConstants.PHASE_MISC);
         findById("TYOKOKEMUSKUUKAUDET");
 
         setValue("TYOKOKEMUSKUUKAUDET", StringUtils.repeat("\b", "1001".length()) + "2"); //\b is backspace
 
         // Ei mene läpi, asiointikieli valitsematta
-        nextPhase();
+        nextPhase(OppijaConstants.PHASE_MISC);
         clickByNameAndValue("asiointikieli", "suomi");
 
         // Menee läpi
-        nextPhase();
+        nextPhase(OppijaConstants.PHASE_PREVIEW);
 
         // Esikatselu
-        nextPhase();
+        nextPhase(OppijaConstants.PHASE_PREVIEW);
 
         findByIdAndClick("submit_confirm");
 
@@ -170,14 +175,14 @@ public class LomakeIT extends DummyModelBaseItTest {
 
         String value = driver.findElement(new By.ById("Sukunimi")).getAttribute("value");
         assertTrue(StringUtils.isEmpty(value));
-        nextPhase();
+        nextPhase(OppijaConstants.PHASE_PERSONAL);
     }
 
     private void testHAK123AandHAK124() {
         clickByNameAndValue(KYSYMYS_POHJAKOULUTUS, TUTKINTO_KESKEYTYNYT);
-        findById(KoulutustaustaPhaseYhteishakuSyksy.TUTKINTO_KESKEYTNYT_NOTIFICATION_ID);
+        findById(KoulutustaustaPhase.TUTKINTO_KESKEYTNYT_NOTIFICATION_ID);
         clickByNameAndValue(KYSYMYS_POHJAKOULUTUS, TUTKINTO_ULKOMAINEN_TUTKINTO);
-        findById(KoulutustaustaPhaseYhteishakuSyksy.TUTKINTO_ULKOMAILLA_NOTIFICATION_ID);
+        findById(KoulutustaustaPhase.TUTKINTO_ULKOMAILLA_NOTIFICATION_ID);
     }
 
     protected void elementsPresent(String... locations) {

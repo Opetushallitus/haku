@@ -39,17 +39,16 @@ public class HAK305IT extends DummyModelBaseItTest {
 
         fillOutTheHenkilotiedotPhase(NATIVE_LANGUAGE_FI);
 
-        nextPhase();
+        nextPhase(OppijaConstants.PHASE_EDUCATION);
 
         fillOutTheKoulutustaustaPhase(NATIVE_LANGUAGE_FI);
 
-        nextPhase();
+        nextPhase(OppijaConstants.PHASE_APPLICATION_OPTIONS);
 
         fillInTheHakutoiveetPhase();
 
-        nextPhase();
+        nextPhase(OppijaConstants.PHASE_GRADES);
 
-        screenshot("HAK305_1");
         fillInArvosanatTheme();
 
         // Native lang == FI, no lang test
@@ -58,15 +57,15 @@ public class HAK305IT extends DummyModelBaseItTest {
 
         findByIdAndClick("nav-henkilotiedot");
         setNativeLanguage(NATIVE_LANGUAGE_SV);
-        nextPhase(); // Koulutustausta
+        nextPhase(OppijaConstants.PHASE_EDUCATION); // Koulutustausta
         setPerusopetuksenKieli(NATIVE_LANGUAGE_SV);
-        nextPhase();
-        nextPhase(); // Osaaminen
+        nextPhase(OppijaConstants.PHASE_APPLICATION_OPTIONS);
+        nextPhase(OppijaConstants.PHASE_GRADES); // Osaaminen
 
         clickByNameAndValue("yleinen_kielitutkinto_fi", "true");
         clickByNameAndValue("valtionhallinnon_kielitutkinto_fi", "true");
         clickByNameAndValue("peruskoulun_paattotodistus_vahintaan_seitseman_fi", "true");
-        nextPhase();
+        nextPhase(OppijaConstants.PHASE_MISC);
         fillInRestOfThePhasesAndCheckTheOID();
     }
 
@@ -83,13 +82,12 @@ public class HAK305IT extends DummyModelBaseItTest {
     private void fillInRestOfThePhasesAndCheckTheOID() {
         // Lisätiedot
         clickAllElementsByXPath("//input[@type='checkbox']");
-        //screenshot("HAK305");
         setValue("TYOKOKEMUSKUUKAUDET", "2");
         clickByNameAndValue("asiointikieli", "suomi");
-        nextPhase();
+        nextPhase(OppijaConstants.PHASE_PREVIEW);
 
         // Esikatselu
-        nextPhase();
+        nextPhase(OppijaConstants.PHASE_PREVIEW);
         findByIdAndClick("submit_confirm");
 
         String oid = seleniumContainer.getDriver().findElement(new By.ByClassName("number")).getText();
