@@ -24,6 +24,7 @@ import org.springframework.stereotype.Controller;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -46,6 +47,14 @@ public class FormBuilderResource {
         this.applicationSystemService = applicationSystemService;
     }
 
+    @GET
+    @Path("{oid}")
+    @Produces(MediaType.TEXT_PLAIN + ";charset=UTF-8")
+    public Response generateOne(@PathParam("oid") final String oid) throws URISyntaxException {
+        ApplicationSystem as = formGenerator.generateOne(oid);
+        applicationSystemService.save(as);
+        return Response.seeOther(new URI("/lomake/"+oid)).build();
+    }
 
     @GET
     @Produces(MediaType.TEXT_PLAIN + ";charset=UTF-8")

@@ -26,4 +26,6 @@ import java.util.List;
 public interface HakuService {
 
     List<ApplicationSystem> getApplicationSystems();
+
+    ApplicationSystem getApplicationSystem(String oid);
 }
