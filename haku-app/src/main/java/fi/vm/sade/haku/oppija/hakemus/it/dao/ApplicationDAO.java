@@ -84,4 +84,6 @@ public interface ApplicationDAO extends BaseDAO<Application> {
     ApplicationSearchResultDTO findAllQueried(String term, ApplicationQueryParameters applicationQueryParameters);
 
     Application getNextRedo();
+
+    List<Application> findAllQueriedFull(String query, ApplicationQueryParameters applicationQueryParameters);
 }
