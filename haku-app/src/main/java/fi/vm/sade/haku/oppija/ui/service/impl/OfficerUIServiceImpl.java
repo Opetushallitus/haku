@@ -73,7 +73,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     private final ApplicationSystemService applicationSystemService;
     private final AuthenticationService authenticationService;
     private final OrganizationService organizationService;
-    private final ValintaService valintaService;
+    private ValintaService valintaService;
     private final UserSession userSession;
 
     private static final DecimalFormat PISTE_FMT = new DecimalFormat("#.##");
@@ -560,5 +560,9 @@ public class OfficerUIServiceImpl implements OfficerUIService {
 
     private ApplicationNote createNote(String note) {
         return new ApplicationNote(note, new Date(), userSession.getUser().getUserName());
+    }
+
+    public void setValintaService(ValintaService valintaService) {
+        this.valintaService = valintaService;
     }
 }
