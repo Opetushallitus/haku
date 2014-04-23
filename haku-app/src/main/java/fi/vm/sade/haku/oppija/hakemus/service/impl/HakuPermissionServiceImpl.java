@@ -53,17 +53,9 @@ public class HakuPermissionServiceImpl extends AbstractPermissionService impleme
 
         List<String> readble = new ArrayList<String>();
         for (String organization : organizations) {
-            log.debug("Calling checkAccess({}, {})", organization, getReadRole());
-            if (checkAccess(organization, getReadRole())) {
+            log.debug("Checking read permissions as organization:{} for user:{})", organization, authenticationService.getCurrentHenkilo().getPersonOid());
+            if (checkAccess(organization, getReadRole(),getReadUpdateRole(),getCreateReadUpdateDeleteRole(),getRoleLisatietoRU(),getRoleLisatietoCRUD())) {
                 log.debug("Can read");
-                readble.add(organization);
-            } else if (checkAccess(organization, getReadUpdateRole())) {
-                readble.add(organization);
-            } else if (checkAccess(organization, getCreateReadUpdateDeleteRole())) {
-                readble.add(organization);
-            } else if (checkAccess(organization, getRoleLisatietoRU())) {
-                readble.add(organization);
-            } else if (checkAccess(organization, getRoleLisatietoCRUD())) {
                 readble.add(organization);
             }
         }
@@ -175,16 +167,7 @@ public class HakuPermissionServiceImpl extends AbstractPermissionService impleme
 
     @Override
     public boolean userCanEditApplicationAdditionalData(Application application) {
-        if (userCanAccessApplication(application, getRoleLisatietoCRUD())) {
-            return true;
-        } else if (userCanAccessApplication(application, getRoleLisatietoRU())) {
-           return true;
-        } else if (userCanAccessApplication(application, getReadUpdateRole())) {
-            return true;
-        } else if (userCanAccessApplication(application, getCreateReadUpdateDeleteRole())) {
-            return true;
-        }
-        return false;
+        return userCanAccessApplication(application, getRoleLisatietoCRUD(), getRoleLisatietoRU(), getReadUpdateRole(), getCreateReadUpdateDeleteRole());
     }
 
     @SuppressWarnings("deprecation")
