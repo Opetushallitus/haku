@@ -68,12 +68,22 @@ public class HakuServiceImpl implements HakuService {
         List<HakuDTO> hakuDTOs = Lists.newArrayList();
         if (hakuOids != null) {
             for (OidRDTO oid : hakuOids) {
-                WebResource asWebResource = webResource.path(oid.getOid());
-                HakuDTO haku = asWebResource.accept(MEDIA_TYPE).get(new GenericType<HakuDTO>() {
-                });
-                hakuDTOs.add(haku);
+
+                hakuDTOs.add(fetchApplicationSystem(oid.getOid()));
             }
         }
         return Lists.transform(hakuDTOs, new HakuDTOToApplicationSystemFunction());
+    }
+
+    @Override
+    public ApplicationSystem getApplicationSystem(String oid) {
+        HakuDTO hakuDTO = fetchApplicationSystem(oid);
+        return new HakuDTOToApplicationSystemFunction().apply(hakuDTO);
+    }
+
+    private HakuDTO fetchApplicationSystem(String oid) {
+        WebResource asWebResource = webResource.path(oid);
+        return asWebResource.accept(MEDIA_TYPE).get(new GenericType<HakuDTO>() {
+        });
     }
 }

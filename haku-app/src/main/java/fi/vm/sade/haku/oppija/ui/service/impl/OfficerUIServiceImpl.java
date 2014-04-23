@@ -194,11 +194,13 @@ public class OfficerUIServiceImpl implements OfficerUIService {
                                                          HakutoiveDTO hakutoive, HakukohdeDTO hakukohde) {
         ApplicationOptionDTO ao = buildBasicAo(index, applicatioOptions, aoPrefix);
 
-        if (hakutoive == null || hakukohde == null) {
-            return ao;
+        if (hakutoive != null) {
+            ao = addAdditionalApplicationOptionData(ao, hakutoive);
         }
 
-        ao = addAdditionalApplicationOptionData(ao, hakutoive);
+        if (hakukohde == null) {
+            return ao;
+        }
 
         // Lisätään pistetiedot valintakokeista ja kaikkien käytetyn valintatapajonon jonosijoista.
         for (ValinnanvaiheDTO vaihe : hakukohde.getValinnanvaihe()) {
@@ -222,10 +224,12 @@ public class OfficerUIServiceImpl implements OfficerUIService {
 
     private Pistetieto buildPistetieto(HakutoiveDTO hakutoive, ValintakoeDTO koe) {
         Pistetieto pistetieto = null;
-        for (PistetietoDTO pistetietoDTO : hakutoive.getPistetiedot()) {
-            if (pistetietoDTO.getTunniste().equals(koe.getValintakoeTunniste())) {
-                pistetieto = new Pistetieto(pistetietoDTO);
-                break;
+        if (hakutoive != null) {
+            for (PistetietoDTO pistetietoDTO : hakutoive.getPistetiedot()) {
+                if (pistetietoDTO.getTunniste().equals(koe.getValintakoeTunniste())) {
+                    pistetieto = new Pistetieto(pistetietoDTO);
+                    break;
+                }
             }
         }
         if (pistetieto == null) {

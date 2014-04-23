@@ -29,41 +29,53 @@ public class FormGeneratorImpl implements FormGenerator {
     }
 
     @Override
+    public ApplicationSystem generateOne(String oid) {
+        ApplicationSystem as = hakuService.getApplicationSystem(oid);
+        return createApplicationSystem(as);
+    }
+
+    @Override
     public List<ApplicationSystem> generate() {
         List<ApplicationSystem> applicationSystems = hakuService.getApplicationSystems();
         List<ApplicationSystem> asList = Lists.newArrayList();
         for (ApplicationSystem as : applicationSystems) {
-            Form form = null;
-            List<Element> applicationCompleteElements;
-            List<Element> additionalPrintElements;
-            if (as.getApplicationSystemType().equals(OppijaConstants.LISA_HAKU)) {
-                form = LisahakuSyksy.generateForm(as, koodistoService);
-                applicationCompleteElements = LisahakuSyksy.generateApplicationCompleteElements();
-                additionalPrintElements = LisahakuSyksy.createAdditionalInformationElements();
-            } else {
-                if (as.getHakukausiUri().equals(OppijaConstants.HAKUKAUSI_SYKSY)) {
-                    form = YhteishakuSyksy.generateForm(as, koodistoService);
-                    applicationCompleteElements = YhteishakuSyksy.createApplicationCompleteElements();
-                    additionalPrintElements = YhteishakuSyksy.createAdditionalInformationElements();
-                } else if (as.getHakukausiUri().equals(OppijaConstants.HAKUKAUSI_KEVAT)) {
-                    form = YhteishakuKevat.generateForm(as, koodistoService);
-                    applicationCompleteElements = YhteishakuKevat.generateApplicationCompleteElements();
-                    additionalPrintElements = YhteishakuKevat.createAdditionalInformationElements();
-                } else {
-                    //skip
-                    continue;
-                }
+            ApplicationSystem created = createApplicationSystem(as);
+            if (created != null) {
+                asList.add(created);
             }
-            asList.add(new ApplicationSystemBuilder().addId(as.getId()).addForm(form)
-                    .addName(as.getName()).addApplicationPeriods(as.getApplicationPeriods())
-                    .addApplicationSystemType(as.getApplicationSystemType())
-                    .addHakukausiUri(as.getHakukausiUri())
-                    .addHakukausiVuosi(as.getHakukausiVuosi())
-                    .addApplicationCompleteElements(applicationCompleteElements)
-                    .addAdditionalInformationElements(additionalPrintElements)
-                    .get());
         }
         return asList;
+    }
+
+    private ApplicationSystem createApplicationSystem(ApplicationSystem as) {
+        Form form = null;
+        List<Element> applicationCompleteElements;
+        List<Element> additionalPrintElements;
+        if (as.getApplicationSystemType().equals(OppijaConstants.LISA_HAKU)) {
+            form = LisahakuSyksy.generateForm(as, koodistoService);
+            applicationCompleteElements = LisahakuSyksy.generateApplicationCompleteElements();
+            additionalPrintElements = LisahakuSyksy.createAdditionalInformationElements();
+        } else {
+            if (as.getHakukausiUri().equals(OppijaConstants.HAKUKAUSI_SYKSY)) {
+                form = YhteishakuSyksy.generateForm(as, koodistoService);
+                applicationCompleteElements = YhteishakuSyksy.createApplicationCompleteElements();
+                additionalPrintElements = YhteishakuSyksy.createAdditionalInformationElements();
+            } else if (as.getHakukausiUri().equals(OppijaConstants.HAKUKAUSI_KEVAT)) {
+                form = YhteishakuKevat.generateForm(as, koodistoService);
+                applicationCompleteElements = YhteishakuKevat.generateApplicationCompleteElements();
+                additionalPrintElements = YhteishakuKevat.createAdditionalInformationElements();
+            } else {
+                return null;
+            }
+        }
+        return new ApplicationSystemBuilder().addId(as.getId()).addForm(form)
+                .addName(as.getName()).addApplicationPeriods(as.getApplicationPeriods())
+                .addApplicationSystemType(as.getApplicationSystemType())
+                .addHakukausiUri(as.getHakukausiUri())
+                .addHakukausiVuosi(as.getHakukausiVuosi())
+                .addApplicationCompleteElements(applicationCompleteElements)
+                .addAdditionalInformationElements(additionalPrintElements)
+                .get();
     }
 
 

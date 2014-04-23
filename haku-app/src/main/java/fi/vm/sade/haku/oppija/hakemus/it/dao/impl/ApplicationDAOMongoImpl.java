@@ -200,7 +200,19 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
 
     @Override
     public ApplicationSearchResultDTO findAllQueried(String term, ApplicationQueryParameters applicationQueryParameters) {
-        LOG.debug("Enetring findAllQueried");
+        DBObject query = buildQuery(term, applicationQueryParameters);
+        return searchApplications(query, applicationQueryParameters);
+    }
+
+    @Override
+    public List<Application> findAllQueriedFull(String term, ApplicationQueryParameters applicationQueryParameters) {
+        DBObject query = buildQuery(term, applicationQueryParameters);
+        return searchApplicationsFull(query, applicationQueryParameters);
+    }
+
+    private DBObject buildQuery(String term, ApplicationQueryParameters applicationQueryParameters) {
+
+        LOG.debug("Entering findAllQueried");
         DBObject[] filters = buildQueryFilter(applicationQueryParameters);
         StringTokenizer st = new StringTokenizer(term, " ");
         ArrayList<DBObject> queries = new ArrayList<DBObject>();
@@ -237,8 +249,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         QueryBuilder baseQuery = queries.size() > 0 ? QueryBuilder.start().and(queries.toArray(new DBObject[queries.size()])) : QueryBuilder.start();
         DBObject query = newQueryBuilderWithFilters(filters, baseQuery);
         LOG.debug("Constructed query: {}", query.toString());
-        return searchApplications(query, applicationQueryParameters.getStart(), applicationQueryParameters.getRows(),
-                applicationQueryParameters.getOrderBy(), applicationQueryParameters.getOrderDir());
+        return query;
     }
 
     private ArrayList<DBObject> addDobOrNameQuery(ArrayList<DBObject> queries, String token) {
@@ -361,14 +372,33 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         return Lists.newArrayList(Iterables.transform(dbCursor, fromDBObject));
     }
 
-    private ApplicationSearchResultDTO searchApplications(DBObject query, int start, int rows, String orderBy,
-                                                          int orderDir) {
-        LOG.debug("Ordering: {}, {}", orderBy, orderDir);
+    private ApplicationSearchResultDTO searchApplications(DBObject query, ApplicationQueryParameters params) {
         LOG.debug("Query: {}", query);
+        int start = params.getStart();
+        int rows = params.getRows();
+        String orderBy = params.getOrderBy();
+        int orderDir = params.getOrderDir();
         final DBCursor dbCursor = getCollection().find(query).sort(new BasicDBObject(orderBy, orderDir))
                 .skip(start).limit(rows).setReadPreference(ReadPreference.secondaryPreferred());
         LOG.debug("Matches: {}", dbCursor.count());
         return new ApplicationSearchResultDTO(dbCursor.count(), Lists.newArrayList(Iterables.transform(dbCursor, dbObjectToSearchResultItem)));
+    }
+
+    private List<Application> searchApplicationsFull(DBObject query, ApplicationQueryParameters params) {
+        LOG.debug("Query: {}", query);
+        int start = params.getStart();
+        int rows = params.getRows();
+        String orderBy = params.getOrderBy();
+        int orderDir = params.getOrderDir();
+        final DBCursor dbCursor = getCollection().find(query).sort(new BasicDBObject(orderBy, orderDir))
+                .skip(start).limit(rows).setReadPreference(ReadPreference.secondaryPreferred());
+        LOG.debug("Matches: {}", dbCursor.count());
+        List<Application> apps = new ArrayList<Application>(dbCursor.count());
+        while (dbCursor.hasNext()) {
+            DBObject obj = dbCursor.next();
+            apps.add(fromDBObject.apply(obj));
+        }
+        return apps;
     }
 
     private DBObject[] buildQueryFilter(final ApplicationQueryParameters applicationQueryParameters) {
