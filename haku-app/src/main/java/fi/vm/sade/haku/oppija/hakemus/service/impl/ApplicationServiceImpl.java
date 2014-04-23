@@ -493,7 +493,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         Application application = listOfApplications.get(0);
 
         if (!hakuPermissionService.userCanReadApplication(application)) {
-            throw new ResourceNotFoundException("User is not allowed to read application " + application.getOid());
+            throw new ResourceNotFoundException("User "+  authenticationService.getCurrentHenkilo().getPersonOid()  +" is not allowed to read application " + application.getOid());
         }
         return application;
     }
