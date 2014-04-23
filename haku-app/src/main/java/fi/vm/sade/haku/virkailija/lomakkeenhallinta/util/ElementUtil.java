@@ -39,7 +39,8 @@ import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.Regexp;
 import fi.vm.sade.haku.oppija.lomake.validation.Validator;
 import fi.vm.sade.haku.oppija.lomake.validation.validators.*;
 import org.apache.commons.lang3.Validate;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.text.MessageFormat;
 import java.util.*;
@@ -53,7 +54,7 @@ public final class ElementUtil {
 
     public static final String KYLLA = Boolean.TRUE.toString().toLowerCase();
     public static final String EI = Boolean.FALSE.toString().toLowerCase();
-    private static Logger log = Logger.getLogger(ElementUtil.class);
+    private static Logger log = LoggerFactory.getLogger(ElementUtil.class);
     public static final String DISABLED = "disabled";
     public static final String HIDDEN = "hidden";
 
@@ -99,7 +100,7 @@ public final class ElementUtil {
                 }
             } catch (MissingResourceException mre) {
                 text = key + " [" + lang + "]";
-                log.warn("No translation found for key '" + key + "' in " + lang);
+                log.warn("No translation found for key '{}' bundle: {} lang: {}", key, bundleName, lang);
             }
             translations.put(lang, text);
         }

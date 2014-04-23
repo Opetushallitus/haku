@@ -174,35 +174,37 @@ var preferenceRow = {
             }
         });
         $(".field-container-select select").unbind();
-        $(".field-container-select select").change(function (event) {
-            var $hiddenInput = $("#" + this.id + "-id"),
-                $educationDegreeInput = $("#" + this.id + "-educationDegree"),
-                $educationDegreeLang = $("#" + this.id + "-id-lang"),
-                $educationDegreeSora = $("#" + this.id + "-id-sora"),
-                $educationDegreeKaksoistutkinto = $("#" + this.id + "-id-kaksoistutkinto"),
-                $educationDegreeVocational = $("#" + this.id + "-id-vocational"),
-                $educationDegreeAoIdentifier = $("#" + this.id + "-id-aoIdentifier"),
-                $educationDegreeAthlete = $("#" + this.id + "-id-athlete"),
-                $educationDegreeEducationCode = $("#" + this.id + "-id-educationcode"),
-                selectedId, educationDegree, value = $(this).val(),
-                preferenceRowId = this.id.split("-")[0];
-            $(this).parent().find(".warning").hide();
-            $(this).children().removeAttr("selected");
-            $(this).children("option[value='" + value + "']").attr("selected", "selected");
-            var selectedOption = $("#" + this.id + " option:selected");
-            selectedId = selectedOption.data("id");
-            $hiddenInput.val(selectedId);
-            var educationDegree = selectedOption.data("educationdegree");
-            $educationDegreeInput.val(educationDegree).change();
-            $educationDegreeLang.val(selectedOption.data("lang")).change();
-            $educationDegreeSora.val(selectedOption.data("sora")).change();
-            $educationDegreeKaksoistutkinto.val(selectedOption.data("kaksoistutkinto")).change();
-            $educationDegreeVocational.val(selectedOption.data("vocational")).change();
-            $educationDegreeAoIdentifier.val(selectedOption.data("aoidentifier")).change();
-            $educationDegreeAthlete.val(selectedOption.data("athlete")).change();
-            $educationDegreeEducationCode.val(selectedOption.data("educationcode")).change();
-            preferenceRow.displayChildLONames(selectedId, $(this).data("childlonames"));
-        });
+        var selectChange = function (event) {
+                                       var $hiddenInput = $("#" + this.id + "-id"),
+                                           $educationDegreeInput = $("#" + this.id + "-educationDegree"),
+                                           $educationDegreeLang = $("#" + this.id + "-id-lang"),
+                                           $educationDegreeSora = $("#" + this.id + "-id-sora"),
+                                           $educationDegreeKaksoistutkinto = $("#" + this.id + "-id-kaksoistutkinto"),
+                                           $educationDegreeVocational = $("#" + this.id + "-id-vocational"),
+                                           $educationDegreeAoIdentifier = $("#" + this.id + "-id-aoIdentifier"),
+                                           $educationDegreeAthlete = $("#" + this.id + "-id-athlete"),
+                                           $educationDegreeEducationCode = $("#" + this.id + "-id-educationcode"),
+                                           selectedId, educationDegree, value = $(this).val(),
+                                           preferenceRowId = this.id.split("-")[0];
+                                       $(this).parent().find(".warning").hide();
+                                       $(this).children().removeAttr("selected");
+                                       $(this).children("option[value='" + value + "']").attr("selected", "selected");
+                                       var selectedOption = $("#" + this.id + " option:selected");
+                                       selectedId = selectedOption.data("id");
+                                       $hiddenInput.val(selectedId);
+                                       var educationDegree = selectedOption.data("educationdegree");
+                                       $educationDegreeInput.val(educationDegree).change();
+                                       $educationDegreeLang.val(selectedOption.data("lang")).change();
+                                       $educationDegreeSora.val(selectedOption.data("sora")).change();
+                                       $educationDegreeKaksoistutkinto.val(selectedOption.data("kaksoistutkinto")).change();
+                                       $educationDegreeVocational.val(selectedOption.data("vocational")).change();
+                                       $educationDegreeAoIdentifier.val(selectedOption.data("aoidentifier")).change();
+                                       $educationDegreeAthlete.val(selectedOption.data("athlete")).change();
+                                       $educationDegreeEducationCode.val(selectedOption.data("educationcode")).change();
+                                       preferenceRow.displayChildLONames(selectedId, $(this).data("childlonames"));
+                                   };
+        $('button[name=phaseId]').click(selectChange);
+        $(".field-container-select select").change(selectChange);
     }
 };
 
