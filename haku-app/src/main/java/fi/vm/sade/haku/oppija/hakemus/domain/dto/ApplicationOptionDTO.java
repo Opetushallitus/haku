@@ -167,6 +167,9 @@ public class ApplicationOptionDTO {
                 if (thiz.getId() == null) {
                     return 1;
                 }
+                if (other.getId() == null) {
+                    return -1;
+                }
                 return (thiz.getId().compareTo(other.getId()));
             }
         });
