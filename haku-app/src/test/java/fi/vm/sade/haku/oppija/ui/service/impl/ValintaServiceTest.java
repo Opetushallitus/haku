@@ -172,7 +172,7 @@ public class ValintaServiceTest {
         ApplicationOptionDTO ao = hakukohdeList.get(0);
         assertBasicAoInfo(ao);
         List<Pistetieto> pistetiedot = ao.getPistetiedot();
-        assertEquals(3, pistetiedot.size());
+        assertEquals(5, pistetiedot.size());
     }
 
     private void assertBasicAoInfo(ApplicationOptionDTO ao) {
