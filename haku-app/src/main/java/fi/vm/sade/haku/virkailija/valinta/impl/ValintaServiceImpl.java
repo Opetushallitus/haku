@@ -48,7 +48,6 @@ public class ValintaServiceImpl implements ValintaService {
         CachingRestClient client = getCachingRestClientValinta();
 
         try {
-            client.getAsString(url);
             GsonBuilder builder = new GsonBuilder();
             builder.registerTypeAdapter(Date.class, new JsonDeserializer<Date>() {
                 public Date deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
@@ -69,7 +68,6 @@ public class ValintaServiceImpl implements ValintaService {
         CachingRestClient client = getCachingRestClientSijoittelu();
 
         try {
-            client.getAsString(url);
             return new Gson().fromJson(client.getAsString(url), HakijaDTO.class);
         } catch (IOException e) {
             log.error("GET {} failed: ", url, e);
