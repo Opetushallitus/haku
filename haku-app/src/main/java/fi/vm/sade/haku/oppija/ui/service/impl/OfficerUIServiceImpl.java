@@ -172,6 +172,12 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         HakemusDTO hakemusDTO = valintaService.getHakemus(application.getApplicationSystemId(), application.getOid());
         Map<String, String> aoAnswers = application.getPhaseAnswers(OppijaConstants.PHASE_APPLICATION_OPTIONS);
 
+        Map<String, String> koulutusAnswers = application.getPhaseAnswers(OppijaConstants.PHASE_EDUCATION);
+        String education = koulutusAnswers.get(OppijaConstants.ELEMENT_ID_BASE_EDUCATION);
+        boolean showScores = education == null ||
+                (!OppijaConstants.KESKEYTYNYT.equals(education)
+                    && !OppijaConstants.ULKOMAINEN_TUTKINTO.equals(education));
+
         Map<String, HakutoiveDTO> hakijaMap = new HashMap<String, HakutoiveDTO>();
         for (HakutoiveDTO hakutoiveDTO : hakijaDTO.getHakutoiveet()) {
             hakijaMap.put(hakutoiveDTO.getHakukohdeOid(), hakutoiveDTO);
@@ -189,20 +195,21 @@ public class OfficerUIServiceImpl implements OfficerUIService {
                 break;
             }
             aos.add(createApplicationOption(i, aoAnswers, aoPrefix,
-                    hakijaMap.get(aoAnswers.get(aoKey)), hakemusMap.get(aoAnswers.get(aoKey))));
+                    hakijaMap.get(aoAnswers.get(aoKey)), hakemusMap.get(aoAnswers.get(aoKey)), showScores));
         }
         return aos;
     }
 
-    private ApplicationOptionDTO createApplicationOption(int index, Map<String, String> applicatioOptions, String aoPrefix,
-                                                         HakutoiveDTO hakutoive, HakukohdeDTO hakukohde) {
+    private ApplicationOptionDTO createApplicationOption(int index, Map<String, String> applicatioOptions,
+                                                         String aoPrefix, HakutoiveDTO hakutoive,
+                                                         HakukohdeDTO hakukohde, boolean showScores) {
         ApplicationOptionDTO ao = buildBasicAo(index, applicatioOptions, aoPrefix);
 
         if (hakutoive != null) {
             ao = addAdditionalApplicationOptionData(ao, hakutoive);
         }
 
-        if (hakukohde == null) {
+        if (hakukohde == null || !showScores) {
             return ao;
         }
 

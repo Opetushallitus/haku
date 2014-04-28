@@ -29,11 +29,11 @@
         </table>
     </div>
     <div class="grid16-7 .offset-left-16-7">
-        <table class="striped">
+        <table class="striped align-left">
             <tr>
                 <th>&nbsp;</th>
-                <th>Kutsuttu</th>
-                <th>Pisteet</th>
+                <th style="width: 60px">Kutsuttu</th>
+                <th style="width: 60px">Pisteet</th>
             </tr>
         <c:forEach var="test" items="${ao.pistetiedot}">
             <tr>
