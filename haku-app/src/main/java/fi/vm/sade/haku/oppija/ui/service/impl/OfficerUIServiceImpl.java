@@ -179,11 +179,9 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         }
 
         HakemusDTO hakemusDTO;
-        Map<String, HakukohdeDTO> hakemusMap = null;
-
+        Map<String, HakukohdeDTO> hakemusMap = new HashMap<String, HakukohdeDTO>();
         if (showScores) {
             hakemusDTO = valintaService.getHakemus(application.getApplicationSystemId(), application.getOid());
-            hakemusMap = new HashMap<String, HakukohdeDTO>();
             for (HakukohdeDTO hakukohdeDTO : hakemusDTO.getHakukohteet()) {
                 hakemusMap.put(hakukohdeDTO.getOid(), hakukohdeDTO);
             }
