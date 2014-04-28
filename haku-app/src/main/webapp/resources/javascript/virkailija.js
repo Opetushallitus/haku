@@ -370,7 +370,7 @@ $(document).ready(function () {
                 $('#sendingSchoolOid').val(obj.sendingSchoolOid);
                 $('#sendingClass').val(obj.sendingClass);
                 $('#discretionary-only').prop('checked', obj.discretionaryOnly);
-                $('#lop-title').text(obj.lopTitle ? objlopTitle.replace('ThisIsStupidButNecessary', '&') : undefined);
+                $('#lop-title').text(obj.lopTitle ? obj.lopTitle.replace('ThisIsStupidButNecessary', '&') : undefined);
                 if (obj.orgSearchExpanded) {
                     orgSearchDialog.expand();
                 }
