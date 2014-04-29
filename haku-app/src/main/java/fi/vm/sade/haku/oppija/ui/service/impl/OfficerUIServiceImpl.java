@@ -270,7 +270,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         HakutoiveenValintatapajonoDTO jono = jonot.get(0);
         BigDecimal pisteet = jono.getPisteet();
         ao.setJonoId(jono.getValintatapajonoOid());
-        ao.setYhteispisteet(pisteet != null && !showScores ? PISTE_FMT.format(pisteet) : "");
+        ao.setYhteispisteet(pisteet != null && showScores ? PISTE_FMT.format(pisteet) : "");
         ao.setSijoittelunTulos(jono.getTila());
         ao.setVastaanottoTieto(jono.getVastaanottotieto());
 
