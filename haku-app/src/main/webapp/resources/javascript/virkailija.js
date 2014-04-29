@@ -515,6 +515,7 @@ $(document).ready(function () {
             $('#sendingSchool').val('');
             $('#sendingClass').val('');
             $('#discretionary-only').attr('checked', false);
+            $('#check-all-applications').attr('checked', false);
         },
         this.sort = function(column, sortBy) {
             var clazz = column.attr('class');
