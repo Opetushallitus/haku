@@ -74,11 +74,11 @@ public class OsaaminenPhaseYhteishakuKevat {
                 Lists.newArrayList("APP_HAKEMUS_READ_UPDATE", "APP_HAKEMUS_CRUD", "APP_HAKEMUS_OPO"));
         osaaminen.addChild(createArvosanatTheme(koodistoService, FORM_MESSAGES, FORM_ERRORS, FORM_VERBOSE_HELP,
                 applicationSystem.getHakukausiVuosi()));
-        osaaminen.addChild(createKielitaitokysymyksetTheme());
+        osaaminen.addChild(createKielitaitokysymyksetTheme(applicationSystem.getHakukausiVuosi()));
         return osaaminen;
     }
 
-    private static Element createKielitaitokysymyksetTheme() {
+    private static Element createKielitaitokysymyksetTheme(Integer hakukausiVuosi) {
 
         //PK
         Expr pohjakoulutusOnPK = ExprUtil.atLeastOneValueEqualsToVariable(OppijaConstants.ELEMENT_ID_BASE_EDUCATION, BASE_EDUCATION_PK);
@@ -103,16 +103,29 @@ public class OsaaminenPhaseYhteishakuKevat {
         RelatedQuestionComplexRule naytetaankoSaamePK = new RelatedQuestionComplexRule(ElementUtil.randomId(), kysytaankoSaamePK);
         RelatedQuestionComplexRule naytetaankoViittomaPK = new RelatedQuestionComplexRule(ElementUtil.randomId(), kysytaankoViittomaPK);
 
-        naytetaankoSuomiPK.addChild(createKielitutkinto("peruskoulun_paattotodistus_vahintaan_seitseman_fi", FORM_MESSAGES, FORM_ERRORS),
+        Expr tuoreTodistusPK = new Not(ExprUtil.atLeastOneVariableEqualsToValue(String.valueOf(hakukausiVuosi), OppijaConstants.PERUSOPETUS_PAATTOTODISTUSVUOSI));
+
+        RelatedQuestionComplexRule kysytaankoArvosanaPkFi = new RelatedQuestionComplexRule(ElementUtil.randomId(), tuoreTodistusPK);
+        kysytaankoArvosanaPkFi.addChild(createKielitutkinto("peruskoulun_paattotodistus_vahintaan_seitseman_fi", FORM_MESSAGES, FORM_ERRORS));
+        naytetaankoSuomiPK.addChild(kysytaankoArvosanaPkFi,
                 createKielitutkinto("yleinen_kielitutkinto_fi", FORM_MESSAGES, FORM_ERRORS),
                 createKielitutkinto("valtionhallinnon_kielitutkinto_fi", FORM_MESSAGES, FORM_ERRORS));
-        naytetaankoRuotsiPK.addChild(createKielitutkinto("peruskoulun_paattotodistus_vahintaan_seitseman_sv", FORM_MESSAGES, FORM_ERRORS),
+
+        RelatedQuestionComplexRule kysytaankoArvosanaPkSv = new RelatedQuestionComplexRule(ElementUtil.randomId(), tuoreTodistusPK);
+        kysytaankoArvosanaPkSv.addChild(createKielitutkinto("peruskoulun_paattotodistus_vahintaan_seitseman_sv", FORM_MESSAGES, FORM_ERRORS));
+        naytetaankoRuotsiPK.addChild(kysytaankoArvosanaPkSv,
                 createKielitutkinto("yleinen_kielitutkinto_sv", FORM_MESSAGES, FORM_ERRORS),
                 createKielitutkinto("valtionhallinnon_kielitutkinto_sv", FORM_MESSAGES, FORM_ERRORS));
-        naytetaankoSaamePK.addChild(createKielitutkinto("peruskoulun_paattotodistus_vahintaan_seitseman_se", FORM_MESSAGES, FORM_ERRORS),
+
+        RelatedQuestionComplexRule kysytaankoArvosanaPkSe = new RelatedQuestionComplexRule(ElementUtil.randomId(), tuoreTodistusPK);
+        kysytaankoArvosanaPkSe.addChild(createKielitutkinto("peruskoulun_paattotodistus_vahintaan_seitseman_se", FORM_MESSAGES, FORM_ERRORS));
+        naytetaankoSaamePK.addChild(kysytaankoArvosanaPkSe,
                 createKielitutkinto("yleinen_kielitutkinto_se", FORM_MESSAGES, FORM_ERRORS),
                 createKielitutkinto("valtionhallinnon_kielitutkinto_se", FORM_MESSAGES, FORM_ERRORS));
-        naytetaankoViittomaPK.addChild(createKielitutkinto("peruskoulun_paattotodistus_vahintaan_seitseman_vk", FORM_MESSAGES, FORM_ERRORS),
+
+        RelatedQuestionComplexRule kysytaankoArvosanaPkVk = new RelatedQuestionComplexRule(ElementUtil.randomId(), tuoreTodistusPK);
+        kysytaankoArvosanaPkVk.addChild(createKielitutkinto("peruskoulun_paattotodistus_vahintaan_seitseman_vk", FORM_MESSAGES, FORM_ERRORS));
+        naytetaankoViittomaPK.addChild(kysytaankoArvosanaPkVk,
                 createKielitutkinto("yleinen_kielitutkinto_vk", FORM_MESSAGES, FORM_ERRORS),
                 createKielitutkinto("valtionhallinnon_kielitutkinto_vk", FORM_MESSAGES, FORM_ERRORS));
 
@@ -135,16 +148,29 @@ public class OsaaminenPhaseYhteishakuKevat {
         RelatedQuestionComplexRule naytetaankoSaameYO = new RelatedQuestionComplexRule(ElementUtil.randomId(), kysytaankoSaameYO);
         RelatedQuestionComplexRule naytetaankoViittomaYO = new RelatedQuestionComplexRule(ElementUtil.randomId(), kysytaankoViittomaYO);
 
-        naytetaankoSuomiYO.addChild(createKielitutkinto("lukion_paattotodistus_vahintaan_seitseman_fi", FORM_MESSAGES, FORM_ERRORS),
+        Expr tuoreTodistusYo = new Not(ExprUtil.atLeastOneVariableEqualsToValue(String.valueOf(hakukausiVuosi), OppijaConstants.PERUSOPETUS_PAATTOTODISTUSVUOSI));
+
+        RelatedQuestionComplexRule kysytaankoArvosanaYoFi = new RelatedQuestionComplexRule(ElementUtil.randomId(), tuoreTodistusYo);
+        kysytaankoArvosanaYoFi.addChild(createKielitutkinto("lukion_paattotodistus_vahintaan_seitseman_fi", FORM_MESSAGES, FORM_ERRORS));
+        naytetaankoSuomiYO.addChild(kysytaankoArvosanaYoFi,
                 createKielitutkinto("yleinen_kielitutkinto_fi", FORM_MESSAGES, FORM_ERRORS),
                 createKielitutkinto("valtionhallinnon_kielitutkinto_fi", FORM_MESSAGES, FORM_ERRORS));
-        naytetaankoRuotsiYO.addChild(createKielitutkinto("lukion_paattotodistus_vahintaan_seitseman_sv", FORM_MESSAGES, FORM_ERRORS),
+
+        RelatedQuestionComplexRule kysytaankoArvosanaYoSv = new RelatedQuestionComplexRule(ElementUtil.randomId(), tuoreTodistusYo);
+        kysytaankoArvosanaYoSv.addChild(createKielitutkinto("lukion_paattotodistus_vahintaan_seitseman_sv", FORM_MESSAGES, FORM_ERRORS));
+        naytetaankoRuotsiYO.addChild(kysytaankoArvosanaYoSv,
                 createKielitutkinto("yleinen_kielitutkinto_sv", FORM_MESSAGES, FORM_ERRORS),
                 createKielitutkinto("valtionhallinnon_kielitutkinto_sv", FORM_MESSAGES, FORM_ERRORS));
-        naytetaankoSaameYO.addChild(createKielitutkinto("lukion_paattotodistus_vahintaan_seitseman_se", FORM_MESSAGES, FORM_ERRORS),
+
+        RelatedQuestionComplexRule kysytaankoArvosanaYoSe = new RelatedQuestionComplexRule(ElementUtil.randomId(), tuoreTodistusYo);
+        kysytaankoArvosanaYoSe.addChild(createKielitutkinto("lukion_paattotodistus_vahintaan_seitseman_se", FORM_MESSAGES, FORM_ERRORS));
+        naytetaankoSaameYO.addChild(kysytaankoArvosanaYoSe,
                 createKielitutkinto("yleinen_kielitutkinto_se", FORM_MESSAGES, FORM_ERRORS),
                 createKielitutkinto("valtionhallinnon_kielitutkinto_se", FORM_MESSAGES, FORM_ERRORS));
-        naytetaankoViittomaYO.addChild(createKielitutkinto("lukion_paattotodistus_vahintaan_seitseman_vk", FORM_MESSAGES, FORM_ERRORS),
+
+        RelatedQuestionComplexRule kysytaankoArvosanaYoVk = new RelatedQuestionComplexRule(ElementUtil.randomId(), tuoreTodistusYo);
+        kysytaankoArvosanaYoVk.addChild(createKielitutkinto("lukion_paattotodistus_vahintaan_seitseman_vk", FORM_MESSAGES, FORM_ERRORS));
+        naytetaankoViittomaYO.addChild(kysytaankoArvosanaYoVk,
                 createKielitutkinto("yleinen_kielitutkinto_vk", FORM_MESSAGES, FORM_ERRORS),
                 createKielitutkinto("valtionhallinnon_kielitutkinto_vk", FORM_MESSAGES, FORM_ERRORS));
 

@@ -26,6 +26,8 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.FormGenerator;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -35,6 +37,8 @@ import java.util.List;
  * @author Mikko Majapuro
  */
 public class FormGeneratorMock implements FormGenerator {
+
+    private static final Logger log = LoggerFactory.getLogger(FormGeneratorMock.class);
 
     private final KoodistoService koodistoService;
     private final String asId;
@@ -69,6 +73,8 @@ public class FormGeneratorMock implements FormGenerator {
         instance.roll(Calendar.YEAR, 2);
         Date end = new Date(instance.getTimeInMillis());
         Integer hakuvuosi = instance.get(Calendar.YEAR);
+        log.debug("Hakuvuosi: {}", hakuvuosi);
+        System.out.println("Hakuvuosi: " + hakuvuosi);
         List<ApplicationPeriod> applicationPeriods = Lists.newArrayList(new ApplicationPeriod(start, end));
         I18nText name = ElementUtil.createI18NAsIs(asId);
         return new ApplicationSystemBuilder().addId(asId).addName(name).addApplicationPeriods(applicationPeriods)
