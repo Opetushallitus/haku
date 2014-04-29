@@ -37,6 +37,8 @@ import org.springframework.stereotype.Service;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
 
+import static org.apache.commons.lang3.StringUtils.isBlank;
+
 /**
  * @author Mikko Majapuro
  */
@@ -68,8 +70,10 @@ public class HakuServiceImpl implements HakuService {
         List<HakuDTO> hakuDTOs = Lists.newArrayList();
         if (hakuOids != null) {
             for (OidRDTO oid : hakuOids) {
-
-                hakuDTOs.add(fetchApplicationSystem(oid.getOid()));
+                HakuDTO haku = fetchApplicationSystem(oid.getOid());
+                if (isBlank(haku.getHakulomakeUrl())) {
+                    hakuDTOs.add(haku);
+                }
             }
         }
         return Lists.transform(hakuDTOs, new HakuDTOToApplicationSystemFunction());
