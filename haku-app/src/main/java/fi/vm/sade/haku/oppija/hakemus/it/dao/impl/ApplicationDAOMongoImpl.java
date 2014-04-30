@@ -404,9 +404,11 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         LOG.debug("Matches: {}", dbCursor.count());
         List<Application> apps = new ArrayList<Application>(dbCursor.count());
         while (dbCursor.hasNext()) {
+            LOG.debug("Processing application: {}", System.currentTimeMillis());
             DBObject obj = dbCursor.next();
             apps.add(fromDBObject.apply(obj));
         }
+        LOG.debug("Returning applications");
         return apps;
     }
 
