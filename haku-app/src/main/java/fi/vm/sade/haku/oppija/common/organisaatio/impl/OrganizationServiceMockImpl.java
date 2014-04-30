@@ -223,8 +223,8 @@ public class OrganizationServiceMockImpl implements OrganizationService {
         @SuppressWarnings("unchecked")
         final Predicate<Organization> predicate = Predicates.and(new OrgNamePredicate(criteria.getSearchStr()),
                 new OrgTypePredicate(criteria.getOrganisaatioTyyppi()),
-                new OrgIncludeOnlyActivePredicate(criteria.isVainAktiiviset()),
-                new OrgIncludeOnlyPassivePredicate(criteria.isVainLakkautetut()));
+                new OrgIncludeOnlyActivePredicate(criteria.getVainAktiiviset()),
+                new OrgIncludeOnlyPassivePredicate(criteria.getVainLakkautetut()));
         return Lists.newArrayList(Iterables.filter(orgs, predicate));
     }
 
