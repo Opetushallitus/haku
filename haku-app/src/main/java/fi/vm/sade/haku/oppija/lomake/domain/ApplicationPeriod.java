@@ -34,9 +34,13 @@ public class ApplicationPeriod implements Serializable {
 
     public ApplicationPeriod(final Date start, final Date end) {
         Preconditions.checkNotNull(start);
-        Preconditions.checkNotNull(end);
+        Date realEnd = end;
+        if (end == null) {
+            realEnd = new Date();
+            realEnd.setTime(Long.MAX_VALUE);
+        }
         this.start = new Date(start.getTime());
-        this.end = new Date(end.getTime());
+        this.end = realEnd;
     }
 
     public Date getStart() {

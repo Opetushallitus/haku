@@ -165,18 +165,27 @@ public class OfficerUIServiceImpl implements OfficerUIService {
 
     private List<ApplicationOptionDTO> getValintatiedot(Application application) {
         HakijaDTO hakijaDTO = valintaService.getHakija(application.getApplicationSystemId(), application.getOid());
-        HakemusDTO hakemusDTO = valintaService.getHakemus(application.getApplicationSystemId(), application.getOid());
         Map<String, String> aoAnswers = application.getPhaseAnswers(OppijaConstants.PHASE_APPLICATION_OPTIONS);
+
+        Map<String, String> koulutusAnswers = application.getPhaseAnswers(OppijaConstants.PHASE_EDUCATION);
+        String education = koulutusAnswers.get(OppijaConstants.ELEMENT_ID_BASE_EDUCATION);
+        boolean showScores = education == null ||
+                (!OppijaConstants.KESKEYTYNYT.equals(education)
+                    && !OppijaConstants.ULKOMAINEN_TUTKINTO.equals(education));
 
         Map<String, HakutoiveDTO> hakijaMap = new HashMap<String, HakutoiveDTO>();
         for (HakutoiveDTO hakutoiveDTO : hakijaDTO.getHakutoiveet()) {
             hakijaMap.put(hakutoiveDTO.getHakukohdeOid(), hakutoiveDTO);
         }
-        Map<String, HakukohdeDTO> hakemusMap = new HashMap<String, HakukohdeDTO>();
-        for (HakukohdeDTO hakukohdeDTO : hakemusDTO.getHakukohteet()) {
-            hakemusMap.put(hakukohdeDTO.getOid(), hakukohdeDTO);
-        }
 
+        HakemusDTO hakemusDTO;
+        Map<String, HakukohdeDTO> hakemusMap = new HashMap<String, HakukohdeDTO>();
+        if (showScores) {
+            hakemusDTO = valintaService.getHakemus(application.getApplicationSystemId(), application.getOid());
+            for (HakukohdeDTO hakukohdeDTO : hakemusDTO.getHakukohteet()) {
+                hakemusMap.put(hakukohdeDTO.getOid(), hakukohdeDTO);
+            }
+        }
         List<ApplicationOptionDTO> aos = new ArrayList<ApplicationOptionDTO>(5);
         for (int i = 1; i < 100; i++) {
             String aoPrefix = String.format("preference%d-", i);
@@ -185,20 +194,21 @@ public class OfficerUIServiceImpl implements OfficerUIService {
                 break;
             }
             aos.add(createApplicationOption(i, aoAnswers, aoPrefix,
-                    hakijaMap.get(aoAnswers.get(aoKey)), hakemusMap.get(aoAnswers.get(aoKey))));
+                    hakijaMap.get(aoAnswers.get(aoKey)), hakemusMap.get(aoAnswers.get(aoKey)), showScores));
         }
         return aos;
     }
 
-    private ApplicationOptionDTO createApplicationOption(int index, Map<String, String> applicatioOptions, String aoPrefix,
-                                                         HakutoiveDTO hakutoive, HakukohdeDTO hakukohde) {
+    private ApplicationOptionDTO createApplicationOption(int index, Map<String, String> applicatioOptions,
+                                                         String aoPrefix, HakutoiveDTO hakutoive,
+                                                         HakukohdeDTO hakukohde, boolean showScores) {
         ApplicationOptionDTO ao = buildBasicAo(index, applicatioOptions, aoPrefix);
 
         if (hakutoive != null) {
-            ao = addAdditionalApplicationOptionData(ao, hakutoive);
+            ao = addAdditionalApplicationOptionData(ao, hakutoive, showScores);
         }
 
-        if (hakukohde == null) {
+        if (hakukohde == null || !showScores) {
             return ao;
         }
 
@@ -209,7 +219,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
             }
 
             for (ValintatapajonoDTO valintatapajonoDTO : vaihe.getValintatapajono()) {
-                if (valintatapajonoDTO.getOid().equals(ao.getJonoId())) {
+                if (ao.getJonoId() == null || valintatapajonoDTO.getOid().equals(ao.getJonoId())) {
                     for (JonosijaDTO jonosijaDTO : valintatapajonoDTO.getJonosijat()) {
                         for (FunktioTulosDTO funktioTulosDTO : jonosijaDTO.getFunktioTulokset()) {
                             ao.addPistetieto(buildPistetieto(funktioTulosDTO));
@@ -244,7 +254,8 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         return pistetieto;
     }
 
-    private ApplicationOptionDTO addAdditionalApplicationOptionData(ApplicationOptionDTO ao, HakutoiveDTO hakutoive) {
+    private ApplicationOptionDTO addAdditionalApplicationOptionData(ApplicationOptionDTO ao, HakutoiveDTO hakutoive,
+                                                                    boolean showScores) {
         List<HakutoiveenValintatapajonoDTO> jonot = hakutoive.getHakutoiveenValintatapajonot();
         Collections.sort(jonot, new Comparator<HakutoiveenValintatapajonoDTO>() {
             @Override
@@ -255,7 +266,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         HakutoiveenValintatapajonoDTO jono = jonot.get(0);
         BigDecimal pisteet = jono.getPisteet();
         ao.setJonoId(jono.getValintatapajonoOid());
-        ao.setYhteispisteet(pisteet != null ? PISTE_FMT.format(pisteet) : "");
+        ao.setYhteispisteet(pisteet != null && showScores ? PISTE_FMT.format(pisteet) : "");
         ao.setSijoittelunTulos(jono.getTila());
         ao.setVastaanottoTieto(jono.getVastaanottotieto());
 

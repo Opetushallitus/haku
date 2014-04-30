@@ -41,6 +41,8 @@ public class OrganizationServiceImpl implements OrganizationService {
 
     private static final Logger LOG = LoggerFactory.getLogger(OrganizationServiceImpl.class);
 
+    private static CachingRestClient cachingRestClient;
+    private static Map<String, Object> cache;
 
     @Value("${web.url.cas}")
     private String casUrl;
@@ -58,6 +60,7 @@ public class OrganizationServiceImpl implements OrganizationService {
     @Autowired
     public OrganizationServiceImpl(final OrganisaatioSearchService service) {
         this.service = service;
+        this.cache = new HashMap<String, Object>();
     }
 
     @Override
@@ -91,31 +94,56 @@ public class OrganizationServiceImpl implements OrganizationService {
         if (orgs.size() == 1) {
             return orgs.get(0);
         } else if (orgs.size() > 1) {
-            LOG.error("Got more than organizations for single oid: {}", oid);
-            throw new RuntimeException("Got more than organizations for single oid");
+            LOG.error("Got more than one organizations for single oid: {}", oid);
+            throw new RuntimeException("Got more one than organizations for single oid");
         }
         return null;
     }
 
     @Override
     public List<Organization> findByOppilaitosnumero(List<String> oppilaitosnumeros) {
-        CachingRestClient cachingRestClient = new CachingRestClient();
         List<Organization> orgs = new ArrayList<Organization>(oppilaitosnumeros.size());
         String baseUrl = targetService + "/rest/organisaatio/";
+        int i = 1;
         try {
+            LOG.debug("Getting {} oppilaitosnumeros", oppilaitosnumeros.size());
             for (String numero : oppilaitosnumeros) {
-                OrganizationRestDTO orgDTO = cachingRestClient.get(baseUrl + numero, OrganizationRestDTO.class);
+                LOG.debug("Getting oppilaitosnumero {} ({} / {})", numero, i++, oppilaitosnumeros.size());
+                OrganizationRestDTO orgDTO = getCached(baseUrl + numero, OrganizationRestDTO.class);
                 Map<String, String> nameTranslations = TranslationsUtil.createTranslationsMap(orgDTO.getNimi());
                 Organization org = new Organization(new I18nText(nameTranslations), orgDTO.getOid(),
                         orgDTO.getParentOid(), orgDTO.getTyypit(), orgDTO.getAlkuPvmAsDate(),
                         orgDTO.getLoppuPvmAsDate());
                 orgs.add(org);
             }
+            LOG.debug("Got numbers");
             return orgs;
         } catch (IOException e) {
             LOG.error("Couldn't find organization for oppilaitosnumero", e);
         }
         return null;
+    }
+
+    private <T> T getCached(String url, Class<? extends T> resultType) throws IOException {
+        if (cache.containsKey(url)) {
+            LOG.debug("Hit cache, url: {}", url);
+            Object result = cache.get(url);
+            if (resultType.isAssignableFrom(result.getClass())) {
+                return (T) result;
+            }
+        }
+        CachingRestClient client = getCachingRestClient();
+        T result = client.get(url, resultType);
+        cache.put(url, result);
+        return result;
+
+    }
+
+    private synchronized CachingRestClient getCachingRestClient() {
+        if (cachingRestClient == null) {
+            cachingRestClient = new CachingRestClient();
+        }
+        return cachingRestClient;
     }
 
 }

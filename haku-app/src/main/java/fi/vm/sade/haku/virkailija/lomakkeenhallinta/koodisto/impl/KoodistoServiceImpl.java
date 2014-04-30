@@ -60,6 +60,7 @@ public class KoodistoServiceImpl implements KoodistoService {
     public static final String CODE_HAKUKAUSI = "kausi";
     private static final String CODE_KOULUNUMERO = "oppilaitosnumero";
     private static final String CODE_HAKUKOHDE = "hakukohteet";
+    private static final String CODE_OPPILAITOSTYYPPI = "oppilaitostyyppi";
 
     private static final String LUKIO = "15";
     private static final String LUKIO_JA_PERUSKOULU = "19";
@@ -169,26 +170,21 @@ public class KoodistoServiceImpl implements KoodistoService {
 
     @Override
     public List<Option> getLukioKoulukoodit() {
-        List<KoodiType> numerot = getKoodiTypes(CODE_KOULUNUMERO);
-        LOGGER.debug("Getting lukiokoodit: {}", numerot.size());
+        List<KoodiType> koulut = getKoodiTypes(CODE_OPPILAITOSTYYPPI);
         List<String> lukioNumerot = new ArrayList<String>();
-        for (KoodiType koodi : numerot) {
-            List<KoodiType> alakoodit = koodiService.getAlakoodis(koodi.getKoodiUri());
-
-            for (KoodiType alakoodi : alakoodit) {
-                String uri = alakoodi.getKoodiUri();
-                String arvo = alakoodi.getKoodiArvo();
-                if ((OPPILAITOSTYYPPI_LUKIO.equals(uri)
-                        || OPPILAITOSTYYPPI_PK_JA_LUKIO.equals(uri)
-                        || OPPILAITOSTYYPPI_KANSANOPISTO.equals(uri))
-                        &&
-                        (LUKIO.equals(arvo)
-                                || LUKIO_JA_PERUSKOULU.equals(arvo))
-                        || KANSANOPISTO.equals(arvo)) {
-                    lukioNumerot.add(koodi.getKoodiArvo());
-                    LOGGER.debug("Lukiokoodit: " + koodi.getKoodiArvo());
-                    break;
+        for (KoodiType koodi : koulut) {
+            if (koodi.getKoodiArvo().equals(LUKIO)
+                    || koodi.getKoodiArvo().equals(LUKIO_JA_PERUSKOULU)
+                    || koodi.getKoodiArvo().equals(KANSANOPISTO)) {
+                List<KoodiType> ylakoodit = koodiService.getYlakoodis(koodi.getKoodiUri());
+                LOGGER.debug("Getting lukiokoodit. Koulukoodi: {}", koodi.getKoodiArvo());
+                LOGGER.debug("Ylakoodeja: {}", ylakoodit.size());
+                for (KoodiType ylakoodi : ylakoodit) {
+                    if (ylakoodi.getKoodisto().getKoodistoUri().equals("oppilaitosnumero")) {
+                        lukioNumerot.add(ylakoodi.getKoodiArvo());
+                    }
                 }
+                LOGGER.debug("Lukioita: {}", lukioNumerot.size());
             }
         }
 
