@@ -43,7 +43,7 @@ public class YhteishakuSyksy {
             Form form = new Form(as.getId(), as.getName());
             form.addChild(HenkilotiedotPhase.create(OppijaConstants.VARSINAINEN_HAKU, koodistoService, FORM_MESSAGES, FORM_ERRORS, FORM_VERBOSE_HELP));
             form.addChild(KoulutustaustaPhase.create(koodistoService, as, FORM_MESSAGES,FORM_ERRORS,FORM_VERBOSE_HELP));
-            form.addChild(HakutoiveetPhaseYhteishakuSyksy.create());
+            form.addChild(HakutoiveetPhaseYhteishakuSyksy.create(as));
             form.addChild(OsaaminenPhaseSyksy.create(koodistoService, FORM_MESSAGES, FORM_ERRORS,FORM_VERBOSE_HELP));
             form.addChild(LisatiedotPhase.create(FORM_MESSAGES, FORM_ERRORS,FORM_VERBOSE_HELP));
             return form;

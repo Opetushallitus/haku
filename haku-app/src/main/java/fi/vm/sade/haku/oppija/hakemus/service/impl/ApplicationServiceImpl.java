@@ -367,7 +367,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public List<Application> findFullApplications(final String query,
+    public List<Map<String, Object>> findFullApplications(final String query,
                                                   final ApplicationQueryParameters applicationQueryParameters) {
         return applicationDAO.findAllQueriedFull(query, applicationQueryParameters);
     }

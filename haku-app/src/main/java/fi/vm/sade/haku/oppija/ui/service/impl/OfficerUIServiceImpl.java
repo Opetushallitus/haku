@@ -394,7 +394,8 @@ public class OfficerUIServiceImpl implements OfficerUIService {
 
     @Override
     public List<ApplicationSystem> getApplicationSystems() {
-        return applicationSystemService.getAllApplicationSystems("id", "name", "hakukausiUri", "hakukausiVuosi");
+        return applicationSystemService.getAllApplicationSystems("id", "name", "hakukausiUri", "hakukausiVuosi",
+                "maxApplicationOptions");
     }
 
     @Override

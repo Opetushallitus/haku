@@ -23,6 +23,7 @@ import com.mongodb.*;
 import fi.vm.sade.haku.oppija.common.dao.AbstractDAOMongoImpl;
 import fi.vm.sade.haku.oppija.hakemus.converter.ApplicationToDBObjectFunction;
 import fi.vm.sade.haku.oppija.hakemus.converter.DBObjectToApplicationFunction;
+import fi.vm.sade.haku.oppija.hakemus.converter.DBObjectToMapFunction;
 import fi.vm.sade.haku.oppija.hakemus.converter.DBObjectToSearchResultItem;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
@@ -43,10 +44,7 @@ import javax.annotation.PostConstruct;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.StringTokenizer;
+import java.util.*;
 import java.util.regex.Pattern;
 
 import static org.apache.commons.lang.StringUtils.isEmpty;
@@ -124,6 +122,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     private static final String REGEX_LINE_BEGIN = "^";
     private final EncrypterService shaEncrypter;
     private final DBObjectToSearchResultItem dbObjectToSearchResultItem;
+    private final DBObjectToMapFunction dbObjectToMapFunction;
 
     private static final Pattern OID_PATTERN = Pattern.compile("((^([0-9]{1,4}\\.){5})|(^))[0-9]{11}$");
     private static final Pattern HETU_PATTERN = Pattern.compile("^[0-3][0-9][0-1][0-9][0-9][0-9][-+Aa][0-9]{3}[0-9a-zA-Z]");
@@ -141,6 +140,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     @Autowired
     public ApplicationDAOMongoImpl(DBObjectToApplicationFunction dbObjectToHakemusConverter,
                                    ApplicationToDBObjectFunction hakemusToBasicDBObjectConverter,
+                                   DBObjectToMapFunction dbObjectToMapFunction,
                                    @Qualifier("shaEncrypter") EncrypterService shaEncrypter,
                                    DBObjectToSearchResultItem dbObjectToSearchResultItem,
                                    AuthenticationService authenticationService,
@@ -148,6 +148,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         super(dbObjectToHakemusConverter, hakemusToBasicDBObjectConverter);
         this.shaEncrypter = shaEncrypter;
         this.dbObjectToSearchResultItem = dbObjectToSearchResultItem;
+        this.dbObjectToMapFunction = dbObjectToMapFunction;
         this.authenticationService = authenticationService;
         this.hakuPermissionService = hakuPermissionService;
     }
@@ -205,8 +206,10 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     }
 
     @Override
-    public List<Application> findAllQueriedFull(String term, ApplicationQueryParameters applicationQueryParameters) {
+    public List<Map<String, Object>> findAllQueriedFull(String term, ApplicationQueryParameters applicationQueryParameters) {
+        LOG.debug("findFullApplications, build query: {}", System.currentTimeMillis());
         DBObject query = buildQuery(term, applicationQueryParameters);
+        LOG.debug("findFullApplications, query built: {}", System.currentTimeMillis());
         return searchApplicationsFull(query, applicationQueryParameters);
     }
 
@@ -384,8 +387,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         return new ApplicationSearchResultDTO(dbCursor.count(), Lists.newArrayList(Iterables.transform(dbCursor, dbObjectToSearchResultItem)));
     }
 
-    private List<Application> searchApplicationsFull(DBObject query, ApplicationQueryParameters params) {
-        LOG.debug("Query: {}", query);
+    private List<Map<String, Object>> searchApplicationsFull(DBObject query, ApplicationQueryParameters params) {
         int start = params.getStart();
         int rows = params.getRows();
         String orderBy = params.getOrderBy();
@@ -399,16 +401,16 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         keys.put("personOid", 1);
         keys.put("studentOid", 1);
         keys.put("received", 1);
+        LOG.debug("findFullApplications, getting cursor: {}", System.currentTimeMillis());
         final DBCursor dbCursor = getCollection().find(query, keys).sort(new BasicDBObject(orderBy, orderDir))
                 .skip(start).limit(rows).setReadPreference(ReadPreference.secondaryPreferred());
-        LOG.debug("Matches: {}", dbCursor.count());
-        List<Application> apps = new ArrayList<Application>(dbCursor.count());
+        LOG.debug("findFullApplications, found {} matches: {}", dbCursor.count(), System.currentTimeMillis());
+        List<Map<String, Object>> apps = new ArrayList<Map<String, Object>>(dbCursor.count());
         while (dbCursor.hasNext()) {
-            LOG.debug("Processing application: {}", System.currentTimeMillis());
             DBObject obj = dbCursor.next();
-            apps.add(fromDBObject.apply(obj));
+            apps.add(dbObjectToMapFunction.apply(obj));
         }
-        LOG.debug("Returning applications");
+        LOG.debug("findFullApplications, all serialized: {}", System.currentTimeMillis());
         return apps;
     }
 
