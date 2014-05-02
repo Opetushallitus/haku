@@ -105,7 +105,7 @@ public class ApplicationResource {
     @Path("listfull")
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_READ', 'ROLE_APP_HAKEMUS_CRUD', 'ROLE_APP_HAKEMUS_OPO')")
-    public List<Application> findFullApplications(@DefaultValue(value = "") @QueryParam("q") String query,
+    public List<Map<String, Object>> findFullApplications(@DefaultValue(value = "") @QueryParam("q") String query,
                                                        @QueryParam("appState") List<String> state,
                                                        @QueryParam("aoid") String aoid,
                                                        @QueryParam("lopoid") String lopoid,
@@ -120,18 +120,18 @@ public class ApplicationResource {
                                                        @DefaultValue(value = "0") @QueryParam("start") int start,
                                                        @DefaultValue(value = "100") @QueryParam("rows") int rows) {
 
+        LOGGER.debug("findFullApplications start: {}", System.currentTimeMillis());
         List<String> asIds = new ArrayList<String>();
         if (isNotEmpty(asId)) {
             asIds.add(asId);
         } else if (isNotEmpty(asSemester) || isNotEmpty(asYear)) {
             asIds.addAll(applicationSystemService.findByYearAndSemester(asSemester, asYear));
         }
-        for (String s : asIds) {
-            LOGGER.debug("asId: {}", s);
-        }
-        return applicationService.findFullApplications(
+        List<Map<String, Object>> apps = applicationService.findFullApplications(
                 query, new ApplicationQueryParameters(state, asIds, aoid, lopoid, aoOid, discretionaryOnly,
                         sendingSchoolOid, sendingClass, updatedAfter != null ? updatedAfter.getDate() : null, start, rows, "oid", 1));
+        LOGGER.debug("findFullApplications done: {}", System.currentTimeMillis());
+        return apps;
     }
 
     @GET

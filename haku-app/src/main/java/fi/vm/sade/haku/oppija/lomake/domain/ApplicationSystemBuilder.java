@@ -16,6 +16,7 @@ public class ApplicationSystemBuilder {
     private String hakukausiUri;
     private List<Element> applicationCompleteElements;
     private List<Element> additionalPrintElements;
+    private int maxApplicationOptions;
 
     public ApplicationSystemBuilder() {
         this.additionalPrintElements = new ArrayList<Element>();
@@ -69,6 +70,12 @@ public class ApplicationSystemBuilder {
 
     public ApplicationSystem get() {
         return new ApplicationSystem(id, form, name, applicationPeriods,
-                applicationSystemType, hakukausiVuosi, hakukausiUri, applicationCompleteElements, additionalPrintElements);
+                applicationSystemType, hakukausiVuosi, hakukausiUri, applicationCompleteElements,
+                additionalPrintElements, maxApplicationOptions);
+    }
+
+    public ApplicationSystemBuilder addMaxApplicationOptions(int maxHakukohdes) {
+        this.maxApplicationOptions = maxHakukohdes;
+        return this;
     }
 }

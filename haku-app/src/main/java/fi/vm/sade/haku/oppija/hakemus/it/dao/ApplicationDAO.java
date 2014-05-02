@@ -21,6 +21,7 @@ import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * DAO interface for saving, updating and finding applications made by users.
@@ -85,5 +86,5 @@ public interface ApplicationDAO extends BaseDAO<Application> {
 
     Application getNextRedo();
 
-    List<Application> findAllQueriedFull(String query, ApplicationQueryParameters applicationQueryParameters);
+    List<Map<String, Object>> findAllQueriedFull(String query, ApplicationQueryParameters applicationQueryParameters);
 }
