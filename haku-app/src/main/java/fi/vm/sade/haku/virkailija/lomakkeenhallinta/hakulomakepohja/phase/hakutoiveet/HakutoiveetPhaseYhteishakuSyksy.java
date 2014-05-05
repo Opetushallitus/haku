@@ -17,6 +17,7 @@
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.hakutoiveet;
 
 import com.google.common.collect.Lists;
+import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.HiddenValue;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Phase;
@@ -42,17 +43,17 @@ public class HakutoiveetPhaseYhteishakuSyksy {
     private static final String FORM_VERBOSE_HELP = "form_verboseHelp_yhteishaku_syksy";
 
 
-    public static Phase create() {
+    public static Phase create(ApplicationSystem as) {
 
         // Hakutoiveet
         Phase hakutoiveet = new Phase(HAKUTOIVEET_PHASE_ID, createI18NText("form.hakutoiveet.otsikko", FORM_MESSAGES), false,
                 Lists.newArrayList("APP_HAKEMUS_READ_UPDATE", "APP_HAKEMUS_CRUD"));
 
-        hakutoiveet.addChild(createHakutoiveetTheme());
+        hakutoiveet.addChild(createHakutoiveetTheme(as.getMaxApplicationOptions()));
         return hakutoiveet;
     }
 
-    private static Theme createHakutoiveetTheme() {
+    private static Theme createHakutoiveetTheme(int maxApplicationOptions) {
 
         Theme hakutoiveetTheme = new Theme("hakutoiveetGrp", createI18NText("form.hakutoiveet.otsikko",
                 FORM_MESSAGES), true);
@@ -63,15 +64,12 @@ public class HakutoiveetPhaseYhteishakuSyksy {
         PreferenceRow pr1 = createI18NPreferenceRow("preference1", "1");
         pr1.setValidator(new RequiredFieldValidator(pr1.getLearningInstitutionInputId(), ElementUtil.createI18NText("yleinen.pakollinen", "form_errors_yhteishaku_kevat")));
         pr1.setValidator(new RequiredFieldValidator(pr1.getEducationInputId(), ElementUtil.createI18NText("yleinen.pakollinen", "form_errors_yhteishaku_kevat")));
-        PreferenceRow pr2 = createI18NPreferenceRow("preference2", "2");
-        PreferenceRow pr3 = createI18NPreferenceRow("preference3", "3");
-        PreferenceRow pr4 = createI18NPreferenceRow("preference4", "4");
-        PreferenceRow pr5 = createI18NPreferenceRow("preference5", "5");
         preferenceTable.addChild(pr1);
-        preferenceTable.addChild(pr2);
-        preferenceTable.addChild(pr3);
-        preferenceTable.addChild(pr4);
-        preferenceTable.addChild(pr5);
+        for (int index = 2; index <= maxApplicationOptions; index++) {
+            PreferenceRow pref = createI18NPreferenceRow("preference" + index, String.valueOf(index));
+            preferenceTable.addChild(pref);
+
+        }
         ElementUtil.setVerboseHelp(preferenceTable, "form.hakutoiveet.otsikko.verboseHelp", FORM_VERBOSE_HELP);
         hakutoiveetTheme.addChild(preferenceTable);
         return hakutoiveetTheme;

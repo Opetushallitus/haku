@@ -366,7 +366,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public List<Application> findFullApplications(final String query,
+    public List<Map<String, Object>> findFullApplications(final String query,
                                                   final ApplicationQueryParameters applicationQueryParameters) {
         return applicationDAO.findAllQueriedFull(query, applicationQueryParameters);
     }
@@ -492,7 +492,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         Application application = listOfApplications.get(0);
 
         if (!hakuPermissionService.userCanReadApplication(application)) {
-            throw new ResourceNotFoundException("User is not allowed to read application " + application.getOid());
+            throw new ResourceNotFoundException("User "+  authenticationService.getCurrentHenkilo().getPersonOid()  +" is not allowed to read application " + application.getOid());
         }
         return application;
     }

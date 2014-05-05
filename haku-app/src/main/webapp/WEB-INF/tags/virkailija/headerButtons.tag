@@ -21,7 +21,7 @@
     <sec:authorize access="hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_CRUD')">
     <c:choose>
         <c:when test="${!application.passive}">
-            <c:if test="${it.virkailijaDeleteAllowed}">
+            <c:if test="${it.virkailijaDeleteAllowed and preview}">
                 <a href="#" id="passivateApplication" data-po-show="confirmPassivation" class="button small "><fmt:message
                         key="virkailija.hakemus.passivoi.hakemus"/></a>
             </c:if>
@@ -32,20 +32,22 @@
         </c:otherwise>
     </c:choose>
     <c:choose>
-        <c:when test="${it.postProcessAllowed and empty application.studentOid and not empty application.personOid}">
+        <c:when test="${it.postProcessAllowed and empty application.studentOid and not empty application.personOid and preview}">
             <a href="#" id="addStudentOid" data-po-show="addStudentOid" class="button small">
                 <fmt:message key="virkailija.hakemus.lisaa.oppijanumero" />
             </a>
         </c:when>
     </c:choose>
-    <c:if test="${it.postProcessAllowed}">
+    <c:if test="${it.postProcessAllowed and preview}">
         <a href="#" id="postProcessApplication" data-po-show="postProcessApplicationDialog" class="button small">
             <fmt:message key="virkailija.hakemus.postProcess" />
         </a>
     </c:if>
     </sec:authorize>
-    <a href="${contextPath}/virkailija/hakemus/${oid}/print" class="button small print" target="_blank"><fmt:message
-    key="lomake.valmis.button.tulosta"/></a>
+    <c:if test="${preview}">
+        <a href="${contextPath}/virkailija/hakemus/${oid}/print" class="button small print" target="_blank"><fmt:message
+        key="lomake.valmis.button.tulosta"/></a>
+    </c:if>
 </div>
 <div class="grid-right-16-6">
     <span><haku:i18nText value="${applicationSystem.name}" /></span>

@@ -120,5 +120,5 @@ public interface ApplicationService {
 
     Application addSendingSchool(Application application);
 
-    List<Application> findFullApplications(String query, ApplicationQueryParameters applicationQueryParameters);
+    List<Map<String, Object>> findFullApplications(String query, ApplicationQueryParameters applicationQueryParameters);
 }

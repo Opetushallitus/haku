@@ -27,9 +27,10 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.jstl.core.Config;
-import javax.ws.rs.HEAD;
 import javax.ws.rs.core.Context;
 import java.util.Locale;
+
+import static org.apache.commons.lang3.StringUtils.isBlank;
 
 public class LocaleFilter implements ContainerRequestFilter {
 
@@ -37,6 +38,7 @@ public class LocaleFilter implements ContainerRequestFilter {
 
     private static final Locale DEFAULT_LOCALE = new Locale("fi");
     public static final String LANGUAGE_COOKIE_KEY = "i18next";
+    public static final String LANGUAGE_COOKIE_KEY_TEST = "testi18next";
     public static final String LANGUAGE_QUERY_PARAMETER_KEY = "lang";
 
     final HttpServletRequest httpServletRequest;
@@ -51,7 +53,6 @@ public class LocaleFilter implements ContainerRequestFilter {
     @Override
     public ContainerRequest filter(ContainerRequest containerRequest) {
         HttpSession session = httpServletRequest.getSession();
-
         String lang = getLanguage(containerRequest);
 
         Locale currentLocale = (Locale) Config.get(session, Config.FMT_LOCALE);
@@ -63,8 +64,24 @@ public class LocaleFilter implements ContainerRequestFilter {
     }
 
     public String getLanguage(ContainerRequest containerRequest) {
-        String lang = containerRequest.getCookieNameValueMap().getFirst(LANGUAGE_COOKIE_KEY);
+        String lang = containerRequest.getQueryParameters().getFirst(LANGUAGE_QUERY_PARAMETER_KEY);
+        log.debug("Param lang: " + lang);
+
+        if (!isBlank(lang)) {
+            return lang;
+        }
+
+        lang = containerRequest.getCookieNameValueMap().getFirst(LANGUAGE_COOKIE_KEY);
+        if (isBlank(lang)) {
+            // Kielikeksillä on eri avain testiympäristössä
+            lang = containerRequest.getCookieNameValueMap().getFirst(LANGUAGE_COOKIE_KEY_TEST);
+        }
         log.debug("Cookie lang: " + lang);
+
+        if (!isBlank(lang)) {
+            return lang;
+        }
+
         Person person = authenticationService.getCurrentHenkilo();
         String personOid = person != null ? person.getPersonOid() : "null";
         log.debug("Got person: " + personOid);
@@ -76,12 +93,6 @@ public class LocaleFilter implements ContainerRequestFilter {
             }
         }
 
-        String paramLang = containerRequest.getQueryParameters().getFirst(LANGUAGE_QUERY_PARAMETER_KEY);
-        log.debug("Param lang: " + paramLang);
-        if (paramLang != null) {
-            lang = paramLang;
-        }
-        log.debug("Returning lang: " + lang);
         return lang;
     }
 

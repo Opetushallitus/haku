@@ -66,6 +66,7 @@ public class HakuDTOToApplicationSystemFunction implements Function<HakuDTO, App
                 .addApplicationSystemType(hakuDTO.getHakutyyppiUri().split("#")[0])
                 .addHakukausiUri(hakuDTO.getHakukausiUri().split("#")[0])
                 .addHakukausiVuosi(hakuDTO.getHakukausiVuosi())
+                .addMaxApplicationOptions(hakuDTO.getMaxHakukohdes())
                 .get();
         return applicationSystem;
     }

@@ -36,6 +36,7 @@ public class PreferenceConcreteValidatorImpl extends PreferenceConcreteValidator
     public static final String ERROR_STR = "Preference validation error key={}, values={}, applicationOption={}";
     private final ApplicationOptionService applicationOptionService;
     private static final String GENERIC_ERROR = "hakutoiveet.virheellinen.hakutoive";
+    private static final String LOP_ERROR = "hakutoiveet.opetuspisteristiriita";
     private static final String CAN_BE_APPLIED_ERROR = "hakutoiveet.eivoihakea";
     private static final String BASE_EDUCATION_ERROR = "hakutoiveet.pohjakoulutusristiriita";
     private static final Logger LOGGER = LoggerFactory.getLogger(PreferenceConcreteValidatorImpl.class);
@@ -54,8 +55,7 @@ public class PreferenceConcreteValidatorImpl extends PreferenceConcreteValidator
         if (!Strings.isNullOrEmpty(aoId)) {
             try {
                 ApplicationOption ao = applicationOptionService.get(aoId);
-                if (!checkProvider(validationInput, ao) ||
-                        !checkAthlete(validationInput, ao) ||
+                if (!checkAthlete(validationInput, ao) ||
                         !checkSora(validationInput, ao) ||
                         //!checkEducationCode(validationInput, ao) || !TODO enable this when KI implemented
                         !checkTeachingLang(validationInput, ao) ||
@@ -63,6 +63,9 @@ public class PreferenceConcreteValidatorImpl extends PreferenceConcreteValidator
                         !checkAOIdentifier(validationInput, ao) ||
                         !checkKaksoistutkinto(validationInput, ao)) {
                     return createError(validationInput.getElement().getId(), GENERIC_ERROR);
+                }
+                if (!checkProvider(validationInput, ao)) {
+                    return createError(validationInput.getElement().getId(), LOP_ERROR);
                 }
                 if (!checkApplicationDates(ao)) {
                     return createError(validationInput.getElement().getId(), CAN_BE_APPLIED_ERROR);
@@ -88,17 +91,29 @@ public class PreferenceConcreteValidatorImpl extends PreferenceConcreteValidator
         if (validationInput.getValue(key).equals(applicationOption.getEducationCode())) {
             return true;
         }
-        LOGGER.error(ERROR_STR, new Object[]{key, validationInput, applicationOption});
+        LOGGER.error(ERROR_STR, key, validationInput, applicationOption);
         return false;
     }
 
     private boolean checkProvider(final ValidationInput validationInput, final ApplicationOption applicationOption) {
+        boolean isOk = false;
+
         final String key = validationInput.getElement().getId() + "-Opetuspiste-id";
         if (applicationOption.getProvider().getId().equals(validationInput.getValues().get(key))) {
-            return true;
+            isOk = true;
         }
-        LOGGER.error(ERROR_STR, new Object[]{key, validationInput, applicationOption});
-        return false;
+
+        final String label = validationInput.getElement().getId() + "-Opetuspiste";
+        if (applicationOption.getProvider().getName().equals(validationInput.getValue(label))) {
+            isOk = isOk && true;
+        } else {
+            isOk = false;
+        }
+
+        if (!isOk) {
+            LOGGER.error(ERROR_STR, key, validationInput, applicationOption);
+        }
+        return isOk;
     }
 
     private boolean checkAthlete(final ValidationInput validationInput, final ApplicationOption applicationOption) {
@@ -108,7 +123,7 @@ public class PreferenceConcreteValidatorImpl extends PreferenceConcreteValidator
                 == (applicationOption.getProvider().isAthleteEducation() || applicationOption.isAthleteEducation())) {
             return true;
         }
-        LOGGER.error(ERROR_STR, new Object[]{key, validationInput, applicationOption});
+        LOGGER.error(ERROR_STR, key, validationInput, applicationOption);
         return false;
     }
 
@@ -118,7 +133,7 @@ public class PreferenceConcreteValidatorImpl extends PreferenceConcreteValidator
                 == applicationOption.isSora()) {
             return true;
         }
-        LOGGER.error(ERROR_STR, new Object[]{key, validationInput, applicationOption});
+        LOGGER.error(ERROR_STR, key, validationInput, applicationOption);
         return false;
     }
 
@@ -127,7 +142,7 @@ public class PreferenceConcreteValidatorImpl extends PreferenceConcreteValidator
         if (Boolean.valueOf(validationInput.getValues().get(key)).booleanValue() == applicationOption.isKaksoistutkinto()) {
             return true;
         }
-        LOGGER.error(ERROR_STR, new Object[]{key, validationInput, applicationOption});
+        LOGGER.error(ERROR_STR, key, validationInput, applicationOption);
         return false;
     }
 
@@ -144,7 +159,7 @@ public class PreferenceConcreteValidatorImpl extends PreferenceConcreteValidator
         if (applicationOption.getTeachingLanguages().contains(validationInput.getValues().get(key))) {
             return true;
         }
-        LOGGER.error(ERROR_STR, new Object[]{key, validationInput, applicationOption});
+        LOGGER.error(ERROR_STR, key, validationInput, applicationOption);
         return false;
     }
 
@@ -160,7 +175,7 @@ public class PreferenceConcreteValidatorImpl extends PreferenceConcreteValidator
         if (applicationOption.getProvider().getApplicationSystemIds().contains(validationInput.getApplicationSystemId())) {
             return true;
         }
-        LOGGER.error(ERROR_STR, new Object[]{null, validationInput, applicationOption});
+        LOGGER.error(ERROR_STR, null, validationInput, applicationOption);
         return false;
     }
 
@@ -169,7 +184,7 @@ public class PreferenceConcreteValidatorImpl extends PreferenceConcreteValidator
         if (applicationOption.getAoIdentifier().equals(validationInput.getValue(key))) {
             return true;
         }
-        LOGGER.error(ERROR_STR, new Object[]{key, validationInput, applicationOption});
+        LOGGER.error(ERROR_STR, key, validationInput, applicationOption);
         return false;
     }
 }
