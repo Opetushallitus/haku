@@ -149,6 +149,7 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
                     application = applicationService.fillLOPChain(application, false);
                     application = applicationService.addPersonOid(application);
                     if (!skipSendingSchoolManual) {
+                        LOGGER.debug("Adding sendingSchool");
                         application = applicationService.addSendingSchool(application);
                     }
                     application = validateApplication(application);
