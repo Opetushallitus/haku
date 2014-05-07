@@ -5,7 +5,6 @@ import fi.vm.sade.authentication.service.types.dto.SukupuoliType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.ws.rs.HEAD;
 import java.lang.reflect.Type;
 
 import static org.apache.commons.lang3.StringUtils.isEmpty;
@@ -90,12 +89,6 @@ public class PersonJsonAdapter implements JsonSerializer<Person>, JsonDeserializ
             personBuilder.setSex(SukupuoliType.MIES.value());
         } else if (sex != null && sex.equals("NAINEN")) {
             personBuilder.setSex(SukupuoliType.NAINEN.value());
-        }
-
-        JsonObject contactLanguage = personJson.get("asiointiKieli").getAsJsonObject();
-        log.debug("Contact language: "+contactLanguage.toString());
-        if (contactLanguage != null && !contactLanguage.isJsonNull()) {
-            personBuilder.setContactLanguage(getJsonString(contactLanguage, "kieliKoodi"));
         }
 
         Boolean securityOrder = getJsonBoolean(personJson, "turvakielto");

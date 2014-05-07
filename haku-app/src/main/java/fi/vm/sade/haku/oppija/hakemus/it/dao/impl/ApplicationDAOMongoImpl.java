@@ -381,7 +381,15 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         int rows = params.getRows();
         String orderBy = params.getOrderBy();
         int orderDir = params.getOrderDir();
-        final DBCursor dbCursor = getCollection().find(query).sort(new BasicDBObject(orderBy, orderDir))
+        DBObject keys = new BasicDBObject();
+        keys.put("oid", 1);
+        keys.put("state", 1);
+        keys.put("personOid", 1);
+        keys.put("answers.henkilotiedot.Henkilotunnus", 1);
+        keys.put("answers.henkilotiedot.Etunimet", 1);
+        keys.put("answers.henkilotiedot.Sukunimi", 1);
+        keys.put("answers.henkilotiedot.syntymaaika", 1);
+        final DBCursor dbCursor = getCollection().find(query, keys).sort(new BasicDBObject(orderBy, orderDir))
                 .skip(start).limit(rows).setReadPreference(ReadPreference.secondaryPreferred());
         LOG.debug("Matches: {}", dbCursor.count());
         return new ApplicationSearchResultDTO(dbCursor.count(), Lists.newArrayList(Iterables.transform(dbCursor, dbObjectToSearchResultItem)));

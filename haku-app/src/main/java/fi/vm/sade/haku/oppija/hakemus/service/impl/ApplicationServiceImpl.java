@@ -17,7 +17,6 @@
 package fi.vm.sade.haku.oppija.hakemus.service.impl;
 
 import com.google.common.collect.Lists;
-import fi.vm.sade.authentication.service.GenericFault;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
 import fi.vm.sade.haku.oppija.common.suoritusrekisteri.OpiskelijaDTO;
 import fi.vm.sade.haku.oppija.common.suoritusrekisteri.SuoritusDTO;
@@ -182,24 +181,17 @@ public class ApplicationServiceImpl implements ApplicationService {
                 .setSocialSecurityNumber(allAnswers.get(OppijaConstants.ELEMENT_ID_SOCIAL_SECURITY_NUMBER))
                 .setSecurityOrder(false);
 
+        application.setLastAutomatedProcessingTime(System.currentTimeMillis());
+        Person personBefore = personBuilder.get();
+        LOGGER.debug("Calling addPerson");
         try {
-            application.setLastAutomatedProcessingTime(System.currentTimeMillis());
-            Person personBefore = personBuilder.get();
-            LOGGER.debug("Calling addPerson");
-            Person personAfter = null;
-            try {
-                personAfter = authenticationService.addPerson(personBefore);
-            } catch (Throwable t) {
-                LOGGER.debug("Unexpected happened: " + t);
-            }
+            Person personAfter  = authenticationService.addPerson(personBefore);
             LOGGER.debug("Called addPerson");
             LOGGER.debug("Calling modifyPersonalData");
             application = application.modifyPersonalData(personAfter);
             LOGGER.debug("Called modifyPersonalData");
-        } catch (GenericFault fail) {
-            LOGGER.info(fail.getMessage());
-        } catch (Exception e) {
-            LOGGER.error(e.getMessage());
+        } catch (Throwable t) {
+            LOGGER.debug("Unexpected happened: ", t);
         }
         return application;
     }
