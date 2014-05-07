@@ -34,8 +34,11 @@ public class ApplicationToAdditionalDataDTO implements Function<Application, App
         dto.setOid(application.getOid());
         dto.setPersonOid(application.getPersonOid());
         final Map<String, String> henkilotiedot = application.getAnswers().get("henkilotiedot");
-        dto.setFirstNames(henkilotiedot.get(OppijaConstants.ELEMENT_ID_FIRST_NAMES));
-        dto.setLastName(henkilotiedot.get(OppijaConstants.ELEMENT_ID_LAST_NAME));
+        // Joukossa voi olla puutteellisia hakemuksia, joista puuttuu henkilötiedot
+        if (henkilotiedot != null) {
+            dto.setFirstNames(henkilotiedot.get(OppijaConstants.ELEMENT_ID_FIRST_NAMES));
+            dto.setLastName(henkilotiedot.get(OppijaConstants.ELEMENT_ID_LAST_NAME));
+        }
         dto.setAdditionalData(application.getAdditionalInfo());
         return dto;
     }
