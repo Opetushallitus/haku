@@ -26,38 +26,27 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.lisati
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.osaaminen.OsaaminenPhaseSyksy;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.valmis.ValmisPhase;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 
 import java.util.List;
 
-import static com.google.common.collect.Lists.newArrayList;
-
 public class YhteishakuSyksy {
-
-    private static final String FORM_MESSAGES = "form_messages_yhteishaku_syksy";
-    private static final String FORM_ERRORS = "form_errors_yhteishaku_syksy";
-    private static final String FORM_VERBOSE_HELP = "form_verboseHelp_yhteishaku_syksy";
 
     public static Form generateForm(final ApplicationSystem as, final KoodistoService koodistoService) {
         try {
             Form form = new Form(as.getId(), as.getName());
-            form.addChild(HenkilotiedotPhase.create(OppijaConstants.VARSINAINEN_HAKU, koodistoService, FORM_MESSAGES, FORM_ERRORS, FORM_VERBOSE_HELP));
-            form.addChild(KoulutustaustaPhase.create(koodistoService, as, FORM_MESSAGES,FORM_ERRORS,FORM_VERBOSE_HELP));
-            form.addChild(HakutoiveetPhaseYhteishakuSyksy.create(as));
-            form.addChild(OsaaminenPhaseSyksy.create(koodistoService, FORM_MESSAGES, FORM_ERRORS,FORM_VERBOSE_HELP));
-            form.addChild(LisatiedotPhase.create(FORM_MESSAGES, FORM_ERRORS,FORM_VERBOSE_HELP));
+            FormParameters formParameters = new FormParameters(as, koodistoService);
+            form.addChild(HenkilotiedotPhase.create(formParameters));
+            form.addChild(KoulutustaustaPhase.create(formParameters));
+            form.addChild(HakutoiveetPhaseYhteishakuSyksy.create(formParameters));
+            form.addChild(OsaaminenPhaseSyksy.create(formParameters));
+            form.addChild(LisatiedotPhase.create(formParameters));
             return form;
         } catch (Exception e) {
             throw new RuntimeException(YhteishakuSyksy.class.getCanonicalName() + " init failed", e);
         }
     }
 
-    public static List<Element> createApplicationCompleteElements() {
-        return ValmisPhase.create(FORM_MESSAGES, "form.valmis.muutoksentekeminen.p1",
-                "form.valmis.muutoksentekeminen.p2", "form.valmis.muutoksentekeminen.p3");
-    }
-
-    public static List<Element> createAdditionalInformationElements() {
-        return newArrayList(ValmisPhase.createAdditionalInformationElements(FORM_MESSAGES));
+    public static List<Element> createApplicationCompleteElements(final ApplicationSystem as) {
+        return ValmisPhase.create(as);
     }
 }

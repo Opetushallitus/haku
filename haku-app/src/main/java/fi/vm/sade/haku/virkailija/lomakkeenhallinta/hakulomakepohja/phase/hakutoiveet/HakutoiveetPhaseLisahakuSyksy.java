@@ -26,6 +26,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.SinglePreference;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.DropdownSelect;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Radio;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionComplexRule;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 
@@ -36,54 +37,50 @@ public class HakutoiveetPhaseLisahakuSyksy {
     public static final String DISCRETIONARY_EDUCATION_DEGREE = "32";
     public static final String HAKUTOIVEET_PHASE_ID = "hakutoiveet";
 
-    private static final String FORM_MESSAGES = "form_messages_lisahaku_syksy";
-    private static final String FORM_ERRORS = "form_errors_lisahaku_syksy";
-    private static final String FORM_VERBOSE_HELP = "form_verboseHelp_lisahaku_syksy";
-
-    public static Phase create() {
+    public static Phase create(final FormParameters formParameters) {
 
         // Hakutoiveet
-        Phase hakutoiveet = new Phase(HAKUTOIVEET_PHASE_ID, createI18NText("form.hakutoiveet.otsikko", FORM_MESSAGES), false,
+        Phase hakutoiveet = new Phase(HAKUTOIVEET_PHASE_ID, createI18NText("form.hakutoiveet.otsikko", formParameters), false,
                 Lists.newArrayList("APP_HAKEMUS_READ_UPDATE", "APP_HAKEMUS_CRUD"));
-        hakutoiveet.addChild(createHakutoiveetThemeLisahaku());
+        hakutoiveet.addChild(createHakutoiveetThemeLisahaku(formParameters));
 
         return hakutoiveet;
     }
 
-    private static Theme createHakutoiveetThemeLisahaku() {
-        Theme hakutoiveetTheme = new Theme("hakutoiveetGrp", createI18NText("form.hakutoiveet.otsikko", FORM_MESSAGES), true);
-        hakutoiveetTheme.setHelp(createI18NText("form.hakutoiveet.lisahaku.help", FORM_MESSAGES));
+    private static Theme createHakutoiveetThemeLisahaku(final FormParameters formParameters) {
+        Theme hakutoiveetTheme = new Theme("hakutoiveetGrp", createI18NText("form.hakutoiveet.otsikko", formParameters), true);
+        hakutoiveetTheme.setHelp(createI18NText("form.hakutoiveet.lisahaku.help", formParameters));
         final String id = "preference1";
         SinglePreference singlePreference = new SinglePreference(id,
-                createI18NText("form.hakutoiveet.koulutus", FORM_MESSAGES),
-                createI18NText("form.hakutoiveet.opetuspiste", FORM_MESSAGES),
-                createI18NText("form.hakutoiveet.otsikko", FORM_MESSAGES),
-                createI18NText("form.hakutoiveet.sisaltyvatKoulutusohjelmat", FORM_MESSAGES));
-        singlePreference.addChild(createDiscretionaryQuestionsAndRules(id));
-        singlePreference.addChild(createSoraQuestions(id),
-                createUrheilijanAmmatillisenKoulutuksenLisakysymysAndRule(id));
+                createI18NText("form.hakutoiveet.koulutus", formParameters),
+                createI18NText("form.hakutoiveet.opetuspiste", formParameters),
+                createI18NText("form.hakutoiveet.otsikko", formParameters),
+                createI18NText("form.hakutoiveet.sisaltyvatKoulutusohjelmat", formParameters));
+        singlePreference.addChild(createDiscretionaryQuestionsAndRules(id, formParameters));
+        singlePreference.addChild(createSoraQuestions(id, formParameters),
+                createUrheilijanAmmatillisenKoulutuksenLisakysymysAndRule(id, formParameters));
         hakutoiveetTheme.addChild(singlePreference);
-        ElementUtil.setVerboseHelp(singlePreference, "form.hakutoiveet.otsikko.lisahaku.verboseHelp", FORM_VERBOSE_HELP);
+        ElementUtil.setVerboseHelp(singlePreference, "form.hakutoiveet.otsikko.lisahaku.verboseHelp", formParameters);
         ElementUtil.addPreferenceValidator(singlePreference);
         addUniqueApplicationValidator(singlePreference, OppijaConstants.LISA_HAKU);
         return hakutoiveetTheme;
     }
 
-    private static Element[] createDiscretionaryQuestionsAndRules(final String index) {
+    private static Element[] createDiscretionaryQuestionsAndRules(final String index, final FormParameters formParameters) {
         Radio discretionary = new Radio(index + "-discretionary", createI18NText("form.hakutoiveet.harkinnanvarainen",
-                FORM_MESSAGES));
-        addDefaultTrueFalseOptions(discretionary, FORM_MESSAGES);
-        addRequiredValidator(discretionary, FORM_ERRORS);
-        discretionary.setHelp(createI18NText("form.hakutoiveet.harkinnanvarainen.ohje", FORM_MESSAGES));
+                formParameters));
+        addDefaultTrueFalseOptions(discretionary, formParameters);
+        addRequiredValidator(discretionary, formParameters);
+        discretionary.setHelp(createI18NText("form.hakutoiveet.harkinnanvarainen.ohje", formParameters));
 
         DropdownSelect discretionaryFollowUp = new DropdownSelect(discretionary.getId() + "-follow-up",
-                createI18NText("form.hakutoiveet.harkinnanvarainen.perustelu", FORM_MESSAGES), null);
+                createI18NText("form.hakutoiveet.harkinnanvarainen.perustelu", formParameters), null);
         discretionaryFollowUp.addOption(ElementUtil.createI18NAsIs(""), "");
         discretionaryFollowUp.addOption(createI18NText("form.hakutoiveet.harkinnanvarainen.perustelu.oppimisvaikeudet",
-                FORM_MESSAGES), "oppimisvaikudet");
+                formParameters), "oppimisvaikudet");
         discretionaryFollowUp.addOption(createI18NText("form.hakutoiveet.harkinnanvarainen.perustelu.sosiaaliset",
-                FORM_MESSAGES), "sosiaalisetsyyt");
-        addRequiredValidator(discretionaryFollowUp, FORM_ERRORS);
+                formParameters), "sosiaalisetsyyt");
+        addRequiredValidator(discretionaryFollowUp, formParameters);
 
         RelatedQuestionComplexRule discretionaryFollowUpRule =
                 ElementUtil.createRuleIfVariableIsTrue(index + "-discretionary-follow-up-rule", discretionary.getId());
@@ -105,34 +102,34 @@ public class HakutoiveetPhaseLisahakuSyksy {
 
     }
 
-    public static Element createSoraQuestions(final String index) {
+    public static Element createSoraQuestions(final String index, final FormParameters formParameters) {
         // sora-kysymykset
 
         RelatedQuestionComplexRule hasSora = ElementUtil.createRuleIfVariableIsTrue(index + "_sora_rule", index + "-Koulutus-id-sora");
 
-        Radio sora1 = new Radio(index + "_sora_terveys", createI18NText("form.sora.terveys", FORM_MESSAGES));
-        sora1.addOption(createI18NText("form.yleinen.ei", FORM_MESSAGES), ElementUtil.EI);
-        sora1.addOption(createI18NText("form.sora.kylla", FORM_MESSAGES), ElementUtil.KYLLA);
-        addRequiredValidator(sora1, FORM_ERRORS);
+        Radio sora1 = new Radio(index + "_sora_terveys", createI18NText("form.sora.terveys", formParameters));
+        sora1.addOption(createI18NText("form.yleinen.ei", formParameters), ElementUtil.EI);
+        sora1.addOption(createI18NText("form.sora.kylla", formParameters), ElementUtil.KYLLA);
+        addRequiredValidator(sora1, formParameters);
         sora1.setPopup(new Popup("sora-popup", createI18NText("form.hakutoiveet.terveydentilavaatimukset.otsikko",
-                FORM_MESSAGES)));
+                formParameters)));
 
         Radio sora2 = new Radio(index + "_sora_oikeudenMenetys", createI18NText("form.sora.oikeudenMenetys",
-                FORM_MESSAGES));
-        sora2.addOption(createI18NText("form.yleinen.ei", FORM_MESSAGES), ElementUtil.EI);
-        sora2.addOption(createI18NText("form.sora.kylla", FORM_MESSAGES), ElementUtil.KYLLA);
-        addRequiredValidator(sora2, FORM_ERRORS);
+                formParameters));
+        sora2.addOption(createI18NText("form.yleinen.ei", formParameters), ElementUtil.EI);
+        sora2.addOption(createI18NText("form.sora.kylla", formParameters), ElementUtil.KYLLA);
+        addRequiredValidator(sora2, formParameters);
 
         hasSora.addChild(sora1, sora2);
         return hasSora;
     }
 
-    public static Element createUrheilijanAmmatillisenKoulutuksenLisakysymysAndRule(final String index) {
+    public static Element createUrheilijanAmmatillisenKoulutuksenLisakysymysAndRule(final String index, final FormParameters formParameters) {
 
         Radio radio = new Radio(index + "_urheilijan_ammatillisen_koulutuksen_lisakysymys",
-                createI18NText("form.hakutoiveet.urheilijan.ammatillisen.koulutuksen.lisakysymys", FORM_MESSAGES));
-        addDefaultTrueFalseOptions(radio, FORM_MESSAGES);
-        addRequiredValidator(radio, FORM_ERRORS);
+                createI18NText("form.hakutoiveet.urheilijan.ammatillisen.koulutuksen.lisakysymys", formParameters));
+        addDefaultTrueFalseOptions(radio, formParameters);
+        addRequiredValidator(radio, formParameters);
 
         RelatedQuestionComplexRule hasQuestion =
                 ElementUtil.createRuleIfVariableIsTrue(radio.getId() + "_related_question_rule", index + "-Koulutus-id-athlete");

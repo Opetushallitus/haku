@@ -82,8 +82,9 @@ public class FormGeneratorMock implements FormGenerator {
         System.out.println("Hakuvuosi: " + hakuvuosi);
         List<ApplicationPeriod> applicationPeriods = Lists.newArrayList(new ApplicationPeriod(start, end));
         I18nText name = ElementUtil.createI18NAsIs(asId);
-        return new ApplicationSystemBuilder().addId(asId).addName(name).addApplicationPeriods(applicationPeriods)
-                .addHakukausiVuosi(hakuvuosi).addApplicationSystemType(OppijaConstants.VARSINAINEN_HAKU)
-                .addApplicationCompleteElements(YhteishakuSyksy.createApplicationCompleteElements());
+        ApplicationSystemBuilder applicationSystemBuilder = new ApplicationSystemBuilder();
+        return applicationSystemBuilder.addId(asId).addName(name).addApplicationPeriods(applicationPeriods)
+                .addHakukausiVuosi(hakuvuosi).addApplicationSystemType(OppijaConstants.VARSINAINEN_HAKU).addHakukausiUri(OppijaConstants.HAKUKAUSI_KEVAT)
+                .addApplicationCompleteElements(YhteishakuSyksy.createApplicationCompleteElements(applicationSystemBuilder.get()));
     }
 }

@@ -38,6 +38,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionComplexRule;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.Regexp;
 import fi.vm.sade.haku.oppija.lomake.validation.Validator;
 import fi.vm.sade.haku.oppija.lomake.validation.validators.*;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
 import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -70,6 +71,14 @@ public final class ElementUtil {
             translations.put(lang, text);
         }
         return new I18nText(translations);
+    }
+
+    public static I18nText createI18NText(final String key, final FormParameters formParameters, final String... params) {
+        return createI18NText(key, formParameters.getFormMessagesBundle(), false, params);
+    }
+
+    public static I18nText createI18NText(final String key, final FormParameters formParameters) {
+        return createI18NText(key, formParameters.getFormMessagesBundle(), false);
     }
 
     public static I18nText createI18NText(final String key, final String bundleName, final String... params) {
@@ -129,14 +138,14 @@ public final class ElementUtil {
         element.addAttribute(DISABLED, DISABLED);
     }
 
-    public static void addDefaultTrueFalseOptions(final Radio radio, final String bundleName) {
-        radio.addOption(createI18NText("form.yleinen.kylla", bundleName), KYLLA);
-        radio.addOption(createI18NText("form.yleinen.ei", bundleName), EI);
+    public static void addDefaultTrueFalseOptions(final Radio radio, final FormParameters formParameters) {
+        radio.addOption(createI18NText("form.yleinen.kylla", formParameters.getFormMessagesBundle()), KYLLA);
+        radio.addOption(createI18NText("form.yleinen.ei", formParameters.getFormMessagesBundle()), EI);
     }
 
-    public static void addYesAndIDontOptions(final Radio radio, final String bundleName) {
-        radio.addOption(createI18NText("form.yleinen.kylla", bundleName), KYLLA);
-        radio.addOption(createI18NText("form.yleinen.en", bundleName), EI);
+    public static void addYesAndIDontOptions(final Radio radio, final FormParameters formParameters) {
+        radio.addOption(createI18NText("form.yleinen.kylla", formParameters.getFormMessagesBundle()), KYLLA);
+        radio.addOption(createI18NText("form.yleinen.en", formParameters.getFormMessagesBundle()), EI);
     }
 
     public static GradeGridRow createHiddenGradeGridRowWithId(final String id) {
@@ -152,10 +161,10 @@ public final class ElementUtil {
         }
     }
 
-    public static TextQuestion createRequiredTextQuestion(final String id, final String name, final String bundleName,
-                                                          final String errorBundleName, final int size) {
-        TextQuestion textQuestion = new TextQuestion(id, createI18NText(name, bundleName));
-        addRequiredValidator(textQuestion, errorBundleName);
+    public static TextQuestion createRequiredTextQuestion(final String id, final String name, int size,
+                                                          final FormParameters formParameters) {
+        TextQuestion textQuestion = new TextQuestion(id, createI18NText(name, formParameters.getFormMessagesBundle()));
+        addRequiredValidator(textQuestion, formParameters);
         addSizeAttribute(textQuestion, size);
         return textQuestion;
     }
@@ -165,27 +174,27 @@ public final class ElementUtil {
         return element;
     }
 
-    public static Element addMaxLengthAttributeAndLengthValidator(final Element element, final int maxlength, final String bundleName) {
+    public static Element addMaxLengthAttributeAndLengthValidator(final Element element, final int maxlength, final FormParameters formParameters) {
         element.addAttribute("maxlength", String.valueOf(maxlength));
         element.setValidator(new LengthValidator(element.getId(),
-                createI18NText("yleinen.virheellinenArvo", bundleName), maxlength));
+                createI18NText("yleinen.virheellinenArvo", formParameters.getFormErrorsBundle()), maxlength));
         return element;
     }
 
-    public static Validator createRegexValidator(final String id, final String pattern, final String bundleName) {
-        return createRegexValidator(id, pattern, bundleName, "yleinen.virheellinenArvo");
+    public static Validator createRegexValidator(final String id, final String pattern, final FormParameters formParameters) {
+        return createRegexValidator(id, pattern, formParameters, "yleinen.virheellinenArvo");
     }
 
-    public static Validator createRegexValidator(final String id, final String pattern, final String bundleName,
+    public static Validator createRegexValidator(final String id, final String pattern, final FormParameters formParameters,
                                                  final String messageKey) {
         return new RegexFieldValidator(id,
-                ElementUtil.createI18NText(messageKey, bundleName),
+                ElementUtil.createI18NText(messageKey, formParameters.getFormErrorsBundle()),
                 pattern);
     }
 
-    public static Validator createValueSetValidator(final String id, final List<String> validValues, final String bundleName) {
+    public static Validator createValueSetValidator(final String id, final List<String> validValues, final FormParameters formParameters) {
         return new ValueSetValidator(id,
-                ElementUtil.createI18NText("yleinen.virheellinenArvo", bundleName),
+                ElementUtil.createI18NText("yleinen.virheellinenArvo", formParameters.getFormErrorsBundle()),
                 validValues);
     }
 
@@ -194,11 +203,11 @@ public final class ElementUtil {
                 ElementUtil.createI18NText(DateOfBirthValidator.DATE_OF_BIRTH_GENERIC_ERROR_MESSAGE, bundleName), bundleName);
     }
 
-    public static void addRequiredValidator(final Element element, final String bundleName) {
+    public static void addRequiredValidator(final Element element, final FormParameters formParameters) {
         element.setValidator(
                 new RequiredFieldValidator(
                         element.getId(),
-                        ElementUtil.createI18NText("yleinen.pakollinen", bundleName)));
+                        ElementUtil.createI18NText("yleinen.pakollinen", formParameters.getFormErrorsBundle())));
     }
 
     public static void addUniqueApplicationValidator(final Element element, final String asType) {
@@ -222,15 +231,18 @@ public final class ElementUtil {
         element.setValidator(new PreferenceValidator());
     }
 
-    public static void setRequiredInlineAndVerboseHelp(final Question question, final String helpId, final String bundleName,
-                                                       final String errorBundleName) {
-        addRequiredValidator(question, errorBundleName);
-        setVerboseHelp(question, helpId, bundleName);
+    public static void setRequiredInlineAndVerboseHelp(final Question question, final String helpId, final FormParameters formParameters) {
+        addRequiredValidator(question, formParameters);
+        setVerboseHelp(question, helpId, formParameters);
         question.setInline(true);
     }
 
-    public static void setVerboseHelp(final Titled titled, final String helpId, final String bundleName) {
-        titled.setVerboseHelp(createI18NText(helpId, bundleName));
+    public static void setVerboseHelp(final Titled titled, final String helpId, final FormParameters formParameters) {
+        titled.setVerboseHelp(createI18NText(helpId, formParameters.getFormVerboseHelpBundle()));
+    }
+
+    public static void setHelp(final Element element, final String key, final FormParameters formParameters) {
+        element.setHelp(createI18NText(key, formParameters.getFormMessagesBundle()));
     }
 
     public static String randomId() {

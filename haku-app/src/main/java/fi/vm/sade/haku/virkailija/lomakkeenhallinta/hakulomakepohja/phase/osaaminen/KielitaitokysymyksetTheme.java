@@ -9,6 +9,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.And;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.Expr;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.Not;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.Or;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ExprUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
@@ -27,7 +28,7 @@ public final class KielitaitokysymyksetTheme {
     private KielitaitokysymyksetTheme() {
     }
 
-    public static Element createKielitaitokysymyksetTheme(final String formMessages, final String formErrors, final String verboseHelps) {
+    public static Element createKielitaitokysymyksetTheme(final FormParameters formParameters) {
         Expr suomiOnAidinkieliTaiKouluSuomeksi = ExprUtil.atLeastOneVariableEqualsToValue("FI", LANGUAGE_QUESTIONS);
         Expr ruotsiOnAidinkieliTaiKouluRuotsiksi = ExprUtil.atLeastOneVariableEqualsToValue("SV", LANGUAGE_QUESTIONS);
 
@@ -42,27 +43,27 @@ public final class KielitaitokysymyksetTheme {
         RelatedQuestionComplexRule naytetaankoTeema = new RelatedQuestionComplexRule(ElementUtil.randomId(), naytetaankoKielitaitoteema);
 
         Theme kielitaitokysymyksetTheme =
-                new Theme("KielitaitokysymyksetTheme", ElementUtil.createI18NText("form.kielitaito.otsikko", formMessages), true);
+                new Theme("KielitaitokysymyksetTheme", ElementUtil.createI18NText("form.kielitaito.otsikko", formParameters.getFormMessagesBundle()), true);
         naytetaankoTeema.addChild(kielitaitokysymyksetTheme);
 
         RelatedQuestionComplexRule naytetaankoSuomi = new RelatedQuestionComplexRule(ElementUtil.randomId(), kysytaankoSuomi);
         RelatedQuestionComplexRule naytetaankoRuotsi = new RelatedQuestionComplexRule(ElementUtil.randomId(), kysytaankoRuotsi);
-        naytetaankoSuomi.addChild(createKielitutkinto("yleinen_kielitutkinto_fi", formMessages, formErrors),
-                createKielitutkinto("valtionhallinnon_kielitutkinto_fi", formMessages, formErrors));
-        naytetaankoRuotsi.addChild(createKielitutkinto("yleinen_kielitutkinto_sv", formMessages, formErrors),
-                createKielitutkinto("valtionhallinnon_kielitutkinto_sv", formMessages, formErrors));
+        naytetaankoSuomi.addChild(createKielitutkinto("yleinen_kielitutkinto_fi", formParameters),
+                createKielitutkinto("valtionhallinnon_kielitutkinto_fi", formParameters));
+        naytetaankoRuotsi.addChild(createKielitutkinto("yleinen_kielitutkinto_sv", formParameters),
+                createKielitutkinto("valtionhallinnon_kielitutkinto_sv", formParameters));
         kielitaitokysymyksetTheme.addChild(naytetaankoSuomi, naytetaankoRuotsi);
-        ElementUtil.setVerboseHelp(kielitaitokysymyksetTheme, "form.kielitaito.otsikko.verboseHelp", verboseHelps);
+        ElementUtil.setVerboseHelp(kielitaitokysymyksetTheme, "form.kielitaito.otsikko.verboseHelp", formParameters);
         return naytetaankoTeema;
     }
 
 
-    private static Radio createKielitutkinto(final String id, final String formMessages, final String formErrors) {
+    private static Radio createKielitutkinto(final String id, final FormParameters formParameters) {
         Radio radio = new Radio(id,
                 createI18NText("form.kielitaito." +
-                        CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, id).replace('_', '.'), formMessages));
-        addDefaultTrueFalseOptions(radio, formMessages);
-        addRequiredValidator(radio, formErrors);
+                        CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, id).replace('_', '.'), formParameters.getFormMessagesBundle()));
+        addDefaultTrueFalseOptions(radio, formParameters);
+        addRequiredValidator(radio, formParameters);
         return radio;
     }
 }

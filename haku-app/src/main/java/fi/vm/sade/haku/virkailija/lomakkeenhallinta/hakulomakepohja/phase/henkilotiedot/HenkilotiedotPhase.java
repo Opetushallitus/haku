@@ -26,7 +26,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.*;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.AddElementRule;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionComplexRule;
 import fi.vm.sade.haku.oppija.lomake.validation.validators.ContainedInOtherFieldValidator;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.*;
@@ -44,27 +44,27 @@ public final class HenkilotiedotPhase {
     private HenkilotiedotPhase() {
     }
 
-    public static Phase create(final String applicationType,final KoodistoService koodistoService, final String formMessagesBundle, final String formErrorsBundle, final String formVerboseHelpBundle) {
+    public static Phase create(final FormParameters formParameters) {
 
         // Henkilötiedot
         Phase henkilotiedot = new Phase("henkilotiedot", createI18NText("form.henkilotiedot.otsikko",
-          formMessagesBundle), false, Lists.newArrayList("APP_HAKEMUS_READ_UPDATE", "APP_HAKEMUS_CRUD", "APP_HAKEMUS_OPO"));
+                formParameters), false, Lists.newArrayList("APP_HAKEMUS_READ_UPDATE", "APP_HAKEMUS_CRUD", "APP_HAKEMUS_OPO"));
 
         Theme henkilotiedotRyhma = new Theme("HenkilotiedotGrp", createI18NText("form.henkilotiedot.otsikko",
-          formMessagesBundle), true);
+                formParameters), true);
 
         // Nimet
-        Question sukunimi = createNameQuestion("Sukunimi", "form.henkilotiedot.sukunimi", formMessagesBundle, formErrorsBundle, 30);
+        Question sukunimi = createNameQuestion("Sukunimi", "form.henkilotiedot.sukunimi", formParameters, 30);
         henkilotiedotRyhma.addChild(sukunimi);
 
-        Question etunimet = createNameQuestion("Etunimet", "form.henkilotiedot.etunimet", formMessagesBundle, formErrorsBundle, 30);
+        Question etunimet = createNameQuestion("Etunimet", "form.henkilotiedot.etunimet", formParameters, 30);
         henkilotiedotRyhma.addChild(etunimet);
 
-        Question kutsumanimi = createCallingNameQuestion(formMessagesBundle, formErrorsBundle, formVerboseHelpBundle, 20);
+        Question kutsumanimi = createCallingNameQuestion(formParameters);
         kutsumanimi.setValidator(
                 new ContainedInOtherFieldValidator(kutsumanimi.getId(),
                         etunimet.getId(),
-                        ElementUtil.createI18NText("yleinen.virheellinenArvo", formErrorsBundle)));
+                        ElementUtil.createI18NText("yleinen.virheellinenArvo", formParameters)));
 
         henkilotiedotRyhma.addChild(kutsumanimi);
 
@@ -72,30 +72,27 @@ public final class HenkilotiedotPhase {
         // Kansalaisuus, hetu ja sukupuoli suomalaisille
         DropdownSelect kansalaisuus =
                 new DropdownSelect("kansalaisuus", createI18NText("form.henkilotiedot.kansalaisuus",
-                  formMessagesBundle), null);
-        kansalaisuus.addOptions(koodistoService.getNationalities());
+                        formParameters), null);
+        kansalaisuus.addOptions(formParameters.getKoodistoService().getNationalities());
         setDefaultOption("FIN", kansalaisuus.getOptions());
-        kansalaisuus.setHelp(createI18NText("form.henkilotiedot.kansalaisuus.help", formMessagesBundle));
-        setRequiredInlineAndVerboseHelp(kansalaisuus, "form.henkilotiedot.kansalaisuus.verboseHelp", formVerboseHelpBundle,
-          formErrorsBundle);
+        kansalaisuus.setHelp(createI18NText("form.henkilotiedot.kansalaisuus.help", formParameters));
+        setRequiredInlineAndVerboseHelp(kansalaisuus, "form.henkilotiedot.kansalaisuus.verboseHelp", formParameters);
         henkilotiedotRyhma.addChild(kansalaisuus);
 
         TextQuestion henkilotunnus =
                 new TextQuestion("Henkilotunnus", createI18NText("form.henkilotiedot.henkilotunnus",
-                  formMessagesBundle));
+                        formParameters));
         henkilotunnus.addAttribute("placeholder", "ppkkvv*****");
         addSizeAttribute(henkilotunnus, 11);
         henkilotunnus.addAttribute("maxlength", "11");
-        henkilotunnus.setHelp(createI18NText("form.henkilotiedot.henkilotunnus.help", formMessagesBundle));
-        henkilotunnus.setValidator(createRegexValidator(henkilotunnus.getId(), HETU_PATTERN, formErrorsBundle));
-        setRequiredInlineAndVerboseHelp(henkilotunnus, "form.henkilotiedot.henkilotunnus.verboseHelp", formVerboseHelpBundle,
-          formErrorsBundle);
+        henkilotunnus.setHelp(createI18NText("form.henkilotiedot.henkilotunnus.help", formParameters));
+        henkilotunnus.setValidator(createRegexValidator(henkilotunnus.getId(), HETU_PATTERN, formParameters));
+        setRequiredInlineAndVerboseHelp(henkilotunnus, "form.henkilotiedot.henkilotunnus.verboseHelp", formParameters);
 
         Radio sukupuoli = new Radio("sukupuoli", createI18NText("form.henkilotiedot.sukupuoli",
-          formMessagesBundle));
-        sukupuoli.addOptions(koodistoService.getGenders());
-        setRequiredInlineAndVerboseHelp(sukupuoli, "form.henkilotiedot.sukupuoli.verboseHelp", formVerboseHelpBundle,
-          formErrorsBundle);
+                formParameters));
+        sukupuoli.addOptions(formParameters.getKoodistoService().getGenders());
+        setRequiredInlineAndVerboseHelp(sukupuoli, "form.henkilotiedot.sukupuoli.verboseHelp", formParameters);
 
         Option male = sukupuoli.getOptions().get(0).getI18nText().getTranslations().get("fi").equalsIgnoreCase("Mies") ?
                 sukupuoli.getOptions().get(0) : sukupuoli.getOptions().get(1);
@@ -103,9 +100,9 @@ public final class HenkilotiedotPhase {
                 sukupuoli.getOptions().get(0) : sukupuoli.getOptions().get(1);
         SocialSecurityNumber socialSecurityNumber =
                 new SocialSecurityNumber("ssn_question", createI18NText("form.henkilotiedot.hetu",
-                  formMessagesBundle),
+                        formParameters),
                         sukupuoli.getI18nText(), male, female, sukupuoli.getId(), henkilotunnus);
-        addUniqueApplicantValidator(henkilotunnus, applicationType);
+        addUniqueApplicantValidator(henkilotunnus, formParameters.getApplicationSystem().getApplicationSystemType());
 
         RelatedQuestionComplexRule hetuRule = createRegexpRule(kansalaisuus, EMPTY_OR_FIN_PATTERN);
         hetuRule.addChild(socialSecurityNumber);
@@ -113,10 +110,9 @@ public final class HenkilotiedotPhase {
 
         // Ulkomaalaisten tunnisteet
         Radio onkoSinullaSuomalainenHetu = new Radio("onkoSinullaSuomalainenHetu",
-                createI18NText("form.henkilotiedot.hetu.onkoSuomalainen", formMessagesBundle));
-        addDefaultTrueFalseOptions(onkoSinullaSuomalainenHetu, formMessagesBundle);
-        setRequiredInlineAndVerboseHelp(onkoSinullaSuomalainenHetu, "form.henkilotiedot.hetu.onkoSuomalainen.verboseHelp",
-          formVerboseHelpBundle, formErrorsBundle);
+                createI18NText("form.henkilotiedot.hetu.onkoSuomalainen", formParameters));
+        addDefaultTrueFalseOptions(onkoSinullaSuomalainenHetu, formParameters);
+        setRequiredInlineAndVerboseHelp(onkoSinullaSuomalainenHetu, "form.henkilotiedot.hetu.onkoSuomalainen.verboseHelp", formParameters);
         RelatedQuestionComplexRule suomalainenHetuRule = createRuleIfVariableIsTrue("onSuomalainenHetu", onkoSinullaSuomalainenHetu.getId());
         suomalainenHetuRule.addChild(socialSecurityNumber);
         onkoSinullaSuomalainenHetu.addChild(suomalainenHetuRule);
@@ -125,30 +121,30 @@ public final class HenkilotiedotPhase {
         eiSuomalaistaHetuaRule.addChild(sukupuoli);
 
         DateQuestion syntymaaika = new DateQuestion("syntymaaika", createI18NText("form.henkilotiedot.syntymaaika",
-                formMessagesBundle));
-        syntymaaika.setValidator(ElementUtil.createRegexValidator(syntymaaika.getId(), DATE_PATTERN, formErrorsBundle));
-        syntymaaika.setValidator(ElementUtil.createDateOfBirthValidator(syntymaaika.getId(), formErrorsBundle));
-        addRequiredValidator(syntymaaika, formErrorsBundle);
+                formParameters));
+        syntymaaika.setValidator(ElementUtil.createRegexValidator(syntymaaika.getId(), DATE_PATTERN, formParameters));
+        syntymaaika.setValidator(ElementUtil.createDateOfBirthValidator(syntymaaika.getId(), formParameters.getFormMessagesBundle()));
+        addRequiredValidator(syntymaaika, formParameters);
         syntymaaika.setInline(true);
         eiSuomalaistaHetuaRule.addChild(syntymaaika);
 
         TextQuestion syntymapaikka =
                 new TextQuestion("syntymapaikka", createI18NText("form.henkilotiedot.syntymapaikka",
-                  formMessagesBundle));
+                        formParameters));
         addSizeAttribute(syntymapaikka, 30);
-        addRequiredValidator(syntymapaikka, formErrorsBundle);
+        addRequiredValidator(syntymapaikka, formParameters);
         syntymapaikka.setInline(true);
         eiSuomalaistaHetuaRule.addChild(syntymapaikka);
 
         TextQuestion kansallinenIdTunnus =
                 new TextQuestion("kansallinenIdTunnus", createI18NText("form.henkilotiedot.kansallinenId",
-                  formMessagesBundle));
+                        formParameters));
         addSizeAttribute(kansallinenIdTunnus, 30);
         kansallinenIdTunnus.setInline(true);
         eiSuomalaistaHetuaRule.addChild(kansallinenIdTunnus);
 
         TextQuestion passinnumero = new TextQuestion("passinnumero", createI18NText("form.henkilotiedot.passinnumero",
-          formMessagesBundle));
+                formParameters));
         addSizeAttribute(passinnumero, 30);
         passinnumero.setInline(true);
         eiSuomalaistaHetuaRule.addChild(passinnumero);
@@ -161,23 +157,23 @@ public final class HenkilotiedotPhase {
 
         // Email
         TextQuestion email = new TextQuestion("Sähköposti", createI18NText("form.henkilotiedot.email",
-          formMessagesBundle));
+                formParameters));
         addSizeAttribute(email, 50);
-        email.setValidator(createRegexValidator(email.getId(), EMAIL_REGEX, formErrorsBundle));
-        email.setHelp(createI18NText("form.henkilotiedot.email.help", formMessagesBundle));
-        ElementUtil.setVerboseHelp(email, "form.henkilotiedot.email.verboseHelp", formVerboseHelpBundle);
+        email.setValidator(createRegexValidator(email.getId(), EMAIL_REGEX, formParameters));
+        email.setHelp(createI18NText("form.henkilotiedot.email.help", formParameters));
+        ElementUtil.setVerboseHelp(email, "form.henkilotiedot.email.verboseHelp", formParameters);
         email.setInline(true);
         henkilotiedotRyhma.addChild(email);
 
         // Matkapuhelinnumerot
 
         TextQuestion puhelinnumero1 = new TextQuestion("matkapuhelinnumero1",
-                createI18NText("form.henkilotiedot.matkapuhelinnumero", formMessagesBundle));
+                createI18NText("form.henkilotiedot.matkapuhelinnumero", formParameters));
         puhelinnumero1.setHelp(createI18NText("form.henkilotiedot.matkapuhelinnumero.help",
-          formMessagesBundle));
+                formParameters));
         addSizeAttribute(puhelinnumero1, 30);
-        puhelinnumero1.setValidator(createRegexValidator(puhelinnumero1.getId(), PHONE_PATTERN, formErrorsBundle));
-        ElementUtil.setVerboseHelp(puhelinnumero1, "form.henkilotiedot.matkapuhelinnumero.verboseHelp", formVerboseHelpBundle);
+        puhelinnumero1.setValidator(createRegexValidator(puhelinnumero1.getId(), PHONE_PATTERN, formParameters));
+        ElementUtil.setVerboseHelp(puhelinnumero1, "form.henkilotiedot.matkapuhelinnumero.verboseHelp", formParameters);
         puhelinnumero1.setInline(true);
         henkilotiedotRyhma.addChild(puhelinnumero1);
 
@@ -185,13 +181,13 @@ public final class HenkilotiedotPhase {
         AddElementRule prevRule = null;
         for (int i = 2; i <= 5; i++) {
             TextQuestion extranumero = new TextQuestion("matkapuhelinnumero" + i,
-                    createI18NText("form.henkilotiedot.puhelinnumero", formMessagesBundle));
+                    createI18NText("form.henkilotiedot.puhelinnumero", formParameters));
             addSizeAttribute(extranumero, 30);
-            extranumero.setValidator(createRegexValidator(extranumero.getId(), PHONE_PATTERN, formErrorsBundle));
+            extranumero.setValidator(createRegexValidator(extranumero.getId(), PHONE_PATTERN, formParameters));
             extranumero.setInline(true);
 
             AddElementRule extranumeroRule = new AddElementRule("addPuhelinnumero" + i + "Rule", prevNum.getId(),
-                    createI18NText("form.henkilotiedot.puhelinnumero.lisaa", formMessagesBundle));
+                    createI18NText("form.henkilotiedot.puhelinnumero.lisaa", formParameters));
             extranumeroRule.addChild(extranumero);
             if (i == 2) {
                 henkilotiedotRyhma.addChild(extranumeroRule);
@@ -205,36 +201,33 @@ public final class HenkilotiedotPhase {
 
         // Asuinmaa, osoite
         DropdownSelect asuinmaa = new DropdownSelect("asuinmaa", createI18NText("form.henkilotiedot.asuinmaa",
-          formMessagesBundle), null);
-        asuinmaa.addOptions(koodistoService.getCountries());
+                formParameters), null);
+        asuinmaa.addOptions(formParameters.getKoodistoService().getCountries());
         setDefaultOption("FIN", asuinmaa.getOptions());
-        setRequiredInlineAndVerboseHelp(asuinmaa, "form.henkilotiedot.asuinmaa.verboseHelp", formVerboseHelpBundle,
-          formErrorsBundle);
+        setRequiredInlineAndVerboseHelp(asuinmaa, "form.henkilotiedot.asuinmaa.verboseHelp", formParameters);
 
         RelatedQuestionComplexRule asuinmaaFI = ElementUtil.createRegexpRule(asuinmaa, EMPTY_OR_FIN_PATTERN);
-        Question lahiosoite = createRequiredTextQuestion("lahiosoite", "form.henkilotiedot.lahiosoite", formMessagesBundle,
-          formErrorsBundle, 40);
+        Question lahiosoite = createRequiredTextQuestion("lahiosoite", "form.henkilotiedot.lahiosoite", 40, formParameters);
         lahiosoite.setInline(true);
         asuinmaaFI.addChild(lahiosoite);
 
         Element postinumero = new PostalCode("Postinumero", createI18NText("form.henkilotiedot.postinumero",
-          formMessagesBundle), koodistoService.getPostOffices());
+                formParameters), formParameters.getKoodistoService().getPostOffices());
         addSizeAttribute(postinumero, 5);
         postinumero.addAttribute("placeholder", "00000");
         postinumero.addAttribute("maxlength", "5");
-        postinumero.setValidator(createRegexValidator(postinumero.getId(), POSTINUMERO_PATTERN, formErrorsBundle, "f"));
-        addRequiredValidator(postinumero, formErrorsBundle);
-        postinumero.setHelp(createI18NText("form.henkilotiedot.postinumero.help", formMessagesBundle));
+        postinumero.setValidator(createRegexValidator(postinumero.getId(), POSTINUMERO_PATTERN, formParameters, "f"));
+        addRequiredValidator(postinumero, formParameters);
+        postinumero.setHelp(createI18NText("form.henkilotiedot.postinumero.help", formParameters));
         asuinmaaFI.addChild(postinumero);
 
         DropdownSelect kotikunta =
                 new DropdownSelect("kotikunta", createI18NText("form.henkilotiedot.kotikunta",
-                  formMessagesBundle), null);
+                        formParameters), null);
         kotikunta.addOption(ElementUtil.createI18NAsIs(""), "");
-        kotikunta.addOptions(koodistoService.getMunicipalities());
-        setRequiredInlineAndVerboseHelp(kotikunta, "form.henkilotiedot.kotikunta.verboseHelp", formVerboseHelpBundle,
-          formErrorsBundle);
-        kotikunta.setHelp(createI18NText("form.henkilotiedot.kotikunta.help", formMessagesBundle));
+        kotikunta.addOptions(formParameters.getKoodistoService().getMunicipalities());
+        setRequiredInlineAndVerboseHelp(kotikunta, "form.henkilotiedot.kotikunta.verboseHelp", formParameters);
+        kotikunta.setHelp(createI18NText("form.henkilotiedot.kotikunta.help", formParameters));
         asuinmaaFI.addChild(kotikunta);
 
         /*CheckBox ensisijainenOsoite = new CheckBox("ensisijainenOsoite1",
@@ -243,16 +236,13 @@ public final class HenkilotiedotPhase {
         asuinmaaFI.addChild(ensisijainenOsoite);*/
 
         RelatedQuestionComplexRule relatedQuestionRule2 = ElementUtil.createRegexpRule(asuinmaa, NOT_FI);
-        Question osoiteUlkomaa = createRequiredTextQuestion("osoiteUlkomaa", "form.henkilotiedot.osoite", formMessagesBundle,
-          formErrorsBundle, 40);
+        Question osoiteUlkomaa = createRequiredTextQuestion("osoiteUlkomaa", "form.henkilotiedot.osoite", 40, formParameters);
         osoiteUlkomaa.setInline(true);
         relatedQuestionRule2.addChild(osoiteUlkomaa);
-        Question postinumeroUlkomaa = createRequiredTextQuestion("postinumeroUlkomaa", "form.henkilotiedot.postinumero",
-          formMessagesBundle, formErrorsBundle, 12);
+        Question postinumeroUlkomaa = createRequiredTextQuestion("postinumeroUlkomaa", "form.henkilotiedot.postinumero", 12, formParameters);
         postinumeroUlkomaa.setInline(true);
         relatedQuestionRule2.addChild(postinumeroUlkomaa);
-        Question kaupunkiUlkomaa = createRequiredTextQuestion("kaupunkiUlkomaa", "form.henkilotiedot.kaupunki",
-          formMessagesBundle, formErrorsBundle, 25);
+        Question kaupunkiUlkomaa = createRequiredTextQuestion("kaupunkiUlkomaa", "form.henkilotiedot.kaupunki", 25, formParameters);
         kaupunkiUlkomaa.setInline(true);
         relatedQuestionRule2.addChild(kaupunkiUlkomaa);
 
@@ -263,31 +253,29 @@ public final class HenkilotiedotPhase {
 
         // Äidinkieli
         DropdownSelect aidinkieli =
-                new DropdownSelect(AIDINKIELI_ID, createI18NText("form.henkilotiedot.aidinkieli",
-                  formMessagesBundle),
+                new DropdownSelect(AIDINKIELI_ID, createI18NText("form.henkilotiedot.aidinkieli", formParameters),
                         "fi_vm_sade_oppija_language");
         aidinkieli.addOption(ElementUtil.createI18NAsIs(""), "");
-        aidinkieli.addOptions(koodistoService.getLanguages());
-        setRequiredInlineAndVerboseHelp(aidinkieli, "form.henkilotiedot.aidinkieli.verboseHelp", formVerboseHelpBundle,
-          formErrorsBundle);
-        aidinkieli.setHelp(createI18NText("form.henkilotiedot.aidinkieli.help", formMessagesBundle));
+        aidinkieli.addOptions(formParameters.getKoodistoService().getLanguages());
+        setRequiredInlineAndVerboseHelp(aidinkieli, "form.henkilotiedot.aidinkieli.verboseHelp", formParameters);
+        aidinkieli.setHelp(createI18NText("form.henkilotiedot.aidinkieli.help", formParameters));
         henkilotiedotRyhma.addChild(aidinkieli);
 
         henkilotiedot.addChild(henkilotiedotRyhma);
         return henkilotiedot;
     }
 
-    private static TextQuestion createCallingNameQuestion(String formMessagesBundle, String formErrorsBundle, String formVerboseHelpBundle, final int size) {
-        TextQuestion kutsumanimi = createNameQuestion("Kutsumanimi", "form.henkilotiedot.kutsumanimi", formMessagesBundle, formErrorsBundle, 20 );
-        kutsumanimi.setHelp(createI18NText("form.henkilotiedot.kutsumanimi.help", formMessagesBundle));
-        setVerboseHelp(kutsumanimi, "form.henkilotiedot.kutsumanimi.verboseHelp", formVerboseHelpBundle);
+    private static TextQuestion createCallingNameQuestion(final FormParameters formParameters) {
+        TextQuestion kutsumanimi = createNameQuestion("Kutsumanimi", "form.henkilotiedot.kutsumanimi", formParameters, 20);
+        kutsumanimi.setHelp(createI18NText("form.henkilotiedot.kutsumanimi.help", formParameters));
+        setVerboseHelp(kutsumanimi, "form.henkilotiedot.kutsumanimi.verboseHelp", formParameters);
         return kutsumanimi;
     }
 
-    private static TextQuestion createNameQuestion(String id, String translation, String formMessagesBundle, String formErrorsBundle, final int size ) {
-        TextQuestion name = createRequiredTextQuestion(id, translation, formMessagesBundle, formErrorsBundle, size);
+    private static TextQuestion createNameQuestion(String id, String translation, final FormParameters formParameters, final int size) {
+        TextQuestion name = createRequiredTextQuestion(id, translation, size, formParameters);
         name.setInline(true);
-        name.setValidator(createRegexValidator(name.getId(), ElementUtil.ISO88591_NAME_REGEX, formErrorsBundle));
+        name.setValidator(createRegexValidator(name.getId(), ElementUtil.ISO88591_NAME_REGEX, formParameters));
         return name;
     }
 }

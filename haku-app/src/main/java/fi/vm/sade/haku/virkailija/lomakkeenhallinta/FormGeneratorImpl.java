@@ -1,13 +1,14 @@
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta;
 
+import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystemBuilder;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.LisahakuSyksy;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.YhteishakuKevat;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.YhteishakuSyksy;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.valmis.ValmisPhase;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakuService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
@@ -53,34 +54,38 @@ public class FormGeneratorImpl implements FormGenerator {
     }
 
     private ApplicationSystem createApplicationSystem(ApplicationSystem as) {
-        Form form = null;
-        List<Element> applicationCompleteElements;
-        List<Element> additionalPrintElements;
-        if (as.getApplicationSystemType().equals(OppijaConstants.LISA_HAKU)) {
-            form = LisahakuSyksy.generateForm(as, koodistoService);
-            applicationCompleteElements = LisahakuSyksy.generateApplicationCompleteElements();
-            additionalPrintElements = LisahakuSyksy.createAdditionalInformationElements();
-        } else {
-            if (as.getHakukausiUri().equals(OppijaConstants.HAKUKAUSI_SYKSY)) {
-                form = YhteishakuSyksy.generateForm(as, koodistoService);
-                applicationCompleteElements = YhteishakuSyksy.createApplicationCompleteElements();
-                additionalPrintElements = YhteishakuSyksy.createAdditionalInformationElements();
-            } else if (as.getHakukausiUri().equals(OppijaConstants.HAKUKAUSI_KEVAT)) {
-                form = YhteishakuKevat.generateForm(as, koodistoService);
-                applicationCompleteElements = YhteishakuKevat.generateApplicationCompleteElements();
-                additionalPrintElements = YhteishakuKevat.createAdditionalInformationElements();
-            } else {
-                return null;
-            }
-        }
-        return new ApplicationSystemBuilder().addId(as.getId()).addForm(form)
+        return new ApplicationSystemBuilder().addId(as.getId()).addForm(generateForm(as))
                 .addName(as.getName()).addApplicationPeriods(as.getApplicationPeriods())
                 .addApplicationSystemType(as.getApplicationSystemType())
                 .addHakukausiUri(as.getHakukausiUri())
                 .addHakukausiVuosi(as.getHakukausiVuosi())
-                .addApplicationCompleteElements(applicationCompleteElements)
-                .addAdditionalInformationElements(additionalPrintElements)
+                .addApplicationCompleteElements(ValmisPhase.create(as))
+                .addAdditionalInformationElements(ValmisPhase.createAdditionalInformationElements(getMessageBundleName("form_messages", as)))
                 .get();
+    }
+
+    private Form generateForm(final ApplicationSystem as) {
+        Form form = null;
+        if (as.getApplicationSystemType().equals(OppijaConstants.LISA_HAKU)) {
+            form = LisahakuSyksy.generateForm(as, koodistoService);
+        } else {
+            if (as.getHakukausiUri().equals(OppijaConstants.HAKUKAUSI_SYKSY)) {
+                form = YhteishakuSyksy.generateForm(as, koodistoService);
+            } else if (as.getHakukausiUri().equals(OppijaConstants.HAKUKAUSI_KEVAT)) {
+                form = YhteishakuKevat.generateForm(as, koodistoService);
+            } else {
+                return null;
+            }
+        }
+        return form;
+    }
+
+    public static String getMessageBundleName(final String baseName, final ApplicationSystem as) {
+        String hakutyyppi = OppijaConstants.LISA_HAKU.equals(as.getApplicationSystemType()) ? "lisahaku" : "yhteishaku";
+        String hakukausi = OppijaConstants.HAKUKAUSI_SYKSY.equals(as.getHakukausiUri()) ? "syksy" : "kevat";
+
+        return Joiner.on('_').join(baseName, hakutyyppi, hakukausi);
+
     }
 
 

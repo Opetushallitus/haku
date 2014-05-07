@@ -3,6 +3,7 @@ package fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.valmi
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Link;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Text;
@@ -12,8 +13,10 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.DiscretionaryAttachm
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.Print;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionComplexRule;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.Expr;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.FormGeneratorImpl;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ExprUtil;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 
 import java.util.List;
 import java.util.Set;
@@ -110,5 +113,16 @@ public class ValmisPhase {
         musiikkiTanssiLiikuntaRule.addChild(musiikkiTanssiLiikuntaGroup);
 
         return Lists.newArrayList(athleteRule, musiikkiTanssiLiikuntaRule);
+    }
+
+    public static List<Element> create(ApplicationSystem as) {
+        String formMessagesBundle = FormGeneratorImpl.getMessageBundleName("form_messages", as);
+
+        if (as.getApplicationSystemType().equals(OppijaConstants.LISA_HAKU)) {
+            return ValmisPhase.create(formMessagesBundle, "form.valmis.muutoksentekeminen.p1");
+        } else {
+            return ValmisPhase.create(formMessagesBundle, "form.valmis.muutoksentekeminen.p1",
+                    "form.valmis.muutoksentekeminen.p2", "form.valmis.muutoksentekeminen.p3");
+        }
     }
 }

@@ -18,17 +18,17 @@ package fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.osaam
 
 import com.google.common.collect.Lists;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Phase;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
 
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.createI18NText;
 
 public class OsaaminenPhaseSyksy {
 
-    public static Phase create(final KoodistoService koodistoService, final String formMessagesBundle, final String formErrorsBundle, final String formVerboseHelpBundle) {
-        Phase osaaminen = new Phase("osaaminen", createI18NText("form.osaaminen.otsikko", formMessagesBundle), false,
+    public static Phase create(final FormParameters formParameters) {
+        Phase osaaminen = new Phase("osaaminen", createI18NText("form.osaaminen.otsikko", formParameters.getFormMessagesBundle()), false,
                 Lists.newArrayList("APP_HAKEMUS_READ_UPDATE", "APP_HAKEMUS_CRUD", "APP_HAKEMUS_OPO"));
-        osaaminen.addChild(ArvosanatTheme.createArvosanatTheme(koodistoService, formMessagesBundle, formErrorsBundle, formVerboseHelpBundle));
-        osaaminen.addChild(KielitaitokysymyksetTheme.createKielitaitokysymyksetTheme(formMessagesBundle, formErrorsBundle, formVerboseHelpBundle));
+        osaaminen.addChild(ArvosanatTheme.createArvosanatTheme(formParameters));
+        osaaminen.addChild(KielitaitokysymyksetTheme.createKielitaitokysymyksetTheme(formParameters));
         return osaaminen;
     }
 }

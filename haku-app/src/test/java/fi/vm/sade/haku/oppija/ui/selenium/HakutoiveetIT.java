@@ -17,16 +17,18 @@
 package fi.vm.sade.haku.oppija.ui.selenium;
 
 import com.google.common.collect.Lists;
-import com.thoughtworks.selenium.Selenium;
 import fi.vm.sade.haku.oppija.common.selenium.AbstractSeleniumBase;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
+import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystemBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Phase;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Theme;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.PreferenceRow;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.PreferenceTable;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.hakutoiveet.HakutoiveetPhaseYhteishakuSyksy;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
@@ -60,9 +62,10 @@ public class HakutoiveetIT extends AbstractSeleniumBase {
         hakutoiveet.addChild(hakutoiveetRyhmä);
         hakutoiveetRyhmä.setHelp(createI18NAsIs("Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem."));
         PreferenceTable preferenceTable = new PreferenceTable("preferencelist", createI18NAsIs("Hakutoiveet"));
-        PreferenceRow pr1 = HakutoiveetPhaseYhteishakuSyksy.createI18NPreferenceRow("preference1", "Hakutoive 1");
-        PreferenceRow pr2 = HakutoiveetPhaseYhteishakuSyksy.createI18NPreferenceRow("preference2", "Hakutoive 2");
-        PreferenceRow pr3 = HakutoiveetPhaseYhteishakuSyksy.createI18NPreferenceRow("preference3", "Hakutoive 3");
+        FormParameters formParameters = new FormParameters(new ApplicationSystemBuilder().addHakukausiUri(OppijaConstants.HAKUKAUSI_SYKSY).addApplicationSystemType(OppijaConstants.VARSINAINEN_HAKU).get(), null);
+        PreferenceRow pr1 = HakutoiveetPhaseYhteishakuSyksy.createI18NPreferenceRow("preference1", "Hakutoive 1", formParameters);
+        PreferenceRow pr2 = HakutoiveetPhaseYhteishakuSyksy.createI18NPreferenceRow("preference2", "Hakutoive 2", formParameters);
+        PreferenceRow pr3 = HakutoiveetPhaseYhteishakuSyksy.createI18NPreferenceRow("preference3", "Hakutoive 3", formParameters);
         preferenceTable.addChild(pr1);
         preferenceTable.addChild(pr2);
         preferenceTable.addChild(pr3);

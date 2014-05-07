@@ -19,10 +19,13 @@ package fi.vm.sade.haku.oppija.ui.selenium;
 import fi.vm.sade.haku.oppija.common.selenium.AbstractSeleniumBase;
 import fi.vm.sade.haku.oppija.lomake.ApplicationSystemHelper;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
+import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystemBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.builders.FormModelBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.SocialSecurityNumber;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Radio;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.TextQuestion;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
@@ -33,6 +36,7 @@ import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.*;
 
 
 public class SocialSecurityNumberIT extends AbstractSeleniumBase {
+
     private ApplicationSystemHelper applicationSystemHelper;
 
     @Before
@@ -41,17 +45,18 @@ public class SocialSecurityNumberIT extends AbstractSeleniumBase {
         TextQuestion henkilötunnus = new TextQuestion("Henkilotunnus", createI18NAsIs("Henkilotunnus"));
         henkilötunnus.addAttribute("placeholder", "ppkkvv*****");
         henkilötunnus.addAttribute("title", "ppkkvv*****");
-        addRequiredValidator(henkilötunnus, "form_errors_yhteishaku_syksy");
-        henkilötunnus.setValidator(createRegexValidator(henkilötunnus.getId(), "[0-9]{6}.[0-9]{4}", "form_errors_yhteishaku_syksy"));
+        FormParameters formParameters = new FormParameters(new ApplicationSystemBuilder().addHakukausiUri(OppijaConstants.HAKUKAUSI_SYKSY).addApplicationSystemType(OppijaConstants.VARSINAINEN_HAKU).get(), null);
+        addRequiredValidator(henkilötunnus, formParameters);
+        henkilötunnus.setValidator(createRegexValidator(henkilötunnus.getId(), "[0-9]{6}.[0-9]{4}", formParameters));
         henkilötunnus.addAttribute("size", "11");
         henkilötunnus.addAttribute("maxlength", "11");
         henkilötunnus.setHelp(createI18NAsIs("Jos sinulla ei ole suomalaista henkilötunnusta, täytä tähän syntymäaikasi"));
         henkilötunnus.setInline(true);
 
         Radio sukupuoli = new Radio("Sukupuoli", createI18NAsIs("Sukupuoli"));
-        sukupuoli.addOption(createI18NText("form.henkilotiedot.sukupuoli.mies", "form_messages_yhteishaku_syksy"), "1");
-        sukupuoli.addOption(createI18NText("form.henkilotiedot.sukupuoli.nainen", "form_messages_yhteishaku_syksy"), "2");
-        addRequiredValidator(sukupuoli, "form_errors_yhteishaku_syksy");
+        sukupuoli.addOption(createI18NText("form.henkilotiedot.sukupuoli.mies", formParameters), "1");
+        sukupuoli.addOption(createI18NText("form.henkilotiedot.sukupuoli.nainen", formParameters), "2");
+        addRequiredValidator(sukupuoli, formParameters);
         sukupuoli.setInline(true);
 
         SocialSecurityNumber socialSecurityNumber = new SocialSecurityNumber("ssn_question", createI18NAsIs("Henkilötunnus"),

@@ -26,7 +26,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.gradegrid.GradeGrid;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Radio;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionComplexRule;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.*;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ExprUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
@@ -37,10 +37,6 @@ import java.util.List;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.*;
 
 public class OsaaminenPhaseYhteishakuKevat {
-
-    private static final String FORM_MESSAGES = "form_messages_yhteishaku_kevat";
-    private static final String FORM_ERRORS = "form_errors_yhteishaku_kevat";
-    private static final String FORM_VERBOSE_HELP = "form_verboseHelp_yhteishaku_kevat";
 
     public static final String RELATED_ELEMENT_ID = "POHJAKOULUTUS";
     public static final String ARVOSANAT_THEME_ID = "arvosanatTheme";
@@ -66,16 +62,15 @@ public class OsaaminenPhaseYhteishakuKevat {
             OppijaConstants.ULKOMAINEN_TUTKINTO
     };
 
-    public static Phase create(final KoodistoService koodistoService, final ApplicationSystem applicationSystem) {
-        Phase osaaminen = new Phase("osaaminen", createI18NText("form.osaaminen.otsikko", FORM_MESSAGES), false,
+    public static Phase create(final FormParameters formParameters) {
+        Phase osaaminen = new Phase("osaaminen", createI18NText("form.osaaminen.otsikko", formParameters), false,
                 Lists.newArrayList("APP_HAKEMUS_READ_UPDATE", "APP_HAKEMUS_CRUD", "APP_HAKEMUS_OPO"));
-        osaaminen.addChild(createArvosanatTheme(koodistoService, FORM_MESSAGES, FORM_ERRORS, FORM_VERBOSE_HELP,
-                applicationSystem.getHakukausiVuosi()));
-        osaaminen.addChild(createKielitaitokysymyksetTheme(applicationSystem.getHakukausiVuosi()));
+        osaaminen.addChild(createArvosanatTheme(formParameters));
+        osaaminen.addChild(createKielitaitokysymyksetTheme(formParameters));
         return osaaminen;
     }
 
-    private static Element createKielitaitokysymyksetTheme(Integer hakukausiVuosi) {
+    private static Element createKielitaitokysymyksetTheme(final FormParameters formParameters) {
 
         //PK
         Expr pohjakoulutusOnPK = ExprUtil.atLeastOneValueEqualsToVariable(OppijaConstants.ELEMENT_ID_BASE_EDUCATION, BASE_EDUCATION_PK);
@@ -100,31 +95,33 @@ public class OsaaminenPhaseYhteishakuKevat {
         RelatedQuestionComplexRule naytetaankoSaamePK = new RelatedQuestionComplexRule(ElementUtil.randomId(), kysytaankoSaamePK);
         RelatedQuestionComplexRule naytetaankoViittomaPK = new RelatedQuestionComplexRule(ElementUtil.randomId(), kysytaankoViittomaPK);
 
+
+        Integer hakukausiVuosi = formParameters.getApplicationSystem().getHakukausiVuosi();
         Expr tuoreTodistusPK = new Not(ExprUtil.atLeastOneVariableEqualsToValue(String.valueOf(hakukausiVuosi), OppijaConstants.PERUSOPETUS_PAATTOTODISTUSVUOSI));
 
         RelatedQuestionComplexRule kysytaankoArvosanaPkFi = new RelatedQuestionComplexRule(ElementUtil.randomId(), tuoreTodistusPK);
-        kysytaankoArvosanaPkFi.addChild(createKielitutkinto("peruskoulun_paattotodistus_vahintaan_seitseman_fi", FORM_MESSAGES, FORM_ERRORS));
+        kysytaankoArvosanaPkFi.addChild(createKielitutkinto("peruskoulun_paattotodistus_vahintaan_seitseman_fi", formParameters));
         naytetaankoSuomiPK.addChild(kysytaankoArvosanaPkFi,
-                createKielitutkinto("yleinen_kielitutkinto_fi", FORM_MESSAGES, FORM_ERRORS),
-                createKielitutkinto("valtionhallinnon_kielitutkinto_fi", FORM_MESSAGES, FORM_ERRORS));
+                createKielitutkinto("yleinen_kielitutkinto_fi", formParameters),
+                createKielitutkinto("valtionhallinnon_kielitutkinto_fi", formParameters));
 
         RelatedQuestionComplexRule kysytaankoArvosanaPkSv = new RelatedQuestionComplexRule(ElementUtil.randomId(), tuoreTodistusPK);
-        kysytaankoArvosanaPkSv.addChild(createKielitutkinto("peruskoulun_paattotodistus_vahintaan_seitseman_sv", FORM_MESSAGES, FORM_ERRORS));
+        kysytaankoArvosanaPkSv.addChild(createKielitutkinto("peruskoulun_paattotodistus_vahintaan_seitseman_sv", formParameters));
         naytetaankoRuotsiPK.addChild(kysytaankoArvosanaPkSv,
-                createKielitutkinto("yleinen_kielitutkinto_sv", FORM_MESSAGES, FORM_ERRORS),
-                createKielitutkinto("valtionhallinnon_kielitutkinto_sv", FORM_MESSAGES, FORM_ERRORS));
+                createKielitutkinto("yleinen_kielitutkinto_sv", formParameters),
+                createKielitutkinto("valtionhallinnon_kielitutkinto_sv", formParameters));
 
         RelatedQuestionComplexRule kysytaankoArvosanaPkSe = new RelatedQuestionComplexRule(ElementUtil.randomId(), tuoreTodistusPK);
-        kysytaankoArvosanaPkSe.addChild(createKielitutkinto("peruskoulun_paattotodistus_vahintaan_seitseman_se", FORM_MESSAGES, FORM_ERRORS));
+        kysytaankoArvosanaPkSe.addChild(createKielitutkinto("peruskoulun_paattotodistus_vahintaan_seitseman_se", formParameters));
         naytetaankoSaamePK.addChild(kysytaankoArvosanaPkSe,
-                createKielitutkinto("yleinen_kielitutkinto_se", FORM_MESSAGES, FORM_ERRORS),
-                createKielitutkinto("valtionhallinnon_kielitutkinto_se", FORM_MESSAGES, FORM_ERRORS));
+                createKielitutkinto("yleinen_kielitutkinto_se", formParameters),
+                createKielitutkinto("valtionhallinnon_kielitutkinto_se", formParameters));
 
         RelatedQuestionComplexRule kysytaankoArvosanaPkVk = new RelatedQuestionComplexRule(ElementUtil.randomId(), tuoreTodistusPK);
-        kysytaankoArvosanaPkVk.addChild(createKielitutkinto("peruskoulun_paattotodistus_vahintaan_seitseman_vk", FORM_MESSAGES, FORM_ERRORS));
+        kysytaankoArvosanaPkVk.addChild(createKielitutkinto("peruskoulun_paattotodistus_vahintaan_seitseman_vk", formParameters));
         naytetaankoViittomaPK.addChild(kysytaankoArvosanaPkVk,
-                createKielitutkinto("yleinen_kielitutkinto_vk", FORM_MESSAGES, FORM_ERRORS),
-                createKielitutkinto("valtionhallinnon_kielitutkinto_vk", FORM_MESSAGES, FORM_ERRORS));
+                createKielitutkinto("yleinen_kielitutkinto_vk", formParameters),
+                createKielitutkinto("valtionhallinnon_kielitutkinto_vk", formParameters));
 
         //YO
         Expr pohjakoulutusOnYO = ExprUtil.atLeastOneValueEqualsToVariable(OppijaConstants.ELEMENT_ID_BASE_EDUCATION, OppijaConstants.YLIOPPILAS);
@@ -144,32 +141,31 @@ public class OsaaminenPhaseYhteishakuKevat {
         RelatedQuestionComplexRule naytetaankoRuotsiYO = new RelatedQuestionComplexRule(ElementUtil.randomId(), kysytaankoRuotsiYO);
         RelatedQuestionComplexRule naytetaankoSaameYO = new RelatedQuestionComplexRule(ElementUtil.randomId(), kysytaankoSaameYO);
         RelatedQuestionComplexRule naytetaankoViittomaYO = new RelatedQuestionComplexRule(ElementUtil.randomId(), kysytaankoViittomaYO);
-
         Expr tuoreTodistusYo = new Not(ExprUtil.atLeastOneVariableEqualsToValue(String.valueOf(hakukausiVuosi), OppijaConstants.PERUSOPETUS_PAATTOTODISTUSVUOSI));
 
         RelatedQuestionComplexRule kysytaankoArvosanaYoFi = new RelatedQuestionComplexRule(ElementUtil.randomId(), tuoreTodistusYo);
-        kysytaankoArvosanaYoFi.addChild(createKielitutkinto("lukion_paattotodistus_vahintaan_seitseman_fi", FORM_MESSAGES, FORM_ERRORS));
+        kysytaankoArvosanaYoFi.addChild(createKielitutkinto("lukion_paattotodistus_vahintaan_seitseman_fi", formParameters));
         naytetaankoSuomiYO.addChild(kysytaankoArvosanaYoFi,
-                createKielitutkinto("yleinen_kielitutkinto_fi", FORM_MESSAGES, FORM_ERRORS),
-                createKielitutkinto("valtionhallinnon_kielitutkinto_fi", FORM_MESSAGES, FORM_ERRORS));
+                createKielitutkinto("yleinen_kielitutkinto_fi", formParameters),
+                createKielitutkinto("valtionhallinnon_kielitutkinto_fi", formParameters));
 
         RelatedQuestionComplexRule kysytaankoArvosanaYoSv = new RelatedQuestionComplexRule(ElementUtil.randomId(), tuoreTodistusYo);
-        kysytaankoArvosanaYoSv.addChild(createKielitutkinto("lukion_paattotodistus_vahintaan_seitseman_sv", FORM_MESSAGES, FORM_ERRORS));
+        kysytaankoArvosanaYoSv.addChild(createKielitutkinto("lukion_paattotodistus_vahintaan_seitseman_sv", formParameters));
         naytetaankoRuotsiYO.addChild(kysytaankoArvosanaYoSv,
-                createKielitutkinto("yleinen_kielitutkinto_sv", FORM_MESSAGES, FORM_ERRORS),
-                createKielitutkinto("valtionhallinnon_kielitutkinto_sv", FORM_MESSAGES, FORM_ERRORS));
+                createKielitutkinto("yleinen_kielitutkinto_sv", formParameters),
+                createKielitutkinto("valtionhallinnon_kielitutkinto_sv", formParameters));
 
         RelatedQuestionComplexRule kysytaankoArvosanaYoSe = new RelatedQuestionComplexRule(ElementUtil.randomId(), tuoreTodistusYo);
-        kysytaankoArvosanaYoSe.addChild(createKielitutkinto("lukion_paattotodistus_vahintaan_seitseman_se", FORM_MESSAGES, FORM_ERRORS));
+        kysytaankoArvosanaYoSe.addChild(createKielitutkinto("lukion_paattotodistus_vahintaan_seitseman_se", formParameters));
         naytetaankoSaameYO.addChild(kysytaankoArvosanaYoSe,
-                createKielitutkinto("yleinen_kielitutkinto_se", FORM_MESSAGES, FORM_ERRORS),
-                createKielitutkinto("valtionhallinnon_kielitutkinto_se", FORM_MESSAGES, FORM_ERRORS));
+                createKielitutkinto("yleinen_kielitutkinto_se", formParameters),
+                createKielitutkinto("valtionhallinnon_kielitutkinto_se", formParameters));
 
         RelatedQuestionComplexRule kysytaankoArvosanaYoVk = new RelatedQuestionComplexRule(ElementUtil.randomId(), tuoreTodistusYo);
-        kysytaankoArvosanaYoVk.addChild(createKielitutkinto("lukion_paattotodistus_vahintaan_seitseman_vk", FORM_MESSAGES, FORM_ERRORS));
+        kysytaankoArvosanaYoVk.addChild(createKielitutkinto("lukion_paattotodistus_vahintaan_seitseman_vk", formParameters));
         naytetaankoViittomaYO.addChild(kysytaankoArvosanaYoVk,
-                createKielitutkinto("yleinen_kielitutkinto_vk", FORM_MESSAGES, FORM_ERRORS),
-                createKielitutkinto("valtionhallinnon_kielitutkinto_vk", FORM_MESSAGES, FORM_ERRORS));
+                createKielitutkinto("yleinen_kielitutkinto_vk", formParameters),
+                createKielitutkinto("valtionhallinnon_kielitutkinto_vk", formParameters));
 
 
         //KESKEYTTANYT TAI ULKOMAILLA SUORITTANUT
@@ -190,14 +186,14 @@ public class OsaaminenPhaseYhteishakuKevat {
         RelatedQuestionComplexRule naytetaankoRuotsiKeskUlk = new RelatedQuestionComplexRule(ElementUtil.randomId(), kysytaankoRuotsiKeskUlk);
         RelatedQuestionComplexRule naytetaankoSaameKeskUlk = new RelatedQuestionComplexRule(ElementUtil.randomId(), kysytaankoSaameKeskUlk);
         RelatedQuestionComplexRule naytetaankoViittomaKeskUlk = new RelatedQuestionComplexRule(ElementUtil.randomId(), kysytaankoViittomaKeskUlk);
-        naytetaankoSuomiKeskUlk.addChild(createKielitutkinto("yleinen_kielitutkinto_fi", FORM_MESSAGES, FORM_ERRORS),
-                createKielitutkinto("valtionhallinnon_kielitutkinto_fi", FORM_MESSAGES, FORM_ERRORS));
-        naytetaankoRuotsiKeskUlk.addChild(createKielitutkinto("yleinen_kielitutkinto_sv", FORM_MESSAGES, FORM_ERRORS),
-                createKielitutkinto("valtionhallinnon_kielitutkinto_sv", FORM_MESSAGES, FORM_ERRORS));
-        naytetaankoSaameKeskUlk.addChild(createKielitutkinto("yleinen_kielitutkinto_se", FORM_MESSAGES, FORM_ERRORS),
-                createKielitutkinto("valtionhallinnon_kielitutkinto_se", FORM_MESSAGES, FORM_ERRORS));
-        naytetaankoViittomaKeskUlk.addChild(createKielitutkinto("yleinen_kielitutkinto_vk", FORM_MESSAGES, FORM_ERRORS),
-                createKielitutkinto("valtionhallinnon_kielitutkinto_vk", FORM_MESSAGES, FORM_ERRORS));
+        naytetaankoSuomiKeskUlk.addChild(createKielitutkinto("yleinen_kielitutkinto_fi", formParameters),
+                createKielitutkinto("valtionhallinnon_kielitutkinto_fi", formParameters));
+        naytetaankoRuotsiKeskUlk.addChild(createKielitutkinto("yleinen_kielitutkinto_sv", formParameters),
+                createKielitutkinto("valtionhallinnon_kielitutkinto_sv", formParameters));
+        naytetaankoSaameKeskUlk.addChild(createKielitutkinto("yleinen_kielitutkinto_se", formParameters),
+                createKielitutkinto("valtionhallinnon_kielitutkinto_se", formParameters));
+        naytetaankoViittomaKeskUlk.addChild(createKielitutkinto("yleinen_kielitutkinto_vk", formParameters),
+                createKielitutkinto("valtionhallinnon_kielitutkinto_vk", formParameters));
 
 
         Expr naytetaankoKielitaitoteema = ExprUtil.reduceToOr(ImmutableList.of(kysytaankoSuomiPK,
@@ -207,11 +203,11 @@ public class OsaaminenPhaseYhteishakuKevat {
 
         RelatedQuestionComplexRule naytetaankoTeema = new RelatedQuestionComplexRule(ElementUtil.randomId(), naytetaankoKielitaitoteema);
         Theme kielitaitokysymyksetTheme =
-                new Theme("KielitaitokysymyksetTheme", ElementUtil.createI18NText("form.kielitaito.otsikko", FORM_MESSAGES), true);
+                new Theme("KielitaitokysymyksetTheme", ElementUtil.createI18NText("form.kielitaito.otsikko", formParameters), true);
         kielitaitokysymyksetTheme.addChild(naytetaankoSuomiPK, naytetaankoRuotsiPK, naytetaankoSuomiYO, naytetaankoRuotsiYO,
                 naytetaankoSuomiKeskUlk, naytetaankoRuotsiKeskUlk, naytetaankoSaamePK, naytetaankoSaameYO, naytetaankoSaameKeskUlk,
                 naytetaankoViittomaPK, naytetaankoViittomaYO, naytetaankoViittomaKeskUlk);
-        ElementUtil.setVerboseHelp(kielitaitokysymyksetTheme, "form.kielitaito.otsikko.verboseHelp", FORM_VERBOSE_HELP);
+        ElementUtil.setVerboseHelp(kielitaitokysymyksetTheme, "form.kielitaito.otsikko.verboseHelp", formParameters);
         naytetaankoTeema.addChild(kielitaitokysymyksetTheme);
 
         return naytetaankoTeema;
@@ -222,36 +218,35 @@ public class OsaaminenPhaseYhteishakuKevat {
                 BASE_EDUCATION_KESK_ULK);
     }
 
-    private static Radio createKielitutkinto(final String id, final String formMessages, final String formErrors) {
+    private static Radio createKielitutkinto(final String id, final FormParameters formParameters) {
         Radio radio = new Radio(id,
                 createI18NText("form.kielitaito." +
-                        CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, id).replace('_', '.'), formMessages));
-        addDefaultTrueFalseOptions(radio, formMessages);
-        addRequiredValidator(radio, formErrors);
+                        CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, id).replace('_', '.'), formParameters.getFormMessagesBundle()));
+        addDefaultTrueFalseOptions(radio, formParameters);
+        addRequiredValidator(radio, formParameters);
         return radio;
     }
 
-    private static Theme createArvosanatTheme(final KoodistoService koodistoService, final String formMessages,
-                                              final String formErrors, final String verboseHelps,
-                                              final Integer hakuvuosi) {
+    private static Theme createArvosanatTheme(final FormParameters formParameters) {
         Theme arvosanatTheme = new Theme(
                 ARVOSANAT_THEME_ID,
-                createI18NText("form.arvosanat.otsikko", formMessages),
+                createI18NText("form.arvosanat.otsikko", formParameters.getFormMessagesBundle()),
                 true);
-        ElementUtil.setVerboseHelp(arvosanatTheme, "form.arvosanat.otsikko.verboseHelp", verboseHelps);
+        ElementUtil.setVerboseHelp(arvosanatTheme, "form.arvosanat.otsikko.verboseHelp", formParameters);
 
-        GradesTable gradesTablePK = new GradesTable(koodistoService, true, formMessages, formErrors, verboseHelps);
-        GradesTable gradesTableYO = new GradesTable(koodistoService, false, formMessages, formErrors, verboseHelps);
+        GradesTable gradesTablePK = new GradesTable(true, formParameters);
+        GradesTable gradesTableYO = new GradesTable(false, formParameters);
 
         // Peruskoulu
-        GradeGrid grid_pk = gradesTablePK.createGradeGrid("grid_pk", formMessages, formErrors, verboseHelps);
-        grid_pk.setHelp(createI18NText("form.arvosanat.help", formMessages));
+        GradeGrid grid_pk = gradesTablePK.createGradeGrid("grid_pk", formParameters);
+        grid_pk.setHelp(createI18NText("form.arvosanat.help", formParameters.getFormMessagesBundle()));
+        Integer hakukausiVuosi = formParameters.getApplicationSystem().getHakukausiVuosi();
         Expr kysyArvosanatPk = new Or(
                 new And(
                         new Not(
                                 new Equals(
                                         new Variable(OppijaConstants.PERUSOPETUS_PAATTOTODISTUSVUOSI),
-                                        new Value(String.valueOf(hakuvuosi)))),
+                                        new Value(String.valueOf(hakukausiVuosi)))),
                         ExprUtil.atLeastOneValueEqualsToVariable(RELATED_ELEMENT_ID, OppijaConstants.PERUSKOULU,
                                 OppijaConstants.ALUEITTAIN_YKSILOLLISTETTY, OppijaConstants.YKSILOLLISTETTY,
                                 OppijaConstants.OSITTAIN_YKSILOLLISTETTY)),
@@ -261,14 +256,14 @@ public class OsaaminenPhaseYhteishakuKevat {
         arvosanatTheme.addChild(relatedQuestionPk);
 
         // Ylioppilaat
-        GradeGrid grid_yo = gradesTableYO.createGradeGrid("grid_yo", formMessages, formErrors, verboseHelps);
-        grid_yo.setHelp(createI18NText("form.arvosanat.help", formMessages));
+        GradeGrid grid_yo = gradesTableYO.createGradeGrid("grid_yo", formParameters);
+        grid_yo.setHelp(createI18NText("form.arvosanat.help", formParameters.getFormMessagesBundle()));
         Expr kysyArvosanatLukio = new Or(
                 new And(
                         new Not(
                                 new Equals(
                                         new Variable(OppijaConstants.LUKIO_PAATTOTODISTUS_VUOSI),
-                                        new Value(String.valueOf(hakuvuosi)))),
+                                        new Value(String.valueOf(hakukausiVuosi)))),
                         ExprUtil.atLeastOneValueEqualsToVariable(RELATED_ELEMENT_ID, OppijaConstants.YLIOPPILAS)),
                 new Regexp("_meta_grades_transferred_lk", "true"));
         RelatedQuestionComplexRule relatedQuestionYo = new RelatedQuestionComplexRule("rule_grade_yo", kysyArvosanatLukio);
@@ -277,18 +272,18 @@ public class OsaaminenPhaseYhteishakuKevat {
 
         // Ei arvosanoja
         RelatedQuestionComplexRule eiNaytetaPk = new RelatedQuestionComplexRule("rule_grade_no_pk",
-                new Equals(new Variable(OppijaConstants.PERUSOPETUS_PAATTOTODISTUSVUOSI), new Value(String.valueOf(hakuvuosi))));
-        eiNaytetaPk.addChild(new Text("nogradegrid", createI18NText("form.arvosanat.eiKysyta.pk", formMessages)));
+                new Equals(new Variable(OppijaConstants.PERUSOPETUS_PAATTOTODISTUSVUOSI), new Value(String.valueOf(hakukausiVuosi))));
+        eiNaytetaPk.addChild(new Text("nogradegrid", createI18NText("form.arvosanat.eiKysyta.pk", formParameters.getFormMessagesBundle())));
         arvosanatTheme.addChild(eiNaytetaPk);
 
         RelatedQuestionComplexRule eiNaytetaYo = new RelatedQuestionComplexRule("rule_grade_no_yo",
-                new Equals(new Variable("lukioPaattotodistusVuosi"), new Value(String.valueOf(hakuvuosi))));
-        eiNaytetaYo.addChild(new Text("nogradegrid", createI18NText("form.arvosanat.eiKysyta.yo", formMessages)));
+                new Equals(new Variable("lukioPaattotodistusVuosi"), new Value(String.valueOf(hakukausiVuosi))));
+        eiNaytetaYo.addChild(new Text("nogradegrid", createI18NText("form.arvosanat.eiKysyta.yo", formParameters.getFormMessagesBundle())));
         arvosanatTheme.addChild(eiNaytetaYo);
 
         RelatedQuestionComplexRule eiNayteta = new RelatedQuestionComplexRule("rule_grade_no",
                 ExprUtil.atLeastOneValueEqualsToVariable(RELATED_ELEMENT_ID, "5", OppijaConstants.KESKEYTYNYT, OppijaConstants.ULKOMAINEN_TUTKINTO));
-        eiNayteta.addChild(new Text("nogradegrid", createI18NText("form.arvosanat.eiKysyta", formMessages)));
+        eiNayteta.addChild(new Text("nogradegrid", createI18NText("form.arvosanat.eiKysyta", formParameters.getFormMessagesBundle())));
         arvosanatTheme.addChild(eiNayteta);
 
         return arvosanatTheme;
