@@ -10,11 +10,19 @@ public class FormParameters {
     private static final String FORM_ERRORS = "form_errors";
     private static final String FORM_VERBOSE_HELP = "form_verboseHelp";
 
+    public enum FormTemplateType {
+        YHTEISHAKU_KEVAT,
+        YHTEISHAKU_SYKSY,
+        LISAHAKU_SYKSY,
+        PERVAKO
+    }
+
     private final ApplicationSystem applicationSystem;
     private final KoodistoService koodistoService;
     private final String formMessagesBundle;
     private final String formErrorsBundle;
     private final String formVerboseHelpBundle;
+    private final FormTemplateType formTemplateType;
 
     public FormParameters(ApplicationSystem applicationSystem, KoodistoService koodistoService) {
         this.applicationSystem = applicationSystem;
@@ -22,6 +30,7 @@ public class FormParameters {
         this.formMessagesBundle = getMessageBundleName(FORM_MESSAGES, applicationSystem);
         this.formErrorsBundle = getMessageBundleName(FORM_ERRORS, applicationSystem);
         this.formVerboseHelpBundle = getMessageBundleName(FORM_VERBOSE_HELP, applicationSystem);
+        this.formTemplateType = figureOutFormForApplicationSystem(applicationSystem);
     }
 
     public ApplicationSystem getApplicationSystem() {
@@ -44,11 +53,27 @@ public class FormParameters {
         return formVerboseHelpBundle;
     }
 
+    public FormTemplateType getFormTemplateType() {
+        return formTemplateType;
+    }
+
     private static String getMessageBundleName(final String baseName, final ApplicationSystem as) {
         String hakutyyppi = OppijaConstants.LISA_HAKU.equals(as.getApplicationSystemType()) ? "lisahaku" : "yhteishaku";
         String hakukausi = OppijaConstants.HAKUKAUSI_SYKSY.equals(as.getHakukausiUri()) ? "syksy" : "kevat";
-
         return Joiner.on('_').join(baseName, hakutyyppi, hakukausi);
+    }
 
+    private FormTemplateType figureOutFormForApplicationSystem(ApplicationSystem as) {
+        if (as.getApplicationSystemType().equals(OppijaConstants.LISA_HAKU)) {
+            return FormTemplateType.LISAHAKU_SYKSY;
+        } else {
+            if (as.getHakukausiUri().equals(OppijaConstants.HAKUKAUSI_SYKSY)) {
+                return FormTemplateType.YHTEISHAKU_SYKSY;
+            } else if (as.getHakukausiUri().equals(OppijaConstants.HAKUKAUSI_KEVAT)) {
+                return FormTemplateType.YHTEISHAKU_KEVAT;
+            } else {
+                return FormTemplateType.PERVAKO;
+            }
+        }
     }
 }

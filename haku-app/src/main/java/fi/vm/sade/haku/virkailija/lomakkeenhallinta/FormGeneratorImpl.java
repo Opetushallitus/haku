@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystemBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.LisahakuSyksy;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.YhteishakuKevat;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.YhteishakuSyksy;
@@ -66,13 +67,17 @@ public class FormGeneratorImpl implements FormGenerator {
 
     private Form generateForm(final ApplicationSystem as) {
         Form form = null;
-        if (as.getApplicationSystemType().equals(OppijaConstants.LISA_HAKU)) {
-            form = LisahakuSyksy.generateForm(as, koodistoService);
+
+        FormParameters formParameters = new FormParameters(as, koodistoService);
+
+
+        if (formParameters.getFormTemplateType().equals(FormParameters.FormTemplateType.LISAHAKU_SYKSY)) {
+            form = LisahakuSyksy.generateForm(formParameters);
         } else {
-            if (as.getHakukausiUri().equals(OppijaConstants.HAKUKAUSI_SYKSY)) {
-                form = YhteishakuSyksy.generateForm(as, koodistoService);
-            } else if (as.getHakukausiUri().equals(OppijaConstants.HAKUKAUSI_KEVAT)) {
-                form = YhteishakuKevat.generateForm(as, koodistoService);
+            if (formParameters.getFormTemplateType().equals(FormParameters.FormTemplateType.YHTEISHAKU_SYKSY)) {
+                form = YhteishakuSyksy.generateForm(formParameters);
+            } else if (formParameters.getFormTemplateType().equals(FormParameters.FormTemplateType.YHTEISHAKU_KEVAT)) {
+                form = YhteishakuKevat.generateForm(formParameters);
             } else {
                 return null;
             }
@@ -80,10 +85,10 @@ public class FormGeneratorImpl implements FormGenerator {
         return form;
     }
 
+
     public static String getMessageBundleName(final String baseName, final ApplicationSystem as) {
         String hakutyyppi = OppijaConstants.LISA_HAKU.equals(as.getApplicationSystemType()) ? "lisahaku" : "yhteishaku";
         String hakukausi = OppijaConstants.HAKUKAUSI_SYKSY.equals(as.getHakukausiUri()) ? "syksy" : "kevat";
-
         return Joiner.on('_').join(baseName, hakutyyppi, hakukausi);
 
     }

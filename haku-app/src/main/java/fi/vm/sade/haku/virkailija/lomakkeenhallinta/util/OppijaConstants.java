@@ -98,6 +98,7 @@ public final class OppijaConstants {
 
     public static final String VARSINAINEN_HAKU = "hakutyyppi_01";
     public static final String LISA_HAKU = "hakutyyppi_03";
+    public static final String PERVAKO_HAKU = "hakutyyppi_pervako";
 
     public static final String HAKUKAUSI_SYKSY = "kausi_s";
     public static final String HAKUKAUSI_KEVAT = "kausi_k";

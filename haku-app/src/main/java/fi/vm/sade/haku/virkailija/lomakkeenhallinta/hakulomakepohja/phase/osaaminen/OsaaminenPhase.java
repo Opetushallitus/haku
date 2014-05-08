@@ -22,7 +22,7 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParamete
 
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.createI18NText;
 
-public class OsaaminenPhaseSyksy {
+public class OsaaminenPhase {
 
     public static Phase create(final FormParameters formParameters) {
         Phase osaaminen = new Phase("osaaminen", createI18NText("form.osaaminen.otsikko", formParameters.getFormMessagesBundle()), false,

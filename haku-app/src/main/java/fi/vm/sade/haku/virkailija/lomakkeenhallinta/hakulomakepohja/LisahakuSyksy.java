@@ -17,29 +17,24 @@
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja;
 
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.hakutoiveet.HakutoiveetPhaseYhteishakuSyksy;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.henkilotiedot.HenkilotiedotPhase;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.koulutustausta.KoulutustaustaPhase;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.lisatiedot.LisatiedotPhase;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.osaaminen.OsaaminenPhaseSyksy;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.valmis.ValmisPhase;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
-
-import java.util.List;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.osaaminen.OsaaminenPhase;
 
 public class LisahakuSyksy {
 
 
-    public static Form generateForm(final ApplicationSystem as, final KoodistoService koodistoService) {
+    public static Form generateForm(final FormParameters formParameters) {
         try {
+            ApplicationSystem as = formParameters.getApplicationSystem();
             Form form = new Form(as.getId(), as.getName());
-            FormParameters formParameters = new FormParameters(as, koodistoService);
             form.addChild(HenkilotiedotPhase.create(formParameters));
             form.addChild(KoulutustaustaPhase.create(formParameters));
             form.addChild(HakutoiveetPhaseYhteishakuSyksy.create(formParameters));
-            form.addChild(OsaaminenPhaseSyksy.create(formParameters));
+            form.addChild(OsaaminenPhase.create(formParameters));
             form.addChild(LisatiedotPhase.create(formParameters));
             return form;
         } catch (Exception e) {

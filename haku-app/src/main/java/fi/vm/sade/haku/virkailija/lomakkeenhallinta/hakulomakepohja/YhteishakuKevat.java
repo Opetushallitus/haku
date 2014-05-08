@@ -22,19 +22,18 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.hakuto
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.henkilotiedot.HenkilotiedotPhase;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.koulutustausta.KoulutustaustaPhase;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.lisatiedot.LisatiedotPhase;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.osaaminen.OsaaminenPhaseYhteishakuKevat;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.osaaminen.OsaaminenPhase;
 
 public class YhteishakuKevat {
 
-    public static Form generateForm(final ApplicationSystem as, final KoodistoService koodistoService) {
+    public static Form generateForm(final FormParameters formParameters) {
         try {
+            ApplicationSystem as = formParameters.getApplicationSystem();
             Form form = new Form(as.getId(), as.getName());
-            FormParameters formParameters = new FormParameters(as, koodistoService);
             form.addChild(HenkilotiedotPhase.create(formParameters));
             form.addChild(KoulutustaustaPhase.create(formParameters));
             form.addChild(HakutoiveetPhaseYhteishakuKevat.create(formParameters));
-            form.addChild(OsaaminenPhaseYhteishakuKevat.create(formParameters));
+            form.addChild(OsaaminenPhase.create(formParameters));
             form.addChild(LisatiedotPhase.create(formParameters));
             return form;
         } catch (Exception e) {

@@ -66,8 +66,8 @@ public class FormGeneratorMock implements FormGenerator {
     }
 
     public ApplicationSystem createApplicationSystem() {
-        Form form = YhteishakuKevat.generateForm(generateInitialApplicationSystemBuilder()
-                .get(), koodistoService);
+        FormParameters formParameters = new FormParameters(generateInitialApplicationSystemBuilder().get(), koodistoService);
+        Form form = YhteishakuKevat.generateForm(formParameters);
         return generateInitialApplicationSystemBuilder().addForm(form).get();
     }
 
