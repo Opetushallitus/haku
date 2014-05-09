@@ -22,7 +22,6 @@ import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystemBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.FormGenerator;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
@@ -38,8 +37,6 @@ import java.util.List;
  */
 public class FormGeneratorMock implements FormGenerator {
 
-    private static final Logger log = LoggerFactory.getLogger(FormGeneratorMock.class);
-
     private final KoodistoService koodistoService;
     private final String asId;
 
@@ -49,7 +46,7 @@ public class FormGeneratorMock implements FormGenerator {
     }
 
     @Override
-    public ApplicationSystem generateOne(String oid) {
+    public ApplicationSystem generate(String oid) {
         return createApplicationSystem();
     }
 
@@ -67,7 +64,7 @@ public class FormGeneratorMock implements FormGenerator {
 
     public ApplicationSystem createApplicationSystem() {
         FormParameters formParameters = new FormParameters(generateInitialApplicationSystemBuilder().get(), koodistoService);
-        Form form = YhteishakuKevat.generateForm(formParameters);
+        Form form = FormGeneratorImpl.generateForm(formParameters);
         return generateInitialApplicationSystemBuilder().addForm(form).get();
     }
 
@@ -78,13 +75,13 @@ public class FormGeneratorMock implements FormGenerator {
         instance.roll(Calendar.YEAR, 2);
         Date end = new Date(instance.getTimeInMillis());
         Integer hakuvuosi = instance.get(Calendar.YEAR);
-        log.debug("Hakuvuosi: {}", hakuvuosi);
-        System.out.println("Hakuvuosi: " + hakuvuosi);
         List<ApplicationPeriod> applicationPeriods = Lists.newArrayList(new ApplicationPeriod(start, end));
         I18nText name = ElementUtil.createI18NAsIs(asId);
         ApplicationSystemBuilder applicationSystemBuilder = new ApplicationSystemBuilder();
         return applicationSystemBuilder.addId(asId).addName(name).addApplicationPeriods(applicationPeriods)
-                .addHakukausiVuosi(hakuvuosi).addApplicationSystemType(OppijaConstants.VARSINAINEN_HAKU).addHakukausiUri(OppijaConstants.HAKUKAUSI_KEVAT)
-                .addApplicationCompleteElements(YhteishakuSyksy.createApplicationCompleteElements(applicationSystemBuilder.get()));
+                .addHakukausiVuosi(hakuvuosi)
+                .addApplicationSystemType(OppijaConstants.VARSINAINEN_HAKU)
+                .addHakukausiUri(OppijaConstants.HAKUKAUSI_KEVAT)
+                .addApplicationCompleteElements(FormGeneratorImpl.createApplicationCompleteElements(applicationSystemBuilder.get()));
     }
 }

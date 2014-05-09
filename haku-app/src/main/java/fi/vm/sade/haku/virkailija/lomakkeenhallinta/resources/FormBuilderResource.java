@@ -18,9 +18,9 @@ package fi.vm.sade.haku.virkailija.lomakkeenhallinta.resources;
 
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.FormGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -55,7 +55,7 @@ public class FormBuilderResource {
     @Path("{oid}")
     @Produces(MediaType.TEXT_PLAIN + ";charset=UTF-8")
     public Response generateOne(@PathParam("oid") final String oid) throws URISyntaxException {
-        ApplicationSystem as = formGenerator.generateOne(oid);
+        ApplicationSystem as = formGenerator.generate(oid);
         applicationSystemService.save(as);
         return Response.seeOther(new URI("/lomake/"+oid)).build();
     }
@@ -69,7 +69,7 @@ public class FormBuilderResource {
         log.info("Starting to generate {} application systems", asCount);
         for (ApplicationSystem applicationSystem : applicationSystems) {
             log.info("Generating application system {} ({}, {})", applicationSystem.getId(), index++, asCount);
-            applicationSystemService.save(formGenerator.generateOne(applicationSystem.getId()));
+            applicationSystemService.save(formGenerator.generate(applicationSystem.getId()));
             log.info("Generated application system {}", applicationSystem.getId());
         }
         return Response.seeOther(new URI("/lomake/")).build();

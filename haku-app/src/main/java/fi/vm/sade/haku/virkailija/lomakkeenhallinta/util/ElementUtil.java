@@ -92,17 +92,16 @@ public final class ElementUtil {
 
         Map<String, String> translations = new HashMap<String, String>();
         for (String lang : LANGS) {
-            ResourceBundle bundle = ResourceBundle.getBundle(bundleName, new Locale(lang));
+
 
             String text = "";
             try {
-                if (key != null) {
-                    text = bundle.getString(key);
-                    if (keepFirst) {
-                        // Add space at the beginning of string, making it appear before regular words in
-                        // alphabetical order.
-                        text = "\u0020" + text;
-                    }
+                text = getString(bundleName, key, lang);
+
+                if (keepFirst) {
+                    // Add space at the beginning of string, making it appear before regular words in
+                    // alphabetical order.
+                    text = "\u0020" + text;
                 }
                 if (params != null && params.length > 0) {
                     text = MessageFormat.format(text, (Object[]) params);
@@ -114,6 +113,27 @@ public final class ElementUtil {
             translations.put(lang, text);
         }
         return new I18nText(translations);
+    }
+
+    private static String getString(final String bundleName, final String key, final String lang) {
+        ResourceBundle commonBundle = ResourceBundle.getBundle("form_common", new Locale(lang));
+        String text = key + " [" + lang + "]";
+        try {
+            ResourceBundle bundle = ResourceBundle.getBundle(bundleName, new Locale(lang));
+            if (bundle.containsKey(key)) {
+                text = bundle.getString(key);
+            }
+        } catch (MissingResourceException mre) {
+            try {
+                text = commonBundle.getString(key);
+            } catch (MissingResourceException mre2) {
+                log.warn("No translation found for key '{}' bundle: {} lang: {}", key, bundleName, lang);
+                log.warn("Exception: ", mre2);
+            }
+        }
+
+        return text;
+
     }
 
     public static List<Element> filterElements(final Element element, final Predicate<Element> predicate) {
@@ -177,7 +197,7 @@ public final class ElementUtil {
     public static Element addMaxLengthAttributeAndLengthValidator(final Element element, final int maxlength, final FormParameters formParameters) {
         element.addAttribute("maxlength", String.valueOf(maxlength));
         element.setValidator(new LengthValidator(element.getId(),
-                createI18NText("yleinen.virheellinenArvo", formParameters.getFormErrorsBundle()), maxlength));
+                createI18NText("yleinen.virheellinenArvo", formParameters.getFormMessagesBundle()), maxlength));
         return element;
     }
 
@@ -188,13 +208,13 @@ public final class ElementUtil {
     public static Validator createRegexValidator(final String id, final String pattern, final FormParameters formParameters,
                                                  final String messageKey) {
         return new RegexFieldValidator(id,
-                ElementUtil.createI18NText(messageKey, formParameters.getFormErrorsBundle()),
+                ElementUtil.createI18NText(messageKey, formParameters.getFormMessagesBundle()),
                 pattern);
     }
 
     public static Validator createValueSetValidator(final String id, final List<String> validValues, final FormParameters formParameters) {
         return new ValueSetValidator(id,
-                ElementUtil.createI18NText("yleinen.virheellinenArvo", formParameters.getFormErrorsBundle()),
+                ElementUtil.createI18NText("yleinen.virheellinenArvo", formParameters.getFormMessagesBundle()),
                 validValues);
     }
 
@@ -207,15 +227,7 @@ public final class ElementUtil {
         element.setValidator(
                 new RequiredFieldValidator(
                         element.getId(),
-                        ElementUtil.createI18NText("yleinen.pakollinen", formParameters.getFormErrorsBundle())));
-    }
-
-    public static void addUniqueApplicationValidator(final Element element, final String asType) {
-        if (OppijaConstants.LISA_HAKU.equals(asType)) {
-            element.setValidator(new SsnAndPreferenceUniqueValidator());
-        } else {
-            //skip
-        }
+                        ElementUtil.createI18NText("yleinen.pakollinen", formParameters.getFormMessagesBundle())));
     }
 
     public static void addUniqueApplicantValidator(final Element element, final String asType) {
@@ -238,7 +250,7 @@ public final class ElementUtil {
     }
 
     public static void setVerboseHelp(final Titled titled, final String helpId, final FormParameters formParameters) {
-        titled.setVerboseHelp(createI18NText(helpId, formParameters.getFormVerboseHelpBundle()));
+        titled.setVerboseHelp(createI18NText(helpId, formParameters.getFormMessagesBundle()));
     }
 
     public static void setHelp(final Element element, final String key, final FormParameters formParameters) {

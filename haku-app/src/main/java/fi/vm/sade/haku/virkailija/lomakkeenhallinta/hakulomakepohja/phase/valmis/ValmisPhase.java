@@ -13,7 +13,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.DiscretionaryAttachm
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.Print;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionComplexRule;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.Expr;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.FormGeneratorImpl;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormGeneratorImpl;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ExprUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;

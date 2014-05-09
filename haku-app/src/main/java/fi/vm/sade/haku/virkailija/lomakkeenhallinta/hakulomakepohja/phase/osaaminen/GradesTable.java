@@ -72,7 +72,7 @@ public class GradesTable {
                         gradeGrid.getId(),
                         uniqLanguagesIds,
                         ImmutableList.of(OppijaConstants.EDUCATION_LANGUAGE_EI_SUORITUSTA),
-                        ElementUtil.createI18NText("yleinen.kielet.samoja", formParameters.getFormErrorsBundle())));
+                        ElementUtil.createI18NText("yleinen.kielet.samoja", formParameters.getFormMessagesBundle())));
         return gradeGrid;
     }
 

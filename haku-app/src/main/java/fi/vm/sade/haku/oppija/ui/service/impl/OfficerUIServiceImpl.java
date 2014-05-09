@@ -157,7 +157,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         String userOid = userSession.getUser().getUserName();
         if (userOid == null || userOid.equals(application.getPersonOid())) {
             Map<String, I18nText> errors = modelResponse.getErrorMessages();
-            errors.put("common", ElementUtil.createI18NText("virkailija.hakemus.omanMuokkausKielletty", "messages", null));
+            errors.put("common", ElementUtil.createI18NText("virkailija.hakemus.omanMuokkausKielletty", "messages"));
             modelResponse.setErrorMessages(errors);
         }
         return modelResponse;

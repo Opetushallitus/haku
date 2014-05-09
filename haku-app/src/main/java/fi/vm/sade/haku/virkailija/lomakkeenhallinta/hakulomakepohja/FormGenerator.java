@@ -14,7 +14,7 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.haku.virkailija.lomakkeenhallinta;
+package fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja;
 
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 
@@ -25,9 +25,7 @@ import java.util.List;
  */
 public interface FormGenerator {
 
-    ApplicationSystem generateOne(String oid);
-
     List<ApplicationSystem> getApplicationSystems();
-
+    ApplicationSystem generate(String oid);
     List<ApplicationSystem> generate();
 }

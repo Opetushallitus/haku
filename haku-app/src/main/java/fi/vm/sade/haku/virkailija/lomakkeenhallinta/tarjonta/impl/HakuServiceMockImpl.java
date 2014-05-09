@@ -27,7 +27,10 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.*;
 
@@ -39,37 +42,45 @@ public class HakuServiceMockImpl implements HakuService {
 
     static {
         asList.add(new ApplicationSystemBuilder()
-                        .addId("haku1")
-                        .addName(new I18nText(ImmutableMap.of("fi", "testi haku 1 " + HAKUKAUSI_SYKSY)))
-                        .addApplicationPeriods(Lists.newArrayList(new ApplicationPeriod(new Date(), getDate(100))))
-                        .addHakukausiUri(HAKUKAUSI_SYKSY)
-                        .addHakukausiVuosi(2014)
-                        .addApplicationSystemType(VARSINAINEN_HAKU)
-                        .get());
+                .addId("haku1")
+                .addName(new I18nText(ImmutableMap.of("fi", "testi haku 1 " + HAKUKAUSI_SYKSY)))
+                .addApplicationPeriods(Lists.newArrayList(new ApplicationPeriod(new Date(), getDate(100))))
+                .addHakukausiUri(HAKUKAUSI_SYKSY)
+                .addHakukausiVuosi(2014)
+                .addApplicationSystemType(VARSINAINEN_HAKU)
+                .get());
         asList.add(new ApplicationSystemBuilder()
-                        .addId("haku2")
-                        .addName(new I18nText(ImmutableMap.of("fi", "testi haku 2 " + OppijaConstants.HAKUKAUSI_KEVAT)))
-                        .addApplicationPeriods(Lists.newArrayList(new ApplicationPeriod(new Date(), getDate(100))))
-                        .addHakukausiUri(OppijaConstants.HAKUKAUSI_KEVAT)
-                        .addApplicationSystemType(VARSINAINEN_HAKU)
-                        .addHakukausiVuosi(2014)
-                        .get());
+                .addId("haku2")
+                .addName(new I18nText(ImmutableMap.of("fi", "testi haku 2 " + OppijaConstants.HAKUKAUSI_KEVAT)))
+                .addApplicationPeriods(Lists.newArrayList(new ApplicationPeriod(new Date(), getDate(100))))
+                .addHakukausiUri(OppijaConstants.HAKUKAUSI_KEVAT)
+                .addApplicationSystemType(VARSINAINEN_HAKU)
+                .addHakukausiVuosi(2014)
+                .get());
         asList.add(new ApplicationSystemBuilder()
-                        .addId("haku3")
-                        .addName(new I18nText(ImmutableMap.of("fi", "testi haku 3" + OppijaConstants.LISA_HAKU)))
-                        .addApplicationPeriods(Lists.newArrayList(new ApplicationPeriod(new Date(), getDate(100))))
-                        .addHakukausiUri(HAKUKAUSI_SYKSY)
-                        .addHakukausiVuosi(2014)
-                        .addApplicationSystemType(LISA_HAKU)
-                        .get());
+                .addId("haku3")
+                .addName(new I18nText(ImmutableMap.of("fi", "testi haku 3" + OppijaConstants.LISA_HAKU)))
+                .addApplicationPeriods(Lists.newArrayList(new ApplicationPeriod(new Date(), getDate(100))))
+                .addHakukausiUri(HAKUKAUSI_SYKSY)
+                .addHakukausiVuosi(2014)
+                .addApplicationSystemType(LISA_HAKU)
+                .get());
         asList.add(new ApplicationSystemBuilder()
-                        .addId("haku4")
-                        .addName(new I18nText(ImmutableMap.of("fi", "testi haku 4 " + OppijaConstants.LISA_HAKU)))
-                        .addApplicationPeriods(Lists.newArrayList(new ApplicationPeriod(getDate(-100), getDate(-1))))
-                        .addHakukausiUri(HAKUKAUSI_SYKSY)
-                        .addHakukausiVuosi(2014)
-                        .addApplicationSystemType(LISA_HAKU)
-                        .get());
+                .addId("haku4")
+                .addName(new I18nText(ImmutableMap.of("fi", "testi haku 4 " + OppijaConstants.LISA_HAKU)))
+                .addApplicationPeriods(Lists.newArrayList(new ApplicationPeriod(getDate(-100), getDate(-1))))
+                .addHakukausiUri(HAKUKAUSI_SYKSY)
+                .addHakukausiVuosi(2014)
+                .addApplicationSystemType(LISA_HAKU)
+                .get());
+        asList.add(new ApplicationSystemBuilder()
+                .addId("haku5")
+                .addName(new I18nText(ImmutableMap.of("fi", "testi haku 4 " + OppijaConstants.LISA_HAKU)))
+                .addApplicationPeriods(Lists.newArrayList(new ApplicationPeriod(getDate(-100), getDate(-1))))
+                .addHakukausiUri(HAKUKAUSI_SYKSY)
+                .addHakukausiVuosi(2014)
+                .addApplicationSystemType(LISA_HAKU)
+                .get());
     }
 
     @Override

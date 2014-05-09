@@ -216,7 +216,7 @@ public final class HenkilotiedotPhase {
         addSizeAttribute(postinumero, 5);
         postinumero.addAttribute("placeholder", "00000");
         postinumero.addAttribute("maxlength", "5");
-        postinumero.setValidator(createRegexValidator(postinumero.getId(), POSTINUMERO_PATTERN, formParameters, "f"));
+        postinumero.setValidator(createRegexValidator(postinumero.getId(), POSTINUMERO_PATTERN, formParameters, "yleinen.virheellinenArvo"));
         addRequiredValidator(postinumero, formParameters);
         postinumero.setHelp(createI18NText("form.henkilotiedot.postinumero.help", formParameters));
         asuinmaaFI.addChild(postinumero);

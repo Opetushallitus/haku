@@ -7,8 +7,6 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 
 public class FormParameters {
     private static final String FORM_MESSAGES = "form_messages";
-    private static final String FORM_ERRORS = "form_errors";
-    private static final String FORM_VERBOSE_HELP = "form_verboseHelp";
 
     public enum FormTemplateType {
         YHTEISHAKU_KEVAT,
@@ -20,17 +18,20 @@ public class FormParameters {
     private final ApplicationSystem applicationSystem;
     private final KoodistoService koodistoService;
     private final String formMessagesBundle;
-    private final String formErrorsBundle;
-    private final String formVerboseHelpBundle;
     private final FormTemplateType formTemplateType;
 
     public FormParameters(ApplicationSystem applicationSystem, KoodistoService koodistoService) {
         this.applicationSystem = applicationSystem;
         this.koodistoService = koodistoService;
-        this.formMessagesBundle = getMessageBundleName(FORM_MESSAGES, applicationSystem);
-        this.formErrorsBundle = getMessageBundleName(FORM_ERRORS, applicationSystem);
-        this.formVerboseHelpBundle = getMessageBundleName(FORM_VERBOSE_HELP, applicationSystem);
         this.formTemplateType = figureOutFormForApplicationSystem(applicationSystem);
+
+
+        if (applicationSystem.getId().equals("haku5")) {
+            this.formMessagesBundle = getMessageBundleName(FORM_MESSAGES, applicationSystem) + "_pervako";
+        } else {
+            this.formMessagesBundle = getMessageBundleName(FORM_MESSAGES, applicationSystem);
+        }
+        System.out.println(this.formMessagesBundle);
     }
 
     public ApplicationSystem getApplicationSystem() {
@@ -45,14 +46,6 @@ public class FormParameters {
         return formMessagesBundle;
     }
 
-    public String getFormErrorsBundle() {
-        return formErrorsBundle;
-    }
-
-    public String getFormVerboseHelpBundle() {
-        return formVerboseHelpBundle;
-    }
-
     public FormTemplateType getFormTemplateType() {
         return formTemplateType;
     }
@@ -64,6 +57,9 @@ public class FormParameters {
     }
 
     private FormTemplateType figureOutFormForApplicationSystem(ApplicationSystem as) {
+        if (as.getId().equals("haku5")) {
+            return FormTemplateType.PERVAKO;
+        }
         if (as.getApplicationSystemType().equals(OppijaConstants.LISA_HAKU)) {
             return FormTemplateType.LISAHAKU_SYKSY;
         } else {
