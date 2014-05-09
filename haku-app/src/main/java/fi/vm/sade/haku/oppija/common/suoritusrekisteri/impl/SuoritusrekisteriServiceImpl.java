@@ -134,12 +134,14 @@ public class SuoritusrekisteriServiceImpl implements SuoritusrekisteriService {
 
     private SuoritusDTO suoritusJsonToDTO(JsonObject elem) {
         log.debug("suoritusJsonToDTO, json ", elem.toString());
+        JsonElement id = elem.get("id");
         JsonElement tila = elem.get("tila");
         JsonElement henkiloOid = elem.get("henkiloOid");
         JsonElement suoritusKieli = elem.get("suoritusKieli");
         JsonElement komoto = elem.get("komoto");
 
         SuoritusDTO suoritus = new SuoritusDTO();
+        suoritus.setId(jsonElementToString(id));
         suoritus.setTila(jsonElementToString(tila));
         suoritus.setHenkiloOid(jsonElementToString(henkiloOid));
         suoritus.setSuorituskieli(jsonElementToString(suoritusKieli));

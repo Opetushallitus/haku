@@ -21,7 +21,7 @@ public class SuoritusrekisteriServiceMockImpl implements SuoritusrekisteriServic
     public List<SuoritusDTO> getSuoritukset(String personOid) {
         List<SuoritusDTO> suoritukset = new ArrayList<SuoritusDTO>(1);
         Date tomorrow = new Date(System.currentTimeMillis() + ONE_DAY);
-        SuoritusDTO suoritus = new SuoritusDTO(tomorrow, "KESKEN", personOid,
+        SuoritusDTO suoritus = new SuoritusDTO("suoritusId", tomorrow, "KESKEN", personOid,
                 Integer.valueOf(OppijaConstants.PERUSKOULU), "FI");
 
         suoritukset.add(suoritus);

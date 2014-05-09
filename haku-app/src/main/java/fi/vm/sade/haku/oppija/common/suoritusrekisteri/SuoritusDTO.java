@@ -5,12 +5,14 @@ import java.util.Date;
 public class SuoritusDTO {
 
     private Date valmistuminen;
+    private String id;
     private String tila;
     private String henkiloOid;
     private String suorituskieli;
     private Integer pohjakoulutus;
 
-    public SuoritusDTO(Date valmistuminen, String tila, String henkiloOid, Integer pohjakoulutus, String suorituskieli) {
+    public SuoritusDTO(String id, Date valmistuminen, String tila, String henkiloOid, Integer pohjakoulutus, String suorituskieli) {
+        this.id = id;
         this.valmistuminen = valmistuminen;
         this.tila = tila;
         this.henkiloOid = henkiloOid;
@@ -20,6 +22,14 @@ public class SuoritusDTO {
 
     public SuoritusDTO() {
         // Empty
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public Date getValmistuminen() {
@@ -65,11 +75,12 @@ public class SuoritusDTO {
     public String toString() {
         StringBuilder builder = new StringBuilder()
                 .append("{")
-                .append(" valmistuminen :").append(valmistuminen)
-                .append(" tila :").append(tila)
-                .append(" henkiloOid :").append(henkiloOid)
-                .append(" suorituskieli :").append(suorituskieli)
-                .append(" pohjakoulutus :").append(pohjakoulutus);
+                .append(" id : ").append(id)
+                .append(" valmistuminen : ").append(valmistuminen)
+                .append(" tila : ").append(tila)
+                .append(" henkiloOid : ").append(henkiloOid)
+                .append(" suorituskieli : ").append(suorituskieli)
+                .append(" pohjakoulutus : ").append(pohjakoulutus);
         return builder.toString();
     }
 }

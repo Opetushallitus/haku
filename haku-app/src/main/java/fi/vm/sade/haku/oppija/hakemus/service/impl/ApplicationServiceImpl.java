@@ -243,63 +243,19 @@ public class ApplicationServiceImpl implements ApplicationService {
             SuoritusDTO suoritus = suoritukset.get(0);
             OpiskelijaDTO opiskelija = opiskelijat.get(0);
 
-            String sendingSchool = opiskelija.getOppilaitosOid();
-            String sendingClass = opiskelija.getLuokka();
-            String classLevel = opiskelija.getLuokkataso();
-            Integer baseEducationInt = suoritus.getPohjakoulutus();
-            String language = suoritus.getSuorituskieli();
-            Date valmistuminen = suoritus.getValmistuminen();
 
-            Map<String, String> answers = new HashMap<String, String>(
+            Map<String, String> educationAnswers = new HashMap<String, String>(
                     application.getPhaseAnswers(OppijaConstants.PHASE_EDUCATION));
 
             String oid = application.getOid();
-            if (isNotEmpty(sendingSchool)) {
-                LOGGER.info("Updating koulutustausta oid: "+String.valueOf(application.getOid())
-                        +" lahtokoulu: "+sendingSchool);
-                answers.put(OppijaConstants.ELEMENT_ID_SENDING_SCHOOL, sendingSchool);
-            }
-            if (isNotEmpty(sendingClass)) {
-                sendingClass = sendingClass.toUpperCase();
-                answers = addRegisterValue(oid, answers, OppijaConstants.ELEMENT_ID_SENDING_CLASS, sendingClass);
-                LOGGER.info("Updating koulutustausta oid: "+String.valueOf(application.getOid())
-                        +" lahtoluokka: "+sendingClass);
-            }
-            if (isNotEmpty(classLevel)) {
-                classLevel = classLevel.toUpperCase();
-                answers = addRegisterValue(oid, answers, OppijaConstants.ELEMENT_ID_CLASS_LEVEL, classLevel);
-                LOGGER.info("Updating koulutustausta oid: "+String.valueOf(application.getOid())
-                        +" luokkataso: "+classLevel);
-            }
-            if (baseEducationInt != null) {
-                String baseEducation = String.valueOf(baseEducationInt);
-                answers = addRegisterValue(oid, answers, OppijaConstants.ELEMENT_ID_BASE_EDUCATION, baseEducation);
-                if (isNotEmpty(language)) {
-                    if (baseEducation.equals(OppijaConstants.YLIOPPILAS)) {
-                        answers = addRegisterValue(oid, answers, OppijaConstants.LUKIO_KIELI, language);
-                    } else if (baseEducation.equals(OppijaConstants.PERUSKOULU)
-                            || baseEducation.equals(OppijaConstants.YKSILOLLISTETTY)
-                            || baseEducation.equals(OppijaConstants.ALUEITTAIN_YKSILOLLISTETTY)
-                            || baseEducation.equals(OppijaConstants.OSITTAIN_YKSILOLLISTETTY)) {
-                        answers = addRegisterValue(oid, answers, OppijaConstants.PERUSOPETUS_KIELI, language);
-                    }
-                }
-                if (valmistuminen != null) {
-                    Calendar cal = GregorianCalendar.getInstance();
-                    cal.setTime(valmistuminen);
-                    String year = String.valueOf(cal.get(Calendar.YEAR));
-                    if (baseEducation.equals(OppijaConstants.YLIOPPILAS)) {
-                        answers = addRegisterValue(oid, answers, OppijaConstants.LUKIO_PAATTOTODISTUS_VUOSI, year);
-                    } else if (baseEducation.equals(OppijaConstants.PERUSKOULU)
-                            || baseEducation.equals(OppijaConstants.YKSILOLLISTETTY)
-                            || baseEducation.equals(OppijaConstants.ALUEITTAIN_YKSILOLLISTETTY)
-                            || baseEducation.equals(OppijaConstants.OSITTAIN_YKSILOLLISTETTY)) {
-                        answers = addRegisterValue(oid, answers, OppijaConstants.PERUSOPETUS_PAATTOTODISTUSVUOSI, year);
-                    }
-                }
-            }
+            educationAnswers = handleSuoritukset(educationAnswers, oid, suoritus);
+            educationAnswers = handleOpiskelija(educationAnswers, oid, opiskelija);
+            application.addVaiheenVastaukset(OppijaConstants.PHASE_EDUCATION, educationAnswers);
 
-            application.addVaiheenVastaukset(OppijaConstants.PHASE_EDUCATION, answers);
+            Map<String, String> gradeAnswers = new HashMap<String, String>(
+                    application.getPhaseAnswers(OppijaConstants.PHASE_GRADES));
+
+
         }
 
         Map<String, String> answers = new HashMap<String, String>(application.getPhaseAnswers(OppijaConstants.PHASE_EDUCATION));
@@ -314,6 +270,67 @@ public class ApplicationServiceImpl implements ApplicationService {
 
         return application;
 
+    }
+
+    private Map<String, String> handleOpiskelija(Map<String, String> answers, String applicationOid, OpiskelijaDTO opiskelija) {
+        String sendingSchool = opiskelija.getOppilaitosOid();
+        String sendingClass = opiskelija.getLuokka();
+        String classLevel = opiskelija.getLuokkataso();
+        if (isNotEmpty(sendingSchool)) {
+            LOGGER.info("Updating koulutustausta oid: "+String.valueOf(applicationOid)
+                    +" lahtokoulu: "+sendingSchool);
+            answers = addRegisterValue(applicationOid, answers, OppijaConstants.ELEMENT_ID_SENDING_SCHOOL, sendingSchool);
+        }
+        if (isNotEmpty(sendingClass)) {
+            sendingClass = sendingClass.toUpperCase();
+            answers = addRegisterValue(applicationOid, answers, OppijaConstants.ELEMENT_ID_SENDING_CLASS, sendingClass);
+            LOGGER.info("Updating koulutustausta oid: "+String.valueOf(applicationOid)
+                    +" lahtoluokka: "+sendingClass);
+        }
+        if (isNotEmpty(classLevel)) {
+            classLevel = classLevel.toUpperCase();
+            answers = addRegisterValue(applicationOid, answers, OppijaConstants.ELEMENT_ID_CLASS_LEVEL, classLevel);
+            LOGGER.info("Updating koulutustausta oid: "+String.valueOf(applicationOid)
+                    +" luokkataso: "+classLevel);
+        }
+        return answers;
+    }
+
+    private Map<String, String> handleSuoritukset(Map<String, String> answers,
+                                                  String applicationOid, SuoritusDTO suoritus) {
+
+        Integer baseEducationInt = suoritus.getPohjakoulutus();
+        String language = suoritus.getSuorituskieli();
+        Date valmistuminen = suoritus.getValmistuminen();
+
+        if (baseEducationInt != null) {
+            String baseEducation = String.valueOf(baseEducationInt);
+            answers = addRegisterValue(applicationOid, answers, OppijaConstants.ELEMENT_ID_BASE_EDUCATION, baseEducation);
+            if (isNotEmpty(language)) {
+                if (baseEducation.equals(OppijaConstants.YLIOPPILAS)) {
+                    answers = addRegisterValue(applicationOid, answers, OppijaConstants.LUKIO_KIELI, language);
+                } else if (baseEducation.equals(OppijaConstants.PERUSKOULU)
+                        || baseEducation.equals(OppijaConstants.YKSILOLLISTETTY)
+                        || baseEducation.equals(OppijaConstants.ALUEITTAIN_YKSILOLLISTETTY)
+                        || baseEducation.equals(OppijaConstants.OSITTAIN_YKSILOLLISTETTY)) {
+                    answers = addRegisterValue(applicationOid, answers, OppijaConstants.PERUSOPETUS_KIELI, language);
+                }
+            }
+            if (valmistuminen != null) {
+                Calendar cal = GregorianCalendar.getInstance();
+                cal.setTime(valmistuminen);
+                String year = String.valueOf(cal.get(Calendar.YEAR));
+                if (baseEducation.equals(OppijaConstants.YLIOPPILAS)) {
+                    answers = addRegisterValue(applicationOid, answers, OppijaConstants.LUKIO_PAATTOTODISTUS_VUOSI, year);
+                } else if (baseEducation.equals(OppijaConstants.PERUSKOULU)
+                        || baseEducation.equals(OppijaConstants.YKSILOLLISTETTY)
+                        || baseEducation.equals(OppijaConstants.ALUEITTAIN_YKSILOLLISTETTY)
+                        || baseEducation.equals(OppijaConstants.OSITTAIN_YKSILOLLISTETTY)) {
+                    answers = addRegisterValue(applicationOid, answers, OppijaConstants.PERUSOPETUS_PAATTOTODISTUSVUOSI, year);
+                }
+            }
+        }
+        return answers;
     }
 
     private Map<String, String> addRegisterValue(String oid, Map<String, String> answers, String key, String value) {
