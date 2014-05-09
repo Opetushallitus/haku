@@ -1,9 +1,9 @@
 package fi.vm.sade.haku.oppija.common.suoritusrekisteri.impl;
 
+import fi.vm.sade.haku.oppija.common.suoritusrekisteri.ArvosanaDTO;
 import fi.vm.sade.haku.oppija.common.suoritusrekisteri.OpiskelijaDTO;
 import fi.vm.sade.haku.oppija.common.suoritusrekisteri.SuoritusDTO;
 import fi.vm.sade.haku.oppija.common.suoritusrekisteri.SuoritusrekisteriService;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
@@ -21,8 +21,8 @@ public class SuoritusrekisteriServiceMockImpl implements SuoritusrekisteriServic
     public List<SuoritusDTO> getSuoritukset(String personOid) {
         List<SuoritusDTO> suoritukset = new ArrayList<SuoritusDTO>(1);
         Date tomorrow = new Date(System.currentTimeMillis() + ONE_DAY);
-        SuoritusDTO suoritus = new SuoritusDTO(tomorrow, "KESKEN", personOid,
-                Integer.valueOf(OppijaConstants.PERUSKOULU), "FI");
+        SuoritusDTO suoritus = new SuoritusDTO("suoritusId", "peruskoulu", "1.2.3", "KESKEN", tomorrow,
+                personOid, "Ei", "FI");
 
         suoritukset.add(suoritus);
         return suoritukset;
@@ -31,8 +31,13 @@ public class SuoritusrekisteriServiceMockImpl implements SuoritusrekisteriServic
     @Override
     public List<OpiskelijaDTO> getOpiskelijat(String personOid) {
         List<OpiskelijaDTO> suoritukset = new ArrayList<OpiskelijaDTO>(1);
-        OpiskelijaDTO opiskelija = new OpiskelijaDTO("1.2.246.562.10.27450788669", "9", "9A", personOid);
+        OpiskelijaDTO opiskelija = new OpiskelijaDTO("1.2.246.562.10.27450788669", "9", "9A", personOid, null);
         suoritukset.add(opiskelija);
         return suoritukset;
+    }
+
+    @Override
+    public List<ArvosanaDTO> getArvosanat(String suoritusId) {
+        return null;
     }
 }
