@@ -1368,8 +1368,7 @@ table {
   border-collapse: normal; }
   table td {
     line-height: 1.5em;
-    vertical-align: middle;
-    border-right: 10px solid transparent; }
+    vertical-align: middle; }
 
 small {
   color: #909090; }
@@ -1409,18 +1408,21 @@ dl {
   margin: 0 0 1em;
   padding: 0; }
   dl dt {
-    font-weight: bold;
     line-height: 1.5em;
     height: 1.5em;
+    font-weight: bold;
     width: 173px;
-    margin: 0 15px 0 0;
+    margin: 25px 15px 0 0;
     padding: 0;
     text-align: right; }
+    dl dt:first-of-type {
+      margin-top: 0; }
   dl dd {
     margin: -19px 0 0 195px;
     padding: 0 0 1em;
     line-height: 1.5em;
-    height: 1.5em; }
+    height: 1.5em;
+    float: left; }
     dl dd:after {
       clear: both; }
     dl dd .virkailija-table-1 {
@@ -1431,7 +1433,9 @@ dl {
 #application-wrapper {
   min-width: 1200px;
   margin: 0 auto;
-  background-color: none; }
+  background-color: none;
+  padding-left: 20px;
+  padding-right: 20px; }
 
 /*** Textarea
 *************************************/
@@ -1768,6 +1772,8 @@ label, .label {
   .virkailija-table-1 input, .virkailija-table-1 select {
     position: relative;
     bottom: 2px; }
+  .virkailija-table-1 td.leftorientedcolumn {
+    text-align: left; }
 
 /*** Virkailija-table-2
 ************************************************/
@@ -1918,11 +1924,11 @@ table.dropmenu-table {
     padding: 0.5em;
     background: #eee;
     border: 1px solid #ccc;
-    -webkit-transition: 0.1s;
-    -moz-transition: 0.1s;
-    -o-transition: 0.1s;
-    -ms-transition: 0.1s;
-    transition: 0.1s;
+    -webkit-transition: background-color 0.1s;
+    -moz-transition: background-color 0.1s;
+    -o-transition: background-color 0.1s;
+    -ms-transition: background-color 0.1s;
+    transition: background-color 0.1s;
     padding: 0.5em 1.5em 0.5em 1.5em;
     text-align: center; }
     table.dropmenu-table tbody td:hover {
@@ -1941,13 +1947,11 @@ table.dropmenu-table {
       -ms-box-shadow: 0px 0px 1px 0 rgba(0, 0, 0, 0.5) inset;
       box-shadow: 0px 0px 1px 0 rgba(0, 0, 0, 0.5) inset; }
 
-.function table.dropmenu-table {
-  display: none; }
 .function:hover table.dropmenu-table {
   display: block; }
 
 /*
-	Taulukko tyyli perustietojen nÔøΩyttÔøΩmiselle, esim. hakijan henkilÔøΩtietot
+	Taulukko tyyli perustietojen n‰ytt‰miselle, esim. hakijan henkilˆtietot
 */
 .perustieto-table {
   width: 100%; }
@@ -2017,11 +2021,11 @@ a.button {
   box-shadow: -1px 1px 1px 0px #dff2f8 inset;
   border: solid 1px #92cce0;
   background-color: #d2ecf5;
-  -webkit-transition: 0.3s;
-  -moz-transition: 0.3s;
-  -o-transition: 0.3s;
-  -ms-transition: 0.3s;
-  transition: 0.3s;
+  -webkit-transition: background-color 0.3s;
+  -moz-transition: background-color 0.3s;
+  -o-transition: background-color 0.3s;
+  -ms-transition: background-color 0.3s;
+  transition: background-color 0.3s;
   /*  Primary button */
   /* Expand button */
   /* Collapse button*/
@@ -2312,37 +2316,77 @@ button.edit-link {
   .remove span {
     display: none; }
 
+.plainBtn {
+  cursor: pointer;
+  -webkit-transition: text-decoration 0.3s;
+  -moz-transition: text-decoration 0.3s;
+  -o-transition: text-decoration 0.3s;
+  -ms-transition: text-decoration 0.3s;
+  transition: text-decoration 0.3s;
+  -webkit-transition: font-weight 0.3s;
+  -moz-transition: font-weight 0.3s;
+  -o-transition: font-weight 0.3s;
+  -ms-transition: font-weight 0.3s;
+  transition: font-weight 0.3s; }
+  .plainBtn:hover {
+    text-decoration: underline;
+    font-weight: bold; }
+
+/*** Spinner
+************************************************/
+.spinner {
+  cursor: progress !important; }
+  .spinner input,
+  .spinner select,
+  .spinner a,
+  .spinner #toolbartoggle-btn-container #toolbartoggle-btn {
+    cursor: progress !important; }
+
+/*** Modal
+************************************************/
+.modal-backdrop {
+  position: fixed;
+  left: 0;
+  top: 0;
+  background-color: #000;
+  opacity: 0.5;
+  z-index: 10049;
+  width: 100%;
+  height: 100%; }
+
 .modal {
-  border: 1px solid #bdbdbd;
-  padding: 10px;
-  background-color: #fff;
-  z-index: 1050;
   position: absolute;
-  opacity: 1;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  -o-border-radius: 3px;
-  -ms-border-radius: 3px;
-  border-radius: 3px;
-  -webkit-box-shadow: 2px 2px 2px 0 rgba(0, 0, 0, 0.5);
-  -moz-box-shadow: 2px 2px 2px 0 rgba(0, 0, 0, 0.5);
-  -o-box-shadow: 2px 2px 2px 0 rgba(0, 0, 0, 0.5);
-  -ms-box-shadow: 2px 2px 2px 0 rgba(0, 0, 0, 0.5);
-  box-shadow: 2px 2px 2px 0 rgba(0, 0, 0, 0.5);
+  line-height: 20px;
+  background: white;
+  border: 1px solid #bbb;
+  border-radius: 5px;
+  box-shadow: rgba(0, 0, 0, 0.1) 1px 1px 2px 0px;
   -webkit-box-shadow: 0 0 50px 0 rgba(0, 0, 0, 0.5);
   -moz-box-shadow: 0 0 50px 0 rgba(0, 0, 0, 0.5);
   -o-box-shadow: 0 0 50px 0 rgba(0, 0, 0, 0.5);
   -ms-box-shadow: 0 0 50px 0 rgba(0, 0, 0, 0.5);
-  box-shadow: 0 0 50px 0 rgba(0, 0, 0, 0.5); }
+  box-shadow: 0 0 50px 0 rgba(0, 0, 0, 0.5);
+  z-index: 10050; }
+  .modal .modal-header {
+    border-bottom: 1px solid #ccc;
+    height: 30px;
+    background-image: url(../img/texture-45dg-lines-eeeeee.gif);
+    background-repeat: repeat;
+    background-position: 0 0;
+    line-height: 30px;
+    font-weight: bold;
+    text-align: left;
+    padding-left: 10px; }
+    .modal .modal-header .close {
+      background-image: url(../img/popup-close-icon.png);
+      cursor: pointer;
+      width: 16px;
+      height: 17px;
+      position: absolute;
+      right: 7px;
+      top: 7px; }
   .modal .modal-content {
-    position: fixed;
-    top: 0;
-    right: 0;
-    left: 0;
-    bottom: 0;
-    z-index: 1040;
-    background-color: #333;
-    opacity: 0.8; }
+    padding: 10px 20px 10px 10px; }
 
 /*** Pagination
 ************************************************/
@@ -3046,56 +3090,84 @@ ul.orgmenu {
 
 /*** horizontal toolbar
 ************************************************/
-.toolbarcontainerwithouthakukohde,
 .toolbarcontainer {
   overflow: hidden;
-  height: 700px; }
-  .toolbarcontainerwithouthakukohde #toolbarcontent,
+  height: 700px;
+    /*
+    &.hakukohteetVisible-add,
+    &.hakukohteetVisible-remove {
+        -webkit-transition:2s linear all;
+        -moz-transition:2s linear all;
+        -o-transition:2s linear all;
+        transition:2s linear all;
+    }
+
+    &.hakukohteetVisible-add,
+    &.hakukohteetVisible-remove,
+    &.hakukohteetVisible-remove-active {
+        width: 30%;
+        opacity: 1;
+    }
+    
+    &.hakukohteetVisible,
+    &.hakukohteetVisible-remove,
+    &.hakukohteetVisible-add,
+    &.hakukohteetVisible-add-active {
+        width: 5%;
+        opacity: 0.3;
+    }
+*/ }
   .toolbarcontainer #toolbarcontent {
     background-color: #f1f6f7;
     float: left;
-    height: 700px; }
-    .toolbarcontainerwithouthakukohde #toolbarcontent .toolbar-decoration,
+    height: 698px;
+    width: 90%;
+    border-bottom: 1px solid #e4e4e4;
+    border-top: 1px solid #e4e4e4; }
     .toolbarcontainer #toolbarcontent .toolbar-decoration {
+      height: 683px;
       padding: 10px;
-      border-left: 1px solid #e4e4e4;
-      border-bottom: 1px solid #e4e4e4;
-      border-top: 1px solid #e4e4e4; }
-      .toolbarcontainerwithouthakukohde #toolbarcontent .toolbar-decoration .selectlist,
+      border-left: 1px solid #e4e4e4; }
       .toolbarcontainer #toolbarcontent .toolbar-decoration .selectlist {
-        height: 624px;
+        height: 583px;
         overflow: scroll;
         margin: 0 !important;
         background-color: #fff; }
 
-#toolbartoggle-btn-container {
+#toolbartoggle-btn {
   float: left; }
-  #toolbartoggle-btn-container #toolbartoggle-btn {
+  #toolbartoggle-btn > div {
     background-color: #f1f6f7;
     width: 32px;
     height: 698px;
     position: relative;
     cursor: pointer;
-    border: 1px solid #e4e4e4; }
-    #toolbartoggle-btn-container #toolbartoggle-btn:hover {
+    border: 1px solid #e4e4e4;
+    -webkit-transition: "background-color" 0.2s;
+    -moz-transition: "background-color" 0.2s;
+    -o-transition: "background-color" 0.2s;
+    -ms-transition: "background-color" 0.2s;
+    transition: "background-color" 0.2s; }
+    #toolbartoggle-btn > div:hover {
       background-color: #c5e5ef; }
-    #toolbartoggle-btn-container #toolbartoggle-btn .toolbartext-position {
+    #toolbartoggle-btn > div > div {
       position: absolute;
       left: 50%;
       top: 50%;
       height: 0;
       width: 0; }
-      #toolbartoggle-btn-container #toolbartoggle-btn .toolbartext-position span {
+      #toolbartoggle-btn > div > div span {
         display: block;
         color: #149ecb;
         transform: rotate(-90deg);
         -webkit-transform: rotate(-90deg);
         -o-transform: rotate(-90deg);
+        -ms-transform: rotate(-90deg);
         transform-origin: 0;
         -webkit-transform-origin: 0;
         -o-transform-origin: 0;
         width: 150px; }
-        #toolbartoggle-btn-container #toolbartoggle-btn .toolbartext-position span:before, #toolbartoggle-btn-container #toolbartoggle-btn .toolbartext-position span:after {
+        #toolbartoggle-btn > div > div span:before, #toolbartoggle-btn > div > div span:after {
           position: absolute;
           font-size: 9px;
           transform-origin: 50% 50%;
@@ -3109,21 +3181,16 @@ ul.orgmenu {
           -ms-transform: rotate(90deg);
           -o-transform: rotate(90deg);
           content: '<<'; }
-        #toolbartoggle-btn-container #toolbartoggle-btn .toolbartext-position span:before {
+        #toolbartoggle-btn > div > div span:before {
           left: -30px; }
-        #toolbartoggle-btn-container #toolbartoggle-btn .toolbartext-position span:after {
+        #toolbartoggle-btn > div > div span:after {
           left: 105px; }
-        #toolbartoggle-btn-container #toolbartoggle-btn .toolbartext-position span.minimized:before, #toolbartoggle-btn-container #toolbartoggle-btn .toolbartext-position span.minimized:after {
+        #toolbartoggle-btn > div > div span.minimized:before, #toolbartoggle-btn > div > div span.minimized:after {
           transform: rotate(-90deg);
           -webkit-transform: rotate(-90deg);
           -moz-transform: rotate(-90deg);
           -ms-transform: rotate(-90deg);
           -o-transform: rotate(-90deg); }
-
-.toolbarcontainerwithouthakukohde .toolbar-decoration {
-  border-right: 1px solid #e4e4e4; }
-.toolbarcontainerwithouthakukohde #toolbartoggle-btn-container {
-  display: none; }
 
 .togglecontent {
   height: 700px; }
@@ -3220,6 +3287,38 @@ ul.orgmenu {
     background: #f8f8f8;
     border: 1px solid #ccc; }
 
+/*** Definition list
+************************************************/
+dl.dl-horizontal {
+  margin-bottom: 2em;
+  margin: 0 0 1em;
+  padding: 0; }
+  dl.dl-horizontal dt {
+    line-height: 1.5em;
+    height: 1.5em;
+    font-weight: bold;
+    width: 173px;
+    margin: 25px 15px 0 0;
+    padding: 0;
+    text-align: right; }
+    dl.dl-horizontal dt:first-of-type {
+      margin-top: 0; }
+  dl.dl-horizontal dd {
+    margin: -19px 0 0 195px;
+    padding: 0 0 1em;
+    line-height: 1.5em;
+    height: 1.5em;
+    float: left; }
+    dl.dl-horizontal dd:after {
+      clear: both; }
+    dl.dl-horizontal dd .virkailija-table-1 {
+      width: auto; }
+
+/*** kaavaeditor
+************************************************/
+.kaavaeditor-blue {
+  color: #147fa2; }
+
 /*** Itemtree
 ************************************************/
 .selectlist,
@@ -3228,8 +3327,7 @@ ul.orgmenu {
   padding: 0 0 0 24px; }
   .selectlist.collapsible,
   .treelist.collapsible {
-    margin-left: 0px;
-    padding: 0 0 0 32px; }
+    margin-left: 0px; }
   .selectlist li,
   .treelist li {
     margin: 0.3em 0;
@@ -3358,8 +3456,18 @@ ul.orgmenu {
     color: #3e3e3e;
     display: block;
     margin: -0.3em 0px;
-    padding: 0.3em 0px; }
+    padding: 0.3em 0px;
+    -webkit-transition: "background-color" 0.3s;
+    -moz-transition: "background-color" 0.3s;
+    -o-transition: "background-color" 0.3s;
+    -ms-transition: "background-color" 0.3s;
+    transition: "background-color" 0.3s; }
     .selectlist li a:before {
+      -webkit-transition: "background-color" 0.3s;
+      -moz-transition: "background-color" 0.3s;
+      -o-transition: "background-color" 0.3s;
+      -ms-transition: "background-color" 0.3s;
+      transition: "background-color" 0.3s;
       content: '';
       display: block;
       width: 30px;
@@ -3380,6 +3488,10 @@ ul.orgmenu {
     background-color: #c2e6f1; }
     .selectlist li.active a:before {
       background-color: #c2e6f1; }
+  .selectlist li.selected a {
+    background-color: #b1d5e0; }
+    .selectlist li.selected a:before {
+      background-color: #b1d5e0; }
 
 /*** Dropmenu-list
 ************************************************/
@@ -3543,6 +3655,7 @@ ul.dropmenu-list {
     background: -moz-linear-gradient(top, whitesmoke, #c6c6c6);
     background: -ms-linear-gradient(top, whitesmoke, #c6c6c6);
     background: -o-linear-gradient(top, whitesmoke, #c6c6c6);
+    background: linear-gradient(top, whitesmoke, #c6c6c6);
     -webkit-box-shadow: 1px 1px 5px white inset, -1px -1px 5px white inset;
     -moz-box-shadow: 1px 1px 5px white inset, -1px -1px 5px white inset;
     -o-box-shadow: 1px 1px 5px white inset, -1px -1px 5px white inset;
@@ -3557,14 +3670,16 @@ ul.dropmenu-list {
       background: -webkit-linear-gradient(top, #c6c6c6, whitesmoke);
       background: -moz-linear-gradient(top, #c6c6c6, whitesmoke);
       background: -ms-linear-gradient(top, #c6c6c6, whitesmoke);
-      background: -o-linear-gradient(top, #c6c6c6, whitesmoke); }
+      background: -o-linear-gradient(top, #c6c6c6, whitesmoke);
+      background: linear-gradient(top, #c6c6c6, whitesmoke); }
     .tabsheet-container .nav-tabs li:active {
       background: whitesmoke;
       background: -webkit-gradient(linear, left top, left bottom, from(whitesmoke), to(whitesmoke));
       background: -webkit-linear-gradient(top, whitesmoke, whitesmoke);
       background: -moz-linear-gradient(top, whitesmoke, whitesmoke);
       background: -ms-linear-gradient(top, whitesmoke, whitesmoke);
-      background: -o-linear-gradient(top, whitesmoke, whitesmoke); }
+      background: -o-linear-gradient(top, whitesmoke, whitesmoke);
+      background: linear-gradient(top, whitesmoke, whitesmoke); }
     .tabsheet-container .nav-tabs li.active {
       background: white;
       background: -webkit-gradient(linear, left top, left bottom, from(whitesmoke), to(white));
@@ -3572,6 +3687,7 @@ ul.dropmenu-list {
       background: -moz-linear-gradient(top, whitesmoke, white);
       background: -ms-linear-gradient(top, whitesmoke, white);
       background: -o-linear-gradient(top, whitesmoke, white);
+      background: linear-gradient(top, whitesmoke, white);
       border-bottom: 1px solid white; }
     .tabsheet-container .nav-tabs li a {
       display: block;
@@ -3627,6 +3743,7 @@ ul.dropmenu-list {
       background: -moz-linear-gradient(top, whitesmoke, #c6c6c6);
       background: -ms-linear-gradient(top, whitesmoke, #c6c6c6);
       background: -o-linear-gradient(top, whitesmoke, #c6c6c6);
+      background: linear-gradient(top, whitesmoke, #c6c6c6);
       font-size: 13px; }
     .tabs .tab:hover span {
       background: #c6c6c6;
@@ -3635,7 +3752,8 @@ ul.dropmenu-list {
       background: -webkit-linear-gradient(top, #c6c6c6, whitesmoke);
       background: -moz-linear-gradient(top, #c6c6c6, whitesmoke);
       background: -ms-linear-gradient(top, #c6c6c6, whitesmoke);
-      background: -o-linear-gradient(top, #c6c6c6, whitesmoke); }
+      background: -o-linear-gradient(top, #c6c6c6, whitesmoke);
+      background: linear-gradient(top, #c6c6c6, whitesmoke); }
     .tabs .tab.current {
       border-top-width: 1px;
       border-right-width: 1px;
@@ -3651,434 +3769,8 @@ ul.dropmenu-list {
         background: -webkit-linear-gradient(top, whitesmoke, white);
         background: -moz-linear-gradient(top, whitesmoke, white);
         background: -ms-linear-gradient(top, whitesmoke, white);
-        background: -o-linear-gradient(top, whitesmoke, white); }
+        background: -o-linear-gradient(top, whitesmoke, white);
+        background: linear-gradient(top, whitesmoke, white); }
     .tabs .tab.disabled span, .tabs .tab.disabled:hover span {
       background: #f6f6f6;
       background-image: url("../img/texture-45dg-lines-96ccdb.gif"); }
-
-/*** Popups
-************************************************/
-.popup-overlay {
-  background-color: #000;
-  opacity: 0.4;
-  filter: alpha(opacity=40);
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  z-index: 10; }
-
-#popup {
-  margin: 0px auto;
-  background: #ffffff;
-  max-width: 980px;
-  position: relative;
-  padding: 10px;
-  border-radius: 3px 3px 3px 3px;
-  box-shadow: 2px 2px 2px 0 #5f5f5f;
-  background-color: #f9f9f9; }
-  #popup .close {
-    display: block;
-    position: absolute;
-    top: 5px;
-    right: 5px;
-    width: 16px;
-    height: 17px;
-    background-image: url(../img/popup-close-icon.png);
-    background-repeat: no-repeat;
-    background-position: center center;
-    cursor: pointer; }
-  #popup .popup-content {
-    display: inline-block; }
-  #popup .tagset .tag {
-    margin-bottom: 7px; }
-
-.popup {
-  display: none;
-  background: white;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  z-index: 1000;
-  max-width: 980px; }
-  .popup header {
-    background-color: #eee;
-    border-bottom: 1px dotted #ccc;
-    padding: 0.8em; }
-    .popup header > * {
-      display: inline-block;
-      vertical-align: middle; }
-    .popup header > div {
-      padding: 0 0.8em; }
-    .popup header h3 {
-      margin: 0; }
-    .popup header a.close {
-      background-image: url(../img/close-icon.png);
-      background-repeat: no-repeat;
-      background-position: left top;
-      width: 16px;
-      height: 17px;
-      float: right; }
-
-.arvosanat {
-  overflow-x: scroll; }
-
-/*** Popover window/dialog
-************************************************/
-.popup-dialog-wrapper {
-  color: #3e3e3e;
-  display: none;
-  position: absolute;
-  left: 0px;
-  top: 0px;
-  width: 100%;
-  height: 100%;
-  margin: 0px;
-  z-index: 1000;
-  background-color: rgba(0, 0, 0, 0.1); }
-  .popup-dialog-wrapper.inactive {
-    opacity: 0.5; }
-  .popup-dialog-wrapper > .popup-dialog-close {
-    display: block;
-    position: absolute;
-    left: 0px;
-    top: 0px;
-    width: 100%;
-    min-height: 100%; }
-  .popup-dialog-wrapper .popup-dialog {
-    display: block;
-    margin: 2em auto;
-    background: #ffffff;
-    position: relative;
-    padding: 0px;
-    border-radius: 3px 3px 3px 3px;
-    box-shadow: 2px 2px 2px 0 #5f5f5f;
-    width: auto;
-    max-width: 960px !important;
-    min-width: 460px !important;
-    height: auto;
-    padding: 0 20px 20px;
-    border: 10px solid #FFFFFF; }
-    .popup-dialog-wrapper .popup-dialog > .popup-dialog-close {
-      display: block;
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      width: 16px;
-      height: 17px;
-      background-image: url(../img/popup-close-icon.png);
-      background-repeat: no-repeat;
-      background-position: center center;
-      cursor: pointer;
-      color: transparent; }
-    .popup-dialog-wrapper .popup-dialog > .popup-dialog-header {
-      font-size: 14px;
-      font-weight: bold;
-      width: auto;
-      color: #333333; }
-    .popup-dialog-wrapper .popup-dialog > .popup-dialog-content {
-      display: inline-block; }
-
-.gradingformula,
-.gradingformula-dragged {
-  padding: 1em; }
-  .gradingformula ul,
-  .gradingformula-dragged ul {
-    background-image: url(../img/logictree-line-vertical.gif);
-    background-repeat: no-repeat;
-    background-position: 10px 0px;
-    padding: 18px 0px 0px 10px;
-    margin: 0px; }
-    .gradingformula ul > li,
-    .gradingformula-dragged ul > li {
-      display: block;
-      list-style-type: none;
-      padding: 0px 0px 18px 18px;
-      background-image: url(../img/logictree-line-vertical.gif), url(../img/logictree-line-horizontal.gif);
-      background-repeat: repeat-y, no-repeat;
-      background-position: 0px -13px, 2px 9px; }
-    .gradingformula ul > li:last-child,
-    .gradingformula-dragged ul > li:last-child {
-      background-repeat: no-repeat, no-repeat;
-      padding-bottom: 0px; }
-  .gradingformula .frame, .gradingformula .function, .gradingformula .parameter,
-  .gradingformula-dragged .frame,
-  .gradingformula-dragged .function,
-  .gradingformula-dragged .parameter {
-    display: inline-block;
-    position: relative;
-    height: 18px;
-    line-height: 18px; }
-    .gradingformula .frame .icon, .gradingformula .function .icon, .gradingformula .parameter .icon,
-    .gradingformula-dragged .frame .icon,
-    .gradingformula-dragged .function .icon,
-    .gradingformula-dragged .parameter .icon {
-      display: inline-block;
-      margin-right: 0.5em;
-      width: 18px;
-      height: 18px;
-      border: solid 0px transparent;
-      background-color: transparent;
-      background-image: url("../img/18x18-ui-icons.png");
-      background-repeat: no-repeat; }
-      .gradingformula .frame .icon.dropmenu, .gradingformula .function .icon.dropmenu, .gradingformula .parameter .icon.dropmenu,
-      .gradingformula-dragged .frame .icon.dropmenu,
-      .gradingformula-dragged .function .icon.dropmenu,
-      .gradingformula-dragged .parameter .icon.dropmenu {
-        position: relative;
-        background-image: none;
-        width: auto; }
-        .gradingformula .frame .icon.dropmenu > .dropmenu-list, .gradingformula .function .icon.dropmenu > .dropmenu-list, .gradingformula .parameter .icon.dropmenu > .dropmenu-list,
-        .gradingformula-dragged .frame .icon.dropmenu > .dropmenu-list,
-        .gradingformula-dragged .function .icon.dropmenu > .dropmenu-list,
-        .gradingformula-dragged .parameter .icon.dropmenu > .dropmenu-list {
-          position: absolute;
-          top: 16px;
-          left: 0px;
-          background-image: none;
-          background-color: #eeeeee; }
-          .gradingformula .frame .icon.dropmenu > .dropmenu-list > li, .gradingformula .function .icon.dropmenu > .dropmenu-list > li, .gradingformula .parameter .icon.dropmenu > .dropmenu-list > li,
-          .gradingformula-dragged .frame .icon.dropmenu > .dropmenu-list > li,
-          .gradingformula-dragged .function .icon.dropmenu > .dropmenu-list > li,
-          .gradingformula-dragged .parameter .icon.dropmenu > .dropmenu-list > li {
-            background-image: none; }
-    .gradingformula .frame .label, .gradingformula .function .label, .gradingformula .parameter .label,
-    .gradingformula-dragged .frame .label,
-    .gradingformula-dragged .function .label,
-    .gradingformula-dragged .parameter .label {
-      display: inline-block;
-      height: 18px;
-      line-height: 18px;
-      color: #000000; }
-    .gradingformula .frame .dropmenu-list, .gradingformula .function .dropmenu-list, .gradingformula .parameter .dropmenu-list,
-    .gradingformula-dragged .frame .dropmenu-list,
-    .gradingformula-dragged .function .dropmenu-list,
-    .gradingformula-dragged .parameter .dropmenu-list {
-      position: absolute;
-      left: 0px;
-      top: 18px;
-      display: none;
-      background-image: none;
-      background-color: #eeeeee;
-      padding-left: 0px; }
-      .gradingformula .frame .dropmenu-list > li, .gradingformula .function .dropmenu-list > li, .gradingformula .parameter .dropmenu-list > li,
-      .gradingformula-dragged .frame .dropmenu-list > li,
-      .gradingformula-dragged .function .dropmenu-list > li,
-      .gradingformula-dragged .parameter .dropmenu-list > li {
-        background-image: none;
-        padding-left: 0px; }
-    .gradingformula .frame:hover .dropmenu-list, .gradingformula .function:hover .dropmenu-list, .gradingformula .parameter:hover .dropmenu-list,
-    .gradingformula-dragged .frame:hover .dropmenu-list,
-    .gradingformula-dragged .function:hover .dropmenu-list,
-    .gradingformula-dragged .parameter:hover .dropmenu-list {
-      display: block; }
-    .gradingformula .frame:active .label, .gradingformula .frame.active .label, .gradingformula .function:active .label, .gradingformula .function.active .label, .gradingformula .parameter:active .label, .gradingformula .parameter.active .label,
-    .gradingformula-dragged .frame:active .label,
-    .gradingformula-dragged .frame.active .label,
-    .gradingformula-dragged .function:active .label,
-    .gradingformula-dragged .function.active .label,
-    .gradingformula-dragged .parameter:active .label,
-    .gradingformula-dragged .parameter.active .label {
-      background-color: #e6f8fe; }
-    .gradingformula .frame.line-through span.label, .gradingformula .function.line-through span.label, .gradingformula .parameter.line-through span.label,
-    .gradingformula-dragged .frame.line-through span.label,
-    .gradingformula-dragged .function.line-through span.label,
-    .gradingformula-dragged .parameter.line-through span.label {
-      text-decoration: line-through; }
-    .gradingformula .frame .dropzone, .gradingformula .function .dropzone, .gradingformula .parameter .dropzone,
-    .gradingformula-dragged .frame .dropzone,
-    .gradingformula-dragged .function .dropzone,
-    .gradingformula-dragged .parameter .dropzone {
-      display: inline-block;
-      margin-right: 0.5em;
-      width: 150px;
-      height: 18px;
-      border: solid 0px transparent;
-      background-color: transparent;
-      background-repeat: no-repeat; }
-  .gradingformula .notification,
-  .gradingformula-dragged .notification {
-    display: inline-block;
-    vertical-align: middle;
-    height: 18px;
-    padding: 0 15px;
-    background-image: none;
-    position: relative;
-    top: -2px;
-    -webkit-box-shadow: 1px 1px 1px 0 rgba(0, 0, 0, 0.5);
-    -moz-box-shadow: 1px 1px 1px 0 rgba(0, 0, 0, 0.5);
-    -o-box-shadow: 1px 1px 1px 0 rgba(0, 0, 0, 0.5);
-    -ms-box-shadow: 1px 1px 1px 0 rgba(0, 0, 0, 0.5);
-    box-shadow: 1px 1px 1px 0 rgba(0, 0, 0, 0.5);
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
-    -o-border-radius: 3px;
-    -ms-border-radius: 3px;
-    border-radius: 3px;
-    -webkit-text-shadow: 1px 1px 1px white;
-    -moz-text-shadow: 1px 1px 1px white;
-    -o-text-shadow: 1px 1px 1px white;
-    -ms-text-shadow: 1px 1px 1px white;
-    text-shadow: 1px 1px 1px white; }
-    .gradingformula .notification.warning,
-    .gradingformula-dragged .notification.warning {
-      background-color: #fee7a5;
-      color: #730d02; }
-    .gradingformula .notification.info,
-    .gradingformula-dragged .notification.info {
-      color: #333;
-      background-color: #c2e6f1; }
-    .gradingformula .notification.confirmation,
-    .gradingformula-dragged .notification.confirmation {
-      color: #333;
-      background-color: #c6f1cb; }
-  .gradingformula .frame .icon,
-  .gradingformula-dragged .frame .icon {
-    background-position: -126px 0px; }
-  .gradingformula > .frame,
-  .gradingformula-dragged > .frame {
-    padding-top: 18px; }
-  .gradingformula .function .icon,
-  .gradingformula-dragged .function .icon {
-    background-position: -90px 0px; }
-    .gradingformula .function .icon.sum,
-    .gradingformula-dragged .function .icon.sum {
-      background-position: -36px 0px; }
-  .gradingformula .parameter .icon,
-  .gradingformula-dragged .parameter .icon {
-    background-position: -72px 0px; }
-  .gradingformula .placeholder,
-  .gradingformula .empty,
-  .gradingformula-dragged .placeholder,
-  .gradingformula-dragged .empty {
-    position: relative;
-    margin: 0 0 18px 0;
-    padding: 0;
-    min-height: 18px;
-    background: #f5f5f5;
-    border: 1px dashed #bbbbbb;
-    box-sizing: border-box;
-    -moz-box-sizing: border-box; }
-    .gradingformula .placeholder:before,
-    .gradingformula .empty:before,
-    .gradingformula-dragged .placeholder:before,
-    .gradingformula-dragged .empty:before {
-      content: '';
-      display: block;
-      position: absolute;
-      left: -1px;
-      bottom: -19px;
-      height: 18px;
-      width: 2px;
-      padding: 0px;
-      margin: 0px;
-      background-image: url(../img/logictree-line-vertical.gif);
-      background-repeat: repeat-y;
-      background-position: 0px -13px; }
-    .gradingformula .placeholder:last-child:before,
-    .gradingformula .empty:last-child:before,
-    .gradingformula-dragged .placeholder:last-child:before,
-    .gradingformula-dragged .empty:last-child:before {
-      display: none; }
-
-.gradingformula-dragged {
-  position: absolute;
-  pointer-events: none;
-  z-index: 9999;
-  list-style-type: none;
-  padding: 0px 0px 0px 18px;
-  border: 1px dashed #bbbbbb;
-  background-color: transparent;
-  background-color: rgba(255, 255, 255, 0.75); }
-
-/*** Valintaperusteiden valintaryhmien ja hakukohteiden drag & drop
-************************************************/
-.placeholder {
-  outline: 1px dashed #4183C4;
-  /*-webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  border-radius: 3px;
-  margin: -1px;*/ }
-
-.mjs-nestedSortable-error {
-  background: #fbe3e4;
-  border-color: transparent; }
-
-ol {
-  margin: 0;
-  padding: 0;
-  padding-left: 30px; }
-
-ol.sortable, ol.sortable ol {
-  margin: 0 0 0 25px;
-  padding: 0;
-  list-style-type: none; }
-
-ol.sortable {
-  margin: 0 0 4em 0; }
-
-.sortable li {
-  margin: 5px 0 0 0;
-  padding: 0; }
-
-ul.dropmenu-list {
-  width: 240px; }
-
-li.uiCollapsed.mjs-nestedSortable-hovering div {
-  border-color: #999;
-  background: #fafafa; }
-
-.sortable li div.state-disabled {
-  cursor: default; }
-
-.disclose {
-  cursor: pointer;
-  width: 10px;
-  display: none; }
-
-.sortable li.uiCollapsed > ol {
-  display: none; }
-
-.sortable li > div > .disclose {
-  display: inline-block; }
-
-/*** tilatiedot & henkil√∂tiedot
-************************************************/
-div.tilaParial, div.henkiloPartial {
-  position: absolute;
-  /* width: 400px; */
-  /* height: 200px; */
-  line-height: 20px;
-  padding: 5px;
-  /* font-size: 14px; */
-  /* text-align: center; */
-  /* color: rgb(113, 157, 171); */
-  background: white;
-  border: 1px solid black;
-  border-radius: 5px;
-  /* text-shadow: rgba(0, 0, 0, 0.1) 1px 1px 1px; */
-  box-shadow: rgba(0, 0, 0, 0.1) 1px 1px 2px 0px; }
-
-div.tilaParial .close, div.henkiloPartial .close {
-  float: right;
-  padding-bottom: 5px;
-  cursor: pointer; }
-
-/*
-div.tilaParial:after, div.henkiloPartial:after {
-      content: "";
-      position: absolute;
-      width: 0;
-      height: 0;
-      border-width: 10px;
-      border-style: solid;
-      border-color: transparent transparent #FFFFFF transparent;
-      top: -24px;
-      left: 10%;
-}
-*/
-
-#application-table td.sorted-asc:after {
-    content : url(/haku-app/resources/img/arrow-down.png);
-}
-#application-table td.sorted-desc:after {
-    content : url(/haku-app/resources/img/arrow-up.png);
-}
