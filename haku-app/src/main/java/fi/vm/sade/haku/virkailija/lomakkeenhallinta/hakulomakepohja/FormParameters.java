@@ -31,7 +31,6 @@ public class FormParameters {
         } else {
             this.formMessagesBundle = getMessageBundleName(FORM_MESSAGES, applicationSystem);
         }
-        System.out.println(this.formMessagesBundle);
     }
 
     public ApplicationSystem getApplicationSystem() {

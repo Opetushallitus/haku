@@ -122,6 +122,8 @@ public final class ElementUtil {
             ResourceBundle bundle = ResourceBundle.getBundle(bundleName, new Locale(lang));
             if (bundle.containsKey(key)) {
                 text = bundle.getString(key);
+            } else {
+                text = commonBundle.getString(key);
             }
         } catch (MissingResourceException mre) {
             try {
