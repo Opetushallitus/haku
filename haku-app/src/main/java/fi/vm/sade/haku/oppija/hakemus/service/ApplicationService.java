@@ -28,6 +28,8 @@ import java.util.Map;
 
 public interface ApplicationService {
 
+    Application addBaseEducation(Application application);
+
     Application getApplication(final String applicationSystemId);
 
     Application getApplication(final Application queryApplication);

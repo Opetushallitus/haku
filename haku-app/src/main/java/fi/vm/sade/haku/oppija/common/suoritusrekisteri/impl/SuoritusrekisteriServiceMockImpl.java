@@ -1,5 +1,6 @@
 package fi.vm.sade.haku.oppija.common.suoritusrekisteri.impl;
 
+import fi.vm.sade.haku.oppija.common.suoritusrekisteri.ArvosanaDTO;
 import fi.vm.sade.haku.oppija.common.suoritusrekisteri.OpiskelijaDTO;
 import fi.vm.sade.haku.oppija.common.suoritusrekisteri.SuoritusDTO;
 import fi.vm.sade.haku.oppija.common.suoritusrekisteri.SuoritusrekisteriService;
@@ -31,8 +32,13 @@ public class SuoritusrekisteriServiceMockImpl implements SuoritusrekisteriServic
     @Override
     public List<OpiskelijaDTO> getOpiskelijat(String personOid) {
         List<OpiskelijaDTO> suoritukset = new ArrayList<OpiskelijaDTO>(1);
-        OpiskelijaDTO opiskelija = new OpiskelijaDTO("1.2.246.562.10.27450788669", "9", "9A", personOid);
+        OpiskelijaDTO opiskelija = new OpiskelijaDTO("1.2.246.562.10.27450788669", "9", "9A", personOid, null);
         suoritukset.add(opiskelija);
         return suoritukset;
+    }
+
+    @Override
+    public List<ArvosanaDTO> getArvosanat(String suoritusId) {
+        return null;
     }
 }

@@ -10,6 +10,7 @@ public class SuoritusDTO {
     private String henkiloOid;
     private String suorituskieli;
     private Integer pohjakoulutus;
+    private String luokkataso;
 
     public SuoritusDTO(String id, Date valmistuminen, String tila, String henkiloOid, Integer pohjakoulutus, String suorituskieli) {
         this.id = id;
@@ -72,6 +73,15 @@ public class SuoritusDTO {
         return pohjakoulutus;
     }
 
+
+    public void setLuokkataso(String luokkataso) {
+        this.luokkataso = luokkataso;
+    }
+
+    public String getLuokkataso() {
+        return luokkataso;
+    }
+
     public String toString() {
         StringBuilder builder = new StringBuilder()
                 .append("{")
@@ -80,7 +90,9 @@ public class SuoritusDTO {
                 .append(" tila : ").append(tila)
                 .append(" henkiloOid : ").append(henkiloOid)
                 .append(" suorituskieli : ").append(suorituskieli)
-                .append(" pohjakoulutus : ").append(pohjakoulutus);
+                .append(" pohjakoulutus : ").append(pohjakoulutus)
+                .append(" luokkataso : ").append(luokkataso)
+                .append("}");
         return builder.toString();
     }
 }

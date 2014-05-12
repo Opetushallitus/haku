@@ -200,7 +200,7 @@ public class ApplicationServiceImplTest {
 
     @Test
     public void testSendingSchool() {
-        OpiskelijaDTO opiskelija = new OpiskelijaDTO("oppilaitos", "9", "9A", "henkiloOid");
+        OpiskelijaDTO opiskelija = new OpiskelijaDTO("oppilaitos", "9", "9A", "henkiloOid", null);
         SuoritusDTO suoritus = new SuoritusDTO("suoritusId", new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24), "KESKEN",
                 "henkiloOid", Integer.valueOf(OppijaConstants.PERUSKOULU), "SV");
 
@@ -211,12 +211,14 @@ public class ApplicationServiceImplTest {
 
         Application application = new Application();
         application.setPersonOid("1.2.3");
+        application.setOid("4.5.6");
         Map<String, String> koulutustausta = new HashMap<String, String>();
         koulutustausta.put(OppijaConstants.ELEMENT_ID_BASE_EDUCATION, OppijaConstants.YLIOPPILAS);
         koulutustausta.put(OppijaConstants.LUKIO_KIELI, "FI");
         koulutustausta.put(OppijaConstants.LUKIO_PAATTOTODISTUS_VUOSI, "2013");
         application.addVaiheenVastaukset(OppijaConstants.PHASE_EDUCATION, koulutustausta);
         application = service.addSendingSchool(application);
+        application = service.addBaseEducation(application);
         koulutustausta = application.getPhaseAnswers(OppijaConstants.PHASE_EDUCATION);
 
         assertEquals("SV", koulutustausta.get(OppijaConstants.PERUSOPETUS_KIELI));
@@ -231,7 +233,7 @@ public class ApplicationServiceImplTest {
 
     @Test
     public void testSendingSchoolEqual() {
-        OpiskelijaDTO opiskelija = new OpiskelijaDTO("oppilaitos", "9", "9A", "henkiloOid");
+        OpiskelijaDTO opiskelija = new OpiskelijaDTO("oppilaitos", "9", "9A", "henkiloOid", null);
         SuoritusDTO suoritus = new SuoritusDTO("suoritusId", new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24), "KESKEN",
                 "henkiloOid", Integer.valueOf(OppijaConstants.PERUSKOULU), "SV");
 

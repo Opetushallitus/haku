@@ -18,6 +18,7 @@ package fi.vm.sade.haku.oppija.hakemus.service.impl;
 
 import com.google.common.collect.Lists;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
+import fi.vm.sade.haku.oppija.common.suoritusrekisteri.ArvosanaDTO;
 import fi.vm.sade.haku.oppija.common.suoritusrekisteri.OpiskelijaDTO;
 import fi.vm.sade.haku.oppija.common.suoritusrekisteri.SuoritusDTO;
 import fi.vm.sade.haku.oppija.common.suoritusrekisteri.SuoritusrekisteriService;
@@ -236,25 +237,26 @@ public class ApplicationServiceImpl implements ApplicationService {
             return application;
         }
 
-        List<SuoritusDTO> suoritukset = suoritusrekisteriService.getSuoritukset(personOid);
         List<OpiskelijaDTO> opiskelijat = suoritusrekisteriService.getOpiskelijat(personOid);
 
-        if (suoritukset != null && suoritukset.size() > 0 && opiskelijat != null && opiskelijat.size() > 0) {
-            SuoritusDTO suoritus = suoritukset.get(0);
-            OpiskelijaDTO opiskelija = opiskelijat.get(0);
-
+        if (opiskelijat != null && opiskelijat.size() > 0) {
+            OpiskelijaDTO opiskelija = null;
+            for (OpiskelijaDTO dto : opiskelijat) {
+                if (dto.getLoppuPaiva() == null) {
+                    opiskelija = dto;
+                }
+            }
+            if (opiskelija == null) {
+                // Jos opiskelija ei ole missään koulussa, ei aseteta lähtökoulua
+                return application;
+            }
 
             Map<String, String> educationAnswers = new HashMap<String, String>(
                     application.getPhaseAnswers(OppijaConstants.PHASE_EDUCATION));
 
             String oid = application.getOid();
-            educationAnswers = handleSuoritukset(educationAnswers, oid, suoritus);
             educationAnswers = handleOpiskelija(educationAnswers, oid, opiskelija);
             application.addVaiheenVastaukset(OppijaConstants.PHASE_EDUCATION, educationAnswers);
-
-            Map<String, String> gradeAnswers = new HashMap<String, String>(
-                    application.getPhaseAnswers(OppijaConstants.PHASE_GRADES));
-
 
         }
 
@@ -296,6 +298,62 @@ public class ApplicationServiceImpl implements ApplicationService {
         return answers;
     }
 
+    @Override
+    public Application addBaseEducation(Application application) {
+        String personOid = application.getPersonOid();
+        if (isEmpty(personOid)) {
+            return application;
+        }
+        List<SuoritusDTO> suoritukset = suoritusrekisteriService.getSuoritukset(personOid);
+        SuoritusDTO suoritus = null;
+        for (SuoritusDTO dto : suoritukset) {
+            Integer pohjakoulutus = dto.getPohjakoulutus();
+            if (pohjakoulutus.equals(Integer.getInteger(OppijaConstants.YLIOPPILAS))) {
+                suoritus = dto;
+            } else if (suoritus == null && (pohjakoulutus.equals(Integer.valueOf(OppijaConstants.PERUSKOULU))
+                    || pohjakoulutus.equals(Integer.valueOf(OppijaConstants.YKSILOLLISTETTY))
+                    || pohjakoulutus.equals(Integer.valueOf(OppijaConstants.ALUEITTAIN_YKSILOLLISTETTY))
+                    || pohjakoulutus.equals(Integer.valueOf(OppijaConstants.OSITTAIN_YKSILOLLISTETTY)))) {
+                suoritus = dto;
+            }
+        }
+        Map<String, String> educationAnswers = new HashMap<String, String>(application.getPhaseAnswers(OppijaConstants.PHASE_EDUCATION));
+        educationAnswers = handleSuoritukset(educationAnswers, application.getOid(), suoritus);
+        application.addVaiheenVastaukset(OppijaConstants.PHASE_EDUCATION, educationAnswers);
+
+        Map<String, String> gradeAnswers = application.getPhaseAnswers(OppijaConstants.PHASE_GRADES);
+        if ("10".equals(suoritus.getLuokkataso())) {
+            for (SuoritusDTO dto : suoritukset) {
+                if ("9".equals(dto.getLuokkataso())) {
+                    gradeAnswers = handleArvosanat(gradeAnswers, application, dto);
+                    break;
+                }
+            }
+        }
+        gradeAnswers = handleArvosanat(gradeAnswers, application, suoritus);
+        application.addVaiheenVastaukset(OppijaConstants.PHASE_GRADES, gradeAnswers);
+        return application;
+    }
+
+    private Map<String, String> handleArvosanat(Map<String, String> gradeAnswers, Application application,
+                                                SuoritusDTO suoritus) {
+        String suoritusId = suoritus.getId();
+        List<ArvosanaDTO> arvosanat = suoritusrekisteriService.getArvosanat(suoritusId);
+        String prefix = "PK_";
+        if (suoritus.getPohjakoulutus().equals(Integer.valueOf(OppijaConstants.YLIOPPILAS))) {
+            prefix = "LK_";
+        }
+        String suffix = "";
+        if (suoritus.getLuokkataso() != null && suoritus.getLuokkataso().equals("10")) {
+            suffix = "_10";
+        }
+        for (ArvosanaDTO arvosana : arvosanat) {
+            String key = prefix + arvosana.getAine() + "suffix";
+            gradeAnswers = addRegisterValue(application.getOid(), gradeAnswers, key, arvosana.getAine());
+        }
+        return gradeAnswers;
+    }
+
     private Map<String, String> handleSuoritukset(Map<String, String> answers,
                                                   String applicationOid, SuoritusDTO suoritus) {
 
@@ -306,6 +364,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         if (baseEducationInt != null) {
             String baseEducation = String.valueOf(baseEducationInt);
             answers = addRegisterValue(applicationOid, answers, OppijaConstants.ELEMENT_ID_BASE_EDUCATION, baseEducation);
+
             if (isNotEmpty(language)) {
                 if (baseEducation.equals(OppijaConstants.YLIOPPILAS)) {
                     answers = addRegisterValue(applicationOid, answers, OppijaConstants.LUKIO_KIELI, language);
@@ -314,6 +373,11 @@ public class ApplicationServiceImpl implements ApplicationService {
                         || baseEducation.equals(OppijaConstants.ALUEITTAIN_YKSILOLLISTETTY)
                         || baseEducation.equals(OppijaConstants.OSITTAIN_YKSILOLLISTETTY)) {
                     answers = addRegisterValue(applicationOid, answers, OppijaConstants.PERUSOPETUS_KIELI, language);
+                    if ("10".equals(suoritus.getLuokkataso())) {
+                        answers = addRegisterValue(applicationOid, answers, "LISAKOULUTUS_KYMPPI", "true");
+                    } else {
+                        answers = addRegisterValue(applicationOid, answers, "LISAKOULUTUS_KYMPPI", "false");
+                    }
                 }
             }
             if (valmistuminen != null) {
