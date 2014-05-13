@@ -142,7 +142,6 @@ public class SuoritusrekisteriServiceImpl implements SuoritusrekisteriService {
 
         CachingRestClient cachingRestClient = getCachingRestClient();
         String response;
-        String date = ISO8601.format(new Date());
         try {
             InputStream is = cachingRestClient.get("/rest/v1/suoritukset"
                     + "?henkilo=" + personOid);
@@ -160,7 +159,21 @@ public class SuoritusrekisteriServiceImpl implements SuoritusrekisteriService {
             suoritukset.add(suoritus);
         }
 
+        checkForMulti(suoritukset);
+
         return suoritukset;
+    }
+
+    private void checkForMulti(ArrayList<SuoritusDTO> suoritukset) {
+        List<Integer> foundEducations = new ArrayList<Integer>(suoritukset.size());
+        for (SuoritusDTO suoritus : suoritukset) {
+            Integer edu = suoritus.getPohjakoulutus();
+            if (foundEducations.contains(edu)) {
+                throw new ResourceNotFoundException("Found multiple instances of baseEducation "+edu+
+                        " for personOid"+suoritus.getHenkiloOid());
+            }
+            foundEducations.add(edu);
+        }
     }
 
     private SuoritusDTO suoritusJsonToDTO(JsonObject elem) {
