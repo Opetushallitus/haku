@@ -185,7 +185,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         Person personBefore = personBuilder.get();
         LOGGER.debug("Calling addPerson");
         try {
-            Person personAfter  = authenticationService.addPerson(personBefore);
+            Person personAfter = authenticationService.addPerson(personBefore);
             LOGGER.debug("Called addPerson");
             LOGGER.debug("Calling modifyPersonalData");
             application = application.modifyPersonalData(personAfter);

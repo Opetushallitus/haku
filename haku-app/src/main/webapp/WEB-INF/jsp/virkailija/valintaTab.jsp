@@ -29,19 +29,28 @@
         </table>
     </div>
     <div class="grid16-7 .offset-left-16-7">
-        <table class="striped align-left">
-            <tr>
-                <th>&nbsp;</th>
-                <th style="width: 60px">Kutsuttu</th>
-                <th style="width: 60px">Pisteet</th>
-            </tr>
-        <c:forEach var="test" items="${ao.pistetiedot}">
-            <tr>
-                <td><haku:i18nText value="${test.nimi}"/></td>
-                <td><haku:i18nText value="${test.osallistuminenText}" /></td>
-                <td><c:out value="${test.pisteet}"/></td>
-            </tr>
-        </c:forEach>
+        <table class="striped">
+            <colgroup>
+                <col></col>
+                <col style="width: 15%;"></col>
+                <col style="width: 15%;"></col>
+            </colgroup>
+            <thead>
+                <tr>
+                    <th>&nbsp;</th>
+                    <th>Kutsuttu</th>
+                    <th>Pisteet</th>
+                </tr>
+            <thead>
+            <tbody>
+            <c:forEach var="test" items="${ao.pistetiedot}">
+                <tr>
+                    <td><haku:i18nText value="${test.nimi}"/></td>
+                    <td><haku:i18nText value="${test.osallistuminenText}" /></td>
+                    <td><c:out value="${test.pisteet}"/></td>
+                </tr>
+            </c:forEach>
+            </tbody>
         </table>
     </div>
     <div class="clear"></div>
