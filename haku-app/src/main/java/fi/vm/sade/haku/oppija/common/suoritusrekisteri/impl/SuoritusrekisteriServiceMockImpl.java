@@ -4,7 +4,6 @@ import fi.vm.sade.haku.oppija.common.suoritusrekisteri.ArvosanaDTO;
 import fi.vm.sade.haku.oppija.common.suoritusrekisteri.OpiskelijaDTO;
 import fi.vm.sade.haku.oppija.common.suoritusrekisteri.SuoritusDTO;
 import fi.vm.sade.haku.oppija.common.suoritusrekisteri.SuoritusrekisteriService;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
@@ -22,8 +21,8 @@ public class SuoritusrekisteriServiceMockImpl implements SuoritusrekisteriServic
     public List<SuoritusDTO> getSuoritukset(String personOid) {
         List<SuoritusDTO> suoritukset = new ArrayList<SuoritusDTO>(1);
         Date tomorrow = new Date(System.currentTimeMillis() + ONE_DAY);
-        SuoritusDTO suoritus = new SuoritusDTO("suoritusId", tomorrow, "KESKEN", personOid,
-                Integer.valueOf(OppijaConstants.PERUSKOULU), "FI");
+        SuoritusDTO suoritus = new SuoritusDTO("suoritusId", "peruskoulu", "1.2.3", "KESKEN", tomorrow,
+                personOid, "Ei", "FI");
 
         suoritukset.add(suoritus);
         return suoritukset;

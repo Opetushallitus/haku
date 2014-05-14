@@ -165,66 +165,32 @@ public class SuoritusrekisteriServiceImpl implements SuoritusrekisteriService {
     }
 
     private void checkForMulti(ArrayList<SuoritusDTO> suoritukset) {
-        List<Integer> foundEducations = new ArrayList<Integer>(suoritukset.size());
+        List<String> foundKomos = new ArrayList<String>(suoritukset.size());
         for (SuoritusDTO suoritus : suoritukset) {
-            Integer edu = suoritus.getPohjakoulutus();
-            if (foundEducations.contains(edu)) {
-                throw new ResourceNotFoundException("Found multiple instances of baseEducation "+edu+
-                        " for personOid"+suoritus.getHenkiloOid());
+            String komo = suoritus.getKomo();
+            if (foundKomos.contains(komo)) {
+                throw new ResourceNotFoundException("Found multiple instances of komo "+komo+
+                        " for personOid "+suoritus.getHenkiloOid());
             }
-            foundEducations.add(edu);
+            foundKomos.add(komo);
         }
     }
 
     private SuoritusDTO suoritusJsonToDTO(JsonObject elem) {
         log.debug("suoritusJsonToDTO, json ", elem.toString());
-        JsonElement id = elem.get("id");
-        JsonElement tila = elem.get("tila");
-        JsonElement henkiloOid = elem.get("henkiloOid");
-        JsonElement suoritusKieli = elem.get("suoritusKieli");
-        JsonElement komoto = elem.get("komoto");
-        JsonElement luokkataso = elem.get("luokkataso");
 
         SuoritusDTO suoritus = new SuoritusDTO();
-        suoritus.setId(jsonElementToString(id));
-        suoritus.setTila(jsonElementToString(tila));
-        suoritus.setHenkiloOid(jsonElementToString(henkiloOid));
-        suoritus.setSuorituskieli(jsonElementToString(suoritusKieli));
-        suoritus.setLuokkataso(jsonElementToString(luokkataso));
+        suoritus.setId(jsonElementToString(elem.get("id")));
+        suoritus.setTila(jsonElementToString(elem.get("tila")));
+        suoritus.setHenkiloOid(jsonElementToString(elem.get("henkiloOid")));
+        suoritus.setSuorituskieli(jsonElementToString(elem.get("suorituskieli")));
+        suoritus.setKomo(jsonElementToString(elem.get("komo")));
 
         try {
             Date valmistuminen = VALMISTUMINEN_FMT.parse(jsonElementToString(elem.get("valmistuminen")));
             suoritus.setValmistuminen(valmistuminen);
         } catch (ParseException e) {
             log.info("Parsing valmistuminen date failed: " + e);
-        }
-
-        if (komoto != null && komoto.isJsonObject()) {
-            JsonObject komotoObj = (JsonObject) komoto;
-            String komo = jsonElementToString(komotoObj.get("komo"));
-
-            if ("ulkomainen".equals(komo)) {
-//            0: Suoritus.komoto.komo = "ulkomainen"
-                suoritus.setPohjakoulutus(0);
-            } else if ("lukio".equals(komo)) {
-//            9: Suoritus.komoto.komo = "lukio"
-                suoritus.setPohjakoulutus(9);
-            } else if ("peruskoulu".equals(komo)) {
-                String yksilollistaminen = jsonElementToString(elem.get("yksilollistaminen"));
-//            1: Suoritus.komoto.komo = "peruskoulu", yksilollistaminen = "Ei"
-//            2: Suoritus.komoto.komo = "peruskoulu", yksilollistaminen = "Osittain"
-//            3: Suoritus.komoto.komo = "peruskoulu", yksilollistaminen = "Alueittain"
-//            6: Suoritus.komoto.komo = "peruskoulu", yksilollistaminen = "Kokonaan"
-                if ("Ei".equals(yksilollistaminen)) {
-                    suoritus.setPohjakoulutus(1);
-                } else if ("Osittain".equals(yksilollistaminen)) {
-                    suoritus.setPohjakoulutus(2);
-                } else if ("Alueittain".equals(yksilollistaminen)) {
-                    suoritus.setPohjakoulutus(3);
-                } else if ("Kokonaan".equals(yksilollistaminen)) {
-                    suoritus.setPohjakoulutus(6);
-                }
-            }
         }
 
         log.debug("suoritusJsonToDTO, dto ", suoritus.toString());

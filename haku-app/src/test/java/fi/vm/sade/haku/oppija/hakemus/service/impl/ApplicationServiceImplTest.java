@@ -201,8 +201,9 @@ public class ApplicationServiceImplTest {
     @Test
     public void testSendingSchool() {
         OpiskelijaDTO opiskelija = new OpiskelijaDTO("oppilaitos", "9", "9A", "henkiloOid", null);
-        SuoritusDTO suoritus = new SuoritusDTO("suoritusId", new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24), "KESKEN",
-                "henkiloOid", Integer.valueOf(OppijaConstants.PERUSKOULU), "SV");
+        SuoritusDTO suoritus = new SuoritusDTO("suoritusId", "peruskoulu", "1.2.3", "KESKEN",
+                new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24), "henkiloOid",
+                "Ei", "SV");
 
         List<OpiskelijaDTO> opiskelijat = Lists.newArrayList(opiskelija);
         List<SuoritusDTO> suoritukset = Lists.newArrayList(suoritus);
@@ -234,8 +235,9 @@ public class ApplicationServiceImplTest {
     @Test
     public void testSendingSchoolEqual() {
         OpiskelijaDTO opiskelija = new OpiskelijaDTO("oppilaitos", "9", "9A", "henkiloOid", null);
-        SuoritusDTO suoritus = new SuoritusDTO("suoritusId", new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24), "KESKEN",
-                "henkiloOid", Integer.valueOf(OppijaConstants.PERUSKOULU), "SV");
+        SuoritusDTO suoritus = new SuoritusDTO("suoritusId", "peruskoulu", "1.2.3", "KESKEN",
+                new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24), "henkiloOid",
+                "Ei", "SV");
 
         List<OpiskelijaDTO> opiskelijat = Lists.newArrayList(opiskelija);
         List<SuoritusDTO> suoritukset = Lists.newArrayList(suoritus);

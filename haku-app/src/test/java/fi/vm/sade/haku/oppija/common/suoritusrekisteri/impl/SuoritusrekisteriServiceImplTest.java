@@ -6,9 +6,11 @@ import com.google.gson.JsonPrimitive;
 import fi.vm.sade.generic.rest.CachingRestClient;
 import fi.vm.sade.haku.oppija.common.suoritusrekisteri.OpiskelijaDTO;
 import fi.vm.sade.haku.oppija.common.suoritusrekisteri.SuoritusDTO;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
+import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -16,9 +18,7 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -48,66 +48,46 @@ public class SuoritusrekisteriServiceImplTest {
     }
 
     @Test
-    public void testSuorituksetPK() throws IOException {
-        when(cachingRestClient.get(any(String.class))).thenReturn(getSuoritus("peruskoulu", "Ei"));
+    public void testSingleSuoritus() throws IOException {
+        String suoritukset = "["+getSuoritus("peruskoulu")+"]";
+        InputStream is = new ByteArrayInputStream(suoritukset.getBytes("UTF-8"));
+        when(cachingRestClient.get(any(String.class))).thenReturn(is);
         suoritusrekisteriService.setCachingRestClient(cachingRestClient);
 
-        List<SuoritusDTO> suoritukset = suoritusrekisteriService.getSuoritukset("1.2.246.562.24.50387424171");
-        assertEquals(1, suoritukset.size());
-        SuoritusDTO suoritus = suoritukset.get(0);
-        assertEquals(Integer.valueOf(OppijaConstants.PERUSKOULU), suoritus.getPohjakoulutus());
+        List<SuoritusDTO> suoritusDTOs = suoritusrekisteriService.getSuoritukset("1.2.246.562.24.50387424171");
+        assertEquals(1, suoritusDTOs.size());
+        SuoritusDTO suoritus = suoritusDTOs.get(0);
+        assertEquals(suoritus.getKomo(), "peruskoulu");
 
-        Calendar cal = GregorianCalendar.getInstance();
-        cal.setTime(tomorrow);
-        Calendar calSuoritus = GregorianCalendar.getInstance();
-        calSuoritus.setTime(suoritus.getValmistuminen());
-        assertEquals(cal.get(Calendar.YEAR), calSuoritus.get(Calendar.YEAR));
-
-        assertEquals("AR", suoritus.getSuorituskieli());
     }
 
     @Test
-    public void testSuorituksetLukio() throws IOException {
-        when(cachingRestClient.get(any(String.class))).thenReturn(getSuoritus("lukio", "Ei"));
+    public void testMultipleLegalSuoritus() throws IOException {
+        String suoritukset = "["+getSuoritus("peruskoulu")+","+getSuoritus("lisaopetus")+"]";
+        InputStream is = new ByteArrayInputStream(suoritukset.getBytes("UTF-8"));
+        when(cachingRestClient.get(any(String.class))).thenReturn(is);
         suoritusrekisteriService.setCachingRestClient(cachingRestClient);
 
-        List<SuoritusDTO> suoritukset = suoritusrekisteriService.getSuoritukset("1.2.246.562.24.50387424171");
-        assertEquals(1, suoritukset.size());
-        SuoritusDTO suoritus = suoritukset.get(0);
-        assertEquals(Integer.valueOf(OppijaConstants.YLIOPPILAS), suoritus.getPohjakoulutus());
+        List<SuoritusDTO> suoritusDTOs = suoritusrekisteriService.getSuoritukset("1.2.246.562.24.50387424171");
+        assertEquals(2, suoritusDTOs.size());
+        SuoritusDTO suoritus = suoritusDTOs.get(0);
+        assertEquals(suoritus.getKomo(), "peruskoulu");
+        suoritus = suoritusDTOs.get(1);
+        assertEquals(suoritus.getKomo(), "lisaopetus");
 
-        Calendar cal = GregorianCalendar.getInstance();
-        cal.setTime(tomorrow);
-        Calendar calSuoritus = GregorianCalendar.getInstance();
-        calSuoritus.setTime(suoritus.getValmistuminen());
-        assertEquals(cal.get(Calendar.YEAR), calSuoritus.get(Calendar.YEAR));
     }
 
+    @Rule public ExpectedException thrown= ExpectedException.none();
     @Test
-    public void testSuorituksetYksilollistetty() throws IOException {
-        when(cachingRestClient.get(any(String.class))).thenReturn(getSuoritus("peruskoulu", "Alueittain"));
+    public void testMultipleFailingSuoritus() throws IOException {
+        thrown.expect(ResourceNotFoundException.class);
+        thrown.expectMessage("Found multiple instances of komo peruskoulu for personOid 1.2.246.562.24.15469000319");
+        String suoritukset = "["+getSuoritus("peruskoulu")+","+getSuoritus("peruskoulu")+"]";
+        InputStream is = new ByteArrayInputStream(suoritukset.getBytes("UTF-8"));
+        when(cachingRestClient.get(any(String.class))).thenReturn(is);
         suoritusrekisteriService.setCachingRestClient(cachingRestClient);
 
-        List<SuoritusDTO> suoritukset = suoritusrekisteriService.getSuoritukset("1.2.246.562.24.50387424171");
-        assertEquals(1, suoritukset.size());
-        SuoritusDTO suoritus = suoritukset.get(0);
-        assertEquals(Integer.valueOf(OppijaConstants.ALUEITTAIN_YKSILOLLISTETTY), suoritus.getPohjakoulutus());
-
-        when(cachingRestClient.get(any(String.class))).thenReturn(getSuoritus("peruskoulu", "Osittain"));
-        suoritusrekisteriService.setCachingRestClient(cachingRestClient);
-
-        suoritukset = suoritusrekisteriService.getSuoritukset("1.2.246.562.24.50387424171");
-        assertEquals(1, suoritukset.size());
-        suoritus = suoritukset.get(0);
-        assertEquals(Integer.valueOf(OppijaConstants.OSITTAIN_YKSILOLLISTETTY), suoritus.getPohjakoulutus());
-
-        when(cachingRestClient.get(any(String.class))).thenReturn(getSuoritus("peruskoulu", "Kokonaan"));
-        suoritusrekisteriService.setCachingRestClient(cachingRestClient);
-
-        suoritukset = suoritusrekisteriService.getSuoritukset("1.2.246.562.24.50387424171");
-        assertEquals(1, suoritukset.size());
-        suoritus = suoritukset.get(0);
-        assertEquals(Integer.valueOf(OppijaConstants.YKSILOLLISTETTY), suoritus.getPohjakoulutus());
+        List<SuoritusDTO> suoritusDTOs = suoritusrekisteriService.getSuoritukset("1.2.246.562.24.50387424171");
 
     }
 
@@ -126,26 +106,15 @@ public class SuoritusrekisteriServiceImplTest {
 
     }
 
-    private InputStream getSuoritus(String pohjakoulutus, String yksilollistaminen) throws UnsupportedEncodingException {
-        JsonObject suoritus = new JsonObject();
-        suoritus.add("id", new JsonPrimitive("7514285c-921b-44a9-b9d7-511d0eb39160"));
-        suoritus.add("tila", new JsonPrimitive("KESKEN"));
-        suoritus.add("valmistuminen", new JsonPrimitive(df.format(tomorrow)));
-        suoritus.add("henkiloOid", new JsonPrimitive("1.2.246.562.24.50387424171"));
-        suoritus.add("yksilollistaminen", new JsonPrimitive(yksilollistaminen));
-        suoritus.add("suoritusKieli", new JsonPrimitive("AR"));
-
-        JsonObject komoto = new JsonObject();
-        komoto.add("oid", new JsonPrimitive("FIXME"));
-        komoto.add("komo", new JsonPrimitive(pohjakoulutus));
-        komoto.add("tarjoaja", new JsonPrimitive("1.2.246.562.10.27450788669"));
-
-        suoritus.add("komoto", komoto);
-
-        JsonArray suoritukset = new JsonArray();
-        suoritukset.add(suoritus);
-
-        return new ByteArrayInputStream(suoritukset.toString().getBytes("UTF-8"));
+    private String getSuoritus(String komo) {
+        return "{\"id\":\"b32ba8e6-63d7-4946-8717-61fdb85f2860\"," +
+                "\"komo\":\"" + komo + "\"," +
+                "\"myontaja\":\"1.2.246.562.10.74977233621\"," +
+                "\"tila\":\"KESKEN\"," +
+                "\"valmistuminen\":\"30.05.2014\"," +
+                "\"henkiloOid\":\"1.2.246.562.24.15469000319\"," +
+                "\"yksilollistaminen\":\"Alueittain\"," +
+                "\"suoritusKieli\":\"GL\"}";
     }
 
     private InputStream getOpiskelija() throws UnsupportedEncodingException {

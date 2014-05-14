@@ -306,95 +306,104 @@ public class ApplicationServiceImpl implements ApplicationService {
         }
         List<SuoritusDTO> suoritukset = suoritusrekisteriService.getSuoritukset(personOid);
         SuoritusDTO suoritus = null;
+        int pohjakoulutus = -1;
+        boolean kymppi = false;
+        Date valmistuminen = null;
+        String suorituskieli = null;
         for (SuoritusDTO dto : suoritukset) {
-            Integer pohjakoulutus = dto.getPohjakoulutus();
-            if (pohjakoulutus.equals(Integer.getInteger(OppijaConstants.YLIOPPILAS))) {
-                suoritus = dto;
-            } else if (suoritus == null && (pohjakoulutus.equals(Integer.valueOf(OppijaConstants.PERUSKOULU))
-                    || pohjakoulutus.equals(Integer.valueOf(OppijaConstants.YKSILOLLISTETTY))
-                    || pohjakoulutus.equals(Integer.valueOf(OppijaConstants.ALUEITTAIN_YKSILOLLISTETTY))
-                    || pohjakoulutus.equals(Integer.valueOf(OppijaConstants.OSITTAIN_YKSILOLLISTETTY)))) {
-                suoritus = dto;
+            String komo = dto.getKomo();
+            if (pohjakoulutus < 0 && "ulkomainen".equals(komo)) {
+                pohjakoulutus = Integer.valueOf(OppijaConstants.ULKOMAINEN_TUTKINTO).intValue();
+            } else if ("lukio".equals(komo)) {
+                pohjakoulutus = Integer.valueOf(OppijaConstants.YLIOPPILAS).intValue();
+                valmistuminen = dto.getValmistuminen();
+                suorituskieli = dto.getSuorituskieli();
+                addGrades(application, dto);
+            } else if (pohjakoulutus < 0 && "peruskoulu".equals(komo)) {
+                valmistuminen = dto.getValmistuminen();
+                suorituskieli = dto.getSuorituskieli();
+                String yksilollistaminen = dto.getYksilollistaminen();
+                if ("Ei".equals(yksilollistaminen)) {
+                    pohjakoulutus = Integer.valueOf(OppijaConstants.PERUSKOULU).intValue();
+                } else if ("Alueittain".equals(yksilollistaminen)) {
+                    pohjakoulutus = Integer.valueOf(OppijaConstants.ALUEITTAIN_YKSILOLLISTETTY).intValue();
+                } else if ("Kokonaan".equals(yksilollistaminen)) {
+                    pohjakoulutus = Integer.valueOf(OppijaConstants.YKSILOLLISTETTY).intValue();
+                } else if ("Osittain".equals(yksilollistaminen)) {
+                    pohjakoulutus = Integer.valueOf(OppijaConstants.OSITTAIN_YKSILOLLISTETTY).intValue();
+                }
+                addGrades(application, dto);
+            } else if ("lisaopetus".equals(komo)) {
+                kymppi = true;
+                addGrades(application, dto);
             }
         }
+
+        String applicationOid = application.getOid();
         Map<String, String> educationAnswers = new HashMap<String, String>(application.getPhaseAnswers(OppijaConstants.PHASE_EDUCATION));
-        educationAnswers = handleSuoritukset(educationAnswers, application.getOid(), suoritus);
+        educationAnswers = addRegisterValue(applicationOid, educationAnswers,
+                OppijaConstants.ELEMENT_ID_BASE_EDUCATION, String.valueOf(pohjakoulutus));
+        educationAnswers = addRegisterValue(applicationOid, educationAnswers,
+                OppijaConstants.ELEMENT_ID_LISAKOULUTUS_KYMPPI, String.valueOf(kymppi));
+
+        String todistusvuosiKey = pohjakoulutus == Integer.valueOf(OppijaConstants.YLIOPPILAS).intValue()
+                ? OppijaConstants.LUKIO_PAATTOTODISTUS_VUOSI
+                : OppijaConstants.PERUSOPETUS_PAATTOTODISTUSVUOSI;
+        if (valmistuminen != null) {
+            Calendar cal = GregorianCalendar.getInstance();
+            cal.setTime(valmistuminen);
+            String todistusvuosi = String.valueOf(cal.get(Calendar.YEAR));
+            educationAnswers= addRegisterValue(applicationOid, educationAnswers, todistusvuosiKey, todistusvuosi);
+        }
+        String suorituskieliKey = pohjakoulutus == Integer.valueOf(OppijaConstants.YLIOPPILAS).intValue()
+                ? OppijaConstants.LUKIO_KIELI
+                : OppijaConstants.PERUSOPETUS_KIELI;
+        if (suorituskieli != null) {
+            educationAnswers = addRegisterValue(applicationOid, educationAnswers, suorituskieliKey, suorituskieli);
+        }
+
         application.addVaiheenVastaukset(OppijaConstants.PHASE_EDUCATION, educationAnswers);
 
-        Map<String, String> gradeAnswers = application.getPhaseAnswers(OppijaConstants.PHASE_GRADES);
-        if ("10".equals(suoritus.getLuokkataso())) {
-            for (SuoritusDTO dto : suoritukset) {
-                if ("9".equals(dto.getLuokkataso())) {
-                    gradeAnswers = handleArvosanat(gradeAnswers, application, dto);
-                    break;
-                }
-            }
-        }
-        gradeAnswers = handleArvosanat(gradeAnswers, application, suoritus);
-        application.addVaiheenVastaukset(OppijaConstants.PHASE_GRADES, gradeAnswers);
         return application;
     }
 
-    private Map<String, String> handleArvosanat(Map<String, String> gradeAnswers, Application application,
-                                                SuoritusDTO suoritus) {
+    private Map<String, String> addGrades(Application application, SuoritusDTO suoritus) {
         String suoritusId = suoritus.getId();
         List<ArvosanaDTO> arvosanat = suoritusrekisteriService.getArvosanat(suoritusId);
         String prefix = "PK_";
-        if (suoritus.getPohjakoulutus().equals(Integer.valueOf(OppijaConstants.YLIOPPILAS))) {
+        if (suoritus.getKomo().equals("lukio")) {
             prefix = "LK_";
         }
         String suffix = "";
-        if (suoritus.getLuokkataso() != null && suoritus.getLuokkataso().equals("10")) {
+        if (suoritus.getKomo().equals("lisaopetus")) {
             suffix = "_10";
         }
+        Map<String, String> gradeAnswers = application.getPhaseAnswers(OppijaConstants.PHASE_GRADES);
+
+        if (!arvosanat.isEmpty()) {
+            gradeAnswers.put("arvosanat_lukittu", "true");
+        }
+        Map<String, Integer> valinnaiset = new HashMap<String, Integer>();
         for (ArvosanaDTO arvosana : arvosanat) {
-            String key = prefix + arvosana.getAine() + "suffix";
-            gradeAnswers = addRegisterValue(application.getOid(), gradeAnswers, key, arvosana.getAine());
+            String aine = arvosana.getAine();
+            String thisSuffix = suffix;
+            if (arvosana.isValinnainen()) {
+                Integer count = 1;
+                if (valinnaiset.containsKey(aine)) {
+                    count = valinnaiset.get(aine) + 1;
+                }
+                valinnaiset.put(aine, count);
+                thisSuffix = "_VAL" + String.valueOf(count) + suffix;
+            }
+            String key = prefix + arvosana.getAine() + thisSuffix;
+            gradeAnswers = addRegisterValue(application.getOid(), gradeAnswers, key, arvosana.getArvosana());
+            if (isNotBlank(arvosana.getLisatieto())) {
+                gradeAnswers = addRegisterValue(application.getOid(), gradeAnswers,
+                        "prefix" + arvosana.getAine() + "_OPPIAINE", arvosana.getLisatieto());
+            }
         }
+        application.addVaiheenVastaukset(OppijaConstants.PHASE_GRADES, gradeAnswers);
         return gradeAnswers;
-    }
-
-    private Map<String, String> handleSuoritukset(Map<String, String> answers,
-                                                  String applicationOid, SuoritusDTO suoritus) {
-
-        Integer baseEducationInt = suoritus.getPohjakoulutus();
-        String language = suoritus.getSuorituskieli();
-        Date valmistuminen = suoritus.getValmistuminen();
-
-        if (baseEducationInt != null) {
-            String baseEducation = String.valueOf(baseEducationInt);
-            answers = addRegisterValue(applicationOid, answers, OppijaConstants.ELEMENT_ID_BASE_EDUCATION, baseEducation);
-
-            if (isNotEmpty(language)) {
-                if (baseEducation.equals(OppijaConstants.YLIOPPILAS)) {
-                    answers = addRegisterValue(applicationOid, answers, OppijaConstants.LUKIO_KIELI, language);
-                } else if (baseEducation.equals(OppijaConstants.PERUSKOULU)
-                        || baseEducation.equals(OppijaConstants.YKSILOLLISTETTY)
-                        || baseEducation.equals(OppijaConstants.ALUEITTAIN_YKSILOLLISTETTY)
-                        || baseEducation.equals(OppijaConstants.OSITTAIN_YKSILOLLISTETTY)) {
-                    answers = addRegisterValue(applicationOid, answers, OppijaConstants.PERUSOPETUS_KIELI, language);
-                    if ("10".equals(suoritus.getLuokkataso())) {
-                        answers = addRegisterValue(applicationOid, answers, "LISAKOULUTUS_KYMPPI", "true");
-                    } else {
-                        answers = addRegisterValue(applicationOid, answers, "LISAKOULUTUS_KYMPPI", "false");
-                    }
-                }
-            }
-            if (valmistuminen != null) {
-                Calendar cal = GregorianCalendar.getInstance();
-                cal.setTime(valmistuminen);
-                String year = String.valueOf(cal.get(Calendar.YEAR));
-                if (baseEducation.equals(OppijaConstants.YLIOPPILAS)) {
-                    answers = addRegisterValue(applicationOid, answers, OppijaConstants.LUKIO_PAATTOTODISTUS_VUOSI, year);
-                } else if (baseEducation.equals(OppijaConstants.PERUSKOULU)
-                        || baseEducation.equals(OppijaConstants.YKSILOLLISTETTY)
-                        || baseEducation.equals(OppijaConstants.ALUEITTAIN_YKSILOLLISTETTY)
-                        || baseEducation.equals(OppijaConstants.OSITTAIN_YKSILOLLISTETTY)) {
-                    answers = addRegisterValue(applicationOid, answers, OppijaConstants.PERUSOPETUS_PAATTOTODISTUSVUOSI, year);
-                }
-            }
-        }
-        return answers;
     }
 
     private Map<String, String> addRegisterValue(String oid, Map<String, String> answers, String key, String value) {
