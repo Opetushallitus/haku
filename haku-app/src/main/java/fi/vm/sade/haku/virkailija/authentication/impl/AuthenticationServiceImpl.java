@@ -40,6 +40,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
+
 /**
  * @author Hannu Lyytikainen
  */
@@ -68,42 +70,16 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private Gson gson;
 
     public Person addPerson(Person person) {
-        GsonBuilder gsonBuilder = new GsonBuilder();
-        gsonBuilder.registerTypeAdapter(Person.class, new PersonJsonAdapter());
-        gson = gsonBuilder.create();
-
-        String responseString = null;
-        try {
-            responseString = getCachingRestClient().getAsString("/resources/henkilo/byHetu/" + person.getSocialSecurityNumber());
-            log.debug("Person found: " + responseString);
-        } catch (CachingRestClient.HttpException hte) {
-            log.debug("HttpException: " + hte.getStatusCode());
-            try {
-                if (hte.getStatusCode() == 404) {
-                    log.debug("Person not found, creating");
-                    String personJson = gson.toJson(person, Person.class);
-                    CachingRestClient client = getCachingRestClient();
-                    HttpResponse response = client.post("/resources/henkilo", MediaType.APPLICATION_JSON, personJson);
-                    BasicResponseHandler handler = new BasicResponseHandler();
-                    String oid = handler.handleResponse(response);
-                    log.debug("Got oid: ", oid);
-                    responseString = getCachingRestClient().getAsString("/resources/henkilo/" + oid);
-                    log.debug("Created person: " + responseString);
-                } else {
-                    log.warn("Something unexpected happened while fetching person: " + hte.getErrorContent());
-                }
-            } catch (IOException e) {
-                log.error("Fetching or creating person failed: ", e);
-                return null;
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } catch (IOException e) {
-            log.error("Fetching or creating person failed: ", e);
-            return null;
+        String hetu = person.getSocialSecurityNumber();
+        Person newPerson = null;
+        if (isNotBlank(hetu)) {
+            newPerson = fetchPerson(hetu);
         }
 
-        Person newPerson = gson.fromJson(responseString, Person.class);
+        if (newPerson == null) {
+            newPerson = createPerson(person);
+        }
+
         return newPerson;
     }
 
@@ -118,9 +94,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 log.debug("Getting organisaatiohenkilos for {}", personOid);
                 log.debug("Using cachingRestClient webCasUrl: {}, casService: {} ", cachingRestClient.getWebCasUrl(), cachingRestClient.getCasService());
             }
-            InputStream is = null;
-
-            is = cachingRestClient.get(url);
+            InputStream is = cachingRestClient.get(url);
 
             JsonArray orgJson = new JsonParser().parse(IOUtils.toString(is)).getAsJsonArray();
             Iterator<JsonElement> elems = orgJson.iterator();
@@ -130,7 +104,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             }
             return orgs;
         } catch (IOException e) {
-            throw new RemoteServiceException(url, e);
+            throw new RemoteServiceException(targetService + url, e);
         }
     }
 
@@ -150,7 +124,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public Person getHenkilo(String personOid) {
-        String url = "/resources/henkilo/" + personOid;
+        String url = "/resources/s2s/" + personOid;
         Person person = null;
         try {
             CachingRestClient cachingRestClient = getCachingRestClient();
@@ -161,9 +135,53 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             gson = gsonBuilder.create();
             person = gson.fromJson(personJson, Person.class);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RemoteServiceException(targetService + url, e);
         }
         return person;
+    }
+
+    @Override
+    public Person getStudentOid(String personOid) {
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.registerTypeAdapter(Person.class, new PersonJsonAdapter());
+        gson = gsonBuilder.create();
+
+        String url = "/resources/henkilo/" + personOid + "/yksiloi";
+
+        String responseString = null;
+        try {
+            HttpResponse response = getCachingRestClient().put(url, MediaType.APPLICATION_JSON, null);
+            BasicResponseHandler handler = new BasicResponseHandler();
+            responseString = handler.handleResponse(response);
+        } catch (CachingRestClient.HttpException hte) {
+            // Nothing to do
+        } catch (IOException e) {
+            throw new RemoteServiceException(targetService + url, e);
+        }
+        log.debug("Person found: " + responseString);
+        Person newPerson = gson.fromJson(responseString, Person.class);
+        return newPerson;
+    }
+
+    @Override
+    public Person checkStudentOid(String personOid) {
+
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.registerTypeAdapter(Person.class, new PersonJsonAdapter());
+        gson = gsonBuilder.create();
+
+        String url = "/resources/s2s/" + personOid;
+        try {
+            String responseString = getCachingRestClient().getAsString(url);
+            log.debug("Person found: " + responseString);
+            Person newPerson = gson.fromJson(responseString, Person.class);
+            return newPerson;
+        } catch (CachingRestClient.HttpException hte) {
+            // Nothing to do
+        } catch (IOException e) {
+            throw new RemoteServiceException(targetService + url, e);
+        }
+        return null;
     }
 
     private synchronized CachingRestClient getCachingRestClient() {
@@ -177,47 +195,43 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         return cachingRestClient;
     }
 
-    @Override
-    public Person getStudentOid(String personOid) {
-
+    private Person createPerson(Person person) {
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.registerTypeAdapter(Person.class, new PersonJsonAdapter());
         gson = gsonBuilder.create();
 
+        CachingRestClient client = getCachingRestClient();
+        String personJson = gson.toJson(person, Person.class);
+        String url = "/resources/henkilo";
+        String oid = null;
         try {
-            HttpResponse response = getCachingRestClient()
-                    .put("/resources/henkilo/" + personOid + "/yksiloi", MediaType.APPLICATION_JSON, null);
+            HttpResponse response = client.post(url, MediaType.APPLICATION_JSON, personJson);
             BasicResponseHandler handler = new BasicResponseHandler();
-            String responseString = handler.handleResponse(response);
-            log.debug("Person found: " + responseString);
-            Person newPerson = gson.fromJson(responseString, Person.class);
-            return newPerson;
-        } catch (CachingRestClient.HttpException hte) {
-            // Nothing to do
+            oid = handler.handleResponse(response);
         } catch (IOException e) {
-            log.error("Error fetching person: " + e.getMessage());
+            throw new RemoteServiceException(targetService + url, e);
         }
-        return null;
+        return getHenkilo(oid);
     }
 
-    @Override
-    public Person checkStudentOid(String personOid) {
+    private Person fetchPerson(String hetu) {
+        String responseString = null;
+        String url = "/resources/s2s/byHetu/" + hetu;
+        try {
+            responseString = getCachingRestClient().getAsString(url);
+        } catch (CachingRestClient.HttpException hte) {
+            if (hte.getStatusCode() == 404) {
+                return null;
+            }
+        } catch (IOException e) {
+            throw new RemoteServiceException(targetService + url, e);
+        }
 
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.registerTypeAdapter(Person.class, new PersonJsonAdapter());
         gson = gsonBuilder.create();
 
-        try {
-            String responseString = getCachingRestClient().getAsString("/resources/henkilo/" + personOid);
-            log.debug("Person found: " + responseString);
-            Person newPerson = gson.fromJson(responseString, Person.class);
-            return newPerson;
-        } catch (CachingRestClient.HttpException hte) {
-            // Nothing to do
-        } catch (IOException e) {
-            log.error("Error fetching person: " + e.getMessage());
-        }
-        return null;
-
+        Person newPerson = gson.fromJson(responseString, Person.class);
+        return newPerson;
     }
 }
