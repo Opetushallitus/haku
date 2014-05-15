@@ -449,6 +449,15 @@ public class ApplicationServiceImpl implements ApplicationService {
                 toAdd.put(userKey, entry.getValue());
                 toAdd.put(key, "Ei arvosanaa");
             }
+            if (suoritus.getKomo().equals("peruskoulu") && !key.endsWith("OPPIAINE") && !key.endsWith("_VAL1")
+                    && !key.endsWith("VAL2")) {
+                if (!gradeAnswers.containsKey(key + "_VAL1")) {
+                    toAdd.put(key + "_VAL1", "Ei arvosanaa");
+                }
+                if (!gradeAnswers.containsKey(key + "_VAL2")) {
+                    toAdd.put(key + "_VAL2", "Ei arvosanaa");
+                }
+            } 
         }
         gradeAnswers.putAll(toAdd);
         gradeAnswers.remove("grades_transferred_pk");
