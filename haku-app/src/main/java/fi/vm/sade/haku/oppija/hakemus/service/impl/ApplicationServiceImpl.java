@@ -401,7 +401,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         if (suoritus.getKomo().equals("lisaopetus")) {
             suffix = "_10";
         }
-        Map<String, String> gradeAnswers = application.getPhaseAnswers(OppijaConstants.PHASE_GRADES);
+        Map<String, String> gradeAnswers = new HashMap<String, String>(application.getPhaseAnswers(OppijaConstants.PHASE_GRADES));
         Set<String> receivedGrades = new HashSet<String>();
         if (!arvosanat.isEmpty()) {
             gradeAnswers.put("locked", "true");
