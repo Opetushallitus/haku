@@ -37,6 +37,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.ApplicationState;
 import fi.vm.sade.haku.oppija.lomake.domain.User;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
+import fi.vm.sade.haku.oppija.lomake.exception.IllegalValueException;
 import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
 import fi.vm.sade.haku.oppija.lomake.service.FormService;
 import fi.vm.sade.haku.oppija.lomake.service.UserSession;
@@ -239,11 +240,16 @@ public class ApplicationServiceImpl implements ApplicationService {
 
         List<OpiskelijaDTO> opiskelijat = suoritusrekisteriService.getOpiskelijat(personOid);
 
-        if (opiskelijat != null && opiskelijat.size() > 0) {
+        if (opiskelijat != null && opiskelijat.size() > 1) {
             OpiskelijaDTO opiskelija = null;
+            boolean found = false;
             for (OpiskelijaDTO dto : opiskelijat) {
                 if (dto.getLoppuPaiva() == null) {
+                    if (found) {
+                        throw new ResourceNotFoundException("Person "+personOid+" in enrolled in multiple schools");
+                    }
                     opiskelija = dto;
+                    found = true;
                 }
             }
             if (opiskelija == null) {
@@ -257,7 +263,6 @@ public class ApplicationServiceImpl implements ApplicationService {
             String oid = application.getOid();
             educationAnswers = handleOpiskelija(educationAnswers, oid, opiskelija);
             application.addVaiheenVastaukset(OppijaConstants.PHASE_EDUCATION, educationAnswers);
-
         }
 
         Map<String, String> answers = new HashMap<String, String>(application.getPhaseAnswers(OppijaConstants.PHASE_EDUCATION));
@@ -310,6 +315,8 @@ public class ApplicationServiceImpl implements ApplicationService {
         boolean kymppi = false;
         Date valmistuminen = null;
         String suorituskieli = null;
+        boolean gradesTranferredLk = false;
+        boolean gradesTranferredPk = false;
         for (SuoritusDTO dto : suoritukset) {
             String komo = dto.getKomo();
             if (pohjakoulutus < 0 && "ulkomainen".equals(komo)) {
@@ -318,7 +325,10 @@ public class ApplicationServiceImpl implements ApplicationService {
                 pohjakoulutus = Integer.valueOf(OppijaConstants.YLIOPPILAS).intValue();
                 valmistuminen = dto.getValmistuminen();
                 suorituskieli = dto.getSuorituskieli();
-                addGrades(application, dto);
+                Map<String, String> gradeAnswers = addGrades(application, dto);
+                if (!gradeAnswers.isEmpty()) {
+                    gradesTranferredLk = true;
+                }
             } else if (pohjakoulutus < 0 && "peruskoulu".equals(komo)) {
                 valmistuminen = dto.getValmistuminen();
                 suorituskieli = dto.getSuorituskieli();
@@ -332,11 +342,23 @@ public class ApplicationServiceImpl implements ApplicationService {
                 } else if ("Osittain".equals(yksilollistaminen)) {
                     pohjakoulutus = Integer.valueOf(OppijaConstants.OSITTAIN_YKSILOLLISTETTY).intValue();
                 }
-                addGrades(application, dto);
+                Map<String, String> gradeAnswers = addGrades(application, dto);
+                if (!gradeAnswers.isEmpty()) {
+                    gradesTranferredPk = true;
+                }
             } else if ("lisaopetus".equals(komo)) {
                 kymppi = true;
-                addGrades(application, dto);
+                Map<String, String> gradeAnswers = addGrades(application, dto);
+                if (!gradeAnswers.isEmpty()) {
+                    gradesTranferredPk = true;
+                }
             }
+        }
+
+        if (gradesTranferredLk) {
+
+        } else if (gradesTranferredPk) {
+
         }
 
         String applicationOid = application.getOid();
@@ -379,29 +401,51 @@ public class ApplicationServiceImpl implements ApplicationService {
             suffix = "_10";
         }
         Map<String, String> gradeAnswers = application.getPhaseAnswers(OppijaConstants.PHASE_GRADES);
-
+        Set<String> receivedGrades = new HashSet<String>();
         if (!arvosanat.isEmpty()) {
-            gradeAnswers.put("arvosanat_lukittu", "true");
+            gradeAnswers.put("locked", "true");
         }
         Map<String, Integer> valinnaiset = new HashMap<String, Integer>();
         for (ArvosanaDTO arvosana : arvosanat) {
             String aine = arvosana.getAine();
             String thisSuffix = suffix;
             if (arvosana.isValinnainen()) {
+                if (suoritus.getKomo().equals("lukio")) {
+                    LOGGER.error("Lukio grades can not have optional subjects");
+                    throw new IllegalValueException("Lukio grades can not have optional subjects");
+                }
                 Integer count = 1;
                 if (valinnaiset.containsKey(aine)) {
                     count = valinnaiset.get(aine) + 1;
+                }
+                if (count > 2) {
+                    LOGGER.error("Can not have more than two optional subjects");
+                    throw new IllegalValueException("Can not have more than two optional subjects");
                 }
                 valinnaiset.put(aine, count);
                 thisSuffix = "_VAL" + String.valueOf(count) + suffix;
             }
             String key = prefix + arvosana.getAine() + thisSuffix;
+            receivedGrades.add(key);
             gradeAnswers = addRegisterValue(application.getOid(), gradeAnswers, key, arvosana.getArvosana());
             if (isNotBlank(arvosana.getLisatieto())) {
                 gradeAnswers = addRegisterValue(application.getOid(), gradeAnswers,
                         "prefix" + arvosana.getAine() + "_OPPIAINE", arvosana.getLisatieto());
             }
         }
+        Map<String, String> toAdd = new HashMap<String, String>();
+        for (Map.Entry<String, String> entry : gradeAnswers.entrySet()) {
+            String key = entry.getKey();
+            if (key.endsWith("_user")) {
+                continue;
+            }
+            String userKey = key + "_user";
+            if (!receivedGrades.contains(key) && !gradeAnswers.containsKey(userKey)) {
+                toAdd.put(userKey, entry.getValue());
+                toAdd.put(key, "Ei arvosanaa");
+            }
+        }
+        gradeAnswers.putAll(toAdd);
         application.addVaiheenVastaukset(OppijaConstants.PHASE_GRADES, gradeAnswers);
         return gradeAnswers;
     }
