@@ -17,8 +17,10 @@
 package fi.vm.sade.haku.oppija.ui.selenium;
 
 import fi.vm.sade.haku.oppija.common.selenium.AbstractSeleniumBase;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormGeneratorMock;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormGenerator;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormGeneratorImpl;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.impl.KoodistoServiceMockImpl;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.impl.HakuServiceMockImpl;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
@@ -30,8 +32,8 @@ public class HelpTextIT extends AbstractSeleniumBase {
 
     @Before
     public void init() {
-        FormGeneratorMock formGeneratorMock = new FormGeneratorMock(new KoodistoServiceMockImpl(), ASID);
-        updateApplicationSystem(formGeneratorMock.createApplicationSystem());
+        FormGenerator formGeneratorMock = new FormGeneratorImpl(new KoodistoServiceMockImpl(), new HakuServiceMockImpl());
+        updateApplicationSystem(formGeneratorMock.generate(ASID));
     }
 
     @Test

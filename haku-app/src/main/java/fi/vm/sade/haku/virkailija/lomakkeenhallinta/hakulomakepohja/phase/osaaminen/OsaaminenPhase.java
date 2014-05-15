@@ -16,19 +16,21 @@
 
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.osaaminen;
 
-import com.google.common.collect.Lists;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.Phase;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
 
-import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.createI18NText;
+import static fi.vm.sade.haku.oppija.lomake.domain.builder.PhaseBuilder.Phase;
 
 public class OsaaminenPhase {
 
-    public static Phase create(final FormParameters formParameters) {
-        Phase osaaminen = new Phase("osaaminen", createI18NText("form.osaaminen.otsikko", formParameters.getFormMessagesBundle()), false,
-                Lists.newArrayList("APP_HAKEMUS_READ_UPDATE", "APP_HAKEMUS_CRUD", "APP_HAKEMUS_OPO"));
+    public static Element create(final FormParameters formParameters) {
+
+        Element osaaminen = Phase("osaaminen").build(formParameters);
         osaaminen.addChild(ArvosanatTheme.createArvosanatTheme(formParameters));
-        osaaminen.addChild(KielitaitokysymyksetTheme.createKielitaitokysymyksetTheme(formParameters));
+        if (!formParameters.isPervako()) {
+            osaaminen.addChild(KielitaitokysymyksetTheme.createKielitaitokysymyksetTheme(formParameters));
+        }
         return osaaminen;
+
     }
 }

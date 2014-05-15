@@ -45,6 +45,7 @@ public abstract class Element implements Serializable {
     protected final Map<String, String> attributes;
     protected I18nText help;
     protected Element popup;
+    private boolean inline;
 
 
     protected Element(final String id) {
@@ -86,13 +87,10 @@ public abstract class Element implements Serializable {
         return this;
     }
 
-    public void addAttribute(final String key, final String value) {
+    public void addAttribute(final String key, final Object value) {
         checkNotNull(key, "Attribute's key cannot be null");
         checkNotNull(value, "Attribute's value cannot be null");
-        if (!attributes.containsKey(key)) {
-            this.attributes.put(key, value);
-        } else
-            throw new UnsupportedOperationException("Attribute \"" + key + "\" already set");
+        this.attributes.put(key, String.valueOf(value));
     }
 
     public List<Validator> getValidators() {
@@ -107,6 +105,14 @@ public abstract class Element implements Serializable {
         this.validators.add(validator);
     }
 
+    public boolean isInline() {
+        return inline;
+    }
+
+    public void setInline(boolean inline) {
+        this.inline = inline;
+    }
+
     /*
      * Required for fi.vm.sade.haku.oppija.lomake.domain.rule.RelatedQuestionComplexRule to work
      */
@@ -117,6 +123,7 @@ public abstract class Element implements Serializable {
     public List<Element> getChildren() {
         return ImmutableList.copyOf(children);
     }
+
 
     @Transient
     public String getType() {

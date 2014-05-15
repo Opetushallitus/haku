@@ -33,7 +33,6 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.gradegrid.GradeGridR
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Question;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Radio;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.TextQuestion;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionComplexRule;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.Regexp;
 import fi.vm.sade.haku.oppija.lomake.validation.Validator;
@@ -78,7 +77,7 @@ public final class ElementUtil {
     }
 
     public static I18nText createI18NText(final String key, final FormParameters formParameters) {
-        return createI18NText(key, formParameters.getFormMessagesBundle(), false);
+        return formParameters.getI18nText(key);
     }
 
     public static I18nText createI18NText(final String key, final String bundleName, final String... params) {
@@ -94,10 +93,9 @@ public final class ElementUtil {
         for (String lang : LANGS) {
 
 
-            String text = "";
-            try {
-                text = getString(bundleName, key, lang);
+            String text = getString(bundleName, key.toLowerCase(), lang);
 
+            if (text != null) {
                 if (keepFirst) {
                     // Add space at the beginning of string, making it appear before regular words in
                     // alphabetical order.
@@ -106,34 +104,25 @@ public final class ElementUtil {
                 if (params != null && params.length > 0) {
                     text = MessageFormat.format(text, (Object[]) params);
                 }
-            } catch (MissingResourceException mre) {
-                text = key + " [" + lang + "]";
-                log.warn("No translation found for key '{}' bundle: {} lang: {}", key, bundleName, lang);
+                translations.put(lang, text);
             }
-            translations.put(lang, text);
         }
         return new I18nText(translations);
     }
 
     private static String getString(final String bundleName, final String key, final String lang) {
-        ResourceBundle commonBundle = ResourceBundle.getBundle("form_common", new Locale(lang));
-        String text = key + " [" + lang + "]";
+        String text = null;
         try {
             ResourceBundle bundle = ResourceBundle.getBundle(bundleName, new Locale(lang));
             if (bundle.containsKey(key)) {
                 text = bundle.getString(key);
             } else {
+                ResourceBundle commonBundle = ResourceBundle.getBundle("form_common", new Locale(lang));
                 text = commonBundle.getString(key);
             }
         } catch (MissingResourceException mre) {
-            try {
-                text = commonBundle.getString(key);
-            } catch (MissingResourceException mre2) {
-                log.warn("No translation found for key '{}' bundle: {} lang: {}", key, bundleName, lang);
-                log.warn("Exception: ", mre2);
-            }
+            log.warn("No translation found for key '{}' bundle: {} lang: {}", key, bundleName, lang);
         }
-
         return text;
 
     }
@@ -183,16 +172,10 @@ public final class ElementUtil {
         }
     }
 
-    public static TextQuestion createRequiredTextQuestion(final String id, final String name, int size,
-                                                          final FormParameters formParameters) {
-        TextQuestion textQuestion = new TextQuestion(id, createI18NText(name, formParameters.getFormMessagesBundle()));
-        addRequiredValidator(textQuestion, formParameters);
-        addSizeAttribute(textQuestion, size);
-        return textQuestion;
-    }
-
-    public static Element addSizeAttribute(final Element element, final int size) {
-        element.addAttribute("size", String.valueOf(size));
+    public static Element addSizeAttribute(final Element element, final Integer size) {
+        if (size != null) {
+            element.addAttribute("size", size);
+        }
         return element;
     }
 
@@ -209,15 +192,11 @@ public final class ElementUtil {
 
     public static Validator createRegexValidator(final String id, final String pattern, final FormParameters formParameters,
                                                  final String messageKey) {
-        return new RegexFieldValidator(id,
-                ElementUtil.createI18NText(messageKey, formParameters.getFormMessagesBundle()),
-                pattern);
+        return new RegexFieldValidator(id, formParameters.getI18nText(messageKey), pattern);
     }
 
     public static Validator createValueSetValidator(final String id, final List<String> validValues, final FormParameters formParameters) {
-        return new ValueSetValidator(id,
-                ElementUtil.createI18NText("yleinen.virheellinenArvo", formParameters.getFormMessagesBundle()),
-                validValues);
+        return new ValueSetValidator(id, formParameters.getI18nText("yleinen.virheellinenArvo"), validValues);
     }
 
     public static Validator createDateOfBirthValidator(final String id, final String bundleName) {
@@ -252,11 +231,11 @@ public final class ElementUtil {
     }
 
     public static void setVerboseHelp(final Titled titled, final String helpId, final FormParameters formParameters) {
-        titled.setVerboseHelp(createI18NText(helpId, formParameters.getFormMessagesBundle()));
+        titled.setVerboseHelp(formParameters.getI18nText(helpId));
     }
 
     public static void setHelp(final Element element, final String key, final FormParameters formParameters) {
-        element.setHelp(createI18NText(key, formParameters.getFormMessagesBundle()));
+        element.setHelp(formParameters.getI18nText(key));
     }
 
     public static String randomId() {

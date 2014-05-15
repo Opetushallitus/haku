@@ -75,11 +75,12 @@ public class HakuServiceMockImpl implements HakuService {
                 .get());
         asList.add(new ApplicationSystemBuilder()
                 .addId("haku5")
-                .addName(new I18nText(ImmutableMap.of("fi", "testi haku 4 " + OppijaConstants.LISA_HAKU)))
-                .addApplicationPeriods(Lists.newArrayList(new ApplicationPeriod(getDate(-100), getDate(-1))))
-                .addHakukausiUri(HAKUKAUSI_SYKSY)
+                .addName(new I18nText(ImmutableMap.of("fi", "Perusopetuksen jälkeisen valmistavan koulutuksen kesän 2014 haku")))
+                .addApplicationPeriods(Lists.newArrayList(new ApplicationPeriod(new Date(), getDate(100))))
+                .addHakukausiUri(HAKUKAUSI_KEVAT)
                 .addHakukausiVuosi(2014)
-                .addApplicationSystemType(LISA_HAKU)
+                .addApplicationSystemType(VARSINAINEN_HAKU)
+                .addMaxApplicationOptions(3)
                 .get());
     }
 

@@ -20,6 +20,7 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import org.junit.Before;
 import org.junit.Test;
 
+import static fi.vm.sade.haku.oppija.lomake.domain.builder.TitledGroupBuilder.TitledGroup;
 import static org.junit.Assert.assertEquals;
 
 public class TitledGroupTest {
@@ -30,7 +31,7 @@ public class TitledGroupTest {
 
     @Before
     public void setUp() throws Exception {
-        titledGroup = new TitledGroup(ID, ElementUtil.createI18NText(TITLE, "form_messages_yhteishaku_syksy"));
+        titledGroup = (TitledGroup) TitledGroup(ID).i18nText(ElementUtil.createI18NText(TITLE, "form_messages_yhteishaku_syksy")).build();
     }
 
     @Test

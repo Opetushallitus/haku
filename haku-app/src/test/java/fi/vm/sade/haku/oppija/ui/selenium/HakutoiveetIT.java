@@ -16,13 +16,12 @@
 
 package fi.vm.sade.haku.oppija.ui.selenium;
 
-import com.google.common.collect.Lists;
 import fi.vm.sade.haku.oppija.common.selenium.AbstractSeleniumBase;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystemBuilder;
+import fi.vm.sade.haku.oppija.lomake.domain.builder.PhaseBuilder;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.Phase;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.Theme;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.PreferenceRow;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.PreferenceTable;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
@@ -37,6 +36,7 @@ import org.openqa.selenium.WebDriver;
 
 import java.io.IOException;
 
+import static fi.vm.sade.haku.oppija.lomake.domain.builder.ThemeBuilder.Theme;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.createActiveApplicationSystem;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.createI18NAsIs;
 
@@ -53,14 +53,14 @@ public class HakutoiveetIT extends AbstractSeleniumBase {
     public void init() throws IOException {
         Form form = new Form("lomake", createI18NAsIs("yhteishaku"));
         activeApplicationSystem = createActiveApplicationSystem(ASID, form);
-        Phase hakutoiveet = new Phase("hakutoiveet", createI18NAsIs("Hakutoiveet"), false,
-                Lists.newArrayList("APP_HAKEMUS_READ_UPDATE", "APP_HAKEMUS_CRUD"));
+        Element hakutoiveet = new PhaseBuilder("hakutoiveet")
+                .i18nText(createI18NAsIs("Hakutoiveet")).build();
         form.addChild(hakutoiveet);
 
 
-        Theme hakutoiveetRyhmä = new Theme("hakutoiveetGrp", createI18NAsIs("Hakutoiveet"), true);
-        hakutoiveet.addChild(hakutoiveetRyhmä);
-        hakutoiveetRyhmä.setHelp(createI18NAsIs("Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem."));
+        Element hakutoiveetTeema = Theme("hakutoiveetTheme").previewable().i18nText(createI18NAsIs("Hakutoiveet")).build();
+        hakutoiveet.addChild(hakutoiveetTeema);
+        hakutoiveetTeema.setHelp(createI18NAsIs("Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem."));
         PreferenceTable preferenceTable = new PreferenceTable("preferencelist", createI18NAsIs("Hakutoiveet"));
         FormParameters formParameters = new FormParameters(new ApplicationSystemBuilder().addHakukausiUri(OppijaConstants.HAKUKAUSI_SYKSY).addApplicationSystemType(OppijaConstants.VARSINAINEN_HAKU).get(), null);
         PreferenceRow pr1 = HakutoiveetPhase.createI18NPreferenceRow("preference1", "Hakutoive 1", formParameters);
@@ -69,7 +69,7 @@ public class HakutoiveetIT extends AbstractSeleniumBase {
         preferenceTable.addChild(pr1);
         preferenceTable.addChild(pr2);
         preferenceTable.addChild(pr3);
-        hakutoiveetRyhmä.addChild(preferenceTable);
+        hakutoiveetTeema.addChild(preferenceTable);
         updateApplicationSystem(activeApplicationSystem);
     }
 

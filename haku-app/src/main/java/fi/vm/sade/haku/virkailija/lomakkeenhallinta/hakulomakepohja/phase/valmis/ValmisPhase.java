@@ -7,13 +7,13 @@ import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Link;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Text;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.TitledGroup;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.Answer;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.DiscretionaryAttachments;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.Print;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionComplexRule;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.Expr;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormGeneratorImpl;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ExprUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
@@ -21,6 +21,7 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import java.util.List;
 import java.util.Set;
 
+import static fi.vm.sade.haku.oppija.lomake.domain.builder.TitledGroupBuilder.TitledGroup;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.*;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ExprUtil.atLeastOneVariableEqualsToValue;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.*;
@@ -32,7 +33,7 @@ public class ValmisPhase {
             Sets.newHashSet(EDUCATION_CODE_MUSIIKKI, EDUCATION_CODE_TANSSI, EDUCATION_CODE_LIIKUNTA);
 
 
-    public static List<Element> create(final String formMessages, final String... paragraphs) {
+    public static List<Element> create(final String formMessages, FormParameters formParameters, final String... paragraphs) {
         List<Element> elements = Lists.newArrayList();
 
         RelatedQuestionComplexRule emailRule = ElementUtil.createRegexpRule("Sähköposti", REGEX_NON_EMPTY);
@@ -51,9 +52,9 @@ public class ValmisPhase {
 
         elements.add(new DiscretionaryAttachments("discretionaryAttachments"));
 
-        elements.addAll(createAdditionalInformationElements(formMessages));
+        elements.addAll(createAdditionalInformationElements(formMessages, formParameters));
 
-        TitledGroup muutoksenTekeminen = new TitledGroup("muutoksenTekeminen", createI18NText("form.valmis.muutoksentekeminen", formMessages));
+        Element muutoksenTekeminen = TitledGroup("muutoksenTekeminen").build(formParameters);
 
         for (int i = 0; i < paragraphs.length; i++) {
             muutoksenTekeminen.addChild(new Text("muutoksenTekeminenP" + (i + 1), createI18NText(paragraphs[i], formMessages)));
@@ -68,7 +69,7 @@ public class ValmisPhase {
         return elements;
     }
 
-    public static List<Element> createAdditionalInformationElements(String formMessages) {
+    public static List<Element> createAdditionalInformationElements(String formMessages, FormParameters formParameters) {
 
         RelatedQuestionComplexRule athleteRule = new RelatedQuestionComplexRule("athleteRule",
                 atLeastOneVariableEqualsToValue(ElementUtil.KYLLA,
@@ -77,7 +78,7 @@ public class ValmisPhase {
                         "preference3_urheilijan_ammatillisen_koulutuksen_lisakysymys", "preference3_urheilijalinjan_lisakysymys",
                         "preference4_urheilijan_ammatillisen_koulutuksen_lisakysymys", "preference4_urheilijalinjan_lisakysymys",
                         "preference5_urheilijan_ammatillisen_koulutuksen_lisakysymys", "preference5_urheilijalinjan_lisakysymys"));
-        TitledGroup athleteGroup = new TitledGroup("atheleteGroup", createI18NText("form.valmis.haeturheilijana.header", formMessages));
+        Element athleteGroup = TitledGroup("atheleteGroup").build(formParameters);
 
         athleteGroup.addChild(new Text("athleteP1", createI18NText("form.valmis.haeturheilijana", formMessages)));
         Link athleteLink = new Link("athleteLink", createI18NText("form.valmis.haeturheilijana.linkki.url", formMessages),
@@ -108,21 +109,24 @@ public class ValmisPhase {
 
         Element musiikkiTanssiLiikuntaRule = new RelatedQuestionComplexRule("musiikkiTanssiLiikuntaRule",
                 ExprUtil.reduceToOr(ImmutableList.of(isMusiikki, isTanssi, isLiiKunta)));
-        TitledGroup musiikkiTanssiLiikuntaGroup = new TitledGroup("mtlGroup", createI18NText("form.valmis.musiikkitanssiliikunta.header", formMessages));
-        musiikkiTanssiLiikuntaGroup.addChild(new Text(randomId(), createI18NText("form.valmis.musiikkitanssiliikunta", formMessages)));
-        musiikkiTanssiLiikuntaRule.addChild(musiikkiTanssiLiikuntaGroup);
+        musiikkiTanssiLiikuntaRule.addChild(TitledGroup("mtlGroup").build(formParameters)
+                .addChild(
+                        new Text(randomId(), createI18NText("form.valmis.musiikkitanssiliikunta", formMessages))));
 
         return Lists.newArrayList(athleteRule, musiikkiTanssiLiikuntaRule);
     }
 
-    public static List<Element> create(ApplicationSystem as) {
+    public static List<Element> create(FormParameters formParameters) {
+        ApplicationSystem as = formParameters.getApplicationSystem();
         String formMessagesBundle = FormGeneratorImpl.getMessageBundleName("form_messages", as);
 
         if (as.getApplicationSystemType().equals(OppijaConstants.LISA_HAKU)) {
-            return ValmisPhase.create(formMessagesBundle, "form.valmis.muutoksentekeminen.p1");
+            return ValmisPhase.create(formMessagesBundle, formParameters, "form.valmis.muutoksentekeminen.p1");
         } else {
-            return ValmisPhase.create(formMessagesBundle, "form.valmis.muutoksentekeminen.p1",
-                    "form.valmis.muutoksentekeminen.p2", "form.valmis.muutoksentekeminen.p3");
+            return ValmisPhase.create(formMessagesBundle, formParameters,
+                    "form.valmis.muutoksentekeminen.p1",
+                    "form.valmis.muutoksentekeminen.p2",
+                    "form.valmis.muutoksentekeminen.p3");
         }
     }
 }

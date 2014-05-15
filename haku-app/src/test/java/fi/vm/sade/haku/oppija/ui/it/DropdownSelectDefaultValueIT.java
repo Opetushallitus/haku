@@ -20,8 +20,9 @@ import com.google.common.collect.ImmutableList;
 import fi.vm.sade.haku.oppija.common.selenium.AbstractSeleniumBase;
 import fi.vm.sade.haku.oppija.lomake.ApplicationSystemHelper;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
+import fi.vm.sade.haku.oppija.lomake.domain.builder.DropdownSelectBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.builders.FormModelBuilder;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.DropdownSelect;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import org.junit.Before;
@@ -30,7 +31,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import java.io.IOException;
-import java.util.List;
 
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.createI18NAsIs;
 import static org.junit.Assert.assertEquals;
@@ -45,15 +45,15 @@ public class DropdownSelectDefaultValueIT extends AbstractSeleniumBase {
     private final Option option3 = new Option(createI18NAsIs(OPTION_3_ID), OPTION_3_ID);
     private ApplicationSystemHelper applicationSystemHelper;
     private WebDriver driver;
-    private DropdownSelect dropdownSelect;
+    private Element dropdownSelect;
 
     @Before
     public void init() throws IOException {
         String id = ElementUtil.randomId();
-        dropdownSelect = new DropdownSelect(id, createI18NAsIs(id), null);
+        dropdownSelect = new DropdownSelectBuilder(id).setI18nText(createI18NAsIs(id))
+                .addOptions(ImmutableList.of(option1, option2, option3))
+                .build();
         option2.setDefaultOption(true);
-        List<Option> listOfOptions = ImmutableList.of(option1, option2, option3);
-        dropdownSelect.addOptions(listOfOptions);
         ApplicationSystem applicationSystem = new FormModelBuilder().buildDefaultFormWithFields(dropdownSelect);
         this.applicationSystemHelper = updateApplicationSystem(applicationSystem);
         driver = seleniumContainer.getDriver();

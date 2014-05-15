@@ -16,15 +16,12 @@
 
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.hakutoiveet;
 
-import com.google.common.collect.Lists;
+import fi.vm.sade.haku.oppija.lomake.domain.builder.DropdownSelectBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.HiddenValue;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.Phase;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.Theme;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.Popup;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.PreferenceRow;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.PreferenceTable;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.DropdownSelect;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Radio;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionComplexRule;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.*;
@@ -33,6 +30,8 @@ import fi.vm.sade.haku.oppija.lomake.validation.validators.RequiredFieldValidato
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 
+import static fi.vm.sade.haku.oppija.lomake.domain.builder.PhaseBuilder.Phase;
+import static fi.vm.sade.haku.oppija.lomake.domain.builder.ThemeBuilder.Theme;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.*;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.*;
 
@@ -43,26 +42,20 @@ public class HakutoiveetPhase {
     private static final String TODISTUSTENPUUTTUMINEN = "todistustenpuuttuminen";
 
 
-    public static Phase create(final FormParameters formParameters) {
-
-        // Hakutoiveet
-        Phase hakutoiveet = new Phase(HAKUTOIVEET_PHASE_ID, createI18NText("form.hakutoiveet.otsikko", formParameters), false,
-                Lists.newArrayList("APP_HAKEMUS_READ_UPDATE", "APP_HAKEMUS_CRUD"));
-
-        hakutoiveet.addChild(createHakutoiveetTheme(formParameters));
-        return hakutoiveet;
+    public static Element create(final FormParameters formParameters) {
+        return Phase(HAKUTOIVEET_PHASE_ID).build(formParameters)
+                .addChild(createHakutoiveetTheme(formParameters));
     }
 
-    private static Theme createHakutoiveetTheme(final FormParameters formParameters) {
+    private static Element createHakutoiveetTheme(final FormParameters formParameters) {
 
-        Theme hakutoiveetTheme = new Theme("hakutoiveetGrp", createI18NText("form.hakutoiveet.otsikko",
-                formParameters), true);
+        Element hakutoiveetTheme = Theme("hakutoiveet.teema").previewable().build(formParameters);
         hakutoiveetTheme.setHelp(createI18NText("form.hakutoiveet.help", formParameters));
         PreferenceTable preferenceTable =
                 new PreferenceTable("preferencelist", createI18NText("form.hakutoiveet.otsikko", formParameters));
 
         PreferenceRow pr1 = createI18NPreferenceRow("preference1", "1", formParameters);
-        pr1.setValidator(new RequiredFieldValidator(pr1.getLearningInstitutionInputId(), ElementUtil.createI18NText("yleinen.pakollinen",formParameters)));
+        pr1.setValidator(new RequiredFieldValidator(pr1.getLearningInstitutionInputId(), ElementUtil.createI18NText("yleinen.pakollinen", formParameters)));
         pr1.setValidator(new RequiredFieldValidator(pr1.getEducationInputId(), ElementUtil.createI18NText("yleinen.pakollinen", formParameters)));
         preferenceTable.addChild(pr1);
         for (int index = 2; index <= formParameters.getApplicationSystem().getMaxApplicationOptions(); index++) {
@@ -99,17 +92,15 @@ public class HakutoiveetPhase {
         addRequiredValidator(discretionary, formParameters);
         discretionary.setHelp(createI18NText("form.hakutoiveet.harkinnanvarainen.ohje", formParameters));
 
-        DropdownSelect discretionaryFollowUp = new DropdownSelect(discretionary.getId() + "-follow-up",
-                createI18NText("form.hakutoiveet.harkinnanvarainen.perustelu", formParameters), null);
-        discretionaryFollowUp.addOption(ElementUtil.createI18NAsIs(""), "");
-        discretionaryFollowUp.addOption(createI18NText("form.hakutoiveet.harkinnanvarainen.perustelu.oppimisvaikeudet",
-                formParameters), "oppimisvaikudet");
-        discretionaryFollowUp.addOption(createI18NText("form.hakutoiveet.harkinnanvarainen.perustelu.sosiaaliset",
-                formParameters), "sosiaalisetsyyt");
-        discretionaryFollowUp.addOption(createI18NText("form.hakutoiveet.harkinnanvarainen.perustelu.todistustenvertailuvaikeudet",
-                formParameters), "todistustenvertailuvaikeudet");
-        discretionaryFollowUp.addOption(createI18NText("form.hakutoiveet.harkinnanvarainen.perustelu.todistustenpuuttuminen",
-                formParameters), TODISTUSTENPUUTTUMINEN);
+        Element discretionaryFollowUp = new DropdownSelectBuilder(discretionary.getId() + "-follow-up")
+                .emptyOption()
+                .addOption(createI18NText("perustelu.oppimisvaikeudet", formParameters), "oppimisvaikudet")
+                .addOption(createI18NText("perustelu.sosiaaliset", formParameters), "sosiaalisetsyyt")
+                .addOption(createI18NText("perustelu.todistustenvertailuvaikeudet", formParameters), "todistustenvertailuvaikeudet")
+                .addOption(createI18NText("perustelu.todistustenpuuttuminen", formParameters), TODISTUSTENPUUTTUMINEN)
+                .required()
+                .build(formParameters);
+
         addRequiredValidator(discretionaryFollowUp, formParameters);
 
 

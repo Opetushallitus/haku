@@ -22,6 +22,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.builders.FormModelBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Text;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.TitledGroup;
+import fi.vm.sade.haku.oppija.lomake.domain.builder.TitledGroupBuilder;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import net.sourceforge.jwebunit.api.IElement;
 import org.junit.Before;
@@ -41,7 +42,7 @@ public class GroupIT extends AbstractFormTest {
 
     @Before
     public void init() throws IOException {
-        TitledGroup titledGroup = new TitledGroup(GROUP_ID, createI18NAsIs("foo"));
+        TitledGroup titledGroup = (TitledGroup) TitledGroupBuilder.TitledGroup(GROUP_ID).i18nText(createI18NAsIs("foo")).build();
         titledGroup.addChild(CHILD_ELEMENT);
         ApplicationSystem applicationSystem = new FormModelBuilder().buildDefaultFormWithFields(titledGroup);
         this.applicationSystemHelper = updateModelAndCreateFormModelHelper(applicationSystem);

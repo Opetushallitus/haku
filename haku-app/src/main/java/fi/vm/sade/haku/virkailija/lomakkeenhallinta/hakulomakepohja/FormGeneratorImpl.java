@@ -4,7 +4,6 @@ import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystemBuilder;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.hakutoiveet.HakutoiveetPhase;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.henkilotiedot.HenkilotiedotPhase;
@@ -63,8 +62,8 @@ public class FormGeneratorImpl implements FormGenerator {
                 .addApplicationSystemType(as.getApplicationSystemType())
                 .addHakukausiUri(as.getHakukausiUri())
                 .addHakukausiVuosi(as.getHakukausiVuosi())
-                .addApplicationCompleteElements(ValmisPhase.create(as))
-                .addAdditionalInformationElements(ValmisPhase.createAdditionalInformationElements(getMessageBundleName("form_messages", as)))
+                .addApplicationCompleteElements(ValmisPhase.create(formParameters))
+                .addAdditionalInformationElements(ValmisPhase.createAdditionalInformationElements(getMessageBundleName("form_messages", as), formParameters))
                 .get();
     }
 
@@ -77,10 +76,6 @@ public class FormGeneratorImpl implements FormGenerator {
         form.addChild(OsaaminenPhase.create(formParameters));
         form.addChild(LisatiedotPhase.create(formParameters));
         return form;
-    }
-
-    public static List<Element> createApplicationCompleteElements(final ApplicationSystem as) {
-        return ValmisPhase.create(as);
     }
 
     public static String getMessageBundleName(final String baseName, final ApplicationSystem as) {

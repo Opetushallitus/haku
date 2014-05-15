@@ -3,8 +3,10 @@ package fi.vm.sade.haku.oppija.common.selenium;
 import com.google.common.base.Joiner;
 import fi.vm.sade.haku.oppija.lomake.ApplicationSystemHelper;
 import fi.vm.sade.haku.oppija.ui.selenium.DefaultValues;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormGeneratorMock;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormGenerator;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormGeneratorImpl;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.impl.KoodistoServiceMockImpl;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.impl.HakuServiceMockImpl;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
@@ -18,9 +20,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 public abstract class DummyModelBaseItTest extends AbstractSeleniumBase {
 
@@ -30,8 +30,8 @@ public abstract class DummyModelBaseItTest extends AbstractSeleniumBase {
     @Before
     public void setUDummyModelBaseIt() throws Exception {
         defaultValues = new DefaultValues();
-        FormGeneratorMock formGeneratorMock = new FormGeneratorMock(new KoodistoServiceMockImpl(), ASID);
-        applicationSystemHelper = updateApplicationSystem(formGeneratorMock.createApplicationSystem());
+        FormGenerator formGeneratorMock = new FormGeneratorImpl(new KoodistoServiceMockImpl(), new HakuServiceMockImpl());
+        applicationSystemHelper = updateApplicationSystem(formGeneratorMock.generate(ASID));
     }
 
 
@@ -50,7 +50,7 @@ public abstract class DummyModelBaseItTest extends AbstractSeleniumBase {
     }
 
     protected void expectPhase(String expected) {
-        WebElement form = findBy(By.id("nav-"+expected));
+        WebElement form = findBy(By.id("nav-" + expected));
         String clazz = form.getAttribute("class");
         assertEquals("current", clazz);
     }

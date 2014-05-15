@@ -24,17 +24,9 @@ public abstract class Question extends Titled {
     private static final long serialVersionUID = -6202853270204822932L;
     private boolean inline = false;
 
-
     protected Question(final String id, final I18nText i18nText) {
         super(id, i18nText);
-        super.addAttribute("name", id);
     }
 
-    public boolean isInline() {
-        return inline;
-    }
 
-    public void setInline(boolean inline) {
-        this.inline = inline;
-    }
 }

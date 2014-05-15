@@ -1,13 +1,9 @@
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.lisatiedot;
 
-import com.google.common.collect.Lists;
+import fi.vm.sade.haku.oppija.lomake.domain.builder.TextQuestionBuilder;
+import fi.vm.sade.haku.oppija.lomake.domain.builder.ThemeBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.Phase;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.Theme;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.TitledGroup;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.CheckBox;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Radio;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.TextArea;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.TextQuestion;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionComplexRule;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.*;
@@ -16,6 +12,12 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ExprUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 
+import static fi.vm.sade.haku.oppija.lomake.domain.builder.CheckBoxBuilder.Checkbox;
+import static fi.vm.sade.haku.oppija.lomake.domain.builder.PhaseBuilder.Phase;
+import static fi.vm.sade.haku.oppija.lomake.domain.builder.TextAreaBuilder.TextArea;
+import static fi.vm.sade.haku.oppija.lomake.domain.builder.TextQuestionBuilder.TextQuestion;
+import static fi.vm.sade.haku.oppija.lomake.domain.builder.ThemeBuilder.Theme;
+import static fi.vm.sade.haku.oppija.lomake.domain.builder.TitledGroupBuilder.TitledGroup;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.osaaminen.KielitaitokysymyksetTheme.createPohjakoilutusUlkomainenTaiKeskeyttanyt;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.*;
 
@@ -28,13 +30,14 @@ public class LisatiedotPhase {
     private LisatiedotPhase() {
     }
 
-    public static Phase create(final FormParameters formParameters) {
-        Phase lisatiedot = new Phase("lisatiedot", createI18NText("form.lisatiedot.otsikko", formParameters.getFormMessagesBundle()), false,
-                Lists.newArrayList("APP_HAKEMUS_READ_UPDATE", "APP_HAKEMUS_CRUD", "APP_HAKEMUS_OPO"));
-        lisatiedot.addChild(createTyokokemus(formParameters));
-        lisatiedot.addChild(createLupatiedot(formParameters));
-        lisatiedot.addChild(createUrheilijanLisakysymykset(formParameters));
-        return lisatiedot;
+    public static Element create(final FormParameters formParameters) {
+        Element lisatiedot = Phase("lisatiedot").build(formParameters);
+        if (!formParameters.isPervako()) {
+            lisatiedot.addChild(createTyokokemus(formParameters));
+        }
+        return lisatiedot
+                .addChild(createLupatiedot(formParameters))
+                .addChild(createUrheilijanLisakysymykset(formParameters));
     }
 
     static RelatedQuestionComplexRule createTyokokemus(final FormParameters formParameters) {
@@ -44,15 +47,13 @@ public class LisatiedotPhase {
 
         Expr rules = new And(new Not(pohjakoulutusKeskeyttanytTaiUlkomaillasuoritettu), new And(isEducation32, olderThan16));
 
-        Theme workExperienceTheme = new Theme("WorkExperienceTheme", createI18NText("form.lisatiedot.tyokokemus", formParameters.getFormMessagesBundle()), true);
-        workExperienceTheme.setHelp(createI18NText("form.tyokokemus.help", formParameters.getFormMessagesBundle()));
 
-        TextQuestion tyokokemuskuukaudet = new TextQuestion("TYOKOKEMUSKUUKAUDET",
-                createI18NText("form.tyokokemus.kuukausina", formParameters.getFormMessagesBundle()));
-        tyokokemuskuukaudet
-                .setHelp(createI18NText("form.tyokokemus.kuukausina.help", formParameters.getFormMessagesBundle()));
-        tyokokemuskuukaudet.setValidator(createRegexValidator(tyokokemuskuukaudet.getId(), TYOKOKEMUS_PATTERN,
-                formParameters, "lisatiedot.tyokokemus.virhe"));
+        Element workExperienceTheme = new ThemeBuilder("tyokokemus").previewable().build(formParameters);
+
+
+        TextQuestion tyokokemuskuukaudet = (TextQuestion) new TextQuestionBuilder("TYOKOKEMUSKUUKAUDET").labelKey("form.tyokokemus.kuukausina").build(formParameters);
+        tyokokemuskuukaudet.setHelp(createI18NText("form.tyokokemus.kuukausina.help", formParameters.getFormMessagesBundle()));
+        tyokokemuskuukaudet.setValidator(createRegexValidator(tyokokemuskuukaudet.getId(), TYOKOKEMUS_PATTERN, formParameters, "lisatiedot.tyokokemus.virhe"));
         addSizeAttribute(tyokokemuskuukaudet, 8);
         tyokokemuskuukaudet.addAttribute("maxlength", "4");
         setVerboseHelp(tyokokemuskuukaudet, "form.tyokokemus.kuukausina.verboseHelp", formParameters);
@@ -62,31 +63,17 @@ public class LisatiedotPhase {
         return naytetaankoTyokokemus;
     }
 
-    static Theme createLupatiedot(final FormParameters formParameters) {
-        Theme lupatiedotTheme = new Theme("lupatiedotGrp", createI18NText("form.lisatiedot.lupatiedot", formParameters.getFormMessagesBundle()), true);
-        CheckBox lupaMarkkinointi = new CheckBox(
-                "lupaMarkkinointi",
-                createI18NText("form.lupatiedot.saaMarkkinoida", formParameters.getFormMessagesBundle()));
-        CheckBox lupaJulkaisu = new CheckBox("lupaJulkaisu",
-                createI18NText("form.lupatiedot.saaJulkaista", formParameters.getFormMessagesBundle()));
-        CheckBox lupaSahkoisesti = new CheckBox("lupaSahkoisesti",
-                createI18NText("form.lupatiedot.saaLahettaaSahkoisesti", formParameters.getFormMessagesBundle()));
-        CheckBox lupaSms = new CheckBox(
-                "lupaSms",
-                createI18NText("form.lupatiedot.saaLahettaaTekstiviesteja", formParameters.getFormMessagesBundle()));
+    static Element createLupatiedot(final FormParameters formParameters) {
+        Element lupatiedotTheme = Theme("lupatiedot").previewable().build(formParameters);
 
-        TitledGroup lupaGroup = new TitledGroup("permissionCheckboxes", createI18NText("form.lupatiedot.otsikko",
-                formParameters.getFormMessagesBundle()));
+        lupatiedotTheme.addChild(
+                TitledGroup("lupatiedot.ryhma").build(formParameters).addChild(
+                        Checkbox("lupaMarkkinointi").build(formParameters),
+                        Checkbox("lupaJulkaisu").build(formParameters),
+                        Checkbox("lupaSahkoisesti").build(formParameters),
+                        Checkbox("lupaSms").build(formParameters)));
 
-        lupaGroup.addChild(lupaMarkkinointi);
-        lupaGroup.addChild(lupaJulkaisu);
-        lupaGroup.addChild(lupaSahkoisesti);
-        lupaGroup.addChild(lupaSms);
-        lupatiedotTheme.addChild(lupaGroup);
-        setVerboseHelp(lupatiedotTheme, "form.lisatiedot.lupatiedot.verboseHelp", formParameters);
-
-        Radio asiointikieli = new Radio(OppijaConstants.ELEMENT_ID_CONTACT_LANGUAGE,
-                createI18NText("form.asiointikieli.otsikko", formParameters.getFormMessagesBundle()));
+        Radio asiointikieli = new Radio(OppijaConstants.ELEMENT_ID_CONTACT_LANGUAGE, createI18NText("form.asiointikieli.otsikko", formParameters.getFormMessagesBundle()));
         asiointikieli.setHelp(createI18NText("form.asiointikieli.help", formParameters.getFormMessagesBundle()));
         asiointikieli.addOption(createI18NText("form.asiointikieli.suomi", formParameters.getFormMessagesBundle()), "suomi");
         asiointikieli.addOption(createI18NText("form.asiointikieli.ruotsi", formParameters.getFormMessagesBundle()), "ruotsi");
@@ -97,9 +84,7 @@ public class LisatiedotPhase {
     }
 
     static Element createUrheilijanLisakysymykset(final FormParameters formParameters) {
-        Theme urheilijanLisakysymyksetTeema = new Theme(ElementUtil.randomId(),
-                createI18NText("form.lisatiedot.urheilija", formParameters.getFormMessagesBundle()), true);
-        ElementUtil.setVerboseHelp(urheilijanLisakysymyksetTeema, "form.lisatiedot.urheilija.verboseHelp", formParameters);
+        Element urheilijanLisakysymyksetTeema = new ThemeBuilder("urheilija").previewable().build(formParameters);
 
         Expr onkoUrheilija = ExprUtil.atLeastOneVariableEqualsToValue(ElementUtil.KYLLA,
                 "preference1_urheilijan_ammatillisen_koulutuksen_lisakysymys",
@@ -116,90 +101,50 @@ public class LisatiedotPhase {
         RelatedQuestionComplexRule urheilijanLisakysymyksetSaanto = new RelatedQuestionComplexRule(ElementUtil.randomId(), onkoUrheilija);
         urheilijanLisakysymyksetSaanto.addChild(urheilijanLisakysymyksetTeema);
 
-        TitledGroup opinnotGroup = createAiemmatOpinnotRyhma(formParameters);
-        TitledGroup urheilulajitGroup = createUrheilulajitRyhma(formParameters);
-        TitledGroup saavutuksetGroup = createSaavutuksetRyhma(formParameters);
+        Element opinnotGroup = TitledGroup("opinnot").build(formParameters)
+                .addChild(
+                        createTextQuestion("liikunnanopettajan-nimi", 50, formParameters),
+                        createTextQuestion("lukuaineiden-keskiarvo", 4, formParameters),
+                        createTextQuestion("pakollinen-liikunnan-numero", 2, formParameters));
 
-        TitledGroup valmentajaGroup = new TitledGroup(ElementUtil.randomId(),
-                createI18NText("form.lisatiedot.urheilija.valmentajan.yhteystiedot", formParameters.getFormMessagesBundle()));
+        Element urheilulajitGroup = TitledGroup("urheilu").build(formParameters)
+                .addChild(
+                        createTextQuestion("Urheilulaji1", 50, formParameters),
+                        createTextQuestion("lajiliitto1", 50, formParameters),
+                        createTextQuestion("Urheilulaji2", 50, formParameters),
+                        createTextQuestion("lajiliitto2", 50, formParameters));
 
-        TextQuestion valmentajanNimi = createTextQuestion("valmentajan-nimi", "form.lisatiedot.urheilija.valmentajan.yhteystiedot.nimi", 50, formParameters);
-        valmentajaGroup.addChild(valmentajanNimi);
+        Element saavutuksetGroup = TitledGroup("saavutukset.ryhma").build(formParameters)
+                .addChild(
+                        TextArea("saavutukset").inline().maxLength(2000).build(formParameters));
 
-        TextQuestion valmentajanPuhelinnumero = createTextQuestion("valmentajan-puhelinnumero", "form.lisatiedot.urheilija.valmentajan.yhteystiedot.puhelinnumero", 50, formParameters);
-        valmentajaGroup.addChild(valmentajanPuhelinnumero);
+        Element valmentajaGroup =
+                TitledGroup("valmentajan-yhteystiedot").build(formParameters)
+                        .addChild(createTextQuestion("valmentajan-nimi", 50, formParameters))
+                        .addChild(createTextQuestion("valmentajan-puhelinnumero", 50, formParameters))
+                        .addChild(TextQuestion("valmentajan-sähköpostiosoite")
+                                .inline()
+                                .size(30)
+                                .maxLength(50)
+                                .pattern(EMAIL_REGEX)
+                                .build(formParameters));
 
-        TextQuestion email = createTextQuestion("valmentajan-sähköpostiosoite", "form.lisatiedot.urheilija.valmentajan.yhteystiedot.sahkopostiosoite", 50, formParameters);
-        email.setValidator(createRegexValidator(email.getId(), EMAIL_REGEX, formParameters));
-        valmentajaGroup.addChild(email);
-
-        TitledGroup valmennusryhmaGroup = new TitledGroup(ElementUtil.randomId(),
-                createI18NText("form.lisatiedot.urheilija.valmennusryhma", formParameters.getFormMessagesBundle()));
-
-        TextQuestion lajiliitto = createTextQuestion("lajiliitto-maajoukkue", "form.lisatiedot.urheilija.valmennusryhma.lajiliitto", 100, formParameters);
-        valmennusryhmaGroup.addChild(lajiliitto);
-
-        TextQuestion piiri = createTextQuestion("alue-piiri", "form.lisatiedot.urheilija.valmennusryhma.alue", 100, formParameters);
-        valmennusryhmaGroup.addChild(piiri);
-
-        TextQuestion seura = createTextQuestion("seura", "form.lisatiedot.urheilija.valmennusryhma.seura", 100, formParameters);
-        valmennusryhmaGroup.addChild(seura);
+        Element valmennusryhmaGroup =
+                TitledGroup("valmennusryhma").build(formParameters)
+                        .addChild(createTextQuestion("lajiliitto-maajoukkue", 100, formParameters))
+                        .addChild(createTextQuestion("alue-piiri", 100, formParameters))
+                        .addChild(createTextQuestion("seura", 100, formParameters));
 
         urheilijanLisakysymyksetTeema.addChild(opinnotGroup, urheilulajitGroup,
                 saavutuksetGroup, valmentajaGroup, valmennusryhmaGroup);
         return urheilijanLisakysymyksetSaanto;
     }
 
-    private static TitledGroup createUrheilulajitRyhma(final FormParameters formParameters) {
-        TitledGroup urheilulajit = new TitledGroup(ElementUtil.randomId(),
-                createI18NText("form.lisatiedot.urheilija.urheilu", formParameters.getFormMessagesBundle()));
-
-        TextQuestion urheilulaji1 = createTextQuestion("Urheilulaji1", "form.lisatiedot.urheilija.urheilu.urheilulaji", 50, formParameters);
-        TextQuestion lajiliitto1 = createTextQuestion("lajiliitto1", "form.lisatiedot.urheilija.urheilu.lajiliitto", 50, formParameters);
-
-        TextQuestion urheilulaji2 = createTextQuestion("Urheilulaji2", "form.lisatiedot.urheilija.urheilu.urheilulaji2", 50, formParameters);
-        urheilulaji2.setHelp(createI18NText("form.lisatiedot.urheilija.urheilu.urheilulaji2.help", formParameters.getFormMessagesBundle()));
-        TextQuestion lajiliitto2 = createTextQuestion("lajiliitto2", "form.lisatiedot.urheilija.urheilu.lajiliitto2", 50, formParameters);
-
-        urheilulajit.addChild(urheilulaji1, lajiliitto1, urheilulaji2, lajiliitto2);
-        return urheilulajit;
-    }
-
-    private static TitledGroup createAiemmatOpinnotRyhma(final FormParameters formParameters) {
-        TitledGroup opinnotGroup = new TitledGroup(ElementUtil.randomId(),
-                createI18NText("form.lisatiedot.urheilija.opinnot", formParameters.getFormMessagesBundle()));
-
-        TextQuestion liikunnanopettaja = createTextQuestion("liikunnanopettajan-nimi",
-                "form.lisatiedot.urheilija.opinnot.liikunnanopettajan.nimi", 50, formParameters);
-
-        TextQuestion lukuaineidenKeskiarvo = createTextQuestion("lukuaineiden-keskiarvo",
-                "form.lisatiedot.urheilija.opinnot.lukuaineiden.keskiarvo", 4, formParameters);
-
-        TextQuestion pakollinenLiikunnanNumero = createTextQuestion("pakollinen-liikunnan-numero",
-                "form.lisatiedot.urheilija.opinnot.pakollisen.liikunnan.numero", 2, formParameters);
-
-        opinnotGroup.addChild(liikunnanopettaja, lukuaineidenKeskiarvo, pakollinenLiikunnanNumero);
-        return opinnotGroup;
-    }
-
-    private static TitledGroup createSaavutuksetRyhma(final FormParameters formParameters) {
-        TitledGroup saavutuksetGroup = new TitledGroup(ElementUtil.randomId(),
-                createI18NText("form.lisatiedot.urheilija.saavutukset", formParameters.getFormMessagesBundle()));
-
-        TextArea saavutukset = new TextArea("saavutukset",
-                createI18NText("form.lisatiedot.urheilija.saavutukset.saavutukset", formParameters.getFormMessagesBundle()));
-        addMaxLengthAttributeAndLengthValidator(saavutukset, 2000, formParameters);
-        saavutukset.setInline(true);
-        saavutukset.setHelp(createI18NText("form.lisatiedot.urheilija.saavutukset.saavutukset.help", formParameters.getFormMessagesBundle()));
-        saavutuksetGroup.addChild(saavutukset);
-        return saavutuksetGroup;
-    }
-
-    private static TextQuestion createTextQuestion(final String id, final String messageKey, int maxlength, final FormParameters formParameters) {
-        TextQuestion textQuestion = new TextQuestion(id, createI18NText(messageKey, formParameters.getFormMessagesBundle()));
-        textQuestion.setInline(true);
-        addSizeAttribute(textQuestion, 30);
-        addMaxLengthAttributeAndLengthValidator(textQuestion, maxlength, formParameters);
-        return textQuestion;
+    private static Element createTextQuestion(final String id, int maxLength, final FormParameters formParameters) {
+        return TextQuestion(id)
+                .inline()
+                .size(30)
+                .maxLength(maxLength)
+                .build(formParameters);
     }
 }

@@ -24,6 +24,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.builders.FormModelBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.SocialSecurityNumber;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Radio;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.TextQuestion;
+import fi.vm.sade.haku.oppija.lomake.domain.builder.TextQuestionBuilder;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.junit.Before;
@@ -42,7 +43,7 @@ public class SocialSecurityNumberIT extends AbstractSeleniumBase {
     @Before
     public void init() throws IOException {
 
-        TextQuestion henkilötunnus = new TextQuestion("Henkilotunnus", createI18NAsIs("Henkilotunnus"));
+        TextQuestion henkilötunnus = (TextQuestion) new TextQuestionBuilder("Henkilotunnus").i18nText(createI18NAsIs("Henkilotunnus")).build();
         henkilötunnus.addAttribute("placeholder", "ppkkvv*****");
         henkilötunnus.addAttribute("title", "ppkkvv*****");
         FormParameters formParameters = new FormParameters(new ApplicationSystemBuilder().addHakukausiUri(OppijaConstants.HAKUKAUSI_SYKSY).addApplicationSystemType(OppijaConstants.VARSINAINEN_HAKU).get(), null);

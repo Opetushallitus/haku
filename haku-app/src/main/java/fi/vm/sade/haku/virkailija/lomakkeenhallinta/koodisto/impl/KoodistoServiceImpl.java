@@ -48,7 +48,6 @@ public class KoodistoServiceImpl implements KoodistoService {
     public static final String CODE_SUBJECT = "oppiaineetyleissivistava";
     public static final String CODE_GRADE_RANGE = "arvosanat";
     public static final String CODE_LEARNING_INSTITUTION_TYPES = "oppilaitostyyppi";
-    public static final String CODE_ORGANIZATION_TYPES = "organisaatiotyyppi";
     public static final String CODE_COUNTRIES = "maatjavaltiot1";
     public static final String CODE_NATIONALITIES = CODE_COUNTRIES;
     public static final String CODE_LANGUAGES = "kieli";
@@ -58,16 +57,12 @@ public class KoodistoServiceImpl implements KoodistoService {
     public static final String CODE_AIDINKIELI_JA_KIRJALLISUUS = "aidinkielijakirjallisuus";
     public static final String CODE_GENDER = "sukupuoli";
     public static final String CODE_HAKUKAUSI = "kausi";
-    private static final String CODE_KOULUNUMERO = "oppilaitosnumero";
     private static final String CODE_HAKUKOHDE = "hakukohteet";
     private static final String CODE_OPPILAITOSTYYPPI = "oppilaitostyyppi";
 
     private static final String LUKIO = "15";
     private static final String LUKIO_JA_PERUSKOULU = "19";
     private static final String KANSANOPISTO = "63";
-    private static final String OPPILAITOSTYYPPI_LUKIO = "oppilaitostyyppi_15";
-    private static final String OPPILAITOSTYYPPI_PK_JA_LUKIO = "oppilaitostyyppi_19";
-    private static final String OPPILAITOSTYYPPI_KANSANOPISTO = "oppilaitostyyppi_63";
 
     private final KoodistoClient koodiService;
     private final OrganizationService organisaatioService;

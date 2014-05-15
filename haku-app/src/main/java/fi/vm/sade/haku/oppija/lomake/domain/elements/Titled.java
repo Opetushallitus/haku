@@ -24,13 +24,13 @@ public abstract class Titled extends Element {
     private static final long serialVersionUID = 761433927081818640L;
 
     private I18nText i18nText;
-
-    // verbose help text that is rendered in a separate help window
     private I18nText verboseHelp;
+    private boolean inline = false;
 
     public Titled(final String id, final I18nText i18nText) {
         super(id);
         this.i18nText = i18nText;
+        super.addAttribute("name", id);
     }
 
     public I18nText getI18nText() {
