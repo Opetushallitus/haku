@@ -357,9 +357,11 @@ public class ApplicationServiceImpl implements ApplicationService {
         }
 
         if (gradesTranferredLk) {
-
+            Map<String, String> gradeAnswers = new HashMap<String, String>(application.getPhaseAnswers(OppijaConstants.PHASE_GRADES));
+            gradeAnswers.put("grades_transferred_lk", "true");
         } else if (gradesTranferredPk) {
-
+            Map<String, String> gradeAnswers = new HashMap<String, String>(application.getPhaseAnswers(OppijaConstants.PHASE_GRADES));
+            gradeAnswers.put("grades_transferred_pk", "true");
         }
 
         String applicationOid = application.getOid();
@@ -431,13 +433,13 @@ public class ApplicationServiceImpl implements ApplicationService {
             gradeAnswers = addRegisterValue(application.getOid(), gradeAnswers, key, arvosana.getArvosana());
             if (isNotBlank(arvosana.getLisatieto())) {
                 gradeAnswers = addRegisterValue(application.getOid(), gradeAnswers,
-                        "prefix" + arvosana.getAine() + "_OPPIAINE", arvosana.getLisatieto());
+                        prefix + arvosana.getAine() + "_OPPIAINE", arvosana.getLisatieto());
             }
         }
         Map<String, String> toAdd = new HashMap<String, String>();
         for (Map.Entry<String, String> entry : gradeAnswers.entrySet()) {
             String key = entry.getKey();
-            if (key.endsWith("_user")) {
+            if (key.endsWith("_user") || key.equals("locked")) {
                 continue;
             }
             String userKey = key + "_user";
@@ -447,6 +449,8 @@ public class ApplicationServiceImpl implements ApplicationService {
             }
         }
         gradeAnswers.putAll(toAdd);
+        gradeAnswers.remove("grades_transferred_pk");
+        gradeAnswers.remove("grades_transferred_lk");
         application.addVaiheenVastaukset(OppijaConstants.PHASE_GRADES, gradeAnswers);
         return gradeAnswers;
     }
