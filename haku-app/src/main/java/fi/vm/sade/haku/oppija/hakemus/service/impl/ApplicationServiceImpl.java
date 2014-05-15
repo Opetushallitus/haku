@@ -319,6 +319,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         boolean gradesTranferredPk = false;
         for (SuoritusDTO dto : suoritukset) {
             String komo = dto.getKomo();
+            LOGGER.debug("Handling baseEducation, komo: {}, yksilollistaminen: {}", komo, dto.getYksilollistaminen());
             if (pohjakoulutus < 0 && "ulkomainen".equals(komo)) {
                 pohjakoulutus = Integer.valueOf(OppijaConstants.ULKOMAINEN_TUTKINTO).intValue();
             } else if ("lukio".equals(komo)) {

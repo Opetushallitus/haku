@@ -185,6 +185,7 @@ public class SuoritusrekisteriServiceImpl implements SuoritusrekisteriService {
         suoritus.setHenkiloOid(jsonElementToString(elem.get("henkiloOid")));
         suoritus.setSuorituskieli(jsonElementToString(elem.get("suorituskieli")));
         suoritus.setKomo(jsonElementToString(elem.get("komo")));
+        suoritus.setYksilollistaminen(jsonElementToString(elem.get("yksilollistaminen")));
 
         try {
             Date valmistuminen = VALMISTUMINEN_FMT.parse(jsonElementToString(elem.get("valmistuminen")));
