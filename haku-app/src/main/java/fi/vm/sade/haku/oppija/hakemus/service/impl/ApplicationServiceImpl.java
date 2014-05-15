@@ -359,9 +359,11 @@ public class ApplicationServiceImpl implements ApplicationService {
         if (gradesTranferredLk) {
             Map<String, String> gradeAnswers = new HashMap<String, String>(application.getPhaseAnswers(OppijaConstants.PHASE_GRADES));
             gradeAnswers.put("grades_transferred_lk", "true");
+            application.addVaiheenVastaukset(OppijaConstants.PHASE_GRADES, gradeAnswers);
         } else if (gradesTranferredPk) {
             Map<String, String> gradeAnswers = new HashMap<String, String>(application.getPhaseAnswers(OppijaConstants.PHASE_GRADES));
             gradeAnswers.put("grades_transferred_pk", "true");
+            application.addVaiheenVastaukset(OppijaConstants.PHASE_GRADES, gradeAnswers);
         }
 
         String applicationOid = application.getOid();
