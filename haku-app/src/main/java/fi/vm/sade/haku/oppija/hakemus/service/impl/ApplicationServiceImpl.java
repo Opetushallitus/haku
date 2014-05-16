@@ -270,8 +270,7 @@ public class ApplicationServiceImpl implements ApplicationService {
             Map<String, String> educationAnswers = new HashMap<String, String>(
                     application.getPhaseAnswers(OppijaConstants.PHASE_EDUCATION));
 
-            String oid = application.getOid();
-            educationAnswers = handleOpiskelija(educationAnswers, oid, opiskelija);
+            educationAnswers = handleOpiskelija(educationAnswers, application, opiskelija);
             application.addVaiheenVastaukset(OppijaConstants.PHASE_EDUCATION, educationAnswers);
         }
 
@@ -289,26 +288,20 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     }
 
-    private Map<String, String> handleOpiskelija(Map<String, String> answers, String applicationOid, OpiskelijaDTO opiskelija) {
+    private Map<String, String> handleOpiskelija(Map<String, String> answers, Application application, OpiskelijaDTO opiskelija) {
         String sendingSchool = opiskelija.getOppilaitosOid();
         String sendingClass = opiskelija.getLuokka();
         String classLevel = opiskelija.getLuokkataso();
         if (isNotEmpty(sendingSchool)) {
-            LOGGER.info("Updating koulutustausta oid: "+String.valueOf(applicationOid)
-                    +" lahtokoulu: "+sendingSchool);
-            answers = addRegisterValue(applicationOid, answers, OppijaConstants.ELEMENT_ID_SENDING_SCHOOL, sendingSchool);
+            answers = addRegisterValue(application, answers, OppijaConstants.ELEMENT_ID_SENDING_SCHOOL, sendingSchool);
         }
         if (isNotEmpty(sendingClass)) {
             sendingClass = sendingClass.toUpperCase();
-            answers = addRegisterValue(applicationOid, answers, OppijaConstants.ELEMENT_ID_SENDING_CLASS, sendingClass);
-            LOGGER.info("Updating koulutustausta oid: "+String.valueOf(applicationOid)
-                    +" lahtoluokka: "+sendingClass);
+            answers = addRegisterValue(application, answers, OppijaConstants.ELEMENT_ID_SENDING_CLASS, sendingClass);
         }
         if (isNotEmpty(classLevel)) {
             classLevel = classLevel.toUpperCase();
-            answers = addRegisterValue(applicationOid, answers, OppijaConstants.ELEMENT_ID_CLASS_LEVEL, classLevel);
-            LOGGER.info("Updating koulutustausta oid: "+String.valueOf(applicationOid)
-                    +" luokkataso: "+classLevel);
+            answers = addRegisterValue(application, answers, OppijaConstants.ELEMENT_ID_CLASS_LEVEL, classLevel);
         }
         return answers;
     }
@@ -390,10 +383,9 @@ public class ApplicationServiceImpl implements ApplicationService {
             return application;
         }
 
-        String applicationOid = application.getOid();
-        educationAnswers = addRegisterValue(applicationOid, educationAnswers,
+        educationAnswers = addRegisterValue(application, educationAnswers,
                 OppijaConstants.ELEMENT_ID_BASE_EDUCATION, String.valueOf(pohjakoulutus));
-        educationAnswers = addRegisterValue(applicationOid, educationAnswers,
+        educationAnswers = addRegisterValue(application, educationAnswers,
                 OppijaConstants.ELEMENT_ID_LISAKOULUTUS_KYMPPI, String.valueOf(kymppi));
 
         String todistusvuosiKey = pohjakoulutus == Integer.valueOf(OppijaConstants.YLIOPPILAS).intValue()
@@ -403,13 +395,13 @@ public class ApplicationServiceImpl implements ApplicationService {
             Calendar cal = GregorianCalendar.getInstance();
             cal.setTime(valmistuminen);
             String todistusvuosi = String.valueOf(cal.get(Calendar.YEAR));
-            educationAnswers= addRegisterValue(applicationOid, educationAnswers, todistusvuosiKey, todistusvuosi);
+            educationAnswers= addRegisterValue(application, educationAnswers, todistusvuosiKey, todistusvuosi);
         }
         String suorituskieliKey = pohjakoulutus == Integer.valueOf(OppijaConstants.YLIOPPILAS).intValue()
                 ? OppijaConstants.LUKIO_KIELI
                 : OppijaConstants.PERUSOPETUS_KIELI;
         if (suorituskieli != null) {
-            educationAnswers = addRegisterValue(applicationOid, educationAnswers, suorituskieliKey, suorituskieli);
+            educationAnswers = addRegisterValue(application, educationAnswers, suorituskieliKey, suorituskieli);
         }
 
         application.addVaiheenVastaukset(OppijaConstants.PHASE_EDUCATION, educationAnswers);
@@ -455,9 +447,9 @@ public class ApplicationServiceImpl implements ApplicationService {
             }
             String key = prefix + arvosana.getAine() + thisSuffix;
             receivedGrades.add(key);
-            gradeAnswers = addRegisterValue(application.getOid(), gradeAnswers, key, arvosana.getArvosana());
+            gradeAnswers = addRegisterValue(application, gradeAnswers, key, arvosana.getArvosana());
             if (isNotBlank(arvosana.getLisatieto())) {
-                gradeAnswers = addRegisterValue(application.getOid(), gradeAnswers,
+                gradeAnswers = addRegisterValue(application, gradeAnswers,
                         prefix + arvosana.getAine() + "_OPPIAINE", arvosana.getLisatieto());
             }
         }
@@ -491,18 +483,14 @@ public class ApplicationServiceImpl implements ApplicationService {
         return gradeAnswers;
     }
 
-    private Map<String, String> addRegisterValue(String oid, Map<String, String> answers, String key, String value) {
-        String valueForm = answers.get(key);
-        if (isEmpty(valueForm)) {
-            answers.put(key, value);
-        } else if (!value.equals(valueForm)) {
-            String valueUser = answers.get(key+"_user");
-            LOGGER.info("Updating application oid:"+oid+" "+key+": "+valueUser+" -> "+value);
-            if (isEmpty(valueUser)) {
-                answers.put(key+"_user", valueForm);
-            }
-            answers.put(key, value);
+    private Map<String, String> addRegisterValue(Application application, Map<String, String> answers,
+                                                 String key, String value) {
+        Map<String, String> overriddenAnswers = application.getOverriddenAnswers();
+        String oldValue = answers.put(key, value);
+        if (!overriddenAnswers.containsKey(key)) {
+            overriddenAnswers.put(key, oldValue);
         }
+        LOGGER.info("Changing value key: {}, value: {} -> {}", key, oldValue, value);
         return answers;
     }
 

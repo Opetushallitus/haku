@@ -21,10 +21,7 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.Phase;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.Text;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.Theme;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.*;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.gradegrid.GradeGrid;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Radio;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionComplexRule;
@@ -246,6 +243,16 @@ public class OsaaminenPhaseYhteishakuKevat {
         GradesTable gradesTablePK = new GradesTable(koodistoService, true, formMessages, formErrors, verboseHelps);
         GradesTable gradesTableYO = new GradesTable(koodistoService, false, formMessages, formErrors, verboseHelps);
 
+        RelatedQuestionComplexRule gradesTransferredPkRule = new RelatedQuestionComplexRule("gradesTransferredPkRule",
+                new Regexp("grades_transferred_pk", "true"));
+        gradesTransferredPkRule.addChild(new HiddenValue("grades_transferred_pk", "true"));
+        arvosanatTheme.addChild(gradesTransferredPkRule);
+
+        RelatedQuestionComplexRule gradesTransferredLkRule = new RelatedQuestionComplexRule("gradesTransferredLkRule",
+                new Regexp("grades_transferred_lk", "true"));
+        gradesTransferredLkRule.addChild(new HiddenValue("grades_transferred_lk", "true"));
+        arvosanatTheme.addChild(gradesTransferredLkRule);
+
         // Peruskoulu
         GradeGrid grid_pk = gradesTablePK.createGradeGrid("grid_pk", formMessages, formErrors, verboseHelps);
         grid_pk.setHelp(createI18NText("form.arvosanat.help", formMessages));
@@ -258,7 +265,7 @@ public class OsaaminenPhaseYhteishakuKevat {
                         ExprUtil.atLeastOneValueEqualsToVariable(RELATED_ELEMENT_ID, OppijaConstants.PERUSKOULU,
                                 OppijaConstants.ALUEITTAIN_YKSILOLLISTETTY, OppijaConstants.YKSILOLLISTETTY,
                                 OppijaConstants.OSITTAIN_YKSILOLLISTETTY)),
-                new Regexp("grades_transferred_pk", ".+"));
+                new Regexp("grades_transferred_pk", "true"));
         RelatedQuestionComplexRule relatedQuestionPk = new RelatedQuestionComplexRule("rule_grade_pk", kysyArvosanatPk);
         relatedQuestionPk.addChild(grid_pk);
         arvosanatTheme.addChild(relatedQuestionPk);
@@ -273,7 +280,7 @@ public class OsaaminenPhaseYhteishakuKevat {
                                         new Variable(OppijaConstants.LUKIO_PAATTOTODISTUS_VUOSI),
                                         new Value(String.valueOf(hakuvuosi)))),
                         ExprUtil.atLeastOneValueEqualsToVariable(RELATED_ELEMENT_ID, OppijaConstants.YLIOPPILAS)),
-                new Regexp("grades_transferred_lk", ".+"));
+                new Regexp("grades_transferred_lk", "true"));
         RelatedQuestionComplexRule relatedQuestionYo = new RelatedQuestionComplexRule("rule_grade_yo", kysyArvosanatLukio);
         relatedQuestionYo.addChild(grid_yo);
         arvosanatTheme.addChild(relatedQuestionYo);
