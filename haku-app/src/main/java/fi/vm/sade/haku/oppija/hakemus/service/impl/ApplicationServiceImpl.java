@@ -53,6 +53,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -63,6 +64,15 @@ import static org.apache.commons.lang.StringUtils.*;
 public class ApplicationServiceImpl implements ApplicationService {
 
     public static final Logger LOGGER = LoggerFactory.getLogger(ApplicationServiceImpl.class);
+
+    @Value("${komo.oid.perusopetus}")
+    private String perusopetusKomoOid;
+    @Value("${komo.oid.lukio}")
+    private String lukioKomoOid;
+    @Value("${komo.oid.lisaopetus}")
+    private String lisaopetusKomoOid;
+    @Value("${komo.oid.ulkomainen}")
+    private String ulkomainenKomoOid;
 
     private static final String OPH_ORGANIZATION = "1.2.246.562.10.00000000001";
     private final ApplicationDAO applicationDAO;
@@ -310,7 +320,6 @@ public class ApplicationServiceImpl implements ApplicationService {
             return application;
         }
         List<SuoritusDTO> suoritukset = suoritusrekisteriService.getSuoritukset(personOid);
-        SuoritusDTO suoritus = null;
         int pohjakoulutus = -1;
         boolean kymppi = false;
         Date valmistuminen = null;
@@ -320,9 +329,9 @@ public class ApplicationServiceImpl implements ApplicationService {
         for (SuoritusDTO dto : suoritukset) {
             String komo = dto.getKomo();
             LOGGER.debug("Handling baseEducation, komo: {}, yksilollistaminen: {}", komo, dto.getYksilollistaminen());
-            if (pohjakoulutus < 0 && "ulkomainen".equals(komo)) {
+            if (pohjakoulutus < 0 && ulkomainenKomoOid.equals(komo)) {
                 pohjakoulutus = Integer.valueOf(OppijaConstants.ULKOMAINEN_TUTKINTO).intValue();
-            } else if ("lukio".equals(komo)) {
+            } else if (lukioKomoOid.equals(komo)) {
                 pohjakoulutus = Integer.valueOf(OppijaConstants.YLIOPPILAS).intValue();
                 valmistuminen = dto.getValmistuminen();
                 suorituskieli = dto.getSuorituskieli();
@@ -330,7 +339,7 @@ public class ApplicationServiceImpl implements ApplicationService {
                 if (!gradeAnswers.isEmpty()) {
                     gradesTranferredLk = true;
                 }
-            } else if (pohjakoulutus < 0 && "peruskoulu".equals(komo)) {
+            } else if (pohjakoulutus < 0 && perusopetusKomoOid.equals(komo)) {
                 valmistuminen = dto.getValmistuminen();
                 suorituskieli = dto.getSuorituskieli();
                 String yksilollistaminen = dto.getYksilollistaminen();
@@ -342,12 +351,14 @@ public class ApplicationServiceImpl implements ApplicationService {
                     pohjakoulutus = Integer.valueOf(OppijaConstants.YKSILOLLISTETTY).intValue();
                 } else if ("Osittain".equals(yksilollistaminen)) {
                     pohjakoulutus = Integer.valueOf(OppijaConstants.OSITTAIN_YKSILOLLISTETTY).intValue();
+                } else {
+                    throw new IllegalValueException("Illegal value for yksilollistaminen: "+yksilollistaminen);
                 }
                 Map<String, String> gradeAnswers = addGrades(application, dto);
                 if (!gradeAnswers.isEmpty()) {
                     gradesTranferredPk = true;
                 }
-            } else if ("lisaopetus".equals(komo)) {
+            } else if (lisaopetusKomoOid.equals(komo)) {
                 kymppi = true;
                 Map<String, String> gradeAnswers = addGrades(application, dto);
                 if (!gradeAnswers.isEmpty()) {
@@ -398,11 +409,11 @@ public class ApplicationServiceImpl implements ApplicationService {
         String suoritusId = suoritus.getId();
         List<ArvosanaDTO> arvosanat = suoritusrekisteriService.getArvosanat(suoritusId);
         String prefix = "PK_";
-        if (suoritus.getKomo().equals("lukio")) {
+        if (suoritus.getKomo().equals(lukioKomoOid)) {
             prefix = "LK_";
         }
         String suffix = "";
-        if (suoritus.getKomo().equals("lisaopetus")) {
+        if (suoritus.getKomo().equals(lisaopetusKomoOid)) {
             suffix = "_10";
         }
         Map<String, String> gradeAnswers = new HashMap<String, String>(application.getPhaseAnswers(OppijaConstants.PHASE_GRADES));
@@ -415,7 +426,7 @@ public class ApplicationServiceImpl implements ApplicationService {
             String aine = arvosana.getAine();
             String thisSuffix = suffix;
             if (arvosana.isValinnainen()) {
-                if (suoritus.getKomo().equals("lukio")) {
+                if (suoritus.getKomo().equals(lukioKomoOid)) {
                     LOGGER.error("Lukio grades can not have optional subjects");
                     throw new IllegalValueException("Lukio grades can not have optional subjects");
                 }
@@ -449,7 +460,7 @@ public class ApplicationServiceImpl implements ApplicationService {
                 toAdd.put(userKey, entry.getValue());
                 toAdd.put(key, "Ei arvosanaa");
             }
-            if (suoritus.getKomo().equals("peruskoulu") && !key.endsWith("OPPIAINE") && !key.endsWith("_VAL1")
+            if (suoritus.getKomo().equals(perusopetusKomoOid) && !key.endsWith("OPPIAINE") && !key.endsWith("_VAL1")
                     && !key.endsWith("VAL2")) {
                 if (!gradeAnswers.containsKey(key + "_VAL1")) {
                     toAdd.put(key + "_VAL1", "Ei arvosanaa");
@@ -457,7 +468,7 @@ public class ApplicationServiceImpl implements ApplicationService {
                 if (!gradeAnswers.containsKey(key + "_VAL2")) {
                     toAdd.put(key + "_VAL2", "Ei arvosanaa");
                 }
-            } 
+            }
         }
         gradeAnswers.putAll(toAdd);
         gradeAnswers.remove("grades_transferred_pk");
