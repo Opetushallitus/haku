@@ -379,8 +379,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         }
 
         if (pohjakoulutus < 0) {
-            LOGGER.error("I don't know happened, no baseEducation for "+application.getOid());
-            throw new RuntimeException("I don't know happened, no baseEducation for "+application.getOid());
+            return application;
         }
 
         String applicationOid = application.getOid();
