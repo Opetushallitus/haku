@@ -48,7 +48,7 @@ import java.util.*;
 import java.util.regex.Pattern;
 
 import static org.apache.commons.lang.StringUtils.isEmpty;
-import static org.apache.commons.lang.StringUtils.isNotEmpty;
+import static org.apache.commons.lang.StringUtils.isNotBlank;
 
 /**
  * @author Hannu Lyytikainen
@@ -73,11 +73,13 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     private static final String INDEX_SEARCH_NAMES = "index_searchNames";
     private static final String INDEX_REDO_POSTPROCESS = "index_redoPostProcess";
 
+    private static final String FIELD_AO_T = "answers.hakutoiveet.preference1-Koulutus-id";
     private static final String FIELD_AO_1 = "answers.hakutoiveet.preference1-Koulutus-id";
     private static final String FIELD_AO_2 = "answers.hakutoiveet.preference2-Koulutus-id";
     private static final String FIELD_AO_3 = "answers.hakutoiveet.preference3-Koulutus-id";
     private static final String FIELD_AO_4 = "answers.hakutoiveet.preference4-Koulutus-id";
     private static final String FIELD_AO_5 = "answers.hakutoiveet.preference5-Koulutus-id";
+    private static final String FIELD_AO_KOULUTUS_ID_T = "answers.hakutoiveet.preference%d-Koulutus-id-aoIdentifier";
     private static final String FIELD_AO_KOULUTUS_ID_1 = "answers.hakutoiveet.preference1-Koulutus-id-aoIdentifier";
     private static final String FIELD_AO_KOULUTUS_ID_2 = "answers.hakutoiveet.preference2-Koulutus-id-aoIdentifier";
     private static final String FIELD_AO_KOULUTUS_ID_3 = "answers.hakutoiveet.preference3-Koulutus-id-aoIdentifier";
@@ -88,11 +90,13 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     private static final String FIELD_LOP_3 = "answers.hakutoiveet.preference3-Opetuspiste-id";
     private static final String FIELD_LOP_4 = "answers.hakutoiveet.preference4-Opetuspiste-id";
     private static final String FIELD_LOP_5 = "answers.hakutoiveet.preference5-Opetuspiste-id";
+    private static final String FIELD_LOP_PARENTS_T = "answers.hakutoiveet.preference%d-Opetuspiste-id-parents";
     private static final String FIELD_LOP_PARENTS_1 = "answers.hakutoiveet.preference1-Opetuspiste-id-parents";
     private static final String FIELD_LOP_PARENTS_2 = "answers.hakutoiveet.preference2-Opetuspiste-id-parents";
     private static final String FIELD_LOP_PARENTS_3 = "answers.hakutoiveet.preference3-Opetuspiste-id-parents";
     private static final String FIELD_LOP_PARENTS_4 = "answers.hakutoiveet.preference4-Opetuspiste-id-parents";
     private static final String FIELD_LOP_PARENTS_5 = "answers.hakutoiveet.preference5-Opetuspiste-id-parents";
+    private static final String FIELD_DISCRETIONARY_T = "answers.hakutoiveet.preference%d-discretionary";
     private static final String FIELD_DISCRETIONARY_1 = "answers.hakutoiveet.preference1-discretionary";
     private static final String FIELD_DISCRETIONARY_2 = "answers.hakutoiveet.preference2-discretionary";
     private static final String FIELD_DISCRETIONARY_3 = "answers.hakutoiveet.preference3-discretionary";
@@ -423,9 +427,66 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     }
 
     private DBObject[] buildQueryFilter(final ApplicationQueryParameters applicationQueryParameters) {
-        ArrayList<DBObject> filters = new ArrayList<DBObject>(2);
+        ArrayList<DBObject> filters = new ArrayList<DBObject>();
         DBObject stateQuery = null;
 
+
+        // Koskee yksittäistä hakutoivetta
+        String lopOid = applicationQueryParameters.getLopOid();
+        String preference = applicationQueryParameters.getAoId();
+        boolean discretionaryOnly = applicationQueryParameters.isDiscretionaryOnly();
+        String aoOid = applicationQueryParameters.getAoOid();
+
+        ArrayList<DBObject> preferenceQueries = new ArrayList<DBObject>();
+        for (int i = 1; i <= 5; i++) {
+            ArrayList<DBObject> preferenceQuery = new ArrayList<DBObject>(4);
+            if (isNotBlank(lopOid)) {
+                preferenceQuery.add(
+                        QueryBuilder.start(String.format(FIELD_LOP_PARENTS_T, i)).regex(Pattern.compile(lopOid)).get());
+            }
+            if (isNotBlank(preference)) {
+                preferenceQuery.add(
+                        QueryBuilder.start(String.format(FIELD_AO_KOULUTUS_ID_T, i)).is(preference).get());
+            }
+            if (discretionaryOnly) {
+                preferenceQuery.add(
+                        QueryBuilder.start(String.format(FIELD_DISCRETIONARY_T, i)).is("true").get());
+            }
+            if (isNotBlank(aoOid)) {
+                preferenceQuery.add(
+                        QueryBuilder.start(String.format(FIELD_AO_T, i)).is(aoOid).get());
+            }
+            if (!preferenceQuery.isEmpty()) {
+                preferenceQueries.add(QueryBuilder.start().and(
+                        preferenceQuery.toArray(new DBObject[preferenceQuery.size()])).get());
+            }
+        }
+        if (!preferenceQueries.isEmpty()) {
+            filters.add(QueryBuilder.start().or(
+                preferenceQueries.toArray(new DBObject[preferenceQueries.size()])).get());
+        }
+
+//        if (isNotEmpty(lopOid) && isNotEmpty(preference)) {
+//            filters.add(queryByLopAndPreference(preference, lopOid).get());
+//        } else {
+//            if (!isEmpty(lopOid)) {
+//                filters.add(queryByLearningOpportunityProviderOid(lopOid).get());
+//            }
+//            if (!isEmpty(preference)) {
+//                filters.add(queryByPreference(preference).get());
+//            }
+//        }
+//        if (isNotEmpty(lopOid) && discretionaryOnly) {
+//            filters.add(queryByLopAndDiscretionary(lopOid).get());
+//        } else if (discretionaryOnly) {
+//            filters.add(queryDiscretionaryOnly().get());
+//        }
+//
+//        if (!isEmpty(aoOid)) {
+//            filters.add(queryByPreference(Lists.newArrayList(aoOid)).get());
+//        }
+
+        // Koskee koko hakemusta
         List<String> state = applicationQueryParameters.getState();
         if (state != null && !state.isEmpty()) {
             if (state.size() == 1 && "NOT_IDENTIFIED".equals(state.get(0))) {
@@ -441,37 +502,11 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
             filters.add(stateQuery);
         }
 
-        String preference = applicationQueryParameters.getAoId();
-        String lopOid = applicationQueryParameters.getLopOid();
-
-        if (isNotEmpty(lopOid) && isNotEmpty(preference)) {
-            filters.add(queryByLopAndPreference(preference, lopOid).get());
-        } else {
-            if (!isEmpty(lopOid)) {
-                filters.add(queryByLearningOpportunityProviderOid(lopOid).get());
-            }
-            if (!isEmpty(preference)) {
-                filters.add(queryByPreference(preference).get());
-            }
-        }
-
-        String aoOid = applicationQueryParameters.getAoOid();
-        if (!isEmpty(aoOid)) {
-            filters.add(queryByPreference(Lists.newArrayList(aoOid)).get());
-        }
-
-
         List<String> asIds = applicationQueryParameters.getAsIds();
         if (!asIds.isEmpty()) {
             filters.add(QueryBuilder.start(FIELD_APPLICATION_SYSTEM_ID).in(asIds).get());
         }
 
-        boolean discretionaryOnly = applicationQueryParameters.isDiscretionaryOnly();
-        if (isNotEmpty(lopOid) && discretionaryOnly) {
-            filters.add(queryByLopAndDiscretionary(lopOid).get());
-        } else if (discretionaryOnly) {
-            filters.add(queryDiscretionaryOnly().get());
-        }
 
         String sendingSchool = applicationQueryParameters.getSendingSchool();
         if (!isEmpty(sendingSchool)) {

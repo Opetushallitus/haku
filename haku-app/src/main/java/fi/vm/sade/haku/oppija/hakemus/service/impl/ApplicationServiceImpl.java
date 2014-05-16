@@ -55,7 +55,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import scala.tools.nsc.Global;
 
+import javax.ws.rs.HEAD;
 import java.util.*;
 
 import static org.apache.commons.lang.StringUtils.*;
@@ -320,6 +322,10 @@ public class ApplicationServiceImpl implements ApplicationService {
             return application;
         }
         List<SuoritusDTO> suoritukset = suoritusrekisteriService.getSuoritukset(personOid);
+        if (suoritukset.isEmpty()) {
+            return application;
+        }
+
         int pohjakoulutus = -1;
         boolean kymppi = false;
         Date valmistuminen = null;
@@ -375,6 +381,11 @@ public class ApplicationServiceImpl implements ApplicationService {
             Map<String, String> gradeAnswers = new HashMap<String, String>(application.getPhaseAnswers(OppijaConstants.PHASE_GRADES));
             gradeAnswers.put("grades_transferred_pk", "true");
             application.addVaiheenVastaukset(OppijaConstants.PHASE_GRADES, gradeAnswers);
+        }
+
+        if (pohjakoulutus < 0) {
+            LOGGER.error("I don't know happened, no baseEducation for "+application.getOid());
+            throw new RuntimeException("I don't know happened, no baseEducation for "+application.getOid());
         }
 
         String applicationOid = application.getOid();
