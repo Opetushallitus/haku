@@ -55,9 +55,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import scala.tools.nsc.Global;
 
-import javax.ws.rs.HEAD;
 import java.util.*;
 
 import static org.apache.commons.lang.StringUtils.*;
@@ -322,9 +320,6 @@ public class ApplicationServiceImpl implements ApplicationService {
             return application;
         }
         List<SuoritusDTO> suoritukset = suoritusrekisteriService.getSuoritukset(personOid);
-        if (suoritukset.isEmpty()) {
-            return application;
-        }
 
         int pohjakoulutus = -1;
         boolean kymppi = false;
@@ -469,7 +464,9 @@ public class ApplicationServiceImpl implements ApplicationService {
             String userKey = key + "_user";
             if (!receivedGrades.contains(key) && !gradeAnswers.containsKey(userKey)) {
                 toAdd.put(userKey, entry.getValue());
-                toAdd.put(key, "Ei arvosanaa");
+                if (!key.endsWith("OPPIAINE")) {
+                    toAdd.put(key, "Ei arvosanaa");
+                }
             }
             if (suoritus.getKomo().equals(perusopetusKomoOid) && !key.endsWith("OPPIAINE") && !key.endsWith("_VAL1")
                     && !key.endsWith("VAL2")) {
