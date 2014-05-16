@@ -336,10 +336,7 @@ public class ApplicationServiceImpl implements ApplicationService {
                 pohjakoulutus = Integer.valueOf(OppijaConstants.YLIOPPILAS).intValue();
                 valmistuminen = dto.getValmistuminen();
                 suorituskieli = dto.getSuorituskieli();
-                Map<String, String> gradeAnswers = addGrades(application, dto);
-                if (!gradeAnswers.isEmpty()) {
-                    gradesTranferredLk = true;
-                }
+                gradesTranferredLk = true;
             } else if (pohjakoulutus < 0 && perusopetusKomoOid.equals(komo)) {
                 valmistuminen = dto.getValmistuminen();
                 suorituskieli = dto.getSuorituskieli();
@@ -355,16 +352,10 @@ public class ApplicationServiceImpl implements ApplicationService {
                 } else {
                     throw new IllegalValueException("Illegal value for yksilollistaminen: "+yksilollistaminen);
                 }
-                Map<String, String> gradeAnswers = addGrades(application, dto);
-                if (!gradeAnswers.isEmpty()) {
-                    gradesTranferredPk = true;
-                }
+                gradesTranferredPk = true;
             } else if (lisaopetusKomoOid.equals(komo)) {
                 kymppi = true;
-                Map<String, String> gradeAnswers = addGrades(application, dto);
-                if (!gradeAnswers.isEmpty()) {
-                    gradesTranferredPk = true;
-                }
+                gradesTranferredPk = true;
             }
         }
 
