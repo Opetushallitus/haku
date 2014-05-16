@@ -149,7 +149,7 @@ public final class KoulutustaustaPhase {
         TitledGroup suorittanutGroup = new TitledGroup("suorittanutgroup",
                 createI18NText("form.koulutustausta.suorittanut", formMessagesBundle));
         suorittanutGroup.addChild(
-                new CheckBox("LISAKOULUTUS_KYMPPI", createI18NText("form.koulutustausta.kymppiluokka", formMessagesBundle)),
+                new CheckBox(OppijaConstants.ELEMENT_ID_LISAKOULUTUS_KYMPPI, createI18NText("form.koulutustausta.kymppiluokka", formMessagesBundle)),
                 new CheckBox("LISAKOULUTUS_VAMMAISTEN", createI18NText("form.koulutustausta.vammaistenValmentava", formMessagesBundle)),
                 new CheckBox("LISAKOULUTUS_TALOUS", createI18NText("form.koulutustausta.talouskoulu", formMessagesBundle)),
                 new CheckBox("LISAKOULUTUS_AMMATTISTARTTI", createI18NText("form.koulutustausta.ammattistartti", formMessagesBundle)),

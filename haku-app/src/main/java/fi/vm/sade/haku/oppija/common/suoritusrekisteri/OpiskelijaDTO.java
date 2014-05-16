@@ -1,11 +1,14 @@
 package fi.vm.sade.haku.oppija.common.suoritusrekisteri;
 
+import java.util.Date;
+
 public class OpiskelijaDTO {
 
     private String oppilaitosOid;
     private String luokkataso;
     private String luokka;
     private String henkiloOid;
+    private Date loppuPaiva;
 
 //    {
 //        "oppilaitosOid": "1.2.246.562.10.15523794103",
@@ -14,11 +17,13 @@ public class OpiskelijaDTO {
 //            "henkiloOid": "1.2.3"
 //    }
 
-    public OpiskelijaDTO(String oppilaitosOid, String luokkataso, String luokka, String henkiloOid) {
+    public OpiskelijaDTO(String oppilaitosOid, String luokkataso, String luokka, String henkiloOid,
+                         Date loppuPaiva) {
         this.oppilaitosOid = oppilaitosOid;
         this.luokkataso = luokkataso;
         this.luokka = luokka;
         this.henkiloOid = henkiloOid;
+        this.loppuPaiva = loppuPaiva;
     }
 
     public OpiskelijaDTO() {
@@ -57,4 +62,11 @@ public class OpiskelijaDTO {
         this.henkiloOid = henkiloOid;
     }
 
+    public void setLoppuPaiva(Date loppuPaiva) {
+        this.loppuPaiva = loppuPaiva;
+    }
+
+    public Date getLoppuPaiva() {
+        return loppuPaiva;
+    }
 }
