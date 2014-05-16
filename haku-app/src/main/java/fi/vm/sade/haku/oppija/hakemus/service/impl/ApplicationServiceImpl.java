@@ -336,6 +336,7 @@ public class ApplicationServiceImpl implements ApplicationService {
                 pohjakoulutus = Integer.valueOf(OppijaConstants.YLIOPPILAS).intValue();
                 valmistuminen = dto.getValmistuminen();
                 suorituskieli = dto.getSuorituskieli();
+                Map<String, String> gradeAnswers = addGrades(application, dto);
                 gradesTranferredLk = true;
             } else if (pohjakoulutus < 0 && perusopetusKomoOid.equals(komo)) {
                 valmistuminen = dto.getValmistuminen();
@@ -352,9 +353,25 @@ public class ApplicationServiceImpl implements ApplicationService {
                 } else {
                     throw new IllegalValueException("Illegal value for yksilollistaminen: "+yksilollistaminen);
                 }
+                Map<String, String> gradeAnswers = addGrades(application, dto);
                 gradesTranferredPk = true;
             } else if (lisaopetusKomoOid.equals(komo)) {
                 kymppi = true;
+                Map<String, String> gradeAnswers = addGrades(application, dto);
+                gradesTranferredPk = true;
+            }
+        }
+
+        Map<String, String> educationAnswers = new HashMap<String, String>(application.getPhaseAnswers(OppijaConstants.PHASE_EDUCATION));
+
+        if (pohjakoulutus < 0) {
+            String userPohjakoulutus = educationAnswers.get("POHJAKOULUTUS");
+            if (userPohjakoulutus.equals(OppijaConstants.YLIOPPILAS)) {
+                gradesTranferredLk = true;
+            } else if (userPohjakoulutus.equals(OppijaConstants.PERUSKOULU)
+                    || userPohjakoulutus.equals(OppijaConstants.YKSILOLLISTETTY)
+                    || userPohjakoulutus.equals(OppijaConstants.ALUEITTAIN_YKSILOLLISTETTY)
+                    || userPohjakoulutus.equals(OppijaConstants.OSITTAIN_YKSILOLLISTETTY)) {
                 gradesTranferredPk = true;
             }
         }
@@ -374,7 +391,6 @@ public class ApplicationServiceImpl implements ApplicationService {
         }
 
         String applicationOid = application.getOid();
-        Map<String, String> educationAnswers = new HashMap<String, String>(application.getPhaseAnswers(OppijaConstants.PHASE_EDUCATION));
         educationAnswers = addRegisterValue(applicationOid, educationAnswers,
                 OppijaConstants.ELEMENT_ID_BASE_EDUCATION, String.valueOf(pohjakoulutus));
         educationAnswers = addRegisterValue(applicationOid, educationAnswers,
