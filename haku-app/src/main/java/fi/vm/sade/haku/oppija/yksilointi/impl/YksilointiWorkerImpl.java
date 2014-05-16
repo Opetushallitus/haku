@@ -112,6 +112,7 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
             application = applicationService.addPersonOid(application);
             if (!skipSendingSchoolAutomatic) {
                 application = applicationService.addSendingSchool(application);
+                application = applicationService.addBaseEducation(application);
             }
             application = validateApplication(application);
             this.applicationDAO.update(new Application(application.getOid()), application);
@@ -151,6 +152,7 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
                     if (!skipSendingSchoolManual) {
                         LOGGER.debug("Adding sendingSchool");
                         application = applicationService.addSendingSchool(application);
+                        application = applicationService.addBaseEducation(application);
                     }
                     application = validateApplication(application);
                     application.setRedoPostProcess("DONE");

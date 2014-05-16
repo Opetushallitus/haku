@@ -61,6 +61,8 @@ public final class OppijaConstants {
     public static final String ELEMENT_ID_CONTACT_LANGUAGE_USER = "asiointikieli";
     public static final String ELEMENT_ID_BASE_EDUCATION = "POHJAKOULUTUS";
     public static final String ELEMENT_ID_BASE_EDUCATION_USER = "POHJAKOULUTUS_user";
+    public static final String ELEMENT_ID_LISAKOULUTUS_KYMPPI = "LISAKOULUTUS_KYMPPI";
+    public static final String ELEMENT_ID_LISAKOULUTUS_KYMPPI_USER = "LISAKOULUTUS_KYMPPI_user";
 
     public static final String PHASE_PERSONAL = "henkilotiedot";
     public static final String PHASE_EDUCATION = "koulutustausta";

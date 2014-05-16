@@ -5,9 +5,11 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import fi.vm.sade.generic.rest.CachingRestClient;
+import fi.vm.sade.haku.oppija.common.suoritusrekisteri.ArvosanaDTO;
 import fi.vm.sade.haku.oppija.common.suoritusrekisteri.OpiskelijaDTO;
 import fi.vm.sade.haku.oppija.common.suoritusrekisteri.SuoritusDTO;
 import fi.vm.sade.haku.oppija.common.suoritusrekisteri.SuoritusrekisteriService;
+import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,8 +64,7 @@ public class SuoritusrekisteriServiceImpl implements SuoritusrekisteriService {
         String date = ISO8601.format(new Date());
         try {
             InputStream is = cachingRestClient.get("/rest/v1/opiskelijat"
-                    + "?henkilo=" + personOid
-                    + "&paiva=" + date);
+                    + "?henkilo=" + personOid);
             response = IOUtils.toString(is);
             log.debug("Got response: {}", response);
         } catch (IOException e) {
@@ -79,16 +80,47 @@ public class SuoritusrekisteriServiceImpl implements SuoritusrekisteriService {
             JsonElement luokkataso = elem.get("luokkataso");
             JsonElement luokka = elem.get("luokka");
             JsonElement henkiloOid = elem.get("henkiloOid");
+            JsonElement loppuPaiva = elem.get("loppuPaiva");
 
             OpiskelijaDTO opiskelija = new OpiskelijaDTO();
             opiskelija.setOppilaitosOid(jsonElementToString(oppilaitos));
             opiskelija.setLuokkataso(jsonElementToString(luokkataso));
             opiskelija.setLuokka(jsonElementToString(luokka));
             opiskelija.setHenkiloOid(jsonElementToString(henkiloOid));
+            try {
+                opiskelija.setLoppuPaiva(jsonElementToDate(loppuPaiva));
+            } catch (ParseException e) {
+                throw new ResourceNotFoundException("LoppuPaiva '"+loppuPaiva+"' can not be parsed as date", e);
+            }
             opiskelijat.add(opiskelija);
         }
 
         return opiskelijat;
+    }
+
+    @Override
+    public List<ArvosanaDTO> getArvosanat(String suoritusId) {
+        CachingRestClient cachingRestClient = getCachingRestClient();
+        String response = null;
+        try {
+            response = cachingRestClient.getAsString("/rest/v1/arvosanat/?suoritus="+suoritusId);
+        } catch (IOException e) {
+            throw new ResourceNotFoundException("Fetching grades failed: ", e);
+        }
+        JsonArray elements = new JsonParser().parse(response).getAsJsonArray();
+        List<ArvosanaDTO> arvosanat = new ArrayList<ArvosanaDTO>(elements.size());
+        for (JsonElement elem : elements) {
+            JsonObject obj = elem.getAsJsonObject();
+            ArvosanaDTO arvosana = new ArvosanaDTO();
+            arvosana.setId(jsonElementToString(obj.get("id")));
+            arvosana.setAine(jsonElementToString(obj.get("aine")));
+            arvosana.setLisatieto(jsonElementToString(obj.get("lisatieto")));
+            arvosana.setValinnainen(jsonElementToBoolean(obj.get("valinnainen")));
+            JsonObject arvioObj = obj.get("arvio").getAsJsonObject();
+            arvosana.setArvosana(jsonElementToString(arvioObj.get("arvosana")));
+            arvosanat.add(arvosana);
+        }
+        return arvosanat;
     }
 
     @Override
@@ -110,11 +142,9 @@ public class SuoritusrekisteriServiceImpl implements SuoritusrekisteriService {
 
         CachingRestClient cachingRestClient = getCachingRestClient();
         String response;
-        String date = ISO8601.format(new Date());
         try {
             InputStream is = cachingRestClient.get("/rest/v1/suoritukset"
-                    + "?henkilo=" + personOid
-                    + "&paiva=" + date);
+                    + "?henkilo=" + personOid);
             response = IOUtils.toString(is);
             log.debug("Got response: {}", response);
         } catch (IOException e) {
@@ -129,20 +159,33 @@ public class SuoritusrekisteriServiceImpl implements SuoritusrekisteriService {
             suoritukset.add(suoritus);
         }
 
+        checkForMulti(suoritukset);
+
         return suoritukset;
+    }
+
+    private void checkForMulti(ArrayList<SuoritusDTO> suoritukset) {
+        List<String> foundKomos = new ArrayList<String>(suoritukset.size());
+        for (SuoritusDTO suoritus : suoritukset) {
+            String komo = suoritus.getKomo();
+            if (foundKomos.contains(komo)) {
+                throw new ResourceNotFoundException("Found multiple instances of komo "+komo+
+                        " for personOid "+suoritus.getHenkiloOid());
+            }
+            foundKomos.add(komo);
+        }
     }
 
     private SuoritusDTO suoritusJsonToDTO(JsonObject elem) {
         log.debug("suoritusJsonToDTO, json ", elem.toString());
-        JsonElement tila = elem.get("tila");
-        JsonElement henkiloOid = elem.get("henkiloOid");
-        JsonElement suoritusKieli = elem.get("suoritusKieli");
-        JsonElement komoto = elem.get("komoto");
 
         SuoritusDTO suoritus = new SuoritusDTO();
-        suoritus.setTila(jsonElementToString(tila));
-        suoritus.setHenkiloOid(jsonElementToString(henkiloOid));
-        suoritus.setSuorituskieli(jsonElementToString(suoritusKieli));
+        suoritus.setId(jsonElementToString(elem.get("id")));
+        suoritus.setTila(jsonElementToString(elem.get("tila")));
+        suoritus.setHenkiloOid(jsonElementToString(elem.get("henkiloOid")));
+        suoritus.setSuorituskieli(jsonElementToString(elem.get("suorituskieli")));
+        suoritus.setKomo(jsonElementToString(elem.get("komo")));
+        suoritus.setYksilollistaminen(jsonElementToString(elem.get("yksilollistaminen")));
 
         try {
             Date valmistuminen = VALMISTUMINEN_FMT.parse(jsonElementToString(elem.get("valmistuminen")));
@@ -150,35 +193,6 @@ public class SuoritusrekisteriServiceImpl implements SuoritusrekisteriService {
         } catch (ParseException e) {
             log.info("Parsing valmistuminen date failed: " + e);
         }
-
-        if (komoto != null && komoto.isJsonObject()) {
-            JsonObject komotoObj = (JsonObject) komoto;
-            String komo = jsonElementToString(komotoObj.get("komo"));
-
-            if ("ulkomainen".equals(komo)) {
-//            0: Suoritus.komoto.komo = "ulkomainen"
-                suoritus.setPohjakoulutus(0);
-            } else if ("lukio".equals(komo)) {
-//            9: Suoritus.komoto.komo = "lukio"
-                suoritus.setPohjakoulutus(9);
-            } else if ("peruskoulu".equals(komo)) {
-                String yksilollistaminen = jsonElementToString(elem.get("yksilollistaminen"));
-//            1: Suoritus.komoto.komo = "peruskoulu", yksilollistaminen = "Ei"
-//            2: Suoritus.komoto.komo = "peruskoulu", yksilollistaminen = "Osittain"
-//            3: Suoritus.komoto.komo = "peruskoulu", yksilollistaminen = "Alueittain"
-//            6: Suoritus.komoto.komo = "peruskoulu", yksilollistaminen = "Kokonaan"
-                if ("Ei".equals(yksilollistaminen)) {
-                    suoritus.setPohjakoulutus(1);
-                } else if ("Osittain".equals(yksilollistaminen)) {
-                    suoritus.setPohjakoulutus(2);
-                } else if ("Alueittain".equals(yksilollistaminen)) {
-                    suoritus.setPohjakoulutus(3);
-                } else if ("Kokonaan".equals(yksilollistaminen)) {
-                    suoritus.setPohjakoulutus(6);
-                }
-            }
-        }
-
 
         log.debug("suoritusJsonToDTO, dto ", suoritus.toString());
         return suoritus;
@@ -189,6 +203,22 @@ public class SuoritusrekisteriServiceImpl implements SuoritusrekisteriService {
             return null;
         }
         return elem.getAsString();
+    }
+
+    private Date jsonElementToDate(JsonElement elem) throws ParseException {
+        String str = jsonElementToString(elem);
+        if (str == null) {
+            return null;
+        }
+        return ISO8601.parse(str);
+    }
+
+    private Boolean jsonElementToBoolean(JsonElement elem) {
+        String str = jsonElementToString(elem);
+        if (str == null) {
+            return null;
+        }
+        return Boolean.valueOf(str);
     }
 
     private synchronized CachingRestClient getCachingRestClient() {
