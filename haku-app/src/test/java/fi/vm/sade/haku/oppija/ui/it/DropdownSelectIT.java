@@ -47,11 +47,12 @@ public class DropdownSelectIT extends AbstractSeleniumBase {
 
     @Before
     public void init() throws IOException {
-        ApplicationSystem applicationSystem = new FormModelBuilder().buildDefaultFormWithFields(dropdownSelect);
-        dropdownSelect = new DropdownSelectBuilder(SELECT_ID).setI18nText(createI18NAsIs(SELECT_ID))
+        dropdownSelect = new DropdownSelectBuilder(SELECT_ID)
                 .addOption(createI18NAsIs("option1"), "option1")
                 .addOption(createI18NAsIs("option2"), "option2")
-                .build(new FormParameters(applicationSystem, new KoodistoServiceMockImpl()));
+                .i18nText(createI18NAsIs(SELECT_ID))
+                .build();
+        ApplicationSystem applicationSystem = new FormModelBuilder().buildDefaultFormWithFields(dropdownSelect);
         this.applicationSystemHelper = updateApplicationSystem(applicationSystem);
         driver = seleniumContainer.getDriver();
         driver.get(getBaseUrl() + this.applicationSystemHelper.getFormUrl(this.applicationSystemHelper.getFirstPhase().getId()));

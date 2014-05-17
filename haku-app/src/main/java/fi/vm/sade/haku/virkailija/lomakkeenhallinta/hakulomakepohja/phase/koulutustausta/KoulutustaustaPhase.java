@@ -195,17 +195,18 @@ public final class KoulutustaustaPhase {
                     .build(formParameters));
 
             RelatedQuestionComplexRule lukioRule = createVarEqualsToValueRule(millatutkinnolla.getId(), YLIOPPILAS);
+            Element ylioppilastutkinto = new DropdownSelectBuilder(OppijaConstants.YLIOPPILASTUTKINTO)
+                    .defaultOption(OppijaConstants.YLIOPPILASTUTKINTO_FI)
+                    .addOption(createI18NAsIs("form.koulutustausta.lukio.yotutkinto.fi"), OppijaConstants.YLIOPPILASTUTKINTO_FI)
+                    .addOption(createI18NAsIs("form.koulutustausta.lukio.yotutkinto.ib"), "ib")
+                    .addOption(createI18NAsIs("form.koulutustausta.lukio.yotutkinto.eb"), "eb")
+                    .addOption(createI18NAsIs("form.koulutustausta.lukio.yotutkinto.rp"), "rp")
+                    .required()
+                    .inline()
+                    .build(formParameters);
             lukioRule.addChild(TitledGroup("lukio.suoritus").build(formParameters)
                     .addChild(lukioPaattotodistusVuosi,
-                            new DropdownSelectBuilder(OppijaConstants.YLIOPPILASTUTKINTO)
-                                    .defaultOption("fi")
-                                    .addOption(createI18NText("form.koulutustausta.lukio.yotutkinto.fi", formParameters), OppijaConstants.YLIOPPILASTUTKINTO_FI)
-                                    .addOption(createI18NText("form.koulutustausta.lukio.yotutkinto.ib", formParameters), "ib")
-                                    .addOption(createI18NText("form.koulutustausta.lukio.yotutkinto.eb", formParameters), "eb")
-                                    .addOption(createI18NText("form.koulutustausta.lukio.yotutkinto.rp", formParameters), "rp")
-                                    .required()
-                                    .inline()
-                                    .build(formParameters)));
+                            ylioppilastutkinto));
 
 
             lukioRule.addChild(tuoreYoTodistus);

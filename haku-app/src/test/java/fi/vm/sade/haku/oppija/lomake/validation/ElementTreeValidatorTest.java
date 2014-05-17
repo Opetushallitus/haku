@@ -43,7 +43,7 @@ import static org.mockito.Mockito.when;
 
 public class ElementTreeValidatorTest {
 
-    private static final String ASID = "dummyAsid";
+    private static final String ASID = "haku1";
     private TextQuestion textQuestion;
     private ElementTreeValidator elementTreeValidator;
     private ApplicationSystemService applicationSystemServiceMock;

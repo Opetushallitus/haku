@@ -25,10 +25,6 @@ public class I18nBundle {
             log.warn("Bundle {} not found", bundleName);
         }
 
-        for (String propertyKey : propertyKeys) {
-            System.out.println("--------" + propertyKey);
-        }
-
         for (String key : propertyKeys) {
             Map<String, String> translations = new HashMap<String, String>();
             String lowerCaseKey = key.toLowerCase();
@@ -49,14 +45,20 @@ public class I18nBundle {
             ResourceBundle bundle = ResourceBundle.getBundle(bundleName, new Locale(lang));
             if (bundle.containsKey(lowerCaseKey)) {
                 text = bundle.getString(lowerCaseKey);
-            } else {
-                ResourceBundle commonBundle = ResourceBundle.getBundle("form_common", new Locale(lang));
-                text = commonBundle.getString(lowerCaseKey);
             }
+
         } catch (MissingResourceException mre) {
         }
-        return text;
 
+        if (text == null) {
+            ResourceBundle commonBundle = ResourceBundle.getBundle("form_common", new Locale(lang));
+            if (commonBundle.containsKey(lowerCaseKey)) {
+                text = commonBundle.getString(lowerCaseKey);
+            } else {
+                text = "****" + key + "[" + lang + "]****";
+            }
+        }
+        return text;
     }
 
     public I18nText get(final String key) {

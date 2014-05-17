@@ -631,7 +631,7 @@
             <artifactId>authentication-api</artifactId>
             <version>${authentication-api.version}</version>
         </dependency>
-        
+
         <dependency>
             <groupId>fi.vm.sade.valintaperusteet</groupId>
             <artifactId>valintalaskenta-domain</artifactId>
@@ -734,6 +734,9 @@
                         <spring.profiles.active>dev</spring.profiles.active>
                         <mongodb.port>27018</mongodb.port>
                     </systemProperties>
+                    <additionalClasspathElements>
+                        <additionalClasspathElement>src/main/resources</additionalClasspathElement>
+                    </additionalClasspathElements>
                 </configuration>
             </plugin>
 

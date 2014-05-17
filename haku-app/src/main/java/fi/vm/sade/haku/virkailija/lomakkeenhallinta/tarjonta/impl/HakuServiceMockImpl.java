@@ -50,7 +50,7 @@ public class HakuServiceMockImpl implements HakuService {
                 .addApplicationSystemType(VARSINAINEN_HAKU)
                 .get());
         asList.add(new ApplicationSystemBuilder()
-                .addId("haku2")
+                .addId("1.2.246.562.5.50476818906")
                 .addName(new I18nText(ImmutableMap.of("fi", "testi haku 2 " + OppijaConstants.HAKUKAUSI_KEVAT)))
                 .addApplicationPeriods(Lists.newArrayList(new ApplicationPeriod(new Date(), getDate(100))))
                 .addHakukausiUri(OppijaConstants.HAKUKAUSI_KEVAT)

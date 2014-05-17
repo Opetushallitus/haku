@@ -55,7 +55,7 @@ public class PostalCodeIT extends DummyModelBaseItTest {
     @Before
     public void init() throws IOException {
         Form form = new Form(randomId(), createI18NAsIs(randomId()));
-        applicationSystem = ElementUtil.createActiveApplicationSystem(randomId(), form);
+        applicationSystem = createActiveApplicationSystem(randomId(), form);
         Element phase = new PhaseBuilder(randomId())
                 .i18nText(createI18NAsIs(randomId())).build();
         form.addChild(phase);

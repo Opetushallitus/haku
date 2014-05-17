@@ -63,7 +63,7 @@ public class FormGeneratorImpl implements FormGenerator {
                 .addHakukausiUri(as.getHakukausiUri())
                 .addHakukausiVuosi(as.getHakukausiVuosi())
                 .addApplicationCompleteElements(ValmisPhase.create(formParameters))
-                .addAdditionalInformationElements(ValmisPhase.createAdditionalInformationElements(getMessageBundleName("form_messages", as), formParameters))
+                .addAdditionalInformationElements(ValmisPhase.createAdditionalInformationElements(formParameters))
                 .get();
     }
 
@@ -77,13 +77,4 @@ public class FormGeneratorImpl implements FormGenerator {
         form.addChild(LisatiedotPhase.create(formParameters));
         return form;
     }
-
-    public static String getMessageBundleName(final String baseName, final ApplicationSystem as) {
-        String hakutyyppi = OppijaConstants.LISA_HAKU.equals(as.getApplicationSystemType()) ? "lisahaku" : "yhteishaku";
-        String hakukausi = OppijaConstants.HAKUKAUSI_SYKSY.equals(as.getHakukausiUri()) ? "syksy" : "kevat";
-        return Joiner.on('_').join(baseName, hakutyyppi, hakukausi);
-
-    }
-
-
 }

@@ -50,8 +50,9 @@ public class DropdownSelectDefaultValueIT extends AbstractSeleniumBase {
     @Before
     public void init() throws IOException {
         String id = ElementUtil.randomId();
-        dropdownSelect = new DropdownSelectBuilder(id).setI18nText(createI18NAsIs(id))
+        dropdownSelect = new DropdownSelectBuilder(id)
                 .addOptions(ImmutableList.of(option1, option2, option3))
+                .i18nText(createI18NAsIs(id))
                 .build();
         option2.setDefaultOption(true);
         ApplicationSystem applicationSystem = new FormModelBuilder().buildDefaultFormWithFields(dropdownSelect);

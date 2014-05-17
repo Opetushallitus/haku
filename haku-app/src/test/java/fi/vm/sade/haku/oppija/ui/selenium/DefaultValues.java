@@ -42,6 +42,7 @@ public final class DefaultValues {
         koulutustausta_lk.put(OppijaConstants.LUKIO_PAATTOTODISTUS_VUOSI, "2012");
         koulutustausta_lk.put("ammatillinenTutkintoSuoritettu", "false");
         koulutustausta_lk.put(OppijaConstants.LUKIO_KIELI, "FI");
+        koulutustausta_lk.put(OppijaConstants.YLIOPPILASTUTKINTO, OppijaConstants.YLIOPPILASTUTKINTO_FI);
 
         koulutustausta_pk.put("POHJAKOULUTUS", "1");
         koulutustausta_pk.put(OppijaConstants.PERUSOPETUS_PAATTOTODISTUSVUOSI, "2012");

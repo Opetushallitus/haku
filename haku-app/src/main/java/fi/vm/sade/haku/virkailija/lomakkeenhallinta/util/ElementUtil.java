@@ -19,13 +19,9 @@ package fi.vm.sade.haku.virkailija.lomakkeenhallinta.util;
 import com.google.common.base.Joiner;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
-import com.google.common.collect.Lists;
-import fi.vm.sade.haku.oppija.lomake.domain.ApplicationPeriod;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
-import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystemBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Titled;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.PreferenceRow;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.SinglePreference;
@@ -271,20 +267,6 @@ public final class ElementUtil {
         for (Element child : element.getChildren()) {
             findElementByType(child, elements, eClass);
         }
-    }
-
-    public static ApplicationSystem createActiveApplicationSystem(final String id, Form form) {
-        final Calendar instance = Calendar.getInstance();
-        instance.roll(Calendar.YEAR, -1);
-        Date start = new Date(instance.getTimeInMillis());
-        instance.roll(Calendar.YEAR, 2);
-        Date end = new Date(instance.getTimeInMillis());
-        List<ApplicationPeriod> applicationPeriods = Lists.newArrayList(new ApplicationPeriod(start, end));
-        return new ApplicationSystemBuilder().addId(id).addForm(form)
-                .addName(ElementUtil.createI18NAsIs("test application period"))
-                .addApplicationPeriods(applicationPeriods)
-                .addApplicationSystemType(OppijaConstants.VARSINAINEN_HAKU)
-                .get();
     }
 
     public static String getPath(final ApplicationSystem applicationSystem, final String id) {

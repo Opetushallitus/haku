@@ -16,93 +16,50 @@
 
 package fi.vm.sade.haku.oppija.ui.selenium;
 
-import fi.vm.sade.haku.oppija.common.selenium.AbstractSeleniumBase;
-import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
-import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystemBuilder;
-import fi.vm.sade.haku.oppija.lomake.domain.builder.PhaseBuilder;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.PreferenceRow;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.PreferenceTable;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.hakutoiveet.HakutoiveetPhase;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
+import fi.vm.sade.haku.oppija.common.selenium.DummyModelBaseItTest;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
-import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebDriver;
-
-import java.io.IOException;
-
-import static fi.vm.sade.haku.oppija.lomake.domain.builder.ThemeBuilder.Theme;
-import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.createActiveApplicationSystem;
-import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.createI18NAsIs;
+import org.openqa.selenium.firefox.FirefoxDriver;
 
 /**
  * Test for education institute preferences
  *
  * @author Mikko Majapuro
  */
-public class HakutoiveetIT extends AbstractSeleniumBase {
+public class HakutoiveetIT extends DummyModelBaseItTest {
 
-    private ApplicationSystem activeApplicationSystem;
-
-    @Before
-    public void init() throws IOException {
-        Form form = new Form("lomake", createI18NAsIs("yhteishaku"));
-        activeApplicationSystem = createActiveApplicationSystem(ASID, form);
-        Element hakutoiveet = new PhaseBuilder("hakutoiveet")
-                .i18nText(createI18NAsIs("Hakutoiveet")).build();
-        form.addChild(hakutoiveet);
-
-
-        Element hakutoiveetTeema = Theme("hakutoiveetTheme").previewable().i18nText(createI18NAsIs("Hakutoiveet")).build();
-        hakutoiveet.addChild(hakutoiveetTeema);
-        hakutoiveetTeema.setHelp(createI18NAsIs("Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem."));
-        PreferenceTable preferenceTable = new PreferenceTable("preferencelist", createI18NAsIs("Hakutoiveet"));
-        FormParameters formParameters = new FormParameters(new ApplicationSystemBuilder().addHakukausiUri(OppijaConstants.HAKUKAUSI_SYKSY).addApplicationSystemType(OppijaConstants.VARSINAINEN_HAKU).get(), null);
-        PreferenceRow pr1 = HakutoiveetPhase.createI18NPreferenceRow("preference1", "Hakutoive 1", formParameters);
-        PreferenceRow pr2 = HakutoiveetPhase.createI18NPreferenceRow("preference2", "Hakutoive 2", formParameters);
-        PreferenceRow pr3 = HakutoiveetPhase.createI18NPreferenceRow("preference3", "Hakutoive 3", formParameters);
-        preferenceTable.addChild(pr1);
-        preferenceTable.addChild(pr2);
-        preferenceTable.addChild(pr3);
-        hakutoiveetTeema.addChild(preferenceTable);
-        updateApplicationSystem(activeApplicationSystem);
-    }
 
     @Test
     public void testEducationPreferenceAdditionalQuestion() throws InterruptedException {
-        final WebDriver driver = seleniumContainer.getDriver();
-        seleniumContainer.navigate(getHakutoiveetPath());
+        toApplicationOptionPhase();
+        FirefoxDriver driver = seleniumContainer.getDriver();
         findById("preference1-Opetuspiste");
         typeWithoutTab("preference1-Opetuspiste", "Esp");
         driver.findElement(By.linkText("FAKTIA, Espoo op")).click();
-        driver.findElement(By.xpath("//option[@value='Kaivosalan perustutkinto, pk']")).click();
+        findByXPath("//option[@value='Kaivosalan perustutkinto, pk']").click();
         isTextPresent("Kaivosalan perustutkinto, Kaivosalan koulutusohjelma");
-
         clickByNameAndValue("preference1_urheilijan_ammatillisen_koulutuksen_lisakysymys", "true");
         clickByNameAndValue("preference1_sora_terveys", "false");
         clickByNameAndValue("preference1_sora_oikeudenMenetys", "false");
-
         driver.findElement(By.xpath("//button[@class='right']")).click();
     }
 
     @Test(expected = NoSuchElementException.class)
     public void testEducationPreferenceNoAdditionalQuestion() throws InterruptedException {
-        final WebDriver driver = seleniumContainer.getDriver();
-        seleniumContainer.navigate(getHakutoiveetPath());
+        toApplicationOptionPhase();
+        FirefoxDriver driver = seleniumContainer.getDriver();
         typeWithoutTab("preference1-Opetuspiste", "Eso");
         driver.findElement(By.linkText("FAKTIA, Espoo op")).click();
-        driver.findElement(By.xpath("//option[@value='Kaivosalan perustutkinto, pk']")).click();
-        isTextPresent("Kaivosalan perustutkinto, Kaivosalan koulutusohjelma");
-        driver.findElement(By.xpath("//button[@name='nav-next']")).click();
     }
 
-    private String getHakutoiveetPath() {
-        String hakutoiveet = ElementUtil.getPath(this.activeApplicationSystem, "hakutoiveet");
-        return "lomake/" + hakutoiveet;
+    private void toApplicationOptionPhase() {
+        navigateToFirstPhase();
+        fillOut(defaultValues.henkilotiedot);
+        nextPhase(OppijaConstants.PHASE_EDUCATION);
+        fillOut(defaultValues.koulutustausta_pk);
+        nextPhase(OppijaConstants.PHASE_APPLICATION_OPTIONS);
     }
+
 }

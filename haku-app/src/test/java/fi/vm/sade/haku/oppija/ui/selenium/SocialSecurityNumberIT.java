@@ -46,7 +46,7 @@ public class SocialSecurityNumberIT extends AbstractSeleniumBase {
         TextQuestion henkilötunnus = (TextQuestion) new TextQuestionBuilder("Henkilotunnus").i18nText(createI18NAsIs("Henkilotunnus")).build();
         henkilötunnus.addAttribute("placeholder", "ppkkvv*****");
         henkilötunnus.addAttribute("title", "ppkkvv*****");
-        FormParameters formParameters = new FormParameters(new ApplicationSystemBuilder().addHakukausiUri(OppijaConstants.HAKUKAUSI_SYKSY).addApplicationSystemType(OppijaConstants.VARSINAINEN_HAKU).get(), null);
+        FormParameters formParameters = new FormParameters(new ApplicationSystemBuilder().addName(createI18NAsIs("name")).addId("id").addHakukausiUri(OppijaConstants.HAKUKAUSI_SYKSY).addApplicationSystemType(OppijaConstants.VARSINAINEN_HAKU).get(), null);
         addRequiredValidator(henkilötunnus, formParameters);
         henkilötunnus.setValidator(createRegexValidator(henkilötunnus.getId(), "[0-9]{6}.[0-9]{4}", formParameters));
         henkilötunnus.addAttribute("size", "11");
@@ -55,8 +55,8 @@ public class SocialSecurityNumberIT extends AbstractSeleniumBase {
         henkilötunnus.setInline(true);
 
         Radio sukupuoli = new Radio("Sukupuoli", createI18NAsIs("Sukupuoli"));
-        sukupuoli.addOption(createI18NText("form.henkilotiedot.sukupuoli.mies", formParameters), "1");
-        sukupuoli.addOption(createI18NText("form.henkilotiedot.sukupuoli.nainen", formParameters), "2");
+        sukupuoli.addOption(createI18NText("sukupuoli.mies", formParameters), "1");
+        sukupuoli.addOption(createI18NText("sukupuoli.nainen", formParameters), "2");
         addRequiredValidator(sukupuoli, formParameters);
         sukupuoli.setInline(true);
 

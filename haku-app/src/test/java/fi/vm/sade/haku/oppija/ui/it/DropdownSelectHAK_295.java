@@ -53,7 +53,8 @@ public class DropdownSelectHAK_295 extends AbstractSeleniumBase {
         option3 = new Option(createI18NAsIs(OPTION_3_ID), OPTION_3_ID);
         dropdownSelect = new DropdownSelectBuilder(SELECT_ID)
                 .addOptions(ImmutableList.of(option3, option2, option1))
-                .setI18nText(createI18NAsIs(SELECT_ID)).defaultValueAttribute(dropdownAttribute).build();
+                .defaultValueAttribute(dropdownAttribute)
+                .i18nText(createI18NAsIs(SELECT_ID)).build();
         if (setDefault) {
             option2.setDefaultOption(true);
         }

@@ -19,11 +19,6 @@ public class DropdownSelectBuilder extends ElementBuilder {
         super(id);
     }
 
-    public DropdownSelectBuilder setI18nText(I18nText i18nText) {
-        this.i18nText = i18nText;
-        return this;
-    }
-
     public DropdownSelectBuilder emptyOption() {
         options.add(new Option(ElementUtil.createI18NAsIs(""), ""));
         return this;
