@@ -80,11 +80,11 @@ public final class HenkilotiedotPhase {
                 .required()
                 .build(formParameters);
 
-        Radio sukupuoli = new Radio("sukupuoli", createI18NText("form.henkilotiedot.sukupuoli",
+        Radio sukupuoli = new Radio("sukupuoli", createI18NText("sukupuoli",
                 formParameters));
 
         sukupuoli.addOptions(formParameters.getKoodistoService().getGenders());
-        setRequiredInlineAndVerboseHelp(sukupuoli, "form.henkilotiedot.sukupuoli.verboseHelp", formParameters);
+        setRequiredInlineAndVerboseHelp(sukupuoli, "sukupuoli.verboseHelp", formParameters);
 
         Option male = sukupuoli.getOptions().get(0).getI18nText().getTranslations().get("fi").equalsIgnoreCase("Mies") ?
                 sukupuoli.getOptions().get(0) : sukupuoli.getOptions().get(1);
@@ -103,7 +103,7 @@ public final class HenkilotiedotPhase {
 
         // Ulkomaalaisten tunnisteet
         Radio onkoSinullaSuomalainenHetu = new Radio("onkoSinullaSuomalainenHetu",
-                createI18NText("form.henkilotiedot.hetu.onkoSuomalainen", formParameters));
+                createI18NText("onkoSinullaSuomalainenHetu", formParameters));
         addDefaultTrueFalseOptions(onkoSinullaSuomalainenHetu, formParameters);
         setRequiredInlineAndVerboseHelp(onkoSinullaSuomalainenHetu, "form.henkilotiedot.hetu.onkoSuomalainen.verboseHelp", formParameters);
         RelatedQuestionComplexRule suomalainenHetuRule = createRuleIfVariableIsTrue("onSuomalainenHetu", onkoSinullaSuomalainenHetu.getId());
