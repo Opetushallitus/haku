@@ -4,11 +4,11 @@ package fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.koulu
 import com.google.common.base.Function;
 import com.google.common.collect.Maps;
 import fi.vm.sade.haku.oppija.lomake.domain.builder.DropdownSelectBuilder;
+import fi.vm.sade.haku.oppija.lomake.domain.builder.RadioBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.builder.TextQuestionBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.builder.ThemeBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Notification;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Radio;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionComplexRule;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.*;
 import fi.vm.sade.haku.oppija.lomake.validation.validators.AlwaysFailsValidator;
@@ -49,7 +49,7 @@ public final class KoulutustaustaPhase {
     }
 
 
-    public static Radio createKoulutustaustaRadio(final FormParameters formParameters) {
+    public static Element createKoulutustaustaRadio(final FormParameters formParameters) {
         Integer hakukausiVuosi = formParameters.getApplicationSystem().getHakukausiVuosi();
         String hakukausiVuosiStr = String.valueOf(hakukausiVuosi);
         KoodistoService koodistoService = formParameters.getKoodistoService();
@@ -63,44 +63,21 @@ public final class KoulutustaustaPhase {
             }
         });
 
-        Radio millatutkinnolla = new Radio(ELEMENT_ID_BASE_EDUCATION,
-                createI18NText("form.koulutustausta.milla.tutkinnolla", formParameters.getFormMessagesBundle()));
+        RadioBuilder baseEducationBuilder = RadioBuilder.Radio(ELEMENT_ID_BASE_EDUCATION)
+                .addOption(educationMap.get(PERUSKOULU).getValue(), formParameters)
+                .addOption(educationMap.get(OSITTAIN_YKSILOLLISTETTY).getValue(), formParameters)
+                .addOption(ALUEITTAIN_YKSILOLLISTETTY, formParameters)
+                .addOption(educationMap.get(YKSILOLLISTETTY).getValue(), formParameters)
+                .addOption(educationMap.get(KESKEYTYNYT).getValue(), formParameters);
 
-
-        millatutkinnolla.addOption(createI18NText("form.koulutustausta.peruskoulu", formParameters.getFormMessagesBundle()),
-                educationMap.get(PERUSKOULU).getValue(),
-                createI18NText("form.koulutustausta.peruskoulu.help", formParameters.getFormMessagesBundle()));
-        millatutkinnolla
-                .addOption(createI18NText("form.koulutustausta.osittain.yksilollistetty", formParameters.getFormMessagesBundle()),
-                        educationMap.get(OSITTAIN_YKSILOLLISTETTY).getValue(),
-                        createI18NText("form.koulutustausta.osittain.yksilollistetty.help", formParameters.getFormMessagesBundle()));
-        millatutkinnolla
-                .addOption(
-                        createI18NText("form.koulutustausta.erityisopetuksen.yksilollistetty", formParameters.getFormMessagesBundle()),
-                        ALUEITTAIN_YKSILOLLISTETTY,
-                        createI18NText("form.koulutustausta.erityisopetuksen.yksilollistetty.help", formParameters.getFormMessagesBundle()));
-        millatutkinnolla
-                .addOption(
-                        createI18NText("form.koulutustausta.yksilollistetty", formParameters.getFormMessagesBundle()),
-                        educationMap.get(YKSILOLLISTETTY).getValue(),
-                        createI18NText("form.koulutustausta.yksilollistetty.help", formParameters.getFormMessagesBundle()));
-        millatutkinnolla.addOption(createI18NText("form.koulutustausta.keskeytynyt", formParameters.getFormMessagesBundle()),
-                educationMap.get(KESKEYTYNYT).getValue(),
-                createI18NText("form.koulutustausta.keskeytynyt", formParameters.getFormMessagesBundle()));
 
         if (!formParameters.isPervako()) {
-            millatutkinnolla
-                    .addOption(
-                            createI18NText("form.koulutustausta.lukio", formParameters.getFormMessagesBundle()),
-                            educationMap.get(YLIOPPILAS).getValue(),
-                            createI18NText("form.koulutustausta.lukio.help", formParameters.getFormMessagesBundle()));
+            baseEducationBuilder.addOption(educationMap.get(YLIOPPILAS).getValue(), formParameters);
         }
+        baseEducationBuilder.addOption(educationMap.get(ULKOMAINEN_TUTKINTO).getValue(), formParameters);
 
-        millatutkinnolla.addOption(createI18NText("form.koulutustausta.ulkomailla", formParameters),
-                educationMap.get(ULKOMAINEN_TUTKINTO).getValue(),
-                createI18NText("form.koulutustausta.ulkomailla.help", formParameters));
-        ElementUtil.setVerboseHelp(millatutkinnolla, "form.koulutustausta.milla.tutkinnolla.verboseHelp", formParameters);
-        addRequiredValidator(millatutkinnolla, formParameters);
+
+        Element baseEducation = baseEducationBuilder.required().build(formParameters);
 
         Notification tutkintoUlkomaillaNotification = new Notification(TUTKINTO_ULKOMAILLA_NOTIFICATION_ID,
                 createI18NText("form.koulutustausta.ulkomailla.huom", formParameters),
@@ -112,11 +89,11 @@ public final class KoulutustaustaPhase {
                 Notification.NotificationType.INFO);
 
 
-        RelatedQuestionComplexRule keskeytynytRule = createVarEqualsToValueRule(millatutkinnolla.getId(), KESKEYTYNYT);
+        RelatedQuestionComplexRule keskeytynytRule = createVarEqualsToValueRule(baseEducation.getId(), KESKEYTYNYT);
         keskeytynytRule.addChild(tutkintoKeskeytynytNotification);
         // Minkä koulutuksen olet suorittanut ulkomailla? (vapaatekstikenttä, 250 merkkiä
 
-        RelatedQuestionComplexRule ulkomaillaSuoritettuTutkintoRule = createVarEqualsToValueRule(millatutkinnolla.getId(), ULKOMAINEN_TUTKINTO);
+        RelatedQuestionComplexRule ulkomaillaSuoritettuTutkintoRule = createVarEqualsToValueRule(baseEducation.getId(), ULKOMAINEN_TUTKINTO);
         if (formParameters.isPervako()) {
             ulkomaillaSuoritettuTutkintoRule.addChild(
                     TextArea("mika-ulkomainen-koulutus")
@@ -127,8 +104,8 @@ public final class KoulutustaustaPhase {
         }
         ulkomaillaSuoritettuTutkintoRule.addChild(tutkintoUlkomaillaNotification);
 
-        millatutkinnolla.addChild(ulkomaillaSuoritettuTutkintoRule);
-        millatutkinnolla.addChild(keskeytynytRule);
+        baseEducation.addChild(ulkomaillaSuoritettuTutkintoRule);
+        baseEducation.addChild(keskeytynytRule);
 
         List<String> validYears = new ArrayList<String>(hakukausiVuosi - 1900 + 1);
         for (int year = 1900; year <= hakukausiVuosi; year++) {
@@ -155,15 +132,15 @@ public final class KoulutustaustaPhase {
                                 Checkbox("LISAKOULUTUS_MAAHANMUUTTO").build(formParameters)
                         );
 
-        RelatedQuestionComplexRule pkKysymyksetRule = createVarEqualsToValueRule(millatutkinnolla.getId(),
+        RelatedQuestionComplexRule pkKysymyksetRule = createVarEqualsToValueRule(baseEducation.getId(),
                 PERUSKOULU, OSITTAIN_YKSILOLLISTETTY, ALUEITTAIN_YKSILOLLISTETTY, YKSILOLLISTETTY);
 
         RelatedQuestionComplexRule paattotodistusvuosiPeruskouluRule = createRegexpRule(paattotodistusvuosiPeruskoulu.getId(), "^(19[0-9][0-9]|200[0-9]|201[0-1])$");
 
-        Radio koulutuspaikkaAmmatillisenTutkintoon = new Radio("KOULUTUSPAIKKA_AMMATILLISEEN_TUTKINTOON",
-                createI18NText("form.koulutustausta.ammatillinenKoulutuspaikka", formParameters));
-        addDefaultTrueFalseOptions(koulutuspaikkaAmmatillisenTutkintoon, formParameters);
-        addRequiredValidator(koulutuspaikkaAmmatillisenTutkintoon, formParameters);
+        Element koulutuspaikkaAmmatillisenTutkintoon = RadioBuilder.Radio("KOULUTUSPAIKKA_AMMATILLISEEN_TUTKINTOON")
+                .addDefaultTrueFalse()
+                .required()
+                .build(formParameters);
 
         Expr vuosiSyotetty = new Regexp(paattotodistusvuosiPeruskoulu.getId(), PAATTOTODISTUSVUOSI_PATTERN);
         Expr kysytaankoKoulutuspaikka = new And(new Not(new Equals(new Variable(paattotodistusvuosiPeruskoulu.getId()), new Value(hakukausiVuosiStr))), vuosiSyotetty);
@@ -194,7 +171,7 @@ public final class KoulutustaustaPhase {
                     .required()
                     .build(formParameters));
 
-            RelatedQuestionComplexRule lukioRule = createVarEqualsToValueRule(millatutkinnolla.getId(), YLIOPPILAS);
+            RelatedQuestionComplexRule lukioRule = createVarEqualsToValueRule(baseEducation.getId(), YLIOPPILAS);
             Element ylioppilastutkinto = new DropdownSelectBuilder(OppijaConstants.YLIOPPILASTUTKINTO)
                     .defaultOption(OppijaConstants.YLIOPPILASTUTKINTO_FI)
                     .addOption(createI18NAsIs("form.koulutustausta.lukio.yotutkinto.fi"), OppijaConstants.YLIOPPILASTUTKINTO_FI)
@@ -211,11 +188,10 @@ public final class KoulutustaustaPhase {
 
             lukioRule.addChild(tuoreYoTodistus);
 
-            Radio suorittanutAmmatillisenTutkinnonLukio = new Radio(
-                    "ammatillinenTutkintoSuoritettu",
-                    createI18NText("form.koulutustausta.ammatillinenSuoritettu", formParameters));
-            addYesAndIDontOptions(suorittanutAmmatillisenTutkinnonLukio, formParameters);
-            addRequiredValidator(suorittanutAmmatillisenTutkinnonLukio, formParameters);
+            Element suorittanutAmmatillisenTutkinnonLukio = RadioBuilder.Radio("ammatillinenTutkintoSuoritettu")
+                    .addDefaultTrueFalse()
+                    .required()
+                    .build(formParameters);
             lukioRule.addChild(suorittanutAmmatillisenTutkinnonLukio);
 
 
@@ -226,7 +202,7 @@ public final class KoulutustaustaPhase {
                             .required()
                             .build(formParameters));
 
-            millatutkinnolla.addChild(lukioRule);
+            baseEducation.addChild(lukioRule);
 
             RelatedQuestionComplexRule suorittanutTutkinnonLukioRule = createRuleIfVariableIsTrue(ElementUtil.randomId(),
                     suorittanutAmmatillisenTutkinnonLukio.getId());
@@ -242,14 +218,12 @@ public final class KoulutustaustaPhase {
 
 
         }
-        millatutkinnolla.addChild(pkKysymyksetRule);
+        baseEducation.addChild(pkKysymyksetRule);
 
-        Radio suorittanutAmmatillisenTutkinnon = new Radio(
-                "ammatillinenTutkintoSuoritettu",
-                createI18NText("form.koulutustausta.ammatillinenSuoritettu", formParameters));
-        addYesAndIDontOptions(suorittanutAmmatillisenTutkinnon, formParameters);
-        addRequiredValidator(suorittanutAmmatillisenTutkinnon, formParameters);
-
+        Element suorittanutAmmatillisenTutkinnon = RadioBuilder.Radio("ammatillinenTutkintoSuoritettu")
+                .addDefaultTrueFalse()
+                .required()
+                .build(formParameters);
 
         paattotodistusvuosiPeruskouluRule.addChild(suorittanutAmmatillisenTutkinnon);
 
@@ -270,7 +244,7 @@ public final class KoulutustaustaPhase {
                 .build(formParameters));
 
 
-        return millatutkinnolla;
+        return baseEducation;
     }
 
 }

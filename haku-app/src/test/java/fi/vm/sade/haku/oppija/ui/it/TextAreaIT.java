@@ -30,11 +30,6 @@ import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.crea
 import static net.sourceforge.jwebunit.junit.JWebUnit.assertElementPresent;
 import static net.sourceforge.jwebunit.junit.JWebUnit.beginAt;
 
-/**
- * @author jukka
- * @version 9/17/124:24 PM}
- * @since 1.1
- */
 public class TextAreaIT extends AbstractFormTest {
 
     private ApplicationSystemHelper applicationSystemHelper;

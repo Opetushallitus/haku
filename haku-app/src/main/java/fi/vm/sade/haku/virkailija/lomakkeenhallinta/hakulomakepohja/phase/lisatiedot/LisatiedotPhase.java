@@ -3,7 +3,6 @@ package fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.lisat
 import fi.vm.sade.haku.oppija.lomake.domain.builder.TextQuestionBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.builder.ThemeBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Radio;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.TextQuestion;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionComplexRule;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.*;
@@ -14,6 +13,7 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.CheckBoxBuilder.Checkbox;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.PhaseBuilder.Phase;
+import static fi.vm.sade.haku.oppija.lomake.domain.builder.RadioBuilder.Radio;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.TextAreaBuilder.TextArea;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.TextQuestionBuilder.TextQuestion;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.ThemeBuilder.Theme;
@@ -73,13 +73,12 @@ public class LisatiedotPhase {
                         Checkbox("lupaSahkoisesti").build(formParameters),
                         Checkbox("lupaSms").build(formParameters)));
 
-        Radio asiointikieli = new Radio(OppijaConstants.ELEMENT_ID_CONTACT_LANGUAGE, createI18NText("form.asiointikieli.otsikko", formParameters.getFormMessagesBundle()));
-        asiointikieli.setHelp(createI18NText("form.asiointikieli.help", formParameters.getFormMessagesBundle()));
-        asiointikieli.addOption(createI18NText("form.asiointikieli.suomi", formParameters.getFormMessagesBundle()), "suomi");
-        asiointikieli.addOption(createI18NText("form.asiointikieli.ruotsi", formParameters.getFormMessagesBundle()), "ruotsi");
-        addRequiredValidator(asiointikieli, formParameters);
-        setVerboseHelp(asiointikieli, "form.asiointikieli.otsikko.verboseHelp", formParameters);
-        lupatiedotTheme.addChild(asiointikieli);
+        lupatiedotTheme.addChild(Radio(OppijaConstants.ELEMENT_ID_CONTACT_LANGUAGE)
+                .addOption("suomi", formParameters)
+                .addOption("ruotsi", formParameters)
+                .required()
+                .build(formParameters));
+
         return lupatiedotTheme;
     }
 

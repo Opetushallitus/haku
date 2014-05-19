@@ -18,6 +18,7 @@ package fi.vm.sade.haku.oppija.lomake.domain.elements.questions;
 
 import com.google.common.collect.ImmutableList;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
+import fi.vm.sade.haku.oppija.lomake.domain.builder.OptionBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.validation.Validator;
 import fi.vm.sade.haku.oppija.lomake.validation.validators.ValueSetValidator;
@@ -53,14 +54,10 @@ public abstract class OptionQuestion extends Question {
     }
 
     public Option addOption(final I18nText i18nText, final String value) {
-        Option option = new Option(i18nText, value);
-        addOption(option);
-        return option;
-    }
-
-    public Option addOption(final I18nText i18nText, final String value, final I18nText help) {
-        Option option = new Option(i18nText, value);
-        option.setHelp(help);
+        Option option = (Option) OptionBuilder.Option(this.id + "." + value)
+                .setValue(value)
+                .i18nText(i18nText)
+                .build();
         addOption(option);
         return option;
     }

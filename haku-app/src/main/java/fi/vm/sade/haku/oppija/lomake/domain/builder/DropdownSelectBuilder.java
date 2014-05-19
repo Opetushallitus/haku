@@ -20,12 +20,18 @@ public class DropdownSelectBuilder extends ElementBuilder {
     }
 
     public DropdownSelectBuilder emptyOption() {
-        options.add(new Option(ElementUtil.createI18NAsIs(""), ""));
+        options.add((Option) OptionBuilder.Option(ElementUtil.randomId())
+                .setValue("")
+                .i18nText(ElementUtil.createI18NAsIs(""))
+                .build());
         return this;
     }
 
     public DropdownSelectBuilder addOption(I18nText i18nText, String value) {
-        options.add(new Option(i18nText, value));
+        options.add((Option) new OptionBuilder(id)
+                .setValue(value)
+                .i18nText(i18nText)
+                .build());
         return this;
     }
 

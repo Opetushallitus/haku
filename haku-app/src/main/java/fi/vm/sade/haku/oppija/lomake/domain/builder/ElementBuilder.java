@@ -59,6 +59,7 @@ public abstract class ElementBuilder {
             validators.add(new ContainedInOtherFieldValidator(id,
                     containsInField, errorMessage));
         }
+
         return element;
     }
 
@@ -120,5 +121,9 @@ public abstract class ElementBuilder {
     public ElementBuilder containsInField(String id) {
         this.containsInField = id;
         return this;
+    }
+
+    public ElementBuilder requiredInline() {
+        return required().inline();
     }
 }

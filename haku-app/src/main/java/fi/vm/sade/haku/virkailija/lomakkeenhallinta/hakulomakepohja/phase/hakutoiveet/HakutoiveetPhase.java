@@ -17,12 +17,12 @@
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.hakutoiveet;
 
 import fi.vm.sade.haku.oppija.lomake.domain.builder.DropdownSelectBuilder;
+import fi.vm.sade.haku.oppija.lomake.domain.builder.RadioBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.HiddenValue;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.Popup;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.PreferenceRow;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.PreferenceTable;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Radio;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionComplexRule;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.*;
 import fi.vm.sade.haku.oppija.lomake.validation.validators.RegexFieldValidator;
@@ -86,11 +86,11 @@ public class HakutoiveetPhase {
     }
 
     private static Element[] createDiscretionaryQuestionsAndRules(final String index, final FormParameters formParameters) {
-        Radio discretionary = new Radio(index + "-discretionary", createI18NText("form.hakutoiveet.harkinnanvarainen",
-                formParameters));
-        addDefaultTrueFalseOptions(discretionary, formParameters);
-        addRequiredValidator(discretionary, formParameters);
-        discretionary.setHelp(createI18NText("form.hakutoiveet.harkinnanvarainen.ohje", formParameters));
+        Element discretionary = RadioBuilder.Radio(index + "-discretionary")
+                .addDefaultTrueFalse()
+                .required()
+                .i18nText(createI18NText("form.hakutoiveet.harkinnanvarainen", formParameters))
+                .build(formParameters);
 
         Element discretionaryFollowUp = new DropdownSelectBuilder(discretionary.getId() + "-follow-up")
                 .emptyOption()
@@ -152,26 +152,28 @@ public class HakutoiveetPhase {
 
         RelatedQuestionComplexRule hasSora = ElementUtil.createRuleIfVariableIsTrue(index + "_sora_rule", index + "-Koulutus-id-sora");
 
-        Radio sora1 = new Radio(index + "_sora_terveys", createI18NText("form.sora.terveys", formParameters));
-        sora1.addOption(createI18NText("form.yleinen.ei", formParameters), ElementUtil.EI);
-        sora1.addOption(createI18NText("form.sora.kylla", formParameters), ElementUtil.KYLLA);
-        addRequiredValidator(sora1, formParameters);
+        Element sora1 = RadioBuilder.Radio(index + "_sora_terveys")
+                .noYesOption()
+                .i18nText(createI18NText("form.sora.terveys", formParameters))
+                .required()
+                .build(formParameters);
         sora1.setPopup(new Popup("sora-popup", createI18NText("form.hakutoiveet.terveydentilavaatimukset.otsikko", formParameters)));
 
-        Radio sora2 = new Radio(index + "_sora_oikeudenMenetys", createI18NText("form.sora.oikeudenMenetys", formParameters));
-        sora2.addOption(createI18NText("form.yleinen.ei", formParameters), ElementUtil.EI);
-        sora2.addOption(createI18NText("form.sora.kylla", formParameters), ElementUtil.KYLLA);
-        addRequiredValidator(sora2, formParameters);
+        Element sora2 = RadioBuilder.Radio(index + "_sora_oikeudenMenetys")
+                .noYesOption()
+                .required()
+                .build(formParameters);
 
         hasSora.addChild(sora1, sora2);
         return hasSora;
     }
 
     private static Element createUrheilijanAmmatillisenKoulutuksenLisakysymysAndRule(final String index, final FormParameters formParameters) {
-        Radio radio = new Radio(index + "_urheilijan_ammatillisen_koulutuksen_lisakysymys",
-                createI18NText("form.hakutoiveet.urheilijan.ammatillisen.koulutuksen.lisakysymys", formParameters));
-        addDefaultTrueFalseOptions(radio, formParameters);
-        addRequiredValidator(radio, formParameters);
+        Element radio = RadioBuilder.Radio(index + "_urheilijan_ammatillisen_koulutuksen_lisakysymys")
+                .addDefaultTrueFalse()
+                .required()
+                .i18nText(createI18NText("form.hakutoiveet.urheilijan.ammatillisen.koulutuksen.lisakysymys", formParameters))
+                .build(formParameters);
         Expr expr = new And(new Equals(new Variable(index + "-Koulutus-id-athlete"), new Value(ElementUtil.KYLLA)),
                 new Equals(new Variable(index + "-Koulutus-id-vocational"), new Value(ElementUtil.KYLLA)));
         RelatedQuestionComplexRule rule = new RelatedQuestionComplexRule(ElementUtil.randomId(), expr);
@@ -189,10 +191,11 @@ public class HakutoiveetPhase {
     }
 
     private static Element createKaksoistutkintoQuestions(final String index, final FormParameters formParameters) {
-        Radio radio = new Radio(index + "_kaksoistutkinnon_lisakysymys",
-                createI18NText("form.hakutoiveet.kaksoistutkinnon.lisakysymys", formParameters));
-        addDefaultTrueFalseOptions(radio, formParameters);
-        addRequiredValidator(radio, formParameters);
+        Element radio = RadioBuilder.Radio(index + "_kaksoistutkinnon_lisakysymys")
+                .addDefaultTrueFalse()
+                .required()
+                .i18nText(createI18NText("form.hakutoiveet.kaksoistutkinnon.lisakysymys", formParameters))
+                .build(formParameters);
         RelatedQuestionComplexRule hasQuestion =
                 ElementUtil.createRuleIfVariableIsTrue(radio.getId() + "_related_question_rule", index + "-Koulutus-id-kaksoistutkinto");
         hasQuestion.addChild(radio);

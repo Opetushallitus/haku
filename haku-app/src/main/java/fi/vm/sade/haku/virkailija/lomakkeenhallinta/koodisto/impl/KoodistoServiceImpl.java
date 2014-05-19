@@ -24,6 +24,7 @@ import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.SubjectRow;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
+import fi.vm.sade.haku.oppija.lomake.domain.builder.OptionBuilder;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.domain.Code;
 import fi.vm.sade.koodisto.service.types.common.KoodiType;
@@ -189,7 +190,7 @@ public class KoodistoServiceImpl implements KoodistoService {
             LOGGER.debug("Lukiokoodit, orgOid: " + org.getOid());
             List<String> types = org.getTypes();
             if (types.contains("Oppilaitos")) {
-                opts.add(new Option(org.getName(), org.getOid()));
+                opts.add(new OptionBuilder().setI18nText(org.getName()).setValue(org.getOid()).createOption());
             }
         }
         return opts;
@@ -217,9 +218,7 @@ public class KoodistoServiceImpl implements KoodistoService {
                                     @Override
                                     public Option apply(final KoodiType koodiType) {
                                         String version = withVersion ? "#" + koodiType.getVersio() : "";
-                                        return new Option(
-                                                new I18nText(TranslationsUtil.createTranslationsMap(koodiType)),
-                                                koodiType.getKoodiUri() + version);
+                                        return new OptionBuilder().setI18nText(new I18nText(TranslationsUtil.createTranslationsMap(koodiType))).setValue(koodiType.getKoodiUri() + version).createOption();
                                     }
                                 })));
     }

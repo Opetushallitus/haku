@@ -24,6 +24,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.builder.DropdownSelectBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.builders.FormModelBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
+import fi.vm.sade.haku.oppija.lomake.domain.builder.OptionBuilder;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.WebElement;
@@ -48,9 +49,9 @@ public class DropdownSelectHAK_295 extends AbstractSeleniumBase {
     Option option3;
 
     private void init(final String dropdownAttribute, final boolean setDefault) {
-        option1 = new Option(createI18NAsIs(OPTION_1_ID), OPTION_1_ID);
-        option2 = new Option(createI18NAsIs(OPTION_2_ID), OPTION_2_ID);
-        option3 = new Option(createI18NAsIs(OPTION_3_ID), OPTION_3_ID);
+        option1 = new OptionBuilder().setI18nText(createI18NAsIs(OPTION_1_ID)).setValue(OPTION_1_ID).createOption();
+        option2 = new OptionBuilder().setI18nText(createI18NAsIs(OPTION_2_ID)).setValue(OPTION_2_ID).createOption();
+        option3 = new OptionBuilder().setI18nText(createI18NAsIs(OPTION_3_ID)).setValue(OPTION_3_ID).createOption();
         dropdownSelect = new DropdownSelectBuilder(SELECT_ID)
                 .addOptions(ImmutableList.of(option3, option2, option1))
                 .defaultValueAttribute(dropdownAttribute)

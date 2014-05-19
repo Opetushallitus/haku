@@ -27,6 +27,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.PostalCode;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
+import fi.vm.sade.haku.oppija.lomake.domain.builder.OptionBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.TextQuestion;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -63,8 +64,8 @@ public class PostalCodeIT extends DummyModelBaseItTest {
         Element theme = new ThemeBuilder(randomId()).previewable().build();
         phase.addChild(theme);
         ImmutableList<Option> options = ImmutableList.of(
-                new Option(ElementUtil.createI18NAsIs(POST_OFFICE), POST_CODE),
-                new Option(ElementUtil.createI18NAsIs(POST_OFFICE2), POST_CODE2));
+                new OptionBuilder().setI18nText(ElementUtil.createI18NAsIs(POST_OFFICE)).setValue(POST_CODE).createOption(),
+                new OptionBuilder().setI18nText(ElementUtil.createI18NAsIs(POST_OFFICE2)).setValue(POST_CODE2).createOption());
         postalCode = new PostalCode(randomId(), createI18NAsIs(randomId()), options);
         theme.addChild(postalCode);
         textQuestion = (TextQuestion) new TextQuestionBuilder(randomId()).i18nText(createI18NAsIs(randomId())).build();

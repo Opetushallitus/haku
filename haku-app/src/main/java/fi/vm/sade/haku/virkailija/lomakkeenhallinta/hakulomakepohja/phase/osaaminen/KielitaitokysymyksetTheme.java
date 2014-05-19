@@ -3,9 +3,9 @@ package fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.osaam
 import com.google.common.base.CaseFormat;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
+import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.builder.ThemeBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Radio;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionComplexRule;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.*;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
@@ -16,7 +16,8 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import java.util.ArrayList;
 import java.util.List;
 
-import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.*;
+import static fi.vm.sade.haku.oppija.lomake.domain.builder.RadioBuilder.Radio;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.createI18NText;
 
 public final class KielitaitokysymyksetTheme {
 
@@ -245,12 +246,12 @@ public final class KielitaitokysymyksetTheme {
         return naytetaankoTeema;
     }
 
-    private static Radio createKielitutkinto(final String id, final FormParameters formParameters) {
-        Radio radio = new Radio(id,
-                createI18NText("form.kielitaito." +
-                        CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, id).replace('_', '.'), formParameters.getFormMessagesBundle()));
-        addDefaultTrueFalseOptions(radio, formParameters);
-        addRequiredValidator(radio, formParameters);
-        return radio;
+    private static Element createKielitutkinto(final String id, final FormParameters formParameters) {
+        I18nText i18NText = createI18NText("form.kielitaito." + CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, id).replace('_', '.'), formParameters.getFormMessagesBundle());
+        return Radio(id)
+                .addDefaultTrueFalse()
+                .required()
+                .i18nText(i18NText)
+                .build(formParameters);
     }
 }

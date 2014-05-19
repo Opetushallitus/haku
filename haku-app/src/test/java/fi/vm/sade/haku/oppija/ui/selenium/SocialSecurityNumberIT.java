@@ -20,11 +20,12 @@ import fi.vm.sade.haku.oppija.common.selenium.AbstractSeleniumBase;
 import fi.vm.sade.haku.oppija.lomake.ApplicationSystemHelper;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystemBuilder;
+import fi.vm.sade.haku.oppija.lomake.domain.builder.RadioBuilder;
+import fi.vm.sade.haku.oppija.lomake.domain.builder.TextQuestionBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.builders.FormModelBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.SocialSecurityNumber;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Radio;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.TextQuestion;
-import fi.vm.sade.haku.oppija.lomake.domain.builder.TextQuestionBuilder;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.junit.Before;
@@ -54,11 +55,11 @@ public class SocialSecurityNumberIT extends AbstractSeleniumBase {
         henkilötunnus.setHelp(createI18NAsIs("Jos sinulla ei ole suomalaista henkilötunnusta, täytä tähän syntymäaikasi"));
         henkilötunnus.setInline(true);
 
-        Radio sukupuoli = new Radio("Sukupuoli", createI18NAsIs("Sukupuoli"));
-        sukupuoli.addOption(createI18NText("sukupuoli.mies", formParameters), "1");
-        sukupuoli.addOption(createI18NText("sukupuoli.nainen", formParameters), "2");
-        addRequiredValidator(sukupuoli, formParameters);
-        sukupuoli.setInline(true);
+        Radio sukupuoli = (Radio) RadioBuilder.Radio("Sukupuoli")
+                .addOption("1", formParameters)
+                .addOption("2", formParameters)
+                .requiredInline()
+                .build();
 
         SocialSecurityNumber socialSecurityNumber = new SocialSecurityNumber("ssn_question", createI18NAsIs("Henkilötunnus"),
                 sukupuoli.getI18nText(), sukupuoli.getOptions().get(0), sukupuoli.getOptions().get(1), sukupuoli.getId(), henkilötunnus);

@@ -31,7 +31,10 @@ import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionComplexRule;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 
+import java.util.List;
+
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.PhaseBuilder.Phase;
+import static fi.vm.sade.haku.oppija.lomake.domain.builder.RadioBuilder.Radio;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.TextQuestionBuilder.TextQuestion;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.ThemeBuilder.Theme;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.*;
@@ -80,16 +83,15 @@ public final class HenkilotiedotPhase {
                 .required()
                 .build(formParameters);
 
-        Radio sukupuoli = new Radio("sukupuoli", createI18NText("sukupuoli",
-                formParameters));
+        List<Option> genders = formParameters.getKoodistoService().getGenders();
+        Radio sukupuoli = (Radio) Radio("sukupuoli")
+                .addOptions(genders)
+                .build(formParameters);
 
-        sukupuoli.addOptions(formParameters.getKoodistoService().getGenders());
-        setRequiredInlineAndVerboseHelp(sukupuoli, "sukupuoli.verboseHelp", formParameters);
-
-        Option male = sukupuoli.getOptions().get(0).getI18nText().getTranslations().get("fi").equalsIgnoreCase("Mies") ?
-                sukupuoli.getOptions().get(0) : sukupuoli.getOptions().get(1);
-        Option female = sukupuoli.getOptions().get(0).getI18nText().getTranslations().get("fi").equalsIgnoreCase("Nainen") ?
-                sukupuoli.getOptions().get(0) : sukupuoli.getOptions().get(1);
+        Option male = genders.get(0).getI18nText().getTranslations().get("fi").equalsIgnoreCase("Mies") ?
+                genders.get(0) : sukupuoli.getOptions().get(1);
+        Option female = genders.get(0).getI18nText().getTranslations().get("fi").equalsIgnoreCase("Nainen") ?
+                genders.get(0) : genders.get(1);
         SocialSecurityNumber socialSecurityNumber =
                 new SocialSecurityNumber("ssn_question", createI18NText("form.henkilotiedot.hetu",
                         formParameters),
@@ -102,10 +104,11 @@ public final class HenkilotiedotPhase {
         henkilotiedotTeema.addChild(hetuRule);
 
         // Ulkomaalaisten tunnisteet
-        Radio onkoSinullaSuomalainenHetu = new Radio("onkoSinullaSuomalainenHetu",
-                createI18NText("onkoSinullaSuomalainenHetu", formParameters));
-        addDefaultTrueFalseOptions(onkoSinullaSuomalainenHetu, formParameters);
-        setRequiredInlineAndVerboseHelp(onkoSinullaSuomalainenHetu, "form.henkilotiedot.hetu.onkoSuomalainen.verboseHelp", formParameters);
+        Element onkoSinullaSuomalainenHetu = Radio("onkoSinullaSuomalainenHetu")
+                .addDefaultTrueFalse()
+                .requiredInline()
+                .build(formParameters);
+
         RelatedQuestionComplexRule suomalainenHetuRule = createRuleIfVariableIsTrue("onSuomalainenHetu", onkoSinullaSuomalainenHetu.getId());
         suomalainenHetuRule.addChild(socialSecurityNumber);
         onkoSinullaSuomalainenHetu.addChild(suomalainenHetuRule);
