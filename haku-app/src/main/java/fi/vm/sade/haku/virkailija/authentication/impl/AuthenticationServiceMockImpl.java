@@ -37,6 +37,9 @@ public class AuthenticationServiceMockImpl implements AuthenticationService {
     public Person addPerson(Person person) {
         PersonBuilder builder = PersonBuilder.start(person)
                 .setPersonOid(OID_PREFIX + String.format("%011d", Math.round(Math.random() * RANGE_SIZE)));
+//        PersonBuilder builder = PersonBuilder.start(person)
+//                .setPersonOid("1.2.246.562.24.52904508892");
+
         return builder.get();
     }
 

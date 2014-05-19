@@ -113,11 +113,9 @@ public class HakuPermissionServiceImpl extends AbstractPermissionService impleme
         for (Element element : form.getChildren()) {
             Phase phase = (Phase) element;
             String phaseId = phase.getId();
-            Map<String, String> phaseAnswers = application.getPhaseAnswers(phaseId);
-            Boolean phaseLocked = phaseAnswers.containsKey("locked") && Boolean.valueOf(phaseAnswers.get("locked"));
+            boolean phaseLocked = Boolean.valueOf(application.getMetaValue(phase + "_locked"));
             Boolean editAllowed = !phaseLocked && phase.isEditAllowedByRoles(userRolesToApplication);
             phasesToEdit.put(phaseId, editAllowed);
-
         }
         return phasesToEdit;
     }

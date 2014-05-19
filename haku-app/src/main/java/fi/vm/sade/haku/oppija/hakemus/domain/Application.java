@@ -192,12 +192,6 @@ public class Application implements Serializable {
         this.phaseId = answers.get(VAIHE_ID);
         Map<String, String> answersWithoutPhaseId = new HashMap<String, String>(
                 Maps.filterKeys(answers, Predicates.not(Predicates.equalTo(VAIHE_ID))));
-        Map<String, String> oldAnswers = this.getPhaseAnswers(phaseId);
-        for (Map.Entry<String, String> oldAnswer : oldAnswers.entrySet()) {
-            if (oldAnswer.getKey().endsWith("_user")) {
-                answersWithoutPhaseId.put(oldAnswer.getKey(), oldAnswer.getValue());
-            }
-        }
         this.answers.put(phaseId, answersWithoutPhaseId);
         updateNameMetadata();
         return this;
@@ -217,21 +211,31 @@ public class Application implements Serializable {
 
     @JsonIgnore
     public Map<String, String> getVastauksetMerged() {
-        final Map<String, String> answers = new HashMap<String, String>();
+        Map<String, String> answers = new HashMap<String, String>();
         for (Map<String, String> phaseAnswers : this.answers.values()) {
             answers.putAll(phaseAnswers);
         }
-
+        answers = addMetaToAnswers(answers);
         return answers;
     }
 
     @JsonIgnore
     public Map<String, String> getVastauksetMergedIgnoringPhase(final String phaseId) {
-        final Map<String, String> answers = new HashMap<String, String>();
+        Map<String, String> answers = new HashMap<String, String>();
         for (String phaseKey : this.answers.keySet()) {
             if (!phaseKey.equalsIgnoreCase(phaseId)) {
                 answers.putAll(this.answers.get(phaseKey));
             }
+        }
+        answers = addMetaToAnswers(answers);
+        return answers;
+    }
+
+    private Map<String, String> addMetaToAnswers(Map<String, String> answers) {
+        for (Map.Entry<String, String> entry : meta.entrySet()) {
+            String key = "_meta_" + entry.getKey();
+            String value = entry.getValue();
+            answers.put(key, value);
         }
         return answers;
     }
@@ -342,9 +346,7 @@ public class Application implements Serializable {
         } else {
             answers.remove(key);
         }
-        if (!overriddenAnswers.containsKey(key)) {
-            overriddenAnswers.put(key, oldValue);
-        }
+        addOverriddenAnswer(key, oldValue);
 
         log.info("Changing value key: {}, value: {} -> {}", key, oldValue, value);
         return answers;
@@ -399,11 +401,32 @@ public class Application implements Serializable {
     }
 
     public Map<String, String> getOverriddenAnswers() {
-        return overriddenAnswers;
+        return ImmutableMap.copyOf(overriddenAnswers);
     }
+
+    public boolean addOverriddenAnswer(String key, String value) {
+        if (overriddenAnswers.containsKey(key)) {
+            return false;
+        }
+        if (value != null) {
+            overriddenAnswers.put(key, value);
+        } else {
+            overriddenAnswers.put(key, "(null)");
+        }
+        return true;
+    }
+
 
     public void setMeta(Map<String, String> meta) {
         this.meta = meta;
+    }
+
+    public String addMeta(String key, String value) {
+        return this.meta.put(key, value);
+    }
+
+    public String getMetaValue(String key) {
+        return this.meta.get(key);
     }
 
     public void setApplicationSystemId(String applicationSystemId) {

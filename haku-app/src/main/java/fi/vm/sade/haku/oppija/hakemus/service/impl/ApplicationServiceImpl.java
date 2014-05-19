@@ -329,7 +329,7 @@ public class ApplicationServiceImpl implements ApplicationService {
                 pohjakoulutus = Integer.valueOf(OppijaConstants.YLIOPPILAS).intValue();
                 valmistuminen = dto.getValmistuminen();
                 suorituskieli = dto.getSuorituskieli();
-                Map<String, String> gradeAnswers = addGrades(application, dto);
+                addGrades(application, dto);
                 gradesTranferredLk = true;
             } else if (pohjakoulutus < 0 && perusopetusKomoOid.equals(komo)) {
                 valmistuminen = dto.getValmistuminen();
@@ -346,11 +346,11 @@ public class ApplicationServiceImpl implements ApplicationService {
                 } else {
                     throw new IllegalValueException("Illegal value for yksilollistaminen: "+yksilollistaminen);
                 }
-                Map<String, String> gradeAnswers = addGrades(application, dto);
+                addGrades(application, dto);
                 gradesTranferredPk = true;
             } else if (lisaopetusKomoOid.equals(komo)) {
                 kymppi = true;
-                Map<String, String> gradeAnswers = addGrades(application, dto);
+                addGrades(application, dto);
                 gradesTranferredPk = true;
             }
         }
@@ -370,13 +370,9 @@ public class ApplicationServiceImpl implements ApplicationService {
         }
 
         if (gradesTranferredLk) {
-            Map<String, String> gradeAnswers = new HashMap<String, String>(application.getPhaseAnswers(OppijaConstants.PHASE_GRADES));
-            gradeAnswers.put("grades_transferred_lk", "true");
-            application.addVaiheenVastaukset(OppijaConstants.PHASE_GRADES, gradeAnswers);
+            application.addMeta("grades_transferred_lk", "true");
         } else if (gradesTranferredPk) {
-            Map<String, String> gradeAnswers = new HashMap<String, String>(application.getPhaseAnswers(OppijaConstants.PHASE_GRADES));
-            gradeAnswers.put("grades_transferred_pk", "true");
-            application.addVaiheenVastaukset(OppijaConstants.PHASE_GRADES, gradeAnswers);
+            application.addMeta("grades_transferred_pk", "true");
         }
 
         if (pohjakoulutus < 0) {
@@ -412,59 +408,36 @@ public class ApplicationServiceImpl implements ApplicationService {
     private Map<String, String> addGrades(Application application, SuoritusDTO suoritus) {
         String suoritusId = suoritus.getId();
         List<ArvosanaDTO> arvosanat = suoritusrekisteriService.getArvosanat(suoritusId);
-        String prefix = "PK_";
-        if (suoritus.getKomo().equals(lukioKomoOid)) {
-            prefix = "LK_";
-        }
-        String suffix = "";
-        if (suoritus.getKomo().equals(lisaopetusKomoOid)) {
-            suffix = "_10";
-        }
+        String prefix = getGradePrefix(suoritus);
+
         Map<String, String> gradeAnswers = new HashMap<String, String>(application.getPhaseAnswers(OppijaConstants.PHASE_GRADES));
         Set<String> receivedGrades = new HashSet<String>();
         if (!arvosanat.isEmpty()) {
-            gradeAnswers.put("locked", "true");
+            application.addMeta("grades_locked", "true");
         }
         Map<String, Integer> valinnaiset = new HashMap<String, Integer>();
+
+        // Käy läpi rekisteristä tulleet arvosanat ja lisää answers-mappiin
         for (ArvosanaDTO arvosana : arvosanat) {
-            String aine = arvosana.getAine();
-            String thisSuffix = suffix;
-            if (arvosana.isValinnainen()) {
-                if (suoritus.getKomo().equals(lukioKomoOid)) {
-                    LOGGER.error("Lukio grades can not have optional subjects");
-                    throw new IllegalValueException("Lukio grades can not have optional subjects");
-                }
-                Integer count = 1;
-                if (valinnaiset.containsKey(aine)) {
-                    count = valinnaiset.get(aine) + 1;
-                }
-                if (count > 2) {
-                    LOGGER.error("Can not have more than two optional subjects");
-                    throw new IllegalValueException("Can not have more than two optional subjects");
-                }
-                valinnaiset.put(aine, count);
-                thisSuffix = "_VAL" + String.valueOf(count) + suffix;
-            }
-            String key = prefix + arvosana.getAine() + thisSuffix;
+            String suffix = getGradeSuffix(suoritus, valinnaiset, arvosana);
+            String key = prefix + arvosana.getAine() + suffix;
             receivedGrades.add(key);
             gradeAnswers = addRegisterValue(application, gradeAnswers, key, arvosana.getArvosana());
+            // Lisätieto == kieli (AI, A1, B1 jne)
             if (isNotBlank(arvosana.getLisatieto())) {
                 gradeAnswers = addRegisterValue(application, gradeAnswers,
                         prefix + arvosana.getAine() + "_OPPIAINE", arvosana.getLisatieto());
             }
         }
+
+        // Lisää "Ei arvosanaa" puuttuviin kenttiin
         Map<String, String> toAdd = new HashMap<String, String>();
         for (Map.Entry<String, String> entry : gradeAnswers.entrySet()) {
             String key = entry.getKey();
-            if (key.endsWith("_user") || key.equals("locked")) {
-                continue;
-            }
-            String userKey = key + "_user";
-            if (!receivedGrades.contains(key) && !gradeAnswers.containsKey(userKey)) {
-                toAdd.put(userKey, entry.getValue());
-                if (!key.endsWith("OPPIAINE")) {
-                    toAdd.put(key, "Ei arvosanaa");
-                }
+
+            if (!receivedGrades.contains(key) && !key.endsWith("OPPIAINE")) {
+                application.addOverriddenAnswer(key, gradeAnswers.get(key));
+                toAdd.put(key, "Ei arvosanaa");
             }
             if (suoritus.getKomo().equals(perusopetusKomoOid) && !key.endsWith("OPPIAINE") && !key.endsWith("_VAL1")
                     && !key.endsWith("VAL2")) {
@@ -477,19 +450,47 @@ public class ApplicationServiceImpl implements ApplicationService {
             }
         }
         gradeAnswers.putAll(toAdd);
-        gradeAnswers.remove("grades_transferred_pk");
-        gradeAnswers.remove("grades_transferred_lk");
         application.addVaiheenVastaukset(OppijaConstants.PHASE_GRADES, gradeAnswers);
         return gradeAnswers;
     }
 
+    private String getGradePrefix(SuoritusDTO suoritus) {
+        String prefix = "PK_";
+        if (suoritus.getKomo().equals(lukioKomoOid)) {
+            prefix = "LK_";
+        }
+        return prefix;
+    }
+
+    private String getGradeSuffix(SuoritusDTO suoritus, Map<String, Integer> valinnaiset, ArvosanaDTO arvosana) {
+        String suffix = "";
+        if (arvosana.isValinnainen()) {
+            String aine = arvosana.getAine();
+            if (suoritus.getKomo().equals(lukioKomoOid)) {
+                LOGGER.error("Lukio grades can not have optional subjects");
+                throw new IllegalValueException("Lukio grades can not have optional subjects");
+            }
+            Integer count = 1;
+            if (valinnaiset.containsKey(aine)) {
+                count = valinnaiset.get(aine) + 1;
+            }
+            if (count > 2) {
+                LOGGER.error("Can not have more than two optional subjects");
+                throw new IllegalValueException("Can not have more than two optional subjects");
+            }
+            valinnaiset.put(aine, count);
+            suffix = "_VAL" + String.valueOf(count);
+        }
+        if (suoritus.getKomo().equals(lisaopetusKomoOid)) {
+            suffix = suffix + "_10";
+        }
+        return suffix;
+    }
+
     private Map<String, String> addRegisterValue(Application application, Map<String, String> answers,
                                                  String key, String value) {
-        Map<String, String> overriddenAnswers = application.getOverriddenAnswers();
         String oldValue = answers.put(key, value);
-        if (!overriddenAnswers.containsKey(key)) {
-            overriddenAnswers.put(key, oldValue);
-        }
+        application.addOverriddenAnswer(key, oldValue);
         LOGGER.info("Changing value key: {}, value: {} -> {}", key, oldValue, value);
         return answers;
     }

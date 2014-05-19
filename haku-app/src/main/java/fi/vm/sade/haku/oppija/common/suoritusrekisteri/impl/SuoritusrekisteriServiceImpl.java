@@ -143,8 +143,7 @@ public class SuoritusrekisteriServiceImpl implements SuoritusrekisteriService {
         CachingRestClient cachingRestClient = getCachingRestClient();
         String response;
         try {
-            InputStream is = cachingRestClient.get("/rest/v1/suoritukset"
-                    + "?henkilo=" + personOid);
+            InputStream is = cachingRestClient.get("/rest/v1/suoritukset?henkilo=" + personOid);
             response = IOUtils.toString(is);
             log.debug("Got response: {}", response);
         } catch (IOException e) {
