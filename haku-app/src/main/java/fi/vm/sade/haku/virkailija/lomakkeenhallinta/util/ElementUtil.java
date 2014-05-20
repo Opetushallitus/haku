@@ -201,6 +201,7 @@ public final class ElementUtil {
     }
 
     public static void addRequiredValidator(final Element element, final FormParameters formParameters) {
+        element.addAttribute("required", "required");
         element.setValidator(
                 new RequiredFieldValidator(
                         element.getId(),
