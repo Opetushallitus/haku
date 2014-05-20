@@ -36,7 +36,7 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import fi.vm.sade.haku.virkailija.valinta.ValintaService;
 import fi.vm.sade.organisaatio.api.model.types.OrganisaatioTyyppi;
-import fi.vm.sade.organisaatio.api.search.OrganisaatioSearchCriteria;
+import fi.vm.sade.organisaatio.service.search.SearchCriteria;
 import fi.vm.sade.sijoittelu.tulos.dto.PistetietoDTO;
 import fi.vm.sade.sijoittelu.tulos.dto.raportointi.HakijaDTO;
 import fi.vm.sade.sijoittelu.tulos.dto.raportointi.HakutoiveDTO;
@@ -468,7 +468,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
 
     @Override
     public List<Map<String, Object>> getSchools(String term) {
-        OrganisaatioSearchCriteria crit = new OrganisaatioSearchCriteria();
+        SearchCriteria crit = new SearchCriteria();
         crit.setOrganisaatioTyyppi(OrganisaatioTyyppi.OPPILAITOS.value());
         crit.setSearchStr(term);
         crit.setSkipParents(true);
