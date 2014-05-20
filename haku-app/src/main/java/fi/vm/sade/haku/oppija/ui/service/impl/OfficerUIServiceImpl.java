@@ -472,6 +472,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         crit.setOrganisaatioTyyppi(OrganisaatioTyyppi.OPPILAITOS.value());
         crit.setSearchStr(term);
         crit.setSkipParents(true);
+        crit.setAktiiviset(true);
         List<Organization> orgs = organizationService.search(crit);
         List<Map<String, Object>> schools = new ArrayList<Map<String, Object>>(orgs.size());
         LOGGER.debug("Fetching schools with term: '{}', got {} organizations", term, orgs.size());
