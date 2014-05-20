@@ -24,7 +24,7 @@ import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.exception.ConfigurationException;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
-import fi.vm.sade.organisaatio.api.search.OrganisaatioSearchCriteria;
+import fi.vm.sade.organisaatio.service.search.SearchCriteria;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
@@ -219,12 +219,12 @@ public class OrganizationServiceMockImpl implements OrganizationService {
     }
 
     @Override
-    public List<Organization> search(OrganisaatioSearchCriteria criteria) {
+    public List<Organization> search(SearchCriteria criteria) {
         @SuppressWarnings("unchecked")
         final Predicate<Organization> predicate = Predicates.and(new OrgNamePredicate(criteria.getSearchStr()),
                 new OrgTypePredicate(criteria.getOrganisaatioTyyppi()),
-                new OrgIncludeOnlyActivePredicate(criteria.getVainAktiiviset()),
-                new OrgIncludeOnlyPassivePredicate(criteria.getVainLakkautetut()));
+                new OrgIncludeOnlyActivePredicate(criteria.getAktiiviset()),
+                new OrgIncludeOnlyPassivePredicate(criteria.getLakkautetut()));
         return Lists.newArrayList(Iterables.filter(orgs, predicate));
     }
 
