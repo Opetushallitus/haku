@@ -161,6 +161,7 @@ public class HakutoiveetPhase {
 
         Element sora2 = RadioBuilder.Radio(index + "_sora_oikeudenMenetys")
                 .noYesOption()
+                .i18nText(createI18NText("form.sora.oikeudenmenetys", formParameters))
                 .required()
                 .build(formParameters);
 

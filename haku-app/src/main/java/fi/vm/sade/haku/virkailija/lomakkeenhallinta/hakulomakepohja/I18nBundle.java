@@ -66,8 +66,7 @@ public class I18nBundle {
         if (this.i18nBundle.containsKey(keyLowerCase)) {
             return this.i18nBundle.get(keyLowerCase);
         } else {
-            //return null;
-            return ElementUtil.createI18NAsIs("***" + keyLowerCase + "***");
+            return null;
         }
     }
 }

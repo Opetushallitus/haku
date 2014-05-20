@@ -231,7 +231,7 @@ public final class KoulutustaustaPhase {
         RelatedQuestionComplexRule suorittanutTutkinnonRule = createRuleIfVariableIsTrue(ElementUtil.randomId(), suorittanutAmmatillisenTutkinnon.getId());
         Notification warning = new Notification(
                 ElementUtil.randomId(),
-                createI18NText("form.koulutustausta.ammatillinenSuoritettu.huom", formParameters),
+                createI18NText("form.koulutustausta.ammatillinen.suoritettu.huom", formParameters),
                 Notification.NotificationType.INFO);
         suorittanutTutkinnonRule.addChild(warning);
 
