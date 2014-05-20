@@ -30,7 +30,7 @@ public class TextAreaBuilder extends ElementBuilder {
         TextArea textArea = new TextArea(id, i18nText);
         textArea.setInline(this.inline);
         if (cols != null) {
-            textArea.addAttribute("cols", cols);
+            textArea.addAttribute("cols", cols.toString());
         }
         return textArea;
 

@@ -87,10 +87,13 @@ public abstract class Element implements Serializable {
         return this;
     }
 
-    public void addAttribute(final String key, final Object value) {
+    public void addAttribute(final String key, final String value) {
         checkNotNull(key, "Attribute's key cannot be null");
         checkNotNull(value, "Attribute's value cannot be null");
-        this.attributes.put(key, String.valueOf(value));
+        if (!attributes.containsKey(key)) {
+            this.attributes.put(key, value);
+        } else
+            throw new UnsupportedOperationException("Attribute \"" + key + "\" already set");
     }
 
     public List<Validator> getValidators() {

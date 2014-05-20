@@ -52,7 +52,7 @@ public abstract class ElementBuilder {
         }
         I18nText errorMessage = formParameters.getI18nText("yleinen.virheellinenArvo");
         if (maxLength != null) {
-            element.addAttribute("maxlength", maxLength);
+            element.addAttribute("maxlength", maxLength.toString());
             element.setValidator(new LengthValidator(element.getId(), errorMessage, maxLength));
         }
         if (containsInField != null) {
