@@ -222,9 +222,12 @@ public final class HenkilotiedotPhase {
 
         henkilotiedot.addChild(henkilotiedotTeema);
         if (formParameters.isPervako()) {
-
             henkilotiedotTeema.addChild(
-                    createNameQuestionBuilder("huoltajannimi", 30).build(formParameters),
+                    TextQuestion("huoltajannimi")
+                            .size(30)
+                            .pattern(ElementUtil.ISO88591_NAME_REGEX)
+                            .inline()
+                            .build(formParameters),
                     TextQuestion("huoltajanpuhelinnumero")
                             .size(30)
                             .pattern(PHONE_PATTERN)
