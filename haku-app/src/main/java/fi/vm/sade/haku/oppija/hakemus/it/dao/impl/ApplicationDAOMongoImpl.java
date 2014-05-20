@@ -49,6 +49,7 @@ import java.util.regex.Pattern;
 
 import static org.apache.commons.lang.StringUtils.isEmpty;
 import static org.apache.commons.lang.StringUtils.isNotBlank;
+import static org.apache.commons.lang.StringUtils.join;
 
 /**
  * @author Hannu Lyytikainen
@@ -432,6 +433,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         }
 
         List<String> opoOrgs = hakuPermissionService.userHasOpoRole(henkOrgs);
+        LOG.debug("User has OPO roles: [{}]", join(opoOrgs, ","));
         if (!opoOrgs.isEmpty()) {
             for (String opoOrg : opoOrgs) {
                 Pattern opoOrgPattern = Pattern.compile(opoOrg);
