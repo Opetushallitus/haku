@@ -81,18 +81,13 @@ public final class KoulutustaustaPhase {
 
         Element baseEducation = baseEducationBuilder.required().build(formParameters);
 
-        Notification tutkintoUlkomaillaNotification = new Notification(TUTKINTO_ULKOMAILLA_NOTIFICATION_ID,
-                createI18NText("form.koulutustausta.ulkomailla.huom", formParameters),
-                Notification.NotificationType.INFO);
-
-
-        Notification tutkintoKeskeytynytNotification = new Notification(TUTKINTO_KESKEYTNYT_NOTIFICATION_ID,
-                createI18NText("form.koulutustausta.keskeytynyt.huom", formParameters),
-                Notification.NotificationType.INFO);
-
-
         RelatedQuestionComplexRule keskeytynytRule = createVarEqualsToValueRule(baseEducation.getId(), KESKEYTYNYT);
-        keskeytynytRule.addChild(tutkintoKeskeytynytNotification);
+        if (!formParameters.isPervako()) {
+            keskeytynytRule.addChild(new Notification(TUTKINTO_KESKEYTNYT_NOTIFICATION_ID,
+                    createI18NText("form.koulutustausta.keskeytynyt.huom", formParameters),
+                    Notification.NotificationType.INFO));
+        }
+
 
         RelatedQuestionComplexRule ulkomaillaSuoritettuTutkintoRule = createVarEqualsToValueRule(baseEducation.getId(), ULKOMAINEN_TUTKINTO);
         if (formParameters.isPervako()) {
@@ -103,7 +98,13 @@ public final class KoulutustaustaPhase {
                             .build(formParameters));
 
         }
-        ulkomaillaSuoritettuTutkintoRule.addChild(tutkintoUlkomaillaNotification);
+
+        if (!formParameters.isPervako()) {
+            Notification tutkintoUlkomaillaNotification = new Notification(TUTKINTO_ULKOMAILLA_NOTIFICATION_ID,
+                    createI18NText("form.koulutustausta.ulkomailla.huom", formParameters),
+                    Notification.NotificationType.INFO);
+            ulkomaillaSuoritettuTutkintoRule.addChild(tutkintoUlkomaillaNotification);
+        }
 
         baseEducation.addChild(ulkomaillaSuoritettuTutkintoRule);
         baseEducation.addChild(keskeytynytRule);
@@ -219,6 +220,7 @@ public final class KoulutustaustaPhase {
 
 
         }
+
         baseEducation.addChild(pkKysymyksetRule);
 
         Element suorittanutAmmatillisenTutkinnon = Radio("ammatillinenTutkintoSuoritettu")

@@ -16,6 +16,7 @@
 
 package fi.vm.sade.haku.oppija.ui.selenium;
 
+import com.google.common.collect.ImmutableList;
 import fi.vm.sade.haku.oppija.common.selenium.AbstractSeleniumBase;
 import fi.vm.sade.haku.oppija.lomake.ApplicationSystemHelper;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
@@ -24,6 +25,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.builder.RadioBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.builder.TextQuestionBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.builders.FormModelBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.SocialSecurityNumber;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Radio;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.TextQuestion;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
@@ -44,20 +46,19 @@ public class SocialSecurityNumberIT extends AbstractSeleniumBase {
     @Before
     public void init() throws IOException {
 
-        TextQuestion henkilötunnus = (TextQuestion) new TextQuestionBuilder("Henkilotunnus").i18nText(createI18NAsIs("Henkilotunnus")).build();
-        henkilötunnus.addAttribute("placeholder", "ppkkvv*****");
+        TextQuestion henkilötunnus = (TextQuestion) new TextQuestionBuilder("Henkilotunnus")
+                .placeholder("ppkkvv*****")
+                .size(11)
+                .pattern("[0-9]{6}.[0-9]{4}")
+                .maxLength(11)
+                .i18nText(createI18NAsIs("Henkilotunnus")).build();
         henkilötunnus.addAttribute("title", "ppkkvv*****");
         FormParameters formParameters = new FormParameters(new ApplicationSystemBuilder().addName(createI18NAsIs("name")).addId("id").addHakukausiUri(OppijaConstants.HAKUKAUSI_SYKSY).addApplicationSystemType(OppijaConstants.VARSINAINEN_HAKU).get(), null);
         addRequiredValidator(henkilötunnus, formParameters);
         henkilötunnus.setValidator(createRegexValidator(henkilötunnus.getId(), "[0-9]{6}.[0-9]{4}", formParameters));
-        henkilötunnus.addAttribute("size", "11");
-        henkilötunnus.addAttribute("maxlength", "11");
-        henkilötunnus.setHelp(createI18NAsIs("Jos sinulla ei ole suomalaista henkilötunnusta, täytä tähän syntymäaikasi"));
-        henkilötunnus.setInline(true);
 
         Radio sukupuoli = (Radio) RadioBuilder.Radio("Sukupuoli")
-                .addOption("1", formParameters)
-                .addOption("2", formParameters)
+                .addOptions(ImmutableList.of(new Option(createI18NAsIs("Mies"), "1"), new Option(createI18NAsIs("Nainen"), "2")))
                 .requiredInline()
                 .build();
 

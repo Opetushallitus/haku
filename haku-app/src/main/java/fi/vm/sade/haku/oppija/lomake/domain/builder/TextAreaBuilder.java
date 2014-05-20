@@ -7,8 +7,10 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 
 public class TextAreaBuilder extends ElementBuilder {
 
-    private Integer cols;
+    public static final Integer ROWS = 3;
+    public static final Integer COLS = 20;
 
+    private Integer cols = COLS;
 
     protected TextAreaBuilder(String id) {
         super(id);
@@ -28,6 +30,7 @@ public class TextAreaBuilder extends ElementBuilder {
 
     public Element buildImpl() {
         TextArea textArea = new TextArea(id, i18nText);
+        textArea.addAttribute("rows", ROWS.toString());
         textArea.setInline(this.inline);
         if (cols != null) {
             textArea.addAttribute("cols", cols.toString());

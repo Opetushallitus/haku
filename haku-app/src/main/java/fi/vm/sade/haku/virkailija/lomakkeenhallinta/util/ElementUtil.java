@@ -145,40 +145,16 @@ public final class ElementUtil {
         element.addAttribute(DISABLED, DISABLED);
     }
 
-    public static void addDefaultTrueFalseOptions(final Radio radio, final FormParameters formParameters) {
-        radio.addOption(createI18NText("form.yleinen.kylla", formParameters.getFormMessagesBundle()), KYLLA);
-        radio.addOption(createI18NText("form.yleinen.ei", formParameters.getFormMessagesBundle()), EI);
-    }
-
-    public static void addYesAndIDontOptions(final Radio radio, final FormParameters formParameters) {
-        radio.addOption(createI18NText("form.yleinen.kylla", formParameters.getFormMessagesBundle()), KYLLA);
-        radio.addOption(createI18NText("form.yleinen.en", formParameters.getFormMessagesBundle()), EI);
-    }
-
     public static GradeGridRow createHiddenGradeGridRowWithId(final String id) {
         GradeGridRow gradeGridRow = new GradeGridRow(id);
         gradeGridRow.addAttribute(HIDDEN, HIDDEN);
         return gradeGridRow;
     }
 
-
-    public static void setDefaultOption(final String value, final List<Option> options) {
-        for (Option opt : options) {
-            opt.setDefaultOption(opt.getValue().equalsIgnoreCase(value));
-        }
-    }
-
     public static Element addSizeAttribute(final Element element, final Integer size) {
         if (size != null) {
-            element.addAttribute("size", size);
+            element.addAttribute("size", size.toString());
         }
-        return element;
-    }
-
-    public static Element addMaxLengthAttributeAndLengthValidator(final Element element, final int maxlength, final FormParameters formParameters) {
-        element.addAttribute("maxlength", String.valueOf(maxlength));
-        element.setValidator(new LengthValidator(element.getId(),
-                createI18NText("yleinen.virheellinenArvo", formParameters.getFormMessagesBundle()), maxlength));
         return element;
     }
 
@@ -201,7 +177,8 @@ public final class ElementUtil {
     }
 
     public static void addRequiredValidator(final Element element, final FormParameters formParameters) {
-        element.addAttribute("required", "required");
+        String required = "required";
+        element.addAttribute(required, required);
         element.setValidator(
                 new RequiredFieldValidator(
                         element.getId(),
@@ -219,12 +196,6 @@ public final class ElementUtil {
     public static void addPreferenceValidator(final Element element) {
         Preconditions.checkArgument(element instanceof PreferenceRow || element instanceof SinglePreference);
         element.setValidator(new PreferenceValidator());
-    }
-
-    public static void setRequiredInlineAndVerboseHelp(final Question question, final String helpId, final FormParameters formParameters) {
-        addRequiredValidator(question, formParameters);
-        setVerboseHelp(question, helpId, formParameters);
-        question.setInline(true);
     }
 
     public static void setVerboseHelp(final Titled titled, final String helpId, final FormParameters formParameters) {

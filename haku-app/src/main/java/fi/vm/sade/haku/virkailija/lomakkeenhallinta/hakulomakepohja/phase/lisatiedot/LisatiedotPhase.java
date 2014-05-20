@@ -19,7 +19,8 @@ import static fi.vm.sade.haku.oppija.lomake.domain.builder.TextQuestionBuilder.T
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.ThemeBuilder.Theme;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.TitledGroupBuilder.TitledGroup;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.osaaminen.KielitaitokysymyksetTheme.createPohjakoilutusUlkomainenTaiKeskeyttanyt;
-import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.*;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.EMAIL_REGEX;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.createRegexValidator;
 
 public class LisatiedotPhase {
 
@@ -51,12 +52,12 @@ public class LisatiedotPhase {
         Element workExperienceTheme = new ThemeBuilder("tyokokemus").previewable().build(formParameters);
 
 
-        TextQuestion tyokokemuskuukaudet = (TextQuestion) new TextQuestionBuilder("TYOKOKEMUSKUUKAUDET").labelKey("form.tyokokemus.kuukausina").build(formParameters);
-        tyokokemuskuukaudet.setHelp(createI18NText("form.tyokokemus.kuukausina.help", formParameters.getFormMessagesBundle()));
-        tyokokemuskuukaudet.setValidator(createRegexValidator(tyokokemuskuukaudet.getId(), TYOKOKEMUS_PATTERN, formParameters, "lisatiedot.tyokokemus.virhe"));
-        addSizeAttribute(tyokokemuskuukaudet, 8);
-        tyokokemuskuukaudet.addAttribute("maxlength", "4");
-        setVerboseHelp(tyokokemuskuukaudet, "form.tyokokemus.kuukausina.verboseHelp", formParameters);
+        String tyokokemusId = "TYOKOKEMUSKUUKAUDET";
+        TextQuestion tyokokemuskuukaudet = (TextQuestion) new TextQuestionBuilder(tyokokemusId)
+                .validator(createRegexValidator(tyokokemusId, TYOKOKEMUS_PATTERN, formParameters, "lisatiedot.tyokokemus.virhe"))
+                .size(8)
+                .maxLength(4)
+                .build(formParameters);
         workExperienceTheme.addChild(tyokokemuskuukaudet);
         RelatedQuestionComplexRule naytetaankoTyokokemus = new RelatedQuestionComplexRule(ElementUtil.randomId(), rules);
         naytetaankoTyokokemus.addChild(workExperienceTheme);

@@ -99,10 +99,8 @@ public class HakutoiveetPhase {
                 .addOption(createI18NText("perustelu.todistustenvertailuvaikeudet", formParameters), "todistustenvertailuvaikeudet")
                 .addOption(createI18NText("perustelu.todistustenpuuttuminen", formParameters), TODISTUSTENPUUTTUMINEN)
                 .required()
+                .i18nText(createI18NText("form.hakutoiveet.harkinnanvarainen.perustelu", formParameters))
                 .build(formParameters);
-
-        addRequiredValidator(discretionaryFollowUp, formParameters);
-
 
         RelatedQuestionComplexRule discretionaryFollowUpRule = createVarEqualsToValueRule(discretionary.getId(), KYLLA);
         discretionaryFollowUpRule.addChild(discretionaryFollowUp);
@@ -154,14 +152,14 @@ public class HakutoiveetPhase {
 
         Element sora1 = RadioBuilder.Radio(index + "_sora_terveys")
                 .noYesOption()
-                .i18nText(createI18NText("form.sora.terveys", formParameters))
+                .labelKey("form.sora.terveys")
                 .required()
                 .build(formParameters);
         sora1.setPopup(new Popup("sora-popup", createI18NText("form.hakutoiveet.terveydentilavaatimukset.otsikko", formParameters)));
 
         Element sora2 = RadioBuilder.Radio(index + "_sora_oikeudenMenetys")
                 .noYesOption()
-                .i18nText(createI18NText("form.sora.oikeudenmenetys", formParameters))
+                .labelKey("form.sora.oikeudenmenetys")
                 .required()
                 .build(formParameters);
 

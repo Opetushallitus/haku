@@ -13,7 +13,7 @@ public class OptionBuilder extends ElementBuilder {
         super(ElementUtil.randomId());
     }
 
-    public OptionBuilder(String id) {
+    public OptionBuilder(final String id) {
         super(id);
     }
 

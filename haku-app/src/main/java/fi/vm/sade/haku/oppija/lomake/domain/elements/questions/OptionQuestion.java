@@ -85,6 +85,7 @@ public abstract class OptionQuestion extends Question {
     private void initSortedOptions() {
         optionsSortedByText = new HashMap<String, List<Option>>();
         for (Option option : options) {
+            System.out.println("----------------------------->" + this.getId());
             Set<String> langs = option.getI18nText().getTranslations().keySet();
             for (String lang : langs) {
                 List<Option> optionListForLang = optionsSortedByText.get(lang);

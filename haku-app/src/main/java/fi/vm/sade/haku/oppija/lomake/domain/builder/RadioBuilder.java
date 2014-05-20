@@ -1,5 +1,6 @@
 package fi.vm.sade.haku.oppija.lomake.domain.builder;
 
+import com.google.common.collect.ImmutableList;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
@@ -39,13 +40,14 @@ public class RadioBuilder extends ElementBuilder {
         Radio radio = (Radio) this.buildImpl();
         ElementUtil.setVerboseHelp(radio, key + ".verboseHelp", formParameters);
         if (defaultTrueFalse) {
-            radio.addOption(createI18NText("form.yleinen.kylla", formParameters.getFormMessagesBundle()), KYLLA);
-            radio.addOption(createI18NText("form.yleinen.ei", formParameters.getFormMessagesBundle()), EI);
+            radio.addOptions(ImmutableList.of(
+                    new Option(createI18NText("form.yleinen.kylla", formParameters), KYLLA),
+                    new Option(createI18NText("form.yleinen.ei", formParameters), EI)));
         }
         if (defaultNoYes) {
-
-            radio.addOption(createI18NText("form.yleinen.ei", formParameters.getFormMessagesBundle()), EI);
-            radio.addOption(createI18NText("form.sora.kylla", formParameters.getFormMessagesBundle()), KYLLA);
+            radio.addOptions(ImmutableList.of(
+                    new Option(createI18NText("form.yleinen.ei", formParameters), EI),
+                    new Option(createI18NText("form.sora.kylla", formParameters), KYLLA)));
         }
         return radio;
     }

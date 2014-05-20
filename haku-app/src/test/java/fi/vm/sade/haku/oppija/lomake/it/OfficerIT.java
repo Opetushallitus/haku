@@ -4,6 +4,7 @@ import fi.vm.sade.haku.oppija.common.selenium.DummyModelBaseItTest;
 import fi.vm.sade.haku.oppija.common.selenium.LoginPage;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.lomake.HakuClient;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -56,143 +57,10 @@ public class OfficerIT extends DummyModelBaseItTest {
         WebElement editLink = editLinks.get(1);
         editLink.click();
         clickByNameAndValue(KYSYMYS_POHJAKOULUTUS, TUTKINTO_YLIOPPILAS);
+        setValue(OppijaConstants.LUKIO_PAATTOTODISTUS_VUOSI, "3012");
+        setValue(OppijaConstants.LUKIO_KIELI, "FI");
         seleniumContainer.getDriver().findElement(new By.ByClassName("save")).click();
         checkApplicationState("Puutteellinen");
-    }
-
-    @Test
-    public void testEditControls() {
-        clearSearch();
-        clickSearch();
-        WebElement applicationLink = findByClassName("application-link").get(0);
-        applicationLink.click();
-        List<WebElement> editLinks = findByClassName("edit-link");
-        assertFalse("Edit links not found", editLinks.isEmpty());
-        editLinks = findByClassName("edit-link");
-        assertFalse("Edit links not found", editLinks.isEmpty());
-        passivate();
-        editLinks = findByClassName("edit-link");
-        assertTrue("Edit links found", editLinks.isEmpty());
-    }
-
-    @Test
-    public void testComments() {
-        clearSearch();
-        clickSearch();
-        WebElement applicationLink = findByClassName("application-link").get(0);
-        applicationLink.click();
-        List<WebElement> editLinks = findByClassName("edit-link");
-        WebElement editLink = editLinks.get(4);
-        editLink.click();
-        findByIdAndClick("lupaMarkkinointi");
-        screenshot("mark1");
-        seleniumContainer.getDriver().findElement(new By.ByClassName("save")).click();
-        screenshot("mark2");
-        setValue("note-text", "Uusi kommentti");
-        findByIdAndClick("note-create");
-        passivate();
-
-        boolean received = false;
-        boolean lisatiedot = false;
-        boolean added = false;
-        boolean passive = false;
-        for (WebElement element : findByClassName("note-content")) {
-            received = received || element.getText().contains("Hakemus vastaanotettu");
-            lisatiedot = lisatiedot || element.getText().contains("Päivitetty vaihetta 'lisatiedot'");
-            added = added || element.getText().contains("Uusi kommentti");
-            passive = passive || element.getText().contains("Hakemus passivoitu: reason");
-        }
-        assertTrue(received);
-        assertTrue(lisatiedot);
-        assertTrue(added);
-        assertTrue(passive);
-    }
-
-    @Test
-    public void testOrganization() throws Exception {
-        seleniumContainer.getDriver().findElement(new By.ByClassName("label")).click();
-        setValue("searchString", "Espoo");
-        findByIdAndClick("search-organizations");
-        findById("1.2.246.562.10.10108401950");
-        findByIdAndClick("search-organizations");
-        findById("1.2.246.562.10.10108401950");
-    }
-
-    @Test
-    public void testSearch() throws Exception {
-        testSearchByTermAndState();
-        //testSearchByPreference();
-    }
-
-    private void testSearchByTermAndState() throws Exception {
-        shouldFindByTerm("topi");
-        shouldNotFindByTermAndState("topi", Application.State.PASSIVE);
-        shouldNotFindByTermAndState("topi", Application.State.INCOMPLETE);
-        shouldNotFindByTermAndState("Notfound", null);
-        shouldNotFindByTermAndState("Notfound", Application.State.ACTIVE);
-        shouldNotFindByTermAndState("Notfound", Application.State.PASSIVE);
-        shouldFindByTermAndState("Korhonen", null);
-        shouldFindByTermAndState("Korhonen", Application.State.ACTIVE);
-        shouldNotFindByTermAndState("Korhonen", Application.State.PASSIVE);
-        shouldFindByTermAndState("270802-184A", null);
-        shouldFindByTermAndState("270802-184A", Application.State.ACTIVE);
-        shouldNotFindByTermAndState("270802-184A", Application.State.PASSIVE);
-        shouldFindByTerm("27.08.1902");
-        //shouldFindByTerm("270802");
-        shouldNotFindByTerm("120100");
-        shouldNotFindByTerm("12.01.2000");
-
-        shouldNotFindByTerm("1.2.246.562.10.10108401950");
-    }
-
-    // Jätetään nyt toistaiseksi pois, kun en osaa korjata.
-    // Toimii kyllä käsin, mutta testi feilaa.
-    @Ignore
-    @Test
-    public void testCreateNewApplicationAndSetPersonOid() {
-        log.debug("x x x x x x x x x Starting testCreateNewApplicationAndSetPersonOid x x x x x x x x x");
-        findByIdAndClick("create-application");
-        Select asSelect = new Select(findElementById("asSelect"));
-        asSelect.selectByIndex(0);
-        findByIdAndClick("submit_confirm");
-        String oid = getTrimmedTextById("_infocell_oid");
-        findByIdAndClick("back");
-        activate(oid);
-        clickLinkByText(oid);
-        clickLinkByText("Lisää oppijanumero");
-        WebElement element = seleniumContainer.getDriver().findElement(By.id("addStudentOidForm"));
-        element.submit();
-        String personOid = getTrimmedTextById("_infocell_henkilonumero");
-        String studentOid = getTrimmedTextById("_infocell_oppijanumero");
-        assertTrue(studentOid.contains(personOid));
-    }
-
-    @Test
-    public void View() {
-        clearSearch();
-        clickSearch();
-        WebElement applicationLink = findByClassName("application-link").get(0);
-        applicationLink.click();
-        WebElement printLink = findByClassName("print").get(0);
-
-        WebDriver driver = seleniumContainer.getDriver();
-        final int windowsBefore = driver.getWindowHandles().size();
-        printLink.click();
-        ExpectedCondition<Boolean> windowCondition = new ExpectedCondition<Boolean>() {
-            public Boolean apply(WebDriver driver) {
-                return driver.getWindowHandles().size() == windowsBefore + 1;
-            }
-        };
-        WebDriverWait waitForWindow = new WebDriverWait(driver, 5);
-        waitForWindow.until(windowCondition);
-
-        ArrayList<String> newTab = new ArrayList<String>(driver.getWindowHandles());
-
-        driver.switchTo().window(newTab.get(1));
-        assertTrue(driver.getCurrentUrl().contains("print"));
-        assertTrue(isTextPresent("Korhonen"));
-        driver.close();
-        driver.switchTo().window(newTab.get(0));
     }
 
     private List<WebElement> SearchByTerm(final String term) {

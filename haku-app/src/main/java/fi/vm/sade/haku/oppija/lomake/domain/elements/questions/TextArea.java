@@ -22,12 +22,9 @@ import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 public class TextArea extends Question {
 
     private static final long serialVersionUID = -8549493045339575750L;
-    public static final String ROWS = "3";
-    public static final String COLS = "20";
+
 
     public TextArea(final String id, final I18nText i18nText) {
         super(id, i18nText);
-        addAttribute("rows", ROWS);
-        addAttribute("cols", COLS);
     }
 }
