@@ -39,13 +39,13 @@ public class RadioBuilder extends ElementBuilder {
         Radio radio = (Radio) this.buildImpl();
         ElementUtil.setVerboseHelp(radio, key + ".verboseHelp", formParameters);
         if (defaultTrueFalse) {
-            this.addOption(createI18NText("form.yleinen.kylla", formParameters.getFormMessagesBundle()), KYLLA);
-            this.addOption(createI18NText("form.yleinen.ei", formParameters.getFormMessagesBundle()), EI);
+            radio.addOption(createI18NText("form.yleinen.kylla", formParameters.getFormMessagesBundle()), KYLLA);
+            radio.addOption(createI18NText("form.yleinen.ei", formParameters.getFormMessagesBundle()), EI);
         }
         if (defaultNoYes) {
 
-            this.addOption(createI18NText("form.yleinen.ei", formParameters.getFormMessagesBundle()), EI);
-            this.addOption(createI18NText("form.sora.kylla", formParameters.getFormMessagesBundle()), KYLLA);
+            radio.addOption(createI18NText("form.yleinen.ei", formParameters.getFormMessagesBundle()), EI);
+            radio.addOption(createI18NText("form.sora.kylla", formParameters.getFormMessagesBundle()), KYLLA);
         }
         return radio;
     }

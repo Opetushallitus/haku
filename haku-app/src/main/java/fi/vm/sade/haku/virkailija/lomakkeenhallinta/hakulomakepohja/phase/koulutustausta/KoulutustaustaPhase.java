@@ -25,6 +25,7 @@ import java.util.Map;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.CheckBoxBuilder.Checkbox;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.DropdownSelectBuilder.DropdownSelect;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.PhaseBuilder.Phase;
+import static fi.vm.sade.haku.oppija.lomake.domain.builder.RadioBuilder.Radio;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.TextAreaBuilder.TextArea;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.TextQuestionBuilder.TextQuestion;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.TitledGroupBuilder.TitledGroup;
@@ -36,6 +37,7 @@ public final class KoulutustaustaPhase {
     public static final String TUTKINTO_KESKEYTNYT_NOTIFICATION_ID = "tutkinto5-notification";
 
     public static final String PAATTOTODISTUSVUOSI_PATTERN = "^(19[0-9][0-9]|200[0-9]|201[0-4])$";
+    public static final int TEXT_AREA_COLS = 60;
 
     private KoulutustaustaPhase() {
     }
@@ -63,7 +65,7 @@ public final class KoulutustaustaPhase {
             }
         });
 
-        RadioBuilder baseEducationBuilder = RadioBuilder.Radio(ELEMENT_ID_BASE_EDUCATION)
+        RadioBuilder baseEducationBuilder = Radio(ELEMENT_ID_BASE_EDUCATION)
                 .addOption(educationMap.get(PERUSKOULU).getValue(), formParameters)
                 .addOption(educationMap.get(OSITTAIN_YKSILOLLISTETTY).getValue(), formParameters)
                 .addOption(ALUEITTAIN_YKSILOLLISTETTY, formParameters)
@@ -91,13 +93,12 @@ public final class KoulutustaustaPhase {
 
         RelatedQuestionComplexRule keskeytynytRule = createVarEqualsToValueRule(baseEducation.getId(), KESKEYTYNYT);
         keskeytynytRule.addChild(tutkintoKeskeytynytNotification);
-        // Minkä koulutuksen olet suorittanut ulkomailla? (vapaatekstikenttä, 250 merkkiä
 
         RelatedQuestionComplexRule ulkomaillaSuoritettuTutkintoRule = createVarEqualsToValueRule(baseEducation.getId(), ULKOMAINEN_TUTKINTO);
         if (formParameters.isPervako()) {
             ulkomaillaSuoritettuTutkintoRule.addChild(
                     TextArea("mika-ulkomainen-koulutus")
-                            .cols(50)
+                            .cols(TEXT_AREA_COLS)
                             .maxLength(250)
                             .build(formParameters));
 
@@ -137,7 +138,7 @@ public final class KoulutustaustaPhase {
 
         RelatedQuestionComplexRule paattotodistusvuosiPeruskouluRule = createRegexpRule(paattotodistusvuosiPeruskoulu.getId(), "^(19[0-9][0-9]|200[0-9]|201[0-1])$");
 
-        Element koulutuspaikkaAmmatillisenTutkintoon = RadioBuilder.Radio("KOULUTUSPAIKKA_AMMATILLISEEN_TUTKINTOON")
+        Element koulutuspaikkaAmmatillisenTutkintoon = Radio("KOULUTUSPAIKKA_AMMATILLISEEN_TUTKINTOON")
                 .addDefaultTrueFalse()
                 .required()
                 .build(formParameters);
@@ -188,7 +189,7 @@ public final class KoulutustaustaPhase {
 
             lukioRule.addChild(tuoreYoTodistus);
 
-            Element suorittanutAmmatillisenTutkinnonLukio = RadioBuilder.Radio("ammatillinenTutkintoSuoritettu")
+            Element suorittanutAmmatillisenTutkinnonLukio = Radio("ammatillinenTutkintoSuoritettu")
                     .addDefaultTrueFalse()
                     .required()
                     .build(formParameters);
@@ -220,7 +221,7 @@ public final class KoulutustaustaPhase {
         }
         baseEducation.addChild(pkKysymyksetRule);
 
-        Element suorittanutAmmatillisenTutkinnon = RadioBuilder.Radio("ammatillinenTutkintoSuoritettu")
+        Element suorittanutAmmatillisenTutkinnon = Radio("ammatillinenTutkintoSuoritettu")
                 .addDefaultTrueFalse()
                 .required()
                 .build(formParameters);
@@ -243,7 +244,9 @@ public final class KoulutustaustaPhase {
                 .required()
                 .build(formParameters));
 
-        baseEducation.addChild(TextArea("muukoulutus").maxLength(500).inline().build(formParameters));
+        if (formParameters.isPervako()) {
+            baseEducation.addChild(TextArea("muukoulutus").cols(TEXT_AREA_COLS).maxLength(500).build(formParameters));
+        }
         return baseEducation;
     }
 
