@@ -243,7 +243,7 @@ public final class KoulutustaustaPhase {
                 .required()
                 .build(formParameters));
 
-
+        baseEducation.addChild(TextArea("muukoulutus").maxLength(500).inline().build(formParameters));
         return baseEducation;
     }
 
