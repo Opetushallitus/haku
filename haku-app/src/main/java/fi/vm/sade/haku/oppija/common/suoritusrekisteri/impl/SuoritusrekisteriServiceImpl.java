@@ -61,12 +61,11 @@ public class SuoritusrekisteriServiceImpl implements SuoritusrekisteriService {
 
         CachingRestClient cachingRestClient = getCachingRestClient();
         String response;
-        String date = ISO8601.format(new Date());
+        String url = "/rest/v1/opiskelijat?henkilo=" + personOid;
         try {
-            InputStream is = cachingRestClient.get("/rest/v1/opiskelijat"
-                    + "?henkilo=" + personOid);
+            InputStream is = cachingRestClient.get(url);
             response = IOUtils.toString(is);
-            log.debug("Got response: {}", response);
+            log.debug("url: {}, response: {}", url, response);
         } catch (IOException e) {
             log.error("Fetching opiskelija failed: {}", e);
             return null;
@@ -102,8 +101,10 @@ public class SuoritusrekisteriServiceImpl implements SuoritusrekisteriService {
     public List<ArvosanaDTO> getArvosanat(String suoritusId) {
         CachingRestClient cachingRestClient = getCachingRestClient();
         String response = null;
+        String url = "/rest/v1/arvosanat/?suoritus="+suoritusId;
         try {
-            response = cachingRestClient.getAsString("/rest/v1/arvosanat/?suoritus="+suoritusId);
+            response = cachingRestClient.getAsString(url);
+            log.debug("url: {}, response: {}", url, response);
         } catch (IOException e) {
             throw new ResourceNotFoundException("Fetching grades failed: ", e);
         }
@@ -142,10 +143,11 @@ public class SuoritusrekisteriServiceImpl implements SuoritusrekisteriService {
 
         CachingRestClient cachingRestClient = getCachingRestClient();
         String response;
+        String url = "/rest/v1/suoritukset?henkilo=" + personOid;
         try {
-            InputStream is = cachingRestClient.get("/rest/v1/suoritukset?henkilo=" + personOid);
+            InputStream is = cachingRestClient.get(url);
             response = IOUtils.toString(is);
-            log.debug("Got response: {}", response);
+            log.debug("url: {}, response: {}", url, response);
         } catch (IOException e) {
             log.error("Fetching koulu failed: {}", e);
             return null;
