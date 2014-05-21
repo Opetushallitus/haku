@@ -77,6 +77,11 @@ public class PreferenceConcreteValidatorImpl extends PreferenceConcreteValidator
                 LOGGER.error("validation error", e);
                 return createError(validationInput.getElement().getId(), GENERIC_ERROR);
             }
+        } else {
+            final String opetuspisteIdKey = validationInput.getElement().getId() + "-Opetuspiste-id";
+            if (!Strings.isNullOrEmpty(validationInput.getValues().get(opetuspisteIdKey))) {
+                return createError(validationInput.getElement().getId(), LOP_ERROR);
+            }
         }
         return validationResult;
     }

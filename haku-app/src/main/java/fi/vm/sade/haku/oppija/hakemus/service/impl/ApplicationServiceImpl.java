@@ -270,8 +270,7 @@ public class ApplicationServiceImpl implements ApplicationService {
             Map<String, String> educationAnswers = new HashMap<String, String>(
                     application.getPhaseAnswers(OppijaConstants.PHASE_EDUCATION));
 
-            String oid = application.getOid();
-            educationAnswers = handleOpiskelija(educationAnswers, oid, opiskelija);
+            educationAnswers = handleOpiskelija(educationAnswers, application, opiskelija);
             application.addVaiheenVastaukset(OppijaConstants.PHASE_EDUCATION, educationAnswers);
         }
 
@@ -291,26 +290,20 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     }
 
-    private Map<String, String> handleOpiskelija(Map<String, String> answers, String applicationOid, OpiskelijaDTO opiskelija) {
+    private Map<String, String> handleOpiskelija(Map<String, String> answers, Application application, OpiskelijaDTO opiskelija) {
         String sendingSchool = opiskelija.getOppilaitosOid();
         String sendingClass = opiskelija.getLuokka();
         String classLevel = opiskelija.getLuokkataso();
         if (isNotEmpty(sendingSchool)) {
-            LOGGER.info("Updating koulutustausta oid: "+String.valueOf(applicationOid)
-                    +" lahtokoulu: "+sendingSchool);
-            answers = addRegisterValue(applicationOid, answers, OppijaConstants.ELEMENT_ID_SENDING_SCHOOL, sendingSchool);
+            answers = addRegisterValue(application, answers, OppijaConstants.ELEMENT_ID_SENDING_SCHOOL, sendingSchool);
         }
         if (isNotEmpty(sendingClass)) {
             sendingClass = sendingClass.toUpperCase();
-            answers = addRegisterValue(applicationOid, answers, OppijaConstants.ELEMENT_ID_SENDING_CLASS, sendingClass);
-            LOGGER.info("Updating koulutustausta oid: "+String.valueOf(applicationOid)
-                    +" lahtoluokka: "+sendingClass);
+            answers = addRegisterValue(application, answers, OppijaConstants.ELEMENT_ID_SENDING_CLASS, sendingClass);
         }
         if (isNotEmpty(classLevel)) {
             classLevel = classLevel.toUpperCase();
-            answers = addRegisterValue(applicationOid, answers, OppijaConstants.ELEMENT_ID_CLASS_LEVEL, classLevel);
-            LOGGER.info("Updating koulutustausta oid: "+String.valueOf(applicationOid)
-                    +" luokkataso: "+classLevel);
+            answers = addRegisterValue(application, answers, OppijaConstants.ELEMENT_ID_CLASS_LEVEL, classLevel);
         }
         return answers;
     }
@@ -322,9 +315,6 @@ public class ApplicationServiceImpl implements ApplicationService {
             return application;
         }
         List<SuoritusDTO> suoritukset = suoritusrekisteriService.getSuoritukset(personOid);
-        if (suoritukset.isEmpty()) {
-            return application;
-        }
 
         int pohjakoulutus = -1;
         boolean kymppi = false;
@@ -341,10 +331,8 @@ public class ApplicationServiceImpl implements ApplicationService {
                 pohjakoulutus = Integer.valueOf(OppijaConstants.YLIOPPILAS).intValue();
                 valmistuminen = dto.getValmistuminen();
                 suorituskieli = dto.getSuorituskieli();
-                Map<String, String> gradeAnswers = addGrades(application, dto);
-                if (!gradeAnswers.isEmpty()) {
-                    gradesTranferredLk = true;
-                }
+                addGrades(application, dto);
+                gradesTranferredLk = true;
             } else if (pohjakoulutus < 0 && perusopetusKomoOid.equals(komo)) {
                 valmistuminen = dto.getValmistuminen();
                 suorituskieli = dto.getSuorituskieli();
@@ -360,38 +348,42 @@ public class ApplicationServiceImpl implements ApplicationService {
                 } else {
                     throw new IllegalValueException("Illegal value for yksilollistaminen: "+yksilollistaminen);
                 }
-                Map<String, String> gradeAnswers = addGrades(application, dto);
-                if (!gradeAnswers.isEmpty()) {
-                    gradesTranferredPk = true;
-                }
+                addGrades(application, dto);
+                gradesTranferredPk = true;
             } else if (lisaopetusKomoOid.equals(komo)) {
                 kymppi = true;
-                Map<String, String> gradeAnswers = addGrades(application, dto);
-                if (!gradeAnswers.isEmpty()) {
-                    gradesTranferredPk = true;
-                }
+                addGrades(application, dto);
+                gradesTranferredPk = true;
+            }
+        }
+
+        Map<String, String> educationAnswers = new HashMap<String, String>(application.getPhaseAnswers(OppijaConstants.PHASE_EDUCATION));
+
+        if (pohjakoulutus < 0) {
+            String userPohjakoulutus = educationAnswers.get("POHJAKOULUTUS");
+            if (userPohjakoulutus.equals(OppijaConstants.YLIOPPILAS)) {
+                gradesTranferredLk = true;
+            } else if (userPohjakoulutus.equals(OppijaConstants.PERUSKOULU)
+                    || userPohjakoulutus.equals(OppijaConstants.YKSILOLLISTETTY)
+                    || userPohjakoulutus.equals(OppijaConstants.ALUEITTAIN_YKSILOLLISTETTY)
+                    || userPohjakoulutus.equals(OppijaConstants.OSITTAIN_YKSILOLLISTETTY)) {
+                gradesTranferredPk = true;
             }
         }
 
         if (gradesTranferredLk) {
-            Map<String, String> gradeAnswers = new HashMap<String, String>(application.getPhaseAnswers(OppijaConstants.PHASE_GRADES));
-            gradeAnswers.put("grades_transferred_lk", "true");
-            application.addVaiheenVastaukset(OppijaConstants.PHASE_GRADES, gradeAnswers);
+            application.addMeta("grades_transferred_lk", "true");
         } else if (gradesTranferredPk) {
-            Map<String, String> gradeAnswers = new HashMap<String, String>(application.getPhaseAnswers(OppijaConstants.PHASE_GRADES));
-            gradeAnswers.put("grades_transferred_pk", "true");
-            application.addVaiheenVastaukset(OppijaConstants.PHASE_GRADES, gradeAnswers);
+            application.addMeta("grades_transferred_pk", "true");
         }
 
         if (pohjakoulutus < 0) {
             return application;
         }
 
-        String applicationOid = application.getOid();
-        Map<String, String> educationAnswers = new HashMap<String, String>(application.getPhaseAnswers(OppijaConstants.PHASE_EDUCATION));
-        educationAnswers = addRegisterValue(applicationOid, educationAnswers,
+        educationAnswers = addRegisterValue(application, educationAnswers,
                 OppijaConstants.ELEMENT_ID_BASE_EDUCATION, String.valueOf(pohjakoulutus));
-        educationAnswers = addRegisterValue(applicationOid, educationAnswers,
+        educationAnswers = addRegisterValue(application, educationAnswers,
                 OppijaConstants.ELEMENT_ID_LISAKOULUTUS_KYMPPI, String.valueOf(kymppi));
 
         String todistusvuosiKey = pohjakoulutus == Integer.valueOf(OppijaConstants.YLIOPPILAS).intValue()
@@ -401,13 +393,13 @@ public class ApplicationServiceImpl implements ApplicationService {
             Calendar cal = GregorianCalendar.getInstance();
             cal.setTime(valmistuminen);
             String todistusvuosi = String.valueOf(cal.get(Calendar.YEAR));
-            educationAnswers= addRegisterValue(applicationOid, educationAnswers, todistusvuosiKey, todistusvuosi);
+            educationAnswers= addRegisterValue(application, educationAnswers, todistusvuosiKey, todistusvuosi);
         }
         String suorituskieliKey = pohjakoulutus == Integer.valueOf(OppijaConstants.YLIOPPILAS).intValue()
                 ? OppijaConstants.LUKIO_KIELI
                 : OppijaConstants.PERUSOPETUS_KIELI;
         if (suorituskieli != null) {
-            educationAnswers = addRegisterValue(applicationOid, educationAnswers, suorituskieliKey, suorituskieli);
+            educationAnswers = addRegisterValue(application, educationAnswers, suorituskieliKey, suorituskieli);
         }
 
         application.addVaiheenVastaukset(OppijaConstants.PHASE_EDUCATION, educationAnswers);
@@ -418,56 +410,40 @@ public class ApplicationServiceImpl implements ApplicationService {
     private Map<String, String> addGrades(Application application, SuoritusDTO suoritus) {
         String suoritusId = suoritus.getId();
         List<ArvosanaDTO> arvosanat = suoritusrekisteriService.getArvosanat(suoritusId);
-        String prefix = "PK_";
-        if (suoritus.getKomo().equals(lukioKomoOid)) {
-            prefix = "LK_";
-        }
-        String suffix = "";
-        if (suoritus.getKomo().equals(lisaopetusKomoOid)) {
-            suffix = "_10";
-        }
+        String prefix = getGradePrefix(suoritus);
+
         Map<String, String> gradeAnswers = new HashMap<String, String>(application.getPhaseAnswers(OppijaConstants.PHASE_GRADES));
         Set<String> receivedGrades = new HashSet<String>();
         if (!arvosanat.isEmpty()) {
-            gradeAnswers.put("locked", "true");
+            application.addMeta("osaaminen_locked", "true");
         }
         Map<String, Integer> valinnaiset = new HashMap<String, Integer>();
+
+        // Käy läpi rekisteristä tulleet arvosanat ja lisää answers-mappiin
         for (ArvosanaDTO arvosana : arvosanat) {
-            String aine = arvosana.getAine();
-            String thisSuffix = suffix;
-            if (arvosana.isValinnainen()) {
-                if (suoritus.getKomo().equals(lukioKomoOid)) {
-                    LOGGER.error("Lukio grades can not have optional subjects");
-                    throw new IllegalValueException("Lukio grades can not have optional subjects");
-                }
-                Integer count = 1;
-                if (valinnaiset.containsKey(aine)) {
-                    count = valinnaiset.get(aine) + 1;
-                }
-                if (count > 2) {
-                    LOGGER.error("Can not have more than two optional subjects");
-                    throw new IllegalValueException("Can not have more than two optional subjects");
-                }
-                valinnaiset.put(aine, count);
-                thisSuffix = "_VAL" + String.valueOf(count) + suffix;
-            }
-            String key = prefix + arvosana.getAine() + thisSuffix;
+            String suffix = getGradeSuffix(suoritus, valinnaiset, arvosana);
+            String key = prefix + arvosana.getAine() + suffix;
             receivedGrades.add(key);
-            gradeAnswers = addRegisterValue(application.getOid(), gradeAnswers, key, arvosana.getArvosana());
+            gradeAnswers = addRegisterValue(application, gradeAnswers, key, arvosana.getArvosana());
+            // Lisätieto == kieli (AI, A1, B1 jne)
             if (isNotBlank(arvosana.getLisatieto())) {
-                gradeAnswers = addRegisterValue(application.getOid(), gradeAnswers,
+                gradeAnswers = addRegisterValue(application, gradeAnswers,
                         prefix + arvosana.getAine() + "_OPPIAINE", arvosana.getLisatieto());
             }
         }
+
+        // Lisää "Ei arvosanaa" puuttuviin kenttiin
         Map<String, String> toAdd = new HashMap<String, String>();
+        boolean kymppi = suoritus.getKomo().equals(lisaopetusKomoOid);
         for (Map.Entry<String, String> entry : gradeAnswers.entrySet()) {
             String key = entry.getKey();
-            if (key.endsWith("_user") || key.equals("locked")) {
+            if (!key.startsWith(prefix)) {
+                continue;
+            } else if (kymppi != key.endsWith("_10")) {
                 continue;
             }
-            String userKey = key + "_user";
-            if (!receivedGrades.contains(key) && !gradeAnswers.containsKey(userKey)) {
-                toAdd.put(userKey, entry.getValue());
+            if (!receivedGrades.contains(key) && !key.endsWith("OPPIAINE")) {
+                application.addOverriddenAnswer(key, gradeAnswers.get(key));
                 toAdd.put(key, "Ei arvosanaa");
             }
             if (suoritus.getKomo().equals(perusopetusKomoOid) && !key.endsWith("OPPIAINE") && !key.endsWith("_VAL1")
@@ -481,24 +457,48 @@ public class ApplicationServiceImpl implements ApplicationService {
             }
         }
         gradeAnswers.putAll(toAdd);
-        gradeAnswers.remove("grades_transferred_pk");
-        gradeAnswers.remove("grades_transferred_lk");
         application.addVaiheenVastaukset(OppijaConstants.PHASE_GRADES, gradeAnswers);
         return gradeAnswers;
     }
 
-    private Map<String, String> addRegisterValue(String oid, Map<String, String> answers, String key, String value) {
-        String valueForm = answers.get(key);
-        if (isEmpty(valueForm)) {
-            answers.put(key, value);
-        } else if (!value.equals(valueForm)) {
-            String valueUser = answers.get(key+"_user");
-            LOGGER.info("Updating application oid:"+oid+" "+key+": "+valueUser+" -> "+value);
-            if (isEmpty(valueUser)) {
-                answers.put(key+"_user", valueForm);
-            }
-            answers.put(key, value);
+    private String getGradePrefix(SuoritusDTO suoritus) {
+        String prefix = "PK_";
+        if (suoritus.getKomo().equals(lukioKomoOid)) {
+            prefix = "LK_";
         }
+        return prefix;
+    }
+
+    private String getGradeSuffix(SuoritusDTO suoritus, Map<String, Integer> valinnaiset, ArvosanaDTO arvosana) {
+        String suffix = "";
+        if (arvosana.isValinnainen()) {
+            if (suoritus.getKomo().equals(lukioKomoOid)) {
+                LOGGER.error("Lukio grades can not have optional subjects");
+                throw new IllegalValueException("Lukio grades can not have optional subjects");
+            }
+            String aine = arvosana.getAine();
+            Integer count = 1;
+            if (valinnaiset.containsKey(aine)) {
+                count = valinnaiset.get(aine) + 1;
+            }
+            if (count > 2) {
+                LOGGER.error("Can not have more than two optional subjects");
+                throw new IllegalValueException("Can not have more than two optional subjects");
+            }
+            valinnaiset.put(aine, count);
+            suffix = "_VAL" + String.valueOf(count);
+        }
+        if (suoritus.getKomo().equals(lisaopetusKomoOid)) {
+            suffix = suffix + "_10";
+        }
+        return suffix;
+    }
+
+    private Map<String, String> addRegisterValue(Application application, Map<String, String> answers,
+                                                 String key, String value) {
+        String oldValue = answers.put(key, value);
+        application.addOverriddenAnswer(key, oldValue);
+        LOGGER.info("Changing value key: {}, value: {} -> {}", key, oldValue, value);
         return answers;
     }
 

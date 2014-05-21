@@ -22,7 +22,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import fi.vm.sade.haku.oppija.common.organisaatio.Organization;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
-import fi.vm.sade.organisaatio.api.search.OrganisaatioSearchCriteria;
+import fi.vm.sade.organisaatio.service.search.SearchCriteria;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -114,14 +114,16 @@ public class OrganizationResource {
         LOGGER.debug("getOrganizations {} {} {} {}",
                 new String[]{searchString, organizationType, learningInstitutionType,
                         String.valueOf(onlyPassive)});
-        OrganisaatioSearchCriteria criteria = new OrganisaatioSearchCriteria();
+        SearchCriteria criteria = new SearchCriteria();
         criteria.setSearchStr(searchString);
         criteria.setOrganisaatioTyyppi(organizationType);
         criteria.setOppilaitosTyyppi(learningInstitutionType);
         if (onlyPassive) {
-            criteria.setVainLakkautetut(true);
+            criteria.setLakkautetut(true);
+            criteria.setAktiiviset(false);
         } else {
-            criteria.setVainAktiiviset(true);
+            criteria.setAktiiviset(true);
+            criteria.setLakkautetut(false);
         }
 
         List<Organization> organizations = organizationService.search(criteria);

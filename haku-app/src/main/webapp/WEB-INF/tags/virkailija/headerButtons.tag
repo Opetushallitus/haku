@@ -48,6 +48,10 @@
         <a href="${contextPath}/virkailija/hakemus/${oid}/print" class="button small print" target="_blank"><fmt:message
         key="lomake.valmis.button.tulosta"/></a>
     </c:if>
+    <c:if test="${preview}">
+        <a href="${contextPath}/virkailija/hakemus/${oid}" class="button small"><fmt:message
+        key="virkailija.hakemus.paivita"/></a>
+    </c:if>
 </div>
 <div class="grid-right-16-6">
     <span><haku:i18nText value="${applicationSystem.name}" /></span>

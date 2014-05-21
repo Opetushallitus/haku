@@ -38,12 +38,9 @@ public final class OppijaConstants {
     element ids, can be used to retrieve specific information from an application
     */
     public static final String ELEMENT_ID_FIRST_NAMES = "Etunimet";
-    public static final String ELEMENT_ID_FIRST_NAMES_USER = ELEMENT_ID_FIRST_NAMES + "_user";
 
     public static final String ELEMENT_ID_NICKNAME = "Kutsumanimi";
-    public static final String ELEMENT_ID_NICKNAME_USER = ELEMENT_ID_NICKNAME + "_user";
     public static final String ELEMENT_ID_LAST_NAME = "Sukunimi";
-    public static final String ELEMENT_ID_LAST_NAME_USER = ELEMENT_ID_LAST_NAME + "_user";
     public static final String ELEMENT_ID_SOCIAL_SECURITY_NUMBER = "Henkilotunnus";
     public static final String ELEMENT_ID_DATE_OF_BIRTH = "syntymaaika";
     public static final String ELEMENT_ID_EMAIL = "Sähköposti";
@@ -53,16 +50,12 @@ public final class OppijaConstants {
     public static final String ELEMENT_ID_SENDING_CLASS = "lahtoluokka";
     public static final String ELEMENT_ID_CLASS_LEVEL = "luokkataso";
     public static final String ELEMENT_ID_HOME_CITY = "kotikunta";
-    public static final String ELEMENT_ID_HOME_CITY_USER = "kotikunta_user";
     public static final String ELEMENT_ID_LANGUAGE = "äidinkieli";
     public static final String ELEMENT_ID_NATIONALITY = "kansalaisuus";
     public static final String ELEMENT_ID_FIRST_LANGUAGE = "äidinkieli";
     public static final String ELEMENT_ID_CONTACT_LANGUAGE = "asiointikieli";
-    public static final String ELEMENT_ID_CONTACT_LANGUAGE_USER = "asiointikieli";
     public static final String ELEMENT_ID_BASE_EDUCATION = "POHJAKOULUTUS";
-    public static final String ELEMENT_ID_BASE_EDUCATION_USER = "POHJAKOULUTUS_user";
     public static final String ELEMENT_ID_LISAKOULUTUS_KYMPPI = "LISAKOULUTUS_KYMPPI";
-    public static final String ELEMENT_ID_LISAKOULUTUS_KYMPPI_USER = "LISAKOULUTUS_KYMPPI_user";
 
     public static final String PHASE_PERSONAL = "henkilotiedot";
     public static final String PHASE_EDUCATION = "koulutustausta";
