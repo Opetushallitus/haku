@@ -80,8 +80,7 @@ public class PersonJsonAdapter implements JsonSerializer<Person>, JsonDeserializ
                 .setSocialSecurityNumber(getJsonString(personJson, "hetu"))
                 .setPersonOid(getJsonString(personJson, "oidHenkilo"))
                 .setStudentOid(getJsonString(personJson, "oppijanumero"))
-                .setNoSocialSecurityNumber(getJsonBoolean(personJson, "eiSuomalaistaHetua"))
-                .setHomeCity(getJsonString(personJson, "kotikunta"));
+                .setNoSocialSecurityNumber(getJsonBoolean(personJson, "eiSuomalaistaHetua"));
 
         log.debug("Deserialized basic info");
         String sex = getJsonString(personJson, "sukupuoli");

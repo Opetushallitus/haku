@@ -28,7 +28,7 @@ import java.util.List;
  * @author Hannu Lyytikainen
  */
 @Service
-@Profile(value = {"dev", "it", "devluokka"})
+@Profile(value = {"dev", "it"})
 public class AuthenticationServiceMockImpl implements AuthenticationService {
 
     public static final int RANGE_SIZE = 1000000000;
@@ -37,6 +37,9 @@ public class AuthenticationServiceMockImpl implements AuthenticationService {
     public Person addPerson(Person person) {
         PersonBuilder builder = PersonBuilder.start(person)
                 .setPersonOid(OID_PREFIX + String.format("%011d", Math.round(Math.random() * RANGE_SIZE)));
+//        PersonBuilder builder = PersonBuilder.start(person)
+//                .setPersonOid("1.2.246.562.24.52904508892");
+
         return builder.get();
     }
 

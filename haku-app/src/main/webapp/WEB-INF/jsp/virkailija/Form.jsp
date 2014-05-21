@@ -28,6 +28,8 @@
 <c:set var="application" value="${it.application}" scope="request"/>
 <c:set var="applicationSystem" value="${it.applicationSystem}" scope="request"/>
 <c:set var="answers" value="${it.application.vastauksetMerged}" scope="request"/>
+<c:set var="overridden" value="${it.application.overriddenAnswers}" scope="request" />
+<c:set var="applicationMeta" value="${it.application.meta}" scope="request" />
 <c:set var="contextPath" value="${pageContext.request.contextPath}" scope="request"/>
 <c:set var="errorMessages" value="${it.errorMessages}" scope="request"/>
 <html>
@@ -96,9 +98,9 @@
         <div class="grid16-16">
             <h3><c:out value="${answers['Etunimet']}" escapeXml="true"/>&nbsp;<c:out
                     value="${answers['Sukunimi']}" escapeXml="true"/>
-                <c:if test="${not empty answers['Etunimet_user'] or not empty answers['Sukunimi_user']}">
-                    &nbsp;<span title="<c:out value="${answers['Etunimet_user']}"/>&nbsp;<c:out
-                        value="${answers['Sukunimi_user']}"/>">[*]</span>
+                <c:if test="${not empty overridden['Etunimet'] or not empty overridden['Sukunimi_user']}">
+                    &nbsp;<span title="<c:out value="${overridden['Etunimet']}"/>&nbsp;<c:out
+                        value="${overridden['Sukunimi']}"/>">[*]</span>
                 </c:if>
             </h3>
             <table class="margin-top-2">

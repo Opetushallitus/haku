@@ -49,6 +49,7 @@ import java.util.regex.Pattern;
 
 import static org.apache.commons.lang.StringUtils.isEmpty;
 import static org.apache.commons.lang.StringUtils.isNotBlank;
+import static org.apache.commons.lang.StringUtils.join;
 
 /**
  * @author Hannu Lyytikainen
@@ -73,35 +74,11 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     private static final String INDEX_SEARCH_NAMES = "index_searchNames";
     private static final String INDEX_REDO_POSTPROCESS = "index_redoPostProcess";
 
-    private static final String FIELD_AO_T = "answers.hakutoiveet.preference1-Koulutus-id";
-    private static final String FIELD_AO_1 = "answers.hakutoiveet.preference1-Koulutus-id";
-    private static final String FIELD_AO_2 = "answers.hakutoiveet.preference2-Koulutus-id";
-    private static final String FIELD_AO_3 = "answers.hakutoiveet.preference3-Koulutus-id";
-    private static final String FIELD_AO_4 = "answers.hakutoiveet.preference4-Koulutus-id";
-    private static final String FIELD_AO_5 = "answers.hakutoiveet.preference5-Koulutus-id";
+    private static final String FIELD_AO_T = "answers.hakutoiveet.preference%d-Koulutus-id";
     private static final String FIELD_AO_KOULUTUS_ID_T = "answers.hakutoiveet.preference%d-Koulutus-id-aoIdentifier";
-    private static final String FIELD_AO_KOULUTUS_ID_1 = "answers.hakutoiveet.preference1-Koulutus-id-aoIdentifier";
-    private static final String FIELD_AO_KOULUTUS_ID_2 = "answers.hakutoiveet.preference2-Koulutus-id-aoIdentifier";
-    private static final String FIELD_AO_KOULUTUS_ID_3 = "answers.hakutoiveet.preference3-Koulutus-id-aoIdentifier";
-    private static final String FIELD_AO_KOULUTUS_ID_4 = "answers.hakutoiveet.preference4-Koulutus-id-aoIdentifier";
-    private static final String FIELD_AO_KOULUTUS_ID_5 = "answers.hakutoiveet.preference5-Koulutus-id-aoIdentifier";
-    private static final String FIELD_LOP_1 = "answers.hakutoiveet.preference1-Opetuspiste-id";
-    private static final String FIELD_LOP_2 = "answers.hakutoiveet.preference2-Opetuspiste-id";
-    private static final String FIELD_LOP_3 = "answers.hakutoiveet.preference3-Opetuspiste-id";
-    private static final String FIELD_LOP_4 = "answers.hakutoiveet.preference4-Opetuspiste-id";
-    private static final String FIELD_LOP_5 = "answers.hakutoiveet.preference5-Opetuspiste-id";
+    private static final String FIELD_LOP_T = "answers.hakutoiveet.preference%d-Opetuspiste-id";
     private static final String FIELD_LOP_PARENTS_T = "answers.hakutoiveet.preference%d-Opetuspiste-id-parents";
-    private static final String FIELD_LOP_PARENTS_1 = "answers.hakutoiveet.preference1-Opetuspiste-id-parents";
-    private static final String FIELD_LOP_PARENTS_2 = "answers.hakutoiveet.preference2-Opetuspiste-id-parents";
-    private static final String FIELD_LOP_PARENTS_3 = "answers.hakutoiveet.preference3-Opetuspiste-id-parents";
-    private static final String FIELD_LOP_PARENTS_4 = "answers.hakutoiveet.preference4-Opetuspiste-id-parents";
-    private static final String FIELD_LOP_PARENTS_5 = "answers.hakutoiveet.preference5-Opetuspiste-id-parents";
     private static final String FIELD_DISCRETIONARY_T = "answers.hakutoiveet.preference%d-discretionary";
-    private static final String FIELD_DISCRETIONARY_1 = "answers.hakutoiveet.preference1-discretionary";
-    private static final String FIELD_DISCRETIONARY_2 = "answers.hakutoiveet.preference2-discretionary";
-    private static final String FIELD_DISCRETIONARY_3 = "answers.hakutoiveet.preference3-discretionary";
-    private static final String FIELD_DISCRETIONARY_4 = "answers.hakutoiveet.preference4-discretionary";
-    private static final String FIELD_DISCRETIONARY_5 = "answers.hakutoiveet.preference5-discretionary";
     private static final String FIELD_APPLICATION_OID = "oid";
     private static final String FIELD_APPLICATION_SYSTEM_ID = "applicationSystemId";
     private static final String FIELD_PERSON_OID = "personOid";
@@ -288,90 +265,11 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     }
 
     private QueryBuilder queryByPreference(final List<String> aoIds) {
-        return QueryBuilder.start().or(
-                QueryBuilder.start(FIELD_AO_1).in(aoIds).get(),
-                QueryBuilder.start(FIELD_AO_2).in(aoIds).get(),
-                QueryBuilder.start(FIELD_AO_3).in(aoIds).get(),
-                QueryBuilder.start(FIELD_AO_4).in(aoIds).get(),
-                QueryBuilder.start(FIELD_AO_5).in(aoIds).get()
-        );
-    }
-
-    private QueryBuilder queryByPreference(String preference) {
-        return new QueryBuilder().start().or(
-                QueryBuilder.start(FIELD_AO_KOULUTUS_ID_1).is(preference).get(),
-                QueryBuilder.start(FIELD_AO_KOULUTUS_ID_2).is(preference).get(),
-                QueryBuilder.start(FIELD_AO_KOULUTUS_ID_3).is(preference).get(),
-                QueryBuilder.start(FIELD_AO_KOULUTUS_ID_4).is(preference).get(),
-                QueryBuilder.start(FIELD_AO_KOULUTUS_ID_5).is(preference).get()
-        );
-    }
-
-    private QueryBuilder queryByLopAndPreference(String preference, String lopOid) {
-        return QueryBuilder.start().or(
-                queryByLopAndPreference(FIELD_AO_KOULUTUS_ID_1, FIELD_LOP_1, FIELD_LOP_PARENTS_1, preference, lopOid).get(),
-                queryByLopAndPreference(FIELD_AO_KOULUTUS_ID_2, FIELD_LOP_2, FIELD_LOP_PARENTS_2, preference, lopOid).get(),
-                queryByLopAndPreference(FIELD_AO_KOULUTUS_ID_3, FIELD_LOP_3, FIELD_LOP_PARENTS_3, preference, lopOid).get(),
-                queryByLopAndPreference(FIELD_AO_KOULUTUS_ID_4, FIELD_LOP_4, FIELD_LOP_PARENTS_4, preference, lopOid).get(),
-                queryByLopAndPreference(FIELD_AO_KOULUTUS_ID_5, FIELD_LOP_5, FIELD_LOP_PARENTS_5, preference, lopOid).get()
-        );
-    }
-
-    private QueryBuilder queryByLopAndPreference(String koulutusField, String lopField, String lopParentsField,
-                                                 String preference, String lopOid) {
-        return QueryBuilder.start().and(
-                QueryBuilder.start(koulutusField).is(preference).get(),
-                QueryBuilder.start().or(
-                        QueryBuilder.start(lopField).is(lopOid).get(),
-                        QueryBuilder.start(lopParentsField).regex(Pattern.compile(lopOid)).get()
-                ).get()
-        );
-    }
-
-    private QueryBuilder queryByLearningOpportunityProviderOid(String lopOid) {
-        return QueryBuilder.start().or(
-                QueryBuilder.start(FIELD_LOP_1).is(lopOid).get(),
-                QueryBuilder.start(FIELD_LOP_2).is(lopOid).get(),
-                QueryBuilder.start(FIELD_LOP_3).is(lopOid).get(),
-                QueryBuilder.start(FIELD_LOP_4).is(lopOid).get(),
-                QueryBuilder.start(FIELD_LOP_5).is(lopOid).get(),
-                QueryBuilder.start(FIELD_LOP_PARENTS_1).regex(Pattern.compile(lopOid)).get(),
-                QueryBuilder.start(FIELD_LOP_PARENTS_2).regex(Pattern.compile(lopOid)).get(),
-                QueryBuilder.start(FIELD_LOP_PARENTS_3).regex(Pattern.compile(lopOid)).get(),
-                QueryBuilder.start(FIELD_LOP_PARENTS_4).regex(Pattern.compile(lopOid)).get(),
-                QueryBuilder.start(FIELD_LOP_PARENTS_5).regex(Pattern.compile(lopOid)).get()
-        );
-    }
-
-    private QueryBuilder queryDiscretionaryOnly() {
-        return QueryBuilder.start().or(
-                QueryBuilder.start(FIELD_DISCRETIONARY_1).is(Boolean.TRUE.toString()).get(),
-                QueryBuilder.start(FIELD_DISCRETIONARY_2).is(Boolean.TRUE.toString()).get(),
-                QueryBuilder.start(FIELD_DISCRETIONARY_3).is(Boolean.TRUE.toString()).get(),
-                QueryBuilder.start(FIELD_DISCRETIONARY_4).is(Boolean.TRUE.toString()).get(),
-                QueryBuilder.start(FIELD_DISCRETIONARY_5).is(Boolean.TRUE.toString()).get()
-        );
-    }
-
-    private QueryBuilder queryByLopAndDiscretionary(String lopOid) {
-        return QueryBuilder.start().or(
-                queryByLopAndDiscretionary(FIELD_DISCRETIONARY_1, FIELD_LOP_1, FIELD_LOP_PARENTS_1, lopOid).get(),
-                queryByLopAndDiscretionary(FIELD_DISCRETIONARY_2, FIELD_LOP_2, FIELD_LOP_PARENTS_2, lopOid).get(),
-                queryByLopAndDiscretionary(FIELD_DISCRETIONARY_3, FIELD_LOP_3, FIELD_LOP_PARENTS_3, lopOid).get(),
-                queryByLopAndDiscretionary(FIELD_DISCRETIONARY_4, FIELD_LOP_4, FIELD_LOP_PARENTS_4, lopOid).get(),
-                queryByLopAndDiscretionary(FIELD_DISCRETIONARY_5, FIELD_LOP_5, FIELD_LOP_PARENTS_5, lopOid).get()
-        );
-    }
-
-    private QueryBuilder queryByLopAndDiscretionary(String fieldDiscretionary, String fieldLop, String fieldLopParents,
-                                                    String lopOid) {
-        return QueryBuilder.start().and(
-                QueryBuilder.start(fieldDiscretionary).is(Boolean.TRUE.toString()).get(),
-                QueryBuilder.start().or(
-                        QueryBuilder.start(fieldLop).is(lopOid).get(),
-                        QueryBuilder.start(fieldLopParents).regex(Pattern.compile(lopOid)).get()
-                ).get()
-        );
+        DBObject[] queries = new DBObject[5];
+        for (int i = 0; i < queries.length; i++) {
+            queries[i] = QueryBuilder.start(String.format(FIELD_AO_T, i+1)).in(aoIds).get();
+        }
+        return QueryBuilder.start().or(queries);
     }
 
     private List<Application> findApplications(DBObject dbObject) {
@@ -439,7 +337,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
 
         ArrayList<DBObject> preferenceQueries = new ArrayList<DBObject>();
         for (int i = 1; i <= 5; i++) {
-            ArrayList<DBObject> preferenceQuery = new ArrayList<DBObject>(4);
+            ArrayList<DBObject> preferenceQuery = new ArrayList<DBObject>(5);
             if (isNotBlank(lopOid)) {
                 preferenceQuery.add(
                         QueryBuilder.start(String.format(FIELD_LOP_PARENTS_T, i)).regex(Pattern.compile(lopOid)).get());
@@ -465,26 +363,6 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
             filters.add(QueryBuilder.start().or(
                 preferenceQueries.toArray(new DBObject[preferenceQueries.size()])).get());
         }
-
-//        if (isNotEmpty(lopOid) && isNotEmpty(preference)) {
-//            filters.add(queryByLopAndPreference(preference, lopOid).get());
-//        } else {
-//            if (!isEmpty(lopOid)) {
-//                filters.add(queryByLearningOpportunityProviderOid(lopOid).get());
-//            }
-//            if (!isEmpty(preference)) {
-//                filters.add(queryByPreference(preference).get());
-//            }
-//        }
-//        if (isNotEmpty(lopOid) && discretionaryOnly) {
-//            filters.add(queryByLopAndDiscretionary(lopOid).get());
-//        } else if (discretionaryOnly) {
-//            filters.add(queryDiscretionaryOnly().get());
-//        }
-//
-//        if (!isEmpty(aoOid)) {
-//            filters.add(queryByPreference(Lists.newArrayList(aoOid)).get());
-//        }
 
         // Koskee koko hakemusta
         List<String> state = applicationQueryParameters.getState();
@@ -546,17 +424,16 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
 
         for (String org : orgs) {
             Pattern orgPattern = Pattern.compile(org);
-            queries.add(QueryBuilder.start().or(
-                    QueryBuilder.start(FIELD_LOP_PARENTS_1).regex(orgPattern).get(),
-                    QueryBuilder.start(FIELD_LOP_PARENTS_2).regex(orgPattern).get(),
-                    QueryBuilder.start(FIELD_LOP_PARENTS_3).regex(orgPattern).get(),
-                    QueryBuilder.start(FIELD_LOP_PARENTS_4).regex(orgPattern).get(),
-                    QueryBuilder.start(FIELD_LOP_PARENTS_5).regex(orgPattern).get(),
-                    QueryBuilder.start(FIELD_LOP_PARENTS_1).is(null).get()) // Empty applications
-                    .get());
+            DBObject[] lopQueries = new DBObject[6];
+            lopQueries[0] = QueryBuilder.start(String.format(FIELD_LOP_PARENTS_T, 1)).is(null).get(); // Empty applications
+            for (int i = 1; i <= 5; i++) {
+                lopQueries[i] = QueryBuilder.start(String.format(FIELD_LOP_PARENTS_T, i)).regex(orgPattern).get();
+            }
+            queries.add(QueryBuilder.start().or(lopQueries).get());
         }
 
         List<String> opoOrgs = hakuPermissionService.userHasOpoRole(henkOrgs);
+        LOG.debug("User has OPO roles: [{}]", join(opoOrgs, ","));
         if (!opoOrgs.isEmpty()) {
             for (String opoOrg : opoOrgs) {
                 Pattern opoOrgPattern = Pattern.compile(opoOrg);
@@ -688,11 +565,14 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         createIndex(INDEX_REDO_POSTPROCESS, true, FIELD_REDO_POSTPROCESS);
 
         // Preference Indexes
-        createPreferenceIndexes("preference1", false, FIELD_LOP_1, FIELD_DISCRETIONARY_1, FIELD_AO_1, FIELD_AO_KOULUTUS_ID_1);
-        createPreferenceIndexes("preference2", true, FIELD_LOP_2, FIELD_DISCRETIONARY_2, FIELD_AO_2, FIELD_AO_KOULUTUS_ID_2);
-        createPreferenceIndexes("preference3", true, FIELD_LOP_3, FIELD_DISCRETIONARY_3, FIELD_AO_3, FIELD_AO_KOULUTUS_ID_3);
-        createPreferenceIndexes("preference4", true, FIELD_LOP_4, FIELD_DISCRETIONARY_4, FIELD_AO_4, FIELD_AO_KOULUTUS_ID_4);
-        createPreferenceIndexes("preference5", true, FIELD_LOP_5, FIELD_DISCRETIONARY_5, FIELD_AO_5, FIELD_AO_KOULUTUS_ID_5);
+        for (int i = 1; i <= 5; i++) {
+            createPreferenceIndexes("preference"+i, false,
+                    String.format(FIELD_LOP_T, i),
+                    String.format(FIELD_DISCRETIONARY_T, i),
+                    String.format(FIELD_AO_T, i),
+                    String.format(FIELD_AO_KOULUTUS_ID_T, i));
+
+        }
     }
 
     private void createPreferenceIndexes(String preference, Boolean sparsePossible, String lopField, String discretionaryField, String fieldAo, String fieldAoIdentifier) {
