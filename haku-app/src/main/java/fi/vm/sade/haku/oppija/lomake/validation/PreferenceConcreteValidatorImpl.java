@@ -87,7 +87,7 @@ public class PreferenceConcreteValidatorImpl extends PreferenceConcreteValidator
     }
 
     private ValidationResult createError(final String key, final String errorKey) {
-        return new ValidationResult(key, ElementUtil.createI18NText(errorKey, "form_errors_yhteishaku_kevat"));
+        return new ValidationResult(key, ElementUtil.createI18NText(errorKey, "form_common"));
     }
 
     private boolean checkEducationCode(final ValidationInput validationInput, final ApplicationOption applicationOption) {
