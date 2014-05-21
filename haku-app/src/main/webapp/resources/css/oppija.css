@@ -2076,7 +2076,7 @@ label, .label {
 
 /*** Mandatory
 ************************************************/
-.data-star:after {
+.required:after {
   content: " *"; }
 
 .required-field {
