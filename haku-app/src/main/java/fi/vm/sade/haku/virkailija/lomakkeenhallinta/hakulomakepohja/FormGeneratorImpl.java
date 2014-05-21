@@ -1,6 +1,5 @@
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja;
 
-import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystemBuilder;
@@ -13,7 +12,6 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.osaami
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.valmis.ValmisPhase;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakuService;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

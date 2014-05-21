@@ -18,7 +18,6 @@ package fi.vm.sade.haku.oppija.lomake.domain.elements.questions;
 
 import com.google.common.collect.ImmutableList;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
-import fi.vm.sade.haku.oppija.lomake.domain.builder.OptionBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.validation.Validator;
 import fi.vm.sade.haku.oppija.lomake.validation.validators.ValueSetValidator;
@@ -53,15 +52,6 @@ public abstract class OptionQuestion extends Question {
         }
     }
 
-    public Option addOption(final I18nText i18nText, final String value) {
-        Option option = (Option) OptionBuilder.Option(this.id + "." + value)
-                .setValue(value)
-                .i18nText(i18nText)
-                .build();
-        addOption(option);
-        return option;
-    }
-
     private void addOption(final Option option) {
         this.optionsMap.put(option.getValue(), option);
         this.options.add(option);
@@ -85,7 +75,6 @@ public abstract class OptionQuestion extends Question {
     private void initSortedOptions() {
         optionsSortedByText = new HashMap<String, List<Option>>();
         for (Option option : options) {
-            System.out.println("----------------------------->" + this.getId());
             Set<String> langs = option.getI18nText().getTranslations().keySet();
             for (String lang : langs) {
                 List<Option> optionListForLang = optionsSortedByText.get(lang);

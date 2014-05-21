@@ -54,8 +54,6 @@ public class I18nBundle {
             ResourceBundle commonBundle = ResourceBundle.getBundle("form_common", new Locale(lang));
             if (commonBundle.containsKey(lowerCaseKey)) {
                 text = commonBundle.getString(lowerCaseKey);
-            } else {
-                text = "****" + key + "[" + lang + "]****";
             }
         }
         return text;

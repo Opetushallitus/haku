@@ -37,6 +37,12 @@ public class DropdownSelectBuilder extends ElementBuilder {
         return this;
     }
 
+    public DropdownSelectBuilder addOption(Option option) {
+        System.out.println(option);
+        this.options.add(option);
+        return this;
+    }
+
     public DropdownSelectBuilder defaultValueAttribute(String attributeName) {
         this.defaultValueAttribute = attributeName;
         return this;
@@ -56,13 +62,13 @@ public class DropdownSelectBuilder extends ElementBuilder {
 
     @Override
     public Element buildImpl() {
-        DropdownSelect dropdownSelect = new DropdownSelect(id, i18nText, defaultValueAttribute);
-        dropdownSelect.addOptions(this.options);
+        DropdownSelect dropdownSelect = new DropdownSelect(id, this.i18nText, defaultValueAttribute);
         if (defaultOption != null) {
             for (Option opt : options) {
                 opt.setDefaultOption(opt.getValue().equalsIgnoreCase(defaultOption));
             }
         }
+        dropdownSelect.addOptions(this.options);
         dropdownSelect.setInline(inline);
         return dropdownSelect;
     }

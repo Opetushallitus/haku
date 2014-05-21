@@ -16,19 +16,24 @@
 
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.hakutoiveet;
 
+import com.google.common.collect.ImmutableList;
 import fi.vm.sade.haku.oppija.lomake.domain.builder.DropdownSelectBuilder;
+import fi.vm.sade.haku.oppija.lomake.domain.builder.OptionBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.builder.RadioBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.HiddenValue;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.Popup;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.PreferenceRow;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.PreferenceTable;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionComplexRule;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.*;
 import fi.vm.sade.haku.oppija.lomake.validation.validators.RegexFieldValidator;
 import fi.vm.sade.haku.oppija.lomake.validation.validators.RequiredFieldValidator;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
+
+import java.util.List;
 
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.PhaseBuilder.Phase;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.ThemeBuilder.Theme;
@@ -70,7 +75,7 @@ public class HakutoiveetPhase {
 
     public static PreferenceRow createI18NPreferenceRow(final String id, final String title, final FormParameters formParameters) {
         PreferenceRow pr = new PreferenceRow(id,
-                createI18NText("form.hakutoiveet.hakutoive", formParameters, title),
+                createI18NAsIs(title + "."),
                 createI18NText("form.yleinen.tyhjenna", formParameters),
                 createI18NText("form.hakutoiveet.koulutus", formParameters),
                 createI18NText("form.hakutoiveet.opetuspiste", formParameters),
@@ -94,10 +99,10 @@ public class HakutoiveetPhase {
 
         Element discretionaryFollowUp = new DropdownSelectBuilder(discretionary.getId() + "-follow-up")
                 .emptyOption()
-                .addOption(createI18NText("perustelu.oppimisvaikeudet", formParameters), "oppimisvaikudet")
-                .addOption(createI18NText("perustelu.sosiaaliset", formParameters), "sosiaalisetsyyt")
-                .addOption(createI18NText("perustelu.todistustenvertailuvaikeudet", formParameters), "todistustenvertailuvaikeudet")
-                .addOption(createI18NText("perustelu.todistustenpuuttuminen", formParameters), TODISTUSTENPUUTTUMINEN)
+                .addOption((Option) new OptionBuilder().setValue("oppimisvaikudet").labelKey("perustelu.oppimisvaikeudet").build(formParameters))
+                .addOption((Option) new OptionBuilder().setValue("sosiaalisetsyyt").labelKey("perustelu.sosiaaliset").build(formParameters))
+                .addOption((Option) new OptionBuilder().setValue("todistustenvertailuvaikeudet").labelKey("perustelu.todistustenvertailuvaikeudet").build(formParameters))
+                .addOption((Option) new OptionBuilder().setValue(TODISTUSTENPUUTTUMINEN).labelKey("perustelu.todistustenpuuttuminen").build(formParameters))
                 .required()
                 .i18nText(createI18NText("form.hakutoiveet.harkinnanvarainen.perustelu", formParameters))
                 .build(formParameters);
