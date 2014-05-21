@@ -413,7 +413,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         Map<String, String> gradeAnswers = new HashMap<String, String>(application.getPhaseAnswers(OppijaConstants.PHASE_GRADES));
         Set<String> receivedGrades = new HashSet<String>();
         if (!arvosanat.isEmpty()) {
-            application.addMeta("grades_locked", "true");
+            application.addMeta("osaaminen_locked", "true");
         }
         Map<String, Integer> valinnaiset = new HashMap<String, Integer>();
 
@@ -432,9 +432,14 @@ public class ApplicationServiceImpl implements ApplicationService {
 
         // Lisää "Ei arvosanaa" puuttuviin kenttiin
         Map<String, String> toAdd = new HashMap<String, String>();
+        boolean kymppi = suoritus.getKomo().equals(lisaopetusKomoOid);
         for (Map.Entry<String, String> entry : gradeAnswers.entrySet()) {
             String key = entry.getKey();
-
+            if (!key.startsWith(prefix)) {
+                continue;
+            } else if (kymppi != key.endsWith("_10")) {
+                continue;
+            }
             if (!receivedGrades.contains(key) && !key.endsWith("OPPIAINE")) {
                 application.addOverriddenAnswer(key, gradeAnswers.get(key));
                 toAdd.put(key, "Ei arvosanaa");
@@ -465,11 +470,11 @@ public class ApplicationServiceImpl implements ApplicationService {
     private String getGradeSuffix(SuoritusDTO suoritus, Map<String, Integer> valinnaiset, ArvosanaDTO arvosana) {
         String suffix = "";
         if (arvosana.isValinnainen()) {
-            String aine = arvosana.getAine();
             if (suoritus.getKomo().equals(lukioKomoOid)) {
                 LOGGER.error("Lukio grades can not have optional subjects");
                 throw new IllegalValueException("Lukio grades can not have optional subjects");
             }
+            String aine = arvosana.getAine();
             Integer count = 1;
             if (valinnaiset.containsKey(aine)) {
                 count = valinnaiset.get(aine) + 1;

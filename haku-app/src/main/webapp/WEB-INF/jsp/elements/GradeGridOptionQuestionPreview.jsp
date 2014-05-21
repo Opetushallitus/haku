@@ -17,8 +17,22 @@
   ~ European Union Public Licence for more details.
   --%>
 <a name="${element.id}"></a>
+<c:set var="osaaminen" value="${it.application.answers.osaaminen}" scope="request" />
+<c:set var="kymppiKey" value="${element.id}_10" scope="page" />
 <c:forEach var="option" items="${element.options}">
+    <c:if test="${(answers[kymppiKey] eq option.value)}">
+        <c:set var="kymppiValue" value="${option.i18nText}"/>
+    </c:if>
     <c:if test="${(answers[element.id] eq option.value)}">
-        <haku:i18nText value="${option.i18nText}"/>
+        <c:set var="gradeValue" value="${option.i18nText}"/>
     </c:if>
 </c:forEach>
+
+<c:choose>
+    <c:when test="${not empty kymppiValue}">
+        <haku:i18nText value="${kymppiValue}" /> (<haku:i18nText value="${gradeValue}"/>)
+    </c:when>
+    <c:otherwise>
+        <haku:i18nText value="${gradeValue}" />
+    </c:otherwise>
+</c:choose>
