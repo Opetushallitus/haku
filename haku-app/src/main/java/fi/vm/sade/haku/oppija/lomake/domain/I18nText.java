@@ -39,9 +39,6 @@ public class I18nText implements Serializable {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("I18nText{");
-        sb.append("translations=").append(translations);
-        sb.append('}');
-        return sb.toString();
+        return translations.toString();
     }
 }
