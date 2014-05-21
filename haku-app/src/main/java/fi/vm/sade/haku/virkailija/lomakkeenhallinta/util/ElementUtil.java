@@ -26,9 +26,6 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.Titled;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.PreferenceRow;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.SinglePreference;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.gradegrid.GradeGridRow;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Question;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Radio;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionComplexRule;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.Regexp;
 import fi.vm.sade.haku.oppija.lomake.validation.Validator;
@@ -66,10 +63,6 @@ public final class ElementUtil {
             translations.put(lang, text);
         }
         return new I18nText(translations);
-    }
-
-    public static I18nText createI18NText(final String key, final FormParameters formParameters, final String... params) {
-        return createI18NText(key, formParameters.getFormMessagesBundle(), false, params);
     }
 
     public static I18nText createI18NText(final String key, final FormParameters formParameters) {
