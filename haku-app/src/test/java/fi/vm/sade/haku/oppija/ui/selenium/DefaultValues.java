@@ -65,20 +65,8 @@ public final class DefaultValues {
         return getNewMap(henkilotiedot, values);
     }
 
-    public Map<String, String> getKoulutustausta_pk(final Map<String, String> values) {
-        return getNewMap(koulutustausta_pk, values);
-    }
-
-    public Map<String, String> getKoulutustausta_lk(final Map<String, String> values) {
-        return getNewMap(koulutustausta_lk, values);
-    }
-
     public Map<String, String> getPreference1(final Map<String, String> values) {
         return getNewMap(preference1, values);
-    }
-
-    public Map<String, String> getLisatiedot(final Map<String, String> values) {
-        return getNewMap(lisatiedot, values);
     }
 
     private Map<String, String> getNewMap(final Map<String, String> defaultValues, final Map<String, String> values) {
