@@ -120,7 +120,7 @@
                     </div>
                 </c:when>
                 <c:otherwise>
-                    <form id="form-${vaihe.id}" class="form" method="post">
+                    <form id="form-${vaihe.id}" class="form" method="post" novalidate="novalidate">
                         <jsp:include page="../prev_next_buttons.jsp"/>
 
                         <c:forEach var="child" items="${vaihe.children}">
