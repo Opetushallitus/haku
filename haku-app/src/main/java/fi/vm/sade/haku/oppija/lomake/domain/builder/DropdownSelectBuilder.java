@@ -38,7 +38,6 @@ public class DropdownSelectBuilder extends ElementBuilder {
     }
 
     public DropdownSelectBuilder addOption(Option option) {
-        System.out.println(option);
         this.options.add(option);
         return this;
     }
