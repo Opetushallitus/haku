@@ -16,7 +16,6 @@
 
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.hakutoiveet;
 
-import com.google.common.collect.ImmutableList;
 import fi.vm.sade.haku.oppija.lomake.domain.builder.DropdownSelectBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.builder.OptionBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.builder.RadioBuilder;
@@ -28,12 +27,11 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.PreferenceTable;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionComplexRule;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.*;
+import fi.vm.sade.haku.oppija.lomake.validation.validators.PreferenceValidator;
 import fi.vm.sade.haku.oppija.lomake.validation.validators.RegexFieldValidator;
 import fi.vm.sade.haku.oppija.lomake.validation.validators.RequiredFieldValidator;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
-
-import java.util.List;
 
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.PhaseBuilder.Phase;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.ThemeBuilder.Theme;
@@ -86,7 +84,7 @@ public class HakutoiveetPhase {
                 createUrheilijanAmmatillisenKoulutuksenLisakysymysAndRule(id, formParameters),
                 createUrheilijalinjaRule(id),
                 createKaksoistutkintoQuestions(id, formParameters));
-        ElementUtil.addPreferenceValidator(pr);
+        pr.setValidator(new PreferenceValidator());
         return pr;
     }
 

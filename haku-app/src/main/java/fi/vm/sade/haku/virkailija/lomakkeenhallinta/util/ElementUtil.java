@@ -17,14 +17,11 @@
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.util;
 
 import com.google.common.base.Joiner;
-import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Titled;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.PreferenceRow;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.SinglePreference;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.gradegrid.GradeGridRow;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionComplexRule;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.Regexp;
@@ -184,11 +181,6 @@ public final class ElementUtil {
         } else {
             //skip
         }
-    }
-
-    public static void addPreferenceValidator(final Element element) {
-        Preconditions.checkArgument(element instanceof PreferenceRow || element instanceof SinglePreference);
-        element.setValidator(new PreferenceValidator());
     }
 
     public static void setVerboseHelp(final Titled titled, final String helpId, final FormParameters formParameters) {
