@@ -32,8 +32,11 @@ public class HakuPermissionServiceMockImpl implements HakuPermissionService {
     @Override
     public Map<String, Boolean> userHasEditRoleToPhases(Application application, Form form) {
         Map<String, Boolean> phaseEditAllowed = new HashMap<String, Boolean>();
+        Map<String, String> meta = application.getMeta();
         for (Element element : form.getChildren()) {
-            phaseEditAllowed.put(element.getId(), true);
+            String phaseId = element.getId();
+            boolean locked = Boolean.valueOf(meta.get(phaseId + "_locked"));
+            phaseEditAllowed.put(element.getId(), !locked);
         }
         return phaseEditAllowed;
     }
