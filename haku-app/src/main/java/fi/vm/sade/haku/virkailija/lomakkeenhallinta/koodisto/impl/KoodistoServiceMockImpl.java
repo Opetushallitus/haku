@@ -26,7 +26,6 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.domain.Code;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -59,99 +58,98 @@ public class KoodistoServiceMockImpl implements KoodistoService {
     public static final String BASE_EDUCATION_KOODISTO_URI = "pohjakoulutustoinenaste";
 
     public KoodistoServiceMockImpl() {
-        List<Option> listOfGradeGrades = new ArrayList<Option>();
-        listOfGradeGrades.add(getOption("Ei arvosanaa","0"));
-        listOfGradeGrades.add(getOption("10","10"));
-        listOfGradeGrades.add(getOption("9","9"));
-        listOfGradeGrades.add(getOption("8","8"));
-        listOfGradeGrades.add(getOption("7","7"));
-        listOfGradeGrades.add(getOption("6","6"));
-        listOfGradeGrades.add(getOption("5","5"));
-        listOfGradeGrades.add(getOption("4","4"));
-        this.listOfGradeGrades = ImmutableList.copyOf(listOfGradeGrades);
+        this.listOfGradeGrades = ImmutableList.of(
+                getOption("Ei arvosanaa", "0"),
+                getOption("10", "10"),
+                getOption("9", "9"),
+                getOption("8", "8"),
+                getOption("7", "7"),
+                getOption("6", "6"),
+                getOption("5", "5"),
+                getOption("4", "4"));
 
         this.listOfPostOffices = ImmutableList.of(
-                getOption("Helsinki","00100"),
-                getOption("Espoo","02100"),
-                getOption("Tampere","33100"));
+                getOption("Helsinki", "00100"),
+                getOption("Espoo", "02100"),
+                getOption("Tampere", "33100"));
 
         this.listOfLearningInstitutionTypes = ImmutableList.of(
-                getOption("Oppisopimustoimipiste","04"),
-                getOption("Muu organisaatio","05"),
-                getOption("Oppilaitos","02"),
-                getOption("Koulutustoimija","01"),
-                getOption("Toimipiste","03")
+                getOption("Oppisopimustoimipiste", "04"),
+                getOption("Muu organisaatio", "05"),
+                getOption("Oppilaitos", "02"),
+                getOption("Koulutustoimija", "01"),
+                getOption("Toimipiste", "03")
 
         );
 
         this.listOfOrganizationTypes =
                 ImmutableList.of(
-                        getOption("Oppisopimustoimipiste","04"),
-                        getOption("Muu organisaatio","05"),
-                        getOption("Oppilaitos","02"),
-                        getOption("Koulutustoimija","01"),
-                        getOption("Toimipiste","03"));
+                        getOption("Oppisopimustoimipiste", "04"),
+                        getOption("Muu organisaatio", "05"),
+                        getOption("Oppilaitos", "02"),
+                        getOption("Koulutustoimija", "01"),
+                        getOption("Toimipiste", "03"));
 
         this.listOfCountries =
                 ImmutableList.of(
-                        getOption("Suomi",SUOMI),
-                        getOption("Ruotsi",RUOTSI));
+                        getOption("Suomi", SUOMI),
+                        getOption("Ruotsi", RUOTSI));
 
         this.listOfLanguages =
                 ImmutableList.of(
-                        getOption("Suomi","FI"),
-                        getOption("Ruotsi","SV"),
-                        getOption("Saame","SE"),
-                        getOption("Englanti","EN"));
+                        getOption("Suomi", "FI"),
+                        getOption("Ruotsi", "SV"),
+                        getOption("Saame", "SE"),
+                        getOption("Englanti", "EN"));
 
         this.listOfTeachingLanguages =
                 ImmutableList.of(
-                        getOption("Suomi","FI"),
-                        getOption("Ruotsi","SV"),
-                        getOption("Saame","SE"));
+                        getOption("Suomi", "FI"),
+                        getOption("Ruotsi", "SV"),
+                        getOption("Saame", "SE"));
 
         this.listOfNationalities =
                 ImmutableList.of(
-                        getOption("Suomi",SUOMI),
-                        getOption("Ruotsi",RUOTSI));
+                        getOption("Suomi", SUOMI),
+                        getOption("Ruotsi", RUOTSI));
 
         this.listOfMunicipalities = ImmutableList.of(
-                getOption("Jalasjärvi","jalasjarvi"),
-                getOption("Janakkala","janakkala"),
-                getOption("Joensuu","joensuu"),
-                getOption("jokioinen","jokioinen"),
-                getOption("Jomala","jomala")
+                getOption("Jalasjärvi", "jalasjarvi"),
+                getOption("Janakkala", "janakkala"),
+                getOption("Joensuu", "joensuu"),
+                getOption("jokioinen", "jokioinen"),
+                getOption("Jomala", "jomala")
         );
 
         this.listOfLanguageAndLiterature = ImmutableList.of(
-                getOption("Suomi äidinkielenä","FI"),
-                getOption("Ruotsi äidinkielenä","SV"),
-                getOption("Saame äidinkielenä","SE"),
-                getOption("Romani äidinkielenä","RI"),
-                getOption("Viittomakieli äidinkielenä","VK"),
-                getOption("Muu oppilaan äidinkieli","XX"),
-                getOption("Suomi toisena kielenä","FI_2"),
-                getOption("Ruotsi toisena kielenä","SV_2"),
-                getOption("Suomi saamenkielisille","FI_SE"),
-                getOption("Suomi viittomakielisille","FI_VK"),
-                getOption("Ruotsi viittomakielisille","SV_VK"));
+                getOption("Suomi äidinkielenä", "FI"),
+                getOption("Ruotsi äidinkielenä", "SV"),
+                getOption("Saame äidinkielenä", "SE"),
+                getOption("Romani äidinkielenä", "RI"),
+                getOption("Viittomakieli äidinkielenä", "VK"),
+                getOption("Muu oppilaan äidinkieli", "XX"),
+                getOption("Suomi toisena kielenä", "FI_2"),
+                getOption("Ruotsi toisena kielenä", "SV_2"),
+                getOption("Suomi saamenkielisille", "FI_SE"),
+                getOption("Suomi viittomakielisille", "FI_VK"),
+                getOption("Ruotsi viittomakielisille", "SV_VK"));
 
         this.listOfGenders =
                 ImmutableList.of(
-                        getOption("Mies","1"),
-                        getOption("Nainen","2"));
+                        getOption("Mies", "1"),
+                        getOption("Nainen", "2"));
 
         this.listOfKausi =
                 ImmutableList.of(
-                        getOption("Kevät","kausi_k"),
-                        getOption("Syksy","kausi_s"));
+                        getOption("Kevät", "kausi_k"),
+                        getOption("Syksy", "kausi_s"));
 
         this.listOfLukios =
                 ImmutableList.of(
-                        getOption("Aktiivi-instituutti","1.2.246.562.10.56695937518"),
-                        getOption("Alajärven lukio","1.2.246.562.10.54943480589"),
-                        getOption("Alavuden lukio","1.2.246.562.10.328060821310"),
-                        getOption("Alkio-opisto","1.2.246.562.10.77255241653")
+                        getOption("Aktiivi-instituutti", "1.2.246.562.10.56695937518"),
+                        getOption("Alajärven lukio", "1.2.246.562.10.54943480589"),
+                        getOption("Alavuden lukio", "1.2.246.562.10.328060821310"),
+                        getOption("Alkio-opisto", "1.2.246.562.10.77255241653")
                 );
 
         this.listOfHakukohdekoodit =
