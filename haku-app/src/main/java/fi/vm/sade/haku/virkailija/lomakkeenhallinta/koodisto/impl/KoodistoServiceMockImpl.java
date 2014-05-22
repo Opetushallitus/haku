@@ -18,9 +18,9 @@ package fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.impl;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
+import fi.vm.sade.haku.oppija.lomake.domain.builder.OptionBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.SubjectRow;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
-import fi.vm.sade.haku.oppija.lomake.domain.builder.OptionBuilder;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.domain.Code;
 import org.springframework.context.annotation.Profile;
@@ -60,106 +60,105 @@ public class KoodistoServiceMockImpl implements KoodistoService {
 
     public KoodistoServiceMockImpl() {
         List<Option> listOfGradeGrades = new ArrayList<Option>();
-        listOfGradeGrades.add(new OptionBuilder().setI18nText(createI18NAsIs("Ei arvosanaa")).setValue("0").createOption());
-        listOfGradeGrades.add(new OptionBuilder().setI18nText(createI18NAsIs("10")).setValue("10").createOption());
-        listOfGradeGrades.add(new OptionBuilder().setI18nText(createI18NAsIs("9")).setValue("9").createOption());
-        listOfGradeGrades.add(new OptionBuilder().setI18nText(createI18NAsIs("8")).setValue("8").createOption());
-        listOfGradeGrades.add(new OptionBuilder().setI18nText(createI18NAsIs("7")).setValue("7").createOption());
-        listOfGradeGrades.add(new OptionBuilder().setI18nText(createI18NAsIs("6")).setValue("6").createOption());
-        listOfGradeGrades.add(new OptionBuilder().setI18nText(createI18NAsIs("5")).setValue("5").createOption());
-        listOfGradeGrades.add(new OptionBuilder().setI18nText(createI18NAsIs("4")).setValue("4").createOption());
+        listOfGradeGrades.add(getOption("Ei arvosanaa","0"));
+        listOfGradeGrades.add(getOption("10","10"));
+        listOfGradeGrades.add(getOption("9","9"));
+        listOfGradeGrades.add(getOption("8","8"));
+        listOfGradeGrades.add(getOption("7","7"));
+        listOfGradeGrades.add(getOption("6","6"));
+        listOfGradeGrades.add(getOption("5","5"));
+        listOfGradeGrades.add(getOption("4","4"));
         this.listOfGradeGrades = ImmutableList.copyOf(listOfGradeGrades);
 
         this.listOfPostOffices = ImmutableList.of(
-                new OptionBuilder().setI18nText(createI18NAsIs("Helsinki")).setValue("00100").createOption(),
-                new OptionBuilder().setI18nText(createI18NAsIs("Espoo")).setValue("02100").createOption(),
-                new OptionBuilder().setI18nText(createI18NAsIs("Tampere")).setValue("33100").createOption());
+                getOption("Helsinki","00100"),
+                getOption("Espoo","02100"),
+                getOption("Tampere","33100"));
 
         this.listOfLearningInstitutionTypes = ImmutableList.of(
-                new OptionBuilder().setI18nText(createI18NAsIs("Oppisopimustoimipiste")).setValue("04").createOption(),
-                new OptionBuilder().setI18nText(createI18NAsIs("Muu organisaatio")).setValue("05").createOption(),
-                new OptionBuilder().setI18nText(createI18NAsIs("Oppilaitos")).setValue("02").createOption(),
-                new OptionBuilder().setI18nText(createI18NAsIs("Koulutustoimija")).setValue("01").createOption(),
-                new OptionBuilder().setI18nText(createI18NAsIs("Toimipiste")).setValue("03").createOption()
+                getOption("Oppisopimustoimipiste","04"),
+                getOption("Muu organisaatio","05"),
+                getOption("Oppilaitos","02"),
+                getOption("Koulutustoimija","01"),
+                getOption("Toimipiste","03")
 
         );
 
         this.listOfOrganizationTypes =
                 ImmutableList.of(
-                        new OptionBuilder().setI18nText(createI18NAsIs("Oppisopimustoimipiste")).setValue("04").createOption(),
-                        new OptionBuilder().setI18nText(createI18NAsIs("Muu organisaatio")).setValue("05").createOption(),
-                        new OptionBuilder().setI18nText(createI18NAsIs("Oppilaitos")).setValue("02").createOption(),
-                        new OptionBuilder().setI18nText(createI18NAsIs("Koulutustoimija")).setValue("01").createOption(),
-                        new OptionBuilder().setI18nText(createI18NAsIs("Toimipiste")).setValue("03").createOption());
+                        getOption("Oppisopimustoimipiste","04"),
+                        getOption("Muu organisaatio","05"),
+                        getOption("Oppilaitos","02"),
+                        getOption("Koulutustoimija","01"),
+                        getOption("Toimipiste","03"));
 
         this.listOfCountries =
                 ImmutableList.of(
-                        new OptionBuilder().setI18nText(createI18NAsIs("Suomi")).setValue(SUOMI).createOption(),
-                        new OptionBuilder().setI18nText(createI18NAsIs("Ruotsi")).setValue(RUOTSI).createOption());
+                        getOption("Suomi",SUOMI),
+                        getOption("Ruotsi",RUOTSI));
 
         this.listOfLanguages =
                 ImmutableList.of(
-                        new OptionBuilder().setI18nText(createI18NAsIs("Suomi")).setValue("FI").createOption(),
-                        new OptionBuilder().setI18nText(createI18NAsIs("Ruotsi")).setValue("SV").createOption(),
-                        new OptionBuilder().setI18nText(createI18NAsIs("Saame")).setValue("SE").createOption(),
-                        new OptionBuilder().setI18nText(createI18NAsIs("Englanti")).setValue("EN").createOption());
+                        getOption("Suomi","FI"),
+                        getOption("Ruotsi","SV"),
+                        getOption("Saame","SE"),
+                        getOption("Englanti","EN"));
 
         this.listOfTeachingLanguages =
                 ImmutableList.of(
-                        new OptionBuilder().setI18nText(createI18NAsIs("Suomi")).setValue("FI").createOption(),
-                        new OptionBuilder().setI18nText(createI18NAsIs("Ruotsi")).setValue("SV").createOption(),
-                        new OptionBuilder().setI18nText(createI18NAsIs("Saame")).setValue("SE").createOption());
+                        getOption("Suomi","FI"),
+                        getOption("Ruotsi","SV"),
+                        getOption("Saame","SE"));
 
         this.listOfNationalities =
                 ImmutableList.of(
-                        new OptionBuilder().setI18nText(createI18NAsIs("Suomi")).setValue(SUOMI).createOption(),
-                        new OptionBuilder().setI18nText(createI18NAsIs("Ruotsi")).setValue(RUOTSI).createOption());
+                        getOption("Suomi",SUOMI),
+                        getOption("Ruotsi",RUOTSI));
 
         this.listOfMunicipalities = ImmutableList.of(
-                new OptionBuilder().setI18nText(createI18NAsIs("Jalasjärvi")).setValue("jalasjarvi").createOption(),
-                new OptionBuilder().setI18nText(createI18NAsIs("Janakkala")).setValue("janakkala").createOption(),
-                new OptionBuilder().setI18nText(createI18NAsIs("Joensuu")).setValue("joensuu").createOption(),
-                new OptionBuilder().setI18nText(createI18NAsIs("jokioinen")).setValue("jokioinen").createOption(),
-                new OptionBuilder().setI18nText(createI18NAsIs("Jomala")).setValue("jomala").createOption()
+                getOption("Jalasjärvi","jalasjarvi"),
+                getOption("Janakkala","janakkala"),
+                getOption("Joensuu","joensuu"),
+                getOption("jokioinen","jokioinen"),
+                getOption("Jomala","jomala")
         );
 
         this.listOfLanguageAndLiterature = ImmutableList.of(
-                new OptionBuilder().setI18nText(createI18NAsIs("Suomi äidinkielenä")).setValue("FI").createOption(),
-                new OptionBuilder().setI18nText(createI18NAsIs("Ruotsi äidinkielenä")).setValue("SV").createOption(),
-                new OptionBuilder().setI18nText(createI18NAsIs("Saame äidinkielenä")).setValue("SE").createOption(),
-                new OptionBuilder().setI18nText(createI18NAsIs("Romani äidinkielenä")).setValue("RI").createOption(),
-                new OptionBuilder().setI18nText(createI18NAsIs("Viittomakieli äidinkielenä")).setValue("VK").createOption(),
-                new OptionBuilder().setI18nText(createI18NAsIs("Muu oppilaan äidinkieli")).setValue("XX").createOption(),
-                new OptionBuilder().setI18nText(createI18NAsIs("Suomi toisena kielenä")).setValue("FI_2").createOption(),
-                new OptionBuilder().setI18nText(createI18NAsIs("Ruotsi toisena kielenä")).setValue("SV_2").createOption(),
-                new OptionBuilder().setI18nText(createI18NAsIs("Suomi saamenkielisille")).setValue("FI_SE").createOption(),
-                new OptionBuilder().setI18nText(createI18NAsIs("Suomi viittomakielisille")).setValue("FI_VK").createOption(),
-                new OptionBuilder().setI18nText(createI18NAsIs("Ruotsi viittomakielisille")).setValue("SV_VK").createOption());
+                getOption("Suomi äidinkielenä","FI"),
+                getOption("Ruotsi äidinkielenä","SV"),
+                getOption("Saame äidinkielenä","SE"),
+                getOption("Romani äidinkielenä","RI"),
+                getOption("Viittomakieli äidinkielenä","VK"),
+                getOption("Muu oppilaan äidinkieli","XX"),
+                getOption("Suomi toisena kielenä","FI_2"),
+                getOption("Ruotsi toisena kielenä","SV_2"),
+                getOption("Suomi saamenkielisille","FI_SE"),
+                getOption("Suomi viittomakielisille","FI_VK"),
+                getOption("Ruotsi viittomakielisille","SV_VK"));
 
         this.listOfGenders =
                 ImmutableList.of(
-                        new OptionBuilder().setI18nText(createI18NAsIs("Mies")).setValue("1").createOption(),
-                        new OptionBuilder().setI18nText(createI18NAsIs("Nainen")).setValue("2").createOption());
+                        getOption("Mies","1"),
+                        getOption("Nainen","2"));
 
         this.listOfKausi =
                 ImmutableList.of(
-                        new OptionBuilder().setI18nText(createI18NAsIs("Kevät")).setValue("kausi_k").createOption(),
-                        new OptionBuilder().setI18nText(createI18NAsIs("Syksy")).setValue("kausi_s").createOption());
+                        getOption("Kevät","kausi_k"),
+                        getOption("Syksy","kausi_s"));
 
         this.listOfLukios =
                 ImmutableList.of(
-                        new OptionBuilder().setI18nText(createI18NAsIs("Aktiivi-instituutti")).setValue("1.2.246.562.10.56695937518").createOption(),
-                        new OptionBuilder().setI18nText(createI18NAsIs("Alajärven lukio")).setValue("1.2.246.562.10.54943480589").createOption(),
-                        new OptionBuilder().setI18nText(createI18NAsIs("Alavuden lukio")).setValue("1.2.246.562.10.328060821310").createOption(),
-                        new OptionBuilder().setI18nText(createI18NAsIs("Alkio-opisto")).setValue("1.2.246.562.10.77255241653").createOption()
+                        getOption("Aktiivi-instituutti","1.2.246.562.10.56695937518"),
+                        getOption("Alajärven lukio","1.2.246.562.10.54943480589"),
+                        getOption("Alavuden lukio","1.2.246.562.10.328060821310"),
+                        getOption("Alkio-opisto","1.2.246.562.10.77255241653")
                 );
 
         this.listOfHakukohdekoodit =
                 ImmutableList.of(
-                        new OptionBuilder().setI18nText(createI18NAsIs("Kaivosalan perustutkinto, pk")).setValue("123").createOption(),
-                        new OptionBuilder().setI18nText(createI18NAsIs("Kone- ja metallialan perustutkinto, pk")).setValue("857").createOption(),
-                        new OptionBuilder().setI18nText(createI18NAsIs("Notfound")).setValue("xxx").createOption()
-                );
+                        getOption("Kaivosalan perustutkinto, pk", "123"),
+                        getOption("Kone- ja metallialan perustutkinto, pk", "857"),
+                        getOption("Notfound", "xxx"));
 
         this.listOfBaseEducationCodes = ImmutableList.of(
                 new Code(ULKOMAINEN_TUTKINTO, createI18NAsIs("Ulkomailla suoritettu koulutus")),
@@ -173,6 +172,10 @@ public class KoodistoServiceMockImpl implements KoodistoService {
         );
 
         this.codes.put(BASE_EDUCATION_KOODISTO_URI, this.listOfBaseEducationCodes);
+    }
+
+    private Option getOption(final String labelKey, final String value) {
+        return (Option) new OptionBuilder().setI18nText(createI18NAsIs(labelKey)).setValue(value).build();
     }
 
     @Override

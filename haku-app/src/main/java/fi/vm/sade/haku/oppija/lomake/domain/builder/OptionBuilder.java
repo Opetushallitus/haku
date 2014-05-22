@@ -22,10 +22,6 @@ public class OptionBuilder extends ElementBuilder {
         return this;
     }
 
-    public Option createOption() {
-        return (Option) super.build();
-    }
-
     public OptionBuilder setI18nText(I18nText i18nText) {
         this.i18nText = i18nText;
         return this;

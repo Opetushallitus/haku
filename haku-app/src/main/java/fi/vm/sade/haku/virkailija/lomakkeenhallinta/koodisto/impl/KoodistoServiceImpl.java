@@ -190,7 +190,7 @@ public class KoodistoServiceImpl implements KoodistoService {
             LOGGER.debug("Lukiokoodit, orgOid: " + org.getOid());
             List<String> types = org.getTypes();
             if (types.contains("Oppilaitos")) {
-                opts.add(new OptionBuilder().setI18nText(org.getName()).setValue(org.getOid()).createOption());
+                opts.add((Option) new OptionBuilder().setI18nText(org.getName()).setValue(org.getOid()).build());
             }
         }
         return opts;
@@ -218,7 +218,7 @@ public class KoodistoServiceImpl implements KoodistoService {
                                     @Override
                                     public Option apply(final KoodiType koodiType) {
                                         String version = withVersion ? "#" + koodiType.getVersio() : "";
-                                        return new OptionBuilder().setI18nText(new I18nText(TranslationsUtil.createTranslationsMap(koodiType))).setValue(koodiType.getKoodiUri() + version).createOption();
+                                        return (Option) new OptionBuilder().setI18nText(new I18nText(TranslationsUtil.createTranslationsMap(koodiType))).setValue(koodiType.getKoodiUri() + version).build();
                                     }
                                 })));
     }

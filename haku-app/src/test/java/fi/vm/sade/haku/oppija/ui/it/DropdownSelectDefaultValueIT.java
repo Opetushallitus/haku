@@ -41,9 +41,9 @@ public class DropdownSelectDefaultValueIT extends AbstractSeleniumBase {
     public static final String OPTION_1_ID = "fi";
     public static final String OPTION_2_ID = "sv";
     public static final String OPTION_3_ID = "xx";
-    private final Option option1 = new OptionBuilder().setI18nText(createI18NAsIs(OPTION_1_ID)).setValue(OPTION_1_ID).createOption();
-    private final Option option2 = new OptionBuilder().setI18nText(createI18NAsIs(OPTION_2_ID)).setValue(OPTION_2_ID).createOption();
-    private final Option option3 = new OptionBuilder().setI18nText(createI18NAsIs(OPTION_3_ID)).setValue(OPTION_3_ID).createOption();
+    private final Option option1 = (Option) new OptionBuilder().setI18nText(createI18NAsIs(OPTION_1_ID)).setValue(OPTION_1_ID).build();
+    private final Option option2 = (Option) new OptionBuilder().setI18nText(createI18NAsIs(OPTION_2_ID)).setValue(OPTION_2_ID).build();
+    private final Option option3 = (Option) new OptionBuilder().setI18nText(createI18NAsIs(OPTION_3_ID)).setValue(OPTION_3_ID).build();
     private ApplicationSystemHelper applicationSystemHelper;
     private WebDriver driver;
     private Element dropdownSelect;
