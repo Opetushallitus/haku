@@ -15,6 +15,8 @@
  */
 package fi.vm.sade.haku.virkailija.authentication;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * @author Hannu Lyytikainen
  */
@@ -130,5 +132,24 @@ public class Person {
                 .append(" studentOid: ").append(studentOid);
         return sb.toString();
 
+    }
+
+    public Person mergeWith(Person other) {
+        this.firstNames = other.firstNames != null ? other.firstNames : this.firstNames;
+        this.nickName = other.nickName != null ? other.nickName : this.nickName;
+        this.lastName = other.lastName != null ? other.lastName : this.lastName;
+        this.socialSecurityNumber = other.socialSecurityNumber != null ? other.socialSecurityNumber : this.socialSecurityNumber;
+        this.socialSecurityNumber = other.socialSecurityNumber != null ? other.socialSecurityNumber : this.socialSecurityNumber;
+        this.noSocialSecurityNumber = StringUtils.isBlank(this.socialSecurityNumber);
+        this.email = other.email != null ? other.email : this.email;
+        this.sex = other.sex != null ? other.sex : this.sex;
+        this.homeCity = other.homeCity != null ? other.homeCity : this.homeCity;
+        this.securityOrder = other.securityOrder;
+        this.language = other.language != null ? other.language : this.language;
+        this.nationality = other.nationality != null ? other.nationality : this.nationality;
+        this.contactLanguage = other.contactLanguage != null ? other.contactLanguage : this.contactLanguage;
+        this.personOid = other.personOid != null ? other.personOid : this.personOid;
+        this.studentOid = other.studentOid != null ? other.studentOid : this.studentOid;
+        return this;
     }
 }

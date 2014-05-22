@@ -80,7 +80,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             newPerson = createPerson(person);
         }
 
-        return newPerson;
+        person.mergeWith(newPerson);
+
+        return person;
     }
 
     @Override
