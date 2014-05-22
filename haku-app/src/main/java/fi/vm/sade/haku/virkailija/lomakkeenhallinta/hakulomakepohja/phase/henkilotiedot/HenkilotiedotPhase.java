@@ -201,13 +201,13 @@ public final class HenkilotiedotPhase {
 
         asuinmaaFI.addChild(kotikunta);
 
-        RelatedQuestionComplexRule relatedQuestionRule2 = ElementUtil.createRegexpRule(asuinmaa, NOT_FI);
-        relatedQuestionRule2.addChild(
+        RelatedQuestionComplexRule asuinmaaEiOleSuomiRule = ElementUtil.createRegexpRule(asuinmaa, NOT_FI);
+        asuinmaaEiOleSuomiRule.addChild(
                 TextQuestion("osoiteUlkomaa").labelKey("osoite").inline().size(40).required().build(formParameters),
                 TextQuestion("postinumeroUlkomaa").inline().size(12).required().build(formParameters),
                 TextQuestion("kaupunkiUlkomaa").labelKey("kaupunki").inline().size(25).required().build(formParameters));
 
-        asuinmaa.addChild(relatedQuestionRule2);
+        asuinmaa.addChild(asuinmaaEiOleSuomiRule);
         asuinmaa.addChild(asuinmaaFI);
 
         henkilotiedotTeema.addChild(asuinmaa);

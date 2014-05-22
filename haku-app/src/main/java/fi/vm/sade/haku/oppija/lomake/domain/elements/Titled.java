@@ -25,7 +25,6 @@ public abstract class Titled extends Element {
 
     private I18nText i18nText;
     private I18nText verboseHelp;
-    private boolean inline = false;
 
     public Titled(final String id, final I18nText i18nText) {
         super(id);

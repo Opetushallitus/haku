@@ -19,6 +19,7 @@ package fi.vm.sade.haku.oppija.lomake.domain.elements.questions;
 import com.google.common.collect.ImmutableList;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.Titled;
 import fi.vm.sade.haku.oppija.lomake.validation.Validator;
 import fi.vm.sade.haku.oppija.lomake.validation.validators.ValueSetValidator;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
@@ -26,7 +27,7 @@ import org.springframework.data.annotation.Transient;
 
 import java.util.*;
 
-public abstract class OptionQuestion extends Question {
+public abstract class OptionQuestion extends Titled {
 
     private static final long serialVersionUID = -2304711424350028559L;
 
