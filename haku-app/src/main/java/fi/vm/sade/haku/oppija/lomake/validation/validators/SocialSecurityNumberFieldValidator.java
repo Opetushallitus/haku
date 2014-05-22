@@ -54,7 +54,7 @@ public class SocialSecurityNumberFieldValidator extends FieldValidator {
     }
 
     public SocialSecurityNumberFieldValidator(final String socialSecurityNumberId) {
-        super(socialSecurityNumberId, ElementUtil.createI18NText(GENERIC_ERROR_MESSAGE, "form_errors_yhteishaku_kevat"));
+        super(socialSecurityNumberId, ElementUtil.createI18NText(GENERIC_ERROR_MESSAGE, "form_common"));
         this.socialSecurityNumberPattern = Pattern.compile(SOCIAL_SECURITY_NUMBER_PATTERN);
         fmt = new SimpleDateFormat("ddMMyyyy");
         fmt.setLenient(false);

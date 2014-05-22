@@ -32,7 +32,6 @@ import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.text.MessageFormat;
 import java.util.*;
 
 import static fi.vm.sade.haku.oppija.lomake.domain.I18nText.LANGS;
@@ -66,34 +65,30 @@ public final class ElementUtil {
         return formParameters.getI18nText(key);
     }
 
-    public static I18nText createI18NText(final String key, final String bundleName, final String... params) {
-        return createI18NText(key, bundleName, false, params);
-    }
-
-    public static I18nText createI18NText(final String key, final String bundleName, final boolean keepFirst,
-                                          final String... params) {
+    public static I18nText createI18NText(final String key, final String bundleName) { // Todo get rid of this function
         Validate.notNull(key, "key can't be null");
         Validate.notNull(bundleName, "bundleName can't be null");
 
         Map<String, String> translations = new HashMap<String, String>();
         for (String lang : LANGS) {
 
-
             String text = getString(bundleName, key.toLowerCase(), lang);
 
             if (text != null) {
-                if (keepFirst) {
-                    // Add space at the beginning of string, making it appear before regular words in
-                    // alphabetical order.
-                    text = "\u0020" + text;
-                }
-                if (params != null && params.length > 0) {
-                    text = MessageFormat.format(text, (Object[]) params);
-                }
                 translations.put(lang, text);
             }
         }
         return new I18nText(translations);
+    }
+
+    public static I18nText addSpaceAtTheBeginning(final I18nText i18nText) {
+        Map<String, String> newTranslations = new HashMap<String, String>();
+        for (Map.Entry<String, String> stringStringEntry : i18nText.getTranslations().entrySet()) {
+            // Add space at the beginning of string, making it appear before regular words in
+            // alphabetical order.
+            newTranslations.put(stringStringEntry.getKey(), "\u0020" + stringStringEntry.getValue());
+        }
+        return new I18nText(newTranslations);
     }
 
     private static String getString(final String bundleName, final String key, final String lang) {
