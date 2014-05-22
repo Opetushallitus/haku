@@ -222,7 +222,7 @@ public class ValintaServiceTest {
         jonosijat.add(sija);
         jono.setJonosijat(jonosijat);
         jonot.add(jono);
-        vaihe.setValintatapajono(jonot);
+        vaihe.setValintatapajonot(jonot);
         valinnanvaiheet.add(vaihe);
         hakukohdeDTO.setValinnanvaihe(valinnanvaiheet);
 

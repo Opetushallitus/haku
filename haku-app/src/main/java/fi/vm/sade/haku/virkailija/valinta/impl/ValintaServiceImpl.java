@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import javax.ws.rs.HEAD;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 import java.util.Date;
 
@@ -55,6 +56,16 @@ public class ValintaServiceImpl implements ValintaService {
                     return new Date(json.getAsJsonPrimitive().getAsLong());
                 }
             });
+            FieldNamingStrategy fieldNamingStrategy = new FieldNamingStrategy() {
+                @Override
+                public String translateName(Field f) {
+                    if (f.getName().equals("valintatapajonooid")) {
+                        return "oid";
+                    }
+                    return f.getName();
+                }
+            };
+            builder.setFieldNamingStrategy(fieldNamingStrategy);
             Gson gson = builder.create();
             return gson.fromJson(client.getAsString(url), HakemusDTO.class);
         } catch (IOException e) {

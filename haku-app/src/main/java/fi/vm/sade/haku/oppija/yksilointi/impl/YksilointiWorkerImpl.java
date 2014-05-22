@@ -159,7 +159,7 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
                     this.applicationDAO.update(new Application(application.getOid()), application);
                     LOGGER.debug("Reprocessing " + application.getOid() + " done");
                 }
-                if (sendMail && redo == "FULL") {
+                if (sendMail && redo.equals("FULL")) {
                     try {
                         sendMail(application);
                     } catch (EmailException e) {
