@@ -6,6 +6,7 @@ import com.google.common.collect.ImmutableList;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.builder.ThemeBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionComplexRule;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.*;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
@@ -17,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.RadioBuilder.Radio;
-import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.createI18NText;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.*;
 
 public final class KielitaitokysymyksetTheme {
 
@@ -249,7 +250,9 @@ public final class KielitaitokysymyksetTheme {
     private static Element createKielitutkinto(final String id, final FormParameters formParameters) {
         I18nText i18NText = createI18NText("form.kielitaito." + CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, id).replace('_', '.'), formParameters.getFormMessagesBundle());
         return Radio(id)
-                .addDefaultTrueFalse()
+                .addOptions(ImmutableList.of(
+                        new Option(createI18NText("form.yleinen.kylla", formParameters), KYLLA),
+                        new Option(createI18NText("form.yleinen.ei", formParameters), EI)))
                 .required()
                 .i18nText(i18NText)
                 .build(formParameters);

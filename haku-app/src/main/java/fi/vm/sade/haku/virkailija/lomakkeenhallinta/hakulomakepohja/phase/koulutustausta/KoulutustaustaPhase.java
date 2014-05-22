@@ -2,6 +2,7 @@
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.koulutustausta;
 
 import com.google.common.base.Function;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
 import fi.vm.sade.haku.oppija.lomake.domain.builder.DropdownSelectBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.builder.RadioBuilder;
@@ -9,6 +10,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.builder.TextQuestionBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.builder.ThemeBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Notification;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionComplexRule;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.*;
 import fi.vm.sade.haku.oppija.lomake.validation.validators.AlwaysFailsValidator;
@@ -140,7 +142,9 @@ public final class KoulutustaustaPhase {
         RelatedQuestionComplexRule paattotodistusvuosiPeruskouluRule = createRegexpRule(paattotodistusvuosiPeruskoulu.getId(), "^(19[0-9][0-9]|200[0-9]|201[0-1])$");
 
         Element koulutuspaikkaAmmatillisenTutkintoon = Radio("KOULUTUSPAIKKA_AMMATILLISEEN_TUTKINTOON")
-                .addDefaultTrueFalse()
+                .addOptions(ImmutableList.of(
+                        new Option(createI18NText("form.yleinen.kylla", formParameters), KYLLA),
+                        new Option(createI18NText("form.yleinen.ei", formParameters), EI)))
                 .required()
                 .build(formParameters);
 
@@ -191,7 +195,9 @@ public final class KoulutustaustaPhase {
             lukioRule.addChild(tuoreYoTodistus);
 
             Element suorittanutAmmatillisenTutkinnonLukio = Radio("ammatillinenTutkintoSuoritettu")
-                    .addDefaultTrueFalse()
+                    .addOptions(ImmutableList.of(
+                            new Option(createI18NText("form.yleinen.kylla", formParameters), KYLLA),
+                            new Option(createI18NText("form.yleinen.ei", formParameters), EI)))
                     .required()
                     .build(formParameters);
             lukioRule.addChild(suorittanutAmmatillisenTutkinnonLukio);
@@ -224,7 +230,9 @@ public final class KoulutustaustaPhase {
         baseEducation.addChild(pkKysymyksetRule);
 
         Element suorittanutAmmatillisenTutkinnon = Radio("ammatillinenTutkintoSuoritettu")
-                .addDefaultTrueFalse()
+                .addOptions(ImmutableList.of(
+                        new Option(createI18NText("form.yleinen.kylla", formParameters), KYLLA),
+                        new Option(createI18NText("form.yleinen.ei", formParameters), EI)))
                 .required()
                 .build(formParameters);
 

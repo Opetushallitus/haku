@@ -38,24 +38,13 @@ public abstract class OptionQuestion extends Titled {
     @Transient
     private Map<String, List<Option>> optionsSortedByText;
 
-    protected OptionQuestion(final String id, final I18nText i18nText) {
-        super(id, i18nText);
-    }
-
     protected OptionQuestion(final String id, final I18nText i18nText, final List<Option> options) {
-        this(id, i18nText);
-        addOptions(options);
-    }
-
-    public final void addOptions(final List<Option> options) {
+        super(id, i18nText);
         for (Option option : options) {
-            addOption(option);
+            this.optionsMap.put(option.getValue(), option);
+            this.options.add(option);
         }
-    }
-
-    private void addOption(final Option option) {
-        this.optionsMap.put(option.getValue(), option);
-        this.options.add(option);
+        initSortedOptions();
     }
 
     public List<Option> getOptions() {
@@ -67,9 +56,6 @@ public abstract class OptionQuestion extends Titled {
     }
 
     public Map<String, List<Option>> getOptionsSortedByText() {
-        if (optionsSortedByText == null) {
-            initSortedOptions();
-        }
         return optionsSortedByText;
     }
 

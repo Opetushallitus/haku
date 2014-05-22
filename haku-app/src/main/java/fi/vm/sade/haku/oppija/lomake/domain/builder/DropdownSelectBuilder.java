@@ -62,13 +62,12 @@ public class DropdownSelectBuilder extends ElementBuilder {
 
     @Override
     public Element buildImpl() {
-        DropdownSelect dropdownSelect = new DropdownSelect(id, this.i18nText, defaultValueAttribute);
         if (defaultOption != null) {
             for (Option opt : options) {
                 opt.setDefaultOption(opt.getValue().equalsIgnoreCase(defaultOption));
             }
         }
-        dropdownSelect.addOptions(this.options);
+        DropdownSelect dropdownSelect = new DropdownSelect(id, this.i18nText, this.options, defaultValueAttribute);
         dropdownSelect.setInline(inline);
         return dropdownSelect;
     }

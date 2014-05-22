@@ -16,6 +16,7 @@
 
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.henkilotiedot;
 
+import com.google.common.collect.ImmutableList;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.builder.DropdownSelectBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.builder.ElementBuilder;
@@ -105,7 +106,9 @@ public final class HenkilotiedotPhase {
 
         // Ulkomaalaisten tunnisteet
         Element onkoSinullaSuomalainenHetu = Radio("onkoSinullaSuomalainenHetu")
-                .addDefaultTrueFalse()
+                .addOptions(ImmutableList.of(
+                        new Option(createI18NText("form.yleinen.kylla", formParameters), KYLLA),
+                        new Option(createI18NText("form.yleinen.ei", formParameters), EI)))
                 .requiredInline()
                 .build(formParameters);
 
