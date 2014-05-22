@@ -54,6 +54,11 @@ public class FormGeneratorMock implements FormGenerator {
     }
 
     @Override
+    public List<ApplicationSystem> getApplicationSystems() {
+        return generate();
+    }
+
+    @Override
     public List<ApplicationSystem> generate() {
         List<ApplicationSystem> asList = Lists.newArrayList();
         asList.add(createApplicationSystem());

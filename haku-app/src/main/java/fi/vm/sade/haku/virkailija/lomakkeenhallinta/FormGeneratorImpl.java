@@ -35,6 +35,11 @@ public class FormGeneratorImpl implements FormGenerator {
     }
 
     @Override
+    public List<ApplicationSystem> getApplicationSystems() {
+        return hakuService.getApplicationSystems();
+    }
+
+    @Override
     public List<ApplicationSystem> generate() {
         List<ApplicationSystem> applicationSystems = hakuService.getApplicationSystems();
         List<ApplicationSystem> asList = Lists.newArrayList();

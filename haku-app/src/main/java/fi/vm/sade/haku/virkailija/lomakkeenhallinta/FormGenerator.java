@@ -27,5 +27,7 @@ public interface FormGenerator {
 
     ApplicationSystem generateOne(String oid);
 
+    List<ApplicationSystem> getApplicationSystems();
+
     List<ApplicationSystem> generate();
 }
