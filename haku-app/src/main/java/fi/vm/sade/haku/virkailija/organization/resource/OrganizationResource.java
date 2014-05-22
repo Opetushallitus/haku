@@ -53,7 +53,7 @@ public class OrganizationResource {
                                                 @QueryParam("learningInstitutionType") final String learningInstitutionType,
                                                 @QueryParam("onlyPassive") @DefaultValue("false") final boolean onlyPassive) {
         LOGGER.debug("Search organizations q: {}, orgType: {}, loiType: {}, passive: {}",
-                new String[]{searchString, organizationType, learningInstitutionType, String.valueOf(onlyPassive)});
+                searchString, organizationType, learningInstitutionType, String.valueOf(onlyPassive));
         List<Organization> listOfOrganization = getOrganizations(searchString, organizationType,
                 learningInstitutionType, onlyPassive);
         return toMap(listOfOrganization);
@@ -112,8 +112,8 @@ public class OrganizationResource {
                                                 final String learningInstitutionType,
                                                 final boolean onlyPassive) {
         LOGGER.debug("getOrganizations {} {} {} {}",
-                new String[]{searchString, organizationType, learningInstitutionType,
-                        String.valueOf(onlyPassive)});
+                searchString, organizationType, learningInstitutionType,
+                        String.valueOf(onlyPassive));
         SearchCriteria criteria = new SearchCriteria();
         criteria.setSearchStr(searchString);
         criteria.setOrganisaatioTyyppi(organizationType);

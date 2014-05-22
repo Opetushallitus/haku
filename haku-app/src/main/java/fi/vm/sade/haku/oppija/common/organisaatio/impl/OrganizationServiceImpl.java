@@ -67,13 +67,12 @@ public class OrganizationServiceImpl implements OrganizationService {
     public List<Organization> search(final SearchCriteria searchCriteria) {
 
         LOG.debug("search organization kunta: {}, oidRestrictions: {}, loiType: {}, orgType: {}, q: {}, skipParents: {}",
-                new String[]{
-                        searchCriteria.getKunta(),
-                        String.valueOf(searchCriteria.getOidRestrictionList().size()),
-                        searchCriteria.getOppilaitosTyyppi(),
-                        searchCriteria.getOrganisaatioTyyppi(),
-                        searchCriteria.getSearchStr(),
-                        String.valueOf(searchCriteria.getSkipParents())});
+                searchCriteria.getKunta(),
+                String.valueOf(searchCriteria.getOidRestrictionList().size()),
+                searchCriteria.getOppilaitosTyyppi(),
+                searchCriteria.getOrganisaatioTyyppi(),
+                searchCriteria.getSearchStr(),
+                String.valueOf(searchCriteria.getSkipParents()));
 
         final List<OrganisaatioPerustieto> result = service.searchBasicOrganisaatios(searchCriteria);
 
