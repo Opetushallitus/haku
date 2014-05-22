@@ -19,6 +19,8 @@ package fi.vm.sade.haku.virkailija.lomakkeenhallinta.resources;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.FormGenerator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -37,6 +39,8 @@ import java.util.List;
 @Path("/lomakkeenhallinta")
 // @Secured("ROLE_APP_HAKEMUS_CRUD")
 public class FormBuilderResource {
+
+    private static final Logger log = LoggerFactory.getLogger(FormBuilderResource.class);
 
     private final FormGenerator formGenerator;
     private final ApplicationSystemService applicationSystemService;
@@ -59,9 +63,14 @@ public class FormBuilderResource {
     @GET
     @Produces(MediaType.TEXT_PLAIN + ";charset=UTF-8")
     public Response generate() throws URISyntaxException {
-        List<ApplicationSystem> applicationSystems = formGenerator.generate();
+        List<ApplicationSystem> applicationSystems = formGenerator.getApplicationSystems();
+        int asCount = applicationSystems.size();
+        int index = 1;
+        log.info("Starting to generate {} application systems", asCount);
         for (ApplicationSystem applicationSystem : applicationSystems) {
-            applicationSystemService.save(applicationSystem);
+            log.info("Generating application system {} ({}, {})", applicationSystem.getId(), index++, asCount);
+            applicationSystemService.save(formGenerator.generateOne(applicationSystem.getId()));
+            log.info("Generated application system {}", applicationSystem.getId());
         }
         return Response.seeOther(new URI("/lomake/")).build();
     }
