@@ -218,7 +218,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
                 ao.addPistetieto(buildPistetieto(hakutoive, koe));
             }
 
-            for (ValintatapajonoDTO valintatapajonoDTO : vaihe.getValintatapajono()) {
+            for (ValintatapajonoDTO valintatapajonoDTO : vaihe.getValintatapajonot()) {
                 if (ao.getJonoId() == null || valintatapajonoDTO.getOid().equals(ao.getJonoId())) {
                     for (JonosijaDTO jonosijaDTO : valintatapajonoDTO.getJonosijat()) {
                         for (FunktioTulosDTO funktioTulosDTO : jonosijaDTO.getFunktioTulokset()) {
