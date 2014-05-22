@@ -16,13 +16,12 @@
 
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.impl;
 
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationPeriod;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystemBuilder;
-import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakuService;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
@@ -43,7 +42,7 @@ public class HakuServiceMockImpl implements HakuService {
     static {
         asList.add(new ApplicationSystemBuilder()
                 .addId("haku1")
-                .addName(new I18nText(ImmutableMap.of("fi", "testi haku 1 " + HAKUKAUSI_SYKSY)))
+                .addName(ElementUtil.createI18NAsIs("testi haku 1 " + HAKUKAUSI_SYKSY))
                 .addApplicationPeriods(Lists.newArrayList(new ApplicationPeriod(new Date(), getDate(100))))
                 .addHakukausiUri(HAKUKAUSI_SYKSY)
                 .addHakukausiVuosi(2014)
@@ -51,7 +50,7 @@ public class HakuServiceMockImpl implements HakuService {
                 .get());
         asList.add(new ApplicationSystemBuilder()
                 .addId("1.2.246.562.5.50476818906")
-                .addName(new I18nText(ImmutableMap.of("fi", "testi haku 2 " + OppijaConstants.HAKUKAUSI_KEVAT)))
+                .addName(ElementUtil.createI18NAsIs("testi haku 2 " + OppijaConstants.HAKUKAUSI_KEVAT))
                 .addApplicationPeriods(Lists.newArrayList(new ApplicationPeriod(new Date(), getDate(100))))
                 .addHakukausiUri(OppijaConstants.HAKUKAUSI_KEVAT)
                 .addApplicationSystemType(VARSINAINEN_HAKU)
@@ -59,7 +58,7 @@ public class HakuServiceMockImpl implements HakuService {
                 .get());
         asList.add(new ApplicationSystemBuilder()
                 .addId("haku3")
-                .addName(new I18nText(ImmutableMap.of("fi", "testi haku 3" + OppijaConstants.LISA_HAKU)))
+                .addName(ElementUtil.createI18NAsIs("testi haku 3" + OppijaConstants.LISA_HAKU))
                 .addApplicationPeriods(Lists.newArrayList(new ApplicationPeriod(new Date(), getDate(100))))
                 .addHakukausiUri(HAKUKAUSI_SYKSY)
                 .addHakukausiVuosi(2014)
@@ -67,7 +66,7 @@ public class HakuServiceMockImpl implements HakuService {
                 .get());
         asList.add(new ApplicationSystemBuilder()
                 .addId("haku4")
-                .addName(new I18nText(ImmutableMap.of("fi", "testi haku 4 " + OppijaConstants.LISA_HAKU)))
+                .addName(ElementUtil.createI18NAsIs("testi haku 4 " + OppijaConstants.LISA_HAKU))
                 .addApplicationPeriods(Lists.newArrayList(new ApplicationPeriod(getDate(-100), getDate(-1))))
                 .addHakukausiUri(HAKUKAUSI_SYKSY)
                 .addHakukausiVuosi(2014)
@@ -75,7 +74,7 @@ public class HakuServiceMockImpl implements HakuService {
                 .get());
         asList.add(new ApplicationSystemBuilder()
                 .addId("haku5")
-                .addName(new I18nText(ImmutableMap.of("fi", "Perusopetuksen jälkeisen valmistavan koulutuksen kesän 2014 haku")))
+                .addName(ElementUtil.createI18NAsIs("Perusopetuksen jälkeisen valmistavan koulutuksen kesän 2014 haku"))
                 .addApplicationPeriods(Lists.newArrayList(new ApplicationPeriod(new Date(), getDate(100))))
                 .addHakukausiUri(HAKUKAUSI_KEVAT)
                 .addHakukausiVuosi(2014)
