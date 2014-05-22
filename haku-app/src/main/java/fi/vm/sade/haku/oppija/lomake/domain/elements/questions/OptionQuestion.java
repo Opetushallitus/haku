@@ -105,8 +105,7 @@ public abstract class OptionQuestion extends Titled {
             values.add(option.getValue());
         }
 
-        listOfValidator.add(new ValueSetValidator(this.getId(), ElementUtil.createI18NText("yleinen.virheellinenArvo",
-                "form_common"), values));
+        listOfValidator.add(new ValueSetValidator(this.getId(), ElementUtil.createI18NText("yleinen.virheellinenArvo"), values));
         return listOfValidator;
     }
 }

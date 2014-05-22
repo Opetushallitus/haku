@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import java.util.*;
 
 import static fi.vm.sade.haku.oppija.lomake.domain.I18nText.LANGS;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.FORM_COMMON_BUNDLE_NAME;
 
 public class I18nBundle {
 
@@ -15,7 +16,7 @@ public class I18nBundle {
     private final Map<String, I18nText> i18nBundle = new HashMap<String, I18nText>();
 
     public I18nBundle(final String bundleName) {
-        ResourceBundle commonBundle = ResourceBundle.getBundle("form_common", new Locale("fi"));
+        ResourceBundle commonBundle = ResourceBundle.getBundle(FORM_COMMON_BUNDLE_NAME, new Locale("fi"));
         Set<String> propertyKeys = commonBundle.keySet();
 
         try {
@@ -51,7 +52,7 @@ public class I18nBundle {
         }
 
         if (text == null) {
-            ResourceBundle commonBundle = ResourceBundle.getBundle("form_common", new Locale(lang));
+            ResourceBundle commonBundle = ResourceBundle.getBundle(FORM_COMMON_BUNDLE_NAME, new Locale(lang));
             if (commonBundle.containsKey(lowerCaseKey)) {
                 text = commonBundle.getString(lowerCaseKey);
             }

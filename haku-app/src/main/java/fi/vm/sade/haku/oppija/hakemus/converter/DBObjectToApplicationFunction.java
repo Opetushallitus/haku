@@ -22,8 +22,6 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.SocialSecurityNumber
 import fi.vm.sade.haku.oppija.lomake.service.EncrypterService;
 import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;

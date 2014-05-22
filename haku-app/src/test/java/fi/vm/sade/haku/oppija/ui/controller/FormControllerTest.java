@@ -105,7 +105,7 @@ public class FormControllerTest {
     @Test
     public void testSavePhaseInvalid() throws Exception {
         HashMap<String, I18nText> errorMessages = new HashMap<String, I18nText>();
-        errorMessages.put("", ElementUtil.createI18NText("", "form_messages_yhteishaku_syksy"));
+        errorMessages.put("", ElementUtil.createI18NAsIs(""));
         this.modelResponse.setErrorMessages(errorMessages);
         Viewable viewable = (Viewable) formController.savePhase(APPLICATION_SYSTEM_ID, FIRST_PHASE_ID, new MultivaluedMapImpl()).getEntity();
         assertEquals(FormController.ROOT_VIEW, viewable.getTemplateName());

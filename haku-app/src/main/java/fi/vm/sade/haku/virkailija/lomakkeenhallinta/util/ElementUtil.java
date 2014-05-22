@@ -35,6 +35,7 @@ import org.slf4j.LoggerFactory;
 import java.util.*;
 
 import static fi.vm.sade.haku.oppija.lomake.domain.I18nText.LANGS;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.FORM_COMMON_BUNDLE_NAME;
 
 public final class ElementUtil {
 
@@ -63,6 +64,10 @@ public final class ElementUtil {
 
     public static I18nText createI18NText(final String key, final FormParameters formParameters) {
         return formParameters.getI18nText(key);
+    }
+
+    public static I18nText createI18NText(final String key) { // Todo get rid of this function
+        return createI18NText(key, OppijaConstants.FORM_COMMON_BUNDLE_NAME);
     }
 
     public static I18nText createI18NText(final String key, final String bundleName) { // Todo get rid of this function
@@ -98,7 +103,7 @@ public final class ElementUtil {
             if (bundle.containsKey(key)) {
                 text = bundle.getString(key);
             } else {
-                ResourceBundle commonBundle = ResourceBundle.getBundle("form_common", new Locale(lang));
+                ResourceBundle commonBundle = ResourceBundle.getBundle(FORM_COMMON_BUNDLE_NAME, new Locale(lang));
                 text = commonBundle.getString(key);
             }
         } catch (MissingResourceException mre) {
@@ -167,7 +172,7 @@ public final class ElementUtil {
         element.setValidator(
                 new RequiredFieldValidator(
                         element.getId(),
-                        ElementUtil.createI18NText("yleinen.pakollinen", formParameters.getFormMessagesBundle())));
+                        ElementUtil.createI18NText("yleinen.pakollinen", formParameters)));
     }
 
     public static void addUniqueApplicantValidator(final Element element, final String asType) {

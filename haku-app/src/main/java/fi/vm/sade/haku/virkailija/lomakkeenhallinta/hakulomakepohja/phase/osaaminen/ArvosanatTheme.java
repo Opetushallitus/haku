@@ -27,7 +27,7 @@ public final class ArvosanatTheme {
 
         GradesTable gradesTablePK = new GradesTable(true, formParameters);
         GradeGrid grid_pk = gradesTablePK.createGradeGrid("grid_pk", formParameters);
-        grid_pk.setHelp(createI18NText("form.arvosanat.help", formParameters.getFormMessagesBundle()));
+        grid_pk.setHelp(createI18NText("form.arvosanat.help", formParameters));
         setHelp(grid_pk, "form.arvosanat.help", formParameters);
         relatedQuestionPK.addChild(grid_pk);
         arvosanatTheme.addChild(relatedQuestionPK);
@@ -44,7 +44,7 @@ public final class ArvosanatTheme {
                     KESKEYTYNYT, ULKOMAINEN_TUTKINTO);
 
             relatedQuestionEiTutkintoa.addChild(
-                    new Text("nogradegrid", createI18NText("form.arvosanat.eiKysyta", formParameters.getFormMessagesBundle())));
+                    new Text("nogradegrid", createI18NText("form.arvosanat.eiKysyta", formParameters)));
             arvosanatTheme.addChild(relatedQuestionEiTutkintoa);
         }
         return arvosanatTheme;

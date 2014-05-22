@@ -57,7 +57,7 @@ public class SsnUniqueConcreteValidator implements Validator {
             Matcher matcher = socialSecurityNumberPattern.matcher(ssn);
             if (matcher.matches() && this.applicationDAO.checkIfExistsBySocialSecurityNumber(asId, ssn)) {
                 ValidationResult result = new ValidationResult("Henkilotunnus",
-                        ElementUtil.createI18NText("henkilotiedot.hetuKaytetty", "form_common"));
+                        ElementUtil.createI18NText("henkilotiedot.hetuKaytetty"));
                 return new ValidationResult(Arrays.asList(new ValidationResult[]{validationResult, result}));
             }
         }

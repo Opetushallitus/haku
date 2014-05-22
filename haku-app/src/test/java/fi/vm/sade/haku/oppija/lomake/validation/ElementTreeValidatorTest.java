@@ -82,7 +82,7 @@ public class ElementTreeValidatorTest {
     @Test()
     public void testValidateRequiredElement() throws Exception {
         textQuestion.setValidator
-                (new RequiredFieldValidator("id", createI18NText("Error message", "form_common")));
+                (new RequiredFieldValidator("id", createI18NText("Error message")));
         ValidationResult validationResult = elementTreeValidator.validate(new ValidationInput(textQuestion, new HashMap<String, String>(),
                 null, null));
         assertTrue(validationResult.hasErrors());

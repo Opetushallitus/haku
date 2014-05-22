@@ -26,6 +26,9 @@ public final class OppijaConstants {
         // Utility class, no need for instances
     }
 
+
+    public static String FORM_COMMON_BUNDLE_NAME = "form_common";
+
     /*
     names of the fields that hold the information about the education degree
     of a selected application option

@@ -172,7 +172,7 @@ public final class KoulutustaustaPhase {
             RelatedQuestionComplexRule tuoreYoTodistus = createVarEqualsToValueRule(lukioPaattotodistusVuosi.getId(), hakukausiVuosiStr);
             tuoreYoTodistus.addChild(new DropdownSelectBuilder("lahtokoulu")
                     .defaultValueAttribute("")
-                    .addOption(addSpaceAtTheBeginning(ElementUtil.createI18NText("form.koulutustausta.lukio.valitseOppilaitos", formParameters.getFormMessagesBundle())), "")
+                    .addOption(addSpaceAtTheBeginning(ElementUtil.createI18NText("form.koulutustausta.lukio.valitse.oppilaitos", formParameters)), "")
                     .addOptions(koodistoService.getLukioKoulukoodit())
                     .required()
                     .build(formParameters));
