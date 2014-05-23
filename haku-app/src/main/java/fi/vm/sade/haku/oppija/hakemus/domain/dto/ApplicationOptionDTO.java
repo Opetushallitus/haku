@@ -8,8 +8,8 @@ import fi.vm.sade.sijoittelu.tulos.dto.ValintatuloksenTila;
 
 import java.util.*;
 
-import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static org.apache.commons.lang3.StringUtils.isBlank;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 public class ApplicationOptionDTO {
 

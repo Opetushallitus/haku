@@ -19,6 +19,7 @@ package fi.vm.sade.haku.oppija.ui.it;
 import fi.vm.sade.haku.oppija.common.it.AbstractFormTest;
 import fi.vm.sade.haku.oppija.lomake.ApplicationSystemHelper;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
+import fi.vm.sade.haku.oppija.lomake.domain.builder.CheckBoxBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.builders.FormModelBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Text;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.CheckBox;
@@ -42,7 +43,7 @@ public class CheckBoxIT extends AbstractFormTest {
 
     @Before
     public void init() throws IOException {
-        checkBox = new CheckBox(CHECKBOX_ID, createI18NAsIs("foo"));
+        checkBox = (CheckBox) CheckBoxBuilder.Checkbox(CHECKBOX_ID).i18nText(createI18NAsIs("foo")).build();
         checkBox.addChild(TEXT_ELEMENT);
         ApplicationSystem applicationSystem = new FormModelBuilder().buildDefaultFormWithFields(checkBox);
         this.applicationSystemHelper = updateModelAndCreateFormModelHelper(applicationSystem);

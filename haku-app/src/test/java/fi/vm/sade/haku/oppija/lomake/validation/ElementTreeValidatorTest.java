@@ -16,15 +16,17 @@
 
 package fi.vm.sade.haku.oppija.lomake.validation;
 
-import fi.vm.sade.haku.oppija.lomake.dao.impl.FormServiceMockImpl;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
+import fi.vm.sade.haku.oppija.lomake.domain.builder.TextQuestionBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.TextQuestion;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.haku.oppija.lomake.util.ElementTree;
 import fi.vm.sade.haku.oppija.lomake.validation.validators.RequiredFieldValidator;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormGeneratorMock;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormGenerator;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormGeneratorImpl;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.impl.KoodistoServiceMockImpl;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.impl.HakuServiceMockImpl;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -41,17 +43,17 @@ import static org.mockito.Mockito.when;
 
 public class ElementTreeValidatorTest {
 
-    private static final String ASID = "dummyAsid";
+    private static final String ASID = "haku1";
     private TextQuestion textQuestion;
     private ElementTreeValidator elementTreeValidator;
     private ApplicationSystemService applicationSystemServiceMock;
 
     @Before
     public void setUp() throws Exception {
-        textQuestion = new TextQuestion("id", createI18NAsIs("title"));
-        FormGeneratorMock formGeneratorMock = new FormGeneratorMock(new KoodistoServiceMockImpl(), ASID);
+        textQuestion = (TextQuestion) new TextQuestionBuilder("id").i18nText(createI18NAsIs("title")).build();
+        FormGenerator formGeneratorMock = new FormGeneratorImpl(new KoodistoServiceMockImpl(), new HakuServiceMockImpl());
         applicationSystemServiceMock = mock(ApplicationSystemService.class);
-        when(applicationSystemServiceMock.getApplicationSystem(anyString())).thenReturn(formGeneratorMock.createApplicationSystem());
+        when(applicationSystemServiceMock.getApplicationSystem(anyString())).thenReturn(formGeneratorMock.generate(ASID));
         SsnUniqueConcreteValidator ssnUniqueConcreteValidator = mock(SsnUniqueConcreteValidator.class);
         SsnAndPreferenceUniqueConcreteValidator ssnAndPreferenceUniqueConcreteValidator = mock(SsnAndPreferenceUniqueConcreteValidator.class);
         PreferenceConcreteValidator preferenceConcreteValidator = mock(PreferenceConcreteValidator.class);
@@ -80,7 +82,7 @@ public class ElementTreeValidatorTest {
     @Test()
     public void testValidateRequiredElement() throws Exception {
         textQuestion.setValidator
-                (new RequiredFieldValidator("id", createI18NText("Error message", "form_errors_yhteishaku_syksy")));
+                (new RequiredFieldValidator("id", createI18NText("Error message")));
         ValidationResult validationResult = elementTreeValidator.validate(new ValidationInput(textQuestion, new HashMap<String, String>(),
                 null, null));
         assertTrue(validationResult.hasErrors());

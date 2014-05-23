@@ -42,6 +42,7 @@ public final class DefaultValues {
         koulutustausta_lk.put(OppijaConstants.LUKIO_PAATTOTODISTUS_VUOSI, "2012");
         koulutustausta_lk.put("ammatillinenTutkintoSuoritettu", "false");
         koulutustausta_lk.put(OppijaConstants.LUKIO_KIELI, "FI");
+        koulutustausta_lk.put(OppijaConstants.YLIOPPILASTUTKINTO, OppijaConstants.YLIOPPILASTUTKINTO_FI);
 
         koulutustausta_pk.put("POHJAKOULUTUS", "1");
         koulutustausta_pk.put(OppijaConstants.PERUSOPETUS_PAATTOTODISTUSVUOSI, "2012");
@@ -64,20 +65,8 @@ public final class DefaultValues {
         return getNewMap(henkilotiedot, values);
     }
 
-    public Map<String, String> getKoulutustausta_pk(final Map<String, String> values) {
-        return getNewMap(koulutustausta_pk, values);
-    }
-
-    public Map<String, String> getKoulutustausta_lk(final Map<String, String> values) {
-        return getNewMap(koulutustausta_lk, values);
-    }
-
     public Map<String, String> getPreference1(final Map<String, String> values) {
         return getNewMap(preference1, values);
-    }
-
-    public Map<String, String> getLisatiedot(final Map<String, String> values) {
-        return getNewMap(lisatiedot, values);
     }
 
     private Map<String, String> getNewMap(final Map<String, String> defaultValues, final Map<String, String> values) {

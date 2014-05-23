@@ -1,6 +1,6 @@
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.function;
 
-import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.TextQuestion;
+import fi.vm.sade.haku.oppija.lomake.domain.builder.TextQuestionBuilder;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import org.junit.Assert;
 import org.junit.Test;
@@ -12,13 +12,13 @@ public class ElementToIdTest {
 
     @Test
     public void testApply() throws Exception {
-        String actualId = elementToId.apply(new TextQuestion(EXPECTED_ID, ElementUtil.createI18NAsIs("jotain")));
+        String actualId = elementToId.apply(new TextQuestionBuilder(EXPECTED_ID).i18nText(ElementUtil.createI18NAsIs("jotain")).build());
         Assert.assertEquals(actualId, EXPECTED_ID);
     }
 
     @Test
     public void testApplyFail() throws Exception {
-        String actualId = elementToId.apply(new TextQuestion(EXPECTED_ID + "t", ElementUtil.createI18NAsIs("jotain")));
+        String actualId = elementToId.apply(new TextQuestionBuilder(EXPECTED_ID + "t").i18nText(ElementUtil.createI18NAsIs("jotain")).build());
         Assert.assertNotEquals(actualId, EXPECTED_ID);
     }
 }
