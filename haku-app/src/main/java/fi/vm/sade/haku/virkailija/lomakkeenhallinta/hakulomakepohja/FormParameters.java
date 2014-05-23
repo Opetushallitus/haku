@@ -29,7 +29,7 @@ public class FormParameters {
         this.formTemplateType = figureOutFormForApplicationSystem(applicationSystem);
 
 
-        if (applicationSystem.getId().equals("haku5")) {
+        if (FormTemplateType.PERVAKO.equals(formTemplateType)) {
             this.formMessagesBundle = getMessageBundleName(FORM_MESSAGES, applicationSystem) + "_pervako";
         } else {
             this.formMessagesBundle = getMessageBundleName(FORM_MESSAGES, applicationSystem);
@@ -62,7 +62,8 @@ public class FormParameters {
     private FormTemplateType figureOutFormForApplicationSystem(ApplicationSystem as) {
         String finnishName = as.getName().getTranslations().get("fi");
         if (finnishName.toLowerCase().startsWith("perusopetuksen jälkeisen") ||
-            finnishName.toLowerCase().contains("pervako")) {
+                finnishName.toLowerCase().contains("pervako") ||
+                applicationSystem.getId().equals("haku5")) {
             return FormTemplateType.PERVAKO;
         }
         if (as.getApplicationSystemType().equals(OppijaConstants.LISA_HAKU)) {
