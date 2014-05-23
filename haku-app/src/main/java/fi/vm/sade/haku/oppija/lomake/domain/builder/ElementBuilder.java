@@ -56,9 +56,11 @@ public abstract class ElementBuilder {
             element.setValidator(new LengthValidator(element.getId(), errorMessage, maxLength));
         }
         if (containsInField != null) {
-            validators.add(new ContainedInOtherFieldValidator(id,
+            element.setValidator(new ContainedInOtherFieldValidator(id,
                     containsInField, errorMessage));
         }
+
+        element.setValidators(validators);
 
         return element;
     }
