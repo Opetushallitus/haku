@@ -87,6 +87,7 @@ public final class HenkilotiedotPhase {
         List<Option> genders = formParameters.getKoodistoService().getGenders();
         Radio sukupuoli = (Radio) Radio("sukupuoli")
                 .addOptions(genders)
+                .inline()
                 .build(formParameters);
 
         Option male = genders.get(0).getI18nText().getTranslations().get("fi").equalsIgnoreCase("Mies") ?
