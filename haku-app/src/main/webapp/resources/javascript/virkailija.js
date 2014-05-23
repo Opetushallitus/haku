@@ -351,7 +351,7 @@ $(document).ready(function () {
             $applicationTabLabel = $('#application-tab-label'),
             maxRows = 50;
 
-        function createQueryParameters(start) {
+        function createQueryParameters(start, orderBy, orderDir) {
             $.cookie.path = cookiePath;
             $.cookie.json = true;
             var lastSearch = $.cookie(cookieName);
@@ -401,6 +401,8 @@ $(document).ready(function () {
                 obj['checkAllApplications'] = $('#check-all-applications').prop('checked');
                 obj['start'] = start;
                 obj['rows'] = maxRows;
+                obj['orderBy'] = orderBy;
+                obj['orderDir'] = orderDir;
                 $.removeCookie(cookieName);
                 $.cookie(cookieName, obj);
             }
@@ -416,11 +418,11 @@ $(document).ready(function () {
 
         this.search = function (start, orderBy, orderDir) {
             $('#application-table thead tr td').removeAttr('class');
-            var queryParameters = createQueryParameters(start);
+            var queryParameters = createQueryParameters(start, orderBy, orderDir);
             start = queryParameters.start;
             spinner.stop();
             spinner.spin(document.getElementById('search-spinner'));
-            $.getJSON(page_settings.contextPath + "/applications/list/" + orderBy + "/" + orderDir,
+            $.getJSON(page_settings.contextPath + "/applications/listshort",
                 queryParameters,
                 function (data) {
                     $tbody.empty();
@@ -443,6 +445,7 @@ $(document).ready(function () {
                             }
                         }
                         $('#pagination').bootstrapPaginator(options);
+                        applicationSearch.setSortOrder(queryParameters.orderBy, queryParameters.orderDir);
                     } else {
                         $('#pagination').empty();
                     }
@@ -517,7 +520,8 @@ $(document).ready(function () {
             $('#discretionary-only').attr('checked', false);
             $('#check-all-applications').attr('checked', false);
         },
-        this.sort = function(column, sortBy) {
+        this.getSortOrder = function(columnName) {
+            var column = $('#application-table-header-'+columnName);
             var clazz = column.attr('class');
             var sortOrder = 'asc';
             if (clazz === 'sorted-asc') {
@@ -526,8 +530,17 @@ $(document).ready(function () {
             } else {
                 clazz = 'sorted-asc';
             }
+            return sortOrder;
+        },
+        this.setSortOrder = function(columnName, sortOrder) {
+            if (columnName && sortOrder) {
+                var column = $('#application-table-header-'+columnName);
+                column.attr('class', 'sorted-'+sortOrder)
+            }
+        },
+        this.sort = function(sortBy) {
+            var sortOrder = applicationSearch.getSortOrder(sortBy);
             applicationSearch.search(0, sortBy, sortOrder);
-            column.attr('class', clazz);
         }
 
         return this;
@@ -552,15 +565,15 @@ $(document).ready(function () {
     });
 
     $('#application-table-header-fullName').click(function (event) {
-        applicationSearch.sort($(this), 'fullName');
+        applicationSearch.sort('fullName');
     });
 
-    $('#application-table-header-applicationOid').click(function (event) {
-        applicationSearch.sort($(this), 'oid');
+    $('#application-table-header-oid').click(function (event) {
+        applicationSearch.sort('oid');
     });
 
     $('#application-table-header-state').click(function (event) {
-        applicationSearch.sort($(this), 'state');
+        applicationSearch.sort('state');
     });
 
     $('#check-all-applications').change(function () {
@@ -614,9 +627,15 @@ $(document).ready(function () {
         }
     });
 
+
+    /* *****************************************************************************************
+     *
+     * Keyboard shortcuts
+     *
+     */
+
     $(document).bind('keypress', 'a', function() { $('#check-all-applications').click()});
     $(document).bind('keypress', 'o', function() { $('#open-selected').click()});
-
 
     $(document).bind('keypress', 'j', function() {
         var firstApplication = false;
