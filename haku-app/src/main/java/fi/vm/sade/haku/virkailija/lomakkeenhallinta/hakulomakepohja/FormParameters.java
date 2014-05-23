@@ -59,6 +59,15 @@ public class FormParameters {
         return Joiner.on('_').join(baseName, hakutyyppi, hakukausi);
     }
 
+    private FormTemplateType configureHuuhaa(ApplicationSystem as) {
+        FormTemplateType ftt = null;
+        // tff = ApplicationSystemConfigurations.fetch (as)
+        if (null != ftt) {
+            ftt = figureOutFormForApplicationSystem(as);
+        }
+        return ftt;
+    }
+
     private FormTemplateType figureOutFormForApplicationSystem(ApplicationSystem as) {
         String finnishName = as.getName().getTranslations().get("fi");
         if (finnishName.toLowerCase().startsWith("perusopetuksen jälkeisen") ||
