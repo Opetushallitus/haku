@@ -204,7 +204,6 @@ public final class KielitaitokysymyksetTheme {
                 BASE_EDUCATION_KESK_ULK);
     }
 
-
     public static Expr haettuAmmatilliseenOppilaitokseenKielella(String educationDegreeLang, int count) {
         Preconditions.checkArgument(count > 0);
         List<Expr> exprs = new ArrayList<Expr>(count);
