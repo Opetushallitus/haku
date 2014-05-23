@@ -21,6 +21,7 @@ import fi.vm.sade.haku.oppija.common.selenium.AbstractSeleniumBase;
 import fi.vm.sade.haku.oppija.lomake.ApplicationSystemHelper;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
+import fi.vm.sade.haku.oppija.lomake.domain.builder.CheckBoxBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.builders.FormModelBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.CheckBox;
@@ -45,7 +46,7 @@ public class HelpIT extends AbstractSeleniumBase {
 
     @Before
     public void beforeHelpIt() throws Exception {
-        checkBox = new CheckBox(ID, createI18NAsIs(TITLE));
+        checkBox = (CheckBox) CheckBoxBuilder.Checkbox(ID).i18nText(createI18NAsIs(TITLE)).build();
     }
 
     @Test

@@ -18,7 +18,6 @@ package fi.vm.sade.haku.oppija.lomake.validation.validators;
 import fi.vm.sade.haku.oppija.lomake.validation.FieldValidator;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationInput;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationResult;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -28,6 +27,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.createI18NText;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.FORM_COMMON_BUNDLE_NAME;
 
 
 public class SocialSecurityNumberFieldValidator extends FieldValidator {
@@ -54,7 +56,7 @@ public class SocialSecurityNumberFieldValidator extends FieldValidator {
     }
 
     public SocialSecurityNumberFieldValidator(final String socialSecurityNumberId) {
-        super(socialSecurityNumberId, ElementUtil.createI18NText(GENERIC_ERROR_MESSAGE, "form_errors_yhteishaku_kevat"));
+        super(socialSecurityNumberId, createI18NText(GENERIC_ERROR_MESSAGE));
         this.socialSecurityNumberPattern = Pattern.compile(SOCIAL_SECURITY_NUMBER_PATTERN);
         fmt = new SimpleDateFormat("ddMMyyyy");
         fmt.setLenient(false);
@@ -68,7 +70,7 @@ public class SocialSecurityNumberFieldValidator extends FieldValidator {
             Matcher matcher = socialSecurityNumberPattern.matcher(socialSecurityNumber);
             if (!matcher.matches()) {
                 validationResult = new ValidationResult(fieldName,
-                        ElementUtil.createI18NText(GENERIC_ERROR_MESSAGE, "form_errors_yhteishaku_kevat"));
+                        createI18NText(GENERIC_ERROR_MESSAGE));
             }
             if (!validationResult.hasErrors()) {
                 validationResult = checkDOB(socialSecurityNumber);
@@ -88,7 +90,7 @@ public class SocialSecurityNumberFieldValidator extends FieldValidator {
         int ssnNumber = Integer.valueOf(dob + id);
         String myCheck = checks[ssnNumber % 31]; // NOSONAR
         if (!check.equalsIgnoreCase(myCheck)) {
-            result = new ValidationResult(getFieldName(), ElementUtil.createI18NText(GENERIC_ERROR_MESSAGE, "form_errors_yhteishaku_kevat"));
+            result = new ValidationResult(getFieldName(), createI18NText(GENERIC_ERROR_MESSAGE));
         }
         return result;
     }
@@ -108,12 +110,10 @@ public class SocialSecurityNumberFieldValidator extends FieldValidator {
         try {
             dob = fmt.parse(dayAndMonth + year);
         } catch (ParseException e) {
-            result = new ValidationResult(fieldName, ElementUtil.createI18NText(NOT_A_DATE_ERROR,
-                    "form_errors_yhteishaku_kevat"));
+            result = new ValidationResult(fieldName, createI18NText(NOT_A_DATE_ERROR, FORM_COMMON_BUNDLE_NAME));
         }
         if (dob != null && dob.after(new Date())) {
-            result = new ValidationResult(fieldName, ElementUtil.createI18NText(DOB_IN_FUTURE,
-                    "form_errors_yhteishaku_kevat"));
+            result = new ValidationResult(fieldName, createI18NText(DOB_IN_FUTURE, FORM_COMMON_BUNDLE_NAME));
         }
         return result;
     }

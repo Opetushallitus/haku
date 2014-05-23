@@ -17,21 +17,20 @@
 package fi.vm.sade.haku.oppija.lomake.domain.elements.questions;
 
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.Titled;
+import org.springframework.data.annotation.Transient;
 
-public class CheckBox extends Question {
+public class CheckBox extends Titled {
 
     private static final long serialVersionUID = -3440726329489605608L;
-    private String value = "true";
+    private static final String value = "true";
 
     public CheckBox(final String id, final I18nText i18nText) {
         super(id, i18nText);
     }
 
+    @Transient
     public String getValue() {
         return value;
-    }
-
-    public void setValue(String value) {
-        this.value = value;
     }
 }

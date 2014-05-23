@@ -15,7 +15,6 @@
  */
 package fi.vm.sade.haku.oppija.common.organisaatio;
 
-import fi.vm.sade.organisaatio.api.search.OrganisaatioSearchCriteria;
 import fi.vm.sade.organisaatio.service.search.SearchCriteria;
 
 import java.util.List;

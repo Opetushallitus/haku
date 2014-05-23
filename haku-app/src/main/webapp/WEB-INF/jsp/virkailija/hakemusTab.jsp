@@ -18,7 +18,7 @@
     </c:when>
     <c:otherwise>
         <c:set var="virkailijaEdit" value="true" scope="request"/>
-        <form id="form-${it.element.id}" class="form" method="post">
+        <form id="form-${it.element.id}" class="form" method="post" novalidate="novalidate">
             <c:forEach var="child" items="${it.element.children}">
                 <c:set var="element" value="${child}" scope="request"/>
                 <jsp:include page="../elements/${child.type}.jsp"/>

@@ -17,13 +17,15 @@
 package fi.vm.sade.haku.oppija.ui.selenium;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
 import fi.vm.sade.haku.oppija.common.selenium.DummyModelBaseItTest;
 import fi.vm.sade.haku.oppija.lomake.ApplicationSystemHelper;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
+import fi.vm.sade.haku.oppija.lomake.domain.builder.OptionBuilder;
+import fi.vm.sade.haku.oppija.lomake.domain.builder.PhaseBuilder;
+import fi.vm.sade.haku.oppija.lomake.domain.builder.TextQuestionBuilder;
+import fi.vm.sade.haku.oppija.lomake.domain.builder.ThemeBuilder;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.Phase;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.Theme;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.PostalCode;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.TextQuestion;
@@ -54,19 +56,19 @@ public class PostalCodeIT extends DummyModelBaseItTest {
     @Before
     public void init() throws IOException {
         Form form = new Form(randomId(), createI18NAsIs(randomId()));
-        applicationSystem = ElementUtil.createActiveApplicationSystem(randomId(), form);
-        Phase phase = new Phase(randomId(), createI18NAsIs(randomId()), false,
-                Lists.newArrayList("APP_HAKEMUS_READ_UPDATE", "APP_HAKEMUS_CRUD", "APP_HAKEMUS_OPO"));
+        applicationSystem = createActiveApplicationSystem(randomId(), form);
+        Element phase = new PhaseBuilder(randomId())
+                .i18nText(createI18NAsIs(randomId())).build();
         form.addChild(phase);
 
-        Theme theme = new Theme(randomId(), createI18NAsIs(randomId()), true);
+        Element theme = new ThemeBuilder(randomId()).previewable().build();
         phase.addChild(theme);
         ImmutableList<Option> options = ImmutableList.of(
-                new Option(ElementUtil.createI18NAsIs(POST_OFFICE), POST_CODE),
-                new Option(ElementUtil.createI18NAsIs(POST_OFFICE2), POST_CODE2));
+                (Option) new OptionBuilder().setI18nText(ElementUtil.createI18NAsIs(POST_OFFICE)).setValue(POST_CODE).build(),
+                (Option) new OptionBuilder().setI18nText(ElementUtil.createI18NAsIs(POST_OFFICE2)).setValue(POST_CODE2).build());
         postalCode = new PostalCode(randomId(), createI18NAsIs(randomId()), options);
         theme.addChild(postalCode);
-        textQuestion = new TextQuestion(randomId(), createI18NAsIs(randomId()));
+        textQuestion = (TextQuestion) new TextQuestionBuilder(randomId()).i18nText(createI18NAsIs(randomId())).build();
         theme.addChild(textQuestion);
         updateApplicationSystem(applicationSystem);
     }

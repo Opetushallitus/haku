@@ -7,8 +7,9 @@ import fi.vm.sade.haku.oppija.lomake.validation.ValidationResult;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import org.junit.Test;
 
-import static org.junit.Assert.assertTrue;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.FORM_COMMON_BUNDLE_NAME;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 
 public class DateOfBirthValidatorTest {
@@ -20,24 +21,26 @@ public class DateOfBirthValidatorTest {
 
     @Test
     public void testValidDate() throws Exception {
-        DateOfBirthValidator dobValidator = new DateOfBirthValidator(FIELD_NAME, TEXT, "form_errors_yhteishaku_kevat");
+        DateOfBirthValidator dobValidator = new DateOfBirthValidator(FIELD_NAME, TEXT, FORM_COMMON_BUNDLE_NAME);
         ValidationResult validate = dobValidator.validate(new ValidationInput(null, ImmutableMap.of(FIELD_NAME, VALID_DATE),
-          null, null));
+                null, null));
         assertFalse(validate.hasErrors());
 
     }
+
     @Test
     public void testFutureDate() throws Exception {
-        DateOfBirthValidator dobValidator = new DateOfBirthValidator(FIELD_NAME, TEXT, "form_errors_yhteishaku_kevat");
+        DateOfBirthValidator dobValidator = new DateOfBirthValidator(FIELD_NAME, TEXT, FORM_COMMON_BUNDLE_NAME);
         ValidationResult validationResult = dobValidator.validate(new ValidationInput(null, ImmutableMap.of(FIELD_NAME, FUTURE_DATE),
-          null, null));
+                null, null));
         assertTrue(validationResult.hasErrors());
     }
+
     @Test
     public void testInvalidDate() throws Exception {
-        DateOfBirthValidator dobValidator = new DateOfBirthValidator(FIELD_NAME, TEXT, "form_errors_yhteishaku_kevat");
+        DateOfBirthValidator dobValidator = new DateOfBirthValidator(FIELD_NAME, TEXT, FORM_COMMON_BUNDLE_NAME);
         ValidationResult validate = dobValidator.validate(new ValidationInput(null, ImmutableMap.of(FIELD_NAME, INVALID_DATE),
-          null, null));
+                null, null));
         assertTrue(validate.hasErrors());
     }
 }

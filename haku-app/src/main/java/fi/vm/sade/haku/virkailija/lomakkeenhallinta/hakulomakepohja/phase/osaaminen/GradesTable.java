@@ -8,8 +8,8 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.SubjectRow;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.gradegrid.*;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
 import fi.vm.sade.haku.oppija.lomake.validation.validators.UniqValuesValidator;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.osaaminen.predicate.IdEndsWith;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.function.ElementToId;
@@ -24,21 +24,19 @@ public class GradesTable {
     public static final String OPPIAINE_SUFFIX = "_OPPIAINE";
     private GradeGridHelper gradeGridHelper;
 
-    public GradesTable(final KoodistoService koodistoService, final boolean comprehensiveSchool, final String formMessages,
-                       final String formErrors, final String verboseHelps) {
-        gradeGridHelper = new GradeGridHelper(koodistoService, comprehensiveSchool, formMessages, formErrors, verboseHelps);
+    public GradesTable(final boolean comprehensiveSchool, final FormParameters formParameters) {
+        gradeGridHelper = new GradeGridHelper(comprehensiveSchool, formParameters);
     }
 
-    public GradeGrid createGradeGrid(final String id, final String formMessages,
-                                     final String formErrors, final String verboseHelps) {
+    public GradeGrid createGradeGrid(final String id, final FormParameters formParameters) {
         GradeGrid gradeGrid = new GradeGrid(id,
-                ElementUtil.createI18NText("form.arvosanat.otsikko", formMessages),
+                ElementUtil.createI18NText("form.arvosanat.otsikko", formParameters.getFormMessagesBundle()),
                 gradeGridHelper.isComprehensiveSchool());
 
-        ElementUtil.setVerboseHelp(gradeGrid, "form.arvosanat.otsikko.verboseHelp", verboseHelps);
+        ElementUtil.setVerboseHelp(gradeGrid, "form.arvosanat.otsikko.verboseHelp", formParameters);
 
         for (SubjectRow nativeLanguage : gradeGridHelper.getNativeLanguages()) {
-            gradeGrid.addChild(createGradeGridRow(nativeLanguage, true, true, formMessages, formErrors, verboseHelps));
+            gradeGrid.addChild(createGradeGridRow(nativeLanguage, true, true, formParameters));
         }
 
         for (SubjectRow nativeLanguage : gradeGridHelper.getAdditionalNativeLanguages()) {
@@ -46,11 +44,11 @@ public class GradesTable {
                     createAdditionalLanguageRow(NATIVE_LANGUAGE_GROUP,
                             nativeLanguage, gradeGridHelper.getLanguageAndLiterature()));
         }
-        I18nText addNativeLangText = ElementUtil.createI18NText("form.add.lang.native", formMessages);
+        I18nText addNativeLangText = ElementUtil.createI18NText("form.add.lang.native", formParameters.getFormMessagesBundle());
         gradeGrid.addChild(createAddLangRow(NATIVE_LANGUAGE_GROUP, addNativeLangText));
 
         for (SubjectRow defaultLanguage : gradeGridHelper.getDefaultLanguages()) {
-            gradeGrid.addChild(createGradeGridRow(defaultLanguage, true, false, formMessages, formErrors, verboseHelps));
+            gradeGrid.addChild(createGradeGridRow(defaultLanguage, true, false, formParameters));
         }
 
         for (SubjectRow additionalLanguages : gradeGridHelper.getAdditionalLanguages()) {
@@ -59,12 +57,12 @@ public class GradesTable {
                             additionalLanguages,
                             gradeGridHelper.getSubjectLanguages()));
         }
-        I18nText addAdditionalanguages = ElementUtil.createI18NText("form.add.lang", formMessages);
+        I18nText addAdditionalanguages = ElementUtil.createI18NText("form.add.lang", formParameters.getFormMessagesBundle());
         gradeGrid.addChild(createAddLangRow(ADDITIONAL_LANGUAGES_GROUP, addAdditionalanguages));
 
 
         for (SubjectRow subjectsAfterLanguage : gradeGridHelper.getNotLanguageSubjects()) {
-            gradeGrid.addChild(createGradeGridRow(subjectsAfterLanguage, false, false, formMessages, formErrors, verboseHelps));
+            gradeGrid.addChild(createGradeGridRow(subjectsAfterLanguage, false, false, formParameters));
         }
         List<String> uniqLanguagesIds = Lists.transform(
                 ElementUtil.filterElements(gradeGrid, new IdEndsWith(OPPIAINE_SUFFIX)),
@@ -74,7 +72,7 @@ public class GradesTable {
                         gradeGrid.getId(),
                         uniqLanguagesIds,
                         ImmutableList.of(OppijaConstants.EDUCATION_LANGUAGE_EI_SUORITUSTA),
-                        ElementUtil.createI18NText("yleinen.kielet.samoja", formErrors)));
+                        ElementUtil.createI18NText("yleinen.kielet.samoja", formParameters.getFormMessagesBundle())));
         return gradeGrid;
     }
 
@@ -153,7 +151,7 @@ public class GradesTable {
     }
 
     GradeGridRow createGradeGridRow(final SubjectRow subjectRow, boolean language, boolean literature,
-                                    final String formMessages, final String formErrors, final String verboseHelps) {
+                                    final FormParameters formParameters) {
 
         GradeGridRow gradeGridRow = new GradeGridRow(subjectRow.getId());
         String id = gradeGridHelper.getIdPrefix() + subjectRow.getId();
@@ -172,13 +170,13 @@ public class GradesTable {
                 subjectLanguages.addAll(gradeGridHelper.getSubjectLanguages());
                 child = new GradeGridOptionQuestion(id + "_OPPIAINE", subjectLanguages, false, true, null);
             }
-            ElementUtil.addRequiredValidator(child, formErrors);
+            ElementUtil.addRequiredValidator(child, formParameters);
             columns[1].addChild(child);
         } else {
             columns[0].addAttribute("colspan", "2");
         }
         GradeGridOptionQuestion child1 = new GradeGridOptionQuestion(id, gradeGridHelper.getGradeRanges(), false, false, null);
-        ElementUtil.addRequiredValidator(child1, formErrors);
+        ElementUtil.addRequiredValidator(child1, formParameters);
         columns[2].addChild(child1);
 
         gradeGridRow.addChild(columns[0]);
@@ -188,11 +186,11 @@ public class GradesTable {
         gradeGridRow.addChild(columns[2]);
         if (gradeGridHelper.isComprehensiveSchool()) {
             GradeGridOptionQuestion gradeGridOptionQuestion = new GradeGridOptionQuestion(id + "_VAL1", gradeGridHelper.getGradeRangesWithDefault(), true, false, null);
-            ElementUtil.addRequiredValidator(gradeGridOptionQuestion, formErrors);
+            ElementUtil.addRequiredValidator(gradeGridOptionQuestion, formParameters);
             columns[3].addChild(gradeGridOptionQuestion);
 
             GradeGridOptionQuestion child2 = new GradeGridOptionQuestion(id + "_VAL2", gradeGridHelper.getGradeRangesWithDefault(), true, false, null);
-            ElementUtil.addRequiredValidator(child2, formErrors);
+            ElementUtil.addRequiredValidator(child2, formParameters);
             columns[4].addChild(child2);
 
             gradeGridRow.addChild(columns[3]);
