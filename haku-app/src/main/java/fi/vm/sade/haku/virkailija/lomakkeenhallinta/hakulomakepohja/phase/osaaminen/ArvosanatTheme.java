@@ -17,7 +17,6 @@ public final class ArvosanatTheme {
 
     public static final String POHJAKOULUTUS_ID = "POHJAKOULUTUS";
     public static final String RELATED_ELEMENT_ID = "POHJAKOULUTUS";
-    public static final String ARVOSANAT_THEME_ID = "arvosanatTheme";
 
     private ArvosanatTheme() {
     }
@@ -55,7 +54,7 @@ public final class ArvosanatTheme {
     }
 
     public static Element createArvosanatThemeKevat(final FormParameters formParameters) {
-        Element arvosanatTheme = new ThemeBuilder(ARVOSANAT_THEME_ID).previewable().build(formParameters);
+        Element arvosanatTheme = new ThemeBuilder("arvosanat").previewable().build(formParameters);
 
         GradesTable gradesTablePK = new GradesTable(true, formParameters);
         GradesTable gradesTableYO = new GradesTable(false, formParameters);
