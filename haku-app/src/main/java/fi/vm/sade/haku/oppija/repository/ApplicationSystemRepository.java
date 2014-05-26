@@ -27,6 +27,7 @@ public class ApplicationSystemRepository {
     }
 
     public void save(final ApplicationSystem applicationSystem) {
+        log.info("Saving application system {}", applicationSystem.getId());
         mongoOperations.save(applicationSystem);
     }
 
