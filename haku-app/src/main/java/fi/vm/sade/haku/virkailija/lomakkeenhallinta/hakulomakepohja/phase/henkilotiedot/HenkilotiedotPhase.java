@@ -29,6 +29,8 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Radio;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.TextQuestion;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.AddElementRule;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionComplexRule;
+import fi.vm.sade.haku.oppija.lomake.validation.validators.PastDateValidator;
+import fi.vm.sade.haku.oppija.lomake.validation.validators.RegexFieldValidator;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 
@@ -120,10 +122,9 @@ public final class HenkilotiedotPhase {
         RelatedQuestionComplexRule eiSuomalaistaHetuaRule = createRuleIfVariableIsFalse("eiOleSuomalaistaHetua", onkoSinullaSuomalainenHetu.getId());
         eiSuomalaistaHetuaRule.addChild(sukupuoli);
 
-        DateQuestion syntymaaika = new DateQuestion("syntymaaika", createI18NText("syntymaaika",
-                formParameters));
-        syntymaaika.setValidator(ElementUtil.createRegexValidator(syntymaaika.getId(), DATE_PATTERN, formParameters));
-        syntymaaika.setValidator(ElementUtil.createDateOfBirthValidator(syntymaaika.getId(), formParameters.getFormMessagesBundle()));
+        DateQuestion syntymaaika = new DateQuestion("syntymaaika", createI18NText("syntymaaika", formParameters));
+        syntymaaika.setValidator(new PastDateValidator(syntymaaika.getId(), createI18NText("henkilotiedot.syntymaaika.tulevaisuudessa", formParameters)));
+        syntymaaika.setValidator(new RegexFieldValidator(syntymaaika.getId(), createI18NText("henkilotiedot.syntymaaika.virhe"), DATE_PATTERN));
         addRequiredValidator(syntymaaika, formParameters);
         syntymaaika.setInline(true);
 
