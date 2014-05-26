@@ -20,15 +20,16 @@ import com.google.common.collect.ImmutableList;
 import fi.vm.sade.haku.oppija.common.selenium.AbstractSeleniumBase;
 import fi.vm.sade.haku.oppija.lomake.ApplicationSystemHelper;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
+import fi.vm.sade.haku.oppija.lomake.domain.builder.DropdownSelectBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.builders.FormModelBuilder;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.DropdownSelect;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
+import fi.vm.sade.haku.oppija.lomake.domain.builder.OptionBuilder;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.WebElement;
 
 import java.io.IOException;
-import java.util.List;
 
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.createI18NAsIs;
 import static org.junit.Assert.assertEquals;
@@ -42,21 +43,22 @@ public class DropdownSelectHAK_295 extends AbstractSeleniumBase {
     public static final String FI_VM_SADE_OPPIJA_LANGUAGE = "fi_vm_sade_oppija_language";
     public static final String SELECTED_ATTRIBUTE = "selected";
     private ApplicationSystemHelper applicationSystemHelper;
-    private DropdownSelect dropdownSelect;
+    private Element dropdownSelect;
     Option option1;
     Option option2;
     Option option3;
 
     private void init(final String dropdownAttribute, final boolean setDefault) {
-        option1 = new Option(createI18NAsIs(OPTION_1_ID), OPTION_1_ID);
-        option2 = new Option(createI18NAsIs(OPTION_2_ID), OPTION_2_ID);
-        option3 = new Option(createI18NAsIs(OPTION_3_ID), OPTION_3_ID);
-        dropdownSelect = new DropdownSelect(SELECT_ID, createI18NAsIs(SELECT_ID), dropdownAttribute);
+        option1 = (Option) new OptionBuilder().setI18nText(createI18NAsIs(OPTION_1_ID)).setValue(OPTION_1_ID).build();
+        option2 = (Option) new OptionBuilder().setI18nText(createI18NAsIs(OPTION_2_ID)).setValue(OPTION_2_ID).build();
+        option3 = (Option) new OptionBuilder().setI18nText(createI18NAsIs(OPTION_3_ID)).setValue(OPTION_3_ID).build();
+        dropdownSelect = new DropdownSelectBuilder(SELECT_ID)
+                .addOptions(ImmutableList.of(option3, option2, option1))
+                .defaultValueAttribute(dropdownAttribute)
+                .i18nText(createI18NAsIs(SELECT_ID)).build();
         if (setDefault) {
             option2.setDefaultOption(true);
         }
-        List<Option> listOfOptions = ImmutableList.of(option3, option2, option1);
-        dropdownSelect.addOptions(listOfOptions);
         ApplicationSystem applicationSystem = new FormModelBuilder().buildDefaultFormWithFields(dropdownSelect);
         this.applicationSystemHelper = updateApplicationSystem(applicationSystem);
         seleniumContainer.getDriver().get(getBaseUrl() + this.applicationSystemHelper.getFormUrl(this.applicationSystemHelper.getFirstPhase().getId()));

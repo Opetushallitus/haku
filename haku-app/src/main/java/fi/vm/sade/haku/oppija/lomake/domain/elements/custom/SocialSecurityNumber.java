@@ -17,8 +17,8 @@
 package fi.vm.sade.haku.oppija.lomake.domain.elements.custom;
 
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.Titled;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Question;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.TextQuestion;
 import fi.vm.sade.haku.oppija.lomake.validation.Validator;
 import fi.vm.sade.haku.oppija.lomake.validation.validators.SocialSecurityNumberFieldValidator;
@@ -27,7 +27,7 @@ import org.springframework.data.annotation.Transient;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SocialSecurityNumber extends Question {
+public class SocialSecurityNumber extends Titled {
 
     private static final long serialVersionUID = -5573908500482185095L;
 

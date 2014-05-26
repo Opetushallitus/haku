@@ -17,6 +17,7 @@ import fi.vm.sade.haku.oppija.hakemus.service.HakuPermissionService;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.User;
+import fi.vm.sade.haku.oppija.lomake.domain.builder.OptionBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
@@ -157,7 +158,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         String userOid = userSession.getUser().getUserName();
         if (userOid == null || userOid.equals(application.getPersonOid())) {
             Map<String, I18nText> errors = modelResponse.getErrorMessages();
-            errors.put("common", ElementUtil.createI18NText("virkailija.hakemus.omanMuokkausKielletty", "messages", null));
+            errors.put("common", ElementUtil.createI18NText("virkailija.hakemus.omanMuokkausKielletty", "messages"));
             modelResponse.setErrorMessages(errors);
         }
         return modelResponse;
@@ -171,7 +172,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         String education = koulutusAnswers.get(OppijaConstants.ELEMENT_ID_BASE_EDUCATION);
         boolean showScores = education == null ||
                 (!OppijaConstants.KESKEYTYNYT.equals(education)
-                    && !OppijaConstants.ULKOMAINEN_TUTKINTO.equals(education));
+                        && !OppijaConstants.ULKOMAINEN_TUTKINTO.equals(education));
 
         Map<String, HakutoiveDTO> hakijaMap = new HashMap<String, HakutoiveDTO>();
         for (HakutoiveDTO hakutoiveDTO : hakijaDTO.getHakutoiveet()) {
@@ -371,7 +372,10 @@ public class OfficerUIServiceImpl implements OfficerUIService {
 
         List<Option> organizationTypes = new ArrayList<Option>();
         for (OrganisaatioTyyppi ot : OrganisaatioTyyppi.values()) {
-            organizationTypes.add(new Option(ElementUtil.createI18NAsIs(ot.value()), ot.value()));
+            organizationTypes.add((Option) OptionBuilder.Option("organizationTypes")
+                    .setValue(ot.value())
+                    .i18nText(ElementUtil.createI18NAsIs(ot.value()))
+                    .build());
         }
         List<ApplicationSystem> applicationSystems =
                 applicationSystemService.getAllApplicationSystems("id", "name", "hakukausiUri", "hakukausiVuosi");

@@ -16,13 +16,12 @@
 
 package fi.vm.sade.haku.oppija.lomake.domain.builders;
 
-import com.google.common.collect.Lists;
+import fi.vm.sade.haku.oppija.common.selenium.DummyModelBaseItTest;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
+import fi.vm.sade.haku.oppija.lomake.domain.builder.PhaseBuilder;
+import fi.vm.sade.haku.oppija.lomake.domain.builder.ThemeBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.Phase;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.Theme;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 
 import java.util.Date;
 
@@ -36,9 +35,9 @@ public class FormModelBuilder { // TODO rename to application system builder
     public static final String FORM_ID = "form";
 
     private ApplicationSystem applicationSystem;
-    private Phase phase = new Phase(PHASE_ID, createI18NAsIs(PHASE_ID), false,
-            Lists.newArrayList("APP_HAKEMUS_READ_UPDATE", "APP_HAKEMUS_CRUD", "APP_HAKEMUS_OPO"));
-    private Theme theme = new Theme(THEME_ID, createI18NAsIs(THEME_ID), true);
+    private Element phase = new PhaseBuilder(PHASE_ID)
+            .i18nText(createI18NAsIs(PHASE_ID)).build();
+    private Element theme = new ThemeBuilder(THEME_ID).previewable().build();
 
     private FormBuilder formBuilder =
             new FormBuilder(FORM_ID,
@@ -46,7 +45,7 @@ public class FormModelBuilder { // TODO rename to application system builder
 
     Form form = (Form) createForm(phase);
 
-    private Element createForm(Phase phase) {
+    private Element createForm(Element phase) {
         return formBuilder.withChild(phase.addChild(theme)).build();
     }
 
@@ -55,7 +54,7 @@ public class FormModelBuilder { // TODO rename to application system builder
     }
 
     public FormModelBuilder withDefaults() {
-        this.applicationSystem = ElementUtil.createActiveApplicationSystem(APPLICATION_SYSTEM_ID, form);
+        this.applicationSystem = DummyModelBaseItTest.createActiveApplicationSystem(APPLICATION_SYSTEM_ID, form);
         return this;
     }
 

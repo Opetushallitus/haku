@@ -71,7 +71,7 @@ public class HAK305IT extends DummyModelBaseItTest {
 
 
     private void fillInArvosanatTheme() {
-        findById("arvosanatTheme");
+        findById("arvosanat");
         select();
         selectByValue("PK_AI_OPPIAINE", "FI");
         selectByValue("PK_A1_OPPIAINE", "EN");

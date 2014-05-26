@@ -19,6 +19,7 @@ package fi.vm.sade.haku.oppija.lomake.domain.elements.questions;
 import com.google.common.collect.ImmutableList;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.Titled;
 import fi.vm.sade.haku.oppija.lomake.validation.Validator;
 import fi.vm.sade.haku.oppija.lomake.validation.validators.ValueSetValidator;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
@@ -26,7 +27,7 @@ import org.springframework.data.annotation.Transient;
 
 import java.util.*;
 
-public abstract class OptionQuestion extends Question {
+public abstract class OptionQuestion extends Titled {
 
     private static final long serialVersionUID = -2304711424350028559L;
 
@@ -37,37 +38,13 @@ public abstract class OptionQuestion extends Question {
     @Transient
     private Map<String, List<Option>> optionsSortedByText;
 
-    protected OptionQuestion(final String id, final I18nText i18nText) {
-        super(id, i18nText);
-    }
-
     protected OptionQuestion(final String id, final I18nText i18nText, final List<Option> options) {
-        this(id, i18nText);
-        addOptions(options);
-    }
-
-    public final void addOptions(final List<Option> options) {
+        super(id, i18nText);
         for (Option option : options) {
-            addOption(option);
+            this.optionsMap.put(option.getValue(), option);
+            this.options.add(option);
         }
-    }
-
-    public Option addOption(final I18nText i18nText, final String value) {
-        Option option = new Option(i18nText, value);
-        addOption(option);
-        return option;
-    }
-
-    public Option addOption(final I18nText i18nText, final String value, final I18nText help) {
-        Option option = new Option(i18nText, value);
-        option.setHelp(help);
-        addOption(option);
-        return option;
-    }
-
-    private void addOption(final Option option) {
-        this.optionsMap.put(option.getValue(), option);
-        this.options.add(option);
+        initSortedOptions();
     }
 
     public List<Option> getOptions() {
@@ -79,9 +56,6 @@ public abstract class OptionQuestion extends Question {
     }
 
     public Map<String, List<Option>> getOptionsSortedByText() {
-        if (optionsSortedByText == null) {
-            initSortedOptions();
-        }
         return optionsSortedByText;
     }
 
@@ -131,8 +105,7 @@ public abstract class OptionQuestion extends Question {
             values.add(option.getValue());
         }
 
-        listOfValidator.add(new ValueSetValidator(this.getId(), ElementUtil.createI18NText("yleinen.virheellinenArvo",
-                "form_errors_yhteishaku_kevat"), values));
+        listOfValidator.add(new ValueSetValidator(this.getId(), ElementUtil.createI18NText("yleinen.virheellinenArvo"), values));
         return listOfValidator;
     }
 }

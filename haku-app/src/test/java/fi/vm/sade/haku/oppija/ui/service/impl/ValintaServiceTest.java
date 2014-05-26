@@ -10,8 +10,10 @@ import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.haku.oppija.hakemus.service.HakuPermissionService;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.User;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Phase;
+import fi.vm.sade.haku.oppija.lomake.domain.builder.PhaseBuilder;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.haku.oppija.lomake.service.FormService;
 import fi.vm.sade.haku.oppija.lomake.service.UserSession;
@@ -92,8 +94,8 @@ public class ValintaServiceTest {
 
         FormService formService = mock(FormService.class);
         Form form = new Form("formId", ElementUtil.createI18NAsIs("formName"));
-        Phase phase = new Phase("esikatselu", ElementUtil.createI18NAsIs("title"), false,
-                Lists.newArrayList("APP_HAKEMUS_READ_UPDATE", "APP_HAKEMUS_CRUD", "APP_HAKEMUS_OPO"));
+        Element phase = new PhaseBuilder("esikatselu")
+                .i18nText(ElementUtil.createI18NAsIs("title")).build();
         form.addChild(phase);
 
         when(formService.getForm(anyString()))

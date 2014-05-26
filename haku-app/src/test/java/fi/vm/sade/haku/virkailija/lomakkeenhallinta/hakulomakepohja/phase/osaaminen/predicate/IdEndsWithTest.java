@@ -1,6 +1,6 @@
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.osaaminen.predicate;
 
-import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.TextQuestion;
+import fi.vm.sade.haku.oppija.lomake.domain.builder.TextQuestionBuilder;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import org.junit.Test;
 
@@ -15,13 +15,13 @@ public class IdEndsWithTest {
 
     @Test
     public void testApplyTrue() throws Exception {
-        boolean actual = idEndsWith.apply(new TextQuestion(ID, ElementUtil.createI18NAsIs("")));
+        boolean actual = idEndsWith.apply(new TextQuestionBuilder(ID).i18nText(ElementUtil.createI18NAsIs("")).build());
         assertTrue(actual);
     }
 
     @Test
     public void testApplyFalse() throws Exception {
-        boolean actual = idEndsWith.apply(new TextQuestion(ID + 'T', ElementUtil.createI18NAsIs("")));
+        boolean actual = idEndsWith.apply(new TextQuestionBuilder(ID + 'T').i18nText(ElementUtil.createI18NAsIs("")).build());
         assertFalse(actual);
     }
 

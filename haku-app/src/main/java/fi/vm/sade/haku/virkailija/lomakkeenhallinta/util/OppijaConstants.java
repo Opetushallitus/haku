@@ -26,6 +26,9 @@ public final class OppijaConstants {
         // Utility class, no need for instances
     }
 
+
+    public static String FORM_COMMON_BUNDLE_NAME = "form_common";
+
     /*
     names of the fields that hold the information about the education degree
     of a selected application option
@@ -97,11 +100,11 @@ public final class OppijaConstants {
     public static final String PERUSOPETUS_PAATTOTODISTUSVUOSI = "PK_PAATTOTODISTUSVUOSI";
 
     public static final String VARSINAINEN_HAKU = "hakutyyppi_01";
-
     public static final String LISA_HAKU = "hakutyyppi_03";
-    public static final String HAKUKAUSI_SYKSY = "kausi_s";
 
+    public static final String HAKUKAUSI_SYKSY = "kausi_s";
     public static final String HAKUKAUSI_KEVAT = "kausi_k";
+
     public static final String EDUCATION_CODE_MUSIIKKI = "koulutus_321204";
     public static final String EDUCATION_CODE_TANSSI = "koulutus_321501";
 

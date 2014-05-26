@@ -19,8 +19,12 @@ package fi.vm.sade.haku.oppija.ui.it;
 import fi.vm.sade.haku.oppija.common.selenium.AbstractSeleniumBase;
 import fi.vm.sade.haku.oppija.lomake.ApplicationSystemHelper;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
+import fi.vm.sade.haku.oppija.lomake.domain.builder.DropdownSelectBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.builders.FormModelBuilder;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.DropdownSelect;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.impl.KoodistoServiceMockImpl;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -39,13 +43,15 @@ public class DropdownSelectIT extends AbstractSeleniumBase {
     public static final String SELECT_ID = "select_id";
     private ApplicationSystemHelper applicationSystemHelper;
     private WebDriver driver;
-    private DropdownSelect dropdownSelect;
+    private Element dropdownSelect;
 
     @Before
     public void init() throws IOException {
-        dropdownSelect = new DropdownSelect(SELECT_ID, createI18NAsIs(SELECT_ID), null);
-        dropdownSelect.addOption(createI18NAsIs("option1"), "option1");
-        dropdownSelect.addOption(createI18NAsIs("option2"), "option2");
+        dropdownSelect = new DropdownSelectBuilder(SELECT_ID)
+                .addOption(createI18NAsIs("option1"), "option1")
+                .addOption(createI18NAsIs("option2"), "option2")
+                .i18nText(createI18NAsIs(SELECT_ID))
+                .build();
         ApplicationSystem applicationSystem = new FormModelBuilder().buildDefaultFormWithFields(dropdownSelect);
         this.applicationSystemHelper = updateApplicationSystem(applicationSystem);
         driver = seleniumContainer.getDriver();
@@ -79,7 +85,7 @@ public class DropdownSelectIT extends AbstractSeleniumBase {
     public void testLabelLangSv() throws IOException {
         driver.get(getBaseUrl() + this.applicationSystemHelper.getFormUrl(this.applicationSystemHelper.getFirstPhase().getId()) + "?lang=sv");
         WebElement label = driver.findElement(new By.ByTagName("label"));
-        assertEquals("Invalid label id", dropdownSelect.getI18nText().getTranslations().get("sv"), label.getText());
+        assertEquals("Invalid label id", ((DropdownSelect) dropdownSelect).getI18nText().getTranslations().get("sv"), label.getText());
     }
 
     @Ignore

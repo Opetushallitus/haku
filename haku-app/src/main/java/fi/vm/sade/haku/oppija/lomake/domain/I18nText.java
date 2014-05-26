@@ -36,4 +36,9 @@ public class I18nText implements Serializable {
     public Map<String, String> getTranslations() {
         return translations;
     }
+
+    @Override
+    public String toString() {
+        return translations.toString();
+    }
 }

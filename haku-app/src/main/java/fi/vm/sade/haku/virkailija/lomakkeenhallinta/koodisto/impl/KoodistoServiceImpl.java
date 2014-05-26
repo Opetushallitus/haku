@@ -22,6 +22,7 @@ import com.google.common.collect.Lists;
 import fi.vm.sade.haku.oppija.common.organisaatio.Organization;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
+import fi.vm.sade.haku.oppija.lomake.domain.builder.OptionBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.SubjectRow;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
@@ -48,7 +49,6 @@ public class KoodistoServiceImpl implements KoodistoService {
     public static final String CODE_SUBJECT = "oppiaineetyleissivistava";
     public static final String CODE_GRADE_RANGE = "arvosanat";
     public static final String CODE_LEARNING_INSTITUTION_TYPES = "oppilaitostyyppi";
-    public static final String CODE_ORGANIZATION_TYPES = "organisaatiotyyppi";
     public static final String CODE_COUNTRIES = "maatjavaltiot1";
     public static final String CODE_NATIONALITIES = CODE_COUNTRIES;
     public static final String CODE_LANGUAGES = "kieli";
@@ -58,16 +58,12 @@ public class KoodistoServiceImpl implements KoodistoService {
     public static final String CODE_AIDINKIELI_JA_KIRJALLISUUS = "aidinkielijakirjallisuus";
     public static final String CODE_GENDER = "sukupuoli";
     public static final String CODE_HAKUKAUSI = "kausi";
-    private static final String CODE_KOULUNUMERO = "oppilaitosnumero";
     private static final String CODE_HAKUKOHDE = "hakukohteet";
     private static final String CODE_OPPILAITOSTYYPPI = "oppilaitostyyppi";
 
     private static final String LUKIO = "15";
     private static final String LUKIO_JA_PERUSKOULU = "19";
     private static final String KANSANOPISTO = "63";
-    private static final String OPPILAITOSTYYPPI_LUKIO = "oppilaitostyyppi_15";
-    private static final String OPPILAITOSTYYPPI_PK_JA_LUKIO = "oppilaitostyyppi_19";
-    private static final String OPPILAITOSTYYPPI_KANSANOPISTO = "oppilaitostyyppi_63";
 
     private final KoodistoClient koodiService;
     private final OrganizationService organisaatioService;
@@ -194,7 +190,7 @@ public class KoodistoServiceImpl implements KoodistoService {
             LOGGER.debug("Lukiokoodit, orgOid: " + org.getOid());
             List<String> types = org.getTypes();
             if (types.contains("Oppilaitos")) {
-                opts.add(new Option(org.getName(), org.getOid()));
+                opts.add((Option) new OptionBuilder().setI18nText(org.getName()).setValue(org.getOid()).build());
             }
         }
         return opts;
@@ -222,9 +218,7 @@ public class KoodistoServiceImpl implements KoodistoService {
                                     @Override
                                     public Option apply(final KoodiType koodiType) {
                                         String version = withVersion ? "#" + koodiType.getVersio() : "";
-                                        return new Option(
-                                                new I18nText(TranslationsUtil.createTranslationsMap(koodiType)),
-                                                koodiType.getKoodiUri() + version);
+                                        return (Option) new OptionBuilder().setI18nText(new I18nText(TranslationsUtil.createTranslationsMap(koodiType))).setValue(koodiType.getKoodiUri() + version).build();
                                     }
                                 })));
     }

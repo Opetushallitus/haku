@@ -18,12 +18,14 @@ package fi.vm.sade.haku.oppija.lomake.domain.elements.questions;
 
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 
+import java.util.List;
+
 public class DropdownSelect extends OptionQuestion {
 
     private final String defaultValueAttribute;
 
-    public DropdownSelect(final String id, final I18nText i18nText, final String defaultValueAttribute) {
-        super(id, i18nText);
+    public DropdownSelect(final String id, final I18nText i18nText, final List<Option> options, final String defaultValueAttribute) {
+        super(id, i18nText, options);
         this.defaultValueAttribute = defaultValueAttribute;
     }
 

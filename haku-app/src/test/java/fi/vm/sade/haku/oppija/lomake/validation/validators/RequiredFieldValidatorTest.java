@@ -29,7 +29,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class RequiredFieldValidatorTest {
-    public static final I18nText ERROR_MESSAGE = createI18NText("kenttä on virheellinen", "form_errors_yhteishaku_syksy");
+    public static final I18nText ERROR_MESSAGE = createI18NText("kenttä on virheellinen");
     public static final String FIELD_NAME = "kenttä";
     private Map<String, String> values;
     private RequiredFieldValidator requiredFieldValidator;

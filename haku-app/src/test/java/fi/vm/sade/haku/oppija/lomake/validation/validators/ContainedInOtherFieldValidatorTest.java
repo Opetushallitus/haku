@@ -31,8 +31,7 @@ public class ContainedInOtherFieldValidatorTest {
 
     String thisField = "thisField";
     String thatField = "thatField";
-    FieldValidator validator = new ContainedInOtherFieldValidator(thisField, thatField, createI18NText("error",
-            "form_errors_yhteishaku_syksy"));
+    FieldValidator validator = new ContainedInOtherFieldValidator(thisField, thatField, createI18NText("error"));
 
     @Test
     public void testExactMatch() {
