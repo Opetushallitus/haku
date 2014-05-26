@@ -144,7 +144,7 @@ public class Person {
         this.email = isNotBlank(email) ? other.email : this.email;
         this.sex = isNotBlank(sex) ? other.sex : this.sex;
         this.homeCity = isNotBlank(homeCity) ? other.homeCity : this.homeCity;
-        this.securityOrder = isNotBlank(securityOrder;
+        this.securityOrder = this.securityOrder ? true : other.securityOrder;
         this.language = isNotBlank(language) ? other.language : this.language;
         this.nationality = isNotBlank(nationality) ? other.nationality : this.nationality;
         this.contactLanguage = isNotBlank(contactLanguage) ? other.contactLanguage : this.contactLanguage;
