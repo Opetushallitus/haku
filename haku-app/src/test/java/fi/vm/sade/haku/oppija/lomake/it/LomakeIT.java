@@ -30,6 +30,8 @@ import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.ArrayList;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 import static fi.vm.sade.haku.oppija.ui.selenium.DefaultValues.*;
 import static org.junit.Assert.assertFalse;
@@ -39,7 +41,14 @@ public class LomakeIT extends DummyModelBaseItTest {
 
     @Test
     public void submitApplication() throws Exception {
-        WebDriver driver = seleniumContainer.getDriver();
+
+
+
+
+        final WebDriver driver = seleniumContainer.getDriver();
+        //navigateTo(getBaseUrl() + "lomake/" + ASID + "/HenkilotiedotGrp/help");
+        //findById("help-page");
+
 
         navigateToFirstPhase();
         WebElement form = findBy(By.id("form-henkilotiedot"));
@@ -51,6 +60,8 @@ public class LomakeIT extends DummyModelBaseItTest {
         setValue("Sähköposti", " aku.ankka@ankkalinna.al    "); // OVT-5952 spaces
         setValue("matkapuhelinnumero1", "0501000100");
         setValue("aidinkieli", "FI");
+
+        findById("help-Kutsumanimi");
 
         elementsNotPresentByName("puhelinnumero2");
 
@@ -146,7 +157,7 @@ public class LomakeIT extends DummyModelBaseItTest {
         findByIdAndClick("submit_confirm");
 
         String oid = driver.findElement(new By.ByClassName("number")).getText();
-        findByXPath("//h3[contains(text(), \"form.valmis.musiikkitanssiliikunta.header\")]");
+        findByXPath("//h3[contains(text(), \"Musiikki- tanssi- ja liikunta-alan\")]");
 
         assertFalse(oid.contains("."));
 

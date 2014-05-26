@@ -18,11 +18,13 @@ package fi.vm.sade.haku.oppija.lomake.domain.elements.questions;
 
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 
+import java.util.List;
+
 public class Radio extends OptionQuestion {
 
     private static final long serialVersionUID = 7715723881547491714L;
 
-    public Radio(final String id, final I18nText i18nText) {
-        super(id, i18nText);
+    public Radio(final String id, final I18nText i18nText, final List<Option> options) {
+        super(id, i18nText, options);
     }
 }

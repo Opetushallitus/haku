@@ -3,6 +3,7 @@ package fi.vm.sade.haku.oppija.ui.common;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.TextQuestion;
+import fi.vm.sade.haku.oppija.lomake.domain.builder.TextQuestionBuilder;
 import fi.vm.sade.haku.oppija.lomake.exception.ElementNotFound;
 import fi.vm.sade.haku.oppija.lomake.util.ElementTree;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
@@ -14,7 +15,7 @@ import static org.junit.Assert.assertEquals;
 public class ElementTreeTest {
 
     private Form form = new Form(ElementUtil.randomId(), createI18NAsIs("title"));
-    private TextQuestion expectedElement = new TextQuestion(ElementUtil.randomId(), createI18NAsIs("title2"));
+    private TextQuestion expectedElement = (TextQuestion) new TextQuestionBuilder(ElementUtil.randomId()).i18nText(createI18NAsIs("title2")).build();
     private ElementTree elementTree = new ElementTree(form);
 
     @Test

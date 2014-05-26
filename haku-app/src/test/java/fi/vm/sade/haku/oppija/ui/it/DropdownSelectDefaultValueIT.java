@@ -20,9 +20,11 @@ import com.google.common.collect.ImmutableList;
 import fi.vm.sade.haku.oppija.common.selenium.AbstractSeleniumBase;
 import fi.vm.sade.haku.oppija.lomake.ApplicationSystemHelper;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
+import fi.vm.sade.haku.oppija.lomake.domain.builder.DropdownSelectBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.builders.FormModelBuilder;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.DropdownSelect;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
+import fi.vm.sade.haku.oppija.lomake.domain.builder.OptionBuilder;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import org.junit.Before;
 import org.junit.Test;
@@ -30,7 +32,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import java.io.IOException;
-import java.util.List;
 
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.createI18NAsIs;
 import static org.junit.Assert.assertEquals;
@@ -40,20 +41,21 @@ public class DropdownSelectDefaultValueIT extends AbstractSeleniumBase {
     public static final String OPTION_1_ID = "fi";
     public static final String OPTION_2_ID = "sv";
     public static final String OPTION_3_ID = "xx";
-    private final Option option1 = new Option(createI18NAsIs(OPTION_1_ID), OPTION_1_ID);
-    private final Option option2 = new Option(createI18NAsIs(OPTION_2_ID), OPTION_2_ID);
-    private final Option option3 = new Option(createI18NAsIs(OPTION_3_ID), OPTION_3_ID);
+    private final Option option1 = (Option) new OptionBuilder().setI18nText(createI18NAsIs(OPTION_1_ID)).setValue(OPTION_1_ID).build();
+    private final Option option2 = (Option) new OptionBuilder().setI18nText(createI18NAsIs(OPTION_2_ID)).setValue(OPTION_2_ID).build();
+    private final Option option3 = (Option) new OptionBuilder().setI18nText(createI18NAsIs(OPTION_3_ID)).setValue(OPTION_3_ID).build();
     private ApplicationSystemHelper applicationSystemHelper;
     private WebDriver driver;
-    private DropdownSelect dropdownSelect;
+    private Element dropdownSelect;
 
     @Before
     public void init() throws IOException {
         String id = ElementUtil.randomId();
-        dropdownSelect = new DropdownSelect(id, createI18NAsIs(id), null);
+        dropdownSelect = new DropdownSelectBuilder(id)
+                .addOptions(ImmutableList.of(option1, option2, option3))
+                .i18nText(createI18NAsIs(id))
+                .build();
         option2.setDefaultOption(true);
-        List<Option> listOfOptions = ImmutableList.of(option1, option2, option3);
-        dropdownSelect.addOptions(listOfOptions);
         ApplicationSystem applicationSystem = new FormModelBuilder().buildDefaultFormWithFields(dropdownSelect);
         this.applicationSystemHelper = updateApplicationSystem(applicationSystem);
         driver = seleniumContainer.getDriver();

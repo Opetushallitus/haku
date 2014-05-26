@@ -17,11 +17,13 @@
 package fi.vm.sade.haku.oppija.lomake.domain.util;
 
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Lists;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
+import fi.vm.sade.haku.oppija.lomake.domain.builder.PhaseBuilder;
+import fi.vm.sade.haku.oppija.lomake.domain.builder.TextAreaBuilder;
+import fi.vm.sade.haku.oppija.lomake.domain.builder.TextQuestionBuilder;
+import fi.vm.sade.haku.oppija.lomake.domain.builder.ThemeBuilder;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.Phase;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.Theme;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.TextArea;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.TextQuestion;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
@@ -34,38 +36,39 @@ import static org.junit.Assert.*;
 
 public class ElementUtilTest {
 
-    public static final String NO_TRANSLATION = "test";
-    public static final String HAS_TRANSLATION = "translated_key";
-    public static final String TRANSLATED_FI = "suomeksi";
+    public static final String NO_TRANSLATION = "testjklsdhfjklsahdfkljsafhkljsafhjksadfhjksalfhkljsafhiwe";
+    public static final String HAS_TRANSLATION = "form.add.lang";
+    public static final String TRANSLATED_FI = "Lisää kieli";
 
     @Test
     public void testCreateI18NTextSize() throws Exception {
-        I18nText test = ElementUtil.createI18NText("test", "form_messages_yhteishaku_syksy");
+        I18nText test = ElementUtil.createI18NText(HAS_TRANSLATION);
         assertTrue(test.getTranslations().size() == 2);
     }
 
     @Test
     public void testCreateI18NTextNoTranslation() throws Exception {
-        I18nText test = ElementUtil.createI18NText(NO_TRANSLATION, "form_messages_yhteishaku_syksy");
-        assertEquals(NO_TRANSLATION + " [fi]", test.getTranslations().get("fi"));
+        I18nText test = ElementUtil.createI18NText(NO_TRANSLATION);
+        assertEquals(null, test.getTranslations().get("fi"));
     }
 
     @Test
     public void testCreateI18NTextHasTranslation() throws Exception {
-        I18nText test = ElementUtil.createI18NText(HAS_TRANSLATION, "form_messages_yhteishaku_syksy");
+        I18nText test = ElementUtil.createI18NText(HAS_TRANSLATION);
         assertEquals(TRANSLATED_FI, test.getTranslations().get("fi"));
     }
 
     @Test
     public void testFindElementsByType() {
         Form form = new Form("form", new I18nText(ImmutableMap.of("fi", "form")));
-        Phase phase = new Phase("phase", new I18nText(ImmutableMap.of("fi", "phase")), false,
-                Lists.newArrayList("APP_HAKEMUS_READ_UPDATE", "APP_HAKEMUS_CRUD", "APP_HAKEMUS_OPO"));
-        Theme theme = new Theme("theme", new I18nText(ImmutableMap.of("fi", "theme")), true);
+        Element phase = new PhaseBuilder("phase")
+                .i18nText(new I18nText(ImmutableMap.of("fi", "phase")))
+                .build();
+        Element theme = new ThemeBuilder("theme").previewable().i18nText(new I18nText(ImmutableMap.of("fi", "theme"))).build();
         phase.addChild(theme);
-        TextQuestion tq1 = new TextQuestion("text1", new I18nText(ImmutableMap.of("fi", "text1")));
-        TextQuestion tq2 = new TextQuestion("text2", new I18nText(ImmutableMap.of("fi", "text2")));
-        TextArea ta = new TextArea("textarea", new I18nText(ImmutableMap.of("fi", "textarea")));
+        TextQuestion tq1 = (TextQuestion) new TextQuestionBuilder("text1").i18nText(new I18nText(ImmutableMap.of("fi", "text1"))).build();
+        TextQuestion tq2 = (TextQuestion) new TextQuestionBuilder("text2").i18nText(new I18nText(ImmutableMap.of("fi", "text2"))).build();
+        TextArea ta = (TextArea) TextAreaBuilder.TextArea("textarea").i18nText(new I18nText(ImmutableMap.of("fi", "textarea"))).build();
         theme.addChild(tq1);
         theme.addChild(ta);
         theme.addChild(tq2);
@@ -78,13 +81,13 @@ public class ElementUtilTest {
     @Test
     public void testFindElementsByTypeAsList() {
         Form form = new Form("form", new I18nText(ImmutableMap.of("fi", "form")));
-        Phase phase = new Phase("phase", new I18nText(ImmutableMap.of("fi", "phase")), false,
-                Lists.newArrayList("APP_HAKEMUS_READ_UPDATE", "APP_HAKEMUS_CRUD", "APP_HAKEMUS_OPO"));
-        Theme theme = new Theme("theme", new I18nText(ImmutableMap.of("fi", "theme")), true);
+        Element phase = new PhaseBuilder("phase")
+                .i18nText(new I18nText(ImmutableMap.of("fi", "phase"))).build();
+        Element theme = new ThemeBuilder("theme").previewable().i18nText(new I18nText(ImmutableMap.of("fi", "theme"))).build();
         phase.addChild(theme);
-        TextQuestion tq1 = new TextQuestion("text1", new I18nText(ImmutableMap.of("fi", "text1")));
-        TextQuestion tq2 = new TextQuestion("text2", new I18nText(ImmutableMap.of("fi", "text2")));
-        TextArea ta = new TextArea("textarea", new I18nText(ImmutableMap.of("fi", "textarea")));
+        TextQuestion tq1 = (TextQuestion) new TextQuestionBuilder("text1").i18nText(new I18nText(ImmutableMap.of("fi", "text1"))).build();
+        TextQuestion tq2 = (TextQuestion) new TextQuestionBuilder("text2").i18nText(new I18nText(ImmutableMap.of("fi", "text2"))).build();
+        TextArea ta = (TextArea) TextAreaBuilder.TextArea("textarea").i18nText(new I18nText(ImmutableMap.of("fi", "textarea"))).build();
         theme.addChild(tq1);
         theme.addChild(ta);
         theme.addChild(tq2);

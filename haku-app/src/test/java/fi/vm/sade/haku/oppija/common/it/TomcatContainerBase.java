@@ -33,7 +33,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ActiveProfiles("it")
 public abstract class TomcatContainerBase {
 
-    @Value("${asid:1.2.246.562.5.50476818906}")
+    @Value("${asid:haku5}")
     protected String ASID;
     @Value("${aoid:1.2.246.562.14.71344129359}")
     protected String AOID;

@@ -1,6 +1,5 @@
 package fi.vm.sade.haku.oppija.ui.service.impl;
 
-import com.google.common.collect.Lists;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
 import fi.vm.sade.haku.oppija.hakemus.aspect.LoggerAspect;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
@@ -8,8 +7,9 @@ import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.haku.oppija.hakemus.service.HakuPermissionService;
 import fi.vm.sade.haku.oppija.lomake.domain.User;
+import fi.vm.sade.haku.oppija.lomake.domain.builder.PhaseBuilder;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.Phase;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.haku.oppija.lomake.service.FormService;
 import fi.vm.sade.haku.oppija.lomake.service.UserSession;
@@ -50,8 +50,8 @@ public class OfficerUIServiceImplTest {
     private UserSession userSession;
 
     private Application application;
-    private Phase phase = new Phase(ID, ElementUtil.createI18NAsIs("title"), false,
-            Lists.newArrayList("APP_HAKEMUS_READ_UPDATE", "APP_HAKEMUS_CRUD", "APP_HAKEMUS_OPO"));
+    private Element phase = new PhaseBuilder(ID)
+            .i18nText(ElementUtil.createI18NAsIs("title")).build();
 
     private Form form;
 

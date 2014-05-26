@@ -36,6 +36,7 @@ import org.slf4j.LoggerFactory;
 import java.io.Serializable;
 import java.util.*;
 
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_EMPTY)
@@ -341,7 +342,7 @@ public class Application implements Serializable {
 
     private Map<String, String> updateHenkilotiedotField(Map<String, String> answers, String value, String key) {
         String oldValue = null;
-        if (value != null) {
+        if (isNotBlank(value)) {
             oldValue = answers.put(key, value);
         } else {
             answers.remove(key);

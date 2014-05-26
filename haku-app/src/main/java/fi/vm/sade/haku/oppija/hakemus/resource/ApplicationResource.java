@@ -157,11 +157,11 @@ public class ApplicationResource {
     }
 
     @GET
-    @Path("list/{orderBy}/{orderDir}")
+    @Path("listshort")
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_READ', 'ROLE_APP_HAKEMUS_CRUD', 'ROLE_APP_HAKEMUS_OPO')")
-    public ApplicationSearchResultDTO findApplicationsOrdered(@PathParam("orderBy") String orderBy,
-                                                              @PathParam("orderDir") String orderDir,
+    public ApplicationSearchResultDTO findApplicationsOrdered(@DefaultValue(value = "fullName") @QueryParam("orderBy") String orderBy,
+                                                              @DefaultValue(value = "asc") @QueryParam("orderDir") String orderDir,
                                                               @DefaultValue(value = "") @QueryParam("q") String query,
                                                               @QueryParam("appState") List<String> state,
                                                               @QueryParam("aoidCode") String aoid,

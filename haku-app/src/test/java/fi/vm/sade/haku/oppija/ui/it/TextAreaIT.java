@@ -19,8 +19,8 @@ package fi.vm.sade.haku.oppija.ui.it;
 import fi.vm.sade.haku.oppija.common.it.AbstractFormTest;
 import fi.vm.sade.haku.oppija.lomake.ApplicationSystemHelper;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
+import fi.vm.sade.haku.oppija.lomake.domain.builder.TextAreaBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.builders.FormModelBuilder;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.TextArea;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -30,18 +30,14 @@ import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.crea
 import static net.sourceforge.jwebunit.junit.JWebUnit.assertElementPresent;
 import static net.sourceforge.jwebunit.junit.JWebUnit.beginAt;
 
-/**
- * @author jukka
- * @version 9/17/124:24 PM}
- * @since 1.1
- */
 public class TextAreaIT extends AbstractFormTest {
 
     private ApplicationSystemHelper applicationSystemHelper;
 
     @Before
     public void init() throws IOException {
-        ApplicationSystem applicationSystem = new FormModelBuilder().buildDefaultFormWithFields(new TextArea("vapaa_teksti", createI18NAsIs("foo")));
+        ApplicationSystem applicationSystem = new FormModelBuilder().buildDefaultFormWithFields(
+                TextAreaBuilder.TextArea("vapaa_teksti").i18nText(createI18NAsIs("foo")).build());
         this.applicationSystemHelper = updateModelAndCreateFormModelHelper(applicationSystem);
     }
 

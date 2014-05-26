@@ -16,15 +16,15 @@
 
 package fi.vm.sade.haku.oppija.ui.controller;
 
-import com.google.common.collect.Lists;
 import com.sun.jersey.api.view.Viewable;
 import com.sun.jersey.core.util.MultivaluedMapImpl;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.haku.oppija.lomake.domain.User;
+import fi.vm.sade.haku.oppija.lomake.domain.builder.PhaseBuilder;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.Phase;
 import fi.vm.sade.haku.oppija.lomake.service.FormService;
 import fi.vm.sade.haku.oppija.lomake.service.UserSession;
 import fi.vm.sade.haku.oppija.ui.service.ModelResponse;
@@ -68,12 +68,14 @@ public class OfficerControllerTest {
         app.setPhaseId("valmis");
         when(applicationService.getApplication(OID)).thenReturn(app);
 
-        Phase phase = new Phase(PREVIEW_PHASE, createI18NAsIs(PREVIEW_PHASE), true,
-                Lists.newArrayList("APP_HAKEMUS_READ_UPDATE", "APP_HAKEMUS_CRUD", "APP_HAKEMUS_OPO"));
+        Element phase = new PhaseBuilder(PREVIEW_PHASE)
+                .preview()
+                .i18nText(createI18NAsIs(PREVIEW_PHASE)).build();
 
         Form form = new Form("yhteishaku", createI18NAsIs("yhteishaku"));
-        form.addChild(new Phase("henkilotiedot", createI18NAsIs("henkilotiedot"), false,
-                Lists.newArrayList("APP_HAKEMUS_READ_UPDATE", "APP_HAKEMUS_CRUD", "APP_HAKEMUS_OPO")));
+        form.addChild(new PhaseBuilder("henkilotiedot")
+                .i18nText(createI18NAsIs("henkilotiedot")).build());
+
         form.addChild(phase);
         when(formService.getActiveForm(ASID)).thenReturn(form);
 

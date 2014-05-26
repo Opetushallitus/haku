@@ -21,6 +21,7 @@ import fi.vm.sade.haku.oppija.lomake.ApplicationSystemHelper;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.builders.FormModelBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.TextQuestion;
+import fi.vm.sade.haku.oppija.lomake.domain.builder.TextQuestionBuilder;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -32,7 +33,7 @@ public class TextQuestionIT extends AbstractFormTest {
 
     @Before
     public void init() {
-        TextQuestion textQuestion = new TextQuestion("sukunimi", createI18NAsIs("foo"));
+        TextQuestion textQuestion = (TextQuestion) new TextQuestionBuilder("sukunimi").i18nText(createI18NAsIs("foo")).build();
         textQuestion.setHelp(createI18NAsIs("help"));
         ApplicationSystem applicationSystem = new FormModelBuilder().buildDefaultFormWithFields(textQuestion);
         this.applicationSystemHelper = updateModelAndCreateFormModelHelper(applicationSystem);

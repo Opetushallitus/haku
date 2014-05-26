@@ -18,6 +18,7 @@ package fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.impl;
 
 import com.google.common.base.Function;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
+import fi.vm.sade.haku.oppija.lomake.domain.builder.OptionBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
 import fi.vm.sade.koodisto.service.types.common.KoodiType;
 
@@ -25,7 +26,10 @@ public class KoodiTypeToOptionFunction implements Function<KoodiType, Option> {
 
     @Override
     public Option apply(final KoodiType koodiType) {
-        return new Option(new I18nText(TranslationsUtil.createTranslationsMap(koodiType)), koodiType.getKoodiArvo());
+        return (Option) OptionBuilder.Option(koodiType.getKoodiArvo())
+                .setValue(koodiType.getKoodiArvo())
+                .i18nText(new I18nText(TranslationsUtil.createTranslationsMap(koodiType)))
+                .build();
     }
 
 }

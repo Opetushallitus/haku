@@ -17,35 +17,25 @@
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.util;
 
 import com.google.common.base.Joiner;
-import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
-import com.google.common.collect.Lists;
-import fi.vm.sade.haku.oppija.lomake.domain.ApplicationPeriod;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
-import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystemBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Titled;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.PreferenceRow;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.SinglePreference;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.gradegrid.GradeGridRow;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Question;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Radio;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.TextQuestion;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionComplexRule;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.Regexp;
 import fi.vm.sade.haku.oppija.lomake.validation.Validator;
 import fi.vm.sade.haku.oppija.lomake.validation.validators.*;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
 import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.text.MessageFormat;
 import java.util.*;
 
 import static fi.vm.sade.haku.oppija.lomake.domain.I18nText.LANGS;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.FORM_COMMON_BUNDLE_NAME;
 
 public final class ElementUtil {
 
@@ -72,39 +62,55 @@ public final class ElementUtil {
         return new I18nText(translations);
     }
 
-    public static I18nText createI18NText(final String key, final String bundleName, final String... params) {
-        return createI18NText(key, bundleName, false, params);
+    public static I18nText createI18NText(final String key, final FormParameters formParameters) {
+        return formParameters.getI18nText(key);
     }
 
-    public static I18nText createI18NText(final String key, final String bundleName, final boolean keepFirst,
-                                          final String... params) {
+    public static I18nText createI18NText(final String key) { // Todo get rid of this function
+        return createI18NText(key, OppijaConstants.FORM_COMMON_BUNDLE_NAME);
+    }
+
+    public static I18nText createI18NText(final String key, final String bundleName) { // Todo get rid of this function
         Validate.notNull(key, "key can't be null");
         Validate.notNull(bundleName, "bundleName can't be null");
 
         Map<String, String> translations = new HashMap<String, String>();
         for (String lang : LANGS) {
-            ResourceBundle bundle = ResourceBundle.getBundle(bundleName, new Locale(lang));
 
-            String text = "";
-            try {
-                if (key != null) {
-                    text = bundle.getString(key);
-                    if (keepFirst) {
-                        // Add space at the beginning of string, making it appear before regular words in
-                        // alphabetical order.
-                        text = "\u0020" + text;
-                    }
-                }
-                if (params != null && params.length > 0) {
-                    text = MessageFormat.format(text, (Object[]) params);
-                }
-            } catch (MissingResourceException mre) {
-                text = key + " [" + lang + "]";
-                log.warn("No translation found for key '{}' bundle: {} lang: {}", key, bundleName, lang);
+            String text = getString(bundleName, key.toLowerCase(), lang);
+
+            if (text != null) {
+                translations.put(lang, text);
             }
-            translations.put(lang, text);
         }
         return new I18nText(translations);
+    }
+
+    public static I18nText addSpaceAtTheBeginning(final I18nText i18nText) {
+        Map<String, String> newTranslations = new HashMap<String, String>();
+        for (Map.Entry<String, String> stringStringEntry : i18nText.getTranslations().entrySet()) {
+            // Add space at the beginning of string, making it appear before regular words in
+            // alphabetical order.
+            newTranslations.put(stringStringEntry.getKey(), "\u0020" + stringStringEntry.getValue());
+        }
+        return new I18nText(newTranslations);
+    }
+
+    private static String getString(final String bundleName, final String key, final String lang) {
+        String text = null;
+        try {
+            ResourceBundle bundle = ResourceBundle.getBundle(bundleName, new Locale(lang));
+            if (bundle.containsKey(key)) {
+                text = bundle.getString(key);
+            } else {
+                ResourceBundle commonBundle = ResourceBundle.getBundle(FORM_COMMON_BUNDLE_NAME, new Locale(lang));
+                text = commonBundle.getString(key);
+            }
+        } catch (MissingResourceException mre) {
+            log.warn("No translation found for key '{}' bundle: {} lang: {}", key, bundleName, lang);
+        }
+        return text;
+
     }
 
     public static List<Element> filterElements(final Element element, final Predicate<Element> predicate) {
@@ -129,84 +135,39 @@ public final class ElementUtil {
         element.addAttribute(DISABLED, DISABLED);
     }
 
-    public static void addDefaultTrueFalseOptions(final Radio radio, final String bundleName) {
-        radio.addOption(createI18NText("form.yleinen.kylla", bundleName), KYLLA);
-        radio.addOption(createI18NText("form.yleinen.ei", bundleName), EI);
-    }
-
-    public static void addYesAndIDontOptions(final Radio radio, final String bundleName) {
-        radio.addOption(createI18NText("form.yleinen.kylla", bundleName), KYLLA);
-        radio.addOption(createI18NText("form.yleinen.en", bundleName), EI);
-    }
-
     public static GradeGridRow createHiddenGradeGridRowWithId(final String id) {
         GradeGridRow gradeGridRow = new GradeGridRow(id);
         gradeGridRow.addAttribute(HIDDEN, HIDDEN);
         return gradeGridRow;
     }
 
-
-    public static void setDefaultOption(final String value, final List<Option> options) {
-        for (Option opt : options) {
-            opt.setDefaultOption(opt.getValue().equalsIgnoreCase(value));
+    public static Element addSizeAttribute(final Element element, final Integer size) {
+        if (size != null) {
+            element.addAttribute("size", size.toString());
         }
-    }
-
-    public static TextQuestion createRequiredTextQuestion(final String id, final String name, final String bundleName,
-                                                          final String errorBundleName, final int size) {
-        TextQuestion textQuestion = new TextQuestion(id, createI18NText(name, bundleName));
-        addRequiredValidator(textQuestion, errorBundleName);
-        addSizeAttribute(textQuestion, size);
-        return textQuestion;
-    }
-
-    public static Element addSizeAttribute(final Element element, final int size) {
-        element.addAttribute("size", String.valueOf(size));
         return element;
     }
 
-    public static Element addMaxLengthAttributeAndLengthValidator(final Element element, final int maxlength, final String bundleName) {
-        element.addAttribute("maxlength", String.valueOf(maxlength));
-        element.setValidator(new LengthValidator(element.getId(),
-                createI18NText("yleinen.virheellinenArvo", bundleName), maxlength));
-        return element;
+    public static Validator createRegexValidator(final String id, final String pattern, final FormParameters formParameters) {
+        return createRegexValidator(id, pattern, formParameters, "yleinen.virheellinenArvo");
     }
 
-    public static Validator createRegexValidator(final String id, final String pattern, final String bundleName) {
-        return createRegexValidator(id, pattern, bundleName, "yleinen.virheellinenArvo");
-    }
-
-    public static Validator createRegexValidator(final String id, final String pattern, final String bundleName,
+    public static Validator createRegexValidator(final String id, final String pattern, final FormParameters formParameters,
                                                  final String messageKey) {
-        return new RegexFieldValidator(id,
-                ElementUtil.createI18NText(messageKey, bundleName),
-                pattern);
+        return new RegexFieldValidator(id, formParameters.getI18nText(messageKey), pattern);
     }
 
-    public static Validator createValueSetValidator(final String id, final List<String> validValues, final String bundleName) {
-        return new ValueSetValidator(id,
-                ElementUtil.createI18NText("yleinen.virheellinenArvo", bundleName),
-                validValues);
+    public static Validator createValueSetValidator(final String id, final List<String> validValues, final FormParameters formParameters) {
+        return new ValueSetValidator(id, formParameters.getI18nText("yleinen.virheellinenArvo"), validValues);
     }
 
-    public static Validator createDateOfBirthValidator(final String id, final String bundleName) {
-        return new DateOfBirthValidator(id,
-                ElementUtil.createI18NText(DateOfBirthValidator.DATE_OF_BIRTH_GENERIC_ERROR_MESSAGE, bundleName), bundleName);
-    }
-
-    public static void addRequiredValidator(final Element element, final String bundleName) {
+    public static void addRequiredValidator(final Element element, final FormParameters formParameters) {
+        String required = "required";
+        element.addAttribute(required, required);
         element.setValidator(
                 new RequiredFieldValidator(
                         element.getId(),
-                        ElementUtil.createI18NText("yleinen.pakollinen", bundleName)));
-    }
-
-    public static void addUniqueApplicationValidator(final Element element, final String asType) {
-        if (OppijaConstants.LISA_HAKU.equals(asType)) {
-            element.setValidator(new SsnAndPreferenceUniqueValidator());
-        } else {
-            //skip
-        }
+                        ElementUtil.createI18NText("yleinen.pakollinen", formParameters)));
     }
 
     public static void addUniqueApplicantValidator(final Element element, final String asType) {
@@ -217,20 +178,12 @@ public final class ElementUtil {
         }
     }
 
-    public static void addPreferenceValidator(final Element element) {
-        Preconditions.checkArgument(element instanceof PreferenceRow || element instanceof SinglePreference);
-        element.setValidator(new PreferenceValidator());
+    public static void setVerboseHelp(final Titled titled, final String helpId, final FormParameters formParameters) {
+        titled.setVerboseHelp(formParameters.getI18nText(helpId));
     }
 
-    public static void setRequiredInlineAndVerboseHelp(final Question question, final String helpId, final String bundleName,
-                                                       final String errorBundleName) {
-        addRequiredValidator(question, errorBundleName);
-        setVerboseHelp(question, helpId, bundleName);
-        question.setInline(true);
-    }
-
-    public static void setVerboseHelp(final Titled titled, final String helpId, final String bundleName) {
-        titled.setVerboseHelp(createI18NText(helpId, bundleName));
+    public static void setHelp(final Element element, final String key, final FormParameters formParameters) {
+        element.setHelp(formParameters.getI18nText(key));
     }
 
     public static String randomId() {
@@ -266,20 +219,6 @@ public final class ElementUtil {
         for (Element child : element.getChildren()) {
             findElementByType(child, elements, eClass);
         }
-    }
-
-    public static ApplicationSystem createActiveApplicationSystem(final String id, Form form) {
-        final Calendar instance = Calendar.getInstance();
-        instance.roll(Calendar.YEAR, -1);
-        Date start = new Date(instance.getTimeInMillis());
-        instance.roll(Calendar.YEAR, 2);
-        Date end = new Date(instance.getTimeInMillis());
-        List<ApplicationPeriod> applicationPeriods = Lists.newArrayList(new ApplicationPeriod(start, end));
-        return new ApplicationSystemBuilder().addId(id).addForm(form)
-                .addName(ElementUtil.createI18NAsIs("test application period"))
-                .addApplicationPeriods(applicationPeriods)
-                .addApplicationSystemType(OppijaConstants.VARSINAINEN_HAKU)
-                .get();
     }
 
     public static String getPath(final ApplicationSystem applicationSystem, final String id) {

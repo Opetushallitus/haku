@@ -17,7 +17,7 @@
 package fi.vm.sade.haku.oppija.lomake.domain.elements.custom;
 
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Question;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.Titled;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.springframework.data.annotation.Transient;
 
@@ -27,7 +27,7 @@ import org.springframework.data.annotation.Transient;
  *
  * @author Mikko Majapuro
  */
-public class PreferenceRow extends Question {
+public class PreferenceRow extends Titled {
 
     private static final long serialVersionUID = 5149303147942411002L;
     // label text for reset button

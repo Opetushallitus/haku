@@ -123,7 +123,7 @@ public class FormController {
                                 @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
                                 @PathParam(ELEMENT_ID_PATH_PARAM) final String elementId,
                                 final MultivaluedMap<String, String> multiValues) {
-        LOGGER.debug("updateRules {}, {}, {}", new String[]{applicationSystemId, phaseId, elementId});
+        LOGGER.debug("updateRules {}, {}, {}", applicationSystemId, phaseId, elementId);
         ModelResponse modelResponse = uiService.updateRules(applicationSystemId, phaseId, elementId, toSingleValueMap(multiValues));
         return new Viewable(ROOT_VIEW, modelResponse.getModel());
     }
@@ -145,7 +145,7 @@ public class FormController {
     public Response savePhase(@PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId,
                               @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
                               final MultivaluedMap<String, String> answers) throws URISyntaxException {
-        LOGGER.debug("savePhase {}, {}", new String[]{applicationSystemId, phaseId});
+        LOGGER.debug("savePhase {}, {}", applicationSystemId, phaseId);
         ModelResponse modelResponse = uiService.savePhase(applicationSystemId, phaseId, toSingleValueMap(answers));
         if (modelResponse.hasErrors()) {
             return Response.status(Response.Status.OK).entity(new Viewable(ROOT_VIEW, modelResponse.getModel())).build();
