@@ -79,12 +79,14 @@ public class HakutoiveetPhase {
                 createI18NText("form.hakutoiveet.koulutus", formParameters),
                 createI18NText("form.hakutoiveet.opetuspiste", formParameters),
                 createI18NText("form.hakutoiveet.sisaltyvatKoulutusohjelmat", formParameters));
+        if (!formParameters.isPervako()) {
+            pr.addChild(createDiscretionaryQuestionsAndRules(id, formParameters));
 
-        pr.addChild(createDiscretionaryQuestionsAndRules(id, formParameters));
-        pr.addChild(createSoraQuestions(id, formParameters),
-                createUrheilijanAmmatillisenKoulutuksenLisakysymysAndRule(id, formParameters),
-                createUrheilijalinjaRule(id),
-                createKaksoistutkintoQuestions(id, formParameters));
+            pr.addChild(createSoraQuestions(id, formParameters),
+                    createUrheilijanAmmatillisenKoulutuksenLisakysymysAndRule(id, formParameters),
+                    createUrheilijalinjaRule(id),
+                    createKaksoistutkintoQuestions(id, formParameters));
+        }
         pr.setValidator(new PreferenceValidator());
         return pr;
     }
