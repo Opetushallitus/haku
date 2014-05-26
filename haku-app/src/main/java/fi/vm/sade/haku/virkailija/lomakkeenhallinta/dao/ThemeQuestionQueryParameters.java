@@ -2,7 +2,7 @@ package fi.vm.sade.haku.virkailija.lomakkeenhallinta.dao;
 
 public final class ThemeQuestionQueryParameters {
     private String applicationSystemId;
-    private String learningOpportunityProviderId;
+    private String learningOpportunityId;
 
     public String getApplicationSystemId() {
         return applicationSystemId;
@@ -12,11 +12,11 @@ public final class ThemeQuestionQueryParameters {
         this.applicationSystemId = applicationSystemId;
     }
 
-    public String getLearningOpportunityProviderId() {
-        return learningOpportunityProviderId;
+    public String getLearningOpportunityId() {
+        return learningOpportunityId;
     }
 
-    public void setLearningOpportunityProviderId(String learningOpportunityProviderId) {
-        this.learningOpportunityProviderId = learningOpportunityProviderId;
+    public void setLearningOpportunityId(String learningOpportunityId) {
+        this.learningOpportunityId = learningOpportunityId;
     }
 }

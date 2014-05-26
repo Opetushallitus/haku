@@ -19,8 +19,8 @@ public class ThemeTextQuestion extends ThemeQuestion {
         super(TYPE);
     }
 
-    public ThemeTextQuestion(String applicationSystemId, String theme, String creatorPersonOid, String ownerOrganizationOid, String learningOpportunityProviderId, Map<String, String> validators) {
-        super(applicationSystemId, theme, creatorPersonOid, ownerOrganizationOid, TYPE,learningOpportunityProviderId, validators);
+    public ThemeTextQuestion(String applicationSystemId, String theme, String creatorPersonOid, String ownerOrganizationOid, String learningOpportunityId, Map<String, String> validators) {
+        super(applicationSystemId, theme, creatorPersonOid, ownerOrganizationOid, TYPE,learningOpportunityId, validators);
     }
 
     @Override

@@ -68,20 +68,20 @@ public class ThemeQuestionResource {
 
 
     @GET
-    @Path("{applicationSystemId}/{learningOpportunityProviderId}")
+    @Path("{applicationSystemId}/{learningOpportunityId}")
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     @JsonSerialize(using= SimpleObjectIdSerializer.class,
       as=ObjectId.class)
-    public List<ThemeQuestion> getThemeQuestion(@PathParam("applicationSystemId") String applicationSystemId, @PathParam("learningOpportunityProviderId") String learningOpportunityProviderId) {
+    public List<ThemeQuestion> getThemeQuestion(@PathParam("applicationSystemId") String applicationSystemId, @PathParam("learningOpportunityId") String learningOpportunityId) {
         ThemeQuestionQueryParameters tqq = new ThemeQuestionQueryParameters();
         tqq.setApplicationSystemId(applicationSystemId);
-        tqq.setLearningOpportunityProviderId(learningOpportunityProviderId);
+        tqq.setLearningOpportunityId(learningOpportunityId);
         List<ThemeQuestion> themeQuestions = themeQuestionDAO.query(tqq);
         return themeQuestions;
     }
 
     @GET
-    @Path("{applicationSystemId}/{learningOpportunityProviderId}/{themeQuestionId}")
+    @Path("{applicationSystemId}/{learningOpportunityId}/{themeQuestionId}")
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     public ThemeQuestion getThemedQuestionByPath(@PathParam("themeQuestionId") String themeQuestionId) {
         LOGGER.debug("Getting question by: {}", themeQuestionId);
@@ -89,11 +89,11 @@ public class ThemeQuestionResource {
     }
 
     @POST
-    @Path("{applicationSystemId}/{learningOpportunityProviderId}")
+    @Path("{applicationSystemId}/{learningOpportunityId}")
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     @Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     public void postThemeQuestion(@PathParam("applicationSystemId") String applicationSystemId,
-                                    @PathParam("learningOpportunityProviderId") String learningOpportunityProviderId,
+                                    @PathParam("learningOpportunityId") String learningOpportunityId,
                                     ThemeQuestion themeQuestion) {
         LOGGER.debug("Got " + themeQuestion);
         themeQuestionDAO.save(themeQuestion);

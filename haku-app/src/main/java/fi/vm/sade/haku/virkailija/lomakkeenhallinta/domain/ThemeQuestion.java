@@ -53,7 +53,7 @@ public abstract class ThemeQuestion implements ConfiguredElement {
     private I18nText verboseHelpText;
 
     // Attached to learning opportunity Identifier
-    private String learningOpportunityProviderId;
+    private String learningOpportunityId;
 
     // Validators for the question
     private Map<String, String> validators;
@@ -70,26 +70,26 @@ public abstract class ThemeQuestion implements ConfiguredElement {
     protected ThemeQuestion(@JsonProperty(value = "applicationSystemId") String applicationSystemId,
                             @JsonProperty(value = "theme")String theme,
                             @JsonProperty(value = "type")String type,
-                            @JsonProperty(value = "learningOpportunityProviderId")String learningOpportunityProviderId,
+                            @JsonProperty(value = "learningOpportunityId")String learningOpportunityId,
                             @JsonProperty(value = "validators")Map<String,String> validators ) {
         this.applicationSystemId =  applicationSystemId;
         this.theme = theme;
         this.type = type;
-        this.learningOpportunityProviderId = learningOpportunityProviderId;
+        this.learningOpportunityId = learningOpportunityId;
         this.validators = new HashMap<String,String>(validators);
     }
 
     protected ThemeQuestion(String applicationSystemId, String theme, String creatorPersonOid,
       String ownerOrganizationOid,
       String type,
-      String learningOpportunityProviderId,
+      String learningOpportunityId,
       Map<String,String> validators ) {
         this.applicationSystemId =  applicationSystemId;
         this.theme = theme;
         this.creatorPersonOid = creatorPersonOid;
         this.ownerOrganizationOid = ownerOrganizationOid;
         this.type = type;
-        this.learningOpportunityProviderId = learningOpportunityProviderId;
+        this.learningOpportunityId = learningOpportunityId;
         this.validators = new HashMap<String,String>();
     }
 
@@ -165,12 +165,12 @@ public abstract class ThemeQuestion implements ConfiguredElement {
         this.verboseHelpText = verboseHelpText;
     }
 
-    public String getLearningOpportunityProviderId() {
-        return learningOpportunityProviderId;
+    public String getLearningOpportunityId() {
+        return learningOpportunityId;
     }
 
-    public void setLearningOpportunityProviderId(String learningOpportunityProviderId) {
-        this.learningOpportunityProviderId = learningOpportunityProviderId;
+    public void setLearningOpportunityId(String learningOpportunityId) {
+        this.learningOpportunityId = learningOpportunityId;
     }
 
     public Map<String, String> getValidators() {
@@ -193,7 +193,7 @@ public abstract class ThemeQuestion implements ConfiguredElement {
           ", messageText=" + messageText +
           ", helpText=" + helpText +
           ", verboseHelpText=" + verboseHelpText +
-          ", learningOpportunityProviderId='" + learningOpportunityProviderId + '\'' +
+          ", learningOpportunityId='" + learningOpportunityId + '\'' +
           ", validators=" + validators +
           '}';
     }
