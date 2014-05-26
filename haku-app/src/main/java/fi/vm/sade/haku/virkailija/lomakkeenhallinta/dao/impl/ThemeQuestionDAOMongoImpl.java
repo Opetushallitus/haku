@@ -49,9 +49,13 @@ public class ThemeQuestionDAOMongoImpl extends AbstractDAOMongoImpl<ThemeQuestio
     public ThemeQuestion findById(String id) {
         LOGGER.debug("findById: " + id);
         BasicDBObject query = new BasicDBObject(FIELD_ID, new ObjectId(id));
-        // TODO consistency check
-        LOGGER.debug("with query:" + query.toString());
-        return executeQuery(query).get(0);
+        LOGGER.debug("Executing with query:" + query.toString());
+        List <ThemeQuestion> themeQuestions =  executeQuery(query);
+        LOGGER.debug("Found: " + themeQuestions.size());
+        if (themeQuestions.size() == 1) {
+            return themeQuestions.get(0);
+        }
+        return null;
     }
 
     public List<ThemeQuestion> query(ThemeQuestionQueryParameters parameters){
