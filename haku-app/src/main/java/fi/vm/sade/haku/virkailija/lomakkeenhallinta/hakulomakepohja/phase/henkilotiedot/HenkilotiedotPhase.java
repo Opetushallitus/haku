@@ -21,7 +21,6 @@ import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.builder.DropdownSelectBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.builder.ElementBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.PostalCode;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.SocialSecurityNumber;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.DateQuestion;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
@@ -37,6 +36,7 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import java.util.List;
 
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.PhaseBuilder.Phase;
+import static fi.vm.sade.haku.oppija.lomake.domain.builder.PostalCodeBuilder.PostalCode;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.RadioBuilder.Radio;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.TextQuestionBuilder.TextQuestion;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.ThemeBuilder.Theme;
@@ -185,9 +185,8 @@ public final class HenkilotiedotPhase {
         Element lahiosoite = TextQuestion("lahiosoite").inline().size(40).required().build(formParameters);
         asuinmaaFI.addChild(lahiosoite);
 
-        Element postinumero = new PostalCode("Postinumero",
-                formParameters.getI18nText("Postinumero"),
-                formParameters.getKoodistoService().getPostOffices());
+        Element postinumero = PostalCode("Postinumero")
+                .addOptions(formParameters.getKoodistoService().getPostOffices()).build();
         addSizeAttribute(postinumero, 5);
         postinumero.addAttribute("placeholder", "00000");
         postinumero.addAttribute("maxlength", "5");
