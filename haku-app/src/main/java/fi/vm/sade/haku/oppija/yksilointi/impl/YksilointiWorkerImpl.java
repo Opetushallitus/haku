@@ -316,7 +316,8 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
     }
 
     public Application getNextRedo() {
-        return applicationDAO.getNextRedo();
+        Application application = applicationDAO.getNextRedo();
+        return setLastAutomatedProcessingTimeAndSave(application);
     }
 
     private Application setLastAutomatedProcessingTimeAndSave(final Application application) {
