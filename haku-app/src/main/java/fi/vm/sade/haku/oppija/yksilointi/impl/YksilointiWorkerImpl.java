@@ -108,23 +108,27 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
         Application application = getNextSubmittedApplication();
         int count = 0;
         while (application != null && ++count < maxBatchSize) {
-            application = applicationService.fillLOPChain(application, false);
-            application = applicationService.addPersonOid(application);
-            if (!skipSendingSchoolAutomatic) {
-                application = applicationService.addSendingSchool(application);
-                application = applicationService.addBaseEducation(application);
-            }
-            application = validateApplication(application);
-            this.applicationDAO.update(new Application(application.getOid()), application);
-            //applicationService.update(, application);
-            if (sendMail) {
-                try {
-                    sendMail(application);
-                } catch (EmailException e) {
-                    LOGGER.info("Error process applications", e);
+            try {
+                application = applicationService.fillLOPChain(application, false);
+                application = applicationService.addPersonOid(application);
+                if (!skipSendingSchoolAutomatic) {
+                    application = applicationService.addSendingSchool(application);
+                    application = applicationService.addBaseEducation(application);
                 }
+                application = validateApplication(application);
+                this.applicationDAO.update(new Application(application.getOid()), application);
+                //applicationService.update(, application);
+                if (sendMail) {
+                    try {
+                        sendMail(application);
+                    } catch (EmailException e) {
+                        LOGGER.info("Error process applications", e);
+                    }
+                }
+                application = getNextSubmittedApplication();
+            } catch (Exception e) {
+                LOGGER.error("post process failed: {}", e);
             }
-            application = getNextSubmittedApplication();
         }
     }
 
@@ -142,31 +146,35 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
         Application application = getNextRedo();
         int count = 0;
         while (application != null && ++count < maxBatchSize) {
-            LOGGER.debug("Reprocessing application " + application.getOid());
-            String redo = application.getRedoPostProcess();
-            LOGGER.debug("Reprocessing application, redo: " + redo);
-            if (redo != null) {
-                if ("FULL".equals(redo) || "NOMAIL".equals(redo)) {
-                    application = applicationService.fillLOPChain(application, false);
-                    application = applicationService.addPersonOid(application);
-                    if (!skipSendingSchoolManual) {
-                        application = applicationService.addSendingSchool(application);
-                        application = applicationService.addBaseEducation(application);
+            try {
+                LOGGER.debug("Reprocessing application " + application.getOid());
+                String redo = application.getRedoPostProcess();
+                LOGGER.debug("Reprocessing application, redo: " + redo);
+                if (redo != null) {
+                    if ("FULL".equals(redo) || "NOMAIL".equals(redo)) {
+                        application = applicationService.fillLOPChain(application, false);
+                        application = applicationService.addPersonOid(application);
+                        if (!skipSendingSchoolManual) {
+                            application = applicationService.addSendingSchool(application);
+                            application = applicationService.addBaseEducation(application);
+                        }
+                        application = validateApplication(application);
+                        application.setRedoPostProcess("DONE");
+                        this.applicationDAO.update(new Application(application.getOid()), application);
+                        LOGGER.debug("Reprocessing " + application.getOid() + " done");
                     }
-                    application = validateApplication(application);
-                    application.setRedoPostProcess("DONE");
-                    this.applicationDAO.update(new Application(application.getOid()), application);
-                    LOGGER.debug("Reprocessing " + application.getOid() + " done");
-                }
-                if (sendMail && redo.equals("FULL")) {
-                    try {
-                        sendMail(application);
-                    } catch (EmailException e) {
-                        LOGGER.info("Error process applications", e);
+                    if (sendMail && redo.equals("FULL")) {
+                        try {
+                            sendMail(application);
+                        } catch (EmailException e) {
+                            LOGGER.info("Error process applications", e);
+                        }
                     }
                 }
+                application = getNextRedo();
+            } catch (Exception e) {
+                LOGGER.error("redoPostProcess failed: {}", e);
             }
-            application = getNextRedo();
         }
     }
 
