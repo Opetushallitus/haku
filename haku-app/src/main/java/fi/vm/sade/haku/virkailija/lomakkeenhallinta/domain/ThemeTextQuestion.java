@@ -9,11 +9,7 @@ public class ThemeTextQuestion extends ThemeQuestion {
 
     public static final String TYPE = "TextQuestion";
 
-    private Boolean requiredFieldValidator = Boolean.FALSE;
-
     private Integer size;
-
-    private Boolean previewable = Boolean.FALSE;
 
     public ThemeTextQuestion(){
         super(TYPE);
@@ -28,14 +24,6 @@ public class ThemeTextQuestion extends ThemeQuestion {
         return null;
     }
 
-    public Boolean getRequiredFieldValidator() {
-        return requiredFieldValidator;
-    }
-
-    public void setRequiredFieldValidator(Boolean requiredFieldValidator) {
-        this.requiredFieldValidator = requiredFieldValidator;
-    }
-
     public Integer getSize() {
         return size;
     }
@@ -44,11 +32,4 @@ public class ThemeTextQuestion extends ThemeQuestion {
         this.size = size;
     }
 
-    public Boolean getPreviewable() {
-        return previewable;
-    }
-
-    public void setPreviewable(Boolean previewable) {
-        this.previewable = previewable;
-    }
 }

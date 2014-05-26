@@ -55,8 +55,15 @@ public abstract class ThemeQuestion implements ConfiguredElement {
     // Attached to learning opportunity Identifier
     private String learningOpportunityId;
 
+    // Is requiredQuestion
+    private Boolean requiredFieldValidator = Boolean.FALSE;
+
+    // Is show on the completed page
+    private Boolean onCompletedPage = Boolean.FALSE;
+
     // Validators for the question
     private Map<String, String> validators;
+
 
     protected ThemeQuestion() {
         this.validators = new HashMap<String, String>();
@@ -173,6 +180,22 @@ public abstract class ThemeQuestion implements ConfiguredElement {
         this.learningOpportunityId = learningOpportunityId;
     }
 
+    public Boolean getRequiredFieldValidator() {
+        return requiredFieldValidator;
+    }
+
+    public void setRequiredFieldValidator(Boolean requiredFieldValidator) {
+        this.requiredFieldValidator = requiredFieldValidator;
+    }
+
+    public Boolean getOnCompletedPage() {
+        return onCompletedPage;
+    }
+
+    public void setOnCompletedPage(Boolean onCompletedPage) {
+        this.onCompletedPage = onCompletedPage;
+    }
+
     public Map<String, String> getValidators() {
         return validators;
     }
@@ -194,6 +217,8 @@ public abstract class ThemeQuestion implements ConfiguredElement {
           ", helpText=" + helpText +
           ", verboseHelpText=" + verboseHelpText +
           ", learningOpportunityId='" + learningOpportunityId + '\'' +
+          ", requiredFieldValidator=" + requiredFieldValidator +
+          ", onCompletedPage=" + onCompletedPage +
           ", validators=" + validators +
           '}';
     }
