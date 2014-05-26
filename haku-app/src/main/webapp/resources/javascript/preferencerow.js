@@ -86,7 +86,7 @@ var preferenceRow = {
     displayChildLONames: function (hakukohdeId, childLONamesId) {
         var $names =  $("#" + childLONamesId), data = '<ol class="list-style-none">', loNames = childLONames[hakukohdeId];
 
-        if (loNames) {
+        if (loNames && loNames.length > 0) {
             for (var index in loNames) {
                 data = data.concat("<li><small>", loNames[index], "</small></li>");
             }
