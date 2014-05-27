@@ -46,11 +46,9 @@ public abstract class ElementBuilder {
         element.setHelp(getI18nText(key + ".help"));
         ElementUtil.setVerboseHelp(element, getI18nText(key + ".verboseHelp"));
 
-        ElementUtil.setHelp(element, key + ".help", formParameters);
         if (size != null) {
             element.addAttribute("size", size.toString());
         }
-        ElementUtil.addSizeAttribute(element, size);
         if (required) {
             String required = "required";
             element.addAttribute(required, required);
