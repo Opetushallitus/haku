@@ -30,8 +30,7 @@ public final class ArvosanatTheme {
 
         GradesTable gradesTablePK = new GradesTable(true, formParameters);
         GradeGrid grid_pk = gradesTablePK.createGradeGrid("grid_pk", formParameters);
-        grid_pk.setHelp(createI18NText("form.arvosanat.help", formParameters));
-        setHelp(grid_pk, "form.arvosanat.help", formParameters);
+        grid_pk.setHelp(createI18NText("form.arvosanat.help.pk", formParameters));
         relatedQuestionPK.addChild(grid_pk);
         arvosanatTheme.addChild(relatedQuestionPK);
 
@@ -39,7 +38,7 @@ public final class ArvosanatTheme {
             RelatedQuestionComplexRule relatedQuestionLukio = createVarEqualsToValueRule(POHJAKOULUTUS_ID, YLIOPPILAS);
             GradesTable gradesTableYO = new GradesTable(false, formParameters);
             GradeGrid grid_yo = gradesTableYO.createGradeGrid("grid_yo", formParameters);
-            setHelp(grid_yo, "form.arvosanat.help", formParameters);
+            grid_yo.setHelp(createI18NText("form.arvosanat.help.lk", formParameters));
             relatedQuestionLukio.addChild(grid_yo);
             arvosanatTheme.addChild(relatedQuestionLukio);
 
@@ -61,7 +60,7 @@ public final class ArvosanatTheme {
 
         // Peruskoulu
         GradeGrid grid_pk = gradesTablePK.createGradeGrid("grid_pk", formParameters);
-        grid_pk.setHelp(createI18NText("form.arvosanat.help", formParameters));
+        grid_pk.setHelp(createI18NText("form.arvosanat.help.pk", formParameters));
         Integer hakukausiVuosi = formParameters.getApplicationSystem().getHakukausiVuosi();
         Expr kysyArvosanatPk = new Or(
                 new And(
@@ -79,7 +78,7 @@ public final class ArvosanatTheme {
 
         // Ylioppilaat
         GradeGrid grid_yo = gradesTableYO.createGradeGrid("grid_yo", formParameters);
-        grid_yo.setHelp(createI18NText("form.arvosanat.help", formParameters));
+        grid_yo.setHelp(createI18NText("form.arvosanat.help.lk", formParameters));
         Expr kysyArvosanatLukio = new Or(
                 new And(
                         new Not(
