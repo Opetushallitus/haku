@@ -6,6 +6,9 @@
 <c:forEach var="child" items="${fn:children(element, answers)}">
     <c:set var="parent" value="${element}" scope="request"/>
     <c:set var="element" value="${child}" scope="request"/>
+    <c:if test="${parent.type eq 'Phase'}">
+        <c:set var="currentPhase" value="${parent}" scope="request"/>
+    </c:if>
     <c:choose>
         <c:when test="${preview or print}">
             <jsp:include page="/WEB-INF/jsp/elements/${child.type}Preview.jsp"/>
