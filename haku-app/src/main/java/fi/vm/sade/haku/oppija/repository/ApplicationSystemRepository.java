@@ -32,6 +32,7 @@ public class ApplicationSystemRepository {
     }
 
     public ApplicationSystem findById(final String asid) {
+        log.debug("Trying to find applicationSystem with id "+ asid);
         return mongoOperations.findById(asid, ApplicationSystem.class);
     }
 

@@ -322,11 +322,6 @@ public class Application implements Serializable {
                 OppijaConstants.ELEMENT_ID_NICKNAME);
         updateNameMetadata();
 
-        henkilotiedot = updateHenkilotiedotField(henkilotiedot, person.getContactLanguage(),
-                OppijaConstants.ELEMENT_ID_CONTACT_LANGUAGE);
-        henkilotiedot = updateHenkilotiedotField(henkilotiedot, person.getHomeCity(),
-                OppijaConstants.ELEMENT_ID_HOME_CITY);
-
         String personOid = person.getPersonOid();
         if (isNotEmpty(personOid)) {
             setPersonOid(personOid);
