@@ -88,15 +88,14 @@ public class OfficerController {
     }
 
     @POST
-    @Path("/hakemus/new")
+    @Path("/hakemus/")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED + CHARSET_UTF_8)
     @Produces(MEDIA_TYPE_TEXT_HTML_UTF8)
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_CRUD')")
     public Response newApplication(final MultivaluedMap<String, String> multiValues) throws URISyntaxException {
-        LOGGER.debug("newApplication");
-        final String asId = multiValues.getFirst("asId");
-        Application application = officerUIService.createApplication(asId);
-        return redirectToLastPhase(application.getOid());
+        LOGGER.debug("create new application");
+        Application application = officerUIService.createApplication(multiValues.getFirst("asId"));
+        return redirectToOidResponse(application.getOid());
     }
 
     @GET
@@ -108,15 +107,23 @@ public class OfficerController {
     }
 
     @GET
-    @Path("/hakemus/{oid}")
-    public Response redirectToLastPhase(@PathParam(OID_PATH_PARAM) final String oid) throws URISyntaxException {
-        LOGGER.debug("redirectToLastPhase {}", new Object[]{oid});
-        Application application = officerUIService.getApplicationWithLastPhase(oid);
-        URI path = UriUtil.pathSegmentsToUri(VIRKAILIJA_HAKEMUS_VIEW,
-                application.getApplicationSystemId(),
-                application.getPhaseId(),
-                application.getOid());
-        return seeOther(path).build();
+    @Path("/hakemus/{oid}/")
+    public Viewable redirectToLastPhase(@PathParam(OID_PATH_PARAM) final String oid) throws URISyntaxException {
+        LOGGER.debug("get application  {}", oid);
+        ModelResponse modelResponse = officerUIService.getValidatedApplication(oid, "esikatselu");
+        return new Viewable(DEFAULT_VIEW, modelResponse.getModel());
+    }
+
+    @GET
+    @Path("/hakemus/{applicationSystemId}/{phaseId}/{oid}")
+    @Produces(MEDIA_TYPE_TEXT_HTML_UTF8)
+    public Viewable getPreview(@PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId,
+                               @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
+                               @PathParam(OID_PATH_PARAM) final String oid) {
+
+        LOGGER.debug("getPreview {}, {}, {}", applicationSystemId, phaseId, oid);
+        ModelResponse modelResponse = officerUIService.getValidatedApplication(oid, phaseId);
+        return new Viewable(DEFAULT_VIEW, modelResponse.getModel()); // TODO remove hardcoded Phase
     }
 
     @POST
@@ -146,19 +153,6 @@ public class OfficerController {
         LOGGER.debug("getPreviewElement {}, {}, {}", applicationSystemId, phaseId, oid);
         ModelResponse modelResponse = officerUIService.getApplicationElement(oid, phaseId, elementId, true);
         return new Viewable("/elements/Root", modelResponse.getModel()); // TODO remove hardcoded Phase
-    }
-
-    @GET
-    @Path("/hakemus/{applicationSystemId}/{phaseId}/{oid}")
-    @Produces(MEDIA_TYPE_TEXT_HTML_UTF8)
-    public Viewable getPreview(@PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId,
-                               @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
-                               @PathParam(OID_PATH_PARAM) final String oid) {
-
-        LOGGER.debug("getPreview {}, {}, {}", applicationSystemId, phaseId, oid);
-        ModelResponse modelResponse = officerUIService.getValidatedApplication(oid, phaseId);
-
-        return new Viewable(DEFAULT_VIEW, modelResponse.getModel()); // TODO remove hardcoded Phase
     }
 
     @POST
@@ -210,7 +204,7 @@ public class OfficerController {
                                        final MultivaluedMap<String, String> multiValues) throws URISyntaxException {
         LOGGER.debug("saveAdditionalInfo {}, {}", new Object[]{oid, multiValues});
         officerUIService.saveApplicationAdditionalInfo(oid, MultivaluedMapUtil.toSingleValueMap(multiValues));
-        return seeOther(UriUtil.pathSegmentsToUri(VIRKAILIJA_HAKEMUS_VIEW, oid, "")).build();
+        return redirectToOidResponse(oid);
     }
 
     @GET
@@ -222,53 +216,25 @@ public class OfficerController {
         return new Viewable(ADDITIONAL_INFO_VIEW, modelResponse.getModel());
     }
 
-    @GET
-    @Path("/hakemus/{oid}/activate")
-    @Produces(MEDIA_TYPE_TEXT_HTML_UTF8)
-    @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_CRUD')")
-    public Response activate(@PathParam(OID_PATH_PARAM) final String oid) throws URISyntaxException {
-        LOGGER.debug("Entering GET activate");
-        officerUIService.addPersonAndAuthenticate(oid);
-        return seeOther(UriUtil.pathSegmentsToUri(VIRKAILIJA_HAKEMUS_VIEW, oid, "")).build();
+    @POST
+    @Path("/hakemus/{oid}/state")
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED + CHARSET_UTF_8)
+    @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
+    @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_CRUD')")
+    public Response state(@PathParam(OID_PATH_PARAM) final String oid, final MultivaluedMap<String, String> multiValues) throws URISyntaxException {
+        String reason = concatMultivaluedQueryParam("note", multiValues);
+        officerUIService.changeState(oid, Application.State.valueOf(multiValues.getFirst("state")), reason);
+        return redirectToOidResponse(oid);
     }
 
     @POST
-    @Path("/hakemus/{oid}/activate")
+    @Path("/hakemus/{oid}/note")
     @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED + CHARSET_UTF_8)
-    @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_CRUD')")
-    public Viewable activate(@PathParam(OID_PATH_PARAM) final String oid, final MultivaluedMap<String, String> multiValues) {
-        for (Map.Entry<String, List<String>> entry : multiValues.entrySet()) {
-            LOGGER.debug("activation " + entry.getKey() + " -> " + entry.getValue());
-        }
-        StringBuilder reasonBuilder = new StringBuilder();
-        for (String reasonPart : multiValues.get("activation-reason")) {
-            reasonBuilder.append(reasonPart);
-        }
-
-        officerUIService.activateApplication(oid, reasonBuilder.toString());
-        ModelResponse modelResponse = officerUIService.getValidatedApplication(oid, PHASE_ID_PREVIEW);
-        return new Viewable(DEFAULT_VIEW, modelResponse.getModel());
-    }
-
-    @POST
-    @Path("/hakemus/{oid}/passivate")
-    @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
-    @Consumes(MediaType.APPLICATION_FORM_URLENCODED + CHARSET_UTF_8)
-    @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_CRUD')")
-    public Viewable passivate(@PathParam(OID_PATH_PARAM) final String oid,
-                              final MultivaluedMap<String, String> multiValues) {
-        for (Map.Entry<String, List<String>> entry : multiValues.entrySet()) {
-            LOGGER.debug("passivation " + entry.getKey() + " -> " + entry.getValue());
-        }
-        StringBuilder reasonBuilder = new StringBuilder();
-        for (String reasonPart : multiValues.get("passivation-reason")) {
-            reasonBuilder.append(reasonPart);
-        }
-
-        officerUIService.passivateApplication(oid, reasonBuilder.toString());
-        ModelResponse modelResponse = officerUIService.getValidatedApplication(oid, PHASE_ID_PREVIEW);
-        return new Viewable(DEFAULT_VIEW, modelResponse.getModel());
+    public Response addNote(@PathParam(OID_PATH_PARAM) final String oid, final MultivaluedMap<String, String> multiValues) throws URISyntaxException {
+        String note = concatMultivaluedQueryParam("note-text", multiValues);
+        officerUIService.addNote(oid, note);
+        return redirectToOidResponse(oid);
     }
 
     @POST
@@ -276,31 +242,22 @@ public class OfficerController {
     @Produces(MEDIA_TYPE_TEXT_HTML_UTF8)
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED + CHARSET_UTF_8)
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_CRUD')")
-    public Viewable postProcess(@PathParam(OID_PATH_PARAM) final String oid,
-                                final MultivaluedMap<String, String> multiValues) {
-        boolean email = Boolean.valueOf(multiValues.get("email").get(0));
-        ModelResponse modelResponse = officerUIService.postProcess(oid, email);
-        return new Viewable(DEFAULT_VIEW, modelResponse.getModel());
+    public Response postProcess(@PathParam(OID_PATH_PARAM) final String oid,
+                                final MultivaluedMap<String, String> multiValues) throws URISyntaxException {
+        boolean email = Boolean.valueOf(multiValues.getFirst("email"));
+        officerUIService.postProcess(oid, email);
+        return redirectToOidResponse(oid);
     }
 
     @POST
-    @Path("/hakemus/{oid}/note")
+    @Path("/hakemus/{oid}/addStudentOid")
     @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED + CHARSET_UTF_8)
-    public Response addNote(@PathParam(OID_PATH_PARAM) final String oid,
-                            final MultivaluedMap<String, String> multiValues) throws URISyntaxException {
-        for (Map.Entry<String, List<String>> entry : multiValues.entrySet()) {
-            LOGGER.debug("note " + entry.getKey() + " -> " + entry.getValue());
-        }
-        StringBuilder noteBuilder = new StringBuilder();
-        for (String notePart : multiValues.get("note-text")) {
-            noteBuilder.append(notePart);
-        }
-
-        officerUIService.addNote(oid, noteBuilder.toString());
-        return seeOther(new URI(VIRKAILIJA_HAKEMUS_VIEW + '/' + oid)).build();
+    @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_CRUD')")
+    public Response addStudentOid(@PathParam(OID_PATH_PARAM) final String oid) throws URISyntaxException {
+        officerUIService.addStudentOid(oid);
+        return redirectToOidResponse(oid);
     }
-
 
     @GET
     @Path("/hakemus/{oid}/print")
@@ -310,16 +267,6 @@ public class OfficerController {
         return new Viewable(APPLICATION_PRINT_VIEW, modelResponse.getModel());
     }
 
-    @POST
-    @Path("/hakemus/{oid}/addStudentOid")
-    @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
-    @Consumes(MediaType.APPLICATION_FORM_URLENCODED + CHARSET_UTF_8)
-    @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_CRUD')")
-
-    public Viewable addStudentOid(@PathParam(OID_PATH_PARAM) final String oid) {
-        ModelResponse modelResponse = officerUIService.addStudentOid(oid);
-        return new Viewable(DEFAULT_VIEW, modelResponse.getModel());
-    }
 
     @GET
     @Path("/hakemus/applicationSystems")
@@ -357,5 +304,20 @@ public class OfficerController {
             return officerUIService.getPreferences(term);
         }
         return new ArrayList<Map<String, Object>>(0);
+    }
+
+    private String concatMultivaluedQueryParam(final String paramName, final MultivaluedMap<String, String> multiValues) {
+        for (Map.Entry<String, List<String>> entry : multiValues.entrySet()) {
+            LOGGER.debug(paramName + " " + entry.getKey() + " -> " + entry.getValue());
+        }
+        StringBuilder reasonBuilder = new StringBuilder();
+        for (String reasonPart : multiValues.get(paramName)) {
+            reasonBuilder.append(reasonPart);
+        }
+        return reasonBuilder.toString();
+    }
+
+    private Response redirectToOidResponse(String oid) throws URISyntaxException {
+        return seeOther(UriUtil.pathSegmentsToUri(VIRKAILIJA_HAKEMUS_VIEW, oid, "")).build();
     }
 }
