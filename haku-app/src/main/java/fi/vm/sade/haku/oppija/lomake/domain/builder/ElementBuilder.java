@@ -40,12 +40,14 @@ public abstract class ElementBuilder {
         Element element = buildImpl(formParameters);
 
         ElementUtil.setHelp(element, key + ".help", formParameters);
-        ElementUtil.addSizeAttribute(element, size);
+        if (size != null) {
+            element.addAttribute("size", size.toString());
+        }
         if (required) {
             ElementUtil.addRequiredValidator(element, formParameters);
         }
         if (pattern != null) {
-            ElementUtil.createRegexValidator(id, pattern, formParameters);
+            element.setValidator(ElementUtil.createRegexValidator(id, pattern, formParameters));
         }
         if (placeholder != null) {
             element.addAttribute("placeholder", placeholder);
@@ -67,7 +69,6 @@ public abstract class ElementBuilder {
 
     public final Element build() {
         Element element = buildImpl();
-        ElementUtil.addSizeAttribute(element, size);
         return element;
     }
 
