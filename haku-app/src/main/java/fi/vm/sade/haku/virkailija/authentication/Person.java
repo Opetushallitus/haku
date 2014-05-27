@@ -135,21 +135,21 @@ public class Person {
     }
 
     public Person mergeWith(Person other) {
-        this.firstNames =  isNotBlank(firstNames) ? other.firstNames : this.firstNames;
-        this.nickName = isNotBlank(nickName) ? other.nickName : this.nickName;
-        this.lastName = isNotBlank(lastName) ? other.lastName : this.lastName;
-        this.socialSecurityNumber = isNotBlank(socialSecurityNumber) ? other.socialSecurityNumber : this.socialSecurityNumber;
+        this.firstNames =  isNotBlank(other.firstNames) ? other.firstNames : this.firstNames;
+        this.nickName = isNotBlank(other.nickName) ? other.nickName : this.nickName;
+        this.lastName = isNotBlank(other.lastName) ? other.lastName : this.lastName;
+        this.socialSecurityNumber = isNotBlank(other.socialSecurityNumber) ? other.socialSecurityNumber : this.socialSecurityNumber;
         this.socialSecurityNumber = isNotBlank(other.socialSecurityNumber) ? other.socialSecurityNumber : this.socialSecurityNumber;
         this.noSocialSecurityNumber = isBlank(this.socialSecurityNumber);
-        this.email = isNotBlank(email) ? other.email : this.email;
-        this.sex = isNotBlank(sex) ? other.sex : this.sex;
-        this.homeCity = isNotBlank(homeCity) ? other.homeCity : this.homeCity;
+        this.email = isNotBlank(other.email) ? other.email : this.email;
+        this.sex = isNotBlank(other.sex) ? other.sex : this.sex;
+        this.homeCity = isNotBlank(other.homeCity) ? other.homeCity : this.homeCity;
         this.securityOrder = this.securityOrder ? true : other.securityOrder;
-        this.language = isNotBlank(language) ? other.language : this.language;
-        this.nationality = isNotBlank(nationality) ? other.nationality : this.nationality;
-        this.contactLanguage = isNotBlank(contactLanguage) ? other.contactLanguage : this.contactLanguage;
-        this.personOid = isNotBlank(personOid) ? other.personOid : this.personOid;
-        this.studentOid = isNotBlank(studentOid) ? other.studentOid : this.studentOid;
+        this.language = isNotBlank(other.language) ? other.language : this.language;
+        this.nationality = isNotBlank(other.nationality) ? other.nationality : this.nationality;
+        this.contactLanguage = isNotBlank(other.contactLanguage) ? other.contactLanguage : this.contactLanguage;
+        this.personOid = isNotBlank(other.personOid) ? other.personOid : this.personOid;
+        this.studentOid = isNotBlank(other.studentOid) ? other.studentOid : this.studentOid;
         return this;
     }
 }
