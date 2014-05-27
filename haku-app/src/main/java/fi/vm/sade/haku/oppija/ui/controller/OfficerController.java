@@ -284,13 +284,13 @@ public class OfficerController {
     }
 
     @POST
-    @Path("/hakemus/{oid}/addNote")
+    @Path("/hakemus/{oid}/note")
     @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED + CHARSET_UTF_8)
-    public Viewable addNote(@PathParam(OID_PATH_PARAM) final String oid,
-                            final MultivaluedMap<String, String> multiValues) {
+    public Response addNote(@PathParam(OID_PATH_PARAM) final String oid,
+                            final MultivaluedMap<String, String> multiValues) throws URISyntaxException {
         for (Map.Entry<String, List<String>> entry : multiValues.entrySet()) {
-            LOGGER.debug("passivation " + entry.getKey() + " -> " + entry.getValue());
+            LOGGER.debug("note " + entry.getKey() + " -> " + entry.getValue());
         }
         StringBuilder noteBuilder = new StringBuilder();
         for (String notePart : multiValues.get("note-text")) {
@@ -298,9 +298,9 @@ public class OfficerController {
         }
 
         officerUIService.addNote(oid, noteBuilder.toString());
-        ModelResponse modelResponse = officerUIService.getValidatedApplication(oid, PHASE_ID_PREVIEW);
-        return new Viewable(DEFAULT_VIEW, modelResponse.getModel());
+        return seeOther(new URI(VIRKAILIJA_HAKEMUS_VIEW + '/' + oid)).build();
     }
+
 
     @GET
     @Path("/hakemus/{oid}/print")
