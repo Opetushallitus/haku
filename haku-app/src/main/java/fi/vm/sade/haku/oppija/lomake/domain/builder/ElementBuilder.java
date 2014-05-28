@@ -1,5 +1,7 @@
 package fi.vm.sade.haku.oppija.lomake.domain.builder;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.validation.Validator;
@@ -156,5 +158,14 @@ public abstract class ElementBuilder {
     public ElementBuilder addChild(Element element) {
         this.children.add(element);
         return this;
+    }
+
+    public static Element[] buildAll(final FormParameters formParameters, final ElementBuilder... elementBuilders) {
+        return Lists.transform(Lists.newArrayList(elementBuilders), new Function<ElementBuilder, Element>() {
+            @Override
+            public Element apply(ElementBuilder elementBuilder) {
+                return elementBuilder.formParams(formParameters).build();
+            }
+        }).toArray(new Element[elementBuilders.length]);
     }
 }

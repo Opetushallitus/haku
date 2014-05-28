@@ -69,7 +69,7 @@ public class DropdownSelectBuilder extends ElementBuilder {
         return dropdownSelect;
     }
 
-    public static DropdownSelectBuilder DropdownSelect(final String id) {
+    public static DropdownSelectBuilder Dropdown(final String id) {
         return new DropdownSelectBuilder(id);
     }
 }

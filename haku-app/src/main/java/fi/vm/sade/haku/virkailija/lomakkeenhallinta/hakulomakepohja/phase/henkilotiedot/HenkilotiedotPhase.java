@@ -18,11 +18,11 @@ package fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.henki
 
 import com.google.common.collect.ImmutableList;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
+import fi.vm.sade.haku.oppija.lomake.domain.builder.DateQuestionBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.builder.DropdownSelectBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.builder.ElementBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.SocialSecurityNumber;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.DateQuestion;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Radio;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.TextQuestion;
@@ -35,6 +35,7 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 
 import java.util.List;
 
+import static fi.vm.sade.haku.oppija.lomake.domain.builder.DropdownSelectBuilder.Dropdown;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.PhaseBuilder.Phase;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.PostalCodeBuilder.PostalCode;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.RadioBuilder.Radio;
@@ -122,14 +123,14 @@ public final class HenkilotiedotPhase {
         RelatedQuestionComplexRule eiSuomalaistaHetuaRule = createRuleIfVariableIsFalse("eiOleSuomalaistaHetua", onkoSinullaSuomalainenHetu.getId());
         eiSuomalaistaHetuaRule.addChild(sukupuoli);
 
-        DateQuestion syntymaaika = new DateQuestion("syntymaaika", createI18NText("syntymaaika", formParameters));
+        Element syntymaaika = DateQuestionBuilder.Date("syntymaaika").formParams(formParameters).build();
         syntymaaika.setValidator(new PastDateValidator(syntymaaika.getId(), createI18NText("henkilotiedot.syntymaaika.tulevaisuudessa", formParameters)));
         syntymaaika.setValidator(new RegexFieldValidator(syntymaaika.getId(), createI18NText("henkilotiedot.syntymaaika.virhe"), DATE_PATTERN));
         addRequiredValidator(syntymaaika, formParameters);
         syntymaaika.setInline(true);
 
         eiSuomalaistaHetuaRule.addChild(syntymaaika,
-                TextQuestion("syntymapaikka").inline().size(30).required().formParams(formParameters).build(),
+                TextQuestion("syntymapaikka").size(30).requiredInline().formParams(formParameters).build(),
                 TextQuestion("kansallinenIdTunnus").inline().size(30).formParams(formParameters).build(),
                 TextQuestion("passinnumero").inline().size(30).formParams(formParameters).build());
 
@@ -174,11 +175,10 @@ public final class HenkilotiedotPhase {
 
 
         // Asuinmaa, osoite
-        Element asuinmaa = new DropdownSelectBuilder("asuinmaa")
+        Element asuinmaa = Dropdown("asuinmaa")
                 .defaultOption("FIN")
                 .addOptions(formParameters.getKoodistoService().getCountries())
-                .required()
-                .inline()
+                .requiredInline()
                 .formParams(formParameters).build();
 
         RelatedQuestionComplexRule asuinmaaFI = ElementUtil.createRegexpRule(asuinmaa, EMPTY_OR_FIN_PATTERN);
@@ -201,8 +201,7 @@ public final class HenkilotiedotPhase {
                 new DropdownSelectBuilder("kotikunta")
                         .emptyOption()
                         .addOptions(formParameters.getKoodistoService().getMunicipalities())
-                        .inline()
-                        .required()
+                        .requiredInline()
                         .formParams(formParameters).build();
 
         asuinmaaFI.addChild(kotikunta);
@@ -218,31 +217,29 @@ public final class HenkilotiedotPhase {
 
         henkilotiedotTeema.addChild(asuinmaa);
 
-        henkilotiedotTeema.addChild(new DropdownSelectBuilder(AIDINKIELI_ID)
+        henkilotiedotTeema.addChild(Dropdown(AIDINKIELI_ID)
                 .defaultValueAttribute("fi_vm_sade_oppija_language")
                 .emptyOption()
                 .addOptions(formParameters.getKoodistoService().getLanguages())
-                .required()
-                .inline()
+                .requiredInline()
                 .formParams(formParameters).build());
 
         henkilotiedot.addChild(henkilotiedotTeema);
         if (formParameters.isPervako()) {
             henkilotiedotTeema.addChild(
-                    TextQuestion("huoltajannimi")
-                            .size(30)
-                            .pattern(ElementUtil.ISO88591_NAME_REGEX)
-                            .inline()
-                            .formParams(formParameters).build(),
-                    TextQuestion("huoltajanpuhelinnumero")
-                            .size(30)
-                            .pattern(PHONE_PATTERN)
-                            .inline()
-                            .formParams(formParameters).build(),
-                    TextQuestion("huoltajansahkoposti")
-                            .inline()
-                            .size(50)
-                            .pattern(EMAIL_REGEX).formParams(formParameters).build());
+                    ElementBuilder.buildAll(formParameters,
+                            TextQuestion("huoltajannimi")
+                                    .size(30)
+                                    .pattern(ElementUtil.ISO88591_NAME_REGEX)
+                                    .inline(),
+                            TextQuestion("huoltajanpuhelinnumero")
+                                    .size(30)
+                                    .pattern(PHONE_PATTERN)
+                                    .inline(),
+                            TextQuestion("huoltajansahkoposti")
+                                    .inline()
+                                    .size(50)
+                                    .pattern(EMAIL_REGEX)));
         }
         return henkilotiedot;
     }

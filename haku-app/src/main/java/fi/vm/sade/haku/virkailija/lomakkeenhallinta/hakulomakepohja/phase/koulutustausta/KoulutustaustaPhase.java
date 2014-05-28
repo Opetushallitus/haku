@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Map;
 
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.CheckBoxBuilder.Checkbox;
-import static fi.vm.sade.haku.oppija.lomake.domain.builder.DropdownSelectBuilder.DropdownSelect;
+import static fi.vm.sade.haku.oppija.lomake.domain.builder.DropdownSelectBuilder.Dropdown;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.PhaseBuilder.Phase;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.RadioBuilder.Radio;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.TextAreaBuilder.TextArea;
@@ -203,7 +203,7 @@ public final class KoulutustaustaPhase {
 
 
             lukioRule.addChild(
-                    DropdownSelect(OppijaConstants.LUKIO_KIELI)
+                    Dropdown(OppijaConstants.LUKIO_KIELI)
                             .emptyOption()
                             .addOptions(koodistoService.getTeachingLanguages())
                             .required()
@@ -247,7 +247,7 @@ public final class KoulutustaustaPhase {
         suorittanutAmmatillisenTutkinnon.addChild(suorittanutTutkinnonRule);
 
 
-        pkKysymyksetRule.addChild(DropdownSelect(OppijaConstants.PERUSOPETUS_KIELI)
+        pkKysymyksetRule.addChild(Dropdown(OppijaConstants.PERUSOPETUS_KIELI)
                 .addOption(ElementUtil.createI18NAsIs(""), "")
                 .addOptions(koodistoService.getTeachingLanguages())
                 .required()
