@@ -1,4 +1,4 @@
-<%@ page session="false"%>
+<%@ page session="false" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="haku" tagdir="/WEB-INF/tags" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
@@ -23,27 +23,14 @@
 <fieldset>
     <legend class="h3"><haku:i18nText value="${element.i18nText}"/></legend>
     <hr>
-    <c:forEach var="phase" items="${form.children}">
-        <c:if test="${(not phase.preview)}">
-            <c:forEach var="teema" items="${phase.children}">
-                <c:if test="${(teema.id eq element.id)}">
-                    <c:choose>
-                        <c:when test="${oid eq null}">
-                            <c:set var="editUrl"
-                                   value="${pageContext.request.contextPath}/lomake/${applicationSystemId}/${phase.id}"/>
-                        </c:when>
-                        <c:otherwise>
-                            <c:set var="editUrl"
-                                   value="${pageContext.request.contextPath}/virkailija/hakemus/${application.applicationSystemId}/${phase.id}/${oid}"/>
-                        </c:otherwise>
-                    </c:choose>
-                    <c:if test="${it.phaseEditAllowed[phase.id]}">
-                        <virkailija:EditButton url="${editUrl}" application="${application}"/>
-                    </c:if>
-                </c:if>
-            </c:forEach>
-        </c:if>
-    </c:forEach>
+
+    <c:set var="editUrl"
+           value="${pageContext.request.contextPath}/virkailija/hakemus/${application.applicationSystemId}/${currentPhase.id}/${oid}"/>
+
+    <c:if test="${it.phaseEditAllowed[currentPhase.id]}">
+        <virkailija:EditButton url="${editUrl}" application="${application}"/>
+    </c:if>
+
     <table class="form-summary-table width-80">
         <tbody>
         <haku:viewChilds element="${element}"/>

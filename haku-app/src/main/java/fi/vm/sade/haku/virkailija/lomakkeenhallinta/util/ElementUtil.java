@@ -161,11 +161,6 @@ public final class ElementUtil {
         return new ValueSetValidator(id, formParameters.getI18nText("yleinen.virheellinenArvo"), validValues);
     }
 
-    public static Validator createDateOfBirthValidator(final String id, final String bundleName) {
-        return new DateOfBirthValidator(id,
-                ElementUtil.createI18NText(DateOfBirthValidator.DATE_OF_BIRTH_GENERIC_ERROR_MESSAGE, bundleName), bundleName);
-    }
-
     public static void addRequiredValidator(final Element element, final FormParameters formParameters) {
         String required = "required";
         element.addAttribute(required, required);

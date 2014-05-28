@@ -11,18 +11,20 @@
             <h3><fmt:message key="virkailija.hakemus.passivoi.hakemus.varmistus"/></h3>
         </div>
         <div class="popup-dialog-content">
-            <form method="post" action="${contextPath}/virkailija/hakemus/${application.oid}/passivate">
+            <form method="post" action="state">
                 <div class="margin-bottom-2">
                     <p>
                         <fmt:message key="virkailija.hakemus.passivoi.hakemus.viesti"/>
                     </p>
-                    <textarea name="passivation-reason" id="passivation-reason" ></textarea>
+                    <textarea name="note" id="note"></textarea>
+                    <input type="hidden" name="state" value="PASSIVE"/>
                 </div>
                 <div>
-                    <button class="small" name="nav-send" value="true" data-po-clear-on-hide="passivation-reason" data-po-hide="confirmPassivation">
+                    <button class="small" name="nav-send" value="true" data-po-clear-on-hide="note" data-po-hide="confirmPassivation">
                         <fmt:message key="lomake.send.confirm.no"/>
                     </button>
-                    <button id="submit_confirm" class="primary set-right small" name="nav-send" type="submit" value="true">
+                    <button id="submit_confirm" class="primary set-right small" name="nav-send" type="submit"
+                            value="true">
                         <fmt:message key="lomake.send.confirm.yes"/>
                     </button>
                 </div>

@@ -22,7 +22,7 @@
     <legend class="h3"><fmt:message key="virkailija.hakemus.kommentit"/></legend>
 
     <sec:authorize access="hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_CRUD')">
-        <form action="${contextPath}/virkailija/hakemus/${application.oid}/addNote" method="post">
+        <form action="${contextPath}/virkailija/hakemus/${application.oid}/note" method="post">
             <textarea name="note-text" id="note-text"></textarea>
             <input id="note-create" class="button primary small" type="submit"
                    value="<fmt:message key="virkailija.hakemus.kommentit.uusi"/>"/>

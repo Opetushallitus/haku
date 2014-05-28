@@ -189,7 +189,7 @@ public class ApplicationServiceImpl implements ApplicationService {
                 .setHomeCity(allAnswers.get(OppijaConstants.ELEMENT_ID_HOME_CITY))
                 .setLanguage(allAnswers.get(OppijaConstants.ELEMENT_ID_LANGUAGE))
                 .setNationality(allAnswers.get(OppijaConstants.ELEMENT_ID_NATIONALITY))
-                .setContactLanguage(allAnswers.get(OppijaConstants.ELEMENT_ID_FIRST_LANGUAGE))
+                .setContactLanguage(allAnswers.get(OppijaConstants.ELEMENT_ID_CONTACT_LANGUAGE))
                 .setSocialSecurityNumber(allAnswers.get(OppijaConstants.ELEMENT_ID_SOCIAL_SECURITY_NUMBER))
                 .setSecurityOrder(false);
 

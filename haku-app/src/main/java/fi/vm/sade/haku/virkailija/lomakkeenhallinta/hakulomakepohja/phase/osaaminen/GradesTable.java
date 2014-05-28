@@ -30,7 +30,7 @@ public class GradesTable {
 
     public GradeGrid createGradeGrid(final String id, final FormParameters formParameters) {
         GradeGrid gradeGrid = new GradeGrid(id,
-                ElementUtil.createI18NText("form.arvosanat.otsikko", formParameters.getFormMessagesBundle()),
+                ElementUtil.createI18NText("form.arvosanat.otsikko", formParameters),
                 gradeGridHelper.isComprehensiveSchool());
 
         ElementUtil.setVerboseHelp(gradeGrid, "form.arvosanat.otsikko.verboseHelp", formParameters);
@@ -44,7 +44,7 @@ public class GradesTable {
                     createAdditionalLanguageRow(NATIVE_LANGUAGE_GROUP,
                             nativeLanguage, gradeGridHelper.getLanguageAndLiterature()));
         }
-        I18nText addNativeLangText = ElementUtil.createI18NText("form.add.lang.native", formParameters.getFormMessagesBundle());
+        I18nText addNativeLangText = ElementUtil.createI18NText("form.add.lang.native", formParameters);
         gradeGrid.addChild(createAddLangRow(NATIVE_LANGUAGE_GROUP, addNativeLangText));
 
         for (SubjectRow defaultLanguage : gradeGridHelper.getDefaultLanguages()) {
@@ -57,7 +57,7 @@ public class GradesTable {
                             additionalLanguages,
                             gradeGridHelper.getSubjectLanguages()));
         }
-        I18nText addAdditionalanguages = ElementUtil.createI18NText("form.add.lang", formParameters.getFormMessagesBundle());
+        I18nText addAdditionalanguages = ElementUtil.createI18NText("form.add.lang", formParameters);
         gradeGrid.addChild(createAddLangRow(ADDITIONAL_LANGUAGES_GROUP, addAdditionalanguages));
 
 
@@ -72,7 +72,7 @@ public class GradesTable {
                         gradeGrid.getId(),
                         uniqLanguagesIds,
                         ImmutableList.of(OppijaConstants.EDUCATION_LANGUAGE_EI_SUORITUSTA),
-                        ElementUtil.createI18NText("yleinen.kielet.samoja", formParameters.getFormMessagesBundle())));
+                        ElementUtil.createI18NText("yleinen.kielet.samoja", formParameters)));
         return gradeGrid;
     }
 

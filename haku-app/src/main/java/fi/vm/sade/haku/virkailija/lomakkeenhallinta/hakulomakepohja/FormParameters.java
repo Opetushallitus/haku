@@ -45,10 +45,6 @@ public class FormParameters {
         return koodistoService;
     }
 
-    public String getFormMessagesBundle() {
-        return formMessagesBundle;
-    }
-
     public FormTemplateType getFormTemplateType() {
         return formTemplateType;
     }

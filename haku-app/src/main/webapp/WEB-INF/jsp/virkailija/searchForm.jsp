@@ -180,7 +180,7 @@
                             key="virkailija.hakemus.nimi"/></td>
                     <td id="application-table-header-ssn" class="sorted-not"><fmt:message
                             key="virkailija.hakemus.henkilotunnus"/></td>
-                    <td id="application-table-header-applicationOid" class="sorted-not"><fmt:message
+                    <td id="application-table-header-oid" class="sorted-not"><fmt:message
                             key="virkailija.hakemus.hakemusnro"/></td>
                     <td id="application-table-header-state" class="sorted-not"><fmt:message
                             key="virkailija.hakemus.hakemuksen.tila"/></td>

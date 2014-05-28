@@ -27,10 +27,12 @@ public class ApplicationSystemRepository {
     }
 
     public void save(final ApplicationSystem applicationSystem) {
+        log.info("Saving application system {}", applicationSystem.getId());
         mongoOperations.save(applicationSystem);
     }
 
     public ApplicationSystem findById(final String asid) {
+        log.debug("Trying to find applicationSystem with id "+ asid);
         return mongoOperations.findById(asid, ApplicationSystem.class);
     }
 

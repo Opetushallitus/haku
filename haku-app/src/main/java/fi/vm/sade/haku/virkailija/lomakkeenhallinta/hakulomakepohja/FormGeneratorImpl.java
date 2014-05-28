@@ -40,19 +40,6 @@ public class FormGeneratorImpl implements FormGenerator {
         return hakuService.getApplicationSystems();
     }
 
-    @Override
-    public List<ApplicationSystem> generate() {
-        List<ApplicationSystem> applicationSystems = hakuService.getApplicationSystems();
-        List<ApplicationSystem> asList = Lists.newArrayList();
-        for (ApplicationSystem as : applicationSystems) {
-            ApplicationSystem created = createApplicationSystem(as);
-            if (created != null) {
-                asList.add(created);
-            }
-        }
-        return asList;
-    }
-
     private ApplicationSystem createApplicationSystem(ApplicationSystem as) {
         FormParameters formParameters = new FormParameters(as, koodistoService);
         return new ApplicationSystemBuilder().addId(as.getId()).addForm(generateForm(formParameters))

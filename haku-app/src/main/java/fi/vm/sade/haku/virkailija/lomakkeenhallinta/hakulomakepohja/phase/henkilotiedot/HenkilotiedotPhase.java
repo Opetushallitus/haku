@@ -29,6 +29,8 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Radio;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.TextQuestion;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.AddElementRule;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionComplexRule;
+import fi.vm.sade.haku.oppija.lomake.validation.validators.PastDateValidator;
+import fi.vm.sade.haku.oppija.lomake.validation.validators.RegexFieldValidator;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 
@@ -47,7 +49,7 @@ public final class HenkilotiedotPhase {
     public static final String AIDINKIELI_ID = "aidinkieli";
     private static final String HETU_PATTERN = "^([0-9]{6}.[0-9]{3}([0-9]|[a-z]|[A-Z]))$";
     private static final String POSTINUMERO_PATTERN = "[0-9]{5}";
-    private static final String DATE_PATTERN = "^(0[1-9]|[12][0-9]|3[01])\\.(0[1-9]|1[012])\\.(19|20)\\d\\d$";
+    private static final String DATE_PATTERN = "^([0-9]|0[1-9]|[12][0-9]|3[01])\\.([0-9]|0[1-9]|1[012])\\.(19|20)\\d\\d$";
     public static final String EMPTY_OR_FIN_PATTERN = "^$|^FIN$";
 
     private HenkilotiedotPhase() {
@@ -87,6 +89,7 @@ public final class HenkilotiedotPhase {
         List<Option> genders = formParameters.getKoodistoService().getGenders();
         Radio sukupuoli = (Radio) Radio("sukupuoli")
                 .addOptions(genders)
+                .inline()
                 .build(formParameters);
 
         Option male = genders.get(0).getI18nText().getTranslations().get("fi").equalsIgnoreCase("Mies") ?
@@ -119,10 +122,9 @@ public final class HenkilotiedotPhase {
         RelatedQuestionComplexRule eiSuomalaistaHetuaRule = createRuleIfVariableIsFalse("eiOleSuomalaistaHetua", onkoSinullaSuomalainenHetu.getId());
         eiSuomalaistaHetuaRule.addChild(sukupuoli);
 
-        DateQuestion syntymaaika = new DateQuestion("syntymaaika", createI18NText("syntymaaika",
-                formParameters));
-        syntymaaika.setValidator(ElementUtil.createRegexValidator(syntymaaika.getId(), DATE_PATTERN, formParameters));
-        syntymaaika.setValidator(ElementUtil.createDateOfBirthValidator(syntymaaika.getId(), formParameters.getFormMessagesBundle()));
+        DateQuestion syntymaaika = new DateQuestion("syntymaaika", createI18NText("syntymaaika", formParameters));
+        syntymaaika.setValidator(new PastDateValidator(syntymaaika.getId(), createI18NText("henkilotiedot.syntymaaika.tulevaisuudessa", formParameters)));
+        syntymaaika.setValidator(new RegexFieldValidator(syntymaaika.getId(), createI18NText("henkilotiedot.syntymaaika.virhe"), DATE_PATTERN));
         addRequiredValidator(syntymaaika, formParameters);
         syntymaaika.setInline(true);
 

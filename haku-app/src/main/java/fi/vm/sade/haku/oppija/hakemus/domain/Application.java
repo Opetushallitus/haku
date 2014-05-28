@@ -36,6 +36,7 @@ import org.slf4j.LoggerFactory;
 import java.io.Serializable;
 import java.util.*;
 
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_EMPTY)
@@ -145,11 +146,6 @@ public class Application implements Serializable {
     public Application(final String applicationSystemId, final String oid) {
         this.applicationSystemId = applicationSystemId;
         this.oid = oid;
-    }
-
-    @JsonIgnore
-    public void passivate() {
-        state = State.PASSIVE;
     }
 
     @JsonIgnore
@@ -321,11 +317,6 @@ public class Application implements Serializable {
                 OppijaConstants.ELEMENT_ID_NICKNAME);
         updateNameMetadata();
 
-        henkilotiedot = updateHenkilotiedotField(henkilotiedot, person.getContactLanguage(),
-                OppijaConstants.ELEMENT_ID_CONTACT_LANGUAGE);
-        henkilotiedot = updateHenkilotiedotField(henkilotiedot, person.getHomeCity(),
-                OppijaConstants.ELEMENT_ID_HOME_CITY);
-
         String personOid = person.getPersonOid();
         if (isNotEmpty(personOid)) {
             setPersonOid(personOid);
@@ -341,7 +332,7 @@ public class Application implements Serializable {
 
     private Map<String, String> updateHenkilotiedotField(Map<String, String> answers, String value, String key) {
         String oldValue = null;
-        if (value != null) {
+        if (isNotBlank(value)) {
             oldValue = answers.put(key, value);
         } else {
             answers.remove(key);

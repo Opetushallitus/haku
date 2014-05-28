@@ -42,16 +42,17 @@ public class I18nBundle {
     private static String getString(final String bundleName, final String key, final String lang) {
         String lowerCaseKey = key.toLowerCase();
         String text = null;
+        boolean found = false;
         try {
             ResourceBundle bundle = ResourceBundle.getBundle(bundleName, new Locale(lang));
             if (bundle.containsKey(lowerCaseKey)) {
                 text = bundle.getString(lowerCaseKey);
+                found = true;
             }
 
         } catch (MissingResourceException mre) {
         }
-
-        if (text == null) {
+        if (text == null && !found) {
             ResourceBundle commonBundle = ResourceBundle.getBundle(FORM_COMMON_BUNDLE_NAME, new Locale(lang));
             if (commonBundle.containsKey(lowerCaseKey)) {
                 text = commonBundle.getString(lowerCaseKey);

@@ -36,9 +36,13 @@ public class LisatiedotPhase {
         if (!formParameters.isPervako()) {
             lisatiedot.addChild(createTyokokemus(formParameters));
         }
-        return lisatiedot
-                .addChild(createLupatiedot(formParameters))
-                .addChild(createUrheilijanLisakysymykset(formParameters));
+        Element element = lisatiedot
+                .addChild(createLupatiedot(formParameters));
+        if (!formParameters.isPervako()) {
+            lisatiedot
+                    .addChild(createUrheilijanLisakysymykset(formParameters));
+        }
+        return element;
     }
 
     static RelatedQuestionComplexRule createTyokokemus(final FormParameters formParameters) {
