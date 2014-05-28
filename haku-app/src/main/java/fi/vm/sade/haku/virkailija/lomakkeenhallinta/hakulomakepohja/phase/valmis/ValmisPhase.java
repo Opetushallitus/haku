@@ -6,8 +6,6 @@ import com.google.common.collect.Sets;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Link;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.Text;
-import fi.vm.sade.haku.oppija.lomake.domain.builder.TextBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.Answer;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.DiscretionaryAttachments;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.Print;

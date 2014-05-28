@@ -190,6 +190,7 @@ public final class HenkilotiedotPhase {
                 .maxLength(5)
                 .size(5)
                 .required()
+                .formParams(formParameters)
                 .pattern(POSTINUMERO_PATTERN)
                 .placeholder("00000")
                 .build();

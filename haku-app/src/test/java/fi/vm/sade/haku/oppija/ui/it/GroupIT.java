@@ -38,7 +38,7 @@ import static org.junit.Assert.assertNotNull;
 
 public class GroupIT extends AbstractFormTest {
     public static final String GROUP_ID = "grpid";
-    public static final Element CHILD_ELEMENT = Text("textId").setI18nText(ElementUtil.createI18NAsIs("text")).build();
+    public static final Element CHILD_ELEMENT = Text("textId").i18nText(ElementUtil.createI18NAsIs("text")).build();
     private ApplicationSystemHelper applicationSystemHelper;
 
     @Before

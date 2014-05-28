@@ -20,7 +20,6 @@ import fi.vm.sade.haku.oppija.common.it.AbstractFormTest;
 import fi.vm.sade.haku.oppija.lomake.ApplicationSystemHelper;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.builder.CheckBoxBuilder;
-import fi.vm.sade.haku.oppija.lomake.domain.builder.TextBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.builders.FormModelBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.CheckBox;
@@ -39,7 +38,7 @@ import static org.junit.Assert.assertNotNull;
 
 public class CheckBoxIT extends AbstractFormTest {
     public static final String CHECKBOX_ID = "checkbox";
-    public static final Element TEXT_ELEMENT = Text("textId").setI18nText(ElementUtil.createI18NAsIs("text")).build();
+    public static final Element TEXT_ELEMENT = Text("textId").i18nText(ElementUtil.createI18NAsIs("text")).build();
     private ApplicationSystemHelper applicationSystemHelper;
     private CheckBox checkBox;
 
