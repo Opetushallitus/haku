@@ -71,8 +71,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     public Person addPerson(Person person) {
         String hetu = person.getSocialSecurityNumber();
+        String personOid = person.getPersonOid();
         Person newPerson = null;
-        if (isNotBlank(hetu)) {
+        if (isNotBlank(personOid)) {
+            newPerson = getHenkilo(personOid);
+        }
+
+        if (newPerson == null && isNotBlank(hetu)) {
             newPerson = fetchPerson(hetu);
         }
 
