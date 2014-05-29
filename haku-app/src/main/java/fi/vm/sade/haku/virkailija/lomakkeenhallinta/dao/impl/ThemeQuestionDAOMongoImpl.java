@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import static com.mongodb.QueryOperators.*;
 
 @Service("themeQuestionDAOMongoImpl")
 public class ThemeQuestionDAOMongoImpl extends AbstractDAOMongoImpl<ThemeQuestion> implements ThemeQuestionDAO {
@@ -28,6 +29,7 @@ public class ThemeQuestionDAOMongoImpl extends AbstractDAOMongoImpl<ThemeQuestio
     private static final String FIELD_APPLICATION_SYSTEM_ID = "applicationSystemId";
     private static final String FIELD_LO_ID = "learningOpportunityId";
     private static final String FIELD_OWNER_OIDS= "ownerOrganizationOids";
+    private static final String FIELD_STATE = "state";
 
     private static final String collectionName = "themequestion";
 
@@ -67,6 +69,12 @@ public class ThemeQuestionDAOMongoImpl extends AbstractDAOMongoImpl<ThemeQuestio
         }
         if (null != parameters.getOrganizationId()){
             query.append(FIELD_OWNER_OIDS, parameters.getOrganizationId());
+        }
+        if (parameters.searchDeleted()) {
+            query.append(FIELD_STATE, ThemeQuestion.State.DELETED);
+        }else {
+            Object[] states = {ThemeQuestion.State.ACTIVE.toString(), ThemeQuestion.State.LOCKED.toString()};
+            query.append(FIELD_STATE, new BasicDBObject(IN, states));
         }
         return executeQuery(query);
     }

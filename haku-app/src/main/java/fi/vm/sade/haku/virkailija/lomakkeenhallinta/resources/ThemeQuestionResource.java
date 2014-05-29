@@ -74,9 +74,12 @@ public class ThemeQuestionResource {
     @DELETE
     @Path("{themeQuestionId}")
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
-    public ThemeQuestion deleteThemeQuestionByOid(@PathParam("themeQuestionId") String themeQuestionId) {
+    public void deleteThemeQuestionByOid(@PathParam("themeQuestionId") String themeQuestionId) {
         LOGGER.debug("Deleting theme question with id: {}", themeQuestionId);
-        throw new JSONException(Response.Status.NOT_FOUND, "Not implemented yet", null);
+        ThemeQuestion dbThemeQuestion = fetchThemeQuestion(themeQuestionId);
+        dbThemeQuestion.setState(ThemeQuestion.State.DELETED);
+        themeQuestionDAO.save(dbThemeQuestion);
+        LOGGER.debug("ThemeQuestion {} saved with state {}", dbThemeQuestion.getId().toString(), dbThemeQuestion.getState());
     }
 
     @POST

@@ -4,6 +4,7 @@ public final class ThemeQuestionQueryParameters {
     private String applicationSystemId;
     private String learningOpportunityId;
     private String organizationId;
+    private Boolean searchDeleted;
 
     public String getApplicationSystemId() {
         return applicationSystemId;
@@ -27,5 +28,13 @@ public final class ThemeQuestionQueryParameters {
 
     public void setOrganizationId(String organizationId) {
         this.organizationId = organizationId;
+    }
+
+    public Boolean searchDeleted() {
+        return ((null != searchDeleted) && searchDeleted) ;
+    }
+
+    public void setSearchDeleted(Boolean searchDeleted){
+        this.searchDeleted = searchDeleted;
     }
 }

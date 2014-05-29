@@ -26,11 +26,17 @@ import java.util.Map;
 })
 public abstract class ThemeQuestion implements ConfiguredElement {
 
+    public enum State {
+        ACTIVE, LOCKED, DELETED
+    }
     // ThemeQuestion oid
     @JsonProperty(value = "_id")
     @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL, using = SimpleObjectIdSerializer.class)
     @JsonDeserialize(using = ComplexObjectIdDeserializer.class)
     private org.bson.types.ObjectId id;
+
+    // ThemeQuestion state
+    private State state = State.ACTIVE;;
 
     //Application System oid
     private String applicationSystemId;
@@ -91,6 +97,7 @@ public abstract class ThemeQuestion implements ConfiguredElement {
         this.type = type;
         this.learningOpportunityId = learningOpportunityId;
         this.validators = new HashMap<String,String>(validators);
+        this.ownerOrganizationOids = new ArrayList<String>();
     }
 
     protected ThemeQuestion(String applicationSystemId, String theme, String creatorPersonOid,
@@ -105,6 +112,7 @@ public abstract class ThemeQuestion implements ConfiguredElement {
         this.type = type;
         this.learningOpportunityId = learningOpportunityId;
         this.validators = new HashMap<String,String>();
+        this.ownerOrganizationOids = new ArrayList<String>();
     }
 
     public ObjectId getId() {
@@ -113,6 +121,14 @@ public abstract class ThemeQuestion implements ConfiguredElement {
 
     public void setId(ObjectId id) {
         this.id = id;
+    }
+
+    public State getState() {
+        return state;
+    }
+
+    public void setState(State state) {
+        this.state = state;
     }
 
     public String getApplicationSystemId() {
