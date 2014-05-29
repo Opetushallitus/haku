@@ -16,9 +16,11 @@
 
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.resources;
 
+import fi.vm.sade.haku.oppija.hakemus.resource.JSONException;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
+import fi.vm.sade.haku.oppija.lomake.util.StringUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.dao.ThemeQuestionDAO;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.dao.ThemeQuestionQueryParameters;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.dao.impl.DBConverter.SimpleObjectIdSerializer;
@@ -36,6 +38,8 @@ import org.springframework.stereotype.Controller;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -109,7 +113,22 @@ public class ThemeQuestionResource {
                                     @PathParam("learningOpportunityId") String learningOpportunityId,
                                     ThemeQuestion themeQuestion) {
         LOGGER.debug("Got " + themeQuestion);
+
+        if (null == applicationSystemId || null == learningOpportunityId)
+            throw new JSONException(Response.Status.BAD_REQUEST, "Missing pathparameters", null);
+        String tqAsId = themeQuestion.getApplicationSystemId();
+        if (! applicationSystemId.equals(tqAsId)) {
+            themeQuestion.setApplicationSystemId(applicationSystemId);
+            LOGGER.debug("Overriding given theme question application system id " + tqAsId + " with path param " + applicationSystemId);
+        }
+        String tqLoId = themeQuestion.getLearningOpportunityId();
+        if (! learningOpportunityId.equals(tqLoId)) {
+            themeQuestion.setLearningOpportunityId(learningOpportunityId);
+            LOGGER.debug("Overriding given theme question learning opportunity id " + tqLoId + " with path param " + learningOpportunityId);
+        }
+        LOGGER.debug("Saving Theme Question");
         themeQuestionDAO.save(themeQuestion);
+        LOGGER.debug("Saved Theme Question");
     }
 
     //TODO: @FIX Move later to a sane location and fix. Return supported types with translations
