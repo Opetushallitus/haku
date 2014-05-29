@@ -86,7 +86,23 @@ public class ThemeQuestionResource {
     public void updateThemeQuestion(@PathParam("themeQuestionId") String themeQuestionId,
                                     ThemeQuestion themeQuestion) {
         LOGGER.debug("Updating theme question with id: {}", themeQuestionId);
-        throw new JSONException(Response.Status.NOT_FOUND, "Not implemented yet", null);
+
+        if (!themeQuestionId.equals(themeQuestion.getId().toString())){
+            throw new JSONException(Response.Status.BAD_REQUEST, "theme question id mismatch", null);
+        }
+        ThemeQuestion dbThemeQuestion = fetchThemeQuestion(themeQuestionId);
+
+        LOGGER.debug("Saving Theme Question with id: " + dbThemeQuestion.getId().toString());
+        themeQuestionDAO.save(themeQuestion);
+        LOGGER.debug("Saved Theme Question with id: " + themeQuestionId);
+    }
+
+    private ThemeQuestion fetchThemeQuestion(String themeQuestionId){
+        ThemeQuestion dbThemeQuestion = themeQuestionDAO.findById(themeQuestionId);
+        if (null == dbThemeQuestion){
+            throw new JSONException(Response.Status.NOT_FOUND, "No such theme question found", null);
+        }
+        return dbThemeQuestion;
     }
 
     @POST
