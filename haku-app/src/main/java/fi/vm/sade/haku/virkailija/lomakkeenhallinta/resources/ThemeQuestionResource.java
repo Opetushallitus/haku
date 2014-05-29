@@ -34,6 +34,7 @@ import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 
 import javax.ws.rs.*;
@@ -47,7 +48,7 @@ import java.util.Map;
 
 
 @Controller
-@Path("/lomakkeenhallinta/themequestion")
+@Path("/application-system-form-editor/theme-question")
 public class ThemeQuestionResource {
 
     public static final String CHARSET_UTF_8 = ";charset=UTF-8";
@@ -55,65 +56,48 @@ public class ThemeQuestionResource {
     private static final Logger LOGGER = LoggerFactory.getLogger(ThemeQuestionResource.class);
 
     private final ThemeQuestionDAO themeQuestionDAO;
-    private final HakuService hakuService;
-    private final FormGenerator formaGenerator;
+
 
     @Autowired
-    public ThemeQuestionResource(ThemeQuestionDAO themeQuestionDAO, HakuService hakuService, FormGenerator formaGenerator) {
+    public ThemeQuestionResource(ThemeQuestionDAO themeQuestionDAO) {
         this.themeQuestionDAO = themeQuestionDAO;
-        this.hakuService = hakuService;
-        this.formaGenerator = formaGenerator;
     }
 
     @GET
-    @Path("question/{themeQuestionId}")
+    @Path("{themeQuestionId}")
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
-    public ThemeQuestion getThemedQuestionByOid(@PathParam("themeQuestionId") String themeQuestionId) {
-        LOGGER.debug("Getting question by: {}", themeQuestionId);
+    public ThemeQuestion getThemeQuestionByOid(@PathParam("themeQuestionId") String themeQuestionId) {
+        LOGGER.debug("Getting question by Id: {}", themeQuestionId);
         return themeQuestionDAO.findById(themeQuestionId);
     }
 
-    @GET
-    @Path("{applicationSystemId}")
+    @DELETE
+    @Path("{themeQuestionId}")
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
-    public List<ThemeQuestion> getThemeQuestionsByApplicationSystem(@PathParam("applicationSystemId") String applicationSystemId){
-        ThemeQuestionQueryParameters tqq = new ThemeQuestionQueryParameters();
-        tqq.setApplicationSystemId(applicationSystemId);
-        List<ThemeQuestion> themeQuestions = themeQuestionDAO.query(tqq);
-        return themeQuestions;
-    }
-
-
-    @GET
-    @Path("{applicationSystemId}/{learningOpportunityId}")
-    @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
-    @JsonSerialize(using= SimpleObjectIdSerializer.class,
-      as=ObjectId.class)
-    public List<ThemeQuestion> getThemeQuestion(@PathParam("applicationSystemId") String applicationSystemId, @PathParam("learningOpportunityId") String learningOpportunityId) {
-        ThemeQuestionQueryParameters tqq = new ThemeQuestionQueryParameters();
-        tqq.setApplicationSystemId(applicationSystemId);
-        tqq.setLearningOpportunityId(learningOpportunityId);
-        List<ThemeQuestion> themeQuestions = themeQuestionDAO.query(tqq);
-        return themeQuestions;
-    }
-
-    @GET
-    @Path("{applicationSystemId}/{learningOpportunityId}/{themeQuestionId}")
-    @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
-    public ThemeQuestion getThemedQuestionByPath(@PathParam("themeQuestionId") String themeQuestionId) {
-        LOGGER.debug("Getting question by: {}", themeQuestionId);
-        return themeQuestionDAO.findById(themeQuestionId);
+    public ThemeQuestion deleteThemeQuestionByOid(@PathParam("themeQuestionId") String themeQuestionId) {
+        LOGGER.debug("Deleting theme question with id: {}", themeQuestionId);
+        throw new JSONException(Response.Status.NOT_FOUND, "Not implemented yet", null);
     }
 
     @POST
-    @Path("{applicationSystemId}/{learningOpportunityId}")
+    @Path("{themeQuestionId}")
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     @Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
-    public void postThemeQuestion(@PathParam("applicationSystemId") String applicationSystemId,
-                                    @PathParam("learningOpportunityId") String learningOpportunityId,
+    public void updateThemeQuestion(@PathParam("themeQuestionId") String themeQuestionId,
                                     ThemeQuestion themeQuestion) {
-        LOGGER.debug("Got " + themeQuestion);
+        LOGGER.debug("Updating theme question with id: {}", themeQuestionId);
+        throw new JSONException(Response.Status.NOT_FOUND, "Not implemented yet", null);
+    }
 
+    @POST
+    @Path("{applicationSystemId}/{learningOpportunityId}/{themeId}")
+    @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
+    @Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
+    public void saveNewThemeQuestion(@PathParam("applicationSystemId") String applicationSystemId,
+                                     @PathParam("learningOpportunityId") String learningOpportunityId,
+                                     @PathParam("themeId")  String themeId,
+                                     ThemeQuestion themeQuestion) {
+        LOGGER.debug("Got " + themeQuestion);
         if (null == applicationSystemId || null == learningOpportunityId)
             throw new JSONException(Response.Status.BAD_REQUEST, "Missing pathparameters", null);
         String tqAsId = themeQuestion.getApplicationSystemId();
@@ -126,108 +110,26 @@ public class ThemeQuestionResource {
             themeQuestion.setLearningOpportunityId(learningOpportunityId);
             LOGGER.debug("Overriding given theme question learning opportunity id " + tqLoId + " with path param " + learningOpportunityId);
         }
+        String tqThemeId = themeQuestion.getLearningOpportunityId();
+        if (! themeId.equals(tqThemeId)) {
+            themeQuestion.setTheme(themeId);
+            LOGGER.debug("Overriding given theme question learning opportunity id " + tqThemeId + " with path param " + themeId);
+        }
         LOGGER.debug("Saving Theme Question");
         themeQuestionDAO.save(themeQuestion);
         LOGGER.debug("Saved Theme Question");
     }
 
-    //TODO: @FIX Move later to a sane location and fix. Return supported types with translations
     @GET
-    @Path("types")
+    @Path("list/{applicationSystemId}")
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
-    public List getSupportedTypes(){
-        ArrayList supportedTypes = new ArrayList();
-
-        Map<String, String> textQuestion = new HashMap<String,String>();
-        textQuestion.put("fi", "Avoin vastaus (tekstikenttä)");
-        textQuestion.put( "sv", "Avoin vastaus (tekstikenttä) (sv)");
-        textQuestion.put("en", "Avoin vastaus (textfield) (en)");
-
-        Map supportedType = new HashMap();
-        supportedType.put("id", "TextQuestion");
-        supportedType.put("name", new I18nText(textQuestion));
-        supportedTypes.add(supportedType);
-
-        Map<String, String> checkBox = new HashMap<String,String>();
-        checkBox.put("fi", "Valinta kysymys (valintalaatikko)");
-        checkBox.put("sv", "Valinta kysymys (valintalaatikko) (sv)");
-        checkBox.put("en", "Valinta kysymys (checkbox) (en)");
-
-        supportedType = new HashMap();
-        supportedType.put("id", "CheckBox");
-        supportedType.put("name", new I18nText(checkBox));
-        supportedTypes.add(supportedType);
-
-        Map<String, String> radioButton = new HashMap<String,String>();
-        radioButton.put("fi", "Valinta kysymys (valintanappi)");
-        radioButton.put("sv", "Valinta kysymys (valintanappi) (sv)");
-        radioButton.put("en", "Valinta kysymys (radiobutton) (en)");
-
-        supportedType = new HashMap();
-        supportedType.put("id", "RadioButton");
-        supportedType.put("name", new I18nText(radioButton));
-        supportedTypes.add(supportedType);
-        return supportedTypes;
+    public List<ThemeQuestion> getThemeQuestionQuery(@PathParam("applicationSystemId") String applicationSystemId,
+      @QueryParam("aoId") String learningOpportunityId, @QueryParam("orgId") String organizationId){
+        ThemeQuestionQueryParameters tqq = new ThemeQuestionQueryParameters();
+        tqq.setApplicationSystemId(applicationSystemId);
+        tqq.setLearningOpportunityId(learningOpportunityId);
+        tqq.setOrganizationId(organizationId);
+        List<ThemeQuestion> themeQuestions = themeQuestionDAO.query(tqq);
+        return themeQuestions;
     }
-
-    //TODO: @FIX Move later to a sane location. Returns translations for languages
-    @GET
-    @Path("languages")
-    @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
-    public Map<String, I18nText> getLanguages(){
-        Map<String, String> fi_tranlations = new HashMap<String,String>();
-        fi_tranlations.put("fi", "Suomi");
-        fi_tranlations.put( "sv", "Suomi (sv)");
-        fi_tranlations.put("en", "Suomi (en)");
-
-        Map<String, String> sv_tranlations = new HashMap<String,String>();
-        sv_tranlations.put("fi", "Ruotsi");
-        sv_tranlations.put("sv", "Ruotsi (sv)");
-        sv_tranlations.put("en", "Ruotsi (en)");
-
-        Map<String, String> en_tranlations = new HashMap<String,String>();
-        en_tranlations.put("fi", "Englanti");
-        en_tranlations.put("sv", "Englanti (sv)");
-        en_tranlations.put("en", "Englanti (en)");
-        Map<String, I18nText> languages = new HashMap<String, I18nText>();
-        languages.put("fi", new I18nText(fi_tranlations));
-        languages.put("sv", new I18nText(sv_tranlations));
-        languages.put("en", new I18nText(en_tranlations));
-        return languages;
-    }
-
-    //TODO: @FIX Move later to a sane location. Returns all configure applicationSystems
-    @GET
-    @Path("application-system-form")
-    @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
-    public List<Map<String, Object>> getApplicationSystemForms(){
-        ArrayList<Map<String,Object>> applicationSystemForms = new ArrayList<Map<String, Object>>();
-        for (ApplicationSystem applicationSystem : hakuService.getApplicationSystems()){
-            Map<String, Object> applicationSystemForm = new HashMap<String, Object>();
-            applicationSystemForm.put("_id", applicationSystem.getId());
-            applicationSystemForm.put("name", applicationSystem.getName());
-            applicationSystemForm.put("kausi", applicationSystem.getHakukausiUri());
-            applicationSystemForm.put("vuosi", applicationSystem.getHakukausiVuosi());
-            applicationSystemForm.put("tyyppi", applicationSystem.getApplicationSystemType());
-            applicationSystemForm.put("pohja", applicationSystem.getApplicationSystemType());
-            //applicationSystemForm.put("state",null);
-            applicationSystemForms.add(applicationSystemForm);
-        }
-        return applicationSystemForms;
-    }
-
-    //TODO: @FIX Move later to a sane location. Returns a configured form
-    @GET
-    @Path("application-system-form/{applicationSystemId}")
-    @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
-    public Map getAppicationSystemForm(@PathParam("applicationSystemId") String applicationSystemId){
-        ApplicationSystem applicationSystem = formaGenerator.generate(applicationSystemId);
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.enable(SerializationConfig.Feature.INDENT_OUTPUT);
-        mapper.disable(SerializationConfig.Feature.FAIL_ON_EMPTY_BEANS);
-
-        return mapper.convertValue(applicationSystem.getForm(), Map.class);
-    }
-
-
 }

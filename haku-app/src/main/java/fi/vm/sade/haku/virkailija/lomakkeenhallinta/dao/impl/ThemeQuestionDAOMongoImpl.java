@@ -5,7 +5,6 @@ import com.google.common.collect.Lists;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
-import com.mongodb.QueryBuilder;
 import fi.vm.sade.haku.oppija.common.dao.AbstractDAOMongoImpl;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.dao.ThemeQuestionDAO;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.dao.ThemeQuestionQueryParameters;
@@ -17,8 +16,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service("themeQuestionDAOMongoImpl")
@@ -59,14 +58,15 @@ public class ThemeQuestionDAOMongoImpl extends AbstractDAOMongoImpl<ThemeQuestio
     }
 
     public List<ThemeQuestion> query(ThemeQuestionQueryParameters parameters){
-        //TODO consistence checks
         BasicDBObject query = new BasicDBObject();
         if (null != parameters.getApplicationSystemId()){
             query.append(FIELD_APPLICATION_SYSTEM_ID, parameters.getApplicationSystemId());
         }
-
         if (null != parameters.getLearningOpportunityId()){
             query.append(FIELD_LO_ID, parameters.getLearningOpportunityId());
+        }
+        if (null != parameters.getOrganizationId()){
+            throw new NotImplementedException();
         }
         return executeQuery(query);
     }
