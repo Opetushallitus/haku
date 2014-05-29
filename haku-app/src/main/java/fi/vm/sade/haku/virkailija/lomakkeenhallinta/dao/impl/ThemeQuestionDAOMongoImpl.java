@@ -28,6 +28,7 @@ public class ThemeQuestionDAOMongoImpl extends AbstractDAOMongoImpl<ThemeQuestio
     private static final String FIELD_ID = "_id";
     private static final String FIELD_APPLICATION_SYSTEM_ID = "applicationSystemId";
     private static final String FIELD_LO_ID = "learningOpportunityId";
+    private static final String FIELD_OWNER_OIDS= "ownerOrganizationOids";
 
     private static final String collectionName = "themequestion";
 
@@ -66,7 +67,7 @@ public class ThemeQuestionDAOMongoImpl extends AbstractDAOMongoImpl<ThemeQuestio
             query.append(FIELD_LO_ID, parameters.getLearningOpportunityId());
         }
         if (null != parameters.getOrganizationId()){
-            throw new NotImplementedException();
+            query.append(FIELD_OWNER_OIDS, parameters.getOrganizationId());
         }
         return executeQuery(query);
     }

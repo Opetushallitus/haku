@@ -11,7 +11,9 @@ import org.codehaus.jackson.annotate.JsonTypeInfo;
 import org.codehaus.jackson.map.annotate.JsonDeserialize;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -40,7 +42,7 @@ public abstract class ThemeQuestion implements ConfiguredElement {
     private String creatorPersonOid;
 
     // organization oid
-    private String ownerOrganizationOid;
+    private List<String> ownerOrganizationOids;
 
     // Type of question
     private String type;
@@ -68,11 +70,14 @@ public abstract class ThemeQuestion implements ConfiguredElement {
 
 
     protected ThemeQuestion() {
+        this.ownerOrganizationOids = new ArrayList<String>();
         this.validators = new HashMap<String, String>();
     }
 
     protected ThemeQuestion(String type){
         this.type = type;
+        this.ownerOrganizationOids = new ArrayList<String>();
+        this.validators = new HashMap<String, String>();
     }
 
     @JsonCreator
@@ -89,14 +94,14 @@ public abstract class ThemeQuestion implements ConfiguredElement {
     }
 
     protected ThemeQuestion(String applicationSystemId, String theme, String creatorPersonOid,
-      String ownerOrganizationOid,
+      List<String> ownerOrganizationOid,
       String type,
       String learningOpportunityId,
       Map<String,String> validators ) {
         this.applicationSystemId =  applicationSystemId;
         this.theme = theme;
         this.creatorPersonOid = creatorPersonOid;
-        this.ownerOrganizationOid = ownerOrganizationOid;
+        this.ownerOrganizationOids = new ArrayList<String>(ownerOrganizationOid);
         this.type = type;
         this.learningOpportunityId = learningOpportunityId;
         this.validators = new HashMap<String,String>();
@@ -134,12 +139,12 @@ public abstract class ThemeQuestion implements ConfiguredElement {
         this.creatorPersonOid = creatorPersonOid;
     }
 
-    public String getOwnerOrganizationOid() {
-        return ownerOrganizationOid;
+    public List<String> getOwnerOrganizationOids() {
+        return ownerOrganizationOids;
     }
 
-    public void setOwnerOrganizationOid(String ownerOrganizationOid) {
-        this.ownerOrganizationOid = ownerOrganizationOid;
+    public void setOwnerOrganizationOids(List<String> ownerOrganizationOids) {
+        this.ownerOrganizationOids = new ArrayList<String>(ownerOrganizationOids);
     }
 
     public String getType() {
@@ -203,7 +208,7 @@ public abstract class ThemeQuestion implements ConfiguredElement {
     }
 
     public void setValidators(Map<String, String> validators) {
-        this.validators = validators;
+        this.validators = new HashMap<String, String>(validators);
     }
 
     @Override
@@ -213,7 +218,7 @@ public abstract class ThemeQuestion implements ConfiguredElement {
           ", applicationSystemId='" + applicationSystemId + '\'' +
           ", theme='" + theme + '\'' +
           ", creatorPersonOid='" + creatorPersonOid + '\'' +
-          ", ownerOrganizationOid='" + ownerOrganizationOid + '\'' +
+          ", ownerOrganizationOids='" + ownerOrganizationOids + '\'' +
           ", type='" + type + '\'' +
           ", messageText=" + messageText +
           ", helpText=" + helpText +
