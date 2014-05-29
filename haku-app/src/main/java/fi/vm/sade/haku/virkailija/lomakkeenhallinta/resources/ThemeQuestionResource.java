@@ -116,7 +116,7 @@ public class ThemeQuestionResource {
                                      @PathParam("learningOpportunityId") String learningOpportunityId,
                                      @PathParam("themeId")  String themeId,
                                      ThemeQuestion themeQuestion) {
-        LOGGER.debug("Got " + themeQuestion);
+        LOGGER.debug("Posted " + themeQuestion);
         if (null == applicationSystemId || null == learningOpportunityId)
             throw new JSONException(Response.Status.BAD_REQUEST, "Missing pathparameters", null);
         String tqAsId = themeQuestion.getApplicationSystemId();
@@ -144,11 +144,13 @@ public class ThemeQuestionResource {
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     public List<ThemeQuestion> getThemeQuestionQuery(@PathParam("applicationSystemId") String applicationSystemId,
       @QueryParam("aoId") String learningOpportunityId, @QueryParam("orgId") String organizationId){
+        LOGGER.debug("Listing by applicationSystemId: {}, learningOpportunityId: {}, organizationId: {} ", applicationSystemId, applicationSystemId, organizationId);
         ThemeQuestionQueryParameters tqq = new ThemeQuestionQueryParameters();
         tqq.setApplicationSystemId(applicationSystemId);
         tqq.setLearningOpportunityId(learningOpportunityId);
         tqq.setOrganizationId(organizationId);
         List<ThemeQuestion> themeQuestions = themeQuestionDAO.query(tqq);
+        LOGGER.debug("Found {} ThemeQuestions", themeQuestions.size());
         return themeQuestions;
     }
 }
