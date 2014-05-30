@@ -28,12 +28,22 @@ public class ApplicationSystemRepository {
 
     public void save(final ApplicationSystem applicationSystem) {
         log.info("Saving application system {}", applicationSystem.getId());
-        mongoOperations.save(applicationSystem);
+        try {
+            mongoOperations.save(applicationSystem);
+        } catch (RuntimeException e){
+            log.error("Failed to find application system " + applicationSystem.getId(), e);
+            throw e;
+        }
     }
 
     public ApplicationSystem findById(final String asid) {
         log.debug("Trying to find applicationSystem with id "+ asid);
-        return mongoOperations.findById(asid, ApplicationSystem.class);
+        try {
+            return mongoOperations.findById(asid, ApplicationSystem.class);
+        } catch (RuntimeException e){
+            log.error("Failed to find application system " + asid, e);
+            throw e;
+        }
     }
 
     public List<ApplicationSystem> findAll(String... includeFields) {
