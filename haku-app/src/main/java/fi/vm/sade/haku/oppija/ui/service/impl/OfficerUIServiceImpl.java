@@ -408,24 +408,6 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     }
 
     @Override
-    public void addPersonAndAuthenticate(String oid) {
-        Application application = applicationService.getApplicationByOid(oid);
-        applicationService.fillLOPChain(application, false);
-        applicationService.addPersonOid(application);
-        application.activate();
-        applicationService.update(new Application(oid), application);
-    }
-
-    @Override
-    public void activateApplication(String oid, String reason) {
-        Application application = applicationService.getApplicationByOid(oid);
-        ApplicationNote note = createNote("Hakemus aktivoitu: " + reason);
-        application.addNote(note);
-        application.activate();
-        applicationService.update(new Application(oid), application);
-    }
-
-    @Override
     public ModelResponse getMultipleApplicationResponse(String applicationList, String selectedApplication) {
         Application application = applicationService.getApplicationByOid(selectedApplication);
 
@@ -523,10 +505,16 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     }
 
     @Override
-    public void passivateApplication(final String oid, final String reason) {
+    public void changeState(final String oid, Application.State state, String reason) {
         Application application = applicationService.getApplicationByOid(oid);
-        application.addNote(createNote("Hakemus passivoitu: " + reason));
-        application.passivate();
+
+        if (state.equals(Application.State.PASSIVE)) { // TODO no jaa
+            reason = "Hakemus passivoitu: " + reason;
+        } else if (state.equals(Application.State.ACTIVE)) {
+            reason = "Hakemus aktivoitu: " + reason;
+        }
+        application.addNote(createNote(reason));
+        application.setState(state);
         applicationService.update(new Application(oid), application);
     }
 
@@ -543,7 +531,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     }
 
     @Override
-    public ModelResponse addStudentOid(String oid) {
+    public void addStudentOid(String oid) {
         Application application = applicationService.getApplicationByOid(oid);
         String studentOid = application.getPersonOid();
         if (!Strings.isNullOrEmpty(application.getStudentOid())) {
@@ -556,15 +544,13 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         application.addNote(createNote("Oppijanumero syötetty"));
         Application queryApplication = new Application(oid);
         applicationService.update(queryApplication, application);
-        return getValidatedApplication(oid, PHASE_ID_PREVIEW);
     }
 
     @Override
-    public ModelResponse postProcess(String oid, boolean email) {
+    public void postProcess(String oid, boolean email) {
         Application application = applicationService.getApplicationByOid(oid);
         application.setRedoPostProcess(email ? "FULL" : "NOMAIL");
         applicationService.update(new Application(oid), application);
-        return getValidatedApplication(oid, PHASE_ID_PREVIEW);
     }
 
     @Override

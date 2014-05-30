@@ -15,8 +15,7 @@ host.haku={{host_haku}}
 host.ilb={{host_ilb}}
 host.virkailija={{host_virkailija}}
 mongo.db.maxpoolsize=100
-mongo.db.name={{mongo_db_name}}
-mongodb.oppija.uri={{mongodb_oppija_uri}}
+mongodb.oppija.uri=mongodb://{{mongodb_oppija_auth}}@{{mongodb_oppija_host}}:{{mongodb_oppija_port}}
 server.name={{ansible_hostname}}
 
 # Oletusarvoja
@@ -69,9 +68,8 @@ ldap.port=10389
 ldap.search.base.people=ou=People,dc=opintopolku,dc=fi
 ldap.url=ldap://${host.ldap}\:${ldap.port}
 ldap.url.with.base=ldap\://${host.ldap}\:${ldap.port}/dc\=opintopolku,dc\=fi
-log.mongo.uri=${mongodb.virkailija.uri}/auditlog
-log.mongo.dbname=auditlog
 log4j.properties.file=${user.home.conf}/log4j.properties
+mongo.db.name=hakulomake
 mongodb.url=${mongodb.oppija.uri}/${mongo.db.name}?maxpoolsize=${mongo.db.maxpoolsize}
 oid.rest.url.backend=${host.ilb}/oid-service/rest/oid
 oid.webservice.url.backend=${host.ilb}/services/oidService

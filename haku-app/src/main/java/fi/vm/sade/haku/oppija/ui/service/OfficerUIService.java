@@ -28,19 +28,15 @@ public interface OfficerUIService {
 
     void saveApplicationAdditionalInfo(final String oid, final Map<String, String> additionalInfo);
 
-    void addPersonAndAuthenticate(final String oid);
-
-    void passivateApplication(String oid, String reason);
-
     void addNote(String applicationOid, String note);
 
     Application createApplication(final String asId);
 
-    ModelResponse addStudentOid(final String oid);
+    void addStudentOid(final String oid);
 
-    ModelResponse postProcess(final String oid, final boolean email);
+    void postProcess(final String oid, final boolean email);
 
-    void activateApplication(String oid, String reason);
+    void changeState(String oid, Application.State state, String reason);
 
     ModelResponse getMultipleApplicationResponse(String applicationList, String selectedApplication);
 

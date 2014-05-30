@@ -12,7 +12,7 @@
             <h3><fmt:message key="virkailija.hakemus.syota"/></h3>
         </div>
         <div class="popup-dialog-content">
-            <form method="post" action="${contextPath}/virkailija/hakemus/new">
+            <form method="post">
                 <div class="margin-top-2">
                     <label for="asSelect"><fmt:message key="virkailija.hakemus.syota.valitsehaku"/></label>
                     <select id="asSelect" name="asId">

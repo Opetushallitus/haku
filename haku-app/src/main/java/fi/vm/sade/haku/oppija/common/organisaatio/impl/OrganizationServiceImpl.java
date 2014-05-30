@@ -33,6 +33,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.lang.ref.SoftReference;
 import java.util.*;
 
 @Service
@@ -42,7 +43,7 @@ public class OrganizationServiceImpl implements OrganizationService {
     private static final Logger LOG = LoggerFactory.getLogger(OrganizationServiceImpl.class);
 
     private static CachingRestClient cachingRestClient;
-    private static Map<String, Object> cache;
+    private static Map<String, SoftReference<Object>> cache;
 
     @Value("${web.url.cas}")
     private String casUrl;
@@ -60,7 +61,7 @@ public class OrganizationServiceImpl implements OrganizationService {
     @Autowired
     public OrganizationServiceImpl(final OrganisaatioSearchService service) {
         this.service = service;
-        this.cache = new HashMap<String, Object>();
+        this.cache = new HashMap<String, SoftReference<Object>>();
     }
 
     @Override
@@ -126,14 +127,16 @@ public class OrganizationServiceImpl implements OrganizationService {
     private <T> T getCached(String url, Class<? extends T> resultType) throws IOException {
         if (cache.containsKey(url)) {
             LOG.debug("Hit cache, url: {}", url);
-            Object result = cache.get(url);
-            if (resultType.isAssignableFrom(result.getClass())) {
+            Object result = cache.get(url).get();
+
+            if (null != result && resultType.isAssignableFrom(result.getClass())) {
                 return (T) result;
             }
+            LOG.debug("Cache reference for key {} is stale or unassignable. Result object was of type {} expected {}", url, null == result ? null : result.getClass(), resultType.getClass());
         }
         CachingRestClient client = getCachingRestClient();
         T result = client.get(url, resultType);
-        cache.put(url, result);
+        cache.put(url, new SoftReference<Object>(result));
         return result;
 
     }

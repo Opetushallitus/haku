@@ -191,6 +191,7 @@ public class ApplicationServiceImpl implements ApplicationService {
                 .setNationality(allAnswers.get(OppijaConstants.ELEMENT_ID_NATIONALITY))
                 .setContactLanguage(allAnswers.get(OppijaConstants.ELEMENT_ID_CONTACT_LANGUAGE))
                 .setSocialSecurityNumber(allAnswers.get(OppijaConstants.ELEMENT_ID_SOCIAL_SECURITY_NUMBER))
+                .setPersonOid(allAnswers.get(application.getPersonOid()))
                 .setSecurityOrder(false);
 
         application.setLastAutomatedProcessingTime(System.currentTimeMillis());
@@ -250,7 +251,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 
         List<OpiskelijaDTO> opiskelijat = suoritusrekisteriService.getOpiskelijat(personOid);
 
-        if (opiskelijat != null && opiskelijat.size() > 1) {
+        if (opiskelijat != null && opiskelijat.size() >= 1) {
             OpiskelijaDTO opiskelija = null;
             boolean found = false;
             for (OpiskelijaDTO dto : opiskelijat) {
