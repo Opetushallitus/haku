@@ -16,6 +16,9 @@
 
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.resources;
 
+import fi.vm.sade.haku.oppija.common.koulutusinformaatio.ApplicationOption;
+import fi.vm.sade.haku.oppija.common.koulutusinformaatio.ApplicationOptionService;
+import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
 import fi.vm.sade.haku.oppija.hakemus.resource.JSONException;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
@@ -41,10 +44,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 @Controller
@@ -56,11 +56,15 @@ public class ThemeQuestionResource {
     private static final Logger LOGGER = LoggerFactory.getLogger(ThemeQuestionResource.class);
 
     private final ThemeQuestionDAO themeQuestionDAO;
+    private final ApplicationOptionService applicationOptionService;
+    private final OrganizationService organizationService;
 
 
     @Autowired
-    public ThemeQuestionResource(ThemeQuestionDAO themeQuestionDAO) {
+    public ThemeQuestionResource(ThemeQuestionDAO themeQuestionDAO, ApplicationOptionService applicationOptionService, OrganizationService organizationService) {
         this.themeQuestionDAO = themeQuestionDAO;
+        this.applicationOptionService = applicationOptionService;
+        this.organizationService = organizationService;
     }
 
     @GET
@@ -94,6 +98,8 @@ public class ThemeQuestionResource {
             throw new JSONException(Response.Status.BAD_REQUEST, "theme question id mismatch", null);
         }
         ThemeQuestion dbThemeQuestion = fetchThemeQuestion(themeQuestionId);
+
+        themeQuestion = fillInOwnerOrganizations(themeQuestion);
 
         LOGGER.debug("Saving Theme Question with id: " + dbThemeQuestion.getId().toString());
         themeQuestionDAO.save(themeQuestion);
@@ -134,9 +140,25 @@ public class ThemeQuestionResource {
             themeQuestion.setTheme(themeId);
             LOGGER.debug("Overriding given theme question learning opportunity id " + tqThemeId + " with path param " + themeId);
         }
+
+        themeQuestion = fillInOwnerOrganizations(themeQuestion);
         LOGGER.debug("Saving Theme Question");
         themeQuestionDAO.save(themeQuestion);
         LOGGER.debug("Saved Theme Question");
+    }
+
+    private ThemeQuestion fillInOwnerOrganizations(ThemeQuestion themeQuestion){
+        LOGGER.debug("Filling in organizations for theme question for application system " + themeQuestion.getApplicationSystemId() + " application option " + themeQuestion.getLearningOpportunityId());
+        ApplicationOption applicationOption = applicationOptionService.get(themeQuestion.getLearningOpportunityId());
+        LOGGER.debug("Filling in organizations for theme question");
+        String learningOpportunityProvicerId = applicationOption.getProvider().getId();
+        List<String> parentOids = organizationService.findParentOids(learningOpportunityProvicerId);
+        HashSet<String> ownerOrganizations = new HashSet<String>();
+        ownerOrganizations.addAll(parentOids);
+        ownerOrganizations.add(learningOpportunityProvicerId);
+        themeQuestion.setOwnerOrganizationOids(new ArrayList<String>(ownerOrganizations));
+        LOGGER.debug("Owner organizations "+ ownerOrganizations.toString() +" added for applicationoption "+ applicationOption.getId());
+        return themeQuestion;
     }
 
     @GET
