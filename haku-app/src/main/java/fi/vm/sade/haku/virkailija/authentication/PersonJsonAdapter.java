@@ -95,6 +95,11 @@ public class PersonJsonAdapter implements JsonSerializer<Person>, JsonDeserializ
             personBuilder.setSecurityOrder(securityOrder.booleanValue());
         }
 
+        JsonObject kieliObj = personJson.get("asiointiKieli").getAsJsonObject();
+        if (kieliObj != null && !kieliObj.isJsonNull()) {
+            personBuilder.setContactLanguage(getJsonString(kieliObj, "kieliKoodi"));
+        }
+
         return personBuilder.get();
 
     }
