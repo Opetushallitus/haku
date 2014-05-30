@@ -16,14 +16,17 @@ public class ThemeQuestionToDBObjectFunction implements Function<ThemeQuestion, 
 
     private static final String THEMEQUESTION_ID = "_id";
 
-    @Override
-    public DBObject apply(ThemeQuestion themeQuestion) {
-        ObjectMapper mapper = new ObjectMapper();
+    private final ObjectMapper mapper;
+
+    public ThemeQuestionToDBObjectFunction(){
+        mapper = new ObjectMapper();
         mapper.enable(SerializationConfig.Feature.INDENT_OUTPUT);
         mapper.disable(SerializationConfig.Feature.WRITE_EMPTY_JSON_ARRAYS);
         mapper.disable(SerializationConfig.Feature.WRITE_NULL_MAP_VALUES);
+    }
 
-        @SuppressWarnings("rawtypes")
+    @Override
+    public DBObject apply(ThemeQuestion themeQuestion) {
         final Map m = mapper.convertValue(themeQuestion, Map.class);
 
         //Dirty hack

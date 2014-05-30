@@ -13,23 +13,19 @@ import java.util.Map;
 @Service
 public class DBObjectToThemeQuestionFunction implements Function<DBObject, ThemeQuestion> {
 
-    @Override
-    public ThemeQuestion apply(DBObject dbObject) {
-        ObjectMapper mapper = new ObjectMapper();
+    private final ObjectMapper mapper;
+
+    public DBObjectToThemeQuestionFunction(){
+        mapper = new ObjectMapper();
         mapper.enable(SerializationConfig.Feature.INDENT_OUTPUT);
         mapper.enable(DeserializationConfig.Feature.READ_ENUMS_USING_TO_STRING);
         mapper.enable(SerializationConfig.Feature.WRITE_ENUMS_USING_TO_STRING);
+    }
 
-        @SuppressWarnings("rawtypes")
+    @Override
+    public ThemeQuestion apply(DBObject dbObject) {
         final Map fromValue = dbObject.toMap();
-        ThemeQuestion themeQuestion= null;
-        try {
-            themeQuestion = mapper.convertValue(fromValue, ThemeQuestion.class);
-        } catch (IllegalArgumentException iae) {
-            //LOG.info("Could not convert DBObject to Application : " + fromValue);
-            throw iae;
-        }
-        return themeQuestion;
+        return mapper.convertValue(fromValue, ThemeQuestion.class);
     }
 
 }
