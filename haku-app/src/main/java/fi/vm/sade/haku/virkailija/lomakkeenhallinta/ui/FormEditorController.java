@@ -3,6 +3,9 @@ package fi.vm.sade.haku.virkailija.lomakkeenhallinta.ui;
 import fi.vm.sade.haku.oppija.hakemus.resource.JSONException;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.Phase;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.Theme;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormGenerator;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakuService;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -35,6 +38,8 @@ public class FormEditorController {
 
     private final HakuService hakuService;
     private final FormGenerator formaGenerator;
+
+    private static final String[] UNEDITABLE_THEME_FILTERS = {"henkilotiedot", "koulutustausta"};
 
     @Autowired
     public FormEditorController(HakuService hakuService, FormGenerator formaGenerator) {
@@ -74,11 +79,48 @@ public class FormEditorController {
     }
 
     @GET
-    @Path("application-system-themes/{applicationSystemId}")
+    @Path("application-system-form/{applicationSystemId}/additional-question-themes")
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
-    public Map getApplicationSystemThemes(@PathParam("applicationSystemId") String applicationSystemId){
-        throw new JSONException(Response.Status.NOT_FOUND, "Not implemented yet", null);
+    public List<Map<String, Object>> getAdditinalQuestionThemes(@PathParam("applicationSystemId") String applicationSystemId){
+        LOGGER.debug("Generating application system with id: "+ applicationSystemId);
+        ApplicationSystem applicationSystem = formaGenerator.generate(applicationSystemId);
+        List<Element> phaseElements = applicationSystem.getForm().getChildren();
+        List<Map<String, Object>> themes = new ArrayList<Map<String, Object>>();
+        for(Element phase : phaseElements){
+           if (! (phase instanceof Phase)){
+                LOGGER.debug("First level child not a phase element in form for applicationSystem. Got " + phase.getType() + " instead." );
+                continue;
+            }
+            themes.addAll(parsePhaseThemes((Phase) phase));
+        }
+        return themes;
     }
+
+    private final List<Map<String, Object>> parsePhaseThemes(Phase phase) {
+        List<Element> themeElements = phase.getChildren();
+        List<Map<String, Object>> themes = new ArrayList<Map<String, Object>>();
+        for (Element themeElement : themeElements) {
+            if (!(themeElement instanceof Theme)) {
+                LOGGER.warn("First level child of phase " + phase.getId() + " not a theme element. Got " + themeElement.getType() + " instead.");
+                continue;
+            }
+            Boolean filtered = Boolean.FALSE;
+            for (String filter : UNEDITABLE_THEME_FILTERS) {
+                if (themeElement.getId().toLowerCase().contains(filter))
+                    filtered = Boolean.TRUE;
+            }
+            if (filtered)
+                LOGGER.debug("Filtered theme " + themeElement.getId());
+            else{
+                Map<String, Object> themeMap = new HashMap<String, Object>(2);
+                themeMap.put("id", themeElement.getId());
+                themeMap.put("name", ((Theme) themeElement).getI18nText());
+                themes.add(themeMap);
+            }
+        }
+        return themes;
+    }
+
 
     /*
     Support Methods
