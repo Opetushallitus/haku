@@ -1,6 +1,8 @@
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.ui;
 
+import com.google.common.collect.ImmutableMap;
 import fi.vm.sade.haku.oppija.hakemus.resource.JSONException;
+import fi.vm.sade.haku.oppija.lomake.domain.ApplicationPeriod;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
@@ -22,10 +24,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 @Path("/application-system-form-editor")
@@ -33,6 +32,13 @@ public class FormEditorController {
 
     public static final String CHARSET_UTF_8 = ";charset=UTF-8";
 
+    public enum State {
+        ACTIVE, LOCKED, PUBLISHED, CLOSED, ERROR
+    }
+
+    private static final Map<State, I18nText> stateTranslations = new ImmutableMap.Builder<State,I18nText>().put(State.ACTIVE, new I18nText(ImmutableMap.of("fi", "Aktiivinen"))).
+      put(State.LOCKED, new I18nText(ImmutableMap.of("fi", "Lukittu"))).put(State.PUBLISHED, new I18nText(ImmutableMap.of("fi", "Julkaistu"))).
+      put(State.CLOSED, new I18nText(ImmutableMap.of("fi", "Suljettu"))).put(State.ERROR, new I18nText(ImmutableMap.of("fi", "Virheellinen"))).build();
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FormEditorController.class);
 
@@ -56,14 +62,41 @@ public class FormEditorController {
             Map<String, Object> applicationSystemForm = new HashMap<String, Object>();
             applicationSystemForm.put("_id", applicationSystem.getId());
             applicationSystemForm.put("name", applicationSystem.getName());
-            applicationSystemForm.put("kausi", applicationSystem.getHakukausiUri());
-            applicationSystemForm.put("vuosi", applicationSystem.getHakukausiVuosi());
-            applicationSystemForm.put("tyyppi", applicationSystem.getApplicationSystemType());
-            applicationSystemForm.put("pohja", applicationSystem.getApplicationSystemType());
-            //applicationSystemForm.put("state",null);
+            applicationSystemForm.put("period", applicationSystem.getHakukausiUri());
+            applicationSystemForm.put("year", applicationSystem.getHakukausiVuosi());
+            applicationSystemForm.put("type", applicationSystem.getApplicationSystemType());
+            applicationSystemForm.put("template", applicationSystem.getApplicationSystemType());
+            applicationSystemForm.put("status", stateTranslations.get(deduceApplicationSystemState(applicationSystem)));
             applicationSystemForms.add(applicationSystemForm);
         }
         return applicationSystemForms;
+    }
+
+    private State deduceApplicationSystemState(ApplicationSystem applicationSystem){
+        List<ApplicationPeriod> applicationPeriods = applicationSystem.getApplicationPeriods();
+        if (applicationPeriods.size() != 1 ){
+            LOGGER.error("Unexcepted number of periods. Got {} for application system {}", applicationPeriods.size(), applicationSystem.getId());
+            if (applicationPeriods.size() < 1)
+                return State.ERROR;
+        }
+        ApplicationPeriod applicationPeriod = applicationPeriods.get(0);
+        final Date now = new Date();
+        LOGGER.debug("Decucing state. Now {}. Period Start {}. Period End {}", now, applicationPeriod.getStart(),applicationPeriod.getEnd());
+        if (now.after(applicationPeriod.getEnd())){
+            return State.CLOSED;
+        }
+        if ( now.after(applicationPeriod.getStart())) {
+            return State.PUBLISHED;
+        }
+        // TODO: FIX Hardcoding locked to 2 days before application period starts
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(applicationPeriod.getStart());
+        calendar.roll(Calendar.DATE,-2);
+        LOGGER.debug("Testing against {} ", calendar.getTime());
+        if (now.after(calendar.getTime())){
+            return State.LOCKED;
+        }
+        return State.ACTIVE;
     }
 
     @GET
