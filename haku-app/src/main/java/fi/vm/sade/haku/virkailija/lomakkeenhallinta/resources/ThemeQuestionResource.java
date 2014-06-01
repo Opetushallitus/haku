@@ -77,7 +77,7 @@ public class ThemeQuestionResource {
     @GET
     @Path("{themeQuestionId}")
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
-    @PreAuthorize("hasRole('ROLE_APP_HAKEMUS_READ_UPDATE')")
+    @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_READ', 'ROLE_APP_HAKEMUS_CRUD')")
     public ThemeQuestion getThemeQuestionByOid(@PathParam("themeQuestionId") String themeQuestionId) {
         LOGGER.debug("Getting question by Id: {}", themeQuestionId);
         return themeQuestionDAO.findById(themeQuestionId);
@@ -86,7 +86,7 @@ public class ThemeQuestionResource {
     @DELETE
     @Path("{themeQuestionId}")
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
-    @PreAuthorize("hasRole('ROLE_APP_HAKEMUS_READ_UPDATE')")
+    @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_READ', 'ROLE_APP_HAKEMUS_CRUD')")
     public void deleteThemeQuestionByOid(@PathParam("themeQuestionId") String themeQuestionId) {
         LOGGER.debug("Deleting theme question with id: {}", themeQuestionId);
         ThemeQuestion dbThemeQuestion = fetchThemeQuestion(themeQuestionId);
@@ -99,7 +99,7 @@ public class ThemeQuestionResource {
     @Path("{themeQuestionId}")
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     @Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
-    @PreAuthorize("hasRole('ROLE_APP_HAKEMUS_READ_UPDATE')")
+    @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_READ', 'ROLE_APP_HAKEMUS_CRUD')")
     public void updateThemeQuestion(@PathParam("themeQuestionId") String themeQuestionId,
                                     ThemeQuestion themeQuestion) {
         LOGGER.debug("Updating theme question with id: {}", themeQuestionId);
@@ -128,7 +128,7 @@ public class ThemeQuestionResource {
     @Path("{applicationSystemId}/{learningOpportunityId}/{themeId}")
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     @Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
-    @PreAuthorize("hasRole('ROLE_APP_HAKEMUS_READ_UPDATE')")
+    @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_READ', 'ROLE_APP_HAKEMUS_CRUD')")
     public void saveNewThemeQuestion(@PathParam("applicationSystemId") String applicationSystemId,
                                      @PathParam("learningOpportunityId") String learningOpportunityId,
                                      @PathParam("themeId")  String themeId,
@@ -175,7 +175,7 @@ public class ThemeQuestionResource {
     @GET
     @Path("list/{applicationSystemId}")
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
-    @PreAuthorize("hasRole('ROLE_APP_HAKEMUS_READ_UPDATE')")
+    @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_READ', 'ROLE_APP_HAKEMUS_CRUD')")
     public List<ThemeQuestion> getThemeQuestionQuery(@PathParam("applicationSystemId") String applicationSystemId,
       @QueryParam("aoId") String learningOpportunityId, @QueryParam("orgId") String organizationId){
         LOGGER.debug("Listing by applicationSystemId: {}, learningOpportunityId: {}, organizationId: {} ", applicationSystemId, applicationSystemId, organizationId);

@@ -63,7 +63,7 @@ public class FormEditorController {
     @GET
     @Path("application-system-form")
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
-    @PreAuthorize("hasRole('ROLE_APP_HAKEMUS_READ_UPDATE')")
+    @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_READ', 'ROLE_APP_HAKEMUS_CRUD')")
     public List<Map<String, Object>> getApplicationSystemForms(){
         ArrayList<Map<String,Object>> applicationSystemForms = new ArrayList<Map<String, Object>>();
         for (ApplicationSystem applicationSystem : hakuService.getApplicationSystems()){
@@ -110,7 +110,7 @@ public class FormEditorController {
     @GET
     @Path("application-system-form/{applicationSystemId}")
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
-    @PreAuthorize("hasRole('ROLE_APP_HAKEMUS_READ_UPDATE')")
+    @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_READ', 'ROLE_APP_HAKEMUS_CRUD')")
     public Map getAppicationSystemForm(@PathParam("applicationSystemId") String applicationSystemId){
         ApplicationSystem applicationSystem = formaGenerator.generate(applicationSystemId);
         ObjectMapper mapper = new ObjectMapper();
@@ -123,7 +123,7 @@ public class FormEditorController {
     @GET
     @Path("application-system-form/{applicationSystemId}/additional-question-themes")
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
-    @PreAuthorize("hasRole('ROLE_APP_HAKEMUS_READ_UPDATE')")
+    @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_READ', 'ROLE_APP_HAKEMUS_CRUD')")
     public List<Map<String, Object>> getAdditinalQuestionThemes(@PathParam("applicationSystemId") String applicationSystemId){
         LOGGER.debug("Generating application system with id: "+ applicationSystemId);
         ApplicationSystem applicationSystem = formaGenerator.generate(applicationSystemId);
