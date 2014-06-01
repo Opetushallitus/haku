@@ -20,6 +20,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
@@ -49,31 +50,32 @@ public class SuoritusrekisteriServiceImplTest {
 
     @Test
     public void testSingleSuoritus() throws IOException {
-        String suoritukset = "["+getSuoritus("peruskoulu")+"]";
+        String suoritukset = "["+getSuoritus("1.2.246.562.13.62959769647")+"]";
         InputStream is = new ByteArrayInputStream(suoritukset.getBytes("UTF-8"));
         when(cachingRestClient.get(any(String.class))).thenReturn(is);
         suoritusrekisteriService.setCachingRestClient(cachingRestClient);
 
-        List<SuoritusDTO> suoritusDTOs = suoritusrekisteriService.getSuoritukset("1.2.246.562.24.50387424171");
+        Map<String, SuoritusDTO> suoritusDTOs = suoritusrekisteriService.getSuoritukset("1.2.246.562.24.50387424171");
         assertEquals(1, suoritusDTOs.size());
-        SuoritusDTO suoritus = suoritusDTOs.get(0);
-        assertEquals(suoritus.getKomo(), "peruskoulu");
+        SuoritusDTO suoritus = suoritusDTOs.get("1.2.246.562.13.62959769647");
+        assertEquals(suoritus.getKomo(), "1.2.246.562.13.62959769647");
 
     }
 
     @Test
     public void testMultipleLegalSuoritus() throws IOException {
-        String suoritukset = "["+getSuoritus("peruskoulu")+","+getSuoritus("lisaopetus")+"]";
+        String suoritukset = "["+getSuoritus("1.2.246.562.13.62959769647")+","
+                +getSuoritus("1.2.246.562.5.2013112814572435044876")+"]";
         InputStream is = new ByteArrayInputStream(suoritukset.getBytes("UTF-8"));
         when(cachingRestClient.get(any(String.class))).thenReturn(is);
         suoritusrekisteriService.setCachingRestClient(cachingRestClient);
 
-        List<SuoritusDTO> suoritusDTOs = suoritusrekisteriService.getSuoritukset("1.2.246.562.24.50387424171");
+        Map<String, SuoritusDTO> suoritusDTOs = suoritusrekisteriService.getSuoritukset("1.2.246.562.24.50387424171");
         assertEquals(2, suoritusDTOs.size());
-        SuoritusDTO suoritus = suoritusDTOs.get(0);
-        assertEquals(suoritus.getKomo(), "peruskoulu");
-        suoritus = suoritusDTOs.get(1);
-        assertEquals(suoritus.getKomo(), "lisaopetus");
+        SuoritusDTO suoritus = suoritusDTOs.get("1.2.246.562.13.62959769647");
+        assertEquals(suoritus.getKomo(), "1.2.246.562.13.62959769647");
+        suoritus = suoritusDTOs.get("1.2.246.562.5.2013112814572435044876");
+        assertEquals(suoritus.getKomo(), "1.2.246.562.5.2013112814572435044876");
 
     }
 
@@ -81,13 +83,13 @@ public class SuoritusrekisteriServiceImplTest {
     @Test
     public void testMultipleFailingSuoritus() throws IOException {
         thrown.expect(ResourceNotFoundException.class);
-        thrown.expectMessage("Found multiple instances of komo peruskoulu for personOid 1.2.246.562.24.15469000319");
-        String suoritukset = "["+getSuoritus("peruskoulu")+","+getSuoritus("peruskoulu")+"]";
+        thrown.expectMessage("Found multiple instances of komo 1.2.246.562.13.62959769647 for personOid 1.2.246.562.24.15469000319");
+        String suoritukset = "["+getSuoritus("1.2.246.562.13.62959769647")+","+getSuoritus("1.2.246.562.13.62959769647")+"]";
         InputStream is = new ByteArrayInputStream(suoritukset.getBytes("UTF-8"));
         when(cachingRestClient.get(any(String.class))).thenReturn(is);
         suoritusrekisteriService.setCachingRestClient(cachingRestClient);
 
-        List<SuoritusDTO> suoritusDTOs = suoritusrekisteriService.getSuoritukset("1.2.246.562.24.50387424171");
+        Map<String, SuoritusDTO> suoritusDTOs = suoritusrekisteriService.getSuoritukset("1.2.246.562.24.50387424171");
 
     }
 

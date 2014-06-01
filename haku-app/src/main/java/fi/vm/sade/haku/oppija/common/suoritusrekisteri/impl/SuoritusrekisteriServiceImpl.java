@@ -22,9 +22,7 @@ import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 @Profile(value = {"default", "devluokka"})
@@ -34,6 +32,18 @@ public class SuoritusrekisteriServiceImpl implements SuoritusrekisteriService {
 
     private final static DateFormat ISO8601 = new SimpleDateFormat("yyyyMMdd'T000000Z'");
     private final static DateFormat VALMISTUMINEN_FMT = new SimpleDateFormat("dd.MM.yyyy");
+
+    private final static List<String> validKomos = new ArrayList<String>();
+
+    static {
+        validKomos.add("1.2.246.562.5.2013112814572438136372"); // AmmOhjaavaJaValmistavaKoulutus
+        validKomos.add("1.2.246.562.5.2013061010184880799984"); // Lukiokoulutus
+        validKomos.add("1.2.246.562.5.2013112814572441001730"); // MaahanmAmmValmistavaKoulutus
+        validKomos.add("1.2.246.562.5.2013112814572435755085"); // ValmentavaJaKuntouttavaOpetus
+        validKomos.add("1.2.246.562.5.2013112814572435044876"); // PerusopetuksenLisaopetus
+        validKomos.add("1.2.246.562.13.62959769647");           // Perusopetus
+        validKomos.add("1.2.246.562.13.86722481404");           // Perusopetuksen ulkomainen vastaava opetus
+    }
 
     @Value("${web.url.cas}")
     private String casUrl;
@@ -125,7 +135,7 @@ public class SuoritusrekisteriServiceImpl implements SuoritusrekisteriService {
     }
 
     @Override
-    public List<SuoritusDTO> getSuoritukset(String personOid) {
+    public Map<String, SuoritusDTO> getSuoritukset(String personOid) {
 
 //        {
 //            "id":"e482944f-6195-41d6-a456-3637c217096d",
@@ -153,14 +163,21 @@ public class SuoritusrekisteriServiceImpl implements SuoritusrekisteriService {
             return null;
         }
         JsonArray elements = new JsonParser().parse(response).getAsJsonArray();
-        ArrayList<SuoritusDTO> suoritukset = new ArrayList<SuoritusDTO>(elements.size());
+        Map<String, SuoritusDTO> suoritukset = new HashMap<String, SuoritusDTO>(elements.size());
         for (int i = 0; i < elements.size(); i++) {
             JsonObject elem = elements.get(i).getAsJsonObject();
             SuoritusDTO suoritus = suoritusJsonToDTO(elem);
-            suoritukset.add(suoritus);
+            String komo = suoritus.getKomo();
+            if (!validKomos.contains(komo)) {
+                throw new ResourceNotFoundException("Found invalid komo ("+komo+
+                        ") for personOid "+suoritus.getHenkiloOid());
+            }
+            SuoritusDTO prev = suoritukset.put(komo, suoritus);
+            if (prev != null) {
+                throw new ResourceNotFoundException("Found multiple instances of komo "+komo+
+                        " for personOid "+suoritus.getHenkiloOid());
+            }
         }
-
-        checkForMulti(suoritukset);
 
         return suoritukset;
     }

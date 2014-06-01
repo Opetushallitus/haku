@@ -1,10 +1,11 @@
 package fi.vm.sade.haku.oppija.common.suoritusrekisteri;
 
 import java.util.List;
+import java.util.Map;
 
 public interface SuoritusrekisteriService {
 
-    List<SuoritusDTO> getSuoritukset(String personOid);
+    Map<String, SuoritusDTO> getSuoritukset(String personOid);
 
     List<OpiskelijaDTO> getOpiskelijat(String personOid);
 
