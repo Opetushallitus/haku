@@ -71,7 +71,7 @@ $(document).ready(function() {
                         "&lt;&nbsp;Edellinen ("+sukunimi + " " + etunimet+")" :
                         "("+sukunimi + " " + etunimet+")&nbsp;Seuraava&nbsp;&gt;";
                     $('#'+elementId).text(linkText);
-                    $('#'+elementId).attr('href', page_settings.contextPath + "/virkailija/hakemus/" + oid);
+                    $('#'+elementId).attr('href', page_settings.contextPath + "/virkailija/hakemus/" + oid + '/');
                 }
             )
         },
@@ -121,7 +121,7 @@ $(document).ready(function() {
                         var sukunimi = data.answers.henkilotiedot.Sukunimi;
                         var linkText = "< Edellinen ("+sukunimi + " " + etunimet+")";
                         $('#previousApplication').text(linkText);
-                        var prevApplicationUrl = page_settings.contextPath + "/virkailija/hakemus/" + previousApplication;
+                        var prevApplicationUrl = page_settings.contextPath + "/virkailija/hakemus/" + previousApplication + "/";
                         $(document).bind('keypress', 'j', function() { location.href = prevApplicationUrl });
                         $('#previousApplication').attr('href', prevApplicationUrl);
                     }
@@ -135,7 +135,7 @@ $(document).ready(function() {
                         var sukunimi = data.answers.henkilotiedot.Sukunimi;
                         var linkText = "("+sukunimi + " " + etunimet+") Seuraava >";
                         $('#nextApplication').text(linkText);
-                        var nextApplicationUrl = page_settings.contextPath + "/virkailija/hakemus/" + nextApplication
+                        var nextApplicationUrl = page_settings.contextPath + "/virkailija/hakemus/" + nextApplication + "/"
                         $(document).bind('keypress', 'k', function() { location.href = nextApplicationUrl });
                         $('#nextApplication').attr('href', nextApplicationUrl);
                     }

@@ -150,11 +150,6 @@ public class Application implements Serializable {
     }
 
     @JsonIgnore
-    public void passivate() {
-        state = State.PASSIVE;
-    }
-
-    @JsonIgnore
     public void activate() {
         state = State.ACTIVE;
     }

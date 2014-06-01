@@ -17,13 +17,16 @@ public class FormParameters {
         PERVAKO;
     }
 
-    private final ApplicationSystem applicationSystem;
-    private final I18nBundle i18nBundle;
-    private final KoodistoService koodistoService;
-    private final String formMessagesBundle;
-    private final FormTemplateType formTemplateType;
 
-    public FormParameters(ApplicationSystem applicationSystem, KoodistoService koodistoService) {
+    private final ApplicationSystem applicationSystem;
+    private final KoodistoService koodistoService;
+
+    private final FormTemplateType formTemplateType;
+    private final I18nBundle i18nBundle;
+    private final String formMessagesBundle;
+
+
+    public FormParameters(final ApplicationSystem applicationSystem, final KoodistoService koodistoService) {
         this.applicationSystem = applicationSystem;
         this.koodistoService = koodistoService;
         this.formTemplateType = figureOutFormForApplicationSystem(applicationSystem);

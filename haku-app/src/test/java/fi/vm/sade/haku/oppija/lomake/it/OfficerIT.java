@@ -52,7 +52,6 @@ public class OfficerIT extends DummyModelBaseItTest {
         clickSearch();
         WebElement applicationLink = findByClassName("application-link").get(0);
         applicationLink.click();
-        checkApplicationState("Aktiivinen");
         List<WebElement> editLinks = findByClassName("edit-link");
         WebElement editLink = editLinks.get(1);
         editLink.click();
@@ -84,7 +83,6 @@ public class OfficerIT extends DummyModelBaseItTest {
     }
 
     private WebElement checkApplicationState(String applicationState) {
-
         return seleniumContainer.getDriver().findElement(By.xpath("//*[contains(.,'" + applicationState + "')]"));
     }
 
@@ -123,7 +121,7 @@ public class OfficerIT extends DummyModelBaseItTest {
         click("postProcessApplication");
         click("submit-dialog");
 
-        navigateToPath("virkailija", "hakemus", oid, "activate");
+        navigateToPath("virkailija", "hakemus", oid, "");
         List<WebElement> passivateApplication = getById("passivateApplication");
         if (passivateApplication.isEmpty()) {
             List<WebElement> activateApplication = getById("activateApplication");

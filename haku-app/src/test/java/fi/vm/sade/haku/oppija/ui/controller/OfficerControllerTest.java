@@ -89,12 +89,6 @@ public class OfficerControllerTest {
     }
 
     @Test
-    public void testGetApplication() throws Exception {
-        Response response = officerController.redirectToLastPhase(OID);
-        assertEquals("/virkailija/hakemus/" + ASID + "/valmis/" + OID, getLocationHeader(response));
-    }
-
-    @Test
     public void testUpdatePhase() throws URISyntaxException {
         Response response = officerController.updatePhase(ASID, "henkilotiedot", OID, new MultivaluedMapImpl());
         assertEquals(Response.Status.SEE_OTHER.getStatusCode(), response.getStatus());
