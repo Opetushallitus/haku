@@ -1,7 +1,6 @@
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.ui;
 
 import com.google.common.collect.ImmutableMap;
-import fi.vm.sade.haku.oppija.hakemus.resource.JSONException;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationPeriod;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
@@ -15,7 +14,6 @@ import org.codehaus.jackson.map.SerializationConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 
@@ -24,7 +22,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import java.util.*;
 
 @Controller
@@ -40,6 +37,15 @@ public class FormEditorController {
     private static final Map<State, I18nText> stateTranslations = new ImmutableMap.Builder<State,I18nText>().put(State.ACTIVE, new I18nText(ImmutableMap.of("fi", "Aktiivinen"))).
       put(State.LOCKED, new I18nText(ImmutableMap.of("fi", "Lukittu"))).put(State.PUBLISHED, new I18nText(ImmutableMap.of("fi", "Julkaistu"))).
       put(State.CLOSED, new I18nText(ImmutableMap.of("fi", "Suljettu"))).put(State.ERROR, new I18nText(ImmutableMap.of("fi", "Virheellinen"))).build();
+
+    private static final Map<String, Object> hakutoiveTheme = new ImmutableMap.Builder<String,Object>().put("id", "hakutoiveet.teema").
+      put("name", new I18nText(ImmutableMap.of("fi", "Hakutoiveet", "sv", "Ansökningsönskemål"))).build();
+
+    private static final Map<String, Object> arvosanaTheme = new ImmutableMap.Builder<String,Object>().put("id", "arvosanat").
+      put("name", new I18nText(ImmutableMap.of("fi", "Arvosanat", "sv", "Vitsord"))).build();
+
+    private static final Map<String, Object> lupaTiedotTheme = new ImmutableMap.Builder<String,Object>().put("id", "lupatiedot").
+      put("name", new I18nText(ImmutableMap.of("fi", "Lupatiedot", "sv", "Tillståndsuppgifter"))).build();
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FormEditorController.class);
 
@@ -126,11 +132,24 @@ public class FormEditorController {
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_READ', 'ROLE_APP_HAKEMUS_CRUD')")
     public List<Map<String, Object>> getAdditinalQuestionThemes(@PathParam("applicationSystemId") String applicationSystemId){
         LOGGER.debug("Generating application system with id: "+ applicationSystemId);
+        return generateThemes();
+
+    }
+
+    private final List<Map<String, Object>> generateThemes(){
+        List<Map<String, Object>> themes = new ArrayList<Map<String, Object>>();
+        themes.add(hakutoiveTheme);
+        themes.add(arvosanaTheme);
+        themes.add(lupaTiedotTheme);
+        return themes;
+    }
+
+    private final List<Map<String, Object>> getThemesFromApplicationSystem(String applicationSystemId){
         ApplicationSystem applicationSystem = formaGenerator.generate(applicationSystemId);
         List<Element> phaseElements = applicationSystem.getForm().getChildren();
         List<Map<String, Object>> themes = new ArrayList<Map<String, Object>>();
         for(Element phase : phaseElements){
-           if (! (phase instanceof Phase)){
+            if (! (phase instanceof Phase)){
                 LOGGER.debug("First level child not a phase element in form for applicationSystem. Got " + phase.getType() + " instead." );
                 continue;
             }
