@@ -16,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 
 import javax.ws.rs.GET;
@@ -42,10 +43,16 @@ public class FormEditorController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FormEditorController.class);
 
-    private final HakuService hakuService;
-    private final FormGenerator formaGenerator;
+    @Autowired
+    private HakuService hakuService;
+
+    @Autowired
+    private FormGenerator formaGenerator;
 
     private static final String[] UNEDITABLE_THEME_FILTERS = {"henkilotiedot", "koulutustausta"};
+
+    public FormEditorController() {
+    }
 
     @Autowired
     public FormEditorController(HakuService hakuService, FormGenerator formaGenerator) {
@@ -56,6 +63,7 @@ public class FormEditorController {
     @GET
     @Path("application-system-form")
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
+    @PreAuthorize("hasRole('ROLE_APP_HAKEMUS_READ_UPDATE')")
     public List<Map<String, Object>> getApplicationSystemForms(){
         ArrayList<Map<String,Object>> applicationSystemForms = new ArrayList<Map<String, Object>>();
         for (ApplicationSystem applicationSystem : hakuService.getApplicationSystems()){
@@ -102,6 +110,7 @@ public class FormEditorController {
     @GET
     @Path("application-system-form/{applicationSystemId}")
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
+    @PreAuthorize("hasRole('ROLE_APP_HAKEMUS_READ_UPDATE')")
     public Map getAppicationSystemForm(@PathParam("applicationSystemId") String applicationSystemId){
         ApplicationSystem applicationSystem = formaGenerator.generate(applicationSystemId);
         ObjectMapper mapper = new ObjectMapper();
@@ -114,6 +123,7 @@ public class FormEditorController {
     @GET
     @Path("application-system-form/{applicationSystemId}/additional-question-themes")
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
+    @PreAuthorize("hasRole('ROLE_APP_HAKEMUS_READ_UPDATE')")
     public List<Map<String, Object>> getAdditinalQuestionThemes(@PathParam("applicationSystemId") String applicationSystemId){
         LOGGER.debug("Generating application system with id: "+ applicationSystemId);
         ApplicationSystem applicationSystem = formaGenerator.generate(applicationSystemId);

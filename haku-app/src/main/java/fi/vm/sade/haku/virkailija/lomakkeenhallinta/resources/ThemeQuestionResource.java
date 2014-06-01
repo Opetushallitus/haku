@@ -38,6 +38,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 
 import javax.ws.rs.*;
@@ -55,10 +56,16 @@ public class ThemeQuestionResource {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ThemeQuestionResource.class);
 
-    private final ThemeQuestionDAO themeQuestionDAO;
-    private final ApplicationOptionService applicationOptionService;
-    private final OrganizationService organizationService;
+    @Autowired
+    private ThemeQuestionDAO themeQuestionDAO;
+    @Autowired
+    private ApplicationOptionService applicationOptionService;
+    @Autowired
+    private OrganizationService organizationService;
 
+    public ThemeQuestionResource(){
+
+    }
 
     @Autowired
     public ThemeQuestionResource(ThemeQuestionDAO themeQuestionDAO, ApplicationOptionService applicationOptionService, OrganizationService organizationService) {
@@ -70,6 +77,7 @@ public class ThemeQuestionResource {
     @GET
     @Path("{themeQuestionId}")
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
+    @PreAuthorize("hasRole('ROLE_APP_HAKEMUS_READ_UPDATE')")
     public ThemeQuestion getThemeQuestionByOid(@PathParam("themeQuestionId") String themeQuestionId) {
         LOGGER.debug("Getting question by Id: {}", themeQuestionId);
         return themeQuestionDAO.findById(themeQuestionId);
@@ -78,6 +86,7 @@ public class ThemeQuestionResource {
     @DELETE
     @Path("{themeQuestionId}")
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
+    @PreAuthorize("hasRole('ROLE_APP_HAKEMUS_READ_UPDATE')")
     public void deleteThemeQuestionByOid(@PathParam("themeQuestionId") String themeQuestionId) {
         LOGGER.debug("Deleting theme question with id: {}", themeQuestionId);
         ThemeQuestion dbThemeQuestion = fetchThemeQuestion(themeQuestionId);
@@ -90,6 +99,7 @@ public class ThemeQuestionResource {
     @Path("{themeQuestionId}")
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     @Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
+    @PreAuthorize("hasRole('ROLE_APP_HAKEMUS_READ_UPDATE')")
     public void updateThemeQuestion(@PathParam("themeQuestionId") String themeQuestionId,
                                     ThemeQuestion themeQuestion) {
         LOGGER.debug("Updating theme question with id: {}", themeQuestionId);
@@ -118,6 +128,7 @@ public class ThemeQuestionResource {
     @Path("{applicationSystemId}/{learningOpportunityId}/{themeId}")
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     @Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
+    @PreAuthorize("hasRole('ROLE_APP_HAKEMUS_READ_UPDATE')")
     public void saveNewThemeQuestion(@PathParam("applicationSystemId") String applicationSystemId,
                                      @PathParam("learningOpportunityId") String learningOpportunityId,
                                      @PathParam("themeId")  String themeId,
@@ -164,6 +175,7 @@ public class ThemeQuestionResource {
     @GET
     @Path("list/{applicationSystemId}")
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
+    @PreAuthorize("hasRole('ROLE_APP_HAKEMUS_READ_UPDATE')")
     public List<ThemeQuestion> getThemeQuestionQuery(@PathParam("applicationSystemId") String applicationSystemId,
       @QueryParam("aoId") String learningOpportunityId, @QueryParam("orgId") String organizationId){
         LOGGER.debug("Listing by applicationSystemId: {}, learningOpportunityId: {}, organizationId: {} ", applicationSystemId, applicationSystemId, organizationId);
