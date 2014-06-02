@@ -331,7 +331,6 @@ public class ApplicationServiceImpl implements ApplicationService {
         SuoritusDTO ammattistartti = suoritukset.get(valmistavaKomoOid);
         SuoritusDTO kuntouttava = suoritukset.get(kuntouttavaKomoOid);
         SuoritusDTO mamuValmentava = suoritukset.get(mamuValmistavaKomoOid);
-
         SuoritusDTO pk = suoritukset.get(perusopetusKomoOid);
 
         boolean kymppiSuoritettu = false;
@@ -391,6 +390,12 @@ public class ApplicationServiceImpl implements ApplicationService {
             pohjakoulutus = getPohjakoulutus(pk);
             Map<String, String> grades = addGrades(application, pk);
             gradesTranferredPk = !grades.isEmpty();
+        } else if (pk != null) {
+            valmistuminen = pk.getValmistuminen();
+            suorituskieli = pk.getSuorituskieli();
+            pohjakoulutus = getPohjakoulutus(pk);
+            Map<String, String> grades = addGrades(application, pk);
+            gradesTranferredPk = !grades.isEmpty();
         }
 
         if (pohjakoulutus == null) {
@@ -408,7 +413,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         educationAnswers = addRegisterValue(application, educationAnswers,
                 OppijaConstants.ELEMENT_ID_BASE_EDUCATION, String.valueOf(pohjakoulutus));
         educationAnswers = addRegisterValue(application, educationAnswers,
-                OppijaConstants.ELEMENT_ID_LISAKOULUTUS_KYMPPI, String.valueOf(kymppi));
+                OppijaConstants.ELEMENT_ID_LISAKOULUTUS_KYMPPI, String.valueOf(kymppiSuoritettu));
         educationAnswers = addRegisterValue(application, educationAnswers,
                 OppijaConstants.ELEMENT_ID_LISAKOULUTUS_AMMATTISTARTTI, String.valueOf(ammattistarttiSuoritettu));
         educationAnswers = addRegisterValue(application, educationAnswers,
@@ -454,6 +459,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     private Map<String, String> addGrades(Application application, SuoritusDTO suoritus) {
         String suoritusId = suoritus.getId();
+
         List<ArvosanaDTO> arvosanat = suoritusrekisteriService.getArvosanat(suoritusId);
         if (arvosanat.isEmpty()) {
             return new HashMap<String, String>();
