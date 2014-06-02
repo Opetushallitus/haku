@@ -182,20 +182,8 @@ public class SuoritusrekisteriServiceImpl implements SuoritusrekisteriService {
         return suoritukset;
     }
 
-    private void checkForMulti(ArrayList<SuoritusDTO> suoritukset) {
-        List<String> foundKomos = new ArrayList<String>(suoritukset.size());
-        for (SuoritusDTO suoritus : suoritukset) {
-            String komo = suoritus.getKomo();
-            if (foundKomos.contains(komo)) {
-                throw new ResourceNotFoundException("Found multiple instances of komo "+komo+
-                        " for personOid "+suoritus.getHenkiloOid());
-            }
-            foundKomos.add(komo);
-        }
-    }
-
     private SuoritusDTO suoritusJsonToDTO(JsonObject elem) {
-        log.debug("suoritusJsonToDTO, json ", elem.toString());
+        log.debug("suoritusJsonToDTO, json {}", elem.toString());
 
         SuoritusDTO suoritus = new SuoritusDTO();
         suoritus.setId(jsonElementToString(elem.get("id")));
@@ -213,7 +201,7 @@ public class SuoritusrekisteriServiceImpl implements SuoritusrekisteriService {
             log.info("Parsing valmistuminen date failed: " + e);
         }
 
-        log.debug("suoritusJsonToDTO, dto ", suoritus.toString());
+        log.debug("suoritusJsonToDTO, dto {}", suoritus.toString());
         return suoritus;
     }
 
