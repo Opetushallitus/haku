@@ -30,7 +30,7 @@ public class SuoritusrekisteriServiceImpl implements SuoritusrekisteriService {
 
     final Logger log = LoggerFactory.getLogger(SuoritusrekisteriServiceImpl.class);
 
-    private final static DateFormat ISO8601 = new SimpleDateFormat("yyyyMMdd'T000000Z'");
+    private final static DateFormat ISO8601 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
     private final static DateFormat VALMISTUMINEN_FMT = new SimpleDateFormat("dd.MM.yyyy");
 
     private final static List<String> validKomos = new ArrayList<String>();
