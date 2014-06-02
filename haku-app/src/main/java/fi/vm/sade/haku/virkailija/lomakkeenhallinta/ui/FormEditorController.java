@@ -127,6 +127,15 @@ public class FormEditorController {
     }
 
     @GET
+    @Path("application-system-form/{applicationSystemId}/name")
+    @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
+    @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_READ', 'ROLE_APP_HAKEMUS_CRUD')")
+    public I18nText getApplicationSystemForms(@PathParam("applicationSystemId") String applicationSystemId){
+        ApplicationSystem applicationSystem = hakuService.getApplicationSystem(applicationSystemId);
+        return applicationSystem.getName();
+    }
+
+    @GET
     @Path("application-system-form/{applicationSystemId}/additional-question-themes")
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_READ', 'ROLE_APP_HAKEMUS_CRUD')")
