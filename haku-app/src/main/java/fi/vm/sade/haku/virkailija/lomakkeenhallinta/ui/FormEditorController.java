@@ -220,8 +220,8 @@ public class FormEditorController {
         supportedTypes.add(supportedType);
 
         Map<String, String> checkBox = new HashMap<String,String>();
-        checkBox.put("fi", "Valinta kysymys (valintalaatikko)");
-        checkBox.put("sv", "Valinta kysymys (valintalaatikko) (sv)");
+        checkBox.put("fi", "Valinta kysymys (valintaruutu)");
+        checkBox.put("sv", "Valinta kysymys (valintaruutu) (sv)");
         checkBox.put("en", "Valinta kysymys (checkbox) (en)");
 
         supportedType = new HashMap();
