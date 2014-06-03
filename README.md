@@ -2,12 +2,16 @@
 
 ### Getting Started
 
+Make sure you have JDK7 on your JAVA_HOME.
+
     cd haku
     mvn clean install
     cd haku-app
     mvn tomcat7:run
 
-    http://localhost:8080/haku-app
+    http://localhost:9090/haku-app
+    
+If the site fails to load due to "Input validation failure", make sure you don't have any unwanted cookies stored for localhost on your browser.    
 
 #### Integration tests
 
