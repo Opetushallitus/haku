@@ -16,36 +16,25 @@
 
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.resources;
 
-import fi.vm.sade.haku.oppija.common.koulutusinformaatio.ApplicationOption;
-import fi.vm.sade.haku.oppija.common.koulutusinformaatio.ApplicationOptionService;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
 import fi.vm.sade.haku.oppija.hakemus.resource.JSONException;
-import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
-import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
-import fi.vm.sade.haku.oppija.lomake.util.StringUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.dao.ThemeQuestionDAO;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.dao.ThemeQuestionQueryParameters;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.dao.impl.DBConverter.SimpleObjectIdSerializer;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain.*;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormGenerator;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakuService;
-import org.bson.types.ObjectId;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.SerializationConfig;
-import org.codehaus.jackson.map.annotate.JsonSerialize;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain.ThemeQuestion;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakukohdeService;
+import fi.vm.sade.tarjonta.service.resources.dto.HakukohdeDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 
 
 @Controller
@@ -59,7 +48,7 @@ public class ThemeQuestionResource {
     @Autowired
     private ThemeQuestionDAO themeQuestionDAO;
     @Autowired
-    private ApplicationOptionService applicationOptionService;
+    private HakukohdeService hakukohdeService;
     @Autowired
     private OrganizationService organizationService;
 
@@ -68,9 +57,9 @@ public class ThemeQuestionResource {
     }
 
     @Autowired
-    public ThemeQuestionResource(ThemeQuestionDAO themeQuestionDAO, ApplicationOptionService applicationOptionService, OrganizationService organizationService) {
+    public ThemeQuestionResource(ThemeQuestionDAO themeQuestionDAO, HakukohdeService hakukohdeService, OrganizationService organizationService) {
         this.themeQuestionDAO = themeQuestionDAO;
-        this.applicationOptionService = applicationOptionService;
+        this.hakukohdeService = hakukohdeService;
         this.organizationService = organizationService;
     }
 
@@ -160,15 +149,15 @@ public class ThemeQuestionResource {
 
     private ThemeQuestion fillInOwnerOrganizations(ThemeQuestion themeQuestion){
         LOGGER.debug("Filling in organizations for theme question for application system " + themeQuestion.getApplicationSystemId() + " application option " + themeQuestion.getLearningOpportunityId());
-        ApplicationOption applicationOption = applicationOptionService.get(themeQuestion.getLearningOpportunityId());
+        HakukohdeDTO applicationOption = hakukohdeService.findByOid(themeQuestion.getLearningOpportunityId());
         LOGGER.debug("Filling in organizations for theme question");
-        String learningOpportunityProvicerId = applicationOption.getProvider().getId();
+        String learningOpportunityProvicerId = applicationOption.getTarjoajaOid();
         List<String> parentOids = organizationService.findParentOids(learningOpportunityProvicerId);
         HashSet<String> ownerOrganizations = new HashSet<String>();
         ownerOrganizations.addAll(parentOids);
         ownerOrganizations.add(learningOpportunityProvicerId);
         themeQuestion.setOwnerOrganizationOids(new ArrayList<String>(ownerOrganizations));
-        LOGGER.debug("Owner organizations "+ ownerOrganizations.toString() +" added for applicationoption "+ applicationOption.getId());
+        LOGGER.debug("Owner organizations "+ ownerOrganizations.toString() +" added for applicationoption "+ applicationOption.getOid());
         return themeQuestion;
     }
 
