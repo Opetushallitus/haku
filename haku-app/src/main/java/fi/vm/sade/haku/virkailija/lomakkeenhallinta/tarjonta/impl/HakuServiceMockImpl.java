@@ -98,6 +98,11 @@ public class HakuServiceMockImpl implements HakuService {
         return null;
     }
 
+    // TODO: FIX
+    public List<String> getRelatedApplicationOptionIds(String oid){
+        return null;
+    }
+
     public static final Date getDate(int years) {
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.YEAR, years);
