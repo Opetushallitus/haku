@@ -1,5 +1,6 @@
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.ui;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import fi.vm.sade.haku.oppija.hakemus.resource.JSONException;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationPeriod;
@@ -48,6 +49,15 @@ public class FormEditorController {
 
     private static final Map<String, Object> lupaTiedotTheme = new ImmutableMap.Builder<String,Object>().put("id", "lupatiedot").
       put("name", new I18nText(ImmutableMap.of("fi", "Lupatiedot", "sv", "Tillståndsuppgifter"))).build();
+
+    private static final Map<String, I18nText> questionTypeTranslations = new ImmutableMap.Builder<String, I18nText>()
+      .put("TextQuestion", new I18nText(new ImmutableMap.Builder<String, String>().put("fi", "Avoin vastaus (tekstikenttä)")
+        .put("sv", "Avoin vastaus (tekstikenttä) (sv)").put("en", "Avoin vastaus (textfield) (en)").build()))
+      .put("CheckBox", new I18nText(new ImmutableMap.Builder<String, String>().put("fi", "Valinta kysymys (valintaruutu)")
+        .put("sv", "Valinta kysymys (valintaruutu) (sv)").put("en", "Valinta kysymys (checkbox) (en)").build()))
+      .put("RadioButton", new I18nText(new ImmutableMap.Builder<String, String>().put("fi", "Valinta kysymys (valintanappi)")
+        .put("sv", "Valinta kysymys (valintanappi) (sv)").put("en", "Valinta kysymys (radiobutton) (en)").build()))
+      .build();
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FormEditorController.class);
 
@@ -208,37 +218,18 @@ public class FormEditorController {
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     public List getSupportedTypes(){
         ArrayList supportedTypes = new ArrayList();
-
-        Map<String, String> textQuestion = new HashMap<String,String>();
-        textQuestion.put("fi", "Avoin vastaus (tekstikenttä)");
-        textQuestion.put( "sv", "Avoin vastaus (tekstikenttä) (sv)");
-        textQuestion.put("en", "Avoin vastaus (textfield) (en)");
-
-        Map supportedType = new HashMap();
-        supportedType.put("id", "TextQuestion");
-        supportedType.put("name", new I18nText(textQuestion));
-        supportedTypes.add(supportedType);
-
-        Map<String, String> checkBox = new HashMap<String,String>();
-        checkBox.put("fi", "Valinta kysymys (valintaruutu)");
-        checkBox.put("sv", "Valinta kysymys (valintaruutu) (sv)");
-        checkBox.put("en", "Valinta kysymys (checkbox) (en)");
-
-        supportedType = new HashMap();
-        supportedType.put("id", "CheckBox");
-        supportedType.put("name", new I18nText(checkBox));
-        supportedTypes.add(supportedType);
-
-        Map<String, String> radioButton = new HashMap<String,String>();
-        radioButton.put("fi", "Valinta kysymys (valintanappi)");
-        radioButton.put("sv", "Valinta kysymys (valintanappi) (sv)");
-        radioButton.put("en", "Valinta kysymys (radiobutton) (en)");
-
-        supportedType = new HashMap();
-        supportedType.put("id", "RadioButton");
-        supportedType.put("name", new I18nText(radioButton));
-        supportedTypes.add(supportedType);
+        for (String key: questionTypeTranslations.keySet()){
+            supportedTypes.add(ImmutableMap.of("id", key, "name", questionTypeTranslations.get(key)));
+        }
         return supportedTypes;
+    }
+
+    @GET
+    @Path("types/{type}")
+    @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
+    public List getSupportedType(@PathParam("type") String type){
+        I18nText typeTranslation = questionTypeTranslations.get(type);
+        return ImmutableList.of(ImmutableMap.of("id", type, "name", typeTranslation));
     }
 
     //Returns translations for languages
