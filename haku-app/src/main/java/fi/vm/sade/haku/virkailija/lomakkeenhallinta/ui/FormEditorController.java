@@ -2,6 +2,8 @@ package fi.vm.sade.haku.virkailija.lomakkeenhallinta.ui;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationHierarchy;
+import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
 import fi.vm.sade.haku.oppija.hakemus.resource.JSONException;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationPeriod;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
@@ -9,8 +11,11 @@ import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Phase;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Theme;
+import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormGenerator;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakuService;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakukohdeService;
+import fi.vm.sade.tarjonta.service.resources.dto.HakukohdeDTO;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.SerializationConfig;
 import org.slf4j.Logger;
@@ -65,7 +70,16 @@ public class FormEditorController {
     private HakuService hakuService;
 
     @Autowired
+    private HakukohdeService hakukohdeService;
+
+    @Autowired
     private FormGenerator formaGenerator;
+
+    @Autowired
+    private AuthenticationService authenticationService;
+
+    @Autowired
+    private OrganizationService organizationService;
 
     private static final String[] UNEDITABLE_THEME_FILTERS = {"henkilotiedot", "koulutustausta"};
 
@@ -73,9 +87,12 @@ public class FormEditorController {
     }
 
     @Autowired
-    public FormEditorController(HakuService hakuService, FormGenerator formaGenerator) {
+    public FormEditorController(HakuService hakuService, FormGenerator formaGenerator, AuthenticationService authenticationService, HakukohdeService hakukohdeService, OrganizationService organizationService) {
         this.hakuService = hakuService;
         this.formaGenerator = formaGenerator;
+        this.authenticationService = authenticationService;
+        this.hakukohdeService = hakukohdeService;
+        this.organizationService = organizationService;
     }
 
     @GET
@@ -147,6 +164,35 @@ public class FormEditorController {
         if (applicationSystem == null)
             throw new JSONException(Response.Status.NOT_FOUND, "ApplicationSystem not found with id "+ applicationSystemId, null);
         return ImmutableMap.of("name", applicationSystem.getName());
+    }
+
+    @GET
+    @Path("application-system-form/{applicationSystemId}/represented-organizations")
+    @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
+    @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_READ', 'ROLE_APP_HAKEMUS_CRUD')")
+    public List<Map<String, Object>> getParticipatingUserOrganizations(@PathParam("applicationSystemId") String applicationSystemId) {
+        List<String> applicationOptionIds = hakuService.getRelatedApplicationOptionIds(applicationSystemId);
+        LOGGER.debug("Got " + (null == applicationOptionIds ? null: applicationOptionIds.size()) + " options for application system "+ applicationSystemId);
+        if (null == applicationOptionIds)
+            return new ArrayList<Map<String, Object>>();
+
+        //TODO cache this
+        LOGGER.debug("Building hiararchy for " + applicationSystemId);
+        OrganizationHierarchy orgHierarchy = new OrganizationHierarchy(organizationService);
+        for (String applicationOptionId : applicationOptionIds) {
+            LOGGER.debug("Fetching option data for " + applicationOptionId);
+            HakukohdeDTO applicationOption = hakukohdeService.findByOid(applicationOptionId);
+            String providerId = applicationOption.getTarjoajaOid();
+            LOGGER.debug("Provider for  " + applicationOptionId + " is " +providerId);
+            orgHierarchy.addOrganization(providerId);
+        }
+        List<String> henkOrgs = authenticationService.getOrganisaatioHenkilo();
+        LOGGER.debug("Got " + henkOrgs.size() + " organization for the user");
+        HashSet<Map<String, Object>> organizations = new HashSet<Map<String, Object>>();
+        for (String henkOrg : henkOrgs){
+            organizations.addAll(orgHierarchy.getAllSubOrganizations(henkOrg));
+        }
+        return new ArrayList<Map<String, Object>>(organizations);
     }
 
     @GET

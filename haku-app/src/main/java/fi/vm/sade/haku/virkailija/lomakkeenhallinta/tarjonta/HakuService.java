@@ -28,4 +28,6 @@ public interface HakuService {
     List<ApplicationSystem> getApplicationSystems();
 
     ApplicationSystem getApplicationSystem(String oid);
+
+    List<String> getRelatedApplicationOptionIds(String oid);
 }
