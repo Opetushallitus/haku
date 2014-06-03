@@ -7,7 +7,7 @@
     cd haku-app
     mvn tomcat7:run
 
-    http://localhost:8080/haku-app
+    http://localhost:9090/haku-app
 
 #### Integration tests
 
