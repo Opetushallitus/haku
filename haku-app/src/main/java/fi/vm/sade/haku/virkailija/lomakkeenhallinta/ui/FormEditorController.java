@@ -1,14 +1,21 @@
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.ui;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationHierarchy;
+import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
+import fi.vm.sade.haku.oppija.hakemus.resource.JSONException;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationPeriod;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Phase;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Theme;
+import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormGenerator;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakuService;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakukohdeService;
+import fi.vm.sade.tarjonta.service.resources.dto.HakukohdeDTO;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.SerializationConfig;
 import org.slf4j.Logger;
@@ -22,6 +29,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.util.*;
 
 @Controller
@@ -47,13 +55,31 @@ public class FormEditorController {
     private static final Map<String, Object> lupaTiedotTheme = new ImmutableMap.Builder<String,Object>().put("id", "lupatiedot").
       put("name", new I18nText(ImmutableMap.of("fi", "Lupatiedot", "sv", "Tillståndsuppgifter"))).build();
 
+    private static final Map<String, I18nText> questionTypeTranslations = new ImmutableMap.Builder<String, I18nText>()
+      .put("TextQuestion", new I18nText(new ImmutableMap.Builder<String, String>().put("fi", "Avoin vastaus (tekstikenttä)")
+        .put("sv", "Avoin vastaus (tekstikenttä) (sv)").put("en", "Avoin vastaus (textfield) (en)").build()))
+      .put("CheckBox", new I18nText(new ImmutableMap.Builder<String, String>().put("fi", "Valinta kysymys (valintaruutu)")
+        .put("sv", "Valinta kysymys (valintaruutu) (sv)").put("en", "Valinta kysymys (checkbox) (en)").build()))
+      .put("RadioButton", new I18nText(new ImmutableMap.Builder<String, String>().put("fi", "Valinta kysymys (valintanappi)")
+        .put("sv", "Valinta kysymys (valintanappi) (sv)").put("en", "Valinta kysymys (radiobutton) (en)").build()))
+      .build();
+
     private static final Logger LOGGER = LoggerFactory.getLogger(FormEditorController.class);
 
     @Autowired
     private HakuService hakuService;
 
     @Autowired
+    private HakukohdeService hakukohdeService;
+
+    @Autowired
     private FormGenerator formaGenerator;
+
+    @Autowired
+    private AuthenticationService authenticationService;
+
+    @Autowired
+    private OrganizationService organizationService;
 
     private static final String[] UNEDITABLE_THEME_FILTERS = {"henkilotiedot", "koulutustausta"};
 
@@ -61,15 +87,18 @@ public class FormEditorController {
     }
 
     @Autowired
-    public FormEditorController(HakuService hakuService, FormGenerator formaGenerator) {
+    public FormEditorController(HakuService hakuService, FormGenerator formaGenerator, AuthenticationService authenticationService, HakukohdeService hakukohdeService, OrganizationService organizationService) {
         this.hakuService = hakuService;
         this.formaGenerator = formaGenerator;
+        this.authenticationService = authenticationService;
+        this.hakukohdeService = hakukohdeService;
+        this.organizationService = organizationService;
     }
 
     @GET
     @Path("application-system-form")
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
-    @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_READ', 'ROLE_APP_HAKEMUS_CRUD')")
+    @PreAuthorize("hasAnyRole('ROLE_APP_HAKULOMAKKEENHALLINTA_READ_UPDATE', 'ROLE_APP_HAKULOMAKKEENHALLINTA_CRUD', 'ROLE_APP_HAKULOMAKKEENHALLINTA_READ')")
     public List<Map<String, Object>> getApplicationSystemForms(){
         ArrayList<Map<String,Object>> applicationSystemForms = new ArrayList<Map<String, Object>>();
         for (ApplicationSystem applicationSystem : hakuService.getApplicationSystems()){
@@ -116,7 +145,7 @@ public class FormEditorController {
     @GET
     @Path("application-system-form/{applicationSystemId}")
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
-    @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_READ', 'ROLE_APP_HAKEMUS_CRUD')")
+    @PreAuthorize("hasAnyRole('ROLE_APP_HAKULOMAKKEENHALLINTA_READ_UPDATE', 'ROLE_APP_HAKULOMAKKEENHALLINTA_CRUD', 'ROLE_APP_HAKULOMAKKEENHALLINTA_READ')")
     public Map getAppicationSystemForm(@PathParam("applicationSystemId") String applicationSystemId){
         ApplicationSystem applicationSystem = formaGenerator.generate(applicationSystemId);
         ObjectMapper mapper = new ObjectMapper();
@@ -129,16 +158,47 @@ public class FormEditorController {
     @GET
     @Path("application-system-form/{applicationSystemId}/name")
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
-    @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_READ', 'ROLE_APP_HAKEMUS_CRUD')")
-    public I18nText getApplicationSystemForms(@PathParam("applicationSystemId") String applicationSystemId){
+    @PreAuthorize("hasAnyRole('ROLE_APP_HAKULOMAKKEENHALLINTA_READ_UPDATE', 'ROLE_APP_HAKULOMAKKEENHALLINTA_CRUD', 'ROLE_APP_HAKULOMAKKEENHALLINTA_READ')")
+    public Map<String, I18nText> getApplicationSystemForms(@PathParam("applicationSystemId") String applicationSystemId){
         ApplicationSystem applicationSystem = hakuService.getApplicationSystem(applicationSystemId);
-        return applicationSystem.getName();
+        if (applicationSystem == null)
+            throw new JSONException(Response.Status.NOT_FOUND, "ApplicationSystem not found with id "+ applicationSystemId, null);
+        return ImmutableMap.of("name", applicationSystem.getName());
+    }
+
+    @GET
+    @Path("application-system-form/{applicationSystemId}/represented-organizations")
+    @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
+    @PreAuthorize("hasAnyRole('ROLE_APP_HAKULOMAKKEENHALLINTA_READ_UPDATE', 'ROLE_APP_HAKULOMAKKEENHALLINTA_CRUD', 'ROLE_APP_HAKULOMAKKEENHALLINTA_READ')")
+    public List<Map<String, Object>> getParticipatingUserOrganizations(@PathParam("applicationSystemId") String applicationSystemId) {
+        List<String> applicationOptionIds = hakuService.getRelatedApplicationOptionIds(applicationSystemId);
+        LOGGER.debug("Got " + (null == applicationOptionIds ? null: applicationOptionIds.size()) + " options for application system "+ applicationSystemId);
+        if (null == applicationOptionIds)
+            return new ArrayList<Map<String, Object>>();
+
+        //TODO cache this
+        LOGGER.debug("Building hiararchy for " + applicationSystemId);
+        OrganizationHierarchy orgHierarchy = new OrganizationHierarchy(organizationService);
+        for (String applicationOptionId : applicationOptionIds) {
+            LOGGER.debug("Fetching option data for " + applicationOptionId);
+            HakukohdeDTO applicationOption = hakukohdeService.findByOid(applicationOptionId);
+            String providerId = applicationOption.getTarjoajaOid();
+            LOGGER.debug("Provider for  " + applicationOptionId + " is " +providerId);
+            orgHierarchy.addOrganization(providerId);
+        }
+        List<String> henkOrgs = authenticationService.getOrganisaatioHenkilo();
+        LOGGER.debug("Got " + henkOrgs.size() + " organization for the user");
+        HashSet<Map<String, Object>> organizations = new HashSet<Map<String, Object>>();
+        for (String henkOrg : henkOrgs){
+            organizations.addAll(orgHierarchy.getAllSubOrganizations(henkOrg));
+        }
+        return new ArrayList<Map<String, Object>>(organizations);
     }
 
     @GET
     @Path("application-system-form/{applicationSystemId}/additional-question-themes")
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
-    @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_READ', 'ROLE_APP_HAKEMUS_CRUD')")
+    @PreAuthorize("hasAnyRole('ROLE_APP_HAKULOMAKKEENHALLINTA_READ_UPDATE', 'ROLE_APP_HAKULOMAKKEENHALLINTA_CRUD')")
     public List<Map<String, Object>> getAdditinalQuestionThemes(@PathParam("applicationSystemId") String applicationSystemId){
         LOGGER.debug("Generating application system with id: "+ applicationSystemId);
         return generateThemes();
@@ -204,62 +264,43 @@ public class FormEditorController {
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     public List getSupportedTypes(){
         ArrayList supportedTypes = new ArrayList();
-
-        Map<String, String> textQuestion = new HashMap<String,String>();
-        textQuestion.put("fi", "Avoin vastaus (tekstikenttä)");
-        textQuestion.put( "sv", "Avoin vastaus (tekstikenttä) (sv)");
-        textQuestion.put("en", "Avoin vastaus (textfield) (en)");
-
-        Map supportedType = new HashMap();
-        supportedType.put("id", "TextQuestion");
-        supportedType.put("name", new I18nText(textQuestion));
-        supportedTypes.add(supportedType);
-
-        Map<String, String> checkBox = new HashMap<String,String>();
-        checkBox.put("fi", "Valinta kysymys (valintalaatikko)");
-        checkBox.put("sv", "Valinta kysymys (valintalaatikko) (sv)");
-        checkBox.put("en", "Valinta kysymys (checkbox) (en)");
-
-        supportedType = new HashMap();
-        supportedType.put("id", "CheckBox");
-        supportedType.put("name", new I18nText(checkBox));
-        supportedTypes.add(supportedType);
-
-        Map<String, String> radioButton = new HashMap<String,String>();
-        radioButton.put("fi", "Valinta kysymys (valintanappi)");
-        radioButton.put("sv", "Valinta kysymys (valintanappi) (sv)");
-        radioButton.put("en", "Valinta kysymys (radiobutton) (en)");
-
-        supportedType = new HashMap();
-        supportedType.put("id", "RadioButton");
-        supportedType.put("name", new I18nText(radioButton));
-        supportedTypes.add(supportedType);
+        for (String key: questionTypeTranslations.keySet()){
+            supportedTypes.add(ImmutableMap.of("id", key, "name", questionTypeTranslations.get(key)));
+        }
         return supportedTypes;
+    }
+
+    @GET
+    @Path("types/{type}")
+    @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
+    public List getSupportedType(@PathParam("type") String type){
+        I18nText typeTranslation = questionTypeTranslations.get(type);
+        return ImmutableList.of(ImmutableMap.of("id", type, "name", typeTranslation));
     }
 
     //Returns translations for languages
     @GET
     @Path("languages")
     @Produces(value = MediaType.APPLICATION_JSON + CHARSET_UTF_8)
-    public Map<String, I18nText> getLanguages(){
+    public List<Map<String, Object>> getLanguages(){
+        List<Map<String, Object>> languages = new ArrayList<Map<String, Object>>();
         Map<String, String> fi_tranlations = new HashMap<String,String>();
         fi_tranlations.put("fi", "Suomi");
         fi_tranlations.put( "sv", "Suomi (sv)");
         fi_tranlations.put("en", "Suomi (en)");
+        languages.add(new ImmutableMap.Builder().put("id", "fi").put("order", 1).put("translations", fi_tranlations).build());
 
         Map<String, String> sv_tranlations = new HashMap<String,String>();
         sv_tranlations.put("fi", "Ruotsi");
         sv_tranlations.put("sv", "Ruotsi (sv)");
         sv_tranlations.put("en", "Ruotsi (en)");
+        languages.add(new ImmutableMap.Builder().put("id", "sv").put("order", 2).put("translations", sv_tranlations).build());
 
         Map<String, String> en_tranlations = new HashMap<String,String>();
         en_tranlations.put("fi", "Englanti");
         en_tranlations.put("sv", "Englanti (sv)");
         en_tranlations.put("en", "Englanti (en)");
-        Map<String, I18nText> languages = new HashMap<String, I18nText>();
-        languages.put("fi", new I18nText(fi_tranlations));
-        languages.put("sv", new I18nText(sv_tranlations));
-        languages.put("en", new I18nText(en_tranlations));
+        languages.add(new ImmutableMap.Builder().put("id", "en").put("order", 3).put("translations", en_tranlations).build());
         return languages;
     }
 }
