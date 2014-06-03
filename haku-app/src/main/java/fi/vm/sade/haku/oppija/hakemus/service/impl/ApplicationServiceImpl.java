@@ -364,7 +364,7 @@ public class ApplicationServiceImpl implements ApplicationService {
             gradesTranferredPk = gradesTranferredPk || !grades.isEmpty();
         } else if (ammattistartti != null) {
             if (pk == null) {
-                throw new ResourceNotFoundException("Found kymppi without pk for person "+personOid);
+                throw new ResourceNotFoundException("Found ammattistartti without pk for person "+personOid);
             }
             ammattistarttiSuoritettu = true;
             valmistuminen = pk.getValmistuminen();
@@ -374,7 +374,7 @@ public class ApplicationServiceImpl implements ApplicationService {
             gradesTranferredPk = !grades.isEmpty();
         } else if (kuntouttava != null) {
             if (pk == null) {
-                throw new ResourceNotFoundException("Found kymppi without pk for person "+personOid);
+                throw new ResourceNotFoundException("Found kuntouttava without pk for person "+personOid);
             }
             kuntouttavaSuoritettu = true;
             valmistuminen = pk.getValmistuminen();
@@ -384,7 +384,7 @@ public class ApplicationServiceImpl implements ApplicationService {
             gradesTranferredPk = !grades.isEmpty();
         } else if (mamuValmentava != null) {
             if (pk == null) {
-                throw new ResourceNotFoundException("Found kymppi without pk for person "+personOid);
+                throw new ResourceNotFoundException("Found mamuValmentava without pk for person "+personOid);
             }
             mamuValmentavaSuoritettu = true;
             valmistuminen = pk.getValmistuminen();
