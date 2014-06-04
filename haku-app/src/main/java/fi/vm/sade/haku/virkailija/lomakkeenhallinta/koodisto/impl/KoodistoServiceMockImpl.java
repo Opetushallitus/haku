@@ -23,6 +23,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.SubjectRow;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.domain.Code;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
@@ -100,7 +101,8 @@ public class KoodistoServiceMockImpl implements KoodistoService {
                         getOption("Suomi", "FI"),
                         getOption("Ruotsi", "SV"),
                         getOption("Saame", "SE"),
-                        getOption("Englanti", "EN"));
+                        getOption("Englanti", "EN"),
+                        getOption("Muu", OppijaConstants.EDUCATION_LANGUAGE_OTHER) );
 
         this.listOfTeachingLanguages =
                 ImmutableList.of(
