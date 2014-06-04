@@ -28,7 +28,7 @@
                     <input name="${element.id}" type="hidden" value="<c:out value='${answers[element.id]}'/>"/>
                 </c:when>
                 <c:otherwise>
-                    <input ${element.attributeString} value="<c:out value='${answers[element.id]}'/>"/>
+                    <input ${element.attributeString} value="<c:out value='${answers[element.id]}'/>" type="text"/>
                 </c:otherwise>
             </c:choose>
             <span id="sex">
