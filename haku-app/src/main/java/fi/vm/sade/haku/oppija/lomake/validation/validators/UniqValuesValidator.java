@@ -19,7 +19,7 @@ public final class UniqValuesValidator extends FieldValidator {
     private final List<String> keys;
     private final List<String> skipValues;
     @Transient
-    private final Predicate<Map.Entry<String, String>> notNullKeyValue;
+    private final Predicate<Map.Entry<String, String>> valuePredicate;
 
     @PersistenceConstructor
     public UniqValuesValidator(@JsonProperty(value = "fieldName") final String fieldName,
@@ -33,33 +33,22 @@ public final class UniqValuesValidator extends FieldValidator {
         Preconditions.checkNotNull(errorMessage);
         this.keys = ImmutableList.copyOf(keys);
         this.skipValues = ImmutableList.copyOf(skipValues);
-        this.notNullKeyValue = new NotNullKeyValues(keys);
+        this.valuePredicate = new Predicate<Map.Entry<String, String>>() {
+            @Override
+            public boolean apply(Map.Entry<String, String> entry) {
+                String value = entry.getValue();
+                return value != null && keys.contains(entry.getKey()) && !skipValues.contains(value);
+            }
+        };
     }
 
     @Override
     public ValidationResult validate(final ValidationInput validationInput) {
-        Collection<String> values = Maps.filterEntries(validationInput.getValues(), notNullKeyValue).values();
+        Collection<String> values = Maps.filterEntries(validationInput.getValues(), valuePredicate).values();
         Set<String> uniqValues = new HashSet<String>(values);
         if (uniqValues.size() != values.size()) {
             return invalidValidationResult;
         }
         return new ValidationResult();
     }
-
-    private final class NotNullKeyValues implements Predicate<Map.Entry<String, String>> {
-        private final List<String> keys = new ArrayList<String>();
-
-        private NotNullKeyValues(List<String> keys) {
-            this.keys.addAll(keys);
-        }
-
-        @Override
-        public boolean apply(Map.Entry<String, String> entry) {
-            String value = entry.getValue();
-            return value != null && keys.contains(entry.getKey()) && !skipValues.contains(value);
-
-        }
-    }
-
-
 }
