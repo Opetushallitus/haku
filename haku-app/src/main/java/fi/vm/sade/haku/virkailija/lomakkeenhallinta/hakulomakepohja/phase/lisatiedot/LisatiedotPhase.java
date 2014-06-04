@@ -54,7 +54,7 @@ public class LisatiedotPhase {
         String tyokokemusId = "TYOKOKEMUSKUUKAUDET";
         Element workExperienceTheme = Theme("tyokokemus").previewable().formParams(formParameters)
                 .addChild(TextQuestionBuilder.TextQuestion(tyokokemusId)
-                        .validator(createRegexValidator(tyokokemusId, TYOKOKEMUS_PATTERN, formParameters, "lisatiedot.tyokokemus.virhe"))
+                        .validator(createRegexValidator(TYOKOKEMUS_PATTERN, formParameters, "lisatiedot.tyokokemus.virhe"))
                         .size(8)
                         .maxLength(4)).build();
 

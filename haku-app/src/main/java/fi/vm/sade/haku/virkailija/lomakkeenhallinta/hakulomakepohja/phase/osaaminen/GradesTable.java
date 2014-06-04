@@ -69,7 +69,6 @@ public class GradesTable {
                 new ElementToId());
         gradeGrid.setValidator(
                 new UniqValuesValidator(
-                        gradeGrid.getId(),
                         uniqLanguagesIds,
                         ImmutableList.of(OppijaConstants.EDUCATION_LANGUAGE_OTHER, OppijaConstants.EDUCATION_LANGUAGE_EI_SUORITUSTA),
                         ElementUtil.createI18NText("yleinen.kielet.samoja", formParameters)));

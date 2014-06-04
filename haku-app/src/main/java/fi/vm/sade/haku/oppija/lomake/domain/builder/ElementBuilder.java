@@ -37,15 +37,16 @@ public abstract class ElementBuilder {
     }
 
     public final Element build() {
+
+        if (key == null) {
+            key = id;
+        }
         if (this.i18nText == null) {
-            if (key == null) {
-                key = id;
-            }
-            this.i18nText = getI18nText(key);
+            this.i18nText = getI18nText(key, false);
         }
         Element element = buildImpl();
-
-        element.setHelp(getI18nText(key + ".help"));
+        I18nText i18nText1 = getI18nText(key + ".help");
+        element.setHelp(i18nText1);
         ElementUtil.setVerboseHelp(element, getI18nText(key + ".verboseHelp"));
 
         if (size != null) {
@@ -56,11 +57,10 @@ public abstract class ElementBuilder {
             element.addAttribute(required, required);
             element.setValidator(
                     new RequiredFieldValidator(
-                            id,
-                            getI18nText("yleinen.pakollinen")));
+                            getI18nText("yleinen.pakollinen", false)));
         }
         if (pattern != null) {
-            element.setValidator(new RegexFieldValidator(id, getI18nText("yleinen.virheellinenArvo"), pattern));
+            element.setValidator(new RegexFieldValidator(getI18nText("yleinen.virheellinenArvo"), pattern));
         }
         if (placeholder != null) {
             element.addAttribute("placeholder", placeholder);
@@ -68,11 +68,10 @@ public abstract class ElementBuilder {
         I18nText errorMessage = getI18nText("yleinen.virheellinenArvo");
         if (maxLength != null) {
             element.addAttribute("maxlength", maxLength.toString());
-            element.setValidator(new LengthValidator(element.getId(), errorMessage, maxLength));
+            element.setValidator(new LengthValidator(errorMessage, maxLength));
         }
         if (containsInField != null) {
-            element.setValidator(new ContainedInOtherFieldValidator(id,
-                    containsInField, errorMessage));
+            element.setValidator(new ContainedInOtherFieldValidator(containsInField, errorMessage));
         }
         element.setInline(this.inline);
         element.setValidators(validators);
@@ -81,12 +80,15 @@ public abstract class ElementBuilder {
         }
         return element;
     }
+    I18nText getI18nText(final String key) {
+        return getI18nText(key, true);
+    }
 
-    private I18nText getI18nText(final String key) {
+    I18nText getI18nText(final String key, boolean ignoreMissing) {
         if (this.formParameters != null) {
             return this.formParameters.getI18nText(key);
         }
-        return ElementUtil.createI18NAsIs(key);
+        return (ignoreMissing ? null : ElementUtil.createI18NAsIs(key));
     }
 
     public abstract Element buildImpl();
@@ -168,4 +170,5 @@ public abstract class ElementBuilder {
             }
         }).toArray(new Element[elementBuilders.length]);
     }
+
 }

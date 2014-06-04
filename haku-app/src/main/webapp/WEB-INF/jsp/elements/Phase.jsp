@@ -106,7 +106,6 @@
                 </ul>
                 <div class="clear"></div>
             </div>
-
             <c:choose>
                 <c:when test="${preview}">
                     <div class="form">

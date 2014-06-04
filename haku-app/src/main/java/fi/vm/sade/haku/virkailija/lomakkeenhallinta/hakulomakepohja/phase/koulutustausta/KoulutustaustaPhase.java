@@ -122,7 +122,7 @@ public final class KoulutustaustaPhase {
                 .required()
                 .size(4)
                 .maxLength(4)
-                .validator(createValueSetValidator(OppijaConstants.PERUSOPETUS_PAATTOTODISTUSVUOSI, validYears, formParameters))
+                .validator(createValueSetValidator(validYears, formParameters))
                 .formParams(formParameters).build();
 
         Element suorittanutGroup =
@@ -217,7 +217,7 @@ public final class KoulutustaustaPhase {
                     ElementUtil.randomId(),
                     createI18NText("form.koulutustausta.ammatillinenSuoritettu.lukio.huom", formParameters),
                     Notification.NotificationType.WARNING);
-            warningLukio.setValidator(new AlwaysFailsValidator(warningLukio.getId(), createI18NText("form.koulutustausta.ammatillinenSuoritettu.lukio.huom",
+            warningLukio.setValidator(new AlwaysFailsValidator(createI18NText("form.koulutustausta.ammatillinenSuoritettu.lukio.huom",
                     formParameters)));
             suorittanutTutkinnonLukioRule.addChild(warningLukio);
 

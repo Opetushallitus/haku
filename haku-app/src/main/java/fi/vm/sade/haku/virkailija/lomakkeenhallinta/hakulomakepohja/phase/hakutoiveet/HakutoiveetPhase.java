@@ -134,15 +134,13 @@ public class HakutoiveetPhase {
         HiddenValue hiddenDiscretionary = new HiddenValue(discretionary.getId(), ElementUtil.KYLLA);
         ElementUtil.addRequiredValidator(hiddenDiscretionary, formParameters);
         hiddenDiscretionary.setValidator(
-                new RegexFieldValidator(hiddenDiscretionary.getId(),
-                        ElementUtil.createI18NText("yleinen.virheellinenArvo", formParameters),
+                new RegexFieldValidator(ElementUtil.createI18NText("yleinen.virheellinenArvo", formParameters),
                         ElementUtil.KYLLA));
 
         HiddenValue hiddenDiscretionaryFollowUp = new HiddenValue(discretionaryFollowUp.getId(), TODISTUSTENPUUTTUMINEN);
         ElementUtil.addRequiredValidator(hiddenDiscretionaryFollowUp, formParameters);
         hiddenDiscretionaryFollowUp.setValidator(
-                new RegexFieldValidator(hiddenDiscretionaryFollowUp.getId(),
-                        ElementUtil.createI18NText("yleinen.virheellinenArvo", formParameters),
+                new RegexFieldValidator(ElementUtil.createI18NText("yleinen.virheellinenArvo", formParameters),
                         TODISTUSTENPUUTTUMINEN));
 
 

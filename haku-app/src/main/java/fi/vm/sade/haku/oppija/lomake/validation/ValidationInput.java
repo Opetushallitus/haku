@@ -57,8 +57,12 @@ public class ValidationInput {
         return values.containsKey(key);
     }
 
-    public String getValue(final String key) {
+    public String getValueByKey(final String key) {
         return values.get(key);
+    }
+
+    public String getValue() {
+        return values.get(element.getId());
     }
 
     public String getApplicationOid() {
@@ -67,5 +71,9 @@ public class ValidationInput {
 
     public String getApplicationSystemId() {
         return applicationSystemId;
+    }
+
+    public String getFieldName() {
+        return this.element.getId();
     }
 }

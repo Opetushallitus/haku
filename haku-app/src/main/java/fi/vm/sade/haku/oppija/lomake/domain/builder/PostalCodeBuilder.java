@@ -4,7 +4,6 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.PostalCode;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
 import fi.vm.sade.haku.oppija.lomake.validation.validators.ValueSetValidator;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 
 import java.util.ArrayList;
@@ -29,7 +28,7 @@ public class PostalCodeBuilder extends ElementBuilder {
         for (Option option : options) {
             values.add(option.getValue());
         }
-        postalCode.setValidator(new ValueSetValidator(id, ElementUtil.createI18NText("yleinen.virheellinenArvo"), values));
+        postalCode.setValidator(new ValueSetValidator(ElementUtil.createI18NText("yleinen.virheellinenArvo"), values));
         return postalCode;
     }
 

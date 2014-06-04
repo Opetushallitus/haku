@@ -144,24 +144,17 @@ public final class ElementUtil {
         return gradeGridRow;
     }
 
-    public static Element addSizeAttribute(final Element element, final Integer size) {
-        if (size != null) {
-            element.addAttribute("size", size.toString());
-        }
-        return element;
+    public static Validator createRegexValidator(final String pattern, final FormParameters formParameters) {
+        return createRegexValidator(pattern, formParameters, "yleinen.virheellinenArvo");
     }
 
-    public static Validator createRegexValidator(final String id, final String pattern, final FormParameters formParameters) {
-        return createRegexValidator(id, pattern, formParameters, "yleinen.virheellinenArvo");
-    }
-
-    public static Validator createRegexValidator(final String id, final String pattern, final FormParameters formParameters,
+    public static Validator createRegexValidator(final String pattern, final FormParameters formParameters,
                                                  final String messageKey) {
-        return new RegexFieldValidator(id, formParameters.getI18nText(messageKey), pattern);
+        return new RegexFieldValidator(formParameters.getI18nText(messageKey), pattern);
     }
 
-    public static Validator createValueSetValidator(final String id, final List<String> validValues, final FormParameters formParameters) {
-        return new ValueSetValidator(id, formParameters.getI18nText("yleinen.virheellinenArvo"), validValues);
+    public static Validator createValueSetValidator(final List<String> validValues, final FormParameters formParameters) {
+        return new ValueSetValidator(formParameters.getI18nText("yleinen.virheellinenArvo"), validValues);
     }
 
     public static void addRequiredValidator(final Element element, final FormParameters formParameters) {
@@ -169,7 +162,6 @@ public final class ElementUtil {
         element.addAttribute(required, required);
         element.setValidator(
                 new RequiredFieldValidator(
-                        element.getId(),
                         ElementUtil.createI18NText("yleinen.pakollinen", formParameters)));
     }
 

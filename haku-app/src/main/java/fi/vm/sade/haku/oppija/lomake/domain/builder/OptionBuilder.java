@@ -29,8 +29,7 @@ public class OptionBuilder extends ElementBuilder {
 
     @Override
     public Element buildImpl() {
-        Option element = new Option(this.i18nText, value);
-        return element;
+        return new Option(this.i18nText, value);
     }
 
     public static OptionBuilder Option(final String id) {

@@ -17,7 +17,6 @@
 package fi.vm.sade.haku.oppija.lomake.validation;
 
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationDAO;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.SocialSecurityNumber;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -46,17 +45,16 @@ public class SsnUniqueConcreteValidator implements Validator {
 
     @Override
     public ValidationResult validate(ValidationInput validationInput) {
-        return checkIfExistsBySocialSecurityNumber(validationInput.getApplicationSystemId(),
-                validationInput.getValue(SocialSecurityNumber.HENKILOTUNNUS),
-                validationInput.getApplicationOid());
+        return checkIfExistsBySocialSecurityNumber(validationInput);
     }
 
-    private ValidationResult checkIfExistsBySocialSecurityNumber(String asId, String ssn, String applicationOid) {
+    private ValidationResult checkIfExistsBySocialSecurityNumber(final ValidationInput validationInput) {
         ValidationResult validationResult = new ValidationResult();
-        if (ssn != null && applicationOid == null) {
+        String ssn= validationInput.getValue();
+        if (ssn != null && validationInput.getApplicationOid() == null) {
             Matcher matcher = socialSecurityNumberPattern.matcher(ssn);
-            if (matcher.matches() && this.applicationDAO.checkIfExistsBySocialSecurityNumber(asId, ssn)) {
-                ValidationResult result = new ValidationResult("Henkilotunnus",
+            if (matcher.matches() && this.applicationDAO.checkIfExistsBySocialSecurityNumber(validationInput.getApplicationOid(), ssn)) {
+                ValidationResult result = new ValidationResult(validationInput.getFieldName(),
                         ElementUtil.createI18NText("henkilotiedot.hetuKaytetty"));
                 return new ValidationResult(Arrays.asList(new ValidationResult[]{validationResult, result}));
             }

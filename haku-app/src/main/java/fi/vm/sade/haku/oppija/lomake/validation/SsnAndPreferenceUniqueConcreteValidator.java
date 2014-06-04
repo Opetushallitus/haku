@@ -18,7 +18,6 @@ package fi.vm.sade.haku.oppija.lomake.validation;
 
 import com.google.common.base.Strings;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationDAO;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.SocialSecurityNumber;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -51,8 +50,8 @@ public class SsnAndPreferenceUniqueConcreteValidator implements Validator {
     @Override
     public ValidationResult validate(ValidationInput validationInput) {
         return checkIfExistsBySocialSecurityNumberAndAo(validationInput.getApplicationSystemId(),
-                validationInput.getValue(SocialSecurityNumber.HENKILOTUNNUS),
-                validationInput.getApplicationOid(), validationInput.getValue(preferenceKey),
+                validationInput.getValue(),
+                validationInput.getApplicationOid(), validationInput.getValueByKey(preferenceKey),
                 validationInput.getElement().getId());
     }
 
@@ -62,8 +61,7 @@ public class SsnAndPreferenceUniqueConcreteValidator implements Validator {
         if (!Strings.isNullOrEmpty(ssn) && Strings.isNullOrEmpty(applicationOid) && !Strings.isNullOrEmpty(aoId)) {
             Matcher matcher = socialSecurityNumberPattern.matcher(ssn);
             if (matcher.matches() && this.applicationDAO.checkIfExistsBySocialSecurityNumberAndAo(asId, ssn, aoId)) {
-                ValidationResult result = new ValidationResult(elementId,
-                        ElementUtil.createI18NText("henkilotiedot.hetuKaytetty"));
+                ValidationResult result = new ValidationResult(elementId, ElementUtil.createI18NText("henkilotiedot.hetuKaytetty"));
                 return new ValidationResult(Arrays.asList(new ValidationResult[]{validationResult, result}));
             }
         }

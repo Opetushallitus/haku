@@ -15,8 +15,10 @@
  */
 package fi.vm.sade.haku.oppija.lomake.validation.validators;
 
+import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.TextQuestion;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationInput;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationResult;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -32,10 +34,14 @@ import static org.junit.Assert.assertTrue;
 public class SocialSecurityNumberValidatorTest {
 
     private Map<String, String> values;
+    private SocialSecurityNumberFieldValidator validator;
+    private TextQuestion henkilotunnus;
 
     @Before
     public void setUp() throws Exception {
         values = new HashMap<String, String>();
+        validator = new SocialSecurityNumberFieldValidator();
+        henkilotunnus = new TextQuestion("henkilotunnus", ElementUtil.createI18NAsIs("Henkilotunnus"));
     }
 
     @Test
@@ -44,8 +50,9 @@ public class SocialSecurityNumberValidatorTest {
         values.put("kansalaisuus", "fi");
         for (String hetu : hetus) {
             values.put("henkilotunnus", hetu);
-            SocialSecurityNumberFieldValidator validator = new SocialSecurityNumberFieldValidator("henkilotunnus");
-            ValidationResult validationResult = validator.validate(new ValidationInput(null, values, null, null));
+
+
+            ValidationResult validationResult = validator.validate(new ValidationInput(henkilotunnus, values, null, null));
             assertFalse(validationResult.hasErrors());
         }
     }
@@ -54,8 +61,7 @@ public class SocialSecurityNumberValidatorTest {
     public void testValidateInvalidCheck() throws Exception {
         values.put("henkilotunnus", "120187-123Z");
         values.put("kansalaisuus", "fi");
-        SocialSecurityNumberFieldValidator validator = new SocialSecurityNumberFieldValidator("henkilotunnus");
-        ValidationResult validationResult = validator.validate(new ValidationInput(null, values, null, null));
+        ValidationResult validationResult = validator.validate(new ValidationInput(henkilotunnus, values, null, null));
         assertTrue(validationResult.hasErrors());
     }
 
@@ -63,8 +69,7 @@ public class SocialSecurityNumberValidatorTest {
     public void testValidateInvalid() throws Exception {
         values.put("henkilotunnus", "10.02.1977");
         values.put("kansalaisuus", "fi");
-        SocialSecurityNumberFieldValidator validator = new SocialSecurityNumberFieldValidator("henkilotunnus");
-        ValidationResult validationResult = validator.validate(new ValidationInput(null, values, null, null));
+        ValidationResult validationResult = validator.validate(new ValidationInput(henkilotunnus, values, null, null));
         assertTrue(validationResult.hasErrors());
     }
 
@@ -74,8 +79,7 @@ public class SocialSecurityNumberValidatorTest {
         values.put("kansalaisuus", "fi");
         for (String hetu : hetus) {
             values.put("henkilotunnus", hetu);
-            SocialSecurityNumberFieldValidator validator = new SocialSecurityNumberFieldValidator("henkilotunnus");
-            ValidationResult validationResult = validator.validate(new ValidationInput(null, values, null, null));
+            ValidationResult validationResult = validator.validate(new ValidationInput(henkilotunnus, values, null, null));
             assertTrue(validationResult.hasErrors());
         }
     }
@@ -84,8 +88,7 @@ public class SocialSecurityNumberValidatorTest {
     public void testNotYetBorn() {
         values.put("henkilotunnus", "311299A999E");
         values.put("kansalaisuus", "fi");
-        SocialSecurityNumberFieldValidator validator = new SocialSecurityNumberFieldValidator("henkilotunnus");
-        ValidationResult validationResult = validator.validate(new ValidationInput(null, values, null, null));
+        ValidationResult validationResult = validator.validate(new ValidationInput(henkilotunnus, values, null, null));
         assertTrue(validationResult.hasErrors());
     }
 

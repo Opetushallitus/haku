@@ -55,8 +55,8 @@ public class SocialSecurityNumberFieldValidator extends FieldValidator {
         centuries.put("A", 2000); // NOSONAR
     }
 
-    public SocialSecurityNumberFieldValidator(final String socialSecurityNumberId) {
-        super(socialSecurityNumberId, createI18NText(GENERIC_ERROR_MESSAGE));
+    public SocialSecurityNumberFieldValidator() {
+        super(createI18NText(GENERIC_ERROR_MESSAGE));
         this.socialSecurityNumberPattern = Pattern.compile(SOCIAL_SECURITY_NUMBER_PATTERN);
         fmt = new SimpleDateFormat("ddMMyyyy");
         fmt.setLenient(false);
@@ -64,35 +64,30 @@ public class SocialSecurityNumberFieldValidator extends FieldValidator {
 
     @Override
     public ValidationResult validate(final ValidationInput validationInput) {
-        String socialSecurityNumber = validationInput.getValue(fieldName);
+        String socialSecurityNumber = validationInput.getValue();
         ValidationResult validationResult = new ValidationResult();
         if (socialSecurityNumber != null) {
             Matcher matcher = socialSecurityNumberPattern.matcher(socialSecurityNumber);
             if (!matcher.matches()) {
-                validationResult = new ValidationResult(fieldName,
-                        createI18NText(GENERIC_ERROR_MESSAGE));
+                validationResult = getInvalidValidationResult(validationInput);
             }
             if (!validationResult.hasErrors()) {
-                validationResult = checkDOB(socialSecurityNumber);
+                validationResult = checkDOB(validationInput.getFieldName(), socialSecurityNumber);
             }
-            if (!validationResult.hasErrors()) {
-                validationResult = checkCheckSum(socialSecurityNumber);
+            if (!validationResult.hasErrors() && !validChecksum(socialSecurityNumber)) {
+                validationResult = getInvalidValidationResult(validationInput);
             }
         }
         return validationResult;
     }
 
-    private ValidationResult checkCheckSum(String socialSecurityNumber) {
-        ValidationResult result = new ValidationResult();
+    private boolean validChecksum(String socialSecurityNumber) {
         String dob = socialSecurityNumber.substring(0, 6); // NOSONAR
         String id = socialSecurityNumber.substring(7, 10); // NOSONAR
         String check = socialSecurityNumber.substring(10, 11); // NOSONAR
         int ssnNumber = Integer.valueOf(dob + id);
         String myCheck = checks[ssnNumber % 31]; // NOSONAR
-        if (!check.equalsIgnoreCase(myCheck)) {
-            result = new ValidationResult(getFieldName(), createI18NText(GENERIC_ERROR_MESSAGE));
-        }
-        return result;
+        return check.equalsIgnoreCase(myCheck);
     }
 
     /**
@@ -101,7 +96,7 @@ public class SocialSecurityNumberFieldValidator extends FieldValidator {
      * @param socialSecurityNumber tarkastettavaksi
      * @return ValidationResult-olio mahdollisine virheviesteineen.
      */
-    private ValidationResult checkDOB(String socialSecurityNumber) {
+    private ValidationResult checkDOB(String fieldName, String socialSecurityNumber) {
         ValidationResult result = new ValidationResult();
         String dayAndMonth = socialSecurityNumber.substring(0, 4); // NOSONAR
         String year = Integer.toString((centuries.get(socialSecurityNumber.substring(6, 7)) + Integer // NOSONAR

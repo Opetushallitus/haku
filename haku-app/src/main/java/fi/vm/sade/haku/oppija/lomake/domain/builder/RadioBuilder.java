@@ -1,5 +1,6 @@
 package fi.vm.sade.haku.oppija.lomake.domain.builder;
 
+import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Radio;
@@ -31,12 +32,13 @@ public class RadioBuilder extends ElementBuilder {
 
     @Override
     public Element buildImpl() {
-        Radio radio =  new Radio(id, i18nText, this.options);
+        Radio radio = new Radio(id, i18nText, this.options);
         List<String> values = new ArrayList<String>();
         for (Option option : options) {
             values.add(option.getValue());
         }
-        radio.setValidator(new ValueSetValidator(id, ElementUtil.createI18NText("yleinen.virheellinenArvo"), values));
+        I18nText i18nText1 = getI18nText("yleinen.virheellinenArvo", false);
+        radio.setValidator(new ValueSetValidator(i18nText1, values));
         return radio;
     }
 

@@ -26,10 +26,9 @@ public class EqualsValidator extends FieldValidator {
 
     private final String validValue;
 
-    public EqualsValidator(final String fieldName,
-                           final I18nText errorMessage,
+    public EqualsValidator(final I18nText errorMessage,
                            final String validValue) {
-        super(fieldName, errorMessage);
+        super(errorMessage);
         Validate.notNull(validValue, "Valid value can't be null");
         this.validValue = validValue;
     }
@@ -40,10 +39,10 @@ public class EqualsValidator extends FieldValidator {
 
     @Override
     public ValidationResult validate(final ValidationInput validationInput) {
-        String value = validationInput.getValue(fieldName);
+        String value = validationInput.getValue();
         if (value != null && validValue.equals(value)) {
             return validValidationResult;
         }
-        return invalidValidationResult;
+        return getInvalidValidationResult(validationInput);
     }
 }

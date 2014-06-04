@@ -51,9 +51,9 @@ public class PreferenceTableValidator implements Validator {
         for (int i = 0; i < this.learningInstitutionInputIds.size(); ++i) {
             String learningInstitutionInputId = learningInstitutionInputIds.get(i);
             String educationInputId = educationInputIds.get(i);
-            String learningInstitution = validationInput.getValue(learningInstitutionInputId);
+            String learningInstitution = validationInput.getValueByKey(learningInstitutionInputId);
             learningInstitution = Strings.isNullOrEmpty(learningInstitution) ? null : CharMatcher.WHITESPACE.trimFrom(learningInstitution);
-            String education = validationInput.getValue(educationInputId);
+            String education = validationInput.getValueByKey(educationInputId);
             education = Strings.isNullOrEmpty(education) ? null : CharMatcher.WHITESPACE.trimFrom(education);
 
             if (!checkBothNullOrTyped(learningInstitution, education)) {

@@ -17,11 +17,6 @@
   ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   ~ European Union Public Licence for more details.
   --%>
-
-<c:set var="ssnElement" value="${element}"/>
-
-<c:set var="element" value="${ssnElement.ssn}" scope="request"/>
-
 <c:set var="styleBaseClass" value="${element.inline ? 'form-row' : 'form-item'}"/>
 <div class="${styleBaseClass}">
     <haku:label element="${element}" styleBaseClass="${styleBaseClass}"/>
@@ -37,30 +32,31 @@
                 </c:otherwise>
             </c:choose>
             <span id="sex">
-                <c:if test="${answers[ssnElement.sexId] eq ssnElement.maleOption.value}">
-                    <haku:i18nText value="${ssnElement.maleOption.i18nText}"/>
+                <c:if test="${answers[element.sexId] eq element.maleOption.value}">
+                    <haku:i18nText value="${element.maleOption.i18nText}"/>
                 </c:if>
-                <c:if test="${answers[ssnElement.sexId] eq ssnElement.femaleOption.value}">
-                    <haku:i18nText value="${ssnElement.femaleOption.i18nText}"/>
+                <c:if test="${answers[element.sexId] eq element.femaleOption.value}">
+                    <haku:i18nText value="${element.femaleOption.i18nText}"/>
                 </c:if>
             </span>
-            <input id="${ssnElement.sexId}" name="${ssnElement.sexId}" value="<c:out value='${answers[ssnElement.sexId]}' />" type="hidden"/>
+            <input id="${element.sexId}" name="${element.sexId}" value="<c:out value='${answers[element.sexId]}' />" type="hidden"/>
             <haku:errorMessage id="${element.id}" additionalClass="margin-top-1"/>
         </div>
         <haku:help element="${element}"/>
     </div>
     <div class="clear"></div>
+    <haku:viewChilds element="${element}"/>
 </div>
 
 
 <script>
     (function() {
-        var ssnId = "<c:out value="${ssnElement.ssn.id}"/>",
-            maleLabel = "<haku:i18nText value="${ssnElement.maleOption.i18nText}"/>",
-            femaleLabel = "<haku:i18nText value="${ssnElement.femaleOption.i18nText}"/>",
-            maleValue = "<c:out value="${ssnElement.maleOption.value}"/>",
-            femaleValue = "<c:out value="${ssnElement.femaleOption.value}"/>",
-            sexId = "<c:out value="${ssnElement.sexId}"/>";
+        var ssnId = "<c:out value="${element.id}"/>",
+            maleLabel = "<haku:i18nText value="${element.maleOption.i18nText}"/>",
+            femaleLabel = "<haku:i18nText value="${element.femaleOption.i18nText}"/>",
+            maleValue = "<c:out value="${element.maleOption.value}"/>",
+            femaleValue = "<c:out value="${element.femaleOption.value}"/>",
+            sexId = "<c:out value="${element.sexId}"/>";
         $("#" + ssnId).change(function() {
             var maleReg   = /\d{6}[-+aA]\d{2}[13579]\w/;
             var femaleReg = /\d{6}[-+aA]\d{2}[02468]\w/;
