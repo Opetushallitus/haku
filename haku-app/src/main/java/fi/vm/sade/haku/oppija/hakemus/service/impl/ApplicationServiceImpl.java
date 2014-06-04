@@ -261,7 +261,7 @@ public class ApplicationServiceImpl implements ApplicationService {
             OpiskelijaDTO opiskelija = null;
             boolean found = false;
             for (OpiskelijaDTO dto : opiskelijat) {
-                if (dto.getLoppuPaiva() == null) {
+                if (dto.getLoppuPaiva() == null || dto.getLoppuPaiva().after(new Date())) {
                     if (found) {
                         throw new ResourceNotFoundException("Person "+personOid+" in enrolled in multiple schools");
                     }
@@ -321,6 +321,10 @@ public class ApplicationServiceImpl implements ApplicationService {
         }
         Map<String, SuoritusDTO> suoritukset = suoritusrekisteriService.getSuoritukset(personOid);
 
+        if (suoritukset.isEmpty()) {
+            return application;
+        }
+
         String pohjakoulutus = null;
         Date valmistuminen = null;
         String suorituskieli = null;
@@ -333,7 +337,6 @@ public class ApplicationServiceImpl implements ApplicationService {
         SuoritusDTO mamuValmentava = suoritukset.get(mamuValmistavaKomoOid);
         SuoritusDTO pk = suoritukset.get(perusopetusKomoOid);
 
-        boolean kymppiSuoritettu = false;
         boolean ammattistarttiSuoritettu = false;
         boolean kuntouttavaSuoritettu = false;
         boolean mamuValmentavaSuoritettu = false;
@@ -342,60 +345,58 @@ public class ApplicationServiceImpl implements ApplicationService {
 
         if (lukio != null) {
             pohjakoulutus = OppijaConstants.YLIOPPILAS;
-            Map<String, String> grades = addGrades(application, lukio);
+            addGrades(application, lukio);
             gradesTranferredLk = true;
             valmistuminen = lukio.getValmistuminen();
             suorituskieli = lukio.getSuorituskieli();
         } else if (ulkomainen != null) {
             pohjakoulutus = OppijaConstants.ULKOMAINEN_TUTKINTO;
         } else if (kymppi != null) {
-            if (pk == null) {
-                throw new ResourceNotFoundException("Found kymppi without pk for person "+personOid);
+            addGrades(application, kymppi);
+            gradesTranferredPk = true;
+            valmistuminen = kymppi.getValmistuminen();
+            suorituskieli = kymppi.getSuorituskieli();
+            pohjakoulutus = getPohjakoulutus(kymppi);
+
+            if (pk != null) {
+                addGrades(application, pk);
             }
-            kymppiSuoritettu = true;
-            Map<String, String> grades = addGrades(application, kymppi);
-            gradesTranferredPk = !grades.isEmpty();
-            valmistuminen = pk.getValmistuminen();
-            suorituskieli = pk.getSuorituskieli();
-            pohjakoulutus = getPohjakoulutus(pk);
-            grades = addGrades(application, pk);
-            gradesTranferredPk = gradesTranferredPk || !grades.isEmpty();
         } else if (ammattistartti != null) {
-            if (pk == null) {
-                throw new ResourceNotFoundException("Found ammattistartti without pk for person "+personOid);
-            }
             ammattistarttiSuoritettu = true;
-            valmistuminen = pk.getValmistuminen();
-            suorituskieli = pk.getSuorituskieli();
-            pohjakoulutus = getPohjakoulutus(pk);
-            Map<String, String> grades = addGrades(application, pk);
-            gradesTranferredPk = !grades.isEmpty();
+
+            if (pk != null) {
+                valmistuminen = pk.getValmistuminen();
+                suorituskieli = pk.getSuorituskieli();
+                pohjakoulutus = getPohjakoulutus(pk);
+                addGrades(application, pk);
+                gradesTranferredPk = true;
+            }
         } else if (kuntouttava != null) {
-            if (pk == null) {
-                throw new ResourceNotFoundException("Found kuntouttava without pk for person "+personOid);
-            }
             kuntouttavaSuoritettu = true;
-            valmistuminen = pk.getValmistuminen();
-            suorituskieli = pk.getSuorituskieli();
-            pohjakoulutus = getPohjakoulutus(pk);
-            Map<String, String> grades = addGrades(application, pk);
-            gradesTranferredPk = !grades.isEmpty();
-        } else if (mamuValmentava != null) {
-            if (pk == null) {
-                throw new ResourceNotFoundException("Found mamuValmentava without pk for person "+personOid);
+
+            if (pk != null) {
+                valmistuminen = pk.getValmistuminen();
+                suorituskieli = pk.getSuorituskieli();
+                pohjakoulutus = getPohjakoulutus(pk);
+                addGrades(application, pk);
+                gradesTranferredPk = true;
             }
+        } else if (mamuValmentava != null) {
             mamuValmentavaSuoritettu = true;
-            valmistuminen = pk.getValmistuminen();
-            suorituskieli = pk.getSuorituskieli();
-            pohjakoulutus = getPohjakoulutus(pk);
-            Map<String, String> grades = addGrades(application, pk);
-            gradesTranferredPk = !grades.isEmpty();
+
+            if (pk != null) {
+                valmistuminen = pk.getValmistuminen();
+                suorituskieli = pk.getSuorituskieli();
+                pohjakoulutus = getPohjakoulutus(pk);
+                addGrades(application, pk);
+                gradesTranferredPk = true;
+            }
         } else if (pk != null) {
             valmistuminen = pk.getValmistuminen();
             suorituskieli = pk.getSuorituskieli();
             pohjakoulutus = getPohjakoulutus(pk);
-            Map<String, String> grades = addGrades(application, pk);
-            gradesTranferredPk = !grades.isEmpty();
+            addGrades(application, pk);
+            gradesTranferredPk = true;
         }
 
         if (pohjakoulutus == null) {
@@ -412,8 +413,6 @@ public class ApplicationServiceImpl implements ApplicationService {
 
         educationAnswers = addRegisterValue(application, educationAnswers,
                 OppijaConstants.ELEMENT_ID_BASE_EDUCATION, String.valueOf(pohjakoulutus));
-        educationAnswers = addRegisterValue(application, educationAnswers,
-                OppijaConstants.ELEMENT_ID_LISAKOULUTUS_KYMPPI, String.valueOf(kymppiSuoritettu));
         educationAnswers = addRegisterValue(application, educationAnswers,
                 OppijaConstants.ELEMENT_ID_LISAKOULUTUS_AMMATTISTARTTI, String.valueOf(ammattistarttiSuoritettu));
         educationAnswers = addRegisterValue(application, educationAnswers,
