@@ -32,6 +32,7 @@ import fi.vm.sade.haku.oppija.lomake.validation.ValidationResult;
 import fi.vm.sade.haku.oppija.ui.service.ModelResponse;
 import fi.vm.sade.haku.oppija.ui.service.OfficerUIService;
 import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
+import fi.vm.sade.haku.virkailija.authentication.Person;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
@@ -539,9 +540,11 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         } else if (Strings.isNullOrEmpty(studentOid)) {
             throw new IllegalArgumentException("Invalid student oid");
         }
-        authenticationService.getStudentOid(studentOid);
-        application.setStudentOid(studentOid);
-        application.addNote(createNote("Oppijanumero syötetty"));
+        Person person = authenticationService.getStudentOid(studentOid);
+        if (person != null) {
+            application.modifyPersonalData(person);
+            application.addNote(createNote("Oppijanumero syötetty"));
+        }
         Application queryApplication = new Application(oid);
         applicationService.update(queryApplication, application);
     }
