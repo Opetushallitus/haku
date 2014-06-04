@@ -277,6 +277,7 @@ public class Application implements Serializable {
         } else {
             fullName = "";
         }
+        fullName = fullName.replaceAll("-", "");
     }
 
     private void updateSearchNames(String... names) {
