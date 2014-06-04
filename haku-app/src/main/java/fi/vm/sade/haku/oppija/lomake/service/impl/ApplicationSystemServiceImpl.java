@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.lang.ref.SoftReference;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -16,7 +17,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @Service
 public class ApplicationSystemServiceImpl implements ApplicationSystemService {
 
-    final Map<String, ApplicationSystem> applicationSystems = new ConcurrentHashMap<String, ApplicationSystem>();
+    final Map<String, SoftReference<ApplicationSystem>> applicationSystems = new ConcurrentHashMap<String, SoftReference<ApplicationSystem>>();
 
     final ApplicationSystemRepository applicationSystemRepository;
 
@@ -32,12 +33,14 @@ public class ApplicationSystemServiceImpl implements ApplicationSystemService {
     @Override
     public ApplicationSystem getApplicationSystem(final String id) {
         if (applicationSystems.containsKey(id)) {
-            return applicationSystems.get(id);
+            ApplicationSystem as =  applicationSystems.get(id).get();
+            if (null != as)
+                return as;
         }
         ApplicationSystem applicationSystem = applicationSystemRepository.findById(id);
         if (applicationSystem != null) {
             if (this.cacheApplicationSystems) {
-                this.applicationSystems.put(applicationSystem.getId(), applicationSystem);
+                this.applicationSystems.put(applicationSystem.getId(), new SoftReference<ApplicationSystem>(applicationSystem));
             }
             return applicationSystem;
         }
@@ -56,7 +59,7 @@ public class ApplicationSystemServiceImpl implements ApplicationSystemService {
     @Override
     public void save(final ApplicationSystem applicationSystem) {
         this.applicationSystemRepository.save(applicationSystem);
-        this.applicationSystems.put(applicationSystem.getId(), applicationSystem);
+        this.applicationSystems.put(applicationSystem.getId(), new SoftReference<ApplicationSystem>(applicationSystem));
     }
 
     @Override

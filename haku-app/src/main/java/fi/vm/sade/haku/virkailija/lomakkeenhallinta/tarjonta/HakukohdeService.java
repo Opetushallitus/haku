@@ -16,18 +16,9 @@
 
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta;
 
-import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
+import fi.vm.sade.tarjonta.service.resources.dto.HakukohdeDTO;
 
-import java.util.List;
+public interface HakukohdeService {
 
-/**
- * @author Mikko Majapuro
- */
-public interface HakuService {
-
-    List<ApplicationSystem> getApplicationSystems();
-
-    ApplicationSystem getApplicationSystem(String oid);
-
-    List<String> getRelatedApplicationOptionIds(String oid);
+    HakukohdeDTO findByOid(String oid);
 }

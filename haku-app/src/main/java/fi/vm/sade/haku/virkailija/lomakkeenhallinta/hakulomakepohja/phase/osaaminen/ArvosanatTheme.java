@@ -93,12 +93,20 @@ public final class ArvosanatTheme {
 
         // Ei arvosanoja
         RelatedQuestionComplexRule eiNaytetaPk = new RelatedQuestionComplexRule("rule_grade_no_pk",
-                new Equals(new Variable(OppijaConstants.PERUSOPETUS_PAATTOTODISTUSVUOSI), new Value(String.valueOf(hakukausiVuosi))));
+                new Or(
+                    new Equals(new Variable(OppijaConstants.PERUSOPETUS_PAATTOTODISTUSVUOSI), new Value(String.valueOf(hakukausiVuosi))),
+                    new Not(new Regexp("_meta_grades_transferred_pk", "true"))
+                )
+        );
         eiNaytetaPk.addChild(new Text("nogradegrid", createI18NText("form.arvosanat.eiKysyta.pk", formParameters)));
         arvosanatTheme.addChild(eiNaytetaPk);
 
         RelatedQuestionComplexRule eiNaytetaYo = new RelatedQuestionComplexRule("rule_grade_no_yo",
-                new Equals(new Variable("lukioPaattotodistusVuosi"), new Value(String.valueOf(hakukausiVuosi))));
+                new Or(
+                    new Equals(new Variable("lukioPaattotodistusVuosi"), new Value(String.valueOf(hakukausiVuosi))),
+                    new Not(new Regexp("_meta_grades_transferred_lk", "true"))
+                )
+        );
         eiNaytetaYo.addChild(new Text("nogradegrid", createI18NText("form.arvosanat.eiKysyta.yo", formParameters)));
         arvosanatTheme.addChild(eiNaytetaYo);
 
