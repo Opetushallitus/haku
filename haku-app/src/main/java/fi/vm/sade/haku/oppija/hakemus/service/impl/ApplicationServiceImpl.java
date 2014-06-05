@@ -475,7 +475,9 @@ public class ApplicationServiceImpl implements ApplicationService {
         for (ArvosanaDTO arvosana : arvosanat) {
             String suffix = getGradeSuffix(suoritus, valinnaiset, arvosana);
             String key = prefix + arvosana.getAine() + suffix;
-            receivedGrades.add(key);
+            if (!receivedGrades.add(key)) {
+                throw new IllegalValueException("Doublegrade: "+key+" for person "+application.getPersonOid());
+            }
             gradeAnswers = addRegisterValue(application, gradeAnswers, key, arvosana.getArvosana());
             // Lisätieto == kieli (AI, A1, B1 jne)
             if (isNotBlank(arvosana.getLisatieto())) {
