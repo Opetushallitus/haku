@@ -197,7 +197,7 @@ public class ApplicationServiceImpl implements ApplicationService {
                 .setNationality(allAnswers.get(OppijaConstants.ELEMENT_ID_NATIONALITY))
                 .setContactLanguage(allAnswers.get(OppijaConstants.ELEMENT_ID_CONTACT_LANGUAGE))
                 .setSocialSecurityNumber(allAnswers.get(OppijaConstants.ELEMENT_ID_SOCIAL_SECURITY_NUMBER))
-                .setPersonOid(allAnswers.get(application.getPersonOid()))
+                .setPersonOid(application.getPersonOid())
                 .setSecurityOrder(false);
 
         application.setLastAutomatedProcessingTime(System.currentTimeMillis());

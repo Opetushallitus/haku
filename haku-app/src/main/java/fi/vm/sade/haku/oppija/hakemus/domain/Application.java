@@ -317,7 +317,16 @@ public class Application implements Serializable {
                 OppijaConstants.ELEMENT_ID_LAST_NAME);
         henkilotiedot = updateHenkilotiedotField(henkilotiedot, person.getNickName(),
                 OppijaConstants.ELEMENT_ID_NICKNAME);
-        updateNameMetadata();
+        henkilotiedot = updateHenkilotiedotField(henkilotiedot, person.getSocialSecurityNumber(),
+                OppijaConstants.ELEMENT_ID_SOCIAL_SECURITY_NUMBER);
+        henkilotiedot = updateHenkilotiedotField(henkilotiedot, person.getHomeCity(),
+                OppijaConstants.ELEMENT_ID_HOME_CITY);
+        henkilotiedot = updateHenkilotiedotField(henkilotiedot, person.getSex(),
+                OppijaConstants.ELEMENT_ID_SEX);
+        henkilotiedot = updateHenkilotiedotField(henkilotiedot, String.valueOf(!person.isNoSocialSecurityNumber()),
+                OppijaConstants.ELEMENT_ID_HAS_SOCIAL_SECURITY_NUMBER);
+        henkilotiedot = updateHenkilotiedotField(henkilotiedot, String.valueOf(person.isSecurityOrder()),
+                OppijaConstants.ELEMENT_ID_SECURITY_ORDER);
 
         String personOid = person.getPersonOid();
         if (isNotEmpty(personOid)) {
@@ -328,6 +337,7 @@ public class Application implements Serializable {
             setStudentOid(studentOid);
         }
 
+        updateNameMetadata();
         addVaiheenVastaukset("henkilotiedot", henkilotiedot);
         return this;
     }
