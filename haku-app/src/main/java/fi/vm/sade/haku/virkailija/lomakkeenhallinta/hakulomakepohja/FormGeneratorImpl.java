@@ -47,6 +47,7 @@ public class FormGeneratorImpl implements FormGenerator {
                 .addApplicationSystemType(as.getApplicationSystemType())
                 .addHakukausiUri(as.getHakukausiUri())
                 .addHakukausiVuosi(as.getHakukausiVuosi())
+                .addKohdejoukkoUri(as.getKohdejoukkoUri())
                 .addApplicationCompleteElements(ValmisPhase.create(formParameters))
                 .addAdditionalInformationElements(ValmisPhase.createAdditionalInformationElements(formParameters))
                 .get();

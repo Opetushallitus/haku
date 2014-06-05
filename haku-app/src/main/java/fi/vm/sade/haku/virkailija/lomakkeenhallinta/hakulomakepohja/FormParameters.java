@@ -68,10 +68,7 @@ public class FormParameters {
     }
 
     private FormTemplateType figureOutFormForApplicationSystem(ApplicationSystem as) {
-        String finnishName = as.getName().getTranslations().get("fi");
-        if (finnishName.toLowerCase().startsWith("perusopetuksen jälkeisen") ||
-                finnishName.toLowerCase().contains("pervako") ||
-                applicationSystem.getId().equals("haku5")) {
+        if (OppijaConstants.KOHDEJOUKKO_PERVAKO.equals(as.getKohdejoukkoUri())) {
             return FormTemplateType.PERVAKO;
         }
         if (as.getApplicationSystemType().equals(OppijaConstants.LISA_HAKU)) {
