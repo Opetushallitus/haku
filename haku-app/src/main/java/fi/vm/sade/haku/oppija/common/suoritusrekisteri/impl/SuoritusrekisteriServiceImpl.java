@@ -172,10 +172,12 @@ public class SuoritusrekisteriServiceImpl implements SuoritusrekisteriService {
                 throw new ResourceNotFoundException("Found invalid komo ("+komo+
                         ") for personOid "+suoritus.getHenkiloOid());
             }
-            SuoritusDTO prev = suoritukset.put(komo, suoritus);
-            if (prev != null) {
-                throw new ResourceNotFoundException("Found multiple instances of komo "+komo+
-                        " for personOid "+suoritus.getHenkiloOid());
+            if (!"KESKEYTYNYT".equals(suoritus.getTila())) {
+                SuoritusDTO prev = suoritukset.put(komo, suoritus);
+                if (prev != null) {
+                    throw new ResourceNotFoundException("Found multiple instances of komo "+komo+
+                            " for personOid "+suoritus.getHenkiloOid());
+                }
             }
         }
 
