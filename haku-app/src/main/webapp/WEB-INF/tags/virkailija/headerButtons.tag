@@ -31,13 +31,6 @@
                     key="virkailija.hakemus.aktivoi.hakemus"/></a>
         </c:otherwise>
     </c:choose>
-    <c:choose>
-        <c:when test="${it.postProcessAllowed and empty application.studentOid and not empty application.personOid and preview}">
-            <a href="#" id="addStudentOid" data-po-show="addStudentOid" class="button small">
-                <fmt:message key="virkailija.hakemus.lisaa.oppijanumero" />
-            </a>
-        </c:when>
-    </c:choose>
     <c:if test="${it.postProcessAllowed and preview}">
         <a href="#" id="postProcessApplication" data-po-show="postProcessApplicationDialog" class="button small">
             <fmt:message key="virkailija.hakemus.postProcess" />
