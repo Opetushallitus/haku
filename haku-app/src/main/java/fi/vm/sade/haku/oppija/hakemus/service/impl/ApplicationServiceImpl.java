@@ -422,8 +422,11 @@ public class ApplicationServiceImpl implements ApplicationService {
             application.addMeta("grades_transferred_pk", "true");
         }
 
-        educationAnswers = addRegisterValue(application, educationAnswers,
-                OppijaConstants.ELEMENT_ID_BASE_EDUCATION, String.valueOf(pohjakoulutus));
+        if (pohjakoulutusSuoritettu) {
+            educationAnswers = addRegisterValue(application, educationAnswers,
+                    OppijaConstants.ELEMENT_ID_BASE_EDUCATION, String.valueOf(pohjakoulutus));
+        }
+
         educationAnswers = addRegisterValue(application, educationAnswers,
                 OppijaConstants.ELEMENT_ID_LISAKOULUTUS_AMMATTISTARTTI, String.valueOf(ammattistarttiSuoritettu));
         educationAnswers = addRegisterValue(application, educationAnswers,
