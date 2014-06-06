@@ -574,7 +574,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         createIndex(INDEX_SENDING_SCHOOL, true, FIELD_SENDING_SCHOOL, FIELD_SENDING_CLASS);
         createIndex(INDEX_SENDING_CLASS, true, FIELD_SENDING_CLASS);
         createIndex(INDEX_SEARCH_NAMES, false, FIELD_SEARCH_NAMES);
-        createIndex(INDEX_REDO_POSTPROCESS, true, FIELD_REDO_POSTPROCESS);
+        createIndex(INDEX_REDO_POSTPROCESS, true, FIELD_REDO_POSTPROCESS, FIELD_LAST_AUTOMATED_PROCESSING_TIME);
 
         // Preference Indexes
         for (int i = 1; i <= 5; i++) {
