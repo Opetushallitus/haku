@@ -4,7 +4,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.builder.TextQuestionBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.builder.ThemeBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionRule;
-import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionRuleBuilder;
+import fi.vm.sade.haku.oppija.lomake.domain.builder.RelatedQuestionRuleBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.*;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
@@ -14,6 +14,7 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.CheckBoxBuilder.Checkbox;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.PhaseBuilder.Phase;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.RadioBuilder.Radio;
+import static fi.vm.sade.haku.oppija.lomake.domain.builder.RelatedQuestionRuleBuilder.Rule;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.TextAreaBuilder.TextArea;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.TextQuestionBuilder.TextQuestion;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.ThemeBuilder.Theme;
@@ -45,7 +46,7 @@ public class LisatiedotPhase {
         return element;
     }
 
-    static RelatedQuestionRule createTyokokemus(final FormParameters formParameters) {
+    static Element createTyokokemus(final FormParameters formParameters) {
         Expr isEducation32 = ExprUtil.atLeastOneVariableEqualsToValue(REQUIRED_EDUCATION_DEGREE, OppijaConstants.AO_EDUCATION_DEGREE_KEYS);
         Expr olderThan16 = new OlderThan(new Value(MIN_AGE_REQUIRED_TO_WORK_EXPERIENCE_AGE));
         Expr pohjakoulutusKeskeyttanytTaiUlkomaillasuoritettu = createPohjakoilutusUlkomainenTaiKeskeyttanyt();
@@ -59,7 +60,7 @@ public class LisatiedotPhase {
                         .size(8)
                         .maxLength(4)).build();
 
-        RelatedQuestionRule naytetaankoTyokokemus = new RelatedQuestionRuleBuilder().setId(ElementUtil.randomId()).setExpr(rules).createRelatedQuestionRule();
+        Element naytetaankoTyokokemus = Rule(ElementUtil.randomId()).setExpr(rules).build();
         naytetaankoTyokokemus.addChild(workExperienceTheme);
         return naytetaankoTyokokemus;
     }
@@ -98,7 +99,7 @@ public class LisatiedotPhase {
                 "preference5_urheilijan_ammatillisen_koulutuksen_lisakysymys",
                 "preference5_urheilijalinjan_lisakysymys");
 
-        RelatedQuestionRule urheilijanLisakysymyksetSaanto = new RelatedQuestionRuleBuilder().setId(ElementUtil.randomId()).setExpr(onkoUrheilija).createRelatedQuestionRule();
+        Element urheilijanLisakysymyksetSaanto = Rule(ElementUtil.randomId()).setExpr(onkoUrheilija).build();
         urheilijanLisakysymyksetSaanto.addChild(urheilijanLisakysymyksetTeema);
 
         Element opinnotGroup = TitledGroup("opinnot").formParams(formParameters).build()

@@ -23,8 +23,6 @@ import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Titled;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.gradegrid.GradeGridRow;
-import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionRule;
-import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionRuleBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.Regexp;
 import fi.vm.sade.haku.oppija.lomake.validation.Validator;
 import fi.vm.sade.haku.oppija.lomake.validation.validators.RegexFieldValidator;
@@ -39,6 +37,7 @@ import org.slf4j.LoggerFactory;
 import java.util.*;
 
 import static fi.vm.sade.haku.oppija.lomake.domain.I18nText.LANGS;
+import static fi.vm.sade.haku.oppija.lomake.domain.builder.RelatedQuestionRuleBuilder.Rule;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.FORM_COMMON_BUNDLE_NAME;
 
 public final class ElementUtil {
@@ -181,7 +180,9 @@ public final class ElementUtil {
     }
 
     public static void setVerboseHelp(Element element, I18nText i18nText) {
-        ((Titled) element).setVerboseHelp(i18nText);
+        if (element instanceof Titled) {
+            ((Titled) element).setVerboseHelp(i18nText);
+        }
     }
 
     public static String randomId() {
@@ -244,20 +245,20 @@ public final class ElementUtil {
     }
 
 
-    public static RelatedQuestionRule createVarEqualsToValueRule(final String variable, final String... values) {
-        return new RelatedQuestionRuleBuilder().setId(ElementUtil.randomId()).setExpr(ExprUtil.atLeastOneValueEqualsToVariable(variable, values)).createRelatedQuestionRule();
+    public static Element createVarEqualsToValueRule(final String variable, final String... values) {
+        return Rule(ElementUtil.randomId()).setExpr(ExprUtil.atLeastOneValueEqualsToVariable(variable, values)).build();
     }
 
-    public static RelatedQuestionRule createRuleIfVariableIsTrue(final String ruleId, final String variable) {
-        return new RelatedQuestionRuleBuilder().setId(ruleId).setExpr(ExprUtil.isAnswerTrue(variable)).createRelatedQuestionRule();
+    public static Element createRuleIfVariableIsTrue(final String ruleId, final String variable) {
+        return Rule(ruleId).setExpr(ExprUtil.isAnswerTrue(variable)).build();
     }
 
-    public static RelatedQuestionRule createRegexpRule(final Element element, final String pattern) {
+    public static Element createRegexpRule(final Element element, final String pattern) {
         return createRegexpRule(element.getId(), pattern);
     }
 
-    public static RelatedQuestionRule createRegexpRule(final String variable, final String pattern) {
-        return new RelatedQuestionRuleBuilder().setId(ElementUtil.randomId()).setExpr(new Regexp(variable, pattern)).createRelatedQuestionRule();
+    public static Element createRegexpRule(final String variable, final String pattern) {
+        return Rule(ElementUtil.randomId()).setExpr(new Regexp(variable, pattern)).build();
     }
 
 

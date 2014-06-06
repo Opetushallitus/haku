@@ -26,7 +26,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Radio;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.AddElementRule;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionRule;
-import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionRuleBuilder;
+import fi.vm.sade.haku.oppija.lomake.domain.builder.RelatedQuestionRuleBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.*;
 import fi.vm.sade.haku.oppija.lomake.validation.validators.PastDateValidator;
 import fi.vm.sade.haku.oppija.lomake.validation.validators.RegexFieldValidator;
@@ -41,6 +41,7 @@ import static fi.vm.sade.haku.oppija.lomake.domain.builder.DropdownSelectBuilder
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.PhaseBuilder.Phase;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.PostalCodeBuilder.PostalCode;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.RadioBuilder.Radio;
+import static fi.vm.sade.haku.oppija.lomake.domain.builder.RelatedQuestionRuleBuilder.Rule;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.TextQuestionBuilder.TextQuestion;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.ThemeBuilder.Theme;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.*;
@@ -81,7 +82,7 @@ public final class HenkilotiedotPhase {
         henkilotiedotTeema.addChild(kansalaisuus);
         Expr suomalainen = new Regexp(kansalaisuus.getId(), EMPTY_OR_FIN_PATTERN);
 
-        RelatedQuestionRule eiSuomalainen = new RelatedQuestionRuleBuilder().setId(ElementUtil.randomId()).setExpr(new Not(suomalainen)).createRelatedQuestionRule();
+        Element eiSuomalainen = Rule(ElementUtil.randomId()).setExpr(new Not(suomalainen)).build();
         // Ulkomaalaisten tunnisteet
         Element onkoSuomalainenKysymys = Radio("onkoSinullaSuomalainenHetu")
                 .addOptions(ImmutableList.of(
@@ -95,7 +96,7 @@ public final class HenkilotiedotPhase {
         Expr onSuomalainenHetu = new Equals(new Variable("onkoSinullaSuomalainenHetu"), new Value(KYLLA));
 
         Or kysytaankoHetu = new Or(suomalainen, onSuomalainenHetu);
-        RelatedQuestionRule kysytaankoHetuSaanto = new RelatedQuestionRuleBuilder().setId(ElementUtil.randomId()).setExpr(kysytaankoHetu).createRelatedQuestionRule();
+        Element kysytaankoHetuSaanto = Rule(ElementUtil.randomId()).setExpr(kysytaankoHetu).build();
         Element henkilotunnus = TextQuestion("Henkilotunnus")
                 .requiredInline()
                 .placeholder("ppkkvv*****")
@@ -142,7 +143,7 @@ public final class HenkilotiedotPhase {
         addRequiredValidator(syntymaaika, formParameters);
         syntymaaika.setInline(true);
 
-        RelatedQuestionRule eiHetuaSaanto = new RelatedQuestionRuleBuilder().setId(ElementUtil.randomId()).setExpr(new Equals(new Variable("onkoSinullaSuomalainenHetu"), new Value(EI))).createRelatedQuestionRule();
+        Element eiHetuaSaanto = Rule(ElementUtil.randomId()).setExpr(new Equals(new Variable("onkoSinullaSuomalainenHetu"), new Value(EI))).build();
         eiHetuaSaanto.addChild(
                 sukupuoli,
                 syntymaaika,
@@ -194,7 +195,7 @@ public final class HenkilotiedotPhase {
                 .requiredInline()
                 .formParams(formParameters).build();
 
-        RelatedQuestionRule asuinmaaFI = ElementUtil.createRegexpRule(asuinmaa, EMPTY_OR_FIN_PATTERN);
+        Element asuinmaaFI = ElementUtil.createRegexpRule(asuinmaa, EMPTY_OR_FIN_PATTERN);
         Element lahiosoite = TextQuestion("lahiosoite").inline().size(40).required().formParams(formParameters).build();
         asuinmaaFI.addChild(lahiosoite);
 
@@ -219,7 +220,7 @@ public final class HenkilotiedotPhase {
 
         asuinmaaFI.addChild(kotikunta);
 
-        RelatedQuestionRule asuinmaaEiOleSuomiRule = ElementUtil.createRegexpRule(asuinmaa, NOT_FI);
+        Element asuinmaaEiOleSuomiRule = ElementUtil.createRegexpRule(asuinmaa, NOT_FI);
         asuinmaaEiOleSuomiRule.addChild(
                 TextQuestion("osoiteUlkomaa").labelKey("osoite").inline().size(40).required().formParams(formParameters).build(),
                 TextQuestion("postinumeroUlkomaa").inline().size(12).required().formParams(formParameters).build(),

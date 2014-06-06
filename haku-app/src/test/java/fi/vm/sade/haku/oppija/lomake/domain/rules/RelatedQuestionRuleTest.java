@@ -1,6 +1,7 @@
 package fi.vm.sade.haku.oppija.lomake.domain.rules;
 
 import com.google.common.collect.ImmutableMap;
+import fi.vm.sade.haku.oppija.lomake.domain.builder.RelatedQuestionRuleBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.Equals;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.Value;
@@ -11,20 +12,21 @@ import org.junit.Test;
 
 import java.util.List;
 
+import static fi.vm.sade.haku.oppija.lomake.domain.builder.RelatedQuestionRuleBuilder.Rule;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-public class RelatedQuestionComplexRuleTest {
+public class RelatedQuestionRuleTest {
 
     public static final String AIDINKIELI = "aidinkieli";
     public static final String FI = "fi";
     public static final String SV = "sv";
-    private RelatedQuestionRule relatedQuestionRule;
+    private Element relatedQuestionRule;
 
     @Before
     public void setUp() throws Exception {
         Equals equals = new Equals(new Variable(AIDINKIELI), new Value(FI));
-        relatedQuestionRule = new RelatedQuestionRuleBuilder().setId(ElementUtil.randomId()).setExpr(equals).createRelatedQuestionRule();
+        relatedQuestionRule = Rule(ElementUtil.randomId()).setExpr(equals).build();
         relatedQuestionRule.addChild(ElementUtil.createHiddenGradeGridRowWithId(ElementUtil.randomId()));
     }
 

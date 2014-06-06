@@ -27,7 +27,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.PreferenceRow;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.PreferenceTable;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionRule;
-import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionRuleBuilder;
+import fi.vm.sade.haku.oppija.lomake.domain.builder.RelatedQuestionRuleBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.*;
 import fi.vm.sade.haku.oppija.lomake.validation.validators.PreferenceValidator;
 import fi.vm.sade.haku.oppija.lomake.validation.validators.RegexFieldValidator;
@@ -36,6 +36,7 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParamete
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.PhaseBuilder.Phase;
+import static fi.vm.sade.haku.oppija.lomake.domain.builder.RelatedQuestionRuleBuilder.Rule;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.ThemeBuilder.Theme;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.*;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.*;
@@ -111,24 +112,24 @@ public class HakutoiveetPhase {
                 .i18nText(createI18NText("form.hakutoiveet.harkinnanvarainen.perustelu", formParameters))
                 .formParams(formParameters).build();
 
-        RelatedQuestionRule discretionaryFollowUpRule = createVarEqualsToValueRule(discretionary.getId(), KYLLA);
+        Element discretionaryFollowUpRule = createVarEqualsToValueRule(discretionary.getId(), KYLLA);
         discretionaryFollowUpRule.addChild(discretionaryFollowUp);
 
         discretionary.addChild(discretionaryFollowUpRule);
 
-        RelatedQuestionRule discretionaryRule =
+        Element discretionaryRule =
                 createVarEqualsToValueRule(index + "-Koulutus-educationDegree", DISCRETIONARY_EDUCATION_DEGREE);
 
-        RelatedQuestionRule discretionaryRule2 = createVarEqualsToValueRule("POHJAKOULUTUS",
+        Element discretionaryRule2 = createVarEqualsToValueRule("POHJAKOULUTUS",
                 PERUSKOULU, YLIOPPILAS, OSITTAIN_YKSILOLLISTETTY, ALUEITTAIN_YKSILOLLISTETTY, YKSILOLLISTETTY);
 
 
         discretionaryRule.addChild(discretionary);
         discretionaryRule2.addChild(discretionaryRule);
 
-        RelatedQuestionRule KoulutusValittu = new RelatedQuestionRuleBuilder().setId(ElementUtil.randomId()).setExpr(new Not(new Equals(new Variable(index + "-Koulutus-id"), new Value("")))).createRelatedQuestionRule();
+        Element KoulutusValittu = Rule(ElementUtil.randomId()).setExpr(new Not(new Equals(new Variable(index + "-Koulutus-id"), new Value("")))).build();
 
-        RelatedQuestionRule keskeytynytTaiUlkomainenRule =
+        Element keskeytynytTaiUlkomainenRule =
                 createVarEqualsToValueRule("POHJAKOULUTUS", KESKEYTYNYT, ULKOMAINEN_TUTKINTO);
 
         HiddenValue hiddenDiscretionary = new HiddenValue(discretionary.getId(), ElementUtil.KYLLA);
@@ -154,7 +155,7 @@ public class HakutoiveetPhase {
     private static Element createSoraQuestions(final String index, final FormParameters formParameters) {
         // sora-kysymykset
 
-        RelatedQuestionRule hasSora = ElementUtil.createRuleIfVariableIsTrue(index + "_sora_rule", index + "-Koulutus-id-sora");
+        Element hasSora = ElementUtil.createRuleIfVariableIsTrue(index + "_sora_rule", index + "-Koulutus-id-sora");
 
         Element sora1 = RadioBuilder.Radio(index + "_sora_terveys")
                 .addOptions(ImmutableList.of(
@@ -187,7 +188,7 @@ public class HakutoiveetPhase {
                 .formParams(formParameters).build();
         Expr expr = new And(new Equals(new Variable(index + "-Koulutus-id-athlete"), new Value(ElementUtil.KYLLA)),
                 new Equals(new Variable(index + "-Koulutus-id-vocational"), new Value(ElementUtil.KYLLA)));
-        RelatedQuestionRule rule = new RelatedQuestionRuleBuilder().setId(ElementUtil.randomId()).setExpr(expr).createRelatedQuestionRule();
+        Element rule =  Rule(ElementUtil.randomId()).setExpr(expr).build();
         rule.addChild(radio);
         return rule;
     }
@@ -196,7 +197,7 @@ public class HakutoiveetPhase {
         HiddenValue hiddenValue = new HiddenValue(index + "_urheilijalinjan_lisakysymys", ElementUtil.KYLLA);
         Expr expr = new And(new Equals(new Variable(index + "-Koulutus-id-athlete"), new Value(ElementUtil.KYLLA)),
                 new Equals(new Variable(index + "-Koulutus-id-vocational"), new Value(ElementUtil.EI)));
-        RelatedQuestionRule rule = new RelatedQuestionRuleBuilder().setId(ElementUtil.randomId()).setExpr(expr).createRelatedQuestionRule();
+        Element rule = Rule(ElementUtil.randomId()).setExpr(expr).build();
         rule.addChild(hiddenValue);
         return rule;
     }
@@ -209,7 +210,7 @@ public class HakutoiveetPhase {
                 .required()
                 .i18nText(createI18NText("form.hakutoiveet.kaksoistutkinnon.lisakysymys", formParameters))
                 .formParams(formParameters).build();
-        RelatedQuestionRule hasQuestion =
+        Element hasQuestion =
                 ElementUtil.createRuleIfVariableIsTrue(radio.getId() + "_related_question_rule", index + "-Koulutus-id-kaksoistutkinto");
         hasQuestion.addChild(radio);
         return hasQuestion;
