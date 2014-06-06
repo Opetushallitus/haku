@@ -47,13 +47,13 @@ public class HakutoiveetPhase {
 
 
     public static Element create(final FormParameters formParameters) {
-        return Phase(HAKUTOIVEET_PHASE_ID).build(formParameters)
-                .addChild(createHakutoiveetTheme(formParameters));
+        return Phase(HAKUTOIVEET_PHASE_ID).formParams(formParameters)
+                .addChild(createHakutoiveetTheme(formParameters)).build();
     }
 
     private static Element createHakutoiveetTheme(final FormParameters formParameters) {
 
-        Element hakutoiveetTheme = Theme("hakutoiveet.teema").previewable().build(formParameters);
+        Element hakutoiveetTheme = Theme("hakutoiveet.teema").previewable().formParams(formParameters).build();
         hakutoiveetTheme.setHelp(createI18NText("form.hakutoiveet.help", formParameters));
         PreferenceTable preferenceTable =
                 new PreferenceTable("preferencelist", createI18NText("form.hakutoiveet.otsikko", formParameters));
@@ -98,17 +98,17 @@ public class HakutoiveetPhase {
                         new Option(createI18NText("form.yleinen.ei", formParameters), EI)))
                 .required()
                 .i18nText(createI18NText("form.hakutoiveet.harkinnanvarainen", formParameters))
-                .build(formParameters);
+                .formParams(formParameters).build();
 
         Element discretionaryFollowUp = new DropdownSelectBuilder(discretionary.getId() + "-follow-up")
                 .emptyOption()
-                .addOption((Option) new OptionBuilder().setValue("oppimisvaikudet").labelKey("perustelu.oppimisvaikeudet").build(formParameters))
-                .addOption((Option) new OptionBuilder().setValue("sosiaalisetsyyt").labelKey("perustelu.sosiaaliset").build(formParameters))
-                .addOption((Option) new OptionBuilder().setValue("todistustenvertailuvaikeudet").labelKey("perustelu.todistustenvertailuvaikeudet").build(formParameters))
-                .addOption((Option) new OptionBuilder().setValue(TODISTUSTENPUUTTUMINEN).labelKey("perustelu.todistustenpuuttuminen").build(formParameters))
+                .addOption((Option) new OptionBuilder().setValue("oppimisvaikudet").labelKey("perustelu.oppimisvaikeudet").formParams(formParameters).build())
+                .addOption((Option) new OptionBuilder().setValue("sosiaalisetsyyt").labelKey("perustelu.sosiaaliset").formParams(formParameters).build())
+                .addOption((Option) new OptionBuilder().setValue("todistustenvertailuvaikeudet").labelKey("perustelu.todistustenvertailuvaikeudet").formParams(formParameters).build())
+                .addOption((Option) new OptionBuilder().setValue(TODISTUSTENPUUTTUMINEN).labelKey("perustelu.todistustenpuuttuminen").formParams(formParameters).build())
                 .required()
                 .i18nText(createI18NText("form.hakutoiveet.harkinnanvarainen.perustelu", formParameters))
-                .build(formParameters);
+                .formParams(formParameters).build();
 
         RelatedQuestionComplexRule discretionaryFollowUpRule = createVarEqualsToValueRule(discretionary.getId(), KYLLA);
         discretionaryFollowUpRule.addChild(discretionaryFollowUp);
@@ -164,7 +164,7 @@ public class HakutoiveetPhase {
                         new Option(createI18NText("form.sora.kylla", formParameters), KYLLA)))
                 .labelKey("form.sora.terveys")
                 .required()
-                .build(formParameters);
+                .formParams(formParameters).build();
         sora1.setPopup(new Popup("sora-popup", createI18NText("form.hakutoiveet.terveydentilavaatimukset.otsikko", formParameters)));
 
         Element sora2 = RadioBuilder.Radio(index + "_sora_oikeudenMenetys")
@@ -173,7 +173,7 @@ public class HakutoiveetPhase {
                         new Option(createI18NText("form.sora.kylla", formParameters), KYLLA)))
                 .labelKey("form.sora.oikeudenmenetys")
                 .required()
-                .build(formParameters);
+                .formParams(formParameters).build();
 
         hasSora.addChild(sora1, sora2);
         return hasSora;
@@ -186,7 +186,7 @@ public class HakutoiveetPhase {
                         new Option(createI18NText("form.yleinen.ei", formParameters), EI)))
                 .required()
                 .i18nText(createI18NText("form.hakutoiveet.urheilijan.ammatillisen.koulutuksen.lisakysymys", formParameters))
-                .build(formParameters);
+                .formParams(formParameters).build();
         Expr expr = new And(new Equals(new Variable(index + "-Koulutus-id-athlete"), new Value(ElementUtil.KYLLA)),
                 new Equals(new Variable(index + "-Koulutus-id-vocational"), new Value(ElementUtil.KYLLA)));
         RelatedQuestionComplexRule rule = new RelatedQuestionComplexRule(ElementUtil.randomId(), expr);
@@ -210,7 +210,7 @@ public class HakutoiveetPhase {
                         new Option(createI18NText("form.yleinen.ei", formParameters), EI)))
                 .required()
                 .i18nText(createI18NText("form.hakutoiveet.kaksoistutkinnon.lisakysymys", formParameters))
-                .build(formParameters);
+                .formParams(formParameters).build();
         RelatedQuestionComplexRule hasQuestion =
                 ElementUtil.createRuleIfVariableIsTrue(radio.getId() + "_related_question_rule", index + "-Koulutus-id-kaksoistutkinto");
         hasQuestion.addChild(radio);

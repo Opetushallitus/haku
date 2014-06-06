@@ -23,22 +23,14 @@ public class PostalCodeBuilder extends ElementBuilder {
     }
 
     @Override
-    public Element buildImpl(FormParameters formParameters) {
-        PostalCode postalCode = (PostalCode) this.buildImpl();
-        ElementUtil.setVerboseHelp(postalCode, key + ".verboseHelp", formParameters);
+    public Element buildImpl() {
+        PostalCode postalCode = new PostalCode(id, i18nText, this.options);
         List<String> values = new ArrayList<String>();
         for (Option option : options) {
             values.add(option.getValue());
         }
         postalCode.setValidator(new ValueSetValidator(id, ElementUtil.createI18NText("yleinen.virheellinenArvo"), values));
         return postalCode;
-    }
-
-    @Override
-    public Element buildImpl() {
-        PostalCode element = new PostalCode(id, i18nText, this.options);
-        element.setInline(inline);
-        return element;
     }
 
     public static PostalCodeBuilder PostalCode(final String id) {

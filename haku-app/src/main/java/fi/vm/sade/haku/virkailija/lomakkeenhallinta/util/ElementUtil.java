@@ -26,7 +26,10 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.gradegrid.GradeGridR
 import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionComplexRule;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.Regexp;
 import fi.vm.sade.haku.oppija.lomake.validation.Validator;
-import fi.vm.sade.haku.oppija.lomake.validation.validators.*;
+import fi.vm.sade.haku.oppija.lomake.validation.validators.RegexFieldValidator;
+import fi.vm.sade.haku.oppija.lomake.validation.validators.RequiredFieldValidator;
+import fi.vm.sade.haku.oppija.lomake.validation.validators.SsnUniqueValidator;
+import fi.vm.sade.haku.oppija.lomake.validation.validators.ValueSetValidator;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
 import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
@@ -178,8 +181,14 @@ public final class ElementUtil {
         }
     }
 
-    public static void setVerboseHelp(final Titled titled, final String helpId, final FormParameters formParameters) {
-        titled.setVerboseHelp(formParameters.getI18nText(helpId));
+    public static void setVerboseHelp(final Element element, final String helpId, final FormParameters formParameters) {
+        if (element instanceof Titled) {
+            ((Titled) element).setVerboseHelp(formParameters.getI18nText(helpId));
+        }
+    }
+
+    public static void setVerboseHelp(Element element, I18nText i18nText) {
+        ((Titled) element).setVerboseHelp(i18nText);
     }
 
     public static void setHelp(final Element element, final String key, final FormParameters formParameters) {

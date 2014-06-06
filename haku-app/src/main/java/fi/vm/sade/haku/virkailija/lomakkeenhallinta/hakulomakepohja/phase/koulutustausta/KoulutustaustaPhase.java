@@ -45,8 +45,8 @@ public final class KoulutustaustaPhase {
     }
 
     public static Element create(final FormParameters formParameters) {
-        Element koulutustausta = Phase("koulutustausta").build(formParameters);
-        Element koulutustaustaRyhma = new ThemeBuilder("koulutustausta").previewable().build(formParameters);
+        Element koulutustausta = Phase("koulutustausta").formParams(formParameters).build();
+        Element koulutustaustaRyhma = new ThemeBuilder("koulutustausta").previewable().formParams(formParameters).build();
         koulutustaustaRyhma.addChild(createKoulutustaustaRadio(formParameters));
         koulutustausta.addChild(koulutustaustaRyhma);
         return koulutustausta;
@@ -81,7 +81,7 @@ public final class KoulutustaustaPhase {
         baseEducationBuilder.addOption(educationMap.get(ULKOMAINEN_TUTKINTO).getValue(), formParameters);
 
 
-        Element baseEducation = baseEducationBuilder.required().build(formParameters);
+        Element baseEducation = baseEducationBuilder.required().formParams(formParameters).build();
 
         RelatedQuestionComplexRule keskeytynytRule = createVarEqualsToValueRule(baseEducation.getId(), KESKEYTYNYT);
         if (!formParameters.isPervako()) {
@@ -97,7 +97,7 @@ public final class KoulutustaustaPhase {
                     TextArea("mika-ulkomainen-koulutus")
                             .cols(TEXT_AREA_COLS)
                             .maxLength(250)
-                            .build(formParameters));
+                            .formParams(formParameters).build());
 
         }
 
@@ -123,17 +123,17 @@ public final class KoulutustaustaPhase {
                 .size(4)
                 .maxLength(4)
                 .validator(createValueSetValidator(OppijaConstants.PERUSOPETUS_PAATTOTODISTUSVUOSI, validYears, formParameters))
-                .build(formParameters);
+                .formParams(formParameters).build();
 
         Element suorittanutGroup =
-                TitledGroup("suorittanut.ryhma").build(formParameters)
+                TitledGroup("suorittanut.ryhma").formParams(formParameters).build()
                         .addChild(
-                                Checkbox(OppijaConstants.ELEMENT_ID_LISAKOULUTUS_KYMPPI).build(formParameters),
-                                Checkbox("LISAKOULUTUS_VAMMAISTEN").build(formParameters),
-                                Checkbox("LISAKOULUTUS_TALOUS").build(formParameters),
-                                Checkbox("LISAKOULUTUS_AMMATTISTARTTI").build(formParameters),
-                                Checkbox("LISAKOULUTUS_KANSANOPISTO").build(formParameters),
-                                Checkbox("LISAKOULUTUS_MAAHANMUUTTO").build(formParameters)
+                                Checkbox(OppijaConstants.ELEMENT_ID_LISAKOULUTUS_KYMPPI).formParams(formParameters).build(),
+                                Checkbox("LISAKOULUTUS_VAMMAISTEN").formParams(formParameters).build(),
+                                Checkbox("LISAKOULUTUS_TALOUS").formParams(formParameters).build(),
+                                Checkbox("LISAKOULUTUS_AMMATTISTARTTI").formParams(formParameters).build(),
+                                Checkbox("LISAKOULUTUS_KANSANOPISTO").formParams(formParameters).build(),
+                                Checkbox("LISAKOULUTUS_MAAHANMUUTTO").formParams(formParameters).build()
                         );
 
         RelatedQuestionComplexRule pkKysymyksetRule = createVarEqualsToValueRule(baseEducation.getId(),
@@ -146,7 +146,7 @@ public final class KoulutustaustaPhase {
                         new Option(createI18NText("form.yleinen.kylla", formParameters), KYLLA),
                         new Option(createI18NText("form.yleinen.ei", formParameters), EI)))
                 .required()
-                .build(formParameters);
+                .formParams(formParameters).build();
 
         Expr vuosiSyotetty = new Regexp(paattotodistusvuosiPeruskoulu.getId(), PAATTOTODISTUSVUOSI_PATTERN);
         Expr kysytaankoKoulutuspaikka = new And(new Not(new Equals(new Variable(paattotodistusvuosiPeruskoulu.getId()), new Value(hakukausiVuosiStr))), vuosiSyotetty);
@@ -167,7 +167,7 @@ public final class KoulutustaustaPhase {
                     .pattern(PAATTOTODISTUSVUOSI_PATTERN)
                     .required()
                     .inline()
-                    .build(formParameters);
+                    .formParams(formParameters).build();
 
             RelatedQuestionComplexRule tuoreYoTodistus = createVarEqualsToValueRule(lukioPaattotodistusVuosi.getId(), hakukausiVuosiStr);
             tuoreYoTodistus.addChild(new DropdownSelectBuilder("lahtokoulu")
@@ -175,7 +175,7 @@ public final class KoulutustaustaPhase {
                     .addOption(addSpaceAtTheBeginning(ElementUtil.createI18NText("form.koulutustausta.lukio.valitse.oppilaitos", formParameters)), "")
                     .addOptions(koodistoService.getLukioKoulukoodit())
                     .requiredInline()
-                    .build(formParameters));
+                    .formParams(formParameters).build());
 
             RelatedQuestionComplexRule lukioRule = createVarEqualsToValueRule(baseEducation.getId(), YLIOPPILAS);
             Element ylioppilastutkinto = new DropdownSelectBuilder(OppijaConstants.YLIOPPILASTUTKINTO)
@@ -186,8 +186,8 @@ public final class KoulutustaustaPhase {
                     .addOption(createI18NText("form.koulutustausta.lukio.yotutkinto.rp"), "rp")
                     .required()
                     .inline()
-                    .build(formParameters);
-            lukioRule.addChild(TitledGroup("lukio.suoritus").build(formParameters)
+                    .formParams(formParameters).build();
+            lukioRule.addChild(TitledGroup("lukio.suoritus").formParams(formParameters).build()
                     .addChild(lukioPaattotodistusVuosi,
                             ylioppilastutkinto));
 
@@ -198,7 +198,7 @@ public final class KoulutustaustaPhase {
                             new Option(createI18NText("form.yleinen.kylla", formParameters), KYLLA),
                             new Option(createI18NText("form.yleinen.ei", formParameters), EI)))
                     .required()
-                    .build(formParameters);
+                    .formParams(formParameters).build();
             lukioRule.addChild(suorittanutAmmatillisenTutkinnonLukio);
 
 
@@ -207,7 +207,7 @@ public final class KoulutustaustaPhase {
                             .emptyOption()
                             .addOptions(koodistoService.getTeachingLanguages())
                             .required()
-                            .build(formParameters));
+                            .formParams(formParameters).build());
 
             baseEducation.addChild(lukioRule);
 
@@ -233,7 +233,7 @@ public final class KoulutustaustaPhase {
                         new Option(createI18NText("form.yleinen.kylla", formParameters), KYLLA),
                         new Option(createI18NText("form.yleinen.ei", formParameters), EI)))
                 .required()
-                .build(formParameters);
+                .formParams(formParameters).build();
 
         paattotodistusvuosiPeruskouluRule.addChild(suorittanutAmmatillisenTutkinnon);
 
@@ -251,10 +251,10 @@ public final class KoulutustaustaPhase {
                 .addOption(ElementUtil.createI18NAsIs(""), "")
                 .addOptions(koodistoService.getTeachingLanguages())
                 .required()
-                .build(formParameters));
+                .formParams(formParameters).build());
 
         if (formParameters.isPervako()) {
-            baseEducation.addChild(TextArea("muukoulutus").cols(TEXT_AREA_COLS).maxLength(500).build(formParameters));
+            baseEducation.addChild(TextArea("muukoulutus").cols(TEXT_AREA_COLS).maxLength(500).formParams(formParameters).build());
         }
         return baseEducation;
     }

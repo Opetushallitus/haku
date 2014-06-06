@@ -20,7 +20,7 @@ public class RadioBuilder extends ElementBuilder {
     }
 
     public RadioBuilder addOption(String value, FormParameters formParameters) {
-        options.add((Option) Option(id + "." + value).setValue(value).build(formParameters));
+        options.add((Option) Option(id + "." + value).setValue(value).formParams(formParameters).build());
         return this;
     }
 
@@ -30,22 +30,14 @@ public class RadioBuilder extends ElementBuilder {
     }
 
     @Override
-    public Element buildImpl(FormParameters formParameters) {
-        Radio radio = (Radio) this.buildImpl();
-        ElementUtil.setVerboseHelp(radio, key + ".verboseHelp", formParameters);
+    public Element buildImpl() {
+        Radio radio =  new Radio(id, i18nText, this.options);
         List<String> values = new ArrayList<String>();
         for (Option option : options) {
             values.add(option.getValue());
         }
         radio.setValidator(new ValueSetValidator(id, ElementUtil.createI18NText("yleinen.virheellinenArvo"), values));
         return radio;
-    }
-
-    @Override
-    public Element buildImpl() {
-        Radio element = new Radio(id, i18nText, this.options);
-        element.setInline(inline);
-        return element;
     }
 
     public static RadioBuilder Radio(final String id) {

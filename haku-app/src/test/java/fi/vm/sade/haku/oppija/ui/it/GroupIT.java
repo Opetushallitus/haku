@@ -19,10 +19,10 @@ package fi.vm.sade.haku.oppija.ui.it;
 import fi.vm.sade.haku.oppija.common.it.AbstractFormTest;
 import fi.vm.sade.haku.oppija.lomake.ApplicationSystemHelper;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
-import fi.vm.sade.haku.oppija.lomake.domain.builders.FormModelBuilder;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.Text;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.TitledGroup;
 import fi.vm.sade.haku.oppija.lomake.domain.builder.TitledGroupBuilder;
+import fi.vm.sade.haku.oppija.lomake.domain.builders.FormModelBuilder;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.TitledGroup;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import net.sourceforge.jwebunit.api.IElement;
 import org.junit.Before;
@@ -30,6 +30,7 @@ import org.junit.Test;
 
 import java.io.IOException;
 
+import static fi.vm.sade.haku.oppija.lomake.domain.builder.TextBuilder.Text;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.createI18NAsIs;
 import static net.sourceforge.jwebunit.junit.JWebUnit.beginAt;
 import static net.sourceforge.jwebunit.junit.JWebUnit.getElementByXPath;
@@ -37,7 +38,7 @@ import static org.junit.Assert.assertNotNull;
 
 public class GroupIT extends AbstractFormTest {
     public static final String GROUP_ID = "grpid";
-    public static final Text CHILD_ELEMENT = new Text("textId", ElementUtil.createI18NAsIs("text"));
+    public static final Element CHILD_ELEMENT = Text("textId").setI18nText(ElementUtil.createI18NAsIs("text")).build();
     private ApplicationSystemHelper applicationSystemHelper;
 
     @Before

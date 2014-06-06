@@ -58,23 +58,23 @@ public final class HenkilotiedotPhase {
     public static Element create(final FormParameters formParameters) {
 
         // Henkilötiedot
-        Element henkilotiedot = Phase("henkilotiedot").build(formParameters);
+        Element henkilotiedot = Phase("henkilotiedot").formParams(formParameters).build();
 
-        Element henkilotiedotTeema = Theme("henkilotiedot.teema").previewable().build(formParameters);
+        Element henkilotiedotTeema = Theme("henkilotiedot.teema").previewable().formParams(formParameters).build();
 
         henkilotiedotTeema.addChild(
-                createNameQuestionBuilder("Sukunimi", 30).build(formParameters),
-                createNameQuestionBuilder("Etunimet", 30).build(formParameters),
+                createNameQuestionBuilder("Sukunimi", 30).formParams(formParameters).build(),
+                createNameQuestionBuilder("Etunimet", 30).formParams(formParameters).build(),
                 createNameQuestionBuilder("Kutsumanimi", 20)
                         .containsInField("Etunimet")
-                        .build(formParameters));
+                        .formParams(formParameters).build());
 
         Element kansalaisuus = new DropdownSelectBuilder("kansalaisuus")
                 .addOptions(formParameters.getKoodistoService().getNationalities())
                 .defaultOption("FIN")
                 .required()
                 .inline()
-                .build(formParameters);
+                .formParams(formParameters).build();
         henkilotiedotTeema.addChild(kansalaisuus);
 
         Element henkilotunnus = TextQuestion("Henkilotunnus")
@@ -84,13 +84,13 @@ public final class HenkilotiedotPhase {
                 .maxLength(11)
                 .pattern(HETU_PATTERN)
                 .required()
-                .build(formParameters);
+                .formParams(formParameters).build();
 
         List<Option> genders = formParameters.getKoodistoService().getGenders();
         Radio sukupuoli = (Radio) Radio("sukupuoli")
                 .addOptions(genders)
                 .inline()
-                .build(formParameters);
+                .formParams(formParameters).build();
 
         Option male = genders.get(0).getI18nText().getTranslations().get("fi").equalsIgnoreCase("Mies") ?
                 genders.get(0) : sukupuoli.getOptions().get(1);
@@ -113,7 +113,7 @@ public final class HenkilotiedotPhase {
                         new Option(createI18NText("form.yleinen.kylla", formParameters), KYLLA),
                         new Option(createI18NText("form.yleinen.ei", formParameters), EI)))
                 .requiredInline()
-                .build(formParameters);
+                .formParams(formParameters).build();
 
         RelatedQuestionComplexRule suomalainenHetuRule = createRuleIfVariableIsTrue("onSuomalainenHetu", onkoSinullaSuomalainenHetu.getId());
         suomalainenHetuRule.addChild(socialSecurityNumber);
@@ -129,9 +129,9 @@ public final class HenkilotiedotPhase {
         syntymaaika.setInline(true);
 
         eiSuomalaistaHetuaRule.addChild(syntymaaika,
-                TextQuestion("syntymapaikka").inline().size(30).required().build(formParameters),
-                TextQuestion("kansallinenIdTunnus").inline().size(30).build(formParameters),
-                TextQuestion("passinnumero").inline().size(30).build(formParameters));
+                TextQuestion("syntymapaikka").inline().size(30).required().formParams(formParameters).build(),
+                TextQuestion("kansallinenIdTunnus").inline().size(30).formParams(formParameters).build(),
+                TextQuestion("passinnumero").inline().size(30).formParams(formParameters).build());
 
         onkoSinullaSuomalainenHetu.addChild(eiSuomalaistaHetuaRule);
 
@@ -140,14 +140,14 @@ public final class HenkilotiedotPhase {
         henkilotiedotTeema.addChild(ulkomaalaisenTunnisteetRule);
 
         henkilotiedotTeema.addChild(
-                TextQuestion("Sähköposti").inline().size(50).pattern(EMAIL_REGEX).build(formParameters));
+                TextQuestion("Sähköposti").inline().size(50).pattern(EMAIL_REGEX).formParams(formParameters).build());
 
         // Matkapuhelinnumerot
         Element puhelinnumero1 = TextQuestion("matkapuhelinnumero1").labelKey("matkapuhelinnumero")
                 .pattern(PHONE_PATTERN)
                 .size(30)
                 .inline()
-                .build(formParameters);
+                .formParams(formParameters).build();
         henkilotiedotTeema.addChild(puhelinnumero1);
 
         Element prevNum = puhelinnumero1;
@@ -157,7 +157,7 @@ public final class HenkilotiedotPhase {
                     .size(30)
                     .pattern(PHONE_PATTERN)
                     .inline()
-                    .build(formParameters);
+                    .formParams(formParameters).build();
 
             String id = "addPuhelinnumero" + i + "Rule";
             I18nText i18nText = formParameters.getI18nText("puhelinnumero.lisaa");
@@ -179,20 +179,21 @@ public final class HenkilotiedotPhase {
                 .addOptions(formParameters.getKoodistoService().getCountries())
                 .required()
                 .inline()
-                .build(formParameters);
+                .formParams(formParameters).build();
 
         RelatedQuestionComplexRule asuinmaaFI = ElementUtil.createRegexpRule(asuinmaa, EMPTY_OR_FIN_PATTERN);
-        Element lahiosoite = TextQuestion("lahiosoite").inline().size(40).required().build(formParameters);
+        Element lahiosoite = TextQuestion("lahiosoite").inline().size(40).required().formParams(formParameters).build();
         asuinmaaFI.addChild(lahiosoite);
 
         Element postinumero = PostalCode("Postinumero")
-                .addOptions(formParameters.getKoodistoService().getPostOffices()).build();
-        addSizeAttribute(postinumero, 5);
-        postinumero.addAttribute("placeholder", "00000");
-        postinumero.addAttribute("maxlength", "5");
-        postinumero.setValidator(createRegexValidator(postinumero.getId(), POSTINUMERO_PATTERN, formParameters));
-        addRequiredValidator(postinumero, formParameters);
-        postinumero.setHelp(createI18NText("postinumero.help", formParameters));
+                .addOptions(formParameters.getKoodistoService().getPostOffices())
+                .maxLength(5)
+                .size(5)
+                .required()
+                .pattern(POSTINUMERO_PATTERN)
+                .placeholder("00000")
+                .build();
+
         asuinmaaFI.addChild(postinumero);
 
         Element kotikunta =
@@ -201,15 +202,15 @@ public final class HenkilotiedotPhase {
                         .addOptions(formParameters.getKoodistoService().getMunicipalities())
                         .inline()
                         .required()
-                        .build(formParameters);
+                        .formParams(formParameters).build();
 
         asuinmaaFI.addChild(kotikunta);
 
         RelatedQuestionComplexRule asuinmaaEiOleSuomiRule = ElementUtil.createRegexpRule(asuinmaa, NOT_FI);
         asuinmaaEiOleSuomiRule.addChild(
-                TextQuestion("osoiteUlkomaa").labelKey("osoite").inline().size(40).required().build(formParameters),
-                TextQuestion("postinumeroUlkomaa").inline().size(12).required().build(formParameters),
-                TextQuestion("kaupunkiUlkomaa").labelKey("kaupunki").inline().size(25).required().build(formParameters));
+                TextQuestion("osoiteUlkomaa").labelKey("osoite").inline().size(40).required().formParams(formParameters).build(),
+                TextQuestion("postinumeroUlkomaa").inline().size(12).required().formParams(formParameters).build(),
+                TextQuestion("kaupunkiUlkomaa").labelKey("kaupunki").inline().size(25).required().formParams(formParameters).build());
 
         asuinmaa.addChild(asuinmaaEiOleSuomiRule);
         asuinmaa.addChild(asuinmaaFI);
@@ -222,7 +223,7 @@ public final class HenkilotiedotPhase {
                 .addOptions(formParameters.getKoodistoService().getLanguages())
                 .required()
                 .inline()
-                .build(formParameters));
+                .formParams(formParameters).build());
 
         henkilotiedot.addChild(henkilotiedotTeema);
         if (formParameters.isPervako()) {
@@ -231,16 +232,16 @@ public final class HenkilotiedotPhase {
                             .size(30)
                             .pattern(ElementUtil.ISO88591_NAME_REGEX)
                             .inline()
-                            .build(formParameters),
+                            .formParams(formParameters).build(),
                     TextQuestion("huoltajanpuhelinnumero")
                             .size(30)
                             .pattern(PHONE_PATTERN)
                             .inline()
-                            .build(formParameters),
+                            .formParams(formParameters).build(),
                     TextQuestion("huoltajansahkoposti")
                             .inline()
                             .size(50)
-                            .pattern(EMAIL_REGEX).build(formParameters));
+                            .pattern(EMAIL_REGEX).formParams(formParameters).build());
         }
         return henkilotiedot;
     }

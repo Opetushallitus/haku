@@ -190,7 +190,7 @@ public final class KielitaitokysymyksetTheme {
                 kysytaankoViittomaKeskUlk));
 
         RelatedQuestionComplexRule naytetaankoTeema = new RelatedQuestionComplexRule(ElementUtil.randomId(), naytetaankoKielitaitoteema);
-        Element kielitaitokysymyksetTheme = new ThemeBuilder("kielitaito").previewable().build(formParameters);
+        Element kielitaitokysymyksetTheme = new ThemeBuilder("kielitaito").previewable().formParams(formParameters).build();
         kielitaitokysymyksetTheme.addChild(naytetaankoSuomiPK, naytetaankoRuotsiPK, naytetaankoSuomiYO, naytetaankoRuotsiYO,
                 naytetaankoSuomiKeskUlk, naytetaankoRuotsiKeskUlk, naytetaankoSaamePK, naytetaankoSaameYO, naytetaankoSaameKeskUlk,
                 naytetaankoViittomaPK, naytetaankoViittomaYO, naytetaankoViittomaKeskUlk);
@@ -232,7 +232,7 @@ public final class KielitaitokysymyksetTheme {
         RelatedQuestionComplexRule naytetaankoTeema = new RelatedQuestionComplexRule(ElementUtil.randomId(), naytetaankoKielitaitoteema);
 
         Element kielitaitokysymyksetTheme =
-                new ThemeBuilder("kielitaito").previewable().build(formParameters);
+                new ThemeBuilder("kielitaito").previewable().formParams(formParameters).build();
         naytetaankoTeema.addChild(kielitaitokysymyksetTheme);
 
         RelatedQuestionComplexRule naytetaankoSuomi = new RelatedQuestionComplexRule(ElementUtil.randomId(), kysytaankoSuomi);
@@ -254,6 +254,6 @@ public final class KielitaitokysymyksetTheme {
                         new Option(createI18NText("form.yleinen.ei", formParameters), EI)))
                 .required()
                 .i18nText(i18NText)
-                .build(formParameters);
+                .formParams(formParameters).build();
     }
 }

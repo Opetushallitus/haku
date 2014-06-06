@@ -7,6 +7,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Link;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Text;
+import fi.vm.sade.haku.oppija.lomake.domain.builder.TextBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.Answer;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.DiscretionaryAttachments;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.Print;
@@ -20,6 +21,7 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import java.util.List;
 import java.util.Set;
 
+import static fi.vm.sade.haku.oppija.lomake.domain.builder.TextBuilder.Text;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.TitledGroupBuilder.TitledGroup;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.*;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ExprUtil.atLeastOneVariableEqualsToValue;
@@ -36,16 +38,15 @@ public class ValmisPhase {
         List<Element> elements = Lists.newArrayList();
 
         RelatedQuestionComplexRule emailRule = ElementUtil.createRegexpRule("Sähköposti", REGEX_NON_EMPTY);
-        Text emailP1 = new Text("emailP1", createI18NText("form.valmis.sinulleonlahetettyvahvistussahkopostiisi",
-                formParameters));
+        Element emailP1 = Text("emailP1").labelKey("form.valmis.sinulleonlahetettyvahvistussahkopostiisi").formParams(formParameters).build();
         emailP1.addChild(new Answer("Sähköposti"));
         emailRule.addChild(emailP1);
 
         elements.add(emailRule);
 
-        elements.add(new Text("valmisP1", createI18NText("form.lomake.valmis.p1", formParameters)));
-        elements.add(new Text("valmisP2", createI18NText("form.lomake.valmis.p2", formParameters)));
-        elements.add(new Text("valmisP3", createI18NText("form.lomake.valmis.p3", formParameters)));
+        elements.add(Text("valmisP1").labelKey("form.lomake.valmis.p1").formParams(formParameters).build());
+        elements.add(Text("valmisP2").labelKey("form.lomake.valmis.p2").formParams(formParameters).build());
+        elements.add(Text("valmisP3").labelKey("form.lomake.valmis.p3").formParams(formParameters).build());
 
         elements.add(new Print("printLink", createI18NText("form.valmis.button.tulosta", formParameters)));
 
@@ -53,14 +54,14 @@ public class ValmisPhase {
 
         elements.addAll(createAdditionalInformationElements(formParameters));
 
-        Element muutoksenTekeminen = TitledGroup("muutoksenTekeminen").build(formParameters);
+        Element muutoksenTekeminen = TitledGroup("muutoksenTekeminen").formParams(formParameters).build();
 
         for (int i = 0; i < paragraphs.length; i++) {
-            muutoksenTekeminen.addChild(new Text("muutoksenTekeminenP" + (i + 1), createI18NText(paragraphs[i], formParameters)));
+            muutoksenTekeminen.addChild(Text("muutoksenTekeminenP" + (i + 1)).i18nText(ElementUtil.createI18NAsIs(paragraphs[i])).build());
         }
         elements.add(muutoksenTekeminen);
 
-        elements.add(new Text("palaute", createI18NText("form.valmis.palaute", formParameters)));
+        elements.add(Text("palaute").labelKey("form.valmis.palaute").formParams(formParameters).build());
 
         elements.add(new Link("backLink", createI18NAsIs("https://opintopolku.fi"), createI18NText("form.valmis.takaisin.opintopolkuun.linkki",
                 formParameters)));
@@ -77,9 +78,9 @@ public class ValmisPhase {
                         "preference3_urheilijan_ammatillisen_koulutuksen_lisakysymys", "preference3_urheilijalinjan_lisakysymys",
                         "preference4_urheilijan_ammatillisen_koulutuksen_lisakysymys", "preference4_urheilijalinjan_lisakysymys",
                         "preference5_urheilijan_ammatillisen_koulutuksen_lisakysymys", "preference5_urheilijalinjan_lisakysymys"));
-        Element athleteGroup = TitledGroup("atheleteGroup").build(formParameters);
+        Element athleteGroup = TitledGroup("atheleteGroup").formParams(formParameters).build();
 
-        athleteGroup.addChild(new Text("athleteP1", createI18NText("form.valmis.haeturheilijana", formParameters)));
+        athleteGroup.addChild(Text("athleteP1").labelKey("form.valmis.haeturheilijana").formParams(formParameters).build());
         Link athleteLink = new Link("athleteLink", createI18NText("form.valmis.haeturheilijana.linkki.url", formParameters),
                 createI18NText("form.valmis.haeturheilijana.linkki.text", formParameters));
         athleteLink.addAttribute("target", "_blank");
@@ -108,9 +109,8 @@ public class ValmisPhase {
 
         Element musiikkiTanssiLiikuntaRule = new RelatedQuestionComplexRule("musiikkiTanssiLiikuntaRule",
                 ExprUtil.reduceToOr(ImmutableList.of(isMusiikki, isTanssi, isLiiKunta)));
-        musiikkiTanssiLiikuntaRule.addChild(TitledGroup("musiikkitanssiliikunta.ryhma").build(formParameters)
-                .addChild(
-                        new Text(randomId(), createI18NText("musiikkitanssiliikunta", formParameters))));
+        musiikkiTanssiLiikuntaRule.addChild(TitledGroup("musiikkitanssiliikunta.ryhma").formParams(formParameters).build()
+                .addChild(Text(randomId()).labelKey("musiikkitanssiliikunta").formParams(formParameters).build()));
 
         return Lists.newArrayList(athleteRule, musiikkiTanssiLiikuntaRule);
     }
