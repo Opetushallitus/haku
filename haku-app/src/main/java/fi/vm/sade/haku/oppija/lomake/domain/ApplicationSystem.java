@@ -40,6 +40,7 @@ public class ApplicationSystem implements Serializable {
     private String applicationSystemType;
     private Integer hakukausiVuosi;
     private String hakukausiUri;
+    private String kohdejoukkoUri;
     private List<Element> applicationCompleteElements;
     private List<Element> additionalInformationElements;
     private int maxApplicationOptions;
@@ -48,6 +49,7 @@ public class ApplicationSystem implements Serializable {
                              final List<ApplicationPeriod> applicationPeriods,
                              final String applicationSystemType, Integer hakukausiVuosi,
                              final String hakukausiUri,
+                             final String kohdejoukkoUri,
                              final List<Element> applicationCompleteElements,
                              final List<Element> additionalInformationElements, final Integer maxApplicationOptions) {
         Preconditions.checkNotNull(id);
@@ -60,6 +62,7 @@ public class ApplicationSystem implements Serializable {
         this.applicationSystemType = applicationSystemType;
         this.hakukausiVuosi = hakukausiVuosi;
         this.hakukausiUri = hakukausiUri;
+        this.kohdejoukkoUri = kohdejoukkoUri;
         this.applicationCompleteElements = applicationCompleteElements;
         this.additionalInformationElements = additionalInformationElements;
         this.maxApplicationOptions = maxApplicationOptions != null ?
@@ -102,6 +105,10 @@ public class ApplicationSystem implements Serializable {
 
     public String getHakukausiUri() {
         return hakukausiUri;
+    }
+
+    public String getKohdejoukkoUri() {
+        return kohdejoukkoUri;
     }
 
     public List<Element> getApplicationCompleteElements() {
