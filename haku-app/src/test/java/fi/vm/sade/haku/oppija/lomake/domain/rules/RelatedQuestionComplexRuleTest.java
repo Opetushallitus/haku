@@ -19,24 +19,24 @@ public class RelatedQuestionComplexRuleTest {
     public static final String AIDINKIELI = "aidinkieli";
     public static final String FI = "fi";
     public static final String SV = "sv";
-    private RelatedQuestionComplexRule relatedQuestionComplexRule;
+    private RelatedQuestionRule relatedQuestionRule;
 
     @Before
     public void setUp() throws Exception {
         Equals equals = new Equals(new Variable(AIDINKIELI), new Value(FI));
-        relatedQuestionComplexRule = new RelatedQuestionComplexRule(ElementUtil.randomId(), equals);
-        relatedQuestionComplexRule.addChild(ElementUtil.createHiddenGradeGridRowWithId(ElementUtil.randomId()));
+        relatedQuestionRule = new RelatedQuestionRule(ElementUtil.randomId(), equals);
+        relatedQuestionRule.addChild(ElementUtil.createHiddenGradeGridRowWithId(ElementUtil.randomId()));
     }
 
     @Test
     public void testGetChildrenEmpty() {
-        List<Element> children = relatedQuestionComplexRule.getChildren(ImmutableMap.of(AIDINKIELI, SV));
+        List<Element> children = relatedQuestionRule.getChildren(ImmutableMap.of(AIDINKIELI, SV));
         assertTrue(children.isEmpty());
     }
 
     @Test
     public void testGetChildrenTrue() {
-        List<Element> children = relatedQuestionComplexRule.getChildren(ImmutableMap.of(AIDINKIELI, FI));
+        List<Element> children = relatedQuestionRule.getChildren(ImmutableMap.of(AIDINKIELI, FI));
         assertFalse(children.isEmpty());
     }
 }

@@ -3,7 +3,7 @@ package fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.lisat
 import fi.vm.sade.haku.oppija.lomake.domain.builder.TextQuestionBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.builder.ThemeBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
-import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionComplexRule;
+import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionRule;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.*;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
@@ -44,7 +44,7 @@ public class LisatiedotPhase {
         return element;
     }
 
-    static RelatedQuestionComplexRule createTyokokemus(final FormParameters formParameters) {
+    static RelatedQuestionRule createTyokokemus(final FormParameters formParameters) {
         Expr isEducation32 = ExprUtil.atLeastOneVariableEqualsToValue(REQUIRED_EDUCATION_DEGREE, OppijaConstants.AO_EDUCATION_DEGREE_KEYS);
         Expr olderThan16 = new OlderThan(new Value(MIN_AGE_REQUIRED_TO_WORK_EXPERIENCE_AGE));
         Expr pohjakoulutusKeskeyttanytTaiUlkomaillasuoritettu = createPohjakoilutusUlkomainenTaiKeskeyttanyt();
@@ -58,7 +58,7 @@ public class LisatiedotPhase {
                         .size(8)
                         .maxLength(4)).build();
 
-        RelatedQuestionComplexRule naytetaankoTyokokemus = new RelatedQuestionComplexRule(ElementUtil.randomId(), rules);
+        RelatedQuestionRule naytetaankoTyokokemus = new RelatedQuestionRule(ElementUtil.randomId(), rules);
         naytetaankoTyokokemus.addChild(workExperienceTheme);
         return naytetaankoTyokokemus;
     }
@@ -97,7 +97,7 @@ public class LisatiedotPhase {
                 "preference5_urheilijan_ammatillisen_koulutuksen_lisakysymys",
                 "preference5_urheilijalinjan_lisakysymys");
 
-        RelatedQuestionComplexRule urheilijanLisakysymyksetSaanto = new RelatedQuestionComplexRule(ElementUtil.randomId(), onkoUrheilija);
+        RelatedQuestionRule urheilijanLisakysymyksetSaanto = new RelatedQuestionRule(ElementUtil.randomId(), onkoUrheilija);
         urheilijanLisakysymyksetSaanto.addChild(urheilijanLisakysymyksetTeema);
 
         Element opinnotGroup = TitledGroup("opinnot").formParams(formParameters).build()

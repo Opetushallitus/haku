@@ -11,7 +11,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.builder.ThemeBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Notification;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
-import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionComplexRule;
+import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionRule;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.*;
 import fi.vm.sade.haku.oppija.lomake.validation.validators.AlwaysFailsValidator;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
@@ -83,7 +83,7 @@ public final class KoulutustaustaPhase {
 
         Element baseEducation = baseEducationBuilder.required().formParams(formParameters).build();
 
-        RelatedQuestionComplexRule keskeytynytRule = createVarEqualsToValueRule(baseEducation.getId(), KESKEYTYNYT);
+        RelatedQuestionRule keskeytynytRule = createVarEqualsToValueRule(baseEducation.getId(), KESKEYTYNYT);
         if (!formParameters.isPervako()) {
             keskeytynytRule.addChild(new Notification(TUTKINTO_KESKEYTNYT_NOTIFICATION_ID,
                     createI18NText("form.koulutustausta.keskeytynyt.huom", formParameters),
@@ -91,7 +91,7 @@ public final class KoulutustaustaPhase {
         }
 
 
-        RelatedQuestionComplexRule ulkomaillaSuoritettuTutkintoRule = createVarEqualsToValueRule(baseEducation.getId(), ULKOMAINEN_TUTKINTO);
+        RelatedQuestionRule ulkomaillaSuoritettuTutkintoRule = createVarEqualsToValueRule(baseEducation.getId(), ULKOMAINEN_TUTKINTO);
         if (formParameters.isPervako()) {
             ulkomaillaSuoritettuTutkintoRule.addChild(
                     TextArea("mika-ulkomainen-koulutus")
@@ -136,10 +136,10 @@ public final class KoulutustaustaPhase {
                                 Checkbox("LISAKOULUTUS_MAAHANMUUTTO").formParams(formParameters).build()
                         );
 
-        RelatedQuestionComplexRule pkKysymyksetRule = createVarEqualsToValueRule(baseEducation.getId(),
+        RelatedQuestionRule pkKysymyksetRule = createVarEqualsToValueRule(baseEducation.getId(),
                 PERUSKOULU, OSITTAIN_YKSILOLLISTETTY, ALUEITTAIN_YKSILOLLISTETTY, YKSILOLLISTETTY);
 
-        RelatedQuestionComplexRule paattotodistusvuosiPeruskouluRule = createRegexpRule(paattotodistusvuosiPeruskoulu.getId(), "^(19[0-9][0-9]|200[0-9]|201[0-1])$");
+        RelatedQuestionRule paattotodistusvuosiPeruskouluRule = createRegexpRule(paattotodistusvuosiPeruskoulu.getId(), "^(19[0-9][0-9]|200[0-9]|201[0-1])$");
 
         Element koulutuspaikkaAmmatillisenTutkintoon = Radio("KOULUTUSPAIKKA_AMMATILLISEEN_TUTKINTOON")
                 .addOptions(ImmutableList.of(
@@ -151,7 +151,7 @@ public final class KoulutustaustaPhase {
         Expr vuosiSyotetty = new Regexp(paattotodistusvuosiPeruskoulu.getId(), PAATTOTODISTUSVUOSI_PATTERN);
         Expr kysytaankoKoulutuspaikka = new And(new Not(new Equals(new Variable(paattotodistusvuosiPeruskoulu.getId()), new Value(hakukausiVuosiStr))), vuosiSyotetty);
 
-        RelatedQuestionComplexRule onkoTodistusSaatuKuluneenaVuonna = new RelatedQuestionComplexRule(ElementUtil.randomId(), kysytaankoKoulutuspaikka);
+        RelatedQuestionRule onkoTodistusSaatuKuluneenaVuonna = new RelatedQuestionRule(ElementUtil.randomId(), kysytaankoKoulutuspaikka);
         onkoTodistusSaatuKuluneenaVuonna.addChild(koulutuspaikkaAmmatillisenTutkintoon);
 
         pkKysymyksetRule.addChild(paattotodistusvuosiPeruskoulu, suorittanutGroup,
@@ -169,7 +169,7 @@ public final class KoulutustaustaPhase {
                     .inline()
                     .formParams(formParameters).build();
 
-            RelatedQuestionComplexRule tuoreYoTodistus = createVarEqualsToValueRule(lukioPaattotodistusVuosi.getId(), hakukausiVuosiStr);
+            RelatedQuestionRule tuoreYoTodistus = createVarEqualsToValueRule(lukioPaattotodistusVuosi.getId(), hakukausiVuosiStr);
             tuoreYoTodistus.addChild(new DropdownSelectBuilder("lahtokoulu")
                     .defaultValueAttribute("")
                     .addOption(addSpaceAtTheBeginning(ElementUtil.createI18NText("form.koulutustausta.lukio.valitse.oppilaitos", formParameters)), "")
@@ -177,7 +177,7 @@ public final class KoulutustaustaPhase {
                     .requiredInline()
                     .formParams(formParameters).build());
 
-            RelatedQuestionComplexRule lukioRule = createVarEqualsToValueRule(baseEducation.getId(), YLIOPPILAS);
+            RelatedQuestionRule lukioRule = createVarEqualsToValueRule(baseEducation.getId(), YLIOPPILAS);
             Element ylioppilastutkinto = new DropdownSelectBuilder(OppijaConstants.YLIOPPILASTUTKINTO)
                     .defaultOption(OppijaConstants.YLIOPPILASTUTKINTO_FI)
                     .addOption(createI18NText("form.koulutustausta.lukio.yotutkinto.fi"), OppijaConstants.YLIOPPILASTUTKINTO_FI)
@@ -211,7 +211,7 @@ public final class KoulutustaustaPhase {
 
             baseEducation.addChild(lukioRule);
 
-            RelatedQuestionComplexRule suorittanutTutkinnonLukioRule = createRuleIfVariableIsTrue(ElementUtil.randomId(),
+            RelatedQuestionRule suorittanutTutkinnonLukioRule = createRuleIfVariableIsTrue(ElementUtil.randomId(),
                     suorittanutAmmatillisenTutkinnonLukio.getId());
             Notification warningLukio = new Notification(
                     ElementUtil.randomId(),
@@ -237,7 +237,7 @@ public final class KoulutustaustaPhase {
 
         paattotodistusvuosiPeruskouluRule.addChild(suorittanutAmmatillisenTutkinnon);
 
-        RelatedQuestionComplexRule suorittanutTutkinnonRule = createRuleIfVariableIsTrue(ElementUtil.randomId(), suorittanutAmmatillisenTutkinnon.getId());
+        RelatedQuestionRule suorittanutTutkinnonRule = createRuleIfVariableIsTrue(ElementUtil.randomId(), suorittanutAmmatillisenTutkinnon.getId());
         Notification warning = new Notification(
                 ElementUtil.randomId(),
                 createI18NText("form.koulutustausta.ammatillinensuoritettu.huom", formParameters),

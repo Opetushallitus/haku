@@ -9,7 +9,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.Link;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.Answer;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.DiscretionaryAttachments;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.Print;
-import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionComplexRule;
+import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionRule;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.Expr;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
@@ -35,7 +35,7 @@ public class ValmisPhase {
     public static List<Element> create(FormParameters formParameters, final String... paragraphs) {
         List<Element> elements = Lists.newArrayList();
 
-        RelatedQuestionComplexRule emailRule = ElementUtil.createRegexpRule("Sähköposti", REGEX_NON_EMPTY);
+        RelatedQuestionRule emailRule = ElementUtil.createRegexpRule("Sähköposti", REGEX_NON_EMPTY);
         Element emailP1 = Text("emailP1").labelKey("form.valmis.sinulleonlahetettyvahvistussahkopostiisi").formParams(formParameters).build();
         emailP1.addChild(new Answer("Sähköposti"));
         emailRule.addChild(emailP1);
@@ -69,7 +69,7 @@ public class ValmisPhase {
 
     public static List<Element> createAdditionalInformationElements(FormParameters formParameters) {
 
-        RelatedQuestionComplexRule athleteRule = new RelatedQuestionComplexRule("athleteRule",
+        RelatedQuestionRule athleteRule = new RelatedQuestionRule("athleteRule",
                 atLeastOneVariableEqualsToValue(ElementUtil.KYLLA,
                         "preference1_urheilijan_ammatillisen_koulutuksen_lisakysymys", "preference1_urheilijalinjan_lisakysymys",
                         "preference2_urheilijan_ammatillisen_koulutuksen_lisakysymys", "preference2_urheilijalinjan_lisakysymys",
@@ -105,7 +105,7 @@ public class ValmisPhase {
                 String.format(EDUCATION_CODE_KEY, 4),
                 String.format(EDUCATION_CODE_KEY, 5));
 
-        Element musiikkiTanssiLiikuntaRule = new RelatedQuestionComplexRule("musiikkiTanssiLiikuntaRule",
+        Element musiikkiTanssiLiikuntaRule = new RelatedQuestionRule("musiikkiTanssiLiikuntaRule",
                 ExprUtil.reduceToOr(ImmutableList.of(isMusiikki, isTanssi, isLiiKunta)));
         musiikkiTanssiLiikuntaRule.addChild(TitledGroup("musiikkitanssiliikunta.ryhma").formParams(formParameters).build()
                 .addChild(Text(randomId()).labelKey("musiikkitanssiliikunta").formParams(formParameters).build()));

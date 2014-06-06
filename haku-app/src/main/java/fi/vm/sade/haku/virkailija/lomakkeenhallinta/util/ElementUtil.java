@@ -23,7 +23,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Titled;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.gradegrid.GradeGridRow;
-import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionComplexRule;
+import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionRule;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.Regexp;
 import fi.vm.sade.haku.oppija.lomake.validation.Validator;
 import fi.vm.sade.haku.oppija.lomake.validation.validators.RegexFieldValidator;
@@ -247,26 +247,26 @@ public final class ElementUtil {
     }
 
 
-    public static RelatedQuestionComplexRule createVarEqualsToValueRule(final String variable, final String... values) {
-        return new RelatedQuestionComplexRule(
+    public static RelatedQuestionRule createVarEqualsToValueRule(final String variable, final String... values) {
+        return new RelatedQuestionRule(
                 ElementUtil.randomId(),
                 ExprUtil.atLeastOneValueEqualsToVariable(variable, values));
     }
 
-    public static RelatedQuestionComplexRule createRuleIfVariableIsTrue(final String ruleId, final String variable) {
-        return new RelatedQuestionComplexRule(ruleId, ExprUtil.isAnswerTrue(variable));
+    public static RelatedQuestionRule createRuleIfVariableIsTrue(final String ruleId, final String variable) {
+        return new RelatedQuestionRule(ruleId, ExprUtil.isAnswerTrue(variable));
     }
 
-    public static RelatedQuestionComplexRule createRuleIfVariableIsFalse(final String ruleId, final String variable) {
-        return new RelatedQuestionComplexRule(ruleId, ExprUtil.isAnswerFalse(variable));
+    public static RelatedQuestionRule createRuleIfVariableIsFalse(final String ruleId, final String variable) {
+        return new RelatedQuestionRule(ruleId, ExprUtil.isAnswerFalse(variable));
     }
 
-    public static RelatedQuestionComplexRule createRegexpRule(final Element element, final String pattern) {
+    public static RelatedQuestionRule createRegexpRule(final Element element, final String pattern) {
         return createRegexpRule(element.getId(), pattern);
     }
 
-    public static RelatedQuestionComplexRule createRegexpRule(final String variable, final String pattern) {
-        return new RelatedQuestionComplexRule(ElementUtil.randomId(), new Regexp(variable, pattern));
+    public static RelatedQuestionRule createRegexpRule(final String variable, final String pattern) {
+        return new RelatedQuestionRule(ElementUtil.randomId(), new Regexp(variable, pattern));
     }
 
 
