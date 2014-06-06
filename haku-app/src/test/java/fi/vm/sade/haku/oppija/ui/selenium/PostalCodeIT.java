@@ -64,8 +64,8 @@ public class PostalCodeIT extends DummyModelBaseItTest {
         Element theme = new ThemeBuilder(randomId()).previewable().build();
         phase.addChild(theme);
         ImmutableList<Option> options = ImmutableList.of(
-                (Option) new OptionBuilder().setI18nText(ElementUtil.createI18NAsIs(POST_OFFICE)).setValue(POST_CODE).build(),
-                (Option) new OptionBuilder().setI18nText(ElementUtil.createI18NAsIs(POST_OFFICE2)).setValue(POST_CODE2).build());
+                (Option) new OptionBuilder().setValue(POST_CODE).i18nText(ElementUtil.createI18NAsIs(POST_OFFICE)).build(),
+                (Option) new OptionBuilder().setValue(POST_CODE2).i18nText(ElementUtil.createI18NAsIs(POST_OFFICE2)).build());
         postalCode = new PostalCode(randomId(), createI18NAsIs(randomId()), options);
         theme.addChild(postalCode);
         textQuestion = (TextQuestion) new TextQuestionBuilder(randomId()).i18nText(createI18NAsIs(randomId())).build();

@@ -250,6 +250,7 @@ public final class KoulutustaustaPhase {
 
 
         pkKysymyksetRule.addChild(Dropdown(OppijaConstants.PERUSOPETUS_KIELI)
+                .emptyOption()
                 .addOption(ElementUtil.createI18NAsIs(""), "")
                 .addOptions(koodistoService.getTeachingLanguages())
                 .required()

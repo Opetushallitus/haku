@@ -49,9 +49,9 @@ public class DropdownSelectHAK_295 extends AbstractSeleniumBase {
     Option option3;
 
     private void init(final String dropdownAttribute, final boolean setDefault) {
-        option1 = (Option) new OptionBuilder().setI18nText(createI18NAsIs(OPTION_1_ID)).setValue(OPTION_1_ID).build();
-        option2 = (Option) new OptionBuilder().setI18nText(createI18NAsIs(OPTION_2_ID)).setValue(OPTION_2_ID).build();
-        option3 = (Option) new OptionBuilder().setI18nText(createI18NAsIs(OPTION_3_ID)).setValue(OPTION_3_ID).build();
+        option1 = (Option) new OptionBuilder().setValue(OPTION_1_ID).i18nText(createI18NAsIs(OPTION_1_ID)).build();
+        option2 = (Option) new OptionBuilder().setValue(OPTION_2_ID).i18nText(createI18NAsIs(OPTION_2_ID)).build();
+        option3 = (Option) new OptionBuilder().setValue(OPTION_3_ID).i18nText(createI18NAsIs(OPTION_3_ID)).build();
         dropdownSelect = new DropdownSelectBuilder(SELECT_ID)
                 .addOptions(ImmutableList.of(option3, option2, option1))
                 .defaultValueAttribute(dropdownAttribute)

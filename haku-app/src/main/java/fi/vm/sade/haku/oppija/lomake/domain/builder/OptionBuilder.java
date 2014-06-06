@@ -22,11 +22,6 @@ public class OptionBuilder extends ElementBuilder {
         return this;
     }
 
-    public OptionBuilder setI18nText(I18nText i18nText) {
-        this.i18nText = i18nText;
-        return this;
-    }
-
     @Override
     public Element buildImpl() {
         return new Option(this.i18nText, value);
