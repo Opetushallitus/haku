@@ -521,7 +521,13 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
 
         DBObject sortBy = new BasicDBObject(FIELD_LAST_AUTOMATED_PROCESSING_TIME, 1);
 
+
         DBCursor cursor = getCollection().find(query).sort(sortBy).limit(1);
+        if (ensureIndex) {
+            DBObject hint = new BasicDBObject(FIELD_APPLICATION_STATE, 1);
+            hint.put(FIELD_LAST_AUTOMATED_PROCESSING_TIME, 1);
+            cursor.hint(hint);
+        }
         if (!cursor.hasNext()) {
             return null;
         }
@@ -566,7 +572,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
 
         // Preference Indexes
         for (int i = 1; i <= 5; i++) {
-            createPreferenceIndexes("preference"+i, false,
+            createPreferenceIndexes("preference"+i, i>1,
                     String.format(FIELD_LOP_T, i),
                     String.format(FIELD_DISCRETIONARY_T, i),
                     String.format(FIELD_AO_T, i),
