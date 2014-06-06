@@ -10,6 +10,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.Answer;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.DiscretionaryAttachments;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.Print;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionRule;
+import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionRuleBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.Expr;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
@@ -69,13 +70,12 @@ public class ValmisPhase {
 
     public static List<Element> createAdditionalInformationElements(FormParameters formParameters) {
 
-        RelatedQuestionRule athleteRule = new RelatedQuestionRule("athleteRule",
-                atLeastOneVariableEqualsToValue(ElementUtil.KYLLA,
-                        "preference1_urheilijan_ammatillisen_koulutuksen_lisakysymys", "preference1_urheilijalinjan_lisakysymys",
-                        "preference2_urheilijan_ammatillisen_koulutuksen_lisakysymys", "preference2_urheilijalinjan_lisakysymys",
-                        "preference3_urheilijan_ammatillisen_koulutuksen_lisakysymys", "preference3_urheilijalinjan_lisakysymys",
-                        "preference4_urheilijan_ammatillisen_koulutuksen_lisakysymys", "preference4_urheilijalinjan_lisakysymys",
-                        "preference5_urheilijan_ammatillisen_koulutuksen_lisakysymys", "preference5_urheilijalinjan_lisakysymys"));
+        RelatedQuestionRule athleteRule = new RelatedQuestionRuleBuilder().setId("athleteRule").setExpr(atLeastOneVariableEqualsToValue(ElementUtil.KYLLA,
+                "preference1_urheilijan_ammatillisen_koulutuksen_lisakysymys", "preference1_urheilijalinjan_lisakysymys",
+                "preference2_urheilijan_ammatillisen_koulutuksen_lisakysymys", "preference2_urheilijalinjan_lisakysymys",
+                "preference3_urheilijan_ammatillisen_koulutuksen_lisakysymys", "preference3_urheilijalinjan_lisakysymys",
+                "preference4_urheilijan_ammatillisen_koulutuksen_lisakysymys", "preference4_urheilijalinjan_lisakysymys",
+                "preference5_urheilijan_ammatillisen_koulutuksen_lisakysymys", "preference5_urheilijalinjan_lisakysymys")).createRelatedQuestionRule();
         Element athleteGroup = TitledGroup("atheleteGroup").formParams(formParameters).build();
 
         athleteGroup.addChild(Text("athleteP1").labelKey("form.valmis.haeturheilijana").formParams(formParameters).build());
@@ -105,8 +105,7 @@ public class ValmisPhase {
                 String.format(EDUCATION_CODE_KEY, 4),
                 String.format(EDUCATION_CODE_KEY, 5));
 
-        Element musiikkiTanssiLiikuntaRule = new RelatedQuestionRule("musiikkiTanssiLiikuntaRule",
-                ExprUtil.reduceToOr(ImmutableList.of(isMusiikki, isTanssi, isLiiKunta)));
+        Element musiikkiTanssiLiikuntaRule = new RelatedQuestionRuleBuilder().setId("musiikkiTanssiLiikuntaRule").setExpr(ExprUtil.reduceToOr(ImmutableList.of(isMusiikki, isTanssi, isLiiKunta))).createRelatedQuestionRule();
         musiikkiTanssiLiikuntaRule.addChild(TitledGroup("musiikkitanssiliikunta.ryhma").formParams(formParameters).build()
                 .addChild(Text(randomId()).labelKey("musiikkitanssiliikunta").formParams(formParameters).build()));
 

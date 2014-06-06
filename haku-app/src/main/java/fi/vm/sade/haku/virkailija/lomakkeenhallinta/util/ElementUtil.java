@@ -24,6 +24,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Titled;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.gradegrid.GradeGridRow;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionRule;
+import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionRuleBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.Regexp;
 import fi.vm.sade.haku.oppija.lomake.validation.Validator;
 import fi.vm.sade.haku.oppija.lomake.validation.validators.RegexFieldValidator;
@@ -248,17 +249,15 @@ public final class ElementUtil {
 
 
     public static RelatedQuestionRule createVarEqualsToValueRule(final String variable, final String... values) {
-        return new RelatedQuestionRule(
-                ElementUtil.randomId(),
-                ExprUtil.atLeastOneValueEqualsToVariable(variable, values));
+        return new RelatedQuestionRuleBuilder().setId(ElementUtil.randomId()).setExpr(ExprUtil.atLeastOneValueEqualsToVariable(variable, values)).createRelatedQuestionRule();
     }
 
     public static RelatedQuestionRule createRuleIfVariableIsTrue(final String ruleId, final String variable) {
-        return new RelatedQuestionRule(ruleId, ExprUtil.isAnswerTrue(variable));
+        return new RelatedQuestionRuleBuilder().setId(ruleId).setExpr(ExprUtil.isAnswerTrue(variable)).createRelatedQuestionRule();
     }
 
     public static RelatedQuestionRule createRuleIfVariableIsFalse(final String ruleId, final String variable) {
-        return new RelatedQuestionRule(ruleId, ExprUtil.isAnswerFalse(variable));
+        return new RelatedQuestionRuleBuilder().setId(ruleId).setExpr(ExprUtil.isAnswerFalse(variable)).createRelatedQuestionRule();
     }
 
     public static RelatedQuestionRule createRegexpRule(final Element element, final String pattern) {
@@ -266,7 +265,7 @@ public final class ElementUtil {
     }
 
     public static RelatedQuestionRule createRegexpRule(final String variable, final String pattern) {
-        return new RelatedQuestionRule(ElementUtil.randomId(), new Regexp(variable, pattern));
+        return new RelatedQuestionRuleBuilder().setId(ElementUtil.randomId()).setExpr(new Regexp(variable, pattern)).createRelatedQuestionRule();
     }
 
 

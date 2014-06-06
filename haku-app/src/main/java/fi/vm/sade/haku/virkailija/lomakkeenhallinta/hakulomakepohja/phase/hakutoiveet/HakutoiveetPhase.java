@@ -27,6 +27,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.PreferenceRow;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.PreferenceTable;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionRule;
+import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionRuleBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.*;
 import fi.vm.sade.haku.oppija.lomake.validation.validators.PreferenceValidator;
 import fi.vm.sade.haku.oppija.lomake.validation.validators.RegexFieldValidator;
@@ -125,8 +126,7 @@ public class HakutoiveetPhase {
         discretionaryRule.addChild(discretionary);
         discretionaryRule2.addChild(discretionaryRule);
 
-        RelatedQuestionRule KoulutusValittu = new RelatedQuestionRule(
-                ElementUtil.randomId(), new Not(new Equals(new Variable(index + "-Koulutus-id"), new Value(""))));
+        RelatedQuestionRule KoulutusValittu = new RelatedQuestionRuleBuilder().setId(ElementUtil.randomId()).setExpr(new Not(new Equals(new Variable(index + "-Koulutus-id"), new Value("")))).createRelatedQuestionRule();
 
         RelatedQuestionRule keskeytynytTaiUlkomainenRule =
                 createVarEqualsToValueRule("POHJAKOULUTUS", KESKEYTYNYT, ULKOMAINEN_TUTKINTO);
@@ -187,7 +187,7 @@ public class HakutoiveetPhase {
                 .formParams(formParameters).build();
         Expr expr = new And(new Equals(new Variable(index + "-Koulutus-id-athlete"), new Value(ElementUtil.KYLLA)),
                 new Equals(new Variable(index + "-Koulutus-id-vocational"), new Value(ElementUtil.KYLLA)));
-        RelatedQuestionRule rule = new RelatedQuestionRule(ElementUtil.randomId(), expr);
+        RelatedQuestionRule rule = new RelatedQuestionRuleBuilder().setId(ElementUtil.randomId()).setExpr(expr).createRelatedQuestionRule();
         rule.addChild(radio);
         return rule;
     }
@@ -196,7 +196,7 @@ public class HakutoiveetPhase {
         HiddenValue hiddenValue = new HiddenValue(index + "_urheilijalinjan_lisakysymys", ElementUtil.KYLLA);
         Expr expr = new And(new Equals(new Variable(index + "-Koulutus-id-athlete"), new Value(ElementUtil.KYLLA)),
                 new Equals(new Variable(index + "-Koulutus-id-vocational"), new Value(ElementUtil.EI)));
-        RelatedQuestionRule rule = new RelatedQuestionRule(ElementUtil.randomId(), expr);
+        RelatedQuestionRule rule = new RelatedQuestionRuleBuilder().setId(ElementUtil.randomId()).setExpr(expr).createRelatedQuestionRule();
         rule.addChild(hiddenValue);
         return rule;
     }

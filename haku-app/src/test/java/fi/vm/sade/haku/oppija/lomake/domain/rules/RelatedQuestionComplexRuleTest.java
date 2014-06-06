@@ -24,7 +24,7 @@ public class RelatedQuestionComplexRuleTest {
     @Before
     public void setUp() throws Exception {
         Equals equals = new Equals(new Variable(AIDINKIELI), new Value(FI));
-        relatedQuestionRule = new RelatedQuestionRule(ElementUtil.randomId(), equals);
+        relatedQuestionRule = new RelatedQuestionRuleBuilder().setId(ElementUtil.randomId()).setExpr(equals).createRelatedQuestionRule();
         relatedQuestionRule.addChild(ElementUtil.createHiddenGradeGridRowWithId(ElementUtil.randomId()));
     }
 

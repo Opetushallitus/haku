@@ -26,6 +26,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Radio;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.AddElementRule;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionRule;
+import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionRuleBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.*;
 import fi.vm.sade.haku.oppija.lomake.validation.validators.PastDateValidator;
 import fi.vm.sade.haku.oppija.lomake.validation.validators.RegexFieldValidator;
@@ -80,7 +81,7 @@ public final class HenkilotiedotPhase {
         henkilotiedotTeema.addChild(kansalaisuus);
         Expr suomalainen = new Regexp(kansalaisuus.getId(), EMPTY_OR_FIN_PATTERN);
 
-        RelatedQuestionRule eiSuomalainen = new RelatedQuestionRule(ElementUtil.randomId(), new Not(suomalainen));
+        RelatedQuestionRule eiSuomalainen = new RelatedQuestionRuleBuilder().setId(ElementUtil.randomId()).setExpr(new Not(suomalainen)).createRelatedQuestionRule();
         // Ulkomaalaisten tunnisteet
         Element onkoSuomalainenKysymys = Radio("onkoSinullaSuomalainenHetu")
                 .addOptions(ImmutableList.of(
@@ -94,7 +95,7 @@ public final class HenkilotiedotPhase {
         Expr onSuomalainenHetu = new Equals(new Variable("onkoSinullaSuomalainenHetu"), new Value(KYLLA));
 
         Or kysytaankoHetu = new Or(suomalainen, onSuomalainenHetu);
-        RelatedQuestionRule kysytaankoHetuSaanto = new RelatedQuestionRule(ElementUtil.randomId(), kysytaankoHetu);
+        RelatedQuestionRule kysytaankoHetuSaanto = new RelatedQuestionRuleBuilder().setId(ElementUtil.randomId()).setExpr(kysytaankoHetu).createRelatedQuestionRule();
         Element henkilotunnus = TextQuestion("Henkilotunnus")
                 .requiredInline()
                 .placeholder("ppkkvv*****")
@@ -141,7 +142,7 @@ public final class HenkilotiedotPhase {
         addRequiredValidator(syntymaaika, formParameters);
         syntymaaika.setInline(true);
 
-        RelatedQuestionRule eiHetuaSaanto = new RelatedQuestionRule(ElementUtil.randomId(), new Equals(new Variable("onkoSinullaSuomalainenHetu"), new Value(EI)));
+        RelatedQuestionRule eiHetuaSaanto = new RelatedQuestionRuleBuilder().setId(ElementUtil.randomId()).setExpr(new Equals(new Variable("onkoSinullaSuomalainenHetu"), new Value(EI))).createRelatedQuestionRule();
         eiHetuaSaanto.addChild(
                 sukupuoli,
                 syntymaaika,

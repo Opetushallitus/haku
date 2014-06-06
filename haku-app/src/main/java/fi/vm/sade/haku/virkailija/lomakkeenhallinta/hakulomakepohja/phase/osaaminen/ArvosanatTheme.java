@@ -4,6 +4,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.builder.ThemeBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.gradegrid.GradeGrid;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionRule;
+import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionRuleBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.*;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ExprUtil;
@@ -72,7 +73,7 @@ public final class ArvosanatTheme {
                                 OppijaConstants.ALUEITTAIN_YKSILOLLISTETTY, OppijaConstants.YKSILOLLISTETTY,
                                 OppijaConstants.OSITTAIN_YKSILOLLISTETTY)),
                 new Regexp("_meta_grades_transferred_pk", "true"));
-        RelatedQuestionRule relatedQuestionPk = new RelatedQuestionRule("rule_grade_pk", kysyArvosanatPk);
+        RelatedQuestionRule relatedQuestionPk = new RelatedQuestionRuleBuilder().setId("rule_grade_pk").setExpr(kysyArvosanatPk).createRelatedQuestionRule();
         relatedQuestionPk.addChild(grid_pk);
         arvosanatTheme.addChild(relatedQuestionPk);
 
@@ -87,31 +88,26 @@ public final class ArvosanatTheme {
                                         new Value(String.valueOf(hakukausiVuosi)))),
                         ExprUtil.atLeastOneValueEqualsToVariable(RELATED_ELEMENT_ID, OppijaConstants.YLIOPPILAS)),
                 new Regexp("_meta_grades_transferred_lk", "true"));
-        RelatedQuestionRule relatedQuestionYo = new RelatedQuestionRule("rule_grade_yo", kysyArvosanatLukio);
+        RelatedQuestionRule relatedQuestionYo = new RelatedQuestionRuleBuilder().setId("rule_grade_yo").setExpr(kysyArvosanatLukio).createRelatedQuestionRule();
         relatedQuestionYo.addChild(grid_yo);
         arvosanatTheme.addChild(relatedQuestionYo);
 
         // Ei arvosanoja
-        RelatedQuestionRule eiNaytetaPk = new RelatedQuestionRule("rule_grade_no_pk",
-                new Or(
-                    new Equals(new Variable(OppijaConstants.PERUSOPETUS_PAATTOTODISTUSVUOSI), new Value(String.valueOf(hakukausiVuosi))),
-                    new Not(new Regexp("_meta_grades_transferred_pk", "true"))
-                )
-        );
+        RelatedQuestionRule eiNaytetaPk = new RelatedQuestionRuleBuilder().setId("rule_grade_no_pk").setExpr(new Or(
+                new Equals(new Variable(OppijaConstants.PERUSOPETUS_PAATTOTODISTUSVUOSI), new Value(String.valueOf(hakukausiVuosi))),
+                new Not(new Regexp("_meta_grades_transferred_pk", "true"))
+        )).createRelatedQuestionRule();
         eiNaytetaPk.addChild(Text("nogradegrid").labelKey("form.arvosanat.eiKysyta.pk").formParams(formParameters).build());
         arvosanatTheme.addChild(eiNaytetaPk);
 
-        RelatedQuestionRule eiNaytetaYo = new RelatedQuestionRule("rule_grade_no_yo",
-                new Or(
-                    new Equals(new Variable("lukioPaattotodistusVuosi"), new Value(String.valueOf(hakukausiVuosi))),
-                    new Not(new Regexp("_meta_grades_transferred_lk", "true"))
-                )
-        );
+        RelatedQuestionRule eiNaytetaYo = new RelatedQuestionRuleBuilder().setId("rule_grade_no_yo").setExpr(new Or(
+                new Equals(new Variable("lukioPaattotodistusVuosi"), new Value(String.valueOf(hakukausiVuosi))),
+                new Not(new Regexp("_meta_grades_transferred_lk", "true"))
+        )).createRelatedQuestionRule();
         eiNaytetaYo.addChild(Text("nogradegrid").labelKey("form.arvosanat.eiKysyta.yo").formParams(formParameters).build());
         arvosanatTheme.addChild(eiNaytetaYo);
 
-        RelatedQuestionRule eiNayteta = new RelatedQuestionRule("rule_grade_no",
-                ExprUtil.atLeastOneValueEqualsToVariable(RELATED_ELEMENT_ID, "5", OppijaConstants.KESKEYTYNYT, OppijaConstants.ULKOMAINEN_TUTKINTO));
+        RelatedQuestionRule eiNayteta = new RelatedQuestionRuleBuilder().setId("rule_grade_no").setExpr(ExprUtil.atLeastOneValueEqualsToVariable(RELATED_ELEMENT_ID, "5", OppijaConstants.KESKEYTYNYT, OppijaConstants.ULKOMAINEN_TUTKINTO)).createRelatedQuestionRule();
         eiNayteta.addChild(Text("nogradegrid").labelKey("form.arvosanat.eikysyta").formParams(formParameters).build());
         arvosanatTheme.addChild(eiNayteta);
 
