@@ -51,6 +51,10 @@ public class Application implements Serializable {
         ACTIVE, PASSIVE, INCOMPLETE, SUBMITTED;
     }
 
+    public enum PostProcessingState {
+        NOMAIL, FULL, DONE, FAILED
+    }
+
     private static final long serialVersionUID = -7491168801255850954L;
     public static final String VAIHE_ID = "phaseId";
 
@@ -74,7 +78,8 @@ public class Application implements Serializable {
     private Long studentOidChecked;
     private Date received;
     private Date updated;
-    private String redoPostProcess;
+    //TODO: Rename if/when refactoring
+    private PostProcessingState redoPostProcess;
 
     private String fullName;
     private HashSet<String> searchNames = new HashSet<String>();
@@ -494,11 +499,11 @@ public class Application implements Serializable {
         this.studentOidChecked = studentOidChecked;
     }
 
-    public void setRedoPostProcess(String redoPostProcess) {
+    public void setRedoPostProcess(PostProcessingState redoPostProcess) {
         this.redoPostProcess = redoPostProcess;
     }
 
-    public String getRedoPostProcess() {
+    public PostProcessingState getRedoPostProcess() {
         return redoPostProcess;
     }
 

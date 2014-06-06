@@ -26,6 +26,7 @@ import fi.vm.sade.haku.oppija.hakemus.converter.DBObjectToApplicationFunction;
 import fi.vm.sade.haku.oppija.hakemus.converter.DBObjectToMapFunction;
 import fi.vm.sade.haku.oppija.hakemus.converter.DBObjectToSearchResultItem;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
+import fi.vm.sade.haku.oppija.hakemus.domain.Application.PostProcessingState;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationDAO;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationQueryParameters;
@@ -521,7 +522,13 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
 
         DBObject sortBy = new BasicDBObject(FIELD_LAST_AUTOMATED_PROCESSING_TIME, 1);
 
+
         DBCursor cursor = getCollection().find(query).sort(sortBy).limit(1);
+        if (ensureIndex) {
+            DBObject hint = new BasicDBObject(FIELD_APPLICATION_STATE, 1);
+            hint.put(FIELD_LAST_AUTOMATED_PROCESSING_TIME, 1);
+            cursor.hint(hint);
+        }
         if (!cursor.hasNext()) {
             return null;
         }
@@ -531,9 +538,14 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     @Override
     public Application getNextRedo() {
 
-        DBObject query = QueryBuilder.start(FIELD_REDO_POSTPROCESS).in(Lists.newArrayList("FULL", "NOMAIL")).get();
+        DBObject query = QueryBuilder.start(FIELD_REDO_POSTPROCESS).in(Lists.newArrayList(PostProcessingState.FULL.toString(), PostProcessingState.NOMAIL.toString())).get();
         DBObject sortBy = new BasicDBObject(FIELD_LAST_AUTOMATED_PROCESSING_TIME, 1);
         DBCursor cursor = getCollection().find(query).sort(sortBy).limit(1);
+        if (ensureIndex) {
+            DBObject hint = new BasicDBObject(FIELD_REDO_POSTPROCESS, 1);
+            hint.put(FIELD_LAST_AUTOMATED_PROCESSING_TIME, 1);
+            cursor.hint(hint);
+        }
         if (!cursor.hasNext()) {
             return null;
         }
@@ -562,11 +574,11 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         createIndex(INDEX_SENDING_SCHOOL, true, FIELD_SENDING_SCHOOL, FIELD_SENDING_CLASS);
         createIndex(INDEX_SENDING_CLASS, true, FIELD_SENDING_CLASS);
         createIndex(INDEX_SEARCH_NAMES, false, FIELD_SEARCH_NAMES);
-        createIndex(INDEX_REDO_POSTPROCESS, true, FIELD_REDO_POSTPROCESS);
+        createIndex(INDEX_REDO_POSTPROCESS, true, FIELD_REDO_POSTPROCESS, FIELD_LAST_AUTOMATED_PROCESSING_TIME);
 
         // Preference Indexes
         for (int i = 1; i <= 5; i++) {
-            createPreferenceIndexes("preference"+i, false,
+            createPreferenceIndexes("preference"+i, i>1,
                     String.format(FIELD_LOP_T, i),
                     String.format(FIELD_DISCRETIONARY_T, i),
                     String.format(FIELD_AO_T, i),

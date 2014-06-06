@@ -551,7 +551,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     @Override
     public void postProcess(String oid, boolean email) {
         Application application = applicationService.getApplicationByOid(oid);
-        application.setRedoPostProcess(email ? "FULL" : "NOMAIL");
+        application.setRedoPostProcess(email ? Application.PostProcessingState.FULL: Application.PostProcessingState.NOMAIL);
         applicationService.update(new Application(oid), application);
     }
 
