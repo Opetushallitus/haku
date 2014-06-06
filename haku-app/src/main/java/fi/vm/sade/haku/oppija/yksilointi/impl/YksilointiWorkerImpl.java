@@ -16,6 +16,7 @@
 package fi.vm.sade.haku.oppija.yksilointi.impl;
 
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
+import fi.vm.sade.haku.oppija.hakemus.domain.Application.PostProcessingState;
 import fi.vm.sade.haku.oppija.hakemus.domain.util.ApplicationUtil;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationDAO;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
@@ -104,31 +105,36 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
      *
      * @param sendMail
      */
-    public void processApplications(boolean sendMail) {
+    public void processApplications(final boolean sendMail) {
         Application application = getNextSubmittedApplication();
         int count = 0;
         while (application != null && ++count < maxBatchSize) {
-            try {
-                application = applicationService.fillLOPChain(application, false);
-                application = applicationService.addPersonOid(application);
-                if (!skipSendingSchoolAutomatic) {
-                    application = applicationService.addSendingSchool(application);
-                    application = applicationService.addBaseEducation(application);
-                }
-                application = validateApplication(application);
-                this.applicationDAO.update(new Application(application.getOid()), application);
-                //applicationService.update(, application);
-                if (sendMail) {
-                    try {
-                        sendMail(application);
-                    } catch (EmailException e) {
-                        LOGGER.info("Error process applications", e);
-                    }
-                }
-                application = getNextSubmittedApplication();
-            } catch (Exception e) {
-                LOGGER.error("post process failed: {}", e);
+            processOneApplication(application, sendMail);
+            application = getNextSubmittedApplication();
+        }
+    }
+
+    public void processOneApplication(Application application, final boolean sendMail){
+        try {
+            application = applicationService.fillLOPChain(application, false);
+            application = applicationService.addPersonOid(application);
+            if (!skipSendingSchoolAutomatic) {
+                application = applicationService.addSendingSchool(application);
+                application = applicationService.addBaseEducation(application);
             }
+            application = validateApplication(application);
+            this.applicationDAO.update(new Application(application.getOid()), application);
+            //applicationService.update(, application);
+            if (sendMail) {
+                try {
+                    sendMail(application);
+                } catch (EmailException e) {
+                    LOGGER.error("Send mail failed for application:" + application.getOid(), e);
+                }
+            }
+        } catch (Exception e) {
+            LOGGER.error("post process failed for application: " +application.getOid(), e);
+            setProcessingStateToFailed(application.getOid());
         }
     }
 
@@ -146,35 +152,40 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
         Application application = getNextRedo();
         int count = 0;
         while (application != null && ++count < maxBatchSize) {
-            try {
-                LOGGER.debug("Reprocessing application " + application.getOid());
-                String redo = application.getRedoPostProcess();
-                LOGGER.debug("Reprocessing application, redo: " + redo);
-                if (redo != null) {
-                    if ("FULL".equals(redo) || "NOMAIL".equals(redo)) {
-                        application = applicationService.fillLOPChain(application, false);
-                        application = applicationService.addPersonOid(application);
-                        if (!skipSendingSchoolManual) {
-                            application = applicationService.addSendingSchool(application);
-                            application = applicationService.addBaseEducation(application);
-                        }
-                        application = validateApplication(application);
-                        application.setRedoPostProcess("DONE");
-                        this.applicationDAO.update(new Application(application.getOid()), application);
-                        LOGGER.debug("Reprocessing " + application.getOid() + " done");
+            reprocessOneApplication(application, sendMail);
+            application = getNextRedo();
+        }
+    }
+
+    private void reprocessOneApplication(Application application, final boolean sendMail){
+        try {
+            LOGGER.debug("Reprocessing application " + application.getOid());
+            PostProcessingState redo = application.getRedoPostProcess();
+            LOGGER.debug("Reprocessing application, redo: " + redo);
+            if (redo != null) {
+                if (PostProcessingState.FULL.equals(redo) || PostProcessingState.NOMAIL.equals(redo)) {
+                    application = applicationService.fillLOPChain(application, false);
+                    application = applicationService.addPersonOid(application);
+                    if (!skipSendingSchoolManual) {
+                        application = applicationService.addSendingSchool(application);
+                        application = applicationService.addBaseEducation(application);
                     }
-                    if (sendMail && redo.equals("FULL")) {
-                        try {
-                            sendMail(application);
-                        } catch (EmailException e) {
-                            LOGGER.info("Error process applications", e);
-                        }
+                    application = validateApplication(application);
+                    application.setRedoPostProcess(PostProcessingState.DONE);
+                    this.applicationDAO.update(new Application(application.getOid()), application);
+                    LOGGER.debug("Reprocessing " + application.getOid() + " done");
+                }
+                if (sendMail && PostProcessingState.FULL.equals(redo)) {
+                    try {
+                        sendMail(application);
+                    } catch (EmailException e) {
+                        LOGGER.error("Send mail failed in redo for application:" + application.getOid(), e);
                     }
                 }
-                application = getNextRedo();
-            } catch (Exception e) {
-                LOGGER.error("redoPostProcess failed: {}", e);
             }
+        } catch (Exception e) {
+            LOGGER.error("redoPostProcess failed for application " + application.getOid(), e);
+            setProcessingStateToFailed(application.getOid());
         }
     }
 
@@ -334,5 +345,11 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
             applicationDAO.save(application);
         }
         return application;
+    }
+
+    private void setProcessingStateToFailed(String oid){
+        Application application = applicationService.getApplicationByOid(oid);
+        application.setRedoPostProcess(PostProcessingState.FAILED);
+        this.applicationDAO.update(new Application(oid), application);
     }
 }
