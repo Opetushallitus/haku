@@ -184,10 +184,6 @@ public final class ElementUtil {
         ((Titled) element).setVerboseHelp(i18nText);
     }
 
-    public static void setHelp(final Element element, final String key, final FormParameters formParameters) {
-        element.setHelp(formParameters.getI18nText(key));
-    }
-
     public static String randomId() {
         //starting random id with a letter preventing some javascript errors
         return 'a' + UUID.randomUUID().toString().replace('.', '_');
