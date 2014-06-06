@@ -348,7 +348,7 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
     }
 
     private void setProcessingStateToFailed(String oid){
-        Application application = applicationService.getApplicationByOid(oid);
+        Application application = applicationDAO.find(new Application(oid)).get(0);
         application.setRedoPostProcess(PostProcessingState.FAILED);
         this.applicationDAO.update(new Application(oid), application);
     }
