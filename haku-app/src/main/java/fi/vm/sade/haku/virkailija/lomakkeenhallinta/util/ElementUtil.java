@@ -256,10 +256,6 @@ public final class ElementUtil {
         return new RelatedQuestionRuleBuilder().setId(ruleId).setExpr(ExprUtil.isAnswerTrue(variable)).createRelatedQuestionRule();
     }
 
-    public static RelatedQuestionRule createRuleIfVariableIsFalse(final String ruleId, final String variable) {
-        return new RelatedQuestionRuleBuilder().setId(ruleId).setExpr(ExprUtil.isAnswerFalse(variable)).createRelatedQuestionRule();
-    }
-
     public static RelatedQuestionRule createRegexpRule(final Element element, final String pattern) {
         return createRegexpRule(element.getId(), pattern);
     }
