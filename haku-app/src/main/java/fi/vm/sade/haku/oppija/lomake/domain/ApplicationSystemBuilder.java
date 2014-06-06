@@ -17,6 +17,7 @@ public class ApplicationSystemBuilder {
     private List<Element> applicationCompleteElements;
     private List<Element> additionalPrintElements;
     private int maxApplicationOptions;
+    private String kohdejoukkoUri;
 
     public ApplicationSystemBuilder() {
         this.additionalPrintElements = new ArrayList<Element>();
@@ -70,12 +71,17 @@ public class ApplicationSystemBuilder {
 
     public ApplicationSystem get() {
         return new ApplicationSystem(id, form, name, applicationPeriods,
-                applicationSystemType, hakukausiVuosi, hakukausiUri, applicationCompleteElements,
+                applicationSystemType, hakukausiVuosi, hakukausiUri, kohdejoukkoUri, applicationCompleteElements,
                 additionalPrintElements, maxApplicationOptions);
     }
 
     public ApplicationSystemBuilder addMaxApplicationOptions(int maxHakukohdes) {
         this.maxApplicationOptions = maxHakukohdes;
+        return this;
+    }
+
+    public ApplicationSystemBuilder addKohdejoukkoUri(String kohdejoukkoUri) {
+        this.kohdejoukkoUri = kohdejoukkoUri;
         return this;
     }
 }

@@ -339,9 +339,16 @@ public class ApplicationServiceImpl implements ApplicationService {
         SuoritusDTO mamuValmentava = suoritukset.get(mamuValmistavaKomoOid);
         SuoritusDTO pk = suoritukset.get(perusopetusKomoOid);
 
-        boolean ammattistarttiSuoritettu = false;
-        boolean kuntouttavaSuoritettu = false;
-        boolean mamuValmentavaSuoritettu = false;
+        Map<String, String> educationAnswers = new HashMap<String, String>(application.getPhaseAnswers(OppijaConstants.PHASE_EDUCATION));
+
+        String ammattistarttiSuoritettuStr = educationAnswers.get(OppijaConstants.ELEMENT_ID_LISAKOULUTUS_AMMATTISTARTTI);
+        String kuntouttavaSuoritettuStr = educationAnswers.get(OppijaConstants.ELEMENT_ID_LISAKOULUTUS_VAMMAISTEN);
+        String mamuValmentavaSuoritettuStr = educationAnswers.get(OppijaConstants.ELEMENT_ID_LISAKOULUTUS_MAAHANMUUTTO);
+
+        boolean ammattistarttiSuoritettu = isNotBlank(ammattistarttiSuoritettuStr) ? Boolean.valueOf(ammattistarttiSuoritettuStr) : false;
+        boolean kuntouttavaSuoritettu = isNotBlank(kuntouttavaSuoritettuStr) ? Boolean.valueOf(kuntouttavaSuoritettuStr) : false;
+        boolean mamuValmentavaSuoritettu = isNotBlank(mamuValmentavaSuoritettuStr) ? Boolean.valueOf(mamuValmentavaSuoritettuStr) : false;
+
         boolean gradesTranferredPk = false;
         boolean gradesTranferredLk = false;
 
@@ -401,11 +408,15 @@ public class ApplicationServiceImpl implements ApplicationService {
             gradesTranferredPk = true;
         }
 
-        if (pohjakoulutus == null) {
+        boolean pohjakoulutusSuoritettu = pohjakoulutus != null;
+
+        if (!(ammattistarttiSuoritettu || kuntouttavaSuoritettu || mamuValmentavaSuoritettu || pohjakoulutusSuoritettu)) {
             return application;
         }
 
-        Map<String, String> educationAnswers = new HashMap<String, String>(application.getPhaseAnswers(OppijaConstants.PHASE_EDUCATION));
+//        if (pohjakoulutus == null ) {
+//            return application;
+//        }
 
         if (gradesTranferredLk) {
             application.addMeta("grades_transferred_lk", "true");

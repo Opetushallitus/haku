@@ -104,15 +104,30 @@
                 </c:if>
             </h3>
             <table class="margin-top-2">
+                <c:if test="${application.redoPostProcess == 'DONE'}">
+                    <fmt:message key="virkailija.hakemus.kasittely.done" var="redoProcessState"/>
+                </c:if>
+                <c:if test="${application.redoPostProcess == 'NOMAIL'}">
+                    <fmt:message key="virkailija.hakemus.kasittely.nomail" var="redoProcessState"/>
+                </c:if>
+                <c:if test="${application.redoPostProcess == 'FULL'}">
+                    <fmt:message key="virkailija.hakemus.kasittely.full" var="redoProcessState"/>
+                </c:if>
+                <c:if test="${application.redoPostProcess == 'FAILED'}">
+                    <fmt:message key="virkailija.hakemus.kasittely.fail" var="redoProcessState"/>
+                </c:if>
+
+
                 <c:if test="${application.state eq 'ACTIVE'}">
-                    <fmt:message key="virkailija.hakemus.tila.voimassa" var="msg"/>
+                    <fmt:message key="virkailija.hakemus.tila.voimassa" var="applicationState"/>
                 </c:if>
                 <c:if test="${application.state eq 'PASSIVE'}">
-                    <fmt:message key="virkailija.hakemus.tila.peruttu" var="msg"/>
+                    <fmt:message key="virkailija.hakemus.tila.peruttu" var="applicationState"/>
                 </c:if>
                 <c:if test="${application.state eq 'INCOMPLETE'}">
-                    <fmt:message key="virkailija.hakemus.tila.puutteellinen" var="msg"/>
+                    <fmt:message key="virkailija.hakemus.tila.puutteellinen" var="applicationState"/>
                 </c:if>
+
                 <tr>
                     <haku:infoCell key="virkailija.hakemus.hakemusnro" value="${application.oid}"
                                    cellId="infocell_oid"/>
@@ -133,7 +148,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <haku:infoCell key="virkailija.hakemus.hakemuksen.tila" value='${msg}'/>
+                    <haku:infoCell key="virkailija.hakemus.hakemuksen.tila" value='${applicationState}'/>
 
                     <haku:infoCell key="virkailija.hakemus.henkilonumero" value="${application.personOid}"
                                    cellId="infocell_henkilonumero"/>
@@ -141,7 +156,7 @@
                     <haku:infoCell key="virkailija.vaihe.aidinkieli" value="${answers['aidinkieli']}"/>
                 </tr>
                 <tr>
-                    <td>&nbsp;</td>
+                    <haku:infoCell key="virkailija.hakemus.kasittely" value='${redoProcessState}'/>
 
                     <haku:infoCell key="virkailija.hakemus.oppijanumero" value="${application.studentOid}"
                                    cellId="infocell_oppijanumero"/>
