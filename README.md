@@ -2,6 +2,8 @@
 
 ### Getting Started
 
+Make sure you have JDK7 on your JAVA_HOME and Java Cryptography Extensions (JCE) installed.
+
     cd haku
     mvn clean install
     cd haku-app
