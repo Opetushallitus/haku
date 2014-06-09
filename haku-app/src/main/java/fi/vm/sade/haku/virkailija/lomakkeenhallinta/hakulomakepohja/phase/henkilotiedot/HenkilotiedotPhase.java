@@ -21,23 +21,27 @@ import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.builder.DropdownSelectBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.builder.ElementBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.PostalCode;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.SocialSecurityNumber;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.DateQuestion;
+import fi.vm.sade.haku.oppija.lomake.domain.builder.SocialSecurityNumberBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Radio;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.TextQuestion;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.AddElementRule;
-import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionComplexRule;
+import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionRule;
+import fi.vm.sade.haku.oppija.lomake.domain.builder.RelatedQuestionRuleBuilder;
+import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.*;
 import fi.vm.sade.haku.oppija.lomake.validation.validators.PastDateValidator;
 import fi.vm.sade.haku.oppija.lomake.validation.validators.RegexFieldValidator;
+import fi.vm.sade.haku.oppija.lomake.validation.validators.SocialSecurityNumberFieldValidator;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 
 import java.util.List;
 
+import static fi.vm.sade.haku.oppija.lomake.domain.builder.DateQuestionBuilder.Date;
+import static fi.vm.sade.haku.oppija.lomake.domain.builder.DropdownSelectBuilder.Dropdown;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.PhaseBuilder.Phase;
+import static fi.vm.sade.haku.oppija.lomake.domain.builder.PostalCodeBuilder.PostalCode;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.RadioBuilder.Radio;
+import static fi.vm.sade.haku.oppija.lomake.domain.builder.RelatedQuestionRuleBuilder.Rule;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.TextQuestionBuilder.TextQuestion;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.ThemeBuilder.Theme;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.*;
@@ -58,96 +62,107 @@ public final class HenkilotiedotPhase {
     public static Element create(final FormParameters formParameters) {
 
         // Henkilötiedot
-        Element henkilotiedot = Phase("henkilotiedot").build(formParameters);
+        Element henkilotiedot = Phase("henkilotiedot").formParams(formParameters).build();
 
-        Element henkilotiedotTeema = Theme("henkilotiedot.teema").previewable().build(formParameters);
+        Element henkilotiedotTeema = Theme("henkilotiedot.teema").previewable().formParams(formParameters).build();
 
         henkilotiedotTeema.addChild(
-                createNameQuestionBuilder("Sukunimi", 30).build(formParameters),
-                createNameQuestionBuilder("Etunimet", 30).build(formParameters),
+                createNameQuestionBuilder("Sukunimi", 30).formParams(formParameters).build(),
+                createNameQuestionBuilder("Etunimet", 30).formParams(formParameters).build(),
                 createNameQuestionBuilder("Kutsumanimi", 20)
                         .containsInField("Etunimet")
-                        .build(formParameters));
+                        .formParams(formParameters).build());
+
 
         Element kansalaisuus = new DropdownSelectBuilder("kansalaisuus")
                 .addOptions(formParameters.getKoodistoService().getNationalities())
                 .defaultOption("FIN")
-                .required()
-                .inline()
-                .build(formParameters);
+                .requiredInline()
+                .formParams(formParameters).build();
         henkilotiedotTeema.addChild(kansalaisuus);
+        Expr suomalainen = new Regexp(kansalaisuus.getId(), EMPTY_OR_FIN_PATTERN);
 
+        Element eiSuomalainen = Rule(ElementUtil.randomId()).setExpr(new Not(suomalainen)).build();
+        // Ulkomaalaisten tunnisteet
+        Element onkoSuomalainenKysymys = Radio("onkoSinullaSuomalainenHetu")
+                .addOptions(ImmutableList.of(
+                        new Option(createI18NText("form.yleinen.kylla", formParameters), KYLLA),
+                        new Option(createI18NText("form.yleinen.ei", formParameters), EI)))
+                .requiredInline()
+                .formParams(formParameters).build();
+        eiSuomalainen.addChild(onkoSuomalainenKysymys);
+        henkilotiedotTeema.addChild(eiSuomalainen);
+
+        Expr onSuomalainenHetu = new Equals(new Variable("onkoSinullaSuomalainenHetu"), new Value(KYLLA));
+
+        Or kysytaankoHetu = new Or(suomalainen, onSuomalainenHetu);
+        Element kysytaankoHetuSaanto = Rule(ElementUtil.randomId()).setExpr(kysytaankoHetu).build();
         Element henkilotunnus = TextQuestion("Henkilotunnus")
-                .inline()
+                .requiredInline()
                 .placeholder("ppkkvv*****")
                 .size(11)
                 .maxLength(11)
+                .validator(new SocialSecurityNumberFieldValidator())
                 .pattern(HETU_PATTERN)
-                .required()
-                .build(formParameters);
+                .formParams(formParameters).build();
+        henkilotiedotTeema.addChild(kysytaankoHetuSaanto);
 
         List<Option> genders = formParameters.getKoodistoService().getGenders();
         Radio sukupuoli = (Radio) Radio("sukupuoli")
                 .addOptions(genders)
-                .inline()
-                .build(formParameters);
+                .requiredInline()
+                .formParams(formParameters).build();
 
         Option male = genders.get(0).getI18nText().getTranslations().get("fi").equalsIgnoreCase("Mies") ?
                 genders.get(0) : sukupuoli.getOptions().get(1);
         Option female = genders.get(0).getI18nText().getTranslations().get("fi").equalsIgnoreCase("Nainen") ?
                 genders.get(0) : genders.get(1);
-        SocialSecurityNumber socialSecurityNumber =
-                new SocialSecurityNumber("ssn_question", createI18NText("form.henkilotiedot.hetu",
-                        formParameters),
-                        sukupuoli.getI18nText(), male, female, sukupuoli.getId(), (TextQuestion) henkilotunnus);
-        addUniqueApplicantValidator(henkilotunnus, formParameters.getApplicationSystem().getApplicationSystemType());
 
-        RelatedQuestionComplexRule hetuRule = createRegexpRule(kansalaisuus, EMPTY_OR_FIN_PATTERN);
+        Element socialSecurityNumber =
+                new SocialSecurityNumberBuilder("Henkilotunnus")
+                        .setSexI18nText(sukupuoli.getI18nText())
+                        .setMaleOption(male)
+                        .setFemaleOption(female)
+                        .setSexId(sukupuoli.getId())
+                        .formParams(formParameters)
+                        .placeholder("ppkkvv*****")
+                        .requiredInline()
+                        .size(11)
+                        .maxLength(11)
+                        .validator(new SocialSecurityNumberFieldValidator())
+                        .pattern(HETU_PATTERN)
+                        .build();
+        addUniqueApplicantValidator(socialSecurityNumber, formParameters.getApplicationSystem().getApplicationSystemType());
 
-        hetuRule.addChild(socialSecurityNumber);
-        henkilotiedotTeema.addChild(hetuRule);
 
-        // Ulkomaalaisten tunnisteet
-        Element onkoSinullaSuomalainenHetu = Radio("onkoSinullaSuomalainenHetu")
-                .addOptions(ImmutableList.of(
-                        new Option(createI18NText("form.yleinen.kylla", formParameters), KYLLA),
-                        new Option(createI18NText("form.yleinen.ei", formParameters), EI)))
-                .requiredInline()
-                .build(formParameters);
+        kysytaankoHetuSaanto.addChild(socialSecurityNumber);
 
-        RelatedQuestionComplexRule suomalainenHetuRule = createRuleIfVariableIsTrue("onSuomalainenHetu", onkoSinullaSuomalainenHetu.getId());
-        suomalainenHetuRule.addChild(socialSecurityNumber);
-        onkoSinullaSuomalainenHetu.addChild(suomalainenHetuRule);
-
-        RelatedQuestionComplexRule eiSuomalaistaHetuaRule = createRuleIfVariableIsFalse("eiOleSuomalaistaHetua", onkoSinullaSuomalainenHetu.getId());
-        eiSuomalaistaHetuaRule.addChild(sukupuoli);
-
-        DateQuestion syntymaaika = new DateQuestion("syntymaaika", createI18NText("syntymaaika", formParameters));
-        syntymaaika.setValidator(new PastDateValidator(syntymaaika.getId(), createI18NText("henkilotiedot.syntymaaika.tulevaisuudessa", formParameters)));
-        syntymaaika.setValidator(new RegexFieldValidator(syntymaaika.getId(), createI18NText("henkilotiedot.syntymaaika.virhe"), DATE_PATTERN));
+        Element syntymaaika = Date("syntymaaika").formParams(formParameters).build();
+        syntymaaika.setValidator(new PastDateValidator(createI18NText("henkilotiedot.syntymaaika.tulevaisuudessa", formParameters)));
+        syntymaaika.setValidator(new RegexFieldValidator(createI18NText("henkilotiedot.syntymaaika.virhe"), DATE_PATTERN));
         addRequiredValidator(syntymaaika, formParameters);
         syntymaaika.setInline(true);
 
-        eiSuomalaistaHetuaRule.addChild(syntymaaika,
-                TextQuestion("syntymapaikka").inline().size(30).required().build(formParameters),
-                TextQuestion("kansallinenIdTunnus").inline().size(30).build(formParameters),
-                TextQuestion("passinnumero").inline().size(30).build(formParameters));
+        Element eiHetuaSaanto = Rule(ElementUtil.randomId()).setExpr(new Equals(new Variable("onkoSinullaSuomalainenHetu"), new Value(EI))).build();
+        eiHetuaSaanto.addChild(
+                sukupuoli,
+                syntymaaika,
+                TextQuestion("syntymapaikka").size(30).requiredInline().formParams(formParameters).build(),
+                TextQuestion("kansallinenIdTunnus").inline().size(30).formParams(formParameters).build(),
+                TextQuestion("passinnumero").inline().size(30).formParams(formParameters).build());
 
-        onkoSinullaSuomalainenHetu.addChild(eiSuomalaistaHetuaRule);
+        onkoSuomalainenKysymys.addChild(eiHetuaSaanto);
 
-        RelatedQuestionComplexRule ulkomaalaisenTunnisteetRule = createRegexpRule(kansalaisuus, NOT_FI);
-        ulkomaalaisenTunnisteetRule.addChild(onkoSinullaSuomalainenHetu);
-        henkilotiedotTeema.addChild(ulkomaalaisenTunnisteetRule);
 
         henkilotiedotTeema.addChild(
-                TextQuestion("Sähköposti").inline().size(50).pattern(EMAIL_REGEX).build(formParameters));
+                TextQuestion("Sähköposti").inline().size(50).pattern(EMAIL_REGEX).formParams(formParameters).build());
 
         // Matkapuhelinnumerot
         Element puhelinnumero1 = TextQuestion("matkapuhelinnumero1").labelKey("matkapuhelinnumero")
                 .pattern(PHONE_PATTERN)
                 .size(30)
                 .inline()
-                .build(formParameters);
+                .formParams(formParameters).build();
         henkilotiedotTeema.addChild(puhelinnumero1);
 
         Element prevNum = puhelinnumero1;
@@ -157,7 +172,7 @@ public final class HenkilotiedotPhase {
                     .size(30)
                     .pattern(PHONE_PATTERN)
                     .inline()
-                    .build(formParameters);
+                    .formParams(formParameters).build();
 
             String id = "addPuhelinnumero" + i + "Rule";
             I18nText i18nText = formParameters.getI18nText("puhelinnumero.lisaa");
@@ -174,74 +189,71 @@ public final class HenkilotiedotPhase {
 
 
         // Asuinmaa, osoite
-        Element asuinmaa = new DropdownSelectBuilder("asuinmaa")
+        Element asuinmaa = Dropdown("asuinmaa")
                 .defaultOption("FIN")
                 .addOptions(formParameters.getKoodistoService().getCountries())
-                .required()
-                .inline()
-                .build(formParameters);
+                .requiredInline()
+                .formParams(formParameters).build();
 
-        RelatedQuestionComplexRule asuinmaaFI = ElementUtil.createRegexpRule(asuinmaa, EMPTY_OR_FIN_PATTERN);
-        Element lahiosoite = TextQuestion("lahiosoite").inline().size(40).required().build(formParameters);
+        Element asuinmaaFI = ElementUtil.createRegexpRule(asuinmaa, EMPTY_OR_FIN_PATTERN);
+        Element lahiosoite = TextQuestion("lahiosoite").inline().size(40).required().formParams(formParameters).build();
         asuinmaaFI.addChild(lahiosoite);
 
-        Element postinumero = new PostalCode("Postinumero",
-                formParameters.getI18nText("Postinumero"),
-                formParameters.getKoodistoService().getPostOffices());
-        addSizeAttribute(postinumero, 5);
-        postinumero.addAttribute("placeholder", "00000");
-        postinumero.addAttribute("maxlength", "5");
-        postinumero.setValidator(createRegexValidator(postinumero.getId(), POSTINUMERO_PATTERN, formParameters));
-        addRequiredValidator(postinumero, formParameters);
-        postinumero.setHelp(createI18NText("postinumero.help", formParameters));
+        Element postinumero = PostalCode("Postinumero")
+                .addOptions(formParameters.getKoodistoService().getPostOffices())
+                .maxLength(5)
+                .size(5)
+                .required()
+                .formParams(formParameters)
+                .pattern(POSTINUMERO_PATTERN)
+                .placeholder("00000")
+                .build();
+
         asuinmaaFI.addChild(postinumero);
 
         Element kotikunta =
                 new DropdownSelectBuilder("kotikunta")
                         .emptyOption()
                         .addOptions(formParameters.getKoodistoService().getMunicipalities())
-                        .inline()
-                        .required()
-                        .build(formParameters);
+                        .requiredInline()
+                        .formParams(formParameters).build();
 
         asuinmaaFI.addChild(kotikunta);
 
-        RelatedQuestionComplexRule asuinmaaEiOleSuomiRule = ElementUtil.createRegexpRule(asuinmaa, NOT_FI);
+        Element asuinmaaEiOleSuomiRule = ElementUtil.createRegexpRule(asuinmaa, NOT_FI);
         asuinmaaEiOleSuomiRule.addChild(
-                TextQuestion("osoiteUlkomaa").labelKey("osoite").inline().size(40).required().build(formParameters),
-                TextQuestion("postinumeroUlkomaa").inline().size(12).required().build(formParameters),
-                TextQuestion("kaupunkiUlkomaa").labelKey("kaupunki").inline().size(25).required().build(formParameters));
+                TextQuestion("osoiteUlkomaa").labelKey("osoite").inline().size(40).required().formParams(formParameters).build(),
+                TextQuestion("postinumeroUlkomaa").inline().size(12).required().formParams(formParameters).build(),
+                TextQuestion("kaupunkiUlkomaa").labelKey("kaupunki").inline().size(25).required().formParams(formParameters).build());
 
         asuinmaa.addChild(asuinmaaEiOleSuomiRule);
         asuinmaa.addChild(asuinmaaFI);
 
         henkilotiedotTeema.addChild(asuinmaa);
 
-        henkilotiedotTeema.addChild(new DropdownSelectBuilder(AIDINKIELI_ID)
+        henkilotiedotTeema.addChild(Dropdown(AIDINKIELI_ID)
                 .defaultValueAttribute("fi_vm_sade_oppija_language")
                 .emptyOption()
                 .addOptions(formParameters.getKoodistoService().getLanguages())
-                .required()
-                .inline()
-                .build(formParameters));
+                .requiredInline()
+                .formParams(formParameters).build());
 
         henkilotiedot.addChild(henkilotiedotTeema);
         if (formParameters.isPervako()) {
             henkilotiedotTeema.addChild(
-                    TextQuestion("huoltajannimi")
-                            .size(30)
-                            .pattern(ElementUtil.ISO88591_NAME_REGEX)
-                            .inline()
-                            .build(formParameters),
-                    TextQuestion("huoltajanpuhelinnumero")
-                            .size(30)
-                            .pattern(PHONE_PATTERN)
-                            .inline()
-                            .build(formParameters),
-                    TextQuestion("huoltajansahkoposti")
-                            .inline()
-                            .size(50)
-                            .pattern(EMAIL_REGEX).build(formParameters));
+                    ElementBuilder.buildAll(formParameters,
+                            TextQuestion("huoltajannimi")
+                                    .size(30)
+                                    .pattern(ElementUtil.ISO88591_NAME_REGEX)
+                                    .inline(),
+                            TextQuestion("huoltajanpuhelinnumero")
+                                    .size(30)
+                                    .pattern(PHONE_PATTERN)
+                                    .inline(),
+                            TextQuestion("huoltajansahkoposti")
+                                    .inline()
+                                    .size(50)
+                                    .pattern(EMAIL_REGEX)));
         }
         return henkilotiedot;
     }

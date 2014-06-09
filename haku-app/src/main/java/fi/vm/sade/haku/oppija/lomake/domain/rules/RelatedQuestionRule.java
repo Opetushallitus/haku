@@ -26,7 +26,7 @@ import org.springframework.data.annotation.Transient;
 
 import java.util.*;
 
-public class RelatedQuestionComplexRule extends Element {
+public class RelatedQuestionRule extends Element {
 
     private static final long serialVersionUID = -6030200061901263949L;
     private final Expr expr;
@@ -35,8 +35,8 @@ public class RelatedQuestionComplexRule extends Element {
     private final Set<String> variables;
 
     @PersistenceConstructor
-    public RelatedQuestionComplexRule(@JsonProperty(value = "id") String id,
-                                      @JsonProperty(value = "expr") final Expr expr) {
+    public RelatedQuestionRule(@JsonProperty(value = "id") String id,
+                               @JsonProperty(value = "expr") final Expr expr) {
         super(id);
         Preconditions.checkNotNull(expr);
         this.expr = expr;

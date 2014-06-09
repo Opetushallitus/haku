@@ -29,4 +29,3 @@
     <div class="clear"></div>
     <haku:viewChilds element="${element}"/>
 </div>
-

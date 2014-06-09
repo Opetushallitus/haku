@@ -21,13 +21,6 @@ public class TextAreaBuilder extends ElementBuilder {
         return this;
     }
 
-    @Override
-    public Element buildImpl(FormParameters formParameters) {
-        TextArea textArea = (TextArea) buildImpl();
-        ElementUtil.setVerboseHelp(textArea, key + ".verboseHelp", formParameters);
-        return textArea;
-    }
-
     public Element buildImpl() {
         TextArea textArea = new TextArea(id, i18nText);
         textArea.addAttribute("rows", ROWS.toString());

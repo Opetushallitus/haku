@@ -31,10 +31,8 @@ public class RegexFieldValidator extends FieldValidator {
     @Transient
     private final Pattern compiledPattern;
 
-    public RegexFieldValidator(final String fieldName,
-                               final I18nText errorMessage,
-                               final String pattern) {
-        super(fieldName, errorMessage);
+    public RegexFieldValidator(final I18nText errorMessage, final String pattern) {
+        super(errorMessage);
         Validate.notNull(pattern, "Pattern can't be null");
         this.pattern = pattern;
         this.compiledPattern = Pattern.compile(this.pattern);
@@ -42,9 +40,9 @@ public class RegexFieldValidator extends FieldValidator {
 
     @Override
     public ValidationResult validate(final ValidationInput validationInput) {
-        String value = validationInput.getValue(fieldName);
+        String value = validationInput.getValue();
         if (value != null && !compiledPattern.matcher(value).matches()) {
-            return invalidValidationResult;
+            return getInvalidValidationResult(validationInput);
         }
         return validValidationResult;
     }

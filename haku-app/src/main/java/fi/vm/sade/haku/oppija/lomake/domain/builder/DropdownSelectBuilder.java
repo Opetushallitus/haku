@@ -4,6 +4,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.DropdownSelect;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
+import fi.vm.sade.haku.oppija.lomake.validation.validators.ValueSetValidator;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 
@@ -53,13 +54,6 @@ public class DropdownSelectBuilder extends ElementBuilder {
     }
 
     @Override
-    public Element buildImpl(FormParameters formParameters) {
-        DropdownSelect dropdownSelect = (DropdownSelect) this.buildImpl();
-        ElementUtil.setVerboseHelp(dropdownSelect, key + ".verboseHelp", formParameters);
-        return dropdownSelect;
-    }
-
-    @Override
     public Element buildImpl() {
         if (defaultOption != null) {
             for (Option opt : options) {
@@ -67,11 +61,15 @@ public class DropdownSelectBuilder extends ElementBuilder {
             }
         }
         DropdownSelect dropdownSelect = new DropdownSelect(id, this.i18nText, this.options, defaultValueAttribute);
-        dropdownSelect.setInline(inline);
+        List<String> values = new ArrayList<String>();
+        for (Option option : options) {
+            values.add(option.getValue());
+        }
+        dropdownSelect.setValidator(new ValueSetValidator(ElementUtil.createI18NText("yleinen.virheellinenArvo"), values));
         return dropdownSelect;
     }
 
-    public static DropdownSelectBuilder DropdownSelect(final String id) {
+    public static DropdownSelectBuilder Dropdown(final String id) {
         return new DropdownSelectBuilder(id);
     }
 }

@@ -17,7 +17,10 @@
 package fi.vm.sade.haku.oppija.lomake.validation.validators;
 
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.TextQuestion;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationInput;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -31,8 +34,10 @@ import static org.junit.Assert.assertTrue;
 public class RequiredFieldValidatorTest {
     public static final I18nText ERROR_MESSAGE = createI18NText("kenttä on virheellinen");
     public static final String FIELD_NAME = "kenttä";
+    private static final Element element = new TextQuestion(FIELD_NAME, ElementUtil.createI18NAsIs(FIELD_NAME));
     private Map<String, String> values;
     private RequiredFieldValidator requiredFieldValidator;
+
 
     @Before
     public void setUp() throws Exception {
@@ -52,7 +57,7 @@ public class RequiredFieldValidatorTest {
     }
 
     private boolean isValid() {
-        return requiredFieldValidator.validate(new ValidationInput(null, values, null, null)).hasErrors();
+        return requiredFieldValidator.validate(new ValidationInput(element, values, null, null)).hasErrors();
     }
 
 }

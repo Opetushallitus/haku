@@ -31,29 +31,21 @@ public class SocialSecurityNumber extends Titled {
 
     private static final long serialVersionUID = -5573908500482185095L;
 
+    public static final String HENKILOTUNNUS_HASH = "Henkilotunnus_digest";
     public static final String HENKILOTUNNUS = "Henkilotunnus";
-
-    private TextQuestion ssn;
 
     private Option maleOption;
     private Option femaleOption;
     private String sexId;
     private I18nText sexI18nText;
-    public static final String HENKILOTUNNUS_HASH = "Henkilotunnus_digest";
 
     public SocialSecurityNumber(final String id, final I18nText i18nText, final I18nText sexI18nText,
-                                final Option maleOption, final Option femaleOption,
-                                final String sexId, final TextQuestion ssn) {
+                                final Option maleOption, final Option femaleOption, final String sexId) {
         super(id, i18nText);
-        this.ssn = ssn;
         this.maleOption = maleOption;
         this.femaleOption = femaleOption;
         this.sexId = sexId;
         this.sexI18nText = sexI18nText;
-    }
-
-    public TextQuestion getSsn() {
-        return ssn;
     }
 
     public Option getMaleOption() {
@@ -70,15 +62,5 @@ public class SocialSecurityNumber extends Titled {
 
     public I18nText getSexI18nText() {
         return sexI18nText;
-    }
-
-    @Override
-    @Transient
-    public List<Validator> getValidators() {
-        List<Validator> listOfValidators = new ArrayList<Validator>();
-        listOfValidators.addAll(this.ssn.getValidators());
-        listOfValidators.add(new SocialSecurityNumberFieldValidator(ssn.getId()));
-        listOfValidators.addAll(this.validators);
-        return listOfValidators;
     }
 }

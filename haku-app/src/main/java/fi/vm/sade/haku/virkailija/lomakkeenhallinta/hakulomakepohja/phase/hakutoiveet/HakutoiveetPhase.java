@@ -26,7 +26,8 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.Popup;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.PreferenceRow;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.PreferenceTable;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
-import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionComplexRule;
+import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionRule;
+import fi.vm.sade.haku.oppija.lomake.domain.builder.RelatedQuestionRuleBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.*;
 import fi.vm.sade.haku.oppija.lomake.validation.validators.PreferenceValidator;
 import fi.vm.sade.haku.oppija.lomake.validation.validators.RegexFieldValidator;
@@ -35,6 +36,7 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParamete
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.PhaseBuilder.Phase;
+import static fi.vm.sade.haku.oppija.lomake.domain.builder.RelatedQuestionRuleBuilder.Rule;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.ThemeBuilder.Theme;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.*;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.*;
@@ -47,13 +49,13 @@ public class HakutoiveetPhase {
 
 
     public static Element create(final FormParameters formParameters) {
-        return Phase(HAKUTOIVEET_PHASE_ID).build(formParameters)
-                .addChild(createHakutoiveetTheme(formParameters));
+        return Phase(HAKUTOIVEET_PHASE_ID).formParams(formParameters)
+                .addChild(createHakutoiveetTheme(formParameters)).build();
     }
 
     private static Element createHakutoiveetTheme(final FormParameters formParameters) {
 
-        Element hakutoiveetTheme = Theme("hakutoiveet.teema").previewable().build(formParameters);
+        Element hakutoiveetTheme = Theme("hakutoiveet.teema").previewable().formParams(formParameters).build();
         hakutoiveetTheme.setHelp(createI18NText("form.hakutoiveet.help", formParameters));
         PreferenceTable preferenceTable =
                 new PreferenceTable("preferencelist", createI18NText("form.hakutoiveet.otsikko", formParameters));
@@ -98,51 +100,48 @@ public class HakutoiveetPhase {
                         new Option(createI18NText("form.yleinen.ei", formParameters), EI)))
                 .required()
                 .i18nText(createI18NText("form.hakutoiveet.harkinnanvarainen", formParameters))
-                .build(formParameters);
+                .formParams(formParameters).build();
 
         Element discretionaryFollowUp = new DropdownSelectBuilder(discretionary.getId() + "-follow-up")
                 .emptyOption()
-                .addOption((Option) new OptionBuilder().setValue("oppimisvaikudet").labelKey("perustelu.oppimisvaikeudet").build(formParameters))
-                .addOption((Option) new OptionBuilder().setValue("sosiaalisetsyyt").labelKey("perustelu.sosiaaliset").build(formParameters))
-                .addOption((Option) new OptionBuilder().setValue("todistustenvertailuvaikeudet").labelKey("perustelu.todistustenvertailuvaikeudet").build(formParameters))
-                .addOption((Option) new OptionBuilder().setValue(TODISTUSTENPUUTTUMINEN).labelKey("perustelu.todistustenpuuttuminen").build(formParameters))
+                .addOption((Option) new OptionBuilder().setValue("oppimisvaikudet").labelKey("perustelu.oppimisvaikeudet").formParams(formParameters).build())
+                .addOption((Option) new OptionBuilder().setValue("sosiaalisetsyyt").labelKey("perustelu.sosiaaliset").formParams(formParameters).build())
+                .addOption((Option) new OptionBuilder().setValue("todistustenvertailuvaikeudet").labelKey("perustelu.todistustenvertailuvaikeudet").formParams(formParameters).build())
+                .addOption((Option) new OptionBuilder().setValue(TODISTUSTENPUUTTUMINEN).labelKey("perustelu.todistustenpuuttuminen").formParams(formParameters).build())
                 .required()
                 .i18nText(createI18NText("form.hakutoiveet.harkinnanvarainen.perustelu", formParameters))
-                .build(formParameters);
+                .formParams(formParameters).build();
 
-        RelatedQuestionComplexRule discretionaryFollowUpRule = createVarEqualsToValueRule(discretionary.getId(), KYLLA);
+        Element discretionaryFollowUpRule = createVarEqualsToValueRule(discretionary.getId(), KYLLA);
         discretionaryFollowUpRule.addChild(discretionaryFollowUp);
 
         discretionary.addChild(discretionaryFollowUpRule);
 
-        RelatedQuestionComplexRule discretionaryRule =
+        Element discretionaryRule =
                 createVarEqualsToValueRule(index + "-Koulutus-educationDegree", DISCRETIONARY_EDUCATION_DEGREE);
 
-        RelatedQuestionComplexRule discretionaryRule2 = createVarEqualsToValueRule("POHJAKOULUTUS",
+        Element discretionaryRule2 = createVarEqualsToValueRule("POHJAKOULUTUS",
                 PERUSKOULU, YLIOPPILAS, OSITTAIN_YKSILOLLISTETTY, ALUEITTAIN_YKSILOLLISTETTY, YKSILOLLISTETTY);
 
 
         discretionaryRule.addChild(discretionary);
         discretionaryRule2.addChild(discretionaryRule);
 
-        RelatedQuestionComplexRule KoulutusValittu = new RelatedQuestionComplexRule(
-                ElementUtil.randomId(), new Not(new Equals(new Variable(index + "-Koulutus-id"), new Value(""))));
+        Element KoulutusValittu = Rule(ElementUtil.randomId()).setExpr(new Not(new Equals(new Variable(index + "-Koulutus-id"), new Value("")))).build();
 
-        RelatedQuestionComplexRule keskeytynytTaiUlkomainenRule =
+        Element keskeytynytTaiUlkomainenRule =
                 createVarEqualsToValueRule("POHJAKOULUTUS", KESKEYTYNYT, ULKOMAINEN_TUTKINTO);
 
         HiddenValue hiddenDiscretionary = new HiddenValue(discretionary.getId(), ElementUtil.KYLLA);
         ElementUtil.addRequiredValidator(hiddenDiscretionary, formParameters);
         hiddenDiscretionary.setValidator(
-                new RegexFieldValidator(hiddenDiscretionary.getId(),
-                        ElementUtil.createI18NText("yleinen.virheellinenArvo", formParameters),
+                new RegexFieldValidator(ElementUtil.createI18NText("yleinen.virheellinenArvo", formParameters),
                         ElementUtil.KYLLA));
 
         HiddenValue hiddenDiscretionaryFollowUp = new HiddenValue(discretionaryFollowUp.getId(), TODISTUSTENPUUTTUMINEN);
         ElementUtil.addRequiredValidator(hiddenDiscretionaryFollowUp, formParameters);
         hiddenDiscretionaryFollowUp.setValidator(
-                new RegexFieldValidator(hiddenDiscretionaryFollowUp.getId(),
-                        ElementUtil.createI18NText("yleinen.virheellinenArvo", formParameters),
+                new RegexFieldValidator(ElementUtil.createI18NText("yleinen.virheellinenArvo", formParameters),
                         TODISTUSTENPUUTTUMINEN));
 
 
@@ -156,7 +155,7 @@ public class HakutoiveetPhase {
     private static Element createSoraQuestions(final String index, final FormParameters formParameters) {
         // sora-kysymykset
 
-        RelatedQuestionComplexRule hasSora = ElementUtil.createRuleIfVariableIsTrue(index + "_sora_rule", index + "-Koulutus-id-sora");
+        Element hasSora = ElementUtil.createRuleIfVariableIsTrue(index + "_sora_rule", index + "-Koulutus-id-sora");
 
         Element sora1 = RadioBuilder.Radio(index + "_sora_terveys")
                 .addOptions(ImmutableList.of(
@@ -164,7 +163,7 @@ public class HakutoiveetPhase {
                         new Option(createI18NText("form.sora.kylla", formParameters), KYLLA)))
                 .labelKey("form.sora.terveys")
                 .required()
-                .build(formParameters);
+                .formParams(formParameters).build();
         sora1.setPopup(new Popup("sora-popup", createI18NText("form.hakutoiveet.terveydentilavaatimukset.otsikko", formParameters)));
 
         Element sora2 = RadioBuilder.Radio(index + "_sora_oikeudenMenetys")
@@ -173,7 +172,7 @@ public class HakutoiveetPhase {
                         new Option(createI18NText("form.sora.kylla", formParameters), KYLLA)))
                 .labelKey("form.sora.oikeudenmenetys")
                 .required()
-                .build(formParameters);
+                .formParams(formParameters).build();
 
         hasSora.addChild(sora1, sora2);
         return hasSora;
@@ -186,10 +185,10 @@ public class HakutoiveetPhase {
                         new Option(createI18NText("form.yleinen.ei", formParameters), EI)))
                 .required()
                 .i18nText(createI18NText("form.hakutoiveet.urheilijan.ammatillisen.koulutuksen.lisakysymys", formParameters))
-                .build(formParameters);
+                .formParams(formParameters).build();
         Expr expr = new And(new Equals(new Variable(index + "-Koulutus-id-athlete"), new Value(ElementUtil.KYLLA)),
                 new Equals(new Variable(index + "-Koulutus-id-vocational"), new Value(ElementUtil.KYLLA)));
-        RelatedQuestionComplexRule rule = new RelatedQuestionComplexRule(ElementUtil.randomId(), expr);
+        Element rule =  Rule(ElementUtil.randomId()).setExpr(expr).build();
         rule.addChild(radio);
         return rule;
     }
@@ -198,7 +197,7 @@ public class HakutoiveetPhase {
         HiddenValue hiddenValue = new HiddenValue(index + "_urheilijalinjan_lisakysymys", ElementUtil.KYLLA);
         Expr expr = new And(new Equals(new Variable(index + "-Koulutus-id-athlete"), new Value(ElementUtil.KYLLA)),
                 new Equals(new Variable(index + "-Koulutus-id-vocational"), new Value(ElementUtil.EI)));
-        RelatedQuestionComplexRule rule = new RelatedQuestionComplexRule(ElementUtil.randomId(), expr);
+        Element rule = Rule(ElementUtil.randomId()).setExpr(expr).build();
         rule.addChild(hiddenValue);
         return rule;
     }
@@ -210,8 +209,8 @@ public class HakutoiveetPhase {
                         new Option(createI18NText("form.yleinen.ei", formParameters), EI)))
                 .required()
                 .i18nText(createI18NText("form.hakutoiveet.kaksoistutkinnon.lisakysymys", formParameters))
-                .build(formParameters);
-        RelatedQuestionComplexRule hasQuestion =
+                .formParams(formParameters).build();
+        Element hasQuestion =
                 ElementUtil.createRuleIfVariableIsTrue(radio.getId() + "_related_question_rule", index + "-Koulutus-id-kaksoistutkinto");
         hasQuestion.addChild(radio);
         return hasQuestion;

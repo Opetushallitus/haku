@@ -28,19 +28,17 @@ public class ValueSetValidator extends FieldValidator {
 
     private final List<String> validValues;
 
-    public ValueSetValidator(final String fieldName,
-                             final I18nText errorMessage,
-                             final List<String> validValues) {
-        super(fieldName, errorMessage);
+    public ValueSetValidator(final I18nText errorMessage, final List<String> validValues) {
+        super(errorMessage);
         this.validValues = new ArrayList<String>(validValues);
     }
 
     @Override
     public ValidationResult validate(final ValidationInput validationInput) {
         ValidationResult validationResult = new ValidationResult();
-        String value = validationInput.getValue(fieldName);
+        String value = validationInput.getValue();
         if (value != null && !this.validValues.contains(value)) {
-            validationResult = new ValidationResult(fieldName, getErrorMessage());
+            validationResult = getInvalidValidationResult(validationInput);
         }
         return validationResult;
     }
