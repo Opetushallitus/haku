@@ -45,8 +45,7 @@ public abstract class ElementBuilder {
             this.i18nText = getI18nText(key, false);
         }
         Element element = buildImpl();
-        I18nText i18nText1 = getI18nText(key + ".help");
-        element.setHelp(i18nText1);
+        element.setHelp(getI18nText(key + ".help"));
         ElementUtil.setVerboseHelp(element, getI18nText(key + ".verboseHelp"));
 
         if (size != null) {

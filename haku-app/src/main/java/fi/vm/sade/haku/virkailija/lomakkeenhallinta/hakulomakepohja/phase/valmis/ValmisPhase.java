@@ -9,8 +9,6 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.Link;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.Answer;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.DiscretionaryAttachments;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.Print;
-import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionRule;
-import fi.vm.sade.haku.oppija.lomake.domain.builder.RelatedQuestionRuleBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.Expr;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
@@ -57,7 +55,7 @@ public class ValmisPhase {
         Element muutoksenTekeminen = TitledGroup("muutoksenTekeminen").formParams(formParameters).build();
 
         for (int i = 0; i < paragraphs.length; i++) {
-            muutoksenTekeminen.addChild(Text("muutoksenTekeminenP" + (i + 1)).i18nText(ElementUtil.createI18NAsIs(paragraphs[i])).build());
+            muutoksenTekeminen.addChild(Text(ElementUtil.randomId()).formParams(formParameters).labelKey(paragraphs[i]).build());
         }
         elements.add(muutoksenTekeminen);
 

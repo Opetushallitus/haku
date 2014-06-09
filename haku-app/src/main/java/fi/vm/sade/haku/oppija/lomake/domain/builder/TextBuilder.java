@@ -9,7 +9,6 @@ public class TextBuilder extends ElementBuilder {
         super(id);
     }
 
-
     public Element buildImpl() {
         return new Text(id, i18nText);
     }
