@@ -77,9 +77,9 @@ public class ValmisPhase {
                 "preference5_urheilijan_ammatillisen_koulutuksen_lisakysymys", "preference5_urheilijalinjan_lisakysymys")).build();
         Element athleteGroup = TitledGroup("atheleteGroup").formParams(formParameters).build();
 
-        athleteGroup.addChild(Text("athleteP1").labelKey("form.valmis.haeturheilijana").formParams(formParameters).build());
-        Link athleteLink = new Link("athleteLink", createI18NText("form.valmis.haeturheilijana.linkki.url", formParameters),
-                createI18NText("form.valmis.haeturheilijana.linkki.text", formParameters));
+        athleteGroup.addChild(Text("athleteP1").labelKey("form.valmis.haetturheilijana").formParams(formParameters).build());
+        Link athleteLink = new Link("athleteLink", createI18NText("form.valmis.haetturheilijana.linkki.url", formParameters),
+                createI18NText("form.valmis.haetturheilijana.linkki.text", formParameters));
         athleteLink.addAttribute("target", "_blank");
         athleteGroup.addChild(athleteLink);
         athleteRule.addChild(athleteGroup);

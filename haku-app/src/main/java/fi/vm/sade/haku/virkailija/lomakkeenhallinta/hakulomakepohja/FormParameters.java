@@ -89,6 +89,10 @@ public class FormParameters {
         return i18nText;
     }
 
+    public I18nBundle getI18nBundle() {
+        return i18nBundle;
+    }
+
     public boolean isPervako() {
         return FormParameters.FormTemplateType.PERVAKO.equals(this.getFormTemplateType());
     }

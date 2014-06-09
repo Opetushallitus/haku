@@ -62,7 +62,9 @@ public class I18nBundle {
     }
 
     public I18nText get(final String key) {
+
         String keyLowerCase = key.toLowerCase().replaceAll("-", ".");
+
         if (this.i18nBundle.containsKey(keyLowerCase)) {
             return this.i18nBundle.get(keyLowerCase);
         } else {
