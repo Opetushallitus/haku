@@ -16,6 +16,7 @@
 
 package fi.vm.sade.haku.oppija.lomake.validation;
 
+import fi.vm.sade.haku.oppija.common.koulutusinformaatio.ApplicationOptionService;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.builder.TextQuestionBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
@@ -23,9 +24,12 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.TextQuestion;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.haku.oppija.lomake.util.ElementTree;
 import fi.vm.sade.haku.oppija.lomake.validation.validators.RequiredFieldValidator;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.dao.ThemeQuestionDAO;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.dao.impl.ThemeQuestionDAOMockImpl;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormGenerator;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormGeneratorImpl;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.impl.KoodistoServiceMockImpl;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakukohdeService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.impl.HakuServiceMockImpl;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.junit.Before;
@@ -48,11 +52,13 @@ public class ElementTreeValidatorTest {
     private TextQuestion textQuestion;
     private ElementTreeValidator elementTreeValidator;
     private ApplicationSystemService applicationSystemServiceMock;
+    private ThemeQuestionDAO themeQuestionDAOMock;
 
     @Before
     public void setUp() throws Exception {
         textQuestion = (TextQuestion) new TextQuestionBuilder("id").i18nText(createI18NAsIs("title")).build();
-        FormGenerator formGeneratorMock = new FormGeneratorImpl(new KoodistoServiceMockImpl(), new HakuServiceMockImpl(), null);
+        themeQuestionDAOMock = new ThemeQuestionDAOMockImpl();
+        FormGenerator formGeneratorMock = new FormGeneratorImpl(new KoodistoServiceMockImpl(), new HakuServiceMockImpl(), themeQuestionDAOMock, mock(HakukohdeService.class), mock(ApplicationOptionService.class));
         applicationSystemServiceMock = mock(ApplicationSystemService.class);
         when(applicationSystemServiceMock.getApplicationSystem(anyString())).thenReturn(formGeneratorMock.generate(ASID));
         SsnUniqueConcreteValidator ssnUniqueConcreteValidator = mock(SsnUniqueConcreteValidator.class);

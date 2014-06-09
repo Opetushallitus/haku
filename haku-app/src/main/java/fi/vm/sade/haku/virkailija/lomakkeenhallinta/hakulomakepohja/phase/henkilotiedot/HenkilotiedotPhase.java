@@ -247,10 +247,6 @@ public final class HenkilotiedotPhase {
                                     .size(50)
                                     .pattern(EMAIL_REGEX)));
         }
-        List<Element> test = formParameters.test();
-        for (Element element : test) {
-            henkilotiedot.addChild(element);
-        }
         return henkilotiedot;
     }
 

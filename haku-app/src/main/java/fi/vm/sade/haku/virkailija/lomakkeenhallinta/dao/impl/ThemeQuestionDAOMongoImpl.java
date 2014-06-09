@@ -6,6 +6,7 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import fi.vm.sade.haku.oppija.common.dao.AbstractDAOMongoImpl;
+import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.dao.ThemeQuestionDAO;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.dao.ThemeQuestionQueryParameters;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.dao.impl.DBConverter.DBObjectToThemeQuestionFunction;
@@ -17,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import static com.mongodb.QueryOperators.*;
 
@@ -29,7 +31,9 @@ public class ThemeQuestionDAOMongoImpl extends AbstractDAOMongoImpl<ThemeQuestio
     private static final String FIELD_APPLICATION_SYSTEM_ID = "applicationSystemId";
     private static final String FIELD_LO_ID = "learningOpportunityId";
     private static final String FIELD_OWNER_OIDS= "ownerOrganizationOids";
+    private static final String FIELD_THEME= "theme";
     private static final String FIELD_STATE = "state";
+    private static final String FIELD_APPLICATION_OPTION = "learningOpportunityId";
 
     private static final String collectionName = "themequestion";
 
@@ -56,10 +60,28 @@ public class ThemeQuestionDAOMongoImpl extends AbstractDAOMongoImpl<ThemeQuestio
         if (themeQuestions.size() == 1) {
             return themeQuestions.get(0);
         }
-        return null;
+        throw new ResourceNotFoundException("No ThemeQuestion found with id " + id);
     }
 
-    public List<ThemeQuestion> query(ThemeQuestionQueryParameters parameters){
+    public List<ThemeQuestion> query(final ThemeQuestionQueryParameters parameters){
+        return executeQuery(buildQuery(parameters));
+    }
+
+    @Override
+    public List<String> queryApplicationOptionsIn(ThemeQuestionQueryParameters parameters) {
+        DBCursor cursor = getCollection().find(buildQuery(parameters), new BasicDBObject(FIELD_APPLICATION_OPTION, 1));
+        LOGGER.debug("Got "+ cursor.count() + " application options ");
+        ArrayList<String> results = new ArrayList<String>();
+        for (DBObject object :cursor){
+            String value = (String )object.get(FIELD_APPLICATION_OPTION);
+            LOGGER.debug("Got option " + value);
+            results.add(value);
+        }
+
+        return results;
+    }
+
+    private final DBObject buildQuery(final ThemeQuestionQueryParameters parameters){
         BasicDBObject query = new BasicDBObject();
         if (null != parameters.getApplicationSystemId()){
             query.append(FIELD_APPLICATION_SYSTEM_ID, parameters.getApplicationSystemId());
@@ -70,13 +92,16 @@ public class ThemeQuestionDAOMongoImpl extends AbstractDAOMongoImpl<ThemeQuestio
         if (null != parameters.getOrganizationId()){
             query.append(FIELD_OWNER_OIDS, parameters.getOrganizationId());
         }
+        if (null != parameters.getTheme()){
+            query.append(FIELD_THEME, parameters.getTheme());
+        }
         if (parameters.searchDeleted()) {
             query.append(FIELD_STATE, ThemeQuestion.State.DELETED);
         }else {
             Object[] states = {ThemeQuestion.State.ACTIVE.toString(), ThemeQuestion.State.LOCKED.toString()};
             query.append(FIELD_STATE, new BasicDBObject(IN, states));
         }
-        return executeQuery(query);
+        return query;
     }
 
 

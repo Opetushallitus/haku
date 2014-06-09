@@ -1,17 +1,14 @@
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja;
 
 import com.google.common.base.Joiner;
+import fi.vm.sade.haku.oppija.common.koulutusinformaatio.ApplicationOptionService;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.dao.ThemeQuestionDAO;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.dao.ThemeQuestionQueryParameters;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain.ThemeQuestion;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.service.ThemeQuestionConfigurator;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakukohdeService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class FormParameters {
     private static final String FORM_MESSAGES = "form_messages";
@@ -29,16 +26,20 @@ public class FormParameters {
     private final ApplicationSystem applicationSystem;
     private final KoodistoService koodistoService;
     private final ThemeQuestionDAO themeQuestionDAO;
+    private final HakukohdeService hakukohdeService;
+    private final ApplicationOptionService applicationOptionService;
 
     private final FormTemplateType formTemplateType;
     private final I18nBundle i18nBundle;
     private final String formMessagesBundle;
 
 
-    public FormParameters(final ApplicationSystem applicationSystem, final KoodistoService koodistoService, ThemeQuestionDAO themeQuestionDAO) {
+    public FormParameters(final ApplicationSystem applicationSystem, final KoodistoService koodistoService, final ThemeQuestionDAO themeQuestionDAO, final HakukohdeService hakukohdeService, final ApplicationOptionService applicationOptionService) {
         this.applicationSystem = applicationSystem;
         this.koodistoService = koodistoService;
         this.themeQuestionDAO = themeQuestionDAO;
+        this.hakukohdeService = hakukohdeService;
+        this.applicationOptionService = applicationOptionService;
         this.formTemplateType = figureOutFormForApplicationSystem(applicationSystem);
 
 
@@ -109,14 +110,7 @@ public class FormParameters {
 
     }
 
-    public List<Element> test() {
-        ThemeQuestionQueryParameters parameters = new ThemeQuestionQueryParameters();
-        parameters.setApplicationSystemId(applicationSystem.getId());
-        List<ThemeQuestion> query = themeQuestionDAO.query(parameters);
-        List<Element> elementList = new ArrayList<Element>(query.size());
-        for (ThemeQuestion themeQuestion : query) {
-            elementList.add(themeQuestion.generateElement(this));
-        }
-        return elementList;
+    public ThemeQuestionConfigurator getThemeQuestionGenerator(){
+        return new ThemeQuestionConfigurator(themeQuestionDAO,hakukohdeService, applicationOptionService, this);
     }
 }
