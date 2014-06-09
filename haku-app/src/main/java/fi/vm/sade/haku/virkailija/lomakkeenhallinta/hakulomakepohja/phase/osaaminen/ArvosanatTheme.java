@@ -2,6 +2,7 @@ package fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.osaam
 
 import fi.vm.sade.haku.oppija.lomake.domain.builder.ThemeBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.Text;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.gradegrid.GradeGrid;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.*;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
@@ -56,7 +57,6 @@ public final class ArvosanatTheme {
     public static Element createArvosanatThemeKevat(final FormParameters formParameters) {
         Element arvosanatTheme = new ThemeBuilder("arvosanat").previewable().formParams(formParameters).build();
 
-
         // Peruskoulu
         GradesTable gradesTablePK = new GradesTable(true, formParameters);
         GradeGrid grid_pk = gradesTablePK.createGradeGrid("grid_pk", formParameters);
@@ -79,10 +79,12 @@ public final class ArvosanatTheme {
         // Ei arvosanoja
         Element eiNaytetaPk = Rule("rule_grade_no_pk").setExpr(new Or(
                 new Equals(new Variable(OppijaConstants.PERUSOPETUS_PAATTOTODISTUSVUOSI), new Value(String.valueOf(hakukausiVuosi))),
-                new Not(new Regexp("_meta_grades_transferred_pk", "true"))
+                new Regexp("_meta_grades_transferred_pk", "true")
         )).build();
+
         eiNaytetaPk.addChild(Text("nogradegrid").labelKey("form.arvosanat.eiKysyta.pk").formParams(formParameters).build());
         arvosanatTheme.addChild(eiNaytetaPk);
+
         if (!formParameters.isPervako()) {
             // Ylioppilaat
             GradesTable gradesTableYO = new GradesTable(false, formParameters);
@@ -107,8 +109,10 @@ public final class ArvosanatTheme {
             eiNaytetaYo.addChild(Text("nogradegrid").labelKey("form.arvosanat.eiKysyta.yo").formParams(formParameters).build());
             arvosanatTheme.addChild(eiNaytetaYo);
         }
+
         Element eiNayteta = Rule("rule_grade_no").setExpr(ExprUtil.atLeastOneValueEqualsToVariable(RELATED_ELEMENT_ID, "5", OppijaConstants.KESKEYTYNYT, OppijaConstants.ULKOMAINEN_TUTKINTO)).build();
-        eiNayteta.addChild(Text("nogradegrid").labelKey("form.arvosanat.eikysyta").formParams(formParameters).build());
+        Element nogradegrid = Text("nogradegrid").labelKey("form.arvosanat.eikysyta").formParams(formParameters).build();
+        eiNayteta.addChild(nogradegrid);
         arvosanatTheme.addChild(eiNayteta);
 
         return arvosanatTheme;
