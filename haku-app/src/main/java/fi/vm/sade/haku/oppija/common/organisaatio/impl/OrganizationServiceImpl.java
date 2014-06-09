@@ -44,6 +44,7 @@ public class OrganizationServiceImpl implements OrganizationService {
 
     private static CachingRestClient cachingRestClient;
     private static Map<String, SoftReference<Object>> cache;
+    private static final String ROOT_ORGANIZATION_OPH = "1.2.246.562.10.00000000001";
 
     @Value("${web.url.cas}")
     private String casUrl;
@@ -83,7 +84,15 @@ public class OrganizationServiceImpl implements OrganizationService {
 
     @Override
     public List<String> findParentOids(final String organizationOid) {
-        return service.findParentOids(organizationOid);
+        // Fix some service curiosities
+        List<String> parentOids = service.findParentOids(organizationOid);
+        if (! parentOids.contains(organizationOid)){
+            parentOids.add(organizationOid);
+        }
+        if (! parentOids.contains(ROOT_ORGANIZATION_OPH)){
+            parentOids.add(ROOT_ORGANIZATION_OPH);
+        }
+        return parentOids;
     }
 
     @Override
