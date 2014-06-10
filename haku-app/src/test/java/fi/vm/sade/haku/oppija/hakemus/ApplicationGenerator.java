@@ -8,6 +8,7 @@ import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.impl.ApplicationOidDAOMongoImpl;
 import fi.vm.sade.haku.oppija.lomake.service.SHA2Encrypter;
 import fi.vm.sade.haku.oppija.lomake.service.impl.AESEncrypter;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.data.mongodb.core.MongoTemplate;
 
@@ -134,7 +135,7 @@ public class ApplicationGenerator {
         henkilotiedot.put("Sukunimi", lastName);
         henkilotiedot.put("Postinumero", "00100");
         henkilotiedot.put("lahiosoite", "Testikatu 4");
-        henkilotiedot.put("sukupuoli", getSex(hetu));
+        henkilotiedot.put(OppijaConstants.ELEMENT_ID_SEX, getSex(hetu));
         henkilotiedot.put("Sähköposti", "");
         henkilotiedot.put("Kutsumanimi", firstName);
         henkilotiedot.put("Etunimet", firstName + " " + secondName);
@@ -148,7 +149,7 @@ public class ApplicationGenerator {
 
     private String getSex(String hetu) {
         int sexyNumber = Integer.valueOf(hetu.substring(9, 10));
-        return String.valueOf(sexyNumber % 2 == 0 ? 0 : 1);
+        return String.valueOf(sexyNumber % 2 == 0 ? 2 : 1);
     }
 
     private static String generateHetu() {

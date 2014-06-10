@@ -2,6 +2,7 @@ package fi.vm.sade.haku.virkailija.authentication;
 
 import com.google.gson.*;
 import fi.vm.sade.authentication.service.types.dto.SukupuoliType;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -59,9 +60,10 @@ public class PersonJsonAdapter implements JsonSerializer<Person>, JsonDeserializ
         }
 
         String sex = person.getSex();
-        if (!isEmpty(sex)) {
-            log.debug("Sex defined: " + sex);
-            personJson.add("sukupuoli", new JsonPrimitive(sex.equals(SukupuoliType.MIES.value()) ? "MIES" : "NAINEN"));
+        if (!isEmpty(sex) && OppijaConstants.SUKUPUOLI_MIES.equals(sex)) {
+            personJson.add("sukupuoli", new JsonPrimitive(SukupuoliType.MIES.value()));
+        } else if (!isEmpty(sex) && OppijaConstants.SUKUPUOLI_NAINEN.equals(sex)) {
+            personJson.add("sukupuoli", new JsonPrimitive(SukupuoliType.NAINEN.value()));
         }
 
         return personJson;
@@ -84,10 +86,10 @@ public class PersonJsonAdapter implements JsonSerializer<Person>, JsonDeserializ
 
         log.debug("Deserialized basic info");
         String sex = getJsonString(personJson, "sukupuoli");
-        if (sex != null && sex.equals("MIES")) {
-            personBuilder.setSex(SukupuoliType.MIES.value());
-        } else if (sex != null && sex.equals("NAINEN")) {
-            personBuilder.setSex(SukupuoliType.NAINEN.value());
+        if (sex != null && SukupuoliType.MIES.value().equals(sex)) {
+            personBuilder.setSex(OppijaConstants.SUKUPUOLI_MIES);
+        } else if (sex != null && SukupuoliType.NAINEN.value().equals(sex)) {
+            personBuilder.setSex(OppijaConstants.SUKUPUOLI_NAINEN);
         }
 
         Boolean securityOrder = getJsonBoolean(personJson, "turvakielto");
