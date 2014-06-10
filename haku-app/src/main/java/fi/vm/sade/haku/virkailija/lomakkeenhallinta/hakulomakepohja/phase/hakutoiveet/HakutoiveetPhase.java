@@ -32,7 +32,9 @@ import fi.vm.sade.haku.oppija.lomake.validation.validators.RegexFieldValidator;
 import fi.vm.sade.haku.oppija.lomake.validation.validators.RequiredFieldValidator;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ExprUtil;
 
+import static fi.vm.sade.haku.oppija.lomake.domain.builder.NotificationBuilder.Warning;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.PhaseBuilder.Phase;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.RelatedQuestionRuleBuilder.Rule;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.ThemeBuilder.Theme;
@@ -40,6 +42,7 @@ import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.*;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.*;
 
 public class HakutoiveetPhase {
+    public static final String LISAOPETUS_EDUCATION_DEGREE = "22";
     private static final String DISCRETIONARY_EDUCATION_DEGREE = "32";
     private static final String HAKUTOIVEET_PHASE_ID = "hakutoiveet";
 
@@ -86,6 +89,16 @@ public class HakutoiveetPhase {
                     createUrheilijanAmmatillisenKoulutuksenLisakysymysAndRule(id, formParameters),
                     createUrheilijalinjaRule(id),
                     createKaksoistutkintoQuestions(id, formParameters));
+        } else {
+            Element koulutusasteRistiriidassaSuoritettuunTutkintoon = Rule(ElementUtil.randomId()).setExpr(
+                    new And(
+                            ExprUtil.isAnswerTrue("KOULUTUSPAIKKA_AMMATILLISEEN_TUTKINTOON"),
+                            ExprUtil.atLeastOneValueEqualsToVariable(id + "-Koulutus-educationDegree", LISAOPETUS_EDUCATION_DEGREE, DISCRETIONARY_EDUCATION_DEGREE)))
+                    .build();
+            Element ristiriita = Warning("koulutusasteristiriita").failValidation()
+                    .formParams(formParameters).build();
+            koulutusasteRistiriidassaSuoritettuunTutkintoon.addChild(ristiriita);
+            pr.addChild(koulutusasteRistiriidassaSuoritettuunTutkintoon);
         }
         pr.setValidator(new PreferenceValidator());
         return pr;

@@ -102,10 +102,10 @@ public class SearchResourceMock {
                     "{\"id\":\"1.2.246.562.5.32094353409\",\"name\":\"Turvallisuusalan perustutkinto, yo\",\"aoIdentifier\":\"505\"," +
                     "\"educationDegree\":\"32\",\"childLONames\":[\"Turvallisuusala, turvallisuusvalvoja\"],\"sora\":false," +
                     "\"teachingLanguages\":[\"FI\"],\"athleteEducation\":true},{\"id\":\"1.2.246.562.5.37738069758\"," +
-                    "\"name\":\"Maanmittausalan perustutkinto, yo\",\"aoIdentifier\":\"890\",\"educationDegree\":\"32\"," +
+                    "\"name\":\"Maanmittausalan perustutkinto, yo\",\"aoIdentifier\":\"890\",\"educationDegree\":\"22\"," +
                     "\"childLONames\":[\"Maanmittaustekniikka, kartoittaja\"],\"sora\":false,\"teachingLanguages\":[\"FI\"]," +
                     "\"athleteEducation\":true},{\"id\":\"1.2.246.562.5.52308596866\",\"name\":\"Suunnitteluassistentin perustutkinto, " +
-                    "yo\",\"aoIdentifier\":\"668\",\"educationDegree\":\"32\",\"childLONames\":[\"Tekninen suunnittelu, suunnitteluassistentti\"]," +
+                    "yo\",\"aoIdentifier\":\"668\",\"educationDegree\":\"30\",\"childLONames\":[\"Tekninen suunnittelu, suunnitteluassistentti\"]," +
                     "\"sora\":false,\"teachingLanguages\":[\"FI\"],\"athleteEducation\":true},{\"id\":\"1.2.246.562.5.66688607689\"," +
                     "\"name\":\"Sähkö- ja automaatiotekniikan perustutkinto, yo\",\"aoIdentifier\":\"192\",\"educationDegree\":\"32\"," +
                     "\"childLONames\":[\"Sähkö- ja automaatiotekniikka, sähköasentaja\"],\"sora\":false,\"teachingLanguages\":[\"FI\"]," +

@@ -9,12 +9,8 @@ import fi.vm.sade.haku.oppija.lomake.domain.builder.RadioBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.builder.TextQuestionBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.builder.ThemeBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.Notification;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
-import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionRule;
-import fi.vm.sade.haku.oppija.lomake.domain.builder.RelatedQuestionRuleBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.*;
-import fi.vm.sade.haku.oppija.lomake.validation.validators.AlwaysFailsValidator;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.domain.Code;
@@ -27,6 +23,8 @@ import java.util.Map;
 
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.CheckBoxBuilder.Checkbox;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.DropdownSelectBuilder.Dropdown;
+import static fi.vm.sade.haku.oppija.lomake.domain.builder.NotificationBuilder.Info;
+import static fi.vm.sade.haku.oppija.lomake.domain.builder.NotificationBuilder.Warning;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.PhaseBuilder.Phase;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.RadioBuilder.Radio;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.RelatedQuestionRuleBuilder.Rule;
@@ -87,9 +85,8 @@ public final class KoulutustaustaPhase {
 
         Element keskeytynytRule = createVarEqualsToValueRule(baseEducation.getId(), KESKEYTYNYT);
         if (!formParameters.isPervako()) {
-            keskeytynytRule.addChild(new Notification(TUTKINTO_KESKEYTNYT_NOTIFICATION_ID,
-                    createI18NText("form.koulutustausta.keskeytynyt.huom", formParameters),
-                    Notification.NotificationType.INFO));
+            keskeytynytRule.addChild(
+                    Info(TUTKINTO_KESKEYTNYT_NOTIFICATION_ID).labelKey("form.koulutustausta.keskeytynyt.huom").formParams(formParameters).build());
         }
 
 
@@ -104,9 +101,8 @@ public final class KoulutustaustaPhase {
         }
 
         if (!formParameters.isPervako()) {
-            Notification tutkintoUlkomaillaNotification = new Notification(TUTKINTO_ULKOMAILLA_NOTIFICATION_ID,
-                    createI18NText("form.koulutustausta.ulkomailla.huom", formParameters),
-                    Notification.NotificationType.INFO);
+            Element tutkintoUlkomaillaNotification =
+                    Info(TUTKINTO_ULKOMAILLA_NOTIFICATION_ID).labelKey("form.koulutustausta.ulkomailla.huom").formParams(formParameters).build();
             ulkomaillaSuoritettuTutkintoRule.addChild(tutkintoUlkomaillaNotification);
         }
 
@@ -215,12 +211,9 @@ public final class KoulutustaustaPhase {
 
             Element suorittanutTutkinnonLukioRule = createRuleIfVariableIsTrue(ElementUtil.randomId(),
                     suorittanutAmmatillisenTutkinnonLukio.getId());
-            Notification warningLukio = new Notification(
-                    ElementUtil.randomId(),
-                    createI18NText("form.koulutustausta.ammatillinenSuoritettu.lukio.huom", formParameters),
-                    Notification.NotificationType.WARNING);
-            warningLukio.setValidator(new AlwaysFailsValidator(createI18NText("form.koulutustausta.ammatillinenSuoritettu.lukio.huom",
-                    formParameters)));
+            Element warningLukio =
+                    Warning(ElementUtil.randomId()).failValidation().labelKey("form.koulutustausta.ammatillinenSuoritettu.lukio.huom").formParams(formParameters).build();
+
             suorittanutTutkinnonLukioRule.addChild(warningLukio);
 
             suorittanutAmmatillisenTutkinnonLukio.addChild(suorittanutTutkinnonLukioRule);
@@ -240,10 +233,8 @@ public final class KoulutustaustaPhase {
         paattotodistusvuosiPeruskouluRule.addChild(suorittanutAmmatillisenTutkinnon);
 
         Element suorittanutTutkinnonRule = createRuleIfVariableIsTrue(ElementUtil.randomId(), suorittanutAmmatillisenTutkinnon.getId());
-        Notification warning = new Notification(
-                ElementUtil.randomId(),
-                createI18NText("form.koulutustausta.ammatillinensuoritettu.huom", formParameters),
-                Notification.NotificationType.INFO);
+        Element warning = Info().labelKey("form.koulutustausta.ammatillinensuoritettu.huom").formParams(formParameters).build();
+
         suorittanutTutkinnonRule.addChild(warning);
 
         suorittanutAmmatillisenTutkinnon.addChild(suorittanutTutkinnonRule);
