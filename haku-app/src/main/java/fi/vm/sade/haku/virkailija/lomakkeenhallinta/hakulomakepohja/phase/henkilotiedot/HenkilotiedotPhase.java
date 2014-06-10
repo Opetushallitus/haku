@@ -97,14 +97,7 @@ public final class HenkilotiedotPhase {
 
         Or kysytaankoHetu = new Or(suomalainen, onSuomalainenHetu);
         Element kysytaankoHetuSaanto = Rule(ElementUtil.randomId()).setExpr(kysytaankoHetu).build();
-        Element henkilotunnus = TextQuestion("Henkilotunnus")
-                .requiredInline()
-                .placeholder("ppkkvv*****")
-                .size(11)
-                .maxLength(11)
-                .validator(new SocialSecurityNumberFieldValidator())
-                .pattern(HETU_PATTERN)
-                .formParams(formParameters).build();
+
         henkilotiedotTeema.addChild(kysytaankoHetuSaanto);
 
         List<Option> genders = formParameters.getKoodistoService().getGenders();
