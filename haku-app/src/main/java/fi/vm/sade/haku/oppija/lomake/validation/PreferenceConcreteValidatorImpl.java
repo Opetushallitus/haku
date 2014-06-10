@@ -93,7 +93,7 @@ public class PreferenceConcreteValidatorImpl extends PreferenceConcreteValidator
     private boolean checkEducationCode(final ValidationInput validationInput, final ApplicationOption applicationOption) {
         final String key = validationInput.getElement().getId() + "-Koulutus-id-educationcode";
 
-        if (validationInput.getValue(key).equals(applicationOption.getEducationCode())) {
+        if (validationInput.getValueByKey(key).equals(applicationOption.getEducationCode())) {
             return true;
         }
         LOGGER.error(ERROR_STR, key, validationInput, applicationOption);
@@ -109,7 +109,7 @@ public class PreferenceConcreteValidatorImpl extends PreferenceConcreteValidator
         }
 
         final String label = validationInput.getElement().getId() + "-Opetuspiste";
-        if (applicationOption.getProvider().getName().equals(validationInput.getValue(label))) {
+        if (applicationOption.getProvider().getName().equals(validationInput.getValueByKey(label))) {
             isOk = isOk && true;
         } else {
             isOk = false;
@@ -186,7 +186,7 @@ public class PreferenceConcreteValidatorImpl extends PreferenceConcreteValidator
 
     private boolean checkAOIdentifier(final ValidationInput validationInput, final ApplicationOption applicationOption) {
         final String key = validationInput.getElement().getId() + "-Koulutus-id-aoIdentifier";
-        if (applicationOption.getAoIdentifier().equals(validationInput.getValue(key))) {
+        if (applicationOption.getAoIdentifier().equals(validationInput.getValueByKey(key))) {
             return true;
         }
         LOGGER.error(ERROR_STR, key, validationInput, applicationOption);

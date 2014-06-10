@@ -16,9 +16,12 @@
 
 package fi.vm.sade.haku.oppija.lomake.validation.validators;
 
+import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.TextQuestion;
 import fi.vm.sade.haku.oppija.lomake.validation.FieldValidator;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationInput;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationResult;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import org.junit.Test;
 
 import java.util.HashMap;
@@ -29,16 +32,17 @@ import static org.junit.Assert.assertTrue;
 
 public class ContainedInOtherFieldValidatorTest {
 
-    String thisField = "thisField";
-    String thatField = "thatField";
-    FieldValidator validator = new ContainedInOtherFieldValidator(thisField, thatField, createI18NText("error"));
+    private static final String thisField = "thisField";
+    private static final String thatField = "thatField";
+    private static final Element element = new TextQuestion(thisField, ElementUtil.createI18NAsIs(thisField));
+    FieldValidator validator = new ContainedInOtherFieldValidator(thatField, createI18NText("error"));
 
     @Test
     public void testExactMatch() {
         HashMap<String, String> values = new HashMap<String, String>();
         values.put(thatField, "FirstName");
         values.put(thisField, "FirstName");
-        ValidationResult result = validator.validate(new ValidationInput(null, values, null, null));
+        ValidationResult result = validator.validate(new ValidationInput(element, values, null, null));
         assertFalse(result.hasErrors());
     }
 
@@ -47,7 +51,7 @@ public class ContainedInOtherFieldValidatorTest {
         HashMap<String, String> values = new HashMap<String, String>();
         values.put(thatField, "First-Name");
         values.put(thisField, "First");
-        ValidationResult result = validator.validate(new ValidationInput(null, values, null, null));
+        ValidationResult result = validator.validate(new ValidationInput(element, values, null, null));
         assertFalse(result.hasErrors());
     }
 
@@ -56,7 +60,7 @@ public class ContainedInOtherFieldValidatorTest {
         HashMap<String, String> values = new HashMap<String, String>();
         values.put(thatField, "First-Name");
         values.put(thisField, "first");
-        ValidationResult result = validator.validate(new ValidationInput(null, values, null, null));
+        ValidationResult result = validator.validate(new ValidationInput(element, values, null, null));
         assertFalse(result.hasErrors());
     }
 
@@ -65,7 +69,7 @@ public class ContainedInOtherFieldValidatorTest {
         HashMap<String, String> values = new HashMap<String, String>();
         values.put(thatField, "First-Name");
         values.put(thisField, "Last");
-        ValidationResult result = validator.validate(new ValidationInput(null, values, null, null));
+        ValidationResult result = validator.validate(new ValidationInput(element, values, null, null));
         assertTrue(result.hasErrors());
     }
 
@@ -74,7 +78,7 @@ public class ContainedInOtherFieldValidatorTest {
         HashMap<String, String> values = new HashMap<String, String>();
         values.put(thatField, "FirstName");
         values.put(thisField, null);
-        ValidationResult result = validator.validate(new ValidationInput(null, values, null, null));
+        ValidationResult result = validator.validate(new ValidationInput(element, values, null, null));
         assertTrue(result.hasErrors());
     }
 
@@ -83,7 +87,7 @@ public class ContainedInOtherFieldValidatorTest {
         HashMap<String, String> values = new HashMap<String, String>();
         values.put(thatField, "Väinö");
         values.put(thisField, "Väinö");
-        ValidationResult result = validator.validate(new ValidationInput(null, values, null, null));
+        ValidationResult result = validator.validate(new ValidationInput(element, values, null, null));
         assertFalse(result.hasErrors());
     }
 
@@ -92,7 +96,7 @@ public class ContainedInOtherFieldValidatorTest {
         HashMap<String, String> values = new HashMap<String, String>();
         values.put(thatField, thisField);
         values.put(thisField, thisField);
-        ValidationResult result = validator.validate(new ValidationInput(null, values, null, null));
+        ValidationResult result = validator.validate(new ValidationInput(element, values, null, null));
         assertFalse(result.hasErrors());
     }
 
@@ -101,7 +105,7 @@ public class ContainedInOtherFieldValidatorTest {
         HashMap<String, String> values = new HashMap<String, String>();
         values.put(thatField, "Teemu Hanz");
         values.put(thisField, "Teemu Hanz");
-        ValidationResult result = validator.validate(new ValidationInput(null, values, null, null));
+        ValidationResult result = validator.validate(new ValidationInput(element, values, null, null));
         assertFalse(result.hasErrors());
     }
 
@@ -110,7 +114,7 @@ public class ContainedInOtherFieldValidatorTest {
         HashMap<String, String> values = new HashMap<String, String>();
         values.put(thatField, "Teemu-Hanz");
         values.put(thisField, "Teemu-Hanz");
-        ValidationResult result = validator.validate(new ValidationInput(null, values, null, null));
+        ValidationResult result = validator.validate(new ValidationInput(element, values, null, null));
         assertFalse(result.hasErrors());
     }
 
@@ -119,7 +123,7 @@ public class ContainedInOtherFieldValidatorTest {
         HashMap<String, String> values = new HashMap<String, String>();
         values.put(thatField, "Teemu-Hanz");
         values.put(thisField, "Teemu-Hanz");
-        ValidationResult result = validator.validate(new ValidationInput(null, values, null, null));
+        ValidationResult result = validator.validate(new ValidationInput(element, values, null, null));
         assertFalse(result.hasErrors());
     }
 
@@ -128,7 +132,7 @@ public class ContainedInOtherFieldValidatorTest {
         HashMap<String, String> values = new HashMap<String, String>();
         values.put(thatField, "Teemu-Hanz");
         values.put(thisField, "    Teemu-Hanz");
-        ValidationResult result = validator.validate(new ValidationInput(null, values, null, null));
+        ValidationResult result = validator.validate(new ValidationInput(element, values, null, null));
         assertFalse(result.hasErrors());
     }
 }

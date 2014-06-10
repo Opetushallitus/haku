@@ -21,16 +21,34 @@ import fi.vm.sade.haku.oppija.lomake.validation.FieldValidator;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationInput;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationResult;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.data.annotation.PersistenceConstructor;
 
 public class RequiredFieldValidator extends FieldValidator {
-    public RequiredFieldValidator(final String fieldName, final I18nText errorMessage) {
-        super(fieldName, errorMessage);
+
+
+    private final String id;
+
+    @PersistenceConstructor
+    public RequiredFieldValidator(final I18nText errorMessage) {
+        super(errorMessage);
+        id = null;
+    }
+
+    public RequiredFieldValidator(final String id, final I18nText errorMessage) {
+        super(errorMessage);
+        this.id = id;
     }
 
     @Override
     public ValidationResult validate(final ValidationInput validationInput) {
-        if (StringUtils.isBlank(validationInput.getValue(getFieldName()))) {
-            return invalidValidationResult;
+        String value;
+        if (id != null) {
+            value = validationInput.getValueByKey(id);
+        } else {
+            value = validationInput.getValue();
+        }
+        if (StringUtils.isBlank(value)) {
+            return getInvalidValidationResult(validationInput);
         }
         return validValidationResult;
     }

@@ -53,7 +53,6 @@ public class HelpIT extends AbstractSeleniumBase {
     public void testCheckBox() {
         checkBox.setHelp(HELP_TEXT);
         String actualHelpText = initModelAndGetHelpText(checkBox);
-        System.out.println(this.seleniumContainer.getSelenium().getHtmlSource());
         assertEquals(HELP_TEXT.getTranslations().get("fi"), actualHelpText);
     }
 

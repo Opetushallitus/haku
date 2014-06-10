@@ -7,7 +7,8 @@ import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.builder.ThemeBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
-import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionComplexRule;
+import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionRule;
+import fi.vm.sade.haku.oppija.lomake.domain.builder.RelatedQuestionRuleBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.*;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.RadioBuilder.Radio;
+import static fi.vm.sade.haku.oppija.lomake.domain.builder.RelatedQuestionRuleBuilder.Rule;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.*;
 
 public final class KielitaitokysymyksetTheme {
@@ -78,34 +80,34 @@ public final class KielitaitokysymyksetTheme {
         Expr kysytaankoSaamePK = new And(new And(haettuSaamenkieliseenAmmatilliseenKoulutukseen, pohjakoulutusOnPK), new Not(saameOnAidinkieliTaiKouluSaameksiPK));
         Expr kysytaankoViittomaPK = new And(new And(haettuViittomakieliseenAmmatilliseenKoulutukseen, pohjakoulutusOnPK), new Not(viittomaOnAidinkieliTaiKouluViittomaksiPK));
 
-        RelatedQuestionComplexRule naytetaankoSuomiPK = new RelatedQuestionComplexRule(ElementUtil.randomId(), kysytaankoSuomiPK);
-        RelatedQuestionComplexRule naytetaankoRuotsiPK = new RelatedQuestionComplexRule(ElementUtil.randomId(), kysytaankoRuotsiPK);
-        RelatedQuestionComplexRule naytetaankoSaamePK = new RelatedQuestionComplexRule(ElementUtil.randomId(), kysytaankoSaamePK);
-        RelatedQuestionComplexRule naytetaankoViittomaPK = new RelatedQuestionComplexRule(ElementUtil.randomId(), kysytaankoViittomaPK);
+        Element naytetaankoSuomiPK = Rule(ElementUtil.randomId()).setExpr(kysytaankoSuomiPK).build();
+        Element naytetaankoRuotsiPK = Rule(ElementUtil.randomId()).setExpr(kysytaankoRuotsiPK).build();
+        Element naytetaankoSaamePK = Rule(ElementUtil.randomId()).setExpr(kysytaankoSaamePK).build();
+        Element naytetaankoViittomaPK = Rule(ElementUtil.randomId()).setExpr(kysytaankoViittomaPK).build();
 
 
         Integer hakukausiVuosi = formParameters.getApplicationSystem().getHakukausiVuosi();
         Expr tuoreTodistusPK = new Not(ExprUtil.atLeastOneVariableEqualsToValue(String.valueOf(hakukausiVuosi), OppijaConstants.PERUSOPETUS_PAATTOTODISTUSVUOSI));
 
-        RelatedQuestionComplexRule kysytaankoArvosanaPkFi = new RelatedQuestionComplexRule(ElementUtil.randomId(), tuoreTodistusPK);
+        Element kysytaankoArvosanaPkFi = Rule(ElementUtil.randomId()).setExpr(tuoreTodistusPK).build();
         kysytaankoArvosanaPkFi.addChild(createKielitutkinto("peruskoulun_paattotodistus_vahintaan_seitseman_fi", formParameters));
         naytetaankoSuomiPK.addChild(kysytaankoArvosanaPkFi,
                 createKielitutkinto("yleinen_kielitutkinto_fi", formParameters),
                 createKielitutkinto("valtionhallinnon_kielitutkinto_fi", formParameters));
 
-        RelatedQuestionComplexRule kysytaankoArvosanaPkSv = new RelatedQuestionComplexRule(ElementUtil.randomId(), tuoreTodistusPK);
+        Element kysytaankoArvosanaPkSv = Rule(ElementUtil.randomId()).setExpr(tuoreTodistusPK).build();
         kysytaankoArvosanaPkSv.addChild(createKielitutkinto("peruskoulun_paattotodistus_vahintaan_seitseman_sv", formParameters));
         naytetaankoRuotsiPK.addChild(kysytaankoArvosanaPkSv,
                 createKielitutkinto("yleinen_kielitutkinto_sv", formParameters),
                 createKielitutkinto("valtionhallinnon_kielitutkinto_sv", formParameters));
 
-        RelatedQuestionComplexRule kysytaankoArvosanaPkSe = new RelatedQuestionComplexRule(ElementUtil.randomId(), tuoreTodistusPK);
+        Element kysytaankoArvosanaPkSe = Rule(ElementUtil.randomId()).setExpr(tuoreTodistusPK).build();
         kysytaankoArvosanaPkSe.addChild(createKielitutkinto("peruskoulun_paattotodistus_vahintaan_seitseman_se", formParameters));
         naytetaankoSaamePK.addChild(kysytaankoArvosanaPkSe,
                 createKielitutkinto("yleinen_kielitutkinto_se", formParameters),
                 createKielitutkinto("valtionhallinnon_kielitutkinto_se", formParameters));
 
-        RelatedQuestionComplexRule kysytaankoArvosanaPkVk = new RelatedQuestionComplexRule(ElementUtil.randomId(), tuoreTodistusPK);
+        Element kysytaankoArvosanaPkVk = Rule(ElementUtil.randomId()).setExpr(tuoreTodistusPK).build();
         kysytaankoArvosanaPkVk.addChild(createKielitutkinto("peruskoulun_paattotodistus_vahintaan_seitseman_vk", formParameters));
         naytetaankoViittomaPK.addChild(kysytaankoArvosanaPkVk,
                 createKielitutkinto("yleinen_kielitutkinto_vk", formParameters),
@@ -125,31 +127,31 @@ public final class KielitaitokysymyksetTheme {
         Expr kysytaankoViittomaYO = new And(new And(haettuViittomakieliseenAmmatilliseenKoulutukseen, pohjakoulutusOnYO), new Not(viittomaOnAidinkieliTaiKouluViittomaksiYO));
 
 
-        RelatedQuestionComplexRule naytetaankoSuomiYO = new RelatedQuestionComplexRule(ElementUtil.randomId(), kysytaankoSuomiYO);
-        RelatedQuestionComplexRule naytetaankoRuotsiYO = new RelatedQuestionComplexRule(ElementUtil.randomId(), kysytaankoRuotsiYO);
-        RelatedQuestionComplexRule naytetaankoSaameYO = new RelatedQuestionComplexRule(ElementUtil.randomId(), kysytaankoSaameYO);
-        RelatedQuestionComplexRule naytetaankoViittomaYO = new RelatedQuestionComplexRule(ElementUtil.randomId(), kysytaankoViittomaYO);
+        Element naytetaankoSuomiYO = Rule(ElementUtil.randomId()).setExpr(kysytaankoSuomiYO).build();
+        Element naytetaankoRuotsiYO = Rule(ElementUtil.randomId()).setExpr(kysytaankoRuotsiYO).build();
+        Element naytetaankoSaameYO = Rule(ElementUtil.randomId()).setExpr(kysytaankoSaameYO).build();
+        Element naytetaankoViittomaYO = Rule(ElementUtil.randomId()).setExpr(kysytaankoViittomaYO).build();
         Expr tuoreTodistusYo = new Not(ExprUtil.atLeastOneVariableEqualsToValue(String.valueOf(hakukausiVuosi), OppijaConstants.PERUSOPETUS_PAATTOTODISTUSVUOSI));
 
-        RelatedQuestionComplexRule kysytaankoArvosanaYoFi = new RelatedQuestionComplexRule(ElementUtil.randomId(), tuoreTodistusYo);
+        Element kysytaankoArvosanaYoFi = Rule(ElementUtil.randomId()).setExpr(tuoreTodistusYo).build();
         kysytaankoArvosanaYoFi.addChild(createKielitutkinto("lukion_paattotodistus_vahintaan_seitseman_fi", formParameters));
         naytetaankoSuomiYO.addChild(kysytaankoArvosanaYoFi,
                 createKielitutkinto("yleinen_kielitutkinto_fi", formParameters),
                 createKielitutkinto("valtionhallinnon_kielitutkinto_fi", formParameters));
 
-        RelatedQuestionComplexRule kysytaankoArvosanaYoSv = new RelatedQuestionComplexRule(ElementUtil.randomId(), tuoreTodistusYo);
+        Element kysytaankoArvosanaYoSv = Rule(ElementUtil.randomId()).setExpr(tuoreTodistusYo).build();
         kysytaankoArvosanaYoSv.addChild(createKielitutkinto("lukion_paattotodistus_vahintaan_seitseman_sv", formParameters));
         naytetaankoRuotsiYO.addChild(kysytaankoArvosanaYoSv,
                 createKielitutkinto("yleinen_kielitutkinto_sv", formParameters),
                 createKielitutkinto("valtionhallinnon_kielitutkinto_sv", formParameters));
 
-        RelatedQuestionComplexRule kysytaankoArvosanaYoSe = new RelatedQuestionComplexRule(ElementUtil.randomId(), tuoreTodistusYo);
+        Element kysytaankoArvosanaYoSe = Rule(ElementUtil.randomId()).setExpr(tuoreTodistusYo).build();
         kysytaankoArvosanaYoSe.addChild(createKielitutkinto("lukion_paattotodistus_vahintaan_seitseman_se", formParameters));
         naytetaankoSaameYO.addChild(kysytaankoArvosanaYoSe,
                 createKielitutkinto("yleinen_kielitutkinto_se", formParameters),
                 createKielitutkinto("valtionhallinnon_kielitutkinto_se", formParameters));
 
-        RelatedQuestionComplexRule kysytaankoArvosanaYoVk = new RelatedQuestionComplexRule(ElementUtil.randomId(), tuoreTodistusYo);
+        Element kysytaankoArvosanaYoVk = Rule(ElementUtil.randomId()).setExpr(tuoreTodistusYo).build();
         kysytaankoArvosanaYoVk.addChild(createKielitutkinto("lukion_paattotodistus_vahintaan_seitseman_vk", formParameters));
         naytetaankoViittomaYO.addChild(kysytaankoArvosanaYoVk,
                 createKielitutkinto("yleinen_kielitutkinto_vk", formParameters),
@@ -170,10 +172,10 @@ public final class KielitaitokysymyksetTheme {
         Expr kysytaankoViittomaKeskUlk = new And(new And(haettuViittomakieliseenAmmatilliseenKoulutukseen, pohjakoulutusOnKeskUlk), new Not(viittomaOnAidinkieliKeskUlk));
 
 
-        RelatedQuestionComplexRule naytetaankoSuomiKeskUlk = new RelatedQuestionComplexRule(ElementUtil.randomId(), kysytaankoSuomiKeskUlk);
-        RelatedQuestionComplexRule naytetaankoRuotsiKeskUlk = new RelatedQuestionComplexRule(ElementUtil.randomId(), kysytaankoRuotsiKeskUlk);
-        RelatedQuestionComplexRule naytetaankoSaameKeskUlk = new RelatedQuestionComplexRule(ElementUtil.randomId(), kysytaankoSaameKeskUlk);
-        RelatedQuestionComplexRule naytetaankoViittomaKeskUlk = new RelatedQuestionComplexRule(ElementUtil.randomId(), kysytaankoViittomaKeskUlk);
+        Element naytetaankoSuomiKeskUlk = Rule(ElementUtil.randomId()).setExpr(kysytaankoSuomiKeskUlk).build();
+        Element naytetaankoRuotsiKeskUlk = Rule(ElementUtil.randomId()).setExpr(kysytaankoRuotsiKeskUlk).build();
+        Element naytetaankoSaameKeskUlk = Rule(ElementUtil.randomId()).setExpr(kysytaankoSaameKeskUlk).build();
+        Element naytetaankoViittomaKeskUlk = Rule(ElementUtil.randomId()).setExpr(kysytaankoViittomaKeskUlk).build();
         naytetaankoSuomiKeskUlk.addChild(createKielitutkinto("yleinen_kielitutkinto_fi", formParameters),
                 createKielitutkinto("valtionhallinnon_kielitutkinto_fi", formParameters));
         naytetaankoRuotsiKeskUlk.addChild(createKielitutkinto("yleinen_kielitutkinto_sv", formParameters),
@@ -189,8 +191,8 @@ public final class KielitaitokysymyksetTheme {
                 kysytaankoSaamePK, kysytaankoSaameYO, kysytaankoSaameKeskUlk, kysytaankoViittomaPK, kysytaankoViittomaYO,
                 kysytaankoViittomaKeskUlk));
 
-        RelatedQuestionComplexRule naytetaankoTeema = new RelatedQuestionComplexRule(ElementUtil.randomId(), naytetaankoKielitaitoteema);
-        Element kielitaitokysymyksetTheme = new ThemeBuilder("kielitaito").previewable().build(formParameters);
+        Element naytetaankoTeema = Rule(ElementUtil.randomId()).setExpr(naytetaankoKielitaitoteema).build();
+        Element kielitaitokysymyksetTheme = new ThemeBuilder("kielitaito").previewable().formParams(formParameters).build();
         kielitaitokysymyksetTheme.addChild(naytetaankoSuomiPK, naytetaankoRuotsiPK, naytetaankoSuomiYO, naytetaankoRuotsiYO,
                 naytetaankoSuomiKeskUlk, naytetaankoRuotsiKeskUlk, naytetaankoSaamePK, naytetaankoSaameYO, naytetaankoSaameKeskUlk,
                 naytetaankoViittomaPK, naytetaankoViittomaYO, naytetaankoViittomaKeskUlk);
@@ -229,14 +231,14 @@ public final class KielitaitokysymyksetTheme {
 
         Expr naytetaankoKielitaitoteema = new Or(kysytaankoSuomi, kysytaankoRuotsi);
 
-        RelatedQuestionComplexRule naytetaankoTeema = new RelatedQuestionComplexRule(ElementUtil.randomId(), naytetaankoKielitaitoteema);
+        Element naytetaankoTeema = Rule(ElementUtil.randomId()).setExpr(naytetaankoKielitaitoteema).build();
 
         Element kielitaitokysymyksetTheme =
-                new ThemeBuilder("kielitaito").previewable().build(formParameters);
+                new ThemeBuilder("kielitaito").previewable().formParams(formParameters).build();
         naytetaankoTeema.addChild(kielitaitokysymyksetTheme);
 
-        RelatedQuestionComplexRule naytetaankoSuomi = new RelatedQuestionComplexRule(ElementUtil.randomId(), kysytaankoSuomi);
-        RelatedQuestionComplexRule naytetaankoRuotsi = new RelatedQuestionComplexRule(ElementUtil.randomId(), kysytaankoRuotsi);
+        Element naytetaankoSuomi = Rule(ElementUtil.randomId()).setExpr(kysytaankoSuomi).build();
+        Element naytetaankoRuotsi = Rule(ElementUtil.randomId()).setExpr(kysytaankoRuotsi).build();
 
         naytetaankoSuomi.addChild(createKielitutkinto("yleinen_kielitutkinto_fi", formParameters),
                 createKielitutkinto("valtionhallinnon_kielitutkinto_fi", formParameters));
@@ -254,6 +256,6 @@ public final class KielitaitokysymyksetTheme {
                         new Option(createI18NText("form.yleinen.ei", formParameters), EI)))
                 .required()
                 .i18nText(i18NText)
-                .build(formParameters);
+                .formParams(formParameters).build();
     }
 }

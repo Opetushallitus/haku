@@ -36,13 +36,11 @@ public final class ElementTreeValidator {
     public ValidationResult validate(final ValidationInput validationInput) {
         List<ValidationResult> listOfValidationResult = new ArrayList<ValidationResult>();
         Element element = validationInput.getElement();
-        if (!element.getId().equals("esikatselu")) { // TODO refactor magic string
-            for (Validator validator : element.getValidators()) {
-                listOfValidationResult.add(validatorFactory.buildValidator(validator).validate(validationInput));
-            }
-            for (Element child : element.getChildren(validationInput.getValues())) {
-                listOfValidationResult.add(validate(new ValidationInput(child, validationInput)));
-            }
+        for (Validator validator : element.getValidators()) {
+            listOfValidationResult.add(validatorFactory.buildValidator(validator).validate(validationInput));
+        }
+        for (Element child : element.getChildren(validationInput.getValues())) {
+            listOfValidationResult.add(validate(new ValidationInput(child, validationInput)));
         }
         return new ValidationResult(listOfValidationResult);
     }

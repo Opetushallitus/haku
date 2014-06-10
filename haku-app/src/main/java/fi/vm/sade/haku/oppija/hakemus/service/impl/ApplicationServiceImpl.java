@@ -80,7 +80,6 @@ public class ApplicationServiceImpl implements ApplicationService {
     @Value("${komo.oid.kuntouttava}")
     private String kuntouttavaKomoOid;
 
-    private static final String OPH_ORGANIZATION = "1.2.246.562.10.00000000001";
     private final ApplicationDAO applicationDAO;
     private final ApplicationOidService applicationOidService;
     private final UserSession userSession;
@@ -285,8 +284,6 @@ public class ApplicationServiceImpl implements ApplicationService {
         if (answers.containsKey(OppijaConstants.ELEMENT_ID_SENDING_SCHOOL)) {
             String sendingSchool = answers.get(OppijaConstants.ELEMENT_ID_SENDING_SCHOOL);
             List<String> parentOids = organizationService.findParentOids(sendingSchool);
-            parentOids.add(OPH_ORGANIZATION);
-            parentOids.add(sendingSchool);
             answers.put(OppijaConstants.ELEMENT_ID_SENDING_SCHOOL_PARENTS, join(parentOids, ","));
             application.addVaiheenVastaukset(OppijaConstants.PHASE_EDUCATION, answers);
         }
@@ -673,10 +670,6 @@ public class ApplicationServiceImpl implements ApplicationService {
                 String opetuspiste = answers.get(id);
                 if (isNotEmpty(opetuspiste)) {
                     List<String> parentOids = organizationService.findParentOids(opetuspiste);
-                    // OPH-guys have access to all organizations
-                    parentOids.add(OPH_ORGANIZATION);
-                    // Also add organization itself
-                    parentOids.add(opetuspiste);
                     answers.put(id + "-parents", join(parentOids, ","));
                 }
             }

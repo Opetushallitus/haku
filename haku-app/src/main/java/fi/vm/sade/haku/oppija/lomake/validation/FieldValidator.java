@@ -21,28 +21,22 @@ import org.apache.commons.lang3.Validate;
 import org.springframework.data.annotation.Transient;
 
 public abstract class FieldValidator implements Validator {
-    protected final String fieldName;
     protected final I18nText errorMessage;
     @Transient
     protected ValidationResult validValidationResult;
-    @Transient
-    protected ValidationResult invalidValidationResult;
 
-    protected FieldValidator(final String fieldName, final I18nText errorMessage) {
-        Validate.notNull(fieldName, "FieldName can't be null");
+    protected FieldValidator(final I18nText errorMessage) {
         Validate.notNull(errorMessage, "ErrorMessage can't be null");
-        this.fieldName = fieldName;
         this.errorMessage = errorMessage;
         validValidationResult = new ValidationResult();
-        invalidValidationResult = new ValidationResult(this.fieldName,
-                errorMessage);
     }
 
-    public String getFieldName() {
-        return fieldName;
-    }
 
     public I18nText getErrorMessage() {
         return errorMessage;
+    }
+
+    public ValidationResult getInvalidValidationResult(final ValidationInput validationInput) {
+        return new ValidationResult(validationInput.getFieldName(), getErrorMessage());
     }
 }

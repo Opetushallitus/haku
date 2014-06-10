@@ -24,10 +24,13 @@ import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystemBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.builder.RadioBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.builder.TextQuestionBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.builders.FormModelBuilder;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.SocialSecurityNumber;
+import fi.vm.sade.haku.oppija.lomake.domain.builder.SocialSecurityNumberBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Radio;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.TextQuestion;
+import fi.vm.sade.haku.oppija.lomake.validation.validators.SocialSecurityNumberFieldValidator;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.junit.Before;
@@ -46,30 +49,17 @@ public class SocialSecurityNumberIT extends AbstractSeleniumBase {
     @Before
     public void init() throws IOException {
 
-        TextQuestion henkilötunnus = (TextQuestion) new TextQuestionBuilder("Henkilotunnus")
-                .placeholder("ppkkvv*****")
-                .size(11)
-                .pattern("[0-9]{6}.[0-9]{4}")
-                .maxLength(11)
-                .i18nText(createI18NAsIs("Henkilotunnus")).build();
-        henkilötunnus.addAttribute("title", "ppkkvv*****");
-        FormParameters formParameters = new FormParameters(new ApplicationSystemBuilder().addName(createI18NAsIs("name")).addId("id").addHakukausiUri(OppijaConstants.HAKUKAUSI_SYKSY).addApplicationSystemType(OppijaConstants.VARSINAINEN_HAKU).get(), null);
-        addRequiredValidator(henkilötunnus, formParameters);
-        henkilötunnus.setValidator(createRegexValidator(henkilötunnus.getId(), "[0-9]{6}.[0-9]{4}", formParameters));
-
         Radio sukupuoli = (Radio) RadioBuilder.Radio("Sukupuoli")
                 .addOptions(ImmutableList.of(new Option(createI18NAsIs("Mies"), "1"), new Option(createI18NAsIs("Nainen"), "2")))
                 .requiredInline()
                 .build();
 
-        SocialSecurityNumber socialSecurityNumber = new SocialSecurityNumber("ssn_question", createI18NAsIs("Henkilötunnus"),
-                sukupuoli.getI18nText(), sukupuoli.getOptions().get(0), sukupuoli.getOptions().get(1), sukupuoli.getId(), henkilötunnus);
+        Element socialSecurityNumber = new SocialSecurityNumberBuilder("Henkilotunnus").setSexI18nText(sukupuoli.getI18nText()).setMaleOption(sukupuoli.getOptions().get(0)).setFemaleOption(sukupuoli.getOptions().get(1)).setSexId(sukupuoli.getId()).build();
 
         ApplicationSystem applicationSystem = new FormModelBuilder().buildDefaultFormWithFields(socialSecurityNumber);
         this.applicationSystemHelper = updateApplicationSystem(applicationSystem);
         seleniumContainer.getDriver().get(getBaseUrl() + applicationSystemHelper.getStartUrl());
     }
-
 
     @Test
     public void testInputMale() {

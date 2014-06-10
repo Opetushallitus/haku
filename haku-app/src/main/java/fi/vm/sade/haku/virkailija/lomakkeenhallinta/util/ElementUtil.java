@@ -23,10 +23,12 @@ import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Titled;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.gradegrid.GradeGridRow;
-import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionComplexRule;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.Regexp;
 import fi.vm.sade.haku.oppija.lomake.validation.Validator;
-import fi.vm.sade.haku.oppija.lomake.validation.validators.*;
+import fi.vm.sade.haku.oppija.lomake.validation.validators.RegexFieldValidator;
+import fi.vm.sade.haku.oppija.lomake.validation.validators.RequiredFieldValidator;
+import fi.vm.sade.haku.oppija.lomake.validation.validators.SsnUniqueValidator;
+import fi.vm.sade.haku.oppija.lomake.validation.validators.ValueSetValidator;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
 import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
@@ -35,6 +37,7 @@ import org.slf4j.LoggerFactory;
 import java.util.*;
 
 import static fi.vm.sade.haku.oppija.lomake.domain.I18nText.LANGS;
+import static fi.vm.sade.haku.oppija.lomake.domain.builder.RelatedQuestionRuleBuilder.Rule;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.FORM_COMMON_BUNDLE_NAME;
 
 public final class ElementUtil {
@@ -141,24 +144,17 @@ public final class ElementUtil {
         return gradeGridRow;
     }
 
-    public static Element addSizeAttribute(final Element element, final Integer size) {
-        if (size != null) {
-            element.addAttribute("size", size.toString());
-        }
-        return element;
+    public static Validator createRegexValidator(final String pattern, final FormParameters formParameters) {
+        return createRegexValidator(pattern, formParameters, "yleinen.virheellinenArvo");
     }
 
-    public static Validator createRegexValidator(final String id, final String pattern, final FormParameters formParameters) {
-        return createRegexValidator(id, pattern, formParameters, "yleinen.virheellinenArvo");
-    }
-
-    public static Validator createRegexValidator(final String id, final String pattern, final FormParameters formParameters,
+    public static Validator createRegexValidator(final String pattern, final FormParameters formParameters,
                                                  final String messageKey) {
-        return new RegexFieldValidator(id, formParameters.getI18nText(messageKey), pattern);
+        return new RegexFieldValidator(formParameters.getI18nText(messageKey), pattern);
     }
 
-    public static Validator createValueSetValidator(final String id, final List<String> validValues, final FormParameters formParameters) {
-        return new ValueSetValidator(id, formParameters.getI18nText("yleinen.virheellinenArvo"), validValues);
+    public static Validator createValueSetValidator(final List<String> validValues, final FormParameters formParameters) {
+        return new ValueSetValidator(formParameters.getI18nText("yleinen.virheellinenArvo"), validValues);
     }
 
     public static void addRequiredValidator(final Element element, final FormParameters formParameters) {
@@ -166,7 +162,6 @@ public final class ElementUtil {
         element.addAttribute(required, required);
         element.setValidator(
                 new RequiredFieldValidator(
-                        element.getId(),
                         ElementUtil.createI18NText("yleinen.pakollinen", formParameters)));
     }
 
@@ -178,12 +173,16 @@ public final class ElementUtil {
         }
     }
 
-    public static void setVerboseHelp(final Titled titled, final String helpId, final FormParameters formParameters) {
-        titled.setVerboseHelp(formParameters.getI18nText(helpId));
+    public static void setVerboseHelp(final Element element, final String helpId, final FormParameters formParameters) {
+        if (element instanceof Titled) {
+            ((Titled) element).setVerboseHelp(formParameters.getI18nText(helpId));
+        }
     }
 
-    public static void setHelp(final Element element, final String key, final FormParameters formParameters) {
-        element.setHelp(formParameters.getI18nText(key));
+    public static void setVerboseHelp(Element element, I18nText i18nText) {
+        if (element instanceof Titled) {
+            ((Titled) element).setVerboseHelp(i18nText);
+        }
     }
 
     public static String randomId() {
@@ -246,26 +245,20 @@ public final class ElementUtil {
     }
 
 
-    public static RelatedQuestionComplexRule createVarEqualsToValueRule(final String variable, final String... values) {
-        return new RelatedQuestionComplexRule(
-                ElementUtil.randomId(),
-                ExprUtil.atLeastOneValueEqualsToVariable(variable, values));
+    public static Element createVarEqualsToValueRule(final String variable, final String... values) {
+        return Rule(ElementUtil.randomId()).setExpr(ExprUtil.atLeastOneValueEqualsToVariable(variable, values)).build();
     }
 
-    public static RelatedQuestionComplexRule createRuleIfVariableIsTrue(final String ruleId, final String variable) {
-        return new RelatedQuestionComplexRule(ruleId, ExprUtil.isAnswerTrue(variable));
+    public static Element createRuleIfVariableIsTrue(final String ruleId, final String variable) {
+        return Rule(ruleId).setExpr(ExprUtil.isAnswerTrue(variable)).build();
     }
 
-    public static RelatedQuestionComplexRule createRuleIfVariableIsFalse(final String ruleId, final String variable) {
-        return new RelatedQuestionComplexRule(ruleId, ExprUtil.isAnswerFalse(variable));
-    }
-
-    public static RelatedQuestionComplexRule createRegexpRule(final Element element, final String pattern) {
+    public static Element createRegexpRule(final Element element, final String pattern) {
         return createRegexpRule(element.getId(), pattern);
     }
 
-    public static RelatedQuestionComplexRule createRegexpRule(final String variable, final String pattern) {
-        return new RelatedQuestionComplexRule(ElementUtil.randomId(), new Regexp(variable, pattern));
+    public static Element createRegexpRule(final String variable, final String pattern) {
+        return Rule(ElementUtil.randomId()).setExpr(new Regexp(variable, pattern)).build();
     }
 
 

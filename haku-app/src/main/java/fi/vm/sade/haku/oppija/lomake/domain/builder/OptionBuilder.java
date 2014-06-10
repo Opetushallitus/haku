@@ -22,23 +22,9 @@ public class OptionBuilder extends ElementBuilder {
         return this;
     }
 
-    public OptionBuilder setI18nText(I18nText i18nText) {
-        this.i18nText = i18nText;
-        return this;
-    }
-
-    @Override
-    public Element buildImpl(final FormParameters formParameters) {
-        Option option = (Option) buildImpl();
-        ElementUtil.setVerboseHelp(option, key + ".verboseHelp", formParameters);
-        return option;
-    }
-
     @Override
     public Element buildImpl() {
-        Option element = new Option(this.i18nText, value);
-        element.setInline(this.inline);
-        return element;
+        return new Option(this.i18nText, value);
     }
 
     public static OptionBuilder Option(final String id) {

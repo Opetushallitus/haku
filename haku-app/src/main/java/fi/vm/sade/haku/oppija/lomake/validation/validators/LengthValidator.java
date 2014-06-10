@@ -26,10 +26,8 @@ public class LengthValidator extends FieldValidator {
 
     private final int length;
 
-    public LengthValidator(final String fieldName,
-                           final I18nText errorMessage,
-                           int length) {
-        super(fieldName, errorMessage);
+    public LengthValidator(final I18nText errorMessage, int length) {
+        super(errorMessage);
         Validate.isTrue(length >= 0, "Length must be greater than or equal to 0");
         this.length = length;
     }
@@ -37,9 +35,9 @@ public class LengthValidator extends FieldValidator {
     @Override
     public ValidationResult validate(final ValidationInput validationInput) {
         ValidationResult validationResult = new ValidationResult();
-        String value = validationInput.getValue(fieldName);
+        String value = validationInput.getValue();
         if (value != null && value.length() > this.length) {
-            validationResult = new ValidationResult(fieldName, getErrorMessage());
+            validationResult = getInvalidValidationResult(validationInput);
         }
         return validationResult;
     }

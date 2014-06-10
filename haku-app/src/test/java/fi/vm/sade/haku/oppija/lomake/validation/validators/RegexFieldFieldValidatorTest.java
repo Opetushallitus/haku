@@ -2,6 +2,8 @@ package fi.vm.sade.haku.oppija.lomake.validation.validators;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.TextQuestion;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationInput;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationResult;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
@@ -18,9 +20,10 @@ import static org.junit.Assert.assertTrue;
 public class RegexFieldFieldValidatorTest {
 
     private static final String FIELD_NAME = "name";
+    private static final Element element = new TextQuestion(FIELD_NAME, ElementUtil.createI18NAsIs(FIELD_NAME));
 
-    private final RegexFieldValidator regexFieldFieldValidator = new RegexFieldValidator(FIELD_NAME,
-            createI18NText("yleinen.virheellinenArvo"), ElementUtil.ISO88591_NAME_REGEX);
+    private final RegexFieldValidator regexFieldFieldValidator =
+            new RegexFieldValidator(createI18NText("yleinen.virheellinenArvo"), ElementUtil.ISO88591_NAME_REGEX);
 
     private final List<String> listOfValidNames = ImmutableList.of(
             "",
@@ -49,16 +52,16 @@ public class RegexFieldFieldValidatorTest {
     @Test
     public void validateValid() throws Exception {
         Map<String, String> values = ImmutableMap.of(FIELD_NAME, "test");
-        RegexFieldValidator test = new RegexFieldValidator(FIELD_NAME, ElementUtil.createI18NText("yleinen.virheellinenArvo"), "test");
-        ValidationResult validationResult = test.validate(new ValidationInput(null, values, null, null));
+        RegexFieldValidator test = new RegexFieldValidator(ElementUtil.createI18NText("yleinen.virheellinenArvo"), "test");
+        ValidationResult validationResult = test.validate(new ValidationInput(element, values, null, null));
         assertFalse(validationResult.hasErrors());
     }
 
     @Test
     public void validateInvalid() throws Exception {
         Map<String, String> values = ImmutableMap.of(FIELD_NAME, "test2");
-        RegexFieldValidator test = new RegexFieldValidator(FIELD_NAME, ElementUtil.createI18NText("yleinen.virheellinenArvo"), "test");
-        ValidationResult validationResult = test.validate(new ValidationInput(null, values, null, null));
+        RegexFieldValidator test = new RegexFieldValidator(ElementUtil.createI18NText("yleinen.virheellinenArvo"), "test");
+        ValidationResult validationResult = test.validate(new ValidationInput(element, values, null, null));
         assertTrue(validationResult.hasErrors());
     }
 
@@ -86,6 +89,6 @@ public class RegexFieldFieldValidatorTest {
 
     private ValidationResult validate(String name) {
         Map<String, String> values = ImmutableMap.of(FIELD_NAME, name);
-        return regexFieldFieldValidator.validate(new ValidationInput(null, values, null, null));
+        return regexFieldFieldValidator.validate(new ValidationInput(element, values, null, null));
     }
 }
