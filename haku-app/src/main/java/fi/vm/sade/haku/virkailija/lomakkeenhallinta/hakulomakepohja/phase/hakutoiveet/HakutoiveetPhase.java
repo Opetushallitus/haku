@@ -92,7 +92,7 @@ public class HakutoiveetPhase {
         } else {
             Element koulutusasteRistiriidassaSuoritettuunTutkintoon = Rule(ElementUtil.randomId()).setExpr(
                     new And(
-                            ExprUtil.isAnswerTrue("KOULUTUSPAIKKA_AMMATILLISEEN_TUTKINTOON"),
+                            ExprUtil.isAnswerTrue("ammatillinenTutkintoSuoritettu"),
                             ExprUtil.atLeastOneValueEqualsToVariable(id + "-Koulutus-educationDegree", LISAOPETUS_EDUCATION_DEGREE, DISCRETIONARY_EDUCATION_DEGREE)))
                     .build();
             Element ristiriita = Warning("koulutusasteristiriita").failValidation()
