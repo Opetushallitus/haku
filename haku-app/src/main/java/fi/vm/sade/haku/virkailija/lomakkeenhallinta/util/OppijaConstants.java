@@ -50,7 +50,7 @@ public final class OppijaConstants {
     public static final String ELEMENT_ID_SECURITY_ORDER = "turvakielto";
     public static final String ELEMENT_ID_DATE_OF_BIRTH = "syntymaaika";
     public static final String ELEMENT_ID_EMAIL = "Sähköposti";
-    public static final String ELEMENT_ID_SEX = "Sukupuoli";
+    public static final String ELEMENT_ID_SEX = "sukupuoli";
     public static final String ELEMENT_ID_SENDING_SCHOOL = "lahtokoulu";
     public static final String ELEMENT_ID_SENDING_SCHOOL_PARENTS = "lahtokoulu-parents";
     public static final String ELEMENT_ID_SENDING_CLASS = "lahtoluokka";
@@ -74,6 +74,9 @@ public final class OppijaConstants {
     public static final String PHASE_PREVIEW = "esikatselu";
 
     public static final String PREFERENCE_ID = "preference%d-Koulutus-id";
+
+    public static final String SUKUPUOLI_MIES = "1";
+    public static final String SUKUPUOLI_NAINEN = "2";
 
     public static final String PREFERENCE_NAME = "preference%d-Koulutus";
     public static final String PREFERENCE_ORGANIZATION = "preference%d-Opetuspiste";

@@ -33,6 +33,7 @@ import fi.vm.sade.haku.oppija.lomake.validation.validators.PastDateValidator;
 import fi.vm.sade.haku.oppija.lomake.validation.validators.RegexFieldValidator;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 
 import java.util.List;
 
@@ -87,7 +88,7 @@ public final class HenkilotiedotPhase {
                 .build(formParameters);
 
         List<Option> genders = formParameters.getKoodistoService().getGenders();
-        Radio sukupuoli = (Radio) Radio("sukupuoli")
+        Radio sukupuoli = (Radio) Radio(OppijaConstants.ELEMENT_ID_SEX)
                 .addOptions(genders)
                 .inline()
                 .build(formParameters);

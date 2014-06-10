@@ -27,6 +27,7 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormGenerato
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormGeneratorImpl;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.impl.KoodistoServiceMockImpl;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.impl.HakuServiceMockImpl;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -114,7 +115,7 @@ public class ElementTreeValidatorTest {
         values.put("Kutsumanimi", "Mika");
         values.put("kansalaisuus", "FIN");
         values.put("Henkilotunnus", "110293-906X");
-        values.put("sukupuoli", "2");
+        values.put(OppijaConstants.ELEMENT_ID_SEX, "2");
         values.put("aidinkieli", "FI");
         //values.put("kotikunta", "janakkala");
         return values;
