@@ -14,6 +14,7 @@ public class FormParameters {
         YHTEISHAKU_KEVAT,
         YHTEISHAKU_SYKSY,
         LISAHAKU_SYKSY,
+        LISAHAKU_KEVAT,
         PERVAKO;
     }
 
@@ -72,6 +73,9 @@ public class FormParameters {
             return FormTemplateType.PERVAKO;
         }
         if (as.getApplicationSystemType().equals(OppijaConstants.LISA_HAKU)) {
+            if (as.getHakukausiUri().equals(OppijaConstants.HAKUKAUSI_KEVAT)) {
+               return FormTemplateType.LISAHAKU_KEVAT;
+            }
             return FormTemplateType.LISAHAKU_SYKSY;
         } else {
             if (as.getHakukausiUri().equals(OppijaConstants.HAKUKAUSI_SYKSY)) {
