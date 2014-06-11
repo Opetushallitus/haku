@@ -18,6 +18,7 @@ package fi.vm.sade.haku.oppija.lomake.validation.validators;
 import fi.vm.sade.haku.oppija.lomake.validation.FieldValidator;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationInput;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationResult;
+import org.springframework.data.annotation.Transient;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -44,6 +45,7 @@ public class SocialSecurityNumberFieldValidator extends FieldValidator {
     private static final String NOT_A_DATE_ERROR = "henkilotiedot.hetu.eiPvm";
     private static final String DOB_IN_FUTURE = "henkilotiedot.hetu.tulevaisuudessa";
     private static Map<String, Integer> centuries = new HashMap<String, Integer>();
+    @Transient
     private DateFormat fmt;
     private static String[] checks = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C",
             "D", "E", "F", "H", "J", "K", "L", "M", "N", "P", "R", "S", "T", "U", "V", "W", "X", "Y"};
