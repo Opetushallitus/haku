@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystemBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.dao.ThemeQuestionDAO;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.hakutoiveet.HakutoiveetPhase;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.henkilotiedot.HenkilotiedotPhase;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.koulutustausta.KoulutustaustaPhase;
@@ -21,12 +22,15 @@ import java.util.List;
 public class FormGeneratorImpl implements FormGenerator {
     private final KoodistoService koodistoService;
     private final HakuService hakuService;
+    private final ThemeQuestionDAO themeQuestionDAO;
 
     @Autowired
     public FormGeneratorImpl(final KoodistoService koodistoService,
-                             final HakuService hakuService) {
+                             final HakuService hakuService,
+                             final ThemeQuestionDAO themeQuestionDAO) {
         this.koodistoService = koodistoService;
         this.hakuService = hakuService;
+        this.themeQuestionDAO = themeQuestionDAO;
     }
 
     @Override
@@ -41,7 +45,7 @@ public class FormGeneratorImpl implements FormGenerator {
     }
 
     private ApplicationSystem createApplicationSystem(ApplicationSystem as) {
-        FormParameters formParameters = new FormParameters(as, koodistoService);
+        FormParameters formParameters = new FormParameters(as, koodistoService, themeQuestionDAO);
         return new ApplicationSystemBuilder().addId(as.getId()).addForm(generateForm(formParameters))
                 .addName(as.getName()).addApplicationPeriods(as.getApplicationPeriods())
                 .addApplicationSystemType(as.getApplicationSystemType())

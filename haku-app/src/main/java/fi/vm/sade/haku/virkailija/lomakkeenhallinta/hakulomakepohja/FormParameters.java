@@ -3,8 +3,15 @@ package fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja;
 import com.google.common.base.Joiner;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.dao.ThemeQuestionDAO;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.dao.ThemeQuestionQueryParameters;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain.ThemeQuestion;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class FormParameters {
     private static final String FORM_MESSAGES = "form_messages";
@@ -21,15 +28,17 @@ public class FormParameters {
 
     private final ApplicationSystem applicationSystem;
     private final KoodistoService koodistoService;
+    private final ThemeQuestionDAO themeQuestionDAO;
 
     private final FormTemplateType formTemplateType;
     private final I18nBundle i18nBundle;
     private final String formMessagesBundle;
 
 
-    public FormParameters(final ApplicationSystem applicationSystem, final KoodistoService koodistoService) {
+    public FormParameters(final ApplicationSystem applicationSystem, final KoodistoService koodistoService, ThemeQuestionDAO themeQuestionDAO) {
         this.applicationSystem = applicationSystem;
         this.koodistoService = koodistoService;
+        this.themeQuestionDAO = themeQuestionDAO;
         this.formTemplateType = figureOutFormForApplicationSystem(applicationSystem);
 
 
@@ -65,7 +74,7 @@ public class FormParameters {
         }
         if (as.getApplicationSystemType().equals(OppijaConstants.LISA_HAKU)) {
             if (as.getHakukausiUri().equals(OppijaConstants.HAKUKAUSI_KEVAT)) {
-               return FormTemplateType.LISAHAKU_KEVAT;
+                return FormTemplateType.LISAHAKU_KEVAT;
             }
             return FormTemplateType.LISAHAKU_SYKSY;
         } else {
@@ -90,12 +99,24 @@ public class FormParameters {
     public boolean isPervako() {
         return FormParameters.FormTemplateType.PERVAKO.equals(formTemplateType);
     }
+
     public boolean isKevaanLisahaku() {
         return FormTemplateType.LISAHAKU_KEVAT.equals(this.getFormTemplateType());
     }
+
     public boolean isLisahaku() {
         return FormTemplateType.LISAHAKU_KEVAT.equals(formTemplateType) || FormTemplateType.LISAHAKU_SYKSY.equals(formTemplateType);
 
     }
 
+    public List<Element> test() {
+        ThemeQuestionQueryParameters parameters = new ThemeQuestionQueryParameters();
+        parameters.setApplicationSystemId(applicationSystem.getId());
+        List<ThemeQuestion> query = themeQuestionDAO.query(parameters);
+        List<Element> elementList = new ArrayList<Element>(query.size());
+        for (ThemeQuestion themeQuestion : query) {
+            elementList.add(themeQuestion.generateElement(this));
+        }
+        return elementList;
+    }
 }

@@ -1,12 +1,10 @@
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain;
 
 
-import fi.vm.sade.haku.oppija.lomake.domain.builder.ElementBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.builder.TitledGroupBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -33,6 +31,7 @@ public class ThemeCheckBoxQuestion extends ThemeOptionQuestion {
         for (ThemeQuestionOption option : options) {
             elementBuilder.addChild(Checkbox(option.getId().toString())
                     .i18nText(option.getOptionText())
+                    .inline()
                     .formParams(formParameters));
         }
         elementBuilder.formParams(formParameters);
