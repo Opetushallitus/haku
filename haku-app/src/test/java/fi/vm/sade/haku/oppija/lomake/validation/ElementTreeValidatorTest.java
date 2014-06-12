@@ -52,7 +52,7 @@ public class ElementTreeValidatorTest {
     @Before
     public void setUp() throws Exception {
         textQuestion = (TextQuestion) new TextQuestionBuilder("id").i18nText(createI18NAsIs("title")).build();
-        FormGenerator formGeneratorMock = new FormGeneratorImpl(new KoodistoServiceMockImpl(), new HakuServiceMockImpl());
+        FormGenerator formGeneratorMock = new FormGeneratorImpl(new KoodistoServiceMockImpl(), new HakuServiceMockImpl(), null);
         applicationSystemServiceMock = mock(ApplicationSystemService.class);
         when(applicationSystemServiceMock.getApplicationSystem(anyString())).thenReturn(formGeneratorMock.generate(ASID));
         SsnUniqueConcreteValidator ssnUniqueConcreteValidator = mock(SsnUniqueConcreteValidator.class);

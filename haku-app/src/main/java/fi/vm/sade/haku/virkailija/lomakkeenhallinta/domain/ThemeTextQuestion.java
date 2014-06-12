@@ -31,8 +31,9 @@ public class ThemeTextQuestion extends ThemeQuestion {
         elementBuilder.i18nText(getMessageText());
         elementBuilder.help(getHelpText());
         elementBuilder.verboseHelp(getVerboseHelpText());
+        elementBuilder.size(50);
         if (this.size != null) {
-            elementBuilder.size(this.getSize());
+            elementBuilder.maxLength(this.getSize());
         }
         elementBuilder.inline();
         if (this.getRequiredFieldValidator()) {

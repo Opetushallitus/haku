@@ -14,6 +14,7 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public abstract class ElementBuilder {
 
@@ -181,11 +182,25 @@ public abstract class ElementBuilder {
         }).toArray(new Element[elementBuilders.length]);
     }
 
-    public void help(I18nText help) {
-        this.help = help;
+    public ElementBuilder help(I18nText help) {
+        this.help = emptyToNull(help);
+        return this;
     }
 
-    public void verboseHelp(I18nText verboseHelp) {
-        this.verboseHelp = verboseHelp;
+    public ElementBuilder verboseHelp(I18nText verboseHelp) {
+        this.verboseHelp = emptyToNull(verboseHelp);
+        return this;
+    }
+
+    private I18nText emptyToNull(final I18nText i18nText) {
+
+        if (i18nText != null) {
+            Map<String, String> translations = i18nText.getTranslations();
+            if (translations != null && !translations.isEmpty()) {
+                return i18nText;
+            }
+        }
+
+        return null;
     }
 }
