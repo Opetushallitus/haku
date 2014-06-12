@@ -26,19 +26,19 @@ public class ThemeTextQuestion extends ThemeQuestion {
 
     @Override
     public Element generateElement(final FormParameters formParameters) {
-        TextQuestionBuilder textQuestionBuilder = TextQuestion(this.getId().toString());
-        textQuestionBuilder.formParams(formParameters);
-        textQuestionBuilder.i18nText(getMessageText());
-        textQuestionBuilder.help(getHelpText());
-        textQuestionBuilder.verboseHelp(getVerboseHelpText());
+        TextQuestionBuilder elementBuilder = TextQuestion(this.getId().toString());
+        elementBuilder.formParams(formParameters);
+        elementBuilder.i18nText(getMessageText());
+        elementBuilder.help(getHelpText());
+        elementBuilder.verboseHelp(getVerboseHelpText());
         if (this.size != null) {
-            textQuestionBuilder.size(this.getSize());
+            elementBuilder.size(this.getSize());
         }
-        textQuestionBuilder.inline();
+        elementBuilder.inline();
         if (this.getRequiredFieldValidator()) {
-            textQuestionBuilder.required();
+            elementBuilder.required();
         }
-        return textQuestionBuilder.build();
+        return elementBuilder.build();
     }
 
     public Integer getSize() {
