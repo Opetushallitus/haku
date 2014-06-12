@@ -2,6 +2,7 @@ package fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain;
 
 
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
 
 import java.util.List;
 import java.util.Map;
@@ -19,7 +20,7 @@ public class ThemeCheckBoxQuestion extends ThemeOptionQuestion {
     }
 
     @Override
-    public Element generateElement() {
+    public Element generateElement(final FormParameters formParameters) {
         return null;
     }
 }

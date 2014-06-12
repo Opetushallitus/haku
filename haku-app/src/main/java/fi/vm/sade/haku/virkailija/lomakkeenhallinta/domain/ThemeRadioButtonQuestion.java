@@ -2,6 +2,7 @@ package fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain;
 
 
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
 
 import java.util.HashMap;
 import java.util.List;
@@ -20,7 +21,7 @@ public class ThemeRadioButtonQuestion extends ThemeOptionQuestion {
     }
 
     @Override
-    public Element generateElement() {
+    public Element generateElement(final FormParameters formParameters) {
         return null;
     }
 }

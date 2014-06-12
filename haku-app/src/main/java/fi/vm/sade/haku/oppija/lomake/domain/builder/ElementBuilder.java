@@ -23,6 +23,8 @@ public abstract class ElementBuilder {
     String key;
     String placeholder;
     I18nText i18nText;
+    I18nText help;
+    I18nText verboseHelp;
     String pattern;
     Integer maxLength;
     boolean inline;
@@ -45,8 +47,16 @@ public abstract class ElementBuilder {
             this.i18nText = getI18nText(key, false);
         }
         Element element = buildImpl();
-        element.setHelp(getI18nText(key + ".help"));
-        ElementUtil.setVerboseHelp(element, getI18nText(key + ".verboseHelp"));
+        if (help != null) {
+            element.setHelp(help);
+        } else {
+            element.setHelp(getI18nText(key + ".help"));
+        }
+        if (verboseHelp == null) {
+            ElementUtil.setVerboseHelp(element, verboseHelp);
+        } else {
+            ElementUtil.setVerboseHelp(element, getI18nText(key + ".verboseHelp"));
+        }
 
         if (size != null) {
             element.addAttribute("size", size.toString());
@@ -79,6 +89,7 @@ public abstract class ElementBuilder {
         }
         return element;
     }
+
     I18nText getI18nText(final String key) {
         return getI18nText(key, true);
     }
@@ -90,7 +101,7 @@ public abstract class ElementBuilder {
         return (ignoreMissing ? null : ElementUtil.createI18NAsIs(key));
     }
 
-    public abstract Element buildImpl();
+    abstract Element buildImpl();
 
     public ElementBuilder labelKey(final String key) {
         this.key = key;
@@ -170,4 +181,11 @@ public abstract class ElementBuilder {
         }).toArray(new Element[elementBuilders.length]);
     }
 
+    public void help(I18nText help) {
+        this.help = help;
+    }
+
+    public void verboseHelp(I18nText verboseHelp) {
+        this.verboseHelp = verboseHelp;
+    }
 }

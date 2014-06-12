@@ -18,7 +18,7 @@ public class RelatedQuestionRuleBuilder extends ElementBuilder {
     }
 
     @Override
-    public Element buildImpl() {
+    Element buildImpl() {
         return new RelatedQuestionRule(id, expr);
     }
 
