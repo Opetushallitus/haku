@@ -16,6 +16,7 @@
 
 package fi.vm.sade.haku.oppija.ui.service.impl;
 
+import com.google.common.base.Predicate;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.haku.oppija.hakemus.domain.util.ApplicationUtil;
@@ -31,11 +32,11 @@ import fi.vm.sade.haku.oppija.lomake.service.UserSession;
 import fi.vm.sade.haku.oppija.lomake.util.ElementTree;
 import fi.vm.sade.haku.oppija.ui.service.ModelResponse;
 import fi.vm.sade.haku.oppija.ui.service.UIService;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -109,16 +110,15 @@ public class UIServiceImpl implements UIService {
         ApplicationSystem activeApplicationSystem = applicationSystemService.getActiveApplicationSystem(applicationSystemId);
 
         Map<String, Object> model = new HashMap<String, Object>();
-        Element theme = new ElementTree(activeApplicationSystem.getForm()).getChildById(elementId);
-        List<Element> listsOfTitledElements = new ArrayList<Element>();
-        for (Element tElement : theme.getChildren()) {
-            if (tElement instanceof Titled) {
-                listsOfTitledElements.add(tElement);
+        Element root = new ElementTree(activeApplicationSystem.getForm()).getChildById(elementId);
+        List<Element> listOfTitledElements = ElementUtil.filterElements(root, new Predicate<Element>() {
+            @Override
+            public boolean apply(Element input) {
+                return (input instanceof Titled);
             }
-        }
-        listsOfTitledElements.add(theme);
-        model.put("theme", theme);
-        model.put("listsOfTitledElements", listsOfTitledElements);
+        });
+        model.put("theme", root); //why theme?
+        model.put("listsOfTitledElements", listOfTitledElements);
         return model;
     }
 
