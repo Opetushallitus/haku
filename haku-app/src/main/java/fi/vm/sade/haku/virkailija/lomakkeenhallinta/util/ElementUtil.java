@@ -165,8 +165,6 @@ public final class ElementUtil {
     public static void addUniqueApplicantValidator(final Element element, final String asType) {
         if (OppijaConstants.VARSINAINEN_HAKU.equals(asType)) {
             element.setValidator(new SsnUniqueValidator());
-        } else {
-            element.setValidator(new SsnAndPreferenceUniqueValidator());
         }
     }
 

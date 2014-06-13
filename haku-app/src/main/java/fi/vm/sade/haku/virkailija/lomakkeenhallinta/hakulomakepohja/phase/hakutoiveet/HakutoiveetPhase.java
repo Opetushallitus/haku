@@ -30,6 +30,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.*;
 import fi.vm.sade.haku.oppija.lomake.validation.validators.PreferenceValidator;
 import fi.vm.sade.haku.oppija.lomake.validation.validators.RegexFieldValidator;
 import fi.vm.sade.haku.oppija.lomake.validation.validators.RequiredFieldValidator;
+import fi.vm.sade.haku.oppija.lomake.validation.validators.SsnAndPreferenceUniqueValidator;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ExprUtil;
@@ -64,6 +65,7 @@ public class HakutoiveetPhase {
         PreferenceRow pr1 = createI18NPreferenceRow("preference1", "1", formParameters);
         pr1.setValidator(new RequiredFieldValidator(pr1.getLearningInstitutionInputId(), ElementUtil.createI18NText("yleinen.pakollinen", formParameters)));
         pr1.setValidator(new RequiredFieldValidator(pr1.getEducationInputId(), ElementUtil.createI18NText("yleinen.pakollinen", formParameters)));
+        pr1.setValidator(new SsnAndPreferenceUniqueValidator());
         preferenceTable.addChild(pr1);
         for (int index = 2; index <= formParameters.getApplicationSystem().getMaxApplicationOptions(); index++) {
             PreferenceRow pref = createI18NPreferenceRow("preference" + index, String.valueOf(index), formParameters);
