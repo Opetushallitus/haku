@@ -105,7 +105,7 @@ public class ApplicationResource {
     @Path("list")
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     @Consumes("application/json")
-    //@PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_READ', 'ROLE_APP_HAKEMUS_CRUD', 'ROLE_APP_HAKEMUS_OPO')")
+    @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_READ', 'ROLE_APP_HAKEMUS_CRUD', 'ROLE_APP_HAKEMUS_OPO')")
     public List<Application> getApplicationsByOidsPost(final List<String> oids) {
 
         List<Application> result = new ArrayList<Application>();
