@@ -22,6 +22,7 @@ import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationRestDTO;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.impl.TranslationsUtil;
+import fi.vm.sade.organisaatio.api.search.OrganisaatioHakutulos;
 import fi.vm.sade.organisaatio.api.search.OrganisaatioPerustieto;
 import fi.vm.sade.organisaatio.service.search.OrganisaatioSearchService;
 import fi.vm.sade.organisaatio.service.search.SearchCriteria;
@@ -35,6 +36,8 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.lang.ref.SoftReference;
 import java.util.*;
+
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 @Service
 @Profile(value = {"default", "devluokka"})
@@ -68,18 +71,55 @@ public class OrganizationServiceImpl implements OrganizationService {
     @Override
     public List<Organization> search(final SearchCriteria searchCriteria) {
 
-        LOG.debug("search organization kunta: {}, oidRestrictions: {}, loiType: {}, orgType: {}, q: {}, skipParents: {}",
-                searchCriteria.getKunta(),
-                String.valueOf(searchCriteria.getOidRestrictionList().size()),
-                searchCriteria.getOppilaitosTyyppi(),
-                searchCriteria.getOrganisaatioTyyppi(),
-                searchCriteria.getSearchStr(),
-                String.valueOf(searchCriteria.getSkipParents()));
+        String baseUrl = targetService + "/rest/organisaatio/hae";
+        String params = buildParamString(searchCriteria);
 
-        final List<OrganisaatioPerustieto> result = service.searchBasicOrganisaatios(searchCriteria);
+        OrganisaatioHakutulos hakutulos = null;
+        try {
+            hakutulos = getCached(baseUrl + params, OrganisaatioHakutulos.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-        LOG.debug("Criteria: {}, found {} organizations", searchCriteria, result.size());
-        return Lists.newArrayList(Lists.transform(result, new OrganisaatioPerustietoToOrganizationFunction()));
+        return flattenAndTransformResultList(hakutulos);
+    }
+
+    private List<Organization> flattenAndTransformResultList(OrganisaatioHakutulos hakutulos) {
+        List<Organization> orgs = new ArrayList<Organization>(hakutulos.getNumHits());
+        OrganisaatioPerustietoToOrganizationFunction transformer = new OrganisaatioPerustietoToOrganizationFunction();
+        for (OrganisaatioPerustieto perustieto : hakutulos.getOrganisaatiot()) {
+            orgs = flattenChildren(orgs, transformer, perustieto);
+        }
+        return orgs;
+    }
+
+    private List<Organization> flattenChildren(List<Organization> orgs,
+                                               OrganisaatioPerustietoToOrganizationFunction transformer,
+                                               OrganisaatioPerustieto perustieto) {
+        orgs.add(transformer.apply(perustieto));
+        for (OrganisaatioPerustieto childOrg : perustieto.getChildren()) {
+            orgs = flattenChildren(orgs, transformer, childOrg);
+        }
+        return orgs;
+    }
+
+    private String buildParamString(SearchCriteria criteria) {
+        StringBuilder builder = new StringBuilder("?");
+
+        if (isNotBlank(criteria.getOppilaitosTyyppi())) {
+            builder.append("oppilaitosTyyppi=").append(criteria.getOppilaitosTyyppi()).append("&");
+        }
+        if (isNotBlank(criteria.getOrganisaatioTyyppi())) {
+            builder.append("organisaatioTyyppi=").append(criteria.getOrganisaatioTyyppi()).append("&");
+        }
+        if (isNotBlank(criteria.getSearchStr())) {
+            builder.append("searchStr=").append(criteria.getSearchStr()).append("&");
+        }
+        builder.append("skipParents=").append(String.valueOf(criteria.getSkipParents())).append("&")
+                .append("suunnitellut=").append(String.valueOf(criteria.getSuunnitellut())).append("&")
+                .append("vainLakkautetut=").append(String.valueOf(criteria.getLakkautetut())).append("&")
+                .append("vainAktiiviset=").append(String.valueOf(criteria.getAktiiviset()));
+        return builder.toString();
     }
 
     @Override
@@ -148,6 +188,10 @@ public class OrganizationServiceImpl implements OrganizationService {
         cache.put(url, new SoftReference<Object>(result));
         return result;
 
+    }
+
+    public static void setCachingRestClient(CachingRestClient client) {
+        cachingRestClient = client;
     }
 
     private synchronized CachingRestClient getCachingRestClient() {

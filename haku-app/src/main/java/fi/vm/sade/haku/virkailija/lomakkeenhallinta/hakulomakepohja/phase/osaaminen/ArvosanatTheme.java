@@ -74,21 +74,21 @@ public final class ArvosanatTheme {
 
         if (!formParameters.isPervako()) {
             // Ylioppilaat
-            Expr kysyArvosanatLukio = new Or(
+            Expr kysyArvosanatLukio = new And(
                     new And(
                             new Not(
                                     new Equals(
                                             new Variable(OppijaConstants.LUKIO_PAATTOTODISTUS_VUOSI),
                                             new Value(String.valueOf(hakukausiVuosi)))),
-                            ExprUtil.atLeastOneValueEqualsToVariable(POHJAKOULUTUS_ID, OppijaConstants.YLIOPPILAS)),
-                    new Regexp("_meta_grades_transferred_lk", "true"));
+                            new Equals(new Variable(POHJAKOULUTUS_ID), new Value(OppijaConstants.YLIOPPILAS))),
+                    new Not(new Regexp("_meta_grades_transferred_lk", "true")));
             Element relatedQuestionYo = Rule("rule_grade_yo").setExpr(kysyArvosanatLukio).build();
             relatedQuestionYo.addChild(arvosanataulukkoYO(formParameters));
             arvosanatTheme.addChild(relatedQuestionYo);
 
             Element eiNaytetaYo = Rule("rule_grade_no_yo").setExpr(new Or(
                     new Equals(new Variable("lukioPaattotodistusVuosi"), new Value(String.valueOf(hakukausiVuosi))),
-                    new Not(new Regexp("_meta_grades_transferred_lk", "true"))
+                    new Regexp("_meta_grades_transferred_lk", "true")
             )).build();
             eiNaytetaYo.addChild(Text("nogradegrid").labelKey("form.arvosanat.eikysyta.yo").formParams(formParameters).build());
             arvosanatTheme.addChild(eiNaytetaYo);
@@ -123,9 +123,9 @@ public final class ArvosanatTheme {
     }
 
     private static GradeGrid arvosanataulukko(FormParameters formParameters, String suffix) {
-        GradesTable gradesTablePK = new GradesTable(true, formParameters);
+        GradesTable gradesTable = new GradesTable("pk".equals(suffix), formParameters);
         String id = "arvosanataulukko_" + suffix;
-        GradeGrid grid_pk = gradesTablePK.createGradeGrid(id, formParameters);
+        GradeGrid grid_pk = gradesTable.createGradeGrid(id, formParameters);
         grid_pk.setHelp(createI18NText(id + ".help", formParameters));
         return grid_pk;
     }
