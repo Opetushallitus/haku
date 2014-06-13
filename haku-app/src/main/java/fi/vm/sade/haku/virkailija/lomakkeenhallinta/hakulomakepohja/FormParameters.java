@@ -89,8 +89,7 @@ public class FormParameters {
     }
 
     public I18nText getI18nText(final String key) {
-        I18nText i18nText = this.i18nBundle.get(key);
-        return i18nText;
+        return this.i18nBundle.get(key);
     }
 
     public I18nBundle getI18nBundle() {

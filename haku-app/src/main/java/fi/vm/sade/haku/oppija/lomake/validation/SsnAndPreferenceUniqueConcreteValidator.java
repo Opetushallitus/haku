@@ -49,7 +49,8 @@ public class SsnAndPreferenceUniqueConcreteValidator implements Validator {
 
     @Override
     public ValidationResult validate(ValidationInput validationInput) {
-        return checkIfExistsBySocialSecurityNumberAndAo(validationInput.getApplicationSystemId(),
+        return checkIfExistsBySocialSecurityNumberAndAo(
+                validationInput.getApplicationSystemId(),
                 validationInput.getValue(),
                 validationInput.getApplicationOid(), validationInput.getValueByKey(preferenceKey),
                 validationInput.getElement().getId());
