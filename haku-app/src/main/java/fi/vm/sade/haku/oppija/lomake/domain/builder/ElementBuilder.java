@@ -10,6 +10,7 @@ import fi.vm.sade.haku.oppija.lomake.validation.validators.LengthValidator;
 import fi.vm.sade.haku.oppija.lomake.validation.validators.RegexFieldValidator;
 import fi.vm.sade.haku.oppija.lomake.validation.validators.RequiredFieldValidator;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.impl.TranslationsUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 
 import java.util.ArrayList;
@@ -140,7 +141,7 @@ public abstract class ElementBuilder {
     }
 
     public ElementBuilder i18nText(final I18nText i18nText) {
-        this.i18nText = i18nText;
+        this.i18nText = ensureTranslations(i18nText);
         return this;
     }
 
@@ -149,7 +150,7 @@ public abstract class ElementBuilder {
         return this;
     }
 
-    public ElementBuilder containsInField(String id) {
+    public ElementBuilder containsInField(final String id) {
         this.containsInField = id;
         return this;
     }
@@ -158,17 +159,17 @@ public abstract class ElementBuilder {
         return required().inline();
     }
 
-    public ElementBuilder formParams(FormParameters formParameters) {
+    public ElementBuilder formParams(final FormParameters formParameters) {
         this.formParameters = formParameters;
         return this;
     }
 
-    public ElementBuilder addChild(ElementBuilder elementBuilder) {
+    public ElementBuilder addChild(final ElementBuilder elementBuilder) {
         this.children.add(elementBuilder.formParams(this.formParameters).build());
         return this;
     }
 
-    public ElementBuilder addChild(Element element) {
+    public ElementBuilder addChild(final Element element) {
         this.children.add(element);
         return this;
     }
@@ -182,13 +183,15 @@ public abstract class ElementBuilder {
         }).toArray(new Element[elementBuilders.length]);
     }
 
-    public ElementBuilder help(I18nText help) {
+    public ElementBuilder help(final I18nText help) {
         this.help = emptyToNull(help);
+        this.help = ensureTranslations(this.help);
         return this;
     }
 
-    public ElementBuilder verboseHelp(I18nText verboseHelp) {
+    public ElementBuilder verboseHelp(final I18nText verboseHelp) {
         this.verboseHelp = emptyToNull(verboseHelp);
+        this.verboseHelp = ensureTranslations(this.verboseHelp);
         return this;
     }
 
@@ -202,5 +205,11 @@ public abstract class ElementBuilder {
         }
 
         return null;
+    }
+
+    private I18nText ensureTranslations(final I18nText i18nText){
+        if (null == i18nText)
+            return null;
+        return TranslationsUtil.ensureDefaultLanguageTranslations(i18nText);
     }
 }
