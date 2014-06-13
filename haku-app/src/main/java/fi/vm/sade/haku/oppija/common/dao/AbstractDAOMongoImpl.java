@@ -19,9 +19,12 @@ package fi.vm.sade.haku.oppija.common.dao;
 import com.google.common.base.Function;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
+import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 
@@ -29,6 +32,10 @@ import java.util.List;
 
 public abstract class AbstractDAOMongoImpl<T> implements BaseDAO<T> {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(AbstractDAOMongoImpl.class);
+
+    protected static final String OPTION_SPARSE = "sparse";
+    protected static final String OPTION_NAME = "name";
     @Autowired
     protected MongoTemplate mongoTemplate;
 
@@ -55,6 +62,28 @@ public abstract class AbstractDAOMongoImpl<T> implements BaseDAO<T> {
     @Override
     public void save(T t) {
         getCollection().save(toDBObject.apply(t));
+    }
+
+    protected void createIndex(String name, Boolean isSparse, String... fields) {
+        final DBObject options = new BasicDBObject(OPTION_NAME, name);
+        options.put(OPTION_SPARSE, isSparse.booleanValue());
+
+        final DBObject index = new BasicDBObject();
+        for (String field : fields) {
+            index.put(field, 1);
+        }
+        LOGGER.info("Creating index " + index+ " with options " + options + " for " + this.getClass().getSimpleName());
+        getCollection().ensureIndex(index, options);
+    }
+
+    protected void checkIndexes(String message){
+        LOGGER.info("Checking indexes " + message);
+        List<DBObject>  indexes = getCollection().getIndexInfo();
+        int indexCount = indexes.size();
+        int counter = 1;
+        for (DBObject index : indexes){
+            LOGGER.info("Index(" + counter++ + "/" + indexCount + "):" +index);
+        }
     }
 
     @Override
