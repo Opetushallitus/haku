@@ -69,15 +69,13 @@ public class ThemeQuestionDAOMongoImpl extends AbstractDAOMongoImpl<ThemeQuestio
 
     @Override
     public List<String> queryApplicationOptionsIn(ThemeQuestionQueryParameters parameters) {
-        DBCursor cursor = getCollection().find(buildQuery(parameters), new BasicDBObject(FIELD_APPLICATION_OPTION, 1));
-        LOGGER.debug("Got "+ cursor.count() + " application options ");
+        List<Object> distinctApplicationOptions = getCollection().distinct(FIELD_APPLICATION_OPTION, buildQuery(parameters));
+        LOGGER.debug("Got "+ distinctApplicationOptions.size() + " application options ");
         ArrayList<String> results = new ArrayList<String>();
-        for (DBObject object :cursor){
-            String value = (String )object.get(FIELD_APPLICATION_OPTION);
+        for (Object value :distinctApplicationOptions){
             LOGGER.debug("Got option " + value);
-            results.add(value);
+            results.add((String) value);
         }
-
         return results;
     }
 
