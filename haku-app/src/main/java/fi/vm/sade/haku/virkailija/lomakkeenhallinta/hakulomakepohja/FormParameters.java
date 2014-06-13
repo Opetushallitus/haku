@@ -100,4 +100,7 @@ public class FormParameters {
     public boolean isPervako() {
         return FormParameters.FormTemplateType.PERVAKO.equals(this.getFormTemplateType());
     }
+    public boolean isKevaanLisahaku() {
+        return FormTemplateType.LISAHAKU_KEVAT.equals(this.getFormTemplateType());
+    }
 }

@@ -25,7 +25,8 @@ public class OsaaminenPhase {
 
     public static Element create(final FormParameters formParameters) {
         Element osaaminen = Phase("osaaminen").formParams(formParameters).build();
-        if (formParameters.getFormTemplateType().equals(FormParameters.FormTemplateType.YHTEISHAKU_KEVAT) || formParameters.isPervako()) {
+        if (formParameters.getFormTemplateType().equals(FormParameters.FormTemplateType.YHTEISHAKU_KEVAT) ||
+                formParameters.isPervako() || formParameters.isKevaanLisahaku()) {
             osaaminen.addChild(ArvosanatTheme.createArvosanatThemeKevat(formParameters));
         } else {
             osaaminen.addChild(ArvosanatTheme.createArvosanatTheme(formParameters));

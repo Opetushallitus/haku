@@ -1,5 +1,6 @@
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.osaaminen;
 
+import fi.vm.sade.haku.oppija.lomake.domain.builder.RelatedQuestionRuleBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.builder.ThemeBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.gradegrid.GradeGrid;
@@ -57,7 +58,7 @@ public final class ArvosanatTheme {
                                 PERUSKOULU,
                                 OSITTAIN_YKSILOLLISTETTY,
                                 ALUEITTAIN_YKSILOLLISTETTY,
-                                YKSILOLLISTETTY )),
+                                YKSILOLLISTETTY)),
                 new Regexp("_meta_grades_transferred_pk", "true"));
         Element relatedQuestionPk = Rule("rule_grade_pk").setExpr(kysyArvosanatPk).build();
         relatedQuestionPk.addChild(arvosanataulukkoPK(formParameters));
@@ -74,24 +75,33 @@ public final class ArvosanatTheme {
 
         if (!formParameters.isPervako()) {
             // Ylioppilaat
-            Expr kysyArvosanatLukio = new And(
-                    new And(
-                            new Not(
-                                    new Equals(
-                                            new Variable(OppijaConstants.LUKIO_PAATTOTODISTUS_VUOSI),
-                                            new Value(String.valueOf(hakukausiVuosi)))),
-                            new Equals(new Variable(POHJAKOULUTUS_ID), new Value(OppijaConstants.YLIOPPILAS))),
-                    new Not(new Regexp("_meta_grades_transferred_lk", "true")));
-            Element relatedQuestionYo = Rule("rule_grade_yo").setExpr(kysyArvosanatLukio).build();
-            relatedQuestionYo.addChild(arvosanataulukkoYO(formParameters));
-            arvosanatTheme.addChild(relatedQuestionYo);
-
-            Element eiNaytetaYo = Rule("rule_grade_no_yo").setExpr(new Or(
-                    new Equals(new Variable("lukioPaattotodistusVuosi"), new Value(String.valueOf(hakukausiVuosi))),
-                    new Regexp("_meta_grades_transferred_lk", "true")
-            )).build();
-            eiNaytetaYo.addChild(Text("nogradegrid").labelKey("form.arvosanat.eikysyta.yo").formParams(formParameters).build());
-            arvosanatTheme.addChild(eiNaytetaYo);
+            Expr kysyArvosanatLukio;
+            RelatedQuestionRuleBuilder naytetaankoLukionArvosanataulukko;
+            if (formParameters.isKevaanLisahaku()) {
+                naytetaankoLukionArvosanataulukko = Rule(new Equals(new Variable(POHJAKOULUTUS_ID), new Value(OppijaConstants.YLIOPPILAS)));
+            } else {
+                naytetaankoLukionArvosanataulukko = Rule(
+                        new And(
+                                new And(
+                                        new Not(
+                                                new Equals(
+                                                        new Variable(OppijaConstants.LUKIO_PAATTOTODISTUS_VUOSI),
+                                                        new Value(String.valueOf(hakukausiVuosi)))),
+                                        new Equals(new Variable(POHJAKOULUTUS_ID), new Value(OppijaConstants.YLIOPPILAS))),
+                                new Not(new Regexp("_meta_grades_transferred_lk", "true"))));
+            }
+            naytetaankoLukionArvosanataulukko.addChild(arvosanataulukkoYO(formParameters));
+            arvosanatTheme.addChild(naytetaankoLukionArvosanataulukko.build());
+            if (!formParameters.isKevaanLisahaku()) {
+                arvosanatTheme.addChild(Rule(
+                        new Or(
+                                new Equals(new Variable("lukioPaattotodistusVuosi"), new Value(String.valueOf(hakukausiVuosi))),
+                                new Regexp("_meta_grades_transferred_lk", "true")
+                        ))
+                        .formParams(formParameters)
+                        .addChild(Text().labelKey("form.arvosanat.eikysyta.yo"))
+                        .build());
+            }
         }
 
         arvosanatTheme.addChild(eiArvosanataulukkoa(formParameters));
