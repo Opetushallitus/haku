@@ -32,7 +32,7 @@ public class ThemeRadioButtonQuestion extends ThemeOptionQuestion {
         List<ThemeQuestionOption> options = this.getOptions();
         List<Option> elementList = new ArrayList<Option>(options.size());
         for (ThemeQuestionOption option : options) {
-            elementList.add((Option) new OptionBuilder(option.getId())
+            elementList.add((Option) new OptionBuilder(this.getId().toString()+"-"+ option.getId())
                     .i18nText(option.getOptionText())
                     .formParams(formParameters).build());
         }

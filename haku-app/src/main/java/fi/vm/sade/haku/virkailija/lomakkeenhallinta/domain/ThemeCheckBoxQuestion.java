@@ -29,7 +29,7 @@ public class ThemeCheckBoxQuestion extends ThemeOptionQuestion {
 
         List<ThemeQuestionOption> options = this.getOptions();
         for (ThemeQuestionOption option : options) {
-            elementBuilder.addChild(Checkbox(option.getId().toString())
+            elementBuilder.addChild(Checkbox(this.getId().toString()+"-"+option.getId())
                     .i18nText(option.getOptionText())
                     .inline()
                     .formParams(formParameters));
