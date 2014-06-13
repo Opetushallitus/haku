@@ -113,7 +113,8 @@ var preferenceRow = {
             $(this).parent().find(".warning").hide();
         });
 
-        $(".field-container-text input:text").each(function (index) {
+//        $(".field-container-text input:text#preferenceLopInput").each(function (index) {
+            $('[data-special-id="preferenceLopInput"]').each(function (index) {
             var selectInputId = $(this).data('selectinputid');
             var $hiddenInput = $("#" + this.id + "-id");
             //$(this).autocomplete = null;
@@ -191,7 +192,7 @@ var preferenceRow = {
                                        $(this).children("option[value='" + value + "']").attr("selected", "selected");
                                        var selectedOption = $("#" + this.id + " option:selected");
                                        selectedId = selectedOption.data("id");
-                                       $hiddenInput.val(selectedId);
+                                       $hiddenInput.val(selectedId).change();
                                        var educationDegree = selectedOption.data("educationdegree");
                                        $educationDegreeInput.val(educationDegree).change();
                                        $educationDegreeLang.val(selectedOption.data("lang")).change();
