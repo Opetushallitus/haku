@@ -20,8 +20,10 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.RelatedQuestionRuleBuilder.Rule;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.impl.TranslationsUtil.*;
 
 public final class ThemeQuestionConfigurator {
 
@@ -108,7 +110,9 @@ public final class ThemeQuestionConfigurator {
     private Element generateTitleGroupForApplicationOption(final String applicationOptionId){
         LOGGER.debug("Generating Titled group");
         HakukohdeDTO hakukohde = hakukohdeService.findByOid(applicationOptionId);
-        Element group = TitledGroupBuilder.TitledGroup(ElementUtil.randomId()).i18nText(new I18nText(hakukohde.getHakukohdeNimi())).help(new I18nText(hakukohde.getTarjoajaNimi())).build();
+        Map<String,String> applicationOptionName = ensureDefaultLanguageTranslations(filterCodePrefix(hakukohde.getHakukohdeNimi()));
+        Map<String,String> providerName = ensureDefaultLanguageTranslations(filterCodePrefix(hakukohde.getTarjoajaNimi()));
+        Element group = TitledGroupBuilder.TitledGroup(ElementUtil.randomId()).i18nText(new I18nText(applicationOptionName)).help(new I18nText(providerName)).build();
         return group;
     }
 
