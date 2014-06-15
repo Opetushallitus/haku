@@ -6,6 +6,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.builder.RadioBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +33,8 @@ public class ThemeRadioButtonQuestion extends ThemeOptionQuestion {
         List<ThemeQuestionOption> options = this.getOptions();
         List<Option> elementList = new ArrayList<Option>(options.size());
         for (ThemeQuestionOption option : options) {
-            elementList.add((Option) new OptionBuilder(this.getId().toString()+"-"+ option.getId())
+            elementList.add((Option) OptionBuilder.Option(ElementUtil.randomId())
+                    .setValue(option.getId())
                     .i18nText(option.getOptionText())
                     .formParams(formParameters).build());
         }
