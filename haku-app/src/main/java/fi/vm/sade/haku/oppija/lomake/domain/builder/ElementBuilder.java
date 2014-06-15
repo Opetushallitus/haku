@@ -190,10 +190,8 @@ public abstract class ElementBuilder {
     }
 
     public ElementBuilder verboseHelp(final I18nText verboseHelp) {
-        System.out.println("----------------------------------------->" + verboseHelp);
         this.verboseHelp = emptyToNull(verboseHelp);
         this.verboseHelp = ensureTranslations(this.verboseHelp);
-        System.out.println("-----------------------------------------<" + verboseHelp);
         return this;
     }
 
