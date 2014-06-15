@@ -35,8 +35,6 @@ public final class ThemeQuestionConfigurator {
     private final FormParameters formParameters;
 
     private static final String PREFERENCE_PREFIX = "preference";
-    private static final String AO_POSTFIX = "-Koulutus-id-aoIdentifier";
-    private static final String LOP_POSTFIX = "-Opetuspiste-id";
     private static final String OPTION_POSTFIX = "-Koulutus-id";
 
     public ThemeQuestionConfigurator(final ThemeQuestionDAO themeQuestionDAO, final HakukohdeService hakukohdeService, ApplicationOptionService applicationOptionService, final FormParameters formParameters) {
@@ -66,7 +64,7 @@ public final class ThemeQuestionConfigurator {
             try {
                 configuredApplicationOptions.add(configureThemeQuestionForApplicationOption(applicationSystem, theme, applicationOptionId, titleApplicationOptions, preferenceElementId));
             }catch (RuntimeException exception){
-                LOGGER.error("Faild to configure application option "+ applicationOptionId + " for application applicationSystem "+ applicationSystem.getId() + " theme " +theme);
+                LOGGER.error("Failed to configure application option "+ applicationOptionId + " for application applicationSystem "+ applicationSystem.getId() + " theme " +theme, exception);
             }
         }
         LOGGER.debug("Configuration complete for application system "+ applicationSystem.getId() + " theme " + theme);
@@ -128,28 +126,16 @@ public final class ThemeQuestionConfigurator {
 
     private Expr generateExpr(final ApplicationSystem applicationSystem, final String applicationOptionId, final String preferenceElementId){
         List<String> preferenceAoKeys = new ArrayList<String>();
-        List<String> preferenceLopKeys = new ArrayList<String>();
         if (null != preferenceElementId){
             preferenceAoKeys.add(preferenceElementId+OPTION_POSTFIX);
-//            preferenceAoKeys.add(preferenceElementId+AO_POSTFIX);
-//            preferenceLopKeys.add(preferenceElementId+LOP_POSTFIX);
         }
         else {
             // TODO: FIX use from application system when it knows the number of allowed preferences
             for (int i = 1; i <= 5; i++){
                 preferenceAoKeys.add(PREFERENCE_PREFIX+i+OPTION_POSTFIX);
-//                preferenceAoKeys.add(PREFERENCE_PREFIX+i+AO_POSTFIX);
-//                preferenceAoKeys.add(PREFERENCE_PREFIX+i+LOP_POSTFIX);
             }
         }
-//        ApplicationOption applicationOption = applicationOptionService.get(applicationOptionId);
-
         return ExprUtil.atLeastOneVariableEqualsToValue(applicationOptionId,
                 preferenceAoKeys.toArray(new String[preferenceAoKeys.size()]));
-//        Expr aoExpr = ExprUtil.atLeastOneVariableEqualsToValue(applicationOption.getAoIdentifier(),
-//                preferenceAoKeys.toArray(new String[preferenceAoKeys.size()]));
-//        Expr lopExpr = ExprUtil.atLeastOneVariableEqualsToValue(applicationOption.getProvider().getId(),
-//                preferenceLopKeys.toArray(new String[preferenceLopKeys.size()]));
-//        return new And(aoExpr, lopExpr);
     }
 }
