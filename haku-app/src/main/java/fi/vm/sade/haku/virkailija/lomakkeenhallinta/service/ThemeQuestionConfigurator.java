@@ -17,7 +17,6 @@ import fi.vm.sade.tarjonta.service.resources.dto.HakukohdeDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.ws.rs.HEAD;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -109,7 +108,7 @@ public final class ThemeQuestionConfigurator {
         List<ThemeQuestion> themeQuestions = findQuestions(asId, theme,applicationOptionId);
         LOGGER.debug("Configuring a list of " +themeQuestions.size() + " themequestions");
         ArrayList<Element> configuredElements = new ArrayList<Element>(themeQuestions.size());
-        for(ThemeQuestion tq : themeQuestions){
+        for (ThemeQuestion tq : themeQuestions) {
             Element cfgdElement = tq.generateElement(formParameters);
             LOGGER.debug("configured question {} of type {}", tq.getId(), tq.getType());
             configuredElements.add(cfgdElement);

@@ -5,10 +5,7 @@ import com.google.common.collect.Lists;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.validation.Validator;
-import fi.vm.sade.haku.oppija.lomake.validation.validators.ContainedInOtherFieldValidator;
-import fi.vm.sade.haku.oppija.lomake.validation.validators.LengthValidator;
-import fi.vm.sade.haku.oppija.lomake.validation.validators.RegexFieldValidator;
-import fi.vm.sade.haku.oppija.lomake.validation.validators.RequiredFieldValidator;
+import fi.vm.sade.haku.oppija.lomake.validation.validators.*;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.impl.TranslationsUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
@@ -29,6 +26,8 @@ public abstract class ElementBuilder {
     I18nText verboseHelp;
     String pattern;
     Integer maxLength;
+    Integer minOptions;
+    Integer maxOptions;
     boolean inline;
     private List<Validator> validators = new ArrayList<Validator>();
     private String containsInField;
@@ -69,6 +68,10 @@ public abstract class ElementBuilder {
             element.setValidator(
                     new RequiredFieldValidator(
                             getI18nText("yleinen.pakollinen", false)));
+        }
+        if (minOptions != null && maxOptions != null) {
+            element.setValidator(new MinMaxOptionsValidator(getI18nText("yleinen.virheellinenarvo"),
+                    minOptions, maxOptions));
         }
         if (pattern != null) {
             element.setValidator(new RegexFieldValidator(getI18nText("yleinen.virheellinenArvo"), pattern));
@@ -132,6 +135,16 @@ public abstract class ElementBuilder {
 
     public ElementBuilder maxLength(int maxLength) {
         this.maxLength = maxLength;
+        return this;
+    }
+
+    public ElementBuilder maxOptions(int maxOptions) {
+        this.maxOptions = maxOptions;
+        return this;
+    }
+
+    public ElementBuilder minOptions(int minOptions) {
+        this.minOptions = minOptions;
         return this;
     }
 

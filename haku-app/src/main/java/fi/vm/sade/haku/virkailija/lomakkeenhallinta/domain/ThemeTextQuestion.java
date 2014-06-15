@@ -35,7 +35,7 @@ public class ThemeTextQuestion extends ThemeQuestion {
         if (this.size != null) {
             elementBuilder.maxLength(this.getSize());
         }
-        elementBuilder.inline();
+        //elementBuilder.inline();
         if (this.getRequiredFieldValidator()) {
             elementBuilder.required();
         }

@@ -43,7 +43,7 @@ public class ThemeRadioButtonQuestion extends ThemeOptionQuestion {
         elementBuilder.i18nText(getMessageText());
         elementBuilder.help(getHelpText());
         elementBuilder.verboseHelp(getVerboseHelpText());
-        elementBuilder.inline();
+        //elementBuilder.inline();
 
         if (this.getRequiredFieldValidator()) {
             elementBuilder.required();

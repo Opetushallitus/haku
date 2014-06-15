@@ -19,7 +19,9 @@ public class ThemeCheckBoxQuestion extends ThemeOptionQuestion {
         super(TYPE);
     }
 
-    public ThemeCheckBoxQuestion(String applicationSystemId, String theme, String creatorPersonOid, List<String> ownerOrganizationOid, String learningOpportunityId, Map<String, String> validators) {
+    public ThemeCheckBoxQuestion(String applicationSystemId, String theme, String creatorPersonOid,
+                                 List<String> ownerOrganizationOid, String learningOpportunityId,
+                                 Map<String, String> validators) {
         super(applicationSystemId, theme, creatorPersonOid, ownerOrganizationOid, TYPE, learningOpportunityId, validators);
     }
 
@@ -38,11 +40,20 @@ public class ThemeCheckBoxQuestion extends ThemeOptionQuestion {
         elementBuilder.i18nText(getMessageText());
         elementBuilder.help(getHelpText());
         elementBuilder.verboseHelp(getVerboseHelpText());
-        elementBuilder.inline();
+        // elementBuilder.inline();
 
         if (this.getRequiredFieldValidator()) {
             elementBuilder.required();
         }
+        for (Map.Entry<String, String> validator : this.getValidators().entrySet()) {
+            String key = validator.getKey();
+            if ("min".equals(key)) {
+                elementBuilder.minOptions(Integer.valueOf(validator.getValue()));
+            } else if ("max".equals(key)) {
+                elementBuilder.maxOptions(Integer.valueOf(validator.getValue()));
+            }
+        }
+
         return elementBuilder.build();
     }
 }
