@@ -54,7 +54,7 @@ public abstract class ElementBuilder {
         } else {
             element.setHelp(getI18nText(key + ".help"));
         }
-        if (verboseHelp == null) {
+        if (verboseHelp != null) {
             ElementUtil.setVerboseHelp(element, verboseHelp);
         } else {
             ElementUtil.setVerboseHelp(element, getI18nText(key + ".verboseHelp"));
@@ -190,8 +190,10 @@ public abstract class ElementBuilder {
     }
 
     public ElementBuilder verboseHelp(final I18nText verboseHelp) {
+        System.out.println("----------------------------------------->" + verboseHelp);
         this.verboseHelp = emptyToNull(verboseHelp);
         this.verboseHelp = ensureTranslations(this.verboseHelp);
+        System.out.println("-----------------------------------------<" + verboseHelp);
         return this;
     }
 
