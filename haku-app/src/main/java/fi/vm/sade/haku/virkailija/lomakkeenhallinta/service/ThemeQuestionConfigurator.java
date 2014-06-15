@@ -17,6 +17,7 @@ import fi.vm.sade.tarjonta.service.resources.dto.HakukohdeDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.ws.rs.HEAD;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -37,7 +38,8 @@ public final class ThemeQuestionConfigurator {
     private static final String PREFERENCE_PREFIX = "preference";
     private static final String OPTION_POSTFIX = "-Koulutus-id";
 
-    public ThemeQuestionConfigurator(final ThemeQuestionDAO themeQuestionDAO, final HakukohdeService hakukohdeService, ApplicationOptionService applicationOptionService, final FormParameters formParameters) {
+    public ThemeQuestionConfigurator(final ThemeQuestionDAO themeQuestionDAO, final HakukohdeService hakukohdeService,
+                                     ApplicationOptionService applicationOptionService, final FormParameters formParameters) {
         this.themeQuestionDAO = themeQuestionDAO;
         this.hakukohdeService = hakukohdeService;
         this.applicationOptionService = applicationOptionService;
@@ -52,27 +54,35 @@ public final class ThemeQuestionConfigurator {
         return findAndConfigure(applicationSystem, theme, false, preferenceElementId);
     }
 
-    private List<Element> findAndConfigure(final ApplicationSystem applicationSystem, final String theme, final Boolean titleApplicationOptions, final String preferenceElementId){
-        LOGGER.debug("Configuring themequestions for application system: "+ applicationSystem.getId() + " theme:" +theme+" generating titled groups " + titleApplicationOptions);
+    private List<Element> findAndConfigure(final ApplicationSystem applicationSystem, final String theme,
+                                           final Boolean titleApplicationOptions, final String preferenceElementId){
+        LOGGER.debug("Configuring themequestions for application system: "+ applicationSystem.getId()
+                + " theme:" +theme+" generating titled groups " + titleApplicationOptions);
         ThemeQuestionQueryParameters queryParameters = new ThemeQuestionQueryParameters();
         queryParameters.setApplicationSystemId(applicationSystem.getId());
         queryParameters.setTheme(theme);
         List<String> applicationOptionIds = themeQuestionDAO.queryApplicationOptionsIn(queryParameters);
-        LOGGER.debug("Got " + applicationOptionIds.size() + " application options for application system " + applicationSystem.getId() + " theme" + theme);
+        LOGGER.debug("Got " + applicationOptionIds.size() + " application options for application system "
+                + applicationSystem.getId() + " theme" + theme);
         ArrayList<Element> configuredApplicationOptions = new ArrayList<Element>(applicationOptionIds.size());
         for (String applicationOptionId : applicationOptionIds) {
             try {
-                configuredApplicationOptions.add(configureThemeQuestionForApplicationOption(applicationSystem, theme, applicationOptionId, titleApplicationOptions, preferenceElementId));
+                configuredApplicationOptions.add(configureThemeQuestionForApplicationOption(applicationSystem, theme,
+                        applicationOptionId, titleApplicationOptions, preferenceElementId));
             }catch (RuntimeException exception){
-                LOGGER.error("Failed to configure application option "+ applicationOptionId + " for application applicationSystem "+ applicationSystem.getId() + " theme " +theme, exception);
+                LOGGER.error("Failed to configure application option "+ applicationOptionId + " for application applicationSystem "
+                        + applicationSystem.getId() + " theme " +theme, exception);
             }
         }
         LOGGER.debug("Configuration complete for application system "+ applicationSystem.getId() + " theme " + theme);
         return configuredApplicationOptions;
     }
 
-    private Element configureThemeQuestionForApplicationOption(final ApplicationSystem applicationSystem, final String theme, final String applicationOptionId, final Boolean titleApplicationOptions, final String  preferenceElementId ) {
-        LOGGER.debug("Configuring application option " +  applicationOptionId +" for application system " +applicationSystem.getId() + " theme " + theme);
+    private Element configureThemeQuestionForApplicationOption(final ApplicationSystem applicationSystem, final String theme,
+                                                               final String applicationOptionId, final Boolean titleApplicationOptions,
+                                                               final String  preferenceElementId ) {
+        LOGGER.debug("Configuring application option " +  applicationOptionId +" for application system "
+                +applicationSystem.getId() + " theme " + theme);
         Element baseElement = generateApplicationOptionRule(applicationSystem,applicationOptionId, preferenceElementId);
         Element groupElement = baseElement;
         if (titleApplicationOptions){
@@ -81,7 +91,8 @@ public final class ThemeQuestionConfigurator {
         }
         final List<Element> configuredQuestions = configureQuestions(applicationSystem.getId(), theme,applicationOptionId);
         groupElement.addChild(configuredQuestions.toArray(new Element[configuredQuestions.size()]));
-        LOGGER.debug("Configuration of application option " + applicationOptionId + " complete for application system " +applicationSystem.getId() + " theme " + theme);
+        LOGGER.debug("Configuration of application option " + applicationOptionId + " complete for application system "
+                +applicationSystem.getId() + " theme " + theme);
         return baseElement;
     }
 
@@ -112,11 +123,14 @@ public final class ThemeQuestionConfigurator {
         HakukohdeDTO hakukohde = hakukohdeService.findByOid(applicationOptionId);
         Map<String,String> applicationOptionName = ensureDefaultLanguageTranslations(filterCodePrefix(hakukohde.getHakukohdeNimi()));
         Map<String,String> providerName = ensureDefaultLanguageTranslations(filterCodePrefix(hakukohde.getTarjoajaNimi()));
-        Element group = TitledGroupBuilder.TitledGroup(ElementUtil.randomId()).i18nText(new I18nText(applicationOptionName)).help(new I18nText(providerName)).build();
+        Element group = TitledGroupBuilder.TitledGroup(ElementUtil.randomId())
+                .i18nText(new I18nText(applicationOptionName))
+                .help(new I18nText(providerName)).build();
         return group;
     }
 
-    private Element generateApplicationOptionRule(final ApplicationSystem applicationSystem, final String applicationOptionId, final String  preferenceElementId){
+    private Element generateApplicationOptionRule(final ApplicationSystem applicationSystem, final String applicationOptionId,
+                                                  final String  preferenceElementId){
         LOGGER.debug("Generating the ApplicationOptionRule group");
         final Expr ruleExpr = generateExpr(applicationSystem, applicationOptionId, preferenceElementId);
         Element rule = Rule(ElementUtil.randomId()).setExpr(ruleExpr).build();
@@ -131,7 +145,7 @@ public final class ThemeQuestionConfigurator {
         }
         else {
             // TODO: FIX use from application system when it knows the number of allowed preferences
-            for (int i = 1; i <= 5; i++){
+            for (int i = 1; i <= applicationSystem.getMaxApplicationOptions(); i++){
                 preferenceAoKeys.add(PREFERENCE_PREFIX+i+OPTION_POSTFIX);
             }
         }
