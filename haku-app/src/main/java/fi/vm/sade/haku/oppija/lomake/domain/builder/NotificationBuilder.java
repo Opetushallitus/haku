@@ -32,10 +32,6 @@ public class NotificationBuilder extends ElementBuilder {
         return new Notification(this.id, this.i18nText, notificationType);
     }
 
-    public static NotificationBuilder Notification(final String id) {
-        return new NotificationBuilder(id);
-    }
-
     public static NotificationBuilder Info(final String id) {
         return new NotificationBuilder(id).type(Notification.NotificationType.INFO);
     }

@@ -13,4 +13,6 @@ public interface ThemeQuestionDAO extends BaseDAO<ThemeQuestion> {
     ThemeQuestion findById(String id);
 
     List<ThemeQuestion> query(ThemeQuestionQueryParameters parameters);
+
+    List <String> queryApplicationOptionsIn(ThemeQuestionQueryParameters parameters);
 }

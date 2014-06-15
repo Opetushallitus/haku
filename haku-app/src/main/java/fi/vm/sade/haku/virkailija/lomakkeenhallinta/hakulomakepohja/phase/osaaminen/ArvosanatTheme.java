@@ -6,8 +6,11 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.gradegrid.GradeGrid;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.*;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.service.ThemeQuestionConfigurator;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ExprUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
+
+import java.util.List;
 
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.RelatedQuestionRuleBuilder.Rule;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.TextBuilder.Text;
@@ -40,6 +43,12 @@ public final class ArvosanatTheme {
             arvosanatTheme.addChild(pohjakoulutusOnYlioppilas);
         }
         arvosanatTheme.addChild(eiArvosanataulukkoa(formParameters));
+        
+        ThemeQuestionConfigurator configurator = formParameters.getThemeQuestionGenerator();
+        List<Element> themeQuestions = configurator.findAndConfigure(formParameters.getApplicationSystem(),arvosanatTheme.getId());
+        if (themeQuestions.size() > 0) {
+            arvosanatTheme.addChild(themeQuestions.toArray(new Element[themeQuestions.size()]));
+        }
         return arvosanatTheme;
     }
 

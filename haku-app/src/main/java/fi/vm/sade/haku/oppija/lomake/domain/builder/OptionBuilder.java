@@ -23,7 +23,7 @@ public class OptionBuilder extends ElementBuilder {
     }
 
     @Override
-    public Element buildImpl() {
+    Element buildImpl() {
         return new Option(this.i18nText, value);
     }
 

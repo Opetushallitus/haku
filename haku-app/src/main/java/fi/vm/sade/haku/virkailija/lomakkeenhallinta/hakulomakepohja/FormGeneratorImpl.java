@@ -1,9 +1,10 @@
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja;
 
-import com.google.common.collect.Lists;
+import fi.vm.sade.haku.oppija.common.koulutusinformaatio.ApplicationOptionService;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystemBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.dao.ThemeQuestionDAO;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.hakutoiveet.HakutoiveetPhase;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.henkilotiedot.HenkilotiedotPhase;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.koulutustausta.KoulutustaustaPhase;
@@ -12,6 +13,7 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.osaami
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.valmis.ValmisPhase;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakuService;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakukohdeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,12 +23,18 @@ import java.util.List;
 public class FormGeneratorImpl implements FormGenerator {
     private final KoodistoService koodistoService;
     private final HakuService hakuService;
+    private final ThemeQuestionDAO themeQuestionDAO;
+    private final HakukohdeService hakukohdeService;
+    private final ApplicationOptionService applicationOptionService;
 
     @Autowired
-    public FormGeneratorImpl(final KoodistoService koodistoService,
-                             final HakuService hakuService) {
+    public FormGeneratorImpl(final KoodistoService koodistoService, final HakuService hakuService,
+      ThemeQuestionDAO themeQuestionDAO, HakukohdeService hakukohdeService, ApplicationOptionService applicationOptionService) {
         this.koodistoService = koodistoService;
         this.hakuService = hakuService;
+        this.themeQuestionDAO = themeQuestionDAO;
+        this.hakukohdeService = hakukohdeService;
+        this.applicationOptionService = applicationOptionService;
     }
 
     @Override
@@ -41,7 +49,7 @@ public class FormGeneratorImpl implements FormGenerator {
     }
 
     private ApplicationSystem createApplicationSystem(ApplicationSystem as) {
-        FormParameters formParameters = new FormParameters(as, koodistoService);
+        FormParameters formParameters = new FormParameters(as, koodistoService, themeQuestionDAO, hakukohdeService, applicationOptionService);
         return new ApplicationSystemBuilder().addId(as.getId()).addForm(generateForm(formParameters))
                 .addName(as.getName()).addApplicationPeriods(as.getApplicationPeriods())
                 .addApplicationSystemType(as.getApplicationSystemType())

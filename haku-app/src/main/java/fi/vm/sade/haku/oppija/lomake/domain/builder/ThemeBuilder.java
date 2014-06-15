@@ -15,7 +15,7 @@ public class ThemeBuilder extends ElementBuilder {
         return this;
     }
 
-    public Element buildImpl() {
+    Element buildImpl() {
         Theme theme = new Theme(id, i18nText, preview);
         return theme;
     }

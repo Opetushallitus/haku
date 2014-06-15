@@ -22,7 +22,7 @@ public class PostalCodeBuilder extends ElementBuilder {
     }
 
     @Override
-    public Element buildImpl() {
+    Element buildImpl() {
         PostalCode postalCode = new PostalCode(id, i18nText, this.options);
         List<String> values = new ArrayList<String>();
         for (Option option : options) {
