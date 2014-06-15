@@ -56,7 +56,6 @@ public class ApplicationSystemConfigurationResource {
     @Produces(JSON)
     public Response getConfiguration(@PathParam("asid") final String asid) {
         ApplicationSystemConfiguration byId = applicationSystemConfigurationRepository.findById(asid);
-        System.out.println(byId);
         if (byId == null)
             return Responses.notFound().build();
 

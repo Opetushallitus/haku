@@ -2,8 +2,6 @@ package fi.vm.sade.haku.oppija.lomake.domain.builder;
 
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.TextArea;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 
 public class TextAreaBuilder extends ElementBuilder {
 
@@ -21,14 +19,7 @@ public class TextAreaBuilder extends ElementBuilder {
         return this;
     }
 
-    @Override
-    public Element buildImpl(FormParameters formParameters) {
-        TextArea textArea = (TextArea) buildImpl();
-        ElementUtil.setVerboseHelp(textArea, key + ".verboseHelp", formParameters);
-        return textArea;
-    }
-
-    public Element buildImpl() {
+    Element buildImpl() {
         TextArea textArea = new TextArea(id, i18nText);
         textArea.addAttribute("rows", ROWS.toString());
         textArea.setInline(this.inline);

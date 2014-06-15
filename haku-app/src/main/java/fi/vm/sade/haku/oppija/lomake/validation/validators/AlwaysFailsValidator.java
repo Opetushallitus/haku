@@ -23,12 +23,12 @@ import fi.vm.sade.haku.oppija.lomake.validation.ValidationResult;
 
 public class AlwaysFailsValidator extends FieldValidator {
 
-    public AlwaysFailsValidator(final String fieldName, final I18nText errorMessage) {
-        super(fieldName, errorMessage);
+    public AlwaysFailsValidator(final I18nText errorMessage) {
+        super(errorMessage);
     }
 
     @Override
     public ValidationResult validate(final ValidationInput validationInput) {
-        return invalidValidationResult;
+        return getInvalidValidationResult(validationInput);
     }
 }

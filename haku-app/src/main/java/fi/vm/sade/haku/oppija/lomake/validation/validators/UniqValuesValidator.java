@@ -22,12 +22,10 @@ public final class UniqValuesValidator extends FieldValidator {
     private final Predicate<Map.Entry<String, String>> valuePredicate;
 
     @PersistenceConstructor
-    public UniqValuesValidator(@JsonProperty(value = "fieldName") final String fieldName,
-                               @JsonProperty(value = "keys") final List<String> keys,
+    public UniqValuesValidator(@JsonProperty(value = "keys") final List<String> keys,
                                @JsonProperty(value = "skipValues") final List<String> skipValues,
                                @JsonProperty(value = "errorMessage") final I18nText errorMessage) {
-        super(fieldName, errorMessage);
-        Preconditions.checkNotNull(fieldName);
+        super(errorMessage);
         Preconditions.checkNotNull(keys);
         Preconditions.checkNotNull(skipValues);
         Preconditions.checkNotNull(errorMessage);
@@ -47,7 +45,7 @@ public final class UniqValuesValidator extends FieldValidator {
         Collection<String> values = Maps.filterEntries(validationInput.getValues(), valuePredicate).values();
         Set<String> uniqValues = new HashSet<String>(values);
         if (uniqValues.size() != values.size()) {
-            return invalidValidationResult;
+            return getInvalidValidationResult(validationInput);
         }
         return new ValidationResult();
     }

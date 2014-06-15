@@ -1,4 +1,4 @@
-<%@ page session="false"%>
+<%@ page session="false" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="haku" tagdir="/WEB-INF/tags" %>
 <%--
@@ -23,7 +23,7 @@
     <hr/>
     <div class="theme-help">
         <div class="help-text"><haku:i18nText value="${element.help}"/></div>
-        <a href="${element.id}/help" target="_blank" class="helplink">?</a>
+        <button class="helplink" type="submit" formtarget="_blank" formaction="${element.id}/help">?</button>
         <div class="clear"></div>
     </div>
     <haku:viewChilds element="${element}"/>

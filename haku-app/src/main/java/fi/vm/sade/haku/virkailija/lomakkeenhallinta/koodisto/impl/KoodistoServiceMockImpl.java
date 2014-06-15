@@ -175,7 +175,7 @@ public class KoodistoServiceMockImpl implements KoodistoService {
     }
 
     private Option getOption(final String labelKey, final String value) {
-        return (Option) new OptionBuilder().setI18nText(createI18NAsIs(labelKey)).setValue(value).build();
+        return (Option) OptionBuilder.Option(labelKey).setValue(value).build();
     }
 
     @Override

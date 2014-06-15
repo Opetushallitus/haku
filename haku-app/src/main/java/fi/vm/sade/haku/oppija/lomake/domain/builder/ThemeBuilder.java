@@ -2,7 +2,6 @@ package fi.vm.sade.haku.oppija.lomake.domain.builder;
 
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Theme;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
 
 public class ThemeBuilder extends ElementBuilder {
     boolean preview;
@@ -16,16 +15,8 @@ public class ThemeBuilder extends ElementBuilder {
         return this;
     }
 
-    @Override
-    public Element buildImpl(final FormParameters formParameters) {
+    Element buildImpl() {
         Theme theme = new Theme(id, i18nText, preview);
-        theme.setInline(this.inline);
-        return theme;
-    }
-
-    public Element buildImpl() {
-        Theme theme = new Theme(id, i18nText, preview);
-        theme.setInline(this.inline);
         return theme;
     }
 

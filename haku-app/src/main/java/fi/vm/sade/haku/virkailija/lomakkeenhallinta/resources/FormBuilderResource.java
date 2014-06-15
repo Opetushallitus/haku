@@ -55,8 +55,7 @@ public class FormBuilderResource {
     @Path("{oid}")
     @Produces(MediaType.TEXT_PLAIN + ";charset=UTF-8")
     public Response generateOne(@PathParam("oid") final String oid) throws URISyntaxException {
-        ApplicationSystem as = formGenerator.generate(oid);
-        applicationSystemService.save(as);
+        doGenerate(oid);
         return Response.seeOther(new URI("/lomake/"+oid)).build();
     }
 
@@ -66,12 +65,23 @@ public class FormBuilderResource {
         List<ApplicationSystem> applicationSystems = formGenerator.getApplicationSystems();
         int asCount = applicationSystems.size();
         int index = 1;
-        log.info("Starting to generate {} application systems", asCount);
+        log.info("Starting to generate "+ asCount+ " application systems");
         for (ApplicationSystem applicationSystem : applicationSystems) {
-            log.info("Generating application system {} ({}, {})", applicationSystem.getId(), index++, asCount);
-            applicationSystemService.save(formGenerator.generate(applicationSystem.getId()));
-            log.info("Generated application system {}", applicationSystem.getId());
+            log.info("Application system generation cycle " + index++ +"/" + asCount);
+            doGenerate(applicationSystem.getId());
+            log.info("Generated application system " +applicationSystem.getId());
         }
         return Response.seeOther(new URI("/lomake/")).build();
+    }
+
+    private void doGenerate(final String oid) {
+        log.debug("Generating application system " + oid);
+        try {
+            ApplicationSystem as = formGenerator.generate(oid);
+            applicationSystemService.save(as);
+        } catch (RuntimeException exception) {
+            log.error("Application system generation failed for " + oid, exception);
+        }
+        log.debug("Generated application system " + oid);
     }
 }

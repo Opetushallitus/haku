@@ -27,32 +27,26 @@ public class ContainedInOtherFieldValidator extends FieldValidator {
 
     private final String otherFieldName;
 
-    public ContainedInOtherFieldValidator(final String fieldName,
-                                          final String otherFieldName,
+    public ContainedInOtherFieldValidator(final String otherFieldName,
                                           final I18nText errorMessage) {
-        super(fieldName, errorMessage);
+        super(errorMessage);
         Validate.notNull(otherFieldName, "'otherFieldName' can't be null");
         this.otherFieldName = otherFieldName;
     }
 
     @Override
     public ValidationResult validate(final ValidationInput validationInput) {
-        String otherValue = StringUtils.trim(validationInput.getValue(otherFieldName));
-        String thisValue = StringUtils.trim(validationInput.getValue(fieldName));
+        String otherValue = StringUtils.trim(validationInput.getValueByKey(otherFieldName));
+        String thisValue = StringUtils.trim(validationInput.getValue());
 
         if (otherValue == null && thisValue == null) {
             return validValidationResult;
         } else if (otherValue != null && otherValue.equals(thisValue)) {
             return validValidationResult;
-        } else if (otherFieldName != null && thisValue != null) {
-            return otherValue.toLowerCase().contains(thisValue.toLowerCase())
-                    ? validValidationResult : invalidValidationResult;
+        } else if (otherFieldName != null && thisValue != null && otherValue.toLowerCase().contains(thisValue.toLowerCase())) {
+            return validValidationResult;
         }
 
-        return invalidValidationResult;
-    }
-
-    public String getOtherFieldName() {
-        return otherFieldName;
+        return getInvalidValidationResult(validationInput);
     }
 }

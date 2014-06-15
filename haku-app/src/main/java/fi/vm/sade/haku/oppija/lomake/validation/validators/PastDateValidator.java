@@ -28,23 +28,25 @@ public class PastDateValidator extends FieldValidator {
 
     public static final String DATE_OF_BIRTH_FORMAT = "dd.MM.yyyy";
 
-    public PastDateValidator(final String fieldName, final I18nText errorMessage) {
-        super(fieldName, errorMessage);
+    public PastDateValidator(final I18nText errorMessage) {
+        super(errorMessage);
     }
 
     @Override
     public ValidationResult validate(ValidationInput validationInput) {
-        String dateOfBirthString = validationInput.getValues().get(fieldName);
-        ValidationResult result = this.invalidValidationResult;
+        String dateOfBirthString = validationInput.getValue();
+        ValidationResult result = null;
         try {
             Date dateOfBirth = (new SimpleDateFormat(DATE_OF_BIRTH_FORMAT)).parse(dateOfBirthString);
             if (dateOfBirth.before(new Date())) {
                 result = this.validValidationResult;
             }
         } catch (Exception e) {
-
         }
 
+        if (result == null) {
+            result = getInvalidValidationResult(validationInput);
+        }
         return result;
     }
 }

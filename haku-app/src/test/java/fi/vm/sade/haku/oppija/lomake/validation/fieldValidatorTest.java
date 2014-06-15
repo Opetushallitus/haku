@@ -25,43 +25,24 @@ import static org.junit.Assert.assertEquals;
 
 public class fieldValidatorTest {
 
-    public static final String FIELD_NAME = "field_name";
     public static final I18nText ERROR_MESSAGE = ElementUtil.createI18NText("error_message");
 
     @Test
-    public void testFieldNameConstructor() throws Exception {
-        FieldValidator validator = createValidator(FIELD_NAME, ERROR_MESSAGE);
-        assertEquals(FIELD_NAME, validator.fieldName);
-    }
-
-    @Test
     public void testErrorMessageConstructor() throws Exception {
-        FieldValidator validator = createValidator(FIELD_NAME, ERROR_MESSAGE);
+        FieldValidator validator = createValidator(ERROR_MESSAGE);
         assertEquals(ERROR_MESSAGE, validator.getErrorMessage());
     }
 
-    @Test
-    public void testValidConstructor() throws Exception {
-        createValidator(FIELD_NAME, ERROR_MESSAGE);
-    }
 
-    @Test(expected = NullPointerException.class)
-    public void testNullField() throws Exception {
-        createValidator(null, ERROR_MESSAGE);
-    }
+
 
     @Test(expected = NullPointerException.class)
     public void testNullErrorMessage() throws Exception {
-        createValidator("", null);
+        createValidator(null);
     }
 
-    @Test(expected = NullPointerException.class)
-    public void testNullNUll() throws Exception {
-        createValidator(null, null);
-    }
-
-    private FieldValidator createValidator(String fieldName, I18nText errorMessage) {
-        return new FieldValidator(fieldName, errorMessage) {
+    private FieldValidator createValidator(I18nText errorMessage) {
+        return new FieldValidator(errorMessage) {
             @Override
             public ValidationResult validate(final ValidationInput validationInput) {
                 throw new NotImplementedException();

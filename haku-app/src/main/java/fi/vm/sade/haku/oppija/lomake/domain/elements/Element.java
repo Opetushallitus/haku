@@ -117,7 +117,7 @@ public abstract class Element implements Serializable {
     }
 
     /*
-     * Required for fi.vm.sade.haku.oppija.lomake.domain.rule.RelatedQuestionComplexRule to work
+     * Required for fi.vm.sade.haku.oppija.lomake.domain.rule.RelatedQuestionRule to work
      */
     public List<Element> getChildren(Map<String, String> values) {
         return getChildren();

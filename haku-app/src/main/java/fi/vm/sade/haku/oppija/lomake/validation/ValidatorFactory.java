@@ -42,14 +42,12 @@ public class ValidatorFactory {
     }
 
     public Validator buildValidator(final Validator validator) {
-        if (validator != null) {
-            if (validator instanceof SsnUniqueValidator) {
-                return ssnUniqueConcreteValidator;
-            } else if (validator instanceof SsnAndPreferenceUniqueValidator) {
-                return ssnAndPreferenceUniqueConcreteValidator;
-            } else if (validator instanceof PreferenceValidator) {
-                return preferenceConcreteValidator;
-            }
+        if (validator instanceof SsnUniqueValidator) {
+            return ssnUniqueConcreteValidator;
+        } else if (validator instanceof SsnAndPreferenceUniqueValidator) {
+            return ssnAndPreferenceUniqueConcreteValidator;
+        } else if (validator instanceof PreferenceValidator) {
+            return preferenceConcreteValidator;
         }
         return validator;
     }

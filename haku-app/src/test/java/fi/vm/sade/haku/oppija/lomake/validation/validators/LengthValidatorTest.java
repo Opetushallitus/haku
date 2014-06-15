@@ -2,6 +2,8 @@ package fi.vm.sade.haku.oppija.lomake.validation.validators;
 
 import com.google.common.collect.ImmutableMap;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.TextQuestion;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationInput;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationResult;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
@@ -15,8 +17,9 @@ import static org.junit.Assert.assertTrue;
 
 public class LengthValidatorTest {
 
-    private static final String FIELD_ID = "a";
+    private static final String FIELD_NAME = "a";
     private I18nText errorMessage;
+    private static final Element element = new TextQuestion(FIELD_NAME, ElementUtil.createI18NAsIs(FIELD_NAME));
 
     @Before
     public void setUp() throws Exception {
@@ -25,37 +28,36 @@ public class LengthValidatorTest {
 
     @Test
     public void testInValid() throws Exception {
-
         LengthValidator lengthValidator = getLengthValidator(5);
-        ValidationResult validationResult = lengthValidator.validate(new ValidationInput(null, ImmutableMap.of(FIELD_ID, "123456"), null, null));
+        ValidationResult validationResult = lengthValidator.validate(new ValidationInput(element, ImmutableMap.of(FIELD_NAME, "123456"), null, null));
         assertTrue(validationResult.hasErrors());
     }
 
     @Test
     public void testValid() throws Exception {
         LengthValidator lengthValidator = getLengthValidator(5);
-        ValidationResult validationResult = lengthValidator.validate(new ValidationInput(null, ImmutableMap.of(FIELD_ID, "12345"), null, null));
+        ValidationResult validationResult = lengthValidator.validate(new ValidationInput(element, ImmutableMap.of(FIELD_NAME, "12345"), null, null));
         assertFalse(validationResult.hasErrors());
     }
 
     @Test
     public void testNull() throws Exception {
         LengthValidator lengthValidator = getLengthValidator(5);
-        ValidationResult validationResult = lengthValidator.validate(new ValidationInput(null, new HashMap<String, String>(), null, null));
+        ValidationResult validationResult = lengthValidator.validate(new ValidationInput(element, new HashMap<String, String>(), null, null));
         assertFalse(validationResult.hasErrors());
     }
 
     @Test
     public void testEmpty() throws Exception {
         LengthValidator lengthValidator = getLengthValidator(5);
-        ValidationResult validationResult = lengthValidator.validate(new ValidationInput(null, ImmutableMap.of(FIELD_ID, ""), null, null));
+        ValidationResult validationResult = lengthValidator.validate(new ValidationInput(element, ImmutableMap.of(FIELD_NAME, ""), null, null));
         assertFalse(validationResult.hasErrors());
     }
 
     @Test
     public void testEmptyAndEmptyLength() throws Exception {
         LengthValidator lengthValidator = getLengthValidator(0);
-        ValidationResult validationResult = lengthValidator.validate(new ValidationInput(null, ImmutableMap.of(FIELD_ID, ""), null, null));
+        ValidationResult validationResult = lengthValidator.validate(new ValidationInput(element, ImmutableMap.of(FIELD_NAME, ""), null, null));
         assertFalse(validationResult.hasErrors());
     }
 
@@ -65,6 +67,6 @@ public class LengthValidatorTest {
     }
 
     private LengthValidator getLengthValidator(int length) {
-        return new LengthValidator(FIELD_ID, errorMessage, length);
+        return new LengthValidator(errorMessage, length);
     }
 }

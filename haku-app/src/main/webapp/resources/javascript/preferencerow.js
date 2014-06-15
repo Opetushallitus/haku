@@ -70,7 +70,7 @@ var preferenceRow = {
     },
 
     clearSelectInput: function (selectInputId) {
-        $("#" + selectInputId + "-id").val("");
+        $("#" + selectInputId + "-id").val("").change();
         $("#" + selectInputId + "-educationDegree").val("").change();
         $("#" + selectInputId + "-id-lang").val("").change();
         $("#" + selectInputId + "-id-sora").val(false).change();
@@ -107,13 +107,14 @@ var preferenceRow = {
         $('button.reset').unbind();
         $('button.reset').click(function (event) {
             var id = $(this).data('id');
-
             $('[id|="' + id + '"]').val('');
             preferenceRow.clearSelectInput(id + "-Koulutus");
             $(this).parent().find(".warning").hide();
+            $('[id|="' + id + '"]').change();
         });
 
-        $(".field-container-text input:text").each(function (index) {
+//        $(".field-container-text input:text#preferenceLopInput").each(function (index) {
+            $('[data-special-id="preferenceLopInput"]').each(function (index) {
             var selectInputId = $(this).data('selectinputid');
             var $hiddenInput = $("#" + this.id + "-id");
             //$(this).autocomplete = null;
@@ -191,7 +192,7 @@ var preferenceRow = {
                                        $(this).children("option[value='" + value + "']").attr("selected", "selected");
                                        var selectedOption = $("#" + this.id + " option:selected");
                                        selectedId = selectedOption.data("id");
-                                       $hiddenInput.val(selectedId);
+                                       $hiddenInput.val(selectedId).change();
                                        var educationDegree = selectedOption.data("educationdegree");
                                        $educationDegreeInput.val(educationDegree).change();
                                        $educationDegreeLang.val(selectedOption.data("lang")).change();

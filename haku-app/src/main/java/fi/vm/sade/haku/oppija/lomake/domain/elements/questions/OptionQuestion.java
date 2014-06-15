@@ -95,19 +95,6 @@ public abstract class OptionQuestion extends Titled {
         }
         return listOfElements;
     }
-
-    @Override
-    public List<Validator> getValidators() {
-        List<Validator> listOfValidator = new ArrayList<Validator>();
-        listOfValidator.addAll(super.getValidators());
-        List<String> values = new ArrayList<String>();
-        for (Option option : options) {
-            values.add(option.getValue());
-        }
-
-        listOfValidator.add(new ValueSetValidator(this.getId(), ElementUtil.createI18NText("yleinen.virheellinenArvo"), values));
-        return listOfValidator;
-    }
 }
 
 

@@ -22,12 +22,7 @@ public class PhaseBuilder extends ElementBuilder {
     }
 
     @Override
-    public Element buildImpl(final FormParameters formParameters) {
-        return new Phase(id, i18nText, preview, editAllowedByRoles);
-    }
-
-    @Override
-    public Element buildImpl() {
+    Element buildImpl() {
         return new Phase(id, i18nText, preview, editAllowedByRoles);
     }
 
