@@ -22,7 +22,7 @@
     <parent>
         <artifactId>haku</artifactId>
         <groupId>fi.vm.sade.haku</groupId>
-        <version>9.5.2</version>
+        <version>9.6.0</version>
     </parent>
     <artifactId>haku-app</artifactId>
     <packaging>war</packaging>
