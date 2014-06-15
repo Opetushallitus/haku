@@ -111,7 +111,7 @@ public final class HenkilotiedotPhase {
                 genders.get(0) : genders.get(1);
 
         Element socialSecurityNumber =
-                new SocialSecurityNumberBuilder("Henkilotunnus")
+                new SocialSecurityNumberBuilder(OppijaConstants.ELEMENT_ID_SOCIAL_SECURITY_NUMBER)
                         .setSexI18nText(sukupuoli.getI18nText())
                         .setMaleOption(male)
                         .setFemaleOption(female)

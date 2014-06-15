@@ -59,15 +59,6 @@ public class FormParameters {
         return Joiner.on('_').join(baseName, hakutyyppi, hakukausi);
     }
 
-    private FormTemplateType configureHuuhaa(ApplicationSystem as) {
-        FormTemplateType ftt = null;
-        // tff = ApplicationSystemConfigurations.fetch (as)
-        if (null != ftt) {
-            ftt = figureOutFormForApplicationSystem(as);
-        }
-        return ftt;
-    }
-
     private FormTemplateType figureOutFormForApplicationSystem(ApplicationSystem as) {
         if (OppijaConstants.KOHDEJOUKKO_PERVAKO.equals(as.getKohdejoukkoUri())) {
             return FormTemplateType.PERVAKO;
@@ -97,9 +88,14 @@ public class FormParameters {
     }
 
     public boolean isPervako() {
-        return FormParameters.FormTemplateType.PERVAKO.equals(this.getFormTemplateType());
+        return FormParameters.FormTemplateType.PERVAKO.equals(formTemplateType);
     }
     public boolean isKevaanLisahaku() {
         return FormTemplateType.LISAHAKU_KEVAT.equals(this.getFormTemplateType());
     }
+    public boolean isLisahaku() {
+        return FormTemplateType.LISAHAKU_KEVAT.equals(formTemplateType) || FormTemplateType.LISAHAKU_SYKSY.equals(formTemplateType);
+
+    }
+
 }

@@ -77,7 +77,7 @@ public final class ArvosanatTheme {
             // Ylioppilaat
             Expr kysyArvosanatLukio;
             RelatedQuestionRuleBuilder naytetaankoLukionArvosanataulukko;
-            if (formParameters.isKevaanLisahaku()) {
+            if (formParameters.isLisahaku()) {
                 naytetaankoLukionArvosanataulukko = Rule(new Equals(new Variable(POHJAKOULUTUS_ID), new Value(OppijaConstants.YLIOPPILAS)));
             } else {
                 naytetaankoLukionArvosanataulukko = Rule(
@@ -92,7 +92,7 @@ public final class ArvosanatTheme {
             }
             naytetaankoLukionArvosanataulukko.addChild(arvosanataulukkoYO(formParameters));
             arvosanatTheme.addChild(naytetaankoLukionArvosanataulukko.build());
-            if (!formParameters.isKevaanLisahaku()) {
+            if (!formParameters.isLisahaku()) {
                 arvosanatTheme.addChild(Rule(
                         new Or(
                                 new Equals(new Variable("lukioPaattotodistusVuosi"), new Value(String.valueOf(hakukausiVuosi))),
