@@ -65,7 +65,7 @@ public class GradesTable {
             gradeGrid.addChild(createGradeGridRow(subjectsAfterLanguage, false, false, formParameters));
         }
         List<String> uniqLanguagesIds = Lists.transform(
-                ElementUtil.filterElements(gradeGrid, new IdEndsWith(OPPIAINE_SUFFIX)),
+                ElementUtil.filterElements(gradeGrid, new IdEndsWith(OPPIAINE_SUFFIX), null),
                 new ElementToId());
         gradeGrid.setValidator(
                 new UniqValuesValidator(

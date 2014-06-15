@@ -31,7 +31,7 @@ public class RadioBuilder extends ElementBuilder {
     }
 
     @Override
-    public Element buildImpl() {
+    Element buildImpl() {
         Radio radio = new Radio(id, i18nText, this.options);
         List<String> values = new ArrayList<String>();
         for (Option option : options) {

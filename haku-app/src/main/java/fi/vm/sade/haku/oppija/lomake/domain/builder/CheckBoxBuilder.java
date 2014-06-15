@@ -11,7 +11,7 @@ public class CheckBoxBuilder extends ElementBuilder {
     }
 
     @Override
-    public Element buildImpl() {
+    Element buildImpl() {
         return new CheckBox(id, i18nText);
     }
 

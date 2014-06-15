@@ -30,7 +30,7 @@ public interface UIService {
 
     void storePrefilledAnswers(final String applicationSystemId, final Map<String, String> answers);
 
-    Map<String, Object> getElementHelp(final String applicationSystemId, final String elementId);
+    Map<String, Object> getElementHelp(final String applicationSystemId, final String elementId, final Map<String, String> map);
 
     Map<String, Object> getAdditionalLanguageRow(final String applicationSystemId, final String gradeGridId);
 

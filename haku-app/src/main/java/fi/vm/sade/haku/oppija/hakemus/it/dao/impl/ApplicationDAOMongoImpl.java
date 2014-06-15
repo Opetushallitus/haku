@@ -51,6 +51,7 @@ import java.util.regex.Pattern;
 import static org.apache.commons.lang.StringUtils.isEmpty;
 import static org.apache.commons.lang.StringUtils.isNotBlank;
 import static org.apache.commons.lang.StringUtils.join;
+import static com.mongodb.QueryOperators.EXISTS;
 
 /**
  * @author Hannu Lyytikainen
@@ -95,9 +96,6 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     private static final String FIELD_SEARCH_NAMES = "searchNames";
     private static final String FIELD_RECEIVED = "received";
     private static final String FIELD_UPDATED = "updated";
-    private static final String EXISTS = "$exists";
-    private static final String OPTION_SPARSE = "sparse";
-    private static final String OPTION_NAME = "name";
     private static final String FIELD_STUDENT_OID = "studentOid";
     private static final String FIELD_STUDENT_IDENTIFICATION_DONE = "studentIdentificationDone";
     private static final String FIELD_REDO_POSTPROCESS = "redoPostProcess";
@@ -592,17 +590,6 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         createIndex("index_ " + preference + "_discretionary", true, discretionaryField);
         createIndex("index_ " + preference + "_ao", sparsePossible.booleanValue(), fieldAo);
         createIndex("index_ " + preference + "_ao_identifier", sparsePossible.booleanValue(), fieldAoIdentifier);
-    }
-
-    private void createIndex(String name, Boolean isSparse, String... fields) {
-        final DBObject options = new BasicDBObject(OPTION_NAME, name);
-        options.put(OPTION_SPARSE, isSparse.booleanValue());
-
-        final DBObject index = new BasicDBObject();
-        for (String field : fields) {
-            index.put(field, 1);
-        }
-        getCollection().ensureIndex(index, options);
     }
 
     @Override

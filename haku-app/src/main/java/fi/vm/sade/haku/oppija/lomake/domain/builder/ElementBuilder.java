@@ -5,15 +5,14 @@ import com.google.common.collect.Lists;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.validation.Validator;
-import fi.vm.sade.haku.oppija.lomake.validation.validators.ContainedInOtherFieldValidator;
-import fi.vm.sade.haku.oppija.lomake.validation.validators.LengthValidator;
-import fi.vm.sade.haku.oppija.lomake.validation.validators.RegexFieldValidator;
-import fi.vm.sade.haku.oppija.lomake.validation.validators.RequiredFieldValidator;
+import fi.vm.sade.haku.oppija.lomake.validation.validators.*;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.impl.TranslationsUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public abstract class ElementBuilder {
 
@@ -23,8 +22,12 @@ public abstract class ElementBuilder {
     String key;
     String placeholder;
     I18nText i18nText;
+    I18nText help;
+    I18nText verboseHelp;
     String pattern;
     Integer maxLength;
+    Integer minOptions;
+    Integer maxOptions;
     boolean inline;
     private List<Validator> validators = new ArrayList<Validator>();
     private String containsInField;
@@ -45,8 +48,16 @@ public abstract class ElementBuilder {
             this.i18nText = getI18nText(key, false);
         }
         Element element = buildImpl();
-        element.setHelp(getI18nText(key + ".help"));
-        ElementUtil.setVerboseHelp(element, getI18nText(key + ".verboseHelp"));
+        if (help != null) {
+            element.setHelp(help);
+        } else {
+            element.setHelp(getI18nText(key + ".help"));
+        }
+        if (verboseHelp != null) {
+            ElementUtil.setVerboseHelp(element, verboseHelp);
+        } else {
+            ElementUtil.setVerboseHelp(element, getI18nText(key + ".verboseHelp"));
+        }
 
         if (size != null) {
             element.addAttribute("size", size.toString());
@@ -57,6 +68,10 @@ public abstract class ElementBuilder {
             element.setValidator(
                     new RequiredFieldValidator(
                             getI18nText("yleinen.pakollinen", false)));
+        }
+        if (minOptions != null && maxOptions != null) {
+            element.setValidator(new MinMaxOptionsValidator(getI18nText("yleinen.virheellinenarvo"),
+                    minOptions, maxOptions));
         }
         if (pattern != null) {
             element.setValidator(new RegexFieldValidator(getI18nText("yleinen.virheellinenArvo"), pattern));
@@ -79,6 +94,7 @@ public abstract class ElementBuilder {
         }
         return element;
     }
+
     I18nText getI18nText(final String key) {
         return getI18nText(key, true);
     }
@@ -90,7 +106,7 @@ public abstract class ElementBuilder {
         return (ignoreMissing ? null : ElementUtil.createI18NAsIs(key));
     }
 
-    public abstract Element buildImpl();
+    abstract Element buildImpl();
 
     public ElementBuilder labelKey(final String key) {
         this.key = key;
@@ -122,13 +138,23 @@ public abstract class ElementBuilder {
         return this;
     }
 
+    public ElementBuilder maxOptions(int maxOptions) {
+        this.maxOptions = maxOptions;
+        return this;
+    }
+
+    public ElementBuilder minOptions(int minOptions) {
+        this.minOptions = minOptions;
+        return this;
+    }
+
     public ElementBuilder validator(final Validator validator) {
         validators.add(validator);
         return this;
     }
 
     public ElementBuilder i18nText(final I18nText i18nText) {
-        this.i18nText = i18nText;
+        this.i18nText = ensureTranslations(i18nText);
         return this;
     }
 
@@ -137,7 +163,7 @@ public abstract class ElementBuilder {
         return this;
     }
 
-    public ElementBuilder containsInField(String id) {
+    public ElementBuilder containsInField(final String id) {
         this.containsInField = id;
         return this;
     }
@@ -146,17 +172,17 @@ public abstract class ElementBuilder {
         return required().inline();
     }
 
-    public ElementBuilder formParams(FormParameters formParameters) {
+    public ElementBuilder formParams(final FormParameters formParameters) {
         this.formParameters = formParameters;
         return this;
     }
 
-    public ElementBuilder addChild(ElementBuilder elementBuilder) {
+    public ElementBuilder addChild(final ElementBuilder elementBuilder) {
         this.children.add(elementBuilder.formParams(this.formParameters).build());
         return this;
     }
 
-    public ElementBuilder addChild(Element element) {
+    public ElementBuilder addChild(final Element element) {
         this.children.add(element);
         return this;
     }
@@ -170,4 +196,33 @@ public abstract class ElementBuilder {
         }).toArray(new Element[elementBuilders.length]);
     }
 
+    public ElementBuilder help(final I18nText help) {
+        this.help = emptyToNull(help);
+        this.help = ensureTranslations(this.help);
+        return this;
+    }
+
+    public ElementBuilder verboseHelp(final I18nText verboseHelp) {
+        this.verboseHelp = emptyToNull(verboseHelp);
+        this.verboseHelp = ensureTranslations(this.verboseHelp);
+        return this;
+    }
+
+    private I18nText emptyToNull(final I18nText i18nText) {
+
+        if (i18nText != null) {
+            Map<String, String> translations = i18nText.getTranslations();
+            if (translations != null && !translations.isEmpty()) {
+                return i18nText;
+            }
+        }
+
+        return null;
+    }
+
+    private I18nText ensureTranslations(final I18nText i18nText){
+        if (null == i18nText)
+            return null;
+        return TranslationsUtil.ensureDefaultLanguageTranslations(i18nText);
+    }
 }

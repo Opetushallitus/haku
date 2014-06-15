@@ -10,7 +10,7 @@ public class TitledGroupBuilder extends ElementBuilder {
         super(id);
     }
     @Override
-    public Element buildImpl() {
+    Element buildImpl() {
         return new TitledGroup(id, i18nText);
     }
 

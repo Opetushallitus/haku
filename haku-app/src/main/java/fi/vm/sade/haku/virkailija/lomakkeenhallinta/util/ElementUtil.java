@@ -116,9 +116,9 @@ public final class ElementUtil {
 
     }
 
-    public static List<Element> filterElements(final Element element, final Predicate<Element> predicate) {
+    public static List<Element> filterElements(final Element element, final Predicate<Element> predicate, final Map<String, String> answers) {
         List<Element> elements = new ArrayList<Element>();
-        filterElements(element, elements, predicate);
+        filterElements(element, elements, predicate, answers);
         return elements;
     }
 
@@ -168,8 +168,6 @@ public final class ElementUtil {
     public static void addUniqueApplicantValidator(final Element element, final String asType) {
         if (OppijaConstants.VARSINAINEN_HAKU.equals(asType)) {
             element.setValidator(new SsnUniqueValidator());
-        } else {
-            //skip
         }
     }
 
@@ -191,12 +189,18 @@ public final class ElementUtil {
     }
 
     private static void filterElements(
-            final Element element, final List<Element> elements, final Predicate<Element> predicate) {
+            final Element element, final List<Element> elements, final Predicate<Element> predicate, final Map<String, String> answers) {
         if (predicate.apply(element)) {
             elements.add(element);
         }
-        for (Element child : element.getChildren()) {
-            filterElements(child, elements, predicate);
+        if (answers != null) {
+            for (Element child : element.getChildren(answers)) {
+                filterElements(child, elements, predicate, answers);
+            }
+        } else {
+            for (Element child : element.getChildren()) {
+                filterElements(child, elements, predicate, answers);
+            }
         }
     }
 

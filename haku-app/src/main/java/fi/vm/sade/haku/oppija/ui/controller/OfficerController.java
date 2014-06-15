@@ -23,7 +23,6 @@ import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.service.FormService;
 import fi.vm.sade.haku.oppija.lomake.service.UserSession;
-import fi.vm.sade.haku.oppija.ui.common.MultivaluedMapUtil;
 import fi.vm.sade.haku.oppija.ui.common.UriUtil;
 import fi.vm.sade.haku.oppija.ui.service.ModelResponse;
 import fi.vm.sade.haku.oppija.ui.service.OfficerUIService;
@@ -45,6 +44,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static fi.vm.sade.haku.oppija.ui.common.MultivaluedMapUtil.toSingleValueMap;
 import static javax.ws.rs.core.Response.ok;
 import static javax.ws.rs.core.Response.seeOther;
 
@@ -98,12 +98,13 @@ public class OfficerController {
         return redirectToOidResponse(application.getOid());
     }
 
-    @GET
-    @Path("/hakemus/{applicationSystemId}/{phaseId}/{elementId}/help")
+    @POST
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED + CHARSET_UTF_8)
     @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
+    @Path("/hakemus/{applicationSystemId}/{phaseId}/{elementId}/help")
     public Viewable getFormHelp(@PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId,
-                                @PathParam(ELEMENT_ID_PATH_PARAM) final String elementId) {
-        return new Viewable(VERBOSE_HELP_VIEW, uiService.getElementHelp(applicationSystemId, elementId));
+                                @PathParam(ELEMENT_ID_PATH_PARAM) final String elementId, final MultivaluedMap<String, String> answers) {
+        return new Viewable(VERBOSE_HELP_VIEW, uiService.getElementHelp(applicationSystemId, elementId, toSingleValueMap(answers)));
     }
 
     @GET
@@ -132,7 +133,7 @@ public class OfficerController {
     @Produces(MEDIA_TYPE_TEXT_HTML_UTF8)
     public Viewable openApplications(final MultivaluedMap<String, String> multiValues) {
         LOGGER.debug("Opening multiple applications");
-        Map<String, String> values = MultivaluedMapUtil.toSingleValueMap(multiValues);
+        Map<String, String> values = toSingleValueMap(multiValues);
         String applicationList = values.get("applicationList");
         String selectedApplication = values.get("selectedApplication");
         for (Map.Entry<String, String> entry : values.entrySet()) {
@@ -169,7 +170,7 @@ public class OfficerController {
         LOGGER.debug("updatePhase {}, {}, {}", applicationSystemId, phaseId, oid);
 
         ModelResponse modelResponse = officerUIService.updateApplication(oid,
-                new ApplicationPhase(applicationSystemId, phaseId, MultivaluedMapUtil.toSingleValueMap(multiValues)),
+                new ApplicationPhase(applicationSystemId, phaseId, toSingleValueMap(multiValues)),
                 userSession.getUser());
 
         if (modelResponse.hasErrors()) {
@@ -191,7 +192,7 @@ public class OfficerController {
                                @PathParam("elementId") final String elementId,
                                final MultivaluedMap<String, String> multiValues) {
         ModelResponse modelResponse = officerUIService.getApplicationElement(oid, phaseId, elementId, false);
-        modelResponse.addAnswers(MultivaluedMapUtil.toSingleValueMap(multiValues));
+        modelResponse.addAnswers(toSingleValueMap(multiValues));
         return new Viewable("/elements/Root", modelResponse.getModel());
     }
 
@@ -203,7 +204,7 @@ public class OfficerController {
     public Response saveAdditionalInfo(@PathParam(OID_PATH_PARAM) final String oid,
                                        final MultivaluedMap<String, String> multiValues) throws URISyntaxException {
         LOGGER.debug("saveAdditionalInfo {}, {}", new Object[]{oid, multiValues});
-        officerUIService.saveApplicationAdditionalInfo(oid, MultivaluedMapUtil.toSingleValueMap(multiValues));
+        officerUIService.saveApplicationAdditionalInfo(oid, toSingleValueMap(multiValues));
         return redirectToOidResponse(oid);
     }
 

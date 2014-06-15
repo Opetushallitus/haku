@@ -10,7 +10,7 @@ public class TextQuestionBuilder extends ElementBuilder {
         super(id);
     }
 
-    public Element buildImpl() {
+    Element buildImpl() {
         return new TextQuestion(id, this.i18nText);
     }
 

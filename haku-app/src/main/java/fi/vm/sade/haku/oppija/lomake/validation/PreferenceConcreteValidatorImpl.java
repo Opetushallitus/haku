@@ -152,10 +152,13 @@ public class PreferenceConcreteValidatorImpl extends PreferenceConcreteValidator
     }
 
     private boolean checkApplicationDates(final ApplicationOption applicationOption) {
-        if (applicationOption.isSpecificApplicationDates() && applicationOption.isCanBeApplied()) {
+        if (!applicationOption.isSpecificApplicationDates()) {
             return true;
         }
-        LOGGER.error("Preference validation error {} ", applicationOption);
+        if (!applicationOption.isCanBeApplied()) {
+            LOGGER.error("Preference validation error {} ", applicationOption);
+            return false;
+        }
         return true;
     }
 

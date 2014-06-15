@@ -50,6 +50,7 @@
                        name="${textInputId}"
                        value="<c:out value='${answers[textInputId]}'/>"
                        type="text"
+                       data-special-id="preferenceLopInput"
                        data-selectinputid="${selectInputId}"
                        size="60"
                 ${sortableItem.attributes['required']}/>

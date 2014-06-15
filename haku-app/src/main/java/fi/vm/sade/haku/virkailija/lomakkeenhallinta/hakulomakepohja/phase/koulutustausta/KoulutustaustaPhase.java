@@ -46,7 +46,7 @@ public final class KoulutustaustaPhase {
 
     public static Element create(final FormParameters formParameters) {
         Element koulutustausta = Phase("koulutustausta").formParams(formParameters).build();
-        Element koulutustaustaRyhma = new ThemeBuilder("koulutustausta").previewable().formParams(formParameters).build();
+        Element koulutustaustaRyhma = new ThemeBuilder("koulutustausta.teema").previewable().formParams(formParameters).build();
         koulutustaustaRyhma.addChild(createKoulutustaustaRadio(formParameters));
         koulutustausta.addChild(koulutustaustaRyhma);
         return koulutustausta;

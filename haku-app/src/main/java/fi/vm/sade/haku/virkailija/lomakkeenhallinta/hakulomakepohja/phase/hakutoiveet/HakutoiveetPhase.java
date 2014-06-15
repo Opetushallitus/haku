@@ -30,9 +30,12 @@ import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.*;
 import fi.vm.sade.haku.oppija.lomake.validation.validators.PreferenceValidator;
 import fi.vm.sade.haku.oppija.lomake.validation.validators.RegexFieldValidator;
 import fi.vm.sade.haku.oppija.lomake.validation.validators.RequiredFieldValidator;
+import fi.vm.sade.haku.oppija.lomake.validation.validators.SsnAndPreferenceUniqueValidator;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.service.ThemeQuestionConfigurator;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ExprUtil;
+import java.util.List;
 
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.NotificationBuilder.Warning;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.PhaseBuilder.Phase;
@@ -45,6 +48,7 @@ public class HakutoiveetPhase {
     public static final String LISAOPETUS_EDUCATION_DEGREE = "22";
     private static final String DISCRETIONARY_EDUCATION_DEGREE = "32";
     private static final String HAKUTOIVEET_PHASE_ID = "hakutoiveet";
+    private static final String HAKUTOIVEET_THEME_ID = "hakutoiveet.teema";
 
     private static final String TODISTUSTENPUUTTUMINEN = "todistustenpuuttuminen";
 
@@ -56,7 +60,7 @@ public class HakutoiveetPhase {
 
     private static Element createHakutoiveetTheme(final FormParameters formParameters) {
 
-        Element hakutoiveetTheme = Theme("hakutoiveet.teema").previewable().formParams(formParameters).build();
+        Element hakutoiveetTheme = Theme(HAKUTOIVEET_THEME_ID).previewable().formParams(formParameters).build();
         hakutoiveetTheme.setHelp(createI18NText("form.hakutoiveet.help", formParameters));
         PreferenceTable preferenceTable =
                 new PreferenceTable("preferencelist", createI18NText("form.hakutoiveet.otsikko", formParameters));
@@ -64,6 +68,9 @@ public class HakutoiveetPhase {
         PreferenceRow pr1 = createI18NPreferenceRow("preference1", "1", formParameters);
         pr1.setValidator(new RequiredFieldValidator(pr1.getLearningInstitutionInputId(), ElementUtil.createI18NText("yleinen.pakollinen", formParameters)));
         pr1.setValidator(new RequiredFieldValidator(pr1.getEducationInputId(), ElementUtil.createI18NText("yleinen.pakollinen", formParameters)));
+        if (formParameters.isLisahaku()) {
+            pr1.setValidator(new SsnAndPreferenceUniqueValidator());
+        }
         preferenceTable.addChild(pr1);
         for (int index = 2; index <= formParameters.getApplicationSystem().getMaxApplicationOptions(); index++) {
             PreferenceRow pref = createI18NPreferenceRow("preference" + index, String.valueOf(index), formParameters);
@@ -101,6 +108,11 @@ public class HakutoiveetPhase {
             pr.addChild(koulutusasteRistiriidassaSuoritettuunTutkintoon);
         }
         pr.setValidator(new PreferenceValidator());
+        ThemeQuestionConfigurator configurator = formParameters.getThemeQuestionGenerator();
+        List<Element> themeQuestions = configurator.findAndConfigure(formParameters.getApplicationSystem(), HAKUTOIVEET_THEME_ID, pr.getId());
+        if (themeQuestions.size() > 0){
+           pr.addChild(themeQuestions.toArray(new Element[themeQuestions.size()]));
+        }
         return pr;
     }
 

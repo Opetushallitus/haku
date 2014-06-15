@@ -23,33 +23,38 @@ import fi.vm.sade.haku.oppija.lomake.validation.FieldValidator;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationInput;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationResult;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.data.annotation.PersistenceConstructor;
 
-public class RequiredFieldValidator extends FieldValidator {
+public class MinMaxOptionsValidator extends FieldValidator {
 
     private final String id;
+    private final int min;
+    private final int max;
 
-    @PersistenceConstructor
-    public RequiredFieldValidator(final I18nText errorMessage) {
+    public MinMaxOptionsValidator(final I18nText errorMessage, final Integer min, final Integer max) {
         super(errorMessage);
+        if (min == null || min.intValue() < 0) {
+            throw new IllegalArgumentException("Minimum must be non null and non negative");
+        }
+        if (max == null || max.intValue() < 1) {
+            throw new IllegalArgumentException("Maximum must be non null and positive");
+        }
         id = null;
-    }
-
-    public RequiredFieldValidator(final String id, final I18nText errorMessage) {
-        super(errorMessage);
-        this.id = id;
+        this.min = min.intValue();
+        this.max = max.intValue();
     }
 
     @Override
     public ValidationResult validate(final ValidationInput validationInput) {
         if (validationInput.getElement().getType().equals(TitledGroup.class.getSimpleName())) {
+            int valueCount = 0;
             for (Element child : validationInput.getElement().getChildren()) {
                 if (hasValue(validationInput, child.getId())) {
-                    return validValidationResult;
+                    valueCount++;
                 }
             }
-        } else if (hasValue(validationInput, this.id)) {
-            return validValidationResult;
+            if (valueCount >= min && valueCount <= max) {
+                return validValidationResult;
+            }
         }
         return getInvalidValidationResult(validationInput);
     }

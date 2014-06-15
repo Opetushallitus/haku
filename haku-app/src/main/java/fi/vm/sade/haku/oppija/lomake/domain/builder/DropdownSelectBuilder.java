@@ -54,7 +54,7 @@ public class DropdownSelectBuilder extends ElementBuilder {
     }
 
     @Override
-    public Element buildImpl() {
+    Element buildImpl() {
         if (defaultOption != null) {
             for (Option opt : options) {
                 opt.setDefaultOption(opt.getValue().equalsIgnoreCase(defaultOption));

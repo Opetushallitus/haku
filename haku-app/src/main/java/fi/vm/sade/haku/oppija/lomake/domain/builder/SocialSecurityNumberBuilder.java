@@ -37,7 +37,7 @@ public class SocialSecurityNumberBuilder extends ElementBuilder {
     }
 
     @Override
-    public Element buildImpl() {
+    Element buildImpl() {
         return new SocialSecurityNumber(id, i18nText, sexI18nText, maleOption, femaleOption, sexId);
     }
 }

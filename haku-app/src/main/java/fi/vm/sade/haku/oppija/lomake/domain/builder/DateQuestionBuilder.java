@@ -16,7 +16,7 @@ public class DateQuestionBuilder extends ElementBuilder {
     }
 
     @Override
-    public Element buildImpl() {
+    Element buildImpl() {
         return new DateQuestion(id, i18nText);
     }
 
