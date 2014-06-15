@@ -106,17 +106,20 @@ public class UIServiceImpl implements UIService {
     }
 
     @Override
-    public Map<String, Object> getElementHelp(final String applicationSystemId, final String elementId) {
+    public Map<String, Object> getElementHelp(final String applicationSystemId, final String elementId, final Map<String, String> answers) {
         ApplicationSystem activeApplicationSystem = applicationSystemService.getActiveApplicationSystem(applicationSystemId);
-
+        Application application = applicationService.getApplication(applicationSystemId);
         Map<String, Object> model = new HashMap<String, Object>();
+        Map<String, String> vastauksetMerged = application.getVastauksetMerged();
+        vastauksetMerged.putAll(answers);
         Element root = new ElementTree(activeApplicationSystem.getForm()).getChildById(elementId);
         List<Element> listOfTitledElements = ElementUtil.filterElements(root, new Predicate<Element>() {
             @Override
             public boolean apply(Element input) {
                 return (input instanceof Titled);
             }
-        });
+        },
+                vastauksetMerged);
         model.put("theme", root); //why theme?
         model.put("listsOfTitledElements", listOfTitledElements);
         return model;

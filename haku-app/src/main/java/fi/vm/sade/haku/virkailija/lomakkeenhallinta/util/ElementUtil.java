@@ -25,7 +25,10 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.Titled;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.gradegrid.GradeGridRow;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.Regexp;
 import fi.vm.sade.haku.oppija.lomake.validation.Validator;
-import fi.vm.sade.haku.oppija.lomake.validation.validators.*;
+import fi.vm.sade.haku.oppija.lomake.validation.validators.RegexFieldValidator;
+import fi.vm.sade.haku.oppija.lomake.validation.validators.RequiredFieldValidator;
+import fi.vm.sade.haku.oppija.lomake.validation.validators.SsnUniqueValidator;
+import fi.vm.sade.haku.oppija.lomake.validation.validators.ValueSetValidator;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
 import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
@@ -113,9 +116,9 @@ public final class ElementUtil {
 
     }
 
-    public static List<Element> filterElements(final Element element, final Predicate<Element> predicate) {
+    public static List<Element> filterElements(final Element element, final Predicate<Element> predicate, final Map<String, String> answers) {
         List<Element> elements = new ArrayList<Element>();
-        filterElements(element, elements, predicate);
+        filterElements(element, elements, predicate, answers);
         return elements;
     }
 
@@ -186,12 +189,18 @@ public final class ElementUtil {
     }
 
     private static void filterElements(
-            final Element element, final List<Element> elements, final Predicate<Element> predicate) {
+            final Element element, final List<Element> elements, final Predicate<Element> predicate, final Map<String, String> answers) {
         if (predicate.apply(element)) {
             elements.add(element);
         }
-        for (Element child : element.getChildren()) {
-            filterElements(child, elements, predicate);
+        if (answers != null) {
+            for (Element child : element.getChildren(answers)) {
+                filterElements(child, elements, predicate, answers);
+            }
+        } else {
+            for (Element child : element.getChildren()) {
+                filterElements(child, elements, predicate, answers);
+            }
         }
     }
 

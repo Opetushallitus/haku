@@ -177,12 +177,14 @@ public class FormController {
         return new Viewable(PRINT_VIEW, modelResponse.getModel());
     }
 
-    @GET
+    @POST
     @Path("/{applicationSystemId}/{elementId}/help")
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED + CHARSET_UTF_8)
     @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
     public Viewable getFormHelp(@PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId,
-                                @PathParam(ELEMENT_ID_PATH_PARAM) final String elementId) {
-        return new Viewable(VERBOSE_HELP_VIEW, uiService.getElementHelp(applicationSystemId, elementId));
+                                @PathParam(ELEMENT_ID_PATH_PARAM) final String elementId,
+                                final MultivaluedMap<String, String> answers) {
+        return new Viewable(VERBOSE_HELP_VIEW, uiService.getElementHelp(applicationSystemId, elementId,toSingleValueMap(answers)));
     }
 
     @GET
