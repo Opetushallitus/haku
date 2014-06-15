@@ -70,7 +70,7 @@ var preferenceRow = {
     },
 
     clearSelectInput: function (selectInputId) {
-        $("#" + selectInputId + "-id").val("");
+        $("#" + selectInputId + "-id").val("").change();
         $("#" + selectInputId + "-educationDegree").val("").change();
         $("#" + selectInputId + "-id-lang").val("").change();
         $("#" + selectInputId + "-id-sora").val(false).change();
@@ -107,10 +107,10 @@ var preferenceRow = {
         $('button.reset').unbind();
         $('button.reset').click(function (event) {
             var id = $(this).data('id');
-
             $('[id|="' + id + '"]').val('');
             preferenceRow.clearSelectInput(id + "-Koulutus");
             $(this).parent().find(".warning").hide();
+            $('[id|="' + id + '"]').change();
         });
 
 //        $(".field-container-text input:text#preferenceLopInput").each(function (index) {
