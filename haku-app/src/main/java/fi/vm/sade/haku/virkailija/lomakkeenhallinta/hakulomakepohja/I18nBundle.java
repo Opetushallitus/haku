@@ -1,6 +1,7 @@
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja;
 
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.impl.TranslationsUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -66,7 +67,7 @@ public class I18nBundle {
         String keyLowerCase = key.toLowerCase().replaceAll("-", ".");
 
         if (this.i18nBundle.containsKey(keyLowerCase)) {
-            return this.i18nBundle.get(keyLowerCase);
+            return TranslationsUtil.ensureDefaultLanguageTranslations(this.i18nBundle.get(keyLowerCase));
         } else {
             return null;
         }
