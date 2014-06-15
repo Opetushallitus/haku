@@ -124,8 +124,8 @@ public final class ThemeQuestionConfigurator {
         Map<String,String> applicationOptionName = ensureDefaultLanguageTranslations(filterCodePrefix(hakukohde.getHakukohdeNimi()));
         Map<String,String> providerName = ensureDefaultLanguageTranslations(filterCodePrefix(hakukohde.getTarjoajaNimi()));
         Element group = TitledGroupBuilder.TitledGroup(ElementUtil.randomId())
-                .i18nText(new I18nText(applicationOptionName))
-                .help(new I18nText(providerName)).build();
+                .i18nText(new I18nText(providerName))
+                .help(new I18nText(applicationOptionName)).build();
         return group;
     }
 
