@@ -67,12 +67,11 @@ public final class TranslationsUtil {
     }
 
     public static Map<String, String> filterCodePrefix(final Map<String, String> translations) {
-        HashMap<String, String> filteredTranslations = new HashMap<String, String>(translations);
-        for (String key: filteredTranslations.keySet()){
-            if (key.contains(LANG_CODE_PREFIX)){
-                String newKey = key.replace(LANG_CODE_PREFIX, "");
-                filteredTranslations.put(newKey, filteredTranslations.remove(key));
-            }
+        HashMap<String, String> filteredTranslations = new HashMap<String, String>(translations.size());
+        for (String key: translations.keySet()){
+            String newKey = key.replace(LANG_CODE_PREFIX, "");
+            filteredTranslations.put(newKey, translations.get(key));
+
         }
         return ImmutableMap.copyOf(filteredTranslations);
     }
