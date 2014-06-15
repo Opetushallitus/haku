@@ -28,8 +28,8 @@ import static com.mongodb.QueryOperators.IN;
 @Service("themeQuestionDAOMongoImpl")
 public class ThemeQuestionDAOMongoImpl extends AbstractDAOMongoImpl<ThemeQuestion> implements ThemeQuestionDAO {
 
-    @Value("${mongodb.ensureIndex:true}")
-    private boolean ensureIndex;
+    //@Value("${mongodb.ensureIndex:true}")
+    private boolean ensureIndex = false;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ThemeQuestionDAOMongoImpl.class);
 
