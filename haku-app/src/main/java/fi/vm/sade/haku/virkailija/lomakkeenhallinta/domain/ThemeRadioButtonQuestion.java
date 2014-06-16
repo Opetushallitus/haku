@@ -24,6 +24,7 @@ public class ThemeRadioButtonQuestion extends ThemeOptionQuestion {
 
     public ThemeRadioButtonQuestion(String applicationSystemId, String theme, String creatorPersonOid, List<String> ownerOrganizationOid, String learningOpportunityId, Map<String, String> validators) {
         super(applicationSystemId, theme, creatorPersonOid, ownerOrganizationOid, TYPE, learningOpportunityId, validators);
+        this.setRequiredFieldValidator(Boolean.TRUE);
     }
 
     @Override
