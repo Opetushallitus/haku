@@ -30,17 +30,17 @@ public class ApplicationSystemRepository {
         log.info("Saving application system {}", applicationSystem.getId());
         try {
             mongoOperations.save(applicationSystem);
-        } catch (RuntimeException e){
+        } catch (RuntimeException e) {
             log.error("Failed to find application system " + applicationSystem.getId(), e);
             throw e;
         }
     }
 
     public ApplicationSystem findById(final String asid) {
-        log.debug("Trying to find applicationSystem with id "+ asid);
+        log.debug("Trying to find applicationSystem with id " + asid);
         try {
             return mongoOperations.findById(asid, ApplicationSystem.class);
-        } catch (RuntimeException e){
+        } catch (RuntimeException e) {
             log.error("Failed to find application system " + asid, e);
             throw e;
         }
@@ -58,13 +58,17 @@ public class ApplicationSystemRepository {
         return applicationSystems;
     }
 
-    public List<ApplicationSystem> findBySemesterAndYear(String semester, String year) {
+    public List<ApplicationSystem> findBySemesterAndYear(String semester, String year, String... includeFields) {
         Query q = new Query();
         if (isNotEmpty(semester)) {
             q.addCriteria(new Criteria("hakukausiUri").is(semester));
         }
         if (isNotEmpty(year)) {
             q.addCriteria(new Criteria("hakukausiVuosi").is(Integer.valueOf(year)));
+        }
+        for (String includeField : includeFields) {
+            q.fields().include(includeField);
+
         }
         log.debug("findBySemesterAndYear({}, {}) query: {}", semester, year, q.toString());
         return mongoOperations.find(q, ApplicationSystem.class);
