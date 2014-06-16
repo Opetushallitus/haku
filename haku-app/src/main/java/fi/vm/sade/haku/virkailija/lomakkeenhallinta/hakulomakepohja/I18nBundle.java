@@ -33,12 +33,6 @@ public class I18nBundle {
             for (String lang : LANGS) {
                 String text = getString(bundleName, lowerCaseKey, lang);
                 if (text != null) {
-                    if (translations.containsKey(lang)) {
-                        String s = translations.get(lang);
-                        if (s.equals(text)) {
-                            System.out.println("--------------->" +bundleName + " " + lowerCaseKey + " " + lang);
-                        }
-                    }
                     translations.put(lang, text);
                 }
             }
