@@ -115,6 +115,11 @@ public final class ArvosanatTheme {
 
         arvosanatTheme.addChild(eiArvosanataulukkoa(formParameters));
 
+        ThemeQuestionConfigurator configurator = formParameters.getThemeQuestionGenerator();
+        List<Element> themeQuestions = configurator.findAndConfigure(formParameters.getApplicationSystem(),arvosanatTheme.getId());
+        if (themeQuestions.size() > 0) {
+            arvosanatTheme.addChild(themeQuestions.toArray(new Element[themeQuestions.size()]));
+        }
         return arvosanatTheme;
 
     }
