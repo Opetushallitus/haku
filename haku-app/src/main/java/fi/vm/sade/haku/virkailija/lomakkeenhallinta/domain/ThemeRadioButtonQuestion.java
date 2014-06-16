@@ -45,9 +45,9 @@ public class ThemeRadioButtonQuestion extends ThemeOptionQuestion {
         elementBuilder.verboseHelp(getVerboseHelpText());
         //elementBuilder.inline();
 
-        if (this.getRequiredFieldValidator()) {
-            elementBuilder.required();
-        }
+
+        // Radiobuttons are always required
+        elementBuilder.required();
         return elementBuilder.build();
     }
 }
