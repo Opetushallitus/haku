@@ -142,6 +142,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         if (elementTree.isValidationNeeded(applicationPhase.getPhaseId(), application.getPhaseId())) {
             ValidationResult validationResult = elementTreeValidator.validate(new ValidationInput(phase, allAnswers,
                     application.getOid(), applicationSystemId));
+            System.out.println("----------->>>>>>" + application.getOid());
             applicationState.addError(validationResult.getErrorMessages());
         }
 

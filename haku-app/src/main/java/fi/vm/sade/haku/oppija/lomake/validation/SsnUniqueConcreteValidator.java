@@ -53,7 +53,7 @@ public class SsnUniqueConcreteValidator implements Validator {
         String ssn= validationInput.getValue();
         if (ssn != null && validationInput.getApplicationOid() == null) {
             Matcher matcher = socialSecurityNumberPattern.matcher(ssn);
-            if (matcher.matches() && this.applicationDAO.checkIfExistsBySocialSecurityNumber(validationInput.getApplicationOid(), ssn)) {
+            if (matcher.matches() && this.applicationDAO.checkIfExistsBySocialSecurityNumber(validationInput.getApplicationSystemId(), ssn)) {
                 ValidationResult result = new ValidationResult(validationInput.getFieldName(),
                         ElementUtil.createI18NText("henkilotiedot.hetuKaytetty"));
                 return new ValidationResult(Arrays.asList(new ValidationResult[]{validationResult, result}));
