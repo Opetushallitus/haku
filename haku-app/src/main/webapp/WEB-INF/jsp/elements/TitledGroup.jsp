@@ -17,7 +17,7 @@
   ~ European Union Public Licence for more details.
   --%>
 <fieldset class="form-item">
-    <legend class="form-item-label"><haku:i18nText value="${element.i18nText}"/></legend>
+    <legend class="form-item-label ${element.attributes['required']}"><haku:i18nText value="${element.i18nText}"/></legend>
     <div class="form-item-content">
         <haku:errorMessage id="${element.id}"/>
         <haku:help element="${element}"/>

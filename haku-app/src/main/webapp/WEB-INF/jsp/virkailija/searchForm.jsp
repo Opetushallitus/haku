@@ -88,8 +88,8 @@
 
                         <div class="field-select-containerbox">
                             <select class="width-50" id="application-state" name="application-state">
-                                <option value=""><fmt:message key="virkailija.hakemus.tila.kaikki"/></option>
-                                <option selected="selected" value="ACTIVE"><fmt:message
+                                <option selected="selected" value=""><fmt:message key="virkailija.hakemus.tila.kaikki"/></option>
+                                <option value="ACTIVE"><fmt:message
                                         key="virkailija.hakemus.tila.voimassa"/></option>
                                 <option value="PASSIVE"><fmt:message key="virkailija.hakemus.tila.peruttu"/></option>
                                 <option value="INCOMPLETE"><fmt:message
