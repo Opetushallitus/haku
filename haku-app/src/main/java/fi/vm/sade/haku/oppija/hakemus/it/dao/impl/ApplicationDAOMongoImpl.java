@@ -314,8 +314,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         LOG.debug("findFullApplications, getting cursor: {}", System.currentTimeMillis());
         final DBCursor dbCursor = getCollection().find(query, keys).sort(new BasicDBObject(orderBy, orderDir))
                 .skip(start).limit(rows).setReadPreference(ReadPreference.secondaryPreferred());
-        LOG.debug("findFullApplications, found {} matches: {}", dbCursor.count(), System.currentTimeMillis());
-        List<Map<String, Object>> apps = new ArrayList<Map<String, Object>>(dbCursor.count());
+        List<Map<String, Object>> apps = new ArrayList<Map<String, Object>>(rows);
         while (dbCursor.hasNext()) {
             DBObject obj = dbCursor.next();
             apps.add(dbObjectToMapFunction.apply(obj));
