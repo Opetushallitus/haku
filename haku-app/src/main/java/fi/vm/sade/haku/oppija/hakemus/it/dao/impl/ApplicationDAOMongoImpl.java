@@ -64,6 +64,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
 
     private static final Logger LOG = LoggerFactory.getLogger(ApplicationDAOMongoImpl.class);
     private static final String INDEX_APPLICATION_OID = "index_oid";
+    private static final String INDEX_APPLICATION_SYSTEM_ID = "index_as_oid";
     private static final String INDEX_SSN = "index_Henkilotunnus";
     private static final String INDEX_SSN_DIGEST = "index_Henkilotunnus_digest";
     private static final String INDEX_DATE_OF_BIRTH = "index_syntymaaika";
@@ -562,6 +563,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         }
 
         createIndex(INDEX_APPLICATION_OID, false, FIELD_APPLICATION_OID);
+        createIndex(INDEX_APPLICATION_SYSTEM_ID, false, FIELD_APPLICATION_SYSTEM_ID);
         createIndex(INDEX_SSN, false, FIELD_SSN);
         createIndex(INDEX_SSN_DIGEST, false, FIELD_SSN_DIGEST);
         createIndex(INDEX_DATE_OF_BIRTH, false, FIELD_DATE_OF_BIRTH);
