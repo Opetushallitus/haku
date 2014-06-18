@@ -33,7 +33,6 @@ public class ThemeCheckBoxQuestion extends ThemeOptionQuestion {
         for (ThemeQuestionOption option : options) {
             elementBuilder.addChild(Checkbox(this.getId().toString()+"-"+option.getId())
                     .i18nText(option.getOptionText())
-                    .inline()
                     .formParams(formParameters));
         }
         elementBuilder.formParams(formParameters);
