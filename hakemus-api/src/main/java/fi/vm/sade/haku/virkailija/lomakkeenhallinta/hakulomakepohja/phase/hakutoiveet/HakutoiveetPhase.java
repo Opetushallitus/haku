@@ -144,7 +144,6 @@ public class HakutoiveetPhase {
                     .build();
 
             pr.addChild(onAMKkoulutus);
-
         }
 
         pr.setValidator(new PreferenceValidator());
