@@ -27,6 +27,7 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
+import javax.ws.rs.HEAD;
 import java.util.List;
 import java.util.Map;
 
