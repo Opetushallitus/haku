@@ -32,6 +32,7 @@ import fi.vm.sade.koodisto.util.KoodistoClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
@@ -60,13 +61,22 @@ public class KoodistoServiceImpl implements KoodistoService {
     public static final String CODE_HAKUKAUSI = "kausi";
     private static final String CODE_HAKUKOHDE = "hakukohteet";
     private static final String CODE_OPPILAITOSTYYPPI = "oppilaitostyyppi";
+    private static final String CODE_LAAJUUSYKSIKKO = "opintojenlaajuusyksikko";
+    private static final String CODE_KOULUTUSASTE = "koulutusasteoph2002";
 
     private static final String LUKIO = "15";
     private static final String LUKIO_JA_PERUSKOULU = "19";
     private static final String KANSANOPISTO = "63";
+    private static final String AMMATTIKORKEAKOLU = "41";
+    private static final String YLIOPISTO = "42";
+    private static final String SOTILASKORKEAKOULU = "43";
+    private static final String VALIAIKAINEN_AMK= "46";
 
     private final KoodistoClient koodiService;
     private final OrganizationService organisaatioService;
+
+    @Value("${haku.koodisto.limit:99999}")
+    private int fetchLimit;
 
     @Autowired
     public KoodistoServiceImpl(final KoodistoClient koodiService, final OrganizationService organisaatioService) {
@@ -168,15 +178,19 @@ public class KoodistoServiceImpl implements KoodistoService {
     public List<Option> getLukioKoulukoodit() {
         List<KoodiType> koulut = getKoodiTypes(CODE_OPPILAITOSTYYPPI);
         List<String> lukioNumerot = new ArrayList<String>();
+        int i = 0;
         for (KoodiType koodi : koulut) {
             if (koodi.getKoodiArvo().equals(LUKIO)
                     || koodi.getKoodiArvo().equals(LUKIO_JA_PERUSKOULU)
                     || koodi.getKoodiArvo().equals(KANSANOPISTO)) {
+                if (i++ >= fetchLimit) { break; }
                 List<KoodiType> ylakoodit = koodiService.getYlakoodis(koodi.getKoodiUri());
                 LOGGER.debug("Getting lukiokoodit. Koulukoodi: {}", koodi.getKoodiArvo());
                 LOGGER.debug("Ylakoodeja: {}", ylakoodit.size());
+                int j = 0;
                 for (KoodiType ylakoodi : ylakoodit) {
                     if (ylakoodi.getKoodisto().getKoodistoUri().equals("oppilaitosnumero")) {
+                        if (j++ >= fetchLimit) { break; }
                         lukioNumerot.add(ylakoodi.getKoodiArvo());
                     }
                 }
@@ -197,8 +211,68 @@ public class KoodistoServiceImpl implements KoodistoService {
     }
 
     @Override
+    public List<Option> getKorkeakouluKoulukoodit() {
+        List<KoodiType> koulut = getKoodiTypes(CODE_OPPILAITOSTYYPPI);
+        List<String> lukioNumerot = new ArrayList<String>();
+        int i = 0;
+        for (KoodiType koodi : koulut) {
+            if (koodi.getKoodiArvo().equals(AMMATTIKORKEAKOLU)
+                    || koodi.getKoodiArvo().equals(YLIOPISTO)
+                    || koodi.getKoodiArvo().equals(SOTILASKORKEAKOULU)
+                    || koodi.getKoodiArvo().equals(VALIAIKAINEN_AMK)) {
+                if (i++ >= fetchLimit) { break; }
+                List<KoodiType> ylakoodit = koodiService.getYlakoodis(koodi.getKoodiUri());
+                LOGGER.debug("Getting korkeakoulukoodit. Koulukoodi: {}", koodi.getKoodiArvo());
+                LOGGER.debug("Ylakoodeja: {}", ylakoodit.size());
+                int j = 0;
+                for (KoodiType ylakoodi : ylakoodit) {
+                    if (ylakoodi.getKoodisto().getKoodistoUri().equals("oppilaitosnumero")) {
+                        if (j++ >= fetchLimit) { break; }
+                        lukioNumerot.add(ylakoodi.getKoodiArvo());
+                    }
+                }
+                LOGGER.debug("Korkeakouluja: {}", lukioNumerot.size());
+            }
+        }
+
+        List<Option> opts = new ArrayList<Option>(lukioNumerot.size());
+        List<Organization> orgs = organisaatioService.findByOppilaitosnumero(lukioNumerot);
+        for (Organization org : orgs) {
+            LOGGER.debug("Korkeakouluja, orgOid: " + org.getOid());
+            List<String> types = org.getTypes();
+            if (types.contains("Oppilaitos")) {
+                opts.add((Option) new OptionBuilder().setValue(org.getOid()).i18nText(org.getName()).build());
+            }
+        }
+        return opts;
+    }
+
+    @Override
     public List<Option> getHakukohdekoodit() {
         return codesToOptions(CODE_HAKUKOHDE);
+    }
+
+    @Override
+    public List<Option> getLaajuusYksikot() {
+        return codesToOptions(CODE_LAAJUUSYKSIKKO);
+    }
+
+    @Override
+    public List<Option> getKorkeakouluTutkintotasot() {
+        List<KoodiType> koulutusasteet = getKoodiTypes(CODE_KOULUTUSASTE);
+        List<Option> options = new ArrayList<Option>();
+        for (KoodiType koodi : koulutusasteet) {
+            for (KoodiType ylakoodi : koodiService.getYlakoodis(koodi.getKoodiUri())) {
+                if (ylakoodi.getKoodiArvo().equals(AMMATTIKORKEAKOLU)
+                        || ylakoodi.getKoodiArvo().equals(YLIOPISTO)
+                        || ylakoodi.getKoodiArvo().equals(SOTILASKORKEAKOULU)) {
+                    options.add((Option) new OptionBuilder().setValue(koodi.getKoodiUri())
+                            .i18nText(new I18nText(TranslationsUtil.createTranslationsMap(koodi))).build());
+                    break;
+                }
+            }
+        }
+        return options;
     }
 
     private List<Option> codesToOptions(final String codeName) {

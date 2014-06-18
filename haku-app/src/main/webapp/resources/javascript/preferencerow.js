@@ -133,14 +133,18 @@ var preferenceRow = {
                         }));
                         return;
                     }
-                    $.getJSON(sortabletable_settings.koulutusinformaatioBaseUrl + "/lop/search/" + encodeURI(request.term), {
+                    var lopParams = {
                         asId: sortabletable_settings.applicationSystemId,
-                        baseEducation: sortabletable_settings.baseEducation,
                         vocational: sortabletable_settings.vocational,
                         start: 0,
                         rows: 999999,
                         lang: sortabletable_settings.uiLang
-                    }, function (data) {
+                    }
+                    if (sortabletable_settings.baseEducation) {
+                        lopParams.baseEducation = sortabletable_settings.baseEducation;
+                    }
+                    $.getJSON(sortabletable_settings.koulutusinformaatioBaseUrl + "/lop/search/" + encodeURI(request.term),
+                            lopParams, function (data) {
                         lopCache[request.term] = data;
                         response($.map(data, function (result) {
                             return {

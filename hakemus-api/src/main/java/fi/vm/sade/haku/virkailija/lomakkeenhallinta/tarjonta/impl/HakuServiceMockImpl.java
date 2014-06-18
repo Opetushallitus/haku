@@ -47,6 +47,7 @@ public class HakuServiceMockImpl implements HakuService {
                 .addHakukausiUri(HAKUKAUSI_SYKSY)
                 .addHakukausiVuosi(2014)
                 .addApplicationSystemType(VARSINAINEN_HAKU)
+                .addKohdejoukkoUri("haunkohdejoukko_1")
                 .get());
         asList.add(new ApplicationSystemBuilder()
                 .addId("1.2.246.562.5.50476818906")
@@ -55,6 +56,7 @@ public class HakuServiceMockImpl implements HakuService {
                 .addHakukausiUri(OppijaConstants.HAKUKAUSI_KEVAT)
                 .addApplicationSystemType(VARSINAINEN_HAKU)
                 .addHakukausiVuosi(2014)
+                .addKohdejoukkoUri("haunkohdejoukko_1")
                 .get());
         asList.add(new ApplicationSystemBuilder()
                 .addId("haku3")
@@ -63,6 +65,7 @@ public class HakuServiceMockImpl implements HakuService {
                 .addHakukausiUri(HAKUKAUSI_SYKSY)
                 .addHakukausiVuosi(2014)
                 .addApplicationSystemType(LISA_HAKU)
+                .addKohdejoukkoUri("haunkohdejoukko_1")
                 .get());
         asList.add(new ApplicationSystemBuilder()
                 .addId("haku4")
@@ -71,6 +74,7 @@ public class HakuServiceMockImpl implements HakuService {
                 .addHakukausiUri(HAKUKAUSI_KEVAT)
                 .addHakukausiVuosi(2014)
                 .addApplicationSystemType(LISA_HAKU)
+                .addKohdejoukkoUri("haunkohdejoukko_1")
                 .get());
         asList.add(new ApplicationSystemBuilder()
                 .addId("haku5")

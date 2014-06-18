@@ -52,8 +52,12 @@ public class KoodistoServiceMockImpl implements KoodistoService {
     public final List<Option> listOfGenders;
     public final List<Option> listOfKausi;
     public final List<Option> listOfLukios;
+    public final List<Option> listOfKorkeakoulus;
     public final List<Option> listOfHakukohdekoodit;
+    public final List<Option> listOfLaajuusYksikot;
+    public final List<Option> listOfKorkealuTutkintotasot;
     public final List<Code> listOfBaseEducationCodes;
+
     // koodisto uri -> codes
     public Map<String, List<Code>> codes = Maps.newHashMap();
     public static final String BASE_EDUCATION_KOODISTO_URI = "pohjakoulutustoinenaste";
@@ -154,6 +158,14 @@ public class KoodistoServiceMockImpl implements KoodistoService {
                         getOption("Alkio-opisto", "1.2.246.562.10.77255241653")
                 );
 
+        this.listOfKorkeakoulus =
+                ImmutableList.of(
+                        getOption("Aktiivi-instituutti", "1.2.246.562.10.56695937518"),
+                        getOption("Alajärven lukio", "1.2.246.562.10.54943480589"),
+                        getOption("Alavuden lukio", "1.2.246.562.10.328060821310"),
+                        getOption("Alkio-opisto", "1.2.246.562.10.77255241653")
+                );
+
         this.listOfHakukohdekoodit =
                 ImmutableList.of(
                         getOption("Kaivosalan perustutkinto, pk", "123"),
@@ -171,6 +183,15 @@ public class KoodistoServiceMockImpl implements KoodistoService {
                 new Code(YLIOPPILAS, createI18NAsIs("Lukion päättötodistus, ylioppilastutkinto tai abiturientti"))
         );
 
+        this.listOfLaajuusYksikot = ImmutableList.of(
+                getOption("opintoviikkoa", "1"),
+                getOption("opintopistettä", "2"),
+                getOption("tuntia", "5")
+        );
+
+        this.listOfKorkealuTutkintotasot = ImmutableList.of(
+                getOption("foo", "1")
+        );
         this.codes.put(BASE_EDUCATION_KOODISTO_URI, this.listOfBaseEducationCodes);
     }
 
@@ -260,8 +281,23 @@ public class KoodistoServiceMockImpl implements KoodistoService {
     }
 
     @Override
+    public List<Option> getKorkeakouluKoulukoodit() {
+        return this.listOfKorkeakoulus;
+    }
+
+    @Override
     public List<Option> getHakukohdekoodit() {
         return this.listOfHakukohdekoodit;
+    }
+
+    @Override
+    public List<Option> getLaajuusYksikot() {
+        return this.listOfLaajuusYksikot;
+    }
+
+    @Override
+    public List<Option> getKorkeakouluTutkintotasot() {
+        return this.listOfKorkealuTutkintotasot;
     }
 
     @Override

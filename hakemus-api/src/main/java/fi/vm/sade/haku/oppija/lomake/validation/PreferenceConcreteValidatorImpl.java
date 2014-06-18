@@ -19,7 +19,11 @@ package fi.vm.sade.haku.oppija.lomake.validation;
 import com.google.common.base.Strings;
 import fi.vm.sade.haku.oppija.common.koulutusinformaatio.ApplicationOption;
 import fi.vm.sade.haku.oppija.common.koulutusinformaatio.ApplicationOptionService;
+import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
+import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
+import fi.vm.sade.haku.oppija.lomake.util.StringUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +39,7 @@ public class PreferenceConcreteValidatorImpl extends PreferenceConcreteValidator
 
     public static final String ERROR_STR = "Preference validation error key={}, values={}, applicationOption={}";
     private final ApplicationOptionService applicationOptionService;
+    private final ApplicationSystemService applicationSystemService;
     private static final String GENERIC_ERROR = "hakutoiveet.virheellinen.hakutoive";
     private static final String LOP_ERROR = "hakutoiveet.opetuspisteristiriita";
     private static final String CAN_BE_APPLIED_ERROR = "hakutoiveet.eivoihakea";
@@ -42,8 +47,10 @@ public class PreferenceConcreteValidatorImpl extends PreferenceConcreteValidator
     private static final Logger LOGGER = LoggerFactory.getLogger(PreferenceConcreteValidatorImpl.class);
 
     @Autowired
-    public PreferenceConcreteValidatorImpl(ApplicationOptionService applicationOptionService) {
+    public PreferenceConcreteValidatorImpl(ApplicationOptionService applicationOptionService,
+                                           ApplicationSystemService applicationSystemService) {
         this.applicationOptionService = applicationOptionService;
+        this.applicationSystemService = applicationSystemService;
     }
 
     @Override
@@ -172,6 +179,11 @@ public class PreferenceConcreteValidatorImpl extends PreferenceConcreteValidator
     }
 
     private boolean checkEducationDegree(final ValidationInput validationInput, final ApplicationOption applicationOption) {
+        ApplicationSystem as = applicationSystemService.getApplicationSystem(validationInput.getApplicationSystemId());
+        if (as.getKohdejoukkoUri().equals(OppijaConstants.KOHDEJOUKKO_KORKEAKOULU)) {
+            // Korkeakouluhaussa ei tarkasteta pohjakoulutusta vastaan.
+            return true;
+        }
         final String key = "POHJAKOULUTUS";
         if (applicationOption.getRequiredBaseEducations().contains(validationInput.getValues().get(key))) {
             return true;
@@ -189,7 +201,8 @@ public class PreferenceConcreteValidatorImpl extends PreferenceConcreteValidator
 
     private boolean checkAOIdentifier(final ValidationInput validationInput, final ApplicationOption applicationOption) {
         final String key = validationInput.getElement().getId() + "-Koulutus-id-aoIdentifier";
-        if (applicationOption.getAoIdentifier().equals(validationInput.getValueByKey(key))) {
+        String aoIdentifier = StringUtil.safeToString(applicationOption.getAoIdentifier());
+        if (aoIdentifier.equals(validationInput.getValueByKey(key))) {
             return true;
         }
         LOGGER.error(ERROR_STR, key, validationInput, applicationOption);
