@@ -35,6 +35,7 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParamete
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.service.ThemeQuestionConfigurator;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ExprUtil;
+
 import java.util.List;
 
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.NotificationBuilder.Warning;
@@ -106,6 +107,11 @@ public class HakutoiveetPhase {
             koulutusasteRistiriidassaSuoritettuunTutkintoon.addChild(ristiriita);
             pr.addChild(koulutusasteRistiriidassaSuoritettuunTutkintoon);
         }
+
+        if (formParameters.isHigherEd()) {
+
+        }
+
         pr.setValidator(new PreferenceValidator());
         ThemeQuestionConfigurator configurator = formParameters.getThemeQuestionGenerator();
         List<Element> themeQuestions = configurator.findAndConfigure(formParameters.getApplicationSystem(), HAKUTOIVEET_THEME_ID, pr.getId());

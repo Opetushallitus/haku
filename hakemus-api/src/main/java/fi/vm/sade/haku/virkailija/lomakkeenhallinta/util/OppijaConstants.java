@@ -121,5 +121,6 @@ public final class OppijaConstants {
     public static final String EDUCATION_CODE_LIIKUNTA = "koulutus_381203";
 
     public static final String KOHDEJOUKKO_PERVAKO = "haunkohdejoukko_17";
+    public static final String KOHDEJOUKKO_KORKEAKOULU = "haunkohdejoukko_12";
 
 }

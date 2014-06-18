@@ -13,7 +13,6 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 public class FormParameters {
     private static final String FORM_MESSAGES = "form_messages";
 
-
     public enum FormTemplateType {
         YHTEISHAKU_KEVAT,
         YHTEISHAKU_SYKSY,
@@ -99,6 +98,10 @@ public class FormParameters {
 
     public boolean isPervako() {
         return FormParameters.FormTemplateType.PERVAKO.equals(formTemplateType);
+    }
+
+    public boolean isHigherEd() {
+        return applicationSystem.getKohdejoukkoUri().equals(OppijaConstants.KOHDEJOUKKO_KORKEAKOULU);
     }
 
     public boolean isKevaanLisahaku() {

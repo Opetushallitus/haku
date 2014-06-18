@@ -33,4 +33,5 @@ public class CheckBox extends Titled {
     public String getValue() {
         return value;
     }
+
 }
