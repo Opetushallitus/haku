@@ -10,6 +10,9 @@ activemq.brokerurl={{activemq_brokerurl}}
 activemq.jmxurl={{activemq_jmxurl}}
 auth.mode={{auth_mode}}
 env.loglevel={{env_loglevel}}
+hakemus.aes.key={{hakemus_aes_key}}
+hakemus.aes.salt={{hakemus_aes_salt}}
+hakemus.sha.salt={{hakemus_sha_salt}}
 haku.app.username.to.usermanagement={{haku_app_username_to_usermanagement}}
 haku.app.password.to.usermanagement={{haku_app_password_to_usermanagement}}
 haku.app.username.to.valintalaskenta={{haku_app_username_to_valintalaskenta}}
@@ -23,9 +26,14 @@ host.haku={{host_haku}}
 host.ilb={{host_ilb}}
 host.ldap={{host_ldap}}
 host.virkailija={{host_virkailija}}
+ldap.manager.password={{ldap_manager_password}}
+ldap.manager-password={{ldap_manager_password}}
 mongo.db.maxpoolsize=100
 mongodb.oppija.uri=mongodb://{{mongodb_oppija_auth}}@{{mongodb_oppija_host}}:{{mongodb_oppija_port}}
 server.name={{ansible_hostname}}
+scheduler.run={{scheduler_run}}
+scheduler.delay={{scheduler_delay}}
+scheduler.sendMail={{scheduler_sendMail}}
 
 # Oletusarvoja
 accessRight.webservice.url.backend=https\://${host.virkailija}/authentication-service/services/accessRightService
