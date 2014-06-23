@@ -139,7 +139,6 @@ public class Person {
         this.nickName = isNotBlank(other.nickName) ? other.nickName : this.nickName;
         this.lastName = isNotBlank(other.lastName) ? other.lastName : this.lastName;
         this.socialSecurityNumber = isNotBlank(other.socialSecurityNumber) ? other.socialSecurityNumber : this.socialSecurityNumber;
-        this.socialSecurityNumber = isNotBlank(other.socialSecurityNumber) ? other.socialSecurityNumber : this.socialSecurityNumber;
         this.noSocialSecurityNumber = isBlank(this.socialSecurityNumber);
         this.email = isNotBlank(other.email) ? other.email : this.email;
         this.sex = isNotBlank(other.sex) ? other.sex : this.sex;
