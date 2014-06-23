@@ -43,20 +43,20 @@ public class ApplicationToDBObjectFunction implements Function<Application, DBOb
 
     private final EncrypterService aesEncypter;
     private final EncrypterService shaEncrypter;
+    private final ObjectMapper mapper;
 
     @Autowired
     public ApplicationToDBObjectFunction(@Qualifier("aesEncrypter") EncrypterService aesEncypter, @Qualifier("shaEncrypter") EncrypterService shaEncrypter) {
         this.aesEncypter = aesEncypter;
         this.shaEncrypter = shaEncrypter;
+        mapper = new ObjectMapper();
+        mapper.enable(SerializationConfig.Feature.INDENT_OUTPUT);
+        mapper.disable(SerializationConfig.Feature.WRITE_EMPTY_JSON_ARRAYS);
+        mapper.disable(SerializationConfig.Feature.WRITE_NULL_MAP_VALUES);
     }
 
     @Override
     public DBObject apply(Application application) {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.enable(SerializationConfig.Feature.INDENT_OUTPUT);
-        mapper.disable(SerializationConfig.Feature.WRITE_EMPTY_JSON_ARRAYS);
-        mapper.disable(SerializationConfig.Feature.WRITE_NULL_MAP_VALUES);
-
         @SuppressWarnings("rawtypes")
         final Map m = mapper.convertValue(application, Map.class);
         @SuppressWarnings("unchecked")
