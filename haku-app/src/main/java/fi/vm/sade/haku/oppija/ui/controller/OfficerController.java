@@ -17,6 +17,7 @@
 package fi.vm.sade.haku.oppija.ui.controller;
 
 import com.sun.jersey.api.view.Viewable;
+
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
@@ -27,6 +28,10 @@ import fi.vm.sade.haku.oppija.ui.common.UriUtil;
 import fi.vm.sade.haku.oppija.ui.service.ModelResponse;
 import fi.vm.sade.haku.oppija.ui.service.OfficerUIService;
 import fi.vm.sade.haku.oppija.ui.service.UIService;
+import fi.vm.sade.haku.virkailija.viestintapalvelu.EmailService;
+import fi.vm.sade.haku.virkailija.viestintapalvelu.PDFService;
+
+import org.apache.http.HttpResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +42,8 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
+
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -75,9 +82,12 @@ public class OfficerController {
     UIService uiService;
     @Autowired
     FormService formService;
-
     @Autowired
     UserSession userSession;
+    @Autowired
+    private PDFService pdfService;
+    @Autowired
+    private EmailService emailService;
 
     @GET
     @Path("/hakemus/")
@@ -262,12 +272,28 @@ public class OfficerController {
 
     @GET
     @Path("/hakemus/{oid}/print")
+    @Produces(MediaType.TEXT_PLAIN)
+    public Response applicationPrint(@PathParam(OID_PATH_PARAM) final String oid) throws URISyntaxException {
+    	HttpResponse httpResponse = pdfService.getUriToPDF(oid);
+    	URI location = UriUtil.pathSegmentsToUri(httpResponse.getFirstHeader("Content-Location").getValue());
+    	return Response.seeOther(location).build();
+    }
+
+    @GET
+    @Path("/hakemus/{oid}/print/view")
     @Produces(MEDIA_TYPE_TEXT_HTML_UTF8)
-    public Viewable applicationPrintView(@PathParam(OID_PATH_PARAM) final String oid) {
+    public Viewable getApplicationPrintView(@PathParam(OID_PATH_PARAM) final String oid) {
         ModelResponse modelResponse = officerUIService.getApplicationPrint(oid);
         return new Viewable(APPLICATION_PRINT_VIEW, modelResponse.getModel());
     }
 
+    @GET
+    @Path("/hakemus/{oid}/email")
+    @Produces(MediaType.TEXT_PLAIN)
+    public Response applicationEmail(@PathParam(OID_PATH_PARAM) final String oid) throws URISyntaxException, IOException {
+    	String id = emailService.sendApplicationByEmail(oid);
+    	return Response.ok(id).build();
+    }
 
     @GET
     @Path("/hakemus/applicationSystems")

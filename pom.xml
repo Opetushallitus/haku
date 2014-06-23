@@ -48,6 +48,7 @@
         <organisaatio-solr-client.version>10.0-SNAPSHOT</organisaatio-solr-client.version>
         <tarjonta-api.version>9.1</tarjonta-api.version>
         <valintaperusteet.version>1.0-SNAPSHOT</valintaperusteet.version>
+		<viestintapalvelu.version>0.0.2-SNAPSHOT</viestintapalvelu.version>
     </properties>
 
     <repositories>

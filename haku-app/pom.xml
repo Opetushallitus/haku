@@ -59,6 +59,11 @@
             </exclusions>
         </dependency>
         <dependency>
+        	<groupId>fi.vm.sade.ryhmasahkoposti</groupId>
+        	<artifactId>ryhmasahkoposti-api</artifactId>
+        	<version>${viestintapalvelu.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpcore</artifactId>
             <version>4.2.3</version>
