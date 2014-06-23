@@ -1,27 +1,26 @@
 package fi.vm.sade.haku.virkailija.viestintapalvelu.impl;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.ws.rs.core.MediaType;
-
-import org.apache.http.HttpResponse;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
 import fi.vm.sade.generic.rest.CachingRestClient;
 import fi.vm.sade.haku.RemoteServiceException;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.ApplicationPrintViewService;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.DocumentSource;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.DocumentSourceJsonAdapter;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.PDFService;
+import org.apache.http.HttpResponse;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Service;
+
+import javax.ws.rs.core.MediaType;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
+@Profile(value = {"default", "devluokka"})
 public class PDFServiceImpl implements PDFService {
     @Value("${web.url.cas}")
     private String casUrl;

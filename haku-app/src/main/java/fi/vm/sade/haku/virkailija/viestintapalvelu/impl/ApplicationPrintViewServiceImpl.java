@@ -1,16 +1,17 @@
 package fi.vm.sade.haku.virkailija.viestintapalvelu.impl;
 
-import java.io.IOException;
-
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-
 import fi.vm.sade.generic.rest.CachingRestClient;
 import fi.vm.sade.haku.RemoteServiceException;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.ApplicationPrintViewService;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.UtfUtil;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Service;
+
+import java.io.IOException;
 
 @Service
+@Profile(value = {"default", "devluokka"})
 public class ApplicationPrintViewServiceImpl implements ApplicationPrintViewService {
     @Value("${web.url.cas}")
     private String casUrl;

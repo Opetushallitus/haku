@@ -1,22 +1,6 @@
 package fi.vm.sade.haku.virkailija.viestintapalvelu.impl;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-
-import javax.ws.rs.core.MediaType;
-
-import org.apache.http.HttpResponse;
-import org.apache.http.util.EntityUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.MessageSource;
-import org.springframework.stereotype.Service;
-
 import com.google.gson.Gson;
-
 import fi.vm.sade.generic.rest.CachingRestClient;
 import fi.vm.sade.haku.RemoteServiceException;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
@@ -26,13 +10,24 @@ import fi.vm.sade.haku.virkailija.authentication.Person;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.EmailService;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.PDFService;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.constants.ViestintapalveluConstants;
-import fi.vm.sade.ryhmasahkoposti.api.dto.EmailAttachment;
-import fi.vm.sade.ryhmasahkoposti.api.dto.EmailData;
-import fi.vm.sade.ryhmasahkoposti.api.dto.EmailMessage;
-import fi.vm.sade.ryhmasahkoposti.api.dto.EmailRecipient;
-import fi.vm.sade.ryhmasahkoposti.api.dto.EmailSendId;
+import fi.vm.sade.ryhmasahkoposti.api.dto.*;
+import org.apache.http.HttpResponse;
+import org.apache.http.util.EntityUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.MessageSource;
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Service;
+
+import javax.ws.rs.core.MediaType;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 @Service
+@Profile(value = {"default", "devluokka"})
 public class EmailServiceImpl implements EmailService {
     @Value("${web.url.cas}")
     private String casUrl;
