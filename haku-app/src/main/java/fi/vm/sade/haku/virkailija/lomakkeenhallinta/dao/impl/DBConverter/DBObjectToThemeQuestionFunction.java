@@ -17,7 +17,6 @@ public class DBObjectToThemeQuestionFunction implements Function<DBObject, Theme
 
     public DBObjectToThemeQuestionFunction(){
         mapper = new ObjectMapper();
-        mapper.enable(SerializationConfig.Feature.INDENT_OUTPUT);
         mapper.enable(DeserializationConfig.Feature.READ_ENUMS_USING_TO_STRING);
         mapper.enable(SerializationConfig.Feature.WRITE_ENUMS_USING_TO_STRING);
     }

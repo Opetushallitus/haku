@@ -20,7 +20,6 @@ public class ThemeQuestionToDBObjectFunction implements Function<ThemeQuestion, 
 
     public ThemeQuestionToDBObjectFunction(){
         mapper = new ObjectMapper();
-        mapper.enable(SerializationConfig.Feature.INDENT_OUTPUT);
         mapper.disable(SerializationConfig.Feature.WRITE_EMPTY_JSON_ARRAYS);
         mapper.disable(SerializationConfig.Feature.WRITE_NULL_MAP_VALUES);
     }

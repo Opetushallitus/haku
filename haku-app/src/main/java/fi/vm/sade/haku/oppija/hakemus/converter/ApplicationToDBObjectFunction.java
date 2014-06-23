@@ -50,7 +50,6 @@ public class ApplicationToDBObjectFunction implements Function<Application, DBOb
         this.aesEncypter = aesEncypter;
         this.shaEncrypter = shaEncrypter;
         mapper = new ObjectMapper();
-        mapper.enable(SerializationConfig.Feature.INDENT_OUTPUT);
         mapper.disable(SerializationConfig.Feature.WRITE_EMPTY_JSON_ARRAYS);
         mapper.disable(SerializationConfig.Feature.WRITE_NULL_MAP_VALUES);
     }
