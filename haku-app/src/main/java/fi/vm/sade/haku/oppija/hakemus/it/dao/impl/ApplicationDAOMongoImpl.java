@@ -16,10 +16,15 @@
 
 package fi.vm.sade.haku.oppija.hakemus.it.dao.impl;
 
+import com.google.common.base.Function;
 import com.google.common.base.Strings;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
-import com.mongodb.*;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBCursor;
+import com.mongodb.DBObject;
+import com.mongodb.QueryBuilder;
+import com.mongodb.ReadPreference;
 import fi.vm.sade.haku.oppija.common.dao.AbstractDAOMongoImpl;
 import fi.vm.sade.haku.oppija.hakemus.converter.ApplicationToDBObjectFunction;
 import fi.vm.sade.haku.oppija.hakemus.converter.DBObjectToApplicationFunction;
@@ -28,6 +33,7 @@ import fi.vm.sade.haku.oppija.hakemus.converter.DBObjectToSearchResultItem;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application.PostProcessingState;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
+import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultItemDTO;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationDAO;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationQueryParameters;
 import fi.vm.sade.haku.oppija.hakemus.service.HakuPermissionService;
@@ -45,13 +51,17 @@ import javax.annotation.PostConstruct;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.StringTokenizer;
 import java.util.regex.Pattern;
 
+import static com.mongodb.QueryOperators.EXISTS;
 import static org.apache.commons.lang.StringUtils.isEmpty;
 import static org.apache.commons.lang.StringUtils.isNotBlank;
 import static org.apache.commons.lang.StringUtils.join;
-import static com.mongodb.QueryOperators.EXISTS;
 
 /**
  * @author Hannu Lyytikainen
@@ -277,12 +287,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         return Lists.newArrayList(Iterables.transform(dbCursor, fromDBObject));
     }
 
-    private ApplicationSearchResultDTO searchApplications(DBObject query, ApplicationQueryParameters params) {
-        LOG.debug("Query: {}", query);
-        int start = params.getStart();
-        int rows = params.getRows();
-        String orderBy = params.getOrderBy();
-        int orderDir = params.getOrderDir();
+    private ApplicationSearchResultDTO searchApplications(final DBObject query, final ApplicationQueryParameters params) {
         DBObject keys = new BasicDBObject();
         keys.put("oid", 1);
         keys.put("state", 1);
@@ -291,17 +296,12 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         keys.put("answers.henkilotiedot.Etunimet", 1);
         keys.put("answers.henkilotiedot.Sukunimi", 1);
         keys.put("answers.henkilotiedot.syntymaaika", 1);
-        final DBCursor dbCursor = getCollection().find(query, keys).sort(new BasicDBObject(orderBy, orderDir))
-                .skip(start).limit(rows).setReadPreference(ReadPreference.secondaryPreferred());
-        LOG.debug("Matches: {}", dbCursor.count());
-        return new ApplicationSearchResultDTO(dbCursor.count(), Lists.newArrayList(Iterables.transform(dbCursor, dbObjectToSearchResultItem)));
+        final DBObject sortBy = new BasicDBObject(params.getOrderBy(), params.getOrderDir());
+        final SearchResults<ApplicationSearchResultItemDTO> results = searchListing(query, keys, sortBy, params.getStart(), params.getRows(), dbObjectToSearchResultItem, true);
+        return new ApplicationSearchResultDTO(results.searchHits, results.searchResultsList);
     }
 
-    private List<Map<String, Object>> searchApplicationsFull(DBObject query, ApplicationQueryParameters params) {
-        int start = params.getStart();
-        int rows = params.getRows();
-        String orderBy = params.getOrderBy();
-        int orderDir = params.getOrderDir();
+    private List<Map<String, Object>> searchApplicationsFull(final DBObject query, final ApplicationQueryParameters params) {
         DBObject keys = new BasicDBObject();
         keys.put("type", 1);
         keys.put("applicationSystemId", 1);
@@ -311,22 +311,34 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         keys.put("personOid", 1);
         keys.put("studentOid", 1);
         keys.put("received", 1);
-        LOG.debug("findFullApplications, getting cursor: {}", System.currentTimeMillis());
-        final DBCursor dbCursor = getCollection().find(query, keys).sort(new BasicDBObject(orderBy, orderDir))
-                .skip(start).limit(rows).setReadPreference(ReadPreference.secondaryPreferred());
-        List<Map<String, Object>> apps = new ArrayList<Map<String, Object>>(rows);
+        final DBObject sortBy = new BasicDBObject(params.getOrderBy(),  params.getOrderDir());
+        final SearchResults<Map<String, Object>> searchResults = searchListing(query, keys, sortBy, params.getStart(), params.getRows(), dbObjectToMapFunction, false);
+        return searchResults.searchResultsList;
+    }
+
+    private <T> SearchResults<T> searchListing(final DBObject query, final DBObject keys, final DBObject sortBy, final int start, final int rows, final Function<DBObject, T> transformationFunction, final boolean doCount){
+        LOG.debug("searchListing starts Query: {} Keys: {} Skipping: {} Rows: {}", query, keys, start, rows);
+        final long startTime = System.currentTimeMillis();
+        final DBCursor dbCursor = getCollection().find(query, keys).sort(sortBy)
+          .skip(start).limit(rows).setReadPreference(ReadPreference.secondaryPreferred());
+        final List<T> results = new ArrayList<T>(rows);
         while (dbCursor.hasNext()) {
             DBObject obj = dbCursor.next();
-            apps.add(dbObjectToMapFunction.apply(obj));
+            results.add(transformationFunction.apply(obj));
         }
-        LOG.debug("findFullApplications, all serialized: {}", System.currentTimeMillis());
-        return apps;
+        int searchHits;
+        if (doCount)
+            searchHits = dbCursor.count();
+        else
+            searchHits = results.size();
+
+        LOG.debug("searchListing ends, took {} ms. Found matches: {} returning: {}, did count: {}", (System.currentTimeMillis() - startTime), searchHits,  results.size(), doCount);
+        return new SearchResults<T>(searchHits, results);
     }
 
     private DBObject[] buildQueryFilter(final ApplicationQueryParameters applicationQueryParameters) {
         ArrayList<DBObject> filters = new ArrayList<DBObject>();
         DBObject stateQuery = null;
-
 
         // Koskee yksittäistä hakutoivetta
         String lopOid = applicationQueryParameters.getLopOid();
@@ -384,7 +396,6 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
             filters.add(QueryBuilder.start(FIELD_APPLICATION_SYSTEM_ID).in(asIds).get());
         }
 
-
         String sendingSchool = applicationQueryParameters.getSendingSchool();
         if (!isEmpty(sendingSchool)) {
             filters.add(QueryBuilder.start(FIELD_SENDING_SCHOOL).is(sendingSchool).get());
@@ -441,7 +452,6 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         }
 
         LOG.debug("queries: {}", queries.size());
-
         return queries;
     }
 
@@ -519,7 +529,6 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         query.put(FIELD_APPLICATION_STATE, Application.State.SUBMITTED.toString());
 
         DBObject sortBy = new BasicDBObject(FIELD_LAST_AUTOMATED_PROCESSING_TIME, 1);
-
 
         DBCursor cursor = getCollection().find(query).sort(sortBy).limit(1);
         if (ensureIndex) {
@@ -603,5 +612,15 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     public void save(Application application) {
         application.setUpdated(new Date());
         super.save(application);
+    }
+
+    private class SearchResults<T>{
+        private final int searchHits;
+        private final List<T> searchResultsList;
+
+        private SearchResults(int searchHits, List<T> searchResults) {
+            this.searchHits = searchHits;
+            this.searchResultsList = searchResults;
+        }
     }
 }
