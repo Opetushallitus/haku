@@ -5,6 +5,7 @@ import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
 import fi.vm.sade.haku.oppija.common.suoritusrekisteri.OpiskelijaDTO;
 import fi.vm.sade.haku.oppija.common.suoritusrekisteri.SuoritusrekisteriService;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
+import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationAdditionalDataDTO;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultItemDTO;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationDAO;
@@ -90,7 +91,7 @@ public class ApplicationServiceImplTest {
         when(applicationDAO.findAllQueried(eq(SHORT_OID), eq(applicationQueryParameters))).thenReturn(searchResultDTO);
         when(applicationDAO.find(any(Application.class))).thenReturn(Lists.newArrayList(application));
         //when(authenticationService.addPerson(any(Person.class))).thenReturn(PERSON_OID);
-        when(applicationDAO.findByApplicationSystemAndApplicationOption(eq(AS_ID), eq(AO_ID))).thenReturn(Lists.newArrayList(application));
+        when(applicationDAO.findApplicationAdditionalData(eq(AS_ID), eq(AO_ID))).thenReturn(Lists.newArrayList(new ApplicationAdditionalDataDTO()));
         when(hakuPermissionService.userCanReadApplication(any(Application.class))).thenReturn(true);
 //        when(suoritusrekisteriService.getLahtokoulu(any(String.class))).thenReturn("1.2.246.562.10.56695937518");
 //        when(suoritusrekisteriService.getLahtoluokka(any(String.class))).thenReturn("9A");

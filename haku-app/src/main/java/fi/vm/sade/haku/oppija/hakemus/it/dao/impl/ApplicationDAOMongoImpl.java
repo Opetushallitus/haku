@@ -18,7 +18,6 @@ package fi.vm.sade.haku.oppija.hakemus.it.dao.impl;
 
 import com.google.common.base.Function;
 import com.google.common.base.Strings;
-import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCursor;
@@ -27,11 +26,13 @@ import com.mongodb.QueryBuilder;
 import com.mongodb.ReadPreference;
 import fi.vm.sade.haku.oppija.common.dao.AbstractDAOMongoImpl;
 import fi.vm.sade.haku.oppija.hakemus.converter.ApplicationToDBObjectFunction;
+import fi.vm.sade.haku.oppija.hakemus.converter.DBObjectToAdditionalDataDTO;
 import fi.vm.sade.haku.oppija.hakemus.converter.DBObjectToApplicationFunction;
 import fi.vm.sade.haku.oppija.hakemus.converter.DBObjectToMapFunction;
 import fi.vm.sade.haku.oppija.hakemus.converter.DBObjectToSearchResultItem;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application.PostProcessingState;
+import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationAdditionalDataDTO;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultItemDTO;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationDAO;
@@ -71,6 +72,9 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
 
     @Value("${mongodb.ensureIndex:true}")
     private boolean ensureIndex;
+
+    @Value("${mongodb.enableSearchOnSecondary:true}")
+    private boolean enableSearchOnSecondary;
 
     private static final Logger LOG = LoggerFactory.getLogger(ApplicationDAOMongoImpl.class);
     private static final String INDEX_APPLICATION_OID = "index_oid";
@@ -150,15 +154,19 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     }
 
     @Override
-    public List<Application> findByApplicationSystemAndApplicationOption(String asId, String aoId) {
+    public List<ApplicationAdditionalDataDTO> findApplicationAdditionalData(String applicationSystemId, String aoId) {
         ArrayList<DBObject> orgFilter = filterByOrganization();
-        DBObject dbObject = QueryBuilder.start().and(queryByPreference(Lists.newArrayList(aoId)).get(),
-                newOIdExistDBObject(),
-                new BasicDBObject(FIELD_APPLICATION_SYSTEM_ID, asId),
-                QueryBuilder.start(FIELD_APPLICATION_STATE).in(Lists.newArrayList(
-                        Application.State.ACTIVE.toString(), Application.State.INCOMPLETE.toString())).get(),
-                QueryBuilder.start().or(orgFilter.toArray(new DBObject[orgFilter.size()])).get()).get();
-        return findApplications(dbObject);
+        DBObject query = QueryBuilder.start().and(queryByPreference(Lists.newArrayList(aoId)).get(),
+          newOIdExistDBObject(),
+          new BasicDBObject(FIELD_APPLICATION_SYSTEM_ID, applicationSystemId),
+          QueryBuilder.start(FIELD_APPLICATION_STATE).in(Lists.newArrayList(
+            Application.State.ACTIVE.toString(), Application.State.INCOMPLETE.toString())).get(),
+          QueryBuilder.start().or(orgFilter.toArray(new DBObject[orgFilter.size()])).get()).get();
+
+        DBObject keys = generateKeysDBObject(DBObjectToAdditionalDataDTO.KEYS);
+
+        SearchResults<ApplicationAdditionalDataDTO> results = searchListing(query, keys, null, 0, 0, new DBObjectToAdditionalDataDTO(), false);
+        return results.searchResultsList;
     }
 
     @Override
@@ -205,7 +213,6 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     }
 
     private DBObject buildQuery(String term, ApplicationQueryParameters applicationQueryParameters) {
-
         LOG.debug("Entering findAllQueried");
         DBObject[] filters = buildQueryFilter(applicationQueryParameters);
         StringTokenizer st = new StringTokenizer(term, " ");
@@ -282,11 +289,6 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         return QueryBuilder.start().or(queries);
     }
 
-    private List<Application> findApplications(DBObject dbObject) {
-        final DBCursor dbCursor = getCollection().find(dbObject);
-        return Lists.newArrayList(Iterables.transform(dbCursor, fromDBObject));
-    }
-
     private ApplicationSearchResultDTO searchApplications(final DBObject query, final ApplicationQueryParameters params) {
         DBObject keys = new BasicDBObject();
         keys.put("oid", 1);
@@ -319,9 +321,17 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     private <T> SearchResults<T> searchListing(final DBObject query, final DBObject keys, final DBObject sortBy, final int start, final int rows, final Function<DBObject, T> transformationFunction, final boolean doCount){
         LOG.debug("searchListing starts Query: {} Keys: {} Skipping: {} Rows: {}", query, keys, start, rows);
         final long startTime = System.currentTimeMillis();
-        final DBCursor dbCursor = getCollection().find(query, keys).sort(sortBy)
-          .skip(start).limit(rows).setReadPreference(ReadPreference.secondaryPreferred());
-        final List<T> results = new ArrayList<T>(rows);
+        final DBCursor dbCursor = getCollection().find(query, keys);
+        if (null != sortBy)
+            dbCursor.sort(sortBy);
+        if (start > 0)
+          dbCursor.skip(start);
+        if (rows > 0)
+            dbCursor.limit(rows);
+        if (enableSearchOnSecondary)
+            dbCursor.setReadPreference(ReadPreference.secondaryPreferred());
+
+        final List<T> results = new ArrayList<T>(rows > 0 ? rows : 1000);
         while (dbCursor.hasNext()) {
             DBObject obj = dbCursor.next();
             results.add(transformationFunction.apply(obj));
@@ -612,6 +622,14 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     public void save(Application application) {
         application.setUpdated(new Date());
         super.save(application);
+    }
+
+    private DBObject generateKeysDBObject(String... keys) {
+        DBObject dbKeys = new BasicDBObject();
+        for (String key: keys){
+            dbKeys.put(key, 1);
+        }
+        return dbKeys;
     }
 
     private class SearchResults<T>{

@@ -18,6 +18,7 @@ package fi.vm.sade.haku.oppija.hakemus.it.dao;
 
 import fi.vm.sade.haku.oppija.common.dao.BaseDAO;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
+import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationAdditionalDataDTO;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
 
 import java.util.List;
@@ -37,16 +38,6 @@ public interface ApplicationDAO extends BaseDAO<Application> {
      * @return
      */
     List<Application> find(Application application);
-
-    /**
-     * Finds all the applications related to given application system and application option.
-     * Matching applications must be ACTIVE and contains application OID
-     *
-     * @param asId application system id
-     * @param aoId application option id
-     * @return list of applications
-     */
-    List<Application> findByApplicationSystemAndApplicationOption(String asId, String aoId);
 
     /**
      * Checks if submitted application already exists by specified social security number and
@@ -87,4 +78,6 @@ public interface ApplicationDAO extends BaseDAO<Application> {
     Application getNextRedo();
 
     List<Map<String, Object>> findAllQueriedFull(String query, ApplicationQueryParameters applicationQueryParameters);
+
+    List<ApplicationAdditionalDataDTO> findApplicationAdditionalData(String applicationSystemId, String aoId);
 }

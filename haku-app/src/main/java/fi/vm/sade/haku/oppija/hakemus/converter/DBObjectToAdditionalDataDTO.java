@@ -17,28 +17,33 @@
 package fi.vm.sade.haku.oppija.hakemus.converter;
 
 import com.google.common.base.Function;
+import com.mongodb.DBObject;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationAdditionalDataDTO;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
  * @author majapuro
  */
-public class ApplicationToAdditionalDataDTO implements Function<Application, ApplicationAdditionalDataDTO> {
+public class DBObjectToAdditionalDataDTO implements Function<DBObject, ApplicationAdditionalDataDTO> {
+
+    public static final String[] KEYS = {"oid", "personOid", "answers.henkilotiedot", "additionalInfo" };
 
     @Override
-    public ApplicationAdditionalDataDTO apply(Application application) {
+    public ApplicationAdditionalDataDTO apply(DBObject applicationObject) {
         ApplicationAdditionalDataDTO dto = new ApplicationAdditionalDataDTO();
-        dto.setOid(application.getOid());
-        dto.setPersonOid(application.getPersonOid());
-        final Map<String, String> henkilotiedot = application.getAnswers().get("henkilotiedot");
+        dto.setOid((String)applicationObject.get("oid"));
+        dto.setPersonOid((String)applicationObject.get("personOid"));
+        Map answers = (Map) applicationObject.get("answers");
+        final Map<String, String> henkilotiedot = null != answers ? (Map<String,String>) answers.get("henkilotiedot"): null;
         if (henkilotiedot != null) {
             dto.setFirstNames(henkilotiedot.get(OppijaConstants.ELEMENT_ID_FIRST_NAMES));
             dto.setLastName(henkilotiedot.get(OppijaConstants.ELEMENT_ID_LAST_NAME));
         }
-        dto.setAdditionalData(application.getAdditionalInfo());
+        dto.setAdditionalData((Map<String,String>) applicationObject.get("additionalInfo"));
         return dto;
     }
 }
