@@ -69,6 +69,17 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     private Gson gson;
 
+    public AuthenticationServiceImpl() {
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.registerTypeAdapter(Person.class, new PersonJsonAdapter());
+        gson = gsonBuilder.create();
+        cachingRestClient = new CachingRestClient();
+        cachingRestClient.setWebCasUrl(casUrl);
+        cachingRestClient.setCasService(targetService);
+        cachingRestClient.setUsername(clientAppUser);
+        cachingRestClient.setPassword(clientAppPass);
+    }
+
     public Person addPerson(Person person) {
         String hetu = person.getSocialSecurityNumber();
         String personOid = person.getPersonOid();
@@ -96,7 +107,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         String url = "/resources/henkilo/" + personOid + "/organisaatiohenkilo";
         try {
             List<String> orgs = new ArrayList<String>();
-            CachingRestClient cachingRestClient = getCachingRestClient();
             if (log.isDebugEnabled()) {
                 log.debug("Getting organisaatiohenkilos for {}", personOid);
                 log.debug("Using cachingRestClient webCasUrl: {}, casService: {} ", cachingRestClient.getWebCasUrl(), cachingRestClient.getCasService());
@@ -134,12 +144,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         String url = "/resources/s2s/" + personOid;
         Person person = null;
         try {
-            CachingRestClient cachingRestClient = getCachingRestClient();
             String personJson = cachingRestClient.getAsString(url);
-
-            GsonBuilder gsonBuilder = new GsonBuilder();
-            gsonBuilder.registerTypeAdapter(Person.class, new PersonJsonAdapter());
-            gson = gsonBuilder.create();
             person = gson.fromJson(personJson, Person.class);
         } catch (IOException e) {
             throw new RemoteServiceException(targetService + url, e);
@@ -149,15 +154,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public Person getStudentOid(String personOid) {
-        GsonBuilder gsonBuilder = new GsonBuilder();
-        gsonBuilder.registerTypeAdapter(Person.class, new PersonJsonAdapter());
-        gson = gsonBuilder.create();
-
         String url = "/resources/henkilo/" + personOid + "/yksiloi";
 
         String responseString = null;
         try {
-            HttpResponse response = getCachingRestClient().put(url, MediaType.APPLICATION_JSON, null);
+            HttpResponse response = cachingRestClient.put(url, MediaType.APPLICATION_JSON, null);
             BasicResponseHandler handler = new BasicResponseHandler();
             responseString = handler.handleResponse(response);
         } catch (CachingRestClient.HttpException hte) {
@@ -166,23 +167,16 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             throw new RemoteServiceException(targetService + url, e);
         }
         log.debug("Person found: " + responseString);
-        Person newPerson = gson.fromJson(responseString, Person.class);
-        return newPerson;
+        return gson.fromJson(responseString, Person.class);
     }
-
     @Override
     public Person checkStudentOid(String personOid) {
 
-        GsonBuilder gsonBuilder = new GsonBuilder();
-        gsonBuilder.registerTypeAdapter(Person.class, new PersonJsonAdapter());
-        gson = gsonBuilder.create();
-
         String url = "/resources/s2s/" + personOid;
         try {
-            String responseString = getCachingRestClient().getAsString(url);
+            String responseString = cachingRestClient.getAsString(url);
             log.debug("Person found: " + responseString);
-            Person newPerson = gson.fromJson(responseString, Person.class);
-            return newPerson;
+            return gson.fromJson(responseString, Person.class);
         } catch (CachingRestClient.HttpException hte) {
             // Nothing to do
         } catch (IOException e) {
@@ -191,28 +185,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         return null;
     }
 
-    private synchronized CachingRestClient getCachingRestClient() {
-        if (cachingRestClient == null) {
-            cachingRestClient = new CachingRestClient();
-            cachingRestClient.setWebCasUrl(casUrl);
-            cachingRestClient.setCasService(targetService);
-            cachingRestClient.setUsername(clientAppUser);
-            cachingRestClient.setPassword(clientAppPass);
-        }
-        return cachingRestClient;
-    }
 
     private Person createPerson(Person person) {
-        GsonBuilder gsonBuilder = new GsonBuilder();
-        gsonBuilder.registerTypeAdapter(Person.class, new PersonJsonAdapter());
-        gson = gsonBuilder.create();
-
-        CachingRestClient client = getCachingRestClient();
         String personJson = gson.toJson(person, Person.class);
         String url = "/resources/henkilo";
         String oid = null;
         try {
-            HttpResponse response = client.post(url, MediaType.APPLICATION_JSON, personJson);
+            HttpResponse response = cachingRestClient.post(url, MediaType.APPLICATION_JSON, personJson);
             BasicResponseHandler handler = new BasicResponseHandler();
             oid = handler.handleResponse(response);
         } catch (IOException e) {
@@ -225,7 +204,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         String responseString = null;
         String url = "/resources/s2s/byHetu/" + hetu;
         try {
-            responseString = getCachingRestClient().getAsString(url);
+            responseString = cachingRestClient.getAsString(url);
         } catch (CachingRestClient.HttpException hte) {
             if (hte.getStatusCode() == 404) {
                 return null;
@@ -234,11 +213,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             throw new RemoteServiceException(targetService + url, e);
         }
 
-        GsonBuilder gsonBuilder = new GsonBuilder();
-        gsonBuilder.registerTypeAdapter(Person.class, new PersonJsonAdapter());
-        gson = gsonBuilder.create();
-
-        Person newPerson = gson.fromJson(responseString, Person.class);
-        return newPerson;
+        return gson.fromJson(responseString, Person.class);
     }
 }
