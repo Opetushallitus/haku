@@ -43,13 +43,11 @@ public class PreferenceRow extends Titled {
     private String educationDegreeId;
 
     public PreferenceRow(@JsonProperty(value = "id") final String id,
-                         @JsonProperty(value = "i18nText") final I18nText i18nText,
                          @JsonProperty(value = "resetLabel") final I18nText resetLabel,
                          @JsonProperty(value = "educationLabel") final I18nText educationLabel,
                          @JsonProperty(value = "learningInstitutionLabel") final I18nText learningInstitutionLabel,
-                         @JsonProperty(value = "childLONameListLabel") final I18nText childLONameListLabel
-    ) {
-        super(id, i18nText);
+                         @JsonProperty(value = "childLONameListLabel") final I18nText childLONameListLabel ) {
+        super(id, null);
         this.resetLabel = resetLabel;
         this.educationLabel = educationLabel;
         this.learningInstitutionLabel = learningInstitutionLabel;

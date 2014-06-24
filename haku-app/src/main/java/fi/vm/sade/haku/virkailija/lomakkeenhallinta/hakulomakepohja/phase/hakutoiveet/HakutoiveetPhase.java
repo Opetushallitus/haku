@@ -84,7 +84,6 @@ public class HakutoiveetPhase {
 
     public static PreferenceRow createI18NPreferenceRow(final String id, final String title, final FormParameters formParameters) {
         PreferenceRow pr = new PreferenceRow(id,
-                createI18NAsIs(title + "."),
                 createI18NText("form.yleinen.tyhjenna", formParameters),
                 createI18NText("form.hakutoiveet.koulutus", formParameters),
                 createI18NText("form.hakutoiveet.opetuspiste", formParameters),
