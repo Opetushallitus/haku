@@ -17,6 +17,7 @@
 package fi.vm.sade.haku.virkailija.authentication.impl;
 
 import fi.vm.sade.haku.virkailija.authentication.Person;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +29,15 @@ import java.util.List;
 @Service
 @Profile(value = {"devluokka"})
 public class AuthenticationServiceDevLuokkaImpl extends AuthenticationServiceImpl {
+
+    public AuthenticationServiceDevLuokkaImpl(
+            @Value("${web.url.cas}") String casUrl,
+            @Value("${cas.service.authentication-service}") String targetService,
+            @Value("${haku.app.username.to.usermanagement}") String clientAppUser,
+            @Value("${haku.app.password.to.usermanagement}") String clientAppPass,
+            @Value("${user.oid.prefix}") String userOidPrefix) {
+        super(casUrl, targetService, clientAppUser, clientAppPass, userOidPrefix);
+    }
 
     @Override
     public List<String> getOrganisaatioHenkilo() {

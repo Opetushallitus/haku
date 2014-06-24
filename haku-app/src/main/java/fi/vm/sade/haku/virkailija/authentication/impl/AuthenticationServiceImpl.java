@@ -27,6 +27,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.core.Authentication;
@@ -52,24 +53,18 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     final Logger log = LoggerFactory.getLogger(AuthenticationServiceImpl.class);
 
 
-    @Value("${web.url.cas}")
-    private String casUrl;
+    private final String targetService;
+    private final CachingRestClient cachingRestClient;
+    private final Gson gson;
+    private final String userOidPrefix ;
 
-    @Value("${cas.service.authentication-service}")
-    private String targetService;
-    @Value("${haku.app.username.to.usermanagement}")
-    private String clientAppUser;
-    @Value("${haku.app.password.to.usermanagement}")
-    private String clientAppPass;
-
-    @Value("${user.oid.prefix}")
-    private String userOidPrefix;
-
-    private CachingRestClient cachingRestClient;
-
-    private Gson gson;
-
-    public AuthenticationServiceImpl() {
+    @Autowired
+    public AuthenticationServiceImpl(
+    @Value("${web.url.cas}") String casUrl,
+    @Value("${cas.service.authentication-service}") String targetService,
+    @Value("${haku.app.username.to.usermanagement}") String clientAppUser,
+    @Value("${haku.app.password.to.usermanagement}") String clientAppPass,
+    @Value("${user.oid.prefix}") String userOidPrefix) {
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.registerTypeAdapter(Person.class, new PersonJsonAdapter());
         gson = gsonBuilder.create();
@@ -78,6 +73,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         cachingRestClient.setCasService(targetService);
         cachingRestClient.setUsername(clientAppUser);
         cachingRestClient.setPassword(clientAppPass);
+        this.targetService = targetService;
+        this.userOidPrefix = userOidPrefix;
     }
 
     public Person addPerson(Person person) {
