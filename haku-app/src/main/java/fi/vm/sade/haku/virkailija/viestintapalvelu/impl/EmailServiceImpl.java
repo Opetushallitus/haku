@@ -34,7 +34,7 @@ public class EmailServiceImpl implements EmailService {
 	private Logger LOGGER = LoggerFactory.getLogger(EmailServiceImpl.class);
     @Value("${web.url.cas}")
     private String casUrl;
-    @Value("${cas.service.viestintapalvelu}")
+    @Value("${cas.service.ryhmasahkoposti}")
     private String targetService;
     @Value("${haku.app.username.to.viestintapalvelu}")
     private String clientAppUser;
