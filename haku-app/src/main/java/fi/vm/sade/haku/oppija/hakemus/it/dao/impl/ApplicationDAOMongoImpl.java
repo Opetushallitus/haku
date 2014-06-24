@@ -330,19 +330,23 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
             dbCursor.limit(rows);
         if (enableSearchOnSecondary)
             dbCursor.setReadPreference(ReadPreference.secondaryPreferred());
+        int searchHits = -1;
 
-        final List<T> results = new ArrayList<T>(rows > 0 ? rows : 1000);
+        // Trying to avoid needless full table scans caused by data structuring
+        if (doCount)
+            searchHits = dbCursor.count();
+        // Guessing for sizes
+        final int listSize = doCount ? searchHits : rows > 0 ? rows : 1000;
+        final List<T> results = new ArrayList<T>(listSize);
         while (dbCursor.hasNext()) {
             DBObject obj = dbCursor.next();
             results.add(transformationFunction.apply(obj));
         }
-        int searchHits;
-        if (doCount)
-            searchHits = dbCursor.count();
-        else
+
+        if (!doCount)
             searchHits = results.size();
 
-        LOG.debug("searchListing ends, took {} ms. Found matches: {} returning: {}, did count: {}", (System.currentTimeMillis() - startTime), searchHits,  results.size(), doCount);
+        LOG.info("searchListing ends, took {} ms. Found matches: {}, returning: {}, initial set size: {}, did count: {}", (System.currentTimeMillis() - startTime), searchHits,  results.size(), listSize, doCount);
         return new SearchResults<T>(searchHits, results);
     }
 
