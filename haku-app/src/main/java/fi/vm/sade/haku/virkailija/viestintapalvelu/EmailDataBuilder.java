@@ -50,14 +50,17 @@ public class EmailDataBuilder {
 	private EmailMessage getEmailMessage(Person user, Person applicant) {		
 		EmailMessage emailMessage = new EmailMessage();
 		
-		Locale locale = new Locale(applicant.getContactLanguage());
+		Locale locale = new Locale("FI");
+		if (applicant.getContactLanguage() != null && !applicant.getContactLanguage().isEmpty()) {
+			locale = new Locale(applicant.getContactLanguage());
+		}
 		
 		emailMessage.setBody(messageSource.getMessage("application.email.body", null, locale));
 		emailMessage.setCallingProcess(ViestintapalveluConstants.APPLICATION_CALLING_PROCESS);
 		emailMessage.setCharset(ViestintapalveluConstants.APPLICATION_CHARSET);
 		emailMessage.setFrom(ViestintapalveluConstants.APPLICATION_FROM);
 		emailMessage.setHtml(false);
-		emailMessage.setLanguageCode(applicant.getContactLanguage());
+		emailMessage.setLanguageCode(locale.getLanguage());
 		emailMessage.setOrganizationOid("");
 		emailMessage.setReplyTo("");
 		emailMessage.setSenderOid(user.getPersonOid());
@@ -69,10 +72,15 @@ public class EmailDataBuilder {
 
 	private List<EmailRecipient> getEmailRecipientList(Person applicant) {
 		List<EmailRecipient> emailRecipients = new ArrayList<EmailRecipient>();
+
+		Locale locale = new Locale("FI");
+		if (applicant.getContactLanguage() != null && !applicant.getContactLanguage().isEmpty()) {
+			locale = new Locale(applicant.getContactLanguage());
+		}
 		
 		EmailRecipient emailRecipient = new EmailRecipient();
 		emailRecipient.setEmail(applicant.getEmail());
-		emailRecipient.setLanguageCode(applicant.getContactLanguage());
+		emailRecipient.setLanguageCode(locale.getLanguage());
 		emailRecipient.setOid(applicant.getPersonOid());
 		emailRecipient.setOidType("");
 		emailRecipient.setRecipientReplacements(null);
