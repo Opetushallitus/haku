@@ -30,7 +30,7 @@ import java.util.Map;
 @Service
 public class DBObjectToMapFunction implements Function<DBObject, Map<String, Object>> {
 
-    private static final Logger LOG = LoggerFactory.getLogger(DBObjectToMapFunction.class);
+    public static final String[] KEYS = { "type","applicationSystemId","answers","oid","state","personOid","studentOid", "received" };
 
     private final EncrypterService encrypterService;
 

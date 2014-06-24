@@ -290,29 +290,14 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     }
 
     private ApplicationSearchResultDTO searchApplications(final DBObject query, final ApplicationQueryParameters params) {
-        DBObject keys = new BasicDBObject();
-        keys.put("oid", 1);
-        keys.put("state", 1);
-        keys.put("personOid", 1);
-        keys.put("answers.henkilotiedot.Henkilotunnus", 1);
-        keys.put("answers.henkilotiedot.Etunimet", 1);
-        keys.put("answers.henkilotiedot.Sukunimi", 1);
-        keys.put("answers.henkilotiedot.syntymaaika", 1);
+        DBObject keys = generateKeysDBObject(DBObjectToSearchResultItem.KEYS);
         final DBObject sortBy = new BasicDBObject(params.getOrderBy(), params.getOrderDir());
         final SearchResults<ApplicationSearchResultItemDTO> results = searchListing(query, keys, sortBy, params.getStart(), params.getRows(), dbObjectToSearchResultItem, true);
         return new ApplicationSearchResultDTO(results.searchHits, results.searchResultsList);
     }
 
     private List<Map<String, Object>> searchApplicationsFull(final DBObject query, final ApplicationQueryParameters params) {
-        DBObject keys = new BasicDBObject();
-        keys.put("type", 1);
-        keys.put("applicationSystemId", 1);
-        keys.put("answers", 1);
-        keys.put("oid", 1);
-        keys.put("state", 1);
-        keys.put("personOid", 1);
-        keys.put("studentOid", 1);
-        keys.put("received", 1);
+        DBObject keys = generateKeysDBObject(DBObjectToMapFunction.KEYS);
         final DBObject sortBy = new BasicDBObject(params.getOrderBy(),  params.getOrderDir());
         final SearchResults<Map<String, Object>> searchResults = searchListing(query, keys, sortBy, params.getStart(), params.getRows(), dbObjectToMapFunction, false);
         return searchResults.searchResultsList;

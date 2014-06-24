@@ -35,6 +35,8 @@ import java.util.Map;
 @Service
 public class DBObjectToSearchResultItem implements Function<DBObject, ApplicationSearchResultItemDTO> {
 
+    public static final String[] KEYS = {"oid", "state", "personOid", "answers.henkilotiedot.Henkilotunnus", "answers.henkilotiedot.Etunimet", "answers.henkilotiedot.Sukunimi", "answers.henkilotiedot.syntymaaika" };
+
     private final EncrypterService encrypterService;
 
     @Autowired
