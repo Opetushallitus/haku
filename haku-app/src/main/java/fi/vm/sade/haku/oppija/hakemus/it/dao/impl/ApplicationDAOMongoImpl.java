@@ -543,13 +543,15 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
 
     @Override
     public Application getNextRedo() {
-
-        DBObject query = QueryBuilder.start(FIELD_REDO_POSTPROCESS).in(Lists.newArrayList(PostProcessingState.FULL.toString(), PostProcessingState.NOMAIL.toString())).get();
+        QueryBuilder queryBuilder = QueryBuilder.start(FIELD_REDO_POSTPROCESS).in(Lists.newArrayList(PostProcessingState.FULL.toString(), PostProcessingState.NOMAIL.toString()));
+        queryBuilder.put(FIELD_APPLICATION_STATE).in(Lists.newArrayList(Application.State.ACTIVE.name(), Application.State.INCOMPLETE.name()));
+        DBObject query = queryBuilder.get();
         DBObject sortBy = new BasicDBObject(FIELD_LAST_AUTOMATED_PROCESSING_TIME, 1);
         DBCursor cursor = getCollection().find(query).sort(sortBy).limit(1);
         if (ensureIndex) {
             DBObject hint = new BasicDBObject(FIELD_REDO_POSTPROCESS, 1);
             hint.put(FIELD_LAST_AUTOMATED_PROCESSING_TIME, 1);
+            hint.put(FIELD_APPLICATION_STATE, 1);
             cursor.hint(hint);
         }
         if (!cursor.hasNext()) {
@@ -581,7 +583,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         createIndex(INDEX_SENDING_SCHOOL, true, FIELD_SENDING_SCHOOL, FIELD_SENDING_CLASS);
         createIndex(INDEX_SENDING_CLASS, true, FIELD_SENDING_CLASS);
         createIndex(INDEX_SEARCH_NAMES, false, FIELD_SEARCH_NAMES);
-        createIndex(INDEX_REDO_POSTPROCESS, true, FIELD_REDO_POSTPROCESS, FIELD_LAST_AUTOMATED_PROCESSING_TIME);
+        createIndex(INDEX_REDO_POSTPROCESS, true, FIELD_REDO_POSTPROCESS, FIELD_LAST_AUTOMATED_PROCESSING_TIME, FIELD_APPLICATION_STATE);
 
         // Preference Indexes
         for (int i = 1; i <= 5; i++) {
