@@ -571,19 +571,21 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
             return;
         }
 
-        createUniqueIndex(INDEX_APPLICATION_OID, FIELD_APPLICATION_OID);
-        createIndex(INDEX_APPLICATION_SYSTEM_ID, false, FIELD_APPLICATION_SYSTEM_ID);
-        createIndex(INDEX_SSN, false, FIELD_SSN);
-        createIndex(INDEX_SSN_DIGEST, false, FIELD_SSN_DIGEST);
-        createIndex(INDEX_DATE_OF_BIRTH, false, FIELD_DATE_OF_BIRTH);
-        createIndex(INDEX_PERSON_OID, false, FIELD_PERSON_OID);
-        createIndex(INDEX_STUDENT_OID, false, FIELD_STUDENT_OID);
-        createIndex(INDEX_STATE, false, FIELD_APPLICATION_STATE, FIELD_LAST_AUTOMATED_PROCESSING_TIME);
-        createIndex(INDEX_STUDENT_IDENTIFICATION_DONE, true, FIELD_APPLICATION_STATE, FIELD_STUDENT_IDENTIFICATION_DONE, FIELD_LAST_AUTOMATED_PROCESSING_TIME);
-        createIndex(INDEX_SENDING_SCHOOL, true, FIELD_SENDING_SCHOOL, FIELD_SENDING_CLASS);
-        createIndex(INDEX_SENDING_CLASS, true, FIELD_SENDING_CLASS);
-        createIndex(INDEX_SEARCH_NAMES, false, FIELD_SEARCH_NAMES);
-        createIndex(INDEX_REDO_POSTPROCESS, true, FIELD_REDO_POSTPROCESS, FIELD_LAST_AUTOMATED_PROCESSING_TIME, FIELD_APPLICATION_STATE);
+        checkIndexes("before ensures");
+
+        ensureUniqueIndex(INDEX_APPLICATION_OID, FIELD_APPLICATION_OID);
+        ensureIndex(INDEX_APPLICATION_SYSTEM_ID, FIELD_APPLICATION_SYSTEM_ID);
+        ensureIndex(INDEX_SSN, FIELD_SSN);
+        ensureIndex(INDEX_SSN_DIGEST, FIELD_SSN_DIGEST);
+        ensureIndex(INDEX_DATE_OF_BIRTH, FIELD_DATE_OF_BIRTH);
+        ensureIndex(INDEX_PERSON_OID, FIELD_PERSON_OID);
+        ensureIndex(INDEX_STUDENT_OID, FIELD_STUDENT_OID);
+        ensureIndex(INDEX_STATE, FIELD_APPLICATION_STATE, FIELD_LAST_AUTOMATED_PROCESSING_TIME);
+        ensureSparseIndex(INDEX_STUDENT_IDENTIFICATION_DONE, FIELD_APPLICATION_STATE, FIELD_STUDENT_IDENTIFICATION_DONE, FIELD_LAST_AUTOMATED_PROCESSING_TIME);
+        ensureSparseIndex(INDEX_SENDING_SCHOOL, FIELD_SENDING_SCHOOL, FIELD_SENDING_CLASS);
+        ensureSparseIndex(INDEX_SENDING_CLASS, FIELD_SENDING_CLASS);
+        ensureIndex(INDEX_SEARCH_NAMES, FIELD_SEARCH_NAMES);
+        ensureSparseIndex(INDEX_REDO_POSTPROCESS, FIELD_REDO_POSTPROCESS, FIELD_LAST_AUTOMATED_PROCESSING_TIME, FIELD_APPLICATION_STATE);
 
         // Preference Indexes
         for (int i = 1; i <= 5; i++) {
@@ -594,13 +596,14 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
                     String.format(FIELD_AO_KOULUTUS_ID_T, i));
 
         }
+        checkIndexes("after ensures");
     }
 
     private void createPreferenceIndexes(String preference, Boolean sparsePossible, String lopField, String discretionaryField, String fieldAo, String fieldAoIdentifier) {
-        createIndex("index_ " + preference + "_lop", sparsePossible.booleanValue(), lopField);
-        createIndex("index_ " + preference + "_discretionary", true, discretionaryField);
-        createIndex("index_ " + preference + "_ao", sparsePossible.booleanValue(), fieldAo);
-        createIndex("index_ " + preference + "_ao_identifier", sparsePossible.booleanValue(), fieldAoIdentifier);
+        ensureIndex("index_ " + preference + "_lop", sparsePossible.booleanValue(), lopField);
+        ensureSparseIndex("index_ " + preference + "_discretionary", discretionaryField);
+        ensureIndex("index_ " + preference + "_ao", sparsePossible.booleanValue(), fieldAo);
+        ensureIndex("index_ " + preference + "_ao_identifier", sparsePossible.booleanValue(), fieldAoIdentifier);
     }
 
     @Override

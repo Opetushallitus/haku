@@ -16,7 +16,6 @@ import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -133,13 +132,13 @@ public class ThemeQuestionDAOMongoImpl extends AbstractDAOMongoImpl<ThemeQuestio
 
         checkIndexes("before ensures");
 
-        createIndex("index_applicationsystem_ownerid", false, FIELD_APPLICATION_SYSTEM_ID, FIELD_STATE, FIELD_OWNER_OIDS, FIELD_APPLICATION_OPTION);
-        createIndex("index_applicationsystem_theme", false, FIELD_APPLICATION_SYSTEM_ID, FIELD_STATE, FIELD_THEME, FIELD_APPLICATION_OPTION);
-        createIndex("index_applicationsystem_ao", false, FIELD_APPLICATION_SYSTEM_ID, FIELD_STATE, FIELD_APPLICATION_OPTION);
+        ensureIndex("index_applicationsystem_ownerid", FIELD_APPLICATION_SYSTEM_ID, FIELD_STATE, FIELD_OWNER_OIDS, FIELD_APPLICATION_OPTION);
+        ensureIndex("index_applicationsystem_theme", FIELD_APPLICATION_SYSTEM_ID, FIELD_STATE, FIELD_THEME, FIELD_APPLICATION_OPTION);
+        ensureIndex("index_applicationsystem_ao", FIELD_APPLICATION_SYSTEM_ID, FIELD_STATE, FIELD_APPLICATION_OPTION);
 
-        createIndex("index_owner", false, FIELD_STATE, FIELD_OWNER_OIDS, FIELD_APPLICATION_OPTION);
-        createIndex("index_theme", false, FIELD_STATE, FIELD_THEME, FIELD_APPLICATION_OPTION);
-        createIndex("index_ao", false, FIELD_STATE, FIELD_APPLICATION_OPTION);
+        ensureIndex("index_owner", FIELD_STATE, FIELD_OWNER_OIDS, FIELD_APPLICATION_OPTION);
+        ensureIndex("index_theme", FIELD_STATE, FIELD_THEME, FIELD_APPLICATION_OPTION);
+        ensureIndex("index_ao", FIELD_STATE, FIELD_APPLICATION_OPTION);
         checkIndexes("after ensures");
     }
 }

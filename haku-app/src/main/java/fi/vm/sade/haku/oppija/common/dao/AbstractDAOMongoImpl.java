@@ -65,19 +65,23 @@ public abstract class AbstractDAOMongoImpl<T> implements BaseDAO<T> {
         getCollection().save(toDBObject.apply(t));
     }
 
-    protected void createIndex(String name, Boolean isSparse, String... fields){
-        _createIndex(name, false, isSparse, fields);
+    protected void ensureIndex(String name, String... fields){
+        _ensureIndex(name, false, false, fields);
     }
 
-    protected void createUniqueIndex(String name, String... fields){
-        _createIndex(name, true, false, fields);
+    protected void ensureIndex(String name, Boolean isSparse, String... fields){
+        _ensureIndex(name, false, isSparse, fields);
     }
 
-    protected void createSparseIndex(String name, String... fields){
-        _createIndex(name, false, true, fields);
+    protected void ensureUniqueIndex(String name, String... fields){
+        _ensureIndex(name, true, false, fields);
     }
 
-    private void _createIndex(String name, Boolean isUnique, Boolean isSparse, String... fields) {
+    protected void ensureSparseIndex(String name, String... fields){
+        _ensureIndex(name, false, true, fields);
+    }
+
+    private void _ensureIndex(String name, Boolean isUnique, Boolean isSparse, String... fields) {
         final DBObject options = new BasicDBObject(OPTION_NAME, name);
         options.put(OPTION_SPARSE, isSparse.booleanValue());
         if (isUnique){
