@@ -36,6 +36,7 @@ public abstract class AbstractDAOMongoImpl<T> implements BaseDAO<T> {
 
     protected static final String OPTION_SPARSE = "sparse";
     protected static final String OPTION_NAME = "name";
+    protected static final String OPTION_UNIQUE = "unique";
     @Autowired
     protected MongoTemplate mongoTemplate;
 
@@ -64,9 +65,24 @@ public abstract class AbstractDAOMongoImpl<T> implements BaseDAO<T> {
         getCollection().save(toDBObject.apply(t));
     }
 
-    protected void createIndex(String name, Boolean isSparse, String... fields) {
+    protected void createIndex(String name, Boolean isSparse, String... fields){
+        _createIndex(name, false, isSparse, fields);
+    }
+
+    protected void createUniqueIndex(String name, String... fields){
+        _createIndex(name, true, false, fields);
+    }
+
+    protected void createSparseIndex(String name, String... fields){
+        _createIndex(name, false, true, fields);
+    }
+
+    private void _createIndex(String name, Boolean isUnique, Boolean isSparse, String... fields) {
         final DBObject options = new BasicDBObject(OPTION_NAME, name);
         options.put(OPTION_SPARSE, isSparse.booleanValue());
+        if (isUnique){
+            options.put(OPTION_UNIQUE, isUnique);
+        }
 
         final DBObject index = new BasicDBObject();
         for (String field : fields) {

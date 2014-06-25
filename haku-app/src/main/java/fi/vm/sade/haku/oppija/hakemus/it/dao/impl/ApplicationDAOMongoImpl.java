@@ -571,7 +571,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
             return;
         }
 
-        createIndex(INDEX_APPLICATION_OID, false, FIELD_APPLICATION_OID);
+        createUniqueIndex(INDEX_APPLICATION_OID, FIELD_APPLICATION_OID);
         createIndex(INDEX_APPLICATION_SYSTEM_ID, false, FIELD_APPLICATION_SYSTEM_ID);
         createIndex(INDEX_SSN, false, FIELD_SSN);
         createIndex(INDEX_SSN_DIGEST, false, FIELD_SSN_DIGEST);
