@@ -74,16 +74,21 @@ public abstract class ThemeQuestion implements ConfiguredElement {
     // Validators for the question
     private Map<String, String> validators;
 
+    // Attachment requests
+    private List<AttachmentRequest> attachmentRequests;
+
 
     protected ThemeQuestion() {
         this.ownerOrganizationOids = new ArrayList<String>();
         this.validators = new HashMap<String, String>();
+        this.attachmentRequests = new ArrayList<AttachmentRequest>();
     }
 
     protected ThemeQuestion(String type){
         this.type = type;
         this.ownerOrganizationOids = new ArrayList<String>();
         this.validators = new HashMap<String, String>();
+        this.attachmentRequests = new ArrayList<AttachmentRequest>();
     }
 
     @JsonCreator
@@ -91,28 +96,32 @@ public abstract class ThemeQuestion implements ConfiguredElement {
                             @JsonProperty(value = "theme")String theme,
                             @JsonProperty(value = "type")String type,
                             @JsonProperty(value = "learningOpportunityId")String learningOpportunityId,
-                            @JsonProperty(value = "validators")Map<String,String> validators ) {
+                            @JsonProperty(value = "validators")Map<String,String> validators,
+                            @JsonProperty(value = "attachmentRequests") List<AttachmentRequest>attachmentRequests) {
         this.applicationSystemId =  applicationSystemId;
         this.theme = theme;
         this.type = type;
         this.learningOpportunityId = learningOpportunityId;
         this.validators = new HashMap<String,String>(validators);
         this.ownerOrganizationOids = new ArrayList<String>();
+        this.attachmentRequests = new ArrayList<AttachmentRequest>(attachmentRequests);
     }
 
     protected ThemeQuestion(String applicationSystemId, String theme, String creatorPersonOid,
       List<String> ownerOrganizationOid,
       String type,
       String learningOpportunityId,
-      Map<String,String> validators ) {
+      Map<String,String> validators,
+      List<AttachmentRequest>attachmentRequests) {
         this.applicationSystemId =  applicationSystemId;
         this.theme = theme;
         this.creatorPersonOid = creatorPersonOid;
         this.ownerOrganizationOids = new ArrayList<String>(ownerOrganizationOid);
         this.type = type;
         this.learningOpportunityId = learningOpportunityId;
-        this.validators = new HashMap<String,String>();
+        this.validators = new HashMap<String,String>(validators);
         this.ownerOrganizationOids = new ArrayList<String>();
+        this.attachmentRequests = new ArrayList<AttachmentRequest>(attachmentRequests);
     }
 
     public ObjectId getId() {
@@ -225,6 +234,14 @@ public abstract class ThemeQuestion implements ConfiguredElement {
 
     public void setValidators(Map<String, String> validators) {
         this.validators = new HashMap<String, String>(validators);
+    }
+
+    public List<AttachmentRequest> getAttachmentRequests() {
+        return attachmentRequests;
+    }
+
+    public void setAttachmentRequests(List<AttachmentRequest> attachmentRequests) {
+        this.attachmentRequests = new ArrayList<AttachmentRequest>(attachmentRequests);
     }
 
     @Override

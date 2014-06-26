@@ -21,8 +21,8 @@ public class ThemeCheckBoxQuestion extends ThemeOptionQuestion {
 
     public ThemeCheckBoxQuestion(String applicationSystemId, String theme, String creatorPersonOid,
                                  List<String> ownerOrganizationOid, String learningOpportunityId,
-                                 Map<String, String> validators) {
-        super(applicationSystemId, theme, creatorPersonOid, ownerOrganizationOid, TYPE, learningOpportunityId, validators);
+                                 Map<String, String> validators, List<AttachmentRequest> attachmentRequests) {
+        super(applicationSystemId, theme, creatorPersonOid, ownerOrganizationOid, TYPE, learningOpportunityId, validators, attachmentRequests);
     }
 
     @Override
