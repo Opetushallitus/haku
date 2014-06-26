@@ -1,7 +1,8 @@
 $( document ).ready(function() {
     var form = $('form.form');
-    form.find('button.helplink').click(function () {
-        alert('click');
+    var button = form.find('button.helplink');
+    button.attr('type', 'button');
+    button.click(function () {
         form.attr('action', this.value);
         form.attr('target', '_blank');
         form.submit();
