@@ -9,6 +9,8 @@
 activemq.brokerurl={{activemq_brokerurl}}
 activemq.jmxurl={{activemq_jmxurl}}
 auth.mode={{auth_mode}}
+authentication.app.username.to.organisaatioservice={{authentication_app_username_to_organisaatioservice}}
+authentication.app.password.to.organisaatioservice={{authentication_app_password_to_organisaatioservice}}
 env.loglevel={{env_loglevel}}
 hakemus.aes.key={{hakemus_aes_key}}
 hakemus.aes.salt={{hakemus_aes_salt}}
