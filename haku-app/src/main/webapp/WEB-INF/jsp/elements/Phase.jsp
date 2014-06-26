@@ -44,6 +44,9 @@
     <script src="${contextPath}/resources/jquery/xdr.js"></script>
     <script src="${contextPath}/resources/javascript/rules.js"></script>
     <script src="${contextPath}/resources/javascript/master.js"></script>
+    <!--[if lte IE 9]>
+    <script src="${contextPath}/resources/javascript/ie9-help-fix.js"></script>
+    <![endif]-->
     <script>
         function pastPhase(phaseId) {
             $('#form-${vaihe.id}').append('<input type="hidden" name="phaseId" value="' + phaseId + '" />');
