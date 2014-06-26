@@ -18,13 +18,10 @@ import com.google.gson.Gson;
 
 import fi.vm.sade.generic.rest.CachingRestClient;
 import fi.vm.sade.haku.RemoteServiceException;
-import fi.vm.sade.haku.oppija.hakemus.domain.Application;
-import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
-import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
-import fi.vm.sade.haku.virkailija.authentication.Person;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.EmailDataBuilder;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.EmailService;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.PDFService;
+import fi.vm.sade.haku.virkailija.viestintapalvelu.dto.ApplicationByEmailDTO;
 import fi.vm.sade.ryhmasahkoposti.api.dto.EmailData;
 import fi.vm.sade.ryhmasahkoposti.api.dto.EmailSendId;
 
@@ -40,33 +37,21 @@ public class EmailServiceImpl implements EmailService {
     private String clientAppUser;
     @Value("${haku.app.password.to.viestintapalvelu}")
     private String clientAppPass;
-    private ApplicationService applicationService;
-    private AuthenticationService authenticationService;
     private PDFService pdfService;
     private EmailDataBuilder emailDataBuilder;
     private CachingRestClient cachingRestClient;
 
     @Autowired
-    public EmailServiceImpl(ApplicationService applicationService, 
-    	AuthenticationService authenticationService, PDFService pdfService, EmailDataBuilder emailDataBuilder) {
-    	this.applicationService = applicationService;
-    	this.authenticationService = authenticationService;
+    public EmailServiceImpl(PDFService pdfService, EmailDataBuilder emailDataBuilder) {
     	this.pdfService = pdfService;
     	this.emailDataBuilder = emailDataBuilder;
     }
 
 	@Override
-	public String sendApplicationByEmail(String applicationOID) throws IOException {
-		Application application = applicationService.getApplicationByOid(applicationOID);
-		
-		Person user = authenticationService.getCurrentHenkilo();
-		Person applicant = authenticationService.getHenkilo(application.getPersonOid());
-		LOGGER.info("authenticationService.getHenkilo(" + application.getPersonOid() + ", Name: " + 
-			applicant.getLastName() + ", " + applicant.getFirstNames() + ", Language: " + applicant.getContactLanguage());
-		
-		byte[] pdf = getPDF(applicationOID);
-		
-		EmailData emailData = emailDataBuilder.build(applicant, user, pdf);				
+	public String sendApplicationByEmail(ApplicationByEmailDTO applicationByEmail) throws IOException {
+		LOGGER.info("EmailServiceImpl.sendApplicationByEmail [applicationOID: " + applicationByEmail.getApplicationOID() + "]");
+		byte[] pdf = getPDF(applicationByEmail.getApplicationOID());		
+		EmailData emailData = emailDataBuilder.build(applicationByEmail, pdf);
 		return sendGroupEmail(emailData);
 	}
 
@@ -80,7 +65,7 @@ public class EmailServiceImpl implements EmailService {
 	    }
 	    return cachingRestClient;
 	}
-
+	
 	private byte[] getPDF(String applicationOID) throws IOException {
 		HttpResponse response = pdfService.getPDF(applicationOID);
 		

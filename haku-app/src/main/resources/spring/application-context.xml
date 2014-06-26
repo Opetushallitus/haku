@@ -112,11 +112,6 @@
         </task:scheduled-tasks>
 
         <task:scheduler id="scheduler" pool-size="1"/>
-        
-        <!-- Resourcebundle for localizing -->
-		<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
-	  		<property name="basename" value="messages"/>
-		</bean>
     </beans>
 
 </beans>

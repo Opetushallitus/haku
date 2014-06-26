@@ -4,12 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Component;
 
-import fi.vm.sade.haku.virkailija.authentication.Person;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.constants.ViestintapalveluConstants;
+import fi.vm.sade.haku.virkailija.viestintapalvelu.dto.ApplicationByEmailDTO;
 import fi.vm.sade.ryhmasahkoposti.api.dto.EmailAttachment;
 import fi.vm.sade.ryhmasahkoposti.api.dto.EmailData;
 import fi.vm.sade.ryhmasahkoposti.api.dto.EmailMessage;
@@ -17,18 +15,12 @@ import fi.vm.sade.ryhmasahkoposti.api.dto.EmailRecipient;
 
 @Component
 public class EmailDataBuilder {
-    private MessageSource messageSource;
-    
-    @Autowired
-    public EmailDataBuilder(MessageSource messageSource) {
-    	this.messageSource = messageSource;
-    }
-    
-	public EmailData build(Person applicant, Person user, byte[] pdf) {
+	public EmailData build(ApplicationByEmailDTO applicationByEmail, byte[] pdf) {
 		EmailData emailData = new EmailData();
-		emailData.setRecipient(getEmailRecipientList(applicant));
 		
-		EmailMessage emailMessage = getEmailMessage(user, applicant);
+		emailData.setRecipient(getEmailRecipientList(applicationByEmail));
+		
+		EmailMessage emailMessage = getEmailMessage(applicationByEmail);
 		emailMessage.setAttachments(getEmailAttachmentList(pdf));
 		emailData.setEmail(emailMessage);
 		
@@ -47,41 +39,41 @@ public class EmailDataBuilder {
 		return emailAttachments;
 	}
 
-	private EmailMessage getEmailMessage(Person user, Person applicant) {		
+	private EmailMessage getEmailMessage(ApplicationByEmailDTO applicationByEmail) {		
 		EmailMessage emailMessage = new EmailMessage();
 		
 		Locale locale = new Locale("FI");
-		if (applicant.getContactLanguage() != null && !applicant.getContactLanguage().isEmpty()) {
-			locale = new Locale(applicant.getContactLanguage());
+		if (applicationByEmail.getApplicantLanguageCode() != null) {
+			locale = new Locale(applicationByEmail.getApplicantLanguageCode());
 		}
 		
-		emailMessage.setBody(messageSource.getMessage("application.email.body", null, locale));
+		emailMessage.setBody(applicationByEmail.getBody());
 		emailMessage.setCallingProcess(ViestintapalveluConstants.APPLICATION_CALLING_PROCESS);
 		emailMessage.setCharset(ViestintapalveluConstants.APPLICATION_CHARSET);
 		emailMessage.setFrom(ViestintapalveluConstants.APPLICATION_FROM);
 		emailMessage.setHtml(false);
-		emailMessage.setLanguageCode(locale.getLanguage());
-		emailMessage.setOrganizationOid("");
+		emailMessage.setLanguageCode(locale.getLanguage().toUpperCase());
+		emailMessage.setOrganizationOid(applicationByEmail.getUserOrganzationOID());
 		emailMessage.setReplyTo("");
-		emailMessage.setSenderOid(user.getPersonOid());
-		emailMessage.setSubject(messageSource.getMessage("application.email.subject", null, locale));
+		emailMessage.setSenderOid(applicationByEmail.getUserOID());
+		emailMessage.setSubject(applicationByEmail.getSubject());
 		emailMessage.setTemplateName("");
 				
 		return emailMessage;
 	}
 
-	private List<EmailRecipient> getEmailRecipientList(Person applicant) {
+	private List<EmailRecipient> getEmailRecipientList(ApplicationByEmailDTO applicationByEmail) {
 		List<EmailRecipient> emailRecipients = new ArrayList<EmailRecipient>();
 
 		Locale locale = new Locale("FI");
-		if (applicant.getContactLanguage() != null && !applicant.getContactLanguage().isEmpty()) {
-			locale = new Locale(applicant.getContactLanguage());
+		if (applicationByEmail.getApplicantLanguageCode() != null) {
+			locale = new Locale(applicationByEmail.getApplicantLanguageCode());
 		}
 		
 		EmailRecipient emailRecipient = new EmailRecipient();
-		emailRecipient.setEmail(applicant.getEmail());
-		emailRecipient.setLanguageCode(locale.getLanguage());
-		emailRecipient.setOid(applicant.getPersonOid());
+		emailRecipient.setEmail(applicationByEmail.getApplicantEmailAddress());
+		emailRecipient.setLanguageCode(locale.getLanguage().toUpperCase());
+		emailRecipient.setOid(applicationByEmail.getApplicantOID());
 		emailRecipient.setOidType("");
 		emailRecipient.setRecipientReplacements(null);
 		
