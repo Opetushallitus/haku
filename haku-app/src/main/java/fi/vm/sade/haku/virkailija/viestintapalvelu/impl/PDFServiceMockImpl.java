@@ -23,12 +23,12 @@ public class PDFServiceMockImpl implements PDFService {
     }
     
 	@Override
-	public HttpResponse getUriToPDF(String applicationOID) {
+	public HttpResponse getUriToPDF(String url) {
         return null;
 	}
 
     @Override
-	public HttpResponse getPDF(String applicationOID) {
+	public HttpResponse getPDF(String url) {
     	HttpEntity entity = new StringEntity("pdf", ContentType.create("application/pdf", "UTF-8"));
     	HttpResponse response = new BasicHttpResponse(HttpVersion.HTTP_1_1, HttpStatus.SC_OK, "OK");
     	response.setEntity(entity);

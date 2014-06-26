@@ -17,11 +17,16 @@
 package fi.vm.sade.haku.oppija.ui.controller;
 
 import com.sun.jersey.api.view.Viewable;
+
 import fi.vm.sade.haku.oppija.ui.common.RedirectToFormViewPath;
 import fi.vm.sade.haku.oppija.ui.common.RedirectToPendingViewPath;
 import fi.vm.sade.haku.oppija.ui.common.RedirectToPhaseViewPath;
+import fi.vm.sade.haku.oppija.ui.common.UriUtil;
 import fi.vm.sade.haku.oppija.ui.service.ModelResponse;
 import fi.vm.sade.haku.oppija.ui.service.UIService;
+import fi.vm.sade.haku.virkailija.viestintapalvelu.PDFService;
+
+import org.apache.http.HttpResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +36,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
+
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -52,10 +58,12 @@ public class FormController {
     public static final String ELEMENT_ID_PATH_PARAM = "elementId";
 
     private final UIService uiService;
+    private final PDFService pdfService;
 
     @Autowired
-    public FormController(final UIService uiService) {
+    public FormController(final UIService uiService, final PDFService pdfService) {
         this.uiService = uiService;
+        this.pdfService = pdfService;
     }
 
     @GET
@@ -177,6 +185,17 @@ public class FormController {
         return new Viewable(PRINT_VIEW, modelResponse.getModel());
     }
 
+    @GET
+    @Path("/{applicationSystemId}/pdf/{oid}")
+    @Produces(MediaType.TEXT_PLAIN)
+    public Response getPDF(@PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId,
+    	@PathParam("oid") final String oid) throws URISyntaxException {
+    	String url = "/lomake/" + applicationSystemId + "/tulostus/" + oid;
+    	HttpResponse httpResponse = pdfService.getUriToPDF(url);
+    	URI location = UriUtil.pathSegmentsToUri(httpResponse.getFirstHeader("Content-Location").getValue());
+    	return Response.seeOther(location).build();
+    }
+    
     @POST
     @Path("/{applicationSystemId}/{elementId}/help")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED + CHARSET_UTF_8)

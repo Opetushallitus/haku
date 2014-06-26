@@ -24,16 +24,15 @@ public class ApplicationPrintViewServiceImpl implements ApplicationPrintViewServ
     private CachingRestClient cachingRestClient;
 
 	@Override
-	public String getApplicationPrintView(String applicationOID) {
+	public String getApplicationPrintView(String urlToApplicationPrint) {
 		String applicationViewJSON = "";
-		String url = "/virkailija/hakemus/" + applicationOID + "/print/view";
 		
 		try {
 			CachingRestClient cachingRestClient = getCachingRestClient();
-			applicationViewJSON = cachingRestClient.getAsString(url);			
+			applicationViewJSON = cachingRestClient.getAsString(urlToApplicationPrint);			
 			applicationViewJSON = UtfUtil.toUTF8(applicationViewJSON);
         } catch (IOException e) {
-            throw new RemoteServiceException(targetService + url, e);
+            throw new RemoteServiceException(targetService + urlToApplicationPrint, e);
 		}
 		
 		return applicationViewJSON;

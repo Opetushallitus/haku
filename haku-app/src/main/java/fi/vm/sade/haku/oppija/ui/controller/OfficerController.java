@@ -50,7 +50,6 @@ import com.sun.jersey.api.view.Viewable;
 
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
-import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.service.FormService;
@@ -59,7 +58,6 @@ import fi.vm.sade.haku.oppija.ui.common.UriUtil;
 import fi.vm.sade.haku.oppija.ui.service.ModelResponse;
 import fi.vm.sade.haku.oppija.ui.service.OfficerUIService;
 import fi.vm.sade.haku.oppija.ui.service.UIService;
-import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.EmailService;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.PDFService;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.dto.ApplicationByEmailDTO;
@@ -284,7 +282,8 @@ public class OfficerController {
     @Path("/hakemus/{oid}/print")
     @Produces(MediaType.TEXT_PLAIN)
     public Response applicationPrint(@PathParam(OID_PATH_PARAM) final String oid) throws URISyntaxException {
-    	HttpResponse httpResponse = pdfService.getUriToPDF(oid);
+		String url = "/virkailija/hakemus/" + oid + "/print/view";
+    	HttpResponse httpResponse = pdfService.getUriToPDF(url);
     	URI location = UriUtil.pathSegmentsToUri(httpResponse.getFirstHeader("Content-Location").getValue());
     	return Response.seeOther(location).build();
     }
@@ -306,14 +305,6 @@ public class OfficerController {
     	return Response.ok(id).build();
     }
 
-    @GET
-    @Path("/hakemus/getApplicationByEmailDTO")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getApplicationByEmailDTO() {
-    	ApplicationByEmailDTO applicationByEmail = new ApplicationByEmailDTO();
-    	return Response.ok(applicationByEmail).build();
-    }
-    
     @GET
     @Path("/hakemus/applicationSystems")
     @Produces(MediaType.APPLICATION_JSON)

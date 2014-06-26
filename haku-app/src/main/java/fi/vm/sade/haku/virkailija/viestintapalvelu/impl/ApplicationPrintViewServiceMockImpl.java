@@ -10,6 +10,6 @@ public class ApplicationPrintViewServiceMockImpl implements ApplicationPrintView
 
 	@Override
 	public String getApplicationPrintView(String applicationOID) {
-        return "";
+        return "<html><head><title>Testi</title></head><body>testibody</body></html>";
 	}
 }

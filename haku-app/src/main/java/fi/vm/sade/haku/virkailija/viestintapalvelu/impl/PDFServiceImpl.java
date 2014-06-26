@@ -39,8 +39,8 @@ public class PDFServiceImpl implements PDFService {
     }
     
 	@Override
-	public HttpResponse getUriToPDF(String applicationOID) {
-		String applicationPrintView = applicationPrintViewService.getApplicationPrintView(applicationOID);
+	public HttpResponse getUriToPDF(String urlToApplicationPrint) {
+		String applicationPrintView = applicationPrintViewService.getApplicationPrintView(urlToApplicationPrint);
 		String documentSourceJson = getDocumentsourceJson(applicationPrintView);		
 		
 		String url = "/api/v1/printer/pdf";
@@ -54,8 +54,8 @@ public class PDFServiceImpl implements PDFService {
 	}
 
     @Override
-	public HttpResponse getPDF(String applicationOID) {
-		String applicationPrintView = applicationPrintViewService.getApplicationPrintView(applicationOID);
+	public HttpResponse getPDF(String urlToApplicationPrint) {
+		String applicationPrintView = applicationPrintViewService.getApplicationPrintView(urlToApplicationPrint);
 		String documentSourceJson = getDocumentsourceJson(applicationPrintView);		
 		
 		String url = "/api/v1/printer/pdf/content";

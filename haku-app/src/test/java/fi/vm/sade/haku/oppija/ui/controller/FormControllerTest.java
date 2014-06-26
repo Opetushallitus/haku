@@ -18,6 +18,7 @@ package fi.vm.sade.haku.oppija.ui.controller;
 
 import com.sun.jersey.api.view.Viewable;
 import com.sun.jersey.core.util.MultivaluedMapImpl;
+
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
@@ -29,11 +30,14 @@ import fi.vm.sade.haku.oppija.ui.common.RedirectToPhaseViewPath;
 import fi.vm.sade.haku.oppija.ui.service.ModelResponse;
 import fi.vm.sade.haku.oppija.ui.service.UIService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
+import fi.vm.sade.haku.virkailija.viestintapalvelu.PDFService;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Matchers;
 
 import javax.ws.rs.core.Response;
+
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
@@ -68,9 +72,10 @@ public class FormControllerTest {
         this.applicationService = mock(ApplicationService.class);
         this.formService = mock(FormService.class);
         UIService uiService = mock(UIService.class);
+        PDFService pdfService = mock(PDFService.class);
         when(uiService.getPhase(APPLICATION_SYSTEM_ID, FIRST_PHASE_ID)).thenReturn(modelResponse);
         when(uiService.savePhase(Matchers.<String>any(), Matchers.<String>any(), Matchers.<Map>any())).thenReturn(modelResponse);
-        this.formController = new FormController(uiService);
+        this.formController = new FormController(uiService, pdfService);
 
         FORM.addChild(PHASE);
         when(applicationService.getApplication(Matchers.<String>any())).thenReturn(this.application);

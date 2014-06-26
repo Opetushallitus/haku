@@ -10,8 +10,8 @@ public interface ApplicationPrintViewService {
 	/**
 	 * Gets the print view of application
 	 * 
-	 * @param applicationOID The oid of application
+	 * @param urlToApplicationPrint The url to application printing
 	 * @return Application print view in HTML
 	 */
-	public String getApplicationPrintView(String applicationOID);
+	public String getApplicationPrintView(String urlToApplicationPrint);
 }
