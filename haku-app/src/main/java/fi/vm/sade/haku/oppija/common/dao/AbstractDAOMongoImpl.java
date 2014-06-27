@@ -92,17 +92,17 @@ public abstract class AbstractDAOMongoImpl<T> implements BaseDAO<T> {
         for (String field : fields) {
             index.put(field, 1);
         }
-        LOGGER.info("Creating index " + index+ " with options " + options + " for " + this.getClass().getSimpleName());
+        LOGGER.info(this.getClass().getSimpleName() +": Executin ensure index " + index+ " with options " + options);
         getCollection().ensureIndex(index, options);
     }
 
     protected void checkIndexes(String message){
-        LOGGER.info("Checking indexes " + message);
+        LOGGER.info(this.getClass().getSimpleName() +": Checking indexes " + message);
         List<DBObject>  indexes = getCollection().getIndexInfo();
         int indexCount = indexes.size();
         int counter = 1;
         for (DBObject index : indexes){
-            LOGGER.info("Index(" + counter++ + "/" + indexCount + "):" +index);
+            LOGGER.info(this.getClass().getSimpleName() +": Index(" + counter++ + "/" + indexCount + "):" +index);
         }
     }
 
