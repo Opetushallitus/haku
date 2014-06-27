@@ -17,6 +17,7 @@
 package fi.vm.sade.haku.virkailija.authentication.impl;
 
 import fi.vm.sade.haku.virkailija.authentication.Person;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
@@ -30,6 +31,7 @@ import java.util.List;
 @Profile(value = {"devluokka"})
 public class AuthenticationServiceDevLuokkaImpl extends AuthenticationServiceImpl {
 
+    @Autowired
     public AuthenticationServiceDevLuokkaImpl(
             @Value("${web.url.cas}") String casUrl,
             @Value("${cas.service.authentication-service}") String targetService,
