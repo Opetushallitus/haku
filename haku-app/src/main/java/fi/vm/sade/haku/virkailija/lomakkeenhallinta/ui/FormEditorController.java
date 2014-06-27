@@ -183,6 +183,10 @@ public class FormEditorController {
             LOGGER.debug("Fetching option data for " + applicationOptionId);
             HakukohdeDTO applicationOption = hakukohdeService.findByOid(applicationOptionId);
             String providerId = applicationOption.getTarjoajaOid();
+            if (null == providerId){
+                LOGGER.error("Got null provider for application option: " + applicationOptionId + " of application system: " + applicationSystemId);
+                continue;
+            }
             LOGGER.debug("Provider for  " + applicationOptionId + " is " +providerId);
             orgHierarchy.addOrganization(providerId);
         }
