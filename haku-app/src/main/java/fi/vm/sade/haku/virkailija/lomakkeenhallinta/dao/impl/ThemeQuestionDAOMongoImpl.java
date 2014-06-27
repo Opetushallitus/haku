@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
+import com.mongodb.WriteConcern;
 import fi.vm.sade.haku.oppija.common.dao.AbstractDAOMongoImpl;
 import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.dao.ThemeQuestionDAO;
@@ -125,7 +126,9 @@ public class ThemeQuestionDAOMongoImpl extends AbstractDAOMongoImpl<ThemeQuestio
 
 
     @PostConstruct
-    public void ensureIndexes() {
+    public void configure() {
+        mongoTemplate.setWriteConcern(WriteConcern.MAJORITY);
+
         if (!ensureIndex) {
             return;
         }

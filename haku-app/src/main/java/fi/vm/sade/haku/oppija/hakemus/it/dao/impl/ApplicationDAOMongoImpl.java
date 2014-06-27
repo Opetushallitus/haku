@@ -24,6 +24,7 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.QueryBuilder;
 import com.mongodb.ReadPreference;
+import com.mongodb.WriteConcern;
 import fi.vm.sade.haku.oppija.common.dao.AbstractDAOMongoImpl;
 import fi.vm.sade.haku.oppija.hakemus.converter.ApplicationToDBObjectFunction;
 import fi.vm.sade.haku.oppija.hakemus.converter.DBObjectToAdditionalDataDTO;
@@ -565,7 +566,8 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     }
 
     @PostConstruct
-    public void ensureIndexes() {
+    public void configure() {
+        mongoTemplate.setWriteConcern(WriteConcern.MAJORITY);
 
         if (!ensureIndex) {
             return;
