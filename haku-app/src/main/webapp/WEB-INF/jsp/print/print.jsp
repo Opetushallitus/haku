@@ -11,7 +11,9 @@
 <c:set var="answers" value="${it.application.vastauksetMerged}" scope="request"/>
 <c:set var="phase" value="${it.phase}" scope="request"/>
 <c:set var="print" value="true" scope="request"/>
+<c:set var="server" value="${fn:replace(pageContext.request.requestURL, pageContext.request.requestURI, pageContext.request.contextPath)}" scope="request"/>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" scope="request"/>
+
 <c:set var="discretionaryAttachmentAOIds" value="${it.discretionaryAttachmentAOIds}" scope="request"/>
 
 <html>
@@ -19,7 +21,7 @@
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
     <meta charset="utf-8"/>
     <haku:icons/>
-    <link href="${contextPath}/resources/css/hakemus-print.css" type="text/css" rel="stylesheet"/>
+    <link href="${server}/resources/css/hakemus-print.css" type="text/css" rel="stylesheet"/>
     <script src="${contextPath}/resources/jquery/jquery.min.js" type="text/javascript"></script>
     <script src="${contextPath}/resources/jquery/xdr.js"></script>
     <script src="${contextPath}/resources/javascript/printfix.js"></script>

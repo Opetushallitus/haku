@@ -25,14 +25,16 @@
                 $.getJSON(koulutusinformaatioBaseUrl + '/ao/' + discretionaryAttachmentAOIds[i], function(data) {
                     if (data.attachmentDeliveryAddress) {
                         var addrsHtml = '<address>', addrs = data.attachmentDeliveryAddress, provider = data.provider;
-                        if (provider && provider.name) {
-                            addrsHtml = addrsHtml.concat(provider.name + '<br>');
+                        if (provider) {
+							if (provider.name) {
+								addrsHtml = addrsHtml.concat(provider.name + '<br/>');
+							}
                         }
                         if (addrs.streetAddress) {
-                            addrsHtml = addrsHtml.concat(addrs.streetAddress + '<br>');
+                            addrsHtml = addrsHtml.concat(addrs.streetAddress + '<br/>');
                         }
                         if (addrs.streetAddress2) {
-                            addrsHtml = addrsHtml.concat(addrs.streetAddress2 + '<br>');
+                            addrsHtml = addrsHtml.concat(addrs.streetAddress2 + '<br/>');
                         }
                         if (addrs.postalCode) {
                             addrsHtml = addrsHtml.concat(addrs.postalCode + ' ');
@@ -45,9 +47,9 @@
                             var date = deadline.getDate();
                             var month = deadline.getMonth() + 1;
                             var year = deadline.getFullYear();
-                            addrsHtml = addrsHtml.concat('<br>' + deliveryDeadlineLabel + ' ' + date + '.' + month + ' ' + year);
+                            addrsHtml = addrsHtml.concat('<br/>' + deliveryDeadlineLabel + ' ' + date + '.' + month + ' ' + year);
                         }
-                        addrsHtml = addrsHtml.concat('</address><br>');
+                        addrsHtml = addrsHtml.concat('</address><br/>');
                         $discretionaryAttachments.append(addrsHtml);
                     }
                 });
