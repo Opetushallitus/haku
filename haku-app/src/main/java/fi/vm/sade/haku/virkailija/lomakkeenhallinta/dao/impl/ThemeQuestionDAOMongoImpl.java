@@ -127,11 +127,11 @@ public class ThemeQuestionDAOMongoImpl extends AbstractDAOMongoImpl<ThemeQuestio
 
     @PostConstruct
     public void configure() {
-        mongoTemplate.setWriteConcern(WriteConcern.MAJORITY);
-
         if (!ensureIndex) {
             return;
         }
+        mongoTemplate.setWriteConcern(WriteConcern.MAJORITY);
+
 
         checkIndexes("before ensures");
 
