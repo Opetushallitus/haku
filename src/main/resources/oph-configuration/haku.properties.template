@@ -23,7 +23,7 @@ host.haku={{host_haku}}
 host.ilb={{host_ilb}}
 host.virkailija={{host_virkailija}}
 mongo.db.maxpoolsize=100
-mongodb.oppija.uri=mongodb://{{mongodb_oppija_auth}}@{{mongodb_oppija_host}}:{{mongodb_oppija_port}}
+mongodb.oppija.uri=mongodb://{{mongodb_hakemus_auth}}@{{mongodb_hakemus_host}}:{{mongodb_hakemus_port}}
 server.name={{ansible_hostname}}
 
 # Oletusarvoja
