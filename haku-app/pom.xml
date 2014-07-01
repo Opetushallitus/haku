@@ -795,7 +795,7 @@
                             <fork>true</fork>
                             <systemProperties>
                                 <application.system.cache>false</application.system.cache>
-                                <spring.profiles.active>dev</spring.profiles.active>
+                                <spring.profiles.active>it</spring.profiles.active>
                             </systemProperties>
                         </configuration>
                     </execution>
