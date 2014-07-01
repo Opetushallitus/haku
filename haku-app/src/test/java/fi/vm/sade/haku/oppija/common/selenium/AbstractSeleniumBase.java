@@ -18,7 +18,6 @@ package fi.vm.sade.haku.oppija.common.selenium;
 
 import com.mongodb.BasicDBObject;
 import fi.vm.sade.haku.oppija.common.it.TomcatContainerBase;
-import fi.vm.sade.haku.oppija.configuration.ASInitializer;
 import fi.vm.sade.haku.oppija.lomake.ApplicationSystemHelper;
 import fi.vm.sade.haku.oppija.lomake.SeleniumContainer;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
@@ -39,10 +38,6 @@ import static fi.vm.sade.haku.oppija.hakemus.it.dao.impl.ApplicationOidDAOMongoI
 import static org.junit.Assert.assertTrue;
 
 public abstract class AbstractSeleniumBase extends TomcatContainerBase {
-
-
-    @Autowired
-    ASInitializer asInitializer;
     @Autowired
     protected SeleniumContainer seleniumContainer;
 
