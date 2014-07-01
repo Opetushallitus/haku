@@ -1067,9 +1067,6 @@ buildTtime=${maven.build.timestamp}
                 </plugins>
                 <resources>
                     <resource>
-                        <directory>config/dev</directory>
-                    </resource>
-                    <resource>
                         <directory>src/main/resources</directory>
                     </resource>
                 </resources>
@@ -1102,9 +1099,6 @@ buildTtime=${maven.build.timestamp}
                     </plugin>
                 </plugins>
                 <resources>
-                    <resource>
-                        <directory>config/dev</directory>
-                    </resource>
                     <resource>
                         <directory>src/main/resources</directory>
                     </resource>
@@ -1142,16 +1136,10 @@ buildTtime=${maven.build.timestamp}
             <build>
                 <resources>
                     <resource>
-                        <directory>config/it</directory>
-                    </resource>
-                    <resource>
                         <directory>src/main/resources</directory>
                     </resource>
                 </resources>
                 <testResources>
-                    <testResource>
-                        <directory>config/it</directory>
-                    </testResource>
                     <testResource>
                         <directory>src/test/resources</directory>
                     </testResource>
