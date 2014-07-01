@@ -10,6 +10,7 @@
     <name>Haku :: Parent</name>
 
     <modules>
+        <module>hakemus-api</module>
         <module>haku-app</module>
     </modules>
 
