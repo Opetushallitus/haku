@@ -16,10 +16,10 @@
 
 package fi.vm.sade.haku.oppija.hakemus.domain;
 
-import fi.vm.sade.haku.oppija.common.selenium.DummyModelBaseItTest;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
+import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystemCreator;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -36,7 +36,7 @@ public class ApplicationInfoTest {
     @Before
     public void setUp() throws Exception {
         form = new Form("id", createI18NAsIs("title"));
-        this.applicationSystem = DummyModelBaseItTest.createActiveApplicationSystem("ASID", form);
+        this.applicationSystem = ApplicationSystemCreator.createActiveApplicationSystem("ASID", form);
         application = new Application();
         applicationInfo = new ApplicationInfo(application, form, applicationSystem);
     }
