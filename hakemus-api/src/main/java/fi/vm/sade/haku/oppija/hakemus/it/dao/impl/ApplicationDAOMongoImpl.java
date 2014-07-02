@@ -22,6 +22,7 @@ import com.google.common.collect.Lists;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
+import com.mongodb.MongoException;
 import com.mongodb.QueryBuilder;
 import com.mongodb.ReadPreference;
 import com.mongodb.WriteConcern;
@@ -310,23 +311,28 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         if (enableSearchOnSecondary)
             dbCursor.setReadPreference(ReadPreference.secondaryPreferred());
         int searchHits = -1;
+        // TODO: Add hint
+        try {
+            // Trying to avoid needless full table scans caused by data structuring
+            if (doCount)
+                searchHits = dbCursor.count();
+            // Guessing for sizes
+            final int listSize = doCount ? searchHits : rows > 0 ? rows : 1000;
+            final List<T> results = new ArrayList<T>(listSize);
+            while (dbCursor.hasNext()) {
+                DBObject obj = dbCursor.next();
+                results.add(transformationFunction.apply(obj));
+            }
 
-        // Trying to avoid needless full table scans caused by data structuring
-        if (doCount)
-            searchHits = dbCursor.count();
-        // Guessing for sizes
-        final int listSize = doCount ? searchHits : rows > 0 ? rows : 1000;
-        final List<T> results = new ArrayList<T>(listSize);
-        while (dbCursor.hasNext()) {
-            DBObject obj = dbCursor.next();
-            results.add(transformationFunction.apply(obj));
+            if (!doCount)
+                searchHits = results.size();
+
+            LOG.info("searchListing ends, took {} ms. Found matches: {}, returning: {}, initial set size: {}, did count: {}", (System.currentTimeMillis() - startTime), searchHits, results.size(), listSize, doCount);
+            return new SearchResults<T>(searchHits, results);
+        } catch (MongoException mongoException) {
+            LOG.error("Got error {} with query: {} using hint: {}", mongoException.getMessage(), query, null);
+            throw mongoException;
         }
-
-        if (!doCount)
-            searchHits = results.size();
-
-        LOG.info("searchListing ends, took {} ms. Found matches: {}, returning: {}, initial set size: {}, did count: {}", (System.currentTimeMillis() - startTime), searchHits,  results.size(), listSize, doCount);
-        return new SearchResults<T>(searchHits, results);
     }
 
     private DBObject[] buildQueryFilter(final ApplicationQueryParameters applicationQueryParameters) {
@@ -500,17 +506,23 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         DBObject sortBy = new BasicDBObject(FIELD_LAST_AUTOMATED_PROCESSING_TIME, 1);
 
         DBCursor cursor = getCollection().find(query).sort(sortBy).limit(1);
+        DBObject hint = null;
         if (ensureIndex) {
-            DBObject hint = new BasicDBObject();
+            hint = new BasicDBObject();
             hint.put(FIELD_APPLICATION_STATE, 1);
             hint.put(FIELD_STUDENT_IDENTIFICATION_DONE, 1);
             hint.put(FIELD_LAST_AUTOMATED_PROCESSING_TIME, 1);
             cursor.hint(hint);
         }
-        if (!cursor.hasNext()) {
-            return null;
+        try {
+            if (!cursor.hasNext()) {
+                return null;
+            }
+            return fromDBObject.apply(cursor.next());
+        } catch (MongoException mongoException) {
+            LOG.error("Got error {} with query: {} using hint: {}", mongoException.getMessage(), query, hint);
+            throw mongoException;
         }
-        return fromDBObject.apply(cursor.next());
     }
 
     @Override
@@ -524,15 +536,21 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         DBObject sortBy = new BasicDBObject(FIELD_LAST_AUTOMATED_PROCESSING_TIME, 1);
 
         DBCursor cursor = getCollection().find(query).sort(sortBy).limit(1);
+        DBObject hint = null;
         if (ensureIndex) {
-            DBObject hint = new BasicDBObject(FIELD_APPLICATION_STATE, 1);
+            hint = new BasicDBObject(FIELD_APPLICATION_STATE, 1);
             hint.put(FIELD_LAST_AUTOMATED_PROCESSING_TIME, 1);
             cursor.hint(hint);
         }
-        if (!cursor.hasNext()) {
-            return null;
+        try {
+            if (!cursor.hasNext()) {
+                return null;
+            }
+            return fromDBObject.apply(cursor.next());
+        } catch (MongoException mongoException) {
+            LOG.error("Got error {} with query: {} using hint: {}", mongoException.getMessage(), query, hint);
+            throw mongoException;
         }
-        return fromDBObject.apply(cursor.next());
     }
 
     @Override
@@ -542,20 +560,32 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         DBObject query = queryBuilder.get();
         DBObject sortBy = new BasicDBObject(FIELD_LAST_AUTOMATED_PROCESSING_TIME, 1);
         DBCursor cursor = getCollection().find(query).sort(sortBy).limit(1);
+        DBObject hint = null;
         if (ensureIndex) {
-            DBObject hint = new BasicDBObject(FIELD_REDO_POSTPROCESS, 1);
+            hint = new BasicDBObject(FIELD_REDO_POSTPROCESS, 1);
             hint.put(FIELD_LAST_AUTOMATED_PROCESSING_TIME, 1);
             hint.put(FIELD_APPLICATION_STATE, 1);
             cursor.hint(hint);
         }
-        if (!cursor.hasNext()) {
-            return null;
+        try {
+            if (!cursor.hasNext()) {
+                return null;
+            }
+            return fromDBObject.apply(cursor.next());
+        } catch (MongoException mongoException) {
+            LOG.error("Got error {} with query: {} using hint: {}", mongoException.getMessage(), query, hint);
+            throw mongoException;
         }
-        return fromDBObject.apply(cursor.next());
     }
 
     private boolean resultNotEmpty(final DBObject query) {
-        return getCollection().find(query).limit(1).size() > 0;
+        try {
+            DBCursor cursor = getCollection().find(query).limit(1);
+            return cursor.size() > 0;
+        } catch (MongoException mongoException) {
+            LOG.error("Got error {} with query: {}", mongoException.getMessage(), query);
+            throw mongoException;
+        }
     }
 
     @PostConstruct

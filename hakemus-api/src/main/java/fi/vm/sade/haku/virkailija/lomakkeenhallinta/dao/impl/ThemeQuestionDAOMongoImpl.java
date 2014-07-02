@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
+import com.mongodb.MongoException;
 import com.mongodb.WriteConcern;
 import fi.vm.sade.haku.oppija.common.dao.AbstractDAOMongoImpl;
 import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
@@ -58,7 +59,12 @@ public class ThemeQuestionDAOMongoImpl extends AbstractDAOMongoImpl<ThemeQuestio
         if (ensureIndex && null != queryParam[HINT]) {
             dbCursor.hint(queryParam[HINT]);
         }
-        return Lists.newArrayList(Iterables.transform(dbCursor, fromDBObject));
+        try {
+            return Lists.newArrayList(Iterables.transform(dbCursor, fromDBObject));
+        }catch (MongoException mongoException){
+            LOGGER.error("Got error "+ mongoException.getMessage() +" with query: " + queryParam[QUERY] + " using hint: " +queryParam[HINT]);
+            throw mongoException;
+        }
     }
 
     @Override
@@ -84,7 +90,7 @@ public class ThemeQuestionDAOMongoImpl extends AbstractDAOMongoImpl<ThemeQuestio
         List<Object> distinctApplicationOptions = getCollection().distinct(FIELD_APPLICATION_OPTION, buildQuery(parameters)[0]);
         LOGGER.debug("Got "+ distinctApplicationOptions.size() + " application options ");
         ArrayList<String> results = new ArrayList<String>();
-        for (Object value :distinctApplicationOptions){
+        for (Object value : distinctApplicationOptions){
             LOGGER.debug("Got option " + value);
             results.add((String) value);
         }
@@ -131,7 +137,6 @@ public class ThemeQuestionDAOMongoImpl extends AbstractDAOMongoImpl<ThemeQuestio
             return;
         }
         mongoTemplate.setWriteConcern(WriteConcern.MAJORITY);
-
 
         checkIndexes("before ensures");
 
