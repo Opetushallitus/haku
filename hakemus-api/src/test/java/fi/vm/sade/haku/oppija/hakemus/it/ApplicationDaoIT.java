@@ -14,9 +14,11 @@ import org.springframework.context.annotation.ImportResource;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
+import org.springframework.data.mongodb.core.MongoTemplate;
 
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.impl.ApplicationDAOMongoImpl;
+import fi.vm.sade.haku.testfixtures.JsonFixtureImporter;
 
 public class ApplicationDaoIT {
     @Test
@@ -25,9 +27,12 @@ public class ApplicationDaoIT {
         appContext.getEnvironment().setActiveProfiles("it");
         appContext.register(TestConfiguration.class);
         appContext.refresh();
+
+        JsonFixtureImporter.importJsonFixtures(appContext.getBean(MongoTemplate.class));
+
         final ApplicationDAOMongoImpl dao = appContext.getBean(ApplicationDAOMongoImpl.class);
         final List<Application> applications = dao.find(new Application());
-        assertEquals(0, applications.size());
+        assertEquals(1, applications.size());
     }
 }
 
