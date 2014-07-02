@@ -160,63 +160,47 @@ public class BaseEducationServiceImpl implements BaseEducationService{
         boolean gradesTranferredPk = false;
         boolean gradesTranferredLk = false;
 
-        if (lukio != null) {
+        if (lukio != null && isComplete(lukio)) {
             pohjakoulutus = OppijaConstants.YLIOPPILAS;
             addGrades(application, lukio);
             gradesTranferredLk = true;
             valmistuminen = lukio.getValmistuminen();
             suorituskieli = lukio.getSuorituskieli();
-        } else if (ulkomainen != null) {
+        } else if (ulkomainen != null && isComplete(ulkomainen)) {
             pohjakoulutus = OppijaConstants.ULKOMAINEN_TUTKINTO;
-        } else if (kymppi != null) {
-            addGrades(application, kymppi);
-            gradesTranferredPk = true;
-            valmistuminen = kymppi.getValmistuminen();
-            suorituskieli = kymppi.getSuorituskieli();
-            pohjakoulutus = getPohjakoulutus(kymppi);
-
-            if (pk != null) {
-                addGrades(application, pk);
-            }
-        } else if (ammattistartti != null) {
-            ammattistarttiSuoritettu = true;
-
-            if (pk != null) {
+        } else {
+            if (kymppi != null) {
+                addGrades(application, kymppi);
+                gradesTranferredPk = true;
+                if (isComplete(kymppi)) {
+                    valmistuminen = kymppi.getValmistuminen();
+                }
+                if (pk != null) {
+                    if (!isComplete(kymppi)){
+                        valmistuminen = pk.getValmistuminen();
+                    }
+                    pohjakoulutus = getPohjakoulutus(pk);
+                    suorituskieli = pk.getSuorituskieli();
+                    addGrades(application, pk);
+                } else {
+                    LOGGER.error("Missing pk-suoritus with kymppi-suoritus for application: {} of person: {}", application.getOid(), application.getPersonOid());
+                    suorituskieli = kymppi.getSuorituskieli();
+                    pohjakoulutus = getPohjakoulutus(kymppi);
+                }
+            } else if (pk != null && isComplete(pk)) {
                 valmistuminen = pk.getValmistuminen();
                 suorituskieli = pk.getSuorituskieli();
                 pohjakoulutus = getPohjakoulutus(pk);
                 addGrades(application, pk);
                 gradesTranferredPk = true;
             }
-        } else if (kuntouttava != null) {
-            kuntouttavaSuoritettu = true;
-
-            if (pk != null) {
-                valmistuminen = pk.getValmistuminen();
-                suorituskieli = pk.getSuorituskieli();
-                pohjakoulutus = getPohjakoulutus(pk);
-                addGrades(application, pk);
-                gradesTranferredPk = true;
-            }
-        } else if (mamuValmentava != null) {
-            mamuValmentavaSuoritettu = true;
-
-            if (pk != null) {
-                valmistuminen = pk.getValmistuminen();
-                suorituskieli = pk.getSuorituskieli();
-                pohjakoulutus = getPohjakoulutus(pk);
-                addGrades(application, pk);
-                gradesTranferredPk = true;
-            }
-        } else if (pk != null) {
-            valmistuminen = pk.getValmistuminen();
-            suorituskieli = pk.getSuorituskieli();
-            pohjakoulutus = getPohjakoulutus(pk);
-            addGrades(application, pk);
-            gradesTranferredPk = true;
         }
 
-        boolean pohjakoulutusSuoritettu = pohjakoulutus != null;
+        ammattistarttiSuoritettu = ammattistarttiSuoritettu || ammattistartti != null && isComplete(ammattistartti);
+        kuntouttavaSuoritettu = kuntouttavaSuoritettu || kuntouttava != null && isComplete(kuntouttava);
+        mamuValmentavaSuoritettu = mamuValmentavaSuoritettu || mamuValmentava != null && isComplete(mamuValmentava);
+
+        final boolean pohjakoulutusSuoritettu = pohjakoulutus != null;
 
         if (!(ammattistarttiSuoritettu || kuntouttavaSuoritettu || mamuValmentavaSuoritettu || pohjakoulutusSuoritettu)) {
             return application;
@@ -371,6 +355,11 @@ public class BaseEducationServiceImpl implements BaseEducationService{
         }
         return suffix;
     }
+
+    private boolean isComplete(SuoritusDTO suoritus){
+        return !"KESKEYTYNYT".equals(suoritus.getTila());
+    }
+
 
     private Map<String, String> addRegisterValue(Application application, Map<String, String> answers,
       String key, String value) {
