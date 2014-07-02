@@ -11,7 +11,7 @@ import com.mongodb.util.JSON;
 
 public class JsonFixtureImporter {
     public static void importJsonFixtures(MongoTemplate template) throws IOException {
-        File fixturesRoot = new File("testfixtures");
+        File fixturesRoot = new File(ProjectRootFinder.findProjectRoot() + "/" + "testfixtures");
         for (File collectionDirectory : fixturesRoot.listFiles()) {
             if (collectionDirectory.isDirectory()) {
                 String collection = collectionDirectory.getName();
