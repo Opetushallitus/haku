@@ -721,6 +721,19 @@
             </plugin>
 
             <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-jar-plugin</artifactId>
+              <version>2.4</version>
+              <executions>
+                <execution>
+                  <goals>
+                    <goal>test-jar</goal>
+                  </goals>
+                </execution>
+              </executions>
+            </plugin>
+
+            <plugin>
                 <!-- explicitly define maven-deploy-plugin after other to force exec
                     order -->
                 <artifactId>maven-deploy-plugin</artifactId>
@@ -755,109 +768,7 @@
                     </additionalClasspathElements>
                 </configuration>
             </plugin>
-
-            <plugin>
-                <groupId>org.apache.tomcat.maven</groupId>
-                <artifactId>tomcat7-maven-plugin</artifactId>
-                <version>2.1</version>
-                <dependencies>
-                    <dependency>
-                        <groupId>com.cenqua.clover</groupId>
-                        <artifactId>clover</artifactId>
-                        <version>${clover.version}</version>
-                    </dependency>
-                </dependencies>
-                <executions>
-                    <execution>
-                        <id>tomcat-run</id>
-                        <goals>
-                            <goal>run-war-only</goal>
-                        </goals>
-                        <phase>pre-integration-test</phase>
-                        <configuration>
-                            <fork>true</fork>
-                            <systemProperties>
-                                <application.system.cache>false</application.system.cache>
-                                <spring.profiles.active>it</spring.profiles.active>
-                            </systemProperties>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>tomcat-shutdown</id>
-                        <goals>
-                            <goal>shutdown</goal>
-                        </goals>
-                        <phase>post-integration-test</phase>
-                    </execution>
-                </executions>
-                <configuration>
-                    <port>9090</port>
-                    <charset>UTF-8</charset>
-                    <uriEncoding>UTF-8</uriEncoding>
-                </configuration>
-            </plugin>
-
-            <plugin>
-                <artifactId>maven-resources-plugin</artifactId>
-                <version>2.6</version>
-                <configuration>
-                    <encoding>UTF-8</encoding>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>copy-resources</id>
-                        <phase>validate</phase>
-                        <goals>
-                            <goal>copy-resources</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${basedir}/target/haku-app/resources/</outputDirectory>
-                            <resources>
-                                <resource>
-                                    <directory>src/main/resources</directory>
-                                    <filtering>true</filtering>
-                                    <includes>
-                                        <include>version.txt</include>
-                                    </includes>
-                                </resource>
-                            </resources>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <artifactId>maven-antrun-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>write buildversion.txt</id>
-                        <phase>process-resources</phase>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                        <configuration>
-                            <target>
-                                <echo message="writing target/${project.build.finalName}/buildversion.txt"/>
-                                <echo file="target/${project.build.finalName}/buildversion.txt">
-                                    <![CDATA[artifactId=${project.artifactId}
-version=${project.version}
-buildNumber=${project.build}
-branchName=${branch}
-vcsRevision=${revision}
-buildTtime=${maven.build.timestamp}
-]]>
-                                </echo>
-                                <loadfile property="buildversiontxt"
-                                          srcFile="target/${project.build.finalName}/buildversion.txt"/>
-                                <echo message="${buildversiontxt}"/>
-                                <echo file="target/mavenversion.txt">${project.version}</echo>
-                            </target>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
         </plugins>
-
-        <finalName>haku-app</finalName>
     </build>
 
     <profiles>
@@ -1025,72 +936,6 @@ buildTtime=${maven.build.timestamp}
         </profile>
 
         <profile>
-            <id>dev</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <properties>
-                <springProfileActive>dev</springProfileActive>
-                <log4jConfigLocation>/WEB-INF/classes/log4j.properties</log4jConfigLocation>
-            </properties>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.tomcat.maven</groupId>
-                        <artifactId>tomcat7-maven-plugin</artifactId>
-                        <version>2.1</version>
-                        <configuration>
-                            <charset>UTF-8</charset>
-                            <uriEncoding>UTF-8</uriEncoding>
-                            <systemProperties>
-                                <spring.profiles.active>dev</spring.profiles.active>
-                            </systemProperties>
-                        </configuration>
-                    </plugin>
-                </plugins>
-                <resources>
-                    <resource>
-                        <directory>src/main/resources</directory>
-                    </resource>
-                </resources>
-
-            </build>
-        </profile>
-
-        <profile>
-            <id>devluokka</id>
-            <activation>
-                <activeByDefault>false</activeByDefault>
-            </activation>
-            <properties>
-                <springProfileActive>devluokka</springProfileActive>
-                <log4jConfigLocation>/WEB-INF/classes/log4j.properties</log4jConfigLocation>
-            </properties>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.tomcat.maven</groupId>
-                        <artifactId>tomcat7-maven-plugin</artifactId>
-                        <version>2.1</version>
-                        <configuration>
-                            <charset>UTF-8</charset>
-                            <uriEncoding>UTF-8</uriEncoding>
-                            <systemProperties>
-                                <spring.profiles.active>devluokka</spring.profiles.active>
-                            </systemProperties>
-                        </configuration>
-                    </plugin>
-                </plugins>
-                <resources>
-                    <resource>
-                        <directory>src/main/resources</directory>
-                    </resource>
-                </resources>
-
-            </build>
-        </profile>
-
-        <profile>
             <id>deploy</id>
             <properties>
                 <springProfileActive>default</springProfileActive>
@@ -1162,38 +1007,6 @@ buildTtime=${maven.build.timestamp}
                                 <goals>
                                     <goal>verify</goal>
                                 </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-        <profile>
-            <id>buildversion.txt</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <artifactId>maven-antrun-plugin</artifactId>
-                        <version>1.7</version>
-                        <executions>
-                            <execution>
-                                <id>write buildversion.txt</id>
-                                <phase>process-resources</phase>
-                                <goals>
-                                    <goal>run</goal>
-                                </goals>
-                                <configuration>
-                                    <target>
-                                        <echo file="target/${project.build.finalName}/buildversion.txt">
-                                            artifactId=${project.artifactId}
-                                            version=${project.version}
-                                            buildNumber=${project.build}
-                                            branchName=${branch}
-                                            vcsRevision=${revision}
-                                            buildTtime=${maven.build.timestamp}
-                                        </echo>
-                                    </target>
-                                </configuration>
                             </execution>
                         </executions>
                     </plugin>
