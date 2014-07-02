@@ -1,4 +1,4 @@
-var process = require("./process-stdin");
+var processJson = require("./process-stdin");
 
 function stripLists(obj) {
   (function stripListsFrom(children) {
@@ -26,7 +26,7 @@ function changePeriods(obj) {
   obj.applicationPeriods[0]["end"]["$date"] = "2100-12-01T08:00:31.839+0300";
 }
 
-process(function(obj, stdout) {
+processJson(function(obj) {
   stripLists(obj);
   changePeriods(obj);
   return obj;

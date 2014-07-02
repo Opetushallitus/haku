@@ -1,7 +1,12 @@
-var process = require("./process-stdin");
+var processJson = require("./process-stdin");
+
+if (process.argv.length != 3) {
+  console.error("ERROR: Person oid not specified");
+  process.exit(1);
+}
 
 function changePersonOid(obj) {
-  obj.personOid = "1.2.246.562.24.14229104472";
+  obj.personOid = process.argv[2];
 }
 
 function removeEncryptedHetu(obj) {
@@ -9,7 +14,7 @@ function removeEncryptedHetu(obj) {
   delete obj.answers.henkilotiedot.Henkilotunnus_digest
 }
 
-process(function(obj, stdout) {
+processJson(function(obj) {
   changePersonOid(obj);
   removeEncryptedHetu(obj);
   return obj;
