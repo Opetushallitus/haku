@@ -33,6 +33,8 @@ public class ApplicationDaoIT {
         final ApplicationDAOMongoImpl dao = appContext.getBean(ApplicationDAOMongoImpl.class);
         final List<Application> applications = dao.find(new Application());
         assertEquals(1, applications.size());
+        final Application application = applications.get(0);
+        assertEquals("aho minna wa", application.getFullName());
     }
 }
 
