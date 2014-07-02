@@ -84,6 +84,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     private static final String INDEX_SENDING_CLASS = "index_lahtoluokka";
     private static final String INDEX_SEARCH_NAMES = "index_searchNames";
     private static final String INDEX_REDO_POSTPROCESS = "index_redoPostProcess";
+    private static final String INDEX_FULL_NAME = "index_full_name";
 
     private static final String FIELD_AO_T = "answers.hakutoiveet.preference%d-Koulutus-id";
     private static final String FIELD_AO_KOULUTUS_ID_T = "answers.hakutoiveet.preference%d-Koulutus-id-aoIdentifier";
@@ -103,6 +104,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     private static final String FIELD_SSN_DIGEST = "answers.henkilotiedot.Henkilotunnus_digest";
     private static final String FIELD_DATE_OF_BIRTH = "answers.henkilotiedot.syntymaaika";
     private static final String FIELD_SEARCH_NAMES = "searchNames";
+    private static final String FIELD_FULL_NAME = "fullName";
     private static final String FIELD_RECEIVED = "received";
     private static final String FIELD_UPDATED = "updated";
     private static final String FIELD_STUDENT_OID = "studentOid";
@@ -574,7 +576,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         checkIndexes("before ensures");
 
         ensureUniqueIndex(INDEX_APPLICATION_OID, FIELD_APPLICATION_OID);
-        ensureIndex(INDEX_APPLICATION_SYSTEM_ID, FIELD_APPLICATION_SYSTEM_ID);
+        ensureIndex(INDEX_APPLICATION_SYSTEM_ID, FIELD_APPLICATION_SYSTEM_ID, FIELD_FULL_NAME);
         ensureIndex(INDEX_SSN, FIELD_SSN);
         ensureIndex(INDEX_SSN_DIGEST, FIELD_SSN_DIGEST);
         ensureIndex(INDEX_DATE_OF_BIRTH, FIELD_DATE_OF_BIRTH);
@@ -586,6 +588,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         ensureSparseIndex(INDEX_SENDING_CLASS, FIELD_SENDING_CLASS);
         ensureIndex(INDEX_SEARCH_NAMES, FIELD_SEARCH_NAMES);
         ensureSparseIndex(INDEX_REDO_POSTPROCESS, FIELD_REDO_POSTPROCESS, FIELD_LAST_AUTOMATED_PROCESSING_TIME, FIELD_APPLICATION_STATE);
+        ensureIndex(INDEX_FULL_NAME, FIELD_FULL_NAME);
 
         // Preference Indexes
         for (int i = 1; i <= 5; i++) {
