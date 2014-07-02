@@ -617,14 +617,6 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         super.save(application);
     }
 
-    private DBObject generateKeysDBObject(String... keys) {
-        DBObject dbKeys = new BasicDBObject();
-        for (String key: keys){
-            dbKeys.put(key, 1);
-        }
-        return dbKeys;
-    }
-
     private class SearchResults<T>{
         private final int searchHits;
         private final List<T> searchResultsList;

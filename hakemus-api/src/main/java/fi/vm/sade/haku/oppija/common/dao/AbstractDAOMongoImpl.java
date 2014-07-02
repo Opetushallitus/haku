@@ -106,6 +106,14 @@ public abstract class AbstractDAOMongoImpl<T> implements BaseDAO<T> {
         }
     }
 
+    protected DBObject generateKeysDBObject(String... keys) {
+        DBObject dbKeys = new BasicDBObject();
+        for (String key: keys){
+            dbKeys.put(key, 1);
+        }
+        return dbKeys;
+    }
+
     @Override
     public void update(T o, T n) {
         getCollection().update(toDBObject.apply(o), toDBObject.apply(n));
