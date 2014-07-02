@@ -23,7 +23,7 @@ function stripLists(obj) {
 
 function changePeriods(obj) {
   obj.applicationPeriods[0]["start"]["$date"] = "2014-07-01T08:00:31.839+0300";
-  obj.applicationPeriods[0]["end"]["$date"] = "2014-12-01T08:00:31.839+0300";
+  obj.applicationPeriods[0]["end"]["$date"] = "2100-12-01T08:00:31.839+0300";
 }
 
 process(function(obj, stdout) {
