@@ -16,8 +16,8 @@
 
 package fi.vm.sade.haku.oppija.lomake.domain.builders;
 
-import fi.vm.sade.haku.oppija.common.selenium.DummyModelBaseItTest;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
+import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystemCreator;
 import fi.vm.sade.haku.oppija.lomake.domain.builder.PhaseBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.builder.ThemeBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
@@ -54,7 +54,7 @@ public class FormModelBuilder { // TODO rename to application system builder
     }
 
     public FormModelBuilder withDefaults() {
-        this.applicationSystem = DummyModelBaseItTest.createActiveApplicationSystem(APPLICATION_SYSTEM_ID, form);
+        this.applicationSystem = ApplicationSystemCreator.createActiveApplicationSystem(APPLICATION_SYSTEM_ID, form);
         return this;
     }
 

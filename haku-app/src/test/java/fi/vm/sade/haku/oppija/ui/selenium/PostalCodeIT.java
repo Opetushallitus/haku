@@ -20,6 +20,7 @@ import com.google.common.collect.ImmutableList;
 import fi.vm.sade.haku.oppija.common.selenium.DummyModelBaseItTest;
 import fi.vm.sade.haku.oppija.lomake.ApplicationSystemHelper;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
+import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystemCreator;
 import fi.vm.sade.haku.oppija.lomake.domain.builder.OptionBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.builder.PhaseBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.builder.TextQuestionBuilder;
@@ -56,7 +57,7 @@ public class PostalCodeIT extends DummyModelBaseItTest {
     @Before
     public void init() throws IOException {
         Form form = new Form(randomId(), createI18NAsIs(randomId()));
-        applicationSystem = createActiveApplicationSystem(randomId(), form);
+        applicationSystem = ApplicationSystemCreator.createActiveApplicationSystem(randomId(), form);
         Element phase = new PhaseBuilder(randomId())
                 .i18nText(createI18NAsIs(randomId())).build();
         form.addChild(phase);

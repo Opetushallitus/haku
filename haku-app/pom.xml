@@ -36,6 +36,15 @@
       </dependency>
 
       <dependency>
+        <groupId>fi.vm.sade.haku</groupId>
+        <artifactId>hakemus-api</artifactId>
+        <version>9.5-SNAPSHOT</version>
+        <type>test-jar</type>
+        <scope>test</scope>
+      </dependency>
+
+
+      <dependency>
             <groupId>fi.vm.sade.koodisto</groupId>
             <artifactId>koodisto-api</artifactId>
             <version>${koodisto-api.version}</version>
