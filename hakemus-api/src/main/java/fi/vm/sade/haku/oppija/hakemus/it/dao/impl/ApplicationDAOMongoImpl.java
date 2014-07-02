@@ -70,13 +70,6 @@ import static org.apache.commons.lang.StringUtils.join;
  */
 @Service("applicationDAOMongoImpl")
 public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> implements ApplicationDAO {
-
-    @Value("${mongodb.ensureIndex:true}")
-    private boolean ensureIndex;
-
-    @Value("${mongodb.enableSearchOnSecondary:true}")
-    private boolean enableSearchOnSecondary;
-
     private static final Logger LOG = LoggerFactory.getLogger(ApplicationDAOMongoImpl.class);
     private static final String INDEX_APPLICATION_OID = "index_oid";
     private static final String INDEX_APPLICATION_SYSTEM_ID = "index_as_oid";
@@ -116,9 +109,6 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     private static final String FIELD_STUDENT_IDENTIFICATION_DONE = "studentIdentificationDone";
     private static final String FIELD_REDO_POSTPROCESS = "redoPostProcess";
     private static final String REGEX_LINE_BEGIN = "^";
-    private final EncrypterService shaEncrypter;
-    private final DBObjectToSearchResultItem dbObjectToSearchResultItem;
-    private final DBObjectToMapFunction dbObjectToMapFunction;
 
     private static final Pattern OID_PATTERN = Pattern.compile("((^([0-9]{1,4}\\.){5})|(^))[0-9]{11}$");
     private static final Pattern HETU_PATTERN = Pattern.compile("^[0-3][0-9][0-1][0-9][0-9][0-9][-+Aa][0-9]{3}[0-9a-zA-Z]");
@@ -126,12 +116,21 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     private static final DateFormat LONG_HETU_DATE = new SimpleDateFormat("ddMMyyyy");
     private static final DateFormat FORM_DATE = new SimpleDateFormat("dd.MM.yyyy");
 
+    private final EncrypterService shaEncrypter;
+    private final DBObjectToSearchResultItem dbObjectToSearchResultItem;
+    private final DBObjectToMapFunction dbObjectToMapFunction;
+    private final AuthenticationService authenticationService;
+    private final HakuPermissionService hakuPermissionService;
+
+    @Value("${mongodb.ensureIndex:true}")
+    private boolean ensureIndex;
+
+    @Value("${mongodb.enableSearchOnSecondary:true}")
+    private boolean enableSearchOnSecondary;
     @Value("${application.oid.prefix}")
     private String applicationOidPrefix;
     @Value("${user.oid.prefix}")
     private String userOidPrefix;
-    private AuthenticationService authenticationService;
-    private HakuPermissionService hakuPermissionService;
 
     @Autowired
     public ApplicationDAOMongoImpl(DBObjectToApplicationFunction dbObjectToHakemusConverter,
