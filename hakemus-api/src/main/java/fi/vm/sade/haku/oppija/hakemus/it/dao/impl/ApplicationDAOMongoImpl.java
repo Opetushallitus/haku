@@ -71,10 +71,12 @@ import static org.apache.commons.lang.StringUtils.join;
  */
 @Service("applicationDAOMongoImpl")
 public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> implements ApplicationDAO {
+
     private static final Logger LOG = LoggerFactory.getLogger(ApplicationDAOMongoImpl.class);
+
     private static final String INDEX_APPLICATION_OID = "index_oid";
     private static final String INDEX_APPLICATION_SYSTEM_ID = "index_as_oid";
-    private static final String INDEX_SSN = "index_Henkilotunnus";
+    private static final String INDEX_SSN_DIGEST_SEARCH = "index_Henkilotunnus_digest_search";
     private static final String INDEX_SSN_DIGEST = "index_Henkilotunnus_digest";
     private static final String INDEX_DATE_OF_BIRTH = "index_syntymaaika";
     private static final String INDEX_PERSON_OID = "index_personOid";
@@ -176,12 +178,12 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     public boolean checkIfExistsBySocialSecurityNumber(String asId, String ssn) {
         if (!Strings.isNullOrEmpty(ssn)) {
             String encryptedSsn = shaEncrypter.encrypt(ssn.toUpperCase());
-            DBObject query = QueryBuilder.start(FIELD_APPLICATION_SYSTEM_ID).is(asId)
+            final DBObject query = QueryBuilder.start(FIELD_APPLICATION_SYSTEM_ID).is(asId)
                     .and("answers.henkilotiedot." + SocialSecurityNumber.HENKILOTUNNUS_HASH).is(encryptedSsn)
                     .and(FIELD_APPLICATION_OID).exists(true)
                     .and(FIELD_APPLICATION_STATE).notEquals(Application.State.PASSIVE.toString())
                     .get();
-            return resultNotEmpty(query);
+            return resultNotEmpty(query, INDEX_SSN_DIGEST);
         }
         return false;
     }
@@ -196,7 +198,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
                     .and(FIELD_APPLICATION_STATE).notEquals(Application.State.PASSIVE.toString())
                     .and(queryByPreference(Lists.newArrayList(aoId)).get())
                     .get();
-            return resultNotEmpty(query);
+            return resultNotEmpty(query, INDEX_SSN_DIGEST);
         }
         return false;
     }
@@ -506,13 +508,10 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         DBObject sortBy = new BasicDBObject(FIELD_LAST_AUTOMATED_PROCESSING_TIME, 1);
 
         DBCursor cursor = getCollection().find(query).sort(sortBy).limit(1);
-        DBObject hint = null;
+        String hint = null;
         if (ensureIndex) {
-            hint = new BasicDBObject();
-            hint.put(FIELD_APPLICATION_STATE, 1);
-            hint.put(FIELD_STUDENT_IDENTIFICATION_DONE, 1);
-            hint.put(FIELD_LAST_AUTOMATED_PROCESSING_TIME, 1);
-            cursor.hint(hint);
+            hint = INDEX_STUDENT_IDENTIFICATION_DONE;
+            cursor.hint(INDEX_STUDENT_IDENTIFICATION_DONE);
         }
         try {
             if (!cursor.hasNext()) {
@@ -536,11 +535,10 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         DBObject sortBy = new BasicDBObject(FIELD_LAST_AUTOMATED_PROCESSING_TIME, 1);
 
         DBCursor cursor = getCollection().find(query).sort(sortBy).limit(1);
-        DBObject hint = null;
+        String hint = null;
         if (ensureIndex) {
-            hint = new BasicDBObject(FIELD_APPLICATION_STATE, 1);
-            hint.put(FIELD_LAST_AUTOMATED_PROCESSING_TIME, 1);
-            cursor.hint(hint);
+            hint = INDEX_STATE;
+            cursor.hint(INDEX_STATE);
         }
         try {
             if (!cursor.hasNext()) {
@@ -560,12 +558,10 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         DBObject query = queryBuilder.get();
         DBObject sortBy = new BasicDBObject(FIELD_LAST_AUTOMATED_PROCESSING_TIME, 1);
         DBCursor cursor = getCollection().find(query).sort(sortBy).limit(1);
-        DBObject hint = null;
+        String hint = null;
         if (ensureIndex) {
-            hint = new BasicDBObject(FIELD_REDO_POSTPROCESS, 1);
-            hint.put(FIELD_LAST_AUTOMATED_PROCESSING_TIME, 1);
-            hint.put(FIELD_APPLICATION_STATE, 1);
-            cursor.hint(hint);
+            hint = INDEX_REDO_POSTPROCESS;
+            cursor.hint(INDEX_REDO_POSTPROCESS);
         }
         try {
             if (!cursor.hasNext()) {
@@ -578,12 +574,14 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         }
     }
 
-    private boolean resultNotEmpty(final DBObject query) {
+    private boolean resultNotEmpty(final DBObject query, final String indexName) {
         try {
             DBCursor cursor = getCollection().find(query).limit(1);
+            if(ensureIndex && !isEmpty(indexName))
+                cursor.hint(indexName);
             return cursor.size() > 0;
         } catch (MongoException mongoException) {
-            LOG.error("Got error {} with query: {}", mongoException.getMessage(), query);
+            LOG.error("Got error {} with query: {} using hint: {}", mongoException.getMessage(), query, indexName);
             throw mongoException;
         }
     }
@@ -601,8 +599,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         ensureUniqueIndex(INDEX_APPLICATION_OID, FIELD_APPLICATION_OID);
         // default query indexes
         ensureIndex(INDEX_APPLICATION_SYSTEM_ID, FIELD_APPLICATION_SYSTEM_ID, FIELD_FULL_NAME);
-        ensureIndex(INDEX_SSN, FIELD_SSN);
-        ensureIndex(INDEX_SSN_DIGEST, FIELD_SSN_DIGEST);
+        ensureIndex(INDEX_SSN_DIGEST_SEARCH, FIELD_SSN_DIGEST);
         ensureIndex(INDEX_DATE_OF_BIRTH, FIELD_DATE_OF_BIRTH);
         ensureIndex(INDEX_PERSON_OID, FIELD_PERSON_OID);
         ensureIndex(INDEX_STUDENT_OID, FIELD_STUDENT_OID);
@@ -615,6 +612,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         ensureSparseIndex(INDEX_STUDENT_IDENTIFICATION_DONE, FIELD_APPLICATION_STATE, FIELD_STUDENT_IDENTIFICATION_DONE, FIELD_LAST_AUTOMATED_PROCESSING_TIME);
         ensureSparseIndex(INDEX_REDO_POSTPROCESS, FIELD_REDO_POSTPROCESS, FIELD_LAST_AUTOMATED_PROCESSING_TIME, FIELD_APPLICATION_STATE);
         ensureIndex(INDEX_STATE, FIELD_APPLICATION_STATE, FIELD_LAST_AUTOMATED_PROCESSING_TIME);
+        ensureIndex(INDEX_SSN_DIGEST, FIELD_APPLICATION_SYSTEM_ID, FIELD_SSN_DIGEST);
 
         // Preference Indexes
         for (int i = 1; i <= 5; i++) {
