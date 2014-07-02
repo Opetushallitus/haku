@@ -42,10 +42,13 @@ public class SearchResourceMock {
                     ImmutableMap.of("id", "1.2.246.562.10.89537774706", "name", "FAKTIA, Espoo op", "key", "faktia, espoo op"),
                     ImmutableMap.of("id", "1.2.246.562.10.10108401950", "name", "Espoon kaupunki", "key", "espoon kaupunki")
             );
-
         } else if (term.equalsIgnoreCase("sturen") && baseEducation.equals("9")) {
             return ImmutableList.<Map<String, String>>of(
                     ImmutableMap.of("id", "1.2.246.562.10.51872958189", "name", "Stadin ammattiopisto, Sturenkadun toimipaikka")
+            );
+        } else if (term.equalsIgnoreCase("anna")) {
+            return ImmutableList.<Map<String, String>>of(
+                    ImmutableMap.of("id", "1.2.246.562.10.35241670047", "name", "Anna Tapion koulu")
             );
         } else {
             return ImmutableList.of();
@@ -114,6 +117,10 @@ public class SearchResourceMock {
                     "\"sora\":false,\"teachingLanguages\":[\"FI\"],\"athleteEducation\":true},{\"id\":\"1.2.246.562.5.95890367071\"," +
                     "\"name\":\"Verhoilu- ja sisustusalan perustutkinto, yo\",\"aoIdentifier\":\"653\",\"educationDegree\":\"32\"," +
                     "\"childLONames\":[\"Sisustus, sisustaja\",\"Verhoilu, verhoilija\"],\"sora\":false,\"teachingLanguages\":[\"FI\"],\"athleteEducation\":true}]";
+        } else if (lopId.equalsIgnoreCase("1.2.246.562.10.35241670047")) {
+            return "[{\"id\":\"1.2.246.562.20.30500448839\",\"name\":\"Kymppiluokka\",\"aoIdentifier\":\"019\",\"educationDegree\":\"22\"," +
+                    "\"childLONames\":[],\"sora\":false,\"teachingLanguages\":[\"FI\"],\"athleteEducation\":false,\"kaksoistutkinto\":false," +
+                    "\"vocational\":true,\"educationCodeUri\":\"koulutus_020075\"}]";
         } else {
             return "[]";
         }
