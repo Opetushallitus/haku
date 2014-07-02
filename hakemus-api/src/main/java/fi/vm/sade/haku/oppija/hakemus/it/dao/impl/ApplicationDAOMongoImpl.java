@@ -624,10 +624,10 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     }
 
     private void createPreferenceIndexes(String preference, Boolean sparsePossible, String lopField, String discretionaryField, String fieldAo, String fieldAoIdentifier) {
-        ensureIndex("index_ " + preference + "_lop", sparsePossible.booleanValue(), lopField);
-        ensureSparseIndex("index_ " + preference + "_discretionary", discretionaryField);
-        ensureIndex("index_ " + preference + "_ao", sparsePossible.booleanValue(), fieldAo);
-        ensureIndex("index_ " + preference + "_ao_identifier", sparsePossible.booleanValue(), fieldAoIdentifier);
+        ensureIndex("index_" + preference + "_lop", sparsePossible.booleanValue(), lopField);
+        ensureSparseIndex("index_" + preference + "_discretionary", discretionaryField);
+        ensureIndex("index_" + preference + "_ao", sparsePossible.booleanValue(), fieldAo);
+        ensureIndex("index_" + preference + "_ao_identifier", sparsePossible.booleanValue(), fieldAoIdentifier);
     }
 
     @Override
