@@ -28,8 +28,6 @@ import java.util.Map;
 
 public interface ApplicationService {
 
-    Application addBaseEducation(Application application);
-
     Application getApplication(final String applicationSystemId);
 
     Application getApplication(final Application queryApplication);
@@ -119,8 +117,6 @@ public interface ApplicationService {
     Application fillLOPChain(Application application, boolean save);
 
     Application getSubmittedApplication(final String applicationSystemId, final String oid);
-
-    Application addSendingSchool(Application application);
 
     List<Map<String, Object>> findFullApplications(String query, ApplicationQueryParameters applicationQueryParameters);
 }

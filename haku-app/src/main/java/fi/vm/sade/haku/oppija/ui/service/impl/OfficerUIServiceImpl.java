@@ -13,6 +13,7 @@ import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationOptionDTO;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.Pistetieto;
 import fi.vm.sade.haku.oppija.hakemus.domain.util.ApplicationUtil;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
+import fi.vm.sade.haku.oppija.hakemus.service.BaseEducationService;
 import fi.vm.sade.haku.oppija.hakemus.service.HakuPermissionService;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
@@ -66,6 +67,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     public static final String PHASE_ID_PREVIEW = "esikatselu";
 
     private final ApplicationService applicationService;
+    private final BaseEducationService baseEducationService;
     private final FormService formService;
     private final KoodistoService koodistoService;
     private final HakuPermissionService hakuPermissionService;
@@ -85,6 +87,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
 
     @Autowired
     public OfficerUIServiceImpl(final ApplicationService applicationService,
+                                final BaseEducationService baseEducationService,
                                 final FormService formService,
                                 final KoodistoService koodistoService,
                                 final HakuPermissionService hakuPermissionService,
@@ -97,6 +100,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
                                 final ValintaService valintaService,
                                 final UserSession userSession) {
         this.applicationService = applicationService;
+        this.baseEducationService = baseEducationService;
         this.formService = formService;
         this.koodistoService = koodistoService;
         this.hakuPermissionService = hakuPermissionService;
@@ -348,7 +352,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         String noteText = "Päivitetty vaihetta '" + applicationPhase.getPhaseId() + "'";
         application.addNote(createNote(noteText));
         this.applicationService.fillLOPChain(application, false);
-        this.applicationService.addSendingSchool(application);
+        this.baseEducationService.addSendingSchool(application);
         this.applicationService.update(queryApplication, application);
         application.setPhaseId(applicationPhase.getPhaseId());
         return new ModelResponse(application, form, phase, phaseValidationResult, koulutusinformaatioBaseUrl);

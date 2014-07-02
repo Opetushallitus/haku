@@ -7,6 +7,7 @@ import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationOptionDTO;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.Pistetieto;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
+import fi.vm.sade.haku.oppija.hakemus.service.BaseEducationService;
 import fi.vm.sade.haku.oppija.hakemus.service.HakuPermissionService;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.User;
@@ -121,9 +122,11 @@ public class ValintaServiceTest {
         LoggerAspect loggerAspect = null;
         AuthenticationService authenticationService = null;
         OrganizationService organizationService = null;
+        BaseEducationService baseEducationService = null;
 
         officerUIService = new OfficerUIServiceImpl(
                 applicationService,
+                baseEducationService,
                 formService,
                 koodistoService,
                 hakuPermissionService,
