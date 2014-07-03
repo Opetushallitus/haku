@@ -33,7 +33,7 @@ import static org.apache.commons.lang.StringUtils.join;
 @Service
 public class BaseEducationServiceImpl implements BaseEducationService{
 
-    public static final Logger LOGGER = LoggerFactory.getLogger(ApplicationServiceImpl.class);
+    public static final Logger LOGGER = LoggerFactory.getLogger(BaseEducationServiceImpl.class);
 
     @Value("${komo.oid.perusopetus}")
     private String perusopetusKomoOid;
