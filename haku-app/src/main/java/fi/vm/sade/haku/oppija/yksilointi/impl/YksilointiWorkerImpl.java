@@ -20,6 +20,7 @@ import fi.vm.sade.haku.oppija.hakemus.domain.Application.PostProcessingState;
 import fi.vm.sade.haku.oppija.hakemus.domain.util.ApplicationUtil;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationDAO;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
+import fi.vm.sade.haku.oppija.hakemus.service.BaseEducationService;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.haku.oppija.lomake.service.FormService;
 import fi.vm.sade.haku.oppija.lomake.validation.ElementTreeValidator;
@@ -54,6 +55,7 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
     public static final Logger LOGGER = LoggerFactory.getLogger(YksilointiWorkerImpl.class);
     public static final String TRUE = "true";
     private final ApplicationService applicationService;
+    private final BaseEducationService baseEducationService;
     private final ApplicationDAO applicationDAO;
     private final ElementTreeValidator elementTreeValidator;
     private FormService formService;
@@ -79,9 +81,10 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
     private String replyTo;
 
     @Autowired
-    public YksilointiWorkerImpl(ApplicationService applicationService, FormService formService, ApplicationDAO applicationDAO,
-                                ElementTreeValidator elementTreeValidator) {
+    public YksilointiWorkerImpl(ApplicationService applicationService, BaseEducationService baseEducationService, FormService formService, ApplicationDAO applicationDAO,
+      ElementTreeValidator elementTreeValidator) {
         this.applicationService = applicationService;
+        this.baseEducationService = baseEducationService;
         this.formService = formService;
         this.applicationDAO = applicationDAO;
         this.elementTreeValidator = elementTreeValidator;
@@ -119,8 +122,8 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
             application = applicationService.fillLOPChain(application, false);
             application = applicationService.addPersonOid(application);
             if (!skipSendingSchoolAutomatic) {
-                application = applicationService.addSendingSchool(application);
-                application = applicationService.addBaseEducation(application);
+                application = baseEducationService.addSendingSchool(application);
+                application = baseEducationService.addBaseEducation(application);
             }
             application = validateApplication(application);
             this.applicationDAO.update(new Application(application.getOid()), application);
@@ -167,8 +170,8 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
                     application = applicationService.fillLOPChain(application, false);
                     application = applicationService.addPersonOid(application);
                     if (!skipSendingSchoolManual) {
-                        application = applicationService.addSendingSchool(application);
-                        application = applicationService.addBaseEducation(application);
+                        application = baseEducationService.addSendingSchool(application);
+                        application = baseEducationService.addBaseEducation(application);
                     }
                     application = validateApplication(application);
                     application.setRedoPostProcess(PostProcessingState.DONE);

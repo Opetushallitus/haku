@@ -98,7 +98,7 @@ public class ApplicationServiceImplTest {
 //        when(suoritusrekisteriService.getLahtoluokka(any(String.class))).thenReturn("9A");
 
         service = new ApplicationServiceImpl(applicationDAO, null, null, applicationOidService, authenticationService, organizationService,
-                hakuPermissionService, suoritusrekisteriService, elementTreeValidator);
+                hakuPermissionService, elementTreeValidator);
 
         answerMap = new HashMap<String, String>();
         answerMap.put(OppijaConstants.ELEMENT_ID_FIRST_NAMES, "Etunimi");
