@@ -193,7 +193,7 @@ public class ApplicationResourceTest {
         public ApplicationQueryParameters param;
 
         public ApplicationServiceMock() {
-            super(null, null, null, null, null, null, null, null, null);
+            super(null, null, null, null, null, null, null, null);
         }
 
         @Override
