@@ -22,8 +22,8 @@ function stripLists(obj) {
 }
 
 function changePeriods(obj) {
-  obj.applicationPeriods[0]["start"]["$date"] = "2014-07-01T08:00:31.839+0300";
-  obj.applicationPeriods[0]["end"]["$date"] = "2100-12-01T08:00:31.839+0300";
+  obj.applicationPeriods[0]["start"]["$date"] = new Date("2014-07-01T08:00:31.839+0300").getTime();
+  obj.applicationPeriods[0]["end"]["$date"] = new Date("2100-12-01T08:00:31.839+0300").getTime();
 }
 
 processJson(function(obj) {
