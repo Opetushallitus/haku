@@ -5,6 +5,7 @@ import fi.vm.sade.haku.oppija.hakemus.aspect.LoggerAspect;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
+import fi.vm.sade.haku.oppija.hakemus.service.BaseEducationService;
 import fi.vm.sade.haku.oppija.hakemus.service.HakuPermissionService;
 import fi.vm.sade.haku.oppija.lomake.domain.User;
 import fi.vm.sade.haku.oppija.lomake.domain.builder.PhaseBuilder;
@@ -39,6 +40,7 @@ public class OfficerUIServiceImplTest {
 
     private OfficerUIServiceImpl officerUIService;
     private ApplicationService applicationService;
+    private BaseEducationService baseEducationService;
     private FormService formService;
     private KoodistoService koodistoService;
     private HakuPermissionService hakuPermissionService;
@@ -73,9 +75,11 @@ public class OfficerUIServiceImplTest {
         organizationService = mock(OrganizationService.class);
         valintaService = new ValintaServiceMockImpl(); //mock(ValintaService.class);
         userSession = mock(UserSession.class);
+        baseEducationService = mock(BaseEducationService.class);
 
         officerUIService = new OfficerUIServiceImpl(
                 applicationService,
+                baseEducationService,
                 formService,
                 koodistoService,
                 hakuPermissionService,
