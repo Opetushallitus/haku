@@ -127,11 +127,13 @@ public class BaseEducationServiceImpl implements BaseEducationService{
     public Application addBaseEducation(Application application) {
         String personOid = application.getPersonOid();
         if (isEmpty(personOid)) {
+            clearGradesTranferedFlags(application);
             return application;
         }
         Map<String, SuoritusDTO> suoritukset = suoritusrekisteriService.getSuoritukset(personOid);
 
         if (suoritukset.isEmpty()) {
+            clearGradesTranferedFlags(application);
             return application;
         }
 
@@ -212,8 +214,12 @@ public class BaseEducationServiceImpl implements BaseEducationService{
 
         if (gradesTranferredLk) {
             application.addMeta("grades_transferred_lk", "true");
+            application.addMeta("grades_transferred_pk", "false");
         } else if (gradesTranferredPk) {
+            application.addMeta("grades_transferred_lk", "false");
             application.addMeta("grades_transferred_pk", "true");
+        } else {
+            clearGradesTranferedFlags(application);
         }
 
         if (pohjakoulutusSuoritettu) {
@@ -249,8 +255,13 @@ public class BaseEducationServiceImpl implements BaseEducationService{
         return application;
     }
 
-    private String getPohjakoulutus(SuoritusDTO suoritus) {
-        String yksilollistaminen = suoritus.getYksilollistaminen();
+    private void clearGradesTranferedFlags(final Application application) {
+        application.addMeta("grades_transferred_lk", "false");
+        application.addMeta("grades_transferred_pk", "false");
+    }
+
+    private String getPohjakoulutus(final SuoritusDTO suoritus) {
+        final String yksilollistaminen = suoritus.getYksilollistaminen();
         if ("Ei".equals(yksilollistaminen)) {
             return OppijaConstants.PERUSKOULU;
         } else if ("Alueittain".equals(yksilollistaminen)) {
