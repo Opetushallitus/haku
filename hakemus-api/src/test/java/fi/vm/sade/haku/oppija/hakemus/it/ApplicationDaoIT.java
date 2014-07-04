@@ -8,13 +8,12 @@ import java.util.List;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.data.mongodb.core.MongoTemplate;
 
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.impl.ApplicationDAOMongoImpl;
-import fi.vm.sade.haku.testfixtures.JsonFixtureImporter;
+import fi.vm.sade.haku.testfixtures.MongoFixtureImporter;
 
 public class ApplicationDaoIT {
     private static AnnotationConfigApplicationContext appContext;
@@ -22,7 +21,7 @@ public class ApplicationDaoIT {
     @BeforeClass
     public static void createApplicationContextWithFixtures() throws IOException {
         appContext = ApiIntegrationTestSpringConfiguration.createApplicationContext();
-        JsonFixtureImporter.importJsonFixtures(appContext.getBean(MongoTemplate.class));
+        MongoFixtureImporter.importJsonFixtures(appContext.getBean(MongoTemplate.class));
     }
 
     @Test

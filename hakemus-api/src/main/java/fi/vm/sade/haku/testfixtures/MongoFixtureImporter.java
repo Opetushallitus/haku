@@ -11,7 +11,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import com.mongodb.DBObject;
 import com.mongodb.util.JSON;
 
-public class JsonFixtureImporter {
+public class MongoFixtureImporter {
     public static void importJsonFixtures(MongoTemplate template) throws IOException {
         final Resource[] resources = new PathMatchingResourcePatternResolver().getResources("mongofixtures/**/*.json");
         for (Resource resource: resources) {
