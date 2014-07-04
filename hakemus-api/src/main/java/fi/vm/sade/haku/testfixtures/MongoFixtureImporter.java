@@ -43,7 +43,7 @@ public class MongoFixtureImporter {
     }
 
     private static String getParentName(Resource resource) throws IOException {
-        final String[] components = resource.getURI().getPath().split("/");
+        final String[] components = resource.getURI().toString().split("/");
         return components[components.length - 2];
     }
 }
