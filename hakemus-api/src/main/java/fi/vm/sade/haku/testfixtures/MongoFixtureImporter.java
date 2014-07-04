@@ -15,7 +15,7 @@ public class MongoFixtureImporter {
     public static void importJsonFixtures(MongoTemplate template) throws IOException {
         final Resource[] resources = new PathMatchingResourcePatternResolver().getResources("mongofixtures/**/*.json");
         for (Resource resource: resources) {
-            String collection = resource.getFile().getParentFile().getName();
+            String collection = getParentName(resource);
             final String jsonString = IOUtils.toString(resource.getURI());
             try {
                 final DBObject dbObject = (DBObject) JSON.parse(jsonString);
@@ -23,8 +23,13 @@ public class MongoFixtureImporter {
             } catch (Exception e) {
                 System.err.println("Dumping JSON:");
                 System.err.println(jsonString);
-                throw new RuntimeException("Error importing JSON from " + resource.getFile().getPath(), e);
+                throw new RuntimeException("Error importing JSON from " + resource.getURL(), e);
             }
         }
+    }
+
+    private static String getParentName(Resource resource) throws IOException {
+        final String[] components = resource.getURI().getPath().split("/");
+        return components[components.length - 2];
     }
 }
