@@ -367,28 +367,30 @@ public class Application implements Serializable {
         return additionalInfo;
     }
 
-    public void setAdditionalInfo(Map<String, String> additionalInfo) {
+    public Application setAdditionalInfo(Map<String, String> additionalInfo) {
         this.additionalInfo = additionalInfo;
+        return this;
     }
 
     public String getOid() {
         return oid;
     }
 
-    public void setOid(String oid) {
-        this.oid = oid;
+    public Application setOid(String oid) {
+        this.oid = oid; return this;
     }
 
-    public void setState(State state) {
-        this.state = state;
+    public Application setState(State state) {
+        this.state = state; return this;
     }
 
     public State getState() {
         return this.state;
     }
 
-    public void setStudentIdentificationDone(Boolean studentIdentificationDone) {
+    public Application setStudentIdentificationDone(Boolean studentIdentificationDone) {
         this.studentIdentificationDone = studentIdentificationDone;
+        return this;
     }
 
     public Boolean getStudentIdentificationDone() {
@@ -399,8 +401,8 @@ public class Application implements Serializable {
         return phaseId;
     }
 
-    public void setPhaseId(final String phaseId) {
-        this.phaseId = phaseId;
+    public Application setPhaseId(final String phaseId) {
+        this.phaseId = phaseId; return this;
     }
 
     public Map<String, String> getMeta() {
@@ -424,8 +426,8 @@ public class Application implements Serializable {
     }
 
 
-    public void setMeta(Map<String, String> meta) {
-        this.meta = meta;
+    public Application setMeta(Map<String, String> meta) {
+        this.meta = meta; return this;
     }
 
     public String addMeta(String key, String value) {
@@ -436,28 +438,28 @@ public class Application implements Serializable {
         return this.meta.get(key);
     }
 
-    public void setApplicationSystemId(String applicationSystemId) {
-        this.applicationSystemId = applicationSystemId;
+    public Application setApplicationSystemId(String applicationSystemId) {
+        this.applicationSystemId = applicationSystemId; return this;
     }
 
     public String getPersonOid() {
         return personOid;
     }
 
-    public void setPersonOid(String personOid) {
-        this.personOid = personOid;
+    public Application setPersonOid(String personOid) {
+        this.personOid = personOid; return this;
     }
 
-    public void setReceived(Date received) {
-        this.received = received;
+    public Application setReceived(Date received) {
+        this.received = received; return this;
     }
 
     public Date getReceived() {
         return received;
     }
 
-    public void setUpdated(Date updated) {
-        this.updated = updated;
+    public Application setUpdated(Date updated) {
+        this.updated = updated; return this;
     }
 
     public Date getUpdated() { return updated; }
@@ -466,16 +468,17 @@ public class Application implements Serializable {
         return studentOid;
     }
 
-    public void setStudentOid(String studentOid) {
-        this.studentOid = studentOid;
+    public Application setStudentOid(String studentOid) {
+        this.studentOid = studentOid; return this;
     }
 
     public Long getLastAutomatedProcessingTime() {
         return lastAutomatedProcessingTime;
     }
 
-    public void setLastAutomatedProcessingTime(Long lastAutomatedProcessingTime) {
+    public Application setLastAutomatedProcessingTime(Long lastAutomatedProcessingTime) {
         this.lastAutomatedProcessingTime = lastAutomatedProcessingTime;
+        return this;
     }
 
     @Deprecated
@@ -498,16 +501,16 @@ public class Application implements Serializable {
         this.studentOidChecked = studentOidChecked;
     }
 
-    public void setRedoPostProcess(PostProcessingState redoPostProcess) {
-        this.redoPostProcess = redoPostProcess;
+    public Application setRedoPostProcess(PostProcessingState redoPostProcess) {
+        this.redoPostProcess = redoPostProcess; return this;
     }
 
     public PostProcessingState getRedoPostProcess() {
         return redoPostProcess;
     }
 
-    public void setFullname(String fullName) {
-        this.fullName = fullName;
+    public Application setFullname(String fullName) {
+        this.fullName = fullName; return this;
     }
 
     public String getFullName() {
@@ -518,8 +521,9 @@ public class Application implements Serializable {
         return notes;
     }
 
-    public void addNote(ApplicationNote note) {
+    public Application addNote(ApplicationNote note) {
         notes.add(0, note);
+        return this;
     }
 
     public List<Change> getHistory() {
@@ -530,18 +534,20 @@ public class Application implements Serializable {
         return this.searchNames;
     }
 
-    public void addSearchName(String searchName) {
+    public Application addSearchName(String searchName) {
         if (searchName != null && !searchName.isEmpty()) {
             this.searchNames.add(searchName);
         }
+        return this;
     }
 
-    public void addHistory(final Change change) {
+    public Application addHistory(final Change change) {
         if (this.history == null) {
             this.history = new LinkedList<Change>();
         }
         this.history.add(0, change);
         this.version = this.history.size();
+        return this;
     }
 
     public Integer getVersion() {
