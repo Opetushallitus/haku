@@ -1,14 +1,16 @@
 #!/bin/bash
 
-for d in *
+fixturesroot="../hakemus-api/src/test/resources/mongofixtures"
+
+for d in $fixturesroot/*
 do
    if [ -d $d ];then
       for f in $d/*.json
       do
-         echo Collection $d
+         collection="${d##*/}"
+         echo Collection $collection
          echo Importing $f to Mongo $@
-         mongoimport "$@" -c $d -d hakulomake --file $f --upsert
+         mongoimport "$@" -c $collection -d hakulomake --file $f --upsert
       done
    fi
 done
-
