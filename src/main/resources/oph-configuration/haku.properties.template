@@ -70,6 +70,7 @@ cas.user-search-filter=(|(mail\={0})(uid\={0}))
 cas.service.authentication-service=https://${host.virkailija}/authentication-service
 cas.service.haku=https://${host.virkailija}/haku-app
 cas.service.haku-service=https://${host.virkailija}/haku-app
+cas.service.koodisto-service=https://${host.virkailija}/koodisto-service
 cas.service.organisaatio-service=https://${host.virkailija}/organisaatio-service
 cas.service.sijoittelu-service=https://${host.virkailija}/sijoittelu-service
 cas.service.suoritusrekisteri=https://${host.virkailija}/suoritusrekisteri
