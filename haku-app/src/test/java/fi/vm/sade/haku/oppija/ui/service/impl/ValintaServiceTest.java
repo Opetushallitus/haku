@@ -137,7 +137,7 @@ public class ValintaServiceTest {
                 authenticationService,
                 organizationService,
                 null,
-                userSession);
+                userSession, null);
 
     }
 

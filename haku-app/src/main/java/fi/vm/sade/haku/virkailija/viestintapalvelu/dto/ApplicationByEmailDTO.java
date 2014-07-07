@@ -10,8 +10,7 @@ public class ApplicationByEmailDTO implements Serializable {
 	private String applicantLanguageCode;
 	private String userOID;
 	private String userOrganzationOID;
-	private String subject;
-	private String body;
+	private ApplicationTemplateDTO applicationTemplate;
 	
 	public String getApplicationOID() {
 		return applicationOID;
@@ -61,19 +60,11 @@ public class ApplicationByEmailDTO implements Serializable {
 		this.userOrganzationOID = userOrganzationOID;
 	}
 
-	public String getSubject() {
-		return subject;
+	public ApplicationTemplateDTO getApplicationTemplate() {
+		return applicationTemplate;
 	}
 
-	public void setSubject(String subject) {
-		this.subject = subject;
-	}
-
-	public String getBody() {
-		return body;
-	}
-
-	public void setBody(String body) {
-		this.body = body;
+	public void setApplicationTemplate(ApplicationTemplateDTO applicationTemplate) {
+		this.applicationTemplate = applicationTemplate;
 	}
 }

@@ -2,12 +2,14 @@ package fi.vm.sade.haku.virkailija.viestintapalvelu.impl;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
 import fi.vm.sade.generic.rest.CachingRestClient;
 import fi.vm.sade.haku.RemoteServiceException;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.ApplicationPrintViewService;
-import fi.vm.sade.haku.virkailija.viestintapalvelu.DocumentSource;
-import fi.vm.sade.haku.virkailija.viestintapalvelu.DocumentSourceJsonAdapter;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.PDFService;
+import fi.vm.sade.haku.virkailija.viestintapalvelu.dto.DocumentSourceDTO;
+import fi.vm.sade.haku.virkailija.viestintapalvelu.json.DocumentSourceJsonAdapter;
+
 import org.apache.http.HttpResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,6 +17,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import javax.ws.rs.core.MediaType;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -83,14 +86,14 @@ public class PDFServiceImpl implements PDFService {
 		List<String> sources = new ArrayList<String>();
 		sources.add(applicationPrintView);
 		
-		DocumentSource documentSource = new DocumentSource();
+		DocumentSourceDTO documentSource = new DocumentSourceDTO();
 		documentSource.setDocumentName("application");
 		documentSource.setSources(sources);
 		
         GsonBuilder gsonBuilder = new GsonBuilder();
-        gsonBuilder.registerTypeAdapter(DocumentSource.class, new DocumentSourceJsonAdapter());
+        gsonBuilder.registerTypeAdapter(DocumentSourceDTO.class, new DocumentSourceJsonAdapter());
         Gson gson = gsonBuilder.create();
         
-        return gson.toJson(documentSource, DocumentSource.class);
+        return gson.toJson(documentSource, DocumentSourceDTO.class);
     }
 }

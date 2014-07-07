@@ -3,7 +3,8 @@ package fi.vm.sade.haku.virkailija.viestintapalvelu.impl;
 import fi.vm.sade.generic.rest.CachingRestClient;
 import fi.vm.sade.haku.RemoteServiceException;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.ApplicationPrintViewService;
-import fi.vm.sade.haku.virkailija.viestintapalvelu.UtfUtil;
+import fi.vm.sade.haku.virkailija.viestintapalvelu.util.UtfUtil;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;

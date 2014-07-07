@@ -14,7 +14,7 @@
 <c:set var="server" value="${fn:replace(pageContext.request.requestURL, pageContext.request.requestURI, pageContext.request.contextPath)}" scope="request"/>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" scope="request"/>
 
-<c:set var="discretionaryAttachmentAOIds" value="${it.discretionaryAttachmentAOIds}" scope="request"/>
+<c:set var="discretionaryAttachments" value="${it.discretionaryAttachments}" scope="request"/>
 
 <html>
 <head>

@@ -8,15 +8,19 @@ import org.springframework.stereotype.Component;
 
 import fi.vm.sade.haku.virkailija.viestintapalvelu.constants.ViestintapalveluConstants;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.dto.ApplicationByEmailDTO;
+import fi.vm.sade.haku.virkailija.viestintapalvelu.dto.ApplicationReplacementDTO;
 import fi.vm.sade.ryhmasahkoposti.api.dto.EmailAttachment;
 import fi.vm.sade.ryhmasahkoposti.api.dto.EmailData;
 import fi.vm.sade.ryhmasahkoposti.api.dto.EmailMessage;
 import fi.vm.sade.ryhmasahkoposti.api.dto.EmailRecipient;
+import fi.vm.sade.ryhmasahkoposti.api.dto.ReplacementDTO;
 
 @Component
 public class EmailDataBuilder {
 	public EmailData build(ApplicationByEmailDTO applicationByEmail, byte[] pdf) {
 		EmailData emailData = new EmailData();
+		List<ReplacementDTO> replacements = getReplacements(applicationByEmail);
+		emailData.setReplacements(replacements);
 		
 		emailData.setRecipient(getEmailRecipientList(applicationByEmail));
 		
@@ -47,7 +51,7 @@ public class EmailDataBuilder {
 			locale = new Locale(applicationByEmail.getApplicantLanguageCode());
 		}
 		
-		emailMessage.setBody(applicationByEmail.getBody());
+		emailMessage.setBody("");
 		emailMessage.setCallingProcess(ViestintapalveluConstants.APPLICATION_CALLING_PROCESS);
 		emailMessage.setCharset(ViestintapalveluConstants.APPLICATION_CHARSET);
 		emailMessage.setFrom(ViestintapalveluConstants.APPLICATION_FROM);
@@ -56,8 +60,8 @@ public class EmailDataBuilder {
 		emailMessage.setOrganizationOid(applicationByEmail.getUserOrganzationOID());
 		emailMessage.setReplyTo("");
 		emailMessage.setSenderOid(applicationByEmail.getUserOID());
-		emailMessage.setSubject(applicationByEmail.getSubject());
-		emailMessage.setTemplateName("");
+		emailMessage.setSubject("");
+		emailMessage.setTemplateName(applicationByEmail.getApplicationTemplate().getTemplateName());
 				
 		return emailMessage;
 	}
@@ -79,5 +83,25 @@ public class EmailDataBuilder {
 		
 		emailRecipients.add(emailRecipient);
 		return emailRecipients;
+	}
+	
+	private List<ReplacementDTO> getReplacements(ApplicationByEmailDTO applicationByEmail) {
+		List<ReplacementDTO> replacements = new ArrayList<ReplacementDTO>();
+		
+		if (applicationByEmail.getApplicationTemplate().getTemplateReplacements() == null || 
+			applicationByEmail.getApplicationTemplate().getTemplateReplacements().isEmpty()) {
+			return replacements;
+		}
+		
+		for (ApplicationReplacementDTO templateReplacement : 
+			applicationByEmail.getApplicationTemplate().getTemplateReplacements()) {
+			ReplacementDTO replacement = new ReplacementDTO();
+			replacement.setName(templateReplacement.getName());
+			replacement.setDefaultValue(templateReplacement.getValue());
+			
+			replacements.add(replacement);
+		}
+		
+		return replacements;
 	}
 }

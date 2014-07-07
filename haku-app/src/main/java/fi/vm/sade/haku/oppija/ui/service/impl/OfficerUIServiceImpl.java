@@ -3,6 +3,7 @@ package fi.vm.sade.haku.oppija.ui.service.impl;
 import com.google.common.base.Joiner;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
+
 import fi.vm.sade.haku.oppija.common.organisaatio.Organization;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
 import fi.vm.sade.haku.oppija.hakemus.aspect.LoggerAspect;
@@ -34,6 +35,7 @@ import fi.vm.sade.haku.oppija.ui.service.ModelResponse;
 import fi.vm.sade.haku.oppija.ui.service.OfficerUIService;
 import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
 import fi.vm.sade.haku.virkailija.authentication.Person;
+import fi.vm.sade.haku.virkailija.koulutusinformaatio.KoulutusinformaatioService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
@@ -47,6 +49,7 @@ import fi.vm.sade.sijoittelu.tulos.dto.raportointi.HakutoiveenValintatapajonoDTO
 import fi.vm.sade.valintalaskenta.domain.dto.*;
 import fi.vm.sade.valintalaskenta.domain.dto.valintakoe.ValintakoeDTO;
 import fi.vm.sade.valintalaskenta.domain.valintakoe.Osallistuminen;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,6 +82,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     private final OrganizationService organizationService;
     private ValintaService valintaService;
     private final UserSession userSession;
+    private final KoulutusinformaatioService koulutusinformaatioService;
 
     private static final DecimalFormat PISTE_FMT = new DecimalFormat("#.##");
 
@@ -98,7 +102,8 @@ public class OfficerUIServiceImpl implements OfficerUIService {
                                 final AuthenticationService authenticationService,
                                 final OrganizationService organizationService,
                                 final ValintaService valintaService,
-                                final UserSession userSession) {
+                                final UserSession userSession,
+                                final KoulutusinformaatioService koulutusinformaatioService) {
         this.applicationService = applicationService;
         this.baseEducationService = baseEducationService;
         this.formService = formService;
@@ -112,6 +117,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         this.organizationService = organizationService;
         this.valintaService = valintaService;
         this.userSession = userSession;
+        this.koulutusinformaatioService = koulutusinformaatioService;
     }
 
     @Override
@@ -565,7 +571,9 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         Application application = applicationService.getApplicationByOid(oid);
         ApplicationSystem activeApplicationSystem = applicationSystemService.getApplicationSystem(application.getApplicationSystemId());
         List<String> discretionaryAttachmentAOIds = ApplicationUtil.getDiscretionaryAttachmentAOIds(application);
-        return new ModelResponse(application, activeApplicationSystem, discretionaryAttachmentAOIds, koulutusinformaatioBaseUrl);
+        List<fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO> discretionaryAttachments = 
+       		koulutusinformaatioService.getApplicationOptions(discretionaryAttachmentAOIds);
+        return new ModelResponse(application, activeApplicationSystem, discretionaryAttachments);
     }
 
     private ApplicationNote createNote(String note) {

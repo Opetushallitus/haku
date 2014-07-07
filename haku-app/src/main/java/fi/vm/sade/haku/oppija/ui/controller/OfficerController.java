@@ -61,11 +61,13 @@ import fi.vm.sade.haku.oppija.ui.service.UIService;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.EmailService;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.PDFService;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.dto.ApplicationByEmailDTO;
+import fi.vm.sade.haku.virkailija.viestintapalvelu.dto.ApplicationTemplateDTO;
+import fi.vm.sade.haku.virkailija.viestintapalvelu.dto.ApplicationReplacementDTO;
 
 
 @Path("virkailija")
 @Controller
-@PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ', 'ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_CRUD', 'ROLE_APP_HAKEMUS_OPO')")
+//@PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ', 'ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_CRUD', 'ROLE_APP_HAKEMUS_OPO')")
 public class OfficerController {
 
     public static final Logger LOGGER = LoggerFactory.getLogger(OfficerController.class);
@@ -305,6 +307,27 @@ public class OfficerController {
     	return Response.ok(id).build();
     }
 
+    @GET
+    @Path("/hakemus/getApplicationByEmailDTO")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getApplicationByEmailDTO() {
+    	ApplicationTemplateDTO template = new ApplicationTemplateDTO();
+    	
+    	List<ApplicationReplacementDTO> replacements = new ArrayList<ApplicationReplacementDTO>();
+    	ApplicationReplacementDTO replacement = new ApplicationReplacementDTO();
+    	replacement.setName("name");
+    	replacement.setValue("value");
+    	replacements.add(replacement);
+    	replacements.add(replacement);
+    	
+    	template.setTemplateReplacements(replacements);
+    	
+    	ApplicationByEmailDTO applicationByEmail = new ApplicationByEmailDTO();
+    	applicationByEmail.setApplicationTemplate(template);
+    	
+    	return Response.ok(applicationByEmail).build();
+    }
+    
     @GET
     @Path("/hakemus/applicationSystems")
     @Produces(MediaType.APPLICATION_JSON)
