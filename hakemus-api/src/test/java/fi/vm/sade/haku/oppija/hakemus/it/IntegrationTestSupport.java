@@ -18,7 +18,7 @@ public class IntegrationTestSupport {
     }
 
     @AfterClass
-    public static void shutdownApplicationContext() {
+    public static void shutdownApplicationContext() { appContext.close();
         appContext.stop();
     }
 }
