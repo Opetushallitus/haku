@@ -67,7 +67,7 @@ import fi.vm.sade.haku.virkailija.viestintapalvelu.dto.ApplicationReplacementDTO
 
 @Path("virkailija")
 @Controller
-//@PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ', 'ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_CRUD', 'ROLE_APP_HAKEMUS_OPO')")
+@PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ', 'ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_CRUD', 'ROLE_APP_HAKEMUS_OPO')")
 public class OfficerController {
 
     public static final Logger LOGGER = LoggerFactory.getLogger(OfficerController.class);
