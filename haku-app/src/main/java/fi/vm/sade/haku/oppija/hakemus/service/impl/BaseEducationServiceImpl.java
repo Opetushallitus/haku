@@ -35,6 +35,8 @@ public class BaseEducationServiceImpl implements BaseEducationService{
 
     public static final Logger LOGGER = LoggerFactory.getLogger(BaseEducationServiceImpl.class);
 
+    private enum GradePrefix {PK_, LK_ };
+
     @Value("${komo.oid.perusopetus}")
     private String perusopetusKomoOid;
     @Value("${komo.oid.lukio}")
@@ -141,13 +143,13 @@ public class BaseEducationServiceImpl implements BaseEducationService{
         Date valmistuminen = null;
         String suorituskieli = null;
 
-        SuoritusDTO lukio = suoritukset.get(lukioKomoOid);
-        SuoritusDTO ulkomainen = suoritukset.get(ulkomainenKomoOid);
-        SuoritusDTO kymppi = suoritukset.get(lisaopetusKomoOid);
-        SuoritusDTO ammattistartti = suoritukset.get(valmistavaKomoOid);
-        SuoritusDTO kuntouttava = suoritukset.get(kuntouttavaKomoOid);
-        SuoritusDTO mamuValmentava = suoritukset.get(mamuValmistavaKomoOid);
-        SuoritusDTO pk = suoritukset.get(perusopetusKomoOid);
+        SuoritusDTO lukioSuoritus = suoritukset.get(lukioKomoOid);
+        SuoritusDTO ulkomainenSuoritus = suoritukset.get(ulkomainenKomoOid);
+        SuoritusDTO kymppiSuoritus = suoritukset.get(lisaopetusKomoOid);
+        SuoritusDTO ammattistarttiSuoritus = suoritukset.get(valmistavaKomoOid);
+        SuoritusDTO kuntouttavaSuoritus = suoritukset.get(kuntouttavaKomoOid);
+        SuoritusDTO mamuValmentavaSuoritus = suoritukset.get(mamuValmistavaKomoOid);
+        SuoritusDTO peruskouluSuoritus = suoritukset.get(perusopetusKomoOid);
 
         Map<String, String> educationAnswers = new HashMap<String, String>(application.getPhaseAnswers(OppijaConstants.PHASE_EDUCATION));
 
@@ -162,55 +164,48 @@ public class BaseEducationServiceImpl implements BaseEducationService{
         boolean gradesTranferredPk = false;
         boolean gradesTranferredLk = false;
 
-        if (lukio != null && isComplete(lukio)) {
+        if (lukioSuoritus != null && isComplete(lukioSuoritus)) {
             pohjakoulutus = OppijaConstants.YLIOPPILAS;
-            addGrades(application, lukio);
+            addGrades(application, lukioSuoritus);
             gradesTranferredLk = true;
-            valmistuminen = lukio.getValmistuminen();
-            suorituskieli = lukio.getSuorituskieli();
-        } else if (ulkomainen != null && isComplete(ulkomainen)) {
+            valmistuminen = lukioSuoritus.getValmistuminen();
+            suorituskieli = lukioSuoritus.getSuorituskieli();
+        } else if (ulkomainenSuoritus != null && isComplete(ulkomainenSuoritus)) {
             pohjakoulutus = OppijaConstants.ULKOMAINEN_TUTKINTO;
+            clearGrades(application);
         } else {
-            if (kymppi != null) {
-                addGrades(application, kymppi);
+            if (kymppiSuoritus != null) {
+                addGrades(application, kymppiSuoritus);
                 gradesTranferredPk = true;
-                if (isComplete(kymppi)) {
-                    valmistuminen = kymppi.getValmistuminen();
+                if (isComplete(kymppiSuoritus)) {
+                    valmistuminen = kymppiSuoritus.getValmistuminen();
                 }
-                if (pk != null) {
-                    if (!isComplete(kymppi)){
-                        valmistuminen = pk.getValmistuminen();
+                if (peruskouluSuoritus != null) {
+                    if (!isComplete(kymppiSuoritus)){
+                        valmistuminen = peruskouluSuoritus.getValmistuminen();
                     }
-                    pohjakoulutus = getPohjakoulutus(pk);
-                    suorituskieli = pk.getSuorituskieli();
-                    addGrades(application, pk);
+                    pohjakoulutus = getPohjakoulutus(peruskouluSuoritus);
+                    suorituskieli = peruskouluSuoritus.getSuorituskieli();
+                    addGrades(application, peruskouluSuoritus);
                 } else {
                     LOGGER.error("Missing pk-suoritus with kymppi-suoritus for application: {} of person: {}", application.getOid(), application.getPersonOid());
-                    suorituskieli = kymppi.getSuorituskieli();
-                    pohjakoulutus = getPohjakoulutus(kymppi);
+                    suorituskieli = kymppiSuoritus.getSuorituskieli();
+                    pohjakoulutus = getPohjakoulutus(kymppiSuoritus);
                 }
-            } else if (pk != null && isComplete(pk)) {
-                valmistuminen = pk.getValmistuminen();
-                suorituskieli = pk.getSuorituskieli();
-                pohjakoulutus = getPohjakoulutus(pk);
-                addGrades(application, pk);
+            } else if (peruskouluSuoritus != null && isComplete(peruskouluSuoritus)) {
+                valmistuminen = peruskouluSuoritus.getValmistuminen();
+                suorituskieli = peruskouluSuoritus.getSuorituskieli();
+                pohjakoulutus = getPohjakoulutus(peruskouluSuoritus);
+                addGrades(application, peruskouluSuoritus);
                 gradesTranferredPk = true;
             }
         }
 
-        ammattistarttiSuoritettu = ammattistarttiSuoritettu || ammattistartti != null && isComplete(ammattistartti);
-        kuntouttavaSuoritettu = kuntouttavaSuoritettu || kuntouttava != null && isComplete(kuntouttava);
-        mamuValmentavaSuoritettu = mamuValmentavaSuoritettu || mamuValmentava != null && isComplete(mamuValmentava);
+        ammattistarttiSuoritettu = ammattistarttiSuoritettu || ammattistarttiSuoritus != null && isComplete(ammattistarttiSuoritus);
+        kuntouttavaSuoritettu = kuntouttavaSuoritettu || kuntouttavaSuoritus != null && isComplete(kuntouttavaSuoritus);
+        mamuValmentavaSuoritettu = mamuValmentavaSuoritettu || mamuValmentavaSuoritus != null && isComplete(mamuValmentavaSuoritus);
 
         final boolean pohjakoulutusSuoritettu = pohjakoulutus != null;
-
-        if (!(ammattistarttiSuoritettu || kuntouttavaSuoritettu || mamuValmentavaSuoritettu || pohjakoulutusSuoritettu)) {
-            return application;
-        }
-
-        //        if (pohjakoulutus == null ) {
-        //            return application;
-        //        }
 
         if (gradesTranferredLk) {
             application.addMeta("grades_transferred_lk", "true");
@@ -220,6 +215,10 @@ public class BaseEducationServiceImpl implements BaseEducationService{
             application.addMeta("grades_transferred_pk", "true");
         } else {
             clearGradesTranferedFlags(application);
+        }
+
+        if (!(ammattistarttiSuoritettu || kuntouttavaSuoritettu || mamuValmentavaSuoritettu || pohjakoulutusSuoritettu)) {
+            return application;
         }
 
         if (pohjakoulutusSuoritettu) {
@@ -260,6 +259,23 @@ public class BaseEducationServiceImpl implements BaseEducationService{
         application.addMeta("grades_transferred_pk", "false");
     }
 
+    private void clearGrades(final Application application){
+        LOGGER.info("Clearing grades for application {}", application.getOid());
+        Map<String, String> originalGradeAnswers = application.getPhaseAnswers(OppijaConstants.PHASE_GRADES);
+        Map<String, String> gradeAnswers = new HashMap<String, String>(originalGradeAnswers);
+        for (String key : originalGradeAnswers.keySet()) {
+            for (GradePrefix prefix : GradePrefix.values()) {
+                if (!key.startsWith(prefix.name())) {
+                    continue;
+                }
+                String value = gradeAnswers.remove(key);
+                application.addOverriddenAnswer(key, value);
+                LOGGER.debug("Removed grade key: {}, value {} from application: {}", key, value, application.getOid());
+            }
+        }
+        application.addVaiheenVastaukset(OppijaConstants.PHASE_GRADES, gradeAnswers);
+    }
+
     private String getPohjakoulutus(final SuoritusDTO suoritus) {
         final String yksilollistaminen = suoritus.getYksilollistaminen();
         if ("Ei".equals(yksilollistaminen)) {
@@ -275,71 +291,66 @@ public class BaseEducationServiceImpl implements BaseEducationService{
         }
     }
 
-    private Map<String, String> addGrades(Application application, SuoritusDTO suoritus) {
+    private void addGrades(Application application, SuoritusDTO suoritus) {
         String suoritusId = suoritus.getId();
 
-        List<ArvosanaDTO> arvosanat = suoritusrekisteriService.getArvosanat(suoritusId);
-        if (arvosanat.isEmpty()) {
-            return new HashMap<String, String>();
-        }
+        List<ArvosanaDTO> suoritusArvosanat = suoritusrekisteriService.getArvosanat(suoritusId);
+
         String prefix = getGradePrefix(suoritus);
 
-        Map<String, String> gradeAnswers = new HashMap<String, String>(application.getPhaseAnswers(OppijaConstants.PHASE_GRADES));
+        Map<String, String> proficiencyPhaseAnswers = new HashMap<String, String>(application.getPhaseAnswers(OppijaConstants.PHASE_GRADES));
         Set<String> receivedGrades = new HashSet<String>();
         application.addMeta("osaaminen_locked", "true");
 
         Map<String, Integer> valinnaiset = new HashMap<String, Integer>();
 
         // Käy läpi rekisteristä tulleet arvosanat ja lisää answers-mappiin
-        for (ArvosanaDTO arvosana : arvosanat) {
-            String suffix = getGradeSuffix(suoritus, valinnaiset, arvosana);
-            String key = prefix + arvosana.getAine() + suffix;
+        for (ArvosanaDTO suoritusArvosana : suoritusArvosanat) {
+            String suffix = getGradeSuffix(suoritus, valinnaiset, suoritusArvosana);
+            String key = prefix + suoritusArvosana.getAine() + suffix;
             if (!receivedGrades.add(key)) {
                 throw new IllegalValueException("Doublegrade: "+key+" for person "+application.getPersonOid());
             }
-            gradeAnswers = addRegisterValue(application, gradeAnswers, key, arvosana.getArvosana());
+            proficiencyPhaseAnswers = addRegisterValue(application, proficiencyPhaseAnswers, key, suoritusArvosana.getArvosana());
             // Lisätieto == kieli (AI, A1, B1 jne)
-            if (isNotBlank(arvosana.getLisatieto())) {
-                gradeAnswers = addRegisterValue(application, gradeAnswers,
-                  prefix + arvosana.getAine() + "_OPPIAINE", arvosana.getLisatieto());
+            if (isNotBlank(suoritusArvosana.getLisatieto())) {
+                proficiencyPhaseAnswers = addRegisterValue(application, proficiencyPhaseAnswers,
+                  prefix + suoritusArvosana.getAine() + "_OPPIAINE", suoritusArvosana.getLisatieto());
             }
         }
 
         // Lisää "Ei arvosanaa" puuttuviin kenttiin
         Map<String, String> toAdd = new HashMap<String, String>();
-        boolean kymppi = suoritus.getKomo().equals(lisaopetusKomoOid);
-        for (Map.Entry<String, String> entry : gradeAnswers.entrySet()) {
-            String key = entry.getKey();
+        boolean isKymppi = suoritus.getKomo().equals(lisaopetusKomoOid);
+        for (String key : proficiencyPhaseAnswers.keySet()) {
             if (!key.startsWith(prefix)) {
                 continue;
-            } else if (kymppi != key.endsWith("_10")) {
+            } else if (isKymppi != key.endsWith("_10")) {
                 continue;
             }
             if (!receivedGrades.contains(key) && !key.endsWith("OPPIAINE")) {
-                application.addOverriddenAnswer(key, gradeAnswers.get(key));
+                application.addOverriddenAnswer(key, proficiencyPhaseAnswers.get(key));
                 toAdd.put(key, "Ei arvosanaa");
             }
             if (suoritus.getKomo().equals(perusopetusKomoOid) && !key.endsWith("OPPIAINE") && !key.endsWith("_VAL1")
               && !key.endsWith("VAL2")) {
-                if (!gradeAnswers.containsKey(key + "_VAL1")) {
+                if (!proficiencyPhaseAnswers.containsKey(key + "_VAL1")) {
                     toAdd.put(key + "_VAL1", "Ei arvosanaa");
                 }
-                if (!gradeAnswers.containsKey(key + "_VAL2")) {
+                if (!proficiencyPhaseAnswers.containsKey(key + "_VAL2")) {
                     toAdd.put(key + "_VAL2", "Ei arvosanaa");
                 }
             }
         }
-        gradeAnswers.putAll(toAdd);
-        application.addVaiheenVastaukset(OppijaConstants.PHASE_GRADES, gradeAnswers);
-        return gradeAnswers;
+        proficiencyPhaseAnswers.putAll(toAdd);
+        application.addVaiheenVastaukset(OppijaConstants.PHASE_GRADES, proficiencyPhaseAnswers);
     }
 
     private String getGradePrefix(SuoritusDTO suoritus) {
-        String prefix = "PK_";
         if (suoritus.getKomo().equals(lukioKomoOid)) {
-            prefix = "LK_";
+            return GradePrefix.LK_.name();
         }
-        return prefix;
+        return GradePrefix.PK_.name();
     }
 
     private String getGradeSuffix(SuoritusDTO suoritus, Map<String, Integer> valinnaiset, ArvosanaDTO arvosana) {
@@ -376,7 +387,7 @@ public class BaseEducationServiceImpl implements BaseEducationService{
       String key, String value) {
         String oldValue = answers.put(key, value);
         application.addOverriddenAnswer(key, oldValue);
-        LOGGER.info("Changing value key: {}, value: {} -> {}", key, oldValue, value);
+        LOGGER.debug("Changing value key: {}, value: {} -> {}", key, oldValue, value);
         return answers;
     }
 }
