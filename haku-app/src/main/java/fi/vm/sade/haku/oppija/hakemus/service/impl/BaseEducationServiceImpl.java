@@ -206,14 +206,6 @@ public class BaseEducationServiceImpl implements BaseEducationService{
 
         final boolean pohjakoulutusSuoritettu = pohjakoulutus != null;
 
-        if (!(ammattistarttiSuoritettu || kuntouttavaSuoritettu || mamuValmentavaSuoritettu || pohjakoulutusSuoritettu)) {
-            return application;
-        }
-
-        //        if (pohjakoulutus == null ) {
-        //            return application;
-        //        }
-
         if (gradesTranferredLk) {
             application.addMeta("grades_transferred_lk", "true");
             application.addMeta("grades_transferred_pk", "false");
@@ -222,6 +214,10 @@ public class BaseEducationServiceImpl implements BaseEducationService{
             application.addMeta("grades_transferred_pk", "true");
         } else {
             clearGradesTranferedFlags(application);
+        }
+
+        if (!(ammattistarttiSuoritettu || kuntouttavaSuoritettu || mamuValmentavaSuoritettu || pohjakoulutusSuoritettu)) {
+            return application;
         }
 
         if (pohjakoulutusSuoritettu) {
