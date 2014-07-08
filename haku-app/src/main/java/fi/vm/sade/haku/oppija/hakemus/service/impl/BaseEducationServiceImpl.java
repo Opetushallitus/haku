@@ -277,10 +277,7 @@ public class BaseEducationServiceImpl implements BaseEducationService{
         String suoritusId = suoritus.getId();
 
         List<ArvosanaDTO> suoritusArvosanat = suoritusrekisteriService.getArvosanat(suoritusId);
-        if (suoritusArvosanat.isEmpty()) {
-            //TODO clear suoritus
-            return;
-        }
+
         String prefix = getGradePrefix(suoritus);
 
         Map<String, String> proficiencyPhaseAnswers = new HashMap<String, String>(application.getPhaseAnswers(OppijaConstants.PHASE_GRADES));
