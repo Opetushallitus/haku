@@ -172,6 +172,7 @@ public class BaseEducationServiceImpl implements BaseEducationService{
             suorituskieli = lukioSuoritus.getSuorituskieli();
         } else if (ulkomainenSuoritus != null && isComplete(ulkomainenSuoritus)) {
             pohjakoulutus = OppijaConstants.ULKOMAINEN_TUTKINTO;
+            clearGrades(application);
         } else {
             if (kymppiSuoritus != null) {
                 addGrades(application, kymppiSuoritus);
@@ -256,6 +257,23 @@ public class BaseEducationServiceImpl implements BaseEducationService{
     private void clearGradesTranferedFlags(final Application application) {
         application.addMeta("grades_transferred_lk", "false");
         application.addMeta("grades_transferred_pk", "false");
+    }
+
+    private void clearGrades(final Application application){
+        LOGGER.info("Clearing grades for application {}", application.getOid());
+        Map<String, String> originalGradeAnswers = application.getPhaseAnswers(OppijaConstants.PHASE_GRADES);
+        Map<String, String> gradeAnswers = new HashMap<String, String>(originalGradeAnswers);
+        for (String key : originalGradeAnswers.keySet()) {
+            for (GradePrefix prefix : GradePrefix.values()) {
+                if (!key.startsWith(prefix.name())) {
+                    continue;
+                }
+                String value = gradeAnswers.remove(key);
+                application.addOverriddenAnswer(key, value);
+                LOGGER.debug("Removed grade key: {}, value {} from application: {}", key, value, application.getOid());
+            }
+        }
+        application.addVaiheenVastaukset(OppijaConstants.PHASE_GRADES, gradeAnswers);
     }
 
     private String getPohjakoulutus(final SuoritusDTO suoritus) {
@@ -369,7 +387,7 @@ public class BaseEducationServiceImpl implements BaseEducationService{
       String key, String value) {
         String oldValue = answers.put(key, value);
         application.addOverriddenAnswer(key, oldValue);
-        LOGGER.info("Changing value key: {}, value: {} -> {}", key, oldValue, value);
+        LOGGER.debug("Changing value key: {}, value: {} -> {}", key, oldValue, value);
         return answers;
     }
 }
