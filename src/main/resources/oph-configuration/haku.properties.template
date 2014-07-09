@@ -103,6 +103,7 @@ mongo.db.name=hakulomake
 mongodb.url=${mongodb.oppija.uri}/${mongo.db.name}?maxpoolsize=${mongo.db.maxpoolsize}
 oid.rest.url.backend=${host.ilb}/oid-service/rest/oid
 oid.webservice.url.backend=${host.ilb}/services/oidService
+organisaatio.solr.url={{ organisaatio_solr_url }}
 root.organisaatio.oid=1.2.246.562.10.00000000001
 tarjonta.data.url=https\://${host.virkailija}/tarjonta-service/rest/
 tarjonta.haku.resource.url=https\://${host.virkailija}/tarjonta-service/rest/haku
