@@ -68,12 +68,12 @@ public class OfficerControllerTest {
         app.setPhaseId("valmis");
         when(applicationService.getApplication(OID)).thenReturn(app);
 
-        Element phase = new PhaseBuilder(PREVIEW_PHASE)
+        Element phase = new PhaseBuilder(PREVIEW_PHASE).setEditAllowedByRoles("TESTING")
                 .preview()
                 .i18nText(createI18NAsIs(PREVIEW_PHASE)).build();
 
         Form form = new Form("yhteishaku", createI18NAsIs("yhteishaku"));
-        form.addChild(new PhaseBuilder("henkilotiedot")
+        form.addChild(new PhaseBuilder("henkilotiedot").setEditAllowedByRoles("TESTING")
                 .i18nText(createI18NAsIs("henkilotiedot")).build());
 
         form.addChild(phase);

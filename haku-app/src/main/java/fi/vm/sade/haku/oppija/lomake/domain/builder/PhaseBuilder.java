@@ -3,12 +3,12 @@ package fi.vm.sade.haku.oppija.lomake.domain.builder;
 import com.google.common.collect.ImmutableList;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Phase;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
+import fi.vm.sade.haku.oppija.lomake.exception.ConfigurationException;
 
 import java.util.List;
 
 public class PhaseBuilder extends ElementBuilder {
-    private List<String> editAllowedByRoles = ImmutableList.of("APP_HAKEMUS_READ_UPDATE", "APP_HAKEMUS_CRUD", "APP_HAKEMUS_OPO");
+    private List<String> editAllowedByRoles = null;
     boolean preview;
 
     public PhaseBuilder(String id) {
@@ -23,10 +23,21 @@ public class PhaseBuilder extends ElementBuilder {
 
     @Override
     Element buildImpl() {
+        if (editAllowedByRoles == null || editAllowedByRoles.isEmpty())
+            throw new ConfigurationException("Missing configuration for editAllowedByRoles");
         return new Phase(id, i18nText, preview, editAllowedByRoles);
     }
 
     public static PhaseBuilder Phase(final String id) {
         return new PhaseBuilder(id);
+    }
+
+    public PhaseBuilder setEditAllowedByRoles(List<String> editAllowedByRoles){
+        this.editAllowedByRoles=editAllowedByRoles;
+        return this;
+    }
+
+    public PhaseBuilder setEditAllowedByRoles(String... editAllowedByRoles){
+        return this.setEditAllowedByRoles(ImmutableList.copyOf(editAllowedByRoles));
     }
 }

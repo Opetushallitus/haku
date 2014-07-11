@@ -36,7 +36,7 @@ public class LisatiedotPhase {
     }
 
     public static Element create(final FormParameters formParameters) {
-        Element lisatiedot = Phase("lisatiedot").formParams(formParameters).build();
+        Element lisatiedot = Phase("lisatiedot").setEditAllowedByRoles("APP_HAKEMUS_READ_UPDATE", "APP_HAKEMUS_CRUD", "APP_HAKEMUS_OPO").formParams(formParameters).build();
         if (!formParameters.isPervako()) {
             lisatiedot.addChild(createTyokokemus(formParameters));
         }

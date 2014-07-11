@@ -45,7 +45,7 @@ public final class KoulutustaustaPhase {
     }
 
     public static Element create(final FormParameters formParameters) {
-        Element koulutustausta = Phase("koulutustausta").formParams(formParameters).build();
+        Element koulutustausta = Phase("koulutustausta").setEditAllowedByRoles("APP_HAKEMUS_READ_UPDATE", "APP_HAKEMUS_CRUD", "APP_HAKEMUS_OPO").formParams(formParameters).build();
         Element koulutustaustaRyhma = new ThemeBuilder("koulutustausta.teema").previewable().formParams(formParameters).build();
         koulutustaustaRyhma.addChild(createKoulutustaustaRadio(formParameters));
         koulutustausta.addChild(koulutustaustaRyhma);
