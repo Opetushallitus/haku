@@ -61,7 +61,7 @@ public final class HenkilotiedotPhase {
     public static Element create(final FormParameters formParameters) {
 
         // Henkilötiedot
-        Element henkilotiedot = Phase("henkilotiedot").formParams(formParameters).build();
+        Element henkilotiedot = Phase("henkilotiedot").setEditAllowedByRoles("APP_HAKEMUS_READ_UPDATE", "APP_HAKEMUS_CRUD", "APP_HAKEMUS_OPO").formParams(formParameters).build();
 
         Element henkilotiedotTeema = Theme("henkilotiedot.teema").previewable().formParams(formParameters).build();
 
