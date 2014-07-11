@@ -54,7 +54,7 @@ public class HakutoiveetPhase {
 
 
     public static Element create(final FormParameters formParameters) {
-        return Phase(HAKUTOIVEET_PHASE_ID).formParams(formParameters)
+        return Phase(HAKUTOIVEET_PHASE_ID).setEditAllowedByRoles("APP_HAKEMUS_READ_UPDATE", "APP_HAKEMUS_CRUD").formParams(formParameters)
                 .addChild(createHakutoiveetTheme(formParameters)).build();
     }
 

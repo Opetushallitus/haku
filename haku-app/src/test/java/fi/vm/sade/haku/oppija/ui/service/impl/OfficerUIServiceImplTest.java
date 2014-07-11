@@ -52,7 +52,7 @@ public class OfficerUIServiceImplTest {
     private UserSession userSession;
 
     private Application application;
-    private Element phase = new PhaseBuilder(ID)
+    private Element phase = new PhaseBuilder(ID).setEditAllowedByRoles("TESTING")
             .i18nText(ElementUtil.createI18NAsIs("title")).build();
 
     private Form form;

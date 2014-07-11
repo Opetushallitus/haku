@@ -61,7 +61,7 @@ public class ElementUtilTest {
     @Test
     public void testFindElementsByType() {
         Form form = new Form("form", new I18nText(ImmutableMap.of("fi", "form")));
-        Element phase = new PhaseBuilder("phase")
+        Element phase = new PhaseBuilder("phase").setEditAllowedByRoles("TESTING")
                 .i18nText(new I18nText(ImmutableMap.of("fi", "phase")))
                 .build();
         Element theme = new ThemeBuilder("theme").previewable().i18nText(new I18nText(ImmutableMap.of("fi", "theme"))).build();
@@ -81,7 +81,7 @@ public class ElementUtilTest {
     @Test
     public void testFindElementsByTypeAsList() {
         Form form = new Form("form", new I18nText(ImmutableMap.of("fi", "form")));
-        Element phase = new PhaseBuilder("phase")
+        Element phase = new PhaseBuilder("phase").setEditAllowedByRoles("TESTING")
                 .i18nText(new I18nText(ImmutableMap.of("fi", "phase"))).build();
         Element theme = new ThemeBuilder("theme").previewable().i18nText(new I18nText(ImmutableMap.of("fi", "theme"))).build();
         phase.addChild(theme);

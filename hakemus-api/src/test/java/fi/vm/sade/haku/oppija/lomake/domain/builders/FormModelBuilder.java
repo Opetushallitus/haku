@@ -35,7 +35,7 @@ public class FormModelBuilder { // TODO rename to application system builder
     public static final String FORM_ID = "form";
 
     private ApplicationSystem applicationSystem;
-    private Element phase = new PhaseBuilder(PHASE_ID)
+    private Element phase = new PhaseBuilder(PHASE_ID).setEditAllowedByRoles("TESTING")
             .i18nText(createI18NAsIs(PHASE_ID)).build();
     private Element theme = new ThemeBuilder(THEME_ID).previewable().build();
 

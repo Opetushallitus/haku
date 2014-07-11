@@ -54,8 +54,8 @@ public class FormControllerTest {
     private static final String FIRST_PHASE_ID = "henkilotiedot";
     private static final String APPLICATION_SYSTEM_ID = ASID;
     public static final String PHASE_TITLE = "title";
-    public static final Element PHASE = new PhaseBuilder(FIRST_PHASE_ID)
-            .i18nText(createI18NAsIs(PHASE_TITLE)).build();
+    public static final  Element PHASE =  new PhaseBuilder(FIRST_PHASE_ID).setEditAllowedByRoles("TESTING")
+      .i18nText(createI18NAsIs(PHASE_TITLE)).build();
     public static final Form FORM = new Form("id", createI18NAsIs("title"));
 
     private FormController formController;

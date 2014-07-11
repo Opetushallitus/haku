@@ -24,7 +24,7 @@ import static fi.vm.sade.haku.oppija.lomake.domain.builder.PhaseBuilder.Phase;
 public class OsaaminenPhase {
 
     public static Element create(final FormParameters formParameters) {
-        Element osaaminen = Phase("osaaminen").formParams(formParameters).build();
+        Element osaaminen = Phase("osaaminen").setEditAllowedByRoles("APP_HAKEMUS_READ_UPDATE", "APP_HAKEMUS_CRUD", "APP_HAKEMUS_OPO").formParams(formParameters).build();
         if (formParameters.getFormTemplateType().equals(FormParameters.FormTemplateType.YHTEISHAKU_KEVAT) ||
                 formParameters.isPervako() || formParameters.isKevaanLisahaku()) {
             osaaminen.addChild(ArvosanatTheme.createArvosanatThemeKevat(formParameters));
