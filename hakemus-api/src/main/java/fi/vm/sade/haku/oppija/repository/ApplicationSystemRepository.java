@@ -31,7 +31,7 @@ public class ApplicationSystemRepository {
         try {
             mongoOperations.save(applicationSystem);
         } catch (RuntimeException e) {
-            log.error("Failed to find application system " + applicationSystem.getId(), e);
+            log.error("Failed to save application system " + applicationSystem.getId(), e);
             throw e;
         }
     }
