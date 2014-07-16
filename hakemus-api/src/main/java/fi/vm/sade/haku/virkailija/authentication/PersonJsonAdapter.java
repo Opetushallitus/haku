@@ -61,9 +61,9 @@ public class PersonJsonAdapter implements JsonSerializer<Person>, JsonDeserializ
 
         String sex = person.getSex();
         if (!isEmpty(sex) && OppijaConstants.SUKUPUOLI_MIES.equals(sex)) {
-            personJson.add("sukupuoli", new JsonPrimitive(SukupuoliType.MIES.value()));
+            personJson.add("sukupuoli", new JsonPrimitive(OppijaConstants.SUKUPUOLI_MIES));
         } else if (!isEmpty(sex) && OppijaConstants.SUKUPUOLI_NAINEN.equals(sex)) {
-            personJson.add("sukupuoli", new JsonPrimitive(SukupuoliType.NAINEN.value()));
+            personJson.add("sukupuoli", new JsonPrimitive(OppijaConstants.SUKUPUOLI_NAINEN));
         }
 
         return personJson;
@@ -86,9 +86,9 @@ public class PersonJsonAdapter implements JsonSerializer<Person>, JsonDeserializ
 
         log.debug("Deserialized basic info");
         String sex = getJsonString(personJson, "sukupuoli");
-        if (sex != null && SukupuoliType.MIES.value().equals(sex)) {
+        if (sex != null && (SukupuoliType.MIES.value().equals(sex) || OppijaConstants.SUKUPUOLI_MIES.equals(sex))) {
             personBuilder.setSex(OppijaConstants.SUKUPUOLI_MIES);
-        } else if (sex != null && SukupuoliType.NAINEN.value().equals(sex)) {
+        } else if (sex != null && (SukupuoliType.NAINEN.value().equals(sex) || OppijaConstants.SUKUPUOLI_NAINEN.equals(sex))) {
             personBuilder.setSex(OppijaConstants.SUKUPUOLI_NAINEN);
         }
 
