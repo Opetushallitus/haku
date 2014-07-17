@@ -146,8 +146,8 @@ public class ValintaServiceTest {
                 authenticationService,
                 organizationService,
                 null,
-                userSession);
-
+                userSession,
+                "01.02 - 01.09");
     }
 
     @Test
