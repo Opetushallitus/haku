@@ -25,7 +25,7 @@ public class ValidationIT extends IntegrationTestSupport {
     public void validateFixture() {
         ApplicationSystem applicationSystemFixture = ass.getApplicationSystem(applicationSystemId);
         Application applicationFixture = dao.find(new Application()).get(0);
-        assertEquals(validateApplication(applicationSystemFixture, applicationFixture).size(), 3);
+        assertEquals(validateApplication(applicationSystemFixture, applicationFixture).size(), 1);
     }
 
     @Test
@@ -36,7 +36,7 @@ public class ValidationIT extends IntegrationTestSupport {
         vastaukset.put("preference1-Koulutus-id", "1.2.246.562.20.30500448839");
         vastaukset.put("preference1-Opetuspiste-id", "1.2.246.562.10.35241670047");
         applicationFixture.addVaiheenVastaukset("hakutoiveet", vastaukset);
-        assertEquals(validateApplication(applicationSystemFixture, applicationFixture).size(), 7);
+        assertEquals(validateApplication(applicationSystemFixture, applicationFixture).size(), 6);
     }
 
     private Map<String, I18nText> validateApplication(ApplicationSystem applicationSystemFixture, Application applicationFixture) {
