@@ -25,6 +25,5 @@ import java.util.List;
  */
 public interface FormGenerator {
 
-    List<ApplicationSystem> getApplicationSystems();
     ApplicationSystem generate(String oid);
 }

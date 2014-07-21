@@ -43,11 +43,6 @@ public class FormGeneratorImpl implements FormGenerator {
         return createApplicationSystem(as);
     }
 
-    @Override
-    public List<ApplicationSystem> getApplicationSystems() {
-        return hakuService.getApplicationSystems();
-    }
-
     private ApplicationSystem createApplicationSystem(ApplicationSystem as) {
         FormParameters formParameters = new FormParameters(as, koodistoService, themeQuestionDAO, hakukohdeService, applicationOptionService);
         return new ApplicationSystemBuilder().addId(as.getId()).addForm(generateForm(formParameters))
