@@ -89,7 +89,9 @@ public class OfficerUIServiceImplTest {
                 authenticationService,
                 organizationService,
                 valintaService,
-                userSession, null);
+                userSession,
+                null,
+                "01.02 - 01.09");
         form.addChild(phase);
         when(applicationService.getApplication(OID)).thenReturn(application);
         when(applicationService.getApplicationByOid(OID)).thenReturn(application);
