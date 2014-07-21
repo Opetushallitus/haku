@@ -156,6 +156,14 @@ public class FormEditorController {
     }
 
     @GET
+    @Path("application-system-form/{applicationSystemId}/state")
+    @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
+    @PreAuthorize("hasAnyRole('ROLE_APP_HAKULOMAKKEENHALLINTA_READ_UPDATE', 'ROLE_APP_HAKULOMAKKEENHALLINTA_CRUD', 'ROLE_APP_HAKULOMAKKEENHALLINTA_READ')")
+    public Map getAppicationSystemState(@PathParam("applicationSystemId") String applicationSystemId){
+        return ImmutableMap.of("State", deduceApplicationSystemState(hakuService.getApplicationSystem(applicationSystemId)));
+    }
+
+    @GET
     @Path("application-system-form/{applicationSystemId}/name")
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKULOMAKKEENHALLINTA_READ_UPDATE', 'ROLE_APP_HAKULOMAKKEENHALLINTA_CRUD', 'ROLE_APP_HAKULOMAKKEENHALLINTA_READ')")
