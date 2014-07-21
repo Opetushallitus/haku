@@ -156,6 +156,19 @@ public class FormEditorController {
     }
 
     @GET
+    @Path("application-system-form/{applicationSystemId}/full")
+    @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
+    @PreAuthorize("hasAnyRole('ROLE_APP_HAKULOMAKKEENHALLINTA_READ_UPDATE', 'ROLE_APP_HAKULOMAKKEENHALLINTA_CRUD', 'ROLE_APP_HAKULOMAKKEENHALLINTA_READ')")
+    public Map getAppicationSystem(@PathParam("applicationSystemId") String applicationSystemId){
+        ApplicationSystem applicationSystem = formaGenerator.generate(applicationSystemId);
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.enable(SerializationConfig.Feature.INDENT_OUTPUT);
+        mapper.disable(SerializationConfig.Feature.FAIL_ON_EMPTY_BEANS);
+
+        return mapper.convertValue(applicationSystem, Map.class);
+    }
+
+    @GET
     @Path("application-system-form/{applicationSystemId}/state")
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKULOMAKKEENHALLINTA_READ_UPDATE', 'ROLE_APP_HAKULOMAKKEENHALLINTA_CRUD', 'ROLE_APP_HAKULOMAKKEENHALLINTA_READ')")
