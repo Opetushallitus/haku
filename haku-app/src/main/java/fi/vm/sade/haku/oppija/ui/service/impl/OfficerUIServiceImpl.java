@@ -2,7 +2,6 @@ package fi.vm.sade.haku.oppija.ui.service.impl;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Strings;
-import com.google.common.collect.ImmutableList;
 import fi.vm.sade.haku.oppija.common.organisaatio.Organization;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
 import fi.vm.sade.haku.oppija.hakemus.aspect.LoggerAspect;
@@ -54,7 +53,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.text.DateFormat;
 import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
@@ -82,8 +84,8 @@ public class OfficerUIServiceImpl implements OfficerUIService {
 
     private static final DecimalFormat PISTE_FMT = new DecimalFormat("#.##");
 
-    private static final List<Integer> syyskausi = ImmutableList.of(Calendar.JULY, Calendar.AUGUST, Calendar.SEPTEMBER,
-            Calendar.OCTOBER, Calendar.NOVEMBER, Calendar.DECEMBER);
+    private static final DateFormat KAUSI_FMT = new SimpleDateFormat("dd.MM.yyyy");
+    private final String kevatkausi;
 
     @Autowired
     public OfficerUIServiceImpl(final ApplicationService applicationService,
@@ -98,7 +100,8 @@ public class OfficerUIServiceImpl implements OfficerUIService {
                                 final AuthenticationService authenticationService,
                                 final OrganizationService organizationService,
                                 final ValintaService valintaService,
-                                final UserSession userSession) {
+                                final UserSession userSession,
+                                @Value("${hakukausi.kevat}") final String kevatkausi) {
         this.applicationService = applicationService;
         this.baseEducationService = baseEducationService;
         this.formService = formService;
@@ -112,6 +115,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         this.organizationService = organizationService;
         this.valintaService = valintaService;
         this.userSession = userSession;
+        this.kevatkausi = kevatkausi;
     }
 
     @Override
@@ -391,9 +395,16 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         modelResponse.addObjectToModel("applicationEnterAllowed", hakuPermissionService.userCanEnterApplication());
         modelResponse.addObjectToModel("sendingSchoolAllowed", hakuPermissionService.userCanSearchBySendingSchool());
         Calendar today = GregorianCalendar.getInstance();
-        String semester = "kausi_k";
-        if (syyskausi.contains(Integer.valueOf(today.get(Calendar.MONTH)))) {
-            semester = "kausi_s";
+        String semester = "kausi_s";
+        String[] kevatkausiDates = kevatkausi.split("-");
+        try {
+            Date kevatkausiAlkaa = KAUSI_FMT.parse(kevatkausiDates[0].trim() + "." + today.get(Calendar.YEAR));
+            Date kevatkausiLoppuu = KAUSI_FMT.parse(kevatkausiDates[1].trim() +"."+today.get(Calendar.YEAR));
+            if (today.getTime().after(kevatkausiAlkaa) && today.getTime().before(kevatkausiLoppuu)) {
+                semester = "kausi_k";
+            }
+        } catch (ParseException e) {
+            LOGGER.error("Couldn't parse kevatkausi dates: {}", kevatkausi);
         }
         modelResponse.addObjectToModel("defaultYear", String.valueOf(today.get(Calendar.YEAR)));
         modelResponse.addObjectToModel("defaultSemester", semester);
