@@ -25,7 +25,7 @@
     <c:forEach var="child" items="${element.children}" varStatus="status">
         <tr>
             <td class="index">
-                <span><haku:i18nText value="${child.i18nText}"/></span>
+                <span>${status.index + 1}.</span>
                 <div class="sort-arrows">
                     <c:if test="${not status.first}">
                         <button class="up sort" data-id="${child.id}" data-target="${element.children[status.index - 1].id}"

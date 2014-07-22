@@ -110,7 +110,7 @@ public class ApplicationResource {
 
         List<Application> result = new ArrayList<Application>();
         for (String oid : oids) {
-            LOGGER.debug("Getting application by oid : {}", oid);
+            LOGGER.debug("Getting appApplicationRlication by oid : {}", oid);
             try {
                 Application app = applicationService.getApplicationByOid(oid);
                 result.add(app);

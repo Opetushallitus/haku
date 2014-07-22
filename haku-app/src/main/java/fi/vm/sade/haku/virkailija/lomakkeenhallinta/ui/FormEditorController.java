@@ -156,6 +156,27 @@ public class FormEditorController {
     }
 
     @GET
+    @Path("application-system-form/{applicationSystemId}/full")
+    @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
+    @PreAuthorize("hasAnyRole('ROLE_APP_HAKULOMAKKEENHALLINTA_READ_UPDATE', 'ROLE_APP_HAKULOMAKKEENHALLINTA_CRUD', 'ROLE_APP_HAKULOMAKKEENHALLINTA_READ')")
+    public Map getAppicationSystem(@PathParam("applicationSystemId") String applicationSystemId){
+        ApplicationSystem applicationSystem = formaGenerator.generate(applicationSystemId);
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.enable(SerializationConfig.Feature.INDENT_OUTPUT);
+        mapper.disable(SerializationConfig.Feature.FAIL_ON_EMPTY_BEANS);
+
+        return mapper.convertValue(applicationSystem, Map.class);
+    }
+
+    @GET
+    @Path("application-system-form/{applicationSystemId}/state")
+    @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
+    @PreAuthorize("hasAnyRole('ROLE_APP_HAKULOMAKKEENHALLINTA_READ_UPDATE', 'ROLE_APP_HAKULOMAKKEENHALLINTA_CRUD', 'ROLE_APP_HAKULOMAKKEENHALLINTA_READ')")
+    public Map getAppicationSystemState(@PathParam("applicationSystemId") String applicationSystemId){
+        return ImmutableMap.of("State", deduceApplicationSystemState(hakuService.getApplicationSystem(applicationSystemId)));
+    }
+
+    @GET
     @Path("application-system-form/{applicationSystemId}/name")
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKULOMAKKEENHALLINTA_READ_UPDATE', 'ROLE_APP_HAKULOMAKKEENHALLINTA_CRUD', 'ROLE_APP_HAKULOMAKKEENHALLINTA_READ')")
@@ -183,6 +204,10 @@ public class FormEditorController {
             LOGGER.debug("Fetching option data for " + applicationOptionId);
             HakukohdeDTO applicationOption = hakukohdeService.findByOid(applicationOptionId);
             String providerId = applicationOption.getTarjoajaOid();
+            if (null == providerId){
+                LOGGER.error("Got null provider for application option: " + applicationOptionId + " of application system: " + applicationSystemId);
+                continue;
+            }
             LOGGER.debug("Provider for  " + applicationOptionId + " is " +providerId);
             orgHierarchy.addOrganization(providerId);
         }

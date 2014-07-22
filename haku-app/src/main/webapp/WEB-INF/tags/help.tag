@@ -19,7 +19,7 @@
   ~ European Union Public Licence for more details.
   --%>
 <c:if test="${not empty element.help}">
-    <div class="margin-top-1" id="help-${element.id}">
+    <div id="help-${element.id}" class="element-help">
         <p class="small italic"><haku:i18nText value="${element.help}"/></p>
     </div>
 </c:if>

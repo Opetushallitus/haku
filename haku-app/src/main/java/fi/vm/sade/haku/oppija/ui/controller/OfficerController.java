@@ -16,7 +16,38 @@
 
 package fi.vm.sade.haku.oppija.ui.controller;
 
+import static fi.vm.sade.haku.oppija.ui.common.MultivaluedMapUtil.toSingleValueMap;
+import static javax.ws.rs.core.Response.ok;
+import static javax.ws.rs.core.Response.seeOther;
+
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.core.Response;
+
+import org.apache.http.HttpResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.stereotype.Controller;
+
 import com.sun.jersey.api.view.Viewable;
+
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
@@ -27,26 +58,11 @@ import fi.vm.sade.haku.oppija.ui.common.UriUtil;
 import fi.vm.sade.haku.oppija.ui.service.ModelResponse;
 import fi.vm.sade.haku.oppija.ui.service.OfficerUIService;
 import fi.vm.sade.haku.oppija.ui.service.UIService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Controller;
-
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.MultivaluedMap;
-import javax.ws.rs.core.Response;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import static fi.vm.sade.haku.oppija.ui.common.MultivaluedMapUtil.toSingleValueMap;
-import static javax.ws.rs.core.Response.ok;
-import static javax.ws.rs.core.Response.seeOther;
+import fi.vm.sade.haku.virkailija.viestintapalvelu.EmailService;
+import fi.vm.sade.haku.virkailija.viestintapalvelu.PDFService;
+import fi.vm.sade.haku.virkailija.viestintapalvelu.dto.ApplicationByEmailDTO;
+import fi.vm.sade.haku.virkailija.viestintapalvelu.dto.ApplicationTemplateDTO;
+import fi.vm.sade.haku.virkailija.viestintapalvelu.dto.ApplicationReplacementDTO;
 
 
 @Path("virkailija")
@@ -58,6 +74,7 @@ public class OfficerController {
     public static final String VIRKAILIJA_HAKEMUS_VIEW = "/virkailija/hakemus";
     public static final String DEFAULT_VIEW = "/virkailija/Form";
     public static final String OID_PATH_PARAM = "oid";
+    public static final String ORGANIZATION_OID_PATH_PARAM = "orgOid";
     public static final String VERBOSE_HELP_VIEW = "/help";
     public static final String PHASE_ID_PATH_PARAM = "phaseId";
     public static final String ELEMENT_ID_PATH_PARAM = "elementId";
@@ -75,9 +92,12 @@ public class OfficerController {
     UIService uiService;
     @Autowired
     FormService formService;
-
     @Autowired
     UserSession userSession;
+    @Autowired
+    private PDFService pdfService;
+    @Autowired
+    private EmailService emailService;
 
     @GET
     @Path("/hakemus/")
@@ -262,13 +282,52 @@ public class OfficerController {
 
     @GET
     @Path("/hakemus/{oid}/print")
+    @Produces(MediaType.TEXT_PLAIN)
+    public Response applicationPrint(@PathParam(OID_PATH_PARAM) final String oid) throws URISyntaxException {
+		String url = "/virkailija/hakemus/" + oid + "/print/view";
+    	HttpResponse httpResponse = pdfService.getUriToPDF(url);
+    	URI location = UriUtil.pathSegmentsToUri(httpResponse.getFirstHeader("Content-Location").getValue());
+    	return Response.seeOther(location).build();
+    }
+
+    @GET
+    @Path("/hakemus/{oid}/print/view")
     @Produces(MEDIA_TYPE_TEXT_HTML_UTF8)
-    public Viewable applicationPrintView(@PathParam(OID_PATH_PARAM) final String oid) {
+    public Viewable getApplicationPrintView(@PathParam(OID_PATH_PARAM) final String oid) {
         ModelResponse modelResponse = officerUIService.getApplicationPrint(oid);
         return new Viewable(APPLICATION_PRINT_VIEW, modelResponse.getModel());
     }
 
+    @POST
+    @Path("/hakemus/email")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.TEXT_PLAIN)
+    public Response applicationEmail(ApplicationByEmailDTO applicationByEmail) throws URISyntaxException, IOException {
+    	String id = emailService.sendApplicationByEmail(applicationByEmail);
+    	return Response.ok(id).build();
+    }
 
+    @GET
+    @Path("/hakemus/getApplicationByEmailDTO")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getApplicationByEmailDTO() {
+    	ApplicationTemplateDTO template = new ApplicationTemplateDTO();
+    	
+    	List<ApplicationReplacementDTO> replacements = new ArrayList<ApplicationReplacementDTO>();
+    	ApplicationReplacementDTO replacement = new ApplicationReplacementDTO();
+    	replacement.setName("name");
+    	replacement.setValue("value");
+    	replacements.add(replacement);
+    	replacements.add(replacement);
+    	
+    	template.setTemplateReplacements(replacements);
+    	
+    	ApplicationByEmailDTO applicationByEmail = new ApplicationByEmailDTO();
+    	applicationByEmail.setApplicationTemplate(template);
+    	
+    	return Response.ok(applicationByEmail).build();
+    }
+    
     @GET
     @Path("/hakemus/applicationSystems")
     @Produces(MediaType.APPLICATION_JSON)

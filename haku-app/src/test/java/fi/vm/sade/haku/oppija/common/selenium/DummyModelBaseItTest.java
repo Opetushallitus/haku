@@ -161,19 +161,4 @@ public abstract class DummyModelBaseItTest extends AbstractSeleniumBase {
             setValue(questionAndAnswer.getKey(), questionAndAnswer.getValue());
         }
     }
-
-    public static ApplicationSystem createActiveApplicationSystem(final String id, Form form) {
-        final Calendar instance = Calendar.getInstance();
-        instance.roll(Calendar.YEAR, -1);
-        Date start = new Date(instance.getTimeInMillis());
-        instance.roll(Calendar.YEAR, 2);
-        Date end = new Date(instance.getTimeInMillis());
-        List<ApplicationPeriod> applicationPeriods = Lists.newArrayList(new ApplicationPeriod(start, end));
-        return new ApplicationSystemBuilder().addId(id).addForm(form)
-                .addName(ElementUtil.createI18NAsIs("test application period"))
-                .addApplicationPeriods(applicationPeriods)
-                .addHakukausiUri(OppijaConstants.HAKUKAUSI_SYKSY)
-                .addApplicationSystemType(OppijaConstants.VARSINAINEN_HAKU)
-                .get();
-    }
 }

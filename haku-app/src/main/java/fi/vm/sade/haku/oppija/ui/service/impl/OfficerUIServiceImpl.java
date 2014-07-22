@@ -2,7 +2,6 @@ package fi.vm.sade.haku.oppija.ui.service.impl;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Strings;
-import com.google.common.collect.ImmutableList;
 import fi.vm.sade.haku.oppija.common.organisaatio.Organization;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
 import fi.vm.sade.haku.oppija.hakemus.aspect.LoggerAspect;
@@ -34,6 +33,7 @@ import fi.vm.sade.haku.oppija.ui.service.ModelResponse;
 import fi.vm.sade.haku.oppija.ui.service.OfficerUIService;
 import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
 import fi.vm.sade.haku.virkailija.authentication.Person;
+import fi.vm.sade.haku.virkailija.koulutusinformaatio.KoulutusinformaatioService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
@@ -47,6 +47,7 @@ import fi.vm.sade.sijoittelu.tulos.dto.raportointi.HakutoiveenValintatapajonoDTO
 import fi.vm.sade.valintalaskenta.domain.dto.*;
 import fi.vm.sade.valintalaskenta.domain.dto.valintakoe.ValintakoeDTO;
 import fi.vm.sade.valintalaskenta.domain.valintakoe.Osallistuminen;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,7 +55,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.text.DateFormat;
 import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
@@ -79,11 +83,12 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     private final OrganizationService organizationService;
     private ValintaService valintaService;
     private final UserSession userSession;
+    private final KoulutusinformaatioService koulutusinformaatioService;
 
     private static final DecimalFormat PISTE_FMT = new DecimalFormat("#.##");
 
-    private static final List<Integer> syyskausi = ImmutableList.of(Calendar.JULY, Calendar.AUGUST, Calendar.SEPTEMBER,
-            Calendar.OCTOBER, Calendar.NOVEMBER, Calendar.DECEMBER);
+    private static final DateFormat KAUSI_FMT = new SimpleDateFormat("dd.MM.yyyy");
+    private final String kevatkausi;
 
     @Autowired
     public OfficerUIServiceImpl(final ApplicationService applicationService,
@@ -98,7 +103,9 @@ public class OfficerUIServiceImpl implements OfficerUIService {
                                 final AuthenticationService authenticationService,
                                 final OrganizationService organizationService,
                                 final ValintaService valintaService,
-                                final UserSession userSession) {
+                                final UserSession userSession,
+                                final KoulutusinformaatioService koulutusinformaatioService,
+                                @Value("${hakukausi.kevat}") final String kevatkausi) {
         this.applicationService = applicationService;
         this.baseEducationService = baseEducationService;
         this.formService = formService;
@@ -112,6 +119,8 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         this.organizationService = organizationService;
         this.valintaService = valintaService;
         this.userSession = userSession;
+        this.koulutusinformaatioService = koulutusinformaatioService;
+        this.kevatkausi = kevatkausi;
     }
 
     @Override
@@ -392,9 +401,16 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         modelResponse.addObjectToModel("applicationEnterAllowed", hakuPermissionService.userCanEnterApplication());
         modelResponse.addObjectToModel("sendingSchoolAllowed", hakuPermissionService.userCanSearchBySendingSchool());
         Calendar today = GregorianCalendar.getInstance();
-        String semester = "kausi_k";
-        if (syyskausi.contains(Integer.valueOf(today.get(Calendar.MONTH)))) {
-            semester = "kausi_s";
+        String semester = "kausi_s";
+        String[] kevatkausiDates = kevatkausi.split("-");
+        try {
+            Date kevatkausiAlkaa = KAUSI_FMT.parse(kevatkausiDates[0].trim() + "." + today.get(Calendar.YEAR));
+            Date kevatkausiLoppuu = KAUSI_FMT.parse(kevatkausiDates[1].trim() +"."+today.get(Calendar.YEAR));
+            if (today.getTime().after(kevatkausiAlkaa) && today.getTime().before(kevatkausiLoppuu)) {
+                semester = "kausi_k";
+            }
+        } catch (ParseException e) {
+            LOGGER.error("Couldn't parse kevatkausi dates: {}", kevatkausi);
         }
         modelResponse.addObjectToModel("defaultYear", String.valueOf(today.get(Calendar.YEAR)));
         modelResponse.addObjectToModel("defaultSemester", semester);
@@ -565,7 +581,9 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         Application application = applicationService.getApplicationByOid(oid);
         ApplicationSystem activeApplicationSystem = applicationSystemService.getApplicationSystem(application.getApplicationSystemId());
         List<String> discretionaryAttachmentAOIds = ApplicationUtil.getDiscretionaryAttachmentAOIds(application);
-        return new ModelResponse(application, activeApplicationSystem, discretionaryAttachmentAOIds, koulutusinformaatioBaseUrl);
+        List<fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO> discretionaryAttachments = 
+       		koulutusinformaatioService.getApplicationOptions(discretionaryAttachmentAOIds);
+        return new ModelResponse(application, activeApplicationSystem, discretionaryAttachments);
     }
 
     private ApplicationNote createNote(String note) {

@@ -1388,6 +1388,9 @@ input, textarea, select, option {
 .break-word {
   word-wrap: break-word; }
 
+.oneline {
+  white-space: nowrap; }
+
 /*** Links
 ************************************************/
 a:link {
@@ -1978,7 +1981,7 @@ fieldset {
   margin: 2em 0; }
   fieldset legend {
     padding: 0;
-    margin: 0 0 1.538em 0; }
+    margin: 0 0 1em 0; }
   fieldset small {
     display: block;
     font-style: italic; }
@@ -2026,14 +2029,19 @@ label, .label {
     float: left;
     width: 300px;
     max-width: 455px; }
+  .form-row select {
+    margin: 0 0 1em 0; }
 
 /*** Form item structure
 ************************************************/
 .form-item {
-  clear: both; }
+  clear: both;
+  margin: 2em 0; }
 
 .form-item-label {
-  color: #000000; }
+  display: inline-block;
+  color: #000000;
+  margin: 0 0 1em 0; }
 
 .form .form-item-content {
   padding: 0 0 0 1em; }
@@ -2069,10 +2077,12 @@ label, .label {
 /*** Input(text), Select
 **********************************/
 .field-container-select {
-  padding: 0px 2px 0px 0px; }
+  padding: 0px 2px 0px 0px;
+  margin: 0 0 1em 0; }
 
 .field-container-text {
-  padding: 0px 0.923em 0px 0px; }
+  padding: 0px 0.923em 0px 0px;
+  margin: 0 0 1em 0; }
 
 /*** Mandatory
 ************************************************/
@@ -2082,6 +2092,12 @@ label, .label {
 .required-field {
   font-size: 0.813em;
   color: red; }
+
+.element-help {
+  margin: 0 0 1em 0; }
+  .element-help p {
+    margin: 0;
+    padding: 0; }
 
 /*** Help page
 ************************************************/
@@ -2206,8 +2222,6 @@ label, .label {
     -o-border-top-right-radius: 5px;
     -ms-border-top-right-radius: 5px;
     border-top-right-radius: 5px; }
-.application-basket tbody tr td.table-container {
-  padding: 1em 0; }
 .application-basket table.sub {
   border: none;
   border-spacing: 0;
@@ -2395,16 +2409,15 @@ label, .label {
   font-size: 0px; }
 
 /*  Näytä lisää -tekstikomponentti */
+/*
 .extendable-content {
-  -webkit-transition: height 0.2s ease;
-  -moz-transition: height 0.2s ease;
-  -o-transition: height 0.2s ease;
-  -ms-transition: height 0.2s ease;
-  transition: height 0.2s ease; }
+    @include transitions(height, 0.2s ease);
 
+}
+*/
 .ao-block {
   border-bottom: 1px solid #dddddd;
-  margin-bottom: 2em;
+  margin-bottom: 1em;
   padding-bottom: 2em; }
 
 .search-result-collapsed {
@@ -3082,6 +3095,10 @@ table {
     font-size: 12px;
     text-align: left;
     text-transform: uppercase; }
+  table.striped tr {
+    border-bottom: 1px solid #bfe4f1; }
+    table.striped tr:first-child {
+      border-top: 1px solid #bfe4f1; }
   table.striped thead tr {
     background-color: white; }
   table.striped tbody tr:nth-child(even) {
@@ -3092,8 +3109,10 @@ table {
     background-color: #dff2f8; }
   table.striped tbody.headless tr:nth-child(odd) {
     background-color: white; }
-  table.table tbody tr td {
-    border-top: 1px solid #bfe4f1; }
+  table.table tr {
+    border-bottom: 1px solid #bfe4f1; }
+    table.table tr:first-child {
+      border-top: 1px solid #bfe4f1; }
 
 /*** Application form
 **************************************************************/

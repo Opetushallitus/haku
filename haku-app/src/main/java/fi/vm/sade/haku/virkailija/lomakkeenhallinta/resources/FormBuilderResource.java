@@ -18,6 +18,7 @@ package fi.vm.sade.haku.virkailija.lomakkeenhallinta.resources;
 
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakuService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormGenerator;
@@ -44,11 +45,13 @@ public class FormBuilderResource {
 
     private final FormGenerator formGenerator;
     private final ApplicationSystemService applicationSystemService;
+    private final HakuService hakuService;
 
     @Autowired
-    public FormBuilderResource(final FormGenerator formGenerator, final ApplicationSystemService applicationSystemService) {
+    public FormBuilderResource(final FormGenerator formGenerator, final ApplicationSystemService applicationSystemService, final HakuService hakuService) {
         this.formGenerator = formGenerator;
         this.applicationSystemService = applicationSystemService;
+        this.hakuService = hakuService;
     }
 
     @GET
@@ -62,7 +65,7 @@ public class FormBuilderResource {
     @GET
     @Produces(MediaType.TEXT_PLAIN + ";charset=UTF-8")
     public Response generate() throws URISyntaxException {
-        List<ApplicationSystem> applicationSystems = formGenerator.getApplicationSystems();
+        List<ApplicationSystem> applicationSystems = hakuService.getApplicationSystems();
         int asCount = applicationSystems.size();
         int index = 1;
         log.info("Starting to generate "+ asCount+ " application systems");
