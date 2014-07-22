@@ -373,7 +373,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
 
             for (Map.Entry<String, String> entry : newAnswers.entrySet()) {
                 String key = entry.getKey();
-                if ((key.startsWith("LK") || key.startsWith("PK_")) && grades.containsKey(key)) {
+                if ((key.startsWith("LK_") || key.startsWith("PK_")) && grades.containsKey(key)) {
                     String value = entry.getValue();
                     String oldValue = grades.get(key);
                     if (!value.equals(oldValue)) {
@@ -382,7 +382,10 @@ public class OfficerUIServiceImpl implements OfficerUIService {
                 }
             }
             for (Map.Entry<String, String> entry : grades.entrySet()) {
-                newAnswers.put(entry.getKey(), entry.getValue());
+                String key = entry.getKey();
+                if (key.startsWith("LK_") || key.startsWith("PK_")) {
+                    newAnswers.put(key, entry.getValue());
+                }
             }
         }
 

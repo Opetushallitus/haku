@@ -36,6 +36,7 @@ import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
 
@@ -137,6 +138,7 @@ public class OfficerUIServiceImplTest {
         Map<String, String> answers = new HashMap<String, String>();
         answers.put("PK_GRADE", "foo");
         answers.put("notgrade", "foo");
+        answers.put("stillnotgrade", "foo");
         application.addVaiheenVastaukset("osaaminen", answers);
         if (transferred) {
             application.addMeta("grades_transferred_pk", "true");
@@ -165,8 +167,32 @@ public class OfficerUIServiceImplTest {
 
         Map<String, String> answers = new HashMap<String, String>();
         answers.put("PK_GRADE", "bar");
+        answers.put("notgrade", "baz");
         ApplicationPhase phase = new ApplicationPhase(asId, "osaaminen", answers);
-        uiService.updateApplication(oid, phase, null);
+        ModelResponse response = uiService.updateApplication(oid, phase, null);
+        Map<String, String> newAnswers = response.getApplication().getVastauksetMerged();
+        assertEquals(2, answers.size());
+        assertEquals("bar", newAnswers.get("PK_GRADE"));
+        assertEquals("baz", newAnswers.get("notgrade"));
+    }
+
+    @Test
+    public void testUpdateGradesTransferred() {
+        String oid = "1.2.3";
+        String asId = "4.5.6";
+        OfficerUIService uiService = createUiServiceForGrades(oid, asId, true);
+
+        Map<String, String> answers = new HashMap<String, String>();
+        answers.put("notgrade", "baz");
+        answers.put("stillnotgrade", "foo");
+        ApplicationPhase phase = new ApplicationPhase(asId, "osaaminen", answers);
+        ModelResponse response = uiService.updateApplication(oid, phase, null);
+        Map<String, String> newAnswers = response.getApplication().getVastauksetMerged();
+        assertEquals(4, newAnswers.size());
+        assertEquals("foo", newAnswers.get("PK_GRADE"));
+        assertEquals("baz", newAnswers.get("notgrade"));
+        assertEquals("foo", newAnswers.get("stillnotgrade"));
+        assertEquals("true", newAnswers.get("_meta_grades_transferred_pk"));
     }
 
     @Test
@@ -177,11 +203,14 @@ public class OfficerUIServiceImplTest {
 
         Map<String, String> answers = new HashMap<String, String>();
         answers.put("PK_GRADE", "bar");
+        answers.put("notgrade", "baz");
         ApplicationPhase phase = new ApplicationPhase(asId, "osaaminen", answers);
 
         thrown.expect(fi.vm.sade.haku.oppija.lomake.exception.IllegalStateException.class);
         thrown.expectMessage("Trying to change transferred grades");
-        uiService.updateApplication(oid, phase, null);
+        ModelResponse response = uiService.updateApplication(oid, phase, null);
+        response.getApplication().getVastauksetMerged();
+        fail("Should have thrown");
     }
 
     @Test
