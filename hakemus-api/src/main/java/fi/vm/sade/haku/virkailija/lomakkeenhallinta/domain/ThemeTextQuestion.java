@@ -20,8 +20,8 @@ public class ThemeTextQuestion extends ThemeQuestion {
         super(TYPE);
     }
 
-    public ThemeTextQuestion(String applicationSystemId, String theme, String creatorPersonOid, List<String> ownerOrganizationOid, String learningOpportunityId, Map<String, String> validators, List<AttachmentRequest> attachmentRequests) {
-        super(applicationSystemId, theme, creatorPersonOid, ownerOrganizationOid, TYPE, learningOpportunityId, validators, attachmentRequests);
+    public ThemeTextQuestion(String applicationSystemId, String theme, String creatorPersonOid, List<String> ownerOrganizationOid, String learningOpportunityId, Integer ordinal, Map<String, String> validators, List<AttachmentRequest> attachmentRequests) {
+        super(applicationSystemId, theme, creatorPersonOid, ownerOrganizationOid, TYPE, learningOpportunityId, ordinal, validators, attachmentRequests);
     }
 
     @Override
