@@ -1,6 +1,6 @@
 #!/bin/bash
 
-fixturesroot="../hakemus-api/src/test/resources/mongofixtures"
+fixturesroot="../hakemus-api/src/main/resources/mongofixtures"
 mongoversion=`mongoexport --version`
 
 if [[ $mongoversion =~ 2\.4 ]]; then
