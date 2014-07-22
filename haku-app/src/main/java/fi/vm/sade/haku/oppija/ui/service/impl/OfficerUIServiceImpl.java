@@ -87,7 +87,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
 
     private static final DecimalFormat PISTE_FMT = new DecimalFormat("#.##");
 
-    private static final DateFormat KAUSI_FMT = new SimpleDateFormat("dd.MM.yyyy");
+    private static final String KAUSI_FORMAT_STRING = "dd.MM.yyyy";
     private final String kevatkausi;
 
     @Autowired
@@ -403,9 +403,10 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         Calendar today = GregorianCalendar.getInstance();
         String semester = "kausi_s";
         String[] kevatkausiDates = kevatkausi.split("-");
+        SimpleDateFormat dateFormat = new SimpleDateFormat(KAUSI_FORMAT_STRING);
         try {
-            Date kevatkausiAlkaa = KAUSI_FMT.parse(kevatkausiDates[0].trim() + "." + today.get(Calendar.YEAR));
-            Date kevatkausiLoppuu = KAUSI_FMT.parse(kevatkausiDates[1].trim() +"."+today.get(Calendar.YEAR));
+            Date kevatkausiAlkaa = dateFormat.parse(kevatkausiDates[0].trim() + "." + today.get(Calendar.YEAR));
+            Date kevatkausiLoppuu = dateFormat.parse(kevatkausiDates[1].trim() +"."+today.get(Calendar.YEAR));
             if (today.getTime().after(kevatkausiAlkaa) && today.getTime().before(kevatkausiLoppuu)) {
                 semester = "kausi_k";
             }
