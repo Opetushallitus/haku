@@ -45,8 +45,6 @@ public class SocialSecurityNumberFieldValidator extends FieldValidator {
     private static final String NOT_A_DATE_ERROR = "henkilotiedot.hetu.eiPvm";
     private static final String DOB_IN_FUTURE = "henkilotiedot.hetu.tulevaisuudessa";
     private static Map<String, Integer> centuries = new HashMap<String, Integer>();
-    @Transient
-    private DateFormat fmt;
     private static String[] checks = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C",
             "D", "E", "F", "H", "J", "K", "L", "M", "N", "P", "R", "S", "T", "U", "V", "W", "X", "Y"};
 
@@ -60,8 +58,6 @@ public class SocialSecurityNumberFieldValidator extends FieldValidator {
     public SocialSecurityNumberFieldValidator() {
         super(createI18NText(GENERIC_ERROR_MESSAGE));
         this.socialSecurityNumberPattern = Pattern.compile(SOCIAL_SECURITY_NUMBER_PATTERN);
-        fmt = new SimpleDateFormat("ddMMyyyy");
-        fmt.setLenient(false);
     }
 
     @Override
@@ -105,7 +101,7 @@ public class SocialSecurityNumberFieldValidator extends FieldValidator {
                 .valueOf(socialSecurityNumber.substring(4, 6)))); // NOSONAR
         Date dob = null;
         try {
-            dob = fmt.parse(dayAndMonth + year);
+            dob = date().parse(dayAndMonth + year);
         } catch (ParseException e) {
             result = new ValidationResult(fieldName, createI18NText(NOT_A_DATE_ERROR, FORM_COMMON_BUNDLE_NAME));
         }
@@ -113,5 +109,11 @@ public class SocialSecurityNumberFieldValidator extends FieldValidator {
             result = new ValidationResult(fieldName, createI18NText(DOB_IN_FUTURE, FORM_COMMON_BUNDLE_NAME));
         }
         return result;
+    }
+
+    private DateFormat date() {
+        DateFormat format = new SimpleDateFormat("ddMMyyyy");
+        format.setLenient(false);
+        return format;
     }
 }

@@ -36,9 +36,6 @@ public class SuoritusrekisteriServiceImplTest {
     Date yesterday;
     long ONE_DAY = 1000 * 60 * 60 * 24;
 
-    DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
-    DateFormat zulu = new SimpleDateFormat("dd.MM.yyyy");
-
     @Before
     public void setUp() {
         suoritusrekisteriService =  new SuoritusrekisteriServiceImpl();
@@ -125,11 +122,14 @@ public class SuoritusrekisteriServiceImplTest {
         opiskelija.add("luokkataso", new JsonPrimitive("10"));
         opiskelija.add("luokka", new JsonPrimitive("10Y"));
         opiskelija.add("henkiloOid", new JsonPrimitive("1.2.246.562.24.59031586696"));
-        opiskelija.add("alkuPaiva", new JsonPrimitive(zulu.format(yesterday)));
+        opiskelija.add("alkuPaiva", new JsonPrimitive(zulu().format(yesterday)));
 
         JsonArray opiskelijat = new JsonArray();
         opiskelijat.add(opiskelija);
         return new ByteArrayInputStream(opiskelijat.toString().getBytes("UTF-8"));
+    }
 
+    private DateFormat zulu() {
+        return new SimpleDateFormat("dd.MM.yyyy");
     }
 }

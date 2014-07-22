@@ -30,9 +30,6 @@ public class SuoritusrekisteriServiceImpl implements SuoritusrekisteriService {
 
     final Logger log = LoggerFactory.getLogger(SuoritusrekisteriServiceImpl.class);
 
-    private final static DateFormat ISO8601 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-    private final static DateFormat VALMISTUMINEN_FMT = new SimpleDateFormat("dd.MM.yyyy");
-
     private final static List<String> validKomos = new ArrayList<String>();
 
     static {
@@ -195,7 +192,7 @@ public class SuoritusrekisteriServiceImpl implements SuoritusrekisteriService {
         suoritus.setSuorituskieli(jsonElementToString(elem.get("suoritusKieli")));
 
         try {
-            Date valmistuminen = VALMISTUMINEN_FMT.parse(jsonElementToString(elem.get("valmistuminen")));
+            Date valmistuminen = valmistuminenPvm().parse(jsonElementToString(elem.get("valmistuminen")));
             suoritus.setValmistuminen(valmistuminen);
         } catch (ParseException e) {
             log.info("Parsing valmistuminen date failed: " + e);
@@ -217,7 +214,7 @@ public class SuoritusrekisteriServiceImpl implements SuoritusrekisteriService {
         if (str == null) {
             return null;
         }
-        return ISO8601.parse(str);
+        return ISO8601().parse(str);
     }
 
     private Boolean jsonElementToBoolean(JsonElement elem) {
@@ -241,5 +238,13 @@ public class SuoritusrekisteriServiceImpl implements SuoritusrekisteriService {
 
     protected void setCachingRestClient(CachingRestClient cachingRestClient) {
         this.cachingRestClient = cachingRestClient;
+    }
+
+    private DateFormat ISO8601() {
+        return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+    }
+
+    private DateFormat valmistuminenPvm() {
+        return new SimpleDateFormat("dd.MM.yyyy");
     }
 }
