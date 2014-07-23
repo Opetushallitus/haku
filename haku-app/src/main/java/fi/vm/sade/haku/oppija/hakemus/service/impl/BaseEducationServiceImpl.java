@@ -300,7 +300,7 @@ public class BaseEducationServiceImpl implements BaseEducationService{
 
         Map<String, String> proficiencyPhaseAnswers = new HashMap<String, String>(application.getPhaseAnswers(OppijaConstants.PHASE_GRADES));
         Set<String> receivedGrades = new HashSet<String>();
-        application.addMeta("osaaminen_locked", "true");
+        // application.addMeta("osaaminen_locked", "true");
 
         Map<String, Integer> valinnaiset = new HashMap<String, Integer>();
 
