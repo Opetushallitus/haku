@@ -40,6 +40,8 @@ import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 
 @Controller
@@ -48,6 +50,8 @@ public class ThemeQuestionResource {
 
     //NOTE: Supported roles ROLE_APP_HAKULOMAKKEENHALLINTA_CRUD ROLE_APP_HAKULOMAKKEENHALLINTA_READ ROLE_APP_HAKULOMAKKEENHALLINTA_READ_UPDATE
     public static final String CHARSET_UTF_8 = ";charset=UTF-8";
+    private static final String PARAM_NEW_ORDINAL = "newOrdinal";
+    private static final String PARAM_OLD_ORDINAL = "oldOrdinal";
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ThemeQuestionResource.class);
 
@@ -176,6 +180,59 @@ public class ThemeQuestionResource {
         LOGGER.debug("Saving Theme Question");
         themeQuestionDAO.save(themeQuestion);
         LOGGER.debug("Saved Theme Question");
+    }
+
+    @POST
+    @Path("reorder/{learningOpportunityId}/{themeId}")
+    @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
+    @Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
+    @PreAuthorize("hasAnyRole('ROLE_APP_HAKULOMAKKEENHALLINTA_READ_UPDATE', 'ROLE_APP_HAKULOMAKKEENHALLINTA_CRUD')")
+    public void reorderThemeQuestions(@PathParam("learningOpportunityId") String learningOpportunityId,
+      @PathParam("themeId") String themeId, Map<String,Map<String,String>> reorderedQuestions) {
+        LOGGER.debug("Posted " + reorderedQuestions);
+        if (null == learningOpportunityId || null == themeId)
+            throw new JSONException(Response.Status.BAD_REQUEST, "Missing pathparameters", null);
+        List<Map<String, String>> values = new ArrayList(reorderedQuestions.values());
+        boolean changes = false;
+        long ordinalCheckSum = 0;
+        for (Map<String,String> value : values){
+            try {
+                Integer newOrdinal = Integer.getInteger(value.get(PARAM_NEW_ORDINAL));
+                Integer oldOrdinal = Integer.getInteger(value.get(PARAM_OLD_ORDINAL));
+                if (null == newOrdinal) {
+                    LOGGER.debug("Exception due to new ordinal null value");
+                    throw new JSONException(Response.Status.BAD_REQUEST, "New ordinal values are missing or not valid", null);
+                }
+                if (!newOrdinal.equals(oldOrdinal))
+                    changes = true;
+                if (newOrdinal < 1 || reorderedQuestions.size() < newOrdinal) {
+                    LOGGER.debug("Exception due to new ordinal value. New ordinal: {}, questionCount : {}", newOrdinal, reorderedQuestions.size());
+                    throw new JSONException(Response.Status.BAD_REQUEST, "New ordinal values are missing or not valid", null);
+                }
+                long currentOrdinalCheckSum = 1 << newOrdinal;
+                if ((currentOrdinalCheckSum & ordinalCheckSum) > 0) {
+                    LOGGER.debug("Exception due to ordinalCheckSums. Current: {}, total: {}", currentOrdinalCheckSum, ordinalCheckSum);
+                    throw new JSONException(Response.Status.BAD_REQUEST, "Duplicate ordinals", null);
+                }
+                ordinalCheckSum += currentOrdinalCheckSum;
+            } catch (NumberFormatException exception){
+                throw new JSONException(Response.Status.BAD_REQUEST, "Ordinal values must be integers", null);
+            }
+        }
+        if (!changes){
+            LOGGER.debug("No changes. Skipping the rest");
+            return;
+        }
+        //TODO =RS= some metalocking to simulate transactions or something
+
+        Set<String> themeQuestionIds = reorderedQuestions.keySet();
+        if (!themeQuestionDAO.validateLearningOpportunityAndTheme(learningOpportunityId, themeId,  themeQuestionIds.toArray(new String[themeQuestionIds.size()])))
+            throw new JSONException(Response.Status.BAD_REQUEST, "Error in input data. Mismatch between question ids, theme and application option", null);
+        // TODO =RS= do something if there are ordinals missing or old values do not match.
+        for (String id : themeQuestionIds){
+            Map<String, String> questionParam = reorderedQuestions.get(id);
+            themeQuestionDAO.setOrdinal(id, Integer.getInteger(questionParam.get(PARAM_NEW_ORDINAL)));
+        }
     }
 
     private ThemeQuestion fillInOwnerOrganizations(ThemeQuestion themeQuestion){
