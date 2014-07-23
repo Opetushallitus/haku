@@ -90,14 +90,16 @@ public final class ArvosanatTheme {
                 naytetaankoLukionArvosanataulukko = Rule(new Equals(new Variable(POHJAKOULUTUS_ID), new Value(OppijaConstants.YLIOPPILAS)));
             } else {
                 naytetaankoLukionArvosanataulukko = Rule(
-                        new And(
+                        new Or(
                                 new And(
                                         new Not(
                                                 new Equals(
                                                         new Variable(OppijaConstants.LUKIO_PAATTOTODISTUS_VUOSI),
                                                         new Value(String.valueOf(hakukausiVuosi)))),
                                         new Equals(new Variable(POHJAKOULUTUS_ID), new Value(OppijaConstants.YLIOPPILAS))),
-                                new Not(new Regexp("_meta_grades_transferred_lk", "true"))));
+                                new Equals(
+                                        new Variable("_meta_grades_transferred_lk"),
+                                        new Value("true"))));
             }
             naytetaankoLukionArvosanataulukko.addChild(arvosanataulukkoYO(formParameters));
             arvosanatTheme.addChild(naytetaankoLukionArvosanataulukko.build());
