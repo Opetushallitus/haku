@@ -15,7 +15,9 @@ mkdir -p applicationSystem||0
 mkdir -p themequestion||0
 
 mongoexport "$@" -d hakulomake -c applicationSystem --query '{_id:"1.2.246.562.5.2014022711042555034240"}'| node process-appsystem.js  | sed 's/\(.\){"_id"/\1\
-{"_id"/g' > $fixturesroot/applicationSystem/2014022711042555034240.json
+{"_id"/g' | sed 's/:\[{/:\[\
+{/g' | sed 's/}],/}\
+],/g' > $fixturesroot/applicationSystem/2014022711042555034240.json
 
 mongoexport "$@" -d hakulomake -c themequestion --query '{applicationSystemId: "1.2.246.562.5.2014022711042555034240"}' --out $fixturesroot/themequestion/2014022711042555034240.json
 
