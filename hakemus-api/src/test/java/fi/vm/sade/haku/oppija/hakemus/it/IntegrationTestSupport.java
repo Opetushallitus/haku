@@ -1,5 +1,6 @@
 package fi.vm.sade.haku.oppija.hakemus.it;
 
+import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationDAO;
 import fi.vm.sade.haku.testfixtures.MongoFixtureImporter;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -14,7 +15,7 @@ public class IntegrationTestSupport {
     @BeforeClass
     public static void createApplicationContextWithFixtures() throws IOException {
         appContext = ApiIntegrationTestSpringConfiguration.createApplicationContext();
-        MongoFixtureImporter.importJsonFixtures(appContext.getBean(MongoTemplate.class));
+        MongoFixtureImporter.importJsonFixtures(appContext.getBean(MongoTemplate.class), appContext.getBean(ApplicationDAO.class));
     }
 
     @AfterClass
