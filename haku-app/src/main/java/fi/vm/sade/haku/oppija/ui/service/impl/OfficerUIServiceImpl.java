@@ -21,6 +21,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.builder.OptionBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
+import fi.vm.sade.haku.oppija.lomake.exception.IllegalStateException;
 import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.haku.oppija.lomake.service.FormService;
@@ -339,14 +340,16 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         final Form form = formService.getForm(application.getApplicationSystemId());
         checkUpdatePermission(application, form, applicationPhase.getPhaseId());
 
+        Map<String, String> newPhaseAnswers = applicationPhase.getAnswers();
+        newPhaseAnswers = handleGrades(application, applicationPhase, new HashMap<String, String>(newPhaseAnswers));
+
         loggerAspect.logUpdateApplication(application, applicationPhase);
 
-        Map<String, String> newPhaseAnswers = applicationPhase.getAnswers();
         application.addVaiheenVastaukset(applicationPhase.getPhaseId(), newPhaseAnswers);
 
         Map<String, String> allAnswers = application.getVastauksetMergedIgnoringPhase(applicationPhase.getPhaseId());
-
         allAnswers.putAll(newPhaseAnswers);
+
         ValidationResult formValidationResult = elementTreeValidator.validate(new ValidationInput(form,
                 allAnswers, oid, application.getApplicationSystemId()));
         if (formValidationResult.hasErrors()) {
@@ -365,6 +368,33 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         this.applicationService.update(queryApplication, application);
         application.setPhaseId(applicationPhase.getPhaseId());
         return new ModelResponse(application, form, phase, phaseValidationResult, koulutusinformaatioBaseUrl);
+    }
+
+    private Map<String, String> handleGrades(Application application, ApplicationPhase phase, Map<String, String> newAnswers) {
+        Map<String, String> meta = application.getMeta();
+        if (phase.getPhaseId().equals(OppijaConstants.PHASE_GRADES) &&
+                (meta.containsKey("grades_transferred_lk") || meta.containsKey("grades_transferred_pk"))) {
+            Map<String, String> grades = new HashMap<String, String>(application.getPhaseAnswers(OppijaConstants.PHASE_GRADES));
+
+            for (Map.Entry<String, String> entry : newAnswers.entrySet()) {
+                String key = entry.getKey();
+                if ((key.startsWith("LK_") || key.startsWith("PK_")) && grades.containsKey(key)) {
+                    String value = entry.getValue();
+                    String oldValue = grades.get(key);
+                    if (!value.equals(oldValue)) {
+                        throw new IllegalStateException("Trying to change transferred grades");
+                    }
+                }
+            }
+            for (Map.Entry<String, String> entry : grades.entrySet()) {
+                String key = entry.getKey();
+                if (key.startsWith("LK_") || key.startsWith("PK_")) {
+                    newAnswers.put(key, entry.getValue());
+                }
+            }
+        }
+
+        return newAnswers;
     }
 
     private void checkUpdatePermission(Application application, Form form, String phaseId) {
