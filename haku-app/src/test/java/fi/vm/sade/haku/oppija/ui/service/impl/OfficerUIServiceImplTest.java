@@ -157,7 +157,7 @@ public class OfficerUIServiceImplTest {
 
         return new OfficerUIServiceImpl(applicationService, baseEducationService, formService,
                 null, hakuPermissionService,loggerAspect, "", elementTreeValidator,
-                null, null, null, null, userSession, null);
+                null, null, null, null, userSession, null, null);
     }
 
     @Test
