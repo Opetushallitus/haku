@@ -117,9 +117,6 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
 
     private static final Pattern OID_PATTERN = Pattern.compile("((^([0-9]{1,4}\\.){5})|(^))[0-9]{11}$");
     private static final Pattern HETU_PATTERN = Pattern.compile("^[0-3][0-9][0-1][0-9][0-9][0-9][-+Aa][0-9]{3}[0-9a-zA-Z]");
-    private static final DateFormat HETU_DATE = new SimpleDateFormat("ddMMyy");
-    private static final DateFormat LONG_HETU_DATE = new SimpleDateFormat("ddMMyyyy");
-    private static final DateFormat FORM_DATE = new SimpleDateFormat("dd.MM.yyyy");
 
     private final EncrypterService shaEncrypter;
     private final DBObjectToSearchResultItem dbObjectToSearchResultItem;
@@ -266,13 +263,13 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
 
     private ArrayList<DBObject> addDobOrNameQuery(ArrayList<DBObject> queries, String token) {
         String possibleDob = token.replace(".", "");
-        Date dob = tryDate(HETU_DATE, possibleDob);
+        Date dob = tryDate(new SimpleDateFormat("ddMMyy"), possibleDob);
         if (dob == null) {
-            dob = tryDate(LONG_HETU_DATE, possibleDob);
+            dob = tryDate(new SimpleDateFormat("ddMMyyyy"), possibleDob);
         }
         if (dob != null) {
             queries.add(
-                    QueryBuilder.start(FIELD_DATE_OF_BIRTH).is(FORM_DATE.format(dob)).get()
+                    QueryBuilder.start(FIELD_DATE_OF_BIRTH).is(new SimpleDateFormat("dd.MM.yyyy").format(dob)).get()
             );
         } else {
             queries.add(

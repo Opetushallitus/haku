@@ -18,8 +18,6 @@ public class OrganizationRestDTO {
     private Map<String, String> nimi;
     private List<String> tyypit;
 
-    private DateFormat dft = new SimpleDateFormat("yyyy-MM-dd");
-
     public String getOid() {
         return oid;
     }
@@ -80,11 +78,16 @@ public class OrganizationRestDTO {
         Date date = null;
         if (isNotBlank(pvm)) {
             try {
-                date = dft.parse(pvm);
+                date = date().parse(pvm);
             } catch (ParseException e) {
+                // FIXME this is probably not a good idea
                 e.printStackTrace();
             }
         }
         return date;
+    }
+
+    private DateFormat date() {
+        return new SimpleDateFormat("yyyy-MM-dd");
     }
 }

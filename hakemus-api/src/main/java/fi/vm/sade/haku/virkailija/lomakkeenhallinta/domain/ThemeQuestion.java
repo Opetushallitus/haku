@@ -36,13 +36,16 @@ public abstract class ThemeQuestion implements ConfiguredElement {
     private org.bson.types.ObjectId id;
 
     // ThemeQuestion state
-    private State state = State.ACTIVE;;
+    private State state = State.ACTIVE;
 
     //Application System oid
     private String applicationSystemId;
 
     // Where the question is to be displayed
     private String theme;
+
+    //Ordinal
+    private Integer ordinal;
 
     //user ident oid
     private String creatorPersonOid;
@@ -96,12 +99,14 @@ public abstract class ThemeQuestion implements ConfiguredElement {
                             @JsonProperty(value = "theme")String theme,
                             @JsonProperty(value = "type")String type,
                             @JsonProperty(value = "learningOpportunityId")String learningOpportunityId,
+                            @JsonProperty(value = "ordial") Integer ordinal,
                             @JsonProperty(value = "validators")Map<String,String> validators,
                             @JsonProperty(value = "attachmentRequests") List<AttachmentRequest>attachmentRequests) {
         this.applicationSystemId =  applicationSystemId;
         this.theme = theme;
         this.type = type;
         this.learningOpportunityId = learningOpportunityId;
+        this.ordinal = ordinal;
         this.validators = new HashMap<String,String>(validators);
         this.ownerOrganizationOids = new ArrayList<String>();
         this.attachmentRequests = new ArrayList<AttachmentRequest>(attachmentRequests);
@@ -111,6 +116,7 @@ public abstract class ThemeQuestion implements ConfiguredElement {
       List<String> ownerOrganizationOid,
       String type,
       String learningOpportunityId,
+      Integer ordinal,
       Map<String,String> validators,
       List<AttachmentRequest>attachmentRequests) {
         this.applicationSystemId =  applicationSystemId;
@@ -119,6 +125,7 @@ public abstract class ThemeQuestion implements ConfiguredElement {
         this.ownerOrganizationOids = new ArrayList<String>(ownerOrganizationOid);
         this.type = type;
         this.learningOpportunityId = learningOpportunityId;
+        this.ordinal = ordinal;
         this.validators = new HashMap<String,String>(validators);
         this.ownerOrganizationOids = new ArrayList<String>();
         this.attachmentRequests = new ArrayList<AttachmentRequest>(attachmentRequests);

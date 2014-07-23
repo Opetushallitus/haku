@@ -196,13 +196,14 @@ public class ThemeQuestionResource {
     @Path("list/{applicationSystemId}")
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKULOMAKKEENHALLINTA_READ_UPDATE', 'ROLE_APP_HAKULOMAKKEENHALLINTA_CRUD', 'ROLE_APP_HAKULOMAKKEENHALLINTA_READ')")
-    public List<ThemeQuestion> getThemeQuestionQuery(@PathParam("applicationSystemId") String applicationSystemId,
-      @QueryParam("aoId") String learningOpportunityId, @QueryParam("orgId") String organizationId){
+    public List<ThemeQuestion> getThemeQuestionByQuery(@PathParam("applicationSystemId") String applicationSystemId,
+      @QueryParam("aoId") String learningOpportunityId, @QueryParam("orgId") String organizationId, @QueryParam("themeId") String themeId){
         LOGGER.debug("Listing by applicationSystemId: {}, learningOpportunityId: {}, organizationId: {} ", applicationSystemId, applicationSystemId, organizationId);
         ThemeQuestionQueryParameters tqq = new ThemeQuestionQueryParameters();
         tqq.setApplicationSystemId(applicationSystemId);
         tqq.setLearningOpportunityId(learningOpportunityId);
         tqq.setOrganizationId(organizationId);
+        tqq.setTheme(themeId);
         List<ThemeQuestion> themeQuestions = themeQuestionDAO.query(tqq);
         LOGGER.debug("Found {} ThemeQuestions", themeQuestions.size());
         return themeQuestions;
