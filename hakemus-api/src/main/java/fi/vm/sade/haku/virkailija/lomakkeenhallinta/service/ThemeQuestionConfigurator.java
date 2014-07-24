@@ -143,7 +143,6 @@ public final class ThemeQuestionConfigurator {
             preferenceAoKeys.add(preferenceElementId+OPTION_POSTFIX);
         }
         else {
-            // TODO: FIX use from application system when it knows the number of allowed preferences
             for (int i = 1; i <= applicationSystem.getMaxApplicationOptions(); i++){
                 preferenceAoKeys.add(PREFERENCE_PREFIX+i+OPTION_POSTFIX);
             }
