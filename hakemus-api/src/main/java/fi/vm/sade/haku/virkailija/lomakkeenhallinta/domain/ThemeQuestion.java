@@ -251,14 +251,22 @@ public abstract class ThemeQuestion implements ConfiguredElement {
         this.attachmentRequests = new ArrayList<AttachmentRequest>(attachmentRequests);
     }
 
+    public Integer getOrdinal() {
+        return ordinal;
+    }
+
+    public void setOrdinal(Integer ordinal) {
+        this.ordinal = ordinal;
+    }
+
     @Override
     public String toString() {
         return "ThemeQuestion{" +
           "id=" + id +
+          ", state=" + state +
           ", applicationSystemId='" + applicationSystemId + '\'' +
           ", theme='" + theme + '\'' +
-          ", creatorPersonOid='" + creatorPersonOid + '\'' +
-          ", ownerOrganizationOids='" + ownerOrganizationOids + '\'' +
+          ", ordinal=" + ordinal +
           ", type='" + type + '\'' +
           ", messageText=" + messageText +
           ", helpText=" + helpText +
@@ -267,6 +275,9 @@ public abstract class ThemeQuestion implements ConfiguredElement {
           ", requiredFieldValidator=" + requiredFieldValidator +
           ", onCompletedPage=" + onCompletedPage +
           ", validators=" + validators +
+          ", attachmentRequests=" + attachmentRequests +
+          ", creatorPersonOid='" + creatorPersonOid + '\'' +
+          ", ownerOrganizationOids=" + ownerOrganizationOids +
           '}';
     }
 }
