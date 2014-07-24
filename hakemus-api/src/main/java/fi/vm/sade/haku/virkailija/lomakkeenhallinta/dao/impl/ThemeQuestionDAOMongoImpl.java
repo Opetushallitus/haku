@@ -44,6 +44,7 @@ public class ThemeQuestionDAOMongoImpl extends AbstractDAOMongoImpl<ThemeQuestio
     private static final String FIELD_STATE = "state";
     private static final String FIELD_ORDINAL = "ordinal";
     private static final String FIELD_APPLICATION_OPTION = "learningOpportunityId";
+    private static final String FIELD_PARENT_ID = "parentId";
     private static final String FIELD_TARGET_IS_GROUP = "targetIsGroup";
     private static final String FIELD_ATTACHMENT_REQUESTS = "attachmentRequests";
     private static int PARAM_QUERY =0;
@@ -103,7 +104,7 @@ public class ThemeQuestionDAOMongoImpl extends AbstractDAOMongoImpl<ThemeQuestio
     @Override
     public List<String> queryApplicationOptionsIn(ThemeQuestionQueryParameters parameters) {
         List<Object> distinctApplicationOptions = getCollection().distinct(FIELD_APPLICATION_OPTION, buildQuery(parameters)[0]);
-        LOGGER.debug("Got "+ distinctApplicationOptions.size() + " application options ");
+        LOGGER.debug("Got " + distinctApplicationOptions.size() + " application options ");
         ArrayList<String> results = new ArrayList<String>();
         for (Object value : distinctApplicationOptions){
             LOGGER.debug("Got option " + value);
@@ -216,6 +217,11 @@ public class ThemeQuestionDAOMongoImpl extends AbstractDAOMongoImpl<ThemeQuestio
             hint.put(FIELD_APPLICATION_OPTION, 1);
         }
 
+        if (parameters.isSetParentThemeQuestionId()){
+            query.append(FIELD_PARENT_ID, parameters.getParentThemeQuestionId());
+            hint.put(FIELD_PARENT_ID, 1);
+        }
+
         if (null != parameters.queryGroups()){
             if (parameters.queryGroups()) {
                 query.append(FIELD_TARGET_IS_GROUP, true);
@@ -252,6 +258,8 @@ public class ThemeQuestionDAOMongoImpl extends AbstractDAOMongoImpl<ThemeQuestio
         }
 
         checkIndexes("before ensures");
+
+        //TODO =RS= Add parent data to indexes
 
         ensureIndex("index_applicationsystem_ownerid", FIELD_APPLICATION_SYSTEM_ID, FIELD_STATE, FIELD_OWNER_OIDS, FIELD_APPLICATION_OPTION);
         ensureIndex("index_applicationsystem_theme", FIELD_APPLICATION_SYSTEM_ID, FIELD_STATE, FIELD_THEME, FIELD_APPLICATION_OPTION);
