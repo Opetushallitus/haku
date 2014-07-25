@@ -19,7 +19,7 @@ public class FixtureSSNFixer {
             Map<String, String> allAnswers = application.getVastauksetMerged();
             if (StringUtils.isEmpty(allAnswers.get(OppijaConstants.ELEMENT_ID_SOCIAL_SECURITY_NUMBER))) {
                 setHetu(application, ssn, dao);
-                dao.update(queryApplication, application);
+                dao.update(new Application().setOid(application.getOid()), application);
             }
         }
     }

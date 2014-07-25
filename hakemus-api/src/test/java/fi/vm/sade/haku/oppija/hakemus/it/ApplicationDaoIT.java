@@ -14,8 +14,7 @@ public class ApplicationDaoIT extends IntegrationTestSupport {
     public void fetchApplication() throws IOException {
         final ApplicationDAOMongoImpl dao = appContext.getBean(ApplicationDAOMongoImpl.class);
         final List<Application> applications = dao.find(new Application());
-        assertEquals(1, applications.size());
-        final Application application = applications.get(0);
+        final Application application = applications.get(1);
         assertEquals("aho minna wa", application.getFullName());
     }
 }
