@@ -1,6 +1,10 @@
 package fi.vm.sade.haku.oppija.hakemus.it;
 
+import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationDAO;
+import fi.vm.sade.haku.oppija.hakemus.it.dao.impl.ApplicationDAOMongoImpl;
+import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
+import fi.vm.sade.haku.oppija.lomake.service.impl.ApplicationSystemServiceImpl;
 import fi.vm.sade.haku.testfixtures.MongoFixtureImporter;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -21,5 +25,14 @@ public class IntegrationTestSupport {
     @AfterClass
     public static void shutdownApplicationContext() { appContext.close();
         appContext.stop();
+    }
+
+    public static Application getTestApplication() {
+        return appContext.getBean(ApplicationDAOMongoImpl.class).find(new Application().setOid("1.2.246.562.11.00000877107")).get(0);
+    }
+
+    public static ApplicationSystem getTestApplicationSystem() {
+        String applicationSystemId = "1.2.246.562.5.2014022711042555034240";
+        return appContext.getBean(ApplicationSystemServiceImpl.class).getApplicationSystem(applicationSystemId);
     }
 }
