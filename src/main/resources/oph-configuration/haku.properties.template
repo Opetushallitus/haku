@@ -77,6 +77,7 @@ cas.service.organisaatio-service=https://${host.virkailija}/organisaatio-service
 cas.service.sijoittelu-service=https://${host.virkailija}/sijoittelu-service
 cas.service.suoritusrekisteri=https://${host.virkailija}/suoritusrekisteri
 cas.service.valintalaskenta-service=https://${host.virkailija}/valintalaskenta-laskenta-service
+cas.service.viestintapalvelu=https://${host.virkailija}/viestintapalvelu
 customAttribute.webservice.url.backend=https://${host.virkailija}/authentication-service/services/customAttributeService
 flyway.initOnMigrate=true
 komo.oid.kuntouttava=1.2.246.562.5.2013112814572435755085
