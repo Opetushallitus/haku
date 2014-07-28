@@ -142,6 +142,7 @@ public class HakutoiveetPhase {
                     .addChild(amkLiite)
                     .formParams(formParameters)
                     .build();
+            pr.addChild(onAMKkoulutus);
 
             pr.addChild(onAMKkoulutus);
         }
