@@ -28,6 +28,8 @@ public class ModelResponse {
     public static final String FORM = "form";
     public static final String DISCRETIONARY_ATTACHMENT_AO_IDS = "discretionaryAttachmentAOIds";
     public static final String DISCRETIONARY_ATTACHMENTS = "discretionaryAttachments";
+    public static final String HIGHER_ED_ATTACHMENT_AO_IDS = "higherEdAttachmentAOIds";
+    public static final String HIGHER_ED_ATTACHMENTS = "higherEdAttachments";
     public static final String APPLICATION_COMPLETE_ELEMENTS = "applicationCompleteElements";
     public static final String ADDITIONAL_INFORMATION_ELEMENTS = "additionalInformationElements";
     public static final String APPLICATION_SYSTEMS = "applicationSystems";
@@ -65,13 +67,29 @@ public class ModelResponse {
         setKoulutusinformaatioBaseUrl(koulutusinformaatioBaseUrl);
     }
 
+    public ModelResponse(final Application application,
+                         final ApplicationSystem applicationSystem,
+                         final List<String> discretionaryAttachmentAOIds,
+                         final Map<String, List<String>> higherEdAttachmentAOIds,
+                         final String koulutusinformaatioBaseUrl) {
+        this(application, applicationSystem, discretionaryAttachmentAOIds, koulutusinformaatioBaseUrl);
+        setHigherEdAttachmentAOIds(higherEdAttachmentAOIds);
+    }
+
     public ModelResponse(final Application application, final ApplicationSystem applicationSystem,
-        final List<ApplicationOptionDTO> discretionaryAttachments) {
-		this(application, applicationSystem.getForm());
-		setApplicationCompleteElements(applicationSystem.getApplicationCompleteElements());
-		setApplicationInformationElements(applicationSystem.getAdditionalInformationElements());
-		setDiscretionaryAttachments(discretionaryAttachments);
-	}
+                         final List<ApplicationOptionDTO> discretionaryAttachments) {
+        this(application, applicationSystem.getForm());
+        setApplicationCompleteElements(applicationSystem.getApplicationCompleteElements());
+        setApplicationInformationElements(applicationSystem.getAdditionalInformationElements());
+        setDiscretionaryAttachments(discretionaryAttachments);
+    }
+
+    public ModelResponse(final Application application, final ApplicationSystem applicationSystem,
+                         final List<ApplicationOptionDTO> discretionaryAttachments,
+                         final Map<String, List<ApplicationOptionDTO>> higherEdAttachments) {
+        this(application, applicationSystem, discretionaryAttachments);
+        setHigherEdAttachments(higherEdAttachments);
+    }
 
     public ModelResponse(final Application application,
                          final Form form,
@@ -148,6 +166,14 @@ public class ModelResponse {
 
     public void setDiscretionaryAttachments(final List<ApplicationOptionDTO> discretionaryAttachments) {
         this.addObjectToModel(DISCRETIONARY_ATTACHMENTS, discretionaryAttachments);
+    }
+
+    public void setHigherEdAttachmentAOIds(final Map<String, List<String>> attachmentAOIds) {
+        this.addObjectToModel(HIGHER_ED_ATTACHMENT_AO_IDS, attachmentAOIds);
+    }
+
+    public void setHigherEdAttachments(final Map<String, List<ApplicationOptionDTO>> higherEdAttachments) {
+        this.addObjectToModel(HIGHER_ED_ATTACHMENTS, higherEdAttachments);
     }
 
     public void setApplicationCompleteElements(final List<Element> applicationCompleteElements) {

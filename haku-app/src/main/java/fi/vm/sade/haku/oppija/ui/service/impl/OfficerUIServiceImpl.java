@@ -603,10 +603,26 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     public ModelResponse getApplicationPrint(final String oid) {
         Application application = applicationService.getApplicationByOid(oid);
         ApplicationSystem activeApplicationSystem = applicationSystemService.getApplicationSystem(application.getApplicationSystemId());
+
         List<String> discretionaryAttachmentAOIds = ApplicationUtil.getDiscretionaryAttachmentAOIds(application);
-        List<fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO> discretionaryAttachments = 
-       		koulutusinformaatioService.getApplicationOptions(discretionaryAttachmentAOIds);
-        return new ModelResponse(application, activeApplicationSystem, discretionaryAttachments);
+        List<fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO> discretionaryAttachments =
+                koulutusinformaatioService.getApplicationOptions(discretionaryAttachmentAOIds);
+
+        Map<String, List<String>> higherEdAttachmentAOIds = ApplicationUtil.getHigherEdAttachmentAOIds(application);
+        Map<String, List<fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO>> higherEdAttachments =
+                new HashMap<String, List<fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO>>();
+        for (Map.Entry<String, List<String>> entry : higherEdAttachmentAOIds.entrySet()) {
+            String key = entry.getKey();
+            List<fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO> aos =
+                    new ArrayList<fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO>();
+            for (String aoOid : entry.getValue()) {
+                aos.add(koulutusinformaatioService.getApplicationOption(aoOid));
+            }
+            higherEdAttachments.put(key, aos);
+        }
+
+        return new ModelResponse(application, activeApplicationSystem,
+                discretionaryAttachments, higherEdAttachments);
     }
 
     private ApplicationNote createNote(String note) {

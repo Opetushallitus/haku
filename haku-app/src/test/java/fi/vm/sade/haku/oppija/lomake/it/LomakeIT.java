@@ -30,8 +30,6 @@ import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.ArrayList;
-import java.util.Locale;
-import java.util.ResourceBundle;
 
 import static fi.vm.sade.haku.oppija.ui.selenium.DefaultValues.*;
 import static org.junit.Assert.assertFalse;
@@ -42,13 +40,7 @@ public class LomakeIT extends DummyModelBaseItTest {
     @Test
     public void submitApplication() throws Exception {
 
-
-
-
         final WebDriver driver = seleniumContainer.getDriver();
-        //navigateTo(getBaseUrl() + "lomake/" + ASID + "/HenkilotiedotGrp/help");
-        //findById("help-page");
-
 
         navigateToFirstPhase();
         WebElement form = findBy(By.id("form-henkilotiedot"));
@@ -92,6 +84,7 @@ public class LomakeIT extends DummyModelBaseItTest {
 
         typeWithoutTab("preference1-Opetuspiste", "sturen");
         clickLinkByText("Stadin ammattiopisto, Sturenkadun toimipaikka");
+
         driver.findElement(By.xpath("//option[@data-id='1.2.246.562.5.20176855623']")).click();
         prevPhase(OppijaConstants.PHASE_EDUCATION);
 

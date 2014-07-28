@@ -41,6 +41,31 @@ var preferenceRow = {
                         // overrides additional questions rendered in the backend
                         preferenceRow.displayChildLONames(hakukohdeId, $selectInput.data("childlonames"));
                     }
+                    var organizationGroups = item.organizationGroups;
+                    var attachmentGroups = new Array();
+                    for (var i = 0; i < organizationGroups.length; i++) {
+                        var group = organizationGroups[i];
+                        var groupTypes = group.groupTypes;
+                        var isAoGroup = false;
+                        for (var j = 0; j < groupTypes.length; j++) {
+                            if (groupTypes[j] === 'hakukohde') {
+                                isAoGroup = true;
+                                break;
+                            }
+                        }
+                        if (!isAoGroup) { continue; }
+                        var usages = group.usageGroups;
+                        var isAttachmentGroup = false;
+                        for (var j = 0; j < usages.length; j++) {
+                            if (usages[j] == 'hakukohde_liiteosoite') {
+                                isAttachmentGroup = true;
+                                break;
+                            }
+                        }
+                        if (!isAttachmentGroup) { continue; }
+                        attachmentGroups.push(group.oid);
+                    }
+
                     $selectInput.append('<option value="' + item.name
                         + '" ' + selected + ' data-id="' + item.id +
                         '" data-educationdegree="' + item.educationDegree +
@@ -50,6 +75,7 @@ var preferenceRow = {
                         '" data-kaksoistutkinto="' + item.kaksoistutkinto +
                         '" data-vocational="' + item.vocational +
                         '" data-educationcode="' + item.educationCodeUri +
+                        '" data-attachmentgroups="' + attachmentGroups.join(",") +
                         '" data-athlete="' + item.athleteEducation + '" >' + item.name + '</option>');
                 });
                 if (isInit && !selectedPreferenceOK && hakukohdeId && hakukohdeId !== '') {
@@ -79,6 +105,7 @@ var preferenceRow = {
         $("#" + selectInputId + "-id-vocational").val(false).change();
         $("#" + selectInputId + "-id-educationcode").val(false).change();
         $("#" + selectInputId + "-id-athlete").val(false).change();
+        $("#" + selectInputId + "-id-attachmentgroups").val("").change();
         $("#" + selectInputId).html("<option>&nbsp;</option>");
         preferenceRow.clearChildLONames($("#" + selectInputId).data("childlonames"));
     },
@@ -188,6 +215,7 @@ var preferenceRow = {
                                            $educationDegreeVocational = $("#" + this.id + "-id-vocational"),
                                            $educationDegreeAoIdentifier = $("#" + this.id + "-id-aoIdentifier"),
                                            $educationDegreeAthlete = $("#" + this.id + "-id-athlete"),
+                                           $educationAttachmentGroups = $("#" + this.id + "-id-attachmentgroups"),
                                            $educationDegreeEducationCode = $("#" + this.id + "-id-educationcode"),
                                            selectedId, educationDegree, value = $(this).val(),
                                            preferenceRowId = this.id.split("-")[0];
@@ -205,6 +233,7 @@ var preferenceRow = {
                                        $educationDegreeVocational.val(selectedOption.data("vocational")).change();
                                        $educationDegreeAoIdentifier.val(selectedOption.data("aoidentifier")).change();
                                        $educationDegreeAthlete.val(selectedOption.data("athlete")).change();
+                                       $educationAttachmentGroups.val(selectedOption.data("attachmentgroups")).change();
                                        $educationDegreeEducationCode.val(selectedOption.data("educationcode")).change();
                                        preferenceRow.displayChildLONames(selectedId, $(this).data("childlonames"));
                                    };
