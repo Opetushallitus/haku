@@ -2,8 +2,8 @@ package fi.vm.sade.haku.virkailija.valinta.impl;
 
 import com.google.gson.*;
 import fi.vm.sade.haku.virkailija.valinta.ValintaService;
-import fi.vm.sade.sijoittelu.tulos.dto.raportointi.HakijaDTO;
-import fi.vm.sade.valintalaskenta.domain.dto.HakemusDTO;
+import fi.vm.sade.haku.virkailija.valinta.dto.HakemusDTO;
+import fi.vm.sade.haku.virkailija.valinta.dto.HakijaDTO;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
