@@ -32,6 +32,8 @@ import fi.vm.sade.haku.oppija.lomake.validation.validators.RegexFieldValidator;
 import fi.vm.sade.haku.oppija.lomake.validation.validators.RequiredFieldValidator;
 import fi.vm.sade.haku.oppija.lomake.validation.validators.SsnAndPreferenceUniqueValidator;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.domain.Code;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.service.ThemeQuestionConfigurator;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ExprUtil;
@@ -109,6 +111,39 @@ public class HakutoiveetPhase {
         }
 
         if (formParameters.isHigherEd()) {
+            KoodistoService koodistoService = formParameters.getKoodistoService();
+
+            // Yliopisto
+            List<Code> yliopistokoulutukset = koodistoService.getYliopistokoulutukset();
+            String[] yliopistokoulutuksetArr =  new String[yliopistokoulutukset.size()];
+            for (int i = 0; i < yliopistokoulutukset.size(); i++) {
+                yliopistokoulutuksetArr[i] = "koulutus_" + yliopistokoulutukset.get(i).getValue();
+            }
+            // TODO päättely pohjakoulutuksen perusteella
+            Element yoLiite = new HiddenValue(id + "-yoLiite", "true");
+            Element onYliopistokoulutus = Rule(ElementUtil.randomId())
+                    .setExpr(ExprUtil
+                            .atLeastOneValueEqualsToVariable(id + "-Koulutus-id-educationcode", yliopistokoulutuksetArr))
+                    .addChild(yoLiite)
+                    .formParams(formParameters)
+                    .build();
+            pr.addChild(onYliopistokoulutus);
+
+            // AMK
+            List<Code> amkkoulutukset = koodistoService.getAMKkoulutukset();
+            String[] amkkoulutuksetArr =  new String[amkkoulutukset.size()];
+            for (int i = 0; i < amkkoulutukset.size(); i++) {
+                amkkoulutuksetArr[i] = "koulutus_" + amkkoulutukset.get(i).getValue();
+            }
+            Element amkLiite = new HiddenValue(id + "-amkLiite", "true");
+            Element onAMKkoulutus = Rule(ElementUtil.randomId())
+                    .setExpr(ExprUtil
+                            .atLeastOneValueEqualsToVariable(id + "-Koulutus-id-educationcode", amkkoulutuksetArr))
+                    .addChild(amkLiite)
+                    .formParams(formParameters)
+                    .build();
+
+            pr.addChild(onAMKkoulutus);
 
         }
 

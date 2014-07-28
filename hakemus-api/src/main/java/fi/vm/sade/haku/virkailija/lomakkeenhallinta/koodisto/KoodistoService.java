@@ -51,6 +51,8 @@ public interface KoodistoService {
 
     List<Code> getCodes(String koodistoUrl, int version);
 
+    List<Code> getYliopistokoulutukset();
+
     List<Option> getLukioKoulukoodit();
 
     List<Option> getKorkeakouluKoulukoodit();
@@ -60,4 +62,6 @@ public interface KoodistoService {
     List<Option> getLaajuusYksikot();
 
     List<Option> getKorkeakouluTutkintotasot();
+
+    List<Code> getAMKkoulutukset();
 }

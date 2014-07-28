@@ -63,6 +63,7 @@ public class KoodistoServiceImpl implements KoodistoService {
     private static final String CODE_OPPILAITOSTYYPPI = "oppilaitostyyppi";
     private static final String CODE_LAAJUUSYKSIKKO = "opintojenlaajuusyksikko";
     private static final String CODE_KOULUTUSASTE = "koulutusasteoph2002";
+    private static final String CODE_TUTKINTOTYYPPI = "tutkintotyyppi";
 
     private static final String LUKIO = "15";
     private static final String LUKIO_JA_PERUSKOULU = "19";
@@ -70,7 +71,16 @@ public class KoodistoServiceImpl implements KoodistoService {
     private static final String AMMATTIKORKEAKOLU = "41";
     private static final String YLIOPISTO = "42";
     private static final String SOTILASKORKEAKOULU = "43";
-    private static final String VALIAIKAINEN_AMK= "46";
+    private static final String VALIAIKAINEN_AMK = "46";
+
+    private static final String TOHTORIN_TUTKINTO = "16";
+    private static final String LISENSIAATIN_TUTKINTO = "15";
+    private static final String YLEMPI_KORKEAKOULUTUTKINTO = "14";
+    private static final String ALEMPI_KORKEAKOULUTUTKINTO = "13";
+
+    private static final String YLEMPI_AMMATTIKORKEAKOULUTUTKINTO = "12";
+    private static final String AMMATTIKORKEAKOULUJEN_ERIKOISTUMISOPINNOT = "07";
+    private static final String AMMATTIKORKEAKOULUTUS = "06";
 
     private final KoodistoClient koodiService;
     private final OrganizationService organisaatioService;
@@ -172,6 +182,37 @@ public class KoodistoServiceImpl implements KoodistoService {
     @Override
     public List<Code> getCodes(String koodistoUrl, int version) {
         return Lists.transform(getKoodiTypes(koodistoUrl, version), new KoodiTypeToCodeFunction());
+    }
+
+    @Override
+    public List<Code> getYliopistokoulutukset() {
+        List<KoodiType> tutkintotyypit = getKoodiTypes(CODE_TUTKINTOTYYPPI);
+        List<KoodiType> yliopistoKoulutukset = new ArrayList<KoodiType>();
+        for (KoodiType koodi : tutkintotyypit) {
+            if (koodi.getKoodiArvo().equals(TOHTORIN_TUTKINTO) ||
+                    koodi.getKoodiArvo().equals(LISENSIAATIN_TUTKINTO) ||
+                    koodi.getKoodiArvo().equals(YLEMPI_KORKEAKOULUTUTKINTO) ||
+                    koodi.getKoodiArvo().equals(ALEMPI_KORKEAKOULUTUTKINTO)) {
+                List<KoodiType> ylakoodit = koodiService.getYlakoodis(koodi.getKoodiUri());
+                yliopistoKoulutukset.addAll(ylakoodit);
+            }
+        }
+        return Lists.transform(yliopistoKoulutukset, new KoodiTypeToCodeFunction());
+    }
+
+    @Override
+    public List<Code> getAMKkoulutukset() {
+        List<KoodiType> tutkintotyypit = getKoodiTypes(CODE_TUTKINTOTYYPPI);
+        List<KoodiType> koulutukset = new ArrayList<KoodiType>();
+        for (KoodiType koodi : tutkintotyypit) {
+            if (koodi.getKoodiArvo().equals(YLEMPI_AMMATTIKORKEAKOULUTUTKINTO) ||
+                    koodi.getKoodiArvo().equals(AMMATTIKORKEAKOULUJEN_ERIKOISTUMISOPINNOT) ||
+                    koodi.getKoodiArvo().equals(AMMATTIKORKEAKOULUTUS)) {
+                List<KoodiType> ylakoodit = koodiService.getYlakoodis(koodi.getKoodiUri());
+                koulutukset.addAll(ylakoodit);
+            }
+        }
+        return Lists.transform(koulutukset, new KoodiTypeToCodeFunction());
     }
 
     @Override
