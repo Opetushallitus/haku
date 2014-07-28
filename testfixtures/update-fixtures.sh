@@ -32,7 +32,15 @@ elif [[ $@ =~ reppu ]]; then
 {/g' | sed 's/}],/}\
 ],/g' > $fixturesroot/applicationSystem/2013080813081926341927.json
 
+  mongoexport "$@" -d hakulomake -c applicationSystem --query '{_id:"1.2.246.562.5.2014020613412490531399"}'| node process-appsystem.js  | sed 's/\(.\){"_id"/\1\
+{"_id"/g' | sed 's/:\[{/:\[\
+{/g' | sed 's/}],/}\
+],/g' > $fixturesroot/applicationSystem/2014020613412490531399.json
+
   mongoexport "$@" -d hakulomake -c application --query '{oid: "1.2.246.562.11.00000441368"}' | node process-application.js 1.2.246.562.24.14229104472 > $fixturesroot/application/00000441368.json
+
+  mongoexport "$@" -d hakulomake -c application --query '{oid: "1.2.246.562.11.00000441371"}' | node process-application.js 1.2.246.562.24.14229104472 > $fixturesroot/application/00000441371.json
+
 else
   echo Please specify mongo params for either luokka or reppu.
 fi
