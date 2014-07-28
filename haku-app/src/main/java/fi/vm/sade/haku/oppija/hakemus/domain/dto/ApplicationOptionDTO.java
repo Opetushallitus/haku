@@ -3,8 +3,8 @@ package fi.vm.sade.haku.oppija.hakemus.domain.dto;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.util.StringUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
-import fi.vm.sade.sijoittelu.tulos.dto.HakemuksenTila;
-import fi.vm.sade.sijoittelu.tulos.dto.ValintatuloksenTila;
+import fi.vm.sade.haku.virkailija.valinta.HakemuksenTila;
+import fi.vm.sade.haku.virkailija.valinta.ValintatuloksenTila;
 
 import java.util.*;
 

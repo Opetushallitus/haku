@@ -2,9 +2,9 @@ package fi.vm.sade.haku.virkailija.valinta.impl;
 
 import com.google.gson.*;
 import fi.vm.sade.generic.rest.CachingRestClient;
+import fi.vm.sade.haku.virkailija.valinta.HakemusDTO;
+import fi.vm.sade.haku.virkailija.valinta.HakijaDTO;
 import fi.vm.sade.haku.virkailija.valinta.ValintaService;
-import fi.vm.sade.sijoittelu.tulos.dto.raportointi.HakijaDTO;
-import fi.vm.sade.valintalaskenta.domain.dto.HakemusDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;

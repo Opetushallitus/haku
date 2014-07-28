@@ -30,6 +30,7 @@
         <flapdoodle.version>1.36</flapdoodle.version>
         <org.apache.tomcat.embed>7.0.39</org.apache.tomcat.embed>
         <clover.version>3.1.8</clover.version>
+        <jackson.version>2.3.0</jackson.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -47,7 +48,6 @@
         <organisaatio-api.version>10.0-SNAPSHOT</organisaatio-api.version>
         <organisaatio-solr-client.version>10.0-SNAPSHOT</organisaatio-solr-client.version>
         <tarjonta-api.version>9.1</tarjonta-api.version>
-        <valintaperusteet.version>1.0-SNAPSHOT</valintaperusteet.version>
     </properties>
 
     <repositories>
