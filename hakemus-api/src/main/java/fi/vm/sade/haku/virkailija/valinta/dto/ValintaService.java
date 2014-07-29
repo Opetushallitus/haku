@@ -1,7 +1,4 @@
-package fi.vm.sade.haku.virkailija.valinta;
-
-import fi.vm.sade.haku.virkailija.valinta.dto.HakemusDTO;
-import fi.vm.sade.haku.virkailija.valinta.dto.HakijaDTO;
+package fi.vm.sade.haku.virkailija.valinta.dto;
 
 public interface ValintaService {
 

@@ -39,16 +39,9 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import fi.vm.sade.haku.virkailija.valinta.ValintaService;
+import fi.vm.sade.haku.virkailija.valinta.dto.*;
 import fi.vm.sade.organisaatio.api.model.types.OrganisaatioTyyppi;
 import fi.vm.sade.organisaatio.service.search.SearchCriteria;
-import fi.vm.sade.sijoittelu.tulos.dto.PistetietoDTO;
-import fi.vm.sade.sijoittelu.tulos.dto.raportointi.HakijaDTO;
-import fi.vm.sade.sijoittelu.tulos.dto.raportointi.HakutoiveDTO;
-import fi.vm.sade.sijoittelu.tulos.dto.raportointi.HakutoiveenValintatapajonoDTO;
-import fi.vm.sade.valintalaskenta.domain.dto.*;
-import fi.vm.sade.valintalaskenta.domain.dto.valintakoe.ValintakoeDTO;
-import fi.vm.sade.valintalaskenta.domain.valintakoe.Osallistuminen;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,7 +49,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
