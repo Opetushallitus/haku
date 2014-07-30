@@ -16,11 +16,16 @@
 
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.resources;
 
+import fi.vm.sade.haku.oppija.common.koulutusinformaatio.ApplicationOptionService;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
 import fi.vm.sade.haku.oppija.hakemus.resource.JSONException;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.dao.ThemeQuestionDAO;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.dao.ThemeQuestionQueryParameters;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain.ThemeQuestion;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakuService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakukohdeService;
 import fi.vm.sade.tarjonta.service.resources.dto.HakukohdeDTO;
 import org.slf4j.Logger;
@@ -53,15 +58,29 @@ public class ThemeQuestionResource {
     @Autowired
     private OrganizationService organizationService;
 
-    public ThemeQuestionResource(){
+    @Autowired
+    private HakuService hakuService;
+    @Autowired
+    private KoodistoService koodistoService;
+    @Autowired
+    private ApplicationOptionService applicationOptionService;
 
+    public ThemeQuestionResource(){
     }
 
     @Autowired
-    public ThemeQuestionResource(ThemeQuestionDAO themeQuestionDAO, HakukohdeService hakukohdeService, OrganizationService organizationService) {
+    public ThemeQuestionResource(final ThemeQuestionDAO themeQuestionDAO,
+                                 final HakukohdeService hakukohdeService,
+                                 final OrganizationService organizationService,
+                                 final HakuService hakuService,
+                                 final KoodistoService koodistoService,
+                                 final ApplicationOptionService applicationOptionService) {
         this.themeQuestionDAO = themeQuestionDAO;
         this.hakukohdeService = hakukohdeService;
         this.organizationService = organizationService;
+        this.hakuService = hakuService;
+        this.koodistoService = koodistoService;
+        this.applicationOptionService = applicationOptionService;
     }
 
     @GET
@@ -71,6 +90,17 @@ public class ThemeQuestionResource {
     public ThemeQuestion getThemeQuestionByOid(@PathParam("themeQuestionId") String themeQuestionId) {
         LOGGER.debug("Getting question by Id: {}", themeQuestionId);
         return themeQuestionDAO.findById(themeQuestionId);
+    }
+
+    @GET
+    @Path("{themeQuestionId}/generate")
+    @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
+    @PreAuthorize("hasAnyRole('ROLE_APP_HAKULOMAKKEENHALLINTA_READ_UPDATE', 'ROLE_APP_HAKULOMAKKEENHALLINTA_CRUD', 'ROLE_APP_HAKULOMAKKEENHALLINTA_READ')")
+    public Element getGeneratedThemeQuestionByOid(@PathParam("themeQuestionId") String themeQuestionId) {
+        LOGGER.debug("Getting question by Id: {}", themeQuestionId);
+        ThemeQuestion themeQuestion = themeQuestionDAO.findById(themeQuestionId);
+        FormParameters formParameters = new FormParameters(hakuService.getApplicationSystem(themeQuestion.getApplicationSystemId()), koodistoService, themeQuestionDAO, hakukohdeService, applicationOptionService);;
+        return themeQuestion.generateElement(formParameters);
     }
 
     @DELETE
@@ -166,13 +196,14 @@ public class ThemeQuestionResource {
     @Path("list/{applicationSystemId}")
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKULOMAKKEENHALLINTA_READ_UPDATE', 'ROLE_APP_HAKULOMAKKEENHALLINTA_CRUD', 'ROLE_APP_HAKULOMAKKEENHALLINTA_READ')")
-    public List<ThemeQuestion> getThemeQuestionQuery(@PathParam("applicationSystemId") String applicationSystemId,
-      @QueryParam("aoId") String learningOpportunityId, @QueryParam("orgId") String organizationId){
+    public List<ThemeQuestion> getThemeQuestionByQuery(@PathParam("applicationSystemId") String applicationSystemId,
+      @QueryParam("aoId") String learningOpportunityId, @QueryParam("orgId") String organizationId, @QueryParam("themeId") String themeId){
         LOGGER.debug("Listing by applicationSystemId: {}, learningOpportunityId: {}, organizationId: {} ", applicationSystemId, applicationSystemId, organizationId);
         ThemeQuestionQueryParameters tqq = new ThemeQuestionQueryParameters();
         tqq.setApplicationSystemId(applicationSystemId);
         tqq.setLearningOpportunityId(learningOpportunityId);
         tqq.setOrganizationId(organizationId);
+        tqq.setTheme(themeId);
         List<ThemeQuestion> themeQuestions = themeQuestionDAO.query(tqq);
         LOGGER.debug("Found {} ThemeQuestions", themeQuestions.size());
         return themeQuestions;

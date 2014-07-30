@@ -29,7 +29,22 @@
     <name>Oppijan verkkopalvelu :: Haku App</name>
 
     <dependencies>
-        <dependency>
+      <dependency>
+        <groupId>fi.vm.sade.haku</groupId>
+        <artifactId>hakemus-api</artifactId>
+        <version>10.0-SNAPSHOT</version>
+      </dependency>
+
+      <dependency>
+        <groupId>fi.vm.sade.haku</groupId>
+        <artifactId>hakemus-api</artifactId>
+        <version>10.0-SNAPSHOT</version>
+        <type>test-jar</type>
+        <scope>test</scope>
+      </dependency>
+
+
+      <dependency>
             <groupId>fi.vm.sade.koodisto</groupId>
             <artifactId>koodisto-api</artifactId>
             <version>${koodisto-api.version}</version>
@@ -57,6 +72,11 @@
                     <artifactId>jsr311-api</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+        <dependency>
+        	<groupId>fi.vm.sade.ryhmasahkoposti</groupId>
+        	<artifactId>ryhmasahkoposti-api</artifactId>
+        	<version>${viestintapalvelu.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
@@ -659,18 +679,6 @@
             <version>${authentication-api.version}</version>
         </dependency>
 
-        <dependency>
-            <groupId>fi.vm.sade.valintaperusteet</groupId>
-            <artifactId>valintalaskenta-domain</artifactId>
-            <version>${valintaperusteet.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>fi.vm.sade.sijoittelu</groupId>
-            <artifactId>sijoittelu-tulos-api</artifactId>
-            <version>${valintaperusteet.version}</version>
-        </dependency>
-
         <!-- security -->
         <dependency>
             <groupId>net.sf.ehcache</groupId>
@@ -729,7 +737,6 @@
             <artifactId>joda-time</artifactId>
             <version>2.2</version>
         </dependency>
-
 
     </dependencies>
 
@@ -810,7 +817,7 @@
                             <fork>true</fork>
                             <systemProperties>
                                 <application.system.cache>false</application.system.cache>
-                                <spring.profiles.active>dev</spring.profiles.active>
+                                <spring.profiles.active>it</spring.profiles.active>
                             </systemProperties>
                         </configuration>
                     </execution>
@@ -1082,9 +1089,6 @@ buildTtime=${maven.build.timestamp}
                 </plugins>
                 <resources>
                     <resource>
-                        <directory>config/dev</directory>
-                    </resource>
-                    <resource>
                         <directory>src/main/resources</directory>
                     </resource>
                 </resources>
@@ -1117,9 +1121,6 @@ buildTtime=${maven.build.timestamp}
                     </plugin>
                 </plugins>
                 <resources>
-                    <resource>
-                        <directory>config/dev</directory>
-                    </resource>
                     <resource>
                         <directory>src/main/resources</directory>
                     </resource>
@@ -1157,16 +1158,10 @@ buildTtime=${maven.build.timestamp}
             <build>
                 <resources>
                     <resource>
-                        <directory>config/it</directory>
-                    </resource>
-                    <resource>
                         <directory>src/main/resources</directory>
                     </resource>
                 </resources>
                 <testResources>
-                    <testResource>
-                        <directory>config/it</directory>
-                    </testResource>
                     <testResource>
                         <directory>src/test/resources</directory>
                     </testResource>

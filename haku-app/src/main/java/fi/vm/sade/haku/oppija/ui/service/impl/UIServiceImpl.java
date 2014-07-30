@@ -65,6 +65,7 @@ public class UIServiceImpl implements UIService {
         ApplicationSystem activeApplicationSystem = applicationSystemService.getActiveApplicationSystem(applicationSystemId);
         Application application = applicationService.getSubmittedApplication(applicationSystemId, oid);
         List<String> discretionaryAttachmentAOIds = ApplicationUtil.getDiscretionaryAttachmentAOIds(application);
+        Map<String, List<String>>  higherEdAttachmentAOIds = ApplicationUtil.getHigherEdAttachmentAOIds(application);
         return new ModelResponse(application, activeApplicationSystem, discretionaryAttachmentAOIds, koulutusinformaatioBaseUrl);
     }
 

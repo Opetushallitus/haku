@@ -34,19 +34,14 @@ import fi.vm.sade.haku.oppija.ui.service.ModelResponse;
 import fi.vm.sade.haku.oppija.ui.service.OfficerUIService;
 import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
 import fi.vm.sade.haku.virkailija.authentication.Person;
+import fi.vm.sade.haku.virkailija.koulutusinformaatio.KoulutusinformaatioService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import fi.vm.sade.haku.virkailija.valinta.ValintaService;
+import fi.vm.sade.haku.virkailija.valinta.dto.*;
 import fi.vm.sade.organisaatio.api.model.types.OrganisaatioTyyppi;
 import fi.vm.sade.organisaatio.service.search.SearchCriteria;
-import fi.vm.sade.sijoittelu.tulos.dto.PistetietoDTO;
-import fi.vm.sade.sijoittelu.tulos.dto.raportointi.HakijaDTO;
-import fi.vm.sade.sijoittelu.tulos.dto.raportointi.HakutoiveDTO;
-import fi.vm.sade.sijoittelu.tulos.dto.raportointi.HakutoiveenValintatapajonoDTO;
-import fi.vm.sade.valintalaskenta.domain.dto.*;
-import fi.vm.sade.valintalaskenta.domain.dto.valintakoe.ValintakoeDTO;
-import fi.vm.sade.valintalaskenta.domain.valintakoe.Osallistuminen;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,7 +49,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -82,10 +76,11 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     private final OrganizationService organizationService;
     private ValintaService valintaService;
     private final UserSession userSession;
+    private final KoulutusinformaatioService koulutusinformaatioService;
 
     private static final DecimalFormat PISTE_FMT = new DecimalFormat("#.##");
 
-    private static final DateFormat KAUSI_FMT = new SimpleDateFormat("dd.MM.yyyy");
+    private static final String KAUSI_FORMAT_STRING = "dd.MM.yyyy";
     private final String kevatkausi;
 
     @Autowired
@@ -102,6 +97,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
                                 final OrganizationService organizationService,
                                 final ValintaService valintaService,
                                 final UserSession userSession,
+                                final KoulutusinformaatioService koulutusinformaatioService,
                                 @Value("${hakukausi.kevat}") final String kevatkausi) {
         this.applicationService = applicationService;
         this.baseEducationService = baseEducationService;
@@ -116,6 +112,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         this.organizationService = organizationService;
         this.valintaService = valintaService;
         this.userSession = userSession;
+        this.koulutusinformaatioService = koulutusinformaatioService;
         this.kevatkausi = kevatkausi;
     }
 
@@ -427,9 +424,10 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         Calendar today = GregorianCalendar.getInstance();
         String semester = "kausi_s";
         String[] kevatkausiDates = kevatkausi.split("-");
+        SimpleDateFormat dateFormat = new SimpleDateFormat(KAUSI_FORMAT_STRING);
         try {
-            Date kevatkausiAlkaa = KAUSI_FMT.parse(kevatkausiDates[0].trim() + "." + today.get(Calendar.YEAR));
-            Date kevatkausiLoppuu = KAUSI_FMT.parse(kevatkausiDates[1].trim() +"."+today.get(Calendar.YEAR));
+            Date kevatkausiAlkaa = dateFormat.parse(kevatkausiDates[0].trim() + "." + today.get(Calendar.YEAR));
+            Date kevatkausiLoppuu = dateFormat.parse(kevatkausiDates[1].trim() +"."+today.get(Calendar.YEAR));
             if (today.getTime().after(kevatkausiAlkaa) && today.getTime().before(kevatkausiLoppuu)) {
                 semester = "kausi_k";
             }
@@ -604,8 +602,26 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     public ModelResponse getApplicationPrint(final String oid) {
         Application application = applicationService.getApplicationByOid(oid);
         ApplicationSystem activeApplicationSystem = applicationSystemService.getApplicationSystem(application.getApplicationSystemId());
+
         List<String> discretionaryAttachmentAOIds = ApplicationUtil.getDiscretionaryAttachmentAOIds(application);
-        return new ModelResponse(application, activeApplicationSystem, discretionaryAttachmentAOIds, koulutusinformaatioBaseUrl);
+        List<fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO> discretionaryAttachments =
+                koulutusinformaatioService.getApplicationOptions(discretionaryAttachmentAOIds);
+
+        Map<String, List<String>> higherEdAttachmentAOIds = ApplicationUtil.getHigherEdAttachmentAOIds(application);
+        Map<String, List<fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO>> higherEdAttachments =
+                new HashMap<String, List<fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO>>();
+        for (Map.Entry<String, List<String>> entry : higherEdAttachmentAOIds.entrySet()) {
+            String key = entry.getKey();
+            List<fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO> aos =
+                    new ArrayList<fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO>();
+            for (String aoOid : entry.getValue()) {
+                aos.add(koulutusinformaatioService.getApplicationOption(aoOid));
+            }
+            higherEdAttachments.put(key, aos);
+        }
+
+        return new ModelResponse(application, activeApplicationSystem,
+                discretionaryAttachments, higherEdAttachments);
     }
 
     private ApplicationNote createNote(String note) {

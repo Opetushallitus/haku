@@ -99,6 +99,7 @@ public class OfficerUIServiceImplTest {
                 organizationService,
                 valintaService,
                 userSession,
+                null,
                 "01.02 - 01.09");
         form.addChild(phase);
         when(applicationService.getApplication(OID)).thenReturn(application);
@@ -156,7 +157,7 @@ public class OfficerUIServiceImplTest {
 
         return new OfficerUIServiceImpl(applicationService, baseEducationService, formService,
                 null, hakuPermissionService,loggerAspect, "", elementTreeValidator,
-                null, null, null, null, userSession, null);
+                null, null, null, null, userSession, null, null);
     }
 
     @Test

@@ -21,8 +21,10 @@ import com.mongodb.util.JSON;
 import fi.vm.sade.haku.oppija.common.dao.AbstractDAOTest;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
+import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
 import fi.vm.sade.haku.oppija.lomake.domain.User;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -115,10 +117,11 @@ public class ApplicationDAOMongoImplIT extends AbstractDAOTest {
     }
 
     @Test
-    public void testFindByApplicationSystemAndApplicationOption() {
-        List<Application> applications = applicationDAO.findByApplicationSystemAndApplicationOption("Yhteishaku", "776");
-        assertNotNull(applications);
-        assertEquals(2, applications.size());
+    public void testfindAllQueriedByApplicationSystemAndApplicationOption() {
+        ApplicationQueryParameters param  = new ApplicationQueryParametersBuilder().setAsId("YhteisHaku").setAoId("776").build();
+        ApplicationSearchResultDTO resultDTO = applicationDAO.findAllQueried("",param);
+        assertFalse(CollectionUtils.isEmpty(resultDTO.getResults()));
+        assertEquals(2, resultDTO.getResults().size());
     }
 
     @Override

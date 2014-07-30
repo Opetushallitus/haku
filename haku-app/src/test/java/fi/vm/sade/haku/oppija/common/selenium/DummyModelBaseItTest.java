@@ -1,15 +1,8 @@
 package fi.vm.sade.haku.oppija.common.selenium;
 
 import com.google.common.base.Joiner;
-import com.google.common.collect.Lists;
 import fi.vm.sade.haku.oppija.lomake.ApplicationSystemHelper;
-import fi.vm.sade.haku.oppija.lomake.domain.ApplicationPeriod;
-import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
-import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystemBuilder;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.haku.oppija.ui.selenium.DefaultValues;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
@@ -20,8 +13,6 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -160,20 +151,5 @@ public abstract class DummyModelBaseItTest extends AbstractSeleniumBase {
         for (Map.Entry<String, String> questionAndAnswer : values.entrySet()) {
             setValue(questionAndAnswer.getKey(), questionAndAnswer.getValue());
         }
-    }
-
-    public static ApplicationSystem createActiveApplicationSystem(final String id, Form form) {
-        final Calendar instance = Calendar.getInstance();
-        instance.roll(Calendar.YEAR, -1);
-        Date start = new Date(instance.getTimeInMillis());
-        instance.roll(Calendar.YEAR, 2);
-        Date end = new Date(instance.getTimeInMillis());
-        List<ApplicationPeriod> applicationPeriods = Lists.newArrayList(new ApplicationPeriod(start, end));
-        return new ApplicationSystemBuilder().addId(id).addForm(form)
-                .addName(ElementUtil.createI18NAsIs("test application period"))
-                .addApplicationPeriods(applicationPeriods)
-                .addHakukausiUri(OppijaConstants.HAKUKAUSI_SYKSY)
-                .addApplicationSystemType(OppijaConstants.VARSINAINEN_HAKU)
-                .get();
     }
 }

@@ -17,7 +17,7 @@
   ~ European Union Public Licence for more details.
   --%>
 <c:set var="styleBaseClass" value="${element.inline ? 'form-row' : 'form-item'}"/>
-<div class="${styleBaseClass}-checkbox">
+<div class="${styleBaseClass}-checkbox ${styleBaseClass}">
     <c:if test="${styleBaseClass=='form-row'}">
         <div class="${styleBaseClass}-label">&#8302;</div>
     </c:if>

@@ -27,6 +27,8 @@ haku.app.username.to.sijoittelu={{haku_app_username_to_sijoittelu}}
 haku.app.password.to.sijoittelu={{haku_app_password_to_sijoittelu}}
 haku.app.username.to.suoritusrekisteri={{haku_app_username_to_suoritusrekisteri}}
 haku.app.password.to.suoritusrekisteri={{haku_app_password_to_suoritusrekisteri}}
+haku.app.username.to.viestintapalvelu={{haku_app_username_to_viestintapalvelu}}
+haku.app.password.to.viestintapalvelu={{haku_app_password_to_viestintapalvelu}}
 host.cas={{host_cas}}
 host.haku={{host_haku}}
 host.ilb={{host_ilb}}
@@ -75,6 +77,8 @@ cas.service.organisaatio-service=https://${host.virkailija}/organisaatio-service
 cas.service.sijoittelu-service=https://${host.virkailija}/sijoittelu-service
 cas.service.suoritusrekisteri=https://${host.virkailija}/suoritusrekisteri
 cas.service.valintalaskenta-service=https://${host.virkailija}/valintalaskenta-laskenta-service
+cas.service.viestintapalvelu=https://${host.virkailija}/viestintapalvelu
+cas.service.ryhmasahkoposti=https://${host.virkailija}/ryhmasahkoposti-service
 customAttribute.webservice.url.backend=https://${host.virkailija}/authentication-service/services/customAttributeService
 flyway.initOnMigrate=true
 komo.oid.kuntouttava=1.2.246.562.5.2013112814572435755085
@@ -100,6 +104,7 @@ ldap.url=ldap://${host.ldap}
 ldap.url.with.base=ldap\://${host.ldap}/dc\=opintopolku,dc\=fi
 log4j.properties.file=${user.home.conf}/log4j.properties
 mongo.db.name=hakulomake
+mongo.writeconcern={{ haku_mongo_writeconcern | default('ACKNOWLEDGED') }}
 mongodb.url=${mongodb.oppija.uri}/${mongo.db.name}?maxpoolsize=${mongo.db.maxpoolsize}
 oid.rest.url.backend=${host.ilb}/oid-service/rest/oid
 oid.webservice.url.backend=${host.ilb}/services/oidService

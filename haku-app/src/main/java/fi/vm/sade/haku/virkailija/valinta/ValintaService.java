@@ -1,7 +1,7 @@
 package fi.vm.sade.haku.virkailija.valinta;
 
-import fi.vm.sade.sijoittelu.tulos.dto.raportointi.HakijaDTO;
-import fi.vm.sade.valintalaskenta.domain.dto.HakemusDTO;
+import fi.vm.sade.haku.virkailija.valinta.dto.HakemusDTO;
+import fi.vm.sade.haku.virkailija.valinta.dto.HakijaDTO;
 
 public interface ValintaService {
 
