@@ -109,8 +109,7 @@ public class FormParameters {
     }
 
     public boolean isLisahaku() {
-        return FormTemplateType.LISAHAKU_KEVAT.equals(formTemplateType) || FormTemplateType.LISAHAKU_SYKSY.equals(formTemplateType);
-
+        return applicationSystem.getApplicationSystemType().equals(OppijaConstants.LISA_HAKU);
     }
 
     public ThemeQuestionConfigurator getThemeQuestionGenerator(){
