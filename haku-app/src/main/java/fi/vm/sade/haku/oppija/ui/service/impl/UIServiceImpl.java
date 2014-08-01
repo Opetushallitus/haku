@@ -32,11 +32,14 @@ import fi.vm.sade.haku.oppija.lomake.service.UserSession;
 import fi.vm.sade.haku.oppija.lomake.util.ElementTree;
 import fi.vm.sade.haku.oppija.ui.service.ModelResponse;
 import fi.vm.sade.haku.oppija.ui.service.UIService;
+import fi.vm.sade.haku.virkailija.koulutusinformaatio.KoulutusinformaatioService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
+import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,15 +51,18 @@ public class UIServiceImpl implements UIService {
     private final ApplicationSystemService applicationSystemService;
     private final String koulutusinformaatioBaseUrl;
     private final UserSession userSession;
+    private final KoulutusinformaatioService koulutusinformaatioService;
 
     @Autowired
     public UIServiceImpl(final ApplicationService applicationService,
                          final ApplicationSystemService applicationSystemService,
                          final UserSession userSession,
+                         final KoulutusinformaatioService koulutusinformaatioService,
                          @Value("${koulutusinformaatio.base.url}") final String koulutusinformaatioBaseUrl) {
         this.applicationService = applicationService;
         this.applicationSystemService = applicationSystemService;
         this.userSession = userSession;
+        this.koulutusinformaatioService = koulutusinformaatioService;
         this.koulutusinformaatioBaseUrl = koulutusinformaatioBaseUrl;
     }
 
@@ -65,8 +71,20 @@ public class UIServiceImpl implements UIService {
         ApplicationSystem activeApplicationSystem = applicationSystemService.getActiveApplicationSystem(applicationSystemId);
         Application application = applicationService.getSubmittedApplication(applicationSystemId, oid);
         List<String> discretionaryAttachmentAOIds = ApplicationUtil.getDiscretionaryAttachmentAOIds(application);
-        Map<String, List<String>>  higherEdAttachmentAOIds = ApplicationUtil.getHigherEdAttachmentAOIds(application);
-        return new ModelResponse(application, activeApplicationSystem, discretionaryAttachmentAOIds, koulutusinformaatioBaseUrl);
+        Map<String, List<String>> higherEdAttachmentAOIds = ApplicationUtil.getHigherEdAttachmentAOIds(application);
+        Map<String, List<fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO>> higherEdAttachments =
+                new HashMap<String, List<fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO>>();
+        for (Map.Entry<String, List<String>> entry : higherEdAttachmentAOIds.entrySet()) {
+            String key = entry.getKey();
+            List<fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO> aos =
+                    new ArrayList<ApplicationOptionDTO>();
+            for (String aoOid : entry.getValue()) {
+                aos.add(koulutusinformaatioService.getApplicationOption(aoOid));
+            }
+            higherEdAttachments.put(key, aos);
+        }
+        return new ModelResponse(application, activeApplicationSystem, discretionaryAttachmentAOIds,
+                higherEdAttachments, koulutusinformaatioBaseUrl);
     }
 
     @Override

@@ -44,6 +44,7 @@ public final class ElementUtil {
 
     public static final String ISO88591_NAME_REGEX = "^$|^[a-zA-ZÀ-ÖØ-öø-ÿ]$|^[a-zA-ZÀ-ÖØ-öø-ÿ'][a-zA-ZÀ-ÖØ-öø-ÿ ,-.']*(?:[a-zA-ZÀ-ÖØ-öø-ÿ.']+$)$";
     public static final String EMAIL_REGEX = "^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$|^$";
+    public static final String YEAR_REGEX = "^[1-2][0-9]{3}$";
 
     public static final String KYLLA = Boolean.TRUE.toString().toLowerCase();
     public static final String EI = Boolean.FALSE.toString().toLowerCase();
@@ -157,6 +158,11 @@ public final class ElementUtil {
         return new ValueSetValidator(formParameters.getI18nText("yleinen.virheellinenArvo"), validValues);
     }
 
+
+    public static Validator createYearValidator(final FormParameters formParameters, final String messageKey) {
+        return createRegexValidator(YEAR_REGEX, formParameters, messageKey);
+    }
+
     public static void addRequiredValidator(final Element element, final FormParameters formParameters) {
         String required = "required";
         element.addAttribute(required, required);
@@ -264,6 +270,5 @@ public final class ElementUtil {
     public static Element createRegexpRule(final String variable, final String pattern) {
         return Rule(ElementUtil.randomId()).setExpr(new Regexp(variable, pattern)).build();
     }
-
 
 }
