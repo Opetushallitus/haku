@@ -37,7 +37,6 @@ public final class PersonBuilder {
                 .setNoSocialSecurityNumber(person.isNoSocialSecurityNumber())
                 .setEmail(person.getEmail())
                 .setSex(person.getSex())
-                .setHomeCity(person.getHomeCity())
                 .setSecurityOrder(person.isSecurityOrder())
                 .setLanguage(person.getLanguage())
                 .setNationality(person.getNationality())
