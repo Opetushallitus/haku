@@ -331,6 +331,8 @@ public class Application implements Serializable {
                 OppijaConstants.ELEMENT_ID_HAS_SOCIAL_SECURITY_NUMBER);
         henkilotiedot = updateHenkilotiedotField(henkilotiedot, String.valueOf(person.isSecurityOrder()),
                 OppijaConstants.ELEMENT_ID_SECURITY_ORDER);
+        henkilotiedot = updateHenkilotiedotField(henkilotiedot, String.valueOf(person.getDateOfBirth()),
+                OppijaConstants.ELEMENT_ID_DATE_OF_BIRTH);
 
         String personOid = person.getPersonOid();
         if (isNotEmpty(personOid)) {

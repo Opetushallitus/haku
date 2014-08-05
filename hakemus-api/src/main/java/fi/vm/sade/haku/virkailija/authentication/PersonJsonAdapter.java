@@ -7,10 +7,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Type;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import static org.apache.commons.lang3.StringUtils.isEmpty;
 
 public class PersonJsonAdapter implements JsonSerializer<Person>, JsonDeserializer<Person> {
+
+    private final static DateFormat AUTH_DATE_FMT = new SimpleDateFormat("yyyy-MM-dd");
+    private final static DateFormat HAKU_DATE_FMT = new SimpleDateFormat("dd.MM.yyyy");
 
     private static Logger log = LoggerFactory.getLogger(PersonJsonAdapter.class);
 
@@ -59,6 +66,17 @@ public class PersonJsonAdapter implements JsonSerializer<Person>, JsonDeserializ
             personJson.add("eiSuomalaistaHetua", new JsonPrimitive(true));
         }
 
+        String dateOfBirth = person.getDateOfBirth();
+        if (!isEmpty(dateOfBirth)) {
+            try {
+                Date dob = HAKU_DATE_FMT.parse(dateOfBirth);
+                personJson.add("syntymaaika", new JsonPrimitive(AUTH_DATE_FMT.format(dob)));
+            } catch (ParseException e) {
+                log.error("Couldn't parse date of birth: "+dateOfBirth);
+            }
+
+        }
+
         String sex = person.getSex();
         if (!isEmpty(sex) && OppijaConstants.SUKUPUOLI_MIES.equals(sex)) {
             personJson.add("sukupuoli", new JsonPrimitive(OppijaConstants.SUKUPUOLI_MIES));
@@ -96,6 +114,17 @@ public class PersonJsonAdapter implements JsonSerializer<Person>, JsonDeserializ
         if (securityOrder != null) {
             personBuilder.setSecurityOrder(securityOrder.booleanValue());
         }
+
+        String dobStr = getJsonString(personJson, "syntymaaika");
+        if (dobStr != null) {
+            try {
+                Date dob = AUTH_DATE_FMT.parse(dobStr);
+                personBuilder.setDateOfBirth(HAKU_DATE_FMT.format(dob));
+            } catch (ParseException e) {
+                log.error("Couldn't parse date of birth: "+dobStr);
+            }
+        }
+
 
         JsonElement kieliElem = personJson.get("asiointiKieli");
         if (kieliElem != null && !kieliElem.isJsonNull()) {
