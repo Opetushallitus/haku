@@ -1,10 +1,9 @@
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.lisatiedot;
 
+import fi.vm.sade.haku.oppija.lomake.domain.builder.RadioBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.builder.TextQuestionBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.builder.ThemeBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
-import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionRule;
-import fi.vm.sade.haku.oppija.lomake.domain.builder.RelatedQuestionRuleBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.*;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.service.ThemeQuestionConfigurator;
@@ -37,7 +36,7 @@ public class LisatiedotPhase {
 
     public static Element create(final FormParameters formParameters) {
         Element lisatiedot = Phase("lisatiedot").setEditAllowedByRoles("APP_HAKEMUS_READ_UPDATE", "APP_HAKEMUS_CRUD", "APP_HAKEMUS_OPO").formParams(formParameters).build();
-        if (!formParameters.isPervako()) {
+        if (!formParameters.isPervako() && !formParameters.isHigherEd()) {
             lisatiedot.addChild(createTyokokemus(formParameters));
         }
         Element element = lisatiedot
@@ -74,16 +73,27 @@ public class LisatiedotPhase {
         if(formParameters.isOnlyThemeGenerationForFormEditor())
             return lupatiedotTheme;
 
-        lupatiedotTheme.addChild(
-                TitledGroup("lupatiedot.ryhma").formParams(formParameters).build().addChild(
-                        Checkbox("lupaMarkkinointi").formParams(formParameters).build(),
-                        Checkbox("lupaJulkaisu").formParams(formParameters).build(),
-                        Checkbox("lupaSahkoisesti").formParams(formParameters).build(),
-                        Checkbox("lupaSms").formParams(formParameters).build()));
+        Element lupatietoGrp = TitledGroup("lupatiedot.ryhma").formParams(formParameters).build();
+        lupatietoGrp.addChild(
+                Checkbox("lupaMarkkinointi").formParams(formParameters).build(),
+                Checkbox("lupaJulkaisu").formParams(formParameters).build(),
+                Checkbox("lupaSahkoisesti").formParams(formParameters).build(),
+                Checkbox("lupaSms").formParams(formParameters).build());
+        if (formParameters.isHigherEd()) {
+            Element opolupa = Checkbox("lupaOpo").formParams(formParameters).build();
+            lupatietoGrp.addChild(opolupa);
+        }
 
-        lupatiedotTheme.addChild(Radio(OppijaConstants.ELEMENT_ID_CONTACT_LANGUAGE)
+        lupatiedotTheme.addChild(lupatietoGrp);
+
+        RadioBuilder kieliRadioBuilder = Radio(OppijaConstants.ELEMENT_ID_CONTACT_LANGUAGE)
                 .addOption("suomi", formParameters)
-                .addOption("ruotsi", formParameters)
+                .addOption("ruotsi", formParameters);
+        if (formParameters.isHigherEd()) {
+            kieliRadioBuilder.addOption("englanti", formParameters);
+        }
+        
+        lupatiedotTheme.addChild(kieliRadioBuilder
                 .required()
                 .formParams(formParameters).build());
 

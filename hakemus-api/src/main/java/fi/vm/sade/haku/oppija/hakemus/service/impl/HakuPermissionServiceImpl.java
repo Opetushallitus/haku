@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import fi.vm.sade.generic.service.AbstractPermissionService;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
+import fi.vm.sade.haku.oppija.hakemus.domain.AuthorizationMeta;
 import fi.vm.sade.haku.oppija.hakemus.service.HakuPermissionService;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
@@ -45,12 +46,12 @@ public class HakuPermissionServiceImpl extends AbstractPermissionService impleme
     }
 
     @Override
+    public List<String> userCanReadApplications() {
+        return userCanReadApplications(authenticationService.getOrganisaatioHenkilo());
+    }
+
+    @Override
     public List<String> userCanReadApplications(List<String> organizations) {
-
-        if (organizations == null || organizations.isEmpty()) {
-            organizations = authenticationService.getOrganisaatioHenkilo();
-        }
-
         List<String> readble = new ArrayList<String>();
         for (String organization : organizations) {
             log.debug("Checking read permissions as organization:{} for user:{})", organization, authenticationService.getCurrentHenkilo().getPersonOid());
@@ -63,10 +64,12 @@ public class HakuPermissionServiceImpl extends AbstractPermissionService impleme
     }
 
     @Override
+    public List<String> userHasOpoRole() {
+        return userHasOpoRole(authenticationService.getOrganisaatioHenkilo());
+    }
+
+    @Override
     public List<String> userHasOpoRole(List<String> organizations) {
-        if (organizations == null || organizations.isEmpty()) {
-            organizations = authenticationService.getOrganisaatioHenkilo();
-        }
         List<String> opoOrg = new ArrayList<String>();
         for (String organization : organizations) {
             log.debug("checking opo-role against organization "+organization);
@@ -87,10 +90,10 @@ public class HakuPermissionServiceImpl extends AbstractPermissionService impleme
             return canRead;
         }
         boolean opo = userHasOpoRoleToSendingSchool(application);
-        if (opo) {
-            log.debug("Can read, opo "+application.getOid());
-        }
-        return opo;
+        AuthorizationMeta authorizationMeta = application.getAuthorizationMeta();
+        boolean opoAllowed = authorizationMeta == null || authorizationMeta.isOpoAllowed() == null
+                ? false : authorizationMeta.isOpoAllowed();
+        return opo && opoAllowed;
     }
 
     @Override
@@ -165,7 +168,7 @@ public class HakuPermissionServiceImpl extends AbstractPermissionService impleme
             // OPH users can access anything
             return true;
         }
-        return userHasOpoRole(null).size() > 0;
+        return userHasOpoRole().size() > 0;
     }
 
     @Override

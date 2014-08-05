@@ -85,6 +85,7 @@ public class Application implements Serializable {
 
     private Map<String, Map<String, String>> answers = new HashMap<String, Map<String, String>>();
     private Map<String, String> meta = new HashMap<String, String>();
+    private AuthorizationMeta authorizationMeta = null; // new AuthorizationMeta();
     private Map<String, String> overriddenAnswers = new HashMap<String, String>();
     private Map<String, String> additionalInfo = new HashMap<String, String>();
     private LinkedList<ApplicationNote> notes = new LinkedList<ApplicationNote>();
@@ -407,6 +408,14 @@ public class Application implements Serializable {
 
     public Map<String, String> getMeta() {
         return meta;
+    }
+
+    public AuthorizationMeta getAuthorizationMeta() {
+        return authorizationMeta;
+    }
+
+    public void setAuthorizationMeta(AuthorizationMeta authorizationMeta) {
+        this.authorizationMeta = authorizationMeta;
     }
 
     public Map<String, String> getOverriddenAnswers() {

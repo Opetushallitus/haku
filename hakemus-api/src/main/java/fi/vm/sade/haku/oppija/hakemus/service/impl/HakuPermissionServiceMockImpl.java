@@ -4,6 +4,7 @@ import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.service.HakuPermissionService;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
+import fi.vm.sade.haku.virkailija.authentication.impl.AuthenticationServiceMockImpl;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
@@ -15,14 +16,27 @@ import java.util.Map;
 @Profile(value = {"dev", "it", "devluokka"})
 public class HakuPermissionServiceMockImpl implements HakuPermissionService {
     @Override
+    public List<String> userCanReadApplications() {
+        AuthenticationServiceMockImpl authenticationService = new AuthenticationServiceMockImpl();
+        return userCanReadApplications(authenticationService.getOrganisaatioHenkilo());
+    }
+
+    @Override
     public List<String> userCanReadApplications(List<String> organizations) {
         return organizations;
+    }
+
+    @Override
+    public List<String> userHasOpoRole() {
+        AuthenticationServiceMockImpl authenticationService = new AuthenticationServiceMockImpl();
+        return userHasOpoRole(authenticationService.getOrganisaatioHenkilo());
     }
 
     @Override
     public List<String> userHasOpoRole(List<String> organizations) {
         return organizations;
     }
+
 
     @Override
     public boolean userCanReadApplication(Application application) {

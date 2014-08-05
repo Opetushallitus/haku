@@ -70,7 +70,7 @@ public class LoginController {
     }
 
     private Response getResponseByUsername(String username) throws URISyntaxException {
-        String path = "officer".equals(username) ? "virkailija/hakemus" : "/";
+        String path = "officer".equals(username) || "opo".equals(username) ? "virkailija/hakemus" : "/";
         return seeOther(new URI(path)).build();
     }
 

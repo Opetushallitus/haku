@@ -1,6 +1,7 @@
 package fi.vm.sade.haku.oppija.repository;
 
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
+import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,13 +47,27 @@ public class ApplicationSystemRepository {
         }
     }
 
+    public ApplicationSystem findById(final String asid, String... includeFields) {
+        Criteria crit = new Criteria("_id").is(asid);
+        Query q = new Query(crit);
+        q.fields().include("name"); // Mandatory field
+        for (String includeField : includeFields) {
+            q.fields().include(includeField);
+        }
+        List<ApplicationSystem> result = mongoOperations.find(q, ApplicationSystem.class);
+        if (result != null && result.size() == 1) {
+            return result.get(0);
+        }
+        throw new ResourceNotFoundException("ApplicationSystem "+asid+" not found");
+    }
+
     public List<ApplicationSystem> findAll(String... includeFields) {
         log.debug("Find all ApplicationSystems (include fields: {})", Arrays.toString(includeFields));
         Query q = new Query();
         for (String includeField : includeFields) {
             q.fields().include(includeField);
-
         }
+
         List<ApplicationSystem> applicationSystems = mongoOperations.find(q, ApplicationSystem.class);
         log.debug("Found {} applicationSystems", applicationSystems.size());
         return applicationSystems;

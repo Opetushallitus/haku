@@ -7,6 +7,8 @@ import java.util.List;
 public interface ApplicationSystemService {
     ApplicationSystem getApplicationSystem(final String Id);
 
+    ApplicationSystem getApplicationSystem(String id, String... includeFields);
+
     ApplicationSystem getActiveApplicationSystem(final String Id);
 
     void save(final ApplicationSystem applicationSystem);

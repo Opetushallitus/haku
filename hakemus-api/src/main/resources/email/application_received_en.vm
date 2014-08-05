@@ -1,0 +1,36 @@
+Haku: $applicationSystemId
+Hakija: $applicant
+Hakemusnumero: $applicationId
+Hakemuksen päivämäärä ja tallennusaika: $applicationDate
+
+Hakutoiveesi:
+
+#foreach ($preference in $preferences)
+$preference
+
+#end
+#if ($discretionary)
+
+Hait harkintaan perustuvassa valinnassa. Sinun tulee toimittaa hakuajan päättymiseen mennessä
+oppilaitokseen seuraavat tiedot: tulostettu hakemus sekä perustelut ja todistukset, joihin vetoat.
+
+#end
+#if ($athlete)
+
+Haet urheilijana ammatilliseen koulutukseen. Lisätietoja löydät osoitteesta
+
+http://www.sport.fi/urheiluoppilaitoshaku
+
+#end
+#if ($musiikkiTanssiLiikuntaEducationCode)
+
+Hait musiikki-, tanssi- tai liikunta-alan koulutukseen. Muista tarkistaa oppilaitoksen
+nettisivuilta, pitääkö sinun täyttää myös oppilaitoksen oma lisätietolomake. Lomakkeen
+voit tulostaa oppilaitoksen nettisivuilta, ja se on lähetettävä hakuaikana oppilaitokseen.
+
+#end
+
+
+Tämä on automaattinen sähköpostiviesti. Älä vastaa tähän. Jos haluat muuttaa
+hakutoiveitasi, ole yhteydessä Opintopolun hakuneuvontaan hakuaikana
+(neuvonta@opintopolku.fi).

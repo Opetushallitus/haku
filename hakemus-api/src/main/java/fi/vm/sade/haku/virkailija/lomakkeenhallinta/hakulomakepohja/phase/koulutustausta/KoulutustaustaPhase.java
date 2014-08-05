@@ -415,7 +415,7 @@ public final class KoulutustaustaPhase {
                     .formParams(formParameters).build();
 
             Element tuoreYoTodistus = createVarEqualsToValueRule(lukioPaattotodistusVuosi.getId(), hakukausiVuosiStr);
-            tuoreYoTodistus.addChild(new DropdownSelectBuilder("lahtokoulu")
+            tuoreYoTodistus.addChild(new DropdownSelectBuilder(ELEMENT_ID_SENDING_SCHOOL)
                     .defaultValueAttribute("")
                     .addOption(addSpaceAtTheBeginning(ElementUtil.createI18NText("form.koulutustausta.lukio.valitse.oppilaitos", formParameters)), "")
                     .addOptions(koodistoService.getLukioKoulukoodit())

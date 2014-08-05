@@ -17,8 +17,6 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakukohdeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 public class FormGeneratorImpl implements FormGenerator {
     private final KoodistoService koodistoService;
@@ -53,13 +51,17 @@ public class FormGeneratorImpl implements FormGenerator {
 
     private ApplicationSystem createApplicationSystem(ApplicationSystem as) {
         FormParameters formParameters = new FormParameters(as, koodistoService, themeQuestionDAO, hakukohdeService, applicationOptionService);
-        return new ApplicationSystemBuilder().addId(as.getId()).addForm(generateForm(formParameters))
-                .addName(as.getName()).addApplicationPeriods(as.getApplicationPeriods())
+        return new ApplicationSystemBuilder()
+                .addId(as.getId())
+                .addForm(generateForm(formParameters))
+                .addName(as.getName())
+                .addApplicationPeriods(as.getApplicationPeriods())
                 .addApplicationSystemType(as.getApplicationSystemType())
                 .addHakukausiUri(as.getHakukausiUri())
                 .addHakukausiVuosi(as.getHakukausiVuosi())
                 .addKohdejoukkoUri(as.getKohdejoukkoUri())
                 .addApplicationCompleteElements(ValmisPhase.create(formParameters))
+                .addMaxApplicationOptions(as.getMaxApplicationOptions())
                 .addAdditionalInformationElements(ValmisPhase.createAdditionalInformationElements(formParameters))
                 .get();
     }
