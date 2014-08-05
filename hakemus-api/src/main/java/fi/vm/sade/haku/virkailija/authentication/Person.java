@@ -31,7 +31,6 @@ public class Person {
     private boolean noSocialSecurityNumber;
     private String email;
     private String sex;
-    private String homeCity;
     private boolean securityOrder;
     private String language;
     private String nationality;
@@ -51,7 +50,6 @@ public class Person {
         this.noSocialSecurityNumber = noSocialSecurityNumber;
         this.email = email;
         this.sex = sex;
-        this.homeCity = homeCity;
         this.securityOrder = securityOrder;
         this.language = language;
         this.nationality = nationality;
@@ -86,10 +84,6 @@ public class Person {
 
     public String getSex() {
         return sex;
-    }
-
-    public String getHomeCity() {
-        return homeCity;
     }
 
     public boolean isSecurityOrder() {
@@ -127,7 +121,6 @@ public class Person {
                 .append(" noSocialSecurityNumber: ").append(noSocialSecurityNumber)
                 .append(" email: ").append(email)
                 .append(" sex: ").append(sex)
-                .append(" homeCity: ").append(homeCity)
                 .append(" securityOrder: ").append(securityOrder)
                 .append(" language: ").append(language)
                 .append(" nationality: ").append(nationality)
@@ -146,7 +139,6 @@ public class Person {
         this.noSocialSecurityNumber = isBlank(this.socialSecurityNumber);
         this.email = isNotBlank(other.email) ? other.email : this.email;
         this.sex = isNotBlank(other.sex) ? other.sex : this.sex;
-        this.homeCity = isNotBlank(other.homeCity) ? other.homeCity : this.homeCity;
         this.securityOrder = this.securityOrder ? true : other.securityOrder;
         this.language = isNotBlank(other.language) ? other.language : this.language;
         this.nationality = isNotBlank(other.nationality) ? other.nationality : this.nationality;

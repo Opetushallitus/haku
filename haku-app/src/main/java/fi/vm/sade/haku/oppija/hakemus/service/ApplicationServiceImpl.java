@@ -166,7 +166,6 @@ public class ApplicationServiceImpl implements ApplicationService {
                 .setNickName(allAnswers.get(OppijaConstants.ELEMENT_ID_NICKNAME))
                 .setLastName(allAnswers.get(OppijaConstants.ELEMENT_ID_LAST_NAME))
                 .setSex(allAnswers.get(OppijaConstants.ELEMENT_ID_SEX))
-                .setHomeCity(allAnswers.get(OppijaConstants.ELEMENT_ID_HOME_CITY))
                 .setLanguage(allAnswers.get(OppijaConstants.ELEMENT_ID_LANGUAGE))
                 .setNationality(allAnswers.get(OppijaConstants.ELEMENT_ID_NATIONALITY))
                 .setContactLanguage(allAnswers.get(OppijaConstants.ELEMENT_ID_CONTACT_LANGUAGE))
