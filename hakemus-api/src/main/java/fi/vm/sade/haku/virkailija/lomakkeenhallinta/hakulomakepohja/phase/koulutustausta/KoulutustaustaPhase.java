@@ -178,7 +178,7 @@ public final class KoulutustaustaPhase {
                 .requiredInline().formParams(formParameters).build();
         Element laajuusYksikko = Dropdown("pohjakoulutus_am_laajuus_yksikko")
                 .addOptions(laajuusYksikot).inline().formParams(formParameters).labelKey("form.yleinen.nbsp").build();
-        Element nayttotutkinto = Checkbox("pohjakoulutus_am_nayttotutkintona").requiredInline()
+        Element nayttotutkinto = Checkbox("pohjakoulutus_am_nayttotutkintona").inline()
                 .formParams(formParameters).build();
         Element oppilaitos = TextQuestion("pohjakoulutus_am_oppilaitos").labelKey("pohjakoulutus.oppilaitos")
                 .requiredInline().formParams(formParameters).build();
