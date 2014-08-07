@@ -42,7 +42,7 @@ public final class KoulutustaustaPhase {
 
     public static final String PAATTOTODISTUSVUOSI_PATTERN = "^(19[0-9][0-9]|200[0-9]|201[0-4])$";
     public static final int TEXT_AREA_COLS = 60;
-    private static final String SUORITUSVUOSI_PAKOLLINEN = "form.pohjakoulutus.suoritusvuosiOnPakollinen";
+    private static final String SUORITUSVUOSI_PAKOLLINEN = "suoritusvuosi.on.pakollinen";
 
     private KoulutustaustaPhase() {
     }
