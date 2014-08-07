@@ -47,6 +47,7 @@ public class HakuServiceMockImpl implements HakuService {
                 .addHakukausiUri(HAKUKAUSI_SYKSY)
                 .addHakukausiVuosi(2014)
                 .addApplicationSystemType(VARSINAINEN_HAKU)
+                .addMaxApplicationOptions(5)
                 .addKohdejoukkoUri("haunkohdejoukko_1")
                 .get());
         asList.add(new ApplicationSystemBuilder()
@@ -55,6 +56,7 @@ public class HakuServiceMockImpl implements HakuService {
                 .addApplicationPeriods(Lists.newArrayList(new ApplicationPeriod(new Date(), getDate(100))))
                 .addHakukausiUri(OppijaConstants.HAKUKAUSI_KEVAT)
                 .addApplicationSystemType(VARSINAINEN_HAKU)
+                .addMaxApplicationOptions(5)
                 .addHakukausiVuosi(2014)
                 .addKohdejoukkoUri("haunkohdejoukko_1")
                 .get());
@@ -64,6 +66,7 @@ public class HakuServiceMockImpl implements HakuService {
                 .addApplicationPeriods(Lists.newArrayList(new ApplicationPeriod(new Date(), getDate(100))))
                 .addHakukausiUri(HAKUKAUSI_SYKSY)
                 .addHakukausiVuosi(2014)
+                .addMaxApplicationOptions(5)
                 .addApplicationSystemType(LISA_HAKU)
                 .addKohdejoukkoUri("haunkohdejoukko_1")
                 .get());
@@ -73,6 +76,7 @@ public class HakuServiceMockImpl implements HakuService {
                 .addApplicationPeriods(Lists.newArrayList(new ApplicationPeriod(getDate(-100), getDate(1000))))
                 .addHakukausiUri(HAKUKAUSI_KEVAT)
                 .addHakukausiVuosi(2014)
+                .addMaxApplicationOptions(5)
                 .addApplicationSystemType(LISA_HAKU)
                 .addKohdejoukkoUri("haunkohdejoukko_1")
                 .get());
@@ -94,6 +98,7 @@ public class HakuServiceMockImpl implements HakuService {
                 .addHakukausiUri(HAKUKAUSI_SYKSY)
                 .addHakukausiVuosi(2014)
                 .addApplicationSystemType(VARSINAINEN_HAKU)
+                .addMaxApplicationOptions(5)
                 .addKohdejoukkoUri(KOHDEJOUKKO_KORKEAKOULU)
                 .get());
     }

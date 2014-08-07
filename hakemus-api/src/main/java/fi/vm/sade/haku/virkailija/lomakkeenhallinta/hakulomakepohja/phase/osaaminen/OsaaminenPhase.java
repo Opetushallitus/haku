@@ -56,7 +56,7 @@ public class OsaaminenPhase {
                         .build();
             }
 
-            ElementBuilder onkoAmmatillinenPohjakoulutus = Rule().setExpr(new Or(ExprUtil.isAnswerTrue("pohjakoulutus_am"), ExprUtil.isAnswerTrue("pohjakoulutus_yo_ammatillinen")));
+            ElementBuilder onkoAmmatillinenPohjakoulutus = Rule(new Or(ExprUtil.isAnswerTrue("pohjakoulutus_am"), ExprUtil.isAnswerTrue("pohjakoulutus_yo_ammatillinen")));
             List<Option> asteikkolista = koodistoService.getLaajuusYksikot();
             osaaminen.addChild(
                     Theme("osaaminenteema")

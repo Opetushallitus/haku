@@ -80,34 +80,34 @@ public final class KielitaitokysymyksetTheme {
         Expr kysytaankoSaamePK = new And(new And(haettuSaamenkieliseenAmmatilliseenKoulutukseen, pohjakoulutusOnPK), new Not(saameOnAidinkieliTaiKouluSaameksiPK));
         Expr kysytaankoViittomaPK = new And(new And(haettuViittomakieliseenAmmatilliseenKoulutukseen, pohjakoulutusOnPK), new Not(viittomaOnAidinkieliTaiKouluViittomaksiPK));
 
-        Element naytetaankoSuomiPK = Rule(ElementUtil.randomId()).setExpr(kysytaankoSuomiPK).build();
-        Element naytetaankoRuotsiPK = Rule(ElementUtil.randomId()).setExpr(kysytaankoRuotsiPK).build();
-        Element naytetaankoSaamePK = Rule(ElementUtil.randomId()).setExpr(kysytaankoSaamePK).build();
-        Element naytetaankoViittomaPK = Rule(ElementUtil.randomId()).setExpr(kysytaankoViittomaPK).build();
+        Element naytetaankoSuomiPK = Rule(kysytaankoSuomiPK).build();
+        Element naytetaankoRuotsiPK = Rule(kysytaankoRuotsiPK).build();
+        Element naytetaankoSaamePK = Rule(kysytaankoSaamePK).build();
+        Element naytetaankoViittomaPK = Rule(kysytaankoViittomaPK).build();
 
 
         Integer hakukausiVuosi = formParameters.getApplicationSystem().getHakukausiVuosi();
         Expr tuoreTodistusPK = new Not(ExprUtil.atLeastOneVariableEqualsToValue(String.valueOf(hakukausiVuosi), OppijaConstants.PERUSOPETUS_PAATTOTODISTUSVUOSI));
 
-        Element kysytaankoArvosanaPkFi = Rule(ElementUtil.randomId()).setExpr(tuoreTodistusPK).build();
+        Element kysytaankoArvosanaPkFi = Rule(tuoreTodistusPK).build();
         kysytaankoArvosanaPkFi.addChild(createKielitutkinto("peruskoulun_paattotodistus_vahintaan_seitseman_fi", formParameters));
         naytetaankoSuomiPK.addChild(kysytaankoArvosanaPkFi,
                 createKielitutkinto("yleinen_kielitutkinto_fi", formParameters),
                 createKielitutkinto("valtionhallinnon_kielitutkinto_fi", formParameters));
 
-        Element kysytaankoArvosanaPkSv = Rule(ElementUtil.randomId()).setExpr(tuoreTodistusPK).build();
+        Element kysytaankoArvosanaPkSv = Rule(tuoreTodistusPK).build();
         kysytaankoArvosanaPkSv.addChild(createKielitutkinto("peruskoulun_paattotodistus_vahintaan_seitseman_sv", formParameters));
         naytetaankoRuotsiPK.addChild(kysytaankoArvosanaPkSv,
                 createKielitutkinto("yleinen_kielitutkinto_sv", formParameters),
                 createKielitutkinto("valtionhallinnon_kielitutkinto_sv", formParameters));
 
-        Element kysytaankoArvosanaPkSe = Rule(ElementUtil.randomId()).setExpr(tuoreTodistusPK).build();
+        Element kysytaankoArvosanaPkSe = Rule(tuoreTodistusPK).build();
         kysytaankoArvosanaPkSe.addChild(createKielitutkinto("peruskoulun_paattotodistus_vahintaan_seitseman_se", formParameters));
         naytetaankoSaamePK.addChild(kysytaankoArvosanaPkSe,
                 createKielitutkinto("yleinen_kielitutkinto_se", formParameters),
                 createKielitutkinto("valtionhallinnon_kielitutkinto_se", formParameters));
 
-        Element kysytaankoArvosanaPkVk = Rule(ElementUtil.randomId()).setExpr(tuoreTodistusPK).build();
+        Element kysytaankoArvosanaPkVk = Rule(tuoreTodistusPK).build();
         kysytaankoArvosanaPkVk.addChild(createKielitutkinto("peruskoulun_paattotodistus_vahintaan_seitseman_vk", formParameters));
         naytetaankoViittomaPK.addChild(kysytaankoArvosanaPkVk,
                 createKielitutkinto("yleinen_kielitutkinto_vk", formParameters),
@@ -127,31 +127,31 @@ public final class KielitaitokysymyksetTheme {
         Expr kysytaankoViittomaYO = new And(new And(haettuViittomakieliseenAmmatilliseenKoulutukseen, pohjakoulutusOnYO), new Not(viittomaOnAidinkieliTaiKouluViittomaksiYO));
 
 
-        Element naytetaankoSuomiYO = Rule(ElementUtil.randomId()).setExpr(kysytaankoSuomiYO).build();
-        Element naytetaankoRuotsiYO = Rule(ElementUtil.randomId()).setExpr(kysytaankoRuotsiYO).build();
-        Element naytetaankoSaameYO = Rule(ElementUtil.randomId()).setExpr(kysytaankoSaameYO).build();
-        Element naytetaankoViittomaYO = Rule(ElementUtil.randomId()).setExpr(kysytaankoViittomaYO).build();
+        Element naytetaankoSuomiYO = Rule(kysytaankoSuomiYO).build();
+        Element naytetaankoRuotsiYO = Rule(kysytaankoRuotsiYO).build();
+        Element naytetaankoSaameYO = Rule(kysytaankoSaameYO).build();
+        Element naytetaankoViittomaYO = Rule(kysytaankoViittomaYO).build();
         Expr tuoreTodistusYo = new Not(ExprUtil.atLeastOneVariableEqualsToValue(String.valueOf(hakukausiVuosi), OppijaConstants.PERUSOPETUS_PAATTOTODISTUSVUOSI));
 
-        Element kysytaankoArvosanaYoFi = Rule(ElementUtil.randomId()).setExpr(tuoreTodistusYo).build();
+        Element kysytaankoArvosanaYoFi = Rule(tuoreTodistusYo).build();
         kysytaankoArvosanaYoFi.addChild(createKielitutkinto("lukion_paattotodistus_vahintaan_seitseman_fi", formParameters));
         naytetaankoSuomiYO.addChild(kysytaankoArvosanaYoFi,
                 createKielitutkinto("yleinen_kielitutkinto_fi", formParameters),
                 createKielitutkinto("valtionhallinnon_kielitutkinto_fi", formParameters));
 
-        Element kysytaankoArvosanaYoSv = Rule(ElementUtil.randomId()).setExpr(tuoreTodistusYo).build();
+        Element kysytaankoArvosanaYoSv = Rule(tuoreTodistusYo).build();
         kysytaankoArvosanaYoSv.addChild(createKielitutkinto("lukion_paattotodistus_vahintaan_seitseman_sv", formParameters));
         naytetaankoRuotsiYO.addChild(kysytaankoArvosanaYoSv,
                 createKielitutkinto("yleinen_kielitutkinto_sv", formParameters),
                 createKielitutkinto("valtionhallinnon_kielitutkinto_sv", formParameters));
 
-        Element kysytaankoArvosanaYoSe = Rule(ElementUtil.randomId()).setExpr(tuoreTodistusYo).build();
+        Element kysytaankoArvosanaYoSe = Rule(tuoreTodistusYo).build();
         kysytaankoArvosanaYoSe.addChild(createKielitutkinto("lukion_paattotodistus_vahintaan_seitseman_se", formParameters));
         naytetaankoSaameYO.addChild(kysytaankoArvosanaYoSe,
                 createKielitutkinto("yleinen_kielitutkinto_se", formParameters),
                 createKielitutkinto("valtionhallinnon_kielitutkinto_se", formParameters));
 
-        Element kysytaankoArvosanaYoVk = Rule(ElementUtil.randomId()).setExpr(tuoreTodistusYo).build();
+        Element kysytaankoArvosanaYoVk = Rule(tuoreTodistusYo).build();
         kysytaankoArvosanaYoVk.addChild(createKielitutkinto("lukion_paattotodistus_vahintaan_seitseman_vk", formParameters));
         naytetaankoViittomaYO.addChild(kysytaankoArvosanaYoVk,
                 createKielitutkinto("yleinen_kielitutkinto_vk", formParameters),
@@ -172,10 +172,10 @@ public final class KielitaitokysymyksetTheme {
         Expr kysytaankoViittomaKeskUlk = new And(new And(haettuViittomakieliseenAmmatilliseenKoulutukseen, pohjakoulutusOnKeskUlk), new Not(viittomaOnAidinkieliKeskUlk));
 
 
-        Element naytetaankoSuomiKeskUlk = Rule(ElementUtil.randomId()).setExpr(kysytaankoSuomiKeskUlk).build();
-        Element naytetaankoRuotsiKeskUlk = Rule(ElementUtil.randomId()).setExpr(kysytaankoRuotsiKeskUlk).build();
-        Element naytetaankoSaameKeskUlk = Rule(ElementUtil.randomId()).setExpr(kysytaankoSaameKeskUlk).build();
-        Element naytetaankoViittomaKeskUlk = Rule(ElementUtil.randomId()).setExpr(kysytaankoViittomaKeskUlk).build();
+        Element naytetaankoSuomiKeskUlk = Rule(kysytaankoSuomiKeskUlk).build();
+        Element naytetaankoRuotsiKeskUlk = Rule(kysytaankoRuotsiKeskUlk).build();
+        Element naytetaankoSaameKeskUlk = Rule(kysytaankoSaameKeskUlk).build();
+        Element naytetaankoViittomaKeskUlk = Rule(kysytaankoViittomaKeskUlk).build();
         naytetaankoSuomiKeskUlk.addChild(createKielitutkinto("yleinen_kielitutkinto_fi", formParameters),
                 createKielitutkinto("valtionhallinnon_kielitutkinto_fi", formParameters));
         naytetaankoRuotsiKeskUlk.addChild(createKielitutkinto("yleinen_kielitutkinto_sv", formParameters),
@@ -191,7 +191,7 @@ public final class KielitaitokysymyksetTheme {
                 kysytaankoSaamePK, kysytaankoSaameYO, kysytaankoSaameKeskUlk, kysytaankoViittomaPK, kysytaankoViittomaYO,
                 kysytaankoViittomaKeskUlk));
 
-        Element naytetaankoTeema = Rule(ElementUtil.randomId()).setExpr(naytetaankoKielitaitoteema).build();
+        Element naytetaankoTeema = Rule(naytetaankoKielitaitoteema).build();
         Element kielitaitokysymyksetTheme = new ThemeBuilder("kielitaito").previewable().formParams(formParameters).build();
         kielitaitokysymyksetTheme.addChild(naytetaankoSuomiPK, naytetaankoRuotsiPK, naytetaankoSuomiYO, naytetaankoRuotsiYO,
                 naytetaankoSuomiKeskUlk, naytetaankoRuotsiKeskUlk, naytetaankoSaamePK, naytetaankoSaameYO, naytetaankoSaameKeskUlk,
@@ -231,14 +231,14 @@ public final class KielitaitokysymyksetTheme {
 
         Expr naytetaankoKielitaitoteema = new Or(kysytaankoSuomi, kysytaankoRuotsi);
 
-        Element naytetaankoTeema = Rule(ElementUtil.randomId()).setExpr(naytetaankoKielitaitoteema).build();
+        Element naytetaankoTeema = Rule(naytetaankoKielitaitoteema).build();
 
         Element kielitaitokysymyksetTheme =
                 new ThemeBuilder("kielitaito").previewable().formParams(formParameters).build();
         naytetaankoTeema.addChild(kielitaitokysymyksetTheme);
 
-        Element naytetaankoSuomi = Rule(ElementUtil.randomId()).setExpr(kysytaankoSuomi).build();
-        Element naytetaankoRuotsi = Rule(ElementUtil.randomId()).setExpr(kysytaankoRuotsi).build();
+        Element naytetaankoSuomi = Rule(kysytaankoSuomi).build();
+        Element naytetaankoRuotsi = Rule(kysytaankoRuotsi).build();
 
         naytetaankoSuomi.addChild(createKielitutkinto("yleinen_kielitutkinto_fi", formParameters),
                 createKielitutkinto("valtionhallinnon_kielitutkinto_fi", formParameters));

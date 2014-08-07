@@ -108,7 +108,7 @@ public class HakutoiveetPhase {
                     createUrheilijalinjaRule(id),
                     createKaksoistutkintoQuestions(id, formParameters));
         } else {
-            Element koulutusasteRistiriidassaSuoritettuunTutkintoon = Rule(ElementUtil.randomId()).setExpr(
+            Element koulutusasteRistiriidassaSuoritettuunTutkintoon = Rule(
                     new And(
                             ExprUtil.isAnswerTrue("ammatillinenTutkintoSuoritettu"),
                             ExprUtil.atLeastOneValueEqualsToVariable(id + "-Koulutus-educationDegree", LISAOPETUS_EDUCATION_DEGREE, DISCRETIONARY_EDUCATION_DEGREE)))
@@ -130,8 +130,7 @@ public class HakutoiveetPhase {
             }
             // TODO päättely pohjakoulutuksen perusteella
             Element yoLiite = new HiddenValue(id + "-yoLiite", "true");
-            Element onYliopistokoulutus = Rule(ElementUtil.randomId())
-                    .setExpr(ExprUtil
+            Element onYliopistokoulutus = Rule(ExprUtil
                             .atLeastOneValueEqualsToVariable(id + "-Koulutus-id-educationcode", yliopistokoulutuksetArr))
                     .addChild(yoLiite)
                     .formParams(formParameters)
@@ -140,8 +139,7 @@ public class HakutoiveetPhase {
 
             // AMK
             Element amkLiite = new HiddenValue(id + "-amkLiite", "true");
-            Element onAMKkoulutus = Rule()
-                    .setExpr(ExprUtil
+            Element onAMKkoulutus = Rule(ExprUtil
                             .atLeastOneValueEqualsToVariable(id + "-Koulutus-id-educationcode", getAmkKoulutusIds(koodistoService)))
                     .addChild(amkLiite)
                     .formParams(formParameters)
@@ -203,7 +201,7 @@ public class HakutoiveetPhase {
         discretionaryRule.addChild(discretionary);
         discretionaryRule2.addChild(discretionaryRule);
 
-        Element KoulutusValittu = Rule(ElementUtil.randomId()).setExpr(new Not(new Equals(new Variable(index + "-Koulutus-id"), new Value("")))).build();
+        Element KoulutusValittu = Rule(new Not(new Equals(new Variable(index + "-Koulutus-id"), new Value("")))).build();
 
         Element keskeytynytTaiUlkomainenRule =
                 createVarEqualsToValueRule("POHJAKOULUTUS", KESKEYTYNYT, ULKOMAINEN_TUTKINTO);
@@ -231,7 +229,7 @@ public class HakutoiveetPhase {
     private static Element createSoraQuestions(final String index, final FormParameters formParameters) {
         // sora-kysymykset
 
-        Element hasSora = ElementUtil.createRuleIfVariableIsTrue(index + "_sora_rule", index + "-Koulutus-id-sora");
+        Element hasSora = ElementUtil.createRuleIfVariableIsTrue(index + "-Koulutus-id-sora");
 
         Element sora1 = RadioBuilder.Radio(index + "_sora_terveys")
                 .addOptions(ImmutableList.of(
@@ -264,7 +262,7 @@ public class HakutoiveetPhase {
                 .formParams(formParameters).build();
         Expr expr = new And(new Equals(new Variable(index + "-Koulutus-id-athlete"), new Value(ElementUtil.KYLLA)),
                 new Equals(new Variable(index + "-Koulutus-id-vocational"), new Value(ElementUtil.KYLLA)));
-        Element rule = Rule(ElementUtil.randomId()).setExpr(expr).build();
+        Element rule = Rule(expr).build();
         rule.addChild(radio);
         return rule;
     }
@@ -273,7 +271,7 @@ public class HakutoiveetPhase {
         HiddenValue hiddenValue = new HiddenValue(index + "_urheilijalinjan_lisakysymys", ElementUtil.KYLLA);
         Expr expr = new And(new Equals(new Variable(index + "-Koulutus-id-athlete"), new Value(ElementUtil.KYLLA)),
                 new Equals(new Variable(index + "-Koulutus-id-vocational"), new Value(ElementUtil.EI)));
-        Element rule = Rule(ElementUtil.randomId()).setExpr(expr).build();
+        Element rule = Rule(expr).build();
         rule.addChild(hiddenValue);
         return rule;
     }
@@ -287,7 +285,7 @@ public class HakutoiveetPhase {
                 .i18nText(createI18NText("form.hakutoiveet.kaksoistutkinnon.lisakysymys", formParameters))
                 .formParams(formParameters).build();
         Element hasQuestion =
-                ElementUtil.createRuleIfVariableIsTrue(radio.getId() + "_related_question_rule", index + "-Koulutus-id-kaksoistutkinto");
+                ElementUtil.createRuleIfVariableIsTrue(index + "-Koulutus-id-kaksoistutkinto");
         hasQuestion.addChild(radio);
         return hasQuestion;
     }

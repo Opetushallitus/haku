@@ -258,15 +258,11 @@ public final class ElementUtil {
 
 
     public static Element createVarEqualsToValueRule(final String variable, final String... values) {
-        return Rule(ElementUtil.randomId()).setExpr(ExprUtil.atLeastOneValueEqualsToVariable(variable, values)).build();
+        return Rule(ExprUtil.atLeastOneValueEqualsToVariable(variable, values)).build();
     }
 
-    public static Element createRuleIfVariableIsTrue(final String ruleId, final String variable) {
-        return Rule(ruleId).setExpr(ExprUtil.isAnswerTrue(variable)).build();
-    }
-
-    public static Element ifVariableIsTrue(final String variable) {
-        return Rule(randomId()).setExpr(ExprUtil.isAnswerTrue(variable)).build();
+    public static Element createRuleIfVariableIsTrue(final String variable) {
+        return Rule(ExprUtil.isAnswerTrue(variable)).build();
     }
 
     public static Element createRegexpRule(final Element element, final String pattern) {
@@ -274,7 +270,7 @@ public final class ElementUtil {
     }
 
     public static Element createRegexpRule(final String variable, final String pattern) {
-        return Rule(ElementUtil.randomId()).setExpr(new Regexp(variable, pattern)).build();
+        return Rule(new Regexp(variable, pattern)).build();
     }
 
 }

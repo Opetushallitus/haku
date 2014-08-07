@@ -132,7 +132,7 @@ public final class ThemeQuestionConfigurator {
                                                   final String  preferenceElementId){
         LOGGER.debug("Generating the ApplicationOptionRule group");
         final Expr ruleExpr = generateExpr(applicationSystem, applicationOptionId, preferenceElementId);
-        Element rule = Rule(ElementUtil.randomId()).setExpr(ruleExpr).build();
+        Element rule = Rule(ruleExpr).build();
         return rule;
     }
 
