@@ -16,23 +16,64 @@
 
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.osaaminen;
 
+import fi.vm.sade.haku.oppija.lomake.domain.builder.ElementBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
+import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.Or;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.hakutoiveet.HakutoiveetPhase;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ExprUtil;
 
+import java.util.List;
+
+import static fi.vm.sade.haku.oppija.lomake.domain.builder.DropdownSelectBuilder.Dropdown;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.PhaseBuilder.Phase;
+import static fi.vm.sade.haku.oppija.lomake.domain.builder.RelatedQuestionRuleBuilder.Rule;
+import static fi.vm.sade.haku.oppija.lomake.domain.builder.TextQuestionBuilder.TextQuestion;
+import static fi.vm.sade.haku.oppija.lomake.domain.builder.ThemeBuilder.Theme;
 
 public class OsaaminenPhase {
 
     public static Element create(final FormParameters formParameters) {
         Element osaaminen = Phase("osaaminen").setEditAllowedByRoles("APP_HAKEMUS_READ_UPDATE", "APP_HAKEMUS_CRUD", "APP_HAKEMUS_OPO").formParams(formParameters).build();
-        if (formParameters.getFormTemplateType().equals(FormParameters.FormTemplateType.YHTEISHAKU_KEVAT) ||
-                formParameters.isPervako() || formParameters.isKevaanLisahaku()) {
-            osaaminen.addChild(ArvosanatTheme.createArvosanatThemeKevat(formParameters));
+        if (!formParameters.isHigherEd()) {
+            if (formParameters.isKevaanYhteishaku() || formParameters.isPervako() || formParameters.isKevaanLisahaku()) {
+                osaaminen.addChild(ArvosanatTheme.createArvosanatThemeKevat(formParameters));
+            } else {
+                osaaminen.addChild(ArvosanatTheme.createArvosanatTheme(formParameters));
+            }
+            if (!formParameters.isPervako()) {
+                osaaminen.addChild(KielitaitokysymyksetTheme.createKielitaitokysymyksetTheme(formParameters));
+            }
         } else {
-            osaaminen.addChild(ArvosanatTheme.createArvosanatTheme(formParameters));
-        }
-        if (!formParameters.isPervako()) {
-            osaaminen.addChild(KielitaitokysymyksetTheme.createKielitaitokysymyksetTheme(formParameters));
+            KoodistoService koodistoService = formParameters.getKoodistoService();
+            String[] amkkoulutuksetArr = HakutoiveetPhase.getAmkKoulutusIds(koodistoService);
+            List<String> preferenceIds = HakutoiveetPhase.getPreferenceIds(formParameters);
+            for (String preferenceId : preferenceIds) {
+                Rule(ExprUtil.atLeastOneValueEqualsToVariable(preferenceId + "-Koulutus-id-educationcode", amkkoulutuksetArr))
+                        .formParams(formParameters)
+                        .build();
+            }
+
+            ElementBuilder onkoAmmatillinenPohjakoulutus = Rule().setExpr(new Or(ExprUtil.isAnswerTrue("pohjakoulutus_am"), ExprUtil.isAnswerTrue("pohjakoulutus_yo_ammatillinen")));
+            List<Option> asteikkolista = koodistoService.getLaajuusYksikot();
+            osaaminen.addChild(
+                    Theme("osaaminenteema")
+                            .formParams(formParameters)
+                            .addChild(
+                                    onkoAmmatillinenPohjakoulutus
+                                            .addChild(TextQuestion("keskiarvo")
+                                                    .inline()
+                                                    .required()
+                                                    .formParams(formParameters).build())
+                                            .addChild(Dropdown("arvosanaasteikko")
+                                                    .addOptions(asteikkolista)
+                                                    .inline()
+                                                    .required()
+                                                    .formParams(formParameters).build()
+                                            ))
+                            .build());
         }
         return osaaminen;
 

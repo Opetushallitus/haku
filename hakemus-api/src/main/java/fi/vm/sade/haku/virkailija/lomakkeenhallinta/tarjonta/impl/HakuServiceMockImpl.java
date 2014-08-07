@@ -76,6 +76,7 @@ public class HakuServiceMockImpl implements HakuService {
                 .addApplicationSystemType(LISA_HAKU)
                 .addKohdejoukkoUri("haunkohdejoukko_1")
                 .get());
+
         asList.add(new ApplicationSystemBuilder()
                 .addId("haku5")
                 .addName(ElementUtil.createI18NAsIs("Perusopetuksen jälkeisen valmistavan koulutuksen kesän 2014 haku"))
@@ -85,6 +86,15 @@ public class HakuServiceMockImpl implements HakuService {
                 .addKohdejoukkoUri(OppijaConstants.KOHDEJOUKKO_PERVAKO)
                 .addApplicationSystemType(VARSINAINEN_HAKU)
                 .addMaxApplicationOptions(3)
+                .get());
+        asList.add(new ApplicationSystemBuilder()
+                .addId("haku6")
+                .addName(ElementUtil.createI18NAsIs("Korkkari " + KOHDEJOUKKO_KORKEAKOULU))
+                .addApplicationPeriods(Lists.newArrayList(new ApplicationPeriod(getDate(-100), getDate(1000))))
+                .addHakukausiUri(HAKUKAUSI_SYKSY)
+                .addHakukausiVuosi(2014)
+                .addApplicationSystemType(VARSINAINEN_HAKU)
+                .addKohdejoukkoUri(KOHDEJOUKKO_KORKEAKOULU)
                 .get());
     }
 

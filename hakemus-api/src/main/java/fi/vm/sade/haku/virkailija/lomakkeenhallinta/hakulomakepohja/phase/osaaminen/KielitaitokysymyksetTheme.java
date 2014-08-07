@@ -54,7 +54,7 @@ public final class KielitaitokysymyksetTheme {
     }
 
     public static Element createKielitaitokysymyksetTheme(final FormParameters formParameters) {
-        if (formParameters.getFormTemplateType().equals(FormParameters.FormTemplateType.YHTEISHAKU_KEVAT)) {
+        if (formParameters.isKevaanYhteishaku()) {
             return createKielitaitokysymyksetThemeKevat(formParameters);
         } else {
             return createKielitaitokysymyksetThemeSyksy(formParameters);

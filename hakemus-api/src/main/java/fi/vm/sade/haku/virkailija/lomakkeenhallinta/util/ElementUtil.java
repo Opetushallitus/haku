@@ -20,6 +20,8 @@ import com.google.common.base.Joiner;
 import com.google.common.base.Predicate;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
+import fi.vm.sade.haku.oppija.lomake.domain.builder.ElementBuilder;
+import fi.vm.sade.haku.oppija.lomake.domain.builder.RelatedQuestionRuleBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Titled;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.gradegrid.GradeGridRow;
@@ -146,7 +148,7 @@ public final class ElementUtil {
     }
 
     public static Validator createRegexValidator(final String pattern, final FormParameters formParameters) {
-        return createRegexValidator(pattern, formParameters, "yleinen.virheellinenArvo");
+        return createRegexValidator(pattern, formParameters, "yleinen.virheellinenarvo");
     }
 
     public static Validator createRegexValidator(final String pattern, final FormParameters formParameters,
@@ -155,7 +157,7 @@ public final class ElementUtil {
     }
 
     public static Validator createValueSetValidator(final List<String> validValues, final FormParameters formParameters) {
-        return new ValueSetValidator(formParameters.getI18nText("yleinen.virheellinenArvo"), validValues);
+        return new ValueSetValidator(formParameters.getI18nText("yleinen.virheellinenarvo"), validValues);
     }
 
 
@@ -261,6 +263,10 @@ public final class ElementUtil {
 
     public static Element createRuleIfVariableIsTrue(final String ruleId, final String variable) {
         return Rule(ruleId).setExpr(ExprUtil.isAnswerTrue(variable)).build();
+    }
+
+    public static Element ifVariableIsTrue(final String variable) {
+        return Rule(randomId()).setExpr(ExprUtil.isAnswerTrue(variable)).build();
     }
 
     public static Element createRegexpRule(final Element element, final String pattern) {
