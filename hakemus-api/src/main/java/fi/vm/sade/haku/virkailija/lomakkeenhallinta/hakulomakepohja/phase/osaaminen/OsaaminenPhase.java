@@ -19,12 +19,16 @@ package fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.osaam
 import fi.vm.sade.haku.oppija.lomake.domain.builder.ElementBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
+import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.And;
+import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.Expr;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.Or;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.hakutoiveet.HakutoiveetPhase;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ExprUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.DropdownSelectBuilder.Dropdown;
@@ -49,20 +53,21 @@ public class OsaaminenPhase {
         } else {
             KoodistoService koodistoService = formParameters.getKoodistoService();
             String[] amkkoulutuksetArr = HakutoiveetPhase.getAmkKoulutusIds(koodistoService);
-            List<String> preferenceIds = HakutoiveetPhase.getPreferenceIds(formParameters);
-            for (String preferenceId : preferenceIds) {
-                Rule(ExprUtil.atLeastOneValueEqualsToVariable(preferenceId + "-Koulutus-id-educationcode", amkkoulutuksetArr))
-                        .formParams(formParameters)
-                        .build();
+            List<Expr> exprs = new ArrayList<Expr>();
+            for (String preferenceId : HakutoiveetPhase.getPreferenceIds(formParameters)) {
+                exprs.add(ExprUtil.atLeastOneValueEqualsToVariable(preferenceId + "-Koulutus-id-educationcode", amkkoulutuksetArr));
             }
 
-            ElementBuilder onkoAmmatillinenPohjakoulutus = Rule(new Or(ExprUtil.isAnswerTrue("pohjakoulutus_am"), ExprUtil.isAnswerTrue("pohjakoulutus_yo_ammatillinen")));
+            Expr haettuAMKHon = ExprUtil.reduceToOr(exprs);
+            Expr pohjakoulutusAmmatillinen = new Or(ExprUtil.isAnswerTrue("pohjakoulutus_am"), ExprUtil.isAnswerTrue("pohjakoulutus_yo_ammatillinen"));
+
+            ElementBuilder kysytaankoKeskiarvoJaAsteikko = Rule(new And(haettuAMKHon, pohjakoulutusAmmatillinen));
             List<Option> asteikkolista = koodistoService.getLaajuusYksikot();
             osaaminen.addChild(
                     Theme("osaaminenteema")
                             .formParams(formParameters)
                             .addChild(
-                                    onkoAmmatillinenPohjakoulutus
+                                    kysytaankoKeskiarvoJaAsteikko
                                             .addChild(TextQuestion("keskiarvo")
                                                     .inline()
                                                     .required()

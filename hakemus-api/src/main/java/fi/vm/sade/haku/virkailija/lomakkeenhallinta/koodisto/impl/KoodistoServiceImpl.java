@@ -64,6 +64,7 @@ public class KoodistoServiceImpl implements KoodistoService {
     private static final String CODE_LAAJUUSYKSIKKO = "opintojenlaajuusyksikko";
     private static final String CODE_KOULUTUSASTE = "koulutusasteoph2002";
     private static final String CODE_TUTKINTOTYYPPI = "tutkintotyyppi";
+    private static final String CODE_ARVOSANAASTEIKONTYYPPI = "arvosanaasteikontyyppi";
 
     private static final String LUKIO = "15";
     private static final String LUKIO_JA_PERUSKOULU = "19";
@@ -180,6 +181,11 @@ public class KoodistoServiceImpl implements KoodistoService {
     }
 
     @Override
+    public List<Option> getArvosanaasteikontyyppi() {
+        return codesToOptions(CODE_ARVOSANAASTEIKONTYYPPI);
+    }
+
+    @Override
     public List<Code> getCodes(String koodistoUrl, int version) {
         return Lists.transform(getKoodiTypes(koodistoUrl, version), new KoodiTypeToCodeFunction());
     }
@@ -224,14 +230,18 @@ public class KoodistoServiceImpl implements KoodistoService {
             if (koodi.getKoodiArvo().equals(LUKIO)
                     || koodi.getKoodiArvo().equals(LUKIO_JA_PERUSKOULU)
                     || koodi.getKoodiArvo().equals(KANSANOPISTO)) {
-                if (i++ >= fetchLimit) { break; }
+                if (i++ >= fetchLimit) {
+                    break;
+                }
                 List<KoodiType> ylakoodit = koodiService.getYlakoodis(koodi.getKoodiUri());
                 LOGGER.debug("Getting lukiokoodit. Koulukoodi: {}", koodi.getKoodiArvo());
                 LOGGER.debug("Ylakoodeja: {}", ylakoodit.size());
                 int j = 0;
                 for (KoodiType ylakoodi : ylakoodit) {
                     if (ylakoodi.getKoodisto().getKoodistoUri().equals("oppilaitosnumero")) {
-                        if (j++ >= fetchLimit) { break; }
+                        if (j++ >= fetchLimit) {
+                            break;
+                        }
                         lukioNumerot.add(ylakoodi.getKoodiArvo());
                     }
                 }
@@ -261,14 +271,18 @@ public class KoodistoServiceImpl implements KoodistoService {
                     || koodi.getKoodiArvo().equals(YLIOPISTO)
                     || koodi.getKoodiArvo().equals(SOTILASKORKEAKOULU)
                     || koodi.getKoodiArvo().equals(VALIAIKAINEN_AMK)) {
-                if (i++ >= fetchLimit) { break; }
+                if (i++ >= fetchLimit) {
+                    break;
+                }
                 List<KoodiType> ylakoodit = koodiService.getYlakoodis(koodi.getKoodiUri());
                 LOGGER.debug("Getting korkeakoulukoodit. Koulukoodi: {}", koodi.getKoodiArvo());
                 LOGGER.debug("Ylakoodeja: {}", ylakoodit.size());
                 int j = 0;
                 for (KoodiType ylakoodi : ylakoodit) {
                     if (ylakoodi.getKoodisto().getKoodistoUri().equals("oppilaitosnumero")) {
-                        if (j++ >= fetchLimit) { break; }
+                        if (j++ >= fetchLimit) {
+                            break;
+                        }
                         lukioNumerot.add(ylakoodi.getKoodiArvo());
                     }
                 }

@@ -59,6 +59,7 @@ public class KoodistoServiceMockImpl implements KoodistoService {
     public final List<Code> listOfBaseEducationCodes;
     public final List<Code> listOfYliopistokoulutukset;
     public final List<Code> listOfAMKkoulutukset;
+    private final List<Option> listOfArvosanaasteikontyyppi;
 
     // koodisto uri -> codes
     public Map<String, List<Code>> codes = Maps.newHashMap();
@@ -202,6 +203,14 @@ public class KoodistoServiceMockImpl implements KoodistoService {
         this.listOfKorkealuTutkintotasot = ImmutableList.of(
                 getOption("foo", "1")
         );
+        this.listOfArvosanaasteikontyyppi = ImmutableList.of(
+                getOption("01", "Viisiportainen"),
+                getOption("02", "Hyväksytty"),
+                getOption("03", "Toinen kotimainen"),
+                getOption("04", "Näytetyö"),
+                getOption("05", "Tutkielma"),
+                getOption("06", "Muu")
+        );
         this.codes.put(BASE_EDUCATION_KOODISTO_URI, this.listOfBaseEducationCodes);
     }
 
@@ -318,6 +327,11 @@ public class KoodistoServiceMockImpl implements KoodistoService {
     @Override
     public List<Code> getAMKkoulutukset() {
         return this.listOfAMKkoulutukset;
+    }
+
+    @Override
+    public List<Option> getArvosanaasteikontyyppi() {
+        return this.listOfArvosanaasteikontyyppi;
     }
 
     @Override
