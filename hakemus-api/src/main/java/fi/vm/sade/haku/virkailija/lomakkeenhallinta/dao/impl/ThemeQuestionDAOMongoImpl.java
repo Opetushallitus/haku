@@ -117,7 +117,11 @@ public class ThemeQuestionDAOMongoImpl extends AbstractDAOMongoImpl<ThemeQuestio
         BasicDBObject query = new BasicDBObject();
         query.append(FIELD_APPLICATION_OPTION, learningOpportunityId);
         query.append(FIELD_THEME, themeId);
-        query.append(FIELD_ID, new BasicDBObject(IN, themeQuestionIds));
+        ObjectId[] objectIds = new ObjectId[themeQuestionIds.length];
+        for (int i= 0; i < themeQuestionIds.length; i++){
+            objectIds[i] = new ObjectId(themeQuestionIds[i]);
+        }
+        query.append(FIELD_ID, new BasicDBObject(IN, objectIds));
         int count = -1;
         try {
             //TODO: =RS= Need support for index hints

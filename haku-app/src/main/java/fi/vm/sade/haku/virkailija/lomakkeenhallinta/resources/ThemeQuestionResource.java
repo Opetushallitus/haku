@@ -197,8 +197,8 @@ public class ThemeQuestionResource {
         long ordinalCheckSum = 0;
         for (Map<String,String> value : values){
             try {
-                Integer newOrdinal = Integer.getInteger(value.get(PARAM_NEW_ORDINAL));
-                Integer oldOrdinal = Integer.getInteger(value.get(PARAM_OLD_ORDINAL));
+                Integer newOrdinal = Integer.valueOf(value.get(PARAM_NEW_ORDINAL));
+                Integer oldOrdinal = Integer.valueOf(value.get(PARAM_OLD_ORDINAL));
                 if (null == newOrdinal) {
                     LOGGER.debug("Exception due to new ordinal null value");
                     throw new JSONException(Response.Status.BAD_REQUEST, "New ordinal values are missing or not valid", null);
@@ -231,7 +231,7 @@ public class ThemeQuestionResource {
         // TODO =RS= do something if there are ordinals missing or old values do not match.
         for (String id : themeQuestionIds){
             Map<String, String> questionParam = reorderedQuestions.get(id);
-            themeQuestionDAO.setOrdinal(id, Integer.getInteger(questionParam.get(PARAM_NEW_ORDINAL)));
+            themeQuestionDAO.setOrdinal(id, Integer.valueOf(questionParam.get(PARAM_NEW_ORDINAL)));
         }
     }
 
