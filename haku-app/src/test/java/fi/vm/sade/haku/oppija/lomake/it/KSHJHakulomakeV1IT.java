@@ -50,6 +50,9 @@ public class KSHJHakulomakeV1IT extends DummyModelBaseItTest {
         navigateToPath("lomake", "haku6", OppijaConstants.PHASE_EDUCATION);
 
         click("pohjakoulutus_am");
+        click("pohjakoulutus_muu");
+        setValue("pohjakoulutus_muu_vuosi", "2012");
+        setValue("pohjakoulutus_muu_kuvaus", "kuvaus");
         nextPhase(OppijaConstants.PHASE_APPLICATION_OPTIONS);
         elementsNotPresent("keskiarvo");
         elementsNotPresent("arvosanaasteikko");
