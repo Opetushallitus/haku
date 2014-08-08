@@ -42,7 +42,7 @@ public final class KoulutustaustaPhase {
 
     public static final String PAATTOTODISTUSVUOSI_PATTERN = "^(19[0-9][0-9]|200[0-9]|201[0-4])$";
     public static final int TEXT_AREA_COLS = 60;
-    private static final String SUORITUSVUOSI_PAKOLLINEN = "form.pohjakoulutus.suoritusvuosiOnPakollinen";
+    private static final String SUORITUSVUOSI_PAKOLLINEN = "suoritusvuosi.on.pakollinen";
 
     private KoulutustaustaPhase() {
     }
@@ -393,7 +393,7 @@ public final class KoulutustaustaPhase {
         Expr vuosiSyotetty = new Regexp(paattotodistusvuosiPeruskoulu.getId(), PAATTOTODISTUSVUOSI_PATTERN);
         Expr kysytaankoKoulutuspaikka = new And(new Not(new Equals(new Variable(paattotodistusvuosiPeruskoulu.getId()), new Value(hakukausiVuosiStr))), vuosiSyotetty);
 
-        Element onkoTodistusSaatuKuluneenaVuonna = Rule(ElementUtil.randomId()).setExpr(kysytaankoKoulutuspaikka).build();
+        Element onkoTodistusSaatuKuluneenaVuonna = Rule(kysytaankoKoulutuspaikka).build();
         onkoTodistusSaatuKuluneenaVuonna.addChild(koulutuspaikkaAmmatillisenTutkintoon);
 
         pkKysymyksetRule.addChild(paattotodistusvuosiPeruskoulu, suorittanutGroup,
@@ -450,8 +450,8 @@ public final class KoulutustaustaPhase {
 
             baseEducation.addChild(lukioRule);
 
-            Element suorittanutTutkinnonLukioRule = createRuleIfVariableIsTrue(ElementUtil.randomId(),
-                    suorittanutAmmatillisenTutkinnonLukio.getId());
+            Element suorittanutTutkinnonLukioRule =
+                    createRuleIfVariableIsTrue(suorittanutAmmatillisenTutkinnonLukio.getId());
             Element warningLukio =
                     Warning(ElementUtil.randomId()).failValidation().labelKey("form.koulutustausta.ammatillinenSuoritettu.lukio.huom").formParams(formParameters).build();
 
@@ -472,7 +472,7 @@ public final class KoulutustaustaPhase {
 
         paattotodistusvuosiPeruskouluRule.addChild(suorittanutAmmatillisenTutkinnon);
 
-        Element suorittanutTutkinnonRule = createRuleIfVariableIsTrue(ElementUtil.randomId(), suorittanutAmmatillisenTutkinnon.getId());
+        Element suorittanutTutkinnonRule = createRuleIfVariableIsTrue(suorittanutAmmatillisenTutkinnon.getId());
         Element warning = Info().labelKey("form.koulutustausta.ammatillinensuoritettu.huom").formParams(formParameters).build();
 
         suorittanutTutkinnonRule.addChild(warning);

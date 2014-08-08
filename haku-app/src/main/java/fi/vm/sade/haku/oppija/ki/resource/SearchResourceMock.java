@@ -187,7 +187,7 @@ public class SearchResourceMock {
                     "\"athleteEducation\":false," +
                     "\"kaksoistutkinto\":false," +
                     "\"vocational\":true," +
-                    "\"educationCodeUri\":\"koulutus_020075\"}]";
+                    "\"educationCodeUri\":\"koulutus_222222\"}]";
         } else {
             return "[]";
         }

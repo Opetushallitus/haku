@@ -158,7 +158,11 @@ public class UIServiceImpl implements UIService {
     @Override
     public ModelResponse updateRules(String applicationSystemId, String phaseId, String elementId, Map<String, String> currentAnswers) {
         Form activeForm = applicationSystemService.getActiveApplicationSystem(applicationSystemId).getForm();
-        Map<String, String> values = applicationService.getApplication(applicationSystemId).getVastauksetMerged();
+        Application application = applicationService.getApplication(applicationSystemId);
+        Map<String, String> values = application.getVastauksetMerged();
+        for (String key : application.getPhaseAnswers(phaseId).keySet()) {
+            values.remove(key);
+        }
         values.putAll(currentAnswers);
         ModelResponse modelResponse = new ModelResponse();
         modelResponse.addAnswers(values);

@@ -22,13 +22,7 @@ public class RelatedQuestionRuleBuilder extends ElementBuilder {
         return new RelatedQuestionRule(id, expr);
     }
 
-    public static RelatedQuestionRuleBuilder Rule(final String id) {
-        return new RelatedQuestionRuleBuilder(id);
-    }
-    public static RelatedQuestionRuleBuilder Rule() {
-        return new RelatedQuestionRuleBuilder(ElementUtil.randomId());
-    }
     public static RelatedQuestionRuleBuilder Rule(final Expr expr) {
-        return Rule().setExpr(expr);
+        return new RelatedQuestionRuleBuilder(ElementUtil.randomId()).setExpr(expr);
     }
 }
