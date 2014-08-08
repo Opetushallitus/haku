@@ -171,20 +171,20 @@ public class ThemeQuestionResource {
             throw new JSONException(Response.Status.BAD_REQUEST, "Missing pathparameters", null);
         String tqAsId = themeQuestion.getApplicationSystemId();
         if (! applicationSystemId.equals(tqAsId)) {
-            throw new JSONException(Response.Status.BAD_REQUEST, "Data error: Mismatch on path and model", null);
+            throw new JSONException(Response.Status.BAD_REQUEST, "Data error: Mismatch on applicationSystemId from path and model", null);
         }
         String tqLoId = themeQuestion.getLearningOpportunityId();
         if (null == tqLoId){
             throw new JSONException(Response.Status.BAD_REQUEST, "Data error: Missing learningOpportunityId", null);
         }
         if (!learningOpportunityId.equals(tqLoId)) {
-            throw new JSONException(Response.Status.BAD_REQUEST, "Data error: Mismatch on path and model", null);
+            throw new JSONException(Response.Status.BAD_REQUEST, "Data error: Mismatch on learningOpportunityId from path and model", null);
         }
-        String tqThemeId = themeQuestion.getLearningOpportunityId();
+        String tqThemeId = themeQuestion.getTheme();
         if (! themeId.equals(tqThemeId)) {
-            throw new JSONException(Response.Status.BAD_REQUEST, "Data error: Mismatch on path and model", null);
+            throw new JSONException(Response.Status.BAD_REQUEST, "Data error: Mismatch on theme from path and model", null);
         }
-        if (themeQuestion.isGroup()) {
+        if (themeQuestion.getTargetIsGroup()) {
             themeQuestion = fillInOwnerOrganizationsFromApplicationOptionGroup(themeQuestion);
         } else {
             themeQuestion = fillInOwnerOrganizationsFromApplicationOption(themeQuestion);

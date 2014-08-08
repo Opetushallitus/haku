@@ -4,6 +4,8 @@ package fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain;
 import fi.vm.sade.haku.oppija.lomake.domain.builder.TitledGroupBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
+import org.codehaus.jackson.annotate.JsonCreator;
+import org.codehaus.jackson.annotate.JsonProperty;
 
 import java.util.List;
 import java.util.Map;
@@ -15,14 +17,25 @@ public class ThemeCheckBoxQuestion extends ThemeOptionQuestion {
 
     public static final String TYPE = "CheckBox";
 
+    @JsonCreator
+    public ThemeCheckBoxQuestion(@JsonProperty(value = "applicationSystemId") String applicationSystemId,
+      @JsonProperty(value = "theme") String theme,
+      @JsonProperty(value = "learningOpportunityId") String learningOpportunityId,
+      @JsonProperty(value = "targetIsGroup") Boolean targetIsGroup,
+      @JsonProperty(value = "ordial") Integer ordinal,
+      @JsonProperty(value = "validators") Map<String,String> validators,
+      @JsonProperty(value = "attachmentRequests") List<AttachmentRequest> attachmentRequests){
+        super(applicationSystemId, theme, TYPE, learningOpportunityId, targetIsGroup, ordinal, validators, attachmentRequests);
+    }
+
     public ThemeCheckBoxQuestion() {
         super(TYPE);
     }
 
     public ThemeCheckBoxQuestion(String applicationSystemId, String theme, String creatorPersonOid,
-                                 List<String> ownerOrganizationOid, String learningOpportunityId, Boolean isGroup, Integer ordinal,
+                                 List<String> ownerOrganizationOid, String learningOpportunityId, Boolean targetIsGroup, Integer ordinal,
                                  Map<String, String> validators, List<AttachmentRequest> attachmentRequests) {
-        super(applicationSystemId, theme, creatorPersonOid, ownerOrganizationOid, TYPE, learningOpportunityId, isGroup, ordinal, validators, attachmentRequests);
+        super(applicationSystemId, theme, creatorPersonOid, ownerOrganizationOid, TYPE, learningOpportunityId, targetIsGroup, ordinal, validators, attachmentRequests);
     }
 
     @Override
