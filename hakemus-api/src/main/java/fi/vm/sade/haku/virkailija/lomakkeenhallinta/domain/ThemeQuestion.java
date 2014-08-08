@@ -68,6 +68,9 @@ public abstract class ThemeQuestion implements ConfiguredElement {
     // Attached to learning opportunity Identifier
     private String learningOpportunityId;
 
+    // the learning opportunity is not a learning opportunity but a group \o/
+    private Boolean isGroup;
+
     // Is requiredQuestion
     private Boolean requiredFieldValidator = Boolean.FALSE;
 
@@ -99,6 +102,7 @@ public abstract class ThemeQuestion implements ConfiguredElement {
                             @JsonProperty(value = "theme")String theme,
                             @JsonProperty(value = "type")String type,
                             @JsonProperty(value = "learningOpportunityId")String learningOpportunityId,
+                            @JsonProperty(value = "isGroup") Boolean isGroup,
                             @JsonProperty(value = "ordial") Integer ordinal,
                             @JsonProperty(value = "validators")Map<String,String> validators,
                             @JsonProperty(value = "attachmentRequests") List<AttachmentRequest>attachmentRequests) {
@@ -106,6 +110,7 @@ public abstract class ThemeQuestion implements ConfiguredElement {
         this.theme = theme;
         this.type = type;
         this.learningOpportunityId = learningOpportunityId;
+        this.isGroup = isGroup;
         this.ordinal = ordinal;
         this.validators = new HashMap<String,String>(validators);
         this.ownerOrganizationOids = new ArrayList<String>();
@@ -116,6 +121,7 @@ public abstract class ThemeQuestion implements ConfiguredElement {
       List<String> ownerOrganizationOid,
       String type,
       String learningOpportunityId,
+      Boolean isGroup,
       Integer ordinal,
       Map<String,String> validators,
       List<AttachmentRequest>attachmentRequests) {
@@ -125,6 +131,7 @@ public abstract class ThemeQuestion implements ConfiguredElement {
         this.ownerOrganizationOids = new ArrayList<String>(ownerOrganizationOid);
         this.type = type;
         this.learningOpportunityId = learningOpportunityId;
+        this.isGroup = isGroup;
         this.ordinal = ordinal;
         this.validators = new HashMap<String,String>(validators);
         this.ownerOrganizationOids = new ArrayList<String>();
@@ -133,10 +140,6 @@ public abstract class ThemeQuestion implements ConfiguredElement {
 
     public ObjectId getId() {
         return id;
-    }
-
-    public void setId(ObjectId id) {
-        this.id = id;
     }
 
     public State getState() {
@@ -151,16 +154,8 @@ public abstract class ThemeQuestion implements ConfiguredElement {
         return applicationSystemId;
     }
 
-    public void setApplicationSystemId(String applicationSystemId) {
-        this.applicationSystemId = applicationSystemId;
-    }
-
     public String getTheme() {
         return theme;
-    }
-
-    public void setTheme(String theme) {
-        this.theme = theme;
     }
 
     public String getCreatorPersonOid() {
@@ -215,8 +210,8 @@ public abstract class ThemeQuestion implements ConfiguredElement {
         return learningOpportunityId;
     }
 
-    public void setLearningOpportunityId(String learningOpportunityId) {
-        this.learningOpportunityId = learningOpportunityId;
+    public Boolean isGroup() {
+        return null != isGroup ? isGroup: Boolean.FALSE;
     }
 
     public Boolean getRequiredFieldValidator() {
@@ -267,17 +262,18 @@ public abstract class ThemeQuestion implements ConfiguredElement {
           ", applicationSystemId='" + applicationSystemId + '\'' +
           ", theme='" + theme + '\'' +
           ", ordinal=" + ordinal +
+          ", creatorPersonOid='" + creatorPersonOid + '\'' +
+          ", ownerOrganizationOids=" + ownerOrganizationOids +
           ", type='" + type + '\'' +
           ", messageText=" + messageText +
           ", helpText=" + helpText +
           ", verboseHelpText=" + verboseHelpText +
           ", learningOpportunityId='" + learningOpportunityId + '\'' +
+          ", isGroup=" + isGroup +
           ", requiredFieldValidator=" + requiredFieldValidator +
           ", onCompletedPage=" + onCompletedPage +
           ", validators=" + validators +
           ", attachmentRequests=" + attachmentRequests +
-          ", creatorPersonOid='" + creatorPersonOid + '\'' +
-          ", ownerOrganizationOids=" + ownerOrganizationOids +
           '}';
     }
 }
