@@ -27,8 +27,8 @@ public class HigherEducationAttachments extends Titled {
 
     private Map<String, I18nText> attachmentNotes;
 
-    public HigherEducationAttachments(final String id, final I18nText title) {
-        super(id, title);
+    public HigherEducationAttachments(final String id, final I18nText i18nText) {
+        super(id, i18nText);
         attachmentNotes = new HashMap<String, I18nText>();
     }
 
