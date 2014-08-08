@@ -17,10 +17,6 @@
 package fi.vm.sade.haku.oppija.hakemus.service;
 
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
-import fi.vm.sade.haku.oppija.common.suoritusrekisteri.ArvosanaDTO;
-import fi.vm.sade.haku.oppija.common.suoritusrekisteri.OpiskelijaDTO;
-import fi.vm.sade.haku.oppija.common.suoritusrekisteri.SuoritusDTO;
-import fi.vm.sade.haku.oppija.common.suoritusrekisteri.SuoritusrekisteriService;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationNote;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
@@ -32,7 +28,6 @@ import fi.vm.sade.haku.oppija.lomake.domain.ApplicationState;
 import fi.vm.sade.haku.oppija.lomake.domain.User;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
-import fi.vm.sade.haku.oppija.lomake.exception.IllegalValueException;
 import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
 import fi.vm.sade.haku.oppija.lomake.service.FormService;
 import fi.vm.sade.haku.oppija.lomake.service.UserSession;
@@ -48,22 +43,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
-import static org.apache.commons.lang.StringUtils.isEmpty;
-import static org.apache.commons.lang.StringUtils.isNotBlank;
-import static org.apache.commons.lang.StringUtils.isNotEmpty;
-import static org.apache.commons.lang.StringUtils.join;
+import static org.apache.commons.lang.StringUtils.*;
 
 @Service
 public class ApplicationServiceImpl implements ApplicationService {
@@ -179,11 +166,11 @@ public class ApplicationServiceImpl implements ApplicationService {
                 .setNickName(allAnswers.get(OppijaConstants.ELEMENT_ID_NICKNAME))
                 .setLastName(allAnswers.get(OppijaConstants.ELEMENT_ID_LAST_NAME))
                 .setSex(allAnswers.get(OppijaConstants.ELEMENT_ID_SEX))
-                .setHomeCity(allAnswers.get(OppijaConstants.ELEMENT_ID_HOME_CITY))
                 .setLanguage(allAnswers.get(OppijaConstants.ELEMENT_ID_LANGUAGE))
                 .setNationality(allAnswers.get(OppijaConstants.ELEMENT_ID_NATIONALITY))
                 .setContactLanguage(allAnswers.get(OppijaConstants.ELEMENT_ID_CONTACT_LANGUAGE))
                 .setSocialSecurityNumber(allAnswers.get(OppijaConstants.ELEMENT_ID_SOCIAL_SECURITY_NUMBER))
+                .setDateOfBirth(allAnswers.get(OppijaConstants.ELEMENT_ID_DATE_OF_BIRTH))
                 .setPersonOid(application.getPersonOid())
                 .setSecurityOrder(false);
 

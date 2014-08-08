@@ -19,8 +19,8 @@ public abstract class ThemeOptionQuestion extends ThemeQuestion {
     }
 
     protected ThemeOptionQuestion(String applicationSystemId, String theme, String creatorPersonOid, List<String> ownerOrganizationOid,
-      String type, String learningOpportunityId, Integer ordinal, Map<String, String> validators, List<AttachmentRequest> attachmentRequests) {
-        super(applicationSystemId, theme, creatorPersonOid, ownerOrganizationOid, type, learningOpportunityId, ordinal, validators, attachmentRequests);
+      String type, String learningOpportunityId, Boolean isGroup, Integer ordinal, Map<String, String> validators, List<AttachmentRequest> attachmentRequests) {
+        super(applicationSystemId, theme, creatorPersonOid, ownerOrganizationOid, type, learningOpportunityId, isGroup, ordinal, validators, attachmentRequests);
         this.options = new ArrayList<ThemeQuestionOption>();
     }
 

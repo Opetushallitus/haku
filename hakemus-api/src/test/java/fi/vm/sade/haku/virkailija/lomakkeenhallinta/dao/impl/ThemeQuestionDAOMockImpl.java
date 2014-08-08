@@ -25,6 +25,17 @@ public class ThemeQuestionDAOMockImpl implements ThemeQuestionDAO {
     }
 
     @Override
+    public void setOrdinal(String themeQuestionId, Integer newOrdinal) {
+    //TODO =RS= Do something maybe someday....
+    }
+
+    @Override
+    public Boolean validateLearningOpportunityAndTheme(String learningOpportunityId, String themeId, String... themeQuestionIds) {
+        //TODO =RS= not too sane
+        return false;
+    }
+
+    @Override
     public List<ThemeQuestion> find(ThemeQuestion themeQuestion) {
         return ImmutableList.of();
     }

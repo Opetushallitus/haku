@@ -23,6 +23,7 @@ if [[ $@ =~ luokka ]]; then
 ],/g' > $fixturesroot/applicationSystem/2014022711042555034240.json
   mongoexport "$@" -d hakulomake -c themequestion --query '{applicationSystemId: "1.2.246.562.5.2014022711042555034240"}' --out $fixturesroot/themequestion/2014022711042555034240.json
   mongoexport "$@" -d hakulomake -c application --query '{oid: "1.2.246.562.11.00000877107"}' | node process-application.js 1.2.246.562.24.14229104472 > $fixturesroot/application/00000877107.json
+  mongoexport "$@" -d hakulomake -c application --query '{oid: "1.2.246.562.11.00000855417"}' | node process-application.js 1.2.246.562.24.14229104472 > $fixturesroot/application/00000855417.json
 
 elif [[ $@ =~ reppu ]]; then
   echo Importing from reppu

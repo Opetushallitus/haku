@@ -15,6 +15,7 @@
 <c:set var="contextPath" value="${pageContext.request.contextPath}" scope="request"/>
 
 <c:set var="discretionaryAttachments" value="${it.discretionaryAttachments}" scope="request"/>
+<c:set var="higherEducationAttachments" value="${it.higherEducationAttachments}" scope="request"/>
 
 <html>
 <head>
@@ -53,6 +54,9 @@
 </c:forEach>
 
 <jsp:include page="../print/discretionaryAttachments.jsp"/>
+
+<jsp:include page="../print/HigherEducationAttachments.jsp"/>
+
 <hr class="strong">
 <footer>
     <address>

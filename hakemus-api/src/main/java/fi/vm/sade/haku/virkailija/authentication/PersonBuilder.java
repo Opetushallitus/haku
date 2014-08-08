@@ -6,6 +6,7 @@ public final class PersonBuilder {
     private String nickName;
     private String lastName;
     private String socialSecurityNumber;
+    private String dateOfBirth;
     private boolean noSocialSecurityNumber;
     private String email;
     private String sex;
@@ -32,10 +33,10 @@ public final class PersonBuilder {
                 .setNickName(person.getNickName())
                 .setLastName(person.getLastName())
                 .setSocialSecurityNumber(person.getSocialSecurityNumber())
+                .setDateOfBirth(person.getDateOfBirth())
                 .setNoSocialSecurityNumber(person.isNoSocialSecurityNumber())
                 .setEmail(person.getEmail())
                 .setSex(person.getSex())
-                .setHomeCity(person.getHomeCity())
                 .setSecurityOrder(person.isSecurityOrder())
                 .setLanguage(person.getLanguage())
                 .setNationality(person.getNationality())
@@ -47,8 +48,8 @@ public final class PersonBuilder {
     }
 
     public Person get() {
-        return new Person(firstNames, nickName, lastName, socialSecurityNumber, noSocialSecurityNumber, email, sex,
-                homeCity, securityOrder, language, nationality, contactLanguage, personOid, studentOid);
+        return new Person(firstNames, nickName, lastName, socialSecurityNumber, dateOfBirth, noSocialSecurityNumber,
+                email, sex, homeCity, securityOrder, language, nationality, contactLanguage, personOid, studentOid);
     }
 
     public String getFirstNames() {
@@ -178,4 +179,8 @@ public final class PersonBuilder {
     }
 
 
+    public PersonBuilder setDateOfBirth(String dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+        return this;
+    }
 }

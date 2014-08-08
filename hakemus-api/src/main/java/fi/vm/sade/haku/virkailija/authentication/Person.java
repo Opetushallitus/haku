@@ -27,10 +27,10 @@ public class Person {
     private String nickName;
     private String lastName;
     private String socialSecurityNumber;
+    private String dateOfBirth;
     private boolean noSocialSecurityNumber;
     private String email;
     private String sex;
-    private String homeCity;
     private boolean securityOrder;
     private String language;
     private String nationality;
@@ -39,17 +39,17 @@ public class Person {
     private String studentOid;
 
     public Person(String firstNames, String nickName, String lastName, String socialSecurityNumber,
-                  boolean noSocialSecurityNumber, String email, String sex, String homeCity,
+                  String dateOfBirth, boolean noSocialSecurityNumber, String email, String sex, String homeCity,
                   boolean securityOrder, String language, String nationality, String contactLanguage,
                   String personOid, String studentOid) {
         this.firstNames = firstNames;
         this.nickName = nickName;
         this.lastName = lastName;
         this.socialSecurityNumber = socialSecurityNumber;
+        this.dateOfBirth = dateOfBirth;
         this.noSocialSecurityNumber = noSocialSecurityNumber;
         this.email = email;
         this.sex = sex;
-        this.homeCity = homeCity;
         this.securityOrder = securityOrder;
         this.language = language;
         this.nationality = nationality;
@@ -86,10 +86,6 @@ public class Person {
         return sex;
     }
 
-    public String getHomeCity() {
-        return homeCity;
-    }
-
     public boolean isSecurityOrder() {
         return securityOrder;
     }
@@ -121,10 +117,10 @@ public class Person {
                 .append(" nickName: ").append(nickName)
                 .append(" lastName: ").append(lastName)
                 .append(" socialSecurityNumber: ").append(socialSecurityNumber)
+                .append(" dateOfBirth: ").append(dateOfBirth)
                 .append(" noSocialSecurityNumber: ").append(noSocialSecurityNumber)
                 .append(" email: ").append(email)
                 .append(" sex: ").append(sex)
-                .append(" homeCity: ").append(homeCity)
                 .append(" securityOrder: ").append(securityOrder)
                 .append(" language: ").append(language)
                 .append(" nationality: ").append(nationality)
@@ -139,10 +135,10 @@ public class Person {
         this.nickName = isNotBlank(other.nickName) ? other.nickName : this.nickName;
         this.lastName = isNotBlank(other.lastName) ? other.lastName : this.lastName;
         this.socialSecurityNumber = isNotBlank(other.socialSecurityNumber) ? other.socialSecurityNumber : this.socialSecurityNumber;
+        this.dateOfBirth = isNotBlank(other.dateOfBirth) ? other.dateOfBirth : this.dateOfBirth;
         this.noSocialSecurityNumber = isBlank(this.socialSecurityNumber);
         this.email = isNotBlank(other.email) ? other.email : this.email;
         this.sex = isNotBlank(other.sex) ? other.sex : this.sex;
-        this.homeCity = isNotBlank(other.homeCity) ? other.homeCity : this.homeCity;
         this.securityOrder = this.securityOrder ? true : other.securityOrder;
         this.language = isNotBlank(other.language) ? other.language : this.language;
         this.nationality = isNotBlank(other.nationality) ? other.nationality : this.nationality;
@@ -150,5 +146,13 @@ public class Person {
         this.personOid = isNotBlank(other.personOid) ? other.personOid : this.personOid;
         this.studentOid = isNotBlank(other.studentOid) ? other.studentOid : this.studentOid;
         return this;
+    }
+
+    public String getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(String dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
     }
 }

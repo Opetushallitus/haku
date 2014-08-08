@@ -20,6 +20,8 @@ import com.google.common.base.Joiner;
 import com.google.common.base.Predicate;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
+import fi.vm.sade.haku.oppija.lomake.domain.builder.ElementBuilder;
+import fi.vm.sade.haku.oppija.lomake.domain.builder.RelatedQuestionRuleBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Titled;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.gradegrid.GradeGridRow;
@@ -44,6 +46,7 @@ public final class ElementUtil {
 
     public static final String ISO88591_NAME_REGEX = "^$|^[a-zA-ZÀ-ÖØ-öø-ÿ]$|^[a-zA-ZÀ-ÖØ-öø-ÿ'][a-zA-ZÀ-ÖØ-öø-ÿ ,-.']*(?:[a-zA-ZÀ-ÖØ-öø-ÿ.']+$)$";
     public static final String EMAIL_REGEX = "^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$|^$";
+    public static final String YEAR_REGEX = "^[1-2][0-9]{3}$";
 
     public static final String KYLLA = Boolean.TRUE.toString().toLowerCase();
     public static final String EI = Boolean.FALSE.toString().toLowerCase();
@@ -145,7 +148,7 @@ public final class ElementUtil {
     }
 
     public static Validator createRegexValidator(final String pattern, final FormParameters formParameters) {
-        return createRegexValidator(pattern, formParameters, "yleinen.virheellinenArvo");
+        return createRegexValidator(pattern, formParameters, "yleinen.virheellinenarvo");
     }
 
     public static Validator createRegexValidator(final String pattern, final FormParameters formParameters,
@@ -154,7 +157,12 @@ public final class ElementUtil {
     }
 
     public static Validator createValueSetValidator(final List<String> validValues, final FormParameters formParameters) {
-        return new ValueSetValidator(formParameters.getI18nText("yleinen.virheellinenArvo"), validValues);
+        return new ValueSetValidator(formParameters.getI18nText("yleinen.virheellinenarvo"), validValues);
+    }
+
+
+    public static Validator createYearValidator(final FormParameters formParameters, final String messageKey) {
+        return createRegexValidator(YEAR_REGEX, formParameters, messageKey);
     }
 
     public static void addRequiredValidator(final Element element, final FormParameters formParameters) {
@@ -250,11 +258,11 @@ public final class ElementUtil {
 
 
     public static Element createVarEqualsToValueRule(final String variable, final String... values) {
-        return Rule(ElementUtil.randomId()).setExpr(ExprUtil.atLeastOneValueEqualsToVariable(variable, values)).build();
+        return Rule(ExprUtil.atLeastOneValueEqualsToVariable(variable, values)).build();
     }
 
-    public static Element createRuleIfVariableIsTrue(final String ruleId, final String variable) {
-        return Rule(ruleId).setExpr(ExprUtil.isAnswerTrue(variable)).build();
+    public static Element createRuleIfVariableIsTrue(final String variable) {
+        return Rule(ExprUtil.isAnswerTrue(variable)).build();
     }
 
     public static Element createRegexpRule(final Element element, final String pattern) {
@@ -262,8 +270,7 @@ public final class ElementUtil {
     }
 
     public static Element createRegexpRule(final String variable, final String pattern) {
-        return Rule(ElementUtil.randomId()).setExpr(new Regexp(variable, pattern)).build();
+        return Rule(new Regexp(variable, pattern)).build();
     }
-
 
 }

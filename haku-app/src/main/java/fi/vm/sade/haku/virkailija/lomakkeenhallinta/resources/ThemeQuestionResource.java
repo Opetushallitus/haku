@@ -16,6 +16,7 @@
 
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.resources;
 
+import com.google.common.collect.ImmutableList;
 import fi.vm.sade.haku.oppija.common.koulutusinformaatio.ApplicationOptionService;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
 import fi.vm.sade.haku.oppija.hakemus.resource.JSONException;
@@ -27,6 +28,7 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParamete
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakuService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakukohdeService;
+import fi.vm.sade.haku.virkailija.organization.resource.OrganizationResource;
 import fi.vm.sade.tarjonta.service.resources.dto.HakukohdeDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,12 +36,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 
-import javax.ws.rs.*;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 
 @Controller
@@ -48,6 +59,8 @@ public class ThemeQuestionResource {
 
     //NOTE: Supported roles ROLE_APP_HAKULOMAKKEENHALLINTA_CRUD ROLE_APP_HAKULOMAKKEENHALLINTA_READ ROLE_APP_HAKULOMAKKEENHALLINTA_READ_UPDATE
     public static final String CHARSET_UTF_8 = ";charset=UTF-8";
+    private static final String PARAM_NEW_ORDINAL = "newOrdinal";
+    private static final String PARAM_OLD_ORDINAL = "oldOrdinal";
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ThemeQuestionResource.class);
 
@@ -129,7 +142,7 @@ public class ThemeQuestionResource {
         }
         ThemeQuestion dbThemeQuestion = fetchThemeQuestion(themeQuestionId);
 
-        themeQuestion = fillInOwnerOrganizations(themeQuestion);
+        themeQuestion = fillInOwnerOrganizationsFromApplicationOption(themeQuestion);
 
         LOGGER.debug("Saving Theme Question with id: " + dbThemeQuestion.getId().toString());
         themeQuestionDAO.save(themeQuestion);
@@ -158,29 +171,93 @@ public class ThemeQuestionResource {
             throw new JSONException(Response.Status.BAD_REQUEST, "Missing pathparameters", null);
         String tqAsId = themeQuestion.getApplicationSystemId();
         if (! applicationSystemId.equals(tqAsId)) {
-            themeQuestion.setApplicationSystemId(applicationSystemId);
-            LOGGER.debug("Overriding given theme question application system id " + tqAsId + " with path param " + applicationSystemId);
+            throw new JSONException(Response.Status.BAD_REQUEST, "Data error: Mismatch on path and model", null);
         }
         String tqLoId = themeQuestion.getLearningOpportunityId();
-        if (! learningOpportunityId.equals(tqLoId)) {
-            themeQuestion.setLearningOpportunityId(learningOpportunityId);
-            LOGGER.debug("Overriding given theme question learning opportunity id " + tqLoId + " with path param " + learningOpportunityId);
+        if (null == tqLoId){
+            throw new JSONException(Response.Status.BAD_REQUEST, "Data error: Missing learningOpportunityId", null);
+        }
+        if (!learningOpportunityId.equals(tqLoId)) {
+            throw new JSONException(Response.Status.BAD_REQUEST, "Data error: Mismatch on path and model", null);
         }
         String tqThemeId = themeQuestion.getLearningOpportunityId();
         if (! themeId.equals(tqThemeId)) {
-            themeQuestion.setTheme(themeId);
-            LOGGER.debug("Overriding given theme question learning opportunity id " + tqThemeId + " with path param " + themeId);
+            throw new JSONException(Response.Status.BAD_REQUEST, "Data error: Mismatch on path and model", null);
         }
-
-        themeQuestion = fillInOwnerOrganizations(themeQuestion);
+        if (themeQuestion.isGroup()) {
+            themeQuestion = fillInOwnerOrganizationsFromApplicationOptionGroup(themeQuestion);
+        } else {
+            themeQuestion = fillInOwnerOrganizationsFromApplicationOption(themeQuestion);
+        }
         LOGGER.debug("Saving Theme Question");
         themeQuestionDAO.save(themeQuestion);
         LOGGER.debug("Saved Theme Question");
     }
 
-    private ThemeQuestion fillInOwnerOrganizations(ThemeQuestion themeQuestion){
+    @POST
+    @Path("reorder/{learningOpportunityId}/{themeId}")
+    @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
+    @Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
+    @PreAuthorize("hasAnyRole('ROLE_APP_HAKULOMAKKEENHALLINTA_READ_UPDATE', 'ROLE_APP_HAKULOMAKKEENHALLINTA_CRUD')")
+    public void reorderThemeQuestions(@PathParam("learningOpportunityId") String learningOpportunityId,
+      @PathParam("themeId") String themeId, Map<String,Map<String,String>> reorderedQuestions) {
+        LOGGER.debug("Posted " + reorderedQuestions);
+        if (null == learningOpportunityId || null == themeId)
+            throw new JSONException(Response.Status.BAD_REQUEST, "Missing pathparameters", null);
+        List<Map<String, String>> values = new ArrayList(reorderedQuestions.values());
+        boolean changes = false;
+        long ordinalCheckSum = 0;
+        for (Map<String,String> value : values){
+            try {
+                Integer newOrdinal = Integer.valueOf(value.get(PARAM_NEW_ORDINAL));
+                Integer oldOrdinal = Integer.valueOf(value.get(PARAM_OLD_ORDINAL));
+                if (null == newOrdinal) {
+                    LOGGER.debug("Exception due to new ordinal null value");
+                    throw new JSONException(Response.Status.BAD_REQUEST, "New ordinal values are missing or not valid", null);
+                }
+                if (!newOrdinal.equals(oldOrdinal))
+                    changes = true;
+                if (newOrdinal < 1 || reorderedQuestions.size() < newOrdinal) {
+                    LOGGER.debug("Exception due to new ordinal value. New ordinal: {}, questionCount : {}", newOrdinal, reorderedQuestions.size());
+                    throw new JSONException(Response.Status.BAD_REQUEST, "New ordinal values are missing or not valid", null);
+                }
+                long currentOrdinalCheckSum = 1 << newOrdinal;
+                if ((currentOrdinalCheckSum & ordinalCheckSum) > 0) {
+                    LOGGER.debug("Exception due to ordinalCheckSums. Current: {}, total: {}", currentOrdinalCheckSum, ordinalCheckSum);
+                    throw new JSONException(Response.Status.BAD_REQUEST, "Duplicate ordinals", null);
+                }
+                ordinalCheckSum += currentOrdinalCheckSum;
+            } catch (NumberFormatException exception){
+                throw new JSONException(Response.Status.BAD_REQUEST, "Ordinal values must be integers", null);
+            }
+        }
+        if (!changes){
+            LOGGER.debug("No changes. Skipping the rest");
+            return;
+        }
+        //TODO =RS= some metalocking to simulate transactions or something
+
+        Set<String> themeQuestionIds = reorderedQuestions.keySet();
+        if (!themeQuestionDAO.validateLearningOpportunityAndTheme(learningOpportunityId, themeId,  themeQuestionIds.toArray(new String[themeQuestionIds.size()])))
+            throw new JSONException(Response.Status.BAD_REQUEST, "Error in input data. Mismatch between question ids, theme and application option", null);
+        // TODO =RS= do something if there are ordinals missing or old values do not match.
+        for (String id : themeQuestionIds){
+            Map<String, String> questionParam = reorderedQuestions.get(id);
+            themeQuestionDAO.setOrdinal(id, Integer.valueOf(questionParam.get(PARAM_NEW_ORDINAL)));
+        }
+    }
+
+    private ThemeQuestion fillInOwnerOrganizationsFromApplicationOption(ThemeQuestion themeQuestion){
         LOGGER.debug("Filling in organizations for theme question for application system " + themeQuestion.getApplicationSystemId() + " application option " + themeQuestion.getLearningOpportunityId());
-        HakukohdeDTO applicationOption = hakukohdeService.findByOid(themeQuestion.getLearningOpportunityId());
+        HakukohdeDTO applicationOption = null;
+        try {
+            applicationOption = hakukohdeService.findByOid(themeQuestion.getLearningOpportunityId());
+            if (null == applicationOption)
+                throw new JSONException(Response.Status.BAD_REQUEST, "Invalid learningOpportunityId", null);
+        } catch (RuntimeException exception){
+            LOGGER.error("Application Option Search failed", exception);
+            throw new JSONException(Response.Status.BAD_REQUEST, "Invalid learningOpportunityId", null);
+        }
         LOGGER.debug("Filling in organizations for theme question");
         String learningOpportunityProvicerId = applicationOption.getTarjoajaOid();
         List<String> parentOids = organizationService.findParentOids(learningOpportunityProvicerId);
@@ -189,6 +266,12 @@ public class ThemeQuestionResource {
         ownerOrganizations.add(learningOpportunityProvicerId);
         themeQuestion.setOwnerOrganizationOids(new ArrayList<String>(ownerOrganizations));
         LOGGER.debug("Owner organizations "+ ownerOrganizations.toString() +" added for applicationoption "+ applicationOption.getOid());
+        return themeQuestion;
+    }
+
+    private ThemeQuestion fillInOwnerOrganizationsFromApplicationOptionGroup(ThemeQuestion themeQuestion) {
+        String applicationOptionGroupId = themeQuestion.getLearningOpportunityId();
+        themeQuestion.setOwnerOrganizationOids(ImmutableList.of(OrganizationResource.ORGANIZATION_ROOT_ID, applicationOptionGroupId));
         return themeQuestion;
     }
 

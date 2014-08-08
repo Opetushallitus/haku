@@ -8,6 +8,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.*;
 
+
 public final class ApplicationUtil {
 
     private ApplicationUtil() {
@@ -44,9 +45,11 @@ public final class ApplicationUtil {
         List<String> universityAOs = getUniversityAOs(application);
         List<String> amkAOs = getAmkAOs(application);
         List<String> aspaAmkAOs = getAspaAmkAOs(application);
+
         List<String> universityAndAspaAmkAOs = new ArrayList<String>();
         universityAndAspaAmkAOs.addAll(universityAOs);
         universityAndAspaAmkAOs.addAll(aspaAmkAOs);
+
         List<String> allAOs = new ArrayList<String>();
         allAOs.addAll(universityAOs);
         allAOs.addAll(amkAOs);
@@ -122,8 +125,8 @@ public final class ApplicationUtil {
                 break;
             }
             String liiteKey = "preference" + i + "-" + liiteKeyBase;
-            if (answers.containsKey(liiteKey) && !aos.contains(key)) {
-                aos.add(key);
+            if (answers.containsKey(liiteKey) && !aos.contains(answers.get(key))) {
+                aos.add(answers.get(key));
             }
             i++;
         }
@@ -153,5 +156,6 @@ public final class ApplicationUtil {
             return false;
         }
         return true;
+
     }
 }

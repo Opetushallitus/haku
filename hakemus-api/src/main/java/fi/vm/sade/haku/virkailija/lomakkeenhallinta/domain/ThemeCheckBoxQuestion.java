@@ -20,9 +20,9 @@ public class ThemeCheckBoxQuestion extends ThemeOptionQuestion {
     }
 
     public ThemeCheckBoxQuestion(String applicationSystemId, String theme, String creatorPersonOid,
-                                 List<String> ownerOrganizationOid, String learningOpportunityId, Integer ordinal,
+                                 List<String> ownerOrganizationOid, String learningOpportunityId, Boolean isGroup, Integer ordinal,
                                  Map<String, String> validators, List<AttachmentRequest> attachmentRequests) {
-        super(applicationSystemId, theme, creatorPersonOid, ownerOrganizationOid, TYPE, learningOpportunityId, ordinal, validators, attachmentRequests);
+        super(applicationSystemId, theme, creatorPersonOid, ownerOrganizationOid, TYPE, learningOpportunityId, isGroup, ordinal, validators, attachmentRequests);
     }
 
     @Override

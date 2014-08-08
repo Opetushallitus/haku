@@ -1,11 +1,8 @@
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.dao;
 
 import fi.vm.sade.haku.oppija.common.dao.BaseDAO;
-import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain.ThemeQuestion;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.List;
 
 public interface ThemeQuestionDAO extends BaseDAO<ThemeQuestion> {
@@ -15,4 +12,8 @@ public interface ThemeQuestionDAO extends BaseDAO<ThemeQuestion> {
     List<ThemeQuestion> query(ThemeQuestionQueryParameters parameters);
 
     List <String> queryApplicationOptionsIn(ThemeQuestionQueryParameters parameters);
+
+    void setOrdinal(String themeQuestionId, Integer newOrdinal);
+
+    Boolean validateLearningOpportunityAndTheme(String learningOpportunityId, String themeId, String... themeQuestionIds);
 }
