@@ -3,6 +3,8 @@ package fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain;
 
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
+import org.codehaus.jackson.annotate.JsonCreator;
+import org.codehaus.jackson.annotate.JsonProperty;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,14 +15,19 @@ public abstract class ThemeOptionQuestion extends ThemeQuestion {
    // Validators for the question
     private List<ThemeQuestionOption> options;
 
-    public ThemeOptionQuestion(String type) {
+    protected ThemeOptionQuestion(String applicationSystemId, String theme, String type, String learningOpportunityId,
+      Boolean targetIsGroup, Integer ordinal, Map<String,String> validators, List<AttachmentRequest> attachmentRequests){
+        super(applicationSystemId, theme, type, learningOpportunityId, targetIsGroup, ordinal, validators, attachmentRequests);
+    }
+
+    protected ThemeOptionQuestion(String type) {
         super(type);
         this.options = new ArrayList<ThemeQuestionOption>();
     }
 
     protected ThemeOptionQuestion(String applicationSystemId, String theme, String creatorPersonOid, List<String> ownerOrganizationOid,
-      String type, String learningOpportunityId, Boolean isGroup, Integer ordinal, Map<String, String> validators, List<AttachmentRequest> attachmentRequests) {
-        super(applicationSystemId, theme, creatorPersonOid, ownerOrganizationOid, type, learningOpportunityId, isGroup, ordinal, validators, attachmentRequests);
+      String type, String learningOpportunityId, Boolean targetIsGroup, Integer ordinal, Map<String, String> validators, List<AttachmentRequest> attachmentRequests) {
+        super(applicationSystemId, theme, creatorPersonOid, ownerOrganizationOid, type, learningOpportunityId, targetIsGroup, ordinal, validators, attachmentRequests);
         this.options = new ArrayList<ThemeQuestionOption>();
     }
 

@@ -7,6 +7,8 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
+import org.codehaus.jackson.annotate.JsonCreator;
+import org.codehaus.jackson.annotate.JsonProperty;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,12 +20,23 @@ public class ThemeRadioButtonQuestion extends ThemeOptionQuestion {
 
     public static final String TYPE = "RadioButton";
 
+    @JsonCreator
+    public ThemeRadioButtonQuestion(@JsonProperty(value = "applicationSystemId") String applicationSystemId,
+      @JsonProperty(value = "theme") String theme,
+      @JsonProperty(value = "learningOpportunityId") String learningOpportunityId,
+      @JsonProperty(value = "targetIsGroup") Boolean targetIsGroup,
+      @JsonProperty(value = "ordial") Integer ordinal,
+      @JsonProperty(value = "validators") Map<String,String> validators,
+      @JsonProperty(value = "attachmentRequests") List<AttachmentRequest> attachmentRequests){
+        super(applicationSystemId, theme, TYPE, learningOpportunityId, targetIsGroup, ordinal, validators, attachmentRequests);
+    }
+
     public ThemeRadioButtonQuestion() {
         super(TYPE);
     }
 
-    public ThemeRadioButtonQuestion(String applicationSystemId, String theme, String creatorPersonOid, List<String> ownerOrganizationOid, String learningOpportunityId, Boolean isGroup, Integer ordinal, Map<String, String> validators, List<AttachmentRequest> attachmentRequests) {
-        super(applicationSystemId, theme, creatorPersonOid, ownerOrganizationOid, TYPE, learningOpportunityId, isGroup, ordinal, validators, attachmentRequests);
+    public ThemeRadioButtonQuestion(String applicationSystemId, String theme, String creatorPersonOid, List<String> ownerOrganizationOid, String learningOpportunityId, Boolean targetIsGroup, Integer ordinal, Map<String, String> validators, List<AttachmentRequest> attachmentRequests) {
+        super(applicationSystemId, theme, creatorPersonOid, ownerOrganizationOid, TYPE, learningOpportunityId, targetIsGroup, ordinal, validators, attachmentRequests);
         this.setRequiredFieldValidator(Boolean.TRUE);
     }
 
