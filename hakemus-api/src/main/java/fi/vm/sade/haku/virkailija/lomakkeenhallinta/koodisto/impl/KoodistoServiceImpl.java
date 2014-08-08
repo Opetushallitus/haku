@@ -181,7 +181,7 @@ public class KoodistoServiceImpl implements KoodistoService {
     }
 
     @Override
-    public List<Option> getArvosanaasteikontyyppi() {
+    public List<Option> getAmmatillisenTutkinnonArvosteluasteikko() {
         return codesToOptions(CODE_ARVOSANAASTEIKONTYYPPI);
     }
 

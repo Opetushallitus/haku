@@ -25,7 +25,6 @@ import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.Or;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.hakutoiveet.HakutoiveetPhase;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ExprUtil;
 
 import java.util.ArrayList;
@@ -62,7 +61,7 @@ public class OsaaminenPhase {
             Expr pohjakoulutusAmmatillinen = new Or(ExprUtil.isAnswerTrue("pohjakoulutus_am"), ExprUtil.isAnswerTrue("pohjakoulutus_yo_ammatillinen"));
 
             ElementBuilder kysytaankoKeskiarvoJaAsteikko = Rule(new And(haettuAMKHon, pohjakoulutusAmmatillinen));
-            List<Option> asteikkolista = koodistoService.getLaajuusYksikot();
+            List<Option> asteikkolista = koodistoService.getAmmatillisenTutkinnonArvosteluasteikko();
             osaaminen.addChild(
                     Theme("osaaminenteema")
                             .formParams(formParameters)
