@@ -18,6 +18,7 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.domain.Code;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 
+import javax.ws.rs.HEAD;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -224,7 +225,7 @@ public final class KoulutustaustaPhase {
                 .requiredInline()
                 .formParams(formParameters).build();
         Element ammatillinenLaajuusYksikot = Dropdown("pohjakoulutus_yo_ammatillinen_laajuusYksikko")
-                .addOptions(laajuusYksikot).requiredInline().labelKey("form.yleinen.nbsp").build();
+                .addOptions(laajuusYksikot).inline().formParams(formParameters).labelKey("form.yleinen.nbsp").build();
 
         ammatillinenMore.addChild(ammatillinenVuosi,
                 ammatillinenNimike,
