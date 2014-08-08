@@ -45,5 +45,13 @@ public class KSHJHakulomakeV1IT extends DummyModelBaseItTest {
         setValue("keskiarvo", "10");
         setValue("arvosanaasteikko", "4-10");
         nextPhase(OppijaConstants.PHASE_MISC);
+
+
+        navigateToPath("lomake", "haku6", OppijaConstants.PHASE_EDUCATION);
+
+        click("pohjakoulutus_am");
+        nextPhase(OppijaConstants.PHASE_APPLICATION_OPTIONS);
+        elementsNotPresent("keskiarvo");
+        elementsNotPresent("arvosanaasteikko");
     }
 }
