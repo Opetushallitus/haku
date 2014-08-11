@@ -247,11 +247,30 @@ public class ThemeQuestionResource {
         }
     }
 
-    private ThemeQuestion fillInOwnerOrganizationsFromApplicationOption(ThemeQuestion themeQuestion){
+    private ThemeQuestion fillInOwnerOrganizationsFromApplicationOption(final ThemeQuestion themeQuestion){
         LOGGER.debug("Filling in organizations for theme question for application system " + themeQuestion.getApplicationSystemId() + " application option " + themeQuestion.getLearningOpportunityId());
+        HashSet<String> ownerOrganizations = new HashSet<String>();
+        ownerOrganizations.addAll(fetchApplicationOptionParents(themeQuestion.getLearningOpportunityId()));
+        themeQuestion.setOwnerOrganizationOids(new ArrayList<String>(ownerOrganizations));
+        return themeQuestion;
+    }
+
+    private ThemeQuestion fillInOwnerOrganizationsFromApplicationOptionGroup(final ThemeQuestion themeQuestion) {
+        String applicationOptionGroupId = themeQuestion.getLearningOpportunityId();
+        LOGGER.debug("Filling in organizations for theme question for application system " + themeQuestion.getApplicationSystemId() + " application option group " + applicationOptionGroupId);
+        List <String> applicationOptionsIds = hakukohdeService.findByGroupAndApplicationSystem(applicationOptionGroupId, themeQuestion.getApplicationSystemId());
+        HashSet<String> ownerOrganizations = new HashSet<String>();
+        for (String applicationOptionId : applicationOptionsIds){
+            ownerOrganizations.addAll(fetchApplicationOptionParents(applicationOptionId));
+        }
+        themeQuestion.setOwnerOrganizationOids(new ArrayList<String>(ownerOrganizations));
+        return themeQuestion;
+    }
+
+    private List<String> fetchApplicationOptionParents(final String applicationOptionId){
         HakukohdeDTO applicationOption = null;
         try {
-            applicationOption = hakukohdeService.findByOid(themeQuestion.getLearningOpportunityId());
+            applicationOption = hakukohdeService.findByOid(applicationOptionId);
             if (null == applicationOption)
                 throw new JSONException(Response.Status.BAD_REQUEST, "Invalid learningOpportunityId", null);
         } catch (RuntimeException exception){
@@ -260,19 +279,11 @@ public class ThemeQuestionResource {
         }
         LOGGER.debug("Filling in organizations for theme question");
         String learningOpportunityProvicerId = applicationOption.getTarjoajaOid();
-        List<String> parentOids = organizationService.findParentOids(learningOpportunityProvicerId);
-        HashSet<String> ownerOrganizations = new HashSet<String>();
-        ownerOrganizations.addAll(parentOids);
-        ownerOrganizations.add(learningOpportunityProvicerId);
-        themeQuestion.setOwnerOrganizationOids(new ArrayList<String>(ownerOrganizations));
-        LOGGER.debug("Owner organizations "+ ownerOrganizations.toString() +" added for applicationoption "+ applicationOption.getOid());
-        return themeQuestion;
-    }
-
-    private ThemeQuestion fillInOwnerOrganizationsFromApplicationOptionGroup(ThemeQuestion themeQuestion) {
-        String applicationOptionGroupId = themeQuestion.getLearningOpportunityId();
-        themeQuestion.setOwnerOrganizationOids(ImmutableList.of(OrganizationResource.ORGANIZATION_ROOT_ID, applicationOptionGroupId));
-        return themeQuestion;
+        HashSet<String> parentOids = new HashSet<String>();
+        parentOids.addAll(organizationService.findParentOids(learningOpportunityProvicerId));
+        parentOids.add(learningOpportunityProvicerId);
+        LOGGER.debug("Owner organizations " + parentOids.toString() + " fetched for applicationoption " + applicationOption.getOid());
+        return new ArrayList<String>(parentOids);
     }
 
     @GET
