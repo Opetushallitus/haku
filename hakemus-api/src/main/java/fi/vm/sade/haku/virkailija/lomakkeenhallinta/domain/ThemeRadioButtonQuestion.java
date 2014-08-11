@@ -18,8 +18,6 @@ import static fi.vm.sade.haku.oppija.lomake.domain.builder.RadioBuilder.Radio;
 
 public class ThemeRadioButtonQuestion extends ThemeOptionQuestion {
 
-    public static final String TYPE = "RadioButton";
-
     @JsonCreator
     public ThemeRadioButtonQuestion(@JsonProperty(value = "applicationSystemId") String applicationSystemId,
       @JsonProperty(value = "theme") String theme,
@@ -28,15 +26,15 @@ public class ThemeRadioButtonQuestion extends ThemeOptionQuestion {
       @JsonProperty(value = "ordial") Integer ordinal,
       @JsonProperty(value = "validators") Map<String,String> validators,
       @JsonProperty(value = "attachmentRequests") List<AttachmentRequest> attachmentRequests){
-        super(applicationSystemId, theme, TYPE, learningOpportunityId, targetIsGroup, ordinal, validators, attachmentRequests);
+        super(applicationSystemId, theme, learningOpportunityId, targetIsGroup, ordinal, validators, attachmentRequests);
     }
 
     public ThemeRadioButtonQuestion() {
-        super(TYPE);
+        super();
     }
 
     public ThemeRadioButtonQuestion(String applicationSystemId, String theme, String creatorPersonOid, List<String> ownerOrganizationOid, String learningOpportunityId, Boolean targetIsGroup, Integer ordinal, Map<String, String> validators, List<AttachmentRequest> attachmentRequests) {
-        super(applicationSystemId, theme, creatorPersonOid, ownerOrganizationOid, TYPE, learningOpportunityId, targetIsGroup, ordinal, validators, attachmentRequests);
+        super(applicationSystemId, theme, creatorPersonOid, ownerOrganizationOid, learningOpportunityId, targetIsGroup, ordinal, validators, attachmentRequests);
         this.setRequiredFieldValidator(Boolean.TRUE);
     }
 
@@ -58,7 +56,6 @@ public class ThemeRadioButtonQuestion extends ThemeOptionQuestion {
         elementBuilder.help(getHelpText());
         elementBuilder.verboseHelp(getVerboseHelpText());
         //elementBuilder.inline();
-
 
         // Radiobuttons are always required
         elementBuilder.required();

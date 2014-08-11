@@ -53,9 +53,6 @@ public abstract class ThemeQuestion implements ConfiguredElement {
     // organization oid
     private List<String> ownerOrganizationOids;
 
-    // Type of question
-    private String type;
-
     // Message text
     private I18nText messageText;
 
@@ -90,17 +87,9 @@ public abstract class ThemeQuestion implements ConfiguredElement {
         this.attachmentRequests = new ArrayList<AttachmentRequest>();
     }
 
-    protected ThemeQuestion(String type){
-        this.type = type;
-        this.ownerOrganizationOids = new ArrayList<String>();
-        this.validators = new HashMap<String, String>();
-        this.attachmentRequests = new ArrayList<AttachmentRequest>();
-    }
-
     @JsonCreator
     protected ThemeQuestion(@JsonProperty(value = "applicationSystemId") String applicationSystemId,
                             @JsonProperty(value = "theme") String theme,
-                            @JsonProperty(value = "type") String type,
                             @JsonProperty(value = "learningOpportunityId") String learningOpportunityId,
                             @JsonProperty(value = "targetIsGroup") Boolean targetIsGroup,
                             @JsonProperty(value = "ordial") Integer ordinal,
@@ -108,7 +97,6 @@ public abstract class ThemeQuestion implements ConfiguredElement {
                             @JsonProperty(value = "attachmentRequests") List<AttachmentRequest>attachmentRequests) {
         this.applicationSystemId =  applicationSystemId;
         this.theme = theme;
-        this.type = type;
         this.learningOpportunityId = learningOpportunityId;
         this.targetIsGroup = targetIsGroup;
         this.ordinal = ordinal;
@@ -123,7 +111,6 @@ public abstract class ThemeQuestion implements ConfiguredElement {
 
     protected ThemeQuestion(String applicationSystemId, String theme, String creatorPersonOid,
       List<String> ownerOrganizationOid,
-      String type,
       String learningOpportunityId,
       Boolean targetIsGroup,
       Integer ordinal,
@@ -133,7 +120,6 @@ public abstract class ThemeQuestion implements ConfiguredElement {
         this.theme = theme;
         this.creatorPersonOid = creatorPersonOid;
         this.ownerOrganizationOids = new ArrayList<String>(ownerOrganizationOid);
-        this.type = type;
         this.learningOpportunityId = learningOpportunityId;
         this.targetIsGroup = targetIsGroup;
         this.ordinal = ordinal;
@@ -188,14 +174,6 @@ public abstract class ThemeQuestion implements ConfiguredElement {
 
     public void setOwnerOrganizationOids(List<String> ownerOrganizationOids) {
         this.ownerOrganizationOids = new ArrayList<String>(ownerOrganizationOids);
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
     }
 
     public I18nText getMessageText() {
@@ -282,13 +260,13 @@ public abstract class ThemeQuestion implements ConfiguredElement {
     public String toString() {
         return "ThemeQuestion{" +
           "id=" + id +
+          ", class=" + this.getClass().getSimpleName() +
           ", state=" + state +
           ", applicationSystemId='" + applicationSystemId + '\'' +
           ", theme='" + theme + '\'' +
           ", ordinal=" + ordinal +
           ", creatorPersonOid='" + creatorPersonOid + '\'' +
           ", ownerOrganizationOids=" + ownerOrganizationOids +
-          ", type='" + type + '\'' +
           ", messageText=" + messageText +
           ", helpText=" + helpText +
           ", verboseHelpText=" + verboseHelpText +
