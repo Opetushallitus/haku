@@ -40,7 +40,7 @@ public final class ApplicationUtil {
 
     public static Map<String, List<String>> getHigherEdAttachmentAOIds(Application application) {
 
-        Map<String, List<String>> attachments = new HashMap<String, List<String>>();
+        Map<String, List<String>> attachments = new LinkedHashMap<String, List<String>>();
 
         List<String> universityAOs = getUniversityAOs(application);
         List<String> amkAOs = getAmkAOs(application);
@@ -53,26 +53,25 @@ public final class ApplicationUtil {
         List<String> allAOs = new ArrayList<String>();
         allAOs.addAll(universityAOs);
         allAOs.addAll(amkAOs);
-
-        if (yoNeeded(application)) {
+        if (yoNeeded(application) && !universityAOs.isEmpty()) {
             attachments.put("yo", universityAOs);
         }
-        if (hasBaseEducation(application, "pohjakoulutus_am")) {
+        if (hasBaseEducation(application, "pohjakoulutus_am") && !universityAOs.isEmpty()) {
             attachments.put("am", universityAOs);
         }
-        if (hasBaseEducation(application, "pohjakoulutus_amt")) {
+        if (hasBaseEducation(application, "pohjakoulutus_amt") && !universityAndAspaAmkAOs.isEmpty()) {
             attachments.put("amt", universityAndAspaAmkAOs);
         }
-        if (hasBaseEducation(application, "pohjakoulutus_kk")) {
+        if (hasBaseEducation(application, "pohjakoulutus_kk") && !allAOs.isEmpty()) {
             attachments.put("kk", allAOs);
         }
-        if (hasBaseEducation(application, "pohjakoulutus_ulk")) {
+        if (hasBaseEducation(application, "pohjakoulutus_ulk") && !universityAndAspaAmkAOs.isEmpty()) {
             attachments.put("ulk", universityAndAspaAmkAOs);
         }
-        if (hasBaseEducation(application, "pohjakoulutus_avoin")) {
+        if (hasBaseEducation(application, "pohjakoulutus_avoin") && !allAOs.isEmpty()) {
             attachments.put("avoin", allAOs);
         }
-        if (hasBaseEducation(application, "pohjakoulutus_muu")) {
+        if (hasBaseEducation(application, "pohjakoulutus_muu") && !allAOs.isEmpty()) {
             attachments.put("muu", allAOs);
         }
         return attachments;
@@ -90,7 +89,7 @@ public final class ApplicationUtil {
             }
             String liiteKey = "preference" + i + "-amkLiite";
             if (answers.containsKey(liiteKey) && !aos.contains(key)) {
-                String groupsStr = answers.get("preference" + 1 + "-Koulutus-id-attachmentgroups");
+                String groupsStr = answers.get("preference" + i + "-Koulutus-id-attachmentgroups");
                 if (StringUtils.isBlank(groupsStr)) {
                     aos.add(key);
                 } else {
@@ -143,10 +142,6 @@ public final class ApplicationUtil {
             return false;
         }
         Map<String, String> answers = application.getVastauksetMerged();
-        boolean hasYo = Boolean.parseBoolean(answers.get("pohjakoulutus_yo"));
-        if (!hasYo) {
-            return false;
-        }
         int suoritusvuosi = Integer.parseInt(answers.get("pohjakoulutus_yo_vuosi"));
         if (suoritusvuosi < 1990) {
             return true;
