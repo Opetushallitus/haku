@@ -23,7 +23,7 @@
 
     <div class="${styleBaseClass}-content">
         <div class="field-container-text">
-            <input type="text" <haku:placeholder titled="${element}"/> ${element.attributeString} value="<c:out value='${answers[element.id]}'/>"/>
+            <input type="text" name="${element.id}" <haku:placeholder titled="${element}"/>id="${element.id}" ${element.attributeString} <haku:value value='${answers[element.id]}'/> />
             <haku:errorMessage id="${element.id}" additionalClass="margin-top-1"/>
         </div>
 

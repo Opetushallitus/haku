@@ -30,7 +30,6 @@ public abstract class Titled extends Element {
     public Titled(final String id, final I18nText i18nText) {
         super(id);
         this.i18nText = i18nText;
-        super.addAttribute("name", id);
     }
 
     public I18nText getI18nText() {

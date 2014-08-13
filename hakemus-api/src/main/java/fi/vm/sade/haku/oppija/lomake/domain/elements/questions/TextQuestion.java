@@ -27,6 +27,5 @@ public class TextQuestion extends Titled {
     public TextQuestion(@JsonProperty(value = "id") final String id,
                         @JsonProperty(value = "i18nText") final I18nText i18nText) {
         super(id, i18nText);
-        addAttribute("type", "text");
     }
 }

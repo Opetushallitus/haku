@@ -16,6 +16,6 @@
   ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   ~ European Union Public Licence for more details.
   --%>
-<td ${element.attributeString}>
+<td ${element.attributeString} id="${element.id}" >
     <haku:viewChilds element="${element}"/>
 </td>

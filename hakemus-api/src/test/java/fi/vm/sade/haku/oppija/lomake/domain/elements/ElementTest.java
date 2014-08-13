@@ -37,7 +37,7 @@ public class ElementTest {
 
     @Test
     public void testDefaultAttributeString() throws Exception {
-        assertEquals("id=\"test\" ", testElement.getAttributeString());
+        assertEquals("", testElement.getAttributeString());
     }
 
     @Test

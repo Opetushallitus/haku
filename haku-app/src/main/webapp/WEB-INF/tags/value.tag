@@ -1,6 +1,8 @@
-<%@ page session="false"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ tag description="Add placeholder attribute" body-content="empty" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="haku" tagdir="/WEB-INF/tags" %>
+<%@ attribute name="value" required="true" type="java.lang.String" %>
+<%@ tag trimDirectiveWhitespaces="true" %>
 <%--
   ~ Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
   ~
@@ -16,4 +18,4 @@
   ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   ~ European Union Public Licence for more details.
   --%>
-<tr ${element.attributeString} id="${element.id}" ><a name="${element.id}"></a><haku:viewChilds element="${element}"/></tr>
+<c:if test="${not empty value}">value="<c:out value='${value}'/>"</c:if>

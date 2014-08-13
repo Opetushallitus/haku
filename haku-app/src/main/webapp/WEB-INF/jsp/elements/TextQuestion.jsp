@@ -21,7 +21,7 @@
     <haku:label element="${element}" styleBaseClass="${styleBaseClass}"/>
     <div class="${styleBaseClass}-content">
         <div class="field-container-text">
-            <input ${element.attributeString} <haku:placeholder titled="${element}"/> value="<c:out value='${answers[element.id]}'/>"/>
+            <input type="text" ${element.attributeString} id="${element.id}" name="${element.id}" <haku:placeholder titled="${element}"/> <haku:value value='${answers[element.id]}'/> />
             <haku:errorMessage id="${element.id}" additionalClass="margin-top-1"/>
         </div>
         <haku:help element="${element}"/>

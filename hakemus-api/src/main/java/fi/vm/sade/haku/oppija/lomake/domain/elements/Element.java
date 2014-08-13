@@ -54,8 +54,6 @@ public abstract class Element implements Serializable {
         this.validators = new ArrayList<Validator>();
         this.children = new ArrayList<Element>();
         this.attributes = new HashMap<String, String>();
-        addAttribute("id", id);
-
     }
 
     public String getId() {
@@ -90,9 +88,6 @@ public abstract class Element implements Serializable {
     public void addAttribute(final String key, final String value) {
         checkNotNull(key, "Attribute's key cannot be null");
         checkNotNull(value, "Attribute's value cannot be null");
-        if (key.equals("type")) {
-            System.out.println("--------------------------------->addAttribute " + this.type + ", " + this.id + ", " + key + ", " + value);
-        }
         if (!attributes.containsKey(key)) {
             this.attributes.put(key, value);
         } else
@@ -170,7 +165,6 @@ public abstract class Element implements Serializable {
             builder.append(attr.getValue());
             builder.append("\" ");
         }
-        System.out.println("getAttributeString " + builder.toString());
         return builder.toString();
     }
 }
