@@ -4,6 +4,7 @@ import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.Titled;
 import fi.vm.sade.haku.oppija.lomake.validation.Validator;
 import fi.vm.sade.haku.oppija.lomake.validation.validators.*;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
@@ -20,7 +21,6 @@ public abstract class ElementBuilder {
     Integer size;
     boolean required;
     String key;
-    String placeholder;
     I18nText i18nText;
     I18nText help;
     I18nText verboseHelp;
@@ -76,8 +76,9 @@ public abstract class ElementBuilder {
         if (pattern != null) {
             element.setValidator(new RegexFieldValidator(getI18nText("yleinen.virheellinenarvo"), pattern));
         }
-        if (placeholder != null) {
-            element.addAttribute("placeholder", placeholder);
+        I18nText placeholder = getI18nText(key + ".placeholder");
+        if (placeholder != null && element instanceof  Titled) {
+            ((Titled)element).setPlaceholder(placeholder);
         }
         I18nText errorMessage = getI18nText("yleinen.virheellinenarvo");
         if (maxLength != null) {
@@ -125,11 +126,6 @@ public abstract class ElementBuilder {
 
     public ElementBuilder size(int s) {
         this.size = s;
-        return this;
-    }
-
-    public ElementBuilder placeholder(final String placeholder) {
-        this.placeholder = placeholder;
         return this;
     }
 

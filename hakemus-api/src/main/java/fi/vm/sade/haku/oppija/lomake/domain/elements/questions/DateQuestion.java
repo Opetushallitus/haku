@@ -12,7 +12,5 @@ public class DateQuestion extends Titled {
 
     public DateQuestion(final String id, final I18nText i18nText) {
         super(id, i18nText);
-        addAttribute("type", "text");
-        addAttribute("placeholder", "pp.kk.vvvv");
     }
 }

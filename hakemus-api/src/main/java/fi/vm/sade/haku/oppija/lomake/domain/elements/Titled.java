@@ -25,6 +25,7 @@ public abstract class Titled extends Element {
 
     private I18nText i18nText;
     private I18nText verboseHelp;
+    private I18nText placeholder;
 
     public Titled(final String id, final I18nText i18nText) {
         super(id);
@@ -44,4 +45,11 @@ public abstract class Titled extends Element {
         this.verboseHelp = verboseHelp;
     }
 
+    public I18nText getPlaceholder() {
+        return placeholder;
+    }
+
+    public void setPlaceholder(I18nText placeholder) {
+        this.placeholder = placeholder;
+    }
 }

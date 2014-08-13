@@ -122,7 +122,6 @@ public final class HenkilotiedotPhase {
                         .setFemaleOption(female)
                         .setSexId(sukupuoli.getId())
                         .formParams(formParameters)
-                        .placeholder("ppkkvv*****")
                         .requiredInline()
                         .size(11)
                         .maxLength(11)
@@ -203,7 +202,6 @@ public final class HenkilotiedotPhase {
                 .required()
                 .formParams(formParameters)
                 .pattern(POSTINUMERO_PATTERN)
-                .placeholder("00000")
                 .build();
 
         asuinmaaFI.addChild(postinumero);
