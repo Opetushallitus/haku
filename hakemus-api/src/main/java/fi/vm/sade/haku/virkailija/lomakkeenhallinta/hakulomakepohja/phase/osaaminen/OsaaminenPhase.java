@@ -50,6 +50,11 @@ public class OsaaminenPhase {
                 osaaminen.addChild(KielitaitokysymyksetTheme.createKielitaitokysymyksetTheme(formParameters));
             }
         } else {
+            Element osaaminenTheme = Theme("osaaminenteema").configurable().formParams(formParameters).build();
+            osaaminen.addChild(osaaminenTheme);
+            if (formParameters.isOnlyThemeGenerationForFormEditor())
+                return osaaminen;
+
             KoodistoService koodistoService = formParameters.getKoodistoService();
             String[] amkkoulutuksetArr = HakutoiveetPhase.getAmkKoulutusIds(koodistoService);
             List<Expr> exprs = new ArrayList<Expr>();
@@ -62,22 +67,19 @@ public class OsaaminenPhase {
 
             ElementBuilder kysytaankoKeskiarvoJaAsteikko = Rule(new And(haettuAMKHon, pohjakoulutusAmmatillinen));
             List<Option> asteikkolista = koodistoService.getAmmatillisenTutkinnonArvosteluasteikko();
-            osaaminen.addChild(
-                    Theme("osaaminenteema")
-                            .formParams(formParameters)
-                            .addChild(
-                                    kysytaankoKeskiarvoJaAsteikko
-                                            .addChild(TextQuestion("keskiarvo")
-                                                    .inline()
-                                                    .required()
-                                                    .formParams(formParameters).build())
-                                            .addChild(Dropdown("arvosanaasteikko")
-                                                    .addOptions(asteikkolista)
-                                                    .inline()
-                                                    .required()
-                                                    .formParams(formParameters).build()
-                                            ))
-                            .build());
+
+            osaaminenTheme.addChild(
+              kysytaankoKeskiarvoJaAsteikko
+                .addChild(TextQuestion("keskiarvo")
+                  .inline()
+                  .required()
+                  .formParams(formParameters).build())
+                .addChild(Dropdown("arvosanaasteikko")
+                    .addOptions(asteikkolista)
+                    .inline()
+                    .required()
+                    .formParams(formParameters).build()
+                ).build());
         }
         return osaaminen;
 

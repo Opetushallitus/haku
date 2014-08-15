@@ -52,12 +52,16 @@ public final class KoulutustaustaPhase {
         ApplicationSystem as = formParameters.getApplicationSystem();
         if (as.getKohdejoukkoUri().equals(OppijaConstants.KOHDEJOUKKO_KORKEAKOULU)){
             Element koulutustaustaRyhma = new ThemeBuilder("koulutustausta.teema_kk").previewable().formParams(formParameters).build();
-            koulutustaustaRyhma.addChild(createKorkeakouluKoulutustausta(formParameters));
-            koulutustausta.addChild(koulutustaustaRyhma);
+            if (!formParameters.isOnlyThemeGenerationForFormEditor()) {
+                koulutustaustaRyhma.addChild(createKorkeakouluKoulutustausta(formParameters));
+                koulutustausta.addChild(koulutustaustaRyhma);
+            }
         } else {
             Element koulutustaustaRyhma = new ThemeBuilder("koulutustausta.teema").previewable().formParams(formParameters).build();
-            koulutustaustaRyhma.addChild(createKoulutustaustaRadio(formParameters));
-            koulutustausta.addChild(koulutustaustaRyhma);
+            if (!formParameters.isOnlyThemeGenerationForFormEditor()) {
+                koulutustaustaRyhma.addChild(createKoulutustaustaRadio(formParameters));
+                koulutustausta.addChild(koulutustaustaRyhma);
+            }
         }
         return koulutustausta;
     }

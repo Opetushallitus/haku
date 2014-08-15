@@ -73,8 +73,12 @@ public class HakutoiveetPhase {
     }
     private static Element createHakutoiveetTheme(final FormParameters formParameters) {
 
-        Element hakutoiveetTheme = Theme(HAKUTOIVEET_THEME_ID).previewable().formParams(formParameters).build();
+        Element hakutoiveetTheme = Theme(HAKUTOIVEET_THEME_ID).previewable().configurable().formParams(formParameters).build();
         hakutoiveetTheme.setHelp(createI18NText("form.hakutoiveet.help", formParameters));
+
+        if (formParameters.isOnlyThemeGenerationForFormEditor())
+            return hakutoiveetTheme;
+
         PreferenceTable preferenceTable =
                 new PreferenceTable("preferencelist", createI18NText("form.hakutoiveet.otsikko", formParameters));
 

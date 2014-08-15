@@ -43,6 +43,14 @@ public class FormGeneratorImpl implements FormGenerator {
         return createApplicationSystem(as);
     }
 
+    @Override
+    public Form generateFormWithThemesOnly(String oid) {
+        ApplicationSystem as = hakuService.getApplicationSystem(oid);
+        FormParameters formParameters = new FormParameters(as, koodistoService, themeQuestionDAO, hakukohdeService, applicationOptionService);
+        formParameters.setOnlyThemeGenerationForFormEditor(Boolean.TRUE);
+        return generateForm(formParameters);
+    }
+
     private ApplicationSystem createApplicationSystem(ApplicationSystem as) {
         FormParameters formParameters = new FormParameters(as, koodistoService, themeQuestionDAO, hakukohdeService, applicationOptionService);
         return new ApplicationSystemBuilder().addId(as.getId()).addForm(generateForm(formParameters))
