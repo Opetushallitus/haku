@@ -41,7 +41,6 @@ public class MongoFixtureImporter {
 
     private static void upsert(final MongoTemplate template, final String collection, final DBObject dbObject) {
         final Object id = dbObject.get("_id");
-        dbObject.removeField("_id");
         template.getCollection(collection).update(new BasicDBObject("_id", id), dbObject, true, false);
     }
 
