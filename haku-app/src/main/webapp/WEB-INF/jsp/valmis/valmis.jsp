@@ -26,6 +26,7 @@
 <c:set var="form" value="${it.form}" scope="request"/>
 <c:set var="application" value="${it.application}" scope="request"/>
 <c:set var="discretionaryAttachmentAOIds" value="${it.discretionaryAttachmentAOIds}" scope="request"/>
+<c:set var="higherEducationAttachments" value="${it.higherEducationAttachments}" scope="request"/>
 <c:set var="completeElements" value="${it.applicationCompleteElements}" scope="request"/>
 <!DOCTYPE html>
 <html>

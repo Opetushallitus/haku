@@ -23,7 +23,7 @@ public class RegexFieldFieldValidatorTest {
     private static final Element element = new TextQuestion(FIELD_NAME, ElementUtil.createI18NAsIs(FIELD_NAME));
 
     private final RegexFieldValidator regexFieldFieldValidator =
-            new RegexFieldValidator(createI18NText("yleinen.virheellinenArvo"), ElementUtil.ISO88591_NAME_REGEX);
+            new RegexFieldValidator(createI18NText("yleinen.virheellinenarvo"), ElementUtil.ISO88591_NAME_REGEX);
 
     private final List<String> listOfValidNames = ImmutableList.of(
             "",

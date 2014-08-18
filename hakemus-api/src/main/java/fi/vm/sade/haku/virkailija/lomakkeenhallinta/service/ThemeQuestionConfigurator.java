@@ -110,7 +110,7 @@ public final class ThemeQuestionConfigurator {
         ArrayList<Element> configuredElements = new ArrayList<Element>(themeQuestions.size());
         for (ThemeQuestion tq : themeQuestions) {
             Element cfgdElement = tq.generateElement(formParameters);
-            LOGGER.debug("configured question {} of type {}", tq.getId(), tq.getType());
+            LOGGER.debug("configured question {} of type {}", tq.getId(), tq.getClass().getSimpleName());
             configuredElements.add(cfgdElement);
         }
         LOGGER.debug("Configuration of the list complete");
@@ -132,7 +132,7 @@ public final class ThemeQuestionConfigurator {
                                                   final String  preferenceElementId){
         LOGGER.debug("Generating the ApplicationOptionRule group");
         final Expr ruleExpr = generateExpr(applicationSystem, applicationOptionId, preferenceElementId);
-        Element rule = Rule(ElementUtil.randomId()).setExpr(ruleExpr).build();
+        Element rule = Rule(ruleExpr).build();
         return rule;
     }
 

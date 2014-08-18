@@ -10,17 +10,19 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.service.ThemeQuestionConfigu
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakukohdeService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 
+import javax.ws.rs.HEAD;
+
 public class FormParameters {
     private static final String FORM_MESSAGES = "form_messages";
 
     public enum FormTemplateType {
         YHTEISHAKU_KEVAT,
         YHTEISHAKU_SYKSY,
+        YHTEISHAKU_SYKSY_KORKEAKOULU,
         LISAHAKU_SYKSY,
         LISAHAKU_KEVAT,
         PERVAKO;
     }
-
 
     private final ApplicationSystem applicationSystem;
     private final KoodistoService koodistoService;
@@ -30,8 +32,8 @@ public class FormParameters {
 
     private final FormTemplateType formTemplateType;
     private final I18nBundle i18nBundle;
-    private final String formMessagesBundle;
 
+    private Boolean onlyThemeGenerationForFormEditor = Boolean.FALSE;
 
     public FormParameters(final ApplicationSystem applicationSystem, final KoodistoService koodistoService, final ThemeQuestionDAO themeQuestionDAO, final HakukohdeService hakukohdeService, final ApplicationOptionService applicationOptionService) {
         this.applicationSystem = applicationSystem;
@@ -41,13 +43,13 @@ public class FormParameters {
         this.applicationOptionService = applicationOptionService;
         this.formTemplateType = figureOutFormForApplicationSystem(applicationSystem);
 
-
         if (FormTemplateType.PERVAKO.equals(formTemplateType)) {
-            this.formMessagesBundle = getMessageBundleName(FORM_MESSAGES, applicationSystem) + "_pervako";
+            this.i18nBundle = new I18nBundle(getMessageBundleName(FORM_MESSAGES, applicationSystem) + "_pervako");
+        } else if (FormTemplateType.YHTEISHAKU_SYKSY_KORKEAKOULU.equals(formTemplateType)) {
+            this.i18nBundle = new I18nBundle(getMessageBundleName(FORM_MESSAGES, applicationSystem) + "_korkeakoulu");
         } else {
-            this.formMessagesBundle = getMessageBundleName(FORM_MESSAGES, applicationSystem);
+            this.i18nBundle = new I18nBundle(getMessageBundleName(FORM_MESSAGES, applicationSystem));
         }
-        i18nBundle = new I18nBundle(this.formMessagesBundle);
     }
 
     public ApplicationSystem getApplicationSystem() {
@@ -71,6 +73,8 @@ public class FormParameters {
     private FormTemplateType figureOutFormForApplicationSystem(ApplicationSystem as) {
         if (OppijaConstants.KOHDEJOUKKO_PERVAKO.equals(as.getKohdejoukkoUri())) {
             return FormTemplateType.PERVAKO;
+        } else if (OppijaConstants.KOHDEJOUKKO_KORKEAKOULU.equals(as.getKohdejoukkoUri())) {
+            return FormTemplateType.YHTEISHAKU_SYKSY_KORKEAKOULU;
         }
         if (as.getApplicationSystemType().equals(OppijaConstants.LISA_HAKU)) {
             if (as.getHakukausiUri().equals(OppijaConstants.HAKUKAUSI_KEVAT)) {
@@ -92,27 +96,34 @@ public class FormParameters {
         return this.i18nBundle.get(key);
     }
 
-    public I18nBundle getI18nBundle() {
-        return i18nBundle;
-    }
-
     public boolean isPervako() {
         return FormParameters.FormTemplateType.PERVAKO.equals(formTemplateType);
     }
 
     public boolean isHigherEd() {
-        return applicationSystem.getKohdejoukkoUri().equals(OppijaConstants.KOHDEJOUKKO_KORKEAKOULU);
+        return FormTemplateType.YHTEISHAKU_SYKSY_KORKEAKOULU.equals(this.getFormTemplateType());
     }
 
     public boolean isKevaanLisahaku() {
         return FormTemplateType.LISAHAKU_KEVAT.equals(this.getFormTemplateType());
     }
 
+    public boolean isKevaanYhteishaku() {
+        return FormTemplateType.YHTEISHAKU_KEVAT.equals(this.getFormTemplateType());
+    }
     public boolean isLisahaku() {
         return applicationSystem.getApplicationSystemType().equals(OppijaConstants.LISA_HAKU);
     }
 
-    public ThemeQuestionConfigurator getThemeQuestionGenerator(){
-        return new ThemeQuestionConfigurator(themeQuestionDAO,hakukohdeService, applicationOptionService, this);
+    public ThemeQuestionConfigurator getThemeQuestionGenerator() {
+        return new ThemeQuestionConfigurator(themeQuestionDAO, hakukohdeService, applicationOptionService, this);
+    }
+
+    public Boolean isOnlyThemeGenerationForFormEditor() {
+        return onlyThemeGenerationForFormEditor;
+    }
+
+    public void setOnlyThemeGenerationForFormEditor(Boolean onlyThemeGenerationForFormEditor) {
+        this.onlyThemeGenerationForFormEditor = onlyThemeGenerationForFormEditor;
     }
 }

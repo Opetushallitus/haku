@@ -63,13 +63,16 @@ public class LisatiedotPhase {
                         .size(8)
                         .maxLength(4)).build();
 
-        Element naytetaankoTyokokemus = Rule(ElementUtil.randomId()).setExpr(rules).build();
+        Element naytetaankoTyokokemus = Rule(rules).build();
         naytetaankoTyokokemus.addChild(workExperienceTheme);
         return naytetaankoTyokokemus;
     }
 
     static Element createLupatiedot(final FormParameters formParameters) {
-        Element lupatiedotTheme = Theme("lupatiedot").previewable().formParams(formParameters).build();
+        Element lupatiedotTheme = Theme("lupatiedot").previewable().configurable().formParams(formParameters).build();
+
+        if(formParameters.isOnlyThemeGenerationForFormEditor())
+            return lupatiedotTheme;
 
         lupatiedotTheme.addChild(
                 TitledGroup("lupatiedot.ryhma").formParams(formParameters).build().addChild(
@@ -107,7 +110,7 @@ public class LisatiedotPhase {
                 "preference5_urheilijan_ammatillisen_koulutuksen_lisakysymys",
                 "preference5_urheilijalinjan_lisakysymys");
 
-        Element urheilijanLisakysymyksetSaanto = Rule(ElementUtil.randomId()).setExpr(onkoUrheilija).build();
+        Element urheilijanLisakysymyksetSaanto = Rule(onkoUrheilija).build();
         urheilijanLisakysymyksetSaanto.addChild(urheilijanLisakysymyksetTeema);
 
         Element opinnotGroup = TitledGroup("opinnot").formParams(formParameters).build()

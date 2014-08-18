@@ -324,14 +324,14 @@ public class Application implements Serializable {
                 OppijaConstants.ELEMENT_ID_NICKNAME);
         henkilotiedot = updateHenkilotiedotField(henkilotiedot, person.getSocialSecurityNumber(),
                 OppijaConstants.ELEMENT_ID_SOCIAL_SECURITY_NUMBER);
-        henkilotiedot = updateHenkilotiedotField(henkilotiedot, person.getHomeCity(),
-                OppijaConstants.ELEMENT_ID_HOME_CITY);
         henkilotiedot = updateHenkilotiedotField(henkilotiedot, person.getSex(),
                 OppijaConstants.ELEMENT_ID_SEX);
         henkilotiedot = updateHenkilotiedotField(henkilotiedot, String.valueOf(!person.isNoSocialSecurityNumber()),
                 OppijaConstants.ELEMENT_ID_HAS_SOCIAL_SECURITY_NUMBER);
         henkilotiedot = updateHenkilotiedotField(henkilotiedot, String.valueOf(person.isSecurityOrder()),
                 OppijaConstants.ELEMENT_ID_SECURITY_ORDER);
+        henkilotiedot = updateHenkilotiedotField(henkilotiedot, String.valueOf(person.getDateOfBirth()),
+                OppijaConstants.ELEMENT_ID_DATE_OF_BIRTH);
 
         String personOid = person.getPersonOid();
         if (isNotEmpty(personOid)) {
@@ -555,4 +555,21 @@ public class Application implements Serializable {
         return version;
     }
 
+    public Application clone() {
+        Application clone = new Application(getApplicationSystemId(), getUser(), Maps.newHashMap(getAnswers()), Maps.newHashMap(getAdditionalInfo()));
+        clone.setOid(getOid())
+             .setLastAutomatedProcessingTime(getLastAutomatedProcessingTime())
+             .setMeta(Maps.newHashMap(getMeta()))
+             .setPersonOid(getPersonOid())
+             .setPhaseId(getPhaseId())
+             .setReceived(getReceived())
+             .setRedoPostProcess(getRedoPostProcess())
+             .setState(getState())
+             .setStudentIdentificationDone(getStudentIdentificationDone())
+             .setStudentOid(getStudentOid())
+             .setUpdated(getUpdated());
+        clone.setPersonOidChecked(getPersonOidChecked());
+        clone.setStudentOidChecked(getStudentOidChecked());
+        return clone;
+    }
 }

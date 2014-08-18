@@ -5,9 +5,15 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.Theme;
 
 public class ThemeBuilder extends ElementBuilder {
     boolean preview;
+    boolean configurable;
 
     public ThemeBuilder(final String id) {
         super(id);
+    }
+
+    public ThemeBuilder configurable() {
+        this.configurable = true;
+        return this;
     }
 
     public ThemeBuilder previewable() {
@@ -17,6 +23,7 @@ public class ThemeBuilder extends ElementBuilder {
 
     Element buildImpl() {
         Theme theme = new Theme(id, i18nText, preview);
+        theme.setConfigurable(configurable);
         return theme;
     }
 

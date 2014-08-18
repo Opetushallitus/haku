@@ -21,7 +21,9 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static com.mongodb.QueryOperators.IN;
 
@@ -38,6 +40,7 @@ public class ThemeQuestionDAOMongoImpl extends AbstractDAOMongoImpl<ThemeQuestio
     private static final String FIELD_OWNER_OIDS= "ownerOrganizationOids";
     private static final String FIELD_THEME= "theme";
     private static final String FIELD_STATE = "state";
+    private static final String FIELD_ORDINAL = "ordinal";
     private static final String FIELD_APPLICATION_OPTION = "learningOpportunityId";
     private static int QUERY =0;
     private static int HINT =1;
@@ -94,6 +97,41 @@ public class ThemeQuestionDAOMongoImpl extends AbstractDAOMongoImpl<ThemeQuestio
             results.add((String) value);
         }
         return results;
+    }
+
+    @Override
+    public void setOrdinal(String themeQuestionId, Integer newOrdinal) {
+        DBObject find = new BasicDBObject(FIELD_ID, new ObjectId(themeQuestionId));
+        DBObject update = new BasicDBObject("$set", new BasicDBObject(FIELD_ORDINAL, newOrdinal));
+        try {
+            getCollection().findAndModify(find, update);
+        }
+        catch(MongoException mongoException){
+                LOGGER.error("Got error " + mongoException.getMessage() + " with for updating ordinal for ThemeQuestion: "+themeQuestionId);
+                throw mongoException;
+        }
+    }
+
+    @Override
+    public Boolean validateLearningOpportunityAndTheme(String learningOpportunityId, String themeId, String... themeQuestionIds) {
+        BasicDBObject query = new BasicDBObject();
+        query.append(FIELD_APPLICATION_OPTION, learningOpportunityId);
+        query.append(FIELD_THEME, themeId);
+        ObjectId[] objectIds = new ObjectId[themeQuestionIds.length];
+        for (int i= 0; i < themeQuestionIds.length; i++){
+            objectIds[i] = new ObjectId(themeQuestionIds[i]);
+        }
+        query.append(FIELD_ID, new BasicDBObject(IN, objectIds));
+        int count = -1;
+        try {
+            //TODO: =RS= Need support for index hints
+            count = getCollection().find(query).count();
+        }catch (MongoException mongoException){
+            LOGGER.error("Validation query failed for AO: {}, Theme: {}, QuestionIds: {}. Got: {}", learningOpportunityId, themeId, themeQuestionIds, mongoException.getMessage());
+            throw mongoException;
+        }
+        LOGGER.debug("Validating AO: {}, Theme: {}, QuestionIds: {}. Expecting: {}. Got: {}", learningOpportunityId, themeId, themeQuestionIds, themeQuestionIds.length, count);
+        return count == themeQuestionIds.length;
     }
 
     private final DBObject[] buildQuery(final ThemeQuestionQueryParameters parameters){

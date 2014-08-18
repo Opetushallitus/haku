@@ -23,6 +23,9 @@ import fi.vm.sade.haku.oppija.lomake.validation.ValidationResult;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.Validate;
 
+import static org.apache.commons.lang3.StringUtils.isBlank;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
+
 public class ContainedInOtherFieldValidator extends FieldValidator {
 
     private final String otherFieldName;
@@ -39,12 +42,23 @@ public class ContainedInOtherFieldValidator extends FieldValidator {
         String otherValue = StringUtils.trim(validationInput.getValueByKey(otherFieldName));
         String thisValue = StringUtils.trim(validationInput.getValue());
 
-        if (otherValue == null && thisValue == null) {
+        if (isBlank(otherValue) && isBlank(thisValue)) {
             return validValidationResult;
-        } else if (otherValue != null && otherValue.equals(thisValue)) {
-            return validValidationResult;
-        } else if (otherFieldName != null && thisValue != null && otherValue.toLowerCase().contains(thisValue.toLowerCase())) {
-            return validValidationResult;
+        }
+
+        if (isNotBlank(otherValue) ^ isNotBlank(thisValue)) {
+            return getInvalidValidationResult(validationInput);
+        }
+
+        for (String part : otherValue.split("[ ]")) {
+            if (thisValue.equalsIgnoreCase(part)) {
+                return validValidationResult;
+            }
+        }
+        for (String part : otherValue.split("[ -]")) {
+            if (thisValue.equalsIgnoreCase(part)) {
+                return validValidationResult;
+            }
         }
 
         return getInvalidValidationResult(validationInput);

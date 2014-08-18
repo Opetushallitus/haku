@@ -28,6 +28,9 @@ public final class ArvosanatTheme {
     public static Element createArvosanatTheme(final FormParameters formParameters) {
         Element arvosanatTheme = arvosanatTeema(formParameters);
 
+        if (formParameters.isOnlyThemeGenerationForFormEditor()){
+            return arvosanatTheme;
+        }
 
         Element relatedQuestionPK = createVarEqualsToValueRule(POHJAKOULUTUS_ID,
                 PERUSKOULU,
@@ -55,6 +58,10 @@ public final class ArvosanatTheme {
     public static Element createArvosanatThemeKevat(final FormParameters formParameters) {
         Element arvosanatTheme = arvosanatTeema(formParameters);
 
+        if (formParameters.isOnlyThemeGenerationForFormEditor()){
+            return arvosanatTheme;
+        }
+
         // Peruskoulu
         Integer hakukausiVuosi = formParameters.getApplicationSystem().getHakukausiVuosi();
         Expr kysyArvosanatPk = new Or(
@@ -69,12 +76,12 @@ public final class ArvosanatTheme {
                                 ALUEITTAIN_YKSILOLLISTETTY,
                                 YKSILOLLISTETTY)),
                 new Regexp("_meta_grades_transferred_pk", "true"));
-        Element relatedQuestionPk = Rule("rule_grade_pk").setExpr(kysyArvosanatPk).build();
+        Element relatedQuestionPk = Rule(kysyArvosanatPk).build();
         relatedQuestionPk.addChild(arvosanataulukkoPK(formParameters));
         arvosanatTheme.addChild(relatedQuestionPk);
 
         // Ei arvosanoja
-        Element eiNaytetaPk = Rule("rule_grade_no_pk").setExpr(new Or(
+        Element eiNaytetaPk = Rule(new Or(
                 new Equals(new Variable(OppijaConstants.PERUSOPETUS_PAATTOTODISTUSVUOSI), new Value(String.valueOf(hakukausiVuosi))),
                 new Regexp("_meta_grades_transferred_pk", "true")
         )).build();
@@ -133,7 +140,7 @@ public final class ArvosanatTheme {
     }
 
     private static Element pohjakoulutusOnKeskeytynytTaiUlkomainenRule() {
-        return Rule("rule_grade_no").setExpr(ExprUtil.atLeastOneValueEqualsToVariable(POHJAKOULUTUS_ID, OppijaConstants.KESKEYTYNYT, OppijaConstants.ULKOMAINEN_TUTKINTO)).build();
+        return Rule(ExprUtil.atLeastOneValueEqualsToVariable(POHJAKOULUTUS_ID, OppijaConstants.KESKEYTYNYT, OppijaConstants.ULKOMAINEN_TUTKINTO)).build();
     }
 
     private static Element textEiArvosanataulukkoa(FormParameters formParameters) {
@@ -157,7 +164,7 @@ public final class ArvosanatTheme {
     }
 
     private static Element arvosanatTeema(FormParameters formParameters) {
-        return new ThemeBuilder("arvosanat").previewable().formParams(formParameters).build();
+        return new ThemeBuilder("arvosanat").previewable().configurable().formParams(formParameters).build();
     }
 
 }

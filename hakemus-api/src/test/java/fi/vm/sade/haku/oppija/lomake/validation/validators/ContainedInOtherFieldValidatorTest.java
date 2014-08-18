@@ -106,7 +106,7 @@ public class ContainedInOtherFieldValidatorTest {
         values.put(thatField, "Teemu Hanz");
         values.put(thisField, "Teemu Hanz");
         ValidationResult result = validator.validate(new ValidationInput(element, values, null, null));
-        assertFalse(result.hasErrors());
+        assertTrue(result.hasErrors());
     }
 
     @Test

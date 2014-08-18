@@ -7,6 +7,8 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
+import org.codehaus.jackson.annotate.JsonCreator;
+import org.codehaus.jackson.annotate.JsonProperty;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,14 +18,23 @@ import static fi.vm.sade.haku.oppija.lomake.domain.builder.RadioBuilder.Radio;
 
 public class ThemeRadioButtonQuestion extends ThemeOptionQuestion {
 
-    public static final String TYPE = "RadioButton";
-
-    public ThemeRadioButtonQuestion() {
-        super(TYPE);
+    @JsonCreator
+    public ThemeRadioButtonQuestion(@JsonProperty(value = "applicationSystemId") String applicationSystemId,
+      @JsonProperty(value = "theme") String theme,
+      @JsonProperty(value = "learningOpportunityId") String learningOpportunityId,
+      @JsonProperty(value = "targetIsGroup") Boolean targetIsGroup,
+      @JsonProperty(value = "ordial") Integer ordinal,
+      @JsonProperty(value = "validators") Map<String,String> validators,
+      @JsonProperty(value = "attachmentRequests") List<AttachmentRequest> attachmentRequests){
+        super(applicationSystemId, theme, learningOpportunityId, targetIsGroup, ordinal, validators, attachmentRequests);
     }
 
-    public ThemeRadioButtonQuestion(String applicationSystemId, String theme, String creatorPersonOid, List<String> ownerOrganizationOid, String learningOpportunityId, Integer ordinal, Map<String, String> validators, List<AttachmentRequest> attachmentRequests) {
-        super(applicationSystemId, theme, creatorPersonOid, ownerOrganizationOid, TYPE, learningOpportunityId,ordinal, validators, attachmentRequests);
+    public ThemeRadioButtonQuestion() {
+        super();
+    }
+
+    public ThemeRadioButtonQuestion(String applicationSystemId, String theme, String creatorPersonOid, List<String> ownerOrganizationOid, String learningOpportunityId, Boolean targetIsGroup, Integer ordinal, Map<String, String> validators, List<AttachmentRequest> attachmentRequests) {
+        super(applicationSystemId, theme, creatorPersonOid, ownerOrganizationOid, learningOpportunityId, targetIsGroup, ordinal, validators, attachmentRequests);
         this.setRequiredFieldValidator(Boolean.TRUE);
     }
 
@@ -45,7 +56,6 @@ public class ThemeRadioButtonQuestion extends ThemeOptionQuestion {
         elementBuilder.help(getHelpText());
         elementBuilder.verboseHelp(getVerboseHelpText());
         //elementBuilder.inline();
-
 
         // Radiobuttons are always required
         elementBuilder.required();

@@ -53,9 +53,6 @@ public abstract class ThemeQuestion implements ConfiguredElement {
     // organization oid
     private List<String> ownerOrganizationOids;
 
-    // Type of question
-    private String type;
-
     // Message text
     private I18nText messageText;
 
@@ -67,6 +64,9 @@ public abstract class ThemeQuestion implements ConfiguredElement {
 
     // Attached to learning opportunity Identifier
     private String learningOpportunityId;
+
+    // the learning opportunity is not a learning opportunity but a group \o/
+    private Boolean targetIsGroup;
 
     // Is requiredQuestion
     private Boolean requiredFieldValidator = Boolean.FALSE;
@@ -87,35 +87,32 @@ public abstract class ThemeQuestion implements ConfiguredElement {
         this.attachmentRequests = new ArrayList<AttachmentRequest>();
     }
 
-    protected ThemeQuestion(String type){
-        this.type = type;
-        this.ownerOrganizationOids = new ArrayList<String>();
-        this.validators = new HashMap<String, String>();
-        this.attachmentRequests = new ArrayList<AttachmentRequest>();
-    }
-
     @JsonCreator
     protected ThemeQuestion(@JsonProperty(value = "applicationSystemId") String applicationSystemId,
-                            @JsonProperty(value = "theme")String theme,
-                            @JsonProperty(value = "type")String type,
-                            @JsonProperty(value = "learningOpportunityId")String learningOpportunityId,
+                            @JsonProperty(value = "theme") String theme,
+                            @JsonProperty(value = "learningOpportunityId") String learningOpportunityId,
+                            @JsonProperty(value = "targetIsGroup") Boolean targetIsGroup,
                             @JsonProperty(value = "ordial") Integer ordinal,
                             @JsonProperty(value = "validators")Map<String,String> validators,
                             @JsonProperty(value = "attachmentRequests") List<AttachmentRequest>attachmentRequests) {
         this.applicationSystemId =  applicationSystemId;
         this.theme = theme;
-        this.type = type;
         this.learningOpportunityId = learningOpportunityId;
+        this.targetIsGroup = targetIsGroup;
         this.ordinal = ordinal;
-        this.validators = new HashMap<String,String>(validators);
+        this.validators = new HashMap<String,String>();
+        if (null != validators)
+            this.validators.putAll(validators);
+        this.attachmentRequests = new ArrayList<AttachmentRequest>();
+        if (null != attachmentRequests)
+            this.attachmentRequests.addAll(attachmentRequests);
         this.ownerOrganizationOids = new ArrayList<String>();
-        this.attachmentRequests = new ArrayList<AttachmentRequest>(attachmentRequests);
     }
 
     protected ThemeQuestion(String applicationSystemId, String theme, String creatorPersonOid,
       List<String> ownerOrganizationOid,
-      String type,
       String learningOpportunityId,
+      Boolean targetIsGroup,
       Integer ordinal,
       Map<String,String> validators,
       List<AttachmentRequest>attachmentRequests) {
@@ -123,8 +120,8 @@ public abstract class ThemeQuestion implements ConfiguredElement {
         this.theme = theme;
         this.creatorPersonOid = creatorPersonOid;
         this.ownerOrganizationOids = new ArrayList<String>(ownerOrganizationOid);
-        this.type = type;
         this.learningOpportunityId = learningOpportunityId;
+        this.targetIsGroup = targetIsGroup;
         this.ordinal = ordinal;
         this.validators = new HashMap<String,String>(validators);
         this.ownerOrganizationOids = new ArrayList<String>();
@@ -179,14 +176,6 @@ public abstract class ThemeQuestion implements ConfiguredElement {
         this.ownerOrganizationOids = new ArrayList<String>(ownerOrganizationOids);
     }
 
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
     public I18nText getMessageText() {
         return messageText;
     }
@@ -217,6 +206,14 @@ public abstract class ThemeQuestion implements ConfiguredElement {
 
     public void setLearningOpportunityId(String learningOpportunityId) {
         this.learningOpportunityId = learningOpportunityId;
+    }
+
+    public Boolean getTargetIsGroup() {
+        return null != targetIsGroup ? targetIsGroup: Boolean.FALSE;
+    }
+
+    public void setTargetIsGroup(Boolean targetIsGroup) {
+        this.targetIsGroup = targetIsGroup;
     }
 
     public Boolean getRequiredFieldValidator() {
@@ -263,21 +260,22 @@ public abstract class ThemeQuestion implements ConfiguredElement {
     public String toString() {
         return "ThemeQuestion{" +
           "id=" + id +
+          ", class=" + this.getClass().getSimpleName() +
           ", state=" + state +
           ", applicationSystemId='" + applicationSystemId + '\'' +
           ", theme='" + theme + '\'' +
           ", ordinal=" + ordinal +
-          ", type='" + type + '\'' +
+          ", creatorPersonOid='" + creatorPersonOid + '\'' +
+          ", ownerOrganizationOids=" + ownerOrganizationOids +
           ", messageText=" + messageText +
           ", helpText=" + helpText +
           ", verboseHelpText=" + verboseHelpText +
           ", learningOpportunityId='" + learningOpportunityId + '\'' +
+          ", targetIsGroup=" + targetIsGroup +
           ", requiredFieldValidator=" + requiredFieldValidator +
           ", onCompletedPage=" + onCompletedPage +
           ", validators=" + validators +
           ", attachmentRequests=" + attachmentRequests +
-          ", creatorPersonOid='" + creatorPersonOid + '\'' +
-          ", ownerOrganizationOids=" + ownerOrganizationOids +
           '}';
     }
 }

@@ -18,6 +18,7 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import java.util.List;
 import java.util.Set;
 
+import static fi.vm.sade.haku.oppija.lomake.domain.builder.HigherEducationAttachmentsBuilder.HigherEducationAttachments;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.RelatedQuestionRuleBuilder.Rule;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.TextBuilder.Text;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.TitledGroupBuilder.TitledGroup;
@@ -50,6 +51,13 @@ public class ValmisPhase {
 
         elements.add(new DiscretionaryAttachments("discretionaryAttachments"));
 
+        if (formParameters.isHigherEd()) {
+            elements.add(HigherEducationAttachments("higherEducationAttachment")
+                    .i18nText(ElementUtil.createI18NText("form.valmis.todistus.otsikko"))
+                    .formParams(formParameters)
+                    .build());
+        }
+
         elements.addAll(createAdditionalInformationElements(formParameters));
 
         Element muutoksenTekeminen = TitledGroup("muutoksenTekeminen").formParams(formParameters).build();
@@ -69,7 +77,7 @@ public class ValmisPhase {
 
     public static List<Element> createAdditionalInformationElements(FormParameters formParameters) {
 
-        Element athleteRule = Rule("athleteRule").setExpr(atLeastOneVariableEqualsToValue(ElementUtil.KYLLA,
+        Element athleteRule = Rule(atLeastOneVariableEqualsToValue(ElementUtil.KYLLA,
                 "preference1_urheilijan_ammatillisen_koulutuksen_lisakysymys", "preference1_urheilijalinjan_lisakysymys",
                 "preference2_urheilijan_ammatillisen_koulutuksen_lisakysymys", "preference2_urheilijalinjan_lisakysymys",
                 "preference3_urheilijan_ammatillisen_koulutuksen_lisakysymys", "preference3_urheilijalinjan_lisakysymys",
@@ -104,7 +112,7 @@ public class ValmisPhase {
                 String.format(EDUCATION_CODE_KEY, 4),
                 String.format(EDUCATION_CODE_KEY, 5));
 
-        Element musiikkiTanssiLiikuntaRule = Rule("musiikkiTanssiLiikuntaRule").setExpr(ExprUtil.reduceToOr(ImmutableList.of(isMusiikki, isTanssi, isLiiKunta))).build();
+        Element musiikkiTanssiLiikuntaRule = Rule(ExprUtil.reduceToOr(ImmutableList.of(isMusiikki, isTanssi, isLiiKunta))).build();
         musiikkiTanssiLiikuntaRule.addChild(TitledGroup("musiikkitanssiliikunta.ryhma").formParams(formParameters).build()
                 .addChild(Text(randomId()).labelKey("musiikkitanssiliikunta").formParams(formParameters).build()));
 

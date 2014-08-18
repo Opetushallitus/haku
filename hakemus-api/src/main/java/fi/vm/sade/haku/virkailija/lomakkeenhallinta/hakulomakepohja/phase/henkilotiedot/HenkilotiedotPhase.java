@@ -65,6 +65,11 @@ public final class HenkilotiedotPhase {
 
         Element henkilotiedotTeema = Theme("henkilotiedot.teema").previewable().formParams(formParameters).build();
 
+        // Just skip there rest
+        if (formParameters.isOnlyThemeGenerationForFormEditor()) {
+            return henkilotiedotTeema;
+        }
+
         henkilotiedotTeema.addChild(
                 createNameQuestionBuilder("Sukunimi", 30).formParams(formParameters).build(),
                 createNameQuestionBuilder("Etunimet", 30).formParams(formParameters).build(),
@@ -81,7 +86,7 @@ public final class HenkilotiedotPhase {
         henkilotiedotTeema.addChild(kansalaisuus);
         Expr suomalainen = new Regexp(kansalaisuus.getId(), EMPTY_OR_FIN_PATTERN);
 
-        Element eiSuomalainen = Rule(ElementUtil.randomId()).setExpr(new Not(suomalainen)).build();
+        Element eiSuomalainen = Rule(new Not(suomalainen)).build();
         // Ulkomaalaisten tunnisteet
         Element onkoSuomalainenKysymys = Radio("onkoSinullaSuomalainenHetu")
                 .addOptions(ImmutableList.of(
@@ -95,7 +100,7 @@ public final class HenkilotiedotPhase {
         Expr onSuomalainenHetu = new Equals(new Variable("onkoSinullaSuomalainenHetu"), new Value(KYLLA));
 
         Or kysytaankoHetu = new Or(suomalainen, onSuomalainenHetu);
-        Element kysytaankoHetuSaanto = Rule(ElementUtil.randomId()).setExpr(kysytaankoHetu).build();
+        Element kysytaankoHetuSaanto = Rule(kysytaankoHetu).build();
 
         henkilotiedotTeema.addChild(kysytaankoHetuSaanto);
 
@@ -135,7 +140,7 @@ public final class HenkilotiedotPhase {
         addRequiredValidator(syntymaaika, formParameters);
         syntymaaika.setInline(true);
 
-        Element eiHetuaSaanto = Rule(ElementUtil.randomId()).setExpr(new Equals(new Variable("onkoSinullaSuomalainenHetu"), new Value(EI))).build();
+        Element eiHetuaSaanto = Rule(new Equals(new Variable("onkoSinullaSuomalainenHetu"), new Value(EI))).build();
         eiHetuaSaanto.addChild(
                 sukupuoli,
                 syntymaaika,

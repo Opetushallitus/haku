@@ -74,12 +74,12 @@ public abstract class ElementBuilder {
                     minOptions, maxOptions));
         }
         if (pattern != null) {
-            element.setValidator(new RegexFieldValidator(getI18nText("yleinen.virheellinenArvo"), pattern));
+            element.setValidator(new RegexFieldValidator(getI18nText("yleinen.virheellinenarvo"), pattern));
         }
         if (placeholder != null) {
             element.addAttribute("placeholder", placeholder);
         }
-        I18nText errorMessage = getI18nText("yleinen.virheellinenArvo");
+        I18nText errorMessage = getI18nText("yleinen.virheellinenarvo");
         if (maxLength != null) {
             element.addAttribute("maxlength", maxLength.toString());
             element.setValidator(new LengthValidator(errorMessage, maxLength));
