@@ -5,7 +5,7 @@
 
     <groupId>fi.vm.sade.haku</groupId>
     <artifactId>haku</artifactId>
-    <version>10.0.0_SNAPSHOT</version>
+    <version>10.1</version>
     <packaging>pom</packaging>
     <name>Haku :: Parent</name>
 
@@ -43,7 +43,7 @@
 
         <authentication-api.version>9.2</authentication-api.version>
         <generic-common.version>9.1-SNAPSHOT</generic-common.version>
-        <koodisto-api.version>10.0</koodisto-api.version>
+        <koodisto-api.version>10.1</koodisto-api.version>
         <koulutusinformaatio-api.version>10.1</koulutusinformaatio-api.version>
         <log-client.version>8.0</log-client.version>
         <organisaatio-api.version>9.7</organisaatio-api.version>
