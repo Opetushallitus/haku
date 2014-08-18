@@ -88,7 +88,7 @@ public class LocaleFilter implements ContainerRequestFilter {
         if (person != null) {
             String contactLang = person.getContactLanguage();
             log.debug("Person contactLang: " + contactLang);
-            if ("fi".equals(contactLang) || "sv".equals(contactLang)) {
+            if ("fi".equals(contactLang) || "sv".equals(contactLang) || "en".equals(contactLang)) {
                 lang = contactLang;
             }
         }

@@ -25,7 +25,7 @@ import java.util.Map;
 public class I18nText implements Serializable {
 
     private static final long serialVersionUID = 3485756393751579235L;
-    public static final String[] LANGS = {"fi", "sv"};
+    public static final String[] LANGS = {"fi", "sv", "en"};
     private final Map<String, String> translations;
 
 

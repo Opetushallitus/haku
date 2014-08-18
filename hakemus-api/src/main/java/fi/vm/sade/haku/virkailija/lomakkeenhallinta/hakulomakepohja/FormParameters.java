@@ -33,7 +33,9 @@ public class FormParameters {
 
     private Boolean onlyThemeGenerationForFormEditor = Boolean.FALSE;
 
-    public FormParameters(final ApplicationSystem applicationSystem, final KoodistoService koodistoService, final ThemeQuestionDAO themeQuestionDAO, final HakukohdeService hakukohdeService, final ApplicationOptionService applicationOptionService) {
+    public FormParameters(final ApplicationSystem applicationSystem, final KoodistoService koodistoService,
+                          final ThemeQuestionDAO themeQuestionDAO, final HakukohdeService hakukohdeService,
+                          final ApplicationOptionService applicationOptionService) {
         this.applicationSystem = applicationSystem;
         this.koodistoService = koodistoService;
         this.themeQuestionDAO = themeQuestionDAO;

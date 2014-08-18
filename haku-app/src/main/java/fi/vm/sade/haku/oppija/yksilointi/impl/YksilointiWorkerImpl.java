@@ -221,7 +221,12 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
         String lang = answers.get(OppijaConstants.ELEMENT_ID_CONTACT_LANGUAGE);
         Template tmpl = templateMap.get(lang);
 
-        Locale locale = new Locale("ruotsi".equals(lang) ? "sv" : "fi");
+        Locale locale = new Locale("fi");
+        if ("ruotsi".equals(lang)) {
+            locale = new Locale("sv");
+        } else if ("englanti".equals(lang)) {
+            locale = new Locale("en");
+        }
         ResourceBundle messages = ResourceBundle.getBundle("messages", locale);
 
         String subject = messages.getString("email.application.received.title");
