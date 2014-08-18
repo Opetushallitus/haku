@@ -14,8 +14,6 @@ import static fi.vm.sade.haku.oppija.lomake.domain.builder.TextQuestionBuilder.T
 
 public class ThemeTextQuestion extends ThemeQuestion {
 
-    public static final String TYPE = "TextQuestion";
-
     private Integer size;
 
     @JsonCreator
@@ -26,15 +24,15 @@ public class ThemeTextQuestion extends ThemeQuestion {
       @JsonProperty(value = "ordial") Integer ordinal,
       @JsonProperty(value = "validators") Map<String,String> validators,
       @JsonProperty(value = "attachmentRequests") List<AttachmentRequest> attachmentRequests){
-        super(applicationSystemId, theme, TYPE, learningOpportunityId, targetIsGroup, ordinal, validators, attachmentRequests);
+        super(applicationSystemId, theme, learningOpportunityId, targetIsGroup, ordinal, validators, attachmentRequests);
     }
 
     public ThemeTextQuestion() {
-        super(TYPE);
+        super();
     }
 
     public ThemeTextQuestion(String applicationSystemId, String theme, String creatorPersonOid, List<String> ownerOrganizationOid, String learningOpportunityId, Boolean targetIsGroup, Integer ordinal, Map<String, String> validators, List<AttachmentRequest> attachmentRequests) {
-        super(applicationSystemId, theme, creatorPersonOid, ownerOrganizationOid, TYPE, learningOpportunityId, targetIsGroup, ordinal, validators, attachmentRequests);
+        super(applicationSystemId, theme, creatorPersonOid, ownerOrganizationOid, learningOpportunityId, targetIsGroup, ordinal, validators, attachmentRequests);
     }
 
     @Override

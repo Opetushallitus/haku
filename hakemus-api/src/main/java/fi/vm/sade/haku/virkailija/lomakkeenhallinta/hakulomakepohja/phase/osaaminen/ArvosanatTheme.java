@@ -28,6 +28,9 @@ public final class ArvosanatTheme {
     public static Element createArvosanatTheme(final FormParameters formParameters) {
         Element arvosanatTheme = arvosanatTeema(formParameters);
 
+        if (formParameters.isOnlyThemeGenerationForFormEditor()){
+            return arvosanatTheme;
+        }
 
         Element relatedQuestionPK = createVarEqualsToValueRule(POHJAKOULUTUS_ID,
                 PERUSKOULU,
@@ -54,6 +57,10 @@ public final class ArvosanatTheme {
 
     public static Element createArvosanatThemeKevat(final FormParameters formParameters) {
         Element arvosanatTheme = arvosanatTeema(formParameters);
+
+        if (formParameters.isOnlyThemeGenerationForFormEditor()){
+            return arvosanatTheme;
+        }
 
         // Peruskoulu
         Integer hakukausiVuosi = formParameters.getApplicationSystem().getHakukausiVuosi();
@@ -157,7 +164,7 @@ public final class ArvosanatTheme {
     }
 
     private static Element arvosanatTeema(FormParameters formParameters) {
-        return new ThemeBuilder("arvosanat").previewable().formParams(formParameters).build();
+        return new ThemeBuilder("arvosanat").previewable().configurable().formParams(formParameters).build();
     }
 
 }

@@ -34,7 +34,9 @@ import fi.vm.sade.haku.oppija.ui.service.ModelResponse;
 import fi.vm.sade.haku.oppija.ui.service.UIService;
 import fi.vm.sade.haku.virkailija.koulutusinformaatio.KoulutusinformaatioService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
+import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOfficeDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -79,12 +81,38 @@ public class UIServiceImpl implements UIService {
             List<fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO> aos =
                     new ArrayList<ApplicationOptionDTO>();
             for (String aoOid : entry.getValue()) {
-                aos.add(koulutusinformaatioService.getApplicationOption(aoOid));
+                ApplicationOptionDTO ao = koulutusinformaatioService.getApplicationOption(aoOid);
+                ao.getProvider().getApplicationOffice();
+                if (!addressAlreadyAdded(aos, ao)) {
+                    aos.add(ao);
+                }
             }
             higherEdAttachments.put(key, aos);
         }
         return new ModelResponse(application, activeApplicationSystem, discretionaryAttachmentAOIds,
                 higherEdAttachments, koulutusinformaatioBaseUrl);
+    }
+
+    private boolean addressAlreadyAdded(List<ApplicationOptionDTO> aos, ApplicationOptionDTO ao) {
+        if (aos.isEmpty()) {
+            return false;
+        }
+        ApplicationOfficeDTO newOffice = ao.getProvider().getApplicationOffice();
+        for (ApplicationOptionDTO currAo : aos) {
+            ApplicationOfficeDTO currOffice = currAo.getProvider().getApplicationOffice();
+            if (StringUtils.equals(newOffice.getName(), currOffice.getName())
+                    && StringUtils.equals(newOffice.getPostalAddress().getStreetAddress(),
+                        currOffice.getPostalAddress().getStreetAddress())
+                    && StringUtils.equals(newOffice.getPostalAddress().getStreetAddress2(),
+                        currOffice.getPostalAddress().getStreetAddress2())
+                    && StringUtils.equals(newOffice.getPostalAddress().getPostalCode(),
+                        currOffice.getPostalAddress().getPostalCode())
+                    && StringUtils.equals(newOffice.getPostalAddress().getPostOffice(),
+                        currOffice.getPostalAddress().getPostOffice())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override

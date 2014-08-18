@@ -69,7 +69,10 @@ public class LisatiedotPhase {
     }
 
     static Element createLupatiedot(final FormParameters formParameters) {
-        Element lupatiedotTheme = Theme("lupatiedot").previewable().formParams(formParameters).build();
+        Element lupatiedotTheme = Theme("lupatiedot").previewable().configurable().formParams(formParameters).build();
+
+        if(formParameters.isOnlyThemeGenerationForFormEditor())
+            return lupatiedotTheme;
 
         lupatiedotTheme.addChild(
                 TitledGroup("lupatiedot.ryhma").formParams(formParameters).build().addChild(

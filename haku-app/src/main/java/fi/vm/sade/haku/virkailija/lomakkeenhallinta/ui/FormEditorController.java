@@ -9,6 +9,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.ApplicationPeriod;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Phase;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Theme;
 import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
@@ -37,6 +38,7 @@ import java.util.*;
 public class FormEditorController {
 
     public static final String CHARSET_UTF_8 = ";charset=UTF-8";
+
 
     public enum State {
         ACTIVE, LOCKED, PUBLISHED, CLOSED, ERROR
@@ -73,7 +75,7 @@ public class FormEditorController {
     private HakukohdeService hakukohdeService;
 
     @Autowired
-    private FormGenerator formaGenerator;
+    private FormGenerator formGenerator;
 
     @Autowired
     private AuthenticationService authenticationService;
@@ -81,15 +83,13 @@ public class FormEditorController {
     @Autowired
     private OrganizationService organizationService;
 
-    private static final String[] UNEDITABLE_THEME_FILTERS = {"henkilotiedot", "koulutustausta"};
-
     public FormEditorController() {
     }
 
     @Autowired
-    public FormEditorController(HakuService hakuService, FormGenerator formaGenerator, AuthenticationService authenticationService, HakukohdeService hakukohdeService, OrganizationService organizationService) {
+    public FormEditorController(HakuService hakuService, FormGenerator formGenerator, AuthenticationService authenticationService, HakukohdeService hakukohdeService, OrganizationService organizationService) {
         this.hakuService = hakuService;
-        this.formaGenerator = formaGenerator;
+        this.formGenerator = formGenerator;
         this.authenticationService = authenticationService;
         this.hakukohdeService = hakukohdeService;
         this.organizationService = organizationService;
@@ -147,7 +147,7 @@ public class FormEditorController {
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKULOMAKKEENHALLINTA_READ_UPDATE', 'ROLE_APP_HAKULOMAKKEENHALLINTA_CRUD', 'ROLE_APP_HAKULOMAKKEENHALLINTA_READ')")
     public Map getAppicationSystemForm(@PathParam("applicationSystemId") String applicationSystemId){
-        ApplicationSystem applicationSystem = formaGenerator.generate(applicationSystemId);
+        ApplicationSystem applicationSystem = formGenerator.generate(applicationSystemId);
         ObjectMapper mapper = new ObjectMapper();
         mapper.enable(SerializationConfig.Feature.INDENT_OUTPUT);
         mapper.disable(SerializationConfig.Feature.FAIL_ON_EMPTY_BEANS);
@@ -160,7 +160,7 @@ public class FormEditorController {
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKULOMAKKEENHALLINTA_READ_UPDATE', 'ROLE_APP_HAKULOMAKKEENHALLINTA_CRUD', 'ROLE_APP_HAKULOMAKKEENHALLINTA_READ')")
     public Map getAppicationSystem(@PathParam("applicationSystemId") String applicationSystemId){
-        ApplicationSystem applicationSystem = formaGenerator.generate(applicationSystemId);
+        ApplicationSystem applicationSystem = formGenerator.generate(applicationSystemId);
         ObjectMapper mapper = new ObjectMapper();
         mapper.enable(SerializationConfig.Feature.INDENT_OUTPUT);
         mapper.disable(SerializationConfig.Feature.FAIL_ON_EMPTY_BEANS);
@@ -226,7 +226,7 @@ public class FormEditorController {
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKULOMAKKEENHALLINTA_READ_UPDATE', 'ROLE_APP_HAKULOMAKKEENHALLINTA_CRUD')")
     public List<Map<String, Object>> getAdditinalQuestionThemes(@PathParam("applicationSystemId") String applicationSystemId){
         LOGGER.debug("Generating application system with id: "+ applicationSystemId);
-        return generateThemes();
+        return getThemesFromApplicationSystem(applicationSystemId);
 
     }
 
@@ -239,8 +239,8 @@ public class FormEditorController {
     }
 
     private final List<Map<String, Object>> getThemesFromApplicationSystem(String applicationSystemId){
-        ApplicationSystem applicationSystem = formaGenerator.generate(applicationSystemId);
-        List<Element> phaseElements = applicationSystem.getForm().getChildren();
+        Form applicationSystemForm = formGenerator.generateFormWithThemesOnly(applicationSystemId);
+        List<Element> phaseElements = applicationSystemForm.getChildren();
         List<Map<String, Object>> themes = new ArrayList<Map<String, Object>>();
         for(Element phase : phaseElements){
             if (! (phase instanceof Phase)){
@@ -260,18 +260,14 @@ public class FormEditorController {
                 LOGGER.warn("First level child of phase " + phase.getId() + " not a theme element. Got " + themeElement.getType() + " instead.");
                 continue;
             }
-            Boolean filtered = Boolean.FALSE;
-            for (String filter : UNEDITABLE_THEME_FILTERS) {
-                if (themeElement.getId().toLowerCase().contains(filter))
-                    filtered = Boolean.TRUE;
-            }
-            if (filtered)
-                LOGGER.debug("Filtered theme " + themeElement.getId());
-            else{
+            if (((Theme) themeElement).isConfigurable()){
                 Map<String, Object> themeMap = new HashMap<String, Object>(2);
                 themeMap.put("id", themeElement.getId());
                 themeMap.put("name", ((Theme) themeElement).getI18nText());
                 themes.add(themeMap);
+            }
+            else {
+                LOGGER.debug("Theme " + themeElement.getId() + " not configurable");
             }
         }
         return themes;

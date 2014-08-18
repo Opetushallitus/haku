@@ -17,11 +17,14 @@
 package fi.vm.sade.haku.oppija.lomake.domain.elements;
 
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
+import org.springframework.data.annotation.Transient;
 
 public class Theme extends Titled {
 
     private static final long serialVersionUID = -1394712276903310469L;
     final boolean previewable;
+    @Transient
+    boolean configurable;
 
     public Theme(final String id, final I18nText i18nText, final boolean previewable) {
         super(id, i18nText);
@@ -30,5 +33,14 @@ public class Theme extends Titled {
 
     public boolean isPreviewable() {
         return previewable;
+    }
+
+    @Transient
+    public boolean isConfigurable() {
+        return configurable;
+    }
+
+    public void setConfigurable(boolean configurable) {
+        this.configurable = configurable;
     }
 }

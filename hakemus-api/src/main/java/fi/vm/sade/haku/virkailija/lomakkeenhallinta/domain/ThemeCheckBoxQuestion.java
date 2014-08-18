@@ -15,8 +15,6 @@ import static fi.vm.sade.haku.oppija.lomake.domain.builder.TitledGroupBuilder.Ti
 
 public class ThemeCheckBoxQuestion extends ThemeOptionQuestion {
 
-    public static final String TYPE = "CheckBox";
-
     @JsonCreator
     public ThemeCheckBoxQuestion(@JsonProperty(value = "applicationSystemId") String applicationSystemId,
       @JsonProperty(value = "theme") String theme,
@@ -25,17 +23,17 @@ public class ThemeCheckBoxQuestion extends ThemeOptionQuestion {
       @JsonProperty(value = "ordial") Integer ordinal,
       @JsonProperty(value = "validators") Map<String,String> validators,
       @JsonProperty(value = "attachmentRequests") List<AttachmentRequest> attachmentRequests){
-        super(applicationSystemId, theme, TYPE, learningOpportunityId, targetIsGroup, ordinal, validators, attachmentRequests);
+        super(applicationSystemId, theme, learningOpportunityId, targetIsGroup, ordinal, validators, attachmentRequests);
     }
 
     public ThemeCheckBoxQuestion() {
-        super(TYPE);
+        super();
     }
 
     public ThemeCheckBoxQuestion(String applicationSystemId, String theme, String creatorPersonOid,
                                  List<String> ownerOrganizationOid, String learningOpportunityId, Boolean targetIsGroup, Integer ordinal,
                                  Map<String, String> validators, List<AttachmentRequest> attachmentRequests) {
-        super(applicationSystemId, theme, creatorPersonOid, ownerOrganizationOid, TYPE, learningOpportunityId, targetIsGroup, ordinal, validators, attachmentRequests);
+        super(applicationSystemId, theme, creatorPersonOid, ownerOrganizationOid, learningOpportunityId, targetIsGroup, ordinal, validators, attachmentRequests);
     }
 
     @Override

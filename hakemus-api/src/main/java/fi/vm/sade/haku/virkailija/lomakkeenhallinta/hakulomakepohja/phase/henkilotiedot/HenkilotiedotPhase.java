@@ -65,6 +65,11 @@ public final class HenkilotiedotPhase {
 
         Element henkilotiedotTeema = Theme("henkilotiedot.teema").previewable().formParams(formParameters).build();
 
+        // Just skip there rest
+        if (formParameters.isOnlyThemeGenerationForFormEditor()) {
+            return henkilotiedotTeema;
+        }
+
         henkilotiedotTeema.addChild(
                 createNameQuestionBuilder("Sukunimi", 30).formParams(formParameters).build(),
                 createNameQuestionBuilder("Etunimet", 30).formParams(formParameters).build(),

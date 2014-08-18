@@ -17,6 +17,7 @@
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja;
 
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
 
 import java.util.List;
 
@@ -26,4 +27,6 @@ import java.util.List;
 public interface FormGenerator {
 
     ApplicationSystem generate(String oid);
+
+    Form generateFormWithThemesOnly(String oid);
 }

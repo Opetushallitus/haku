@@ -554,4 +554,21 @@ public class Application implements Serializable {
         return version;
     }
 
+    public Application clone() {
+        Application clone = new Application(getApplicationSystemId(), getUser(), Maps.newHashMap(getAnswers()), Maps.newHashMap(getAdditionalInfo()));
+        clone.setOid(getOid())
+             .setLastAutomatedProcessingTime(getLastAutomatedProcessingTime())
+             .setMeta(Maps.newHashMap(getMeta()))
+             .setPersonOid(getPersonOid())
+             .setPhaseId(getPhaseId())
+             .setReceived(getReceived())
+             .setRedoPostProcess(getRedoPostProcess())
+             .setState(getState())
+             .setStudentIdentificationDone(getStudentIdentificationDone())
+             .setStudentOid(getStudentOid())
+             .setUpdated(getUpdated());
+        clone.setPersonOidChecked(getPersonOidChecked());
+        clone.setStudentOidChecked(getStudentOidChecked());
+        return clone;
+    }
 }

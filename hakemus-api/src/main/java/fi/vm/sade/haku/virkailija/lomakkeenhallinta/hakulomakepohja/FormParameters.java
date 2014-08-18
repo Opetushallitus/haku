@@ -31,6 +31,8 @@ public class FormParameters {
     private final FormTemplateType formTemplateType;
     private final I18nBundle i18nBundle;
 
+    private Boolean onlyThemeGenerationForFormEditor = Boolean.FALSE;
+
     public FormParameters(final ApplicationSystem applicationSystem, final KoodistoService koodistoService, final ThemeQuestionDAO themeQuestionDAO, final HakukohdeService hakukohdeService, final ApplicationOptionService applicationOptionService) {
         this.applicationSystem = applicationSystem;
         this.koodistoService = koodistoService;
@@ -113,5 +115,13 @@ public class FormParameters {
 
     public ThemeQuestionConfigurator getThemeQuestionGenerator() {
         return new ThemeQuestionConfigurator(themeQuestionDAO, hakukohdeService, applicationOptionService, this);
+    }
+
+    public Boolean isOnlyThemeGenerationForFormEditor() {
+        return onlyThemeGenerationForFormEditor;
+    }
+
+    public void setOnlyThemeGenerationForFormEditor(Boolean onlyThemeGenerationForFormEditor) {
+        this.onlyThemeGenerationForFormEditor = onlyThemeGenerationForFormEditor;
     }
 }
