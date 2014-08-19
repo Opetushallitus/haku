@@ -79,10 +79,6 @@ public class LisatiedotPhase {
                 Checkbox("lupaJulkaisu").formParams(formParameters).build(),
                 Checkbox("lupaSahkoisesti").formParams(formParameters).build(),
                 Checkbox("lupaSms").formParams(formParameters).build());
-        if (formParameters.isHigherEd()) {
-            Element opolupa = Checkbox("lupaOpo").formParams(formParameters).build();
-            lupatietoGrp.addChild(opolupa);
-        }
 
         lupatiedotTheme.addChild(lupatietoGrp);
 

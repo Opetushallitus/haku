@@ -321,11 +321,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         boolean opoAllowed = true;
         ApplicationSystem as = applicationSystemService.getApplicationSystem(application.getApplicationSystemId());
         if (as.getKohdejoukkoUri().equals(OppijaConstants.KOHDEJOUKKO_KORKEAKOULU)) {
-            Map<String, String> lisatietoAnswers = application.getPhaseAnswers(OppijaConstants.PHASE_MISC);
-            String opoLupa = lisatietoAnswers.get("lupaOpo");
-            if (!Boolean.parseBoolean(opoLupa)) {
-                opoAllowed = false;
-            }
+            opoAllowed = false;
         }
         return opoAllowed;
     }
