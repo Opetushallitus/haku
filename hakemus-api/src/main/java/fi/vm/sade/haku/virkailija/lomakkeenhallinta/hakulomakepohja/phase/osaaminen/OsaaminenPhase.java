@@ -21,6 +21,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.And;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.Expr;
+import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.Not;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.Or;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.hakutoiveet.HakutoiveetPhase;
@@ -33,6 +34,7 @@ import java.util.List;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.DropdownSelectBuilder.Dropdown;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.PhaseBuilder.Phase;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.RelatedQuestionRuleBuilder.Rule;
+import static fi.vm.sade.haku.oppija.lomake.domain.builder.TextBuilder.Text;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.TextQuestionBuilder.TextQuestion;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.ThemeBuilder.Theme;
 
@@ -64,22 +66,42 @@ public class OsaaminenPhase {
 
             Expr haettuAMKHon = ExprUtil.reduceToOr(exprs);
             Expr pohjakoulutusAmmatillinen = new Or(ExprUtil.isAnswerTrue("pohjakoulutus_am"), ExprUtil.isAnswerTrue("pohjakoulutus_yo_ammatillinen"));
+            Expr pohjakoulutusLukio = ExprUtil.atLeastOneValueEqualsToVariable("pohjakoulutus_yo_tutkinto", "fi", "lk");
 
             ElementBuilder kysytaankoKeskiarvoJaAsteikko = Rule(new And(haettuAMKHon, pohjakoulutusAmmatillinen));
+            ElementBuilder kysytaankoLukionKeskiarvo = Rule(new And(haettuAMKHon, pohjakoulutusLukio));
             List<Option> asteikkolista = koodistoService.getAmmatillisenTutkinnonArvosteluasteikko();
 
+            ElementBuilder tyhjaVaihe = Rule(new Not(new Or(new And(haettuAMKHon, pohjakoulutusAmmatillinen), new And(haettuAMKHon, pohjakoulutusLukio))));
+
             osaaminenTheme.addChild(
-              kysytaankoKeskiarvoJaAsteikko
-                .addChild(TextQuestion("keskiarvo")
-                  .inline()
-                  .required()
-                  .formParams(formParameters).build())
-                .addChild(Dropdown("arvosanaasteikko")
-                    .addOptions(asteikkolista)
-                    .inline()
-                    .required()
-                    .formParams(formParameters).build()
-                ).build());
+                    kysytaankoLukionKeskiarvo.addChild(
+                            TextQuestion("lukion-paattotodistuksen-keskiarvo")
+                                    .inline()
+                                    .required()
+                                    .maxLength(4)
+                                    .formParams(formParameters)
+                                    .build())
+                            .build(),
+                    kysytaankoKeskiarvoJaAsteikko
+                            .addChild(TextQuestion("keskiarvo")
+                                    .inline()
+                                    .required()
+                                    .formParams(formParameters)
+                                    .build())
+                            .addChild(Dropdown("arvosanaasteikko")
+                                    .addOptions(asteikkolista)
+                                    .inline()
+                                    .required()
+                                    .formParams(formParameters)
+                                    .build())
+                            .build(),
+                    tyhjaVaihe.addChild(
+                            Text().labelKey("osaaminen-vaihe-tyhja").formParams(formParameters)
+                    ).build()
+            );
+
+
         }
         return osaaminen;
 

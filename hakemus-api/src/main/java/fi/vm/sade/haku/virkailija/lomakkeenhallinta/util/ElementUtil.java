@@ -20,8 +20,6 @@ import com.google.common.base.Joiner;
 import com.google.common.base.Predicate;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
-import fi.vm.sade.haku.oppija.lomake.domain.builder.ElementBuilder;
-import fi.vm.sade.haku.oppija.lomake.domain.builder.RelatedQuestionRuleBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Titled;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.gradegrid.GradeGridRow;
@@ -48,8 +46,8 @@ public final class ElementUtil {
     public static final String EMAIL_REGEX = "^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$|^$";
     public static final String YEAR_REGEX = "^[1-2][0-9]{3}$";
 
-    public static final String KYLLA = Boolean.TRUE.toString().toLowerCase();
-    public static final String EI = Boolean.FALSE.toString().toLowerCase();
+    public static final String KYLLA = Boolean.TRUE.toString();
+    public static final String EI = Boolean.FALSE.toString();
     private static Logger log = LoggerFactory.getLogger(ElementUtil.class);
     public static final String DISABLED = "disabled";
     public static final String HIDDEN = "hidden";
