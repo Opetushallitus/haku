@@ -64,6 +64,7 @@ public class ApplicationSystemRepository {
     public List<ApplicationSystem> findAll(String... includeFields) {
         log.debug("Find all ApplicationSystems (include fields: {})", Arrays.toString(includeFields));
         Query q = new Query();
+        q.fields().include("name"); // Mandatory field
         for (String includeField : includeFields) {
             q.fields().include(includeField);
         }
