@@ -25,7 +25,7 @@
 
     <div class="${styleBaseClass}-content">
 
-        <select ${element.attributeString}>
+        <select ${element.attributeString} id="${element.id}" name="${element.id}">
             <haku:setSelectedValue element="${element}"/>
             <c:set var="options" value="${element.optionsSortedByText[requestScope['fi_vm_sade_oppija_language']]}"/>
             <haku:options options="${options}"/>

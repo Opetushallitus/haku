@@ -18,7 +18,7 @@
   --%>
 
 <select id="${element.id}-add-lang-select"></select>
-<button ${element.attributeString} class="link" type="button"><haku:i18nText value="${element.i18nText}"/></button>
+<button ${element.attributeString} id="${element.id}" class="link" type="button"><haku:i18nText value="${element.i18nText}"/></button>
 <script>
     $(document).ready(function () {
 

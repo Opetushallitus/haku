@@ -154,7 +154,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
 
         modelResponse.addObjectToModel("hakukohteet", getValintatiedot(application));
 
-        String sendingSchoolOid = application.getVastauksetMerged().get("lahtokoulu");
+        String sendingSchoolOid = application.getVastauksetMerged().get(OppijaConstants.ELEMENT_ID_SENDING_SCHOOL);
         if (sendingSchoolOid != null) {
             Organization sendingSchool = organizationService.findByOid(sendingSchoolOid);
             String sendingClass = application.getVastauksetMerged().get("lahtoluokka");
@@ -355,8 +355,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
 
         String noteText = "Päivitetty vaihetta '" + applicationPhase.getPhaseId() + "'";
         application.addNote(createNote(noteText));
-        this.applicationService.fillLOPChain(application, false);
-        this.baseEducationService.addSendingSchool(application);
+        this.applicationService.updateAuthorizationMeta(application, false);
         this.applicationService.update(queryApplication, application);
         application.setPhaseId(applicationPhase.getPhaseId());
         return new ModelResponse(application, form, phase, phaseValidationResult, koulutusinformaatioBaseUrl);

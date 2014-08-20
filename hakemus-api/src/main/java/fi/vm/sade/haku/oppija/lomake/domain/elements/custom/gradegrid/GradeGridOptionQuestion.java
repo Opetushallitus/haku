@@ -24,7 +24,6 @@ public class GradeGridOptionQuestion extends Element {
                                    final Boolean sortByText,
                                    final String defaultValueAttribute) {
         super(id);
-        addAttribute("name", id);
         Preconditions.checkNotNull(options);
         Preconditions.checkNotNull(selected);
         this.options = options;

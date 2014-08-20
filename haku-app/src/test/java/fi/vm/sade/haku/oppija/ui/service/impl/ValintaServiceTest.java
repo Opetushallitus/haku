@@ -70,7 +70,6 @@ public class ValintaServiceTest {
         hakutoiveet.put("preference1-Koulutus-id-athlete", "true");
         hakutoiveet.put("preference1-discretionary", "false");
         hakutoiveet.put("preference1_urheilijan_ammatillisen_koulutuksen_lisakysymys", "false");
-        hakutoiveet.put("preference1-Opetuspiste-id-parents", "1.2.246.562.10.00000000001,"+LOP_OID);
         hakutoiveet.put("preference1-Koulutus-id", AO_OID);
         hakutoiveet.put("preference1-Koulutus", AO_NAME);
         hakutoiveet.put("preference1-Koulutus-id-kaksoistutkinto", "true");

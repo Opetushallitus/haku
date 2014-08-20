@@ -98,7 +98,6 @@ public class ApplicationGenerator {
             hakutoiveet.put("preference" + i + "-Opetuspiste", i == 1 ? "Helmi Liiketalousopisto" : "");
             hakutoiveet.put("preference" + i + "-discretionary", i == 1 ? "true" : "");
             hakutoiveet.put("preference" + i + "-Koulutus-educationDegree", i == 1 ? "32" : "");
-            hakutoiveet.put("preference" + i + "-Opetuspiste-id-parents", i == 1 ? "1.2.246.562.10.00000000001,1.2.246.562.10.50942158994" : "");
             hakutoiveet.put("preference" + i + "-Koulutus-id", i == 1 ? "1.2.246.562.5.10067_02_873_1616" : "");
             hakutoiveet.put("preference" + i + "-Opetuspiste-id", i == 1 ? "1.2.246.562.10.50942158994" : "");
             hakutoiveet.put("preference" + i + "-Koulutus-id-sora", i == 1 ? "false" : "");

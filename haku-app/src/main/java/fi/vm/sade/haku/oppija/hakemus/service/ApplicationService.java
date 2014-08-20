@@ -114,9 +114,9 @@ public interface ApplicationService {
      */
     Application officerCreateNewApplication(final String asId);
 
-    Application fillLOPChain(Application application, boolean save);
-
     Application getSubmittedApplication(final String applicationSystemId, final String oid);
 
     List<Map<String, Object>> findFullApplications(String query, ApplicationQueryParameters applicationQueryParameters);
+
+    Application updateAuthorizationMeta(Application application, boolean save);
 }

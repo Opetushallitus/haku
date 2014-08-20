@@ -1,12 +1,12 @@
 package fi.vm.sade.haku.oppija.hakemus.service.impl;
 
-import fi.vm.sade.haku.oppija.hakemus.service.BaseEducationService;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
 import fi.vm.sade.haku.oppija.common.suoritusrekisteri.ArvosanaDTO;
 import fi.vm.sade.haku.oppija.common.suoritusrekisteri.OpiskelijaDTO;
 import fi.vm.sade.haku.oppija.common.suoritusrekisteri.SuoritusDTO;
 import fi.vm.sade.haku.oppija.common.suoritusrekisteri.SuoritusrekisteriService;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
+import fi.vm.sade.haku.oppija.hakemus.service.BaseEducationService;
 import fi.vm.sade.haku.oppija.lomake.exception.IllegalValueException;
 import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
@@ -16,19 +16,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
-import static org.apache.commons.lang.StringUtils.isEmpty;
-import static org.apache.commons.lang.StringUtils.isNotBlank;
-import static org.apache.commons.lang.StringUtils.isNotEmpty;
-import static org.apache.commons.lang.StringUtils.join;
+import static org.apache.commons.lang.StringUtils.*;
 
 @Service
 public class BaseEducationServiceImpl implements BaseEducationService{
@@ -94,14 +84,6 @@ public class BaseEducationServiceImpl implements BaseEducationService{
 
             educationAnswers = handleOpiskelija(educationAnswers, application, opiskelija);
             application.addVaiheenVastaukset(OppijaConstants.PHASE_EDUCATION, educationAnswers);
-        }
-
-        Map<String, String> answers = new HashMap<String, String>(application.getPhaseAnswers(OppijaConstants.PHASE_EDUCATION));
-        if (answers.containsKey(OppijaConstants.ELEMENT_ID_SENDING_SCHOOL)) {
-            String sendingSchool = answers.get(OppijaConstants.ELEMENT_ID_SENDING_SCHOOL);
-            List<String> parentOids = organizationService.findParentOids(sendingSchool);
-            answers.put(OppijaConstants.ELEMENT_ID_SENDING_SCHOOL_PARENTS, join(parentOids, ","));
-            application.addVaiheenVastaukset(OppijaConstants.PHASE_EDUCATION, answers);
         }
 
         return application;

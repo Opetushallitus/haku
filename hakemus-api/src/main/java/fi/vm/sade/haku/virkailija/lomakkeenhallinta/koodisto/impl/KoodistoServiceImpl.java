@@ -64,7 +64,7 @@ public class KoodistoServiceImpl implements KoodistoService {
     private static final String CODE_LAAJUUSYKSIKKO = "opintojenlaajuusyksikko";
     private static final String CODE_KOULUTUSASTE = "koulutusasteoph2002";
     private static final String CODE_TUTKINTOTYYPPI = "tutkintotyyppi";
-    private static final String CODE_ARVOSANAASTEIKONTYYPPI = "arvosanaasteikontyyppi";
+    private static final String CODE_ARVOSTELUASTEIKKO= "ammatillisentutkinnonarvosteluasteikko";
 
     private static final String LUKIO = "15";
     private static final String LUKIO_JA_PERUSKOULU = "19";
@@ -182,7 +182,7 @@ public class KoodistoServiceImpl implements KoodistoService {
 
     @Override
     public List<Option> getAmmatillisenTutkinnonArvosteluasteikko() {
-        return codesToOptions(CODE_ARVOSANAASTEIKONTYYPPI);
+        return codesToOptions(CODE_ARVOSTELUASTEIKKO);
     }
 
     @Override

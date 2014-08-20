@@ -45,15 +45,15 @@ public final class ThemeQuestionConfigurator {
         this.formParameters = formParameters;
     }
 
-    public List<Element> findAndConfigure(final ApplicationSystem applicationSystem, final String theme){
-        return findAndConfigure(applicationSystem, theme, true, null);
+    public Element[] findAndConfigure(final String theme){
+        return findAndConfigure(formParameters.getApplicationSystem(), theme, true, null);
     }
 
-    public List<Element> findAndConfigure(final ApplicationSystem applicationSystem, final String theme, final String preferenceElementId){
-        return findAndConfigure(applicationSystem, theme, false, preferenceElementId);
+    public Element[] findAndConfigure(final String theme, final String preferenceElementId){
+        return findAndConfigure(formParameters.getApplicationSystem(), theme, false, preferenceElementId);
     }
 
-    private List<Element> findAndConfigure(final ApplicationSystem applicationSystem, final String theme,
+    private Element[] findAndConfigure(final ApplicationSystem applicationSystem, final String theme,
                                            final Boolean titleApplicationOptions, final String preferenceElementId){
         LOGGER.debug("Configuring themequestions for application system: "+ applicationSystem.getId()
                 + " theme:" +theme+" generating titled groups " + titleApplicationOptions);
@@ -74,7 +74,8 @@ public final class ThemeQuestionConfigurator {
             }
         }
         LOGGER.debug("Configuration complete for application system "+ applicationSystem.getId() + " theme " + theme);
-        return configuredApplicationOptions;
+
+        return configuredApplicationOptions.toArray(new Element[configuredApplicationOptions.size()]);
     }
 
     private Element configureThemeQuestionForApplicationOption(final ApplicationSystem applicationSystem, final String theme,

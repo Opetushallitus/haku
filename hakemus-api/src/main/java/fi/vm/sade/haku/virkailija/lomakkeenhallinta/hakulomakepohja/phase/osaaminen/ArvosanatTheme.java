@@ -10,8 +10,6 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.service.ThemeQuestionConfigu
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ExprUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 
-import java.util.List;
-
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.RelatedQuestionRuleBuilder.Rule;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.TextBuilder.Text;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.createI18NText;
@@ -47,11 +45,8 @@ public final class ArvosanatTheme {
         }
         arvosanatTheme.addChild(eiArvosanataulukkoa(formParameters));
         
-        ThemeQuestionConfigurator configurator = formParameters.getThemeQuestionGenerator();
-        List<Element> themeQuestions = configurator.findAndConfigure(formParameters.getApplicationSystem(),arvosanatTheme.getId());
-        if (themeQuestions.size() > 0) {
-            arvosanatTheme.addChild(themeQuestions.toArray(new Element[themeQuestions.size()]));
-        }
+        ThemeQuestionConfigurator configurator = formParameters.getThemeQuestionConfigurator();
+        arvosanatTheme.addChild(configurator.findAndConfigure(arvosanatTheme.getId()));
         return arvosanatTheme;
     }
 
@@ -124,13 +119,10 @@ public final class ArvosanatTheme {
 
         arvosanatTheme.addChild(eiArvosanataulukkoa(formParameters));
 
-        ThemeQuestionConfigurator configurator = formParameters.getThemeQuestionGenerator();
-        List<Element> themeQuestions = configurator.findAndConfigure(formParameters.getApplicationSystem(),arvosanatTheme.getId());
-        if (themeQuestions.size() > 0) {
-            arvosanatTheme.addChild(themeQuestions.toArray(new Element[themeQuestions.size()]));
-        }
-        return arvosanatTheme;
+        ThemeQuestionConfigurator configurator = formParameters.getThemeQuestionConfigurator();
+        arvosanatTheme.addChild(configurator.findAndConfigure(arvosanatTheme.getId()));
 
+        return arvosanatTheme;
     }
 
     private static Element eiArvosanataulukkoa(FormParameters formParameters) {

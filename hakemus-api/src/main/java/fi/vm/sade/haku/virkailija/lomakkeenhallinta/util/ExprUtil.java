@@ -66,7 +66,4 @@ public final class ExprUtil {
         return new Equals(new Variable(id), Value.TRUE);
     }
 
-    public static Expr isAnswerFalse(final String id) {
-        return new Equals(new Variable(id), Value.FALSE);
-    }
 }

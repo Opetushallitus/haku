@@ -39,6 +39,9 @@ public interface ApplicationDAO extends BaseDAO<Application> {
      */
     List<Application> find(Application application);
 
+    List<ApplicationAdditionalDataDTO> findApplicationAdditionalData(String applicationSystemId, String aoId,
+                                                                     ApplicationFilterParameters filterParameters);
+
     /**
      * Checks if submitted application already exists by specified social security number and
      * application system
@@ -60,6 +63,12 @@ public interface ApplicationDAO extends BaseDAO<Application> {
      */
     boolean checkIfExistsBySocialSecurityNumberAndAo(String asId, String ssn, String aoId);
 
+    ApplicationSearchResultDTO findAllQueried(String term, ApplicationQueryParameters queryParameters,
+                                              ApplicationFilterParameters filterParameters);
+
+    List<Map<String, Object>> findAllQueriedFull(String term, ApplicationQueryParameters queryParameters,
+                                                 ApplicationFilterParameters filterParameters);
+
     /**
      * Updates key/value of the application by oid
      *
@@ -73,11 +82,6 @@ public interface ApplicationDAO extends BaseDAO<Application> {
 
     Application getNextSubmittedApplication();
 
-    ApplicationSearchResultDTO findAllQueried(String term, ApplicationQueryParameters applicationQueryParameters);
-
     Application getNextRedo();
 
-    List<Map<String, Object>> findAllQueriedFull(String query, ApplicationQueryParameters applicationQueryParameters);
-
-    List<ApplicationAdditionalDataDTO> findApplicationAdditionalData(String applicationSystemId, String aoId);
 }

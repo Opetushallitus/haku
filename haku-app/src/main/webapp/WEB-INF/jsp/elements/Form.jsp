@@ -53,7 +53,8 @@
     <div id="site">
         <div id="sitecontent">
             <div class="content">
-                <a href="https://opintopolku.fi"><fmt:message key="lomake.lisaakoulutuksia"/></a>
+                <fmt:message key="lomake.lisaakoulutuksia.href" var="lisaaKoulutuksiaHref"/>
+                <a href="${lisaaKoulutuksiaHref}"><fmt:message key="lomake.lisaakoulutuksia"/></a>
 
                 <h1><haku:i18nText value="${element.i18nText}"/> - <fmt:message key="form.title"/></h1>
                 <ul class="form-steps">

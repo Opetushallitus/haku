@@ -508,7 +508,7 @@ $(document).ready(function () {
             $('#lop-title').empty();
             $('#lopoid').val('');
             $('#entry').val('');
-            $('#application-state').val('ACTIVE');
+            $('#application-state').val('');
             $('#application-preference').val('');
             $('#application-preference-code').val('');
             $('#application-system').val('');

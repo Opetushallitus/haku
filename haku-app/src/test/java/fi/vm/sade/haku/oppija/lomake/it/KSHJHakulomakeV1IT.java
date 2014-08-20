@@ -43,7 +43,7 @@ public class KSHJHakulomakeV1IT extends DummyModelBaseItTest {
         nextPhase(OppijaConstants.PHASE_GRADES);
 
         setValue("keskiarvo", "10");
-        setValue("arvosanaasteikko", "4-10");
+        setValue("arvosanaasteikko", "410");
         nextPhase(OppijaConstants.PHASE_MISC);
 
 
@@ -54,7 +54,21 @@ public class KSHJHakulomakeV1IT extends DummyModelBaseItTest {
         setValue("pohjakoulutus_muu_vuosi", "2012");
         setValue("pohjakoulutus_muu_kuvaus", "kuvaus");
         nextPhase(OppijaConstants.PHASE_APPLICATION_OPTIONS);
+        nextPhase(OppijaConstants.PHASE_GRADES);
         elementsNotPresent("keskiarvo");
         elementsNotPresent("arvosanaasteikko");
+
+
+        navigateToPath("lomake", "haku6", OppijaConstants.PHASE_EDUCATION);
+        click("pohjakoulutus_yo");
+        setValue("pohjakoulutus_yo_vuosi", "2002");
+        setValue("pohjakoulutus_yo_tutkinto", "fi");
+
+        nextPhase(OppijaConstants.PHASE_APPLICATION_OPTIONS);
+        nextPhase(OppijaConstants.PHASE_GRADES);
+        setValue("lukion-paattotodistuksen-keskiarvo", "4,51");
+        elementsNotPresent("keskiarvo");
+        elementsNotPresent("arvosanaasteikko");
+
     }
 }

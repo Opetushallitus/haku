@@ -25,7 +25,6 @@ public class HiddenValue extends Element {
 
     public HiddenValue(String id, String value) {
         super(id);
-        this.addAttribute("name", id);
         this.value = value;
     }
 

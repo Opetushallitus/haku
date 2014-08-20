@@ -23,6 +23,7 @@ import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
 import fi.vm.sade.haku.oppija.lomake.domain.User;
+import fi.vm.sade.haku.virkailija.authentication.impl.AuthenticationServiceMockImpl;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.io.IOUtils;
@@ -119,7 +120,10 @@ public class ApplicationDAOMongoImplIT extends AbstractDAOTest {
     @Test
     public void testfindAllQueriedByApplicationSystemAndApplicationOption() {
         ApplicationQueryParameters param  = new ApplicationQueryParametersBuilder().setAsId("YhteisHaku").setAoId("776").build();
-        ApplicationSearchResultDTO resultDTO = applicationDAO.findAllQueried("",param);
+        AuthenticationServiceMockImpl authenticationServiceMock = new AuthenticationServiceMockImpl();
+        ApplicationFilterParameters filterParameters = new ApplicationFilterParameters(6,
+                authenticationServiceMock.getOrganisaatioHenkilo(), authenticationServiceMock.getOrganisaatioHenkilo());
+        ApplicationSearchResultDTO resultDTO = applicationDAO.findAllQueried("", param, filterParameters);
         assertFalse(CollectionUtils.isEmpty(resultDTO.getResults()));
         assertEquals(2, resultDTO.getResults().size());
     }

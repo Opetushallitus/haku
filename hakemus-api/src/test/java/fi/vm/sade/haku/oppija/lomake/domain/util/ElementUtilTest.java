@@ -43,7 +43,7 @@ public class ElementUtilTest {
     @Test
     public void testCreateI18NTextSize() throws Exception {
         I18nText test = ElementUtil.createI18NText(HAS_TRANSLATION);
-        assertTrue(test.getTranslations().size() == 2);
+        assertTrue(test.getTranslations().size() == 3);
     }
 
     @Test

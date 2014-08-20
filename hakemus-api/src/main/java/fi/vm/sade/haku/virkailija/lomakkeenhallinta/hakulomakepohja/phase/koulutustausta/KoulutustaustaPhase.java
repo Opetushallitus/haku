@@ -363,7 +363,6 @@ public final class KoulutustaustaPhase {
         }
 
         Element paattotodistusvuosiPeruskoulu = new TextQuestionBuilder(OppijaConstants.PERUSOPETUS_PAATTOTODISTUSVUOSI)
-                .placeholder("vvvv")
                 .labelKey("form.koulutustausta.paattotodistusvuosi")
                 .required()
                 .size(4)
@@ -407,7 +406,6 @@ public final class KoulutustaustaPhase {
         if (!formParameters.isPervako()) {
 
             Element lukioPaattotodistusVuosi = TextQuestion(OppijaConstants.LUKIO_PAATTOTODISTUS_VUOSI)
-                    .placeholder("vvvv")
                     .maxLength(4)
                     .size(4)
                     .pattern(PAATTOTODISTUSVUOSI_PATTERN)
@@ -415,7 +413,7 @@ public final class KoulutustaustaPhase {
                     .formParams(formParameters).build();
 
             Element tuoreYoTodistus = createVarEqualsToValueRule(lukioPaattotodistusVuosi.getId(), hakukausiVuosiStr);
-            tuoreYoTodistus.addChild(new DropdownSelectBuilder("lahtokoulu")
+            tuoreYoTodistus.addChild(new DropdownSelectBuilder(ELEMENT_ID_SENDING_SCHOOL)
                     .defaultValueAttribute("")
                     .addOption(addSpaceAtTheBeginning(ElementUtil.createI18NText("form.koulutustausta.lukio.valitse.oppilaitos", formParameters)), "")
                     .addOptions(koodistoService.getLukioKoulukoodit())

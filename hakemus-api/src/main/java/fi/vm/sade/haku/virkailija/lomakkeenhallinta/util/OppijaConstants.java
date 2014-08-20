@@ -52,7 +52,6 @@ public final class OppijaConstants {
     public static final String ELEMENT_ID_EMAIL = "Sähköposti";
     public static final String ELEMENT_ID_SEX = "sukupuoli";
     public static final String ELEMENT_ID_SENDING_SCHOOL = "lahtokoulu";
-    public static final String ELEMENT_ID_SENDING_SCHOOL_PARENTS = "lahtokoulu-parents";
     public static final String ELEMENT_ID_SENDING_CLASS = "lahtoluokka";
     public static final String ELEMENT_ID_CLASS_LEVEL = "luokkataso";
     public static final String ELEMENT_ID_HOME_CITY = "kotikunta";
@@ -80,6 +79,7 @@ public final class OppijaConstants {
 
     public static final String PREFERENCE_NAME = "preference%d-Koulutus";
     public static final String PREFERENCE_ORGANIZATION = "preference%d-Opetuspiste";
+    public static final String PREFERENCE_ORGANIZATION_ID = "preference%d-Opetuspiste-id";
     public static final String EDUCATION_CODE_KEY = PREFERENCE_ID + "-educationcode";
     public static final String EDUCATION_VOCATIONAL = PREFERENCE_ID + "-vocational";
     public static final String EDUCATION_LANGUAGE = PREFERENCE_ID + "-lang";

@@ -44,27 +44,50 @@ public class FormEditorController {
         ACTIVE, LOCKED, PUBLISHED, CLOSED, ERROR
     }
 
-    private static final Map<State, I18nText> stateTranslations = new ImmutableMap.Builder<State,I18nText>().put(State.ACTIVE, new I18nText(ImmutableMap.of("fi", "Aktiivinen"))).
-      put(State.LOCKED, new I18nText(ImmutableMap.of("fi", "Lukittu"))).put(State.PUBLISHED, new I18nText(ImmutableMap.of("fi", "Julkaistu"))).
-      put(State.CLOSED, new I18nText(ImmutableMap.of("fi", "Suljettu"))).put(State.ERROR, new I18nText(ImmutableMap.of("fi", "Virheellinen"))).build();
+    private static final Map<State, I18nText> stateTranslations =
+            new ImmutableMap.Builder<State,I18nText>()
+                    .put(State.ACTIVE, new I18nText(ImmutableMap.of("fi", "Aktiivinen")))
+                    .put(State.LOCKED, new I18nText(ImmutableMap.of("fi", "Lukittu")))
+                    .put(State.PUBLISHED, new I18nText(ImmutableMap.of("fi", "Julkaistu")))
+                    .put(State.CLOSED, new I18nText(ImmutableMap.of("fi", "Suljettu")))
+                    .put(State.ERROR, new I18nText(ImmutableMap.of("fi", "Virheellinen")))
+                    .build();
 
-    private static final Map<String, Object> hakutoiveTheme = new ImmutableMap.Builder<String,Object>().put("id", "hakutoiveet.teema").
-      put("name", new I18nText(ImmutableMap.of("fi", "Hakutoiveet", "sv", "Ansökningsönskemål"))).build();
+    private static final Map<String, Object> hakutoiveTheme =
+            new ImmutableMap.Builder<String,Object>()
+                    .put("id", "hakutoiveet.teema")
+                    .put("name", new I18nText(ImmutableMap.of("fi", "Hakutoiveet", "sv", "Ansökningsönskemål")))
+                    .build();
 
-    private static final Map<String, Object> arvosanaTheme = new ImmutableMap.Builder<String,Object>().put("id", "arvosanat").
-      put("name", new I18nText(ImmutableMap.of("fi", "Arvosanat", "sv", "Vitsord"))).build();
+    private static final Map<String, Object> arvosanaTheme =
+            new ImmutableMap.Builder<String,Object>().put("id", "arvosanat")
+                    .put("name", new I18nText(ImmutableMap.of("fi", "Arvosanat", "sv", "Vitsord")))
+                    .build();
 
-    private static final Map<String, Object> lupaTiedotTheme = new ImmutableMap.Builder<String,Object>().put("id", "lupatiedot").
-      put("name", new I18nText(ImmutableMap.of("fi", "Lupatiedot", "sv", "Tillståndsuppgifter"))).build();
+    private static final Map<String, Object> lupaTiedotTheme =
+            new ImmutableMap.Builder<String,Object>()
+                    .put("id", "lupatiedot")
+                    .put("name", new I18nText(ImmutableMap.of("fi", "Lupatiedot", "sv", "Tillståndsuppgifter")))
+                    .build();
 
-    private static final Map<String, I18nText> questionTypeTranslations = new ImmutableMap.Builder<String, I18nText>()
-      .put("TextQuestion", new I18nText(new ImmutableMap.Builder<String, String>().put("fi", "Avoin vastaus (tekstikenttä)")
-        .put("sv", "Avoin vastaus (tekstikenttä) (sv)").put("en", "Avoin vastaus (textfield) (en)").build()))
-      .put("CheckBox", new I18nText(new ImmutableMap.Builder<String, String>().put("fi", "Valinta kysymys (valintaruutu)")
-        .put("sv", "Valinta kysymys (valintaruutu) (sv)").put("en", "Valinta kysymys (checkbox) (en)").build()))
-      .put("RadioButton", new I18nText(new ImmutableMap.Builder<String, String>().put("fi", "Valinta kysymys (valintanappi)")
-        .put("sv", "Valinta kysymys (valintanappi) (sv)").put("en", "Valinta kysymys (radiobutton) (en)").build()))
-      .build();
+    private static final Map<String, I18nText> questionTypeTranslations =
+            new ImmutableMap.Builder<String, I18nText>()
+                    .put("TextQuestion", new I18nText(new ImmutableMap.Builder<String, String>()
+                            .put("fi", "Avoin vastaus (tekstikenttä)")
+                            .put("sv", "Avoin vastaus (tekstikenttä) (sv)")
+                            .put("en", "Avoin vastaus (textfield) (en)")
+                            .build()))
+                    .put("CheckBox", new I18nText(new ImmutableMap.Builder<String, String>()
+                            .put("fi", "Valinta kysymys (valintaruutu)")
+                            .put("sv", "Valinta kysymys (valintaruutu) (sv)")
+                            .put("en", "Valinta kysymys (checkbox) (en)")
+                            .build()))
+                    .put("RadioButton", new I18nText(new ImmutableMap.Builder<String, String>()
+                            .put("fi", "Valinta kysymys (valintanappi)")
+                            .put("sv", "Valinta kysymys (valintanappi) (sv)")
+                            .put("en", "Valinta kysymys (radiobutton) (en)")
+                            .build()))
+                    .build();
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FormEditorController.class);
 
@@ -87,7 +110,9 @@ public class FormEditorController {
     }
 
     @Autowired
-    public FormEditorController(HakuService hakuService, FormGenerator formGenerator, AuthenticationService authenticationService, HakukohdeService hakukohdeService, OrganizationService organizationService) {
+    public FormEditorController(HakuService hakuService, FormGenerator formGenerator,
+                                AuthenticationService authenticationService, HakukohdeService hakukohdeService,
+                                OrganizationService organizationService) {
         this.hakuService = hakuService;
         this.formGenerator = formGenerator;
         this.authenticationService = authenticationService;
@@ -98,7 +123,8 @@ public class FormEditorController {
     @GET
     @Path("application-system-form")
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
-    @PreAuthorize("hasAnyRole('ROLE_APP_HAKULOMAKKEENHALLINTA_READ_UPDATE', 'ROLE_APP_HAKULOMAKKEENHALLINTA_CRUD', 'ROLE_APP_HAKULOMAKKEENHALLINTA_READ')")
+    @PreAuthorize("hasAnyRole('ROLE_APP_HAKULOMAKKEENHALLINTA_READ_UPDATE', 'ROLE_APP_HAKULOMAKKEENHALLINTA_CRUD', " +
+            "'ROLE_APP_HAKULOMAKKEENHALLINTA_READ')")
     public List<Map<String, Object>> getApplicationSystemForms(){
         ArrayList<Map<String,Object>> applicationSystemForms = new ArrayList<Map<String, Object>>();
         for (ApplicationSystem applicationSystem : hakuService.getApplicationSystems()){
@@ -118,13 +144,15 @@ public class FormEditorController {
     private State deduceApplicationSystemState(ApplicationSystem applicationSystem){
         List<ApplicationPeriod> applicationPeriods = applicationSystem.getApplicationPeriods();
         if (applicationPeriods.size() != 1 ){
-            LOGGER.error("Unexcepted number of periods. Got {} for application system {}", applicationPeriods.size(), applicationSystem.getId());
+            LOGGER.error("Unexcepted number of periods. Got {} for application system {}",
+                    applicationPeriods.size(), applicationSystem.getId());
             if (applicationPeriods.size() < 1)
                 return State.ERROR;
         }
         ApplicationPeriod applicationPeriod = applicationPeriods.get(0);
         final Date now = new Date();
-        LOGGER.debug("Decucing state. Now {}. Period Start {}. Period End {}", now, applicationPeriod.getStart(),applicationPeriod.getEnd());
+        LOGGER.debug("Decucing state. Now {}. Period Start {}. Period End {}",
+                now, applicationPeriod.getStart(),applicationPeriod.getEnd());
         if (now.after(applicationPeriod.getEnd())){
             return State.CLOSED;
         }
@@ -145,7 +173,8 @@ public class FormEditorController {
     @GET
     @Path("application-system-form/{applicationSystemId}")
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
-    @PreAuthorize("hasAnyRole('ROLE_APP_HAKULOMAKKEENHALLINTA_READ_UPDATE', 'ROLE_APP_HAKULOMAKKEENHALLINTA_CRUD', 'ROLE_APP_HAKULOMAKKEENHALLINTA_READ')")
+    @PreAuthorize("hasAnyRole('ROLE_APP_HAKULOMAKKEENHALLINTA_READ_UPDATE', 'ROLE_APP_HAKULOMAKKEENHALLINTA_CRUD', " +
+            "'ROLE_APP_HAKULOMAKKEENHALLINTA_READ')")
     public Map getAppicationSystemForm(@PathParam("applicationSystemId") String applicationSystemId){
         ApplicationSystem applicationSystem = formGenerator.generate(applicationSystemId);
         ObjectMapper mapper = new ObjectMapper();
@@ -158,7 +187,8 @@ public class FormEditorController {
     @GET
     @Path("application-system-form/{applicationSystemId}/full")
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
-    @PreAuthorize("hasAnyRole('ROLE_APP_HAKULOMAKKEENHALLINTA_READ_UPDATE', 'ROLE_APP_HAKULOMAKKEENHALLINTA_CRUD', 'ROLE_APP_HAKULOMAKKEENHALLINTA_READ')")
+    @PreAuthorize("hasAnyRole('ROLE_APP_HAKULOMAKKEENHALLINTA_READ_UPDATE', 'ROLE_APP_HAKULOMAKKEENHALLINTA_CRUD', " +
+            "'ROLE_APP_HAKULOMAKKEENHALLINTA_READ')")
     public Map getAppicationSystem(@PathParam("applicationSystemId") String applicationSystemId){
         ApplicationSystem applicationSystem = formGenerator.generate(applicationSystemId);
         ObjectMapper mapper = new ObjectMapper();
@@ -171,7 +201,8 @@ public class FormEditorController {
     @GET
     @Path("application-system-form/{applicationSystemId}/state")
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
-    @PreAuthorize("hasAnyRole('ROLE_APP_HAKULOMAKKEENHALLINTA_READ_UPDATE', 'ROLE_APP_HAKULOMAKKEENHALLINTA_CRUD', 'ROLE_APP_HAKULOMAKKEENHALLINTA_READ')")
+    @PreAuthorize("hasAnyRole('ROLE_APP_HAKULOMAKKEENHALLINTA_READ_UPDATE', 'ROLE_APP_HAKULOMAKKEENHALLINTA_CRUD', " +
+            "'ROLE_APP_HAKULOMAKKEENHALLINTA_READ')")
     public Map getAppicationSystemState(@PathParam("applicationSystemId") String applicationSystemId){
         return ImmutableMap.of("State", deduceApplicationSystemState(hakuService.getApplicationSystem(applicationSystemId)));
     }
@@ -179,7 +210,8 @@ public class FormEditorController {
     @GET
     @Path("application-system-form/{applicationSystemId}/name")
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
-    @PreAuthorize("hasAnyRole('ROLE_APP_HAKULOMAKKEENHALLINTA_READ_UPDATE', 'ROLE_APP_HAKULOMAKKEENHALLINTA_CRUD', 'ROLE_APP_HAKULOMAKKEENHALLINTA_READ')")
+    @PreAuthorize("hasAnyRole('ROLE_APP_HAKULOMAKKEENHALLINTA_READ_UPDATE', 'ROLE_APP_HAKULOMAKKEENHALLINTA_CRUD', " +
+            "'ROLE_APP_HAKULOMAKKEENHALLINTA_READ')")
     public Map<String, I18nText> getApplicationSystemForms(@PathParam("applicationSystemId") String applicationSystemId){
         ApplicationSystem applicationSystem = hakuService.getApplicationSystem(applicationSystemId);
         if (applicationSystem == null)
@@ -190,10 +222,12 @@ public class FormEditorController {
     @GET
     @Path("application-system-form/{applicationSystemId}/represented-organizations")
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
-    @PreAuthorize("hasAnyRole('ROLE_APP_HAKULOMAKKEENHALLINTA_READ_UPDATE', 'ROLE_APP_HAKULOMAKKEENHALLINTA_CRUD', 'ROLE_APP_HAKULOMAKKEENHALLINTA_READ')")
+    @PreAuthorize("hasAnyRole('ROLE_APP_HAKULOMAKKEENHALLINTA_READ_UPDATE', 'ROLE_APP_HAKULOMAKKEENHALLINTA_CRUD', " +
+            "'ROLE_APP_HAKULOMAKKEENHALLINTA_READ')")
     public List<Map<String, Object>> getParticipatingUserOrganizations(@PathParam("applicationSystemId") String applicationSystemId) {
         List<String> applicationOptionIds = hakuService.getRelatedApplicationOptionIds(applicationSystemId);
-        LOGGER.debug("Got " + (null == applicationOptionIds ? null: applicationOptionIds.size()) + " options for application system "+ applicationSystemId);
+        LOGGER.debug("Got " + (null == applicationOptionIds ? null
+                : applicationOptionIds.size()) + " options for application system "+ applicationSystemId);
         if (null == applicationOptionIds)
             return new ArrayList<Map<String, Object>>();
 
@@ -205,7 +239,8 @@ public class FormEditorController {
             HakukohdeDTO applicationOption = hakukohdeService.findByOid(applicationOptionId);
             String providerId = applicationOption.getTarjoajaOid();
             if (null == providerId){
-                LOGGER.error("Got null provider for application option: " + applicationOptionId + " of application system: " + applicationSystemId);
+                LOGGER.error("Got null provider for application option: " + applicationOptionId + " of application system: "
+                        + applicationSystemId);
                 continue;
             }
             LOGGER.debug("Provider for  " + applicationOptionId + " is " +providerId);
@@ -257,7 +292,8 @@ public class FormEditorController {
         List<Map<String, Object>> themes = new ArrayList<Map<String, Object>>();
         for (Element themeElement : themeElements) {
             if (!(themeElement instanceof Theme)) {
-                LOGGER.warn("First level child of phase " + phase.getId() + " not a theme element. Got " + themeElement.getType() + " instead.");
+                LOGGER.warn("First level child of phase " + phase.getId() + " not a theme element. Got " +
+                        themeElement.getType() + " instead.");
                 continue;
             }
             if (((Theme) themeElement).isConfigurable()){

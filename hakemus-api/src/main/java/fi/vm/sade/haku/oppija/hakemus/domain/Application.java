@@ -16,14 +16,12 @@
 
 package fi.vm.sade.haku.oppija.hakemus.domain;
 
-import com.google.common.base.Predicates;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Maps;
-import fi.vm.sade.haku.oppija.lomake.domain.ObjectIdDeserializer;
-import fi.vm.sade.haku.oppija.lomake.domain.ObjectIdSerializer;
-import fi.vm.sade.haku.oppija.lomake.domain.User;
-import fi.vm.sade.haku.virkailija.authentication.Person;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
+import static org.apache.commons.lang3.StringUtils.isNotEmpty;
+
+import java.io.Serializable;
+import java.util.*;
+
 import org.codehaus.jackson.annotate.JsonCreator;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
@@ -33,11 +31,15 @@ import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.Serializable;
-import java.util.*;
+import com.google.common.base.Predicates;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
 
-import static org.apache.commons.lang3.StringUtils.isNotBlank;
-import static org.apache.commons.lang3.StringUtils.isNotEmpty;
+import fi.vm.sade.haku.oppija.lomake.domain.ObjectIdDeserializer;
+import fi.vm.sade.haku.oppija.lomake.domain.ObjectIdSerializer;
+import fi.vm.sade.haku.oppija.lomake.domain.User;
+import fi.vm.sade.haku.virkailija.authentication.Person;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_EMPTY)
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -85,6 +87,7 @@ public class Application implements Serializable {
 
     private Map<String, Map<String, String>> answers = new HashMap<String, Map<String, String>>();
     private Map<String, String> meta = new HashMap<String, String>();
+    private AuthorizationMeta authorizationMeta = null; // new AuthorizationMeta();
     private Map<String, String> overriddenAnswers = new HashMap<String, String>();
     private Map<String, String> additionalInfo = new HashMap<String, String>();
     private LinkedList<ApplicationNote> notes = new LinkedList<ApplicationNote>();
@@ -409,6 +412,14 @@ public class Application implements Serializable {
         return meta;
     }
 
+    public AuthorizationMeta getAuthorizationMeta() {
+        return authorizationMeta;
+    }
+
+    public void setAuthorizationMeta(AuthorizationMeta authorizationMeta) {
+        this.authorizationMeta = authorizationMeta;
+    }
+
     public Map<String, String> getOverriddenAnswers() {
         return ImmutableMap.copyOf(overriddenAnswers);
     }
@@ -554,8 +565,9 @@ public class Application implements Serializable {
         return version;
     }
 
+    @Override
     public Application clone() {
-        Application clone = new Application(getApplicationSystemId(), getUser(), Maps.newHashMap(getAnswers()), Maps.newHashMap(getAdditionalInfo()));
+        Application clone = new Application(getApplicationSystemId(), getUser(), copyAnswers(), Maps.newHashMap(getAdditionalInfo()));
         clone.setOid(getOid())
              .setLastAutomatedProcessingTime(getLastAutomatedProcessingTime())
              .setMeta(Maps.newHashMap(getMeta()))
@@ -570,5 +582,13 @@ public class Application implements Serializable {
         clone.setPersonOidChecked(getPersonOidChecked());
         clone.setStudentOidChecked(getStudentOidChecked());
         return clone;
+    }
+
+    private Map<String, Map<String,String>> copyAnswers() {
+        Map<String, Map<String,String>> newMap = new HashMap<String, Map<String,String>>();
+        for (String key : getAnswers().keySet()) {
+            newMap.put(key, Maps.newHashMap(getAnswers().get(key)));
+        }
+        return newMap;
     }
 }

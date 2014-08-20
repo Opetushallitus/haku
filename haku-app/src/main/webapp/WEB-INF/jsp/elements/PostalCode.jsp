@@ -20,7 +20,7 @@
     <haku:label element="${element}" styleBaseClass="form-row"/>
     <div class="form-row-content">
         <div class="field-container-text">
-            <input type="text" ${element.attributeString} value="<c:out value='${answers[element.id]}'/>"
+            <input type="text" id="${element.id}" ${element.attributeString} name="${element.id}" <haku:placeholder titled="${element}"/> <haku:value value='${answers[element.id]}'/>
                    class="postal-code"/>
             <span class="post-office"><haku:i18nText value="${element.data[answers[element.id]].i18nText}"/></span>
         </div>

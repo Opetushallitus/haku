@@ -23,7 +23,7 @@
     </c:when>
     <c:otherwise>
         <haku:setSelectedValue element="${element}"/>
-        <select ${element.attributeString}>
+        <select ${element.attributeString} id="${element.id}" name="${element.id}">
             <c:if test="${not element.selected}">
                 <option value="">&nbsp;</option>
             </c:if>

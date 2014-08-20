@@ -49,7 +49,7 @@
             <div class="field-container-text">
                 <input id="${textInputId}"
                        name="${textInputId}"
-                       value="<c:out value='${answers[textInputId]}'/>"
+                       <haku:value value='${answers[textInputId]}'/>
                        type="text"
                        data-special-id="preferenceLopInput"
                        data-selectinputid="${selectInputId}"
@@ -57,7 +57,7 @@
                 ${sortableItem.attributes['required']}/>
                 <haku:errorMessage id="${textInputId}" additionalClass="margin-top-1"/>
                 <input id="${hiddenInputId}" name="${hiddenInputId}"
-                       value="<c:out value='${answers[hiddenInputId]}'/>"
+                       <haku:value value='${answers[hiddenInputId]}'/>
                        type="hidden"/>
             </div>
         </div>
