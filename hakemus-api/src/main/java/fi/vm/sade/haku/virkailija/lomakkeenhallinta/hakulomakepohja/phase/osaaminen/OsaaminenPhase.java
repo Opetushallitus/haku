@@ -26,6 +26,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.Or;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.hakutoiveet.HakutoiveetPhase;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.service.ThemeQuestionConfigurator;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ExprUtil;
 
 import java.util.ArrayList;
@@ -101,9 +102,9 @@ public class OsaaminenPhase {
                     ).build()
             );
 
-
+            ThemeQuestionConfigurator configurator = formParameters.getThemeQuestionConfigurator();
+            osaaminenTheme.addChild(configurator.findAndConfigure(osaaminenTheme.getId()));
         }
         return osaaminen;
-
     }
 }
