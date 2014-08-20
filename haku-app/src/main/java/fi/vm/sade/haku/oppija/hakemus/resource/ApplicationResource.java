@@ -16,13 +16,18 @@
 
 package fi.vm.sade.haku.oppija.hakemus.resource;
 
+import com.google.common.base.Predicate;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationAdditionalDataDTO;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationQueryParameters;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
+import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.Titled;
 import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,21 +89,20 @@ public class ApplicationResource {
     }
 
     @GET
+    @Path("testi")
+    @Produces("application/xls")
+    public XLSParameter getApplicationsByOids(@QueryParam("asid") String asid, @QueryParam("oid") List<String> oid) {
+        ApplicationSystem activeApplicationSystem = applicationSystemService.getActiveApplicationSystem(asid);
+        List<Application> applications = getApplications(oid);
+        Map<String, Titled> elementsByType = ElementUtil.findElementsByType(activeApplicationSystem.getForm(), Titled.class);
+        return new XLSParameter(activeApplicationSystem, applications, elementsByType);
+    }
+    @GET
     @Path("list")
-    @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
-    @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_READ', 'ROLE_APP_HAKEMUS_CRUD', 'ROLE_APP_HAKEMUS_OPO')")
+    @Produces({MediaType.APPLICATION_JSON + CHARSET_UTF_8, "application/xls"})
+//    @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_READ', 'ROLE_APP_HAKEMUS_CRUD', 'ROLE_APP_HAKEMUS_OPO')")
     public List<Application> getApplicationsByOids(@QueryParam("oid") List<String> oids) {
-        List<Application> result = new ArrayList<Application>();
-        for (String oid : oids) {
-            LOGGER.debug("Getting application by oid : {}", oid);
-            try {
-                Application app = applicationService.getApplicationByOid(oid);
-                result.add(app);
-            } catch (ResourceNotFoundException e) {
-                throw new JSONException(Response.Status.NOT_FOUND, "Could not find requested application with oid: " + oid, e);
-            }
-        }
-        return result;
+        return getApplications(oids);
     }
 
     @POST
@@ -107,18 +111,7 @@ public class ApplicationResource {
     @Consumes("application/json")
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_READ', 'ROLE_APP_HAKEMUS_CRUD', 'ROLE_APP_HAKEMUS_OPO')")
     public List<Application> getApplicationsByOidsPost(final List<String> oids) {
-
-        List<Application> result = new ArrayList<Application>();
-        for (String oid : oids) {
-            LOGGER.debug("Getting appApplicationRlication by oid : {}", oid);
-            try {
-                Application app = applicationService.getApplicationByOid(oid);
-                result.add(app);
-            } catch (ResourceNotFoundException e) {
-                throw new JSONException(Response.Status.NOT_FOUND, "Could not find requested application with oid: " + oid, e);
-            }
-        }
-        return result;
+        return getApplications(oids);
     }
 
     @GET
@@ -269,5 +262,19 @@ public class ApplicationResource {
                                              @PathParam("aoId") String aoId,
                                              List<ApplicationAdditionalDataDTO> additionalData) {
         applicationService.saveApplicationAdditionalInfo(additionalData);
+    }
+
+    private List<Application> getApplications(List<String> oids) {
+        List<Application> result = new ArrayList<Application>();
+        for (String oid : oids) {
+            LOGGER.debug("Getting application by oid : {}", oid);
+            try {
+                Application app = applicationService.getApplicationByOid(oid);
+                result.add(app);
+            } catch (ResourceNotFoundException e) {
+                throw new JSONException(Response.Status.NOT_FOUND, "Could not find requested application with oid: " + oid, e);
+            }
+        }
+        return result;
     }
 }

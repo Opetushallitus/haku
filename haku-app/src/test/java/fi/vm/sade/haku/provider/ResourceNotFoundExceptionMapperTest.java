@@ -14,7 +14,7 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.haku.oppija.ui.provider;
+package fi.vm.sade.haku.provider;
 
 import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
 import org.junit.Before;
