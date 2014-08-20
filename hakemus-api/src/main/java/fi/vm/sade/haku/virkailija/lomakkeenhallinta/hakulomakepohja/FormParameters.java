@@ -113,7 +113,7 @@ public class FormParameters {
         return applicationSystem.getApplicationSystemType().equals(OppijaConstants.LISA_HAKU);
     }
 
-    public ThemeQuestionConfigurator getThemeQuestionGenerator() {
+    public ThemeQuestionConfigurator getThemeQuestionConfigurator() {
         return new ThemeQuestionConfigurator(themeQuestionDAO, hakukohdeService, applicationOptionService, this);
     }
 

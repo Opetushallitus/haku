@@ -154,11 +154,10 @@ public class HakutoiveetPhase {
         }
 
         pr.setValidator(new PreferenceValidator());
-        ThemeQuestionConfigurator configurator = formParameters.getThemeQuestionGenerator();
-        List<Element> themeQuestions = configurator.findAndConfigure(formParameters.getApplicationSystem(), HAKUTOIVEET_THEME_ID, pr.getId());
-        if (themeQuestions.size() > 0){
-           pr.addChild(themeQuestions.toArray(new Element[themeQuestions.size()]));
-        }
+
+        ThemeQuestionConfigurator configurator = formParameters.getThemeQuestionConfigurator();
+        pr.addChild(configurator.findAndConfigure(HAKUTOIVEET_THEME_ID, pr.getId()));
+
         return pr;
     }
 

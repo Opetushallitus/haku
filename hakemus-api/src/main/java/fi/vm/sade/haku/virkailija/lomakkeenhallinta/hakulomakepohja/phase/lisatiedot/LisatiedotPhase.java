@@ -11,8 +11,6 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ExprUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 
-import java.util.List;
-
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.CheckBoxBuilder.Checkbox;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.PhaseBuilder.Phase;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.RadioBuilder.Radio;
@@ -93,11 +91,8 @@ public class LisatiedotPhase {
                 .required()
                 .formParams(formParameters).build());
 
-        ThemeQuestionConfigurator configurator = formParameters.getThemeQuestionGenerator();
-        List<Element> themeQuestions = configurator.findAndConfigure(formParameters.getApplicationSystem(), lupatiedotTheme.getId());
-        if (themeQuestions.size() > 0){
-            lupatiedotTheme.addChild(themeQuestions.toArray(new Element[themeQuestions.size()]));
-        }
+        ThemeQuestionConfigurator configurator = formParameters.getThemeQuestionConfigurator();
+        lupatiedotTheme.addChild(configurator.findAndConfigure(lupatiedotTheme.getId()));
         return lupatiedotTheme;
     }
 
