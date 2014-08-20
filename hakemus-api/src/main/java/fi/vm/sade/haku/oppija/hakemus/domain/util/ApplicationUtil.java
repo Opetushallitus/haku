@@ -91,12 +91,12 @@ public final class ApplicationUtil {
             if (answers.containsKey(liiteKey) && !aos.contains(key)) {
                 String groupsStr = answers.get("preference" + i + "-Koulutus-id-attachmentgroups");
                 if (StringUtils.isBlank(groupsStr)) {
-                    aos.add(key);
+                    aos.add(answers.get(key));
                 } else {
                     for (String group : groupsStr.split(",")) {
                         if (!aspaAos.contains(group)) {
                             aspaAos.add(group);
-                            aos.add(key);
+                            aos.add(answers.get(key));
                         }
                     }
                 }
@@ -116,6 +116,7 @@ public final class ApplicationUtil {
 
     private static List<String> getAosForType(Application application, String liiteKeyBase) {
         Map<String, String> answers = application.getPhaseAnswers(OppijaConstants.PHASE_APPLICATION_OPTIONS);
+        List<String> providers = new ArrayList<String>();
         List<String> aos = new ArrayList<String>();
         int i = 1;
         while (true) {
@@ -124,8 +125,12 @@ public final class ApplicationUtil {
                 break;
             }
             String liiteKey = "preference" + i + "-" + liiteKeyBase;
-            if (answers.containsKey(liiteKey) && !aos.contains(answers.get(key))) {
+            String provider = answers.get("preference" + i + "-Opetuspiste-id");
+            if (answers.containsKey(liiteKey)
+                    && !aos.contains(answers.get(key))
+                    && !providers.contains(provider)) {
                 aos.add(answers.get(key));
+                providers.add(provider);
             }
             i++;
         }
