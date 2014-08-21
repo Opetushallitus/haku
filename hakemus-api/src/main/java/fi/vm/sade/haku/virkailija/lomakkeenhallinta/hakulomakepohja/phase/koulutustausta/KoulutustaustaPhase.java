@@ -143,8 +143,6 @@ public final class KoulutustaustaPhase {
                 .formParams(formParameters).build();
         Element nimike = TextQuestion("pohjakoulutus_kk_nimike").labelKey("pohjakoulutus.tutkintonimike")
                 .formParams(formParameters).requiredInline().build();
-        Element tutkinto = TextQuestion("pohjakoulutus_kk_tutkinto").labelKey("pohjakoulutus.tutkinto")
-                .formParams(formParameters).requiredInline().build();
         Element oppilaitos = TextQuestion("pohjakoulutus_kk_oppilaitos")
                 .requiredInline().formParams(formParameters).build();
         Element ulkomailla = Checkbox("pohjakoulutus_kk_ulkomainen")
@@ -154,7 +152,7 @@ public final class KoulutustaustaPhase {
         Element ulkomaillaMore = createVarEqualsToValueRule(ulkomailla.getId(), "true");
         ulkomaillaMore.addChild(ulkomaillaMissa);
 
-        kkMore.addChild(taso, vuosi, nimike, tutkinto, oppilaitos, ulkomailla, ulkomaillaMore);
+        kkMore.addChild(taso, vuosi, nimike, oppilaitos, ulkomailla, ulkomaillaMore);
         kk.addChild(kkMore);
 
         return kk;
@@ -246,7 +244,7 @@ public final class KoulutustaustaPhase {
                 .requiredInline().formParams(formParameters).build();
         ulkomainenYoMore.addChild(ulkomainenYoMissa);
         ulkomainenYo.addChild(ulkomainenYoMore);
-        
+
         yoMore.addChild(vuosi, yoTutkinto, ulkomainenYo, ammatillinen);
 
         yo.addChild(yoMore);
