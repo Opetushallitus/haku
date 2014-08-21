@@ -202,7 +202,7 @@ public class PreferenceConcreteValidatorImpl extends PreferenceConcreteValidator
     private boolean checkAOIdentifier(final ValidationInput validationInput, final ApplicationOption applicationOption) {
         final String key = validationInput.getElement().getId() + "-Koulutus-id-aoIdentifier";
         String aoIdentifier = StringUtil.safeToString(applicationOption.getAoIdentifier());
-        if (aoIdentifier.equals(validationInput.getValueByKey(key))) {
+        if (aoIdentifier.equals(StringUtil.safeToString(validationInput.getValueByKey(key)))) {
             return true;
         }
         LOGGER.error(ERROR_STR, key, validationInput, applicationOption);
