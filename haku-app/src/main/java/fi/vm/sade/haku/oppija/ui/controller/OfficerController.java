@@ -16,38 +16,7 @@
 
 package fi.vm.sade.haku.oppija.ui.controller;
 
-import static fi.vm.sade.haku.oppija.ui.common.MultivaluedMapUtil.toSingleValueMap;
-import static javax.ws.rs.core.Response.ok;
-import static javax.ws.rs.core.Response.seeOther;
-
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.MultivaluedMap;
-import javax.ws.rs.core.Response;
-
-import org.apache.http.HttpResponse;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Controller;
-
 import com.sun.jersey.api.view.Viewable;
-
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
@@ -61,8 +30,31 @@ import fi.vm.sade.haku.oppija.ui.service.UIService;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.EmailService;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.PDFService;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.dto.ApplicationByEmailDTO;
-import fi.vm.sade.haku.virkailija.viestintapalvelu.dto.ApplicationTemplateDTO;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.dto.ApplicationReplacementDTO;
+import fi.vm.sade.haku.virkailija.viestintapalvelu.dto.ApplicationTemplateDTO;
+import org.apache.http.HttpResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.stereotype.Controller;
+
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.core.Response;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static fi.vm.sade.haku.oppija.ui.common.MultivaluedMapUtil.toSingleValueMap;
+import static javax.ws.rs.core.Response.ok;
+import static javax.ws.rs.core.Response.seeOther;
 
 
 @Path("virkailija")
@@ -129,7 +121,7 @@ public class OfficerController {
 
     @GET
     @Path("/hakemus/{oid}/")
-    public Viewable redirectToLastPhase(@PathParam(OID_PATH_PARAM) final String oid) throws URISyntaxException {
+    public Viewable redirectToLastPhase(@PathParam(OID_PATH_PARAM) final String oid) throws URISyntaxException, IOException {
         LOGGER.debug("get application  {}", oid);
         ModelResponse modelResponse = officerUIService.getValidatedApplication(oid, "esikatselu");
         return new Viewable(DEFAULT_VIEW, modelResponse.getModel());
@@ -140,7 +132,7 @@ public class OfficerController {
     @Produces(MEDIA_TYPE_TEXT_HTML_UTF8)
     public Viewable getPreview(@PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId,
                                @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
-                               @PathParam(OID_PATH_PARAM) final String oid) {
+                               @PathParam(OID_PATH_PARAM) final String oid) throws IOException {
 
         LOGGER.debug("getPreview {}, {}, {}", applicationSystemId, phaseId, oid);
         ModelResponse modelResponse = officerUIService.getValidatedApplication(oid, phaseId);
@@ -151,7 +143,7 @@ public class OfficerController {
     @Path("/hakemus/multiple")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(MEDIA_TYPE_TEXT_HTML_UTF8)
-    public Viewable openApplications(final MultivaluedMap<String, String> multiValues) {
+    public Viewable openApplications(final MultivaluedMap<String, String> multiValues) throws IOException {
         LOGGER.debug("Opening multiple applications");
         Map<String, String> values = toSingleValueMap(multiValues);
         String applicationList = values.get("applicationList");
@@ -185,7 +177,7 @@ public class OfficerController {
                                 @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
                                 @PathParam(OID_PATH_PARAM) final String oid,
                                 final MultivaluedMap<String, String> multiValues)
-            throws URISyntaxException {
+            throws URISyntaxException, IOException {
 
         LOGGER.debug("updatePhase {}, {}, {}", applicationSystemId, phaseId, oid);
 
@@ -357,7 +349,7 @@ public class OfficerController {
     @Path("/autocomplete/{list}")
     @Produces(MediaType.APPLICATION_JSON)
     public List<Map<String, Object>> getAutocomplete(@PathParam("list") String list,
-                                                     @QueryParam("term") String term) {
+                                                     @QueryParam("term") String term) throws UnsupportedEncodingException {
         if ("school".equals(list)) {
             return officerUIService.getSchools(term);
         } else if ("preference".equals(list)) {

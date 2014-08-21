@@ -22,7 +22,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import fi.vm.sade.haku.oppija.common.organisaatio.Organization;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
-import fi.vm.sade.organisaatio.service.search.SearchCriteria;
+import fi.vm.sade.organisaatio.api.search.OrganisaatioSearchCriteria;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,10 +30,10 @@ import org.springframework.stereotype.Component;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.UnsupportedEncodingException;
+import java.util.*;
+
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 @Component
 @Path("/organization")
@@ -51,7 +51,7 @@ public class OrganizationResource {
     public List<Map<String, Object>> searchJson(@QueryParam("searchString") final String searchString,
                                                 @QueryParam("organizationType") final String organizationType,
                                                 @QueryParam("learningInstitutionType") final String learningInstitutionType,
-                                                @QueryParam("onlyPassive") @DefaultValue("false") final boolean onlyPassive) {
+                                                @QueryParam("onlyPassive") @DefaultValue("false") final boolean onlyPassive) throws UnsupportedEncodingException {
         LOGGER.debug("Search organizations q: {}, orgType: {}, loiType: {}, passive: {}",
                 searchString, organizationType, learningInstitutionType, String.valueOf(onlyPassive));
         List<Organization> listOfOrganization = getOrganizations(searchString, organizationType,
@@ -110,20 +110,24 @@ public class OrganizationResource {
     private List<Organization> getOrganizations(final String searchString,
                                                 final String organizationType,
                                                 final String learningInstitutionType,
-                                                final boolean onlyPassive) {
+                                                final boolean onlyPassive) throws UnsupportedEncodingException {
         LOGGER.debug("getOrganizations {} {} {} {}",
                 searchString, organizationType, learningInstitutionType,
                         String.valueOf(onlyPassive));
-        SearchCriteria criteria = new SearchCriteria();
+        OrganisaatioSearchCriteria criteria = new OrganisaatioSearchCriteria();
         criteria.setSearchStr(searchString);
         criteria.setOrganisaatioTyyppi(organizationType);
-        criteria.setOppilaitosTyyppi(learningInstitutionType);
+        if (isNotBlank(learningInstitutionType)) {
+            Set<String> learningInstitutionTypeSet = new HashSet<String>();
+            learningInstitutionTypeSet.add(learningInstitutionType);
+            criteria.setOppilaitosTyyppi(learningInstitutionTypeSet);
+        }
         if (onlyPassive) {
-            criteria.setLakkautetut(true);
-            criteria.setAktiiviset(false);
+            criteria.setVainLakkautetut(true);
+            criteria.setVainAktiiviset(false);
         } else {
-            criteria.setAktiiviset(true);
-            criteria.setLakkautetut(false);
+            criteria.setVainAktiiviset(true);
+            criteria.setVainLakkautetut(false);
         }
 
         List<Organization> organizations = organizationService.search(criteria);

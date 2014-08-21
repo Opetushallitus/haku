@@ -30,8 +30,10 @@ public class OrganisaatioPerustietoToOrganizationFunction implements
         final Date startDate = input.getAlkuPvm();
         final Date endDate = input.getLakkautusPvm();
 
+        final String oppilaitostyyppi = input.getOppilaitostyyppi();
+
         Map<String, String> nimiTranslations = TranslationsUtil.createTranslationsMap(input.getNimi());
-        return new Organization(new I18nText(nimiTranslations), oid, parentOid, types,
+        return new Organization(new I18nText(nimiTranslations), oid, parentOid, types, oppilaitostyyppi,
                 startDate, endDate);
     }
 }
