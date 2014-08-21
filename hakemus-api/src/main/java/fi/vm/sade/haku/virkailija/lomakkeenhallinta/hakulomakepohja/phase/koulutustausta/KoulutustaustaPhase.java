@@ -240,9 +240,14 @@ public final class KoulutustaustaPhase {
                 ammatillinenLaajuus, ammatillinenLaajuusYksikot);
         ammatillinen.addChild(ammatillinenMore);
 
-        yoMore.addChild(vuosi, yoTutkinto,
-                Checkbox("pohjakoulutus_yo_ulkomainen").inline().formParams(formParameters).build(),
-                ammatillinen);
+        Element ulkomainenYo = Checkbox("pohjakoulutus_yo_ulkomainen").inline().formParams(formParameters).build();
+        Element ulkomainenYoMore = createVarEqualsToValueRule(ulkomainenYo.getId(), "true");
+        Element ulkomainenYoMissa = TextQuestion("pohjakoulutus_yo_ulkomainen_maa")
+                .requiredInline().formParams(formParameters).build();
+        ulkomainenYoMore.addChild(ulkomainenYoMissa);
+        ulkomainenYo.addChild(ulkomainenYoMore);
+        
+        yoMore.addChild(vuosi, yoTutkinto, ulkomainenYo, ammatillinen);
 
         yo.addChild(yoMore);
         return yo;
