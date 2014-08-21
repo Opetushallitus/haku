@@ -20,7 +20,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Titled;
 import org.codehaus.jackson.annotate.JsonProperty;
 
-public class TextQuestion extends Titled {
+public class TextQuestion extends Question {
 
     private static final long serialVersionUID = -4941045359062359811L;
 

@@ -27,7 +27,7 @@ import org.springframework.data.annotation.Transient;
 
 import java.util.*;
 
-public abstract class OptionQuestion extends Titled {
+public abstract class OptionQuestion extends Question {
 
     private static final long serialVersionUID = -2304711424350028559L;
 

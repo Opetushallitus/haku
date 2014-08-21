@@ -20,7 +20,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Titled;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 
-public class Option extends Titled {
+public class Option extends Question{
 
     private static final long serialVersionUID = 2199056039532430243L;
     private final String value;

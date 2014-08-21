@@ -16,15 +16,15 @@
 
 package fi.vm.sade.haku.oppija.hakemus.resource;
 
-import com.google.common.base.Predicate;
+import com.google.common.collect.Lists;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationAdditionalDataDTO;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationQueryParameters;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Titled;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Question;
 import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
@@ -89,18 +89,33 @@ public class ApplicationResource {
     }
 
     @GET
-    @Path("testi")
-    @Produces("application/xls")
-    public XLSParameter getApplicationsByOids(@QueryParam("asid") String asid, @QueryParam("oid") List<String> oid) {
-        ApplicationSystem activeApplicationSystem = applicationSystemService.getActiveApplicationSystem(asid);
-        List<Application> applications = getApplications(oid);
-        Map<String, Titled> elementsByType = ElementUtil.findElementsByType(activeApplicationSystem.getForm(), Titled.class);
-        return new XLSParameter(activeApplicationSystem, applications, elementsByType);
+    @Path("{asid}/{aoid}")
+    @Produces(MediaType.APPLICATION_OCTET_STREAM)
+    public XlsParameter getApplicattionsByOids(@PathParam("asid") String asid,
+                                               @PathParam("aoid") String aoid,
+                                               @DefaultValue(value = "") @QueryParam("q") String query,
+                                               @QueryParam("appState") List<String> state,
+                                               @QueryParam("lopoid") String lopoid,
+                                               @QueryParam("aoOid") String aoOid,
+                                               @QueryParam("discretionaryOnly") Boolean discretionaryOnly,
+                                               @QueryParam("sendingSchoolOid") String sendingSchoolOid,
+                                               @QueryParam("sendingClass") String sendingClass,
+                                               @QueryParam("updatedAfter") DateParam updatedAfter,
+                                               @DefaultValue(value = "0") @QueryParam("start") int start,
+                                               @DefaultValue(value = "100") @QueryParam("rows") int rows) {
+        ApplicationSystem activeApplicationSystem = applicationSystemService.getApplicationSystem(asid);
+
+        List<Map<String, Object>> applications = applicationService.findFullApplications(
+                query, new ApplicationQueryParameters(state, Lists.newArrayList(asid), aoid, lopoid, aoOid, discretionaryOnly,
+                sendingSchoolOid, sendingClass, updatedAfter != null ? updatedAfter.getDate() : null, start, rows, "oid", 1));
+        Map<String, Question> elementsByType = ElementUtil.findElementsByType(activeApplicationSystem.getForm(), Question.class);
+        return new XlsParameter(activeApplicationSystem, applications, elementsByType);
     }
+
     @GET
     @Path("list")
     @Produces({MediaType.APPLICATION_JSON + CHARSET_UTF_8, "application/xls"})
-//    @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_READ', 'ROLE_APP_HAKEMUS_CRUD', 'ROLE_APP_HAKEMUS_OPO')")
+    @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_READ', 'ROLE_APP_HAKEMUS_CRUD', 'ROLE_APP_HAKEMUS_OPO')")
     public List<Application> getApplicationsByOids(@QueryParam("oid") List<String> oids) {
         return getApplications(oids);
     }
@@ -119,19 +134,19 @@ public class ApplicationResource {
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_READ', 'ROLE_APP_HAKEMUS_CRUD', 'ROLE_APP_HAKEMUS_OPO')")
     public List<Map<String, Object>> findFullApplications(@DefaultValue(value = "") @QueryParam("q") String query,
-                                                       @QueryParam("appState") List<String> state,
-                                                       @QueryParam("aoid") String aoid,
-                                                       @QueryParam("lopoid") String lopoid,
-                                                       @QueryParam("asId") String asId,
-                                                       @QueryParam("asSemester") String asSemester,
-                                                       @QueryParam("asYear") String asYear,
-                                                       @QueryParam("aoOid") String aoOid,
-                                                       @QueryParam("discretionaryOnly") Boolean discretionaryOnly,
-                                                       @QueryParam("sendingSchoolOid") String sendingSchoolOid,
-                                                       @QueryParam("sendingClass") String sendingClass,
-                                                       @QueryParam("updatedAfter") DateParam updatedAfter,
-                                                       @DefaultValue(value = "0") @QueryParam("start") int start,
-                                                       @DefaultValue(value = "100") @QueryParam("rows") int rows) {
+                                                          @QueryParam("appState") List<String> state,
+                                                          @QueryParam("aoid") String aoid,
+                                                          @QueryParam("lopoid") String lopoid,
+                                                          @QueryParam("asId") String asId,
+                                                          @QueryParam("asSemester") String asSemester,
+                                                          @QueryParam("asYear") String asYear,
+                                                          @QueryParam("aoOid") String aoOid,
+                                                          @QueryParam("discretionaryOnly") Boolean discretionaryOnly,
+                                                          @QueryParam("sendingSchoolOid") String sendingSchoolOid,
+                                                          @QueryParam("sendingClass") String sendingClass,
+                                                          @QueryParam("updatedAfter") DateParam updatedAfter,
+                                                          @DefaultValue(value = "0") @QueryParam("start") int start,
+                                                          @DefaultValue(value = "100") @QueryParam("rows") int rows) {
 
         LOGGER.debug("findFullApplications start: {}", System.currentTimeMillis());
         List<String> asIds = new ArrayList<String>();
@@ -142,7 +157,7 @@ public class ApplicationResource {
         }
         List<Map<String, Object>> apps = applicationService.findFullApplications(
                 query, new ApplicationQueryParameters(state, asIds, aoid, lopoid, aoOid, discretionaryOnly,
-                        sendingSchoolOid, sendingClass, updatedAfter != null ? updatedAfter.getDate() : null, start, rows, "oid", 1));
+                sendingSchoolOid, sendingClass, updatedAfter != null ? updatedAfter.getDate() : null, start, rows, "oid", 1));
         LOGGER.debug("findFullApplications done: {}", System.currentTimeMillis());
         return apps;
     }
