@@ -19,9 +19,12 @@ import com.google.common.base.Function;
 import com.mongodb.DBObject;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.SocialSecurityNumber;
+import fi.vm.sade.haku.oppija.lomake.exception.ConfigurationException;
 import fi.vm.sade.haku.oppija.lomake.service.EncrypterService;
 import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -34,6 +37,7 @@ public class DBObjectToApplicationFunction implements Function<DBObject, Applica
     private final EncrypterService encrypterService;
     private final ObjectMapper objectMapper;
 
+    private static final Logger log = LoggerFactory.getLogger(DBObjectToApplicationFunction.class);
 
     @Autowired
     public DBObjectToApplicationFunction(@Qualifier("aesEncrypter") EncrypterService encrypterService) {
@@ -50,7 +54,13 @@ public class DBObjectToApplicationFunction implements Function<DBObject, Applica
             final Map<String, String> henkilotiedot = answers.get("henkilotiedot");
             if (henkilotiedot != null && henkilotiedot.containsKey(SocialSecurityNumber.HENKILOTUNNUS)) {
                 final String hetu = henkilotiedot.get(SocialSecurityNumber.HENKILOTUNNUS);
-                henkilotiedot.put(SocialSecurityNumber.HENKILOTUNNUS, encrypterService.decrypt(hetu));
+                try {
+                    henkilotiedot.put(SocialSecurityNumber.HENKILOTUNNUS, encrypterService.decrypt(hetu));
+                } catch (ConfigurationException ce) {
+                    String oid = (String) dbObject.get("oid");
+                    log.error("Decrypting hetu failed for application.oid : "+oid);
+                    throw ce;
+                }
             }
         }
         return objectMapper.convertValue(dbObject, Application.class);
