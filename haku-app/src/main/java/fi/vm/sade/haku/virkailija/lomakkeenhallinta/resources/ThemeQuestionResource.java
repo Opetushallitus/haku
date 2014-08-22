@@ -16,7 +16,6 @@
 
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.resources;
 
-import com.google.common.collect.ImmutableList;
 import fi.vm.sade.haku.oppija.common.koulutusinformaatio.ApplicationOptionService;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
 import fi.vm.sade.haku.oppija.hakemus.resource.JSONException;
@@ -28,7 +27,6 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParamete
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakuService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakukohdeService;
-import fi.vm.sade.haku.virkailija.organization.resource.OrganizationResource;
 import fi.vm.sade.tarjonta.service.resources.dto.HakukohdeDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,21 +34,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.io.IOException;
+import java.util.*;
 
 
 @Controller
@@ -134,7 +122,7 @@ public class ThemeQuestionResource {
     @Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKULOMAKKEENHALLINTA_READ_UPDATE', 'ROLE_APP_HAKULOMAKKEENHALLINTA_CRUD')")
     public void updateThemeQuestion(@PathParam("themeQuestionId") String themeQuestionId,
-                                    ThemeQuestion themeQuestion) {
+                                    ThemeQuestion themeQuestion) throws IOException {
         LOGGER.debug("Updating theme question with id: {}", themeQuestionId);
 
         if (!themeQuestionId.equals(themeQuestion.getId().toString())){
@@ -165,7 +153,7 @@ public class ThemeQuestionResource {
     public void saveNewThemeQuestion(@PathParam("applicationSystemId") String applicationSystemId,
                                      @PathParam("learningOpportunityId") String learningOpportunityId,
                                      @PathParam("themeId")  String themeId,
-                                     ThemeQuestion themeQuestion) {
+                                     ThemeQuestion themeQuestion) throws IOException {
         LOGGER.debug("Posted " + themeQuestion);
         if (null == applicationSystemId || null == learningOpportunityId)
             throw new JSONException(Response.Status.BAD_REQUEST, "Missing pathparameters", null);
@@ -247,7 +235,7 @@ public class ThemeQuestionResource {
         }
     }
 
-    private ThemeQuestion fillInOwnerOrganizationsFromApplicationOption(final ThemeQuestion themeQuestion){
+    private ThemeQuestion fillInOwnerOrganizationsFromApplicationOption(final ThemeQuestion themeQuestion) throws IOException {
         LOGGER.debug("Filling in organizations for theme question for application system " + themeQuestion.getApplicationSystemId() + " application option " + themeQuestion.getLearningOpportunityId());
         HashSet<String> ownerOrganizations = new HashSet<String>();
         ownerOrganizations.addAll(fetchApplicationOptionParents(themeQuestion.getLearningOpportunityId()));
@@ -255,7 +243,7 @@ public class ThemeQuestionResource {
         return themeQuestion;
     }
 
-    private ThemeQuestion fillInOwnerOrganizationsFromApplicationOptionGroup(final ThemeQuestion themeQuestion) {
+    private ThemeQuestion fillInOwnerOrganizationsFromApplicationOptionGroup(final ThemeQuestion themeQuestion) throws IOException {
         String applicationOptionGroupId = themeQuestion.getLearningOpportunityId();
         LOGGER.debug("Filling in organizations for theme question for application system " + themeQuestion.getApplicationSystemId() + " application option group " + applicationOptionGroupId);
         List <String> applicationOptionsIds = hakukohdeService.findByGroupAndApplicationSystem(applicationOptionGroupId, themeQuestion.getApplicationSystemId());
@@ -267,7 +255,7 @@ public class ThemeQuestionResource {
         return themeQuestion;
     }
 
-    private List<String> fetchApplicationOptionParents(final String applicationOptionId){
+    private List<String> fetchApplicationOptionParents(final String applicationOptionId) throws IOException {
         HakukohdeDTO applicationOption = null;
         try {
             applicationOption = hakukohdeService.findByOid(applicationOptionId);

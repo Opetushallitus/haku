@@ -49,6 +49,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.*;
 
 import static org.apache.commons.lang.StringUtils.isEmpty;
@@ -277,7 +278,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public Application updateAuthorizationMeta(Application application, boolean save) {
+    public Application updateAuthorizationMeta(Application application, boolean save) throws IOException {
         boolean opoAllowed = resolveOpoAllowed(application);
         Map<String, Set<String>> aoOrganizations = new HashMap<String, Set<String>>();
         Set<String> allOrganizations = new HashSet<String>();

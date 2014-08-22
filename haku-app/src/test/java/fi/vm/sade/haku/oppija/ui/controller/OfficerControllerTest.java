@@ -89,8 +89,9 @@ public class OfficerControllerTest {
     }
 
     @Test
-    public void testUpdatePhase() throws URISyntaxException {
-        Response response = officerController.updatePhase(ASID, "henkilotiedot", OID, new MultivaluedMapImpl());
+    public void testUpdatePhase() throws URISyntaxException, IOException {
+        Response response = null;
+        response = officerController.updatePhase(ASID, "henkilotiedot", OID, new MultivaluedMapImpl());
         assertEquals(Response.Status.SEE_OTHER.getStatusCode(), response.getStatus());
     }
 

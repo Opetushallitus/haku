@@ -18,7 +18,6 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.domain.Code;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 
-import javax.ws.rs.HEAD;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -144,13 +143,16 @@ public final class KoulutustaustaPhase {
                 .formParams(formParameters).build();
         Element nimike = TextQuestion("pohjakoulutus_kk_nimike").labelKey("pohjakoulutus.tutkintonimike")
                 .formParams(formParameters).requiredInline().build();
-        Element tutkinto = TextQuestion("pohjakoulutus_kk_tutkinto").labelKey("pohjakoulutus.tutkinto")
-                .formParams(formParameters).requiredInline().build();
-        // TODO: korkeakouluvalinnan dropdowniin 'muu', laukaisee tekstikysymyksen, johon koulu
-        Element oppilaitos = Dropdown("pohjakoulutus_kk_oppilaitos")
-                .addOptions(korkeakoulut)
-                .labelKey("pohjakoulutus.korkeakoulu").requiredInline().formParams(formParameters).build();
-        kkMore.addChild(taso, vuosi, nimike, tutkinto, oppilaitos);
+        Element oppilaitos = TextQuestion("pohjakoulutus_kk_oppilaitos")
+                .requiredInline().formParams(formParameters).build();
+        Element ulkomailla = Checkbox("pohjakoulutus_kk_ulkomainen")
+                .inline().formParams(formParameters).build();
+        Element ulkomaillaMissa = TextQuestion("pohjakoulutus_kk_ulkomainen_missa")
+                .requiredInline().formParams(formParameters).build();
+        Element ulkomaillaMore = createVarEqualsToValueRule(ulkomailla.getId(), "true");
+        ulkomaillaMore.addChild(ulkomaillaMissa);
+
+        kkMore.addChild(taso, vuosi, nimike, oppilaitos, ulkomailla, ulkomaillaMore);
         kk.addChild(kkMore);
 
         return kk;
@@ -236,9 +238,14 @@ public final class KoulutustaustaPhase {
                 ammatillinenLaajuus, ammatillinenLaajuusYksikot);
         ammatillinen.addChild(ammatillinenMore);
 
-        yoMore.addChild(vuosi, yoTutkinto,
-                Checkbox("pohjakoulutus_yo_ulkomainen").inline().formParams(formParameters).build(),
-                ammatillinen);
+        Element ulkomainenYo = Checkbox("pohjakoulutus_yo_ulkomainen").inline().formParams(formParameters).build();
+        Element ulkomainenYoMore = createVarEqualsToValueRule(ulkomainenYo.getId(), "true");
+        Element ulkomainenYoMissa = TextQuestion("pohjakoulutus_yo_ulkomainen_maa")
+                .requiredInline().formParams(formParameters).build();
+        ulkomainenYoMore.addChild(ulkomainenYoMissa);
+        ulkomainenYo.addChild(ulkomainenYoMore);
+
+        yoMore.addChild(vuosi, yoTutkinto, ulkomainenYo, ammatillinen);
 
         yo.addChild(yoMore);
         return yo;

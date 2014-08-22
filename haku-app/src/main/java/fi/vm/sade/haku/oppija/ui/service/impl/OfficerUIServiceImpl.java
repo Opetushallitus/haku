@@ -1,6 +1,5 @@
 package fi.vm.sade.haku.oppija.ui.service.impl;
 
-import com.google.common.base.Joiner;
 import com.google.common.base.Strings;
 import fi.vm.sade.haku.oppija.common.organisaatio.Organization;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
@@ -41,13 +40,15 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import fi.vm.sade.haku.virkailija.valinta.ValintaService;
 import fi.vm.sade.haku.virkailija.valinta.dto.*;
 import fi.vm.sade.organisaatio.api.model.types.OrganisaatioTyyppi;
-import fi.vm.sade.organisaatio.service.search.SearchCriteria;
+import fi.vm.sade.organisaatio.api.search.OrganisaatioSearchCriteria;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.ParseException;
@@ -132,7 +133,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     }
 
     @Override
-    public ModelResponse getValidatedApplication(final String oid, final String phaseId) {
+    public ModelResponse getValidatedApplication(final String oid, final String phaseId) throws IOException {
         Application application = this.applicationService.getApplicationByOid(oid);
         application.setPhaseId(phaseId); // TODO active applications does not have phaseId?
         Form form = this.formService.getForm(application.getApplicationSystemId());
@@ -320,7 +321,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     }
 
     @Override
-    public ModelResponse updateApplication(final String oid, final ApplicationPhase applicationPhase, User user) {
+    public ModelResponse updateApplication(final String oid, final ApplicationPhase applicationPhase, User user) throws IOException {
 
         Application application = this.applicationService.getApplicationByOid(oid);
         Application queryApplication = new Application(oid, application.getVersion());
@@ -417,7 +418,13 @@ public class OfficerUIServiceImpl implements OfficerUIService {
                 applicationSystemService.getAllApplicationSystems("id", "name", "hakukausiUri", "hakukausiVuosi");
         modelResponse.addObjectToModel("applicationSystems", applicationSystems);
         modelResponse.addObjectToModel("organizationTypes", organizationTypes);
-        modelResponse.addObjectToModel("learningInstitutionTypes", koodistoService.getLearningInstitutionTypes());
+        List<Option> institutionTypes = new ArrayList<Option>();
+        for (Option institution : koodistoService.getLearningInstitutionTypes()) {
+            String value = institution.getValue();
+            value = value.replaceAll("#[0-9]$", "#*");
+            institutionTypes.add(new Option(institution.getI18nText(), value));
+        }
+        modelResponse.addObjectToModel("learningInstitutionTypes", institutionTypes);
         modelResponse.addObjectToModel("hakukausiOptions", koodistoService.getHakukausi());
         modelResponse.addObjectToModel("applicationEnterAllowed", hakuPermissionService.userCanEnterApplication());
         modelResponse.addObjectToModel("sendingSchoolAllowed", hakuPermissionService.userCanSearchBySendingSchool());
@@ -451,7 +458,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     }
 
     @Override
-    public ModelResponse getMultipleApplicationResponse(String applicationList, String selectedApplication) {
+    public ModelResponse getMultipleApplicationResponse(String applicationList, String selectedApplication) throws IOException {
         Application application = applicationService.getApplicationByOid(selectedApplication);
 
         String[] apps = applicationList.split(",");
@@ -496,23 +503,20 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     }
 
     @Override
-    public List<Map<String, Object>> getSchools(String term) {
-        SearchCriteria crit = new SearchCriteria();
+    public List<Map<String, Object>> getSchools(String term) throws UnsupportedEncodingException {
+        OrganisaatioSearchCriteria crit = new OrganisaatioSearchCriteria();
         crit.setOrganisaatioTyyppi(OrganisaatioTyyppi.OPPILAITOS.value());
         crit.setSearchStr(term);
         crit.setSkipParents(true);
-        crit.setAktiiviset(true);
+        crit.setVainAktiiviset(true);
         List<Organization> orgs = organizationService.search(crit);
         List<Map<String, Object>> schools = new ArrayList<Map<String, Object>>(orgs.size());
         LOGGER.debug("Fetching schools with term: '{}', got {} organizations", term, orgs.size());
         int resultCount = 20;
         for (Organization org : orgs) {
-            // This IF is stupid, but necessary. Asking organisaatioService for 'oppilaitos' returns also
-            // organisaatios with type of 'opetuspiste' and 'oppisopimustoimipiste'.
-            LOGGER.debug("Org: " + org.getOid() + " Types: [" + Joiner.on(",").join(org.getTypes()) + "]");
-//            if (!org.getTypes().contains("OPPILAITOS")) {
-//                continue;
-//            }
+            if (org.getOppilaitostyyppi() == null) {
+                continue;
+            }
             I18nText name = org.getName();
             Map<String, Object> school = new HashMap<String, Object>();
             school.put("name", name.getTranslations());

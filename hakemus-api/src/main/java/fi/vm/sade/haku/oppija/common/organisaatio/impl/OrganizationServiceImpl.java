@@ -20,22 +20,23 @@ import fi.vm.sade.generic.rest.CachingRestClient;
 import fi.vm.sade.haku.oppija.common.organisaatio.Organization;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationRestDTO;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
-import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.impl.TranslationsUtil;
 import fi.vm.sade.organisaatio.api.search.OrganisaatioHakutulos;
 import fi.vm.sade.organisaatio.api.search.OrganisaatioPerustieto;
-import fi.vm.sade.organisaatio.service.search.OrganisaatioSearchService;
-import fi.vm.sade.organisaatio.service.search.SearchCriteria;
+import fi.vm.sade.organisaatio.api.search.OrganisaatioSearchCriteria;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.lang.ref.SoftReference;
-import java.util.*;
+import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
@@ -60,16 +61,12 @@ public class OrganizationServiceImpl implements OrganizationService {
     @Value("${authentication.app.password.to.organisaatioservice}")
     private String clientAppPass;
 
-    private final OrganisaatioSearchService service;
-
-    @Autowired
-    public OrganizationServiceImpl(final OrganisaatioSearchService service) {
-        this.service = service;
+    public OrganizationServiceImpl() {
         this.cache = new HashMap<String, SoftReference<Object>>();
     }
 
     @Override
-    public List<Organization> search(final SearchCriteria searchCriteria) {
+    public List<Organization> search(final OrganisaatioSearchCriteria searchCriteria) throws UnsupportedEncodingException {
 
         String baseUrl = targetService + "/rest/organisaatio/hae";
         String params = buildParamString(searchCriteria);
@@ -103,67 +100,55 @@ public class OrganizationServiceImpl implements OrganizationService {
         return orgs;
     }
 
-    private String buildParamString(SearchCriteria criteria) {
+    private String buildParamString(OrganisaatioSearchCriteria criteria) throws UnsupportedEncodingException {
         StringBuilder builder = new StringBuilder("?");
 
-        if (isNotBlank(criteria.getOppilaitosTyyppi())) {
-            builder.append("oppilaitosTyyppi=").append(criteria.getOppilaitosTyyppi()).append("&");
+        if (criteria.getOppilaitosTyyppi() != null && !criteria.getOppilaitosTyyppi().isEmpty()) {
+            builder.append("oppilaitosTyyppi=")
+                    .append(URLEncoder.encode(criteria.getOppilaitosTyyppi().toArray()[0].toString(), "UTF-8"))
+                    .append("&");
         }
         if (isNotBlank(criteria.getOrganisaatioTyyppi())) {
-            builder.append("organisaatioTyyppi=").append(criteria.getOrganisaatioTyyppi()).append("&");
+            builder.append("organisaatioTyyppi=")
+                    .append(URLEncoder.encode(criteria.getOrganisaatioTyyppi(), "UTF-8"))
+                    .append("&");
         }
         if (isNotBlank(criteria.getSearchStr())) {
-            builder.append("searchStr=").append(criteria.getSearchStr()).append("&");
+            builder.append("searchStr=")
+                    .append(URLEncoder.encode(criteria.getSearchStr(), "UTF-8"))
+                    .append("&");
         }
         builder.append("skipParents=").append(String.valueOf(criteria.getSkipParents())).append("&")
                 .append("suunnitellut=").append(String.valueOf(criteria.getSuunnitellut())).append("&")
-                .append("vainLakkautetut=").append(String.valueOf(criteria.getLakkautetut())).append("&")
-                .append("vainAktiiviset=").append(String.valueOf(criteria.getAktiiviset()));
+                .append("vainLakkautetut=").append(String.valueOf(criteria.getVainLakkautetut())).append("&")
+                .append("vainAktiiviset=").append(String.valueOf(criteria.getVainAktiiviset()));
         return builder.toString();
     }
 
     @Override
-    public List<String> findParentOids(final String organizationOid) {
-        // Fix some service curiosities
-        List<String> parentOids = service.findParentOids(organizationOid);
-        if (! parentOids.contains(organizationOid)){
-            parentOids.add(organizationOid);
-        }
-        if (! parentOids.contains(ROOT_ORGANIZATION_OPH)){
-            parentOids.add(ROOT_ORGANIZATION_OPH);
-        }
-        return parentOids;
+    public List<String> findParentOids(final String organizationOid) throws IOException {
+        String url = targetService + "/rest/organisaatio/" + organizationOid + "/parentoids";
+        CachingRestClient client = getCachingRestClient();
+        String parents = client.getAsString(url);
+        return Lists.newArrayList(parents.split("/"));
     }
 
     @Override
-    public Organization findByOid(String oid) {
-        Set<String> singleOid = Collections.singleton(oid);
-        List<Organization> orgs = Lists.newArrayList(Lists.transform(service.findByOidSet(singleOid),
-                new OrganisaatioPerustietoToOrganizationFunction()));
-        if (orgs.size() == 1) {
-            return orgs.get(0);
-        } else if (orgs.size() > 1) {
-            LOG.error("Got more than one organizations for single oid: {}", oid);
-            throw new RuntimeException("Got more one than organizations for single oid");
-        }
-        return null;
+    public Organization findByOid(String oid) throws IOException {
+        String url = targetService + "/rest/organisaatio/" + oid;
+        OrganizationRestDTO organisaatioRDTO = getCached(url, OrganizationRestDTO.class);
+        return new Organization(organisaatioRDTO);
     }
 
     @Override
     public List<Organization> findByOppilaitosnumero(List<String> oppilaitosnumeros) {
         List<Organization> orgs = new ArrayList<Organization>(oppilaitosnumeros.size());
-        String baseUrl = targetService + "/rest/organisaatio/";
         int i = 1;
         try {
             LOG.debug("Getting {} oppilaitosnumeros", oppilaitosnumeros.size());
             for (String numero : oppilaitosnumeros) {
                 LOG.debug("Getting oppilaitosnumero {} ({} / {})", numero, i++, oppilaitosnumeros.size());
-                OrganizationRestDTO orgDTO = getCached(baseUrl + numero, OrganizationRestDTO.class);
-                Map<String, String> nameTranslations = TranslationsUtil.createTranslationsMap(orgDTO.getNimi());
-                Organization org = new Organization(new I18nText(nameTranslations), orgDTO.getOid(),
-                        orgDTO.getParentOid(), orgDTO.getTyypit(), orgDTO.getAlkuPvmAsDate(),
-                        orgDTO.getLoppuPvmAsDate());
-                orgs.add(org);
+                orgs.add(findByOid(numero));
             }
             LOG.debug("Got numbers");
             return orgs;

@@ -17,29 +17,26 @@ package fi.vm.sade.haku.oppija.common.organisaatio;
 
 import com.google.common.collect.ImmutableList;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.impl.TranslationsUtil;
 
 import java.util.Date;
 import java.util.List;
 
 public class Organization {
 
-    private Date endDate;
-
     private I18nText name;
-
     private String oid;
-
     private List<String> types;
-
+    private String oppilaitostyyppi;
     private String parentOid;
-
     private Date startDate;
+    private Date endDate;
 
     public Organization() {
     }
 
     public Organization(final I18nText name, final String oid, final String parentOid,
-                        final List<String> types, Date startDate, Date endDate) {
+                        final List<String> types, String oppilaitostyyppi, Date startDate, Date endDate) {
         if (oid == null) {
             throw new IllegalArgumentException("Oid cannot be null");
         }
@@ -47,8 +44,19 @@ public class Organization {
         this.oid = oid;
         this.parentOid = parentOid;
         this.types = ImmutableList.copyOf(types);
+        this.oppilaitostyyppi = oppilaitostyyppi;
         this.startDate = startDate;
         this.endDate = endDate;
+    }
+
+    public Organization(OrganizationRestDTO organisaatioRDTO) {
+        this.name = new I18nText(TranslationsUtil.createTranslationsMap(organisaatioRDTO.getNimi()));
+        this.oid = organisaatioRDTO.getOid();
+        this.types = organisaatioRDTO.getTyypit();
+        this.parentOid = organisaatioRDTO.getParentOid();
+        this.oppilaitostyyppi = organisaatioRDTO.getOppilaitosTyyppiUri();
+        this.startDate = organisaatioRDTO.getAlkuPvmAsDate();
+        this.endDate = organisaatioRDTO.getLoppuPvmAsDate();
     }
 
     @Override
@@ -104,5 +112,13 @@ public class Organization {
         StringBuilder str = new StringBuilder("{'").append(name.getTranslations().get("fi")).append("'")
                 .append(", oid:").append(oid).append(", parent:").append(parentOid).append("}");
         return str.toString();
+    }
+
+    public String getOppilaitostyyppi() {
+        return oppilaitostyyppi;
+    }
+
+    public void setOppilaitostyyppi(String oppilaitostyyppi) {
+        this.oppilaitostyyppi = oppilaitostyyppi;
     }
 }
