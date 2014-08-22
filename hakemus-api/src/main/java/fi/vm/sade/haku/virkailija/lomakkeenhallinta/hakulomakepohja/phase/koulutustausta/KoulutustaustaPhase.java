@@ -147,12 +147,8 @@ public final class KoulutustaustaPhase {
                 .requiredInline().formParams(formParameters).build();
         Element ulkomailla = Checkbox("pohjakoulutus_kk_ulkomainen")
                 .inline().formParams(formParameters).build();
-        Element ulkomaillaMissa = TextQuestion("pohjakoulutus_kk_ulkomainen_missa")
-                .requiredInline().formParams(formParameters).build();
-        Element ulkomaillaMore = createVarEqualsToValueRule(ulkomailla.getId(), "true");
-        ulkomaillaMore.addChild(ulkomaillaMissa);
 
-        kkMore.addChild(taso, vuosi, nimike, oppilaitos, ulkomailla, ulkomaillaMore);
+        kkMore.addChild(taso, vuosi, nimike, oppilaitos, ulkomailla);
         kk.addChild(kkMore);
 
         return kk;
