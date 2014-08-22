@@ -27,6 +27,9 @@
 
         </c:when>
         <c:otherwise>
+            <c:if test="${not empty ao.provider.applicationOffice.name}">
+                <c:out value="${ao.provider.applicationOffice.name}"/><br/>
+            </c:if>
             <c:if test="${not empty ao.provider.applicationOffice.postalAddress.streetAddress}">
                 <c:out value="${ao.provider.applicationOffice.postalAddress.streetAddress}"/><br/>
             </c:if>
