@@ -128,7 +128,8 @@ public class OrganizationServiceImpl implements OrganizationService {
     @Override
     public List<String> findParentOids(final String organizationOid) throws IOException {
         String url = targetService + "/rest/organisaatio/" + organizationOid + "/parentoids";
-        String parents = getCached(url, String.class);
+        CachingRestClient client = getCachingRestClient();
+        String parents = client.getAsString(url);
         return Lists.newArrayList(parents.split("/"));
     }
 
