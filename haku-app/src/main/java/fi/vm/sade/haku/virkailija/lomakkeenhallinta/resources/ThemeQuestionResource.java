@@ -19,7 +19,10 @@ package fi.vm.sade.haku.virkailija.lomakkeenhallinta.resources;
 import fi.vm.sade.haku.oppija.common.koulutusinformaatio.ApplicationOptionService;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
 import fi.vm.sade.haku.oppija.hakemus.resource.JSONException;
+import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
+import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
+import fi.vm.sade.haku.virkailija.authentication.Person;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.dao.ThemeQuestionDAO;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.dao.ThemeQuestionQueryParameters;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain.ThemeQuestion;
@@ -58,6 +61,8 @@ public class ThemeQuestionResource {
     private HakukohdeService hakukohdeService;
     @Autowired
     private OrganizationService organizationService;
+    @Autowired
+    private AuthenticationService authenticationService;
 
     @Autowired
     private HakuService hakuService;
@@ -75,13 +80,15 @@ public class ThemeQuestionResource {
                                  final OrganizationService organizationService,
                                  final HakuService hakuService,
                                  final KoodistoService koodistoService,
-                                 final ApplicationOptionService applicationOptionService) {
+                                 final ApplicationOptionService applicationOptionService,
+                                 final AuthenticationService authenticationService) {
         this.themeQuestionDAO = themeQuestionDAO;
         this.hakukohdeService = hakukohdeService;
         this.organizationService = organizationService;
         this.hakuService = hakuService;
         this.koodistoService = koodistoService;
         this.applicationOptionService = applicationOptionService;
+        this.authenticationService = authenticationService;
     }
 
     @GET
@@ -130,6 +137,7 @@ public class ThemeQuestionResource {
         ThemeQuestion dbThemeQuestion = fetchThemeQuestion(themeQuestionId);
 
         themeQuestion = fillInOwnerOrganizationsFromApplicationOption(themeQuestion);
+        themeQuestion.setCreatorPersonOid(dbThemeQuestion.getCreatorPersonOid());
 
         LOGGER.debug("Saving Theme Question with id: " + dbThemeQuestion.getId().toString());
         themeQuestionDAO.save(themeQuestion);
@@ -176,6 +184,10 @@ public class ThemeQuestionResource {
         } else {
             themeQuestion = fillInOwnerOrganizationsFromApplicationOption(themeQuestion);
         }
+
+        Person currentHenkilo = authenticationService.getCurrentHenkilo();
+        themeQuestion.setCreatorPersonOid(currentHenkilo.getPersonOid());
+
         LOGGER.debug("Saving Theme Question");
         themeQuestionDAO.save(themeQuestion);
         LOGGER.debug("Saved Theme Question");
