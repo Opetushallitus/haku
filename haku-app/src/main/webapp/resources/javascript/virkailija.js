@@ -446,8 +446,23 @@ $(document).ready(function () {
                         }
                         $('#pagination').bootstrapPaginator(options);
                         applicationSearch.setSortOrder(queryParameters.orderBy, queryParameters.orderDir);
+                        if (queryParameters.asId && queryParameters.aoid) {
+                            $('#excel-link').removeAttr('hidden');
+                            var href = $('#excel-link').attr('href');
+                            href = href + queryParameters.asId + '/' + queryParameters.aoid + '?'  +
+                                Object.keys(queryParameters).reduce(function(a,k){
+                                    if (k !== 'asId' || k !== 'aoid') {
+                                        a.push(k+'='+encodeURIComponent(queryParameters[k]));
+                                    }
+                                    return a
+                                },[]).join('&');
+                            var href = $('#excel-link').attr('href',href);
+                        } else {
+                            $('#excel-link').attr('hidden','hidden');
+                        }
                     } else {
                         $('#pagination').empty();
+                        $('#excel-link').attr('hidden', 'hidden');
                     }
                     spinner.stop();
                     window.location.hash = '';
@@ -519,6 +534,7 @@ $(document).ready(function () {
             $('#sendingClass').val('');
             $('#discretionary-only').attr('checked', false);
             $('#check-all-applications').attr('checked', false);
+            $('#excel-link').attr('hidden', 'hidden');
         },
         this.getSortOrder = function(columnName) {
             var column = $('#application-table-header-'+columnName);
