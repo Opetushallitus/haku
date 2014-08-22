@@ -47,6 +47,9 @@ import java.util.*;
 import java.util.regex.Pattern;
 
 import static com.mongodb.QueryOperators.EXISTS;
+import static com.mongodb.QueryOperators.NE;
+import static com.mongodb.QueryOperators.NOT;
+import static com.mongodb.QueryOperators.OR;
 import static org.apache.commons.lang.StringUtils.isEmpty;
 import static org.apache.commons.lang.StringUtils.isNotBlank;
 
@@ -497,9 +500,13 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     public Application getNextSubmittedApplication() {
         DBObject query = new BasicDBObject();
 
-        query.put(FIELD_PERSON_OID, new BasicDBObject("$exists", false));
-        query.put(FIELD_APPLICATION_OID, new BasicDBObject("$exists", true));
+        query.put(FIELD_PERSON_OID, new BasicDBObject(EXISTS, false));
+        query.put(FIELD_APPLICATION_OID, new BasicDBObject(EXISTS, true));
         query.put(FIELD_APPLICATION_STATE, Application.State.SUBMITTED.toString());
+        query.put(OR, new BasicDBObject[]{
+                new BasicDBObject(FIELD_REDO_POSTPROCESS, new BasicDBObject(EXISTS, false)),
+                new BasicDBObject(FIELD_REDO_POSTPROCESS, new BasicDBObject(NE, PostProcessingState.FAILED.toString()))
+        });
 
         DBObject sortBy = new BasicDBObject(FIELD_LAST_AUTOMATED_PROCESSING_TIME, 1);
 
@@ -522,8 +529,14 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
 
     @Override
     public Application getNextRedo() {
-        QueryBuilder queryBuilder = QueryBuilder.start(FIELD_REDO_POSTPROCESS).in(Lists.newArrayList(PostProcessingState.FULL.toString(), PostProcessingState.NOMAIL.toString()));
-        queryBuilder.put(FIELD_APPLICATION_STATE).in(Lists.newArrayList(Application.State.ACTIVE.name(), Application.State.INCOMPLETE.name()));
+        QueryBuilder queryBuilder = QueryBuilder.start(FIELD_REDO_POSTPROCESS).in(
+                Lists.newArrayList(
+                        PostProcessingState.FULL.toString(),
+                        PostProcessingState.NOMAIL.toString()));
+        queryBuilder.put(FIELD_APPLICATION_STATE).in(
+                Lists.newArrayList(
+                        Application.State.ACTIVE.name(),
+                        Application.State.INCOMPLETE.name()));
         DBObject query = queryBuilder.get();
         DBObject sortBy = new BasicDBObject(FIELD_LAST_AUTOMATED_PROCESSING_TIME, 1);
         DBCursor cursor = getCollection().find(query).sort(sortBy).limit(1);
