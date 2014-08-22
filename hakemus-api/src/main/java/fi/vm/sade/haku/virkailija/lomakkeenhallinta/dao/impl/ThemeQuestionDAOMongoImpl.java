@@ -163,7 +163,7 @@ public class ThemeQuestionDAOMongoImpl extends AbstractDAOMongoImpl<ThemeQuestio
         if (parameters.searchDeleted()) {
             query.append(FIELD_STATE, ThemeQuestion.State.DELETED);
         }else {
-            Object[] states = {ThemeQuestion.State.ACTIVE.toString(), ThemeQuestion.State.LOCKED.toString()};
+            Object[] states = {ThemeQuestion.State.ACTIVE, ThemeQuestion.State.LOCKED};
             query.append(FIELD_STATE, new BasicDBObject(IN, states));
         }
         hint.put(FIELD_STATE, 1);

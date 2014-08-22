@@ -116,7 +116,7 @@ public class FormParameters {
     }
 
     public ThemeQuestionConfigurator getThemeQuestionConfigurator() {
-        return new ThemeQuestionConfigurator(themeQuestionDAO, hakukohdeService, applicationOptionService, this);
+        return new ThemeQuestionConfigurator(themeQuestionDAO, hakukohdeService, this);
     }
 
     public Boolean isOnlyThemeGenerationForFormEditor() {
