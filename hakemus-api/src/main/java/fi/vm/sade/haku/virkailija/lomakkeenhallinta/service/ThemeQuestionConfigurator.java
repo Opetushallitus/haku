@@ -101,6 +101,7 @@ public final class ThemeQuestionConfigurator {
         query.setApplicationSystemId(asId);
         query.setTheme(theme);
         query.setLearningOpportunityId(applicationOptionId);
+        query.addSortBy(ThemeQuestion.FIELD_ORDINAL, ThemeQuestionQueryParameters.SORT_ASCENDING);
         LOGGER.debug("Querying questions with " + query);
         return themeQuestionDAO.query(query);
     }
