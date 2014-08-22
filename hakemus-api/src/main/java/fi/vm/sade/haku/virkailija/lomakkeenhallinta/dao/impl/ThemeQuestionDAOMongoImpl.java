@@ -104,14 +104,28 @@ public class ThemeQuestionDAOMongoImpl extends AbstractDAOMongoImpl<ThemeQuestio
 
     @Override
     public void setOrdinal(String themeQuestionId, Integer newOrdinal) {
+        DBObject update = new BasicDBObject(FIELD_ORDINAL, newOrdinal);
+        set(themeQuestionId, update);
+        LOGGER.debug("ThemeQuestion "+ themeQuestionId + " ordinal updated to " + newOrdinal);
+    }
+
+    @Override
+    public void delete(String themeQuestionId) {
+        DBObject update = new BasicDBObject(FIELD_STATE, ThemeQuestion.State.DELETED);
+        update.put(FIELD_ORDINAL, 99);
+        set(themeQuestionId, update);
+        LOGGER.debug("ThemeQuestion "+ themeQuestionId + " deleted");
+    }
+
+    private void set(String themeQuestionId, DBObject update){
         DBObject find = new BasicDBObject(FIELD_ID, new ObjectId(themeQuestionId));
-        DBObject update = new BasicDBObject("$set", new BasicDBObject(FIELD_ORDINAL, newOrdinal));
+        DBObject setUpdate = new BasicDBObject("$set", update);
         try {
-            getCollection().findAndModify(find, update);
+            getCollection().findAndModify(find, setUpdate);
         }
         catch(MongoException mongoException){
-                LOGGER.error("Got error " + mongoException.getMessage() + " with for updating ordinal for ThemeQuestion: "+themeQuestionId);
-                throw mongoException;
+            LOGGER.error("Got error " + mongoException.getMessage() + " while updating ThemeQuestion: "+themeQuestionId +" with data: " + setUpdate);
+            throw mongoException;
         }
     }
 

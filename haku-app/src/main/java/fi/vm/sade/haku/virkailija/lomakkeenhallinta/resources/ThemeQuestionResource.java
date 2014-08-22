@@ -110,10 +110,9 @@ public class ThemeQuestionResource {
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKULOMAKKEENHALLINTA_READ_UPDATE', 'ROLE_APP_HAKULOMAKKEENHALLINTA_CRUD')")
     public void deleteThemeQuestionByOid(@PathParam("themeQuestionId") String themeQuestionId) {
         LOGGER.debug("Deleting theme question with id: {}", themeQuestionId);
+        themeQuestionDAO.delete(themeQuestionId);
         ThemeQuestion dbThemeQuestion = fetchThemeQuestion(themeQuestionId);
-        dbThemeQuestion.setState(ThemeQuestion.State.DELETED);
-        themeQuestionDAO.save(dbThemeQuestion);
-        LOGGER.debug("ThemeQuestion {} saved with state {}", dbThemeQuestion.getId().toString(), dbThemeQuestion.getState());
+        renumerateThemeQuestionOrdinals(dbThemeQuestion.getApplicationSystemId(), dbThemeQuestion.getLearningOpportunityId(), dbThemeQuestion.getTheme());
     }
 
     @POST
@@ -289,5 +288,20 @@ public class ThemeQuestionResource {
         List<ThemeQuestion> themeQuestions = themeQuestionDAO.query(tqq);
         LOGGER.debug("Found {} ThemeQuestions", themeQuestions.size());
         return themeQuestions;
+    }
+
+    private void renumerateThemeQuestionOrdinals(final String applicationSystemId, final String applicationOptionId, final String themeId){
+        // TODO: mutex
+        ThemeQuestionQueryParameters tqqp = new ThemeQuestionQueryParameters();
+        tqqp.setApplicationSystemId(applicationSystemId);
+        tqqp.setLearningOpportunityId(applicationOptionId);
+        tqqp.setTheme(themeId);
+        tqqp.addSortBy(ThemeQuestion.FIELD_ORDINAL, ThemeQuestionQueryParameters.SORT_ASCENDING);
+        Integer assumedOrdinal = 1;
+        for (ThemeQuestion tq: themeQuestionDAO.query(tqqp)){
+            if (!assumedOrdinal.equals(tq.getOrdinal())){
+                themeQuestionDAO.setOrdinal(tq.getId().toString(), assumedOrdinal++);
+            }
+        }
     }
 }
