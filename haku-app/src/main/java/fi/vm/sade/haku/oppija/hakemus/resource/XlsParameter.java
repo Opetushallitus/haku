@@ -31,6 +31,6 @@ public class XlsParameter {
     }
 
     public String getHakukohteenNimi() {
-        return "%hakukohteen nimi%";
+        return "hakukohteen nimi";
     }
 }

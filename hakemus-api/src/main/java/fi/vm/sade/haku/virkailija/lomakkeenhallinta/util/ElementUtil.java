@@ -219,7 +219,6 @@ public final class ElementUtil {
     private static <E extends Element> void findElementByType(
             final Element element, final Map<String, E> elements, Class<E> eClass) {
         if (eClass.isAssignableFrom(element.getClass())) {
-            System.out.println("Lisätään löytynyt elementti " + element.getId());
             elements.put(element.getId(), (E) element);
         }
         for (Element child : element.getChildren()) {
