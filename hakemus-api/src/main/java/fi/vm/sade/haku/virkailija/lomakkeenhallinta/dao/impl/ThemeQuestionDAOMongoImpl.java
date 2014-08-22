@@ -13,6 +13,7 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.dao.ThemeQuestionQueryParame
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.dao.impl.DBConverter.DBObjectToThemeQuestionFunction;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.dao.impl.DBConverter.ThemeQuestionToDBObjectFunction;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain.ThemeQuestion;
+import org.apache.commons.lang3.tuple.Pair;
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,9 +22,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import static com.mongodb.QueryOperators.IN;
 
@@ -42,8 +41,9 @@ public class ThemeQuestionDAOMongoImpl extends AbstractDAOMongoImpl<ThemeQuestio
     private static final String FIELD_STATE = "state";
     private static final String FIELD_ORDINAL = "ordinal";
     private static final String FIELD_APPLICATION_OPTION = "learningOpportunityId";
-    private static int QUERY =0;
-    private static int HINT =1;
+    private static int PARAM_QUERY =0;
+    private static int PARAM_HINT =1;
+    private static int PARAM_SORT_BY = 2;
 
     private static final String collectionName = "themequestion";
 
@@ -56,15 +56,18 @@ public class ThemeQuestionDAOMongoImpl extends AbstractDAOMongoImpl<ThemeQuestio
     protected String getCollectionName() { return collectionName; }
 
     private List<ThemeQuestion> executeQuery(DBObject[] queryParam) {
-        LOGGER.debug("Executing with query: " + queryParam[QUERY] + " with hint: " +queryParam[HINT]);
-        final DBCursor dbCursor = getCollection().find(queryParam[QUERY]);
-        if (ensureIndex && null != queryParam[HINT]) {
-            dbCursor.hint(queryParam[HINT]);
+        LOGGER.debug("Executing with query: " + queryParam[PARAM_QUERY] + " with hint: " +queryParam[PARAM_HINT]);
+        final DBCursor dbCursor = getCollection().find(queryParam[PARAM_QUERY]);
+        if (null != queryParam[PARAM_SORT_BY]){
+            dbCursor.sort(queryParam[PARAM_SORT_BY]);
+        }
+        if (ensureIndex && null != queryParam[PARAM_HINT]) {
+            dbCursor.hint(queryParam[PARAM_HINT]);
         }
         try {
             return Lists.newArrayList(Iterables.transform(dbCursor, fromDBObject));
         }catch (MongoException mongoException){
-            LOGGER.error("Got error "+ mongoException.getMessage() +" with query: " + queryParam[QUERY] + " using hint: " +queryParam[HINT]);
+            LOGGER.error("Got error "+ mongoException.getMessage() +" with query: " + queryParam[PARAM_QUERY] + " using hint: " +queryParam[PARAM_HINT]);
             throw mongoException;
         }
     }
@@ -74,7 +77,7 @@ public class ThemeQuestionDAOMongoImpl extends AbstractDAOMongoImpl<ThemeQuestio
         LOGGER.debug("findById: " + id);
         DBObject queryParam = new BasicDBObject(FIELD_ID, new ObjectId(id));
         LOGGER.debug("Executing with query: " + queryParam.toString());
-        List <ThemeQuestion> themeQuestions =  executeQuery(new DBObject[]{queryParam, null});
+        List <ThemeQuestion> themeQuestions =  executeQuery(new DBObject[]{queryParam, null, null});
         LOGGER.debug("Found: " + themeQuestions.size());
         if (themeQuestions.size() == 1) {
             return themeQuestions.get(0);
@@ -137,6 +140,7 @@ public class ThemeQuestionDAOMongoImpl extends AbstractDAOMongoImpl<ThemeQuestio
     private final DBObject[] buildQuery(final ThemeQuestionQueryParameters parameters){
         BasicDBObject query = new BasicDBObject();
         BasicDBObject hint = new BasicDBObject();
+        BasicDBObject sortBy = null;
         if (null != parameters.getApplicationSystemId()){
             query.append(FIELD_APPLICATION_SYSTEM_ID, parameters.getApplicationSystemId());
             hint.put(FIELD_APPLICATION_SYSTEM_ID, 1);
@@ -164,7 +168,16 @@ public class ThemeQuestionDAOMongoImpl extends AbstractDAOMongoImpl<ThemeQuestio
             query.append(FIELD_APPLICATION_OPTION, parameters.getLearningOpportunityId());
             hint.put(FIELD_APPLICATION_OPTION, 1);
         }
-        return new DBObject[]{query,hint};
+
+        if (parameters.getSortBy().size() > 0){
+            sortBy = new BasicDBObject();
+            for (Pair<String, Integer> sortKey: parameters.getSortBy()){
+                String field = sortKey.getKey();
+                Integer order = sortKey.getValue();
+                sortBy.append(field,order);
+            }
+        }
+        return new DBObject[]{query, hint, sortBy};
     }
 
 
