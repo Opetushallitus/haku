@@ -18,11 +18,11 @@ package fi.vm.sade.haku.oppija.common.organisaatio.impl;
 import com.google.common.collect.Lists;
 import fi.vm.sade.generic.rest.CachingRestClient;
 import fi.vm.sade.haku.oppija.common.organisaatio.Organization;
+import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationRestDTO;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
 import fi.vm.sade.organisaatio.api.search.OrganisaatioHakutulos;
 import fi.vm.sade.organisaatio.api.search.OrganisaatioPerustieto;
 import fi.vm.sade.organisaatio.api.search.OrganisaatioSearchCriteria;
-import fi.vm.sade.organisaatio.resource.dto.OrganisaatioRDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -136,7 +136,7 @@ public class OrganizationServiceImpl implements OrganizationService {
     @Override
     public Organization findByOid(String oid) throws IOException {
         String url = targetService + "/rest/organisaatio/" + oid;
-        OrganisaatioRDTO organisaatioRDTO = getCached(url, OrganisaatioRDTO.class);
+        OrganizationRestDTO organisaatioRDTO = getCached(url, OrganizationRestDTO.class);
         return new Organization(organisaatioRDTO);
     }
 

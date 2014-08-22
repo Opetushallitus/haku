@@ -17,6 +17,7 @@ public class OrganizationRestDTO {
     private String loppuPvm;
     private Map<String, String> nimi;
     private List<String> tyypit;
+    private String oppilaitosTyyppiUri;
 
     public String getOid() {
         return oid;
@@ -89,5 +90,13 @@ public class OrganizationRestDTO {
 
     private DateFormat date() {
         return new SimpleDateFormat("yyyy-MM-dd");
+    }
+
+    public String getOppilaitosTyyppiUri() {
+        return oppilaitosTyyppiUri;
+    }
+
+    public void setOppilaitosTyyppiUri(String oppilaitosTyyppiUri) {
+        this.oppilaitosTyyppiUri = oppilaitosTyyppiUri;
     }
 }

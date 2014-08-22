@@ -18,7 +18,6 @@ package fi.vm.sade.haku.oppija.common.organisaatio;
 import com.google.common.collect.ImmutableList;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.impl.TranslationsUtil;
-import fi.vm.sade.organisaatio.resource.dto.OrganisaatioRDTO;
 
 import java.util.Date;
 import java.util.List;
@@ -50,14 +49,14 @@ public class Organization {
         this.endDate = endDate;
     }
 
-    public Organization(OrganisaatioRDTO organisaatioRDTO) {
+    public Organization(OrganizationRestDTO organisaatioRDTO) {
         this.name = new I18nText(TranslationsUtil.createTranslationsMap(organisaatioRDTO.getNimi()));
         this.oid = organisaatioRDTO.getOid();
         this.types = organisaatioRDTO.getTyypit();
         this.parentOid = organisaatioRDTO.getParentOid();
-        this.startDate = organisaatioRDTO.getAlkuPvm();
-        this.endDate = organisaatioRDTO.getLakkautusPvm();
         this.oppilaitostyyppi = organisaatioRDTO.getOppilaitosTyyppiUri();
+        this.startDate = organisaatioRDTO.getAlkuPvmAsDate();
+        this.endDate = organisaatioRDTO.getLoppuPvmAsDate();
     }
 
     @Override
