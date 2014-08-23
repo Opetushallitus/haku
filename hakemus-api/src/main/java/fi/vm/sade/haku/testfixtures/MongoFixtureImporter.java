@@ -18,8 +18,6 @@ public class MongoFixtureImporter {
     public static void importJsonFixtures(MongoTemplate template, ApplicationDAO dao) throws IOException {
         final Resource[] resources = new PathMatchingResourcePatternResolver().getResources("mongofixtures/**/*.json");
         for (Resource resource: resources) {
-            // do twice to ensure idempotence
-            insertObject(template, resource);
             insertObject(template, resource);
         }
         FixtureSSNFixer.updateEmptySsnInApplications(TestFixtureConstants.personOid, TestFixtureConstants.hetu, dao);
