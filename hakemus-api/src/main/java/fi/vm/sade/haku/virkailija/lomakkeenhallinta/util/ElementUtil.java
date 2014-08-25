@@ -25,10 +25,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.Titled;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.gradegrid.GradeGridRow;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.Regexp;
 import fi.vm.sade.haku.oppija.lomake.validation.Validator;
-import fi.vm.sade.haku.oppija.lomake.validation.validators.RegexFieldValidator;
-import fi.vm.sade.haku.oppija.lomake.validation.validators.RequiredFieldValidator;
-import fi.vm.sade.haku.oppija.lomake.validation.validators.SsnUniqueValidator;
-import fi.vm.sade.haku.oppija.lomake.validation.validators.ValueSetValidator;
+import fi.vm.sade.haku.oppija.lomake.validation.validators.*;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
 import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
@@ -44,8 +41,7 @@ public final class ElementUtil {
 
     public static final String ISO88591_NAME_REGEX = "^$|^[a-zA-ZÀ-ÖØ-öø-ÿ]$|^[a-zA-ZÀ-ÖØ-öø-ÿ'][a-zA-ZÀ-ÖØ-öø-ÿ ,-.']*(?:[a-zA-ZÀ-ÖØ-öø-ÿ.']+$)$";
     public static final String EMAIL_REGEX = "^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)+$|^$";
-    public static final String YEAR_REGEX = "^[1-2][0-9]{3}$";
-
+    public static final String YEAR_REGEX = "^(19[0-9][0-9])|(20[0-9][0-9])$|^$"; // "^[1-2][0-9]{3}$";
     public static final String KYLLA = Boolean.TRUE.toString();
     public static final String EI = Boolean.FALSE.toString();
     private static Logger log = LoggerFactory.getLogger(ElementUtil.class);
@@ -159,8 +155,8 @@ public final class ElementUtil {
     }
 
 
-    public static Validator createYearValidator(final FormParameters formParameters, final String messageKey) {
-        return createRegexValidator(YEAR_REGEX, formParameters, messageKey);
+    public static Validator createYearValidator(FormParameters formParameters, final Integer toYear, final boolean allowEmpty, final Integer fromYear) {
+        return new YearValidator(formParameters, fromYear, toYear, allowEmpty);
     }
 
     public static void addRequiredValidator(final Element element, final FormParameters formParameters) {
