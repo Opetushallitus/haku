@@ -1,12 +1,13 @@
 package fi.vm.sade.haku.oppija.common.organisaatio;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
-import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class OrganizationHierarchy {
 
@@ -22,60 +23,59 @@ public class OrganizationHierarchy {
     private HashMap<String, OrganizationEntry> organizations = new HashMap<String, OrganizationEntry>();
 
     public void addOrganization(String id){
-
         LOGGER.debug("Adding " + id + " to hierarchty");
-        getOrganization(id);
+        _getOrganization(id);
     }
 
-    public List<Map<String, Object>> getAllSubOrganizations(String id){
-        LOGGER.debug("Sub organizations in hierarchy for " + id);
-        OrganizationEntry organization = getOrganization(id);
-        HashSet<Map<String, Object>> organizationSet = new HashSet<Map<String,Object>>();
-        for (OrganizationEntry child : organization.getChildOrganizations()){
-            organizationSet.addAll(getAllSubOrganizations(child.getId()));
-        }
-        Map<String, Object> entry = new ImmutableMap.Builder<String,Object>().put("id", organization.getId()).put("name", organization.getName()).build();
-        organizationSet.add(entry);
+    public Set<Organization> getAllSubOrganizations(final String id){
+        LOGGER.debug("Getting sub organization hierarchy for" + id);
+        final HashSet<Organization> organizationSet = new HashSet<Organization>();
+        _getAllSubOrganizations(id, organizationSet);
         LOGGER.debug("Returning " + organizationSet.size() + " sub organizations");
-        return new ArrayList<Map<String, Object>>(organizationSet);
+        return organizationSet;
     }
 
-    private OrganizationEntry getOrganization(String id){
+    private void _getAllSubOrganizations(final String ofId, final Set<Organization> toOrganizationSet){
+        LOGGER.debug("Sub organizations in hierarchy for " + ofId);
+        final OrganizationEntry organizationEntry = _getOrganization(ofId);
+        toOrganizationSet.add(organizationEntry.getOrganization());
+
+        for (OrganizationEntry childOrganizationEntry : organizationEntry.getChildOrganizations()){
+            _getAllSubOrganizations(childOrganizationEntry.getOrganization().getOid(), toOrganizationSet);
+        }
+    }
+
+    private OrganizationEntry _getOrganization(final String id){
         LOGGER.debug("Getting organization entry for " + id);
         if (organizations.containsKey(id))
             return organizations.get(id);
         LOGGER.debug("Organization " + id + " not in hiearchy. Adding.");
-        Organization org = organizationService.findByOppilaitosnumero(ImmutableList.of(id)).get(0);
-        String parentOid = org.getParentOid();
+        final Organization org = organizationService.findByOppilaitosnumero(ImmutableList.of(id)).get(0);
+        final String parentOid = org.getParentOid();
         LOGGER.debug("Organization " + id + " parent is " + parentOid);
-        OrganizationEntry parent = parentOid == null? null: getOrganization(parentOid);
-        OrganizationEntry organizationEntry = new OrganizationEntry(org.getOid(), parent, org.getName());
+        final OrganizationEntry parent = parentOid == null ? null: _getOrganization(parentOid);
+        final OrganizationEntry organizationEntry = new OrganizationEntry(org, parent);
         if (null != parent){
-            LOGGER.debug("Attaching " + id + " to parent " + parent.getId());
+            LOGGER.debug("Attaching " + id + " to parent " + parent.getOrganization().getOid());
             parent.addChildOrganization(organizationEntry);
         }
-        organizations.put(organizationEntry.getId(), organizationEntry);
+        organizations.put(organizationEntry.getOrganization().getOid(), organizationEntry);
         return organizationEntry;
     }
 
-    private class OrganizationEntry{
-        private String id;
-        private I18nText name;
-        private OrganizationEntry parent;
-        private HashSet<OrganizationEntry> children = new HashSet<OrganizationEntry>();
+    private final class OrganizationEntry{
+        final private Organization organization;
 
-        public OrganizationEntry(String id,OrganizationEntry parent, I18nText name) {
-            this.id = id;
-            this.name = name;
+        final private OrganizationEntry parent;
+        final private HashSet<OrganizationEntry> children = new HashSet<OrganizationEntry>();
+
+        public OrganizationEntry(Organization organization,OrganizationEntry parent) {
+            this.organization = organization;
             this.parent = parent;
         }
 
-        public String getId() {
-            return id;
-        }
-
-        public I18nText getName() {
-            return name;
+        public Organization getOrganization() {
+            return organization;
         }
 
         public OrganizationEntry getParent() {
@@ -101,25 +101,15 @@ public class OrganizationHierarchy {
 
             OrganizationEntry that = (OrganizationEntry) o;
 
-            if (!id.equals(that.id)) {
+            if (!organization.equals(that.organization)) {
                 return false;
             }
-            if (!name.equals(that.name)) {
-                return false;
-            }
-            if (parent != null ? !parent.equals(that.parent) : that.parent != null) {
-                return false;
-            }
-
             return true;
         }
 
         @Override
         public int hashCode() {
-            int result = id.hashCode();
-            result = 31 * result + name.hashCode();
-            result = 31 * result + (parent != null ? parent.hashCode() : 0);
-            return result;
+            return  29 * organization.hashCode();
         }
     }
 }
