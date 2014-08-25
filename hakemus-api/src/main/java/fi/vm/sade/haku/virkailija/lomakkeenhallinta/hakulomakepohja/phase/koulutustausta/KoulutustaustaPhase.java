@@ -72,8 +72,8 @@ public final class KoulutustaustaPhase {
         List<Option> laajuusYksikot = koodistoService.getLaajuusYksikot();
         List<Option> tutkintotasot = koodistoService.getKorkeakouluTutkintotasot();
 
-        elements.add(buildSuoritusoikeus(formParameters, korkeakoulut));
-        elements.add(buildAiempiTutkinto(formParameters, korkeakoulut, tutkintotasot));
+        elements.add(buildSuoritusoikeus(formParameters));
+        elements.add(buildAiempiTutkinto(formParameters, tutkintotasot));
 
         Element pohjakoulutusGrp = TitledGroup("pohjakoulutus.korkeakoulut")
                 .required().formParams(formParameters).build();
@@ -247,17 +247,16 @@ public final class KoulutustaustaPhase {
         return yo;
     }
 
-    private static Element buildAiempiTutkinto(FormParameters formParameters, List<Option> korkeakoulut,
+    private static Element buildAiempiTutkinto(FormParameters formParameters,
                                                List<Option> tutkintotasot) {
         RadioBuilder aiempitutkintoBuilder = Radio("aiempitutkinto")
                 .addOption("false", formParameters)
                 .addOption("true", formParameters);
         Element aiempitutkinto = aiempitutkintoBuilder.required().formParams(formParameters).build();
         Element aiempitutkintoMore = createVarEqualsToValueRule(aiempitutkinto.getId(), "true");
-        Element aiempitutkintoOppilaitos = Dropdown("aiempitutkinto_korkeakoulu")
-                .addOptions(korkeakoulut)
-                .labelKey("pohjakoulutus.korkeakoulu")
-                .requiredInline().formParams(formParameters).build();
+        Element aiempitutkintoOppilaitos = TextQuestion("aiempitutkinto_korkeakoulu")
+                .requiredInline()
+                .formParams(formParameters).build();
 
         Element aiempitutkintoTutkinto = Dropdown("aiempitutkinto_tutkintotaso")
                 .addOptions(tutkintotasot).labelKey("pohjakoulutus.tutkintotaso")
@@ -279,15 +278,15 @@ public final class KoulutustaustaPhase {
         return aiempitutkinto;
     }
 
-    private static Element buildSuoritusoikeus(FormParameters formParameters, List<Option> korkeakoulut) {
+    private static Element buildSuoritusoikeus(FormParameters formParameters) {
         RadioBuilder suoritusoikeusBuilder = Radio("suoritusoikeus")
                 .addOption("false", formParameters)
                 .addOption("true", formParameters);
         Element suoritusoikeus = suoritusoikeusBuilder.required().formParams(formParameters).build();
         Element suoritusoikeusMore = createVarEqualsToValueRule(suoritusoikeus.getId(), "true");
-        Element suoritusoikeusOppilaitos = Dropdown("suoritusoikeus_korkeakoulu")
-                .addOptions(korkeakoulut).labelKey("pohjakoulutus.korkeakoulu")
-                .requiredInline().formParams(formParameters).build();
+        Element suoritusoikeusOppilaitos = TextQuestion("suoritusoikeus_korkeakoulu")
+                .requiredInline()
+                .formParams(formParameters).build();
 
         Element tutkinto = TextQuestion("suoritusoikeus_tutkinto").labelKey("pohjakoulutus.tutkinto")
                 .requiredInline().formParams(formParameters).build();
