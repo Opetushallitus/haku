@@ -43,7 +43,7 @@ import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.
 public final class ElementUtil {
 
     public static final String ISO88591_NAME_REGEX = "^$|^[a-zA-ZÀ-ÖØ-öø-ÿ]$|^[a-zA-ZÀ-ÖØ-öø-ÿ'][a-zA-ZÀ-ÖØ-öø-ÿ ,-.']*(?:[a-zA-ZÀ-ÖØ-öø-ÿ.']+$)$";
-    public static final String EMAIL_REGEX = "^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$|^$";
+    public static final String EMAIL_REGEX = "^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)+$|^$";
     public static final String YEAR_REGEX = "^[1-2][0-9]{3}$";
 
     public static final String KYLLA = Boolean.TRUE.toString();
