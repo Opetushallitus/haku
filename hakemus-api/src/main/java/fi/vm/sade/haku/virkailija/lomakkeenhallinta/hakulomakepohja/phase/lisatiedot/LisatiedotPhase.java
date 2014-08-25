@@ -129,7 +129,11 @@ public class LisatiedotPhase {
 
         Element saavutuksetGroup = TitledGroup("saavutukset.ryhma").formParams(formParameters).build()
                 .addChild(
-                        TextArea("saavutukset").inline().maxLength(2000).formParams(formParameters).build());
+                        TextArea("saavutukset")
+                                .cols(60)
+                                .maxLength(2000)
+                                .inline()
+                                .formParams(formParameters).build());
 
         Element valmentajaGroup =
                 TitledGroup("valmentajan-yhteystiedot").formParams(formParameters).build()
