@@ -17,77 +17,118 @@
   ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   ~ European Union Public Licence for more details.
   --%>
-<fmt:setBundle basename="messages" scope="application"/>
-<c:set var="contextPath" value="${pageContext.request.contextPath}" scope="request"/>
-<!DOCTYPE HTML>
-<html>
-<head>
+  <fmt:setBundle basename="messages" scope="application"/>
+  <c:set var="contextPath" value="${pageContext.request.contextPath}" scope="request"/>
+  <!DOCTYPE HTML>
+  <html>
+  <head>
     <meta charset="utf-8"/>
     <title>Opintopolku.fi</title>
     <link rel="stylesheet" href="${contextPath}/resources/css/oppija.css" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=PT+Sans+Narrow:700|PT+Serif:400italic" rel="stylesheet"
-          type="text/css">
+    type="text/css">
     <haku:icons/>
 </head>
 <body class="front-page" style="margin:10px 50px;">
-<header>
+    <header>
+        <div class="logo-bg">
+            <div class="container">
+                <a id="home-link" href="/wp/fi/"><img src="${contextPath}/resources/img/Opintopolku_FI_logo.png"
+                    alt="Opintopolku.fi"/></a>
+            </div>
+        </div>
+    </header>
+    
+    <!-- suomeksi -->
+    <p>Tapahtui odottamaton virhe. Pahoittelemme tapahtunutta.</p>
+    <p>Palaa takaisin <a href="/wp/fi/">opintopolku.fi-palveluun</a> ja hae koulutukseen uudelleen.</p>
+    <p>Mikäli ehdit lähettää hakulomakkeen, mutta et saanut kuittausta antamaasi sähköpostiin etkä ehtinyt tulostaa hakulomakettasi, ota yhteyttä</p>
+    <ul>
+        <li>haettuasi korkeakouluun</li>
+        <ul>
+            <li>ammattikorkeakoulujen hakijapalvelut:
+                <a href="/wp/fi/ammattikorkeakoulu/ammattikorkeakoulujen-hakutoimistot-ja-hakijapalvelut">https://opintopolku.fi/wp/fi/ammattikorkeakoulu/ammattikorkeakoulujen-hakutoimistot-ja-hakijapalvelut</a>
+            </li>
+            <li>yliopistojen hakijapalvelut:
+                <a href="/wp/fi/yliopisto/yliopistojen-hakijapalvelut">https://opintopolku.fi/wp/fi/yliopisto/yliopistojen-hakijapalvelut</a>
+          </li>
+        </ul>
+        <li>haettuasi ammatillisiin koulutuksiin</li>
+        <ul>
+            <li>Opetushallitukseen: neuvonta@opintopolku.fi</li>
+        </ul>
+    </ul>
+
+    <p>Ohjaus- ja neuvontapalvelut<br/>
+        Opetushallitus<br/>
+        PL 380<br/>
+        00531 Helsinki<br/>
+    </p>
+
+    <!-- på svenska -->
+    <hr class="margin-top-2"/>
     <div class="logo-bg">
         <div class="container">
-            <a id="home-link" href="/"><img src="${contextPath}/resources/img/Opintopolku_FI_logo.png"
-                                            alt="Opintopolku.fi"/></a>
-
+            <a id="home-link" href="/wp/sv/"><img src="${contextPath}/resources/img/Opintopolku_SV_logo.png" alt="Studieinfo.fi"/></a>
         </div>
     </div>
-</header>
-<p>Tapahtui odottamaton virhe. Pahoittelemme tapahtunutta.</p>
-<p>Palaa takaisin <a href="/">opintopolku.fi-palveluun</a> ja hae koulutukseen uudelleen.</p>
-<p>Mikäli ehdit lähettää hakulomakkeen, mutta et saanut kuittausta antamaasi sähköpostiin etkä ehtinyt tulostaa hakulomakettasi, ota yhteyttä</p>
-<ul>
-  <li>haettuasi korkeakouluun</li>
-  <ul>
-    <li>ammattikorkeakoulujen hakijapalvelut:
-      <a href="/wp/fi/ammattikorkeakoulu/ammattikorkeakoulujen-hakutoimistot-ja-hakijapalvelut">https://opintopolku.fi/wp/fi/ammattikorkeakoulu/ammattikorkeakoulujen-hakutoimistot-ja-hakijapalvelut</a>
-    </li>
-    <li>yliopistojen hakijapalvelut:
-      <a href="/wp/fi/yliopisto/yliopistojen-hakijapalvelut">https://opintopolku.fi/wp/fi/yliopisto/yliopistojen-hakijapalvelut</a>
-    </li>
-  </ul>
-  <li>haettuasi ammatillisiin koulutuksiin</li>
-  <ul>
-    <li>Opetushallitukseen: neuvonta@opintopolku.fi</li>
-  </ul>
-</ul>
 
-<p>Ohjaus- ja neuvontapalvelut<br/>
-Opetushallitus<br/>
-PL 380<br/>
-00531 Helsinki<br/>
-</p>
+    <p>Ett oförutsett fel inträffade. Vi beklagar.</p>
+    <p>Gå tillbaka till <a href="/wp/sv/">studienfo.fi-tjänsten</a> och sök till utbildningen på nytt.</p>
+    <p>Om du redan skickade ansökningsblanketten, men inte fick en kvittering i den e-post du angett och inte hann printa ut ansökningsblanketten, kan du kontakta</p>
+    <ul>
+        <li>om du sökt till högskola</li>
+        <ul>
+            <li>ansökningsservicen vid yrkeshögskolorna:
+                <a href="/wp/sv/yrkeshogskola/yrkeshogskolornas-ansokningsbyraer-och-ansokningsservice">https://opintopolku.fi/wp/sv/yrkeshogskola/yrkeshogskolornas-ansokningsbyraer-och-ansokningsservice</a>
+            </li>
+            <li>ansökningsservicen vid universiteten:
+                <a href="/wp/sv/universitet/universitetens-ansokningsservice">https://opintopolku.fi/wp/sv/universitet/universitetens-ansokningsservice</a>
+          </li>
+        </ul>
+        <li>om du sökt till yrkesutbildning</li>
+        <ul>
+            <li>Utbildningsstyrelsen: info@studieinfo.fi</li>
+        </ul>
+    </ul>
 
-<hr class="margin-top-2"/>
-<div class="logo-bg">
+    <p>
+        Studieinfos ansökningstjänst<br />
+        Utbildningsstyrelsen<br />
+        PB 380<br />
+        00531 Helsingfors<br />
+    </p>
+
+    <!-- in english -->
+    <hr class="margin-top-2"/>
+    <div class="logo-bg">
         <div class="container">
-            <a id="home-link" href="/"><img src="${contextPath}/resources/img/Opintopolku_SV_logo.png"
-                                            alt="Studieinfo.fi"/></a>
-
+            <a id="home-link" href="/wp2/en/"><img src="${contextPath}/resources/img/Opintopolku_EN_logo.png" alt="Studyinfo.fi"/></a>
         </div>
     </div>
 
-<p>Ett oväntat fel uppstod. Vi beklagar situationen.</p>
-<p>Gå tillbaka till <a href="/">studienfo.fi-tjänsten</a> och ansök till utbildningen på nytt.</p>
-<p>Om du redan hann skicka din ansökningsblankett, men inte hann få en utskrift av din ansökningsblankett, kan du vid behov be om en utskrift från Studieinfos ansökningstjänst:</p>
-<p>info@studieinfo.fi</p>
-<p>telefon: 029 533 1010</p>
-<p>
-Studieinfos ansökningstjänst<br />
-Utbildningsstyrelsen<br />
-PB 380<br />
-00531 Helsingfors<br />
-</p>
+    <p>An unexpected error has occurred. We apologize for the inconvenience.</p>
+    <p>Return to the <a href="/wp2/en/">studyinfo.fi –service</a> and apply for the study programme again.</p>
+    <p>If you have already submitted your application form, but have not received a confirmation e-mail to the given e-mail address and you do not have a printed copy of your application form, please contact</p>
+    <ul>
+        <li>if you have applied to a higher education institution</li>
+        <ul>
+            <li>the admissions services at polytechnics/universities of applied sciences (UAS):
+                <a href="/wp2/en/higher-education/polytechnics-universities-of-applied-sciences">https://opintopolku.fi/wp2/en/higher-education/polytechnics-universities-of-applied-sciences</a>
+            </li>
+            <li>the admissions services at universities:
+                <a href="/wp2/en/higher-education/universities">https://opintopolku.fi/wp2/en/higher-education/universities</a>
+            </li>
+        </ul>
+        <li>if you have applied for vocational education and training</li>
+        <ul>
+            <li>The Finnish National Board of Education: xxx@studyinfo.fi</li>
+        </ul>
+    </ul>
 
-<footer style="width: 100%;bottom: 0; position: fixed; float: right">${it.timestamp} &nbsp;${it.error_id}</footer>
-<!-- Piwik -->
-<script src="${contextPath}/resources/piwik/piwik.js" type="text/javascript"></script>
-<!-- End Piwik Code -->
+    <footer style="width: 100%;bottom: 0; position: fixed; float: right">${it.timestamp} &nbsp;${it.error_id}</footer>
+    <!-- Piwik -->
+    <script src="${contextPath}/resources/piwik/piwik.js" type="text/javascript"></script>
+    <!-- End Piwik Code -->
 </body>
 </html>
