@@ -41,10 +41,15 @@
 </header>
 <p>Tapahtui odottamaton virhe. Pahoittelemme tapahtunutta.</p>
 <p>Palaa takaisin <a href="/">opintopolku.fi-palveluun</a> ja hae koulutukseen uudelleen.</p>
-<p>Mikäli etenit jo hakulomakkeen lähettämiseen saakka, etkä ehtinyt saada tulostetta hakulomakkeestasi, voit pyytääsitä Opintopolun neuvontapalvelusta:</p>
-<p>neuvonta@opintopolku.fi</p>
-<p>puhelin: 02 9533 1010</p>
-Ohjaus- ja neuvontapalvelut<br/>
+<p>Mikäli ehdit lähettää hakulomakkeen, mutta et saanut kuittausta antamaasi sähköpostiin etkä ehtinyt tulostaa hakulomakettasi, ota yhteyttä</p>
+<ul>
+<li>haettuasi korkeakouluun</li><ul>
+<li>ammattikorkeakoulujen hakijapalvelut: <a href="/">opintopolku.fi/wp/fi/ammattikorkeakoulu/ammattikorkeakoulujen-hakutoimistot-ja-hakijapalvelut</a></li>
+<li>yliopistojen hakijapalvelut: <a href="/">opintopolku.fi/wp/fi/yliopisto/yliopistojen-hakijapalvelut</a></li><ul>
+<li>haettuasi ammatillisiin koulutuksiin</li><ul>
+<li>Opetushallitukseen: neuvonta@opintopolku.fi</li>
+
+<p>Ohjaus- ja neuvontapalvelut<br/>
 Opetushallitus<br/>
 PL 380<br/>
 00531 Helsinki<br/>
