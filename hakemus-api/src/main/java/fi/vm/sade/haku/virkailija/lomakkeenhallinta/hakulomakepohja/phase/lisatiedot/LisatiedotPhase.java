@@ -39,7 +39,7 @@ public class LisatiedotPhase {
         }
         Element element = lisatiedot
                 .addChild(createLupatiedot(formParameters));
-        if (!formParameters.isPervako()) {
+        if (!(formParameters.isPervako() || formParameters.isHigherEd())) {
             lisatiedot
                     .addChild(createUrheilijanLisakysymykset(formParameters));
         }
