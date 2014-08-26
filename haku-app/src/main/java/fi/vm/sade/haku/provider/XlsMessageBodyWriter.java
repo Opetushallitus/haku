@@ -1,6 +1,7 @@
 package fi.vm.sade.haku.provider;
 
 import fi.vm.sade.haku.oppija.hakemus.resource.XlsParameter;
+import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.DropdownSelect;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Question;
@@ -43,10 +44,11 @@ public class XlsMessageBodyWriter implements MessageBodyWriter<XlsParameter> {
     public void writeTo(XlsParameter xlsParameter, Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType, MultivaluedMap<String, Object> httpHeaders, OutputStream entityStream) throws IOException, WebApplicationException {
 
         String lang = "fi";
-        Integer hakukausiVuosi = xlsParameter.getApplicationSystem().getHakukausiVuosi();
+        ApplicationSystem applicationSystem = xlsParameter.getApplicationSystem();
+        Integer hakukausiVuosi = applicationSystem.getHakukausiVuosi();
         Workbook wb = new HSSFWorkbook();
-        String haunNimi = xlsParameter.getApplicationSystem().getName().getTranslations().get(lang);
-        String raportinNimi =  xlsParameter.getAsid() + "_" + hakukausiVuosi + "_" + xlsParameter.getAoid();
+        String haunNimi = applicationSystem.getName().getTranslations().get(lang);
+        String raportinNimi = xlsParameter.getAsid() + "_" + hakukausiVuosi + "_" + xlsParameter.getAoid();
         Sheet sheet = wb.createSheet(raportinNimi);
         CreationHelper createHelper = wb.getCreationHelper();
         // Create a row and put some cells in it. Rows are 0 based.
@@ -55,13 +57,10 @@ public class XlsMessageBodyWriter implements MessageBodyWriter<XlsParameter> {
         int currentRowIndex = 0;
         int currentColumnIndex = 0;
 
-        Row infoRow = sheet.createRow(currentRowIndex++);
-        infoRow.createCell(0).setCellValue("Haku oid");
-        infoRow.createCell(1).setCellValue(xlsParameter.getAsid());
-
-        infoRow = sheet.createRow(currentRowIndex++);
-        infoRow.createCell(0).setCellValue("Hakukohde");
-        infoRow.createCell(1).setCellValue(xlsParameter.getAoid());
+        createKeyValueRow(sheet, currentRowIndex++, "Haku", haunNimi);
+        createKeyValueRow(sheet, currentRowIndex++, "Haku oid", xlsParameter.getAsid());
+        createKeyValueRow(sheet, currentRowIndex++, "Hakukausi", applicationSystem.getHakukausiVuosi().toString());
+        createKeyValueRow(sheet, currentRowIndex++, "Hakukohde", xlsParameter.getAoid());
 
         sheet.createRow(currentRowIndex++);
 
@@ -106,5 +105,12 @@ public class XlsMessageBodyWriter implements MessageBodyWriter<XlsParameter> {
         }
         httpHeaders.add("content-disposition", "attachment; filename=" + raportinNimi + ".xls");
         wb.write(entityStream);
+    }
+
+    private void createKeyValueRow(final Sheet sheet, int row, String... values) {
+        Row infoRow = sheet.createRow(row);
+        for (int i = 0; i < values.length; i++) {
+            infoRow.createCell(i).setCellValue(values[i]);
+        }
     }
 }

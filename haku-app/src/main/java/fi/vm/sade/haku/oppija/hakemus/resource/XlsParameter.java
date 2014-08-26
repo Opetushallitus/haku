@@ -21,7 +21,6 @@ public class XlsParameter {
         this.asid = asid;
         this.aoid = aoid;
         this.applicationSystem = applicationSystem;
-        System.out.println("Hakemuksia yhteensä " + applications.size() + " kappaletta.");
         this.applications = applications;
         this.questions = questions;
     }
