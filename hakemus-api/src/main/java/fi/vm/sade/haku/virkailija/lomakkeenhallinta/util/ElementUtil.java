@@ -120,7 +120,7 @@ public final class ElementUtil {
     }
 
     public static <E extends Element> Map<String, E> findElementsByType(Element element, Class<E> eClass) {
-        Map<String, E> elements = new HashMap<String, E>();
+        Map<String, E> elements = new LinkedHashMap<String, E>();
         findElementByType(element, elements, eClass);
         return elements;
     }
@@ -267,4 +267,11 @@ public final class ElementUtil {
         return Rule(new Regexp(variable, pattern)).build();
     }
 
+    public static String getText(final Titled titled, String lang) {
+        I18nText i18nText = titled.getI18nText();
+        if (i18nText != null) {
+            return i18nText.getTranslations().get(lang);
+        }
+        return null;
+    }
 }

@@ -170,6 +170,8 @@
                    value="<fmt:message key="virkailija.hakemus.syota"/>"/>
             </c:if>
 
+            <a id="excel-link" href='javascript:void(0)' class='button secondary small disabled'><fmt:message key="virkailija.hakemus.excel"/></a>
+
             <table id="application-table" class="virkailija-table-1">
                 <thead>
                 <tr>
