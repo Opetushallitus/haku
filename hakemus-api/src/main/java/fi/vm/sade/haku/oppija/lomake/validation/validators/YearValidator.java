@@ -20,7 +20,6 @@ import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.validation.FieldValidator;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationInput;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationResult;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import org.apache.commons.lang3.StringUtils;
 
@@ -30,22 +29,17 @@ public class YearValidator extends FieldValidator {
     private final Integer toYear;
     private final boolean allowEmpty;
 
-    private final I18nText EMPTY_NOT_ALLOWED; // = ElementUtil.createI18NText("yearValidator.emptyNotAllowed");
-    private final I18nText NOT_A_NUMBER;
-    private final I18nText TOO_EARLY;
-    private final I18nText TOO_LATE;
+    private static final I18nText EMPTY_NOT_ALLOWED = ElementUtil.createI18NText("yearValidator.emptyNotAllowed");
+    private static final I18nText NOT_A_NUMBER = ElementUtil.createI18NText("yearValidator.notANumber");
+    private static final I18nText TOO_EARLY = ElementUtil.createI18NText("yearValidator.tooEarly");
+    private static final I18nText TOO_LATE = ElementUtil.createI18NText("yearValidator.tooLate");
 
-    public YearValidator(FormParameters formParameters, final Integer fromYear, final Integer toYear,
+    public YearValidator(final Integer fromYear, final Integer toYear,
                          final boolean allowEmpty) {
         super(ElementUtil.createI18NAsIs("Generic error message"));
         this.fromYear = fromYear;
         this.toYear = toYear;
         this.allowEmpty = allowEmpty;
-
-        EMPTY_NOT_ALLOWED = formParameters.getI18nText("yearValidator.emptyNotAllowed");
-        NOT_A_NUMBER = formParameters.getI18nText("yearValidator.notANumber");
-        TOO_EARLY = formParameters.getI18nText("yearValidator.tooEarly");
-        TOO_LATE = formParameters.getI18nText("yearValidator.tooLate");
     }
 
     @Override

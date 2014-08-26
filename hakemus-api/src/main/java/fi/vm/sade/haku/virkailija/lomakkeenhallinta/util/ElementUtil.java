@@ -156,7 +156,7 @@ public final class ElementUtil {
 
 
     public static Validator createYearValidator(FormParameters formParameters, final Integer toYear, final boolean allowEmpty, final Integer fromYear) {
-        return new YearValidator(formParameters, fromYear, toYear, allowEmpty);
+        return new YearValidator(fromYear, toYear, allowEmpty);
     }
 
     public static void addRequiredValidator(final Element element, final FormParameters formParameters) {
