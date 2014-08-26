@@ -24,9 +24,9 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-@Produces("application/octet-stream")
+@Produces("application/vnd.ms-excel")
 @Provider
-public class XlsWriter implements MessageBodyWriter<XlsParameter> {
+public class XlsMessageBodyWriter implements MessageBodyWriter<XlsParameter> {
 
 
     @Override
@@ -46,15 +46,24 @@ public class XlsWriter implements MessageBodyWriter<XlsParameter> {
         Integer hakukausiVuosi = xlsParameter.getApplicationSystem().getHakukausiVuosi();
         Workbook wb = new HSSFWorkbook();
         String haunNimi = xlsParameter.getApplicationSystem().getName().getTranslations().get(lang);
-        String raportinNimi = haunNimi + " " + hakukausiVuosi + " " + xlsParameter.getHakukohteenNimi();
+        String raportinNimi =  xlsParameter.getAsid() + "_" + hakukausiVuosi + "_" + xlsParameter.getAoid();
         Sheet sheet = wb.createSheet(raportinNimi);
         CreationHelper createHelper = wb.getCreationHelper();
         // Create a row and put some cells in it. Rows are 0 based.
         sheet.setDefaultColumnWidth(20);
 
-
         int currentRowIndex = 0;
         int currentColumnIndex = 0;
+
+        Row infoRow = sheet.createRow(currentRowIndex++);
+        infoRow.createCell(0).setCellValue("Haku oid");
+        infoRow.createCell(1).setCellValue(xlsParameter.getAsid());
+
+        infoRow = sheet.createRow(currentRowIndex++);
+        infoRow.createCell(0).setCellValue("Hakukohde");
+        infoRow.createCell(1).setCellValue(xlsParameter.getAoid());
+
+        sheet.createRow(currentRowIndex++);
 
         Map<String, Question> questions = xlsParameter.getQuestions();
         Row titleRow = sheet.createRow(currentRowIndex);
@@ -68,20 +77,18 @@ public class XlsWriter implements MessageBodyWriter<XlsParameter> {
                 currentColumnIndex++;
             }
         }
-        currentRowIndex++;
 
         List<Map<String, Object>> applications = xlsParameter.getApplications();
-
+        currentRowIndex++;
         for (Map<String, Object> application : applications) {
-
-            titleRow = sheet.createRow(currentRowIndex);
+            Row currentRow = sheet.createRow(currentRowIndex++);
             Map<String, Object> vastaukset = (Map<String, Object>) application.get("answers");
             for (Map.Entry<String, Object> vastauksetVaiheittain : vastaukset.entrySet()) {
                 Map<String, String> vaiheenVastaukset = (Map<String, String>) vastauksetVaiheittain.getValue();
                 for (Map.Entry<String, String> vastaus : vaiheenVastaukset.entrySet()) {
                     int column = questionIndexes.indexOf(vastaus.getKey());
                     if (column > -1) {
-                        Cell kentta = titleRow.createCell(column);
+                        Cell kentta = currentRow.createCell(column);
                         Question question = questions.get(vastaus.getKey());
                         String title = ElementUtil.getText(question, lang);
                         if (title != null) {

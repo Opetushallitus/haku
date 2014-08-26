@@ -7,12 +7,21 @@ import java.util.List;
 import java.util.Map;
 
 public class XlsParameter {
+    private final String asid;
+    private final String aoid;
     private final ApplicationSystem applicationSystem;
     private final List<Map<String, Object>> applications;
     private final Map<String, Question> questions;
 
-    public XlsParameter(ApplicationSystem applicationSystem, List<Map<String, Object>> applications, Map<String,Question> questions) {
+    public XlsParameter(final String asid,
+                        final String aoid,
+                        final ApplicationSystem applicationSystem,
+                        final List<Map<String, Object>> applications,
+                        final Map<String, Question> questions) {
+        this.asid = asid;
+        this.aoid = aoid;
         this.applicationSystem = applicationSystem;
+        System.out.println("Hakemuksia yhteensä " + applications.size() + " kappaletta.");
         this.applications = applications;
         this.questions = questions;
     }
@@ -29,7 +38,11 @@ public class XlsParameter {
         return questions;
     }
 
-    public String getHakukohteenNimi() {
-        return "hakukohteen nimi";
+    public String getAsid() {
+        return asid;
+    }
+
+    public String getAoid() {
+        return aoid;
     }
 }

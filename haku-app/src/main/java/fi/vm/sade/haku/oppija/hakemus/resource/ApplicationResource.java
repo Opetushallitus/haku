@@ -90,7 +90,7 @@ public class ApplicationResource {
 
     @GET
     @Path("{asid}/{aoid}")
-    @Produces(MediaType.APPLICATION_OCTET_STREAM)
+    @Produces("application/vnd.ms-excel")
     public XlsParameter getApplicattionsByOids(@PathParam("asid") String asid,
                                                @PathParam("aoid") String aoid,
                                                @DefaultValue(value = "") @QueryParam("q") String query,
@@ -102,14 +102,14 @@ public class ApplicationResource {
                                                @QueryParam("sendingClass") String sendingClass,
                                                @QueryParam("updatedAfter") DateParam updatedAfter,
                                                @DefaultValue(value = "0") @QueryParam("start") int start,
-                                               @DefaultValue(value = "100") @QueryParam("rows") int rows) {
+                                               @DefaultValue(value = "10000") @QueryParam("rows") int rows) {
         ApplicationSystem activeApplicationSystem = applicationSystemService.getApplicationSystem(asid);
 
         List<Map<String, Object>> applications = applicationService.findFullApplications(
                 query, new ApplicationQueryParameters(state, Lists.newArrayList(asid), aoid, lopoid, aoOid, discretionaryOnly,
                 sendingSchoolOid, sendingClass, updatedAfter != null ? updatedAfter.getDate() : null, start, rows, "oid", 1));
         Map<String, Question> elementsByType = ElementUtil.findElementsByType(activeApplicationSystem.getForm(), Question.class);
-        return new XlsParameter(activeApplicationSystem, applications, elementsByType);
+        return new XlsParameter(asid, aoid, activeApplicationSystem, applications, elementsByType);
     }
 
     @GET
