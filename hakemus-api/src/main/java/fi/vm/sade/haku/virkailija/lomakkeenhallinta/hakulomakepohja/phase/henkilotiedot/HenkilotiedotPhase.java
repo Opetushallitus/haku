@@ -233,6 +233,16 @@ public final class HenkilotiedotPhase {
                 .requiredInline()
                 .formParams(formParameters).build());
 
+        if (formParameters.isHigherEd()) {
+            henkilotiedotTeema.addChild(Dropdown("koulusivistyskieli")
+                            .emptyOption()
+                            .addOptions(formParameters.getKoodistoService().getTeachingLanguages())
+                            .requiredInline()
+                            .formParams(formParameters)
+                            .build()
+            );
+        }
+
         henkilotiedot.addChild(henkilotiedotTeema);
         if (formParameters.isPervako()) {
             henkilotiedotTeema.addChild(

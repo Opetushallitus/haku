@@ -26,7 +26,7 @@ public class KSHJHakulomakeV1IT extends DummyModelBaseItTest {
     public void runKSHJForm() throws Exception {
 
         navigateToPath("lomake", "haku6");
-        fillOut(defaultValues.henkilotiedot);
+        fillOut(defaultValues.kkHenkilotiedot);
         nextPhase(OppijaConstants.PHASE_EDUCATION);
         click("suoritusoikeus", "aiempitutkinto", "pohjakoulutus_am");
         setValue("pohjakoulutus_am_vuosi", "2012");

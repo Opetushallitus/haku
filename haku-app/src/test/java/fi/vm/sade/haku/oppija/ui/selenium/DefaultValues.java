@@ -20,6 +20,7 @@ public final class DefaultValues {
     public static final String OPETUSPISTE = "FAKTIA, Espoo op";
 
     public final Map<String, String> henkilotiedot = new LinkedHashMap<String, String>();
+    public final Map<String, String> kkHenkilotiedot = new LinkedHashMap<String, String>();
     public final Map<String, String> koulutustausta_pk = new LinkedHashMap<String, String>();
     public final Map<String, String> koulutustausta_lk = new LinkedHashMap<String, String>();
     public final Map<String, String> lisatiedot = new LinkedHashMap<String, String>();
@@ -37,6 +38,9 @@ public final class DefaultValues {
         henkilotiedot.put("kotikunta", "jalasjarvi");
         henkilotiedot.put("lahiosoite", "Katu 1");
         henkilotiedot.put("Postinumero", "00100");
+
+        kkHenkilotiedot.putAll(henkilotiedot);
+        kkHenkilotiedot.put("koulusivistyskieli", "FI");
 
         koulutustausta_lk.put("POHJAKOULUTUS", "9");
         koulutustausta_lk.put(OppijaConstants.LUKIO_PAATTOTODISTUS_VUOSI, "2012");
