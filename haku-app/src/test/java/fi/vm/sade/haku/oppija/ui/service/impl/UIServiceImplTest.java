@@ -64,7 +64,7 @@ public class UIServiceImplTest {
     public void testCompleteApplicationAttachments() {
 
         UIServiceImpl service = new UIServiceImpl(applicationService, applicationSystemService, userSession,
-                koulutusinformaatioService, koulutusinformaatioBaseurl);
+                koulutusinformaatioService, koulutusinformaatioBaseurl, pdfService);
 
         String asId = "1.2.3";
         String oid = "4.5.6";
