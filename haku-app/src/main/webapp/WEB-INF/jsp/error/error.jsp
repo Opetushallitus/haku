@@ -43,16 +43,26 @@
 <p>Palaa takaisin <a href="/">opintopolku.fi-palveluun</a> ja hae koulutukseen uudelleen.</p>
 <p>Mikäli ehdit lähettää hakulomakkeen, mutta et saanut kuittausta antamaasi sähköpostiin etkä ehtinyt tulostaa hakulomakettasi, ota yhteyttä</p>
 <ul>
-<li>haettuasi korkeakouluun</li><ul>
-<li>ammattikorkeakoulujen hakijapalvelut: <a href="/">opintopolku.fi/wp/fi/ammattikorkeakoulu/ammattikorkeakoulujen-hakutoimistot-ja-hakijapalvelut</a></li>
-<li>yliopistojen hakijapalvelut: <a href="/">opintopolku.fi/wp/fi/yliopisto/yliopistojen-hakijapalvelut</a></li><ul>
-<li>haettuasi ammatillisiin koulutuksiin</li><ul>
-<li>Opetushallitukseen: neuvonta@opintopolku.fi</li>
+  <li>haettuasi korkeakouluun</li>
+  <ul>
+    <li>ammattikorkeakoulujen hakijapalvelut:
+      <a href="/wp/fi/ammattikorkeakoulu/ammattikorkeakoulujen-hakutoimistot-ja-hakijapalvelut">https://opintopolku.fi/wp/fi/ammattikorkeakoulu/ammattikorkeakoulujen-hakutoimistot-ja-hakijapalvelut</a>
+    </li>
+    <li>yliopistojen hakijapalvelut:
+      <a href="/wp/fi/yliopisto/yliopistojen-hakijapalvelut">https://opintopolku.fi/wp/fi/yliopisto/yliopistojen-hakijapalvelut</a>
+    </li>
+  </ul>
+  <li>haettuasi ammatillisiin koulutuksiin</li>
+  <ul>
+    <li>Opetushallitukseen: neuvonta@opintopolku.fi</li>
+  </ul>
+</ul>
 
 <p>Ohjaus- ja neuvontapalvelut<br/>
 Opetushallitus<br/>
 PL 380<br/>
 00531 Helsinki<br/>
+</p>
 
 <hr class="margin-top-2"/>
 <div class="logo-bg">
@@ -68,10 +78,12 @@ PL 380<br/>
 <p>Om du redan hann skicka din ansökningsblankett, men inte hann få en utskrift av din ansökningsblankett, kan du vid behov be om en utskrift från Studieinfos ansökningstjänst:</p>
 <p>info@studieinfo.fi</p>
 <p>telefon: 029 533 1010</p>
+<p>
 Studieinfos ansökningstjänst<br />
 Utbildningsstyrelsen<br />
 PB 380<br />
 00531 Helsingfors<br />
+</p>
 
 <footer style="width: 100%;bottom: 0; position: fixed; float: right">${it.timestamp} &nbsp;${it.error_id}</footer>
 <!-- Piwik -->
