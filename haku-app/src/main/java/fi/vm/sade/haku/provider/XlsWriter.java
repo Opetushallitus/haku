@@ -1,9 +1,10 @@
 package fi.vm.sade.haku.provider;
 
 import fi.vm.sade.haku.oppija.hakemus.resource.XlsParameter;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.Titled;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.DropdownSelect;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Question;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 import org.springframework.stereotype.Service;
@@ -52,48 +53,51 @@ public class XlsWriter implements MessageBodyWriter<XlsParameter> {
         sheet.setDefaultColumnWidth(20);
 
 
-        int currentRow = 0;
-        int currentColumn = 0;
+        int currentRowIndex = 0;
+        int currentColumnIndex = 0;
 
-        Map<String, Question> questions = xlsParameter.getElementsByType();
-        Row title = sheet.createRow(currentRow);
+        Map<String, Question> questions = xlsParameter.getQuestions();
+        Row titleRow = sheet.createRow(currentRowIndex);
         ArrayList questionIndexes = new ArrayList(questions.size());
         for (Question titled : questions.values()) {
-            Cell titleCell = title.createCell(currentColumn);
+            Cell titleCell = titleRow.createCell(currentColumnIndex);
             if (titled.getI18nText() != null) {
-                titleCell.setCellValue(titled.getI18nText().getTranslations().get("fi"));
-                sheet.autoSizeColumn(currentColumn);
-                currentColumn++;
+                titleCell.setCellValue(ElementUtil.getText(titled, lang));
+                sheet.autoSizeColumn(currentColumnIndex);
                 questionIndexes.add(titled.getId());
+                currentColumnIndex++;
             }
         }
-        currentRow++;
+        currentRowIndex++;
 
         List<Map<String, Object>> applications = xlsParameter.getApplications();
 
         for (Map<String, Object> application : applications) {
 
-            title = sheet.createRow(currentRow);
+            titleRow = sheet.createRow(currentRowIndex);
             Map<String, Object> vastaukset = (Map<String, Object>) application.get("answers");
             for (Map.Entry<String, Object> vastauksetVaiheittain : vastaukset.entrySet()) {
                 Map<String, String> vaiheenVastaukset = (Map<String, String>) vastauksetVaiheittain.getValue();
                 for (Map.Entry<String, String> vastaus : vaiheenVastaukset.entrySet()) {
                     int column = questionIndexes.indexOf(vastaus.getKey());
                     if (column > -1) {
-                        Cell kentta = title.createCell(column);
-                        Titled titled = questions.get(vastaus.getKey());
-                        if (titled != null && titled.getI18nText() != null && titled.getI18nText().getTranslations() != null && titled.getI18nText().getTranslations().get("fi") != null) {
-                            if (titled instanceof DropdownSelect) {
-                                ((DropdownSelect) titled).getData().get(vastaus.getValue()).getI18nText().getTranslations().get(vastaus.getValue());
+                        Cell kentta = titleRow.createCell(column);
+                        Question question = questions.get(vastaus.getKey());
+                        String title = ElementUtil.getText(question, lang);
+                        if (title != null) {
+                            if (question instanceof DropdownSelect) {
+                                Option option = ((DropdownSelect) question).getData().get(vastaus.getValue());
+                                kentta.setCellValue(ElementUtil.getText(option, lang));
+                            } else {
+                                kentta.setCellValue(vastaus.getValue());
                             }
-                            kentta.setCellValue(vastaus.getValue());
 
                         }
                     }
                 }
             }
         }
-        httpHeaders.add("content-disposition", "attachment; filename=" +  raportinNimi + ".xls");
+        httpHeaders.add("content-disposition", "attachment; filename=" + raportinNimi + ".xls");
         wb.write(entityStream);
     }
 }

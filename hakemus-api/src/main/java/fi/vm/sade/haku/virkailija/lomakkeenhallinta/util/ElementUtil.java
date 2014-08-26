@@ -267,4 +267,11 @@ public final class ElementUtil {
         return Rule(new Regexp(variable, pattern)).build();
     }
 
+    public static String getText(final Titled titled, String lang) {
+        I18nText i18nText = titled.getI18nText();
+        if (i18nText != null) {
+            return i18nText.getTranslations().get(lang);
+        }
+        return null;
+    }
 }
