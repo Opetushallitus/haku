@@ -16,12 +16,14 @@
 
 package fi.vm.sade.haku.oppija.hakemus.domain;
 
-import static org.apache.commons.lang3.StringUtils.isNotBlank;
-import static org.apache.commons.lang3.StringUtils.isNotEmpty;
-
-import java.io.Serializable;
-import java.util.*;
-
+import com.google.common.base.Predicates;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
+import fi.vm.sade.haku.oppija.lomake.domain.ObjectIdDeserializer;
+import fi.vm.sade.haku.oppija.lomake.domain.ObjectIdSerializer;
+import fi.vm.sade.haku.oppija.lomake.domain.User;
+import fi.vm.sade.haku.virkailija.authentication.Person;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.codehaus.jackson.annotate.JsonCreator;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
@@ -31,15 +33,11 @@ import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.base.Predicates;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Maps;
+import java.io.Serializable;
+import java.util.*;
 
-import fi.vm.sade.haku.oppija.lomake.domain.ObjectIdDeserializer;
-import fi.vm.sade.haku.oppija.lomake.domain.ObjectIdSerializer;
-import fi.vm.sade.haku.oppija.lomake.domain.User;
-import fi.vm.sade.haku.virkailija.authentication.Person;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
+import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_EMPTY)
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -47,6 +45,14 @@ public class Application implements Serializable {
 
     @JsonIgnore
     private static final Logger log = LoggerFactory.getLogger(Application.class);
+
+    public Integer getModelVersion() {
+        return modelVersion;
+    }
+
+    public void setModelVersion(Integer modelVersion) {
+        this.modelVersion = modelVersion;
+    }
 
     public enum State {
         ACTIVE, PASSIVE, INCOMPLETE, SUBMITTED;
@@ -93,6 +99,7 @@ public class Application implements Serializable {
     private LinkedList<ApplicationNote> notes = new LinkedList<ApplicationNote>();
     private List<Change> history = new ArrayList<Change>();
     private Integer version;
+    private Integer modelVersion;
 
     @JsonCreator
     public Application(@JsonProperty(value = "applicationSystemId") final String applicationSystemId,

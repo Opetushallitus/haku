@@ -46,10 +46,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Pattern;
 
-import static com.mongodb.QueryOperators.EXISTS;
-import static com.mongodb.QueryOperators.NE;
-import static com.mongodb.QueryOperators.NOT;
-import static com.mongodb.QueryOperators.OR;
+import static com.mongodb.QueryOperators.*;
 import static org.apache.commons.lang.StringUtils.isEmpty;
 import static org.apache.commons.lang.StringUtils.isNotBlank;
 
@@ -103,6 +100,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     private static final String FIELD_STUDENT_IDENTIFICATION_DONE = "studentIdentificationDone";
     private static final String FIELD_REDO_POSTPROCESS = "redoPostProcess";
     private static final String FIELD_OPO_ALLOWED = "authorizationMeta.opoAllowed";
+    private static final String FIELD_MODEL_VERSION = "modelVersion";
     private static final String REGEX_LINE_BEGIN = "^";
 
     private static final Pattern OID_PATTERN = Pattern.compile("((^([0-9]{1,4}\\.){5})|(^))[0-9]{11}$");
@@ -555,6 +553,19 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
             throw mongoException;
         }
     }
+
+
+    @Override
+    public List<Application> getNextUpgradable(int batchSize) {
+        QueryBuilder queryBuilder = QueryBuilder.start(FIELD_MODEL_VERSION).exists(false);
+        DBCursor cursor = getCollection().find(queryBuilder.get()).limit(batchSize);
+        List<Application> applications = new ArrayList<Application>(batchSize);
+        while (cursor.hasNext()) {
+            applications.add(fromDBObject.apply(cursor.next()));
+        }
+        return applications;
+    }
+
 
     private boolean resultNotEmpty(final DBObject query, final String indexName) {
         try {

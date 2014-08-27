@@ -106,12 +106,14 @@
 
         <bean id="yksilointiScheduler" class="fi.vm.sade.haku.oppija.yksilointi.Scheduler">
             <property name="run" value="${scheduler.run}"/>
+            <property name="runModelUpgrade" value="${scheduler.runModelUpgrade}"/>
             <property name="sendMail" value="${scheduler.sendMail}"/>
         </bean>
         <task:scheduled-tasks scheduler="scheduler">
             <task:scheduled ref="yksilointiScheduler" method="runProcess" fixed-delay="${scheduler.delay}"/>
             <task:scheduled ref="yksilointiScheduler" method="redoPostprocess" fixed-delay="${scheduler.delay}"/>
             <task:scheduled ref="yksilointiScheduler" method="runIdentification" fixed-delay="${scheduler.delay}"/>
+            <task:scheduled ref="yksilointiScheduler" method="runModelUpgrade" cron="${scheduler.modelUpgradeCron}"/>
         </task:scheduled-tasks>
 
         <task:scheduler id="scheduler" pool-size="1"/>
