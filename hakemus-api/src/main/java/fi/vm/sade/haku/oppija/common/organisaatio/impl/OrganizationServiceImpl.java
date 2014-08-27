@@ -16,13 +16,22 @@
 package fi.vm.sade.haku.oppija.common.organisaatio.impl;
 
 import com.google.common.collect.Lists;
+import com.google.gson.Gson;
 import fi.vm.sade.generic.rest.CachingRestClient;
 import fi.vm.sade.haku.oppija.common.organisaatio.Organization;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationRestDTO;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
+import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
 import fi.vm.sade.organisaatio.api.search.OrganisaatioHakutulos;
 import fi.vm.sade.organisaatio.api.search.OrganisaatioPerustieto;
 import fi.vm.sade.organisaatio.api.search.OrganisaatioSearchCriteria;
+import org.apache.commons.io.IOUtils;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.StatusLine;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.cache.CachingHttpClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,6 +39,8 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.lang.ref.SoftReference;
 import java.net.URLEncoder;
@@ -46,23 +57,18 @@ public class OrganizationServiceImpl implements OrganizationService {
 
     private static final Logger LOG = LoggerFactory.getLogger(OrganizationServiceImpl.class);
 
-    private static CachingRestClient cachingRestClient;
+    private static HttpClient cachingRestClient;
     private static Map<String, SoftReference<Object>> cache;
     private static final String ROOT_ORGANIZATION_OPH = "1.2.246.562.10.00000000001";
 
-    @Value("${web.url.cas}")
-    private String casUrl;
+    private Gson gson;
 
     @Value("${cas.service.organisaatio-service}")
     private String targetService;
 
-    @Value("${authentication.app.username.to.organisaatioservice}")
-    private String clientAppUser;
-    @Value("${authentication.app.password.to.organisaatioservice}")
-    private String clientAppPass;
-
     public OrganizationServiceImpl() {
         this.cache = new HashMap<String, SoftReference<Object>>();
+        this.gson = new Gson();
     }
 
     @Override
@@ -127,15 +133,14 @@ public class OrganizationServiceImpl implements OrganizationService {
 
     @Override
     public List<String> findParentOids(final String organizationOid) throws IOException {
-        String url = targetService + "/rest/organisaatio/" + organizationOid + "/parentoids";
-        CachingRestClient client = getCachingRestClient();
-        String parents = client.getAsString(url);
+        String url = "/rest/organisaatio/" + organizationOid + "/parentoids";
+        String parents = getCached(url, String.class);
         return Lists.newArrayList(parents.split("/"));
     }
 
     @Override
     public Organization findByOid(String oid) throws IOException {
-        String url = targetService + "/rest/organisaatio/" + oid;
+        String url = "/rest/organisaatio/" + oid;
         OrganizationRestDTO organisaatioRDTO = getCached(url, OrganizationRestDTO.class);
         return new Organization(organisaatioRDTO);
     }
@@ -168,20 +173,38 @@ public class OrganizationServiceImpl implements OrganizationService {
             }
             LOG.debug("Cache reference for key {} is stale or unassignable. Result object was of type {} expected {}", url, null == result ? null : result.getClass(), resultType.getClass());
         }
-        CachingRestClient client = getCachingRestClient();
-        T result = client.get(url, resultType);
+
+        T result = get(url, resultType);
         cache.put(url, new SoftReference<Object>(result));
         return result;
 
     }
 
-    public static void setCachingRestClient(CachingRestClient client) {
-        cachingRestClient = client;
+    private <T> T get(String url, Class<? extends T> resultType) throws IOException {
+        HttpClient client = getCachingRestClient();
+        HttpGet get = new HttpGet(targetService + url);
+        HttpResponse response = client.execute(get);
+        HttpEntity entity = response.getEntity();
+        if (entity != null) {
+            if (resultType.isAssignableFrom(String.class)) {
+                StringWriter writer = new StringWriter();
+                IOUtils.copy(entity.getContent(), writer, "UTF-8");
+                return (T) writer.toString();
+            } else {
+                return gson.fromJson(new InputStreamReader(entity.getContent()), resultType);
+            }
+        }
+        StatusLine statusLine = response.getStatusLine();
+        throw new ResourceNotFoundException("fetch failed. url: "+url+" statusCode: "+statusLine.getStatusCode()
+                +" reason: "+statusLine.getReasonPhrase());
     }
 
-    private synchronized CachingRestClient getCachingRestClient() {
+    public static void setCachingRestClient(CachingRestClient client) {
+    }
+
+    private synchronized HttpClient getCachingRestClient() {
         if (cachingRestClient == null) {
-            cachingRestClient = new CachingRestClient();
+            cachingRestClient = new CachingHttpClient();
         }
         return cachingRestClient;
     }
