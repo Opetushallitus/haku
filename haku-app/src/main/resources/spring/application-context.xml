@@ -98,12 +98,6 @@
                 base-package="fi.vm.sade.haku,fi.vm.sade.security,fi.vm.sade.organisaatio.service.search"/>
         <aop:aspectj-autoproxy/>
 
-        <!-- Configure the multipart resolver -->
-        <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-            <!-- one of the properties available; the maximum file size in bytes -->
-            <property name="maxUploadSize" value="1000000"/>
-        </bean>
-
         <bean id="yksilointiScheduler" class="fi.vm.sade.haku.oppija.yksilointi.Scheduler">
             <property name="run" value="${scheduler.run}"/>
             <property name="runModelUpgrade" value="${scheduler.runModelUpgrade}"/>
