@@ -11,7 +11,7 @@
             <fmt:message bundle="${form_common}" key="form.valmis.todistus.${entry.key}" />
             <c:if test="${not empty entry.value}">
                 <c:forEach items="${entry.value}" var="ao">
-                    <haku:applicationOption ao="${ao}" />
+                    <haku:applicationOffice ao="${ao}" />
                 </c:forEach>
             </c:if>
         </c:forEach>

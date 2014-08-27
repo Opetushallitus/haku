@@ -27,30 +27,22 @@ public class YearValidator extends FieldValidator {
 
     private final Integer fromYear;
     private final Integer toYear;
-    private final boolean allowEmpty;
 
-    private static final I18nText EMPTY_NOT_ALLOWED = ElementUtil.createI18NText("yearValidator.emptyNotAllowed");
     private static final I18nText NOT_A_NUMBER = ElementUtil.createI18NText("yearValidator.notANumber");
     private static final I18nText TOO_EARLY = ElementUtil.createI18NText("yearValidator.tooEarly");
     private static final I18nText TOO_LATE = ElementUtil.createI18NText("yearValidator.tooLate");
 
-    public YearValidator(final Integer fromYear, final Integer toYear,
-                         final boolean allowEmpty) {
+    public YearValidator(final Integer fromYear, final Integer toYear) {
         super(ElementUtil.createI18NAsIs("Generic error message"));
         this.fromYear = fromYear;
         this.toYear = toYear;
-        this.allowEmpty = allowEmpty;
     }
 
     @Override
     public ValidationResult validate(final ValidationInput validationInput) {
         String value = validationInput.getValue();
         if (StringUtils.isBlank(value)) {
-            if (allowEmpty) {
-                return new ValidationResult();
-            } else {
-                return new ValidationResult(validationInput.getFieldName(), EMPTY_NOT_ALLOWED);
-            }
+            return new ValidationResult();
         }
         int year;
         try {

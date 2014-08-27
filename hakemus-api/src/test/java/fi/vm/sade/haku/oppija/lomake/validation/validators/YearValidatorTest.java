@@ -41,29 +41,29 @@ public class YearValidatorTest {
 
     @Test
     public void testYearValidator1984() throws Exception {
-        assertFalse(validationResult(new YearValidator(null, null, true), year1984).hasErrors());
-        assertFalse(validationResult(new YearValidator(null, null, false), year1984).hasErrors());
-        assertFalse(validationResult(new YearValidator(1983, 1985, false), year1984).hasErrors());
-        assertFalse(validationResult(new YearValidator(1984, 1984, false), year1984).hasErrors());
-        assertFalse(validationResult(new YearValidator(1900, 2000, false), year1984).hasErrors());
-        assertTrue(validationResult(new YearValidator(1900, 1983, false), year1984).hasErrors());
-        assertTrue(validationResult(new YearValidator(1985, 2000, false), year1984).hasErrors());
+        assertFalse(validationResult(new YearValidator(null, null), year1984).hasErrors());
+        assertFalse(validationResult(new YearValidator(null, null), year1984).hasErrors());
+        assertFalse(validationResult(new YearValidator(1983, 1985), year1984).hasErrors());
+        assertFalse(validationResult(new YearValidator(1984, 1984), year1984).hasErrors());
+        assertFalse(validationResult(new YearValidator(1900, 2000), year1984).hasErrors());
+        assertTrue(validationResult(new YearValidator(1900, 1983), year1984).hasErrors());
+        assertTrue(validationResult(new YearValidator(1985, 2000), year1984).hasErrors());
     }
 
     @Test
     public void testYearValidatorEmpty() throws Exception {
-        assertFalse(validationResult(new YearValidator(null, null, true), yearEmpty).hasErrors());
-        assertTrue(validationResult(new YearValidator(null, null, false), yearEmpty).hasErrors());
-        assertTrue(validationResult(new YearValidator(1983, 1985, false), yearEmpty).hasErrors());
-        assertFalse(validationResult(new YearValidator(1984, 1984, true), yearEmpty).hasErrors());
+        assertFalse(validationResult(new YearValidator(null, null), yearEmpty).hasErrors());
+        assertFalse(validationResult(new YearValidator(null, null), yearEmpty).hasErrors());
+        assertFalse(validationResult(new YearValidator(1983, 1985), yearEmpty).hasErrors());
+        assertFalse(validationResult(new YearValidator(1984, 1984), yearEmpty).hasErrors());
     }
 
     @Test
     public void testYearValidatorNaN() throws Exception {
-        assertTrue(validationResult(new YearValidator(null, null, true), yearNaN).hasErrors());
-        assertTrue(validationResult(new YearValidator(null, null, false), yearNaN).hasErrors());
-        assertTrue(validationResult(new YearValidator(1983, 1985, false), yearNaN).hasErrors());
-        assertTrue(validationResult(new YearValidator(1984, 1984, true), yearNaN).hasErrors());
+        assertTrue(validationResult(new YearValidator(null, null), yearNaN).hasErrors());
+        assertTrue(validationResult(new YearValidator(null, null), yearNaN).hasErrors());
+        assertTrue(validationResult(new YearValidator(1983, 1985), yearNaN).hasErrors());
+        assertTrue(validationResult(new YearValidator(1984, 1984), yearNaN).hasErrors());
     }
 
     private ValidationResult validationResult(Validator validator, Map<String, String> input) {

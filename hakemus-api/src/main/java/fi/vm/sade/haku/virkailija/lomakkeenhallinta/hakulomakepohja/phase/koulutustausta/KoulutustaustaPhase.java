@@ -40,7 +40,7 @@ public final class KoulutustaustaPhase {
     public static final String TUTKINTO_KESKEYTNYT_NOTIFICATION_ID = "tutkinto5-notification";
 
     public static final int TEXT_AREA_COLS = 60;
-    public static final String PAATTOTODISTUSVUOSI_PATTERN = "^(19[0-9][0-9]|200[0-9]|201[0-4])$";
+    public static final String PAATTOTODISTUSVUOSI_PATTERN = "^(19[0-9][0-9]|200[0-9]|201[0-5])$";
 
     private KoulutustaustaPhase() {
     }
@@ -93,9 +93,9 @@ public final class KoulutustaustaPhase {
     private static Element buildMuu(FormParameters formParameters) {
         Element muu = Checkbox("pohjakoulutus_muu").formParams(formParameters).build();
         Element muuMore = createVarEqualsToValueRule(muu.getId(), "true");
-        Element vuosi = TextQuestion("pohjakoulutus_muu_vuosi").labelKey("pohjakoulutus.suoritusvuosi")
+        Element vuosi = TextQuestion("pohjakoulutus_muu_vuosi")
                 .requiredInline()
-                .validator(ElementUtil.createYearValidator(formParameters, formParameters.getApplicationSystem().getHakukausiVuosi(), false, 1900))
+                .validator(ElementUtil.createYearValidator(formParameters.getApplicationSystem().getHakukausiVuosi() + 1, 1900))
                 .formParams(formParameters).build();
         Element kuvaus = TextArea("pohjakoulutus_muu_kuvaus").formParams(formParameters).requiredInline().build();
         muuMore.addChild(vuosi, kuvaus);
@@ -120,8 +120,9 @@ public final class KoulutustaustaPhase {
     private static Element buildUlkomainenTutkinto(FormParameters formParameters) {
         Element ulk = Checkbox("pohjakoulutus_ulk").formParams(formParameters).build();
         Element ulkMore = createVarEqualsToValueRule(ulk.getId(), "true");
-        Element vuosi = TextQuestion("pohjakoulutus_ulk_vuosi").labelKey("pohjakoulutus.suoritusvuosi")
-                .validator(ElementUtil.createYearValidator(formParameters, formParameters.getApplicationSystem().getHakukausiVuosi(), false, 1900))
+        Element vuosi = TextQuestion("pohjakoulutus_ulk_vuosi")
+                .requiredInline()
+                .validator(ElementUtil.createYearValidator(formParameters.getApplicationSystem().getHakukausiVuosi() + 1, 1900))
                 .formParams(formParameters).build();
         Element nimike = TextQuestion("pohjakoulutus_ulk_nimike").labelKey("pohjakoulutus.tutkintonimike")
                 .formParams(formParameters).requiredInline().build();
@@ -137,8 +138,9 @@ public final class KoulutustaustaPhase {
         Element kkMore = createVarEqualsToValueRule(kk.getId(), "true");
         Element taso = Dropdown("pohjakoulutus_kk_taso")
                 .addOptions(tutkintotasot).requiredInline().labelKey("pohjakoulutus.tutkintotaso").formParams(formParameters).build();
-        Element vuosi = TextQuestion("pohjakoulutus_kk_vuosi").labelKey("pohjakoulutus.suoritusvuosi")
-                .validator(ElementUtil.createYearValidator(formParameters, formParameters.getApplicationSystem().getHakukausiVuosi(), false, 1900))
+        Element vuosi = TextQuestion("pohjakoulutus_kk_vuosi")
+                .requiredInline()
+                .validator(ElementUtil.createYearValidator(formParameters.getApplicationSystem().getHakukausiVuosi() + 1, 1900))
                 .formParams(formParameters).build();
         Element nimike = TextQuestion("pohjakoulutus_kk_nimike").labelKey("pohjakoulutus.tutkintonimike")
                 .formParams(formParameters).requiredInline().build();
@@ -156,8 +158,8 @@ public final class KoulutustaustaPhase {
     private static Element buildAmmattitutkinto(FormParameters formParameters) {
         Element amt = Checkbox("pohjakoulutus_amt").formParams(formParameters).build();
         Element amtMore = createVarEqualsToValueRule(amt.getId(), "true");
-        Element vuosi = TextQuestion("pohjakoulutus_amt_vuosi").labelKey("pohjakoulutus.suoritusvuosi")
-                .validator(ElementUtil.createYearValidator(formParameters, formParameters.getApplicationSystem().getHakukausiVuosi(), false, 1900))
+        Element vuosi = TextQuestion("pohjakoulutus_amt_vuosi")
+                .validator(ElementUtil.createYearValidator(formParameters.getApplicationSystem().getHakukausiVuosi() + 1, 1900))
                 .requiredInline().formParams(formParameters).build();
         Element nimike = TextQuestion("pohjakoulutus_amt_nimike").labelKey("pohjakoulutus.tutkintonimike")
                 .formParams(formParameters).requiredInline().build();
@@ -171,8 +173,8 @@ public final class KoulutustaustaPhase {
     private static Element buildAmmatillinen(FormParameters formParameters, List<Option> laajuusYksikot) {
         Element am = Checkbox("pohjakoulutus_am").formParams(formParameters).build();
         Element amMore = createVarEqualsToValueRule(am.getId(), "true");
-        Element vuosi = TextQuestion("pohjakoulutus_am_vuosi").labelKey("pohjakoulutus.suoritusvuosi")
-                .validator(ElementUtil.createYearValidator(formParameters, formParameters.getApplicationSystem().getHakukausiVuosi(), false, 1900))
+        Element vuosi = TextQuestion("pohjakoulutus_am_vuosi")
+                .validator(ElementUtil.createYearValidator(formParameters.getApplicationSystem().getHakukausiVuosi() + 1, 1900))
                 .requiredInline().formParams(formParameters).build();
         Element nimike = TextQuestion("pohjakoulutus_am_nimike").labelKey("pohjakoulutus.tutkintonimike")
                 .formParams(formParameters).requiredInline().build();
@@ -197,9 +199,9 @@ public final class KoulutustaustaPhase {
     private static Element buildYo(FormParameters formParameters, List<Option> laajuusYksikot) {
         Element yo = Checkbox("pohjakoulutus_yo").formParams(formParameters).build();
         Element yoMore = createVarEqualsToValueRule(yo.getId(), "true");
-        Element vuosi = TextQuestion("pohjakoulutus_yo_vuosi").labelKey("pohjakoulutus.suoritusvuosi")
+        Element vuosi = TextQuestion("pohjakoulutus_yo_vuosi")
                 .requiredInline()
-                .validator(ElementUtil.createYearValidator(formParameters, formParameters.getApplicationSystem().getHakukausiVuosi(), false, 1900))
+                .validator(ElementUtil.createYearValidator(formParameters.getApplicationSystem().getHakukausiVuosi() + 1, 1900))
                 .formParams(formParameters).build();
         Element yoTutkinto = Dropdown("pohjakoulutus_yo_tutkinto")
                 .addOption(createI18NText("form.koulutustausta.lukio.yotutkinto.fi"), "fi")
@@ -213,9 +215,8 @@ public final class KoulutustaustaPhase {
         Element ammatillinen = Checkbox("pohjakoulutus_yo_ammatillinen").inline().formParams(formParameters).build();
         Element ammatillinenMore = createVarEqualsToValueRule(ammatillinen.getId(), "true");
         Element ammatillinenVuosi = TextQuestion("pohjakoulutus_yo_ammatillinen_vuosi")
-                .labelKey("pohjakoulutus.suoritusvuosi")
                 .requiredInline()
-                .validator(ElementUtil.createYearValidator(formParameters, formParameters.getApplicationSystem().getHakukausiVuosi(), false, 1900))
+                .validator(ElementUtil.createYearValidator(formParameters.getApplicationSystem().getHakukausiVuosi() + 1, 1900))
                 .formParams(formParameters).build();
         Element ammatillinenNimike = TextQuestion("pohjakoulutus_yo_ammatillinen_nimike")
                 .labelKey("pohjakoulutus.tutkintonimike")
@@ -263,8 +264,8 @@ public final class KoulutustaustaPhase {
 
         Element tutkinto = TextQuestion("aiempitutkinto_tutkinto").labelKey("pohjakoulutus.tutkinto")
                 .requiredInline().formParams(formParameters).build();
-        Element vuosi = TextQuestion("aiempitutkinto_vuosi").labelKey("pohjakoulutus.suoritusvuosi")
-                .validator(ElementUtil.createYearValidator(formParameters, formParameters.getApplicationSystem().getHakukausiVuosi(), false, 1900))
+        Element vuosi = TextQuestion("aiempitutkinto_vuosi")
+                .validator(ElementUtil.createYearValidator(formParameters.getApplicationSystem().getHakukausiVuosi() + 1, 1900))
                 .requiredInline().formParams(formParameters).build();
 
         aiempitutkintoMore.addChild(
@@ -290,7 +291,7 @@ public final class KoulutustaustaPhase {
         Element tutkinto = TextQuestion("suoritusoikeus_tutkinto").labelKey("pohjakoulutus.tutkinto")
                 .requiredInline().formParams(formParameters).build();
         Element vuosi = TextQuestion("suoritusoikeus_vuosi").requiredInline()
-                .validator(ElementUtil.createYearValidator(formParameters, formParameters.getApplicationSystem().getHakukausiVuosi(), false, 1900))
+                .validator(ElementUtil.createYearValidator(formParameters.getApplicationSystem().getHakukausiVuosi() + 1, 1900))
                 .formParams(formParameters).build();
 
         suoritusoikeusMore.addChild(
@@ -363,7 +364,7 @@ public final class KoulutustaustaPhase {
                 .required()
                 .size(4)
                 .maxLength(4)
-                .validator(ElementUtil.createYearValidator(formParameters, formParameters.getApplicationSystem().getHakukausiVuosi(), false, 1900))
+                .validator(ElementUtil.createYearValidator(formParameters.getApplicationSystem().getHakukausiVuosi(), 1900))
                 .formParams(formParameters).build();
 
         Element suorittanutGroup =
@@ -404,7 +405,7 @@ public final class KoulutustaustaPhase {
             Element lukioPaattotodistusVuosi = TextQuestion(OppijaConstants.LUKIO_PAATTOTODISTUS_VUOSI)
                     .maxLength(4)
                     .size(4)
-                    .validator(ElementUtil.createYearValidator(formParameters, formParameters.getApplicationSystem().getHakukausiVuosi(), false, 1900))
+                    .validator(ElementUtil.createYearValidator(formParameters.getApplicationSystem().getHakukausiVuosi() + 1, 1900))
                     .requiredInline()
                     .formParams(formParameters).build();
 
