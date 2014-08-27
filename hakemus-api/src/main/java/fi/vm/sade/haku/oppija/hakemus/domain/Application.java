@@ -45,6 +45,7 @@ public class Application implements Serializable {
 
     @JsonIgnore
     private static final Logger log = LoggerFactory.getLogger(Application.class);
+    public static final Integer CURRENT_MODEL_VERSION = 1;
 
     public Integer getModelVersion() {
         return modelVersion;

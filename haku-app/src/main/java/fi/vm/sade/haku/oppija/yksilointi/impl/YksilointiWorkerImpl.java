@@ -125,6 +125,7 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
             }
             application = applicationService.updateAuthorizationMeta(application, false);
             application = validateApplication(application);
+            application.setModelVersion(Application.CURRENT_MODEL_VERSION);
             this.applicationDAO.update(new Application(application.getOid()), application);
             if (sendMail) {
                 try {
@@ -159,13 +160,13 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
                 try {
                     LOGGER.info("Start upgrading model version for application: " + application.getOid());
                     application = applicationService.updateAuthorizationMeta(application, false);
-                    application.setModelVersion(1);
+                    application.setModelVersion(Application.CURRENT_MODEL_VERSION);
                     LOGGER.info("Done upgrading model version for application: " + application.getOid());
                 } catch (IOException e) {
-                    application.setModelVersion(-1);
+                    application.setModelVersion(-1 * Application.CURRENT_MODEL_VERSION);
                     LOGGER.error("Upgrading model failed for application: " + application.getOid() + " " + e.getMessage());
                 } catch (RuntimeException e) {
-                    application.setModelVersion(-1);
+                    application.setModelVersion(-1 * Application.CURRENT_MODEL_VERSION);
                     LOGGER.error("Upgrading model failed for application: " + application.getOid() + " " + e.getMessage());
                 } finally {
                     applicationDAO.update(new Application(application.getOid()), application);
@@ -203,6 +204,7 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
                     application = applicationService.updateAuthorizationMeta(application, false);
                     application = validateApplication(application);
                     application.setRedoPostProcess(PostProcessingState.DONE);
+                    application.setModelVersion(Application.CURRENT_MODEL_VERSION);
                     this.applicationDAO.update(new Application(application.getOid()), application);
                     LOGGER.debug("Reprocessing " + application.getOid() + " done");
                 }
