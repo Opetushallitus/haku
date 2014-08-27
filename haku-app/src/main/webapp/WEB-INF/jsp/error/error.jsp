@@ -120,11 +120,11 @@
                 <a href="/wp2/en/higher-education/universities">https://opintopolku.fi/wp2/en/higher-education/universities</a>
             </li>
         </ul>
-        <li>if you have applied for vocational education and training</li>
-        <ul>
-            <li>The Finnish National Board of Education: xxx@studyinfo.fi</li>
-        </ul>
-    </ul>
+        
+        
+            
+        
+    
 
     <footer style="width: 100%;bottom: 0; position: fixed; float: right">${it.timestamp} &nbsp;${it.error_id}</footer>
     <!-- Piwik -->
