@@ -87,7 +87,6 @@ public class UIServiceImpl implements UIService {
                     new ArrayList<ApplicationOptionDTO>();
             for (String aoOid : entry.getValue()) {
                 ApplicationOptionDTO ao = koulutusinformaatioService.getApplicationOption(aoOid);
-                ao.getProvider().getApplicationOffice();
                 if (!addressAlreadyAdded(aos, ao)) {
                     aos.add(ao);
                 }
