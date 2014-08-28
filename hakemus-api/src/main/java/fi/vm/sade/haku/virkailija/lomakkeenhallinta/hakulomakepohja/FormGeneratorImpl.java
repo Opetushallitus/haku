@@ -1,6 +1,7 @@
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja;
 
 import fi.vm.sade.haku.oppija.common.koulutusinformaatio.ApplicationOptionService;
+import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystemBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
@@ -23,16 +24,19 @@ public class FormGeneratorImpl implements FormGenerator {
     private final HakuService hakuService;
     private final ThemeQuestionDAO themeQuestionDAO;
     private final HakukohdeService hakukohdeService;
-    private final ApplicationOptionService applicationOptionService;
+    private final OrganizationService organizationService;
 
     @Autowired
-    public FormGeneratorImpl(final KoodistoService koodistoService, final HakuService hakuService,
-      ThemeQuestionDAO themeQuestionDAO, HakukohdeService hakukohdeService, ApplicationOptionService applicationOptionService) {
+    public FormGeneratorImpl(final KoodistoService koodistoService,
+                             final HakuService hakuService,
+                             final ThemeQuestionDAO themeQuestionDAO,
+                             final HakukohdeService hakukohdeService,
+                             final OrganizationService organizationService) {
         this.koodistoService = koodistoService;
         this.hakuService = hakuService;
         this.themeQuestionDAO = themeQuestionDAO;
         this.hakukohdeService = hakukohdeService;
-        this.applicationOptionService = applicationOptionService;
+        this.organizationService = organizationService;
     }
 
     @Override
@@ -44,13 +48,13 @@ public class FormGeneratorImpl implements FormGenerator {
     @Override
     public Form generateFormWithThemesOnly(String oid) {
         ApplicationSystem as = hakuService.getApplicationSystem(oid);
-        FormParameters formParameters = new FormParameters(as, koodistoService, themeQuestionDAO, hakukohdeService, applicationOptionService);
+        FormParameters formParameters = new FormParameters(as, koodistoService, themeQuestionDAO, hakukohdeService, organizationService);
         formParameters.setOnlyThemeGenerationForFormEditor(Boolean.TRUE);
         return generateForm(formParameters);
     }
 
     private ApplicationSystem createApplicationSystem(ApplicationSystem as) {
-        FormParameters formParameters = new FormParameters(as, koodistoService, themeQuestionDAO, hakukohdeService, applicationOptionService);
+        FormParameters formParameters = new FormParameters(as, koodistoService, themeQuestionDAO, hakukohdeService, organizationService);
         return new ApplicationSystemBuilder()
                 .addId(as.getId())
                 .addForm(generateForm(formParameters))
