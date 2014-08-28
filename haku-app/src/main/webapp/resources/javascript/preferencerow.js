@@ -42,6 +42,7 @@ var preferenceRow = {
                         preferenceRow.displayChildLONames(hakukohdeId, $selectInput.data("childlonames"));
                     }
                     var organizationGroups = item.organizationGroups;
+                    var aoGroups = new Array();
                     var attachmentGroups = new Array();
                     for (var i = 0; i < organizationGroups.length; i++) {
                         var group = organizationGroups[i];
@@ -54,6 +55,7 @@ var preferenceRow = {
                             }
                         }
                         if (!isAoGroup) { continue; }
+                        aoGroups.push(group.oid);
                         var usages = group.usageGroups;
                         var isAttachmentGroup = false;
                         for (var j = 0; j < usages.length; j++) {
@@ -72,6 +74,7 @@ var preferenceRow = {
                         '" data-lang="' + item.teachingLanguages[0] +
                         '" data-sora="' + item.sora +
                         '" data-aoidentifier="' + item.aoIdentifier +
+                        '" data-ao-groups="' + aoGroups.join(",") +
                         '" data-kaksoistutkinto="' + item.kaksoistutkinto +
                         '" data-vocational="' + item.vocational +
                         '" data-educationcode="' + item.educationCodeUri +
@@ -101,6 +104,7 @@ var preferenceRow = {
         $("#" + selectInputId + "-id-lang").val("").change();
         $("#" + selectInputId + "-id-sora").val(false).change();
         $("#" + selectInputId + "-id-aoIdentifier").val("").change();
+        $("#" + selectInputId + "-id-ao-groups").val("").change();
         $("#" + selectInputId + "-id-kaksoistutkinto").val(false).change();
         $("#" + selectInputId + "-id-vocational").val(false).change();
         $("#" + selectInputId + "-id-educationcode").val(false).change();
@@ -214,6 +218,7 @@ var preferenceRow = {
                                            $educationDegreeKaksoistutkinto = $("#" + this.id + "-id-kaksoistutkinto"),
                                            $educationDegreeVocational = $("#" + this.id + "-id-vocational"),
                                            $educationDegreeAoIdentifier = $("#" + this.id + "-id-aoIdentifier"),
+                                           $educationOptionGroups = $("#" + this.id + "-id-ao-groups"),
                                            $educationDegreeAthlete = $("#" + this.id + "-id-athlete"),
                                            $educationAttachmentGroups = $("#" + this.id + "-id-attachmentgroups"),
                                            $educationDegreeEducationCode = $("#" + this.id + "-id-educationcode"),
@@ -232,6 +237,7 @@ var preferenceRow = {
                                        $educationDegreeKaksoistutkinto.val(selectedOption.data("kaksoistutkinto")).change();
                                        $educationDegreeVocational.val(selectedOption.data("vocational")).change();
                                        $educationDegreeAoIdentifier.val(selectedOption.data("aoidentifier")).change();
+                                       $educationOptionGroups.val(selectedOption.data("ao-groups")).change();
                                        $educationDegreeAthlete.val(selectedOption.data("athlete")).change();
                                        $educationAttachmentGroups.val(selectedOption.data("attachmentgroups")).change();
                                        $educationDegreeEducationCode.val(selectedOption.data("educationcode")).change();

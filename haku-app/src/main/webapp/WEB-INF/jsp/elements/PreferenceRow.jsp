@@ -35,6 +35,7 @@
     <c:set value="${hiddenKoulutusId}-educationcode" var="hiddenEducationCode" scope="page"/>
     <c:set value="${hiddenKoulutusId}-sora" var="hiddenKoulutusIdSora" scope="page"/>
     <c:set value="${hiddenKoulutusId}-aoIdentifier" var="hiddenKoulutusIdAoIdentifier" scope="page"/>
+    <c:set value="${hiddenKoulutusId}-ao-groups" var="hiddenKoulutusIdAoGroups" scope="page"/>
     <c:set value="${hiddenKoulutusId}-athlete" var="hiddenKoulutusIdAthlete" scope="page"/>
     <c:set value="${hiddenKoulutusId}-kaksoistutkinto" var="hiddenKoulutusIdKaksoistutkinto" scope="page"/>
     <c:set value="${hiddenKoulutusId}-vocational" var="hiddenKoulutusIdVocational" scope="page"/>
@@ -81,6 +82,7 @@
                 <haku:input-hidden id="${hiddenKoulutusIdLang}" data="${answers}"/>
                 <haku:input-hidden id="${hiddenKoulutusIdSora}" data="${answers}"/>
                 <haku:input-hidden id="${hiddenKoulutusIdAoIdentifier}" data="${answers}"/>
+                <haku:input-hidden id="${hiddenKoulutusIdAoGroups}" data="${answers}"/>
                 <haku:input-hidden id="${hiddenKoulutusIdAthlete}" data="${answers}"/>
                 <haku:input-hidden id="${hiddenKoulutusIdKaksoistutkinto}" data="${answers}"/>
                 <haku:input-hidden id="${hiddenKoulutusIdVocational}" data="${answers}"/>
