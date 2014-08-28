@@ -38,6 +38,7 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.PDFService;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOfficeDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.LearningOpportunityProviderDTO;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,6 +88,7 @@ public class UIServiceImpl implements UIService {
                     new ArrayList<ApplicationOptionDTO>();
             for (String aoOid : entry.getValue()) {
                 ApplicationOptionDTO ao = koulutusinformaatioService.getApplicationOption(aoOid);
+                ao = ensureAddress(ao);
                 if (!addressAlreadyAdded(aos, ao)) {
                     aos.add(ao);
                 }
@@ -95,6 +97,22 @@ public class UIServiceImpl implements UIService {
         }
         return new ModelResponse(application, activeApplicationSystem, discretionaryAttachmentAOIds,
                 higherEdAttachments, koulutusinformaatioBaseUrl);
+    }
+
+    private ApplicationOptionDTO ensureAddress(ApplicationOptionDTO ao) {
+        if (ao.getProvider().getApplicationOffice() != null
+                && ao.getProvider().getApplicationOffice().getPostalAddress() != null) {
+            return ao;
+        }
+        LearningOpportunityProviderDTO provider = ao.getProvider();
+        ApplicationOfficeDTO office = provider.getApplicationOffice();
+        if (office == null) {
+            office = new ApplicationOfficeDTO();
+            office.setName(provider.getName());
+        }
+        office.setPostalAddress(provider.getPostalAddress());
+        provider.setApplicationOffice(office);
+        return ao;
     }
 
     private boolean addressAlreadyAdded(List<ApplicationOptionDTO> aos, ApplicationOptionDTO ao) {
