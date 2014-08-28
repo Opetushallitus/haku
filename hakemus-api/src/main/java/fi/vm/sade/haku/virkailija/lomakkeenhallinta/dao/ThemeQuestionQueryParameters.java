@@ -16,6 +16,7 @@ public final class ThemeQuestionQueryParameters {
     private String organizationId;
     private String theme;
     private Boolean searchDeleted;
+    private Boolean queryGroups;
 
     private ArrayList<Pair<String, Integer>> sortBy = new ArrayList<Pair<String, Integer>>();
 
@@ -60,6 +61,14 @@ public final class ThemeQuestionQueryParameters {
 
     public void setSearchDeleted(final Boolean searchDeleted){
         this.searchDeleted = searchDeleted;
+    }
+
+    public Boolean queryGroups() {
+        return queryGroups;
+    }
+
+    public void setQueryGroups(final Boolean queryGroups) {
+        this.queryGroups = queryGroups;
     }
 
     public void addSortBy(final String fieldName, final Integer sortOrder){

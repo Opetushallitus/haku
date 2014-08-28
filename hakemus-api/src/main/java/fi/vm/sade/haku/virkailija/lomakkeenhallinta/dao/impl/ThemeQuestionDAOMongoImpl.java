@@ -24,7 +24,9 @@ import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.mongodb.QueryOperators.EXISTS;
 import static com.mongodb.QueryOperators.IN;
+import static com.mongodb.QueryOperators.OR;
 
 @Service("themeQuestionDAOMongoImpl")
 public class ThemeQuestionDAOMongoImpl extends AbstractDAOMongoImpl<ThemeQuestion> implements ThemeQuestionDAO {
@@ -41,6 +43,7 @@ public class ThemeQuestionDAOMongoImpl extends AbstractDAOMongoImpl<ThemeQuestio
     private static final String FIELD_STATE = "state";
     private static final String FIELD_ORDINAL = "ordinal";
     private static final String FIELD_APPLICATION_OPTION = "learningOpportunityId";
+    private static final String FIELD_TARGET_IS_GROUP = "targetIsGroup";
     private static int PARAM_QUERY =0;
     private static int PARAM_HINT =1;
     private static int PARAM_SORT_BY = 2;
@@ -181,6 +184,18 @@ public class ThemeQuestionDAOMongoImpl extends AbstractDAOMongoImpl<ThemeQuestio
         if (null != parameters.getLearningOpportunityId()){
             query.append(FIELD_APPLICATION_OPTION, parameters.getLearningOpportunityId());
             hint.put(FIELD_APPLICATION_OPTION, 1);
+        }
+
+        if (null != parameters.queryGroups()){
+            if (parameters.queryGroups()) {
+                query.append(FIELD_TARGET_IS_GROUP, true);
+            } else {
+                query.append(OR, new DBObject[] {
+                  new BasicDBObject(FIELD_TARGET_IS_GROUP, false),
+                  new BasicDBObject(FIELD_TARGET_IS_GROUP, new BasicDBObject(EXISTS, false))
+                });
+            }
+            hint.put(FIELD_TARGET_IS_GROUP, 1);
         }
 
         if (parameters.getSortBy().size() > 0){
