@@ -11,7 +11,6 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Phase;
 import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import fi.vm.sade.security.OrganisationHierarchyAuthorizer;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -22,15 +21,14 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Service
 @Profile(value = {"default"})
 public class HakuPermissionServiceImpl extends AbstractPermissionService implements HakuPermissionService {
 
-    public static final int MAX_NUMBER_OF_PREFERENCES = 5;
     private AuthenticationService authenticationService;
     private static final Logger log = LoggerFactory.getLogger(HakuPermissionServiceImpl.class);
     private static final String ROLE_OPO = "APP_HAKEMUS_OPO";
@@ -146,11 +144,18 @@ public class HakuPermissionServiceImpl extends AbstractPermissionService impleme
     }
 
     private boolean userHasOpoRoleToSendingSchool(Application application) {
-        Map<String, String> answers = new HashMap<String, String>(application.getPhaseAnswers(OppijaConstants.PHASE_EDUCATION));
-        if (answers.containsKey(OppijaConstants.ELEMENT_ID_SENDING_SCHOOL)) {
-            String organization = answers.get(OppijaConstants.ELEMENT_ID_SENDING_SCHOOL);
-            if (!Strings.isNullOrEmpty(organization)) {
-                return checkAccess(organization, getOpoRole());
+        AuthorizationMeta authorizationMeta = application.getAuthorizationMeta();
+        if (authorizationMeta == null) {
+            return false;
+        }
+
+        Set<String> sendingSchool = authorizationMeta.getSendingSchool();
+        if (sendingSchool == null) {
+            return false;
+        }
+        for (String organization : sendingSchool) {
+            if (!Strings.isNullOrEmpty(organization) && checkAccess(organization, getOpoRole())) {
+                return true;
             }
         }
         return false;
@@ -165,7 +170,6 @@ public class HakuPermissionServiceImpl extends AbstractPermissionService impleme
     public boolean userCanSearchBySendingSchool() {
         if (checkAccess(getRootOrgOid(), getReadRole(), getReadUpdateRole(), getCreateReadUpdateDeleteRole(),
                 getOpoRole())) {
-            // OPH users can access anything
             return true;
         }
         return userHasOpoRole().size() > 0;
@@ -183,17 +187,24 @@ public class HakuPermissionServiceImpl extends AbstractPermissionService impleme
             return true;
         }
 
-        Map<String, String> answers = application.getVastauksetMerged();
-        for (int i = 1; i <= MAX_NUMBER_OF_PREFERENCES; i++) {
-            String id = "preference" + i + "-Opetuspiste-id";
-            String organization = answers.get(id);
+        AuthorizationMeta authorizationMeta = application.getAuthorizationMeta();
+        if (authorizationMeta == null) {
+            return false;
+        }
 
+        Set<String> allOrganizations = authorizationMeta.getAllAoOrganizations();
+        if (allOrganizations == null) {
+            return false;
+        }
+
+        for (String organization : allOrganizations) {
             if (StringUtils.isNotEmpty(organization) &&
                     checkAccess(organization, roles)) {
                 log.debug("User can read application, org: {}", organization);
                 return true;
             }
         }
+
         return false;
     }
 

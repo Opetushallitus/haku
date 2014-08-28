@@ -31,17 +31,15 @@ public final class ThemeQuestionConfigurator {
 
     private final ThemeQuestionDAO themeQuestionDAO;
     private final HakukohdeService hakukohdeService;
-    private final ApplicationOptionService applicationOptionService;
     private final FormParameters formParameters;
 
     private static final String PREFERENCE_PREFIX = "preference";
     private static final String OPTION_POSTFIX = "-Koulutus-id";
 
     public ThemeQuestionConfigurator(final ThemeQuestionDAO themeQuestionDAO, final HakukohdeService hakukohdeService,
-                                     ApplicationOptionService applicationOptionService, final FormParameters formParameters) {
+                                     final FormParameters formParameters) {
         this.themeQuestionDAO = themeQuestionDAO;
         this.hakukohdeService = hakukohdeService;
-        this.applicationOptionService = applicationOptionService;
         this.formParameters = formParameters;
     }
 
@@ -101,6 +99,7 @@ public final class ThemeQuestionConfigurator {
         query.setApplicationSystemId(asId);
         query.setTheme(theme);
         query.setLearningOpportunityId(applicationOptionId);
+        query.addSortBy(ThemeQuestion.FIELD_ORDINAL, ThemeQuestionQueryParameters.SORT_ASCENDING);
         LOGGER.debug("Querying questions with " + query);
         return themeQuestionDAO.query(query);
     }

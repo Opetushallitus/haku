@@ -190,8 +190,7 @@ public class FormController {
     @Produces(MediaType.TEXT_PLAIN)
     public Response getPDF(@PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId,
     	@PathParam("oid") final String oid) throws URISyntaxException {
-    	String url = "/lomake/" + applicationSystemId + "/tulostus/" + oid;
-    	HttpResponse httpResponse = pdfService.getUriToPDF(url);
+    	HttpResponse httpResponse = uiService.getUriToPDF(applicationSystemId, oid);
     	URI location = UriUtil.pathSegmentsToUri(httpResponse.getFirstHeader("Content-Location").getValue());
     	return Response.seeOther(location).build();
     }

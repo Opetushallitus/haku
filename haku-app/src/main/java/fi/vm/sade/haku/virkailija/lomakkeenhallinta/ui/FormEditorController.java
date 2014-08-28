@@ -2,6 +2,7 @@ package fi.vm.sade.haku.virkailija.lomakkeenhallinta.ui;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import fi.vm.sade.haku.oppija.common.organisaatio.Organization;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationHierarchy;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
 import fi.vm.sade.haku.oppija.hakemus.resource.JSONException;
@@ -224,12 +225,12 @@ public class FormEditorController {
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKULOMAKKEENHALLINTA_READ_UPDATE', 'ROLE_APP_HAKULOMAKKEENHALLINTA_CRUD', " +
             "'ROLE_APP_HAKULOMAKKEENHALLINTA_READ')")
-    public List<Map<String, Object>> getParticipatingUserOrganizations(@PathParam("applicationSystemId") String applicationSystemId) {
+    public List<Organization> getParticipatingUserOrganizations(@PathParam("applicationSystemId") String applicationSystemId) {
         List<String> applicationOptionIds = hakuService.getRelatedApplicationOptionIds(applicationSystemId);
         LOGGER.debug("Got " + (null == applicationOptionIds ? null
                 : applicationOptionIds.size()) + " options for application system "+ applicationSystemId);
         if (null == applicationOptionIds)
-            return new ArrayList<Map<String, Object>>();
+            return new ArrayList<Organization>();
 
         //TODO cache this
         LOGGER.debug("Building hiararchy for " + applicationSystemId);
@@ -248,11 +249,11 @@ public class FormEditorController {
         }
         List<String> henkOrgs = authenticationService.getOrganisaatioHenkilo();
         LOGGER.debug("Got " + henkOrgs.size() + " organization for the user");
-        HashSet<Map<String, Object>> organizations = new HashSet<Map<String, Object>>();
+        HashSet<Organization> organizations = new HashSet<Organization>();
         for (String henkOrg : henkOrgs){
             organizations.addAll(orgHierarchy.getAllSubOrganizations(henkOrg));
         }
-        return new ArrayList<Map<String, Object>>(organizations);
+        return new ArrayList<Organization>(organizations);
     }
 
     @GET

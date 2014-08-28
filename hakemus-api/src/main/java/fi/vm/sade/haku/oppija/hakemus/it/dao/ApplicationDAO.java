@@ -84,4 +84,5 @@ public interface ApplicationDAO extends BaseDAO<Application> {
 
     Application getNextRedo();
 
+    List<Application> getNextUpgradable(int batchSize);
 }

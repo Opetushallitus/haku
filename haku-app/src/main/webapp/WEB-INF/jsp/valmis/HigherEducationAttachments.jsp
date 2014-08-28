@@ -11,7 +11,7 @@
             <p><haku:i18nText value="${element.attachmentNotes[entry.key]}" /></p>
             <c:if test="${not empty entry.value}">
                 <c:forEach items="${entry.value}" var="ao">
-                    <haku:applicationOption ao="${ao}" />
+                    <haku:applicationOffice ao="${ao}" />
                 </c:forEach>
             </c:if>
         </c:forEach>

@@ -14,7 +14,7 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.haku.oppija.ui.provider;
+package fi.vm.sade.haku.provider;
 
 import com.google.common.collect.ImmutableMap;
 import com.sun.jersey.api.view.Viewable;

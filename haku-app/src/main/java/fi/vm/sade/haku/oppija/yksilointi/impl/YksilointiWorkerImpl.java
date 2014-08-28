@@ -41,6 +41,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.io.StringWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -105,11 +106,7 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
         templateMap.put("englanti", velocityEngine.getTemplate("email/application_received_en.vm", "UTF-8"));
     }
 
-    /**
-     * Post-process applications.
-     *
-     * @param sendMail
-     */
+    @Override
     public void processApplications(final boolean sendMail) {
         Application application = getNextSubmittedApplication();
         int count = 0;
@@ -128,6 +125,7 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
             }
             application = applicationService.updateAuthorizationMeta(application, false);
             application = validateApplication(application);
+            application.setModelVersion(Application.CURRENT_MODEL_VERSION);
             this.applicationDAO.update(new Application(application.getOid()), application);
             if (sendMail) {
                 try {
@@ -142,6 +140,7 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
         }
     }
 
+    @Override
     public void processIdentification() {
         Application application = getNextWithoutStudentOid();
         LOGGER.debug("Starting processIdentification, application: {} {}",
@@ -151,6 +150,35 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
         }
     }
 
+    @Override
+    public void processModelUpdate() {
+        List<Application> applications = getNextUpgradable();
+
+        LOGGER.info("Start upgrading application model");
+        while (applications != null && !applications.isEmpty()) {
+            for (Application application : applications) {
+                try {
+                    LOGGER.info("Start upgrading model version for application: " + application.getOid());
+                    application = applicationService.updateAuthorizationMeta(application, false);
+                    application.setModelVersion(Application.CURRENT_MODEL_VERSION);
+                    LOGGER.info("Done upgrading model version for application: " + application.getOid());
+                } catch (IOException e) {
+                    application.setModelVersion(-1 * Application.CURRENT_MODEL_VERSION);
+                    LOGGER.error("Upgrading model failed for application: " + application.getOid() + " " + e.getMessage());
+                } catch (RuntimeException e) {
+                    application.setModelVersion(-1 * Application.CURRENT_MODEL_VERSION);
+                    LOGGER.error("Upgrading model failed for application: " + application.getOid() + " " + e.getMessage());
+                } finally {
+                    applicationDAO.update(new Application(application.getOid()), application);
+                }
+
+            }
+            applications = getNextUpgradable();
+        }
+        LOGGER.info("Done upgrading application model");
+    }
+
+    @Override
     public void redoPostprocess(boolean sendMail) {
         LOGGER.debug("Beginning redoprocess");
         Application application = getNextRedo();
@@ -176,6 +204,7 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
                     application = applicationService.updateAuthorizationMeta(application, false);
                     application = validateApplication(application);
                     application.setRedoPostProcess(PostProcessingState.DONE);
+                    application.setModelVersion(Application.CURRENT_MODEL_VERSION);
                     this.applicationDAO.update(new Application(application.getOid()), application);
                     LOGGER.debug("Reprocessing " + application.getOid() + " done");
                 }
@@ -351,6 +380,10 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
     public Application getNextRedo() {
         Application application = applicationDAO.getNextRedo();
         return setLastAutomatedProcessingTimeAndSave(application);
+    }
+
+    private List<Application> getNextUpgradable() {
+        return applicationDAO.getNextUpgradable(maxBatchSize);
     }
 
     private Application setLastAutomatedProcessingTimeAndSave(final Application application) {

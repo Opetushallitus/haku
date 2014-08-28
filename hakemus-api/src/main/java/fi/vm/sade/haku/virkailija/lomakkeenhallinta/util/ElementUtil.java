@@ -25,10 +25,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.Titled;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.gradegrid.GradeGridRow;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.Regexp;
 import fi.vm.sade.haku.oppija.lomake.validation.Validator;
-import fi.vm.sade.haku.oppija.lomake.validation.validators.RegexFieldValidator;
-import fi.vm.sade.haku.oppija.lomake.validation.validators.RequiredFieldValidator;
-import fi.vm.sade.haku.oppija.lomake.validation.validators.SsnUniqueValidator;
-import fi.vm.sade.haku.oppija.lomake.validation.validators.ValueSetValidator;
+import fi.vm.sade.haku.oppija.lomake.validation.validators.*;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
 import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
@@ -43,9 +40,8 @@ import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.
 public final class ElementUtil {
 
     public static final String ISO88591_NAME_REGEX = "^$|^[a-zA-ZÀ-ÖØ-öø-ÿ]$|^[a-zA-ZÀ-ÖØ-öø-ÿ'][a-zA-ZÀ-ÖØ-öø-ÿ ,-.']*(?:[a-zA-ZÀ-ÖØ-öø-ÿ.']+$)$";
-    public static final String EMAIL_REGEX = "^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$|^$";
-    public static final String YEAR_REGEX = "^[1-2][0-9]{3}$";
-
+    public static final String EMAIL_REGEX = "^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)+$|^$";
+    public static final String YEAR_REGEX = "^(19[0-9][0-9])|(20[0-9][0-9])$|^$"; // "^[1-2][0-9]{3}$";
     public static final String KYLLA = Boolean.TRUE.toString();
     public static final String EI = Boolean.FALSE.toString();
     private static Logger log = LoggerFactory.getLogger(ElementUtil.class);
@@ -124,7 +120,7 @@ public final class ElementUtil {
     }
 
     public static <E extends Element> Map<String, E> findElementsByType(Element element, Class<E> eClass) {
-        Map<String, E> elements = new HashMap<String, E>();
+        Map<String, E> elements = new LinkedHashMap<String, E>();
         findElementByType(element, elements, eClass);
         return elements;
     }
@@ -159,8 +155,8 @@ public final class ElementUtil {
     }
 
 
-    public static Validator createYearValidator(final FormParameters formParameters, final String messageKey) {
-        return createRegexValidator(YEAR_REGEX, formParameters, messageKey);
+    public static Validator createYearValidator(final Integer toYear, final Integer fromYear) {
+        return new YearValidator(fromYear, toYear);
     }
 
     public static void addRequiredValidator(final Element element, final FormParameters formParameters) {
@@ -271,4 +267,11 @@ public final class ElementUtil {
         return Rule(new Regexp(variable, pattern)).build();
     }
 
+    public static String getText(final Titled titled, String lang) {
+        I18nText i18nText = titled.getI18nText();
+        if (i18nText != null) {
+            return i18nText.getTranslations().get(lang);
+        }
+        return null;
+    }
 }

@@ -25,6 +25,7 @@ public class Scheduler {
 
     public static final Logger LOGGER = LoggerFactory.getLogger(Scheduler.class);
     private boolean run;
+    private boolean runModelUpgrade;
     private boolean sendMail;
 
     private fi.vm.sade.haku.oppija.yksilointi.YksilointiWorker worker;
@@ -63,6 +64,14 @@ public class Scheduler {
         }
     }
 
+    public void runModelUpgrade() {
+        if (run && runModelUpgrade) {
+            LOGGER.debug("Running identification scheduler {}", System.currentTimeMillis());
+            worker.processModelUpdate();
+            LOGGER.debug("Finished running identification scheduler {}", System.currentTimeMillis());
+        }
+    }
+
     public void setRun(boolean run) {
         this.run = run;
     }
@@ -71,4 +80,7 @@ public class Scheduler {
         this.sendMail = sendMail;
     }
 
+    public void setRunModelUpgrade(boolean runModelUpgrade) {
+        this.runModelUpgrade = runModelUpgrade;
+    }
 }

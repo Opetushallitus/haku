@@ -10,6 +10,7 @@ import fi.vm.sade.haku.oppija.lomake.service.UserSession;
 import fi.vm.sade.haku.oppija.ui.service.ModelResponse;
 import fi.vm.sade.haku.virkailija.koulutusinformaatio.KoulutusinformaatioService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
+import fi.vm.sade.haku.virkailija.viestintapalvelu.PDFService;
 import fi.vm.sade.koulutusinformaatio.domain.dto.AddressDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOfficeDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO;
@@ -32,6 +33,8 @@ public class UIServiceImplTest {
     ApplicationSystemService applicationSystemService = mock(ApplicationSystemService.class);
     UserSession userSession = mock(UserSession.class);
     KoulutusinformaatioService koulutusinformaatioService = mock(KoulutusinformaatioService.class);
+    PDFService pdfService = mock(PDFService.class);
+    
     String koulutusinformaatioBaseurl = "";
 
     Map<String, ApplicationOptionDTO> aos;
@@ -64,7 +67,7 @@ public class UIServiceImplTest {
     public void testCompleteApplicationAttachments() {
 
         UIServiceImpl service = new UIServiceImpl(applicationService, applicationSystemService, userSession,
-                koulutusinformaatioService, koulutusinformaatioBaseurl);
+                koulutusinformaatioService, koulutusinformaatioBaseurl, pdfService);
 
         String asId = "1.2.3";
         String oid = "4.5.6";

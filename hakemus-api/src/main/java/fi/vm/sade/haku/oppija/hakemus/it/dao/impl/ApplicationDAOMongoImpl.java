@@ -46,7 +46,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Pattern;
 
-import static com.mongodb.QueryOperators.EXISTS;
+import static com.mongodb.QueryOperators.*;
 import static org.apache.commons.lang.StringUtils.isEmpty;
 import static org.apache.commons.lang.StringUtils.isNotBlank;
 
@@ -100,6 +100,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     private static final String FIELD_STUDENT_IDENTIFICATION_DONE = "studentIdentificationDone";
     private static final String FIELD_REDO_POSTPROCESS = "redoPostProcess";
     private static final String FIELD_OPO_ALLOWED = "authorizationMeta.opoAllowed";
+    private static final String FIELD_MODEL_VERSION = "modelVersion";
     private static final String REGEX_LINE_BEGIN = "^";
 
     private static final Pattern OID_PATTERN = Pattern.compile("((^([0-9]{1,4}\\.){5})|(^))[0-9]{11}$");
@@ -497,9 +498,13 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     public Application getNextSubmittedApplication() {
         DBObject query = new BasicDBObject();
 
-        query.put(FIELD_PERSON_OID, new BasicDBObject("$exists", false));
-        query.put(FIELD_APPLICATION_OID, new BasicDBObject("$exists", true));
+        query.put(FIELD_PERSON_OID, new BasicDBObject(EXISTS, false));
+        query.put(FIELD_APPLICATION_OID, new BasicDBObject(EXISTS, true));
         query.put(FIELD_APPLICATION_STATE, Application.State.SUBMITTED.toString());
+        query.put(OR, new BasicDBObject[]{
+                new BasicDBObject(FIELD_REDO_POSTPROCESS, new BasicDBObject(EXISTS, false)),
+                new BasicDBObject(FIELD_REDO_POSTPROCESS, new BasicDBObject(NE, PostProcessingState.FAILED.toString()))
+        });
 
         DBObject sortBy = new BasicDBObject(FIELD_LAST_AUTOMATED_PROCESSING_TIME, 1);
 
@@ -522,8 +527,14 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
 
     @Override
     public Application getNextRedo() {
-        QueryBuilder queryBuilder = QueryBuilder.start(FIELD_REDO_POSTPROCESS).in(Lists.newArrayList(PostProcessingState.FULL.toString(), PostProcessingState.NOMAIL.toString()));
-        queryBuilder.put(FIELD_APPLICATION_STATE).in(Lists.newArrayList(Application.State.ACTIVE.name(), Application.State.INCOMPLETE.name()));
+        QueryBuilder queryBuilder = QueryBuilder.start(FIELD_REDO_POSTPROCESS).in(
+                Lists.newArrayList(
+                        PostProcessingState.FULL.toString(),
+                        PostProcessingState.NOMAIL.toString()));
+        queryBuilder.put(FIELD_APPLICATION_STATE).in(
+                Lists.newArrayList(
+                        Application.State.ACTIVE.name(),
+                        Application.State.INCOMPLETE.name()));
         DBObject query = queryBuilder.get();
         DBObject sortBy = new BasicDBObject(FIELD_LAST_AUTOMATED_PROCESSING_TIME, 1);
         DBCursor cursor = getCollection().find(query).sort(sortBy).limit(1);
@@ -542,6 +553,19 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
             throw mongoException;
         }
     }
+
+
+    @Override
+    public List<Application> getNextUpgradable(int batchSize) {
+        QueryBuilder queryBuilder = QueryBuilder.start(FIELD_MODEL_VERSION).exists(false);
+        DBCursor cursor = getCollection().find(queryBuilder.get()).limit(batchSize);
+        List<Application> applications = new ArrayList<Application>(batchSize);
+        while (cursor.hasNext()) {
+            applications.add(fromDBObject.apply(cursor.next()));
+        }
+        return applications;
+    }
+
 
     private boolean resultNotEmpty(final DBObject query, final String indexName) {
         try {

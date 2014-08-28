@@ -58,7 +58,7 @@
         </init-param>
         <init-param>
             <param-name>com.sun.jersey.spi.container.ContainerResponseFilters</param-name>
-            <param-value>fi.vm.sade.haku.oppija.common.filter.CorsFilter;fi.vm.sade.haku.oppija.common.filter.NoCacheFilter</param-value>
+            <param-value>fi.vm.sade.haku.oppija.common.filter.NoCacheFilter</param-value>
         </init-param>
         <init-param>
             <param-name>com.sun.jersey.spi.container.ContainerRequestFilters</param-name>

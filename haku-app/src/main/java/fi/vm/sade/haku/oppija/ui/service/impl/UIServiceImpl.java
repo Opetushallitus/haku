@@ -27,6 +27,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Titled;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.gradegrid.GradeGrid;
+import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.haku.oppija.lomake.service.UserSession;
 import fi.vm.sade.haku.oppija.lomake.util.ElementTree;
@@ -34,9 +35,12 @@ import fi.vm.sade.haku.oppija.ui.service.ModelResponse;
 import fi.vm.sade.haku.oppija.ui.service.UIService;
 import fi.vm.sade.haku.virkailija.koulutusinformaatio.KoulutusinformaatioService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
+import fi.vm.sade.haku.virkailija.viestintapalvelu.PDFService;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOfficeDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.LearningOpportunityProviderDTO;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.http.HttpResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -54,18 +58,20 @@ public class UIServiceImpl implements UIService {
     private final String koulutusinformaatioBaseUrl;
     private final UserSession userSession;
     private final KoulutusinformaatioService koulutusinformaatioService;
+    private final PDFService pdfService;
 
     @Autowired
     public UIServiceImpl(final ApplicationService applicationService,
                          final ApplicationSystemService applicationSystemService,
                          final UserSession userSession,
                          final KoulutusinformaatioService koulutusinformaatioService,
-                         @Value("${koulutusinformaatio.base.url}") final String koulutusinformaatioBaseUrl) {
+                         @Value("${koulutusinformaatio.base.url}") final String koulutusinformaatioBaseUrl, PDFService pdfService) {
         this.applicationService = applicationService;
         this.applicationSystemService = applicationSystemService;
         this.userSession = userSession;
         this.koulutusinformaatioService = koulutusinformaatioService;
         this.koulutusinformaatioBaseUrl = koulutusinformaatioBaseUrl;
+        this.pdfService = pdfService;
     }
 
     @Override
@@ -82,7 +88,7 @@ public class UIServiceImpl implements UIService {
                     new ArrayList<ApplicationOptionDTO>();
             for (String aoOid : entry.getValue()) {
                 ApplicationOptionDTO ao = koulutusinformaatioService.getApplicationOption(aoOid);
-                ao.getProvider().getApplicationOffice();
+                ao = ensureAddress(ao);
                 if (!addressAlreadyAdded(aos, ao)) {
                     aos.add(ao);
                 }
@@ -91,6 +97,22 @@ public class UIServiceImpl implements UIService {
         }
         return new ModelResponse(application, activeApplicationSystem, discretionaryAttachmentAOIds,
                 higherEdAttachments, koulutusinformaatioBaseUrl);
+    }
+
+    private ApplicationOptionDTO ensureAddress(ApplicationOptionDTO ao) {
+        if (ao.getProvider().getApplicationOffice() != null
+                && ao.getProvider().getApplicationOffice().getPostalAddress() != null) {
+            return ao;
+        }
+        LearningOpportunityProviderDTO provider = ao.getProvider();
+        ApplicationOfficeDTO office = provider.getApplicationOffice();
+        if (office == null) {
+            office = new ApplicationOfficeDTO();
+            office.setName(provider.getName());
+        }
+        office.setPostalAddress(provider.getPostalAddress());
+        provider.setApplicationOffice(office);
+        return ao;
     }
 
     private boolean addressAlreadyAdded(List<ApplicationOptionDTO> aos, ApplicationOptionDTO ao) {
@@ -247,5 +269,18 @@ public class UIServiceImpl implements UIService {
             application.setPhaseId(ElementTree.getFirstChild(activeForm).getId());
         }
         return new ModelResponse(application);
+    }
+
+    @Override
+    public HttpResponse getUriToPDF(String applicationSystemId, String oid) {
+
+        Application application = applicationService.getSubmittedApplication(applicationSystemId, oid);
+        if (application != null
+                && application.getApplicationSystemId().equals(applicationSystemId)
+                && application.getOid().equals(oid)) {
+            String url = "/virkailija/hakemus/" + oid + "/print/view";
+            return pdfService.getUriToPDF(url);
+        }
+        throw new ResourceNotFoundException("Not allowed");
     }
 }

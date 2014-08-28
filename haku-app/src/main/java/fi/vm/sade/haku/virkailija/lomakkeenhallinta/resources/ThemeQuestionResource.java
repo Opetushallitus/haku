@@ -20,6 +20,8 @@ import fi.vm.sade.haku.oppija.common.koulutusinformaatio.ApplicationOptionServic
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
 import fi.vm.sade.haku.oppija.hakemus.resource.JSONException;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
+import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
+import fi.vm.sade.haku.virkailija.authentication.Person;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.dao.ThemeQuestionDAO;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.dao.ThemeQuestionQueryParameters;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain.ThemeQuestion;
@@ -58,6 +60,8 @@ public class ThemeQuestionResource {
     private HakukohdeService hakukohdeService;
     @Autowired
     private OrganizationService organizationService;
+    @Autowired
+    private AuthenticationService authenticationService;
 
     @Autowired
     private HakuService hakuService;
@@ -75,13 +79,15 @@ public class ThemeQuestionResource {
                                  final OrganizationService organizationService,
                                  final HakuService hakuService,
                                  final KoodistoService koodistoService,
-                                 final ApplicationOptionService applicationOptionService) {
+                                 final ApplicationOptionService applicationOptionService,
+                                 final AuthenticationService authenticationService) {
         this.themeQuestionDAO = themeQuestionDAO;
         this.hakukohdeService = hakukohdeService;
         this.organizationService = organizationService;
         this.hakuService = hakuService;
         this.koodistoService = koodistoService;
         this.applicationOptionService = applicationOptionService;
+        this.authenticationService = authenticationService;
     }
 
     @GET
@@ -110,10 +116,9 @@ public class ThemeQuestionResource {
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKULOMAKKEENHALLINTA_READ_UPDATE', 'ROLE_APP_HAKULOMAKKEENHALLINTA_CRUD')")
     public void deleteThemeQuestionByOid(@PathParam("themeQuestionId") String themeQuestionId) {
         LOGGER.debug("Deleting theme question with id: {}", themeQuestionId);
+        themeQuestionDAO.delete(themeQuestionId);
         ThemeQuestion dbThemeQuestion = fetchThemeQuestion(themeQuestionId);
-        dbThemeQuestion.setState(ThemeQuestion.State.DELETED);
-        themeQuestionDAO.save(dbThemeQuestion);
-        LOGGER.debug("ThemeQuestion {} saved with state {}", dbThemeQuestion.getId().toString(), dbThemeQuestion.getState());
+        renumerateThemeQuestionOrdinals(dbThemeQuestion.getApplicationSystemId(), dbThemeQuestion.getLearningOpportunityId(), dbThemeQuestion.getTheme());
     }
 
     @POST
@@ -131,6 +136,7 @@ public class ThemeQuestionResource {
         ThemeQuestion dbThemeQuestion = fetchThemeQuestion(themeQuestionId);
 
         themeQuestion = fillInOwnerOrganizationsFromApplicationOption(themeQuestion);
+        themeQuestion.setCreatorPersonOid(dbThemeQuestion.getCreatorPersonOid());
 
         LOGGER.debug("Saving Theme Question with id: " + dbThemeQuestion.getId().toString());
         themeQuestionDAO.save(themeQuestion);
@@ -177,6 +183,10 @@ public class ThemeQuestionResource {
         } else {
             themeQuestion = fillInOwnerOrganizationsFromApplicationOption(themeQuestion);
         }
+
+        Person currentHenkilo = authenticationService.getCurrentHenkilo();
+        themeQuestion.setCreatorPersonOid(currentHenkilo.getPersonOid());
+
         LOGGER.debug("Saving Theme Question");
         themeQuestionDAO.save(themeQuestion);
         LOGGER.debug("Saved Theme Question");
@@ -289,5 +299,20 @@ public class ThemeQuestionResource {
         List<ThemeQuestion> themeQuestions = themeQuestionDAO.query(tqq);
         LOGGER.debug("Found {} ThemeQuestions", themeQuestions.size());
         return themeQuestions;
+    }
+
+    private void renumerateThemeQuestionOrdinals(final String applicationSystemId, final String applicationOptionId, final String themeId){
+        // TODO: mutex
+        ThemeQuestionQueryParameters tqqp = new ThemeQuestionQueryParameters();
+        tqqp.setApplicationSystemId(applicationSystemId);
+        tqqp.setLearningOpportunityId(applicationOptionId);
+        tqqp.setTheme(themeId);
+        tqqp.addSortBy(ThemeQuestion.FIELD_ORDINAL, ThemeQuestionQueryParameters.SORT_ASCENDING);
+        Integer assumedOrdinal = 1;
+        for (ThemeQuestion tq: themeQuestionDAO.query(tqqp)){
+            if (!assumedOrdinal.equals(tq.getOrdinal())){
+                themeQuestionDAO.setOrdinal(tq.getId().toString(), assumedOrdinal++);
+            }
+        }
     }
 }

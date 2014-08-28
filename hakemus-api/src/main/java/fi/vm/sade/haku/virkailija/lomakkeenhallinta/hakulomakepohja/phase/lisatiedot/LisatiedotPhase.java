@@ -39,7 +39,7 @@ public class LisatiedotPhase {
         }
         Element element = lisatiedot
                 .addChild(createLupatiedot(formParameters));
-        if (!formParameters.isPervako()) {
+        if (!(formParameters.isPervako() || formParameters.isHigherEd())) {
             lisatiedot
                     .addChild(createUrheilijanLisakysymykset(formParameters));
         }
@@ -129,7 +129,11 @@ public class LisatiedotPhase {
 
         Element saavutuksetGroup = TitledGroup("saavutukset.ryhma").formParams(formParameters).build()
                 .addChild(
-                        TextArea("saavutukset").inline().maxLength(2000).formParams(formParameters).build());
+                        TextArea("saavutukset")
+                                .cols(60)
+                                .maxLength(2000)
+                                .inline()
+                                .formParams(formParameters).build());
 
         Element valmentajaGroup =
                 TitledGroup("valmentajan-yhteystiedot").formParams(formParameters).build()

@@ -35,6 +35,7 @@
         $.datepicker.setDefaults( $.datepicker.regional[ '${requestScope['fi_vm_sade_oppija_language']}'] );
         $( "#" + "${element.id}" ).datepicker({changeMonth: true, changeYear: true, maxDate: new Date(), yearRange: "-50:+0",
                                                 showOn: "both", buttonImage: "${pageContext.request.contextPath}/resources/img/dateEditor_calendar_hover.png",
+                                                dateFormat: 'dd.mm.yy',
                                                 buttonImageOnly: false});
       });
     </script>

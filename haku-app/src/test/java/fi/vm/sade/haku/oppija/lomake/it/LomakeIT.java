@@ -170,8 +170,7 @@ public class LomakeIT extends DummyModelBaseItTest {
 
         ArrayList<String> newTab = new ArrayList<String>(driver.getWindowHandles());
         driver.switchTo().window(newTab.get(1));
-        assertTrue(driver.getCurrentUrl().contains("tulostus"));
-        assertTrue(isTextPresent("Ankka"));
+        assertTrue(driver.getCurrentUrl().contains("pdf"));
         driver.close();
         driver.switchTo().window(newTab.get(0));
 
