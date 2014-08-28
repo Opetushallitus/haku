@@ -29,7 +29,7 @@ public class KSHJHakulomakeV1IT extends DummyModelBaseItTest {
         fillOut(defaultValues.kkHenkilotiedot);
         nextPhase(OppijaConstants.PHASE_EDUCATION);
         click("suoritusoikeus", "aiempitutkinto", "pohjakoulutus_am");
-        setValue("pohjakoulutus_am_vuosi", "2012");
+        setValue("pohjakoulutus_am_pvm", "1.6.2012");
         setValue("pohjakoulutus_am_nimike", "pohjakoulutus_am_nimike");
         setValue("pohjakoulutus_am_laajuus", "laajuus");
         setValue("pohjakoulutus_am_oppilaitos", "oppilaitos");
@@ -45,7 +45,6 @@ public class KSHJHakulomakeV1IT extends DummyModelBaseItTest {
         setValue("keskiarvo", "10");
         setValue("arvosanaasteikko", "410");
         nextPhase(OppijaConstants.PHASE_MISC);
-
 
         navigateToPath("lomake", "haku6", OppijaConstants.PHASE_EDUCATION);
 
