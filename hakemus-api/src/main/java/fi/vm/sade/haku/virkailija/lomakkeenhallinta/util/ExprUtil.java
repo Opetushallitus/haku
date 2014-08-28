@@ -27,6 +27,24 @@ public final class ExprUtil {
         }
     }
 
+    public static Expr atLeastOneVariableContainsValue(final String value, final String... ids) {
+        if (ids.length == 1) {
+            return new Regexp(ids[0], "(?:.*\\s+|\\s*)"+value+"(?:,.*|\\s*|\\s+.*)");
+        } else {
+            Expr current = null;
+            Expr rexExp;
+            for (String id : ids) {
+                rexExp = new Regexp(ids[0], "(?:.*\\s+|\\s*)"+value+"(?:,.*|\\s*|\\s+.*)");;
+                if (current == null) {
+                    current = rexExp;
+                } else {
+                    current = new Or(current, rexExp);
+                }
+            }
+            return current;
+        }
+    }
+
     public static Expr atLeastOneValueEqualsToVariable(final String variable, final String... values) {
         if (values.length == 1) {
             return new Equals(new Value(values[0]), new Variable(variable));
