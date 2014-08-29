@@ -47,6 +47,7 @@ import static fi.vm.sade.haku.oppija.lomake.domain.builder.RelatedQuestionRuleBu
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.ThemeBuilder.Theme;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.*;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.*;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.service.ThemeQuestionConfigurator.ConfiguratorFilter;
 
 public class HakutoiveetPhase {
     public static final String LISAOPETUS_EDUCATION_DEGREE = "22";
@@ -95,6 +96,9 @@ public class HakutoiveetPhase {
         }
         ElementUtil.setVerboseHelp(preferenceTable, "form.hakutoiveet.otsikko.verboseHelp", formParameters);
         hakutoiveetTheme.addChild(preferenceTable);
+
+        ThemeQuestionConfigurator configurator = formParameters.getThemeQuestionConfigurator();
+        hakutoiveetTheme.addChild(configurator.findAndConfigure(hakutoiveetTheme.getId(), ConfiguratorFilter.ONLY_GROUP_QUESTIONS));
         return hakutoiveetTheme;
     }
 
@@ -156,7 +160,7 @@ public class HakutoiveetPhase {
         pr.setValidator(new PreferenceValidator());
 
         ThemeQuestionConfigurator configurator = formParameters.getThemeQuestionConfigurator();
-        pr.addChild(configurator.findAndConfigure(HAKUTOIVEET_THEME_ID, pr.getId()));
+        pr.addChild(configurator.findAndConfigure(HAKUTOIVEET_THEME_ID, pr.getId(), ConfiguratorFilter.NO_GROUP_QUESTIONS));
 
         return pr;
     }
