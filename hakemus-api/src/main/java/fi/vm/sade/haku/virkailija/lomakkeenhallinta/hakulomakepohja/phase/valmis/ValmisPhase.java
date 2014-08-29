@@ -11,6 +11,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.ApplicationAttachmen
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.Print;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.Expr;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.service.ThemeQuestionConfigurator;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ExprUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
@@ -108,8 +109,9 @@ public class ValmisPhase {
         Element musiikkiTanssiLiikuntaRule = Rule(ExprUtil.reduceToOr(ImmutableList.of(isMusiikki, isTanssi, isLiiKunta))).build();
         musiikkiTanssiLiikuntaRule.addChild(TitledGroup("musiikkitanssiliikunta.ryhma").formParams(formParameters).build()
                 .addChild(Text(randomId()).labelKey("musiikkitanssiliikunta").formParams(formParameters).build()));
-
-        return Lists.newArrayList(athleteRule, musiikkiTanssiLiikuntaRule);
+        List<Element> elements = Lists.newArrayList(athleteRule, musiikkiTanssiLiikuntaRule);
+        elements.addAll(formParameters.getThemeQuestionConfigurator().findAndConfigureAttachmentRequests());
+        return elements;
     }
 
     public static List<Element> create(FormParameters formParameters) {

@@ -1,8 +1,10 @@
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain;
 
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.dao.impl.DBConverter.ComplexObjectIdDeserializer;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.dao.impl.DBConverter.SimpleObjectIdSerializer;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
 import org.bson.types.ObjectId;
 import org.codehaus.jackson.annotate.JsonCreator;
 import org.codehaus.jackson.annotate.JsonProperty;
@@ -129,6 +131,16 @@ public abstract class ThemeQuestion implements ConfiguredElement {
         this.ownerOrganizationOids = new ArrayList<String>();
         this.attachmentRequests = new ArrayList<AttachmentRequest>(attachmentRequests);
     }
+
+    public List<Element> generateAttactmentRequests(FormParameters formParameters){
+        List<Element> generatedRequests = new ArrayList<Element>(attachmentRequests.size());
+        for (AttachmentRequest attachmentRequest : attachmentRequests){
+            generatedRequests.add(generateAttachmentRequest(formParameters, attachmentRequest));
+        }
+        return generatedRequests;
+    }
+
+    protected abstract Element generateAttachmentRequest(FormParameters formParameters, AttachmentRequest attachmentRequest);
 
     public ObjectId getId() {
         return id;

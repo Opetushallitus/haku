@@ -1,12 +1,18 @@
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain;
 
 
+import com.google.common.collect.ImmutableMap;
+import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.builder.OptionBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.builder.RadioBuilder;
+import fi.vm.sade.haku.oppija.lomake.domain.builder.RelatedQuestionRuleBuilder;
+import fi.vm.sade.haku.oppija.lomake.domain.builder.TextBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
+import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.Expr;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ExprUtil;
 import org.codehaus.jackson.annotate.JsonCreator;
 import org.codehaus.jackson.annotate.JsonProperty;
 
@@ -60,5 +66,25 @@ public class ThemeRadioButtonQuestion extends ThemeOptionQuestion {
         // Radiobuttons are always required
         elementBuilder.required();
         return elementBuilder.build();
+    }
+
+    @Override
+    public Element generateAttachmentRequest(FormParameters formParameters, AttachmentRequest attachmentRequest) {
+        String optionId =attachmentRequest.getAttachedToOptionId();
+        Expr expr;
+        if (null != optionId) {
+            expr = ExprUtil.atLeastOneVariableEqualsToValue(optionId,
+              this.getId().toString());
+        }
+        else {
+            //TODO: fix me
+            expr=null;
+        }
+        Element rule = RelatedQuestionRuleBuilder.Rule(expr).build();
+        rule.addChild(
+          TextBuilder.Text(ElementUtil.randomId()).i18nText(attachmentRequest.getHeader()).build(),
+          TextBuilder.Text(ElementUtil.randomId()).i18nText(attachmentRequest.getDescription()).build()
+        );
+        return rule;
     }
 }
