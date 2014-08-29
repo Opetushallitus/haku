@@ -167,7 +167,7 @@ public class ApplicationResource {
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_READ', 'ROLE_APP_HAKEMUS_CRUD', 'ROLE_APP_HAKEMUS_OPO')")
     public ApplicationSearchResultDTO findApplications(@DefaultValue(value = "") @QueryParam("q") String query,
                                                        @QueryParam("appState") List<String> state,
-                                                       @QueryParam("aoid") String aoid,
+                                                       @QueryParam("aoidCode") String aoid,
                                                        @QueryParam("lopoid") String lopoid,
                                                        @QueryParam("asId") String asId,
                                                        @QueryParam("asSemester") String asSemester,
