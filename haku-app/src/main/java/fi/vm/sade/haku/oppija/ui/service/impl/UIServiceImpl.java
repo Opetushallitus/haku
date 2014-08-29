@@ -19,7 +19,6 @@ package fi.vm.sade.haku.oppija.ui.service.impl;
 import com.google.common.base.Predicate;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
-import fi.vm.sade.haku.oppija.hakemus.domain.util.ApplicationUtil;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationState;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
@@ -31,21 +30,17 @@ import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.haku.oppija.lomake.service.UserSession;
 import fi.vm.sade.haku.oppija.lomake.util.ElementTree;
+import fi.vm.sade.haku.oppija.ui.common.AttachmentUtil;
 import fi.vm.sade.haku.oppija.ui.service.ModelResponse;
 import fi.vm.sade.haku.oppija.ui.service.UIService;
 import fi.vm.sade.haku.virkailija.koulutusinformaatio.KoulutusinformaatioService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.PDFService;
-import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOfficeDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.LearningOpportunityProviderDTO;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -78,63 +73,10 @@ public class UIServiceImpl implements UIService {
     public ModelResponse getCompleteApplication(final String applicationSystemId, final String oid) {
         ApplicationSystem activeApplicationSystem = applicationSystemService.getActiveApplicationSystem(applicationSystemId);
         Application application = applicationService.getSubmittedApplication(applicationSystemId, oid);
-        List<String> discretionaryAttachmentAOIds = ApplicationUtil.getDiscretionaryAttachmentAOIds(application);
-        Map<String, List<String>> higherEdAttachmentAOIds = ApplicationUtil.getHigherEdAttachmentAOIds(application);
-        Map<String, List<fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO>> higherEdAttachments =
-                new HashMap<String, List<fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO>>();
-        for (Map.Entry<String, List<String>> entry : higherEdAttachmentAOIds.entrySet()) {
-            String key = entry.getKey();
-            List<fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO> aos =
-                    new ArrayList<ApplicationOptionDTO>();
-            for (String aoOid : entry.getValue()) {
-                ApplicationOptionDTO ao = koulutusinformaatioService.getApplicationOption(aoOid);
-                ao = ensureAddress(ao);
-                if (!addressAlreadyAdded(aos, ao)) {
-                    aos.add(ao);
-                }
-            }
-            higherEdAttachments.put(key, aos);
-        }
-        return new ModelResponse(application, activeApplicationSystem, discretionaryAttachmentAOIds,
-                higherEdAttachments, koulutusinformaatioBaseUrl);
-    }
 
-    private ApplicationOptionDTO ensureAddress(ApplicationOptionDTO ao) {
-        if (ao.getProvider().getApplicationOffice() != null
-                && ao.getProvider().getApplicationOffice().getPostalAddress() != null) {
-            return ao;
-        }
-        LearningOpportunityProviderDTO provider = ao.getProvider();
-        ApplicationOfficeDTO office = provider.getApplicationOffice();
-        if (office == null) {
-            office = new ApplicationOfficeDTO();
-            office.setName(provider.getName());
-        }
-        office.setPostalAddress(provider.getPostalAddress());
-        provider.setApplicationOffice(office);
-        return ao;
-    }
-
-    private boolean addressAlreadyAdded(List<ApplicationOptionDTO> aos, ApplicationOptionDTO ao) {
-        if (aos.isEmpty()) {
-            return false;
-        }
-        ApplicationOfficeDTO newOffice = ao.getProvider().getApplicationOffice();
-        for (ApplicationOptionDTO currAo : aos) {
-            ApplicationOfficeDTO currOffice = currAo.getProvider().getApplicationOffice();
-            if (StringUtils.equals(newOffice.getName(), currOffice.getName())
-                    && StringUtils.equals(newOffice.getPostalAddress().getStreetAddress(),
-                        currOffice.getPostalAddress().getStreetAddress())
-                    && StringUtils.equals(newOffice.getPostalAddress().getStreetAddress2(),
-                        currOffice.getPostalAddress().getStreetAddress2())
-                    && StringUtils.equals(newOffice.getPostalAddress().getPostalCode(),
-                        currOffice.getPostalAddress().getPostalCode())
-                    && StringUtils.equals(newOffice.getPostalAddress().getPostOffice(),
-                        currOffice.getPostalAddress().getPostOffice())) {
-                return true;
-            }
-        }
-        return false;
+        return new ModelResponse(application, activeApplicationSystem,
+                AttachmentUtil.resolveAttachments(application, koulutusinformaatioService),
+                koulutusinformaatioBaseUrl);
     }
 
     @Override

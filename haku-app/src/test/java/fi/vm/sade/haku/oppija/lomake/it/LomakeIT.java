@@ -149,6 +149,7 @@ public class LomakeIT extends DummyModelBaseItTest {
 
         findByIdAndClick("submit_confirm");
 
+        screenshot("lomakeIT");
         String oid = driver.findElement(new By.ByClassName("number")).getText();
         findByXPath("//h3[contains(text(), \"Musiikki- tanssi- ja liikunta-alan\")]");
 
@@ -170,7 +171,7 @@ public class LomakeIT extends DummyModelBaseItTest {
 
         ArrayList<String> newTab = new ArrayList<String>(driver.getWindowHandles());
         driver.switchTo().window(newTab.get(1));
-        assertTrue(driver.getCurrentUrl().contains("pdf"));
+        assertTrue(driver.getCurrentUrl().contains("tulostus"));
         driver.close();
         driver.switchTo().window(newTab.get(0));
 

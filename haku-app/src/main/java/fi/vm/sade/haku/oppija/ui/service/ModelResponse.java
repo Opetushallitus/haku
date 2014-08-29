@@ -1,15 +1,14 @@
 package fi.vm.sade.haku.oppija.ui.service;
 
 import com.google.common.collect.ImmutableMap;
-
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
+import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationAttachment;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationState;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationResult;
-import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO;
 
 import java.util.HashMap;
 import java.util.List;
@@ -26,13 +25,10 @@ public class ModelResponse {
     public static final String ELEMENT = "element";
     public static final String TEMPLATE = "template";
     public static final String FORM = "form";
-    public static final String DISCRETIONARY_ATTACHMENT_AO_IDS = "discretionaryAttachmentAOIds";
-    public static final String DISCRETIONARY_ATTACHMENTS = "discretionaryAttachments";
-    public static final String HIGHER_ED_ATTACHMENT_AO_IDS = "higherEducationAttachmentAOIds";
-    public static final String HIGHER_ED_ATTACHMENTS = "higherEducationAttachments";
     public static final String APPLICATION_COMPLETE_ELEMENTS = "applicationCompleteElements";
     public static final String ADDITIONAL_INFORMATION_ELEMENTS = "additionalInformationElements";
     public static final String APPLICATION_SYSTEMS = "applicationSystems";
+    public static final String APPLICATION_ATTACHMENTS = "applicationAttachments";
 
 
     private final Map<String, I18nText> errors = new HashMap<String, I18nText>();
@@ -46,49 +42,17 @@ public class ModelResponse {
 
     }
 
-    public ModelResponse(final Application application, final Form form) {
+    public ModelResponse(final Application application,
+                         final Form form) {
         this(application);
         setForm(form);
     }
 
-    public ModelResponse(final Application application, final Form form, final Element element) {
+    public ModelResponse(final Application application,
+                         final Form form,
+                         final Element element) {
         this(application, form);
         setElement(element);
-    }
-
-    public ModelResponse(final Application application,
-                         final ApplicationSystem applicationSystem,
-                         final List<String> discretionaryAttachmentAOIds,
-                         final String koulutusinformaatioBaseUrl) {
-        this(application, applicationSystem.getForm());
-        setApplicationCompleteElements(applicationSystem.getApplicationCompleteElements());
-        setApplicationInformationElements(applicationSystem.getAdditionalInformationElements());
-        setDiscretionaryAttachmentAOIds(discretionaryAttachmentAOIds);
-        setKoulutusinformaatioBaseUrl(koulutusinformaatioBaseUrl);
-    }
-
-    public ModelResponse(final Application application,
-                         final ApplicationSystem applicationSystem,
-                         final List<String> discretionaryAttachmentAOIds,
-                         final Map<String, List<ApplicationOptionDTO>> higherEdAttachments,
-                         final String koulutusinformaatioBaseUrl) {
-        this(application, applicationSystem, discretionaryAttachmentAOIds, koulutusinformaatioBaseUrl);
-        setHigherEdAttachments(higherEdAttachments);
-    }
-
-    public ModelResponse(final Application application, final ApplicationSystem applicationSystem,
-                         final List<ApplicationOptionDTO> discretionaryAttachments) {
-        this(application, applicationSystem.getForm());
-        setApplicationCompleteElements(applicationSystem.getApplicationCompleteElements());
-        setApplicationInformationElements(applicationSystem.getAdditionalInformationElements());
-        setDiscretionaryAttachments(discretionaryAttachments);
-    }
-
-    public ModelResponse(final Application application, final ApplicationSystem applicationSystem,
-                         final List<ApplicationOptionDTO> discretionaryAttachments,
-                         final Map<String, List<ApplicationOptionDTO>> higherEdAttachments) {
-        this(application, applicationSystem, discretionaryAttachments);
-        setHigherEdAttachments(higherEdAttachments);
     }
 
     public ModelResponse(final Application application,
@@ -105,6 +69,18 @@ public class ModelResponse {
     public ModelResponse(final ApplicationSystem applicationSystem) {
         setForm(applicationSystem.getForm());
         setApplicationSystemId(applicationSystem.getId());
+        setApplicationCompleteElements(applicationSystem.getApplicationCompleteElements());
+        setApplicationInformationElements(applicationSystem.getAdditionalInformationElements());
+    }
+
+    public ModelResponse(final Application application,
+                         final ApplicationSystem activeApplicationSystem,
+                         final List<ApplicationAttachment> attachments,
+                         final String koulutusinformaatioBaseUrl) {
+        this(activeApplicationSystem);
+        setApplication(application);
+        setApplicationAttachments(attachments);
+        setKoulutusinformaatioBaseUrl(koulutusinformaatioBaseUrl);
     }
 
     public final Map<String, Object> getModel() {
@@ -160,20 +136,8 @@ public class ModelResponse {
         this.addObjectToModel(TEMPLATE, element.getType());
     }
 
-    public void setDiscretionaryAttachmentAOIds(final List<String> discretionaryAttachmentAOIds) {
-        this.addObjectToModel(DISCRETIONARY_ATTACHMENT_AO_IDS, discretionaryAttachmentAOIds);
-    }
-
-    public void setDiscretionaryAttachments(final List<ApplicationOptionDTO> discretionaryAttachments) {
-        this.addObjectToModel(DISCRETIONARY_ATTACHMENTS, discretionaryAttachments);
-    }
-
-    public void setHigherEdAttachmentAOIds(final Map<String, List<String>> attachmentAOIds) {
-        this.addObjectToModel(HIGHER_ED_ATTACHMENT_AO_IDS, attachmentAOIds);
-    }
-
-    public void setHigherEdAttachments(final Map<String, List<ApplicationOptionDTO>> higherEdAttachments) {
-        this.addObjectToModel(HIGHER_ED_ATTACHMENTS, higherEdAttachments);
+    public void setApplicationAttachments(final List<ApplicationAttachment> attachments) {
+        this.addObjectToModel(APPLICATION_ATTACHMENTS, attachments);
     }
 
     public void setApplicationCompleteElements(final List<Element> applicationCompleteElements) {

@@ -9,7 +9,6 @@ import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationNote;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationOptionDTO;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.Pistetieto;
-import fi.vm.sade.haku.oppija.hakemus.domain.util.ApplicationUtil;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.haku.oppija.hakemus.service.BaseEducationService;
 import fi.vm.sade.haku.oppija.hakemus.service.HakuPermissionService;
@@ -29,6 +28,7 @@ import fi.vm.sade.haku.oppija.lomake.util.ElementTree;
 import fi.vm.sade.haku.oppija.lomake.validation.ElementTreeValidator;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationInput;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationResult;
+import fi.vm.sade.haku.oppija.ui.common.AttachmentUtil;
 import fi.vm.sade.haku.oppija.ui.service.ModelResponse;
 import fi.vm.sade.haku.oppija.ui.service.OfficerUIService;
 import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
@@ -607,27 +607,11 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     @Override
     public ModelResponse getApplicationPrint(final String oid) {
         Application application = applicationService.getApplicationByOid(oid);
-        ApplicationSystem activeApplicationSystem = applicationSystemService.getApplicationSystem(application.getApplicationSystemId());
 
-        List<String> discretionaryAttachmentAOIds = ApplicationUtil.getDiscretionaryAttachmentAOIds(application);
-        List<fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO> discretionaryAttachments =
-                koulutusinformaatioService.getApplicationOptions(discretionaryAttachmentAOIds);
-
-        Map<String, List<String>> higherEdAttachmentAOIds = ApplicationUtil.getHigherEdAttachmentAOIds(application);
-        Map<String, List<fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO>> higherEdAttachments =
-                new HashMap<String, List<fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO>>();
-        for (Map.Entry<String, List<String>> entry : higherEdAttachmentAOIds.entrySet()) {
-            String key = entry.getKey();
-            List<fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO> aos =
-                    new ArrayList<fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO>();
-            for (String aoOid : entry.getValue()) {
-                aos.add(koulutusinformaatioService.getApplicationOption(aoOid));
-            }
-            higherEdAttachments.put(key, aos);
-        }
-
-        return new ModelResponse(application, activeApplicationSystem,
-                discretionaryAttachments, higherEdAttachments);
+        return new ModelResponse(application,
+                applicationSystemService.getApplicationSystem(application.getApplicationSystemId()),
+                AttachmentUtil.resolveAttachments(application, koulutusinformaatioService),
+                koulutusinformaatioBaseUrl);
     }
 
     private ApplicationNote createNote(String note) {

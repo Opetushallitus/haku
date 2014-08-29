@@ -46,10 +46,12 @@ public class PreferenceTableIT extends AbstractFormTest {
         final PreferenceTable table = new PreferenceTable("t1", createI18NAsIs("Hakutoiveet"));
         final PreferenceRow row = new PreferenceRow("r1",  createI18NAsIs("Tyhjennä"),
                 createI18NAsIs("Koulutus"), createI18NAsIs("Opetuspiste"),
-                createI18NAsIs("Koulutukseen sisältyvät koulutusohjelmat"));
+                createI18NAsIs("Koulutukseen sisältyvät koulutusohjelmat"),
+                createI18NAsIs("Liitteet"));
         final PreferenceRow row2 = new PreferenceRow("r2", createI18NAsIs("Tyhjennä"),
                 createI18NAsIs("Koulutus"), createI18NAsIs("Opetuspiste"),
-                createI18NAsIs("Koulutukseen sisältyvät koulutusohjelmat"));
+                createI18NAsIs("Koulutukseen sisältyvät koulutusohjelmat"),
+                createI18NAsIs("Liitteet"));
         table.addChild(row);
         table.addChild(row2);
         ApplicationSystem applicationSystem = new FormModelBuilder().buildDefaultFormWithFields(table);

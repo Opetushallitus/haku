@@ -1,6 +1,7 @@
 package fi.vm.sade.haku.oppija.ui.service.impl;
 
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
+import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationAttachment;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystemBuilder;
@@ -40,14 +41,17 @@ public class UIServiceImplTest {
     Map<String, ApplicationOptionDTO> aos;
     @Before
     public void setUp() {
+        System.out.println("setUp");
         aos = new HashMap<String, ApplicationOptionDTO>();
         aos.put("1.2.3", createApplicationOption("1.2.3", "office123", "00123", "POSTAL 123", "Street 123"));
         aos.put("4.5.6", createApplicationOption("4.5.6", "office789", "00789", "POSTAL 789", "Street 789"));
         aos.put("7.8.9", createApplicationOption("7.8.9", "office789", "00789", "POSTAL 789", "Street 789"));
+        System.out.println("setUp done");
     }
 
     private ApplicationOptionDTO createApplicationOption(String oid , String officeName, String postalCode, String postalOffice,
                                                          String streetAddress) {
+        System.out.println("createApplicationOption");
         ApplicationOptionDTO ao = new ApplicationOptionDTO();
         ao.setId(oid);
         LearningOpportunityProviderDTO provider = new LearningOpportunityProviderDTO();
@@ -60,6 +64,7 @@ public class UIServiceImplTest {
         office.setPostalAddress(address);
         provider.setApplicationOffice(office);
         ao.setProvider(provider);
+        System.out.println("createApplicationOption done");
         return ao;
     }
 
@@ -80,37 +85,18 @@ public class UIServiceImplTest {
         when(koulutusinformaatioService.getApplicationOption(eq("7.8.9"))).thenReturn(aos.get("7.8.9"));
 
         ModelResponse response = service.getCompleteApplication(asId, oid);
+
         assertNotNull(response);
-        Map<String, List<ApplicationOptionDTO>> attachments = (Map<String, List<ApplicationOptionDTO>>)
-                response.getModel().get("higherEducationAttachments");
+        List<ApplicationAttachment> attachments = (List<ApplicationAttachment>)
+                response.getModel().get("applicationAttachments");
         assertNotNull(attachments);
-        assertEquals(2, attachments.size());
-        assertTrue(attachments.containsKey("yo"));
-        assertTrue(attachments.containsKey("muu"));
-        assertEquals(1, attachments.get("yo").size());
-        assertEquals("00789",attachments.get("yo").get(0).getProvider().getApplicationOffice().getPostalAddress().getPostalCode());
-        assertEquals(2, attachments.get("muu").size());
-        boolean found123 = false;
-        boolean found789 = false;
-        for (ApplicationOptionDTO ao : attachments.get("muu")) {
-            if (ao.getProvider().getApplicationOffice().getPostalAddress().getPostalCode().equals("00123")) {
-                assertFalse(found123);
-                found123 = true;
-            }
-            if (ao.getProvider().getApplicationOffice().getPostalAddress().getPostalCode().equals("00789")) {
-                assertFalse(found789);
-                found789 = true;
-            }
-        }
-        assertTrue(found123);
-        assertTrue(found789);
+        assertEquals(3, attachments.size());
     }
 
     private Application buildApplication(String asId, String oid) {
         Application application = new Application();
         application.setApplicationSystemId(asId);
         application.setOid(oid);
-
 
         Map<String, String> baseEd = new HashMap<String, String>();
         Map<String, String> prefs = new HashMap<String, String>();
@@ -136,7 +122,6 @@ public class UIServiceImplTest {
     }
 
     private ApplicationSystem buildApplicationSystem(String asId) {
-
         ApplicationSystemBuilder builder = new ApplicationSystemBuilder()
                 .addId(asId)
                 .addName(new I18nText(new HashMap<String, String>()));
