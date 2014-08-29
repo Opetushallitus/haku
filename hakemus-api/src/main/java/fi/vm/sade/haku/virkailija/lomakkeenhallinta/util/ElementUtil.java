@@ -18,11 +18,14 @@ package fi.vm.sade.haku.virkailija.lomakkeenhallinta.util;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Predicate;
+import com.google.common.collect.FluentIterable;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Titled;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.gradegrid.GradeGridRow;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.OptionQuestion;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.Regexp;
 import fi.vm.sade.haku.oppija.lomake.validation.Validator;
 import fi.vm.sade.haku.oppija.lomake.validation.validators.*;
@@ -188,6 +191,29 @@ public final class ElementUtil {
     public static String randomId() {
         //starting random id with a letter preventing some javascript errors
         return 'a' + UUID.randomUUID().toString().replace('.', '_');
+    }
+
+    public static Element findElementById(final Element root, final String id) {
+        return findElement(root, new Predicate<Element>() {
+            @Override
+            public boolean apply(Element element) {
+                return id.equals(element.getId());
+            }
+        });
+    }
+
+    public static Element findElement(final Element root, final Predicate<Element> predicate) {
+        if (predicate.apply(root)) {
+            return root;
+        }
+        Element tmp;
+        for (Element child : root.getChildren()) {
+            tmp = findElement(child, predicate);
+            if (tmp != null) {
+                return tmp;
+            }
+        }
+        return null;
     }
 
     private static void filterElements(
