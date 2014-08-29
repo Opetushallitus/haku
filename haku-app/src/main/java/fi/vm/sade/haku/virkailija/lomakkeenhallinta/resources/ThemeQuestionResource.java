@@ -135,7 +135,11 @@ public class ThemeQuestionResource {
         }
         ThemeQuestion dbThemeQuestion = fetchThemeQuestion(themeQuestionId);
 
-        themeQuestion = fillInOwnerOrganizationsFromApplicationOption(themeQuestion);
+        if (themeQuestion.getTargetIsGroup()) {
+            themeQuestion = fillInOwnerOrganizationsFromApplicationOptionGroup(themeQuestion);
+        } else {
+            themeQuestion = fillInOwnerOrganizationsFromApplicationOption(themeQuestion);
+        }
         themeQuestion.setCreatorPersonOid(dbThemeQuestion.getCreatorPersonOid());
 
         LOGGER.debug("Saving Theme Question with id: " + dbThemeQuestion.getId().toString());

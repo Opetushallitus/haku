@@ -61,7 +61,13 @@ public class EmailDataBuilder {
 		emailMessage.setReplyTo("");
 		emailMessage.setSenderOid(applicationByEmail.getUserOID());
 		emailMessage.setSubject("");
-		emailMessage.setTemplateName(applicationByEmail.getApplicationTemplate().getTemplateName());
+		
+		if (applicationByEmail.getApplicationTemplate() != null && 
+			applicationByEmail.getApplicationTemplate().getTemplateName() != null) {
+			emailMessage.setTemplateName(applicationByEmail.getApplicationTemplate().getTemplateName());
+		} else {
+			emailMessage.setTemplateName(ViestintapalveluConstants.APPLICATION_TEMPLATE_NAME);
+		}
 				
 		return emailMessage;
 	}

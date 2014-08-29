@@ -153,7 +153,7 @@
                     <haku:infoCell key="virkailija.hakemus.henkilonumero" value="${application.personOid}"
                                    cellId="infocell_henkilonumero"/>
 
-                    <haku:infoCell key="virkailija.vaihe.aidinkieli" value="${answers['aidinkieli']}"/>
+                    <haku:infoCell key="virkailija.vaihe.aidinkieli" value="${answers['aidinkieli']}" id="aidinkieli" rootElement="${applicationSystem.form}"/>
                 </tr>
                 <tr>
                     <haku:infoCell key="virkailija.hakemus.kasittely" value='${redoProcessState}'/>

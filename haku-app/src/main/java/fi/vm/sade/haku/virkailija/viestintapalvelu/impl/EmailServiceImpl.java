@@ -52,7 +52,7 @@ public class EmailServiceImpl implements EmailService {
 		LOGGER.info("EmailServiceImpl.sendApplicationByEmail [applicationOID: " + applicationByEmail.getApplicationOID() + "]");
 		byte[] pdf = getPDF(applicationByEmail.getApplicationOID());		
 		EmailData emailData = emailDataBuilder.build(applicationByEmail, pdf);
-		return sendGroupEmail(emailData);
+		return sendEmail(emailData);
 	}
 
 	private synchronized CachingRestClient getCachingRestClient() {
@@ -76,11 +76,11 @@ public class EmailServiceImpl implements EmailService {
 		return pdf;
 	}
 	
-	private String sendGroupEmail(EmailData emailData) {
+	private String sendEmail(EmailData emailData) {
 		Gson gson = new Gson();
 		String emailDataJson = gson.toJson(emailData);
 		
-		String url = "/email/sendPdf";
+		String url = "/email";
 		CachingRestClient cachingRestClient = getCachingRestClient();
 
 		try {
