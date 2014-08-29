@@ -31,6 +31,12 @@ import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.impl.Transla
 
 public final class ThemeQuestionConfigurator {
 
+    public static enum ConfiguratorFilter {
+        ALL_QUESTIONS,
+        ONLY_GROUP_QUESTIONS,
+        NO_GROUP_QUESTIONS
+    }
+
     private static final Logger LOGGER = LoggerFactory.getLogger(ThemeQuestionConfigurator.class);
     private static final String PREFERENCE_PREFIX = "preference";
     private static final String OPTION_POSTFIX = "-Koulutus-id";
@@ -49,25 +55,32 @@ public final class ThemeQuestionConfigurator {
     }
 
     public Element[] findAndConfigure(final String theme) {
-        return _findAndConfigure(theme, true, null, false);
+        return _findAndConfigure(theme, true, null, ConfiguratorFilter.ALL_QUESTIONS);
     }
 
-    public Element[] findAndConfigure(final String theme, final boolean groupOnly) {
-        return _findAndConfigure(theme, true, null, groupOnly);
+    public Element[] findAndConfigure(final String theme, final ConfiguratorFilter filter) {
+        return _findAndConfigure(theme, true, null, filter);
     }
 
     public Element[] findAndConfigure(final String theme, final String preferenceElementId) {
-        return _findAndConfigure(theme, false, preferenceElementId, false);
+        return _findAndConfigure(theme, false, preferenceElementId, ConfiguratorFilter.ALL_QUESTIONS);
+    }
+
+    public Element[] findAndConfigure(final String theme, final String preferenceElementId, final ConfiguratorFilter filter) {
+        return _findAndConfigure(theme, false, preferenceElementId, filter);
     }
 
     private Element[] _findAndConfigure(final String theme,
                                         final Boolean generateTitledGroup,
                                         final String preferenceElementId,
-                                        final boolean groupOnly) {
+                                        final ConfiguratorFilter filter) {
         LOGGER.debug("Configuring themequestions for application system: "+ formParameters.getApplicationSystem().getId() +" theme:"+ theme +" generating titled groups "+ generateTitledGroup);
 
-        final List<Element> configuredApplicationOptions = configureOptions(theme, generateTitledGroup, preferenceElementId, true);
-        if (! groupOnly) {
+        final List<Element> configuredApplicationOptions = new ArrayList<Element>();
+        if (ConfiguratorFilter.ALL_QUESTIONS.equals(filter) || ConfiguratorFilter.ONLY_GROUP_QUESTIONS.equals(filter)) {
+         configuredApplicationOptions.addAll(configureOptions(theme, generateTitledGroup, preferenceElementId, true));
+        }
+        if (ConfiguratorFilter.ALL_QUESTIONS.equals(filter) || ConfiguratorFilter.NO_GROUP_QUESTIONS.equals(filter)) {
             configuredApplicationOptions.addAll(configureOptions(theme, generateTitledGroup, preferenceElementId, false));
         }
 

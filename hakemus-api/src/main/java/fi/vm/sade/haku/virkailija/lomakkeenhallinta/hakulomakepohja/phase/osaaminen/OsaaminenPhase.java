@@ -76,8 +76,6 @@ public class OsaaminenPhase {
             ElementBuilder kysytaankoLukionKeskiarvo = Rule(new And(haettuAMKHon, pohjakoulutusLukio));
             List<Option> asteikkolista = koodistoService.getAmmatillisenTutkinnonArvosteluasteikko();
 
-            ElementBuilder tyhjaVaihe = Rule(new Not(new Or(new And(haettuAMKHon, pohjakoulutusAmmatillinen), new And(haettuAMKHon, pohjakoulutusLukio))));
-
             RegexFieldValidator validator = new RegexFieldValidator(ElementUtil.createI18NText("validator.keskiarvo.desimaaliluku", formParameters), "^$|\\d+\\,?\\d{1,2}");
             osaaminenTheme.addChild(
                     kysytaankoLukionKeskiarvo.addChild(
@@ -105,10 +103,7 @@ public class OsaaminenPhase {
                                     .required()
                                     .formParams(formParameters)
                                     .build())
-                            .build(),
-                    tyhjaVaihe.addChild(
-                            Text().labelKey("osaaminen-vaihe-tyhja").formParams(formParameters).build()
-                    ).build()
+                            .build()
             );
 
             ThemeQuestionConfigurator configurator = formParameters.getThemeQuestionConfigurator();
