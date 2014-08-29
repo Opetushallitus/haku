@@ -106,7 +106,7 @@ public class ThemeQuestionResource {
     public Element getGeneratedThemeQuestionByOid(@PathParam("themeQuestionId") String themeQuestionId) {
         LOGGER.debug("Getting question by Id: {}", themeQuestionId);
         ThemeQuestion themeQuestion = themeQuestionDAO.findById(themeQuestionId);
-        FormParameters formParameters = new FormParameters(hakuService.getApplicationSystem(themeQuestion.getApplicationSystemId()), koodistoService, themeQuestionDAO, hakukohdeService, applicationOptionService);;
+        FormParameters formParameters = new FormParameters(hakuService.getApplicationSystem(themeQuestion.getApplicationSystemId()), koodistoService, themeQuestionDAO, hakukohdeService, organizationService);;
         return themeQuestion.generateElement(formParameters);
     }
 

@@ -57,10 +57,15 @@ public class ThemeCheckBoxQuestion extends ThemeOptionQuestion {
         }
         for (Map.Entry<String, String> validator : this.getValidators().entrySet()) {
             String key = validator.getKey();
+            String value = validator.getValue();
             if ("min".equals(key)) {
-                elementBuilder.minOptions(Integer.valueOf(validator.getValue()));
+                if (null != value && !"".equals(value)) {
+                    elementBuilder.minOptions(Integer.valueOf(value));
+                }
             } else if ("max".equals(key)) {
-                elementBuilder.maxOptions(Integer.valueOf(validator.getValue()));
+                if (null != value && !"".equals(value)) {
+                    elementBuilder.maxOptions(Integer.valueOf(value));
+                }
             }
         }
 

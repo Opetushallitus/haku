@@ -16,6 +16,7 @@
 
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.osaaminen;
 
+import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.builder.ElementBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
@@ -23,10 +24,12 @@ import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.And;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.Expr;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.Not;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.Or;
+import fi.vm.sade.haku.oppija.lomake.validation.validators.RegexFieldValidator;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.hakutoiveet.HakutoiveetPhase;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.service.ThemeQuestionConfigurator;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ExprUtil;
 
 import java.util.ArrayList;
@@ -75,12 +78,15 @@ public class OsaaminenPhase {
 
             ElementBuilder tyhjaVaihe = Rule(new Not(new Or(new And(haettuAMKHon, pohjakoulutusAmmatillinen), new And(haettuAMKHon, pohjakoulutusLukio))));
 
+            RegexFieldValidator validator = new RegexFieldValidator(ElementUtil.createI18NText("validator.keskiarvo.desimaaliluku", formParameters), "^$|\\d+\\,?\\d{1,2}");
             osaaminenTheme.addChild(
                     kysytaankoLukionKeskiarvo.addChild(
                             TextQuestion("lukion-paattotodistuksen-keskiarvo")
                                     .inline()
                                     .required()
-                                    .maxLength(4)
+                                    .maxLength(5)
+                                    .size(5)
+                                    .validator(validator)
                                     .formParams(formParameters)
                                     .build())
                             .build(),
@@ -88,6 +94,9 @@ public class OsaaminenPhase {
                             .addChild(TextQuestion("keskiarvo")
                                     .inline()
                                     .required()
+                                    .maxLength(5)
+                                    .size(5)
+                                    .validator(validator)
                                     .formParams(formParameters)
                                     .build())
                             .addChild(Dropdown("arvosanaasteikko")
@@ -98,7 +107,7 @@ public class OsaaminenPhase {
                                     .build())
                             .build(),
                     tyhjaVaihe.addChild(
-                            Text().labelKey("osaaminen-vaihe-tyhja").formParams(formParameters)
+                            Text().labelKey("osaaminen-vaihe-tyhja").formParams(formParameters).build()
                     ).build()
             );
 
