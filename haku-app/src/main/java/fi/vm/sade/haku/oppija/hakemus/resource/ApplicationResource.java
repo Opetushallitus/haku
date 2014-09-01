@@ -91,6 +91,7 @@ public class ApplicationResource {
     @GET
     @Path("{asid}/{aoidCode}")
     @Produces("application/vnd.ms-excel")
+    @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_READ', 'ROLE_APP_HAKEMUS_CRUD', 'ROLE_APP_HAKEMUS_OPO')")
     public XlsParameter getApplicattionsByOids(@PathParam("asid") String asid,
                                                @PathParam("aoidCode") String aoidCode,
                                                @DefaultValue(value = "") @QueryParam("q") String query,
