@@ -48,7 +48,8 @@ public class ValmisPhase {
 
         elements.add(new Print("printLink", createI18NText("form.valmis.button.tulosta", formParameters)));
 
-        elements.add(new ApplicationAttachments("form.valmis.liitteet"));
+        Element attachments = new ApplicationAttachments("applicationAttachments");
+        elements.add(attachments);
 
         elements.addAll(createAdditionalInformationElements(formParameters));
 
