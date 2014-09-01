@@ -89,10 +89,10 @@ public class ApplicationResource {
     }
 
     @GET
-    @Path("{asid}/{aoid}")
+    @Path("{asid}/{aoidCode}")
     @Produces("application/vnd.ms-excel")
     public XlsParameter getApplicattionsByOids(@PathParam("asid") String asid,
-                                               @PathParam("aoid") String aoid,
+                                               @PathParam("aoidCode") String aoidCode,
                                                @DefaultValue(value = "") @QueryParam("q") String query,
                                                @QueryParam("appState") List<String> state,
                                                @QueryParam("lopoid") String lopoid,
@@ -106,10 +106,10 @@ public class ApplicationResource {
         ApplicationSystem activeApplicationSystem = applicationSystemService.getApplicationSystem(asid);
 
         List<Map<String, Object>> applications = applicationService.findFullApplications(
-                query, new ApplicationQueryParameters(state, Lists.newArrayList(asid), aoid, lopoid, aoOid, discretionaryOnly,
+                query, new ApplicationQueryParameters(state, Lists.newArrayList(asid), aoidCode, lopoid, aoOid, discretionaryOnly,
                 sendingSchoolOid, sendingClass, updatedAfter != null ? updatedAfter.getDate() : null, start, rows, "oid", 1));
         Map<String, Question> elementsByType = ElementUtil.findElementsByType(activeApplicationSystem.getForm(), Question.class);
-        return new XlsParameter(asid, aoid, activeApplicationSystem, applications, elementsByType);
+        return new XlsParameter(asid, aoidCode, activeApplicationSystem, applications, elementsByType);
     }
 
     @GET
@@ -167,7 +167,7 @@ public class ApplicationResource {
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_READ', 'ROLE_APP_HAKEMUS_CRUD', 'ROLE_APP_HAKEMUS_OPO')")
     public ApplicationSearchResultDTO findApplications(@DefaultValue(value = "") @QueryParam("q") String query,
                                                        @QueryParam("appState") List<String> state,
-                                                       @QueryParam("aoidCode") String aoid,
+                                                       @QueryParam("aoid") String aoid,
                                                        @QueryParam("lopoid") String lopoid,
                                                        @QueryParam("asId") String asId,
                                                        @QueryParam("asSemester") String asSemester,
