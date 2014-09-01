@@ -46,8 +46,6 @@ scheduler.runModelUpgrade={{haku_scheduler_run_modelupgrade}}
 scheduler.modelUpgradeCron={{haku_scheduler_modelupgrade_cron}}
 scheduler.sendMail={{haku_scheduler_sendMail}}
 
-* 23 * * * *
-
 # Oletusarvoja
 accessRight.webservice.url.backend=https\://${host.virkailija}/authentication-service/services/accessRightService
 accessRightAdmin.webservice.url.backend=https\://${host.virkailija}/authentication-service/services/accessRightAdminService

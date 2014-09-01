@@ -1,14 +1,14 @@
 package fi.vm.sade.haku.virkailija.koulutusinformaatio.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import fi.vm.sade.haku.virkailija.koulutusinformaatio.KoulutusinformaatioService;
+import fi.vm.sade.koulutusinformaatio.domain.dto.AddressDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.LearningOpportunityProviderDTO;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
-import fi.vm.sade.haku.virkailija.koulutusinformaatio.KoulutusinformaatioService;
-import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @Profile(value = {"dev", "it"})
@@ -18,7 +18,14 @@ public class KoulutusinformaatioServiceMockImpl implements
 	@Override
 	public ApplicationOptionDTO getApplicationOption(String oid) {
 		ApplicationOptionDTO applicationOption = new ApplicationOptionDTO();
-        applicationOption.setProvider(new LearningOpportunityProviderDTO());
+        LearningOpportunityProviderDTO provider = new LearningOpportunityProviderDTO();
+        provider.setName("Koulu");
+        AddressDTO addressDTO = new AddressDTO();
+        addressDTO.setPostOffice("HELSINKI");
+        addressDTO.setPostalCode("00100");
+        addressDTO.setStreetAddress("Katukuja 1");
+        provider.setPostalAddress(addressDTO);
+        applicationOption.setProvider(provider);
 		return applicationOption;
 	}
 

@@ -7,7 +7,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Link;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.Answer;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.DiscretionaryAttachments;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.ApplicationAttachments;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.Print;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.Expr;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
@@ -18,7 +18,6 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import java.util.List;
 import java.util.Set;
 
-import static fi.vm.sade.haku.oppija.lomake.domain.builder.HigherEducationAttachmentsBuilder.HigherEducationAttachments;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.RelatedQuestionRuleBuilder.Rule;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.TextBuilder.Text;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.TitledGroupBuilder.TitledGroup;
@@ -49,14 +48,8 @@ public class ValmisPhase {
 
         elements.add(new Print("printLink", createI18NText("form.valmis.button.tulosta", formParameters)));
 
-        elements.add(new DiscretionaryAttachments("discretionaryAttachments"));
-
-        if (formParameters.isHigherEd()) {
-            elements.add(HigherEducationAttachments("higherEducationAttachment")
-                    .i18nText(ElementUtil.createI18NText("form.valmis.todistus.otsikko"))
-                    .formParams(formParameters)
-                    .build());
-        }
+        Element attachments = new ApplicationAttachments("applicationAttachments");
+        elements.add(attachments);
 
         elements.addAll(createAdditionalInformationElements(formParameters));
 

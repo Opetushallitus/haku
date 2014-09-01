@@ -15,27 +15,11 @@ public final class ApplicationUtil {
     }
 
     public static List<String> getDiscretionaryAttachmentAOIds(final Application application) {
-        //AOs requiring attachments
-        List<String> discretionaryAttachmentAOs = Lists.newArrayList();
-        Map<String, String> answers = application.getVastauksetMerged();
-        int i = 1;
-        while (true) {
-            String key = String.format(OppijaConstants.PREFERENCE_ID, i);
-            if (answers.containsKey(key)) {
-                String aoId = answers.get(key);
-                String discretionaryKey = String.format(OppijaConstants.PREFERENCE_DISCRETIONARY, i);
-                if (!Strings.isNullOrEmpty(aoId) && answers.containsKey(discretionaryKey)) {
-                    String discretionaryValue = answers.get(discretionaryKey);
-                    if (!Strings.isNullOrEmpty(discretionaryValue) && Boolean.parseBoolean(discretionaryValue)) {
-                        discretionaryAttachmentAOs.add(aoId);
-                    }
-                }
-            } else {
-                break;
-            }
-            ++i;
-        }
-        return discretionaryAttachmentAOs;
+        return getAttachmentAOIds(application, OppijaConstants.PREFERENCE_DISCRETIONARY);
+    }
+
+    public static List<String> getApplicationOptionAttachmentAOIds(Application application) {
+        return getAttachmentAOIds(application, "preference%d-Koulutus-id-attachments");
     }
 
     public static Map<String, List<String>> getHigherEdAttachmentAOIds(Application application) {
@@ -77,34 +61,25 @@ public final class ApplicationUtil {
         return attachments;
     }
 
-    private static List<String> getAspaAmkAOs(Application application) {
-        Set<String> aspaAos = new HashSet<String>();
-        Map<String, String> answers = application.getPhaseAnswers(OppijaConstants.PHASE_APPLICATION_OPTIONS);
-        List<String> aos = new ArrayList<String>();
-        int i = 1;
-        while (true) {
-            String key = String.format(OppijaConstants.PREFERENCE_ID, i);
-            if (!answers.containsKey(key)) {
-                break;
-            }
-            String liiteKey = "preference" + i + "-amkLiite";
-            if (answers.containsKey(liiteKey) && !aos.contains(key)) {
-                String groupsStr = answers.get("preference" + i + "-Koulutus-id-attachmentgroups");
-                if (StringUtils.isBlank(groupsStr)) {
-                    aos.add(answers.get(key));
-                } else {
-                    for (String group : groupsStr.split(",")) {
-                        if (!aspaAos.contains(group)) {
-                            aspaAos.add(group);
-                            aos.add(answers.get(key));
-                        }
-                    }
-                }
-            }
-            i++;
+
+
+    private static boolean yoNeeded(Application application) {
+        if (!hasBaseEducation(application, "pohjakoulutus_yo")) {
+            return false;
         }
-        return aos;
+        Map<String, String> answers = application.getVastauksetMerged();
+        int suoritusvuosi = Integer.parseInt(answers.get("pohjakoulutus_yo_vuosi"));
+        if (suoritusvuosi < 1990) {
+            return true;
+        }
+        String tutkinto = answers.get("pohjakoulutus_yo_tutkinto");
+        if ("fi".equals(tutkinto)) {
+            return false;
+        }
+        return true;
+
     }
+
 
     private static List<String> getAmkAOs(Application application) {
         return getAosForType(application, "amkLiite");
@@ -142,20 +117,57 @@ public final class ApplicationUtil {
         return Boolean.parseBoolean(answers.get(field));
     }
 
-    private static boolean yoNeeded(Application application) {
-        if (!hasBaseEducation(application, "pohjakoulutus_yo")) {
-            return false;
-        }
+    private static List<String> getAttachmentAOIds(Application application, String field) {
+        List<String> attachmentAOs = Lists.newArrayList();
         Map<String, String> answers = application.getVastauksetMerged();
-        int suoritusvuosi = Integer.parseInt(answers.get("pohjakoulutus_yo_vuosi"));
-        if (suoritusvuosi < 1990) {
-            return true;
+        int i = 1;
+        while (true) {
+            String key = String.format(OppijaConstants.PREFERENCE_ID, i);
+            if (answers.containsKey(key)) {
+                String aoId = answers.get(key);
+                String discretionaryKey = String.format(field, i);
+                if (!Strings.isNullOrEmpty(aoId) && answers.containsKey(discretionaryKey)) {
+                    String discretionaryValue = answers.get(discretionaryKey);
+                    if (!Strings.isNullOrEmpty(discretionaryValue) && Boolean.parseBoolean(discretionaryValue)) {
+                        attachmentAOs.add(aoId);
+                    }
+                }
+            } else {
+                break;
+            }
+            ++i;
         }
-        String tutkinto = answers.get("pohjakoulutus_yo_tutkinto");
-        if ("fi".equals(tutkinto)) {
-            return false;
-        }
-        return true;
-
+        return attachmentAOs;
     }
+
+
+    private static List<String> getAspaAmkAOs(Application application) {
+        Set<String> aspaAos = new HashSet<String>();
+        Map<String, String> answers = application.getPhaseAnswers(OppijaConstants.PHASE_APPLICATION_OPTIONS);
+        List<String> aos = new ArrayList<String>();
+        int i = 1;
+        while (true) {
+            String key = String.format(OppijaConstants.PREFERENCE_ID, i);
+            if (!answers.containsKey(key)) {
+                break;
+            }
+            String liiteKey = "preference" + i + "-amkLiite";
+            if (answers.containsKey(liiteKey) && !aos.contains(key)) {
+                String groupsStr = answers.get("preference" + i + "-Koulutus-id-attachmentgroups");
+                if (StringUtils.isBlank(groupsStr)) {
+                    aos.add(answers.get(key));
+                } else {
+                    for (String group : groupsStr.split(",")) {
+                        if (!aspaAos.contains(group)) {
+                            aspaAos.add(group);
+                            aos.add(answers.get(key));
+                        }
+                    }
+                }
+            }
+            i++;
+        }
+        return aos;
+    }
+
 }

@@ -14,8 +14,7 @@
 <c:set var="server" value="${fn:replace(pageContext.request.requestURL, pageContext.request.requestURI, pageContext.request.contextPath)}" scope="request"/>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" scope="request"/>
 
-<c:set var="discretionaryAttachments" value="${it.discretionaryAttachments}" scope="request"/>
-<c:set var="higherEducationAttachments" value="${it.higherEducationAttachments}" scope="request"/>
+<c:set var="applicationAttachments" value="${it.applicationAttachments}" scope="request"/>
 
 <html>
 <head>
@@ -53,9 +52,7 @@
     <haku:viewChilds element="${element}"/>
 </c:forEach>
 
-<jsp:include page="../print/discretionaryAttachments.jsp"/>
-
-<jsp:include page="../print/HigherEducationAttachments.jsp"/>
+<jsp:include page="../print/applicationAttachments.jsp"/>
 
 <hr class="strong">
 <footer>
