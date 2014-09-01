@@ -8,6 +8,8 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Question;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.ws.rs.Produces;
@@ -29,6 +31,7 @@ import java.util.Map;
 @Provider
 public class XlsMessageBodyWriter implements MessageBodyWriter<XlsParameter> {
 
+    private static final Logger LOG = LoggerFactory.getLogger(XlsMessageBodyWriter.class);
 
     @Override
     public boolean isWriteable(Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType) {
@@ -93,7 +96,11 @@ public class XlsMessageBodyWriter implements MessageBodyWriter<XlsParameter> {
                         if (title != null) {
                             if (question instanceof DropdownSelect) {
                                 Option option = ((DropdownSelect) question).getData().get(vastaus.getValue());
-                                kentta.setCellValue(ElementUtil.getText(option, lang));
+                                if (option != null) {
+                                    kentta.setCellValue(ElementUtil.getText(option, lang));
+                                } else {
+                                    LOG.info("Valinta kysymykseen ei löytynyt valintaja {}", question.getId());
+                                }
                             } else {
                                 kentta.setCellValue(vastaus.getValue());
                             }
