@@ -31,7 +31,6 @@ var preferenceRow = {
                     selectedPreferenceOK = false;
 
                 preferenceRow.clearChildLONames($("#" + selectInputId).data("childlonames"));
-                preferenceRow.clearAttachments($("#" + selectInputId).data("attachments"));
 
                 $("#" + selectInputId).html("<option value=''>&nbsp;</option>");
 
@@ -46,7 +45,6 @@ var preferenceRow = {
                         selected = 'selected = "selected"';
                         // overrides additional questions rendered in the backend
                         preferenceRow.displayChildLONames(hakukohdeId, $selectInput.data("childlonames"));
-                        preferenceRow.displayAttachments(hakukohdeId, $selectInput.data("attachments"));
                     }
                     var organizationGroups = item.organizationGroups;
                     var aoGroups = new Array();
@@ -127,7 +125,6 @@ var preferenceRow = {
         $("#" + selectInputId + "-id-attachmentgroups").val("").change();
         $("#" + selectInputId).html("<option>&nbsp;</option>");
         preferenceRow.clearChildLONames($("#" + selectInputId).data("childlonames"));
-        preferenceRow.clearAttachments($("#" + selectInputId).data("attachments"));
     },
 
     displayChildLONames: function (hakukohdeId, childLONamesId) {
@@ -145,30 +142,9 @@ var preferenceRow = {
         }
     },
 
-    displayAttachments: function (hakukohdeId, attachmentsId) {
-        var $names =  $("#" + attachmentsId), data = '<ol class="list-style-none">', atts = attachments[hakukohdeId];
-
-        if (atts && atts.length > 0) {
-            for (var index in atts) {
-                var att = atts[index];
-                data = data.concat("<li><small>", att.type, "</small></li>");
-            }
-            data = data.concat("</ol>");
-            $names.html(data);
-            $("#container-" + attachmentsId).show();
-        } else {
-            preferenceRow.clearAttachments(attachmentsId);
-        }
-    },
-
     clearChildLONames: function (childLONamesId) {
         $("#container-" + childLONamesId).hide();
         $("#" + childLONamesId).html('');
-    },
-
-    clearAttachments: function (attachmentsId) {
-        $("#container-" + attachmentsId).hide();
-        $("#" + attachmentsId).html('');
     },
 
     init : function () {
@@ -281,7 +257,6 @@ var preferenceRow = {
                                        $educationAttachmentGroups.val(selectedOption.data("attachmentgroups")).change();
                                        $educationDegreeEducationCode.val(selectedOption.data("educationcode")).change();
                                        preferenceRow.displayChildLONames(selectedId, $(this).data("childlonames"));
-                                       preferenceRow.displayAttachments(selectedId, $(this).data("attachments"));
                                    };
         $('button[name=phaseId]').click(selectChange);
         $(".field-container-select select").change(selectChange);

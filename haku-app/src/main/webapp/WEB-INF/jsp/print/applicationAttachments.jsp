@@ -7,7 +7,7 @@
     <section id="applicationAttachments">
         <hr>
         <h3><fmt:message key="lomake.tulostus.liitteet"/></h3>
-        <table>
+        <table class="striped">
             <tr>
                 <th><fmt:message key="lomake.tulostus.liite" /></th>
                 <th><fmt:message key="lomake.tulostus.liite.toimitusosoite" /></th>

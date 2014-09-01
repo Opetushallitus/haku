@@ -99,10 +99,6 @@
         <span><haku:i18nText value="${sortableItem.childLONameListLabel}"/>:&nbsp;</span>
         <span id="${childLONamesId}"></span>
     </div>
-    <div id="container-${attachmentsId}" class="notification block light-grey margin-2" style="display: none">
-        <span><haku:i18nText value="${sortableItem.attachmentsLabel}"/>:&nbsp;</span>
-        <span id="${attachmentsId}"></span>
-    </div>
 
     <haku:viewChilds element="${sortableItem}"/>
 </div>
