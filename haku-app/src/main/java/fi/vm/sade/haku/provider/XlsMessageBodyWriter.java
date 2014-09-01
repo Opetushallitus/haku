@@ -98,8 +98,6 @@ public class XlsMessageBodyWriter implements MessageBodyWriter<XlsParameter> {
                                 Option option = ((DropdownSelect) question).getData().get(vastaus.getValue());
                                 if (option != null) {
                                     kentta.setCellValue(ElementUtil.getText(option, lang));
-                                } else {
-                                    LOG.info("Valinta kysymykseen ei löytynyt valintaja {}", question.getId());
                                 }
                             } else {
                                 kentta.setCellValue(vastaus.getValue());
