@@ -1,6 +1,7 @@
 package fi.vm.sade.haku.oppija.ui.common;
 
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
+import fi.vm.sade.haku.oppija.hakemus.domain.util.ApplicationUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.junit.Test;
 
@@ -16,7 +17,7 @@ public class AttachmentUtilTest {
     public void higherEdAttachmentEmptyTest() {
         Application application = new Application();
 
-        Map<String, List<String>> attachmentOids = AttachmentUtil.getHigherEdAttachmentAOIds(application);
+        Map<String, List<String>> attachmentOids = ApplicationUtil.getHigherEdAttachmentAOIds(application);
         assertTrue(attachmentOids.isEmpty());
     }
 
@@ -38,7 +39,7 @@ public class AttachmentUtilTest {
         application.addVaiheenVastaukset(OppijaConstants.PHASE_EDUCATION, baseEd);
         application.addVaiheenVastaukset(OppijaConstants.PHASE_APPLICATION_OPTIONS, prefs);
 
-        Map<String, List<String>> attachmentOids = AttachmentUtil.getHigherEdAttachmentAOIds(application);
+        Map<String, List<String>> attachmentOids = ApplicationUtil.getHigherEdAttachmentAOIds(application);
         assertFalse(attachmentOids.isEmpty());
 
         assertEquals(1, attachmentOids.size());
@@ -68,7 +69,7 @@ public class AttachmentUtilTest {
         application.addVaiheenVastaukset(OppijaConstants.PHASE_EDUCATION, baseEd);
         application.addVaiheenVastaukset(OppijaConstants.PHASE_APPLICATION_OPTIONS, prefs);
 
-        Map<String, List<String>> attachmentOids = AttachmentUtil.getHigherEdAttachmentAOIds(application);
+        Map<String, List<String>> attachmentOids = ApplicationUtil.getHigherEdAttachmentAOIds(application);
         assertFalse(attachmentOids.isEmpty());
 
         assertEquals(2, attachmentOids.size());
