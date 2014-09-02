@@ -17,6 +17,7 @@ package fi.vm.sade.haku.oppija.common.organisaatio.impl;
 
 import com.google.common.collect.Lists;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import fi.vm.sade.generic.rest.CachingRestClient;
 import fi.vm.sade.haku.oppija.common.organisaatio.Organization;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationRestDTO;
@@ -44,10 +45,7 @@ import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.lang.ref.SoftReference;
 import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
@@ -68,13 +66,15 @@ public class OrganizationServiceImpl implements OrganizationService {
 
     public OrganizationServiceImpl() {
         this.cache = new HashMap<String, SoftReference<Object>>();
-        this.gson = new Gson();
+        GsonBuilder builder = new GsonBuilder();
+        builder.registerTypeAdapter(Date.class, new TimestampDateAdapter());
+        this.gson = builder.create();
     }
 
     @Override
     public List<Organization> search(final OrganisaatioSearchCriteria searchCriteria) throws UnsupportedEncodingException {
 
-        String baseUrl = targetService + "/rest/organisaatio/hae";
+        String baseUrl = "/rest/organisaatio/hae";
         String params = buildParamString(searchCriteria);
 
         OrganisaatioHakutulos hakutulos = null;
