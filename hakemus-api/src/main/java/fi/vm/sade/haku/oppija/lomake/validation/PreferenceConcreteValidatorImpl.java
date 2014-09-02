@@ -71,7 +71,10 @@ public class PreferenceConcreteValidatorImpl extends PreferenceConcreteValidator
                         !checkKaksoistutkinto(validationInput, ao)) {
                     return createError(validationInput.getElement().getId(), GENERIC_ERROR);
                 }
-                if (!checkProvider(validationInput, ao)) {
+                // Must be checked against all langs
+                if (!(checkProvider(validationInput, applicationOptionService.get(aoId, "fi"))
+                    || checkProvider(validationInput, applicationOptionService.get(aoId, "sv"))
+                    || checkProvider(validationInput, applicationOptionService.get(aoId, "en")))) {
                     return createError(validationInput.getElement().getId(), LOP_ERROR);
                 }
                 if (!checkApplicationDates(ao)) {
@@ -109,6 +112,7 @@ public class PreferenceConcreteValidatorImpl extends PreferenceConcreteValidator
 
     private boolean checkProvider(final ValidationInput validationInput, final ApplicationOption applicationOption) {
         boolean isOk = false;
+
 
         final String key = validationInput.getElement().getId() + "-Opetuspiste-id";
         if (applicationOption.getProvider().getId().equals(validationInput.getValues().get(key))) {
