@@ -22,7 +22,9 @@ import fi.vm.sade.haku.oppija.hakemus.domain.util.ApplicationUtil;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationDAO;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.haku.oppija.hakemus.service.BaseEducationService;
+import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
+import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.haku.oppija.lomake.service.FormService;
 import fi.vm.sade.haku.oppija.lomake.validation.ElementTreeValidator;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationInput;
@@ -57,12 +59,14 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
     public static final Logger LOGGER = LoggerFactory.getLogger(YksilointiWorkerImpl.class);
     public static final String TRUE = "true";
     private final ApplicationService applicationService;
+    private final ApplicationSystemService applicationSystemService;
     private final BaseEducationService baseEducationService;
     private final ApplicationDAO applicationDAO;
     private final ElementTreeValidator elementTreeValidator;
     private FormService formService;
 
     private Map<String, Template> templateMap;
+    private Map<String, Template> templateMapHigherEducation;
 
     @Value("${scheduler.maxBatchSize:10}")
     private int maxBatchSize;
@@ -83,9 +87,12 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
     private String replyTo;
 
     @Autowired
-    public YksilointiWorkerImpl(ApplicationService applicationService, BaseEducationService baseEducationService, FormService formService, ApplicationDAO applicationDAO,
+    public YksilointiWorkerImpl(ApplicationService applicationService,
+                                ApplicationSystemService applicationSystemService,
+                                BaseEducationService baseEducationService, FormService formService, ApplicationDAO applicationDAO,
       ElementTreeValidator elementTreeValidator) {
         this.applicationService = applicationService;
+        this.applicationSystemService = applicationSystemService;
         this.baseEducationService = baseEducationService;
         this.formService = formService;
         this.applicationDAO = applicationDAO;
@@ -104,6 +111,10 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
         templateMap.put("suomi", velocityEngine.getTemplate("email/application_received_fi.vm", "UTF-8"));
         templateMap.put("ruotsi", velocityEngine.getTemplate("email/application_received_sv.vm", "UTF-8"));
         templateMap.put("englanti", velocityEngine.getTemplate("email/application_received_en.vm", "UTF-8"));
+        templateMapHigherEducation = new HashMap<String, Template>();
+        templateMapHigherEducation.put("suomi", velocityEngine.getTemplate("email/application_received_higher_ed_fi.vm", "UTF-8"));
+        templateMapHigherEducation.put("ruotsi", velocityEngine.getTemplate("email/application_received_higher_ed_sv.vm", "UTF-8"));
+        templateMapHigherEducation.put("englanti", velocityEngine.getTemplate("email/application_received_higher_ed_en.vm", "UTF-8"));
     }
 
     @Override
@@ -248,7 +259,13 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
         Map<String, String> answers = application.getVastauksetMerged();
         String emailAddress = answers.get(OppijaConstants.ELEMENT_ID_EMAIL);
         String lang = answers.get(OppijaConstants.ELEMENT_ID_CONTACT_LANGUAGE);
+
         Template tmpl = templateMap.get(lang);
+        String asOid = application.getApplicationSystemId();
+        ApplicationSystem as = applicationSystemService.getApplicationSystem(asOid);
+        if (as.getKohdejoukkoUri().equals(OppijaConstants.KOHDEJOUKKO_KORKEAKOULU)) {
+            tmpl = templateMapHigherEducation.get(lang);
+        }
 
         Locale locale = new Locale("fi");
         if ("ruotsi".equals(lang)) {
