@@ -34,7 +34,7 @@
                     </c:if>
                 </td>
                 <td>
-                    <fmt:formatDate pattern="dd.MM.yyyy hh:mm" value="${attachment.deadline}" />
+                    <fmt:formatDate pattern="dd.MM.yyyy HH:mm" value="${attachment.deadline}" />
                 </td>
             </tr>
             </c:forEach>

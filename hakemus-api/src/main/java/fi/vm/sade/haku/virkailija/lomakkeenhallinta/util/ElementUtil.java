@@ -71,6 +71,27 @@ public final class ElementUtil {
         return createI18NText(key, OppijaConstants.FORM_COMMON_BUNDLE_NAME);
     }
 
+    public static I18nText createMultipartI18NText(final String delimiter,
+                                                   final String... keys) {
+        I18nText[] texts = new I18nText[keys.length];
+        for (int i = 0; i < keys.length; i++) {
+            texts[i] = createI18NText(keys[i]);
+        }
+        Map<String, String> combinedTranslations = new HashMap<String, String>(LANGS.length);
+        for (int i = 0; i < texts.length; i++) {
+            I18nText i18nText = texts[i];
+            for (Map.Entry<String, String> translation : i18nText.getTranslations().entrySet()) {
+                String current = combinedTranslations.get(translation.getKey());
+                if (current == null) {
+                    combinedTranslations.put(translation.getKey(), translation.getValue());
+                } else {
+                    combinedTranslations.put(translation.getKey(), current + delimiter + translation.getValue());
+                }
+            }
+        }
+        return new I18nText(combinedTranslations);
+    }
+
     public static I18nText createI18NText(final String key, final String bundleName) { // Todo get rid of this function
         Validate.notNull(key, "key can't be null");
         Validate.notNull(bundleName, "bundleName can't be null");

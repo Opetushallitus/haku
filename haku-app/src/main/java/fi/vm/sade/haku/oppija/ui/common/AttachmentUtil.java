@@ -8,13 +8,11 @@ import fi.vm.sade.haku.oppija.hakemus.domain.util.ApplicationUtil;
 import fi.vm.sade.haku.oppija.lomake.util.StringUtil;
 import fi.vm.sade.haku.virkailija.koulutusinformaatio.KoulutusinformaatioService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import fi.vm.sade.koulutusinformaatio.domain.dto.*;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class AttachmentUtil {
 
@@ -62,20 +60,33 @@ public class AttachmentUtil {
             if (addressDTO == null) {
                 addressDTO = ao.getProvider().getPostalAddress();
             }
-            attachments.add(
-                    ApplicationAttachmentBuilder.start()
-                            .setName(ElementUtil.createI18NAsIs("Harkinnanvaraisuusliite"))
-                            .setDescription(null)
-                            .setDeadline(null)
-                            .setAddress(AddressBuilder.start()
-                                    .setRecipient(ao.getName())
-                                    .setStreetAddress(addressDTO.getStreetAddress())
-                                    .setStreetAddress2(addressDTO.getStreetAddress2())
-                                    .setPostalCode(addressDTO.getPostalCode())
-                                    .setPostOffice(addressDTO.getPostOffice())
-                                    .build())
-                            .build()
-            );
+            Map<String, String> answers = application.getPhaseAnswers(OppijaConstants.PHASE_APPLICATION_OPTIONS);
+            String discreationaryReason = null;
+            for (Map.Entry<String, String> entry : answers.entrySet()) {
+                String key = entry.getKey();
+                String value = entry.getValue();
+                if (key.endsWith("-Koulutus-id") && value.equals(aoOid)) {
+                    String prefix = key.substring(0, key.indexOf("-"));
+                    discreationaryReason = answers.get(prefix + "-discretionary-follow-up");
+                    break;
+                }
+            }
+
+            ApplicationAttachmentBuilder attachmentBuilder = ApplicationAttachmentBuilder.start()
+                    .setName(ElementUtil.createI18NText("form.valmis.liitteet.harkinnanvaraisuus"))
+                    .setDeadline(null)
+                    .setAddress(AddressBuilder.start()
+                            .setRecipient(ao.getProvider().getName() + " " + ao.getName())
+                            .setStreetAddress(addressDTO.getStreetAddress())
+                            .setStreetAddress2(addressDTO.getStreetAddress2())
+                            .setPostalCode(addressDTO.getPostalCode())
+                            .setPostOffice(addressDTO.getPostOffice())
+                            .build());
+            if (discreationaryReason != null) {
+                attachmentBuilder.setDescription(ElementUtil.createI18NText("perustelu."+discreationaryReason));
+            }
+
+            attachments.add(attachmentBuilder.build());
         }
         return attachments;
     }
@@ -100,6 +111,17 @@ public class AttachmentUtil {
             }
             higherEdAttachments.put(key, aos);
         }
+
+        // TODO Seriously, this shouldn't be hardcoded.
+        Calendar deadlineCal = GregorianCalendar.getInstance();
+        deadlineCal.set(Calendar.YEAR, 2014);
+        deadlineCal.set(Calendar.MONTH, Calendar.OCTOBER);
+        deadlineCal.set(Calendar.DATE, 6);
+        deadlineCal.set(Calendar.HOUR, 15);
+        deadlineCal.set(Calendar.MINUTE, 0);
+        deadlineCal.set(Calendar.SECOND, 0);
+        Date deadline = deadlineCal.getTime();
+
         for (Map.Entry<String, List<ApplicationOptionDTO>> entry : higherEdAttachments.entrySet()) {
             String attachmentType = entry.getKey();
             for (ApplicationOptionDTO aoDTO : entry.getValue()) {
@@ -118,7 +140,7 @@ public class AttachmentUtil {
                         ApplicationAttachmentBuilder.start()
                                 .setName(ElementUtil.createI18NAsIs(StringUtil.safeToString(aoDTO.getProvider().getName())))
                                 .setDescription(ElementUtil.createI18NText("form.valmis.todistus." + attachmentType))
-                                .setDeadline(null)
+                                .setDeadline(deadline)
                                 .setAddress(AddressBuilder.start()
                                         .setRecipient(name)
                                         .setStreetAddress(addressDTO.getStreetAddress())
