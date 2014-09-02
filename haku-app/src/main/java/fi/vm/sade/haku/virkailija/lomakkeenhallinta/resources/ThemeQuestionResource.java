@@ -313,10 +313,18 @@ public class ThemeQuestionResource {
         tqqp.setTheme(themeId);
         tqqp.addSortBy(ThemeQuestion.FIELD_ORDINAL, ThemeQuestionQueryParameters.SORT_ASCENDING);
         Integer assumedOrdinal = 1;
-        for (ThemeQuestion tq: themeQuestionDAO.query(tqqp)){
+        List<ThemeQuestion> dbThemeQuestions = themeQuestionDAO.query(tqqp);
+        List<ThemeQuestion> tqsWithoutOrdinal = new ArrayList<ThemeQuestion>();
+        for (ThemeQuestion tq : dbThemeQuestions){
+            if (null == tq.getOrdinal()){
+                tqsWithoutOrdinal.add(tq);
+            }
             if (!assumedOrdinal.equals(tq.getOrdinal())){
                 themeQuestionDAO.setOrdinal(tq.getId().toString(), assumedOrdinal++);
             }
+        }
+        for (ThemeQuestion tq: tqsWithoutOrdinal){
+            themeQuestionDAO.setOrdinal(tq.getId().toString(), assumedOrdinal++);
         }
     }
 }
