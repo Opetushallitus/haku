@@ -114,7 +114,7 @@ public class ThemeQuestionDAOMongoImpl extends AbstractDAOMongoImpl<ThemeQuestio
 
     @Override
     public void delete(String themeQuestionId) {
-        DBObject update = new BasicDBObject(FIELD_STATE, ThemeQuestion.State.DELETED);
+        DBObject update = new BasicDBObject(FIELD_STATE, ThemeQuestion.State.DELETED.toString());
         update.put(FIELD_ORDINAL, 99);
         set(themeQuestionId, update);
         LOGGER.debug("ThemeQuestion "+ themeQuestionId + " deleted");
@@ -164,7 +164,7 @@ public class ThemeQuestionDAOMongoImpl extends AbstractDAOMongoImpl<ThemeQuestio
         }
 
         if (parameters.searchDeleted()) {
-            query.append(FIELD_STATE, ThemeQuestion.State.DELETED);
+            query.append(FIELD_STATE, ThemeQuestion.State.DELETED.toString());
         }else {
             Object[] states = {ThemeQuestion.State.ACTIVE.toString(), ThemeQuestion.State.LOCKED.toString()};
             query.append(FIELD_STATE, new BasicDBObject(IN, states));

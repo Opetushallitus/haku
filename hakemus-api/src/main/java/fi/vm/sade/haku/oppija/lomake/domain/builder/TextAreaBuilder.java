@@ -5,8 +5,8 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.TextArea;
 
 public class TextAreaBuilder extends ElementBuilder {
 
-    public static final Integer ROWS = 3;
-    public static final Integer COLS = 20;
+    public static final Integer ROWS = 4;
+    public static final Integer COLS = 60;
 
     private Integer cols = COLS;
 

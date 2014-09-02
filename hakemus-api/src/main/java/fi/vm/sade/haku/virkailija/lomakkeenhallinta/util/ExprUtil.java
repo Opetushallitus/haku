@@ -34,7 +34,7 @@ public final class ExprUtil {
             Expr current = null;
             Expr rexExp;
             for (String id : ids) {
-                rexExp = new Regexp(ids[0], "(?:.*\\s+|\\s*)"+value+"(?:,.*|\\s*|\\s+.*)");;
+                rexExp = new Regexp(id, "(?:.*\\s+|\\s*)"+value+"(?:,.*|\\s*|\\s+.*)");
                 if (current == null) {
                     current = rexExp;
                 } else {
