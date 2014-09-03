@@ -54,6 +54,7 @@ public class AttachmentUtil {
     private static List<ApplicationAttachment> addDiscreationaryAttachments(List<ApplicationAttachment> attachments,
                                                                             Application application,
                                                                             KoulutusinformaatioService koulutusinformaatioService) {
+
         for (String aoOid : ApplicationUtil.getDiscretionaryAttachmentAOIds(application)) {
             ApplicationOptionDTO ao = koulutusinformaatioService.getApplicationOption(aoOid);
             AddressDTO addressDTO = ao.getAttachmentDeliveryAddress();
@@ -83,7 +84,8 @@ public class AttachmentUtil {
                             .setPostOffice(addressDTO.getPostOffice())
                             .build());
             if (discreationaryReason != null) {
-                attachmentBuilder.setDescription(ElementUtil.createI18NText("perustelu."+discreationaryReason));
+                attachmentBuilder.setDescription(ElementUtil.createI18NText("form.valmis.liitteet.harkinnanvaraisuus."
+                        +discreationaryReason));
             }
 
             attachments.add(attachmentBuilder.build());

@@ -1,17 +1,17 @@
-Haku: $applicationSystemId
-Hakija: $applicant
-Hakemusnumero: $applicationId
-Hakemuksen päivämäärä ja tallennusaika: $applicationDate
+Application: $applicationSystemId
+Applicant: $applicant
+Application number: $applicationId
+Submitted: $applicationDate
 
-Korkeakoulujen email [fi]
 
-Hakutoiveesi:
+
+Application options:
 
 #foreach ($preference in $preferences)
 $preference
 
 #end
 
-Tämä on automaattinen sähköpostiviesti. Älä vastaa tähän. Jos haluat muuttaa
-hakutoiveitasi, ole yhteydessä Opintopolun hakuneuvontaan hakuaikana
-(neuvonta@opintopolku.fi).
+Tämä on automaattinen sähköpostiviesti. Älä vastaa tähän. Jos haluat muuttaa hakutoiveitasi, kirjaudu Oma Opintopolku -palveluun Opintopolun etusivulla, ja tee muutokset hakuajan kuluessa. 
+Jos et voi käyttää palvelua, ota yhteyttä jonkin hakutoiveenasi olevan yliopiston tai ammattikorkeakoulun hakijapalveluihin.
+

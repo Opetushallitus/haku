@@ -34,6 +34,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.UriBuilder;
 
 /**
  * @author Mikko Majapuro
@@ -43,13 +44,14 @@ public class ApplicationOptionServiceImpl implements ApplicationOptionService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ApplicationOptionServiceImpl.class);
     private final WebResource webResource;
+    private final Client clientWithJacksonSerializer;
     private final ApplicationOptionDTOToApplicationOptionFunction converterFunction;
 
     @Autowired
     public ApplicationOptionServiceImpl(@Value("${koulutusinformaatio.ao.resource.url}") final String koulutusinformaatioAOResourceUrl) {
         ClientConfig cc = new DefaultClientConfig();
         cc.getClasses().add(JacksonJsonProvider.class);
-        Client clientWithJacksonSerializer = Client.create(cc);
+        clientWithJacksonSerializer = Client.create(cc);
         webResource = clientWithJacksonSerializer.resource(koulutusinformaatioAOResourceUrl);
         converterFunction = new ApplicationOptionDTOToApplicationOptionFunction();
     }
@@ -61,6 +63,22 @@ public class ApplicationOptionServiceImpl implements ApplicationOptionService {
             return null;
         } else {
             WebResource asWebResource = webResource.path(oid);
+            ApplicationOptionDTO ao = asWebResource.accept(MediaType.APPLICATION_JSON + ";charset=UTF-8").get(new GenericType<ApplicationOptionDTO>() {
+            });
+            return converterFunction.apply(ao);
+        }
+    }
+
+    @Override
+    public ApplicationOption get(String oid, String lang) {
+        LOGGER.debug("get application option : {}", oid);
+        if (Strings.isNullOrEmpty(oid)) {
+            return null;
+        } else {
+            UriBuilder builder = webResource.path(oid).getUriBuilder();
+            builder.queryParam("uiLang", lang).build();
+            LOGGER.debug(builder.build().toString());
+            WebResource asWebResource = clientWithJacksonSerializer.resource(builder.build());
             ApplicationOptionDTO ao = asWebResource.accept(MediaType.APPLICATION_JSON + ";charset=UTF-8").get(new GenericType<ApplicationOptionDTO>() {
             });
             return converterFunction.apply(ao);
