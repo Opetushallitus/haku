@@ -5,8 +5,11 @@ import fi.vm.sade.haku.oppija.hakemus.domain.dto.AddressBuilder;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationAttachment;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationAttachmentBuilder;
 import fi.vm.sade.haku.oppija.hakemus.domain.util.ApplicationUtil;
+import fi.vm.sade.haku.oppija.lomake.domain.ApplicationOptionAttachmentRequest;
+import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.util.StringUtil;
 import fi.vm.sade.haku.virkailija.koulutusinformaatio.KoulutusinformaatioService;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain.SimpleAddress;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import fi.vm.sade.koulutusinformaatio.domain.dto.*;
@@ -16,14 +19,35 @@ import java.util.*;
 
 public class AttachmentUtil {
 
-    public static List<ApplicationAttachment> resolveAttachments(Application application,
+    public static List<ApplicationAttachment> resolveAttachments(ApplicationSystem applicationSystem, Application application,
                                                                  KoulutusinformaatioService koulutusinformaatioService) {
 
         List<ApplicationAttachment> attachments = new ArrayList<ApplicationAttachment>();
         attachments = addApplicationOptionAttachments(attachments, application, koulutusinformaatioService);
         attachments = addDiscreationaryAttachments(attachments, application, koulutusinformaatioService);
         attachments = addHigherEdAttachments(attachments, application, koulutusinformaatioService);
+        attachments = addApplicationOptionAttachmentRequests(attachments, application, applicationSystem);
 
+        return attachments;
+    }
+
+    private static List<ApplicationAttachment> addApplicationOptionAttachmentRequests(List<ApplicationAttachment> attachments, Application application, ApplicationSystem applicationSystem) {
+        for (ApplicationOptionAttachmentRequest attachmentRequest : applicationSystem.getApplicationOptionAttachmentRequests()){
+            if (attachmentRequest.include(application.getVastauksetMerged())){
+                SimpleAddress address = attachmentRequest.getDeliveryAddress();
+                attachments.add(ApplicationAttachmentBuilder.start()
+                  .setName(attachmentRequest.getHeader())
+                  .setDescription(attachmentRequest.getDescription())
+                  .setDeadline(attachmentRequest.getDeliveryDue())
+                  .setAddress(AddressBuilder.start()
+                    .setRecipient(address.getRecipient())
+                    .setStreetAddress(address.getStreet())
+                    .setPostalCode(address.getPostCode())
+                    .setPostOffice(address.getPostOffice())
+                    .build())
+                  .build());
+            }
+        }
         return attachments;
     }
 

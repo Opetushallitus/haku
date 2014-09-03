@@ -1,15 +1,10 @@
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain;
 
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
-import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
-import fi.vm.sade.haku.oppija.lomake.domain.builder.TextBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.builder.TextQuestionBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.Text;
+import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.Expr;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import org.codehaus.jackson.annotate.JsonCreator;
 import org.codehaus.jackson.annotate.JsonProperty;
 
@@ -68,7 +63,8 @@ public class ThemeTextQuestion extends ThemeQuestion {
     }
 
     @Override
-    protected Element generateAttachmentRequest(FormParameters formParameters, AttachmentRequest attachmentRequest) {
+    protected Expr generateAttachmentCondition(FormParameters formParameters, AttachmentRequest attachmentRequest) {
+        //TODO FIX
         return null;
     }
 }

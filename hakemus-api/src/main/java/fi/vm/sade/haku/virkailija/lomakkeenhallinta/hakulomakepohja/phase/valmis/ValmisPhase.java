@@ -11,7 +11,6 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.ApplicationAttachmen
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.Print;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.Expr;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.service.ThemeQuestionConfigurator;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ExprUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
@@ -22,9 +21,14 @@ import java.util.Set;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.RelatedQuestionRuleBuilder.Rule;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.TextBuilder.Text;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.TitledGroupBuilder.TitledGroup;
-import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.*;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.createI18NAsIs;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.createI18NText;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.randomId;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ExprUtil.atLeastOneVariableEqualsToValue;
-import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.*;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.EDUCATION_CODE_KEY;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.EDUCATION_CODE_LIIKUNTA;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.EDUCATION_CODE_MUSIIKKI;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.EDUCATION_CODE_TANSSI;
 
 public class ValmisPhase {
 
@@ -109,9 +113,7 @@ public class ValmisPhase {
         Element musiikkiTanssiLiikuntaRule = Rule(ExprUtil.reduceToOr(ImmutableList.of(isMusiikki, isTanssi, isLiiKunta))).build();
         musiikkiTanssiLiikuntaRule.addChild(TitledGroup("musiikkitanssiliikunta.ryhma").formParams(formParameters).build()
                 .addChild(Text(randomId()).labelKey("musiikkitanssiliikunta").formParams(formParameters).build()));
-        List<Element> elements = Lists.newArrayList(athleteRule, musiikkiTanssiLiikuntaRule);
-        elements.addAll(formParameters.getThemeQuestionConfigurator().findAndConfigureAttachmentRequests());
-        return elements;
+        return Lists.newArrayList(athleteRule, musiikkiTanssiLiikuntaRule);
     }
 
     public static List<Element> create(FormParameters formParameters) {

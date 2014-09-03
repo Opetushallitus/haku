@@ -607,10 +607,11 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     @Override
     public ModelResponse getApplicationPrint(final String oid) {
         Application application = applicationService.getApplicationByOid(oid);
+        ApplicationSystem applicationSystem = applicationSystemService.getApplicationSystem(application.getApplicationSystemId());
 
         return new ModelResponse(application,
-                applicationSystemService.getApplicationSystem(application.getApplicationSystemId()),
-                AttachmentUtil.resolveAttachments(application, koulutusinformaatioService),
+                applicationSystem,
+                AttachmentUtil.resolveAttachments(applicationSystem, application, koulutusinformaatioService),
                 koulutusinformaatioBaseUrl);
     }
 

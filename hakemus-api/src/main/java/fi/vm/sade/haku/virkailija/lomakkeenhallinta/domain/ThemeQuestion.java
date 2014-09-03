@@ -1,7 +1,10 @@
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain;
 
+import fi.vm.sade.haku.oppija.lomake.domain.ApplicationOptionAttachmentRequest;
+import fi.vm.sade.haku.oppija.lomake.domain.ApplicationOptionAttachmentRequestBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
+import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.Expr;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.dao.impl.DBConverter.ComplexObjectIdDeserializer;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.dao.impl.DBConverter.SimpleObjectIdSerializer;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
@@ -132,15 +135,24 @@ public abstract class ThemeQuestion implements ConfiguredElement {
         this.attachmentRequests = new ArrayList<AttachmentRequest>(attachmentRequests);
     }
 
-    public List<Element> generateAttactmentRequests(FormParameters formParameters){
-        List<Element> generatedRequests = new ArrayList<Element>(attachmentRequests.size());
+    public List<ApplicationOptionAttachmentRequest> generateAttactmentRequests(FormParameters formParameters){
+        List<ApplicationOptionAttachmentRequest> generatedRequests = new ArrayList<ApplicationOptionAttachmentRequest>(attachmentRequests.size());
         for (AttachmentRequest attachmentRequest : attachmentRequests){
-            generatedRequests.add(generateAttachmentRequest(formParameters, attachmentRequest));
+            generatedRequests.add(
+              ApplicationOptionAttachmentRequestBuilder.start()
+              .setApplicationOption(learningOpportunityId)
+              .setGroupOption(getTargetIsGroup())
+              .setCondition(generateAttachmentCondition(formParameters, attachmentRequest))
+              .setDeliveryAddress(attachmentRequest.getDeliveryAddress())
+              .setDeliveryDue(attachmentRequest.getDeliveryDue())
+              .setHeader(attachmentRequest.getHeader())
+              .setDescription(attachmentRequest.getDescription())
+              .build());
         }
         return generatedRequests;
     }
 
-    protected abstract Element generateAttachmentRequest(FormParameters formParameters, AttachmentRequest attachmentRequest);
+    protected abstract Expr generateAttachmentCondition(FormParameters formParameters, AttachmentRequest attachmentRequest);
 
     public ObjectId getId() {
         return id;

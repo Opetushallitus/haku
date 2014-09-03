@@ -2,6 +2,7 @@ package fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain;
 
 
 import com.google.common.collect.ImmutableMap;
+import fi.vm.sade.haku.oppija.lomake.domain.ApplicationOptionAttachmentRequest;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.builder.OptionBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.builder.RadioBuilder;
@@ -69,7 +70,7 @@ public class ThemeRadioButtonQuestion extends ThemeOptionQuestion {
     }
 
     @Override
-    public Element generateAttachmentRequest(FormParameters formParameters, AttachmentRequest attachmentRequest) {
+    protected Expr generateAttachmentCondition(FormParameters formParameters, AttachmentRequest attachmentRequest) {
         String optionId =attachmentRequest.getAttachedToOptionId();
         Expr expr;
         if (null != optionId) {
@@ -80,11 +81,6 @@ public class ThemeRadioButtonQuestion extends ThemeOptionQuestion {
             //TODO: fix me
             expr=null;
         }
-        Element rule = RelatedQuestionRuleBuilder.Rule(expr).build();
-        rule.addChild(
-          TextBuilder.Text(ElementUtil.randomId()).i18nText(attachmentRequest.getHeader()).build(),
-          TextBuilder.Text(ElementUtil.randomId()).i18nText(attachmentRequest.getDescription()).build()
-        );
-        return rule;
+        return expr;
     }
 }

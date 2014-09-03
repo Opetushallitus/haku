@@ -2,12 +2,14 @@ package fi.vm.sade.haku.virkailija.lomakkeenhallinta.service;
 
 import fi.vm.sade.haku.oppija.common.organisaatio.Organization;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
+import fi.vm.sade.haku.oppija.lomake.domain.ApplicationOptionAttachmentRequest;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.builder.TitledGroupBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.Expr;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.dao.ThemeQuestionDAO;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.dao.ThemeQuestionQueryParameters;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain.AttachmentRequest;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain.ThemeQuestion;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakukohdeService;
@@ -35,11 +37,6 @@ public final class ThemeQuestionConfigurator {
         ALL_QUESTIONS,
         ONLY_GROUP_QUESTIONS,
         NO_GROUP_QUESTIONS
-    }
-
-    private static enum Function {
-        GENERATE_QUESTION,
-        GENERATE_ATTACHMENT_REQUEST
     }
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ThemeQuestionConfigurator.class);
@@ -88,36 +85,20 @@ public final class ThemeQuestionConfigurator {
 
         final List<Element> configuredApplicationOptions = new ArrayList<Element>();
         if (ConfiguratorFilter.ALL_QUESTIONS.equals(filter) || ConfiguratorFilter.ONLY_GROUP_QUESTIONS.equals(filter)) {
-         configuredApplicationOptions.addAll(configureOptions(baseQuery, generateTitledGroup, preferenceElementId, true, Function.GENERATE_QUESTION));
+         configuredApplicationOptions.addAll(configureOptions(baseQuery, generateTitledGroup, preferenceElementId, true));
         }
         if (ConfiguratorFilter.ALL_QUESTIONS.equals(filter) || ConfiguratorFilter.NO_GROUP_QUESTIONS.equals(filter)) {
-            configuredApplicationOptions.addAll(configureOptions(baseQuery, generateTitledGroup, preferenceElementId, false, Function.GENERATE_QUESTION));
+            configuredApplicationOptions.addAll(configureOptions(baseQuery, generateTitledGroup, preferenceElementId, false));
         }
 
         LOGGER.debug("Configuration complete for application system " + formParameters.getApplicationSystem().getId() + " theme " + theme);
         return configuredApplicationOptions.toArray(new Element[configuredApplicationOptions.size()]);
     }
 
-    public List<Element> findAndConfigureAttachmentRequests(){
-        LOGGER.debug("Configuring themequestion attachment requests for application system: "+ formParameters.getApplicationSystem().getId());
-
-        final ThemeQuestionQueryParameters baseQuery = new ThemeQuestionQueryParameters();
-        baseQuery.setApplicationSystemId(formParameters.getApplicationSystem().getId());
-        baseQuery.setOnlyWithAttachmentRequests(true);
-
-        //retaining order
-        final List<Element> configuredApplicationOptions = configureOptions(baseQuery, true, null, true, Function.GENERATE_ATTACHMENT_REQUEST);
-        configuredApplicationOptions.addAll(configureOptions(baseQuery, true, null, false, Function.GENERATE_ATTACHMENT_REQUEST));
-
-        LOGGER.debug("Configuration of themequestion attachment requests complete for application system " + formParameters.getApplicationSystem().getId());
-        return configuredApplicationOptions;
-    }
-
     private List<Element> configureOptions(final ThemeQuestionQueryParameters baseQuery,
                                            final Boolean generateTitledGroup,
                                            final String preferenceElementId,
-                                           final Boolean groupOption,
-                                           final Function function) {
+                                           final Boolean groupOption) {
         final ThemeQuestionQueryParameters queryParameters = baseQuery.clone();
         queryParameters.setQueryGroups(groupOption);
 
@@ -127,7 +108,7 @@ public final class ThemeQuestionConfigurator {
         final ArrayList<Element> configuredOptions = new ArrayList<Element>(optionIds.size());
         for (String optionId : optionIds) {
             try {
-                configuredOptions.add(configureThemeQuestionForOption(baseQuery, optionId, generateTitledGroup, preferenceElementId, groupOption, function));
+                configuredOptions.add(configureThemeQuestionForOption(baseQuery, optionId, generateTitledGroup, preferenceElementId, groupOption));
             } catch (Exception exception) {
                 LOGGER.error("Failed to configure application " + (groupOption ? "group" : "option") + optionId + " with base query: "+ baseQuery.toString(), exception);
             }
@@ -140,8 +121,7 @@ public final class ThemeQuestionConfigurator {
                                                     final String optionId,
                                                     final Boolean titleApplicationOptions,
                                                     final String preferenceElementId,
-                                                    final Boolean groupOption,
-                                                    final Function function) {
+                                                    final Boolean groupOption) {
         LOGGER.debug("Configuring application option "+ optionId +" with base query: "+ baseQuery.toString());
         final Element baseElement = generateApplicationOptionRule(optionId, preferenceElementId, groupOption);
         Element groupElement = baseElement;
@@ -153,22 +133,18 @@ public final class ThemeQuestionConfigurator {
             }
             baseElement.addChild(groupElement);
         }
-        final List<Element> configuredQuestions = configureQuestions(baseQuery, optionId, function);
+        final List<Element> configuredQuestions = configureQuestions(baseQuery, optionId);
         groupElement.addChild(configuredQuestions.toArray(new Element[configuredQuestions.size()]));
         LOGGER.debug("Configuration of application option "+ optionId +" complete with base query: "+ baseQuery.toString());
         return baseElement;
     }
 
-    private List<Element> configureQuestions(final ThemeQuestionQueryParameters baseQuery, final String optionId, final Function function) {
+    private List<Element> configureQuestions(final ThemeQuestionQueryParameters baseQuery, final String optionId) {
         final List<ThemeQuestion> themeQuestions = queryQuestions(baseQuery, optionId);
         LOGGER.debug("Configuring a list of "+ themeQuestions.size() +" themequestions");
         final ArrayList<Element> configuredElements = new ArrayList<Element>(themeQuestions.size());
         for (ThemeQuestion tq : themeQuestions) {
-            if (Function.GENERATE_QUESTION.equals(function)) {
-                configuredElements.add(tq.generateElement(formParameters));
-            } else {
-                configuredElements.addAll(tq.generateAttactmentRequests(formParameters));
-            }
+            configuredElements.add(tq.generateElement(formParameters));
             LOGGER.debug("configured question {} of type {}", tq.getId(), tq.getClass().getSimpleName());
         }
         LOGGER.debug("Configuration of the list complete");
@@ -272,5 +248,53 @@ public final class ThemeQuestionConfigurator {
         }
         return ExprUtil.atLeastOneVariableContainsValue(groupId,
           preferenceAoKeys.toArray(new String[preferenceAoKeys.size()]));
+    }
+
+    // COPY-AND-PASTE HELL
+    // PLS DO FIX LATER
+
+    public List<ApplicationOptionAttachmentRequest> findAndConfigureAttachmentRequests(){
+        LOGGER.debug("Configuring themequestion attachment requests for application system: "+ formParameters.getApplicationSystem().getId());
+
+        final ThemeQuestionQueryParameters baseQuery = new ThemeQuestionQueryParameters();
+        baseQuery.setApplicationSystemId(formParameters.getApplicationSystem().getId());
+        baseQuery.setOnlyWithAttachmentRequests(true);
+
+        //retaining order
+        final List<ApplicationOptionAttachmentRequest> configuredAttachementRequests = configureAttachementRequests(baseQuery, true);
+        configuredAttachementRequests.addAll(configureAttachementRequests(baseQuery, false));
+
+        LOGGER.debug("Configuration of themequestion attachment requests complete for application system " + formParameters.getApplicationSystem().getId());
+        return configuredAttachementRequests;
+    }
+
+    private List<ApplicationOptionAttachmentRequest> configureAttachementRequests(final ThemeQuestionQueryParameters baseQuery, final Boolean groupOption) {
+        final ThemeQuestionQueryParameters queryParameters = baseQuery.clone();
+        queryParameters.setQueryGroups(groupOption);
+
+        final List<String> optionIds = themeQuestionDAO.queryApplicationOptionsIn(queryParameters);
+        LOGGER.debug("Got " + optionIds.size() + " application " + (groupOption ? "groups" : "options") + " with base query: "+ baseQuery.toString());
+
+        final ArrayList<ApplicationOptionAttachmentRequest> configuredAttachmentRequests = new ArrayList<ApplicationOptionAttachmentRequest>(optionIds.size());
+        for (String optionId : optionIds) {
+            try {
+                configuredAttachmentRequests.addAll(configureAttactmentRequestsForOption(baseQuery, optionId));
+            } catch (Exception exception) {
+                LOGGER.error("Failed to configure application " + (groupOption ? "group" : "option") + optionId + " with base query: "+ baseQuery.toString(), exception);
+            }
+        }
+        return configuredAttachmentRequests;
+    }
+
+    private List<ApplicationOptionAttachmentRequest> configureAttactmentRequestsForOption(final ThemeQuestionQueryParameters baseQuery, final String optionId) {
+        final List<ThemeQuestion> themeQuestions = queryQuestions(baseQuery, optionId);
+        LOGGER.debug("Configuring a list of "+ themeQuestions.size() +" themequestions");
+        final ArrayList<ApplicationOptionAttachmentRequest> configuredAttachmentRequests = new ArrayList<ApplicationOptionAttachmentRequest>(themeQuestions.size());
+        for (ThemeQuestion tq : themeQuestions) {
+            configuredAttachmentRequests.addAll(tq.generateAttactmentRequests(formParameters));
+            LOGGER.debug("configured question {} of type {}", tq.getId(), tq.getClass().getSimpleName());
+        }
+        LOGGER.debug("Configuration of the list complete");
+        return configuredAttachmentRequests;
     }
 }

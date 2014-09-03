@@ -1,6 +1,5 @@
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja;
 
-import fi.vm.sade.haku.oppija.common.koulutusinformaatio.ApplicationOptionService;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystemBuilder;
@@ -67,6 +66,7 @@ public class FormGeneratorImpl implements FormGenerator {
                 .addApplicationCompleteElements(ValmisPhase.create(formParameters))
                 .addMaxApplicationOptions(as.getMaxApplicationOptions())
                 .addAdditionalInformationElements(ValmisPhase.createAdditionalInformationElements(formParameters))
+                .addApplicationOptionAttachmentRequests(formParameters.getThemeQuestionConfigurator().findAndConfigureAttachmentRequests())
                 .get();
     }
 
