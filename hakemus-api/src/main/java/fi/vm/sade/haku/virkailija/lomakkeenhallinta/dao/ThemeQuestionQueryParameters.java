@@ -5,7 +5,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class ThemeQuestionQueryParameters {
+public final class ThemeQuestionQueryParameters implements Cloneable{
     // 3,2,1
     public static Integer SORT_DESCENDING = -1;
     // 1,2,3
@@ -104,5 +104,19 @@ public final class ThemeQuestionQueryParameters {
           ", onlyWithAttachmentRequests=" + onlyWithAttachmentRequests +
           ", sortBy=" + sortBy +
           '}';
+    }
+
+
+    @Override
+    public ThemeQuestionQueryParameters clone(){
+        ThemeQuestionQueryParameters clone = new ThemeQuestionQueryParameters();
+        clone.applicationSystemId = this.applicationSystemId;
+        clone.learningOpportunityId = this.learningOpportunityId;
+        clone.organizationId = this.organizationId;
+        clone.theme = this.theme;
+        clone.searchDeleted = this.searchDeleted;
+        clone.onlyWithAttachmentRequests = this.onlyWithAttachmentRequests;
+        clone.sortBy = (ArrayList<Pair<String, Integer>>) this.sortBy.clone();
+        return clone;
     }
 }

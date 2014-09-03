@@ -6,5 +6,4 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParamete
 public interface ConfiguredElement {
 
     public Element generateElement(final FormParameters formParameters);
-
 }
