@@ -52,7 +52,7 @@ public final class HenkilotiedotPhase {
     public static final String AIDINKIELI_ID = "aidinkieli";
     private static final String HETU_PATTERN = "^([0-9]{6}.[0-9]{3}([0-9]|[a-z]|[A-Z]))$";
     private static final String POSTINUMERO_PATTERN = "[0-9]{5}";
-    private static final String DATE_PATTERN = "^([0-9]|0[1-9]|[12][0-9]|3[01])\\.([0-9]|0[1-9]|1[012])\\.(19|20)\\d\\d$";
+    private static final String DATE_PATTERN = "^(0[1-9]|[12][0-9]|3[01])\\.(0[1-9]|1[012])\\.(19|20)\\d\\d$";
     public static final String EMPTY_OR_FIN_PATTERN = "^$|^FIN$";
 
     private HenkilotiedotPhase() {
