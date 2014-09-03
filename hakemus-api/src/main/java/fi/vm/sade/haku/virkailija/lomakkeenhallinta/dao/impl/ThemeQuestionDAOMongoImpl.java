@@ -6,6 +6,7 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.MongoException;
+import com.mongodb.QueryOperators;
 import fi.vm.sade.haku.oppija.common.dao.AbstractDAOMongoImpl;
 import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.dao.ThemeQuestionDAO;
@@ -26,7 +27,9 @@ import java.util.List;
 
 import static com.mongodb.QueryOperators.EXISTS;
 import static com.mongodb.QueryOperators.IN;
+import static com.mongodb.QueryOperators.NE;
 import static com.mongodb.QueryOperators.OR;
+import static com.mongodb.QueryOperators.AND;
 
 @Service("themeQuestionDAOMongoImpl")
 public class ThemeQuestionDAOMongoImpl extends AbstractDAOMongoImpl<ThemeQuestion> implements ThemeQuestionDAO {
@@ -44,6 +47,7 @@ public class ThemeQuestionDAOMongoImpl extends AbstractDAOMongoImpl<ThemeQuestio
     private static final String FIELD_ORDINAL = "ordinal";
     private static final String FIELD_APPLICATION_OPTION = "learningOpportunityId";
     private static final String FIELD_TARGET_IS_GROUP = "targetIsGroup";
+    private static final String FIELD_ATTACHMENT_REQUESTS = "attachmentRequests";
     private static int PARAM_QUERY =0;
     private static int PARAM_HINT =1;
     private static int PARAM_SORT_BY = 2;
@@ -196,6 +200,11 @@ public class ThemeQuestionDAOMongoImpl extends AbstractDAOMongoImpl<ThemeQuestio
                 });
             }
             hint.put(FIELD_TARGET_IS_GROUP, 1);
+        }
+
+        if (null != parameters.onlyWithAttachmentRequests() && parameters.onlyWithAttachmentRequests()){
+            query.append(FIELD_ATTACHMENT_REQUESTS, new BasicDBObject(NE, null));
+            hint.put(FIELD_ATTACHMENT_REQUESTS, 1);
         }
 
         if (parameters.getSortBy().size() > 0){

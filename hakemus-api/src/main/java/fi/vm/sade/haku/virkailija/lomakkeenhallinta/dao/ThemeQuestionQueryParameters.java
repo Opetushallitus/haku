@@ -17,6 +17,7 @@ public final class ThemeQuestionQueryParameters {
     private String theme;
     private Boolean searchDeleted;
     private Boolean queryGroups;
+    private Boolean onlyWithAttachmentRequests;
 
     private ArrayList<Pair<String, Integer>> sortBy = new ArrayList<Pair<String, Integer>>();
 
@@ -71,6 +72,14 @@ public final class ThemeQuestionQueryParameters {
         this.queryGroups = queryGroups;
     }
 
+    public Boolean onlyWithAttachmentRequests() {
+        return onlyWithAttachmentRequests;
+    }
+
+    public void setOnlyWithAttachmentRequests(Boolean onlyWithAttachmentRequests) {
+        this.onlyWithAttachmentRequests = onlyWithAttachmentRequests;
+    }
+
     public void addSortBy(final String fieldName, final Integer sortOrder){
         if (null != fieldName && (SORT_ASCENDING.equals(sortOrder) || SORT_DESCENDING.equals(sortOrder))){
             sortBy.add(Pair.of(fieldName, sortOrder));
@@ -92,6 +101,7 @@ public final class ThemeQuestionQueryParameters {
           ", organizationId='" + organizationId + '\'' +
           ", theme='" + theme + '\'' +
           ", searchDeleted=" + searchDeleted +
+          ", onlyWithAttachmentRequests=" + onlyWithAttachmentRequests +
           ", sortBy=" + sortBy +
           '}';
     }
