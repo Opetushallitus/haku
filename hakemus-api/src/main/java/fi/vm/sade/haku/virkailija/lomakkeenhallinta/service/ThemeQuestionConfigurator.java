@@ -180,36 +180,12 @@ public final class ThemeQuestionConfigurator {
             LOGGER.error("Failed to get organization for id {}", groupId);
             groupName = new I18nText(new HashMap<String,String>());
         }
-        List<String> applicationOptionsInGroup = hakukohdeService.findByGroupAndApplicationSystem(groupId, formParameters.getApplicationSystem().getId());
-
-        Map<String, String> mangleMap = new HashMap<String, String>();
-        for (String applicationOptionId: applicationOptionsInGroup){
-            HakukohdeDTO hakukohde = hakukohdeService.findByOid(applicationOptionId);
-            mangleMap = mangleProviderAndOption(mangleMap, ensureDefaultLanguageTranslations(filterCodePrefix(hakukohde.getTarjoajaNimi())), ensureDefaultLanguageTranslations(filterCodePrefix(hakukohde.getHakukohdeNimi())));
-        }
 
         final Element group = TitledGroupBuilder.TitledGroup(ElementUtil.randomId())
           .i18nText(groupName)
-          .help(new I18nText(mangleMap)).build();
+          .build();
         return group;
     }
-
-    private Map<String,String> mangleProviderAndOption(final Map<String, String> mangleMap, final Map<String, String> providerName, final Map<String, String> applicationOption) {
-        Set<String> keys = new HashSet<String>(providerName.keySet());
-        keys.addAll(applicationOption.keySet());
-        for (String key : keys){
-            String mangled = mangleMap.get(key);
-            if (null == mangled || "".equals(mangled))
-                mangleMap.put(key, providerName.get(key) +" - "+ applicationOption.get(key));
-            else {
-                mangled.concat("\n");
-                mangled.concat(providerName.get(key) +" - "+ applicationOption.get(key));
-                mangleMap.put(key, mangled);
-            }
-        }
-        return mangleMap;
-    }
-
 
     private Element generateApplicationOptionRule(final String applicationOptionId, final String preferenceElementId, final Boolean groupOption) {
         LOGGER.debug("Generating the ApplicationOptionRule group");
