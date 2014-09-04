@@ -32,13 +32,17 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.jsp.jstl.core.Config;
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Locale;
 
 import static fi.vm.sade.haku.oppija.ui.common.MultivaluedMapUtil.toSingleValueMap;
 
@@ -139,9 +143,11 @@ public class FormController {
     @POST
     @Path("/{applicationSystemId}/esikatselu")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED + CHARSET_UTF_8)
-    public Response submitApplication(@PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId) throws URISyntaxException {
+    public Response submitApplication(@Context HttpServletRequest request,
+                                      @PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId) throws URISyntaxException {
         LOGGER.debug("submitApplication {}", new Object[]{applicationSystemId});
-        ModelResponse modelResponse = uiService.submitApplication(applicationSystemId);
+        Locale userLocale = (Locale) Config.get(request.getSession(), Config.FMT_LOCALE);
+        ModelResponse modelResponse = uiService.submitApplication(applicationSystemId, userLocale.getLanguage());
         RedirectToPendingViewPath redirectToPendingViewPath = new RedirectToPendingViewPath(applicationSystemId, modelResponse.getApplication().getOid());
         return Response.seeOther(new URI(redirectToPendingViewPath.getPath())).build();
     }
@@ -190,8 +196,7 @@ public class FormController {
     @Produces(MediaType.TEXT_PLAIN)
     public Response getPDF(@PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId,
     	@PathParam("oid") final String oid) throws URISyntaxException {
-    	String url = "/lomake/" + applicationSystemId + "/tulostus/" + oid;
-    	HttpResponse httpResponse = pdfService.getUriToPDF(url);
+    	HttpResponse httpResponse = uiService.getUriToPDF(applicationSystemId, oid);
     	URI location = UriUtil.pathSegmentsToUri(httpResponse.getFirstHeader("Content-Location").getValue());
     	return Response.seeOther(location).build();
     }

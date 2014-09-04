@@ -32,7 +32,7 @@
       <dependency>
         <groupId>fi.vm.sade.haku</groupId>
         <artifactId>hakemus-api</artifactId>
-	<version>${project.version}</version>
+	    <version>${project.version}</version>
       </dependency>
 
       <dependency>
@@ -43,8 +43,7 @@
         <scope>test</scope>
       </dependency>
 
-
-      <dependency>
+        <dependency>
             <groupId>fi.vm.sade.koodisto</groupId>
             <artifactId>koodisto-api</artifactId>
             <version>${koodisto-api.version}</version>
@@ -86,25 +85,9 @@
             </exclusions>
         </dependency>
         <dependency>
-        	<groupId>fi.vm.sade.ryhmasahkoposti</groupId>
-        	<artifactId>ryhmasahkoposti-api</artifactId>
-        	<version>${viestintapalvelu.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpcore</artifactId>
-            <version>4.2.3</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpclient-cache</artifactId>
-            <version>4.2.3</version>
-            <exclusions>
-                <exclusion>
-                    <artifactId>commons-logging</artifactId>
-                    <groupId>commons-logging</groupId>
-                </exclusion>
-            </exclusions>
+            <groupId>fi.vm.sade.ryhmasahkoposti</groupId>
+            <artifactId>ryhmasahkoposti-api</artifactId>
+            <version>${viestintapalvelu.version}</version>
         </dependency>
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
@@ -435,6 +418,11 @@
             </exclusions>
         </dependency>
         <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>3.8</version>
+        </dependency>
+        <dependency>
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjrt</artifactId>
             <version>1.6.12</version>
@@ -669,18 +657,6 @@
                 <exclusion>
                     <groupId>javax.ws.rs</groupId>
                     <artifactId>jsr311-api</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-
-        <dependency>
-            <groupId>fi.vm.sade.organisaatio</groupId>
-            <artifactId>organisaatio-solr-client</artifactId>
-            <version>${organisaatio-solr-client.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.springframework</groupId>
-                    <artifactId>spring-asm</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>

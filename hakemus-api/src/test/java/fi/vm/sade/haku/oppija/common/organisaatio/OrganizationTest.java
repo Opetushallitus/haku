@@ -65,6 +65,6 @@ public class OrganizationTest {
     }
 
     private Organization createOrganization(final String oid) {
-        return new Organization(TITLE, oid, "parentOid", new ArrayList<String>(), DATE, DATE);
+        return new Organization(TITLE, oid, "parentOid", new ArrayList<String>(), null, DATE, DATE);
     }
 }

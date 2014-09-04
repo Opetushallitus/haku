@@ -100,4 +100,5 @@ public class ApplicationQueryParameters {
     public String getSendingClass() {return sendingClass; }
 
     public Date getUpdatedAfter() { return updatedAfter; }
+
 }

@@ -22,9 +22,12 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.And;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.Expr;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.Or;
+import fi.vm.sade.haku.oppija.lomake.validation.validators.RegexFieldValidator;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.hakutoiveet.HakutoiveetPhase;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.service.ThemeQuestionConfigurator;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ExprUtil;
 
 import java.util.ArrayList;
@@ -64,24 +67,45 @@ public class OsaaminenPhase {
 
             Expr haettuAMKHon = ExprUtil.reduceToOr(exprs);
             Expr pohjakoulutusAmmatillinen = new Or(ExprUtil.isAnswerTrue("pohjakoulutus_am"), ExprUtil.isAnswerTrue("pohjakoulutus_yo_ammatillinen"));
+            Expr pohjakoulutusLukio = ExprUtil.atLeastOneValueEqualsToVariable("pohjakoulutus_yo_tutkinto", "fi", "lk");
 
             ElementBuilder kysytaankoKeskiarvoJaAsteikko = Rule(new And(haettuAMKHon, pohjakoulutusAmmatillinen));
+            ElementBuilder kysytaankoLukionKeskiarvo = Rule(new And(haettuAMKHon, pohjakoulutusLukio));
             List<Option> asteikkolista = koodistoService.getAmmatillisenTutkinnonArvosteluasteikko();
 
+            RegexFieldValidator validator = new RegexFieldValidator(ElementUtil.createI18NText("validator.keskiarvo.desimaaliluku", formParameters), "^$|\\d+\\,?\\d{1,2}");
             osaaminenTheme.addChild(
-              kysytaankoKeskiarvoJaAsteikko
-                .addChild(TextQuestion("keskiarvo")
-                  .inline()
-                  .required()
-                  .formParams(formParameters).build())
-                .addChild(Dropdown("arvosanaasteikko")
-                    .addOptions(asteikkolista)
-                    .inline()
-                    .required()
-                    .formParams(formParameters).build()
-                ).build());
+                    kysytaankoLukionKeskiarvo.addChild(
+                            TextQuestion("lukion-paattotodistuksen-keskiarvo")
+                                    .inline()
+                                    .required()
+                                    .maxLength(5)
+                                    .size(5)
+                                    .validator(validator)
+                                    .formParams(formParameters)
+                                    .build())
+                            .build(),
+                    kysytaankoKeskiarvoJaAsteikko
+                            .addChild(TextQuestion("keskiarvo")
+                                    .inline()
+                                    .required()
+                                    .maxLength(5)
+                                    .size(5)
+                                    .validator(validator)
+                                    .formParams(formParameters)
+                                    .build())
+                            .addChild(Dropdown("arvosanaasteikko")
+                                    .addOptions(asteikkolista)
+                                    .inline()
+                                    .required()
+                                    .formParams(formParameters)
+                                    .build())
+                            .build()
+            );
+
+            ThemeQuestionConfigurator configurator = formParameters.getThemeQuestionConfigurator();
+            osaaminenTheme.addChild(configurator.findAndConfigure(osaaminenTheme.getId()));
         }
         return osaaminen;
-
     }
 }

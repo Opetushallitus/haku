@@ -20,15 +20,19 @@ import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationNote;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
+import fi.vm.sade.haku.oppija.hakemus.domain.AuthorizationMeta;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationAdditionalDataDTO;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationDAO;
+import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationFilterParametersBuilder;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationQueryParameters;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationState;
+import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.User;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
+import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.haku.oppija.lomake.service.FormService;
 import fi.vm.sade.haku.oppija.lomake.service.UserSession;
 import fi.vm.sade.haku.oppija.lomake.util.ElementTree;
@@ -45,12 +49,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.IOException;
+import java.util.*;
 
-import static org.apache.commons.lang.StringUtils.*;
+import static org.apache.commons.lang.StringUtils.isEmpty;
+import static org.apache.commons.lang.StringUtils.isNotEmpty;
 
 @Service
 public class ApplicationServiceImpl implements ApplicationService {
@@ -64,6 +67,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     private final AuthenticationService authenticationService;
     private final OrganizationService organizationService;
     private final HakuPermissionService hakuPermissionService;
+    private final ApplicationSystemService applicationSystemService;
     private final ElementTreeValidator elementTreeValidator;
 
     @Autowired
@@ -74,6 +78,7 @@ public class ApplicationServiceImpl implements ApplicationService {
                                   AuthenticationService authenticationService,
                                   OrganizationService organizationService,
                                   HakuPermissionService hakuPermissionService,
+                                  ApplicationSystemService applicationSystemService,
                                   ElementTreeValidator elementTreeValidator) {
 
         this.applicationDAO = applicationDAO;
@@ -83,6 +88,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         this.authenticationService = authenticationService;
         this.organizationService = organizationService;
         this.hakuPermissionService = hakuPermissionService;
+        this.applicationSystemService = applicationSystemService;
         this.elementTreeValidator = elementTreeValidator;
     }
 
@@ -127,7 +133,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public Application submitApplication(final String applicationSystemId) {
+    public Application submitApplication(final String applicationSystemId, String language) {
         final User user = userSession.getUser();
         Application application = userSession.getApplication(applicationSystemId);
         Form form = formService.getForm(applicationSystemId);
@@ -147,6 +153,7 @@ public class ApplicationServiceImpl implements ApplicationService {
             application.setLastAutomatedProcessingTime(System.currentTimeMillis());
             application.submitted();
             application.flagStudentIdentificationRequired();
+            application.addMeta(Application.META_FILING_LANGUAGE, language);
             this.applicationDAO.save(application);
             this.userSession.removeApplication(application);
             return application;
@@ -245,13 +252,80 @@ public class ApplicationServiceImpl implements ApplicationService {
     @Override
     public ApplicationSearchResultDTO findApplications(final String term,
                                                        final ApplicationQueryParameters applicationQueryParameters) {
-        return applicationDAO.findAllQueried(term, applicationQueryParameters);
+        List<ApplicationSystem> ass = applicationSystemService.getAllApplicationSystems("maxApplicationOptions");
+        int max = 0;
+        List<String> queriedAss = applicationQueryParameters.getAsIds();
+        for (ApplicationSystem as : ass) {
+            if (queriedAss.contains(as.getId()) && as.getMaxApplicationOptions() > max) {
+                max = as.getMaxApplicationOptions();
+            }
+        }
+        ApplicationFilterParametersBuilder builder = new ApplicationFilterParametersBuilder()
+                .setMaxApplicationOptions(max)
+                .addOrganizationsReadable(hakuPermissionService.userCanReadApplications())
+                .addOrganizationsOpo(hakuPermissionService.userHasOpoRole());
+
+        return applicationDAO.findAllQueried(term, applicationQueryParameters, builder.build());
     }
 
     @Override
     public List<Map<String, Object>> findFullApplications(final String query,
                                                   final ApplicationQueryParameters applicationQueryParameters) {
-        return applicationDAO.findAllQueriedFull(query, applicationQueryParameters);
+        ApplicationFilterParametersBuilder builder = new ApplicationFilterParametersBuilder()
+                .addOrganizationsReadable(hakuPermissionService.userCanReadApplications())
+                .addOrganizationsOpo(hakuPermissionService.userHasOpoRole());
+
+        return applicationDAO.findAllQueriedFull(query, applicationQueryParameters, builder.build());
+    }
+
+    @Override
+    public Application updateAuthorizationMeta(Application application, boolean save) throws IOException {
+        boolean opoAllowed = resolveOpoAllowed(application);
+        Map<String, Set<String>> aoOrganizations = new HashMap<String, Set<String>>();
+        Set<String> allOrganizations = new HashSet<String>();
+        Set<String> sendingSchool = new HashSet<String>();
+
+        int i = 1;
+        Map<String, String> aoAnswers = application.getPhaseAnswers(OppijaConstants.PHASE_APPLICATION_OPTIONS);
+        while (true) {
+            String aoKey = String.format(OppijaConstants.PREFERENCE_ID, i);
+            if (!aoAnswers.containsKey(aoKey)) {
+                break;
+            }
+            String lop = aoAnswers.get(String.format(OppijaConstants.PREFERENCE_ORGANIZATION_ID, i));
+            if (isNotEmpty(lop)) {
+                List<String> parents = organizationService.findParentOids(lop);
+                aoOrganizations.put(String.valueOf(i), new HashSet<String>(parents));
+                allOrganizations.addAll(parents);
+            }
+            i++;
+        }
+
+        Map<String, String> educationAnswers = application.getPhaseAnswers(OppijaConstants.PHASE_EDUCATION);
+        String sendingSchoolOrg = educationAnswers.get(OppijaConstants.ELEMENT_ID_SENDING_SCHOOL);
+        if (sendingSchoolOrg != null) {
+            sendingSchool.addAll(organizationService.findParentOids(sendingSchoolOrg));
+        }
+
+        AuthorizationMeta authorizationMeta = new AuthorizationMeta();
+        authorizationMeta.setOpoAllowed(opoAllowed);
+        authorizationMeta.setAoOrganizations(aoOrganizations);
+        authorizationMeta.setAllAoOrganizations(allOrganizations);
+        authorizationMeta.setSendingSchool(sendingSchool);
+        application.setAuthorizationMeta(authorizationMeta);
+        if (save) {
+            this.update(new Application(application.getOid(), application.getVersion()), application);
+        }
+        return application;
+    }
+
+    private boolean resolveOpoAllowed(Application application) {
+        boolean opoAllowed = true;
+        ApplicationSystem as = applicationSystemService.getApplicationSystem(application.getApplicationSystemId());
+        if (as.getKohdejoukkoUri().equals(OppijaConstants.KOHDEJOUKKO_KORKEAKOULU)) {
+            opoAllowed = false;
+        }
+        return opoAllowed;
     }
 
     @Override
@@ -304,34 +378,14 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     @Override
     public List<ApplicationAdditionalDataDTO> findApplicationAdditionalData(final String applicationSystemId, final String aoId) {
-        return applicationDAO.findApplicationAdditionalData(applicationSystemId, aoId);
-    }
+        ApplicationSystem as = applicationSystemService.getApplicationSystem(applicationSystemId, "maxApplicationOptions");
+        ApplicationFilterParametersBuilder builder = new ApplicationFilterParametersBuilder()
+                .setMaxApplicationOptions(as.getMaxApplicationOptions())
+                .addOrganizationsReadable(hakuPermissionService.userCanReadApplications())
+                .addOrganizationsOpo(hakuPermissionService.userHasOpoRole());
 
-    @Override
-    public Application fillLOPChain(final Application application, final boolean save) {
-        String[] ids = new String[]{
-                "preference1-Opetuspiste-id",
-                "preference2-Opetuspiste-id",
-                "preference3-Opetuspiste-id",
-                "preference4-Opetuspiste-id",
-                "preference5-Opetuspiste-id"};
 
-        Map<String, String> hakutoiveet = application.getAnswers().get("hakutoiveet");
-        if (hakutoiveet != null) {
-            HashMap<String, String> answers = new HashMap<String, String>(hakutoiveet);
-            for (String id : ids) {
-                String opetuspiste = answers.get(id);
-                if (isNotEmpty(opetuspiste)) {
-                    List<String> parentOids = organizationService.findParentOids(opetuspiste);
-                    answers.put(id + "-parents", join(parentOids, ","));
-                }
-            }
-            application.addVaiheenVastaukset("hakutoiveet", answers);
-            if (save) {
-                this.applicationDAO.save(application);
-            }
-        }
-        return application;
+        return applicationDAO.findApplicationAdditionalData(applicationSystemId, aoId, builder.build());
     }
 
     @Override

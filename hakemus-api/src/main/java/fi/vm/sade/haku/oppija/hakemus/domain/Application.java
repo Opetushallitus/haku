@@ -46,6 +46,16 @@ public class Application implements Serializable {
 
     @JsonIgnore
     private static final Logger log = LoggerFactory.getLogger(Application.class);
+    public static final Integer CURRENT_MODEL_VERSION = 1;
+    public static final String META_FILING_LANGUAGE = "filingLanguage";
+
+    public Integer getModelVersion() {
+        return modelVersion;
+    }
+
+    public void setModelVersion(Integer modelVersion) {
+        this.modelVersion = modelVersion;
+    }
 
     public enum State {
         ACTIVE, PASSIVE, INCOMPLETE, SUBMITTED;
@@ -86,11 +96,13 @@ public class Application implements Serializable {
 
     private Map<String, Map<String, String>> answers = new HashMap<String, Map<String, String>>();
     private Map<String, String> meta = new HashMap<String, String>();
+    private AuthorizationMeta authorizationMeta = null; // new AuthorizationMeta();
     private Map<String, String> overriddenAnswers = new HashMap<String, String>();
     private Map<String, String> additionalInfo = new HashMap<String, String>();
     private LinkedList<ApplicationNote> notes = new LinkedList<ApplicationNote>();
     private List<Change> history = new ArrayList<Change>();
     private Integer version;
+    private Integer modelVersion;
 
     @JsonCreator
     public Application(@JsonProperty(value = "applicationSystemId") final String applicationSystemId,
@@ -410,6 +422,14 @@ public class Application implements Serializable {
         return meta;
     }
 
+    public AuthorizationMeta getAuthorizationMeta() {
+        return authorizationMeta;
+    }
+
+    public void setAuthorizationMeta(AuthorizationMeta authorizationMeta) {
+        this.authorizationMeta = authorizationMeta;
+    }
+
     public Map<String, String> getOverriddenAnswers() {
         return ImmutableMap.copyOf(overriddenAnswers);
     }
@@ -555,8 +575,9 @@ public class Application implements Serializable {
         return version;
     }
 
+    @Override
     public Application clone() {
-        Application clone = new Application(getApplicationSystemId(), getUser(), Maps.newHashMap(getAnswers()), Maps.newHashMap(getAdditionalInfo()));
+        Application clone = new Application(getApplicationSystemId(), getUser(), copyAnswers(), Maps.newHashMap(getAdditionalInfo()));
         clone.setOid(getOid())
              .setLastAutomatedProcessingTime(getLastAutomatedProcessingTime())
              .setMeta(Maps.newHashMap(getMeta()))
@@ -571,5 +592,13 @@ public class Application implements Serializable {
         clone.setPersonOidChecked(getPersonOidChecked());
         clone.setStudentOidChecked(getStudentOidChecked());
         return clone;
+    }
+
+    private Map<String, Map<String,String>> copyAnswers() {
+        Map<String, Map<String,String>> newMap = new HashMap<String, Map<String,String>>();
+        for (String key : getAnswers().keySet()) {
+            newMap.put(key, Maps.newHashMap(getAnswers().get(key)));
+        }
+        return newMap;
     }
 }

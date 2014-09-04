@@ -16,11 +16,12 @@
 
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.resources;
 
-import com.google.common.collect.ImmutableList;
 import fi.vm.sade.haku.oppija.common.koulutusinformaatio.ApplicationOptionService;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
 import fi.vm.sade.haku.oppija.hakemus.resource.JSONException;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
+import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
+import fi.vm.sade.haku.virkailija.authentication.Person;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.dao.ThemeQuestionDAO;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.dao.ThemeQuestionQueryParameters;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain.ThemeQuestion;
@@ -28,7 +29,6 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParamete
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakuService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakukohdeService;
-import fi.vm.sade.haku.virkailija.organization.resource.OrganizationResource;
 import fi.vm.sade.tarjonta.service.resources.dto.HakukohdeDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,21 +36,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.io.IOException;
+import java.util.*;
 
 
 @Controller
@@ -70,6 +60,8 @@ public class ThemeQuestionResource {
     private HakukohdeService hakukohdeService;
     @Autowired
     private OrganizationService organizationService;
+    @Autowired
+    private AuthenticationService authenticationService;
 
     @Autowired
     private HakuService hakuService;
@@ -87,13 +79,15 @@ public class ThemeQuestionResource {
                                  final OrganizationService organizationService,
                                  final HakuService hakuService,
                                  final KoodistoService koodistoService,
-                                 final ApplicationOptionService applicationOptionService) {
+                                 final ApplicationOptionService applicationOptionService,
+                                 final AuthenticationService authenticationService) {
         this.themeQuestionDAO = themeQuestionDAO;
         this.hakukohdeService = hakukohdeService;
         this.organizationService = organizationService;
         this.hakuService = hakuService;
         this.koodistoService = koodistoService;
         this.applicationOptionService = applicationOptionService;
+        this.authenticationService = authenticationService;
     }
 
     @GET
@@ -112,7 +106,7 @@ public class ThemeQuestionResource {
     public Element getGeneratedThemeQuestionByOid(@PathParam("themeQuestionId") String themeQuestionId) {
         LOGGER.debug("Getting question by Id: {}", themeQuestionId);
         ThemeQuestion themeQuestion = themeQuestionDAO.findById(themeQuestionId);
-        FormParameters formParameters = new FormParameters(hakuService.getApplicationSystem(themeQuestion.getApplicationSystemId()), koodistoService, themeQuestionDAO, hakukohdeService, applicationOptionService);;
+        FormParameters formParameters = new FormParameters(hakuService.getApplicationSystem(themeQuestion.getApplicationSystemId()), koodistoService, themeQuestionDAO, hakukohdeService, organizationService);;
         return themeQuestion.generateElement(formParameters);
     }
 
@@ -123,9 +117,8 @@ public class ThemeQuestionResource {
     public void deleteThemeQuestionByOid(@PathParam("themeQuestionId") String themeQuestionId) {
         LOGGER.debug("Deleting theme question with id: {}", themeQuestionId);
         ThemeQuestion dbThemeQuestion = fetchThemeQuestion(themeQuestionId);
-        dbThemeQuestion.setState(ThemeQuestion.State.DELETED);
-        themeQuestionDAO.save(dbThemeQuestion);
-        LOGGER.debug("ThemeQuestion {} saved with state {}", dbThemeQuestion.getId().toString(), dbThemeQuestion.getState());
+        themeQuestionDAO.delete(themeQuestionId);
+        renumerateThemeQuestionOrdinals(dbThemeQuestion.getApplicationSystemId(), dbThemeQuestion.getLearningOpportunityId(), dbThemeQuestion.getTheme());
     }
 
     @POST
@@ -134,15 +127,21 @@ public class ThemeQuestionResource {
     @Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKULOMAKKEENHALLINTA_READ_UPDATE', 'ROLE_APP_HAKULOMAKKEENHALLINTA_CRUD')")
     public void updateThemeQuestion(@PathParam("themeQuestionId") String themeQuestionId,
-                                    ThemeQuestion themeQuestion) {
+                                    ThemeQuestion themeQuestion) throws IOException {
         LOGGER.debug("Updating theme question with id: {}", themeQuestionId);
 
         if (!themeQuestionId.equals(themeQuestion.getId().toString())){
             throw new JSONException(Response.Status.BAD_REQUEST, "theme question id mismatch", null);
         }
-        ThemeQuestion dbThemeQuestion = fetchThemeQuestion(themeQuestionId);
+        if (themeQuestion.getTargetIsGroup()) {
+            themeQuestion = fillInOwnerOrganizationsFromApplicationOptionGroup(themeQuestion);
+        } else {
+            themeQuestion = fillInOwnerOrganizationsFromApplicationOption(themeQuestion);
+        }
 
-        themeQuestion = fillInOwnerOrganizationsFromApplicationOption(themeQuestion);
+        ThemeQuestion dbThemeQuestion = fetchThemeQuestion(themeQuestionId);
+        themeQuestion.setCreatorPersonOid(dbThemeQuestion.getCreatorPersonOid());
+        themeQuestion.setOrdinal(dbThemeQuestion.getOrdinal());
 
         LOGGER.debug("Saving Theme Question with id: " + dbThemeQuestion.getId().toString());
         themeQuestionDAO.save(themeQuestion);
@@ -165,7 +164,7 @@ public class ThemeQuestionResource {
     public void saveNewThemeQuestion(@PathParam("applicationSystemId") String applicationSystemId,
                                      @PathParam("learningOpportunityId") String learningOpportunityId,
                                      @PathParam("themeId")  String themeId,
-                                     ThemeQuestion themeQuestion) {
+                                     ThemeQuestion themeQuestion) throws IOException {
         LOGGER.debug("Posted " + themeQuestion);
         if (null == applicationSystemId || null == learningOpportunityId)
             throw new JSONException(Response.Status.BAD_REQUEST, "Missing pathparameters", null);
@@ -189,6 +188,12 @@ public class ThemeQuestionResource {
         } else {
             themeQuestion = fillInOwnerOrganizationsFromApplicationOption(themeQuestion);
         }
+
+        Person currentHenkilo = authenticationService.getCurrentHenkilo();
+        themeQuestion.setCreatorPersonOid(currentHenkilo.getPersonOid());
+        Integer  maxOrdinal = themeQuestionDAO.getMaxOrdinal(applicationSystemId, learningOpportunityId, themeId);
+        themeQuestion.setOrdinal(null == maxOrdinal ? 1: maxOrdinal + 1 );
+
         LOGGER.debug("Saving Theme Question");
         themeQuestionDAO.save(themeQuestion);
         LOGGER.debug("Saved Theme Question");
@@ -238,8 +243,10 @@ public class ThemeQuestionResource {
         //TODO =RS= some metalocking to simulate transactions or something
 
         Set<String> themeQuestionIds = reorderedQuestions.keySet();
-        if (!themeQuestionDAO.validateLearningOpportunityAndTheme(learningOpportunityId, themeId,  themeQuestionIds.toArray(new String[themeQuestionIds.size()])))
-            throw new JSONException(Response.Status.BAD_REQUEST, "Error in input data. Mismatch between question ids, theme and application option", null);
+        // TODO: Fix bad validation. Needs application system to work correctly
+        //if (!themeQuestionDAO.validateLearningOpportunityAndTheme(learningOpportunityId, themeId,  themeQuestionIds.toArray(new String[themeQuestionIds.size()])))
+        //    throw new JSONException(Response.Status.BAD_REQUEST, "Error in input data. Mismatch between question ids, theme and application option", null);
+
         // TODO =RS= do something if there are ordinals missing or old values do not match.
         for (String id : themeQuestionIds){
             Map<String, String> questionParam = reorderedQuestions.get(id);
@@ -247,7 +254,7 @@ public class ThemeQuestionResource {
         }
     }
 
-    private ThemeQuestion fillInOwnerOrganizationsFromApplicationOption(final ThemeQuestion themeQuestion){
+    private ThemeQuestion fillInOwnerOrganizationsFromApplicationOption(final ThemeQuestion themeQuestion) throws IOException {
         LOGGER.debug("Filling in organizations for theme question for application system " + themeQuestion.getApplicationSystemId() + " application option " + themeQuestion.getLearningOpportunityId());
         HashSet<String> ownerOrganizations = new HashSet<String>();
         ownerOrganizations.addAll(fetchApplicationOptionParents(themeQuestion.getLearningOpportunityId()));
@@ -255,7 +262,7 @@ public class ThemeQuestionResource {
         return themeQuestion;
     }
 
-    private ThemeQuestion fillInOwnerOrganizationsFromApplicationOptionGroup(final ThemeQuestion themeQuestion) {
+    private ThemeQuestion fillInOwnerOrganizationsFromApplicationOptionGroup(final ThemeQuestion themeQuestion) throws IOException {
         String applicationOptionGroupId = themeQuestion.getLearningOpportunityId();
         LOGGER.debug("Filling in organizations for theme question for application system " + themeQuestion.getApplicationSystemId() + " application option group " + applicationOptionGroupId);
         List <String> applicationOptionsIds = hakukohdeService.findByGroupAndApplicationSystem(applicationOptionGroupId, themeQuestion.getApplicationSystemId());
@@ -267,7 +274,7 @@ public class ThemeQuestionResource {
         return themeQuestion;
     }
 
-    private List<String> fetchApplicationOptionParents(final String applicationOptionId){
+    private List<String> fetchApplicationOptionParents(final String applicationOptionId) throws IOException {
         HakukohdeDTO applicationOption = null;
         try {
             applicationOption = hakukohdeService.findByOid(applicationOptionId);
@@ -301,5 +308,28 @@ public class ThemeQuestionResource {
         List<ThemeQuestion> themeQuestions = themeQuestionDAO.query(tqq);
         LOGGER.debug("Found {} ThemeQuestions", themeQuestions.size());
         return themeQuestions;
+    }
+
+    private void renumerateThemeQuestionOrdinals(final String applicationSystemId, final String applicationOptionId, final String themeId){
+        // TODO: mutex
+        ThemeQuestionQueryParameters tqqp = new ThemeQuestionQueryParameters();
+        tqqp.setApplicationSystemId(applicationSystemId);
+        tqqp.setLearningOpportunityId(applicationOptionId);
+        tqqp.setTheme(themeId);
+        tqqp.addSortBy(ThemeQuestion.FIELD_ORDINAL, ThemeQuestionQueryParameters.SORT_ASCENDING);
+        Integer assumedOrdinal = 1;
+        List<ThemeQuestion> dbThemeQuestions = themeQuestionDAO.query(tqqp);
+        List<ThemeQuestion> tqsWithoutOrdinal = new ArrayList<ThemeQuestion>();
+        for (ThemeQuestion tq : dbThemeQuestions){
+            if (null == tq.getOrdinal()){
+                tqsWithoutOrdinal.add(tq);
+            }
+            if (!assumedOrdinal.equals(tq.getOrdinal())){
+                themeQuestionDAO.setOrdinal(tq.getId().toString(), assumedOrdinal++);
+            }
+        }
+        for (ThemeQuestion tq: tqsWithoutOrdinal){
+            themeQuestionDAO.setOrdinal(tq.getId().toString(), assumedOrdinal++);
+        }
     }
 }

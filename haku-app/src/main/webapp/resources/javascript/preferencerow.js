@@ -15,6 +15,7 @@
  */
 
 var childLONames = {};
+var attachments = {};
 var lopCache = {};
 var preferenceRow = {
     populateSelectInput: function (orgId, selectInputId, isInit, providerInputId) {
@@ -30,11 +31,15 @@ var preferenceRow = {
                     selectedPreferenceOK = false;
 
                 preferenceRow.clearChildLONames($("#" + selectInputId).data("childlonames"));
+
                 $("#" + selectInputId).html("<option value=''>&nbsp;</option>");
 
                 $(data).each(function (index, item) {
                     var selected = "";
                     childLONames[item.id] = item.childLONames;
+                    if (item.attachments) {
+                        attachments[item.id] = item.attachments;
+                    }
                     if (hakukohdeId == item.id) {
                         selectedPreferenceOK = true;
                         selected = 'selected = "selected"';
@@ -42,6 +47,7 @@ var preferenceRow = {
                         preferenceRow.displayChildLONames(hakukohdeId, $selectInput.data("childlonames"));
                     }
                     var organizationGroups = item.organizationGroups;
+                    var aoGroups = new Array();
                     var attachmentGroups = new Array();
                     for (var i = 0; i < organizationGroups.length; i++) {
                         var group = organizationGroups[i];
@@ -54,6 +60,7 @@ var preferenceRow = {
                             }
                         }
                         if (!isAoGroup) { continue; }
+                        aoGroups.push(group.oid);
                         var usages = group.usageGroups;
                         var isAttachmentGroup = false;
                         for (var j = 0; j < usages.length; j++) {
@@ -66,15 +73,23 @@ var preferenceRow = {
                         attachmentGroups.push(group.oid);
                     }
 
+                    var hasAttachments = false;
+                    if (item.attachments) {
+                        hasAttachments = true;
+                    }
+
+
                     $selectInput.append('<option value="' + item.name
                         + '" ' + selected + ' data-id="' + item.id +
                         '" data-educationdegree="' + item.educationDegree +
                         '" data-lang="' + item.teachingLanguages[0] +
                         '" data-sora="' + item.sora +
                         '" data-aoidentifier="' + item.aoIdentifier +
+                        '" data-ao-groups="' + aoGroups.join(",") +
                         '" data-kaksoistutkinto="' + item.kaksoistutkinto +
                         '" data-vocational="' + item.vocational +
                         '" data-educationcode="' + item.educationCodeUri +
+                        '" data-attachments="' + hasAttachments +
                         '" data-attachmentgroups="' + attachmentGroups.join(",") +
                         '" data-athlete="' + item.athleteEducation + '" >' + item.name + '</option>');
                 });
@@ -101,10 +116,12 @@ var preferenceRow = {
         $("#" + selectInputId + "-id-lang").val("").change();
         $("#" + selectInputId + "-id-sora").val(false).change();
         $("#" + selectInputId + "-id-aoIdentifier").val("").change();
+        $("#" + selectInputId + "-id-ao-groups").val("").change();
         $("#" + selectInputId + "-id-kaksoistutkinto").val(false).change();
         $("#" + selectInputId + "-id-vocational").val(false).change();
         $("#" + selectInputId + "-id-educationcode").val(false).change();
         $("#" + selectInputId + "-id-athlete").val(false).change();
+        $("#" + selectInputId + "-id-attachments").val("").change();
         $("#" + selectInputId + "-id-attachmentgroups").val("").change();
         $("#" + selectInputId).html("<option>&nbsp;</option>");
         preferenceRow.clearChildLONames($("#" + selectInputId).data("childlonames"));
@@ -214,7 +231,9 @@ var preferenceRow = {
                                            $educationDegreeKaksoistutkinto = $("#" + this.id + "-id-kaksoistutkinto"),
                                            $educationDegreeVocational = $("#" + this.id + "-id-vocational"),
                                            $educationDegreeAoIdentifier = $("#" + this.id + "-id-aoIdentifier"),
+                                           $educationOptionGroups = $("#" + this.id + "-id-ao-groups"),
                                            $educationDegreeAthlete = $("#" + this.id + "-id-athlete"),
+                                           $educationAttachments = $("#" + this.id + "-id-attachments"),
                                            $educationAttachmentGroups = $("#" + this.id + "-id-attachmentgroups"),
                                            $educationDegreeEducationCode = $("#" + this.id + "-id-educationcode"),
                                            selectedId, educationDegree, value = $(this).val(),
@@ -232,7 +251,9 @@ var preferenceRow = {
                                        $educationDegreeKaksoistutkinto.val(selectedOption.data("kaksoistutkinto")).change();
                                        $educationDegreeVocational.val(selectedOption.data("vocational")).change();
                                        $educationDegreeAoIdentifier.val(selectedOption.data("aoidentifier")).change();
+                                       $educationOptionGroups.val(selectedOption.data("ao-groups")).change();
                                        $educationDegreeAthlete.val(selectedOption.data("athlete")).change();
+                                       $educationAttachments.val(selectedOption.data("attachments")).change();
                                        $educationAttachmentGroups.val(selectedOption.data("attachmentgroups")).change();
                                        $educationDegreeEducationCode.val(selectedOption.data("educationcode")).change();
                                        preferenceRow.displayChildLONames(selectedId, $(this).data("childlonames"));

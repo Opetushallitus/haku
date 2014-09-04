@@ -24,11 +24,11 @@
         <div class="field-container-text">
             <c:choose>
                 <c:when test="${virkailijaEdit and not empty answers[element.id]}">
-                    <input disabled="disabled" value="<c:out value='${answers[element.id]}'/>"/>
-                    <input name="${element.id}" type="hidden" value="<c:out value='${answers[element.id]}'/>"/>
+                    <input disabled="disabled" <haku:value value='${answers[element.id]}'/>/>
+                    <input name="${element.id}" type="hidden" <haku:value value='${answers[element.id]}'/>/>
                 </c:when>
                 <c:otherwise>
-                    <input ${element.attributeString} value="<c:out value='${answers[element.id]}'/>" type="text"/>
+                    <input ${element.attributeString} id="${element.id}" name="${element.id}" <haku:placeholder titled="${element}"/> <haku:value value='${answers[element.id]}'/> type="text"/>
                 </c:otherwise>
             </c:choose>
             <span id="sex">
@@ -39,7 +39,7 @@
                     <haku:i18nText value="${element.femaleOption.i18nText}"/>
                 </c:if>
             </span>
-            <input id="${element.sexId}" name="${element.sexId}" value="<c:out value='${answers[element.sexId]}' />" type="hidden"/>
+            <input id="${element.sexId}" name="${element.sexId}" <haku:value value='${answers[element.sexId]}'/> type="hidden"/>
             <haku:errorMessage id="${element.id}" additionalClass="margin-top-1"/>
         </div>
         <haku:help element="${element}"/>

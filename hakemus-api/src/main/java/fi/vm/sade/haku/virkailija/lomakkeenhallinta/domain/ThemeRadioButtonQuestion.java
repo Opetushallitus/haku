@@ -1,12 +1,21 @@
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain;
 
 
+import com.google.common.collect.ImmutableMap;
+import fi.vm.sade.haku.oppija.lomake.domain.ApplicationOptionAttachmentRequest;
+import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.builder.OptionBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.builder.RadioBuilder;
+import fi.vm.sade.haku.oppija.lomake.domain.builder.RelatedQuestionRuleBuilder;
+import fi.vm.sade.haku.oppija.lomake.domain.builder.TextBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
+import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.Equals;
+import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.Expr;
+import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.Regexp;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ExprUtil;
 import org.codehaus.jackson.annotate.JsonCreator;
 import org.codehaus.jackson.annotate.JsonProperty;
 
@@ -60,5 +69,22 @@ public class ThemeRadioButtonQuestion extends ThemeOptionQuestion {
         // Radiobuttons are always required
         elementBuilder.required();
         return elementBuilder.build();
+    }
+
+    @Override
+    protected Expr generateAttachmentCondition(FormParameters formParameters, AttachmentRequest attachmentRequest) {
+        String optionId =attachmentRequest.getAttachedToOptionId();
+        Expr expr;
+        if (null != optionId) {
+            expr = ExprUtil.equals(this.getId().toString(), optionId);
+        }
+        else {
+            List<String> optionsIds = new ArrayList<String>();
+            for (ThemeQuestionOption option: this.getOptions()){
+                optionsIds.add(option.getId());
+            }
+            expr = ExprUtil.atLeastOneValueEqualsToVariable(this.getId().toString(), optionsIds.toArray(new String[optionsIds.size()]));
+        }
+        return expr;
     }
 }

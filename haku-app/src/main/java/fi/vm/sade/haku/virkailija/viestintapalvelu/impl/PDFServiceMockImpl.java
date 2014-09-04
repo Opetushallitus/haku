@@ -24,7 +24,7 @@ public class PDFServiceMockImpl implements PDFService {
     
 	@Override
 	public HttpResponse getUriToPDF(String url) {
-        return null;
+        return getPDF(url);
 	}
 
     @Override

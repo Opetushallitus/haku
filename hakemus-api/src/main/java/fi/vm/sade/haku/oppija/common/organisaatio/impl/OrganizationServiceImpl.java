@@ -16,25 +16,36 @@
 package fi.vm.sade.haku.oppija.common.organisaatio.impl;
 
 import com.google.common.collect.Lists;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonSyntaxException;
 import fi.vm.sade.generic.rest.CachingRestClient;
 import fi.vm.sade.haku.oppija.common.organisaatio.Organization;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationRestDTO;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
-import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.impl.TranslationsUtil;
+import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
 import fi.vm.sade.organisaatio.api.search.OrganisaatioHakutulos;
 import fi.vm.sade.organisaatio.api.search.OrganisaatioPerustieto;
-import fi.vm.sade.organisaatio.service.search.OrganisaatioSearchService;
-import fi.vm.sade.organisaatio.service.search.SearchCriteria;
+import fi.vm.sade.organisaatio.api.search.OrganisaatioSearchCriteria;
+import org.apache.commons.io.IOUtils;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.StatusLine;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.cache.CachingHttpClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.StringWriter;
+import java.io.UnsupportedEncodingException;
 import java.lang.ref.SoftReference;
+import java.net.URLEncoder;
 import java.util.*;
 
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
@@ -45,33 +56,26 @@ public class OrganizationServiceImpl implements OrganizationService {
 
     private static final Logger LOG = LoggerFactory.getLogger(OrganizationServiceImpl.class);
 
-    private static CachingRestClient cachingRestClient;
+    private static HttpClient cachingRestClient;
     private static Map<String, SoftReference<Object>> cache;
     private static final String ROOT_ORGANIZATION_OPH = "1.2.246.562.10.00000000001";
 
-    @Value("${web.url.cas}")
-    private String casUrl;
+    private Gson gson;
 
     @Value("${cas.service.organisaatio-service}")
     private String targetService;
 
-    @Value("${authentication.app.username.to.organisaatioservice}")
-    private String clientAppUser;
-    @Value("${authentication.app.password.to.organisaatioservice}")
-    private String clientAppPass;
-
-    private final OrganisaatioSearchService service;
-
-    @Autowired
-    public OrganizationServiceImpl(final OrganisaatioSearchService service) {
-        this.service = service;
+    public OrganizationServiceImpl() {
         this.cache = new HashMap<String, SoftReference<Object>>();
+        GsonBuilder builder = new GsonBuilder();
+        builder.registerTypeAdapter(Date.class, new TimestampDateAdapter());
+        this.gson = builder.create();
     }
 
     @Override
-    public List<Organization> search(final SearchCriteria searchCriteria) {
+    public List<Organization> search(final OrganisaatioSearchCriteria searchCriteria) throws UnsupportedEncodingException {
 
-        String baseUrl = targetService + "/rest/organisaatio/hae";
+        String baseUrl = "/rest/organisaatio/hae";
         String params = buildParamString(searchCriteria);
 
         OrganisaatioHakutulos hakutulos = null;
@@ -103,67 +107,54 @@ public class OrganizationServiceImpl implements OrganizationService {
         return orgs;
     }
 
-    private String buildParamString(SearchCriteria criteria) {
+    private String buildParamString(OrganisaatioSearchCriteria criteria) throws UnsupportedEncodingException {
         StringBuilder builder = new StringBuilder("?");
 
-        if (isNotBlank(criteria.getOppilaitosTyyppi())) {
-            builder.append("oppilaitosTyyppi=").append(criteria.getOppilaitosTyyppi()).append("&");
+        if (criteria.getOppilaitosTyyppi() != null && !criteria.getOppilaitosTyyppi().isEmpty()) {
+            builder.append("oppilaitosTyyppi=")
+                    .append(URLEncoder.encode(criteria.getOppilaitosTyyppi().toArray()[0].toString(), "UTF-8"))
+                    .append("&");
         }
         if (isNotBlank(criteria.getOrganisaatioTyyppi())) {
-            builder.append("organisaatioTyyppi=").append(criteria.getOrganisaatioTyyppi()).append("&");
+            builder.append("organisaatioTyyppi=")
+                    .append(URLEncoder.encode(criteria.getOrganisaatioTyyppi(), "UTF-8"))
+                    .append("&");
         }
         if (isNotBlank(criteria.getSearchStr())) {
-            builder.append("searchStr=").append(criteria.getSearchStr()).append("&");
+            builder.append("searchStr=")
+                    .append(URLEncoder.encode(criteria.getSearchStr(), "UTF-8"))
+                    .append("&");
         }
         builder.append("skipParents=").append(String.valueOf(criteria.getSkipParents())).append("&")
                 .append("suunnitellut=").append(String.valueOf(criteria.getSuunnitellut())).append("&")
-                .append("vainLakkautetut=").append(String.valueOf(criteria.getLakkautetut())).append("&")
-                .append("vainAktiiviset=").append(String.valueOf(criteria.getAktiiviset()));
+                .append("vainLakkautetut=").append(String.valueOf(criteria.getVainLakkautetut())).append("&")
+                .append("vainAktiiviset=").append(String.valueOf(criteria.getVainAktiiviset()));
         return builder.toString();
     }
 
     @Override
-    public List<String> findParentOids(final String organizationOid) {
-        // Fix some service curiosities
-        List<String> parentOids = service.findParentOids(organizationOid);
-        if (! parentOids.contains(organizationOid)){
-            parentOids.add(organizationOid);
-        }
-        if (! parentOids.contains(ROOT_ORGANIZATION_OPH)){
-            parentOids.add(ROOT_ORGANIZATION_OPH);
-        }
-        return parentOids;
+    public List<String> findParentOids(final String organizationOid) throws IOException {
+        String url = "/rest/organisaatio/" + organizationOid + "/parentoids";
+        String parents = getCached(url, String.class);
+        return Lists.newArrayList(parents.split("/"));
     }
 
     @Override
-    public Organization findByOid(String oid) {
-        Set<String> singleOid = Collections.singleton(oid);
-        List<Organization> orgs = Lists.newArrayList(Lists.transform(service.findByOidSet(singleOid),
-                new OrganisaatioPerustietoToOrganizationFunction()));
-        if (orgs.size() == 1) {
-            return orgs.get(0);
-        } else if (orgs.size() > 1) {
-            LOG.error("Got more than one organizations for single oid: {}", oid);
-            throw new RuntimeException("Got more one than organizations for single oid");
-        }
-        return null;
+    public Organization findByOid(String oid) throws IOException {
+        String url = "/rest/organisaatio/" + oid;
+        OrganizationRestDTO organisaatioRDTO = getCached(url, OrganizationRestDTO.class);
+        return new Organization(organisaatioRDTO);
     }
 
     @Override
     public List<Organization> findByOppilaitosnumero(List<String> oppilaitosnumeros) {
         List<Organization> orgs = new ArrayList<Organization>(oppilaitosnumeros.size());
-        String baseUrl = targetService + "/rest/organisaatio/";
         int i = 1;
         try {
             LOG.debug("Getting {} oppilaitosnumeros", oppilaitosnumeros.size());
             for (String numero : oppilaitosnumeros) {
                 LOG.debug("Getting oppilaitosnumero {} ({} / {})", numero, i++, oppilaitosnumeros.size());
-                OrganizationRestDTO orgDTO = getCached(baseUrl + numero, OrganizationRestDTO.class);
-                Map<String, String> nameTranslations = TranslationsUtil.createTranslationsMap(orgDTO.getNimi());
-                Organization org = new Organization(new I18nText(nameTranslations), orgDTO.getOid(),
-                        orgDTO.getParentOid(), orgDTO.getTyypit(), orgDTO.getAlkuPvmAsDate(),
-                        orgDTO.getLoppuPvmAsDate());
-                orgs.add(org);
+                orgs.add(findByOid(numero));
             }
             LOG.debug("Got numbers");
             return orgs;
@@ -183,20 +174,43 @@ public class OrganizationServiceImpl implements OrganizationService {
             }
             LOG.debug("Cache reference for key {} is stale or unassignable. Result object was of type {} expected {}", url, null == result ? null : result.getClass(), resultType.getClass());
         }
-        CachingRestClient client = getCachingRestClient();
-        T result = client.get(url, resultType);
+
+        T result = get(url, resultType);
         cache.put(url, new SoftReference<Object>(result));
         return result;
 
     }
 
-    public static void setCachingRestClient(CachingRestClient client) {
-        cachingRestClient = client;
+    private <T> T get(String url, Class<? extends T> resultType) throws IOException {
+        HttpClient client = getCachingRestClient();
+        HttpGet get = new HttpGet(targetService + url);
+        HttpResponse response = client.execute(get);
+        HttpEntity entity = response.getEntity();
+        if (entity != null) {
+            if (resultType.isAssignableFrom(String.class)) {
+                StringWriter writer = new StringWriter();
+                IOUtils.copy(entity.getContent(), writer, "UTF-8");
+                return (T) writer.toString();
+            } else {
+                try {
+                    return gson.fromJson(new InputStreamReader(entity.getContent()), resultType);
+                } catch (JsonSyntaxException jse) {
+                    LOG.error("Deserializing organisation failed. url: "+url);
+                    throw jse;
+                }
+            }
+        }
+        StatusLine statusLine = response.getStatusLine();
+        throw new ResourceNotFoundException("fetch failed. url: "+url+" statusCode: "+statusLine.getStatusCode()
+                +" reason: "+statusLine.getReasonPhrase());
     }
 
-    private synchronized CachingRestClient getCachingRestClient() {
+    public static void setCachingRestClient(CachingRestClient client) {
+    }
+
+    private synchronized HttpClient getCachingRestClient() {
         if (cachingRestClient == null) {
-            cachingRestClient = new CachingRestClient();
+            cachingRestClient = new CachingHttpClient();
         }
         return cachingRestClient;
     }

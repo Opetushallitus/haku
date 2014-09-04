@@ -3,10 +3,13 @@ package fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain;
 
 import fi.vm.sade.haku.oppija.lomake.domain.builder.TitledGroupBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
+import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.Expr;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ExprUtil;
 import org.codehaus.jackson.annotate.JsonCreator;
 import org.codehaus.jackson.annotate.JsonProperty;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -57,13 +60,35 @@ public class ThemeCheckBoxQuestion extends ThemeOptionQuestion {
         }
         for (Map.Entry<String, String> validator : this.getValidators().entrySet()) {
             String key = validator.getKey();
+            String value = validator.getValue();
             if ("min".equals(key)) {
-                elementBuilder.minOptions(Integer.valueOf(validator.getValue()));
+                if (null != value && !"".equals(value)) {
+                    elementBuilder.minOptions(Integer.valueOf(value));
+                }
             } else if ("max".equals(key)) {
-                elementBuilder.maxOptions(Integer.valueOf(validator.getValue()));
+                if (null != value && !"".equals(value)) {
+                    elementBuilder.maxOptions(Integer.valueOf(value));
+                }
             }
         }
 
         return elementBuilder.build();
+    }
+
+    @Override
+    protected Expr generateAttachmentCondition(FormParameters formParameters, AttachmentRequest attachmentRequest) {
+        String optionId = attachmentRequest.getAttachedToOptionId();
+        Expr expr;
+        if (null != optionId) {
+            expr =  ExprUtil.equals(this.getId().toString()+"-"+ optionId, "true");
+        }
+        else {
+            List<String> answerIds = new ArrayList<String>();
+            for (ThemeQuestionOption option: this.getOptions()){
+                answerIds.add(this.getId().toString() +"-"+ option.getId());
+            }
+            expr = ExprUtil.atLeastOneVariableContainsValue("true", answerIds.toArray(new String[answerIds.size()]));
+        }
+        return expr;
     }
 }

@@ -20,17 +20,12 @@ import com.google.common.base.Joiner;
 import com.google.common.base.Predicate;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
-import fi.vm.sade.haku.oppija.lomake.domain.builder.ElementBuilder;
-import fi.vm.sade.haku.oppija.lomake.domain.builder.RelatedQuestionRuleBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Titled;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.gradegrid.GradeGridRow;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.Regexp;
 import fi.vm.sade.haku.oppija.lomake.validation.Validator;
-import fi.vm.sade.haku.oppija.lomake.validation.validators.RegexFieldValidator;
-import fi.vm.sade.haku.oppija.lomake.validation.validators.RequiredFieldValidator;
-import fi.vm.sade.haku.oppija.lomake.validation.validators.SsnUniqueValidator;
-import fi.vm.sade.haku.oppija.lomake.validation.validators.ValueSetValidator;
+import fi.vm.sade.haku.oppija.lomake.validation.validators.*;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
 import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
@@ -44,12 +39,12 @@ import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.
 
 public final class ElementUtil {
 
-    public static final String ISO88591_NAME_REGEX = "^$|^[a-zA-ZÀ-ÖØ-öø-ÿ]$|^[a-zA-ZÀ-ÖØ-öø-ÿ'][a-zA-ZÀ-ÖØ-öø-ÿ ,-.']*(?:[a-zA-ZÀ-ÖØ-öø-ÿ.']+$)$";
-    public static final String EMAIL_REGEX = "^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$|^$";
-    public static final String YEAR_REGEX = "^[1-2][0-9]{3}$";
 
-    public static final String KYLLA = Boolean.TRUE.toString().toLowerCase();
-    public static final String EI = Boolean.FALSE.toString().toLowerCase();
+    public static final String ISO88591_NAME_REGEX = "^$|^[a-zA-ZÀ-ÖØ-öø-ÿ]$|^[a-zA-ZÀ-ÖØ-öø-ÿ'][a-zA-ZÀ-ÖØ-öø-ÿ ,-.']*(?:[a-zA-ZÀ-ÖØ-öø-ÿ.']+$)$";
+    public static final String EMAIL_REGEX = "^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)+$|^$";
+    public static final String YEAR_REGEX = "^(19[0-9][0-9])|(20[0-9][0-9])$|^$"; // "^[1-2][0-9]{3}$";
+    public static final String KYLLA = Boolean.TRUE.toString();
+    public static final String EI = Boolean.FALSE.toString();
     private static Logger log = LoggerFactory.getLogger(ElementUtil.class);
     public static final String DISABLED = "disabled";
     public static final String HIDDEN = "hidden";
@@ -74,6 +69,27 @@ public final class ElementUtil {
 
     public static I18nText createI18NText(final String key) { // Todo get rid of this function
         return createI18NText(key, OppijaConstants.FORM_COMMON_BUNDLE_NAME);
+    }
+
+    public static I18nText createMultipartI18NText(final String delimiter,
+                                                   final String... keys) {
+        I18nText[] texts = new I18nText[keys.length];
+        for (int i = 0; i < keys.length; i++) {
+            texts[i] = createI18NText(keys[i]);
+        }
+        Map<String, String> combinedTranslations = new HashMap<String, String>(LANGS.length);
+        for (int i = 0; i < texts.length; i++) {
+            I18nText i18nText = texts[i];
+            for (Map.Entry<String, String> translation : i18nText.getTranslations().entrySet()) {
+                String current = combinedTranslations.get(translation.getKey());
+                if (current == null) {
+                    combinedTranslations.put(translation.getKey(), translation.getValue());
+                } else {
+                    combinedTranslations.put(translation.getKey(), current + delimiter + translation.getValue());
+                }
+            }
+        }
+        return new I18nText(combinedTranslations);
     }
 
     public static I18nText createI18NText(final String key, final String bundleName) { // Todo get rid of this function
@@ -126,7 +142,7 @@ public final class ElementUtil {
     }
 
     public static <E extends Element> Map<String, E> findElementsByType(Element element, Class<E> eClass) {
-        Map<String, E> elements = new HashMap<String, E>();
+        Map<String, E> elements = new LinkedHashMap<String, E>();
         findElementByType(element, elements, eClass);
         return elements;
     }
@@ -161,8 +177,8 @@ public final class ElementUtil {
     }
 
 
-    public static Validator createYearValidator(final FormParameters formParameters, final String messageKey) {
-        return createRegexValidator(YEAR_REGEX, formParameters, messageKey);
+    public static Validator createYearValidator(final Integer toYear, final Integer fromYear) {
+        return new YearValidator(fromYear, toYear);
     }
 
     public static void addRequiredValidator(final Element element, final FormParameters formParameters) {
@@ -194,6 +210,29 @@ public final class ElementUtil {
     public static String randomId() {
         //starting random id with a letter preventing some javascript errors
         return 'a' + UUID.randomUUID().toString().replace('.', '_');
+    }
+
+    public static Element findElementById(final Element root, final String id) {
+        return findElement(root, new Predicate<Element>() {
+            @Override
+            public boolean apply(Element element) {
+                return id.equals(element.getId());
+            }
+        });
+    }
+
+    public static Element findElement(final Element root, final Predicate<Element> predicate) {
+        if (predicate.apply(root)) {
+            return root;
+        }
+        Element tmp;
+        for (Element child : root.getChildren()) {
+            tmp = findElement(child, predicate);
+            if (tmp != null) {
+                return tmp;
+            }
+        }
+        return null;
     }
 
     private static void filterElements(
@@ -273,4 +312,11 @@ public final class ElementUtil {
         return Rule(new Regexp(variable, pattern)).build();
     }
 
+    public static String getText(final Titled titled, String lang) {
+        I18nText i18nText = titled.getI18nText();
+        if (i18nText != null) {
+            return i18nText.getTranslations().get(lang);
+        }
+        return null;
+    }
 }

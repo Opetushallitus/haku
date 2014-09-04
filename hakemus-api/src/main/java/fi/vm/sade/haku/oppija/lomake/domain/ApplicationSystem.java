@@ -43,6 +43,7 @@ public class ApplicationSystem implements Serializable {
     private String kohdejoukkoUri;
     private List<Element> applicationCompleteElements;
     private List<Element> additionalInformationElements;
+    private List<ApplicationOptionAttachmentRequest> applicationOptionAttachmentRequests;
     private int maxApplicationOptions;
 
     public ApplicationSystem(final String id, final Form form, final I18nText name,
@@ -51,7 +52,9 @@ public class ApplicationSystem implements Serializable {
                              final String hakukausiUri,
                              final String kohdejoukkoUri,
                              final List<Element> applicationCompleteElements,
-                             final List<Element> additionalInformationElements, final Integer maxApplicationOptions) {
+                             final List<Element> additionalInformationElements,
+                             final List<ApplicationOptionAttachmentRequest> applicationOptionAttachmentRequests,
+                             final Integer maxApplicationOptions) {
         Preconditions.checkNotNull(id);
         Preconditions.checkNotNull(name);
         this.id = id;
@@ -65,6 +68,7 @@ public class ApplicationSystem implements Serializable {
         this.kohdejoukkoUri = kohdejoukkoUri;
         this.applicationCompleteElements = applicationCompleteElements;
         this.additionalInformationElements = additionalInformationElements;
+        this.applicationOptionAttachmentRequests = applicationOptionAttachmentRequests;
         this.maxApplicationOptions = maxApplicationOptions != null ?
                 maxApplicationOptions.intValue() : 1;
     }
@@ -117,6 +121,10 @@ public class ApplicationSystem implements Serializable {
 
     public List<Element> getAdditionalInformationElements() {
         return additionalInformationElements;
+    }
+
+    public List<ApplicationOptionAttachmentRequest> getApplicationOptionAttachmentRequests() {
+        return applicationOptionAttachmentRequests;
     }
 
     public int getMaxApplicationOptions() {

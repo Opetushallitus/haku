@@ -47,7 +47,6 @@
         <koulutusinformaatio-api.version>11.1</koulutusinformaatio-api.version>
         <log-client.version>8.0</log-client.version>
         <organisaatio-api.version>9.7</organisaatio-api.version>
-        <organisaatio-solr-client.version>9.7</organisaatio-solr-client.version>
         <tarjonta-api.version>9.7-SNAPSHOT</tarjonta-api.version>
 		<viestintapalvelu.version>9.8</viestintapalvelu.version>
     </properties>

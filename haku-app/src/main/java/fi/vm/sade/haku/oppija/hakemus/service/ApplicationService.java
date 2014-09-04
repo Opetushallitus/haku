@@ -23,6 +23,7 @@ import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationQueryParameters;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationState;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -47,7 +48,7 @@ public interface ApplicationService {
      *
      * @return
      */
-    Application submitApplication(final String applicationSystemId);
+    Application submitApplication(final String applicationSystemId, String language);
 
     /**
      * Return applications that match to given search term. Term is matched against
@@ -114,9 +115,9 @@ public interface ApplicationService {
      */
     Application officerCreateNewApplication(final String asId);
 
-    Application fillLOPChain(Application application, boolean save);
-
     Application getSubmittedApplication(final String applicationSystemId, final String oid);
 
     List<Map<String, Object>> findFullApplications(String query, ApplicationQueryParameters applicationQueryParameters);
+
+    Application updateAuthorizationMeta(Application application, boolean save) throws IOException;
 }

@@ -13,6 +13,7 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.dao.ThemeQuestionQueryParame
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.dao.impl.DBConverter.DBObjectToThemeQuestionFunction;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.dao.impl.DBConverter.ThemeQuestionToDBObjectFunction;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain.ThemeQuestion;
+import org.apache.commons.lang3.tuple.Pair;
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,11 +22,12 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
+import static com.mongodb.QueryOperators.EXISTS;
 import static com.mongodb.QueryOperators.IN;
+import static com.mongodb.QueryOperators.NE;
+import static com.mongodb.QueryOperators.OR;
 
 @Service("themeQuestionDAOMongoImpl")
 public class ThemeQuestionDAOMongoImpl extends AbstractDAOMongoImpl<ThemeQuestion> implements ThemeQuestionDAO {
@@ -42,8 +44,12 @@ public class ThemeQuestionDAOMongoImpl extends AbstractDAOMongoImpl<ThemeQuestio
     private static final String FIELD_STATE = "state";
     private static final String FIELD_ORDINAL = "ordinal";
     private static final String FIELD_APPLICATION_OPTION = "learningOpportunityId";
-    private static int QUERY =0;
-    private static int HINT =1;
+    private static final String FIELD_TARGET_IS_GROUP = "targetIsGroup";
+    private static final String FIELD_ATTACHMENT_REQUESTS = "attachmentRequests";
+    private static int PARAM_QUERY =0;
+    private static int PARAM_HINT =1;
+    private static int PARAM_SORT_BY = 2;
+    private static int PARAM_KEYS = 3;
 
     private static final String collectionName = "themequestion";
 
@@ -55,16 +61,24 @@ public class ThemeQuestionDAOMongoImpl extends AbstractDAOMongoImpl<ThemeQuestio
     @Override
     protected String getCollectionName() { return collectionName; }
 
-    private List<ThemeQuestion> executeQuery(DBObject[] queryParam) {
-        LOGGER.debug("Executing with query: " + queryParam[QUERY] + " with hint: " +queryParam[HINT]);
-        final DBCursor dbCursor = getCollection().find(queryParam[QUERY]);
-        if (ensureIndex && null != queryParam[HINT]) {
-            dbCursor.hint(queryParam[HINT]);
+    private DBCursor executeQuery(DBObject[] queryParam){
+        final DBCursor dbCursor = getCollection().find(queryParam[PARAM_QUERY], queryParam[PARAM_KEYS]);
+        if (null != queryParam[PARAM_SORT_BY]){
+            dbCursor.sort(queryParam[PARAM_SORT_BY]);
         }
+        if (ensureIndex && null != queryParam[PARAM_HINT]) {
+            dbCursor.hint(queryParam[PARAM_HINT]);
+        }
+        return dbCursor;
+    }
+
+    private List<ThemeQuestion> queryThemeQuestions(DBObject[] queryParam) {
+        LOGGER.debug("Executing with query: " + queryParam[PARAM_QUERY] + " with hint: " +queryParam[PARAM_HINT]);
+        final DBCursor dbCursor = executeQuery(queryParam);
         try {
             return Lists.newArrayList(Iterables.transform(dbCursor, fromDBObject));
         }catch (MongoException mongoException){
-            LOGGER.error("Got error "+ mongoException.getMessage() +" with query: " + queryParam[QUERY] + " using hint: " +queryParam[HINT]);
+            LOGGER.error("Got error "+ mongoException.getMessage() +" with query: " + queryParam[PARAM_QUERY] + " using hint: " +queryParam[PARAM_HINT]);
             throw mongoException;
         }
     }
@@ -74,7 +88,7 @@ public class ThemeQuestionDAOMongoImpl extends AbstractDAOMongoImpl<ThemeQuestio
         LOGGER.debug("findById: " + id);
         DBObject queryParam = new BasicDBObject(FIELD_ID, new ObjectId(id));
         LOGGER.debug("Executing with query: " + queryParam.toString());
-        List <ThemeQuestion> themeQuestions =  executeQuery(new DBObject[]{queryParam, null});
+        List <ThemeQuestion> themeQuestions =  queryThemeQuestions(new DBObject[] { queryParam, null, null, null });
         LOGGER.debug("Found: " + themeQuestions.size());
         if (themeQuestions.size() == 1) {
             return themeQuestions.get(0);
@@ -83,8 +97,7 @@ public class ThemeQuestionDAOMongoImpl extends AbstractDAOMongoImpl<ThemeQuestio
     }
 
     public List<ThemeQuestion> query(final ThemeQuestionQueryParameters parameters){
-        DBObject[] queryParameters = buildQuery(parameters);
-        return executeQuery(queryParameters);
+        return queryThemeQuestions(buildQuery(parameters));
     }
 
     @Override
@@ -101,14 +114,50 @@ public class ThemeQuestionDAOMongoImpl extends AbstractDAOMongoImpl<ThemeQuestio
 
     @Override
     public void setOrdinal(String themeQuestionId, Integer newOrdinal) {
-        DBObject find = new BasicDBObject(FIELD_ID, new ObjectId(themeQuestionId));
-        DBObject update = new BasicDBObject("$set", new BasicDBObject(FIELD_ORDINAL, newOrdinal));
+        DBObject update = new BasicDBObject(FIELD_ORDINAL, newOrdinal);
+        set(themeQuestionId, update);
+        LOGGER.debug("ThemeQuestion "+ themeQuestionId + " ordinal updated to " + newOrdinal);
+    }
+
+    @Override
+    public void delete(String themeQuestionId) {
+        DBObject update = new BasicDBObject(FIELD_STATE, ThemeQuestion.State.DELETED.toString());
+        update.put(FIELD_ORDINAL, 99);
+        set(themeQuestionId, update);
+        LOGGER.debug("ThemeQuestion "+ themeQuestionId + " deleted");
+    }
+
+    @Override
+    public Integer getMaxOrdinal(String applicationSystemId, String learningOpportunityId, String themeId) {
+        final ThemeQuestionQueryParameters tqqp = new ThemeQuestionQueryParameters();
+        tqqp.setApplicationSystemId(applicationSystemId);
+        tqqp.setLearningOpportunityId(learningOpportunityId);
+        tqqp.setTheme(themeId);
+        tqqp.addSortBy(FIELD_ORDINAL, tqqp.SORT_DESCENDING);
+        final DBObject[] queryParam = buildQuery(tqqp);
+        queryParam[PARAM_KEYS] = new BasicDBObject(FIELD_ORDINAL, 1);
+        final DBCursor dbCursor = executeQuery(queryParam);
+        dbCursor.limit(1);
         try {
-            getCollection().findAndModify(find, update);
+            if (!dbCursor.hasNext()) {
+                return null;
+            }
+            return (Integer) dbCursor.next().get(FIELD_ORDINAL);
+        } catch (MongoException mongoException) {
+            LOGGER.error("Got error "+ mongoException.getMessage() +" with query: " + queryParam[PARAM_QUERY] + " using hint: " +queryParam[PARAM_HINT] + " and keys: " +queryParam[PARAM_KEYS]);
+            throw mongoException;
+        }
+    }
+
+    private void set(String themeQuestionId, DBObject update){
+        DBObject find = new BasicDBObject(FIELD_ID, new ObjectId(themeQuestionId));
+        DBObject setUpdate = new BasicDBObject("$set", update);
+        try {
+            getCollection().findAndModify(find, setUpdate);
         }
         catch(MongoException mongoException){
-                LOGGER.error("Got error " + mongoException.getMessage() + " with for updating ordinal for ThemeQuestion: "+themeQuestionId);
-                throw mongoException;
+            LOGGER.error("Got error " + mongoException.getMessage() + " while updating ThemeQuestion: "+themeQuestionId +" with data: " + setUpdate);
+            throw mongoException;
         }
     }
 
@@ -137,13 +186,15 @@ public class ThemeQuestionDAOMongoImpl extends AbstractDAOMongoImpl<ThemeQuestio
     private final DBObject[] buildQuery(final ThemeQuestionQueryParameters parameters){
         BasicDBObject query = new BasicDBObject();
         BasicDBObject hint = new BasicDBObject();
+        BasicDBObject sortBy = null;
+        BasicDBObject keys = null;
         if (null != parameters.getApplicationSystemId()){
             query.append(FIELD_APPLICATION_SYSTEM_ID, parameters.getApplicationSystemId());
             hint.put(FIELD_APPLICATION_SYSTEM_ID, 1);
         }
 
         if (parameters.searchDeleted()) {
-            query.append(FIELD_STATE, ThemeQuestion.State.DELETED);
+            query.append(FIELD_STATE, ThemeQuestion.State.DELETED.toString());
         }else {
             Object[] states = {ThemeQuestion.State.ACTIVE.toString(), ThemeQuestion.State.LOCKED.toString()};
             query.append(FIELD_STATE, new BasicDBObject(IN, states));
@@ -164,7 +215,33 @@ public class ThemeQuestionDAOMongoImpl extends AbstractDAOMongoImpl<ThemeQuestio
             query.append(FIELD_APPLICATION_OPTION, parameters.getLearningOpportunityId());
             hint.put(FIELD_APPLICATION_OPTION, 1);
         }
-        return new DBObject[]{query,hint};
+
+        if (null != parameters.queryGroups()){
+            if (parameters.queryGroups()) {
+                query.append(FIELD_TARGET_IS_GROUP, true);
+            } else {
+                query.append(OR, new DBObject[] {
+                  new BasicDBObject(FIELD_TARGET_IS_GROUP, false),
+                  new BasicDBObject(FIELD_TARGET_IS_GROUP, new BasicDBObject(EXISTS, false))
+                });
+            }
+            hint.put(FIELD_TARGET_IS_GROUP, 1);
+        }
+
+        if (null != parameters.onlyWithAttachmentRequests() && parameters.onlyWithAttachmentRequests()){
+            query.append(FIELD_ATTACHMENT_REQUESTS, new BasicDBObject(NE, null));
+            hint.put(FIELD_ATTACHMENT_REQUESTS, 1);
+        }
+
+        if (parameters.getSortBy().size() > 0){
+            sortBy = new BasicDBObject();
+            for (Pair<String, Integer> sortKey: parameters.getSortBy()){
+                String field = sortKey.getKey();
+                Integer order = sortKey.getValue();
+                sortBy.append(field,order);
+            }
+        }
+        return new DBObject[]{query, hint, sortBy, keys};
     }
 
 

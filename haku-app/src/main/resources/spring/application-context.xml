@@ -98,25 +98,16 @@
                 base-package="fi.vm.sade.haku,fi.vm.sade.security,fi.vm.sade.organisaatio.service.search"/>
         <aop:aspectj-autoproxy/>
 
-        <!-- Configure the multipart resolver -->
-        <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-            <!-- one of the properties available; the maximum file size in bytes -->
-            <property name="maxUploadSize" value="1000000"/>
-        </bean>
-
-        <bean id="organisaatioSearchService" class="fi.vm.sade.organisaatio.service.search.OrganisaatioSearchService">
-        </bean>
-        <bean id="solrServerFactory" class="fi.vm.sade.organisaatio.service.search.SolrServerFactory">
-        </bean>
-
         <bean id="yksilointiScheduler" class="fi.vm.sade.haku.oppija.yksilointi.Scheduler">
             <property name="run" value="${scheduler.run}"/>
+            <property name="runModelUpgrade" value="${scheduler.runModelUpgrade}"/>
             <property name="sendMail" value="${scheduler.sendMail}"/>
         </bean>
         <task:scheduled-tasks scheduler="scheduler">
             <task:scheduled ref="yksilointiScheduler" method="runProcess" fixed-delay="${scheduler.delay}"/>
             <task:scheduled ref="yksilointiScheduler" method="redoPostprocess" fixed-delay="${scheduler.delay}"/>
             <task:scheduled ref="yksilointiScheduler" method="runIdentification" fixed-delay="${scheduler.delay}"/>
+            <task:scheduled ref="yksilointiScheduler" method="runModelUpgrade" cron="${scheduler.modelUpgradeCron}"/>
         </task:scheduled-tasks>
 
         <task:scheduler id="scheduler" pool-size="1"/>

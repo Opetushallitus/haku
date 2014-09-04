@@ -9,22 +9,37 @@ public final class ExprUtil {
     //
     // Refactor to use Operator factory or in the future high order function.
     //
+
+    public static Expr equals(final String variable, final String value) {
+        return new Equals(new Variable(variable), new Value(value));
+    }
+
     public static Expr atLeastOneVariableEqualsToValue(final String value, final String... ids) {
-        if (ids.length == 1) {
-            return new Equals(new Variable(ids[0]), new Value(value));
-        } else {
-            Expr current = null;
-            Expr equal;
-            for (String id : ids) {
-                equal = new Equals(new Variable(id), new Value(value));
-                if (current == null) {
-                    current = new Equals(new Variable(id), new Value(value));
-                } else {
-                    current = new Or(current, equal);
-                }
+        Expr current = null;
+        Expr equal;
+        for (String id : ids) {
+            equal = new Equals(new Variable(id), new Value(value));
+            if (null == current) {
+                current = equal;
+            } else {
+                current = new Or(current, equal);
             }
-            return current;
         }
+        return current;
+    }
+
+    public static Expr atLeastOneVariableContainsValue(final String value, final String... ids) {
+        Expr current = null;
+        Expr rexExp;
+        for (String id : ids) {
+            rexExp = new Regexp(id, "(?:.*\\s*,\\s*|\\s*)" + value + "(?:,.*|\\s*|\\s+.*)");
+            if (current == null) {
+                current = rexExp;
+            } else {
+                current = new Or(current, rexExp);
+            }
+        }
+        return current;
     }
 
     public static Expr atLeastOneValueEqualsToVariable(final String variable, final String... values) {
@@ -66,7 +81,4 @@ public final class ExprUtil {
         return new Equals(new Variable(id), Value.TRUE);
     }
 
-    public static Expr isAnswerFalse(final String id) {
-        return new Equals(new Variable(id), Value.FALSE);
-    }
 }

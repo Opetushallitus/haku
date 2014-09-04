@@ -52,7 +52,7 @@ public final class HenkilotiedotPhase {
     public static final String AIDINKIELI_ID = "aidinkieli";
     private static final String HETU_PATTERN = "^([0-9]{6}.[0-9]{3}([0-9]|[a-z]|[A-Z]))$";
     private static final String POSTINUMERO_PATTERN = "[0-9]{5}";
-    private static final String DATE_PATTERN = "^([0-9]|0[1-9]|[12][0-9]|3[01])\\.([0-9]|0[1-9]|1[012])\\.(19|20)\\d\\d$";
+    private static final String DATE_PATTERN = "^(0[1-9]|[12][0-9]|3[01])\\.(0[1-9]|1[012])\\.(19|20)\\d\\d$";
     public static final String EMPTY_OR_FIN_PATTERN = "^$|^FIN$";
 
     private HenkilotiedotPhase() {
@@ -122,7 +122,6 @@ public final class HenkilotiedotPhase {
                         .setFemaleOption(female)
                         .setSexId(sukupuoli.getId())
                         .formParams(formParameters)
-                        .placeholder("ppkkvv*****")
                         .requiredInline()
                         .size(11)
                         .maxLength(11)
@@ -203,7 +202,6 @@ public final class HenkilotiedotPhase {
                 .required()
                 .formParams(formParameters)
                 .pattern(POSTINUMERO_PATTERN)
-                .placeholder("00000")
                 .build();
 
         asuinmaaFI.addChild(postinumero);
@@ -234,6 +232,16 @@ public final class HenkilotiedotPhase {
                 .addOptions(formParameters.getKoodistoService().getLanguages())
                 .requiredInline()
                 .formParams(formParameters).build());
+
+        if (formParameters.isHigherEd()) {
+            henkilotiedotTeema.addChild(Dropdown("koulusivistyskieli")
+                            .emptyOption()
+                            .addOptions(formParameters.getKoodistoService().getTeachingLanguages())
+                            .requiredInline()
+                            .formParams(formParameters)
+                            .build()
+            );
+        }
 
         henkilotiedot.addChild(henkilotiedotTeema);
         if (formParameters.isPervako()) {

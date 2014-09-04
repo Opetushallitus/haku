@@ -2,18 +2,22 @@ package fi.vm.sade.haku.oppija.hakemus.service.impl;
 
 import com.google.common.collect.Lists;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
-import fi.vm.sade.haku.oppija.common.suoritusrekisteri.OpiskelijaDTO;
 import fi.vm.sade.haku.oppija.common.suoritusrekisteri.SuoritusrekisteriService;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
+import fi.vm.sade.haku.oppija.hakemus.domain.AuthorizationMeta;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationAdditionalDataDTO;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultItemDTO;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationDAO;
+import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationFilterParameters;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationQueryParameters;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationOidService;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationServiceImpl;
 import fi.vm.sade.haku.oppija.hakemus.service.HakuPermissionService;
+import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
+import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
+import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.haku.oppija.lomake.validation.ElementTreeValidator;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidatorFactory;
 import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
@@ -22,12 +26,10 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.io.IOException;
+import java.util.*;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.*;
@@ -56,6 +58,7 @@ public class ApplicationServiceImplTest {
     AuthenticationService authenticationService;
     OrganizationService organizationService;
     HakuPermissionService hakuPermissionService;
+    ApplicationSystemService applicationSystemService;
     SuoritusrekisteriService suoritusrekisteriService;
 
     String SSN = "250584-3847";
@@ -66,12 +69,14 @@ public class ApplicationServiceImplTest {
     String AO_ID = "1.2.246.562.14.299022856910";
     Map<String, String> answerMap;
     private ApplicationQueryParameters applicationQueryParameters;
+    private ApplicationFilterParameters filterParameters;
     private ApplicationServiceImpl service;
     private ElementTreeValidator elementTreeValidator;
 
     @Before
     public void setUp() {
         applicationQueryParameters = new ApplicationQueryParameters(null, null, "", "", "", false, "", "", new Date(), 0, Integer.MAX_VALUE, "fullName", 1);
+        filterParameters = new ApplicationFilterParameters(6, new ArrayList<String>(), new ArrayList<String>());
         application = new Application();
         Map<String, String> answers = new HashMap<String, String>();
         answers.put("avain", "arvo");
@@ -81,24 +86,25 @@ public class ApplicationServiceImplTest {
         authenticationService = new AuthenticationServiceMockImpl();
         organizationService = mock(OrganizationService.class);
         hakuPermissionService = mock(HakuPermissionService.class);
+        applicationSystemService = mock(ApplicationSystemService.class);
         suoritusrekisteriService = mock(SuoritusrekisteriService.class);
         ValidatorFactory validatorFactory = mock(ValidatorFactory.class);
         elementTreeValidator = new ElementTreeValidator(validatorFactory);
 
         ApplicationSearchResultDTO searchResultDTO = new ApplicationSearchResultDTO(1, Lists.newArrayList(new ApplicationSearchResultItemDTO()));
-        when(applicationDAO.findAllQueried(eq(SSN), eq(applicationQueryParameters))).thenReturn(searchResultDTO);
-        when(applicationDAO.findAllQueried(eq(NAME), eq(applicationQueryParameters))).thenReturn(searchResultDTO);
-        when(applicationDAO.findAllQueried(eq(OID), eq(applicationQueryParameters))).thenReturn(searchResultDTO);
-        when(applicationDAO.findAllQueried(eq(SHORT_OID), eq(applicationQueryParameters))).thenReturn(searchResultDTO);
+        when(applicationDAO.findAllQueried(eq(SSN), eq(applicationQueryParameters), eq(filterParameters))).thenReturn(searchResultDTO);
+        when(applicationDAO.findAllQueried(eq(NAME), eq(applicationQueryParameters), eq(filterParameters))).thenReturn(searchResultDTO);
+        when(applicationDAO.findAllQueried(eq(OID), eq(applicationQueryParameters), eq(filterParameters))).thenReturn(searchResultDTO);
+        when(applicationDAO.findAllQueried(eq(SHORT_OID), eq(applicationQueryParameters), eq(filterParameters))).thenReturn(searchResultDTO);
         when(applicationDAO.find(any(Application.class))).thenReturn(Lists.newArrayList(application));
         //when(authenticationService.addPerson(any(Person.class))).thenReturn(PERSON_OID);
-        when(applicationDAO.findApplicationAdditionalData(eq(AS_ID), eq(AO_ID))).thenReturn(Lists.newArrayList(new ApplicationAdditionalDataDTO()));
+        when(applicationDAO.findApplicationAdditionalData(eq(AS_ID), eq(AO_ID), eq(filterParameters))).thenReturn(Lists.newArrayList(new ApplicationAdditionalDataDTO()));
         when(hakuPermissionService.userCanReadApplication(any(Application.class))).thenReturn(true);
 //        when(suoritusrekisteriService.getLahtokoulu(any(String.class))).thenReturn("1.2.246.562.10.56695937518");
 //        when(suoritusrekisteriService.getLahtoluokka(any(String.class))).thenReturn("9A");
 
         service = new ApplicationServiceImpl(applicationDAO, null, null, applicationOidService, authenticationService, organizationService,
-                hakuPermissionService, elementTreeValidator);
+                hakuPermissionService, applicationSystemService, elementTreeValidator);
 
         answerMap = new HashMap<String, String>();
         answerMap.put(OppijaConstants.ELEMENT_ID_FIRST_NAMES, "Etunimi");
@@ -117,7 +123,7 @@ public class ApplicationServiceImplTest {
         ApplicationSearchResultDTO results = service.findApplications(SSN, applicationQueryParameters);
         assertNotNull(results);
         assertEquals(1, results.getResults().size());
-        verify(applicationDAO, only()).findAllQueried(eq(SSN), eq(applicationQueryParameters));
+        verify(applicationDAO, only()).findAllQueried(eq(SSN), eq(applicationQueryParameters), eq(filterParameters));
     }
 
     @Test
@@ -125,7 +131,7 @@ public class ApplicationServiceImplTest {
         ApplicationSearchResultDTO results = service.findApplications(NAME, applicationQueryParameters);
         assertNotNull(results);
         assertEquals(1, results.getResults().size());
-        verify(applicationDAO, only()).findAllQueried(eq(NAME), eq(applicationQueryParameters));
+        verify(applicationDAO, only()).findAllQueried(eq(NAME), eq(applicationQueryParameters), eq(filterParameters));
     }
 
     @Test
@@ -134,7 +140,7 @@ public class ApplicationServiceImplTest {
         ApplicationSearchResultDTO results = service.findApplications(OID, applicationQueryParameters);
         assertNotNull(results);
         assertEquals(1, results.getResults().size());
-        verify(applicationDAO, only()).findAllQueried(eq(OID), eq(applicationQueryParameters));
+        verify(applicationDAO, only()).findAllQueried(eq(OID), eq(applicationQueryParameters), eq(filterParameters));
     }
 
     @Test
@@ -143,7 +149,7 @@ public class ApplicationServiceImplTest {
         ApplicationSearchResultDTO results = service.findApplications(SHORT_OID, applicationQueryParameters);
         assertNotNull(results);
         assertEquals(1, results.getResults().size());
-        verify(applicationDAO, only()).findAllQueried(eq(SHORT_OID), eq(applicationQueryParameters));
+        verify(applicationDAO, only()).findAllQueried(eq(SHORT_OID), eq(applicationQueryParameters), eq(filterParameters));
     }
 
     @Test
@@ -203,18 +209,108 @@ public class ApplicationServiceImplTest {
     }
 
     @Test
-    public void testSendingSchool() {
+    public void testAuthorizationMetaEmptyApplication() {
         Application application = new Application();
-        application.setPersonOid("1.2.3");
-        OpiskelijaDTO opiskelijaDTO = new OpiskelijaDTO();
-        opiskelijaDTO.setHenkiloOid("1.2.3");
-        opiskelijaDTO.setLoppuPaiva(null);
-        opiskelijaDTO.setLuokka("9A");
-        opiskelijaDTO.setLuokkataso("9");
-        opiskelijaDTO.setOppilaitosOid("4.5.6");
-        SuoritusrekisteriService suoritusrekisteriService = mock(SuoritusrekisteriService.class);
-        when(suoritusrekisteriService.getOpiskelijat("1.2.3")).thenReturn(Lists.newArrayList(opiskelijaDTO));
+        application.setApplicationSystemId("myAsId");
+        ApplicationSystem as = new ApplicationSystem("myAsId", null, new I18nText(new HashMap<String, String>()), null,
+                null, null, null, OppijaConstants.KOHDEJOUKKO_PERVAKO, null, null, null, null);
+        when(applicationSystemService.getApplicationSystem(eq("myAsId"))).thenReturn(as);
 
+        try {
+            application = service.updateAuthorizationMeta(application, false);
+        } catch (IOException e) {
+            fail(e.getMessage());
+        }
+        AuthorizationMeta authorizationMeta = application.getAuthorizationMeta();
+        assertTrue(authorizationMeta.isOpoAllowed());
+
+        as = new ApplicationSystem("myAsId", null, new I18nText(new HashMap<String, String>()), null,
+                null, null, null, OppijaConstants.KOHDEJOUKKO_KORKEAKOULU, null, null, null, null);
+        when(applicationSystemService.getApplicationSystem(eq("myAsId"))).thenReturn(as);
+
+        try {
+            application = service.updateAuthorizationMeta(application, false);
+        } catch (IOException e) {
+            fail(e.getMessage());
+        }
+        authorizationMeta = application.getAuthorizationMeta();
+        assertFalse(authorizationMeta.isOpoAllowed());
+    }
+
+    @Test
+    public void testAuthorizationMetaSendingSchool() {
+        Application application = new Application();
+        application.setApplicationSystemId("myAsId");
+        ApplicationSystem as = new ApplicationSystem("myAsId", null, new I18nText(new HashMap<String, String>()), null,
+                null, null, null, OppijaConstants.KOHDEJOUKKO_PERVAKO, null, null, null, null);
+        Map<String, String> educationAnswers = new HashMap<String, String>();
+        educationAnswers.put(OppijaConstants.ELEMENT_ID_SENDING_SCHOOL, "1.2.3.4");
+
+        when(applicationSystemService.getApplicationSystem(eq("myAsId"))).thenReturn(as);
+        List<String> parents = new ArrayList<String>();
+        parents.add("3.4");
+        parents.add("5.6");
+        try {
+            when(organizationService.findParentOids(eq("1.2.3.4"))).thenReturn(parents);
+        } catch (IOException e) {
+            fail(e.getMessage());
+        }
+        application.addVaiheenVastaukset(OppijaConstants.PHASE_EDUCATION, educationAnswers);
+        try {
+            application = service.updateAuthorizationMeta(application, false);
+        } catch (IOException e) {
+            fail(e.getMessage());
+        }
+        AuthorizationMeta authorizationMeta = application.getAuthorizationMeta();
+        assertTrue(authorizationMeta.isOpoAllowed());
+        Set<String> sendingSchool = authorizationMeta.getSendingSchool();
+        assertEquals(2, sendingSchool.size());
+        assertTrue(sendingSchool.contains("3.4"));
+        assertTrue(sendingSchool.contains("5.6"));
+    }
+
+    @Test
+    public void testAuthorizationMetaAoParents() throws IOException {
+        Application application = new Application();
+        application.setApplicationSystemId("myAsId");
+        ApplicationSystem as = new ApplicationSystem("myAsId", null, new I18nText(new HashMap<String, String>()), null,
+                null, null, null, OppijaConstants.KOHDEJOUKKO_PERVAKO, null, null, null, null);
+
+        Map<String, String> aoAnswers = new HashMap<String, String>();
+        aoAnswers.put(String.format(OppijaConstants.PREFERENCE_ID, 1), "1.2.3");
+        aoAnswers.put(String.format(OppijaConstants.PREFERENCE_ID, 2), "4.5.6");
+        aoAnswers.put(String.format(OppijaConstants.PREFERENCE_ORGANIZATION_ID, 1), "10.1.2");
+        aoAnswers.put(String.format(OppijaConstants.PREFERENCE_ORGANIZATION_ID, 2), "10.3.4");
+        application.addVaiheenVastaukset(OppijaConstants.PHASE_APPLICATION_OPTIONS, aoAnswers);
+
+        List<String> org1parents = new ArrayList<String>();
+        org1parents.add("0.0.0");
+        org1parents.add("11.1.2");
+        org1parents.add("11.3.4");
+        List<String> org2parents = new ArrayList<String>();
+        org2parents.add("0.0.0");
+        org2parents.add("12.1.2");
+        org2parents.add("12.3.4");
+
+        when(applicationSystemService.getApplicationSystem(eq("myAsId"))).thenReturn(as);
+        when(organizationService.findParentOids(eq("10.1.2"))).thenReturn(org1parents);
+        when(organizationService.findParentOids(eq("10.3.4"))).thenReturn(org2parents);
+
+        application = service.updateAuthorizationMeta(application, false);
+        AuthorizationMeta authorizationMeta = application.getAuthorizationMeta();
+        assertTrue(authorizationMeta.isOpoAllowed());
+        assertEquals(5, authorizationMeta.getAllAoOrganizations().size());
+        assertTrue(authorizationMeta.getAllAoOrganizations().contains("0.0.0"));
+        assertTrue(authorizationMeta.getAllAoOrganizations().contains("11.1.2"));
+        assertTrue(authorizationMeta.getAllAoOrganizations().contains("11.3.4"));
+        assertTrue(authorizationMeta.getAllAoOrganizations().contains("12.1.2"));
+        assertTrue(authorizationMeta.getAllAoOrganizations().contains("12.3.4"));
+
+        Set<String> ao1parents = authorizationMeta.getAoOrganizations().get("1");
+        assertEquals(3, ao1parents.size());
+        assertTrue(ao1parents.contains("0.0.0"));
+        assertTrue(ao1parents.contains("11.1.2"));
+        assertTrue(ao1parents.contains("11.3.4"));
     }
 
 }

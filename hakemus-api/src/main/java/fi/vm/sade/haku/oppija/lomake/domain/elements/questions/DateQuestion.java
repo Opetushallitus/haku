@@ -6,13 +6,11 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.Titled;
 /**
  * @author Mikko Majapuro
  */
-public class DateQuestion extends Titled {
+public class DateQuestion extends Question{
 
     private static final long serialVersionUID = -4739850221793918562L;
 
     public DateQuestion(final String id, final I18nText i18nText) {
         super(id, i18nText);
-        addAttribute("type", "text");
-        addAttribute("placeholder", "pp.kk.vvvv");
     }
 }

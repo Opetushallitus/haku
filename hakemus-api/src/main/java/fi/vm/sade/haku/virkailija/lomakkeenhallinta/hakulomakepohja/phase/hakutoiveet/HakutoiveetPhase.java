@@ -47,6 +47,7 @@ import static fi.vm.sade.haku.oppija.lomake.domain.builder.RelatedQuestionRuleBu
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.ThemeBuilder.Theme;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.*;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.*;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.service.ThemeQuestionConfigurator.ConfiguratorFilter;
 
 public class HakutoiveetPhase {
     public static final String LISAOPETUS_EDUCATION_DEGREE = "22";
@@ -95,6 +96,9 @@ public class HakutoiveetPhase {
         }
         ElementUtil.setVerboseHelp(preferenceTable, "form.hakutoiveet.otsikko.verboseHelp", formParameters);
         hakutoiveetTheme.addChild(preferenceTable);
+
+        ThemeQuestionConfigurator configurator = formParameters.getThemeQuestionConfigurator();
+        hakutoiveetTheme.addChild(configurator.findAndConfigure(hakutoiveetTheme.getId(), ConfiguratorFilter.ONLY_GROUP_QUESTIONS));
         return hakutoiveetTheme;
     }
 
@@ -103,7 +107,8 @@ public class HakutoiveetPhase {
                 createI18NText("form.yleinen.tyhjenna", formParameters),
                 createI18NText("form.hakutoiveet.koulutus", formParameters),
                 createI18NText("form.hakutoiveet.opetuspiste", formParameters),
-                createI18NText("form.hakutoiveet.sisaltyvatKoulutusohjelmat", formParameters));
+                createI18NText("form.hakutoiveet.sisaltyvatKoulutusohjelmat", formParameters),
+                createI18NText("form.hakutoiveet.liitteet", formParameters));
         if (!formParameters.isPervako()) {
             pr.addChild(createDiscretionaryQuestionsAndRules(id, formParameters));
 
@@ -154,11 +159,10 @@ public class HakutoiveetPhase {
         }
 
         pr.setValidator(new PreferenceValidator());
-        ThemeQuestionConfigurator configurator = formParameters.getThemeQuestionGenerator();
-        List<Element> themeQuestions = configurator.findAndConfigure(formParameters.getApplicationSystem(), HAKUTOIVEET_THEME_ID, pr.getId());
-        if (themeQuestions.size() > 0){
-           pr.addChild(themeQuestions.toArray(new Element[themeQuestions.size()]));
-        }
+
+        ThemeQuestionConfigurator configurator = formParameters.getThemeQuestionConfigurator();
+        pr.addChild(configurator.findAndConfigure(HAKUTOIVEET_THEME_ID, pr.getId(), ConfiguratorFilter.NO_GROUP_QUESTIONS));
+
         return pr;
     }
 

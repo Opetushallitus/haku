@@ -1,0 +1,16 @@
+Application: $applicationSystemId
+Applicant: $applicant
+Application number: $applicationId
+Submitted: $applicationDate
+
+
+
+Application options:
+
+#foreach ($preference in $preferences)
+$preference
+
+#end
+
+If you want to change your study program choices, login to Oma Opintopolku -service and do the changes within the application period. If you cannot use the service,  contact the admission service of one of the universities or polytechnics/universities of applied sciences you have applied to
+This is an automatic email response. Do not reply to this. 

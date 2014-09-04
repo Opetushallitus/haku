@@ -16,6 +16,8 @@
 
 package fi.vm.sade.haku.oppija.ui.service;
 
+import org.apache.http.HttpResponse;
+
 import java.util.Map;
 
 public interface UIService {
@@ -40,7 +42,9 @@ public interface UIService {
 
     ModelResponse savePhase(final String applicationSystemId, final String phaseId, Map<String, String> answers);
 
-    ModelResponse submitApplication(final String applicationSystemId);
+    ModelResponse submitApplication(final String applicationSystemId, String language);
 
     ModelResponse getApplication(final String applicationSystemId);
+
+    HttpResponse getUriToPDF(String applicationSystemId, String oid);
 }

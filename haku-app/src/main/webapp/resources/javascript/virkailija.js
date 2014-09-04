@@ -446,7 +446,24 @@ $(document).ready(function () {
                         }
                         $('#pagination').bootstrapPaginator(options);
                         applicationSearch.setSortOrder(queryParameters.orderBy, queryParameters.orderDir);
+                        if (queryParameters.asId && queryParameters.aoid) {
+                            var href = page_settings.contextPath +
+                                '/applications/' + queryParameters.asId + '/' + queryParameters.aoidCode + '?'  +
+                                Object.keys(queryParameters).reduce(function(a,k){
+                                    if (k !== 'asId' || k !== 'aoidCode') {
+                                        a.push(k+'='+encodeURIComponent(queryParameters[k]));
+                                    }
+                                    return a
+                                },[]).join('&');
+                            $('#excel-link').removeClass('disabled');
+                            $('#excel-link').attr('href',href);
+                        } else {
+                            $('#excel-link').addClass('disabled');
+                            $('#excel-link').attr('href','javascript:void(0);');
+                        }
                     } else {
+                        $('#excel-link').addClass('disabled');
+                        $('#excel-link').attr('href','javascript:void(0);');
                         $('#pagination').empty();
                     }
                     spinner.stop();
@@ -508,7 +525,7 @@ $(document).ready(function () {
             $('#lop-title').empty();
             $('#lopoid').val('');
             $('#entry').val('');
-            $('#application-state').val('ACTIVE');
+            $('#application-state').val('');
             $('#application-preference').val('');
             $('#application-preference-code').val('');
             $('#application-system').val('');
@@ -519,6 +536,9 @@ $(document).ready(function () {
             $('#sendingClass').val('');
             $('#discretionary-only').attr('checked', false);
             $('#check-all-applications').attr('checked', false);
+            $('#excel-link').addClass('disabled');
+            $('#excel-link').attr('href','javascript:void(0);');
+
         },
         this.getSortOrder = function(columnName) {
             var column = $('#application-table-header-'+columnName);

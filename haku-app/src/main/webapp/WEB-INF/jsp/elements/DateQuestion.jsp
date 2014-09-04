@@ -23,19 +23,19 @@
 
     <div class="${styleBaseClass}-content">
         <div class="field-container-text">
-            <input ${element.attributeString} value="<c:out value='${answers[element.id]}'/>"/>
+            <input type="text" name="${element.id}" <haku:placeholder titled="${element}"/>id="${element.id}" ${element.attributeString} <haku:value value='${answers[element.id]}'/> />
             <haku:errorMessage id="${element.id}" additionalClass="margin-top-1"/>
         </div>
 
         <haku:help element="${element}"/>
 
     </div>
-
     <script>
       $(function() {
-        $.datepicker.setDefaults( $.datepicker.regional[ "fi" ] );
+        $.datepicker.setDefaults( $.datepicker.regional[ '${requestScope['fi_vm_sade_oppija_language']}'] );
         $( "#" + "${element.id}" ).datepicker({changeMonth: true, changeYear: true, maxDate: new Date(), yearRange: "-50:+0",
                                                 showOn: "both", buttonImage: "${pageContext.request.contextPath}/resources/img/dateEditor_calendar_hover.png",
+                                                dateFormat: 'dd.mm.yy',
                                                 buttonImageOnly: false});
       });
     </script>

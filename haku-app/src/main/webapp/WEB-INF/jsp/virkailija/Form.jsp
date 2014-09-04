@@ -42,7 +42,7 @@
     <link href="${contextPath}/resources/css/hakemus.css" type="text/css" rel="stylesheet"/>
     <script src="${contextPath}/resources/jquery/jquery.min.js" type="text/javascript"></script>
     <script src="${contextPath}/resources/jquery/jquery-ui-1.8.23.custom.min.js" type="text/javascript"></script>
-    <script src="${contextPath}/resources/jquery/jquery.ui.datepicker-fi.js" type="text/javascript"></script>
+    <script src="${contextPath}/resources/jquery/jquery.ui.datepicker-trans.js" type="text/javascript"></script>
     <script src="${contextPath}/resources/jquery/xdr.js"></script>
     <script src="${contextPath}/resources/javascript/rules.js" type="text/javascript"></script>
     <script src="${contextPath}/resources/javascript/master.js" type="text/javascript"></script>
@@ -153,7 +153,7 @@
                     <haku:infoCell key="virkailija.hakemus.henkilonumero" value="${application.personOid}"
                                    cellId="infocell_henkilonumero"/>
 
-                    <haku:infoCell key="virkailija.vaihe.aidinkieli" value="${answers['aidinkieli']}"/>
+                    <haku:infoCell key="virkailija.vaihe.aidinkieli" value="${answers['aidinkieli']}" id="aidinkieli" rootElement="${applicationSystem.form}"/>
                 </tr>
                 <tr>
                     <haku:infoCell key="virkailija.hakemus.kasittely" value='${redoProcessState}'/>

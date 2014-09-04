@@ -201,7 +201,11 @@ var complexRule = {
 
     refreshView: function (event) {
         var ruleData = event.data;
-        var url = document.URL.split("?")[0] + '/' + ruleData.ruleId;
+        var split = document.URL.split("?");
+        var url = split[0] + '/' + ruleData.ruleId;
+        if (split.length > 1) {
+            url = url + "?" + split[1];
+        }
         $.ajax({
             type: 'POST',
             url: url,

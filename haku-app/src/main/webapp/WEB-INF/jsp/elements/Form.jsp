@@ -38,7 +38,7 @@
     <link rel="stylesheet" href="${contextPath}/resources/jquery-ui-theme/jquery-ui-1.8.23.custom.css" type="text/css">
     <script src="${contextPath}/resources/jquery/jquery.min.js"></script>
     <script src="${contextPath}/resources/jquery/jquery-ui-1.8.23.custom.min.js"></script>
-    <script src="${contextPath}/resources/jquery/jquery.ui.datepicker-fi.js"></script>
+    <script src="${contextPath}/resources/jquery/jquery.ui.datepicker-trans.js"></script>
     <script src="${contextPath}/resources/jquery/jquery.html5-placeholder-shim.js" type="text/javascript"></script>
     <script src="${contextPath}/resources/jquery/xdr.js"></script>
     <script src="${contextPath}/resources/javascript/rules.js"></script>
@@ -53,7 +53,8 @@
     <div id="site">
         <div id="sitecontent">
             <div class="content">
-                <a href="https://opintopolku.fi"><fmt:message key="lomake.lisaakoulutuksia"/></a>
+                <fmt:message key="lomake.lisaakoulutuksia.href" var="lisaaKoulutuksiaHref"/>
+                <a href="${lisaaKoulutuksiaHref}"><fmt:message key="lomake.lisaakoulutuksia"/></a>
 
                 <h1><haku:i18nText value="${element.i18nText}"/> - <fmt:message key="form.title"/></h1>
                 <ul class="form-steps">

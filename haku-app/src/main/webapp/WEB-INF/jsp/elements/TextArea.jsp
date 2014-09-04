@@ -22,7 +22,8 @@
 
     <div class="${styleBaseClass}-content">
         <div class="field-container-text">
-            <textarea ${element.attributeString}><c:out value="${answers[element.id]}"/></textarea>
+            <textarea ${element.attributeString} id="${element.id}" name="${element.id}"
+            <haku:placeholder titled="${element}"/>><c:out value="${answers[element.id]}"/></textarea>
         </div>
         <haku:errorMessage id="${element.id}"/>
         <haku:help element="${element}"/>

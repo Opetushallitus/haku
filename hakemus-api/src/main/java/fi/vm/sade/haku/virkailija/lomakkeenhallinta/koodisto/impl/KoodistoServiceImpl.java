@@ -62,9 +62,9 @@ public class KoodistoServiceImpl implements KoodistoService {
     private static final String CODE_HAKUKOHDE = "hakukohteet";
     private static final String CODE_OPPILAITOSTYYPPI = "oppilaitostyyppi";
     private static final String CODE_LAAJUUSYKSIKKO = "opintojenlaajuusyksikko";
-    private static final String CODE_KOULUTUSASTE = "koulutusasteoph2002";
     private static final String CODE_TUTKINTOTYYPPI = "tutkintotyyppi";
-    private static final String CODE_ARVOSANAASTEIKONTYYPPI = "arvosanaasteikontyyppi";
+    private static final String CODE_ARVOSTELUASTEIKKO= "ammatillisentutkinnonarvosteluasteikko";
+    private static final String CODE_KKTUTKINNOT = "kktutkinnot";
 
     private static final String LUKIO = "15";
     private static final String LUKIO_JA_PERUSKOULU = "19";
@@ -182,7 +182,7 @@ public class KoodistoServiceImpl implements KoodistoService {
 
     @Override
     public List<Option> getAmmatillisenTutkinnonArvosteluasteikko() {
-        return codesToOptions(CODE_ARVOSANAASTEIKONTYYPPI);
+        return codesToOptions(CODE_ARVOSTELUASTEIKKO);
     }
 
     @Override
@@ -314,20 +314,7 @@ public class KoodistoServiceImpl implements KoodistoService {
 
     @Override
     public List<Option> getKorkeakouluTutkintotasot() {
-        List<KoodiType> koulutusasteet = getKoodiTypes(CODE_KOULUTUSASTE);
-        List<Option> options = new ArrayList<Option>();
-        for (KoodiType koodi : koulutusasteet) {
-            for (KoodiType ylakoodi : koodiService.getYlakoodis(koodi.getKoodiUri())) {
-                if (ylakoodi.getKoodiArvo().equals(AMMATTIKORKEAKOLU)
-                        || ylakoodi.getKoodiArvo().equals(YLIOPISTO)
-                        || ylakoodi.getKoodiArvo().equals(SOTILASKORKEAKOULU)) {
-                    options.add((Option) new OptionBuilder().setValue(koodi.getKoodiUri())
-                            .i18nText(new I18nText(TranslationsUtil.createTranslationsMap(koodi))).build());
-                    break;
-                }
-            }
-        }
-        return options;
+        return codesToOptions(CODE_KKTUTKINNOT);
     }
 
     private List<Option> codesToOptions(final String codeName) {

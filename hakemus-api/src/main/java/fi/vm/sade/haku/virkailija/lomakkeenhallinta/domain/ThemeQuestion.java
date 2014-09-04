@@ -1,8 +1,13 @@
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain;
 
+import fi.vm.sade.haku.oppija.lomake.domain.ApplicationOptionAttachmentRequest;
+import fi.vm.sade.haku.oppija.lomake.domain.ApplicationOptionAttachmentRequestBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
+import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.Expr;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.dao.impl.DBConverter.ComplexObjectIdDeserializer;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.dao.impl.DBConverter.SimpleObjectIdSerializer;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
 import org.bson.types.ObjectId;
 import org.codehaus.jackson.annotate.JsonCreator;
 import org.codehaus.jackson.annotate.JsonProperty;
@@ -25,6 +30,8 @@ import java.util.Map;
   @JsonSubTypes.Type(value = ThemeCheckBoxQuestion.class, name = "CheckBox")
 })
 public abstract class ThemeQuestion implements ConfiguredElement {
+
+    public static String FIELD_ORDINAL = "ordinal";
 
     public enum State {
         ACTIVE, LOCKED, DELETED
@@ -127,6 +134,25 @@ public abstract class ThemeQuestion implements ConfiguredElement {
         this.ownerOrganizationOids = new ArrayList<String>();
         this.attachmentRequests = new ArrayList<AttachmentRequest>(attachmentRequests);
     }
+
+    public List<ApplicationOptionAttachmentRequest> generateAttactmentRequests(FormParameters formParameters){
+        List<ApplicationOptionAttachmentRequest> generatedRequests = new ArrayList<ApplicationOptionAttachmentRequest>(attachmentRequests.size());
+        for (AttachmentRequest attachmentRequest : attachmentRequests){
+            generatedRequests.add(
+              ApplicationOptionAttachmentRequestBuilder.start()
+              .setApplicationOption(learningOpportunityId)
+              .setGroupOption(getTargetIsGroup())
+              .setCondition(generateAttachmentCondition(formParameters, attachmentRequest))
+              .setDeliveryAddress(attachmentRequest.getDeliveryAddress())
+              .setDeliveryDue(attachmentRequest.getDeliveryDue())
+              .setHeader(attachmentRequest.getHeader())
+              .setDescription(attachmentRequest.getDescription())
+              .build());
+        }
+        return generatedRequests;
+    }
+
+    protected abstract Expr generateAttachmentCondition(FormParameters formParameters, AttachmentRequest attachmentRequest);
 
     public ObjectId getId() {
         return id;

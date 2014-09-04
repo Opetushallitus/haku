@@ -1,16 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<taglib xmlns="http://java.sun.com/xml/ns/j2ee"
-        version="2.1">
+<taglib xmlns="http://java.sun.com/xml/ns/j2ee" version="2.0">
     <tlib-version>1.0</tlib-version>
-    <short-name>/functions</short-name>
-    <info>Tag library for functions</info>
-    <!--
+    <short-name>functions</short-name>
+
     <function>
-        <name>toNameSelectorString</name>
-        <function-class>fi.vm.sade.haku.oppija.lomake.domain.rules.RegexRule</function-class>
-        <function-signature>java.lang.String toNameSelectorString(java.lang.Iterable)</function-signature>
+        <name>findElementById</name>
+        <function-class>fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil</function-class>
+        <function-signature>fi.vm.sade.haku.oppija.lomake.domain.elements.Element findElementById(fi.vm.sade.haku.oppija.lomake.domain.elements.Element, java.lang.String)</function-signature>
     </function>
-    -->
     <function>
         <name>tochildIdList</name>
         <function-class>fi.vm.sade.haku.oppija.lomake.domain.rules.RegexRule</function-class>
@@ -22,13 +19,6 @@
         <function-class>fi.vm.sade.haku.oppija.lomake.domain.rules.RegexRule</function-class>
         <function-signature>java.lang.String setToList(java.util.Set)</function-signature>
     </function>
-    <!--
-    <function>
-        <name>toCommaSeparatedString</name>
-        <function-class>fi.vm.sade.haku.oppija.lomake.domain.rules.RegexRule</function-class>
-        <function-signature>java.lang.String toCommaSeparatedString(java.lang.Iterable)</function-signature>
-    </function>
-    -->
     <function>
         <name>children</name>
         <function-class>fi.vm.sade.haku.oppija.lomake.domain.rules.RegexRule</function-class>
@@ -42,13 +32,6 @@
         <function-signature>java.util.List getAllChildren(fi.vm.sade.haku.oppija.lomake.domain.elements.Element)
         </function-signature>
     </function>
-    <!--
-    <function>
-        <name>dod</name>
-        <function-class>fi.vm.sade.haku.oppija.lomake.domain.rules.RegexRule</function-class>
-        <function-signature>java.lang.String getDateOfBirth(java.util.Map)</function-signature>
-    </function>
-    -->
     <function>
         <name>formatOid</name>
         <function-class>fi.vm.sade.haku.oppija.lomake.util.StringUtil</function-class>

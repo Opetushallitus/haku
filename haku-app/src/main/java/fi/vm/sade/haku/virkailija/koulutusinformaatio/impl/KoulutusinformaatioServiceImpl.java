@@ -1,13 +1,11 @@
 package fi.vm.sade.haku.virkailija.koulutusinformaatio.impl;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import javax.ws.rs.core.MediaType;
-
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import fi.vm.sade.haku.RemoteServiceException;
+import fi.vm.sade.haku.virkailija.koulutusinformaatio.KoulutusinformaatioService;
+import fi.vm.sade.haku.virkailija.koulutusinformaatio.json.DateJsonAdapter;
+import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -15,13 +13,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
-import fi.vm.sade.haku.RemoteServiceException;
-import fi.vm.sade.haku.virkailija.koulutusinformaatio.KoulutusinformaatioService;
-import fi.vm.sade.haku.virkailija.koulutusinformaatio.json.DateJsonAdapter;
-import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO;
+import javax.ws.rs.core.MediaType;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 @Service
 @Profile(value = {"default", "devluokka"})
@@ -33,16 +30,22 @@ public class KoulutusinformaatioServiceImpl implements KoulutusinformaatioServic
 
 	@Override
 	public ApplicationOptionDTO getApplicationOption(String oid) {
+        return getApplicationOption(oid, null);
+    }
+
+    @Override
+    public ApplicationOptionDTO getApplicationOption(String oid, String lang) {
 		try {
 			// Create the HTTP request for getting application option data 
 			DefaultHttpClient httpClient = new DefaultHttpClient();
-			HttpGet getRequest = new HttpGet(targetService + "/" + oid);
+            String uiLang = buildLangParameter(lang);
+			HttpGet getRequest = new HttpGet(targetService + "/" + oid + uiLang);
 			getRequest.addHeader("accept", MediaType.APPLICATION_JSON);
 
 			// Execute the request. Check was the response successful.
 			HttpResponse response = httpClient.execute(getRequest);			
 			if (response.getStatusLine().getStatusCode() != 200) {
-				throw new RuntimeException(targetService + "/" + oid);
+				throw new RuntimeException(targetService + "/" + oid + uiLang);
 			}
 			
 			// Create readers for handling the response
@@ -65,7 +68,16 @@ public class KoulutusinformaatioServiceImpl implements KoulutusinformaatioServic
 
 	}
 
-	@Override
+    private String buildLangParameter(String lang) {
+        if ("fi".equals(lang) || "sv".equals(lang) || "en".equals(lang)) {
+            return new StringBuilder("?lang=").append(lang)
+                    .append("&uiLang=").append(lang)
+                    .toString();
+        }
+        return "";
+    }
+
+    @Override
 	public List<ApplicationOptionDTO> getApplicationOptions(List<String> oids) {
 		List<ApplicationOptionDTO> applicationOptions = new ArrayList<ApplicationOptionDTO>();
 

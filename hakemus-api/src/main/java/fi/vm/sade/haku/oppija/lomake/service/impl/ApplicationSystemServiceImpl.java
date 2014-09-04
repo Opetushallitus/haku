@@ -48,6 +48,11 @@ public class ApplicationSystemServiceImpl implements ApplicationSystemService {
     }
 
     @Override
+    public ApplicationSystem getApplicationSystem(final String id, final String... includeFields) {
+        return this.applicationSystemRepository.findById(id, includeFields);
+    }
+
+    @Override
     public ApplicationSystem getActiveApplicationSystem(final String id) {
         ApplicationSystem applicationSystem = this.getApplicationSystem(id);
         if (applicationSystem.isActive()) {

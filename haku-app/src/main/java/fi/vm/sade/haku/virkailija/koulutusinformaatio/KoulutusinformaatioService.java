@@ -1,8 +1,8 @@
 package fi.vm.sade.haku.virkailija.koulutusinformaatio;
 
-import java.util.List;
-
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO;
+
+import java.util.List;
 
 /**
  * The interface for getting education information
@@ -26,4 +26,6 @@ public interface KoulutusinformaatioService {
 	 * @return The list of application option data
 	 */
 	public List<ApplicationOptionDTO> getApplicationOptions(List<String> oids);
+
+    ApplicationOptionDTO getApplicationOption(String aoOid, String lang);
 }

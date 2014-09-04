@@ -17,11 +17,14 @@ package fi.vm.sade.haku.oppija.yksilointi.impl;
 
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application.PostProcessingState;
+import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationNote;
 import fi.vm.sade.haku.oppija.hakemus.domain.util.ApplicationUtil;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationDAO;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.haku.oppija.hakemus.service.BaseEducationService;
+import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
+import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.haku.oppija.lomake.service.FormService;
 import fi.vm.sade.haku.oppija.lomake.validation.ElementTreeValidator;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationInput;
@@ -40,6 +43,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.io.StringWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -55,12 +59,14 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
     public static final Logger LOGGER = LoggerFactory.getLogger(YksilointiWorkerImpl.class);
     public static final String TRUE = "true";
     private final ApplicationService applicationService;
+    private final ApplicationSystemService applicationSystemService;
     private final BaseEducationService baseEducationService;
     private final ApplicationDAO applicationDAO;
     private final ElementTreeValidator elementTreeValidator;
     private FormService formService;
 
     private Map<String, Template> templateMap;
+    private Map<String, Template> templateMapHigherEducation;
 
     @Value("${scheduler.maxBatchSize:10}")
     private int maxBatchSize;
@@ -81,9 +87,12 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
     private String replyTo;
 
     @Autowired
-    public YksilointiWorkerImpl(ApplicationService applicationService, BaseEducationService baseEducationService, FormService formService, ApplicationDAO applicationDAO,
+    public YksilointiWorkerImpl(ApplicationService applicationService,
+                                ApplicationSystemService applicationSystemService,
+                                BaseEducationService baseEducationService, FormService formService, ApplicationDAO applicationDAO,
       ElementTreeValidator elementTreeValidator) {
         this.applicationService = applicationService;
+        this.applicationSystemService = applicationSystemService;
         this.baseEducationService = baseEducationService;
         this.formService = formService;
         this.applicationDAO = applicationDAO;
@@ -101,13 +110,14 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
         templateMap = new HashMap<String, Template>();
         templateMap.put("suomi", velocityEngine.getTemplate("email/application_received_fi.vm", "UTF-8"));
         templateMap.put("ruotsi", velocityEngine.getTemplate("email/application_received_sv.vm", "UTF-8"));
+        templateMap.put("englanti", velocityEngine.getTemplate("email/application_received_en.vm", "UTF-8"));
+        templateMapHigherEducation = new HashMap<String, Template>();
+        templateMapHigherEducation.put("suomi", velocityEngine.getTemplate("email/application_received_higher_ed_fi.vm", "UTF-8"));
+        templateMapHigherEducation.put("ruotsi", velocityEngine.getTemplate("email/application_received_higher_ed_sv.vm", "UTF-8"));
+        templateMapHigherEducation.put("englanti", velocityEngine.getTemplate("email/application_received_higher_ed_en.vm", "UTF-8"));
     }
 
-    /**
-     * Post-process applications.
-     *
-     * @param sendMail
-     */
+    @Override
     public void processApplications(final boolean sendMail) {
         Application application = getNextSubmittedApplication();
         int count = 0;
@@ -119,15 +129,15 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
 
     public void processOneApplication(Application application, final boolean sendMail){
         try {
-            application = applicationService.fillLOPChain(application, false);
             application = applicationService.addPersonOid(application);
             if (!skipSendingSchoolAutomatic) {
                 application = baseEducationService.addSendingSchool(application);
                 application = baseEducationService.addBaseEducation(application);
             }
+            application = applicationService.updateAuthorizationMeta(application, false);
             application = validateApplication(application);
+            application.setModelVersion(Application.CURRENT_MODEL_VERSION);
             this.applicationDAO.update(new Application(application.getOid()), application);
-            //applicationService.update(, application);
             if (sendMail) {
                 try {
                     sendMail(application);
@@ -137,10 +147,11 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
             }
         } catch (Exception e) {
             LOGGER.error("post process failed for application: " +application.getOid(), e);
-            setProcessingStateToFailed(application.getOid());
+            setProcessingStateToFailed(application.getOid(), e.getMessage());
         }
     }
 
+    @Override
     public void processIdentification() {
         Application application = getNextWithoutStudentOid();
         LOGGER.debug("Starting processIdentification, application: {} {}",
@@ -150,6 +161,35 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
         }
     }
 
+    @Override
+    public void processModelUpdate() {
+        List<Application> applications = getNextUpgradable();
+
+        LOGGER.info("Start upgrading application model");
+        while (applications != null && !applications.isEmpty()) {
+            for (Application application : applications) {
+                try {
+                    LOGGER.info("Start upgrading model version for application: " + application.getOid());
+                    application = applicationService.updateAuthorizationMeta(application, false);
+                    application.setModelVersion(Application.CURRENT_MODEL_VERSION);
+                    LOGGER.info("Done upgrading model version for application: " + application.getOid());
+                } catch (IOException e) {
+                    application.setModelVersion(-1 * Application.CURRENT_MODEL_VERSION);
+                    LOGGER.error("Upgrading model failed for application: " + application.getOid() + " " + e.getMessage());
+                } catch (RuntimeException e) {
+                    application.setModelVersion(-1 * Application.CURRENT_MODEL_VERSION);
+                    LOGGER.error("Upgrading model failed for application: " + application.getOid() + " " + e.getMessage());
+                } finally {
+                    applicationDAO.update(new Application(application.getOid()), application);
+                }
+
+            }
+            applications = getNextUpgradable();
+        }
+        LOGGER.info("Done upgrading application model");
+    }
+
+    @Override
     public void redoPostprocess(boolean sendMail) {
         LOGGER.debug("Beginning redoprocess");
         Application application = getNextRedo();
@@ -167,14 +207,15 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
             LOGGER.debug("Reprocessing application, redo: " + redo);
             if (redo != null) {
                 if (PostProcessingState.FULL.equals(redo) || PostProcessingState.NOMAIL.equals(redo)) {
-                    application = applicationService.fillLOPChain(application, false);
                     application = applicationService.addPersonOid(application);
                     if (!skipSendingSchoolManual) {
                         application = baseEducationService.addSendingSchool(application);
                         application = baseEducationService.addBaseEducation(application);
                     }
+                    application = applicationService.updateAuthorizationMeta(application, false);
                     application = validateApplication(application);
                     application.setRedoPostProcess(PostProcessingState.DONE);
+                    application.setModelVersion(Application.CURRENT_MODEL_VERSION);
                     this.applicationDAO.update(new Application(application.getOid()), application);
                     LOGGER.debug("Reprocessing " + application.getOid() + " done");
                 }
@@ -188,7 +229,7 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
             }
         } catch (Exception e) {
             LOGGER.error("redoPostProcess failed for application " + application.getOid(), e);
-            setProcessingStateToFailed(application.getOid());
+            setProcessingStateToFailed(application.getOid(), e.getMessage());
         }
     }
 
@@ -218,9 +259,20 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
         Map<String, String> answers = application.getVastauksetMerged();
         String emailAddress = answers.get(OppijaConstants.ELEMENT_ID_EMAIL);
         String lang = answers.get(OppijaConstants.ELEMENT_ID_CONTACT_LANGUAGE);
-        Template tmpl = templateMap.get(lang);
 
-        Locale locale = new Locale("ruotsi".equals(lang) ? "sv" : "fi");
+        Template tmpl = templateMap.get(lang);
+        String asOid = application.getApplicationSystemId();
+        ApplicationSystem as = applicationSystemService.getApplicationSystem(asOid);
+        if (as.getKohdejoukkoUri().equals(OppijaConstants.KOHDEJOUKKO_KORKEAKOULU)) {
+            tmpl = templateMapHigherEducation.get(lang);
+        }
+
+        Locale locale = new Locale("fi");
+        if ("ruotsi".equals(lang)) {
+            locale = new Locale("sv");
+        } else if ("englanti".equals(lang)) {
+            locale = new Locale("en");
+        }
         ResourceBundle messages = ResourceBundle.getBundle("messages", locale);
 
         String subject = messages.getString("email.application.received.title");
@@ -306,7 +358,12 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
         Form form = formService.getForm(application.getApplicationSystemId());
         Map<String, String> translations = form.getI18nText().getTranslations();
         String lang = application.getVastauksetMerged().get(OppijaConstants.ELEMENT_ID_CONTACT_LANGUAGE);
-        String realLang = "suomi".equals(lang) ? "fi" : "sv";
+        String realLang = "fi";
+        if (lang.equals("ruotsi")) {
+            realLang = "sv";
+        } else if (lang.equals("englanti")) {
+            realLang = "en";
+        }
         String formName = translations.get(realLang);
         if (isEmpty(formName)) {
             formName = translations.get("fi");
@@ -342,6 +399,10 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
         return setLastAutomatedProcessingTimeAndSave(application);
     }
 
+    private List<Application> getNextUpgradable() {
+        return applicationDAO.getNextUpgradable(maxBatchSize);
+    }
+
     private Application setLastAutomatedProcessingTimeAndSave(final Application application) {
         if (application != null) {
             application.setLastAutomatedProcessingTime(System.currentTimeMillis());
@@ -350,8 +411,11 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
         return application;
     }
 
-    private void setProcessingStateToFailed(String oid){
+    private void setProcessingStateToFailed(String oid, String message){
         Application application = applicationDAO.find(new Application(oid)).get(0);
+        ApplicationNote note = new ApplicationNote("Hakemuksen jälkikäsittely epäonnistui: "+message,
+                new Date(), "");
+        application.addNote(note);
         application.setRedoPostProcess(PostProcessingState.FAILED);
         this.applicationDAO.update(new Application(oid), application);
     }

@@ -24,7 +24,7 @@ import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.exception.ConfigurationException;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
-import fi.vm.sade.organisaatio.service.search.SearchCriteria;
+import fi.vm.sade.organisaatio.api.search.OrganisaatioSearchCriteria;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
@@ -215,16 +215,16 @@ public class OrganizationServiceMockImpl implements OrganizationService {
     protected Organization getOrganization(final String name, final String oid, final String parentOid,
                                            Date startDate, Date endDate, String... types) {
         final I18nText orgName = ElementUtil.createI18NAsIs(name);
-        return new Organization(orgName, oid, parentOid, Arrays.asList(types), startDate, endDate);
+        return new Organization(orgName, oid, parentOid, Arrays.asList(types), null, startDate, endDate);
     }
 
     @Override
-    public List<Organization> search(SearchCriteria criteria) {
+    public List<Organization> search(OrganisaatioSearchCriteria criteria) {
         @SuppressWarnings("unchecked")
         final Predicate<Organization> predicate = Predicates.and(new OrgNamePredicate(criteria.getSearchStr()),
                 new OrgTypePredicate(criteria.getOrganisaatioTyyppi()),
-                new OrgIncludeOnlyActivePredicate(criteria.getAktiiviset()),
-                new OrgIncludeOnlyPassivePredicate(criteria.getLakkautetut()));
+                new OrgIncludeOnlyActivePredicate(criteria.getVainAktiiviset()),
+                new OrgIncludeOnlyPassivePredicate(criteria.getVainLakkautetut()));
         return Lists.newArrayList(Iterables.filter(orgs, predicate));
     }
 

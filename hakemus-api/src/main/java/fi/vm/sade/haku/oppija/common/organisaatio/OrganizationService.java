@@ -15,8 +15,10 @@
  */
 package fi.vm.sade.haku.oppija.common.organisaatio;
 
-import fi.vm.sade.organisaatio.service.search.SearchCriteria;
+import fi.vm.sade.organisaatio.api.search.OrganisaatioSearchCriteria;
 
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 public interface OrganizationService {
@@ -28,11 +30,11 @@ public interface OrganizationService {
      * @param criteria
      * @return
      */
-    List<Organization> search(SearchCriteria searchCriteria);
+    List<Organization> search(OrganisaatioSearchCriteria searchCriteria) throws UnsupportedEncodingException;
 
-    List<String> findParentOids(String organizationOid);
+    List<String> findParentOids(String organizationOid) throws IOException;
 
-    Organization findByOid(String oid);
+    Organization findByOid(String oid) throws IOException;
 
     List<Organization> findByOppilaitosnumero(List<String> oppilaitosnumeros);
 }

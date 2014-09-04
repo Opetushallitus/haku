@@ -31,6 +31,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -170,7 +171,12 @@ public class OfficerUIServiceImplTest {
         answers.put("PK_GRADE", "bar");
         answers.put("notgrade", "baz");
         ApplicationPhase phase = new ApplicationPhase(asId, "osaaminen", answers);
-        ModelResponse response = uiService.updateApplication(oid, phase, null);
+        ModelResponse response = null;
+        try {
+            response = uiService.updateApplication(oid, phase, null);
+        } catch (IOException e) {
+            fail(e.getMessage());
+        }
         Map<String, String> newAnswers = response.getApplication().getVastauksetMerged();
         assertEquals(2, answers.size());
         assertEquals("bar", newAnswers.get("PK_GRADE"));
@@ -187,7 +193,12 @@ public class OfficerUIServiceImplTest {
         answers.put("notgrade", "baz");
         answers.put("stillnotgrade", "foo");
         ApplicationPhase phase = new ApplicationPhase(asId, "osaaminen", answers);
-        ModelResponse response = uiService.updateApplication(oid, phase, null);
+        ModelResponse response = null;
+        try {
+            response = uiService.updateApplication(oid, phase, null);
+        } catch (IOException e) {
+            fail(e.getMessage());
+        }
         Map<String, String> newAnswers = response.getApplication().getVastauksetMerged();
         assertEquals(4, newAnswers.size());
         assertEquals("foo", newAnswers.get("PK_GRADE"));
@@ -209,7 +220,12 @@ public class OfficerUIServiceImplTest {
 
         thrown.expect(fi.vm.sade.haku.oppija.lomake.exception.IllegalStateException.class);
         thrown.expectMessage("Trying to change transferred grades");
-        ModelResponse response = uiService.updateApplication(oid, phase, null);
+        ModelResponse response = null;
+        try {
+            response = uiService.updateApplication(oid, phase, null);
+        } catch (IOException e) {
+            fail(e.getMessage());
+        }
         response.getApplication().getVastauksetMerged();
         fail("Should have thrown");
     }

@@ -4,8 +4,7 @@ import fi.vm.sade.generic.rest.CachingRestClient;
 import fi.vm.sade.haku.oppija.common.organisaatio.Organization;
 import fi.vm.sade.organisaatio.api.search.OrganisaatioHakutulos;
 import fi.vm.sade.organisaatio.api.search.OrganisaatioPerustieto;
-import fi.vm.sade.organisaatio.service.search.OrganisaatioSearchService;
-import fi.vm.sade.organisaatio.service.search.SearchCriteria;
+import fi.vm.sade.organisaatio.api.search.OrganisaatioSearchCriteria;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -36,8 +35,7 @@ public class OrganizationServiceImplTest {
         nimiMap.put("fi", "nimi");
         organisaatioDTO.setNimi(nimiMap);
         serviceResult.add(organisaatioDTO);
-        OrganisaatioSearchService organisaatioService = mock(OrganisaatioSearchService.class);
-        organizationServiceImpl = new OrganizationServiceImpl(organisaatioService);
+        organizationServiceImpl = new OrganizationServiceImpl();
         // when(organisaatioService.searchBasicOrganisaatios(any(SearchCriteria.class))).thenReturn(serviceResult);
     }
 
@@ -52,7 +50,7 @@ public class OrganizationServiceImplTest {
         when(client.get(any(String.class), eq(OrganisaatioHakutulos.class))).thenReturn(hakutulos);
         OrganizationServiceImpl.setCachingRestClient(client);
 
-        List<Organization> search = organizationServiceImpl.search(new SearchCriteria());
+        List<Organization> search = organizationServiceImpl.search(new OrganisaatioSearchCriteria());
         assertEquals("Wrong oid ", OID, search.get(0).getOid());
     }
 

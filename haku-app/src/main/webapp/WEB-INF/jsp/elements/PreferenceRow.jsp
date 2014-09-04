@@ -31,14 +31,17 @@
     <c:set value="${sortableItem.educationInputId}-id" var="hiddenKoulutusId" scope="page"/>
     <c:set value="${sortableItem.educationInputId}-educationDegree" var="hiddenEducationDegreeId" scope="page"/>
     <c:set value="${sortableItem.id}-childLONames" var="childLONamesId" scope="page"/>
+    <c:set value="${sortableItem.id}-attachments" var="attachmentsId" scope="page"/>
     <c:set value="${hiddenKoulutusId}-lang" var="hiddenKoulutusIdLang" scope="page"/>
     <c:set value="${hiddenKoulutusId}-educationcode" var="hiddenEducationCode" scope="page"/>
     <c:set value="${hiddenKoulutusId}-sora" var="hiddenKoulutusIdSora" scope="page"/>
     <c:set value="${hiddenKoulutusId}-aoIdentifier" var="hiddenKoulutusIdAoIdentifier" scope="page"/>
+    <c:set value="${hiddenKoulutusId}-ao-groups" var="hiddenKoulutusIdAoGroups" scope="page"/>
     <c:set value="${hiddenKoulutusId}-athlete" var="hiddenKoulutusIdAthlete" scope="page"/>
     <c:set value="${hiddenKoulutusId}-kaksoistutkinto" var="hiddenKoulutusIdKaksoistutkinto" scope="page"/>
     <c:set value="${hiddenKoulutusId}-vocational" var="hiddenKoulutusIdVocational" scope="page"/>
     <c:set value="${hiddenKoulutusId}-attachmentgroups" var="hiddenAttachmentgroups" scope="page"/>
+    <c:set value="${hiddenKoulutusId}-attachments" var="hiddenAttachmentgroups" scope="page"/>
 
     <haku:errorMessage id="${sortableItem.id}" additionalClass="margin-top-1"/>
     <div class="form-row">
@@ -49,7 +52,7 @@
             <div class="field-container-text">
                 <input id="${textInputId}"
                        name="${textInputId}"
-                       value="<c:out value='${answers[textInputId]}'/>"
+                       <haku:value value='${answers[textInputId]}'/>
                        type="text"
                        data-special-id="preferenceLopInput"
                        data-selectinputid="${selectInputId}"
@@ -57,7 +60,7 @@
                 ${sortableItem.attributes['required']}/>
                 <haku:errorMessage id="${textInputId}" additionalClass="margin-top-1"/>
                 <input id="${hiddenInputId}" name="${hiddenInputId}"
-                       value="<c:out value='${answers[hiddenInputId]}'/>"
+                       <haku:value value='${answers[hiddenInputId]}'/>
                        type="hidden"/>
             </div>
         </div>
@@ -71,6 +74,7 @@
             <div class="field-container-select">
                 <select id="${selectInputId}" name="${selectInputId}"
                         data-childlonames="${childLONamesId}"
+                        data-attachments="${attachmentsId}"
                         data-selectedname="<c:out value='${answers[selectInputId]}'/>"
                 ${sortableItem.attributes['required']}>
                 </select>
@@ -81,10 +85,12 @@
                 <haku:input-hidden id="${hiddenKoulutusIdLang}" data="${answers}"/>
                 <haku:input-hidden id="${hiddenKoulutusIdSora}" data="${answers}"/>
                 <haku:input-hidden id="${hiddenKoulutusIdAoIdentifier}" data="${answers}"/>
+                <haku:input-hidden id="${hiddenKoulutusIdAoGroups}" data="${answers}"/>
                 <haku:input-hidden id="${hiddenKoulutusIdAthlete}" data="${answers}"/>
                 <haku:input-hidden id="${hiddenKoulutusIdKaksoistutkinto}" data="${answers}"/>
                 <haku:input-hidden id="${hiddenKoulutusIdVocational}" data="${answers}"/>
                 <haku:input-hidden id="${hiddenAttachmentgroups}" data="${answers}"/>
+                <haku:input-hidden id="${hiddenAttachments}" data="${answers}"/>
             </div>
         </div>
         <div class="clear"></div>

@@ -157,7 +157,7 @@ public class SuoritusrekisteriServiceImpl implements SuoritusrekisteriService {
             log.debug("url: {}, response: {}", url, response);
         } catch (IOException e) {
             log.error("Fetching koulu failed: {}", e);
-            return null;
+            throw new ResourceNotFoundException("Fetching koulu failed", e);
         }
         JsonArray elements = new JsonParser().parse(response).getAsJsonArray();
         Map<String, SuoritusDTO> suoritukset = new HashMap<String, SuoritusDTO>(elements.size());

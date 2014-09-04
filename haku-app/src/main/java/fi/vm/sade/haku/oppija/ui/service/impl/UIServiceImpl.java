@@ -19,7 +19,6 @@ package fi.vm.sade.haku.oppija.ui.service.impl;
 import com.google.common.base.Predicate;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
-import fi.vm.sade.haku.oppija.hakemus.domain.util.ApplicationUtil;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationState;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
@@ -27,21 +26,21 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Titled;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.gradegrid.GradeGrid;
+import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.haku.oppija.lomake.service.UserSession;
 import fi.vm.sade.haku.oppija.lomake.util.ElementTree;
+import fi.vm.sade.haku.oppija.ui.common.AttachmentUtil;
 import fi.vm.sade.haku.oppija.ui.service.ModelResponse;
 import fi.vm.sade.haku.oppija.ui.service.UIService;
 import fi.vm.sade.haku.virkailija.koulutusinformaatio.KoulutusinformaatioService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
-import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOfficeDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO;
-import org.apache.commons.lang3.StringUtils;
+import fi.vm.sade.haku.virkailija.viestintapalvelu.PDFService;
+import org.apache.http.HttpResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,65 +53,30 @@ public class UIServiceImpl implements UIService {
     private final String koulutusinformaatioBaseUrl;
     private final UserSession userSession;
     private final KoulutusinformaatioService koulutusinformaatioService;
+    private final PDFService pdfService;
 
     @Autowired
     public UIServiceImpl(final ApplicationService applicationService,
                          final ApplicationSystemService applicationSystemService,
                          final UserSession userSession,
                          final KoulutusinformaatioService koulutusinformaatioService,
-                         @Value("${koulutusinformaatio.base.url}") final String koulutusinformaatioBaseUrl) {
+                         @Value("${koulutusinformaatio.base.url}") final String koulutusinformaatioBaseUrl, PDFService pdfService) {
         this.applicationService = applicationService;
         this.applicationSystemService = applicationSystemService;
         this.userSession = userSession;
         this.koulutusinformaatioService = koulutusinformaatioService;
         this.koulutusinformaatioBaseUrl = koulutusinformaatioBaseUrl;
+        this.pdfService = pdfService;
     }
 
     @Override
     public ModelResponse getCompleteApplication(final String applicationSystemId, final String oid) {
         ApplicationSystem activeApplicationSystem = applicationSystemService.getActiveApplicationSystem(applicationSystemId);
         Application application = applicationService.getSubmittedApplication(applicationSystemId, oid);
-        List<String> discretionaryAttachmentAOIds = ApplicationUtil.getDiscretionaryAttachmentAOIds(application);
-        Map<String, List<String>> higherEdAttachmentAOIds = ApplicationUtil.getHigherEdAttachmentAOIds(application);
-        Map<String, List<fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO>> higherEdAttachments =
-                new HashMap<String, List<fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO>>();
-        for (Map.Entry<String, List<String>> entry : higherEdAttachmentAOIds.entrySet()) {
-            String key = entry.getKey();
-            List<fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO> aos =
-                    new ArrayList<ApplicationOptionDTO>();
-            for (String aoOid : entry.getValue()) {
-                ApplicationOptionDTO ao = koulutusinformaatioService.getApplicationOption(aoOid);
-                ao.getProvider().getApplicationOffice();
-                if (!addressAlreadyAdded(aos, ao)) {
-                    aos.add(ao);
-                }
-            }
-            higherEdAttachments.put(key, aos);
-        }
-        return new ModelResponse(application, activeApplicationSystem, discretionaryAttachmentAOIds,
-                higherEdAttachments, koulutusinformaatioBaseUrl);
-    }
 
-    private boolean addressAlreadyAdded(List<ApplicationOptionDTO> aos, ApplicationOptionDTO ao) {
-        if (aos.isEmpty()) {
-            return false;
-        }
-        ApplicationOfficeDTO newOffice = ao.getProvider().getApplicationOffice();
-        for (ApplicationOptionDTO currAo : aos) {
-            ApplicationOfficeDTO currOffice = currAo.getProvider().getApplicationOffice();
-            if (StringUtils.equals(newOffice.getName(), currOffice.getName())
-                    && StringUtils.equals(newOffice.getPostalAddress().getStreetAddress(),
-                        currOffice.getPostalAddress().getStreetAddress())
-                    && StringUtils.equals(newOffice.getPostalAddress().getStreetAddress2(),
-                        currOffice.getPostalAddress().getStreetAddress2())
-                    && StringUtils.equals(newOffice.getPostalAddress().getPostalCode(),
-                        currOffice.getPostalAddress().getPostalCode())
-                    && StringUtils.equals(newOffice.getPostalAddress().getPostOffice(),
-                        currOffice.getPostalAddress().getPostOffice())) {
-                return true;
-            }
-        }
-        return false;
+        return new ModelResponse(application, activeApplicationSystem,
+                AttachmentUtil.resolveAttachments(activeApplicationSystem, application, koulutusinformaatioService),
+                koulutusinformaatioBaseUrl);
     }
 
     @Override
@@ -233,9 +197,9 @@ public class UIServiceImpl implements UIService {
     }
 
     @Override
-    public ModelResponse submitApplication(final String applicationSystemId) {
+    public ModelResponse submitApplication(final String applicationSystemId, String language) {
         ModelResponse modelResponse = new ModelResponse();
-        modelResponse.setApplication(applicationService.submitApplication(applicationSystemId));
+        modelResponse.setApplication(applicationService.submitApplication(applicationSystemId, language));
         return modelResponse;
     }
 
@@ -247,5 +211,18 @@ public class UIServiceImpl implements UIService {
             application.setPhaseId(ElementTree.getFirstChild(activeForm).getId());
         }
         return new ModelResponse(application);
+    }
+
+    @Override
+    public HttpResponse getUriToPDF(String applicationSystemId, String oid) {
+
+        Application application = applicationService.getSubmittedApplication(applicationSystemId, oid);
+        if (application != null
+                && application.getApplicationSystemId().equals(applicationSystemId)
+                && application.getOid().equals(oid)) {
+            String url = "/virkailija/hakemus/" + oid + "/print/view";
+            return pdfService.getUriToPDF(url);
+        }
+        throw new ResourceNotFoundException("Not allowed");
     }
 }

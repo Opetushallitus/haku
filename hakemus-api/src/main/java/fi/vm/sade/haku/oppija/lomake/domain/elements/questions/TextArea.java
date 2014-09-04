@@ -17,10 +17,9 @@
 package fi.vm.sade.haku.oppija.lomake.domain.elements.questions;
 
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.Titled;
 
 
-public class TextArea extends Titled {
+public class TextArea extends Question {
 
     private static final long serialVersionUID = -8549493045339575750L;
 

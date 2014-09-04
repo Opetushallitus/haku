@@ -21,5 +21,7 @@ public interface YksilointiWorker {
 
     void processIdentification();
 
+    void processModelUpdate();
+
     void redoPostprocess(boolean sendMail);
 }

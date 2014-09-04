@@ -28,4 +28,6 @@ public interface ApplicationOptionService {
      * @return
      */
     ApplicationOption get(final String oid);
+
+    ApplicationOption get(String oid, String lang);
 }

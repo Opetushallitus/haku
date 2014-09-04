@@ -22,7 +22,7 @@ import com.google.common.collect.Lists;
 import fi.vm.sade.haku.oppija.common.organisaatio.Organization;
 import fi.vm.sade.haku.oppija.common.organisaatio.impl.OrganizationServiceMockImpl.OrgNamePredicate;
 import fi.vm.sade.haku.oppija.common.organisaatio.impl.OrganizationServiceMockImpl.OrgTypePredicate;
-import fi.vm.sade.organisaatio.service.search.SearchCriteria;
+import fi.vm.sade.organisaatio.api.search.OrganisaatioSearchCriteria;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -101,7 +101,7 @@ public class OrganizationServiceMockImplTest {
     @Test
     public void testReadTestData() throws IOException {
         OrganizationServiceMockImpl impl = new OrganizationServiceMockImpl();
-        SearchCriteria criteria = new SearchCriteria();
+        OrganisaatioSearchCriteria criteria = new OrganisaatioSearchCriteria();
         criteria.setSearchStr("espoo");
         assertTrue("No search results found", impl.search(criteria).size() > 0);
     }

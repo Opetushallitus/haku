@@ -5,12 +5,12 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import fi.vm.sade.generic.service.AbstractPermissionService;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
+import fi.vm.sade.haku.oppija.hakemus.domain.AuthorizationMeta;
 import fi.vm.sade.haku.oppija.hakemus.service.HakuPermissionService;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Phase;
 import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import fi.vm.sade.security.OrganisationHierarchyAuthorizer;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -22,15 +22,14 @@ import org.springframework.stereotype.Service;
 
 import javax.ws.rs.HEAD;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Service
 @Profile(value = {"default"})
 public class HakuPermissionServiceImpl extends AbstractPermissionService implements HakuPermissionService {
 
-    public static final int MAX_NUMBER_OF_PREFERENCES = 5;
     private AuthenticationService authenticationService;
     private static final Logger log = LoggerFactory.getLogger(HakuPermissionServiceImpl.class);
     private static final String ROLE_OPO = "APP_HAKEMUS_OPO";
@@ -46,12 +45,12 @@ public class HakuPermissionServiceImpl extends AbstractPermissionService impleme
     }
 
     @Override
+    public List<String> userCanReadApplications() {
+        return userCanReadApplications(authenticationService.getOrganisaatioHenkilo());
+    }
+
+    @Override
     public List<String> userCanReadApplications(List<String> organizations) {
-
-        if (organizations == null || organizations.isEmpty()) {
-            organizations = authenticationService.getOrganisaatioHenkilo();
-        }
-
         List<String> readble = new ArrayList<String>();
         for (String organization : organizations) {
             log.debug("Checking read permissions as organization:{} for user:{})", organization, authenticationService.getCurrentHenkilo().getPersonOid());
@@ -64,10 +63,12 @@ public class HakuPermissionServiceImpl extends AbstractPermissionService impleme
     }
 
     @Override
+    public List<String> userHasOpoRole() {
+        return userHasOpoRole(authenticationService.getOrganisaatioHenkilo());
+    }
+
+    @Override
     public List<String> userHasOpoRole(List<String> organizations) {
-        if (organizations == null || organizations.isEmpty()) {
-            organizations = authenticationService.getOrganisaatioHenkilo();
-        }
         List<String> opoOrg = new ArrayList<String>();
         for (String organization : organizations) {
             log.debug("checking opo-role against organization "+organization);
@@ -88,10 +89,10 @@ public class HakuPermissionServiceImpl extends AbstractPermissionService impleme
             return canRead;
         }
         boolean opo = userHasOpoRoleToSendingSchool(application);
-        if (opo) {
-            log.debug("Can read, opo "+application.getOid());
-        }
-        return opo;
+        AuthorizationMeta authorizationMeta = application.getAuthorizationMeta();
+        boolean opoAllowed = authorizationMeta == null || authorizationMeta.isOpoAllowed() == null
+                ? false : authorizationMeta.isOpoAllowed();
+        return opo && opoAllowed;
     }
 
     @Override
@@ -144,11 +145,18 @@ public class HakuPermissionServiceImpl extends AbstractPermissionService impleme
     }
 
     private boolean userHasOpoRoleToSendingSchool(Application application) {
-        Map<String, String> answers = new HashMap<String, String>(application.getPhaseAnswers(OppijaConstants.PHASE_EDUCATION));
-        if (answers.containsKey(OppijaConstants.ELEMENT_ID_SENDING_SCHOOL)) {
-            String organization = answers.get(OppijaConstants.ELEMENT_ID_SENDING_SCHOOL);
-            if (!Strings.isNullOrEmpty(organization)) {
-                return checkAccess(organization, getOpoRole());
+        AuthorizationMeta authorizationMeta = application.getAuthorizationMeta();
+        if (authorizationMeta == null) {
+            return false;
+        }
+
+        Set<String> sendingSchool = authorizationMeta.getSendingSchool();
+        if (sendingSchool == null) {
+            return false;
+        }
+        for (String organization : sendingSchool) {
+            if (!Strings.isNullOrEmpty(organization) && checkAccess(organization, getOpoRole())) {
+                return true;
             }
         }
         return false;
@@ -163,10 +171,9 @@ public class HakuPermissionServiceImpl extends AbstractPermissionService impleme
     public boolean userCanSearchBySendingSchool() {
         if (checkAccess(getRootOrgOid(), getReadRole(), getReadUpdateRole(), getCreateReadUpdateDeleteRole(),
                 getOpoRole())) {
-            // OPH users can access anything
             return true;
         }
-        return userHasOpoRole(null).size() > 0;
+        return userHasOpoRole().size() > 0;
     }
 
     @Override
@@ -181,17 +188,24 @@ public class HakuPermissionServiceImpl extends AbstractPermissionService impleme
             return true;
         }
 
-        Map<String, String> answers = application.getVastauksetMerged();
-        for (int i = 1; i <= MAX_NUMBER_OF_PREFERENCES; i++) {
-            String id = "preference" + i + "-Opetuspiste-id";
-            String organization = answers.get(id);
+        AuthorizationMeta authorizationMeta = application.getAuthorizationMeta();
+        if (authorizationMeta == null) {
+            return false;
+        }
 
+        Set<String> allOrganizations = authorizationMeta.getAllAoOrganizations();
+        if (allOrganizations == null) {
+            return false;
+        }
+
+        for (String organization : allOrganizations) {
             if (StringUtils.isNotEmpty(organization) &&
                     checkAccess(organization, roles)) {
                 log.debug("User can read application, org: {}", organization);
                 return true;
             }
         }
+
         return false;
     }
 

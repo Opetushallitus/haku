@@ -28,11 +28,10 @@ import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationAdditionalDataDTO;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultItemDTO;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationDAO;
+import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationFilterParameters;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationQueryParameters;
-import fi.vm.sade.haku.oppija.hakemus.service.HakuPermissionService;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.SocialSecurityNumber;
 import fi.vm.sade.haku.oppija.lomake.service.EncrypterService;
-import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,8 +46,9 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Pattern;
 
-import static com.mongodb.QueryOperators.EXISTS;
-import static org.apache.commons.lang.StringUtils.*;
+import static com.mongodb.QueryOperators.*;
+import static org.apache.commons.lang.StringUtils.isEmpty;
+import static org.apache.commons.lang.StringUtils.isNotBlank;
 
 /**
  * @author Hannu Lyytikainen
@@ -69,6 +69,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     private static final String INDEX_STUDENT_IDENTIFICATION_DONE = "index_studentIdentificationDone";
     private static final String INDEX_SENDING_SCHOOL = "index_lahtokoulu";
     private static final String INDEX_SENDING_CLASS = "index_lahtoluokka";
+    private static final String INDEX_ALL_ORGANIZAIONS = "index_allOrganizations";
     private static final String INDEX_SEARCH_NAMES = "index_searchNames";
     private static final String INDEX_REDO_POSTPROCESS = "index_redoPostProcess";
     private static final String INDEX_FULL_NAME = "index_full_name";
@@ -76,7 +77,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     private static final String FIELD_AO_T = "answers.hakutoiveet.preference%d-Koulutus-id";
     private static final String FIELD_AO_KOULUTUS_ID_T = "answers.hakutoiveet.preference%d-Koulutus-id-aoIdentifier";
     private static final String FIELD_LOP_T = "answers.hakutoiveet.preference%d-Opetuspiste-id";
-    private static final String FIELD_LOP_PARENTS_T = "answers.hakutoiveet.preference%d-Opetuspiste-id-parents";
+    private static final String FIELD_LOP_PARENTS_T = "authorizationMeta.aoOrganizations.%d";
     private static final String FIELD_DISCRETIONARY_T = "answers.hakutoiveet.preference%d-discretionary";
     private static final String FIELD_APPLICATION_OID = "oid";
     private static final String FIELD_APPLICATION_SYSTEM_ID = "applicationSystemId";
@@ -84,7 +85,8 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     private static final String FIELD_APPLICATION_STATE = "state";
     private static final String FIELD_LAST_AUTOMATED_PROCESSING_TIME = "lastAutomatedProcessingTime";
     private static final String FIELD_SENDING_SCHOOL = "answers.koulutustausta.lahtokoulu";
-    private static final String FIELD_SENDING_SCHOOL_PARENTS = "answers.koulutustausta.lahtokoulu-parents";
+    private static final String FIELD_SENDING_SCHOOL_PARENTS = "authorizationMeta.sendingSchool";
+    private static final String FIELD_ALL_ORGANIZAIONS = "authorizationMeta.allAoOrganizations";
     private static final String FIELD_SENDING_CLASS = "answers.koulutustausta.lahtoluokka";
     private static final String FIELD_CLASS_LEVEL = "answers.koulutustausta.luokkataso";
     private static final String FIELD_SSN = "answers.henkilotiedot.Henkilotunnus";
@@ -97,6 +99,8 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     private static final String FIELD_STUDENT_OID = "studentOid";
     private static final String FIELD_STUDENT_IDENTIFICATION_DONE = "studentIdentificationDone";
     private static final String FIELD_REDO_POSTPROCESS = "redoPostProcess";
+    private static final String FIELD_OPO_ALLOWED = "authorizationMeta.opoAllowed";
+    private static final String FIELD_MODEL_VERSION = "modelVersion";
     private static final String REGEX_LINE_BEGIN = "^";
 
     private static final Pattern OID_PATTERN = Pattern.compile("((^([0-9]{1,4}\\.){5})|(^))[0-9]{11}$");
@@ -105,8 +109,6 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     private final EncrypterService shaEncrypter;
     private final DBObjectToSearchResultItem dbObjectToSearchResultItem;
     private final DBObjectToMapFunction dbObjectToMapFunction;
-    private final AuthenticationService authenticationService;
-    private final HakuPermissionService hakuPermissionService;
 
     @Value("${mongodb.ensureIndex:true}")
     private boolean ensureIndex;
@@ -123,15 +125,11 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
                                    ApplicationToDBObjectFunction hakemusToBasicDBObjectConverter,
                                    DBObjectToMapFunction dbObjectToMapFunction,
                                    @Qualifier("shaEncrypter") EncrypterService shaEncrypter,
-                                   DBObjectToSearchResultItem dbObjectToSearchResultItem,
-                                   AuthenticationService authenticationService,
-                                   HakuPermissionService hakuPermissionService) {
+                                   DBObjectToSearchResultItem dbObjectToSearchResultItem) {
         super(dbObjectToHakemusConverter, hakemusToBasicDBObjectConverter);
         this.shaEncrypter = shaEncrypter;
         this.dbObjectToSearchResultItem = dbObjectToSearchResultItem;
         this.dbObjectToMapFunction = dbObjectToMapFunction;
-        this.authenticationService = authenticationService;
-        this.hakuPermissionService = hakuPermissionService;
     }
 
     @Override
@@ -140,8 +138,9 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     }
 
     @Override
-    public List<ApplicationAdditionalDataDTO> findApplicationAdditionalData(String applicationSystemId, String aoId) {
-        ArrayList<DBObject> orgFilter = filterByOrganization();
+    public List<ApplicationAdditionalDataDTO> findApplicationAdditionalData(String applicationSystemId, String aoId,
+                                                                            ApplicationFilterParameters filterParameters) {
+        ArrayList<DBObject> orgFilter = filterByOrganization(filterParameters);
         DBObject query = QueryBuilder.start().and(queryByPreference(Lists.newArrayList(aoId)).get(),
           newOIdExistDBObject(),
           new BasicDBObject(FIELD_APPLICATION_SYSTEM_ID, applicationSystemId),
@@ -185,8 +184,9 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     }
 
     @Override
-    public ApplicationSearchResultDTO findAllQueried(String term, ApplicationQueryParameters queryParameters) {
-        final DBObject query = buildQuery(term, queryParameters);
+    public ApplicationSearchResultDTO findAllQueried(String term, ApplicationQueryParameters queryParameters,
+                                                     ApplicationFilterParameters filterParameters) {
+        final DBObject query = buildQuery(term, queryParameters, filterParameters);
         final DBObject keys = generateKeysDBObject(DBObjectToSearchResultItem.KEYS);
         final DBObject sortBy = new BasicDBObject(queryParameters.getOrderBy(), queryParameters.getOrderDir());
         final SearchResults<ApplicationSearchResultItemDTO> results = searchListing(query, keys, sortBy, queryParameters.getStart(), queryParameters.getRows(), dbObjectToSearchResultItem, true);
@@ -194,9 +194,10 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     }
 
     @Override
-    public List<Map<String, Object>> findAllQueriedFull(String term, ApplicationQueryParameters queryParameters) {
+    public List<Map<String, Object>> findAllQueriedFull(String term, ApplicationQueryParameters queryParameters,
+                                                        ApplicationFilterParameters filterParameters) {
         LOG.debug("findFullApplications, build query: {}", System.currentTimeMillis());
-        final DBObject query = buildQuery(term, queryParameters);
+        final DBObject query = buildQuery(term, queryParameters, filterParameters);
         LOG.debug("findFullApplications, query built: {}", System.currentTimeMillis());
         final DBObject keys = generateKeysDBObject(DBObjectToMapFunction.KEYS);
         final DBObject sortBy = new BasicDBObject(queryParameters.getOrderBy(),  queryParameters.getOrderDir());
@@ -204,9 +205,10 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         return searchResults.searchResultsList;
     }
 
-    private DBObject buildQuery(String term, ApplicationQueryParameters applicationQueryParameters) {
+    private DBObject buildQuery(String term, ApplicationQueryParameters applicationQueryParameters,
+                                ApplicationFilterParameters filterParameters) {
         LOG.debug("Entering findAllQueried");
-        DBObject[] filters = buildQueryFilter(applicationQueryParameters);
+        DBObject[] filters = buildQueryFilter(applicationQueryParameters, filterParameters);
         StringTokenizer st = new StringTokenizer(term, " ");
         ArrayList<DBObject> queries = new ArrayList<DBObject>();
         while (st.hasMoreTokens()) {
@@ -240,7 +242,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         }
 
         QueryBuilder baseQuery = queries.size() > 0 ? QueryBuilder.start().and(queries.toArray(new DBObject[queries.size()])) : QueryBuilder.start();
-        DBObject query = newQueryBuilderWithFilters(filters, baseQuery);
+        DBObject query = newQueryBuilderWithFilters(filters, filterParameters, baseQuery);
         LOG.debug("Constructed query: {}", query.toString());
         return query;
     }
@@ -318,7 +320,8 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         }
     }
 
-    private DBObject[] buildQueryFilter(final ApplicationQueryParameters applicationQueryParameters) {
+    private DBObject[] buildQueryFilter(final ApplicationQueryParameters applicationQueryParameters,
+                                        final ApplicationFilterParameters filterParameters) {
         ArrayList<DBObject> filters = new ArrayList<DBObject>();
         DBObject stateQuery = null;
 
@@ -329,11 +332,11 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         String aoOid = applicationQueryParameters.getAoOid();
 
         ArrayList<DBObject> preferenceQueries = new ArrayList<DBObject>();
-        for (int i = 1; i <= 5; i++) {
+        for (int i = 1; i <= filterParameters.getMaxApplicationOptions(); i++) {
             ArrayList<DBObject> preferenceQuery = new ArrayList<DBObject>(5);
             if (isNotBlank(lopOid)) {
                 preferenceQuery.add(
-                        QueryBuilder.start(String.format(FIELD_LOP_PARENTS_T, i)).regex(Pattern.compile(lopOid)).get());
+                        QueryBuilder.start(String.format(FIELD_LOP_PARENTS_T, i)).in(lopOid).get());
             }
             if (isNotBlank(preference)) {
                 preferenceQuery.add(
@@ -406,40 +409,29 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         return filters.toArray(new DBObject[filters.size()]);
     }
 
-    private ArrayList<DBObject> filterByOrganization() {
+    private ArrayList<DBObject> filterByOrganization(ApplicationFilterParameters filterParameters) {
 
-        List<String> henkOrgs = authenticationService.getOrganisaatioHenkilo();
-        List<String> orgs = hakuPermissionService.userCanReadApplications(henkOrgs);
+        ArrayList<DBObject> queries = new ArrayList<DBObject>(filterParameters.getOrganizationsReadble().size());
 
-        LOG.debug("OrganisaatioHenkilo.canRead().count() == {} ", orgs.size());
-        ArrayList<DBObject> queries = new ArrayList<DBObject>(orgs.size());
+        queries.add(QueryBuilder.start().or(
+                QueryBuilder.start(FIELD_ALL_ORGANIZAIONS).is(null).get(), // Empty applications
+                QueryBuilder.start(FIELD_ALL_ORGANIZAIONS).in(filterParameters.getOrganizationsReadble()).get()
+        ).get());
 
-        for (String org : orgs) {
-            Pattern orgPattern = Pattern.compile(org);
-            DBObject[] lopQueries = new DBObject[6];
-            lopQueries[0] = QueryBuilder.start(String.format(FIELD_LOP_PARENTS_T, 1)).is(null).get(); // Empty applications
-            for (int i = 1; i <= 5; i++) {
-                lopQueries[i] = QueryBuilder.start(String.format(FIELD_LOP_PARENTS_T, i)).regex(orgPattern).get();
-            }
-            queries.add(QueryBuilder.start().or(lopQueries).get());
+        if (filterParameters.getOrganizationsOpo().size() > 0) {
+            queries.add(QueryBuilder.start().and(
+                    QueryBuilder.start(FIELD_SENDING_SCHOOL_PARENTS).in(filterParameters.getOrganizationsOpo()).get(),
+                    QueryBuilder.start(FIELD_OPO_ALLOWED).is(true).get()).get());
         }
-
-        List<String> opoOrgs = hakuPermissionService.userHasOpoRole(henkOrgs);
-        LOG.debug("User has OPO roles: [{}]", join(opoOrgs, ","));
-        if (!opoOrgs.isEmpty()) {
-            for (String opoOrg : opoOrgs) {
-                Pattern opoOrgPattern = Pattern.compile(opoOrg);
-                queries.add(QueryBuilder.start(FIELD_SENDING_SCHOOL_PARENTS).regex(opoOrgPattern).get());
-            }
-        }
-
         LOG.debug("queries: {}", queries.size());
         return queries;
     }
 
-    private DBObject newQueryBuilderWithFilters(final DBObject[] filters, final QueryBuilder baseQuery) {
+    private DBObject newQueryBuilderWithFilters(final DBObject[] filters,
+                                                final ApplicationFilterParameters filterParameters,
+                                                final QueryBuilder baseQuery) {
         DBObject query;
-        ArrayList<DBObject> orgFilter = filterByOrganization();
+        ArrayList<DBObject> orgFilter = filterByOrganization(filterParameters);
 
         LOG.debug("Filters: {}", filters.length);
 
@@ -506,9 +498,13 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     public Application getNextSubmittedApplication() {
         DBObject query = new BasicDBObject();
 
-        query.put(FIELD_PERSON_OID, new BasicDBObject("$exists", false));
-        query.put(FIELD_APPLICATION_OID, new BasicDBObject("$exists", true));
+        query.put(FIELD_PERSON_OID, new BasicDBObject(EXISTS, false));
+        query.put(FIELD_APPLICATION_OID, new BasicDBObject(EXISTS, true));
         query.put(FIELD_APPLICATION_STATE, Application.State.SUBMITTED.toString());
+        query.put(OR, new BasicDBObject[]{
+                new BasicDBObject(FIELD_REDO_POSTPROCESS, new BasicDBObject(EXISTS, false)),
+                new BasicDBObject(FIELD_REDO_POSTPROCESS, new BasicDBObject(NE, PostProcessingState.FAILED.toString()))
+        });
 
         DBObject sortBy = new BasicDBObject(FIELD_LAST_AUTOMATED_PROCESSING_TIME, 1);
 
@@ -531,8 +527,14 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
 
     @Override
     public Application getNextRedo() {
-        QueryBuilder queryBuilder = QueryBuilder.start(FIELD_REDO_POSTPROCESS).in(Lists.newArrayList(PostProcessingState.FULL.toString(), PostProcessingState.NOMAIL.toString()));
-        queryBuilder.put(FIELD_APPLICATION_STATE).in(Lists.newArrayList(Application.State.ACTIVE.name(), Application.State.INCOMPLETE.name()));
+        QueryBuilder queryBuilder = QueryBuilder.start(FIELD_REDO_POSTPROCESS).in(
+                Lists.newArrayList(
+                        PostProcessingState.FULL.toString(),
+                        PostProcessingState.NOMAIL.toString()));
+        queryBuilder.put(FIELD_APPLICATION_STATE).in(
+                Lists.newArrayList(
+                        Application.State.ACTIVE.name(),
+                        Application.State.INCOMPLETE.name()));
         DBObject query = queryBuilder.get();
         DBObject sortBy = new BasicDBObject(FIELD_LAST_AUTOMATED_PROCESSING_TIME, 1);
         DBCursor cursor = getCollection().find(query).sort(sortBy).limit(1);
@@ -551,6 +553,19 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
             throw mongoException;
         }
     }
+
+
+    @Override
+    public List<Application> getNextUpgradable(int batchSize) {
+        QueryBuilder queryBuilder = QueryBuilder.start(FIELD_MODEL_VERSION).exists(false);
+        DBCursor cursor = getCollection().find(queryBuilder.get()).limit(batchSize);
+        List<Application> applications = new ArrayList<Application>(batchSize);
+        while (cursor.hasNext()) {
+            applications.add(fromDBObject.apply(cursor.next()));
+        }
+        return applications;
+    }
+
 
     private boolean resultNotEmpty(final DBObject query, final String indexName) {
         try {
@@ -582,6 +597,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         ensureIndex(INDEX_STUDENT_OID, FIELD_STUDENT_OID);
         ensureSparseIndex(INDEX_SENDING_SCHOOL, FIELD_SENDING_SCHOOL, FIELD_SENDING_CLASS);
         ensureSparseIndex(INDEX_SENDING_CLASS, FIELD_SENDING_CLASS);
+        ensureSparseIndex(INDEX_ALL_ORGANIZAIONS, FIELD_ALL_ORGANIZAIONS);
         ensureIndex(INDEX_SEARCH_NAMES, FIELD_SEARCH_NAMES);
         ensureIndex(INDEX_FULL_NAME, FIELD_FULL_NAME);
 

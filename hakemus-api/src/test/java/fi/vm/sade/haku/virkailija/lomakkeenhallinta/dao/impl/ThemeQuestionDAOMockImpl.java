@@ -26,7 +26,17 @@ public class ThemeQuestionDAOMockImpl implements ThemeQuestionDAO {
 
     @Override
     public void setOrdinal(String themeQuestionId, Integer newOrdinal) {
-    //TODO =RS= Do something maybe someday....
+        //TODO =RS= Do something maybe someday....
+    }
+
+    @Override
+    public void delete(String themeQuestionId) {
+        //TODO =RS= Do something maybe someday....
+    }
+
+    @Override
+    public Integer getMaxOrdinal(String applicationSystemId, String learningOpportunityId, String themeId) {
+        return null;
     }
 
     @Override

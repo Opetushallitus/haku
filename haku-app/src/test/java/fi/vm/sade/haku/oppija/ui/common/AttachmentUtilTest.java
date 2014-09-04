@@ -1,6 +1,7 @@
-package fi.vm.sade.haku.oppija.hakemus.domain.util;
+package fi.vm.sade.haku.oppija.ui.common;
 
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
+import fi.vm.sade.haku.oppija.hakemus.domain.util.ApplicationUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.junit.Test;
 
@@ -10,7 +11,7 @@ import java.util.Map;
 
 import static org.junit.Assert.*;
 
-public class ApplicationUtilTest {
+public class AttachmentUtilTest {
 
     @Test
     public void higherEdAttachmentEmptyTest() {

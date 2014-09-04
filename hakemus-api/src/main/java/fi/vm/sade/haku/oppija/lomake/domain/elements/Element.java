@@ -54,8 +54,6 @@ public abstract class Element implements Serializable {
         this.validators = new ArrayList<Validator>();
         this.children = new ArrayList<Element>();
         this.attributes = new HashMap<String, String>();
-        addAttribute("id", id);
-
     }
 
     public String getId() {

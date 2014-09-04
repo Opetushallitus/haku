@@ -1,6 +1,5 @@
 package fi.vm.sade.haku.oppija.ui.service.impl;
 
-import com.google.common.base.Joiner;
 import com.google.common.base.Strings;
 import fi.vm.sade.haku.oppija.common.organisaatio.Organization;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
@@ -10,7 +9,6 @@ import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationNote;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationOptionDTO;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.Pistetieto;
-import fi.vm.sade.haku.oppija.hakemus.domain.util.ApplicationUtil;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.haku.oppija.hakemus.service.BaseEducationService;
 import fi.vm.sade.haku.oppija.hakemus.service.HakuPermissionService;
@@ -30,6 +28,7 @@ import fi.vm.sade.haku.oppija.lomake.util.ElementTree;
 import fi.vm.sade.haku.oppija.lomake.validation.ElementTreeValidator;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationInput;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationResult;
+import fi.vm.sade.haku.oppija.ui.common.AttachmentUtil;
 import fi.vm.sade.haku.oppija.ui.service.ModelResponse;
 import fi.vm.sade.haku.oppija.ui.service.OfficerUIService;
 import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
@@ -41,13 +40,15 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import fi.vm.sade.haku.virkailija.valinta.ValintaService;
 import fi.vm.sade.haku.virkailija.valinta.dto.*;
 import fi.vm.sade.organisaatio.api.model.types.OrganisaatioTyyppi;
-import fi.vm.sade.organisaatio.service.search.SearchCriteria;
+import fi.vm.sade.organisaatio.api.search.OrganisaatioSearchCriteria;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.ParseException;
@@ -132,7 +133,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     }
 
     @Override
-    public ModelResponse getValidatedApplication(final String oid, final String phaseId) {
+    public ModelResponse getValidatedApplication(final String oid, final String phaseId) throws IOException {
         Application application = this.applicationService.getApplicationByOid(oid);
         application.setPhaseId(phaseId); // TODO active applications does not have phaseId?
         Form form = this.formService.getForm(application.getApplicationSystemId());
@@ -143,18 +144,20 @@ public class OfficerUIServiceImpl implements OfficerUIService {
             element = new ElementTree(form).getChildById(application.getPhaseId());
         }
         String asId = application.getApplicationSystemId();
+        boolean postProcessAllowed = hakuPermissionService.userCanPostProcess(application)
+                && !Application.State.PASSIVE.equals(application.getState());
         ApplicationSystem as = applicationSystemService.getApplicationSystem(asId);
         ModelResponse modelResponse =
                 new ModelResponse(application, form, element, validationResult, koulutusinformaatioBaseUrl);
         modelResponse.addObjectToModel("preview", PHASE_ID_PREVIEW.equals(phaseId));
         modelResponse.addObjectToModel("phaseEditAllowed", hakuPermissionService.userHasEditRoleToPhases(application, form));
         modelResponse.addObjectToModel("virkailijaDeleteAllowed", hakuPermissionService.userCanDeleteApplication(application));
-        modelResponse.addObjectToModel("postProcessAllowed", hakuPermissionService.userCanPostProcess(application));
+        modelResponse.addObjectToModel("postProcessAllowed", postProcessAllowed);
         modelResponse.addObjectToModel("applicationSystem", as);
 
         modelResponse.addObjectToModel("hakukohteet", getValintatiedot(application));
 
-        String sendingSchoolOid = application.getVastauksetMerged().get("lahtokoulu");
+        String sendingSchoolOid = application.getVastauksetMerged().get(OppijaConstants.ELEMENT_ID_SENDING_SCHOOL);
         if (sendingSchoolOid != null) {
             Organization sendingSchool = organizationService.findByOid(sendingSchoolOid);
             String sendingClass = application.getVastauksetMerged().get("lahtoluokka");
@@ -319,7 +322,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     }
 
     @Override
-    public ModelResponse updateApplication(final String oid, final ApplicationPhase applicationPhase, User user) {
+    public ModelResponse updateApplication(final String oid, final ApplicationPhase applicationPhase, User user) throws IOException {
 
         Application application = this.applicationService.getApplicationByOid(oid);
         Application queryApplication = new Application(oid, application.getVersion());
@@ -354,8 +357,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
 
         String noteText = "Päivitetty vaihetta '" + applicationPhase.getPhaseId() + "'";
         application.addNote(createNote(noteText));
-        this.applicationService.fillLOPChain(application, false);
-        this.baseEducationService.addSendingSchool(application);
+        this.applicationService.updateAuthorizationMeta(application, false);
         this.applicationService.update(queryApplication, application);
         application.setPhaseId(applicationPhase.getPhaseId());
         return new ModelResponse(application, form, phase, phaseValidationResult, koulutusinformaatioBaseUrl);
@@ -417,7 +419,13 @@ public class OfficerUIServiceImpl implements OfficerUIService {
                 applicationSystemService.getAllApplicationSystems("id", "name", "hakukausiUri", "hakukausiVuosi");
         modelResponse.addObjectToModel("applicationSystems", applicationSystems);
         modelResponse.addObjectToModel("organizationTypes", organizationTypes);
-        modelResponse.addObjectToModel("learningInstitutionTypes", koodistoService.getLearningInstitutionTypes());
+        List<Option> institutionTypes = new ArrayList<Option>();
+        for (Option institution : koodistoService.getLearningInstitutionTypes()) {
+            String value = institution.getValue();
+            value = value.replaceAll("#[0-9]$", "#*");
+            institutionTypes.add(new Option(institution.getI18nText(), value));
+        }
+        modelResponse.addObjectToModel("learningInstitutionTypes", institutionTypes);
         modelResponse.addObjectToModel("hakukausiOptions", koodistoService.getHakukausi());
         modelResponse.addObjectToModel("applicationEnterAllowed", hakuPermissionService.userCanEnterApplication());
         modelResponse.addObjectToModel("sendingSchoolAllowed", hakuPermissionService.userCanSearchBySendingSchool());
@@ -451,7 +459,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     }
 
     @Override
-    public ModelResponse getMultipleApplicationResponse(String applicationList, String selectedApplication) {
+    public ModelResponse getMultipleApplicationResponse(String applicationList, String selectedApplication) throws IOException {
         Application application = applicationService.getApplicationByOid(selectedApplication);
 
         String[] apps = applicationList.split(",");
@@ -496,23 +504,20 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     }
 
     @Override
-    public List<Map<String, Object>> getSchools(String term) {
-        SearchCriteria crit = new SearchCriteria();
+    public List<Map<String, Object>> getSchools(String term) throws UnsupportedEncodingException {
+        OrganisaatioSearchCriteria crit = new OrganisaatioSearchCriteria();
         crit.setOrganisaatioTyyppi(OrganisaatioTyyppi.OPPILAITOS.value());
         crit.setSearchStr(term);
         crit.setSkipParents(true);
-        crit.setAktiiviset(true);
+        crit.setVainAktiiviset(true);
         List<Organization> orgs = organizationService.search(crit);
         List<Map<String, Object>> schools = new ArrayList<Map<String, Object>>(orgs.size());
         LOGGER.debug("Fetching schools with term: '{}', got {} organizations", term, orgs.size());
         int resultCount = 20;
         for (Organization org : orgs) {
-            // This IF is stupid, but necessary. Asking organisaatioService for 'oppilaitos' returns also
-            // organisaatios with type of 'opetuspiste' and 'oppisopimustoimipiste'.
-            LOGGER.debug("Org: " + org.getOid() + " Types: [" + Joiner.on(",").join(org.getTypes()) + "]");
-//            if (!org.getTypes().contains("OPPILAITOS")) {
-//                continue;
-//            }
+            if (org.getOppilaitostyyppi() == null) {
+                continue;
+            }
             I18nText name = org.getName();
             Map<String, Object> school = new HashMap<String, Object>();
             school.put("name", name.getTranslations());
@@ -601,27 +606,12 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     @Override
     public ModelResponse getApplicationPrint(final String oid) {
         Application application = applicationService.getApplicationByOid(oid);
-        ApplicationSystem activeApplicationSystem = applicationSystemService.getApplicationSystem(application.getApplicationSystemId());
+        ApplicationSystem applicationSystem = applicationSystemService.getApplicationSystem(application.getApplicationSystemId());
 
-        List<String> discretionaryAttachmentAOIds = ApplicationUtil.getDiscretionaryAttachmentAOIds(application);
-        List<fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO> discretionaryAttachments =
-                koulutusinformaatioService.getApplicationOptions(discretionaryAttachmentAOIds);
-
-        Map<String, List<String>> higherEdAttachmentAOIds = ApplicationUtil.getHigherEdAttachmentAOIds(application);
-        Map<String, List<fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO>> higherEdAttachments =
-                new HashMap<String, List<fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO>>();
-        for (Map.Entry<String, List<String>> entry : higherEdAttachmentAOIds.entrySet()) {
-            String key = entry.getKey();
-            List<fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO> aos =
-                    new ArrayList<fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO>();
-            for (String aoOid : entry.getValue()) {
-                aos.add(koulutusinformaatioService.getApplicationOption(aoOid));
-            }
-            higherEdAttachments.put(key, aos);
-        }
-
-        return new ModelResponse(application, activeApplicationSystem,
-                discretionaryAttachments, higherEdAttachments);
+        return new ModelResponse(application,
+                applicationSystem,
+                AttachmentUtil.resolveAttachments(applicationSystem, application, koulutusinformaatioService),
+                koulutusinformaatioBaseUrl);
     }
 
     private ApplicationNote createNote(String note) {
