@@ -34,7 +34,9 @@
                     </c:if>
                 </td>
                 <td>
-                    <fmt:formatDate pattern="dd.MM.yyyy HH:mm" value="${attachment.deadline}" />
+                    <fmt:timeZone value="EEST">
+                        <fmt:formatDate pattern="dd.MM.yyyy HH:mm" value="${attachment.deadline}" />
+                    </fmt:timeZone>
                 </td>
             </tr>
             </c:forEach>
