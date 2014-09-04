@@ -15,39 +15,31 @@ public final class ExprUtil {
     }
 
     public static Expr atLeastOneVariableEqualsToValue(final String value, final String... ids) {
-        if (ids.length == 1) {
-            return new Equals(new Variable(ids[0]), new Value(value));
-        } else {
-            Expr current = null;
-            Expr equal;
-            for (String id : ids) {
-                equal = new Equals(new Variable(id), new Value(value));
-                if (current == null) {
-                    current = new Equals(new Variable(id), new Value(value));
-                } else {
-                    current = new Or(current, equal);
-                }
+        Expr current = null;
+        Expr equal;
+        for (String id : ids) {
+            equal = new Equals(new Variable(id), new Value(value));
+            if (null == current) {
+                current = equal;
+            } else {
+                current = new Or(current, equal);
             }
-            return current;
         }
+        return current;
     }
 
     public static Expr atLeastOneVariableContainsValue(final String value, final String... ids) {
-        if (ids.length == 1) {
-            return new Regexp(ids[0], "(?:.*\\s+|\\s*)"+value+"(?:,.*|\\s*|\\s+.*)");
-        } else {
-            Expr current = null;
-            Expr rexExp;
-            for (String id : ids) {
-                rexExp = new Regexp(id, "(?:.*\\s+|\\s*)"+value+"(?:,.*|\\s*|\\s+.*)");
-                if (current == null) {
-                    current = rexExp;
-                } else {
-                    current = new Or(current, rexExp);
-                }
+        Expr current = null;
+        Expr rexExp;
+        for (String id : ids) {
+            rexExp = new Regexp(id, "(?:.*\\s*,\\s*|\\s*)" + value + "(?:,.*|\\s*|\\s+.*)");
+            if (current == null) {
+                current = rexExp;
+            } else {
+                current = new Or(current, rexExp);
             }
-            return current;
         }
+        return current;
     }
 
     public static Expr atLeastOneValueEqualsToVariable(final String variable, final String... values) {
