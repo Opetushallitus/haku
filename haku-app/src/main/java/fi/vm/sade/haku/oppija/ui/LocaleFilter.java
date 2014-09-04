@@ -23,6 +23,9 @@ import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
 import fi.vm.sade.haku.virkailija.authentication.Person;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -32,6 +35,7 @@ import java.util.Locale;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
+@Component
 public class LocaleFilter implements ContainerRequestFilter {
 
     private static final Logger log = LoggerFactory.getLogger(LocaleFilter.class);
@@ -41,13 +45,17 @@ public class LocaleFilter implements ContainerRequestFilter {
     public static final String LANGUAGE_COOKIE_KEY_TEST = "testi18next";
     public static final String LANGUAGE_QUERY_PARAMETER_KEY = "lang";
 
+    private String langCookie;
+
     final HttpServletRequest httpServletRequest;
 
     @InjectParam
     AuthenticationService authenticationService;
 
-    public LocaleFilter(@Context final HttpServletRequest httpServletRequest) {
+    @Autowired
+    public LocaleFilter(@Context final HttpServletRequest httpServletRequest, @Value("${haku.langCookie}") String langCookie) {
         this.httpServletRequest = httpServletRequest;
+        this.langCookie = langCookie;
     }
 
     @Override
@@ -71,13 +79,17 @@ public class LocaleFilter implements ContainerRequestFilter {
             return lang;
         }
 
-        lang = containerRequest.getCookieNameValueMap().getFirst(LANGUAGE_COOKIE_KEY);
-        if (isBlank(lang)) {
-            // Kielikeksillä on eri avain testiympäristössä
-            lang = containerRequest.getCookieNameValueMap().getFirst(LANGUAGE_COOKIE_KEY_TEST);
+        lang = containerRequest.getCookieNameValueMap().getFirst(langCookie);
+        if (!isBlank(lang)) {
+            return lang;
         }
-        log.debug("Cookie lang: " + lang);
 
+        lang = containerRequest.getCookieNameValueMap().getFirst(LANGUAGE_COOKIE_KEY);
+        if (!isBlank(lang)) {
+            return lang;
+        }
+
+        lang = containerRequest.getCookieNameValueMap().getFirst(LANGUAGE_COOKIE_KEY_TEST);
         if (!isBlank(lang)) {
             return lang;
         }

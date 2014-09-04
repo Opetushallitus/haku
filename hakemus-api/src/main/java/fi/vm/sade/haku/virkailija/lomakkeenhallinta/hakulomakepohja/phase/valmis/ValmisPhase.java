@@ -21,9 +21,14 @@ import java.util.Set;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.RelatedQuestionRuleBuilder.Rule;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.TextBuilder.Text;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.TitledGroupBuilder.TitledGroup;
-import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.*;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.createI18NAsIs;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.createI18NText;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.randomId;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ExprUtil.atLeastOneVariableEqualsToValue;
-import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.*;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.EDUCATION_CODE_KEY;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.EDUCATION_CODE_LIIKUNTA;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.EDUCATION_CODE_MUSIIKKI;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.EDUCATION_CODE_TANSSI;
 
 public class ValmisPhase {
 
@@ -108,7 +113,6 @@ public class ValmisPhase {
         Element musiikkiTanssiLiikuntaRule = Rule(ExprUtil.reduceToOr(ImmutableList.of(isMusiikki, isTanssi, isLiiKunta))).build();
         musiikkiTanssiLiikuntaRule.addChild(TitledGroup("musiikkitanssiliikunta.ryhma").formParams(formParameters).build()
                 .addChild(Text(randomId()).labelKey("musiikkitanssiliikunta").formParams(formParameters).build()));
-
         return Lists.newArrayList(athleteRule, musiikkiTanssiLiikuntaRule);
     }
 

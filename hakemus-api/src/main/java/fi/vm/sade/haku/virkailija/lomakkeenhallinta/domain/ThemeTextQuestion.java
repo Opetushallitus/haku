@@ -3,6 +3,8 @@ package fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain;
 
 import fi.vm.sade.haku.oppija.lomake.domain.builder.TextQuestionBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
+import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.Expr;
+import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.Regexp;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
 import org.codehaus.jackson.annotate.JsonCreator;
 import org.codehaus.jackson.annotate.JsonProperty;
@@ -61,4 +63,9 @@ public class ThemeTextQuestion extends ThemeQuestion {
         this.size = size;
     }
 
+    @Override
+    protected Expr generateAttachmentCondition(FormParameters formParameters, AttachmentRequest attachmentRequest) {
+        Regexp expr = new Regexp(this.getId().toString(), ".+");
+        return expr;
+    }
 }

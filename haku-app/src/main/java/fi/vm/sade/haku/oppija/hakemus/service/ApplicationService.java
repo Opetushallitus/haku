@@ -48,7 +48,7 @@ public interface ApplicationService {
      *
      * @return
      */
-    Application submitApplication(final String applicationSystemId);
+    Application submitApplication(final String applicationSystemId, String language);
 
     /**
      * Return applications that match to given search term. Term is matched against

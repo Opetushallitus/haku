@@ -16,11 +16,13 @@ public class ApplicationSystemBuilder {
     private String hakukausiUri;
     private List<Element> applicationCompleteElements;
     private List<Element> additionalPrintElements;
+    private List<ApplicationOptionAttachmentRequest> applicationOptionAttachmentRequests;
     private int maxApplicationOptions;
     private String kohdejoukkoUri;
 
     public ApplicationSystemBuilder() {
         this.additionalPrintElements = new ArrayList<Element>();
+        this.applicationOptionAttachmentRequests = new ArrayList<ApplicationOptionAttachmentRequest>();
     }
 
     public ApplicationSystemBuilder addId(String id) {
@@ -69,10 +71,15 @@ public class ApplicationSystemBuilder {
         return this;
     }
 
+    public ApplicationSystemBuilder addApplicationOptionAttachmentRequests(List<ApplicationOptionAttachmentRequest> applicationOptionAttachmentRequests) {
+        this.applicationOptionAttachmentRequests = applicationOptionAttachmentRequests;
+        return this;
+    }
+
     public ApplicationSystem get() {
         return new ApplicationSystem(id, form, name, applicationPeriods,
                 applicationSystemType, hakukausiVuosi, hakukausiUri, kohdejoukkoUri, applicationCompleteElements,
-                additionalPrintElements, maxApplicationOptions);
+                additionalPrintElements, applicationOptionAttachmentRequests, maxApplicationOptions);
     }
 
     public ApplicationSystemBuilder addMaxApplicationOptions(int maxHakukohdes) {

@@ -18,6 +18,7 @@ package fi.vm.sade.haku.oppija.common.organisaatio.impl;
 import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonSyntaxException;
 import fi.vm.sade.generic.rest.CachingRestClient;
 import fi.vm.sade.haku.oppija.common.organisaatio.Organization;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationRestDTO;
@@ -191,7 +192,12 @@ public class OrganizationServiceImpl implements OrganizationService {
                 IOUtils.copy(entity.getContent(), writer, "UTF-8");
                 return (T) writer.toString();
             } else {
-                return gson.fromJson(new InputStreamReader(entity.getContent()), resultType);
+                try {
+                    return gson.fromJson(new InputStreamReader(entity.getContent()), resultType);
+                } catch (JsonSyntaxException jse) {
+                    LOG.error("Deserializing organisation failed. url: "+url);
+                    throw jse;
+                }
             }
         }
         StatusLine statusLine = response.getStatusLine();

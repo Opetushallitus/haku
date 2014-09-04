@@ -3,10 +3,13 @@ package fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain;
 
 import fi.vm.sade.haku.oppija.lomake.domain.builder.TitledGroupBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
+import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.Expr;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ExprUtil;
 import org.codehaus.jackson.annotate.JsonCreator;
 import org.codehaus.jackson.annotate.JsonProperty;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -70,5 +73,22 @@ public class ThemeCheckBoxQuestion extends ThemeOptionQuestion {
         }
 
         return elementBuilder.build();
+    }
+
+    @Override
+    protected Expr generateAttachmentCondition(FormParameters formParameters, AttachmentRequest attachmentRequest) {
+        String optionId = attachmentRequest.getAttachedToOptionId();
+        Expr expr;
+        if (null != optionId) {
+            expr =  ExprUtil.equals(this.getId().toString()+"-"+ optionId, "true");
+        }
+        else {
+            List<String> answerIds = new ArrayList<String>();
+            for (ThemeQuestionOption option: this.getOptions()){
+                answerIds.add(this.getId().toString() +"-"+ option.getId());
+            }
+            expr = ExprUtil.atLeastOneVariableContainsValue("true", answerIds.toArray(new String[answerIds.size()]));
+        }
+        return expr;
     }
 }

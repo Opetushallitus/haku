@@ -5,7 +5,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class ThemeQuestionQueryParameters {
+public final class ThemeQuestionQueryParameters implements Cloneable{
     // 3,2,1
     public static Integer SORT_DESCENDING = -1;
     // 1,2,3
@@ -17,6 +17,7 @@ public final class ThemeQuestionQueryParameters {
     private String theme;
     private Boolean searchDeleted;
     private Boolean queryGroups;
+    private Boolean onlyWithAttachmentRequests;
 
     private ArrayList<Pair<String, Integer>> sortBy = new ArrayList<Pair<String, Integer>>();
 
@@ -71,6 +72,14 @@ public final class ThemeQuestionQueryParameters {
         this.queryGroups = queryGroups;
     }
 
+    public Boolean onlyWithAttachmentRequests() {
+        return onlyWithAttachmentRequests;
+    }
+
+    public void setOnlyWithAttachmentRequests(Boolean onlyWithAttachmentRequests) {
+        this.onlyWithAttachmentRequests = onlyWithAttachmentRequests;
+    }
+
     public void addSortBy(final String fieldName, final Integer sortOrder){
         if (null != fieldName && (SORT_ASCENDING.equals(sortOrder) || SORT_DESCENDING.equals(sortOrder))){
             sortBy.add(Pair.of(fieldName, sortOrder));
@@ -92,7 +101,22 @@ public final class ThemeQuestionQueryParameters {
           ", organizationId='" + organizationId + '\'' +
           ", theme='" + theme + '\'' +
           ", searchDeleted=" + searchDeleted +
+          ", onlyWithAttachmentRequests=" + onlyWithAttachmentRequests +
           ", sortBy=" + sortBy +
           '}';
+    }
+
+
+    @Override
+    public ThemeQuestionQueryParameters clone(){
+        ThemeQuestionQueryParameters clone = new ThemeQuestionQueryParameters();
+        clone.applicationSystemId = this.applicationSystemId;
+        clone.learningOpportunityId = this.learningOpportunityId;
+        clone.organizationId = this.organizationId;
+        clone.theme = this.theme;
+        clone.searchDeleted = this.searchDeleted;
+        clone.onlyWithAttachmentRequests = this.onlyWithAttachmentRequests;
+        clone.sortBy = (ArrayList<Pair<String, Integer>>) this.sortBy.clone();
+        return clone;
     }
 }

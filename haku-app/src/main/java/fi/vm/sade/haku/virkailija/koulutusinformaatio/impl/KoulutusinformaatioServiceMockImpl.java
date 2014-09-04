@@ -36,4 +36,9 @@ public class KoulutusinformaatioServiceMockImpl implements
 		return applicationOptions;
 	}
 
+    @Override
+    public ApplicationOptionDTO getApplicationOption(String aoOid, String lang) {
+        return getApplicationOption(aoOid);
+    }
+
 }

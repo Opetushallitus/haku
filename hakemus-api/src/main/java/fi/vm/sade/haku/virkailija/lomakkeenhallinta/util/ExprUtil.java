@@ -9,6 +9,11 @@ public final class ExprUtil {
     //
     // Refactor to use Operator factory or in the future high order function.
     //
+
+    public static Expr equals(final String variable, final String value) {
+        return new Equals(new Variable(variable), new Value(value));
+    }
+
     public static Expr atLeastOneVariableEqualsToValue(final String value, final String... ids) {
         if (ids.length == 1) {
             return new Equals(new Variable(ids[0]), new Value(value));
