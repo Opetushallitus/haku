@@ -10,7 +10,9 @@ import fi.vm.sade.haku.oppija.lomake.domain.builder.RelatedQuestionRuleBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.builder.TextBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
+import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.Equals;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.Expr;
+import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.Regexp;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ExprUtil;
@@ -74,12 +76,14 @@ public class ThemeRadioButtonQuestion extends ThemeOptionQuestion {
         String optionId =attachmentRequest.getAttachedToOptionId();
         Expr expr;
         if (null != optionId) {
-            expr = ExprUtil.atLeastOneVariableEqualsToValue(optionId,
-              this.getId().toString());
+            expr = ExprUtil.equals(this.getId().toString(), optionId);
         }
         else {
-            //TODO: fix me
-            expr=null;
+            List<String> optionsIds = new ArrayList<String>();
+            for (ThemeQuestionOption option: this.getOptions()){
+                optionsIds.add(option.getId());
+            }
+            expr = ExprUtil.atLeastOneValueEqualsToVariable(this.getId().toString(), optionsIds.toArray(new String[optionsIds.size()]));
         }
         return expr;
     }

@@ -9,6 +9,7 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ExprUtil;
 import org.codehaus.jackson.annotate.JsonCreator;
 import org.codehaus.jackson.annotate.JsonProperty;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -79,12 +80,14 @@ public class ThemeCheckBoxQuestion extends ThemeOptionQuestion {
         String optionId = attachmentRequest.getAttachedToOptionId();
         Expr expr;
         if (null != optionId) {
-            expr = ExprUtil.atLeastOneVariableEqualsToValue("true",
-              this.getId().toString()+"-"+ optionId);
+            expr =  ExprUtil.equals(this.getId().toString()+"-"+ optionId, "true");
         }
         else {
-            //TODO: fix me
-            expr=null;
+            List<String> answerIds = new ArrayList<String>();
+            for (ThemeQuestionOption option: this.getOptions()){
+                answerIds.add(this.getId().toString() +"-"+ option.getId());
+            }
+            expr = ExprUtil.atLeastOneVariableContainsValue("true", answerIds.toArray(new String[answerIds.size()]));
         }
         return expr;
     }
