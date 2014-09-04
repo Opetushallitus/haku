@@ -17,6 +17,7 @@
 var childLONames = {};
 var attachments = {};
 var lopCache = {};
+
 var preferenceRow = {
     populateSelectInput: function (orgId, selectInputId, isInit, providerInputId) {
         
@@ -27,6 +28,29 @@ var preferenceRow = {
                 uiLang: sortabletable_settings.uiLang
             },
             function (data) {
+                var spinner = new Spinner( {
+                    lines: 8, // The number of lines to draw
+                    length: 5, // The length of each line
+                    width: 4, // The line thickness
+                    radius: 4, // The radius of the inner circle
+                    corners: 1, // Corner roundness (0..1)
+                    rotate: 0, // The rotation offset
+                    direction: 1, // 1: clockwise, -1: counterclockwise
+                    color: '#000', // #rgb or #rrggbb or array of colors
+                    speed: 1, // Rounds per second
+                    trail: 60, // Afterglow percentage
+                    shadow: false, // Whether to render a shadow
+                    hwaccel: false, // Whether to use hardware acceleration
+                    className: 'spinner', // The CSS class to assign to the spinner
+                    zIndex: 2e9, // The z-index (defaults to 2000000000)
+                    top: -1, // Top position relative to parent in px
+                    left: 7 // Left position relative to parent in px
+                });
+
+                $('#'+selectInputId).prop('disabled', true);
+                spinner.stop();
+                spinner.spin(document.getElementById(selectInputId+'-spinner'));
+
                 var hakukohdeId = $("#" + selectInputId + "-id").val(), $selectInput = $("#" + selectInputId),
                     selectedPreferenceOK = false;
 
@@ -107,6 +131,9 @@ var preferenceRow = {
                     preferenceRow.clearSelectInput(selectInputId);
                     $selectInput.after(warning);
                 }
+
+                $('#'+selectInputId).prop('disabled', false);
+                spinner.stop();
             });
     },
 
@@ -264,4 +291,3 @@ var preferenceRow = {
 };
 
 preferenceRow.init();
-
