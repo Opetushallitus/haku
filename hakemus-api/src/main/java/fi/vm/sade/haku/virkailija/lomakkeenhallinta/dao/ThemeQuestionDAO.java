@@ -17,5 +17,7 @@ public interface ThemeQuestionDAO extends BaseDAO<ThemeQuestion> {
 
     void delete(String themeQuestionId);
 
+    Integer getMaxOrdinal(String applicationSystemId, String learningOpportunityId, String themeId);
+
     Boolean validateLearningOpportunityAndTheme(String learningOpportunityId, String themeId, String... themeQuestionIds);
 }
