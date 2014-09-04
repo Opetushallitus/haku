@@ -34,12 +34,12 @@ public final class ExprUtil {
 
     public static Expr atLeastOneVariableContainsValue(final String value, final String... ids) {
         if (ids.length == 1) {
-            return new Regexp(ids[0], "(?:.*\\s+|\\s*)"+value+"(?:,.*|\\s*|\\s+.*)");
+            return new Regexp(ids[0], "(?:.*\\s*,\\s*|\\s*)" + value + "(?:,.*|\\s*|\\s+.*)");
         } else {
             Expr current = null;
             Expr rexExp;
             for (String id : ids) {
-                rexExp = new Regexp(id, "(?:.*\\s+|\\s*)"+value+"(?:,.*|\\s*|\\s+.*)");
+                rexExp = new Regexp(id, "(?:.*\\s*,\\s*|\\s*)" + value + "(?:,.*|\\s*|\\s+.*)");
                 if (current == null) {
                     current = rexExp;
                 } else {
