@@ -133,14 +133,15 @@ public class ThemeQuestionResource {
         if (!themeQuestionId.equals(themeQuestion.getId().toString())){
             throw new JSONException(Response.Status.BAD_REQUEST, "theme question id mismatch", null);
         }
-        ThemeQuestion dbThemeQuestion = fetchThemeQuestion(themeQuestionId);
-
         if (themeQuestion.getTargetIsGroup()) {
             themeQuestion = fillInOwnerOrganizationsFromApplicationOptionGroup(themeQuestion);
         } else {
             themeQuestion = fillInOwnerOrganizationsFromApplicationOption(themeQuestion);
         }
+
+        ThemeQuestion dbThemeQuestion = fetchThemeQuestion(themeQuestionId);
         themeQuestion.setCreatorPersonOid(dbThemeQuestion.getCreatorPersonOid());
+        themeQuestion.setOrdinal(dbThemeQuestion.getOrdinal());
 
         LOGGER.debug("Saving Theme Question with id: " + dbThemeQuestion.getId().toString());
         themeQuestionDAO.save(themeQuestion);
@@ -190,6 +191,8 @@ public class ThemeQuestionResource {
 
         Person currentHenkilo = authenticationService.getCurrentHenkilo();
         themeQuestion.setCreatorPersonOid(currentHenkilo.getPersonOid());
+        Integer  maxOrdinal = themeQuestionDAO.getMaxOrdinal(applicationSystemId, learningOpportunityId, themeId);
+        themeQuestion.setOrdinal(null == maxOrdinal ? 1: maxOrdinal + 1 );
 
         LOGGER.debug("Saving Theme Question");
         themeQuestionDAO.save(themeQuestion);
@@ -240,8 +243,10 @@ public class ThemeQuestionResource {
         //TODO =RS= some metalocking to simulate transactions or something
 
         Set<String> themeQuestionIds = reorderedQuestions.keySet();
-        if (!themeQuestionDAO.validateLearningOpportunityAndTheme(learningOpportunityId, themeId,  themeQuestionIds.toArray(new String[themeQuestionIds.size()])))
-            throw new JSONException(Response.Status.BAD_REQUEST, "Error in input data. Mismatch between question ids, theme and application option", null);
+        // TODO: Fix bad validation. Needs application system to work correctly
+        //if (!themeQuestionDAO.validateLearningOpportunityAndTheme(learningOpportunityId, themeId,  themeQuestionIds.toArray(new String[themeQuestionIds.size()])))
+        //    throw new JSONException(Response.Status.BAD_REQUEST, "Error in input data. Mismatch between question ids, theme and application option", null);
+
         // TODO =RS= do something if there are ordinals missing or old values do not match.
         for (String id : themeQuestionIds){
             Map<String, String> questionParam = reorderedQuestions.get(id);

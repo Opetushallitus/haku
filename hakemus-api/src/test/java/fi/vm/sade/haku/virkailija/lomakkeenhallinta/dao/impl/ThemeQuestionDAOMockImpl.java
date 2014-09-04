@@ -35,6 +35,11 @@ public class ThemeQuestionDAOMockImpl implements ThemeQuestionDAO {
     }
 
     @Override
+    public Integer getMaxOrdinal(String applicationSystemId, String learningOpportunityId, String themeId) {
+        return null;
+    }
+
+    @Override
     public Boolean validateLearningOpportunityAndTheme(String learningOpportunityId, String themeId, String... themeQuestionIds) {
         //TODO =RS= not too sane
         return false;
