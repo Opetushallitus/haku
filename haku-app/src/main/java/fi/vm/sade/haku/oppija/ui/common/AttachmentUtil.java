@@ -161,9 +161,10 @@ public class AttachmentUtil {
         deadlineCal.set(Calendar.YEAR, 2014);
         deadlineCal.set(Calendar.MONTH, Calendar.OCTOBER);
         deadlineCal.set(Calendar.DATE, 6);
-        deadlineCal.set(Calendar.HOUR, 15);
+        deadlineCal.set(Calendar.HOUR_OF_DAY, 15);
         deadlineCal.set(Calendar.MINUTE, 0);
         deadlineCal.set(Calendar.SECOND, 0);
+        deadlineCal.setTimeZone(TimeZone.getTimeZone("EEST"));
         Date deadline = deadlineCal.getTime();
 
         for (Map.Entry<String, List<ApplicationOptionDTO>> entry : higherEdAttachments.entrySet()) {
