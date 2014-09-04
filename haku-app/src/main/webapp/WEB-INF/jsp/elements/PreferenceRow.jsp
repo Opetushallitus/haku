@@ -92,6 +92,7 @@
                 <haku:input-hidden id="${hiddenAttachmentgroups}" data="${answers}"/>
                 <haku:input-hidden id="${hiddenAttachments}" data="${answers}"/>
             </div>
+            <div id="${selectInputId}-spinner" style="height: 22px; width: 22px; float: left;"></div>
         </div>
         <div class="clear"></div>
     </div>
