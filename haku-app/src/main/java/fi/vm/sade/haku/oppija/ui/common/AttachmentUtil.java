@@ -22,16 +22,32 @@ public class AttachmentUtil {
     public static List<ApplicationAttachment> resolveAttachments(ApplicationSystem applicationSystem, Application application,
                                                                  KoulutusinformaatioService koulutusinformaatioService) {
 
+        String lang = application.getMetaValue(Application.META_FILING_LANGUAGE);
+        if (lang == null) {
+            Map<String, String> miscAnswers = application.getPhaseAnswers(OppijaConstants.PHASE_MISC);
+            lang = "fi";
+            if (miscAnswers != null) {
+                String contactLang = miscAnswers.get(OppijaConstants.ELEMENT_ID_CONTACT_LANGUAGE);
+                if ("ruotsi".equals(contactLang)) {
+                    lang = "sv";
+                } else if ("englanti".equals(contactLang)) {
+                    lang = "en";
+                }
+            }
+        }
+        
         List<ApplicationAttachment> attachments = new ArrayList<ApplicationAttachment>();
-        attachments = addApplicationOptionAttachments(attachments, application, koulutusinformaatioService);
-        attachments = addDiscreationaryAttachments(attachments, application, koulutusinformaatioService);
-        attachments = addHigherEdAttachments(attachments, application, koulutusinformaatioService);
+        attachments = addApplicationOptionAttachments(attachments, application, koulutusinformaatioService, lang);
+        attachments = addDiscreationaryAttachments(attachments, application, koulutusinformaatioService, lang);
+        attachments = addHigherEdAttachments(attachments, application, koulutusinformaatioService, lang);
         attachments = addApplicationOptionAttachmentRequests(attachments, application, applicationSystem);
 
         return attachments;
     }
 
-    private static List<ApplicationAttachment> addApplicationOptionAttachmentRequests(List<ApplicationAttachment> attachments, Application application, ApplicationSystem applicationSystem) {
+    private static List<ApplicationAttachment> addApplicationOptionAttachmentRequests(List<ApplicationAttachment> attachments,
+                                                                                      Application application,
+                                                                                      ApplicationSystem applicationSystem) {
         for (ApplicationOptionAttachmentRequest attachmentRequest : applicationSystem.getApplicationOptionAttachmentRequests()){
             if (attachmentRequest.include(application.getVastauksetMerged())){
                 SimpleAddress address = attachmentRequest.getDeliveryAddress();
@@ -53,9 +69,9 @@ public class AttachmentUtil {
 
     private static List<ApplicationAttachment> addApplicationOptionAttachments(
             List<ApplicationAttachment> attachments, Application application,
-            KoulutusinformaatioService koulutusinformaatioService) {
+            KoulutusinformaatioService koulutusinformaatioService, String lang) {
         for (String aoOid : ApplicationUtil.getApplicationOptionAttachmentAOIds(application)) {
-            ApplicationOptionDTO ao = koulutusinformaatioService.getApplicationOption(aoOid);
+            ApplicationOptionDTO ao = koulutusinformaatioService.getApplicationOption(aoOid, lang);
             for (ApplicationOptionAttachmentDTO attachmentDTO : ao.getAttachments()) {
                 attachments.add(
                         ApplicationAttachmentBuilder.start()
@@ -77,10 +93,11 @@ public class AttachmentUtil {
 
     private static List<ApplicationAttachment> addDiscreationaryAttachments(List<ApplicationAttachment> attachments,
                                                                             Application application,
-                                                                            KoulutusinformaatioService koulutusinformaatioService) {
+                                                                            KoulutusinformaatioService koulutusinformaatioService,
+                                                                            String lang) {
 
         for (String aoOid : ApplicationUtil.getDiscretionaryAttachmentAOIds(application)) {
-            ApplicationOptionDTO ao = koulutusinformaatioService.getApplicationOption(aoOid);
+            ApplicationOptionDTO ao = koulutusinformaatioService.getApplicationOption(aoOid, lang);
             AddressDTO addressDTO = ao.getAttachmentDeliveryAddress();
             if (addressDTO == null) {
                 addressDTO = ao.getProvider().getPostalAddress();
@@ -120,7 +137,8 @@ public class AttachmentUtil {
 
     private static List<ApplicationAttachment> addHigherEdAttachments(List<ApplicationAttachment> attachments,
                                                                       Application application,
-                                                                      KoulutusinformaatioService koulutusinformaatioService) {
+                                                                      KoulutusinformaatioService koulutusinformaatioService,
+                                                                      String lang) {
         Map<String, List<String>> higherEdAttachmentAOIds = ApplicationUtil.getHigherEdAttachmentAOIds(application);
         Map<String, List<fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO>> higherEdAttachments =
                 new HashMap<String, List<ApplicationOptionDTO>>();
@@ -129,7 +147,7 @@ public class AttachmentUtil {
             List<fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO> aos =
                     new ArrayList<ApplicationOptionDTO>();
             for (String aoOid : entry.getValue()) {
-                ApplicationOptionDTO ao = koulutusinformaatioService.getApplicationOption(aoOid);
+                ApplicationOptionDTO ao = koulutusinformaatioService.getApplicationOption(aoOid, lang);
                 ao = ensureAddress(ao);
                 if (!addressAlreadyAdded(aos, ao)) {
                     aos.add(ao);

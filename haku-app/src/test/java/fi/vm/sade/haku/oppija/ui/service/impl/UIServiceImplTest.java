@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.*;
+import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -80,9 +81,9 @@ public class UIServiceImplTest {
         Application application = buildApplication(asId, oid);
         when(applicationSystemService.getActiveApplicationSystem(eq(asId))).thenReturn(as);
         when(applicationService.getSubmittedApplication(eq(asId), eq(oid))).thenReturn(application);
-        when(koulutusinformaatioService.getApplicationOption(eq("1.2.3"))).thenReturn(aos.get("1.2.3"));
-        when(koulutusinformaatioService.getApplicationOption(eq("4.5.6"))).thenReturn(aos.get("4.5.6"));
-        when(koulutusinformaatioService.getApplicationOption(eq("7.8.9"))).thenReturn(aos.get("7.8.9"));
+        when(koulutusinformaatioService.getApplicationOption(eq("1.2.3"), any(String.class))).thenReturn(aos.get("1.2.3"));
+        when(koulutusinformaatioService.getApplicationOption(eq("4.5.6"), any(String.class))).thenReturn(aos.get("4.5.6"));
+        when(koulutusinformaatioService.getApplicationOption(eq("7.8.9"), any(String.class))).thenReturn(aos.get("7.8.9"));
 
         ModelResponse response = service.getCompleteApplication(asId, oid);
 

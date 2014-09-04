@@ -133,7 +133,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public Application submitApplication(final String applicationSystemId) {
+    public Application submitApplication(final String applicationSystemId, String language) {
         final User user = userSession.getUser();
         Application application = userSession.getApplication(applicationSystemId);
         Form form = formService.getForm(applicationSystemId);
@@ -153,6 +153,7 @@ public class ApplicationServiceImpl implements ApplicationService {
             application.setLastAutomatedProcessingTime(System.currentTimeMillis());
             application.submitted();
             application.flagStudentIdentificationRequired();
+            application.addMeta(Application.META_FILING_LANGUAGE, language);
             this.applicationDAO.save(application);
             this.userSession.removeApplication(application);
             return application;

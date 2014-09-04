@@ -42,7 +42,7 @@ public interface UIService {
 
     ModelResponse savePhase(final String applicationSystemId, final String phaseId, Map<String, String> answers);
 
-    ModelResponse submitApplication(final String applicationSystemId);
+    ModelResponse submitApplication(final String applicationSystemId, String language);
 
     ModelResponse getApplication(final String applicationSystemId);
 
