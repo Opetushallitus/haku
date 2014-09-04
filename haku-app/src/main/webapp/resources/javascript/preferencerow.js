@@ -47,6 +47,7 @@ var preferenceRow = {
                     left: 7 // Left position relative to parent in px
                 });
 
+                $('#'+selectInputId).prop('disabled', true);
                 spinner.stop();
                 spinner.spin(document.getElementById(selectInputId+'-spinner'));
 
@@ -130,6 +131,8 @@ var preferenceRow = {
                     preferenceRow.clearSelectInput(selectInputId);
                     $selectInput.after(warning);
                 }
+
+                $('#'+selectInputId).prop('disabled', false);
                 spinner.stop();
             });
     },
