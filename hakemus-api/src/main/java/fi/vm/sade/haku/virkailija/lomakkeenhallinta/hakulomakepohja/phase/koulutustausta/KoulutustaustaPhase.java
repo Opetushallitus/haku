@@ -140,11 +140,6 @@ public final class KoulutustaustaPhase {
         Element taso = Dropdown("pohjakoulutus_kk_taso")
                 .addOptions(tutkintotasot).requiredInline().labelKey("pohjakoulutus.tutkintotaso").formParams(formParameters).build();
 
-//        Element vuosi = TextQuestion("pohjakoulutus_kk_vuosi")
-//                .requiredInline()
-//                .validator(ElementUtil.createYearValidator(formParameters.getApplicationSystem().getHakukausiVuosi() + 1, 1900))
-//                .formParams(formParameters).build();
-
         Element pvm = Date("pohjakoulutus_kk_pvm")
                 .requiredInline()
                 .formParams(formParameters).build();
@@ -181,14 +176,9 @@ public final class KoulutustaustaPhase {
         Element am = Checkbox("pohjakoulutus_am").formParams(formParameters).build();
         Element amMore = createVarEqualsToValueRule(am.getId(), "true");
 
-//        Element vuosi = TextQuestion("pohjakoulutus_am_vuosi")
-//                .validator(ElementUtil.createYearValidator(formParameters.getApplicationSystem().getHakukausiVuosi() + 1, 1900))
-//                .requiredInline().formParams(formParameters).build();
-
-        Element pvm = Date("pohjakoulutus_am_pvm")
-                .requiredInline()
-                .formParams(formParameters)
-                .build();
+        Element vuosi = TextQuestion("pohjakoulutus_am_vuosi")
+                .validator(ElementUtil.createYearValidator(formParameters.getApplicationSystem().getHakukausiVuosi() + 1, 1900))
+                .requiredInline().formParams(formParameters).build();
 
         Element nimike = TextQuestion("pohjakoulutus_am_nimike").labelKey("pohjakoulutus.tutkintonimike")
                 .formParams(formParameters).requiredInline().build();
@@ -200,7 +190,7 @@ public final class KoulutustaustaPhase {
                 .formParams(formParameters).build();
         Element oppilaitos = TextQuestion("pohjakoulutus_am_oppilaitos").labelKey("pohjakoulutus.oppilaitos")
                 .requiredInline().formParams(formParameters).build();
-        amMore.addChild(pvm,
+        amMore.addChild(vuosi,
                 nimike,
                 laajuus,
                 laajuusYksikko,
