@@ -279,14 +279,14 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
         Email email = basicEmail(emailAddress, subject);
         email.setDebug(smtpDebug);
         StringWriter sw = new StringWriter();
-        VelocityContext ctx = buildContext(application);
+        VelocityContext ctx = buildContext(application, as);
         tmpl.merge(ctx, sw);
         email.setMsg(sw.toString());
         email.send();
 
     }
 
-    private VelocityContext buildContext(Application application) {
+    private VelocityContext buildContext(Application application, ApplicationSystem applicationSystem) {
         VelocityContext ctx = new VelocityContext();
         DateFormat dateFmt = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
         String applicationDate = dateFmt.format(application.getReceived());
@@ -297,7 +297,7 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
         ctx.put("applicant", getApplicantName(application));
         ctx.put("applicationId", applicationId);
         ctx.put("applicationDate", applicationDate);
-        ctx.put("preferences", getPreferences(application));
+        ctx.put("preferences", getPreferences(application, applicationSystem));
         ctx.put("athlete", isAthlete(application));
         ctx.put("discretionary", isDiscretionary(application));
         ctx.put("musiikkiTanssiLiikuntaEducationCode", isMusiikkiTanssiLiikuntaEducationCode(application));
@@ -309,10 +309,11 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
         return !ApplicationUtil.getDiscretionaryAttachmentAOIds(application).isEmpty();
     }
 
-    private Object getPreferences(Application application) {
+    private Object getPreferences(Application application, ApplicationSystem applicationSystem) {
         Map<String, String> answers = application.getVastauksetMerged();
-        List<String> preferences = new ArrayList<String>(5);
-        for (int i = 1; i <= 5; i++) {
+        int maxPrefs = applicationSystem.getMaxApplicationOptions();
+        List<String> preferences = new ArrayList<String>(maxPrefs);
+        for (int i = 1; i <= maxPrefs; i++) {
             String koulutus = answers.get(String.format(OppijaConstants.PREFERENCE_NAME, i));
             String koulu = answers.get(String.format(OppijaConstants.PREFERENCE_ORGANIZATION, i));
             if (isEmpty(koulutus) && isEmpty(koulu)) {
