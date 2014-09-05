@@ -16,10 +16,10 @@
             <c:forEach var="attachment" items="${applicationAttachments}">
             <tr>
                 <td>
-                    <c:if test="${(attachment.name)}">
+                    <c:if test="${not empty attachment.name}">
                         <haku:i18nText value="${attachment.name}"/><br/>
                     </c:if>
-                    <c:if test="${(attachment.header)}">
+                    <c:if test="${not empty attachment.header}">
                         <haku:i18nText value="${attachment.header}"/><br/>
                     </c:if>
                     <haku:i18nText value="${attachment.description}" /></td>
