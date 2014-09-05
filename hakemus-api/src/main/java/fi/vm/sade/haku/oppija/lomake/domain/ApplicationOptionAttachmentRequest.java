@@ -9,7 +9,7 @@ import java.util.Map;
 public class ApplicationOptionAttachmentRequest {
 
     private final Expr condition;
-    private final String applicationOption;
+    private final String applicationOptionId;
     private final Boolean groupOption;
     private final I18nText header;
     private final I18nText description;
@@ -17,9 +17,9 @@ public class ApplicationOptionAttachmentRequest {
     private final Boolean useGroupAddress;
     private final SimpleAddress deliveryAddress;
 
-    public ApplicationOptionAttachmentRequest(Expr condition, String applicationOption, Boolean groupOption, I18nText header, I18nText description, Date deliveryDue, Boolean useGroupAddress, SimpleAddress deliveryAddress) {
+    public ApplicationOptionAttachmentRequest(Expr condition, String applicationOptionId, Boolean groupOption, I18nText header, I18nText description, Date deliveryDue, Boolean useGroupAddress, SimpleAddress deliveryAddress) {
         this.condition = condition;
-        this.applicationOption = applicationOption;
+        this.applicationOptionId = applicationOptionId;
         this.groupOption = groupOption;
         this.header = header;
         this.description = description;
@@ -36,8 +36,8 @@ public class ApplicationOptionAttachmentRequest {
         return condition;
     }
 
-    public String getApplicationOption() {
-        return applicationOption;
+    public String getApplicationOptionId() {
+        return applicationOptionId;
     }
 
     public Boolean isGroupOption() {

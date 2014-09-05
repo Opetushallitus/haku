@@ -3,7 +3,6 @@ package fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationOptionAttachmentRequest;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationOptionAttachmentRequestBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.Expr;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.dao.impl.DBConverter.ComplexObjectIdDeserializer;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.dao.impl.DBConverter.SimpleObjectIdSerializer;
@@ -140,7 +139,7 @@ public abstract class ThemeQuestion implements ConfiguredElement {
         for (AttachmentRequest attachmentRequest : attachmentRequests){
             generatedRequests.add(
               ApplicationOptionAttachmentRequestBuilder.start()
-              .setApplicationOption(learningOpportunityId)
+              .setApplicationOptionId(learningOpportunityId)
               .setGroupOption(getTargetIsGroup())
               .setCondition(generateAttachmentCondition(formParameters, attachmentRequest))
               .setDeliveryAddress(attachmentRequest.getDeliveryAddress())
