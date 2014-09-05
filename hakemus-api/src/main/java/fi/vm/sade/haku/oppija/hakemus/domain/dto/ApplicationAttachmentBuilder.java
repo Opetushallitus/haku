@@ -1,8 +1,9 @@
 package fi.vm.sade.haku.oppija.hakemus.domain.dto;
 
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
-
 import java.util.Date;
+
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.impl.TranslationsUtil.*;
 
 public class ApplicationAttachmentBuilder {
 
@@ -65,9 +66,9 @@ public class ApplicationAttachmentBuilder {
         ApplicationAttachment attachment = new ApplicationAttachment();
         attachment.setAddress(address);
         attachment.setDeadline(deadline);
-        attachment.setDescription(description);
-        attachment.setHeader(header);
-        attachment.setName(name);
+        attachment.setDescription(ensureDefaultLanguageTranslations(description));
+        attachment.setHeader(ensureDefaultLanguageTranslations(header));
+        attachment.setName(ensureDefaultLanguageTranslations(name));
         return attachment;
     }
 
