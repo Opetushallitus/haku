@@ -7,6 +7,7 @@ import java.util.Date;
 public class ApplicationAttachmentBuilder {
 
     private I18nText name;
+    private I18nText header;
     private I18nText description;
     private Date deadline;
     private Address address;
@@ -21,6 +22,15 @@ public class ApplicationAttachmentBuilder {
 
     public ApplicationAttachmentBuilder setName(I18nText name) {
         this.name = name;
+        return this;
+    }
+
+    public I18nText getHeader() {
+        return header;
+    }
+
+    public ApplicationAttachmentBuilder setHeader(I18nText header) {
+        this.header = header;
         return this;
     }
 
@@ -56,6 +66,7 @@ public class ApplicationAttachmentBuilder {
         attachment.setAddress(address);
         attachment.setDeadline(deadline);
         attachment.setDescription(description);
+        attachment.setHeader(header);
         attachment.setName(name);
         return attachment;
     }

@@ -52,7 +52,7 @@ public class AttachmentUtil {
             if (attachmentRequest.include(application.getVastauksetMerged())){
                 SimpleAddress address = attachmentRequest.getDeliveryAddress();
                 attachments.add(ApplicationAttachmentBuilder.start()
-                  .setName(attachmentRequest.getHeader())
+                  .setHeader(attachmentRequest.getHeader())
                   .setDescription(attachmentRequest.getDescription())
                   .setDeadline(attachmentRequest.getDeliveryDue())
                   .setAddress(AddressBuilder.start()
