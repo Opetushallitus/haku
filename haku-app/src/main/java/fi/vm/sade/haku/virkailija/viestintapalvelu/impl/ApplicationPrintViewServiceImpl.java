@@ -18,9 +18,9 @@ public class ApplicationPrintViewServiceImpl implements ApplicationPrintViewServ
     private String casUrl;
     @Value("${cas.service.haku}")
     private String targetService;
-    @Value("${haku.app.username.to.viestintapalvelu}")
+    @Value("${haku.app.username.to.haku}")
     private String clientAppUser;
-    @Value("${haku.app.password.to.viestintapalvelu}")
+    @Value("${haku.app.password.to.haku}")
     private String clientAppPass;
     private CachingRestClient cachingRestClient;
 
