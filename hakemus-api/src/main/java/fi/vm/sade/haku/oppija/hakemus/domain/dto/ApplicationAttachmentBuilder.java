@@ -66,9 +66,12 @@ public class ApplicationAttachmentBuilder {
         ApplicationAttachment attachment = new ApplicationAttachment();
         attachment.setAddress(address);
         attachment.setDeadline(deadline);
-        attachment.setDescription(ensureDefaultLanguageTranslations(description));
-        attachment.setHeader(ensureDefaultLanguageTranslations(header));
-        attachment.setName(ensureDefaultLanguageTranslations(name));
+        if (null != description)
+            attachment.setDescription(ensureDefaultLanguageTranslations(description));
+        if (null != header)
+            attachment.setHeader(ensureDefaultLanguageTranslations(header));
+        if (null != name)
+            attachment.setName(ensureDefaultLanguageTranslations(name));
         return attachment;
     }
 
