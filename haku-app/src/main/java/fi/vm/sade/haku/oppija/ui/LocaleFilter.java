@@ -24,8 +24,6 @@ import fi.vm.sade.haku.virkailija.authentication.Person;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -35,7 +33,6 @@ import java.util.Locale;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
-@Component
 public class LocaleFilter implements ContainerRequestFilter {
 
     private static final Logger log = LoggerFactory.getLogger(LocaleFilter.class);
@@ -45,18 +42,16 @@ public class LocaleFilter implements ContainerRequestFilter {
     public static final String LANGUAGE_COOKIE_KEY_TEST = "testi18next";
     public static final String LANGUAGE_QUERY_PARAMETER_KEY = "lang";
 
-    private String langCookie;
-
     final HttpServletRequest httpServletRequest;
 
     @InjectParam
     AuthenticationService authenticationService;
 
     @Autowired
-    public LocaleFilter(@Context final HttpServletRequest httpServletRequest, @Value("${haku.langCookie}") String langCookie) {
+    public LocaleFilter(@Context final HttpServletRequest httpServletRequest) {
         this.httpServletRequest = httpServletRequest;
-        this.langCookie = langCookie;
     }
+
 
     @Override
     public ContainerRequest filter(ContainerRequest containerRequest) {
@@ -72,6 +67,8 @@ public class LocaleFilter implements ContainerRequestFilter {
     }
 
     public String getLanguage(ContainerRequest containerRequest) {
+        String langCookie = authenticationService.getLangCookieName();
+
         String lang = containerRequest.getQueryParameters().getFirst(LANGUAGE_QUERY_PARAMETER_KEY);
         log.debug("Param lang: " + lang);
 

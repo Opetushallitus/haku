@@ -56,7 +56,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final String targetService;
     private final CachingRestClient cachingRestClient;
     private final Gson gson;
-    private final String userOidPrefix ;
+    private final String userOidPrefix;
+    private final String langCookieName;
 
     @Autowired
     public AuthenticationServiceImpl(
@@ -64,7 +65,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Value("${cas.service.authentication-service}") String targetService,
     @Value("${haku.app.username.to.usermanagement}") String clientAppUser,
     @Value("${haku.app.password.to.usermanagement}") String clientAppPass,
-    @Value("${user.oid.prefix}") String userOidPrefix) {
+    @Value("${user.oid.prefix}") String userOidPrefix,
+    @Value("${haku.langCookie}") String langCookieName) {
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.registerTypeAdapter(Person.class, new PersonJsonAdapter());
         gson = gsonBuilder.create();
@@ -75,6 +77,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         cachingRestClient.setPassword(clientAppPass);
         this.targetService = targetService;
         this.userOidPrefix = userOidPrefix;
+        this.langCookieName = langCookieName;
     }
 
     public Person addPerson(Person person) {
@@ -211,5 +214,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
 
         return gson.fromJson(responseString, Person.class);
+    }
+
+    public String getLangCookieName() {
+        return langCookieName;
     }
 }

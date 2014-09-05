@@ -57,7 +57,7 @@ public class LocaleFilterTest {
 
         when(httpServletRequest.getSession()).thenReturn(session);
         when(containerRequest.getCookieNameValueMap()).thenReturn(cookieMap);
-        localeFilter = new LocaleFilter(httpServletRequest, "texti18next");
+        localeFilter = new LocaleFilter(httpServletRequest);
         localeFilter.setAuthenticationService(authenticationService);
     }
 

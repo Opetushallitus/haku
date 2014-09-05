@@ -7,7 +7,7 @@ import java.util.Date;
 
 public class ApplicationOptionAttachmentRequestBuilder {
     private Expr condition;
-    private String applicationOption;
+    private String applicationOptionId;
     private Boolean groupOption;
     private I18nText header;
     private I18nText description;
@@ -26,8 +26,8 @@ public class ApplicationOptionAttachmentRequestBuilder {
         return this;
     }
 
-    public ApplicationOptionAttachmentRequestBuilder setApplicationOption(String applicationOption) {
-        this.applicationOption = applicationOption;
+    public ApplicationOptionAttachmentRequestBuilder setApplicationOptionId(String applicationOptionId) {
+        this.applicationOptionId = applicationOptionId;
         return this;
     }
 
@@ -62,6 +62,6 @@ public class ApplicationOptionAttachmentRequestBuilder {
     }
 
     public ApplicationOptionAttachmentRequest build() {
-        return new ApplicationOptionAttachmentRequest(condition, applicationOption, groupOption, header, description, deliveryDue, useGroupAddress, deliveryAddress);
+        return new ApplicationOptionAttachmentRequest(condition, applicationOptionId, groupOption, header, description, deliveryDue, useGroupAddress, deliveryAddress);
     }
 }
