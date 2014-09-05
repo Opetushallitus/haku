@@ -37,8 +37,9 @@ public class AuthenticationServiceDevLuokkaImpl extends AuthenticationServiceImp
             @Value("${cas.service.authentication-service}") String targetService,
             @Value("${haku.app.username.to.usermanagement}") String clientAppUser,
             @Value("${haku.app.password.to.usermanagement}") String clientAppPass,
-            @Value("${user.oid.prefix}") String userOidPrefix) {
-        super(casUrl, targetService, clientAppUser, clientAppPass, userOidPrefix);
+            @Value("${user.oid.prefix}") String userOidPrefix,
+            @Value("${haku.langCookie}") String langCookieName) {
+        super(casUrl, targetService, clientAppUser, clientAppPass, userOidPrefix, langCookieName);
     }
 
     @Override
@@ -50,4 +51,5 @@ public class AuthenticationServiceDevLuokkaImpl extends AuthenticationServiceImp
     public Person getCurrentHenkilo() {
         return new AuthenticationServiceMockImpl().getCurrentHenkilo();
     }
+
 }

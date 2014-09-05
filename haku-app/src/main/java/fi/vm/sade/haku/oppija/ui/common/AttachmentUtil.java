@@ -140,11 +140,11 @@ public class AttachmentUtil {
                                                                       KoulutusinformaatioService koulutusinformaatioService,
                                                                       String lang) {
         Map<String, List<String>> higherEdAttachmentAOIds = ApplicationUtil.getHigherEdAttachmentAOIds(application);
-        Map<String, List<fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO>> higherEdAttachments =
+        Map<String, List<ApplicationOptionDTO>> higherEdAttachments =
                 new HashMap<String, List<ApplicationOptionDTO>>();
         for (Map.Entry<String, List<String>> entry : higherEdAttachmentAOIds.entrySet()) {
             String key = entry.getKey();
-            List<fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO> aos =
+            List<ApplicationOptionDTO> aos =
                     new ArrayList<ApplicationOptionDTO>();
             for (String aoOid : entry.getValue()) {
                 ApplicationOptionDTO ao = koulutusinformaatioService.getApplicationOption(aoOid, lang);
@@ -164,7 +164,6 @@ public class AttachmentUtil {
         deadlineCal.set(Calendar.HOUR_OF_DAY, 15);
         deadlineCal.set(Calendar.MINUTE, 0);
         deadlineCal.set(Calendar.SECOND, 0);
-        deadlineCal.setTimeZone(TimeZone.getTimeZone("EEST"));
         Date deadline = deadlineCal.getTime();
 
         for (Map.Entry<String, List<ApplicationOptionDTO>> entry : higherEdAttachments.entrySet()) {
