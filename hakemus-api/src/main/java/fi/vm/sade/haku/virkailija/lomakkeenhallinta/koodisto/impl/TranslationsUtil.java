@@ -25,8 +25,10 @@ import fi.vm.sade.koodisto.service.types.common.KoodiType;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public final class TranslationsUtil {
 
@@ -94,7 +96,27 @@ public final class TranslationsUtil {
         return ImmutableMap.copyOf(ensusedTranslations);
     }
 
+    public static Map<String,String> combineTranslations(final Map<String, String> combinationMap, final Map<String, String> translatioons1, final String delimiter, final Map<String, String> translations2, final String linebreak) {
+        Set<String> keys = new HashSet<String>(translatioons1.keySet());
+        keys.addAll(translations2.keySet());
+        for (String key : keys){
+            String combined = combinationMap.get(key);
+            if (null == combined || "".equals(combined))
+                combinationMap.put(key, translatioons1.get(key) + delimiter + translations2.get(key));
+            else {
+                combined.concat(linebreak);
+                combined.concat(translatioons1.get(key) + delimiter + translations2.get(key));
+                combinationMap.put(key, combined);
+            }
+        }
+        return combinationMap;
+    }
+
     public static I18nText ensureDefaultLanguageTranslations(final I18nText translations) {
         return new I18nText(ensureDefaultLanguageTranslations(translations.getTranslations()));
+    }
+
+    public static I18nText combineTranslations(final I18nText combinationMap, final I18nText translatioons1, final String delimiter, final I18nText translations2, final String linebreak) {
+        return new I18nText(combineTranslations(combinationMap.getTranslations(), translatioons1.getTranslations(), delimiter, translations2.getTranslations(), linebreak));
     }
 }

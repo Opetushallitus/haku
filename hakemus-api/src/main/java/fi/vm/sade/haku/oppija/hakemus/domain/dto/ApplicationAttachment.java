@@ -7,6 +7,7 @@ import java.util.Date;
 public class ApplicationAttachment {
 
     private I18nText name;
+    private I18nText header;
     private I18nText description;
     private Date deadline;
     private Address address;
@@ -17,6 +18,14 @@ public class ApplicationAttachment {
 
     public void setName(I18nText name) {
         this.name = name;
+    }
+
+    public I18nText getHeader() {
+        return header;
+    }
+
+    public void setHeader(I18nText header) {
+        this.header = header;
     }
 
     public I18nText getDescription() {

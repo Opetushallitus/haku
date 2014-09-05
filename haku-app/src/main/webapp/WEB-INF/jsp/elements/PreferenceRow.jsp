@@ -41,7 +41,7 @@
     <c:set value="${hiddenKoulutusId}-kaksoistutkinto" var="hiddenKoulutusIdKaksoistutkinto" scope="page"/>
     <c:set value="${hiddenKoulutusId}-vocational" var="hiddenKoulutusIdVocational" scope="page"/>
     <c:set value="${hiddenKoulutusId}-attachmentgroups" var="hiddenAttachmentgroups" scope="page"/>
-    <c:set value="${hiddenKoulutusId}-attachments" var="hiddenAttachmentgroups" scope="page"/>
+    <c:set value="${hiddenKoulutusId}-attachments" var="hiddenAttachments" scope="page"/>
 
     <haku:errorMessage id="${sortableItem.id}" additionalClass="margin-top-1"/>
     <div class="form-row">
@@ -92,7 +92,6 @@
                 <haku:input-hidden id="${hiddenAttachmentgroups}" data="${answers}"/>
                 <haku:input-hidden id="${hiddenAttachments}" data="${answers}"/>
             </div>
-            <div id="${selectInputId}-spinner" style="height: 22px; width: 22px; float: left;"></div>
         </div>
         <div class="clear"></div>
     </div>

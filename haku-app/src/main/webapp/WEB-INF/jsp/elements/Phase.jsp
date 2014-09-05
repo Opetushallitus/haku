@@ -38,7 +38,6 @@
     <![endif]-->
     <link rel="stylesheet" href="${contextPath}/resources/jquery-ui-theme/jquery-ui-1.8.23.custom.css" type="text/css">
     <script src="${contextPath}/resources/jquery/jquery.min.js"></script>
-    <script src="${contextPath}/resources/javascript/spin.min.js" type="text/javascript"></script>
     <script src="${contextPath}/resources/jquery/jquery-ui-1.8.23.custom.min.js"></script>
     <script src="${contextPath}/resources/jquery/jquery.ui.datepicker-trans.js"></script>
     <script src="${contextPath}/resources/jquery/jquery.html5-placeholder-shim.js" type="text/javascript"></script>
