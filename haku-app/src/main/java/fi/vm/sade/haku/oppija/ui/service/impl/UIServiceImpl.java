@@ -16,6 +16,11 @@
 
 package fi.vm.sade.haku.oppija.ui.service.impl;
 
+import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.OrganizationGroupDTO;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.ListUtils;
+import org.apache.commons.lang.StringUtils;
 import com.google.common.base.Predicate;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
@@ -35,18 +40,32 @@ import fi.vm.sade.haku.oppija.ui.service.ModelResponse;
 import fi.vm.sade.haku.oppija.ui.service.UIService;
 import fi.vm.sade.haku.virkailija.koulutusinformaatio.KoulutusinformaatioService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.PDFService;
 import org.apache.http.HttpResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Service
 public class UIServiceImpl implements UIService {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(UIServiceImpl.class);
+
+    private static final String PREFERENCE_PREFIX = "preference";
+    private static final String OPTION_POSTFIX = "-Koulutus-id";
+    private static final String OPTION_GROUP_POSTFIX = "-Koulutus-id-ao-groups";
+    private static final String ATTACHMENT_GROUP_POSTFIX = "-Koulutus-id-attachmentgroups";
+    private static final String ATTACHMENT_GROUP_TYPE = "hakukohde_liiteosoite";
 
     private final ApplicationService applicationService;
     private final ApplicationSystemService applicationSystemService;
@@ -105,15 +124,53 @@ public class UIServiceImpl implements UIService {
         Application application = applicationService.getApplication(applicationSystemId);
         elementTree.checkPhaseTransfer(application.getPhaseId(), phaseId);
         ModelResponse modelResponse = new ModelResponse(activeApplicationSystem);
-        modelResponse.addAnswers(userSession.populateWithPrefillData(application.getVastauksetMerged()));
+        modelResponse.addAnswers(userSession.populateWithPrefillData(ensureGroupData(phaseId, application.getVastauksetMerged())));
         modelResponse.setElement(phase);
         modelResponse.setKoulutusinformaatioBaseUrl(koulutusinformaatioBaseUrl);
         return modelResponse;
     }
 
+    private Map<String, String> ensureGroupData(String phaseId, Map<String, String> answers) {
+        //TODO this is an evil kludge, pls kill it asap
+        if (!OppijaConstants.PHASE_APPLICATION_OPTIONS.equals(phaseId))
+            return answers;
+        return ensureGroupData(answers);
+    }
+
+    private Map<String, String> ensureGroupData(Map<String, String> answers) {
+        LOGGER.debug("Input map: " + answers.toString());
+        Set<String> keys = new HashSet(answers.keySet());
+        for (String key: keys){
+            if (null != key && key.startsWith(PREFERENCE_PREFIX) && key.endsWith(OPTION_POSTFIX) && StringUtils.isNotEmpty(answers.get(key))){
+                String basekey = key.replace(OPTION_POSTFIX, "");
+                String aoGroups = answers.get(basekey + OPTION_GROUP_POSTFIX);
+                String attachmentGroups = answers.get(basekey + ATTACHMENT_GROUP_POSTFIX);
+                if (StringUtils.isEmpty(aoGroups) || StringUtils.isEmpty(attachmentGroups)){
+                    ApplicationOptionDTO applicationOption = koulutusinformaatioService.getApplicationOption(answers.get(key));
+                    List<OrganizationGroupDTO> organizationGroups = applicationOption.getOrganizationGroups();
+                    if (organizationGroups.size() == 0 ){
+                        continue;
+                    }
+                    ArrayList<String> aoGroupList = new ArrayList<String>(organizationGroups.size());
+                    ArrayList<String> attachmentGroupList = new ArrayList<String>();
+                    for (OrganizationGroupDTO organizationGroup : organizationGroups) {
+                        aoGroupList.add(organizationGroup.getOid());
+                        if (organizationGroup.getGroupTypes().contains(ATTACHMENT_GROUP_TYPE)){
+                            attachmentGroupList.add(organizationGroup.getOid());
+                        }
+                    }
+                    answers.put(basekey + OPTION_GROUP_POSTFIX, StringUtils.join(aoGroupList, ","));
+                    answers.put(basekey + ATTACHMENT_GROUP_POSTFIX, StringUtils.join(attachmentGroupList, ","));
+                }
+            }
+        }
+        LOGGER.debug("output map: " + answers.toString());
+        return answers;
+    }
+
     @Override
     public void storePrefilledAnswers(String applicationSystemId, Map<String, String> answers) {
-        userSession.addPrefillData(applicationSystemId, answers);
+        userSession.addPrefillData(applicationSystemId, ensureGroupData(answers));
     }
 
     @Override
@@ -179,10 +236,11 @@ public class UIServiceImpl implements UIService {
     }
 
     @Override
-    public ModelResponse savePhase(String applicationSystemId, String phaseId, Map<String, String> answers) {
+    public ModelResponse savePhase(String applicationSystemId, String phaseId, Map<String, String> originalAnswers) {
+        Map<String, String> ensuredAnswers = ensureGroupData(phaseId, originalAnswers);
         Form activeForm = applicationSystemService.getActiveApplicationSystem(applicationSystemId).getForm();
         ApplicationState applicationState = applicationService.saveApplicationPhase(
-                new ApplicationPhase(applicationSystemId, phaseId, answers));
+                new ApplicationPhase(applicationSystemId, phaseId, ensuredAnswers));
         ModelResponse modelResponse = new ModelResponse();
         modelResponse.setApplicationState(applicationState);
         if (!applicationState.isValid()) {
