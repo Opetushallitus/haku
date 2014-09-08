@@ -213,6 +213,7 @@ public final class KoulutustaustaPhase {
                 .addOption(createI18NText("form.koulutustausta.lukio.yotutkinto.eb"), "eb")
                 .addOption(createI18NText("form.koulutustausta.lukio.yotutkinto.rp"), "rp")
                 .addOption(createI18NText("form.koulutustausta.lukio.yotutkinto.lk"), "lk")
+                .addOption(createI18NText("form.koulutustausta.lukio.yotutkinto.lkOnly"), "lkOnly")
                 .requiredInline()
                 .formParams(formParameters).build();
 
