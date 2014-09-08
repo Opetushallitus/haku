@@ -1,10 +1,9 @@
-package fi.vm.sade.haku.oppija.ui.common;
+package fi.vm.sade.haku.oppija.hakemus.domain.util;
 
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.AddressBuilder;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationAttachment;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationAttachmentBuilder;
-import fi.vm.sade.haku.oppija.hakemus.domain.util.ApplicationUtil;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationOptionAttachmentRequest;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.util.StringUtil;
@@ -13,6 +12,7 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain.SimpleAddress;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import fi.vm.sade.koulutusinformaatio.domain.dto.*;
+
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.*;
