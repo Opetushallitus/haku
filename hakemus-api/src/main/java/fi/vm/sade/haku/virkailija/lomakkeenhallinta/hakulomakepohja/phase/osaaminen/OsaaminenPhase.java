@@ -36,6 +36,7 @@ import java.util.List;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.DropdownSelectBuilder.Dropdown;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.PhaseBuilder.Phase;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.RelatedQuestionRuleBuilder.Rule;
+import static fi.vm.sade.haku.oppija.lomake.domain.builder.TextAreaBuilder.TextArea;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.TextQuestionBuilder.TextQuestion;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.ThemeBuilder.Theme;
 
@@ -67,7 +68,7 @@ public class OsaaminenPhase {
 
             Expr haettuAMKHon = ExprUtil.reduceToOr(exprs);
             Expr pohjakoulutusAmmatillinen = new Or(ExprUtil.isAnswerTrue("pohjakoulutus_am"), ExprUtil.isAnswerTrue("pohjakoulutus_yo_ammatillinen"));
-            Expr pohjakoulutusLukio = ExprUtil.atLeastOneValueEqualsToVariable("pohjakoulutus_yo_tutkinto", "fi", "lk");
+            Expr pohjakoulutusLukio = ExprUtil.isAnswerTrue("pohjakoulutus_yo");
 
             ElementBuilder kysytaankoKeskiarvoJaAsteikko = Rule(new And(haettuAMKHon, pohjakoulutusAmmatillinen));
             ElementBuilder kysytaankoLukionKeskiarvo = Rule(new And(haettuAMKHon, pohjakoulutusLukio));
@@ -98,6 +99,10 @@ public class OsaaminenPhase {
                                     .addOptions(asteikkolista)
                                     .inline()
                                     .required()
+                                    .formParams(formParameters)
+                                    .build())
+                            .addChild(TextArea("keskiarvo-tutkinto")
+                                    .inline()
                                     .formParams(formParameters)
                                     .build())
                             .build()
