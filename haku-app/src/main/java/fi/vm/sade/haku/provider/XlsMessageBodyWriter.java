@@ -2,10 +2,9 @@ package fi.vm.sade.haku.provider;
 
 import fi.vm.sade.haku.oppija.hakemus.resource.XlsParameter;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.DropdownSelect;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Question;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.*;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 import org.slf4j.Logger;
@@ -32,6 +31,7 @@ import java.util.Map;
 public class XlsMessageBodyWriter implements MessageBodyWriter<XlsParameter> {
 
     private static final Logger LOG = LoggerFactory.getLogger(XlsMessageBodyWriter.class);
+    private static final short EMPTY_COLUMN_WIDTH = 10;
 
     @Override
     public boolean isWriteable(Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType) {
@@ -71,10 +71,10 @@ public class XlsMessageBodyWriter implements MessageBodyWriter<XlsParameter> {
         Row titleRow = sheet.createRow(currentRowIndex);
         ArrayList questionIndexes = new ArrayList(questions.size());
         for (Question titled : questions.values()) {
+            sheet.setColumnWidth(currentColumnIndex,EMPTY_COLUMN_WIDTH);
             Cell titleCell = titleRow.createCell(currentColumnIndex);
             if (titled.getI18nText() != null) {
                 titleCell.setCellValue(ElementUtil.getText(titled, lang));
-                sheet.autoSizeColumn(currentColumnIndex);
                 questionIndexes.add(titled.getId());
                 currentColumnIndex++;
             }
@@ -94,15 +94,16 @@ public class XlsMessageBodyWriter implements MessageBodyWriter<XlsParameter> {
                         Question question = questions.get(vastaus.getKey());
                         String title = ElementUtil.getText(question, lang);
                         if (title != null) {
-                            if (question instanceof DropdownSelect) {
-                                Option option = ((DropdownSelect) question).getData().get(vastaus.getValue());
+                            if (question instanceof OptionQuestion) {
+                                Option option = ((OptionQuestion) question).getData().get(vastaus.getValue());
                                 if (option != null) {
+                                    sheet.autoSizeColumn(column);
                                     kentta.setCellValue(ElementUtil.getText(option, lang));
                                 }
                             } else {
+                                sheet.autoSizeColumn(column);
                                 kentta.setCellValue(vastaus.getValue());
                             }
-
                         }
                     }
                 }
