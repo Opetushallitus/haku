@@ -1,6 +1,11 @@
 package fi.vm.sade.haku.oppija.hakemus.domain.util;
 
+import java.util.*;
+
+import org.apache.commons.lang3.StringUtils;
+
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
+import fi.vm.sade.haku.oppija.hakemus.domain.dto.Address;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.AddressBuilder;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationAttachment;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationAttachmentBuilder;
@@ -12,10 +17,6 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain.SimpleAddress;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import fi.vm.sade.koulutusinformaatio.domain.dto.*;
-
-import org.apache.commons.lang3.StringUtils;
-
-import java.util.*;
 
 public class AttachmentUtil {
 
@@ -35,7 +36,14 @@ public class AttachmentUtil {
                 }
             }
         }
-        
+        return resolveAttachments(applicationSystem, application, koulutusinformaatioService, lang);
+    }
+
+    public static List<ApplicationAttachment> resolveAttachments(
+              ApplicationSystem applicationSystem,
+              Application application,
+              KoulutusinformaatioService koulutusinformaatioService,
+              String lang) {
         List<ApplicationAttachment> attachments = new ArrayList<ApplicationAttachment>();
         attachments = addApplicationOptionAttachments(attachments, application, koulutusinformaatioService, lang);
         attachments = addDiscreationaryAttachments(attachments, application, koulutusinformaatioService, lang);
@@ -48,6 +56,9 @@ public class AttachmentUtil {
     private static List<ApplicationAttachment> addApplicationOptionAttachmentRequests(List<ApplicationAttachment> attachments,
                                                                                       Application application,
                                                                                       ApplicationSystem applicationSystem) {
+        if(applicationSystem.getApplicationOptionAttachmentRequests() == null) {
+          return attachments;
+        }
         for (ApplicationOptionAttachmentRequest attachmentRequest : applicationSystem.getApplicationOptionAttachmentRequests()){
             if (attachmentRequest.include(application.getVastauksetMerged())){
                 SimpleAddress address = attachmentRequest.getDeliveryAddress();
@@ -98,10 +109,6 @@ public class AttachmentUtil {
 
         for (String aoOid : ApplicationUtil.getDiscretionaryAttachmentAOIds(application)) {
             ApplicationOptionDTO ao = koulutusinformaatioService.getApplicationOption(aoOid, lang);
-            AddressDTO addressDTO = ao.getAttachmentDeliveryAddress();
-            if (addressDTO == null) {
-                addressDTO = ao.getProvider().getPostalAddress();
-            }
             Map<String, String> answers = application.getPhaseAnswers(OppijaConstants.PHASE_APPLICATION_OPTIONS);
             String discreationaryReason = null;
             for (Map.Entry<String, String> entry : answers.entrySet()) {
@@ -117,13 +124,7 @@ public class AttachmentUtil {
             ApplicationAttachmentBuilder attachmentBuilder = ApplicationAttachmentBuilder.start()
                     .setName(ElementUtil.createI18NText("form.valmis.liitteet.harkinnanvaraisuus"))
                     .setDeadline(null)
-                    .setAddress(AddressBuilder.start()
-                            .setRecipient(ao.getProvider().getName() + " " + ao.getName())
-                            .setStreetAddress(addressDTO.getStreetAddress())
-                            .setStreetAddress2(addressDTO.getStreetAddress2())
-                            .setPostalCode(addressDTO.getPostalCode())
-                            .setPostOffice(addressDTO.getPostOffice())
-                            .build());
+                    .setAddress(getAddress(ao));
             if (discreationaryReason != null) {
                 attachmentBuilder.setDescription(ElementUtil.createI18NText("form.valmis.liitteet.harkinnanvaraisuus."
                         +discreationaryReason));
@@ -134,6 +135,23 @@ public class AttachmentUtil {
         return attachments;
     }
 
+    private static Address getAddress(ApplicationOptionDTO ao) {
+
+      AddressDTO addressDTO = ao.getAttachmentDeliveryAddress();
+      if (addressDTO == null && ao.getProvider() != null) {
+          addressDTO = ao.getProvider().getPostalAddress();
+      }
+      if(addressDTO == null) {
+        return null;
+      }
+      return AddressBuilder.start()
+          .setRecipient(ao.getProvider().getName() + " " + ao.getName())
+          .setStreetAddress(addressDTO.getStreetAddress())
+          .setStreetAddress2(addressDTO.getStreetAddress2())
+          .setPostalCode(addressDTO.getPostalCode())
+          .setPostOffice(addressDTO.getPostOffice())
+          .build();
+    }
 
     private static List<ApplicationAttachment> addHigherEdAttachments(List<ApplicationAttachment> attachments,
                                                                       Application application,
