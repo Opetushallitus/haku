@@ -1,9 +1,9 @@
 package fi.vm.sade.haku.testfixtures;
 
-import java.io.File;
 import java.io.IOException;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.log4j.Logger;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -15,6 +15,8 @@ import com.mongodb.util.JSON;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationDAO;
 
 public class MongoFixtureImporter {
+    private static final Logger LOGGER = Logger.getLogger(MongoFixtureImporter.class);
+
     public static void importJsonFixtures(MongoTemplate template, ApplicationDAO dao) throws IOException {
         final Resource[] resources = new PathMatchingResourcePatternResolver().getResources("mongofixtures/**/*.json");
         for (Resource resource: resources) {
@@ -27,6 +29,7 @@ public class MongoFixtureImporter {
         String collection = getParentName(resource);
         final String jsonString = IOUtils.toString(resource.getURI());
         try {
+            LOGGER.info("Importing " + resource.getURI() + " to collection " + collection);
             final DBObject dbObject = (DBObject) JSON.parse(jsonString);
             // TODO: doesn't seem to work with multiple objects per file (themequestion/*.json)
             upsert(template, collection, dbObject);
