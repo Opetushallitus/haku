@@ -30,6 +30,7 @@ if [[ $@ =~ luokka ]]; then
   mongoexport "$@" -d hakulomake -c application --query '{oid: "1.2.246.562.11.00000877107"}' | node process-application.js 1.2.246.562.24.14229104472 > $fixturesroot/application/00000877107.json
   mongoexport "$@" -d hakulomake -c application --query '{oid: "1.2.246.562.11.00000855417"}' | node process-application.js 1.2.246.562.24.14229104472 > $fixturesroot/application/00000855417.json
   mongoexport "$@" -d hakulomake -c application --query '{oid: "1.2.246.562.11.00000877699"}' | node process-application.js 1.2.246.562.24.14229104472 > $fixturesroot/application/00000877699.json
+  mongoexport "$@" -d hakulomake -c application --query '{oid: "1.2.246.562.11.00000877686"}' | node process-application.js 1.2.246.562.24.14229104472 > $fixturesroot/application/00000877686.json
 
 elif [[ $@ =~ reppu ]]; then
   echo Importing from reppu

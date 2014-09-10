@@ -20,10 +20,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -156,7 +159,21 @@ public final class ThemeQuestionConfigurator {
         query.setLearningOpportunityId(optionId);
         query.addSortBy(ThemeQuestion.FIELD_ORDINAL, ThemeQuestionQueryParameters.SORT_ASCENDING);
         LOGGER.debug("Querying questions with " + query);
-        return themeQuestionDAO.query(query);
+        return moveNullOrdinalsToTheEnd(themeQuestionDAO.query(query));
+    }
+
+    private List<ThemeQuestion> moveNullOrdinalsToTheEnd(List<ThemeQuestion> themeQuestions){
+        if (0 == themeQuestions.size() || null != themeQuestions.get(0).getOrdinal()){
+            return themeQuestions;
+        }
+        final ArrayList<ThemeQuestion> newOrder = new ArrayList<ThemeQuestion>(themeQuestions.size());
+        int i = 0;
+        do {
+            ThemeQuestion tq = themeQuestions.remove(i);
+            newOrder.add(tq);
+        } while (null  == themeQuestions.get(++i).getOrdinal());
+        newOrder.addAll(0, themeQuestions);
+        return newOrder;
     }
 
     private Element generateTitleGroupForApplicationOption(final String optionId) {

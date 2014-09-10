@@ -152,7 +152,7 @@ public class UIServiceImpl implements UIService {
                 if (StringUtils.isEmpty(aoGroups) || StringUtils.isEmpty(attachmentGroups)){
                     ApplicationOptionDTO applicationOption = koulutusinformaatioService.getApplicationOption(answers.get(key));
                     List<OrganizationGroupDTO> organizationGroups = applicationOption.getOrganizationGroups();
-                    if (organizationGroups.size() == 0 ){
+                    if (null == organizationGroups || organizationGroups.size() == 0 ){
                         continue;
                     }
                     ArrayList<String> aoGroupList = new ArrayList<String>(organizationGroups.size());
