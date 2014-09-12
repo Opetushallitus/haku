@@ -20,14 +20,17 @@ import java.util.List;
 
 public class ApplicationFilterParameters {
 
-    private int maxApplicationOptions;
-    private List<String> organizationsReadable;
-    private List<String> organizationsOpo;
+    private final int maxApplicationOptions;
+    private final List<String> organizationsReadable;
+    private final List<String> organizationsOpo;
+    private final String kohdejoukko;
 
-    public ApplicationFilterParameters(int maxApplicationOptions, List<String> organizationsReadable, List<String> organizationsOpo) {
+    public ApplicationFilterParameters(int maxApplicationOptions, List<String> organizationsReadable,
+                                       List<String> organizationsOpo, String kohdejoukko) {
         this.maxApplicationOptions = maxApplicationOptions;
         this.organizationsReadable = organizationsReadable;
         this.organizationsOpo = organizationsOpo;
+        this.kohdejoukko = kohdejoukko;
     }
 
     public int getMaxApplicationOptions() {
@@ -40,6 +43,10 @@ public class ApplicationFilterParameters {
 
     public List<String> getOrganizationsOpo() {
         return organizationsOpo;
+    }
+
+    public String getKohdejoukko() {
+        return kohdejoukko;
     }
 
     @Override

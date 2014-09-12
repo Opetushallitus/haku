@@ -11,6 +11,7 @@ import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultItemDTO;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationDAO;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationFilterParameters;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationQueryParameters;
+import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationQueryParametersBuilder;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationOidService;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationServiceImpl;
 import fi.vm.sade.haku.oppija.hakemus.service.HakuPermissionService;
@@ -75,8 +76,24 @@ public class ApplicationServiceImplTest {
 
     @Before
     public void setUp() {
-        applicationQueryParameters = new ApplicationQueryParameters(null, null, "", "", "", false, "", "", new Date(), 0, Integer.MAX_VALUE, "fullName", 1);
-        filterParameters = new ApplicationFilterParameters(6, new ArrayList<String>(), new ArrayList<String>());
+
+        applicationQueryParameters = new ApplicationQueryParametersBuilder()
+                .setStates(null)
+                .setAsIds(null)
+                .setAoId("")
+                .setLopOid("")
+                .setAoOid("")
+                .setGroupOid("")
+                .setBaseEducation("")
+                .setDiscretionaryOnly(false)
+                .setSendingSchool("")
+                .setSendingClass("")
+                .setUpdatedAfter(new Date())
+                .setStart(0)
+                .setRows(Integer.MAX_VALUE)
+                .setOrderBy("fullName")
+                .setOrderDir(1).build();
+        filterParameters = new ApplicationFilterParameters(6, new ArrayList<String>(), new ArrayList<String>(), "");
         application = new Application();
         Map<String, String> answers = new HashMap<String, String>();
         answers.put("avain", "arvo");

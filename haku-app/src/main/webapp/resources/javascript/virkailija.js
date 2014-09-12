@@ -56,6 +56,7 @@ $(document).ready(function () {
                         var as = data[i];
                         var year = as.hakukausiVuosi;
                         var semester = as.hakukausiUri;
+                        var kohdejoukko = as.kohdejoukko;
 
                         if (selectedSemester && selectedSemester !== semester) {
                             continue;
@@ -79,9 +80,39 @@ $(document).ready(function () {
                             }
                         }
 
-                    $('#application-system').append('<option value="'+id+'">'+name+'</option>');
+                        $('#application-system').append('<option value="'+id+'" '+'data-kohdejoukko="'+kohdejoukko+'" '+'>'+name+'</option>');
                     }
                 });
+        }
+    };
+
+    var baseEducationSelection = {
+        init : function() {
+            $("#application-system option:selected").each(function() {
+                var kohdejoukko = $(this).attr('data-kohdejoukko');
+                $getJSON(page_settings.contextPath + "/virkailija/hakemus/baseEducations/" + kohdejoukko, function(data) {
+                    var baseEds = [];
+                    $('#base-education option').remove();
+                    $('#base-education').append('<option value="">&nbsp</option>');
+                    for (var i in data) {
+                        var baseEd = data[i];
+                        var value = baseEd.value;
+                        var name = baseEd['name_' + page_settings.lang];
+                        if (!name) {
+                            if (baseEd['name_fi']) {
+                                name = baseEd['name_fi'];
+                            } else if (baseEd['name_sv']) {
+                                name = baseEd['name_sv'];
+                            } else if (baseEd['name_en']) {
+                                name = baseEd['name_en'];
+                            } else {
+                                name = "???";
+                            }
+                        }
+                        $('#base-education').append('<option value="'+value+'">'+name+'</option>');
+                    }
+                });
+            });
         }
     };
 
@@ -91,6 +122,8 @@ $(document).ready(function () {
 
     $('#hakukausi').change(function() {applicationSystemSelection.init()});
     $('#hakukausiVuosi').change(function() {applicationSystemSelection.init()});
+
+    $('#application-system').change(function() {baseEducationSelection.init()});
 
     $('input#sendingSchool').autocomplete({
         minLength : 1,
@@ -164,9 +197,48 @@ $(document).ready(function () {
         }
     });
 
+    $('input#application-group').autocomplete({
+        minLength : 1,
+        delay : 500,
+        source: function(req, res) {
+            $.get(page_settings.contextPath + "/virkailija/autocomplete/group?term="+encodeURI(req.term),
+                function(data) {
+                    res($.map(data, function (result) {
+                        var name = result.name[page_settings.lang];
+                        if ( !name ) {
+                            var langs = ['fi', 'sv', 'en'];
+                            for (var i = 0; i < langs.length; i++) {
+                                name = result.name[langs[i]];
+                                if (name) {
+                                    break;
+                                }
+                            }
+                            if (!name) {
+                                name = "???";
+                            }
+                        }
+                        return {
+                            label: name,
+                            value: name,
+                            dataId: result.dataId
+                        }
+                    }));
+                })
+        },
+        select: function(event, ui) {
+            $('#application-group-oid').val(ui.item.dataId);
+        }
+    });
+
     $('input#application-preference').change(function(event) {
         if (!$(this).val()) {
             $('#application-preference-code').val("");
+        }
+    });
+
+    $('input#application-group').change(function(event) {
+        if (!$(this).val()) {
+            $('#application-group-oid').val("");
         }
     });
 
@@ -362,7 +434,10 @@ $(document).ready(function () {
                 $('#oid').val(obj.oid);
                 $('#application-state').val(obj.appState);
                 $('#application-preference').val(obj.aoid);
-                $('#application-preference-code').val(obj.aoid);
+                $('#application-preference-code').val(obj.aoidCode);
+                $('#application-group').val(obj.group);
+                $('#application-group-oid').val(obj.groupOid);
+                $('#base-education').val(obj.baseEducation);
                 $('#lopoid').val(obj.lopoid);
                 $('#application-system').val(obj.asId);
                 $('#hakukausiVuosi').val(obj.asYear);
@@ -382,7 +457,10 @@ $(document).ready(function () {
                 addParameter(obj, 'appState', '#application-state');
                 addParameter(obj, 'aoid', '#application-preference');
                 addParameter(obj, 'aoidCode', '#application-preference-code');
+                addParameter(obj, 'group', '#application-group');
+                addParameter(obj, 'groupOid', '#application-group-oid');
                 addParameter(obj, 'lopoid', '#lopoid');
+                addParameter(obj, 'baseEducation', '#base-education');
                 addParameter(obj, 'asId', '#application-system');
                 addParameter(obj, 'asYear', '#hakukausiVuosi');
                 addParameter(obj, 'asSemester', '#hakukausi');
@@ -508,6 +586,7 @@ $(document).ready(function () {
                     });
                 });
         },
+<<<<<<< HEAD
         this.updateCounters = function (count) {
             $resultcount.empty().append(count);
             $applicationTabLabel.empty().append('Hakemukset (' + count + ')');
@@ -526,6 +605,8 @@ $(document).ready(function () {
             $('#application-state').val('');
             $('#application-preference').val('');
             $('#application-preference-code').val('');
+            $('#application-group').val('');
+            $('#application-group-oid').val('');
             $('#application-system').val('');
             $('#hakukausiVuosi').val(hakukausiDefaultYear);
             $('#hakukausi').val(hakukausiDefaultSemester);
@@ -536,6 +617,39 @@ $(document).ready(function () {
             $('#check-all-applications').attr('checked', false);
             $('#excel-link').addClass('disabled');
             $('#excel-link').attr('href','javascript:void(0);');
+=======
+            this.updateCounters = function (count) {
+                $resultcount.empty().append(count);
+                $applicationTabLabel.empty().append('Hakemukset (' + count + ')');
+            },
+            this.reset = function () {
+                $.cookie.path = cookiePath;
+                $.cookie.json = true;
+                $.removeCookie(cookieName);
+                $('#application-table thead tr td').removeAttr('class');
+                self.updateCounters(0);
+                $tbody.empty();
+                $('#pagination').empty();
+                $('#lop-title').empty();
+                $('#lopoid').val('');
+                $('#entry').val('');
+                $('#application-state').val('');
+                $('#application-preference').val('');
+                $('#application-preference-code').val('');
+                $('#application-group').val('');
+                $('#application-group-oid').val('');
+                $('#application-system').val('');
+                $('#base-education').val('');
+                $('#hakukausiVuosi').val(hakukausiDefaultYear);
+                $('#hakukausi').val(hakukausiDefaultSemester);
+                $('#sendingSchoolOid').val('');
+                $('#sendingSchool').val('');
+                $('#sendingClass').val('');
+                $('#discretionary-only').attr('checked', false);
+                $('#check-all-applications').attr('checked', false);
+                $('#excel-link').addClass('disabled');
+                $('#excel-link').attr('href', 'javascript:void(0);');
+>>>>>>> 737210d... HAK-581 Haku pohjakoulutuksen perusteella
 
         },
         this.getSortOrder = function(columnName) {

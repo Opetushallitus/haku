@@ -27,6 +27,8 @@ public class ApplicationQueryParameters {
     private final String aoId;
     private final String lopOid;
     private final String aoOid;
+    private final String groupOid;
+    private final String baseEducation;
     private final boolean discretionaryOnly;
     private final String sendingSchool;
     private final String sendingClass;
@@ -37,14 +39,17 @@ public class ApplicationQueryParameters {
     private int orderDir;
 
     public ApplicationQueryParameters(final List<String> state, final List<String> asIds, final String aoId,
-                                      final String lopOid, final String aoOid, final Boolean discretionaryOnly,
-                                      final String sendingSchool, final String sendingClass, final Date updatedAfter,
+                                      final String lopOid, final String aoOid, final String groupOid, String baseEducation,
+                                      final Boolean discretionaryOnly, final String sendingSchool,
+                                      final String sendingClass, final Date updatedAfter,
                                       final int start, final int rows, final String orderBy, final int orderDir) {
         this.lopOid = isEmpty(lopOid) ? null : lopOid;
         this.asIds = asIds;
         this.state = state;
         this.aoId = isEmpty(aoId) ? null : aoId;
         this.aoOid = isEmpty(aoOid) ? null : aoOid;
+        this.groupOid = isEmpty(groupOid) ? null : groupOid;
+        this.baseEducation = isEmpty(baseEducation) ? null : baseEducation;
         this.discretionaryOnly = discretionaryOnly == null ? false : discretionaryOnly;
         this.sendingSchool = sendingSchool;
         this.sendingClass = sendingClass;
@@ -75,6 +80,10 @@ public class ApplicationQueryParameters {
         return aoOid;
     }
 
+    public String getGroupOid() {
+        return groupOid;
+    }
+
     public int getStart() {
         return start;
     }
@@ -101,4 +110,7 @@ public class ApplicationQueryParameters {
 
     public Date getUpdatedAfter() { return updatedAfter; }
 
+    public String getBaseEducation() {
+        return baseEducation;
+    }
 }

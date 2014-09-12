@@ -20,9 +20,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import fi.vm.sade.generic.rest.CachingRestClient;
-import fi.vm.sade.haku.oppija.common.organisaatio.Organization;
-import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationRestDTO;
-import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
+import fi.vm.sade.haku.oppija.common.organisaatio.*;
 import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
 import fi.vm.sade.organisaatio.api.search.OrganisaatioHakutulos;
 import fi.vm.sade.organisaatio.api.search.OrganisaatioPerustieto;
@@ -69,6 +67,7 @@ public class OrganizationServiceImpl implements OrganizationService {
         this.cache = new HashMap<String, SoftReference<Object>>();
         GsonBuilder builder = new GsonBuilder();
         builder.registerTypeAdapter(Date.class, new TimestampDateAdapter());
+        builder.registerTypeAdapter(OrganizationGroupListRestDTO.class, new OrganizationGroupListRestDTOAdapter());
         this.gson = builder.create();
     }
 
@@ -162,6 +161,25 @@ public class OrganizationServiceImpl implements OrganizationService {
             LOG.error("Couldn't find organization for oppilaitosnumero", e);
         }
         return null;
+    }
+
+    @Override
+    public List<OrganizationGroupRestDTO> findGroups(String term) throws IOException {
+        String url = "/rest/organisaatio/1.2.246.562.10.00000000001/ryhmat";
+        OrganizationGroupListRestDTO groupList = getCached(url, OrganizationGroupListRestDTO.class);
+        List<OrganizationGroupRestDTO> groups = groupList.getGroups();
+        List<OrganizationGroupRestDTO> filtered = new ArrayList<OrganizationGroupRestDTO>();
+        String termLC = term.toLowerCase();
+        for (OrganizationGroupRestDTO group : groups) {
+            for (Map.Entry<String, String> entry : group.getNimi().getTranslations().entrySet()) {
+                String nameLC = entry.getValue().toLowerCase();
+                if (nameLC.contains(termLC)) {
+                    filtered.add(group);
+                    break;
+                }
+            }
+        }
+        return filtered;
     }
 
     private <T> T getCached(String url, Class<? extends T> resultType) throws IOException {

@@ -27,6 +27,7 @@ import fi.vm.sade.haku.oppija.ui.common.UriUtil;
 import fi.vm.sade.haku.oppija.ui.service.ModelResponse;
 import fi.vm.sade.haku.oppija.ui.service.OfficerUIService;
 import fi.vm.sade.haku.oppija.ui.service.UIService;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.EmailService;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.PDFService;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.dto.ApplicationByEmailDTO;
@@ -44,7 +45,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -332,6 +332,7 @@ public class OfficerController {
             applicationSystem.put("id", as.getId());
             applicationSystem.put("hakukausiUri", as.getHakukausiUri());
             applicationSystem.put("hakukausiVuosi", as.getHakukausiVuosi().toString());
+            applicationSystem.put("kohdejoukko", as.getKohdejoukkoUri());
             I18nText name = as.getName();
             Map<String, String> translations = name.getTranslations();
             for (Map.Entry<String, String> translation : translations.entrySet()) {
@@ -342,6 +343,16 @@ public class OfficerController {
             applicationSystems.add(applicationSystem);
         }
         return applicationSystems;
+    }
+
+    @GET
+    @Path("/hakemus/baseEducations/{kohdejoukko}")
+    public List<Map<String, String>> getBaseEducations(@PathParam("kohdejoukko") final String kohdejoukko) {
+        if (OppijaConstants.KOHDEJOUKKO_KORKEAKOULU.equals(kohdejoukko)) {
+            return officerUIService.getHigherEdBaseEdOptions();
+        } else {
+            return null;
+        }
 
     }
 
@@ -349,11 +360,13 @@ public class OfficerController {
     @Path("/autocomplete/{list}")
     @Produces(MediaType.APPLICATION_JSON)
     public List<Map<String, Object>> getAutocomplete(@PathParam("list") String list,
-                                                     @QueryParam("term") String term) throws UnsupportedEncodingException {
+                                                     @QueryParam("term") String term) throws IOException {
         if ("school".equals(list)) {
             return officerUIService.getSchools(term);
         } else if ("preference".equals(list)) {
             return officerUIService.getPreferences(term);
+        } else if ("group".equals(list)) {
+            return officerUIService.getGroups(term);
         }
         return new ArrayList<Map<String, Object>>(0);
     }

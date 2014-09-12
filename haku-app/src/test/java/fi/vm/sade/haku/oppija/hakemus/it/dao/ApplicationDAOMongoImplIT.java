@@ -122,7 +122,7 @@ public class ApplicationDAOMongoImplIT extends AbstractDAOTest {
         ApplicationQueryParameters param  = new ApplicationQueryParametersBuilder().setAsId("YhteisHaku").setAoId("776").build();
         AuthenticationServiceMockImpl authenticationServiceMock = new AuthenticationServiceMockImpl();
         ApplicationFilterParameters filterParameters = new ApplicationFilterParameters(6,
-                authenticationServiceMock.getOrganisaatioHenkilo(), authenticationServiceMock.getOrganisaatioHenkilo());
+                authenticationServiceMock.getOrganisaatioHenkilo(), authenticationServiceMock.getOrganisaatioHenkilo(), null);
         ApplicationSearchResultDTO resultDTO = applicationDAO.findAllQueried("", param, filterParameters);
         assertFalse(CollectionUtils.isEmpty(resultDTO.getResults()));
         assertEquals(2, resultDTO.getResults().size());

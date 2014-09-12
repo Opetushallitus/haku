@@ -3,6 +3,7 @@ package fi.vm.sade.haku.oppija.ui.service.impl;
 import com.google.common.base.Strings;
 
 import fi.vm.sade.haku.oppija.common.organisaatio.Organization;
+import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationGroupRestDTO;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
 import fi.vm.sade.haku.oppija.hakemus.aspect.LoggerAspect;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
@@ -455,7 +456,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     @Override
     public List<ApplicationSystem> getApplicationSystems() {
         return applicationSystemService.getAllApplicationSystems("id", "name", "hakukausiUri", "hakukausiVuosi",
-                "maxApplicationOptions");
+                "maxApplicationOptions", "kohdejoukkoUri");
     }
 
     @Override
@@ -536,6 +537,18 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     }
 
     @Override
+    public List<Map<String, Object>> getGroups(String term) throws IOException {
+        List<Map<String, Object>> groups = new ArrayList<Map<String, Object>>();
+        for (OrganizationGroupRestDTO group : organizationService.findGroups(term)) {
+            Map<String, Object> orgGroup = new HashMap<String, Object>();
+            orgGroup.put("name", group.getNimi().getTranslations());
+            orgGroup.put("dataId", group.getOid());
+            groups.add(orgGroup);
+        }
+        return groups;
+    }
+
+    @Override
     public List<Map<String, Object>> getPreferences(String term) {
         term = term.toLowerCase();
         List<Option> preferences = koodistoService.getHakukohdekoodit();
@@ -555,6 +568,22 @@ public class OfficerUIServiceImpl implements OfficerUIService {
             }
         }
         return matchingPreferences;
+    }
+
+
+    @Override
+    public List<Map<String, String>> getHigherEdBaseEdOptions() {
+        List<Map<String, String>> options = new ArrayList<Map<String, String>>();
+        for (String ed : new String[] {"yo", "am", "amt", "kk", "ulk", "avoin", "muu"}) {
+            Map<String, String> opt = new HashMap<String, String>();
+            opt.put("value", ed);
+            Map<String, String> trans = ElementUtil.createI18NText("virkailija.hakemus.pohjakoulutus."+ed, "messages").getTranslations();
+            for (String lang : new String[] {"fi", "sv", "en"}) {
+                opt.put("name_"+lang, trans.get(lang));
+            }
+            options.add(opt);
+        }
+        return options;
     }
 
     @Override
