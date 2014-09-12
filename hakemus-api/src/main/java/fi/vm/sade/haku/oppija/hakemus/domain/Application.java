@@ -18,6 +18,7 @@ package fi.vm.sade.haku.oppija.hakemus.domain;
 
 import com.google.common.base.Predicates;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import fi.vm.sade.haku.oppija.lomake.domain.ObjectIdDeserializer;
 import fi.vm.sade.haku.oppija.lomake.domain.ObjectIdSerializer;
@@ -34,7 +35,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
@@ -102,6 +110,9 @@ public class Application implements Serializable {
     private List<Change> history = new ArrayList<Change>();
     private Integer version;
     private Integer modelVersion;
+
+    private List<PreferenceEligability> preferenceEligabilities = new ArrayList<PreferenceEligability>();
+    private List<ApplicationAttachmentRequest> attachmentRequests = new ArrayList<ApplicationAttachmentRequest>();
 
     @JsonCreator
     public Application(@JsonProperty(value = "applicationSystemId") final String applicationSystemId,
@@ -582,6 +593,22 @@ public class Application implements Serializable {
         return version;
     }
 
+    public List<PreferenceEligability> getPreferenceEligabilities() {
+        return preferenceEligabilities;
+    }
+
+    public void setPreferenceEligabilities(List<PreferenceEligability> preferenceEligabilities) {
+        this.preferenceEligabilities = new ArrayList<PreferenceEligability>(preferenceEligabilities);
+    }
+
+    public List<ApplicationAttachmentRequest> getAttachmentRequests() {
+        return attachmentRequests;
+    }
+
+    public void setAttachmentRequests(List<ApplicationAttachmentRequest> attachmentRequests) {
+        this.attachmentRequests = new ArrayList<ApplicationAttachmentRequest>(attachmentRequests);
+    }
+
     @Override
     public Application clone() {
         Application clone = new Application(getApplicationSystemId(), getUser(), copyAnswers(), Maps.newHashMap(getAdditionalInfo()));
@@ -598,6 +625,8 @@ public class Application implements Serializable {
              .setUpdated(getUpdated());
         clone.setPersonOidChecked(getPersonOidChecked());
         clone.setStudentOidChecked(getStudentOidChecked());
+        clone.setPreferenceEligabilities(getPreferenceEligabilities());
+        clone.setAttachmentRequests(getAttachmentRequests());
         return clone;
     }
 

@@ -644,7 +644,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
 
         return new ModelResponse(application,
                 applicationSystem,
-                AttachmentUtil.resolveAttachments(applicationSystem, application, koulutusinformaatioService),
+                AttachmentUtil.resolveAttachments(application),
                 koulutusinformaatioBaseUrl);
     }
 

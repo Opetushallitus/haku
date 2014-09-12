@@ -1,5 +1,6 @@
 package fi.vm.sade.haku.oppija.hakemus.domain.dto;
 
+import fi.vm.sade.haku.oppija.hakemus.domain.Address;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import java.util.Date;
 

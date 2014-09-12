@@ -73,30 +73,30 @@ public class UIServiceImplTest {
         return ao;
     }
 
-    @Test
-    public void testCompleteApplicationAttachments() {
-
-        UIServiceImpl service = new UIServiceImpl(applicationService, applicationSystemService, userSession,
-                koulutusinformaatioService, authenticationService, koulutusinformaatioBaseurl, pdfService);
-
-        String asId = "1.2.3";
-        String oid = "4.5.6";
-        ApplicationSystem as = buildApplicationSystem(asId);
-        Application application = buildApplication(asId, oid);
-        when(applicationSystemService.getActiveApplicationSystem(eq(asId))).thenReturn(as);
-        when(applicationService.getSubmittedApplication(eq(asId), eq(oid))).thenReturn(application);
-        when(koulutusinformaatioService.getApplicationOption(eq("1.2.3"), any(String.class))).thenReturn(aos.get("1.2.3"));
-        when(koulutusinformaatioService.getApplicationOption(eq("4.5.6"), any(String.class))).thenReturn(aos.get("4.5.6"));
-        when(koulutusinformaatioService.getApplicationOption(eq("7.8.9"), any(String.class))).thenReturn(aos.get("7.8.9"));
-
-        ModelResponse response = service.getCompleteApplication(asId, oid);
-
-        assertNotNull(response);
-        List<ApplicationAttachment> attachments = (List<ApplicationAttachment>)
-                response.getModel().get("applicationAttachments");
-        assertNotNull(attachments);
-        assertEquals(3, attachments.size());
-    }
+//    @Test
+//    public void testCompleteApplicationAttachments() {
+//
+//        UIServiceImpl service = new UIServiceImpl(applicationService, applicationSystemService, userSession,
+//                koulutusinformaatioService, authenticationService, koulutusinformaatioBaseurl, pdfService);
+//
+//        String asId = "1.2.3";
+//        String oid = "4.5.6";
+//        ApplicationSystem as = buildApplicationSystem(asId);
+//        Application application = buildApplication(asId, oid);
+//        when(applicationSystemService.getActiveApplicationSystem(eq(asId))).thenReturn(as);
+//        when(applicationService.getSubmittedApplication(eq(asId), eq(oid))).thenReturn(application);
+//        when(koulutusinformaatioService.getApplicationOption(eq("1.2.3"), any(String.class))).thenReturn(aos.get("1.2.3"));
+//        when(koulutusinformaatioService.getApplicationOption(eq("4.5.6"), any(String.class))).thenReturn(aos.get("4.5.6"));
+//        when(koulutusinformaatioService.getApplicationOption(eq("7.8.9"), any(String.class))).thenReturn(aos.get("7.8.9"));
+//
+//        ModelResponse response = service.getCompleteApplication(asId, oid);
+//
+//        assertNotNull(response);
+//        List<ApplicationAttachment> attachments = (List<ApplicationAttachment>)
+//                response.getModel().get("applicationAttachments");
+//        assertNotNull(attachments);
+//        assertEquals(3, attachments.size());
+//    }
 
     private Application buildApplication(String asId, String oid) {
         Application application = new Application();
