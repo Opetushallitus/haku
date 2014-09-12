@@ -153,6 +153,7 @@ $(document).ready(function() {
     $(document).bind('keypress', 'ctrl+right', function() { $('#valintaTab').click() });
     $(document).bind('keypress', '1', function() { $('#applicationTab').click() });
     $(document).bind('keypress', '2', function() { $('#valintaTab').click() });
+    $(document).bind('keypress', '3', function() { $('#kelpoisuusliitteetTab').click() });
     $(document).bind('keypress', 'b', function() { location.href = $('#back').attr('href') });
 
     if (page_settings.preview === "true") {

@@ -50,6 +50,7 @@
     <script src="${contextPath}/resources/jquery/jquery.hotkeys.js" type="text/javascript"></script>
     <script src="${contextPath}/resources/javascript/virkailija/application.js" type="text/javascript"></script>
     <script src="${contextPath}/resources/javascript/virkailija/tabs.js" type="text/javascript"></script>
+    <script src="${contextPath}/resources/javascript/virkailija/kelpoisuusLiitteet.js" type="text/javascript"></script>
     <script type="text/javascript" src="/virkailija-raamit/apply-raamit.js"></script>
     <title><fmt:message key="virkailija.otsikko"/></title>
 
@@ -182,6 +183,9 @@
                    class="tab current"><span>Hakemus</span></a>
                 <a href="#" data-tabs-group="applicationtabs" data-tabs-id="valinta" id="valintaTab"
                    class="tab"><span>Valinta</span></a>
+                <a href="#" data-tabs-group="applicationtabs" data-tabs-id="kelpoisuusliitteet" id="kelpoisuusliitteetTab"
+                   class="tab"><span>Kelpoisuus ja liitteet</span></a>
+
             </div>
 
             <div class="tabsheets">
@@ -196,6 +200,12 @@
                          style="display: none">
 
                     <jsp:include page="valintaTab.jsp"/>
+                </section>
+
+                <section id="kelpoisuusliitteet" class="tabsheet" data-tabs-group="applicationtabs" data-tabs-id="kelpoisuusliitteet"
+                         style="display: none">
+
+                    <jsp:include page="kelpoisuusLiitteetTab.jsp"/>
                 </section>
 
             </div>
