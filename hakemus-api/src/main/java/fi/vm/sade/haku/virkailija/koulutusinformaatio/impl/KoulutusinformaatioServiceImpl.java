@@ -29,24 +29,27 @@ public class KoulutusinformaatioServiceImpl implements KoulutusinformaatioServic
 	@Value("${koulutusinformaatio.ao.resource.url}")
 	private String targetService;
 
-  @Override
+	@Override
 	public ApplicationOptionDTO getApplicationOption(String oid) {
-        return getApplicationOption(oid, null);
-    }
+		return getApplicationOption(oid, null);
+	}
 
-    @Override
-    public ApplicationOptionDTO getApplicationOption(String oid, String lang) {
+	@Override
+	public ApplicationOptionDTO getApplicationOption(String oid, String lang) {
+
+		String url = targetService + "/" + oid + buildLangParameter(lang);
+
 		try {
+
 			// Create the HTTP request for getting application option data
 			DefaultHttpClient httpClient = new DefaultHttpClient();
-            String uiLang = buildLangParameter(lang);
-			HttpGet getRequest = new HttpGet(targetService + "/" + oid + uiLang);
+			HttpGet getRequest = new HttpGet(url);
 			getRequest.addHeader("accept", MediaType.APPLICATION_JSON);
 
 			// Execute the request. Check was the response successful.
 			HttpResponse response = httpClient.execute(getRequest);
 			if (response.getStatusLine().getStatusCode() != 200) {
-				throw new RuntimeException(targetService + "/" + oid + uiLang);
+				throw new RuntimeException("Got status=" + response.getStatusLine().getStatusCode() + " from " + url);
 			}
 
 			// Create readers for handling the response
@@ -59,26 +62,28 @@ public class KoulutusinformaatioServiceImpl implements KoulutusinformaatioServic
 			// Create GSON and get data by using reader to object
 			Gson gson = builder.create();
 			ApplicationOptionDTO applicationOption = gson.fromJson(bufferedReader, ApplicationOptionDTO.class);
-
+			if(applicationOption == null) {
+				throw new RuntimeException("No ApplicationOption found: " + url);
+			}
 			// Shutdown the connection and return data
 			httpClient.getConnectionManager().shutdown();
 			return applicationOption;
 		} catch (Exception e) {
-			throw new RemoteServiceException(targetService + "/" + oid, e);
+			throw new RemoteServiceException(url, e);
 		}
 
 	}
 
-    private String buildLangParameter(String lang) {
-        if ("fi".equals(lang) || "sv".equals(lang) || "en".equals(lang)) {
-            return new StringBuilder("?lang=").append(lang)
-                    .append("&uiLang=").append(lang)
-                    .toString();
-        }
-        return "";
-    }
+	private String buildLangParameter(String lang) {
+		if ("fi".equals(lang) || "sv".equals(lang) || "en".equals(lang)) {
+			return new StringBuilder("?lang=").append(lang)
+					.append("&uiLang=").append(lang)
+					.toString();
+		}
+		return "";
+	}
 
-    @Override
+	@Override
 	public List<ApplicationOptionDTO> getApplicationOptions(List<String> oids) {
 		List<ApplicationOptionDTO> applicationOptions = new ArrayList<ApplicationOptionDTO>();
 
@@ -89,12 +94,12 @@ public class KoulutusinformaatioServiceImpl implements KoulutusinformaatioServic
 		return applicationOptions;
 	}
 
-    public String getTargetService() {
-      return targetService;
-    }
+	public String getTargetService() {
+		return targetService;
+	}
 
-    public void setTargetService(String targetService) {
-      this.targetService = targetService;
-    }
+	public void setTargetService(String targetService) {
+		this.targetService = targetService;
+	}
 
 }
