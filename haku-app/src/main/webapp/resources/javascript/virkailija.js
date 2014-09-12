@@ -448,11 +448,9 @@ $(document).ready(function () {
                         applicationSearch.setSortOrder(queryParameters.orderBy, queryParameters.orderDir);
                         if (queryParameters.asId && queryParameters.aoid) {
                             var href = page_settings.contextPath +
-                                '/applications/' + queryParameters.asId + '/' + queryParameters.aoidCode + '?'  +
+                                '/applications/excel?'  +
                                 Object.keys(queryParameters).reduce(function(a,k){
-                                    if (k !== 'asId' || k !== 'aoidCode') {
-                                        a.push(k+'='+encodeURIComponent(queryParameters[k]));
-                                    }
+                                    a.push(k+'='+encodeURIComponent(queryParameters[k]));
                                     return a
                                 },[]).join('&');
                             $('#excel-link').removeClass('disabled');

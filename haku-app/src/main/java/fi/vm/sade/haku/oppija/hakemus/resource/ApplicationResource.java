@@ -89,12 +89,13 @@ public class ApplicationResource {
     }
 
     @GET
-    @Path("{asid}/{aoidCode}")
+    @Path("excel")
     @Produces("application/vnd.ms-excel")
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_READ', 'ROLE_APP_HAKEMUS_CRUD', 'ROLE_APP_HAKEMUS_OPO')")
-    public XlsParameter getApplicattionsByOids(@PathParam("asid") String asid,
-                                               @PathParam("aoidCode") String aoidCode,
-                                               @DefaultValue(value = "") @QueryParam("q") String query,
+    public XlsParameter getApplicattionsByOids(@QueryParam("asid") String asid,
+                                               @QueryParam("aoid") String aoid,
+                                               @QueryParam("aoidCode") String aoidCode,
+                                               @QueryParam("q") @DefaultValue(value = "") String query,
                                                @QueryParam("appState") List<String> state,
                                                @QueryParam("lopoid") String lopoid,
                                                @QueryParam("aoOid") String aoOid,
@@ -102,8 +103,8 @@ public class ApplicationResource {
                                                @QueryParam("sendingSchoolOid") String sendingSchoolOid,
                                                @QueryParam("sendingClass") String sendingClass,
                                                @QueryParam("updatedAfter") DateParam updatedAfter,
-                                               @DefaultValue(value = "0") @QueryParam("start") int start,
-                                               @DefaultValue(value = "10000") @QueryParam("rows") int rows) {
+                                               @QueryParam("start") @DefaultValue(value = "0") int start,
+                                               @QueryParam("rows") @DefaultValue(value = "10000") int rows) {
         ApplicationSystem activeApplicationSystem = applicationSystemService.getApplicationSystem(asid);
 
         List<Map<String, Object>> applications = applicationService.findFullApplications(
