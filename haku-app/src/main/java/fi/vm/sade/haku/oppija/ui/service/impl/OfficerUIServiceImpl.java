@@ -203,11 +203,12 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         for (int i = 1; i < 100; i++) {
             String aoPrefix = String.format("preference%d-", i);
             String aoKey = String.format("%sKoulutus-id", aoPrefix);
-            if (!aoAnswers.containsKey(aoKey) || isBlank(aoAnswers.get(aoKey))) {
+            String aoOid = aoAnswers.get(aoKey);
+            if (isBlank(aoOid)) {
                 break;
             }
             aos.add(createApplicationOption(i, aoAnswers, aoPrefix,
-                    hakijaMap.get(aoAnswers.get(aoKey)), hakemusMap.get(aoAnswers.get(aoKey)), showScores));
+                    hakijaMap.get(aoOid), hakemusMap.get(aoAnswers.get(aoKey)), showScores));
         }
         return aos;
     }
@@ -368,8 +369,9 @@ public class OfficerUIServiceImpl implements OfficerUIService {
 
     private Map<String, String> handleGrades(Application application, ApplicationPhase phase, Map<String, String> newAnswers) {
         Map<String, String> meta = application.getMeta();
-        if (phase.getPhaseId().equals(OppijaConstants.PHASE_GRADES) &&
-                (meta.containsKey("grades_transferred_lk") || meta.containsKey("grades_transferred_pk"))) {
+        Boolean gradesTransferredLk = Boolean.valueOf(meta.get("grades_transferred_lk"));
+        Boolean gradesTransferredPk = Boolean.valueOf(meta.get("grades_transferred_pk"));
+        if (phase.getPhaseId().equals(OppijaConstants.PHASE_GRADES) && gradesTransferredLk || gradesTransferredPk) {
             Map<String, String> grades = new HashMap<String, String>(application.getPhaseAnswers(OppijaConstants.PHASE_GRADES));
 
             for (Map.Entry<String, String> entry : newAnswers.entrySet()) {
