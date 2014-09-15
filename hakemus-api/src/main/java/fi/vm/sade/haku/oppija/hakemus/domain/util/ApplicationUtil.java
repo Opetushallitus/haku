@@ -1,12 +1,14 @@
 package fi.vm.sade.haku.oppija.hakemus.domain.util;
 
-import com.google.common.base.Strings;
-import com.google.common.collect.Lists;
-import fi.vm.sade.haku.oppija.hakemus.domain.Application;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
+import java.util.*;
+
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.*;
+import com.google.common.base.Strings;
+import com.google.common.collect.Lists;
+
+import fi.vm.sade.haku.oppija.hakemus.domain.Application;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 
 
 public final class ApplicationUtil {
@@ -95,16 +97,17 @@ public final class ApplicationUtil {
         List<String> aos = new ArrayList<String>();
         int i = 1;
         while (true) {
-            String key = String.format(OppijaConstants.PREFERENCE_ID, i);
-            if (!answers.containsKey(key)) {
+            String aoKey = String.format(OppijaConstants.PREFERENCE_ID, i);
+            if (!answers.containsKey(aoKey)) {
                 break;
             }
-            String liiteKey = "preference" + i + "-" + liiteKeyBase;
+            String aoId = answers.get(aoKey);
             String provider = answers.get("preference" + i + "-Opetuspiste-id");
-            if (answers.containsKey(liiteKey)
-                    && !aos.contains(answers.get(key))
+            String liiteKey = "preference" + i + "-" + liiteKeyBase;
+            if (isIdGivenAndKeyValueTrue(answers, aoId, liiteKey)
+                    && !aos.contains(aoId)
                     && !providers.contains(provider)) {
-                aos.add(answers.get(key));
+                aos.add(aoId);
                 providers.add(provider);
             }
             i++;
@@ -122,15 +125,12 @@ public final class ApplicationUtil {
         Map<String, String> answers = application.getVastauksetMerged();
         int i = 1;
         while (true) {
-            String key = String.format(OppijaConstants.PREFERENCE_ID, i);
-            if (answers.containsKey(key)) {
-                String aoId = answers.get(key);
-                String discretionaryKey = String.format(field, i);
-                if (!Strings.isNullOrEmpty(aoId) && answers.containsKey(discretionaryKey)) {
-                    String discretionaryValue = answers.get(discretionaryKey);
-                    if (!Strings.isNullOrEmpty(discretionaryValue) && Boolean.parseBoolean(discretionaryValue)) {
-                        attachmentAOs.add(aoId);
-                    }
+            String aoKey = String.format(OppijaConstants.PREFERENCE_ID, i);
+            if (answers.containsKey(aoKey)) {
+                String aoId = answers.get(aoKey);
+                String key = String.format(field, i);
+                if (isIdGivenAndKeyValueTrue(answers, aoId, key)) {
+                    attachmentAOs.add(aoId);
                 }
             } else {
                 break;
@@ -140,6 +140,15 @@ public final class ApplicationUtil {
         return attachmentAOs;
     }
 
+    private static boolean isIdGivenAndKeyValueTrue(Map<String, String> answers, String id, String key) {
+        if (!Strings.isNullOrEmpty(id) && answers.containsKey(key)) {
+            String value = answers.get(key);
+            if (!Strings.isNullOrEmpty(value) && Boolean.parseBoolean(value)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     private static List<String> getAspaAmkAOs(Application application) {
         Set<String> aspaAos = new HashSet<String>();
