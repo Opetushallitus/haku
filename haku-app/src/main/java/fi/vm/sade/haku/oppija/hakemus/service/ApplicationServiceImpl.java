@@ -43,6 +43,7 @@ import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
 import fi.vm.sade.haku.virkailija.authentication.Person;
 import fi.vm.sade.haku.virkailija.authentication.PersonBuilder;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,6 +53,8 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.util.*;
 
+import static fi.vm.sade.haku.oppija.hakemus.service.ApplicationModelUtil.removeAuthorizationMeta;
+import static fi.vm.sade.haku.oppija.hakemus.service.ApplicationModelUtil.restoreV0ModelLOPParentsToApplicationMap;
 import static org.apache.commons.lang.StringUtils.isEmpty;
 import static org.apache.commons.lang.StringUtils.isNotEmpty;
 
@@ -274,8 +277,12 @@ public class ApplicationServiceImpl implements ApplicationService {
         ApplicationFilterParametersBuilder builder = new ApplicationFilterParametersBuilder()
                 .addOrganizationsReadable(hakuPermissionService.userCanReadApplications())
                 .addOrganizationsOpo(hakuPermissionService.userHasOpoRole());
-
-        return applicationDAO.findAllQueriedFull(query, applicationQueryParameters, builder.build());
+        List<Map<String, Object>> applications = applicationDAO.findAllQueriedFull(query, applicationQueryParameters, builder.build());
+        for (Map<String, Object> application : applications) {
+            restoreV0ModelLOPParentsToApplicationMap(application);
+            removeAuthorizationMeta(application);
+        }
+        return applications;
     }
 
     @Override
