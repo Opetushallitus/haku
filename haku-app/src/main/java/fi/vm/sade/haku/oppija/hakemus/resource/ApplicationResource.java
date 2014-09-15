@@ -111,7 +111,7 @@ public class ApplicationResource {
                 query, new ApplicationQueryParameters(state, Lists.newArrayList(asid), aoidCode, lopoid, aoOid, discretionaryOnly,
                 sendingSchoolOid, sendingClass, updatedAfter != null ? updatedAfter.getDate() : null, start, rows, "oid", 1));
         Map<String, Question> elementsByType = ElementUtil.findElementsByType(activeApplicationSystem.getForm(), Question.class);
-        return new XlsParameter(asid, aoidCode, activeApplicationSystem, applications, elementsByType);
+        return new XlsParameter(asid, aoid, activeApplicationSystem, applications, elementsByType);
     }
 
     @GET

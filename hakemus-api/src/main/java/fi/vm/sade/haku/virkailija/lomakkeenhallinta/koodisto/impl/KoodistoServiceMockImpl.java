@@ -174,6 +174,7 @@ public class KoodistoServiceMockImpl implements KoodistoService {
                 ImmutableList.of(
                         getOption("Kaivosalan perustutkinto, pk", "123"),
                         getOption("Kone- ja metallialan perustutkinto, pk", "857"),
+                        getOption("hakukohde 019", "019"),
                         getOption("Notfound", "xxx"));
 
         this.listOfBaseEducationCodes = ImmutableList.of(
