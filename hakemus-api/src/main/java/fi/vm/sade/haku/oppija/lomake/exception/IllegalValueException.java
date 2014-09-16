@@ -25,7 +25,4 @@ public class IllegalValueException extends RuntimeException {
     public IllegalValueException(final String message) {
         super(message);
     }
-    public IllegalValueException(final String message, final Throwable cause) {
-        super(message, cause);
-    }
 }

@@ -39,17 +39,6 @@ public final class RegexRule {
     private RegexRule() {
     }
 
-    public static String toNameSelectorString(final Iterable<String> listOfStrings) {
-        Iterable<String> selectors = Iterables.transform(listOfStrings, new Function<String, String>() {
-            @Override
-            public String apply(final String input) {
-                return "[name='" + input + "']"; //NOSONAR
-            }
-        });
-        return toCommaSeparatedString(selectors);
-    }
-
-
     public static String tochildIdList(final Element element) {
         return Joiner.on(',').skipNulls().join(
                 Iterables.transform(element.getChildren(), new Function<Element, String>() {

@@ -32,7 +32,6 @@ public class SuoritusrekisteriServiceImplTest {
     SuoritusrekisteriServiceImpl suoritusrekisteriService;
     CachingRestClient cachingRestClient;
 
-    Date tomorrow;
     Date yesterday;
     long ONE_DAY = 1000 * 60 * 60 * 24;
 
@@ -41,7 +40,6 @@ public class SuoritusrekisteriServiceImplTest {
         suoritusrekisteriService =  new SuoritusrekisteriServiceImpl();
         cachingRestClient = mock(CachingRestClient.class);
 
-        tomorrow = new Date(System.currentTimeMillis() + ONE_DAY);
         yesterday = new Date(System.currentTimeMillis() - ONE_DAY);
     }
 

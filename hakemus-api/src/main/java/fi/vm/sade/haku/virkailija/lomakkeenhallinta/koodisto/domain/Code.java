@@ -42,8 +42,4 @@ public class Code {
     public I18nText getMetadata() {
         return metadata;
     }
-
-    public void setMetadata(I18nText metadata) {
-        this.metadata = metadata;
-    }
 }
