@@ -94,7 +94,7 @@ public class ApplicationResource {
     public XlsParameter getApplicattionsByOids(@QueryParam("asid") String asid,
                                                @QueryParam("aoid") String aoid,
                                                @QueryParam("aoidCode") String aoidCode,
-                                               @QueryParam("q") @DefaultValue(value = "") String query,
+                                               @QueryParam("q") @DefaultValue(value = "") String searchTerms,
                                                @QueryParam("appState") List<String> state,
                                                @QueryParam("lopoid") String lopoid,
                                                @QueryParam("aoOid") String aoOid,
@@ -109,6 +109,7 @@ public class ApplicationResource {
         ApplicationSystem activeApplicationSystem = applicationSystemService.getApplicationSystem(asid);
 
         ApplicationQueryParameters queryParams = new ApplicationQueryParametersBuilder()
+                .setSearchTerms(searchTerms)
                 .setStates(state)
                 .setAsId(asid)
                 .setAoId(aoidCode)
@@ -126,7 +127,7 @@ public class ApplicationResource {
                 .setOrderDir(1)
                 .build();
 
-        List<Map<String, Object>> applications = applicationService.findFullApplications(query, queryParams);
+        List<Map<String, Object>> applications = applicationService.findFullApplications(queryParams);
         Map<String, Question> elementsByType = ElementUtil.findElementsByType(activeApplicationSystem.getForm(), Question.class);
         return new XlsParameter(asid, aoid, activeApplicationSystem, applications, elementsByType);
     }
@@ -152,7 +153,7 @@ public class ApplicationResource {
     @Path("listfull")
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_READ', 'ROLE_APP_HAKEMUS_CRUD', 'ROLE_APP_HAKEMUS_OPO')")
-    public List<Map<String, Object>> findFullApplications(@DefaultValue(value = "") @QueryParam("q") String query,
+    public List<Map<String, Object>> findFullApplications(@DefaultValue(value = "") @QueryParam("q") String searchTerms,
                                                           @QueryParam("appState") List<String> state,
                                                           @QueryParam("aoid") String aoid,
                                                           @QueryParam("groupOid") String groupOid,
@@ -178,6 +179,7 @@ public class ApplicationResource {
         }
 
         ApplicationQueryParameters queryParams = new ApplicationQueryParametersBuilder()
+                .setSearchTerms(searchTerms)
                 .setStates(state)
                 .setAsIds(asIds)
                 .setAoId(aoid)
@@ -195,7 +197,7 @@ public class ApplicationResource {
                 .setOrderDir(1)
                 .build();
 
-        List<Map<String, Object>> apps = applicationService.findFullApplications(query, queryParams);
+        List<Map<String, Object>> apps = applicationService.findFullApplications(queryParams);
         LOGGER.debug("findFullApplications done: {}", System.currentTimeMillis());
         return apps;
     }
@@ -230,7 +232,7 @@ public class ApplicationResource {
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_READ', 'ROLE_APP_HAKEMUS_CRUD', 'ROLE_APP_HAKEMUS_OPO')")
     public ApplicationSearchResultDTO findApplicationsOrdered(@DefaultValue(value = "fullName") @QueryParam("orderBy") String orderBy,
                                                               @DefaultValue(value = "asc") @QueryParam("orderDir") String orderDir,
-                                                              @DefaultValue(value = "") @QueryParam("q") String query,
+                                                              @DefaultValue(value = "") @QueryParam("q") String searchTerms,
                                                               @QueryParam("appState") List<String> state,
                                                               @QueryParam("aoidCode") String aoid,
                                                               @QueryParam("groupOid") String groupOid,
@@ -248,7 +250,7 @@ public class ApplicationResource {
                                                               @DefaultValue(value = "100") @QueryParam("rows") int rows) {
 //        LOGGER.debug("Finding applications q:{}, state:{}, aoid:{}, lopoid:{}, asId:{}, aoOid:{}, start:{}, rows: {}, " +
 //                "asSemester: {}, asYear: {}, discretionaryOnly: {}, sendingSchoolOid: {}, sendingClass: {}",
-//                query, state, aoid, lopoid, asId, aoOid, start, rows, asSemester, asYear, discretionaryOnly, sendingSchoolOid, sendingClass);
+//                q, state, aoid, lopoid, asId, aoOid, start, rows, asSemester, asYear, discretionaryOnly, sendingSchoolOid, sendingClass);
 
         List<String> asIds = new ArrayList<String>();
         if (isNotEmpty(asId)) {
@@ -260,6 +262,7 @@ public class ApplicationResource {
             LOGGER.debug("asId: {}", s);
         }
         ApplicationQueryParameters queryParams = new ApplicationQueryParametersBuilder()
+                .setSearchTerms(searchTerms)
                 .setStates(state)
                 .setAsIds(asIds)
                 .setAoId(aoid)
@@ -276,7 +279,7 @@ public class ApplicationResource {
                 .setOrderBy(orderBy)
                 .setOrderDir("desc".equals(orderDir) ? -1 : 1)
                 .build();
-        return applicationService.findApplications(query, queryParams);
+        return applicationService.findApplications(queryParams);
     }
 
     @GET
