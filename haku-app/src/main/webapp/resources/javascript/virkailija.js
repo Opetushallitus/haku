@@ -215,6 +215,7 @@ $(document).ready(function () {
     $('input#application-preference').change(function (event) {
         if (!$(this).val()) {
             $('#application-preference-code').val("");
+            $('#application-preference-oid').val("");
         }
     });
 
@@ -417,6 +418,7 @@ $(document).ready(function () {
                 $('#application-state').val(obj.appState);
                 $('#application-preference').val(obj.aoid);
                 $('#application-preference-code').val(obj.aoidCode);
+                $('#application-preference-code').val(obj.aoOid);
                 $('#application-group').val(obj.group);
                 $('#application-group-oid').val(obj.groupOid);
                 $('#base-education').val(obj.baseEducation);
@@ -439,6 +441,7 @@ $(document).ready(function () {
                 addParameter(obj, 'appState', '#application-state');
                 addParameter(obj, 'aoid', '#application-preference');
                 addParameter(obj, 'aoidCode', '#application-preference-code');
+                addParameter(obj, 'aoOid', '#application-preference-oid');
                 addParameter(obj, 'group', '#application-group');
                 addParameter(obj, 'groupOid', '#application-group-oid');
                 addParameter(obj, 'lopoid', '#lopoid');
@@ -585,6 +588,7 @@ $(document).ready(function () {
             $('#application-state').val('');
             $('#application-preference').val('');
             $('#application-preference-code').val('');
+            $('#application-preference-oid').val('');
             $('#application-group').val('');
             $('#application-group-oid').val('');
             $('#application-system').val('');
@@ -851,7 +855,8 @@ $(document).ready(function () {
                 })
             },
             select: function (event, ui) {
-                $('#application-preference-code').val(ui.item.dataId);
+                $('#application-preference-code').val('');
+                $('#application-preference-oid').val(ui.item.dataId);
             }
         }
     };
@@ -887,6 +892,7 @@ $(document).ready(function () {
             },
             select: function (event, ui) {
                 $('#application-preference-code').val(ui.item.dataId);
+                $('#application-preference-oid').val('');
             }
         }
     }
