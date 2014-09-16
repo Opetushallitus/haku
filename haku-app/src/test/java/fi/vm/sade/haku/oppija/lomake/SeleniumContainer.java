@@ -16,9 +16,8 @@
 package fi.vm.sade.haku.oppija.lomake;
 
 import com.thoughtworks.selenium.Selenium;
-import org.openqa.selenium.WebDriverBackedSelenium;
+import com.thoughtworks.selenium.webdriven.WebDriverBackedSelenium;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.firefox.FirefoxProfile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
@@ -38,9 +37,10 @@ public class SeleniumContainer {
     @Autowired
     public SeleniumContainer(@Value("${webdriver.base.url:http://localhost:9090/haku-app/}") final String webDriverBaseUrl) {
         this.webDriverBaseUrl = webDriverBaseUrl;
-        FirefoxProfile profile = new FirefoxProfile();
-        profile.setPreference("focusmanager.testmode",true);
-        this.webDriver = new FirefoxDriver(profile);
+//        FirefoxProfile profile = new FirefoxProfile();
+//        profile.setPreference("focusmanager.testmode",true);
+//        this.webDriver = new FirefoxDriver(profile);
+        this.webDriver = new FirefoxDriver();
         this.selenium = new WebDriverBackedSelenium(this.webDriver, this.webDriverBaseUrl);
         this.webDriver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
         this.selenium.setSpeed("1");
