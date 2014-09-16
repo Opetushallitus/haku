@@ -824,9 +824,9 @@ $(document).ready(function () {
             delay: 500,
             source: function (req, res) {
                 var qParams = {
-                    hakuOid : encodeURI(asid),
-                    searchTerms: encodeURI(req.term),
-                    organisationOid : encodeURI($('#lopoid').val())
+                    hakuOid : asid,
+                    searchTerms: req.term,
+                    organisationOid : $('#lopoid').val()
                 }
                 var url = encodeURI('/tarjonta-service/rest/v1/hakukohde/search?' + objectToQueryParameterString(qParams));
                 $.get(url, function (data) {
@@ -893,8 +893,11 @@ $(document).ready(function () {
 });
 
 function objectToQueryParameterString(queryParameters) {
-    Object.keys(queryParameters).reduce(function (a, k) {
-        a.push(k + '=' + queryParameters[k]);
+    return Object.keys(queryParameters).reduce(function (a, k) {
+        var value = queryParameters[k];
+        if (k && value) {
+            a.push(k + '=' + value);
+        }
         return a
-    }, []).join('&');
+    }, []) .join('&');
 }
