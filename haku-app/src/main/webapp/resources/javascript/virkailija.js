@@ -510,20 +510,13 @@ $(document).ready(function () {
                         $('#pagination').bootstrapPaginator(options);
                         applicationSearch.setSortOrder(queryParameters.orderBy, queryParameters.orderDir);
                         if (queryParameters.asId && queryParameters.aoid) {
-                            var href = page_settings.contextPath +
-                                '/applications/excel?' + Object.keys(queryParameters).reduce(function(a,k){
-                                    a.push(k+'='+encodeURIComponent(queryParameters[k]));
-                                    return a
-                                }, []).join('&');
-                            $('#excel-link').removeClass('disabled');
-                            $('#excel-link').attr('href', href);
+                            var href = page_settings.contextPath + '/applications/excel?' + objectToQueryParameterString(queryParameters);
+                            enableExcel(href);
                         } else {
-                            $('#excel-link').addClass('disabled');
-                            $('#excel-link').attr('href', 'javascript:void(0);');
+                            disableExcel();
                         }
                     } else {
-                        $('#excel-link').addClass('disabled');
-                        $('#excel-link').attr('href', 'javascript:void(0);');
+                        disableExcel();
                         $('#pagination').empty();
                     }
                     spinner.stop();
@@ -600,8 +593,7 @@ $(document).ready(function () {
             $('#sendingClass').val('');
             $('#discretionary-only').attr('checked', false);
             $('#check-all-applications').attr('checked', false);
-            $('#excel-link').addClass('disabled');
-            $('#excel-link').attr('href','javascript:void(0);');
+            disableExcel();
         },
             this.getSortOrder = function (columnName) {
                 var column = $('#application-table-header-' + columnName);
@@ -906,4 +898,14 @@ function objectToQueryParameterString(queryParameters) {
         }
         return a
     }, []) .join('&');
+}
+function disableExcel() {
+    var link = $('#excel-link');
+    link.addClass('disabled');
+    link.attr('href', 'javascript:void(0);');
+}
+function enableExcel(href) {
+    var link = $('#excel-link');
+    link.removeClass('disabled');
+    link.attr('href', encodeURI(href));
 }
