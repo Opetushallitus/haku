@@ -23,12 +23,17 @@
             <b id="kesken-${ao.index}"  style="background-color: #000000; color: #ffffff; border-radius: 5px; padding: 5px; display: none;" >Kesken</b>
             <b id="hylatty-${ao.index}" style="background-color: #333333; color: #ffffff; border-radius: 5px; padding: 5px; display: none;" >Hylätty</b>
             <b id="valmis-${ao.index}" style="background-color: #feba00; color: #000000; border-radius: 5px; padding: 5px; display: none;" >Valmis</b>
+
             <br>
             <br>
             <b id="kaikkiliitteet-${ao.index}" style="background-color: #feba00; color: #000000; border-radius: 5px; padding: 5px; display: none">Kaikki liitteet saapuneet</b>
+<%--            <br>
+            <br>
+            <b id="tiedotarkistettu-${ao.index}" style="background-color: #feba00; color: #000000; border-radius: 5px; padding: 5px; display: none">Tiedot tarkistettu</b>--%>
             <br>
             <br>
-            <b id="tiedotarkistettu-${ao.index}" style="background-color: #feba00; color: #000000; border-radius: 5px; padding: 5px; display: none">Tiedot tarkistettu</b>
+            <b id="muuttunut-${ao.index}" style="background-color: #d84a2a; color: #000000; border-radius: 5px; padding: 5px; " >Muuttettu</b>
+            <b id="tallennettu-${ao.index}" style="background-color: #156c18; color: #000000; border-radius: 5px; padding: 5px; " >Tallennettu</b>
         </div>
         <div class="grid16-12 inline-block">
             <div class="grid16-16 inline-block">
@@ -38,7 +43,8 @@
             <div class="grid16-16 inline-block">
                 <br>
                 <button class="button small primary" >Tallenna</button>
-                <button class="button small" onclick="kaikkiLiitteetSaapuneet('${ao.index}')" >Kaikki liitteet saapuneet</button>
+                <button class="button small" id="btn-kaikki-liitteet-saapuneet-${ao.index}" onclick="kaikkiLiitteetSaapuneet('${ao.index}')" >Kaikki liitteet saapuneet</button>
+                <button class="button small disabled" id="btn-kaikki-liitteet-tarkastettu-${ao.index}" onclick="asetaKaikkiLiitteetTarkastetuksi('${ao.index}')" >Kaikki liitteet tarkastettu</button>
             </div>
 
             <div class="grid16-16 inline-block">
@@ -47,11 +53,12 @@
                 </table>
             </div>
 
-            <div class="grid16-16 inline-block">
+            <%--<div class="grid16-16 inline-block">
                 <br>
-                <button class="button small primary" id="ls" >Tallenna</button>
-                <button class="button small" id="ls" onclick="kaikkiLiitteetSaapuneet('${ao.index}')" >Kaikki liitteet saapuneet</button>
-            </div>
+                <button class="button small primary"  >Tallenna</button>
+                <button class="button small" id="btn-kaikki-liitteet-saapuneet-${ao.index}" onclick="kaikkiLiitteetSaapuneet('${ao.index}')" >Kaikki liitteet saapuneet</button>
+                <button class="button small" id="btn-kaikki-liitteet-tarkastettu-${ao.index}" onclick="asetaKaikkiLiitteetTarkastetuksi('${ao.index}')" >Kaikki liitteet tarkastettu</button>
+            </div>--%>
 
         </div>
     </div>
@@ -61,25 +68,28 @@
     <hr>
     <script type="text/javascript">
         var kelpoisuus_liitteet = {
-            indx: '<c:out value="${ao.index}"/>',
-            hakukelpoisuus: 1,
-            tietolahde: '',
-            hylkaamisperuste: '',
+            indx: "<c:out value="${ao.index}"/>",
+            hakukelpoisuus: "01",
+            tietolahde: "",
+            hylkaamisperuste: "",
             liitteet: [
                 {
                    id: 1,
-                   nimi: 'Tässä liite 1',
-                   tila: 6
+                   nimi: "Tässä liite 1",
+                   tila: "03",
+                   liitteentila: "01"
                 },
                 {
                     id: 2,
-                    nimi: 'Tässä liite 2',
-                    tila: 6
+                    nimi: "Tässä liite 2",
+                    tila: "03",
+                    liitteentila: "01"
                 },
                 {
                     id: 3,
-                    nimi: 'Tässä liite 3',
-                    tila: 6
+                    nimi: "Tässä liite 3",
+                    tila: "03",
+                    liitteentila: "01"
                 }
             ]
         };
