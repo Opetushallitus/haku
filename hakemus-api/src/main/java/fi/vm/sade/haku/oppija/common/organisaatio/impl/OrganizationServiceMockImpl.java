@@ -20,6 +20,7 @@ import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.google.common.collect.*;
 import fi.vm.sade.haku.oppija.common.organisaatio.Organization;
+import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationGroupRestDTO;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.exception.ConfigurationException;
@@ -241,6 +242,11 @@ public class OrganizationServiceMockImpl implements OrganizationService {
 
     @Override
     public List<Organization> findByOppilaitosnumero(List<String> oppilaitosnumeros) {
+        return null;
+    }
+
+    @Override
+    public List<OrganizationGroupRestDTO> findGroups(String term) throws IOException {
         return null;
     }
 

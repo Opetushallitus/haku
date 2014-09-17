@@ -46,5 +46,9 @@ public interface OfficerUIService {
 
     List<Map<String, Object>> getPreferences(String term);
 
+    List<Map<String, Object>> getGroups(String term) throws IOException;
+
     ModelResponse getApplicationPrint(final String oid);
+
+    List<Map<String,String>> getHigherEdBaseEdOptions();
 }

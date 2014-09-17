@@ -38,10 +38,4 @@ public class FormIT extends DummyModelBaseItTest {
         navigateToFirstPhase();
         findById("nav-henkilotiedot");
     }
-
-    protected void elementsPresent(String... locations) {
-        for (String location : locations) {
-            assertTrue("Could not find element " + location, seleniumContainer.getSelenium().isElementPresent(location));
-        }
-    }
 }

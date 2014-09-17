@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
+ * Copyright (c) 2011 The Finnish Board of Education - Opetushallitus
  *
  * This program is free software:  Licensed under the EUPL, Version 1.1 or - as
  * soon as they will be approved by the European Commission - subsequent versions
@@ -14,9 +14,10 @@
  * European Union Public Licence for more details.
  */
 
+
 $(document).ready(function () {
 
-    var spinner = new Spinner( {
+    var spinner = new Spinner({
         lines: 8, // The number of lines to draw
         length: 5, // The length of each line
         width: 4, // The line thickness
@@ -39,12 +40,12 @@ $(document).ready(function () {
     var cookiePath = '/haku-app/virkailija/';
 
 
-/* ****************************************************************************
- * Application system selection
- */
+    /* ****************************************************************************
+     * Application system selection
+     */
 
     var applicationSystemSelection = {
-        init : function() {
+        init: function () {
             $.getJSON(page_settings.contextPath + "/virkailija/hakemus/applicationSystems",
                 function (data) {
                     var selectedSemester = $('#hakukausi').val();
@@ -56,6 +57,7 @@ $(document).ready(function () {
                         var as = data[i];
                         var year = as.hakukausiVuosi;
                         var semester = as.hakukausiUri;
+                        var kohdejoukko = as.kohdejoukko;
 
                         if (selectedSemester && selectedSemester !== semester) {
                             continue;
@@ -65,7 +67,7 @@ $(document).ready(function () {
                         }
 
                         var id = as.id;
-                        var name = as['name_'+page_settings.lang];
+                        var name = as['name_' + page_settings.lang];
 
                         if (!name) {
                             if (as['name_fi']) {
@@ -79,28 +81,72 @@ $(document).ready(function () {
                             }
                         }
 
-                    $('#application-system').append('<option value="'+id+'">'+name+'</option>');
+                        $('#application-system').append('<option value="' + id + '" ' + 'data-kohdejoukko="' + kohdejoukko + '" ' + '>' + name + '</option>');
                     }
                 });
         }
     };
 
+    var baseEducationSelection = {
+        init: function () {
+            $("#application-system option:selected").each(function () {
+                var kohdejoukko = $(this).attr('data-kohdejoukko');
+                $.getJSON(page_settings.contextPath + "/virkailija/hakemus/baseEducations/" + kohdejoukko, function (data) {
+                    var baseEds = [];
+                    $('#base-education option').remove();
+                    $('#base-education').append('<option value="">&nbsp</option>');
+                    for (var i in data) {
+                        var baseEd = data[i];
+                        var value = baseEd.value;
+                        var name = baseEd['name_' + page_settings.lang];
+                        if (!name) {
+                            if (baseEd['name_fi']) {
+                                name = baseEd['name_fi'];
+                            } else if (baseEd['name_sv']) {
+                                name = baseEd['name_sv'];
+                            } else if (baseEd['name_en']) {
+                                name = baseEd['name_en'];
+                            } else {
+                                name = "???";
+                            }
+                        }
+                        $('#base-education').append('<option value="' + value + '">' + name + '</option>');
+                    }
+                });
+                if (kohdejoukko === "haunkohdejoukko_12") {
+                    $('input#application-preference').autocomplete(getHigherEducationAutocomplete($(this).val()));
+                } else {
+                    $('input#application-preference').autocomplete(getAutocomplete());
+                }
+            });
+        }
+    };
+
     if (typeof page_settings !== 'undefined') {
         applicationSystemSelection.init();
+        baseEducationSelection.init()
     }
 
-    $('#hakukausi').change(function() {applicationSystemSelection.init()});
-    $('#hakukausiVuosi').change(function() {applicationSystemSelection.init()});
+    $('#hakukausi').change(function () {
+        applicationSystemSelection.init()
+    });
+    $('#hakukausiVuosi').change(function () {
+        applicationSystemSelection.init()
+    });
+
+    $('#application-system').change(function () {
+        baseEducationSelection.init()
+    });
 
     $('input#sendingSchool').autocomplete({
-        minLength : 1,
+        minLength: 1,
         delay: 500,
-        source: function(req, res) {
-            $.get(page_settings.contextPath + "/virkailija/autocomplete/school?term="+encodeURI(req.term),
-                function(data) {
+        source: function (req, res) {
+            $.get(page_settings.contextPath + "/virkailija/autocomplete/school?term=" + encodeURI(req.term),
+                function (data) {
                     res($.map(data, function (result) {
                         var name = result.name[page_settings.lang];
-                        if ( !name ) {
+                        if (!name) {
                             var langs = ['fi', 'sv', 'en'];
                             for (var i = 0; i < langs.length; i++) {
                                 name = result.name[langs[i]];
@@ -120,26 +166,28 @@ $(document).ready(function () {
                     }));
                 })
         },
-        select: function(event, ui) {
+        select: function (event, ui) {
             $('#sendingSchoolOid').val(ui.item.dataId);
         }
     });
 
-    $('input#sendingSchool').change(function(event) {
+    $('input#sendingSchool').change(function (event) {
         if (!$(this).val()) {
             $('#sendingSchoolOid').val("");
         }
     });
 
-    $('input#application-preference').autocomplete({
-        minLength : 1,
-        delay : 500,
-        source: function(req, res) {
-            $.get(page_settings.contextPath + "/virkailija/autocomplete/preference?term="+encodeURI(req.term),
-                function(data) {
+    $('input#application-preference').autocomplete();
+
+    $('input#application-group').autocomplete({
+        minLength: 1,
+        delay: 500,
+        source: function (req, res) {
+            $.get(page_settings.contextPath + "/virkailija/autocomplete/group?term=" + encodeURI(req.term),
+                function (data) {
                     res($.map(data, function (result) {
                         var name = result.name[page_settings.lang];
-                        if ( !name ) {
+                        if (!name) {
                             var langs = ['fi', 'sv', 'en'];
                             for (var i = 0; i < langs.length; i++) {
                                 name = result.name[langs[i]];
@@ -159,20 +207,26 @@ $(document).ready(function () {
                     }));
                 })
         },
-        select: function(event, ui) {
-            $('#application-preference-code').val(ui.item.dataId);
+        select: function (event, ui) {
+            $('#application-group-oid').val(ui.item.dataId);
         }
     });
 
-    $('input#application-preference').change(function(event) {
+    $('input#application-preference').change(function (event) {
         if (!$(this).val()) {
             $('#application-preference-code').val("");
         }
     });
 
-/* ****************************************************************************
- * Organization search dialog
- */
+    $('input#application-group').change(function (event) {
+        if (!$(this).val()) {
+            $('#application-group-oid').val("");
+        }
+    });
+
+    /* ****************************************************************************
+     * Organization search dialog
+     */
 
     var orgSearchDialog = {
         settings: {
@@ -245,9 +299,9 @@ $(document).ready(function () {
     orgSearchDialog.build();
 
 
-/* ****************************************************************************
- * Organization search
- */
+    /* ****************************************************************************
+     * Organization search
+     */
 
     var orgSearch = (function () {
 
@@ -284,8 +338,8 @@ $(document).ready(function () {
                     $('#orgsearchlist').find('ul').eq(0).addClass("treelist").removeClass('branch');
                 }
             ).complete(function () {
-                $('#search-organizations').removeAttr('disabled');
-            });
+                    $('#search-organizations').removeAttr('disabled');
+                });
             return false;
         });
         function createListItem(leaf, org) {
@@ -337,9 +391,9 @@ $(document).ready(function () {
 
     })();
 
-/* ****************************************************************************
- * Application search
- */
+    /* ****************************************************************************
+     * Application search
+     */
 
     var applicationSearch = (function () {
         $.cookie.path = cookiePath;
@@ -362,7 +416,10 @@ $(document).ready(function () {
                 $('#oid').val(obj.oid);
                 $('#application-state').val(obj.appState);
                 $('#application-preference').val(obj.aoid);
-                $('#application-preference-code').val(obj.aoid);
+                $('#application-preference-code').val(obj.aoidCode);
+                $('#application-group').val(obj.group);
+                $('#application-group-oid').val(obj.groupOid);
+                $('#base-education').val(obj.baseEducation);
                 $('#lopoid').val(obj.lopoid);
                 $('#application-system').val(obj.asId);
                 $('#hakukausiVuosi').val(obj.asYear);
@@ -382,7 +439,10 @@ $(document).ready(function () {
                 addParameter(obj, 'appState', '#application-state');
                 addParameter(obj, 'aoid', '#application-preference');
                 addParameter(obj, 'aoidCode', '#application-preference-code');
+                addParameter(obj, 'group', '#application-group');
+                addParameter(obj, 'groupOid', '#application-group-oid');
                 addParameter(obj, 'lopoid', '#lopoid');
+                addParameter(obj, 'baseEducation', '#base-education');
                 addParameter(obj, 'asId', '#application-system');
                 addParameter(obj, 'asYear', '#hakukausiVuosi');
                 addParameter(obj, 'asSemester', '#hakukausi');
@@ -448,22 +508,19 @@ $(document).ready(function () {
                         applicationSearch.setSortOrder(queryParameters.orderBy, queryParameters.orderDir);
                         if (queryParameters.asId && queryParameters.aoid) {
                             var href = page_settings.contextPath +
-                                '/applications/' + queryParameters.asId + '/' + queryParameters.aoidCode + '?'  +
-                                Object.keys(queryParameters).reduce(function(a,k){
-                                    if (k !== 'asId' || k !== 'aoidCode') {
-                                        a.push(k+'='+encodeURIComponent(queryParameters[k]));
-                                    }
+                                '/applications/excel?' + Object.keys(queryParameters).reduce(function(a,k){
+                                    a.push(k+'='+encodeURIComponent(queryParameters[k]));
                                     return a
-                                },[]).join('&');
+                                }, []).join('&');
                             $('#excel-link').removeClass('disabled');
-                            $('#excel-link').attr('href',href);
+                            $('#excel-link').attr('href', href);
                         } else {
                             $('#excel-link').addClass('disabled');
-                            $('#excel-link').attr('href','javascript:void(0);');
+                            $('#excel-link').attr('href', 'javascript:void(0);');
                         }
                     } else {
                         $('#excel-link').addClass('disabled');
-                        $('#excel-link').attr('href','javascript:void(0);');
+                        $('#excel-link').attr('href', 'javascript:void(0);');
                         $('#pagination').empty();
                     }
                     spinner.stop();
@@ -528,7 +585,10 @@ $(document).ready(function () {
             $('#application-state').val('');
             $('#application-preference').val('');
             $('#application-preference-code').val('');
+            $('#application-group').val('');
+            $('#application-group-oid').val('');
             $('#application-system').val('');
+            $('#base-education').val('');
             $('#hakukausiVuosi').val(hakukausiDefaultYear);
             $('#hakukausi').val(hakukausiDefaultSemester);
             $('#sendingSchoolOid').val('');
@@ -538,30 +598,29 @@ $(document).ready(function () {
             $('#check-all-applications').attr('checked', false);
             $('#excel-link').addClass('disabled');
             $('#excel-link').attr('href','javascript:void(0);');
-
         },
-        this.getSortOrder = function(columnName) {
-            var column = $('#application-table-header-'+columnName);
-            var clazz = column.attr('class');
-            var sortOrder = 'asc';
-            if (clazz === 'sorted-asc') {
-                clazz = 'sorted-desc';
-                sortOrder = 'desc';
-            } else {
-                clazz = 'sorted-asc';
+            this.getSortOrder = function (columnName) {
+                var column = $('#application-table-header-' + columnName);
+                var clazz = column.attr('class');
+                var sortOrder = 'asc';
+                if (clazz === 'sorted-asc') {
+                    clazz = 'sorted-desc';
+                    sortOrder = 'desc';
+                } else {
+                    clazz = 'sorted-asc';
+                }
+                return sortOrder;
+            },
+            this.setSortOrder = function (columnName, sortOrder) {
+                if (columnName && sortOrder) {
+                    var column = $('#application-table-header-' + columnName);
+                    column.attr('class', 'sorted-' + sortOrder)
+                }
+            },
+            this.sort = function (sortBy) {
+                var sortOrder = applicationSearch.getSortOrder(sortBy);
+                applicationSearch.search(0, sortBy, sortOrder);
             }
-            return sortOrder;
-        },
-        this.setSortOrder = function(columnName, sortOrder) {
-            if (columnName && sortOrder) {
-                var column = $('#application-table-header-'+columnName);
-                column.attr('class', 'sorted-'+sortOrder)
-            }
-        },
-        this.sort = function(sortBy) {
-            var sortOrder = applicationSearch.getSortOrder(sortBy);
-            applicationSearch.search(0, sortBy, sortOrder);
-        }
 
         return this;
     })();
@@ -629,19 +688,19 @@ $(document).ready(function () {
             }
         }
         if (selectedApplication) {
-            location.href = page_settings.contextPath + "/virkailija/hakemus/"+selectedApplication+"/"
+            location.href = page_settings.contextPath + "/virkailija/hakemus/" + selectedApplication + "/"
         }
     });
 
-    $('#notApplied').click(function() {
+    $('#notApplied').click(function () {
         var school = $('#sendingSchoolOid').val();
         var clazz = $('#sendingClass').val();
         var as = $('#application-system').val();
         if (school && as) {
-            var url = location.protocol+"//"+location.host+"/suoritusrekisteri/#/eihakeneet?haku="+as
-                +"&oppilaitos="+school
-                + (clazz !== "" ? "&luokka="+clazz : "");
-            window.location.href=url;
+            var url = location.protocol + "//" + location.host + "/suoritusrekisteri/#/eihakeneet?haku=" + as
+                + "&oppilaitos=" + school
+                + (clazz !== "" ? "&luokka=" + clazz : "");
+            window.location.href = url;
         } else {
             alert('Koulu ja haku ovat pakollisia tietoja')
         }
@@ -654,14 +713,18 @@ $(document).ready(function () {
      *
      */
 
-    $(document).bind('keypress', 'a', function() { $('#check-all-applications').click()});
-    $(document).bind('keypress', 'o', function() { $('#open-selected').click()});
+    $(document).bind('keypress', 'a', function () {
+        $('#check-all-applications').click()
+    });
+    $(document).bind('keypress', 'o', function () {
+        $('#open-selected').click()
+    });
 
-    $(document).bind('keypress', 'j', function() {
+    $(document).bind('keypress', 'j', function () {
         var firstApplication = false;
         var checkedApplication = false;
         var checkThis = false;
-        $('.check-application').each(function() {
+        $('.check-application').each(function () {
             if (!firstApplication) {
                 firstApplication = $(this).attr('id');
             }
@@ -673,20 +736,20 @@ $(document).ready(function () {
             $(this).prop('checked', false);
         });
         if (checkedApplication) {
-            $('#'+checkedApplication).prop('checked', false);
+            $('#' + checkedApplication).prop('checked', false);
         }
         if (checkThis) {
-            $('#'+checkThis).prop('checked', true);
+            $('#' + checkThis).prop('checked', true);
         } else {
-            $('#'+firstApplication).prop('checked', true);
+            $('#' + firstApplication).prop('checked', true);
         }
     });
 
-    $(document).bind('keypress', 'shift+j', function() {
+    $(document).bind('keypress', 'shift+j', function () {
         var firstApplication = false;
         var checkedApplications = false;
         var checkThis = false;
-        $('.check-application').each(function(index) {
+        $('.check-application').each(function (index) {
             if (!firstApplication) {
                 firstApplication = $(this).attr('id');
             }
@@ -698,21 +761,21 @@ $(document).ready(function () {
             $(this).prop('checked', false);
         });
         if (!checkedApplications && !checkThis) {
-            $('#'+firstApplication).prop('checked', true);
+            $('#' + firstApplication).prop('checked', true);
         } else {
-            $('#'+checkThis).prop('checked', true);
+            $('#' + checkThis).prop('checked', true);
             var checkThese = checkedApplications.split(',');
             for (var i = 0; i < checkThese.length; i++) {
-                $('#'+checkThese[i]).prop('checked', true);
+                $('#' + checkThese[i]).prop('checked', true);
             }
         }
     });
 
-    $(document).bind('keypress', 'k', function() {
+    $(document).bind('keypress', 'k', function () {
         var lastApplication = false;
         var checkedApplication = false;
         var checkThis = false;
-        $('.check-application').each(function() {
+        $('.check-application').each(function () {
             if ($(this).prop('checked') && !checkThis) {
                 checkedApplication = $(this).attr('id');
                 checkThis = lastApplication;
@@ -721,20 +784,20 @@ $(document).ready(function () {
             $(this).prop('checked', false);
         });
         if (checkedApplication) {
-            $('#'+checkedApplication).prop('checked', false);
+            $('#' + checkedApplication).prop('checked', false);
         }
         if (checkThis) {
-            $('#'+checkThis).prop('checked', true);
+            $('#' + checkThis).prop('checked', true);
         } else {
-            $('#'+lastApplication).prop('checked', true);
+            $('#' + lastApplication).prop('checked', true);
         }
     });
 
-    $(document).bind('keypress', 'shift+k', function() {
+    $(document).bind('keypress', 'shift+k', function () {
         var lastApplication = false;
         var checkedApplications = false;
         var checkThis = false;
-        $('.check-application').each(function() {
+        $('.check-application').each(function () {
             if ($(this).prop('checked') && !checkThis) {
                 checkThis = lastApplication;
             }
@@ -745,14 +808,93 @@ $(document).ready(function () {
             $(this).prop('checked', false);
         });
         if (!checkedApplications && !checkThis) {
-            $('#'+lastApplication).prop('checked', true);
+            $('#' + lastApplication).prop('checked', true);
         } else {
-            $('#'+checkThis).prop('checked', true);
+            $('#' + checkThis).prop('checked', true);
             var checkThese = checkedApplications.split(',');
             for (var i = 0; i < checkThese.length; i++) {
-                $('#'+checkThese[i]).prop('checked', true);
+                $('#' + checkThese[i]).prop('checked', true);
             }
         }
     });
 
+    function getHigherEducationAutocomplete(asid) {
+        return {
+            minLength: 3,
+            delay: 500,
+            source: function (req, res) {
+                var qParams = {
+                    hakuOid : encodeURI(asid),
+                    searchTerms: encodeURI(req.term),
+                    organisationOid : encodeURI($('#lopoid').val())
+                }
+                var url = encodeURI('/tarjonta-service/rest/v1/hakukohde/search?' + objectToQueryParameterString(qParams));
+                $.get(url, function (data) {
+                    var applicationOptions = _.reduce(data.result.tulokset, function (aos, provider) {
+                        return aos.concat(provider.tulokset);
+                    }, []);
+                    res(_.map(applicationOptions, function (ao) {
+                        var langs = [page_settings.lang, 'fi', 'sv', 'en'];
+                        var name = '???';
+                        for (var i = 0; i < langs.length; i++) {
+                            if (ao.nimi[langs[i]]) {
+                                name = ao.nimi[langs[i]];
+                                break;
+                            }
+                        }
+                        return {
+                            label: name,
+                            value: name,
+                            dataId: ao.oid
+                        }
+                    }));
+                })
+            },
+            select: function (event, ui) {
+                $('#application-preference-code').val(ui.item.dataId);
+            }
+        }
+    };
+
+    function getAutocomplete() {
+        return {
+            minLength: 1,
+            delay: 500,
+            source: function (req, res) {
+                $.get(page_settings.contextPath + "/virkailija/autocomplete/preference?term=" + encodeURI(req.term),
+                    function (data) {
+                        res($.map(data, function (result) {
+                            var name = result.name[page_settings.lang];
+                            if (!name) {
+                                var langs = ['fi', 'sv', 'en'];
+                                for (var i = 0; i < langs.length; i++) {
+                                    name = result.name[langs[i]];
+                                    if (name) {
+                                        break;
+                                    }
+                                }
+                                if (!name) {
+                                    name = "???";
+                                }
+                            }
+                            return {
+                                label: name,
+                                value: name,
+                                dataId: result.dataId
+                            }
+                        }));
+                    })
+            },
+            select: function (event, ui) {
+                $('#application-preference-code').val(ui.item.dataId);
+            }
+        }
+    }
 });
+
+function objectToQueryParameterString(queryParameters) {
+    Object.keys(queryParameters).reduce(function (a, k) {
+        a.push(k + '=' + queryParameters[k]);
+        return a
+    }, []).join('&');
+}

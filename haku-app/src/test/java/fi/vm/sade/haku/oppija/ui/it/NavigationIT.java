@@ -38,7 +38,7 @@ public class NavigationIT extends DummyModelBaseItTest {
         elementsPresent("//li/span/span[contains(text(),'7')]");
 
         elementsPresent("//button[@class='right']");
-        elementsNotPresent("//button[@class='left']");
+        elementsNotPresentByXPath("//button[@class='left']");
         fillOut(defaultValues.henkilotiedot);
         nextPhase(OppijaConstants.PHASE_EDUCATION);
 
@@ -123,7 +123,7 @@ public class NavigationIT extends DummyModelBaseItTest {
         nextPhase(OppijaConstants.PHASE_MISC);
         nextPhase(OppijaConstants.PHASE_PREVIEW);
         nextPhase(OppijaConstants.PHASE_PREVIEW);
-        click("submit_confirm");
+        findByIdAndClick("submit_confirm");
 
         elementsPresent("//li/span/span[contains(text(),'1')]");
         elementsPresent("//li/span/span[contains(text(),'2')]");

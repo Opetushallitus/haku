@@ -91,10 +91,11 @@ public class LomakeIT extends DummyModelBaseItTest {
         clickByNameAndValue(KYSYMYS_POHJAKOULUTUS, TUTKINTO_PERUSKOULU);
 
         findById(OppijaConstants.PERUSOPETUS_PAATTOTODISTUSVUOSI);
-        setValue(OppijaConstants.PERUSOPETUS_PAATTOTODISTUSVUOSI, "2013");
+        setValue(OppijaConstants.PERUSOPETUS_PAATTOTODISTUSVUOSI, "2012");
 
         findByIdAndClick("LISAKOULUTUS_KYMPPI", "LISAKOULUTUS_VAMMAISTEN", "LISAKOULUTUS_TALOUS", "LISAKOULUTUS_AMMATTISTARTTI");
         setValue(OppijaConstants.PERUSOPETUS_KIELI, "FI");
+        screenshot("LomakeIT");
         setValue("KOULUTUSPAIKKA_AMMATILLISEEN_TUTKINTOON", "false", true);
         nextPhase(OppijaConstants.PHASE_APPLICATION_OPTIONS);
 
@@ -149,7 +150,6 @@ public class LomakeIT extends DummyModelBaseItTest {
 
         findByIdAndClick("submit_confirm");
 
-        screenshot("lomakeIT");
         String oid = driver.findElement(new By.ByClassName("number")).getText();
         findByXPath("//h3[contains(text(), \"Musiikki- tanssi- ja liikunta-alan\")]");
 
@@ -187,11 +187,5 @@ public class LomakeIT extends DummyModelBaseItTest {
         findById(KoulutustaustaPhase.TUTKINTO_KESKEYTNYT_NOTIFICATION_ID);
         clickByNameAndValue(KYSYMYS_POHJAKOULUTUS, TUTKINTO_ULKOMAINEN_TUTKINTO);
         findById(KoulutustaustaPhase.TUTKINTO_ULKOMAILLA_NOTIFICATION_ID);
-    }
-
-    protected void elementsPresent(String... locations) {
-        for (String location : locations) {
-            assertTrue("Could not find element " + location, seleniumContainer.getSelenium().isElementPresent(location));
-        }
     }
 }

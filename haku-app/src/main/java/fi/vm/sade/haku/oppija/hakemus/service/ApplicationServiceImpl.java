@@ -255,12 +255,16 @@ public class ApplicationServiceImpl implements ApplicationService {
     @Override
     public ApplicationSearchResultDTO findApplications(final String term,
                                                        final ApplicationQueryParameters applicationQueryParameters) {
-        List<ApplicationSystem> ass = applicationSystemService.getAllApplicationSystems("maxApplicationOptions");
+        List<ApplicationSystem> ass = applicationSystemService.getAllApplicationSystems("maxApplicationOptions", "kohdejoukkoUri");
         int max = 0;
+        String kohdejoukko = null;
         List<String> queriedAss = applicationQueryParameters.getAsIds();
         for (ApplicationSystem as : ass) {
-            if (queriedAss.contains(as.getId()) && as.getMaxApplicationOptions() > max) {
-                max = as.getMaxApplicationOptions();
+            if (queriedAss.contains(as.getId())) {
+                kohdejoukko = as.getKohdejoukkoUri();
+                if (as.getMaxApplicationOptions() > max) {
+                    max = as.getMaxApplicationOptions();
+                }
             }
         }
         ApplicationFilterParametersBuilder builder = new ApplicationFilterParametersBuilder()
@@ -268,6 +272,9 @@ public class ApplicationServiceImpl implements ApplicationService {
                 .addOrganizationsReadable(hakuPermissionService.userCanReadApplications())
                 .addOrganizationsOpo(hakuPermissionService.userHasOpoRole());
 
+        if (queriedAss != null && queriedAss.size() == 1) {
+            builder.setKohdejoukko(kohdejoukko);
+        }
         return applicationDAO.findAllQueried(term, applicationQueryParameters, builder.build());
     }
 

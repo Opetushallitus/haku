@@ -15,7 +15,8 @@
  */
 package fi.vm.sade.haku.oppija.common.selenium;
 
-import com.thoughtworks.selenium.Selenium;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 
 /**
  * @author jukka
@@ -24,16 +25,16 @@ import com.thoughtworks.selenium.Selenium;
  */
 public class LoginPage {
 
-    private final Selenium selenium;
+    private final WebDriver driver;
 
-    public LoginPage(Selenium selenium) {
-        this.selenium = selenium;
+    public LoginPage(WebDriver driver) {
+        this.driver = driver;
     }
 
     public void login(String user) {
-        selenium.type("j_username", user);
-        selenium.type("j_password", user);
-        selenium.submit("login");
+        driver.findElement(By.name("j_username")).sendKeys(user);
+        driver.findElement(By.name("j_password")).sendKeys(user);
+        driver.findElement(By.id("login")).submit();
     }
 
 }

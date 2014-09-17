@@ -32,7 +32,7 @@ public abstract class DummyModelBaseItTest extends AbstractSeleniumBase {
 
 
     protected void back() {
-        seleniumContainer.getSelenium().goBack();
+        seleniumContainer.getDriver().navigate().back();
     }
 
     protected void nextPhase(String expectedPhase) {
@@ -76,7 +76,7 @@ public abstract class DummyModelBaseItTest extends AbstractSeleniumBase {
             if ("radio".equals(type)) {
                 clickByNameAndValue(id, value);
             } else if ("checkbox".equals(type)) {
-                click(id);
+                findByIdAndClick(id);
             } else {
                 type(id, value, true);
             }
@@ -89,7 +89,7 @@ public abstract class DummyModelBaseItTest extends AbstractSeleniumBase {
     protected void navigateToFirstPhase() {
         String url = getBaseUrl() + "lomake/";
         seleniumContainer.getDriver().get(url);
-        click(ASID);
+        clickByHref(ASID);
     }
 
     protected void navigateToPath(final String... pathSegments) {
@@ -125,15 +125,25 @@ public abstract class DummyModelBaseItTest extends AbstractSeleniumBase {
 
     protected void elementsNotPresentByName(final String... names) {
         for (String name : names) {
-            if (!seleniumContainer.getDriver().findElements(By.name(name)).isEmpty()) {
-                fail("name " + name + " not found");
-            }
+            elementsNotPresentBy(By.name(name));
         }
     }
 
-    protected void elementsNotPresent(String... locations) {
+    protected void elementsNotPresentBy(final By by) {
+        if (!seleniumContainer.getDriver().findElements(by).isEmpty()) {
+            fail("name " + by.toString() + " not found");
+        }
+    }
+
+    protected void elementsNotPresentById(String... locations) {
         for (String location : locations) {
-            assertFalse("Found element " + location, seleniumContainer.getSelenium().isElementPresent(location));
+            elementsNotPresentBy(By.id(location));
+        }
+    }
+
+    protected void elementsNotPresentByXPath(String... locations) {
+        for (String location : locations) {
+            elementsNotPresentBy(By.xpath(location));
         }
     }
 

@@ -26,7 +26,6 @@ import org.openqa.selenium.By;
 import static fi.vm.sade.haku.oppija.ui.selenium.DefaultValues.KYSYMYS_POHJAKOULUTUS;
 import static fi.vm.sade.haku.oppija.ui.selenium.DefaultValues.TUTKINTO_PERUSKOULU;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 
 public class HAK305IT extends DummyModelBaseItTest {
 
@@ -111,7 +110,7 @@ public class HAK305IT extends DummyModelBaseItTest {
         findById("preference1-Opetuspiste");
         typeWithoutTab("preference1-Opetuspiste", "Esp");
         clickLinkByText("FAKTIA, Espoo op");
-        click("//option[@value='Kaivosalan perustutkinto, pk']");
+        clickAllElementsByXPath("//option[@value='Kaivosalan perustutkinto, pk']");
         fillOut(defaultValues.preference1);
     }
 
@@ -124,9 +123,4 @@ public class HAK305IT extends DummyModelBaseItTest {
         setValue("aidinkieli", aidinkieli);
     }
 
-    protected void elementsPresent(String... locations) {
-        for (String location : locations) {
-            assertTrue("Could not find element " + location, seleniumContainer.getSelenium().isElementPresent(location));
-        }
-    }
 }

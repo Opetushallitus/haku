@@ -28,8 +28,8 @@ public class KSHJHakulomakeV1IT extends DummyModelBaseItTest {
         navigateToPath("lomake", "haku6");
         fillOut(defaultValues.kkHenkilotiedot);
         nextPhase(OppijaConstants.PHASE_EDUCATION);
-        click("suoritusoikeus", "aiempitutkinto", "pohjakoulutus_am");
-        setValue("pohjakoulutus_am_pvm", "1.6.2012");
+        findByIdAndClick("suoritusoikeus", "aiempitutkinto", "pohjakoulutus_am");
+        setValue("pohjakoulutus_am_vuosi", "2012");
         setValue("pohjakoulutus_am_nimike", "pohjakoulutus_am_nimike");
         setValue("pohjakoulutus_am_laajuus", "laajuus");
         setValue("pohjakoulutus_am_oppilaitos", "oppilaitos");
@@ -38,7 +38,7 @@ public class KSHJHakulomakeV1IT extends DummyModelBaseItTest {
         findById("preference1-Opetuspiste");
         typeWithoutTab("preference1-Opetuspiste", "anna");
         clickLinkByText("Anna Tapion koulu");
-        click("//option[@value='Kymppiluokka']");
+        clickAllElementsByXPath("//option[@value='Kymppiluokka']");
 
         nextPhase(OppijaConstants.PHASE_GRADES);
 
@@ -48,26 +48,23 @@ public class KSHJHakulomakeV1IT extends DummyModelBaseItTest {
 
         navigateToPath("lomake", "haku6", OppijaConstants.PHASE_EDUCATION);
 
-        click("pohjakoulutus_am");
-        click("pohjakoulutus_muu");
+        findByIdAndClick("pohjakoulutus_am", "pohjakoulutus_muu");
         setValue("pohjakoulutus_muu_vuosi", "2012");
         setValue("pohjakoulutus_muu_kuvaus", "kuvaus");
         nextPhase(OppijaConstants.PHASE_APPLICATION_OPTIONS);
         nextPhase(OppijaConstants.PHASE_GRADES);
-        elementsNotPresent("keskiarvo");
-        elementsNotPresent("arvosanaasteikko");
+        elementsNotPresentById("keskiarvo", "arvosanaasteikko");
 
 
         navigateToPath("lomake", "haku6", OppijaConstants.PHASE_EDUCATION);
-        click("pohjakoulutus_yo");
+        findByIdAndClick("pohjakoulutus_yo");
         setValue("pohjakoulutus_yo_vuosi", "2002");
         setValue("pohjakoulutus_yo_tutkinto", "fi");
 
         nextPhase(OppijaConstants.PHASE_APPLICATION_OPTIONS);
         nextPhase(OppijaConstants.PHASE_GRADES);
         setValue("lukion-paattotodistuksen-keskiarvo", "4,51");
-        elementsNotPresent("keskiarvo");
-        elementsNotPresent("arvosanaasteikko");
+        elementsNotPresentById("keskiarvo", "arvosanaasteikko");
 
     }
 }

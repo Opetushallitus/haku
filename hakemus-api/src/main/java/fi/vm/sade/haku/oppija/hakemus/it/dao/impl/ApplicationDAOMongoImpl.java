@@ -32,6 +32,7 @@ import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationFilterParameters;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationQueryParameters;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.SocialSecurityNumber;
 import fi.vm.sade.haku.oppija.lomake.service.EncrypterService;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,6 +80,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     private static final String FIELD_LOP_T = "answers.hakutoiveet.preference%d-Opetuspiste-id";
     private static final String FIELD_LOP_PARENTS_T = "authorizationMeta.aoOrganizations.%d";
     private static final String FIELD_DISCRETIONARY_T = "answers.hakutoiveet.preference%d-discretionary";
+    private static final String FIELD_AO_GROUPS_T = "answers.hakutoiveet.preference%d-Koulutus-id-ao-groups";
     private static final String FIELD_APPLICATION_OID = "oid";
     private static final String FIELD_APPLICATION_SYSTEM_ID = "applicationSystemId";
     private static final String FIELD_PERSON_OID = "personOid";
@@ -86,6 +88,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     private static final String FIELD_LAST_AUTOMATED_PROCESSING_TIME = "lastAutomatedProcessingTime";
     private static final String FIELD_SENDING_SCHOOL = "answers.koulutustausta.lahtokoulu";
     private static final String FIELD_SENDING_SCHOOL_PARENTS = "authorizationMeta.sendingSchool";
+    private static final String FIELD_HIGHER_ED_BASE_ED_T = "answers.koulutustausta.pohjakoulutus_%s";
     private static final String FIELD_ALL_ORGANIZAIONS = "authorizationMeta.allAoOrganizations";
     private static final String FIELD_SENDING_CLASS = "answers.koulutustausta.lahtoluokka";
     private static final String FIELD_CLASS_LEVEL = "answers.koulutustausta.luokkataso";
@@ -328,6 +331,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         // Koskee yksittäistä hakutoivetta
         String lopOid = applicationQueryParameters.getLopOid();
         String preference = applicationQueryParameters.getAoId();
+        String groupOid = applicationQueryParameters.getGroupOid();
         boolean discretionaryOnly = applicationQueryParameters.isDiscretionaryOnly();
         String aoOid = applicationQueryParameters.getAoOid();
 
@@ -349,6 +353,11 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
             if (isNotBlank(aoOid)) {
                 preferenceQuery.add(
                         QueryBuilder.start(String.format(FIELD_AO_T, i)).is(aoOid).get());
+            }
+            if (isNotBlank(groupOid)) {
+                preferenceQuery.add(
+                        QueryBuilder.start(String.format(FIELD_AO_GROUPS_T, i))
+                                .regex(Pattern.compile(groupOid)).get());
             }
             if (!preferenceQuery.isEmpty()) {
                 preferenceQueries.add(QueryBuilder.start().and(
@@ -402,6 +411,17 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
                             QueryBuilder.start(FIELD_UPDATED).greaterThanEquals(updatedAfter.getTime()).get()
                     ).get()
             );
+        }
+
+        String kohdejoukko = filterParameters.getKohdejoukko();
+        String baseEducation = applicationQueryParameters.getBaseEducation();
+        if (isNotBlank(kohdejoukko) && isNotBlank(baseEducation)) {
+            if (OppijaConstants.KOHDEJOUKKO_KORKEAKOULU.equals(kohdejoukko)) {
+                filters.add(
+                        QueryBuilder.start(String.format(FIELD_HIGHER_ED_BASE_ED_T, baseEducation))
+                                .is(Boolean.TRUE.toString()).get()
+                );
+            }
         }
 
         filters.add(newOIdExistDBObject());
@@ -473,7 +493,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         query.put(FIELD_PERSON_OID, new BasicDBObject(EXISTS, true));
         query.put(FIELD_STUDENT_OID, new BasicDBObject(EXISTS, false));
         query.put(FIELD_APPLICATION_STATE, Application.State.ACTIVE.toString());
-        query.put(FIELD_STUDENT_IDENTIFICATION_DONE, Boolean.FALSE.toString());
+        query.put(FIELD_STUDENT_IDENTIFICATION_DONE, false);
 
         DBObject sortBy = new BasicDBObject(FIELD_LAST_AUTOMATED_PROCESSING_TIME, 1);
 

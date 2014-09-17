@@ -8,6 +8,7 @@ public class ApplicationFilterParametersBuilder {
     private int maxApplicationOptions;
     private List<String> organizationsReadable;
     private List<String> organizationsOpo;
+    private String kohdejoukko;
 
     public ApplicationFilterParametersBuilder() {
         this.organizationsReadable = new ArrayList<String>();
@@ -51,9 +52,18 @@ public class ApplicationFilterParametersBuilder {
         return this;
     }
 
+    public ApplicationFilterParametersBuilder setKohdejoukko(String kohdejoukko) {
+        this.kohdejoukko = kohdejoukko;
+        return this;
+    }
+
+    public String getKohdejoukko() {
+        return kohdejoukko;
+    }
 
     public ApplicationFilterParameters build() {
         int realMaxApplicationOptions = maxApplicationOptions == 0 ? 6 : maxApplicationOptions;
-        return new ApplicationFilterParameters(realMaxApplicationOptions, organizationsReadable, organizationsOpo);
+        return new ApplicationFilterParameters(realMaxApplicationOptions, organizationsReadable, organizationsOpo,
+                kohdejoukko);
     }
 }

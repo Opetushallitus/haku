@@ -124,7 +124,12 @@
                     </td>
 
                     <td>
+                        <label for="base-education"><fmt:message key="virkailija.hakemus.pohjakoulutus"/></label>
 
+                        <div class="field-search-containerbox">
+                            <select id="base-education">
+                            </select>
+                        </div>
                     </td>
 
                     <td class="padding-top-4">
@@ -139,7 +144,17 @@
                 </tr>
                 <tr>
                     <td>
+                        <label class="block" for="application-group"><fmt:message
+                                key="virkailija.hakemus.ryhma.otsikko"/></label>
+
+                        <div class="field-text-containerbox">
+                            <input class="width-60" type="text" id="application-group" />
+                        </div>
+                        <input type="hidden" name="application-group-oid" id="application-group-oid" />
                     </td>
+                    <td>
+                    </td>
+                    <td></td>
                 </tr>
             </table>
         </div>

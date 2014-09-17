@@ -16,14 +16,13 @@
 
 package fi.vm.sade.haku.oppija.hakemus.resource;
 
-import com.google.common.collect.Lists;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationAdditionalDataDTO;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationQueryParameters;
+import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationQueryParametersBuilder;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.Titled;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Question;
 import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
@@ -89,28 +88,47 @@ public class ApplicationResource {
     }
 
     @GET
-    @Path("{asid}/{aoidCode}")
+    @Path("excel")
     @Produces("application/vnd.ms-excel")
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_READ', 'ROLE_APP_HAKEMUS_CRUD', 'ROLE_APP_HAKEMUS_OPO')")
-    public XlsParameter getApplicattionsByOids(@PathParam("asid") String asid,
-                                               @PathParam("aoidCode") String aoidCode,
-                                               @DefaultValue(value = "") @QueryParam("q") String query,
+    public XlsParameter getApplicattionsByOids(@QueryParam("asid") String asid,
+                                               @QueryParam("aoid") String aoid,
+                                               @QueryParam("aoidCode") String aoidCode,
+                                               @QueryParam("q") @DefaultValue(value = "") String query,
                                                @QueryParam("appState") List<String> state,
                                                @QueryParam("lopoid") String lopoid,
                                                @QueryParam("aoOid") String aoOid,
+                                               @QueryParam("groupOid") String groupOid,
+                                               @QueryParam("baseEducation") String baseEducation,
                                                @QueryParam("discretionaryOnly") Boolean discretionaryOnly,
                                                @QueryParam("sendingSchoolOid") String sendingSchoolOid,
                                                @QueryParam("sendingClass") String sendingClass,
                                                @QueryParam("updatedAfter") DateParam updatedAfter,
-                                               @DefaultValue(value = "0") @QueryParam("start") int start,
-                                               @DefaultValue(value = "10000") @QueryParam("rows") int rows) {
+                                               @QueryParam("start") @DefaultValue(value = "0") int start,
+                                               @QueryParam("rows") @DefaultValue(value = "10000") int rows) {
         ApplicationSystem activeApplicationSystem = applicationSystemService.getApplicationSystem(asid);
 
-        List<Map<String, Object>> applications = applicationService.findFullApplications(
-                query, new ApplicationQueryParameters(state, Lists.newArrayList(asid), aoidCode, lopoid, aoOid, discretionaryOnly,
-                sendingSchoolOid, sendingClass, updatedAfter != null ? updatedAfter.getDate() : null, start, rows, "oid", 1));
+        ApplicationQueryParameters queryParams = new ApplicationQueryParametersBuilder()
+                .setStates(state)
+                .setAsId(asid)
+                .setAoId(aoidCode)
+                .setGroupOid(groupOid)
+                .setBaseEducation(baseEducation)
+                .setLopOid(lopoid)
+                .setAoOid(aoOid)
+                .setDiscretionaryOnly(discretionaryOnly)
+                .setSendingSchool(sendingSchoolOid)
+                .setSendingClass(sendingClass)
+                .setUpdatedAfter(updatedAfter != null ? updatedAfter.getDate() : null)
+                .setStart(start)
+                .setRows(rows)
+                .setOrderBy("oid")
+                .setOrderDir(1)
+                .build();
+
+        List<Map<String, Object>> applications = applicationService.findFullApplications(query, queryParams);
         Map<String, Question> elementsByType = ElementUtil.findElementsByType(activeApplicationSystem.getForm(), Question.class);
-        return new XlsParameter(asid, aoidCode, activeApplicationSystem, applications, elementsByType);
+        return new XlsParameter(asid, aoid, activeApplicationSystem, applications, elementsByType);
     }
 
     @GET
@@ -137,6 +155,8 @@ public class ApplicationResource {
     public List<Map<String, Object>> findFullApplications(@DefaultValue(value = "") @QueryParam("q") String query,
                                                           @QueryParam("appState") List<String> state,
                                                           @QueryParam("aoid") String aoid,
+                                                          @QueryParam("groupOid") String groupOid,
+                                                          @QueryParam("baseEducation") String baseEducation,
                                                           @QueryParam("lopoid") String lopoid,
                                                           @QueryParam("asId") String asId,
                                                           @QueryParam("asSemester") String asSemester,
@@ -156,9 +176,26 @@ public class ApplicationResource {
         } else if (isNotEmpty(asSemester) || isNotEmpty(asYear)) {
             asIds.addAll(applicationSystemService.findByYearAndSemester(asSemester, asYear));
         }
-        List<Map<String, Object>> apps = applicationService.findFullApplications(
-                query, new ApplicationQueryParameters(state, asIds, aoid, lopoid, aoOid, discretionaryOnly,
-                sendingSchoolOid, sendingClass, updatedAfter != null ? updatedAfter.getDate() : null, start, rows, "oid", 1));
+
+        ApplicationQueryParameters queryParams = new ApplicationQueryParametersBuilder()
+                .setStates(state)
+                .setAsIds(asIds)
+                .setAoId(aoid)
+                .setGroupOid(groupOid)
+                .setBaseEducation(baseEducation)
+                .setLopOid(lopoid)
+                .setAoOid(aoOid)
+                .setDiscretionaryOnly(discretionaryOnly)
+                .setSendingSchool(sendingSchoolOid)
+                .setSendingClass(sendingClass)
+                .setUpdatedAfter(updatedAfter != null ? updatedAfter.getDate() : null)
+                .setStart(start)
+                .setRows(rows)
+                .setOrderBy("oid")
+                .setOrderDir(1)
+                .build();
+
+        List<Map<String, Object>> apps = applicationService.findFullApplications(query, queryParams);
         LOGGER.debug("findFullApplications done: {}", System.currentTimeMillis());
         return apps;
     }
@@ -169,6 +206,8 @@ public class ApplicationResource {
     public ApplicationSearchResultDTO findApplications(@DefaultValue(value = "") @QueryParam("q") String query,
                                                        @QueryParam("appState") List<String> state,
                                                        @QueryParam("aoid") String aoid,
+                                                       @QueryParam("groupOid") String groupOid,
+                                                       @QueryParam("baseEducation") String baseEducation,
                                                        @QueryParam("lopoid") String lopoid,
                                                        @QueryParam("asId") String asId,
                                                        @QueryParam("asSemester") String asSemester,
@@ -181,8 +220,8 @@ public class ApplicationResource {
                                                        @DefaultValue(value = "0") @QueryParam("start") int start,
                                                        @DefaultValue(value = "100") @QueryParam("rows") int rows) {
 
-        return findApplicationsOrdered("fullName", "asc", query, state, aoid, lopoid, asId, asSemester, asYear, aoOid,
-                discretionaryOnly, sendingSchoolOid, sendingClass, updatedAfter, start, rows);
+        return findApplicationsOrdered("fullName", "asc", query, state, aoid, groupOid, baseEducation, lopoid, asId,
+                asSemester, asYear, aoOid, discretionaryOnly, sendingSchoolOid, sendingClass, updatedAfter, start, rows);
     }
 
     @GET
@@ -194,6 +233,8 @@ public class ApplicationResource {
                                                               @DefaultValue(value = "") @QueryParam("q") String query,
                                                               @QueryParam("appState") List<String> state,
                                                               @QueryParam("aoidCode") String aoid,
+                                                              @QueryParam("groupOid") String groupOid,
+                                                              @QueryParam("baseEducation") String baseEducation,
                                                               @QueryParam("lopoid") String lopoid,
                                                               @QueryParam("asId") String asId,
                                                               @QueryParam("asSemester") String asSemester,
@@ -209,8 +250,6 @@ public class ApplicationResource {
 //                "asSemester: {}, asYear: {}, discretionaryOnly: {}, sendingSchoolOid: {}, sendingClass: {}",
 //                query, state, aoid, lopoid, asId, aoOid, start, rows, asSemester, asYear, discretionaryOnly, sendingSchoolOid, sendingClass);
 
-        int realOrderDir = "desc".equals(orderDir) ? -1 : 1;
-
         List<String> asIds = new ArrayList<String>();
         if (isNotEmpty(asId)) {
             asIds.add(asId);
@@ -220,9 +259,24 @@ public class ApplicationResource {
         for (String s : asIds) {
             LOGGER.debug("asId: {}", s);
         }
-        return applicationService.findApplications(
-                query, new ApplicationQueryParameters(state, asIds, aoid, lopoid, aoOid, discretionaryOnly,
-                sendingSchoolOid, sendingClass, updatedAfter != null ? updatedAfter.getDate() : null, start, rows, orderBy, realOrderDir));
+        ApplicationQueryParameters queryParams = new ApplicationQueryParametersBuilder()
+                .setStates(state)
+                .setAsIds(asIds)
+                .setAoId(aoid)
+                .setGroupOid(groupOid)
+                .setBaseEducation(baseEducation)
+                .setLopOid(lopoid)
+                .setAoOid(aoOid)
+                .setDiscretionaryOnly(discretionaryOnly)
+                .setSendingSchool(sendingSchoolOid)
+                .setSendingClass(sendingClass)
+                .setUpdatedAfter(updatedAfter != null ? updatedAfter.getDate() : null)
+                .setStart(start)
+                .setRows(rows)
+                .setOrderBy(orderBy)
+                .setOrderDir("desc".equals(orderDir) ? -1 : 1)
+                .build();
+        return applicationService.findApplications(query, queryParams);
     }
 
     @GET

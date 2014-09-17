@@ -37,4 +37,6 @@ public interface OrganizationService {
     Organization findByOid(String oid) throws IOException;
 
     List<Organization> findByOppilaitosnumero(List<String> oppilaitosnumeros);
+
+    List<OrganizationGroupRestDTO> findGroups(String term) throws IOException;
 }

@@ -155,7 +155,7 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
     public void processIdentification() {
         Application application = getNextWithoutStudentOid();
         LOGGER.debug("Starting processIdentification, application: {} {}",
-                application != null ? application.getOid() : "null", System.currentTimeMillis());
+                application != null ? application.getOid() : "null-application", System.currentTimeMillis());
         if (application != null) {
             applicationService.checkStudentOid(application);
         }

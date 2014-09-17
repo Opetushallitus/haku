@@ -29,7 +29,7 @@ public class WorkExperienceThemeIT extends DummyModelBaseItTest {
     @Test
     public void testWorkExperienceShown() {
         gotoHakutoiveet("010113-668B");
-        click("//option[@data-id='1.2.246.562.14.79893512065']");
+        clickAllElementsByXPath("//option[@data-id='1.2.246.562.14.79893512065']");
         fillOut(defaultValues.preference1);
 
         nextPhase(OppijaConstants.PHASE_GRADES);
@@ -46,7 +46,7 @@ public class WorkExperienceThemeIT extends DummyModelBaseItTest {
     @Test
     public void testWorkExperienceNotShown() {
         gotoHakutoiveet("010113A668B");
-        click("//option[@data-id='1.2.246.562.14.79893512065']");
+        clickAllElementsByXPath("//option[@data-id='1.2.246.562.14.79893512065']");
         clickByNameAndValue("preference1-discretionary", "false");
         clickByNameAndValue("preference1_sora_terveys", "false");
         clickByNameAndValue("preference1_sora_oikeudenMenetys", "false");
@@ -60,7 +60,7 @@ public class WorkExperienceThemeIT extends DummyModelBaseItTest {
         screenshot("workexp");
         nextPhase(OppijaConstants.PHASE_MISC);
 
-        elementsNotPresent("TYOKOKEMUSKUUKAUDET");
+        elementsNotPresentById("TYOKOKEMUSKUUKAUDET");
     }
 
     private void gotoHakutoiveet(final String hetu) {

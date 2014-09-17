@@ -19,6 +19,8 @@ public class ApplicationQueryParametersBuilder {
     private int rows = 0;
     private String orderBy;
     private int orderDir= 1;
+    private String groupOid;
+    private String baseEducation;
 
     public ApplicationQueryParametersBuilder setStates(List<String> state) {
         this.state = state;
@@ -95,7 +97,26 @@ public class ApplicationQueryParametersBuilder {
         return this;
     }
 
+    public ApplicationQueryParametersBuilder setGroupOid(String groupOid) {
+        this.groupOid = groupOid;
+        return this;
+    }
+
+    public ApplicationQueryParametersBuilder setBaseEducation(String baseEducation) {
+        this.baseEducation = baseEducation;
+        return this;
+    }
+
+    public String getBaseEducation() {
+        return baseEducation;
+    }
+
+    public String getGroupOid() {
+        return groupOid;
+    }
+
     public ApplicationQueryParameters build() {
-        return new ApplicationQueryParameters(state, asIds, aoId, lopOid, aoOid, discretionaryOnly, sendingSchool, sendingClass, updatedAfter, start, rows, orderBy, orderDir);
+        return new ApplicationQueryParameters(state, asIds, aoId, lopOid, aoOid, groupOid, baseEducation,
+                discretionaryOnly, sendingSchool, sendingClass, updatedAfter, start, rows, orderBy, orderDir);
     }
 }
