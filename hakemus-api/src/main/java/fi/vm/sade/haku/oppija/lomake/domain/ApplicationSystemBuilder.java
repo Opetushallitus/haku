@@ -12,6 +12,7 @@ public class ApplicationSystemBuilder {
     private I18nText name;
     private List<ApplicationPeriod> applicationPeriods;
     private String applicationSystemType;
+    private String hakutapa;
     private Integer hakukausiVuosi;
     private String hakukausiUri;
     private List<Element> applicationCompleteElements;
@@ -78,7 +79,7 @@ public class ApplicationSystemBuilder {
 
     public ApplicationSystem get() {
         return new ApplicationSystem(id, form, name, applicationPeriods,
-                applicationSystemType, hakukausiVuosi, hakukausiUri, kohdejoukkoUri, applicationCompleteElements,
+                applicationSystemType, hakutapa, hakukausiVuosi, hakukausiUri, kohdejoukkoUri, applicationCompleteElements,
                 additionalPrintElements, applicationOptionAttachmentRequests, maxApplicationOptions);
     }
 
@@ -89,6 +90,11 @@ public class ApplicationSystemBuilder {
 
     public ApplicationSystemBuilder addKohdejoukkoUri(String kohdejoukkoUri) {
         this.kohdejoukkoUri = kohdejoukkoUri;
+        return this;
+    }
+
+    public ApplicationSystemBuilder addHakutapa(String hakutapa) {
+        this.hakutapa = hakutapa;
         return this;
     }
 }

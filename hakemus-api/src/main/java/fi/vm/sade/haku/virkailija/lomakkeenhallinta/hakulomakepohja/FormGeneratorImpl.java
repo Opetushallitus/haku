@@ -60,6 +60,7 @@ public class FormGeneratorImpl implements FormGenerator {
                 .addName(as.getName())
                 .addApplicationPeriods(as.getApplicationPeriods())
                 .addApplicationSystemType(as.getApplicationSystemType())
+                .addHakutapa(as.getHakutapa())
                 .addHakukausiUri(as.getHakukausiUri())
                 .addHakukausiVuosi(as.getHakukausiVuosi())
                 .addKohdejoukkoUri(as.getKohdejoukkoUri())

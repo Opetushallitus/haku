@@ -230,7 +230,7 @@ public class ApplicationServiceImplTest {
         Application application = new Application();
         application.setApplicationSystemId("myAsId");
         ApplicationSystem as = new ApplicationSystem("myAsId", null, new I18nText(new HashMap<String, String>()), null,
-                null, null, null, OppijaConstants.KOHDEJOUKKO_PERVAKO, null, null, null, null);
+                null, null, null, null, OppijaConstants.KOHDEJOUKKO_PERVAKO, null, null, null, null);
         when(applicationSystemService.getApplicationSystem(eq("myAsId"))).thenReturn(as);
 
         try {
@@ -242,7 +242,7 @@ public class ApplicationServiceImplTest {
         assertTrue(authorizationMeta.isOpoAllowed());
 
         as = new ApplicationSystem("myAsId", null, new I18nText(new HashMap<String, String>()), null,
-                null, null, null, OppijaConstants.KOHDEJOUKKO_KORKEAKOULU, null, null, null, null);
+                null, null, null, null, OppijaConstants.KOHDEJOUKKO_KORKEAKOULU, null, null, null, null);
         when(applicationSystemService.getApplicationSystem(eq("myAsId"))).thenReturn(as);
 
         try {
@@ -259,7 +259,7 @@ public class ApplicationServiceImplTest {
         Application application = new Application();
         application.setApplicationSystemId("myAsId");
         ApplicationSystem as = new ApplicationSystem("myAsId", null, new I18nText(new HashMap<String, String>()), null,
-                null, null, null, OppijaConstants.KOHDEJOUKKO_PERVAKO, null, null, null, null);
+                null, null, null, null, OppijaConstants.KOHDEJOUKKO_PERVAKO, null, null, null, null);
         Map<String, String> educationAnswers = new HashMap<String, String>();
         educationAnswers.put(OppijaConstants.ELEMENT_ID_SENDING_SCHOOL, "1.2.3.4");
 
@@ -291,7 +291,7 @@ public class ApplicationServiceImplTest {
         Application application = new Application();
         application.setApplicationSystemId("myAsId");
         ApplicationSystem as = new ApplicationSystem("myAsId", null, new I18nText(new HashMap<String, String>()), null,
-                null, null, null, OppijaConstants.KOHDEJOUKKO_PERVAKO, null, null, null, null);
+                null, null, null, null, OppijaConstants.KOHDEJOUKKO_PERVAKO, null, null, null, null);
 
         Map<String, String> aoAnswers = new HashMap<String, String>();
         aoAnswers.put(String.format(OppijaConstants.PREFERENCE_ID, 1), "1.2.3");

@@ -18,7 +18,6 @@ package fi.vm.sade.haku.oppija.ui.controller;
 
 import com.sun.jersey.api.view.Viewable;
 import com.sun.jersey.core.util.MultivaluedMapImpl;
-
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
@@ -29,15 +28,14 @@ import fi.vm.sade.haku.oppija.lomake.service.FormService;
 import fi.vm.sade.haku.oppija.ui.common.RedirectToPhaseViewPath;
 import fi.vm.sade.haku.oppija.ui.service.ModelResponse;
 import fi.vm.sade.haku.oppija.ui.service.UIService;
+import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.PDFService;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Matchers;
 
 import javax.ws.rs.core.Response;
-
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
@@ -60,6 +58,7 @@ public class FormControllerTest {
 
     private FormController formController;
     private ApplicationService applicationService;
+    private AuthenticationService authenticationService;
     private FormService formService;
     private Application application;
     private ModelResponse modelResponse;
@@ -71,11 +70,13 @@ public class FormControllerTest {
         modelResponse = new ModelResponse(this.application);
         this.applicationService = mock(ApplicationService.class);
         this.formService = mock(FormService.class);
+        this.authenticationService = mock(AuthenticationService.class);
         UIService uiService = mock(UIService.class);
         PDFService pdfService = mock(PDFService.class);
         when(uiService.getPhase(APPLICATION_SYSTEM_ID, FIRST_PHASE_ID)).thenReturn(modelResponse);
         when(uiService.savePhase(Matchers.<String>any(), Matchers.<String>any(), Matchers.<Map>any())).thenReturn(modelResponse);
-        this.formController = new FormController(uiService, pdfService);
+        when(authenticationService.getLangCookieName()).thenReturn("testi18next");
+        this.formController = new FormController(uiService, pdfService, authenticationService);
 
         FORM.addChild(PHASE);
         when(applicationService.getApplication(Matchers.<String>any())).thenReturn(this.application);
@@ -85,25 +86,25 @@ public class FormControllerTest {
 
     @Test(expected = NullPointerException.class)
     public void testGetFormAndRedirectToFirstCategoryNullApplicationId() throws Exception {
-        formController.getApplication(null);
+        formController.getApplication(null, null);
     }
 
     @SuppressWarnings("rawtypes")
     @Test
     public void testGetPhaseModelSize() throws Exception {
-        Viewable viewable = formController.getPhase(APPLICATION_SYSTEM_ID, FIRST_PHASE_ID);
+        Viewable viewable = (Viewable) formController.getPhase(null, APPLICATION_SYSTEM_ID, FIRST_PHASE_ID).getEntity();
         assertEquals(4, ((Map) viewable.getModel()).size());
     }
 
     @Test
     public void testGetCategoryView() throws Exception {
-        Viewable viewable = formController.getPhase(APPLICATION_SYSTEM_ID, FIRST_PHASE_ID);
+        Viewable viewable = (Viewable) formController.getPhase(null, APPLICATION_SYSTEM_ID, FIRST_PHASE_ID).getEntity();
         assertEquals("/elements/Root", viewable.getTemplateName());
     }
 
     @Test
     public void testGetCategoryWrongView() throws Exception {
-        Viewable viewable = formController.getPhase(APPLICATION_SYSTEM_ID, FIRST_PHASE_ID);
+        Viewable viewable = (Viewable) formController.getPhase(null, APPLICATION_SYSTEM_ID, FIRST_PHASE_ID).getEntity();
         assertNotSame(null, viewable.getTemplateName());
     }
 
