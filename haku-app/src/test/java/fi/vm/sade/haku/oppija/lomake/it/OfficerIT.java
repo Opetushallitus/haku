@@ -2,29 +2,24 @@ package fi.vm.sade.haku.oppija.lomake.it;
 
 import fi.vm.sade.haku.oppija.common.selenium.DummyModelBaseItTest;
 import fi.vm.sade.haku.oppija.common.selenium.LoginPage;
-import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.lomake.HakuClient;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedCondition;
-import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static fi.vm.sade.haku.oppija.ui.selenium.DefaultValues.KYSYMYS_POHJAKOULUTUS;
 import static fi.vm.sade.haku.oppija.ui.selenium.DefaultValues.TUTKINTO_YLIOPPILAS;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 
 public class OfficerIT extends DummyModelBaseItTest {
 
@@ -38,7 +33,7 @@ public class OfficerIT extends DummyModelBaseItTest {
         String baseUrl = getBaseUrl();
         HakuClient hakuClient = new HakuClient(baseUrl + "lomake/", "application.json");
         hakuClient.apply();
-        final LoginPage loginPage = new LoginPage(seleniumContainer.getSelenium());
+        final LoginPage loginPage = new LoginPage(seleniumContainer.getDriver());
         navigateToPath("user", "login");
         loginPage.login("officer");
         activate(applicationOidPrefix + ".00000000013");
@@ -65,21 +60,15 @@ public class OfficerIT extends DummyModelBaseItTest {
     private List<WebElement> SearchByTerm(final String term) {
         enterSearchTerm(term);
         clickSearch();
-        seleniumContainer.getSelenium().waitForCondition("selenium.browserbot.getCurrentWindow().document.getElementsByClassName('application-link')", "1000");
+        new WebDriverWait(seleniumContainer.getDriver(), 1000)
+                .until(new ExpectedCondition<Object>() {
+                    @Override
+                    public Object apply(WebDriver webDriver) {
+                        JavascriptExecutor executor = (JavascriptExecutor) webDriver;
+                        return executor.executeScript("return document.getElementsByClassName('application-link')");
+                    }
+                });
         return findByClassName("application-link");
-    }
-
-    private List<WebElement> searchByTermAndState(final String term, Application.State state) {
-        enterSearchTerm(term);
-        selectState(state);
-        clickSearch();
-        seleniumContainer.getSelenium().waitForCondition("selenium.browserbot.getCurrentWindow().document.getElementsByClassName('application-link')", "1000");
-        return findByClassName("application-link");
-    }
-
-    private void selectState(Application.State state) {
-        Select stateSelect = new Select(seleniumContainer.getDriver().findElement(By.id("application-state")));
-        stateSelect.selectByValue(state == null ? "" : state.toString());
     }
 
     private WebElement checkApplicationState(String applicationState) {
@@ -99,7 +88,7 @@ public class OfficerIT extends DummyModelBaseItTest {
     }
 
     private void clickSearch() {
-        click("search-applications");
+        findByIdAndClick("search-applications");
     }
 
     private void activate(String oid) {
@@ -118,8 +107,7 @@ public class OfficerIT extends DummyModelBaseItTest {
                 break;
             }
         }
-        click("postProcessApplication");
-        click("submit-dialog");
+        findByIdAndClick("postProcessApplication", "submit-dialog");
 
         navigateToPath("virkailija", "hakemus", oid, "");
         List<WebElement> passivateApplication = getById("passivateApplication");
@@ -127,48 +115,9 @@ public class OfficerIT extends DummyModelBaseItTest {
             List<WebElement> activateApplication = getById("activateApplication");
             if (!activateApplication.isEmpty()) {
                 activateApplication.get(0).click();
-                click("confirm-activation");
+                findByIdAndClick("confirm-activation");
             }
         }
-        click("back");
-    }
-
-    private void passivate() {
-        findByIdAndClick("passivateApplication");
-        setValue("passivation-reason", "reason");
-        findByIdAndClick("submit_confirm");
-    }
-
-    private List<WebElement> searchByPreference(final String preference) {
-        clearSearch();
-        setValue("application-preference", preference);
-        clickSearch();
-        return findByClassName("application-link");
-    }
-
-    private void shouldFindByTermAndState(final String term, final Application.State state) {
-        clearSearch();
-        assertFalse("Application not found", searchByTermAndState(term, state).isEmpty());
-    }
-
-    private void shouldNotFindByTermAndState(final String term, final Application.State state) {
-        clearSearch();
-        assertTrue("Application found", searchByTermAndState(term, state).isEmpty());
-    }
-
-    private void shouldFindByTerm(final String term) {
-        clearSearch();
-        assertFalse("Application found", SearchByTerm(term).isEmpty());
-    }
-
-    private void shouldNotFindByTerm(final String term) {
-        clearSearch();
-        assertTrue("Application not", SearchByTerm(term).isEmpty());
-    }
-
-    protected void elementsPresent(String... locations) {
-        for (String location : locations) {
-            assertTrue("Could not find element " + location, seleniumContainer.getSelenium().isElementPresent(location));
-        }
+        findByIdAndClick("back");
     }
 }

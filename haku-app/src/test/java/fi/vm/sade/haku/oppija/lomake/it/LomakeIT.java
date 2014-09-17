@@ -188,10 +188,4 @@ public class LomakeIT extends DummyModelBaseItTest {
         clickByNameAndValue(KYSYMYS_POHJAKOULUTUS, TUTKINTO_ULKOMAINEN_TUTKINTO);
         findById(KoulutustaustaPhase.TUTKINTO_ULKOMAILLA_NOTIFICATION_ID);
     }
-
-    protected void elementsPresent(String... locations) {
-        for (String location : locations) {
-            assertTrue("Could not find element " + location, seleniumContainer.getSelenium().isElementPresent(location));
-        }
-    }
 }

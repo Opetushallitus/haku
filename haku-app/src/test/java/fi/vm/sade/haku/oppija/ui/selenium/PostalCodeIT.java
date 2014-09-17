@@ -95,9 +95,4 @@ public class PostalCodeIT extends DummyModelBaseItTest {
         assertTrue(findByXPath("//span[@class='post-office']").getText().trim().equals(POST_OFFICE2));
     }
 
-    protected void elementsPresent(String... locations) {
-        for (String location : locations) {
-            assertTrue("Could not find element " + location, seleniumContainer.getSelenium().isElementPresent(location));
-        }
-    }
 }

@@ -20,26 +20,18 @@ import com.google.common.collect.ImmutableList;
 import fi.vm.sade.haku.oppija.common.selenium.AbstractSeleniumBase;
 import fi.vm.sade.haku.oppija.lomake.ApplicationSystemHelper;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
-import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystemBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.builder.RadioBuilder;
-import fi.vm.sade.haku.oppija.lomake.domain.builder.TextQuestionBuilder;
+import fi.vm.sade.haku.oppija.lomake.domain.builder.SocialSecurityNumberBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.builders.FormModelBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.SocialSecurityNumber;
-import fi.vm.sade.haku.oppija.lomake.domain.builder.SocialSecurityNumberBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Radio;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.TextQuestion;
-import fi.vm.sade.haku.oppija.lomake.validation.validators.SocialSecurityNumberFieldValidator;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.junit.Before;
 import org.junit.Test;
-import org.openqa.selenium.By;
 
 import java.io.IOException;
 
-import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.*;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.createI18NAsIs;
 
 
 public class SocialSecurityNumberIT extends AbstractSeleniumBase {
@@ -63,15 +55,13 @@ public class SocialSecurityNumberIT extends AbstractSeleniumBase {
 
     @Test
     public void testInputMale() {
-        seleniumContainer.getSelenium().type("Henkilotunnus", "010101-111X");
-        seleniumContainer.getDriver().findElement(By.xpath("//*[text()='Mies']"));
+        type("Henkilotunnus", "010101-111X", true);
+        elementsPresent("//*[text()='Mies']");
     }
 
     @Test
     public void testInputFemale() {
-        seleniumContainer.getSelenium().type("Henkilotunnus", "010101-112X");
-        seleniumContainer.getDriver().findElement(By.xpath("//*[text()='Nainen']"));
-
-
+        type("Henkilotunnus", "010101-112X", true);
+        elementsPresent("//*[text()='Nainen']");
     }
 }

@@ -49,7 +49,7 @@ public class ApplicationIT extends DummyModelBaseItTest {
     @Before
     public void beforeApplicationIT() throws Exception {
         mongoTemplate.getCollection("application").insert(applicationTestDataObject);
-        final LoginPage loginPage = new LoginPage(seleniumContainer.getSelenium());
+        final LoginPage loginPage = new LoginPage(seleniumContainer.getDriver());
         navigateToPath("user", "login");
         loginPage.login("officer");
     }
@@ -92,7 +92,7 @@ public class ApplicationIT extends DummyModelBaseItTest {
     }
 
     private String getBodyText() {
-        return seleniumContainer.getSelenium().getBodyText();
+        return seleniumContainer.getDriver().findElementByTagName("body").getText();
     }
 
     private ApplicationSearchResultDTO responseToSearchResult() throws IOException {
@@ -100,11 +100,5 @@ public class ApplicationIT extends DummyModelBaseItTest {
         ObjectMapper mapper = new ObjectMapper();
         return mapper.readValue(response, new TypeReference<ApplicationSearchResultDTO>() {
         });
-    }
-
-    protected void elementsPresent(String... locations) {
-        for (String location : locations) {
-            assertTrue("Could not find element " + location, seleniumContainer.getSelenium().isElementPresent(location));
-        }
     }
 }

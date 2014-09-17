@@ -15,8 +15,6 @@
  */
 package fi.vm.sade.haku.oppija.lomake;
 
-import com.thoughtworks.selenium.Selenium;
-import com.thoughtworks.selenium.webdriven.WebDriverBackedSelenium;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxProfile;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +30,6 @@ import java.util.concurrent.TimeUnit;
 public class SeleniumContainer {
 
     private final FirefoxDriver webDriver;
-    private final Selenium selenium;
     private final String webDriverBaseUrl;
 
     @Autowired
@@ -41,17 +38,13 @@ public class SeleniumContainer {
         FirefoxProfile profile = new FirefoxProfile();
         profile.setPreference("focusmanager.testmode",true);
         this.webDriver = new FirefoxDriver(profile);
-//        this.webDriver = new FirefoxDriver();
-        this.selenium = new WebDriverBackedSelenium(this.webDriver, this.webDriverBaseUrl);
         this.webDriver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
-        this.selenium.setSpeed("1");
     }
 
     @PreDestroy
     public void destroy() throws Exception {
         webDriver.quit();
         webDriver.close();
-        selenium.close();
     }
 
     public FirefoxDriver getDriver() {
@@ -59,18 +52,11 @@ public class SeleniumContainer {
     }
 
     public void logout() {
-        selenium.open(this.webDriverBaseUrl + "user/logout");
+        webDriver.navigate().to(this.webDriverBaseUrl + "user/logout");
     }
 
     public String getBaseUrl() {
         return webDriverBaseUrl;
     }
 
-    public void navigate(final String path) {
-        selenium.open(webDriverBaseUrl + path);
-    }
-
-    public Selenium getSelenium() {
-        return selenium;
-    }
 }
