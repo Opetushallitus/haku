@@ -890,7 +890,7 @@ $(document).ready(function () {
     }
 });
 
-function objectToQueryParameterString(queryParameters, encode) {
+function objectToQueryParameterString(queryParameters) {
     return Object.keys(queryParameters).reduce(function (a, k) {
         var value = queryParameters[k];
         if (k && value) {
