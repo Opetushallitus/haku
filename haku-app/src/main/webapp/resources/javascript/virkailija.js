@@ -510,7 +510,7 @@ $(document).ready(function () {
                         $('#pagination').bootstrapPaginator(options);
                         applicationSearch.setSortOrder(queryParameters.orderBy, queryParameters.orderDir);
                         if (queryParameters.asId && queryParameters.aoOid) {
-                            var href = page_settings.contextPath + '/applications/excel?' + objectToQueryParameterString(queryParameters, true);
+                            var href = page_settings.contextPath + '/applications/excel?' + objectToQueryParameterString(queryParameters);
                             enableExcel(href);
                         } else {
                             disableExcel();
@@ -824,7 +824,7 @@ $(document).ready(function () {
                     searchTerms: req.term,
                     organisationOid : $('#lopoid').val()
                 }
-                var url = encodeURI('/tarjonta-service/rest/v1/hakukohde/search?' + objectToQueryParameterString(qParams, false));
+                var url = '/tarjonta-service/rest/v1/hakukohde/search?' + objectToQueryParameterString(qParams);
                 $.get(url, function (data) {
                     var applicationOptions = _.reduce(data.result.tulokset, function (aos, provider) {
                         return aos.concat(provider.tulokset);
@@ -894,7 +894,7 @@ function objectToQueryParameterString(queryParameters, encode) {
     return Object.keys(queryParameters).reduce(function (a, k) {
         var value = queryParameters[k];
         if (k && value) {
-            a.push(k + '=' + (encode) ? encodeURIComponent(value) : value);
+            a.push(k + '=' + encodeURIComponent(value));
         }
         return a
     }, []) .join('&');
