@@ -114,6 +114,13 @@ public class XlsMessageBodyWriter implements MessageBodyWriter<XlsParameter> {
                                     sheet.autoSizeColumn(column);
                                     kentta.setCellValue(ElementUtil.getText(option, lang));
                                 }
+                            } else if (question instanceof CheckBox) {
+                                sheet.autoSizeColumn(column);
+                                if (Boolean.TRUE.toString().equals(vastaus.getValue())) {
+                                    kentta.setCellValue("Kyllä");
+                                } else {
+                                    kentta.setCellValue("Ei");
+                                }
                             } else {
                                 sheet.autoSizeColumn(column);
                                 kentta.setCellValue(vastaus.getValue());
