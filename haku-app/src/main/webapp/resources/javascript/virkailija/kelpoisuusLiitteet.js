@@ -144,7 +144,7 @@ $(document).ready(function () {
      * @param hakutoive hakutoiveen index numero
      */
     tarkistaKaikkiLiitteetSaapuneet = function (hakutoive) {
-        console.log('tarkistaKaikkiLiitteetSaapuneet(',hakutoive,')');
+        console.log('tarkistaKaikkiLiitteetSaapuneet(',hakutoive,')',  _.every(hakutoiveet[hakutoive].liitteet, function (liite) { return liite.tila !== '03'; }));
         console.log(hakutoiveet[hakutoive].liitteet);
         var ind = hakutoive + 1;
         if ( _.every(hakutoiveet[hakutoive].liitteet, function (liite) { return liite.tila !== '03'; })) {
@@ -166,15 +166,14 @@ $(document).ready(function () {
     kaikkiLiitteetTarkistettu = function (hakutoive) {
         console.log('kaikkiLiitteetTarkistettu() -->', _.every(hakutoiveet[hakutoive].liitteet, function(liite) { return liite.liitteentila === '04'; }));
         console.log('kaikkiLiitteetTarkistettu()', hakutoiveet[hakutoive]);
-        var liitteetTarkastettu = _.every(hakutoiveet[hakutoive].liitteet, function(liite) { return liite.liitteentila === '04' && liite.tila !== '03'; }),
+        var liitteetTarkastettu = _.every(hakutoiveet[hakutoive].liitteet, function(liite) { return liite.liitteentila === '04' }),
+            liitteetSaapuneet = _.every(hakutoiveet[hakutoive].liitteet, function (liite) { return liite.tila !== '03'; }),
             ind = hakutoive + 1;
-        if (liitteetTarkastettu) {
-            console.log('tttt');
+
+        if (liitteetTarkastettu || !liitteetSaapuneet ) {
             $('#btn-kaikki-liitteet-tarkastettu-' +ind).addClass('disabled');
         } else {
-            console.log('juuuu');
             $('#btn-kaikki-liitteet-tarkastettu-' +ind).removeClass('disabled');
-
         }
         return liitteetTarkastettu
     };
@@ -202,7 +201,6 @@ $(document).ready(function () {
             $('#select-saapunut-' +indx + '-' + trs).val('01');
             hakutoiveet[hakutoive].liitteet[trs].tila = '01';
             tarkistaKaikkiLiitteetSaapuneet(hakutoive);
-            kaikkiLiitteetTarkistettu(hakutoive);
         } else {
             $('#select-saapunut-' +indx + '-' + trs).attr('disabled', 'true');
             $('#select-tarkistettu-' +indx + '-' + trs).attr('disabled', 'true');
@@ -211,7 +209,6 @@ $(document).ready(function () {
             hakutoiveet[hakutoive].liitteet[trs].tila = '03';
             hakutoiveet[hakutoive].liitteet[trs].liitteentila = '01';
             tarkistaKaikkiLiitteetSaapuneet(hakutoive);
-            kaikkiLiitteetTarkistettu(hakutoive);
         }
         tarkistaHakutoiveValmis(indx);
     };
