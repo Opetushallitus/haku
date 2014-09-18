@@ -894,7 +894,7 @@ function objectToQueryParameterString(queryParameters) {
     return Object.keys(queryParameters).reduce(function (a, k) {
         var value = queryParameters[k];
         if (k && value) {
-            a.push(k + '=' + value);
+            a.push(k + '=' + encodeURIComponent(value));
         }
         return a
     }, []) .join('&');
@@ -907,5 +907,5 @@ function disableExcel() {
 function enableExcel(href) {
     var link = $('#excel-link');
     link.removeClass('disabled');
-    link.attr('href', encodeURI(href));
+    link.attr('href', href);
 }
