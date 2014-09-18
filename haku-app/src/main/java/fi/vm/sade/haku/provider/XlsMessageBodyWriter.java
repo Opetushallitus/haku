@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -85,7 +86,7 @@ public class XlsMessageBodyWriter implements MessageBodyWriter<XlsParameter> {
         Row titleRow = sheet.createRow(currentRowIndex);
         ArrayList questionIndexes = new ArrayList(questions.size());
         for (Question titled : questions.values()) {
-            sheet.setColumnWidth(currentColumnIndex,EMPTY_COLUMN_WIDTH);
+            sheet.setColumnWidth(currentColumnIndex, EMPTY_COLUMN_WIDTH);
             Cell titleCell = titleRow.createCell(currentColumnIndex);
             if (titled.getI18nText() != null) {
                 titleCell.setCellValue(ElementUtil.getText(titled, lang));
@@ -130,7 +131,7 @@ public class XlsMessageBodyWriter implements MessageBodyWriter<XlsParameter> {
                 }
             }
         }
-        httpHeaders.add("content-disposition", "attachment; filename=" + raportinNimi + ".xls");
+        httpHeaders.add("content-disposition", "attachment; filename=" + URLEncoder.encode(raportinNimi, "UTF-8") + ".xls");
         wb.write(entityStream);
     }
 

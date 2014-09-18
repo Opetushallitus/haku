@@ -894,7 +894,7 @@ function objectToQueryParameterString(queryParameters) {
     return Object.keys(queryParameters).reduce(function (a, k) {
         var value = queryParameters[k];
         if (k && value) {
-            a.push(k + '=' + encodeURI(value));
+            a.push(k + '=' + encodeURIComponent(value));
         }
         return a
     }, []) .join('&');
