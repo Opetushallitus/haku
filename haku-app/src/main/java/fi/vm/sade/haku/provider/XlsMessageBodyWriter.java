@@ -3,12 +3,14 @@ package fi.vm.sade.haku.provider;
 import fi.vm.sade.haku.oppija.hakemus.resource.XlsParameter;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.*;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.ws.rs.Produces;
@@ -32,6 +34,13 @@ public class XlsMessageBodyWriter implements MessageBodyWriter<XlsParameter> {
 
     private static final short EMPTY_COLUMN_WIDTH = 10;
 
+    private final KoodistoService koodistoService;
+
+    @Autowired
+    public XlsMessageBodyWriter(final KoodistoService koodistoService) {
+        this.koodistoService = koodistoService;
+    }
+
     @Override
     public boolean isWriteable(Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType) {
         return XlsParameter.class.isAssignableFrom(type);
@@ -48,6 +57,12 @@ public class XlsMessageBodyWriter implements MessageBodyWriter<XlsParameter> {
         String lang = "fi";
         ApplicationSystem applicationSystem = xlsParameter.getApplicationSystem();
         Integer hakukausiVuosi = applicationSystem.getHakukausiVuosi();
+        String hakukausi = null;
+        for (Option option : koodistoService.getHakukausi()) {
+            if (option.getValue().equals(applicationSystem.getHakukausiUri())) {
+                hakukausi = option.getI18nText().getTranslations().get(lang);
+            }
+        }
         Workbook wb = new HSSFWorkbook();
         String haunNimi = applicationSystem.getName().getTranslations().get(lang);
         String raportinNimi = xlsParameter.getAsid() + "_" + hakukausiVuosi + "_" + xlsParameter.getAoid();
@@ -61,7 +76,7 @@ public class XlsMessageBodyWriter implements MessageBodyWriter<XlsParameter> {
 
         createKeyValueRow(sheet, currentRowIndex++, "Haku", haunNimi);
         createKeyValueRow(sheet, currentRowIndex++, "Haku oid", xlsParameter.getAsid());
-        createKeyValueRow(sheet, currentRowIndex++, "Hakukausi", applicationSystem.getHakukausiVuosi().toString());
+        createKeyValueRow(sheet, currentRowIndex++, "Hakukausi", (hakukausi + " " + applicationSystem.getHakukausiVuosi().toString()).trim());
         createKeyValueRow(sheet, currentRowIndex++, "Hakukohde", xlsParameter.getAoid());
 
         sheet.createRow(currentRowIndex++);
