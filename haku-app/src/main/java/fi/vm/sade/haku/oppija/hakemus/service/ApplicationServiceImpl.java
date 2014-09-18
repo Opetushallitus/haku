@@ -43,7 +43,6 @@ import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
 import fi.vm.sade.haku.virkailija.authentication.Person;
 import fi.vm.sade.haku.virkailija.authentication.PersonBuilder;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -281,9 +280,17 @@ public class ApplicationServiceImpl implements ApplicationService {
     @Override
     public List<Map<String, Object>> findFullApplications(final String query,
                                                   final ApplicationQueryParameters applicationQueryParameters) {
+        List<ApplicationSystem> ass = applicationSystemService.getAllApplicationSystems("maxApplicationOptions", "kohdejoukkoUri");
+        int max = 0;
+        for (ApplicationSystem as : ass) {
+            if (as.getMaxApplicationOptions() > max) {
+                max = as.getMaxApplicationOptions();
+            }
+        }
         ApplicationFilterParametersBuilder builder = new ApplicationFilterParametersBuilder()
                 .addOrganizationsReadable(hakuPermissionService.userCanReadApplications())
-                .addOrganizationsOpo(hakuPermissionService.userHasOpoRole());
+                .addOrganizationsOpo(hakuPermissionService.userHasOpoRole())
+                .setMaxApplicationOptions(max);
         List<Map<String, Object>> applications = applicationDAO.findAllQueriedFull(query, applicationQueryParameters, builder.build());
         for (Map<String, Object> application : applications) {
             restoreV0ModelLOPParentsToApplicationMap(application);
@@ -291,6 +298,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         }
         return applications;
     }
+
 
     @Override
     public Application updateAuthorizationMeta(Application application, boolean save) throws IOException {
