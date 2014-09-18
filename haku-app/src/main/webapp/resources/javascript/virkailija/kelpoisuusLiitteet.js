@@ -154,8 +154,8 @@ var kjal = {
                 $('#select-saapunut-' + indx +'-' + i).val('01');
                 $('#select-tarkistettu-' + indx +'-' + i).removeAttr('disabled');
                 $('#select-tarkistettu-' + indx +'-' + i).val('01');
-                hakutoiveet[hakutoive].liitteet[i].tila = '01';//$('#select-saapunut-' + indx +'-' + i).val();
-                hakutoiveet[hakutoive].liitteet[i].liitteentila = '01'; // $('#select-tarkistettu-' + indx +'-' + i).val();
+                hakutoiveet[hakutoive].liitteet[i].tila = '01';
+                hakutoiveet[hakutoive].liitteet[i].liitteentila = '01';
             }
         }
         $('#kaikkiliitteet-'+ indx).css('display', '');
@@ -262,6 +262,16 @@ var kjal = {
                 $('#kesken-' +indx).css('display', '');
             }
         }
+        if (_.isEqual(hakutoiveet[indx-1], hakutoiveetCache[indx-1])){
+            $('#tallennettu-' + indx).css('display', '');
+            $('#muuttunut-' + indx).css('display', 'none');
+            $('#btn-tallenna-kepoisuus-liitteet-' + indx).addClass('disabled');
+        } else {
+            $('#tallennettu-' + indx).css('display', 'none');
+            $('#muuttunut-' + indx).css('display', '');
+            $('#btn-tallenna-kepoisuus-liitteet-' + indx).removeClass('disabled');
+        }
+
     },
     /**
      * asettetaan liitteen saapunut tilan UI:sta
@@ -298,6 +308,14 @@ var kjal = {
             hakutoiveet[indx-1].liitteet[t].liitteentila = $('#select-tarkistettu-' + indx + '-' +t).val();
         }
         $('#btn-kaikki-liitteet-tarkastettu-' + indx).addClass('disabled');
+        this.tarkistaHakutoiveValmis(indx);
+    },
+    /**
+     * tallennetaan kelpoisuus ja liitteet
+     * @param indx hakutoiveen index numero
+     */
+    tallennaKelpoisuusJaLiitteet: function (indx) {
+        hakutoiveetCache[indx-1] = JSON.parse(JSON.stringify(hakutoiveet[indx-1]));
         this.tarkistaHakutoiveValmis(indx);
     }
 
