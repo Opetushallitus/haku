@@ -1,3 +1,11 @@
+var config = {
+    hakukelpoinen: "02",
+    eiHakukelpoinen: "03",
+    liiteSaapunut: "01",
+    liiteEiSaapunut: "03",
+    liiteEiTarkistettu: "01",
+    liiteTarkistettu: "04"
+};
 var kjal = {
     /**
      * luodaan kelpoisuus ja liitteet välihdelle taustajärjestelmästä saadun
@@ -80,12 +88,10 @@ var kjal = {
      */
     asetaLiitteidenTilat: function (ind) {
         for (var trs in  hakutoiveet[ind-1].liitteet) {
-            if (hakutoiveet[ind-1].liitteet[trs].tila != '03'){
+            if (hakutoiveet[ind-1].liitteet[trs].tila !== config.liiteEiSaapunut){
                 $('#liitesaapunut-tr-' +ind + '-' + trs + ' [type=checkbox]').attr('checked', 'true');
                 $('#select-saapunut-' +ind + '-' + trs).removeAttr('disabled');
                 $('#select-tarkistettu-' +ind + '-' + trs).removeAttr('disabled');
-
-
             }
             $('#select-saapunut-' +ind + '-' + trs).val(hakutoiveet[ind-1].liitteet[trs].tila)
             $('#select-tarkistettu-' +ind + '-' + trs).val(hakutoiveet[ind-1].liitteet[trs].liitteentila);
@@ -104,12 +110,12 @@ var kjal = {
         } else {
             hakutoiveet[indx-1].hakukelpoisuus = $('#liitteet-table-' + indx + ' #hakukelpoisuus-select').val();
         }
-        if (hakutoiveet[indx-1].hakukelpoisuus === '02') {
+        if (hakutoiveet[indx-1].hakukelpoisuus === config.hakukelpoinen) {
             $('#liitteet-table-' + indx + ' #hakukelpoisuus-tietolahde').removeAttr('disabled');
             $('#liitteet-table-' + indx + ' #hylkaamisenperuste').attr('disabled', 'true');
             hakutoiveet[indx-1].hylkaamisperuste = '';
             $('#liitteet-table-' + indx + ' #hylkaamisenperuste').val('');
-        } else if (hakutoiveet[indx-1].hakukelpoisuus === '03') {
+        } else if (hakutoiveet[indx-1].hakukelpoisuus === config.eihakukelpoinen) {
             $('#liitteet-table-' + indx + ' #hylkaamisenperuste').removeAttr('disabled');
             $('#liitteet-table-' + indx + ' #hakukelpoisuus-tietolahde').attr('disabled', 'true');
             hakutoiveet[indx-1].tietolahde = '';
@@ -149,13 +155,13 @@ var kjal = {
         console.log('kaikkiLiitteetSaapuneet()');
         var hakutoive = parseInt(indx) - 1;
         for(var i in hakutoiveet[hakutoive].liitteet){
-            if (hakutoiveet[hakutoive].liitteet[i].tila === '03') {
+            if (hakutoiveet[hakutoive].liitteet[i].tila === config.liiteEiSaapunut) {
                 $('#select-saapunut-' + indx +'-' + i).removeAttr('disabled');
-                $('#select-saapunut-' + indx +'-' + i).val('01');
+                $('#select-saapunut-' + indx +'-' + i).val(config.liiteSaapunut);
                 $('#select-tarkistettu-' + indx +'-' + i).removeAttr('disabled');
-                $('#select-tarkistettu-' + indx +'-' + i).val('01');
-                hakutoiveet[hakutoive].liitteet[i].tila = '01';
-                hakutoiveet[hakutoive].liitteet[i].liitteentila = '01';
+                $('#select-tarkistettu-' + indx +'-' + i).val(config.liiteEiTarkistettu);
+                hakutoiveet[hakutoive].liitteet[i].tila = config.liiteSaapunut;
+                hakutoiveet[hakutoive].liitteet[i].liitteentila = config.liiteEiTarkistettu;
             }
         }
         $('#kaikkiliitteet-'+ indx).css('display', '');
@@ -170,10 +176,10 @@ var kjal = {
      * @param hakutoive hakutoiveen index numero
      */
     tarkistaKaikkiLiitteetSaapuneet: function (hakutoive) {
-        console.log('tarkistaKaikkiLiitteetSaapuneet(',hakutoive,')',  _.every(hakutoiveet[hakutoive].liitteet, function (liite) { return liite.tila !== '03'; }));
+        console.log('tarkistaKaikkiLiitteetSaapuneet(',hakutoive,')',  _.every(hakutoiveet[hakutoive].liitteet, function (liite) { return liite.tila !== config.liiteEiSaapunut; }));
         console.log(hakutoiveet[hakutoive].liitteet);
         var ind = hakutoive + 1;
-        if ( _.every(hakutoiveet[hakutoive].liitteet, function (liite) { return liite.tila !== '03'; })) {
+        if ( _.every(hakutoiveet[hakutoive].liitteet, function (liite) { return liite.tila !== config.liiteEiSaapunut; })) {
             $('#kaikkiliitteet-' + ind).css('display', '');
             $('#btn-kaikki-liitteet-saapuneet-' +ind).addClass('disabled');
             $('#btn-kaikki-liitteet-tarkastettu-' +ind).removeClass('disabled');
@@ -190,10 +196,10 @@ var kjal = {
      * @returns {boolean} true/false
      */
     kaikkiLiitteetTarkistettu: function (hakutoive) {
-        console.log('kaikkiLiitteetTarkistettu() -->', _.every(hakutoiveet[hakutoive].liitteet, function(liite) { return liite.liitteentila === '04'; }));
+        console.log('kaikkiLiitteetTarkistettu() -->', _.every(hakutoiveet[hakutoive].liitteet, function(liite) { return liite.liitteentila === config.liiteTarkistettu; }));
         console.log('kaikkiLiitteetTarkistettu()', hakutoiveet[hakutoive]);
-        var liitteetTarkastettu = _.every(hakutoiveet[hakutoive].liitteet, function(liite) { return liite.liitteentila === '04' }),
-            liitteetSaapuneet = _.every(hakutoiveet[hakutoive].liitteet, function (liite) { return liite.tila !== '03'; }),
+        var liitteetTarkastettu = _.every(hakutoiveet[hakutoive].liitteet, function(liite) { return liite.liitteentila === config.liiteTarkistettu }),
+            liitteetSaapuneet = _.every(hakutoiveet[hakutoive].liitteet, function (liite) { return liite.tila !== config.liiteEiSaapunut; }),
             ind = hakutoive + 1;
 
         if (liitteetTarkastettu || !liitteetSaapuneet ) {
@@ -209,8 +215,8 @@ var kjal = {
      * @returns {boolean|*} true/false
      */
     kaikkiLiitteetSaapuneetTilassa: function (hakutoive) {
-        console.log('kaikkiLiitteetSaapuneetTilassa() -->', _.every(hakutoiveet[hakutoive].liitteet, function(liite) { return liite.tila !== '03'; }));
-        return _.every(hakutoiveet[hakutoive].liitteet, function(liite) { return liite.tila !== '03'; });
+        console.log('kaikkiLiitteetSaapuneetTilassa() -->', _.every(hakutoiveet[hakutoive].liitteet, function(liite) { return liite.tila !== config.liiteEiSaapunut; }));
+        return _.every(hakutoiveet[hakutoive].liitteet, function(liite) { return liite.tila !== config.liiteEiSaapunut; });
     },
     /**
      * Asettaa kaikki hakutoiveessa olevat liitepyynnöt
@@ -224,16 +230,16 @@ var kjal = {
         if ($('#liitesaapunut-tr-' +indx + '-' + trs + ' [type=checkbox]').prop('checked')) {
             $('#select-saapunut-' +indx + '-' + trs).removeAttr('disabled');
             $('#select-tarkistettu-' +indx + '-' + trs).removeAttr('disabled');
-            $('#select-saapunut-' +indx + '-' + trs).val('01');
-            hakutoiveet[hakutoive].liitteet[trs].tila = '01';
+            $('#select-saapunut-' +indx + '-' + trs).val(config.liiteSaapunut);
+            hakutoiveet[hakutoive].liitteet[trs].tila = config.liiteE;
             this.tarkistaKaikkiLiitteetSaapuneet(hakutoive);
         } else {
             $('#select-saapunut-' +indx + '-' + trs).attr('disabled', 'true');
             $('#select-tarkistettu-' +indx + '-' + trs).attr('disabled', 'true');
-            $('#select-saapunut-' +indx + '-' + trs).val('03');
+            $('#select-saapunut-' +indx + '-' + trs).val(config.liiteEiSaapunut);
             $('#select-tarkistettu-' +indx + '-' + trs).val('01');
-            hakutoiveet[hakutoive].liitteet[trs].tila = '03';
-            hakutoiveet[hakutoive].liitteet[trs].liitteentila = '01';
+            hakutoiveet[hakutoive].liitteet[trs].tila = config.liiteEiSaapunut;
+            hakutoiveet[hakutoive].liitteet[trs].liitteentila = config.liiteEiTarkistettu;
             this.tarkistaKaikkiLiitteetSaapuneet(hakutoive);
         }
         this.tarkistaHakutoiveValmis(indx);
@@ -245,7 +251,7 @@ var kjal = {
      */
     tarkistaHakutoiveValmis: function (indx) {
         console.log('tarkistaHakutoiveValmis()');
-        if (hakutoiveet[indx - 1].hakukelpoisuus ===  '03') {
+        if (hakutoiveet[indx - 1].hakukelpoisuus ===  config.eiHakukelpoinen) {
             $('#hylatty-' +indx).css('display', '');
             $('#valmis-' +indx).css('display', 'none');
             $('#kesken-' +indx).css('display', 'none');
@@ -253,7 +259,7 @@ var kjal = {
             $('#hylatty-' +indx).css('display', 'none');
             $('#valmis-' +indx).css('display', 'none');
             $('#kesken-' +indx).css('display', 'none');
-            if(hakutoiveet[indx - 1].hakukelpoisuus ===  '02' &&
+            if(hakutoiveet[indx - 1].hakukelpoisuus ===  config.hakukelpoinen &&
                 this.kaikkiLiitteetTarkistettu(indx-1) &&
                 hakutoiveet[indx-1].tietolahde !== '' &&
                 this.kaikkiLiitteetSaapuneetTilassa(indx-1) ) {
@@ -304,7 +310,7 @@ var kjal = {
     asetaKaikkiLiitteetTarkastetuksi: function (indx) {
         console.log('asetaKaikkiLiitteetTarkastetuksi()');
         for (var t in hakutoiveet[indx-1].liitteet) {
-            $('#select-tarkistettu-' + indx + '-' +t).val('04');
+            $('#select-tarkistettu-' + indx + '-' +t).val(config.liiteTarkistettu);
             hakutoiveet[indx-1].liitteet[t].liitteentila = $('#select-tarkistettu-' + indx + '-' +t).val();
         }
         $('#btn-kaikki-liitteet-tarkastettu-' + indx).addClass('disabled');

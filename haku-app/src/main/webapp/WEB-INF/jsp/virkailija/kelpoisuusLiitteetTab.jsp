@@ -21,16 +21,16 @@
             <b>${ao.index}.hakutoive</b>
             <br>
             <br>
-            <b id="kesken-${ao.index}"  style="background-color: #000000; color: #ffffff; border-radius: 5px; padding: 5px; display: none;" >Kesken</b>
+            <b id="kesken-${ao.index}"  style="background-color: #188cc0; color: #ffffff; border-radius: 5px; padding: 5px; display: none;" >Kesken</b>
             <b id="hylatty-${ao.index}" style="background-color: #333333; color: #ffffff; border-radius: 5px; padding: 5px; display: none;" >Hylätty</b>
-            <b id="valmis-${ao.index}" style="background-color: #feba00; color: #000000; border-radius: 5px; padding: 5px; display: none;" >Valmis</b>
+            <b id="valmis-${ao.index}" style="background-color: #438c48; color: #ffffff; border-radius: 5px; padding: 5px; display: none;" >Valmis</b>
             <br>
             <br>
-            <b id="kaikkiliitteet-${ao.index}" style="background-color: #feba00; color: #000000; border-radius: 5px; padding: 5px; display: none">Kaikki liitteet saapuneet</b>
+            <b id="kaikkiliitteet-${ao.index}" style="background-color: #438c48; color: #ffffff; border-radius: 5px; padding: 5px; display: none">Kaikki liitteet saapuneet</b>
             <br>
             <br>
-            <b id="muuttunut-${ao.index}" style="background-color: #d84a2a; color: #000000; border-radius: 5px; padding: 5px; display: none;" >Muuttettu</b>
-            <b id="tallennettu-${ao.index}" style="background-color: #156c18; color: #000000; border-radius: 5px; padding: 5px; display: none;" >Tallennettu</b>
+            <b id="muuttunut-${ao.index}" style="background-color: #188cc0; color: #ffffff; border-radius: 5px; padding: 5px; display: none;" >Muuttettu</b>
+            <b id="tallennettu-${ao.index}" style="background-color: #438c48; color: #ffffff; border-radius: 5px; padding: 5px; display: none;" >Tallennettu</b>
         </div>
         <div class="grid16-12 inline-block">
             <div class="grid16-16 inline-block">
