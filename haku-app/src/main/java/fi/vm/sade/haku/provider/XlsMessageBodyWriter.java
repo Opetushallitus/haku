@@ -37,6 +37,7 @@ import java.util.Map;
 public class XlsMessageBodyWriter implements MessageBodyWriter<XlsParameter> {
 
     private static final short EMPTY_COLUMN_WIDTH = 10;
+    private static final  String LANG = "fi";
 
     private final KoodistoService koodistoService;
 
@@ -58,20 +59,18 @@ public class XlsMessageBodyWriter implements MessageBodyWriter<XlsParameter> {
     @Override
     public void writeTo(XlsParameter xlsParameter, Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType, MultivaluedMap<String, Object> httpHeaders, OutputStream entityStream) throws IOException, WebApplicationException {
 
-        String lang = "fi";
         ApplicationSystem applicationSystem = xlsParameter.getApplicationSystem();
-        Integer hakukausiVuosi = applicationSystem.getHakukausiVuosi();
         String hakukausi = null;
         for (Option option : koodistoService.getHakukausi()) {
             if (option.getValue().equals(applicationSystem.getHakukausiUri())) {
-                hakukausi = option.getI18nText().getTranslations().get(lang);
+                hakukausi = ElementUtil.getText(option, LANG);
             }
         }
         Workbook wb = new HSSFWorkbook();
-        String haunNimi = applicationSystem.getName().getTranslations().get(lang);
+        String haunNimi = applicationSystem.getName().getTranslations().get(LANG);
+        Integer hakukausiVuosi = applicationSystem.getHakukausiVuosi();
         String raportinNimi = xlsParameter.getAsid() + "_" + hakukausiVuosi + "_" + xlsParameter.getAoid();
         Sheet sheet = wb.createSheet(raportinNimi);
-        CreationHelper createHelper = wb.getCreationHelper();
         // Create a row and put some cells in it. Rows are 0 based.
         sheet.setDefaultColumnWidth(20);
 
@@ -80,7 +79,8 @@ public class XlsMessageBodyWriter implements MessageBodyWriter<XlsParameter> {
 
         createKeyValueRow(sheet, currentRowIndex++, "Haku", haunNimi);
         createKeyValueRow(sheet, currentRowIndex++, "Haku oid", xlsParameter.getAsid());
-        createKeyValueRow(sheet, currentRowIndex++, "Hakukausi", (hakukausi + " " + applicationSystem.getHakukausiVuosi().toString()).trim());
+        createKeyValueRow(sheet, currentRowIndex++, "Hakukausi", hakukausi);
+        createKeyValueRow(sheet, currentRowIndex++, "Hakuvuosi", applicationSystem.getHakukausiVuosi().toString());
         createKeyValueRow(sheet, currentRowIndex++, "Hakukohde", xlsParameter.getAoid());
 
         sheet.createRow(currentRowIndex++);
@@ -93,18 +93,19 @@ public class XlsMessageBodyWriter implements MessageBodyWriter<XlsParameter> {
             sheet.setColumnWidth(currentColumnIndex, EMPTY_COLUMN_WIDTH);
             Cell titleCell = titleRow.createCell(currentColumnIndex);
             if (((Titled)titled).getI18nText() != null) {
-                titleCell.setCellValue(ElementUtil.getText(titled, lang));
+                titleCell.setCellValue(ElementUtil.getText(titled, LANG));
                 questionIndexes.add(titled.getId());
                 currentColumnIndex++;
                 elementMap.put(titled.getId(), titled);
             }
+            System.out.println("Elementti ilman tekstiä " + titled.getId());
         }
 
 
         List<Map<String, Object>> applications = xlsParameter.getApplications();
         currentRowIndex++;
         for (Map<String, Object> application : applications) {
-            currentRowIndex = fillRow(lang, sheet, elementMap, questionIndexes, application, currentRowIndex);
+            currentRowIndex = fillRow(LANG, sheet, elementMap, questionIndexes, application, currentRowIndex);
         }
         httpHeaders.add("content-disposition", "attachment; filename=" + URLEncoder.encode(raportinNimi, "UTF-8") + ".xls");
         wb.write(entityStream);
