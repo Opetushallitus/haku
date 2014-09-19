@@ -31,6 +31,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.client.cache.CachingHttpClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -208,16 +209,21 @@ public class OrganizationServiceImpl implements OrganizationService {
             if (resultType.isAssignableFrom(String.class)) {
                 StringWriter writer = new StringWriter();
                 IOUtils.copy(entity.getContent(), writer, "UTF-8");
-                return (T) writer.toString();
+                T ret = (T) writer.toString();
+                entity.consumeContent();
+                return ret;
             } else {
                 try {
-                    return gson.fromJson(new InputStreamReader(entity.getContent()), resultType);
+                    T ret = gson.fromJson(new InputStreamReader(entity.getContent()), resultType);
+                    entity.consumeContent();
+                    return ret;
                 } catch (JsonSyntaxException jse) {
                     LOG.error("Deserializing organisation failed. url: "+url);
                     throw jse;
                 }
             }
         }
+        entity.consumeContent();
         StatusLine statusLine = response.getStatusLine();
         throw new ResourceNotFoundException("fetch failed. url: "+url+" statusCode: "+statusLine.getStatusCode()
                 +" reason: "+statusLine.getReasonPhrase());
