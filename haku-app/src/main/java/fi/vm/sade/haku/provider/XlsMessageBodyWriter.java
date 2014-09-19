@@ -7,11 +7,13 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.Titled;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.CheckBox;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.OptionQuestion;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Question;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,7 +39,7 @@ import java.util.Map;
 public class XlsMessageBodyWriter implements MessageBodyWriter<XlsParameter> {
 
     private static final short EMPTY_COLUMN_WIDTH = 10;
-    private static final  String LANG = "fi";
+    private static final String LANG = "fi";
 
     private final KoodistoService koodistoService;
 
@@ -92,13 +94,12 @@ public class XlsMessageBodyWriter implements MessageBodyWriter<XlsParameter> {
         for (Element titled : questions) {
             sheet.setColumnWidth(currentColumnIndex, EMPTY_COLUMN_WIDTH);
             Cell titleCell = titleRow.createCell(currentColumnIndex);
-            if (((Titled)titled).getI18nText() != null) {
+            if (((Titled) titled).getI18nText() != null) {
                 titleCell.setCellValue(ElementUtil.getText(titled, LANG));
                 questionIndexes.add(titled.getId());
                 currentColumnIndex++;
                 elementMap.put(titled.getId(), titled);
             }
-            System.out.println("Elementti ilman tekstiä " + titled.getId());
         }
 
 

@@ -18,7 +18,7 @@ package fi.vm.sade.haku.oppija.lomake.domain.elements.custom;
 
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.Titled;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Question;
 import fi.vm.sade.haku.oppija.lomake.validation.Validator;
 import fi.vm.sade.haku.oppija.lomake.validation.validators.PreferenceTableValidator;
 import org.codehaus.jackson.annotate.JsonProperty;
@@ -32,13 +32,12 @@ import java.util.List;
  *
  * @author Mikko Majapuro
  */
-public class PreferenceTable extends Titled {
+public class PreferenceTable extends Question {
 
     private static final long serialVersionUID = 1289678491786047575L;
 
     public PreferenceTable(@JsonProperty(value = "id") final String id,
-                           @JsonProperty(value = "i18nText") final I18nText i18nText
-    ) {
+                           @JsonProperty(value = "i18nText") final I18nText i18nText ) {
         super(id, i18nText);
     }
 
