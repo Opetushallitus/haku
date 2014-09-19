@@ -1,7 +1,5 @@
 package fi.vm.sade.haku.oppija.hakemus.domain;
 
-import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationAttachment;
-
 public class ApplicationAttachmentRequestBuilder {
     private String aoId;
     private String aoGroupId;
