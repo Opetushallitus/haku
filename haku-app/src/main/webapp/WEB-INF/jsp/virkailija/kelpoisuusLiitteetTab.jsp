@@ -14,39 +14,51 @@
 
 </script>
 <hr>
-<c:forEach var="ao" items="${it.hakukohteet}">
-    <div id="form-kelpoisuus-liitteet-${ao.index}" method="post" novalidate="novalidate" class="block" >
+
+<c:forEach var="hakukohde" items="${it.hakukohteet}">
+    <div id="form-kelpoisuus-liitteet-${hakukohde.index}" method="post" novalidate="novalidate" class="block" >
 
         <div class="grid16-3 inline-block">
-            <b>${ao.index}.hakutoive</b>
+            <b>${hakukohde.index}.hakutoive</b>
             <br>
             <br>
-            <b id="kesken-${ao.index}"  style="background-color: #188cc0; color: #ffffff; border-radius: 5px; padding: 5px; display: none;" >Kesken</b>
-            <b id="hylatty-${ao.index}" style="background-color: #333333; color: #ffffff; border-radius: 5px; padding: 5px; display: none;" >Hylätty</b>
-            <b id="valmis-${ao.index}" style="background-color: #438c48; color: #ffffff; border-radius: 5px; padding: 5px; display: none;" >Valmis</b>
+            <b id="kesken-${hakukohde.index}"  style="background-color: #188cc0; color: #ffffff; border-radius: 5px; padding: 5px; display: none;" >Kesken</b>
+            <b id="hylatty-${hakukohde.index}" style="background-color: #333333; color: #ffffff; border-radius: 5px; padding: 5px; display: none;" >Hylätty</b>
+            <b id="valmis-${hakukohde.index}" style="background-color: #438c48; color: #ffffff; border-radius: 5px; padding: 5px; display: none;" >Valmis</b>
             <br>
             <br>
-            <b id="kaikkiliitteet-${ao.index}" style="background-color: #438c48; color: #ffffff; border-radius: 5px; padding: 5px; display: none">Kaikki liitteet saapuneet</b>
+            <b id="kaikkiliitteet-${hakukohde.index}" style="background-color: #438c48; color: #ffffff; border-radius: 5px; padding: 5px; display: none">Kaikki liitteet saapuneet</b>
             <br>
             <br>
-            <b id="muuttunut-${ao.index}" style="background-color: #188cc0; color: #ffffff; border-radius: 5px; padding: 5px; display: none;" >Muuttettu</b>
-            <b id="tallennettu-${ao.index}" style="background-color: #438c48; color: #ffffff; border-radius: 5px; padding: 5px; display: none;" >Tallennettu</b>
+            <%--<b id="muuttunut-${hakukohde.index}" style="background-color: #188cc0; color: #ffffff; border-radius: 5px; padding: 5px; display: none;" >Muuttettu</b>--%>
+            <b id="muuttunut-${hakukohde.index}" style="background-color: #feba00; color: #000000; border-radius: 5px; padding: 5px; display: none;" >Muuttettu</b>
+            <b id="tallennettu-${hakukohde.index}" style="background-color: #438c48; color: #ffffff; border-radius: 5px; padding: 5px; display: none;" >Tallennettu</b>
+            <br>
+            <br>
+
+            <input type="checkbox"> Kaikki tiedot tarkistettu
         </div>
         <div class="grid16-12 inline-block">
             <div class="grid16-16 inline-block">
-                <b>${ao.name}</b> <br>
-                    ${ao.opetuspiste}
+                <div class="grid16-12">
+                    <b>${hakukohde.name}</b> <br>
+                        ${hakukohde.opetuspiste}
+                </div>
+                <div class="grid16-3">
+
+                </div>
+
             </div>
             <div class="grid16-16 inline-block">
                 <br>
-                <button class="button small primary disabled" id="btn-tallenna-kepoisuus-liitteet-${ao.index}" onclick="kjal.tallennaKelpoisuusJaLiitteet('${ao.index}')">Tallenna</button>
-                <button class="button small" id="btn-kaikki-liitteet-saapuneet-${ao.index}" onclick="kjal.kaikkiLiitteetSaapuneet('${ao.index}')" >Kaikki liitteet saapuneet</button>
-                <button class="button small disabled" id="btn-kaikki-liitteet-tarkastettu-${ao.index}" onclick="kjal.asetaKaikkiLiitteetTarkastetuksi('${ao.index}')" >Kaikki liitteet tarkastettu</button>
+                <button class="button small primary disabled" id="btn-tallenna-kepoisuus-liitteet-${hakukohde.index}" onclick="kjal.tallennaKelpoisuusJaLiitteet('${hakukohde.index}')">Tallenna</button>
+                <button class="button small" id="btn-kaikki-liitteet-saapuneet-${hakukohde.index}" onclick="kjal.kaikkiLiitteetSaapuneet('${hakukohde.index}')" >Kaikki liitteet saapuneet</button>
+                <button class="button small disabled" id="btn-kaikki-liitteet-tarkastettu-${hakukohde.index}" onclick="kjal.asetaKaikkiLiitteetTarkastetuksi('${hakukohde.index}')" >Kaikki liitteet tarkastettu</button>
             </div>
 
             <div class="grid16-16 inline-block">
                 <br>
-                <table class="virkailija-table-2" id="liitteet-table-${ao.index}">
+                <table class="virkailija-table-2" id="liitteet-table-${hakukohde.index}">
                 </table>
             </div>
         </div>
@@ -55,63 +67,31 @@
         <br>
     </div>
     <hr>
-    <script type="text/javascript">
-        var kelpoisuus_liitteet = {
-            indx: "<c:out value="${ao.index}"/>",
-            hakukelpoisuus: "02",
-            tietolahde: "03",
-            hylkaamisperuste: "",
-            liitteet: [
-                {
-                   id: 1,
-                   nimi: "Tässä liite 1",
-                   tila: "01",
-                   liitteentila: "02"
-                },
-                {
-                    id: 2,
-                    nimi: "Tässä liite 2",
-                    tila: "02",
-                    liitteentila: "03"
-                },
-                {
-                    id: 3,
-                    nimi: "Tässä liite 3",
-                    tila: "03",
-                    liitteentila: "01"
-                }
-            ]
-        };
-        var kelpoisuus_liitteet1 = {
-            indx: "<c:out value="${ao.index}"/>",
-            hakukelpoisuus: "02",
-            tietolahde: "03",
-            hylkaamisperuste: "",
-            liitteet: [
-                {
-                    id: 1,
-                    nimi: "Tässä liite 1",
-                    tila: "01",
-                    liitteentila: "02"
-                },
-                {
-                    id: 2,
-                    nimi: "Tässä liite 2",
-                    tila: "02",
-                    liitteentila: "03"
-                },
-                {
-                    id: 3,
-                    nimi: "Tässä liite 3",
-                    tila: "03",
-                    liitteentila: "01"
-                }
-            ]
-        };
-        console.log('€€€€');
-        hakutoiveet.push(kelpoisuus_liitteet);
-        hakutoiveetCache.push(kelpoisuus_liitteet1);
 
+    <script type="text/javascript">
+        <c:forEach var="liite" items="${application.attachmentRequests}" varStatus="liiteCount" >
+        var kelpoisuus_liitteet = {
+            indx: "<c:out value="${hakukohde.index}"/>",
+            aoId: "<c:out value="${liite.aoId}"/>",
+            status: "",
+            source: "",
+            rejectionBasis: "",
+            attachments: [
+
+                {
+                   id: "<c:out value="${liiteCount.count}"/>",
+                   receptionStatus: "<c:out value="${liite.requestStatus}"/>",
+                   name: "<haku:i18nText value="${liite.applicationAttachment.name}"/>",
+                   header: "<haku:i18nText value="${liite.applicationAttachment.header}"/>",
+                   description: "<haku:i18nText value="${liite.applicationAttachment.description}"/>",
+                   documentQuality: "02"
+                } <c:if test="liiteCount > 1">,</c:if>
+
+            ]
+        };
+        hakutoiveet.push(kelpoisuus_liitteet);
+        hakutoiveetCache.push(JSON.parse(JSON.stringify(kelpoisuus_liitteet)));
+        </c:forEach>
     </script>
 </c:forEach>
 <script src="${contextPath}/resources/javascript/virkailija/kelpoisuusLiitteet.js" type="text/javascript"></script>
