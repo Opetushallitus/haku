@@ -29,6 +29,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Question;
 import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -114,7 +115,7 @@ public class ApplicationResource {
                 .setSearchTerms(searchTerms)
                 .setStates(state)
                 .setAsId(asid)
-                .setAoId(aoidCode)
+                .setAoId(StringUtils.trimToNull(aoidCode))
                 .setGroupOid(groupOid)
                 .setBaseEducation(baseEducation)
                 .setLopOid(lopoid)
