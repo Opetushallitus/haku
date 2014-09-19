@@ -30,7 +30,6 @@ import java.util.Map;
 @Provider
 public class XlsMessageBodyWriter implements MessageBodyWriter<XlsParameter> {
 
-    private static final Logger LOG = LoggerFactory.getLogger(XlsMessageBodyWriter.class);
     private static final short EMPTY_COLUMN_WIDTH = 10;
 
     @Override

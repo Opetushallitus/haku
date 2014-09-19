@@ -144,7 +144,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     public List<ApplicationAdditionalDataDTO> findApplicationAdditionalData(String applicationSystemId, String aoId,
                                                                             ApplicationFilterParameters filterParameters) {
         ArrayList<DBObject> orgFilter = filterByOrganization(filterParameters);
-        DBObject query = QueryBuilder.start().and(queryByPreference(Lists.newArrayList(aoId)).get(),
+        DBObject query = QueryBuilder.start().and(queryByPreference(filterParameters, Lists.newArrayList(aoId)).get(),
           newOIdExistDBObject(),
           new BasicDBObject(FIELD_APPLICATION_SYSTEM_ID, applicationSystemId),
           QueryBuilder.start(FIELD_APPLICATION_STATE).in(Lists.newArrayList(
@@ -172,14 +172,15 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     }
 
     @Override
-    public boolean checkIfExistsBySocialSecurityNumberAndAo(String asId, String ssn, String aoId) {
+    public boolean checkIfExistsBySocialSecurityNumberAndAo(final ApplicationFilterParameters filterParameters,
+                                                            final String asId, final String ssn, final String aoId) {
         if (!Strings.isNullOrEmpty(ssn)) {
             String encryptedSsn = shaEncrypter.encrypt(ssn.toUpperCase());
             DBObject query = QueryBuilder.start(FIELD_APPLICATION_SYSTEM_ID).is(asId)
                     .and("answers.henkilotiedot." + SocialSecurityNumber.HENKILOTUNNUS_HASH).is(encryptedSsn)
                     .and(FIELD_APPLICATION_OID).exists(true)
                     .and(FIELD_APPLICATION_STATE).notEquals(Application.State.PASSIVE.toString())
-                    .and(queryByPreference(Lists.newArrayList(aoId)).get())
+                    .and(queryByPreference(filterParameters, Lists.newArrayList(aoId)).get())
                     .get();
             return resultNotEmpty(query, INDEX_SSN_DIGEST);
         }
@@ -278,8 +279,8 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         return date;
     }
 
-    private QueryBuilder queryByPreference(final List<String> aoIds) {
-        DBObject[] queries = new DBObject[5];
+    private QueryBuilder queryByPreference(final ApplicationFilterParameters filterParams, final List<String> aoIds) {
+        DBObject[] queries = new DBObject[filterParams.getMaxApplicationOptions()];
         for (int i = 0; i < queries.length; i++) {
             queries[i] = QueryBuilder.start(String.format(FIELD_AO_T, i+1)).in(aoIds).get();
         }
@@ -337,7 +338,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
 
         ArrayList<DBObject> preferenceQueries = new ArrayList<DBObject>();
         for (int i = 1; i <= filterParameters.getMaxApplicationOptions(); i++) {
-            ArrayList<DBObject> preferenceQuery = new ArrayList<DBObject>(5);
+            ArrayList<DBObject> preferenceQuery = new ArrayList<DBObject>(filterParameters.getMaxApplicationOptions());
             if (isNotBlank(lopOid)) {
                 preferenceQuery.add(
                         QueryBuilder.start(String.format(FIELD_LOP_PARENTS_T, i)).in(Lists.newArrayList(lopOid)).get());
@@ -628,7 +629,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         ensureIndex(INDEX_SSN_DIGEST, FIELD_APPLICATION_SYSTEM_ID, FIELD_SSN_DIGEST);
 
         // Preference Indexes
-        for (int i = 1; i <= 5; i++) {
+        for (int i = 1; i <= 8; i++) {
             createPreferenceIndexes("preference"+i, i>1,
                     String.format(FIELD_LOP_T, i),
                     String.format(FIELD_DISCRETIONARY_T, i),

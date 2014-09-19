@@ -61,7 +61,8 @@ public interface ApplicationDAO extends BaseDAO<Application> {
      * @param aoId application option oid
      * @return true if application already exists, false otherwise
      */
-    boolean checkIfExistsBySocialSecurityNumberAndAo(String asId, String ssn, String aoId);
+    boolean checkIfExistsBySocialSecurityNumberAndAo(ApplicationFilterParameters filterParameters,
+                                                     String asId, String ssn, String aoId);
 
     ApplicationSearchResultDTO findAllQueried(String term, ApplicationQueryParameters queryParameters,
                                               ApplicationFilterParameters filterParameters);
