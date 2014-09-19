@@ -16,15 +16,7 @@
 
 package fi.vm.sade.haku.oppija.ui.service.impl;
 
-import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.OrganizationGroupDTO;
-
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.ListUtils;
-import org.apache.commons.lang.StringUtils;
-
 import com.google.common.base.Predicate;
-
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.haku.oppija.hakemus.domain.util.AttachmentUtil;
@@ -41,11 +33,14 @@ import fi.vm.sade.haku.oppija.lomake.service.UserSession;
 import fi.vm.sade.haku.oppija.lomake.util.ElementTree;
 import fi.vm.sade.haku.oppija.ui.service.ModelResponse;
 import fi.vm.sade.haku.oppija.ui.service.UIService;
+import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
 import fi.vm.sade.haku.virkailija.koulutusinformaatio.KoulutusinformaatioService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.PDFService;
-
+import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.OrganizationGroupDTO;
+import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,12 +48,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import javax.servlet.jsp.jstl.core.Config;
+import java.util.*;
+
+import static org.apache.commons.lang3.StringUtils.isBlank;
 
 @Service
 public class UIServiceImpl implements UIService {
@@ -76,6 +72,7 @@ public class UIServiceImpl implements UIService {
     private final String koulutusinformaatioBaseUrl;
     private final UserSession userSession;
     private final KoulutusinformaatioService koulutusinformaatioService;
+    private final AuthenticationService authenticationService;
     private final PDFService pdfService;
 
     @Autowired
@@ -83,11 +80,13 @@ public class UIServiceImpl implements UIService {
                          final ApplicationSystemService applicationSystemService,
                          final UserSession userSession,
                          final KoulutusinformaatioService koulutusinformaatioService,
+                         final AuthenticationService authenticationService,
                          @Value("${koulutusinformaatio.base.url}") final String koulutusinformaatioBaseUrl, PDFService pdfService) {
         this.applicationService = applicationService;
         this.applicationSystemService = applicationSystemService;
         this.userSession = userSession;
         this.koulutusinformaatioService = koulutusinformaatioService;
+        this.authenticationService = authenticationService;
         this.koulutusinformaatioBaseUrl = koulutusinformaatioBaseUrl;
         this.pdfService = pdfService;
     }
@@ -286,5 +285,40 @@ public class UIServiceImpl implements UIService {
             return pdfService.getUriToPDF(url);
         }
         throw new ResourceNotFoundException("Not allowed");
+    }
+
+    @Override
+    public String ensureLanguage(HttpServletRequest request, String applicationSystemId) {
+        if (request == null) {
+            return null;
+        }
+        Cookie langCookie = getLangCookie(request);
+        if (langCookie == null || isBlank(langCookie.getValue())) {
+            return null;
+        }
+        String lang = langCookie.getValue();
+        ApplicationSystem as = applicationSystemService.getApplicationSystem(applicationSystemId);
+        List<String> allowedLanguages = as.getAllowedLanguages();
+        if (!allowedLanguages.contains(lang)) {
+            lang = allowedLanguages.get(0);
+            HttpSession session = request.getSession();
+            Locale newLocale = new Locale(lang);
+            Config.set(session, Config.FMT_LOCALE, newLocale);
+            request.setAttribute("fi_vm_sade_oppija_language", lang);
+        }
+        return lang;
+    }
+
+    private Cookie getLangCookie(HttpServletRequest request) {
+        String langCookie = authenticationService.getLangCookieName();
+        if (request.getCookies() == null) {
+            return null;
+        }
+        for (Cookie cookie : request.getCookies()) {
+            if (cookie.getName().equals(langCookie)) {
+                return cookie;
+            }
+        }
+        return null;
     }
 }

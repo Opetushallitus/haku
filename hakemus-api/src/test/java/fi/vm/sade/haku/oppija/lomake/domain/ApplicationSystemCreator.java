@@ -1,17 +1,13 @@
 package fi.vm.sade.haku.oppija.lomake.domain;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-
 import com.google.common.collect.Lists;
-
-import fi.vm.sade.haku.oppija.lomake.domain.ApplicationPeriod;
-import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
-import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystemBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
+
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 public class ApplicationSystemCreator {
     public static ApplicationSystem createActiveApplicationSystem(final String id, Form form) {
@@ -26,6 +22,7 @@ public class ApplicationSystemCreator {
             .addApplicationPeriods(applicationPeriods)
             .addHakukausiUri(OppijaConstants.HAKUKAUSI_SYKSY)
             .addApplicationSystemType(OppijaConstants.VARSINAINEN_HAKU)
+            .addHakutapa(OppijaConstants.HAKUTAPA_YHTEISHAKU)
             .get();
     }
 }
