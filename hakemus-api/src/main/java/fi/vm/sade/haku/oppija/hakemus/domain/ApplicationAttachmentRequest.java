@@ -17,7 +17,8 @@ public class ApplicationAttachmentRequest {
         CHECKED,
         NOT_CHECKED,
         INADEQUATE,
-        COMPLEMENT_REQUESTED
+        COMPLEMENT_REQUESTED,
+        UNNECESSARY
     }
 
     private final String aoId;
