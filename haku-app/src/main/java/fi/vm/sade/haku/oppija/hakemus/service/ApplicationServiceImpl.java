@@ -277,9 +277,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-<<<<<<< HEAD
-    public List<Map<String, Object>> findFullApplications(final String query,
-                                                  final ApplicationQueryParameters applicationQueryParameters) {
+    public List<Map<String, Object>> findFullApplications(final ApplicationQueryParameters applicationQueryParameters) {
         List<ApplicationSystem> ass = applicationSystemService.getAllApplicationSystems("maxApplicationOptions", "kohdejoukkoUri");
         int max = 0;
         for (ApplicationSystem as : ass) {
@@ -287,25 +285,11 @@ public class ApplicationServiceImpl implements ApplicationService {
                 max = as.getMaxApplicationOptions();
             }
         }
-||||||| merged common ancestors
-    public List<Map<String, Object>> findFullApplications(final String query,
-                                                  final ApplicationQueryParameters applicationQueryParameters) {
-=======
-    public List<Map<String, Object>> findFullApplications(final ApplicationQueryParameters applicationQueryParameters) {
->>>>>>> query-parametri parametriobjektiin
         ApplicationFilterParametersBuilder builder = new ApplicationFilterParametersBuilder()
                 .addOrganizationsReadable(hakuPermissionService.userCanReadApplications())
-<<<<<<< HEAD
                 .addOrganizationsOpo(hakuPermissionService.userHasOpoRole())
                 .setMaxApplicationOptions(max);
-        List<Map<String, Object>> applications = applicationDAO.findAllQueriedFull(query, applicationQueryParameters, builder.build());
-||||||| merged common ancestors
-                .addOrganizationsOpo(hakuPermissionService.userHasOpoRole());
-        List<Map<String, Object>> applications = applicationDAO.findAllQueriedFull(query, applicationQueryParameters, builder.build());
-=======
-                .addOrganizationsOpo(hakuPermissionService.userHasOpoRole());
         List<Map<String, Object>> applications = applicationDAO.findAllQueriedFull(applicationQueryParameters, builder.build());
->>>>>>> query-parametri parametriobjektiin
         for (Map<String, Object> application : applications) {
             restoreV0ModelLOPParentsToApplicationMap(application);
             removeAuthorizationMeta(application);
