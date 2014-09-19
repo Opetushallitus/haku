@@ -1,9 +1,12 @@
 package fi.vm.sade.haku.oppija.hakemus.domain;
 
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
+import org.codehaus.jackson.annotate.JsonProperty;
+
 import java.util.Date;
 
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.impl.TranslationsUtil.*;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.impl.TranslationsUtil.ensureDefaultLanguageTranslations;
 
 public class ApplicationAttachmentBuilder {
 
@@ -17,17 +20,9 @@ public class ApplicationAttachmentBuilder {
         return new ApplicationAttachmentBuilder();
     }
 
-    public I18nText getName() {
-        return name;
-    }
-
     public ApplicationAttachmentBuilder setName(I18nText name) {
         this.name = name;
         return this;
-    }
-
-    public I18nText getHeader() {
-        return header;
     }
 
     public ApplicationAttachmentBuilder setHeader(I18nText header) {
@@ -35,26 +30,14 @@ public class ApplicationAttachmentBuilder {
         return this;
     }
 
-    public I18nText getDescription() {
-        return description;
-    }
-
     public ApplicationAttachmentBuilder setDescription(I18nText description) {
         this.description = description;
         return this;
     }
 
-    public Date getDeadline() {
-        return deadline;
-    }
-
     public ApplicationAttachmentBuilder setDeadline(Date deadline) {
         this.deadline = deadline;
         return this;
-    }
-
-    public Address getAddress() {
-        return address;
     }
 
     public ApplicationAttachmentBuilder setAddress(Address address) {
@@ -63,16 +46,12 @@ public class ApplicationAttachmentBuilder {
     }
 
     public ApplicationAttachment build() {
-        ApplicationAttachment attachment = new ApplicationAttachment();
-        attachment.setAddress(address);
-        attachment.setDeadline(deadline);
-        if (null != description)
-            attachment.setDescription(ensureDefaultLanguageTranslations(description));
-        if (null != header)
-            attachment.setHeader(ensureDefaultLanguageTranslations(header));
-        if (null != name)
-            attachment.setName(ensureDefaultLanguageTranslations(name));
-        return attachment;
+        return new ApplicationAttachment(
+          null != name ? ensureDefaultLanguageTranslations(name) : null,
+          null != header ? ensureDefaultLanguageTranslations(header) : null,
+          null != description ? ensureDefaultLanguageTranslations(description) : null,
+          deadline,
+          address);
     }
 
 
