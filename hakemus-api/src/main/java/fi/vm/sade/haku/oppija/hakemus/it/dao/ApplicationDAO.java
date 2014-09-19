@@ -64,10 +64,10 @@ public interface ApplicationDAO extends BaseDAO<Application> {
     boolean checkIfExistsBySocialSecurityNumberAndAo(ApplicationFilterParameters filterParameters,
                                                      String asId, String ssn, String aoId);
 
-    ApplicationSearchResultDTO findAllQueried(String term, ApplicationQueryParameters queryParameters,
+    ApplicationSearchResultDTO findAllQueried(ApplicationQueryParameters queryParameters,
                                               ApplicationFilterParameters filterParameters);
 
-    List<Map<String, Object>> findAllQueriedFull(String term, ApplicationQueryParameters queryParameters,
+    List<Map<String, Object>> findAllQueriedFull(ApplicationQueryParameters queryParameters,
                                                  ApplicationFilterParameters filterParameters);
 
     /**

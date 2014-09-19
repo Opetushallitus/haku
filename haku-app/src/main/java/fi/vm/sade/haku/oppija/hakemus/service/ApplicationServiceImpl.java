@@ -252,8 +252,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public ApplicationSearchResultDTO findApplications(final String term,
-                                                       final ApplicationQueryParameters applicationQueryParameters) {
+    public ApplicationSearchResultDTO findApplications(final ApplicationQueryParameters applicationQueryParameters) {
         List<ApplicationSystem> ass = applicationSystemService.getAllApplicationSystems("maxApplicationOptions", "kohdejoukkoUri");
         int max = 0;
         String kohdejoukko = null;
@@ -274,12 +273,11 @@ public class ApplicationServiceImpl implements ApplicationService {
         if (queriedAss != null && queriedAss.size() == 1) {
             builder.setKohdejoukko(kohdejoukko);
         }
-        return applicationDAO.findAllQueried(term, applicationQueryParameters, builder.build());
+        return applicationDAO.findAllQueried(applicationQueryParameters, builder.build());
     }
 
     @Override
-    public List<Map<String, Object>> findFullApplications(final String query,
-                                                  final ApplicationQueryParameters applicationQueryParameters) {
+    public List<Map<String, Object>> findFullApplications(final ApplicationQueryParameters applicationQueryParameters) {
         List<ApplicationSystem> ass = applicationSystemService.getAllApplicationSystems("maxApplicationOptions", "kohdejoukkoUri");
         int max = 0;
         for (ApplicationSystem as : ass) {
@@ -291,7 +289,7 @@ public class ApplicationServiceImpl implements ApplicationService {
                 .addOrganizationsReadable(hakuPermissionService.userCanReadApplications())
                 .addOrganizationsOpo(hakuPermissionService.userHasOpoRole())
                 .setMaxApplicationOptions(max);
-        List<Map<String, Object>> applications = applicationDAO.findAllQueriedFull(query, applicationQueryParameters, builder.build());
+        List<Map<String, Object>> applications = applicationDAO.findAllQueriedFull(applicationQueryParameters, builder.build());
         for (Map<String, Object> application : applications) {
             restoreV0ModelLOPParentsToApplicationMap(application);
             removeAuthorizationMeta(application);

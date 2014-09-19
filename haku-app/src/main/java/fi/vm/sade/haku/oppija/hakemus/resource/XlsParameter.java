@@ -1,6 +1,7 @@
 package fi.vm.sade.haku.oppija.hakemus.resource;
 
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Question;
 
 import java.util.List;
@@ -11,13 +12,13 @@ public class XlsParameter {
     private final String aoid;
     private final ApplicationSystem applicationSystem;
     private final List<Map<String, Object>> applications;
-    private final Map<String, Question> questions;
+    private final List<Element> questions;
 
     public XlsParameter(final String asid,
                         final String aoid,
                         final ApplicationSystem applicationSystem,
                         final List<Map<String, Object>> applications,
-                        final Map<String, Question> questions) {
+                        final List<Element> questions) {
         this.asid = asid;
         this.aoid = aoid;
         this.applicationSystem = applicationSystem;
@@ -33,7 +34,7 @@ public class XlsParameter {
         return applications;
     }
 
-    public Map<String, Question> getQuestions() {
+    public List<Element> getQuestions() {
         return questions;
     }
 

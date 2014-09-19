@@ -109,10 +109,10 @@ public class ApplicationServiceImplTest {
         elementTreeValidator = new ElementTreeValidator(validatorFactory);
 
         ApplicationSearchResultDTO searchResultDTO = new ApplicationSearchResultDTO(1, Lists.newArrayList(new ApplicationSearchResultItemDTO()));
-        when(applicationDAO.findAllQueried(eq(SSN), eq(applicationQueryParameters), eq(filterParameters))).thenReturn(searchResultDTO);
-        when(applicationDAO.findAllQueried(eq(NAME), eq(applicationQueryParameters), eq(filterParameters))).thenReturn(searchResultDTO);
-        when(applicationDAO.findAllQueried(eq(OID), eq(applicationQueryParameters), eq(filterParameters))).thenReturn(searchResultDTO);
-        when(applicationDAO.findAllQueried(eq(SHORT_OID), eq(applicationQueryParameters), eq(filterParameters))).thenReturn(searchResultDTO);
+        when(applicationDAO.findAllQueried(eq(applicationQueryParameters), eq(filterParameters))).thenReturn(searchResultDTO);
+        when(applicationDAO.findAllQueried(eq(applicationQueryParameters), eq(filterParameters))).thenReturn(searchResultDTO);
+        when(applicationDAO.findAllQueried(eq(applicationQueryParameters), eq(filterParameters))).thenReturn(searchResultDTO);
+        when(applicationDAO.findAllQueried(eq(applicationQueryParameters), eq(filterParameters))).thenReturn(searchResultDTO);
         when(applicationDAO.find(any(Application.class))).thenReturn(Lists.newArrayList(application));
         //when(authenticationService.addPerson(any(Person.class))).thenReturn(PERSON_OID);
         when(applicationDAO.findApplicationAdditionalData(eq(AS_ID), eq(AO_ID), eq(filterParameters))).thenReturn(Lists.newArrayList(new ApplicationAdditionalDataDTO()));
@@ -137,36 +137,36 @@ public class ApplicationServiceImplTest {
 
     @Test
     public void testFindApplicationBySsn() {
-        ApplicationSearchResultDTO results = service.findApplications(SSN, applicationQueryParameters);
+        ApplicationSearchResultDTO results = service.findApplications(applicationQueryParameters);
         assertNotNull(results);
         assertEquals(1, results.getResults().size());
-        verify(applicationDAO, only()).findAllQueried(eq(SSN), eq(applicationQueryParameters), eq(filterParameters));
+        verify(applicationDAO, only()).findAllQueried(eq(applicationQueryParameters), eq(filterParameters));
     }
 
     @Test
     public void testFindApplicationByName() {
-        ApplicationSearchResultDTO results = service.findApplications(NAME, applicationQueryParameters);
+        ApplicationSearchResultDTO results = service.findApplications(applicationQueryParameters);
         assertNotNull(results);
         assertEquals(1, results.getResults().size());
-        verify(applicationDAO, only()).findAllQueried(eq(NAME), eq(applicationQueryParameters), eq(filterParameters));
+        verify(applicationDAO, only()).findAllQueried(eq(applicationQueryParameters), eq(filterParameters));
     }
 
     @Test
     public void testFindApplicationByOid() {
         application.setOid(OID);
-        ApplicationSearchResultDTO results = service.findApplications(OID, applicationQueryParameters);
+        ApplicationSearchResultDTO results = service.findApplications(applicationQueryParameters);
         assertNotNull(results);
         assertEquals(1, results.getResults().size());
-        verify(applicationDAO, only()).findAllQueried(eq(OID), eq(applicationQueryParameters), eq(filterParameters));
+        verify(applicationDAO, only()).findAllQueried(eq(applicationQueryParameters), eq(filterParameters));
     }
 
     @Test
     public void testFindApplicationByShortOid() {
         application.setOid(OID);
-        ApplicationSearchResultDTO results = service.findApplications(SHORT_OID, applicationQueryParameters);
+        ApplicationSearchResultDTO results = service.findApplications(applicationQueryParameters);
         assertNotNull(results);
         assertEquals(1, results.getResults().size());
-        verify(applicationDAO, only()).findAllQueried(eq(SHORT_OID), eq(applicationQueryParameters), eq(filterParameters));
+        verify(applicationDAO, only()).findAllQueried(eq(applicationQueryParameters), eq(filterParameters));
     }
 
     @Test

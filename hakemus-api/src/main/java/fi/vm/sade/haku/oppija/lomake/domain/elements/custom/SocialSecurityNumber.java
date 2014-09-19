@@ -17,17 +17,10 @@
 package fi.vm.sade.haku.oppija.lomake.domain.elements.custom;
 
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.Titled;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.TextQuestion;
-import fi.vm.sade.haku.oppija.lomake.validation.Validator;
-import fi.vm.sade.haku.oppija.lomake.validation.validators.SocialSecurityNumberFieldValidator;
-import org.springframework.data.annotation.Transient;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Question;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class SocialSecurityNumber extends Titled {
+public class SocialSecurityNumber extends Question {
 
     private static final long serialVersionUID = -5573908500482185095L;
 

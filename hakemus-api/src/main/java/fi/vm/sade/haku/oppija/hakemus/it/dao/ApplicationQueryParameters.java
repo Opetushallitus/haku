@@ -35,14 +35,16 @@ public class ApplicationQueryParameters {
     private final Date updatedAfter;
     private final int start;
     private final int rows;
-    private String orderBy;
-    private int orderDir;
+    private final String orderBy;
+    private final int orderDir;
+    private final String searchTerms;
 
-    public ApplicationQueryParameters(final List<String> state, final List<String> asIds, final String aoId,
+    public ApplicationQueryParameters(final String searchTerms, final List<String> state, final List<String> asIds, final String aoId,
                                       final String lopOid, final String aoOid, final String groupOid, String baseEducation,
                                       final Boolean discretionaryOnly, final String sendingSchool,
                                       final String sendingClass, final Date updatedAfter,
                                       final int start, final int rows, final String orderBy, final int orderDir) {
+        this.searchTerms = searchTerms;
         this.lopOid = isEmpty(lopOid) ? null : lopOid;
         this.asIds = asIds;
         this.state = state;
@@ -112,5 +114,9 @@ public class ApplicationQueryParameters {
 
     public String getBaseEducation() {
         return baseEducation;
+    }
+
+    public String getSearchTerms() {
+        return searchTerms;
     }
 }
