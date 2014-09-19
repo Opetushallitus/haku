@@ -2,14 +2,16 @@ package fi.vm.sade.haku.provider;
 
 import fi.vm.sade.haku.oppija.hakemus.resource.XlsParameter;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.*;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.Titled;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.CheckBox;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.OptionQuestion;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Question;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +27,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -82,57 +85,50 @@ public class XlsMessageBodyWriter implements MessageBodyWriter<XlsParameter> {
 
         sheet.createRow(currentRowIndex++);
 
-        Map<String, Question> questions = xlsParameter.getQuestions();
+        List<Element> questions = xlsParameter.getQuestions();
         Row titleRow = sheet.createRow(currentRowIndex);
         ArrayList questionIndexes = new ArrayList(questions.size());
-        for (Question titled : questions.values()) {
+        Map<String, Element> elementMap = new HashMap<String, Element>();
+        for (Element titled : questions) {
             sheet.setColumnWidth(currentColumnIndex, EMPTY_COLUMN_WIDTH);
             Cell titleCell = titleRow.createCell(currentColumnIndex);
-            if (titled.getI18nText() != null) {
+            if (((Titled)titled).getI18nText() != null) {
                 titleCell.setCellValue(ElementUtil.getText(titled, lang));
                 questionIndexes.add(titled.getId());
                 currentColumnIndex++;
+                elementMap.put(titled.getId(), titled);
             }
         }
+
 
         List<Map<String, Object>> applications = xlsParameter.getApplications();
         currentRowIndex++;
         for (Map<String, Object> application : applications) {
-            Row currentRow = sheet.createRow(currentRowIndex++);
-            Map<String, Object> vastaukset = (Map<String, Object>) application.get("answers");
-            for (Map.Entry<String, Object> vastauksetVaiheittain : vastaukset.entrySet()) {
-                Map<String, String> vaiheenVastaukset = (Map<String, String>) vastauksetVaiheittain.getValue();
-                for (Map.Entry<String, String> vastaus : vaiheenVastaukset.entrySet()) {
-                    int column = questionIndexes.indexOf(vastaus.getKey());
-                    if (column > -1) {
-                        Cell kentta = currentRow.createCell(column);
-                        Question question = questions.get(vastaus.getKey());
-                        String title = ElementUtil.getText(question, lang);
-                        if (title != null) {
-                            if (question instanceof OptionQuestion) {
-                                Option option = ((OptionQuestion) question).getData().get(vastaus.getValue());
-                                if (option != null) {
-                                    sheet.autoSizeColumn(column);
-                                    kentta.setCellValue(ElementUtil.getText(option, lang));
-                                }
-                            } else if (question instanceof CheckBox) {
-                                sheet.autoSizeColumn(column);
-                                if (Boolean.TRUE.toString().equals(vastaus.getValue())) {
-                                    kentta.setCellValue("Kyllä");
-                                } else {
-                                    kentta.setCellValue("Ei");
-                                }
-                            } else {
-                                sheet.autoSizeColumn(column);
-                                kentta.setCellValue(vastaus.getValue());
-                            }
-                        }
+            currentRowIndex = fillRow(lang, sheet, elementMap, questionIndexes, application, currentRowIndex);
+        }
+        httpHeaders.add("content-disposition", "attachment; filename=" + URLEncoder.encode(raportinNimi, "UTF-8") + ".xls");
+        wb.write(entityStream);
+    }
+
+    private int fillRow(String lang, Sheet sheet, Map<String, Element> questions, ArrayList questionIndexes, Map<String, Object> application, int currentRowIndex) {
+        Row currentRow = sheet.createRow(currentRowIndex);
+        currentRowIndex++;
+        Map<String, Object> vastaukset = (Map<String, Object>) application.get("answers");
+        for (Map.Entry<String, Object> vastauksetVaiheittain : vastaukset.entrySet()) {
+            Map<String, String> vaiheenVastaukset = (Map<String, String>) vastauksetVaiheittain.getValue();
+            for (Map.Entry<String, String> vastaus : vaiheenVastaukset.entrySet()) {
+                int column = questionIndexes.indexOf(vastaus.getKey());
+                if (column > -1) {
+                    Cell kentta = currentRow.createCell(column);
+                    Element question = questions.get(vastaus.getKey());
+                    if (ElementUtil.getText(question, lang) != null) {
+                        kentta.setCellValue(getCellValue(question, vastaus, lang));
+                        sheet.autoSizeColumn(column);
                     }
                 }
             }
         }
-        httpHeaders.add("content-disposition", "attachment; filename=" + URLEncoder.encode(raportinNimi, "UTF-8") + ".xls");
-        wb.write(entityStream);
+        return currentRowIndex;
     }
 
     private void createKeyValueRow(final Sheet sheet, int row, String... values) {
@@ -140,5 +136,18 @@ public class XlsMessageBodyWriter implements MessageBodyWriter<XlsParameter> {
         for (int i = 0; i < values.length; i++) {
             infoRow.createCell(i).setCellValue(values[i]);
         }
+    }
+
+    private String getCellValue(OptionQuestion element, Map.Entry<String, String> vastaus, String lang) {
+        Option option = element.getData().get(vastaus.getValue());
+        return ElementUtil.getText(option, lang);
+    }
+
+    private String getCellValue(CheckBox element, Map.Entry<String, String> vastaus, String lang) {
+        return Boolean.TRUE.toString().equals(vastaus.getValue()) ? "Kyllä" : "Ei";
+    }
+
+    private String getCellValue(Element element, Map.Entry<String, String> vastaus, String lang) {
+        return vastaus.getValue();
     }
 }

@@ -16,6 +16,7 @@
 
 package fi.vm.sade.haku.oppija.hakemus.resource;
 
+import com.google.common.base.Predicate;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationAdditionalDataDTO;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
@@ -23,6 +24,7 @@ import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationQueryParameters;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationQueryParametersBuilder;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Question;
 import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
@@ -91,21 +93,21 @@ public class ApplicationResource {
     @Path("excel")
     @Produces("application/vnd.ms-excel")
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_READ', 'ROLE_APP_HAKEMUS_CRUD', 'ROLE_APP_HAKEMUS_OPO')")
-    public XlsParameter getApplicattionsByOids(@QueryParam("asId") String asid,
-                                               @QueryParam("aoid") String aoid,
-                                               @QueryParam("aoidCode") String aoidCode,
-                                               @QueryParam("q") @DefaultValue(value = "") String searchTerms,
-                                               @QueryParam("appState") List<String> state,
-                                               @QueryParam("lopoid") String lopoid,
-                                               @QueryParam("aoOid") String aoOid,
-                                               @QueryParam("groupOid") String groupOid,
-                                               @QueryParam("baseEducation") String baseEducation,
-                                               @QueryParam("discretionaryOnly") Boolean discretionaryOnly,
-                                               @QueryParam("sendingSchoolOid") String sendingSchoolOid,
-                                               @QueryParam("sendingClass") String sendingClass,
-                                               @QueryParam("updatedAfter") DateParam updatedAfter,
-                                               @QueryParam("start") @DefaultValue(value = "0") int start,
-                                               @QueryParam("rows") @DefaultValue(value = "10000") int rows) {
+    public XlsParameter getApplicationsByOids(@QueryParam("asId") String asid,
+                                              @QueryParam("aoid") String aoid,
+                                              @QueryParam("aoidCode") String aoidCode,
+                                              @QueryParam("q") @DefaultValue(value = "") String searchTerms,
+                                              @QueryParam("appState") List<String> state,
+                                              @QueryParam("lopoid") String lopoid,
+                                              @QueryParam("aoOid") String aoOid,
+                                              @QueryParam("groupOid") String groupOid,
+                                              @QueryParam("baseEducation") String baseEducation,
+                                              @QueryParam("discretionaryOnly") Boolean discretionaryOnly,
+                                              @QueryParam("sendingSchoolOid") String sendingSchoolOid,
+                                              @QueryParam("sendingClass") String sendingClass,
+                                              @QueryParam("updatedAfter") DateParam updatedAfter,
+                                              @QueryParam("start") @DefaultValue(value = "0") int start,
+                                              @QueryParam("rows") @DefaultValue(value = "10000") int rows) {
         ApplicationSystem activeApplicationSystem = applicationSystemService.getApplicationSystem(asid);
 
         ApplicationQueryParameters queryParams = new ApplicationQueryParametersBuilder()
@@ -128,8 +130,13 @@ public class ApplicationResource {
                 .build();
 
         List<Map<String, Object>> applications = applicationService.findFullApplications(queryParams);
-        Map<String, Question> elementsByType = ElementUtil.findElementsByType(activeApplicationSystem.getForm(), Question.class);
-        return new XlsParameter(asid, aoid, activeApplicationSystem, applications, elementsByType);
+        List<Element> elementList = ElementUtil.filterElements(activeApplicationSystem.getForm(), new Predicate<Element>() {
+            @Override
+            public boolean apply(Element element) {
+                return Question.class.isAssignableFrom(element.getClass());
+            }
+        });
+        return new XlsParameter(asid, aoid, activeApplicationSystem, applications, elementList);
     }
 
     @GET
