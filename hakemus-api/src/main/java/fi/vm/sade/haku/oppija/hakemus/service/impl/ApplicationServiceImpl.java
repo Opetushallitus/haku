@@ -21,8 +21,10 @@ import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationNote;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.haku.oppija.hakemus.domain.AuthorizationMeta;
+import fi.vm.sade.haku.oppija.hakemus.domain.PreferenceEligability;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationAdditionalDataDTO;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
+import fi.vm.sade.haku.oppija.hakemus.domain.util.ApplicationUtil;
 import fi.vm.sade.haku.oppija.hakemus.domain.util.AttachmentUtil;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationDAO;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationFilterParametersBuilder;
@@ -345,6 +347,19 @@ public class ApplicationServiceImpl implements ApplicationService {
         authorizationMeta.setAllAoOrganizations(allOrganizations);
         authorizationMeta.setSendingSchool(sendingSchool);
         application.setAuthorizationMeta(authorizationMeta);
+        if (save) {
+            this.update(new Application(application.getOid(), application.getVersion()), application);
+        }
+        return application;
+    }
+
+    public Application updatePreferenceEligabilities(Application application, boolean save) throws IOException {
+        Map<String, String> answers = application.getVastauksetMerged();
+        List<PreferenceEligability> preferenceEligabilities = application.getPreferenceEligabilities();
+        List<String> preferenceAoIds = ApplicationUtil.getPreferenceAoIds(application);
+
+        application.setPreferenceEligabilities(ApplicationUtil.checkAndCreatePreferenceEligabilities(preferenceEligabilities, preferenceAoIds));
+
         if (save) {
             this.update(new Application(application.getOid(), application.getVersion()), application);
         }

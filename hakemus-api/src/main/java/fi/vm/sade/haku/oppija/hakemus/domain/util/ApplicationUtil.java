@@ -1,19 +1,38 @@
 package fi.vm.sade.haku.oppija.hakemus.domain.util;
 
-import java.util.*;
-
-import org.apache.commons.lang3.StringUtils;
-
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
-
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
+import fi.vm.sade.haku.oppija.hakemus.domain.PreferenceEligability;
+import fi.vm.sade.haku.oppija.hakemus.domain.PreferenceEligabilityBuilder;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.*;
+import static org.apache.commons.lang.StringUtils.isNotEmpty;
 
 
 public final class ApplicationUtil {
 
     private ApplicationUtil() {
+    }
+
+    public static List<String> getPreferenceAoIds(final Application application){
+        Map<String, String> answers = application.getVastauksetMerged();
+        List<String> preferenceAoIds = new ArrayList<String>();
+        for (String key: answers.keySet()){
+            if (null != key && key.startsWith(PREFERENCE_PREFIX) && key.endsWith(OPTION_ID_POSTFIX) && isNotEmpty(answers.get(key))){
+               preferenceAoIds.add(answers.get(key));
+            }
+        }
+        return preferenceAoIds;
     }
 
     public static List<String> getDiscretionaryAttachmentAOIds(final Application application) {
@@ -180,4 +199,21 @@ public final class ApplicationUtil {
         return aos;
     }
 
+    public static List<PreferenceEligability> checkAndCreatePreferenceEligabilities(List<PreferenceEligability> existingPreferenceEligabilities, List<String> preferenceAoIds) {
+        List<PreferenceEligability> currentPreferenceEligabilities = new ArrayList<PreferenceEligability>(preferenceAoIds.size());
+        PreferenceEligability matchingPreferenceEligability = null;
+        for (String preferenceAoId : preferenceAoIds) {
+            for (PreferenceEligability preferenceEligability : existingPreferenceEligabilities){
+                if (preferenceAoId.equals(preferenceEligability.getAoId())) {
+                    matchingPreferenceEligability = preferenceEligability;
+                    break;
+                }
+            }
+            if (null == matchingPreferenceEligability)
+                matchingPreferenceEligability = PreferenceEligabilityBuilder.start().setAoId(preferenceAoId).build();
+            currentPreferenceEligabilities.add(matchingPreferenceEligability);
+            matchingPreferenceEligability = null;
+        }
+        return currentPreferenceEligabilities;
+    }
 }
