@@ -3,7 +3,9 @@ package fi.vm.sade.haku.oppija.hakemus.domain;
 public class ApplicationAttachmentRequestBuilder {
     private String aoId;
     private String aoGroupId;
-    private ApplicationAttachmentRequest.Status requestStatus = ApplicationAttachmentRequest.Status.NOT_RECEIVED;
+    private ApplicationAttachmentRequest.ReceptionStatus receptionStatus = ApplicationAttachmentRequest.ReceptionStatus.NOT_RECEIVED;
+    private ApplicationAttachmentRequest.ProcessingStatus processingStatus = ApplicationAttachmentRequest.ProcessingStatus.NOT_CHECKED;
+
     private ApplicationAttachment applicationAttachment;
 
     public static ApplicationAttachmentRequestBuilder start(){
@@ -20,8 +22,13 @@ public class ApplicationAttachmentRequestBuilder {
         return this;
     }
 
-    public ApplicationAttachmentRequestBuilder setRequestStatus(ApplicationAttachmentRequest.Status requestStatus) {
-        this.requestStatus = requestStatus;
+    public ApplicationAttachmentRequestBuilder setReceptionStatus(ApplicationAttachmentRequest.ReceptionStatus receptionStatus) {
+        this.receptionStatus = receptionStatus;
+        return this;
+    }
+
+    public ApplicationAttachmentRequestBuilder setProcessingStatus(ApplicationAttachmentRequest.ProcessingStatus processingStatus) {
+        this.processingStatus = processingStatus;
         return this;
     }
 
@@ -31,6 +38,6 @@ public class ApplicationAttachmentRequestBuilder {
     }
 
     public ApplicationAttachmentRequest build() {
-        return new ApplicationAttachmentRequest(aoId, aoGroupId, requestStatus, applicationAttachment);
+        return new ApplicationAttachmentRequest(aoId, aoGroupId, receptionStatus, processingStatus, applicationAttachment);
     }
 }

@@ -7,25 +7,35 @@ import org.codehaus.jackson.map.annotate.JsonSerialize;
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_EMPTY)
 public class ApplicationAttachmentRequest {
 
-    public static enum Status {
+    public static enum ReceptionStatus {
         ARRIVED,
         ARRIVED_LATE,
         NOT_RECEIVED
     }
 
+    public static enum ProcessingStatus{
+        CHECKED,
+        NOT_CHECKED,
+        INADEQUATE,
+        COMPLEMENT_REQUESTED
+    }
+
     private final String aoId;
     private final String aoGroupId;
-    private final Status requestStatus;
+    private final ReceptionStatus receptionStatus;
+    private final ProcessingStatus processingStatus;
     private final ApplicationAttachment applicationAttachment;
 
     @JsonCreator
     public ApplicationAttachmentRequest(@JsonProperty(value = "aoId") String aoId,
                                         @JsonProperty(value = "aoGroupId") String aoGroupId,
-                                        @JsonProperty(value = "requestStatus") ApplicationAttachmentRequest.Status requestStatus,
+                                        @JsonProperty(value = "requestStatus") ApplicationAttachmentRequest.ReceptionStatus receptionStatus,
+                                        @JsonProperty(value = "processingStatus") ApplicationAttachmentRequest.ProcessingStatus processingStatus,
                                         @JsonProperty(value = "applicationAttachment") ApplicationAttachment applicationAttachment) {
         this.aoId = aoId;
         this.aoGroupId = aoGroupId;
-        this.requestStatus = requestStatus;
+        this.receptionStatus = receptionStatus;
+        this.processingStatus = processingStatus;
         this.applicationAttachment = applicationAttachment;
     }
 
@@ -37,8 +47,12 @@ public class ApplicationAttachmentRequest {
         return aoGroupId;
     }
 
-    public Status getRequestStatus() {
-        return requestStatus;
+    public ReceptionStatus getReceptionStatus() {
+        return receptionStatus;
+    }
+
+    public ProcessingStatus getProcessingStatus() {
+        return processingStatus;
     }
 
     public ApplicationAttachment getApplicationAttachment() {
