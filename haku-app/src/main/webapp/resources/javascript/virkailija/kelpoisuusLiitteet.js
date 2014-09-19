@@ -3,8 +3,8 @@ var config = {
     eiHakukelpoinen: "03",
     liiteSaapunut: "ARRIVED",
     liiteEiSaapunut: "NOT_RECEIVED",
-    liiteEiTarkistettu: "01",
-    liiteTarkistettu: "04"
+    liiteEiTarkistettu: "NOT_CHECK",
+    liiteTarkistettu: "CHECKED"
 };
 var kjal = {
     /**
@@ -69,10 +69,10 @@ var kjal = {
                     + "</td>"
                     + "<td>"
                     + "<select class=\"width-12-11\" id=\"select-tarkistettu-" +ind+ "-" + trs + "\" disabled onchange=\"kjal.liitteenTila("+ ind +","+ trs +")\">"
-                    + "<option value=\"01\" default selected>Ei tarkistettu</option>"
-                    + "<option value=\"02\">Odottaa täydennystä</option>"
-                    + "<option value=\"03\">Puutteellinen</option>"
-                    + "<option value=\"04\">Tarkistettu</option>"
+                    + "<option value=\"NOT_CHECK\" default selected>Ei tarkistettu</option>"
+                    + "<option value=\"COMPLEMENT_REQUESTED\">Odottaa täydennystä</option>"
+                    + "<option value=\"INADEQUATE\">Puutteellinen</option>"
+                    + "<option value=\"CHECKED\">Tarkistettu</option>"
                     + "<option value=\"05\">Tarpeeton</option>"
                     + "</select>"
                     + "</td>"
@@ -96,7 +96,7 @@ var kjal = {
                 $('#select-tarkistettu-' +ind + '-' + trs).removeAttr('disabled');
             }
             $('#select-saapunut-' +ind + '-' + trs).val(hakutoiveet[ind-1].attachments[trs].receptionStatus)
-            $('#select-tarkistettu-' +ind + '-' + trs).val(hakutoiveet[ind-1].attachments[trs].documentQuality);
+            $('#select-tarkistettu-' +ind + '-' + trs).val(hakutoiveet[ind-1].attachments[trs].processingStatus);
         }
     },
     /**
@@ -163,7 +163,7 @@ var kjal = {
                 $('#select-tarkistettu-' + indx +'-' + i).removeAttr('disabled');
                 $('#select-tarkistettu-' + indx +'-' + i).val(config.liiteEiTarkistettu);
                 hakutoiveet[hakutoive].attachments[i].receptionStatus = config.liiteSaapunut;
-                hakutoiveet[hakutoive].attachments[i].documentQuality = config.liiteEiTarkistettu;
+                hakutoiveet[hakutoive].attachments[i].processingStatus = config.liiteEiTarkistettu;
             }
         }
         $('#kaikkiliitteet-'+ indx).css('display', '');
@@ -198,9 +198,9 @@ var kjal = {
      * @returns {boolean} true/false
      */
     kaikkiLiitteetTarkistettu: function (hakutoive) {
-        console.log('kaikkiLiitteetTarkistettu() -->', _.every(hakutoiveet[hakutoive].attachments, function(liite) { return liite.documentQuality === config.liiteTarkistettu; }));
+        console.log('kaikkiLiitteetTarkistettu() -->', _.every(hakutoiveet[hakutoive].attachments, function(liite) { return liite.processingStatus === config.liiteTarkistettu; }));
         console.log('kaikkiLiitteetTarkistettu()', hakutoiveet[hakutoive]);
-        var liitteetTarkastettu = _.every(hakutoiveet[hakutoive].attachments, function(liite) { return liite.documentQuality === config.liiteTarkistettu }),
+        var liitteetTarkastettu = _.every(hakutoiveet[hakutoive].attachments, function(liite) { return liite.processingStatus === config.liiteTarkistettu }),
             liitteetSaapuneet = _.every(hakutoiveet[hakutoive].attachments, function (liite) { return liite.receptionStatus !== config.liiteEiSaapunut; }),
             ind = hakutoive + 1;
 
@@ -241,7 +241,7 @@ var kjal = {
             $('#select-saapunut-' +indx + '-' + trs).val(config.liiteEiSaapunut);
             $('#select-tarkistettu-' +indx + '-' + trs).val(config.liiteEiTarkistettu);
             hakutoiveet[hakutoive].attachments[trs].receptionStatus = config.liiteEiSaapunut;
-            hakutoiveet[hakutoive].attachments[trs].documentQuality = config.liiteEiTarkistettu;
+            hakutoiveet[hakutoive].attachments[trs].processingStatus = config.liiteEiTarkistettu;
             this.tarkistaKaikkiLiitteetSaapuneet(hakutoive);
         }
         this.tarkistaHakutoiveValmis(indx);
@@ -253,11 +253,18 @@ var kjal = {
      */
     tarkistaHakutoiveValmis: function (indx) {
         console.log('tarkistaHakutoiveValmis()');
+        $('#hylatty-' +indx).css('display', 'none');
+        $('#valmis-' +indx).css('display', 'none');
+        $('#kesken-' +indx).css('display', 'none');
         if (hakutoiveet[indx - 1].status ===  config.eiHakukelpoinen) {
             $('#hylatty-' +indx).css('display', '');
-            $('#valmis-' +indx).css('display', 'none');
-            $('#kesken-' +indx).css('display', 'none');
-        } else {
+            $('#kaikki-tiedot-tarkistettu-' +indx).prop('checked', 'true');
+        } else if(hakutoiveet[indx - 1].status ===  config.hakukelpoinen ){
+            $('#valmis-' +indx).css('display', '');
+            $('#kaikki-tiedot-tarkistettu-' +indx).prop('checked', 'true');
+        }
+
+        /*else {
             $('#hylatty-' +indx).css('display', 'none');
             $('#valmis-' +indx).css('display', 'none');
             $('#kesken-' +indx).css('display', 'none');
@@ -269,15 +276,17 @@ var kjal = {
             } else {
                 $('#kesken-' +indx).css('display', '');
             }
-        }
+        }*/
+
+
         if (_.isEqual(hakutoiveet[indx-1], hakutoiveetCache[indx-1])){
             $('#tallennettu-' + indx).css('display', '');
             $('#muuttunut-' + indx).css('display', 'none');
-            $('#btn-tallenna-kepoisuus-liitteet-' + indx).addClass('disabled');
+            $('#btn-tallenna-kelpoisuus-liitteet-' + indx).addClass('disabled');
         } else {
             $('#tallennettu-' + indx).css('display', 'none');
             $('#muuttunut-' + indx).css('display', '');
-            $('#btn-tallenna-kepoisuus-liitteet-' + indx).removeClass('disabled');
+            $('#btn-tallenna-kelpoisuus-liitteet-' + indx).removeClass('disabled');
         }
 
     },
@@ -299,8 +308,8 @@ var kjal = {
      */
     liitteenTila: function (indx, trs) {
         console.log('liitteenTila()');
-        hakutoiveet[indx-1].attachments[trs].documentQuality = $('#select-tarkistettu-' + indx +'-' + trs).val();
-        console.log('-->', hakutoiveet[indx-1].attachments[trs].documentQuality);
+        hakutoiveet[indx-1].attachments[trs].processingStatus = $('#select-tarkistettu-' + indx +'-' + trs).val();
+        console.log('-->', hakutoiveet[indx-1].attachments[trs].processingStatus);
         this.kaikkiLiitteetTarkistettu(indx-1);
         this.tarkistaHakutoiveValmis(indx);
     },
@@ -313,7 +322,7 @@ var kjal = {
         console.log('asetaKaikkiLiitteetTarkastetuksi()');
         for (var t in hakutoiveet[indx-1].attachments) {
             $('#select-tarkistettu-' + indx + '-' +t).val(config.liiteTarkistettu);
-            hakutoiveet[indx-1].attachments[t].documentQuality = $('#select-tarkistettu-' + indx + '-' +t).val();
+            hakutoiveet[indx-1].attachments[t].processingStatus = $('#select-tarkistettu-' + indx + '-' +t).val();
         }
         $('#btn-kaikki-liitteet-tarkastettu-' + indx).addClass('disabled');
         this.tarkistaHakutoiveValmis(indx);
@@ -323,6 +332,18 @@ var kjal = {
      * @param indx hakutoiveen index numero
      */
     tallennaKelpoisuusJaLiitteet: function (indx) {
+        console.log('********');
+        var submitData = JSON.parse(JSON.stringify(hakutoiveet[indx-1]));
+        delete submitData.indx;
+        for(var r in submitData.attachments){
+            delete submitData.attachments[r].name;
+            delete submitData.attachments[r].description;
+            delete submitData.attachments[r].header;
+        };
+
+        $('<input type="hidden" name="json"/>').val(JSON.stringify(submitData)).appendTo('#form-kelpoisuus-liitteet-'+indx);
+        $('#form-kelpoisuus-liitteet-'+indx).submit();
+
         hakutoiveetCache[indx-1] = JSON.parse(JSON.stringify(hakutoiveet[indx-1]));
         this.tarkistaHakutoiveValmis(indx);
     }

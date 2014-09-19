@@ -16,7 +16,7 @@
 <hr>
 
 <c:forEach var="hakukohde" items="${it.hakukohteet}">
-    <div id="form-kelpoisuus-liitteet-${hakukohde.index}" method="post" novalidate="novalidate" class="block" >
+    <form id="form-kelpoisuus-liitteet-${hakukohde.index}" method="post" novalidate="novalidate" class="block" >
 
         <div class="grid16-3 inline-block">
             <b>${hakukohde.index}.hakutoive</b>
@@ -30,13 +30,12 @@
             <b id="kaikkiliitteet-${hakukohde.index}" style="background-color: #438c48; color: #ffffff; border-radius: 5px; padding: 5px; display: none">Kaikki liitteet saapuneet</b>
             <br>
             <br>
-            <%--<b id="muuttunut-${hakukohde.index}" style="background-color: #188cc0; color: #ffffff; border-radius: 5px; padding: 5px; display: none;" >Muuttettu</b>--%>
             <b id="muuttunut-${hakukohde.index}" style="background-color: #feba00; color: #000000; border-radius: 5px; padding: 5px; display: none;" >Muuttettu</b>
             <b id="tallennettu-${hakukohde.index}" style="background-color: #438c48; color: #ffffff; border-radius: 5px; padding: 5px; display: none;" >Tallennettu</b>
             <br>
             <br>
+            <input id="kaikki-tiedot-tarkistettu-${hakukohde.index}" type="checkbox" disabled> Kaikki tiedot tarkistettu
 
-            <input type="checkbox"> Kaikki tiedot tarkistettu
         </div>
         <div class="grid16-12 inline-block">
             <div class="grid16-16 inline-block">
@@ -51,9 +50,9 @@
             </div>
             <div class="grid16-16 inline-block">
                 <br>
-                <button class="button small primary disabled" id="btn-tallenna-kepoisuus-liitteet-${hakukohde.index}" onclick="kjal.tallennaKelpoisuusJaLiitteet('${hakukohde.index}')">Tallenna</button>
-                <button class="button small" id="btn-kaikki-liitteet-saapuneet-${hakukohde.index}" onclick="kjal.kaikkiLiitteetSaapuneet('${hakukohde.index}')" >Kaikki liitteet saapuneet</button>
-                <button class="button small disabled" id="btn-kaikki-liitteet-tarkastettu-${hakukohde.index}" onclick="kjal.asetaKaikkiLiitteetTarkastetuksi('${hakukohde.index}')" >Kaikki liitteet tarkastettu</button>
+                <input type="button" class="button small primary disabled" id="btn-tallenna-kelpoisuus-liitteet-${hakukohde.index}" onclick="kjal.tallennaKelpoisuusJaLiitteet('${hakukohde.index}')" value="Tallenna" />
+                <input type="button" class="button small" id="btn-kaikki-liitteet-saapuneet-${hakukohde.index}" onclick="kjal.kaikkiLiitteetSaapuneet('${hakukohde.index}')"  value="Kaikki liitteet saapuneet" />
+                <input type="button" class="button small disabled" id="btn-kaikki-liitteet-tarkastettu-${hakukohde.index}" onclick="kjal.asetaKaikkiLiitteetTarkastetuksi('${hakukohde.index}')" value="Kaikki liitteet tarkastettu" />
             </div>
 
             <div class="grid16-16 inline-block">
@@ -62,7 +61,7 @@
                 </table>
             </div>
         </div>
-    </div>
+    </form>
     <div class="clear">
         <br>
     </div>
@@ -77,16 +76,14 @@
             source: "",
             rejectionBasis: "",
             attachments: [
-
                 {
-                   id: "<c:out value="${liiteCount.count}"/>",
-                   receptionStatus: "<c:out value="${liite.requestStatus}"/>",
+                   id: "<c:out value="${liiteCount.count}"/>", //TODO: vaihda tämä <--
+                   receptionStatus: "<c:out value="${liite.receptionStatus}"/>",
                    name: "<haku:i18nText value="${liite.applicationAttachment.name}"/>",
                    header: "<haku:i18nText value="${liite.applicationAttachment.header}"/>",
                    description: "<haku:i18nText value="${liite.applicationAttachment.description}"/>",
-                   documentQuality: "02"
+                   processingStatus: "<haku:i18nText value="${liite.processingStatus}"/>"
                 } <c:if test="liiteCount > 1">,</c:if>
-
             ]
         };
         hakutoiveet.push(kelpoisuus_liitteet);
