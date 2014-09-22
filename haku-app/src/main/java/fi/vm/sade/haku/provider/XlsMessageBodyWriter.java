@@ -119,18 +119,42 @@ public class XlsMessageBodyWriter implements MessageBodyWriter<XlsParameter> {
         for (Map.Entry<String, Object> vastauksetVaiheittain : vastaukset.entrySet()) {
             Map<String, String> vaiheenVastaukset = (Map<String, String>) vastauksetVaiheittain.getValue();
             for (Map.Entry<String, String> vastaus : vaiheenVastaukset.entrySet()) {
-                int column = questionIndexes.indexOf(vastaus.getKey());
-                if (column > -1) {
-                    Cell kentta = currentRow.createCell(column);
-                    Element question = questions.get(vastaus.getKey());
-                    if (ElementUtil.getText(question, lang) != null) {
-                        kentta.setCellValue(getCellValue(question, vastaus, lang));
-                        sheet.autoSizeColumn(column);
-                    }
-                }
+                setCellValue(lang, sheet, questions, questionIndexes, currentRow, vastaus);
             }
         }
         return currentRowIndex;
+    }
+
+    private void setCellValue(String lang, Sheet sheet, Map<String, Element> questions, ArrayList questionIndexes, Row currentRow, Map.Entry<String, String> vastaus) {
+        int column = questionIndexes.indexOf(vastaus.getKey());
+        if (column > -1) {
+            Cell kentta = currentRow.createCell(column);
+            Element question = questions.get(vastaus.getKey());
+            String title = ElementUtil.getText(question, lang);
+            if (title != null) {
+                sheet.autoSizeColumn(column);
+                kentta.setCellValue(getElementValue(lang, vastaus, question));
+            }
+        }
+    }
+
+    private String getElementValue(String lang, Map.Entry<String, String> vastaus, Element question) {
+        String value = null;
+        if (question instanceof OptionQuestion) {
+            Option option = ((OptionQuestion) question).getData().get(vastaus.getValue());
+            if (option != null) {
+                value = ElementUtil.getText(option, lang);
+            }
+        } else if (question instanceof CheckBox) {
+            if (Boolean.TRUE.toString().equals(vastaus.getValue())) {
+                value = "Kyllä";
+            } else {
+                value = "Ei";
+            }
+        } else {
+            value = vastaus.getValue();
+        }
+        return value;
     }
 
     private void createKeyValueRow(final Sheet sheet, int row, String... values) {
@@ -138,18 +162,5 @@ public class XlsMessageBodyWriter implements MessageBodyWriter<XlsParameter> {
         for (int i = 0; i < values.length; i++) {
             infoRow.createCell(i).setCellValue(values[i]);
         }
-    }
-
-    private String getCellValue(OptionQuestion element, Map.Entry<String, String> vastaus, String lang) {
-        Option option = element.getData().get(vastaus.getValue());
-        return ElementUtil.getText(option, lang);
-    }
-
-    private String getCellValue(CheckBox element, Map.Entry<String, String> vastaus, String lang) {
-        return Boolean.TRUE.toString().equals(vastaus.getValue()) ? "Kyllä" : "Ei";
-    }
-
-    private String getCellValue(Element element, Map.Entry<String, String> vastaus, String lang) {
-        return vastaus.getValue();
     }
 }

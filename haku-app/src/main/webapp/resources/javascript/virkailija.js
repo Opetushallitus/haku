@@ -509,7 +509,7 @@ $(document).ready(function () {
                         }
                         $('#pagination').bootstrapPaginator(options);
                         applicationSearch.setSortOrder(queryParameters.orderBy, queryParameters.orderDir);
-                        if (queryParameters.asId && queryParameters.aoOid) {
+                        if (queryParameters.asId && (queryParameters.aoOid || queryParameters.aoidCode)) {
                             var href = page_settings.contextPath + '/applications/excel?' + objectToQueryParameterString(_.omit(queryParameters, ['rows','start']));
                             enableExcel(href);
                         } else {
