@@ -104,6 +104,7 @@ public class ApplicationResource {
                                               @QueryParam("groupOid") String groupOid,
                                               @QueryParam("baseEducation") String baseEducation,
                                               @QueryParam("discretionaryOnly") Boolean discretionaryOnly,
+                                              @QueryParam("primaryPreferenceOnly") Boolean primaryPreferenceOnly,
                                               @QueryParam("sendingSchoolOid") String sendingSchoolOid,
                                               @QueryParam("sendingClass") String sendingClass,
                                               @QueryParam("updatedAfter") DateParam updatedAfter,
@@ -121,6 +122,7 @@ public class ApplicationResource {
                 .setLopOid(lopoid)
                 .setAoOid(aoOid)
                 .setDiscretionaryOnly(discretionaryOnly)
+                .setPrimaryPreferenceOnly(primaryPreferenceOnly)
                 .setSendingSchool(sendingSchoolOid)
                 .setSendingClass(sendingClass)
                 .setUpdatedAfter(updatedAfter != null ? updatedAfter.getDate() : null)
@@ -172,6 +174,7 @@ public class ApplicationResource {
                                                           @QueryParam("asYear") String asYear,
                                                           @QueryParam("aoOid") String aoOid,
                                                           @QueryParam("discretionaryOnly") Boolean discretionaryOnly,
+                                                          @QueryParam("primaryPreferenceOnly") Boolean primaryPreferenceOnly,
                                                           @QueryParam("sendingSchoolOid") String sendingSchoolOid,
                                                           @QueryParam("sendingClass") String sendingClass,
                                                           @QueryParam("updatedAfter") DateParam updatedAfter,
@@ -196,6 +199,7 @@ public class ApplicationResource {
                 .setLopOid(lopoid)
                 .setAoOid(aoOid)
                 .setDiscretionaryOnly(discretionaryOnly)
+                .setPrimaryPreferenceOnly(primaryPreferenceOnly)
                 .setSendingSchool(sendingSchoolOid)
                 .setSendingClass(sendingClass)
                 .setUpdatedAfter(updatedAfter != null ? updatedAfter.getDate() : null)
@@ -224,6 +228,7 @@ public class ApplicationResource {
                                                        @QueryParam("asYear") String asYear,
                                                        @QueryParam("aoOid") String aoOid,
                                                        @QueryParam("discretionaryOnly") Boolean discretionaryOnly,
+                                                       @QueryParam("primaryPreferenceOnly") Boolean primaryPreferenceOnly,
                                                        @QueryParam("sendingSchoolOid") String sendingSchoolOid,
                                                        @QueryParam("sendingClass") String sendingClass,
                                                        @QueryParam("updatedAfter") DateParam updatedAfter,
@@ -231,7 +236,8 @@ public class ApplicationResource {
                                                        @DefaultValue(value = "100") @QueryParam("rows") int rows) {
 
         return findApplicationsOrdered("fullName", "asc", query, state, aoid, groupOid, baseEducation, lopoid, asId,
-                asSemester, asYear, aoOid, discretionaryOnly, sendingSchoolOid, sendingClass, updatedAfter, start, rows);
+                asSemester, asYear, aoOid, discretionaryOnly, primaryPreferenceOnly, sendingSchoolOid,
+                sendingClass, updatedAfter, start, rows);
     }
 
     @GET
@@ -251,6 +257,7 @@ public class ApplicationResource {
                                                               @QueryParam("asYear") String asYear,
                                                               @QueryParam("aoOid") String aoOid,
                                                               @QueryParam("discretionaryOnly") Boolean discretionaryOnly,
+                                                              @QueryParam("primaryPreferenceOnly") Boolean primaryPreferenceOnly,
                                                               @QueryParam("sendingSchoolOid") String sendingSchoolOid,
                                                               @QueryParam("sendingClass") String sendingClass,
                                                               @QueryParam("updatedAfter") DateParam updatedAfter,
@@ -279,6 +286,7 @@ public class ApplicationResource {
                 .setLopOid(lopoid)
                 .setAoOid(aoOid)
                 .setDiscretionaryOnly(discretionaryOnly)
+                .setPrimaryPreferenceOnly(primaryPreferenceOnly)
                 .setSendingSchool(sendingSchoolOid)
                 .setSendingClass(sendingClass)
                 .setUpdatedAfter(updatedAfter != null ? updatedAfter.getDate() : null)

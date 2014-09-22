@@ -307,12 +307,6 @@ $(document).ready(function () {
     var orgSearch = (function () {
 
         $('#reset-organizations').click(function (event) {
-            // $('#lopoid').val('');
-            // $('#lop-title').empty();
-            // $('#pagination').empty();
-            // $('#application-table tbody:first').empty();
-            // $('#application-table thead tr td').removeAttr('class');
-            // applicationSearch.updateCounters(0);
             $('#orgsearchlist').empty();
         });
 
@@ -424,6 +418,7 @@ $(document).ready(function () {
                 $('#base-education').val(obj.baseEducation);
                 $('#lopoid').val(obj.lopoid);
                 $('#application-system').val(obj.asId);
+                $('#primary-preference-only').prop('checked', obj.primaryPreferenceOnly);
                 $('#hakukausiVuosi').val(obj.asYear);
                 $('#hakukausi').val(obj.asSemester);
                 $('#sendingSchoolOid').val(obj.sendingSchoolOid);
@@ -451,7 +446,6 @@ $(document).ready(function () {
                 addParameter(obj, 'asSemester', '#hakukausi');
                 addParameter(obj, 'sendingSchoolOid', '#sendingSchoolOid');
                 addParameter(obj, 'sendingClass', '#sendingClass');
-                addParameter(obj, 'discretionaryOnly', '#discretionary-only');
                 var lopTitle = $('#lop-title').text();
                 if (lopTitle) {
                     lopTitle = lopTitle.replace('&', 'ThisIsStupidButNecessary');
@@ -462,6 +456,7 @@ $(document).ready(function () {
                 }
                 obj['discretionaryOnly'] = $('#discretionary-only').prop('checked');
                 obj['checkAllApplications'] = $('#check-all-applications').prop('checked');
+                obj['primaryPreferenceOnly'] = $('#primary-preference-only').prop('checked');
                 obj['start'] = start;
                 obj['rows'] = maxRows;
                 obj['orderBy'] = orderBy;

@@ -338,7 +338,9 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         String aoOid = applicationQueryParameters.getAoOid();
 
         ArrayList<DBObject> preferenceQueries = new ArrayList<DBObject>();
-        for (int i = 1; i <= filterParameters.getMaxApplicationOptions(); i++) {
+        int maxOptions = applicationQueryParameters.isPrimaryPreferenceOnly() ?
+                1 : filterParameters.getMaxApplicationOptions();
+        for (int i = 1; i <= maxOptions; i++) {
             ArrayList<DBObject> preferenceQuery = new ArrayList<DBObject>(filterParameters.getMaxApplicationOptions());
             if (isNotBlank(lopOid)) {
                 preferenceQuery.add(

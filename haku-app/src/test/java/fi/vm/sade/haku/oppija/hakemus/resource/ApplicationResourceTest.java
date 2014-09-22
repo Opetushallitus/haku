@@ -145,7 +145,8 @@ public class ApplicationResourceTest {
     public void testFindApplicationsOrdered() {
         ApplicationServiceMock myApplicationService = new ApplicationServiceMock();
         ApplicationResource resource = new ApplicationResource(myApplicationService, applicationSystemService);
-        resource.findApplications("query", null, "aoId", "groupOid", "baseEducation", "lopOid", "", "", "", "aoId", false, "sendingSchool",
+        resource.findApplications("query", null, "aoId", "groupOid", "baseEducation", "lopOid", "", "", "", "aoId",
+                false, false, "sendingSchool",
                 "class", new DateParam("201403041506"), 0, 20);
         assertEquals("query", myApplicationService.applicationQueryParameters.getSearchTerms());
         ApplicationQueryParameters param = myApplicationService.applicationQueryParameters;
@@ -154,19 +155,22 @@ public class ApplicationResourceTest {
         assertEquals(0, param.getAsIds().size());
 
 
-        resource.findApplications("query", null, "aoId", "groupOid", "baseEducation", "lopOid", "asId", "", "", "aoId", false, "sendingSchool",
+        resource.findApplications("query", null, "aoId", "groupOid", "baseEducation", "lopOid", "asId", "", "", "aoId",
+                false, false, "sendingSchool",
                 "class", new DateParam("201403041506"), 0, 20);
         param = myApplicationService.applicationQueryParameters;
         assertEquals(1, param.getAsIds().size());
         assertEquals("asId", param.getAsIds().get(0));
 
-        resource.findApplications("query", null, "aoId", "groupOid", "baseEducation", "lopOid", "asId", "semester", "year", "aoId", false, "sendingSchool",
+        resource.findApplications("query", null, "aoId", "groupOid", "baseEducation", "lopOid", "asId", "semester",
+                "year", "aoId", false, false, "sendingSchool",
                 "class", new DateParam("201403041506"), 0, 20);
         param = myApplicationService.applicationQueryParameters;
         assertEquals(1, param.getAsIds().size());
         assertEquals("asId", param.getAsIds().get(0));
 
-        resource.findApplications("query", null, "aoId", "groupOid", "baseEducation", "lopOid", "", "semester", "year", "aoId", false, "sendingSchool",
+        resource.findApplications("query", null, "aoId", "groupOid", "baseEducation", "lopOid", "", "semester",
+                "year", "aoId", false, false, "sendingSchool",
                 "class", new DateParam("201403041506"), 0, 20);
         param = myApplicationService.applicationQueryParameters;
         assertEquals(3, param.getAsIds().size());

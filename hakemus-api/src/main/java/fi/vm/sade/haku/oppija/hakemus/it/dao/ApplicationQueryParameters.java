@@ -30,6 +30,7 @@ public class ApplicationQueryParameters {
     private final String groupOid;
     private final String baseEducation;
     private final boolean discretionaryOnly;
+    private final boolean primaryPreferenceOnly;
     private final String sendingSchool;
     private final String sendingClass;
     private final Date updatedAfter;
@@ -41,8 +42,8 @@ public class ApplicationQueryParameters {
 
     public ApplicationQueryParameters(final String searchTerms, final List<String> state, final List<String> asIds, final String aoId,
                                       final String lopOid, final String aoOid, final String groupOid, String baseEducation,
-                                      final Boolean discretionaryOnly, final String sendingSchool,
-                                      final String sendingClass, final Date updatedAfter,
+                                      final Boolean discretionaryOnly, final Boolean primaryPreferenceOnly,
+                                      final String sendingSchool, final String sendingClass, final Date updatedAfter,
                                       final int start, final int rows, final String orderBy, final int orderDir) {
         this.searchTerms = searchTerms;
         this.lopOid = isEmpty(lopOid) ? null : lopOid;
@@ -53,6 +54,7 @@ public class ApplicationQueryParameters {
         this.groupOid = isEmpty(groupOid) ? null : groupOid;
         this.baseEducation = isEmpty(baseEducation) ? null : baseEducation;
         this.discretionaryOnly = discretionaryOnly == null ? false : discretionaryOnly;
+        this.primaryPreferenceOnly = primaryPreferenceOnly == null ? false : primaryPreferenceOnly;
         this.sendingSchool = sendingSchool;
         this.sendingClass = sendingClass;
         this.updatedAfter = updatedAfter;
@@ -104,6 +106,10 @@ public class ApplicationQueryParameters {
 
     public boolean isDiscretionaryOnly() {
         return discretionaryOnly;
+    }
+
+    public boolean isPrimaryPreferenceOnly() {
+        return primaryPreferenceOnly;
     }
 
     public String getSendingSchool() {return sendingSchool; }

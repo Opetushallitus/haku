@@ -154,6 +154,11 @@
                         <input type="hidden" name="application-group-oid" id="application-group-oid" />
                     </td>
                     <td>
+                        <div class="field-search-containerbox">
+                            <input type="checkbox" id="primary-preference-only"/>
+                            <label for="primary-preference-only"><fmt:message
+                                    key="virkailija.hakemus.vain.ensisijaiset"/></label>
+                        </div>
                     </td>
                     <td></td>
                 </tr>
