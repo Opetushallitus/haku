@@ -32,6 +32,7 @@ import fi.vm.sade.haku.oppija.lomake.util.ElementTree;
 import fi.vm.sade.haku.oppija.lomake.validation.ElementTreeValidator;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationInput;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationResult;
+import fi.vm.sade.haku.oppija.ui.controller.dto.AttachmentsAndEligabilityDTO;
 import fi.vm.sade.haku.oppija.ui.service.OfficerUIService;
 import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
 import fi.vm.sade.haku.virkailija.authentication.Person;
@@ -44,6 +45,7 @@ import fi.vm.sade.haku.virkailija.valinta.dto.*;
 import fi.vm.sade.organisaatio.api.model.types.OrganisaatioTyyppi;
 import fi.vm.sade.organisaatio.api.search.OrganisaatioSearchCriteria;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -585,6 +587,11 @@ public class OfficerUIServiceImpl implements OfficerUIService {
             options.add(opt);
         }
         return options;
+    }
+
+    @Override
+    public void processAttachmentsAndEligability(String oid, List<AttachmentsAndEligabilityDTO> attachementsAndEligability) {
+        LOGGER.debug("Got something :" + StringUtils.join(attachementsAndEligability, ","));
     }
 
     @Override
