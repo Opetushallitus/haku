@@ -6,7 +6,7 @@
 
 
 
-<h3>     sKelpoisuus ja liitteet</h3>
+<h3>Kk-haut: Kelpoisuus ja liitteet</h3>
 <script type="text/javascript">
     console.log('hakutoiveet');
     var hakutoiveet = [],
@@ -82,8 +82,7 @@
         if("<c:out value="${hakukohde.oid}"/>" === "<c:out value="${liite.aoId}"/>") {
             var attachment = {};
             attachment.id = "<c:out value="${liiteCount.count}"/>"; //TODO: vaihda tämä <--
-            <%--attachment.aoGroupId = "<c:out value="${liite.aoGroupId}"/>"--%>
-            attachment.aoGroupId = "123.567.89.000001";
+            attachment.aoGroupId = "<c:out value="${liite.aoGroupId}"/>"
             attachment.receptionStatus = "<c:out value="${liite.receptionStatus}"/>";
             attachment.name = "<haku:i18nText value="${liite.applicationAttachment.name}"/>";
             attachment.header = "<haku:i18nText value="${liite.applicationAttachment.header}"/>";
