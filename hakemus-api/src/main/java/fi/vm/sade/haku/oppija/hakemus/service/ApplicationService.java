@@ -109,4 +109,6 @@ public interface ApplicationService {
     List<Map<String, Object>> findFullApplications(final ApplicationQueryParameters applicationQueryParameters);
 
     Application updateAuthorizationMeta(Application application, boolean save) throws IOException;
+
+    Application updatePreferenceBasedData(final Application application);
 }

@@ -353,16 +353,13 @@ public class ApplicationServiceImpl implements ApplicationService {
         return application;
     }
 
-    public Application updatePreferenceEligabilities(Application application, boolean save) throws IOException {
-        Map<String, String> answers = application.getVastauksetMerged();
-        List<PreferenceEligability> preferenceEligabilities = application.getPreferenceEligabilities();
+    @Override
+    public Application updatePreferenceBasedData(final Application application){
         List<String> preferenceAoIds = ApplicationUtil.getPreferenceAoIds(application);
 
-        application.setPreferenceEligabilities(ApplicationUtil.checkAndCreatePreferenceEligabilities(preferenceEligabilities, preferenceAoIds));
+        application.setPreferenceEligabilities(ApplicationUtil.checkAndCreatePreferenceEligabilities(application.getPreferenceEligabilities(), preferenceAoIds));
+        application.setPreferencesChecked(ApplicationUtil.checkAndCreatePreferenceCheckedData(application.getPreferencesChecked(), preferenceAoIds));
 
-        if (save) {
-            this.update(new Application(application.getOid(), application.getVersion()), application);
-        }
         return application;
     }
 

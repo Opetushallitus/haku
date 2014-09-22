@@ -111,8 +111,10 @@ public class Application implements Serializable {
     private Integer version;
     private Integer modelVersion;
 
+    //Higher-education only ...
     private List<PreferenceEligability> preferenceEligabilities = new ArrayList<PreferenceEligability>();
     private List<ApplicationAttachmentRequest> attachmentRequests = new ArrayList<ApplicationAttachmentRequest>();
+    private List<PreferenceChecked> preferencesChecked = new ArrayList<PreferenceChecked>();
 
     @JsonCreator
     public Application(@JsonProperty(value = "applicationSystemId") final String applicationSystemId,
@@ -609,6 +611,14 @@ public class Application implements Serializable {
         this.attachmentRequests = new ArrayList<ApplicationAttachmentRequest>(attachmentRequests);
     }
 
+    public List<PreferenceChecked> getPreferencesChecked() {
+        return preferencesChecked;
+    }
+
+    public void setPreferencesChecked(List<PreferenceChecked> preferencesChecked) {
+        this.preferencesChecked = preferencesChecked;
+    }
+
     @Override
     public Application clone() {
         Application clone = new Application(getApplicationSystemId(), getUser(), copyAnswers(), Maps.newHashMap(getAdditionalInfo()));
@@ -627,6 +637,7 @@ public class Application implements Serializable {
         clone.setStudentOidChecked(getStudentOidChecked());
         clone.setPreferenceEligabilities(getPreferenceEligabilities());
         clone.setAttachmentRequests(getAttachmentRequests());
+        clone.setPreferencesChecked(getPreferencesChecked());
         return clone;
     }
 

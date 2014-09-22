@@ -3,6 +3,8 @@ package fi.vm.sade.haku.oppija.hakemus.domain.util;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
+import fi.vm.sade.haku.oppija.hakemus.domain.PreferenceChecked;
+import fi.vm.sade.haku.oppija.hakemus.domain.PreferenceCheckedBuilder;
 import fi.vm.sade.haku.oppija.hakemus.domain.PreferenceEligability;
 import fi.vm.sade.haku.oppija.hakemus.domain.PreferenceEligabilityBuilder;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
@@ -215,5 +217,23 @@ public final class ApplicationUtil {
             matchingPreferenceEligability = null;
         }
         return currentPreferenceEligabilities;
+    }
+
+    public static List<PreferenceChecked> checkAndCreatePreferenceCheckedData(List<PreferenceChecked> existingPreferencesChecked, List<String> preferenceAoIds) {
+        List<PreferenceChecked> currentPreferencesChecked = new ArrayList<PreferenceChecked>(preferenceAoIds.size());
+        PreferenceChecked matchingPreferenceChecked = null;
+        for (String preferenceAoId : preferenceAoIds) {
+            for (PreferenceChecked preferenceChecked : existingPreferencesChecked){
+                if (preferenceAoId.equals(preferenceChecked.getPreferenceAoOid())) {
+                    matchingPreferenceChecked = preferenceChecked;
+                    break;
+                }
+            }
+            if (null == matchingPreferenceChecked)
+                matchingPreferenceChecked = PreferenceCheckedBuilder.start().setPreferenceAoOid(preferenceAoId).build();
+            currentPreferencesChecked.add(matchingPreferenceChecked);
+            matchingPreferenceChecked = null;
+        }
+        return currentPreferencesChecked;
     }
 }
