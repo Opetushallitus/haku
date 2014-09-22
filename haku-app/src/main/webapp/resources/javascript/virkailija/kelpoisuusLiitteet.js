@@ -253,6 +253,34 @@ var kjal = {
             hakutoiveet[hakutoive].attachments[trs].processingStatus = config.liiteEiTarkistettu;
             this.tarkistaKaikkiLiitteetSaapuneet(hakutoive);
         }
+
+        var aoGroup = hakutoiveet[indx-1].attachments[trs].aoGroupId;
+        for (var g in hakutoiveet){
+            for(var t in hakutoiveet[g].attachments) {
+                if(hakutoiveet[g].attachments[t].aoGroupId === aoGroup) {
+                    var ind = parseInt(g) + 1;
+                    console.log('saapumis tila muihinkin ', ind,' ', t);
+                    if ($('#liitesaapunut-tr-' +indx + '-' + trs + ' [type=checkbox]').prop('checked')){
+                        $('#liitesaapunut-tr-' +ind + '-' + t + ' [type=checkbox]').attr('checked', 'true');
+                        $('#select-saapunut-' +ind + '-' + t).removeAttr('disabled');
+                        $('#select-tarkistettu-' +ind + '-' + t).removeAttr('disabled');
+                        $('#select-saapunut-' +ind + '-' + t).val(config.liiteSaapunut);
+                        hakutoiveet[ind - 1].attachments[t].receptionStatus = config.liiteSaapunut;
+                        this.tarkistaKaikkiLiitteetSaapuneet(ind);
+                    }else {
+                        $('#select-saapunut-' +ind + '-' + t).attr('disabled', 'true');
+                        $('#select-tarkistettu-' +ind + '-' + t).attr('disabled', 'true');
+                        $('#select-saapunut-' +ind + '-' + t).val(config.liiteEiSaapunut);
+                        $('#select-tarkistettu-' +ind + '-' + t).val(config.liiteEiTarkistettu);
+                        hakutoiveet[ind - 1].attachments[t].receptionStatus = config.liiteEiSaapunut;
+                        hakutoiveet[ind - 1].attachments[t].processingStatus = config.liiteEiTarkistettu;
+                        this.tarkistaKaikkiLiitteetSaapuneet(ind);
+                    }
+
+                }
+            }
+        }
+
         this.tarkistaHakutoiveValmis(indx);
     },
     /**
@@ -291,6 +319,7 @@ var kjal = {
      */
     saapumisTila: function (indx, trs) {
         hakutoiveet[indx-1].attachments[trs].receptionStatus = $('#select-saapunut-' + indx +'-' + trs).val();
+
         this.tarkistaHakutoiveValmis(indx);
     },
     /**

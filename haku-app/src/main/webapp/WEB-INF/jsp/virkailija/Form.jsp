@@ -184,7 +184,7 @@
                 <a href="#" data-tabs-group="applicationtabs" data-tabs-id="valinta" id="valintaTab"
                    class="tab"><span>Valinta</span></a>
                 <a href="#" data-tabs-group="applicationtabs" data-tabs-id="kelpoisuusliitteet" id="kelpoisuusliitteetTab"
-                   class="tab"><span>Kelpoisuus ja liitteet</span></a>
+                   class="tab"><span>Kk-haut: Kelpoisuus ja liitteet</span></a>
 
             </div>
 
