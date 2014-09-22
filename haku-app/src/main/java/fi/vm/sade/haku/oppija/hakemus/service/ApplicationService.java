@@ -46,22 +46,11 @@ public interface ApplicationService {
     /**
      * Submits an application based on current user and form.
      *
-     * @return
+     * @return Application
      */
     Application submitApplication(final String applicationSystemId, String language);
 
-    /**
-     * Return applications that match to given search term. Term is matched against
-     * - applications' OID
-     * - applicants' ID
-     * - applicants' DOB
-     * - applicants' hetu
-     * - applicants' name
-     *
-     * @param term
-     * @return
-     */
-    ApplicationSearchResultDTO findApplications(final String term, final ApplicationQueryParameters applicationQueryParameters);
+    ApplicationSearchResultDTO findApplications(final ApplicationQueryParameters applicationQueryParameters);
 
     List<ApplicationAdditionalDataDTO> findApplicationAdditionalData(final String applicationSystemId, final String aoId);
 
@@ -117,7 +106,7 @@ public interface ApplicationService {
 
     Application getSubmittedApplication(final String applicationSystemId, final String oid);
 
-    List<Map<String, Object>> findFullApplications(String query, ApplicationQueryParameters applicationQueryParameters);
+    List<Map<String, Object>> findFullApplications(final ApplicationQueryParameters applicationQueryParameters);
 
     Application updateAuthorizationMeta(Application application, boolean save) throws IOException;
 }

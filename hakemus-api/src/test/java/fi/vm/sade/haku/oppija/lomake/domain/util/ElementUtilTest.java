@@ -59,26 +59,6 @@ public class ElementUtilTest {
     }
 
     @Test
-    public void testFindElementsByType() {
-        Form form = new Form("form", new I18nText(ImmutableMap.of("fi", "form")));
-        Element phase = new PhaseBuilder("phase").setEditAllowedByRoles("TESTING")
-                .i18nText(new I18nText(ImmutableMap.of("fi", "phase")))
-                .build();
-        Element theme = new ThemeBuilder("theme").previewable().i18nText(new I18nText(ImmutableMap.of("fi", "theme"))).build();
-        phase.addChild(theme);
-        TextQuestion tq1 = (TextQuestion) new TextQuestionBuilder("text1").i18nText(new I18nText(ImmutableMap.of("fi", "text1"))).build();
-        TextQuestion tq2 = (TextQuestion) new TextQuestionBuilder("text2").i18nText(new I18nText(ImmutableMap.of("fi", "text2"))).build();
-        TextArea ta = (TextArea) TextAreaBuilder.TextArea("textarea").i18nText(new I18nText(ImmutableMap.of("fi", "textarea"))).build();
-        theme.addChild(tq1);
-        theme.addChild(ta);
-        theme.addChild(tq2);
-        form.addChild(phase);
-        Map<String, TextQuestion> result = ElementUtil.findElementsByType(form, TextQuestion.class);
-        assertNotNull(result);
-        assertEquals(2, result.size());
-    }
-
-    @Test
     public void testFindElementsByTypeAsList() {
         Form form = new Form("form", new I18nText(ImmutableMap.of("fi", "form")));
         Element phase = new PhaseBuilder("phase").setEditAllowedByRoles("TESTING")

@@ -188,9 +188,9 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     }
 
     @Override
-    public ApplicationSearchResultDTO findAllQueried(String term, ApplicationQueryParameters queryParameters,
+    public ApplicationSearchResultDTO findAllQueried(ApplicationQueryParameters queryParameters,
                                                      ApplicationFilterParameters filterParameters) {
-        final DBObject query = buildQuery(term, queryParameters, filterParameters);
+        final DBObject query = buildQuery(queryParameters, filterParameters);
         final DBObject keys = generateKeysDBObject(DBObjectToSearchResultItem.KEYS);
         final DBObject sortBy = new BasicDBObject(queryParameters.getOrderBy(), queryParameters.getOrderDir());
         final SearchResults<ApplicationSearchResultItemDTO> results = searchListing(query, keys, sortBy, queryParameters.getStart(), queryParameters.getRows(), dbObjectToSearchResultItem, true);
@@ -198,10 +198,10 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     }
 
     @Override
-    public List<Map<String, Object>> findAllQueriedFull(String term, ApplicationQueryParameters queryParameters,
-                                                        ApplicationFilterParameters filterParameters) {
+    public List<Map<String, Object>> findAllQueriedFull(final ApplicationQueryParameters queryParameters,
+                                                        final ApplicationFilterParameters filterParameters) {
         LOG.debug("findFullApplications, build query: {}", System.currentTimeMillis());
-        final DBObject query = buildQuery(term, queryParameters, filterParameters);
+        final DBObject query = buildQuery(queryParameters, filterParameters);
         LOG.debug("findFullApplications, query built: {}", System.currentTimeMillis());
         final DBObject keys = generateKeysDBObject(DBObjectToMapFunction.KEYS);
         final DBObject sortBy = new BasicDBObject(queryParameters.getOrderBy(),  queryParameters.getOrderDir());
@@ -209,11 +209,11 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         return searchResults.searchResultsList;
     }
 
-    private DBObject buildQuery(String term, ApplicationQueryParameters applicationQueryParameters,
+    private DBObject buildQuery(ApplicationQueryParameters applicationQueryParameters,
                                 ApplicationFilterParameters filterParameters) {
         LOG.debug("Entering findAllQueried");
         DBObject[] filters = buildQueryFilter(applicationQueryParameters, filterParameters);
-        StringTokenizer st = new StringTokenizer(term, " ");
+        StringTokenizer st = new StringTokenizer(applicationQueryParameters.getSearchTerms(), " ");
         ArrayList<DBObject> queries = new ArrayList<DBObject>();
         while (st.hasMoreTokens()) {
             String token = st.nextToken();

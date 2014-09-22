@@ -9,6 +9,8 @@ import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.haku.oppija.lomake.service.UserSession;
 import fi.vm.sade.haku.oppija.ui.service.ModelResponse;
+import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
+import fi.vm.sade.haku.virkailija.authentication.impl.AuthenticationServiceMockImpl;
 import fi.vm.sade.haku.virkailija.koulutusinformaatio.KoulutusinformaatioService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.PDFService;
@@ -36,6 +38,7 @@ public class UIServiceImplTest {
     UserSession userSession = mock(UserSession.class);
     KoulutusinformaatioService koulutusinformaatioService = mock(KoulutusinformaatioService.class);
     PDFService pdfService = mock(PDFService.class);
+    AuthenticationService authenticationService = new AuthenticationServiceMockImpl();
     
     String koulutusinformaatioBaseurl = "";
 
@@ -73,7 +76,7 @@ public class UIServiceImplTest {
     public void testCompleteApplicationAttachments() {
 
         UIServiceImpl service = new UIServiceImpl(applicationService, applicationSystemService, userSession,
-                koulutusinformaatioService, koulutusinformaatioBaseurl, pdfService);
+                koulutusinformaatioService, authenticationService, koulutusinformaatioBaseurl, pdfService);
 
         String asId = "1.2.3";
         String oid = "4.5.6";

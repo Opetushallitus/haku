@@ -18,6 +18,7 @@ package fi.vm.sade.haku.oppija.ui.service;
 
 import org.apache.http.HttpResponse;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 public interface UIService {
@@ -47,4 +48,6 @@ public interface UIService {
     ModelResponse getApplication(final String applicationSystemId);
 
     HttpResponse getUriToPDF(String applicationSystemId, String oid);
+
+    String ensureLanguage(HttpServletRequest request, String applicationSystemId);
 }

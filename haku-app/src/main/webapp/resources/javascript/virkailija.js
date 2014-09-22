@@ -215,6 +215,7 @@ $(document).ready(function () {
     $('input#application-preference').change(function (event) {
         if (!$(this).val()) {
             $('#application-preference-code').val("");
+            $('#application-preference-oid').val("");
         }
     });
 
@@ -417,6 +418,7 @@ $(document).ready(function () {
                 $('#application-state').val(obj.appState);
                 $('#application-preference').val(obj.aoid);
                 $('#application-preference-code').val(obj.aoidCode);
+                $('#application-preference-code').val(obj.aoOid);
                 $('#application-group').val(obj.group);
                 $('#application-group-oid').val(obj.groupOid);
                 $('#base-education').val(obj.baseEducation);
@@ -439,6 +441,7 @@ $(document).ready(function () {
                 addParameter(obj, 'appState', '#application-state');
                 addParameter(obj, 'aoid', '#application-preference');
                 addParameter(obj, 'aoidCode', '#application-preference-code');
+                addParameter(obj, 'aoOid', '#application-preference-oid');
                 addParameter(obj, 'group', '#application-group');
                 addParameter(obj, 'groupOid', '#application-group-oid');
                 addParameter(obj, 'lopoid', '#lopoid');
@@ -506,21 +509,14 @@ $(document).ready(function () {
                         }
                         $('#pagination').bootstrapPaginator(options);
                         applicationSearch.setSortOrder(queryParameters.orderBy, queryParameters.orderDir);
-                        if (queryParameters.asId && queryParameters.aoid) {
-                            var href = page_settings.contextPath +
-                                '/applications/excel?' + Object.keys(queryParameters).reduce(function(a,k){
-                                    a.push(k+'='+encodeURIComponent(queryParameters[k]));
-                                    return a
-                                }, []).join('&');
-                            $('#excel-link').removeClass('disabled');
-                            $('#excel-link').attr('href', href);
+                        if (queryParameters.asId && (queryParameters.aoOid || queryParameters.aoidCode)) {
+                            var href = page_settings.contextPath + '/applications/excel?' + objectToQueryParameterString(_.omit(queryParameters, ['rows','start']));
+                            enableExcel(href);
                         } else {
-                            $('#excel-link').addClass('disabled');
-                            $('#excel-link').attr('href', 'javascript:void(0);');
+                            disableExcel();
                         }
                     } else {
-                        $('#excel-link').addClass('disabled');
-                        $('#excel-link').attr('href', 'javascript:void(0);');
+                        disableExcel();
                         $('#pagination').empty();
                     }
                     spinner.stop();
@@ -585,6 +581,7 @@ $(document).ready(function () {
             $('#application-state').val('');
             $('#application-preference').val('');
             $('#application-preference-code').val('');
+            $('#application-preference-oid').val('');
             $('#application-group').val('');
             $('#application-group-oid').val('');
             $('#application-system').val('');
@@ -596,8 +593,7 @@ $(document).ready(function () {
             $('#sendingClass').val('');
             $('#discretionary-only').attr('checked', false);
             $('#check-all-applications').attr('checked', false);
-            $('#excel-link').addClass('disabled');
-            $('#excel-link').attr('href','javascript:void(0);');
+            disableExcel();
         },
             this.getSortOrder = function (columnName) {
                 var column = $('#application-table-header-' + columnName);
@@ -824,11 +820,11 @@ $(document).ready(function () {
             delay: 500,
             source: function (req, res) {
                 var qParams = {
-                    hakuOid : encodeURI(asid),
-                    searchTerms: encodeURI(req.term),
-                    organisationOid : encodeURI($('#lopoid').val())
+                    hakuOid : asid,
+                    searchTerms: req.term,
+                    organisationOid : $('#lopoid').val()
                 }
-                var url = encodeURI('/tarjonta-service/rest/v1/hakukohde/search?' + objectToQueryParameterString(qParams));
+                var url = '/tarjonta-service/rest/v1/hakukohde/search?' + objectToQueryParameterString(qParams);
                 $.get(url, function (data) {
                     var applicationOptions = _.reduce(data.result.tulokset, function (aos, provider) {
                         return aos.concat(provider.tulokset);
@@ -851,7 +847,8 @@ $(document).ready(function () {
                 })
             },
             select: function (event, ui) {
-                $('#application-preference-code').val(ui.item.dataId);
+                $('#application-preference-code').val('');
+                $('#application-preference-oid').val(ui.item.dataId);
             }
         }
     };
@@ -887,14 +884,28 @@ $(document).ready(function () {
             },
             select: function (event, ui) {
                 $('#application-preference-code').val(ui.item.dataId);
+                $('#application-preference-oid').val('');
             }
         }
     }
 });
 
 function objectToQueryParameterString(queryParameters) {
-    Object.keys(queryParameters).reduce(function (a, k) {
-        a.push(k + '=' + queryParameters[k]);
+    return Object.keys(queryParameters).reduce(function (a, k) {
+        var value = queryParameters[k];
+        if (k && value) {
+            a.push(k + '=' + encodeURIComponent(value));
+        }
         return a
-    }, []).join('&');
+    }, []) .join('&');
+}
+function disableExcel() {
+    var link = $('#excel-link');
+    link.addClass('disabled');
+    link.attr('href', 'javascript:void(0);');
+}
+function enableExcel(href) {
+    var link = $('#excel-link');
+    link.removeClass('disabled');
+    link.attr('href', href);
 }

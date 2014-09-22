@@ -21,11 +21,13 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @Document
@@ -38,9 +40,11 @@ public class ApplicationSystem implements Serializable {
     private I18nText name;
     private List<ApplicationPeriod> applicationPeriods;
     private String applicationSystemType;
+    private String hakutapa;
     private Integer hakukausiVuosi;
     private String hakukausiUri;
     private String kohdejoukkoUri;
+
     private List<Element> applicationCompleteElements;
     private List<Element> additionalInformationElements;
     private List<ApplicationOptionAttachmentRequest> applicationOptionAttachmentRequests;
@@ -48,7 +52,9 @@ public class ApplicationSystem implements Serializable {
 
     public ApplicationSystem(final String id, final Form form, final I18nText name,
                              final List<ApplicationPeriod> applicationPeriods,
-                             final String applicationSystemType, Integer hakukausiVuosi,
+                             final String applicationSystemType,
+                             final String hakutapa,
+                             final Integer hakukausiVuosi,
                              final String hakukausiUri,
                              final String kohdejoukkoUri,
                              final List<Element> applicationCompleteElements,
@@ -63,6 +69,7 @@ public class ApplicationSystem implements Serializable {
         this.applicationPeriods = applicationPeriods != null ?
                 ImmutableList.copyOf(applicationPeriods) : Lists.<ApplicationPeriod>newArrayList();
         this.applicationSystemType = applicationSystemType;
+        this.hakutapa = hakutapa;
         this.hakukausiVuosi = hakukausiVuosi;
         this.hakukausiUri = hakukausiUri;
         this.kohdejoukkoUri = kohdejoukkoUri;
@@ -103,6 +110,10 @@ public class ApplicationSystem implements Serializable {
         return applicationSystemType;
     }
 
+    public String getHakutapa() {
+        return this.hakutapa;
+    }
+
     public Integer getHakukausiVuosi() {
         return hakukausiVuosi;
     }
@@ -125,6 +136,21 @@ public class ApplicationSystem implements Serializable {
 
     public List<ApplicationOptionAttachmentRequest> getApplicationOptionAttachmentRequests() {
         return applicationOptionAttachmentRequests;
+    }
+
+    public List<String> getAllowedLanguages() {
+        List<String> allowedLanguages = new ArrayList<String>();
+        allowedLanguages.add("fi");
+        allowedLanguages.add("sv");
+        if (OppijaConstants.KOHDEJOUKKO_AMMATILLINEN_JA_LUKIO.equals(kohdejoukkoUri)
+                && OppijaConstants.HAKUTAPA_YHTEISHAKU.equals(hakutapa)
+                && OppijaConstants.HAKUTYYPPI_VARSINAINEN_HAKU.equals(applicationSystemType)
+                && new Integer(2014).equals(hakukausiVuosi)
+                && OppijaConstants.HAKUKAUSI_SYKSY.equals(hakukausiUri)){
+            return allowedLanguages;
+        }
+        allowedLanguages.add("en");
+        return allowedLanguages;
     }
 
     public int getMaxApplicationOptions() {

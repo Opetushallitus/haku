@@ -17,15 +17,14 @@
 package fi.vm.sade.haku.oppija.ui.controller;
 
 import com.sun.jersey.api.view.Viewable;
-
 import fi.vm.sade.haku.oppija.ui.common.RedirectToFormViewPath;
 import fi.vm.sade.haku.oppija.ui.common.RedirectToPendingViewPath;
 import fi.vm.sade.haku.oppija.ui.common.RedirectToPhaseViewPath;
 import fi.vm.sade.haku.oppija.ui.common.UriUtil;
 import fi.vm.sade.haku.oppija.ui.service.ModelResponse;
 import fi.vm.sade.haku.oppija.ui.service.UIService;
+import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.PDFService;
-
 import org.apache.http.HttpResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,11 +34,7 @@ import org.springframework.stereotype.Component;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.jstl.core.Config;
 import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.MultivaluedMap;
-import javax.ws.rs.core.Response;
-
+import javax.ws.rs.core.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Locale;
@@ -63,11 +58,14 @@ public class FormController {
 
     private final UIService uiService;
     private final PDFService pdfService;
+    private final AuthenticationService authenticationService;
 
     @Autowired
-    public FormController(final UIService uiService, final PDFService pdfService) {
+    public FormController(final UIService uiService, final PDFService pdfService,
+                          final AuthenticationService authenticationService) {
         this.uiService = uiService;
         this.pdfService = pdfService;
+        this.authenticationService = authenticationService;
     }
 
     @GET
@@ -80,32 +78,62 @@ public class FormController {
 
     @GET
     @Path("/{applicationSystemId}")
-    public Response getApplication(@PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId) throws URISyntaxException {
+    public Response getApplication(@Context HttpServletRequest request,
+                                   @PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId) throws URISyntaxException {
         LOGGER.debug("getApplication {}", new Object[]{applicationSystemId});
+        String lang = uiService.ensureLanguage(request, applicationSystemId);
         ModelResponse modelResponse = uiService.getApplication(applicationSystemId);
-        return Response.seeOther(new URI(new RedirectToPhaseViewPath(applicationSystemId, modelResponse.getPhaseId()).getPath())).build();
+        Response.ResponseBuilder builder = Response.seeOther(new URI(new RedirectToPhaseViewPath(applicationSystemId, modelResponse.getPhaseId()).getPath()));
+        builder = addLangCookie(builder, request, lang);
+
+        return builder.build();
     }
 
     @POST
     @Path("/{applicationSystemId}")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED + CHARSET_UTF_8)
-    public Response prefillForm(@PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId,
+    public Response prefillForm(@Context HttpServletRequest request,
+                                @PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId,
                                 final MultivaluedMap<String, String> multiValues) throws URISyntaxException {
         LOGGER.debug("prefillForm {}, {}", applicationSystemId, multiValues);
+        String lang = uiService.ensureLanguage(request, applicationSystemId);
         uiService.storePrefilledAnswers(applicationSystemId, toSingleValueMap(multiValues));
-        return Response.seeOther(new URI(
-                new RedirectToFormViewPath(applicationSystemId).getPath())).build();
+        Response.ResponseBuilder builder = Response.seeOther(new URI(
+                new RedirectToFormViewPath(applicationSystemId).getPath()));
+        builder = addLangCookie(builder, request, lang);
+
+        return builder.build();
     }
 
     @GET
     @Path("/{applicationSystemId}/{phaseId}")
     @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
-    public Viewable getPhase(@PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId,
+    public Response getPhase(@Context HttpServletRequest request,
+                             @PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId,
                              @PathParam(PHASE_ID_PATH_PARAM) final String phaseId) {
 
         LOGGER.debug("getPhase {}, {}", applicationSystemId, phaseId);
+        String lang = uiService.ensureLanguage(request, applicationSystemId);
         ModelResponse modelResponse = uiService.getPhase(applicationSystemId, phaseId);
-        return new Viewable(ROOT_VIEW, modelResponse.getModel());
+        Viewable viewable = new Viewable(ROOT_VIEW, modelResponse.getModel());
+
+        Response.ResponseBuilder builder = Response.ok(viewable);
+        builder = addLangCookie(builder, request, lang);
+        return builder.build();
+
+    }
+
+    private Response.ResponseBuilder addLangCookie(Response.ResponseBuilder builder, HttpServletRequest request,
+                                                   String lang) {
+        if (lang != null) {
+            String domain = request.getServerName();
+            LOGGER.debug("cookie domain: {}", domain);
+            NewCookie newCookie = new NewCookie(authenticationService.getLangCookieName(), lang,
+                    "/", null, null, -1, false);
+            LOGGER.debug("langCookie: {}", newCookie.toString());
+            builder.language(lang).cookie(newCookie);
+        }
+        return builder;
     }
 
     @GET

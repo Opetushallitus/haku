@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 public class ApplicationQueryParametersBuilder {
+    private String searchTerms;
     private List<String> state;
     private List<String> asIds;
     private String aoId;
@@ -107,16 +108,13 @@ public class ApplicationQueryParametersBuilder {
         return this;
     }
 
-    public String getBaseEducation() {
-        return baseEducation;
-    }
-
-    public String getGroupOid() {
-        return groupOid;
-    }
-
     public ApplicationQueryParameters build() {
-        return new ApplicationQueryParameters(state, asIds, aoId, lopOid, aoOid, groupOid, baseEducation,
+        return new ApplicationQueryParameters(searchTerms, state, asIds, aoId, lopOid, aoOid, groupOid, baseEducation,
                 discretionaryOnly, sendingSchool, sendingClass, updatedAfter, start, rows, orderBy, orderDir);
+    }
+
+    public ApplicationQueryParametersBuilder setSearchTerms(String searchTerms) {
+        this.searchTerms = searchTerms;
+        return this;
     }
 }

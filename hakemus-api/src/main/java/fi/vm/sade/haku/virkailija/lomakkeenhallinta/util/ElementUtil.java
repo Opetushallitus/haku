@@ -42,7 +42,6 @@ public final class ElementUtil {
 
     public static final String ISO88591_NAME_REGEX = "^$|^[a-zA-ZÀ-ÖØ-öø-ÿ]$|^[a-zA-ZÀ-ÖØ-öø-ÿ'][a-zA-ZÀ-ÖØ-öø-ÿ ,-.']*(?:[a-zA-ZÀ-ÖØ-öø-ÿ.']+$)$";
     public static final String EMAIL_REGEX = "^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)+$|^$";
-    public static final String YEAR_REGEX = "^(19[0-9][0-9])|(20[0-9][0-9])$|^$"; // "^[1-2][0-9]{3}$";
     public static final String KYLLA = Boolean.TRUE.toString();
     public static final String EI = Boolean.FALSE.toString();
     private static Logger log = LoggerFactory.getLogger(ElementUtil.class);
@@ -69,27 +68,6 @@ public final class ElementUtil {
 
     public static I18nText createI18NText(final String key) { // Todo get rid of this function
         return createI18NText(key, OppijaConstants.FORM_COMMON_BUNDLE_NAME);
-    }
-
-    public static I18nText createMultipartI18NText(final String delimiter,
-                                                   final String... keys) {
-        I18nText[] texts = new I18nText[keys.length];
-        for (int i = 0; i < keys.length; i++) {
-            texts[i] = createI18NText(keys[i]);
-        }
-        Map<String, String> combinedTranslations = new HashMap<String, String>(LANGS.length);
-        for (int i = 0; i < texts.length; i++) {
-            I18nText i18nText = texts[i];
-            for (Map.Entry<String, String> translation : i18nText.getTranslations().entrySet()) {
-                String current = combinedTranslations.get(translation.getKey());
-                if (current == null) {
-                    combinedTranslations.put(translation.getKey(), translation.getValue());
-                } else {
-                    combinedTranslations.put(translation.getKey(), current + delimiter + translation.getValue());
-                }
-            }
-        }
-        return new I18nText(combinedTranslations);
     }
 
     public static I18nText createI18NText(final String key, final String bundleName) { // Todo get rid of this function
@@ -135,15 +113,13 @@ public final class ElementUtil {
 
     }
 
+    public static List<Element> filterElements(final Element element, final Predicate<Element> predicate) {
+        return filterElements(element, predicate, null);
+    }
+
     public static List<Element> filterElements(final Element element, final Predicate<Element> predicate, final Map<String, String> answers) {
         List<Element> elements = new ArrayList<Element>();
         filterElements(element, elements, predicate, answers);
-        return elements;
-    }
-
-    public static <E extends Element> Map<String, E> findElementsByType(Element element, Class<E> eClass) {
-        Map<String, E> elements = new LinkedHashMap<String, E>();
-        findElementByType(element, elements, eClass);
         return elements;
     }
 
@@ -312,11 +288,14 @@ public final class ElementUtil {
         return Rule(new Regexp(variable, pattern)).build();
     }
 
-    public static String getText(final Titled titled, String lang) {
-        I18nText i18nText = titled.getI18nText();
-        if (i18nText != null) {
-            return i18nText.getTranslations().get(lang);
+    public static String getText(final Element titled, String lang) {
+        if (titled instanceof Titled) {
+            I18nText i18nText = ((Titled)titled).getI18nText();
+            if (i18nText != null) {
+                return i18nText.getTranslations().get(lang);
+            }
         }
+
         return null;
     }
 }
