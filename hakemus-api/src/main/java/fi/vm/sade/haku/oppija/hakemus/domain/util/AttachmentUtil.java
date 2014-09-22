@@ -79,9 +79,9 @@ public class AttachmentUtil {
                 ApplicationAttachmentRequestBuilder attachmentRequestBuilder = ApplicationAttachmentRequestBuilder.start();
 
                 if (attachmentRequest.isGroupOption())
-                    attachmentRequestBuilder.setAoGroupId(attachmentRequest.getApplicationOptionId());
+                    attachmentRequestBuilder.setPreferenceAoGroupId(attachmentRequest.getApplicationOptionId());
                 else
-                    attachmentRequestBuilder.setAoId(attachmentRequest.getApplicationOptionId());
+                    attachmentRequestBuilder.setPreferenceAoId(attachmentRequest.getApplicationOptionId());
 
                 attachmentRequestBuilder.setApplicationAttachment(ApplicationAttachmentBuilder.start()
                   .setHeader(attachmentRequest.getHeader())
@@ -115,7 +115,7 @@ public class AttachmentUtil {
                 }
                 attachments.add(
                   ApplicationAttachmentRequestBuilder.start()
-                    .setAoId(ao.getId())
+                    .setPreferenceAoId(ao.getId())
                     .setApplicationAttachment(
                       ApplicationAttachmentBuilder.start()
                         .setName(ElementUtil.createI18NAsIs(attachmentDTO.getType()))
@@ -165,7 +165,7 @@ public class AttachmentUtil {
             }
 
             attachments.add(ApplicationAttachmentRequestBuilder.start()
-              .setAoId(aoOid)
+              .setPreferenceAoId(aoOid)
               .setApplicationAttachment(attachmentBuilder.build())
             .build());
         }
@@ -237,8 +237,8 @@ public class AttachmentUtil {
 
                 //TODO =RS= FIX THE NULL
                 attachments.add(ApplicationAttachmentRequestBuilder.start()
-                    .setAoId(aoDTO.getId())
-                    .setAoGroupId(null)
+                    .setPreferenceAoId(aoDTO.getId())
+                    .setPreferenceAoGroupId(null)
                     .setApplicationAttachment(
                       ApplicationAttachmentBuilder.start()
                         .setName(ElementUtil.createI18NAsIs(StringUtil.safeToString(aoDTO.getProvider().getName())))

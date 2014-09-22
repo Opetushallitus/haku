@@ -1,8 +1,11 @@
 package fi.vm.sade.haku.oppija.hakemus.domain;
 
+import java.util.UUID;
+
 public class ApplicationAttachmentRequestBuilder {
-    private String aoId;
-    private String aoGroupId;
+    private String id;
+    private String preferenceAoId;
+    private String preferenceAoGroupId;
     private ApplicationAttachmentRequest.ReceptionStatus receptionStatus = ApplicationAttachmentRequest.ReceptionStatus.NOT_RECEIVED;
     private ApplicationAttachmentRequest.ProcessingStatus processingStatus = ApplicationAttachmentRequest.ProcessingStatus.NOT_CHECKED;
 
@@ -12,32 +15,32 @@ public class ApplicationAttachmentRequestBuilder {
         return new ApplicationAttachmentRequestBuilder();
     }
 
-    public ApplicationAttachmentRequestBuilder setAoId(String aoId) {
-        this.aoId = aoId;
+    public ApplicationAttachmentRequestBuilder setPreferenceAoId(final String preferenceAoId) {
+        this.preferenceAoId = preferenceAoId;
         return this;
     }
 
-    public ApplicationAttachmentRequestBuilder setAoGroupId(String aoGroupId) {
-        this.aoGroupId = aoGroupId;
+    public ApplicationAttachmentRequestBuilder setPreferenceAoGroupId(final String preferenceAoGroupId) {
+        this.preferenceAoGroupId = preferenceAoGroupId;
         return this;
     }
 
-    public ApplicationAttachmentRequestBuilder setReceptionStatus(ApplicationAttachmentRequest.ReceptionStatus receptionStatus) {
+    public ApplicationAttachmentRequestBuilder setReceptionStatus(final ApplicationAttachmentRequest.ReceptionStatus receptionStatus) {
         this.receptionStatus = receptionStatus;
         return this;
     }
 
-    public ApplicationAttachmentRequestBuilder setProcessingStatus(ApplicationAttachmentRequest.ProcessingStatus processingStatus) {
+    public ApplicationAttachmentRequestBuilder setProcessingStatus(final ApplicationAttachmentRequest.ProcessingStatus processingStatus) {
         this.processingStatus = processingStatus;
         return this;
     }
 
-    public ApplicationAttachmentRequestBuilder setApplicationAttachment(ApplicationAttachment applicationAttachment) {
+    public ApplicationAttachmentRequestBuilder setApplicationAttachment(final ApplicationAttachment applicationAttachment) {
         this.applicationAttachment = applicationAttachment;
         return this;
     }
 
     public ApplicationAttachmentRequest build() {
-        return new ApplicationAttachmentRequest(aoId, aoGroupId, receptionStatus, processingStatus, applicationAttachment);
+        return new ApplicationAttachmentRequest(null == id? UUID.randomUUID().toString(): id , preferenceAoId, preferenceAoGroupId, receptionStatus, processingStatus, applicationAttachment);
     }
 }

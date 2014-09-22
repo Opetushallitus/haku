@@ -21,31 +21,38 @@ public class ApplicationAttachmentRequest {
         UNNECESSARY
     }
 
-    private final String aoId;
-    private final String aoGroupId;
+    private final String id;
+    private final String preferenceAoId;
+    private final String preferenceAoGroupId;
     private final ReceptionStatus receptionStatus;
     private final ProcessingStatus processingStatus;
     private final ApplicationAttachment applicationAttachment;
 
     @JsonCreator
-    public ApplicationAttachmentRequest(@JsonProperty(value = "aoId") String aoId,
-                                        @JsonProperty(value = "aoGroupId") String aoGroupId,
-                                        @JsonProperty(value = "requestStatus") ApplicationAttachmentRequest.ReceptionStatus receptionStatus,
-                                        @JsonProperty(value = "processingStatus") ApplicationAttachmentRequest.ProcessingStatus processingStatus,
-                                        @JsonProperty(value = "applicationAttachment") ApplicationAttachment applicationAttachment) {
-        this.aoId = aoId;
-        this.aoGroupId = aoGroupId;
+    public ApplicationAttachmentRequest(@JsonProperty(value = "id") final String id,
+                                        @JsonProperty(value = "preferenceAoId") final String preferenceAoId,
+                                        @JsonProperty(value = "preferenceAoGroupId") final String preferenceAoGroupId,
+                                        @JsonProperty(value = "requestStatus") final ApplicationAttachmentRequest.ReceptionStatus receptionStatus,
+                                        @JsonProperty(value = "processingStatus") final ApplicationAttachmentRequest.ProcessingStatus processingStatus,
+                                        @JsonProperty(value = "applicationAttachment") final ApplicationAttachment applicationAttachment) {
+        this.id = id;
+        this.preferenceAoId = preferenceAoId;
+        this.preferenceAoGroupId = preferenceAoGroupId;
         this.receptionStatus = receptionStatus;
         this.processingStatus = processingStatus;
         this.applicationAttachment = applicationAttachment;
     }
 
+    public String getId(){
+        return id;
+    }
+
     public String getAoId() {
-        return aoId;
+        return preferenceAoId;
     }
 
     public String getAoGroupId() {
-        return aoGroupId;
+        return preferenceAoGroupId;
     }
 
     public ReceptionStatus getReceptionStatus() {
