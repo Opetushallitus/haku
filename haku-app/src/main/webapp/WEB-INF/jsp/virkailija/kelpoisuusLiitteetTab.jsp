@@ -14,17 +14,16 @@
 
 </script>
 <hr>
-
 <c:forEach var="hakukohde" items="${it.hakukohteet}">
-    <form id="form-kelpoisuus-liitteet-${hakukohde.index}" method="post" novalidate="novalidate" class="block" >
+    <form id="form-kelpoisuus-liitteet-${hakukohde.index}" method="post" action="saveKelpoisuusLiitteet/${hakukohde.oid}" novalidate="novalidate" class="block" >
 
         <div class="grid16-3 inline-block">
             <b>${hakukohde.index}.hakutoive</b>
             <br>
             <br>
-            <b id="kesken-${hakukohde.index}"  style="background-color: #188cc0; color: #ffffff; border-radius: 5px; padding: 5px; display: none;" >Kesken</b>
             <b id="hylatty-${hakukohde.index}" style="background-color: #333333; color: #ffffff; border-radius: 5px; padding: 5px; display: none;" >Hylätty</b>
-            <b id="valmis-${hakukohde.index}" style="background-color: #438c48; color: #ffffff; border-radius: 5px; padding: 5px; display: none;" >Valmis</b>
+            <b id="hakukelpoinen-${hakukohde.index}" style="background-color: #438c48; color: #ffffff; border-radius: 5px; padding: 5px; display: none;" >Hakukelpoinen</b>
+            <b id="puutteellinen-${hakukohde.index}" style="background-color: #feba00; color: #000000; border-radius: 5px; padding: 5px; display: none;" >Puutteellinen</b>
             <br>
             <br>
             <b id="kaikkiliitteet-${hakukohde.index}" style="background-color: #438c48; color: #ffffff; border-radius: 5px; padding: 5px; display: none">Kaikki liitteet saapuneet</b>
@@ -34,7 +33,7 @@
             <b id="tallennettu-${hakukohde.index}" style="background-color: #438c48; color: #ffffff; border-radius: 5px; padding: 5px; display: none;" >Tallennettu</b>
             <br>
             <br>
-            <input id="kaikki-tiedot-tarkistettu-${hakukohde.index}" type="checkbox" disabled> Kaikki tiedot tarkistettu
+            <input id="kaikki-tiedot-tarkistettu-${hakukohde.index}" type="checkbox" onchange="kjal.kaikkiTiedotTarkistettuCheckBox('${hakukohde.index}')" > <span style="font-weight: bold">Kaikki tiedot tarkistettu</span>
 
         </div>
         <div class="grid16-12 inline-block">
@@ -69,12 +68,19 @@
 
     <script type="text/javascript">
         <c:forEach var="liite" items="${application.attachmentRequests}" varStatus="liiteCount" >
+        <%--console.log("<c:out value="${liite.source}" />");--%>
+        <%--console.log("<c:out value="${liite.rejectionBasis}" />");--%>
+        <%--status: "<c:out value="${liite.status}"/>",--%>
+        <%--source: "<c:out value="${liite.source}"/>",--%>
+        <%--rejectionBasis: "<c:out value="${liite.rejectionBasis}"/>",--%>
+
         var kelpoisuus_liitteet = {
             indx: "<c:out value="${hakukohde.index}"/>",
             aoId: "<c:out value="${liite.aoId}"/>",
-            status: "",
-            source: "",
-            rejectionBasis: "",
+            status: "NOT_CHECKED", //TODO: muuta tämä kun saatavilla backenditä
+            source: "UNKNOWN", //TODO: muuta tämä kun saatavilla backenditä
+            rejectionBasis: "", //TODO: muuta tämä kun saatavilla backenditä
+            allDataChecked: false, //TODO: muuta tämä kun saatavilla backenditä
             attachments: [
                 {
                    id: "<c:out value="${liiteCount.count}"/>", //TODO: vaihda tämä <--

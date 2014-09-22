@@ -1,10 +1,12 @@
 var config = {
-    hakukelpoinen: "02",
-    eiHakukelpoinen: "03",
+    hakukelpoinen: "INELIGIBLE",
+    eiHakukelpoinen: "UNELIGABLE",
+    puutteellinen: "INADEQUATE",
     liiteSaapunut: "ARRIVED",
     liiteEiSaapunut: "NOT_RECEIVED",
     liiteEiTarkistettu: "NOT_CHECK",
-    liiteTarkistettu: "CHECKED"
+    liiteTarkistettu: "CHECKED",
+    tietolahdeUnknown: "UNKNOWN"
 };
 var kjal = {
     /**
@@ -20,24 +22,24 @@ var kjal = {
                 ind = parseInt(hktindx) + 1,
                 $form =
                     "<tr>"
-                        + "<td> Hakukelpoisuus </td>"
+                        + "<td style=\"font-weight: bold;\"> Hakukelpoisuus </td>"
                         + "<td>"
                         + "<select class=\"width-12-11\" id=\"hakukelpoisuus-select\" onchange=\"kjal.hakuKelpoisuus(" + ind + ", false)\">"
-                        + "<option value=\"01\">Kelpoisuus tarkistamatta</option>"
-                        + "<option value=\"02\">Hakukelpoinen</option>"
-                        + "<option value=\"03\">Ei hakukelpoinen</option>"
-                        + "<option value=\"04\">Puuttelinen</option>"
+                        + "<option value=\"NOT_CHECKED\">Kelpoisuus tarkistamatta</option>"
+                        + "<option value=\"INELIGIBLE\">Hakukelpoinen</option>"
+                        + "<option value=\"UNELIGABLE\">Ei hakukelpoinen</option>"
+                        + "<option value=\"INADEQUATE\">Puuttelinen</option>"
                         + "</select>"
                         + "</td>"
                         + "<td>"
                         + "<select class=\"width-12-11\" id=\"hakukelpoisuus-tietolahde\" disabled onchange=\"kjal.tietoLahde(" + ind + ")\">"
                         + "<option value=\"\" default selected disabled>valitse tarkistettu tietolähde</option>"
-                        + "<option value=\"01\">Oppilaitoksen toimittava tieto</option>"
-                        + "<option value=\"02\">Alkuperäinen todistus</option>"
-                        + "<option value=\"03\">Virallinen oikeaksi todistettu kopio</option>"
-                        + "<option value=\"04\">Oikeaksi todistettu kopio</option>"
-                        + "<option value=\"05\">Kopio</option>"
-                        + "<option value=\"06\">Rekisteri</option>"
+                        + "<option value=\"LEARNING_PROVIDER\">Oppilaitoksen toimittava tieto</option>"
+                        + "<option value=\"ORIGINAL_DIPLOMA\">Alkuperäinen todistus</option>"
+                        + "<option value=\"OFFICIALLY_AUTHENTICATED_COPY\">Virallinen oikeaksi todistettu kopio</option>"
+                        + "<option value=\"AUTHENTICATED_COPY\">Oikeaksi todistettu kopio</option>"
+                        + "<option value=\"COPY\">Kopio</option>"
+                        + "<option value=\"REGISTER\">Rekisteri</option>"
                         + "</select>"
                         + "</td>"
                         + "</tr>"
@@ -104,11 +106,17 @@ var kjal = {
      * @param indx hakutoiveen index numero
      */
     hakuKelpoisuus: function (indx, onPopulate) {
-        console.log(hakutoiveet[indx-1]);
+        console.log('ennen muutostosta: ',hakutoiveet[indx-1]);
+
         if(onPopulate){
-            $('#liitteet-table-' + indx + ' #hakukelpoisuus-select').val(hakutoiveet[indx-1].hakukelpoisuus);
-            $('#liitteet-table-' + indx + ' #hakukelpoisuus-tietolahde').val(hakutoiveet[indx-1].source);
+            $('#liitteet-table-' + indx + ' #hakukelpoisuus-select').val(hakutoiveet[indx-1].status);
+            console.log('**',  hakutoiveet[indx-1].source);
+            if(hakutoiveet[indx-1].source !== config.tietolahdeUnknown ) {
+                console.log('**',  hakutoiveet[indx-1].source);
+                $('#liitteet-table-' + indx + ' #hakukelpoisuus-tietolahde').val(hakutoiveet[indx-1].source);
+            }
             $('#liitteet-table-' + indx + ' #hylkaamisenperuste').val(hakutoiveet[indx-1].rejectionBasis);
+            $('#kaikki-tiedot-tarkistettu-' + indx).attr('checked', hakutoiveet[indx-1].allDataChecked);
         } else {
             hakutoiveet[indx-1].status = $('#liitteet-table-' + indx + ' #hakukelpoisuus-select').val();
         }
@@ -120,16 +128,17 @@ var kjal = {
         } else if (hakutoiveet[indx-1].status === config.eiHakukelpoinen) {
             $('#liitteet-table-' + indx + ' #hylkaamisenperuste').removeAttr('disabled');
             $('#liitteet-table-' + indx + ' #hakukelpoisuus-tietolahde').attr('disabled', 'true');
-            hakutoiveet[indx-1].source = '';
+            hakutoiveet[indx-1].source = config.tietolahdeUnknown;
             $('#liitteet-table-' + indx + ' #hakukelpoisuus-tietolahde').val('');
         } else {
             $('#liitteet-table-' + indx + ' #hakukelpoisuus-tietolahde').attr('disabled', 'true');
             $('#liitteet-table-' + indx + ' #hylkaamisenperuste').attr('disabled', 'true');
-            hakutoiveet[indx-1].source = '';
+            hakutoiveet[indx-1].source = config.tietolahdeUnknown;
             hakutoiveet[indx-1].rejectionBasis = '';
             $('#liitteet-table-' + indx + ' #hylkaamisenperuste').val('');
             $('#liitteet-table-' + indx + ' #hakukelpoisuus-tietolahde').val('');
         }
+        console.log('muutoksen jälkeen: ', hakutoiveet[indx-1]);
         this.tarkistaHakutoiveValmis(indx);
     },
 
@@ -254,31 +263,15 @@ var kjal = {
     tarkistaHakutoiveValmis: function (indx) {
         console.log('tarkistaHakutoiveValmis()');
         $('#hylatty-' +indx).css('display', 'none');
-        $('#valmis-' +indx).css('display', 'none');
-        $('#kesken-' +indx).css('display', 'none');
+        $('#hakukelpoinen-' +indx).css('display', 'none');
+        $('#puutteellinen-' +indx).css('display', 'none');
         if (hakutoiveet[indx - 1].status ===  config.eiHakukelpoinen) {
             $('#hylatty-' +indx).css('display', '');
-            $('#kaikki-tiedot-tarkistettu-' +indx).prop('checked', 'true');
         } else if(hakutoiveet[indx - 1].status ===  config.hakukelpoinen ){
-            $('#valmis-' +indx).css('display', '');
-            $('#kaikki-tiedot-tarkistettu-' +indx).prop('checked', 'true');
+            $('#hakukelpoinen-' +indx).css('display', '');
+        } else if (hakutoiveet[indx - 1].status === config.puutteellinen) {
+            $('#puutteellinen-' +indx).css('display', '');
         }
-
-        /*else {
-            $('#hylatty-' +indx).css('display', 'none');
-            $('#valmis-' +indx).css('display', 'none');
-            $('#kesken-' +indx).css('display', 'none');
-            if(hakutoiveet[indx - 1].status ===  config.hakukelpoinen &&
-                this.kaikkiLiitteetTarkistettu(indx-1) &&
-                hakutoiveet[indx-1].source !== '' &&
-                this.kaikkiLiitteetSaapuneetTilassa(indx-1) ) {
-                $('#valmis-' +indx).css('display', '');
-            } else {
-                $('#kesken-' +indx).css('display', '');
-            }
-        }*/
-
-
         if (_.isEqual(hakutoiveet[indx-1], hakutoiveetCache[indx-1])){
             $('#tallennettu-' + indx).css('display', '');
             $('#muuttunut-' + indx).css('display', 'none');
@@ -342,9 +335,18 @@ var kjal = {
         };
 
         $('<input type="hidden" name="json"/>').val(JSON.stringify(submitData)).appendTo('#form-kelpoisuus-liitteet-'+indx);
-        $('#form-kelpoisuus-liitteet-'+indx).submit();
+        $('#form-kelpoisuus-liitteet-' + indx).submit();
 
         hakutoiveetCache[indx-1] = JSON.parse(JSON.stringify(hakutoiveet[indx-1]));
+        this.tarkistaHakutoiveValmis(indx);
+    },
+    kaikkiTiedotTarkistettuCheckBox: function (indx){
+        console.log('kaikkiTiedotTarkistettuCheckBox = ', $('#kaikki-tiedot-tarkistettu-' + indx).attr('checked'));
+        if( $('#kaikki-tiedot-tarkistettu-' + indx).attr('checked') === 'checked') {
+            hakutoiveet[indx-1].allDataChecked = true;
+        } else {
+            hakutoiveet[indx-1].allDataChecked = false;
+        }
         this.tarkistaHakutoiveValmis(indx);
     }
 
