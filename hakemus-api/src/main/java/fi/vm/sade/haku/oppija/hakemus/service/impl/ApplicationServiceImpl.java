@@ -169,6 +169,7 @@ public class ApplicationServiceImpl implements ApplicationService {
             application.flagStudentIdentificationRequired();
             application.addMeta(Application.META_FILING_LANGUAGE, language);
             application.setAttachmentRequests(AttachmentUtil.resolveAttachmentRequests(applicationSystem, application, koulutusinformaatioService));
+            application = updatePreferenceBasedData(application);
             this.applicationDAO.save(application);
             this.userSession.removeApplication(application);
             return application;
