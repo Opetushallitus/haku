@@ -19,7 +19,6 @@ import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
-import fi.vm.sade.generic.rest.CachingRestClient;
 import fi.vm.sade.haku.oppija.common.organisaatio.*;
 import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
 import fi.vm.sade.organisaatio.api.search.OrganisaatioHakutulos;
@@ -32,7 +31,6 @@ import org.apache.http.StatusLine;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.impl.client.cache.CachingHttpClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -55,7 +53,6 @@ public class OrganizationServiceImpl implements OrganizationService {
 
     private static final Logger LOG = LoggerFactory.getLogger(OrganizationServiceImpl.class);
 
-    private static HttpClient cachingRestClient;
     private static Map<String, SoftReference<Object>> cache;
     private static final String ROOT_ORGANIZATION_OPH = "1.2.246.562.10.00000000001";
 
@@ -201,7 +198,7 @@ public class OrganizationServiceImpl implements OrganizationService {
     }
 
     private <T> T get(String url, Class<? extends T> resultType) throws IOException {
-        HttpClient client = getCachingRestClient();
+        HttpClient client = new DefaultHttpClient();
         HttpGet get = new HttpGet(targetService + url);
         HttpResponse response = client.execute(get);
         HttpEntity entity = response.getEntity();
@@ -211,11 +208,13 @@ public class OrganizationServiceImpl implements OrganizationService {
                 IOUtils.copy(entity.getContent(), writer, "UTF-8");
                 T ret = (T) writer.toString();
                 entity.consumeContent();
+                get.releaseConnection();
                 return ret;
             } else {
                 try {
                     T ret = gson.fromJson(new InputStreamReader(entity.getContent()), resultType);
                     entity.consumeContent();
+                    get.releaseConnection();
                     return ret;
                 } catch (JsonSyntaxException jse) {
                     LOG.error("Deserializing organisation failed. url: "+url);
@@ -224,19 +223,10 @@ public class OrganizationServiceImpl implements OrganizationService {
             }
         }
         entity.consumeContent();
+        get.releaseConnection();
         StatusLine statusLine = response.getStatusLine();
         throw new ResourceNotFoundException("fetch failed. url: "+url+" statusCode: "+statusLine.getStatusCode()
                 +" reason: "+statusLine.getReasonPhrase());
-    }
-
-    public static void setCachingRestClient(CachingRestClient client) {
-    }
-
-    private synchronized HttpClient getCachingRestClient() {
-        if (cachingRestClient == null) {
-            cachingRestClient = new CachingHttpClient();
-        }
-        return cachingRestClient;
     }
 
 }
