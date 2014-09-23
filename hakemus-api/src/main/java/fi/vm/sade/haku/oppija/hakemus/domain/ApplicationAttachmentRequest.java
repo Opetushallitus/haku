@@ -47,11 +47,11 @@ public class ApplicationAttachmentRequest {
         return id;
     }
 
-    public String getAoId() {
+    public String getPreferenceAoId() {
         return preferenceAoId;
     }
 
-    public String getAoGroupId() {
+    public String getPreferenceAoGroupId() {
         return preferenceAoGroupId;
     }
 
