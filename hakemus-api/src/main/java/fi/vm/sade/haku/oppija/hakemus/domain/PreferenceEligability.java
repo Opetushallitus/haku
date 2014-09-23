@@ -1,6 +1,10 @@
 package fi.vm.sade.haku.oppija.hakemus.domain;
 
 
+import org.codehaus.jackson.annotate.JsonProperty;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
+
+@JsonSerialize(include = JsonSerialize.Inclusion.NON_EMPTY)
 public class PreferenceEligability {
     public static enum Status {
         NOT_CHECKED,
@@ -24,7 +28,10 @@ public class PreferenceEligability {
     private final Source source;
     private final String rejectionBasis;
 
-    public PreferenceEligability(String aoId, Status status, Source source, String rejectionBasis) {
+    public PreferenceEligability(@JsonProperty(value = "aoId") final String aoId,
+      @JsonProperty(value = "status") final Status status,
+      @JsonProperty(value = "source") final Source source,
+      @JsonProperty(value = "rejectionBasis") final String rejectionBasis) {
         this.aoId = aoId;
         this.status = status;
         this.source = source;
