@@ -1,6 +1,7 @@
 package fi.vm.sade.haku.oppija.hakemus.domain;
 
 import org.codehaus.jackson.annotate.JsonCreator;
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
@@ -18,7 +19,12 @@ public class PreferenceChecked {
         this.checkedByOfficerOid = checkedByOfficerOid;
     }
 
+    @JsonIgnore
     public Boolean isChecked(){
+        return checked;
+    }
+
+    public Boolean getChecked(){
         return checked;
     }
 
