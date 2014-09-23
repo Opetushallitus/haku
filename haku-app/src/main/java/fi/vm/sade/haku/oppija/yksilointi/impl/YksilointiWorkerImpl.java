@@ -173,7 +173,8 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
                     if (null == application.getAuthorizationMeta()) {
                         application = applicationService.updateAuthorizationMeta(application, false);
                     }
-                    if (null == application.getPreferenceEligabilities() || null == application.getPreferencesChecked() || null == application.getPreferencesChecked()){
+                    if (null == application.getPreferenceEligabilities() || 0 == application.getPreferenceEligabilities().size() ||
+                        null == application.getPreferencesChecked() || 0 == application.getPreferencesChecked().size()){
                         application = applicationService.updatePreferenceBasedData(application);
                     }
                     application.setModelVersion(Application.CURRENT_MODEL_VERSION);
