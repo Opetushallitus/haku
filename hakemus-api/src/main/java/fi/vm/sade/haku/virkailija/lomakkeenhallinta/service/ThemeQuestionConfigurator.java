@@ -171,7 +171,7 @@ public final class ThemeQuestionConfigurator {
         do {
             ThemeQuestion tq = themeQuestions.remove(i);
             newOrder.add(tq);
-        } while (null  == themeQuestions.get(++i).getOrdinal());
+        } while (++i < themeQuestions.size() && null == themeQuestions.get(i).getOrdinal());
         newOrder.addAll(0, themeQuestions);
         return newOrder;
     }

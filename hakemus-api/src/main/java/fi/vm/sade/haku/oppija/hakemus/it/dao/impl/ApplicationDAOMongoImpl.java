@@ -74,6 +74,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     private static final String INDEX_SEARCH_NAMES = "index_searchNames";
     private static final String INDEX_REDO_POSTPROCESS = "index_redoPostProcess";
     private static final String INDEX_FULL_NAME = "index_full_name";
+    private static final String INDEX_VERSION = "index_version";
 
     private static final String FIELD_AO_T = "answers.hakutoiveet.preference%d-Koulutus-id";
     private static final String FIELD_AO_KOULUTUS_ID_T = "answers.hakutoiveet.preference%d-Koulutus-id-aoIdentifier";
@@ -578,8 +579,14 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
 
     @Override
     public List<Application> getNextUpgradable(int batchSize) {
-        QueryBuilder queryBuilder = QueryBuilder.start(FIELD_MODEL_VERSION).exists(false);
-        DBCursor cursor = getCollection().find(queryBuilder.get()).limit(batchSize);
+        DBObject query = new BasicDBObject(OR, new DBObject[] {
+          new BasicDBObject(FIELD_MODEL_VERSION, new BasicDBObject(EXISTS, false)),
+          new BasicDBObject(AND, new DBObject[] {
+            new BasicDBObject(FIELD_MODEL_VERSION, new BasicDBObject(GTE, 0)),
+            new BasicDBObject(FIELD_MODEL_VERSION, new BasicDBObject(LT, Application.CURRENT_MODEL_VERSION)),
+          })
+        });
+          DBCursor cursor = getCollection().find(query).limit(batchSize);
         List<Application> applications = new ArrayList<Application>(batchSize);
         while (cursor.hasNext()) {
             applications.add(fromDBObject.apply(cursor.next()));
@@ -621,6 +628,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         ensureSparseIndex(INDEX_ALL_ORGANIZAIONS, FIELD_ALL_ORGANIZAIONS);
         ensureIndex(INDEX_SEARCH_NAMES, FIELD_SEARCH_NAMES);
         ensureIndex(INDEX_FULL_NAME, FIELD_FULL_NAME);
+        ensureIndex(INDEX_VERSION, FIELD_MODEL_VERSION);
 
         // System queries
         ensureSparseIndex(INDEX_STUDENT_IDENTIFICATION_DONE, FIELD_APPLICATION_STATE, FIELD_STUDENT_IDENTIFICATION_DONE, FIELD_LAST_AUTOMATED_PROCESSING_TIME);

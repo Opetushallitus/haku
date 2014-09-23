@@ -156,20 +156,21 @@ public final class ApplicationUtil {
         List<String> aos = new ArrayList<String>();
         int i = 1;
         while (true) {
-            String key = String.format(OppijaConstants.PREFERENCE_ID, i);
-            if (!answers.containsKey(key)) {
+            String aoKey = String.format(OppijaConstants.PREFERENCE_ID, i);
+            if (!answers.containsKey(aoKey)) {
                 break;
             }
+            String aoId = answers.get(aoKey);
             String liiteKey = "preference" + i + "-amkLiite";
-            if (answers.containsKey(liiteKey) && !aos.contains(key)) {
+            if (isIdGivenAndKeyValueTrue(answers, aoId, liiteKey) && !aos.contains(aoId)) {
                 String groupsStr = answers.get("preference" + i + "-Koulutus-id-attachmentgroups");
                 if (StringUtils.isBlank(groupsStr)) {
-                    aos.add(answers.get(key));
+                    aos.add(aoId);
                 } else {
                     for (String group : groupsStr.split(",")) {
                         if (!aspaAos.contains(group)) {
                             aspaAos.add(group);
-                            aos.add(answers.get(key));
+                            aos.add(aoId);
                         }
                     }
                 }
