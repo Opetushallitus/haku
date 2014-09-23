@@ -181,7 +181,7 @@ public class UIServiceImpl implements UIService {
                         applicationOption = koulutusinformaatioService.getApplicationOption(answers.get(key));
                     }
                     List<ApplicationOptionAttachmentDTO> attachmentList = applicationOption.getAttachments();
-                    if (!attachmentList.isEmpty()) {
+                    if (attachmentList != null && !attachmentList.isEmpty()) {
                         answers.put(basekey + ATTACHMENTS_POSTFIX, "true");
                     }
                 }
