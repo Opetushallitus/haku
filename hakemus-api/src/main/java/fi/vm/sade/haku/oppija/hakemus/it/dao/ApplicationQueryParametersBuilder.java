@@ -13,6 +13,7 @@ public class ApplicationQueryParametersBuilder {
     private String lopOid;
     private String aoOid;
     private Boolean discretionaryOnly;
+    private Boolean primaryPreferenceOnly;
     private String sendingSchool;
     private String sendingClass;
     private Date updatedAfter;
@@ -110,11 +111,17 @@ public class ApplicationQueryParametersBuilder {
 
     public ApplicationQueryParameters build() {
         return new ApplicationQueryParameters(searchTerms, state, asIds, aoId, lopOid, aoOid, groupOid, baseEducation,
-                discretionaryOnly, sendingSchool, sendingClass, updatedAfter, start, rows, orderBy, orderDir);
+                discretionaryOnly, primaryPreferenceOnly, sendingSchool, sendingClass, updatedAfter, start, rows,
+                orderBy, orderDir);
     }
 
     public ApplicationQueryParametersBuilder setSearchTerms(String searchTerms) {
         this.searchTerms = searchTerms;
+        return this;
+    }
+
+    public ApplicationQueryParametersBuilder setPrimaryPreferenceOnly(Boolean primaryPreferenceOnly) {
+        this.primaryPreferenceOnly = primaryPreferenceOnly;
         return this;
     }
 }

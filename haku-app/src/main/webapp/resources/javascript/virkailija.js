@@ -307,12 +307,6 @@ $(document).ready(function () {
     var orgSearch = (function () {
 
         $('#reset-organizations').click(function (event) {
-            // $('#lopoid').val('');
-            // $('#lop-title').empty();
-            // $('#pagination').empty();
-            // $('#application-table tbody:first').empty();
-            // $('#application-table thead tr td').removeAttr('class');
-            // applicationSearch.updateCounters(0);
             $('#orgsearchlist').empty();
         });
 
@@ -413,6 +407,12 @@ $(document).ready(function () {
             var obj = {};
             if (lastSearch && window.location.hash === '#useLast') {
                 obj = lastSearch;
+                $('#hakukausiVuosi').val(obj.asYear);
+                $('#hakukausi').val(obj.asSemester);
+                applicationSystemSelection.init();
+                $('#application-system').val(obj.asId);
+                baseEducationSelection.init()
+
                 $('#entry').val(obj.q);
                 $('#oid').val(obj.oid);
                 $('#application-state').val(obj.appState);
@@ -423,9 +423,7 @@ $(document).ready(function () {
                 $('#application-group-oid').val(obj.groupOid);
                 $('#base-education').val(obj.baseEducation);
                 $('#lopoid').val(obj.lopoid);
-                $('#application-system').val(obj.asId);
-                $('#hakukausiVuosi').val(obj.asYear);
-                $('#hakukausi').val(obj.asSemester);
+                $('#primary-preference-only').prop('checked', obj.primaryPreferenceOnly);
                 $('#sendingSchoolOid').val(obj.sendingSchoolOid);
                 $('#sendingClass').val(obj.sendingClass);
                 $('#discretionary-only').prop('checked', obj.discretionaryOnly);
@@ -451,7 +449,6 @@ $(document).ready(function () {
                 addParameter(obj, 'asSemester', '#hakukausi');
                 addParameter(obj, 'sendingSchoolOid', '#sendingSchoolOid');
                 addParameter(obj, 'sendingClass', '#sendingClass');
-                addParameter(obj, 'discretionaryOnly', '#discretionary-only');
                 var lopTitle = $('#lop-title').text();
                 if (lopTitle) {
                     lopTitle = lopTitle.replace('&', 'ThisIsStupidButNecessary');
@@ -462,6 +459,7 @@ $(document).ready(function () {
                 }
                 obj['discretionaryOnly'] = $('#discretionary-only').prop('checked');
                 obj['checkAllApplications'] = $('#check-all-applications').prop('checked');
+                obj['primaryPreferenceOnly'] = $('#primary-preference-only').prop('checked');
                 obj['start'] = start;
                 obj['rows'] = maxRows;
                 obj['orderBy'] = orderBy;
@@ -824,7 +822,7 @@ $(document).ready(function () {
                     searchTerms: req.term,
                     organisationOid : $('#lopoid').val()
                 }
-                var url = '/tarjonta-service/rest/v1/hakukohde/search?' + objectToQueryParameterString(qParams);
+                var url = 'https://itest-virkailija.oph.ware.fi/tarjonta-service/rest/v1/hakukohde/search?' + objectToQueryParameterString(qParams);
                 $.get(url, function (data) {
                     var applicationOptions = _.reduce(data.result.tulokset, function (aos, provider) {
                         return aos.concat(provider.tulokset);
