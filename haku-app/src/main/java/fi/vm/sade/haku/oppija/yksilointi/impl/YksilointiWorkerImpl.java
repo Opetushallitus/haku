@@ -170,7 +170,12 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
             for (Application application : applications) {
                 try {
                     LOGGER.info("Start upgrading model version for application: " + application.getOid());
-                    application = applicationService.updateAuthorizationMeta(application, false);
+                    if (null == application.getAuthorizationMeta()) {
+                        application = applicationService.updateAuthorizationMeta(application, false);
+                    }
+                    if (null == application.getPreferenceEligabilities() || null == application.getPreferencesChecked() || null == application.getPreferencesChecked()){
+                        application = applicationService.updatePreferenceBasedData(application);
+                    }
                     application.setModelVersion(Application.CURRENT_MODEL_VERSION);
                     LOGGER.info("Done upgrading model version for application: " + application.getOid());
                 } catch (IOException e) {
