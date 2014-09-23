@@ -60,11 +60,11 @@ public class PersonJsonAdapter implements JsonSerializer<Person>, JsonDeserializ
         if (!isEmpty(hetu)) {
             log.debug("Has hetu: " + hetu);
             personJson.add("hetu", new JsonPrimitive(hetu));
-            personJson.add("eiSuomalaistaHetua", new JsonPrimitive(false));
         } else {
             log.debug("Has no hetu");
-            personJson.add("eiSuomalaistaHetua", new JsonPrimitive(true));
         }
+//        TODO: Pois, kunnes henkilöhallinnan bugi on korjattu
+//        personJson.add("eiSuomalaistaHetua", new JsonPrimitive(person.isNoSocialSecurityNumber()));
 
         String dateOfBirth = person.getDateOfBirth();
         if (!isEmpty(dateOfBirth)) {
@@ -74,7 +74,6 @@ public class PersonJsonAdapter implements JsonSerializer<Person>, JsonDeserializ
             } catch (ParseException e) {
                 log.error("Couldn't parse date of birth: "+dateOfBirth);
             }
-
         }
 
         String sex = person.getSex();
@@ -99,8 +98,9 @@ public class PersonJsonAdapter implements JsonSerializer<Person>, JsonDeserializ
                 .setLastName(getJsonString(personJson, "sukunimi"))
                 .setSocialSecurityNumber(getJsonString(personJson, "hetu"))
                 .setPersonOid(getJsonString(personJson, "oidHenkilo"))
-                .setStudentOid(getJsonString(personJson, "oppijanumero"))
-                .setNoSocialSecurityNumber(getJsonBoolean(personJson, "eiSuomalaistaHetua"));
+                .setStudentOid(getJsonString(personJson, "oppijanumero"));
+//        TODO: Pois, kunnes henkilöhallinnan bugi on korjattu
+//                .setNoSocialSecurityNumber(getJsonBoolean(personJson, "eiSuomalaistaHetua"));
 
         log.debug("Deserialized basic info");
         String sex = getJsonString(personJson, "sukupuoli");
@@ -124,7 +124,6 @@ public class PersonJsonAdapter implements JsonSerializer<Person>, JsonDeserializ
                 log.error("Couldn't parse date of birth: "+dobStr);
             }
         }
-
 
         JsonElement kieliElem = personJson.get("asiointiKieli");
         if (kieliElem != null && !kieliElem.isJsonNull()) {

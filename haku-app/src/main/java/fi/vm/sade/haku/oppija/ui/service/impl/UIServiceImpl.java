@@ -38,6 +38,7 @@ import fi.vm.sade.haku.virkailija.koulutusinformaatio.KoulutusinformaatioService
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.PDFService;
+import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionAttachmentDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.OrganizationGroupDTO;
 import org.apache.commons.lang.StringUtils;
@@ -54,6 +55,8 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.jstl.core.Config;
 import java.util.*;
 
+import static org.apache.commons.lang.StringUtils.isEmpty;
+import static org.apache.commons.lang.StringUtils.isNotEmpty;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
 @Service
@@ -65,6 +68,7 @@ public class UIServiceImpl implements UIService {
     private static final String OPTION_POSTFIX = "-Koulutus-id";
     private static final String OPTION_GROUP_POSTFIX = "-Koulutus-id-ao-groups";
     private static final String ATTACHMENT_GROUP_POSTFIX = "-Koulutus-id-attachmentgroups";
+    private static final String ATTACHMENTS_POSTFIX = "-Koulutus-id-attachments";
     private static final String ATTACHMENT_GROUP_TYPE = "hakukohde_liiteosoite";
 
     private final ApplicationService applicationService;
@@ -144,26 +148,42 @@ public class UIServiceImpl implements UIService {
         LOGGER.debug("Input map: " + answers.toString());
         Set<String> keys = new HashSet(answers.keySet());
         for (String key: keys){
-            if (null != key && key.startsWith(PREFERENCE_PREFIX) && key.endsWith(OPTION_POSTFIX) && StringUtils.isNotEmpty(answers.get(key))){
+            if (null != key
+                    && key.startsWith(PREFERENCE_PREFIX)
+                    && key.endsWith(OPTION_POSTFIX)
+                    && isNotEmpty(answers.get(key))){
                 String basekey = key.replace(OPTION_POSTFIX, "");
                 String aoGroups = answers.get(basekey + OPTION_GROUP_POSTFIX);
                 String attachmentGroups = answers.get(basekey + ATTACHMENT_GROUP_POSTFIX);
-                if (StringUtils.isEmpty(aoGroups) || StringUtils.isEmpty(attachmentGroups)){
-                    ApplicationOptionDTO applicationOption = koulutusinformaatioService.getApplicationOption(answers.get(key));
+                String attachments = answers.get(basekey + ATTACHMENTS_POSTFIX);
+
+                ApplicationOptionDTO applicationOption = null;
+                if (isEmpty(aoGroups)
+                        || isEmpty(attachmentGroups)) {
+                    applicationOption = koulutusinformaatioService.getApplicationOption(answers.get(key));
                     List<OrganizationGroupDTO> organizationGroups = applicationOption.getOrganizationGroups();
-                    if (null == organizationGroups || organizationGroups.size() == 0 ){
-                        continue;
-                    }
-                    ArrayList<String> aoGroupList = new ArrayList<String>(organizationGroups.size());
-                    ArrayList<String> attachmentGroupList = new ArrayList<String>();
-                    for (OrganizationGroupDTO organizationGroup : organizationGroups) {
-                        aoGroupList.add(organizationGroup.getOid());
-                        if (organizationGroup.getGroupTypes().contains(ATTACHMENT_GROUP_TYPE)){
-                            attachmentGroupList.add(organizationGroup.getOid());
+                    if (null != organizationGroups && organizationGroups.size() > 0 ){
+                        ArrayList<String> aoGroupList = new ArrayList<String>(organizationGroups.size());
+                        ArrayList<String> attachmentGroupList = new ArrayList<String>();
+                        for (OrganizationGroupDTO organizationGroup : organizationGroups) {
+                            aoGroupList.add(organizationGroup.getOid());
+                            if (organizationGroup.getGroupTypes().contains(ATTACHMENT_GROUP_TYPE)){
+                                attachmentGroupList.add(organizationGroup.getOid());
+                            }
                         }
+                        answers.put(basekey + OPTION_GROUP_POSTFIX, StringUtils.join(aoGroupList, ","));
+                        answers.put(basekey + ATTACHMENT_GROUP_POSTFIX, StringUtils.join(attachmentGroupList, ","));
                     }
-                    answers.put(basekey + OPTION_GROUP_POSTFIX, StringUtils.join(aoGroupList, ","));
-                    answers.put(basekey + ATTACHMENT_GROUP_POSTFIX, StringUtils.join(attachmentGroupList, ","));
+                }
+
+                if (isEmpty(attachments)) {
+                    if (applicationOption == null) {
+                        applicationOption = koulutusinformaatioService.getApplicationOption(answers.get(key));
+                    }
+                    List<ApplicationOptionAttachmentDTO> attachmentList = applicationOption.getAttachments();
+                    if (!attachmentList.isEmpty()) {
+                        answers.put(basekey + ATTACHMENTS_POSTFIX, "true");
+                    }
                 }
             }
         }

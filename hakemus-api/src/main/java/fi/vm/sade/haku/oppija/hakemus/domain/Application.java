@@ -338,12 +338,20 @@ public class Application implements Serializable {
                 OppijaConstants.ELEMENT_ID_SOCIAL_SECURITY_NUMBER);
         henkilotiedot = updateHenkilotiedotField(henkilotiedot, person.getSex(),
                 OppijaConstants.ELEMENT_ID_SEX);
-        henkilotiedot = updateHenkilotiedotField(henkilotiedot, String.valueOf(!person.isNoSocialSecurityNumber()),
-                OppijaConstants.ELEMENT_ID_HAS_SOCIAL_SECURITY_NUMBER);
-        henkilotiedot = updateHenkilotiedotField(henkilotiedot, String.valueOf(person.isSecurityOrder()),
-                OppijaConstants.ELEMENT_ID_SECURITY_ORDER);
         henkilotiedot = updateHenkilotiedotField(henkilotiedot, String.valueOf(person.getDateOfBirth()),
                 OppijaConstants.ELEMENT_ID_DATE_OF_BIRTH);
+
+        Boolean eiSuomalaistaHetua = person.isNoSocialSecurityNumber();
+        if (eiSuomalaistaHetua != null) {
+            henkilotiedot = updateHenkilotiedotField(henkilotiedot, String.valueOf(!eiSuomalaistaHetua),
+                    OppijaConstants.ELEMENT_ID_HAS_SOCIAL_SECURITY_NUMBER);
+        }
+
+        Boolean securityOrder = person.isSecurityOrder();
+        if (securityOrder != null) {
+            henkilotiedot = updateHenkilotiedotField(henkilotiedot, String.valueOf(securityOrder),
+                    OppijaConstants.ELEMENT_ID_SECURITY_ORDER);
+        }
 
         String personOid = person.getPersonOid();
         if (isNotEmpty(personOid)) {

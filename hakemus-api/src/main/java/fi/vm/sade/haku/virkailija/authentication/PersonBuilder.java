@@ -7,11 +7,11 @@ public final class PersonBuilder {
     private String lastName;
     private String socialSecurityNumber;
     private String dateOfBirth;
-    private boolean noSocialSecurityNumber;
+    private Boolean noSocialSecurityNumber;
     private String email;
     private String sex;
     private String homeCity;
-    private boolean securityOrder;
+    private Boolean securityOrder;
     private String language;
     private String nationality;
     private String contactLanguage;
@@ -88,7 +88,7 @@ public final class PersonBuilder {
         return this;
     }
 
-    public boolean isNoSocialSecurityNumber() {
+    public Boolean isNoSocialSecurityNumber() {
         return noSocialSecurityNumber;
     }
 
@@ -124,7 +124,7 @@ public final class PersonBuilder {
         return this;
     }
 
-    public boolean isSecurityOrder() {
+    public Boolean isSecurityOrder() {
         return securityOrder;
     }
 

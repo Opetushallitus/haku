@@ -145,7 +145,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         Person person = null;
         try {
             String personJson = cachingRestClient.getAsString(url);
+            log.debug("Got person: {}", personJson);
             person = gson.fromJson(personJson, Person.class);
+            log.debug("Deserialized person: {}", person);
         } catch (IOException e) {
             throw new RemoteServiceException(targetService + url, e);
         }
@@ -166,7 +168,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         } catch (IOException e) {
             throw new RemoteServiceException(targetService + url, e);
         }
-        log.debug("Person found: " + responseString);
+        log.debug("Person found: {}", responseString);
         return gson.fromJson(responseString, Person.class);
     }
     @Override
@@ -175,7 +177,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         String url = "/resources/s2s/" + personOid;
         try {
             String responseString = cachingRestClient.getAsString(url);
-            log.debug("Person found: " + responseString);
+            log.debug("Person found: {}", responseString);
             return gson.fromJson(responseString, Person.class);
         } catch (CachingRestClient.HttpException hte) {
             // Nothing to do
@@ -191,6 +193,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         String url = "/resources/henkilo";
         String oid = null;
         try {
+            log.debug("Creating person: {}", personJson);
             HttpResponse response = cachingRestClient.post(url, MediaType.APPLICATION_JSON, personJson);
             BasicResponseHandler handler = new BasicResponseHandler();
             oid = handler.handleResponse(response);
