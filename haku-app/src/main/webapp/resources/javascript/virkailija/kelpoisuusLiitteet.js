@@ -381,7 +381,7 @@ var kjal = {
      */
     tallennaKelpoisuusJaLiitteet: function (indx) {
         console.log('********');
-        var submitData = JSON.parse(JSON.stringify(hakutoiveet));
+        var submitData = _.clone(hakutoiveet);
         for (var s in submitData) {
             delete submitData[s].indx;
             for(var r in submitData[s].attachments){
@@ -389,10 +389,26 @@ var kjal = {
                 delete submitData[s].attachments[r].header;
             }
         }
-        $('<input type="hidden" name="json"/>').val(JSON.stringify(submitData)).appendTo('#form-kelpoisuus-liitteet-'+indx);
-        $('#form-kelpoisuus-liitteet-' + indx).submit();
-        hakutoiveetCache[indx-1] = JSON.parse(JSON.stringify(hakutoiveet[indx-1]));
-        this.tarkistaHakutoiveValmis(indx);
+        $.ajax({
+            type: 'POST',
+            url: document.URL.split("#")[0] +'processAttachementsAndEligability',
+            data: JSON.stringify(submitData),
+            async: true
+        }).done(function (data) {
+            hakutoiveetCache = JSON.parse(JSON.stringify(data));
+            hakutoiveet = JSON.parse(JSON.stringify(data));
+//            hakutoiveetCache[indx-1] = JSON.parse(JSON.stringify(hakutoiveet[indx-1]));
+            kjal.hakuKelpoisuus(indx, true);
+            kjal.asetaLiitteidenTilat(indx);
+            kjal.tarkistaHakutoiveValmis(indx);
+         }).fail(function (error) {
+            console.log("error ", error);
+//            hakutoiveetCache = JSON.parse(JSON.stringify(submitData));
+//            hakutoiveet = JSON.parse(JSON.stringify(submitData));
+//            kjal.hakuKelpoisuus(indx, true);
+//            kjal.asetaLiitteidenTilat(indx);
+//            kjal.tarkistaHakutoiveValmis(indx);
+        });
     },
     /**
      * Asettaa kaikki tiedot tarkietettu tilan
@@ -407,6 +423,7 @@ var kjal = {
         }
         this.tarkistaHakutoiveValmis(indx);
     }
+
 
 };
 kjal.populateForm();

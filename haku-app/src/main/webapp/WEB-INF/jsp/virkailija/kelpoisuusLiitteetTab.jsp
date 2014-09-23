@@ -76,8 +76,7 @@
                 kelpoisuus_liitteet.rejectionBasis = "<c:out value="${kelpoisuus.rejectionBasis}"/>";
                 <c:forEach var="tiedotTarkistettu" items="${application.preferencesChecked}">
                     if ("<c:out value="${hakukohde.oid}"/>" === "<c:out value="${tiedotTarkistettu.preferenceAoOid}"/>") {
-                        kelpoisuus_liitteet.preferencesChecked = false; //TODO: vaihda tämä kun bug korjattu
-                        <%--"<c:out value="${tiedotTarkistettu.checked}"/>";--%>
+                        kelpoisuus_liitteet.preferencesChecked = "<c:out value="${tiedotTarkistettu.checked}"/>";
                     }
                 </c:forEach>
                 kelpoisuus_liitteet.attachments = [];
