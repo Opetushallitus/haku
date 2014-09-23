@@ -379,20 +379,23 @@ var kjal = {
      */
     tallennaKelpoisuusJaLiitteet: function (indx) {
         console.log('********');
-        var submitData = JSON.parse(JSON.stringify(hakutoiveet[indx-1]));
-        delete submitData.indx;
-        for(var r in submitData.attachments){
-            delete submitData.attachments[r].name;
-            delete submitData.attachments[r].description;
-            delete submitData.attachments[r].header;
-        };
-
+        var submitData = JSON.parse(JSON.stringify(hakutoiveet));
+        for (var s in submitData) {
+            delete submitData[s].indx;
+            for(var r in submitData[s].attachments){
+                delete submitData[s].attachments[r].name;
+                delete submitData[s].attachments[r].header;
+            }
+        }
         $('<input type="hidden" name="json"/>').val(JSON.stringify(submitData)).appendTo('#form-kelpoisuus-liitteet-'+indx);
         $('#form-kelpoisuus-liitteet-' + indx).submit();
-
         hakutoiveetCache[indx-1] = JSON.parse(JSON.stringify(hakutoiveet[indx-1]));
         this.tarkistaHakutoiveValmis(indx);
     },
+    /**
+     * Asettaa kaikki tiedot tarkietettu tilan
+     * @param indx hakutoiveen index numero
+     */
     kaikkiTiedotTarkistettuCheckBox: function (indx){
         console.log('kaikkiTiedotTarkistettuCheckBox = ', $('#kaikki-tiedot-tarkistettu-' + indx).attr('checked'));
         if( $('#kaikki-tiedot-tarkistettu-' + indx).attr('checked') === 'checked') {

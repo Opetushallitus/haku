@@ -72,7 +72,7 @@
             if ("<c:out value="${hakukohde.oid}"/>" === "<c:out value="${kelpoisuus.aoId}"/>") {
                 kelpoisuus_liitteet.indx = "<c:out value="${hakukohde.index}"/>";
                 kelpoisuus_liitteet.aoId = "<c:out value="${kelpoisuus.aoId}"/>";
-                kelpoisuus_liitteet.aoId = "<c:out value="${kelpoisuus.status}"/>";
+                kelpoisuus_liitteet.status = "<c:out value="${kelpoisuus.status}"/>";
                 kelpoisuus_liitteet.source = "<c:out value="${kelpoisuus.source}"/>";
                 kelpoisuus_liitteet.rejectionBasis = "<c:out value="${kelpoisuus.rejectionBasis}"/>";
                 kelpoisuus_liitteet.preferencesChecked = false
