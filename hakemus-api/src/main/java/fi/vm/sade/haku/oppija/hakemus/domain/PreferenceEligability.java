@@ -8,7 +8,7 @@ import org.codehaus.jackson.map.annotate.JsonSerialize;
 public class PreferenceEligability {
     public static enum Status {
         NOT_CHECKED,
-        INELIGIBLE,
+        ELIGIBLE,
         UNELIGABLE,
         INADEQUATE
     }
