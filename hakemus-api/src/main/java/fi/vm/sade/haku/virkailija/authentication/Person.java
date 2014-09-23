@@ -15,7 +15,6 @@
  */
 package fi.vm.sade.haku.virkailija.authentication;
 
-import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 /**
@@ -28,10 +27,10 @@ public class Person {
     private String lastName;
     private String socialSecurityNumber;
     private String dateOfBirth;
-    private boolean noSocialSecurityNumber;
+    private Boolean noSocialSecurityNumber;
     private String email;
     private String sex;
-    private boolean securityOrder;
+    private Boolean securityOrder;
     private String language;
     private String nationality;
     private String contactLanguage;
@@ -39,8 +38,8 @@ public class Person {
     private String studentOid;
 
     public Person(String firstNames, String nickName, String lastName, String socialSecurityNumber,
-                  String dateOfBirth, boolean noSocialSecurityNumber, String email, String sex, String homeCity,
-                  boolean securityOrder, String language, String nationality, String contactLanguage,
+                  String dateOfBirth, Boolean noSocialSecurityNumber, String email, String sex, String homeCity,
+                  Boolean securityOrder, String language, String nationality, String contactLanguage,
                   String personOid, String studentOid) {
         this.firstNames = firstNames;
         this.nickName = nickName;
@@ -74,7 +73,7 @@ public class Person {
         return socialSecurityNumber;
     }
 
-    public boolean isNoSocialSecurityNumber() {
+    public Boolean isNoSocialSecurityNumber() {
         return noSocialSecurityNumber;
     }
 
@@ -86,7 +85,7 @@ public class Person {
         return sex;
     }
 
-    public boolean isSecurityOrder() {
+    public Boolean isSecurityOrder() {
         return securityOrder;
     }
 
@@ -136,10 +135,10 @@ public class Person {
         this.lastName = isNotBlank(other.lastName) ? other.lastName : this.lastName;
         this.socialSecurityNumber = isNotBlank(other.socialSecurityNumber) ? other.socialSecurityNumber : this.socialSecurityNumber;
         this.dateOfBirth = isNotBlank(other.dateOfBirth) ? other.dateOfBirth : this.dateOfBirth;
-        this.noSocialSecurityNumber = isBlank(this.socialSecurityNumber);
+        this.noSocialSecurityNumber = other.noSocialSecurityNumber != null ? other.noSocialSecurityNumber : this.noSocialSecurityNumber;
         this.email = isNotBlank(other.email) ? other.email : this.email;
         this.sex = isNotBlank(other.sex) ? other.sex : this.sex;
-        this.securityOrder = this.securityOrder ? true : other.securityOrder;
+        this.securityOrder = other.securityOrder != null ? other.securityOrder : this.securityOrder;
         this.language = isNotBlank(other.language) ? other.language : this.language;
         this.nationality = isNotBlank(other.nationality) ? other.nationality : this.nationality;
         this.contactLanguage = isNotBlank(other.contactLanguage) ? other.contactLanguage : this.contactLanguage;
