@@ -168,7 +168,6 @@ public class ApplicationServiceImpl implements ApplicationService {
             application.submitted();
             application.flagStudentIdentificationRequired();
             application.addMeta(Application.META_FILING_LANGUAGE, language);
-            application.setAttachmentRequests(AttachmentUtil.resolveAttachmentRequests(applicationSystem, application, koulutusinformaatioService));
             application = updatePreferenceBasedData(application);
             this.applicationDAO.save(application);
             this.userSession.removeApplication(application);
@@ -360,6 +359,9 @@ public class ApplicationServiceImpl implements ApplicationService {
 
         application.setPreferenceEligabilities(ApplicationUtil.checkAndCreatePreferenceEligabilities(application.getPreferenceEligabilities(), preferenceAoIds));
         application.setPreferencesChecked(ApplicationUtil.checkAndCreatePreferenceCheckedData(application.getPreferencesChecked(), preferenceAoIds));
+
+        ApplicationSystem applicationSystem = applicationSystemService.getApplicationSystem(application.getApplicationSystemId());
+        application.setAttachmentRequests(AttachmentUtil.resolveAttachmentRequests(applicationSystem, application, koulutusinformaatioService));
 
         return application;
     }
