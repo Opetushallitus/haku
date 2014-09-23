@@ -116,7 +116,7 @@ var kjal = {
                 $('#liitteet-table-' + indx + ' #hakukelpoisuus-tietolahde').val(hakutoiveet[indx-1].source);
             }
             $('#liitteet-table-' + indx + ' #hylkaamisenperuste').val(hakutoiveet[indx-1].rejectionBasis);
-            $('#kaikki-tiedot-tarkistettu-' + indx).attr('checked', hakutoiveet[indx-1].allDataChecked);
+            $('#kaikki-tiedot-tarkistettu-' + indx).attr('checked', hakutoiveet[indx-1].preferencesChecked);
         } else {
             hakutoiveet[indx-1].status = $('#liitteet-table-' + indx + ' #hakukelpoisuus-select').val();
         }
@@ -396,9 +396,9 @@ var kjal = {
     kaikkiTiedotTarkistettuCheckBox: function (indx){
         console.log('kaikkiTiedotTarkistettuCheckBox = ', $('#kaikki-tiedot-tarkistettu-' + indx).attr('checked'));
         if( $('#kaikki-tiedot-tarkistettu-' + indx).attr('checked') === 'checked') {
-            hakutoiveet[indx-1].allDataChecked = true;
+            hakutoiveet[indx-1].preferencesChecked = true;
         } else {
-            hakutoiveet[indx-1].allDataChecked = false;
+            hakutoiveet[indx-1].preferencesChecked = false;
         }
         this.tarkistaHakutoiveValmis(indx);
     }

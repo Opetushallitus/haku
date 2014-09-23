@@ -67,29 +67,31 @@
     <hr>
 
     <script type="text/javascript">
-
-        var kelpoisuus_liitteet = {
-            indx: "<c:out value="${hakukohde.index}"/>",
-            aoId: "<c:out value="${hakukohde.oid}"/>",
-            status: "NOT_CHECKED", //TODO: muuta tämä kun saatavilla backenditä
-            source: "UNKNOWN", //TODO: muuta tämä kun saatavilla backenditä
-            rejectionBasis: "", //TODO: muuta tämä kun saatavilla backenditä
-            allDataChecked: false, //TODO: muuta tämä kun saatavilla backenditä
-            attachments: []
-        };
-
-        <c:forEach var="liite" items="${application.attachmentRequests}" varStatus="liiteCount" >
-        if("<c:out value="${hakukohde.oid}"/>" === "<c:out value="${liite.aoId}"/>") {
-            var attachment = {};
-            attachment.id = "<c:out value="${liiteCount.count}"/>"; //TODO: vaihda tämä <--
-            attachment.aoGroupId = "<c:out value="${liite.aoGroupId}"/>"
-            attachment.receptionStatus = "<c:out value="${liite.receptionStatus}"/>";
-            attachment.name = "<haku:i18nText value="${liite.applicationAttachment.name}"/>";
-            attachment.header = "<haku:i18nText value="${liite.applicationAttachment.header}"/>";
-            attachment.processingStatus = "<c:out value="${liite.processingStatus}"/>";
-            kelpoisuus_liitteet.attachments.push(attachment);
-        }
+        var kelpoisuus_liitteet = {};
+        <c:forEach var="kelpoisuus" items="${application.preferenceEligabilities}" />
+            if ("<c:out value="${hakukohde.oid}"/>" === "<c:out value="${kelpoisuus.aoId}"/>") {
+                kelpoisuus_liitteet.indx = "<c:out value="${hakukohde.index}"/>";
+                kelpoisuus_liitteet.aoId = "<c:out value="${kelpoisuus.aoId}"/>";
+                kelpoisuus_liitteet.aoId = "<c:out value="${kelpoisuus.status}"/>";
+                kelpoisuus_liitteet.source = "<c:out value="${kelpoisuus.source}"/>";
+                kelpoisuus_liitteet.rejectionBasis = "<c:out value="${kelpoisuus.rejectionBasis}"/>";
+                kelpoisuus_liitteet.preferencesChecked = false
+                kelpoisuus_liitteet.attachments = [];
+                <c:forEach var="liite" items="${application.attachmentRequests}" varStatus="liiteCount" >
+                    if("<c:out value="${hakukohde.oid}"/>" === "<c:out value="${liite.aoId}"/>") {
+                        var attachment = {};
+                        attachment.id = "<c:out value="${liiteCount.count}"/>"; //TODO: vaihda tämä <--
+                        attachment.aoGroupId = "<c:out value="${liite.aoGroupId}"/>"
+                        attachment.receptionStatus = "<c:out value="${liite.receptionStatus}"/>";
+                        attachment.name = "<haku:i18nText value="${liite.applicationAttachment.name}"/>";
+                        attachment.header = "<haku:i18nText value="${liite.applicationAttachment.header}"/>";
+                        attachment.processingStatus = "<c:out value="${liite.processingStatus}"/>";
+                        kelpoisuus_liitteet.attachments.push(attachment);
+                    }
+                </c:forEach>
+            }
         </c:forEach>
+        console.log('--->....---: ',kelpoisuus_liitteet);
         hakutoiveet.push(kelpoisuus_liitteet);
         hakutoiveetCache.push(JSON.parse(JSON.stringify(kelpoisuus_liitteet)));
 
