@@ -28,13 +28,13 @@ var kjal = {
                         + "<option value=\"NOT_CHECKED\">Kelpoisuus tarkistamatta</option>"
                         + "<option value=\"INELIGIBLE\">Hakukelpoinen</option>"
                         + "<option value=\"UNELIGABLE\">Ei hakukelpoinen</option>"
-                        + "<option value=\"INADEQUATE\">Puuttelinen</option>"
+                        + "<option value=\"INADEQUATE\">Puutteelinen</option>"
                         + "</select>"
                         + "</td>"
                         + "<td>"
                         + "<select class=\"width-12-11\" id=\"hakukelpoisuus-tietolahde\" disabled onchange=\"kjal.tietoLahde(" + ind + ")\">"
-                        + "<option value=\"\" default selected disabled>valitse tarkistettu tietolähde</option>"
-                        + "<option value=\"LEARNING_PROVIDER\">Oppilaitoksen toimittava tieto</option>"
+                        + "<option value=\"\" default selected disabled>valitse tietolähde</option>"
+                        + "<option value=\"LEARNING_PROVIDER\">Oppilaitoksen toimittama tieto</option>"
                         + "<option value=\"ORIGINAL_DIPLOMA\">Alkuperäinen todistus</option>"
                         + "<option value=\"OFFICIALLY_AUTHENTICATED_COPY\">Virallinen oikeaksi todistettu kopio</option>"
                         + "<option value=\"AUTHENTICATED_COPY\">Oikeaksi todistettu kopio</option>"
@@ -62,6 +62,7 @@ var kjal = {
                     + "<td class=\"width-25\"><input type=\"checkbox\" \" onchange=\"kjal.validateKaikkiLiitteetSaapuneet(" + ind + "," + trs + ")\" > "
                     + "Liite saapunut: "+ liitteet[trs].name + " " + liitteet[trs].header
                     + "</td> "
+
                     + "<td>"
                     + "<select class=\"width-12-11\" id=\"select-saapunut-" +ind+ "-" + trs + "\" disabled onchange=\"kjal.saapumisTila("+ ind +","+ trs +")\">"
                     + "<option value=\"ARRIVED\">Saapunut</option>"
@@ -69,6 +70,7 @@ var kjal = {
                     + "<option value=\"NOT_RECEIVED\" default selected disabled >Ei saapunut</option>"
                     + "</select>"
                     + "</td>"
+
                     + "<td>"
                     + "<select class=\"width-12-11\" id=\"select-tarkistettu-" +ind+ "-" + trs + "\" disabled onchange=\"kjal.liitteenTila("+ ind +","+ trs +")\">"
                     + "<option value=\"NOT_CHECK\" default selected>Ei tarkistettu</option>"

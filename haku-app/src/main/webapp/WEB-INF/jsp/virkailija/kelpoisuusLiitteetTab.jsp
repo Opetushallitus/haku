@@ -68,6 +68,10 @@
 
     <script type="text/javascript">
         var kelpoisuus_liitteet = {};
+        console.log('hakukohde id: ',"<c:out value="${hakukohde.oid}"/>");
+        console.log('### ',"<c:out value="${application.preferencesChecked[0].preferenceAoOid}"/>");
+        console.log('€€€ ', "<c:out value="${application.preferenceEligabilities}"/>");
+
         <c:forEach var="kelpoisuus" items="${application.preferenceEligabilities}" />
             if ("<c:out value="${hakukohde.oid}"/>" === "<c:out value="${kelpoisuus.aoId}"/>") {
                 kelpoisuus_liitteet.indx = "<c:out value="${hakukohde.index}"/>";
