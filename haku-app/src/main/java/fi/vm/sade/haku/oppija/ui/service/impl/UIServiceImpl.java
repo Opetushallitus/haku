@@ -162,19 +162,18 @@ public class UIServiceImpl implements UIService {
                         || isEmpty(attachmentGroups)) {
                     applicationOption = koulutusinformaatioService.getApplicationOption(answers.get(key));
                     List<OrganizationGroupDTO> organizationGroups = applicationOption.getOrganizationGroups();
-                    if (null == organizationGroups || organizationGroups.size() == 0 ){
-                        continue;
-                    }
-                    ArrayList<String> aoGroupList = new ArrayList<String>(organizationGroups.size());
-                    ArrayList<String> attachmentGroupList = new ArrayList<String>();
-                    for (OrganizationGroupDTO organizationGroup : organizationGroups) {
-                        aoGroupList.add(organizationGroup.getOid());
-                        if (organizationGroup.getGroupTypes().contains(ATTACHMENT_GROUP_TYPE)){
-                            attachmentGroupList.add(organizationGroup.getOid());
+                    if (null != organizationGroups && organizationGroups.size() > 0 ){
+                        ArrayList<String> aoGroupList = new ArrayList<String>(organizationGroups.size());
+                        ArrayList<String> attachmentGroupList = new ArrayList<String>();
+                        for (OrganizationGroupDTO organizationGroup : organizationGroups) {
+                            aoGroupList.add(organizationGroup.getOid());
+                            if (organizationGroup.getGroupTypes().contains(ATTACHMENT_GROUP_TYPE)){
+                                attachmentGroupList.add(organizationGroup.getOid());
+                            }
                         }
+                        answers.put(basekey + OPTION_GROUP_POSTFIX, StringUtils.join(aoGroupList, ","));
+                        answers.put(basekey + ATTACHMENT_GROUP_POSTFIX, StringUtils.join(attachmentGroupList, ","));
                     }
-                    answers.put(basekey + OPTION_GROUP_POSTFIX, StringUtils.join(aoGroupList, ","));
-                    answers.put(basekey + ATTACHMENT_GROUP_POSTFIX, StringUtils.join(attachmentGroupList, ","));
                 }
 
                 if (isEmpty(attachments)) {
