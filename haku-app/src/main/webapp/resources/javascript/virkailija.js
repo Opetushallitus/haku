@@ -407,6 +407,12 @@ $(document).ready(function () {
             var obj = {};
             if (lastSearch && window.location.hash === '#useLast') {
                 obj = lastSearch;
+                $('#hakukausiVuosi').val(obj.asYear);
+                $('#hakukausi').val(obj.asSemester);
+                applicationSystemSelection.init();
+                $('#application-system').val(obj.asId);
+                baseEducationSelection.init()
+
                 $('#entry').val(obj.q);
                 $('#oid').val(obj.oid);
                 $('#application-state').val(obj.appState);
@@ -417,10 +423,7 @@ $(document).ready(function () {
                 $('#application-group-oid').val(obj.groupOid);
                 $('#base-education').val(obj.baseEducation);
                 $('#lopoid').val(obj.lopoid);
-                $('#application-system').val(obj.asId);
                 $('#primary-preference-only').prop('checked', obj.primaryPreferenceOnly);
-                $('#hakukausiVuosi').val(obj.asYear);
-                $('#hakukausi').val(obj.asSemester);
                 $('#sendingSchoolOid').val(obj.sendingSchoolOid);
                 $('#sendingClass').val(obj.sendingClass);
                 $('#discretionary-only').prop('checked', obj.discretionaryOnly);
@@ -819,7 +822,7 @@ $(document).ready(function () {
                     searchTerms: req.term,
                     organisationOid : $('#lopoid').val()
                 }
-                var url = '/tarjonta-service/rest/v1/hakukohde/search?' + objectToQueryParameterString(qParams);
+                var url = 'https://itest-virkailija.oph.ware.fi/tarjonta-service/rest/v1/hakukohde/search?' + objectToQueryParameterString(qParams);
                 $.get(url, function (data) {
                     var applicationOptions = _.reduce(data.result.tulokset, function (aos, provider) {
                         return aos.concat(provider.tulokset);

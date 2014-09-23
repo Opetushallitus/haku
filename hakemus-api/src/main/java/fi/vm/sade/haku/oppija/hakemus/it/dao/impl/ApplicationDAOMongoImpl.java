@@ -48,6 +48,8 @@ import java.util.*;
 import java.util.regex.Pattern;
 
 import static com.mongodb.QueryOperators.*;
+import static java.lang.String.format;
+import static org.apache.commons.lang.StringUtils.isBlank;
 import static org.apache.commons.lang.StringUtils.isEmpty;
 import static org.apache.commons.lang.StringUtils.isNotBlank;
 
@@ -283,7 +285,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     private QueryBuilder queryByPreference(final ApplicationFilterParameters filterParams, final List<String> aoIds) {
         DBObject[] queries = new DBObject[filterParams.getMaxApplicationOptions()];
         for (int i = 0; i < queries.length; i++) {
-            queries[i] = QueryBuilder.start(String.format(FIELD_AO_T, i+1)).in(aoIds).get();
+            queries[i] = QueryBuilder.start(format(FIELD_AO_T, i + 1)).in(aoIds).get();
         }
         return QueryBuilder.start().or(queries);
     }
@@ -335,34 +337,52 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         String preference = applicationQueryParameters.getAoId();
         String groupOid = applicationQueryParameters.getGroupOid();
         boolean discretionaryOnly = applicationQueryParameters.isDiscretionaryOnly();
+        boolean primaryPreferenceOnly = applicationQueryParameters.isPrimaryPreferenceOnly();
         String aoOid = applicationQueryParameters.getAoOid();
 
         ArrayList<DBObject> preferenceQueries = new ArrayList<DBObject>();
-        int maxOptions = applicationQueryParameters.isPrimaryPreferenceOnly() ?
-                1 : filterParameters.getMaxApplicationOptions();
+
+        int maxOptions = primaryPreferenceOnly && isBlank(groupOid)
+                ? 1
+                : filterParameters.getMaxApplicationOptions();
         for (int i = 1; i <= maxOptions; i++) {
             ArrayList<DBObject> preferenceQuery = new ArrayList<DBObject>(filterParameters.getMaxApplicationOptions());
             if (isNotBlank(lopOid)) {
                 preferenceQuery.add(
-                        QueryBuilder.start(String.format(FIELD_LOP_PARENTS_T, i)).in(Lists.newArrayList(lopOid)).get());
+                        QueryBuilder.start(format(FIELD_LOP_PARENTS_T, i)).in(Lists.newArrayList(lopOid)).get());
             }
             if (isNotBlank(preference)) {
                 preferenceQuery.add(
-                        QueryBuilder.start(String.format(FIELD_AO_KOULUTUS_ID_T, i)).is(preference).get());
+                        QueryBuilder.start(format(FIELD_AO_KOULUTUS_ID_T, i)).is(preference).get());
             }
             if (discretionaryOnly) {
                 preferenceQuery.add(
-                        QueryBuilder.start(String.format(FIELD_DISCRETIONARY_T, i)).is("true").get());
+                        QueryBuilder.start(format(FIELD_DISCRETIONARY_T, i)).is("true").get());
             }
             if (isNotBlank(aoOid)) {
                 preferenceQuery.add(
-                        QueryBuilder.start(String.format(FIELD_AO_T, i)).is(aoOid).get());
+                        QueryBuilder.start(format(FIELD_AO_T, i)).is(aoOid).get());
             }
             if (isNotBlank(groupOid)) {
-                preferenceQuery.add(
-                        QueryBuilder.start(String.format(FIELD_AO_GROUPS_T, i))
-                                .regex(Pattern.compile(groupOid)).get());
+                if (!primaryPreferenceOnly) {
+                    preferenceQuery.add(
+                            QueryBuilder.start(format(FIELD_AO_GROUPS_T, i))
+                                    .regex(Pattern.compile(groupOid)).get());
+                } else {
+                    for (int j = 1; j < i; j++) {
+                        preferenceQuery.add(
+                                QueryBuilder.start(format(FIELD_AO_GROUPS_T, j)).not().regex(Pattern.compile(groupOid)).get()
+                        );
+                    }
+                    preferenceQuery.add(
+                            QueryBuilder.start().and(
+                                    QueryBuilder.start(format(FIELD_AO_GROUPS_T, i)).regex(Pattern.compile(groupOid)).get(),
+                                    QueryBuilder.start(format(FIELD_AO_T, i)).is(aoOid).get()
+                            ).get()
+                    );
+                }
             }
+
             if (!preferenceQuery.isEmpty()) {
                 preferenceQueries.add(QueryBuilder.start().and(
                         preferenceQuery.toArray(new DBObject[preferenceQuery.size()])).get());
@@ -422,7 +442,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         if (isNotBlank(kohdejoukko) && isNotBlank(baseEducation)) {
             if (OppijaConstants.KOHDEJOUKKO_KORKEAKOULU.equals(kohdejoukko)) {
                 filters.add(
-                        QueryBuilder.start(String.format(FIELD_HIGHER_ED_BASE_ED_T, baseEducation))
+                        QueryBuilder.start(format(FIELD_HIGHER_ED_BASE_ED_T, baseEducation))
                                 .is(Boolean.TRUE.toString()).get()
                 );
             }
@@ -641,10 +661,10 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         // Preference Indexes
         for (int i = 1; i <= 8; i++) {
             createPreferenceIndexes("preference"+i, i>1,
-                    String.format(FIELD_LOP_T, i),
-                    String.format(FIELD_DISCRETIONARY_T, i),
-                    String.format(FIELD_AO_T, i),
-                    String.format(FIELD_AO_KOULUTUS_ID_T, i));
+                    format(FIELD_LOP_T, i),
+                    format(FIELD_DISCRETIONARY_T, i),
+                    format(FIELD_AO_T, i),
+                    format(FIELD_AO_KOULUTUS_ID_T, i));
 
         }
         checkIndexes("after ensures");
