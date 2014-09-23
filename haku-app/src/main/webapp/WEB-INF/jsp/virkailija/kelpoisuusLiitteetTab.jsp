@@ -8,14 +8,13 @@
 
 <h3>Kk-haut: Kelpoisuus ja liitteet</h3>
 <script type="text/javascript">
-    console.log('hakutoiveet');
     var hakutoiveet = [],
         hakutoiveetCache = [];
 
 </script>
 <hr>
 <c:forEach var="hakukohde" items="${it.hakukohteet}">
-    <form id="form-kelpoisuus-liitteet-${hakukohde.index}" method="post" action="saveKelpoisuusLiitteet/${hakukohde.oid}" novalidate="novalidate" class="block" >
+    <form id="form-kelpoisuus-liitteet-${hakukohde.index}" method="post" action="processAttachementsAndEligability" novalidate="novalidate" class="block" >
 
         <div class="grid16-3 inline-block">
             <b>${hakukohde.index}.hakutoive</b>
@@ -68,24 +67,26 @@
 
     <script type="text/javascript">
         var kelpoisuus_liitteet = {};
-        console.log('hakukohde id: ',"<c:out value="${hakukohde.oid}"/>");
-        console.log('### ',"<c:out value="${application.preferencesChecked[0].preferenceAoOid}"/>");
-        console.log('€€€ ', "<c:out value="${application.preferenceEligabilities}"/>");
-
-        <c:forEach var="kelpoisuus" items="${application.preferenceEligabilities}" />
+        <c:forEach var="kelpoisuus" items="${application.preferenceEligabilities}">
             if ("<c:out value="${hakukohde.oid}"/>" === "<c:out value="${kelpoisuus.aoId}"/>") {
                 kelpoisuus_liitteet.indx = "<c:out value="${hakukohde.index}"/>";
                 kelpoisuus_liitteet.aoId = "<c:out value="${kelpoisuus.aoId}"/>";
                 kelpoisuus_liitteet.status = "<c:out value="${kelpoisuus.status}"/>";
                 kelpoisuus_liitteet.source = "<c:out value="${kelpoisuus.source}"/>";
                 kelpoisuus_liitteet.rejectionBasis = "<c:out value="${kelpoisuus.rejectionBasis}"/>";
-                kelpoisuus_liitteet.preferencesChecked = false
+                <c:forEach var="tiedotTarkistettu" items="${application.preferencesChecked}">
+                    if ("<c:out value="${hakukohde.oid}"/>" === "<c:out value="${tiedotTarkistettu.preferenceAoOid}"/>") {
+                        kelpoisuus_liitteet.preferencesChecked = false; //TODO: vaihda tämä kun bug korjattu
+                        <%--"<c:out value="${tiedotTarkistettu.checked}"/>";--%>
+                    }
+                </c:forEach>
                 kelpoisuus_liitteet.attachments = [];
+
                 <c:forEach var="liite" items="${application.attachmentRequests}" varStatus="liiteCount" >
-                    if("<c:out value="${hakukohde.oid}"/>" === "<c:out value="${liite.aoId}"/>") {
+                    if("<c:out value="${hakukohde.oid}"/>" === "<c:out value="${liite.preferenceAoId}"/>") {
                         var attachment = {};
-                        attachment.id = "<c:out value="${liiteCount.count}"/>"; //TODO: vaihda tämä <--
-                        attachment.aoGroupId = "<c:out value="${liite.aoGroupId}"/>"
+                        attachment.id = "<c:out value="${liite.id}"/>";
+                        attachment.aoGroupId = "<c:out value="${liite.preferenceAoGroupId}"/>"
                         attachment.receptionStatus = "<c:out value="${liite.receptionStatus}"/>";
                         attachment.name = "<haku:i18nText value="${liite.applicationAttachment.name}"/>";
                         attachment.header = "<haku:i18nText value="${liite.applicationAttachment.header}"/>";
@@ -95,7 +96,6 @@
                 </c:forEach>
             }
         </c:forEach>
-        console.log('--->....---: ',kelpoisuus_liitteet);
         hakutoiveet.push(kelpoisuus_liitteet);
         hakutoiveetCache.push(JSON.parse(JSON.stringify(kelpoisuus_liitteet)));
 

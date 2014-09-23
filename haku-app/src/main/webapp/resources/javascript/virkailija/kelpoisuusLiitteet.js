@@ -261,7 +261,7 @@ var kjal = {
         var aoGroup = hakutoiveet[indx-1].attachments[trs].aoGroupId;
         for (var g in hakutoiveet){
             for(var t in hakutoiveet[g].attachments) {
-                if(hakutoiveet[g].attachments[t].aoGroupId === aoGroup) {
+                if(hakutoiveet[g].attachments[t].aoGroupId === aoGroup && aoGroup !== '') {
                     var ind = parseInt(g) + 1;
                     console.log('saapumis tila ryhmä liitteisiin: ', ind,' ', t,  saapunutCheckBox);
                     if (saapunutCheckBox){
