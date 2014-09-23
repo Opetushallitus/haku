@@ -391,9 +391,11 @@ var kjal = {
         }
         $.ajax({
             type: 'POST',
-            url: document.URL.split("#")[0] +'processAttachementsAndEligability',
+            url: document.URL.split("#")[0] +'processAttachmentsAndEligability',
             data: JSON.stringify(submitData),
-            async: true
+            async: true,
+            contentType: "application/json;charset=utf-8",
+            dataType: "json"
         }).done(function (data) {
             hakutoiveetCache = JSON.parse(JSON.stringify(data));
             hakutoiveet = JSON.parse(JSON.stringify(data));
