@@ -1,9 +1,5 @@
 package fi.vm.sade.haku.oppija.hakemus.domain.util;
 
-import java.util.*;
-
-import org.apache.commons.lang3.StringUtils;
-
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.Address;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.AddressBuilder;
@@ -11,12 +7,18 @@ import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationAttachment;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationAttachmentBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationOptionAttachmentRequest;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
+import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.util.StringUtil;
 import fi.vm.sade.haku.virkailija.koulutusinformaatio.KoulutusinformaatioService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain.SimpleAddress;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import fi.vm.sade.koulutusinformaatio.domain.dto.*;
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.*;
+
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 public class AttachmentUtil {
 
@@ -84,10 +86,17 @@ public class AttachmentUtil {
         for (String aoOid : ApplicationUtil.getApplicationOptionAttachmentAOIds(application)) {
             ApplicationOptionDTO ao = koulutusinformaatioService.getApplicationOption(aoOid, lang);
             for (ApplicationOptionAttachmentDTO attachmentDTO : ao.getAttachments()) {
+                String descriptionText = attachmentDTO.getDescreption();
+                I18nText description = null;
+                if (isNotBlank(descriptionText)) {
+                    description = ElementUtil.createI18NAsIs(descriptionText);
+                } else {
+                    description = ElementUtil.createI18NAsIs("");
+                }
                 attachments.add(
                         ApplicationAttachmentBuilder.start()
                                 .setName(ElementUtil.createI18NAsIs(attachmentDTO.getType()))
-                                .setDescription(ElementUtil.createI18NAsIs(attachmentDTO.getDescreption()))
+                                .setDescription(description)
                                 .setDeadline(attachmentDTO.getDueDate())
                                 .setAddress(AddressBuilder.start()
                                         .setRecipient("")
