@@ -49,6 +49,46 @@ public class AttachmentDTO {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        AttachmentDTO that = (AttachmentDTO) o;
+
+        if (aoGroupId != null ? !aoGroupId.equals(that.aoGroupId) : that.aoGroupId != null) {
+            return false;
+        }
+        if (aoId != null ? !aoId.equals(that.aoId) : that.aoId != null) {
+            return false;
+        }
+        if (id != null ? !id.equals(that.id) : that.id != null) {
+            return false;
+        }
+        if (processingStatus != null ? !processingStatus.equals(that.processingStatus) : that.processingStatus != null) {
+            return false;
+        }
+        if (receptionStatus != null ? !receptionStatus.equals(that.receptionStatus) : that.receptionStatus != null) {
+            return false;
+        }
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (aoId != null ? aoId.hashCode() : 0);
+        result = 31 * result + (aoGroupId != null ? aoGroupId.hashCode() : 0);
+        result = 31 * result + (receptionStatus != null ? receptionStatus.hashCode() : 0);
+        result = 31 * result + (processingStatus != null ? processingStatus.hashCode() : 0);
+        return result;
+    }
+
+    @Override
     public String toString() {
         return "{" +
           "id='" + id + '\'' +

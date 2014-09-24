@@ -24,9 +24,9 @@ public class PreferenceEligability {
     }
 
     private final String aoId;
-    private final Status status;
-    private final Source source;
-    private final String rejectionBasis;
+    private Status status;
+    private Source source;
+    private String rejectionBasis;
 
     public PreferenceEligability(@JsonProperty(value = "aoId") final String aoId,
       @JsonProperty(value = "status") final Status status,
@@ -42,12 +42,24 @@ public class PreferenceEligability {
         return aoId;
     }
 
+    public void setStatus(final Status status) {
+        this.status = status;
+    }
+
     public Status getStatus() {
         return status;
     }
 
+    public void setSource(final Source source) {
+        this.source = source;
+    }
+
     public Source getSource() {
         return source;
+    }
+
+    public void setRejectionBasis(String rejectionBasis) {
+        this.rejectionBasis = rejectionBasis;
     }
 
     public String getRejectionBasis() {

@@ -24,8 +24,8 @@ public class ApplicationAttachmentRequest {
     private final String id;
     private final String preferenceAoId;
     private final String preferenceAoGroupId;
-    private final ReceptionStatus receptionStatus;
-    private final ProcessingStatus processingStatus;
+    private ReceptionStatus receptionStatus;
+    private ProcessingStatus processingStatus;
     private final ApplicationAttachment applicationAttachment;
 
     @JsonCreator
@@ -59,8 +59,16 @@ public class ApplicationAttachmentRequest {
         return receptionStatus;
     }
 
+    public void setReceptionStatus(final ReceptionStatus receptionStatus) {
+        this.receptionStatus = receptionStatus;
+    }
+
     public ProcessingStatus getProcessingStatus() {
         return processingStatus;
+    }
+
+    public void setProcessingStatus(final ProcessingStatus processingStatus) {
+        this.processingStatus = processingStatus;
     }
 
     public ApplicationAttachment getApplicationAttachment() {

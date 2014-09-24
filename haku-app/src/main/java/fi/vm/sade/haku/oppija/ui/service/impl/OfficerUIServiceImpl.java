@@ -1,14 +1,16 @@
 package fi.vm.sade.haku.oppija.ui.service.impl;
 
 import com.google.common.base.Strings;
-
 import fi.vm.sade.haku.oppija.common.organisaatio.Organization;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationGroupRestDTO;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
 import fi.vm.sade.haku.oppija.hakemus.aspect.LoggerAspect;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
+import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationAttachmentRequest;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationNote;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
+import fi.vm.sade.haku.oppija.hakemus.domain.PreferenceChecked;
+import fi.vm.sade.haku.oppija.hakemus.domain.PreferenceEligability;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationOptionDTO;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.Pistetieto;
 import fi.vm.sade.haku.oppija.hakemus.domain.util.AttachmentUtil;
@@ -24,6 +26,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
 import fi.vm.sade.haku.oppija.lomake.exception.IllegalStateException;
+import fi.vm.sade.haku.oppija.lomake.exception.IncoherentDataException;
 import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.haku.oppija.lomake.service.FormService;
@@ -32,6 +35,7 @@ import fi.vm.sade.haku.oppija.lomake.util.ElementTree;
 import fi.vm.sade.haku.oppija.lomake.validation.ElementTreeValidator;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationInput;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationResult;
+import fi.vm.sade.haku.oppija.ui.controller.dto.AttachmentDTO;
 import fi.vm.sade.haku.oppija.ui.controller.dto.AttachmentsAndEligabilityDTO;
 import fi.vm.sade.haku.oppija.ui.service.OfficerUIService;
 import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
@@ -41,10 +45,22 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import fi.vm.sade.haku.virkailija.valinta.ValintaService;
-import fi.vm.sade.haku.virkailija.valinta.dto.*;
+import fi.vm.sade.haku.virkailija.valinta.dto.FunktioTulosDTO;
+import fi.vm.sade.haku.virkailija.valinta.dto.HakemusDTO;
+import fi.vm.sade.haku.virkailija.valinta.dto.HakijaDTO;
+import fi.vm.sade.haku.virkailija.valinta.dto.HakukohdeDTO;
+import fi.vm.sade.haku.virkailija.valinta.dto.HakutoiveDTO;
+import fi.vm.sade.haku.virkailija.valinta.dto.HakutoiveenValintatapajonoDTO;
+import fi.vm.sade.haku.virkailija.valinta.dto.JonosijaDTO;
+import fi.vm.sade.haku.virkailija.valinta.dto.Osallistuminen;
+import fi.vm.sade.haku.virkailija.valinta.dto.PistetietoDTO;
+import fi.vm.sade.haku.virkailija.valinta.dto.ValinnanvaiheDTO;
+import fi.vm.sade.haku.virkailija.valinta.dto.ValintakoeDTO;
+import fi.vm.sade.haku.virkailija.valinta.dto.ValintatapajonoDTO;
 import fi.vm.sade.organisaatio.api.model.types.OrganisaatioTyyppi;
 import fi.vm.sade.organisaatio.api.search.OrganisaatioSearchCriteria;
-
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.Predicate;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,7 +74,16 @@ import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
@@ -590,11 +615,6 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     }
 
     @Override
-    public void processAttachmentsAndEligability(String oid, List<AttachmentsAndEligabilityDTO> attachementsAndEligability) {
-        LOGGER.debug("Got something :" + StringUtils.join(attachementsAndEligability, ","));
-    }
-
-    @Override
     public void changeState(final String oid, Application.State state, String reason) {
         Application application = applicationService.getApplicationByOid(oid);
 
@@ -662,5 +682,60 @@ public class OfficerUIServiceImpl implements OfficerUIService {
 
     public void setValintaService(ValintaService valintaService) {
         this.valintaService = valintaService;
+    }
+
+    @Override
+    public void processAttachmentsAndEligability(String oid, List<AttachmentsAndEligabilityDTO> attachementsAndEligabilities) {
+        LOGGER.debug("Got attachementsAndEligabilities " + StringUtils.join(attachementsAndEligabilities, ","));
+        Application application = applicationService.getApplication(oid);
+        HashMap<String, AttachmentDTO> attachmentDTOs = new HashMap<String, AttachmentDTO>();
+        for (AttachmentsAndEligabilityDTO dto : attachementsAndEligabilities){
+            PreferencePredicate predicate = new PreferencePredicate(dto.getAoId());
+            PreferenceEligability preferenceEligability = (PreferenceEligability) CollectionUtils.find(application.getPreferenceEligabilities(), predicate);
+            if (null == preferenceEligability)
+                throw new IncoherentDataException("No preference found with "+  dto.getAoId());
+            preferenceEligability.setStatus(PreferenceEligability.Status.valueOf(dto.getStatus()));
+            preferenceEligability.setSource(PreferenceEligability.Source.valueOf(dto.getSource()));
+            preferenceEligability.setRejectionBasis(dto.getRejectionBasis());
+
+            PreferenceChecked preferenceChecked = (PreferenceChecked) CollectionUtils.find(application.getPreferencesChecked(), predicate);
+            preferenceChecked.setChecked(dto.getPreferencesChecked());
+            if (dto.getPreferencesChecked()){
+                preferenceChecked.setCheckedByOfficerOid(userSession.getUser().getUserName());
+            }
+            for (AttachmentDTO attachmentDTO : dto.getAttachments()){
+                AttachmentDTO old = attachmentDTOs.put(attachmentDTO.getId(), attachmentDTO);
+                if (null != old){
+                    LOGGER.debug("Got duplicates old: {}, new {}", old, attachmentDTO);
+                    if (!old.equals(attachmentDTO)){
+                        throw new IncoherentDataException("Multiple values for attachment proceesing with mismatching data");
+                    }
+                }
+            }
+        }
+        for (ApplicationAttachmentRequest attachment : application.getAttachmentRequests()){
+            AttachmentDTO dto = attachmentDTOs.get(attachment.getId());
+            attachment.setReceptionStatus(ApplicationAttachmentRequest.ReceptionStatus.valueOf(dto.getReceptionStatus()));
+            attachment.setProcessingStatus(ApplicationAttachmentRequest.ProcessingStatus.valueOf(dto.getProcessingStatus()));
+        }
+
+        applicationService.update(new Application(oid), application);
+    }
+
+    private class PreferencePredicate implements Predicate {
+        private final  String preferenceAoId;
+
+        private PreferencePredicate(String preferenceAoId) {
+            this.preferenceAoId = preferenceAoId;
+        }
+
+        @Override
+        public boolean evaluate(Object object) {
+            if (object instanceof PreferenceEligability)
+                return preferenceAoId.equals(((PreferenceEligability) object).getAoId());
+            if (object instanceof PreferenceChecked)
+                return preferenceAoId.equals(((PreferenceChecked) object).getPreferenceAoOid());
+            return false;
+        }
     }
 }

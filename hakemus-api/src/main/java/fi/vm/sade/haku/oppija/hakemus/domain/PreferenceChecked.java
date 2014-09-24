@@ -8,8 +8,8 @@ import org.codehaus.jackson.map.annotate.JsonSerialize;
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_EMPTY)
 public class PreferenceChecked {
     private final String preferenceAoOid;
-    private final Boolean checked;
-    private final String checkedByOfficerOid;
+    private Boolean checked;
+    private String checkedByOfficerOid;
 
 
     @JsonCreator
@@ -17,6 +17,10 @@ public class PreferenceChecked {
         this.preferenceAoOid = preferenceAoOid;
         this.checked = null == checked ? Boolean.FALSE: checked;
         this.checkedByOfficerOid = checkedByOfficerOid;
+    }
+
+    public void setChecked(Boolean checked) {
+        this.checked = checked;
     }
 
     @JsonIgnore
@@ -32,7 +36,12 @@ public class PreferenceChecked {
         return preferenceAoOid;
     }
 
+    public void setCheckedByOfficerOid(String checkedByOfficerOid) {
+        this.checkedByOfficerOid = checkedByOfficerOid;
+    }
+
     public String getCheckedByOfficerOid() {
         return checkedByOfficerOid;
     }
+
 }
