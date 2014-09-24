@@ -56,7 +56,7 @@ public class XlsModel {
             }
         });
 
-        List<String> aoids = Lists.transform(applications, new Function<Map<String, Object>, String>() {
+        List<String> asids = Lists.transform(applications, new Function<Map<String, Object>, String>() {
             @Override
             public String apply(Map<String, Object> input) {
                 return (String) input.get("oid");
@@ -69,7 +69,7 @@ public class XlsModel {
         }
 
 
-        table = ArrayTable.create(aoids, questions);
+        table = ArrayTable.create(asids, questions);
 
         for (Map<String, Object> application : applications) {
             Map<String, Object> vastaukset = (Map<String, Object>) application.get("answers");
