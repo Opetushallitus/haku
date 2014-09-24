@@ -687,7 +687,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     @Override
     public void processAttachmentsAndEligability(String oid, List<AttachmentsAndEligabilityDTO> attachementsAndEligabilities) {
         LOGGER.debug("Got attachementsAndEligabilities " + StringUtils.join(attachementsAndEligabilities, ","));
-        Application application = applicationService.getApplication(oid);
+        Application application = applicationService.getApplicationByOid(oid);
         HashMap<String, AttachmentDTO> attachmentDTOs = new HashMap<String, AttachmentDTO>();
         for (AttachmentsAndEligabilityDTO dto : attachementsAndEligabilities){
             PreferencePredicate predicate = new PreferencePredicate(dto.getAoId());
