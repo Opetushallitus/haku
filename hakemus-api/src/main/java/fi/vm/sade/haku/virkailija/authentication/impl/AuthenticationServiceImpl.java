@@ -52,7 +52,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     final Logger log = LoggerFactory.getLogger(AuthenticationServiceImpl.class);
 
-
     private final String targetService;
     private final CachingRestClient cachingRestClient;
     private final Gson gson;

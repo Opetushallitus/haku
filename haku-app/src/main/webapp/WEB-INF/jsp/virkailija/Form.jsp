@@ -102,6 +102,10 @@
                     &nbsp;<span title="<c:out value="${overridden['Etunimet']}"/>&nbsp;<c:out
                         value="${overridden['Sukunimi']}"/>">[*]</span>
                 </c:if>
+                <c:if test="${not empty answers['turvakielto'] and answers['turvakielto']}">
+                    <img src="${pageContext.request.contextPath}/resources/img/icon-notification-small.png" />
+                    Turvakielto!
+                </c:if>
             </h3>
             <table class="margin-top-2">
                 <c:if test="${application.redoPostProcess == 'DONE'}">
