@@ -6,7 +6,8 @@ var config = {
     liiteEiSaapunut: "NOT_RECEIVED",
     liiteEiTarkistettu: "NOT_CHECK",
     liiteTarkistettu: "CHECKED",
-    tietolahdeUnknown: "UNKNOWN"
+    tietolahdeUnknown: "UNKNOWN",
+    logs: true
 };
 var kjal = {
     /**
@@ -14,8 +15,8 @@ var kjal = {
      * datan perusteella lomake hakukelpoisuuden ja liitteiden tilojen tallentamiseksi
      */
     populateForm: function () {
-        console.log('Kelpoisuus liitteet --->', hakutoiveet);
-        console.log('populoidaan hakutoive lomake', window.location.href);
+        this.LOGS('Kelpoisuus liitteet --->', hakutoiveet);
+        this.LOGS('populoidaan hakutoive lomake', window.location.href);
         for (var hktindx in hakutoiveet) {
 
             var liitteet = hakutoiveet[hktindx].attachments,
@@ -108,13 +109,13 @@ var kjal = {
      * @param indx hakutoiveen index numero
      */
     hakuKelpoisuus: function (indx, onPopulate) {
-        console.log('ennen muutostosta: ',hakutoiveet[indx-1]);
+        this.LOGS('ennen muutostosta: ',hakutoiveet[indx-1]);
 
         if(onPopulate){
             $('#liitteet-table-' + indx + ' #hakukelpoisuus-select').val(hakutoiveet[indx-1].status);
-            console.log('**',  hakutoiveet[indx-1].source);
+            this.LOGS('**',  hakutoiveet[indx-1].source);
             if(hakutoiveet[indx-1].source !== config.tietolahdeUnknown ) {
-                console.log('**',  hakutoiveet[indx-1].source);
+                this.LOGS('**',  hakutoiveet[indx-1].source);
                 $('#liitteet-table-' + indx + ' #hakukelpoisuus-tietolahde').val(hakutoiveet[indx-1].source);
             }
             $('#liitteet-table-' + indx + ' #hylkaamisenperuste').val(hakutoiveet[indx-1].rejectionBasis);
@@ -145,7 +146,7 @@ var kjal = {
             $('#liitteet-table-' + indx + ' #hylkaamisenperuste').val('');
             $('#liitteet-table-' + indx + ' #hakukelpoisuus-tietolahde').val('');
         }
-        console.log('muutoksen jälkeen: ', hakutoiveet[indx-1]);
+        this.LOGS('muutoksen jälkeen: ', hakutoiveet[indx-1]);
         this.tarkistaHakutoiveValmis(indx);
     },
 
@@ -170,7 +171,7 @@ var kjal = {
      * @param indx hakutoiveen index numero
      */
     kaikkiLiitteetSaapuneet: function (indx) {
-        console.log('kaikkiLiitteetSaapuneet()');
+        this.LOGS('kaikkiLiitteetSaapuneet()');
         var hakutoive = parseInt(indx) - 1;
         for(var i in hakutoiveet[hakutoive].attachments){
             if (hakutoiveet[hakutoive].attachments[i].receptionStatus === config.liiteEiSaapunut) {
@@ -194,8 +195,8 @@ var kjal = {
      * @param hakutoive hakutoiveen index numero
      */
     tarkistaKaikkiLiitteetSaapuneet: function (hakutoive) {
-        console.log('tarkistaKaikkiLiitteetSaapuneet(',hakutoive,')',  _.every(hakutoiveet[hakutoive].attachments, function (liite) { return liite.status !== config.liiteEiSaapunut; }));
-        console.log(hakutoiveet[hakutoive].attachments);
+        this.LOGS('tarkistaKaikkiLiitteetSaapuneet(',hakutoive,')',  _.every(hakutoiveet[hakutoive].attachments, function (liite) { return liite.status !== config.liiteEiSaapunut; }));
+        this.LOGS(hakutoiveet[hakutoive].attachments);
         var ind = hakutoive + 1;
         if ( _.every(hakutoiveet[hakutoive].attachments, function (liite) { return liite.receptionStatus !== config.liiteEiSaapunut; })) {
             $('#kaikkiliitteet-' + ind).css('display', '');
@@ -214,8 +215,8 @@ var kjal = {
      * @returns {boolean} true/false
      */
     kaikkiLiitteetTarkistettu: function (hakutoive) {
-        console.log('kaikkiLiitteetTarkistettu() -->', _.every(hakutoiveet[hakutoive].attachments, function(liite) { return liite.processingStatus === config.liiteTarkistettu; }));
-        console.log('kaikkiLiitteetTarkistettu()', hakutoiveet[hakutoive]);
+        this.LOGS('kaikkiLiitteetTarkistettu() -->', _.every(hakutoiveet[hakutoive].attachments, function(liite) { return liite.processingStatus === config.liiteTarkistettu; }));
+        this.LOGS('kaikkiLiitteetTarkistettu()', hakutoiveet[hakutoive]);
         var liitteetTarkastettu = _.every(hakutoiveet[hakutoive].attachments, function(liite) { return liite.processingStatus === config.liiteTarkistettu }),
             liitteetSaapuneet = _.every(hakutoiveet[hakutoive].attachments, function (liite) { return liite.receptionStatus !== config.liiteEiSaapunut; }),
             ind = hakutoive + 1;
@@ -233,7 +234,7 @@ var kjal = {
      * @returns {boolean|*} true/false
      */
     kaikkiLiitteetSaapuneetTilassa: function (hakutoive) {
-        console.log('kaikkiLiitteetSaapuneetTilassa() -->', _.every(hakutoiveet[hakutoive].attachments, function(liite) { return liite.receptionStatus !== config.liiteEiSaapunut; }));
+        this.LOGS('kaikkiLiitteetSaapuneetTilassa() -->', _.every(hakutoiveet[hakutoive].attachments, function(liite) { return liite.receptionStatus !== config.liiteEiSaapunut; }));
         return _.every(hakutoiveet[hakutoive].attachments, function(liite) { return liite.receptionStatus !== config.liiteEiSaapunut; });
     },
     /**
@@ -243,7 +244,7 @@ var kjal = {
      * @param trs hakutoiveen liitteen index numero
      */
     validateKaikkiLiitteetSaapuneet: function (indx, trs) {
-        console.log('validateKaikkiLiitteetSaapuneet( ', indx,', ',trs,') ', $('#liitesaapunut-tr-' +indx + '-' + trs + ' [type=checkbox]').prop('checked'));
+        this.LOGS('validateKaikkiLiitteetSaapuneet( ', indx,', ',trs,') ', $('#liitesaapunut-tr-' +indx + '-' + trs + ' [type=checkbox]').prop('checked'));
         var hakutoive = parseInt(indx) - 1,
             saapunutCheckBox = $('#liitesaapunut-tr-' +indx + '-' + trs + ' [type=checkbox]').prop('checked') ;
         if (saapunutCheckBox) {
@@ -268,7 +269,7 @@ var kjal = {
             for(var t in hakutoiveet[g].attachments) {
                 if(hakutoiveet[g].attachments[t].aoGroupId === aoGroup && aoGroup !== '') {
                     var ind = parseInt(g) + 1;
-                    console.log('saapumis tila ryhmä liitteisiin: ', ind,' ', t,  saapunutCheckBox);
+                    this.LOGS('saapumis tila ryhmä liitteisiin: ', ind,' ', t,  saapunutCheckBox);
                     if (saapunutCheckBox){
                         $('#liitesaapunut-tr-' +ind + '-' + t + ' [type=checkbox]').attr('checked', 'true');
                         $('#select-saapunut-' +ind + '-' + t).removeAttr('disabled');
@@ -299,7 +300,7 @@ var kjal = {
      * @param indx hakutoiveen index numero
      */
     tarkistaHakutoiveValmis: function (indx) {
-        console.log('tarkistaHakutoiveValmis()');
+        this.LOGS('tarkistaHakutoiveValmis()');
         $('#hylatty-' +indx).css('display', 'none');
         $('#hakukelpoinen-' +indx).css('display', 'none');
         $('#puutteellinen-' +indx).css('display', 'none');
@@ -349,9 +350,9 @@ var kjal = {
      * @param trs hakutoiveen liitteen index numero
      */
     liitteenTila: function (indx, trs) {
-        console.log('liitteenTila()');
+        this.LOGS('liitteenTila()');
         hakutoiveet[indx-1].attachments[trs].processingStatus = $('#select-tarkistettu-' + indx +'-' + trs).val();
-        console.log('-->', hakutoiveet[indx-1].attachments[trs].processingStatus);
+        this.LOGS('-->', hakutoiveet[indx-1].attachments[trs].processingStatus);
 
         var aoGroup = hakutoiveet[indx-1].attachments[trs].aoGroupId;
         for (var g in hakutoiveet){
@@ -372,7 +373,7 @@ var kjal = {
      * @param indx hakutoiveen index numero
      */
     asetaKaikkiLiitteetTarkastetuksi: function (indx) {
-        console.log('asetaKaikkiLiitteetTarkastetuksi()');
+        this.LOGS('asetaKaikkiLiitteetTarkastetuksi()');
         for (var t in hakutoiveet[indx-1].attachments) {
             $('#select-tarkistettu-' + indx + '-' +t).val(config.liiteTarkistettu);
             hakutoiveet[indx-1].attachments[t].processingStatus = $('#select-tarkistettu-' + indx + '-' +t).val();
@@ -401,12 +402,13 @@ var kjal = {
             contentType: "application/json;charset=utf-8",
             dataType: "json",
             cache: false,
-            success: function (data) {
+            success: function () {
                 window.location = window.location.href + 'liitteetkelpoisuusTab';
                 window.location.reload();
             },
             error: function (error) {
-                console.log('## kelpoisuus ja liitteet tallennuksessa error ## ', error);
+                this.LOGS('## kelpoisuus ja liitteet tallennuksessa error ## ', error);
+                $('#error-kelpoisuus-liitteet-' + indx).removeClass('hidden');
             }
         });
 
@@ -416,13 +418,17 @@ var kjal = {
      * @param indx hakutoiveen index numero
      */
     kaikkiTiedotTarkistettuCheckBox: function (indx){
-        console.log('kaikkiTiedotTarkistettuCheckBox = ', $('#kaikki-tiedot-tarkistettu-' + indx).attr('checked'));
+        this.LOGS('kaikkiTiedotTarkistettuCheckBox = ', $('#kaikki-tiedot-tarkistettu-' + indx).attr('checked'));
         if( $('#kaikki-tiedot-tarkistettu-' + indx).attr('checked') === 'checked') {
             hakutoiveet[indx-1].preferencesChecked = true;
         } else {
             hakutoiveet[indx-1].preferencesChecked = false;
         }
         this.tarkistaHakutoiveValmis(indx);
+    },LOGS: function (){
+        if(config.logs){
+            console.log(arguments);
+        }
     }
 
 };
