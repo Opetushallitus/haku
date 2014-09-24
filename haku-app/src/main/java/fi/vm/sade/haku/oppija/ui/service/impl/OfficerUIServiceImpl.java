@@ -692,8 +692,10 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         for (AttachmentsAndEligabilityDTO dto : attachementsAndEligabilities){
             PreferencePredicate predicate = new PreferencePredicate(dto.getAoId());
             PreferenceEligability preferenceEligability = (PreferenceEligability) CollectionUtils.find(application.getPreferenceEligabilities(), predicate);
-            if (null == preferenceEligability)
-                throw new IncoherentDataException("No preference found with "+  dto.getAoId());
+            if (null == preferenceEligability) {
+                LOGGER.error("No preference found with " + dto.getAoId() + " for application " + oid);
+                throw new IncoherentDataException("No preference found with " + dto.getAoId() + " for application " + oid);
+            }
             preferenceEligability.setStatus(PreferenceEligability.Status.valueOf(dto.getStatus()));
             preferenceEligability.setSource(PreferenceEligability.Source.valueOf(dto.getSource()));
             preferenceEligability.setRejectionBasis(dto.getRejectionBasis());
@@ -708,6 +710,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
                 if (null != old){
                     LOGGER.debug("Got duplicates old: {}, new {}", old, attachmentDTO);
                     if (!old.equals(attachmentDTO)){
+                        LOGGER.error("Duplicates do not match old: {}, new {}", old, attachmentDTO);
                         throw new IncoherentDataException("Multiple values for attachment proceesing with mismatching data");
                     }
                 }
