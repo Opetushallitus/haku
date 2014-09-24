@@ -281,10 +281,9 @@ public class OfficerController {
     @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
     @Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_CRUD')")
-    public Response processAttachmentAndEligability(@PathParam(OID_PATH_PARAM) final String oid,
+    public void processAttachmentAndEligability(@PathParam(OID_PATH_PARAM) final String oid,
                                   List<AttachmentsAndEligabilityDTO> attachmentsAndEligability) throws URISyntaxException {
         officerUIService.processAttachmentsAndEligability(oid, attachmentsAndEligability);
-        return redirectToOidResponse(oid);
     }
 
     @GET

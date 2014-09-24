@@ -15,6 +15,7 @@
 <hr>
 <c:forEach var="hakukohde" items="${it.hakukohteet}">
     <form id="form-kelpoisuus-liitteet-${hakukohde.index}" method="post" action="processAttachmentsAndEligability" novalidate="novalidate" class="block" >
+    <%--<form id="form-kelpoisuus-liitteet-${hakukohde.index}" novalidate="novalidate" class="block" >--%>
 
         <div class="grid16-3 inline-block">
             <b>${hakukohde.index}.hakutoive</b>

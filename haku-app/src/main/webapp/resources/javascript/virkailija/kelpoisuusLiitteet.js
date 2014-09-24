@@ -15,7 +15,7 @@ var kjal = {
      */
     populateForm: function () {
         console.log('Kelpoisuus liitteet --->', hakutoiveet);
-        console.log('populoidaan hakutoive lomake');
+        console.log('populoidaan hakutoive lomake', window.location.href);
         for (var hktindx in hakutoiveet) {
 
             var liitteet = hakutoiveet[hktindx].attachments,
@@ -86,6 +86,14 @@ var kjal = {
             this.hakuKelpoisuus(ind, true);
             this.asetaLiitteidenTilat(ind);
         }
+        console.log('###', window.location.href.split('#')[1]);
+        if( window.location.href.split('#')[1] === 'liitteetkelpoisuusTab' ){
+            console.log('***** ');
+            window.location.href = window.location.href.split('#')[0]+'#';
+            console.log($('.tabs').tabs('select'));
+            $('.tabs').tabs('select', '#kelpoisuusliitteetTab');
+//            $('#kelpoisuusliitteetTab').click();
+        }
     },
     /**
      * Asettaa sivun latautuessa taustajärjestelmästä saadut
@@ -118,7 +126,12 @@ var kjal = {
                 $('#liitteet-table-' + indx + ' #hakukelpoisuus-tietolahde').val(hakutoiveet[indx-1].source);
             }
             $('#liitteet-table-' + indx + ' #hylkaamisenperuste').val(hakutoiveet[indx-1].rejectionBasis);
-            $('#kaikki-tiedot-tarkistettu-' + indx).attr('checked', hakutoiveet[indx-1].preferencesChecked);
+            if(hakutoiveet[indx-1].preferencesChecked === 'false' ){
+                $('#kaikki-tiedot-tarkistettu-' + indx).attr('checked', false);
+            } else {
+                $('#kaikki-tiedot-tarkistettu-' + indx).attr('checked', true);
+            }
+
         } else {
             hakutoiveet[indx-1].status = $('#liitteet-table-' + indx + ' #hakukelpoisuus-select').val();
         }
@@ -395,22 +408,20 @@ var kjal = {
             data: JSON.stringify(submitData),
             async: true,
             contentType: "application/json;charset=utf-8",
-            dataType: "json"
-        }).done(function (data) {
-            hakutoiveetCache = JSON.parse(JSON.stringify(data));
-            hakutoiveet = JSON.parse(JSON.stringify(data));
-//            hakutoiveetCache[indx-1] = JSON.parse(JSON.stringify(hakutoiveet[indx-1]));
-            kjal.hakuKelpoisuus(indx, true);
-            kjal.asetaLiitteidenTilat(indx);
-            kjal.tarkistaHakutoiveValmis(indx);
-         }).fail(function (error) {
-            console.log("error ", error);
-//            hakutoiveetCache = JSON.parse(JSON.stringify(submitData));
-//            hakutoiveet = JSON.parse(JSON.stringify(submitData));
-//            kjal.hakuKelpoisuus(indx, true);
-//            kjal.asetaLiitteidenTilat(indx);
-//            kjal.tarkistaHakutoiveValmis(indx);
+            dataType: "json",
+            cache: false,
+            success: function (data) {
+                console.log('### success ##', data);
+                window.location = window.location.href + 'liitteetkelpoisuusTab';
+                window.location.reload();
+            },
+            error: function (je, st, er) {
+                console.log('## error ## ', je);
+                console.log('## error ## ', st);
+                console.log('## error ## ', er);
+            }
         });
+
     },
     /**
      * Asettaa kaikki tiedot tarkietettu tilan
