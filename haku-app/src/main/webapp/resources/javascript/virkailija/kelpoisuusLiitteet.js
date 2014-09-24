@@ -263,10 +263,11 @@ var kjal = {
             hakutoiveet[hakutoive].attachments[trs].processingStatus = config.liiteEiTarkistettu;
             this.tarkistaKaikkiLiitteetSaapuneet(hakutoive);
         }
-
         var aoGroup = hakutoiveet[indx-1].attachments[trs].aoGroupId;
         for (var g in hakutoiveet){
+
             for(var t in hakutoiveet[g].attachments) {
+                this.LOGS('liiteen ryhmä id:', aoGroup, hakutoiveet[g].attachments[t].aoGroupId);
                 if(hakutoiveet[g].attachments[t].aoGroupId === aoGroup && aoGroup !== '') {
                     var ind = parseInt(g) + 1;
                     this.LOGS('saapumis tila ryhmä liitteisiin: ', ind,' ', t,  saapunutCheckBox);
@@ -329,12 +330,13 @@ var kjal = {
      * @param trs hakutoiveen liitteen index numero
      */
     saapumisTila: function (indx, trs) {
+        this.LOGS('saapumisTila()');
         hakutoiveet[indx-1].attachments[trs].receptionStatus = $('#select-saapunut-' + indx +'-' + trs).val();
 
         var aoGroup = hakutoiveet[indx-1].attachments[trs].aoGroupId;
         for (var g in hakutoiveet){
             for(var t in hakutoiveet[g].attachments) {
-                if(hakutoiveet[g].attachments[t].aoGroupId === aoGroup) {
+                if(hakutoiveet[g].attachments[t].aoGroupId === aoGroup && aoGroup !== '') {
                     var ind = parseInt(g) + 1;
                     hakutoiveet[ind-1].attachments[t].receptionStatus = $('#select-saapunut-' + indx +'-' + trs).val();
                     $('#select-saapunut-' + ind +'-' + t).val($('#select-saapunut-' + indx +'-' + trs).val());
@@ -357,7 +359,7 @@ var kjal = {
         var aoGroup = hakutoiveet[indx-1].attachments[trs].aoGroupId;
         for (var g in hakutoiveet){
             for(var t in hakutoiveet[g].attachments) {
-                if(hakutoiveet[g].attachments[t].aoGroupId === aoGroup) {
+                if(hakutoiveet[g].attachments[t].aoGroupId === aoGroup && aoGroup !== '') {
                     var ind = parseInt(g) + 1;
                     hakutoiveet[ind-1].attachments[t].processingStatus = $('#select-tarkistettu-' + indx +'-' + trs).val();
                     $('#select-tarkistettu-' + ind +'-' + t).val($('#select-tarkistettu-' + indx +'-' + trs).val());
@@ -407,7 +409,7 @@ var kjal = {
                 window.location.reload();
             },
             error: function (error) {
-                this.LOGS('## kelpoisuus ja liitteet tallennuksessa error ## ', error);
+                console.log('## kelpoisuus ja liitteet tallennuksessa error ## ', error);
                 $('#error-kelpoisuus-liitteet-' + indx).removeClass('hidden');
             }
         });
