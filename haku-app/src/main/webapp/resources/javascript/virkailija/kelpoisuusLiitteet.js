@@ -86,14 +86,6 @@ var kjal = {
             this.hakuKelpoisuus(ind, true);
             this.asetaLiitteidenTilat(ind);
         }
-        console.log('###', window.location.href.split('#')[1]);
-        if( window.location.href.split('#')[1] === 'liitteetkelpoisuusTab' ){
-            console.log('***** ');
-            window.location.href = window.location.href.split('#')[0]+'#';
-            console.log($('.tabs').tabs('select'));
-            $('.tabs').tabs('select', '#kelpoisuusliitteetTab');
-//            $('#kelpoisuusliitteetTab').click();
-        }
     },
     /**
      * Asettaa sivun latautuessa taustajärjestelmästä saadut
@@ -393,7 +385,6 @@ var kjal = {
      * @param indx hakutoiveen index numero
      */
     tallennaKelpoisuusJaLiitteet: function (indx) {
-        console.log('********');
         var submitData = _.clone(hakutoiveet);
         for (var s in submitData) {
             delete submitData[s].indx;
@@ -411,14 +402,11 @@ var kjal = {
             dataType: "json",
             cache: false,
             success: function (data) {
-                console.log('### success ##', data);
                 window.location = window.location.href + 'liitteetkelpoisuusTab';
                 window.location.reload();
             },
-            error: function (je, st, er) {
-                console.log('## error ## ', je);
-                console.log('## error ## ', st);
-                console.log('## error ## ', er);
+            error: function (error) {
+                console.log('## kelpoisuus ja liitteet tallennuksessa error ## ', error);
             }
         });
 
@@ -437,6 +425,17 @@ var kjal = {
         this.tarkistaHakutoiveValmis(indx);
     }
 
-
 };
+
 kjal.populateForm();
+
+$(document).ready(function() {
+    /**
+     * kelpoisuus ja liitteet välilehden tallennuksen jälkeen
+     * asetataan kelpoisuus ja liitteet välilehti takaisin aktiiviseksi
+     */
+    if( window.location.href.split('#')[1] === 'liitteetkelpoisuusTab' ){
+        window.location.href = window.location.href.split('#')[0]+'#';
+            $('#kelpoisuusliitteetTab').click();
+    }
+});
