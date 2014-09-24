@@ -16,12 +16,10 @@
 
 package fi.vm.sade.haku.oppija.lomake.domain;
 
-
-import fi.vm.sade.haku.oppija.hakemus.domain.Application;
-import fi.vm.sade.haku.oppija.ui.service.ModelResponse;
-
 import java.util.HashMap;
 import java.util.Map;
+
+import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 
 public class ApplicationState {
 

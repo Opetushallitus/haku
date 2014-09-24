@@ -18,7 +18,10 @@ package fi.vm.sade.haku.oppija.ui.service;
 
 import org.apache.http.HttpResponse;
 
+import fi.vm.sade.haku.oppija.lomake.domain.ModelResponse;
+
 import javax.servlet.http.HttpServletRequest;
+
 import java.util.Map;
 
 public interface UIService {
