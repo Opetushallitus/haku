@@ -68,7 +68,7 @@
 
     <script type="text/javascript">
         var kelpoisuus_liitteet = {};
-        <c:forEach var="kelpoisuus" items="${application.preferenceEligabilities}">
+        <c:forEach var="kelpoisuus" items="${application.preferenceEligibilities}">
             if ("<c:out value="${hakukohde.oid}"/>" === "<c:out value="${kelpoisuus.aoId}"/>") {
                 kelpoisuus_liitteet.indx = "<c:out value="${hakukohde.index}"/>";
                 kelpoisuus_liitteet.aoId = "<c:out value="${kelpoisuus.aoId}"/>";

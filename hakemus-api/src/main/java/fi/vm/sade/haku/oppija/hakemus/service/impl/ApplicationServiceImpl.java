@@ -21,7 +21,6 @@ import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationNote;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.haku.oppija.hakemus.domain.AuthorizationMeta;
-import fi.vm.sade.haku.oppija.hakemus.domain.PreferenceEligability;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationAdditionalDataDTO;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
 import fi.vm.sade.haku.oppija.hakemus.domain.util.ApplicationUtil;
@@ -357,7 +356,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     public Application updatePreferenceBasedData(final Application application){
         List<String> preferenceAoIds = ApplicationUtil.getPreferenceAoIds(application);
 
-        application.setPreferenceEligabilities(ApplicationUtil.checkAndCreatePreferenceEligabilities(application.getPreferenceEligabilities(), preferenceAoIds));
+        application.setPreferenceEligibilities(ApplicationUtil.checkAndCreatePreferenceEligibilities(application.getPreferenceEligibilities(), preferenceAoIds));
         application.setPreferencesChecked(ApplicationUtil.checkAndCreatePreferenceCheckedData(application.getPreferencesChecked(), preferenceAoIds));
 
         ApplicationSystem applicationSystem = applicationSystemService.getApplicationSystem(application.getApplicationSystemId());

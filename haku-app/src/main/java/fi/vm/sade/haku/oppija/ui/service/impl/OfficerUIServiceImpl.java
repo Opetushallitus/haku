@@ -10,7 +10,7 @@ import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationAttachmentRequest;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationNote;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.haku.oppija.hakemus.domain.PreferenceChecked;
-import fi.vm.sade.haku.oppija.hakemus.domain.PreferenceEligability;
+import fi.vm.sade.haku.oppija.hakemus.domain.PreferenceEligibility;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationOptionDTO;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.Pistetieto;
 import fi.vm.sade.haku.oppija.hakemus.domain.util.AttachmentUtil;
@@ -36,7 +36,7 @@ import fi.vm.sade.haku.oppija.lomake.validation.ElementTreeValidator;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationInput;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationResult;
 import fi.vm.sade.haku.oppija.ui.controller.dto.AttachmentDTO;
-import fi.vm.sade.haku.oppija.ui.controller.dto.AttachmentsAndEligabilityDTO;
+import fi.vm.sade.haku.oppija.ui.controller.dto.AttachmentsAndEligibilityDTO;
 import fi.vm.sade.haku.oppija.ui.service.OfficerUIService;
 import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
 import fi.vm.sade.haku.virkailija.authentication.Person;
@@ -685,20 +685,20 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     }
 
     @Override
-    public void processAttachmentsAndEligability(String oid, List<AttachmentsAndEligabilityDTO> attachementsAndEligabilities) {
-        LOGGER.debug("Got attachementsAndEligabilities " + StringUtils.join(attachementsAndEligabilities, ","));
+    public void processAttachmentsAndEligibility(String oid, List<AttachmentsAndEligibilityDTO> attachementsAndEligibilities) {
+        LOGGER.debug("Got attachementsAndEligibilities " + StringUtils.join(attachementsAndEligibilities, ","));
         Application application = applicationService.getApplicationByOid(oid);
         HashMap<String, AttachmentDTO> attachmentDTOs = new HashMap<String, AttachmentDTO>();
-        for (AttachmentsAndEligabilityDTO dto : attachementsAndEligabilities){
+        for (AttachmentsAndEligibilityDTO dto : attachementsAndEligibilities){
             PreferencePredicate predicate = new PreferencePredicate(dto.getAoId());
-            PreferenceEligability preferenceEligability = (PreferenceEligability) CollectionUtils.find(application.getPreferenceEligabilities(), predicate);
-            if (null == preferenceEligability) {
+            PreferenceEligibility preferenceEligibility = (PreferenceEligibility) CollectionUtils.find(application.getPreferenceEligibilities(), predicate);
+            if (null == preferenceEligibility) {
                 LOGGER.error("No preference found with " + dto.getAoId() + " for application " + oid);
                 throw new IncoherentDataException("No preference found with " + dto.getAoId() + " for application " + oid);
             }
-            preferenceEligability.setStatus(PreferenceEligability.Status.valueOf(dto.getStatus()));
-            preferenceEligability.setSource(PreferenceEligability.Source.valueOf(dto.getSource()));
-            preferenceEligability.setRejectionBasis(dto.getRejectionBasis());
+            preferenceEligibility.setStatus(PreferenceEligibility.Status.valueOf(dto.getStatus()));
+            preferenceEligibility.setSource(PreferenceEligibility.Source.valueOf(dto.getSource()));
+            preferenceEligibility.setRejectionBasis(dto.getRejectionBasis());
 
             PreferenceChecked preferenceChecked = (PreferenceChecked) CollectionUtils.find(application.getPreferencesChecked(), predicate);
             preferenceChecked.setChecked(dto.getPreferencesChecked());
@@ -734,8 +734,8 @@ public class OfficerUIServiceImpl implements OfficerUIService {
 
         @Override
         public boolean evaluate(Object object) {
-            if (object instanceof PreferenceEligability)
-                return preferenceAoId.equals(((PreferenceEligability) object).getAoId());
+            if (object instanceof PreferenceEligibility)
+                return preferenceAoId.equals(((PreferenceEligibility) object).getAoId());
             if (object instanceof PreferenceChecked)
                 return preferenceAoId.equals(((PreferenceChecked) object).getPreferenceAoOid());
             return false;

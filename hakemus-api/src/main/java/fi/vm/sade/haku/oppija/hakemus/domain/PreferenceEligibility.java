@@ -5,11 +5,11 @@ import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_EMPTY)
-public class PreferenceEligability {
+public class PreferenceEligibility {
     public static enum Status {
         NOT_CHECKED,
         ELIGIBLE,
-        UNELIGABLE,
+        INELIGIBLE,
         INADEQUATE
     }
 
@@ -28,7 +28,7 @@ public class PreferenceEligability {
     private Source source;
     private String rejectionBasis;
 
-    public PreferenceEligability(@JsonProperty(value = "aoId") final String aoId,
+    public PreferenceEligibility(@JsonProperty(value = "aoId") final String aoId,
       @JsonProperty(value = "status") final Status status,
       @JsonProperty(value = "source") final Source source,
       @JsonProperty(value = "rejectionBasis") final String rejectionBasis) {

@@ -5,8 +5,8 @@ import com.google.common.collect.Lists;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.PreferenceChecked;
 import fi.vm.sade.haku.oppija.hakemus.domain.PreferenceCheckedBuilder;
-import fi.vm.sade.haku.oppija.hakemus.domain.PreferenceEligability;
-import fi.vm.sade.haku.oppija.hakemus.domain.PreferenceEligabilityBuilder;
+import fi.vm.sade.haku.oppija.hakemus.domain.PreferenceEligibility;
+import fi.vm.sade.haku.oppija.hakemus.domain.PreferenceEligibilityBuilder;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.apache.commons.lang3.StringUtils;
 
@@ -201,22 +201,22 @@ public final class ApplicationUtil {
         return aos;
     }
 
-    public static List<PreferenceEligability> checkAndCreatePreferenceEligabilities(List<PreferenceEligability> existingPreferenceEligabilities, List<String> preferenceAoIds) {
-        List<PreferenceEligability> currentPreferenceEligabilities = new ArrayList<PreferenceEligability>(preferenceAoIds.size());
-        PreferenceEligability matchingPreferenceEligability = null;
+    public static List<PreferenceEligibility> checkAndCreatePreferenceEligibilities(List<PreferenceEligibility> existingPreferenceEligibilities, List<String> preferenceAoIds) {
+        List<PreferenceEligibility> currentPreferenceEligibilities = new ArrayList<PreferenceEligibility>(preferenceAoIds.size());
+        PreferenceEligibility matchingPreferenceEligibility = null;
         for (String preferenceAoId : preferenceAoIds) {
-            for (PreferenceEligability preferenceEligability : existingPreferenceEligabilities){
-                if (preferenceAoId.equals(preferenceEligability.getAoId())) {
-                    matchingPreferenceEligability = preferenceEligability;
+            for (PreferenceEligibility preferenceEligibility : existingPreferenceEligibilities){
+                if (preferenceAoId.equals(preferenceEligibility.getAoId())) {
+                    matchingPreferenceEligibility = preferenceEligibility;
                     break;
                 }
             }
-            if (null == matchingPreferenceEligability)
-                matchingPreferenceEligability = PreferenceEligabilityBuilder.start().setAoId(preferenceAoId).build();
-            currentPreferenceEligabilities.add(matchingPreferenceEligability);
-            matchingPreferenceEligability = null;
+            if (null == matchingPreferenceEligibility)
+                matchingPreferenceEligibility = PreferenceEligibilityBuilder.start().setAoId(preferenceAoId).build();
+            currentPreferenceEligibilities.add(matchingPreferenceEligibility);
+            matchingPreferenceEligibility = null;
         }
-        return currentPreferenceEligabilities;
+        return currentPreferenceEligibilities;
     }
 
     public static List<PreferenceChecked> checkAndCreatePreferenceCheckedData(List<PreferenceChecked> existingPreferencesChecked, List<String> preferenceAoIds) {

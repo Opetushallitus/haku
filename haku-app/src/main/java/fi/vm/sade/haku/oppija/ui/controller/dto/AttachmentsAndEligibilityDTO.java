@@ -7,7 +7,7 @@ import org.apache.commons.lang.StringUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AttachmentsAndEligabilityDTO {
+public class AttachmentsAndEligibilityDTO {
 
     // preference id
     private String aoId;
@@ -67,7 +67,7 @@ public class AttachmentsAndEligabilityDTO {
 
     @Override
     public String toString() {
-        return "AttachmentsAndEligabilityDTO{" +
+        return "AttachmentsAndEligibilityDTO{" +
           "aoId='" + aoId + '\'' +
           ", status='" + status + '\'' +
           ", source='" + source + '\'' +

@@ -18,7 +18,6 @@ package fi.vm.sade.haku.oppija.hakemus.domain;
 
 import com.google.common.base.Predicates;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import fi.vm.sade.haku.oppija.lomake.domain.ObjectIdDeserializer;
 import fi.vm.sade.haku.oppija.lomake.domain.ObjectIdSerializer;
@@ -112,7 +111,7 @@ public class Application implements Serializable {
     private Integer modelVersion;
 
     //Higher-education only ...
-    private List<PreferenceEligability> preferenceEligabilities = new ArrayList<PreferenceEligability>();
+    private List<PreferenceEligibility> preferenceEligibilities = new ArrayList<PreferenceEligibility>();
     private List<ApplicationAttachmentRequest> attachmentRequests = new ArrayList<ApplicationAttachmentRequest>();
     private List<PreferenceChecked> preferencesChecked = new ArrayList<PreferenceChecked>();
 
@@ -595,12 +594,12 @@ public class Application implements Serializable {
         return version;
     }
 
-    public List<PreferenceEligability> getPreferenceEligabilities() {
-        return preferenceEligabilities;
+    public List<PreferenceEligibility> getPreferenceEligibilities() {
+        return preferenceEligibilities;
     }
 
-    public void setPreferenceEligabilities(List<PreferenceEligability> preferenceEligabilities) {
-        this.preferenceEligabilities = new ArrayList<PreferenceEligability>(preferenceEligabilities);
+    public void setPreferenceEligibilities(List<PreferenceEligibility> preferenceEligibilities) {
+        this.preferenceEligibilities = new ArrayList<PreferenceEligibility>(preferenceEligibilities);
     }
 
     public List<ApplicationAttachmentRequest> getAttachmentRequests() {
@@ -635,7 +634,7 @@ public class Application implements Serializable {
              .setUpdated(getUpdated());
         clone.setPersonOidChecked(getPersonOidChecked());
         clone.setStudentOidChecked(getStudentOidChecked());
-        clone.setPreferenceEligabilities(getPreferenceEligabilities());
+        clone.setPreferenceEligibilities(getPreferenceEligibilities());
         clone.setAttachmentRequests(getAttachmentRequests());
         clone.setPreferencesChecked(getPreferencesChecked());
         return clone;

@@ -398,7 +398,7 @@ var kjal = {
         }
         $.ajax({
             type: 'POST',
-            url: document.URL.split("#")[0] +'processAttachmentsAndEligability',
+            url: document.URL.split("#")[0] +'processAttachmentsAndEligibility',
             data: JSON.stringify(submitData),
             async: true,
             contentType: "application/json;charset=utf-8",
