@@ -1,6 +1,6 @@
 var config = {
-    hakukelpoinen: "INELIGIBLE",
-    eiHakukelpoinen: "UNELIGABLE",
+    hakukelpoinen: "ELIGIBLE",
+    eiHakukelpoinen: "INELIGIBLE",
     puutteellinen: "INADEQUATE",
     liiteSaapunut: "ARRIVED",
     liiteEiSaapunut: "NOT_RECEIVED",
@@ -27,8 +27,8 @@ var kjal = {
                         + "<td>"
                         + "<select class=\"width-12-11\" id=\"hakukelpoisuus-select\" onchange=\"kjal.hakuKelpoisuus(" + ind + ", false)\">"
                         + "<option value=\"NOT_CHECKED\">Kelpoisuus tarkistamatta</option>"
-                        + "<option value=\"INELIGIBLE\">Hakukelpoinen</option>"
-                        + "<option value=\"UNELIGABLE\">Ei hakukelpoinen</option>"
+                        + "<option value=\"ELIGIBLE\">Hakukelpoinen</option>"
+                        + "<option value=\"INELIGIBLE\">Ei hakukelpoinen</option>"
                         + "<option value=\"INADEQUATE\">Puutteelinen</option>"
                         + "</select>"
                         + "</td>"
