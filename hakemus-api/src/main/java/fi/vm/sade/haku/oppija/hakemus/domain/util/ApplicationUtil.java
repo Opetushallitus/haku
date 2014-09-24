@@ -1,19 +1,40 @@
 package fi.vm.sade.haku.oppija.hakemus.domain.util;
 
-import java.util.*;
-
-import org.apache.commons.lang3.StringUtils;
-
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
-
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
+import fi.vm.sade.haku.oppija.hakemus.domain.PreferenceChecked;
+import fi.vm.sade.haku.oppija.hakemus.domain.PreferenceCheckedBuilder;
+import fi.vm.sade.haku.oppija.hakemus.domain.PreferenceEligibility;
+import fi.vm.sade.haku.oppija.hakemus.domain.PreferenceEligibilityBuilder;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.*;
+import static org.apache.commons.lang.StringUtils.isNotEmpty;
 
 
 public final class ApplicationUtil {
 
     private ApplicationUtil() {
+    }
+
+    public static List<String> getPreferenceAoIds(final Application application){
+        Map<String, String> answers = application.getVastauksetMerged();
+        List<String> preferenceAoIds = new ArrayList<String>();
+        for (String key: answers.keySet()){
+            if (null != key && key.startsWith(PREFERENCE_PREFIX) && key.endsWith(OPTION_ID_POSTFIX) && isNotEmpty(answers.get(key))){
+               preferenceAoIds.add(answers.get(key));
+            }
+        }
+        return preferenceAoIds;
     }
 
     public static List<String> getDiscretionaryAttachmentAOIds(final Application application) {
@@ -180,4 +201,39 @@ public final class ApplicationUtil {
         return aos;
     }
 
+    public static List<PreferenceEligibility> checkAndCreatePreferenceEligibilities(List<PreferenceEligibility> existingPreferenceEligibilities, List<String> preferenceAoIds) {
+        List<PreferenceEligibility> currentPreferenceEligibilities = new ArrayList<PreferenceEligibility>(preferenceAoIds.size());
+        PreferenceEligibility matchingPreferenceEligibility = null;
+        for (String preferenceAoId : preferenceAoIds) {
+            for (PreferenceEligibility preferenceEligibility : existingPreferenceEligibilities){
+                if (preferenceAoId.equals(preferenceEligibility.getAoId())) {
+                    matchingPreferenceEligibility = preferenceEligibility;
+                    break;
+                }
+            }
+            if (null == matchingPreferenceEligibility)
+                matchingPreferenceEligibility = PreferenceEligibilityBuilder.start().setAoId(preferenceAoId).build();
+            currentPreferenceEligibilities.add(matchingPreferenceEligibility);
+            matchingPreferenceEligibility = null;
+        }
+        return currentPreferenceEligibilities;
+    }
+
+    public static List<PreferenceChecked> checkAndCreatePreferenceCheckedData(List<PreferenceChecked> existingPreferencesChecked, List<String> preferenceAoIds) {
+        List<PreferenceChecked> currentPreferencesChecked = new ArrayList<PreferenceChecked>(preferenceAoIds.size());
+        PreferenceChecked matchingPreferenceChecked = null;
+        for (String preferenceAoId : preferenceAoIds) {
+            for (PreferenceChecked preferenceChecked : existingPreferencesChecked){
+                if (preferenceAoId.equals(preferenceChecked.getPreferenceAoOid())) {
+                    matchingPreferenceChecked = preferenceChecked;
+                    break;
+                }
+            }
+            if (null == matchingPreferenceChecked)
+                matchingPreferenceChecked = PreferenceCheckedBuilder.start().setPreferenceAoOid(preferenceAoId).build();
+            currentPreferencesChecked.add(matchingPreferenceChecked);
+            matchingPreferenceChecked = null;
+        }
+        return currentPreferencesChecked;
+    }
 }

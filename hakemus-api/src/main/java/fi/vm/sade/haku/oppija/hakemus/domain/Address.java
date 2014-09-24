@@ -1,5 +1,10 @@
-package fi.vm.sade.haku.oppija.hakemus.domain.dto;
+package fi.vm.sade.haku.oppija.hakemus.domain;
 
+import org.codehaus.jackson.annotate.JsonCreator;
+import org.codehaus.jackson.annotate.JsonProperty;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
+
+@JsonSerialize(include = JsonSerialize.Inclusion.NON_EMPTY)
 public class Address {
     private final String recipient;
     private final String streetAddress;
@@ -7,7 +12,12 @@ public class Address {
     private final String postalCode;
     private final String postOffice;
 
-    public Address(String recipient, String streetAddress, String streetAddress2, String postalCode, String postOffice) {
+    @JsonCreator
+    public Address(@JsonProperty(value = "recipient") String recipient,
+                   @JsonProperty(value = "streetAddress") String streetAddress,
+                   @JsonProperty(value = "streetAddress2") String streetAddress2,
+                   @JsonProperty(value = "postalCode") String postalCode,
+                   @JsonProperty(value = "postOffice") String postOffice) {
         this.recipient = recipient;
         this.streetAddress = streetAddress;
         this.streetAddress2 = streetAddress2;

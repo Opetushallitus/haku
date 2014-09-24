@@ -51,6 +51,7 @@
     <script src="${contextPath}/resources/javascript/virkailija/application.js" type="text/javascript"></script>
     <script src="${contextPath}/resources/javascript/virkailija/tabs.js" type="text/javascript"></script>
     <script type="text/javascript" src="/virkailija-raamit/apply-raamit.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
     <title><fmt:message key="virkailija.otsikko"/></title>
 
     <haku:ie9StyleFix/>
@@ -182,6 +183,10 @@
                    class="tab current"><span>Hakemus</span></a>
                 <a href="#" data-tabs-group="applicationtabs" data-tabs-id="valinta" id="valintaTab"
                    class="tab"><span>Valinta</span></a>
+                <c:if test="${applicationSystem.kohdejoukkoUri eq 'haunkohdejoukko_12'}">
+                <a href="#" data-tabs-group="applicationtabs" data-tabs-id="kelpoisuusliitteet" id="kelpoisuusliitteetTab"
+                   class="tab"><span>Kk-haut: Kelpoisuus ja liitteet</span></a>
+                </c:if>
             </div>
 
             <div class="tabsheets">
@@ -197,6 +202,13 @@
 
                     <jsp:include page="valintaTab.jsp"/>
                 </section>
+                <c:if test="${applicationSystem.kohdejoukkoUri eq 'haunkohdejoukko_12'}">
+                <section id="kelpoisuusliitteet" class="tabsheet" data-tabs-group="applicationtabs" data-tabs-id="kelpoisuusliitteet"
+                         style="display: none">
+
+                    <jsp:include page="kelpoisuusLiitteetTab.jsp"/>
+                </section>
+                </c:if>
 
             </div>
         </section>

@@ -1,16 +1,17 @@
 package fi.vm.sade.haku.oppija.hakemus.domain.util;
 
-import java.util.*;
-
+import fi.vm.sade.haku.oppija.hakemus.domain.Address;
+import fi.vm.sade.haku.oppija.hakemus.domain.AddressBuilder;
+import fi.vm.sade.haku.oppija.hakemus.domain.Application;
+import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationAttachmentRequest;
+import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationAttachmentRequestBuilder;
+import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationAttachment;
 import org.apache.commons.lang3.StringUtils;
 
-import fi.vm.sade.haku.oppija.hakemus.domain.Application;
-import fi.vm.sade.haku.oppija.hakemus.domain.dto.Address;
-import fi.vm.sade.haku.oppija.hakemus.domain.dto.AddressBuilder;
-import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationAttachment;
-import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationAttachmentBuilder;
+import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationAttachmentBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationOptionAttachmentRequest;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
+import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.util.StringUtil;
 import fi.vm.sade.haku.virkailija.koulutusinformaatio.KoulutusinformaatioService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain.SimpleAddress;
@@ -18,9 +19,22 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import fi.vm.sade.koulutusinformaatio.domain.dto.*;
 
+import java.util.*;
+
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
+
 public class AttachmentUtil {
 
-    public static List<ApplicationAttachment> resolveAttachments(ApplicationSystem applicationSystem, Application application,
+    public static List<ApplicationAttachment> resolveAttachments(Application application){
+        List<ApplicationAttachmentRequest> attachmentRequests = application.getAttachmentRequests();
+        List<ApplicationAttachment> attachments = new ArrayList<ApplicationAttachment>(attachmentRequests.size());
+        for (ApplicationAttachmentRequest attachmentRequest : attachmentRequests){
+            attachments.add(attachmentRequest.getApplicationAttachment());
+        }
+        return attachments;
+    }
+
+    public static List<ApplicationAttachmentRequest> resolveAttachmentRequests(ApplicationSystem applicationSystem, Application application,
                                                                  KoulutusinformaatioService koulutusinformaatioService) {
 
         String lang = application.getMetaValue(Application.META_FILING_LANGUAGE);
@@ -36,33 +50,40 @@ public class AttachmentUtil {
                 }
             }
         }
-        return resolveAttachments(applicationSystem, application, koulutusinformaatioService, lang);
+        return resolveAttachmentRequests(applicationSystem, application, koulutusinformaatioService, lang);
     }
 
-    public static List<ApplicationAttachment> resolveAttachments(
+    public static List<ApplicationAttachmentRequest> resolveAttachmentRequests(
               ApplicationSystem applicationSystem,
               Application application,
               KoulutusinformaatioService koulutusinformaatioService,
               String lang) {
-        List<ApplicationAttachment> attachments = new ArrayList<ApplicationAttachment>();
+        List<ApplicationAttachmentRequest> attachments = new ArrayList<ApplicationAttachmentRequest>();
         attachments = addApplicationOptionAttachments(attachments, application, koulutusinformaatioService, lang);
         attachments = addDiscreationaryAttachments(attachments, application, koulutusinformaatioService, lang);
         attachments = addHigherEdAttachments(attachments, application, koulutusinformaatioService, lang);
-        attachments = addApplicationOptionAttachmentRequests(attachments, application, applicationSystem);
+        attachments = addApplicationOptionAttachmentRequestsFromForm(attachments, application, applicationSystem);
 
         return attachments;
     }
 
-    private static List<ApplicationAttachment> addApplicationOptionAttachmentRequests(List<ApplicationAttachment> attachments,
-                                                                                      Application application,
-                                                                                      ApplicationSystem applicationSystem) {
+    private static List<ApplicationAttachmentRequest> addApplicationOptionAttachmentRequestsFromForm(List<ApplicationAttachmentRequest> attachments,
+      Application application,
+      ApplicationSystem applicationSystem) {
         if(applicationSystem.getApplicationOptionAttachmentRequests() == null) {
           return attachments;
         }
         for (ApplicationOptionAttachmentRequest attachmentRequest : applicationSystem.getApplicationOptionAttachmentRequests()){
             if (attachmentRequest.include(application.getVastauksetMerged())){
                 SimpleAddress address = attachmentRequest.getDeliveryAddress();
-                attachments.add(ApplicationAttachmentBuilder.start()
+                ApplicationAttachmentRequestBuilder attachmentRequestBuilder = ApplicationAttachmentRequestBuilder.start();
+
+                if (attachmentRequest.isGroupOption())
+                    attachmentRequestBuilder.setPreferenceAoGroupId(attachmentRequest.getApplicationOptionId());
+                else
+                    attachmentRequestBuilder.setPreferenceAoId(attachmentRequest.getApplicationOptionId());
+
+                attachmentRequestBuilder.setApplicationAttachment(ApplicationAttachmentBuilder.start()
                   .setHeader(attachmentRequest.getHeader())
                   .setDescription(attachmentRequest.getDescription())
                   .setDeadline(attachmentRequest.getDeliveryDue())
@@ -73,36 +94,49 @@ public class AttachmentUtil {
                     .setPostOffice(address.getPostOffice())
                     .build())
                   .build());
+                attachments.add(attachmentRequestBuilder.build());
             }
         }
         return attachments;
     }
 
-    private static List<ApplicationAttachment> addApplicationOptionAttachments(
-            List<ApplicationAttachment> attachments, Application application,
-            KoulutusinformaatioService koulutusinformaatioService, String lang) {
+    private static List<ApplicationAttachmentRequest> addApplicationOptionAttachments(
+      List<ApplicationAttachmentRequest> attachments, Application application,
+      KoulutusinformaatioService koulutusinformaatioService, String lang) {
         for (String aoOid : ApplicationUtil.getApplicationOptionAttachmentAOIds(application)) {
             ApplicationOptionDTO ao = koulutusinformaatioService.getApplicationOption(aoOid, lang);
             for (ApplicationOptionAttachmentDTO attachmentDTO : ao.getAttachments()) {
+                String descriptionText = attachmentDTO.getDescreption();
+                I18nText description = null;
+                if (isNotBlank(descriptionText)) {
+                    description = ElementUtil.createI18NAsIs(descriptionText);
+                } else {
+                    description = ElementUtil.createI18NAsIs("");
+                }
                 attachments.add(
-                        ApplicationAttachmentBuilder.start()
-                                .setName(ElementUtil.createI18NAsIs(attachmentDTO.getType()))
-                                .setDescription(ElementUtil.createI18NAsIs(attachmentDTO.getDescreption()))
-                                .setDeadline(attachmentDTO.getDueDate())
-                                .setAddress(AddressBuilder.start()
-                                        .setRecipient("")
-                                        .setStreetAddress(attachmentDTO.getAddress().getStreetAddress())
-                                        .setStreetAddress2(attachmentDTO.getAddress().getStreetAddress2())
-                                        .setPostalCode(attachmentDTO.getAddress().getPostalCode())
-                                        .setPostOffice(attachmentDTO.getAddress().getPostOffice())
-                                        .build())
-                                .build());
+                  ApplicationAttachmentRequestBuilder.start()
+                    .setPreferenceAoId(ao.getId())
+                    .setApplicationAttachment(
+                      ApplicationAttachmentBuilder.start()
+                        .setName(ElementUtil.createI18NAsIs(attachmentDTO.getType()))
+                        .setDescription(description)
+                        .setDeadline(attachmentDTO.getDueDate())
+                        .setAddress(AddressBuilder.start()
+                          .setRecipient("")
+                          .setStreetAddress(attachmentDTO.getAddress().getStreetAddress())
+                          .setStreetAddress2(attachmentDTO.getAddress().getStreetAddress2())
+                          .setPostalCode(attachmentDTO.getAddress().getPostalCode())
+                          .setPostOffice(attachmentDTO.getAddress().getPostOffice())
+                          .build())
+                        .build()
+                    ).build()
+                );
             }
         }
         return attachments;
     }
 
-    private static List<ApplicationAttachment> addDiscreationaryAttachments(List<ApplicationAttachment> attachments,
+    private static List<ApplicationAttachmentRequest> addDiscreationaryAttachments(List<ApplicationAttachmentRequest> attachments,
                                                                             Application application,
                                                                             KoulutusinformaatioService koulutusinformaatioService,
                                                                             String lang) {
@@ -130,7 +164,10 @@ public class AttachmentUtil {
                         +discreationaryReason));
             }
 
-            attachments.add(attachmentBuilder.build());
+            attachments.add(ApplicationAttachmentRequestBuilder.start()
+              .setPreferenceAoId(aoOid)
+              .setApplicationAttachment(attachmentBuilder.build())
+            .build());
         }
         return attachments;
     }
@@ -153,7 +190,7 @@ public class AttachmentUtil {
           .build();
     }
 
-    private static List<ApplicationAttachment> addHigherEdAttachments(List<ApplicationAttachment> attachments,
+    private static List<ApplicationAttachmentRequest> addHigherEdAttachments(List<ApplicationAttachmentRequest> attachments,
                                                                       Application application,
                                                                       KoulutusinformaatioService koulutusinformaatioService,
                                                                       String lang) {
@@ -198,19 +235,23 @@ public class AttachmentUtil {
                     name = aoDTO.getProvider().getName();
                 }
 
-                attachments.add(
-                        ApplicationAttachmentBuilder.start()
-                                .setName(ElementUtil.createI18NAsIs(StringUtil.safeToString(aoDTO.getProvider().getName())))
-                                .setDescription(ElementUtil.createI18NText("form.valmis.todistus." + attachmentType))
-                                .setDeadline(deadline)
-                                .setAddress(AddressBuilder.start()
-                                        .setRecipient(name)
-                                        .setStreetAddress(addressDTO.getStreetAddress())
-                                        .setStreetAddress2(addressDTO.getStreetAddress2())
-                                        .setPostalCode(addressDTO.getPostalCode())
-                                        .setPostOffice(addressDTO.getPostOffice())
-                                        .build())
-                                .build()
+                //TODO =RS= FIX THE NULL
+                attachments.add(ApplicationAttachmentRequestBuilder.start()
+                    .setPreferenceAoId(aoDTO.getId())
+                    .setPreferenceAoGroupId(null)
+                    .setApplicationAttachment(
+                      ApplicationAttachmentBuilder.start()
+                        .setName(ElementUtil.createI18NAsIs(StringUtil.safeToString(aoDTO.getProvider().getName())))
+                        .setDescription(ElementUtil.createI18NText("form.valmis.todistus." + attachmentType))
+                        .setDeadline(deadline)
+                        .setAddress(AddressBuilder.start()
+                          .setRecipient(name)
+                          .setStreetAddress(addressDTO.getStreetAddress())
+                          .setStreetAddress2(addressDTO.getStreetAddress2())
+                          .setPostalCode(addressDTO.getPostalCode())
+                          .setPostOffice(addressDTO.getPostOffice())
+                          .build())
+                        .build()).build()
                 );
             }
         }

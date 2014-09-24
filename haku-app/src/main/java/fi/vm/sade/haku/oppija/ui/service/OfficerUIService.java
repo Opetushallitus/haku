@@ -3,7 +3,9 @@ package fi.vm.sade.haku.oppija.ui.service;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
+import fi.vm.sade.haku.oppija.lomake.domain.ModelResponse;
 import fi.vm.sade.haku.oppija.lomake.domain.User;
+import fi.vm.sade.haku.oppija.ui.controller.dto.AttachmentsAndEligibilityDTO;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -51,4 +53,6 @@ public interface OfficerUIService {
     ModelResponse getApplicationPrint(final String oid);
 
     List<Map<String,String>> getHigherEdBaseEdOptions();
+
+    void processAttachmentsAndEligibility(String oid, List<AttachmentsAndEligibilityDTO> attachementsAndEligibilities);
 }

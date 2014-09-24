@@ -14,7 +14,7 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.haku.oppija.hakemus.service;
+package fi.vm.sade.haku.oppija.hakemus.service.impl;
 
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
@@ -23,9 +23,14 @@ import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.haku.oppija.hakemus.domain.AuthorizationMeta;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationAdditionalDataDTO;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
+import fi.vm.sade.haku.oppija.hakemus.domain.util.ApplicationUtil;
+import fi.vm.sade.haku.oppija.hakemus.domain.util.AttachmentUtil;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationDAO;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationFilterParametersBuilder;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationQueryParameters;
+import fi.vm.sade.haku.oppija.hakemus.service.ApplicationOidService;
+import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
+import fi.vm.sade.haku.oppija.hakemus.service.HakuPermissionService;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationState;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.User;
@@ -42,7 +47,9 @@ import fi.vm.sade.haku.oppija.lomake.validation.ValidationResult;
 import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
 import fi.vm.sade.haku.virkailija.authentication.Person;
 import fi.vm.sade.haku.virkailija.authentication.PersonBuilder;
+import fi.vm.sade.haku.virkailija.koulutusinformaatio.KoulutusinformaatioService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,6 +77,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     private final OrganizationService organizationService;
     private final HakuPermissionService hakuPermissionService;
     private final ApplicationSystemService applicationSystemService;
+    private final KoulutusinformaatioService koulutusinformaatioService;
     private final ElementTreeValidator elementTreeValidator;
 
     @Autowired
@@ -81,6 +89,7 @@ public class ApplicationServiceImpl implements ApplicationService {
                                   OrganizationService organizationService,
                                   HakuPermissionService hakuPermissionService,
                                   ApplicationSystemService applicationSystemService,
+                                  KoulutusinformaatioService koulutusinformaatioService,
                                   ElementTreeValidator elementTreeValidator) {
 
         this.applicationDAO = applicationDAO;
@@ -91,6 +100,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         this.organizationService = organizationService;
         this.hakuPermissionService = hakuPermissionService;
         this.applicationSystemService = applicationSystemService;
+        this.koulutusinformaatioService = koulutusinformaatioService;
         this.elementTreeValidator = elementTreeValidator;
     }
 
@@ -138,7 +148,8 @@ public class ApplicationServiceImpl implements ApplicationService {
     public Application submitApplication(final String applicationSystemId, String language) {
         final User user = userSession.getUser();
         Application application = userSession.getApplication(applicationSystemId);
-        Form form = formService.getForm(applicationSystemId);
+        ApplicationSystem applicationSystem = applicationSystemService.getApplicationSystem(applicationSystemId);
+        Form form = applicationSystem.getForm();
         Map<String, String> allAnswers = application.getVastauksetMerged();
         ValidationResult validationResult = elementTreeValidator.validate(new ValidationInput(form, allAnswers,
                 application.getOid(), applicationSystemId));
@@ -156,6 +167,7 @@ public class ApplicationServiceImpl implements ApplicationService {
             application.submitted();
             application.flagStudentIdentificationRequired();
             application.addMeta(Application.META_FILING_LANGUAGE, language);
+            application = updatePreferenceBasedData(application);
             this.applicationDAO.save(application);
             this.userSession.removeApplication(application);
             return application;
@@ -337,6 +349,19 @@ public class ApplicationServiceImpl implements ApplicationService {
         if (save) {
             this.update(new Application(application.getOid(), application.getVersion()), application);
         }
+        return application;
+    }
+
+    @Override
+    public Application updatePreferenceBasedData(final Application application){
+        List<String> preferenceAoIds = ApplicationUtil.getPreferenceAoIds(application);
+
+        application.setPreferenceEligibilities(ApplicationUtil.checkAndCreatePreferenceEligibilities(application.getPreferenceEligibilities(), preferenceAoIds));
+        application.setPreferencesChecked(ApplicationUtil.checkAndCreatePreferenceCheckedData(application.getPreferencesChecked(), preferenceAoIds));
+
+        ApplicationSystem applicationSystem = applicationSystemService.getApplicationSystem(application.getApplicationSystemId());
+        application.setAttachmentRequests(AttachmentUtil.resolveAttachmentRequests(applicationSystem, application, koulutusinformaatioService));
+
         return application;
     }
 

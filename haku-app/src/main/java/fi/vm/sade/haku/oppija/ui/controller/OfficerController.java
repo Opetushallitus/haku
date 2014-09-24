@@ -17,14 +17,16 @@
 package fi.vm.sade.haku.oppija.ui.controller;
 
 import com.sun.jersey.api.view.Viewable;
+
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
+import fi.vm.sade.haku.oppija.lomake.domain.ModelResponse;
 import fi.vm.sade.haku.oppija.lomake.service.FormService;
 import fi.vm.sade.haku.oppija.lomake.service.UserSession;
 import fi.vm.sade.haku.oppija.ui.common.UriUtil;
-import fi.vm.sade.haku.oppija.ui.service.ModelResponse;
+import fi.vm.sade.haku.oppija.ui.controller.dto.AttachmentsAndEligibilityDTO;
 import fi.vm.sade.haku.oppija.ui.service.OfficerUIService;
 import fi.vm.sade.haku.oppija.ui.service.UIService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
@@ -33,6 +35,7 @@ import fi.vm.sade.haku.virkailija.viestintapalvelu.PDFService;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.dto.ApplicationByEmailDTO;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.dto.ApplicationReplacementDTO;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.dto.ApplicationTemplateDTO;
+
 import org.apache.http.HttpResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,6 +47,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
+
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -272,6 +276,16 @@ public class OfficerController {
         return redirectToOidResponse(oid);
     }
 
+    @POST
+    @Path("/hakemus/{oid}/processAttachmentsAndEligibility")
+    @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
+    @Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
+    @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_CRUD')")
+    public void processAttachmentAndEligibility(@PathParam(OID_PATH_PARAM) final String oid,
+                                  List<AttachmentsAndEligibilityDTO> attachmentsAndEligibility) throws URISyntaxException {
+        officerUIService.processAttachmentsAndEligibility(oid, attachmentsAndEligibility);
+    }
+
     @GET
     @Path("/hakemus/{oid}/print")
     @Produces(MediaType.TEXT_PLAIN)
@@ -324,7 +338,6 @@ public class OfficerController {
     @Path("/hakemus/applicationSystems")
     @Produces(MediaType.APPLICATION_JSON)
     public List<Map<String, String>> getApplicationSystems() {
-
         List<ApplicationSystem> applicationSystemList = officerUIService.getApplicationSystems();
         List<Map<String, String>> applicationSystems = new ArrayList<Map<String, String>>(applicationSystemList.size());
         for (ApplicationSystem as : applicationSystemList) {

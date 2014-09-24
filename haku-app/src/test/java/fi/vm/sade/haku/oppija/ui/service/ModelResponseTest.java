@@ -1,8 +1,11 @@
 package fi.vm.sade.haku.oppija.ui.service;
 
 import com.google.common.collect.ImmutableMap;
+
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
+import fi.vm.sade.haku.oppija.lomake.domain.ModelResponse;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
+
 import org.junit.Before;
 import org.junit.Test;
 
