@@ -34,7 +34,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
@@ -45,7 +52,7 @@ public class Application implements Serializable {
 
     @JsonIgnore
     private static final Logger log = LoggerFactory.getLogger(Application.class);
-    public static final Integer CURRENT_MODEL_VERSION = 1;
+    public static final Integer CURRENT_MODEL_VERSION = 2;
     public static final String META_FILING_LANGUAGE = "filingLanguage";
 
     public Integer getModelVersion() {
@@ -102,6 +109,11 @@ public class Application implements Serializable {
     private List<Change> history = new ArrayList<Change>();
     private Integer version;
     private Integer modelVersion;
+
+    //Higher-education only ...
+    private List<PreferenceEligibility> preferenceEligibilities = new ArrayList<PreferenceEligibility>();
+    private List<ApplicationAttachmentRequest> attachmentRequests = new ArrayList<ApplicationAttachmentRequest>();
+    private List<PreferenceChecked> preferencesChecked = new ArrayList<PreferenceChecked>();
 
     @JsonCreator
     public Application(@JsonProperty(value = "applicationSystemId") final String applicationSystemId,
@@ -582,6 +594,30 @@ public class Application implements Serializable {
         return version;
     }
 
+    public List<PreferenceEligibility> getPreferenceEligibilities() {
+        return preferenceEligibilities;
+    }
+
+    public void setPreferenceEligibilities(List<PreferenceEligibility> preferenceEligibilities) {
+        this.preferenceEligibilities = new ArrayList<PreferenceEligibility>(preferenceEligibilities);
+    }
+
+    public List<ApplicationAttachmentRequest> getAttachmentRequests() {
+        return attachmentRequests;
+    }
+
+    public void setAttachmentRequests(List<ApplicationAttachmentRequest> attachmentRequests) {
+        this.attachmentRequests = new ArrayList<ApplicationAttachmentRequest>(attachmentRequests);
+    }
+
+    public List<PreferenceChecked> getPreferencesChecked() {
+        return preferencesChecked;
+    }
+
+    public void setPreferencesChecked(List<PreferenceChecked> preferencesChecked) {
+        this.preferencesChecked = preferencesChecked;
+    }
+
     @Override
     public Application clone() {
         Application clone = new Application(getApplicationSystemId(), getUser(), copyAnswers(), Maps.newHashMap(getAdditionalInfo()));
@@ -598,6 +634,9 @@ public class Application implements Serializable {
              .setUpdated(getUpdated());
         clone.setPersonOidChecked(getPersonOidChecked());
         clone.setStudentOidChecked(getStudentOidChecked());
+        clone.setPreferenceEligibilities(getPreferenceEligibilities());
+        clone.setAttachmentRequests(getAttachmentRequests());
+        clone.setPreferencesChecked(getPreferencesChecked());
         return clone;
     }
 

@@ -26,6 +26,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.ModelResponse;
 import fi.vm.sade.haku.oppija.lomake.service.FormService;
 import fi.vm.sade.haku.oppija.lomake.service.UserSession;
 import fi.vm.sade.haku.oppija.ui.common.UriUtil;
+import fi.vm.sade.haku.oppija.ui.controller.dto.AttachmentsAndEligibilityDTO;
 import fi.vm.sade.haku.oppija.ui.service.OfficerUIService;
 import fi.vm.sade.haku.oppija.ui.service.UIService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
@@ -275,6 +276,16 @@ public class OfficerController {
         return redirectToOidResponse(oid);
     }
 
+    @POST
+    @Path("/hakemus/{oid}/processAttachmentsAndEligibility")
+    @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
+    @Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
+    @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_CRUD')")
+    public void processAttachmentAndEligibility(@PathParam(OID_PATH_PARAM) final String oid,
+                                  List<AttachmentsAndEligibilityDTO> attachmentsAndEligibility) throws URISyntaxException {
+        officerUIService.processAttachmentsAndEligibility(oid, attachmentsAndEligibility);
+    }
+
     @GET
     @Path("/hakemus/{oid}/print")
     @Produces(MediaType.TEXT_PLAIN)
@@ -327,7 +338,6 @@ public class OfficerController {
     @Path("/hakemus/applicationSystems")
     @Produces(MediaType.APPLICATION_JSON)
     public List<Map<String, String>> getApplicationSystems() {
-
         List<ApplicationSystem> applicationSystemList = officerUIService.getApplicationSystems();
         List<Map<String, String>> applicationSystems = new ArrayList<Map<String, String>>(applicationSystemList.size());
         for (ApplicationSystem as : applicationSystemList) {

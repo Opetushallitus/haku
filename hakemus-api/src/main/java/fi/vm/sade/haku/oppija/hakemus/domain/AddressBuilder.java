@@ -1,4 +1,4 @@
-package fi.vm.sade.haku.oppija.hakemus.domain.dto;
+package fi.vm.sade.haku.oppija.hakemus.domain;
 
 public class AddressBuilder {
     private String recipient;

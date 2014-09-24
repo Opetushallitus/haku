@@ -104,7 +104,7 @@ public class UIServiceImpl implements UIService {
         Application application = applicationService.getSubmittedApplication(applicationSystemId, oid);
 
         return new ModelResponse(application, activeApplicationSystem,
-                AttachmentUtil.resolveAttachments(activeApplicationSystem, application, koulutusinformaatioService),
+                AttachmentUtil.resolveAttachments(application),
                 koulutusinformaatioBaseUrl);
     }
 
