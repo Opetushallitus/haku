@@ -213,7 +213,7 @@ public final class ElementUtil {
 
     private static void filterElements(
             final Element element, final List<Element> elements, final Predicate<Element> predicate, final Map<String, String> answers) {
-        if (predicate.apply(element)) {
+        if (predicate.apply(element) && !elements.contains(element)) {
             elements.add(element);
         }
         if (answers != null) {
