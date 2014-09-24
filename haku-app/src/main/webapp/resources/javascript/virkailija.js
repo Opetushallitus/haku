@@ -45,9 +45,13 @@ $(document).ready(function () {
      */
 
     var applicationSystemSelection = {
-        init: function () {
-            $.getJSON(page_settings.contextPath + "/virkailija/hakemus/applicationSystems",
-                function (data) {
+        init: function (disableAsync) {
+            var isAsync = !disableAsync;
+            $.ajax({
+                dataType: "json",
+                url: page_settings.contextPath + "/virkailija/hakemus/applicationSystems",
+                data: null,
+                success: function (data) {
                     var selectedSemester = $('#hakukausi').val();
                     var selectedYear = $('#hakukausiVuosi').val();
                     var ass = [];
@@ -83,35 +87,45 @@ $(document).ready(function () {
 
                         $('#application-system').append('<option value="' + id + '" ' + 'data-kohdejoukko="' + kohdejoukko + '" ' + '>' + name + '</option>');
                     }
-                });
+                },
+                async: isAsync
+            });
         }
     };
 
     var baseEducationSelection = {
-        init: function () {
+        init: function (disableAsync) {
+            var isAsync = !disableAsync;
+
             $("#application-system option:selected").each(function () {
                 var kohdejoukko = $(this).attr('data-kohdejoukko');
-                $.getJSON(page_settings.contextPath + "/virkailija/hakemus/baseEducations/" + kohdejoukko, function (data) {
-                    var baseEds = [];
-                    $('#base-education option').remove();
-                    $('#base-education').append('<option value="">&nbsp</option>');
-                    for (var i in data) {
-                        var baseEd = data[i];
-                        var value = baseEd.value;
-                        var name = baseEd['name_' + page_settings.lang];
-                        if (!name) {
-                            if (baseEd['name_fi']) {
-                                name = baseEd['name_fi'];
-                            } else if (baseEd['name_sv']) {
-                                name = baseEd['name_sv'];
-                            } else if (baseEd['name_en']) {
-                                name = baseEd['name_en'];
-                            } else {
-                                name = "???";
+                $.ajax({
+                    dataType: "json",
+                    url: page_settings.contextPath + "/virkailija/hakemus/baseEducations/" + kohdejoukko,
+                    data: null,
+                    success: function (data) {
+                        var baseEds = [];
+                        $('#base-education option').remove();
+                        $('#base-education').append('<option value="">&nbsp</option>');
+                        for (var i in data) {
+                            var baseEd = data[i];
+                            var value = baseEd.value;
+                            var name = baseEd['name_' + page_settings.lang];
+                            if (!name) {
+                                if (baseEd['name_fi']) {
+                                    name = baseEd['name_fi'];
+                                } else if (baseEd['name_sv']) {
+                                    name = baseEd['name_sv'];
+                                } else if (baseEd['name_en']) {
+                                    name = baseEd['name_en'];
+                                } else {
+                                    name = "???";
+                                }
                             }
+                            $('#base-education').append('<option value="' + value + '">' + name + '</option>');
                         }
-                        $('#base-education').append('<option value="' + value + '">' + name + '</option>');
-                    }
+                    },
+                    async: isAsync
                 });
                 if (kohdejoukko === "haunkohdejoukko_12") {
                     $('input#application-preference').autocomplete(getHigherEducationAutocomplete($(this).val()));
@@ -121,11 +135,6 @@ $(document).ready(function () {
             });
         }
     };
-
-    if (typeof page_settings !== 'undefined') {
-        applicationSystemSelection.init();
-        baseEducationSelection.init()
-    }
 
     $('#hakukausi').change(function () {
         applicationSystemSelection.init()
@@ -409,9 +418,10 @@ $(document).ready(function () {
                 obj = lastSearch;
                 $('#hakukausiVuosi').val(obj.asYear);
                 $('#hakukausi').val(obj.asSemester);
-                applicationSystemSelection.init();
+                applicationSystemSelection.init(true);
+
                 $('#application-system').val(obj.asId);
-                baseEducationSelection.init()
+                baseEducationSelection.init(true)
 
                 $('#entry').val(obj.q);
                 $('#oid').val(obj.oid);
@@ -593,34 +603,37 @@ $(document).ready(function () {
             $('#check-all-applications').attr('checked', false);
             disableExcel();
         },
-            this.getSortOrder = function (columnName) {
-                var column = $('#application-table-header-' + columnName);
-                var clazz = column.attr('class');
-                var sortOrder = 'asc';
-                if (clazz === 'sorted-asc') {
-                    clazz = 'sorted-desc';
-                    sortOrder = 'desc';
-                } else {
-                    clazz = 'sorted-asc';
-                }
-                return sortOrder;
-            },
-            this.setSortOrder = function (columnName, sortOrder) {
-                if (columnName && sortOrder) {
-                    var column = $('#application-table-header-' + columnName);
-                    column.attr('class', 'sorted-' + sortOrder)
-                }
-            },
-            this.sort = function (sortBy) {
-                var sortOrder = applicationSearch.getSortOrder(sortBy);
-                applicationSearch.search(0, sortBy, sortOrder);
+        this.getSortOrder = function (columnName) {
+            var column = $('#application-table-header-' + columnName);
+            var clazz = column.attr('class');
+            var sortOrder = 'asc';
+            if (clazz === 'sorted-asc') {
+                clazz = 'sorted-desc';
+                sortOrder = 'desc';
+            } else {
+                clazz = 'sorted-asc';
             }
+            return sortOrder;
+        },
+        this.setSortOrder = function (columnName, sortOrder) {
+            if (columnName && sortOrder) {
+                var column = $('#application-table-header-' + columnName);
+                column.attr('class', 'sorted-' + sortOrder)
+            }
+        },
+        this.sort = function (sortBy) {
+            var sortOrder = applicationSearch.getSortOrder(sortBy);
+            applicationSearch.search(0, sortBy, sortOrder);
+        }
 
         return this;
     })();
 
     if ($.cookie(cookieName) && window.location.hash === '#useLast') {
         applicationSearch.search(0, 'fullName', 'asc');
+    } else if (typeof page_settings !== 'undefined') {
+        applicationSystemSelection.init();
+        baseEducationSelection.init()
     }
 
     $('#search-applications').click(function (event) {

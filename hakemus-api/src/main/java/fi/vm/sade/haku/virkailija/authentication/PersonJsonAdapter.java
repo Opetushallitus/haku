@@ -63,8 +63,6 @@ public class PersonJsonAdapter implements JsonSerializer<Person>, JsonDeserializ
         } else {
             log.debug("Has no hetu");
         }
-//        TODO: Pois, kunnes henkilöhallinnan bugi on korjattu
-//        personJson.add("eiSuomalaistaHetua", new JsonPrimitive(person.isNoSocialSecurityNumber()));
 
         String dateOfBirth = person.getDateOfBirth();
         if (!isEmpty(dateOfBirth)) {
@@ -99,8 +97,6 @@ public class PersonJsonAdapter implements JsonSerializer<Person>, JsonDeserializ
                 .setSocialSecurityNumber(getJsonString(personJson, "hetu"))
                 .setPersonOid(getJsonString(personJson, "oidHenkilo"))
                 .setStudentOid(getJsonString(personJson, "oppijanumero"));
-//        TODO: Pois, kunnes henkilöhallinnan bugi on korjattu
-//                .setNoSocialSecurityNumber(getJsonBoolean(personJson, "eiSuomalaistaHetua"));
 
         log.debug("Deserialized basic info");
         String sex = getJsonString(personJson, "sukupuoli");
