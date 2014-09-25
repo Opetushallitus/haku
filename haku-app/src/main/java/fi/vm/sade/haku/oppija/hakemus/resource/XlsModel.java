@@ -98,7 +98,7 @@ public class XlsModel {
         Map<String, Object> vastaukset = (Map<String, Object>) application.get("answers");
         Map<String, String> allAnswers = new HashMap<String, String>();
         for (Map.Entry<String, Object> vastauksetVaiheittain : vastaukset.entrySet()) {
-            vastaukset.putAll((Map<String, String>) vastauksetVaiheittain.getValue());
+            allAnswers.putAll((Map<String, String>) vastauksetVaiheittain.getValue());
         }
         return allAnswers;
     }
