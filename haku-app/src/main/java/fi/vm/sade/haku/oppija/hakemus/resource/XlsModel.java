@@ -104,7 +104,7 @@ public class XlsModel {
     }
 
     private List<Element> findQuestions(ApplicationSystem applicationSystem, final String lang) {
-        findQuestionsWithAnswers(applicationSystem, lang, null);
+        return findQuestionsWithAnswers(applicationSystem, lang, null);
     }
 
     private List<Element> findQuestionsWithAnswers(ApplicationSystem applicationSystem, final String lang, Map<String, String> answers) {
