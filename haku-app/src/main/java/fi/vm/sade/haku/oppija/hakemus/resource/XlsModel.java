@@ -48,13 +48,7 @@ public class XlsModel {
         this.asId = applicationSystem.getId();
         this.asName = applicationSystem.getName().getTranslations().get(lang);
 
-        List<Element> questions = ElementUtil.filterElements(applicationSystem.getForm(), new Predicate<Element>() {
-            @Override
-            public boolean apply(Element element) {
-                return Question.class.isAssignableFrom(element.getClass())
-                        && ElementUtil.getText(element, lang) != null;
-            }
-        });
+        List<Element> questions = findQuestions(applicationSystem, lang);
 
         List<String> asids = Lists.transform(applications, new Function<Map<String, Object>, String>() {
             @Override
@@ -72,11 +66,18 @@ public class XlsModel {
         table = ArrayTable.create(asids, questions);
 
         for (Map<String, Object> application : applications) {
+
+            Map<String, String> answers = getAllAnswers(application);
+            List<Element> questionsWithAnswers = findQuestionsWithAnswers(applicationSystem, lang, answers);
+            Map<String, Element> qMap = new HashMap<String, Element>();
+            for (Element questionsWithAnswer : questionsWithAnswers) {
+                qMap.put(questionsWithAnswer.getId(), questionsWithAnswer);
+            }
             Map<String, Object> vastaukset = (Map<String, Object>) application.get("answers");
             for (Map.Entry<String, Object> vastauksetVaiheittain : vastaukset.entrySet()) {
                 Map<String, String> vaiheenVastaukset = (Map<String, String>) vastauksetVaiheittain.getValue();
                 for (Map.Entry<String, String> vastaus : vaiheenVastaukset.entrySet()) {
-                    if (table.containsColumn(questionMap.get(vastaus.getKey())) && isNotEmpty(vastaus.getValue())) {
+                    if (table.containsColumn(questionMap.get(vastaus.getKey())) && isNotEmpty(vastaus.getValue()) && qMap.containsKey(vastaus.getKey())) {
                         Element question = questionMap.get(vastaus.getKey());
                         String questionAnswer = getQuestionAnswer(vastaus.getValue(), question);
                         table.put((String) application.get("oid"), question, questionAnswer);
@@ -91,6 +92,29 @@ public class XlsModel {
             }
         }));
 
+    }
+
+    private Map<String, String> getAllAnswers(Map<String, Object> application) {
+        Map<String, Object> vastaukset = (Map<String, Object>) application.get("answers");
+        Map<String, String> allAnswers = new HashMap<String, String>();
+        for (Map.Entry<String, Object> vastauksetVaiheittain : vastaukset.entrySet()) {
+            vastaukset.putAll((Map<String, String>) vastauksetVaiheittain.getValue());
+        }
+        return allAnswers;
+    }
+
+    private List<Element> findQuestions(ApplicationSystem applicationSystem, final String lang) {
+        findQuestionsWithAnswers(applicationSystem, lang, null);
+    }
+
+    private List<Element> findQuestionsWithAnswers(ApplicationSystem applicationSystem, final String lang, Map<String, String> answers) {
+        return ElementUtil.filterElements(applicationSystem.getForm(), new Predicate<Element>() {
+            @Override
+            public boolean apply(Element element) {
+                return Question.class.isAssignableFrom(element.getClass())
+                        && ElementUtil.getText(element, lang) != null;
+            }
+        });
     }
 
     public boolean isQuestionAnswered(final Element key) {
