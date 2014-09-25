@@ -3,7 +3,6 @@ package fi.vm.sade.haku.provider;
 import com.google.common.collect.ArrayTable;
 import com.google.common.collect.ImmutableList;
 import fi.vm.sade.haku.oppija.hakemus.resource.XlsModel;
-import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -56,7 +55,7 @@ public class XlsMessageBodyWriter implements MessageBodyWriter<XlsModel> {
     public void writeTo(XlsModel xlsModel, Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType, MultivaluedMap<String, Object> httpHeaders, OutputStream entityStream) throws IOException, WebApplicationException {
 
         Workbook wb = new HSSFWorkbook();
-        String raportinNimi = xlsModel.asId + "_" + xlsModel.hakukausiVuosi + "_" + xlsModel.aoid;
+        String raportinNimi = xlsModel.asId + "_" + xlsModel.hakukausiVuosi + "_" + xlsModel.aoName;
         Sheet sheet = wb.createSheet(raportinNimi);
         // Create a row and put some cells in it. Rows are 0 based.
         sheet.setDefaultColumnWidth(20);
@@ -68,7 +67,7 @@ public class XlsMessageBodyWriter implements MessageBodyWriter<XlsModel> {
         createKeyValueRow(sheet, currentRowIndex++, "Haku oid", xlsModel.asId);
         createKeyValueRow(sheet, currentRowIndex++, "Hakukausi", xlsModel.getHakukausi(koodistoService.getHakukausi()));
         createKeyValueRow(sheet, currentRowIndex++, "Hakuvuosi", xlsModel.hakukausiVuosi);
-        createKeyValueRow(sheet, currentRowIndex++, "Hakukohde", xlsModel.aoid);
+        createKeyValueRow(sheet, currentRowIndex++, "Hakukohde", xlsModel.aoName);
 
         sheet.createRow(currentRowIndex++);
 

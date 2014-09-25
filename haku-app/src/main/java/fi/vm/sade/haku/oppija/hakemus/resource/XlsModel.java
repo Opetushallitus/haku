@@ -22,7 +22,7 @@ import static org.apache.commons.lang.StringUtils.isNotEmpty;
 public class XlsModel {
 
     public final String hakukausiVuosi;
-    public final String aoid;
+    public final String aoName;
     public final String asId;
     public final String asName;
     private final ApplicationSystem applicationSystem;
@@ -32,12 +32,13 @@ public class XlsModel {
     private final Map<String, Element> mappedQuestions;
     private final List<Element> columnKeyList;
 
-    public XlsModel(final String aoid,
+    public XlsModel(final String aoOid,
+                    final String aoName,
                     final ApplicationSystem applicationSystem,
                     final List<Map<String, Object>> applications,
                     final String lang) {
 
-        this.aoid = aoid;
+        this.aoName = aoName;
         this.applicationSystem = applicationSystem;
         this.applications = applications;
         this.lang = lang;
@@ -45,7 +46,7 @@ public class XlsModel {
         this.asId = applicationSystem.getId();
         this.asName = applicationSystem.getName().getTranslations().get(lang);
 
-        List<Element> questions = findQuestions(applicationSystem, aoid, lang);
+        List<Element> questions = findQuestions(applicationSystem, aoOid, lang);
         List<String> aids = Lists.transform(applications, ELEMENT_TO_OID_FUNCTION);
         this.mappedQuestions = Maps.uniqueIndex(questions, ELEMENT_TO_ID_FUNCTION);
 
@@ -53,7 +54,7 @@ public class XlsModel {
 
         for (Map<String, Object> application : applications) {
             Map<String, String> answers = getAllAnswers(application);
-            List<Element> applicationQuestions = findQuestionsWithAnswers(applicationSystem, aoid, lang, answers);
+            List<Element> applicationQuestions = findQuestionsWithAnswers(applicationSystem, aoOid, lang, answers);
 
             for (Element applicationQuestion : applicationQuestions) {
                 if (table.containsColumn(applicationQuestion) && isNotEmpty(answers.get(applicationQuestion.getId()))) {
@@ -95,7 +96,7 @@ public class XlsModel {
                     if (applicationOptionGroupId == null && applicationOptionId == null) {
                         return true;
                     } else {
-                        return aoid.equals(applicationOptionGroupId) || aoid.equals(applicationOptionId);
+                        return aoid != null && (aoid.equals(applicationOptionGroupId) || aoid.equals(applicationOptionId));
                     }
                 } else {
                     return false;
