@@ -5,7 +5,7 @@
 <%@ taglib prefix="haku" tagdir="/WEB-INF/tags" %>
 
 
-
+<script src="${contextPath}/resources/javascript/virkailija/kelpoisuusLiitteet.js" type="text/javascript"></script>
 <h3>Kk-haut: Kelpoisuus ja liitteet</h3>
 <script type="text/javascript">
     var hakutoiveet = [],
@@ -101,6 +101,6 @@
 
     </script>
 </c:forEach>
-<script src="${contextPath}/resources/javascript/virkailija/kelpoisuusLiitteet.js" type="text/javascript"></script>
+
 
 
