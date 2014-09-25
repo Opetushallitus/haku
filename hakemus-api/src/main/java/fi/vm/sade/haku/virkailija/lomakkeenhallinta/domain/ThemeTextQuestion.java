@@ -52,6 +52,7 @@ public class ThemeTextQuestion extends ThemeQuestion {
         if (this.getRequiredFieldValidator()) {
             elementBuilder.required();
         }
+        addAoidOrAoidGroup(elementBuilder);
         return elementBuilder.build();
     }
 

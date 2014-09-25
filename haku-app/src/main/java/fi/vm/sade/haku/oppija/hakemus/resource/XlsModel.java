@@ -4,9 +4,7 @@ import com.google.common.base.Function;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
-import com.google.common.collect.ArrayTable;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
+import com.google.common.collect.*;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.CheckBox;
@@ -24,23 +22,23 @@ import static org.apache.commons.lang.StringUtils.isNotEmpty;
 public class XlsModel {
 
     public final String hakukausiVuosi;
-    public final String aoid;
+    public final String aoName;
     public final String asId;
     public final String asName;
-
     private final ApplicationSystem applicationSystem;
     private final List<Map<String, Object>> applications;
+
     private final String lang;
-    private final ArrayTable<String, Element, Object> table;
-    private final Map<String, Element> questionMap;
+    private final Map<String, Element> mappedQuestions;
     private final List<Element> columnKeyList;
 
-    public XlsModel(final String aoid,
+    public XlsModel(final String aoOid,
+                    final String aoName,
                     final ApplicationSystem applicationSystem,
                     final List<Map<String, Object>> applications,
                     final String lang) {
 
-        this.aoid = aoid;
+        this.aoName = aoName;
         this.applicationSystem = applicationSystem;
         this.applications = applications;
         this.lang = lang;
@@ -48,41 +46,23 @@ public class XlsModel {
         this.asId = applicationSystem.getId();
         this.asName = applicationSystem.getName().getTranslations().get(lang);
 
-        List<Element> questions = ElementUtil.filterElements(applicationSystem.getForm(), new Predicate<Element>() {
-            @Override
-            public boolean apply(Element element) {
-                return Question.class.isAssignableFrom(element.getClass())
-                        && ElementUtil.getText(element, lang) != null;
-            }
-        });
+        List<Element> questions = findQuestions(applicationSystem, aoOid, lang);
+        List<String> aids = Lists.transform(applications, ELEMENT_TO_OID_FUNCTION);
+        this.mappedQuestions = Maps.uniqueIndex(questions, ELEMENT_TO_ID_FUNCTION);
 
-        List<String> asids = Lists.transform(applications, new Function<Map<String, Object>, String>() {
-            @Override
-            public String apply(Map<String, Object> input) {
-                return (String) input.get("oid");
-            }
-        });
-
-        questionMap = new HashMap<String, Element>();
-        for (Element question : questions) {
-            questionMap.put(question.getId(), question);
-        }
-
-
-        table = ArrayTable.create(asids, questions);
+        table = ArrayTable.create(aids, questions);
 
         for (Map<String, Object> application : applications) {
-            Map<String, Object> vastaukset = (Map<String, Object>) application.get("answers");
-            for (Map.Entry<String, Object> vastauksetVaiheittain : vastaukset.entrySet()) {
-                Map<String, String> vaiheenVastaukset = (Map<String, String>) vastauksetVaiheittain.getValue();
-                for (Map.Entry<String, String> vastaus : vaiheenVastaukset.entrySet()) {
-                    if (table.containsColumn(questionMap.get(vastaus.getKey())) && isNotEmpty(vastaus.getValue())) {
-                        Element question = questionMap.get(vastaus.getKey());
-                        String questionAnswer = getQuestionAnswer(vastaus.getValue(), question);
-                        table.put((String) application.get("oid"), question, questionAnswer);
-                    }
+            Map<String, String> answers = getAllAnswers(application);
+            List<Element> applicationQuestions = findQuestionsWithAnswers(applicationSystem, aoOid, lang, answers);
+
+            for (Element applicationQuestion : applicationQuestions) {
+                if (table.containsColumn(applicationQuestion) && isNotEmpty(answers.get(applicationQuestion.getId()))) {
+                    String questionAnswer = getQuestionAnswer(answers.get(applicationQuestion.getId()), applicationQuestion);
+                    table.put((String) application.get("oid"), applicationQuestion, questionAnswer);
                 }
             }
+
         }
         columnKeyList = Lists.newArrayList(Iterables.filter(table.columnKeyList(), new Predicate<Element>() {
             @Override
@@ -93,11 +73,42 @@ public class XlsModel {
 
     }
 
+    private Map<String, String> getAllAnswers(Map<String, Object> application) {
+        Map<String, Object> vastaukset = (Map<String, Object>) application.get("answers");
+        Map<String, String> allAnswers = new HashMap<String, String>();
+        for (Map.Entry<String, Object> vastauksetVaiheittain : vastaukset.entrySet()) {
+            allAnswers.putAll((Map<String, String>) vastauksetVaiheittain.getValue());
+        }
+        return allAnswers;
+    }
+
+    private List<Element> findQuestions(ApplicationSystem applicationSystem, final String aoid, final String lang) {
+        return findQuestionsWithAnswers(applicationSystem, aoid, lang, null);
+    }
+
+    private List<Element> findQuestionsWithAnswers(ApplicationSystem applicationSystem, final String aoid, final String lang, Map<String, String> answers) {
+        return ElementUtil.filterElements(applicationSystem.getForm(), new Predicate<Element>() {
+            @Override
+            public boolean apply(Element element) {
+                if (Question.class.isAssignableFrom(element.getClass()) && ElementUtil.getText(element, lang) != null) {
+                    String applicationOptionGroupId = ((Question) element).getApplicationOptionGroupId();
+                    String applicationOptionId = ((Question) element).getApplicationOptionId();
+                    if (applicationOptionGroupId == null && applicationOptionId == null) {
+                        return true;
+                    } else {
+                        return aoid != null && (aoid.equals(applicationOptionGroupId) || aoid.equals(applicationOptionId));
+                    }
+                } else {
+                    return false;
+                }
+            }
+        }, answers);
+    }
+
     public boolean isQuestionAnswered(final Element key) {
         Optional<Object> optional = Iterables.tryFind(table.column(key).values(), Predicates.notNull());
         return optional.isPresent();
     }
-
 
     public List<Map<String, Object>> getApplications() {
         return applications;
@@ -106,6 +117,7 @@ public class XlsModel {
     public ArrayTable<String, Element, Object> getTable() {
         return table;
     }
+
 
     private String getQuestionAnswer(String vastaus, Element question) {
         String value = vastaus;
@@ -120,7 +132,6 @@ public class XlsModel {
         return value;
     }
 
-
     public String getValue(String rowKey, Element colKey) {
         return (String) table.get(rowKey, colKey);
     }
@@ -128,6 +139,7 @@ public class XlsModel {
     public List<Element> columnKeyList() {
         return this.columnKeyList;
     }
+
 
     public String getText(Element element) {
         return ElementUtil.getText(element, lang);
@@ -142,5 +154,20 @@ public class XlsModel {
         }
         return hakukausi;
     }
+
+    public static final Function<Element, String> ELEMENT_TO_ID_FUNCTION = new Function<Element, String>() {
+        @Override
+        public String apply(Element element) {
+            return element.getId();
+        }
+    };
+
+    public static final Function<Map<String, Object>, String> ELEMENT_TO_OID_FUNCTION = new Function<Map<String, Object>, String>() {
+        @Override
+        public String apply(Map<String, Object> input) {
+            return (String) input.get("oid");
+        }
+    };
+    private final ArrayTable<String, Element, Object> table;
 
 }

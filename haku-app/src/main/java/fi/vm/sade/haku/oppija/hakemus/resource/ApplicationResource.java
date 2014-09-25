@@ -131,7 +131,7 @@ public class ApplicationResource {
 
         List<Map<String, Object>> applications = applicationService.findFullApplications(queryParams);
         Locale userLocale = (Locale) Config.get(request.getSession(), Config.FMT_LOCALE);
-        return new XlsModel(aoid, activeApplicationSystem, applications, userLocale.getLanguage());
+        return new XlsModel(aoOid, aoid, activeApplicationSystem, applications, userLocale.getLanguage());
     }
 
     @GET
