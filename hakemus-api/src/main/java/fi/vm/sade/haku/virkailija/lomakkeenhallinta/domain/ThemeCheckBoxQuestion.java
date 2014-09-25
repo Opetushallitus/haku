@@ -54,7 +54,7 @@ public class ThemeCheckBoxQuestion extends ThemeOptionQuestion {
         elementBuilder.help(getHelpText());
         elementBuilder.verboseHelp(getVerboseHelpText());
         // elementBuilder.inline();
-
+        addAoidOrAoidGroup(elementBuilder);
         if (this.getRequiredFieldValidator()) {
             elementBuilder.required();
         }
