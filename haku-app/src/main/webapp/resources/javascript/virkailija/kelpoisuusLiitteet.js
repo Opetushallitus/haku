@@ -7,7 +7,7 @@ var config = {
     liiteEiTarkistettu: "NOT_CHECKED",
     liiteTarkistettu: "CHECKED",
     tietolahdeUnknown: "UNKNOWN",
-    showlogs: true
+    showlogs: false
 };
 var kjal = {
     /**
@@ -411,7 +411,12 @@ var kjal = {
             dataType: "json",
             cache: false,
             success: function () {
-                window.location = window.location.href + 'liitteetkelpoisuusTab';
+                if (indx >1) {
+                    var nav = parseInt(indx) -1;
+                    window.location = window.location.href.split('#')[0] + '#liitteetkelpoisuusTab#form-kelpoisuus-liitteet-hr-'+nav;
+                } else {
+                    window.location = window.location.href.split('#')[0] + '#liitteetkelpoisuusTab';
+                }
                 window.location.reload();
             },
             error: function (error) {
@@ -453,8 +458,12 @@ $(document).ready(function() {
      * kelpoisuus ja liitteet välilehden tallennuksen jälkeen
      * asetataan kelpoisuus ja liitteet välilehti takaisin aktiiviseksi
      */
-    if( window.location.href.split('#')[1] === 'liitteetkelpoisuusTab' ){
-        window.location.href = window.location.href.split('#')[0]+'#';
-            $('#kelpoisuusliitteetTab').click();
+    if (window.location.href.split('#')[1] === 'liitteetkelpoisuusTab' ) {
+        if (window.location.href.split('#')[2] !== undefined) {
+            window.location.href = window.location.href.split('#')[0]+'#'+window.location.href.split('#')[2];
+        } else {
+            window.location.href = window.location.href.split('#')[0]+'#';
+        }
+        $('#kelpoisuusliitteetTab').click();
     }
 });

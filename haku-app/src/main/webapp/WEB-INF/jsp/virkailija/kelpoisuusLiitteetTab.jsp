@@ -64,7 +64,7 @@
     <div class="clear">
         <br>
     </div>
-    <hr>
+    <hr id="form-kelpoisuus-liitteet-hr-${hakukohde.index}" >
 
     <script type="text/javascript">
         var kelpoisuus_liitteet = {};
