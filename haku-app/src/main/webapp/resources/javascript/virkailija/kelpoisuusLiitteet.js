@@ -7,7 +7,7 @@ var config = {
     liiteEiTarkistettu: "NOT_CHECKED",
     liiteTarkistettu: "CHECKED",
     tietolahdeUnknown: "UNKNOWN",
-    logs: false
+    showlogs: false
 };
 var kjal = {
     /**
@@ -15,8 +15,8 @@ var kjal = {
      * datan perusteella lomake hakukelpoisuuden ja liitteiden tilojen tallentamiseksi
      */
     populateForm: function () {
-        this.LOGS('Kelpoisuus liitteet --->', hakutoiveet);
-        this.LOGS('populoidaan hakutoive lomake', window.location.href);
+        this.LOGS('Kelpoisuus ja liitteet saatu data:', hakutoiveet);
+        this.LOGS('populoidaan kelpoisuus ja liittee välilehti: ', window.location.href);
         for (var hktindx in hakutoiveet) {
 
             var liitteet = hakutoiveet[hktindx].attachments,
@@ -84,24 +84,23 @@ var kjal = {
                     + "</tr>";
             }
             $('#liitteet-table-' + ind).append($form);
-            this.asetaHakuKelpoisuudetJaLiitteidenTilat();
         }
+        this.asetaHakuKelpoisuudetJaLiitteidenTilat();
     },
     /**
      * Asettaa sivun latautuessa taustajärjestelmästä saadut
-     * hakutoiveen tilat käyttöliittymälle.
+     * hakutoiveen ja liitteiden tilat UI:lle.
      * @param ind hakutoiveen index numero
      */
     asetaHakuKelpoisuudetJaLiitteidenTilat: function () {
         this.LOGS('asetaHakuKelpoisuudetJaLiitteidenTilat()');
         for (var ht in hakutoiveet) {
-            this.LOGS('########## hakutoive ########', ht);
+            this.LOGS('########## hakutoive ######## array index:', ht);
             var ind = parseInt(ht) +1;
             $('#liitteet-table-' + ind + ' #hakukelpoisuus-select').val(hakutoiveet[ht].status);
-            this.LOGS('** 1',  hakutoiveet[ht].source);
-            this.LOGS('** status: ',  hakutoiveet[ht].status);
+            this.LOGS('hakutoiveen tila: ',  hakutoiveet[ht].status);
             if(hakutoiveet[ht].source !== config.tietolahdeUnknown ) {
-                this.LOGS('** 2',  hakutoiveet[ht].source);
+                this.LOGS('hakutoiveen tietolähde: ',  hakutoiveet[ht].source);
                 $('#liitteet-table-' + ind + ' #hakukelpoisuus-tietolahde').val(hakutoiveet[ht].source);
             }
             $('#liitteet-table-' + ind + ' #hylkaamisenperuste').val(hakutoiveet[ht].rejectionBasis);
@@ -112,15 +111,17 @@ var kjal = {
             }
             this.hakuKelpoisuus(ind, true);
             for(var trs in hakutoiveet[ht].attachments){
+                this.LOGS('Liitteen saapumistila: ', hakutoiveet[ht].attachments[trs].receptionStatus);
+                $('#select-saapunut-' +ind + '-' + trs).val(hakutoiveet[ht].attachments[trs].receptionStatus)
+                $('#select-tarkistettu-' +ind + '-' + trs).val(hakutoiveet[ht].attachments[trs].processingStatus);
                 if (hakutoiveet[ht].attachments[trs].receptionStatus !== config.liiteEiSaapunut){
                     $('#liitesaapunut-tr-' +ind + '-' + trs + ' [type=checkbox]').attr('checked', 'true');
                     $('#select-saapunut-' +ind + '-' + trs).removeAttr('disabled');
                     $('#select-tarkistettu-' +ind + '-' + trs).removeAttr('disabled');
                 }
-                $('#select-saapunut-' +ind + '-' + trs).val(hakutoiveet[ht].attachments[trs].receptionStatus)
-                $('#select-tarkistettu-' +ind + '-' + trs).val(hakutoiveet[ht].attachments[trs].processingStatus);
+
             }
-            this.kaikkiLiitteetSaapuneet(ind);
+            this.tarkistaKaikkiLiitteetSaapuneet(ht);
             this.kaikkiLiitteetTarkistettu(ht);
         }
     },
@@ -129,7 +130,7 @@ var kjal = {
      * @param indx hakutoiveen index numero
      */
     hakuKelpoisuus: function (indx, onload) {
-        this.LOGS('hakuKelpoisuus()', 'ennen muutostosta: ',hakutoiveet[indx-1]);
+        this.LOGS('hakuKelpoisuus()', ' -> in tila: ',hakutoiveet[indx-1].status);
         if(!onload){
             hakutoiveet[indx-1].status = $('#liitteet-table-' + indx + ' #hakukelpoisuus-select').val();
         }
@@ -151,7 +152,7 @@ var kjal = {
             $('#liitteet-table-' + indx + ' #hylkaamisenperuste').val('');
             $('#liitteet-table-' + indx + ' #hakukelpoisuus-tietolahde').val('');
         }
-        this.LOGS('muutoksen jälkeen: ', hakutoiveet[indx-1]);
+        this.LOGS('hakuKelpoisuus()', ' out -> tila: ', hakutoiveet[indx-1].status);
         this.tarkistaHakutoiveValmis(indx);
     },
 
@@ -200,9 +201,9 @@ var kjal = {
      * @param hakutoive hakutoiveen index numero
      */
     tarkistaKaikkiLiitteetSaapuneet: function (hakutoive) {
-        this.LOGS('tarkistaKaikkiLiitteetSaapuneet(',hakutoive,')',  _.every(hakutoiveet[hakutoive].attachments, function (liite) { return liite.status !== config.liiteEiSaapunut; }));
+        this.LOGS('tarkistaKaikkiLiitteetSaapuneet(',hakutoive,')',  _.every(hakutoiveet[hakutoive].attachments, function (liite) { return liite.receptionStatus !== config.liiteEiSaapunut; }));
         this.LOGS(hakutoiveet[hakutoive].attachments);
-        var ind = hakutoive + 1;
+        var ind = parseInt(hakutoive) + 1;
         if ( _.every(hakutoiveet[hakutoive].attachments, function (liite) { return liite.receptionStatus !== config.liiteEiSaapunut; })) {
             $('#kaikkiliitteet-' + ind).css('display', '');
             $('#btn-kaikki-liitteet-saapuneet-' +ind).addClass('disabled');
@@ -337,7 +338,6 @@ var kjal = {
     saapumisTila: function (indx, trs) {
         this.LOGS('saapumisTila()');
         hakutoiveet[indx-1].attachments[trs].receptionStatus = $('#select-saapunut-' + indx +'-' + trs).val();
-
         var aoGroup = hakutoiveet[indx-1].attachments[trs].aoGroupId;
         for (var g in hakutoiveet){
             for(var t in hakutoiveet[g].attachments) {
@@ -411,7 +411,8 @@ var kjal = {
             dataType: "json",
             cache: false,
             success: function () {
-                window.location = window.location.href + 'liitteetkelpoisuusTab';
+                var navToY = kjal.documentYposition();
+                window.location = window.location.href.split('#')[0] + '#liitteetkelpoisuusTab#'+navToY;
                 window.location.reload();
             },
             error: function (error) {
@@ -433,23 +434,48 @@ var kjal = {
             hakutoiveet[indx-1].preferencesChecked = false;
         }
         this.tarkistaHakutoiveValmis(indx);
-    },LOGS: function (){
-        if(config.logs){
+    },
+    /**
+     * Tämän tiedoston consoli logien näyttäminen
+     * debuggausta varten. Asetetaan päälle ja pois
+     * tämän tiedoston config objetissa.
+     */
+    LOGS: function (){
+        if(config.showlogs){
             console.log(arguments);
         }
+    },
+    /**
+     * palautaa dokumentistä sen Y koordinaatin jossa
+     * tallenus tapahtui, jotta vaälilehden tallennuksen
+     * yhteydessä voidaan näkymä palauttaa käyttäjälle
+     * siihen kohtaan.
+     * @returns {*} dokumentin Y-koordinaatti
+     */
+    documentYposition: function () {
+        var yScroll;
+        if (self.pageYOffset) {
+            yScroll = self.pageYOffset;
+        } else if (document.documentElement && document.documentElement.scrollTop) {
+            yScroll = document.documentElement.scrollTop;
+        } else if (document.body) {
+            yScroll = document.body.scrollTop;
+        }
+        return yScroll;
     }
 
 };
 
-kjal.populateForm();
-
 $(document).ready(function() {
+    kjal.populateForm();
     /**
      * kelpoisuus ja liitteet välilehden tallennuksen jälkeen
      * asetataan kelpoisuus ja liitteet välilehti takaisin aktiiviseksi
      */
-    if( window.location.href.split('#')[1] === 'liitteetkelpoisuusTab' ){
+    if (window.location.href.split('#')[1] === 'liitteetkelpoisuusTab' ) {
+        var navY = window.location.href.split('#')[2];
         window.location.href = window.location.href.split('#')[0]+'#';
-            $('#kelpoisuusliitteetTab').click();
+        $('#kelpoisuusliitteetTab').click();
+        window.setTimeout(function (){scrollTo(0,navY);},10);
     }
 });
