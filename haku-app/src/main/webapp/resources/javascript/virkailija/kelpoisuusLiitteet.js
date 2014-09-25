@@ -411,12 +411,8 @@ var kjal = {
             dataType: "json",
             cache: false,
             success: function () {
-                if (indx >1) {
-                    var nav = parseInt(indx) -1;
-                    window.location = window.location.href.split('#')[0] + '#liitteetkelpoisuusTab#form-kelpoisuus-liitteet-hr-'+nav;
-                } else {
-                    window.location = window.location.href.split('#')[0] + '#liitteetkelpoisuusTab';
-                }
+                var navToY = kjal.documentYposition();
+                window.location = window.location.href.split('#')[0] + '#liitteetkelpoisuusTab#'+navToY;
                 window.location.reload();
             },
             error: function (error) {
@@ -448,6 +444,24 @@ var kjal = {
         if(config.showlogs){
             console.log(arguments);
         }
+    },
+    /**
+     * palautaa dokumentistä sen Y koordinaatin jossa
+     * tallenus tapahtui, jotta vaälilehden tallennuksen
+     * yhteydessä voidaan näkymä palauttaa käyttäjälle
+     * siihen kohtaan.
+     * @returns {*} dokumentin Y-koordinaatti
+     */
+    documentYposition: function () {
+        var yScroll;
+        if (self.pageYOffset) {
+            yScroll = self.pageYOffset;
+        } else if (document.documentElement && document.documentElement.scrollTop) {
+            yScroll = document.documentElement.scrollTop;
+        } else if (document.body) {
+            yScroll = document.body.scrollTop;
+        }
+        return yScroll;
     }
 
 };
@@ -459,11 +473,9 @@ $(document).ready(function() {
      * asetataan kelpoisuus ja liitteet välilehti takaisin aktiiviseksi
      */
     if (window.location.href.split('#')[1] === 'liitteetkelpoisuusTab' ) {
-        if (window.location.href.split('#')[2] !== undefined) {
-            window.location.href = window.location.href.split('#')[0]+'#'+window.location.href.split('#')[2];
-        } else {
-            window.location.href = window.location.href.split('#')[0]+'#';
-        }
+        var navY = window.location.href.split('#')[2];
+        window.location.href = window.location.href.split('#')[0]+'#';
         $('#kelpoisuusliitteetTab').click();
+        window.setTimeout(function (){scrollTo(0,navY);},10);
     }
 });
