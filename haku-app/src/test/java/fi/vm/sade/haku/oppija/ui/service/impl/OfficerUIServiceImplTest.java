@@ -7,9 +7,7 @@ import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.haku.oppija.hakemus.service.BaseEducationService;
 import fi.vm.sade.haku.oppija.hakemus.service.HakuPermissionService;
-import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
-import fi.vm.sade.haku.oppija.lomake.domain.ModelResponse;
-import fi.vm.sade.haku.oppija.lomake.domain.User;
+import fi.vm.sade.haku.oppija.lomake.domain.*;
 import fi.vm.sade.haku.oppija.lomake.domain.builder.PhaseBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.builder.TextQuestionBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
@@ -23,6 +21,7 @@ import fi.vm.sade.haku.oppija.ui.service.OfficerUIService;
 import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import fi.vm.sade.haku.virkailija.valinta.ValintaService;
 import fi.vm.sade.haku.virkailija.valinta.impl.ValintaServiceMockImpl;
 
@@ -49,6 +48,7 @@ public class OfficerUIServiceImplTest {
 
     private OfficerUIServiceImpl officerUIService;
     private ApplicationService applicationService;
+    private ApplicationSystemService applicationSystemService;
     private BaseEducationService baseEducationService;
     private FormService formService;
     private KoodistoService koodistoService;
@@ -61,6 +61,7 @@ public class OfficerUIServiceImplTest {
     private UserSession userSession;
 
     private Application application;
+    private ApplicationSystem as;
     private Element phase = new PhaseBuilder(ID).setEditAllowedByRoles("TESTING")
             .i18nText(ElementUtil.createI18NAsIs("title")).build();
 
@@ -74,8 +75,14 @@ public class OfficerUIServiceImplTest {
         application.setApplicationSystemId("asid");
         application.setOid(OID);
         application.setPhaseId(ID);
+        as = new ApplicationSystemBuilder()
+                .addId("asid")
+                .addName(ElementUtil.createI18NAsIs("asname"))
+                .addKohdejoukkoUri(OppijaConstants.KOHDEJOUKKO_AMMATILLINEN_JA_LUKIO)
+                .get();
         form = new Form("form", ElementUtil.createI18NAsIs(ID));
         applicationService = mock(ApplicationService.class);
+        applicationSystemService = mock(ApplicationSystemService.class);
         formService = mock(FormService.class);
         koodistoService = mock(KoodistoService.class);
         hakuPermissionService = mock(HakuPermissionService.class);
@@ -96,7 +103,7 @@ public class OfficerUIServiceImplTest {
                 hakuPermissionService,
                 loggerAspect, "",
                 elementTreeValidator,
-                mock(ApplicationSystemService.class),
+                applicationSystemService,
                 authenticationService,
                 organizationService,
                 valintaService,
@@ -104,6 +111,7 @@ public class OfficerUIServiceImplTest {
                 null,
                 "01.02 - 01.09");
         form.addChild(phase);
+        when(applicationSystemService.getApplicationSystem(any(String.class))).thenReturn(as);
         when(applicationService.getApplication(OID)).thenReturn(application);
         when(applicationService.getApplicationByOid(OID)).thenReturn(application);
         when(formService.getForm(any(String.class))).thenReturn(form);

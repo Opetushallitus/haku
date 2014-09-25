@@ -96,15 +96,21 @@
         vaiheId: '<c:out value="${vaihe.id}"/>',
         teemaId: '<c:out value="${parent.id}"/>',
         uiLang: '<c:out value="${requestScope['fi_vm_sade_oppija_language']}"/>',
-        baseEducation: '<c:out value="${answers.POHJAKOULUTUS}"/>',
         <c:choose>
-            <c:when test="${answers.ammatillinenTutkintoSuoritettu}">
-                vocational : false
+            <c:when test="${it.higherEd}">
             </c:when>
             <c:otherwise>
-                vocational : true
+                baseEducation: '<c:out value="${answers.POHJAKOULUTUS}"/>',
+                <c:choose>
+                    <c:when test="${answers.ammatillinenTutkintoSuoritettu}">
+                        vocational : false,
+                    </c:when>
+                    <c:otherwise>
+                        vocational : true,
+                    </c:otherwise>
+                </c:choose>
             </c:otherwise>
-        </c:choose>,
+        </c:choose>
         preferenceAndBaseEducationConflictMessage: '<fmt:message key="hakutoiveet.pohjakoulutusristiriita"/>',
         <c:if test="${fn:containsIgnoreCase(it.koulutusinformaatioBaseUrl, 'http') or fn:startsWith(it.koulutusinformaatioBaseUrl, '/')}">
         koulutusinformaatioBaseUrl: '<c:out value="${it.koulutusinformaatioBaseUrl}"/>'
