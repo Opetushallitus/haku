@@ -64,6 +64,8 @@ public class ThemeRadioButtonQuestion extends ThemeOptionQuestion {
         elementBuilder.i18nText(getMessageText());
         elementBuilder.help(getHelpText());
         elementBuilder.verboseHelp(getVerboseHelpText());
+
+        addAoidOrAoidGroup(elementBuilder);
         //elementBuilder.inline();
 
         // Radiobuttons are always required

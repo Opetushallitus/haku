@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Titled;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Question;
 import fi.vm.sade.haku.oppija.lomake.validation.Validator;
 import fi.vm.sade.haku.oppija.lomake.validation.validators.*;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
@@ -33,6 +34,8 @@ public abstract class ElementBuilder {
     private String containsInField;
     private FormParameters formParameters;
     final List<Element> children = new ArrayList<Element>();
+    private String applicationOptionId;
+    private String applicationOptionGroupId;
 
 
     protected ElementBuilder(String id) {
@@ -92,6 +95,10 @@ public abstract class ElementBuilder {
         element.setValidators(validators);
         for (Element child : children) {
             element.addChild(child);
+        }
+        if (element instanceof Question) {
+            ((Question) element).setApplicationOptionId(this.applicationOptionId);
+            ((Question) element).setApplicationOptionGroupId(this.applicationOptionGroupId);
         }
         return element;
     }
@@ -205,7 +212,6 @@ public abstract class ElementBuilder {
     }
 
     private I18nText emptyToNull(final I18nText i18nText) {
-
         if (i18nText != null) {
             Map<String, String> translations = i18nText.getTranslations();
             if (translations != null && !translations.isEmpty()) {
@@ -220,5 +226,15 @@ public abstract class ElementBuilder {
         if (null == i18nText)
             return null;
         return TranslationsUtil.ensureDefaultLanguageTranslations(i18nText);
+    }
+
+    public ElementBuilder applicationOptionGroupId(String applicationOptionGroupId) {
+        this.applicationOptionGroupId = applicationOptionGroupId;
+        return this;
+    }
+
+    public ElementBuilder applicationOptionId(String applicationOptionId) {
+        this.applicationOptionId = applicationOptionId;
+        return this;
     }
 }

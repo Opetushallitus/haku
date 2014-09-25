@@ -3,6 +3,8 @@ package fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationOptionAttachmentRequest;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationOptionAttachmentRequestBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
+import fi.vm.sade.haku.oppija.lomake.domain.builder.ElementBuilder;
+import fi.vm.sade.haku.oppija.lomake.domain.builder.TextQuestionBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.Expr;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.dao.impl.DBConverter.ComplexObjectIdDeserializer;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.dao.impl.DBConverter.SimpleObjectIdSerializer;
@@ -32,15 +34,16 @@ public abstract class ThemeQuestion implements ConfiguredElement {
 
     public static String FIELD_ORDINAL = "ordinal";
 
+
+
     public enum State {
-        ACTIVE, LOCKED, DELETED
+        ACTIVE, LOCKED, DELETED;
     }
     // ThemeQuestion oid
     @JsonProperty(value = "_id")
     @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL, using = SimpleObjectIdSerializer.class)
     @JsonDeserialize(using = ComplexObjectIdDeserializer.class)
     private org.bson.types.ObjectId id;
-
     // ThemeQuestion state
     private State state = State.ACTIVE;
 
@@ -86,12 +89,12 @@ public abstract class ThemeQuestion implements ConfiguredElement {
     // Attachment requests
     private List<AttachmentRequest> attachmentRequests;
 
-
     protected ThemeQuestion() {
         this.ownerOrganizationOids = new ArrayList<String>();
         this.validators = new HashMap<String, String>();
         this.attachmentRequests = new ArrayList<AttachmentRequest>();
     }
+
 
     @JsonCreator
     protected ThemeQuestion(@JsonProperty(value = "applicationSystemId") String applicationSystemId,
@@ -279,6 +282,14 @@ public abstract class ThemeQuestion implements ConfiguredElement {
 
     public void setOrdinal(Integer ordinal) {
         this.ordinal = ordinal;
+    }
+
+    void addAoidOrAoidGroup(ElementBuilder elementBuilder) {
+        if (this.getTargetIsGroup()) {
+            elementBuilder.applicationOptionGroupId(this.getLearningOpportunityId());
+        } else {
+            elementBuilder.applicationOptionId(this.getLearningOpportunityId());
+        }
     }
 
     @Override
