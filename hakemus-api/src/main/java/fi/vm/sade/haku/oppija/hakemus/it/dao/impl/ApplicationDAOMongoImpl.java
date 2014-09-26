@@ -49,9 +49,7 @@ import java.util.regex.Pattern;
 
 import static com.mongodb.QueryOperators.*;
 import static java.lang.String.format;
-import static org.apache.commons.lang.StringUtils.isBlank;
-import static org.apache.commons.lang.StringUtils.isEmpty;
-import static org.apache.commons.lang.StringUtils.isNotBlank;
+import static org.apache.commons.lang.StringUtils.*;
 
 /**
  * @author Hannu Lyytikainen
@@ -390,7 +388,26 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         }
         if (!preferenceQueries.isEmpty()) {
             filters.add(QueryBuilder.start().or(
-                preferenceQueries.toArray(new DBObject[preferenceQueries.size()])).get());
+                    preferenceQueries.toArray(new DBObject[preferenceQueries.size()])).get());
+        }
+
+        Boolean preferenceChecked = applicationQueryParameters.getPreferenceChecked();
+        if (preferenceChecked != null) {
+            if (isNotBlank(aoOid)) {
+                filters.add(
+                        QueryBuilder.start("preferencesChecked").elemMatch(
+                                QueryBuilder.start().and(
+                                        new BasicDBObject("preferenceAoOid", aoOid), new BasicDBObject("checked", preferenceChecked))
+                                        .get()
+                        ).get()
+                );
+            } else {
+                filters.add(
+                        QueryBuilder.start("preferencesChecked").not().elemMatch(
+                                new BasicDBObject("checked", !preferenceChecked)
+                        ).get()
+                );
+            }
         }
 
         // Koskee koko hakemusta
@@ -408,7 +425,6 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         if (stateQuery != null) {
             filters.add(stateQuery);
         }
-
         List<String> asIds = applicationQueryParameters.getAsIds();
         if (!asIds.isEmpty()) {
             filters.add(QueryBuilder.start(FIELD_APPLICATION_SYSTEM_ID).in(asIds).get());

@@ -97,6 +97,7 @@ public class ApplicationResource {
                                           @QueryParam("aoidCode") String aoidCode,
                                           @QueryParam("q") @DefaultValue(value = "") String searchTerms,
                                           @QueryParam("appState") List<String> state,
+                                          @QueryParam("preferenceChecked") Boolean preferenceChecked,
                                           @QueryParam("lopoid") String lopoid,
                                           @QueryParam("aoOid") String aoOid,
                                           @QueryParam("groupOid") String groupOid,
@@ -113,6 +114,7 @@ public class ApplicationResource {
         ApplicationQueryParameters queryParams = new ApplicationQueryParametersBuilder()
                 .setSearchTerms(searchTerms)
                 .setStates(state)
+                .setPreferenceChecked(preferenceChecked)
                 .setAsId(asid)
                 .setAoId(StringUtils.trimToNull(aoidCode))
                 .setGroupOid(groupOid)
@@ -158,6 +160,7 @@ public class ApplicationResource {
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_READ', 'ROLE_APP_HAKEMUS_CRUD', 'ROLE_APP_HAKEMUS_OPO')")
     public List<Map<String, Object>> findFullApplications(@DefaultValue(value = "") @QueryParam("q") String searchTerms,
                                                           @QueryParam("appState") List<String> state,
+                                                          @QueryParam("preferenceChecked") Boolean preferenceChecked,
                                                           @QueryParam("aoid") String aoid,
                                                           @QueryParam("groupOid") String groupOid,
                                                           @QueryParam("baseEducation") String baseEducation,
@@ -189,6 +192,7 @@ public class ApplicationResource {
         ApplicationQueryParameters queryParams = new ApplicationQueryParametersBuilder()
                 .setSearchTerms(searchTerms)
                 .setStates(state)
+                .setPreferenceChecked(preferenceChecked)
                 .setAsIds(asIds)
                 .setAoId(aoid)
                 .setGroupOid(groupOid)
@@ -216,6 +220,7 @@ public class ApplicationResource {
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_READ', 'ROLE_APP_HAKEMUS_CRUD', 'ROLE_APP_HAKEMUS_OPO')")
     public ApplicationSearchResultDTO findApplications(@DefaultValue(value = "") @QueryParam("q") String query,
                                                        @QueryParam("appState") List<String> state,
+                                                       @QueryParam("preferenceChecked") Boolean preferenceChecked,
                                                        @QueryParam("aoid") String aoid,
                                                        @QueryParam("groupOid") String groupOid,
                                                        @QueryParam("baseEducation") String baseEducation,
@@ -232,7 +237,7 @@ public class ApplicationResource {
                                                        @DefaultValue(value = "0") @QueryParam("start") int start,
                                                        @DefaultValue(value = "100") @QueryParam("rows") int rows) {
 
-        return findApplicationsOrdered("fullName", "asc", query, state, aoid, groupOid, baseEducation, lopoid, asId,
+        return findApplicationsOrdered("fullName", "asc", query, state, preferenceChecked, aoid, groupOid, baseEducation, lopoid, asId,
                 asSemester, asYear, aoOid, discretionaryOnly, primaryPreferenceOnly, sendingSchoolOid,
                 sendingClass, updatedAfter, start, rows);
     }
@@ -245,6 +250,7 @@ public class ApplicationResource {
                                                               @DefaultValue(value = "asc") @QueryParam("orderDir") String orderDir,
                                                               @DefaultValue(value = "") @QueryParam("q") String searchTerms,
                                                               @QueryParam("appState") List<String> state,
+                                                              @QueryParam("preferenceChecked") Boolean preferenceChecked,
                                                               @QueryParam("aoidCode") String aoid,
                                                               @QueryParam("groupOid") String groupOid,
                                                               @QueryParam("baseEducation") String baseEducation,
@@ -280,6 +286,7 @@ public class ApplicationResource {
         ApplicationQueryParameters queryParams = new ApplicationQueryParametersBuilder()
                 .setSearchTerms(searchTerms)
                 .setStates(state)
+                .setPreferenceChecked(preferenceChecked)
                 .setAsIds(asIds)
                 .setAoId(aoid)
                 .setGroupOid(groupOid)

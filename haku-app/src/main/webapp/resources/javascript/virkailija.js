@@ -426,9 +426,10 @@ $(document).ready(function () {
                 $('#entry').val(obj.q);
                 $('#oid').val(obj.oid);
                 $('#application-state').val(obj.appState);
+                $('#preference-checked').val(obj.preferenceChecked);
                 $('#application-preference').val(obj.aoid);
                 $('#application-preference-code').val(obj.aoidCode);
-                $('#application-preference-code').val(obj.aoOid);
+                $('#application-preference-oid').val(obj.aoOid);
                 $('#application-group').val(obj.group);
                 $('#application-group-oid').val(obj.groupOid);
                 $('#base-education').val(obj.baseEducation);
@@ -447,6 +448,7 @@ $(document).ready(function () {
                 addParameter(obj, 'q', '#entry');
                 addParameter(obj, 'oid', '#oid');
                 addParameter(obj, 'appState', '#application-state');
+                addParameter(obj, 'preferenceChecked', '#preference-checked');
                 addParameter(obj, 'aoid', '#application-preference');
                 addParameter(obj, 'aoidCode', '#application-preference-code');
                 addParameter(obj, 'aoOid', '#application-preference-oid');
@@ -587,6 +589,7 @@ $(document).ready(function () {
             $('#lopoid').val('');
             $('#entry').val('');
             $('#application-state').val('');
+            $('#preference-checked').val('');
             $('#application-preference').val('');
             $('#application-preference-code').val('');
             $('#application-preference-oid').val('');
@@ -835,7 +838,7 @@ $(document).ready(function () {
                     searchTerms: req.term,
                     organisationOid : $('#lopoid').val()
                 }
-                var url = '/tarjonta-service/rest/v1/hakukohde/search?' + objectToQueryParameterString(qParams);
+                var url = 'https://itest-virkailija.oph.ware.fi/tarjonta-service/rest/v1/hakukohde/search?' + objectToQueryParameterString(qParams);
                 $.get(url, function (data) {
                     var applicationOptions = _.reduce(data.result.tulokset, function (aos, provider) {
                         return aos.concat(provider.tulokset);
