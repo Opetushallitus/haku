@@ -222,8 +222,10 @@ public class OrganizationServiceImpl implements OrganizationService {
                 }
             }
         }
-        entity.consumeContent();
-        get.releaseConnection();
+
+        if (get != null) {
+            get.releaseConnection();
+        }
         StatusLine statusLine = response.getStatusLine();
         throw new ResourceNotFoundException("fetch failed. url: "+url+" statusCode: "+statusLine.getStatusCode()
                 +" reason: "+statusLine.getReasonPhrase());
