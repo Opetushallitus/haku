@@ -1,6 +1,7 @@
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain;
 
 
+import fi.vm.sade.haku.oppija.lomake.domain.builder.CheckBoxBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.builder.TitledGroupBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.Expr;
@@ -45,7 +46,10 @@ public class ThemeCheckBoxQuestion extends ThemeOptionQuestion {
 
         List<ThemeQuestionOption> options = this.getOptions();
         for (ThemeQuestionOption option : options) {
-            elementBuilder.addChild(Checkbox(this.getId().toString()+"-"+option.getId())
+            CheckBoxBuilder checkbox = Checkbox(this.getId().toString() + "-" + option.getId());
+            addAoidOrAoidGroup(checkbox);
+            elementBuilder
+                    .addChild(checkbox
                     .i18nText(option.getOptionText())
                     .formParams(formParameters));
         }
@@ -54,7 +58,6 @@ public class ThemeCheckBoxQuestion extends ThemeOptionQuestion {
         elementBuilder.help(getHelpText());
         elementBuilder.verboseHelp(getVerboseHelpText());
         // elementBuilder.inline();
-        addAoidOrAoidGroup(elementBuilder);
         if (this.getRequiredFieldValidator()) {
             elementBuilder.required();
         }
