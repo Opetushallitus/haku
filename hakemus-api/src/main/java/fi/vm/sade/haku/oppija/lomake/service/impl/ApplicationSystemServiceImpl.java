@@ -75,11 +75,10 @@ public class ApplicationSystemServiceImpl implements ApplicationSystemService {
     @Override
     public List<String> findByYearAndSemester(String asSemester, String asYear) {
         List<ApplicationSystem> ass = this.applicationSystemRepository.findBySemesterAndYear(asSemester, asYear, "id", "name");
-        List<String> asIds = new ArrayList<String>(ass.size() + 1);
+        List<String> asIds = new ArrayList<String>(ass.size());
         for (ApplicationSystem as : ass) {
             asIds.add(as.getId());
         }
-        asIds.add(null);
         return asIds;
     }
 }
