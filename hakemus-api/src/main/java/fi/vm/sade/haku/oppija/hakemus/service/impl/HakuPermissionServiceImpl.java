@@ -200,7 +200,7 @@ public class HakuPermissionServiceImpl extends AbstractPermissionService impleme
 
         AuthorizationMeta authorizationMeta = application.getAuthorizationMeta();
         if (authorizationMeta == null) {
-            return false;
+            return userCanEnterApplication();
         }
 
         Set<String> allOrganizations = authorizationMeta.getAllAoOrganizations();
