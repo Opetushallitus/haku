@@ -91,7 +91,13 @@ public class HakuPermissionServiceImpl extends AbstractPermissionService impleme
         AuthorizationMeta authorizationMeta = application.getAuthorizationMeta();
         boolean opoAllowed = authorizationMeta == null || authorizationMeta.isOpoAllowed() == null
                 ? false : authorizationMeta.isOpoAllowed();
-        return opo && opoAllowed;
+        if (opo && opoAllowed) {
+            return true;
+        }
+        if (authorizationMeta.getAoOrganizations().isEmpty() && userCanEnterApplication()) {
+            return true;
+        }
+        return false;
     }
 
     @Override
