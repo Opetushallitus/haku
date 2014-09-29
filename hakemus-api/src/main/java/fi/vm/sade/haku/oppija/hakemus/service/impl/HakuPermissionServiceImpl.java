@@ -163,7 +163,12 @@ public class HakuPermissionServiceImpl extends AbstractPermissionService impleme
 
     @Override
     public boolean userCanEnterApplication() {
-        return checkAccess(getRootOrgOid(), getCreateReadUpdateDeleteRole());
+        for (String org : authenticationService.getOrganisaatioHenkilo()) {
+            if (checkAccess(org, getCreateReadUpdateDeleteRole())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
@@ -194,6 +199,11 @@ public class HakuPermissionServiceImpl extends AbstractPermissionService impleme
 
         Set<String> allOrganizations = authorizationMeta.getAllAoOrganizations();
         if (allOrganizations == null) {
+            for (String role : roles) {
+                if (role.equals(getCreateReadUpdateDeleteRole())) {
+                    return true;
+                }
+            }
             return false;
         }
 
