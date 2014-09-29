@@ -94,7 +94,8 @@ public class HakuPermissionServiceImpl extends AbstractPermissionService impleme
         if (opo && opoAllowed) {
             return true;
         }
-        if (authorizationMeta.getAoOrganizations().isEmpty() && userCanEnterApplication()) {
+        if ((authorizationMeta == null || authorizationMeta.getAllAoOrganizations().isEmpty())
+                && userCanEnterApplication()) {
             return true;
         }
         return false;
@@ -205,12 +206,7 @@ public class HakuPermissionServiceImpl extends AbstractPermissionService impleme
 
         Set<String> allOrganizations = authorizationMeta.getAllAoOrganizations();
         if (allOrganizations == null) {
-            for (String role : roles) {
-                if (role.equals(getCreateReadUpdateDeleteRole())) {
-                    return true;
-                }
-            }
-            return false;
+            return userCanEnterApplication();
         }
 
         for (String organization : allOrganizations) {
