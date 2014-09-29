@@ -91,7 +91,14 @@ public class HakuPermissionServiceImpl extends AbstractPermissionService impleme
         AuthorizationMeta authorizationMeta = application.getAuthorizationMeta();
         boolean opoAllowed = authorizationMeta == null || authorizationMeta.isOpoAllowed() == null
                 ? false : authorizationMeta.isOpoAllowed();
-        return opo && opoAllowed;
+        if (opo && opoAllowed) {
+            return true;
+        }
+        if ((authorizationMeta == null || authorizationMeta.getAllAoOrganizations().isEmpty())
+                && userCanEnterApplication()) {
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -163,7 +170,12 @@ public class HakuPermissionServiceImpl extends AbstractPermissionService impleme
 
     @Override
     public boolean userCanEnterApplication() {
-        return checkAccess(getRootOrgOid(), getCreateReadUpdateDeleteRole());
+        for (String org : authenticationService.getOrganisaatioHenkilo()) {
+            if (checkAccess(org, getCreateReadUpdateDeleteRole())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
@@ -189,12 +201,12 @@ public class HakuPermissionServiceImpl extends AbstractPermissionService impleme
 
         AuthorizationMeta authorizationMeta = application.getAuthorizationMeta();
         if (authorizationMeta == null) {
-            return false;
+            return userCanEnterApplication();
         }
 
         Set<String> allOrganizations = authorizationMeta.getAllAoOrganizations();
         if (allOrganizations == null) {
-            return false;
+            return userCanEnterApplication();
         }
 
         for (String organization : allOrganizations) {
