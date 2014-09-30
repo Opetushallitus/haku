@@ -603,6 +603,7 @@ $(document).ready(function () {
             $('#sendingSchool').val('');
             $('#sendingClass').val('');
             $('#discretionary-only').attr('checked', false);
+            $('#primary-preference-only').attr('checked', false);
             $('#check-all-applications').attr('checked', false);
             disableExcel();
         },
