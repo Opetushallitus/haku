@@ -131,4 +131,12 @@ public class ApplicationOption {
     public void setEducationCode(String educationCode) {
         this.educationCode = educationCode;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder("ApplicationOption:{ ")
+                .append("id: ").append(id).append(", ")
+                .append("name: ").append(name).append("}");
+        return builder.toString();
+    }
 }

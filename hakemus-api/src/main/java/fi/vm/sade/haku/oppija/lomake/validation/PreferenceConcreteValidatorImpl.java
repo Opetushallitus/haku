@@ -37,7 +37,6 @@ import org.springframework.stereotype.Component;
 @Profile(value = {"default", "devluokka"})
 public class PreferenceConcreteValidatorImpl extends PreferenceConcreteValidator {
 
-    public static final String ERROR_STR = "Preference validation error key={}, values={}, applicationOption={}";
     private final ApplicationOptionService applicationOptionService;
     private final ApplicationSystemService applicationSystemService;
     private static final String GENERIC_ERROR = "hakutoiveet.virheellinen.hakutoive";
@@ -77,7 +76,7 @@ public class PreferenceConcreteValidatorImpl extends PreferenceConcreteValidator
                     || checkProvider(validationInput, applicationOptionService.get(aoId, "en")))) {
                     return createError(validationInput.getElement().getId(), LOP_ERROR);
                 }
-                if (!checkApplicationDates(ao)) {
+                if (!checkApplicationDates(validationInput, ao)) {
                     return createError(validationInput.getElement().getId(), CAN_BE_APPLIED_ERROR);
                 }
                 if (!checkEducationDegree(validationInput, ao)) {
@@ -102,44 +101,55 @@ public class PreferenceConcreteValidatorImpl extends PreferenceConcreteValidator
 
     private boolean checkEducationCode(final ValidationInput validationInput, final ApplicationOption applicationOption) {
         final String key = validationInput.getElement().getId() + "-Koulutus-id-educationcode";
-
-        if (validationInput.getValueByKey(key).equals(applicationOption.getEducationCode())) {
+        final String value = validationInput.getValueByKey(key);
+        if (value.equals(applicationOption.getEducationCode())) {
             return true;
         }
-        LOGGER.error(ERROR_STR, key, validationInput, applicationOption);
+        LOGGER.error("Education Code validation failed for {}. Application: {}. Expected: {}. Got: {}", applicationOption,
+                validationInput.getApplicationOid(), applicationOption.getEducationCode(), value);
         return false;
     }
 
     private boolean checkProvider(final ValidationInput validationInput, final ApplicationOption applicationOption) {
         boolean isOk = false;
 
-
         final String key = validationInput.getElement().getId() + "-Opetuspiste-id";
         if (applicationOption.getProvider().getId().equals(validationInput.getValues().get(key))) {
             isOk = true;
         }
 
-        final String label = validationInput.getElement().getId() + "-Opetuspiste";
-        if (applicationOption.getProvider().getName().equals(validationInput.getValueByKey(label))) {
-            isOk = isOk && true;
-        } else {
-            isOk = false;
+        if (!isOk) {
+            LOGGER.error("Provider ID validation failed for {}. Application: {}. Expected {}. Got: {}",
+                    applicationOption,
+                    validationInput.getApplicationOid(),
+                    applicationOption.getProvider().getId(),
+                    validationInput.getValues().get(key));
         }
 
-        if (!isOk) {
-            LOGGER.error(ERROR_STR, key, validationInput, applicationOption);
+        final String label = validationInput.getElement().getId() + "-Opetuspiste";
+        if (!applicationOption.getProvider().getName().equals(validationInput.getValueByKey(label))) {
+            isOk = false;
+            LOGGER.error("Provider name validation failed for {}. Application: {}. Expected {}. Got: {}",
+                    applicationOption,
+                    validationInput.getApplicationOid(),
+                    applicationOption.getProvider().getName(),
+                    validationInput.getValueByKey(label));
         }
+
         return isOk;
     }
 
     private boolean checkAthlete(final ValidationInput validationInput, final ApplicationOption applicationOption) {
         final String key = validationInput.getElement().getId() + "-Koulutus-id-athlete";
 
+        boolean expected = (applicationOption.getProvider().isAthleteEducation() || applicationOption.isAthleteEducation());
         if (Boolean.valueOf(validationInput.getValues().get(key)).booleanValue()
-                == (applicationOption.getProvider().isAthleteEducation() || applicationOption.isAthleteEducation())) {
+                == expected) {
             return true;
         }
-        LOGGER.error(ERROR_STR, key, validationInput, applicationOption);
+        LOGGER.error("Athle education validation failed for {}. Application: {}. Expected: {}. Got: {}", applicationOption,
+                validationInput.getApplicationOid(),
+                expected, validationInput.getValues().get(key));
         return false;
     }
 
@@ -149,7 +159,9 @@ public class PreferenceConcreteValidatorImpl extends PreferenceConcreteValidator
                 == applicationOption.isSora()) {
             return true;
         }
-        LOGGER.error(ERROR_STR, key, validationInput, applicationOption);
+        LOGGER.error("Sora validation failed for {}. Application: {}. Expected: {}. Got: {}", applicationOption,
+                validationInput.getApplicationOid(), applicationOption.isSora(),
+                validationInput.getValues().get(key));
         return false;
     }
 
@@ -158,16 +170,18 @@ public class PreferenceConcreteValidatorImpl extends PreferenceConcreteValidator
         if (Boolean.valueOf(validationInput.getValues().get(key)).booleanValue() == applicationOption.isKaksoistutkinto()) {
             return true;
         }
-        LOGGER.error(ERROR_STR, key, validationInput, applicationOption);
+        LOGGER.error("Double degree validation failed for {}. Application: {}. Expected: {}. Got: {}", applicationOption,
+                validationInput.getApplicationOid(),
+                applicationOption.isKaksoistutkinto(), validationInput.getValues().get(key));
         return false;
     }
 
-    private boolean checkApplicationDates(final ApplicationOption applicationOption) {
+    private boolean checkApplicationDates(final ValidationInput validationInput, final ApplicationOption applicationOption) {
         if (!applicationOption.isSpecificApplicationDates()) {
             return true;
         }
         if (!applicationOption.isCanBeApplied()) {
-            LOGGER.error("Preference validation error {} ", applicationOption);
+            LOGGER.error("Application date validation failed for {}. Application: {}", applicationOption, validationInput.getApplicationOid());
             return false;
         }
         return true;
@@ -178,7 +192,8 @@ public class PreferenceConcreteValidatorImpl extends PreferenceConcreteValidator
         if (applicationOption.getTeachingLanguages().contains(validationInput.getValues().get(key))) {
             return true;
         }
-        LOGGER.error(ERROR_STR, key, validationInput, applicationOption);
+        LOGGER.error("Language validation failed for {}. Application: {}. '{}' not in allowed languages", applicationOption,
+                validationInput.getApplicationOid(), validationInput.getValues().get(key));
         return false;
     }
 
@@ -190,6 +205,9 @@ public class PreferenceConcreteValidatorImpl extends PreferenceConcreteValidator
         }
         final String key = "POHJAKOULUTUS";
         if (applicationOption.getRequiredBaseEducations().contains(validationInput.getValues().get(key))) {
+            LOGGER.error("Base education validation failed for {}. Application: {}. '{}' not in allowed educations" , applicationOption,
+                    validationInput.getApplicationOid(),
+                    validationInput.getValues().get(key));
             return true;
         }
         return false;
@@ -199,17 +217,19 @@ public class PreferenceConcreteValidatorImpl extends PreferenceConcreteValidator
         if (applicationOption.getProvider().getApplicationSystemIds().contains(validationInput.getApplicationSystemId())) {
             return true;
         }
-        LOGGER.error(ERROR_STR, null, validationInput, applicationOption);
+        LOGGER.error("Application system validation failed for {}. Application: {}", applicationOption, validationInput.getApplicationOid());
         return false;
     }
 
     private boolean checkAOIdentifier(final ValidationInput validationInput, final ApplicationOption applicationOption) {
         final String key = validationInput.getElement().getId() + "-Koulutus-id-aoIdentifier";
-        String aoIdentifier = StringUtil.safeToString(applicationOption.getAoIdentifier());
-        if (aoIdentifier.equals(StringUtil.safeToString(validationInput.getValueByKey(key)))) {
+        final String value = StringUtil.safeToString(validationInput.getValueByKey(key));
+        final String expected = StringUtil.safeToString(applicationOption.getAoIdentifier());
+        if (expected.equals(value)) {
             return true;
         }
-        LOGGER.error(ERROR_STR, key, validationInput, applicationOption);
+        LOGGER.error("Application option identifier validation failed for {}. Application: {}. Expected: {}. Got: {}", applicationOption,
+                validationInput.getApplicationOid(), expected, value);
         return false;
     }
 }
