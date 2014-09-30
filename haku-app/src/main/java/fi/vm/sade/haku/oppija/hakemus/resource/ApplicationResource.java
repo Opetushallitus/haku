@@ -19,6 +19,7 @@ package fi.vm.sade.haku.oppija.hakemus.resource;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationAdditionalDataDTO;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
+import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultItemDTO;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationQueryParameters;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationQueryParametersBuilder;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
@@ -178,7 +179,11 @@ public class ApplicationResource {
         if (isNotEmpty(asId)) {
             asIds.add(asId);
         } else if (isNotEmpty(asSemester) || isNotEmpty(asYear)) {
-            asIds.addAll(applicationSystemService.findByYearAndSemester(asSemester, asYear));
+            List<String> applicationSystemIds = applicationSystemService.findByYearAndSemester(asSemester, asYear);
+            if (applicationSystemIds.size() > 0)
+                asIds.addAll(applicationSystemIds);
+            else
+                return new ArrayList<Map<String, Object>>(0);
         }
 
         ApplicationQueryParameters queryParams = new ApplicationQueryParametersBuilder()
@@ -263,7 +268,11 @@ public class ApplicationResource {
         if (isNotEmpty(asId)) {
             asIds.add(asId);
         } else if (isNotEmpty(asSemester) || isNotEmpty(asYear)) {
-            asIds.addAll(applicationSystemService.findByYearAndSemester(asSemester, asYear));
+            List<String> applicationSystemIds = applicationSystemService.findByYearAndSemester(asSemester, asYear);
+            if (applicationSystemIds.size() > 0)
+                asIds.addAll(applicationSystemIds);
+            else
+                return new ApplicationSearchResultDTO(0, new ArrayList<ApplicationSearchResultItemDTO>(0));
         }
         for (String s : asIds) {
             LOGGER.debug("asId: {}", s);

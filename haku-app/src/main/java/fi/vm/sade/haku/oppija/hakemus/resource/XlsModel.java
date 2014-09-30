@@ -27,9 +27,9 @@ public class XlsModel {
     public final String asName;
     private final ApplicationSystem applicationSystem;
     private final List<Map<String, Object>> applications;
+    private final ArrayTable<String, Element, Object> table;
 
     private final String lang;
-    private final Map<String, Element> mappedQuestions;
     private final List<Element> columnKeyList;
 
     public XlsModel(final String aoOid,
@@ -48,7 +48,6 @@ public class XlsModel {
 
         List<Element> questions = findQuestions(applicationSystem, aoOid, lang);
         List<String> aids = Lists.transform(applications, ELEMENT_TO_OID_FUNCTION);
-        this.mappedQuestions = Maps.uniqueIndex(questions, ELEMENT_TO_ID_FUNCTION);
 
         table = ArrayTable.create(aids, questions);
 
@@ -119,15 +118,15 @@ public class XlsModel {
     }
 
 
-    private String getQuestionAnswer(String vastaus, Element question) {
-        String value = vastaus;
+    private String getQuestionAnswer(String answer, Element question) {
+        String value = answer;
         if (question instanceof OptionQuestion) {
-            Option option = ((OptionQuestion) question).getData().get(vastaus);
+            Option option = ((OptionQuestion) question).getData().get(answer);
             if (option != null) {
                 value = ElementUtil.getText(option, lang);
             }
         } else if (question instanceof CheckBox) {
-            return Boolean.TRUE.toString().equals(vastaus) ? "X" : "";
+            return Boolean.TRUE.toString().equals(answer) ? "X" : "";
         }
         return value;
     }
@@ -139,7 +138,9 @@ public class XlsModel {
     public List<Element> columnKeyList() {
         return this.columnKeyList;
     }
-
+    public List<String> rowKeyList() {
+        return table.rowKeyList();
+    }
 
     public String getText(Element element) {
         return ElementUtil.getText(element, lang);
@@ -155,19 +156,11 @@ public class XlsModel {
         return hakukausi;
     }
 
-    public static final Function<Element, String> ELEMENT_TO_ID_FUNCTION = new Function<Element, String>() {
-        @Override
-        public String apply(Element element) {
-            return element.getId();
-        }
-    };
-
     public static final Function<Map<String, Object>, String> ELEMENT_TO_OID_FUNCTION = new Function<Map<String, Object>, String>() {
         @Override
         public String apply(Map<String, Object> input) {
             return (String) input.get("oid");
         }
     };
-    private final ArrayTable<String, Element, Object> table;
 
 }

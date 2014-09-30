@@ -1,7 +1,5 @@
 package fi.vm.sade.haku.provider;
 
-import com.google.common.collect.ArrayTable;
-import com.google.common.collect.ImmutableList;
 import fi.vm.sade.haku.oppija.hakemus.resource.XlsModel;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
@@ -31,9 +29,6 @@ import java.util.List;
 @Provider
 public class XlsMessageBodyWriter implements MessageBodyWriter<XlsModel> {
 
-    private static final short EMPTY_COLUMN_WIDTH = 10;
-    private static final String LANG = "fi";
-
     private final KoodistoService koodistoService;
 
     @Autowired
@@ -55,60 +50,53 @@ public class XlsMessageBodyWriter implements MessageBodyWriter<XlsModel> {
     public void writeTo(XlsModel xlsModel, Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType, MultivaluedMap<String, Object> httpHeaders, OutputStream entityStream) throws IOException, WebApplicationException {
 
         Workbook wb = new HSSFWorkbook();
-        String raportinNimi = xlsModel.asId + "_" + xlsModel.hakukausiVuosi + "_" + xlsModel.aoName;
-        Sheet sheet = wb.createSheet(raportinNimi);
-        // Create a row and put some cells in it. Rows are 0 based.
+        String sheetname = xlsModel.asId + "_" + xlsModel.hakukausiVuosi + "_" + xlsModel.aoName;
+        Sheet sheet = wb.createSheet(sheetname);
         sheet.setDefaultColumnWidth(20);
 
-        int currentRowIndex = 0;
-        int currentColumnIndex = 0;
 
-        createKeyValueRow(sheet, currentRowIndex++, "Haku", xlsModel.asName);
-        createKeyValueRow(sheet, currentRowIndex++, "Haku oid", xlsModel.asId);
-        createKeyValueRow(sheet, currentRowIndex++, "Hakukausi", xlsModel.getHakukausi(koodistoService.getHakukausi()));
-        createKeyValueRow(sheet, currentRowIndex++, "Hakuvuosi", xlsModel.hakukausiVuosi);
-        createKeyValueRow(sheet, currentRowIndex++, "Hakukohde", xlsModel.aoName);
+        createRow(sheet, "Haku", xlsModel.asName);
+        createRow(sheet, "Haku oid", xlsModel.asId);
+        createRow(sheet, "Hakukausi", xlsModel.getHakukausi(koodistoService.getHakukausi()));
+        createRow(sheet, "Hakuvuosi", xlsModel.hakukausiVuosi);
+        createRow(sheet, "Hakukohde", xlsModel.aoName);
 
-        sheet.createRow(currentRowIndex++);
+        createRow(sheet);
 
-        ArrayTable<String, Element, Object> table = xlsModel.getTable();
-
-        Row titleRow = sheet.createRow(currentRowIndex++);
-
-        List<Element> elements = xlsModel.columnKeyList();
-
-        for (Element title : elements) {
-            if (xlsModel.isQuestionAnswered(title)) {
-                Cell titleCell = titleRow.createCell(currentColumnIndex);
-                titleCell.setCellValue(xlsModel.getText(title));
-                currentColumnIndex++;
-            }
+        Row titleRow = createRow(sheet);
+        for (Element title : xlsModel.columnKeyList()) {
+            createCell(titleRow).setCellValue(xlsModel.getText(title));
         }
-        currentColumnIndex++;
 
-        ImmutableList<String> rowKeys = table.rowKeyList();
+        List<String> rowKeys = xlsModel.rowKeyList();
         Iterable<Element> colKeys = xlsModel.columnKeyList();
         for (String rowKey : rowKeys) {
-            Row row = sheet.createRow(currentRowIndex);
-            int collIndex = 0;
+            boolean isLastRow = rowKeys.indexOf(rowKey) < rowKeys.size() - 1;
+            Row row = createRow(sheet);
             for (Element colKey : colKeys) {
-                Cell cell = row.createCell(collIndex);
+                Cell cell = createCell(row);
                 cell.setCellValue(xlsModel.getValue(rowKey, colKey));
-                sheet.autoSizeColumn(collIndex);
-                collIndex++;
+                if (isLastRow) {
+                    sheet.autoSizeColumn(cell.getColumnIndex());
+                }
             }
-            currentRowIndex++;
         }
-        httpHeaders.add("content-disposition", "attachment; filename=" + URLEncoder.encode(raportinNimi, "UTF-8") + ".xls");
+
+        httpHeaders.add("content-disposition", "attachment; filename=" + URLEncoder.encode(sheetname, "UTF-8") + ".xls");
         wb.write(entityStream);
     }
 
+    private Cell createCell(final Row row) {
+        short lastCellNum = row.getLastCellNum();
+        return row.createCell(lastCellNum == -1 ? 0 : lastCellNum);
+    }
 
-
-    private void createKeyValueRow(final Sheet sheet, int row, String... values) {
-        Row infoRow = sheet.createRow(row);
-        for (int i = 0; i < values.length; i++) {
-            infoRow.createCell(i).setCellValue(values[i]);
+    private Row createRow(final Sheet sheet, String... values) {
+        int lastRowNum = sheet.getLastRowNum();
+        Row row = sheet.createRow(lastRowNum + 1);
+        for (String value : values) {
+            createCell(row).setCellValue(value);
         }
+        return row;
     }
 }

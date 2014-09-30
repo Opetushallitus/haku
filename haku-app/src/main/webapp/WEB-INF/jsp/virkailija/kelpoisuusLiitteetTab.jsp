@@ -3,7 +3,8 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib prefix="haku" tagdir="/WEB-INF/tags" %>
-
+<% pageContext.setAttribute("newLineChar", "\n"); %>
+<% pageContext.setAttribute("newLineEscaped", "\\n"); %>
 
 <script src="${contextPath}/resources/javascript/virkailija/kelpoisuusLiitteet.js" type="text/javascript"></script>
 <h3 id="kun">Kk-haut: Kelpoisuus ja liitteet</h3>
@@ -74,7 +75,7 @@
                 kelpoisuus_liitteet.aoId = "<c:out value="${kelpoisuus.aoId}"/>";
                 kelpoisuus_liitteet.status = "<c:out value="${kelpoisuus.status}"/>";
                 kelpoisuus_liitteet.source = "<c:out value="${kelpoisuus.source}"/>";
-                kelpoisuus_liitteet.rejectionBasis = "<c:out value="${kelpoisuus.rejectionBasis}"/>";
+                kelpoisuus_liitteet.rejectionBasis = "<c:out value="${fn:replace(kelpoisuus.rejectionBasis, newLineChar, newLineEscaped )}" escapeXml="false"/>";
                 <c:forEach var="tiedotTarkistettu" items="${application.preferencesChecked}">
                     if ("<c:out value="${hakukohde.oid}"/>" === "<c:out value="${tiedotTarkistettu.preferenceAoOid}"/>") {
                         kelpoisuus_liitteet.preferencesChecked = "<c:out value="${tiedotTarkistettu.checked}"/>";
