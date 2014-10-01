@@ -23,6 +23,7 @@ import static org.apache.commons.lang3.StringUtils.isEmpty;
 
 public class ApplicationQueryParameters {
     private final List<String> state;
+    private final Boolean preferenceChecked;
     private final List<String> asIds;
     private final String aoId;
     private final String lopOid;
@@ -40,15 +41,17 @@ public class ApplicationQueryParameters {
     private final int orderDir;
     private final String searchTerms;
 
-    public ApplicationQueryParameters(final String searchTerms, final List<String> state, final List<String> asIds, final String aoId,
-                                      final String lopOid, final String aoOid, final String groupOid, String baseEducation,
-                                      final Boolean discretionaryOnly, final Boolean primaryPreferenceOnly,
-                                      final String sendingSchool, final String sendingClass, final Date updatedAfter,
+    public ApplicationQueryParameters(final String searchTerms, final List<String> state, final Boolean preferenceChecked,
+                                      final List<String> asIds, final String aoId, final String lopOid, final String aoOid,
+                                      final String groupOid, String baseEducation, final Boolean discretionaryOnly,
+                                      final Boolean primaryPreferenceOnly, final String sendingSchool,
+                                      final String sendingClass, final Date updatedAfter,
                                       final int start, final int rows, final String orderBy, final int orderDir) {
         this.searchTerms = searchTerms;
         this.lopOid = isEmpty(lopOid) ? null : lopOid;
         this.asIds = asIds;
         this.state = state;
+        this.preferenceChecked = preferenceChecked;
         this.aoId = isEmpty(aoId) ? null : aoId;
         this.aoOid = isEmpty(aoOid) ? null : aoOid;
         this.groupOid = isEmpty(groupOid) ? null : groupOid;
@@ -66,6 +69,10 @@ public class ApplicationQueryParameters {
 
     public List<String> getState() {
         return state;
+    }
+
+    public Boolean getPreferenceChecked() {
+        return preferenceChecked;
     }
 
     public List<String> getAsIds() {

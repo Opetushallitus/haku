@@ -160,7 +160,18 @@
                                     key="virkailija.hakemus.vain.ensisijaiset"/></label>
                         </div>
                     </td>
-                    <td></td>
+                    <td>
+                        <label for="preference-checked"><fmt:message
+                                key="virkailija.hakemus.tiedottarkastettu"/></label>
+
+                        <div class="field-select-containerbox">
+                            <select class="width-50" id="preference-checked" name="preference-checked">
+                                <option selected="selected" value=""></option>
+                                <option value="true"><fmt:message key="virkailija.hakemus.tiedot.tarkastettu"/></option>
+                                <option value="false"><fmt:message key="virkailija.hakemus.tiedot.eitarkastettu"/></option>
+                            </select>
+                        </div>
+                    </td>
                 </tr>
             </table>
         </div>

@@ -9,6 +9,7 @@ public class ApplicationQueryParametersBuilder {
     private String searchTerms;
     private List<String> state;
     private List<String> asIds;
+    private Boolean preferenceChecked;
     private String aoId;
     private String lopOid;
     private String aoOid;
@@ -110,7 +111,7 @@ public class ApplicationQueryParametersBuilder {
     }
 
     public ApplicationQueryParameters build() {
-        return new ApplicationQueryParameters(searchTerms, state, asIds, aoId, lopOid, aoOid, groupOid, baseEducation,
+        return new ApplicationQueryParameters(searchTerms, state, preferenceChecked, asIds, aoId, lopOid, aoOid, groupOid, baseEducation,
                 discretionaryOnly, primaryPreferenceOnly, sendingSchool, sendingClass, updatedAfter, start, rows,
                 orderBy, orderDir);
     }
@@ -122,6 +123,11 @@ public class ApplicationQueryParametersBuilder {
 
     public ApplicationQueryParametersBuilder setPrimaryPreferenceOnly(Boolean primaryPreferenceOnly) {
         this.primaryPreferenceOnly = primaryPreferenceOnly;
+        return this;
+    }
+
+    public ApplicationQueryParametersBuilder setPreferenceChecked(Boolean preferenceChecked) {
+        this.preferenceChecked = preferenceChecked;
         return this;
     }
 }

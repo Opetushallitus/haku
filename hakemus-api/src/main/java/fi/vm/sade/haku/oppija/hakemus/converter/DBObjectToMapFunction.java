@@ -30,7 +30,7 @@ import java.util.Map;
 @Service
 public class DBObjectToMapFunction implements Function<DBObject, Map<String, Object>> {
 
-    public static final String[] KEYS = { "type","applicationSystemId","answers","oid","state","personOid","studentOid", "received", "authorizationMeta" };
+    public static final String[] KEYS = { "type","applicationSystemId","answers","oid","state","personOid","studentOid", "received", "authorizationMeta", "preferenceEligibilities" };
 
     private final EncrypterService encrypterService;
 
