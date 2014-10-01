@@ -28,7 +28,7 @@
             <b id="kaikkiliitteet-${hakukohde.index}" style="background-color: #438c48; color: #ffffff; border-radius: 5px; padding: 5px; display: none">Kaikki liitteet saapuneet</b>
             <br>
             <br>
-            <b id="muuttunut-${hakukohde.index}" style="background-color: #feba00; color: #000000; border-radius: 5px; padding: 5px; display: none;" >Muuttettu</b>
+            <b id="muuttunut-${hakukohde.index}" style="background-color: #feba00; color: #000000; border-radius: 5px; padding: 5px; display: none;" >Muutettu</b>
             <b id="tallennettu-${hakukohde.index}" style="background-color: #438c48; color: #ffffff; border-radius: 5px; padding: 5px; display: none;" >Tallennettu</b>
             <br>
             <br>
@@ -77,17 +77,20 @@
                 kelpoisuus_liitteet.source = "<c:out value="${kelpoisuus.source}"/>";
                 kelpoisuus_liitteet.rejectionBasis = "<c:out value="${fn:replace(kelpoisuus.rejectionBasis, newLineChar, newLineEscaped )}" escapeXml="false"/>";
                 <c:forEach var="tiedotTarkistettu" items="${application.preferencesChecked}">
-                    if ("<c:out value="${hakukohde.oid}"/>" === "<c:out value="${tiedotTarkistettu.preferenceAoOid}"/>") {
+                    if ("<c:out value="${hakukohde.oid}"/>" === "<c:out value="${tiedotTarkistettu.preferenceAoOid}"/>"
+                        || "<c:out value="${hakukohde.oid}"/>" === "<c:out value="${liite.preferenceAoGroupId}"/>" ) {
                         kelpoisuus_liitteet.preferencesChecked = "<c:out value="${tiedotTarkistettu.checked}"/>";
                     }
                 </c:forEach>
                 kelpoisuus_liitteet.attachments = [];
 
                 <c:forEach var="liite" items="${application.attachmentRequests}" varStatus="liiteCount" >
-                    if("<c:out value="${hakukohde.oid}"/>" === "<c:out value="${liite.preferenceAoId}"/>") {
+                    if("<c:out value="${hakukohde.oid}"/>" === "<c:out value="${liite.preferenceAoId}"/>"
+                        || "<c:out value="${hakukohde.oid}"/>" === "<c:out value="${liite.preferenceAoGroupId}"/>") {
                         var attachment = {};
                         attachment.id = "<c:out value="${liite.id}"/>";
-                        attachment.aoGroupId = "<c:out value="${liite.preferenceAoGroupId}"/>"
+                        attachment.aoId = "<c:out value="${liite.preferenceAoId}"/>";
+                        attachment.aoGroupId = "<c:out value="${liite.preferenceAoGroupId}"/>";
                         attachment.receptionStatus = "<c:out value="${liite.receptionStatus}"/>";
                         attachment.name = "<haku:i18nText value="${liite.applicationAttachment.name}"/>";
                         attachment.header = "<haku:i18nText value="${liite.applicationAttachment.header}"/>";
