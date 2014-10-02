@@ -121,13 +121,7 @@ public class AttachmentUtil {
                         .setName(ElementUtil.createI18NAsIs(attachmentDTO.getType()))
                         .setDescription(description)
                         .setDeadline(attachmentDTO.getDueDate())
-                        .setAddress(AddressBuilder.start()
-                          .setRecipient("")
-                          .setStreetAddress(attachmentDTO.getAddress().getStreetAddress())
-                          .setStreetAddress2(attachmentDTO.getAddress().getStreetAddress2())
-                          .setPostalCode(attachmentDTO.getAddress().getPostalCode())
-                          .setPostOffice(attachmentDTO.getAddress().getPostOffice())
-                          .build())
+                        .setAddress(getAddress(attachmentDTO.getAddress()))
                         .build()
                     ).build()
                 );
@@ -172,8 +166,20 @@ public class AttachmentUtil {
         return attachments;
     }
 
-    private static Address getAddress(ApplicationOptionDTO ao) {
 
+    private static Address getAddress(AddressDTO addressDTO) {
+        if (null == addressDTO)
+            return null;
+       return AddressBuilder.start()
+          .setRecipient("")
+          .setStreetAddress(addressDTO.getStreetAddress())
+          .setStreetAddress2(addressDTO.getStreetAddress2())
+          .setPostalCode(addressDTO.getPostalCode())
+          .setPostOffice(addressDTO.getPostOffice())
+          .build();
+    }
+
+    private static Address getAddress(ApplicationOptionDTO ao) {    
       AddressDTO addressDTO = ao.getAttachmentDeliveryAddress();
       if (addressDTO == null && ao.getProvider() != null) {
           addressDTO = ao.getProvider().getPostalAddress();
