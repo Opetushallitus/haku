@@ -19,8 +19,6 @@ import com.google.common.base.Function;
 import com.mongodb.DBObject;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.SocialSecurityNumber;
 import fi.vm.sade.haku.oppija.lomake.service.EncrypterService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -30,7 +28,19 @@ import java.util.Map;
 @Service
 public class DBObjectToMapFunction implements Function<DBObject, Map<String, Object>> {
 
-    public static final String[] KEYS = { "type","applicationSystemId","answers","oid","state","personOid","studentOid", "received", "authorizationMeta", "preferenceEligibilities" };
+    public static final String[] KEYS = {
+            "type",
+            "applicationSystemId",
+            "answers",
+            "oid",
+            "state",
+            "personOid",
+            "studentOid",
+            "received",
+            "authorizationMeta",
+            "preferenceEligibilities",
+            "additionalInfo"
+    };
 
     private final EncrypterService encrypterService;
 
