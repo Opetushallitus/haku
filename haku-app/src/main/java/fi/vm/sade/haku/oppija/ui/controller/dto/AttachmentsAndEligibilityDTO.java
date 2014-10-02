@@ -62,7 +62,7 @@ public class AttachmentsAndEligibilityDTO {
     }
 
     public void setAttachments(List<AttachmentDTO> attachments) {
-        this.attachments = attachments;
+        this.attachments = new ArrayList<AttachmentDTO>(attachments);
     }
 
     @Override

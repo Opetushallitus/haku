@@ -397,14 +397,17 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
                 filters.add(
                         QueryBuilder.start("preferencesChecked").elemMatch(
                                 QueryBuilder.start().and(
-                                        new BasicDBObject("preferenceAoOid", aoOid), new BasicDBObject("checked", preferenceChecked))
-                                        .get()
+                                        new BasicDBObject("preferenceAoOid", aoOid),
+                                        new BasicDBObject("checked", preferenceChecked)
+                                ).get()
                         ).get()
                 );
             } else {
                 filters.add(
-                        QueryBuilder.start("preferencesChecked").not().elemMatch(
-                                new BasicDBObject("checked", !preferenceChecked)
+                        QueryBuilder.start().and(
+                                QueryBuilder.start("preferencesChecked").not().elemMatch(
+                                        new BasicDBObject("checked", !preferenceChecked)).get(),
+                                QueryBuilder.start("preferencesChecked").exists(true).get()
                         ).get()
                 );
             }
