@@ -689,8 +689,8 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     @Override
     public void processAttachmentsAndEligibility(String oid, List<AttachmentsAndEligibilityDTO> attachementsAndEligibilities) {
         LOGGER.debug("Got attachementsAndEligibilities " + StringUtils.join(attachementsAndEligibilities, ","));
-        Application application = applicationService.getApplicationByOid(oid);
-        HashMap<String, AttachmentDTO> attachmentDTOs = new HashMap<String, AttachmentDTO>();
+        final Application application = applicationService.getApplicationByOid(oid);
+        final HashMap<String, AttachmentDTO> attachmentDTOs = new HashMap<String, AttachmentDTO>();
         for (AttachmentsAndEligibilityDTO dto : attachementsAndEligibilities){
             PreferencePredicate predicate = new PreferencePredicate(dto.getAoId());
             PreferenceEligibility preferenceEligibility = (PreferenceEligibility) CollectionUtils.find(application.getPreferenceEligibilities(), predicate);
@@ -720,8 +720,10 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         }
         for (ApplicationAttachmentRequest attachment : application.getAttachmentRequests()){
             AttachmentDTO dto = attachmentDTOs.get(attachment.getId());
-            attachment.setReceptionStatus(ApplicationAttachmentRequest.ReceptionStatus.valueOf(dto.getReceptionStatus()));
-            attachment.setProcessingStatus(ApplicationAttachmentRequest.ProcessingStatus.valueOf(dto.getProcessingStatus()));
+            if (null != dto) {
+                attachment.setReceptionStatus(ApplicationAttachmentRequest.ReceptionStatus.valueOf(dto.getReceptionStatus()));
+                attachment.setProcessingStatus(ApplicationAttachmentRequest.ProcessingStatus.valueOf(dto.getProcessingStatus()));
+            }
         }
 
         applicationService.update(new Application(oid), application);
