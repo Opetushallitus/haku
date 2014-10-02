@@ -4,8 +4,10 @@ import org.codehaus.jackson.annotate.JsonCreator;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
+import java.io.Serializable;
+
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_EMPTY)
-public class ApplicationAttachmentRequest {
+public class ApplicationAttachmentRequest implements Serializable {
 
     public static enum ReceptionStatus {
         ARRIVED,

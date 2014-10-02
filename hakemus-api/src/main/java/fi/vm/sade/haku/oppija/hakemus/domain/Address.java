@@ -4,8 +4,10 @@ import org.codehaus.jackson.annotate.JsonCreator;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
+import java.io.Serializable;
+
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_EMPTY)
-public class Address {
+public class Address implements Serializable {
     private final String recipient;
     private final String streetAddress;
     private final String streetAddress2;
