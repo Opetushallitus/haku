@@ -7,6 +7,7 @@
 <% pageContext.setAttribute("newLineEscaped", "\\n"); %>
 
 <script src="${contextPath}/resources/javascript/virkailija/kelpoisuusLiitteet.js" type="text/javascript"></script>
+<script src="${contextPath}/resources/javascript/underscore.string.min.js" type="text/javascript"></script>
 <h3 id="kun">Kk-haut: Kelpoisuus ja liitteet</h3>
 <script type="text/javascript">
     var hakutoiveet = [],
@@ -48,9 +49,9 @@
             </div>
             <div class="grid16-16 inline-block">
                 <br>
-                <input type="button" class="button small primary disabled" id="btn-tallenna-kelpoisuus-liitteet-${hakukohde.index}" onclick="kjal.tallennaKelpoisuusJaLiitteet('${hakukohde.index}')" value="Tallenna" />
-                <input type="button" class="button small" id="btn-kaikki-liitteet-saapuneet-${hakukohde.index}" onclick="kjal.kaikkiLiitteetSaapuneet('${hakukohde.index}')"  value="Kaikki liitteet saapuneet" />
-                <input type="button" class="button small disabled" id="btn-kaikki-liitteet-tarkastettu-${hakukohde.index}" onclick="kjal.asetaKaikkiLiitteetTarkastetuksi('${hakukohde.index}')" value="Kaikki liitteet tarkastettu" />
+                <input type="button" class="button small primary disabled" id="btn-tallenna-kelpoisuus-liitteet-${hakukohde.index}" onclick="kjal.tallennaKelpoisuusJaLiitteet('${hakukohde.index}')" value="Tallenna" disabled />
+                <input type="button" class="button small" id="btn-kaikki-liitteet-saapuneet-${hakukohde.index}" onclick="kjal.kaikkiLiitteetSaapuneet('${hakukohde.index}')"  value="Kaikki liitteet saapuneet" disabled />
+                <input type="button" class="button small disabled" id="btn-kaikki-liitteet-tarkastettu-${hakukohde.index}" onclick="kjal.asetaKaikkiLiitteetTarkastetuksi('${hakukohde.index}')" value="Kaikki liitteet tarkastettu" disabled/>
             </div>
             <div class="grid16-16 inline-block hidden" id="error-kelpoisuus-liitteet-${hakukohde.index}">
                 <h3 style="color: red">Tallennus ei onnistunut</h3>
@@ -75,7 +76,8 @@
                 kelpoisuus_liitteet.aoId = "<c:out value="${kelpoisuus.aoId}"/>";
                 kelpoisuus_liitteet.status = "<c:out value="${kelpoisuus.status}"/>";
                 kelpoisuus_liitteet.source = "<c:out value="${kelpoisuus.source}"/>";
-                kelpoisuus_liitteet.rejectionBasis = "<c:out value="${fn:replace(kelpoisuus.rejectionBasis, newLineChar, newLineEscaped )}" escapeXml="false"/>";
+                var rejectionbasis =  "<c:out value="${fn:replace(kelpoisuus.rejectionBasis, newLineChar, newLineEscaped )}" escapeXml="false"/>";
+                kelpoisuus_liitteet.rejectionBasis = _.str.unescapeHTML(rejectionbasis);
                 <c:forEach var="tiedotTarkistettu" items="${application.preferencesChecked}">
                     if ("<c:out value="${hakukohde.oid}"/>" === "<c:out value="${tiedotTarkistettu.preferenceAoOid}"/>"
                         || "<c:out value="${hakukohde.oid}"/>" === "<c:out value="${liite.preferenceAoGroupId}"/>" ) {
