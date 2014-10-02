@@ -190,8 +190,8 @@ var kjal = {
             }
         }
         $('#kaikkiliitteet-'+ indx).css('display', '');
-        $('#btn-kaikki-liitteet-saapuneet-' +indx).addClass('disabled');
-        $('#btn-kaikki-liitteet-tarkastettu-' +indx).removeClass('disabled');
+        this.disableBtnKaikkiLiitteetSaapuneet(indx);
+        this.enableBtnKaikkiLiitteetTarkastettu(indx);
         $('#liitteet-table-' + indx +' *:checkbox').prop('checked', true);
         this.tarkistaHakutoiveValmis(indx);
     },
@@ -206,12 +206,12 @@ var kjal = {
         var ind = parseInt(hakutoive) + 1;
         if ( _.every(hakutoiveet[hakutoive].attachments, function (liite) { return liite.receptionStatus !== config.liiteEiSaapunut; })) {
             $('#kaikkiliitteet-' + ind).css('display', '');
-            $('#btn-kaikki-liitteet-saapuneet-' +ind).addClass('disabled');
-            $('#btn-kaikki-liitteet-tarkastettu-' +ind).removeClass('disabled');
+            this.disableBtnKaikkiLiitteetSaapuneet(ind);
+            this.enableBtnKaikkiLiitteetTarkastettu(ind);
         } else {
             $('#kaikkiliitteet-' + ind).css('display', 'none');
-            $('#btn-kaikki-liitteet-saapuneet-' +ind).removeClass('disabled');
-            $('#btn-kaikki-liitteet-tarkastettu-' +ind).addClass('disabled');
+            this.enableBtnKaikkiLiitteetSaapuneet(ind);
+            this.disableBtnKaikkiLiitteetTarkastettu(ind);
         }
     },
     /**
@@ -224,13 +224,12 @@ var kjal = {
         this.LOGS('kaikkiLiitteetTarkistettu() -->', _.every(hakutoiveet[hakutoive].attachments, function(liite) { return liite.processingStatus === config.liiteTarkistettu; }));
         this.LOGS('kaikkiLiitteetTarkistettu()', hakutoiveet[hakutoive]);
         var liitteetTarkastettu = _.every(hakutoiveet[hakutoive].attachments, function(liite) { return liite.processingStatus === config.liiteTarkistettu }),
-            liitteetSaapuneet = _.every(hakutoiveet[hakutoive].attachments, function (liite) { return liite.receptionStatus !== config.liiteEiSaapunut; }),
+            liitteetSaapuneet = this.kaikkiLiitteetSaapuneetTilassa(hakutoive),
             ind = parseInt(hakutoive) + 1;
-
         if (liitteetTarkastettu || !liitteetSaapuneet ) {
-            $('#btn-kaikki-liitteet-tarkastettu-' +ind).addClass('disabled');
+            this.disableBtnKaikkiLiitteetTarkastettu(ind);
         } else {
-            $('#btn-kaikki-liitteet-tarkastettu-' +ind).removeClass('disabled');
+            this.enableBtnKaikkiLiitteetTarkastettu(ind);
         }
         return liitteetTarkastettu
     },
@@ -321,11 +320,11 @@ var kjal = {
         if (_.isEqual(hakutoiveet[indx-1], hakutoiveetCache[indx-1])){
             $('#tallennettu-' + indx).css('display', '');
             $('#muuttunut-' + indx).css('display', 'none');
-            $('#btn-tallenna-kelpoisuus-liitteet-' + indx).addClass('disabled');
+            this.disableBtnTallennaKelpoisuusLiitteet(indx);
         } else {
             $('#tallennettu-' + indx).css('display', 'none');
             $('#muuttunut-' + indx).css('display', '');
-            $('#btn-tallenna-kelpoisuus-liitteet-' + indx).removeClass('disabled');
+            this.enableBtnTallennaKelpoisuusLiitteet(indx);
         }
 
     },
@@ -462,7 +461,64 @@ var kjal = {
             yScroll = document.body.scrollTop;
         }
         return yScroll;
+    },
+    /**
+     * asetettaa "kaikki liitteet tarkastettu" napin disabled tilaan
+     * @param ind hakukohteen index
+     */
+    disableBtnKaikkiLiitteetTarkastettu: function (ind) {
+        this.LOGS('disable ', 'btn kaikki liitteet ', 'tarkastettu');
+        $('#btn-kaikki-liitteet-tarkastettu-' +ind).addClass('disabled');
+        $('#btn-kaikki-liitteet-tarkastettu-' +ind).attr('disabled', 'true');
+    },
+    /**
+     * asettaa "kaikki liitteet tarkastettu" napin enabled tilaan
+     * @param ind hakukohteen index
+     */
+    enableBtnKaikkiLiitteetTarkastettu: function (ind) {
+        this.LOGS('enable ', 'btn kaikki liitteet ', 'tarkastettu');
+        $('#btn-kaikki-liitteet-tarkastettu-' +ind).removeClass('disabled');
+        $('#btn-kaikki-liitteet-tarkastettu-' +ind).removeAttr('disabled');
+    },
+    /**
+     * asetettaa "kaikki liitteet saapuneet" napin disabled tilaan
+     * @param ind hakukohteen index
+     */
+    disableBtnKaikkiLiitteetSaapuneet: function (ind) {
+        this.LOGS('disable ', 'btn kaikki liitteet ', 'saapuneet');
+        $('#btn-kaikki-liitteet-saapuneet-' +ind).addClass('disabled');
+        $('#btn-kaikki-liitteet-saapuneet-' +ind).attr('disabled', 'true');
+    },
+    /**
+     * asetettaa "kaikki liitteet saapuneet" napin enabled tilaan
+     * @param ind hakukohteen index
+     */
+    enableBtnKaikkiLiitteetSaapuneet: function (ind) {
+        this.LOGS('enable ', 'btn kaikki liitteet ', 'saapuneet');
+        $('#btn-kaikki-liitteet-saapuneet-' +ind).removeClass('disabled');
+        $('#btn-kaikki-liitteet-saapuneet-' +ind).removeAttr('disabled');
+    },
+    /**
+     * asetettaa "tallenna" napin disabled tilaan
+     * @param ind hakukohteen index
+     */
+    disableBtnTallennaKelpoisuusLiitteet: function (ind) {
+        this.LOGS('disable ', 'btn ', 'tallene');
+        $('#btn-tallenna-kelpoisuus-liitteet-' + ind).addClass('disabled');
+        $('#btn-tallenna-kelpoisuus-liitteet-' + ind).attr('disabled', 'true');
+    },
+    /**
+     * asetettaa "tallenna" napin enabled tilaan
+     * @param ind hakukohteen index
+     */
+    enableBtnTallennaKelpoisuusLiitteet: function (ind) {
+        this.LOGS('enable ', 'btn ', 'tallenna');
+        $('#btn-tallenna-kelpoisuus-liitteet-' + ind).removeClass('disabled');
+        $('#btn-tallenna-kelpoisuus-liitteet-' + ind).removeAttr('disabled');
     }
+
+
+
 
 };
 
