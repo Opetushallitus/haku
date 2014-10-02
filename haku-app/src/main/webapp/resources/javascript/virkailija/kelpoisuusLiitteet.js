@@ -169,7 +169,7 @@ var kjal = {
      * @param indx hakutoiveen index numero
      */
     hylkaamisenSyy: function (indx) {
-        hakutoiveet[indx-1].rejectionBasis = $('#liitteet-table-' + indx + ' #hylkaamisenperuste').val();
+        hakutoiveet[indx-1].rejectionBasis = _.str.escapeHTML($('#liitteet-table-' + indx + ' #hylkaamisenperuste').val());
         this.tarkistaHakutoiveValmis(indx);
     },
     /**

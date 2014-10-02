@@ -7,6 +7,7 @@
 <% pageContext.setAttribute("newLineEscaped", "\\n"); %>
 
 <script src="${contextPath}/resources/javascript/virkailija/kelpoisuusLiitteet.js" type="text/javascript"></script>
+<script src="${contextPath}/resources/javascript/underscore.string.min.js" type="text/javascript"></script>
 <h3 id="kun">Kk-haut: Kelpoisuus ja liitteet</h3>
 <script type="text/javascript">
     var hakutoiveet = [],
@@ -75,7 +76,8 @@
                 kelpoisuus_liitteet.aoId = "<c:out value="${kelpoisuus.aoId}"/>";
                 kelpoisuus_liitteet.status = "<c:out value="${kelpoisuus.status}"/>";
                 kelpoisuus_liitteet.source = "<c:out value="${kelpoisuus.source}"/>";
-                kelpoisuus_liitteet.rejectionBasis = "<c:out value="${fn:replace(kelpoisuus.rejectionBasis, newLineChar, newLineEscaped )}" escapeXml="false"/>";
+                var rejectionbasis =  "<c:out value="${fn:replace(kelpoisuus.rejectionBasis, newLineChar, newLineEscaped )}" escapeXml="false"/>";
+                kelpoisuus_liitteet.rejectionBasis = _.str.unescapeHTML(rejectionbasis);
                 <c:forEach var="tiedotTarkistettu" items="${application.preferencesChecked}">
                     if ("<c:out value="${hakukohde.oid}"/>" === "<c:out value="${tiedotTarkistettu.preferenceAoOid}"/>"
                         || "<c:out value="${hakukohde.oid}"/>" === "<c:out value="${liite.preferenceAoGroupId}"/>" ) {
