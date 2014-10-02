@@ -5,8 +5,10 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
+import java.io.Serializable;
+
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_EMPTY)
-public class PreferenceChecked {
+public class PreferenceChecked implements Serializable {
     private final String preferenceAoOid;
     private Boolean checked;
     private String checkedByOfficerOid;

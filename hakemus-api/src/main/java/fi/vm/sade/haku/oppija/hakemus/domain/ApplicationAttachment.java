@@ -5,10 +5,11 @@ import org.codehaus.jackson.annotate.JsonCreator;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
+import java.io.Serializable;
 import java.util.Date;
 
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_EMPTY)
-public class ApplicationAttachment {
+public class ApplicationAttachment implements Serializable {
 
     private final I18nText name;
     private final I18nText header;
