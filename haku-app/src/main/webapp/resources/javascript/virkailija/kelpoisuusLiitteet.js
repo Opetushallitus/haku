@@ -103,7 +103,7 @@ var kjal = {
                 this.LOGS('hakutoiveen tietolähde: ',  hakutoiveet[ht].source);
                 $('#liitteet-table-' + ind + ' #hakukelpoisuus-tietolahde').val(hakutoiveet[ht].source);
             }
-            $('#liitteet-table-' + ind + ' #hylkaamisenperuste').val(hakutoiveet[ht].rejectionBasis);
+            $('#liitteet-table-' + ind + ' #hylkaamisenperuste').val(_.str.unescapeHTML(hakutoiveet[ht].rejectionBasis));
             if(hakutoiveet[ht].preferencesChecked === 'false' ){
                 $('#kaikki-tiedot-tarkistettu-' + ind).attr('checked', false);
             } else {
@@ -155,7 +155,6 @@ var kjal = {
         this.LOGS('hakuKelpoisuus()', ' out -> tila: ', hakutoiveet[indx-1].status);
         this.tarkistaHakutoiveValmis(indx);
     },
-
     /**
      * Asetetaan hakukelpoisuuteen liittyvän tarkastuksen tietolähde
      * @param indx hakutoiveen index numero
@@ -176,8 +175,8 @@ var kjal = {
      * Asetetaan kaikki liitteet saapuneet tilaan käyttöliittymästä
      * @param indx hakutoiveen index numero
      */
-    kaikkiLiitteetSaapuneet: function (indx) {
-        this.LOGS('kaikkiLiitteetSaapuneet()');
+    asetaKaikkiLiitteetSaapuneet: function (indx) {
+        this.LOGS('asetaKaikkiLiitteetSaapuneet()');
         var hakutoive = parseInt(indx) - 1;
         for(var i in hakutoiveet[hakutoive].attachments){
             if (hakutoiveet[hakutoive].attachments[i].receptionStatus === config.liiteEiSaapunut) {
@@ -192,8 +191,47 @@ var kjal = {
         $('#kaikkiliitteet-'+ indx).css('display', '');
         this.disableBtnKaikkiLiitteetSaapuneet(indx);
         this.enableBtnKaikkiLiitteetTarkastettu(indx);
+        this.ryhmaanKuuluvienKysymystenTilanAsetus(indx);
         $('#liitteet-table-' + indx +' *:checkbox').prop('checked', true);
         this.tarkistaHakutoiveValmis(indx);
+    },
+    /**
+     * Asettaa kaikissa hakutoiveissa olevien samaan ryhmään kuuluvine kysymysten tilan
+     * samaan kuin muokatussa hakukohtessa, kun käyttäjä valitsee
+     * napin "Kaikki liitteet saapuneet"
+     * @param indx hakutoiveen index nro.
+     */
+    ryhmaanKuuluvienKysymystenTilanAsetus: function (indx) {
+        this.LOGS('ryhmaanKuuluvienKysymystenTilanAsetus()', indx);
+        var aoGroupIds = [];
+        for (var htAoG in hakutoiveet[indx-1].attachments) {
+            if(hakutoiveet[indx-1].attachments[htAoG].aoGroupId !== ''){
+                console.log('***',  hakutoiveet[indx-1].attachments[htAoG].aoGroupId);
+                aoGroupIds.push(hakutoiveet[indx-1].attachments[htAoG].aoGroupId);
+            }
+        }
+
+        for (var g in hakutoiveet){
+            for (var t in hakutoiveet[g].attachments) {
+                for (var htg in aoGroupIds){
+                    if(hakutoiveet[g].attachments[t].aoGroupId === aoGroupIds[htg] ) {
+                        var ind = parseInt(g) + 1;
+                        hakutoiveet[g].attachments[t].receptionStatus = config.liiteSaapunut;
+                        $('#liitesaapunut-tr-' +ind + '-' + t + ' [type=checkbox]').attr('checked', 'true');
+                        $('#select-saapunut-' + ind +'-' + t).val(config.liiteSaapunut);
+                        $('#select-saapunut-' + ind +'-' + t).removeAttr('disabled');
+                        $('#select-tarkistettu-' + ind +'-' + t).removeAttr('disabled');
+                        $('#select-tarkistettu-' + ind +'-' + t).val(config.liiteEiTarkistettu);
+                        hakutoiveet[g].attachments[t].receptionStatus = config.liiteSaapunut;
+                        hakutoiveet[g].attachments[t].processingStatus = config.liiteEiTarkistettu;
+                        if (this.kaikkiLiitteetSaapuneetTilassa(g)) {
+                            this.disableBtnKaikkiLiitteetSaapuneet(g);
+                        }
+                        this.kaikkiLiitteetTarkistettu(g);
+                    }
+                }
+            }
+        }
     },
     /**
      * Tarkistaa hakutoiveeseen liittyvien liitepyyntöjen
@@ -335,11 +373,12 @@ var kjal = {
      * @param trs hakutoiveen liitteen index numero
      */
     saapumisTila: function (indx, trs) {
-        this.LOGS('saapumisTila()');
+        this.LOGS('saapumisTila()', indx);
         hakutoiveet[indx-1].attachments[trs].receptionStatus = $('#select-saapunut-' + indx +'-' + trs).val();
+        this.tarkistaHakutoiveValmis(indx);
         var aoGroup = hakutoiveet[indx-1].attachments[trs].aoGroupId;
         for (var g in hakutoiveet){
-            for(var t in hakutoiveet[g].attachments) {
+            for (var t in hakutoiveet[g].attachments) {
                 if(hakutoiveet[g].attachments[t].aoGroupId === aoGroup && aoGroup !== '') {
                     var ind = parseInt(g) + 1;
                     hakutoiveet[ind-1].attachments[t].receptionStatus = $('#select-saapunut-' + indx +'-' + trs).val();
@@ -347,8 +386,8 @@ var kjal = {
                 }
             }
         }
-        this.tarkistaHakutoiveValmis(indx);
     },
+
     /**
      * asettaa liitteen tarkistus tilan UI:sta
      * sitä vaihdettaessa käyttöliittymän puodustvalikosta
@@ -356,7 +395,7 @@ var kjal = {
      * @param trs hakutoiveen liitteen index numero
      */
     liitteenTila: function (indx, trs) {
-        this.LOGS('liitteenTila()');
+        this.LOGS('liitteenTila()', indx);
         hakutoiveet[indx-1].attachments[trs].processingStatus = $('#select-tarkistettu-' + indx +'-' + trs).val();
         this.LOGS('-->', hakutoiveet[indx-1].attachments[trs].processingStatus);
 
@@ -367,6 +406,7 @@ var kjal = {
                     var ind = parseInt(g) + 1;
                     hakutoiveet[ind-1].attachments[t].processingStatus = $('#select-tarkistettu-' + indx +'-' + trs).val();
                     $('#select-tarkistettu-' + ind +'-' + t).val($('#select-tarkistettu-' + indx +'-' + trs).val());
+                    this.kaikkiLiitteetTarkistettu(g);
                 }
             }
         }
@@ -374,7 +414,8 @@ var kjal = {
         this.tarkistaHakutoiveValmis(indx);
     },
     /**
-     * asettaa liitteiden tarkistuksen tilan
+     * asettaa liitteiden tarkistuksen tilan, myös ryhmäkohtaisten
+     * kysmysten tilan
      * tarkistetuksi
      * @param indx hakutoiveen index numero
      */
@@ -384,6 +425,28 @@ var kjal = {
             $('#select-tarkistettu-' + indx + '-' +t).val(config.liiteTarkistettu);
             hakutoiveet[indx-1].attachments[t].processingStatus = $('#select-tarkistettu-' + indx + '-' +t).val();
         }
+        var aoGroupIds = _.uniq(_.map(hakutoiveet[indx-1].attachments, function (grIds) { return grIds.aoGroupId; })),
+            toiveInd = 0,
+            toiveNro = 1;
+
+        _.each(hakutoiveet, function (toive) {
+                var liiteInd = 0;
+                _.each(toive.attachments, function (liite) {
+                            _.each(aoGroupIds, function (grId) {
+                                if ( liite.aoGroupId === grId){
+                                    $('#select-tarkistettu-' + toiveNro + '-' + liiteInd).val(config.liiteTarkistettu);
+                                    hakutoiveet[toiveInd].attachments[liiteInd].processingStatus = config.liiteTarkistettu;
+                                }
+                            }
+                        )
+                        liiteInd += 1;
+                    }
+                )
+                kjal.kaikkiLiitteetTarkistettu(toiveInd);
+                toiveInd += 1;
+                toiveNro += 1;
+            }
+        );
         $('#btn-kaikki-liitteet-tarkastettu-' + indx).addClass('disabled');
         this.tarkistaHakutoiveValmis(indx);
     },
@@ -516,9 +579,6 @@ var kjal = {
         $('#btn-tallenna-kelpoisuus-liitteet-' + ind).removeClass('disabled');
         $('#btn-tallenna-kelpoisuus-liitteet-' + ind).removeAttr('disabled');
     }
-
-
-
 
 };
 
