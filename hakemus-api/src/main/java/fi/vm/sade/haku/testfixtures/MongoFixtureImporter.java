@@ -18,7 +18,10 @@ public class MongoFixtureImporter {
     private static final Logger LOGGER = Logger.getLogger(MongoFixtureImporter.class);
 
     public static void importJsonFixtures(MongoTemplate template, ApplicationDAO dao) throws IOException {
-        final Resource[] resources = new PathMatchingResourcePatternResolver().getResources("mongofixtures/**/*.json");
+        importJsonFixtures(template, dao, "**");
+    }
+    public static void importJsonFixtures(MongoTemplate template, ApplicationDAO dao, String collection) throws IOException {
+        final Resource[] resources = new PathMatchingResourcePatternResolver().getResources("mongofixtures/"+collection+"/*.json");
         for (Resource resource: resources) {
             insertObject(template, resource);
         }
