@@ -92,7 +92,6 @@
                         attachment.id = "<c:out value="${liite.id}"/>";
                         attachment.aoId = "<c:out value="${liite.preferenceAoId}"/>";
                         attachment.aoGroupId = "<c:out value="${liite.preferenceAoGroupId}"/>";
-//                        attachment.aoGroupId = "152.177.100.000447";
                         attachment.receptionStatus = "<c:out value="${liite.receptionStatus}"/>";
                         attachment.name = "<haku:i18nText value="${liite.applicationAttachment.name}"/>";
                         attachment.header = "<haku:i18nText value="${liite.applicationAttachment.header}"/>";
