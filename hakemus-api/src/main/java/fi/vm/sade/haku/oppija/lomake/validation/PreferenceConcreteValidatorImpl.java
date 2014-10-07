@@ -135,7 +135,7 @@ public class PreferenceConcreteValidatorImpl extends PreferenceConcreteValidator
             ApplicationOption ao = applicationOptionService.get(aoId, lang);
             String name = "(not found: "+lang+")";
             if (ao != null) {
-                name = ao.getName();
+                name = ao.getProvider().getName();
             }
             names.add(name);
         }
