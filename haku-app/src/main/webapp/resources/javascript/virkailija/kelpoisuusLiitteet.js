@@ -433,7 +433,7 @@ var kjal = {
                 var liiteInd = 0;
                 _.each(toive.attachments, function (liite) {
                             _.each(aoGroupIds, function (grId) {
-                                if ( liite.aoGroupId === grId){
+                                if ( liite.aoGroupId === grId && grId !== ''){
                                     $('#select-tarkistettu-' + toiveNro + '-' + liiteInd).val(config.liiteTarkistettu);
                                     hakutoiveet[toiveInd].attachments[liiteInd].processingStatus = config.liiteTarkistettu;
                                 }
