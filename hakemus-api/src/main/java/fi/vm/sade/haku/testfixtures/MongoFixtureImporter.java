@@ -18,14 +18,18 @@ public class MongoFixtureImporter {
     private static final Logger LOGGER = Logger.getLogger(MongoFixtureImporter.class);
 
     public static void importJsonFixtures(MongoTemplate template, ApplicationDAO dao) throws IOException {
-        importJsonFixtures(template, dao, "**");
+        importJsonFixtures(template, dao, "**/*.json");
     }
-    public static void importJsonFixtures(MongoTemplate template, ApplicationDAO dao, String collection) throws IOException {
-        final Resource[] resources = new PathMatchingResourcePatternResolver().getResources("mongofixtures/"+collection+"/*.json");
+    public static void importJsonFixtures(MongoTemplate template, ApplicationDAO dao, String selector) throws IOException {
+        final Resource[] resources = new PathMatchingResourcePatternResolver().getResources("mongofixtures/" + selector);
         for (Resource resource: resources) {
             insertObject(template, resource);
         }
         FixtureSSNFixer.updateEmptySsnInApplications(TestFixtureConstants.personOid, TestFixtureConstants.hetu, dao);
+    }
+
+    public static void clearFixtures(MongoTemplate template, ApplicationDAO dao, String collection) throws IOException {
+        template.getCollection(collection).remove(new BasicDBObject());
     }
 
     private static void insertObject(final MongoTemplate template, final Resource resource) throws IOException {
