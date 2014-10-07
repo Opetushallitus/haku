@@ -16,6 +16,7 @@
 
 package fi.vm.sade.haku.oppija.lomake.validation;
 
+import com.google.common.base.Joiner;
 import com.google.common.base.Strings;
 import fi.vm.sade.haku.oppija.common.koulutusinformaatio.ApplicationOption;
 import fi.vm.sade.haku.oppija.common.koulutusinformaatio.ApplicationOptionService;
@@ -29,6 +30,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Mikko Majapuro
@@ -71,9 +75,7 @@ public class PreferenceConcreteValidatorImpl extends PreferenceConcreteValidator
                     return createError(validationInput.getElement().getId(), GENERIC_ERROR);
                 }
                 // Must be checked against all langs
-                if (!(checkProvider(validationInput, applicationOptionService.get(aoId, "fi"))
-                    || checkProvider(validationInput, applicationOptionService.get(aoId, "sv"))
-                    || checkProvider(validationInput, applicationOptionService.get(aoId, "en")))) {
+                if (!(checkProvider(validationInput, aoId))) {
                     return createError(validationInput.getElement().getId(), LOP_ERROR);
                 }
                 if (!checkApplicationDates(validationInput, ao)) {
@@ -110,7 +112,8 @@ public class PreferenceConcreteValidatorImpl extends PreferenceConcreteValidator
         return false;
     }
 
-    private boolean checkProvider(final ValidationInput validationInput, final ApplicationOption applicationOption) {
+    private boolean checkProvider(final ValidationInput validationInput, final String aoId) {
+        ApplicationOption applicationOption = applicationOptionService.get(aoId);
         boolean isOk = false;
 
         final String key = validationInput.getElement().getId() + "-Opetuspiste-id";
@@ -127,12 +130,25 @@ public class PreferenceConcreteValidatorImpl extends PreferenceConcreteValidator
         }
 
         final String label = validationInput.getElement().getId() + "-Opetuspiste";
-        if (!applicationOption.getProvider().getName().equals(validationInput.getValueByKey(label))) {
+        List<String> names = new ArrayList<String>(3);
+        for (String lang : new String[] {"fi", "sv", "en"}) {
+            ApplicationOption ao = applicationOptionService.get(aoId, lang);
+            String name = "(not found: "+lang+")";
+            if (ao != null) {
+                name = ao.getProvider().getName();
+            }
+            names.add(name);
+        }
+        boolean nameOk = false;
+        for (String name : names) {
+            nameOk = nameOk || name.equals(validationInput.getValueByKey(label));
+        }
+        if (!nameOk) {
             isOk = false;
-            LOGGER.error("Provider name validation failed for {}. Application: {}. Expected {}. Got: {}",
+            LOGGER.error("Provider name validation failed for {}. Application: {}. Expected one of [{}]. Got: {}",
                     applicationOption,
                     validationInput.getApplicationOid(),
-                    applicationOption.getProvider().getName(),
+                    Joiner.on(",").join(names),
                     validationInput.getValueByKey(label));
         }
 
@@ -147,7 +163,7 @@ public class PreferenceConcreteValidatorImpl extends PreferenceConcreteValidator
                 == expected) {
             return true;
         }
-        LOGGER.error("Athle education validation failed for {}. Application: {}. Expected: {}. Got: {}", applicationOption,
+        LOGGER.error("Athlete education validation failed for {}. Application: {}. Expected: {}. Got: {}", applicationOption,
                 validationInput.getApplicationOid(),
                 expected, validationInput.getValues().get(key));
         return false;
@@ -205,11 +221,11 @@ public class PreferenceConcreteValidatorImpl extends PreferenceConcreteValidator
         }
         final String key = "POHJAKOULUTUS";
         if (applicationOption.getRequiredBaseEducations().contains(validationInput.getValues().get(key))) {
-            LOGGER.error("Base education validation failed for {}. Application: {}. '{}' not in allowed educations" , applicationOption,
-                    validationInput.getApplicationOid(),
-                    validationInput.getValues().get(key));
             return true;
         }
+        LOGGER.error("Base education validation failed for {}. Application: {}. '{}' not in allowed educations" , applicationOption,
+                validationInput.getApplicationOid(),
+                validationInput.getValues().get(key));
         return false;
     }
 

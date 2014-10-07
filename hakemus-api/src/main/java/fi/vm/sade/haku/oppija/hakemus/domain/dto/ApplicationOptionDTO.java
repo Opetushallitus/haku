@@ -47,6 +47,8 @@ public class ApplicationOptionDTO {
                 ElementUtil.createI18NText("virkailija.hakemus.valintatiedot.sijoittelu.peruutettu", BUNDLE_NAME));
         sijoittelunTulosTranslations.put(HakemuksenTila.VARALLA,
                 ElementUtil.createI18NText("virkailija.hakemus.valintatiedot.sijoittelu.varalla", BUNDLE_NAME));
+        sijoittelunTulosTranslations.put(HakemuksenTila.HARKINNANVARAISESTI_HYVAKSYTTY,
+                ElementUtil.createI18NText("virkailija.hakemus.valintatiedot.sijoittelu.harkinnanvaraisestiHyvaksytty", BUNDLE_NAME));
 
         vastaanottoTietoTranslations = new HashMap<ValintatuloksenTila, I18nText>();
         vastaanottoTietoTranslations.put(ValintatuloksenTila.EI_VASTAANOTETTU_MAARA_AIKANA,
@@ -61,6 +63,10 @@ public class ApplicationOptionDTO {
                 ElementUtil.createI18NText("virkailija.hakemus.valintatiedot.vastaanotto.lasna", BUNDLE_NAME));
         vastaanottoTietoTranslations.put(ValintatuloksenTila.VASTAANOTTANUT_POISSAOLEVA,
                 ElementUtil.createI18NText("virkailija.hakemus.valintatiedot.vastaanotto.poissa", BUNDLE_NAME));
+        vastaanottoTietoTranslations.put(ValintatuloksenTila.VASTAANOTTANUT,
+                ElementUtil.createI18NText("virkailija.hakemus.valintatiedot.vastaanotto.vastaanottanut", BUNDLE_NAME));
+        vastaanottoTietoTranslations.put(ValintatuloksenTila.EHDOLLISESTI_VASTAANOTTANUT,
+                ElementUtil.createI18NText("virkailija.hakemus.valintatiedot.vastaanotto.ehdollisestiVastaanottanut", BUNDLE_NAME));
     }
 
 

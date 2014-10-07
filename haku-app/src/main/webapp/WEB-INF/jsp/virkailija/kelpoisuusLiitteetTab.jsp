@@ -50,7 +50,7 @@
             <div class="grid16-16 inline-block">
                 <br>
                 <input type="button" class="button small primary disabled" id="btn-tallenna-kelpoisuus-liitteet-${hakukohde.index}" onclick="kjal.tallennaKelpoisuusJaLiitteet('${hakukohde.index}')" value="Tallenna" disabled />
-                <input type="button" class="button small" id="btn-kaikki-liitteet-saapuneet-${hakukohde.index}" onclick="kjal.kaikkiLiitteetSaapuneet('${hakukohde.index}')"  value="Kaikki liitteet saapuneet" disabled />
+                <input type="button" class="button small" id="btn-kaikki-liitteet-saapuneet-${hakukohde.index}" onclick="kjal.asetaKaikkiLiitteetSaapuneet('${hakukohde.index}')"  value="Kaikki liitteet saapuneet" disabled />
                 <input type="button" class="button small disabled" id="btn-kaikki-liitteet-tarkastettu-${hakukohde.index}" onclick="kjal.asetaKaikkiLiitteetTarkastetuksi('${hakukohde.index}')" value="Kaikki liitteet tarkastettu" disabled/>
             </div>
             <div class="grid16-16 inline-block hidden" id="error-kelpoisuus-liitteet-${hakukohde.index}">
@@ -76,8 +76,7 @@
                 kelpoisuus_liitteet.aoId = "<c:out value="${kelpoisuus.aoId}"/>";
                 kelpoisuus_liitteet.status = "<c:out value="${kelpoisuus.status}"/>";
                 kelpoisuus_liitteet.source = "<c:out value="${kelpoisuus.source}"/>";
-                var rejectionbasis =  "<c:out value="${fn:replace(kelpoisuus.rejectionBasis, newLineChar, newLineEscaped )}" escapeXml="false"/>";
-                kelpoisuus_liitteet.rejectionBasis = _.str.unescapeHTML(rejectionbasis);
+                kelpoisuus_liitteet.rejectionBasis = _.str.unescapeHTML("<c:out value="${fn:replace(kelpoisuus.rejectionBasis, newLineChar, newLineEscaped )}" />");
                 <c:forEach var="tiedotTarkistettu" items="${application.preferencesChecked}">
                     if ("<c:out value="${hakukohde.oid}"/>" === "<c:out value="${tiedotTarkistettu.preferenceAoOid}"/>"
                         || "<c:out value="${hakukohde.oid}"/>" === "<c:out value="${liite.preferenceAoGroupId}"/>" ) {
