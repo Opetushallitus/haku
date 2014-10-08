@@ -35,12 +35,48 @@ public final class ArvosanatTheme {
                 OSITTAIN_YKSILOLLISTETTY,
                 ALUEITTAIN_YKSILOLLISTETTY,
                 YKSILOLLISTETTY);
-        relatedQuestionPK.addChild(arvosanataulukkoPK(formParameters));
+
+        Element arvosanataulukkoPkSv = Rule(
+                new Equals(
+                        new Variable(OppijaConstants.PERUSOPETUS_KIELI),
+                        new Value("SV")))
+                .build();
+        arvosanataulukkoPkSv.addChild(arvosanataulukkoYO(formParameters, true));
+
+        Element arvosanataulukkoPkMuut = Rule(
+                new Not(
+                        new Equals(
+                                new Variable(OppijaConstants.PERUSOPETUS_KIELI),
+                                new Value("SV"))))
+                .build();
+        arvosanataulukkoPkMuut.addChild(arvosanataulukkoYO(formParameters, false));
+
+        relatedQuestionPK.addChild(arvosanataulukkoPkSv);
+        relatedQuestionPK.addChild(arvosanataulukkoPkMuut);
+
         arvosanatTheme.addChild(relatedQuestionPK);
 
         if (!formParameters.isPervako()) {
             Element pohjakoulutusOnYlioppilas = createVarEqualsToValueRule(POHJAKOULUTUS_ID, YLIOPPILAS);
-            pohjakoulutusOnYlioppilas.addChild(arvosanataulukkoYO(formParameters));
+
+            Element arvosanataulukkoYoSv = Rule(
+                    new Equals(
+                            new Variable(OppijaConstants.LUKIO_KIELI),
+                            new Value("SV")))
+                    .build();
+            arvosanataulukkoYoSv.addChild(arvosanataulukkoYO(formParameters, true));
+
+            Element arvosanataulukkoYoMuut = Rule(
+                    new Not(
+                            new Equals(
+                                    new Variable(OppijaConstants.LUKIO_KIELI),
+                                    new Value("SV"))))
+                    .build();
+            arvosanataulukkoYoMuut.addChild(arvosanataulukkoYO(formParameters, false));
+
+            pohjakoulutusOnYlioppilas.addChild(arvosanataulukkoYoSv);
+            pohjakoulutusOnYlioppilas.addChild(arvosanataulukkoYoMuut);
+
             arvosanatTheme.addChild(pohjakoulutusOnYlioppilas);
         }
         arvosanatTheme.addChild(eiArvosanataulukkoa(formParameters));
@@ -72,7 +108,25 @@ public final class ArvosanatTheme {
                                 YKSILOLLISTETTY)),
                 new Regexp("_meta_grades_transferred_pk", "true"));
         Element relatedQuestionPk = Rule(kysyArvosanatPk).build();
-        relatedQuestionPk.addChild(arvosanataulukkoPK(formParameters));
+
+        Element arvosanataulukkoPkSv = Rule(
+                new Equals(
+                        new Variable(OppijaConstants.PERUSOPETUS_KIELI),
+                        new Value("SV")))
+                .build();
+        arvosanataulukkoPkSv.addChild(arvosanataulukkoPK(formParameters, true));
+
+        Element arvosanataulukkoPkMuut = Rule(
+                new Not(
+                        new Equals(
+                                new Variable(OppijaConstants.PERUSOPETUS_KIELI),
+                                new Value("SV"))))
+                .build();
+        arvosanataulukkoPkMuut.addChild(arvosanataulukkoPK(formParameters, false));
+
+        relatedQuestionPk.addChild(arvosanataulukkoPkSv);
+        relatedQuestionPk.addChild(arvosanataulukkoPkMuut);
+
         arvosanatTheme.addChild(relatedQuestionPk);
 
         // Ei arvosanoja
@@ -86,7 +140,6 @@ public final class ArvosanatTheme {
 
         if (!formParameters.isPervako()) {
             // Ylioppilaat
-            Expr kysyArvosanatLukio;
             RelatedQuestionRuleBuilder naytetaankoLukionArvosanataulukko;
             if (formParameters.isLisahaku()) {
                 naytetaankoLukionArvosanataulukko = Rule(new Equals(new Variable(POHJAKOULUTUS_ID), new Value(OppijaConstants.YLIOPPILAS)));
@@ -103,7 +156,24 @@ public final class ArvosanatTheme {
                                         new Variable("_meta_grades_transferred_lk"),
                                         new Value("true"))));
             }
-            naytetaankoLukionArvosanataulukko.addChild(arvosanataulukkoYO(formParameters));
+            Element arvosanataulukkoYoSv = Rule(
+                    new Equals(
+                            new Variable(OppijaConstants.LUKIO_KIELI),
+                            new Value("SV")))
+                    .build();
+            arvosanataulukkoYoSv.addChild(arvosanataulukkoYO(formParameters, true));
+
+            Element arvosanataulukkoYoMuut = Rule(
+                    new Not(
+                            new Equals(
+                                    new Variable(OppijaConstants.LUKIO_KIELI),
+                                    new Value("SV"))))
+                    .build();
+            arvosanataulukkoYoMuut.addChild(arvosanataulukkoYO(formParameters, false));
+
+            naytetaankoLukionArvosanataulukko.addChild(arvosanataulukkoYoSv);
+            naytetaankoLukionArvosanataulukko.addChild(arvosanataulukkoYoMuut);
+
             arvosanatTheme.addChild(naytetaankoLukionArvosanataulukko.build());
             if (!formParameters.isLisahaku()) {
                 arvosanatTheme.addChild(Rule(
@@ -139,18 +209,18 @@ public final class ArvosanatTheme {
         return Text("nogradegrid").labelKey("form.arvosanat.eikysyta").formParams(formParameters).build();
     }
 
-    private static GradeGrid arvosanataulukkoPK(FormParameters formParameters) {
-        return arvosanataulukko(formParameters, "pk");
+    private static GradeGrid arvosanataulukkoPK(FormParameters formParameters, boolean isSv) {
+        return arvosanataulukko(formParameters, "pk", isSv);
     }
 
-    private static GradeGrid arvosanataulukkoYO(FormParameters formParameters) {
-        return arvosanataulukko(formParameters, "yo");
+    private static GradeGrid arvosanataulukkoYO(FormParameters formParameters, boolean isSv) {
+        return arvosanataulukko(formParameters, "yo", isSv);
     }
 
-    private static GradeGrid arvosanataulukko(FormParameters formParameters, String suffix) {
+    private static GradeGrid arvosanataulukko(FormParameters formParameters, String suffix, boolean isSv) {
         GradesTable gradesTable = new GradesTable("pk".equals(suffix), formParameters);
         String id = "arvosanataulukko_" + suffix;
-        GradeGrid grid_pk = gradesTable.createGradeGrid(id, formParameters);
+        GradeGrid grid_pk = gradesTable.createGradeGrid(id, formParameters, isSv);
         grid_pk.setHelp(createI18NText(id + ".help", formParameters));
         return grid_pk;
     }

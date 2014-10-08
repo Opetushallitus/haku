@@ -1,5 +1,6 @@
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.osaaminen;
 
+import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
@@ -71,15 +72,21 @@ public class GradeGridHelper {
         return additionalNativeLanguages;
     }
 
-    public List<SubjectRow> getDefaultLanguages() {
-        return ordering.immutableSortedCopy(Iterables.filter(subjects, new Ids<SubjectRow>("A1", "B1")));
+    public List<SubjectRow> getDefaultLanguages(final boolean isSv) {
+        Predicate predicate = isSv
+                ? new Ids<SubjectRow>("A1", "A2")
+                : new Ids<SubjectRow>("A1", "B1");
+        return ordering.immutableSortedCopy(Iterables.filter(subjects, predicate));
     }
 
-    public List<SubjectRow> getAdditionalLanguages() {
+    public List<SubjectRow> getAdditionalLanguages(final boolean isSv) {
+        Predicate predicate = isSv
+                ? new Ids<SubjectRow>("A1", "A2")
+                : new Ids<SubjectRow>("A1", "B1");
         return ImmutableList.copyOf(
                 Iterables.filter(
                         Iterables.filter(subjects, new Languages()),
-                        Predicates.not(new Ids<SubjectRow>("A1", "B1"))));
+                        Predicates.not(predicate)));
     }
 
     public List<SubjectRow> getNotLanguageSubjects() {

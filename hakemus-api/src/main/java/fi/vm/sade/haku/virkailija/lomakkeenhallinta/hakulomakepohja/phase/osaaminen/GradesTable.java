@@ -28,7 +28,7 @@ public class GradesTable {
         gradeGridHelper = new GradeGridHelper(comprehensiveSchool, formParameters);
     }
 
-    public GradeGrid createGradeGrid(final String id, final FormParameters formParameters) {
+    public GradeGrid createGradeGrid(final String id, final FormParameters formParameters, final boolean isSv) {
         GradeGrid gradeGrid = new GradeGrid(id,
                 ElementUtil.createI18NText(id, formParameters),
                 gradeGridHelper.isComprehensiveSchool());
@@ -47,11 +47,11 @@ public class GradesTable {
         I18nText addNativeLangText = ElementUtil.createI18NText("form.add.lang.native", formParameters);
         gradeGrid.addChild(createAddLangRow(NATIVE_LANGUAGE_GROUP, addNativeLangText));
 
-        for (SubjectRow defaultLanguage : gradeGridHelper.getDefaultLanguages()) {
+        for (SubjectRow defaultLanguage : gradeGridHelper.getDefaultLanguages(isSv)) {
             gradeGrid.addChild(createGradeGridRow(defaultLanguage, true, false, formParameters));
         }
 
-        for (SubjectRow additionalLanguages : gradeGridHelper.getAdditionalLanguages()) {
+        for (SubjectRow additionalLanguages : gradeGridHelper.getAdditionalLanguages(isSv)) {
             gradeGrid.addChild(
                     createAdditionalLanguageRow(ADDITIONAL_LANGUAGES_GROUP,
                             additionalLanguages,
