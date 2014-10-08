@@ -96,6 +96,10 @@
                         attachment.name = "<haku:i18nText value="${liite.applicationAttachment.name}"/>";
                         attachment.header = "<haku:i18nText value="${liite.applicationAttachment.header}"/>";
                         attachment.processingStatus = "<c:out value="${liite.processingStatus}"/>";
+                        <c:set var="desc" value="${fn:replace(liite.applicationAttachment.description, newLineChar, newLineEscaped )}"/>;
+                        var desc = "<c:out value="${desc}"/>",
+                        desc_fi = _.str.unescapeHTML(desc.split('fi=')[1].split(', sv=')[0]).replace(/<[^>]*>/g, '');
+                        attachment.description = desc_fi;
                         kelpoisuus_liitteet.attachments.push(attachment);
                     }
                 </c:forEach>

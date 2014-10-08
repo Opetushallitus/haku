@@ -59,10 +59,15 @@ var kjal = {
 
 
             for (var trs in liitteet){
+                var liiteDesc = liitteet[trs].description;
                 $form += "<tr class=\"liitteesaapuneet-" + ind +"\" id=\"liitesaapunut-tr-" +ind+ "-" + trs +"\" >"
                     + "<td class=\"width-25\"><input type=\"checkbox\" \" onchange=\"kjal.validateKaikkiLiitteetSaapuneet(" + ind + "," + trs + ")\" > "
-                    + "Liite saapunut: "+ liitteet[trs].name + " " + liitteet[trs].header
-                    + "</td> "
+                    + "Liite saapunut: "+ liitteet[trs].name + " " + liitteet[trs].header;
+                    if (liiteDesc.length > 0) {
+                        $form += "<a href=\"#\" title=\"" + liiteDesc + " \" class=\"helplink\"></a>";
+                    }
+
+                    $form += "</td> "
 
                     + "<td>"
                     + "<select class=\"width-12-11\" id=\"select-saapunut-" +ind+ "-" + trs + "\" disabled onchange=\"kjal.saapumisTila("+ ind +","+ trs +")\">"
@@ -206,7 +211,6 @@ var kjal = {
         var aoGroupIds = [];
         for (var htAoG in hakutoiveet[indx-1].attachments) {
             if(hakutoiveet[indx-1].attachments[htAoG].aoGroupId !== ''){
-                console.log('***',  hakutoiveet[indx-1].attachments[htAoG].aoGroupId);
                 aoGroupIds.push(hakutoiveet[indx-1].attachments[htAoG].aoGroupId);
             }
         }
