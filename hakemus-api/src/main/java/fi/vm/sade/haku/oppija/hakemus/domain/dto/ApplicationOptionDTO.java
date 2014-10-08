@@ -48,13 +48,13 @@ public class ApplicationOptionDTO {
         sijoittelunTulosTranslations.put(HakemuksenTila.VARALLA,
                 ElementUtil.createI18NText("virkailija.hakemus.valintatiedot.sijoittelu.varalla", BUNDLE_NAME));
         sijoittelunTulosTranslations.put(HakemuksenTila.HARKINNANVARAISESTI_HYVAKSYTTY,
-                ElementUtil.createI18NText("virkailija.hakemus.valintatiedot.sijoittelu.harkinnanvaraisestiHyvaksytty", BUNDLE_NAME));
+                ElementUtil.createI18NText("virkailija.hakemus.valintatiedot.sijoittelu.harkinnanvaraisestihyvaksytty", BUNDLE_NAME));
         sijoittelunTulosTranslations.put(HakemuksenTila.VARASIJALTA_HYVAKSYTTY,
-                ElementUtil.createI18NText("virkailija.hakemus.valintatiedot.sijoittelu.varasijaltaHyvaksytty", BUNDLE_NAME));
+                ElementUtil.createI18NText("virkailija.hakemus.valintatiedot.sijoittelu.varasijaltahyvaksytty", BUNDLE_NAME));
 
         vastaanottoTietoTranslations = new HashMap<ValintatuloksenTila, I18nText>();
         vastaanottoTietoTranslations.put(ValintatuloksenTila.EI_VASTAANOTETTU_MAARA_AIKANA,
-                ElementUtil.createI18NText("virkailija.hakemus.valintatiedot.vastaanotto.eiMaaraaikana", BUNDLE_NAME));
+                ElementUtil.createI18NText("virkailija.hakemus.valintatiedot.vastaanotto.eimaaraaikana", BUNDLE_NAME));
         vastaanottoTietoTranslations.put(ValintatuloksenTila.ILMOITETTU,
                 ElementUtil.createI18NText("virkailija.hakemus.valintatiedot.vastaanotto.ilmoitettu", BUNDLE_NAME));
         vastaanottoTietoTranslations.put(ValintatuloksenTila.PERUNUT,
@@ -68,9 +68,9 @@ public class ApplicationOptionDTO {
         vastaanottoTietoTranslations.put(ValintatuloksenTila.VASTAANOTTANUT,
                 ElementUtil.createI18NText("virkailija.hakemus.valintatiedot.vastaanotto.vastaanottanut", BUNDLE_NAME));
         vastaanottoTietoTranslations.put(ValintatuloksenTila.EHDOLLISESTI_VASTAANOTTANUT,
-                ElementUtil.createI18NText("virkailija.hakemus.valintatiedot.vastaanotto.ehdollisestiVastaanottanut", BUNDLE_NAME));
+                ElementUtil.createI18NText("virkailija.hakemus.valintatiedot.vastaanotto.ehdollisestivastaanottanut", BUNDLE_NAME));
         vastaanottoTietoTranslations.put(ValintatuloksenTila.VASTAANOTTANUT_SITOVASTI,
-                ElementUtil.createI18NText("virkailija.hakemus.valintatiedot.vastaanotto.sitovastiVastaanottanut", BUNDLE_NAME));
+                ElementUtil.createI18NText("virkailija.hakemus.valintatiedot.vastaanotto.sitovastivastaanottanut", BUNDLE_NAME));
         vastaanottoTietoTranslations.put(ValintatuloksenTila.KESKEN,
                 ElementUtil.createI18NText("virkailija.hakemus.valintatiedot.vastaanotto.kesken", BUNDLE_NAME));
     }
