@@ -396,7 +396,19 @@ public final class KoulutustaustaPhase {
                 .formParams(formParameters).build();
 
         Expr vuosiSyotetty = new Regexp(paattotodistusvuosiPeruskoulu.getId(), PAATTOTODISTUSVUOSI_PATTERN);
-        Expr kysytaankoKoulutuspaikka = new And(new Not(new Equals(new Variable(paattotodistusvuosiPeruskoulu.getId()), new Value("2014"))), vuosiSyotetty);
+
+        Expr kysytaankoKoulutuspaikka;
+        String hakukausi = formParameters.getApplicationSystem().getHakukausiUri();
+        if (OppijaConstants.HAKUKAUSI_SYKSY.equals(hakukausi)) {
+            kysytaankoKoulutuspaikka = new Equals(new Value("true"), new Value("true"));
+        } else {
+            kysytaankoKoulutuspaikka = new And(
+                    new Not(
+                            new Equals(
+                                    new Variable(paattotodistusvuosiPeruskoulu.getId()),
+                                    new Value(hakukausiVuosiStr))),
+                    vuosiSyotetty);
+        }
 
         Element onkoTodistusSaatuKuluneenaVuonna = Rule(kysytaankoKoulutuspaikka).build();
         onkoTodistusSaatuKuluneenaVuonna.addChild(koulutuspaikkaAmmatillisenTutkintoon);
