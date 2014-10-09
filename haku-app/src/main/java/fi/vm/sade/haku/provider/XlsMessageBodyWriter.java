@@ -50,7 +50,7 @@ public class XlsMessageBodyWriter implements MessageBodyWriter<XlsModel> {
     public void writeTo(XlsModel xlsModel, Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType, MultivaluedMap<String, Object> httpHeaders, OutputStream entityStream) throws IOException, WebApplicationException {
 
         Workbook wb = new HSSFWorkbook();
-        String sheetname = xlsModel.asId + "_" + xlsModel.hakukausiVuosi + "_" + xlsModel.aoName;
+        String sheetname = xlsModel.asId + "_" + xlsModel.hakukausiVuosi + "_" + xlsModel.ao.getName();
         Sheet sheet = wb.createSheet(sheetname);
         sheet.setDefaultColumnWidth(20);
 
@@ -59,7 +59,7 @@ public class XlsMessageBodyWriter implements MessageBodyWriter<XlsModel> {
         createRow(sheet, "Haku oid", xlsModel.asId);
         createRow(sheet, "Hakukausi", xlsModel.getHakukausi(koodistoService.getHakukausi()));
         createRow(sheet, "Hakuvuosi", xlsModel.hakukausiVuosi);
-        createRow(sheet, "Hakukohde", xlsModel.aoName);
+        createRow(sheet, "Hakukohde", xlsModel.ao.getName());
 
         createRow(sheet);
 

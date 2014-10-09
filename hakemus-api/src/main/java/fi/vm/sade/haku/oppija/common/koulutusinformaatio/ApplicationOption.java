@@ -16,6 +16,7 @@
 
 package fi.vm.sade.haku.oppija.common.koulutusinformaatio;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -35,6 +36,7 @@ public class ApplicationOption {
     private boolean kaksoistutkinto;
     private boolean athleteEducation;
     private String educationCode;
+    private List<String> groups;
 
     public String getId() {
         return id;
@@ -138,5 +140,20 @@ public class ApplicationOption {
                 .append("id: ").append(id).append(", ")
                 .append("name: ").append(name).append("}");
         return builder.toString();
+    }
+
+    public void addGroup(String oid) {
+        if (groups == null) {
+            groups = new ArrayList<String>();
+        }
+        groups.add(oid);
+    }
+
+    public void setGroups(List<String> groups) {
+        this.groups = groups;
+    }
+
+    public List<String> getGroups() {
+        return groups;
     }
 }

@@ -16,6 +16,8 @@
 
 package fi.vm.sade.haku.oppija.hakemus.resource;
 
+import fi.vm.sade.haku.oppija.common.koulutusinformaatio.ApplicationOption;
+import fi.vm.sade.haku.oppija.common.koulutusinformaatio.ApplicationOptionService;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationAdditionalDataDTO;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
@@ -59,6 +61,9 @@ public class ApplicationResource {
 
     @Autowired
     private ApplicationSystemService applicationSystemService;
+
+    @Autowired
+    private ApplicationOptionService applicationOptionService;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ApplicationResource.class);
     private static final String OID = "oid";
@@ -134,7 +139,8 @@ public class ApplicationResource {
 
         List<Map<String, Object>> applications = applicationService.findFullApplications(queryParams);
         Locale userLocale = (Locale) Config.get(request.getSession(), Config.FMT_LOCALE);
-        return new XlsModel(aoOid, aoid, activeApplicationSystem, applications, userLocale.getLanguage());
+        ApplicationOption ao = applicationOptionService.get(aoOid);
+        return new XlsModel(ao, activeApplicationSystem, applications, userLocale.getLanguage());
     }
 
     @GET

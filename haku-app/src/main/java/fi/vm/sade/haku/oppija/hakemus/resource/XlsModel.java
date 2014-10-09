@@ -4,7 +4,10 @@ import com.google.common.base.Function;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
-import com.google.common.collect.*;
+import com.google.common.collect.ArrayTable;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
+import fi.vm.sade.haku.oppija.common.koulutusinformaatio.ApplicationOption;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.CheckBox;
@@ -22,9 +25,9 @@ import static org.apache.commons.lang.StringUtils.isNotEmpty;
 public class XlsModel {
 
     public final String hakukausiVuosi;
-    public final String aoName;
     public final String asId;
     public final String asName;
+    public final ApplicationOption ao;
     private final ApplicationSystem applicationSystem;
     private final List<Map<String, Object>> applications;
     private final ArrayTable<String, Element, Object> table;
@@ -32,13 +35,12 @@ public class XlsModel {
     private final String lang;
     private final List<Element> columnKeyList;
 
-    public XlsModel(final String aoOid,
-                    final String aoName,
+    public XlsModel(final ApplicationOption ao,
                     final ApplicationSystem applicationSystem,
                     final List<Map<String, Object>> applications,
                     final String lang) {
 
-        this.aoName = aoName;
+        this.ao = ao;
         this.applicationSystem = applicationSystem;
         this.applications = applications;
         this.lang = lang;
@@ -46,14 +48,14 @@ public class XlsModel {
         this.asId = applicationSystem.getId();
         this.asName = applicationSystem.getName().getTranslations().get(lang);
 
-        List<Element> questions = findQuestions(applicationSystem, aoOid, lang);
+        List<Element> questions = findQuestions(applicationSystem, ao, lang);
         List<String> aids = Lists.transform(applications, ELEMENT_TO_OID_FUNCTION);
 
         table = ArrayTable.create(aids, questions);
 
         for (Map<String, Object> application : applications) {
             Map<String, String> answers = getAllAnswers(application);
-            List<Element> applicationQuestions = findQuestionsWithAnswers(applicationSystem, aoOid, lang, answers);
+            List<Element> applicationQuestions = findQuestionsWithAnswers(applicationSystem, ao, lang, answers);
 
             for (Element applicationQuestion : applicationQuestions) {
                 if (table.containsColumn(applicationQuestion) && isNotEmpty(answers.get(applicationQuestion.getId()))) {
@@ -81,25 +83,30 @@ public class XlsModel {
         return allAnswers;
     }
 
-    private List<Element> findQuestions(ApplicationSystem applicationSystem, final String aoid, final String lang) {
-        return findQuestionsWithAnswers(applicationSystem, aoid, lang, null);
+    private List<Element> findQuestions(ApplicationSystem applicationSystem, final ApplicationOption ao, final String lang) {
+        return findQuestionsWithAnswers(applicationSystem, ao, lang, null);
     }
 
-    private List<Element> findQuestionsWithAnswers(ApplicationSystem applicationSystem, final String aoid, final String lang, Map<String, String> answers) {
+    private List<Element> findQuestionsWithAnswers(ApplicationSystem applicationSystem, final ApplicationOption ao, final String lang, Map<String, String> answers) {
         return ElementUtil.filterElements(applicationSystem.getForm(), new Predicate<Element>() {
             @Override
             public boolean apply(Element element) {
                 if (Question.class.isAssignableFrom(element.getClass()) && ElementUtil.getText(element, lang) != null) {
                     String applicationOptionGroupId = ((Question) element).getApplicationOptionGroupId();
                     String applicationOptionId = ((Question) element).getApplicationOptionId();
+                    List<String> groups = ao.getGroups();
+
                     if (applicationOptionGroupId == null && applicationOptionId == null) {
                         return true;
+                    } else if (applicationOptionGroupId != null && groups != null) {
+                        if (groups.contains(applicationOptionGroupId)) {
+                            return true;
+                        }
                     } else {
-                        return aoid != null && (aoid.equals(applicationOptionGroupId) || aoid.equals(applicationOptionId));
+                        return ao.getId() != null && (ao.getId().equals(applicationOptionGroupId) || ao.getId().equals(applicationOptionId));
                     }
-                } else {
-                    return false;
                 }
+                return false;
             }
         }, answers);
     }
