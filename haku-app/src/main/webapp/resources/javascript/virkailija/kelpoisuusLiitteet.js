@@ -465,6 +465,7 @@ var kjal = {
             for(var r in submitData[s].attachments){
                 delete submitData[s].attachments[r].name;
                 delete submitData[s].attachments[r].header;
+                delete submitData[s].attachments[r].description;
             }
         }
         this.LOGS('Lähettävä data:', submitData);
