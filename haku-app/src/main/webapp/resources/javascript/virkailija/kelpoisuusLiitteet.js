@@ -7,7 +7,7 @@ var config = {
     liiteEiTarkistettu: "NOT_CHECKED",
     liiteTarkistettu: "CHECKED",
     tietolahdeUnknown: "UNKNOWN",
-    showlogs: false
+    showlogs: true
 };
 var kjal = {
     /**
