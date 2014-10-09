@@ -18,6 +18,7 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.domain.Code;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 
+import javax.ws.rs.HEAD;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -396,7 +397,19 @@ public final class KoulutustaustaPhase {
                 .formParams(formParameters).build();
 
         Expr vuosiSyotetty = new Regexp(paattotodistusvuosiPeruskoulu.getId(), PAATTOTODISTUSVUOSI_PATTERN);
-        Expr kysytaankoKoulutuspaikka = new And(new Not(new Equals(new Variable(paattotodistusvuosiPeruskoulu.getId()), new Value(hakukausiVuosiStr))), vuosiSyotetty);
+
+        Expr kysytaankoKoulutuspaikka;
+        String hakukausi = formParameters.getApplicationSystem().getHakukausiUri();
+        if (OppijaConstants.HAKUKAUSI_SYKSY.equals(hakukausi)) {
+            kysytaankoKoulutuspaikka = new Equals(new Value("true"), new Value("true"));
+        } else {
+            kysytaankoKoulutuspaikka = new And(
+                    new Not(
+                            new Equals(
+                                    new Variable(paattotodistusvuosiPeruskoulu.getId()),
+                                    new Value(hakukausiVuosiStr))),
+                    vuosiSyotetty);
+        }
 
         Element onkoTodistusSaatuKuluneenaVuonna = Rule(kysytaankoKoulutuspaikka).build();
         onkoTodistusSaatuKuluneenaVuonna.addChild(koulutuspaikkaAmmatillisenTutkintoon);
