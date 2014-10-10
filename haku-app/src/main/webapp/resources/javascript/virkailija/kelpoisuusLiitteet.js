@@ -7,7 +7,7 @@ var config = {
     liiteEiTarkistettu: "NOT_CHECKED",
     liiteTarkistettu: "CHECKED",
     tietolahdeUnknown: "UNKNOWN",
-    showlogs: true
+    showlogs: false
 };
 var kjal = {
     /**
@@ -319,8 +319,7 @@ var kjal = {
 
             for(var t in hakutoiveet[g].attachments) {
                 this.LOGS('liiteen ryhmä id:', aoGroup, hakutoiveet[g].attachments[t].aoGroupId);
-//                this.LOGS('liiteen id:', atcId, hakutoiveet[g].attachments[t].id);
-                console.log('liite id: ', hakutoiveet[g].attachments[t].id, ' - ', atcId );
+                this.LOGS('liite id: ', hakutoiveet[g].attachments[t].id, ' - ', atcId );
                 if(hakutoiveet[g].attachments[t].aoGroupId === aoGroup && aoGroup !== ''
                     && hakutoiveet[g].attachments[t].id === atcId) {
                     var ind = parseInt(g) + 1;
@@ -391,7 +390,7 @@ var kjal = {
         atcId = hakutoiveet[indx-1].attachments[trs].id;
         for (var g in hakutoiveet){
             for (var t in hakutoiveet[g].attachments) {
-                console.log('liite id: ', hakutoiveet[g].attachments[t].id, ' - ', atcId );
+                this.LOGS('liite id: ', hakutoiveet[g].attachments[t].id, ' - ', atcId );
                 if(hakutoiveet[g].attachments[t].aoGroupId === aoGroup && aoGroup !== ''
                     && hakutoiveet[g].attachments[t].id === atcId) {
                     var ind = parseInt(g) + 1;
@@ -417,7 +416,7 @@ var kjal = {
             atcId = hakutoiveet[indx-1].attachments[trs].id;
         for (var g in hakutoiveet){
             for(var t in hakutoiveet[g].attachments) {
-                console.log('liite id: ', hakutoiveet[g].attachments[t].id, ' - ', atcId );
+                this.LOGS('liite id: ', hakutoiveet[g].attachments[t].id, ' - ', atcId );
                 if(hakutoiveet[g].attachments[t].aoGroupId === aoGroup && aoGroup !== ''
                     && hakutoiveet[g].attachments[t].id === atcId) {
                     var ind = parseInt(g) + 1;
@@ -452,7 +451,7 @@ var kjal = {
                 _.each(toive.attachments, function (liite) {
                         _.each(aoGroupIds, function (grId) {
                                 _.each(atcIds, function (atcId) {
-                                        console.log('liiteen id: ', liite.id, ' - ', atcId);
+                                        this.LOGS('liiteen id: ', liite.id, ' - ', atcId);
                                         if ( liite.aoGroupId === grId && grId !== '' && liite.id === atcId){
                                             $('#select-tarkistettu-' + toiveNro + '-' + liiteInd).val(config.liiteTarkistettu);
                                             hakutoiveet[toiveInd].attachments[liiteInd].processingStatus = config.liiteTarkistettu;
