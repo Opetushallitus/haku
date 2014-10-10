@@ -47,7 +47,7 @@
 	    <koodisto-api.version>11.2</koodisto-api.version>
         <koulutusinformaatio-api.version>11.4</koulutusinformaatio-api.version>
         <log-client.version>8.0</log-client.version>
-        <organisaatio-api.version>11.3</organisaatio-api.version>
+        <organisaatio-api.version>11.6</organisaatio-api.version>
         <tarjonta-api.version>9.7-SNAPSHOT</tarjonta-api.version>
 	<viestintapalvelu.version>9.8</viestintapalvelu.version>
     </properties>
