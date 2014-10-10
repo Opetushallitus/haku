@@ -313,12 +313,16 @@ var kjal = {
             hakutoiveet[hakutoive].attachments[trs].processingStatus = config.liiteEiTarkistettu;
             this.tarkistaKaikkiLiitteetSaapuneet(hakutoive);
         }
-        var aoGroup = hakutoiveet[indx-1].attachments[trs].aoGroupId;
+        var aoGroup = hakutoiveet[indx-1].attachments[trs].aoGroupId,
+            atcId = hakutoiveet[indx-1].attachments[trs].id;
         for (var g in hakutoiveet){
 
             for(var t in hakutoiveet[g].attachments) {
                 this.LOGS('liiteen ryhmä id:', aoGroup, hakutoiveet[g].attachments[t].aoGroupId);
-                if(hakutoiveet[g].attachments[t].aoGroupId === aoGroup && aoGroup !== '') {
+//                this.LOGS('liiteen id:', atcId, hakutoiveet[g].attachments[t].id);
+                console.log('liite id: ', hakutoiveet[g].attachments[t].id, ' - ', atcId );
+                if(hakutoiveet[g].attachments[t].aoGroupId === aoGroup && aoGroup !== ''
+                    && hakutoiveet[g].attachments[t].id === atcId) {
                     var ind = parseInt(g) + 1;
                     this.LOGS('saapumis tila ryhmä liitteisiin: ', ind,' ', t,  saapunutCheckBox);
                     if (saapunutCheckBox){
@@ -383,10 +387,13 @@ var kjal = {
         this.LOGS('saapumisTila()', indx);
         hakutoiveet[indx-1].attachments[trs].receptionStatus = $('#select-saapunut-' + indx +'-' + trs).val();
         this.tarkistaHakutoiveValmis(indx);
-        var aoGroup = hakutoiveet[indx-1].attachments[trs].aoGroupId;
+        var aoGroup = hakutoiveet[indx-1].attachments[trs].aoGroupId,
+        atcId = hakutoiveet[indx-1].attachments[trs].id;
         for (var g in hakutoiveet){
             for (var t in hakutoiveet[g].attachments) {
-                if(hakutoiveet[g].attachments[t].aoGroupId === aoGroup && aoGroup !== '') {
+                console.log('liite id: ', hakutoiveet[g].attachments[t].id, ' - ', atcId );
+                if(hakutoiveet[g].attachments[t].aoGroupId === aoGroup && aoGroup !== ''
+                    && hakutoiveet[g].attachments[t].id === atcId) {
                     var ind = parseInt(g) + 1;
                     hakutoiveet[ind-1].attachments[t].receptionStatus = $('#select-saapunut-' + indx +'-' + trs).val();
                     $('#select-saapunut-' + ind +'-' + t).val($('#select-saapunut-' + indx +'-' + trs).val());
@@ -406,10 +413,13 @@ var kjal = {
         hakutoiveet[indx-1].attachments[trs].processingStatus = $('#select-tarkistettu-' + indx +'-' + trs).val();
         this.LOGS('-->', hakutoiveet[indx-1].attachments[trs].processingStatus);
 
-        var aoGroup = hakutoiveet[indx-1].attachments[trs].aoGroupId;
+        var aoGroup = hakutoiveet[indx-1].attachments[trs].aoGroupId,
+            atcId = hakutoiveet[indx-1].attachments[trs].id;
         for (var g in hakutoiveet){
             for(var t in hakutoiveet[g].attachments) {
-                if(hakutoiveet[g].attachments[t].aoGroupId === aoGroup && aoGroup !== '') {
+                console.log('liite id: ', hakutoiveet[g].attachments[t].id, ' - ', atcId );
+                if(hakutoiveet[g].attachments[t].aoGroupId === aoGroup && aoGroup !== ''
+                    && hakutoiveet[g].attachments[t].id === atcId) {
                     var ind = parseInt(g) + 1;
                     hakutoiveet[ind-1].attachments[t].processingStatus = $('#select-tarkistettu-' + indx +'-' + trs).val();
                     $('#select-tarkistettu-' + ind +'-' + t).val($('#select-tarkistettu-' + indx +'-' + trs).val());
@@ -433,17 +443,22 @@ var kjal = {
             hakutoiveet[indx-1].attachments[t].processingStatus = $('#select-tarkistettu-' + indx + '-' +t).val();
         }
         var aoGroupIds = _.uniq(_.map(hakutoiveet[indx-1].attachments, function (grIds) { return grIds.aoGroupId; })),
+            atcIds = _.uniq(_.map(hakutoiveet[indx-1].attachments, function (attachmentsIds) { return attachmentsIds.id; })),
             toiveInd = 0,
             toiveNro = 1;
 
         _.each(hakutoiveet, function (toive) {
                 var liiteInd = 0;
                 _.each(toive.attachments, function (liite) {
-                            _.each(aoGroupIds, function (grId) {
-                                if ( liite.aoGroupId === grId && grId !== ''){
-                                    $('#select-tarkistettu-' + toiveNro + '-' + liiteInd).val(config.liiteTarkistettu);
-                                    hakutoiveet[toiveInd].attachments[liiteInd].processingStatus = config.liiteTarkistettu;
-                                }
+                        _.each(aoGroupIds, function (grId) {
+                                _.each(atcIds, function (atcId) {
+                                        console.log('liiteen id: ', liite.id, ' - ', atcId);
+                                        if ( liite.aoGroupId === grId && grId !== '' && liite.id === atcId){
+                                            $('#select-tarkistettu-' + toiveNro + '-' + liiteInd).val(config.liiteTarkistettu);
+                                            hakutoiveet[toiveInd].attachments[liiteInd].processingStatus = config.liiteTarkistettu;
+                                        }
+                                    }
+                                )
                             }
                         )
                         liiteInd += 1;
