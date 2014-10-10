@@ -104,10 +104,13 @@
                         attachment.name = "<haku:i18nText value="${liite.applicationAttachment.name}"/>";
                         attachment.header = "<haku:i18nText value="${liite.applicationAttachment.header}"/>";
                         attachment.processingStatus = "<c:out value="${liite.processingStatus}"/>";
-                        <c:set var="desc" value="${fn:replace(liite.applicationAttachment.description, newLineChar, newLineEscaped )}"/>;
-                        var desc = "<c:out value="${desc}"/>",
-                        desc_fi = _.str.unescapeHTML(desc.split('fi=')[1].split(', sv=')[0]).replace(/<[^>]*>/g, '');
-                        attachment.description = desc_fi;
+                        <c:set var="desc" value="${fn:replace(liite.applicationAttachment.description, newLineChar, newLineEscaped)}"/>;
+                        var desc = "<c:out value="${desc}"/>";
+                        if (desc !== undefined && desc.length > 0) {
+                            attachment.description = _.str.unescapeHTML(desc.split('fi=')[1].split(', sv=')[0]).replace(/<[^>]*>/g, '');
+                        } else {
+                            attachment.description = "";
+                        }
                         kelpoisuus_liitteet.attachments.push(attachment);
                     }
                 </c:forEach>

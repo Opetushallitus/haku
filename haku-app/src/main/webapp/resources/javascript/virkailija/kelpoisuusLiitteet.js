@@ -50,12 +50,15 @@ var kjal = {
                         + "<td colspan=\"2\">"
                         + "<textarea id=\"hylkaamisenperuste\" rows=\"4\" class=\"width-12-11\" disabled onblur=\"kjal.hylkaamisenSyy(" + ind + ")\"></textarea>"
                         + "</td>"
-                        + "</tr>"
-
-                        + "<tr>"
-                        + "<td id=\"liitteidenmaara\" style=\"font-weight: bold\">Liitteiden määrä " + hakutoiveet[hktindx].attachments.length + " kpl </td>"
-                        + "<td colspan=\"2\"></td>"
                         + "</tr>";
+
+                        if (liitteet !== undefined) {
+                           $form +="<tr>"
+                                + "<td id=\"liitteidenmaara\" style=\"font-weight: bold\">Liitteiden määrä " + liitteet.length + " kpl </td>"
+                                + "<td colspan=\"2\"></td>"
+                            + "</tr>";
+                        }
+
 
 
             for (var trs in liitteet){
@@ -63,7 +66,7 @@ var kjal = {
                 $form += "<tr class=\"liitteesaapuneet-" + ind +"\" id=\"liitesaapunut-tr-" +ind+ "-" + trs +"\" >"
                     + "<td class=\"width-25\"><input type=\"checkbox\" \" onchange=\"kjal.validateKaikkiLiitteetSaapuneet(" + ind + "," + trs + ")\" > "
                     + "Liite saapunut: "+ liitteet[trs].name + " " + liitteet[trs].header;
-                    if (liiteDesc.length > 0) {
+                    if (liiteDesc !== undefined && liiteDesc.length > 0) {
                         $form += "<a href=\"#\" title=\"" + liiteDesc + " \" class=\"helplink\"></a>";
                     }
 
