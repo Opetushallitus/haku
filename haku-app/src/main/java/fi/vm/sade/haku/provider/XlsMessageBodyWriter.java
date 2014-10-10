@@ -50,7 +50,7 @@ public class XlsMessageBodyWriter implements MessageBodyWriter<XlsModel> {
     public void writeTo(XlsModel xlsModel, Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType, MultivaluedMap<String, Object> httpHeaders, OutputStream entityStream) throws IOException, WebApplicationException {
 
         Workbook wb = new HSSFWorkbook();
-        String sheetname = xlsModel.asId + "_" + xlsModel.hakukausiVuosi + "_" + xlsModel.aoName;
+        String sheetname = xlsModel.asId + "_" + xlsModel.hakukausiVuosi + "_" + xlsModel.ao.getName();
         Sheet sheet = wb.createSheet(sheetname);
         sheet.setDefaultColumnWidth(20);
 
@@ -59,7 +59,7 @@ public class XlsMessageBodyWriter implements MessageBodyWriter<XlsModel> {
         createRow(sheet, "Haku oid", xlsModel.asId);
         createRow(sheet, "Hakukausi", xlsModel.getHakukausi(koodistoService.getHakukausi()));
         createRow(sheet, "Hakuvuosi", xlsModel.hakukausiVuosi);
-        createRow(sheet, "Hakukohde", xlsModel.aoName);
+        createRow(sheet, "Hakukohde", xlsModel.ao.getName());
 
         createRow(sheet);
 
@@ -69,19 +69,20 @@ public class XlsMessageBodyWriter implements MessageBodyWriter<XlsModel> {
         }
 
         List<String> rowKeys = xlsModel.rowKeyList();
-        Iterable<Element> colKeys = xlsModel.columnKeyList();
-        for (String rowKey : rowKeys) {
-            boolean isLastRow = rowKeys.indexOf(rowKey) < rowKeys.size() - 1;
-            Row row = createRow(sheet);
-            for (Element colKey : colKeys) {
-                Cell cell = createCell(row);
-                cell.setCellValue(xlsModel.getValue(rowKey, colKey));
-                if (isLastRow) {
-                    sheet.autoSizeColumn(cell.getColumnIndex());
-                }
+        List<Element> colKeys = xlsModel.columnKeyList();
+        int rows = rowKeys.size();
+        int cols = colKeys.size();
+        int rowOffset = sheet.getLastRowNum() + 1;
+        for (int i = 0; i < rows; i++) {
+            Row row = sheet.createRow(rowOffset + i);
+            for (int j = 0; j < cols; j++) {
+                Cell cell = row.createCell(j);
+                cell.setCellValue(xlsModel.getValue(rowKeys.get(i), colKeys.get(j)));
             }
         }
-
+        for (int i = 0; i < colKeys.size(); i++) {
+            sheet.autoSizeColumn(i);
+        }
         httpHeaders.add("content-disposition", "attachment; filename=" + URLEncoder.encode(sheetname, "UTF-8") + ".xls");
         wb.write(entityStream);
     }

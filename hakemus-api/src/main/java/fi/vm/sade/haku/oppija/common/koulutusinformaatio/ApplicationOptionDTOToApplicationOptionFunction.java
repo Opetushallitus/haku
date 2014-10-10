@@ -18,6 +18,7 @@ package fi.vm.sade.haku.oppija.common.koulutusinformaatio;
 
 import com.google.common.base.Function;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.OrganizationGroupDTO;
 
 /**
  * @author Mikko Majapuro
@@ -45,6 +46,9 @@ public class ApplicationOptionDTOToApplicationOptionFunction implements Function
             ao.setProvider(lop);
             ao.setAthleteEducation(applicationOptionDTO.isAthleteEducation());
             ao.setEducationCode(applicationOptionDTO.getEducationCodeUri());
+            for (OrganizationGroupDTO group : applicationOptionDTO.getOrganizationGroups()) {
+                ao.addGroup(group.getOid());
+            }
             return ao;
         } else {
             return null;
