@@ -22,7 +22,7 @@
     <parent>
         <artifactId>haku</artifactId>
         <groupId>fi.vm.sade.haku</groupId>
-        <version>11.4-SNAPSHOT</version>
+        <version>11.7-SNAPSHOT</version>
     </parent>
     <artifactId>hakemus-api</artifactId>
     <packaging>jar</packaging>
