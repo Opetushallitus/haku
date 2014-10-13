@@ -105,9 +105,10 @@
                         attachment.header = "<haku:i18nText value="${liite.applicationAttachment.header}"/>";
                         attachment.processingStatus = "<c:out value="${liite.processingStatus}"/>";
                         <c:set var="desc" value="${fn:replace(liite.applicationAttachment.description, newLineChar, newLineEscaped)}"/>;
-                        var desc = "<c:out value="${desc}"/>";
-                        if (desc !== undefined && desc.length > 0) {
-                            attachment.description = _.str.unescapeHTML(desc.split('fi=')[1].split(', sv=')[0]).replace(/<[^>]*>/g, '');
+                        var desc = "<c:out value="${desc}"/>",
+                            lng = 'fi=';
+                        if (desc !== undefined && desc.length > 0 && (desc.match(lng) !== null) ) {
+                            attachment.description = _.str.unescapeHTML(desc.split(lng)[1].split(',')[0]).replace(/<[^>]*>/g, '');
                         } else {
                             attachment.description = "";
                         }
