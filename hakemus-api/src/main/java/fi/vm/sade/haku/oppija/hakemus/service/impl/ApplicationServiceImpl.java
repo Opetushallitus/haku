@@ -286,6 +286,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         if (queriedAss != null && queriedAss.size() == 1) {
             builder.setKohdejoukko(kohdejoukko);
         }
+        
         return applicationDAO.findAllQueried(applicationQueryParameters, builder.build());
     }
 
