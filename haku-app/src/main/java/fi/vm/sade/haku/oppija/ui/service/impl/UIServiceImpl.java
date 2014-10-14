@@ -127,7 +127,7 @@ public class UIServiceImpl implements UIService {
         Application application = applicationService.getApplication(applicationSystemId);
         elementTree.checkPhaseTransfer(application.getPhaseId(), phaseId);
         ModelResponse modelResponse = new ModelResponse(activeApplicationSystem);
-        modelResponse.addAnswers(userSession.populateWithPrefillData(ensureGroupData(phaseId, application.getVastauksetMerged())));
+        modelResponse.addAnswers(userSession.populateWithPrefillData(ensureApplicationOptionGroupData(phaseId, application.getVastauksetMerged())));
         modelResponse.setElement(phase);
         modelResponse.setKoulutusinformaatioBaseUrl(koulutusinformaatioBaseUrl);
         modelResponse.addObjectToModel("higherEd",
@@ -135,14 +135,14 @@ public class UIServiceImpl implements UIService {
         return modelResponse;
     }
 
-    private Map<String, String> ensureGroupData(String phaseId, Map<String, String> answers) {
+    private Map<String, String> ensureApplicationOptionGroupData(String phaseId, Map<String, String> answers) {
         //TODO this is an evil kludge, pls kill it asap
         if (!OppijaConstants.PHASE_APPLICATION_OPTIONS.equals(phaseId))
             return answers;
-        return ensureGroupData(answers);
+        return ensureApplicationOptionGroupData(answers);
     }
 
-    private Map<String, String> ensureGroupData(Map<String, String> answers) {
+    private Map<String, String> ensureApplicationOptionGroupData(Map<String, String> answers) {
         LOGGER.debug("Input map: " + answers.toString());
         Set<String> keys = new HashSet(answers.keySet());
         for (String key: keys){
@@ -191,7 +191,7 @@ public class UIServiceImpl implements UIService {
 
     @Override
     public void storePrefilledAnswers(String applicationSystemId, Map<String, String> answers) {
-        userSession.addPrefillData(applicationSystemId, ensureGroupData(answers));
+        userSession.addPrefillData(applicationSystemId, ensureApplicationOptionGroupData(answers));
     }
 
     @Override
@@ -258,7 +258,7 @@ public class UIServiceImpl implements UIService {
 
     @Override
     public ModelResponse savePhase(String applicationSystemId, String phaseId, Map<String, String> originalAnswers) {
-        Map<String, String> ensuredAnswers = ensureGroupData(phaseId, originalAnswers);
+        Map<String, String> ensuredAnswers = ensureApplicationOptionGroupData(phaseId, originalAnswers);
         Form activeForm = applicationSystemService.getActiveApplicationSystem(applicationSystemId).getForm();
         ApplicationState applicationState = applicationService.saveApplicationPhase(
                 new ApplicationPhase(applicationSystemId, phaseId, ensuredAnswers));
