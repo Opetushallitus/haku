@@ -31,6 +31,10 @@ public interface ApplicationService {
 
     Application getApplication(final String applicationSystemId);
 
+    Map<String, String> ensureApplicationOptionGroupData(Map<String, String> answers);
+
+    Application ensureApplicationOptionGroupData(Application application);
+
     Application getApplication(final Application queryApplication);
 
     Application getApplicationByOid(final String oid);
