@@ -69,7 +69,16 @@
     <hr id="form-kelpoisuus-liitteet-hr-${hakukohde.index}" >
 
     <script type="text/javascript">
-        var kelpoisuus_liitteet = {};
+        var kelpoisuus_liitteet = {},
+            aoGroupIds = [];
+        <c:set var="aoGroups" value="preference${hakukohde.index}-Koulutus-id-ao-groups"/>
+        <c:set var="aoGrAr" value="${fn:split(answers[aoGroups], ',')}"/>;
+        <c:forEach var="aoGrId" items="${aoGrAr}">
+            <c:if test="${fn:length(aoGrId) >0}" >
+                aoGroupIds.push("<c:out value="${aoGrId}" />");
+            </c:if>
+        </c:forEach>
+        kjal.LOGS('hakujohteen ', "<c:out value="${hakukohde.oid}"/>",' ryhmä idt: ', aoGroupIds);
         <c:forEach var="kelpoisuus" items="${application.preferenceEligibilities}">
             if ("<c:out value="${hakukohde.oid}"/>" === "<c:out value="${kelpoisuus.aoId}"/>") {
                 kelpoisuus_liitteet.indx = "<c:out value="${hakukohde.index}"/>";
@@ -78,8 +87,7 @@
                 kelpoisuus_liitteet.source = "<c:out value="${kelpoisuus.source}"/>";
                 kelpoisuus_liitteet.rejectionBasis = _.str.unescapeHTML("<c:out value="${fn:replace(kelpoisuus.rejectionBasis, newLineChar, newLineEscaped )}" />");
                 <c:forEach var="tiedotTarkistettu" items="${application.preferencesChecked}">
-                    if ("<c:out value="${hakukohde.oid}"/>" === "<c:out value="${tiedotTarkistettu.preferenceAoOid}"/>"
-                        || "<c:out value="${hakukohde.oid}"/>" === "<c:out value="${liite.preferenceAoGroupId}"/>" ) {
+                    if ("<c:out value="${hakukohde.oid}"/>" === "<c:out value="${tiedotTarkistettu.preferenceAoOid}"/>") {
                         kelpoisuus_liitteet.preferencesChecked = "<c:out value="${tiedotTarkistettu.checked}"/>";
                     }
                 </c:forEach>
@@ -87,7 +95,7 @@
 
                 <c:forEach var="liite" items="${application.attachmentRequests}" varStatus="liiteCount" >
                     if("<c:out value="${hakukohde.oid}"/>" === "<c:out value="${liite.preferenceAoId}"/>"
-                        || "<c:out value="${hakukohde.oid}"/>" === "<c:out value="${liite.preferenceAoGroupId}"/>") {
+                        || _.contains(aoGroupIds, "<c:out value="${liite.preferenceAoGroupId}"/>")) {
                         var attachment = {};
                         attachment.id = "<c:out value="${liite.id}"/>";
                         attachment.aoId = "<c:out value="${liite.preferenceAoId}"/>";
@@ -96,15 +104,20 @@
                         attachment.name = "<haku:i18nText value="${liite.applicationAttachment.name}"/>";
                         attachment.header = "<haku:i18nText value="${liite.applicationAttachment.header}"/>";
                         attachment.processingStatus = "<c:out value="${liite.processingStatus}"/>";
-                        <c:set var="desc" value="${fn:replace(liite.applicationAttachment.description, newLineChar, newLineEscaped )}"/>;
+                        <c:set var="desc" value="${fn:replace(liite.applicationAttachment.description, newLineChar, newLineEscaped)}"/>;
                         var desc = "<c:out value="${desc}"/>",
-                        desc_fi = _.str.unescapeHTML(desc.split('fi=')[1].split(', sv=')[0]).replace(/<[^>]*>/g, '');
-                        attachment.description = desc_fi;
+                            lng = 'fi=';
+                        if (desc !== undefined && desc.length > 0 && (desc.match(lng) !== null) ) {
+                            attachment.description = _.str.unescapeHTML(desc.split(lng)[1].split(',')[0]).replace(/<[^>]*>/g, '');
+                        } else {
+                            attachment.description = "";
+                        }
                         kelpoisuus_liitteet.attachments.push(attachment);
                     }
                 </c:forEach>
             }
         </c:forEach>
+        kjal.LOGS('kelpoisuus ja liitteet objeckti: ', kelpoisuus_liitteet);
         hakutoiveet.push(kelpoisuus_liitteet);
         hakutoiveetCache.push(JSON.parse(JSON.stringify(kelpoisuus_liitteet)));
 
