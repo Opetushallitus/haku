@@ -15,6 +15,7 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParamete
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakukohdeService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ExprUtil;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import fi.vm.sade.tarjonta.service.resources.dto.HakukohdeDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,9 +44,6 @@ public final class ThemeQuestionConfigurator {
     }
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ThemeQuestionConfigurator.class);
-    private static final String PREFERENCE_PREFIX = "preference";
-    private static final String OPTION_POSTFIX = "-Koulutus-id";
-    private static final String GROUP_POSTFIX = "-Koulutus-id-ao-groups";
     private final ThemeQuestionDAO themeQuestionDAO;
     private final HakukohdeService hakukohdeService;
     private final FormParameters formParameters;
@@ -220,10 +218,10 @@ public final class ThemeQuestionConfigurator {
     private Expr generateApplicationOptionExpr(final String applicationOptionId, final String preferenceElementId) {
         final List<String> preferenceAoKeys = new ArrayList<String>();
         if (null != preferenceElementId) {
-            preferenceAoKeys.add(preferenceElementId + OPTION_POSTFIX);
+            preferenceAoKeys.add(preferenceElementId + OppijaConstants.OPTION_ID_POSTFIX);
         } else {
             for (int i = 1; i <= formParameters.getApplicationSystem().getMaxApplicationOptions(); i++) {
-                preferenceAoKeys.add(PREFERENCE_PREFIX + i + OPTION_POSTFIX);
+                preferenceAoKeys.add(OppijaConstants.PREFERENCE_PREFIX + i + OppijaConstants.OPTION_ID_POSTFIX);
             }
         }
         return ExprUtil.atLeastOneVariableEqualsToValue(applicationOptionId,
@@ -233,10 +231,10 @@ public final class ThemeQuestionConfigurator {
     private Expr generateOptionGroupExpr(final String groupId, final String preferenceElementId) {
         final List<String> preferenceAoKeys = new ArrayList<String>();
         if (null != preferenceElementId) {
-            preferenceAoKeys.add(preferenceElementId + GROUP_POSTFIX);
+            preferenceAoKeys.add(preferenceElementId + OppijaConstants.OPTION_GROUP_POSTFIX);
         } else {
             for (int i = 1; i <= formParameters.getApplicationSystem().getMaxApplicationOptions(); i++) {
-                preferenceAoKeys.add(PREFERENCE_PREFIX + i + GROUP_POSTFIX);
+                preferenceAoKeys.add(OppijaConstants.PREFERENCE_PREFIX + i + OppijaConstants.OPTION_GROUP_POSTFIX);
             }
         }
         return ExprUtil.atLeastOneVariableContainsValue(groupId,

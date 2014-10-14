@@ -34,8 +34,6 @@ public abstract class ThemeQuestion implements ConfiguredElement {
 
     public static String FIELD_ORDINAL = "ordinal";
 
-
-
     public enum State {
         ACTIVE, LOCKED, DELETED;
     }
