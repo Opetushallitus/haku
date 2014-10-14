@@ -451,7 +451,7 @@ var kjal = {
                 _.each(toive.attachments, function (liite) {
                         _.each(aoGroupIds, function (grId) {
                                 _.each(atcIds, function (atcId) {
-                                        this.LOGS('liiteen id: ', liite.id, ' - ', atcId);
+                                        kjal.LOGS('liiteen id: ', liite.id, ' - ', atcId);
                                         if ( liite.aoGroupId === grId && grId !== '' && liite.id === atcId){
                                             $('#select-tarkistettu-' + toiveNro + '-' + liiteInd).val(config.liiteTarkistettu);
                                             hakutoiveet[toiveInd].attachments[liiteInd].processingStatus = config.liiteTarkistettu;
