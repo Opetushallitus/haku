@@ -67,13 +67,6 @@ public class UIServiceImpl implements UIService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UIServiceImpl.class);
 
-    private static final String PREFERENCE_PREFIX = "preference";
-    private static final String OPTION_POSTFIX = "-Koulutus-id";
-    private static final String OPTION_GROUP_POSTFIX = "-Koulutus-id-ao-groups";
-    private static final String ATTACHMENT_GROUP_POSTFIX = "-Koulutus-id-attachmentgroups";
-    private static final String ATTACHMENTS_POSTFIX = "-Koulutus-id-attachments";
-    private static final String ATTACHMENT_GROUP_TYPE = "hakukohde_liiteosoite";
-
     private final ApplicationService applicationService;
     private final ApplicationSystemService applicationSystemService;
     private final String koulutusinformaatioBaseUrl;
@@ -154,13 +147,13 @@ public class UIServiceImpl implements UIService {
         Set<String> keys = new HashSet(answers.keySet());
         for (String key: keys){
             if (null != key
-                    && key.startsWith(PREFERENCE_PREFIX)
-                    && key.endsWith(OPTION_POSTFIX)
+                    && key.startsWith(OppijaConstants.PREFERENCE_PREFIX)
+                    && key.endsWith(OppijaConstants.OPTION_ID_POSTFIX)
                     && isNotEmpty(answers.get(key))){
-                String basekey = key.replace(OPTION_POSTFIX, "");
-                String aoGroups = answers.get(basekey + OPTION_GROUP_POSTFIX);
-                String attachmentGroups = answers.get(basekey + ATTACHMENT_GROUP_POSTFIX);
-                String attachments = answers.get(basekey + ATTACHMENTS_POSTFIX);
+                String basekey = key.replace(OppijaConstants.OPTION_ID_POSTFIX, "");
+                String aoGroups = answers.get(basekey + OppijaConstants.OPTION_GROUP_POSTFIX);
+                String attachmentGroups = answers.get(basekey + OppijaConstants.OPTION_ATTACHMENT_GROUP_POSTFIX);
+                String attachments = answers.get(basekey + OppijaConstants.OPTION_ATTACHMENTS_POSTFIX);
 
                 ApplicationOptionDTO applicationOption = null;
                 if (isEmpty(aoGroups)
@@ -172,12 +165,12 @@ public class UIServiceImpl implements UIService {
                         ArrayList<String> attachmentGroupList = new ArrayList<String>();
                         for (OrganizationGroupDTO organizationGroup : organizationGroups) {
                             aoGroupList.add(organizationGroup.getOid());
-                            if (organizationGroup.getGroupTypes().contains(ATTACHMENT_GROUP_TYPE)){
+                            if (organizationGroup.getGroupTypes().contains(OppijaConstants.OPTION_ATTACHMENT_GROUP_TYPE)){
                                 attachmentGroupList.add(organizationGroup.getOid());
                             }
                         }
-                        answers.put(basekey + OPTION_GROUP_POSTFIX, StringUtils.join(aoGroupList, ","));
-                        answers.put(basekey + ATTACHMENT_GROUP_POSTFIX, StringUtils.join(attachmentGroupList, ","));
+                        answers.put(basekey + OppijaConstants.OPTION_GROUP_POSTFIX, StringUtils.join(aoGroupList, ","));
+                        answers.put(basekey + OppijaConstants.OPTION_ATTACHMENT_GROUP_POSTFIX, StringUtils.join(attachmentGroupList, ","));
                     }
                 }
 
@@ -187,7 +180,7 @@ public class UIServiceImpl implements UIService {
                     }
                     List<ApplicationOptionAttachmentDTO> attachmentList = applicationOption.getAttachments();
                     if (attachmentList != null && !attachmentList.isEmpty()) {
-                        answers.put(basekey + ATTACHMENTS_POSTFIX, "true");
+                        answers.put(basekey + OppijaConstants.OPTION_ATTACHMENTS_POSTFIX, "true");
                     }
                 }
             }
