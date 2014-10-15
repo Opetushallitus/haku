@@ -16,7 +16,20 @@
 
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.henkilotiedot;
 
+import static fi.vm.sade.haku.oppija.lomake.domain.builder.DateQuestionBuilder.Date;
+import static fi.vm.sade.haku.oppija.lomake.domain.builder.DropdownSelectBuilder.Dropdown;
+import static fi.vm.sade.haku.oppija.lomake.domain.builder.PhaseBuilder.Phase;
+import static fi.vm.sade.haku.oppija.lomake.domain.builder.PostalCodeBuilder.PostalCode;
+import static fi.vm.sade.haku.oppija.lomake.domain.builder.RadioBuilder.Radio;
+import static fi.vm.sade.haku.oppija.lomake.domain.builder.RelatedQuestionRuleBuilder.Rule;
+import static fi.vm.sade.haku.oppija.lomake.domain.builder.TextQuestionBuilder.TextQuestion;
+import static fi.vm.sade.haku.oppija.lomake.domain.builder.ThemeBuilder.Theme;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.*;
+
+import java.util.List;
+
 import com.google.common.collect.ImmutableList;
+
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.builder.DropdownSelectBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.builder.ElementBuilder;
@@ -33,23 +46,17 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParamete
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 
-import java.util.List;
-
-import static fi.vm.sade.haku.oppija.lomake.domain.builder.DateQuestionBuilder.Date;
-import static fi.vm.sade.haku.oppija.lomake.domain.builder.DropdownSelectBuilder.Dropdown;
-import static fi.vm.sade.haku.oppija.lomake.domain.builder.PhaseBuilder.Phase;
-import static fi.vm.sade.haku.oppija.lomake.domain.builder.PostalCodeBuilder.PostalCode;
-import static fi.vm.sade.haku.oppija.lomake.domain.builder.RadioBuilder.Radio;
-import static fi.vm.sade.haku.oppija.lomake.domain.builder.RelatedQuestionRuleBuilder.Rule;
-import static fi.vm.sade.haku.oppija.lomake.domain.builder.TextQuestionBuilder.TextQuestion;
-import static fi.vm.sade.haku.oppija.lomake.domain.builder.ThemeBuilder.Theme;
-import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.*;
-
 public final class HenkilotiedotPhase {
+
+    public static final String PHASE_ID_HENKILOTIEDOT = "henkilotiedot";
+    public static final String QUESTION_ID_AIDINKIELI = "aidinkieli";
+    public static final String QUESTION_ID_LAHIOSOITE = "lahiosoite";
+    public static final String QUESTION_ID_POSTINUMERO = "Postinumero";
+    public static final String QUESTION_ID_PREFIX_PUHELINNUMERO = "matkapuhelinnumero";
+    public static final String QUESTION_ID_SAHKOPOSTI = "Sähköposti";
 
     public static final String PHONE_PATTERN = "^$|^([0-9\\(\\)\\/\\+ \\-]*)$";
     private static final String NOT_FI = "^((?!FIN)[A-Z]{3})$";
-    public static final String AIDINKIELI_ID = "aidinkieli";
     private static final String HETU_PATTERN = "^([0-9]{6}.[0-9]{3}([0-9]|[a-z]|[A-Z]))$";
     private static final String POSTINUMERO_PATTERN = "[0-9]{5}";
     private static final String DATE_PATTERN = "^(0[1-9]|[12][0-9]|3[01])\\.(0[1-9]|1[012])\\.(19|20)\\d\\d$";
@@ -61,7 +68,7 @@ public final class HenkilotiedotPhase {
     public static Element create(final FormParameters formParameters) {
 
         // Henkilötiedot
-        Element henkilotiedot = Phase("henkilotiedot").setEditAllowedByRoles("APP_HAKEMUS_READ_UPDATE", "APP_HAKEMUS_CRUD", "APP_HAKEMUS_OPO").formParams(formParameters).build();
+        Element henkilotiedot = Phase(PHASE_ID_HENKILOTIEDOT).setEditAllowedByRoles("APP_HAKEMUS_READ_UPDATE", "APP_HAKEMUS_CRUD", "APP_HAKEMUS_OPO").formParams(formParameters).build();
 
         Element henkilotiedotTeema = Theme("henkilotiedot.teema").previewable().formParams(formParameters).build();
 
@@ -151,10 +158,10 @@ public final class HenkilotiedotPhase {
 
 
         henkilotiedotTeema.addChild(
-                TextQuestion("Sähköposti").inline().size(50).pattern(EMAIL_REGEX).formParams(formParameters).build());
+                TextQuestion(QUESTION_ID_SAHKOPOSTI).inline().size(50).pattern(EMAIL_REGEX).formParams(formParameters).build());
 
         // Matkapuhelinnumerot
-        Element puhelinnumero1 = TextQuestion("matkapuhelinnumero1").labelKey("matkapuhelinnumero")
+        Element puhelinnumero1 = TextQuestion(QUESTION_ID_PREFIX_PUHELINNUMERO + 1).labelKey(QUESTION_ID_PREFIX_PUHELINNUMERO)
                 .pattern(PHONE_PATTERN)
                 .size(30)
                 .inline()
@@ -164,7 +171,7 @@ public final class HenkilotiedotPhase {
         Element prevNum = puhelinnumero1;
         AddElementRule prevRule = null;
         for (int i = 2; i <= 5; i++) {
-            Element extranumero = TextQuestion("matkapuhelinnumero" + i).labelKey("puhelinnumero")
+            Element extranumero = TextQuestion(QUESTION_ID_PREFIX_PUHELINNUMERO + i).labelKey("puhelinnumero")
                     .size(30)
                     .pattern(PHONE_PATTERN)
                     .inline()
@@ -192,10 +199,10 @@ public final class HenkilotiedotPhase {
                 .formParams(formParameters).build();
 
         Element asuinmaaFI = ElementUtil.createRegexpRule(asuinmaa, EMPTY_OR_FIN_PATTERN);
-        Element lahiosoite = TextQuestion("lahiosoite").inline().size(40).required().formParams(formParameters).build();
+        Element lahiosoite = TextQuestion(QUESTION_ID_LAHIOSOITE).inline().size(40).required().formParams(formParameters).build();
         asuinmaaFI.addChild(lahiosoite);
 
-        Element postinumero = PostalCode("Postinumero")
+        Element postinumero = PostalCode(QUESTION_ID_POSTINUMERO)
                 .addOptions(formParameters.getKoodistoService().getPostOffices())
                 .maxLength(5)
                 .size(5)
@@ -226,7 +233,7 @@ public final class HenkilotiedotPhase {
 
         henkilotiedotTeema.addChild(asuinmaa);
 
-        henkilotiedotTeema.addChild(Dropdown(AIDINKIELI_ID)
+        henkilotiedotTeema.addChild(Dropdown(QUESTION_ID_AIDINKIELI)
                 .defaultValueAttribute("fi_vm_sade_oppija_language")
                 .emptyOption()
                 .addOptions(formParameters.getKoodistoService().getLanguages())
