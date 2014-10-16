@@ -38,6 +38,7 @@ public class ApplicationSystem implements Serializable {
     private String id;
     private Form form;
     private I18nText name;
+    private String state;
     private List<ApplicationPeriod> applicationPeriods;
     private String applicationSystemType;
     private String hakutapa;
@@ -50,7 +51,7 @@ public class ApplicationSystem implements Serializable {
     private List<ApplicationOptionAttachmentRequest> applicationOptionAttachmentRequests;
     private int maxApplicationOptions;
 
-    public ApplicationSystem(final String id, final Form form, final I18nText name,
+    public ApplicationSystem(final String id, final Form form, final I18nText name, final String state,
                              final List<ApplicationPeriod> applicationPeriods,
                              final String applicationSystemType,
                              final String hakutapa,
@@ -66,6 +67,7 @@ public class ApplicationSystem implements Serializable {
         this.id = id;
         this.form = form;
         this.name = name;
+        this.state = state;
         this.applicationPeriods = applicationPeriods != null ?
                 ImmutableList.copyOf(applicationPeriods) : Lists.<ApplicationPeriod>newArrayList();
         this.applicationSystemType = applicationSystemType;
@@ -90,6 +92,11 @@ public class ApplicationSystem implements Serializable {
         return false;
     }
 
+    @Transient
+    public boolean isPublished() {
+        return "JULKAISTU".equals(state);
+    }
+
     public String getId() {
         return id;
     }
@@ -100,6 +107,10 @@ public class ApplicationSystem implements Serializable {
 
     public I18nText getName() {
         return name;
+    }
+
+    public String getState() {
+        return state;
     }
 
     public List<ApplicationPeriod> getApplicationPeriods() {
@@ -156,4 +167,5 @@ public class ApplicationSystem implements Serializable {
     public int getMaxApplicationOptions() {
         return maxApplicationOptions;
     }
+
 }

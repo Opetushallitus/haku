@@ -10,6 +10,7 @@ public class ApplicationSystemBuilder {
     private String id;
     private Form form;
     private I18nText name;
+    private String state;
     private List<ApplicationPeriod> applicationPeriods;
     private String applicationSystemType;
     private String hakutapa;
@@ -78,7 +79,7 @@ public class ApplicationSystemBuilder {
     }
 
     public ApplicationSystem get() {
-        return new ApplicationSystem(id, form, name, applicationPeriods,
+        return new ApplicationSystem(id, form, name, state, applicationPeriods,
                 applicationSystemType, hakutapa, hakukausiVuosi, hakukausiUri, kohdejoukkoUri, applicationCompleteElements,
                 additionalPrintElements, applicationOptionAttachmentRequests, maxApplicationOptions);
     }
@@ -95,6 +96,11 @@ public class ApplicationSystemBuilder {
 
     public ApplicationSystemBuilder addHakutapa(String hakutapa) {
         this.hakutapa = hakutapa;
+        return this;
+    }
+
+    public ApplicationSystemBuilder addState(String tila) {
+        this.state = tila;
         return this;
     }
 }
