@@ -58,6 +58,7 @@ public class FormGeneratorImpl implements FormGenerator {
                 .addId(as.getId())
                 .addForm(generateForm(formParameters))
                 .addName(as.getName())
+                .addState(as.getState())
                 .addApplicationPeriods(as.getApplicationPeriods())
                 .addApplicationSystemType(as.getApplicationSystemType())
                 .addHakutapa(as.getHakutapa())

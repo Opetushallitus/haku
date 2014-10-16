@@ -233,7 +233,7 @@ public class ApplicationServiceImplTest {
     public void testAuthorizationMetaEmptyApplication() {
         Application application = new Application();
         application.setApplicationSystemId("myAsId");
-        ApplicationSystem as = new ApplicationSystem("myAsId", null, new I18nText(new HashMap<String, String>()), null,
+        ApplicationSystem as = new ApplicationSystem("myAsId", null, new I18nText(new HashMap<String, String>()), "JULKAISTU", null,
                 null, null, null, null, OppijaConstants.KOHDEJOUKKO_PERVAKO, null, null, null, null);
         when(applicationSystemService.getApplicationSystem(eq("myAsId"))).thenReturn(as);
 
@@ -245,7 +245,7 @@ public class ApplicationServiceImplTest {
         AuthorizationMeta authorizationMeta = application.getAuthorizationMeta();
         assertTrue(authorizationMeta.isOpoAllowed());
 
-        as = new ApplicationSystem("myAsId", null, new I18nText(new HashMap<String, String>()), null,
+        as = new ApplicationSystem("myAsId", null, new I18nText(new HashMap<String, String>()), "JULKAISTU", null,
                 null, null, null, null, OppijaConstants.KOHDEJOUKKO_KORKEAKOULU, null, null, null, null);
         when(applicationSystemService.getApplicationSystem(eq("myAsId"))).thenReturn(as);
 
@@ -262,7 +262,7 @@ public class ApplicationServiceImplTest {
     public void testAuthorizationMetaSendingSchool() {
         Application application = new Application();
         application.setApplicationSystemId("myAsId");
-        ApplicationSystem as = new ApplicationSystem("myAsId", null, new I18nText(new HashMap<String, String>()), null,
+        ApplicationSystem as = new ApplicationSystem("myAsId", null, new I18nText(new HashMap<String, String>()), "JULKAISTU", null,
                 null, null, null, null, OppijaConstants.KOHDEJOUKKO_PERVAKO, null, null, null, null);
         Map<String, String> educationAnswers = new HashMap<String, String>();
         educationAnswers.put(OppijaConstants.ELEMENT_ID_SENDING_SCHOOL, "1.2.3.4");
@@ -294,7 +294,7 @@ public class ApplicationServiceImplTest {
     public void testAuthorizationMetaAoParents() throws IOException {
         Application application = new Application();
         application.setApplicationSystemId("myAsId");
-        ApplicationSystem as = new ApplicationSystem("myAsId", null, new I18nText(new HashMap<String, String>()), null,
+        ApplicationSystem as = new ApplicationSystem("myAsId", null, new I18nText(new HashMap<String, String>()), "JULKAISTU", null,
                 null, null, null, null, OppijaConstants.KOHDEJOUKKO_PERVAKO, null, null, null, null);
 
         Map<String, String> aoAnswers = new HashMap<String, String>();

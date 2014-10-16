@@ -108,6 +108,11 @@ public class ApplicationSystemServiceImpl implements ApplicationSystemService {
     }
 
     @Override
+    public List<ApplicationSystem> getPublishedApplicationSystems(String... includeFields) {
+        return applicationSystemRepository.findAllPublished(includeFields);
+    }
+
+    @Override
     public List<ApplicationSystem> getAllApplicationSystems(String... includeFields) {
         return applicationSystemRepository.findAll(includeFields);
     }

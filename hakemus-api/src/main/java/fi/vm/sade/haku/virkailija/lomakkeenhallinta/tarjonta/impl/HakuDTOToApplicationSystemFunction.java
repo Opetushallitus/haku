@@ -62,6 +62,7 @@ public class HakuDTOToApplicationSystemFunction implements Function<HakuDTO, App
         ApplicationSystem applicationSystem = new ApplicationSystemBuilder()
                 .addId(hakuDTO.getOid())
                 .addName(name)
+                .addState(hakuDTO.getTila())
                 .addApplicationPeriods(applicationPeriods)
                 .addApplicationSystemType(hakuDTO.getHakutyyppiUri().split("#")[0])
                 .addHakutapa(hakuDTO.getHakutapaUri().split("#")[0])
