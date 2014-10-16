@@ -50,12 +50,15 @@ public final class OppijaConstants {
     public static final String ELEMENT_ID_SECURITY_ORDER = "turvakielto";
     public static final String ELEMENT_ID_DATE_OF_BIRTH = "syntymaaika";
     public static final String ELEMENT_ID_EMAIL = "Sähköposti";
+    public static final String ELEMENT_ID_ADDRESS = "lahiosoite";
+    public static final String ELEMENT_ID_POSTAL_NUMBER = "Postinumero";
+    public static final String ELEMENT_ID_PREFIX_PHONENUMBER = "matkapuhelinnumero";
     public static final String ELEMENT_ID_SEX = "sukupuoli";
     public static final String ELEMENT_ID_SENDING_SCHOOL = "lahtokoulu";
     public static final String ELEMENT_ID_SENDING_CLASS = "lahtoluokka";
     public static final String ELEMENT_ID_CLASS_LEVEL = "luokkataso";
     public static final String ELEMENT_ID_HOME_CITY = "kotikunta";
-    public static final String ELEMENT_ID_LANGUAGE = "äidinkieli";
+    public static final String ELEMENT_ID_LANGUAGE = "aidinkieli";
     public static final String ELEMENT_ID_NATIONALITY = "kansalaisuus";
     public static final String ELEMENT_ID_FIRST_LANGUAGE = "äidinkieli";
     public static final String ELEMENT_ID_CONTACT_LANGUAGE = "asiointikieli";

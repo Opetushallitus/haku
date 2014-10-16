@@ -48,13 +48,6 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 
 public final class HenkilotiedotPhase {
 
-    public static final String PHASE_ID_HENKILOTIEDOT = "henkilotiedot";
-    public static final String QUESTION_ID_AIDINKIELI = "aidinkieli";
-    public static final String QUESTION_ID_LAHIOSOITE = "lahiosoite";
-    public static final String QUESTION_ID_POSTINUMERO = "Postinumero";
-    public static final String QUESTION_ID_PREFIX_PUHELINNUMERO = "matkapuhelinnumero";
-    public static final String QUESTION_ID_SAHKOPOSTI = "Sähköposti";
-
     public static final String PHONE_PATTERN = "^$|^([0-9\\(\\)\\/\\+ \\-]*)$";
     private static final String NOT_FI = "^((?!FIN)[A-Z]{3})$";
     private static final String HETU_PATTERN = "^([0-9]{6}.[0-9]{3}([0-9]|[a-z]|[A-Z]))$";
@@ -68,7 +61,7 @@ public final class HenkilotiedotPhase {
     public static Element create(final FormParameters formParameters) {
 
         // Henkilötiedot
-        Element henkilotiedot = Phase(PHASE_ID_HENKILOTIEDOT).setEditAllowedByRoles("APP_HAKEMUS_READ_UPDATE", "APP_HAKEMUS_CRUD", "APP_HAKEMUS_OPO").formParams(formParameters).build();
+        Element henkilotiedot = Phase(OppijaConstants.PHASE_PERSONAL).setEditAllowedByRoles("APP_HAKEMUS_READ_UPDATE", "APP_HAKEMUS_CRUD", "APP_HAKEMUS_OPO").formParams(formParameters).build();
 
         Element henkilotiedotTeema = Theme("henkilotiedot.teema").previewable().formParams(formParameters).build();
 
@@ -158,10 +151,10 @@ public final class HenkilotiedotPhase {
 
 
         henkilotiedotTeema.addChild(
-                TextQuestion(QUESTION_ID_SAHKOPOSTI).inline().size(50).pattern(EMAIL_REGEX).formParams(formParameters).build());
+                TextQuestion(OppijaConstants.ELEMENT_ID_EMAIL).inline().size(50).pattern(EMAIL_REGEX).formParams(formParameters).build());
 
         // Matkapuhelinnumerot
-        Element puhelinnumero1 = TextQuestion(QUESTION_ID_PREFIX_PUHELINNUMERO + 1).labelKey(QUESTION_ID_PREFIX_PUHELINNUMERO)
+        Element puhelinnumero1 = TextQuestion(OppijaConstants.ELEMENT_ID_PREFIX_PHONENUMBER + 1).labelKey("matkapuhelinnumero")
                 .pattern(PHONE_PATTERN)
                 .size(30)
                 .inline()
@@ -171,7 +164,7 @@ public final class HenkilotiedotPhase {
         Element prevNum = puhelinnumero1;
         AddElementRule prevRule = null;
         for (int i = 2; i <= 5; i++) {
-            Element extranumero = TextQuestion(QUESTION_ID_PREFIX_PUHELINNUMERO + i).labelKey("puhelinnumero")
+            Element extranumero = TextQuestion(OppijaConstants.ELEMENT_ID_PREFIX_PHONENUMBER + i).labelKey("puhelinnumero")
                     .size(30)
                     .pattern(PHONE_PATTERN)
                     .inline()
@@ -199,10 +192,10 @@ public final class HenkilotiedotPhase {
                 .formParams(formParameters).build();
 
         Element asuinmaaFI = ElementUtil.createRegexpRule(asuinmaa, EMPTY_OR_FIN_PATTERN);
-        Element lahiosoite = TextQuestion(QUESTION_ID_LAHIOSOITE).inline().size(40).required().formParams(formParameters).build();
+        Element lahiosoite = TextQuestion(OppijaConstants.ELEMENT_ID_ADDRESS).inline().size(40).required().formParams(formParameters).build();
         asuinmaaFI.addChild(lahiosoite);
 
-        Element postinumero = PostalCode(QUESTION_ID_POSTINUMERO)
+        Element postinumero = PostalCode(OppijaConstants.ELEMENT_ID_POSTAL_NUMBER)
                 .addOptions(formParameters.getKoodistoService().getPostOffices())
                 .maxLength(5)
                 .size(5)
@@ -233,7 +226,7 @@ public final class HenkilotiedotPhase {
 
         henkilotiedotTeema.addChild(asuinmaa);
 
-        henkilotiedotTeema.addChild(Dropdown(QUESTION_ID_AIDINKIELI)
+        henkilotiedotTeema.addChild(Dropdown(OppijaConstants.ELEMENT_ID_LANGUAGE)
                 .defaultValueAttribute("fi_vm_sade_oppija_language")
                 .emptyOption()
                 .addOptions(formParameters.getKoodistoService().getLanguages())
