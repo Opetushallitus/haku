@@ -135,6 +135,7 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
                 application = baseEducationService.addBaseEducation(application);
             }
             application = applicationService.updateAuthorizationMeta(application, false);
+            application = applicationService.ensureApplicationOptionGroupData(application);
             application = validateApplication(application);
             application.setModelVersion(Application.CURRENT_MODEL_VERSION);
             this.applicationDAO.update(new Application(application.getOid()), application);
@@ -219,6 +220,7 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
                         application = baseEducationService.addBaseEducation(application);
                     }
                     application = applicationService.updateAuthorizationMeta(application, false);
+                    application = applicationService.ensureApplicationOptionGroupData(application);
                     application = validateApplication(application);
                     application.setRedoPostProcess(PostProcessingState.DONE);
                     application.setModelVersion(Application.CURRENT_MODEL_VERSION);

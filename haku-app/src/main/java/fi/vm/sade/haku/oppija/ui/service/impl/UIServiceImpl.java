@@ -17,7 +17,6 @@
 package fi.vm.sade.haku.oppija.ui.service.impl;
 
 import com.google.common.base.Predicate;
-
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.haku.oppija.hakemus.domain.util.AttachmentUtil;
@@ -39,11 +38,6 @@ import fi.vm.sade.haku.virkailija.koulutusinformaatio.KoulutusinformaatioService
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.PDFService;
-import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionAttachmentDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.OrganizationGroupDTO;
-
-import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,11 +49,11 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.jstl.core.Config;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
-import java.util.*;
-
-import static org.apache.commons.lang.StringUtils.isEmpty;
-import static org.apache.commons.lang.StringUtils.isNotEmpty;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
 @Service
@@ -127,7 +121,7 @@ public class UIServiceImpl implements UIService {
         Application application = applicationService.getApplication(applicationSystemId);
         elementTree.checkPhaseTransfer(application.getPhaseId(), phaseId);
         ModelResponse modelResponse = new ModelResponse(activeApplicationSystem);
-        modelResponse.addAnswers(userSession.populateWithPrefillData(ensureGroupData(phaseId, application.getVastauksetMerged())));
+        modelResponse.addAnswers(userSession.populateWithPrefillData(ensureApplicationOptionGroupData(phaseId, application.getVastauksetMerged())));
         modelResponse.setElement(phase);
         modelResponse.setKoulutusinformaatioBaseUrl(koulutusinformaatioBaseUrl);
         modelResponse.addObjectToModel("higherEd",
@@ -135,63 +129,16 @@ public class UIServiceImpl implements UIService {
         return modelResponse;
     }
 
-    private Map<String, String> ensureGroupData(String phaseId, Map<String, String> answers) {
+    private Map<String, String> ensureApplicationOptionGroupData(String phaseId, Map<String, String> answers) {
         //TODO this is an evil kludge, pls kill it asap
         if (!OppijaConstants.PHASE_APPLICATION_OPTIONS.equals(phaseId))
             return answers;
-        return ensureGroupData(answers);
-    }
-
-    private Map<String, String> ensureGroupData(Map<String, String> answers) {
-        LOGGER.debug("Input map: " + answers.toString());
-        Set<String> keys = new HashSet(answers.keySet());
-        for (String key: keys){
-            if (null != key
-                    && key.startsWith(OppijaConstants.PREFERENCE_PREFIX)
-                    && key.endsWith(OppijaConstants.OPTION_ID_POSTFIX)
-                    && isNotEmpty(answers.get(key))){
-                String basekey = key.replace(OppijaConstants.OPTION_ID_POSTFIX, "");
-                String aoGroups = answers.get(basekey + OppijaConstants.OPTION_GROUP_POSTFIX);
-                String attachmentGroups = answers.get(basekey + OppijaConstants.OPTION_ATTACHMENT_GROUP_POSTFIX);
-                String attachments = answers.get(basekey + OppijaConstants.OPTION_ATTACHMENTS_POSTFIX);
-
-                ApplicationOptionDTO applicationOption = null;
-                if (isEmpty(aoGroups)
-                        || isEmpty(attachmentGroups)) {
-                    applicationOption = koulutusinformaatioService.getApplicationOption(answers.get(key));
-                    List<OrganizationGroupDTO> organizationGroups = applicationOption.getOrganizationGroups();
-                    if (null != organizationGroups && organizationGroups.size() > 0 ){
-                        ArrayList<String> aoGroupList = new ArrayList<String>(organizationGroups.size());
-                        ArrayList<String> attachmentGroupList = new ArrayList<String>();
-                        for (OrganizationGroupDTO organizationGroup : organizationGroups) {
-                            aoGroupList.add(organizationGroup.getOid());
-                            if (organizationGroup.getGroupTypes().contains(OppijaConstants.OPTION_ATTACHMENT_GROUP_TYPE)){
-                                attachmentGroupList.add(organizationGroup.getOid());
-                            }
-                        }
-                        answers.put(basekey + OppijaConstants.OPTION_GROUP_POSTFIX, StringUtils.join(aoGroupList, ","));
-                        answers.put(basekey + OppijaConstants.OPTION_ATTACHMENT_GROUP_POSTFIX, StringUtils.join(attachmentGroupList, ","));
-                    }
-                }
-
-                if (isEmpty(attachments)) {
-                    if (applicationOption == null) {
-                        applicationOption = koulutusinformaatioService.getApplicationOption(answers.get(key));
-                    }
-                    List<ApplicationOptionAttachmentDTO> attachmentList = applicationOption.getAttachments();
-                    if (attachmentList != null && !attachmentList.isEmpty()) {
-                        answers.put(basekey + OppijaConstants.OPTION_ATTACHMENTS_POSTFIX, "true");
-                    }
-                }
-            }
-        }
-        LOGGER.debug("output map: " + answers.toString());
-        return answers;
+        return applicationService.ensureApplicationOptionGroupData(answers);
     }
 
     @Override
     public void storePrefilledAnswers(String applicationSystemId, Map<String, String> answers) {
-        userSession.addPrefillData(applicationSystemId, ensureGroupData(answers));
+        userSession.addPrefillData(applicationSystemId, applicationService.ensureApplicationOptionGroupData(answers));
     }
 
     @Override
@@ -258,7 +205,7 @@ public class UIServiceImpl implements UIService {
 
     @Override
     public ModelResponse savePhase(String applicationSystemId, String phaseId, Map<String, String> originalAnswers) {
-        Map<String, String> ensuredAnswers = ensureGroupData(phaseId, originalAnswers);
+        Map<String, String> ensuredAnswers = ensureApplicationOptionGroupData(phaseId, originalAnswers);
         Form activeForm = applicationSystemService.getActiveApplicationSystem(applicationSystemId).getForm();
         ApplicationState applicationState = applicationService.saveApplicationPhase(
                 new ApplicationPhase(applicationSystemId, phaseId, ensuredAnswers));
