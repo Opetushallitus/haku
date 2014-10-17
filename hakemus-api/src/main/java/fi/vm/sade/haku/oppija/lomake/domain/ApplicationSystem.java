@@ -28,6 +28,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Document
@@ -45,6 +46,7 @@ public class ApplicationSystem implements Serializable {
     private Integer hakukausiVuosi;
     private String hakukausiUri;
     private String kohdejoukkoUri;
+    private Date lastGenerated;
 
     private List<Element> applicationCompleteElements;
     private List<Element> additionalInformationElements;
@@ -61,7 +63,8 @@ public class ApplicationSystem implements Serializable {
                              final List<Element> applicationCompleteElements,
                              final List<Element> additionalInformationElements,
                              final List<ApplicationOptionAttachmentRequest> applicationOptionAttachmentRequests,
-                             final Integer maxApplicationOptions) {
+                             final Integer maxApplicationOptions,
+                             final Date lastGenerated) {
         Preconditions.checkNotNull(id);
         Preconditions.checkNotNull(name);
         this.id = id;
@@ -80,6 +83,7 @@ public class ApplicationSystem implements Serializable {
         this.applicationOptionAttachmentRequests = applicationOptionAttachmentRequests;
         this.maxApplicationOptions = maxApplicationOptions != null ?
                 maxApplicationOptions.intValue() : 1;
+        this.lastGenerated = lastGenerated;
     }
 
     @Transient
@@ -147,6 +151,10 @@ public class ApplicationSystem implements Serializable {
 
     public List<ApplicationOptionAttachmentRequest> getApplicationOptionAttachmentRequests() {
         return applicationOptionAttachmentRequests;
+    }
+
+    public Date getLastGenerated() {
+        return lastGenerated;
     }
 
     public List<String> getAllowedLanguages() {

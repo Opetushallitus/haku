@@ -4,6 +4,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class ApplicationSystemBuilder {
@@ -21,6 +22,7 @@ public class ApplicationSystemBuilder {
     private List<ApplicationOptionAttachmentRequest> applicationOptionAttachmentRequests;
     private int maxApplicationOptions;
     private String kohdejoukkoUri;
+    private Date lastGenerated;
 
     public ApplicationSystemBuilder() {
         this.additionalPrintElements = new ArrayList<Element>();
@@ -81,7 +83,7 @@ public class ApplicationSystemBuilder {
     public ApplicationSystem get() {
         return new ApplicationSystem(id, form, name, state, applicationPeriods,
                 applicationSystemType, hakutapa, hakukausiVuosi, hakukausiUri, kohdejoukkoUri, applicationCompleteElements,
-                additionalPrintElements, applicationOptionAttachmentRequests, maxApplicationOptions);
+                additionalPrintElements, applicationOptionAttachmentRequests, maxApplicationOptions, lastGenerated);
     }
 
     public ApplicationSystemBuilder addMaxApplicationOptions(int maxHakukohdes) {
@@ -101,6 +103,11 @@ public class ApplicationSystemBuilder {
 
     public ApplicationSystemBuilder addState(String tila) {
         this.state = tila;
+        return this;
+    }
+
+    public ApplicationSystemBuilder addLastGenerated(Date lastGenerated) {
+        this.lastGenerated = lastGenerated;
         return this;
     }
 }
