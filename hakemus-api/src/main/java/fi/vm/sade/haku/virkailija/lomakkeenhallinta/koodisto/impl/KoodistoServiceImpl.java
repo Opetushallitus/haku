@@ -28,6 +28,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.domain.Code;
 import fi.vm.sade.koodisto.service.types.common.KoodiType;
+import fi.vm.sade.koodisto.service.types.common.TilaType;
 import fi.vm.sade.koodisto.util.KoodistoClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -238,7 +239,8 @@ public class KoodistoServiceImpl implements KoodistoService {
                 LOGGER.debug("Ylakoodeja: {}", ylakoodit.size());
                 int j = 0;
                 for (KoodiType ylakoodi : ylakoodit) {
-                    if (ylakoodi.getKoodisto().getKoodistoUri().equals("oppilaitosnumero")) {
+                    if (ylakoodi.getKoodisto().getKoodistoUri().equals("oppilaitosnumero")
+                            && !ylakoodi.getTila().equals(TilaType.PASSIIVINEN) ) {
                         if (j++ >= fetchLimit) {
                             break;
                         }
@@ -279,7 +281,8 @@ public class KoodistoServiceImpl implements KoodistoService {
                 LOGGER.debug("Ylakoodeja: {}", ylakoodit.size());
                 int j = 0;
                 for (KoodiType ylakoodi : ylakoodit) {
-                    if (ylakoodi.getKoodisto().getKoodistoUri().equals("oppilaitosnumero")) {
+                    if (ylakoodi.getKoodisto().getKoodistoUri().equals("oppilaitosnumero")
+                            && !ylakoodi.getTila().equals(TilaType.PASSIIVINEN)) {
                         if (j++ >= fetchLimit) {
                             break;
                         }
