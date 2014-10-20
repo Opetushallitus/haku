@@ -134,7 +134,7 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
                 application = baseEducationService.addSendingSchool(application);
                 application = baseEducationService.addBaseEducation(application);
             }
-            application = applicationService.updateAuthorizationMeta(application, false);
+            application = applicationService.updateAuthorizationMeta(application);
             application = applicationService.ensureApplicationOptionGroupData(application);
             application = validateApplication(application);
             application.setModelVersion(Application.CURRENT_MODEL_VERSION);
@@ -172,7 +172,7 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
                 try {
                     LOGGER.info("Start upgrading model version for application: " + application.getOid());
                     if (null == application.getAuthorizationMeta()) {
-                        application = applicationService.updateAuthorizationMeta(application, false);
+                        application = applicationService.updateAuthorizationMeta(application);
                     }
                     if (null == application.getPreferenceEligibilities() || 0 == application.getPreferenceEligibilities().size() ||
                         null == application.getPreferencesChecked() || 0 == application.getPreferencesChecked().size()){
@@ -219,7 +219,7 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
                         application = baseEducationService.addSendingSchool(application);
                         application = baseEducationService.addBaseEducation(application);
                     }
-                    application = applicationService.updateAuthorizationMeta(application, false);
+                    application = applicationService.updateAuthorizationMeta(application);
                     application = applicationService.ensureApplicationOptionGroupData(application);
                     application = validateApplication(application);
                     application.setRedoPostProcess(PostProcessingState.DONE);

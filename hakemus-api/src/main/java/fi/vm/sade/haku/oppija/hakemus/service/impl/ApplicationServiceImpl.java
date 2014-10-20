@@ -317,7 +317,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 
 
     @Override
-    public Application updateAuthorizationMeta(Application application, boolean save) throws IOException {
+    public Application updateAuthorizationMeta(Application application) throws IOException {
         boolean opoAllowed = resolveOpoAllowed(application);
         Map<String, Set<String>> aoOrganizations = new HashMap<String, Set<String>>();
         Set<String> allOrganizations = new HashSet<String>();
@@ -351,9 +351,6 @@ public class ApplicationServiceImpl implements ApplicationService {
         authorizationMeta.setAllAoOrganizations(allOrganizations);
         authorizationMeta.setSendingSchool(sendingSchool);
         application.setAuthorizationMeta(authorizationMeta);
-        if (save) {
-            this.update(new Application(application.getOid(), application.getVersion()), application);
-        }
         return application;
     }
 

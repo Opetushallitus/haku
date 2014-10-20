@@ -238,7 +238,7 @@ public class ApplicationServiceImplTest {
         when(applicationSystemService.getApplicationSystem(eq("myAsId"))).thenReturn(as);
 
         try {
-            application = service.updateAuthorizationMeta(application, false);
+            application = service.updateAuthorizationMeta(application);
         } catch (IOException e) {
             fail(e.getMessage());
         }
@@ -250,7 +250,7 @@ public class ApplicationServiceImplTest {
         when(applicationSystemService.getApplicationSystem(eq("myAsId"))).thenReturn(as);
 
         try {
-            application = service.updateAuthorizationMeta(application, false);
+            application = service.updateAuthorizationMeta(application);
         } catch (IOException e) {
             fail(e.getMessage());
         }
@@ -278,7 +278,7 @@ public class ApplicationServiceImplTest {
         }
         application.addVaiheenVastaukset(OppijaConstants.PHASE_EDUCATION, educationAnswers);
         try {
-            application = service.updateAuthorizationMeta(application, false);
+            application = service.updateAuthorizationMeta(application);
         } catch (IOException e) {
             fail(e.getMessage());
         }
@@ -317,7 +317,7 @@ public class ApplicationServiceImplTest {
         when(organizationService.findParentOids(eq("10.1.2"))).thenReturn(org1parents);
         when(organizationService.findParentOids(eq("10.3.4"))).thenReturn(org2parents);
 
-        application = service.updateAuthorizationMeta(application, false);
+        application = service.updateAuthorizationMeta(application);
         AuthorizationMeta authorizationMeta = application.getAuthorizationMeta();
         assertTrue(authorizationMeta.isOpoAllowed());
         assertEquals(5, authorizationMeta.getAllAoOrganizations().size());
