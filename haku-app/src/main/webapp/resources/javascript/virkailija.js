@@ -839,7 +839,7 @@ $(document).ready(function () {
                     searchTerms: req.term,
                     organisationOid : $('#lopoid').val()
                 }
-                var url = 'https://itest-virkailija.oph.ware.fi/tarjonta-service/rest/v1/hakukohde/search?' + objectToQueryParameterString(qParams);
+                var url = '/tarjonta-service/rest/v1/hakukohde/search?' + objectToQueryParameterString(qParams);
                 $.get(url, function (data) {
                     var applicationOptions = _.reduce(data.result.tulokset, function (aos, provider) {
                         var tulokset = provider.tulokset;
