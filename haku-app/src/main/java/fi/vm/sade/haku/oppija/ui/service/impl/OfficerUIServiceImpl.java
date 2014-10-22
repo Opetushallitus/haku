@@ -75,6 +75,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     private final KoodistoService koodistoService;
     private final HakuPermissionService hakuPermissionService;
     private final String koulutusinformaatioBaseUrl;
+    private final String tarjontaUrl;
     private final LoggerAspect loggerAspect;
     private final ElementTreeValidator elementTreeValidator;
     private final ApplicationSystemService applicationSystemService;
@@ -97,6 +98,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
                                 final HakuPermissionService hakuPermissionService,
                                 final LoggerAspect loggerAspect,
                                 @Value("${koulutusinformaatio.base.url}") final String koulutusinformaatioBaseUrl,
+                                @Value("${tarjonta.v1.hakukohde.resource.url}") final String tarjontaUrl,
                                 final ElementTreeValidator elementTreeValidator,
                                 final ApplicationSystemService applicationSystemService,
                                 final AuthenticationService authenticationService,
@@ -112,6 +114,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         this.hakuPermissionService = hakuPermissionService;
         this.loggerAspect = loggerAspect;
         this.koulutusinformaatioBaseUrl = koulutusinformaatioBaseUrl;
+        this.tarjontaUrl = tarjontaUrl;
         this.elementTreeValidator = elementTreeValidator;
         this.applicationSystemService = applicationSystemService;
         this.authenticationService = authenticationService;
@@ -454,6 +457,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         }
         modelResponse.addObjectToModel("defaultYear", String.valueOf(today.get(Calendar.YEAR)));
         modelResponse.addObjectToModel("defaultSemester", semester);
+        modelResponse.addObjectToModel("tarjontaUrl", tarjontaUrl);
         return modelResponse;
     }
 

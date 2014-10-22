@@ -53,7 +53,8 @@
         PASSIVE: '<fmt:message key="virkailija.hakemus.tila.peruttu"/>',
         INCOMPLETE: '<fmt:message key="virkailija.hakemus.tila.puutteellinen"/>',
         NOT_IDENTIFIED: '<fmt:message key="virkailija.hakemus.tila.yksiloimatta"/>',
-        lang: '${requestScope['fi_vm_sade_oppija_language']}'
+        lang: '${requestScope['fi_vm_sade_oppija_language']}',
+        tarjontaUrl: "${it.tarjontaUrl}"
     }
 </script>
 <div id="viewport">

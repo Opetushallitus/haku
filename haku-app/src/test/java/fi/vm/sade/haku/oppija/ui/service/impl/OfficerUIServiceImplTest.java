@@ -101,7 +101,7 @@ public class OfficerUIServiceImplTest {
                 formService,
                 koodistoService,
                 hakuPermissionService,
-                loggerAspect, "",
+                loggerAspect, "", "",
                 elementTreeValidator,
                 applicationSystemService,
                 authenticationService,
@@ -166,7 +166,7 @@ public class OfficerUIServiceImplTest {
                 .thenReturn(new SingletonMap("osaaminen", Boolean.TRUE));
 
         return new OfficerUIServiceImpl(applicationService, baseEducationService, formService,
-                null, hakuPermissionService,loggerAspect, "", elementTreeValidator,
+                null, hakuPermissionService,loggerAspect, "", "", elementTreeValidator,
                 null, null, null, null, userSession, null, null);
     }
 
@@ -248,7 +248,7 @@ public class OfficerUIServiceImplTest {
     @Test
     public void testGetOrganizationAndLearningInstitutions() throws Exception {
         ModelResponse modelResponse = officerUIService.getOrganizationAndLearningInstitutions();
-        assertEquals("Model size does not match", 9, modelResponse.getModel().size());
+        assertEquals("Model size does not match", 10, modelResponse.getModel().size());
     }
 
     @Test

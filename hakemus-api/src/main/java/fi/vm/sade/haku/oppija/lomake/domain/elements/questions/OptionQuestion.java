@@ -19,9 +19,6 @@ package fi.vm.sade.haku.oppija.lomake.domain.elements.questions;
 import com.google.common.collect.ImmutableList;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.Titled;
-import fi.vm.sade.haku.oppija.lomake.validation.Validator;
-import fi.vm.sade.haku.oppija.lomake.validation.validators.ValueSetValidator;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import org.springframework.data.annotation.Transient;
 
@@ -94,6 +91,16 @@ public abstract class OptionQuestion extends Question {
             listOfElements.addAll(option.getChildren());
         }
         return listOfElements;
+    }
+
+    @Transient
+    public String getExcelValue(String answer, String lang) {
+        Option option = getData().get(answer);
+        String value = null;
+        if (option != null) {
+            value = ElementUtil.getText(option, lang);
+        }
+        return value;
     }
 }
 

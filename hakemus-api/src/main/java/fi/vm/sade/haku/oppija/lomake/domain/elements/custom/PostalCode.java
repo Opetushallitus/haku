@@ -17,8 +17,10 @@
 package fi.vm.sade.haku.oppija.lomake.domain.elements.custom;
 
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.OptionQuestion;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 
 import java.util.List;
 
@@ -26,5 +28,24 @@ public class PostalCode extends OptionQuestion {
 
     public PostalCode(final String id, final I18nText i18nText, final List<Option> options) {
         super(id, i18nText, options);
+    }
+
+    @Override
+    public Element[] getExtraExcelColumns() {
+        Element[] elements = new Element[1];
+        elements[0] = new PostalOffice(this);
+        return elements;
+    }
+
+    @Override
+    public String getExcelValue(String answer, String lang) {
+        return answer;
+    }
+
+    class PostalOffice extends OptionQuestion {
+
+        public PostalOffice(PostalCode postalCode) {
+            super("Postitoimipaikka", ElementUtil.createI18NAsIs("Postitoimipaikka"), postalCode.getOptions());
+        }
     }
 }

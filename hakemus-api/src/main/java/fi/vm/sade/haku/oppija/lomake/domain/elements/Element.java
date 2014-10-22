@@ -167,4 +167,9 @@ public abstract class Element implements Serializable {
         }
         return builder.toString();
     }
+
+    @Transient
+    public Element[] getExtraExcelColumns() {
+        return null;
+    }
 }

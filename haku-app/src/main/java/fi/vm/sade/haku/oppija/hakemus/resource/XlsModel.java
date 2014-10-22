@@ -10,10 +10,7 @@ import com.google.common.collect.Lists;
 import fi.vm.sade.haku.oppija.common.koulutusinformaatio.ApplicationOption;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.CheckBox;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.OptionQuestion;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Question;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.*;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 
 import java.util.HashMap;
@@ -59,7 +56,7 @@ public class XlsModel {
 
             for (Element applicationQuestion : applicationQuestions) {
                 if (table.containsColumn(applicationQuestion) && isNotEmpty(answers.get(applicationQuestion.getId()))) {
-                    String questionAnswer = getQuestionAnswer(answers.get(applicationQuestion.getId()), applicationQuestion);
+                    String questionAnswer = getQuestionAnswer(answers, applicationQuestion.getId(), applicationQuestion);
                     table.put((String) application.get("oid"), applicationQuestion, questionAnswer);
                 }
             }
@@ -88,7 +85,7 @@ public class XlsModel {
     }
 
     private List<Element> findQuestionsWithAnswers(ApplicationSystem applicationSystem, final ApplicationOption ao, final String lang, Map<String, String> answers) {
-        return ElementUtil.filterElements(applicationSystem.getForm(), new Predicate<Element>() {
+        List<Element> elements = ElementUtil.filterElements(applicationSystem.getForm(), new Predicate<Element>() {
             @Override
             public boolean apply(Element element) {
                 if (Question.class.isAssignableFrom(element.getClass()) && ElementUtil.getText(element, lang) != null) {
@@ -109,6 +106,24 @@ public class XlsModel {
                 return false;
             }
         }, answers);
+        int elementsLength = elements.size();
+        for (int i = 0; i < elementsLength; i++) {
+            Element element = elements.get(i);
+            Element[] extraExcelColumns = element.getExtraExcelColumns();
+            if (extraExcelColumns != null && extraExcelColumns.length > 0) {
+                for (Element extraColumn : extraExcelColumns) {
+                    elements.add(i+1, extraColumn);
+                    elementsLength++;
+                    i++;
+                    if (answers != null) {
+                        String answer = answers.get(element.getId());
+                        answers.put(extraColumn.getId(), answer);
+                    }
+                }
+            }
+        }
+
+        return elements;
     }
 
     public boolean isQuestionAnswered(final Element key) {
@@ -125,15 +140,13 @@ public class XlsModel {
     }
 
 
-    private String getQuestionAnswer(String answer, Element question) {
-        String value = answer;
+    private String getQuestionAnswer(Map<String, String> answers, String answerKey, Element question) {
+        String value = answers.get(answerKey);
+
         if (question instanceof OptionQuestion) {
-            Option option = ((OptionQuestion) question).getData().get(answer);
-            if (option != null) {
-                value = ElementUtil.getText(option, lang);
-            }
+            value = ((OptionQuestion) question).getExcelValue(answers.get(answerKey), lang);
         } else if (question instanceof CheckBox) {
-            return Boolean.TRUE.toString().equals(answer) ? "X" : "";
+            return Boolean.TRUE.toString().equals(answers.get(answerKey)) ? "X" : "";
         }
         return value;
     }
