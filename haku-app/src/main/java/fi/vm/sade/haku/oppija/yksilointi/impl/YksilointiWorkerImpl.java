@@ -29,6 +29,7 @@ import fi.vm.sade.haku.oppija.lomake.service.FormService;
 import fi.vm.sade.haku.oppija.lomake.validation.ElementTreeValidator;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationInput;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationResult;
+import fi.vm.sade.haku.healthcheck.StatusRepository;
 import fi.vm.sade.haku.oppija.yksilointi.YksilointiWorker;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.apache.commons.mail.Email;
@@ -63,6 +64,7 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
     private final BaseEducationService baseEducationService;
     private final ApplicationDAO applicationDAO;
     private final ElementTreeValidator elementTreeValidator;
+    private final StatusRepository statusRepository;
     private FormService formService;
 
     private Map<String, Template> templateMap;
@@ -90,13 +92,14 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
     public YksilointiWorkerImpl(ApplicationService applicationService,
                                 ApplicationSystemService applicationSystemService,
                                 BaseEducationService baseEducationService, FormService formService, ApplicationDAO applicationDAO,
-      ElementTreeValidator elementTreeValidator) {
+                                ElementTreeValidator elementTreeValidator, StatusRepository statusRepository) {
         this.applicationService = applicationService;
         this.applicationSystemService = applicationSystemService;
         this.baseEducationService = baseEducationService;
         this.formService = formService;
         this.applicationDAO = applicationDAO;
         this.elementTreeValidator = elementTreeValidator;
+        this.statusRepository = statusRepository;
 
         VelocityEngine velocityEngine = new VelocityEngine();
         velocityEngine.setProperty(VelocityEngine.INPUT_ENCODING, "UTF-8");
@@ -122,7 +125,9 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
         Application application = getNextSubmittedApplication();
         int count = 0;
         while (application != null && ++count < maxBatchSize) {
+            writeStatus("postprocess", "start", application);
             processOneApplication(application, sendMail);
+            writeStatus("postprocess", "done", application);
             application = getNextSubmittedApplication();
         }
     }
@@ -155,10 +160,10 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
     @Override
     public void processIdentification() {
         Application application = getNextWithoutStudentOid();
-        LOGGER.debug("Starting processIdentification, application: {} {}",
-                application != null ? application.getOid() : "null-application", System.currentTimeMillis());
         if (application != null) {
+            writeStatus("identification", "start", application);
             applicationService.checkStudentOid(application);
+            writeStatus("identification", "done", application);
         }
     }
 
@@ -198,20 +203,19 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
 
     @Override
     public void redoPostprocess(boolean sendMail) {
-        LOGGER.debug("Beginning redoprocess");
         Application application = getNextRedo();
         int count = 0;
         while (application != null && ++count < maxBatchSize) {
+            writeStatus("redo postprocess", "start", application);
             reprocessOneApplication(application, sendMail);
+            writeStatus("redo postprocess", "done", application);
             application = getNextRedo();
         }
     }
 
     private void reprocessOneApplication(Application application, final boolean sendMail){
         try {
-            LOGGER.debug("Reprocessing application " + application.getOid());
             PostProcessingState redo = application.getRedoPostProcess();
-            LOGGER.debug("Reprocessing application, redo: " + redo);
             if (redo != null) {
                 if (PostProcessingState.FULL.equals(redo) || PostProcessingState.NOMAIL.equals(redo)) {
                     application = applicationService.addPersonOid(application);
@@ -225,7 +229,6 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
                     application.setRedoPostProcess(PostProcessingState.DONE);
                     application.setModelVersion(Application.CURRENT_MODEL_VERSION);
                     this.applicationDAO.update(new Application(application.getOid()), application);
-                    LOGGER.debug("Reprocessing " + application.getOid() + " done");
                 }
                 if (sendMail && PostProcessingState.FULL.equals(redo)) {
                     try {
@@ -239,6 +242,13 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
             LOGGER.error("redoPostProcess failed for application " + application.getOid(), e);
             setProcessingStateToFailed(application.getOid(), e.getMessage());
         }
+    }
+
+    private void writeStatus(String operation, String state, Application application) {
+        Map<String, String> statusData = new HashMap<String, String>();
+        statusData.put("applicationOid", application != null ? application.getOid() : "(null)");
+        statusData.put("state", state);
+        statusRepository.write(operation, statusData);
     }
 
     private Application validateApplication(Application application) {
