@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.apache.commons.lang.StringUtils.isNotBlank;
 import static org.apache.commons.lang.StringUtils.isNotEmpty;
 
 public class XlsModel {
@@ -122,7 +123,20 @@ public class XlsModel {
                 }
             }
         }
-
+        Element hakukohteenPrioriteetti = new TextQuestion("hakukohteenPrioriteetti", ElementUtil.createI18NAsIs("Hakukohteen prioriteetti"));
+        elements.add(hakukohteenPrioriteetti);
+        if (answers != null) {
+            for (Map.Entry<String, String> entry : answers.entrySet()) {
+                String key = entry.getKey();
+                String value = entry.getValue();
+                if (key.startsWith("preference") && key.endsWith("-Koulutus-id")
+                        && isNotBlank(value) && value.equals(ao.getId())) {
+                    String index = key.replace("preference", "").replace("-Koulutus-id", "");
+                    answers.put(hakukohteenPrioriteetti.getId(), index);
+                    break;
+                }
+            }
+        }
         return elements;
     }
 
