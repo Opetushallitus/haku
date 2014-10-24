@@ -45,7 +45,7 @@ public class PostalCode extends OptionQuestion {
     class PostalOffice extends OptionQuestion {
 
         public PostalOffice(PostalCode postalCode) {
-            super("Postitoimipaikka", ElementUtil.createI18NAsIs("Postitoimipaikka"), postalCode.getOptions());
+            super("Postitoimipaikka", ElementUtil.createI18NText("postitoimipaikka") , postalCode.getOptions());
         }
     }
 }

@@ -24,6 +24,7 @@ public abstract class Titled extends Element {
     private static final long serialVersionUID = 761433927081818640L;
 
     private I18nText i18nText;
+    private I18nText excelColumnLabel;
     private I18nText verboseHelp;
     private I18nText placeholder;
 
@@ -50,5 +51,15 @@ public abstract class Titled extends Element {
 
     public void setPlaceholder(I18nText placeholder) {
         this.placeholder = placeholder;
+    }
+
+    public I18nText getExcelColumnLabel() {
+        return excelColumnLabel != null
+                ? excelColumnLabel
+                : i18nText;
+    }
+
+    public void setExcelColumnLabel(I18nText excelColumnLabel) {
+        this.excelColumnLabel = excelColumnLabel;
     }
 }

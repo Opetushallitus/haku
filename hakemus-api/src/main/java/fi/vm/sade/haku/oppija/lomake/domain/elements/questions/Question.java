@@ -2,6 +2,7 @@ package fi.vm.sade.haku.oppija.lomake.domain.elements.questions;
 
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Titled;
+import org.springframework.data.annotation.Transient;
 
 public abstract class Question extends Titled {
     private String applicationOptionId;
@@ -25,5 +26,10 @@ public abstract class Question extends Titled {
 
     public void setApplicationOptionGroupId(String applicationOptionGroupId) {
         this.applicationOptionGroupId = applicationOptionGroupId;
+    }
+
+    @Transient
+    public String getExcelValue(String answer, String lang) {
+        return answer;
     }
 }
