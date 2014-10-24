@@ -9,7 +9,9 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import fi.vm.sade.haku.oppija.common.koulutusinformaatio.ApplicationOption;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
+import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.Titled;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.*;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 
@@ -123,7 +125,7 @@ public class XlsModel {
                 }
             }
         }
-        Element hakukohteenPrioriteetti = new TextQuestion("hakukohteenPrioriteetti", ElementUtil.createI18NAsIs("Hakukohteen prioriteetti"));
+        Element hakukohteenPrioriteetti = new TextQuestion("hakukohteenPrioriteetti", ElementUtil.createI18NText("Hakukohteen prioriteetti"));
         elements.add(hakukohteenPrioriteetti);
         if (answers != null) {
             for (Map.Entry<String, String> entry : answers.entrySet()) {
@@ -157,8 +159,8 @@ public class XlsModel {
     private String getQuestionAnswer(Map<String, String> answers, String answerKey, Element question) {
         String value = answers.get(answerKey);
 
-        if (question instanceof OptionQuestion) {
-            value = ((OptionQuestion) question).getExcelValue(answers.get(answerKey), lang);
+        if (Question.class.isAssignableFrom(question.getClass())) {
+            value = ((Question) question).getExcelValue(answers.get(answerKey), lang);
         } else if (question instanceof CheckBox) {
             return Boolean.TRUE.toString().equals(answers.get(answerKey)) ? "X" : "";
         }
@@ -176,8 +178,15 @@ public class XlsModel {
         return table.rowKeyList();
     }
 
-    public String getText(Element element) {
-        return ElementUtil.getText(element, lang);
+    public String getText(final Element element) {
+        if (element instanceof Titled) {
+            I18nText i18nText = ((Titled)element).getExcelColumnLabel();
+            if (i18nText != null) {
+                return i18nText.getTranslations().get(lang);
+            }
+        }
+
+        return null;
     }
 
     public String getHakukausi(List<Option> options) {

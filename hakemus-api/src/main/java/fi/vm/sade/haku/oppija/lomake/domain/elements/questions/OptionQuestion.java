@@ -93,7 +93,7 @@ public abstract class OptionQuestion extends Question {
         return listOfElements;
     }
 
-    @Transient
+    @Override
     public String getExcelValue(String answer, String lang) {
         Option option = getData().get(answer);
         String value = null;
