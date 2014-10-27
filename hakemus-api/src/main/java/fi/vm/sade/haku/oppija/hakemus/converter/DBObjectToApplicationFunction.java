@@ -63,6 +63,15 @@ public class DBObjectToApplicationFunction implements Function<DBObject, Applica
                 }
             }
         }
-        return objectMapper.convertValue(dbObject, Application.class);
+        try {
+            return objectMapper.convertValue(dbObject, Application.class);
+        } catch (RuntimeException e) {
+            String oid = "(null)";
+            if (dbObject.containsField("oid")) {
+                oid = dbObject.get("oid").toString();
+            }
+            log.error("Failed to convert application. Oid: {}", oid);
+            throw e;
+        }
     }
 }
