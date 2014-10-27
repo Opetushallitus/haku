@@ -185,17 +185,17 @@ public final class HenkilotiedotPhase {
 
 
         // Asuinmaa, osoite
-        Element asuinmaa = Dropdown("asuinmaa")
-                .defaultOption("FIN")
+        Element asuinmaa = Dropdown(OppijaConstants.ELEMENT_ID_COUNTRY_OF_RESIDENCY)
+                .defaultOption(OppijaConstants.ELEMENT_VALUE_COUNTRY_OF_RESIDENCY_FIN)
                 .addOptions(formParameters.getKoodistoService().getCountries())
                 .requiredInline()
                 .formParams(formParameters).build();
 
         Element asuinmaaFI = ElementUtil.createRegexpRule(asuinmaa, EMPTY_OR_FIN_PATTERN);
-        Element lahiosoite = TextQuestion(OppijaConstants.ELEMENT_ID_ADDRESS).inline().size(40).required().formParams(formParameters).build();
+        Element lahiosoite = TextQuestion(OppijaConstants.ELEMENT_ID_FIN_ADDRESS).inline().size(40).required().formParams(formParameters).build();
         asuinmaaFI.addChild(lahiosoite);
 
-        Element postinumero = PostalCode(OppijaConstants.ELEMENT_ID_POSTAL_NUMBER)
+        Element postinumero = PostalCode(OppijaConstants.ELEMENT_ID_FIN_POSTAL_NUMBER)
                 .addOptions(formParameters.getKoodistoService().getPostOffices())
                 .maxLength(5)
                 .size(5)
