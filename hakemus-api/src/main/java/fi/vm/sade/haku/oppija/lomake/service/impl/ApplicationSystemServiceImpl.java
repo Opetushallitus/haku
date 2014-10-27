@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
@@ -26,15 +27,18 @@ public class ApplicationSystemServiceImpl implements ApplicationSystemService {
     private final ApplicationSystemRepository applicationSystemRepository;
     private final LoadingCache<String, ApplicationSystem> cache;
     private final Boolean cacheApplicationSystems;
+    private final Integer cacheRefreshTimer;
 
     @Autowired
     public ApplicationSystemServiceImpl(final ApplicationSystemRepository applicationSystemRepository,
-                                        @Value("${application.system.cache:true}") final boolean cacheApplicationSystems) {
+                                        @Value("${application.system.cache:true}") final boolean cacheApplicationSystems,
+                                        @Value("${application.system.cache.refresh:6}") final Integer cacheRefreshTimer) {
         this.applicationSystemRepository = applicationSystemRepository;
         this.cacheApplicationSystems = cacheApplicationSystems;
+        this.cacheRefreshTimer = cacheRefreshTimer;
         this.cache = CacheBuilder.newBuilder()
                 .maximumWeight(10)
-                .refreshAfterWrite(1, TimeUnit.HOURS)
+                .refreshAfterWrite(cacheRefreshTimer, TimeUnit.MINUTES)
                 .weigher(new Weigher<String, ApplicationSystem>() {
                     @Override
                     public int weigh(String key, ApplicationSystem value) {
@@ -51,15 +55,28 @@ public class ApplicationSystemServiceImpl implements ApplicationSystemService {
                     }
 
                     @Override
-                    public ListenableFuture<ApplicationSystem> reload(final String key, ApplicationSystem oldValue) throws Exception {
+                    public ListenableFuture<ApplicationSystem> reload(final String key, final ApplicationSystem oldValue) throws Exception {
                         return ListenableFutureTask.create(new Callable<ApplicationSystem>() {
                             @Override
                             public ApplicationSystem call() throws Exception {
-                                return findById(key);
+                                Date dbLastGenerated = getLastGeneratedForId(key);
+                                if (null != oldValue.getLastGenerated() && null != dbLastGenerated && oldValue.getLastGenerated().equals(dbLastGenerated))
+                                    return oldValue;
+                                else
+                                    return findById(key);
                             }
                         });
                     }
                 });
+    }
+
+    private Date getLastGeneratedForId(String key) {
+       final ApplicationSystem applicationSystem = applicationSystemRepository.findById(key, "lastGenerated");
+        if (applicationSystem != null) {
+            return applicationSystem.getLastGenerated();
+        } else {
+            throw new ApplicationSystemNotFound(key);
+        }
     }
 
     private ApplicationSystem findById(String key) {
