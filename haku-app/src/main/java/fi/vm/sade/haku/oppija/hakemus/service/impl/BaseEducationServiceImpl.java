@@ -310,13 +310,24 @@ public class BaseEducationServiceImpl implements BaseEducationService {
                 application.addOverriddenAnswer(key, proficiencyPhaseAnswers.get(key));
                 toAdd.put(key, "Ei arvosanaa");
             }
-            if (suoritus.getKomo().equals(perusopetusKomoOid) && !key.endsWith("OPPIAINE") && !key.endsWith("_VAL1")
-                    && !key.endsWith("VAL2")) {
-                if (!proficiencyPhaseAnswers.containsKey(key + "_VAL1")) {
-                    toAdd.put(key + "_VAL1", "Ei arvosanaa");
+            if (suoritus.getKomo().equals(perusopetusKomoOid) && !key.endsWith("OPPIAINE")) {
+
+                if (!key.endsWith("_VAL1") && !key.endsWith("VAL2")) {
+                    if (!proficiencyPhaseAnswers.containsKey(key + "_VAL1")) {
+                        toAdd.put(key + "_VAL1", "Ei arvosanaa");
+                    }
+                    if (!proficiencyPhaseAnswers.containsKey(key + "_VAL2")) {
+                        toAdd.put(key + "_VAL2", "Ei arvosanaa");
+                    }
                 }
-                if (!proficiencyPhaseAnswers.containsKey(key + "_VAL2")) {
-                    toAdd.put(key + "_VAL2", "Ei arvosanaa");
+                String baseKey = key.substring(0, key.length() - "_VAL1".length());
+                if (key.endsWith("_VAL1")) {
+                    if (!proficiencyPhaseAnswers.containsKey(baseKey)) {
+                        toAdd.put(baseKey, "Ei arvosanaa");
+                    }
+                    if (!proficiencyPhaseAnswers.containsKey(baseKey+"_VAL2")) {
+                        toAdd.put(baseKey+"_VAL2", "Ei arvosanaa");
+                    }
                 }
             }
         }

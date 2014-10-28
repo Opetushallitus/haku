@@ -31,6 +31,10 @@ public interface ApplicationService {
 
     Application getApplication(final String applicationSystemId);
 
+    Map<String, String> ensureApplicationOptionGroupData(Map<String, String> answers);
+
+    Application ensureApplicationOptionGroupData(Application application);
+
     Application getApplication(final Application queryApplication);
 
     Application getApplicationByOid(final String oid);
@@ -108,7 +112,7 @@ public interface ApplicationService {
 
     List<Map<String, Object>> findFullApplications(final ApplicationQueryParameters applicationQueryParameters);
 
-    Application updateAuthorizationMeta(Application application, boolean save) throws IOException;
+    Application updateAuthorizationMeta(Application application) throws IOException;
 
     Application updatePreferenceBasedData(final Application application);
 }

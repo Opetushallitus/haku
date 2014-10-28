@@ -9,17 +9,21 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import fi.vm.sade.haku.oppija.common.koulutusinformaatio.ApplicationOption;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
+import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.Titled;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.CheckBox;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.OptionQuestion;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Question;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.TextQuestion;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static fi.vm.sade.haku.oppija.lomake.domain.builder.TextQuestionBuilder.TextQuestion;
+import static org.apache.commons.lang.StringUtils.isNotBlank;
 import static org.apache.commons.lang.StringUtils.isNotEmpty;
 
 public class XlsModel {
@@ -59,7 +63,7 @@ public class XlsModel {
 
             for (Element applicationQuestion : applicationQuestions) {
                 if (table.containsColumn(applicationQuestion) && isNotEmpty(answers.get(applicationQuestion.getId()))) {
-                    String questionAnswer = getQuestionAnswer(answers.get(applicationQuestion.getId()), applicationQuestion);
+                    String questionAnswer = getQuestionAnswer(answers, applicationQuestion.getId(), applicationQuestion);
                     table.put((String) application.get("oid"), applicationQuestion, questionAnswer);
                 }
             }
@@ -80,6 +84,7 @@ public class XlsModel {
         for (Map.Entry<String, Object> vastauksetVaiheittain : vastaukset.entrySet()) {
             allAnswers.putAll((Map<String, String>) vastauksetVaiheittain.getValue());
         }
+        allAnswers.put("oid", (String) application.get("oid"));
         return allAnswers;
     }
 
@@ -88,7 +93,7 @@ public class XlsModel {
     }
 
     private List<Element> findQuestionsWithAnswers(ApplicationSystem applicationSystem, final ApplicationOption ao, final String lang, Map<String, String> answers) {
-        return ElementUtil.filterElements(applicationSystem.getForm(), new Predicate<Element>() {
+        List<Element> elements = ElementUtil.filterElements(applicationSystem.getForm(), new Predicate<Element>() {
             @Override
             public boolean apply(Element element) {
                 if (Question.class.isAssignableFrom(element.getClass()) && ElementUtil.getText(element, lang) != null) {
@@ -109,6 +114,41 @@ public class XlsModel {
                 return false;
             }
         }, answers);
+        Element applicationOid = TextQuestion("oid")
+                .i18nText(ElementUtil.createI18NText("hakemusnumero"))
+                .build();
+        elements.add(0, applicationOid);
+        int elementsLength = elements.size();
+        for (int i = 0; i < elementsLength; i++) {
+            Element element = elements.get(i);
+            Element[] extraExcelColumns = element.getExtraExcelColumns();
+            if (extraExcelColumns != null && extraExcelColumns.length > 0) {
+                for (Element extraColumn : extraExcelColumns) {
+                    elements.add(i+1, extraColumn);
+                    elementsLength++;
+                    i++;
+                    if (answers != null) {
+                        String answer = answers.get(element.getId());
+                        answers.put(extraColumn.getId(), answer);
+                    }
+                }
+            }
+        }
+        Element hakukohteenPrioriteetti = new TextQuestion("hakukohteenPrioriteetti", ElementUtil.createI18NText("Hakukohteen.prioriteetti"));
+        elements.add(hakukohteenPrioriteetti);
+        if (answers != null) {
+            for (Map.Entry<String, String> entry : answers.entrySet()) {
+                String key = entry.getKey();
+                String value = entry.getValue();
+                if (key.startsWith("preference") && key.endsWith("-Koulutus-id")
+                        && isNotBlank(value) && value.equals(ao.getId())) {
+                    String index = key.replace("preference", "").replace("-Koulutus-id", "");
+                    answers.put(hakukohteenPrioriteetti.getId(), index);
+                    break;
+                }
+            }
+        }
+        return elements;
     }
 
     public boolean isQuestionAnswered(final Element key) {
@@ -125,15 +165,13 @@ public class XlsModel {
     }
 
 
-    private String getQuestionAnswer(String answer, Element question) {
-        String value = answer;
-        if (question instanceof OptionQuestion) {
-            Option option = ((OptionQuestion) question).getData().get(answer);
-            if (option != null) {
-                value = ElementUtil.getText(option, lang);
-            }
+    private String getQuestionAnswer(Map<String, String> answers, String answerKey, Element question) {
+        String value = answers.get(answerKey);
+
+        if (Question.class.isAssignableFrom(question.getClass())) {
+            value = ((Question) question).getExcelValue(answers.get(answerKey), lang);
         } else if (question instanceof CheckBox) {
-            return Boolean.TRUE.toString().equals(answer) ? "X" : "";
+            return Boolean.TRUE.toString().equals(answers.get(answerKey)) ? "X" : "";
         }
         return value;
     }
@@ -149,8 +187,15 @@ public class XlsModel {
         return table.rowKeyList();
     }
 
-    public String getText(Element element) {
-        return ElementUtil.getText(element, lang);
+    public String getText(final Element element) {
+        if (element instanceof Titled) {
+            I18nText i18nText = ((Titled)element).getExcelColumnLabel();
+            if (i18nText != null) {
+                return i18nText.getTranslations().get(lang);
+            }
+        }
+
+        return null;
     }
 
     public String getHakukausi(List<Option> options) {

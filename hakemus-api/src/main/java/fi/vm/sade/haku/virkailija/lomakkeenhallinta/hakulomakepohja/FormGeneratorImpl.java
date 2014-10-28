@@ -17,6 +17,8 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakukohdeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+
 @Service
 public class FormGeneratorImpl implements FormGenerator {
     private final KoodistoService koodistoService;
@@ -58,6 +60,7 @@ public class FormGeneratorImpl implements FormGenerator {
                 .addId(as.getId())
                 .addForm(generateForm(formParameters))
                 .addName(as.getName())
+                .addState(as.getState())
                 .addApplicationPeriods(as.getApplicationPeriods())
                 .addApplicationSystemType(as.getApplicationSystemType())
                 .addHakutapa(as.getHakutapa())
@@ -68,6 +71,7 @@ public class FormGeneratorImpl implements FormGenerator {
                 .addMaxApplicationOptions(as.getMaxApplicationOptions())
                 .addAdditionalInformationElements(ValmisPhase.createAdditionalInformationElements(formParameters))
                 .addApplicationOptionAttachmentRequests(formParameters.getThemeQuestionConfigurator().findAndConfigureAttachmentRequests())
+                .addLastGenerated(new Date())
                 .get();
     }
 

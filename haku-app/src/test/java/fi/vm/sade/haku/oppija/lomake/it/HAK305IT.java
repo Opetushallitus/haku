@@ -60,7 +60,11 @@ public class HAK305IT extends DummyModelBaseItTest {
         setPerusopetuksenKieli(NATIVE_LANGUAGE_SV);
         nextPhase(OppijaConstants.PHASE_APPLICATION_OPTIONS);
         nextPhase(OppijaConstants.PHASE_GRADES); // Osaaminen
-
+        select();
+        selectByValue("PK_AI_OPPIAINE", "SV");
+        selectByValue("PK_A2_OPPIAINE", "SE");
+        findByXPath("//td[@id='PK_B1_column1']//a").click();
+        screenshot("HAK305");
         clickByNameAndValue("yleinen_kielitutkinto_fi", "true");
         clickByNameAndValue("valtionhallinnon_kielitutkinto_fi", "true");
         clickByNameAndValue("peruskoulun_paattotodistus_vahintaan_seitseman_fi", "true");

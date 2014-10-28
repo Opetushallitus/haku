@@ -28,6 +28,7 @@ public class KoulutusinformaatioServiceMockImpl implements
         addressDTO.setStreetAddress("Katukuja 1");
         provider.setPostalAddress(addressDTO);
         applicationOption.setProvider(provider);
+        applicationOption.setAttachments(new ArrayList());
 		return applicationOption;
 	}
 

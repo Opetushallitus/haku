@@ -13,6 +13,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import static org.apache.commons.lang3.StringUtils.isEmpty;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 public class PersonJsonAdapter implements JsonSerializer<Person>, JsonDeserializer<Person> {
 
@@ -100,9 +101,9 @@ public class PersonJsonAdapter implements JsonSerializer<Person>, JsonDeserializ
 
         log.debug("Deserialized basic info");
         String sex = getJsonString(personJson, "sukupuoli");
-        if (sex != null && (SukupuoliType.MIES.value().equals(sex) || OppijaConstants.SUKUPUOLI_MIES.equals(sex))) {
+        if (isNotBlank(sex) && (SukupuoliType.MIES.value().equals(sex) || OppijaConstants.SUKUPUOLI_MIES.equals(sex))) {
             personBuilder.setSex(OppijaConstants.SUKUPUOLI_MIES);
-        } else if (sex != null && (SukupuoliType.NAINEN.value().equals(sex) || OppijaConstants.SUKUPUOLI_NAINEN.equals(sex))) {
+        } else if (isNotBlank(sex) && (SukupuoliType.NAINEN.value().equals(sex) || OppijaConstants.SUKUPUOLI_NAINEN.equals(sex))) {
             personBuilder.setSex(OppijaConstants.SUKUPUOLI_NAINEN);
         }
 
@@ -112,7 +113,7 @@ public class PersonJsonAdapter implements JsonSerializer<Person>, JsonDeserializ
         }
 
         String dobStr = getJsonString(personJson, "syntymaaika");
-        if (dobStr != null) {
+        if (isNotBlank(dobStr)) {
             try {
                 Date dob = AUTH_DATE_FMT.parse(dobStr);
                 personBuilder.setDateOfBirth(HAKU_DATE_FMT.format(dob));

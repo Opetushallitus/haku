@@ -233,24 +233,24 @@ public class ApplicationServiceImplTest {
     public void testAuthorizationMetaEmptyApplication() {
         Application application = new Application();
         application.setApplicationSystemId("myAsId");
-        ApplicationSystem as = new ApplicationSystem("myAsId", null, new I18nText(new HashMap<String, String>()), null,
-                null, null, null, null, OppijaConstants.KOHDEJOUKKO_PERVAKO, null, null, null, null);
+        ApplicationSystem as = new ApplicationSystem("myAsId", null, new I18nText(new HashMap<String, String>()), "JULKAISTU", null,
+                null, null, null, null, OppijaConstants.KOHDEJOUKKO_PERVAKO, null, null, null, null, null);
         when(applicationSystemService.getApplicationSystem(eq("myAsId"))).thenReturn(as);
 
         try {
-            application = service.updateAuthorizationMeta(application, false);
+            application = service.updateAuthorizationMeta(application);
         } catch (IOException e) {
             fail(e.getMessage());
         }
         AuthorizationMeta authorizationMeta = application.getAuthorizationMeta();
         assertTrue(authorizationMeta.isOpoAllowed());
 
-        as = new ApplicationSystem("myAsId", null, new I18nText(new HashMap<String, String>()), null,
-                null, null, null, null, OppijaConstants.KOHDEJOUKKO_KORKEAKOULU, null, null, null, null);
+        as = new ApplicationSystem("myAsId", null, new I18nText(new HashMap<String, String>()), "JULKAISTU", null,
+                null, null, null, null, OppijaConstants.KOHDEJOUKKO_KORKEAKOULU, null, null, null, null, null);
         when(applicationSystemService.getApplicationSystem(eq("myAsId"))).thenReturn(as);
 
         try {
-            application = service.updateAuthorizationMeta(application, false);
+            application = service.updateAuthorizationMeta(application);
         } catch (IOException e) {
             fail(e.getMessage());
         }
@@ -262,8 +262,8 @@ public class ApplicationServiceImplTest {
     public void testAuthorizationMetaSendingSchool() {
         Application application = new Application();
         application.setApplicationSystemId("myAsId");
-        ApplicationSystem as = new ApplicationSystem("myAsId", null, new I18nText(new HashMap<String, String>()), null,
-                null, null, null, null, OppijaConstants.KOHDEJOUKKO_PERVAKO, null, null, null, null);
+        ApplicationSystem as = new ApplicationSystem("myAsId", null, new I18nText(new HashMap<String, String>()), "JULKAISTU", null,
+                null, null, null, null, OppijaConstants.KOHDEJOUKKO_PERVAKO, null, null, null, null, null);
         Map<String, String> educationAnswers = new HashMap<String, String>();
         educationAnswers.put(OppijaConstants.ELEMENT_ID_SENDING_SCHOOL, "1.2.3.4");
 
@@ -278,7 +278,7 @@ public class ApplicationServiceImplTest {
         }
         application.addVaiheenVastaukset(OppijaConstants.PHASE_EDUCATION, educationAnswers);
         try {
-            application = service.updateAuthorizationMeta(application, false);
+            application = service.updateAuthorizationMeta(application);
         } catch (IOException e) {
             fail(e.getMessage());
         }
@@ -294,8 +294,8 @@ public class ApplicationServiceImplTest {
     public void testAuthorizationMetaAoParents() throws IOException {
         Application application = new Application();
         application.setApplicationSystemId("myAsId");
-        ApplicationSystem as = new ApplicationSystem("myAsId", null, new I18nText(new HashMap<String, String>()), null,
-                null, null, null, null, OppijaConstants.KOHDEJOUKKO_PERVAKO, null, null, null, null);
+        ApplicationSystem as = new ApplicationSystem("myAsId", null, new I18nText(new HashMap<String, String>()), "JULKAISTU", null,
+                null, null, null, null, OppijaConstants.KOHDEJOUKKO_PERVAKO, null, null, null, null, null);
 
         Map<String, String> aoAnswers = new HashMap<String, String>();
         aoAnswers.put(String.format(OppijaConstants.PREFERENCE_ID, 1), "1.2.3");
@@ -317,7 +317,7 @@ public class ApplicationServiceImplTest {
         when(organizationService.findParentOids(eq("10.1.2"))).thenReturn(org1parents);
         when(organizationService.findParentOids(eq("10.3.4"))).thenReturn(org2parents);
 
-        application = service.updateAuthorizationMeta(application, false);
+        application = service.updateAuthorizationMeta(application);
         AuthorizationMeta authorizationMeta = application.getAuthorizationMeta();
         assertTrue(authorizationMeta.isOpoAllowed());
         assertEquals(5, authorizationMeta.getAllAoOrganizations().size());

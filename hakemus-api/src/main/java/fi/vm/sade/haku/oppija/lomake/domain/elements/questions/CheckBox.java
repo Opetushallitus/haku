@@ -17,7 +17,6 @@
 package fi.vm.sade.haku.oppija.lomake.domain.elements.questions;
 
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.Titled;
 import org.springframework.data.annotation.Transient;
 
 public class CheckBox extends Question {
@@ -34,4 +33,8 @@ public class CheckBox extends Question {
         return value;
     }
 
+    @Override
+    public String getExcelValue(String value, String lang) {
+        return Boolean.TRUE.toString().equals(value) ? "X" : "";
+    }
 }

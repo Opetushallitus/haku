@@ -1,0 +1,118 @@
+{
+    "_id":
+    {
+        "$oid": "53e4885ce4b0d272fdc5d777"
+    },
+    "type": "Application",
+    "applicationSystemId": "1.2.246.562.29.95390561488",
+    "answers": {
+        "henkilotiedot": {
+            "preference3-yoLiite": "true",
+            "kansalaisuus": "FIN",
+            "asuinmaa": "FIN",
+            "Sukunimi": "Testaaja",
+            "sukupuoli": "1",
+            "turvakielto": "false",
+            "Kutsumanimi": "Teppo",
+            "Etunimet": "Teppo",
+            "onkoSinullaSuomalainenHetu": "true",
+            "matkapuhelinnumero1": "",
+            "Postinumero": "00100",
+            "lahiosoite": "testikatu 1a1",
+            "Sähköposti": "",
+            "kotikunta": "020",
+            "aidinkieli": "FI",
+            "syntymaaika": "01.01.1901",
+            "koulusivistyskieli":"FI"
+        },
+        "lisatiedot": {
+          "asiointikieli": "suomi"
+        },
+        "hakutoiveet": {
+            "preference3-Koulutus-id-ao-groups": "",
+            "preference1-Opetuspiste": "Taideyliopisto, Sibelius-Akatemia",
+            "preference3-Koulutus-id-athlete": "",
+            "preference2-Koulutus-id-aoIdentifier": "",
+            "preference2-Koulutus": "Musiikkitiede, humanististen tieteiden kandidaatti ja filosofian maisteri",
+            "preference3-Opetuspiste-id": "",
+            "preference2-Koulutus-id-ao-groups": "",
+            "preference1-Koulutus-educationDegree": "",
+            "preference2-Koulutus-id-sora": "false",
+            "preference3-Koulutus-id": "",
+            "preference1-Opetuspiste-id": "1.2.246.562.10.78522729439",
+            "preference2-Koulutus-educationDegree": "",
+            "preference1-Koulutus-id-sora": "false",
+            "preference1-Koulutus-id-aoIdentifier": "",
+            "preference1-Koulutus-id-educationcode": "",
+            "preference3-Koulutus-id-attachmentgroups": "",
+            "preference2-Koulutus-id": "1.2.246.562.20.40828730156",
+            "preference3-Koulutus-id-vocational": "",
+            "preference1-Koulutus-id-vocational": "false",
+            "preference1-Koulutus-id-athlete": "false",
+            "preference5-Koulutus-id": "",
+            "preference2-Opetuspiste": "Helsingin yliopisto, Humanistinen tiedekunta",
+            "preference2-Koulutus-id-athlete": "false",
+            "preference3-Koulutus-educationDegree": "",
+            "preference2-Koulutus-id-kaksoistutkinto": "false",
+            "preference3-Koulutus-id-kaksoistutkinto": "",
+            "preference1-Koulutus-id-attachmentgroups": "",
+            "preference3-Koulutus-id-lang": "",
+            "preference2-Opetuspiste-id": "1.2.246.562.10.61397511793",
+            "preference3-Opetuspiste": "",
+            "preference1-Opetuspiste-id-parents": "",
+            "preference6-Koulutus-id": "",
+            "preference2-Koulutus-id-vocational": "false",
+            "preference1-Koulutus-id": "1.2.246.562.20.85668637847",
+            "preference3-Koulutus-id-attachments": "",
+            "preference3-Koulutus-id-sora": "",
+            "preference4-Koulutus-id": "",
+            "preference2-Koulutus-id-lang": "FI",
+            "preference1-Koulutus": "Kansanmusiikki 5,5-vuotinen koulutus",
+            "preference3-Koulutus-id-educationcode": "",
+            "preference1-Koulutus-id-kaksoistutkinto": "false",
+            "preference3-Koulutus": "",
+            "preference3-Koulutus-id-aoIdentifier": "",
+            "preference1-Koulutus-id-lang": "FI",
+            "preference2-Koulutus-id-educationcode": ""
+        },
+      "koulutustausta": {
+        "suoritusoikeus": "false",
+        "aiempitutkinto": "false",
+        "pohjakoulutus_yo_tutkinto": "fi",
+        "pohjakoulutus_yo_vuosi": "2014",
+        "pohjakoulutus_yo": "true"
+      },
+      "osaaminen": {}
+    },
+    "oid": "1.2.246.562.11.00000877687",
+    "state": "ACTIVE",
+    "studentIdentificationDone": false,
+    "personOid": "1.2.246.562.24.14229104472",
+    "lastAutomatedProcessingTime": 1408697524747,
+    "received": 1407486044009,
+    "updated": 1410516893464,
+    "redoPostProcess": "DONE",
+    "fullName": "testaaja teppo",
+    "searchNames": ["teppo", "testaaja", "timo"],
+    "meta": {
+        "sessionId": "anonymousUser"
+    },
+    "overriddenAnswers": {
+        "sukupuoli": "1",
+        "turvakielto": "(null)",
+        "Kutsumanimi": "Timo",
+        "Etunimet": "Timo",
+        "Sukunimi": "Testaaja",
+        "onkoSinullaSuomalainenHetu": "(null)",
+        "Henkilotunnus": "010101-123N",
+        "syntymaaika": "01.01.1901"
+    },
+    "notes": [
+        {
+            "type": "ApplicationNote",
+            "noteText": "Hakemus vastaanotettu",
+            "added": 1407486044009,
+            "user": "anonymousUser"
+        }
+    ]
+}

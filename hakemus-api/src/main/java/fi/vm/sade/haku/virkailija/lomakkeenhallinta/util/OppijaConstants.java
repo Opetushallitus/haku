@@ -50,12 +50,17 @@ public final class OppijaConstants {
     public static final String ELEMENT_ID_SECURITY_ORDER = "turvakielto";
     public static final String ELEMENT_ID_DATE_OF_BIRTH = "syntymaaika";
     public static final String ELEMENT_ID_EMAIL = "Sähköposti";
+    public static final String ELEMENT_ID_COUNTRY_OF_RESIDENCY = "asuinmaa";
+    public static final String ELEMENT_VALUE_COUNTRY_OF_RESIDENCY_FIN = "FIN";
+    public static final String ELEMENT_ID_FIN_ADDRESS = "lahiosoite";
+    public static final String ELEMENT_ID_FIN_POSTAL_NUMBER = "Postinumero";
+    public static final String ELEMENT_ID_PREFIX_PHONENUMBER = "matkapuhelinnumero";
     public static final String ELEMENT_ID_SEX = "sukupuoli";
     public static final String ELEMENT_ID_SENDING_SCHOOL = "lahtokoulu";
     public static final String ELEMENT_ID_SENDING_CLASS = "lahtoluokka";
     public static final String ELEMENT_ID_CLASS_LEVEL = "luokkataso";
     public static final String ELEMENT_ID_HOME_CITY = "kotikunta";
-    public static final String ELEMENT_ID_LANGUAGE = "äidinkieli";
+    public static final String ELEMENT_ID_LANGUAGE = "aidinkieli";
     public static final String ELEMENT_ID_NATIONALITY = "kansalaisuus";
     public static final String ELEMENT_ID_FIRST_LANGUAGE = "äidinkieli";
     public static final String ELEMENT_ID_CONTACT_LANGUAGE = "asiointikieli";
@@ -80,7 +85,10 @@ public final class OppijaConstants {
 
     public static final String PREFERENCE_PREFIX = "preference";
     public static final String OPTION_ID_POSTFIX = "-Koulutus-id";
-    public static final String GROUP_POSTFIX = "-Koulutus-id-ao-groups";
+    public static final String OPTION_GROUP_POSTFIX = "-Koulutus-id-ao-groups";
+    public static final String OPTION_ATTACHMENT_GROUP_POSTFIX = "-Koulutus-id-attachmentgroups";
+    public static final String OPTION_ATTACHMENTS_POSTFIX = "-Koulutus-id-attachments";
+    public static final String OPTION_ATTACHMENT_GROUP_TYPE = "hakukohde_liiteosoite";
     public static final String PREFERENCE_NAME = "preference%d-Koulutus";
     public static final String PREFERENCE_ORGANIZATION = "preference%d-Opetuspiste";
     public static final String PREFERENCE_ORGANIZATION_ID = "preference%d-Opetuspiste-id";

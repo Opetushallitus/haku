@@ -50,6 +50,10 @@ import fi.vm.sade.haku.virkailija.authentication.PersonBuilder;
 import fi.vm.sade.haku.virkailija.koulutusinformaatio.KoulutusinformaatioService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 
+import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionAttachmentDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.OrganizationGroupDTO;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -286,6 +290,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         if (queriedAss != null && queriedAss.size() == 1) {
             builder.setKohdejoukko(kohdejoukko);
         }
+        
         return applicationDAO.findAllQueried(applicationQueryParameters, builder.build());
     }
 
@@ -312,7 +317,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 
 
     @Override
-    public Application updateAuthorizationMeta(Application application, boolean save) throws IOException {
+    public Application updateAuthorizationMeta(Application application) throws IOException {
         boolean opoAllowed = resolveOpoAllowed(application);
         Map<String, Set<String>> aoOrganizations = new HashMap<String, Set<String>>();
         Set<String> allOrganizations = new HashSet<String>();
@@ -346,9 +351,6 @@ public class ApplicationServiceImpl implements ApplicationService {
         authorizationMeta.setAllAoOrganizations(allOrganizations);
         authorizationMeta.setSendingSchool(sendingSchool);
         application.setAuthorizationMeta(authorizationMeta);
-        if (save) {
-            this.update(new Application(application.getOid(), application.getVersion()), application);
-        }
         return application;
     }
 
@@ -443,6 +445,61 @@ public class ApplicationServiceImpl implements ApplicationService {
         application.addNote(new ApplicationNote("Hakemus vastaanotettu", new Date(), userSession.getUser().getUserName()));
         application.setOid(applicationOidService.generateNewOid());
         this.applicationDAO.save(application);
+        return application;
+    }
+
+    @Override
+    public Map<String, String> ensureApplicationOptionGroupData(Map<String, String> answers) {
+        LOGGER.debug("Input map: " + answers.toString());
+        Set<String> keys = new HashSet(answers.keySet());
+        for (String key: keys){
+            if (null != key
+              && key.startsWith(OppijaConstants.PREFERENCE_PREFIX)
+              && key.endsWith(OppijaConstants.OPTION_ID_POSTFIX)
+              && isNotEmpty(answers.get(key))){
+                String basekey = key.replace(OppijaConstants.OPTION_ID_POSTFIX, "");
+                String aoGroups = answers.get(basekey + OppijaConstants.OPTION_GROUP_POSTFIX);
+                String attachmentGroups = answers.get(basekey + OppijaConstants.OPTION_ATTACHMENT_GROUP_POSTFIX);
+                String attachments = answers.get(basekey + OppijaConstants.OPTION_ATTACHMENTS_POSTFIX);
+
+                ApplicationOptionDTO applicationOption = null;
+                if (isEmpty(aoGroups)
+                  || isEmpty(attachmentGroups)) {
+                    applicationOption = koulutusinformaatioService.getApplicationOption(answers.get(key));
+                    List<OrganizationGroupDTO> organizationGroups = applicationOption.getOrganizationGroups();
+                    if (null != organizationGroups && organizationGroups.size() > 0 ){
+                        ArrayList<String> aoGroupList = new ArrayList<String>(organizationGroups.size());
+                        ArrayList<String> attachmentGroupList = new ArrayList<String>();
+                        for (OrganizationGroupDTO organizationGroup : organizationGroups) {
+                            aoGroupList.add(organizationGroup.getOid());
+                            if (organizationGroup.getGroupTypes().contains(OppijaConstants.OPTION_ATTACHMENT_GROUP_TYPE)){
+                                attachmentGroupList.add(organizationGroup.getOid());
+                            }
+                        }
+                        answers.put(basekey + OppijaConstants.OPTION_GROUP_POSTFIX, StringUtils.join(aoGroupList, ","));
+                        answers.put(basekey + OppijaConstants.OPTION_ATTACHMENT_GROUP_POSTFIX, StringUtils.join(attachmentGroupList, ","));
+                    }
+                }
+
+                if (isEmpty(attachments)) {
+                    if (applicationOption == null) {
+                        applicationOption = koulutusinformaatioService.getApplicationOption(answers.get(key));
+                    }
+                    List<ApplicationOptionAttachmentDTO> attachmentList = applicationOption.getAttachments();
+                    if (attachmentList != null && !attachmentList.isEmpty()) {
+                        answers.put(basekey + OppijaConstants.OPTION_ATTACHMENTS_POSTFIX, "true");
+                    }
+                }
+            }
+        }
+        LOGGER.debug("output map: " + answers.toString());
+        return answers;
+    }
+
+    @Override
+    public Application ensureApplicationOptionGroupData(final Application application) {
+        Map<String, String> phaseAnswers =  application.getAnswers().get(OppijaConstants.PHASE_APPLICATION_OPTIONS);
+        application.addVaiheenVastaukset(OppijaConstants.PHASE_APPLICATION_OPTIONS, phaseAnswers);
         return application;
     }
 

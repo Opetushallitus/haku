@@ -38,8 +38,8 @@
     $(document).ready(function () {
         $("tr[id|='additionalRow']").each(function () {
             if ($(this).find("td").filter(function () {
-                return $.trim($(this).text()) === '';
-            }).length === 0) {
+                return $.trim($(this).text());
+            }).length !== 1 ) {
                 $(this).show();
             } else {
                 $(this).hide();

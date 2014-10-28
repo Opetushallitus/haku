@@ -839,9 +839,23 @@ $(document).ready(function () {
                     searchTerms: req.term,
                     organisationOid : $('#lopoid').val()
                 }
-                var url = '/tarjonta-service/rest/v1/hakukohde/search?' + objectToQueryParameterString(qParams);
+                var url = page_settings.tarjontaUrl + '/search?' + objectToQueryParameterString(qParams);
                 $.get(url, function (data) {
                     var applicationOptions = _.reduce(data.result.tulokset, function (aos, provider) {
+                        var tulokset = provider.tulokset;
+                        var providerName = provider.nimi;
+                        var langs = [page_settings.lang, 'fi', 'sv', 'en'];
+                        var realProviderName = "???";
+                        for (var i = 0; i < langs.length; i++) {
+                            if (providerName[langs[i]]) {
+                                realProviderName = providerName[langs[i]];
+                                break;
+                            }
+                        }
+                        for (var i = 0; i < tulokset.length; i++) {
+                            var tulos = tulokset[i];
+                            tulos.providerName = realProviderName;
+                        }
                         return aos.concat(provider.tulokset);
                     }, []);
                     res(_.map(applicationOptions, function (ao) {
@@ -849,7 +863,7 @@ $(document).ready(function () {
                         var name = '???';
                         for (var i = 0; i < langs.length; i++) {
                             if (ao.nimi[langs[i]]) {
-                                name = ao.nimi[langs[i]];
+                                name = ao.nimi[langs[i]] + " (" + ao.providerName + ")";
                                 break;
                             }
                         }

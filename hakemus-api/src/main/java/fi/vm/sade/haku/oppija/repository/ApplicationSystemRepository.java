@@ -84,9 +84,17 @@ public class ApplicationSystemRepository {
         }
         for (String includeField : includeFields) {
             q.fields().include(includeField);
-
         }
         log.debug("findBySemesterAndYear({}, {}) query: {}", semester, year, q.toString());
+        return mongoOperations.find(q, ApplicationSystem.class);
+    }
+
+    public List<ApplicationSystem> findAllPublished(String[] includeFields) {
+        Query q = new Query();
+        q.addCriteria(new Criteria("state").is("JULKAISTU"));
+        for (String includeField : includeFields) {
+            q.fields().include(includeField);
+        }
         return mongoOperations.find(q, ApplicationSystem.class);
     }
 }

@@ -121,7 +121,7 @@ public class ValintaServiceTest {
                 koodistoService,
                 hakuPermissionService,
                 loggerAspect,
-                "koulutusinformaatioBaseUrl",
+                "koulutusinformaatioBaseUrl", "tarjontaUrl",
                 elementTreeValidator,
                 applicationSystemService,
                 authenticationService,

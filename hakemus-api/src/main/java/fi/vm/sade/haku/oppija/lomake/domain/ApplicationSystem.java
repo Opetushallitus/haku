@@ -28,6 +28,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Document
@@ -38,19 +39,21 @@ public class ApplicationSystem implements Serializable {
     private String id;
     private Form form;
     private I18nText name;
+    private String state;
     private List<ApplicationPeriod> applicationPeriods;
     private String applicationSystemType;
     private String hakutapa;
     private Integer hakukausiVuosi;
     private String hakukausiUri;
     private String kohdejoukkoUri;
+    private Date lastGenerated;
 
     private List<Element> applicationCompleteElements;
     private List<Element> additionalInformationElements;
     private List<ApplicationOptionAttachmentRequest> applicationOptionAttachmentRequests;
     private int maxApplicationOptions;
 
-    public ApplicationSystem(final String id, final Form form, final I18nText name,
+    public ApplicationSystem(final String id, final Form form, final I18nText name, final String state,
                              final List<ApplicationPeriod> applicationPeriods,
                              final String applicationSystemType,
                              final String hakutapa,
@@ -60,12 +63,14 @@ public class ApplicationSystem implements Serializable {
                              final List<Element> applicationCompleteElements,
                              final List<Element> additionalInformationElements,
                              final List<ApplicationOptionAttachmentRequest> applicationOptionAttachmentRequests,
-                             final Integer maxApplicationOptions) {
+                             final Integer maxApplicationOptions,
+                             final Date lastGenerated) {
         Preconditions.checkNotNull(id);
         Preconditions.checkNotNull(name);
         this.id = id;
         this.form = form;
         this.name = name;
+        this.state = state;
         this.applicationPeriods = applicationPeriods != null ?
                 ImmutableList.copyOf(applicationPeriods) : Lists.<ApplicationPeriod>newArrayList();
         this.applicationSystemType = applicationSystemType;
@@ -78,6 +83,7 @@ public class ApplicationSystem implements Serializable {
         this.applicationOptionAttachmentRequests = applicationOptionAttachmentRequests;
         this.maxApplicationOptions = maxApplicationOptions != null ?
                 maxApplicationOptions.intValue() : 1;
+        this.lastGenerated = lastGenerated;
     }
 
     @Transient
@@ -90,6 +96,11 @@ public class ApplicationSystem implements Serializable {
         return false;
     }
 
+    @Transient
+    public boolean isPublished() {
+        return "JULKAISTU".equals(state);
+    }
+
     public String getId() {
         return id;
     }
@@ -100,6 +111,10 @@ public class ApplicationSystem implements Serializable {
 
     public I18nText getName() {
         return name;
+    }
+
+    public String getState() {
+        return state;
     }
 
     public List<ApplicationPeriod> getApplicationPeriods() {
@@ -138,6 +153,10 @@ public class ApplicationSystem implements Serializable {
         return applicationOptionAttachmentRequests;
     }
 
+    public Date getLastGenerated() {
+        return lastGenerated;
+    }
+
     public List<String> getAllowedLanguages() {
         List<String> allowedLanguages = new ArrayList<String>();
         allowedLanguages.add("fi");
@@ -156,4 +175,5 @@ public class ApplicationSystem implements Serializable {
     public int getMaxApplicationOptions() {
         return maxApplicationOptions;
     }
+
 }

@@ -5,12 +5,7 @@ import fi.vm.sade.haku.oppija.common.organisaatio.Organization;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationGroupRestDTO;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
 import fi.vm.sade.haku.oppija.hakemus.aspect.LoggerAspect;
-import fi.vm.sade.haku.oppija.hakemus.domain.Application;
-import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationAttachmentRequest;
-import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationNote;
-import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
-import fi.vm.sade.haku.oppija.hakemus.domain.PreferenceChecked;
-import fi.vm.sade.haku.oppija.hakemus.domain.PreferenceEligibility;
+import fi.vm.sade.haku.oppija.hakemus.domain.*;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationOptionDTO;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.Pistetieto;
 import fi.vm.sade.haku.oppija.hakemus.domain.util.AttachmentUtil;
@@ -45,18 +40,7 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import fi.vm.sade.haku.virkailija.valinta.ValintaService;
-import fi.vm.sade.haku.virkailija.valinta.dto.FunktioTulosDTO;
-import fi.vm.sade.haku.virkailija.valinta.dto.HakemusDTO;
-import fi.vm.sade.haku.virkailija.valinta.dto.HakijaDTO;
-import fi.vm.sade.haku.virkailija.valinta.dto.HakukohdeDTO;
-import fi.vm.sade.haku.virkailija.valinta.dto.HakutoiveDTO;
-import fi.vm.sade.haku.virkailija.valinta.dto.HakutoiveenValintatapajonoDTO;
-import fi.vm.sade.haku.virkailija.valinta.dto.JonosijaDTO;
-import fi.vm.sade.haku.virkailija.valinta.dto.Osallistuminen;
-import fi.vm.sade.haku.virkailija.valinta.dto.PistetietoDTO;
-import fi.vm.sade.haku.virkailija.valinta.dto.ValinnanvaiheDTO;
-import fi.vm.sade.haku.virkailija.valinta.dto.ValintakoeDTO;
-import fi.vm.sade.haku.virkailija.valinta.dto.ValintatapajonoDTO;
+import fi.vm.sade.haku.virkailija.valinta.dto.*;
 import fi.vm.sade.organisaatio.api.model.types.OrganisaatioTyyppi;
 import fi.vm.sade.organisaatio.api.search.OrganisaatioSearchCriteria;
 import org.apache.commons.collections.CollectionUtils;
@@ -74,16 +58,7 @@ import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
@@ -100,6 +75,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     private final KoodistoService koodistoService;
     private final HakuPermissionService hakuPermissionService;
     private final String koulutusinformaatioBaseUrl;
+    private final String tarjontaUrl;
     private final LoggerAspect loggerAspect;
     private final ElementTreeValidator elementTreeValidator;
     private final ApplicationSystemService applicationSystemService;
@@ -122,6 +98,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
                                 final HakuPermissionService hakuPermissionService,
                                 final LoggerAspect loggerAspect,
                                 @Value("${koulutusinformaatio.base.url}") final String koulutusinformaatioBaseUrl,
+                                @Value("${tarjonta.v1.hakukohde.resource.url}") final String tarjontaUrl,
                                 final ElementTreeValidator elementTreeValidator,
                                 final ApplicationSystemService applicationSystemService,
                                 final AuthenticationService authenticationService,
@@ -137,6 +114,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         this.hakuPermissionService = hakuPermissionService;
         this.loggerAspect = loggerAspect;
         this.koulutusinformaatioBaseUrl = koulutusinformaatioBaseUrl;
+        this.tarjontaUrl = tarjontaUrl;
         this.elementTreeValidator = elementTreeValidator;
         this.applicationSystemService = applicationSystemService;
         this.authenticationService = authenticationService;
@@ -391,7 +369,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         String noteText = "Päivitetty vaihetta '" + applicationPhase.getPhaseId() + "'";
         application.addNote(createNote(noteText));
         this.applicationService.updatePreferenceBasedData(application);
-        this.applicationService.updateAuthorizationMeta(application, false);
+        this.applicationService.updateAuthorizationMeta(application);
         this.applicationService.update(queryApplication, application);
         application.setPhaseId(applicationPhase.getPhaseId());
         return new ModelResponse(application, form, phase, phaseValidationResult, koulutusinformaatioBaseUrl);
@@ -450,8 +428,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
                     .i18nText(ElementUtil.createI18NAsIs(ot.value()))
                     .build());
         }
-        List<ApplicationSystem> applicationSystems =
-                applicationSystemService.getAllApplicationSystems("id", "name", "hakukausiUri", "hakukausiVuosi");
+        List<ApplicationSystem> applicationSystems = getApplicationSystems();
         modelResponse.addObjectToModel("applicationSystems", applicationSystems);
         modelResponse.addObjectToModel("organizationTypes", organizationTypes);
         List<Option> institutionTypes = new ArrayList<Option>();
@@ -479,12 +456,13 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         }
         modelResponse.addObjectToModel("defaultYear", String.valueOf(today.get(Calendar.YEAR)));
         modelResponse.addObjectToModel("defaultSemester", semester);
+        modelResponse.addObjectToModel("tarjontaUrl", tarjontaUrl);
         return modelResponse;
     }
 
     @Override
     public List<ApplicationSystem> getApplicationSystems() {
-        return applicationSystemService.getAllApplicationSystems("id", "name", "hakukausiUri", "hakukausiVuosi",
+        return applicationSystemService.getPublishedApplicationSystems("id", "name", "hakukausiUri", "hakukausiVuosi",
                 "maxApplicationOptions", "kohdejoukkoUri");
     }
 

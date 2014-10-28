@@ -2,6 +2,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="haku" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%--
   ~ Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
   ~
@@ -39,6 +40,12 @@
                     <haku:i18nText value="${applicationSystem.name}"/>
                 </c:otherwise>
             </c:choose>
+
+            <ul>
+                <li> oid: ${applicationSystem.id}</li>
+                <li> state: ${applicationSystem.state}</li>
+                <li> lastGenerated: <fmt:formatDate value="${applicationSystem.lastGenerated}" pattern="yyyy-MM-dd HH:mm:ss" /></li>
+            </ul>
         </li>
     </c:forEach>
 </ul>

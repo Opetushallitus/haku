@@ -75,7 +75,7 @@ public class FormController {
     @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
     public Viewable listApplicationSystems() {
         LOGGER.debug("listApplicationSystems");
-        ModelResponse modelResponse = uiService.getAllApplicationSystems("id", "name", "applicationPeriods");
+        ModelResponse modelResponse = uiService.getAllApplicationSystems("id", "name", "applicationPeriods", "state", "lastGenerated");
         return new Viewable(APPLICATION_SYSTEM_LIST_VIEW, modelResponse.getModel());
     }
 

@@ -15,10 +15,13 @@
  */
 package fi.vm.sade.haku.oppija.yksilointi;
 
+import fi.vm.sade.haku.healthcheck.StatusRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
 
 @Service
 public class Scheduler {
@@ -29,46 +32,66 @@ public class Scheduler {
     private boolean sendMail;
 
     private fi.vm.sade.haku.oppija.yksilointi.YksilointiWorker worker;
+    private StatusRepository statusRepository;
 
     @Autowired
-    public Scheduler(YksilointiWorker worker) {
+    public Scheduler(YksilointiWorker worker, StatusRepository statusRepository) {
         this.worker = worker;
+        this.statusRepository = statusRepository;
     }
 
     public void runProcess() {
         if (run) {
             try {
-                LOGGER.debug("Running identification scheduler {}", System.currentTimeMillis());
+                statusRepository.write("postprocess scheduler", new HashMap<String, String>() {{ put("state", "start");}});
                 worker.processApplications(sendMail);
-                LOGGER.debug("Finished running identification scheduler {}", System.currentTimeMillis());
+                statusRepository.write("postprocess scheduler", new HashMap<String, String>() {{ put("state", "done");}});
             } catch (Exception e) {
                 LOGGER.error("Error processing applications", e);
                 //run = false;
             }
+        } else {
+            statusRepository.write("postprocess scheduler", new HashMap<String, String>() {{ put("state", "halted");}});
         }
     }
 
     public void runIdentification() {
         if (run) {
-            LOGGER.debug("Running identification scheduler {}", System.currentTimeMillis());
+            statusRepository.write("identification scheduler", new HashMap<String, String>() {{
+                put("state", "start");
+            }});
             worker.processIdentification();
-            LOGGER.debug("Finished running identification scheduler {}", System.currentTimeMillis());
+            statusRepository.write("identification scheduler", new HashMap<String, String>() {{
+                put("state", "done");
+            }});
+        } else {
+            statusRepository.write("identification scheduler", new HashMap<String, String>() {{ put("state", "halted");}});
         }
     }
 
     public void redoPostprocess() {
         if (run) {
-            LOGGER.debug("Running identification scheduler {}", System.currentTimeMillis());
+            statusRepository.write("redo postprocess scheduler", new HashMap<String, String>() {{
+                put("state", "start");
+            }});
             worker.redoPostprocess(sendMail);
-            LOGGER.debug("Finished running identification scheduler {}", System.currentTimeMillis());
+            statusRepository.write("redo postprocess scheduler", new HashMap<String, String>() {{
+                put("state", "done");
+            }});
+        } else {
+            statusRepository.write("redo postprocess scheduler", new HashMap<String, String>() {{ put("state", "halted");}});
         }
     }
 
     public void runModelUpgrade() {
         if (run && runModelUpgrade) {
-            LOGGER.debug("Running identification scheduler {}", System.currentTimeMillis());
+            statusRepository.write("model upgrade scheduler", new HashMap<String, String>() {{ put("state", "start");}});
             worker.processModelUpdate();
-            LOGGER.debug("Finished running identification scheduler {}", System.currentTimeMillis());
+            statusRepository.write("model upgrade scheduler", new HashMap<String, String>() {{
+                put("state", "done");
+            }});
+        } else {
+            statusRepository.write("model upgrade scheduler", new HashMap<String, String>() {{ put("state", "halted");}});
         }
     }
 
