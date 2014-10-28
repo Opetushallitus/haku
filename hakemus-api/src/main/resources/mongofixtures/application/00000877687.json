@@ -22,7 +22,8 @@
             "Sähköposti": "",
             "kotikunta": "020",
             "aidinkieli": "FI",
-            "syntymaaika": "01.01.1901"
+            "syntymaaika": "01.01.1901",
+            "koulusivistyskieli":"FI"
         },
         "lisatiedot": {
           "asiointikieli": "suomi"
@@ -74,8 +75,14 @@
             "preference1-Koulutus-id-lang": "FI",
             "preference2-Koulutus-id-educationcode": ""
         },
-        "koulutustausta": {},
-        "osaaminen": {}
+      "koulutustausta": {
+        "suoritusoikeus": "false",
+        "aiempitutkinto": "false",
+        "pohjakoulutus_yo_tutkinto": "fi",
+        "pohjakoulutus_yo_vuosi": "2014",
+        "pohjakoulutus_yo": "true"
+      },
+      "osaaminen": {}
     },
     "oid": "1.2.246.562.11.00000877687",
     "state": "ACTIVE",
