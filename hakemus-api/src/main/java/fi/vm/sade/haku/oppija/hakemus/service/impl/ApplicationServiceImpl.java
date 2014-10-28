@@ -377,16 +377,16 @@ public class ApplicationServiceImpl implements ApplicationService {
         }
         for (Map.Entry<String, Map<String, String>> phase : application.getAnswers().entrySet()) {
             String phaseId = phase.getKey();
-            if (!phaseId.equals(OppijaConstants.PHASE_APPLICATION_OPTIONS)) {
-                Map<String, String> newAnswers = new HashMap<String, String>();
-                for (Map.Entry<String, String> answer : phase.getValue().entrySet()) {
-                    String answerKey = answer.getKey();
-                    if (elementIds.contains(answerKey)) {
-                        newAnswers.put(answerKey, answer.getValue());
-                    }
+            Map<String, String> newAnswers = new HashMap<String, String>();
+            for (Map.Entry<String, String> answer : phase.getValue().entrySet()) {
+                String answerKey = answer.getKey();
+                if (elementIds.contains(answerKey)
+                        || (OppijaConstants.PHASE_APPLICATION_OPTIONS.equals(phaseId) && answerKey.startsWith("preference"))
+                        ) {
+                    newAnswers.put(answerKey, answer.getValue());
                 }
-                application.addVaiheenVastaukset(phaseId, newAnswers);
             }
+            application.addVaiheenVastaukset(phaseId, newAnswers);
         }
         return application;
     }
