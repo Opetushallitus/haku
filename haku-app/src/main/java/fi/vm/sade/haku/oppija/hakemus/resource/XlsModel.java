@@ -12,13 +12,17 @@ import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Titled;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.*;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.CheckBox;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Question;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.TextQuestion;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static fi.vm.sade.haku.oppija.lomake.domain.builder.TextQuestionBuilder.TextQuestion;
 import static org.apache.commons.lang.StringUtils.isNotBlank;
 import static org.apache.commons.lang.StringUtils.isNotEmpty;
 
@@ -80,6 +84,7 @@ public class XlsModel {
         for (Map.Entry<String, Object> vastauksetVaiheittain : vastaukset.entrySet()) {
             allAnswers.putAll((Map<String, String>) vastauksetVaiheittain.getValue());
         }
+        allAnswers.put("oid", (String) application.get("oid"));
         return allAnswers;
     }
 
@@ -109,6 +114,10 @@ public class XlsModel {
                 return false;
             }
         }, answers);
+        Element applicationOid = TextQuestion("oid")
+                .i18nText(ElementUtil.createI18NText("hakemusnumero"))
+                .build();
+        elements.add(0, applicationOid);
         int elementsLength = elements.size();
         for (int i = 0; i < elementsLength; i++) {
             Element element = elements.get(i);
@@ -125,7 +134,7 @@ public class XlsModel {
                 }
             }
         }
-        Element hakukohteenPrioriteetti = new TextQuestion("hakukohteenPrioriteetti", ElementUtil.createI18NText("Hakukohteen prioriteetti"));
+        Element hakukohteenPrioriteetti = new TextQuestion("hakukohteenPrioriteetti", ElementUtil.createI18NText("Hakukohteen.prioriteetti"));
         elements.add(hakukohteenPrioriteetti);
         if (answers != null) {
             for (Map.Entry<String, String> entry : answers.entrySet()) {
