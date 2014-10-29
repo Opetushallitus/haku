@@ -3,7 +3,7 @@ package fi.vm.sade.haku.oppija.lomake.domain.builder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.TextArea;
 
-public class TextAreaBuilder extends ElementBuilder {
+public class TextAreaBuilder extends QuestionBuilder {
 
     public static final Integer ROWS = 4;
     public static final Integer COLS = 60;
