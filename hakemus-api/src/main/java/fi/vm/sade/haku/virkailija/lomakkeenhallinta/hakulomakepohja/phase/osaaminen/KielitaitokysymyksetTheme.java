@@ -7,8 +7,6 @@ import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.builder.ThemeBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
-import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionRule;
-import fi.vm.sade.haku.oppija.lomake.domain.builder.RelatedQuestionRuleBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.*;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
@@ -254,8 +252,8 @@ public final class KielitaitokysymyksetTheme {
                 .addOptions(ImmutableList.of(
                         new Option(createI18NText("form.yleinen.kylla", formParameters), KYLLA),
                         new Option(createI18NText("form.yleinen.ei", formParameters), EI)))
-                .required()
                 .i18nText(i18NText)
+                .required()
                 .formParams(formParameters).build();
     }
 }

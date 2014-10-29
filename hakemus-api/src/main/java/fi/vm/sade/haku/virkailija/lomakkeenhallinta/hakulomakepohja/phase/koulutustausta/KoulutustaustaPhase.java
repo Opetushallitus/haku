@@ -5,10 +5,7 @@ import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
-import fi.vm.sade.haku.oppija.lomake.domain.builder.DropdownSelectBuilder;
-import fi.vm.sade.haku.oppija.lomake.domain.builder.RadioBuilder;
-import fi.vm.sade.haku.oppija.lomake.domain.builder.TextQuestionBuilder;
-import fi.vm.sade.haku.oppija.lomake.domain.builder.ThemeBuilder;
+import fi.vm.sade.haku.oppija.lomake.domain.builder.*;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.*;
@@ -18,7 +15,6 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.domain.Code;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 
-import javax.ws.rs.HEAD;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -255,7 +251,7 @@ public final class KoulutustaustaPhase {
 
     private static Element buildAiempiTutkinto(FormParameters formParameters,
                                                List<Option> tutkintotasot) {
-        RadioBuilder aiempitutkintoBuilder = Radio("aiempitutkinto")
+        OptionQuestionBuilder aiempitutkintoBuilder = Radio("aiempitutkinto")
                 .addOption("false", formParameters)
                 .addOption("true", formParameters);
         Element aiempitutkinto = aiempitutkintoBuilder.required().formParams(formParameters).build();
@@ -274,9 +270,9 @@ public final class KoulutustaustaPhase {
                 .validator(ElementUtil.createYearValidator(formParameters.getApplicationSystem().getHakukausiVuosi() + 1, 1900))
                 .requiredInline().formParams(formParameters).build();
 
-        aiempitutkintoMore.addChild(
-                Info().formParams(formParameters)
-                        .i18nText(ElementUtil.createI18NText("aiempitutkinto_info", formParameters)).build(),
+        aiempitutkintoMore.addChild(Info()
+                        .i18nText(ElementUtil.createI18NText("aiempitutkinto_info", formParameters))
+                        .formParams(formParameters).build(),
                 aiempitutkintoOppilaitos, aiempitutkintoTutkinto,tutkinto, vuosi
         );
         aiempitutkinto.addChild(aiempitutkintoMore);
@@ -285,7 +281,7 @@ public final class KoulutustaustaPhase {
     }
 
     private static Element buildSuoritusoikeus(FormParameters formParameters) {
-        RadioBuilder suoritusoikeusBuilder = Radio("suoritusoikeus")
+        OptionQuestionBuilder suoritusoikeusBuilder = Radio("suoritusoikeus")
                 .addOption("false", formParameters)
                 .addOption("true", formParameters);
         Element suoritusoikeus = suoritusoikeusBuilder.required().formParams(formParameters).build();
@@ -300,9 +296,10 @@ public final class KoulutustaustaPhase {
                 .validator(ElementUtil.createYearValidator(formParameters.getApplicationSystem().getHakukausiVuosi() + 1, 1900))
                 .formParams(formParameters).build();
 
-        suoritusoikeusMore.addChild(
-                Info().formParams(formParameters)
-                        .i18nText(ElementUtil.createI18NText("suoritusoikeus_info", formParameters)).build(),
+        suoritusoikeusMore.addChild(Info()
+                        .i18nText(ElementUtil.createI18NText("suoritusoikeus_info", formParameters))
+                        .formParams(formParameters)
+                        .build(),
                 suoritusoikeusOppilaitos,
                 tutkinto, vuosi
         );
@@ -326,7 +323,7 @@ public final class KoulutustaustaPhase {
             }
         });
 
-        RadioBuilder baseEducationBuilder = Radio(ELEMENT_ID_BASE_EDUCATION)
+        OptionQuestionBuilder baseEducationBuilder = Radio(ELEMENT_ID_BASE_EDUCATION)
                 .addOption(educationMap.get(PERUSKOULU).getValue(), formParameters)
                 .addOption(educationMap.get(OSITTAIN_YKSILOLLISTETTY).getValue(), formParameters)
                 .addOption(ALUEITTAIN_YKSILOLLISTETTY, formParameters)

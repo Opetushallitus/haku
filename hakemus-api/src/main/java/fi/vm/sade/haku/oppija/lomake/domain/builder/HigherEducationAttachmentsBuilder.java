@@ -3,7 +3,7 @@ package fi.vm.sade.haku.oppija.lomake.domain.builder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.HigherEducationAttachments;
 
-public class HigherEducationAttachmentsBuilder extends ElementBuilder {
+public class HigherEducationAttachmentsBuilder extends TitledBuilder {
 
     protected HigherEducationAttachmentsBuilder(String id) {
         super(id);

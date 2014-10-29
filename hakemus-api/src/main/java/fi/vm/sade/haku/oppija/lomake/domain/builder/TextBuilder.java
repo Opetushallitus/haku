@@ -4,7 +4,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Text;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 
-public class TextBuilder extends ElementBuilder {
+public class TextBuilder extends TitledBuilder {
 
     protected TextBuilder(String id) {
         super(id);

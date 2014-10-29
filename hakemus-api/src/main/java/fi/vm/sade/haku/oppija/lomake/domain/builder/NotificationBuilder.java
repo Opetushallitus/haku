@@ -1,21 +1,15 @@
 package fi.vm.sade.haku.oppija.lomake.domain.builder;
 
-import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Notification;
 import fi.vm.sade.haku.oppija.lomake.validation.validators.AlwaysFailsValidator;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 
-public class NotificationBuilder extends ElementBuilder {
+public class NotificationBuilder extends TitledBuilder {
     private Notification.NotificationType notificationType;
 
     protected NotificationBuilder(String id) {
         super(id);
-    }
-
-    public NotificationBuilder setI18nText(final I18nText i18nText) {
-        this.i18nText = i18nText;
-        return this;
     }
 
     public NotificationBuilder type(final Notification.NotificationType notificationType) {
