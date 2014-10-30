@@ -5,10 +5,12 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Titled;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 
+import static org.apache.commons.lang3.StringUtils.isNotEmpty;
+
 public abstract class TitledBuilder extends ElementBuilder {
 
     protected I18nText i18nText;
-    protected I18nText excelColumnLabel;
+    protected String excelColumnLabelKey;
     protected I18nText verboseHelp;
 
     protected TitledBuilder(String id) {
@@ -34,8 +36,8 @@ public abstract class TitledBuilder extends ElementBuilder {
         if (placeholder != null) {
             ((Titled)element).setPlaceholder(placeholder);
         }
-        if (excelColumnLabel != null) {
-            ((Titled)element).setExcelColumnLabel(excelColumnLabel);
+        if (isNotEmpty(excelColumnLabelKey)) {
+            ((Titled) element).setExcelColumnLabel(getI18nText(excelColumnLabelKey));
         }
         return element;
     }
@@ -51,8 +53,8 @@ public abstract class TitledBuilder extends ElementBuilder {
         return this;
     }
 
-    public TitledBuilder excelColumnLabel(I18nText excelColumnLabel) {
-        this.excelColumnLabel = excelColumnLabel;
+    public TitledBuilder excelColumnLabel(String labelKey) {
+        this.excelColumnLabelKey = labelKey;
         return this;
     }
 

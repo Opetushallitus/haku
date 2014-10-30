@@ -92,6 +92,7 @@ public final class KoulutustaustaPhase {
         Element muu = Checkbox("pohjakoulutus_muu").formParams(formParameters).build();
         Element muuMore = createVarEqualsToValueRule(muu.getId(), "true");
         Element vuosi = TextQuestion("pohjakoulutus_muu_vuosi")
+                .excelColumnLabel("pohjakoulutus_muu_vuosi.excel")
                 .requiredInline()
                 .validator(ElementUtil.createYearValidator(formParameters.getApplicationSystem().getHakukausiVuosi() + 1, 1900))
                 .formParams(formParameters).build();
@@ -119,6 +120,7 @@ public final class KoulutustaustaPhase {
         Element ulk = Checkbox("pohjakoulutus_ulk").formParams(formParameters).build();
         Element ulkMore = createVarEqualsToValueRule(ulk.getId(), "true");
         Element vuosi = TextQuestion("pohjakoulutus_ulk_vuosi")
+                .excelColumnLabel("pohjakoulutus_ulk_vuosi.excel")
                 .requiredInline()
                 .validator(ElementUtil.createYearValidator(formParameters.getApplicationSystem().getHakukausiVuosi() + 1, 1900))
                 .formParams(formParameters).build();
@@ -158,6 +160,7 @@ public final class KoulutustaustaPhase {
         Element amt = Checkbox("pohjakoulutus_amt").formParams(formParameters).build();
         Element amtMore = createVarEqualsToValueRule(amt.getId(), "true");
         Element vuosi = TextQuestion("pohjakoulutus_amt_vuosi")
+                .excelColumnLabel("pohjakoulutus_amt_vuosi.excel")
                 .validator(ElementUtil.createYearValidator(formParameters.getApplicationSystem().getHakukausiVuosi() + 1, 1900))
                 .requiredInline().formParams(formParameters).build();
         Element nimike = TextQuestion("pohjakoulutus_amt_nimike").labelKey("pohjakoulutus.tutkintonimike")
@@ -174,6 +177,7 @@ public final class KoulutustaustaPhase {
         Element amMore = createVarEqualsToValueRule(am.getId(), "true");
 
         Element vuosi = TextQuestion("pohjakoulutus_am_vuosi")
+                .excelColumnLabel("pohjakoulutus_am_vuosi.excel")
                 .validator(ElementUtil.createYearValidator(formParameters.getApplicationSystem().getHakukausiVuosi() + 1, 1900))
                 .requiredInline().formParams(formParameters).build();
 
@@ -201,6 +205,7 @@ public final class KoulutustaustaPhase {
         Element yo = Checkbox("pohjakoulutus_yo").formParams(formParameters).build();
         Element yoMore = createVarEqualsToValueRule(yo.getId(), "true");
         Element vuosi = TextQuestion("pohjakoulutus_yo_vuosi")
+                .excelColumnLabel("pohjakoulutus_yo_vuosi.excel")
                 .requiredInline()
                 .validator(ElementUtil.createYearValidator(formParameters.getApplicationSystem().getHakukausiVuosi() + 1, 1900))
                 .formParams(formParameters).build();
@@ -292,7 +297,9 @@ public final class KoulutustaustaPhase {
 
         Element tutkinto = TextQuestion("suoritusoikeus_tutkinto").labelKey("pohjakoulutus.tutkinto")
                 .requiredInline().formParams(formParameters).build();
-        Element vuosi = TextQuestion("suoritusoikeus_vuosi").requiredInline()
+        Element vuosi = TextQuestion("suoritusoikeus_vuosi")
+                .excelColumnLabel("suoritusoikeus_vuosi.excel")
+                .requiredInline()
                 .validator(ElementUtil.createYearValidator(formParameters.getApplicationSystem().getHakukausiVuosi() + 1, 1900))
                 .formParams(formParameters).build();
 
