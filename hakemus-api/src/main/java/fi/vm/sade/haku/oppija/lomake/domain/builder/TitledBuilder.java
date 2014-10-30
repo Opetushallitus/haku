@@ -11,10 +11,7 @@ public abstract class TitledBuilder extends ElementBuilder {
 
     protected I18nText i18nText;
     protected String excelColumnLabelKey;
-<<<<<<< HEAD
-=======
     protected I18nText excelColumnLabel;
->>>>>>> bug/OVT-8766
     protected I18nText verboseHelp;
 
     protected TitledBuilder(String id) {
