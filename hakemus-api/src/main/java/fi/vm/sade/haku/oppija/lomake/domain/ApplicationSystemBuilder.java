@@ -14,6 +14,7 @@ public class ApplicationSystemBuilder {
     private String state;
     private List<ApplicationPeriod> applicationPeriods;
     private String applicationSystemType;
+    private Boolean usePriorities;
     private String hakutapa;
     private Integer hakukausiVuosi;
     private String hakukausiUri;
@@ -82,7 +83,7 @@ public class ApplicationSystemBuilder {
 
     public ApplicationSystem get() {
         return new ApplicationSystem(id, form, name, state, applicationPeriods,
-                applicationSystemType, hakutapa, hakukausiVuosi, hakukausiUri, kohdejoukkoUri, applicationCompleteElements,
+                applicationSystemType, usePriorities, hakutapa, hakukausiVuosi, hakukausiUri, kohdejoukkoUri, applicationCompleteElements,
                 additionalPrintElements, applicationOptionAttachmentRequests, maxApplicationOptions, lastGenerated);
     }
 
@@ -108,6 +109,11 @@ public class ApplicationSystemBuilder {
 
     public ApplicationSystemBuilder addLastGenerated(Date lastGenerated) {
         this.lastGenerated = lastGenerated;
+        return this;
+    }
+
+    public ApplicationSystemBuilder addUsePriorities(Boolean usePriorities) {
+        this.usePriorities = usePriorities;
         return this;
     }
 }
