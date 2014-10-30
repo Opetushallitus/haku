@@ -1,6 +1,7 @@
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain;
 
 
+import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.builder.CheckBoxBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.builder.TitledGroupBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
@@ -10,12 +11,11 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ExprUtil;
 import org.codehaus.jackson.annotate.JsonCreator;
 import org.codehaus.jackson.annotate.JsonProperty;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.CheckBoxBuilder.Checkbox;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.TitledGroupBuilder.TitledGroup;
+import static fi.vm.sade.haku.oppija.lomake.util.StringUtil.safeToString;
 
 public class ThemeCheckBoxQuestion extends ThemeOptionQuestion {
 
@@ -50,8 +50,9 @@ public class ThemeCheckBoxQuestion extends ThemeOptionQuestion {
             addAoidOrAoidGroup(checkbox);
             elementBuilder
                     .addChild(checkbox
-                    .i18nText(option.getOptionText())
-                    .formParams(formParameters));
+                            .excelColumnLabel(buildExcelColumnLabel(option.getOptionText(), formParameters))
+                            .i18nText(option.getOptionText())
+                            .formParams(formParameters));
         }
         elementBuilder.formParams(formParameters);
         elementBuilder.i18nText(getMessageText());
@@ -76,6 +77,19 @@ public class ThemeCheckBoxQuestion extends ThemeOptionQuestion {
         }
 
         return elementBuilder.build();
+    }
+
+    private I18nText buildExcelColumnLabel(I18nText optionText, FormParameters formParameters) {
+        I18nText parentText = getMessageText();
+        Set<String> langs = new HashSet<String>(parentText.getTranslations().keySet());
+        langs.addAll(optionText.getTranslations().keySet());
+        Map<String, String> translations = new HashMap<String, String>(langs.size());
+        for (String lang : langs) {
+            translations.put(lang, safeToString(parentText.getTranslations().get(lang))
+                            + ":"
+                            + safeToString(optionText.getTranslations().get(lang)));
+        }
+        return new I18nText(translations);
     }
 
     @Override

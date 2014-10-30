@@ -186,7 +186,7 @@ public class XlsModel {
 
     public String getText(final Element element) {
         if (element instanceof Titled) {
-            I18nText i18nText = ((Titled)element).getExcelColumnLabel();
+            I18nText i18nText = ((Titled) element).getExcelColumnLabel();
             if (i18nText != null) {
                 return i18nText.getTranslations().get(lang);
             }
