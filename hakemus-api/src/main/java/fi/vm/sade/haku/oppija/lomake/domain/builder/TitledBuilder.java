@@ -11,6 +11,7 @@ public abstract class TitledBuilder extends ElementBuilder {
 
     protected I18nText i18nText;
     protected String excelColumnLabelKey;
+    protected I18nText excelColumnLabel;
     protected I18nText verboseHelp;
 
     protected TitledBuilder(String id) {
@@ -37,8 +38,9 @@ public abstract class TitledBuilder extends ElementBuilder {
             ((Titled)element).setPlaceholder(placeholder);
         }
         if (isNotEmpty(excelColumnLabelKey)) {
-            ((Titled) element).setExcelColumnLabel(getI18nText(excelColumnLabelKey));
+            excelColumnLabel = getI18nText(excelColumnLabelKey);
         }
+        ((Titled) element).setExcelColumnLabel(excelColumnLabel);
         return element;
     }
 
@@ -55,6 +57,11 @@ public abstract class TitledBuilder extends ElementBuilder {
 
     public TitledBuilder excelColumnLabel(String labelKey) {
         this.excelColumnLabelKey = labelKey;
+        return this;
+    }
+
+    public TitledBuilder excelColumnLabel(I18nText excelColumnLabel) {
+        this.excelColumnLabel = excelColumnLabel;
         return this;
     }
 

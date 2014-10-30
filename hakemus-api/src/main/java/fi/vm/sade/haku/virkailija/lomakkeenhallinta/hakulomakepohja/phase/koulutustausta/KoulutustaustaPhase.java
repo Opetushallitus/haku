@@ -186,7 +186,9 @@ public final class KoulutustaustaPhase {
         Element laajuus = TextQuestion("pohjakoulutus_am_laajuus").labelKey("pohjakoulutus.tutkinnonLaajuus")
                 .requiredInline().formParams(formParameters).build();
         Element laajuusYksikko = Dropdown("pohjakoulutus_am_laajuus_yksikko")
-                .addOptions(laajuusYksikot).inline().formParams(formParameters).labelKey("form.yleinen.nbsp").build();
+                .addOptions(laajuusYksikot)
+                .excelColumnLabel("laajuusyksikko.excel")
+                .inline().formParams(formParameters).labelKey("form.yleinen.nbsp").build();
         Element nayttotutkinto = Checkbox("pohjakoulutus_am_nayttotutkintona").inline()
                 .formParams(formParameters).build();
         Element oppilaitos = TextQuestion("pohjakoulutus_am_oppilaitos").labelKey("pohjakoulutus.oppilaitos")
@@ -234,7 +236,11 @@ public final class KoulutustaustaPhase {
                 .requiredInline()
                 .formParams(formParameters).build();
         Element ammatillinenLaajuusYksikot = Dropdown("pohjakoulutus_yo_ammatillinen_laajuusYksikko")
-                .addOptions(laajuusYksikot).inline().formParams(formParameters).labelKey("form.yleinen.nbsp").build();
+                .addOptions(laajuusYksikot)
+                .excelColumnLabel("laajuusyksikko.excel")
+                .inline()
+                .formParams(formParameters)
+                .labelKey("form.yleinen.nbsp").build();
 
         ammatillinenMore.addChild(ammatillinenVuosi,
                 ammatillinenNimike,
