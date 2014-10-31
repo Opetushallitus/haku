@@ -43,7 +43,7 @@ public class PreferenceTableIT extends AbstractFormTest {
 
     @Before
     public void init() throws IOException {
-        final PreferenceTable table = new PreferenceTable("t1", createI18NAsIs("Hakutoiveet"));
+        final PreferenceTable table = new PreferenceTable("t1", createI18NAsIs("Hakutoiveet"), true);
         final PreferenceRow row = new PreferenceRow("r1",  createI18NAsIs("Tyhjennä"),
                 createI18NAsIs("Koulutus"), createI18NAsIs("Opetuspiste"),
                 createI18NAsIs("Koulutukseen sisältyvät koulutusohjelmat"),
@@ -83,5 +83,34 @@ public class PreferenceTableIT extends AbstractFormTest {
         final IElement input2 = getElementById("r2-Opetuspiste");
         assertEquals("input", input2.getName());
         assertEquals("text", input2.getAttribute("type"));
+    }
+
+    @Test
+    public void testUsePriorities() {
+        final String startUrl = applicationSystemHelper.getStartUrl();
+        beginAt(startUrl);
+        assertElementPresentByXPath("//button[@class='down sort']");
+        assertElementPresentByXPath("//button[@class='up sort']");
+    }
+
+    @Test
+    public void testNotUsePriorities() {
+        final PreferenceTable table = new PreferenceTable("t1", createI18NAsIs("Hakutoiveet"), false);
+        final PreferenceRow row = new PreferenceRow("r1",  createI18NAsIs("Tyhjennä"),
+                createI18NAsIs("Koulutus"), createI18NAsIs("Opetuspiste"),
+                createI18NAsIs("Koulutukseen sisältyvät koulutusohjelmat"),
+                createI18NAsIs("Liitteet"));
+        final PreferenceRow row2 = new PreferenceRow("r2", createI18NAsIs("Tyhjennä"),
+                createI18NAsIs("Koulutus"), createI18NAsIs("Opetuspiste"),
+                createI18NAsIs("Koulutukseen sisältyvät koulutusohjelmat"),
+                createI18NAsIs("Liitteet"));
+        table.addChild(row);
+        table.addChild(row2);
+        ApplicationSystem applicationSystem = new FormModelBuilder().buildDefaultFormWithFields(table);
+        this.applicationSystemHelper = updateModelAndCreateFormModelHelper(applicationSystem);
+        final String startUrl = applicationSystemHelper.getStartUrl();
+        beginAt(startUrl);
+        assertElementNotPresentByXPath("//button[@class='down sort']");
+        assertElementNotPresentByXPath("//button[@class='up sort']");
     }
 }
