@@ -119,6 +119,7 @@ tarjonta.data.url=https\://${host.virkailija}/tarjonta-service/rest/
 tarjonta.haku.resource.url=https\://${host.virkailija}/tarjonta-service/rest/haku
 tarjonta.hakukohde.resource.url=https\://${host.virkailija}/tarjonta-service/rest/hakukohde
 tarjonta.v1.haku.resource.url=https\://${host.virkailija}/tarjonta-service/rest/v1/haku
+tarjonta.v1.hakukohde.resource.url=https\://${host.virkailija}/tarjonta-service/rest/v1/hakukohde
 user.home.conf=/data00/oph/haku/oph-configuration
 user.oid.prefix=1.2.246.562.24
 user.webservice.url.backend=https\://${host.virkailija}/authentication-service/services/userService
