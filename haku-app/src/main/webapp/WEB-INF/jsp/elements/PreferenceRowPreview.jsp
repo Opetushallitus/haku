@@ -25,12 +25,16 @@
 <c:set value="${element.id}-Koulutus-id-aoIdentifier" var="aoIdentifier" scope="page"/>
 <c:if test="${not empty answers[selectHiddenInputId]}">
     <tr>
-        <td class="padding-top-3"><a name="${element.id}"></a><span class="margin-right-5 bold"><c:out value="${index}"/></span></td>
-        <td class="sublabel padding-top-3"><haku:i18nText value="${element.learningInstitutionLabel}"/></td>
+        <c:if test="${usePriorities}">
+            <td class="padding-top-3"><span class="margin-right-5 bold"><c:out value="${index}"/></span></td>
+        </c:if>
+        <td class="sublabel padding-top-3"><a name="${element.id}"></a><haku:i18nText value="${element.learningInstitutionLabel}"/></td>
         <td class="bold padding-top-3"><c:out value="${answers[textInputId]}"/></td>
     </tr>
     <tr>
-        <td></td>
+        <c:if test="${usePriorities}">
+            <td></td>
+        </c:if>
         <td class="sublabel"><haku:i18nText value="${element.educationLabel}"/></td>
         <td class="bold"><c:out value="${answers[selectInputId]}"/>
             <c:if test="${virkailijaPreview}">
@@ -40,7 +44,9 @@
     </tr>
     <c:if test="${not empty fn:children(element, answers)}">
         <tr>
-            <td></td>
+            <c:if test="${usePriorities}">
+                <td></td>
+            </c:if>
             <td class="sublabel"><fmt:message key="hakutoiveet.kysymykset"/></td>
             <td>
                 <table class="additional-questions-table width-100">

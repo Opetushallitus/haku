@@ -80,8 +80,10 @@ public class HakutoiveetPhase {
         if (formParameters.isOnlyThemeGenerationForFormEditor())
             return hakutoiveetTheme;
 
-        PreferenceTable preferenceTable =
-                new PreferenceTable("preferencelist", createI18NText("form.hakutoiveet.otsikko", formParameters));
+        PreferenceTable preferenceTable = new PreferenceTable(
+                "preferencelist",
+                createI18NText("form.hakutoiveet.otsikko", formParameters),
+                formParameters.getApplicationSystem().isUsePriorities());
 
         List<String> preferenceIds = getPreferenceIds(formParameters);
         PreferenceRow pr1 = createI18NPreferenceRow(preferenceIds.remove(0), formParameters);
@@ -109,6 +111,7 @@ public class HakutoiveetPhase {
                 createI18NText("form.hakutoiveet.opetuspiste", formParameters),
                 createI18NText("form.hakutoiveet.sisaltyvatKoulutusohjelmat", formParameters),
                 createI18NText("form.hakutoiveet.liitteet", formParameters));
+
         if (!formParameters.isPervako()) {
             if (!formParameters.isHigherEd()) {
                 pr.addChild(createDiscretionaryQuestionsAndRules(id, formParameters));

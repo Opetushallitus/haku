@@ -24,9 +24,9 @@ import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakuService;
-import fi.vm.sade.tarjonta.service.resources.dto.OidRDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.OidV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.ResultV1RDTO;
 import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,7 +53,7 @@ public class HakuServiceImpl implements HakuService {
     private final WebResource webResource;
 
     @Autowired
-    public HakuServiceImpl(@Value("${tarjonta.v1.hakukohde.resource.urll}") final String tarjontaHakuResourceUrl) {
+    public HakuServiceImpl(@Value("${tarjonta.v1.haku.resource.url}") final String tarjontaHakuResourceUrl) {
         ClientConfig cc = new DefaultClientConfig();
         cc.getClasses().add(JacksonJsonProvider.class);
         Client clientWithJacksonSerializer = Client.create(cc);
@@ -65,17 +65,18 @@ public class HakuServiceImpl implements HakuService {
 
     @Override
     public List<ApplicationSystem> getApplicationSystems() {
-        List<OidRDTO> hakuOids = webResource.accept(MEDIA_TYPE).get(new GenericType<List<OidRDTO>>() {
-        });
+        ResultV1RDTO<List<String>> hakuOidResult = webResource.accept(MEDIA_TYPE)
+                .get(new GenericType<ResultV1RDTO<List<String>>>() { });
         List<HakuV1RDTO> hakuDTOs = Lists.newArrayList();
-        if (hakuOids != null) {
-            for (OidRDTO oid : hakuOids) {
-                HakuV1RDTO haku = fetchApplicationSystem(oid.getOid());
+        if (hakuOidResult != null && hakuOidResult.getResult() != null) {
+            for (String oid : hakuOidResult.getResult()) {
+                HakuV1RDTO haku = fetchApplicationSystem(oid);
                 if (haku.isJarjestelmanHakulomake()) {
                     hakuDTOs.add(haku);
                 }
             }
         }
+
         return Lists.transform(hakuDTOs, new HakuV1RDTOToApplicationSystemFunction());
     }
 
@@ -107,7 +108,9 @@ public class HakuServiceImpl implements HakuService {
 
     private HakuV1RDTO fetchApplicationSystem(String oid) {
         WebResource asWebResource = webResource.path(oid);
-        return asWebResource.accept(MEDIA_TYPE).get(new GenericType<HakuV1RDTO>() {
+        ResultV1RDTO<HakuV1RDTO> result = asWebResource.accept(MEDIA_TYPE).get(new GenericType<ResultV1RDTO<HakuV1RDTO>>() {
         });
+        HakuV1RDTO haku = result.getResult();
+        return haku;
     }
 }
