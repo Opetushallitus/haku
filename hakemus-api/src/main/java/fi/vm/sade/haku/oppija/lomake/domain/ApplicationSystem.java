@@ -47,6 +47,7 @@ public class ApplicationSystem implements Serializable {
     private String hakukausiUri;
     private String kohdejoukkoUri;
     private Date lastGenerated;
+    private Boolean usePriorities;
 
     private List<Element> applicationCompleteElements;
     private List<Element> additionalInformationElements;
@@ -56,6 +57,7 @@ public class ApplicationSystem implements Serializable {
     public ApplicationSystem(final String id, final Form form, final I18nText name, final String state,
                              final List<ApplicationPeriod> applicationPeriods,
                              final String applicationSystemType,
+                             final Boolean usePriorities,
                              final String hakutapa,
                              final Integer hakukausiVuosi,
                              final String hakukausiUri,
@@ -74,6 +76,7 @@ public class ApplicationSystem implements Serializable {
         this.applicationPeriods = applicationPeriods != null ?
                 ImmutableList.copyOf(applicationPeriods) : Lists.<ApplicationPeriod>newArrayList();
         this.applicationSystemType = applicationSystemType;
+        this.usePriorities = usePriorities;
         this.hakutapa = hakutapa;
         this.hakukausiVuosi = hakukausiVuosi;
         this.hakukausiUri = hakukausiUri;
@@ -123,6 +126,10 @@ public class ApplicationSystem implements Serializable {
 
     public String getApplicationSystemType() {
         return applicationSystemType;
+    }
+
+    public boolean isUsePriorities() {
+        return usePriorities != null && usePriorities;
     }
 
     public String getHakutapa() {

@@ -46,7 +46,11 @@ public class Scheduler {
                 statusRepository.write("postprocess scheduler", new HashMap<String, String>() {{ put("state", "start");}});
                 worker.processApplications(sendMail);
                 statusRepository.write("postprocess scheduler", new HashMap<String, String>() {{ put("state", "done");}});
-            } catch (Exception e) {
+            } catch (final Exception e) {
+                statusRepository.write("postprocess scheduler", new HashMap<String, String>() {{
+                    put("state", "error");
+                    put("error", e.getMessage());
+                }});
                 LOGGER.error("Error processing applications", e);
                 //run = false;
             }

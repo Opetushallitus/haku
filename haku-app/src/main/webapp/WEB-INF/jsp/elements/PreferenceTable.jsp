@@ -24,28 +24,30 @@
     <tbody>
     <c:forEach var="child" items="${element.children}" varStatus="status">
         <tr>
-            <td class="index">
-                <span>${status.index + 1}.</span>
-                <div class="sort-arrows">
-                    <c:if test="${not status.first}">
-                        <button class="up sort" data-id="${child.id}" data-target="${element.children[status.index - 1].id}"
-                                type="button">
-                            <span>
-                                <span>^</span>
-                            </span>
-                        </button>
-                        <br/>
-                    </c:if>
-                    <c:if test="${not status.last}">
-                        <button class="down sort" data-id="${child.id}"
-                                data-target="${element.children[status.index + 1].id}" type="button">
-                            <span>
-                                <span>v</span>
-                            </span>
-                        </button>
-                    </c:if>
-                </div>
-            </td>
+            <c:if test="${element.usePriorities}">
+                <td class="index">
+                        <span>${status.index + 1}.</span>
+                        <div class="sort-arrows">
+                            <c:if test="${not status.first}">
+                                <button class="up sort" data-id="${child.id}" data-target="${element.children[status.index - 1].id}"
+                                        type="button">
+                                    <span>
+                                        <span>^</span>
+                                    </span>
+                                </button>
+                                <br/>
+                            </c:if>
+                            <c:if test="${not status.last}">
+                                <button class="down sort" data-id="${child.id}"
+                                        data-target="${element.children[status.index + 1].id}" type="button">
+                                    <span>
+                                        <span>v</span>
+                                    </span>
+                                </button>
+                            </c:if>
+                        </div>
+                </td>
+            </c:if>
             <td>
                 <c:set var="index" value="${status.count}" scope="request"/>
                 <c:set var="sortableItem" value="${child}" scope="request"/>

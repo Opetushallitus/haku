@@ -12,7 +12,6 @@ import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Titled;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.CheckBox;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Question;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.TextQuestion;
@@ -170,8 +169,6 @@ public class XlsModel {
 
         if (Question.class.isAssignableFrom(question.getClass())) {
             value = ((Question) question).getExcelValue(answers.get(answerKey), lang);
-        } else if (question instanceof CheckBox) {
-            return Boolean.TRUE.toString().equals(answers.get(answerKey)) ? "X" : "";
         }
         return value;
     }
@@ -189,7 +186,7 @@ public class XlsModel {
 
     public String getText(final Element element) {
         if (element instanceof Titled) {
-            I18nText i18nText = ((Titled)element).getExcelColumnLabel();
+            I18nText i18nText = ((Titled) element).getExcelColumnLabel();
             if (i18nText != null) {
                 return i18nText.getTranslations().get(lang);
             }

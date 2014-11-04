@@ -7,7 +7,7 @@ import fi.vm.sade.haku.oppija.lomake.exception.ConfigurationException;
 
 import java.util.List;
 
-public class PhaseBuilder extends ElementBuilder {
+public class PhaseBuilder extends TitledBuilder {
     private List<String> editAllowedByRoles = null;
     boolean preview;
 

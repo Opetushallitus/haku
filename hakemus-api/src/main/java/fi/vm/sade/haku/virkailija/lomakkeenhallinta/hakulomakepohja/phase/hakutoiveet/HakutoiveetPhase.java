@@ -80,8 +80,10 @@ public class HakutoiveetPhase {
         if (formParameters.isOnlyThemeGenerationForFormEditor())
             return hakutoiveetTheme;
 
-        PreferenceTable preferenceTable =
-                new PreferenceTable("preferencelist", createI18NText("form.hakutoiveet.otsikko", formParameters));
+        PreferenceTable preferenceTable = new PreferenceTable(
+                "preferencelist",
+                createI18NText("form.hakutoiveet.otsikko", formParameters),
+                formParameters.getApplicationSystem().isUsePriorities());
 
         List<String> preferenceIds = getPreferenceIds(formParameters);
         PreferenceRow pr1 = createI18NPreferenceRow(preferenceIds.remove(0), formParameters);
@@ -109,6 +111,7 @@ public class HakutoiveetPhase {
                 createI18NText("form.hakutoiveet.opetuspiste", formParameters),
                 createI18NText("form.hakutoiveet.sisaltyvatKoulutusohjelmat", formParameters),
                 createI18NText("form.hakutoiveet.liitteet", formParameters));
+
         if (!formParameters.isPervako()) {
             if (!formParameters.isHigherEd()) {
                 pr.addChild(createDiscretionaryQuestionsAndRules(id, formParameters));
@@ -182,8 +185,8 @@ public class HakutoiveetPhase {
                 .addOptions(ImmutableList.of(
                         new Option(createI18NText("form.yleinen.kylla", formParameters), KYLLA),
                         new Option(createI18NText("form.yleinen.ei", formParameters), EI)))
-                .required()
                 .i18nText(createI18NText("form.hakutoiveet.harkinnanvarainen", formParameters))
+                .required()
                 .formParams(formParameters).build();
 
         Element discretionaryFollowUp = new DropdownSelectBuilder(discretionary.getId() + "-follow-up")
@@ -192,8 +195,8 @@ public class HakutoiveetPhase {
                 .addOption((Option) new OptionBuilder().setValue("sosiaalisetsyyt").labelKey("perustelu.sosiaaliset").formParams(formParameters).build())
                 .addOption((Option) new OptionBuilder().setValue("todistustenvertailuvaikeudet").labelKey("perustelu.todistustenvertailuvaikeudet").formParams(formParameters).build())
                 .addOption((Option) new OptionBuilder().setValue(TODISTUSTENPUUTTUMINEN).labelKey("perustelu.todistustenpuuttuminen").formParams(formParameters).build())
-                .required()
                 .i18nText(createI18NText("form.hakutoiveet.harkinnanvarainen.perustelu", formParameters))
+                .required()
                 .formParams(formParameters).build();
 
         Element discretionaryFollowUpRule = createVarEqualsToValueRule(discretionary.getId(), KYLLA);
@@ -267,8 +270,8 @@ public class HakutoiveetPhase {
                 .addOptions(ImmutableList.of(
                         new Option(createI18NText("form.yleinen.kylla", formParameters), KYLLA),
                         new Option(createI18NText("form.yleinen.ei", formParameters), EI)))
-                .required()
                 .i18nText(createI18NText("form.hakutoiveet.urheilijan.ammatillisen.koulutuksen.lisakysymys", formParameters))
+                .required()
                 .formParams(formParameters).build();
         Expr expr = new And(new Equals(new Variable(index + "-Koulutus-id-athlete"), new Value(ElementUtil.KYLLA)),
                 new Equals(new Variable(index + "-Koulutus-id-vocational"), new Value(ElementUtil.KYLLA)));
@@ -291,8 +294,8 @@ public class HakutoiveetPhase {
                 .addOptions(ImmutableList.of(
                         new Option(createI18NText("form.yleinen.kylla", formParameters), KYLLA),
                         new Option(createI18NText("form.yleinen.ei", formParameters), EI)))
-                .required()
                 .i18nText(createI18NText("form.hakutoiveet.kaksoistutkinnon.lisakysymys", formParameters))
+                .required()
                 .formParams(formParameters).build();
         Element hasQuestion =
                 ElementUtil.createRuleIfVariableIsTrue(index + "-Koulutus-id-kaksoistutkinto");

@@ -95,7 +95,6 @@ public class LomakeIT extends DummyModelBaseItTest {
 
         findByIdAndClick("LISAKOULUTUS_KYMPPI", "LISAKOULUTUS_VAMMAISTEN", "LISAKOULUTUS_TALOUS", "LISAKOULUTUS_AMMATTISTARTTI");
         setValue(OppijaConstants.PERUSOPETUS_KIELI, "FI");
-        screenshot("LomakeIT");
         setValue("KOULUTUSPAIKKA_AMMATILLISEEN_TUTKINTOON", "false", true);
         nextPhase(OppijaConstants.PHASE_APPLICATION_OPTIONS);
 
@@ -151,6 +150,7 @@ public class LomakeIT extends DummyModelBaseItTest {
         findByIdAndClick("submit_confirm");
 
         String oid = driver.findElement(new By.ByClassName("number")).getText();
+        screenshot("lomakeit");
         findByXPath("//h3[contains(text(), \"Musiikki- tanssi- ja liikunta-alan\")]");
 
         assertFalse(oid.contains("."));

@@ -9,8 +9,7 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PostalCodeBuilder extends ElementBuilder {
-    private final List<Option> options = new ArrayList<Option>();
+public class PostalCodeBuilder extends OptionQuestionBuilder {
 
     protected PostalCodeBuilder(final String id) {
         super(id);

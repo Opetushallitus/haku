@@ -1,10 +1,10 @@
 {
     "_id":
     {
-        "$oid": "53e4885ce4b0d272fdc5d777"
+        "$oid": "53e4885ce4b0d272fdc5d799"
     },
     "type": "Application",
-    "applicationSystemId": "1.2.246.562.29.95390561488",
+    "applicationSystemId": "1.2.246.562.5.2013112910452702965370",
     "answers": {
         "henkilotiedot": {
             "preference3-yoLiite": "true",
@@ -26,65 +26,62 @@
             "koulusivistyskieli":"FI"
         },
         "lisatiedot": {
-          "asiointikieli": "suomi"
+            "asiointikieli": "suomi"
         },
         "hakutoiveet": {
             "preference3-Koulutus-id-ao-groups": "",
-            "preference1-Opetuspiste": "Taideyliopisto, Sibelius-Akatemia",
-            "preference3-Koulutus-id-athlete": "false",
+            "preference1-Opetuspiste": "Aitoon koulutuskeskus",
+            "preference3-Koulutus-id-athlete": "",
             "preference2-Koulutus-id-aoIdentifier": "",
-            "preference2-Koulutus": "Musiikkitiede, humanististen tieteiden kandidaatti ja filosofian maisteri",
-            "preference3-Opetuspiste-id": "1.2.246.562.10.25716924136",
+            "preference2-Koulutus": "Liiketalouden perustutkinto, er, Kevät 2014, valmis",
+            "preference3-Opetuspiste-id": "",
             "preference2-Koulutus-id-ao-groups": "",
             "preference1-Koulutus-educationDegree": "",
             "preference2-Koulutus-id-sora": "false",
-            "preference3-Koulutus-id": "1.2.246.562.20.48556982121",
-            "preference1-Opetuspiste-id": "1.2.246.562.10.78522729439",
+            "preference3-Koulutus-id": "",
+            "preference1-Opetuspiste-id": "1.2.246.562.10.81044480515",
             "preference2-Koulutus-educationDegree": "",
             "preference1-Koulutus-id-sora": "false",
             "preference1-Koulutus-id-aoIdentifier": "",
             "preference1-Koulutus-id-educationcode": "",
             "preference3-Koulutus-id-attachmentgroups": "",
-            "preference2-Koulutus-id": "1.2.246.562.20.40828730156",
-            "preference3-Koulutus-id-vocational": "false",
+            "preference2-Koulutus-id": "1.2.246.562.14.2013120515524070995659",
+            "preference3-Koulutus-id-vocational": "",
             "preference1-Koulutus-id-vocational": "false",
             "preference1-Koulutus-id-athlete": "false",
             "preference5-Koulutus-id": "",
-            "preference2-Opetuspiste": "Helsingin yliopisto, Humanistinen tiedekunta",
+            "preference2-Opetuspiste": "Kiipulan ammattiopisto,  Lahden toimipaikka",
             "preference2-Koulutus-id-athlete": "false",
             "preference3-Koulutus-educationDegree": "",
             "preference2-Koulutus-id-kaksoistutkinto": "false",
             "preference3-Koulutus-id-kaksoistutkinto": "",
             "preference1-Koulutus-id-attachmentgroups": "",
-            "preference3-Koulutus-id-lang": "FI",
-            "preference2-Opetuspiste-id": "1.2.246.562.10.61397511793",
-            "preference3-Opetuspiste": "Taideyliopisto,  Teatterikorkeakoulu",
+            "preference3-Koulutus-id-lang": "",
+            "preference2-Opetuspiste-id": "1.2.246.562.10.36082741939",
+            "preference3-Opetuspiste": "",
             "preference1-Opetuspiste-id-parents": "",
             "preference6-Koulutus-id": "",
             "preference2-Koulutus-id-vocational": "false",
-            "preference1-Koulutus-id": "1.2.246.562.20.85668637847",
+            "preference1-Koulutus-id": "1.2.246.562.14.2014022408541751568934",
             "preference3-Koulutus-id-attachments": "",
-            "preference3-Koulutus-id-sora": "false",
+            "preference3-Koulutus-id-sora": "",
             "preference4-Koulutus-id": "",
             "preference2-Koulutus-id-lang": "FI",
-            "preference1-Koulutus": "Kansanmusiikki 5,5-vuotinen koulutus",
+            "preference1-Koulutus": "Tuotteen suunnittelun ja valmistuksen koulutusohjelma, er (Käsi- ja taideteollisuusalan perustutkinto), Syksy 2014, valmis",
             "preference3-Koulutus-id-educationcode": "",
             "preference1-Koulutus-id-kaksoistutkinto": "false",
-            "preference3-Koulutus": "Näyttelijäntyön koulutusohjelma",
+            "preference3-Koulutus": "",
             "preference3-Koulutus-id-aoIdentifier": "",
             "preference1-Koulutus-id-lang": "FI",
             "preference2-Koulutus-id-educationcode": ""
         },
-      "koulutustausta": {
-        "suoritusoikeus": "false",
-        "aiempitutkinto": "false",
-        "pohjakoulutus_yo_tutkinto": "fi",
-        "pohjakoulutus_yo_vuosi": "2014",
-        "pohjakoulutus_yo": "true"
-      },
-      "osaaminen": {}
+        "koulutustausta": {
+            "suoritusoikeus": "false",
+            "aiempitutkinto": "false"
+        },
+        "osaaminen": {}
     },
-    "oid": "1.2.246.562.11.00000877687",
+    "oid": "1.2.246.562.11.00000877688",
     "state": "ACTIVE",
     "studentIdentificationDone": false,
     "personOid": "1.2.246.562.24.14229104472",

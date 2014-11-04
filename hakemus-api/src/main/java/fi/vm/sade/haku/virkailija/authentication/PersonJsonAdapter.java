@@ -1,7 +1,6 @@
 package fi.vm.sade.haku.virkailija.authentication;
 
 import com.google.gson.*;
-import fi.vm.sade.authentication.service.types.dto.SukupuoliType;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -101,9 +100,9 @@ public class PersonJsonAdapter implements JsonSerializer<Person>, JsonDeserializ
 
         log.debug("Deserialized basic info");
         String sex = getJsonString(personJson, "sukupuoli");
-        if (isNotBlank(sex) && (SukupuoliType.MIES.value().equals(sex) || OppijaConstants.SUKUPUOLI_MIES.equals(sex))) {
+        if (OppijaConstants.SUKUPUOLI_MIES.equals(sex)) {
             personBuilder.setSex(OppijaConstants.SUKUPUOLI_MIES);
-        } else if (isNotBlank(sex) && (SukupuoliType.NAINEN.value().equals(sex) || OppijaConstants.SUKUPUOLI_NAINEN.equals(sex))) {
+        } else if (OppijaConstants.SUKUPUOLI_NAINEN.equals(sex)) {
             personBuilder.setSex(OppijaConstants.SUKUPUOLI_NAINEN);
         }
 

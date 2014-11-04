@@ -3,7 +3,7 @@ package fi.vm.sade.haku.oppija.lomake.domain.builder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Theme;
 
-public class ThemeBuilder extends ElementBuilder {
+public class ThemeBuilder extends TitledBuilder {
     boolean preview;
     boolean configurable;
 
