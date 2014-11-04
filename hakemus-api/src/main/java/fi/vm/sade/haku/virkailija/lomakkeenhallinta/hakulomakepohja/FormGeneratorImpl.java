@@ -63,6 +63,7 @@ public class FormGeneratorImpl implements FormGenerator {
                 .addState(as.getState())
                 .addApplicationPeriods(as.getApplicationPeriods())
                 .addApplicationSystemType(as.getApplicationSystemType())
+                .addUsePriorities(as.isUsePriorities())
                 .addHakutapa(as.getHakutapa())
                 .addHakukausiUri(as.getHakukausiUri())
                 .addHakukausiVuosi(as.getHakukausiVuosi())

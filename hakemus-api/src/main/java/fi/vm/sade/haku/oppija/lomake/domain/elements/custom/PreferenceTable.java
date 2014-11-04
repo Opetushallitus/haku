@@ -35,10 +35,17 @@ import java.util.List;
 public class PreferenceTable extends Question {
 
     private static final long serialVersionUID = 1289678491786047575L;
+    private boolean usePriorities;
 
     public PreferenceTable(@JsonProperty(value = "id") final String id,
-                           @JsonProperty(value = "i18nText") final I18nText i18nText ) {
+                           @JsonProperty(value = "i18nText") final I18nText i18nText,
+                           @JsonProperty(value = "usePriorities") final Boolean usePriorities) {
         super(id, i18nText);
+        this.usePriorities = usePriorities != null && usePriorities;
+    }
+
+    public boolean isUsePriorities() {
+        return usePriorities;
     }
 
     @Override

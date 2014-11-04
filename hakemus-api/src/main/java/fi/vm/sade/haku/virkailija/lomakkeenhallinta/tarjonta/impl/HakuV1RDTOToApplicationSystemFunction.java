@@ -24,8 +24,8 @@ import fi.vm.sade.haku.oppija.lomake.domain.ApplicationPeriod;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystemBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
-import fi.vm.sade.tarjonta.service.resources.dto.HakuDTO;
-import fi.vm.sade.tarjonta.service.resources.dto.HakuaikaRDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuaikaV1RDTO;
 
 import java.util.Iterator;
 import java.util.List;
@@ -34,10 +34,10 @@ import java.util.Map;
 /**
  * @author Mikko Majapuro
  */
-public class HakuDTOToApplicationSystemFunction implements Function<HakuDTO, ApplicationSystem> {
+public class HakuV1RDTOToApplicationSystemFunction implements Function<HakuV1RDTO, ApplicationSystem> {
 
     @Override
-    public ApplicationSystem apply(HakuDTO hakuDTO) {
+    public ApplicationSystem apply(HakuV1RDTO hakuDTO) {
         Map<String, String> names = hakuDTO.getNimi();
         Map<String, String> namesTransformed = Maps.newHashMap();
         Iterator<Map.Entry<String, String>> i = names.entrySet().iterator();
@@ -52,9 +52,9 @@ public class HakuDTOToApplicationSystemFunction implements Function<HakuDTO, App
         I18nText name = new I18nText(namesTransformed);
 
         List<ApplicationPeriod> applicationPeriods = Lists.newArrayList();
-        List<HakuaikaRDTO> hakuaikas = hakuDTO.getHakuaikas();
+        List<HakuaikaV1RDTO> hakuaikas = hakuDTO.getHakuaikas();
         if (hakuaikas != null) {
-            for (HakuaikaRDTO hakuaika : hakuaikas) {
+            for (HakuaikaV1RDTO hakuaika : hakuaikas) {
                 applicationPeriods.add(new ApplicationPeriod(hakuaika.getAlkuPvm(), hakuaika.getLoppuPvm()));
             }
         }
@@ -64,6 +64,7 @@ public class HakuDTOToApplicationSystemFunction implements Function<HakuDTO, App
                 .addName(name)
                 .addState(hakuDTO.getTila())
                 .addApplicationPeriods(applicationPeriods)
+                .addUsePriorities(hakuDTO.isUsePriority())
                 .addApplicationSystemType(hakuDTO.getHakutyyppiUri().split("#")[0])
                 .addHakutapa(hakuDTO.getHakutapaUri().split("#")[0])
                 .addHakukausiUri(hakuDTO.getHakukausiUri().split("#")[0])

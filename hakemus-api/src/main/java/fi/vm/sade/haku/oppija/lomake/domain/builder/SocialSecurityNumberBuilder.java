@@ -5,7 +5,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.SocialSecurityNumber;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
 
-public class SocialSecurityNumberBuilder extends ElementBuilder {
+public class SocialSecurityNumberBuilder extends QuestionBuilder {
     private I18nText sexI18nText;
     private Option maleOption;
     private Option femaleOption;

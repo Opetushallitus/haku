@@ -4,7 +4,6 @@ import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.Titled;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Question;
 import fi.vm.sade.haku.oppija.lomake.validation.Validator;
 import fi.vm.sade.haku.oppija.lomake.validation.validators.*;
@@ -22,9 +21,7 @@ public abstract class ElementBuilder {
     Integer size;
     boolean required;
     String key;
-    I18nText i18nText;
     I18nText help;
-    I18nText verboseHelp;
     String pattern;
     Integer maxLength;
     Integer minOptions;
@@ -47,19 +44,12 @@ public abstract class ElementBuilder {
         if (key == null) {
             key = id;
         }
-        if (this.i18nText == null) {
-            this.i18nText = getI18nText(key, false);
-        }
+        prepareBuild();
         Element element = buildImpl();
         if (help != null) {
             element.setHelp(help);
         } else {
             element.setHelp(getI18nText(key + ".help"));
-        }
-        if (verboseHelp != null) {
-            ElementUtil.setVerboseHelp(element, verboseHelp);
-        } else {
-            ElementUtil.setVerboseHelp(element, getI18nText(key + ".verboseHelp"));
         }
 
         if (size != null) {
@@ -79,10 +69,7 @@ public abstract class ElementBuilder {
         if (pattern != null) {
             element.setValidator(new RegexFieldValidator(getI18nText("yleinen.virheellinenarvo"), pattern));
         }
-        I18nText placeholder = getI18nText(key + ".placeholder");
-        if (placeholder != null && element instanceof  Titled) {
-            ((Titled)element).setPlaceholder(placeholder);
-        }
+
         I18nText errorMessage = getI18nText("yleinen.virheellinenarvo");
         if (maxLength != null) {
             element.addAttribute("maxlength", maxLength.toString());
@@ -100,7 +87,7 @@ public abstract class ElementBuilder {
             ((Question) element).setApplicationOptionId(this.applicationOptionId);
             ((Question) element).setApplicationOptionGroupId(this.applicationOptionGroupId);
         }
-        return element;
+        return finishBuild(element);
     }
 
     I18nText getI18nText(final String key) {
@@ -112,6 +99,14 @@ public abstract class ElementBuilder {
             return this.formParameters.getI18nText(key);
         }
         return (ignoreMissing ? null : ElementUtil.createI18NAsIs(key));
+    }
+
+    protected void prepareBuild() {
+        // NOP
+    }
+
+    protected Element finishBuild(Element element) {
+        return element;
     }
 
     abstract Element buildImpl();
@@ -153,11 +148,6 @@ public abstract class ElementBuilder {
 
     public ElementBuilder validator(final Validator validator) {
         validators.add(validator);
-        return this;
-    }
-
-    public ElementBuilder i18nText(final I18nText i18nText) {
-        this.i18nText = ensureTranslations(i18nText);
         return this;
     }
 
@@ -205,13 +195,7 @@ public abstract class ElementBuilder {
         return this;
     }
 
-    public ElementBuilder verboseHelp(final I18nText verboseHelp) {
-        this.verboseHelp = emptyToNull(verboseHelp);
-        this.verboseHelp = ensureTranslations(this.verboseHelp);
-        return this;
-    }
-
-    private I18nText emptyToNull(final I18nText i18nText) {
+    protected I18nText emptyToNull(final I18nText i18nText) {
         if (i18nText != null) {
             Map<String, String> translations = i18nText.getTranslations();
             if (translations != null && !translations.isEmpty()) {
@@ -222,7 +206,7 @@ public abstract class ElementBuilder {
         return null;
     }
 
-    private I18nText ensureTranslations(final I18nText i18nText){
+    protected I18nText ensureTranslations(final I18nText i18nText){
         if (null == i18nText)
             return null;
         return TranslationsUtil.ensureDefaultLanguageTranslations(i18nText);

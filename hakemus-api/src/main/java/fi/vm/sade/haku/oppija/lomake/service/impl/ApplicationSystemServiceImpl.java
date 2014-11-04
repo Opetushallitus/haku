@@ -6,6 +6,7 @@ import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.google.common.cache.Weigher;
 import com.google.common.collect.Lists;
+import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.ListenableFutureTask;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
@@ -18,9 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 @Service
 public class ApplicationSystemServiceImpl implements ApplicationSystemService {
@@ -28,6 +27,7 @@ public class ApplicationSystemServiceImpl implements ApplicationSystemService {
     private final LoadingCache<String, ApplicationSystem> cache;
     private final Boolean cacheApplicationSystems;
     private final Integer cacheRefreshTimer;
+    private final ExecutorService executors = Executors.newFixedThreadPool(10);
 
     @Autowired
     public ApplicationSystemServiceImpl(final ApplicationSystemRepository applicationSystemRepository,
@@ -56,16 +56,23 @@ public class ApplicationSystemServiceImpl implements ApplicationSystemService {
 
                     @Override
                     public ListenableFuture<ApplicationSystem> reload(final String key, final ApplicationSystem oldValue) throws Exception {
-                        return ListenableFutureTask.create(new Callable<ApplicationSystem>() {
-                            @Override
-                            public ApplicationSystem call() throws Exception {
-                                Date dbLastGenerated = getLastGeneratedForId(key);
-                                if (null != oldValue.getLastGenerated() && null != dbLastGenerated && oldValue.getLastGenerated().equals(dbLastGenerated))
-                                    return oldValue;
-                                else
+                        if(doesNotNeedRefresh(key, oldValue)) {
+                            return Futures.immediateFuture(oldValue);
+                        } else {
+                            ListenableFutureTask<ApplicationSystem> refreshTask = ListenableFutureTask.create(new Callable<ApplicationSystem>() {
+                                @Override
+                                public ApplicationSystem call() throws Exception {
                                     return findById(key);
-                            }
-                        });
+                                }
+                            });
+                            executors.execute(refreshTask);
+                            return refreshTask;
+                        }
+                    }
+
+                    private boolean doesNotNeedRefresh(String key, ApplicationSystem oldValue) {
+                        Date dbLastGenerated = getLastGeneratedForId(key);
+                        return null != oldValue.getLastGenerated() && null != dbLastGenerated && oldValue.getLastGenerated().equals(dbLastGenerated);
                     }
                 });
     }

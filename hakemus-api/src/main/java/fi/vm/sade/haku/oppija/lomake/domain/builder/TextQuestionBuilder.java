@@ -2,9 +2,8 @@ package fi.vm.sade.haku.oppija.lomake.domain.builder;
 
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.TextQuestion;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
 
-public class TextQuestionBuilder extends ElementBuilder {
+public class TextQuestionBuilder extends QuestionBuilder {
 
     public TextQuestionBuilder(String id) {
         super(id);

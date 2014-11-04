@@ -41,7 +41,7 @@ public final class ArvosanatTheme {
                         new Variable(OppijaConstants.PERUSOPETUS_KIELI),
                         new Value("SV")))
                 .build();
-        arvosanataulukkoPkSv.addChild(arvosanataulukkoYO(formParameters, true));
+        arvosanataulukkoPkSv.addChild(arvosanataulukkoPK(formParameters, true));
 
         Element arvosanataulukkoPkMuut = Rule(
                 new Not(
@@ -49,7 +49,7 @@ public final class ArvosanatTheme {
                                 new Variable(OppijaConstants.PERUSOPETUS_KIELI),
                                 new Value("SV"))))
                 .build();
-        arvosanataulukkoPkMuut.addChild(arvosanataulukkoYO(formParameters, false));
+        arvosanataulukkoPkMuut.addChild(arvosanataulukkoPK(formParameters, false));
 
         relatedQuestionPK.addChild(arvosanataulukkoPkSv);
         relatedQuestionPK.addChild(arvosanataulukkoPkMuut);
