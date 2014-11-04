@@ -1,10 +1,7 @@
 package fi.vm.sade.haku.oppija.lomake.service.impl;
 
 import com.google.common.base.Function;
-import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.CacheLoader;
-import com.google.common.cache.LoadingCache;
-import com.google.common.cache.Weigher;
+import com.google.common.cache.*;
 import com.google.common.collect.Lists;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
@@ -37,6 +34,7 @@ public class ApplicationSystemServiceImpl implements ApplicationSystemService {
         this.cacheApplicationSystems = cacheApplicationSystems;
         this.cacheRefreshTimer = cacheRefreshTimer;
         this.cache = CacheBuilder.newBuilder()
+                .recordStats()
                 .maximumWeight(10)
                 .refreshAfterWrite(cacheRefreshTimer, TimeUnit.MINUTES)
                 .weigher(new Weigher<String, ApplicationSystem>() {
@@ -150,5 +148,9 @@ public class ApplicationSystemServiceImpl implements ApplicationSystemService {
                 return as.getId();
             }
         });
+    }
+
+    public CacheStats getCacheStats() {
+        return cache.stats();
     }
 }
