@@ -77,7 +77,8 @@
         },
         "koulutustausta": {
             "suoritusoikeus": "false",
-            "aiempitutkinto": "false"
+            "aiempitutkinto": "false",
+            "POHJAKOULUTUS": "0"
         },
         "osaaminen": {}
     },
