@@ -35,7 +35,7 @@ public class ApplicationSystemServiceImpl implements ApplicationSystemService {
         this.cacheRefreshTimer = cacheRefreshTimer;
         this.cache = CacheBuilder.newBuilder()
                 .recordStats()
-                .maximumWeight(10)
+                .maximumWeight(20)
                 .refreshAfterWrite(cacheRefreshTimer, TimeUnit.MINUTES)
                 .weigher(new Weigher<String, ApplicationSystem>() {
                     @Override
