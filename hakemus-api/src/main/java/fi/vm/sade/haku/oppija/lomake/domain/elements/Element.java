@@ -125,6 +125,14 @@ public abstract class Element implements Serializable {
         return ImmutableList.copyOf(children);
     }
 
+    public List<Element> getAllChildren(Map<String, String> values) {
+        List<Element> children = new ArrayList<Element>();
+        for (Element child : getChildren(values)) {
+            children.add(child);
+            children.addAll(child.getAllChildren(values));
+        }
+        return children;
+    }
 
     @Transient
     public String getType() {
