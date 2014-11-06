@@ -54,11 +54,7 @@ public class HakutoiveetPhase {
     private static final String DISCRETIONARY_EDUCATION_DEGREE = "32";
     private static final String HAKUTOIVEET_PHASE_ID = "hakutoiveet";
     private static final String HAKUTOIVEET_THEME_ID = "hakutoiveet.teema";
-
-
-
     private static final String TODISTUSTENPUUTTUMINEN = "todistustenpuuttuminen";
-
 
     public static Element create(final FormParameters formParameters) {
         return Phase(HAKUTOIVEET_PHASE_ID).setEditAllowedByRoles("APP_HAKEMUS_READ_UPDATE", "APP_HAKEMUS_CRUD").formParams(formParameters)
@@ -83,7 +79,8 @@ public class HakutoiveetPhase {
         PreferenceTable preferenceTable = new PreferenceTable(
                 "preferencelist",
                 createI18NText("form.hakutoiveet.otsikko", formParameters),
-                formParameters.getApplicationSystem().isUsePriorities());
+                formParameters.getApplicationSystem().isUsePriorities(),
+                Math.min(6, formParameters.getApplicationSystem().getMaxApplicationOptions()));
 
         List<String> preferenceIds = getPreferenceIds(formParameters);
         PreferenceRow pr1 = createI18NPreferenceRow(preferenceIds.remove(0), formParameters);

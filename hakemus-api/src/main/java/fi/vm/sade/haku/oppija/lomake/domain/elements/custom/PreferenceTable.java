@@ -36,16 +36,23 @@ public class PreferenceTable extends Question {
 
     private static final long serialVersionUID = 1289678491786047575L;
     private boolean usePriorities;
+    private int preferencesInitiallyVisible;
 
     public PreferenceTable(@JsonProperty(value = "id") final String id,
                            @JsonProperty(value = "i18nText") final I18nText i18nText,
-                           @JsonProperty(value = "usePriorities") final Boolean usePriorities) {
+                           @JsonProperty(value = "usePriorities") final Boolean usePriorities,
+                           @JsonProperty(value = "preferencesInitiallyVisible") final Integer preferencesInitiallyVisible) {
         super(id, i18nText);
         this.usePriorities = usePriorities != null && usePriorities;
+        this.preferencesInitiallyVisible = preferencesInitiallyVisible.intValue();
     }
 
     public boolean isUsePriorities() {
         return usePriorities;
+    }
+
+    public int getPreferencesInitiallyVisible() {
+        return preferencesInitiallyVisible;
     }
 
     @Override

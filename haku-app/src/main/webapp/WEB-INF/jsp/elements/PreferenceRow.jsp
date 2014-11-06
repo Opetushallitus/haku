@@ -100,5 +100,7 @@
         <span id="${childLONamesId}"></span>
     </div>
 
-    <haku:viewChilds element="${sortableItem}"/>
+    <c:if test="${not hideYoAss}">
+        <haku:viewChilds element="${sortableItem}"/>
+    </c:if>
 </div>
