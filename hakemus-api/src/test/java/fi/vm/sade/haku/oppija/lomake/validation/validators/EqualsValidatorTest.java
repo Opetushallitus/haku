@@ -25,7 +25,7 @@ public class EqualsValidatorTest {
     public void testValidateNotFound() throws Exception {
         EqualsValidator equalsValidator = new EqualsValidator(TEXT, VALID_VALUE);
         ValidationResult validate = equalsValidator.validate(new ValidationInput(question, new HashMap<String, String>(),
-                null, null));
+                null, null, false));
         assertTrue(validate.hasErrors());
     }
 
@@ -33,7 +33,7 @@ public class EqualsValidatorTest {
     public void testValidateNotEqual() throws Exception {
         EqualsValidator equalsValidator = new EqualsValidator(TEXT, VALID_VALUE);
         ValidationResult validate = equalsValidator.validate(new ValidationInput(question, ImmutableMap.of(FIELD_NAME, VALID_VALUE + "1"),
-                null, null));
+                null, null, false));
         assertTrue(validate.hasErrors());
     }
 
@@ -41,7 +41,7 @@ public class EqualsValidatorTest {
     public void testValidatePass() throws Exception {
         EqualsValidator equalsValidator = new EqualsValidator(TEXT, VALID_VALUE);
         ValidationResult validate = equalsValidator.validate(new ValidationInput(question, ImmutableMap.of(FIELD_NAME, VALID_VALUE),
-                null, null));
+                null, null, false));
         assertFalse(validate.hasErrors());
     }
 }

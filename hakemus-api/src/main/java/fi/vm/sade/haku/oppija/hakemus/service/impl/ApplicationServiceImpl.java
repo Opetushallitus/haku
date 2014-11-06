@@ -138,7 +138,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 
         if (elementTree.isValidationNeeded(applicationPhase.getPhaseId(), application.getPhaseId())) {
             ValidationResult validationResult = elementTreeValidator.validate(new ValidationInput(phase, allAnswers,
-                    application.getOid(), applicationSystemId));
+                    application.getOid(), applicationSystemId, true));
             applicationState.addError(validationResult.getErrorMessages());
         }
 
@@ -156,7 +156,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         Form form = applicationSystem.getForm();
         Map<String, String> allAnswers = application.getVastauksetMerged();
         ValidationResult validationResult = elementTreeValidator.validate(new ValidationInput(form, allAnswers,
-                application.getOid(), applicationSystemId));
+                application.getOid(), applicationSystemId, false));
 
         if (!validationResult.hasErrors()) {
 
@@ -475,8 +475,8 @@ public class ApplicationServiceImpl implements ApplicationService {
     @Override
     public Map<String, String> ensureApplicationOptionGroupData(Map<String, String> answers) {
         LOGGER.debug("Input map: " + answers.toString());
-        Set<String> keys = new HashSet(answers.keySet());
-        for (String key: keys){
+        Set<String> keys = new HashSet<String>(answers.keySet());
+        for (String key: keys) {
             if (null != key
               && key.startsWith(OppijaConstants.PREFERENCE_PREFIX)
               && key.endsWith(OppijaConstants.OPTION_ID_POSTFIX)
@@ -541,7 +541,7 @@ public class ApplicationServiceImpl implements ApplicationService {
             LOGGER.error("Getting application failed: "+t);
             throw t;
         }
-        if (listOfApplications == null || listOfApplications.isEmpty()) {
+        if (listOfApplications.isEmpty()) {
             throw new ResourceNotFoundException("Could not find application " + queryApplication.getOid());
         }
         if (listOfApplications.size() > 1) {
