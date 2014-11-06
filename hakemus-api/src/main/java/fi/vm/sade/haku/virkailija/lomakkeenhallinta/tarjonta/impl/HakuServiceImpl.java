@@ -36,6 +36,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import javax.ws.rs.core.MediaType;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -49,7 +50,6 @@ public class HakuServiceImpl implements HakuService {
     public static final String MAX_COUNT = "10000"; // Tarjonta ei hyväksi -1:stä ja hajoaa Integer.MAX_VALUE:een.
     public static final String COUNT_PARAMETER = "count";
     public static final String MEDIA_TYPE = MediaType.APPLICATION_JSON + ";charset=UTF-8";
-    public static final String HAKUKOHDE = "hakukohde";
     private final WebResource webResource;
 
     @Autowired
@@ -88,23 +88,11 @@ public class HakuServiceImpl implements HakuService {
 
     @Override
     public List<String> getRelatedApplicationOptionIds(String oid){
-        List<OidV1RDTO> applicationOptionOidRDTOs = fetchApplicationOptions(oid);
-        LOGGER.debug("Got " + (null == applicationOptionOidRDTOs ? null: applicationOptionOidRDTOs.size()) + " with application system id "+ oid);
-        List<String> applicationOptionOids = Lists.newArrayList();
-        if (applicationOptionOidRDTOs != null) {
-            for (OidV1RDTO optionOid : applicationOptionOidRDTOs) {
-                applicationOptionOids.add(optionOid.getOid());
-            }
-        }
-        return applicationOptionOids;
+        final HakuV1RDTO hakuV1RDTO = fetchApplicationSystem(oid);
+        List <String> applicationOptionOids = hakuV1RDTO.getHakukohdeOids();
+        return null != applicationOptionOids ? applicationOptionOids : new ArrayList<String>(0);
     }
 
-    private List<OidV1RDTO> fetchApplicationOptions(String oid){
-        WebResource asWebResource = webResource.path(oid).path(HAKUKOHDE);
-        LOGGER.debug("Requesting " + asWebResource.getURI());
-        return asWebResource.accept(MEDIA_TYPE).get(new GenericType<List<OidV1RDTO>>() {
-        });
-    }
 
     private HakuV1RDTO fetchApplicationSystem(String oid) {
         WebResource asWebResource = webResource.path(oid);
