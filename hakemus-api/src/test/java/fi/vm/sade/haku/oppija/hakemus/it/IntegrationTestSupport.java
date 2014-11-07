@@ -9,6 +9,7 @@ import fi.vm.sade.haku.testfixtures.MongoFixtureImporter;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.core.io.Resource;
 import org.springframework.data.mongodb.core.MongoTemplate;
 
 import java.io.IOException;
@@ -25,6 +26,10 @@ public class IntegrationTestSupport {
     @AfterClass
     public static void shutdownApplicationContext() { appContext.close();
         appContext.stop();
+    }
+
+    public static String getResourceBaseName(Resource resource) {
+        return resource.getFilename().substring(0, resource.getFilename().indexOf('.'));
     }
 
     public static Application getTestApplication() {

@@ -26,7 +26,7 @@ public class ApplicationDaoIT extends IntegrationTestSupport {
     public void fetchAllTestApplications() throws IOException {
         Resource[] resources = new PathMatchingResourcePatternResolver().getResources("/mongofixtures/application/*.json");
         for(Resource resource: resources) {
-            final Application application = getTestApplication("1.2.246.562.11." + resource.getFilename().substring(0, resource.getFilename().indexOf('.')));
+            final Application application = getTestApplication("1.2.246.562.11." + getResourceBaseName(resource));
             assertNotNull(application);
         }
     }
@@ -36,18 +36,22 @@ public class ApplicationDaoIT extends IntegrationTestSupport {
         String[] oidPrefixes = {"1.2.246.562.5.","1.2.246.562.29."};
         Resource[] resources = new PathMatchingResourcePatternResolver().getResources("/mongofixtures/applicationSystem/*.json");
         for(Resource resource: resources) {
-            Exception error = null;
+            String oidPostfix = getResourceBaseName(resource);
+            Exception lastError = null;
             for(String oidPrefix: oidPrefixes) {
                 try {
-                    getTestApplicationSystem(oidPrefix + resource.getFilename().substring(0, resource.getFilename().indexOf('.')));
-                    error = null;
+                    getTestApplicationSystem(oidPrefix + oidPostfix);
+                    lastError = null;
                     break;
                 }
-                catch (Exception notFound) {
-                    error = notFound;
+                catch (Exception error) {
+                    lastError = error;
+                    if(!(error.getCause() instanceof ApplicationSystemNotFound)) {
+                        break;
+                    }
                 }
             }
-            assertNull(error);
+            assertNull(lastError);
         }
     }
 }
