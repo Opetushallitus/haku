@@ -77,21 +77,33 @@
         </tr>
 
     </c:forEach>
-    <tr>
-        <td>
+        <tr>
+
             <c:choose>
-                <c:when test="${maxPreferences gt preferencesVisible}">
-                    <button id="add-preference" type="button">
-                        Uusi toive
-                    </button>
+                <c:when test="${element.usePriorities}">
+                    <td colspan="2">
                 </c:when>
                 <c:otherwise>
-                    No more
+                    <td>
                 </c:otherwise>
             </c:choose>
-        </td>
-
-    </tr>
+            <c:choose>
+                <c:when test="${maxPreferences gt preferencesVisible}">
+                        <button id="add-preference" class="primary" type="button">
+                            <span>
+                                <span><fmt:message key="hakutoiveet.lisaakohde"/></span>
+                            </span>
+                        </button>
+                    </td>
+                </c:when>
+                <c:otherwise>
+                        <div class="notification info">
+                            <fmt:message key="hakutoiveet.hakukohteidenmaksimimaara"/>&nbsp;${maxPreferences}
+                        </div>
+                </c:otherwise>
+            </c:choose>
+            </td>
+        </tr>
     </tbody>
 </table>
 
