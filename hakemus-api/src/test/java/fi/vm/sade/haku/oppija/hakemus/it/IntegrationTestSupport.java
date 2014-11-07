@@ -28,11 +28,18 @@ public class IntegrationTestSupport {
     }
 
     public static Application getTestApplication() {
-        return appContext.getBean(ApplicationDAOMongoImpl.class).find(new Application().setOid("1.2.246.562.11.00000877107")).get(0);
+        return getTestApplication("1.2.246.562.11.00000877107");
+    }
+
+    public static Application getTestApplication(String oid) {
+        return appContext.getBean(ApplicationDAOMongoImpl.class).find(new Application().setOid(oid)).get(0);
     }
 
     public static ApplicationSystem getTestApplicationSystem() {
-        String applicationSystemId = "1.2.246.562.5.2014022711042555034240";
-        return appContext.getBean(ApplicationSystemServiceImpl.class).getApplicationSystem(applicationSystemId);
+        return getTestApplicationSystem("1.2.246.562.5.2014022711042555034240");
+    }
+
+    public static ApplicationSystem getTestApplicationSystem(String oid) {
+        return appContext.getBean(ApplicationSystemServiceImpl.class).getApplicationSystem(oid);
     }
 }
