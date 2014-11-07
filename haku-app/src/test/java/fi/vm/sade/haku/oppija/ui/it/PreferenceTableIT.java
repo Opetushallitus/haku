@@ -43,7 +43,7 @@ public class PreferenceTableIT extends AbstractFormTest {
 
     @Before
     public void init() throws IOException {
-        final PreferenceTable table = new PreferenceTable("t1", createI18NAsIs("Hakutoiveet"), true);
+        final PreferenceTable table = new PreferenceTable("t1", createI18NAsIs("Hakutoiveet"), true, 2);
         final PreferenceRow row = new PreferenceRow("r1",  createI18NAsIs("Tyhjennä"),
                 createI18NAsIs("Koulutus"), createI18NAsIs("Opetuspiste"),
                 createI18NAsIs("Koulutukseen sisältyvät koulutusohjelmat"),
@@ -95,7 +95,7 @@ public class PreferenceTableIT extends AbstractFormTest {
 
     @Test
     public void testNotUsePriorities() {
-        final PreferenceTable table = new PreferenceTable("t1", createI18NAsIs("Hakutoiveet"), false);
+        final PreferenceTable table = new PreferenceTable("t1", createI18NAsIs("Hakutoiveet"), false, 2);
         final PreferenceRow row = new PreferenceRow("r1",  createI18NAsIs("Tyhjennä"),
                 createI18NAsIs("Koulutus"), createI18NAsIs("Opetuspiste"),
                 createI18NAsIs("Koulutukseen sisältyvät koulutusohjelmat"),

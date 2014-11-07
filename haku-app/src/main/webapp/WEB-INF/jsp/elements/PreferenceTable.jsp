@@ -22,8 +22,27 @@
 <haku:errorMessage id="${element.id}" additionalClass="margin-top-1"/>
 <table id="${element.id}" class="preference-sort">
     <tbody>
+    <c:set var="maxPreferences" value="${fn:length(element.children)}" />
+    <c:choose>
+        <c:when test="${empty answers['preferencesVisible']}">
+            <c:set var="preferencesVisible" value="${element.preferencesInitiallyVisible}" />
+        </c:when>
+        <c:otherwise>
+            <c:set var="preferencesVisible" value="${answers['preferencesVisible']}" />
+        </c:otherwise>
+    </c:choose>
+    <input type="hidden" name="preferencesVisible" id="preferencesVisible" value="${preferencesVisible}" />
     <c:forEach var="child" items="${element.children}" varStatus="status">
-        <tr>
+        <c:set value="${child.id}-Koulutus-id" var="selectHiddenInputId" scope="page"/>
+        <c:choose>
+            <c:when test="${status.index lt preferencesVisible}">
+                <tr>
+                <c:set var="lastVisible" value="${status.index}" />
+            </c:when>
+            <c:otherwise>
+                <tr style="display: none;">
+            </c:otherwise>
+        </c:choose>
             <c:if test="${element.usePriorities}">
                 <td class="index">
                         <span>${status.index + 1}.</span>
@@ -37,7 +56,7 @@
                                 </button>
                                 <br/>
                             </c:if>
-                            <c:if test="${not status.last}">
+                            <c:if test="${status.index lt preferencesVisible - 1}">
                                 <button class="down sort" data-id="${child.id}"
                                         data-target="${element.children[status.index + 1].id}" type="button">
                                     <span>
@@ -56,7 +75,23 @@
                 <c:set var="element" value="${preferenceTable}" scope="request"/>
             </td>
         </tr>
+
     </c:forEach>
+    <tr>
+        <td>
+            <c:choose>
+                <c:when test="${maxPreferences gt preferencesVisible}">
+                    <button id="add-preference" type="button">
+                        Uusi toive
+                    </button>
+                </c:when>
+                <c:otherwise>
+                    No more
+                </c:otherwise>
+            </c:choose>
+        </td>
+
+    </tr>
     </tbody>
 </table>
 

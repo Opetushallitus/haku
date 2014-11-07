@@ -242,13 +242,4 @@ public class FormController {
         return new Viewable(VERBOSE_HELP_VIEW, uiService.getElementHelp(applicationSystemId, elementId,toSingleValueMap(answers)));
     }
 
-    @GET
-    @Path("/{applicationSystemId}/{phaseId}/{gradeGridId}/additionalLanguageRow")
-    @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
-    public Viewable getAdditionalLanguageRow(@PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId,
-                                             @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
-                                             @PathParam("gradeGridId") final String gradeGridId) {
-        LOGGER.debug("getAdditionalLanguageRow {}, {}, {}", applicationSystemId, gradeGridId);
-        return new Viewable(ROOT_VIEW, uiService.getAdditionalLanguageRow(applicationSystemId, gradeGridId));
-    }
 }
