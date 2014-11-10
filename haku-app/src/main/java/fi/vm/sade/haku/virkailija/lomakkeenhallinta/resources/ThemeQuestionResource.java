@@ -117,8 +117,23 @@ public class ThemeQuestionResource {
     public void deleteThemeQuestionByOid(@PathParam("themeQuestionId") String themeQuestionId) {
         LOGGER.debug("Deleting theme question with id: {}", themeQuestionId);
         ThemeQuestion dbThemeQuestion = fetchThemeQuestion(themeQuestionId);
+        if (themeQuestionHasActiveOrLockedChildren(themeQuestionId)) {
+            throw new JSONException(Response.Status.BAD_REQUEST, "question.has.followup.questions.deletion.not.allowed", null);
+        }
         themeQuestionDAO.delete(themeQuestionId);
         renumerateThemeQuestionOrdinals(dbThemeQuestion.getApplicationSystemId(), dbThemeQuestion.getLearningOpportunityId(), dbThemeQuestion.getTheme());
+    }
+
+    private boolean themeQuestionHasActiveOrLockedChildren(String themeQuestionId) {
+        List<ThemeQuestion> dbThemeQuestionChildren = themeQuestionDAO.findByParentId(themeQuestionId);
+        if (dbThemeQuestionChildren != null) {
+            for (ThemeQuestion t : dbThemeQuestionChildren) {
+                if (!t.getState().equals(ThemeQuestion.State.DELETED)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     @POST
@@ -165,6 +180,7 @@ public class ThemeQuestionResource {
                                      @PathParam("learningOpportunityId") String learningOpportunityId,
                                      @PathParam("themeId")  String themeId,
                                      ThemeQuestion themeQuestion) throws IOException {
+
         LOGGER.debug("Posted " + themeQuestion);
         if (null == applicationSystemId || null == learningOpportunityId)
             throw new JSONException(Response.Status.BAD_REQUEST, "Missing pathparameters", null);
@@ -183,22 +199,43 @@ public class ThemeQuestionResource {
         if (! themeId.equals(tqThemeId)) {
             throw new JSONException(Response.Status.BAD_REQUEST, "Data error: Mismatch on theme from path and model", null);
         }
+        //Check that parent exists and is not deleted
+        String parentId = null;
+        if (null != themeQuestion.getParentId()) {
+            parentId = themeQuestion.getParentId().toString();
+            if (!parentId.isEmpty()) {
+                ThemeQuestion parent = themeQuestionDAO.findById(parentId);
+                if (null == parent) {
+                    throw new JSONException(Response.Status.BAD_REQUEST, "Data error: Parent does not exist", null);
+                }
+                if (parent.getState().equals(ThemeQuestion.State.DELETED)) {
+                    throw new JSONException(Response.Status.BAD_REQUEST, "Data error: Parent is deleted", null);
+                }
+            }
+        }
         if (themeQuestion.getTargetIsGroup()) {
             themeQuestion = fillInOwnerOrganizationsFromApplicationOptionGroup(themeQuestion);
         } else {
             themeQuestion = fillInOwnerOrganizationsFromApplicationOption(themeQuestion);
         }
-
         Person currentHenkilo = authenticationService.getCurrentHenkilo();
         themeQuestion.setCreatorPersonOid(currentHenkilo.getPersonOid());
-        Integer  maxOrdinal = themeQuestionDAO.getMaxOrdinal(applicationSystemId, learningOpportunityId, themeId);
-        themeQuestion.setOrdinal(null == maxOrdinal ? 1: maxOrdinal + 1 );
+        //Set ordinal
+        if (null != parentId && !parentId.isEmpty()) { //Child
+            Integer  maxOrdinal = themeQuestionDAO.getMaxOrdinalOfChildren(applicationSystemId, learningOpportunityId, themeId, parentId);
+            LOGGER.debug("getMaxOrdinalOfChildren returned: " + maxOrdinal);
+            themeQuestion.setOrdinal(null == maxOrdinal ? 1: maxOrdinal + 1 );
+        } else {
+            Integer maxOrdinal = themeQuestionDAO.getMaxOrdinal(applicationSystemId, learningOpportunityId, themeId);
+            themeQuestion.setOrdinal(null == maxOrdinal ? 1 : maxOrdinal + 1);
+        }
 
         LOGGER.debug("Saving Theme Question");
         themeQuestionDAO.save(themeQuestion);
         LOGGER.debug("Saved Theme Question");
     }
 
+    //TODO -OS- childien reorder parentin sisällä
     @POST
     @Path("reorder/{learningOpportunityId}/{themeId}")
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
@@ -317,21 +354,54 @@ public class ThemeQuestionResource {
 
     private void renumerateThemeQuestionOrdinals(final String applicationSystemId, final String applicationOptionId, final String themeId){
         // TODO: mutex
+        //Fetch all theme questions for this application system/learning opportunity/theme as a sorted (ascending ordinal) list
         ThemeQuestionQueryParameters tqqp = new ThemeQuestionQueryParameters();
         tqqp.setApplicationSystemId(applicationSystemId);
         tqqp.setLearningOpportunityId(applicationOptionId);
         tqqp.setTheme(themeId);
         tqqp.addSortBy(ThemeQuestion.FIELD_ORDINAL, ThemeQuestionQueryParameters.SORT_ASCENDING);
+        List<ThemeQuestion> allDbThemeQuestions = themeQuestionDAO.query(tqqp);
+        //Renumerate ordinals, first the parents, then children one parent at a time
+        if (!allDbThemeQuestions.isEmpty()) {
+            List<ThemeQuestion> parentThemeQuestions = new ArrayList<ThemeQuestion>();
+            List<ThemeQuestion> childThemeQuestions = new ArrayList<ThemeQuestion>();
+            for (ThemeQuestion tq : allDbThemeQuestions) {
+                if (tq.getParentId() == null) {
+                    parentThemeQuestions.add(tq);
+                } else {
+                    childThemeQuestions.add(tq);
+                }
+            }
+            //Parents
+            processOrdinals(parentThemeQuestions);
+            //Children
+            if(!childThemeQuestions.isEmpty()) {
+                for (ThemeQuestion parentTq : parentThemeQuestions) {
+                    List<ThemeQuestion> childrenOfOneParent = new ArrayList<ThemeQuestion>();
+                    for (ThemeQuestion childTq : childThemeQuestions) {
+                        if (childTq.getParentId().toString().equals(parentTq.getId().toString())) {
+                            childrenOfOneParent.add(childTq);
+                        }
+                    }
+                    if (!childrenOfOneParent.isEmpty()) {
+                        processOrdinals(childrenOfOneParent);
+                    }
+                }
+            }
+        }
+    }
+
+    private void processOrdinals(List<ThemeQuestion> tqList) {
         Integer assumedOrdinal = 1;
-        List<ThemeQuestion> dbThemeQuestions = themeQuestionDAO.query(tqqp);
         List<ThemeQuestion> tqsWithoutOrdinal = new ArrayList<ThemeQuestion>();
-        for (ThemeQuestion tq : dbThemeQuestions){
+        for (ThemeQuestion tq : tqList){
             if (null == tq.getOrdinal()){
                 tqsWithoutOrdinal.add(tq);
             }
-            if (!assumedOrdinal.equals(tq.getOrdinal())){
-                themeQuestionDAO.setOrdinal(tq.getId().toString(), assumedOrdinal++);
+            if (!assumedOrdinal.equals(tq.getOrdinal())) {
+                themeQuestionDAO.setOrdinal(tq.getId().toString(), assumedOrdinal);
             }
+            assumedOrdinal++;
         }
         for (ThemeQuestion tq: tqsWithoutOrdinal){
             themeQuestionDAO.setOrdinal(tq.getId().toString(), assumedOrdinal++);

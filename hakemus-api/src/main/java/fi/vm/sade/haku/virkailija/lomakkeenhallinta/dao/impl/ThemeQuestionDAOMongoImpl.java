@@ -97,6 +97,16 @@ public class ThemeQuestionDAOMongoImpl extends AbstractDAOMongoImpl<ThemeQuestio
         throw new ResourceNotFoundException("No ThemeQuestion found with id " + id);
     }
 
+    @Override
+    public List<ThemeQuestion> findByParentId(String parentId) {
+        LOGGER.debug("findByParentId: " + parentId);
+        DBObject queryParam = new BasicDBObject(FIELD_PARENT_ID, parentId);
+        LOGGER.debug("Executing with query: " + queryParam.toString());
+        List <ThemeQuestion> themeQuestions =  queryThemeQuestions(new DBObject[] { queryParam, null, null, null });
+        LOGGER.debug("Found: " + themeQuestions.size());
+        return themeQuestions;
+    }
+
     public List<ThemeQuestion> query(final ThemeQuestionQueryParameters parameters){
         return queryThemeQuestions(buildQuery(parameters));
     }
@@ -134,6 +144,29 @@ public class ThemeQuestionDAOMongoImpl extends AbstractDAOMongoImpl<ThemeQuestio
         tqqp.setApplicationSystemId(applicationSystemId);
         tqqp.setLearningOpportunityId(learningOpportunityId);
         tqqp.setTheme(themeId);
+        tqqp.addSortBy(FIELD_ORDINAL, tqqp.SORT_DESCENDING);
+        final DBObject[] queryParam = buildQuery(tqqp);
+        queryParam[PARAM_KEYS] = new BasicDBObject(FIELD_ORDINAL, 1);
+        final DBCursor dbCursor = executeQuery(queryParam);
+        dbCursor.limit(1);
+        try {
+            if (!dbCursor.hasNext()) {
+                return null;
+            }
+            return (Integer) dbCursor.next().get(FIELD_ORDINAL);
+        } catch (MongoException mongoException) {
+            LOGGER.error("Got error "+ mongoException.getMessage() +" with query: " + queryParam[PARAM_QUERY] + " using hint: " +queryParam[PARAM_HINT] + " and keys: " +queryParam[PARAM_KEYS]);
+            throw mongoException;
+        }
+    }
+
+    @Override
+    public Integer getMaxOrdinalOfChildren(String applicationSystemId, String learningOpportunityId, String themeId, String parentId) {
+        final ThemeQuestionQueryParameters tqqp = new ThemeQuestionQueryParameters();
+        tqqp.setApplicationSystemId(applicationSystemId);
+        tqqp.setLearningOpportunityId(learningOpportunityId);
+        tqqp.setTheme(themeId);
+        tqqp.setParentThemeQuestionId(parentId);
         tqqp.addSortBy(FIELD_ORDINAL, tqqp.SORT_DESCENDING);
         final DBObject[] queryParam = buildQuery(tqqp);
         queryParam[PARAM_KEYS] = new BasicDBObject(FIELD_ORDINAL, 1);
