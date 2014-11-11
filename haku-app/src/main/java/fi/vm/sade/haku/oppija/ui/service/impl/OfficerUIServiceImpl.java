@@ -355,6 +355,8 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         Map<String, String> allAnswers = application.getVastauksetMergedIgnoringPhase(applicationPhase.getPhaseId());
         allAnswers.putAll(newPhaseAnswers);
 
+        application = applicationService.removeOrphanedAnswers(application);
+
         ValidationResult formValidationResult = elementTreeValidator.validate(new ValidationInput(form,
                 allAnswers, oid, application.getApplicationSystemId()));
         if (formValidationResult.hasErrors()) {

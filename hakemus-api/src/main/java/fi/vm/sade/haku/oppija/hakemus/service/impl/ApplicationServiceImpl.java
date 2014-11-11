@@ -367,6 +367,30 @@ public class ApplicationServiceImpl implements ApplicationService {
         return application;
     }
 
+    @Override
+    public Application removeOrphanedAnswers(Application application) {
+        ApplicationSystem as = applicationSystemService.getApplicationSystem(application.getApplicationSystemId());
+        Form form = as.getForm();
+        List<String> elementIds = new ArrayList<String>();
+        for (Element element : form.getAllChildren(application.getVastauksetMerged())) {
+            elementIds.add(element.getId());
+        }
+        for (Map.Entry<String, Map<String, String>> phase : application.getAnswers().entrySet()) {
+            String phaseId = phase.getKey();
+            Map<String, String> newAnswers = new HashMap<String, String>();
+            for (Map.Entry<String, String> answer : phase.getValue().entrySet()) {
+                String answerKey = answer.getKey();
+                if (elementIds.contains(answerKey)
+                        || (OppijaConstants.PHASE_APPLICATION_OPTIONS.equals(phaseId) && answerKey.startsWith("preference"))
+                        ) {
+                    newAnswers.put(answerKey, answer.getValue());
+                }
+            }
+            application.addVaiheenVastaukset(phaseId, newAnswers);
+        }
+        return application;
+    }
+
     private boolean resolveOpoAllowed(Application application) {
         boolean opoAllowed = true;
         ApplicationSystem as = applicationSystemService.getApplicationSystem(application.getApplicationSystemId());

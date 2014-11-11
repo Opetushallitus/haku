@@ -24,7 +24,6 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import fi.vm.sade.haku.virkailija.valinta.ValintaService;
 import fi.vm.sade.haku.virkailija.valinta.impl.ValintaServiceMockImpl;
-
 import org.apache.commons.collections.map.SingletonMap;
 import org.junit.Before;
 import org.junit.Rule;
@@ -35,9 +34,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
+import static org.mockito.AdditionalAnswers.returnsFirstArg;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
 
@@ -114,6 +112,7 @@ public class OfficerUIServiceImplTest {
         when(applicationSystemService.getApplicationSystem(any(String.class))).thenReturn(as);
         when(applicationService.getApplication(OID)).thenReturn(application);
         when(applicationService.getApplicationByOid(OID)).thenReturn(application);
+        when(applicationService.removeOrphanedAnswers(any(Application.class))).then(returnsFirstArg());
         when(formService.getForm(any(String.class))).thenReturn(form);
         when(formService.getActiveForm(any(String.class))).thenReturn(form);
         Map<String, Boolean> phasesToEdit = new HashMap<String, Boolean>();
@@ -138,6 +137,7 @@ public class OfficerUIServiceImplTest {
 
     private OfficerUIService createUiServiceForGrades(String oid, String asId, boolean transferred) {
         ApplicationService applicationService = mock(ApplicationService.class);
+        when(applicationService.removeOrphanedAnswers(any(Application.class))).then(returnsFirstArg());
         BaseEducationService baseEducationService = mock(BaseEducationService.class);
         FormService formService = mock(FormService.class);
         HakuPermissionService hakuPermissionService = mock(HakuPermissionService.class);

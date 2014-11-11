@@ -64,7 +64,6 @@ public class HAK305IT extends DummyModelBaseItTest {
         selectByValue("PK_AI_OPPIAINE", "SV");
         selectByValue("PK_A2_OPPIAINE", "SE");
         findByXPath("//td[@id='PK_B1_column1']//a").click();
-        screenshot("HAK305");
         clickByNameAndValue("yleinen_kielitutkinto_fi", "true");
         clickByNameAndValue("valtionhallinnon_kielitutkinto_fi", "true");
         clickByNameAndValue("peruskoulun_paattotodistus_vahintaan_seitseman_fi", "true");
@@ -115,6 +114,7 @@ public class HAK305IT extends DummyModelBaseItTest {
         typeWithoutTab("preference1-Opetuspiste", "Esp");
         clickLinkByText("FAKTIA, Espoo op");
         clickAllElementsByXPath("//option[@value='Kaivosalan perustutkinto, pk']");
+        screenshot("HAK305_osaaminen");
         fillOut(defaultValues.preference1);
     }
 

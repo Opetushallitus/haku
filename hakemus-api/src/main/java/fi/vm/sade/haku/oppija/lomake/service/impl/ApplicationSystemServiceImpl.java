@@ -1,10 +1,7 @@
 package fi.vm.sade.haku.oppija.lomake.service.impl;
 
 import com.google.common.base.Function;
-import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.CacheLoader;
-import com.google.common.cache.LoadingCache;
-import com.google.common.cache.Weigher;
+import com.google.common.cache.*;
 import com.google.common.collect.Lists;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
@@ -26,55 +23,15 @@ public class ApplicationSystemServiceImpl implements ApplicationSystemService {
     private final ApplicationSystemRepository applicationSystemRepository;
     private final LoadingCache<String, ApplicationSystem> cache;
     private final Boolean cacheApplicationSystems;
-    private final Integer cacheRefreshTimer;
     private final ExecutorService executors = Executors.newFixedThreadPool(10);
 
     @Autowired
     public ApplicationSystemServiceImpl(final ApplicationSystemRepository applicationSystemRepository,
                                         @Value("${application.system.cache:true}") final boolean cacheApplicationSystems,
-                                        @Value("${application.system.cache.refresh:6}") final Integer cacheRefreshTimer) {
+                                        final CacheBuilder<String, ApplicationSystem> cacheBuilder) {
         this.applicationSystemRepository = applicationSystemRepository;
         this.cacheApplicationSystems = cacheApplicationSystems;
-        this.cacheRefreshTimer = cacheRefreshTimer;
-        this.cache = CacheBuilder.newBuilder()
-                .maximumWeight(10)
-                .refreshAfterWrite(cacheRefreshTimer, TimeUnit.MINUTES)
-                .weigher(new Weigher<String, ApplicationSystem>() {
-                    @Override
-                    public int weigh(String key, ApplicationSystem value) {
-                        if (value.isActive()) {
-                            return 1;
-                        } else {
-                            return 2;
-                        }
-                    }
-                }).build(new CacheLoader<String, ApplicationSystem>() {
-                    @Override
-                    public ApplicationSystem load(String key) throws Exception {
-                        return findById(key);
-                    }
-
-                    @Override
-                    public ListenableFuture<ApplicationSystem> reload(final String key, final ApplicationSystem oldValue) throws Exception {
-                        if(doesNotNeedRefresh(key, oldValue)) {
-                            return Futures.immediateFuture(oldValue);
-                        } else {
-                            ListenableFutureTask<ApplicationSystem> refreshTask = ListenableFutureTask.create(new Callable<ApplicationSystem>() {
-                                @Override
-                                public ApplicationSystem call() throws Exception {
-                                    return findById(key);
-                                }
-                            });
-                            executors.execute(refreshTask);
-                            return refreshTask;
-                        }
-                    }
-
-                    private boolean doesNotNeedRefresh(String key, ApplicationSystem oldValue) {
-                        Date dbLastGenerated = getLastGeneratedForId(key);
-                        return null != oldValue.getLastGenerated() && null != dbLastGenerated && oldValue.getLastGenerated().equals(dbLastGenerated);
-                    }
-                });
+        this.cache = cacheBuilder.build(new ApplicationSystemCacheLoader());
     }
 
     private Date getLastGeneratedForId(String key) {
@@ -150,5 +107,37 @@ public class ApplicationSystemServiceImpl implements ApplicationSystemService {
                 return as.getId();
             }
         });
+    }
+
+    public CacheStats getCacheStats() {
+        return cache.stats();
+    }
+
+    private class ApplicationSystemCacheLoader extends CacheLoader<String, ApplicationSystem> {
+        @Override
+        public ApplicationSystem load(String key) throws Exception {
+            return findById(key);
+        }
+
+        @Override
+        public ListenableFuture<ApplicationSystem> reload(final String key, final ApplicationSystem oldValue) throws Exception {
+            if(doesNotNeedRefresh(key, oldValue)) {
+                return Futures.immediateFuture(oldValue);
+            } else {
+                ListenableFutureTask<ApplicationSystem> refreshTask = ListenableFutureTask.create(new Callable<ApplicationSystem>() {
+                    @Override
+                    public ApplicationSystem call() throws Exception {
+                        return findById(key);
+                    }
+                });
+                executors.execute(refreshTask);
+                return refreshTask;
+            }
+        }
+
+        private boolean doesNotNeedRefresh(String key, ApplicationSystem oldValue) {
+            Date dbLastGenerated = getLastGeneratedForId(key);
+            return null != oldValue.getLastGenerated() && null != dbLastGenerated && oldValue.getLastGenerated().equals(dbLastGenerated);
+        }
     }
 }

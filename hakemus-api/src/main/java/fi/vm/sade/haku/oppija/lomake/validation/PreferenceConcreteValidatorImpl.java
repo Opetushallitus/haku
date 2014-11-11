@@ -59,7 +59,7 @@ public class PreferenceConcreteValidatorImpl extends PreferenceConcreteValidator
     @Override
     public ValidationResult validate(ValidationInput validationInput) {
 
-        ValidationResult validationResult = new ValidationResult();
+         ValidationResult validationResult = new ValidationResult();
         final String key = validationInput.getElement().getId() + "-Koulutus-id";
         final String aoId = validationInput.getValues().get(key);
         if (!Strings.isNullOrEmpty(aoId)) {
