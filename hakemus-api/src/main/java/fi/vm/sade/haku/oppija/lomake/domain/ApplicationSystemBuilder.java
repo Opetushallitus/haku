@@ -23,6 +23,7 @@ public class ApplicationSystemBuilder {
     private List<ApplicationOptionAttachmentRequest> applicationOptionAttachmentRequests;
     private int maxApplicationOptions;
     private String kohdejoukkoUri;
+    private List<String> allowedLanguages;
     private Date lastGenerated;
 
     public ApplicationSystemBuilder() {
@@ -84,7 +85,7 @@ public class ApplicationSystemBuilder {
     public ApplicationSystem get() {
         return new ApplicationSystem(id, form, name, state, applicationPeriods,
                 applicationSystemType, usePriorities, hakutapa, hakukausiVuosi, hakukausiUri, kohdejoukkoUri, applicationCompleteElements,
-                additionalPrintElements, applicationOptionAttachmentRequests, maxApplicationOptions, lastGenerated);
+                additionalPrintElements, applicationOptionAttachmentRequests, maxApplicationOptions, allowedLanguages, lastGenerated);
     }
 
     public ApplicationSystemBuilder addMaxApplicationOptions(int maxHakukohdes) {
@@ -114,6 +115,11 @@ public class ApplicationSystemBuilder {
 
     public ApplicationSystemBuilder addUsePriorities(Boolean usePriorities) {
         this.usePriorities = usePriorities;
+        return this;
+    }
+
+    public ApplicationSystemBuilder addAllowedLanguages(List<String> allowedLanguages) {
+        this.allowedLanguages = allowedLanguages;
         return this;
     }
 }

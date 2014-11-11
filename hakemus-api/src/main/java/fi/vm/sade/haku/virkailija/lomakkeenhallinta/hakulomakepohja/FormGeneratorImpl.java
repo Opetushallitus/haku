@@ -66,6 +66,7 @@ public class FormGeneratorImpl implements FormGenerator {
                 .addAdditionalInformationElements(ValmisPhase.createAdditionalInformationElements(formParameters))
                 .addApplicationOptionAttachmentRequests(formParameters.getThemeQuestionConfigurator().findAndConfigureAttachmentRequests())
                 .addLastGenerated(new Date())
+                .addAllowedLanguages(formParameters.getAllowedLanguages())
                 .get();
     }
 

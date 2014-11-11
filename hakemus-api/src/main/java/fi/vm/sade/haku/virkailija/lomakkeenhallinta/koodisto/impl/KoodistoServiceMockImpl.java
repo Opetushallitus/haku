@@ -56,6 +56,8 @@ public class KoodistoServiceMockImpl implements KoodistoService {
     public final List<Option> listOfHakukohdekoodit;
     public final List<Option> listOfLaajuusYksikot;
     public final List<Option> listOfKorkealuTutkintotasot;
+    public final List<Option> listOfOpintoalat;
+    public final List<Option> listOfKoulutusalat;
     public final List<Code> listOfBaseEducationCodes;
     public final List<Code> listOfYliopistokoulutukset;
     public final List<Code> listOfAMKkoulutukset;
@@ -209,6 +211,14 @@ public class KoodistoServiceMockImpl implements KoodistoService {
                 getOption( "1-5", "1-5"),
                 getOption( "4-10", "4-10")
         );
+        this.listOfOpintoalat = ImmutableList.of(
+                getOption("Esiopetus", "001"),
+                getOption("Perusopetusopetus", "002")
+        );
+        this.listOfKoulutusalat = ImmutableList.of(
+                getOption("Yleissivistävä koulutus", "1"),
+                getOption("Humanistinen ja kasvatusala", "2")
+        );
         this.codes.put(BASE_EDUCATION_KOODISTO_URI, this.listOfBaseEducationCodes);
     }
 
@@ -350,5 +360,20 @@ public class KoodistoServiceMockImpl implements KoodistoService {
     @Override
     public List<Option> getTeachingLanguages() {
         return listOfTeachingLanguages;
+    }
+
+    @Override
+    public List<Option> getOpintoalat() {
+        return listOfOpintoalat;
+    }
+
+    @Override
+    public List<Option> getOpintoalat(String koulutusala) {
+        return getOpintoalat();
+    }
+
+    @Override
+    public List<Option> getKoulutusalat() {
+        return listOfKoulutusalat;
     }
 }

@@ -49,6 +49,12 @@ public interface KoodistoService {
 
     List<Option> getTeachingLanguages();
 
+    List<Option> getOpintoalat();
+
+    List<Option> getOpintoalat(String koulutusala);
+
+    List<Option> getKoulutusalat();
+
     List<Code> getCodes(String koodistoUrl, int version);
 
     List<Code> getYliopistokoulutukset();

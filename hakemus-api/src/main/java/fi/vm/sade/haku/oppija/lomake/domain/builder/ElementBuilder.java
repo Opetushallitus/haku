@@ -175,8 +175,10 @@ public abstract class ElementBuilder {
         return this;
     }
 
-    public ElementBuilder addChild(final Element element) {
-        this.children.add(element);
+    public ElementBuilder addChild(final Element... elements) {
+        for (Element element : elements) {
+            this.children.add(element);
+        }
         return this;
     }
 
