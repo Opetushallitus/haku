@@ -30,6 +30,8 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakuService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakukohdeService;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeV1RDTO;
+import org.apache.commons.lang.StringUtils;
+import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -199,7 +201,7 @@ public class ThemeQuestionResource {
         if (! themeId.equals(tqThemeId)) {
             throw new JSONException(Response.Status.BAD_REQUEST, "Data error: Mismatch on theme from path and model", null);
         }
-        //Check that parent exists and is not deleted
+        //Check if parent exists
         String parentId = null;
         if (null != themeQuestion.getParentId()) {
             parentId = themeQuestion.getParentId().toString();
@@ -235,7 +237,6 @@ public class ThemeQuestionResource {
         LOGGER.debug("Saved Theme Question");
     }
 
-    //TODO -OS- childien reorder parentin sisällä
     @POST
     @Path("reorder/{learningOpportunityId}/{themeId}")
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
@@ -246,6 +247,16 @@ public class ThemeQuestionResource {
         LOGGER.debug("Posted " + reorderedQuestions);
         if (null == learningOpportunityId || null == themeId)
             throw new JSONException(Response.Status.BAD_REQUEST, "Missing pathparameters", null);
+        Set<String> themeQuestionIds = reorderedQuestions.keySet();
+
+        // TODO(?) -OS- Fix bad validation. Needs application system to work correctly
+        if (!themeQuestionDAO.validateLearningOpportunityAndTheme(learningOpportunityId, themeId,  themeQuestionIds.toArray(new String[themeQuestionIds.size()])))
+            throw new JSONException(Response.Status.BAD_REQUEST, "Error in input data. Mismatch between question ids, theme and application option", null);
+
+        if (!themeQuestionHierarchyForReorderingValid(themeQuestionIds)) {
+            LOGGER.debug("Exception due to invalid parentId values");
+            throw new JSONException(Response.Status.BAD_REQUEST, "ParentId values of given questions invalid", null);
+        }
         List<Map<String, String>> values = new ArrayList(reorderedQuestions.values());
         boolean changes = false;
         long ordinalCheckSum = 0;
@@ -279,16 +290,45 @@ public class ThemeQuestionResource {
         }
         //TODO =RS= some metalocking to simulate transactions or something
 
-        Set<String> themeQuestionIds = reorderedQuestions.keySet();
-        // TODO: Fix bad validation. Needs application system to work correctly
-        //if (!themeQuestionDAO.validateLearningOpportunityAndTheme(learningOpportunityId, themeId,  themeQuestionIds.toArray(new String[themeQuestionIds.size()])))
-        //    throw new JSONException(Response.Status.BAD_REQUEST, "Error in input data. Mismatch between question ids, theme and application option", null);
-
-        // TODO =RS= do something if there are ordinals missing or old values do not match.
+        // TODO -OS- do something if there are ordinals missing or old values do not match.
+        //If there are ordinals missing or old values do not match, apply renumerate to fix integrity
+        boolean ordinalIntegrityOk = true;
         for (String id : themeQuestionIds){
             Map<String, String> questionParam = reorderedQuestions.get(id);
+            Integer dbOrdinal = themeQuestionDAO.findById(id).getOrdinal();
+            if (dbOrdinal == null || !dbOrdinal.equals(Integer.valueOf(questionParam.get(PARAM_OLD_ORDINAL)))) {
+                ordinalIntegrityOk = false;
+            }
             themeQuestionDAO.setOrdinal(id, Integer.valueOf(questionParam.get(PARAM_NEW_ORDINAL)));
         }
+        if(!ordinalIntegrityOk) {
+            String applicationSystemId = themeQuestionDAO.findById(themeQuestionIds.iterator().next()).getApplicationSystemId();
+            renumerateThemeQuestionOrdinals(applicationSystemId, learningOpportunityId, themeId);
+        }
+    }
+
+    //Checks that to be reordered items are either all parents or all children of one parent
+    private boolean themeQuestionHierarchyForReorderingValid(Set<String> themeQuestionIds) {
+        if (!themeQuestionIds.isEmpty()) {
+            ObjectId parentId = themeQuestionDAO.findById(themeQuestionIds.toArray()[0].toString()).getParentId();
+            String firstItemParentId = null;
+            if (null != parentId) {
+                firstItemParentId = parentId.toString();
+            }
+            for (String id : themeQuestionIds) {
+                parentId = themeQuestionDAO.findById(id).getParentId();
+                if (StringUtils.isNotBlank(firstItemParentId)) { //Must be a child of same parent
+                    if (null == parentId || StringUtils.isBlank(parentId.toString()) || !parentId.toString().equals(firstItemParentId)) {
+                        return false;
+                    }
+                } else { //Must not be a child
+                    if (null != parentId && StringUtils.isNotBlank(parentId.toString())) {
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
     }
 
     private ThemeQuestion fillInOwnerOrganizationsFromApplicationOption(final ThemeQuestion themeQuestion) throws IOException {
