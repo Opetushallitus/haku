@@ -158,7 +158,9 @@ public class ThemeQuestionResource {
 
         ThemeQuestion dbThemeQuestion = fetchThemeQuestion(themeQuestionId);
         themeQuestion.setCreatorPersonOid(dbThemeQuestion.getCreatorPersonOid());
+        //Parent and ordinal cannot be changed here
         themeQuestion.setOrdinal(dbThemeQuestion.getOrdinal());
+        themeQuestion.setParentId(dbThemeQuestion.getParentId());
 
         LOGGER.debug("Saving Theme Question with id: " + dbThemeQuestion.getId().toString());
         themeQuestionDAO.save(themeQuestion);
@@ -290,7 +292,6 @@ public class ThemeQuestionResource {
         }
         //TODO =RS= some metalocking to simulate transactions or something
 
-        // TODO -OS- do something if there are ordinals missing or old values do not match.
         //If there are ordinals missing or old values do not match, apply renumerate to fix integrity
         boolean ordinalIntegrityOk = true;
         for (String id : themeQuestionIds){
@@ -302,6 +303,7 @@ public class ThemeQuestionResource {
             themeQuestionDAO.setOrdinal(id, Integer.valueOf(questionParam.get(PARAM_NEW_ORDINAL)));
         }
         if(!ordinalIntegrityOk) {
+            LOGGER.debug("Running ordinal renumeration to fix integrity");
             String applicationSystemId = themeQuestionDAO.findById(themeQuestionIds.iterator().next()).getApplicationSystemId();
             renumerateThemeQuestionOrdinals(applicationSystemId, learningOpportunityId, themeId);
         }
