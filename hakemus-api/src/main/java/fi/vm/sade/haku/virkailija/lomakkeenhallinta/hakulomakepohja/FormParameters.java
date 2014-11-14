@@ -62,6 +62,7 @@ public class FormParameters {
         this.organizationService = organizationService;
         this.formConfiguration = formConfiguration;
         this.i18nBundle = new I18nBundle(getMessageBundleName(FORM_MESSAGES, applicationSystem));
+
     }
 
     public ApplicationSystem getApplicationSystem() {
