@@ -41,7 +41,14 @@
                     </c:if>
                 </td>
                 <td>
-                    <fmt:formatDate pattern="dd.MM.yyyy HH:mm" value="${attachment.deadline}" />
+                    <c:choose>
+                        <c:when test="${empty attachment.deadline}">
+                            <fmt:message key="lomake.tulostus.liite.deadline.tarkista" />
+                        </c:when>
+                        <c:otherwise>
+                            <fmt:formatDate pattern="dd.MM.yyyy HH:mm" value="${attachment.deadline}" />
+                        </c:otherwise>
+                    </c:choose>
                 </td>
             </tr>
             </c:forEach>
