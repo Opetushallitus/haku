@@ -60,17 +60,17 @@ public class HakuV1RDTOToApplicationSystemFunction implements Function<HakuV1RDT
         }
 
         ApplicationSystem applicationSystem = new ApplicationSystemBuilder()
-                .addId(hakuDTO.getOid())
-                .addName(name)
-                .addState(hakuDTO.getTila())
-                .addApplicationPeriods(applicationPeriods)
-                .addUsePriorities(hakuDTO.isUsePriority())
-                .addApplicationSystemType(hakuDTO.getHakutyyppiUri().split("#")[0])
-                .addHakutapa(hakuDTO.getHakutapaUri().split("#")[0])
-                .addHakukausiUri(hakuDTO.getHakukausiUri().split("#")[0])
-                .addHakukausiVuosi(hakuDTO.getHakukausiVuosi())
-                .addMaxApplicationOptions(hakuDTO.getMaxHakukohdes())
-                .addKohdejoukkoUri(hakuDTO.getKohdejoukkoUri().split("#")[0])
+                .setId(hakuDTO.getOid())
+                .setName(name)
+                .setState(hakuDTO.getTila())
+                .setApplicationPeriods(applicationPeriods)
+                .setUsePriorities(hakuDTO.isUsePriority())
+                .setApplicationSystemType(hakuDTO.getHakutyyppiUri().split("#")[0])
+                .setHakutapa(hakuDTO.getHakutapaUri().split("#")[0])
+                .setHakukausiUri(hakuDTO.getHakukausiUri().split("#")[0])
+                .setHakukausiVuosi(hakuDTO.getHakukausiVuosi())
+                .setMaxApplicationOptions(hakuDTO.getMaxHakukohdes())
+                .setKohdejoukkoUri(hakuDTO.getKohdejoukkoUri().split("#")[0])
                 .get();
         return applicationSystem;
     }

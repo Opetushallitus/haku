@@ -28,25 +28,26 @@ public class ApplicationSystemBuilder {
 
     public ApplicationSystemBuilder() {
         this.additionalPrintElements = new ArrayList<Element>();
+        this.applicationCompleteElements = new ArrayList<Element>();
         this.applicationOptionAttachmentRequests = new ArrayList<ApplicationOptionAttachmentRequest>();
     }
 
-    public ApplicationSystemBuilder addId(String id) {
+    public ApplicationSystemBuilder setId(String id) {
         this.id = id;
         return this;
     }
 
-    public ApplicationSystemBuilder addForm(Form form) {
+    public ApplicationSystemBuilder setForm(Form form) {
         this.form = form;
         return this;
     }
 
-    public ApplicationSystemBuilder addName(I18nText name) {
+    public ApplicationSystemBuilder setName(I18nText name) {
         this.name = name;
         return this;
     }
 
-    public ApplicationSystemBuilder addApplicationPeriods(List<ApplicationPeriod> applicationPeriods) {
+    public ApplicationSystemBuilder setApplicationPeriods(List<ApplicationPeriod> applicationPeriods) {
         this.applicationPeriods = applicationPeriods;
         return this;
     }
@@ -57,28 +58,28 @@ public class ApplicationSystemBuilder {
     }
 
 
-    public ApplicationSystemBuilder addApplicationSystemType(String applicationSystemType) {
+    public ApplicationSystemBuilder setApplicationSystemType(String applicationSystemType) {
         this.applicationSystemType = applicationSystemType;
         return this;
     }
 
-    public ApplicationSystemBuilder addHakukausiVuosi(Integer hakukausiVuosi) {
+    public ApplicationSystemBuilder setHakukausiVuosi(Integer hakukausiVuosi) {
         this.hakukausiVuosi = hakukausiVuosi;
         return this;
     }
 
-    public ApplicationSystemBuilder addHakukausiUri(String hakukausiUri) {
+    public ApplicationSystemBuilder setHakukausiUri(String hakukausiUri) {
         this.hakukausiUri = hakukausiUri;
         return this;
     }
 
     public ApplicationSystemBuilder addApplicationCompleteElements(List<Element> applicationCompleteElements) {
-        this.applicationCompleteElements = applicationCompleteElements;
+        this.applicationCompleteElements.addAll(applicationCompleteElements);
         return this;
     }
 
     public ApplicationSystemBuilder addApplicationOptionAttachmentRequests(List<ApplicationOptionAttachmentRequest> applicationOptionAttachmentRequests) {
-        this.applicationOptionAttachmentRequests = applicationOptionAttachmentRequests;
+        this.applicationOptionAttachmentRequests.addAll(applicationOptionAttachmentRequests);
         return this;
     }
 
@@ -88,37 +89,37 @@ public class ApplicationSystemBuilder {
                 additionalPrintElements, applicationOptionAttachmentRequests, maxApplicationOptions, allowedLanguages, lastGenerated);
     }
 
-    public ApplicationSystemBuilder addMaxApplicationOptions(int maxHakukohdes) {
+    public ApplicationSystemBuilder setMaxApplicationOptions(int maxHakukohdes) {
         this.maxApplicationOptions = maxHakukohdes;
         return this;
     }
 
-    public ApplicationSystemBuilder addKohdejoukkoUri(String kohdejoukkoUri) {
+    public ApplicationSystemBuilder setKohdejoukkoUri(String kohdejoukkoUri) {
         this.kohdejoukkoUri = kohdejoukkoUri;
         return this;
     }
 
-    public ApplicationSystemBuilder addHakutapa(String hakutapa) {
+    public ApplicationSystemBuilder setHakutapa(String hakutapa) {
         this.hakutapa = hakutapa;
         return this;
     }
 
-    public ApplicationSystemBuilder addState(String tila) {
+    public ApplicationSystemBuilder setState(String tila) {
         this.state = tila;
         return this;
     }
 
-    public ApplicationSystemBuilder addLastGenerated(Date lastGenerated) {
+    public ApplicationSystemBuilder setLastGenerated(Date lastGenerated) {
         this.lastGenerated = lastGenerated;
         return this;
     }
 
-    public ApplicationSystemBuilder addUsePriorities(Boolean usePriorities) {
+    public ApplicationSystemBuilder setUsePriorities(Boolean usePriorities) {
         this.usePriorities = usePriorities;
         return this;
     }
 
-    public ApplicationSystemBuilder addAllowedLanguages(List<String> allowedLanguages) {
+    public ApplicationSystemBuilder setAllowedLanguages(List<String> allowedLanguages) {
         this.allowedLanguages = allowedLanguages;
         return this;
     }

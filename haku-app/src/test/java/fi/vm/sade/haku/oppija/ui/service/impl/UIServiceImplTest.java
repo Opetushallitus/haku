@@ -5,7 +5,6 @@ import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystemBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
-import fi.vm.sade.haku.oppija.lomake.domain.ModelResponse;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.haku.oppija.lomake.service.UserSession;
 import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
@@ -123,8 +122,8 @@ public class UIServiceImplTest {
 
     private ApplicationSystem buildApplicationSystem(String asId) {
         ApplicationSystemBuilder builder = new ApplicationSystemBuilder()
-                .addId(asId)
-                .addName(new I18nText(new HashMap<String, String>()));
+                .setId(asId)
+                .setName(new I18nText(new HashMap<String, String>()));
 
         return builder.get();
     }

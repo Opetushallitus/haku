@@ -1,14 +1,6 @@
 package fi.vm.sade.haku.oppija.hakemus.domain.util;
 
-import fi.vm.sade.haku.oppija.hakemus.domain.Address;
-import fi.vm.sade.haku.oppija.hakemus.domain.AddressBuilder;
-import fi.vm.sade.haku.oppija.hakemus.domain.Application;
-import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationAttachmentRequest;
-import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationAttachmentRequestBuilder;
-import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationAttachment;
-import org.apache.commons.lang3.StringUtils;
-
-import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationAttachmentBuilder;
+import fi.vm.sade.haku.oppija.hakemus.domain.*;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationOptionAttachmentRequest;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
@@ -18,6 +10,7 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain.SimpleAddress;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import fi.vm.sade.koulutusinformaatio.domain.dto.*;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.*;
 
@@ -66,6 +59,7 @@ public class AttachmentUtil {
 
         return attachments;
     }
+
 
     private static List<ApplicationAttachmentRequest> addApplicationOptionAttachmentRequestsFromForm(List<ApplicationAttachmentRequest> attachments,
       Application application,
