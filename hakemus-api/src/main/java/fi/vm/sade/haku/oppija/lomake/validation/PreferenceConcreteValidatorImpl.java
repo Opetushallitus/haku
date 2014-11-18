@@ -113,6 +113,10 @@ public class PreferenceConcreteValidatorImpl extends PreferenceConcreteValidator
     }
 
     private boolean checkProvider(final ValidationInput validationInput, final String aoId) {
+        if (!validationInput.isInputValidation()) {
+            return true;
+        }
+
         ApplicationOption applicationOption = applicationOptionService.get(aoId);
         boolean isOk = false;
 

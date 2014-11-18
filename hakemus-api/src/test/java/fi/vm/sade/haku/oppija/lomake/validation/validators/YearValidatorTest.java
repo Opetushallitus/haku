@@ -67,6 +67,6 @@ public class YearValidatorTest {
     }
 
     private ValidationResult validationResult(Validator validator, Map<String, String> input) {
-        return validator.validate(new ValidationInput(question, input, null, null));
+        return validator.validate(new ValidationInput(question, input, null, null, false));
     }
 }

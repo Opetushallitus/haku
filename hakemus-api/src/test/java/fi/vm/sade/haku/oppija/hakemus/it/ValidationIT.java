@@ -1,18 +1,17 @@
 package fi.vm.sade.haku.oppija.hakemus.it;
 
-import static org.junit.Assert.assertEquals;
-
-import java.util.HashMap;
-import java.util.Map;
-
-import org.junit.Test;
-
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.validation.ElementTreeValidator;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationInput;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationResult;
+import org.junit.Test;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.junit.Assert.assertEquals;
 
 
 public class ValidationIT extends IntegrationTestSupport {
@@ -34,7 +33,11 @@ public class ValidationIT extends IntegrationTestSupport {
     }
 
     private Map<String, I18nText> validateApplication(ApplicationSystem applicationSystemFixture, Application applicationFixture) {
-        ValidationResult vr = validator.validate(new ValidationInput(applicationSystemFixture.getForm(), applicationFixture.getVastauksetMerged(), applicationFixture.getOid(), applicationSystemFixture.getId()));
+        ValidationResult vr = validator.validate(new ValidationInput(applicationSystemFixture.getForm(),
+                applicationFixture.getVastauksetMerged(),
+                applicationFixture.getOid(),
+                applicationSystemFixture.getId(),
+                false));
         return vr.getErrorMessages();
     }
 }

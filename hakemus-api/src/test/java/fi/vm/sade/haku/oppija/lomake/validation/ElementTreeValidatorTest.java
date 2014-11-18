@@ -73,17 +73,17 @@ public class ElementTreeValidatorTest {
 
     @Test(expected = NullPointerException.class)
     public void testValidateNulls() throws Exception {
-        elementTreeValidator.validate(new ValidationInput(null, null, null, null));
+        elementTreeValidator.validate(new ValidationInput(null, null, null, null, false));
     }
 
     @Test(expected = NullPointerException.class)
     public void testValidateNullElement() throws Exception {
-        elementTreeValidator.validate(new ValidationInput(null, new HashMap<String, String>(), null, null));
+        elementTreeValidator.validate(new ValidationInput(null, new HashMap<String, String>(), null, null, false));
     }
 
     @Test(expected = NullPointerException.class)
     public void testValidateNullValues() throws Exception {
-        elementTreeValidator.validate(new ValidationInput(textQuestion, null, null, null));
+        elementTreeValidator.validate(new ValidationInput(textQuestion, null, null, null, false));
     }
 
     @Test()
@@ -91,7 +91,7 @@ public class ElementTreeValidatorTest {
         textQuestion.setValidator
                 (new RequiredFieldValidator("id", createI18NText("Error message")));
         ValidationResult validationResult = elementTreeValidator.validate(new ValidationInput(textQuestion, new HashMap<String, String>(),
-                null, null));
+                null, null, false));
         assertTrue(validationResult.hasErrors());
     }
 
@@ -110,7 +110,7 @@ public class ElementTreeValidatorTest {
         Element phase = ElementTree.getFirstChild(applicationSystem.getForm());
         HashMap<String, String> values = fillFormWithoutAsuinmaa();
         values.put("asuinmaa", asuinmaa);
-        ValidationResult validationResult = elementTreeValidator.validate(new ValidationInput(phase, values, null, null));
+        ValidationResult validationResult = elementTreeValidator.validate(new ValidationInput(phase, values, null, null, false));
         assertEquals(errorCount, validationResult.getErrorMessages().size());
     }
 
