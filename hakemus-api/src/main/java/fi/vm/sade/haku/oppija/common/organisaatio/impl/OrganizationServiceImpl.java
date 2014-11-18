@@ -44,6 +44,7 @@ import java.io.UnsupportedEncodingException;
 import java.lang.ref.SoftReference;
 import java.net.URLEncoder;
 import java.util.*;
+import java.util.regex.Pattern;
 
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
@@ -55,6 +56,10 @@ public class OrganizationServiceImpl implements OrganizationService {
 
     private static Map<String, SoftReference<Object>> cache;
     private static final String ROOT_ORGANIZATION_OPH = "1.2.246.562.10.00000000001";
+    private static final String ORGANIZATION_PREFIX = "1.2.246.562.10";
+    private static final Pattern SUFFIX_PATTERN = Pattern.compile("^[0-9]{11}$");
+
+    private HttpClient httpClient;
 
     private Gson gson;
 
@@ -132,8 +137,17 @@ public class OrganizationServiceImpl implements OrganizationService {
     @Override
     public List<String> findParentOids(final String organizationOid) throws IOException {
         String url = "/rest/organisaatio/" + organizationOid + "/parentoids";
-        String parents = getCached(url, String.class);
-        return Lists.newArrayList(parents.split("/"));
+        List<String> parents = Lists.newArrayList(getCached(url, String.class).split("/"));
+        for (String parent : parents) {
+            String prefix = parent.substring(0, ORGANIZATION_PREFIX.length());
+            String suffix = parent.substring(ORGANIZATION_PREFIX.length(), parent.length());
+            if (!ORGANIZATION_PREFIX.equals(prefix) && !SUFFIX_PATTERN.matcher(suffix).matches()) {
+                throw new ResourceNotFoundException(
+                        String.format("Getting organization parentoids for %s failed. '%s' doesn't look like oid",
+                                organizationOid, parent));
+            }
+        }
+        return parents;
     }
 
     @Override
@@ -198,7 +212,7 @@ public class OrganizationServiceImpl implements OrganizationService {
     }
 
     private <T> T get(String url, Class<? extends T> resultType) throws IOException {
-        HttpClient client = new DefaultHttpClient();
+        HttpClient client = getHttpClient();
         HttpGet get = new HttpGet(targetService + url);
         HttpResponse response = client.execute(get);
         HttpEntity entity = response.getEntity();
@@ -231,4 +245,14 @@ public class OrganizationServiceImpl implements OrganizationService {
                 +" reason: "+statusLine.getReasonPhrase());
     }
 
+    private HttpClient getHttpClient() {
+        if (httpClient == null) {
+            httpClient = new DefaultHttpClient();
+        }
+        return httpClient;
+    }
+
+    public void setHttpClient(HttpClient httpClient) {
+        this.httpClient = httpClient;
+    }
 }

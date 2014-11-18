@@ -217,15 +217,8 @@ public class AttachmentUtil {
             higherEdAttachments.put(key, aos);
         }
 
-        // TODO Seriously, this shouldn't be hardcoded.
-        Calendar deadlineCal = GregorianCalendar.getInstance();
-        deadlineCal.set(Calendar.YEAR, 2014);
-        deadlineCal.set(Calendar.MONTH, Calendar.OCTOBER);
-        deadlineCal.set(Calendar.DATE, 6);
-        deadlineCal.set(Calendar.HOUR_OF_DAY, 15);
-        deadlineCal.set(Calendar.MINUTE, 0);
-        deadlineCal.set(Calendar.SECOND, 0);
-        Date deadline = deadlineCal.getTime();
+        // This variable intentionally left null.
+        Date deadline = null;
 
         for (Map.Entry<String, List<ApplicationOptionDTO>> entry : higherEdAttachments.entrySet()) {
             String attachmentType = entry.getKey();

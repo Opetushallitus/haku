@@ -17,11 +17,13 @@ import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationDAO;
 public class MongoFixtureImporter {
     private static final Logger LOGGER = Logger.getLogger(MongoFixtureImporter.class);
 
+    public static final String MONGOFIXTURES = "/mongofixtures/";
+
     public static void importJsonFixtures(MongoTemplate template, ApplicationDAO dao) throws IOException {
         importJsonFixtures(template, dao, "**/*.json");
     }
     public static void importJsonFixtures(MongoTemplate template, ApplicationDAO dao, String selector) throws IOException {
-        final Resource[] resources = new PathMatchingResourcePatternResolver().getResources("mongofixtures/" + selector);
+        final Resource[] resources = new PathMatchingResourcePatternResolver().getResources(MONGOFIXTURES + selector);
         for (Resource resource: resources) {
             insertObject(template, resource);
         }
