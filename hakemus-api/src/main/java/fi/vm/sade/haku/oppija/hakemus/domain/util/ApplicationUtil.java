@@ -2,22 +2,14 @@ package fi.vm.sade.haku.oppija.hakemus.domain.util;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
-import fi.vm.sade.haku.oppija.hakemus.domain.Application;
-import fi.vm.sade.haku.oppija.hakemus.domain.PreferenceChecked;
-import fi.vm.sade.haku.oppija.hakemus.domain.PreferenceCheckedBuilder;
-import fi.vm.sade.haku.oppija.hakemus.domain.PreferenceEligibility;
-import fi.vm.sade.haku.oppija.hakemus.domain.PreferenceEligibilityBuilder;
+import fi.vm.sade.haku.oppija.hakemus.domain.*;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
-import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.*;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.OPTION_ID_POSTFIX;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.PREFERENCE_PREFIX;
 import static org.apache.commons.lang.StringUtils.isNotEmpty;
 
 
@@ -80,6 +72,26 @@ public final class ApplicationUtil {
         }
         if (hasBaseEducation(application, "pohjakoulutus_muu") && !allAOs.isEmpty()) {
             attachments.put("muu", allAOs);
+        }
+        return attachments;
+    }
+
+    public static Map<String, List<String>> getAmkOpeAttachments(Application application) {
+        Map<String, List<String>> attachments = new LinkedHashMap<String, List<String>>();
+        Map<String, String> koulutustaustaAnswers = application.getPhaseAnswers(OppijaConstants.PHASE_EDUCATION);
+        String tutkintotaso = koulutustaustaAnswers.get("amk_ope_tutkinnontaso");
+        List<String> eiKorkeakoulututkinto = new ArrayList<String>() {{
+            add("opisto"); add("ammatillinen"); add("ammatti"); add("muu");
+        }};
+        if (eiKorkeakoulututkinto.contains(tutkintotaso)) {
+            attachments.put("ei_korkeakoulututkintoa", getPreferenceAoIds(application));
+            if ("opettajana_ammatillisessa_tutkinto".equals(koulutustaustaAnswers.get("ei_korkeakoulututkintoa"))) {
+                attachments.put("opettajana_ammatillisessa_tutkinto", getPreferenceAoIds(application));
+            } else if ("opettajana_ammatillisessa".equals(koulutustaustaAnswers.get("ei_korkeakoulututkintoa"))) {
+                attachments.put("opettajana_ammatillisessa", getPreferenceAoIds(application));
+            }
+        } else if ("ulk".equals(tutkintotaso)) {
+            attachments.put("ulkomainen", getPreferenceAoIds(application));
         }
         return attachments;
     }

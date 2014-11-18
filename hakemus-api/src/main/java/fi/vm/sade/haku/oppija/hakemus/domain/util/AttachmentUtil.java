@@ -60,7 +60,6 @@ public class AttachmentUtil {
         return attachments;
     }
 
-
     private static List<ApplicationAttachmentRequest> addApplicationOptionAttachmentRequestsFromForm(List<ApplicationAttachmentRequest> attachments,
       Application application,
       ApplicationSystem applicationSystem) {
@@ -195,12 +194,11 @@ public class AttachmentUtil {
                                                                       KoulutusinformaatioService koulutusinformaatioService,
                                                                       String lang) {
         Map<String, List<String>> higherEdAttachmentAOIds = ApplicationUtil.getHigherEdAttachmentAOIds(application);
-        Map<String, List<ApplicationOptionDTO>> higherEdAttachments =
-                new HashMap<String, List<ApplicationOptionDTO>>();
+        higherEdAttachmentAOIds.putAll(ApplicationUtil.getAmkOpeAttachments(application));
+        Map<String, List<ApplicationOptionDTO>> higherEdAttachments = new HashMap<String, List<ApplicationOptionDTO>>();
         for (Map.Entry<String, List<String>> entry : higherEdAttachmentAOIds.entrySet()) {
             String key = entry.getKey();
-            List<ApplicationOptionDTO> aos =
-                    new ArrayList<ApplicationOptionDTO>();
+            List<ApplicationOptionDTO> aos = new ArrayList<ApplicationOptionDTO>();
             for (String aoOid : entry.getValue()) {
                 ApplicationOptionDTO ao = koulutusinformaatioService.getApplicationOption(aoOid, lang);
                 ao = ensureAddress(ao);
