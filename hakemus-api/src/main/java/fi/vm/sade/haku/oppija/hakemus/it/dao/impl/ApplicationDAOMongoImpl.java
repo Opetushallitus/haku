@@ -678,7 +678,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         ensureIndex(INDEX_SSN_DIGEST, FIELD_APPLICATION_SYSTEM_ID, FIELD_SSN_DIGEST);
 
         // Preference Indexes
-        for (int i = 1; i <= 100; i++) {
+        for (int i = 1; i <= 8; i++) {
             createPreferenceIndexes("preference"+i, i>1,
                     format(FIELD_LOP_T, i),
                     format(FIELD_DISCRETIONARY_T, i),
