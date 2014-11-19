@@ -417,7 +417,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         Application query = new Application(oid);
         Application current = getApplication(query);
         hakuPermissionService.userCanEditApplicationAdditionalData(current);
-        current.setAdditionalInfo(additionalInfo);
+        current.getAdditionalInfo().putAll(additionalInfo);
         applicationDAO.update(query, current);
     }
 
