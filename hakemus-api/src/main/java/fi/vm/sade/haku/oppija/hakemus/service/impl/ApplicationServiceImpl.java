@@ -298,9 +298,12 @@ public class ApplicationServiceImpl implements ApplicationService {
     public List<Map<String, Object>> findFullApplications(final ApplicationQueryParameters applicationQueryParameters) {
         List<ApplicationSystem> ass = applicationSystemService.getAllApplicationSystems("maxApplicationOptions", "kohdejoukkoUri");
         int max = 0;
+        List<String> queriedAss = applicationQueryParameters.getAsIds();
         for (ApplicationSystem as : ass) {
-            if (as.getMaxApplicationOptions() > max) {
-                max = as.getMaxApplicationOptions();
+            if (queriedAss.isEmpty() || queriedAss.contains(as)) {
+                if (as.getMaxApplicationOptions() > max) {
+                    max = as.getMaxApplicationOptions();
+                }
             }
         }
         ApplicationFilterParametersBuilder builder = new ApplicationFilterParametersBuilder()
