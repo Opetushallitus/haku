@@ -30,7 +30,8 @@ import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.NoConnectionReuseStrategy;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -245,9 +246,12 @@ public class OrganizationServiceImpl implements OrganizationService {
                 +" reason: "+statusLine.getReasonPhrase());
     }
 
-    private HttpClient getHttpClient() {
+    private synchronized HttpClient getHttpClient() {
         if (httpClient == null) {
-            httpClient = new DefaultHttpClient();
+            httpClient = HttpClientBuilder.create()
+                    .disableAuthCaching()
+                    .setConnectionReuseStrategy(new NoConnectionReuseStrategy())
+                    .build();
         }
         return httpClient;
     }
