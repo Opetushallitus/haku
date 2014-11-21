@@ -90,7 +90,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     private static final String FIELD_SENDING_SCHOOL = "answers.koulutustausta.lahtokoulu";
     private static final String FIELD_SENDING_SCHOOL_PARENTS = "authorizationMeta.sendingSchool";
     private static final String FIELD_HIGHER_ED_BASE_ED_T = "answers.koulutustausta.pohjakoulutus_%s";
-    private static final String FIELD_ALL_ORGANIZAIONS = "authorizationMeta.allAoOrganizations";
+    private static final String FIELD_ALL_ORGANIZATIONS = "authorizationMeta.allAoOrganizations";
     private static final String FIELD_SENDING_CLASS = "answers.koulutustausta.lahtoluokka";
     private static final String FIELD_CLASS_LEVEL = "answers.koulutustausta.luokkataso";
     private static final String FIELD_SSN = "answers.henkilotiedot.Henkilotunnus";
@@ -123,6 +123,9 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     private String applicationOidPrefix;
     @Value("${user.oid.prefix}")
     private String userOidPrefix;
+    @Value("${root.organisaatio.oid}")
+    private String rooOrganizationOid;
+
 
     @Autowired
     public ApplicationDAOMongoImpl(DBObjectToApplicationFunction dbObjectToHakemusConverter,
@@ -144,13 +147,13 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     @Override
     public List<ApplicationAdditionalDataDTO> findApplicationAdditionalData(String applicationSystemId, String aoId,
                                                                             ApplicationFilterParameters filterParameters) {
-        ArrayList<DBObject> orgFilter = filterByOrganization(filterParameters);
+        DBObject orgFilter = filterByOrganization(filterParameters);
         DBObject query = QueryBuilder.start().and(queryByPreference(filterParameters, Lists.newArrayList(aoId)).get(),
-          newOIdExistDBObject(),
-          new BasicDBObject(FIELD_APPLICATION_SYSTEM_ID, applicationSystemId),
-          QueryBuilder.start(FIELD_APPLICATION_STATE).in(Lists.newArrayList(
-            Application.State.ACTIVE.toString(), Application.State.INCOMPLETE.toString())).get(),
-          QueryBuilder.start().or(orgFilter.toArray(new DBObject[orgFilter.size()])).get()).get();
+                newOIdExistDBObject(),
+                new BasicDBObject(FIELD_APPLICATION_SYSTEM_ID, applicationSystemId),
+                QueryBuilder.start(FIELD_APPLICATION_STATE).in(Lists.newArrayList(
+                        Application.State.ACTIVE.toString(), Application.State.INCOMPLETE.toString())).get(),
+                orgFilter).get();
 
         DBObject keys = generateKeysDBObject(DBObjectToAdditionalDataDTO.KEYS);
 
@@ -472,14 +475,17 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         return filters.toArray(new DBObject[filters.size()]);
     }
 
-    private ArrayList<DBObject> filterByOrganization(ApplicationFilterParameters filterParameters) {
+    private DBObject filterByOrganization(ApplicationFilterParameters filterParameters) {
 
-        ArrayList<DBObject> queries = new ArrayList<DBObject>(filterParameters.getOrganizationsReadble().size());
+        ArrayList<DBObject> queries = new ArrayList<DBObject>();
 
-        queries.add(QueryBuilder.start().or(
-                QueryBuilder.start(FIELD_ALL_ORGANIZAIONS).is(null).get(), // Empty applications
-                QueryBuilder.start(FIELD_ALL_ORGANIZAIONS).in(filterParameters.getOrganizationsReadble()).get()
-        ).get());
+        if (filterParameters.getOrganizationsReadble().size() > 0) {
+            queries.add(QueryBuilder.start(FIELD_ALL_ORGANIZATIONS).in(filterParameters.getOrganizationsReadble()).get());
+        }
+
+        if (filterParameters.getOrganizationsReadble().contains(rooOrganizationOid)) {
+            queries.add(QueryBuilder.start(FIELD_ALL_ORGANIZATIONS).exists(false).get());
+        }
 
         if (filterParameters.getOrganizationsOpo().size() > 0) {
             queries.add(QueryBuilder.start().and(
@@ -487,30 +493,30 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
                     QueryBuilder.start(FIELD_OPO_ALLOWED).is(true).get()).get());
         }
         LOG.debug("queries: {}", queries.size());
-        return queries;
+
+
+        return QueryBuilder.start().or(queries.toArray(new DBObject[queries.size()])).get();
     }
 
     private DBObject newQueryBuilderWithFilters(final DBObject[] filters,
                                                 final ApplicationFilterParameters filterParameters,
                                                 final QueryBuilder baseQuery) {
         DBObject query;
-        ArrayList<DBObject> orgFilter = filterByOrganization(filterParameters);
+        DBObject orgFilter = filterByOrganization(filterParameters);
 
         LOG.debug("Filters: {}", filters.length);
 
-        if (orgFilter.isEmpty()) {
+        if (orgFilter.keySet().isEmpty()) {
             query = QueryBuilder.start("_id").exists(false).get();
         } else {
             if (filters.length > 0) {
                 query = QueryBuilder.start()
                         .and(baseQuery.get(),
-                                QueryBuilder.start().and(filters).get(),
-                                QueryBuilder.start().or(orgFilter.toArray(new DBObject[orgFilter.size()])).get())
+                                QueryBuilder.start().and(filters).get(), orgFilter)
                         .get();
             } else {
                 query = QueryBuilder.start()
-                        .and(baseQuery.get(),
-                                QueryBuilder.start().or(orgFilter.toArray(new DBObject[orgFilter.size()])).get())
+                        .and(baseQuery.get(), orgFilter)
                         .get();
             }
         }
@@ -596,6 +602,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
                         PostProcessingState.NOMAIL.toString()));
         queryBuilder.put(FIELD_APPLICATION_STATE).in(
                 Lists.newArrayList(
+                        Application.State.DRAFT.name(),
                         Application.State.ACTIVE.name(),
                         Application.State.INCOMPLETE.name()));
         DBObject query = queryBuilder.get();
@@ -666,7 +673,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         ensureIndex(INDEX_STUDENT_OID, FIELD_STUDENT_OID);
         ensureSparseIndex(INDEX_SENDING_SCHOOL, FIELD_SENDING_SCHOOL, FIELD_SENDING_CLASS);
         ensureSparseIndex(INDEX_SENDING_CLASS, FIELD_SENDING_CLASS);
-        ensureSparseIndex(INDEX_ALL_ORGANIZAIONS, FIELD_ALL_ORGANIZAIONS);
+        ensureSparseIndex(INDEX_ALL_ORGANIZAIONS, FIELD_ALL_ORGANIZATIONS);
         ensureIndex(INDEX_SEARCH_NAMES, FIELD_SEARCH_NAMES);
         ensureIndex(INDEX_FULL_NAME, FIELD_FULL_NAME);
         ensureIndex(INDEX_VERSION, FIELD_MODEL_VERSION);

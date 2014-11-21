@@ -64,7 +64,7 @@ public class Application implements Serializable {
     }
 
     public enum State {
-        ACTIVE, PASSIVE, INCOMPLETE, SUBMITTED;
+        ACTIVE, PASSIVE, INCOMPLETE, SUBMITTED, DRAFT
     }
 
     public enum PostProcessingState {

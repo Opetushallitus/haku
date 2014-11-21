@@ -31,6 +31,7 @@ import fi.vm.sade.haku.oppija.hakemus.domain.dto.SyntheticApplication;
 import fi.vm.sade.haku.oppija.hakemus.domain.util.ApplicationUtil;
 import fi.vm.sade.haku.oppija.hakemus.domain.util.AttachmentUtil;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationDAO;
+import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationFilterParameters;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationFilterParametersBuilder;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationQueryParameters;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationOidService;
@@ -276,47 +277,15 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     @Override
     public ApplicationSearchResultDTO findApplications(final ApplicationQueryParameters applicationQueryParameters) {
-        List<ApplicationSystem> ass = applicationSystemService.getAllApplicationSystems("maxApplicationOptions", "kohdejoukkoUri");
-        int max = 0;
-        String kohdejoukko = null;
-        List<String> queriedAss = applicationQueryParameters.getAsIds();
-        for (ApplicationSystem as : ass) {
-            if (queriedAss.contains(as.getId())) {
-                kohdejoukko = as.getKohdejoukkoUri();
-                if (as.getMaxApplicationOptions() > max) {
-                    max = as.getMaxApplicationOptions();
-                }
-            }
-        }
-        ApplicationFilterParametersBuilder builder = new ApplicationFilterParametersBuilder()
-                .setMaxApplicationOptions(max)
-                .addOrganizationsReadable(hakuPermissionService.userCanReadApplications())
-                .addOrganizationsOpo(hakuPermissionService.userHasOpoRole());
-
-        if (queriedAss != null && queriedAss.size() == 1) {
-            builder.setKohdejoukko(kohdejoukko);
-        }
-        
-        return applicationDAO.findAllQueried(applicationQueryParameters, builder.build());
+        return applicationDAO.findAllQueried(applicationQueryParameters,
+                buildFilterParams(applicationQueryParameters));
     }
 
     @Override
     public List<Map<String, Object>> findFullApplications(final ApplicationQueryParameters applicationQueryParameters) {
-        List<ApplicationSystem> ass = applicationSystemService.getAllApplicationSystems("maxApplicationOptions", "kohdejoukkoUri");
-        int max = 0;
-        List<String> queriedAss = applicationQueryParameters.getAsIds();
-        for (ApplicationSystem as : ass) {
-            if (queriedAss.isEmpty() || queriedAss.contains(as)) {
-                if (as.getMaxApplicationOptions() > max) {
-                    max = as.getMaxApplicationOptions();
-                }
-            }
-        }
-        ApplicationFilterParametersBuilder builder = new ApplicationFilterParametersBuilder()
-                .addOrganizationsReadable(hakuPermissionService.userCanReadApplications())
-                .addOrganizationsOpo(hakuPermissionService.userHasOpoRole())
-                .setMaxApplicationOptions(max);
-        List<Map<String, Object>> applications = applicationDAO.findAllQueriedFull(applicationQueryParameters, builder.build());
+
+        List<Map<String, Object>> applications = applicationDAO.findAllQueriedFull(applicationQueryParameters,
+                buildFilterParams(applicationQueryParameters));
         for (Map<String, Object> application : applications) {
             restoreV0ModelLOPParentsToApplicationMap(application);
             removeAuthorizationMeta(application);
@@ -324,6 +293,29 @@ public class ApplicationServiceImpl implements ApplicationService {
         return applications;
     }
 
+    private ApplicationFilterParameters buildFilterParams(final ApplicationQueryParameters applicationQueryParameters) {
+        List<ApplicationSystem> ass = applicationSystemService.getAllApplicationSystems("maxApplicationOptions", "kohdejoukkoUri");
+        int max = 0;
+        String kohdejoukko = null;
+        List<String> queriedAss = applicationQueryParameters.getAsIds();
+        for (ApplicationSystem as : ass) {
+            if (queriedAss.isEmpty() || queriedAss.contains(as)) {
+                kohdejoukko = as.getKohdejoukkoUri();
+                if (as.getMaxApplicationOptions() > max) {
+                    max = as.getMaxApplicationOptions();
+                }
+            }
+        }
+
+        ApplicationFilterParametersBuilder builder = new ApplicationFilterParametersBuilder()
+                .addOrganizationsReadable(hakuPermissionService.userCanReadApplications())
+                .addOrganizationsOpo(hakuPermissionService.userHasOpoRole())
+                .setMaxApplicationOptions(max);
+        if (queriedAss != null && queriedAss.size() == 1) {
+            builder.setKohdejoukko(kohdejoukko);
+        }
+        return builder.build();
+    }
 
     @Override
     public Application updateAuthorizationMeta(Application application) throws IOException {
@@ -474,7 +466,10 @@ public class ApplicationServiceImpl implements ApplicationService {
         Application application = new Application();
         application.setApplicationSystemId(asId);
         application.setReceived(new Date());
-        application.setState(Application.State.INCOMPLETE);
+        application.setState(Application.State.DRAFT);
+        AuthorizationMeta authorizationMeta = new AuthorizationMeta();
+        authorizationMeta.setAllAoOrganizations(new HashSet<String>(hakuPermissionService.userCanEnterApplications()));
+        application.setAuthorizationMeta(authorizationMeta);
         application.addNote(new ApplicationNote("Hakemus vastaanotettu", new Date(), userSession.getUser().getUserName()));
         application.setOid(applicationOidService.generateNewOid());
         this.applicationDAO.save(application);
