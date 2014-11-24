@@ -16,13 +16,13 @@
 
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta;
 
-import fi.vm.sade.tarjonta.service.resources.dto.HakukohdeDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeV1RDTO;
 
 import java.util.List;
 
 public interface HakukohdeService {
 
-    HakukohdeDTO findByOid(String oid);
+    HakukohdeV1RDTO findByOid(String oid);
 
     List<String> findByGroupAndApplicationSystem(String applicationOptionGroupId, String applicationSystemId);
 }

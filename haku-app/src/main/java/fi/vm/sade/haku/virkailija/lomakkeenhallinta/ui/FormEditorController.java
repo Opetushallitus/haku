@@ -17,7 +17,7 @@ import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormGenerator;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakuService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakukohdeService;
-import fi.vm.sade.tarjonta.service.resources.dto.HakukohdeDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeV1RDTO;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.SerializationConfig;
 import org.slf4j.Logger;
@@ -237,13 +237,15 @@ public class FormEditorController {
         OrganizationHierarchy orgHierarchy = new OrganizationHierarchy(organizationService);
         for (String applicationOptionId : applicationOptionIds) {
             LOGGER.debug("Fetching option data for " + applicationOptionId);
-            HakukohdeDTO applicationOption = hakukohdeService.findByOid(applicationOptionId);
-            String providerId = applicationOption.getTarjoajaOid();
-            if (null == providerId){
+            HakukohdeV1RDTO applicationOption = hakukohdeService.findByOid(applicationOptionId);
+            Iterator<String> providerIds = applicationOption.getTarjoajaOids().iterator();
+            if (!providerIds.hasNext()){
                 LOGGER.error("Got null provider for application option: " + applicationOptionId + " of application system: "
                         + applicationSystemId);
                 continue;
             }
+            // TODO jossain vaiheessa täytyy hoitaa useampi provider
+            String providerId = providerIds.next();
             LOGGER.debug("Provider for  " + applicationOptionId + " is " +providerId);
             orgHierarchy.addOrganization(providerId);
         }
