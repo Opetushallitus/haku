@@ -25,6 +25,7 @@ import fi.vm.sade.haku.virkailija.authentication.Person;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.dao.ThemeQuestionDAO;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.dao.ThemeQuestionQueryParameters;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain.ThemeQuestion;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormGenerator;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakuService;
@@ -67,10 +68,9 @@ public class ThemeQuestionResource {
 
     @Autowired
     private HakuService hakuService;
+
     @Autowired
-    private KoodistoService koodistoService;
-    @Autowired
-    private ApplicationOptionService applicationOptionService;
+    private FormGenerator formGenerator;
 
     public ThemeQuestionResource(){
     }
@@ -87,8 +87,6 @@ public class ThemeQuestionResource {
         this.hakukohdeService = hakukohdeService;
         this.organizationService = organizationService;
         this.hakuService = hakuService;
-        this.koodistoService = koodistoService;
-        this.applicationOptionService = applicationOptionService;
         this.authenticationService = authenticationService;
     }
 
@@ -108,7 +106,7 @@ public class ThemeQuestionResource {
     public Element getGeneratedThemeQuestionByOid(@PathParam("themeQuestionId") String themeQuestionId) {
         LOGGER.debug("Getting question by Id: {}", themeQuestionId);
         ThemeQuestion themeQuestion = themeQuestionDAO.findById(themeQuestionId);
-        FormParameters formParameters = new FormParameters(hakuService.getApplicationSystem(themeQuestion.getApplicationSystemId()), koodistoService, themeQuestionDAO, hakukohdeService, organizationService);;
+        FormParameters formParameters = formGenerator.configureForm(hakuService.getApplicationSystem(themeQuestion.getApplicationSystemId()));
         return themeQuestion.generateElement(formParameters);
     }
 
