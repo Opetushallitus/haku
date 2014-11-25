@@ -81,6 +81,7 @@ public final class ApplicationUtil {
         Map<String, String> koulutustaustaAnswers = application.getPhaseAnswers(OppijaConstants.PHASE_EDUCATION);
         String tutkintotaso = koulutustaustaAnswers.get("amk_ope_tutkinnontaso");
         List<String> eiKorkeakoulututkinto = new ArrayList<String>() {{
+            add("tohtori"); add("ylempi"); add("amk"); add("alempi");
             add("opisto"); add("ammatillinen"); add("ammatti"); add("muu");
         }};
         if (eiKorkeakoulututkinto.contains(tutkintotaso)) {
