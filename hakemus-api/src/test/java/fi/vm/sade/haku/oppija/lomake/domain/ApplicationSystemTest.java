@@ -39,7 +39,7 @@ public class ApplicationSystemTest {
                 .addForm(new Form("", ElementUtil.createI18NAsIs("")))
                 .addName(ElementUtil.createI18NAsIs(""))
                 .addApplicationPeriods(applicationPeriods)
-                .addApplicationSystemType(OppijaConstants.VARSINAINEN_HAKU)
+                .addApplicationSystemType(OppijaConstants.HAKUTYYPPI_VARSINAINEN_HAKU)
                 .addName(ElementUtil.createI18NAsIs("")).get();
         assertFalse(applicationSystem.isActive());
     }
@@ -55,7 +55,7 @@ public class ApplicationSystemTest {
                 .addForm(new Form("", ElementUtil.createI18NAsIs("")))
                 .addName(ElementUtil.createI18NAsIs(""))
                 .addApplicationPeriods(applicationPeriods)
-                .addApplicationSystemType(OppijaConstants.VARSINAINEN_HAKU)
+                .addApplicationSystemType(OppijaConstants.HAKUTYYPPI_VARSINAINEN_HAKU)
                 .addName(ElementUtil.createI18NAsIs("")).get();
         assertTrue(applicationSystem.isActive());
     }

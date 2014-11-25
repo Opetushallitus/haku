@@ -128,7 +128,7 @@ public final class HenkilotiedotPhase {
                         .validator(new SocialSecurityNumberFieldValidator())
                         .pattern(HETU_PATTERN)
                         .build();
-        addUniqueApplicantValidator(socialSecurityNumber, formParameters.getApplicationSystem().getApplicationSystemType());
+        addUniqueApplicantValidator(socialSecurityNumber, formParameters);
 
 
         kysytaankoHetuSaanto.addChild(socialSecurityNumber);

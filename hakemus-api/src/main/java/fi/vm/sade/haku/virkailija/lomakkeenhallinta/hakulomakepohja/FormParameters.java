@@ -1,8 +1,6 @@
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja;
 
 import com.google.common.base.Joiner;
-import fi.vm.sade.haku.oppija.common.koulutusinformaatio.ApplicationOptionService;
-import fi.vm.sade.haku.oppija.common.organisaatio.Organization;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
@@ -11,6 +9,9 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.service.ThemeQuestionConfigurator;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakukohdeService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class FormParameters {
     private static final String FORM_MESSAGES = "form_messages";
@@ -21,8 +22,30 @@ public class FormParameters {
         YHTEISHAKU_SYKSY_KORKEAKOULU,
         LISAHAKU_SYKSY,
         LISAHAKU_KEVAT,
-        PERVAKO;
+        PERVAKO
     }
+
+    private static final Map<String, String> HAKUTAVAT = new HashMap<String, String>() {{
+        put(OppijaConstants.HAKUTAPA_YHTEISHAKU, "yhteishaku");
+        put(OppijaConstants.HAKUTAPA_ERILLISHAKU, "erillishaku");
+        put(OppijaConstants.HAKUTAPA_JATKUVA_HAKU, "jatkuva");
+    }};
+
+    private static final Map<String, String> HAKUTYYPIT = new HashMap<String, String>() {{
+        put(OppijaConstants.HAKUTYYPPI_VARSINAINEN_HAKU, "varsinainen");
+        put(OppijaConstants.HAKUTYYPPI_TAYDENNYS, "taydennys");
+        put(OppijaConstants.HAKUTYYPPI_LISAHAKU, "lisahaku");
+    }};
+
+    private static final Map<String, String> KOHDEJOUKOT = new HashMap<String, String>() {{
+        put(OppijaConstants.KOHDEJOUKKO_KORKEAKOULU, "korkeakoulu");
+        put(OppijaConstants.KOHDEJOUKKO_PERVAKO, "pervako");
+    }};
+
+    private static final Map<String, String> HAKUKAUDET = new HashMap<String, String>() {{
+        put(OppijaConstants.HAKUKAUSI_KEVAT, "kevat");
+        put(OppijaConstants.HAKUKAUSI_SYKSY, "syksy");
+    }};
 
     private final ApplicationSystem applicationSystem;
     private final KoodistoService koodistoService;
@@ -44,14 +67,7 @@ public class FormParameters {
         this.hakukohdeService = hakukohdeService;
         this.organizationService = organizationService;
         this.formTemplateType = figureOutFormForApplicationSystem(applicationSystem);
-
-        if (FormTemplateType.PERVAKO.equals(formTemplateType)) {
-            this.i18nBundle = new I18nBundle(getMessageBundleName(FORM_MESSAGES, applicationSystem) + "_pervako");
-        } else if (FormTemplateType.YHTEISHAKU_SYKSY_KORKEAKOULU.equals(formTemplateType)) {
-            this.i18nBundle = new I18nBundle(getMessageBundleName(FORM_MESSAGES, applicationSystem) + "_korkeakoulu");
-        } else {
-            this.i18nBundle = new I18nBundle(getMessageBundleName(FORM_MESSAGES, applicationSystem));
-        }
+        this.i18nBundle = new I18nBundle(getMessageBundleName(FORM_MESSAGES, applicationSystem));
     }
 
     public ApplicationSystem getApplicationSystem() {
@@ -67,9 +83,11 @@ public class FormParameters {
     }
 
     private static String getMessageBundleName(final String baseName, final ApplicationSystem as) {
-        String hakutyyppi = OppijaConstants.LISA_HAKU.equals(as.getApplicationSystemType()) ? "lisahaku" : "yhteishaku";
-        String hakukausi = OppijaConstants.HAKUKAUSI_SYKSY.equals(as.getHakukausiUri()) ? "syksy" : "kevat";
-        return Joiner.on('_').join(baseName, hakutyyppi, hakukausi);
+        return Joiner.on('_').join(baseName,
+                HAKUTAVAT.get(as.getHakutapa()),
+                HAKUTYYPIT.get(as.getApplicationSystemType()),
+                HAKUKAUDET.get(as.getHakukausiUri()),
+                KOHDEJOUKOT.containsKey(as.getKohdejoukkoUri()) ? KOHDEJOUKOT.get(as.getKohdejoukkoUri()) : "muu");
     }
 
     private FormTemplateType figureOutFormForApplicationSystem(ApplicationSystem as) {
@@ -78,7 +96,7 @@ public class FormParameters {
         } else if (OppijaConstants.KOHDEJOUKKO_KORKEAKOULU.equals(as.getKohdejoukkoUri())) {
             return FormTemplateType.YHTEISHAKU_SYKSY_KORKEAKOULU;
         }
-        if (as.getApplicationSystemType().equals(OppijaConstants.LISA_HAKU)) {
+        if (as.getApplicationSystemType().equals(OppijaConstants.HAKUTYYPPI_LISAHAKU)) {
             if (as.getHakukausiUri().equals(OppijaConstants.HAKUKAUSI_KEVAT)) {
                 return FormTemplateType.LISAHAKU_KEVAT;
             }
@@ -114,7 +132,11 @@ public class FormParameters {
         return FormTemplateType.YHTEISHAKU_KEVAT.equals(this.getFormTemplateType());
     }
     public boolean isLisahaku() {
-        return applicationSystem.getApplicationSystemType().equals(OppijaConstants.LISA_HAKU);
+        return applicationSystem.getApplicationSystemType().equals(OppijaConstants.HAKUTYYPPI_LISAHAKU);
+    }
+
+    public boolean isUniqueApplicantRequired() {
+        return OppijaConstants.HAKUTYYPPI_VARSINAINEN_HAKU.equals(applicationSystem.getApplicationSystemType());
     }
 
     public ThemeQuestionConfigurator getThemeQuestionConfigurator() {
@@ -128,4 +150,5 @@ public class FormParameters {
     public void setOnlyThemeGenerationForFormEditor(Boolean onlyThemeGenerationForFormEditor) {
         this.onlyThemeGenerationForFormEditor = onlyThemeGenerationForFormEditor;
     }
+
 }

@@ -21,7 +21,7 @@ public class ApplicationSystemCreator {
             .addName(ElementUtil.createI18NAsIs("test application period"))
             .addApplicationPeriods(applicationPeriods)
             .addHakukausiUri(OppijaConstants.HAKUKAUSI_SYKSY)
-            .addApplicationSystemType(OppijaConstants.VARSINAINEN_HAKU)
+            .addApplicationSystemType(OppijaConstants.HAKUTYYPPI_VARSINAINEN_HAKU)
             .addHakutapa(OppijaConstants.HAKUTAPA_YHTEISHAKU)
             .get();
     }
