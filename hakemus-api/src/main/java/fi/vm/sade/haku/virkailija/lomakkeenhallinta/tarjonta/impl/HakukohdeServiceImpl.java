@@ -22,11 +22,7 @@ import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakukohdeService;
-import fi.vm.sade.tarjonta.service.resources.dto.HakukohdeDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeHakutulosV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.HakutuloksetV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.ResultV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.TarjoajaHakutulosV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.*;
 import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,11 +32,7 @@ import org.springframework.stereotype.Service;
 
 import javax.ws.rs.core.MediaType;
 import java.lang.ref.SoftReference;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 //@Profile(value = {"default", "devluokka"})
@@ -54,28 +46,28 @@ public class HakukohdeServiceImpl implements HakukohdeService {
     private final String PARAM_GROUP_OID = "organisaatioRyhmaOid";
     private final String PARAM_APPLICATION_SYSTEM_OID= "hakuOid";
 
-    private static final Map<String, SoftReference<HakukohdeDTO>> cache = new HashMap<String, SoftReference<HakukohdeDTO>>();
+    private static final Map<String, SoftReference<HakukohdeV1RDTO>> cache = new HashMap<String, SoftReference<HakukohdeV1RDTO>>();
 
     @Autowired
-    public HakukohdeServiceImpl(@Value("${tarjonta.hakukohde.resource.url}") final String tarjontaHakukohdeResourceUrl, @Value("${tarjonta.v1.hakukohde.resource.url}") final String tarjontaV1HakukohdeResourceUrl) {
+    public HakukohdeServiceImpl(@Value("${tarjonta.v1.hakukohde.resource.url}") final String tarjontaV1HakukohdeResourceUrl) {
         ClientConfig cc = new DefaultClientConfig();
         cc.getClasses().add(JacksonJsonProvider.class);
         Client clientWithJacksonSerializer = Client.create(cc);
-        hakukohdeResource = clientWithJacksonSerializer.resource(tarjontaHakukohdeResourceUrl);
+        hakukohdeResource = clientWithJacksonSerializer.resource(tarjontaV1HakukohdeResourceUrl);
         hakukohdeV1Resource = clientWithJacksonSerializer.resource(tarjontaV1HakukohdeResourceUrl);
         LOGGER.debug("Tarjonnan hakukohde uri: {}. Tarjonnan v1 hakukohde uri: {} ",hakukohdeResource.getURI().toString(), hakukohdeV1Resource.getURI().toString());
     }
 
     @Override
-    public HakukohdeDTO findByOid(String oid){
-        SoftReference<HakukohdeDTO> cacheReference = cache.get(oid);
-        HakukohdeDTO hakukohde = null == cacheReference ? null : cacheReference.get();
+    public HakukohdeV1RDTO findByOid(String oid){
+        SoftReference<HakukohdeV1RDTO> cacheReference = cache.get(oid);
+        HakukohdeV1RDTO hakukohde = null == cacheReference ? null : cacheReference.get();
         if (null != hakukohde){
             return hakukohde;
         }
         hakukohde = fetchByOid(oid);
         if (null != hakukohde){
-            cache.put(oid, new SoftReference<HakukohdeDTO>(hakukohde));
+            cache.put(oid, new SoftReference<HakukohdeV1RDTO>(hakukohde));
         }
         return hakukohde;
     }
@@ -99,9 +91,9 @@ public class HakukohdeServiceImpl implements HakukohdeService {
         return new ArrayList(applicationOptions);
     }
 
-    private HakukohdeDTO fetchByOid(String oid){
+    private HakukohdeV1RDTO fetchByOid(String oid){
         WebResource asWebResource = hakukohdeResource.path(oid);
-        return asWebResource.accept(MEDIA_TYPE).get(new GenericType<HakukohdeDTO>() {
+        return asWebResource.accept(MEDIA_TYPE).get(new GenericType<HakukohdeV1RDTO>() {
         });
     }
 

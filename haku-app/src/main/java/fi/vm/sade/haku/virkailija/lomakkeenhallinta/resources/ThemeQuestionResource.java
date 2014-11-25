@@ -29,7 +29,7 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParamete
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakuService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakukohdeService;
-import fi.vm.sade.tarjonta.service.resources.dto.HakukohdeDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeV1RDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -275,7 +275,7 @@ public class ThemeQuestionResource {
     }
 
     private List<String> fetchApplicationOptionParents(final String applicationOptionId) throws IOException {
-        HakukohdeDTO applicationOption = null;
+        HakukohdeV1RDTO applicationOption = null;
         try {
             applicationOption = hakukohdeService.findByOid(applicationOptionId);
             if (null == applicationOption)
@@ -285,7 +285,12 @@ public class ThemeQuestionResource {
             throw new JSONException(Response.Status.BAD_REQUEST, "Invalid learningOpportunityId", null);
         }
         LOGGER.debug("Filling in organizations for theme question");
-        String learningOpportunityProvicerId = applicationOption.getTarjoajaOid();
+        Iterator<String> providerOids = applicationOption.getTarjoajaOids().iterator();
+        String learningOpportunityProvicerId = null;
+        if (providerOids.hasNext()) {
+            // TODO jossain vaiheessa täytyy hoitaa useampi provider
+            learningOpportunityProvicerId = providerOids.next();
+        }
         HashSet<String> parentOids = new HashSet<String>();
         parentOids.addAll(organizationService.findParentOids(learningOpportunityProvicerId));
         parentOids.add(learningOpportunityProvicerId);
