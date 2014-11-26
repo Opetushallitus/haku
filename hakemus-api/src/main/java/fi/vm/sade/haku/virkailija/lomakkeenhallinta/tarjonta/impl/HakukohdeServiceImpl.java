@@ -40,7 +40,6 @@ public class HakukohdeServiceImpl implements HakukohdeService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(HakukohdeServiceImpl.class);
     public static final String MEDIA_TYPE = MediaType.APPLICATION_JSON + ";charset=UTF-8";
-    private final WebResource hakukohdeResource;
     private final WebResource hakukohdeV1Resource;
     private final String SEARCH_PATH = "search";
     private final String PARAM_GROUP_OID = "organisaatioRyhmaOid";
@@ -53,9 +52,8 @@ public class HakukohdeServiceImpl implements HakukohdeService {
         ClientConfig cc = new DefaultClientConfig();
         cc.getClasses().add(JacksonJsonProvider.class);
         Client clientWithJacksonSerializer = Client.create(cc);
-        hakukohdeResource = clientWithJacksonSerializer.resource(tarjontaV1HakukohdeResourceUrl);
         hakukohdeV1Resource = clientWithJacksonSerializer.resource(tarjontaV1HakukohdeResourceUrl);
-        LOGGER.debug("Tarjonnan hakukohde uri: {}. Tarjonnan v1 hakukohde uri: {} ",hakukohdeResource.getURI().toString(), hakukohdeV1Resource.getURI().toString());
+        LOGGER.debug("Tarjonnan v1 hakukohde uri: {} ", hakukohdeV1Resource.getURI().toString());
     }
 
     @Override
@@ -92,9 +90,12 @@ public class HakukohdeServiceImpl implements HakukohdeService {
     }
 
     private HakukohdeV1RDTO fetchByOid(String oid){
-        WebResource asWebResource = hakukohdeResource.path(oid);
-        return asWebResource.accept(MEDIA_TYPE).get(new GenericType<HakukohdeV1RDTO>() {
+        WebResource asWebResource = hakukohdeV1Resource.path(oid);
+        ResultV1RDTO<HakukohdeV1RDTO> result = asWebResource.accept(MEDIA_TYPE).get(new GenericType<ResultV1RDTO<HakukohdeV1RDTO>>() {
         });
+        if (!ResultV1RDTO.ResultStatus.OK.equals(result.getStatus()))
+            LOGGER.error("Failed to get hakukohde with oid: {}. The query ended with status : {}", oid, result.getStatus());
+        return result.getResult();
     }
 
     private ResultV1RDTO<HakutuloksetV1RDTO<HakukohdeHakutulosV1RDTO>> fetchByGroupAndApplicationSystem(String groupOid, String applicationSystemId){
