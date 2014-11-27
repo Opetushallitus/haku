@@ -255,7 +255,7 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
         Map<String, String> allAnswers = application.getVastauksetMerged();
         Form form = formService.getForm(application.getApplicationSystemId());
         ValidationInput validationInput = new ValidationInput(form, allAnswers,
-                application.getOid(), application.getApplicationSystemId());
+                application.getOid(), application.getApplicationSystemId(), false);
         ValidationResult formValidationResult = elementTreeValidator.validate(validationInput);
         if (formValidationResult.hasErrors()) {
             application.incomplete();

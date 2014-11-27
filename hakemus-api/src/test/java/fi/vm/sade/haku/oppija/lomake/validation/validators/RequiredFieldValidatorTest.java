@@ -57,7 +57,7 @@ public class RequiredFieldValidatorTest {
     }
 
     private boolean isValid() {
-        return requiredFieldValidator.validate(new ValidationInput(element, values, null, null)).hasErrors();
+        return requiredFieldValidator.validate(new ValidationInput(element, values, null, null, false)).hasErrors();
     }
 
 }

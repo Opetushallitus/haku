@@ -59,14 +59,14 @@
         </repository>
         <repository>
             <id>oph-sade-artifactory-snapshots</id>
-            <url>http://penaali.hard.ware.fi/artifactory/oph-sade-snapshot-local</url>
+            <url>https://artifactory.oph.ware.fi/artifactory/oph-sade-snapshot-local</url>
             <snapshots>
                 <enabled>true</enabled>
             </snapshots>
         </repository>
         <repository>
             <id>oph-sade-artifactory-releases</id>
-            <url>http://penaali.hard.ware.fi/artifactory/oph-sade-release-local</url>
+            <url>https://artifactory.oph.ware.fi/artifactory/oph-sade-release-local</url>
         </repository>
         <repository>
             <id>repository.jboss.org</id>
@@ -79,12 +79,12 @@
         <repository>
             <id>oph-sade-artifactory</id>
             <name>oph-sade-artifactory-releases</name>
-            <url>http://penaali.hard.ware.fi/artifactory/oph-sade-release-local</url>
+            <url>https://artifactory.oph.ware.fi/artifactory/oph-sade-release-local</url>
         </repository>
         <snapshotRepository>
             <id>oph-sade-artifactory</id>
             <name>oph-sade-artifactory-snapshots</name>
-            <url>http://penaali.hard.ware.fi/artifactory/oph-sade-snapshot-local</url>
+            <url>https://artifactory.oph.ware.fi/artifactory/oph-sade-snapshot-local</url>
         </snapshotRepository>
     </distributionManagement>
 

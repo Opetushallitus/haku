@@ -27,22 +27,26 @@ public class ValidationInput {
     private final String applicationSystemId;
     private final Element element;
     private final Map<String, String> values;
+    private final Boolean inputValidation;
 
     public ValidationInput(final Element element,
                            final Map<String, String> values,
                            final String applicationOid,
-                           final String applicationSystemId) {
+                           final String applicationSystemId,
+                           final Boolean inputValidation) {
         this.element = element;
         this.values = new HashMap<String, String>(values);
         this.applicationOid = applicationOid;
         this.applicationSystemId = applicationSystemId;
+        this.inputValidation = inputValidation;
     }
 
     public ValidationInput(final Element element, ValidationInput validationInput) {
         this(element,
                 validationInput.getValues(),
                 validationInput.getApplicationOid(),
-                validationInput.getApplicationSystemId());
+                validationInput.getApplicationSystemId(),
+                validationInput.isInputValidation());
     }
 
     public Element getElement() {
@@ -75,5 +79,9 @@ public class ValidationInput {
 
     public String getFieldName() {
         return this.element.getId();
+    }
+
+    public Boolean isInputValidation() {
+        return inputValidation;
     }
 }

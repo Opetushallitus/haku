@@ -116,7 +116,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             Iterator<JsonElement> elems = orgJson.iterator();
             while (elems.hasNext()) {
                 JsonObject orgObj = elems.next().getAsJsonObject();
-                orgs.add(orgObj.get("organisaatioOid").getAsString());
+                String organization = orgObj.get("organisaatioOid").getAsString();
+                if (!orgObj.get("passivoitu").getAsBoolean()){
+                    orgs.add(organization);
+                }
+                else {
+                    log.debug("Ignoring inactive organization: " + organization);
+                }
             }
             return orgs;
         } catch (IOException e) {
