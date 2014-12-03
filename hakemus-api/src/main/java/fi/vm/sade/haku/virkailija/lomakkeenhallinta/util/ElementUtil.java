@@ -165,8 +165,8 @@ public final class ElementUtil {
                         ElementUtil.createI18NText("yleinen.pakollinen", formParameters)));
     }
 
-    public static void addUniqueApplicantValidator(final Element element, final String asType) {
-        if (OppijaConstants.VARSINAINEN_HAKU.equals(asType)) {
+    public static void addUniqueApplicantValidator(final Element element, final FormParameters formParameters) {
+        if (formParameters.isUniqueApplicantRequired()) {
             element.setValidator(new SsnUniqueValidator());
         }
     }
