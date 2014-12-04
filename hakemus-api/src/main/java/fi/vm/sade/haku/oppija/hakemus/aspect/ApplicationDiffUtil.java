@@ -4,8 +4,10 @@ import com.google.common.collect.MapDifference;
 import com.google.common.collect.Maps;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
+import fi.vm.sade.haku.oppija.hakemus.domain.Change;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +23,16 @@ public final class ApplicationDiffUtil {
 
     public static MapDifference<String, String> diffAnswers(final Application application, final ApplicationPhase applicationPhase) {
         return Maps.difference(application.getPhaseAnswers(applicationPhase.getPhaseId()), applicationPhase.getAnswers());
+    }
+
+    public static void addHistoryBasedOnChangedAnswers(final Application newApplication, final Application oldApplication, String userName, String reason) {
+        Map<String, String> oldAnswers = oldApplication.getVastauksetMerged();
+        Map<String, String> newAnswers = newApplication.getVastauksetMerged();
+        List<Map<String, String>> changes = ApplicationDiffUtil.oldAndNewAnswersToListOfChanges(oldAnswers, newAnswers);
+        if (!changes.isEmpty()) {
+            Change change = new Change(new Date(), userName, reason, changes);
+            newApplication.addHistory(change);
+        }
     }
 
     public static List<Map<String, String>> oldAndNewAnswersToListOfChanges(final Map<String, String> oldAnswers, final Map<String, String> newAnswers, String... skipKeys) {
