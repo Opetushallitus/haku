@@ -40,6 +40,8 @@ public class BaseEducationServiceImpl implements BaseEducationService {
     private String mamuValmistavaKomoOid;
     @Value("${komo.oid.kuntouttava}")
     private String kuntouttavaKomoOid;
+    @Value("${komo.oid.ylioppilastutkinto")
+    private String ylioppilastutkintoKomoOid;
 
     private final SuoritusrekisteriService suoritusrekisteriService;
 

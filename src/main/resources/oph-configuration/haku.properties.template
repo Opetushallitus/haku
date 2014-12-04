@@ -93,6 +93,7 @@ komo.oid.mamuValmistava=1.2.246.562.5.2013112814572441001730
 komo.oid.perusopetus=1.2.246.562.13.62959769647
 komo.oid.ulkomainen=1.2.246.562.13.86722481404
 komo.oid.valmistava=1.2.246.562.5.2013112814572438136372
+komo.oid.ylioopilastutkinto=1.2.246.562.5.2013061010184237348007
 koodi.public.webservice.url.backend=https://${host.virkailija}/koodisto-service/services/koodiService
 koodisto.public.webservice.url.backend=https://${host.virkailija}/koodisto-service/services/koodistoService
 koulutusinformaatio.ao.resource.url=https\://${host.haku}/ao
