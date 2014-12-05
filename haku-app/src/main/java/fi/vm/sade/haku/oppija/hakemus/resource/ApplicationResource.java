@@ -367,6 +367,15 @@ public class ApplicationResource {
         applicationService.saveApplicationAdditionalInfo(additionalData);
     }
 
+    @PUT
+    @Path("syntheticApplication")
+    @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
+    @Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
+    @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_CRUD', 'ROLE_APP_HAKEMUS_LISATIETORU', 'ROLE_APP_HAKEMUS_LISATIETOCRUD')")
+    public void putSyntheticApplication(List<SyntheticApplication> syntheticApplications) {
+        LOGGER.info("TODO insert applicationService function");
+    }
+
     private List<Application> getApplications(List<String> oids) {
         List<Application> result = new ArrayList<Application>();
         for (String oid : oids) {
