@@ -16,6 +16,8 @@
 
 package fi.vm.sade.haku.oppija.hakemus.service.impl;
 
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Iterables;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationNote;
@@ -23,6 +25,7 @@ import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.haku.oppija.hakemus.domain.AuthorizationMeta;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationAdditionalDataDTO;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
+import fi.vm.sade.haku.oppija.hakemus.domain.dto.SyntheticApplication;
 import fi.vm.sade.haku.oppija.hakemus.domain.util.ApplicationUtil;
 import fi.vm.sade.haku.oppija.hakemus.domain.util.AttachmentUtil;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationDAO;
@@ -556,6 +559,53 @@ public class ApplicationServiceImpl implements ApplicationService {
         if (!hakuPermissionService.userCanReadApplication(application)) {
             throw new ResourceNotFoundException("User "+  authenticationService.getCurrentHenkilo().getPersonOid()  +" is not allowed to read application " + application.getOid());
         }
+        return application;
+    }
+
+    @Override
+    public List<Application> createApplications(List<SyntheticApplication> applicationStubs) {
+
+        List<Application> returns = new ArrayList<Application>();
+
+        for (SyntheticApplication applicationStub : applicationStubs) {
+            Application app = applicationForStub(applicationStub);
+            applicationDAO.save(app);
+            returns.add(app);
+        }
+        return returns;
+    }
+
+    private Application applicationForStub(SyntheticApplication stub) {
+
+        Application query = new Application();
+        query.setPersonOid(stub.getHakijaOid());
+        query.setApplicationSystemId(stub.getHakuOid());
+        List<Application> applications = applicationDAO.find(query);
+
+        if(applications.isEmpty()) {
+            return newApplication(stub);
+        } else {
+            Application current = Iterables.getFirst(applications, query);
+            return addHakutoive(current, stub.getHakukohdeOid());
+        }
+
+    }
+
+    private Application newApplication(SyntheticApplication stub) {
+        Application app = new Application();
+        app.setOid(applicationOidService.generateNewOid());
+        app.setPersonOid(stub.getHakijaOid());
+        app.setApplicationSystemId(stub.getHakuOid());
+        app.setRedoPostProcess(Application.PostProcessingState.DONE);
+        app.setState(Application.State.ACTIVE);
+        app.getAnswers().put("hakutoiveet", ImmutableMap.of("preference1-koulutus-id", stub.getHakukohdeOid()));
+        // TODO opetuspiste-id
+        return app;
+    }
+
+    private Application addHakutoive(Application application, String hakukohdeOid) {
+
+        // TODO
         return application;
     }
 }

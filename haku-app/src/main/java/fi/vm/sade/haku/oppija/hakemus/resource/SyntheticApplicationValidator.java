@@ -3,6 +3,7 @@ package fi.vm.sade.haku.oppija.hakemus.resource;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
+import fi.vm.sade.haku.oppija.hakemus.domain.dto.SyntheticApplication;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;

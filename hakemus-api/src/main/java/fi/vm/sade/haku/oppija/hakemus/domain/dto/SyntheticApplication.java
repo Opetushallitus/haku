@@ -1,4 +1,4 @@
-package fi.vm.sade.haku.oppija.hakemus.resource;
+package fi.vm.sade.haku.oppija.hakemus.domain.dto;
 
 
 import org.codehaus.jackson.annotate.JsonCreator;
@@ -30,39 +30,20 @@ public class SyntheticApplication {
         return hakukohdeOid;
     }
 
-    public void setHakukohdeOid(String hakukohdeOid) {
-        this.hakukohdeOid = hakukohdeOid;
-    }
-
     public String getHakijaOid() {
         return hakijaOid;
-    }
-
-    public void setHakijaOid(String hakijaOid) {
-        this.hakijaOid = hakijaOid;
     }
 
     public String getEtunimi() {
         return etunimi;
     }
 
-    public void setEtunimi(String etunimi) {
-        this.etunimi = etunimi;
-    }
-
     public String getSukunimi() {
         return sukunimi;
-    }
-
-    public void setSukunimi(String sukunimi) {
-        this.sukunimi = sukunimi;
     }
 
     public String getHakuOid() {
         return hakuOid;
     }
-
-    public void setHakuOid(String hakuOid) {
-        this.hakuOid = hakuOid;
-    }
 }
+
