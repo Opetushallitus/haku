@@ -15,7 +15,7 @@ public class SyntheticApplication {
     @JsonCreator
     public SyntheticApplication(@JsonProperty(value = "hakukohdeOid") String hakukohdeOid,
                                 @JsonProperty(value = "hakijaOid") String hakijaOid,
-                                @JsonProperty(value = "sukunimi") String hakuOid,
+                                @JsonProperty(value = "hakuOid") String hakuOid,
                                 @JsonProperty(value = "etunimi") String etunimi,
                                 @JsonProperty(value = "sukunimi") String sukunimi) {
 
@@ -56,5 +56,13 @@ public class SyntheticApplication {
 
     public void setSukunimi(String sukunimi) {
         this.sukunimi = sukunimi;
+    }
+
+    public String getHakuOid() {
+        return hakuOid;
+    }
+
+    public void setHakuOid(String hakuOid) {
+        this.hakuOid = hakuOid;
     }
 }
