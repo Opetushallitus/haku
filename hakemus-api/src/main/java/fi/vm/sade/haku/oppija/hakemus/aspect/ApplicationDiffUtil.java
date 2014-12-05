@@ -25,7 +25,7 @@ public final class ApplicationDiffUtil {
         return Maps.difference(application.getPhaseAnswers(applicationPhase.getPhaseId()), applicationPhase.getAnswers());
     }
 
-    public static void addHistoryBasedOnChangedAnswers(final Application newApplication, final Application oldApplication, String userName, String reason) {
+    public static List<Map<String, String>> addHistoryBasedOnChangedAnswers(final Application newApplication, final Application oldApplication, String userName, String reason) {
         Map<String, String> oldAnswers = oldApplication.getVastauksetMerged();
         Map<String, String> newAnswers = newApplication.getVastauksetMerged();
         List<Map<String, String>> changes = ApplicationDiffUtil.oldAndNewAnswersToListOfChanges(oldAnswers, newAnswers);
@@ -33,6 +33,7 @@ public final class ApplicationDiffUtil {
             Change change = new Change(new Date(), userName, reason, changes);
             newApplication.addHistory(change);
         }
+        return changes;
     }
 
     public static List<Map<String, String>> oldAndNewAnswersToListOfChanges(final Map<String, String> oldAnswers, final Map<String, String> newAnswers, String... skipKeys) {
