@@ -64,9 +64,8 @@ public class SocialSecurityNumber extends Question {
 
     @Override
     public Element[] getExtraExcelColumns() {
-        Element[] extras = new Element[2];
+        Element[] extras = new Element[1];
         extras[0] = new SsnDateOfBirth("ssnDateOfBirthh", ElementUtil.createI18NText("syntymaaika"));
-        extras[1] = new SsnSex("ssnSex", ElementUtil.createI18NText("sukupuoli"));
         return extras;
     }
 
@@ -90,24 +89,6 @@ public class SocialSecurityNumber extends Question {
                     .append(month).append(".")
                     .append(centuries.get(century)).append(year)
                     .toString();
-        }
-    }
-
-    class SsnSex extends Question {
-        private final I18nText SUKUPUOLI_MIES = ElementUtil.createI18NText("sukupuoli.mies");
-        private final I18nText SUKUPUOLI_NAINEN = ElementUtil.createI18NText("sukupuoli.nainen");
-
-        public SsnSex(final String id, final I18nText i18nText) {
-            super(id, i18nText);
-        }
-
-
-        @Override
-        public String getExcelValue(String value, String lang) {
-            int sexNumber = Integer.valueOf(value.substring(9, 10));
-            return sexNumber % 2 == 0
-                    ? SUKUPUOLI_NAINEN.getTranslations().get(lang)
-                    : SUKUPUOLI_MIES.getTranslations().get(lang);
         }
     }
 }
