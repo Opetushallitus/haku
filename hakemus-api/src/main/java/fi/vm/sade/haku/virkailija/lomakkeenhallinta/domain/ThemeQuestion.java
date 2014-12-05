@@ -4,7 +4,6 @@ import fi.vm.sade.haku.oppija.lomake.domain.ApplicationOptionAttachmentRequest;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationOptionAttachmentRequestBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.builder.ElementBuilder;
-import fi.vm.sade.haku.oppija.lomake.domain.builder.TextQuestionBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.Expr;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.dao.impl.DBConverter.ComplexObjectIdDeserializer;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.dao.impl.DBConverter.SimpleObjectIdSerializer;
@@ -35,13 +34,23 @@ public abstract class ThemeQuestion implements ConfiguredElement {
     public static String FIELD_ORDINAL = "ordinal";
 
     public enum State {
-        ACTIVE, LOCKED, DELETED;
+        ACTIVE, LOCKED, DELETED
     }
-    // ThemeQuestion oid
+
+    // ThemeQuestion id
     @JsonProperty(value = "_id")
     @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL, using = SimpleObjectIdSerializer.class)
     @JsonDeserialize(using = ComplexObjectIdDeserializer.class)
     private org.bson.types.ObjectId id;
+
+    //parent question id
+    @JsonProperty(value = "parentId")
+    @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL, using = SimpleObjectIdSerializer.class)
+    @JsonDeserialize(using = ComplexObjectIdDeserializer.class)
+    private org.bson.types.ObjectId parentId;
+
+    private String followupCondition;
+
     // ThemeQuestion state
     private State state = State.ACTIVE;
 
@@ -99,7 +108,7 @@ public abstract class ThemeQuestion implements ConfiguredElement {
                             @JsonProperty(value = "theme") String theme,
                             @JsonProperty(value = "learningOpportunityId") String learningOpportunityId,
                             @JsonProperty(value = "targetIsGroup") Boolean targetIsGroup,
-                            @JsonProperty(value = "ordial") Integer ordinal,
+                            @JsonProperty(value = "ordinal") Integer ordinal,
                             @JsonProperty(value = "validators")Map<String,String> validators,
                             @JsonProperty(value = "attachmentRequests") List<AttachmentRequest>attachmentRequests) {
         this.applicationSystemId =  applicationSystemId;
@@ -289,12 +298,30 @@ public abstract class ThemeQuestion implements ConfiguredElement {
             elementBuilder.applicationOptionId(this.getLearningOpportunityId());
         }
     }
+    
+    public ObjectId getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(ObjectId parentId) {
+        this.parentId = parentId;
+    }
+
+    public String getFollowupCondition() {
+        return followupCondition;
+    }
+
+    public void setFollowupCondition(String followupCondition) {
+        this.followupCondition = followupCondition;
+    }
 
     @Override
     public String toString() {
         return "ThemeQuestion{" +
           "id=" + id +
           ", class=" + this.getClass().getSimpleName() +
+          ", parentId=" + parentId +
+          ", followupCondition='" + followupCondition + '\'' +
           ", state=" + state +
           ", applicationSystemId='" + applicationSystemId + '\'' +
           ", theme='" + theme + '\'' +

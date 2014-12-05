@@ -24,7 +24,7 @@ public class ThemeCheckBoxQuestion extends ThemeOptionQuestion {
       @JsonProperty(value = "theme") String theme,
       @JsonProperty(value = "learningOpportunityId") String learningOpportunityId,
       @JsonProperty(value = "targetIsGroup") Boolean targetIsGroup,
-      @JsonProperty(value = "ordial") Integer ordinal,
+      @JsonProperty(value = "ordinal") Integer ordinal,
       @JsonProperty(value = "validators") Map<String,String> validators,
       @JsonProperty(value = "attachmentRequests") List<AttachmentRequest> attachmentRequests){
         super(applicationSystemId, theme, learningOpportunityId, targetIsGroup, ordinal, validators, attachmentRequests);
