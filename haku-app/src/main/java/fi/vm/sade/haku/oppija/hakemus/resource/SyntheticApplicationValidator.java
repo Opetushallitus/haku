@@ -10,24 +10,15 @@ import java.util.List;
 
 public class SyntheticApplicationValidator {
 
-    private List<SyntheticApplication> syntheticApplications;
+    private SyntheticApplication syntheticApplication;
 
-    public SyntheticApplicationValidator(List<SyntheticApplication> syntheticApplications) {
-        this.syntheticApplications = syntheticApplications;
+    public SyntheticApplicationValidator(SyntheticApplication syntheticApplication) {
+        this.syntheticApplication = syntheticApplication;
     }
 
-    public Boolean validateSyntheticApplications() {
-        return Iterables.all(syntheticApplications, new ValidateSyntheticApplication());
-    }
-
-    private class ValidateSyntheticApplication implements Predicate<SyntheticApplication> {
-        @Override
-        public boolean apply(SyntheticApplication syntheticApplication) {
-            return StringUtils.isNotEmpty(syntheticApplication.getEtunimi()) &&
-                    StringUtils.isNotEmpty(syntheticApplication.getSukunimi()) &&
-                    StringUtils.isNotEmpty(syntheticApplication.getHakukohdeOid()) &&
-                    StringUtils.isNotEmpty(syntheticApplication.getHakijaOid()) &&
-                    StringUtils.isNotEmpty(syntheticApplication.getHakuOid());
-        }
+    public boolean validateSyntheticApplication() {
+            return StringUtils.isNotEmpty(syntheticApplication.getHakukohdeOid()) &&
+                    StringUtils.isNotEmpty(syntheticApplication.getHakuOid()) &&
+                    !syntheticApplication.getHakemukset().isEmpty();
     }
 }

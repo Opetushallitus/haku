@@ -373,8 +373,8 @@ public class ApplicationResource {
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     @Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_CRUD', 'ROLE_APP_HAKEMUS_LISATIETORU', 'ROLE_APP_HAKEMUS_LISATIETOCRUD')")
-    public Response putSyntheticApplication(List<SyntheticApplication> syntheticApplications) {
-        if(new SyntheticApplicationValidator(syntheticApplications).validateSyntheticApplications()) {
+    public Response putSyntheticApplication(SyntheticApplication syntheticApplication) {
+        if(new SyntheticApplicationValidator(syntheticApplication).validateSyntheticApplication()) {
             LOGGER.info("TODO insert applicationService function");
             return Response.ok().build();
         } else {

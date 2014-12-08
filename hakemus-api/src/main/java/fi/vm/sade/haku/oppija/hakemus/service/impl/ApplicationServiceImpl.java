@@ -578,7 +578,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     private Application applicationForStub(SyntheticApplication stub) {
 
         Application query = new Application();
-        query.setPersonOid(stub.getHakijaOid());
+        //query.setPersonOid(stub.getHakijaOid());
         query.setApplicationSystemId(stub.getHakuOid());
         List<Application> applications = applicationDAO.find(query);
 
@@ -594,7 +594,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     private Application newApplication(SyntheticApplication stub) {
         Application app = new Application();
         app.setOid(applicationOidService.generateNewOid());
-        app.setPersonOid(stub.getHakijaOid());
+        //app.setPersonOid(stub.getHakijaOid());
         app.setApplicationSystemId(stub.getHakuOid());
         app.setRedoPostProcess(Application.PostProcessingState.DONE);
         app.setState(Application.State.ACTIVE);
