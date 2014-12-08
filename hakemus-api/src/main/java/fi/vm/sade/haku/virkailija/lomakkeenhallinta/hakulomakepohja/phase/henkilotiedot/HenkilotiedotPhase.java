@@ -86,6 +86,26 @@ public final class HenkilotiedotPhase {
                 .requiredInline()
                 .formParams(formParameters).build();
         henkilotiedotTeema.addChild(kansalaisuus);
+
+        Element onkoKaksoisKansallisuus = Radio("onkosinullakaksoiskansallisuus")
+                .addOptions(ImmutableList.of(
+                        new Option(createI18NText("form.yleinen.kylla", formParameters), KYLLA),
+                        new Option(createI18NText("form.yleinen.ei", formParameters), EI)))
+                .requiredInline()
+                .formParams(formParameters).build();
+        henkilotiedotTeema.addChild(onkoKaksoisKansallisuus);
+
+        Expr onKaksoiskansallisuus = new Equals(new Variable("onkosinullakaksoiskansallisuus"), new Value(KYLLA));
+        Element kysytaankoKaksoiskansallisuusSaanto = Rule(onKaksoiskansallisuus).build();
+        henkilotiedotTeema.addChild(kysytaankoKaksoiskansallisuusSaanto);
+
+        Element kaksoiskansalaisuus = new DropdownSelectBuilder("kaksoiskansalaisuus")
+                .addOptions(formParameters.getKoodistoService().getNationalities())
+                .requiredInline()
+                .formParams(formParameters).build();
+
+        kysytaankoKaksoiskansallisuusSaanto.addChild(kaksoiskansalaisuus);
+
         Expr suomalainen = new Regexp(kansalaisuus.getId(), EMPTY_OR_FIN_PATTERN);
 
         Element eiSuomalainen = Rule(new Not(suomalainen)).build();

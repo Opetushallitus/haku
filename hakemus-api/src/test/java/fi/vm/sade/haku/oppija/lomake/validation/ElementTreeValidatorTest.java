@@ -120,6 +120,7 @@ public class ElementTreeValidatorTest {
         values.put("Sukunimi", "Rajapaju");
         values.put("Kutsumanimi", "Mika");
         values.put("kansalaisuus", "FIN");
+        values.put("onkosinullakaksoiskansallisuus", "false");
         values.put("Henkilotunnus", "110293-906X");
         values.put(OppijaConstants.ELEMENT_ID_SEX, "2");
         values.put("aidinkieli", "FI");
