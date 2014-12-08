@@ -15,6 +15,8 @@
  */
 package fi.vm.sade.haku.virkailija.authentication;
 
+import fi.vm.sade.haku.oppija.lomake.util.StringUtil;
+
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 /**
@@ -55,6 +57,13 @@ public class Person {
         this.contactLanguage = contactLanguage;
         this.personOid = personOid;
         this.studentOid = studentOid;
+    }
+
+    public Person(String firstNames, String lastName, String socialSecurityNumber, String hakijaOid) {
+        this.firstNames = firstNames;
+        this.lastName = lastName;
+        this.socialSecurityNumber = socialSecurityNumber;
+        this.personOid = hakijaOid;
     }
 
     public String getFirstNames() {

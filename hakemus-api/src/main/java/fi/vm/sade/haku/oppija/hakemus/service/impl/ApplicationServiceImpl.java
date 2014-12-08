@@ -605,6 +605,9 @@ public class ApplicationServiceImpl implements ApplicationService {
         app.setState(Application.State.ACTIVE);
 
         // TODO person data
+        Person person = new Person(hakemus.getEtunimi(), hakemus.getSukunimi(), hakemus.getHakijaOid(), hakemus.getHetu());
+        app.modifyPersonalData(person);
+
         HashMap<String, String> hakutoiveet = new HashMap<String, String>();
         hakutoiveet.put("preference1-koulutus-id", stub.getHakukohdeOid());
         hakutoiveet.put("preference1-opetuspiste-id", stub.getTarjoajaOid());

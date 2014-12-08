@@ -372,7 +372,6 @@ public class ApplicationResource {
     @Path("syntheticApplication")
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     @Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
-    @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_CRUD', 'ROLE_APP_HAKEMUS_LISATIETORU', 'ROLE_APP_HAKEMUS_LISATIETOCRUD')")
     public Response putSyntheticApplication(SyntheticApplication syntheticApplication) {
         if(new SyntheticApplicationValidator(syntheticApplication).validateSyntheticApplication()) {
             List<Application> applications = applicationService.createApplications(syntheticApplication);
