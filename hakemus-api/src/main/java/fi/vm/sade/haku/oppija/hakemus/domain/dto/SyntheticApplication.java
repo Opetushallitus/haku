@@ -33,7 +33,7 @@ public class SyntheticApplication {
         return hakuOid;
     }
 
-    static class Person {
+    public static class Person {
 
         private String hakijaOid;
         private String etunimi;

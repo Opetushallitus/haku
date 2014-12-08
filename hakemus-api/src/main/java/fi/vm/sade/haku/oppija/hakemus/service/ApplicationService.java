@@ -119,5 +119,5 @@ public interface ApplicationService {
 
     Application removeOrphanedAnswers(Application application);
 
-    List<Application> createApplications(List<SyntheticApplication> applicationStubs);
+    List<Application> createApplications(SyntheticApplication applicationStub);
 }

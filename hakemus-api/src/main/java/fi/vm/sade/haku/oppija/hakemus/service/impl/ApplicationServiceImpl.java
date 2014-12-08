@@ -16,8 +16,12 @@
 
 package fi.vm.sade.haku.oppija.hakemus.service.impl;
 
+import com.google.common.base.Function;
+import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Iterables;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationNote;
@@ -65,6 +69,8 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static fi.vm.sade.haku.oppija.hakemus.service.ApplicationModelUtil.removeAuthorizationMeta;
 import static fi.vm.sade.haku.oppija.hakemus.service.ApplicationModelUtil.restoreV0ModelLOPParentsToApplicationMap;
@@ -563,49 +569,81 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public List<Application> createApplications(List<SyntheticApplication> applicationStubs) {
+    public List<Application> createApplications(SyntheticApplication applicationStub) {
 
         List<Application> returns = new ArrayList<Application>();
-
-        for (SyntheticApplication applicationStub : applicationStubs) {
-            Application app = applicationForStub(applicationStub);
+        for (SyntheticApplication.Person person : applicationStub.getHakemukset()) {
+            Application app = applicationForStub(person, applicationStub);
             applicationDAO.save(app);
             returns.add(app);
         }
         return returns;
     }
 
-    private Application applicationForStub(SyntheticApplication stub) {
+    private Application applicationForStub(SyntheticApplication.Person person, SyntheticApplication stub) {
 
         Application query = new Application();
-        //query.setPersonOid(stub.getHakijaOid());
+        query.setPersonOid(person.getHakijaOid());
         query.setApplicationSystemId(stub.getHakuOid());
         List<Application> applications = applicationDAO.find(query);
 
         if(applications.isEmpty()) {
-            return newApplication(stub);
+            return newApplication(stub, person);
         } else {
             Application current = Iterables.getFirst(applications, query);
-            return addHakutoive(current, stub.getHakukohdeOid());
+            addHakutoive(current, stub.getHakukohdeOid(), "");
+            return current;
         }
-
     }
 
-    private Application newApplication(SyntheticApplication stub) {
+    private Application newApplication(SyntheticApplication stub, SyntheticApplication.Person person) {
         Application app = new Application();
         app.setOid(applicationOidService.generateNewOid());
-        //app.setPersonOid(stub.getHakijaOid());
+        app.setPersonOid(person.getHakijaOid());
         app.setApplicationSystemId(stub.getHakuOid());
         app.setRedoPostProcess(Application.PostProcessingState.DONE);
         app.setState(Application.State.ACTIVE);
-        app.getAnswers().put("hakutoiveet", ImmutableMap.of("preference1-koulutus-id", stub.getHakukohdeOid()));
-        // TODO opetuspiste-id
+
+        // TODO person data
+
+        app.getAnswers().put("hakutoiveet", Maps.newHashMap(ImmutableMap.of("preference1-koulutus-id", stub.getHakukohdeOid())));
+
         return app;
     }
 
-    private Application addHakutoive(Application application, String hakukohdeOid) {
+    // nasty mutable stuff
+    private void addHakutoive(Application application, String hakukohdeOid, String tarjoajaOid) {
+        String suffix = getNextHakutoiveSuffix(application);
+        Map<String, String> hakutoiveet = application.getPhaseAnswers("hakutoiveet");
+        hakutoiveet.put("preference" + suffix + "-koulutus-id", hakukohdeOid);
+        hakutoiveet.put("preference" + suffix + "opetuspiste-id", tarjoajaOid);
+    }
 
-        // TODO
-        return application;
+    private String getNextHakutoiveSuffix(Application application) {
+
+        TreeSet<String> usedKeys = Sets.newTreeSet(Iterables.transform(Iterables.filter(application.getPhaseAnswers("hakutoiveet").entrySet(), new Predicate<Map.Entry<String, String>>() {
+            @Override
+            public boolean apply(Map.Entry<String, String> entry) {
+                return entry.getKey().matches("preference\\d+-koulutus-id") && !entry.getValue().isEmpty();
+            }
+        }), new Function<Map.Entry<String, String>, String>() {
+            @Override
+            public String apply(Map.Entry<String, String> entry) {
+                return entry.getKey();
+            }
+        }));
+
+        if(usedKeys.isEmpty()) {
+            return "1";
+        }
+
+        Matcher matcher = Pattern.compile("preference(\\d+)").matcher(usedKeys.last());
+        if(matcher.find()) {
+            String latestUsed = matcher.group(1);
+            int next = Integer.parseInt(latestUsed) + 1;
+            return Integer.toString(next);
+        } else {
+            return "1";
+        }
     }
 }

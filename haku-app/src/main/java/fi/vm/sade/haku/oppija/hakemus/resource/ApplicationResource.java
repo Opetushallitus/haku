@@ -375,7 +375,7 @@ public class ApplicationResource {
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_CRUD', 'ROLE_APP_HAKEMUS_LISATIETORU', 'ROLE_APP_HAKEMUS_LISATIETOCRUD')")
     public Response putSyntheticApplication(SyntheticApplication syntheticApplication) {
         if(new SyntheticApplicationValidator(syntheticApplication).validateSyntheticApplication()) {
-            LOGGER.info("TODO insert applicationService function");
+            applicationService.createApplications(syntheticApplication);
             return Response.ok().build();
         } else {
             return Response.status(Response.Status.BAD_REQUEST).build();
