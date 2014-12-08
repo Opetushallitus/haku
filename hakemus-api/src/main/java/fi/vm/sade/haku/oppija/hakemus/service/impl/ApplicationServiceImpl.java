@@ -572,23 +572,23 @@ public class ApplicationServiceImpl implements ApplicationService {
     public List<Application> createApplications(SyntheticApplication applicationStub) {
 
         List<Application> returns = new ArrayList<Application>();
-        for (SyntheticApplication.Person person : applicationStub.getHakemukset()) {
-            Application app = applicationForStub(person, applicationStub);
+        for (SyntheticApplication.Hakemus hakemus : applicationStub.getHakemukset()) {
+            Application app = applicationForStub(hakemus, applicationStub);
             applicationDAO.save(app);
             returns.add(app);
         }
         return returns;
     }
 
-    private Application applicationForStub(SyntheticApplication.Person person, SyntheticApplication stub) {
+    private Application applicationForStub(SyntheticApplication.Hakemus hakemus, SyntheticApplication stub) {
 
         Application query = new Application();
-        query.setPersonOid(person.getHakijaOid());
+        query.setPersonOid(hakemus.getHakijaOid());
         query.setApplicationSystemId(stub.getHakuOid());
         List<Application> applications = applicationDAO.find(query);
 
         if(applications.isEmpty()) {
-            return newApplication(stub, person);
+            return newApplication(stub, hakemus);
         } else {
             Application current = Iterables.getFirst(applications, query);
             addHakutoive(current, stub.getHakukohdeOid(), "");
@@ -596,15 +596,16 @@ public class ApplicationServiceImpl implements ApplicationService {
         }
     }
 
-    private Application newApplication(SyntheticApplication stub, SyntheticApplication.Person person) {
+    private Application newApplication(SyntheticApplication stub, SyntheticApplication.Hakemus hakemus) {
         Application app = new Application();
         app.setOid(applicationOidService.generateNewOid());
-        app.setPersonOid(person.getHakijaOid());
+        app.setPersonOid(hakemus.getHakijaOid());
         app.setApplicationSystemId(stub.getHakuOid());
         app.setRedoPostProcess(Application.PostProcessingState.DONE);
         app.setState(Application.State.ACTIVE);
 
         // TODO person data
+
 
         app.getAnswers().put("hakutoiveet", Maps.newHashMap(ImmutableMap.of("preference1-koulutus-id", stub.getHakukohdeOid())));
 

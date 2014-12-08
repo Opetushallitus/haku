@@ -9,19 +9,22 @@ public class SyntheticApplication {
 
     private String hakukohdeOid;
     private String hakuOid;
-    private List<Person> hakemukset;
+    private String tarjoajaOid;
+    private List<Hakemus> hakemukset;
 
     @JsonCreator
     public SyntheticApplication(@JsonProperty(value = "hakukohdeOid") String hakukohdeOid,
                                 @JsonProperty(value = "hakuOid") String hakuOid,
-                                @JsonProperty(value = "hakemukset") List<Person> hakemukset) {
+                                @JsonProperty(value = "tarjoajaOid") String tarjoajaOid,
+                                @JsonProperty(value = "hakemukset") List<Hakemus> hakemukset) {
 
         this.hakukohdeOid = hakukohdeOid;
         this.hakemukset = hakemukset;
+        this.tarjoajaOid = tarjoajaOid;
         this.hakuOid = hakuOid;
     }
 
-    public List<Person> getHakemukset() {
+    public List<Hakemus> getHakemukset() {
         return hakemukset;
     }
 
@@ -33,7 +36,11 @@ public class SyntheticApplication {
         return hakuOid;
     }
 
-    public static class Person {
+    public String getTarjoajaOid() {
+        return tarjoajaOid;
+    }
+
+    public static class Hakemus {
 
         private String hakijaOid;
         private String etunimi;
