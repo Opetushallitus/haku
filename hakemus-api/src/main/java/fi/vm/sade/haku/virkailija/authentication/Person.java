@@ -59,11 +59,13 @@ public class Person {
         this.studentOid = studentOid;
     }
 
-    public Person(String firstNames, String lastName, String socialSecurityNumber, String hakijaOid) {
+    public Person(String firstNames, String lastName, String socialSecurityNumber, String studentOid, String dateOfBirth) {
         this.firstNames = firstNames;
         this.lastName = lastName;
         this.socialSecurityNumber = socialSecurityNumber;
-        this.personOid = hakijaOid;
+        this.personOid = studentOid;
+        this.studentOid = studentOid;
+        this.dateOfBirth = dateOfBirth;
     }
 
     public String getFirstNames() {
