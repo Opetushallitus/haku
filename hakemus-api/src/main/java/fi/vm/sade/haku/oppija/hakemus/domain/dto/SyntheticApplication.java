@@ -7,10 +7,10 @@ import java.util.List;
 
 public class SyntheticApplication {
 
-    private String hakukohdeOid;
-    private String hakuOid;
-    private String tarjoajaOid;
-    private List<Hakemus> hakemukset;
+    public final String hakukohdeOid;
+    public final String hakuOid;
+    public final String tarjoajaOid;
+    public final List<Hakemus> hakemukset;
 
     @JsonCreator
     public SyntheticApplication(@JsonProperty(value = "hakukohdeOid") String hakukohdeOid,
@@ -24,43 +24,25 @@ public class SyntheticApplication {
         this.hakuOid = hakuOid;
     }
 
-    public List<Hakemus> getHakemukset() {
-        return hakemukset;
-    }
-
-    public String getHakukohdeOid() {
-        return hakukohdeOid;
-    }
-
-    public String getHakuOid() {
-        return hakuOid;
-    }
-
-    public String getTarjoajaOid() {
-        return tarjoajaOid;
-    }
-
     public static class Hakemus {
 
-        private String hakijaOid;
-        private String etunimi;
-        private String sukunimi;
-        private String hetu;
+        public final String hakijaOid;
+        public final String etunimi;
+        public final String sukunimi;
+        public final String henkilotunnus;
+        public final String syntymaAika;
 
-        public String getHakijaOid() {
-            return hakijaOid;
-        }
-
-        public String getEtunimi() {
-            return etunimi;
-        }
-
-        public String getSukunimi() {
-            return sukunimi;
-        }
-
-        public String getHetu() {
-            return hetu;
+        @JsonCreator
+        public Hakemus(@JsonProperty("hakijaOid") String hakijaOid,
+                       @JsonProperty("etunimi") String etunimi,
+                       @JsonProperty("sukunimi") String sukunimi,
+                       @JsonProperty("henkilotunnus") String henkilotunnus,
+                       @JsonProperty("syntymaAika") String syntymaAika) {
+            this.hakijaOid = hakijaOid;
+            this.etunimi = etunimi;
+            this.sukunimi = sukunimi;
+            this.henkilotunnus = henkilotunnus;
+            this.syntymaAika = syntymaAika;
         }
     }
 }

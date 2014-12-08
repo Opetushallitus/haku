@@ -15,19 +15,18 @@ public class SyntheticApplicationValidator {
     }
 
     public boolean validateSyntheticApplication() {
-        return StringUtils.isNotBlank(syntheticApplication.getHakukohdeOid()) &&
-                StringUtils.isNotBlank(syntheticApplication.getTarjoajaOid()) &&
-                StringUtils.isNotBlank(syntheticApplication.getHakuOid()) &&
-                Iterables.all(syntheticApplication.getHakemukset(), new ValidateHakemus());
+        return StringUtils.isNotBlank(syntheticApplication.hakukohdeOid) &&
+                StringUtils.isNotBlank(syntheticApplication.tarjoajaOid) &&
+                StringUtils.isNotBlank(syntheticApplication.hakuOid) &&
+                Iterables.all(syntheticApplication.hakemukset, new ValidateHakemus());
     }
 
     private class ValidateHakemus implements Predicate<SyntheticApplication.Hakemus> {
         @Override
         public boolean apply(SyntheticApplication.Hakemus hakemus) {
-            return StringUtils.isNotBlank(hakemus.getEtunimi()) &&
-                    StringUtils.isNotBlank(hakemus.getSukunimi()) &&
-                    StringUtils.isNotBlank(hakemus.getHakijaOid()) &&
-                    StringUtils.isNotBlank(hakemus.getHakijaOid());
+            return StringUtils.isNotBlank(hakemus.etunimi) &&
+                    StringUtils.isNotBlank(hakemus.sukunimi) &&
+                    StringUtils.isNotBlank(hakemus.hakijaOid);
         }
     }
 }

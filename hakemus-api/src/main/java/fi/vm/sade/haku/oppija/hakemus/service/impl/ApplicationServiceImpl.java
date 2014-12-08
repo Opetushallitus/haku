@@ -572,7 +572,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     public List<Application> createApplications(SyntheticApplication applicationStub) {
 
         List<Application> returns = new ArrayList<Application>();
-        for (SyntheticApplication.Hakemus hakemus : applicationStub.getHakemukset()) {
+        for (SyntheticApplication.Hakemus hakemus : applicationStub.hakemukset) {
             Application app = applicationForStub(hakemus, applicationStub);
             applicationDAO.save(app);
             returns.add(app);
@@ -583,40 +583,39 @@ public class ApplicationServiceImpl implements ApplicationService {
     private Application applicationForStub(SyntheticApplication.Hakemus hakemus, SyntheticApplication stub) {
 
         Application query = new Application();
-        query.setPersonOid(hakemus.getHakijaOid());
-        query.setApplicationSystemId(stub.getHakuOid());
+        query.setPersonOid(hakemus.hakijaOid);
+        query.setApplicationSystemId(stub.hakuOid);
         List<Application> applications = applicationDAO.find(query);
 
         if(applications.isEmpty()) {
             return newApplication(stub, hakemus);
         } else {
             Application current = Iterables.getFirst(applications, query);
-            addHakutoive(current, stub.getHakukohdeOid(), stub.getTarjoajaOid());
+            addHakutoive(current, stub.hakukohdeOid, stub.tarjoajaOid);
             return current;
         }
     }
 
     private Application newApplication(SyntheticApplication stub, SyntheticApplication.Hakemus hakemus) {
+
         Application app = new Application();
         app.setOid(applicationOidService.generateNewOid());
-        app.setPersonOid(hakemus.getHakijaOid());
-        app.setApplicationSystemId(stub.getHakuOid());
+        app.setApplicationSystemId(stub.hakuOid);
         app.setRedoPostProcess(Application.PostProcessingState.DONE);
         app.setState(Application.State.ACTIVE);
 
-        // TODO person data
-        Person person = new Person(hakemus.getEtunimi(), hakemus.getSukunimi(), hakemus.getHakijaOid(), hakemus.getHetu());
+        Person person = new Person(hakemus.etunimi, hakemus.sukunimi, hakemus.henkilotunnus, hakemus.hakijaOid, hakemus.syntymaAika);
         app.modifyPersonalData(person);
+        // TODO modifyPersonalData adds 'overriddenAnswers' section, it should be wiped
 
         HashMap<String, String> hakutoiveet = new HashMap<String, String>();
-        hakutoiveet.put("preference1-koulutus-id", stub.getHakukohdeOid());
-        hakutoiveet.put("preference1-opetuspiste-id", stub.getTarjoajaOid());
+        hakutoiveet.put("preference1-koulutus-id", stub.hakukohdeOid);
+        hakutoiveet.put("preference1-opetuspiste-id", stub.tarjoajaOid);
         app.getAnswers().put("hakutoiveet", hakutoiveet);
 
         return app;
     }
 
-    // nasty mutable stuff
     private void addHakutoive(Application application, String hakukohdeOid, String tarjoajaOid) {
         String suffix = getNextHakutoiveSuffix(application);
         Map<String, String> hakutoiveet = application.getAnswers().get("hakutoiveet");
