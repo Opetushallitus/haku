@@ -591,7 +591,7 @@ public class ApplicationServiceImpl implements ApplicationService {
             return newApplication(stub, hakemus);
         } else {
             Application current = Iterables.getFirst(applications, query);
-            addHakutoive(current, stub.getHakukohdeOid(), "");
+            addHakutoive(current, stub.getHakukohdeOid(), stub.getTarjoajaOid());
             return current;
         }
     }
@@ -611,7 +611,6 @@ public class ApplicationServiceImpl implements ApplicationService {
         app.getAnswers().put("hakutoiveet", hakutoiveet);
 
         return app;
-
     }
 
     // nasty mutable stuff
