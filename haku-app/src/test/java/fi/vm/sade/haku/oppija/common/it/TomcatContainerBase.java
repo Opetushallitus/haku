@@ -18,7 +18,6 @@ package fi.vm.sade.haku.oppija.common.it;
 
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -33,13 +32,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ActiveProfiles("it")
 public abstract class TomcatContainerBase {
 
-    @Value("${asid:haku5}")
-    protected String ASID;
-    @Value("${aoid:1.2.246.562.14.71344129359}")
-    protected String AOID;
-
-    @Value("${webdriver.base.url:http://localhost:9090/haku-app/}")
-    protected String baseUrl;
+    protected String ASID = "1.2.246.562.5.50476818906";
+    protected String AOID = "1.2.246.562.14.71344129359";
+    protected String baseUrl = "http://localhost:9090/haku-app/";
 
     @Autowired
     protected AdminResourceClient adminResourceClient;

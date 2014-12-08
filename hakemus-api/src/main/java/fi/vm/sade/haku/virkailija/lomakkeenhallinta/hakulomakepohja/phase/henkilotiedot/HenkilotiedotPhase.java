@@ -16,25 +16,13 @@
 
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.henkilotiedot;
 
-import static fi.vm.sade.haku.oppija.lomake.domain.builder.DateQuestionBuilder.Date;
-import static fi.vm.sade.haku.oppija.lomake.domain.builder.DropdownSelectBuilder.Dropdown;
-import static fi.vm.sade.haku.oppija.lomake.domain.builder.PhaseBuilder.Phase;
-import static fi.vm.sade.haku.oppija.lomake.domain.builder.PostalCodeBuilder.PostalCode;
-import static fi.vm.sade.haku.oppija.lomake.domain.builder.RadioBuilder.Radio;
-import static fi.vm.sade.haku.oppija.lomake.domain.builder.RelatedQuestionRuleBuilder.Rule;
-import static fi.vm.sade.haku.oppija.lomake.domain.builder.TextQuestionBuilder.TextQuestion;
-import static fi.vm.sade.haku.oppija.lomake.domain.builder.ThemeBuilder.Theme;
-import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.*;
-
-import java.util.List;
-
 import com.google.common.collect.ImmutableList;
-
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.builder.DropdownSelectBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.builder.ElementBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.builder.SocialSecurityNumberBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.HiddenValue;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Radio;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.AddElementRule;
@@ -46,11 +34,25 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParamete
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 
+import java.util.List;
+
+import static fi.vm.sade.haku.oppija.lomake.domain.builder.DateQuestionBuilder.Date;
+import static fi.vm.sade.haku.oppija.lomake.domain.builder.DropdownSelectBuilder.Dropdown;
+import static fi.vm.sade.haku.oppija.lomake.domain.builder.PhaseBuilder.Phase;
+import static fi.vm.sade.haku.oppija.lomake.domain.builder.PostalCodeBuilder.PostalCode;
+import static fi.vm.sade.haku.oppija.lomake.domain.builder.RadioBuilder.Radio;
+import static fi.vm.sade.haku.oppija.lomake.domain.builder.RelatedQuestionRuleBuilder.Rule;
+import static fi.vm.sade.haku.oppija.lomake.domain.builder.TextQuestionBuilder.TextQuestion;
+import static fi.vm.sade.haku.oppija.lomake.domain.builder.ThemeBuilder.Theme;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.*;
+
 public final class HenkilotiedotPhase {
 
     public static final String PHONE_PATTERN = "^$|^([0-9\\(\\)\\/\\+ \\-]*)$";
     private static final String NOT_FI = "^((?!FIN)[A-Z]{3})$";
     private static final String HETU_PATTERN = "^([0-9]{6}.[0-9]{3}([0-9]|[a-z]|[A-Z]))$";
+    private static final String MALE_HETU_PATTERN = "^([0-9]{6}.[0-9]{2}[13579]([0-9]|[a-z]|[A-Z]))$";
+    private static final String FEMALE_HETU_PATTERN = "^([0-9]{6}.[0-9]{2}[02468]([0-9]|[a-z]|[A-Z]))$";
     private static final String POSTINUMERO_PATTERN = "[0-9]{5}";
     private static final String DATE_PATTERN = "^(0[1-9]|[12][0-9]|3[01])\\.(0[1-9]|1[012])\\.(19|20)\\d\\d$";
     public static final String EMPTY_OR_FIN_PATTERN = "^$|^FIN$";
@@ -115,8 +117,7 @@ public final class HenkilotiedotPhase {
         Option female = genders.get(0).getI18nText().getTranslations().get("fi").equalsIgnoreCase("Nainen") ?
                 genders.get(0) : genders.get(1);
 
-        Element socialSecurityNumber =
-                new SocialSecurityNumberBuilder(OppijaConstants.ELEMENT_ID_SOCIAL_SECURITY_NUMBER)
+        Element socialSecurityNumber = new SocialSecurityNumberBuilder(OppijaConstants.ELEMENT_ID_SOCIAL_SECURITY_NUMBER)
                         .setSexI18nText(sukupuoli.getI18nText())
                         .setMaleOption(male)
                         .setFemaleOption(female)
@@ -128,10 +129,15 @@ public final class HenkilotiedotPhase {
                         .validator(new SocialSecurityNumberFieldValidator())
                         .pattern(HETU_PATTERN)
                         .build();
-        addUniqueApplicantValidator(socialSecurityNumber, formParameters.getApplicationSystem().getApplicationSystemType());
+        addUniqueApplicantValidator(socialSecurityNumber, formParameters);
 
-
-        kysytaankoHetuSaanto.addChild(socialSecurityNumber);
+        Element hetuNainen = Rule(new Regexp(socialSecurityNumber.getId(), FEMALE_HETU_PATTERN))
+                .addChild(new HiddenValue(sukupuoli.getId(), female.getValue()))
+                .build();
+        Element hetuMies = Rule(new Regexp(socialSecurityNumber.getId(), MALE_HETU_PATTERN))
+                .addChild(new HiddenValue(sukupuoli.getId(), male.getValue()))
+                .build();
+        kysytaankoHetuSaanto.addChild(socialSecurityNumber, hetuMies, hetuNainen);
 
         Element syntymaaika = Date("syntymaaika").formParams(formParameters).build();
         syntymaaika.setValidator(new PastDateValidator(createI18NText("henkilotiedot.syntymaaika.tulevaisuudessa", formParameters)));

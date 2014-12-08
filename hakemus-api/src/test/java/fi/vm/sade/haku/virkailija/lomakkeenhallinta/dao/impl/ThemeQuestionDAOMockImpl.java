@@ -15,6 +15,11 @@ public class ThemeQuestionDAOMockImpl implements ThemeQuestionDAO {
     }
 
     @Override
+    public List<ThemeQuestion> findByParentId(String parentId) {
+        return null;
+    }
+
+    @Override
     public List<ThemeQuestion> query(ThemeQuestionQueryParameters parameters) {
         return ImmutableList.of();
     }
@@ -36,6 +41,11 @@ public class ThemeQuestionDAOMockImpl implements ThemeQuestionDAO {
 
     @Override
     public Integer getMaxOrdinal(String applicationSystemId, String learningOpportunityId, String themeId) {
+        return null;
+    }
+
+    @Override
+    public Integer getMaxOrdinalOfChildren(String applicationSystemId, String learningOpportunityId, String themeId, String parentId) {
         return null;
     }
 

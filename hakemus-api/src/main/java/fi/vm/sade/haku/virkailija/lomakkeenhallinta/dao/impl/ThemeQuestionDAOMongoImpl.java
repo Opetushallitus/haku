@@ -44,6 +44,7 @@ public class ThemeQuestionDAOMongoImpl extends AbstractDAOMongoImpl<ThemeQuestio
     private static final String FIELD_STATE = "state";
     private static final String FIELD_ORDINAL = "ordinal";
     private static final String FIELD_APPLICATION_OPTION = "learningOpportunityId";
+    private static final String FIELD_PARENT_ID = "parentId";
     private static final String FIELD_TARGET_IS_GROUP = "targetIsGroup";
     private static final String FIELD_ATTACHMENT_REQUESTS = "attachmentRequests";
     private static int PARAM_QUERY =0;
@@ -96,6 +97,16 @@ public class ThemeQuestionDAOMongoImpl extends AbstractDAOMongoImpl<ThemeQuestio
         throw new ResourceNotFoundException("No ThemeQuestion found with id " + id);
     }
 
+    @Override
+    public List<ThemeQuestion> findByParentId(String parentId) {
+        LOGGER.debug("findByParentId: " + parentId);
+        DBObject queryParam = new BasicDBObject(FIELD_PARENT_ID, parentId);
+        LOGGER.debug("Executing with query: " + queryParam.toString());
+        List <ThemeQuestion> themeQuestions =  queryThemeQuestions(new DBObject[] { queryParam, null, null, null });
+        LOGGER.debug("Found: " + themeQuestions.size());
+        return themeQuestions;
+    }
+
     public List<ThemeQuestion> query(final ThemeQuestionQueryParameters parameters){
         return queryThemeQuestions(buildQuery(parameters));
     }
@@ -103,7 +114,7 @@ public class ThemeQuestionDAOMongoImpl extends AbstractDAOMongoImpl<ThemeQuestio
     @Override
     public List<String> queryApplicationOptionsIn(ThemeQuestionQueryParameters parameters) {
         List<Object> distinctApplicationOptions = getCollection().distinct(FIELD_APPLICATION_OPTION, buildQuery(parameters)[0]);
-        LOGGER.debug("Got "+ distinctApplicationOptions.size() + " application options ");
+        LOGGER.debug("Got " + distinctApplicationOptions.size() + " application options ");
         ArrayList<String> results = new ArrayList<String>();
         for (Object value : distinctApplicationOptions){
             LOGGER.debug("Got option " + value);
@@ -133,6 +144,29 @@ public class ThemeQuestionDAOMongoImpl extends AbstractDAOMongoImpl<ThemeQuestio
         tqqp.setApplicationSystemId(applicationSystemId);
         tqqp.setLearningOpportunityId(learningOpportunityId);
         tqqp.setTheme(themeId);
+        tqqp.addSortBy(FIELD_ORDINAL, tqqp.SORT_DESCENDING);
+        final DBObject[] queryParam = buildQuery(tqqp);
+        queryParam[PARAM_KEYS] = new BasicDBObject(FIELD_ORDINAL, 1);
+        final DBCursor dbCursor = executeQuery(queryParam);
+        dbCursor.limit(1);
+        try {
+            if (!dbCursor.hasNext()) {
+                return null;
+            }
+            return (Integer) dbCursor.next().get(FIELD_ORDINAL);
+        } catch (MongoException mongoException) {
+            LOGGER.error("Got error "+ mongoException.getMessage() +" with query: " + queryParam[PARAM_QUERY] + " using hint: " +queryParam[PARAM_HINT] + " and keys: " +queryParam[PARAM_KEYS]);
+            throw mongoException;
+        }
+    }
+
+    @Override
+    public Integer getMaxOrdinalOfChildren(String applicationSystemId, String learningOpportunityId, String themeId, String parentId) {
+        final ThemeQuestionQueryParameters tqqp = new ThemeQuestionQueryParameters();
+        tqqp.setApplicationSystemId(applicationSystemId);
+        tqqp.setLearningOpportunityId(learningOpportunityId);
+        tqqp.setTheme(themeId);
+        tqqp.setParentThemeQuestionId(parentId);
         tqqp.addSortBy(FIELD_ORDINAL, tqqp.SORT_DESCENDING);
         final DBObject[] queryParam = buildQuery(tqqp);
         queryParam[PARAM_KEYS] = new BasicDBObject(FIELD_ORDINAL, 1);
@@ -216,6 +250,11 @@ public class ThemeQuestionDAOMongoImpl extends AbstractDAOMongoImpl<ThemeQuestio
             hint.put(FIELD_APPLICATION_OPTION, 1);
         }
 
+        if (parameters.isSetParentThemeQuestionId()){
+            query.append(FIELD_PARENT_ID, parameters.getParentThemeQuestionId());
+            hint.put(FIELD_PARENT_ID, 1);
+        }
+
         if (null != parameters.queryGroups()){
             if (parameters.queryGroups()) {
                 query.append(FIELD_TARGET_IS_GROUP, true);
@@ -252,6 +291,8 @@ public class ThemeQuestionDAOMongoImpl extends AbstractDAOMongoImpl<ThemeQuestio
         }
 
         checkIndexes("before ensures");
+
+        //TODO =RS= Add parent data to indexes
 
         ensureIndex("index_applicationsystem_ownerid", FIELD_APPLICATION_SYSTEM_ID, FIELD_STATE, FIELD_OWNER_OIDS, FIELD_APPLICATION_OPTION);
         ensureIndex("index_applicationsystem_theme", FIELD_APPLICATION_SYSTEM_ID, FIELD_STATE, FIELD_THEME, FIELD_APPLICATION_OPTION);

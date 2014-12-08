@@ -39,7 +39,6 @@
                     <haku:i18nText value="${element.femaleOption.i18nText}"/>
                 </c:if>
             </span>
-            <input id="${element.sexId}" name="${element.sexId}" <haku:value value='${answers[element.sexId]}'/> type="hidden"/>
             <haku:errorMessage id="${element.id}" additionalClass="margin-top-1"/>
         </div>
         <haku:help element="${element}"/>
@@ -53,22 +52,16 @@
     (function() {
         var ssnId = "<c:out value="${element.id}"/>",
             maleLabel = "<haku:i18nText value="${element.maleOption.i18nText}"/>",
-            femaleLabel = "<haku:i18nText value="${element.femaleOption.i18nText}"/>",
-            maleValue = "<c:out value="${element.maleOption.value}"/>",
-            femaleValue = "<c:out value="${element.femaleOption.value}"/>",
-            sexId = "<c:out value="${element.sexId}"/>";
+            femaleLabel = "<haku:i18nText value="${element.femaleOption.i18nText}"/>";
         $("#" + ssnId).change(function() {
             var maleReg   = /\d{6}[-+aA]\d{2}[13579]\w/;
             var femaleReg = /\d{6}[-+aA]\d{2}[02468]\w/;
             if (maleReg.test($("#" + ssnId).val())) {
                 $("#sex").html(maleLabel);
-                $("#" + sexId).val(maleValue);
             } else if (femaleReg.test($("#" + ssnId).val())) {
                  $("#sex").html(femaleLabel);
-                 $("#" + sexId).val(femaleValue);
             } else {
                  $("#sex").html("");
-                 $("#" + sexId).val("");
             }
         });
     }());

@@ -458,6 +458,11 @@ public class Application implements Serializable {
         if (overriddenAnswers.containsKey(key)) {
             return false;
         }
+
+        if ("Henkilotunnus".equals(key) && value != null) {
+            value = "(hidden)";
+        }
+
         if (value != null) {
             overriddenAnswers.put(key, value);
         } else {

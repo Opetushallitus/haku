@@ -13,6 +13,7 @@ public final class ThemeQuestionQueryParameters implements Cloneable{
 
     private String applicationSystemId;
     private String learningOpportunityId;
+    private Value<String> parentThemeQuestionId;
     private String organizationId;
     private String theme;
     private Boolean searchDeleted;
@@ -38,6 +39,22 @@ public final class ThemeQuestionQueryParameters implements Cloneable{
 
     public void setLearningOpportunityId(final String learningOpportunityId) {
         this.learningOpportunityId = learningOpportunityId;
+    }
+
+    public String getParentThemeQuestionId() {
+        return null == parentThemeQuestionId ? null : parentThemeQuestionId.get();
+    }
+
+    public void setParentThemeQuestionId(String parentThemeQuestionId) {
+        this.parentThemeQuestionId = new Value<String>(parentThemeQuestionId);
+    }
+
+    public void unsetParentThemeQuestionId() {
+        this.parentThemeQuestionId = null;
+    }
+
+    public Boolean isSetParentThemeQuestionId() {
+        return null != parentThemeQuestionId;
     }
 
     public String getOrganizationId() {
@@ -98,6 +115,7 @@ public final class ThemeQuestionQueryParameters implements Cloneable{
         return "ThemeQuestionQueryParameters{" +
           "applicationSystemId='" + applicationSystemId + '\'' +
           ", learningOpportunityId='" + learningOpportunityId + '\'' +
+          ", parentThemeQuestionId='" + parentThemeQuestionId + '\'' +
           ", organizationId='" + organizationId + '\'' +
           ", theme='" + theme + '\'' +
           ", searchDeleted=" + searchDeleted +
@@ -106,17 +124,34 @@ public final class ThemeQuestionQueryParameters implements Cloneable{
           '}';
     }
 
-
     @Override
-    public ThemeQuestionQueryParameters clone(){
+    public ThemeQuestionQueryParameters clone() {
         ThemeQuestionQueryParameters clone = new ThemeQuestionQueryParameters();
         clone.applicationSystemId = this.applicationSystemId;
         clone.learningOpportunityId = this.learningOpportunityId;
+        clone.parentThemeQuestionId = this.parentThemeQuestionId;
         clone.organizationId = this.organizationId;
         clone.theme = this.theme;
         clone.searchDeleted = this.searchDeleted;
         clone.onlyWithAttachmentRequests = this.onlyWithAttachmentRequests;
         clone.sortBy = (ArrayList<Pair<String, Integer>>) this.sortBy.clone();
         return clone;
+    }
+
+    private final class Value<T>{
+        private final T value;
+
+        private Value(final T value) {
+            this.value = value;
+        }
+
+        private T get(){
+            return value;
+        }
+
+        @Override
+        public String toString() {
+            return "Value{"+ value +'}';
+        }
     }
 }

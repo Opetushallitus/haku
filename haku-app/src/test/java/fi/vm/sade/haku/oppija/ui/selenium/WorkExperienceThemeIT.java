@@ -57,7 +57,6 @@ public class WorkExperienceThemeIT extends DummyModelBaseItTest {
         selectByValue("PK_AI_OPPIAINE", "FI");
         selectByValue("PK_A1_OPPIAINE", "EN");
         selectByValue("PK_B1_OPPIAINE", "SE");
-        screenshot("workexp");
         nextPhase(OppijaConstants.PHASE_MISC);
 
         elementsNotPresentById("TYOKOKEMUSKUUKAUDET");

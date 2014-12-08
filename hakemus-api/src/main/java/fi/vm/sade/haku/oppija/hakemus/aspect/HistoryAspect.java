@@ -64,15 +64,7 @@ public class HistoryAspect {
         LOGGER.debug("addChangeHistoryToApplication");
         if (!disableHistory) {
             Application oldApplication = applicationDAO.find(queryApplication).get(0);
-            Map<String, String> oldAnswers = oldApplication.getVastauksetMerged();
-            Map<String, String> newAnswers = application.getVastauksetMerged();
-            List<Map<String, String>> changes = ApplicationDiffUtil.oldAndNewAnswersToListOfChanges(oldAnswers, newAnswers);
-
-            if (!changes.isEmpty()) {
-                Change change = new Change(new Date(), userSession.getUser().getUserName(), "update", changes);
-                application.addHistory(change);
-            }
+            ApplicationDiffUtil.addHistoryBasedOnChangedAnswers(application, oldApplication, userSession.getUser().getUserName(), "update");
         }
     }
-
 }

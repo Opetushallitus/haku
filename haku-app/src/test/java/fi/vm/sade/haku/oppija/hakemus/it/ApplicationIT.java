@@ -57,7 +57,6 @@ public class ApplicationIT extends DummyModelBaseItTest {
     //    @Test
     public void testFindAllApplications() throws IOException {
         navigateToPath("applications");
-        screenshot("findAllApplications");
         ApplicationSearchResultDTO applications = responseToSearchResult();
         assertEquals(3, applications.getResults().size());
         assertEquals(3, applications.getTotalCount());
@@ -82,7 +81,6 @@ public class ApplicationIT extends DummyModelBaseItTest {
     //    @Test
     public void testGetApplication() throws IOException {
         navigateToPath("applications/1.2.246.562.11.00000010003/");
-        screenshot("getApplication");
         String response = getBodyText();
         ObjectMapper mapper = new ObjectMapper();
         Application application = mapper.readValue(response, new TypeReference<Application>() {

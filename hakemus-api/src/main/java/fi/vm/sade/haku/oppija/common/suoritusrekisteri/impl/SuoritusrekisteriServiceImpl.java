@@ -30,7 +30,7 @@ public class SuoritusrekisteriServiceImpl implements SuoritusrekisteriService {
 
     final Logger log = LoggerFactory.getLogger(SuoritusrekisteriServiceImpl.class);
 
-    private final static List<String> validKomos = new ArrayList<String>();
+    private final static List<String> validKomos = new ArrayList<String>(7);
 
     static {
         validKomos.add("1.2.246.562.5.2013112814572438136372"); // AmmOhjaavaJaValmistavaKoulutus
@@ -40,6 +40,7 @@ public class SuoritusrekisteriServiceImpl implements SuoritusrekisteriService {
         validKomos.add("1.2.246.562.5.2013112814572435044876"); // PerusopetuksenLisaopetus
         validKomos.add("1.2.246.562.13.62959769647");           // Perusopetus
         validKomos.add("1.2.246.562.13.86722481404");           // Perusopetuksen ulkomainen vastaava opetus
+        validKomos.add("1.2.246.562.5.2013061010184237348007"); // Ylioppilastutkinto
     }
 
     @Value("${web.url.cas}")
@@ -53,7 +54,6 @@ public class SuoritusrekisteriServiceImpl implements SuoritusrekisteriService {
     private String clientAppPass;
 
     private static CachingRestClient cachingRestClient;
-
 
     @Override
     public List<OpiskelijaDTO> getOpiskelijat(String personOid) {

@@ -150,7 +150,6 @@ public class LomakeIT extends DummyModelBaseItTest {
         findByIdAndClick("submit_confirm");
 
         String oid = driver.findElement(new By.ByClassName("number")).getText();
-        screenshot("lomakeit");
         findByXPath("//h3[contains(text(), \"Musiikki- tanssi- ja liikunta-alan\")]");
 
         assertFalse(oid.contains("."));

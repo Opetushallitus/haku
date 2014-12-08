@@ -128,27 +128,34 @@ public final class ThemeQuestionConfigurator {
             }
             baseElement.addChild(groupElement);
         }
-        final List<Element> configuredQuestions = configureQuestions(baseQuery, optionId);
+        final List<Element> configuredQuestions = configureQuestions(baseQuery, optionId, null);
         groupElement.addChild(configuredQuestions.toArray(new Element[configuredQuestions.size()]));
         LOGGER.debug("Configuration of application option "+ optionId +" complete with base query: "+ baseQuery.toString());
         return baseElement;
     }
 
-    private List<Element> configureQuestions(final ThemeQuestionQueryParameters baseQuery, final String optionId) {
-        final List<ThemeQuestion> themeQuestions = queryQuestions(baseQuery, optionId);
+    private List<Element> configureQuestions(final ThemeQuestionQueryParameters baseQuery, final String optionId, final String parentId) {
+        final List<ThemeQuestion> themeQuestions = queryQuestions(baseQuery, optionId, parentId);
         LOGGER.debug("Configuring a list of "+ themeQuestions.size() +" themequestions");
         final ArrayList<Element> configuredElements = new ArrayList<Element>(themeQuestions.size());
         for (ThemeQuestion tq : themeQuestions) {
-            configuredElements.add(tq.generateElement(formParameters));
+            Element configuredQuestion = tq.generateElement(formParameters);
             LOGGER.debug("configured question {} of type {}", tq.getId(), tq.getClass().getSimpleName());
+            configuredElements.add(configuredQuestion);
+
+            List<Element> followupQuestions = configureQuestions(baseQuery, null, tq.getId().toString());
+            if (followupQuestions.size() > 0 ) {
+                configuredQuestion.addChild(followupQuestions.toArray(new Element[followupQuestions.size()]));
+            }
         }
         LOGGER.debug("Configuration of the list complete");
         return configuredElements;
     }
 
-    private List<ThemeQuestion> queryQuestions(final ThemeQuestionQueryParameters baseQuery, final String optionId) {
+    private List<ThemeQuestion> queryQuestions(final ThemeQuestionQueryParameters baseQuery, final String optionId, final String parentId) {
         ThemeQuestionQueryParameters query = baseQuery.clone();
         query.setLearningOpportunityId(optionId);
+        query.setParentThemeQuestionId(parentId);
         query.addSortBy(ThemeQuestion.FIELD_ORDINAL, ThemeQuestionQueryParameters.SORT_ASCENDING);
         LOGGER.debug("Querying questions with " + query);
         return moveNullOrdinalsToTheEnd(themeQuestionDAO.query(query));
@@ -253,6 +260,7 @@ public final class ThemeQuestionConfigurator {
         return configuredAttachementRequests;
     }
 
+    //TODO =RS= parent consideration
     private List<ApplicationOptionAttachmentRequest> configureAttachementRequests(final ThemeQuestionQueryParameters baseQuery, final Boolean groupOption) {
         final ThemeQuestionQueryParameters queryParameters = baseQuery.clone();
         queryParameters.setQueryGroups(groupOption);
@@ -271,8 +279,9 @@ public final class ThemeQuestionConfigurator {
         return configuredAttachmentRequests;
     }
 
+    //TODO =RS= parent consideration
     private List<ApplicationOptionAttachmentRequest> configureAttactmentRequestsForOption(final ThemeQuestionQueryParameters baseQuery, final String optionId) {
-        final List<ThemeQuestion> themeQuestions = queryQuestions(baseQuery, optionId);
+        final List<ThemeQuestion> themeQuestions = queryQuestions(baseQuery, optionId, null);
         LOGGER.debug("Configuring a list of "+ themeQuestions.size() +" themequestions");
         final ArrayList<ApplicationOptionAttachmentRequest> configuredAttachmentRequests = new ArrayList<ApplicationOptionAttachmentRequest>(themeQuestions.size());
         for (ThemeQuestion tq : themeQuestions) {

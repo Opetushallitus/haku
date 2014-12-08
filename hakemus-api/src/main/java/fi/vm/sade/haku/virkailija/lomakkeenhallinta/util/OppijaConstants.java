@@ -121,23 +121,24 @@ public final class OppijaConstants {
     public static final String PERUSOPETUS_KIELI = "perusopetuksen_kieli";
     public static final String PERUSOPETUS_PAATTOTODISTUSVUOSI = "PK_PAATTOTODISTUSVUOSI";
 
-    public static final String VARSINAINEN_HAKU = "hakutyyppi_01";
-    public static final String LISA_HAKU = "hakutyyppi_03";
-
-    public static final String HAKUKAUSI_SYKSY = "kausi_s";
-    public static final String HAKUKAUSI_KEVAT = "kausi_k";
-
     public static final String EDUCATION_CODE_MUSIIKKI = "koulutus_321204";
     public static final String EDUCATION_CODE_TANSSI = "koulutus_321501";
 
     public static final String EDUCATION_CODE_LIIKUNTA = "koulutus_381203";
+
+    public static final String HAKUKAUSI_SYKSY = "kausi_s";
+    public static final String HAKUKAUSI_KEVAT = "kausi_k";
 
     public static final String KOHDEJOUKKO_PERVAKO = "haunkohdejoukko_17";
     public static final String KOHDEJOUKKO_KORKEAKOULU = "haunkohdejoukko_12";
     public static final String KOHDEJOUKKO_AMMATILLINEN_JA_LUKIO = "haunkohdejoukko_11";
 
     public static final String HAKUTAPA_YHTEISHAKU = "hakutapa_01";
+    public static final String HAKUTAPA_ERILLISHAKU = "hakutapa_02";
+    public static final String HAKUTAPA_JATKUVA_HAKU = "hakutapa_03";
 
     public static final String HAKUTYYPPI_VARSINAINEN_HAKU = "hakutyyppi_01";
+    public static final String HAKUTYYPPI_TAYDENNYS = "hakutyyppi_02";
+    public static final String HAKUTYYPPI_LISAHAKU = "hakutyyppi_03";
 
 }
