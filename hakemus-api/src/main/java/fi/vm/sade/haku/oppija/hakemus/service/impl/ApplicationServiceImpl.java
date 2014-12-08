@@ -605,19 +605,21 @@ public class ApplicationServiceImpl implements ApplicationService {
         app.setState(Application.State.ACTIVE);
 
         // TODO person data
-
-
-        app.getAnswers().put("hakutoiveet", Maps.newHashMap(ImmutableMap.of("preference1-koulutus-id", stub.getHakukohdeOid())));
+        HashMap<String, String> hakutoiveet = new HashMap<String, String>();
+        hakutoiveet.put("preference1-koulutus-id", stub.getHakukohdeOid());
+        hakutoiveet.put("preference1-opetuspiste-id", stub.getTarjoajaOid());
+        app.getAnswers().put("hakutoiveet", hakutoiveet);
 
         return app;
+
     }
 
     // nasty mutable stuff
     private void addHakutoive(Application application, String hakukohdeOid, String tarjoajaOid) {
         String suffix = getNextHakutoiveSuffix(application);
-        Map<String, String> hakutoiveet = application.getPhaseAnswers("hakutoiveet");
+        Map<String, String> hakutoiveet = application.getAnswers().get("hakutoiveet");
         hakutoiveet.put("preference" + suffix + "-koulutus-id", hakukohdeOid);
-        hakutoiveet.put("preference" + suffix + "opetuspiste-id", tarjoajaOid);
+        hakutoiveet.put("preference" + suffix + "-opetuspiste-id", tarjoajaOid);
     }
 
     private String getNextHakutoiveSuffix(Application application) {
