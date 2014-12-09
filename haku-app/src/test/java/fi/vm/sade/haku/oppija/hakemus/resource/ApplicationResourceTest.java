@@ -181,12 +181,6 @@ public class ApplicationResourceTest {
         assertEquals("asId3", param.getAsIds().get(2));
     }
 
-    public void testSyntheticApplicationCreation() {
-        ApplicationServiceMock myApplicationService = new ApplicationServiceMock();
-        ApplicationResource resource = new ApplicationResource(myApplicationService, applicationSystemService);
-        //TODO
-    }
-
     class ApplicationServiceMock extends ApplicationServiceImpl {
 
         public ApplicationQueryParameters applicationQueryParameters;

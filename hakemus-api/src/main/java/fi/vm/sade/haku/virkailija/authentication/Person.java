@@ -15,8 +15,6 @@
  */
 package fi.vm.sade.haku.virkailija.authentication;
 
-import fi.vm.sade.haku.oppija.lomake.util.StringUtil;
-
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 /**
