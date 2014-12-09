@@ -16,6 +16,12 @@
 
 package fi.vm.sade.haku.oppija.hakemus.service.impl;
 
+import com.google.common.base.Function;
+import com.google.common.base.Predicate;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationNote;
@@ -23,6 +29,7 @@ import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.haku.oppija.hakemus.domain.AuthorizationMeta;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationAdditionalDataDTO;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
+import fi.vm.sade.haku.oppija.hakemus.domain.dto.SyntheticApplication;
 import fi.vm.sade.haku.oppija.hakemus.domain.util.ApplicationUtil;
 import fi.vm.sade.haku.oppija.hakemus.domain.util.AttachmentUtil;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationDAO;
@@ -62,6 +69,8 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static fi.vm.sade.haku.oppija.hakemus.service.ApplicationModelUtil.removeAuthorizationMeta;
 import static fi.vm.sade.haku.oppija.hakemus.service.ApplicationModelUtil.restoreV0ModelLOPParentsToApplicationMap;
@@ -557,5 +566,88 @@ public class ApplicationServiceImpl implements ApplicationService {
             throw new ResourceNotFoundException("User "+  authenticationService.getCurrentHenkilo().getPersonOid()  +" is not allowed to read application " + application.getOid());
         }
         return application;
+    }
+
+    @Override
+    public List<Application> createApplications(SyntheticApplication applicationStub) {
+
+        List<Application> returns = new ArrayList<Application>();
+        for (SyntheticApplication.Hakemus hakemus : applicationStub.hakemukset) {
+            Application app = applicationForStub(hakemus, applicationStub);
+            applicationDAO.save(app);
+            returns.add(app);
+        }
+        return returns;
+    }
+
+    private Application applicationForStub(SyntheticApplication.Hakemus hakemus, SyntheticApplication stub) {
+
+        Application query = new Application();
+        query.setPersonOid(hakemus.hakijaOid);
+        query.setApplicationSystemId(stub.hakuOid);
+        List<Application> applications = applicationDAO.find(query);
+
+        if(applications.isEmpty()) {
+            return newApplication(stub, hakemus);
+        } else {
+            Application current = Iterables.getFirst(applications, query);
+            addHakutoive(current, stub.hakukohdeOid, stub.tarjoajaOid);
+            return current;
+        }
+    }
+
+    private Application newApplication(SyntheticApplication stub, SyntheticApplication.Hakemus hakemus) {
+
+        Application app = new Application();
+        app.setOid(applicationOidService.generateNewOid());
+        app.setApplicationSystemId(stub.hakuOid);
+        app.setRedoPostProcess(Application.PostProcessingState.DONE);
+        app.setState(Application.State.ACTIVE);
+
+        Person person = new Person(hakemus.etunimi, hakemus.sukunimi, hakemus.henkilotunnus, hakemus.hakijaOid, hakemus.syntymaAika);
+        app.modifyPersonalData(person);
+        // TODO modifyPersonalData adds 'overriddenAnswers' section, it should be wiped
+
+        HashMap<String, String> hakutoiveet = new HashMap<String, String>();
+        hakutoiveet.put("preference1-koulutus-id", stub.hakukohdeOid);
+        hakutoiveet.put("preference1-opetuspiste-id", stub.tarjoajaOid);
+        app.getAnswers().put("hakutoiveet", hakutoiveet);
+
+        return app;
+    }
+
+    private void addHakutoive(Application application, String hakukohdeOid, String tarjoajaOid) {
+        String suffix = getNextHakutoiveSuffix(application);
+        Map<String, String> hakutoiveet = application.getAnswers().get("hakutoiveet");
+        hakutoiveet.put("preference" + suffix + "-koulutus-id", hakukohdeOid);
+        hakutoiveet.put("preference" + suffix + "-opetuspiste-id", tarjoajaOid);
+    }
+
+    private String getNextHakutoiveSuffix(Application application) {
+
+        TreeSet<String> usedKeys = Sets.newTreeSet(Iterables.transform(Iterables.filter(application.getPhaseAnswers("hakutoiveet").entrySet(), new Predicate<Map.Entry<String, String>>() {
+            @Override
+            public boolean apply(Map.Entry<String, String> entry) {
+                return entry.getKey().matches("preference\\d+-koulutus-id") && !entry.getValue().isEmpty();
+            }
+        }), new Function<Map.Entry<String, String>, String>() {
+            @Override
+            public String apply(Map.Entry<String, String> entry) {
+                return entry.getKey();
+            }
+        }));
+
+        if(usedKeys.isEmpty()) {
+            return "1";
+        }
+
+        Matcher matcher = Pattern.compile("preference(\\d+)").matcher(usedKeys.last());
+        if(matcher.find()) {
+            String latestUsed = matcher.group(1);
+            int next = Integer.parseInt(latestUsed) + 1;
+            return Integer.toString(next);
+        } else {
+            return "1";
+        }
     }
 }

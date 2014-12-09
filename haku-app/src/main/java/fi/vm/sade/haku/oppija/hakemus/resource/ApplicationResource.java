@@ -22,6 +22,7 @@ import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationAdditionalDataDTO;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultItemDTO;
+import fi.vm.sade.haku.oppija.hakemus.domain.dto.SyntheticApplication;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationQueryParameters;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationQueryParametersBuilder;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
@@ -365,6 +366,19 @@ public class ApplicationResource {
                                              @PathParam("aoId") String aoId,
                                              List<ApplicationAdditionalDataDTO> additionalData) {
         applicationService.saveApplicationAdditionalInfo(additionalData);
+    }
+
+    @PUT
+    @Path("syntheticApplication")
+    @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
+    @Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
+    public Response putSyntheticApplication(SyntheticApplication syntheticApplication) {
+        if(new SyntheticApplicationValidator(syntheticApplication).validateSyntheticApplication()) {
+            List<Application> applications = applicationService.createApplications(syntheticApplication);
+            return Response.ok(applications).build();
+        } else {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
     }
 
     private List<Application> getApplications(List<String> oids) {
