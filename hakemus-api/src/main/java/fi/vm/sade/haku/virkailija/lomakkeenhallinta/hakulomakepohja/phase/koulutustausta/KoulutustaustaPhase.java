@@ -76,7 +76,9 @@ public final class KoulutustaustaPhase {
                 .required().formParams(formParameters).build();
 
         pohjakoulutusGrp.addChild(
-                buildYo(formParameters, laajuusYksikot),
+                buildYoSuomalainen(formParameters),
+                buildYoKansainvalinen(formParameters),
+                buildYoAmmatillinen(formParameters, laajuusYksikot),
                 buildAmmatillinen(formParameters, laajuusYksikot),
                 buildAmmattitutkinto(formParameters),
                 buildKorkeakoulututkinto(formParameters, korkeakoulut, tutkintotasot),
@@ -203,7 +205,7 @@ public final class KoulutustaustaPhase {
         return am;
     }
 
-    private static Element buildYo(FormParameters formParameters, List<Option> laajuusYksikot) {
+    private static Element buildYoSuomalainen(FormParameters formParameters) {
         Element yo = Checkbox("pohjakoulutus_yo").formParams(formParameters).build();
         Element yoMore = createVarEqualsToValueRule(yo.getId(), "true");
         Element vuosi = TextQuestion("pohjakoulutus_yo_vuosi")
@@ -220,8 +222,23 @@ public final class KoulutustaustaPhase {
                 .addOption(createI18NText("form.koulutustausta.lukio.yotutkinto.lkOnly"), "lkOnly")
                 .requiredInline()
                 .formParams(formParameters).build();
+        yoMore.addChild(vuosi, yoTutkinto);
+        yo.addChild(yoMore);
+        return yo;
+    }
 
-        Element ammatillinen = Checkbox("pohjakoulutus_yo_ammatillinen").inline().formParams(formParameters).build();
+    private static Element buildYoKansainvalinen(FormParameters formParameters) {
+        Element ulkomainenYo = Checkbox("pohjakoulutus_yo_ulkomainen").formParams(formParameters).build();
+        Element ulkomainenYoMore = createVarEqualsToValueRule(ulkomainenYo.getId(), "true");
+        Element ulkomainenYoMissa = TextQuestion("pohjakoulutus_yo_ulkomainen_maa")
+                .requiredInline().formParams(formParameters).build();
+        ulkomainenYoMore.addChild(ulkomainenYoMissa);
+        ulkomainenYo.addChild(ulkomainenYoMore);
+        return ulkomainenYo;
+    }
+
+    private static Element buildYoAmmatillinen(FormParameters formParameters, List<Option> laajuusYksikot) {
+        Element ammatillinen = Checkbox("pohjakoulutus_yo_ammatillinen").formParams(formParameters).build();
         Element ammatillinenMore = createVarEqualsToValueRule(ammatillinen.getId(), "true");
         Element ammatillinenVuosi = TextQuestion("pohjakoulutus_yo_ammatillinen_vuosi")
                 .requiredInline()
@@ -246,18 +263,7 @@ public final class KoulutustaustaPhase {
                 ammatillinenNimike,
                 ammatillinenLaajuus, ammatillinenLaajuusYksikot);
         ammatillinen.addChild(ammatillinenMore);
-
-        Element ulkomainenYo = Checkbox("pohjakoulutus_yo_ulkomainen").inline().formParams(formParameters).build();
-        Element ulkomainenYoMore = createVarEqualsToValueRule(ulkomainenYo.getId(), "true");
-        Element ulkomainenYoMissa = TextQuestion("pohjakoulutus_yo_ulkomainen_maa")
-                .requiredInline().formParams(formParameters).build();
-        ulkomainenYoMore.addChild(ulkomainenYoMissa);
-        ulkomainenYo.addChild(ulkomainenYoMore);
-
-        yoMore.addChild(vuosi, yoTutkinto, ulkomainenYo, ammatillinen);
-
-        yo.addChild(yoMore);
-        return yo;
+        return ammatillinen;
     }
 
     private static Element buildAiempiTutkinto(FormParameters formParameters,
