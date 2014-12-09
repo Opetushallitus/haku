@@ -16,9 +16,7 @@
 
 package fi.vm.sade.haku.oppija.hakemus.service.impl;
 
-import com.google.common.base.Function;
 import com.google.common.base.Predicate;
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
@@ -56,7 +54,6 @@ import fi.vm.sade.haku.virkailija.authentication.Person;
 import fi.vm.sade.haku.virkailija.authentication.PersonBuilder;
 import fi.vm.sade.haku.virkailija.koulutusinformaatio.KoulutusinformaatioService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
-
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionAttachmentDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.OrganizationGroupDTO;
@@ -616,27 +613,20 @@ public class ApplicationServiceImpl implements ApplicationService {
         return app;
     }
 
-    private void addHakutoive(Application application, String hakukohdeOid, String tarjoajaOid) {
-        String suffix = getNextHakutoiveSuffix(application);
-        Map<String, String> hakutoiveet = application.getAnswers().get("hakutoiveet");
-        hakutoiveet.put("preference" + suffix + "-koulutus-id", hakukohdeOid);
-        hakutoiveet.put("preference" + suffix + "-opetuspiste-id", tarjoajaOid);
+    private void addHakutoive(Application application, final String hakukohdeOid, String tarjoajaOid) {
+
+        Map<String, String> existing = existingPreferences(application);
+        if(!existing.values().contains(hakukohdeOid)) {
+            Map<String, String> hakutoiveet = application.getAnswers().get("hakutoiveet");
+            String suffix = getNextHakutoiveSuffix(existing);
+            hakutoiveet.put("preference" + suffix + "-koulutus-id", hakukohdeOid);
+            hakutoiveet.put("preference" + suffix + "-opetuspiste-id", tarjoajaOid);
+        }
     }
 
-    private String getNextHakutoiveSuffix(Application application) {
+    private String getNextHakutoiveSuffix(Map<String, String> existingPreferences) {
 
-        TreeSet<String> usedKeys = Sets.newTreeSet(Iterables.transform(Iterables.filter(application.getPhaseAnswers("hakutoiveet").entrySet(), new Predicate<Map.Entry<String, String>>() {
-            @Override
-            public boolean apply(Map.Entry<String, String> entry) {
-                return entry.getKey().matches("preference\\d+-koulutus-id") && !entry.getValue().isEmpty();
-            }
-        }), new Function<Map.Entry<String, String>, String>() {
-            @Override
-            public String apply(Map.Entry<String, String> entry) {
-                return entry.getKey();
-            }
-        }));
-
+        TreeSet<String> usedKeys = Sets.newTreeSet(existingPreferences.keySet());
         if(usedKeys.isEmpty()) {
             return "1";
         }
@@ -649,5 +639,15 @@ public class ApplicationServiceImpl implements ApplicationService {
         } else {
             return "1";
         }
+    }
+
+    private Map<String, String> existingPreferences(Application application) {
+
+        return Maps.filterEntries(application.getPhaseAnswers(("hakutoiveet")), new Predicate<Map.Entry<String, String>>() {
+            @Override
+            public boolean apply(Map.Entry<String, String> input) {
+                return input.getKey().matches("preference\\d+-koulutus-id") && !input.getValue().isEmpty();
+            }
+        });
     }
 }
