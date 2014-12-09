@@ -142,6 +142,7 @@
         elementId: '<c:out value="${element.id}"/>',
         contextPath: '<c:out value="${pageContext.request.contextPath}"/>',
         applicationSystemId: '<c:out value="${it.applicationSystemId}"/>',
+        ongoing: '<c:out value="${it.ongoing}"/>',
         vaiheId: '<c:out value="${vaihe.id}"/>',
         teemaId: '<c:out value="${parent.id}"/>',
         uiLang: '<c:out value="${requestScope['fi_vm_sade_oppija_language']}"/>',

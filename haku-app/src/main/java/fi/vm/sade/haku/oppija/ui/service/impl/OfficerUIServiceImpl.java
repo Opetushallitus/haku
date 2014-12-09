@@ -375,7 +375,9 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         this.applicationService.updateAuthorizationMeta(application);
         this.applicationService.update(queryApplication, application);
         application.setPhaseId(applicationPhase.getPhaseId());
-        return new ModelResponse(application, form, phase, phaseValidationResult, koulutusinformaatioBaseUrl);
+        ModelResponse response = new ModelResponse(application, form, phase, phaseValidationResult, koulutusinformaatioBaseUrl);
+        response.addObjectToModel("ongoing", false);
+        return response;
     }
 
     private Map<String, String> handleGrades(Application application, ApplicationPhase phase, Map<String, String> newAnswers) {
