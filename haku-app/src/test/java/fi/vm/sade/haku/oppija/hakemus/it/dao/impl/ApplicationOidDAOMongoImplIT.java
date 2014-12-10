@@ -31,7 +31,7 @@ import static org.junit.Assert.*;
  * @author Mikko Majapuro
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "classpath:spring/test-context.xml")
+@ContextConfiguration("classpath:spring/tomcat-container-context.xml")
 @ActiveProfiles(profiles = {"it"})
 public class ApplicationOidDAOMongoImplIT extends AbstractDAOTest {
 

@@ -47,7 +47,7 @@ import static java.lang.ClassLoader.getSystemResourceAsStream;
 import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "classpath:spring/test-context.xml")
+@ContextConfiguration("classpath:spring/tomcat-container-context.xml")
 @ActiveProfiles(profiles = {"it"})
 public class ApplicationDAOMongoImplIT extends AbstractDAOTest {
 
