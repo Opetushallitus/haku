@@ -361,7 +361,9 @@
                             <argLine>-Xms512M -Xmx1G -XX:MaxPermSize=256M</argLine>
                             <includes>
                                 <include>**/it/*</include>
+                                <include>**/it/**/*</include>
                                 <include>**/selenium/*</include>
+                                <include>**/selenium/**/*</include>
                             </includes>
                             <testFailureIgnore>false</testFailureIgnore>
                             <additionalClasspathElements>
