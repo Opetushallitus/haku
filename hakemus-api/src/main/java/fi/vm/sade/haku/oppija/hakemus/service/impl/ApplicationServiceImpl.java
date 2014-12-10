@@ -16,6 +16,10 @@
 
 package fi.vm.sade.haku.oppija.hakemus.service.impl;
 
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationNote;
@@ -23,9 +27,11 @@ import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.haku.oppija.hakemus.domain.AuthorizationMeta;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationAdditionalDataDTO;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
+import fi.vm.sade.haku.oppija.hakemus.domain.dto.SyntheticApplication;
 import fi.vm.sade.haku.oppija.hakemus.domain.util.ApplicationUtil;
 import fi.vm.sade.haku.oppija.hakemus.domain.util.AttachmentUtil;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationDAO;
+import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationFilterParameters;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationFilterParametersBuilder;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationQueryParameters;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationOidService;
@@ -49,7 +55,6 @@ import fi.vm.sade.haku.virkailija.authentication.Person;
 import fi.vm.sade.haku.virkailija.authentication.PersonBuilder;
 import fi.vm.sade.haku.virkailija.koulutusinformaatio.KoulutusinformaatioService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
-
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionAttachmentDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.OrganizationGroupDTO;
@@ -62,6 +67,8 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static fi.vm.sade.haku.oppija.hakemus.service.ApplicationModelUtil.removeAuthorizationMeta;
 import static fi.vm.sade.haku.oppija.hakemus.service.ApplicationModelUtil.restoreV0ModelLOPParentsToApplicationMap;
@@ -270,47 +277,15 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     @Override
     public ApplicationSearchResultDTO findApplications(final ApplicationQueryParameters applicationQueryParameters) {
-        List<ApplicationSystem> ass = applicationSystemService.getAllApplicationSystems("maxApplicationOptions", "kohdejoukkoUri");
-        int max = 0;
-        String kohdejoukko = null;
-        List<String> queriedAss = applicationQueryParameters.getAsIds();
-        for (ApplicationSystem as : ass) {
-            if (queriedAss.contains(as.getId())) {
-                kohdejoukko = as.getKohdejoukkoUri();
-                if (as.getMaxApplicationOptions() > max) {
-                    max = as.getMaxApplicationOptions();
-                }
-            }
-        }
-        ApplicationFilterParametersBuilder builder = new ApplicationFilterParametersBuilder()
-                .setMaxApplicationOptions(max)
-                .addOrganizationsReadable(hakuPermissionService.userCanReadApplications())
-                .addOrganizationsOpo(hakuPermissionService.userHasOpoRole());
-
-        if (queriedAss != null && queriedAss.size() == 1) {
-            builder.setKohdejoukko(kohdejoukko);
-        }
-        
-        return applicationDAO.findAllQueried(applicationQueryParameters, builder.build());
+        return applicationDAO.findAllQueried(applicationQueryParameters,
+                buildFilterParams(applicationQueryParameters));
     }
 
     @Override
     public List<Map<String, Object>> findFullApplications(final ApplicationQueryParameters applicationQueryParameters) {
-        List<ApplicationSystem> ass = applicationSystemService.getAllApplicationSystems("maxApplicationOptions", "kohdejoukkoUri");
-        int max = 0;
-        List<String> queriedAss = applicationQueryParameters.getAsIds();
-        for (ApplicationSystem as : ass) {
-            if (queriedAss.isEmpty() || queriedAss.contains(as)) {
-                if (as.getMaxApplicationOptions() > max) {
-                    max = as.getMaxApplicationOptions();
-                }
-            }
-        }
-        ApplicationFilterParametersBuilder builder = new ApplicationFilterParametersBuilder()
-                .addOrganizationsReadable(hakuPermissionService.userCanReadApplications())
-                .addOrganizationsOpo(hakuPermissionService.userHasOpoRole())
-                .setMaxApplicationOptions(max);
-        List<Map<String, Object>> applications = applicationDAO.findAllQueriedFull(applicationQueryParameters, builder.build());
+
+        List<Map<String, Object>> applications = applicationDAO.findAllQueriedFull(applicationQueryParameters,
+                buildFilterParams(applicationQueryParameters));
         for (Map<String, Object> application : applications) {
             restoreV0ModelLOPParentsToApplicationMap(application);
             removeAuthorizationMeta(application);
@@ -318,6 +293,29 @@ public class ApplicationServiceImpl implements ApplicationService {
         return applications;
     }
 
+    private ApplicationFilterParameters buildFilterParams(final ApplicationQueryParameters applicationQueryParameters) {
+        List<ApplicationSystem> ass = applicationSystemService.getAllApplicationSystems("maxApplicationOptions", "kohdejoukkoUri");
+        int max = 0;
+        String kohdejoukko = null;
+        List<String> queriedAss = applicationQueryParameters.getAsIds();
+        for (ApplicationSystem as : ass) {
+            if (queriedAss.isEmpty() || queriedAss.contains(as)) {
+                kohdejoukko = as.getKohdejoukkoUri();
+                if (as.getMaxApplicationOptions() > max) {
+                    max = as.getMaxApplicationOptions();
+                }
+            }
+        }
+
+        ApplicationFilterParametersBuilder builder = new ApplicationFilterParametersBuilder()
+                .addOrganizationsReadable(hakuPermissionService.userCanReadApplications())
+                .addOrganizationsOpo(hakuPermissionService.userHasOpoRole())
+                .setMaxApplicationOptions(max);
+        if (queriedAss != null && queriedAss.size() == 1) {
+            builder.setKohdejoukko(kohdejoukko);
+        }
+        return builder.build();
+    }
 
     @Override
     public Application updateAuthorizationMeta(Application application) throws IOException {
@@ -468,7 +466,10 @@ public class ApplicationServiceImpl implements ApplicationService {
         Application application = new Application();
         application.setApplicationSystemId(asId);
         application.setReceived(new Date());
-        application.setState(Application.State.INCOMPLETE);
+        application.setState(Application.State.DRAFT);
+        AuthorizationMeta authorizationMeta = new AuthorizationMeta();
+        authorizationMeta.setAllAoOrganizations(new HashSet<String>(hakuPermissionService.userCanEnterApplications()));
+        application.setAuthorizationMeta(authorizationMeta);
         application.addNote(new ApplicationNote("Hakemus vastaanotettu", new Date(), userSession.getUser().getUserName()));
         application.setOid(applicationOidService.generateNewOid());
         this.applicationDAO.save(application);
@@ -557,5 +558,91 @@ public class ApplicationServiceImpl implements ApplicationService {
             throw new ResourceNotFoundException("User "+  authenticationService.getCurrentHenkilo().getPersonOid()  +" is not allowed to read application " + application.getOid());
         }
         return application;
+    }
+
+    @Override
+    public List<Application> createApplications(SyntheticApplication applicationStub) {
+
+        List<Application> returns = new ArrayList<Application>();
+        for (SyntheticApplication.Hakemus hakemus : applicationStub.hakemukset) {
+            Application app = applicationForStub(hakemus, applicationStub);
+            applicationDAO.save(app);
+            returns.add(app);
+        }
+        return returns;
+    }
+
+    private Application applicationForStub(SyntheticApplication.Hakemus hakemus, SyntheticApplication stub) {
+
+        Application query = new Application();
+        query.setPersonOid(hakemus.hakijaOid);
+        query.setApplicationSystemId(stub.hakuOid);
+        List<Application> applications = applicationDAO.find(query);
+
+        if(applications.isEmpty()) {
+            return newApplication(stub, hakemus);
+        } else {
+            Application current = Iterables.getFirst(applications, query);
+            addHakutoive(current, stub.hakukohdeOid, stub.tarjoajaOid);
+            return current;
+        }
+    }
+
+    private Application newApplication(SyntheticApplication stub, SyntheticApplication.Hakemus hakemus) {
+
+        Application app = new Application();
+        app.setOid(applicationOidService.generateNewOid());
+        app.setApplicationSystemId(stub.hakuOid);
+        app.setRedoPostProcess(Application.PostProcessingState.DONE);
+        app.setState(Application.State.ACTIVE);
+
+        Person person = new Person(hakemus.etunimi, hakemus.sukunimi, hakemus.henkilotunnus, hakemus.hakijaOid, hakemus.syntymaAika);
+        app.modifyPersonalData(person);
+        // TODO modifyPersonalData adds 'overriddenAnswers' section, it should be wiped
+
+        HashMap<String, String> hakutoiveet = new HashMap<String, String>();
+        hakutoiveet.put("preference1-koulutus-id", stub.hakukohdeOid);
+        hakutoiveet.put("preference1-opetuspiste-id", stub.tarjoajaOid);
+        app.getAnswers().put("hakutoiveet", hakutoiveet);
+
+        return app;
+    }
+
+    private void addHakutoive(Application application, final String hakukohdeOid, String tarjoajaOid) {
+
+        Map<String, String> existing = existingPreferences(application);
+        if(!existing.values().contains(hakukohdeOid)) {
+            Map<String, String> hakutoiveet = application.getAnswers().get("hakutoiveet");
+            String suffix = getNextHakutoiveSuffix(existing);
+            hakutoiveet.put("preference" + suffix + "-koulutus-id", hakukohdeOid);
+            hakutoiveet.put("preference" + suffix + "-opetuspiste-id", tarjoajaOid);
+        }
+    }
+
+    private String getNextHakutoiveSuffix(Map<String, String> existingPreferences) {
+
+        TreeSet<String> usedKeys = Sets.newTreeSet(existingPreferences.keySet());
+        if(usedKeys.isEmpty()) {
+            return "1";
+        }
+
+        Matcher matcher = Pattern.compile("preference(\\d+)").matcher(usedKeys.last());
+        if(matcher.find()) {
+            String latestUsed = matcher.group(1);
+            int next = Integer.parseInt(latestUsed) + 1;
+            return Integer.toString(next);
+        } else {
+            return "1";
+        }
+    }
+
+    private Map<String, String> existingPreferences(Application application) {
+
+        return Maps.filterEntries(application.getPhaseAnswers(("hakutoiveet")), new Predicate<Map.Entry<String, String>>() {
+            @Override
+            public boolean apply(Map.Entry<String, String> input) {
+                return input.getKey().matches("preference\\d+-koulutus-id") && !input.getValue().isEmpty();
+            }
+        });
     }
 }

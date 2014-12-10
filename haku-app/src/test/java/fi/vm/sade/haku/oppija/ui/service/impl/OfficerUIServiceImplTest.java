@@ -132,7 +132,7 @@ public class OfficerUIServiceImplTest {
     public void testUpdateApplication() throws Exception {
         ModelResponse modelResponse = officerUIService.updateApplication(
                 OID, new ApplicationPhase(application.getApplicationSystemId(), ID, new HashMap<String, String>()), new User(User.ANONYMOUS_USER));
-        assertTrue(10 == modelResponse.getModel().size());
+        assertTrue(11 == modelResponse.getModel().size());
     }
 
     private OfficerUIService createUiServiceForGrades(String oid, String asId, boolean transferred) {

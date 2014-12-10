@@ -179,6 +179,17 @@ public class HakuPermissionServiceImpl extends AbstractPermissionService impleme
     }
 
     @Override
+    public List<String> userCanEnterApplications() {
+        List<String> orgs = new ArrayList<String>();
+        for (String org : authenticationService.getOrganisaatioHenkilo()) {
+            if (checkAccess(org, getCreateReadUpdateDeleteRole())) {
+                orgs.add(org);
+            }
+        }
+        return orgs;
+    }
+
+    @Override
     public boolean userCanSearchBySendingSchool() {
         if (checkAccess(getRootOrgOid(), getReadRole(), getReadUpdateRole(), getCreateReadUpdateDeleteRole(),
                 getOpoRole())) {
