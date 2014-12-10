@@ -129,7 +129,7 @@ public final class OppijaConstants {
     public static final String HAKUKAUSI_SYKSY = "kausi_s";
     public static final String HAKUKAUSI_KEVAT = "kausi_k";
 
-    public static final String KOHDEJOUKKO_PERVAKO = "haunkohdejoukko_17";
+    public static final String KOHDEJOUKKO_PERUSOPETUKSEN_JALKEINEN_VALMENTAVA = "haunkohdejoukko_17";
     public static final String KOHDEJOUKKO_KORKEAKOULU = "haunkohdejoukko_12";
     public static final String KOHDEJOUKKO_AMMATILLINEN_JA_LUKIO = "haunkohdejoukko_11";
 

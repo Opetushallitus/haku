@@ -270,7 +270,7 @@ public final class HenkilotiedotPhase {
         }
 
         henkilotiedot.addChild(henkilotiedotTeema);
-        if (formParameters.isPervako()) {
+        if (formParameters.isPerusopetuksenJalkeinenValmentava()) {
             henkilotiedotTeema.addChild(
                     ElementBuilder.buildAll(formParameters,
                             TextQuestion("huoltajannimi")

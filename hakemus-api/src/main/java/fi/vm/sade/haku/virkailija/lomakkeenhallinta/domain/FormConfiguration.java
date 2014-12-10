@@ -28,7 +28,7 @@ public class FormConfiguration {
         YHTEISHAKU_KEVAT_KORKEAKOULU,
         LISAHAKU_SYKSY_KORKEAKOULU,
         LISAHAKU_KEVAT_KORKEAKOULU,
-        PERVAKO
+        PERUSOPETUKSEN_JALKEINEN_VALMENTAVA
     }
 
     // FormConfiguration oid
@@ -69,8 +69,8 @@ public class FormConfiguration {
     }
 
     public static FormConfiguration.FormTemplateType figureOutFormForApplicationSystem(final ApplicationSystem as) {
-        if (OppijaConstants.KOHDEJOUKKO_PERVAKO.equals(as.getKohdejoukkoUri())) {
-            return FormConfiguration.FormTemplateType.PERVAKO;
+        if (OppijaConstants.KOHDEJOUKKO_PERUSOPETUKSEN_JALKEINEN_VALMENTAVA.equals(as.getKohdejoukkoUri())) {
+            return FormConfiguration.FormTemplateType.PERUSOPETUKSEN_JALKEINEN_VALMENTAVA;
         } else if (OppijaConstants.KOHDEJOUKKO_KORKEAKOULU.equals(as.getKohdejoukkoUri())) {
             return FormConfiguration.FormTemplateType.YHTEISHAKU_SYKSY_KORKEAKOULU;
         }
@@ -85,7 +85,7 @@ public class FormConfiguration {
             } else if (as.getHakukausiUri().equals(OppijaConstants.HAKUKAUSI_KEVAT)) {
                 return FormConfiguration.FormTemplateType.YHTEISHAKU_KEVAT;
             } else {
-                return FormConfiguration.FormTemplateType.PERVAKO;
+                return FormConfiguration.FormTemplateType.PERUSOPETUKSEN_JALKEINEN_VALMENTAVA;
             }
         }
     }

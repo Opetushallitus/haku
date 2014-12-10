@@ -34,12 +34,12 @@ public class LisatiedotPhase {
 
     public static Element create(final FormParameters formParameters) {
         Element lisatiedot = Phase("lisatiedot").setEditAllowedByRoles("APP_HAKEMUS_READ_UPDATE", "APP_HAKEMUS_CRUD", "APP_HAKEMUS_OPO").formParams(formParameters).build();
-        if (!formParameters.isPervako() && !formParameters.isHigherEd()) {
+        if (!formParameters.isPerusopetuksenJalkeinenValmentava() && !formParameters.isHigherEd()) {
             lisatiedot.addChild(createTyokokemus(formParameters));
         }
         Element element = lisatiedot
                 .addChild(createLupatiedot(formParameters));
-        if (!(formParameters.isPervako() || formParameters.isHigherEd())) {
+        if (!(formParameters.isPerusopetuksenJalkeinenValmentava() || formParameters.isHigherEd())) {
             lisatiedot
                     .addChild(createUrheilijanLisakysymykset(formParameters));
         }

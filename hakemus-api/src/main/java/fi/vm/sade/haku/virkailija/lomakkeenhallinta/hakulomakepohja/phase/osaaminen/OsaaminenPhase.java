@@ -49,12 +49,12 @@ public class OsaaminenPhase {
     public static Element create(final FormParameters formParameters) {
         Element osaaminen = Phase("osaaminen").setEditAllowedByRoles("APP_HAKEMUS_READ_UPDATE", "APP_HAKEMUS_CRUD", "APP_HAKEMUS_OPO").formParams(formParameters).build();
         if (!formParameters.isHigherEd()) {
-            if (formParameters.isKevaanYhteishaku() || formParameters.isPervako() || formParameters.isKevaanLisahaku()) {
+            if (formParameters.isKevaanYhteishaku() || formParameters.isPerusopetuksenJalkeinenValmentava() || formParameters.isKevaanLisahaku()) {
                 osaaminen.addChild(ArvosanatTheme.createArvosanatThemeKevat(formParameters));
             } else {
                 osaaminen.addChild(ArvosanatTheme.createArvosanatTheme(formParameters));
             }
-            if (!formParameters.isPervako()) {
+            if (!formParameters.isPerusopetuksenJalkeinenValmentava()) {
                 osaaminen.addChild(KielitaitokysymyksetTheme.createKielitaitokysymyksetTheme(formParameters));
             }
         } else {

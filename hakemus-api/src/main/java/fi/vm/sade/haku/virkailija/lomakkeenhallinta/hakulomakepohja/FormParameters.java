@@ -31,7 +31,7 @@ public class FormParameters {
 
     private static final Map<String, String> KOHDEJOUKOT = new HashMap<String, String>() {{
         put(OppijaConstants.KOHDEJOUKKO_KORKEAKOULU, "korkeakoulu");
-        put(OppijaConstants.KOHDEJOUKKO_PERVAKO, "pervako");
+        put(OppijaConstants.KOHDEJOUKKO_PERUSOPETUKSEN_JALKEINEN_VALMENTAVA, "pervako");
     }};
 
     private static final Map<String, String> HAKUKAUDET = new HashMap<String, String>() {{
@@ -86,8 +86,8 @@ public class FormParameters {
         return this.i18nBundle.get(key);
     }
 
-    public boolean isPervako() {
-        return FormConfiguration.FormTemplateType.PERVAKO.equals(this.getFormTemplateType());
+    public boolean isPerusopetuksenJalkeinenValmentava() {
+        return FormConfiguration.FormTemplateType.PERUSOPETUKSEN_JALKEINEN_VALMENTAVA.equals(this.getFormTemplateType());
     }
 
     public boolean isHigherEd() {
