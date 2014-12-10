@@ -188,10 +188,17 @@ public final class KoulutustaustaPhase {
 
         tutkinnontasoRule.addChild(eiKorkeakoulututkintoaBuilder.formParams(formParameters).requiredInline().build());
 
+        List<Option> koulutusalatRaw = koodistoService.getKoulutusalat();
+        List<Option> koulutusalat = new ArrayList<Option>(koulutusalatRaw.size() - 1);
+        for (Option o : koulutusalatRaw) {
+            if (!o.getValue().equals("0")) {
+                koulutusalat.add(o);
+            }
+        }
         // Koulutus- ja opintoala
         OptionQuestion koulutusala = (OptionQuestion) Dropdown("amk_ope_koulutusala")
                 .emptyOption()
-                .addOptions(koodistoService.getKoulutusalat())
+                .addOptions(koulutusalat)
                 .excelColumnLabel("amk_ope_koulutusala.excel")
                 .formParams(formParameters)
                 .required()
