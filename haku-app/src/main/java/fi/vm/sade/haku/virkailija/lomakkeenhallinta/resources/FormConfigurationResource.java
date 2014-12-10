@@ -16,9 +16,12 @@
 
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.resources;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import fi.vm.sade.haku.oppija.common.koulutusinformaatio.ApplicationOptionService;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
 import fi.vm.sade.haku.oppija.hakemus.resource.JSONException;
+import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
 import fi.vm.sade.haku.virkailija.authentication.Person;
@@ -50,6 +53,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -60,6 +64,45 @@ import java.util.Set;
 @Controller
 @Path("/application-system-form-editor/configuration")
 public class FormConfigurationResource {
+
+    public static List<Map<String, Object>> formTemplateTypeTranslations = new ImmutableList.Builder<Map<String, Object>>()
+      .add(new ImmutableMap.Builder<String, Object>()
+        .put("id", FormConfiguration.FormTemplateType.YHTEISHAKU_KEVAT)
+        .put("name", new I18nText(ImmutableMap.of("fi", "Keskiasteen yhteishaun kev\u00E4\u00E4n lomakepohja")))
+        .build())
+      .add(new ImmutableMap.Builder<String, Object>()
+        .put("id", FormConfiguration.FormTemplateType.YHTEISHAKU_SYKSY)
+        .put("name", new I18nText(ImmutableMap.of("fi", "Keskiasteen yhteishaun syksyn lomakepohja")))
+        .build())
+      .add(new ImmutableMap.Builder<String, Object>()
+        .put("id", FormConfiguration.FormTemplateType.LISAHAKU_KEVAT)
+        .put("name", new I18nText(ImmutableMap.of("fi", "Keskiasteen lis\u00E4haun kev\u00E4\u00E4n lomakepohja")))
+        .build())
+      .add(new ImmutableMap.Builder<String, Object>()
+        .put("id", FormConfiguration.FormTemplateType.LISAHAKU_SYKSY)
+        .put("name", new I18nText(ImmutableMap.of("fi", "Keskiasteen lis\u00E4haun syksyn lomakepohja")))
+        .build())
+      .add(new ImmutableMap.Builder<String, Object>()
+        .put("id", FormConfiguration.FormTemplateType.YHTEISHAKU_KEVAT_KORKEAKOULU)
+        .put("name", new I18nText(ImmutableMap.of("fi", "Korkeakoulujen yhteishaun kev\u00E4\u00E4n lomakepohja")))
+        .build())
+      .add(new ImmutableMap.Builder<String, Object>()
+        .put("id", FormConfiguration.FormTemplateType.YHTEISHAKU_SYKSY_KORKEAKOULU)
+        .put("name", new I18nText(ImmutableMap.of("fi", "Korkeakoulujen yhteishaun syksyn lomakepohja")))
+        .build())
+      .add(new ImmutableMap.Builder<String, Object>()
+        .put("id", FormConfiguration.FormTemplateType.LISAHAKU_KEVAT_KORKEAKOULU)
+        .put("name", new I18nText(ImmutableMap.of("fi", "Korkeakoulujen lis\u00E4haun kev\u00E4\u00E4n lomakepohja")))
+        .build())
+      .add(new ImmutableMap.Builder<String, Object>()
+        .put("id", FormConfiguration.FormTemplateType.LISAHAKU_SYKSY_KORKEAKOULU)
+        .put("name", new I18nText(ImmutableMap.of("fi", "Korkeakoulujen lis\u00E4haun syksyn lomakepohja")))
+        .build())
+      .add(new ImmutableMap.Builder<String, Object>()
+        .put("id", FormConfiguration.FormTemplateType.PERUSOPETUKSEN_JALKEINEN_VALMENTAVA)
+        .put("name", new I18nText(ImmutableMap.of("fi", "Perusopetuksen j\u00E4lkeisen valmentavan koulutuksen lomakepohja")))
+        .build())
+      .build();
 
     //NOTE: Supported roles ROLE_APP_HAKULOMAKKEENHALLINTA_CRUD
     public static final String CHARSET_UTF_8 = ";charset=UTF-8";
@@ -91,9 +134,16 @@ public class FormConfigurationResource {
     @Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKULOMAKKEENHALLINTA_CRUD')")
     public void saveFormConfigurationForApplicationSystem(@PathParam("asId") String applicationSystemId,
-                                    FormConfiguration formConfiguration) throws IOException {
+      FormConfiguration formConfiguration) throws IOException {
         LOGGER.debug("Saved form configuration for application system: " + applicationSystemId);
         formConfigurationDAO.save(formConfiguration);
         LOGGER.debug("Saved form configuration for application system: " + applicationSystemId);
+    }
+
+    @GET
+    @Path("templates")
+    @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
+    public List<Map<String,Object>> getTemplates() {
+        return formTemplateTypeTranslations;
     }
 }

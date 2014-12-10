@@ -11,9 +11,7 @@ import org.codehaus.jackson.map.annotate.JsonDeserialize;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_EMPTY)
@@ -22,12 +20,12 @@ public class FormConfiguration {
     public enum FormTemplateType {
         YHTEISHAKU_KEVAT,
         YHTEISHAKU_SYKSY,
-        LISAHAKU_SYKSY,
         LISAHAKU_KEVAT,
-        YHTEISHAKU_SYKSY_KORKEAKOULU,
+        LISAHAKU_SYKSY,
         YHTEISHAKU_KEVAT_KORKEAKOULU,
-        LISAHAKU_SYKSY_KORKEAKOULU,
+        YHTEISHAKU_SYKSY_KORKEAKOULU,
         LISAHAKU_KEVAT_KORKEAKOULU,
+        LISAHAKU_SYKSY_KORKEAKOULU,
         PERUSOPETUKSEN_JALKEINEN_VALMENTAVA
     }
 
