@@ -196,7 +196,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
                                                      ApplicationFilterParameters filterParameters) {
         final DBObject query = buildQuery(queryParameters, filterParameters);
         final DBObject keys = generateKeysDBObject(DBObjectToSearchResultItem.KEYS);
-        final DBObject sortBy = new BasicDBObject(queryParameters.getOrderBy(), queryParameters.getOrderDir());
+        final DBObject sortBy = queryParameters.getOrderBy() == null ? null : new BasicDBObject(queryParameters.getOrderBy(), queryParameters.getOrderDir());
         final SearchResults<ApplicationSearchResultItemDTO> results = searchListing(query, keys, sortBy, queryParameters.getStart(), queryParameters.getRows(), dbObjectToSearchResultItem, true);
         return new ApplicationSearchResultDTO(results.searchHits, results.searchResultsList);
     }
@@ -208,7 +208,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         final DBObject query = buildQuery(queryParameters, filterParameters);
         LOG.debug("findFullApplications, query built: {}", System.currentTimeMillis());
         final DBObject keys = generateKeysDBObject(DBObjectToMapFunction.KEYS);
-        final DBObject sortBy = new BasicDBObject(queryParameters.getOrderBy(),  queryParameters.getOrderDir());
+        final DBObject sortBy = queryParameters.getOrderBy() == null ? null : new BasicDBObject(queryParameters.getOrderBy(),  queryParameters.getOrderDir());
         final SearchResults<Map<String, Object>> searchResults = searchListing(query, keys, sortBy, queryParameters.getStart(), queryParameters.getRows(), dbObjectToMapFunction, false);
         return searchResults.searchResultsList;
     }
