@@ -4,6 +4,9 @@ import com.google.common.collect.ImmutableList;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.SyntheticApplication;
 import fi.vm.sade.haku.oppija.hakemus.resource.ApplicationResource;
+import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
+import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +26,17 @@ import static org.junit.Assert.assertEquals;
 public class SyntheticApplicationIT {
 
     @Autowired
-    ApplicationResource applicationResource;
+    private ApplicationService applicationService;
+
+    @Autowired
+    private ApplicationSystemService applicationSystemService;
+
+    private ApplicationResource applicationResource ;
+
+    @Before
+    public void setUp() {
+        this.applicationResource = new ApplicationResource(this.applicationService, this.applicationSystemService);
+    }
 
     @Test
     public void testInvalidInput() {
