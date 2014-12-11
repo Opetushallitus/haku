@@ -1,13 +1,13 @@
 [
     {
-        "type": "Application",
-        "user": {
-            "type": "User",
-            "userName": "admin"
-        },
+        "type":"Application",
+        "oid": "1.2.246.562.11.00000010003",
+        "state": "ACTIVE",
+        "personOid": "9.8.7.6.5.1234567890",
+        "applicationSystemId": "Yhteishaku",
         "answers": {
             "henkilotiedot": {
-                "Sukupuoli": "Mies",
+                "sukupuoli": "Mies",
                 "kansalaisuus": "fin",
                 "asuinmaa": "fi",
                 "Sukunimi": "Huippu",
@@ -30,20 +30,20 @@
                 "opetuskieli": "Suomi"
             },
             "hakutoiveet": {
-                "preference3-Koulutus-id": "",
-                "preference1-Koulutus-id": "776",
-                "preference5-Koulutus-id": "",
+                "preference3-Koulutus-id-aoIdentifier": "",
+                "preference1-Koulutus-id-aoIdentifier": "776",
+                "preference5-Koulutus-id-aoIdentifier": "",
                 "preference2-Opetuspiste": "",
                 "preference1-Opetuspiste-id": "P1",
                 "preference4-Opetuspiste-id": "",
                 "preference1-Opetuspiste": "Helsingin sosiaali- ja terveysalan oppilaitos, Laakson koulutusyksikkö",
-                "preference4-Koulutus-id": "",
+                "preference4-Koulutus-id-aoIdentifier": "",
                 "preference5-Opetuspiste": "",
                 "preference5-Opetuspiste-id": "",
                 "preference4-Opetuspiste": "",
                 "preference1-Koulutus": "Ensihoidon koulutusohjelma, yo",
                 "preference3-Opetuspiste-id": "",
-                "preference2-Koulutus-id": "",
+                "preference2-Koulutus-id-aoIdentifier": "",
                 "preference2-Opetuspiste-id": "",
                 "preference3-Opetuspiste": ""
             },
@@ -94,123 +94,17 @@
                 "lupa_lupaSms": "lupaSms",
                 "tyokokemuskuukaudet": "5"
             }
-        },
-        "oid": "1.2.246.562.11.00000010003",
-        "personOid": "9.8.7.6.5.1234567890",
-        "state": "ACTIVE",
-        "applicationSystemId": "Yhteishaku",
-        "phaseId": "esikatselu"
+        }
     },
     {
-        "type": "Application",
-        "user": {
-            "type": "User",
-            "userName": "admin"
-        },
-        "answers": {
-            "henkilotiedot": {
-                "Sukupuoli": "Mies",
-                "kansalaisuus": "fi",
-                "asuinmaa": "fi",
-                "Sukunimi": "Huippu",
-                "Henkilotunnus": "pjNZ8of2CryfXkLnJgWM9eYYSWv/VAx1XA2EQgRGP1k=",
-                "matkapuhelinnumero": "0304484857",
-                "äidinkieli": "Suomi",
-                "Postinumero": "00100",
-                "lahiosoite": "koulukuja 3",
-                "Sähköposti": "mail.address@happi.de",
-                "Kutsumanimi": "Hessu",
-                "Etunimet": "Hessu Huima",
-                "kotikunta": "Jalasjärvi",
-                "syntymaaika": "1998-09-05",
-                "Henkilotunnus_digest": "6c7a90ff7012fc8048c75b9c624582c34f0620d80b3bc3af379c322a76137ca0"
-            },
-            "koulutustausta": {
-                "millatutkinnolla": "tutkinto1",
-                "peruskoulu2012": "Kyllä",
-                "osallistunut": "Ei",
-                "opetuskieli": "Suomi"
-            },
-            "hakutoiveet": {
-                "preference3-Koulutus-id": "",
-                "preference1-Koulutus-id": "776",
-                "preference5-Koulutus-id": "",
-                "preference2-Opetuspiste": "Some random school",
-                "preference1-Opetuspiste-id": "P1",
-                "preference4-Opetuspiste-id": "",
-                "preference1-Opetuspiste": "Helsingin sosiaali- ja terveysalan oppilaitos, Laakson koulutusyksikkö",
-                "preference4-Koulutus-id": "",
-                "preference5-Opetuspiste": "",
-                "preference5-Opetuspiste-id": "",
-                "preference4-Opetuspiste": "",
-                "preference1-Koulutus": "Ensihoidon koulutusohjelma, yo",
-                "preference3-Opetuspiste-id": "",
-                "preference2-Koulutus-id": "873",
-                "preference2-Opetuspiste-id": "P2",
-                "preference3-Opetuspiste": ""
-            },
-            "arvosanat": {
-                "optional-subject_yhteiskuntaoppi": "",
-                "lang_a1": "eng",
-                "common-lang_a1": "6",
-                "common-subject_matematiikka": "6",
-                "optional-subject_uskonto": "",
-                "optional-subject_kemia": "",
-                "common-subject_maantieto": "7",
-                "optional-subject_kotitalous": "",
-                "optional-subject_kuvataide": "",
-                "optional-subject_terveystieto": "",
-                "optional-subject_maantieto": "-1",
-                "common-subject_kemia": "",
-                "optional-subject_finnish": "-1",
-                "custom-language_0": "fra",
-                "common-subject_terveystieto": "",
-                "custom-optionalgrade_0": "-1",
-                "common-lang_b1": "8",
-                "common-subject_historia": "",
-                "optional-lang_b1": "-1",
-                "lang_b1": "swe",
-                "custom-scope_0": "b2",
-                "optional-subject_matematiikka": "-1",
-                "optional-subject_fysiikka": "-1",
-                "common-subject_kasityo": "",
-                "common-subject_uskonto": "",
-                "optional-subject_kasityo": "",
-                "common-subject_liikunta": "",
-                "common-subject_kuvataide": "",
-                "optional-subject_musiikki": "",
-                "custom-commongrade_0": "6",
-                "common-subject_yhteiskuntaoppi": "",
-                "common-subject_kotitalous": "",
-                "optional-lang_a1": "-1",
-                "optional-subject_biologia": "-1",
-                "common-subject_finnish": "9",
-                "optional-subject_historia": "",
-                "optional-subject_liikunta": "",
-                "common-subject_biologia": "7",
-                "common-subject_fysiikka": "8",
-                "common-subject_musiikki": ""
-            },
-            "lisatiedot": {
-                "asiointikieli": "suomi",
-                "lupa_lupaSms": "lupaSms",
-                "tyokokemuskuukaudet": "5"
-            }
-        },
+        "type":"Application",
         "oid": "1.2.246.562.11.00000020006",
         "state": "ACTIVE",
+        "personOid": "9.8.7.6.5.1234567891",
         "applicationSystemId": "Yhteishaku",
-        "phaseId": "esikatselu"
-    },
-    {
-        "type": "Application",
-        "user": {
-            "type": "User",
-            "userName": "admin"
-        },
         "answers": {
             "henkilotiedot": {
-                "Sukupuoli": "Mies",
+                "sukupuoli": "Mies",
                 "kansalaisuus": "fi",
                 "asuinmaa": "fi",
                 "Sukunimi": "Huippu",
@@ -233,20 +127,20 @@
                 "opetuskieli": "Suomi"
             },
             "hakutoiveet": {
-                "preference3-Koulutus-id": "",
-                "preference1-Koulutus-id": "882",
-                "preference5-Koulutus-id": "",
+                "preference3-Koulutus-id-aoIdentifier": "",
+                "preference1-Koulutus-id-aoIdentifier": "776",
+                "preference5-Koulutus-id-aoIdentifier": "",
                 "preference2-Opetuspiste": "Some random school",
                 "preference1-Opetuspiste-id": "P1",
                 "preference4-Opetuspiste-id": "",
                 "preference1-Opetuspiste": "Helsingin sosiaali- ja terveysalan oppilaitos, Laakson koulutusyksikkö",
-                "preference4-Koulutus-id": "",
+                "preference4-Koulutus-id-aoIdentifier": "",
                 "preference5-Opetuspiste": "",
                 "preference5-Opetuspiste-id": "",
                 "preference4-Opetuspiste": "",
                 "preference1-Koulutus": "Ensihoidon koulutusohjelma, yo",
                 "preference3-Opetuspiste-id": "",
-                "preference2-Koulutus-id": "873",
+                "preference2-Koulutus-id-aoIdentifier": "873",
                 "preference2-Opetuspiste-id": "P2",
                 "preference3-Opetuspiste": ""
             },
@@ -297,10 +191,103 @@
                 "lupa_lupaSms": "lupaSms",
                 "tyokokemuskuukaudet": "5"
             }
-        },
+        }
+    },
+    {
+        "type":"Application",
         "oid": "1.2.246.562.11.00000030009",
         "state": "PASSIVE",
+        "personOid": "9.8.7.6.5.1234567892",
         "applicationSystemId": "Yhteishaku",
-        "phaseId": "esikatselu"
+        "answers": {
+            "henkilotiedot": {
+                "Sukupuoli": "Mies",
+                "kansalaisuus": "fi",
+                "asuinmaa": "fi",
+                "Sukunimi": "Huippu",
+                "Henkilotunnus": "pjNZ8of2CryfXkLnJgWM9eYYSWv/VAx1XA2EQgRGP1k=",
+                "matkapuhelinnumero": "0304484857",
+                "äidinkieli": "Suomi",
+                "Postinumero": "00100",
+                "lahiosoite": "koulukuja 3",
+                "Sähköposti": "mail.address@happi.de",
+                "Kutsumanimi": "Hessu",
+                "Etunimet": "Hessu Huima",
+                "kotikunta": "Jalasjärvi",
+                "syntymaaika": "1998-09-05",
+                "Henkilotunnus_digest": "6c7a90ff7012fc8048c75b9c624582c34f0620d80b3bc3af379c322a76137ca0"
+            },
+            "koulutustausta": {
+                "millatutkinnolla": "tutkinto1",
+                "peruskoulu2012": "Kyllä",
+                "osallistunut": "Ei",
+                "opetuskieli": "Suomi"
+            },
+            "hakutoiveet": {
+                "preference3-Koulutus-id-aoIdentifier": "",
+                "preference1-Koulutus-id-aoIdentifier": "882",
+                "preference5-Koulutus-id-aoIdentifier": "",
+                "preference2-Opetuspiste": "Some random school",
+                "preference1-Opetuspiste-id": "P1",
+                "preference4-Opetuspiste-id": "",
+                "preference1-Opetuspiste": "Helsingin sosiaali- ja terveysalan oppilaitos, Laakson koulutusyksikkö",
+                "preference4-Koulutus-id-aoIdentifier": "",
+                "preference5-Opetuspiste": "",
+                "preference5-Opetuspiste-id": "",
+                "preference4-Opetuspiste": "",
+                "preference1-Koulutus": "Ensihoidon koulutusohjelma, yo",
+                "preference3-Opetuspiste-id": "",
+                "preference2-Koulutus-id-aoIdentifier": "873",
+                "preference2-Opetuspiste-id": "P2",
+                "preference3-Opetuspiste": ""
+            },
+            "arvosanat": {
+                "optional-subject_yhteiskuntaoppi": "",
+                "lang_a1": "eng",
+                "common-lang_a1": "6",
+                "common-subject_matematiikka": "6",
+                "optional-subject_uskonto": "",
+                "optional-subject_kemia": "",
+                "common-subject_maantieto": "7",
+                "optional-subject_kotitalous": "",
+                "optional-subject_kuvataide": "",
+                "optional-subject_terveystieto": "",
+                "optional-subject_maantieto": "-1",
+                "common-subject_kemia": "",
+                "optional-subject_finnish": "-1",
+                "custom-language_0": "fra",
+                "common-subject_terveystieto": "",
+                "custom-optionalgrade_0": "-1",
+                "common-lang_b1": "8",
+                "common-subject_historia": "",
+                "optional-lang_b1": "-1",
+                "lang_b1": "swe",
+                "custom-scope_0": "b2",
+                "optional-subject_matematiikka": "-1",
+                "optional-subject_fysiikka": "-1",
+                "common-subject_kasityo": "",
+                "common-subject_uskonto": "",
+                "optional-subject_kasityo": "",
+                "common-subject_liikunta": "",
+                "common-subject_kuvataide": "",
+                "optional-subject_musiikki": "",
+                "custom-commongrade_0": "6",
+                "common-subject_yhteiskuntaoppi": "",
+                "common-subject_kotitalous": "",
+                "optional-lang_a1": "-1",
+                "optional-subject_biologia": "-1",
+                "common-subject_finnish": "9",
+                "optional-subject_historia": "",
+                "optional-subject_liikunta": "",
+                "common-subject_biologia": "7",
+                "common-subject_fysiikka": "8",
+                "common-subject_musiikki": ""
+            },
+            "lisatiedot": {
+                "asiointikieli": "suomi",
+                "lupa_lupaSms": "lupaSms",
+                "tyokokemuskuukaudet": "5"
+            }
+        }
     }
 ]
