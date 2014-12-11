@@ -86,7 +86,8 @@ public class LisatiedotPhase {
                 && !formParameters.isAmmattillinenOpettajaKoulutus()) {
             kieliRadioBuilder.addOption("ruotsi", formParameters);
         }
-        if (formParameters.isHigherEd()) {
+        if (formParameters.isHigherEd()
+                && !formParameters.isAmmattillinenEritysopettajaTaiOppilaanohjaajaKoulutus()) {
             kieliRadioBuilder.addOption("englanti", formParameters);
         }
         

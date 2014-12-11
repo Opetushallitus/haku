@@ -123,6 +123,7 @@ public class NavigationIT extends DummyModelBaseItTest {
         nextPhase(OppijaConstants.PHASE_MISC);
         nextPhase(OppijaConstants.PHASE_PREVIEW);
         nextPhase(OppijaConstants.PHASE_PREVIEW);
+        screenshot("navigation");
         findByIdAndClick("submit_confirm");
 
         elementsPresent("//li/span/span[contains(text(),'1')]");

@@ -106,26 +106,22 @@ public final class KoulutustaustaPhase {
                 .addOption(ElementUtil.createI18NText("amk_ope_tutkinnontaso.ammatillinen"), "ammatillinen")
                 .addOption(ElementUtil.createI18NText("amk_ope_tutkinnontaso.ammatti"), "ammatti")
                 .addOption(ElementUtil.createI18NText("amk_ope_tutkinnontaso.muu"), "muu")
-                .addOption(ElementUtil.createI18NText("amk_ope_tutkinnontaso.ulk"), "ulk")
                 .formParams(formParameters)
                 .requiredInline()
                 .build();
         elements.add(tutkinnonTaso);
+
+        Element ulkomainen = Checkbox("amk_ope_ulkomainen_tutkinto")
+                .labelKey("amk_ope_ulkomainen_tutkinto")
+                .inline()
+                .formParams(formParameters).build();
+        elements.add(ulkomainen);
 
         // Ei korkeakoulututkintoa...
         Element tutkinnontasoRule = createVarEqualsToValueRule("amk_ope_tutkinnontaso",
                 "opisto", "ammatillinen", "ammatti", "muu");
         elements.add(tutkinnontasoRule);
         OptionQuestionBuilder eiKorkeakoulututkintoaBuilder = Radio("ei_korkeakoulututkintoa");
-
-        Element ulkomainenTutkintoRule = createVarEqualsToValueRule("amk_ope_tutkinnontaso",
-                "ulk");
-        ulkomainenTutkintoRule.addChild(Info()
-                .labelKey("amk_ope_tutkinnontaso.ulk.info")
-                .formParams(formParameters)
-                .inline()
-                .build());
-        elements.add(ulkomainenTutkintoRule);
 
         // ...opettajana/kouluttajana tutkintoon johtavassa ammatillisessa koulutuksessa
         eiKorkeakoulututkintoaBuilder

@@ -11,6 +11,7 @@ import java.util.*;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.OPTION_ID_POSTFIX;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.PREFERENCE_PREFIX;
 import static org.apache.commons.lang.StringUtils.isNotEmpty;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 
 public final class ApplicationUtil {
@@ -76,27 +77,44 @@ public final class ApplicationUtil {
         return attachments;
     }
 
-    public static Map<String, List<String>> getAmkOpeAttachments(Application application) {
+    public static Map<String, List<String>> getAmkOpeAttachments(final Application application) {
         Map<String, List<String>> attachments = new LinkedHashMap<String, List<String>>();
+        List<String> aoIds = new ArrayList<String> () {{ add(getFirstAoId(application)); }};
+
         Map<String, String> koulutustaustaAnswers = application.getPhaseAnswers(OppijaConstants.PHASE_EDUCATION);
+
         String tutkintotaso = koulutustaustaAnswers.get("amk_ope_tutkinnontaso");
+        if (isNotBlank(tutkintotaso)) {
+            // Liite 1. Tutkinto, jolla haet: kopio tutkintotodistuksestasi ja tarvittaessa kopio rinnastamispäätöksestä
+            attachments.put("tutkintotodistus", aoIds);
+        }
+
         List<String> eiKorkeakoulututkinto = new ArrayList<String>() {{
-            add("tohtori"); add("ylempi"); add("amk"); add("alempi");
             add("opisto"); add("ammatillinen"); add("ammatti"); add("muu");
         }};
+
         if (eiKorkeakoulututkinto.contains(tutkintotaso)) {
-            attachments.put("ei_korkeakoulututkintoa", getPreferenceAoIds(application));
-            if ("opettajana_ammatillisessa_tutkinto".equals(koulutustaustaAnswers.get("ei_korkeakoulututkintoa"))) {
-                attachments.put("opettajana_ammatillisessa_tutkinto", getPreferenceAoIds(application));
-            } else if ("opettajana_ammatillisessa".equals(koulutustaustaAnswers.get("ei_korkeakoulututkintoa"))) {
-                attachments.put("opettajana_ammatillisessa", getPreferenceAoIds(application));
+            if ("opettajana_ammatillisessa_tutkinto".equals(koulutustaustaAnswers.get("ei_korkeakoulututkintoa"))
+                    || "opettajana_ammatillisessa".equals(koulutustaustaAnswers.get("ei_korkeakoulututkintoa"))) {
+                // Liite 2. Oppilaitoksen/työnantajan lausunto, https://opintopolku.fi/wp/wp-content/uploads/2014/12/2015_Oppilaitoksen_lausunto.pdf (laita linkki aukeamaan uuteen ikkunaan)
+                attachments.put("tyonantajan_lausunto", aoIds);
             }
-        } else if ("ulk".equals(tutkintotaso)) {
-            attachments.put("ulkomainen", getPreferenceAoIds(application));
         }
+
+        String pedagogisetOpinnot = koulutustaustaAnswers.get("pedagogiset_opinnot");
+        if (isNotBlank(pedagogisetOpinnot) && pedagogisetOpinnot.equals("true")) {
+            // Liite 3. Opettajan pedagogiset opinnot: kopio todistuksestasi
+            attachments.put("pedagogiset_opinnot", aoIds);
+        }
+
         return attachments;
     }
 
+    private static String getFirstAoId(Application application) {
+        Map<String, String> preferenceAnswers = application.getPhaseAnswers(OppijaConstants.PHASE_APPLICATION_OPTIONS);
+        String aoKey = String.format(OppijaConstants.PREFERENCE_ID, 1);
+        return preferenceAnswers.get(aoKey);
+    }
 
 
     private static boolean yoNeeded(Application application) {
