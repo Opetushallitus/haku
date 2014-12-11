@@ -5,9 +5,11 @@ import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
+import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.builder.*;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
+import fi.vm.sade.haku.oppija.lomake.domain.rules.AddElementRule;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.*;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
@@ -78,14 +80,14 @@ public final class KoulutustaustaPhase {
         pohjakoulutusGrp.addChild(
                 buildYoSuomalainen(formParameters, laajuusYksikot),
                 buildYoKansainvalinenSuomessa(formParameters),
-                buildAmmatillinen(formParameters, laajuusYksikot),
-                buildAmmattitutkinto(formParameters),
-                buildKorkeakoulututkinto(formParameters, tutkintotasot),
+                buildAmmatillinen(formParameters, laajuusYksikot, 5),
+                buildAmmattitutkinto(formParameters, 5),
+                buildKorkeakoulututkinto(formParameters, tutkintotasot, 5),
                 buildYoUlkomainen(formParameters, maat),
-                buildKorkeakoulututkintoUlkomaa(formParameters, tutkintotasot, maat),
-                buildUlkomainenTutkinto(formParameters),
-                buildAvoin(formParameters),
-                buildMuu(formParameters));
+                buildKorkeakoulututkintoUlkomaa(formParameters, tutkintotasot, maat, 5),
+                buildUlkomainenTutkinto(formParameters, 5),
+                buildAvoin(formParameters, 5),
+                buildMuu(formParameters, 5));
         elements.add(pohjakoulutusGrp);
 
         Element suoritusoikeusTaiAiempitutkinto = Radio("suoritusoikeus_tai_aiempi_tutkinto")
@@ -100,145 +102,266 @@ public final class KoulutustaustaPhase {
         return elements.toArray(new Element[elements.size()]);
     }
 
-    private static Element buildMuu(FormParameters formParameters) {
+    private static Element buildMuu(FormParameters formParameters, int count) {
         Element muu = Checkbox("pohjakoulutus_muu").formParams(formParameters).build();
         Element muuMore = createVarEqualsToValueRule(muu.getId(), "true");
-        Element vuosi = TextQuestion("pohjakoulutus_muu_vuosi")
-                .excelColumnLabel("pohjakoulutus_muu_vuosi.excel")
-                .requiredInline()
-                .validator(ElementUtil.createYearValidator(formParameters.getApplicationSystem().getHakukausiVuosi() + 1, 1900))
-                .formParams(formParameters).build();
-        Element kuvaus = TextArea("pohjakoulutus_muu_kuvaus").formParams(formParameters).requiredInline().build();
-        muuMore.addChild(vuosi, kuvaus);
         muu.addChild(muuMore);
+
+        Element prevElement = buildMuuElement(formParameters, 1, muuMore);
+
+        for (int i = 2; i <= count; i++) {
+            I18nText i18nText = formParameters.getI18nText("pohjakoulutus.lisaa");
+            AddElementRule extraMuuTutkintoRule = new AddElementRule("addMuuTutkintoRule" + i, prevElement.getId(), i18nText);
+            prevElement.addChild(extraMuuTutkintoRule);
+            prevElement = buildMuuElement(formParameters, i, extraMuuTutkintoRule);
+        }
+
         return muu;
     }
 
-    private static Element buildAvoin(FormParameters formParameters) {
-        Element avoin = Checkbox("pohjakoulutus_avoin").formParams(formParameters).build();
-        Element avoinMore = createVarEqualsToValueRule(avoin.getId(), "true");
-        Element ala = TextQuestion("pohjakoulutus_avoin_ala").requiredInline().formParams(formParameters).build();
-        Element kokonaisuus = TextQuestion("pohjakoulutus_avoin_kokonaisuus").requiredInline().formParams(formParameters).build();
-        Element laajuus = TextQuestion("pohjakoulutus_avoin_laajuus").requiredInline().formParams(formParameters).build();
-        // TODO: korkeakouluvalinnan dropdowniin 'muu', laukaisee tekstikysymyksen, johon koulu
-        Element korkeakoulu = TextQuestion("pohjakoulutus_avoin_korkeakoulu").labelKey("pohjakoulutus.korkeakoulu")
-                .requiredInline().formParams(formParameters).build();
-        avoinMore.addChild(ala, kokonaisuus, laajuus, korkeakoulu);
-        avoin.addChild(avoinMore);
-        return avoin;
-    }
+    private static Element buildMuuElement(FormParameters formParameters, int index, Element parent) {
+        String postfix = index == 1 ? "" : String.valueOf(index);
 
-    private static Element buildUlkomainenTutkinto(FormParameters formParameters) {
-        Element ulk = Checkbox("pohjakoulutus_ulk").formParams(formParameters).build();
-        Element ulkMore = createVarEqualsToValueRule(ulk.getId(), "true");
-        Element vuosi = TextQuestion("pohjakoulutus_ulk_vuosi")
-                .excelColumnLabel("pohjakoulutus_ulk_vuosi.excel")
+        Element vuosi = TextQuestion("pohjakoulutus_muu_vuosi" + postfix)
+                .excelColumnLabel("pohjakoulutus_muu_vuosi.excel")
+                .labelKey("pohjakoulutus_muu_vuosi")
                 .requiredInline()
                 .validator(ElementUtil.createYearValidator(formParameters.getApplicationSystem().getHakukausiVuosi() + 1, 1900))
                 .formParams(formParameters).build();
-        Element nimike = TextQuestion("pohjakoulutus_ulk_nimike").labelKey("pohjakoulutus.tutkintonimike")
-                .formParams(formParameters).requiredInline().build();
-        Element oppilaitos = TextQuestion("pohjakoulutus_ulk_oppilaitos").labelKey("pohjakoulutus.oppilaitos")
-                .formParams(formParameters).requiredInline().build();
-        ulkMore.addChild(vuosi, nimike, oppilaitos);
+        Element kuvaus = TextArea("pohjakoulutus_muu_kuvaus" + postfix)
+                .labelKey("pohjakoulutus_muu_kuvaus").formParams(formParameters).requiredInline().build();
+        parent.addChild(vuosi, kuvaus);
+        return kuvaus;
+    }
+
+    private static Element buildAvoin(FormParameters formParameters, int count) {
+        Element avoin = Checkbox("pohjakoulutus_avoin").formParams(formParameters).build();
+        Element avoinMore = createVarEqualsToValueRule(avoin.getId(), "true");
+        avoin.addChild(avoinMore);
+
+        Element prevElement = buildAvoinElement(formParameters, 1, avoinMore);
+
+        for (int i = 2; i <= count; i++) {
+            I18nText i18nText = formParameters.getI18nText("pohjakoulutus.lisaa");
+            AddElementRule extraAvoinTutkintoRule = new AddElementRule("addAvoinTutkintoRule" + i, prevElement.getId(), i18nText);
+            prevElement.addChild(extraAvoinTutkintoRule);
+            prevElement = buildAvoinElement(formParameters, i, extraAvoinTutkintoRule);
+        }
+
+        return avoin;
+    }
+
+    private static Element buildAvoinElement(FormParameters formParameters, int index, Element parent) {
+        String postfix = index == 1 ? "" : String.valueOf(index);
+
+        Element ala = TextQuestion("pohjakoulutus_avoin_ala" + postfix)
+                .labelKey("pohjakoulutus_avoin_ala").requiredInline().formParams(formParameters).build();
+        Element kokonaisuus = TextQuestion("pohjakoulutus_avoin_kokonaisuus" + postfix)
+                .labelKey("pohjakoulutus_avoin_kokonaisuus").requiredInline().formParams(formParameters).build();
+        Element laajuus = TextQuestion("pohjakoulutus_avoin_laajuus" + postfix)
+                .labelKey("pohjakoulutus_avoin_laajuus").requiredInline().formParams(formParameters).build();
+        Element korkeakoulu = TextQuestion("pohjakoulutus_avoin_korkeakoulu" + postfix).labelKey("pohjakoulutus.korkeakoulu")
+                .requiredInline().formParams(formParameters).build();
+        parent.addChild(ala, kokonaisuus, laajuus, korkeakoulu);
+        return korkeakoulu;
+    }
+
+    private static Element buildUlkomainenTutkinto(FormParameters formParameters, int count) {
+        Element ulk = Checkbox("pohjakoulutus_ulk").formParams(formParameters).build();
+        Element ulkMore = createVarEqualsToValueRule(ulk.getId(), "true");
         ulk.addChild(ulkMore);
+
+        Element prevElement = buildUlkomainenTutkintoElement(formParameters, 1, ulkMore);
+
+        for (int i = 2; i <= count; i++) {
+            I18nText i18nText = formParameters.getI18nText("pohjakoulutus.lisaa");
+            AddElementRule extraUlkTutkintoRule = new AddElementRule("addUlkTutkintoRule" + i, prevElement.getId(), i18nText);
+            prevElement.addChild(extraUlkTutkintoRule);
+            prevElement = buildUlkomainenTutkintoElement(formParameters, i, extraUlkTutkintoRule);
+        }
+
         return ulk;
     }
 
-    private static Element buildKorkeakoulututkinto(FormParameters formParameters, List<Option> tutkintotasot) {
+    private static Element buildUlkomainenTutkintoElement(FormParameters formParameters, int index, Element parent) {
+        String postfix = index == 1 ? "" : String.valueOf(index);
+
+        Element vuosi = TextQuestion("pohjakoulutus_ulk_vuosi" + postfix)
+                .excelColumnLabel("pohjakoulutus_ulk_vuosi.excel")
+                .requiredInline()
+                .labelKey("pohjakoulutus_ulk_vuosi")
+                .validator(ElementUtil.createYearValidator(formParameters.getApplicationSystem().getHakukausiVuosi() + 1, 1900))
+                .formParams(formParameters).build();
+        Element nimike = TextQuestion("pohjakoulutus_ulk_nimike" + postfix).labelKey("pohjakoulutus.tutkintonimike")
+                .formParams(formParameters).requiredInline().build();
+        Element oppilaitos = TextQuestion("pohjakoulutus_ulk_oppilaitos" + postfix).labelKey("pohjakoulutus.oppilaitos")
+                .formParams(formParameters).requiredInline().build();
+        parent.addChild(vuosi, nimike, oppilaitos);
+
+        return oppilaitos;
+    }
+
+    private static Element buildKorkeakoulututkinto(FormParameters formParameters, List<Option> tutkintotasot, int count) {
         Element kk = Checkbox("pohjakoulutus_kk").formParams(formParameters).build();
         Element kkMore = createVarEqualsToValueRule(kk.getId(), "true");
-        Element taso = Dropdown("pohjakoulutus_kk_taso")
-                .addOptions(tutkintotasot).requiredInline().labelKey("pohjakoulutus.tutkintotaso").formParams(formParameters).build();
-
-        Element pvm = Date("pohjakoulutus_kk_pvm")
-                .requiredInline()
-                .formParams(formParameters).build();
-
-        Element nimike = TextQuestion("pohjakoulutus_kk_nimike").labelKey("pohjakoulutus.tutkintonimike")
-                .formParams(formParameters).requiredInline().build();
-        Element oppilaitos = TextQuestion("pohjakoulutus_kk_oppilaitos")
-                .requiredInline().formParams(formParameters).build();
-
-        kkMore.addChild(taso, pvm, nimike, oppilaitos);
         kk.addChild(kkMore);
+
+        Element prevElement = buildKorkeakoulututkintoElement(formParameters, tutkintotasot, 1, kkMore);
+
+        for (int i = 2; i <= count; i++) {
+            I18nText i18nText = formParameters.getI18nText("pohjakoulutus.lisaa");
+            AddElementRule extraKKTutkintoRule = new AddElementRule("addKKtutkintoRule" + i, prevElement.getId(), i18nText);
+            prevElement.addChild(extraKKTutkintoRule);
+            prevElement = buildKorkeakoulututkintoElement(formParameters, tutkintotasot, i, extraKKTutkintoRule);
+        }
 
         return kk;
     }
 
-    private static Element buildKorkeakoulututkintoUlkomaa(FormParameters formParameters, List<Option> tutkintotasot,
-                                                           List<Option> maat) {
-        Element kk_ulkomainen = Checkbox("pohjakoulutus_kk_ulk").formParams(formParameters).build();
-        Element kkUlkomainenMore = createVarEqualsToValueRule(kk_ulkomainen.getId(), "true");
-        Element taso = Dropdown("pohjakoulutus_kk_ulk_taso")
+    private static Element buildKorkeakoulututkintoElement(FormParameters formParameters, List<Option> tutkintotasot,
+                                                           int index, Element parent) {
+        String postfix = index == 1 ? "" : String.valueOf(index);
+        Element taso = Dropdown("pohjakoulutus_kk_taso" + postfix)
                 .addOptions(tutkintotasot).requiredInline().labelKey("pohjakoulutus.tutkintotaso").formParams(formParameters).build();
 
-        Element pvm = Date("pohjakoulutus_kk_ulk_pvm")
+        Element pvm = Date("pohjakoulutus_kk_pvm" + postfix)
                 .requiredInline()
                 .labelKey("pohjakoulutus_kk_pvm")
                 .formParams(formParameters).build();
 
-        Element nimike = TextQuestion("pohjakoulutus_kk_ulk_nimike").labelKey("pohjakoulutus.tutkintonimike")
+        Element nimike = TextQuestion("pohjakoulutus_kk_nimike" + postfix).labelKey("pohjakoulutus.tutkintonimike")
                 .formParams(formParameters).requiredInline().build();
-        Element oppilaitos = TextQuestion("pohjakoulutus_kk_ulk_oppilaitos")
+        Element oppilaitos = TextQuestion("pohjakoulutus_kk_oppilaitos" + postfix)
                 .labelKey("pohjakoulutus_kk_oppilaitos")
                 .requiredInline().formParams(formParameters).build();
 
-        Element kk_ulkomainen_missa = Dropdown("pohjakoulutus_kk_ulk_maa")
-                .addOptions(maat)
-                .requiredInline()
-                .formParams(formParameters).build();
+        parent.addChild(taso, pvm, nimike, oppilaitos);
 
-        kkUlkomainenMore.addChild(taso, pvm, nimike, oppilaitos, kk_ulkomainen_missa);
+        return oppilaitos;
+    }
+
+    private static Element buildKorkeakoulututkintoUlkomaa(FormParameters formParameters, List<Option> tutkintotasot,
+                                                           List<Option> maat, int count) {
+        Element kk_ulkomainen = Checkbox("pohjakoulutus_kk_ulk").formParams(formParameters).build();
+        Element kkUlkomainenMore = createVarEqualsToValueRule(kk_ulkomainen.getId(), "true");
+
         kk_ulkomainen.addChild(kkUlkomainenMore);
+
+        Element prevElement = buildKorkeakoulututkintoUlkomaaElement(formParameters, tutkintotasot, maat, 1, kkUlkomainenMore);
+
+        for (int i = 2; i <= count; i++) {
+            I18nText i18nText = formParameters.getI18nText("pohjakoulutus.lisaa");
+            AddElementRule extraKKUlkomaaRule = new AddElementRule("addKKUlkomaaRule" + i, prevElement.getId(), i18nText);
+            prevElement.addChild(extraKKUlkomaaRule);
+            prevElement = buildKorkeakoulututkintoUlkomaaElement(formParameters, tutkintotasot, maat, i, extraKKUlkomaaRule);
+        }
 
         return kk_ulkomainen;
     }
 
-    private static Element buildAmmattitutkinto(FormParameters formParameters) {
+    private static Element buildKorkeakoulututkintoUlkomaaElement(FormParameters formParameters, List<Option> tutkintotasot,
+                                                           List<Option> maat, int index, Element parent) {
+        String postfix = index == 1 ? "" : String.valueOf(index);
+        Element taso = Dropdown("pohjakoulutus_kk_ulk_taso" + postfix)
+                .addOptions(tutkintotasot).requiredInline().labelKey("pohjakoulutus.tutkintotaso").formParams(formParameters).build();
+
+        Element pvm = Date("pohjakoulutus_kk_ulk_pvm" + postfix)
+                .requiredInline()
+                .labelKey("pohjakoulutus_kk_pvm")
+                .formParams(formParameters).build();
+
+        Element nimike = TextQuestion("pohjakoulutus_kk_ulk_nimike" + postfix).labelKey("pohjakoulutus.tutkintonimike")
+                .formParams(formParameters).requiredInline().build();
+        Element oppilaitos = TextQuestion("pohjakoulutus_kk_ulk_oppilaitos" + postfix)
+                .labelKey("pohjakoulutus_kk_oppilaitos")
+                .requiredInline().formParams(formParameters).build();
+
+        Element kk_ulkomainen_missa = Dropdown("pohjakoulutus_kk_ulk_maa" + postfix)
+                .addOptions(maat)
+                .requiredInline()
+                .labelKey("pohjakoulutus_kk_ulk_maa")
+                .formParams(formParameters).build();
+
+        parent.addChild(taso, pvm, nimike, oppilaitos, kk_ulkomainen_missa);
+        return kk_ulkomainen_missa;
+    }
+
+    private static Element buildAmmattitutkinto(FormParameters formParameters, int count) {
         Element amt = Checkbox("pohjakoulutus_amt").formParams(formParameters).build();
         Element amtMore = createVarEqualsToValueRule(amt.getId(), "true");
-        Element vuosi = TextQuestion("pohjakoulutus_amt_vuosi")
-                .excelColumnLabel("pohjakoulutus_amt_vuosi.excel")
-                .validator(ElementUtil.createYearValidator(formParameters.getApplicationSystem().getHakukausiVuosi() + 1, 1900))
-                .requiredInline().formParams(formParameters).build();
-        Element nimike = TextQuestion("pohjakoulutus_amt_nimike").labelKey("pohjakoulutus.tutkintonimike")
-                .formParams(formParameters).requiredInline().build();
-        Element oppilaitos = TextQuestion("pohjakoulutus_amt_oppilaitos").labelKey("pohjakoulutus.oppilaitos")
-                .requiredInline().formParams(formParameters).build();
-        Element nayttotutkinto = Checkbox("pohjakoulutus_amt_nayttotutkintona").inline()
-                .formParams(formParameters).build();
-        amtMore.addChild(vuosi, nimike, oppilaitos, nayttotutkinto);
         amt.addChild(amtMore);
+
+        Element prevElement = buildAmmattitutkintoElement(formParameters, 1, amtMore);
+
+        for (int i = 2; i <= count; i++) {
+            I18nText i18nText = formParameters.getI18nText("pohjakoulutus.lisaa");
+            AddElementRule extraAmmattitutkintoRule = new AddElementRule("addAmmattitutkintoRule" + i, prevElement.getId(), i18nText);
+            prevElement.addChild(extraAmmattitutkintoRule);
+            prevElement = buildAmmattitutkintoElement(formParameters, i, extraAmmattitutkintoRule);
+        }
+
         return amt;
     }
 
-    private static Element buildAmmatillinen(FormParameters formParameters, List<Option> laajuusYksikot) {
+    private static Element buildAmmattitutkintoElement(FormParameters formParameters, int index, Element parent) {
+        String postfix = index == 1 ? "" : String.valueOf(index);
+        Element vuosi = TextQuestion("pohjakoulutus_amt_vuosi" + postfix)
+                .excelColumnLabel("pohjakoulutus_amt_vuosi.excel")
+                .labelKey("pohjakoulutus_amt_vuosi")
+                .validator(ElementUtil.createYearValidator(formParameters.getApplicationSystem().getHakukausiVuosi() + 1, 1900))
+                .requiredInline().formParams(formParameters).build();
+        Element nimike = TextQuestion("pohjakoulutus_amt_nimike" + postfix).labelKey("pohjakoulutus.tutkintonimike")
+                .formParams(formParameters).requiredInline().build();
+        Element oppilaitos = TextQuestion("pohjakoulutus_amt_oppilaitos" + postfix).labelKey("pohjakoulutus.oppilaitos")
+                .requiredInline().formParams(formParameters).build();
+        Element nayttotutkinto = Checkbox("pohjakoulutus_amt_nayttotutkintona" + postfix).inline()
+                .labelKey("pohjakoulutus_amt_nayttotutkintona")
+                .formParams(formParameters).build();
+        parent.addChild(vuosi, nimike, oppilaitos, nayttotutkinto);
+        return nayttotutkinto;
+    }
+
+    private static Element buildAmmatillinen(FormParameters formParameters, List<Option> laajuusYksikot, int count) {
         Element am = Checkbox("pohjakoulutus_am").formParams(formParameters).build();
         Element amMore = createVarEqualsToValueRule(am.getId(), "true");
+        am.addChild(amMore);
 
-        Element vuosi = TextQuestion("pohjakoulutus_am_vuosi")
+        Element prevElement = buildAmmatillinenElement(formParameters, laajuusYksikot, 1, amMore);
+
+        for (int i = 2; i <= count; i++) {
+            I18nText i18nText = formParameters.getI18nText("pohjakoulutus.lisaa");
+            AddElementRule extraAmmatillinenRule = new AddElementRule("addAmmatillinenRule" + i, prevElement.getId(), i18nText);
+            prevElement.addChild(extraAmmatillinenRule);
+            prevElement = buildAmmatillinenElement(formParameters, laajuusYksikot, i, extraAmmatillinenRule);
+        }
+
+        return am;
+    }
+
+    private static Element buildAmmatillinenElement(FormParameters formParameters, List<Option> laajuusYksikot, int index, Element parent) {
+        String postfix = index == 1 ? "" : String.valueOf(index);
+        Element vuosi = TextQuestion("pohjakoulutus_am_vuosi" + postfix)
                 .excelColumnLabel("pohjakoulutus_am_vuosi.excel")
+                .labelKey("pohjakoulutus_am_vuosi")
                 .validator(ElementUtil.createYearValidator(formParameters.getApplicationSystem().getHakukausiVuosi() + 1, 1900))
                 .requiredInline().formParams(formParameters).build();
 
-        Element nimike = TextQuestion("pohjakoulutus_am_nimike").labelKey("pohjakoulutus.tutkintonimike")
+        Element nimike = TextQuestion("pohjakoulutus_am_nimike" + postfix).labelKey("pohjakoulutus.tutkintonimike")
                 .formParams(formParameters).requiredInline().build();
-        Element laajuus = TextQuestion("pohjakoulutus_am_laajuus").labelKey("pohjakoulutus.tutkinnonLaajuus")
+        Element laajuus = TextQuestion("pohjakoulutus_am_laajuus" + postfix).labelKey("pohjakoulutus.tutkinnonLaajuus")
                 .requiredInline().formParams(formParameters).build();
-        Element laajuusYksikko = Dropdown("pohjakoulutus_am_laajuus_yksikko")
+        Element laajuusYksikko = Dropdown("pohjakoulutus_am_laajuus_yksikko" + postfix)
                 .addOptions(laajuusYksikot)
                 .excelColumnLabel("laajuusyksikko.excel")
                 .inline().formParams(formParameters).labelKey("form.yleinen.nbsp").build();
-        Element oppilaitos = TextQuestion("pohjakoulutus_am_oppilaitos").labelKey("pohjakoulutus.oppilaitos")
+        Element oppilaitos = TextQuestion("pohjakoulutus_am_oppilaitos" + postfix).labelKey("pohjakoulutus.oppilaitos")
                 .requiredInline().formParams(formParameters).build();
-        amMore.addChild(vuosi,
+        parent.addChild(vuosi,
                 nimike,
                 laajuus,
                 laajuusYksikko,
                 oppilaitos);
-        am.addChild(amMore);
-        return am;
+        return oppilaitos;
     }
 
     private static Element buildYoSuomalainen(FormParameters formParameters, List<Option> laajuusYksikot) {

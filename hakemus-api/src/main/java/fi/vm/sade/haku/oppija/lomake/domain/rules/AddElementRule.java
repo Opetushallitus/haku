@@ -16,9 +16,14 @@
 
 package fi.vm.sade.haku.oppija.lomake.domain.rules;
 
+import com.google.common.base.Strings;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import org.codehaus.jackson.annotate.JsonProperty;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author jteuho
@@ -43,6 +48,17 @@ public class AddElementRule extends Element {
 
     public String getRelatedElementId() {
         return relatedElementId;
+    }
+
+    @Override
+    public List<Element> getChildren(final Map<String, String> values) {
+        List<Element> children = getChildren();
+        for (Element child : children) {
+            if (values.containsKey(child.getId()) && !Strings.isNullOrEmpty(values.get(child.getId()))) {
+                return children;
+            }
+        }
+        return Collections.emptyList();
     }
 
 }
