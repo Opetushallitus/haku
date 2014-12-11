@@ -27,7 +27,6 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
-import javax.ws.rs.HEAD;
 import java.util.List;
 import java.util.Map;
 
@@ -206,9 +205,9 @@ public class KoodistoServiceMockImpl implements KoodistoService {
                 getOption("Masteri", "1")
         );
         this.listOfAmmatillisentutkinnonArvosteluasteikko = ImmutableList.of(
-                getOption( "1-3", "13"),
-                getOption( "1-5", "15"),
-                getOption( "4-10", "410")
+                getOption( "1-3", "1-3"),
+                getOption( "1-5", "1-5"),
+                getOption( "4-10", "4-10")
         );
         this.codes.put(BASE_EDUCATION_KOODISTO_URI, this.listOfBaseEducationCodes);
     }
