@@ -42,16 +42,16 @@ public class FormConfiguration {
 
     private List<GroupConfiguration> groupConfigurations;
 
-    public FormConfiguration(){
+    public FormConfiguration() {
         groupConfigurations = new ArrayList<GroupConfiguration>();
     }
 
-    public FormConfiguration(final String applicationSystemId){
+    public FormConfiguration(final String applicationSystemId) {
         this.applicationSystemId = applicationSystemId;
         groupConfigurations = new ArrayList<GroupConfiguration>();
     }
 
-    public FormConfiguration(final String applicationSystemId, final FormTemplateType formTemplateType){
+    public FormConfiguration(final String applicationSystemId, final FormTemplateType formTemplateType) {
         this.applicationSystemId = applicationSystemId;
         this.formTemplateType = formTemplateType;
         groupConfigurations = new ArrayList<GroupConfiguration>();
@@ -59,11 +59,14 @@ public class FormConfiguration {
 
     @JsonCreator
     protected FormConfiguration(@JsonProperty(value = "applicationSystemId") String applicationSystemId,
-      @JsonProperty(value = "formTemplateType") FormTemplateType formTemplateType,
-      @JsonProperty(value = "groupConfigurations") List<GroupConfiguration> groupConfigurations){
+                                @JsonProperty(value = "formTemplateType") FormTemplateType formTemplateType,
+                                @JsonProperty(value = "groupConfigurations") List<GroupConfiguration> groupConfigurations) {
         this.applicationSystemId = applicationSystemId;
         this.formTemplateType = formTemplateType;
-        this.groupConfigurations = new ArrayList(groupConfigurations);
+        if (null == groupConfigurations)
+            this.groupConfigurations = new ArrayList<GroupConfiguration>();
+        else
+            this.groupConfigurations = new ArrayList<GroupConfiguration>(groupConfigurations);
     }
 
     public static FormConfiguration.FormTemplateType figureOutFormForApplicationSystem(final ApplicationSystem as) {
