@@ -91,12 +91,25 @@ public class FormConfigurationResource {
     @Autowired
     private FormConfigurationDAO formConfigurationDAO;
 
-    public FormConfigurationResource(){
+    @Autowired
+    private FormConfigurationService formConfigurationService;
+
+    public FormConfigurationResource() {
     }
 
     @Autowired
-    public FormConfigurationResource(final FormConfigurationDAO formConfigurationDAO) {
+    public FormConfigurationResource(final FormConfigurationDAO formConfigurationDAO,
+                                     final FormConfigurationService formConfigurationService) {
         this.formConfigurationDAO = formConfigurationDAO;
+        this.formConfigurationService = formConfigurationService;
+    }
+
+    @GET
+    @Path("{asId}/default")
+    @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
+    public FormConfiguration.FormTemplateType getDefaultConfiguration(@PathParam("asId") String applicationSystemId) {
+        LOGGER.debug("Getting Configuration by Id: {}", applicationSystemId);
+        return formConfigurationService.defaultFormTemplateType(applicationSystemId);
     }
 
     @GET
