@@ -29,6 +29,4 @@ public interface FormGenerator {
     ApplicationSystem generate(String oid);
 
     Form generateFormWithThemesOnly(String oid);
-
-    FormParameters configureForm(ApplicationSystem as);
 }

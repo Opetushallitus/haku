@@ -18,23 +18,10 @@ package fi.vm.sade.haku.virkailija.lomakkeenhallinta.resources;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import fi.vm.sade.haku.oppija.common.koulutusinformaatio.ApplicationOptionService;
-import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
-import fi.vm.sade.haku.oppija.hakemus.resource.JSONException;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
-import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
-import fi.vm.sade.haku.virkailija.authentication.Person;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.dao.FormConfigurationDAO;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.dao.ThemeQuestionDAO;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.dao.ThemeQuestionQueryParameters;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain.FormConfiguration;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain.ThemeQuestion;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakuService;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakukohdeService;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeV1RDTO;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.service.FormConfigurationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,23 +29,15 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 
 import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 
 @Controller
@@ -100,7 +79,8 @@ public class FormConfigurationResource {
         .build())
       .add(new ImmutableMap.Builder<String, Object>()
         .put("id", FormConfiguration.FormTemplateType.PERUSOPETUKSEN_JALKEINEN_VALMENTAVA)
-        .put("name", new I18nText(ImmutableMap.of("fi", "Perusopetuksen j\u00E4lkeisen valmentavan koulutuksen lomakepohja")))
+        .put("name",
+          new I18nText(ImmutableMap.of("fi", "Perusopetuksen j\u00E4lkeisen valmentavan koulutuksen lomakepohja")))
         .build())
       .build();
 
@@ -134,7 +114,7 @@ public class FormConfigurationResource {
     @Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKULOMAKKEENHALLINTA_CRUD')")
     public void saveFormConfigurationForApplicationSystem(@PathParam("asId") String applicationSystemId,
-      FormConfiguration formConfiguration) throws IOException {
+                                                          FormConfiguration formConfiguration) throws IOException {
         LOGGER.debug("Saved form configuration for application system: " + applicationSystemId);
         formConfigurationDAO.save(formConfiguration);
         LOGGER.debug("Saved form configuration for application system: " + applicationSystemId);
@@ -143,7 +123,7 @@ public class FormConfigurationResource {
     @GET
     @Path("templates")
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
-    public List<Map<String,Object>> getTemplates() {
+    public List<Map<String, Object>> getTemplates() {
         return formTemplateTypeTranslations;
     }
 }

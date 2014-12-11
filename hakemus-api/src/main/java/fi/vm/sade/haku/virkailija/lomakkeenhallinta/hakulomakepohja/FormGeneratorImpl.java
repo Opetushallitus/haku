@@ -1,21 +1,16 @@
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja;
 
-import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystemBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.dao.FormConfigurationDAO;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.dao.ThemeQuestionDAO;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain.FormConfiguration;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.hakutoiveet.HakutoiveetPhase;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.henkilotiedot.HenkilotiedotPhase;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.koulutustausta.KoulutustaustaPhase;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.lisatiedot.LisatiedotPhase;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.osaaminen.OsaaminenPhase;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.valmis.ValmisPhase;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.service.FormConfigurationService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakuService;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakukohdeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,26 +23,14 @@ public class FormGeneratorImpl implements FormGenerator {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FormGeneratorImpl.class);
 
-    private final KoodistoService koodistoService;
     private final HakuService hakuService;
-    private final ThemeQuestionDAO themeQuestionDAO;
-    private final HakukohdeService hakukohdeService;
-    private final OrganizationService organizationService;
-    private final FormConfigurationDAO formConfigurationDAO;
+    private final FormConfigurationService formConfigurationService;
 
     @Autowired
-    public FormGeneratorImpl(final KoodistoService koodistoService,
-                             final HakuService hakuService,
-                             final ThemeQuestionDAO themeQuestionDAO,
-                             final HakukohdeService hakukohdeService,
-                             final OrganizationService organizationService,
-                             final FormConfigurationDAO formConfigurationDAO) {
-        this.koodistoService = koodistoService;
+    public FormGeneratorImpl(final HakuService hakuService,
+                             final FormConfigurationService formConfigurationService) {
         this.hakuService = hakuService;
-        this.themeQuestionDAO = themeQuestionDAO;
-        this.hakukohdeService = hakukohdeService;
-        this.organizationService = organizationService;
-        this.formConfigurationDAO = formConfigurationDAO;
+        this.formConfigurationService = formConfigurationService;
     }
 
     @Override
@@ -59,13 +42,13 @@ public class FormGeneratorImpl implements FormGenerator {
     @Override
     public Form generateFormWithThemesOnly(String oid) {
         ApplicationSystem as = hakuService.getApplicationSystem(oid);
-        FormParameters formParameters = configureForm(as);
+        FormParameters formParameters = formConfigurationService.getFormConfiguration(as);
         formParameters.setOnlyThemeGenerationForFormEditor(Boolean.TRUE);
         return generateForm(formParameters);
     }
 
     private ApplicationSystem createApplicationSystem(ApplicationSystem as) {
-        FormParameters formParameters = configureForm(as);
+        FormParameters formParameters = formConfigurationService.getFormConfiguration(as);
         return new ApplicationSystemBuilder()
                 .addId(as.getId())
                 .addForm(generateForm(formParameters))
@@ -95,19 +78,5 @@ public class FormGeneratorImpl implements FormGenerator {
         form.addChild(OsaaminenPhase.create(formParameters));
         form.addChild(LisatiedotPhase.create(formParameters));
         return form;
-    }
-
-    @Override
-    public FormParameters configureForm(ApplicationSystem as){
-        FormConfiguration formConfiguration = null;
-        try {
-            formConfiguration = formConfigurationDAO.findByApplicationSystem(as.getId());
-        } catch (Exception e) {
-            LOGGER.warn("No configuration for application system", as);
-        }
-        if (null == formConfiguration) {
-           formConfiguration = new FormConfiguration(as.getId(), FormConfiguration.figureOutFormForApplicationSystem(as));
-        }
-        return new FormParameters(as, formConfiguration, koodistoService, themeQuestionDAO, hakukohdeService, organizationService);
     }
 }

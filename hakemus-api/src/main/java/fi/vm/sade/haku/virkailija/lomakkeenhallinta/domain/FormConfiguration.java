@@ -69,28 +69,6 @@ public class FormConfiguration {
             this.groupConfigurations = new ArrayList<GroupConfiguration>(groupConfigurations);
     }
 
-    public static FormConfiguration.FormTemplateType figureOutFormForApplicationSystem(final ApplicationSystem as) {
-        if (OppijaConstants.KOHDEJOUKKO_PERUSOPETUKSEN_JALKEINEN_VALMENTAVA.equals(as.getKohdejoukkoUri())) {
-            return FormConfiguration.FormTemplateType.PERUSOPETUKSEN_JALKEINEN_VALMENTAVA;
-        } else if (OppijaConstants.KOHDEJOUKKO_KORKEAKOULU.equals(as.getKohdejoukkoUri())) {
-            return FormConfiguration.FormTemplateType.YHTEISHAKU_SYKSY_KORKEAKOULU;
-        }
-        if (as.getApplicationSystemType().equals(OppijaConstants.HAKUTYYPPI_LISAHAKU)) {
-            if (as.getHakukausiUri().equals(OppijaConstants.HAKUKAUSI_KEVAT)) {
-                return FormConfiguration.FormTemplateType.LISAHAKU_KEVAT;
-            }
-            return FormConfiguration.FormTemplateType.LISAHAKU_SYKSY;
-        } else {
-            if (as.getHakukausiUri().equals(OppijaConstants.HAKUKAUSI_SYKSY)) {
-                return FormConfiguration.FormTemplateType.YHTEISHAKU_SYKSY;
-            } else if (as.getHakukausiUri().equals(OppijaConstants.HAKUKAUSI_KEVAT)) {
-                return FormConfiguration.FormTemplateType.YHTEISHAKU_KEVAT;
-            } else {
-                return FormConfiguration.FormTemplateType.PERUSOPETUKSEN_JALKEINEN_VALMENTAVA;
-            }
-        }
-    }
-
     public ObjectId getId() {
         return id;
     }
