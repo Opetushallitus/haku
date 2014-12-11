@@ -6,10 +6,6 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
-import fi.vm.sade.haku.oppija.lomake.domain.builder.*;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
-import fi.vm.sade.haku.oppija.lomake.domain.rules.AddElementRule;
 import fi.vm.sade.haku.oppija.lomake.domain.builder.DropdownSelectBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.builder.OptionQuestionBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.builder.TextQuestionBuilder;
@@ -17,6 +13,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.builder.ThemeBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.OptionQuestion;
+import fi.vm.sade.haku.oppija.lomake.domain.rules.AddElementRule;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.*;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain.FormConfiguration;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
@@ -216,30 +213,32 @@ public final class KoulutustaustaPhase {
         }
 
         // Pedagogiset opinnot
-        Element pedagogisetOpinnot = Radio("pedagogiset_opinnot")
-                .addOption(ElementUtil.createI18NText("pedagogiset_opinnot.kylla"), "true")
-                .addOption(ElementUtil.createI18NText("pedagogiset_opinnot.ei"), "false")
-                .requiredInline()
-                .formParams(formParameters)
-                .build();
-        elements.add(pedagogisetOpinnot);
+        if (formParameters.isAmmattillinenEritysopettajaTaiOppilaanohjaajaKoulutus()) {
+            Element pedagogisetOpinnot = Radio("pedagogiset_opinnot")
+                    .addOption(ElementUtil.createI18NText("pedagogiset_opinnot.kylla"), "true")
+                    .addOption(ElementUtil.createI18NText("pedagogiset_opinnot.ei"), "false")
+                    .requiredInline()
+                    .formParams(formParameters)
+                    .build();
+            elements.add(pedagogisetOpinnot);
 
-        Element pedagogisetOpinnotEiSuoritettuRule = createVarEqualsToValueRule("pedagogiset_opinnot", "false");
-        pedagogisetOpinnotEiSuoritettuRule.addChild(Info()
-                .i18nText(ElementUtil.createI18NText("pedagogiset_opinnot.ei.info"))
-                .inline().build());
-        elements.add(pedagogisetOpinnotEiSuoritettuRule);
+            Element pedagogisetOpinnotEiSuoritettuRule = createVarEqualsToValueRule("pedagogiset_opinnot", "false");
+            pedagogisetOpinnotEiSuoritettuRule.addChild(Info()
+                    .i18nText(ElementUtil.createI18NText("pedagogiset_opinnot.ei.info"))
+                    .inline().build());
+            elements.add(pedagogisetOpinnotEiSuoritettuRule);
 
-        Element pedagogisetOpinnotOnSuoritettuRule = createVarEqualsToValueRule("pedagogiset_opinnot", "true");
-        pedagogisetOpinnotOnSuoritettuRule.addChild(
-                TextQuestion("pedagogiset_opinnot_oppilaitos")
-                        .size(50).formParams(formParameters).requiredInline().build(),
-                TextQuestion("pedagogiset_opinnot_suoritusvuosi")
-                        .requiredInline()
-                        .validator(ElementUtil.createYearValidator(formParameters.getApplicationSystem().getHakukausiVuosi() + 1, 1900))
-                        .formParams(formParameters).build());
-        elements.add(pedagogisetOpinnotOnSuoritettuRule);
-
+            Element pedagogisetOpinnotOnSuoritettuRule = createVarEqualsToValueRule("pedagogiset_opinnot", "true");
+            pedagogisetOpinnotOnSuoritettuRule.addChild(
+                    TextQuestion("pedagogiset_opinnot_oppilaitos")
+                            .size(50).formParams(formParameters).requiredInline().build(),
+                    TextQuestion("pedagogiset_opinnot_suoritusvuosi")
+                            .requiredInline()
+                            .validator(ElementUtil.createYearValidator(formParameters.getApplicationSystem().getHakukausiVuosi() + 1, 1900))
+                            .formParams(formParameters).build());
+            elements.add(pedagogisetOpinnotOnSuoritettuRule);
+        }
+        
         // Muut tutkinnot
         if (formParameters.isAmmattillinenOpettajaKoulutus()) {
             Element muutTutkinnotGrp = TitledGroup("muut_tutkinnot").formParams(formParameters).inline().build();
