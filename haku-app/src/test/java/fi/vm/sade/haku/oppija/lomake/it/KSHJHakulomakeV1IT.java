@@ -28,7 +28,7 @@ public class KSHJHakulomakeV1IT extends DummyModelBaseItTest {
         navigateToPath("lomake", "haku6");
         fillOut(defaultValues.kkHenkilotiedot);
         nextPhase(OppijaConstants.PHASE_EDUCATION);
-        findByIdAndClick("suoritusoikeus", "aiempitutkinto", "pohjakoulutus_am");
+        findByIdAndClick("suoritusoikeus_tai_aiempi_tutkinto", "pohjakoulutus_am");
         setValue("pohjakoulutus_am_vuosi", "2012");
         setValue("pohjakoulutus_am_nimike", "pohjakoulutus_am_nimike");
         setValue("pohjakoulutus_am_laajuus", "laajuus");
