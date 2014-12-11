@@ -74,7 +74,7 @@ public class OsaaminenPhase {
 
             Expr haettuAMKHon = ExprUtil.reduceToOr(exprs);
 
-            ElementBuilder kysytaankoLukionKeskiarvo = Rule(pohjakoulutusLukio);//Rule(new And(haettuAMKHon, pohjakoulutusLukio));
+            ElementBuilder kysytaankoLukionKeskiarvo = Rule(new And(haettuAMKHon, pohjakoulutusLukio));
             List<Option> asteikkolista = koodistoService.getAmmatillisenTutkinnonArvosteluasteikko();
 
             RegexFieldValidator validator = new RegexFieldValidator(ElementUtil.createI18NText("validator.keskiarvo.desimaaliluku", formParameters), "^$|\\d+\\,?\\d{1,2}");
@@ -101,14 +101,14 @@ public class OsaaminenPhase {
     private static void buildKeskiarvotAmmatillinen(FormParameters formParameters, Expr haettuAMKHon, List<Option> asteikkolista, Element parent) {
         Expr pohjakoulutusLukioAmmatillinen = ExprUtil.isAnswerTrue("pohjakoulutus_yo_ammatillinen");
 
-        Element kysytaankoLukioAmmatillinen = Rule(pohjakoulutusLukioAmmatillinen).build();//Rule(new And(haettuAMKHon, pohjakoulutusLukioAmmatillinen)).build();
+        Element kysytaankoLukioAmmatillinen = Rule(new And(haettuAMKHon, pohjakoulutusLukioAmmatillinen)).build();
         buildKeskiarvoJaAsteikko(asteikkolista, kysytaankoLukioAmmatillinen, formParameters, "");
         parent.addChild(kysytaankoLukioAmmatillinen);
 
         for (int i = 1; i <= 5; i++) {
             String postfix = i == 1 ? "" : String.valueOf(i);
             Expr pohjakoulutusAmmatillinen = new Regexp("pohjakoulutus_am_vuosi" + postfix, "^\\d+$");
-            Element kysytaankoAmmatillinen = Rule(pohjakoulutusAmmatillinen).build();//Rule(new And(haettuAMKHon, pohjakoulutusAmmatillinen)).build();
+            Element kysytaankoAmmatillinen = Rule(new And(haettuAMKHon, pohjakoulutusAmmatillinen)).build();
             buildKeskiarvoJaAsteikko(asteikkolista, kysytaankoAmmatillinen, formParameters, postfix);
             parent.addChild(kysytaankoAmmatillinen);
         }
@@ -117,8 +117,8 @@ public class OsaaminenPhase {
     private static void buildKeskiarvoJaAsteikko(List<Option> asteikkolista, Element parent, FormParameters formParameters, String postfix) {
         Validator validator = new ExprValidator(new And(new Regexp("keskiarvo" + postfix, "^$|\\d+\\,?\\d{1,2}"),
                 new Or(new Or(new And(new Regexp("arvosanaasteikko" + postfix, "^1-3$"), new Regexp("keskiarvo" + postfix, "^([1-2]\\,[0-9][0-9])|(3\\,00)$")),
-                new And(new Regexp("arvosanaasteikko" + postfix, "^1-5$"), new Regexp("keskiarvo" + postfix, "^([1-4]\\,[0-9][0-9])|(5\\,00)$\")"))),
-                        new And(new Regexp("arvosanaasteikko" + postfix, "^4-10$"), new Regexp("keskiarvo" + postfix, "^([4-9]\\,[0-9][0-9])|(10\\,00)$\")")))),
+                new And(new Regexp("arvosanaasteikko" + postfix, "^1-5$"), new Regexp("keskiarvo" + postfix, "^([1-4]\\,[0-9][0-9])|(5\\,00)$"))),
+                        new And(new Regexp("arvosanaasteikko" + postfix, "^4-10$"), new Regexp("keskiarvo" + postfix, "^([4-9]\\,[0-9][0-9])|(10\\,00)$")))),
                 createI18NText("validator.keskiarvo", formParameters));
 
         parent.addChild(TextQuestion("keskiarvo" + postfix)

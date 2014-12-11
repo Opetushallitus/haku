@@ -42,8 +42,8 @@ public class KSHJHakulomakeV1IT extends DummyModelBaseItTest {
 
         nextPhase(OppijaConstants.PHASE_GRADES);
 
-        setValue("keskiarvo", "10");
-        setValue("arvosanaasteikko", "410");
+        setValue("keskiarvo", "10,00");
+        setValue("arvosanaasteikko", "4-10");
         nextPhase(OppijaConstants.PHASE_MISC);
 
         navigateToPath("lomake", "haku6", OppijaConstants.PHASE_EDUCATION);
