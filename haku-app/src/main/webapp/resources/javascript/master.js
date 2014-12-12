@@ -190,10 +190,10 @@ var complexRule = {
                         }
                     }
                     if (bind == true) {
-                        question.on('change', ruleData, complexRule.refreshView);
+                        question.on('change paste keyup input', ruleData, complexRule.refreshView);
                     }
                 } else {
-                    question.on('change', ruleData, complexRule.refreshView);
+                    question.on('change paste keyup input', ruleData, complexRule.refreshView);
                 }
             }
         }

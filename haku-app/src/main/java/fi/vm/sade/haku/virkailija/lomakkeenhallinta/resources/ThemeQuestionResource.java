@@ -254,7 +254,6 @@ public class ThemeQuestionResource {
             throw new JSONException(Response.Status.BAD_REQUEST, "Missing pathparameters", null);
         Set<String> themeQuestionIds = reorderedQuestions.keySet();
 
-        // TODO(?) -OS- Fix bad validation. Needs application system to work correctly
         if (!themeQuestionDAO.validateLearningOpportunityAndTheme(learningOpportunityId, themeId,  themeQuestionIds.toArray(new String[themeQuestionIds.size()])))
             throw new JSONException(Response.Status.BAD_REQUEST, "Error in input data. Mismatch between question ids, theme and application option", null);
 
