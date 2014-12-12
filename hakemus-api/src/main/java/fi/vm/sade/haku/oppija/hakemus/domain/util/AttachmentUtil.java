@@ -100,25 +100,27 @@ public class AttachmentUtil {
         for (String aoOid : ApplicationUtil.getApplicationOptionAttachmentAOIds(application)) {
             ApplicationOptionDTO ao = koulutusinformaatioService.getApplicationOption(aoOid, lang);
             for (ApplicationOptionAttachmentDTO attachmentDTO : ao.getAttachments()) {
-                String descriptionText = attachmentDTO.getDescreption();
-                I18nText description = null;
-                if (isNotBlank(descriptionText)) {
-                    description = ElementUtil.createI18NAsIs(descriptionText);
-                } else {
-                    description = ElementUtil.createI18NAsIs("");
+                if (attachmentDTO.isUsedInApplicationForm()) {
+                    String descriptionText = attachmentDTO.getDescreption();
+                    I18nText description = null;
+                    if (isNotBlank(descriptionText)) {
+                        description = ElementUtil.createI18NAsIs(descriptionText);
+                    } else {
+                        description = ElementUtil.createI18NAsIs("");
+                    }
+                    attachments.add(
+                            ApplicationAttachmentRequestBuilder.start()
+                                    .setPreferenceAoId(ao.getId())
+                                    .setApplicationAttachment(
+                                            ApplicationAttachmentBuilder.start()
+                                                    .setName(ElementUtil.createI18NAsIs(attachmentDTO.getType()))
+                                                    .setDescription(description)
+                                                    .setDeadline(attachmentDTO.getDueDate())
+                                                    .setAddress(getAddress(attachmentDTO.getAddress()))
+                                                    .build()
+                                    ).build()
+                    );
                 }
-                attachments.add(
-                  ApplicationAttachmentRequestBuilder.start()
-                    .setPreferenceAoId(ao.getId())
-                    .setApplicationAttachment(
-                      ApplicationAttachmentBuilder.start()
-                        .setName(ElementUtil.createI18NAsIs(attachmentDTO.getType()))
-                        .setDescription(description)
-                        .setDeadline(attachmentDTO.getDueDate())
-                        .setAddress(getAddress(attachmentDTO.getAddress()))
-                        .build()
-                    ).build()
-                );
             }
         }
         return attachments;

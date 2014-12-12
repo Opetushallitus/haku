@@ -45,7 +45,7 @@
         <authentication-api.version>9.5</authentication-api.version>
         <generic-common.version>9.1-SNAPSHOT</generic-common.version>
 	    <koodisto-api.version>11.5</koodisto-api.version>
-        <koulutusinformaatio-api.version>12.4-SNAPSHOT</koulutusinformaatio-api.version>
+        <koulutusinformaatio-api.version>13.3-SNAPSHOT</koulutusinformaatio-api.version>
         <log-client.version>8.0</log-client.version>
         <organisaatio-api.version>13.0-SNAPSHOT</organisaatio-api.version>
         <tarjonta-api.version>10.0-SNAPSHOT</tarjonta-api.version>
