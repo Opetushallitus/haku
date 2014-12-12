@@ -56,7 +56,7 @@ public final class ArvosanatTheme {
 
         arvosanatTheme.addChild(relatedQuestionPK);
 
-        if (!formParameters.isPervako()) {
+        if (!formParameters.isPerusopetuksenJalkeinenValmentava()) {
             Element pohjakoulutusOnYlioppilas = createVarEqualsToValueRule(POHJAKOULUTUS_ID, YLIOPPILAS);
 
             Element arvosanataulukkoYoSv = Rule(
@@ -138,7 +138,7 @@ public final class ArvosanatTheme {
         eiNaytetaPk.addChild(Text("nogradegrid").labelKey("form.arvosanat.eiKysyta.pk").formParams(formParameters).build());
         arvosanatTheme.addChild(eiNaytetaPk);
 
-        if (!formParameters.isPervako()) {
+        if (!formParameters.isPerusopetuksenJalkeinenValmentava()) {
             // Ylioppilaat
             RelatedQuestionRuleBuilder naytetaankoLukionArvosanataulukko;
             if (formParameters.isLisahaku()) {

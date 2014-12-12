@@ -109,7 +109,7 @@ public class HakutoiveetPhase {
                 createI18NText("form.hakutoiveet.sisaltyvatKoulutusohjelmat", formParameters),
                 createI18NText("form.hakutoiveet.liitteet", formParameters));
 
-        if (!formParameters.isPervako()) {
+        if (!formParameters.isPerusopetuksenJalkeinenValmentava()) {
             if (!formParameters.isHigherEd()) {
                 pr.addChild(createDiscretionaryQuestionsAndRules(id, formParameters));
             }

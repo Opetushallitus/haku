@@ -543,7 +543,7 @@ public final class KoulutustaustaPhase {
                 .addOption(educationMap.get(KESKEYTYNYT).getValue(), formParameters);
 
 
-        if (!formParameters.isPervako()) {
+        if (!formParameters.isPerusopetuksenJalkeinenValmentava()) {
             baseEducationBuilder.addOption(educationMap.get(YLIOPPILAS).getValue(), formParameters);
         }
         baseEducationBuilder.addOption(educationMap.get(ULKOMAINEN_TUTKINTO).getValue(), formParameters);
@@ -551,13 +551,13 @@ public final class KoulutustaustaPhase {
         Element baseEducation = baseEducationBuilder.required().formParams(formParameters).build();
 
         Element keskeytynytRule = createVarEqualsToValueRule(baseEducation.getId(), KESKEYTYNYT);
-        if (!formParameters.isPervako()) {
+        if (!formParameters.isPerusopetuksenJalkeinenValmentava()) {
             keskeytynytRule.addChild(
                     Info(TUTKINTO_KESKEYTNYT_NOTIFICATION_ID).labelKey("form.koulutustausta.keskeytynyt.huom").formParams(formParameters).build());
         }
 
         Element ulkomaillaSuoritettuTutkintoRule = createVarEqualsToValueRule(baseEducation.getId(), ULKOMAINEN_TUTKINTO);
-        if (formParameters.isPervako()) {
+        if (formParameters.isPerusopetuksenJalkeinenValmentava()) {
             ulkomaillaSuoritettuTutkintoRule.addChild(
                     TextArea("mika-ulkomainen-koulutus")
                             .cols(TEXT_AREA_COLS)
@@ -565,7 +565,7 @@ public final class KoulutustaustaPhase {
                             .formParams(formParameters).build());
         }
 
-        if (!formParameters.isPervako()) {
+        if (!formParameters.isPerusopetuksenJalkeinenValmentava()) {
             Element tutkintoUlkomaillaNotification =
                     Info(TUTKINTO_ULKOMAILLA_NOTIFICATION_ID).labelKey("form.koulutustausta.ulkomailla.huom").formParams(formParameters).build();
             ulkomaillaSuoritettuTutkintoRule.addChild(tutkintoUlkomaillaNotification);
@@ -627,7 +627,7 @@ public final class KoulutustaustaPhase {
                 onkoTodistusSaatuKuluneenaVuonna, paattotodistusvuosiPeruskouluRule);
 
 
-        if (!formParameters.isPervako()) {
+        if (!formParameters.isPerusopetuksenJalkeinenValmentava()) {
 
             Element lukioPaattotodistusVuosi = TextQuestion(OppijaConstants.LUKIO_PAATTOTODISTUS_VUOSI)
                     .maxLength(4)
@@ -712,7 +712,7 @@ public final class KoulutustaustaPhase {
                 .required()
                 .formParams(formParameters).build());
 
-        if (formParameters.isPervako()) {
+        if (formParameters.isPerusopetuksenJalkeinenValmentava()) {
             baseEducation.addChild(TextArea("muukoulutus").cols(TEXT_AREA_COLS).maxLength(500).formParams(formParameters).build());
         }
         return baseEducation;

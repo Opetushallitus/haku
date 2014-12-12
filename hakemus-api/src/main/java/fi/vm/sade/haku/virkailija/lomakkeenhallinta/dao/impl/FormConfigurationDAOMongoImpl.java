@@ -1,0 +1,68 @@
+package fi.vm.sade.haku.virkailija.lomakkeenhallinta.dao.impl;
+
+import fi.vm.sade.haku.oppija.common.dao.AbstractDAOMongoImpl;
+import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.dao.FormConfigurationDAO;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.dao.impl.DBConverter.DBObjectToFormConfigurationFunction;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.dao.impl.DBConverter.FormConfigurationToDBObjectFunction;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain.FormConfiguration;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.PostConstruct;
+import java.util.List;
+
+import static java.lang.String.format;
+
+@Service("formConfigurationDAOMongoImpl")
+public class FormConfigurationDAOMongoImpl extends AbstractDAOMongoImpl<FormConfiguration> implements FormConfigurationDAO {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(FormConfigurationDAOMongoImpl.class);
+
+
+    private static final String INDEX_APPLICATION_SYSTEM_ID = "index_applicationSystemId";
+    private static final String FIELD_APPLICATION_SYSTEM_ID = "applicationSystemId";
+
+    @Value("${mongodb.ensureIndex:true}")
+    private boolean ensureIndex;
+
+    private static final String collectionName = "formconfiguration";
+
+    @Autowired
+    public FormConfigurationDAOMongoImpl(DBObjectToFormConfigurationFunction dbObjectToFormConfigurationConverter,
+      FormConfigurationToDBObjectFunction formConfigurationToBasicDBObjectConverter) {
+        super(dbObjectToFormConfigurationConverter, formConfigurationToBasicDBObjectConverter);
+    }
+
+
+    @PostConstruct
+    public void configure() {
+        if (!ensureIndex) {
+            return;
+        }
+        checkIndexes("before ensures");
+        // constraint indexes
+        ensureUniqueIndex(INDEX_APPLICATION_SYSTEM_ID, FIELD_APPLICATION_SYSTEM_ID);
+
+        //other ?
+        checkIndexes("after ensures");
+    }
+
+    @Override
+    protected String getCollectionName() {
+        return collectionName;
+    }
+
+    @Override
+    public FormConfiguration findByApplicationSystem(String asId) {
+        final FormConfiguration searchConfiguration = new FormConfiguration(asId);
+        LOGGER.debug("findById: " + asId);
+        List<FormConfiguration> formConfigurations = find(searchConfiguration);
+        if (formConfigurations.size() == 1)
+            return formConfigurations.get(0);
+        throw new ResourceNotFoundException("No ThemeQuestion found with id " + asId);
+    }
+}
