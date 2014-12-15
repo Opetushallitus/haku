@@ -61,7 +61,8 @@ public class FormParameters {
         this.hakukohdeService = hakukohdeService;
         this.organizationService = organizationService;
         this.formConfiguration = formConfiguration;
-        this.i18nBundle = new I18nBundle(getMessageBundleName(FORM_MESSAGES, applicationSystem));
+        this.i18nBundle = new I18nBundle(getMessageBundleName(FORM_MESSAGES, applicationSystem),
+                (FORM_MESSAGES+"_"+applicationSystem.getId().replace('.', '_')));
 
     }
 
@@ -103,7 +104,7 @@ public class FormParameters {
     }
 
     public boolean isHigherEd() {
-        return FormConfiguration.FormTemplateType.YHTEISHAKU_SYKSY_KORKEAKOULU.equals(this.getFormTemplateType());
+        return applicationSystem.getKohdejoukkoUri().equals(OppijaConstants.KOHDEJOUKKO_KORKEAKOULU);
     }
 
     public boolean isKevaanLisahaku() {

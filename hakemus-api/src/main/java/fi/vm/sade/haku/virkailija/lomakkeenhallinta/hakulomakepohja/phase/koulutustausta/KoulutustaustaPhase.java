@@ -15,7 +15,6 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.OptionQuestion;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.AddElementRule;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.*;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain.FormConfiguration;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.domain.Code;

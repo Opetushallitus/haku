@@ -20,7 +20,13 @@ public class I18nBundle {
         ResourceBundle commonBundle = ResourceBundle.getBundle(FORM_COMMON_BUNDLE_NAME, new Locale("fi"));
         Set<String> propertyKeys = commonBundle.keySet();
 
+        List<String> bundleNamesList = new ArrayList<String>(bundleNames.length + 1);
+        bundleNamesList.add(FORM_COMMON_BUNDLE_NAME);
         for (String bundleName : bundleNames) {
+            bundleNamesList.add(bundleName);
+        }
+
+        for (String bundleName : bundleNamesList) {
             try {
                 ResourceBundle bundle = ResourceBundle.getBundle(bundleName, new Locale("fi"));
                 propertyKeys.addAll(bundle.keySet());
