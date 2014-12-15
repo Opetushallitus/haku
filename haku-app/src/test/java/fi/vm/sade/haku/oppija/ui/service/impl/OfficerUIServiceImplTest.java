@@ -74,9 +74,9 @@ public class OfficerUIServiceImplTest {
         application.setOid(OID);
         application.setPhaseId(ID);
         as = new ApplicationSystemBuilder()
-                .addId("asid")
-                .addName(ElementUtil.createI18NAsIs("asname"))
-                .addKohdejoukkoUri(OppijaConstants.KOHDEJOUKKO_AMMATILLINEN_JA_LUKIO)
+                .setId("asid")
+                .setName(ElementUtil.createI18NAsIs("asname"))
+                .setKohdejoukkoUri(OppijaConstants.KOHDEJOUKKO_AMMATILLINEN_JA_LUKIO)
                 .get();
         form = new Form("form", ElementUtil.createI18NAsIs(ID));
         applicationService = mock(ApplicationService.class);

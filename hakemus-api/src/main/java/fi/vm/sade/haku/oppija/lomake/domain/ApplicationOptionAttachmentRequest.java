@@ -17,7 +17,9 @@ public class ApplicationOptionAttachmentRequest {
     private final Boolean useGroupAddress;
     private final SimpleAddress deliveryAddress;
 
-    public ApplicationOptionAttachmentRequest(Expr condition, String applicationOptionId, Boolean groupOption, I18nText header, I18nText description, Date deliveryDue, Boolean useGroupAddress, SimpleAddress deliveryAddress) {
+    public ApplicationOptionAttachmentRequest(Expr condition, String applicationOptionId, Boolean groupOption,
+                                              I18nText header, I18nText description, Date deliveryDue,
+                                              Boolean useGroupAddress, SimpleAddress deliveryAddress) {
         this.condition = condition;
         this.applicationOptionId = applicationOptionId;
         this.groupOption = groupOption;

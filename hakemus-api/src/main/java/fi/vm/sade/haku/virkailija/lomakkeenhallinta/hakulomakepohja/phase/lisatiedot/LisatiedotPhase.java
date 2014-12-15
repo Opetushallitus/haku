@@ -81,9 +81,13 @@ public class LisatiedotPhase {
         lupatiedotTheme.addChild(lupatietoGrp);
 
         OptionQuestionBuilder kieliRadioBuilder = Radio(OppijaConstants.ELEMENT_ID_CONTACT_LANGUAGE)
-                .addOption("suomi", formParameters)
-                .addOption("ruotsi", formParameters);
-        if (formParameters.isHigherEd()) {
+                .addOption("suomi", formParameters);
+        if (!formParameters.isAmmattillinenEritysopettajaTaiOppilaanohjaajaKoulutus()
+                && !formParameters.isAmmattillinenOpettajaKoulutus()) {
+            kieliRadioBuilder.addOption("ruotsi", formParameters);
+        }
+        if (formParameters.isHigherEd()
+                && !formParameters.isAmmattillinenEritysopettajaTaiOppilaanohjaajaKoulutus()) {
             kieliRadioBuilder.addOption("englanti", formParameters);
         }
         

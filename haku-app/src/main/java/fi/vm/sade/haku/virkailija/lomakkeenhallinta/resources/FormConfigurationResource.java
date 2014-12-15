@@ -82,6 +82,16 @@ public class FormConfigurationResource {
         .put("name",
           new I18nText(ImmutableMap.of("fi", "Perusopetuksen j\u00E4lkeisen valmentavan koulutuksen lomakepohja")))
         .build())
+      .add(new ImmutableMap.Builder<String, Object>()
+        .put("id", FormConfiguration.FormTemplateType.AMK_ERKAT_JA_OPOT)
+        .put("name",
+          new I18nText(ImmutableMap.of("fi", "Ammatillisen erityisopettajakoulutuksen ja ammatillisen opinto-ohjaajankoulutuksen lomakepohja")))
+        .build())
+      .add(new ImmutableMap.Builder<String, Object>()
+        .put("id", FormConfiguration.FormTemplateType.AMK_OPET)
+        .put("name",
+          new I18nText(ImmutableMap.of("fi", "Ammatillisen opettajankoulutuksen lomakepohja")))
+        .build())
       .build();
 
     //NOTE: Supported roles ROLE_APP_HAKULOMAKKEENHALLINTA_CRUD

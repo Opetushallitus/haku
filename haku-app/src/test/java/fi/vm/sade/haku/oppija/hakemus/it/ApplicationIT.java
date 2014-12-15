@@ -95,7 +95,6 @@ public class ApplicationIT extends DummyModelBaseItTest {
 
     private ApplicationSearchResultDTO responseToSearchResult() throws IOException {
         String response = getBodyText();
-        System.out.println("XXXXXXXXX\n\n"+response+"\n\nXXXXXXXXXXX\n\n");
         ObjectMapper mapper = new ObjectMapper();
         return mapper.readValue(response, new TypeReference<ApplicationSearchResultDTO>() {
         });

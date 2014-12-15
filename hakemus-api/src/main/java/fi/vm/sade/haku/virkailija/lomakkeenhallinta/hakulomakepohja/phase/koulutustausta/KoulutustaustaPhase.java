@@ -6,16 +6,22 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
-import fi.vm.sade.haku.oppija.lomake.domain.builder.*;
+import fi.vm.sade.haku.oppija.lomake.domain.builder.DropdownSelectBuilder;
+import fi.vm.sade.haku.oppija.lomake.domain.builder.OptionQuestionBuilder;
+import fi.vm.sade.haku.oppija.lomake.domain.builder.TextQuestionBuilder;
+import fi.vm.sade.haku.oppija.lomake.domain.builder.ThemeBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.OptionQuestion;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.AddElementRule;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.*;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain.FormConfiguration;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.domain.Code;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,10 +55,19 @@ public final class KoulutustaustaPhase {
         Element koulutustausta = Phase("koulutustausta").setEditAllowedByRoles("APP_HAKEMUS_READ_UPDATE", "APP_HAKEMUS_CRUD", "APP_HAKEMUS_OPO").formParams(formParameters).build();
         ApplicationSystem as = formParameters.getApplicationSystem();
         if (as.getKohdejoukkoUri().equals(OppijaConstants.KOHDEJOUKKO_KORKEAKOULU)){
-            Element koulutustaustaRyhma = new ThemeBuilder("koulutustausta.teema_kk").previewable().formParams(formParameters).build();
-            if (!formParameters.isOnlyThemeGenerationForFormEditor()) {
-                koulutustaustaRyhma.addChild(createKorkeakouluKoulutustausta(formParameters));
-                koulutustausta.addChild(koulutustaustaRyhma);
+            if (formParameters.isAmmattillinenEritysopettajaTaiOppilaanohjaajaKoulutus()
+                    || formParameters.isAmmattillinenOpettajaKoulutus()) {
+                Element koulutustaustaRyhma = new ThemeBuilder("koulutustausta.teema_kk").previewable().formParams(formParameters).build();
+                if (!formParameters.isOnlyThemeGenerationForFormEditor()) {
+                    koulutustaustaRyhma.addChild(createOpetErkatJaOpotKoulutustausta(formParameters));
+                    koulutustausta.addChild(koulutustaustaRyhma);
+                }
+            } else {
+                Element koulutustaustaRyhma = new ThemeBuilder("koulutustausta.teema_kk").previewable().formParams(formParameters).build();
+                if (!formParameters.isOnlyThemeGenerationForFormEditor()) {
+                    koulutustaustaRyhma.addChild(createKorkeakouluKoulutustausta(formParameters));
+                    koulutustausta.addChild(koulutustaustaRyhma);
+                }
             }
         } else {
             Element koulutustaustaRyhma = new ThemeBuilder("koulutustausta.teema").previewable().formParams(formParameters).build();
@@ -62,6 +77,184 @@ public final class KoulutustaustaPhase {
             }
         }
         return koulutustausta;
+    }
+
+    private static Element[] createOpetErkatJaOpotKoulutustausta(FormParameters formParameters) {
+        ArrayList<Element> elements = new ArrayList<Element>();
+        KoodistoService koodistoService = formParameters.getKoodistoService();
+
+        // Tutkinto ja suoritusvuosi
+        Element tutkinto = TextQuestion("amk_ope_tutkinto")
+                .size(50).formParams(formParameters).requiredInline().build();
+        Element vuosi = TextQuestion("amk_ope_tutkinto_vuosi")
+                .requiredInline()
+                .validator(ElementUtil.createYearValidator(formParameters.getApplicationSystem().getHakukausiVuosi() + 1, 1900))
+                .formParams(formParameters).build();
+        elements.add(tutkinto);
+        elements.add(vuosi);
+
+        // Tutkinnon taso
+        Element tutkinnonTaso = Dropdown("amk_ope_tutkinnontaso")
+                .addOption(ElementUtil.createI18NText("amk_ope_tutkinnontaso.tohtori"), "tohtori")
+                .addOption(ElementUtil.createI18NText("amk_ope_tutkinnontaso.ylempi"), "ylempi")
+                .addOption(ElementUtil.createI18NText("amk_ope_tutkinnontaso.amk"), "amk")
+                .addOption(ElementUtil.createI18NText("amk_ope_tutkinnontaso.alempi"), "alempi")
+                .addOption(ElementUtil.createI18NText("amk_ope_tutkinnontaso.opisto"), "opisto")
+                .addOption(ElementUtil.createI18NText("amk_ope_tutkinnontaso.ammatillinen"), "ammatillinen")
+                .addOption(ElementUtil.createI18NText("amk_ope_tutkinnontaso.ammatti"), "ammatti")
+                .addOption(ElementUtil.createI18NText("amk_ope_tutkinnontaso.muu"), "muu")
+                .formParams(formParameters)
+                .requiredInline()
+                .build();
+        elements.add(tutkinnonTaso);
+
+        Element ulkomainen = Checkbox("amk_ope_ulkomainen_tutkinto")
+                .labelKey("amk_ope_ulkomainen_tutkinto")
+                .inline()
+                .formParams(formParameters).build();
+        elements.add(ulkomainen);
+
+        // Ei korkeakoulututkintoa...
+        Element tutkinnontasoRule = createVarEqualsToValueRule("amk_ope_tutkinnontaso",
+                "opisto", "ammatillinen", "ammatti", "muu");
+        elements.add(tutkinnontasoRule);
+        OptionQuestionBuilder eiKorkeakoulututkintoaBuilder = Radio("ei_korkeakoulututkintoa");
+
+        // ...opettajana/kouluttajana tutkintoon johtavassa ammatillisessa koulutuksessa
+        eiKorkeakoulututkintoaBuilder
+                .addOption(ElementUtil.createI18NText("ei_korkeakoulututkintoa.opettajana_ammatillisessa_tutkinto"),
+                "opettajana_ammatillisessa_tutkinto");
+
+        Element opettajaAmmatillisessaTutkintoRule = createVarEqualsToValueRule("ei_korkeakoulututkintoa",
+                "opettajana_ammatillisessa_tutkinto");
+
+        opettajaAmmatillisessaTutkintoRule.addChild(
+                TextQuestion("opettajana_ammatillisessa_tutkinto_tyopaikka")
+                        .size(50)
+                        .formParams(formParameters)
+                        .requiredInline()
+                        .labelKey("opettajana_ammatillisessa_tutkinto_tyopaikka")
+                        .build(),
+                TextQuestion("opettajana_ammatillisessa_tutkinto_tehtavanimike")
+                        .size(50)
+                        .formParams(formParameters)
+                        .requiredInline()
+                        .labelKey("opettajana_ammatillisessa_tutkinto_tehtavanimike")
+                        .build(),
+                Checkbox("opettajana_ammatillisessa_tutkinto_ammattillisten_opettajana")
+                        .formParams(formParameters)
+                        .inline()
+                        .build(),
+                Checkbox("opettajana_ammatillisessa_tutkinto_yhteisten_opettajana")
+                        .formParams(formParameters)
+                        .inline()
+                        .build()
+        );
+        eiKorkeakoulututkintoaBuilder.addChild(opettajaAmmatillisessaTutkintoRule);
+
+        // ...toimin kouluttajana ammatillisessa lisäkoulutuksessa
+        if (formParameters.isAmmattillinenOpettajaKoulutus()) {
+            Element opettajaAmmatillisessaRule = createVarEqualsToValueRule("ei_korkeakoulututkintoa",
+                    "opettajana_ammatillisessa");
+            opettajaAmmatillisessaRule.addChild(
+                    TextQuestion("opettajana_ammatillisessa_tyopaikka")
+                            .size(50)
+                            .formParams(formParameters)
+                            .requiredInline()
+                            .build(),
+                    TextArea("opettajana_ammatillisessa_kuvaus")
+                            .size(400)
+                            .formParams(formParameters)
+                            .requiredInline()
+                            .build());
+
+            eiKorkeakoulututkintoaBuilder
+                    .addOption(ElementUtil.createI18NText("ei_korkeakoulututkintoa.opettajana_ammatillisessa"),
+                            "opettajana_ammatillisessa")
+                    .addChild(opettajaAmmatillisessaRule);
+        }
+
+        // ...en toimi ammatillisen koulutuksen opetustehtävissä
+        eiKorkeakoulututkintoaBuilder.addOption(
+                ElementUtil.createI18NText("ei_korkeakoulututkintoa.ei_opettajana_ammatillisessa"),
+                "ei_opettajana_ammatillisessa");
+
+        tutkinnontasoRule.addChild(eiKorkeakoulututkintoaBuilder.formParams(formParameters).requiredInline().build());
+
+        List<Option> koulutusalatRaw = koodistoService.getKoulutusalat();
+        List<Option> koulutusalat = new ArrayList<Option>(koulutusalatRaw.size() - 1);
+        for (Option o : koulutusalatRaw) {
+            if (!o.getValue().equals("0")) {
+                koulutusalat.add(o);
+            }
+        }
+        // Koulutus- ja opintoala
+        OptionQuestion koulutusala = (OptionQuestion) Dropdown("amk_ope_koulutusala")
+                .emptyOption()
+                .addOptions(koulutusalat)
+                .excelColumnLabel("amk_ope_koulutusala.excel")
+                .formParams(formParameters)
+                .required()
+                .inline()
+                .build();
+        elements.add(koulutusala);
+        for (Option koulutusalaOption : koulutusala.getOptions()) {
+            String koulutusalaKoodi = koulutusalaOption.getValue();
+            Element opintoalaRule = createVarEqualsToValueRule("amk_ope_koulutusala", koulutusalaKoodi);
+            OptionQuestionBuilder opintoalaBuilder = Dropdown("amk_ope_opintoala")
+                    .emptyOption();
+            if (StringUtils.isNotBlank(koulutusalaKoodi)) {
+                opintoalaBuilder.addOptions(koodistoService.getOpintoalat(koulutusalaKoodi))
+                        .excelColumnLabel("amk_ope_opintoala.excel");
+            }
+            opintoalaRule.addChild(
+                    opintoalaBuilder.formParams(formParameters).requiredInline().build());
+            elements.add(opintoalaRule);
+        }
+
+        // Pedagogiset opinnot
+        if (formParameters.isAmmattillinenEritysopettajaTaiOppilaanohjaajaKoulutus()) {
+            Element pedagogisetOpinnot = Radio("pedagogiset_opinnot")
+                    .addOption(ElementUtil.createI18NText("pedagogiset_opinnot.kylla"), "true")
+                    .addOption(ElementUtil.createI18NText("pedagogiset_opinnot.ei"), "false")
+                    .requiredInline()
+                    .formParams(formParameters)
+                    .build();
+            elements.add(pedagogisetOpinnot);
+
+            Element pedagogisetOpinnotEiSuoritettuRule = createVarEqualsToValueRule("pedagogiset_opinnot", "false");
+            pedagogisetOpinnotEiSuoritettuRule.addChild(Info()
+                    .i18nText(ElementUtil.createI18NText("pedagogiset_opinnot.ei.info"))
+                    .inline().build());
+            elements.add(pedagogisetOpinnotEiSuoritettuRule);
+
+            Element pedagogisetOpinnotOnSuoritettuRule = createVarEqualsToValueRule("pedagogiset_opinnot", "true");
+            pedagogisetOpinnotOnSuoritettuRule.addChild(
+                    TextQuestion("pedagogiset_opinnot_oppilaitos")
+                            .size(50).formParams(formParameters).requiredInline().build(),
+                    TextQuestion("pedagogiset_opinnot_suoritusvuosi")
+                            .requiredInline()
+                            .validator(ElementUtil.createYearValidator(formParameters.getApplicationSystem().getHakukausiVuosi() + 1, 1900))
+                            .formParams(formParameters).build());
+            elements.add(pedagogisetOpinnotOnSuoritettuRule);
+        }
+        
+        // Muut tutkinnot
+        if (formParameters.isAmmattillinenOpettajaKoulutus()) {
+            Element muutTutkinnotGrp = TitledGroup("muut_tutkinnot").formParams(formParameters).inline().build();
+            elements.add(muutTutkinnotGrp);
+            for (String t : new String[] {"amt", "am", "kk", "tri"} ) {
+                String muuTutkintoBaseId = "muu_tutkinto_"+t;
+                Element muuTutkinto = Checkbox(muuTutkintoBaseId).formParams(formParameters).inline().build();
+                Element muuTutkintoSuoritettu = createVarEqualsToValueRule(muuTutkintoBaseId, "true");
+                muuTutkintoSuoritettu.addChild(TextQuestion(muuTutkintoBaseId + "_nimi")
+                        .i18nText(ElementUtil.createI18NAsIs("&nbsp;"))
+                        .size(50).formParams(formParameters).inline().build());
+                muutTutkinnotGrp.addChild(muuTutkinto, muuTutkintoSuoritettu);
+            }
+        }
+
+        return elements.toArray(new Element[elements.size()]);
     }
 
     private static Element[] createKorkeakouluKoulutustausta(FormParameters formParameters) {

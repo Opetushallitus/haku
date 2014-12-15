@@ -11,7 +11,9 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.service.ThemeQuestionConfigu
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakukohdeService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class FormParameters {
@@ -60,6 +62,7 @@ public class FormParameters {
         this.organizationService = organizationService;
         this.formConfiguration = formConfiguration;
         this.i18nBundle = new I18nBundle(getMessageBundleName(FORM_MESSAGES, applicationSystem));
+
     }
 
     public ApplicationSystem getApplicationSystem() {
@@ -84,6 +87,15 @@ public class FormParameters {
 
     public I18nText getI18nText(final String key) {
         return this.i18nBundle.get(key);
+    }
+
+
+    public boolean isAmmattillinenOpettajaKoulutus(){
+        return getFormTemplateType().equals(FormConfiguration.FormTemplateType.AMK_OPET);
+    }
+
+    public boolean isAmmattillinenEritysopettajaTaiOppilaanohjaajaKoulutus(){
+        return getFormTemplateType().equals(FormConfiguration.FormTemplateType.AMK_ERKAT_JA_OPOT);
     }
 
     public boolean isPerusopetuksenJalkeinenValmentava() {
@@ -121,4 +133,28 @@ public class FormParameters {
         this.onlyThemeGenerationForFormEditor = onlyThemeGenerationForFormEditor;
     }
 
+    public List<String> getAllowedLanguages() {
+        if (OppijaConstants.KOHDEJOUKKO_AMMATILLINEN_JA_LUKIO.equals(applicationSystem.getKohdejoukkoUri())
+                && OppijaConstants.HAKUTAPA_YHTEISHAKU.equals(applicationSystem.getHakutapa())
+                && OppijaConstants.HAKUTYYPPI_VARSINAINEN_HAKU.equals(applicationSystem.getApplicationSystemType())
+                && new Integer(2014).equals(applicationSystem.getHakukausiVuosi())
+                && OppijaConstants.HAKUKAUSI_SYKSY.equals(applicationSystem.getHakukausiUri())){
+            return asList("fi", "sv");
+        }
+        if (isAmmattillinenOpettajaKoulutus()) {
+            return asList("fi", "en");
+        }
+        if (isAmmattillinenEritysopettajaTaiOppilaanohjaajaKoulutus()) {
+            return asList("fi");
+        }
+        return asList("fi", "sv", "en");
+    }
+
+    private List<String> asList(String... langs) {
+        List<String> list = new ArrayList<String>(langs.length);
+        for (String lang : langs) {
+            list.add(lang);
+        }
+        return list;
+    }
 }
