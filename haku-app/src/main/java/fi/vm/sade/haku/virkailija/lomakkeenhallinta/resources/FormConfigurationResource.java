@@ -139,7 +139,8 @@ public class FormConfigurationResource {
     public void saveFormConfigurationForApplicationSystem(@PathParam("asId") String applicationSystemId,
                                                           FormConfiguration formConfiguration) throws IOException {
         LOGGER.debug("Saved form configuration for application system: " + applicationSystemId);
-        formConfigurationDAO.save(formConfiguration);
+        FormConfiguration searchConfiguration = new FormConfiguration(applicationSystemId);
+        formConfigurationDAO.update(searchConfiguration, formConfiguration);
         LOGGER.debug("Saved form configuration for application system: " + applicationSystemId);
     }
 
