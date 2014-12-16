@@ -32,9 +32,9 @@ public interface UIService {
 
     ModelResponse getPreview(final String applicationSystemId);
 
-    ModelResponse getPhase(final String applicationSystemId, final String phaseId);
+    ModelResponse getPhase(final String applicationSystemId, final String phaseId, final String lang);
 
-    void storePrefilledAnswers(final String applicationSystemId, final Map<String, String> answers);
+    void storePrefilledAnswers(final String applicationSystemId, final Map<String, String> answers, String lang);
 
     Map<String, Object> getElementHelp(final String applicationSystemId, final String elementId, final Map<String, String> map);
 
@@ -44,7 +44,7 @@ public interface UIService {
 
     ModelResponse getPhaseElement(final String applicationSystemId, final String phaseId, final String elementId);
 
-    ModelResponse savePhase(final String applicationSystemId, final String phaseId, Map<String, String> answers);
+    ModelResponse savePhase(final String applicationSystemId, final String phaseId, Map<String, String> answers, String lang);
 
     ModelResponse submitApplication(final String applicationSystemId, String language);
 

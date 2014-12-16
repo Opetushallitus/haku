@@ -70,8 +70,13 @@ public class NavigationIT extends DummyModelBaseItTest {
         clickLinkByText(DefaultValues.OPETUSPISTE);
         findByXPath("//option[@data-id='1.2.246.562.14.79893512065']").click();
 
-        fillOut(defaultValues.preference1);
+        screenshot("NavigationIT1");
 
+        fillOut(defaultValues.preference1);
+        screenshot("NavigationIT2");
+        nextPhase(OppijaConstants.PHASE_GRADES);
+        back();
+        screenshot("NavigationIT2.5");
         nextPhase(OppijaConstants.PHASE_GRADES);
 
         select();
@@ -115,15 +120,16 @@ public class NavigationIT extends DummyModelBaseItTest {
         back();
         back();
         back();
+        screenshot("NavigationIT3");
         back();
         back();
         nextPhase(OppijaConstants.PHASE_EDUCATION);
         nextPhase(OppijaConstants.PHASE_APPLICATION_OPTIONS);
+        screenshot("NavigationIT4");
         nextPhase(OppijaConstants.PHASE_GRADES);
         nextPhase(OppijaConstants.PHASE_MISC);
         nextPhase(OppijaConstants.PHASE_PREVIEW);
         nextPhase(OppijaConstants.PHASE_PREVIEW);
-        screenshot("navigation");
         findByIdAndClick("submit_confirm");
 
         elementsPresent("//li/span/span[contains(text(),'1')]");

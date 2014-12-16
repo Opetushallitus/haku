@@ -100,7 +100,7 @@ public class FormController {
                                 final MultivaluedMap<String, String> multiValues) throws URISyntaxException {
         LOGGER.debug("prefillForm {}, {}", applicationSystemId, multiValues);
         String lang = uiService.ensureLanguage(request, applicationSystemId);
-        uiService.storePrefilledAnswers(applicationSystemId, toSingleValueMap(multiValues));
+        uiService.storePrefilledAnswers(applicationSystemId, toSingleValueMap(multiValues), lang);
         Response.ResponseBuilder builder = Response.seeOther(new URI(
                 new RedirectToFormViewPath(applicationSystemId).getPath()));
         builder = addLangCookie(builder, request, lang);
@@ -117,7 +117,7 @@ public class FormController {
 
         LOGGER.debug("getPhase {}, {}", applicationSystemId, phaseId);
         String lang = uiService.ensureLanguage(request, applicationSystemId);
-        ModelResponse modelResponse = uiService.getPhase(applicationSystemId, phaseId);
+        ModelResponse modelResponse = uiService.getPhase(applicationSystemId, phaseId, lang);
         Viewable viewable = new Viewable(ROOT_VIEW, modelResponse.getModel());
 
         Response.ResponseBuilder builder = Response.ok(viewable);
@@ -187,11 +187,13 @@ public class FormController {
     @Path("/{applicationSystemId}/{phaseId}")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED + CHARSET_UTF_8)
     @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
-    public Response savePhase(@PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId,
+    public Response savePhase(@Context HttpServletRequest request,
+                              @PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId,
                               @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
                               final MultivaluedMap<String, String> answers) throws URISyntaxException {
         LOGGER.debug("savePhase {}, {}", applicationSystemId, phaseId);
-        ModelResponse modelResponse = uiService.savePhase(applicationSystemId, phaseId, toSingleValueMap(answers));
+        String lang = uiService.ensureLanguage(request, applicationSystemId);
+        ModelResponse modelResponse = uiService.savePhase(applicationSystemId, phaseId, toSingleValueMap(answers), lang);
         if (modelResponse.hasErrors()) {
             return Response.status(Response.Status.OK).entity(new Viewable(ROOT_VIEW, modelResponse.getModel())).build();
         } else {

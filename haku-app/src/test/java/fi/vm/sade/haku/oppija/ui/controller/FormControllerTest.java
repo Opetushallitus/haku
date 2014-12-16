@@ -18,7 +18,6 @@ package fi.vm.sade.haku.oppija.ui.controller;
 
 import com.sun.jersey.api.view.Viewable;
 import com.sun.jersey.core.util.MultivaluedMapImpl;
-
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
@@ -32,13 +31,13 @@ import fi.vm.sade.haku.oppija.ui.service.UIService;
 import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.PDFService;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Matchers;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.Response;
-
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
@@ -76,8 +75,9 @@ public class FormControllerTest {
         this.authenticationService = mock(AuthenticationService.class);
         UIService uiService = mock(UIService.class);
         PDFService pdfService = mock(PDFService.class);
-        when(uiService.getPhase(APPLICATION_SYSTEM_ID, FIRST_PHASE_ID)).thenReturn(modelResponse);
-        when(uiService.savePhase(Matchers.<String>any(), Matchers.<String>any(), Matchers.<Map>any())).thenReturn(modelResponse);
+        when(uiService.ensureLanguage(Matchers.<HttpServletRequest>any(), Matchers.<String>any())).thenReturn("fi");
+        when(uiService.getPhase(APPLICATION_SYSTEM_ID, FIRST_PHASE_ID, "fi")).thenReturn(modelResponse);
+        when(uiService.savePhase(Matchers.<String>any(), Matchers.<String>any(), Matchers.<Map>any(), Matchers.<String>any())).thenReturn(modelResponse);
         when(authenticationService.getLangCookieName()).thenReturn("testi18next");
         this.formController = new FormController(uiService, pdfService, authenticationService);
 
@@ -95,19 +95,19 @@ public class FormControllerTest {
     @SuppressWarnings("rawtypes")
     @Test
     public void testGetPhaseModelSize() throws Exception {
-        Viewable viewable = (Viewable) formController.getPhase(null, APPLICATION_SYSTEM_ID, FIRST_PHASE_ID).getEntity();
+        Viewable viewable = (Viewable) formController.getPhase(createRequest(), APPLICATION_SYSTEM_ID, FIRST_PHASE_ID).getEntity();
         assertEquals(4, ((Map) viewable.getModel()).size());
     }
 
     @Test
     public void testGetCategoryView() throws Exception {
-        Viewable viewable = (Viewable) formController.getPhase(null, APPLICATION_SYSTEM_ID, FIRST_PHASE_ID).getEntity();
+        Viewable viewable = (Viewable) formController.getPhase(createRequest(), APPLICATION_SYSTEM_ID, FIRST_PHASE_ID).getEntity();
         assertEquals("/elements/Root", viewable.getTemplateName());
     }
 
     @Test
     public void testGetCategoryWrongView() throws Exception {
-        Viewable viewable = (Viewable) formController.getPhase(null, APPLICATION_SYSTEM_ID, FIRST_PHASE_ID).getEntity();
+        Viewable viewable = (Viewable) formController.getPhase(createRequest(), APPLICATION_SYSTEM_ID, FIRST_PHASE_ID).getEntity();
         assertNotSame(null, viewable.getTemplateName());
     }
 
@@ -116,14 +116,23 @@ public class FormControllerTest {
         HashMap<String, I18nText> errorMessages = new HashMap<String, I18nText>();
         errorMessages.put("", ElementUtil.createI18NAsIs(""));
         this.modelResponse.setErrorMessages(errorMessages);
-        Viewable viewable = (Viewable) formController.savePhase(APPLICATION_SYSTEM_ID, FIRST_PHASE_ID, new MultivaluedMapImpl()).getEntity();
+        HttpServletRequest request = createRequest();
+        Viewable viewable = (Viewable) formController.savePhase(request, APPLICATION_SYSTEM_ID, FIRST_PHASE_ID, new MultivaluedMapImpl()).getEntity();
         assertEquals(FormController.ROOT_VIEW, viewable.getTemplateName());
     }
 
     @Test
     public void testSavePhaseValid() throws Exception {
-        Response response = formController.savePhase(APPLICATION_SYSTEM_ID, FIRST_PHASE_ID, new MultivaluedMapImpl());
+        Response response = formController.savePhase(createRequest(), APPLICATION_SYSTEM_ID, FIRST_PHASE_ID, new MultivaluedMapImpl());
         String actual = ((URI) response.getMetadata().get("Location").get(0)).getPath();
         assertEquals(new RedirectToPhaseViewPath(APPLICATION_SYSTEM_ID, FIRST_PHASE_ID).getPath(), actual);
+    }
+
+    private HttpServletRequest createRequest() {
+        HttpServletRequest request = mock(HttpServletRequest.class);
+        Cookie[] cookies = new Cookie[1];
+        cookies[0] = new Cookie("testi18next", "fi");
+        when(request.getCookies()).thenReturn(cookies);
+        return request;
     }
 }

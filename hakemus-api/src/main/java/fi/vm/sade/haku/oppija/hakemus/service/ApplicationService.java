@@ -31,7 +31,7 @@ public interface ApplicationService {
 
     Application getApplication(final String applicationSystemId);
 
-    Map<String, String> ensureApplicationOptionGroupData(Map<String, String> answers);
+    Map<String, String> ensureApplicationOptionGroupData(Map<String, String> answers, String lang);
 
     Application ensureApplicationOptionGroupData(Application application);
 

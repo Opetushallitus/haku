@@ -1,15 +1,14 @@
 package fi.vm.sade.haku.virkailija.koulutusinformaatio.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.springframework.context.annotation.Profile;
-import org.springframework.stereotype.Service;
-
 import fi.vm.sade.haku.virkailija.koulutusinformaatio.KoulutusinformaatioService;
 import fi.vm.sade.koulutusinformaatio.domain.dto.AddressDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.LearningOpportunityProviderDTO;
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @Profile(value = {"dev", "it"})
@@ -18,6 +17,15 @@ public class KoulutusinformaatioServiceMockImpl implements
 
 	@Override
 	public ApplicationOptionDTO getApplicationOption(String oid) {
+
+        if ("1.2.246.562.5.20176855623".equals(oid)) {
+            return getAo1();
+        } else if ("1.2.246.562.14.79893512065".equals(oid)) {
+            return getAo2();
+        } else if ("1.2.246.562.20.30500448839".equals(oid)) {
+            return getAo3();
+        }
+
 		ApplicationOptionDTO applicationOption = new ApplicationOptionDTO();
 		applicationOption.setName("MockKoulutus");
         LearningOpportunityProviderDTO provider = new LearningOpportunityProviderDTO();
@@ -42,6 +50,66 @@ public class KoulutusinformaatioServiceMockImpl implements
     @Override
     public ApplicationOptionDTO getApplicationOption(String aoOid, String lang) {
         return getApplicationOption(aoOid);
+    }
+
+    private ApplicationOptionDTO getAo1() {
+        return new ApplicationOptionDTO() {{
+            setId("1.2.246.562.5.20176855623");
+            setName("Tieto- ja tietoliikennetekniikan perustutkinto, yo");
+            setAoIdentifier("143");
+            setEducationDegree("32");
+            setSora(false);
+            setTeachingLanguages(new ArrayList<String>(1) {{
+                add("FI");
+            }});
+            setAthleteEducation(true);
+            setProvider(new LearningOpportunityProviderDTO() {{
+                setId("1.2.246.562.10.51872958189");
+                setName("Stadin ammattiopisto, Sturenkadun toimipaikka");
+            }});
+        }};
+    }
+
+    private ApplicationOptionDTO getAo2() {
+        return new ApplicationOptionDTO() {{
+            setId("1.2.246.562.14.79893512065");
+            setName("Kaivosalan perustutkinto, pk");
+            setAoIdentifier("333");
+            setEducationDegree("32");
+            setEducationCodeUri("koulutus_381203");
+            setTeachingLanguages(new ArrayList<String>(1) {{
+                add("FI");
+            }});
+            setAthleteEducation(true);
+            setKaksoistutkinto(false);
+            setVocational(true);
+            setProvider(new LearningOpportunityProviderDTO() {{
+                setId("1.2.246.562.10.89537774706");
+                setName("FAKTIA, Espoo op");
+            }});
+            setSora(true);
+        }};
+    }
+
+    private ApplicationOptionDTO getAo3() {
+        return new ApplicationOptionDTO() {{
+            setId("1.2.246.562.20.30500448839");
+            setName("Kymppiluokka");
+            setAoIdentifier("019");
+            setEducationDegree("22");
+            setEducationCodeUri("koulutus_222222");
+            setTeachingLanguages(new ArrayList<String>(1) {{
+                add("FI");
+            }});
+            setAthleteEducation(false);
+            setKaksoistutkinto(false);
+            setVocational(true);
+            setProvider(new LearningOpportunityProviderDTO() {{
+                setId("1.2.246.562.10.35241670047");
+                setName("Anna Tapion koulu");
+            }});
+            setSora(false);
+        }};
     }
 
 }

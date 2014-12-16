@@ -118,14 +118,14 @@ public class UIServiceImpl implements UIService {
     }
 
     @Override
-    public ModelResponse getPhase(String applicationSystemId, String phaseId) {
+    public ModelResponse getPhase(String applicationSystemId, String phaseId, String lang) {
         ApplicationSystem activeApplicationSystem = applicationSystemService.getActiveApplicationSystem(applicationSystemId);
         ElementTree elementTree = new ElementTree(activeApplicationSystem.getForm());
         Element phase = elementTree.getChildById(phaseId);
         Application application = applicationService.getApplication(applicationSystemId);
         elementTree.checkPhaseTransfer(application.getPhaseId(), phaseId);
         ModelResponse modelResponse = new ModelResponse(activeApplicationSystem);
-        modelResponse.addAnswers(userSession.populateWithPrefillData(ensureApplicationOptionGroupData(phaseId, application.getVastauksetMerged())));
+        modelResponse.addAnswers(userSession.populateWithPrefillData(ensureApplicationOptionGroupData(phaseId, application.getVastauksetMerged(), lang)));
         modelResponse.setElement(phase);
         modelResponse.setKoulutusinformaatioBaseUrl(koulutusinformaatioBaseUrl);
         modelResponse.addObjectToModel("higherEd",
@@ -134,16 +134,16 @@ public class UIServiceImpl implements UIService {
         return modelResponse;
     }
 
-    private Map<String, String> ensureApplicationOptionGroupData(String phaseId, Map<String, String> answers) {
+    private Map<String, String> ensureApplicationOptionGroupData(String phaseId, Map<String, String> answers, String lang) {
         //TODO this is an evil kludge, pls kill it asap
         if (!OppijaConstants.PHASE_APPLICATION_OPTIONS.equals(phaseId))
             return answers;
-        return applicationService.ensureApplicationOptionGroupData(answers);
+        return applicationService.ensureApplicationOptionGroupData(answers, lang);
     }
 
     @Override
-    public void storePrefilledAnswers(String applicationSystemId, Map<String, String> answers) {
-        userSession.addPrefillData(applicationSystemId, applicationService.ensureApplicationOptionGroupData(answers));
+    public void storePrefilledAnswers(String applicationSystemId, Map<String, String> answers, String lang) {
+        userSession.addPrefillData(applicationSystemId, applicationService.ensureApplicationOptionGroupData(answers, lang));
     }
 
     @Override
@@ -211,8 +211,8 @@ public class UIServiceImpl implements UIService {
     }
 
     @Override
-    public ModelResponse savePhase(String applicationSystemId, String phaseId, Map<String, String> originalAnswers) {
-        Map<String, String> ensuredAnswers = ensureApplicationOptionGroupData(phaseId, originalAnswers);
+    public ModelResponse savePhase(String applicationSystemId, String phaseId, Map<String, String> originalAnswers, String lang) {
+        Map<String, String> ensuredAnswers = ensureApplicationOptionGroupData(phaseId, originalAnswers, lang);
         Form activeForm = applicationSystemService.getActiveApplicationSystem(applicationSystemId).getForm();
         ApplicationState applicationState = applicationService.saveApplicationPhase(
                 new ApplicationPhase(applicationSystemId, phaseId, ensuredAnswers));
