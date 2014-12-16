@@ -1,14 +1,6 @@
 package fi.vm.sade.haku.oppija.hakemus.domain.util;
 
-import fi.vm.sade.haku.oppija.hakemus.domain.Address;
-import fi.vm.sade.haku.oppija.hakemus.domain.AddressBuilder;
-import fi.vm.sade.haku.oppija.hakemus.domain.Application;
-import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationAttachmentRequest;
-import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationAttachmentRequestBuilder;
-import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationAttachment;
-import org.apache.commons.lang3.StringUtils;
-
-import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationAttachmentBuilder;
+import fi.vm.sade.haku.oppija.hakemus.domain.*;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationOptionAttachmentRequest;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
@@ -18,6 +10,7 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain.SimpleAddress;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import fi.vm.sade.koulutusinformaatio.domain.dto.*;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.*;
 
@@ -62,6 +55,7 @@ public class AttachmentUtil {
         attachments = addApplicationOptionAttachments(attachments, application, koulutusinformaatioService, lang);
         attachments = addDiscreationaryAttachments(attachments, application, koulutusinformaatioService, lang);
         attachments = addHigherEdAttachments(attachments, application, koulutusinformaatioService, lang);
+        attachments = addAmkOpeAttachments(attachments, application, koulutusinformaatioService, lang);
         attachments = addApplicationOptionAttachmentRequestsFromForm(attachments, application, applicationSystem);
 
         return attachments;
@@ -106,25 +100,27 @@ public class AttachmentUtil {
         for (String aoOid : ApplicationUtil.getApplicationOptionAttachmentAOIds(application)) {
             ApplicationOptionDTO ao = koulutusinformaatioService.getApplicationOption(aoOid, lang);
             for (ApplicationOptionAttachmentDTO attachmentDTO : ao.getAttachments()) {
-                String descriptionText = attachmentDTO.getDescreption();
-                I18nText description = null;
-                if (isNotBlank(descriptionText)) {
-                    description = ElementUtil.createI18NAsIs(descriptionText);
-                } else {
-                    description = ElementUtil.createI18NAsIs("");
+                if (attachmentDTO.isUsedInApplicationForm()) {
+                    String descriptionText = attachmentDTO.getDescreption();
+                    I18nText description = null;
+                    if (isNotBlank(descriptionText)) {
+                        description = ElementUtil.createI18NAsIs(descriptionText);
+                    } else {
+                        description = ElementUtil.createI18NAsIs("");
+                    }
+                    attachments.add(
+                            ApplicationAttachmentRequestBuilder.start()
+                                    .setPreferenceAoId(ao.getId())
+                                    .setApplicationAttachment(
+                                            ApplicationAttachmentBuilder.start()
+                                                    .setName(ElementUtil.createI18NAsIs(attachmentDTO.getType()))
+                                                    .setDescription(description)
+                                                    .setDeadline(attachmentDTO.getDueDate())
+                                                    .setAddress(getAddress(attachmentDTO.getAddress()))
+                                                    .build()
+                                    ).build()
+                    );
                 }
-                attachments.add(
-                  ApplicationAttachmentRequestBuilder.start()
-                    .setPreferenceAoId(ao.getId())
-                    .setApplicationAttachment(
-                      ApplicationAttachmentBuilder.start()
-                        .setName(ElementUtil.createI18NAsIs(attachmentDTO.getType()))
-                        .setDescription(description)
-                        .setDeadline(attachmentDTO.getDueDate())
-                        .setAddress(getAddress(attachmentDTO.getAddress()))
-                        .build()
-                    ).build()
-                );
             }
         }
         return attachments;
@@ -200,22 +196,9 @@ public class AttachmentUtil {
                                                                       Application application,
                                                                       KoulutusinformaatioService koulutusinformaatioService,
                                                                       String lang) {
-        Map<String, List<String>> higherEdAttachmentAOIds = ApplicationUtil.getHigherEdAttachmentAOIds(application);
-        Map<String, List<ApplicationOptionDTO>> higherEdAttachments =
-                new HashMap<String, List<ApplicationOptionDTO>>();
-        for (Map.Entry<String, List<String>> entry : higherEdAttachmentAOIds.entrySet()) {
-            String key = entry.getKey();
-            List<ApplicationOptionDTO> aos =
-                    new ArrayList<ApplicationOptionDTO>();
-            for (String aoOid : entry.getValue()) {
-                ApplicationOptionDTO ao = koulutusinformaatioService.getApplicationOption(aoOid, lang);
-                ao = ensureAddress(ao);
-                if (!addressAlreadyAdded(aos, ao)) {
-                    aos.add(ao);
-                }
-            }
-            higherEdAttachments.put(key, aos);
-        }
+
+        Map<String, List<ApplicationOptionDTO>> higherEdAttachments = getApplicationOptions(
+                ApplicationUtil.getHigherEdAttachmentAOIds(application), koulutusinformaatioService, lang);
 
         // This variable intentionally left null.
         Date deadline = null;
@@ -255,6 +238,91 @@ public class AttachmentUtil {
             }
         }
         return attachments;
+    }
+
+    private static List<ApplicationAttachmentRequest> addAmkOpeAttachments(
+            List<ApplicationAttachmentRequest> attachments, Application application,
+            KoulutusinformaatioService koulutusinformaatioService, String lang) {
+
+        Map<String, List<ApplicationOptionDTO>> amkOpeAttachments = getApplicationOptions(
+                ApplicationUtil.getAmkOpeAttachments(application), koulutusinformaatioService, lang);
+
+        Calendar deadlineCal = GregorianCalendar.getInstance();
+        deadlineCal.set(Calendar.YEAR, 2015);
+        deadlineCal.set(Calendar.MONTH, GregorianCalendar.FEBRUARY);
+        deadlineCal.set(Calendar.DAY_OF_MONTH, 3);
+        deadlineCal.set(Calendar.HOUR_OF_DAY, 15);
+        deadlineCal.set(Calendar.MINUTE, 0);
+        deadlineCal.set(Calendar.SECOND, 0);
+
+        Date deadline = deadlineCal.getTime();
+
+
+//            // Liite 1. Tutkinto, jolla haet: kopio tutkintotodistuksestasi ja tarvittaessa kopio rinnastamispäätöksestä
+//            attachments.put("tutkintotodistus", aoIds);
+//            // Liite: Rinnastuspäätös tutkinnosta, joka on suoritettu muualla kuin Suomessa
+//            attachments.put("rinnastuspaatos", aoIds);
+//            // Liite 2. Oppilaitoksen/työnantajan lausunto, https://opintopolku.fi/wp/wp-content/uploads/2014/12/2015_Oppilaitoksen_lausunto.pdf (laita linkki aukeamaan uuteen ikkunaan)
+//            attachments.put("tyonantajanLausunto", aoIds);
+//            // Liite 3. Opettajan pedagogiset opinnot: kopio todistuksestasi
+//            attachments.put("pedagogisetOpinnot", aoIds);
+
+        for (Map.Entry<String, List<ApplicationOptionDTO>> entry : amkOpeAttachments.entrySet()) {
+            String attachmentType = entry.getKey();
+            for (ApplicationOptionDTO aoDTO : entry.getValue()) {
+                AddressDTO addressDTO = null;
+                String name = null;
+                if (aoDTO.getProvider().getApplicationOffice() != null &&
+                        aoDTO.getProvider().getApplicationOffice().getPostalAddress() != null) {
+                    addressDTO = aoDTO.getProvider().getApplicationOffice().getPostalAddress();
+                    name = aoDTO.getProvider().getApplicationOffice().getName();
+                } else {
+                    addressDTO = aoDTO.getProvider().getPostalAddress();
+                    name = aoDTO.getProvider().getName();
+                }
+
+                //TODO =RS= FIX THE NULL
+                attachments.add(ApplicationAttachmentRequestBuilder.start()
+                                .setPreferenceAoId(aoDTO.getId())
+                                .setPreferenceAoGroupId(null)
+                                .setApplicationAttachment(
+                                        ApplicationAttachmentBuilder.start()
+                                                .setName(ElementUtil.createI18NAsIs(StringUtil.safeToString(aoDTO.getProvider().getName())))
+                                                .setDescription(ElementUtil.createI18NText("form.valmis.amkope." + attachmentType))
+                                                .setDeadline(deadline)
+                                                .setAddress(AddressBuilder.start()
+                                                        .setRecipient(name)
+                                                        .setStreetAddress(addressDTO.getStreetAddress())
+                                                        .setStreetAddress2(addressDTO.getStreetAddress2())
+                                                        .setPostalCode(addressDTO.getPostalCode())
+                                                        .setPostOffice(addressDTO.getPostOffice())
+                                                        .build())
+                                                .build()).build()
+                );
+            }
+        }
+
+        return attachments;
+    }
+
+    private static Map<String, List<ApplicationOptionDTO>> getApplicationOptions(Map<String, List<String>> higherEdAttachmentAOIds,
+                                                                                 KoulutusinformaatioService koulutusinformaatioService,
+                                                                                 String lang) {
+        Map<String, List<ApplicationOptionDTO>> applicationOptions = new HashMap<String, List<ApplicationOptionDTO>>();
+        new HashMap<String, List<ApplicationOptionDTO>>();
+        for (Map.Entry<String, List<String>> entry : higherEdAttachmentAOIds.entrySet()) {
+            String key = entry.getKey();
+            List<ApplicationOptionDTO> aos = new ArrayList<ApplicationOptionDTO>();
+            for (String aoOid : entry.getValue()) {
+                ApplicationOptionDTO ao = koulutusinformaatioService.getApplicationOption(aoOid, lang);
+                ao = ensureAddress(ao);
+                if (!addressAlreadyAdded(aos, ao)) {
+                    aos.add(ao);
+                }
+            }
+            applicationOptions.put(key, aos);
+        }
+        return applicationOptions;
     }
 
     private static ApplicationOptionDTO ensureAddress(ApplicationOptionDTO ao) {

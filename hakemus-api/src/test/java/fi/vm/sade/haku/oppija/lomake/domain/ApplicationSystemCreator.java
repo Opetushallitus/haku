@@ -17,12 +17,12 @@ public class ApplicationSystemCreator {
         instance.roll(Calendar.YEAR, 2);
         Date end = new Date(instance.getTimeInMillis());
         List<ApplicationPeriod> applicationPeriods = Lists.newArrayList(new ApplicationPeriod(start, end));
-        return new ApplicationSystemBuilder().addId(id).addForm(form)
-            .addName(ElementUtil.createI18NAsIs("test application period"))
-            .addApplicationPeriods(applicationPeriods)
-            .addHakukausiUri(OppijaConstants.HAKUKAUSI_SYKSY)
-            .addApplicationSystemType(OppijaConstants.HAKUTYYPPI_VARSINAINEN_HAKU)
-            .addHakutapa(OppijaConstants.HAKUTAPA_YHTEISHAKU)
+        return new ApplicationSystemBuilder().setId(id).setForm(form)
+            .setName(ElementUtil.createI18NAsIs("test application period"))
+            .setApplicationPeriods(applicationPeriods)
+            .setHakukausiUri(OppijaConstants.HAKUKAUSI_SYKSY)
+            .setApplicationSystemType(OppijaConstants.HAKUTYYPPI_VARSINAINEN_HAKU)
+            .setHakutapa(OppijaConstants.HAKUTAPA_YHTEISHAKU)
             .get();
     }
 }

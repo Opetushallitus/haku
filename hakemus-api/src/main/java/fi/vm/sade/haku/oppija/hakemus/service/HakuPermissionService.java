@@ -52,6 +52,8 @@ public interface HakuPermissionService {
 
     boolean userCanEnterApplication();
 
+    List<String> userCanEnterApplications();
+
     boolean userCanSearchBySendingSchool();
 
     boolean userCanEditApplicationAdditionalData(Application application);

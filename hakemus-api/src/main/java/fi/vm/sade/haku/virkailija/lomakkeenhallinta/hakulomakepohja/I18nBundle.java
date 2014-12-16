@@ -16,27 +16,37 @@ public class I18nBundle {
     private static Logger log = LoggerFactory.getLogger(ElementUtil.class);
     private final Map<String, I18nText> i18nBundle = new HashMap<String, I18nText>();
 
-    public I18nBundle(final String bundleName) {
+    public I18nBundle(final String... bundleNames) {
         ResourceBundle commonBundle = ResourceBundle.getBundle(FORM_COMMON_BUNDLE_NAME, new Locale("fi"));
         Set<String> propertyKeys = commonBundle.keySet();
 
-        try {
-            ResourceBundle bundle = ResourceBundle.getBundle(bundleName, new Locale("fi"));
-            propertyKeys.addAll(bundle.keySet());
-        } catch (MissingResourceException mre) {
-            log.warn("Bundle {} not found", bundleName);
+        List<String> bundleNamesList = new ArrayList<String>(bundleNames.length + 1);
+        bundleNamesList.add(FORM_COMMON_BUNDLE_NAME);
+        for (String bundleName : bundleNames) {
+            bundleNamesList.add(bundleName);
+        }
+
+        for (String bundleName : bundleNamesList) {
+            try {
+                ResourceBundle bundle = ResourceBundle.getBundle(bundleName, new Locale("fi"));
+                propertyKeys.addAll(bundle.keySet());
+            } catch (MissingResourceException mre) {
+                log.warn("Bundle {} not found", bundleName);
+            }
         }
 
         for (String key : propertyKeys) {
             Map<String, String> translations = new HashMap<String, String>();
             String lowerCaseKey = key.toLowerCase();
-            for (String lang : LANGS) {
-                String text = getString(bundleName, lowerCaseKey, lang);
-                if (text != null) {
-                    translations.put(lang, text);
+            for (String bundleName : bundleNames) {
+                for (String lang : LANGS) {
+                    String text = getString(bundleName, lowerCaseKey, lang);
+                    if (text != null) {
+                        translations.put(lang, text);
+                    }
                 }
+                i18nBundle.put(lowerCaseKey, new I18nText(translations));
             }
-            i18nBundle.put(lowerCaseKey, new I18nText(translations));
         }
     }
 

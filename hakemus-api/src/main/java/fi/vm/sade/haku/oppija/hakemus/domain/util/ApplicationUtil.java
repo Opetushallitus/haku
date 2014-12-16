@@ -2,23 +2,16 @@ package fi.vm.sade.haku.oppija.hakemus.domain.util;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
-import fi.vm.sade.haku.oppija.hakemus.domain.Application;
-import fi.vm.sade.haku.oppija.hakemus.domain.PreferenceChecked;
-import fi.vm.sade.haku.oppija.hakemus.domain.PreferenceCheckedBuilder;
-import fi.vm.sade.haku.oppija.hakemus.domain.PreferenceEligibility;
-import fi.vm.sade.haku.oppija.hakemus.domain.PreferenceEligibilityBuilder;
+import fi.vm.sade.haku.oppija.hakemus.domain.*;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
-import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.*;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.OPTION_ID_POSTFIX;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.PREFERENCE_PREFIX;
 import static org.apache.commons.lang.StringUtils.isNotEmpty;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 
 public final class ApplicationUtil {
@@ -84,6 +77,44 @@ public final class ApplicationUtil {
         return attachments;
     }
 
+    public static Map<String, List<String>> getAmkOpeAttachments(final Application application) {
+        Map<String, List<String>> attachments = new LinkedHashMap<String, List<String>>();
+        List<String> aoIds = new ArrayList<String> () {{ add(getFirstAoId(application)); }};
+
+        Map<String, String> koulutustaustaAnswers = application.getPhaseAnswers(OppijaConstants.PHASE_EDUCATION);
+
+        String tutkintotaso = koulutustaustaAnswers.get("amk_ope_tutkinnontaso");
+        if (isNotBlank(tutkintotaso)) {
+            // Liite 1. Tutkinto, jolla haet: kopio tutkintotodistuksestasi ja tarvittaessa kopio rinnastamispäätöksestä
+            attachments.put("tutkintotodistus", aoIds);
+        }
+
+        List<String> eiKorkeakoulututkinto = new ArrayList<String>() {{
+            add("opisto"); add("ammatillinen"); add("ammatti"); add("muu");
+        }};
+
+        if (eiKorkeakoulututkinto.contains(tutkintotaso)) {
+            if ("opettajana_ammatillisessa_tutkinto".equals(koulutustaustaAnswers.get("ei_korkeakoulututkintoa"))
+                    || "opettajana_ammatillisessa".equals(koulutustaustaAnswers.get("ei_korkeakoulututkintoa"))) {
+                // Liite 2. Oppilaitoksen/työnantajan lausunto, https://opintopolku.fi/wp/wp-content/uploads/2014/12/2015_Oppilaitoksen_lausunto.pdf (laita linkki aukeamaan uuteen ikkunaan)
+                attachments.put("tyonantajan_lausunto", aoIds);
+            }
+        }
+
+        String pedagogisetOpinnot = koulutustaustaAnswers.get("pedagogiset_opinnot");
+        if (isNotBlank(pedagogisetOpinnot) && pedagogisetOpinnot.equals("true")) {
+            // Liite 3. Opettajan pedagogiset opinnot: kopio todistuksestasi
+            attachments.put("pedagogiset_opinnot", aoIds);
+        }
+
+        return attachments;
+    }
+
+    private static String getFirstAoId(Application application) {
+        Map<String, String> preferenceAnswers = application.getPhaseAnswers(OppijaConstants.PHASE_APPLICATION_OPTIONS);
+        String aoKey = String.format(OppijaConstants.PREFERENCE_ID, 1);
+        return preferenceAnswers.get(aoKey);
+    }
 
 
     private static boolean yoNeeded(Application application) {

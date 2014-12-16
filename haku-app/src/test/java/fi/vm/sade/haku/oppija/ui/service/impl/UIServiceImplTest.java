@@ -5,7 +5,6 @@ import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystemBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
-import fi.vm.sade.haku.oppija.lomake.domain.ModelResponse;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.haku.oppija.lomake.service.UserSession;
 import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
@@ -17,14 +16,11 @@ import fi.vm.sade.koulutusinformaatio.domain.dto.AddressDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOfficeDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.LearningOpportunityProviderDTO;
-
 import org.junit.Before;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 
 public class UIServiceImplTest {
@@ -41,17 +37,14 @@ public class UIServiceImplTest {
     Map<String, ApplicationOptionDTO> aos;
     @Before
     public void setUp() {
-        System.out.println("setUp");
         aos = new HashMap<String, ApplicationOptionDTO>();
         aos.put("1.2.3", createApplicationOption("1.2.3", "office123", "00123", "POSTAL 123", "Street 123"));
         aos.put("4.5.6", createApplicationOption("4.5.6", "office789", "00789", "POSTAL 789", "Street 789"));
         aos.put("7.8.9", createApplicationOption("7.8.9", "office789", "00789", "POSTAL 789", "Street 789"));
-        System.out.println("setUp done");
     }
 
     private ApplicationOptionDTO createApplicationOption(String oid , String officeName, String postalCode, String postalOffice,
                                                          String streetAddress) {
-        System.out.println("createApplicationOption");
         ApplicationOptionDTO ao = new ApplicationOptionDTO();
         ao.setId(oid);
         LearningOpportunityProviderDTO provider = new LearningOpportunityProviderDTO();
@@ -64,7 +57,6 @@ public class UIServiceImplTest {
         office.setPostalAddress(address);
         provider.setApplicationOffice(office);
         ao.setProvider(provider);
-        System.out.println("createApplicationOption done");
         return ao;
     }
 
@@ -123,8 +115,8 @@ public class UIServiceImplTest {
 
     private ApplicationSystem buildApplicationSystem(String asId) {
         ApplicationSystemBuilder builder = new ApplicationSystemBuilder()
-                .addId(asId)
-                .addName(new I18nText(new HashMap<String, String>()));
+                .setId(asId)
+                .setName(new I18nText(new HashMap<String, String>()));
 
         return builder.get();
     }

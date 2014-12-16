@@ -6,10 +6,13 @@ import fi.vm.sade.haku.oppija.lomake.domain.ApplicationOptionAttachmentRequest;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.builder.TitledGroupBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
-import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.Expr;
+import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.*;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.dao.ThemeQuestionDAO;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.dao.ThemeQuestionQueryParameters;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain.ThemeCheckBoxQuestion;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain.ThemeOptionQuestion;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain.ThemeQuestion;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain.ThemeTextQuestion;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakukohdeService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
@@ -136,18 +139,29 @@ public final class ThemeQuestionConfigurator {
 
     private List<Element> configureQuestions(final ThemeQuestionQueryParameters baseQuery, final String optionId, final String parentId) {
         final List<ThemeQuestion> themeQuestions = queryQuestions(baseQuery, optionId, parentId);
-        LOGGER.debug("Configuring a list of "+ themeQuestions.size() +" themequestions");
+        LOGGER.debug("Configuring a list of " + themeQuestions.size() + " themequestions");
+        final HashMap <String, Element> followupRules = new HashMap<String, Element>();
         final ArrayList<Element> configuredElements = new ArrayList<Element>(themeQuestions.size());
         for (ThemeQuestion tq : themeQuestions) {
             Element configuredQuestion = tq.generateElement(formParameters);
             LOGGER.debug("configured question {} of type {}", tq.getId(), tq.getClass().getSimpleName());
-            configuredElements.add(configuredQuestion);
+            if (null == parentId) {
+                configuredElements.add(configuredQuestion);
+            }
+            else {
+                if (!followupRules.containsKey(tq.getFollowupCondition())){
+                    followupRules.put(tq.getFollowupCondition(), generateFollowupRule(tq.getFollowupCondition(), parentId));
+                }
+                followupRules.get(tq.getFollowupCondition()).addChild(configuredQuestion);
+            }
 
             List<Element> followupQuestions = configureQuestions(baseQuery, null, tq.getId().toString());
             if (followupQuestions.size() > 0 ) {
                 configuredQuestion.addChild(followupQuestions.toArray(new Element[followupQuestions.size()]));
             }
         }
+        if (followupRules.size() > 0 )
+            return new ArrayList<Element>(followupRules.values());
         LOGGER.debug("Configuration of the list complete");
         return configuredElements;
     }
@@ -201,6 +215,20 @@ public final class ThemeQuestionConfigurator {
           .i18nText(groupName)
           .build();
         return group;
+    }
+
+    private Element generateFollowupRule(final String followupCondition, final String parentId) {
+        LOGGER.debug("Generating followupRule for followupCondition {}, parentId {}", followupCondition, parentId);
+        Expr ruleExpr = null;
+        ThemeQuestion parentTq = themeQuestionDAO.findById(parentId);
+        if (parentTq instanceof ThemeCheckBoxQuestion) {
+            ruleExpr = ExprUtil.isAnswerTrue(parentId + "-" + followupCondition);
+        } else if (parentTq instanceof ThemeOptionQuestion) {
+            ruleExpr = ExprUtil.equals(parentId, followupCondition);
+        } else if (parentTq instanceof ThemeTextQuestion) {
+            ruleExpr = new Not(new Regexp(parentId, "^\\s*$"));
+        }
+        return Rule(ruleExpr).build();
     }
 
     private Element generateApplicationOptionRule(final String applicationOptionId, final String preferenceElementId, final Boolean groupOption) {
