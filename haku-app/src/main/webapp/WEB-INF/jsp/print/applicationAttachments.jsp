@@ -22,7 +22,10 @@
                     <c:if test="${not empty attachment.header}">
                         <haku:i18nText value="${attachment.header}"/><br/>
                     </c:if>
-                    <haku:i18nText value="${attachment.description}" /></td>
+                    <c:if test="${not empty attachment.description}">
+                        <haku:i18nText value="${attachment.description}" />
+                    </c:if>
+                </td>
                 <td>
                     <c:if test="${(not empty attachment.address.recipient)}">
                         <c:out value="${attachment.address.recipient}"/><br/>
