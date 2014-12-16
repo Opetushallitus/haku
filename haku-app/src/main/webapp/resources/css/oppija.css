@@ -2087,7 +2087,7 @@ label, .label {
 /*** Mandatory
 ************************************************/
 .required:after {
-  content: " *"; }
+  content: "\0000a0*"; }
 
 .required-field {
   font-size: 0.813em;

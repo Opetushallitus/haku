@@ -47,7 +47,7 @@ import static java.lang.ClassLoader.getSystemResourceAsStream;
 import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "classpath:spring/test-context.xml")
+@ContextConfiguration("classpath:spring/tomcat-container-context.xml")
 @ActiveProfiles(profiles = {"it"})
 public class ApplicationDAOMongoImplIT extends AbstractDAOTest {
 
@@ -119,9 +119,9 @@ public class ApplicationDAOMongoImplIT extends AbstractDAOTest {
 
     @Test
     public void testfindAllQueriedByApplicationSystemAndApplicationOption() {
-        ApplicationQueryParameters applicationQueryParameters  = new ApplicationQueryParametersBuilder().setSearchTerms("").setAsId("YhteisHaku").setAoId("776").build();
+        ApplicationQueryParameters applicationQueryParameters  = new ApplicationQueryParametersBuilder().setSearchTerms("").setAsId("Yhteishaku").setAoId("776").build();
         AuthenticationServiceMockImpl authenticationServiceMock = new AuthenticationServiceMockImpl();
-        ApplicationFilterParameters filterParameters = new ApplicationFilterParameters(6,
+        ApplicationFilterParameters filterParameters = new ApplicationFilterParameters(5,
                 authenticationServiceMock.getOrganisaatioHenkilo(), authenticationServiceMock.getOrganisaatioHenkilo(), null);
         ApplicationSearchResultDTO resultDTO = applicationDAO.findAllQueried(applicationQueryParameters, filterParameters);
         assertFalse(CollectionUtils.isEmpty(resultDTO.getResults()));

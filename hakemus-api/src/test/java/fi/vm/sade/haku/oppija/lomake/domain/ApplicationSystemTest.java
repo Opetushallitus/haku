@@ -35,12 +35,12 @@ public class ApplicationSystemTest {
     public void testIsActiveSame() throws Exception {
         Date now = new Date();
         List<ApplicationPeriod> applicationPeriods = Lists.newArrayList(new ApplicationPeriod(now, now));
-        ApplicationSystem applicationSystem = new ApplicationSystemBuilder().addId("1")
-                .addForm(new Form("", ElementUtil.createI18NAsIs("")))
-                .addName(ElementUtil.createI18NAsIs(""))
-                .addApplicationPeriods(applicationPeriods)
-                .addApplicationSystemType(OppijaConstants.HAKUTYYPPI_VARSINAINEN_HAKU)
-                .addName(ElementUtil.createI18NAsIs("")).get();
+        ApplicationSystem applicationSystem = new ApplicationSystemBuilder().setId("1")
+                .setForm(new Form("", ElementUtil.createI18NAsIs("")))
+                .setName(ElementUtil.createI18NAsIs(""))
+                .setApplicationPeriods(applicationPeriods)
+                .setApplicationSystemType(OppijaConstants.HAKUTYYPPI_VARSINAINEN_HAKU)
+                .setName(ElementUtil.createI18NAsIs("")).get();
         assertFalse(applicationSystem.isActive());
     }
 
@@ -51,12 +51,12 @@ public class ApplicationSystemTest {
         instance.roll(Calendar.YEAR, 1);
         Date end = new Date(instance.getTimeInMillis());
         List<ApplicationPeriod> applicationPeriods = Lists.newArrayList(new ApplicationPeriod(start, end));
-        ApplicationSystem applicationSystem = new ApplicationSystemBuilder().addId("1")
-                .addForm(new Form("", ElementUtil.createI18NAsIs("")))
-                .addName(ElementUtil.createI18NAsIs(""))
-                .addApplicationPeriods(applicationPeriods)
-                .addApplicationSystemType(OppijaConstants.HAKUTYYPPI_VARSINAINEN_HAKU)
-                .addName(ElementUtil.createI18NAsIs("")).get();
+        ApplicationSystem applicationSystem = new ApplicationSystemBuilder().setId("1")
+                .setForm(new Form("", ElementUtil.createI18NAsIs("")))
+                .setName(ElementUtil.createI18NAsIs(""))
+                .setApplicationPeriods(applicationPeriods)
+                .setApplicationSystemType(OppijaConstants.HAKUTYYPPI_VARSINAINEN_HAKU)
+                .setName(ElementUtil.createI18NAsIs("")).get();
         assertTrue(applicationSystem.isActive());
     }
 }

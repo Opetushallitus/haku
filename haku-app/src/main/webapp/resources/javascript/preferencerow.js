@@ -25,7 +25,8 @@ var preferenceRow = {
             {
                 baseEducation: sortabletable_settings.baseEducation,
                 vocational: sortabletable_settings.vocational,
-                uiLang: sortabletable_settings.uiLang
+                uiLang: sortabletable_settings.uiLang,
+                ongoing: sortabletable_settings.ongoing
             },
             function (data) {
 

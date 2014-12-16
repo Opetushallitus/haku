@@ -5,6 +5,7 @@
         "henkilotiedot": {
             "aidinkieli": "FI",
             "sukupuoli": "1",
+            "onkosinullakaksoiskansallisuus": "false",
             "kansalaisuus": "FIN",
             "asuinmaa": "FIN",
             "Sukunimi": "Korhonen",

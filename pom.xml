@@ -32,7 +32,7 @@
         <org.apache.tomcat.embed>7.0.39</org.apache.tomcat.embed>
         <clover.version>3.1.8</clover.version>
         <jackson.version>2.3.0</jackson.version>
-        <selenium.version>2.43.1</selenium.version>
+        <selenium.version>2.44.0</selenium.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -45,7 +45,7 @@
         <authentication-api.version>9.5</authentication-api.version>
         <generic-common.version>9.1-SNAPSHOT</generic-common.version>
 	    <koodisto-api.version>11.5</koodisto-api.version>
-        <koulutusinformaatio-api.version>12.4</koulutusinformaatio-api.version>
+        <koulutusinformaatio-api.version>13.3</koulutusinformaatio-api.version>
         <log-client.version>8.0</log-client.version>
         <organisaatio-api.version>13.0</organisaatio-api.version>
         <tarjonta-api.version>10.0-SNAPSHOT</tarjonta-api.version>
@@ -330,9 +330,6 @@
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-surefire-plugin</artifactId>
                         <version>2.13</version>
-                        <configuration>
-                            <skipTests>true</skipTests>
-                        </configuration>
                     </plugin>
                 </plugins>
             </build>
@@ -364,7 +361,9 @@
                             <argLine>-Xms512M -Xmx1G -XX:MaxPermSize=256M</argLine>
                             <includes>
                                 <include>**/it/*</include>
+                                <include>**/it/**/*</include>
                                 <include>**/selenium/*</include>
+                                <include>**/selenium/**/*</include>
                             </includes>
                             <testFailureIgnore>false</testFailureIgnore>
                             <additionalClasspathElements>

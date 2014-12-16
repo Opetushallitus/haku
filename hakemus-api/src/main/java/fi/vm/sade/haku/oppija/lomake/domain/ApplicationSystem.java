@@ -21,13 +21,11 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -53,6 +51,7 @@ public class ApplicationSystem implements Serializable {
     private List<Element> additionalInformationElements;
     private List<ApplicationOptionAttachmentRequest> applicationOptionAttachmentRequests;
     private int maxApplicationOptions;
+    private List<String> allowedLanguages;
 
     public ApplicationSystem(final String id, final Form form, final I18nText name, final String state,
                              final List<ApplicationPeriod> applicationPeriods,
@@ -66,6 +65,7 @@ public class ApplicationSystem implements Serializable {
                              final List<Element> additionalInformationElements,
                              final List<ApplicationOptionAttachmentRequest> applicationOptionAttachmentRequests,
                              final Integer maxApplicationOptions,
+                             final List<String> allowedLanguages,
                              final Date lastGenerated) {
         Preconditions.checkNotNull(id);
         Preconditions.checkNotNull(name);
@@ -86,6 +86,7 @@ public class ApplicationSystem implements Serializable {
         this.applicationOptionAttachmentRequests = applicationOptionAttachmentRequests;
         this.maxApplicationOptions = maxApplicationOptions != null ?
                 maxApplicationOptions.intValue() : 1;
+        this.allowedLanguages = allowedLanguages;
         this.lastGenerated = lastGenerated;
     }
 
@@ -164,23 +165,12 @@ public class ApplicationSystem implements Serializable {
         return lastGenerated;
     }
 
-    public List<String> getAllowedLanguages() {
-        List<String> allowedLanguages = new ArrayList<String>();
-        allowedLanguages.add("fi");
-        allowedLanguages.add("sv");
-        if (OppijaConstants.KOHDEJOUKKO_AMMATILLINEN_JA_LUKIO.equals(kohdejoukkoUri)
-                && OppijaConstants.HAKUTAPA_YHTEISHAKU.equals(hakutapa)
-                && OppijaConstants.HAKUTYYPPI_VARSINAINEN_HAKU.equals(applicationSystemType)
-                && new Integer(2014).equals(hakukausiVuosi)
-                && OppijaConstants.HAKUKAUSI_SYKSY.equals(hakukausiUri)){
-            return allowedLanguages;
-        }
-        allowedLanguages.add("en");
-        return allowedLanguages;
-    }
-
     public int getMaxApplicationOptions() {
         return maxApplicationOptions;
+    }
+
+    public List<String> getAllowedLanguages() {
+        return allowedLanguages;
     }
 
 }
