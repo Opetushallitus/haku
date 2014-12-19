@@ -17,23 +17,18 @@ public class I18nBundle {
     private final Map<String, I18nText> i18nBundle = new HashMap<String, I18nText>();
 
     public I18nBundle(final String... bundleNames) {
-        ResourceBundle commonBundle = ResourceBundle.getBundle(FORM_COMMON_BUNDLE_NAME, new Locale("fi"));
-        Set<String> propertyKeys = commonBundle.keySet();
+        final List<String> bundleNamesList = new ArrayList<String>(bundleNames.length + 1);
 
-        List<String> bundleNamesList = new ArrayList<String>(bundleNames.length + 1);
         bundleNamesList.add(FORM_COMMON_BUNDLE_NAME);
         for (String bundleName : bundleNames) {
             bundleNamesList.add(bundleName);
         }
 
-        for (String bundleName : bundleNamesList) {
-            try {
-                ResourceBundle bundle = ResourceBundle.getBundle(bundleName, new Locale("fi"));
-                propertyKeys.addAll(bundle.keySet());
-            } catch (MissingResourceException mre) {
-                log.warn("Bundle {} not found", bundleName);
-            }
-        }
+        initializeBundle(bundleNamesList);
+    }
+
+    private void initializeBundle(final List<String> bundleNames){
+        Set<String> propertyKeys = getPropertyKeys(bundleNames);
 
         for (String key : propertyKeys) {
             Map<String, String> translations = new HashMap<String, String>();
@@ -45,36 +40,41 @@ public class I18nBundle {
                         translations.put(lang, text);
                     }
                 }
-                i18nBundle.put(lowerCaseKey, new I18nText(translations));
             }
+            i18nBundle.put(lowerCaseKey, new I18nText(translations));
         }
     }
 
     private static String getString(final String bundleName, final String key, final String lang) {
-        String lowerCaseKey = key.toLowerCase();
+        final String lowerCaseKey = key.toLowerCase();
         String text = null;
-        boolean found = false;
         try {
-            ResourceBundle bundle = ResourceBundle.getBundle(bundleName, new Locale(lang));
+            final ResourceBundle bundle = ResourceBundle.getBundle(bundleName, new Locale(lang));
             if (bundle.containsKey(lowerCaseKey)) {
                 text = bundle.getString(lowerCaseKey);
-                found = true;
             }
-
         } catch (MissingResourceException mre) {
-        }
-        if (text == null && !found) {
-            ResourceBundle commonBundle = ResourceBundle.getBundle(FORM_COMMON_BUNDLE_NAME, new Locale(lang));
-            if (commonBundle.containsKey(lowerCaseKey)) {
-                text = commonBundle.getString(lowerCaseKey);
-            }
+            //TODO: =RS= Change to load only once to stop flooding
+            log.debug("Bundle {} not found when loading translations for {}", bundleName, lang);
         }
         return text;
     }
 
-    public I18nText get(final String key) {
+    private Set<String> getPropertyKeys(final List<String> bundleNames){
+        final Set<String> propertyKeys = new HashSet<String>();
+        for (String bundleName : bundleNames) {
+            try {
+                final ResourceBundle bundle = ResourceBundle.getBundle(bundleName, new Locale("fi"));
+                propertyKeys.addAll(bundle.keySet());
+            } catch (MissingResourceException mre) {
+                log.warn("Bundle {} not found when loading properties", bundleName);
+            }
+        }
+        return propertyKeys;
+    }
 
-        String keyLowerCase = key.toLowerCase().replaceAll("-", ".");
+    public I18nText get(final String key) {
+        final String keyLowerCase = key.toLowerCase().replaceAll("-", ".");
 
         if (this.i18nBundle.containsKey(keyLowerCase)) {
             return TranslationsUtil.ensureDefaultLanguageTranslations(this.i18nBundle.get(keyLowerCase));
