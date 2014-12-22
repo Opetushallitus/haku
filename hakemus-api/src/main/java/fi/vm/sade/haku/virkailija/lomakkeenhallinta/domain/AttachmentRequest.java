@@ -16,6 +16,8 @@ public final class AttachmentRequest {
     private final I18nText header;
     private final I18nText description;
     private final Date deliveryDue;
+
+    // TODO: =RS= refactor rename to useLearning provider address.
     private final Boolean useGroupAddress;
     private final SimpleAddress deliveryAddress;
     private final String attachedToOptionId;
