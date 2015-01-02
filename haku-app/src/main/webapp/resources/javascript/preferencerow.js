@@ -157,6 +157,7 @@ var preferenceRow = {
         $('button.reset').unbind();
         $('button.reset').click(function (event) {
             var id = $(this).data('id');
+            $('[id|="' + id + '"]').prop("disabled", false);
             $('[id|="' + id + '"]').val('');
             preferenceRow.clearSelectInput(id + "-Koulutus");
             $(this).parent().find(".warning").hide();
@@ -209,6 +210,7 @@ var preferenceRow = {
                     $hiddenInput.val(ui.item.dataId);
                     preferenceRow.clearSelectInput(selectInputId);
                     preferenceRow.populateSelectInput(ui.item.dataId, selectInputId, false, this.id);
+                    $(this).prop("disabled", true);
                 },
                 change: function (ev, ui) {
                     if (!ui.item) {
@@ -225,6 +227,7 @@ var preferenceRow = {
                 }
             });
             if ($hiddenInput.val() && $hiddenInput.val() !== '') {
+                $(this).prop("disabled", true);
                 preferenceRow.populateSelectInput($hiddenInput.val(), selectInputId, true, this.id);
             }
         });

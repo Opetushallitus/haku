@@ -102,6 +102,7 @@ public class LomakeIT extends DummyModelBaseItTest {
         assertTrue("Warning text 'ristiriita' not found", !findByClassName("warning").isEmpty());
 
         //Skip toimipiste
+        findByIdAndClick("preference1-reset");
         typeWithoutTab("preference1-Opetuspiste", "Esp");
         clickLinkByText("FAKTIA, Espoo op");
 

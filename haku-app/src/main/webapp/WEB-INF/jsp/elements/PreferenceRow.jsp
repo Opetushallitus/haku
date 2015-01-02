@@ -19,7 +19,7 @@
   ~ European Union Public Licence for more details.
   --%>
 
-<button class="reset" data-id="${sortableItem.id}" type="button">
+<button class="reset" data-id="${sortableItem.id}" id="${sortableItem.id}-reset" type="button">
     <span>
         <span><haku:i18nText value="${sortableItem.resetLabel}"/></span>
     </span>
