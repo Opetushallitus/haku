@@ -409,20 +409,25 @@ public final class KoulutustaustaPhase {
                 .formParams(formParameters);
         ElementBuilder oppilaitosBuilder = TextQuestion("pohjakoulutus_ulk_oppilaitos" + postfix).labelKey("pohjakoulutus.oppilaitos")
                 .formParams(formParameters);
+        ElementBuilder maaBuilder = TextQuestion("pohjakoulutus_ulk_suoritusmaa" + postfix).labelKey("pohjakoulutus.suoritusmaa")
+                .formParams(formParameters);
 
         if (required) {
             vuosiBuilder = vuosiBuilder.requiredInline();
             nimikeBuilder = nimikeBuilder.requiredInline();
             oppilaitosBuilder = oppilaitosBuilder.requiredInline();
+            maaBuilder = maaBuilder.requiredInline();
         } else {
             vuosiBuilder = vuosiBuilder.inline();
             nimikeBuilder = nimikeBuilder.inline();
             oppilaitosBuilder = oppilaitosBuilder.inline();
+            maaBuilder = maaBuilder.inline();
         }
         Element vuosi = vuosiBuilder.build();
         Element nimike = nimikeBuilder.build();
         Element oppilaitos = oppilaitosBuilder.build();
-        parent.addChild(vuosi, nimike, oppilaitos);
+        Element maa = maaBuilder.build();
+        parent.addChild(vuosi, nimike, oppilaitos, maa);
 
         return oppilaitos;
     }
