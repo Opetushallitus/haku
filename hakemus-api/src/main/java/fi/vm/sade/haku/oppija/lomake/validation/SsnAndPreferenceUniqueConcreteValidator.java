@@ -21,6 +21,8 @@ import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationDAO;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationFilterParameters;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.I18nBundle;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.service.I18nBundleService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,15 +43,18 @@ public class SsnAndPreferenceUniqueConcreteValidator implements Validator {
 
     private final ApplicationDAO applicationDAO;
     private final ApplicationSystemService applicationSystemService;
+    private final I18nBundleService i18nBundleService;
     private final Pattern socialSecurityNumberPattern;
     private static final String SOCIAL_SECURITY_NUMBER_PATTERN = "([0-9]{6}.[0-9]{3}([0-9]|[a-z]|[A-Z]))";
     private final String preferenceKey;
 
     @Autowired
     public SsnAndPreferenceUniqueConcreteValidator(@Qualifier("applicationDAOMongoImpl") ApplicationDAO applicationDAO,
-                                                   ApplicationSystemService applicationSystemService) {
+                                                   ApplicationSystemService applicationSystemService,
+                                                   I18nBundleService i18nBundleService) {
         this.applicationDAO = applicationDAO;
         this.applicationSystemService = applicationSystemService;
+        this.i18nBundleService = i18nBundleService;
         this.socialSecurityNumberPattern = Pattern.compile(SOCIAL_SECURITY_NUMBER_PATTERN);
         this.preferenceKey = String.format(PREFERENCE_ID, 1);
     }
@@ -72,7 +77,8 @@ public class SsnAndPreferenceUniqueConcreteValidator implements Validator {
         if (!Strings.isNullOrEmpty(ssn) && Strings.isNullOrEmpty(applicationOid) && !Strings.isNullOrEmpty(aoId)) {
             Matcher matcher = socialSecurityNumberPattern.matcher(ssn);
             if (matcher.matches() && this.applicationDAO.checkIfExistsBySocialSecurityNumberAndAo(filterParams, asId, ssn, aoId)) {
-                ValidationResult result = new ValidationResult(elementId, ElementUtil.createI18NText("henkilotiedot.hetuKaytetty"));
+                ValidationResult result = new ValidationResult(elementId, i18nBundleService.getBundle(asId).get(
+                  "henkilotiedot.hetuKaytetty"));
                 return new ValidationResult(Arrays.asList(new ValidationResult[]{validationResult, result}));
             }
         }
