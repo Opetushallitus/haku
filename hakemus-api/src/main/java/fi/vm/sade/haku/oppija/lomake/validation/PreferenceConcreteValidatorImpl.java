@@ -23,6 +23,7 @@ import fi.vm.sade.haku.oppija.common.koulutusinformaatio.ApplicationOptionServic
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.haku.oppija.lomake.util.StringUtil;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.service.I18nBundleService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.slf4j.Logger;
@@ -43,6 +44,7 @@ public class PreferenceConcreteValidatorImpl extends PreferenceConcreteValidator
 
     private final ApplicationOptionService applicationOptionService;
     private final ApplicationSystemService applicationSystemService;
+    private final I18nBundleService i18nBundleService;
     private static final String GENERIC_ERROR = "hakutoiveet.virheellinen.hakutoive";
     private static final String LOP_ERROR = "hakutoiveet.opetuspisteristiriita";
     private static final String CAN_BE_APPLIED_ERROR = "hakutoiveet.eivoihakea";
@@ -51,9 +53,11 @@ public class PreferenceConcreteValidatorImpl extends PreferenceConcreteValidator
 
     @Autowired
     public PreferenceConcreteValidatorImpl(ApplicationOptionService applicationOptionService,
-                                           ApplicationSystemService applicationSystemService) {
+                                           ApplicationSystemService applicationSystemService,
+                                           I18nBundleService i18nBundleService) {
         this.applicationOptionService = applicationOptionService;
         this.applicationSystemService = applicationSystemService;
+        this.i18nBundleService = i18nBundleService;
     }
 
     @Override
@@ -72,33 +76,33 @@ public class PreferenceConcreteValidatorImpl extends PreferenceConcreteValidator
                         !checkApplicationSystem(validationInput, ao) ||
                         !checkAOIdentifier(validationInput, ao) ||
                         !checkKaksoistutkinto(validationInput, ao)) {
-                    return createError(validationInput.getElement().getId(), GENERIC_ERROR);
+                    return createError(validationInput.getElement().getId(), GENERIC_ERROR, validationInput.getApplicationSystemId());
                 }
                 // Must be checked against all langs
                 if (!(checkProvider(validationInput, aoId))) {
-                    return createError(validationInput.getElement().getId(), LOP_ERROR);
+                    return createError(validationInput.getElement().getId(), LOP_ERROR, validationInput.getApplicationSystemId());
                 }
                 if (!checkApplicationDates(validationInput, ao)) {
-                    return createError(validationInput.getElement().getId(), CAN_BE_APPLIED_ERROR);
+                    return createError(validationInput.getElement().getId(), CAN_BE_APPLIED_ERROR, validationInput.getApplicationSystemId());
                 }
                 if (!checkEducationDegree(validationInput, ao)) {
-                    return createError(validationInput.getElement().getId(), BASE_EDUCATION_ERROR);
+                    return createError(validationInput.getElement().getId(), BASE_EDUCATION_ERROR, validationInput.getApplicationSystemId());
                 }
             } catch (RuntimeException e) {
                 LOGGER.error("validation error", e);
-                return createError(validationInput.getElement().getId(), GENERIC_ERROR);
+                return createError(validationInput.getElement().getId(), GENERIC_ERROR, validationInput.getApplicationSystemId());
             }
         } else {
             final String opetuspisteIdKey = validationInput.getElement().getId() + "-Opetuspiste-id";
             if (!Strings.isNullOrEmpty(validationInput.getValues().get(opetuspisteIdKey))) {
-                return createError(validationInput.getElement().getId(), LOP_ERROR);
+                return createError(validationInput.getElement().getId(), LOP_ERROR, validationInput.getApplicationSystemId());
             }
         }
         return validationResult;
     }
 
-    private ValidationResult createError(final String key, final String errorKey) {
-        return new ValidationResult(key, ElementUtil.createI18NText(errorKey));
+    private ValidationResult createError(final String key, final String errorKey, final String applicationSystemId) {
+        return new ValidationResult(key, i18nBundleService.getBundle(applicationSystemId).get(errorKey));
     }
 
     private boolean checkEducationCode(final ValidationInput validationInput, final ApplicationOption applicationOption) {
