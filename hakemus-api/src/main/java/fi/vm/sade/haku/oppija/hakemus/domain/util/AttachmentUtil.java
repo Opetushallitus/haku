@@ -99,6 +99,13 @@ public class AttachmentUtil {
       KoulutusinformaatioService koulutusinformaatioService, String lang) {
         for (String aoOid : ApplicationUtil.getApplicationOptionAttachmentAOIds(application)) {
             ApplicationOptionDTO ao = koulutusinformaatioService.getApplicationOption(aoOid, lang);
+            String name = null;
+            if (ao.getProvider().getApplicationOffice() != null &&
+                    ao.getProvider().getApplicationOffice().getPostalAddress() != null) {
+                name = ao.getProvider().getApplicationOffice().getName();
+            } else {
+                name = ao.getProvider().getName();
+            }
             for (ApplicationOptionAttachmentDTO attachmentDTO : ao.getAttachments()) {
                 if (attachmentDTO.isUsedInApplicationForm()) {
                     String descriptionText = attachmentDTO.getDescreption();
@@ -116,7 +123,7 @@ public class AttachmentUtil {
                                                     .setName(ElementUtil.createI18NAsIs(attachmentDTO.getType()))
                                                     .setDescription(description)
                                                     .setDeadline(attachmentDTO.getDueDate())
-                                                    .setAddress(getAddress(attachmentDTO.getAddress()))
+                                                    .setAddress(getAddress(name, attachmentDTO.getAddress()))
                                                     .build()
                                     ).build()
                     );
@@ -163,11 +170,11 @@ public class AttachmentUtil {
     }
 
 
-    private static Address getAddress(AddressDTO addressDTO) {
+    private static Address getAddress(String recipient, AddressDTO addressDTO) {
         if (null == addressDTO)
             return null;
        return AddressBuilder.start()
-          .setRecipient("")
+          .setRecipient(recipient)
           .setStreetAddress(addressDTO.getStreetAddress())
           .setStreetAddress2(addressDTO.getStreetAddress2())
           .setPostalCode(addressDTO.getPostalCode())
