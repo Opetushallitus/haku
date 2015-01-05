@@ -68,7 +68,8 @@ public class ElementTreeValidatorTest {
         themeQuestionDAOMock = new ThemeQuestionDAOMockImpl();
         formConfigurationDAOMock = new FormConfigurationDAOMockImpl();
         HakuService hakuServiceMock = new HakuServiceMockImpl();
-        I18nBundleService i18nBundleService = new I18nBundleService();
+        //TODO : Not Mocked
+        I18nBundleService i18nBundleService = new I18nBundleService(null);
         //TODO: Not Mocked
         FormConfigurationService formConfigurationService = new FormConfigurationService(new KoodistoServiceMockImpl(), new HakuServiceMockImpl(), themeQuestionDAOMock, mock(HakukohdeService.class), mock(OrganizationService.class), formConfigurationDAOMock, i18nBundleService);
         FormGenerator formGeneratorMock = new FormGeneratorImpl(hakuServiceMock, formConfigurationService);

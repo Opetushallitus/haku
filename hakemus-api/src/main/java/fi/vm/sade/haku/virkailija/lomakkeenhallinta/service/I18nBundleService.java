@@ -44,8 +44,16 @@ public class I18nBundleService {
     private static final String FILE_NAME_PREFIX = "form_messages";
 
     final Map<String, SoftReference<I18nBundle>> applicationSystemTranslations = new ConcurrentHashMap<String, SoftReference<I18nBundle>>();
+    final ApplicationSystemService applicationSystemService;
 
-    public I18nBundleService() {
+    @Autowired
+    public I18nBundleService(ApplicationSystemService applicationSystemService) {
+        this.applicationSystemService = applicationSystemService;
+    }
+
+    public I18nBundle getBundle(String applicationSystemOid) {
+        ApplicationSystem applicationSystem = applicationSystemService.getApplicationSystem(applicationSystemOid);
+        return getBundle(applicationSystem);
     }
 
     public I18nBundle getBundle(ApplicationSystem applicationSystem) {
