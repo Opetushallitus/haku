@@ -429,7 +429,7 @@ public final class KoulutustaustaPhase {
         Element maa = maaBuilder.build();
         parent.addChild(vuosi, nimike, oppilaitos, maa);
 
-        return oppilaitos;
+        return maa;
     }
 
     private static Element buildKorkeakoulututkinto(FormParameters formParameters, List<Option> tutkintotasot, int count) {
