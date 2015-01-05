@@ -22,6 +22,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.builder.TextQuestionBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.TextQuestion;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
+import fi.vm.sade.haku.oppija.lomake.service.impl.ApplicationSystemServiceImpl;
 import fi.vm.sade.haku.oppija.lomake.util.ElementTree;
 import fi.vm.sade.haku.oppija.lomake.validation.validators.RequiredFieldValidator;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.dao.FormConfigurationDAO;
@@ -33,6 +34,7 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormGenerato
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormGeneratorImpl;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.impl.KoodistoServiceMockImpl;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.service.FormConfigurationService;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.service.I18nBundleService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakuService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakukohdeService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.impl.HakuServiceMockImpl;
@@ -66,8 +68,9 @@ public class ElementTreeValidatorTest {
         themeQuestionDAOMock = new ThemeQuestionDAOMockImpl();
         formConfigurationDAOMock = new FormConfigurationDAOMockImpl();
         HakuService hakuServiceMock = new HakuServiceMockImpl();
+        I18nBundleService i18nBundleService = new I18nBundleService();
         //TODO: Not Mocked
-        FormConfigurationService formConfigurationService = new FormConfigurationService(new KoodistoServiceMockImpl(), new HakuServiceMockImpl(), themeQuestionDAOMock, mock(HakukohdeService.class), mock(OrganizationService.class), formConfigurationDAOMock);
+        FormConfigurationService formConfigurationService = new FormConfigurationService(new KoodistoServiceMockImpl(), new HakuServiceMockImpl(), themeQuestionDAOMock, mock(HakukohdeService.class), mock(OrganizationService.class), formConfigurationDAOMock, i18nBundleService);
         FormGenerator formGeneratorMock = new FormGeneratorImpl(hakuServiceMock, formConfigurationService);
         applicationSystemServiceMock = mock(ApplicationSystemService.class);
         when(applicationSystemServiceMock.getApplicationSystem(anyString())).thenReturn(formGeneratorMock.generate(ASID));
