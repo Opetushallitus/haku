@@ -6,6 +6,7 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.dao.FormConfigurationDAO;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.dao.ThemeQuestionDAO;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain.FormConfiguration;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.I18nBundle;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakuService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakukohdeService;
@@ -32,6 +33,8 @@ public final class FormConfigurationService {
     private final HakuService hakuService;
     @Autowired
     private final FormConfigurationDAO formConfigurationDAO;
+    @Autowired
+    private final I18nBundleService i18nBundleService;
 
     @Autowired
     public FormConfigurationService(final KoodistoService koodistoService,
@@ -39,13 +42,15 @@ public final class FormConfigurationService {
                                     final ThemeQuestionDAO themeQuestionDAO,
                                     final HakukohdeService hakukohdeService,
                                     final OrganizationService organizationService,
-                                    final FormConfigurationDAO formConfigurationDAO) {
+                                    final FormConfigurationDAO formConfigurationDAO,
+                                    final I18nBundleService i18nBundleService) {
         this.koodistoService = koodistoService;
         this.hakuService = hakuService;
         this.themeQuestionDAO = themeQuestionDAO;
         this.hakukohdeService = hakukohdeService;
         this.organizationService = organizationService;
         this.formConfigurationDAO = formConfigurationDAO;
+        this.i18nBundleService = i18nBundleService;
     }
 
     public FormParameters getFormConfiguration(String applicationSystemId) {
@@ -65,8 +70,7 @@ public final class FormConfigurationService {
               figureOutFormTypeForApplicationSystem(applicationSystem));
         }
         return new FormParameters(applicationSystem, formConfiguration, koodistoService, themeQuestionDAO,
-          hakukohdeService,
-          organizationService);
+          hakukohdeService, organizationService, i18nBundleService);
     }
 
     public FormConfiguration.FormTemplateType defaultFormTemplateType(final String applicationSystemId) {
