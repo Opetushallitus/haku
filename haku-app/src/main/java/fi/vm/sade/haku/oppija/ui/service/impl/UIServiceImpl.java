@@ -61,6 +61,10 @@ public class UIServiceImpl implements UIService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UIServiceImpl.class);
 
+
+    @Value("${koulutusinformaatio.oppija.aosearch.ongoing:true}")
+    private boolean aoSearchOnlyOngoing;
+
     private final ApplicationService applicationService;
     private final ApplicationSystemService applicationSystemService;
     private final String koulutusinformaatioBaseUrl;
@@ -126,7 +130,7 @@ public class UIServiceImpl implements UIService {
         modelResponse.setKoulutusinformaatioBaseUrl(koulutusinformaatioBaseUrl);
         modelResponse.addObjectToModel("higherEd",
                 OppijaConstants.KOHDEJOUKKO_KORKEAKOULU.equals(activeApplicationSystem.getKohdejoukkoUri()));
-        modelResponse.addObjectToModel("ongoing", true);
+        modelResponse.addObjectToModel("ongoing", aoSearchOnlyOngoing);
         return modelResponse;
     }
 
