@@ -500,7 +500,7 @@ public class ApplicationServiceImpl implements ApplicationService {
                         ArrayList<String> attachmentGroupList = new ArrayList<String>();
                         for (OrganizationGroupDTO organizationGroup : organizationGroups) {
                             aoGroupList.add(organizationGroup.getOid());
-                            if (organizationGroup.getGroupTypes().contains(OppijaConstants.OPTION_ATTACHMENT_GROUP_TYPE)){
+                            if (organizationGroup.getUsageGroups().contains(OppijaConstants.OPTION_ATTACHMENT_GROUP_TYPE)){
                                 attachmentGroupList.add(organizationGroup.getOid());
                             }
                         }
