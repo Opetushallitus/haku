@@ -53,23 +53,32 @@ public final class ApplicationUtil {
         List<String> allAOs = new ArrayList<String>();
         allAOs.addAll(universityAOs);
         allAOs.addAll(amkAOs);
-        if (yoNeeded(application) && !universityAOs.isEmpty()) {
-            attachments.put("yo", universityAOs);
+        if (yoNeeded(application) && !universityAndAspaAmkAOs.isEmpty()) {
+            attachments.put("yo", universityAndAspaAmkAOs);
         }
-        if (hasBaseEducation(application, "pohjakoulutus_am") && !universityAOs.isEmpty()) {
-            attachments.put("am", universityAOs);
+        if (hasBaseEducation(application, "pohjakoulutus_yo_kansainvalinen_suomessa") && !universityAndAspaAmkAOs.isEmpty()) {
+            attachments.put("yo_kv", universityAndAspaAmkAOs);
+        }
+        if (hasBaseEducation(application, "pohjakoulutus_yo_ulkomainen") && !universityAndAspaAmkAOs.isEmpty()) {
+            attachments.put("yo_ulk", universityAndAspaAmkAOs);
+        }
+        if (hasBaseEducation(application, "pohjakoulutus_am") && !universityAndAspaAmkAOs.isEmpty()) {
+            attachments.put("am", universityAndAspaAmkAOs);
         }
         if (hasBaseEducation(application, "pohjakoulutus_amt") && !universityAndAspaAmkAOs.isEmpty()) {
             attachments.put("amt", universityAndAspaAmkAOs);
         }
-        if (hasBaseEducation(application, "pohjakoulutus_kk") && !allAOs.isEmpty()) {
-            attachments.put("kk", allAOs);
+        if (hasBaseEducation(application, "pohjakoulutus_kk") && !universityAndAspaAmkAOs.isEmpty()) {
+            attachments.put("kk", universityAndAspaAmkAOs);
         }
         if (hasBaseEducation(application, "pohjakoulutus_ulk") && !universityAndAspaAmkAOs.isEmpty()) {
             attachments.put("ulk", universityAndAspaAmkAOs);
         }
-        if (hasBaseEducation(application, "pohjakoulutus_avoin") && !allAOs.isEmpty()) {
-            attachments.put("avoin", allAOs);
+        if (hasBaseEducation(application, "pohjakoulutus_kk_ulk") && !universityAndAspaAmkAOs.isEmpty()) {
+            attachments.put("kk_ulk", universityAndAspaAmkAOs);
+        }
+        if (hasBaseEducation(application, "pohjakoulutus_avoin") && !universityAndAspaAmkAOs.isEmpty()) {
+            attachments.put("avoin", universityAndAspaAmkAOs);
         }
         if (hasBaseEducation(application, "pohjakoulutus_muu") && !allAOs.isEmpty()) {
             attachments.put("muu", allAOs);
@@ -105,6 +114,15 @@ public final class ApplicationUtil {
         if (isNotBlank(pedagogisetOpinnot) && pedagogisetOpinnot.equals("true")) {
             // Liite 3. Opettajan pedagogiset opinnot: kopio todistuksestasi
             attachments.put("pedagogiset_opinnot", aoIds);
+        }
+
+        for (String t : new String[] {"amt", "am", "kk", "tri"} ) {
+            String muuTutkintoId = "muu_tutkinto_" + t;
+            String muuTutkinto = koulutustaustaAnswers.get(muuTutkintoId);
+            if ("true".equals(muuTutkinto)) {
+                attachments.put("muu_tutkinto", aoIds);
+                break;
+            }
         }
 
         return attachments;
