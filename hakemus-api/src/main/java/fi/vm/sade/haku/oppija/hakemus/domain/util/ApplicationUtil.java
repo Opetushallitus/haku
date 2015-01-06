@@ -107,6 +107,15 @@ public final class ApplicationUtil {
             attachments.put("pedagogiset_opinnot", aoIds);
         }
 
+        for (String t : new String[] {"amt", "am", "kk", "tri"} ) {
+            String muuTutkintoId = "muu_tutkinto_" + t;
+            String muuTutkinto = koulutustaustaAnswers.get(muuTutkintoId);
+            if ("true".equals(muuTutkinto)) {
+                attachments.put("muu_tutkinto", aoIds);
+                break;
+            }
+        }
+
         return attachments;
     }
 
