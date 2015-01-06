@@ -42,7 +42,7 @@ public class AttachmentUtilTest {
         Map<String, List<String>> attachmentOids = ApplicationUtil.getHigherEdAttachmentAOIds(application);
         assertFalse(attachmentOids.isEmpty());
 
-        assertEquals(1, attachmentOids.size());
+        assertEquals(2, attachmentOids.size());
         assertTrue(attachmentOids.containsKey("muu"));
         assertEquals(1, attachmentOids.get("muu").size());
         assertEquals("1.2.3", attachmentOids.get("muu").get(0));
@@ -78,7 +78,7 @@ public class AttachmentUtilTest {
         assertEquals(2, attachmentOids.get("muu").size());
         assertTrue(attachmentOids.get("muu").contains("1.2.3"));
         assertTrue(attachmentOids.get("muu").contains("4.5.6"));
-        assertEquals(1, attachmentOids.get("yo").size());
+        assertEquals(2, attachmentOids.get("yo").size());
         assertTrue(attachmentOids.get("yo").contains("4.5.6"));
     }
 }
