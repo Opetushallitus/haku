@@ -215,6 +215,7 @@ public class UIServiceImpl implements UIService {
         ApplicationState applicationState = applicationService.saveApplicationPhase(
                 new ApplicationPhase(applicationSystemId, phaseId, ensuredAnswers));
         ModelResponse modelResponse = new ModelResponse();
+        modelResponse.addObjectToModel("ongoing", aoSearchOnlyOngoing);
         modelResponse.setApplicationState(applicationState);
         if (!applicationState.isValid()) {
             modelResponse.setApplicationState(applicationState);
