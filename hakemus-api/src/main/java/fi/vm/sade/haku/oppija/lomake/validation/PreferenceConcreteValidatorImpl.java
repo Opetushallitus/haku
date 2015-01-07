@@ -201,9 +201,6 @@ public class PreferenceConcreteValidatorImpl extends PreferenceConcreteValidator
     }
 
     private boolean checkApplicationDates(final ValidationInput validationInput, final ApplicationOption applicationOption) {
-        if (!applicationOption.isSpecificApplicationDates()) {
-            return true;
-        }
         if (validationInput.isInputValidation() && !applicationOption.isCanBeApplied()) {
             LOGGER.error("Application date validation failed for {}. Application: {}", applicationOption, validationInput.getApplicationOid());
             return false;
