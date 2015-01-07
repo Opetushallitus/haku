@@ -1,4 +1,4 @@
-package fi.vm.sade.haku.virkailija.lomakkeenhallinta.service;
+package fi.vm.sade.haku.virkailija.lomakkeenhallinta.i18n;
 
 import com.google.common.base.Joiner;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;

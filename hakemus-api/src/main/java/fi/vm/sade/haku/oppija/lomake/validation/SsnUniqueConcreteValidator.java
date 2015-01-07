@@ -17,10 +17,8 @@
 package fi.vm.sade.haku.oppija.lomake.validation;
 
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationDAO;
-import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.I18nBundle;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.service.I18nBundleService;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.i18n.I18nBundleService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
