@@ -302,7 +302,7 @@ public final class KoulutustaustaPhase {
             I18nText i18nText = formParameters.getI18nText("pohjakoulutus.lisaa");
             AddElementRule extraMuuTutkintoRule = new AddElementRule("addMuuTutkintoRule" + i, prevElement.getId(), i18nText);
             prevElement.addChild(extraMuuTutkintoRule);
-            prevElement = buildMuuElement(formParameters, i, extraMuuTutkintoRule, false);
+            prevElement = buildMuuElement(formParameters, i, extraMuuTutkintoRule, true);
         }
 
         return muu;
@@ -655,7 +655,14 @@ public final class KoulutustaustaPhase {
                 .excelColumnLabel("laajuusyksikko.excel")
                 .inline().formParams(formParameters).labelKey("form.yleinen.nbsp").build();
         Element oppilaitos = oppilaitosBuilder.build();
-        Element nayttotutkinto = Checkbox("pohjakoulutus_am_nayttotutkintona" + postfix).inline()
+//        Element nayttotutkinto = Checkbox("pohjakoulutus_am_nayttotutkintona" + postfix).inline()
+//                .labelKey("pohjakoulutus_am_nayttotutkintona")
+//                .formParams(formParameters).build();
+        Element nayttotutkinto = Radio("pohjakoulutus_am_nayttotutkintona" + postfix)
+                .addOptions(ImmutableList.of(
+                        new Option(createI18NText("form.yleinen.kylla", formParameters), KYLLA),
+                        new Option(createI18NText("form.yleinen.ei", formParameters), EI)))
+                .requiredInline()
                 .labelKey("pohjakoulutus_am_nayttotutkintona")
                 .formParams(formParameters).build();
 

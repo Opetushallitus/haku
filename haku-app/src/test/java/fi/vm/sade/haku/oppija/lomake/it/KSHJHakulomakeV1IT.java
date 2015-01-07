@@ -33,6 +33,7 @@ public class KSHJHakulomakeV1IT extends DummyModelBaseItTest {
         setValue("pohjakoulutus_am_nimike", "pohjakoulutus_am_nimike");
         setValue("pohjakoulutus_am_laajuus", "laajuus");
         setValue("pohjakoulutus_am_oppilaitos", "oppilaitos");
+        setValue("pohjakoulutus_am_nayttotutkintona", "false");
         nextPhase(OppijaConstants.PHASE_APPLICATION_OPTIONS);
 
         findById("preference1-Opetuspiste");
