@@ -192,6 +192,7 @@ public class UIServiceImpl implements UIService {
         modelResponse.setForm(activeForm);
         modelResponse.setApplicationSystemId(applicationSystemId);
         modelResponse.setKoulutusinformaatioBaseUrl(koulutusinformaatioBaseUrl);
+        modelResponse.addObjectToModel("ongoing", aoSearchOnlyOngoing);
         return modelResponse;
     }
 
@@ -205,6 +206,7 @@ public class UIServiceImpl implements UIService {
         modelResponse.addAnswers(userSession.populateWithPrefillData(application.getVastauksetMerged()));
         modelResponse.setApplicationSystemId(applicationSystemId);
         modelResponse.setKoulutusinformaatioBaseUrl(koulutusinformaatioBaseUrl);
+        modelResponse.addObjectToModel("ongoing", aoSearchOnlyOngoing);
         return modelResponse;
     }
 
