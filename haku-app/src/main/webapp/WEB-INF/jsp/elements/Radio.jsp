@@ -22,12 +22,20 @@
             value="${element.i18nText}"/><haku:popup element="${element}"/></legend>
     <div class="${styleBaseClass}-content">
         <haku:help element="${element}"/>
-        <c:set var="value" value="${(empty value) ? answers[element.id] : value}"/>
+        <c:set var="value" value="${answers[element.id]}"/>
         <c:forEach var="option" items="${element.options}" varStatus="status">
+            <c:choose>
+                <c:when test="${empty value}">
+                    <c:set var="checked" value="${option.defaultOption}" />
+                </c:when>
+                <c:otherwise>
+                    <c:set var="checked" value="${value eq option.value}" />
+                </c:otherwise>
+            </c:choose>
             <haku:errorMessage id="${option.id}"/>
             <div class="field-container-radio">
                 <input type="radio" name="${element.id}"
-                       value="${option.value}" ${(!empty disabled) ? "disabled=\"true\" " : " "} ${(value eq option.value) ? "checked=\"checked\" " : " "} id="${element.id}"  ${option.attributeString}/>
+                       value="${option.value}" ${(!empty disabled) ? "disabled=\"true\" " : " "} ${checked ? "checked=\"checked\"" : ""} id="${element.id}"  ${option.attributeString}/>
                 <label for="${option.id}"><haku:i18nText value="${option.i18nText}"/></label>
                 <haku:help element="${option}"/>
                 <haku:viewChilds element="${option}"/>

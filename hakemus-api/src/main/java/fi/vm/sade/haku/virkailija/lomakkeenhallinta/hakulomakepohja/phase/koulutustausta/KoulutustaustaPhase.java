@@ -662,6 +662,7 @@ public final class KoulutustaustaPhase {
                 .addOptions(ImmutableList.of(
                         new Option(createI18NText("form.yleinen.kylla", formParameters), KYLLA),
                         new Option(createI18NText("form.yleinen.ei", formParameters), EI)))
+                .defaultOption(EI)
                 .requiredInline()
                 .labelKey("pohjakoulutus_am_nayttotutkintona")
                 .formParams(formParameters).build();

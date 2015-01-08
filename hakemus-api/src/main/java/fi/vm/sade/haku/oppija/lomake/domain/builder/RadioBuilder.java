@@ -21,6 +21,9 @@ public class RadioBuilder extends OptionQuestionBuilder {
         List<String> values = new ArrayList<String>();
         for (Option option : options) {
             values.add(option.getValue());
+            if (defaultOption != null) {
+                option.setDefaultOption(option.getValue().equalsIgnoreCase(defaultOption));
+            }
         }
         I18nText i18nText1 = getI18nText("yleinen.virheellinenArvo", false);
         radio.setValidator(new ValueSetValidator(i18nText1, values));
