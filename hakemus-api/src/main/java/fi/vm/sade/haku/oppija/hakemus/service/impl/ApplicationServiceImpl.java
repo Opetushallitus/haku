@@ -601,8 +601,8 @@ public class ApplicationServiceImpl implements ApplicationService {
         // TODO modifyPersonalData adds 'overriddenAnswers' section, it should be wiped
 
         HashMap<String, String> hakutoiveet = new HashMap<String, String>();
-        hakutoiveet.put("preference1-koulutus-id", stub.hakukohdeOid);
-        hakutoiveet.put("preference1-opetuspiste-id", stub.tarjoajaOid);
+        hakutoiveet.put("preference1-Koulutus-id", stub.hakukohdeOid);
+        hakutoiveet.put("preference1-Opetuspiste-id", stub.tarjoajaOid);
         app.getAnswers().put("hakutoiveet", hakutoiveet);
 
         return app;
@@ -614,8 +614,8 @@ public class ApplicationServiceImpl implements ApplicationService {
         if(!existing.values().contains(hakukohdeOid)) {
             Map<String, String> hakutoiveet = application.getAnswers().get("hakutoiveet");
             String suffix = getNextHakutoiveSuffix(existing);
-            hakutoiveet.put("preference" + suffix + "-koulutus-id", hakukohdeOid);
-            hakutoiveet.put("preference" + suffix + "-opetuspiste-id", tarjoajaOid);
+            hakutoiveet.put("preference" + suffix + "-Koulutus-id", hakukohdeOid);
+            hakutoiveet.put("preference" + suffix + "-Opetuspiste-id", tarjoajaOid);
         }
     }
 
@@ -641,7 +641,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         return Maps.filterEntries(application.getPhaseAnswers(("hakutoiveet")), new Predicate<Map.Entry<String, String>>() {
             @Override
             public boolean apply(Map.Entry<String, String> input) {
-                return input.getKey().matches("preference\\d+-koulutus-id") && !input.getValue().isEmpty();
+                return input.getKey().matches("preference\\d+-Koulutus-id") && !input.getValue().isEmpty();
             }
         });
     }

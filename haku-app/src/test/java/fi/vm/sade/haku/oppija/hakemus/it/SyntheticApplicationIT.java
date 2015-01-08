@@ -1,25 +1,28 @@
 package fi.vm.sade.haku.oppija.hakemus.it;
 
+import static org.junit.Assert.assertEquals;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+
+import javax.ws.rs.core.Response;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
 import com.google.common.collect.ImmutableList;
+
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.SyntheticApplication;
 import fi.vm.sade.haku.oppija.hakemus.resource.ApplicationResource;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import javax.ws.rs.core.Response;
-import java.util.List;
-import java.util.Map;
-
-import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:spring/tomcat-container-context.xml")
@@ -41,38 +44,63 @@ public class SyntheticApplicationIT {
 
     @Test
     public void testInvalidInput() {
-        Response response = put("1", "1", null);
+        Response response = put("1", "1", null, null);
         assertEquals(400, response.getStatus());
+    }
+
+    final String hakuOid = "1.2.3";
+    String hakukohde1 = "1";
+    String hakukohde2 = "2";
+
+    @Test
+    public void testCreate() {
+        Response resp1 = put(hakukohde1, "1", "hakijaOid1", "010101-123N");
+
+        final List<Application> apps1 = verifyPutResponse(resp1);
+
+        Application app = apps1.get(0);
+        Map<String, String> hakutoiveet = app.getPhaseAnswers("hakutoiveet");
+        assertEquals(hakukohde1, hakutoiveet.get("preference1-Koulutus-id"));
     }
 
     @Test
     public void testCreateAndUpdate() {
-        String hakukohde1 = "1";
-        String hakukohde2 = "2";
+        final String hetu = "070195-953K";
+        final String hakijaOid = "hakijaOid1";
 
-        Response resp1 = put(hakukohde1, "1", "010101-123N");
-        assertEquals(200, resp1.getStatus());
-        List<Application> apps1 = (List<Application>) resp1.getEntity();
-        assertEquals(1, apps1.size());
+        Response resp1 = put(hakukohde1, "1", hakijaOid, hetu);
+        verifyPutResponse(resp1);
 
-        Response resp2 = put(hakukohde2, "2", "010101-123N");
-        assertEquals(200, resp1.getStatus());
-        List<Application> apps2 = (List<Application>) resp2.getEntity();
-        assertEquals(1, apps2.size());
+        Response resp2 = put(hakukohde2, "2", hakijaOid, hetu);
+        final List<Application> apps2 = verifyPutResponse(resp2);
 
         Application app = apps2.get(0);
         Map<String, String> hakutoiveet = app.getPhaseAnswers("hakutoiveet");
-        assertEquals(hakukohde1, hakutoiveet.get("preference1-koulutus-id"));
-        assertEquals(hakukohde2, hakutoiveet.get("preference2-koulutus-id"));
+        assertEquals(hakukohde1, hakutoiveet.get("preference1-Koulutus-id"));
+        assertEquals(hakukohde2, hakutoiveet.get("preference2-Koulutus-id"));
     }
 
-    private Response put(String hakukohdeOid, String tarjoajaOid, String hetu) {
+    @Test
+    public void testCreateRoundTrip() {
+        Response resp1 = put(hakukohde1, "1", "hakijaOid2", "070195-991T");
+        verifyPutResponse(resp1);
+        final List<Map<String, Object>> applications = applicationResource.findFullApplications("", Arrays.asList("ACTIVE", "INCOMPLETE"), null, null, null, null, null, hakuOid, null, null, hakukohde1, null, null, null, null, null, 0, 10000);
+        assertEquals(1, applications.size());
+    }
+
+    private Response put(String hakukohdeOid, String tarjoajaOid, String hakijaOid, String hetu) {
         SyntheticApplication firstInput = new SyntheticApplication(
-                hakukohdeOid,
-                "1.2.3",
+                hakukohdeOid, hakuOid,
                 tarjoajaOid,
-                ImmutableList.of(new SyntheticApplication.Hakemus(hetu, "Etu", "Suku", "foobar", "barfoo"))
+                ImmutableList.of(new SyntheticApplication.Hakemus(hakijaOid, "Etu", "Suku", hetu, null))
         );
         return applicationResource.putSyntheticApplication(firstInput);
+    }
+
+    private List<Application> verifyPutResponse(final Response response) {
+        assertEquals(200, response.getStatus());
+        List<Application> applications = (List<Application>) response.getEntity();
+        assertEquals(1, applications.size());
+        return applications;
     }
 }
