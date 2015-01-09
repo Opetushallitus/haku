@@ -20,10 +20,13 @@
 
 <c:set var="styleBaseClass" value="form-row"/>
 <div id="${element.id}" class="${styleBaseClass}">
+    <%--
     <c:choose>
         <c:when test="${empty answers[element.children[0].id]}">
-            <div class="${styleBaseClass}-content ${element.id}-removable">
+        --%>
+            <div class="${styleBaseClass}-content" id="${element.id}-addRemoveLinks">
                 <a id="${element.id}-link" href="#"><haku:i18nText value="${element.text}"/></a>
+                <a id="${element.id}-undolink" style="display: none;" href="#">Poista</a>
             </div>
             <c:if test="${not empty element.help}">
                 <div class="margin-top-1 ${element.id}-removable" id="help-${element.id}">
@@ -42,7 +45,22 @@
                                     </c:forEach>]
                         var ruleChilds = $("#${element.id} .rule-childs");
                         ruleData.getRuleChild(childIds, 0, ruleChilds);
+                        $("#${element.id}-link").hide();
+                        $("#${element.id}-undolink").show();
                         $(".${element.id}-removable").remove();
+                        <c:forEach var="prevRule" items="${element.previousRules}" varStatus="status">
+                            $("#${prevRule}-addRemoveLinks").hide();
+                        </c:forEach>
+                    });
+                    $("#${element.id}-undolink").click(function (event) {
+                        event.preventDefault();
+                        var childIds =
+                                [<c:forEach var="child" items="${element.children}" varStatus="status">
+                                    "${child.id}"${not status.last ? ', ' : ''}
+                                    </c:forEach>]
+                        $("#${element.id} .rule-childs").empty();
+                        $("#${element.id}-link").show();
+                        $("#${element.id}-undolink").hide();
                     });
                     var ruleData = {
                         getRuleChild: function (childIds, index, ruleChilds) {
@@ -58,8 +76,10 @@
                     };
                 })();
             </script>
+            <%--
         </c:when>
     </c:choose>
+    --%>
     <div class="rule-childs clear">
         <c:choose>
             <c:when test="${not empty answers[element.relatedElementId] and not empty answers[element.children[0].id]}">

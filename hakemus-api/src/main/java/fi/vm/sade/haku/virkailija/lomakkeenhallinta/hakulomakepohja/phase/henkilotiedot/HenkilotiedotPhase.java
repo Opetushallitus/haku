@@ -34,6 +34,7 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParamete
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.DateQuestionBuilder.Date;
@@ -189,6 +190,7 @@ public final class HenkilotiedotPhase {
 
         Element prevNum = puhelinnumero1;
         AddElementRule prevRule = null;
+        final List<AddElementRule> prevRules = new ArrayList<AddElementRule>();
         for (int i = 2; i <= 5; i++) {
             Element extranumero = TextQuestion(OppijaConstants.ELEMENT_ID_PREFIX_PHONENUMBER + i).labelKey("puhelinnumero")
                     .size(30)
@@ -198,7 +200,10 @@ public final class HenkilotiedotPhase {
 
             String id = "addPuhelinnumero" + i + "Rule";
             I18nText i18nText = formParameters.getI18nText("puhelinnumero.lisaa");
-            AddElementRule extranumeroRule = new AddElementRule(id, prevNum.getId(), i18nText);
+            AddElementRule extranumeroRule = new AddElementRule(id, prevNum.getId(),
+                    prevRules, i18nText);
+            prevRules.add(extranumeroRule);
+
             extranumeroRule.addChild(extranumero);
             if (i == 2) {
                 henkilotiedotTeema.addChild(extranumeroRule);
