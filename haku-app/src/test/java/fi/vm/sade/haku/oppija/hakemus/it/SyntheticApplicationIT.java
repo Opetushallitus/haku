@@ -22,6 +22,7 @@ import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.SyntheticApplication;
 import fi.vm.sade.haku.oppija.hakemus.resource.ApplicationResource;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
+import fi.vm.sade.haku.oppija.hakemus.service.SyntheticApplicationService;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -35,11 +36,15 @@ public class SyntheticApplicationIT {
     @Autowired
     private ApplicationSystemService applicationSystemService;
 
-    private ApplicationResource applicationResource ;
+    @Autowired
+    private SyntheticApplicationService syntheticApplicationService;
+
+    @Autowired
+    private ApplicationResource applicationResource;
 
     @Before
     public void setUp() {
-        this.applicationResource = new ApplicationResource(this.applicationService, this.applicationSystemService);
+        this.applicationResource = new ApplicationResource(this.applicationService, this.applicationSystemService, null, syntheticApplicationService);
     }
 
     @Test

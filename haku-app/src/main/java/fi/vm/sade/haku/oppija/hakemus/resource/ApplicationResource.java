@@ -26,6 +26,7 @@ import fi.vm.sade.haku.oppija.hakemus.domain.dto.SyntheticApplication;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationQueryParameters;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationQueryParametersBuilder;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
+import fi.vm.sade.haku.oppija.hakemus.service.SyntheticApplicationService;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
@@ -66,16 +67,21 @@ public class ApplicationResource {
     @Autowired
     private ApplicationOptionService applicationOptionService;
 
+    @Autowired
+    private SyntheticApplicationService syntheticApplicationService;
+
+
     private static final Logger LOGGER = LoggerFactory.getLogger(ApplicationResource.class);
     private static final String OID = "oid";
 
     public ApplicationResource() {
     }
 
-    @Autowired
-    public ApplicationResource(ApplicationService applicationService, ApplicationSystemService applicationSystemService) {
+    public ApplicationResource(final ApplicationService applicationService, final ApplicationSystemService applicationSystemService, final ApplicationOptionService applicationOptionService, final SyntheticApplicationService syntheticApplicationService) {
         this.applicationService = applicationService;
         this.applicationSystemService = applicationSystemService;
+        this.applicationOptionService = applicationOptionService;
+        this.syntheticApplicationService = syntheticApplicationService;
     }
 
     @GET
@@ -375,7 +381,7 @@ public class ApplicationResource {
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_READ', 'ROLE_APP_HAKEMUS_CRUD', 'ROLE_APP_HAKEMUS_OPO')")
     public Response putSyntheticApplication(SyntheticApplication syntheticApplication) {
         if(new SyntheticApplicationValidator(syntheticApplication).validateSyntheticApplication()) {
-            List<Application> applications = applicationService.createApplications(syntheticApplication);
+            List<Application> applications = syntheticApplicationService.createApplications(syntheticApplication);
             return Response.ok(applications).build();
         } else {
             return Response.status(Response.Status.BAD_REQUEST).build();

@@ -94,7 +94,7 @@ public class ApplicationResourceTest {
         when(applicationService.findApplications(any(ApplicationQueryParameters.class))).thenReturn(searchResultDTO);
         when(applicationService.findApplications(any(ApplicationQueryParameters.class))).thenReturn(emptySearchResultDTO);
         when(applicationSystemService.findByYearAndSemester(any(String.class), any(String.class))).thenReturn(asIds);
-        this.applicationResource = new ApplicationResource(this.applicationService, this.applicationSystemService);
+        this.applicationResource = new ApplicationResource(this.applicationService, this.applicationSystemService, null, null);
     }
 
     @Test
@@ -146,7 +146,7 @@ public class ApplicationResourceTest {
     @Test
     public void testFindApplicationsOrdered() {
         ApplicationServiceMock myApplicationService = new ApplicationServiceMock();
-        ApplicationResource resource = new ApplicationResource(myApplicationService, applicationSystemService);
+        ApplicationResource resource = new ApplicationResource(myApplicationService, applicationSystemService, null, null);
         resource.findApplications("query", null, null, "aoId", "groupOid", "baseEducation", "lopOid", "", "", "", "aoId",
                 false, false, "sendingSchool",
                 "class", new DateParam("201403041506"), 0, 20);

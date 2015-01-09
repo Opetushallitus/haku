@@ -16,17 +16,16 @@
 
 package fi.vm.sade.haku.oppija.hakemus.service;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
+
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationAdditionalDataDTO;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
-import fi.vm.sade.haku.oppija.hakemus.domain.dto.SyntheticApplication;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationQueryParameters;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationState;
-
-import java.io.IOException;
-import java.util.List;
-import java.util.Map;
 
 public interface ApplicationService {
 
@@ -118,6 +117,4 @@ public interface ApplicationService {
     Application updatePreferenceBasedData(final Application application);
 
     Application removeOrphanedAnswers(Application application);
-
-    List<Application> createApplications(SyntheticApplication applicationStub);
 }
