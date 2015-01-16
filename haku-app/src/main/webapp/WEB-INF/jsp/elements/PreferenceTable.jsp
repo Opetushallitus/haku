@@ -145,7 +145,14 @@
         ongoing: '<c:out value="${it.ongoing}"/>',
         vaiheId: '<c:out value="${vaihe.id}"/>',
         teemaId: '<c:out value="${parent.id}"/>',
+        <c:choose>
+            <c:when test="${virkailijaEdit}">
+        uiLang: '<c:out value="${answers._meta_filingLanguage}"/>',
+            </c:when>
+            <c:otherwise>
         uiLang: '<c:out value="${requestScope['fi_vm_sade_oppija_language']}"/>',
+            </c:otherwise>
+        </c:choose>
         <c:choose>
             <c:when test="${it.higherEd}">
             </c:when>
