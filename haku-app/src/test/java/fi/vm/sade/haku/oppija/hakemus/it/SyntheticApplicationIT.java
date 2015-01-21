@@ -49,23 +49,28 @@ public class SyntheticApplicationIT {
 
     @Test
     public void testInvalidInput() {
-        Response response = put("1", "1", null, null);
+        Response response = put("1", "1", null, null, null);
         assertEquals(400, response.getStatus());
     }
 
     final String hakuOid = "1.2.3";
     String hakukohde1 = "1";
     String hakukohde2 = "2";
+    final String email1 = "etu.suku1@example.com";
+    final String email2 = "etu.suku2@example.com";
 
     @Test
     public void testCreate() {
-        Response resp1 = put(hakukohde1, "1", "hakijaOid1", "010101-123N");
+        Response resp1 = put(hakukohde1, "1", "hakijaOid1", "010101-123N", email1);
 
         final List<Application> apps1 = verifyPutResponse(resp1);
 
         Application app = apps1.get(0);
         Map<String, String> hakutoiveet = app.getPhaseAnswers("hakutoiveet");
         assertEquals(hakukohde1, hakutoiveet.get("preference1-Koulutus-id"));
+
+        Map<String, String> henkilotiedot = app.getPhaseAnswers("henkilotiedot");
+        assertEquals(email1, henkilotiedot.get("Sähköposti"));
     }
 
     @Test
@@ -73,31 +78,50 @@ public class SyntheticApplicationIT {
         final String hetu = "070195-953K";
         final String hakijaOid = "hakijaOid1";
 
-        Response resp1 = put(hakukohde1, "1", hakijaOid, hetu);
+        Response resp1 = put(hakukohde1, "1", hakijaOid, hetu, email1);
         verifyPutResponse(resp1);
 
-        Response resp2 = put(hakukohde2, "2", hakijaOid, hetu);
+        Response resp2 = put(hakukohde2, "2", hakijaOid, hetu, email2);
         final List<Application> apps2 = verifyPutResponse(resp2);
 
         Application app = apps2.get(0);
         Map<String, String> hakutoiveet = app.getPhaseAnswers("hakutoiveet");
         assertEquals(hakukohde1, hakutoiveet.get("preference1-Koulutus-id"));
         assertEquals(hakukohde2, hakutoiveet.get("preference2-Koulutus-id"));
+
+        Map<String, String> henkilotiedot = app.getPhaseAnswers("henkilotiedot");
+        assertEquals(email2, henkilotiedot.get("Sähköposti"));
+    }
+
+    @Test
+    public void testCreateAndUpdateWithEmptyEmail() {
+        final String hetu = "070195-953K";
+        final String hakijaOid = "hakijaOid1";
+
+        Response resp1 = put(hakukohde1, "1", hakijaOid, hetu, email1);
+        verifyPutResponse(resp1);
+
+        Response resp2 = put(hakukohde1, "2", hakijaOid, hetu, "");
+        final List<Application> apps2 = verifyPutResponse(resp2);
+
+        Application app = apps2.get(0);
+        Map<String, String> henkilotiedot = app.getPhaseAnswers("henkilotiedot");
+        assertEquals(email1, henkilotiedot.get("Sähköposti"));
     }
 
     @Test
     public void testCreateRoundTrip() {
-        Response resp1 = put(hakukohde1, "1", "hakijaOid2", "070195-991T");
+        Response resp1 = put(hakukohde1, "1", "hakijaOid2", "070195-991T", email1);
         verifyPutResponse(resp1);
         final List<Map<String, Object>> applications = applicationResource.findFullApplications("", Arrays.asList("ACTIVE", "INCOMPLETE"), null, null, null, null, null, hakuOid, null, null, hakukohde1, null, null, null, null, null, 0, 10000);
         assertEquals(1, applications.size());
     }
 
-    private Response put(String hakukohdeOid, String tarjoajaOid, String hakijaOid, String hetu) {
+    private Response put(String hakukohdeOid, String tarjoajaOid, String hakijaOid, String hetu, String email) {
         SyntheticApplication firstInput = new SyntheticApplication(
                 hakukohdeOid, hakuOid,
                 tarjoajaOid,
-                ImmutableList.of(new SyntheticApplication.Hakemus(hakijaOid, "Etu", "Suku", hetu, null))
+                ImmutableList.of(new SyntheticApplication.Hakemus(hakijaOid, "Etu", "Suku", hetu, email, null))
         );
         return applicationResource.putSyntheticApplication(firstInput);
     }

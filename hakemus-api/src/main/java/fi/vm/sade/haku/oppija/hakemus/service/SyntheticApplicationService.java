@@ -8,6 +8,9 @@ import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import fi.vm.sade.haku.oppija.lomake.util.StringUtil;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -54,6 +57,9 @@ public class SyntheticApplicationService {
         } else {
             Application current = Iterables.getFirst(applications, query);
             addHakutoive(current, stub.hakukohdeOid, stub.tarjoajaOid);
+            if (StringUtils.isNotBlank(hakemus.sahkoposti)) {
+                updateEmail(current, hakemus.sahkoposti);
+            }
             return current;
         }
     }
@@ -66,14 +72,14 @@ public class SyntheticApplicationService {
         app.setRedoPostProcess(Application.PostProcessingState.DONE);
         app.setState(Application.State.ACTIVE);
 
-        Person person = new Person(hakemus.etunimi, hakemus.sukunimi, hakemus.henkilotunnus, hakemus.hakijaOid, hakemus.syntymaAika);
+        Person person = new Person(hakemus.etunimi, hakemus.sukunimi, hakemus.henkilotunnus, hakemus.sahkoposti, hakemus.hakijaOid, hakemus.syntymaAika);
         app.modifyPersonalData(person);
         // TODO modifyPersonalData adds 'overriddenAnswers' section, it should be wiped
 
         HashMap<String, String> hakutoiveet = new HashMap<String, String>();
         hakutoiveet.put("preference1-Koulutus-id", stub.hakukohdeOid);
         hakutoiveet.put("preference1-Opetuspiste-id", stub.tarjoajaOid);
-        app.getAnswers().put("hakutoiveet", hakutoiveet);
+        app.getAnswers().put(OppijaConstants.PHASE_APPLICATION_OPTIONS, hakutoiveet);
 
         return app;
     }
@@ -82,11 +88,15 @@ public class SyntheticApplicationService {
 
         Map<String, String> existing = existingPreferences(application);
         if(!existing.values().contains(hakukohdeOid)) {
-            Map<String, String> hakutoiveet = application.getAnswers().get("hakutoiveet");
+            Map<String, String> hakutoiveet = application.getAnswers().get(OppijaConstants.PHASE_APPLICATION_OPTIONS);
             String suffix = getNextHakutoiveSuffix(existing);
             hakutoiveet.put("preference" + suffix + "-Koulutus-id", hakukohdeOid);
             hakutoiveet.put("preference" + suffix + "-Opetuspiste-id", tarjoajaOid);
         }
+    }
+
+    private void updateEmail(Application application, final String email) {
+        application.getAnswers().get(OppijaConstants.PHASE_PERSONAL).put(OppijaConstants.ELEMENT_ID_EMAIL, email);
     }
 
     private String getNextHakutoiveSuffix(Map<String, String> existingPreferences) {

@@ -30,6 +30,7 @@ public class SyntheticApplication {
         public final String etunimi;
         public final String sukunimi;
         public final String henkilotunnus;
+        public final String sahkoposti;
         public final String syntymaAika;
 
         @JsonCreator
@@ -37,11 +38,13 @@ public class SyntheticApplication {
                        @JsonProperty("etunimi") String etunimi,
                        @JsonProperty("sukunimi") String sukunimi,
                        @JsonProperty("henkilotunnus") String henkilotunnus,
+                       @JsonProperty("sahkoposti") String sahkoposti,
                        @JsonProperty("syntymaAika") String syntymaAika) {
             this.hakijaOid = hakijaOid;
             this.etunimi = etunimi;
             this.sukunimi = sukunimi;
             this.henkilotunnus = henkilotunnus;
+            this.sahkoposti = sahkoposti;
             this.syntymaAika = syntymaAika;
         }
     }
