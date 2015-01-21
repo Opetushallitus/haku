@@ -347,6 +347,8 @@ public class Application implements Serializable {
                 OppijaConstants.ELEMENT_ID_NICKNAME);
         henkilotiedot = updateHenkilotiedotField(henkilotiedot, person.getSocialSecurityNumber(),
                 OppijaConstants.ELEMENT_ID_SOCIAL_SECURITY_NUMBER);
+        henkilotiedot = updateHenkilotiedotField(henkilotiedot, person.getEmail(),
+                OppijaConstants.ELEMENT_ID_EMAIL);
         henkilotiedot = updateHenkilotiedotField(henkilotiedot, person.getSex(),
                 OppijaConstants.ELEMENT_ID_SEX);
         henkilotiedot = updateHenkilotiedotField(henkilotiedot, String.valueOf(person.getDateOfBirth()),
