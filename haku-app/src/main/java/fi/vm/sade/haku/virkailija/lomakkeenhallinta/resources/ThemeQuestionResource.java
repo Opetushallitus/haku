@@ -26,7 +26,6 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.dao.ThemeQuestionQueryParame
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain.ThemeQuestion;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.service.FormConfigurationService;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakuService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakukohdeService;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeV1RDTO;
 import org.apache.commons.lang.StringUtils;
@@ -110,7 +109,7 @@ public class ThemeQuestionResource {
     public Element getGeneratedThemeQuestionByOid(@PathParam("themeQuestionId") String themeQuestionId) {
         LOGGER.debug("Getting question by Id: {}", themeQuestionId);
         ThemeQuestion themeQuestion = themeQuestionDAO.findById(themeQuestionId);
-        FormParameters formParameters = formConfigurationService.getFormConfiguration(
+        FormParameters formParameters = formConfigurationService.getFormParameters(
           themeQuestion.getApplicationSystemId());
         return themeQuestion.generateElement(formParameters);
     }

@@ -1,7 +1,6 @@
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.dao.impl;
 
 import fi.vm.sade.haku.oppija.common.dao.AbstractDAOMongoImpl;
-import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.dao.FormConfigurationDAO;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.dao.impl.DBConverter.DBObjectToFormConfigurationFunction;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.dao.impl.DBConverter.FormConfigurationToDBObjectFunction;
@@ -14,8 +13,6 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
-
-import static java.lang.String.format;
 
 @Service("formConfigurationDAOMongoImpl")
 public class FormConfigurationDAOMongoImpl extends AbstractDAOMongoImpl<FormConfiguration> implements FormConfigurationDAO {
@@ -36,7 +33,6 @@ public class FormConfigurationDAOMongoImpl extends AbstractDAOMongoImpl<FormConf
       FormConfigurationToDBObjectFunction formConfigurationToBasicDBObjectConverter) {
         super(dbObjectToFormConfigurationConverter, formConfigurationToBasicDBObjectConverter);
     }
-
 
     @PostConstruct
     public void configure() {
@@ -63,6 +59,6 @@ public class FormConfigurationDAOMongoImpl extends AbstractDAOMongoImpl<FormConf
         List<FormConfiguration> formConfigurations = find(searchConfiguration);
         if (formConfigurations.size() == 1)
             return formConfigurations.get(0);
-        throw new ResourceNotFoundException("No ThemeQuestion found with id " + asId);
+        return null;
     }
 }

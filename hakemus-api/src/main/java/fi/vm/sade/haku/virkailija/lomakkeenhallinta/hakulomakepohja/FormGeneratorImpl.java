@@ -3,6 +3,7 @@ package fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystemBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain.FormConfiguration;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.hakutoiveet.HakutoiveetPhase;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.henkilotiedot.HenkilotiedotPhase;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.koulutustausta.KoulutustaustaPhase;
@@ -42,13 +43,13 @@ public class FormGeneratorImpl implements FormGenerator {
     @Override
     public Form generateFormWithThemesOnly(String oid) {
         ApplicationSystem as = hakuService.getApplicationSystem(oid);
-        FormParameters formParameters = formConfigurationService.getFormConfiguration(as);
+        FormParameters formParameters = formConfigurationService.getFormParameters(as);
         formParameters.setOnlyThemeGenerationForFormEditor(Boolean.TRUE);
         return generateForm(formParameters);
     }
 
     private ApplicationSystem createApplicationSystem(ApplicationSystem as) {
-        FormParameters formParameters = formConfigurationService.getFormConfiguration(as);
+        FormParameters formParameters = formConfigurationService.getFormParameters(as);
         return new ApplicationSystemBuilder()
                 .setId(as.getId())
                 .setForm(generateForm(formParameters))

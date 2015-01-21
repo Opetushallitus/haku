@@ -128,7 +128,7 @@ public class FormConfigurationResource {
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKULOMAKKEENHALLINTA_CRUD')")
     public FormConfiguration getFormConfigurationByApplicationSystem(@PathParam("asId") String applicationSystemId) {
         LOGGER.debug("Getting Configuration by Id: {}", applicationSystemId);
-        return formConfigurationDAO.findByApplicationSystem(applicationSystemId);
+        return formConfigurationService.createOrGetFormConfiguration(applicationSystemId);
     }
 
     @POST
