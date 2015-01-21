@@ -65,6 +65,7 @@ public class Person {
         this.personOid = studentOid;
         this.studentOid = studentOid;
         this.dateOfBirth = dateOfBirth;
+        this.nickName = firstNames;
     }
 
     public String getFirstNames() {

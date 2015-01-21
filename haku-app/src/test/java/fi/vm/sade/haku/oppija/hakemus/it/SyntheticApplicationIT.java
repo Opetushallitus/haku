@@ -91,6 +91,9 @@ public class SyntheticApplicationIT {
 
         Map<String, String> henkilotiedot = app.getPhaseAnswers("henkilotiedot");
         assertEquals(email2, henkilotiedot.get("Sähköposti"));
+        assertEquals("Etu", henkilotiedot.get("Etunimet"));
+        assertEquals("Suku", henkilotiedot.get("Sukunimi"));
+        assertEquals("Etu", henkilotiedot.get("Kutsumanimi"));
     }
 
     @Test
