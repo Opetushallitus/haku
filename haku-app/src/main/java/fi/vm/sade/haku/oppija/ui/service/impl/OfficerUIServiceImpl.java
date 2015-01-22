@@ -449,6 +449,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         modelResponse.addObjectToModel("sendingSchoolAllowed", hakuPermissionService.userCanSearchBySendingSchool());
         Calendar today = GregorianCalendar.getInstance();
         String semester = "kausi_s";
+        String defaultYear = String.valueOf(today.get(Calendar.YEAR));
         String[] kevatkausiDates = kevatkausi.split("-");
         SimpleDateFormat dateFormat = new SimpleDateFormat(KAUSI_FORMAT_STRING);
         try {
@@ -456,11 +457,13 @@ public class OfficerUIServiceImpl implements OfficerUIService {
             Date kevatkausiLoppuu = dateFormat.parse(kevatkausiDates[1].trim() +"."+today.get(Calendar.YEAR));
             if (today.getTime().after(kevatkausiAlkaa) && today.getTime().before(kevatkausiLoppuu)) {
                 semester = "kausi_k";
+            } else if (today.getTime().before(kevatkausiAlkaa)) {
+                defaultYear = String.valueOf(today.get(Calendar.YEAR) - 1);
             }
         } catch (ParseException e) {
             LOGGER.error("Couldn't parse kevatkausi dates: {}", kevatkausi);
         }
-        modelResponse.addObjectToModel("defaultYear", String.valueOf(today.get(Calendar.YEAR)));
+        modelResponse.addObjectToModel("defaultYear", defaultYear);
         modelResponse.addObjectToModel("defaultSemester", semester);
         modelResponse.addObjectToModel("tarjontaUrl", tarjontaUrl);
         return modelResponse;
