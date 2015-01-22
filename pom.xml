@@ -48,7 +48,7 @@
         <koulutusinformaatio-api.version>14.0-SNAPSHOT</koulutusinformaatio-api.version>
         <log-client.version>8.0</log-client.version>
         <organisaatio-api.version>13.0-SNAPSHOT</organisaatio-api.version>
-        <tarjonta-api.version>10.0-SNAPSHOT</tarjonta-api.version>
+        <tarjonta-api.version>10.2-SNAPSHOT</tarjonta-api.version>
 	<viestintapalvelu.version>9.8</viestintapalvelu.version>
     </properties>
 

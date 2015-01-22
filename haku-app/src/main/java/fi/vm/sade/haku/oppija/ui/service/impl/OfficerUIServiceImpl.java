@@ -348,6 +348,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
 
         Map<String, String> newPhaseAnswers = applicationPhase.getAnswers();
         newPhaseAnswers = handleGrades(application, applicationPhase, new HashMap<String, String>(newPhaseAnswers));
+        newPhaseAnswers = applicationService.ensureApplicationOptionGroupData(newPhaseAnswers, application.getMetaValue(Application.META_FILING_LANGUAGE));
 
         loggerAspect.logUpdateApplication(application, applicationPhase);
 

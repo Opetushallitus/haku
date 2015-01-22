@@ -138,6 +138,8 @@ public class OfficerUIServiceImplTest {
     private OfficerUIService createUiServiceForGrades(String oid, String asId, boolean transferred) {
         ApplicationService applicationService = mock(ApplicationService.class);
         when(applicationService.removeOrphanedAnswers(any(Application.class))).then(returnsFirstArg());
+        when(applicationService.ensureApplicationOptionGroupData(any(Map.class), any(String.class))).then(returnsFirstArg());
+
         BaseEducationService baseEducationService = mock(BaseEducationService.class);
         FormService formService = mock(FormService.class);
         HakuPermissionService hakuPermissionService = mock(HakuPermissionService.class);
