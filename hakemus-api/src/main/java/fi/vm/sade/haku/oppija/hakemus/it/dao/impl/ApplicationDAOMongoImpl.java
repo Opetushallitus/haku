@@ -492,8 +492,14 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
                     QueryBuilder.start(FIELD_SENDING_SCHOOL_PARENTS).in(filterParameters.getOrganizationsOpo()).get(),
                     QueryBuilder.start(FIELD_OPO_ALLOWED).is(true).get()).get());
         }
-        LOG.debug("queries: {}", queries.size());
 
+        if (OppijaConstants.HAKUTAPA_YHTEISHAKU.equals(filterParameters.getHakutapa())
+                && OppijaConstants.KOHDEJOUKKO_KORKEAKOULU.equals(filterParameters.getKohdejoukko())
+                && !filterParameters.getOrganizationsHetuttomienKasittely().isEmpty()) {
+            queries.add(QueryBuilder.start(FIELD_SSN).exists(false).get());
+        }
+
+        LOG.debug("queries: {}", queries.size());
 
         return QueryBuilder.start().or(queries.toArray(new DBObject[queries.size()])).get();
     }

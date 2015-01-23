@@ -34,6 +34,7 @@ public class HakuPermissionServiceImpl extends AbstractPermissionService impleme
     private static final String ROLE_OPO = "APP_HAKEMUS_OPO";
     private static final String ROLE_LISATIETORU = "APP_HAKEMUS_LISATIETORU";
     private static final String ROLE_LISATIETOCRUD = "APP_HAKEMUS_LISATIETOCRUD";
+    private static final String ROLE_HETUTTOMIENKASITTELY = "APP_HAKEMUS_HETUTTOMIENKASITTELY";
 
     @Autowired
     public HakuPermissionServiceImpl(AuthenticationService authenticationService,
@@ -67,15 +68,29 @@ public class HakuPermissionServiceImpl extends AbstractPermissionService impleme
     }
 
     @Override
+    public List<String> userHasHetuttomienKasittelyRole() {
+        return userHasHetuttomienKasittelyRole(authenticationService.getOrganisaatioHenkilo());
+    }
+
+    @Override
+    public List<String> userHasHetuttomienKasittelyRole(List<String> organizations) {
+        return userHasRole(organizations, getRoleHetuttomienKasittely());
+    }
+
+    @Override
     public List<String> userHasOpoRole(List<String> organizations) {
-        List<String> opoOrg = new ArrayList<String>();
+        return userHasRole(organizations, getOpoRole());
+    }
+
+    private List<String> userHasRole(List<String> organizations, String role) {
+        List<String> filteredOrgs = new ArrayList<String>();
         for (String organization : organizations) {
-            log.debug("checking opo-role against organization "+organization);
-            if (checkAccess(organization, getOpoRole())) {
-                opoOrg.add(organization);
+            log.debug("checking role: {} against organization: {}", role, organization);
+            if (checkAccess(organization, role)) {
+                filteredOrgs.add(organization);
             }
         }
-        return opoOrg;
+        return filteredOrgs;
     }
 
     @Override
@@ -136,6 +151,10 @@ public class HakuPermissionServiceImpl extends AbstractPermissionService impleme
     @Override
     public boolean userCanPostProcess(Application application) {
         return checkAccess(getRootOrgOid(), getReadUpdateRole(), getCreateReadUpdateDeleteRole());
+    }
+
+    public final String getRoleHetuttomienKasittely() {
+        return ROLE_HETUTTOMIENKASITTELY;
     }
 
     public final String getOpoRole() {

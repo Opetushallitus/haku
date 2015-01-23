@@ -23,14 +23,19 @@ public class ApplicationFilterParameters {
     private final int maxApplicationOptions;
     private final List<String> organizationsReadable;
     private final List<String> organizationsOpo;
+    private final List<String> organizationsHetuttomienKasittely;
     private final String kohdejoukko;
+    private final String hakutapa;
 
     public ApplicationFilterParameters(int maxApplicationOptions, List<String> organizationsReadable,
-                                       List<String> organizationsOpo, String kohdejoukko) {
+                                       List<String> organizationsOpo, List<String> organizationsHetuttomienKasittely,
+                                       String kohdejoukko, String hakutapa) {
         this.maxApplicationOptions = maxApplicationOptions;
         this.organizationsReadable = organizationsReadable;
         this.organizationsOpo = organizationsOpo;
+        this.organizationsHetuttomienKasittely = organizationsHetuttomienKasittely;
         this.kohdejoukko = kohdejoukko;
+        this.hakutapa = hakutapa;
     }
 
     public int getMaxApplicationOptions() {
@@ -45,8 +50,16 @@ public class ApplicationFilterParameters {
         return organizationsOpo;
     }
 
+    public List<String> getOrganizationsHetuttomienKasittely() {
+        return organizationsHetuttomienKasittely;
+    }
+
     public String getKohdejoukko() {
         return kohdejoukko;
+    }
+
+    public String getHakutapa() {
+        return hakutapa;
     }
 
     @Override
@@ -60,7 +73,8 @@ public class ApplicationFilterParameters {
         }
         // Can't rely on List.equals. ArrayList.equals checks for order, and it's not relevant here.
         return isListEqual(this.organizationsOpo, otherParams.organizationsOpo)
-                && isListEqual(this.organizationsReadable, otherParams.organizationsReadable);
+                && isListEqual(this.organizationsReadable, otherParams.organizationsReadable)
+                && isListEqual(this.organizationsHetuttomienKasittely, otherParams.organizationsHetuttomienKasittely);
     }
 
     private boolean isListEqual(List<String> thisList, List<String> otherList) {
