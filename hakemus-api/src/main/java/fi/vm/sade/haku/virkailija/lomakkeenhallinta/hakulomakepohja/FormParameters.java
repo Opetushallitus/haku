@@ -7,6 +7,7 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.dao.ThemeQuestionDAO;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain.FormConfiguration;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.i18n.I18nBundleService;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.service.GroupRestrictionConfigurator;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.service.ThemeQuestionConfigurator;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakukohdeService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
@@ -39,7 +40,6 @@ public class FormParameters {
         this.organizationService = organizationService;
         this.formConfiguration = formConfiguration;
         this.i18nBundle = i18nBundleService.getBundle(applicationSystem);
-
     }
 
     public ApplicationSystem getApplicationSystem() {
@@ -48,6 +48,10 @@ public class FormParameters {
 
     public KoodistoService getKoodistoService() {
         return koodistoService;
+    }
+
+    public FormConfiguration getFormConfiguration() {
+        return formConfiguration;
     }
 
     private FormConfiguration.FormTemplateType getFormTemplateType() {
@@ -111,6 +115,10 @@ public class FormParameters {
 
     public ThemeQuestionConfigurator getThemeQuestionConfigurator() {
         return new ThemeQuestionConfigurator(themeQuestionDAO, hakukohdeService, this, organizationService);
+    }
+
+    public GroupRestrictionConfigurator getGroupRestrictionConfigurator() {
+        return new GroupRestrictionConfigurator(this, hakukohdeService, organizationService);
     }
 
     public Boolean isOnlyThemeGenerationForFormEditor() {

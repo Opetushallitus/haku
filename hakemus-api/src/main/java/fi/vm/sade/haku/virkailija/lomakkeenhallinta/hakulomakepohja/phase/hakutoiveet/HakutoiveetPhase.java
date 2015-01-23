@@ -34,6 +34,7 @@ import fi.vm.sade.haku.oppija.lomake.validation.validators.SsnAndPreferenceUniqu
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.domain.Code;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.service.GroupRestrictionConfigurator;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.service.ThemeQuestionConfigurator;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ExprUtil;
@@ -96,8 +97,16 @@ public class HakutoiveetPhase {
         ElementUtil.setVerboseHelp(preferenceTable, "form.hakutoiveet.otsikko.verboseHelp", formParameters);
         hakutoiveetTheme.addChild(preferenceTable);
 
+        /*
+        TODO: =RS= HH-20/HH-175/HH-19 Saattaa olla oikea paikka.
+        Perus ajatus on että validaatio tehtäisiin kerran koko hakutoivetaulukolle.
+        */
+
+        preferenceTable.setValidators(formParameters.getGroupRestrictionConfigurator().findAndConfigureGroupRestrictions());
+
         ThemeQuestionConfigurator configurator = formParameters.getThemeQuestionConfigurator();
         hakutoiveetTheme.addChild(configurator.findAndConfigure(hakutoiveetTheme.getId(), ConfiguratorFilter.ONLY_GROUP_QUESTIONS));
+
         return hakutoiveetTheme;
     }
 

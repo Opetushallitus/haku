@@ -69,6 +69,8 @@ public class PreferenceTable extends Question {
         }
 
         listOfValidators.add(new PreferenceTableValidator(learningInstitutionInputIds, educationInputIds));
+        // TODO: =RS= HH-20/HH-19/HH-175
+        listOfValidators.addAll(validators);
         return listOfValidators;
     }
 }
