@@ -23,6 +23,11 @@ public class FormConfigurationDAOMockImpl implements FormConfigurationDAO{
     }
 
     @Override
+    public void update(FormConfiguration n) {
+
+    }
+
+    @Override
     public void save(FormConfiguration formConfiguration) {
 
     }

@@ -7,4 +7,6 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain.ThemeQuestion;
 public interface FormConfigurationDAO extends BaseDAO<FormConfiguration> {
 
     FormConfiguration findByApplicationSystem(String asId);
+
+    void update(FormConfiguration formConfiguration);
 }

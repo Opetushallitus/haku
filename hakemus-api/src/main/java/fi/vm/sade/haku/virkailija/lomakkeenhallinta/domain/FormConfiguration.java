@@ -75,6 +75,10 @@ public class FormConfiguration {
         return applicationSystemId;
     }
 
+    public void setFormTemplateType(FormTemplateType formTemplateType) {
+        this.formTemplateType = formTemplateType;
+    }
+
     public FormTemplateType getFormTemplateType() {
         return formTemplateType;
     }
@@ -83,4 +87,15 @@ public class FormConfiguration {
         return groupConfigurations;
     }
 
+    public void addGroupConfiguration(GroupConfiguration toBeAdded) {
+        if (null == toBeAdded)
+            return;
+        groupConfigurations.add(toBeAdded);
+    }
+
+    public void removeGroupConfiguration(GroupConfiguration toBeRemoved) {
+        if (null == toBeRemoved)
+            return;
+        groupConfigurations.remove(toBeRemoved);
+    }
 }

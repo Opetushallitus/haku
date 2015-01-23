@@ -18,9 +18,11 @@ package fi.vm.sade.haku.virkailija.lomakkeenhallinta.resources;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import fi.vm.sade.haku.oppija.hakemus.resource.JSONException;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.dao.FormConfigurationDAO;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain.FormConfiguration;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain.GroupConfiguration;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.service.FormConfigurationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,12 +31,14 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -115,14 +119,6 @@ public class FormConfigurationResource {
     }
 
     @GET
-    @Path("{asId}/default")
-    @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
-    public FormConfiguration.FormTemplateType getDefaultConfiguration(@PathParam("asId") String applicationSystemId) {
-        LOGGER.debug("Getting Configuration by Id: {}", applicationSystemId);
-        return formConfigurationService.defaultFormTemplateType(applicationSystemId);
-    }
-
-    @GET
     @Path("{asId}")
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKULOMAKKEENHALLINTA_CRUD')")
@@ -131,23 +127,67 @@ public class FormConfigurationResource {
         return formConfigurationService.createOrGetFormConfiguration(applicationSystemId);
     }
 
-    @POST
-    @Path("{asId}")
-    @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
-    @Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
-    @PreAuthorize("hasAnyRole('ROLE_APP_HAKULOMAKKEENHALLINTA_CRUD')")
-    public void saveFormConfigurationForApplicationSystem(@PathParam("asId") String applicationSystemId,
-                                                          FormConfiguration formConfiguration) throws IOException {
-        LOGGER.debug("Saved form configuration for application system: " + applicationSystemId);
-        FormConfiguration searchConfiguration = new FormConfiguration(applicationSystemId);
-        formConfigurationDAO.update(searchConfiguration, formConfiguration);
-        LOGGER.debug("Saved form configuration for application system: " + applicationSystemId);
-    }
-
     @GET
     @Path("templates")
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     public List<Map<String, Object>> getTemplates() {
         return formTemplateTypeTranslations;
+    }
+
+    @GET
+    @Path("{asId}/defaultTemplate")
+    @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
+    public FormConfiguration.FormTemplateType getDefaultConfiguration(@PathParam("asId") String applicationSystemId) {
+        LOGGER.debug("Getting Configuration by Id: {}", applicationSystemId);
+        return formConfigurationService.defaultFormTemplateType(applicationSystemId);
+    }
+
+    @POST
+    @Path("{asId}/formTemplate")
+    @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
+    @Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
+    @PreAuthorize("hasAnyRole('ROLE_APP_HAKULOMAKKEENHALLINTA_CRUD')")
+    public void saveFormTemplateType(@PathParam("asId") String applicationSystemId,
+                                     Map<String, String> configuration) throws IOException {
+
+        if (!applicationSystemId.equals(configuration.get("applicationSystemId"))) {
+            throw new JSONException(Response.Status.BAD_REQUEST, "Data error: Mismatch on applicationSystemId from path and model", null);
+        }
+        String formTemplateType = configuration.get("formTemplateType").toString();
+        LOGGER.debug("Got formtemplateType: {} for applicationSystemId: {} ", formTemplateType, applicationSystemId);
+        formConfigurationService.saveFormTemplateType(applicationSystemId, formTemplateType);
+        LOGGER.debug("Saved formtemplateType: {} for applicationSystemId: {} ", formTemplateType, applicationSystemId);
+    }
+
+    @POST
+    @Path("{asId}/groupConfiguration/{groupId}")
+    @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
+    @Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
+    @PreAuthorize("hasAnyRole('ROLE_APP_HAKULOMAKKEENHALLINTA_CRUD')")
+    public void saveGroupConfiguration(@PathParam("asId") String applicationSystemId,
+                                       @PathParam("groupId") String groupId,
+                                       GroupConfiguration groupConfiguration) throws IOException {
+        if (!groupId.equals(groupConfiguration.getGroupdId())) {
+            throw new JSONException(Response.Status.BAD_REQUEST, "Data error: Mismatch on groupId from path and model", null);
+        }
+        LOGGER.debug("Got groupconfiguration for group: {} for applicationSystemId: {}  ", groupConfiguration.getGroupdId(), applicationSystemId);
+        formConfigurationService.saveGroupConfiguration(applicationSystemId, groupConfiguration);
+        LOGGER.debug("Saved groupconfiguration for group: {} for applicationSystemId: {} ", groupConfiguration.getGroupdId(), applicationSystemId);
+    }
+
+    @DELETE
+    @Path("{asId}/groupConfiguration/{groupId}")
+    @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
+    @Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
+    @PreAuthorize("hasAnyRole('ROLE_APP_HAKULOMAKKEENHALLINTA_CRUD')")
+    public void removeGroupConfiguration(@PathParam("asId") String applicationSystemId,
+                                         @PathParam("groupId") String groupId,
+                                         GroupConfiguration groupConfiguration) throws IOException {
+        if (!groupId.equals(groupConfiguration.getGroupdId())) {
+            throw new JSONException(Response.Status.BAD_REQUEST, "Data error: Mismatch on groupId from path and model", null);
+        }
+        LOGGER.debug("Removing groupconfiguration for group: {} for applicationSystemId: {}", groupConfiguration.getGroupdId(), applicationSystemId);
+        formConfigurationService.removeGroupConfiguration(applicationSystemId, groupConfiguration);
+        LOGGER.debug("Removed groupconfiguration for group: {} for applicationSystemId: {}", groupConfiguration.getGroupdId(), applicationSystemId);
     }
 }

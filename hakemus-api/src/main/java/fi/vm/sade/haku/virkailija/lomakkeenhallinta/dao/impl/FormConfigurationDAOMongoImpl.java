@@ -61,4 +61,10 @@ public class FormConfigurationDAOMongoImpl extends AbstractDAOMongoImpl<FormConf
             return formConfigurations.get(0);
         return null;
     }
+
+    @Override
+    public void update(FormConfiguration formConfiguration) {
+        FormConfiguration searchConfiguration = new FormConfiguration(formConfiguration.getApplicationSystemId());
+        super.update(searchConfiguration, formConfiguration);
+    }
 }

@@ -3,6 +3,7 @@ package fi.vm.sade.haku.virkailija.lomakkeenhallinta.service;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain.GroupConfiguration;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.i18n.I18nBundleService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.dao.FormConfigurationDAO;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.dao.ThemeQuestionDAO;
@@ -131,5 +132,49 @@ public final class FormConfigurationService {
                 return FormConfiguration.FormTemplateType.PERUSOPETUKSEN_JALKEINEN_VALMENTAVA;
             }
         }
+    }
+
+    //TODO: =RS= Mutex
+    public void saveFormTemplateType(String applicationSystemId, String formTemplateType) {
+        FormConfiguration formConfiguration = createOrGetFormConfiguration(applicationSystemId);
+        formConfiguration.setFormTemplateType(FormConfiguration.FormTemplateType.valueOf(formTemplateType));
+        formConfigurationDAO.update(formConfiguration);
+    }
+
+    //TODO: =RS= Mutex
+    public void saveGroupConfiguration(String applicationSystemId, GroupConfiguration groupConfiguration) {
+        String groupId = groupConfiguration.getGroupdId();
+        if (null == groupId || groupId.isEmpty())
+            return;
+
+        FormConfiguration formConfiguration = createOrGetFormConfiguration(applicationSystemId);
+        GroupConfiguration toBeRemoved = getMatchingGroupConfiguration(groupId, formConfiguration);
+        if (null != toBeRemoved)
+            formConfiguration.removeGroupConfiguration(toBeRemoved);
+        formConfiguration.addGroupConfiguration(groupConfiguration);
+        formConfigurationDAO.update(formConfiguration);
+    }
+
+    //TODO: =RS= Mutex
+    public void removeGroupConfiguration(String applicationSystemId, GroupConfiguration groupConfiguration) {
+        String groupId = groupConfiguration.getGroupdId();
+        if (null == groupId || groupId.isEmpty())
+            return;
+        FormConfiguration formConfiguration = createOrGetFormConfiguration(applicationSystemId);
+        GroupConfiguration toBeRemoved = getMatchingGroupConfiguration(groupId, formConfiguration);
+        formConfiguration.removeGroupConfiguration(toBeRemoved);
+        formConfigurationDAO.update(formConfiguration);
+    }
+
+    //TODO: =RS= Data should be in set or map to save this trouble.
+    private GroupConfiguration getMatchingGroupConfiguration(String groupId, FormConfiguration formConfiguration){
+        GroupConfiguration matching = null;
+        for (GroupConfiguration groupConfiguration : formConfiguration.getGroupConfigurations()){
+            if (groupConfiguration.getGroupdId().equals(groupId)) {
+                matching = groupConfiguration;
+                break;
+            }
+        }
+        return matching;
     }
 }
