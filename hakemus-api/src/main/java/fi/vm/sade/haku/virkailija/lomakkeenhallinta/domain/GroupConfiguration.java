@@ -22,12 +22,13 @@ public class GroupConfiguration {
 
 
     @JsonCreator
-    public GroupConfiguration(@JsonProperty(value = "groupdId") String groupdId,
+    public GroupConfiguration(@JsonProperty(value = "groupId") String groupdId,
       @JsonProperty(value = "type") final GroupType type,
       @JsonProperty(value = "configurations") final Map<String,String> configurations) {
         this.groupdId = groupdId;
         this.type = type;
-        this.configurations = configurations;
+        if (null != configurations && !configurations.isEmpty())
+            this.configurations = new HashMap<String, String>(configurations);
     }
 
     public String getGroupdId() {
@@ -38,7 +39,7 @@ public class GroupConfiguration {
         return type;
     }
 
-    public Map<String,String> configurations() {
+    public Map<String,String> getConfigurations() {
         return configurations;
     }
 }
