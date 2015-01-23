@@ -33,6 +33,17 @@ public class HakuPermissionServiceMockImpl implements HakuPermissionService {
     }
 
     @Override
+    public List<String> userHasHetuttomienKasittelyRole() {
+        AuthenticationServiceMockImpl authenticationService = new AuthenticationServiceMockImpl();
+        return userHasHetuttomienKasittelyRole(authenticationService.getOrganisaatioHenkilo());
+    }
+
+    @Override
+    public List<String> userHasHetuttomienKasittelyRole(List<String> organizations) {
+        return organizations;
+    }
+
+    @Override
     public List<String> userHasOpoRole(List<String> organizations) {
         return organizations;
     }

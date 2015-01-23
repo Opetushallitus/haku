@@ -33,6 +33,10 @@ public interface HakuPermissionService {
      */
     List<String> userHasOpoRole();
 
+    List<String> userHasHetuttomienKasittelyRole();
+
+    List<String> userHasHetuttomienKasittelyRole(List<String> organizations);
+
     /**
      * Return list of organizations such that current user has opo privilege to applications coming from students
      * of that organization. Check is done against the list of organizations given as parameter.

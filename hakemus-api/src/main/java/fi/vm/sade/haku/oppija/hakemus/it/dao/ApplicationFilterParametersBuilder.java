@@ -8,11 +8,14 @@ public class ApplicationFilterParametersBuilder {
     private int maxApplicationOptions;
     private List<String> organizationsReadable;
     private List<String> organizationsOpo;
+    private List<String> organizationsHetuttomienKasittely;
     private String kohdejoukko;
+    private String hakutapa;
 
     public ApplicationFilterParametersBuilder() {
         this.organizationsReadable = new ArrayList<String>();
         this.organizationsOpo = new ArrayList<String>();
+        this.organizationsHetuttomienKasittely = new ArrayList<String>();
     }
 
     public int getMaxApplicationOptions() {
@@ -52,6 +55,21 @@ public class ApplicationFilterParametersBuilder {
         return this;
     }
 
+    public ApplicationFilterParametersBuilder addOrganizationsHetuttomienKasittely(
+            List<String> organizationsHetuttomienKasittely) {
+        this.organizationsHetuttomienKasittely = organizationsHetuttomienKasittely;
+        return this;
+    }
+
+    public ApplicationFilterParametersBuilder addOrganizationsHetuttomienKasittely(String organizationHetuttomienKasittely) {
+        this.organizationsHetuttomienKasittely.add(organizationHetuttomienKasittely);
+        return this;
+    }
+
+    public List<String> getOrganizationsHetuttomienKasittely() {
+        return organizationsHetuttomienKasittely;
+    }
+
     public ApplicationFilterParametersBuilder setKohdejoukko(String kohdejoukko) {
         this.kohdejoukko = kohdejoukko;
         return this;
@@ -61,9 +79,19 @@ public class ApplicationFilterParametersBuilder {
         return kohdejoukko;
     }
 
+    public ApplicationFilterParametersBuilder setHakutapa(String hakutapa) {
+        this.hakutapa = hakutapa;
+        return this;
+    }
+
+    public String getHakutapa() {
+        return hakutapa;
+    }
+
     public ApplicationFilterParameters build() {
         int realMaxApplicationOptions = maxApplicationOptions == 0 ? 6 : maxApplicationOptions;
         return new ApplicationFilterParameters(realMaxApplicationOptions, organizationsReadable, organizationsOpo,
-                kohdejoukko);
+                organizationsHetuttomienKasittely, kohdejoukko, hakutapa);
     }
+
 }

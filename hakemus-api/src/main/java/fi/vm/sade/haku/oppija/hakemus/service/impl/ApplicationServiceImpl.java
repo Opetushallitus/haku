@@ -16,10 +16,6 @@
 
 package fi.vm.sade.haku.oppija.hakemus.service.impl;
 
-import com.google.common.base.Predicate;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationNote;
@@ -27,7 +23,6 @@ import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.haku.oppija.hakemus.domain.AuthorizationMeta;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationAdditionalDataDTO;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
-import fi.vm.sade.haku.oppija.hakemus.domain.dto.SyntheticApplication;
 import fi.vm.sade.haku.oppija.hakemus.domain.util.ApplicationUtil;
 import fi.vm.sade.haku.oppija.hakemus.domain.util.AttachmentUtil;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationDAO;
@@ -67,8 +62,6 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import static fi.vm.sade.haku.oppija.hakemus.service.ApplicationModelUtil.removeAuthorizationMeta;
 import static fi.vm.sade.haku.oppija.hakemus.service.ApplicationModelUtil.restoreV0ModelLOPParentsToApplicationMap;
@@ -295,13 +288,16 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     private ApplicationFilterParameters buildFilterParams(final ApplicationQueryParameters applicationQueryParameters) {
-        List<ApplicationSystem> ass = applicationSystemService.getAllApplicationSystems("maxApplicationOptions", "kohdejoukkoUri");
+        List<ApplicationSystem> ass = applicationSystemService.getAllApplicationSystems(
+                "maxApplicationOptions", "kohdejoukkoUri", "hakutapa");
         int max = 0;
         String kohdejoukko = null;
+        String hakutapa = null;
         List<String> queriedAss = applicationQueryParameters.getAsIds();
         for (ApplicationSystem as : ass) {
-            if (queriedAss.isEmpty() || queriedAss.contains(as)) {
+            if (queriedAss.isEmpty() || queriedAss.contains(as.getId())) {
                 kohdejoukko = as.getKohdejoukkoUri();
+                hakutapa = as.getHakutapa();
                 if (as.getMaxApplicationOptions() > max) {
                     max = as.getMaxApplicationOptions();
                 }
@@ -311,9 +307,11 @@ public class ApplicationServiceImpl implements ApplicationService {
         ApplicationFilterParametersBuilder builder = new ApplicationFilterParametersBuilder()
                 .addOrganizationsReadable(hakuPermissionService.userCanReadApplications())
                 .addOrganizationsOpo(hakuPermissionService.userHasOpoRole())
+                .addOrganizationsHetuttomienKasittely(hakuPermissionService.userHasHetuttomienKasittelyRole())
                 .setMaxApplicationOptions(max);
         if (queriedAss != null && queriedAss.size() == 1) {
             builder.setKohdejoukko(kohdejoukko);
+            builder.setHakutapa(hakutapa);
         }
         return builder.build();
     }
