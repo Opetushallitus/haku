@@ -10,11 +10,12 @@ import java.util.Map;
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_EMPTY)
 public class GroupConfiguration {
 
+    //TODO: =RS= Siirrä käyttämään koodistoa ml organisaatiopalvelu.
     public enum GroupType {
-        MAXIMUM_NUMBER_OF,  // maximum number of application options
-        PRIORITY, // Priority levels // possible autoconfig
-        CONSTRAINT_GROUP // allow_group_id / deny_group_id
-        }
+        hakukohde_rajaava,  // maximum number of application options
+        hakukohde_priorisoiva, // Priority levels // possible autoconfig
+        CONSTRAINT_GROUP // allow_group_id / deny_group_id  -- NOT IMPLEMENTED
+    }
 
     private final String groupdId;
     private final GroupType type;
