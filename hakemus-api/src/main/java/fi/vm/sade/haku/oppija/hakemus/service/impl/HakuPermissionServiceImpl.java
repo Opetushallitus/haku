@@ -7,9 +7,11 @@ import fi.vm.sade.generic.service.AbstractPermissionService;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.AuthorizationMeta;
 import fi.vm.sade.haku.oppija.hakemus.service.HakuPermissionService;
+import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Phase;
+import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import fi.vm.sade.security.OrganisationHierarchyAuthorizer;
@@ -33,6 +35,7 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
 public class HakuPermissionServiceImpl extends AbstractPermissionService implements HakuPermissionService {
 
     private AuthenticationService authenticationService;
+    private ApplicationSystemService applicationSystemService;
     private static final Logger log = LoggerFactory.getLogger(HakuPermissionServiceImpl.class);
     private static final String ROLE_OPO = "APP_HAKEMUS_OPO";
     private static final String ROLE_LISATIETORU = "APP_HAKEMUS_LISATIETORU";
@@ -41,9 +44,11 @@ public class HakuPermissionServiceImpl extends AbstractPermissionService impleme
 
     @Autowired
     public HakuPermissionServiceImpl(AuthenticationService authenticationService,
+                                     ApplicationSystemService applicationSystemService,
                                      OrganisationHierarchyAuthorizer authorizer) {
         super("HAKEMUS");
         this.authenticationService = authenticationService;
+        this.applicationSystemService = applicationSystemService;
         this.setAuthorizer(authorizer);
     }
 
@@ -121,8 +126,12 @@ public class HakuPermissionServiceImpl extends AbstractPermissionService impleme
             return true;
         }
 
+        ApplicationSystem as = applicationSystemService.getApplicationSystem(
+                application.getApplicationSystemId(), "hakutapa", "hakukausiVuosi", "hakukausiUri", "kohdejoukkoUri");
         if (!userHasHetuttomienKasittelyRole().isEmpty()
-                && isBlank(application.getVastauksetMerged().get(OppijaConstants.ELEMENT_ID_SOCIAL_SECURITY_NUMBER))) {
+                && isBlank(application.getVastauksetMerged().get(OppijaConstants.ELEMENT_ID_SOCIAL_SECURITY_NUMBER))
+                && OppijaConstants.HAKUTAPA_YHTEISHAKU.equals(as.getHakutapa())
+                && OppijaConstants.KOHDEJOUKKO_KORKEAKOULU.equals(as.getKohdejoukkoUri())) {
             return true;
         }
 
@@ -158,7 +167,20 @@ public class HakuPermissionServiceImpl extends AbstractPermissionService impleme
 
     @Override
     public boolean userCanDeleteApplication(Application application) {
-        return userCanAccessApplication(application, getCreateReadUpdateDeleteRole());
+        if (userCanAccessApplication(application, getCreateReadUpdateDeleteRole())) {
+            return true;
+        }
+
+        ApplicationSystem as = applicationSystemService.getApplicationSystem(
+                application.getApplicationSystemId(), "hakutapa", "hakukausiVuosi", "hakukausiUri", "kohdejoukkoUri");
+        if (!userHasHetuttomienKasittelyRole().isEmpty()
+                && isBlank(application.getVastauksetMerged().get(OppijaConstants.ELEMENT_ID_SOCIAL_SECURITY_NUMBER))
+                && OppijaConstants.HAKUTAPA_YHTEISHAKU.equals(as.getHakutapa())
+                && OppijaConstants.KOHDEJOUKKO_KORKEAKOULU.equals(as.getKohdejoukkoUri())) {
+            return true;
+        }
+
+        return false;
     }
 
     @Override
