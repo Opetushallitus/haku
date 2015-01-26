@@ -167,12 +167,12 @@ public class FormConfigurationResource {
     public void saveGroupConfiguration(@PathParam("asId") String applicationSystemId,
                                        @PathParam("groupId") String groupId,
                                        GroupConfiguration groupConfiguration) throws IOException {
-        if (!groupId.equals(groupConfiguration.getGroupdId())) {
+        if (!groupId.equals(groupConfiguration.getGroupId())) {
             throw new JSONException(Response.Status.BAD_REQUEST, "Data error: Mismatch on groupId from path and model", null);
         }
-        LOGGER.debug("Got groupconfiguration for group: {} for applicationSystemId: {}  ", groupConfiguration.getGroupdId(), applicationSystemId);
+        LOGGER.debug("Got groupconfiguration for group: {} for applicationSystemId: {}  ", groupConfiguration.getGroupId(), applicationSystemId);
         formConfigurationService.saveGroupConfiguration(applicationSystemId, groupConfiguration);
-        LOGGER.debug("Saved groupconfiguration for group: {} for applicationSystemId: {} ", groupConfiguration.getGroupdId(), applicationSystemId);
+        LOGGER.debug("Saved groupconfiguration for group: {} for applicationSystemId: {} ", groupConfiguration.getGroupId(), applicationSystemId);
     }
 
     @DELETE
@@ -183,11 +183,11 @@ public class FormConfigurationResource {
     public void removeGroupConfiguration(@PathParam("asId") String applicationSystemId,
                                          @PathParam("groupId") String groupId,
                                          GroupConfiguration groupConfiguration) throws IOException {
-        if (!groupId.equals(groupConfiguration.getGroupdId())) {
+        if (!groupId.equals(groupConfiguration.getGroupId())) {
             throw new JSONException(Response.Status.BAD_REQUEST, "Data error: Mismatch on groupId from path and model", null);
         }
-        LOGGER.debug("Removing groupconfiguration for group: {} for applicationSystemId: {}", groupConfiguration.getGroupdId(), applicationSystemId);
+        LOGGER.debug("Removing groupconfiguration for group: {} for applicationSystemId: {}", groupConfiguration.getGroupId(), applicationSystemId);
         formConfigurationService.removeGroupConfiguration(applicationSystemId, groupConfiguration);
-        LOGGER.debug("Removed groupconfiguration for group: {} for applicationSystemId: {}", groupConfiguration.getGroupdId(), applicationSystemId);
+        LOGGER.debug("Removed groupconfiguration for group: {} for applicationSystemId: {}", groupConfiguration.getGroupId(), applicationSystemId);
     }
 }

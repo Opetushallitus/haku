@@ -17,23 +17,23 @@ public class GroupConfiguration {
         CONSTRAINT_GROUP // allow_group_id / deny_group_id  -- NOT IMPLEMENTED
     }
 
-    private final String groupdId;
+    private final String groupId;
     private final GroupType type;
     private Map<String,String> configurations = new HashMap<String,String>();
 
 
     @JsonCreator
-    public GroupConfiguration(@JsonProperty(value = "groupId") String groupdId,
+    public GroupConfiguration(@JsonProperty(value = "groupId") String groupId,
       @JsonProperty(value = "type") final GroupType type,
       @JsonProperty(value = "configurations") final Map<String,String> configurations) {
-        this.groupdId = groupdId;
+        this.groupId = groupId;
         this.type = type;
         if (null != configurations && !configurations.isEmpty())
             this.configurations = new HashMap<String, String>(configurations);
     }
 
-    public String getGroupdId() {
-        return groupdId;
+    public String getGroupId() {
+        return groupId;
     }
 
     public GroupType getType() {

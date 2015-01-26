@@ -143,7 +143,7 @@ public final class FormConfigurationService {
 
     //TODO: =RS= Mutex
     public void saveGroupConfiguration(String applicationSystemId, GroupConfiguration groupConfiguration) {
-        String groupId = groupConfiguration.getGroupdId();
+        String groupId = groupConfiguration.getGroupId();
         if (null == groupId || groupId.isEmpty())
             return;
 
@@ -157,7 +157,7 @@ public final class FormConfigurationService {
 
     //TODO: =RS= Mutex
     public void removeGroupConfiguration(String applicationSystemId, GroupConfiguration groupConfiguration) {
-        String groupId = groupConfiguration.getGroupdId();
+        String groupId = groupConfiguration.getGroupId();
         if (null == groupId || groupId.isEmpty())
             return;
         FormConfiguration formConfiguration = createOrGetFormConfiguration(applicationSystemId);
@@ -170,7 +170,7 @@ public final class FormConfigurationService {
     private GroupConfiguration getMatchingGroupConfiguration(String groupId, FormConfiguration formConfiguration){
         GroupConfiguration matching = null;
         for (GroupConfiguration groupConfiguration : formConfiguration.getGroupConfigurations()){
-            if (groupConfiguration.getGroupdId().equals(groupId)) {
+            if (groupConfiguration.getGroupId().equals(groupId)) {
                 matching = groupConfiguration;
                 break;
             }
