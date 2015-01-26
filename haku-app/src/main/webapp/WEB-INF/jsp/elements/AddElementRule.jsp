@@ -20,10 +20,8 @@
 
 <c:set var="styleBaseClass" value="form-row"/>
 <div id="${element.id}" class="${styleBaseClass}">
-    <%--
     <c:choose>
         <c:when test="${empty answers[element.children[0].id]}">
-        --%>
             <div class="${styleBaseClass}-content" id="${element.id}-addRemoveLinks">
                 <a id="${element.id}-link" href="#"><haku:i18nText value="${element.text}"/></a>
                 <a id="${element.id}-undolink" style="display: none;" href="#">Poista</a>
@@ -76,10 +74,8 @@
                     };
                 })();
             </script>
-            <%--
         </c:when>
     </c:choose>
-    --%>
     <div class="rule-childs clear">
         <c:choose>
             <c:when test="${not empty answers[element.relatedElementId] and not empty answers[element.children[0].id]}">
