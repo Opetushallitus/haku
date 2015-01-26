@@ -56,10 +56,8 @@ public class SyntheticApplicationService {
             return newApplication(stub, hakemus);
         } else {
             Application current = Iterables.getFirst(applications, query);
+            updateEmail(current, hakemus.sahkoposti);
             addHakutoive(current, stub.hakukohdeOid, stub.tarjoajaOid);
-            if (StringUtils.isNotBlank(hakemus.sahkoposti)) {
-                updateEmail(current, hakemus.sahkoposti);
-            }
             return current;
         }
     }
@@ -72,9 +70,7 @@ public class SyntheticApplicationService {
         app.setRedoPostProcess(Application.PostProcessingState.DONE);
         app.setState(Application.State.ACTIVE);
 
-        Person person = new Person(hakemus.etunimi, hakemus.sukunimi, hakemus.henkilotunnus, hakemus.sahkoposti, hakemus.hakijaOid, hakemus.syntymaAika);
-        app.modifyPersonalData(person);
-        // TODO modifyPersonalData adds 'overriddenAnswers' section, it should be wiped
+        updateEmail(app, hakemus.sahkoposti);
 
         HashMap<String, String> hakutoiveet = new HashMap<String, String>();
         hakutoiveet.put("preference1-Koulutus-id", stub.hakukohdeOid);
@@ -95,8 +91,10 @@ public class SyntheticApplicationService {
         }
     }
 
-    private void updateEmail(Application application, final String email) {
-        application.getAnswers().get(OppijaConstants.PHASE_PERSONAL).put(OppijaConstants.ELEMENT_ID_EMAIL, email);
+    private void updateEmail(Application app, final String email) {
+        if (StringUtils.isNotBlank(email)) {
+            app.getAnswers().get(OppijaConstants.PHASE_PERSONAL).put(OppijaConstants.ELEMENT_ID_EMAIL, email);
+        }
     }
 
     private String getNextHakutoiveSuffix(Map<String, String> existingPreferences) {
