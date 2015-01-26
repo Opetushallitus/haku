@@ -11,6 +11,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Phase;
 import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import fi.vm.sade.security.OrganisationHierarchyAuthorizer;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -24,6 +25,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import static org.apache.commons.lang3.StringUtils.isBlank;
 
 @Service
 @Profile(value = {"default"})
@@ -96,12 +99,14 @@ public class HakuPermissionServiceImpl extends AbstractPermissionService impleme
     @Override
     public boolean userCanReadApplication(Application application) {
         log.debug("Checking access for application: "+application.getOid());
+
         boolean canRead = userCanAccessApplication(application, getReadRole(), getReadUpdateRole(), getCreateReadUpdateDeleteRole(),
                 getRoleLisatietoRU(), getRoleLisatietoCRUD());
         if (canRead) {
             log.debug("Can read, "+application.getOid());
             return canRead;
         }
+
         boolean opo = userHasOpoRoleToSendingSchool(application);
         AuthorizationMeta authorizationMeta = application.getAuthorizationMeta();
         boolean opoAllowed = authorizationMeta == null || authorizationMeta.isOpoAllowed() == null
@@ -109,10 +114,18 @@ public class HakuPermissionServiceImpl extends AbstractPermissionService impleme
         if (opo && opoAllowed) {
             return true;
         }
-        if ((authorizationMeta == null || authorizationMeta.getAllAoOrganizations().isEmpty())
+
+        Set<String> allAoOrganizations = authorizationMeta.getAllAoOrganizations();
+        if ((authorizationMeta == null || allAoOrganizations.isEmpty())
                 && userCanEnterApplication()) {
             return true;
         }
+
+        if (!userHasHetuttomienKasittelyRole().isEmpty()
+                && isBlank(application.getVastauksetMerged().get(OppijaConstants.ELEMENT_ID_SOCIAL_SECURITY_NUMBER))) {
+            return true;
+        }
+
         return false;
     }
 
