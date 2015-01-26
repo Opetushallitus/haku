@@ -8,6 +8,7 @@ import java.util.Map;
 
 import javax.ws.rs.core.Response;
 
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -85,11 +86,11 @@ public class SyntheticApplicationIT {
         final List<Application> apps2 = verifyPutResponse(resp2);
 
         Application app = apps2.get(0);
-        Map<String, String> hakutoiveet = app.getPhaseAnswers("hakutoiveet");
+        Map<String, String> hakutoiveet = app.getPhaseAnswers(OppijaConstants.PHASE_APPLICATION_OPTIONS);
         assertEquals(hakukohde1, hakutoiveet.get("preference1-Koulutus-id"));
         assertEquals(hakukohde2, hakutoiveet.get("preference2-Koulutus-id"));
 
-        Map<String, String> henkilotiedot = app.getPhaseAnswers("henkilotiedot");
+        Map<String, String> henkilotiedot = app.getPhaseAnswers(OppijaConstants.PHASE_PERSONAL);
         assertEquals(email2, henkilotiedot.get("Sähköposti"));
         assertEquals("Etu", henkilotiedot.get("Etunimet"));
         assertEquals("Suku", henkilotiedot.get("Sukunimi"));
@@ -108,7 +109,7 @@ public class SyntheticApplicationIT {
         final List<Application> apps2 = verifyPutResponse(resp2);
 
         Application app = apps2.get(0);
-        Map<String, String> henkilotiedot = app.getPhaseAnswers("henkilotiedot");
+        Map<String, String> henkilotiedot = app.getPhaseAnswers(OppijaConstants.PHASE_PERSONAL);
         assertEquals(email1, henkilotiedot.get("Sähköposti"));
     }
 

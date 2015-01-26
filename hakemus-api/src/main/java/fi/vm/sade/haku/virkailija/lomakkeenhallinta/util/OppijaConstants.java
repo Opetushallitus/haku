@@ -41,6 +41,7 @@ public final class OppijaConstants {
     element ids, can be used to retrieve specific information from an application
     */
     public static final String ELEMENT_ID_PERSON_OID = "personOid";
+    public static final String ELEMENT_ID_STUDENT_OID = "studentOid";
     public static final String ELEMENT_ID_FIRST_NAMES = "Etunimet";
 
     public static final String ELEMENT_ID_NICKNAME = "Kutsumanimi";
