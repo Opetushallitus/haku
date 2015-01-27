@@ -1,6 +1,6 @@
 function KkHakemusPage() {
-    var lomakkeenhallintaPage = openPage("/haku-app/lomakkeenhallinta", function() {
-        return $("#testframe").get(0).contentWindow.document.getElementById("1.2.246.562.29.173465377510")
+    var lomakkeenhallintaPage = openPage("/haku-app/lomakkeenhallinta/1.2.246.562.29.173465377510", function() {
+        return S("#form-henkilotiedot").first().is(':visible')
     });
     var hakemusPage = openPage("/haku-app/virkailija/hakemus", function() {
         return S("#create-application").first().is(':visible')
