@@ -175,8 +175,8 @@ public class FormConfigurationResource {
         LOGGER.debug("Saved groupconfiguration for group: {} for applicationSystemId: {} ", groupConfiguration.getGroupId(), applicationSystemId);
     }
 
-    @DELETE
-    @Path("{asId}/groupConfiguration/{groupId}")
+    @POST
+    @Path("{asId}/groupConfiguration/{groupId}/delete")
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     @Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKULOMAKKEENHALLINTA_CRUD')")
