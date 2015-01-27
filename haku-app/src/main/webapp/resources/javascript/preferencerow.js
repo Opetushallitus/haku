@@ -30,7 +30,7 @@ var preferenceRow = {
             },
             function (data) {
 
-                $('#'+selectInputId).prop('disabled', true);
+                $('#'+selectInputId).prop('readonly', true);
 
                 var hakukohdeId = $("#" + selectInputId + "-id").val(), $selectInput = $("#" + selectInputId),
                     selectedPreferenceOK = false;
@@ -112,7 +112,7 @@ var preferenceRow = {
                     $selectInput.after(warning);
                 }
 
-                $('#'+selectInputId).prop('disabled', false);
+                $('#'+selectInputId).prop('readonly', false);
             });
     },
 
@@ -157,19 +157,16 @@ var preferenceRow = {
         $('button.reset').unbind();
         $('button.reset').click(function (event) {
             var id = $(this).data('id');
-            $('[id|="' + id + '"]').prop("disabled", false);
+            $('[id|="' + id + '"]').prop("readonly", false);
             $('[id|="' + id + '"]').val('');
             preferenceRow.clearSelectInput(id + "-Koulutus");
             $(this).parent().find(".warning").hide();
             $('[id|="' + id + '"]').change();
         });
 
-//        $(".field-container-text input:text#preferenceLopInput").each(function (index) {
             $('[data-special-id="preferenceLopInput"]').each(function (index) {
             var selectInputId = $(this).data('selectinputid');
             var $hiddenInput = $("#" + this.id + "-id");
-            //$(this).autocomplete = null;
-            //$(this).unbind();
             $(this).autocomplete({
                 minLength: 1,
                 source: function (request, response) {
@@ -210,7 +207,7 @@ var preferenceRow = {
                     $hiddenInput.val(ui.item.dataId);
                     preferenceRow.clearSelectInput(selectInputId);
                     preferenceRow.populateSelectInput(ui.item.dataId, selectInputId, false, this.id);
-                    $(this).prop("disabled", true);
+                    $(this).prop("readonly", true);
                 },
                 change: function (ev, ui) {
                     if (!ui.item) {
@@ -227,7 +224,7 @@ var preferenceRow = {
                 }
             });
             if ($hiddenInput.val() && $hiddenInput.val() !== '') {
-                $(this).prop("disabled", true);
+                $(this).prop("readonly", true);
                 preferenceRow.populateSelectInput($hiddenInput.val(), selectInputId, true, this.id);
             }
         });
