@@ -26,6 +26,14 @@ function KkHakemusPage() {
         addAmmatillinenCheckbox: function() {
             return S("input#pohjakoulutus_am").first()
         },
+        ammatilliset: function () {
+            var el = S("a[name=pohjakoulutus_am]").first();
+            if (el.get(0)) el.get(0).scrollIntoView();
+            return el;
+        },
+        addSecondAmmatillinenLink: function() {
+            return S("a#addAmmatillinenRule2-link").first()
+        },
         ammatillinenSuoritusVuosi: function() {
             return S("input#pohjakoulutus_am_vuosi").first()
         },
@@ -38,11 +46,26 @@ function KkHakemusPage() {
         ammatillinenOppilaitos: function() {
             return S("input#pohjakoulutus_am_oppilaitos").first()
         },
+        ammatillinenSuoritusVuosi2: function() {
+            return S("input#pohjakoulutus_am_vuosi2").first()
+        },
+        ammatillinenTutkintonimike2: function() {
+            return S("input#pohjakoulutus_am_nimike2").first()
+        },
+        ammatillinenTutkinnonLaajuus2: function() {
+            return S("input#pohjakoulutus_am_laajuus2").first()
+        },
+        ammatillinenOppilaitos2: function() {
+            return S("input#pohjakoulutus_am_oppilaitos2").first()
+        },
+        ammatillinenOppilaitos2Text: function() {
+            return S("td:contains(SLK)").first()
+        },
         kkTutkintoSuoritettu: function() {
             return S("input[name=suoritusoikeus_tai_aiempi_tutkinto]")
         },
         saveButton: function() {
-            return Button(function() { return S("button.save").first() })
+            return S("button.save[value=koulutustausta]").first()
         },
         createApplication: function() {
             return lomakkeenhallintaPage()
