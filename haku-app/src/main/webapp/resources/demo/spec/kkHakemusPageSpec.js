@@ -26,6 +26,7 @@
                             && page.ammatillinenTutkintonimike().is(':visible')
                             && page.ammatillinenTutkinnonLaajuus().is(':visible')
                             && page.ammatillinenOppilaitos().is(':visible')
+                            && page.ammatillinenNayttotutkinto().is(':visible')
                     }))
                     .then(function() {
                         page.ammatillinenSuoritusVuosi().val("2000");
@@ -47,6 +48,7 @@
                             && page.ammatillinenTutkintonimike2().is(':visible')
                             && page.ammatillinenTutkinnonLaajuus2().is(':visible')
                             && page.ammatillinenOppilaitos2().is(':visible')
+                            && page.ammatillinenNayttotutkinto2().is(':visible')
                     }))
                     .then(asyncPrint("second ammatillinen visible"))
                     .then(function() {

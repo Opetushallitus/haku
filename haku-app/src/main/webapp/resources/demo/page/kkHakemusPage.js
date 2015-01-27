@@ -46,6 +46,9 @@ function KkHakemusPage() {
         ammatillinenOppilaitos: function() {
             return S("input#pohjakoulutus_am_oppilaitos").first()
         },
+        ammatillinenNayttotutkinto: function() {
+            return S("input[name=pohjakoulutus_am_nayttotutkintona]")
+        },
         ammatillinenSuoritusVuosi2: function() {
             return S("input#pohjakoulutus_am_vuosi2").first()
         },
@@ -60,6 +63,9 @@ function KkHakemusPage() {
         },
         ammatillinenOppilaitos2Text: function() {
             return S("td:contains(SLK)").first()
+        },
+        ammatillinenNayttotutkinto2: function() {
+            return S("input[name=pohjakoulutus_am_nayttotutkintona2]")
         },
         kkTutkintoSuoritettu: function() {
             return S("input[name=suoritusoikeus_tai_aiempi_tutkinto]")
