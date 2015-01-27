@@ -755,8 +755,8 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <source>1.6</source>
-                    <target>1.6</target>
+                    <source>1.7</source>
+                    <target>1.7</target>
                 </configuration>
             </plugin>
 
@@ -800,13 +800,6 @@
                 <groupId>org.apache.tomcat.maven</groupId>
                 <artifactId>tomcat7-maven-plugin</artifactId>
                 <version>2.1</version>
-                <dependencies>
-                    <dependency>
-                        <groupId>com.cenqua.clover</groupId>
-                        <artifactId>clover</artifactId>
-                        <version>${clover.version}</version>
-                    </dependency>
-                </dependencies>
                 <executions>
                     <execution>
                         <id>tomcat-run</id>
@@ -867,6 +860,7 @@
             </plugin>
             <plugin>
                 <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.7</version>
                 <executions>
                     <execution>
                         <id>write buildversion.txt</id>
@@ -876,20 +870,14 @@
                         </goals>
                         <configuration>
                             <target>
-                                <echo message="writing target/${project.build.finalName}/buildversion.txt"/>
                                 <echo file="target/${project.build.finalName}/buildversion.txt">
-                                    <![CDATA[artifactId=${project.artifactId}
-version=${project.version}
-buildNumber=${project.build}
-branchName=${branch}
-vcsRevision=${revision}
-buildTtime=${maven.build.timestamp}
-]]>
+                                    artifactId=${project.artifactId}
+                                    version=${project.version}
+                                    buildNumber=${project.build}
+                                    branchName=${branch}
+                                    vcsRevision=${revision}
+                                    buildTtime=${maven.build.timestamp}
                                 </echo>
-                                <loadfile property="buildversiontxt"
-                                          srcFile="target/${project.build.finalName}/buildversion.txt"/>
-                                <echo message="${buildversiontxt}"/>
-                                <echo file="target/mavenversion.txt">${project.version}</echo>
                             </target>
                         </configuration>
                     </execution>

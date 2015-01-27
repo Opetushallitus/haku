@@ -407,12 +407,6 @@
             </exclusions>
         </dependency>
         <dependency>
-            <groupId>com.cenqua.clover</groupId>
-            <artifactId>clover</artifactId>
-            <version>3.1.7</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
             <version>${guava.version}</version>
@@ -602,8 +596,8 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <source>1.6</source>
-                    <target>1.6</target>
+                    <source>1.7</source>
+                    <target>1.7</target>
                 </configuration>
             </plugin>
 
