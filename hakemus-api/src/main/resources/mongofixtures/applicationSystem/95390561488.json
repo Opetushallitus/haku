@@ -58,19 +58,19 @@
 {"_id":"matkapuhelinnumero1","i18nText":{"translations":{"fi":"Matkapuhelinnumero"}},"verboseHelp":{"translations":{"fi":"Kirjoita tähän matkapuhelinnumerosi, josta sinut tavoittaa opiskelijavalintaan liittyvissä asioissa.","sv":"Ange ditt mobiltelefonnummer, så att du vid behov kan kontaktas vid ev. frågor som gäller antagningen av studerande.","en":"Phone number is not compulsory information, but is useful for getting in contact with you."}},"validators":[
 {"pattern":"^$|^([0-9\\(\\)\\/\\+ \\-]*)$","errorMessage":{"translations":{"fi":"Virheellinen arvo","sv":"Ogiltigt värde.","en":"Incorrect value"}},"_class":"fi.vm.sade.haku.oppija.lomake.validation.validators.RegexFieldValidator"}
 ],"children":[],"attributes":{"size":"30"},"help":{"translations":{"fi":"Kirjoita tähän matkapuhelinnumerosi, jotta sinuun saadaan tarvittaessa yhteys.","sv":"Ange ditt mobiltelefonnummer så att du vid behov kan bli kontaktad.","en":"Phone number is not compulsory information, but is useful for getting in contact with you."}},"inline":true,"_class":"fi.vm.sade.haku.oppija.lomake.domain.elements.questions.TextQuestion"},
-{"_id":"addPuhelinnumero2Rule","relatedElementId":"matkapuhelinnumero1","text":{"translations":{"fi":"Lisää puhelinnumero","sv":"Lägg till telefonnummer","en":"Add phone number"}},"validators":[],"children":[
+{"_id":"addPuhelinnumero2Rule","previousRules":[],"relatedElementId":"matkapuhelinnumero1","text":{"translations":{"fi":"Lisää puhelinnumero","sv":"Lägg till telefonnummer","en":"Add phone number"}},"validators":[],"children":[
 {"_id":"matkapuhelinnumero2","i18nText":{"translations":{"fi":"Puhelinnumero"}},"validators":[
 {"pattern":"^$|^([0-9\\(\\)\\/\\+ \\-]*)$","errorMessage":{"translations":{"fi":"Virheellinen arvo","sv":"Ogiltigt värde.","en":"Incorrect value"}},"_class":"fi.vm.sade.haku.oppija.lomake.validation.validators.RegexFieldValidator"}
 ],"children":[],"attributes":{"size":"30"},"inline":true,"_class":"fi.vm.sade.haku.oppija.lomake.domain.elements.questions.TextQuestion"},
-{"_id":"addPuhelinnumero3Rule","relatedElementId":"matkapuhelinnumero2","text":{"translations":{"fi":"Lisää puhelinnumero","sv":"Lägg till telefonnummer","en":"Add phone number"}},"validators":[],"children":[
+{"_id":"addPuhelinnumero3Rule","previousRules":[],"relatedElementId":"matkapuhelinnumero2","text":{"translations":{"fi":"Lisää puhelinnumero","sv":"Lägg till telefonnummer","en":"Add phone number"}},"validators":[],"children":[
 {"_id":"matkapuhelinnumero3","i18nText":{"translations":{"fi":"Puhelinnumero"}},"validators":[
 {"pattern":"^$|^([0-9\\(\\)\\/\\+ \\-]*)$","errorMessage":{"translations":{"fi":"Virheellinen arvo","sv":"Ogiltigt värde.","en":"Incorrect value"}},"_class":"fi.vm.sade.haku.oppija.lomake.validation.validators.RegexFieldValidator"}
 ],"children":[],"attributes":{"size":"30"},"inline":true,"_class":"fi.vm.sade.haku.oppija.lomake.domain.elements.questions.TextQuestion"},
-{"_id":"addPuhelinnumero4Rule","relatedElementId":"matkapuhelinnumero3","text":{"translations":{"fi":"Lisää puhelinnumero","sv":"Lägg till telefonnummer","en":"Add phone number"}},"validators":[],"children":[
+{"_id":"addPuhelinnumero4Rule","previousRules":[],"relatedElementId":"matkapuhelinnumero3","text":{"translations":{"fi":"Lisää puhelinnumero","sv":"Lägg till telefonnummer","en":"Add phone number"}},"validators":[],"children":[
 {"_id":"matkapuhelinnumero4","i18nText":{"translations":{"fi":"Puhelinnumero"}},"validators":[
 {"pattern":"^$|^([0-9\\(\\)\\/\\+ \\-]*)$","errorMessage":{"translations":{"fi":"Virheellinen arvo","sv":"Ogiltigt värde.","en":"Incorrect value"}},"_class":"fi.vm.sade.haku.oppija.lomake.validation.validators.RegexFieldValidator"}
 ],"children":[],"attributes":{"size":"30"},"inline":true,"_class":"fi.vm.sade.haku.oppija.lomake.domain.elements.questions.TextQuestion"},
-{"_id":"addPuhelinnumero5Rule","relatedElementId":"matkapuhelinnumero4","text":{"translations":{"fi":"Lisää puhelinnumero","sv":"Lägg till telefonnummer","en":"Add phone number"}},"validators":[],"children":[
+{"_id":"addPuhelinnumero5Rule","previousRules":[],"relatedElementId":"matkapuhelinnumero4","text":{"translations":{"fi":"Lisää puhelinnumero","sv":"Lägg till telefonnummer","en":"Add phone number"}},"validators":[],"children":[
 {"_id":"matkapuhelinnumero5","i18nText":{"translations":{"fi":"Puhelinnumero"}},"validators":[
 {"pattern":"^$|^([0-9\\(\\)\\/\\+ \\-]*)$","errorMessage":{"translations":{"fi":"Virheellinen arvo","sv":"Ogiltigt värde.","en":"Incorrect value"}},"_class":"fi.vm.sade.haku.oppija.lomake.validation.validators.RegexFieldValidator"}
 ],"children":[],"attributes":{"size":"30"},"inline":true,"_class":"fi.vm.sade.haku.oppija.lomake.domain.elements.questions.TextQuestion"}

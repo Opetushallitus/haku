@@ -297,13 +297,13 @@ public final class KoulutustaustaPhase {
         muu.addChild(muuMore);
 
         Element prevElement = buildMuuElement(formParameters, 1, muuMore);
-        List<AddElementRule> prevLinks = new ArrayList<AddElementRule>();
+        List<String> prevLinks = new ArrayList<String>();
 
         for (int i = 2; i <= count; i++) {
             I18nText i18nText = formParameters.getI18nText("pohjakoulutus.lisaa");
             AddElementRule extraMuuTutkintoRule = new AddElementRule("addMuuTutkintoRule" + i, prevElement.getId(),
                     prevLinks, i18nText);
-            prevLinks.add(extraMuuTutkintoRule);
+            prevLinks.add(extraMuuTutkintoRule.getId());
             prevElement.addChild(extraMuuTutkintoRule);
             prevElement = buildMuuElement(formParameters, i, extraMuuTutkintoRule);
         }
@@ -337,13 +337,13 @@ public final class KoulutustaustaPhase {
         avoin.addChild(avoinMore);
 
         Element prevElement = buildAvoinElement(formParameters, 1, avoinMore);
-        List<AddElementRule> prevLinks = new ArrayList<AddElementRule>();
+        List<String> prevLinks = new ArrayList<String>();
 
         for (int i = 2; i <= count; i++) {
             I18nText i18nText = formParameters.getI18nText("pohjakoulutus.lisaa");
             AddElementRule extraAvoinTutkintoRule = new AddElementRule("addAvoinTutkintoRule" + i, prevElement.getId(),
                     prevLinks, i18nText);
-            prevLinks.add(extraAvoinTutkintoRule);
+            prevLinks.add(extraAvoinTutkintoRule.getId());
             prevElement.addChild(extraAvoinTutkintoRule);
             prevElement = buildAvoinElement(formParameters, i, extraAvoinTutkintoRule);
         }
@@ -382,13 +382,13 @@ public final class KoulutustaustaPhase {
         ulk.addChild(ulkMore);
 
         Element prevElement = buildUlkomainenTutkintoElement(formParameters, 1, ulkMore);
-        List<AddElementRule> prevLinks = new ArrayList<AddElementRule>();
+        List<String> prevLinks = new ArrayList<String>();
 
         for (int i = 2; i <= count; i++) {
             I18nText i18nText = formParameters.getI18nText("pohjakoulutus.lisaa");
             AddElementRule extraUlkTutkintoRule = new AddElementRule("addUlkTutkintoRule" + i, prevElement.getId(),
                     prevLinks, i18nText);
-            prevLinks.add(extraUlkTutkintoRule);
+            prevLinks.add(extraUlkTutkintoRule.getId());
             prevElement.addChild(extraUlkTutkintoRule);
             prevElement = buildUlkomainenTutkintoElement(formParameters, i, extraUlkTutkintoRule);
         }
@@ -431,13 +431,13 @@ public final class KoulutustaustaPhase {
         kk.addChild(kkMore);
 
         Element prevElement = buildKorkeakoulututkintoElement(formParameters, tutkintotasot, 1, kkMore);
-        List<AddElementRule> prevLinks = new ArrayList<AddElementRule>();
+        List<String> prevLinks = new ArrayList<String>();
 
         for (int i = 2; i <= count; i++) {
             I18nText i18nText = formParameters.getI18nText("pohjakoulutus.lisaa");
             AddElementRule extraKKTutkintoRule = new AddElementRule("addKKtutkintoRule" + i, prevElement.getId(),
                     prevLinks, i18nText);
-            prevLinks.add(extraKKTutkintoRule);
+            prevLinks.add(extraKKTutkintoRule.getId());
             prevElement.addChild(extraKKTutkintoRule);
             prevElement = buildKorkeakoulututkintoElement(formParameters, tutkintotasot, i, extraKKTutkintoRule);
         }
@@ -483,13 +483,13 @@ public final class KoulutustaustaPhase {
         kk_ulkomainen.addChild(kkUlkomainenMore);
 
         Element prevElement = buildKorkeakoulututkintoUlkomaaElement(formParameters, tutkintotasot, maat, 1, kkUlkomainenMore);
-        List<AddElementRule> prevLinks = new ArrayList<AddElementRule>();
+        List<String> prevLinks = new ArrayList<String>();
 
         for (int i = 2; i <= count; i++) {
             I18nText i18nText = formParameters.getI18nText("pohjakoulutus.lisaa");
             AddElementRule extraKKUlkomaaRule = new AddElementRule("addKKUlkomaaRule" + i, prevElement.getId(),
                     prevLinks, i18nText);
-            prevLinks.add(extraKKUlkomaaRule);
+            prevLinks.add(extraKKUlkomaaRule.getId());
             prevElement.addChild(extraKKUlkomaaRule);
             prevElement = buildKorkeakoulututkintoUlkomaaElement(formParameters, tutkintotasot, maat, i, extraKKUlkomaaRule);
         }
@@ -538,13 +538,13 @@ public final class KoulutustaustaPhase {
         amt.addChild(amtMore);
 
         Element prevElement = buildAmmattitutkintoElement(formParameters, 1, amtMore);
-        List<AddElementRule> prevLinks = new ArrayList<AddElementRule>();
+        List<String> prevLinks = new ArrayList<String>();
 
         for (int i = 2; i <= count; i++) {
             I18nText i18nText = formParameters.getI18nText("pohjakoulutus.lisaa");
             AddElementRule extraAmmattitutkintoRule = new AddElementRule("addAmmattitutkintoRule" + i, prevElement.getId(),
                     prevLinks, i18nText);
-            prevLinks.add(extraAmmattitutkintoRule);
+            prevLinks.add(extraAmmattitutkintoRule.getId());
             prevElement.addChild(extraAmmattitutkintoRule);
             prevElement = buildAmmattitutkintoElement(formParameters, i, extraAmmattitutkintoRule);
         }
@@ -584,13 +584,13 @@ public final class KoulutustaustaPhase {
         am.addChild(amMore);
 
         Element prevElement = buildAmmatillinenElement(formParameters, laajuusYksikot, 1, amMore);
-        List<AddElementRule> prevLinks = new ArrayList<AddElementRule>();
+        List<String> prevLinks = new ArrayList<String>();
 
         for (int i = 2; i <= count; i++) {
             I18nText i18nText = formParameters.getI18nText("pohjakoulutus.lisaa");
             AddElementRule extraAmmatillinenRule = new AddElementRule("addAmmatillinenRule" + i, prevElement.getId(),
                     prevLinks, i18nText);
-            prevLinks.add(extraAmmatillinenRule);
+            prevLinks.add(extraAmmatillinenRule.getId());
             prevElement.addChild(extraAmmatillinenRule);
             prevElement = buildAmmatillinenElement(formParameters, laajuusYksikot, i, extraAmmatillinenRule);
         }

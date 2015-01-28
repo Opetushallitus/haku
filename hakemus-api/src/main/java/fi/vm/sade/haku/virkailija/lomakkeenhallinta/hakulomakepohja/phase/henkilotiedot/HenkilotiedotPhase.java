@@ -190,7 +190,7 @@ public final class HenkilotiedotPhase {
 
         Element prevNum = puhelinnumero1;
         AddElementRule prevRule = null;
-        final List<AddElementRule> prevRules = new ArrayList<AddElementRule>();
+        final List<String> prevRules = new ArrayList<String>();
         for (int i = 2; i <= 5; i++) {
             Element extranumero = TextQuestion(OppijaConstants.ELEMENT_ID_PREFIX_PHONENUMBER + i).labelKey("puhelinnumero")
                     .size(30)
@@ -202,7 +202,7 @@ public final class HenkilotiedotPhase {
             I18nText i18nText = formParameters.getI18nText("puhelinnumero.lisaa");
             AddElementRule extranumeroRule = new AddElementRule(id, prevNum.getId(),
                     prevRules, i18nText);
-            prevRules.add(extranumeroRule);
+            prevRules.add(extranumeroRule.getId());
 
             extranumeroRule.addChild(extranumero);
             if (i == 2) {

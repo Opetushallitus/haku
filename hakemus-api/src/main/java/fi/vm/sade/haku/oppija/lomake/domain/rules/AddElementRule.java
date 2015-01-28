@@ -35,15 +35,12 @@ public class AddElementRule extends Element {
 
     public AddElementRule(@JsonProperty(value = "id") final String id,
                           @JsonProperty(value = "relatedElementId") final String relatedElementId,
-                          @JsonProperty(value = "previousRules") final List<AddElementRule> previousRules,
+                          @JsonProperty(value = "previousRules") final List<String> previousRules,
                           @JsonProperty(value = "text") final I18nText text) {
         super(id);
         this.text = text;
         this.relatedElementId = relatedElementId;
-        this.previousRules = new ArrayList<String>(previousRules.size());
-        for (AddElementRule rule : previousRules) {
-            this.previousRules.add(rule.getId());
-        }
+        this.previousRules = new ArrayList<String>(previousRules);
     }
 
     public I18nText getText() {

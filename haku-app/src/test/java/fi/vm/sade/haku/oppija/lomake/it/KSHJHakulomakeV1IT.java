@@ -25,7 +25,7 @@ public class KSHJHakulomakeV1IT extends DummyModelBaseItTest {
     @Test
     public void runKSHJForm() throws Exception {
 
-        navigateToPath("lomake", "haku6");
+        navigateToPath("lomake", "1.2.246.562.29.173465377510");
         fillOut(defaultValues.kkHenkilotiedot);
         nextPhase(OppijaConstants.PHASE_EDUCATION);
         findByIdAndClick("suoritusoikeus_tai_aiempi_tutkinto", "pohjakoulutus_am");
@@ -47,7 +47,7 @@ public class KSHJHakulomakeV1IT extends DummyModelBaseItTest {
         setValue("arvosanaasteikko", "4-10");
         nextPhase(OppijaConstants.PHASE_MISC);
 
-        navigateToPath("lomake", "haku6", OppijaConstants.PHASE_EDUCATION);
+        navigateToPath("lomake", "1.2.246.562.29.173465377510", OppijaConstants.PHASE_EDUCATION);
 
         findByIdAndClick("pohjakoulutus_am", "pohjakoulutus_muu");
         setValue("pohjakoulutus_muu_vuosi", "2012");
@@ -57,7 +57,7 @@ public class KSHJHakulomakeV1IT extends DummyModelBaseItTest {
         elementsNotPresentById("keskiarvo", "arvosanaasteikko");
 
 
-        navigateToPath("lomake", "haku6", OppijaConstants.PHASE_EDUCATION);
+        navigateToPath("lomake", "1.2.246.562.29.173465377510", OppijaConstants.PHASE_EDUCATION);
         findByIdAndClick("pohjakoulutus_yo");
         setValue("pohjakoulutus_yo_vuosi", "2002");
         setValue("pohjakoulutus_yo_tutkinto", "fi");
