@@ -28,4 +28,5 @@
             <td><c:out value="${answers[element.id]}"/></td>
         </c:otherwise>
     </c:choose>
+    <haku:viewChilds element="${element}"/>
 </tr>

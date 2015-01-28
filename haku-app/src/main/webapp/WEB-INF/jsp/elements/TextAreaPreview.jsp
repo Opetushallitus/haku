@@ -21,3 +21,4 @@
     <td class="label"><a name="${element.id}"></a><haku:i18nText value="${element.i18nText}"/></td>
     <td><c:out value="${answers[element.id]}"/></td>
 </tr>
+<haku:viewChilds element="${element}"/>
