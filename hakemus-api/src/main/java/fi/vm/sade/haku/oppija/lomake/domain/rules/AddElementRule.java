@@ -21,25 +21,29 @@ import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import org.codehaus.jackson.annotate.JsonProperty;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-/**
- * @author jteuho
- */
 public class AddElementRule extends Element {
 
     private static final long serialVersionUID = -911312576973189581L;
     private final String relatedElementId;
+    private final List<String> previousRules;
     private final I18nText text;
 
-    public AddElementRule(@JsonProperty(value = "id") String id,
-                          @JsonProperty(value = "relatedElementId") String relatedElementId,
-                          @JsonProperty(value = "text") I18nText text) {
+    public AddElementRule(@JsonProperty(value = "id") final String id,
+                          @JsonProperty(value = "relatedElementId") final String relatedElementId,
+                          @JsonProperty(value = "previousRules") final List<AddElementRule> previousRules,
+                          @JsonProperty(value = "text") final I18nText text) {
         super(id);
         this.text = text;
         this.relatedElementId = relatedElementId;
+        this.previousRules = new ArrayList<String>(previousRules.size());
+        for (AddElementRule rule : previousRules) {
+            this.previousRules.add(rule.getId());
+        }
     }
 
     public I18nText getText() {
@@ -48,6 +52,10 @@ public class AddElementRule extends Element {
 
     public String getRelatedElementId() {
         return relatedElementId;
+    }
+
+    public List<String> getPreviousRules() {
+        return previousRules;
     }
 
     @Override

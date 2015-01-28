@@ -98,7 +98,7 @@ public class HakuServiceMockImpl implements HakuService {
                 .setMaxApplicationOptions(3)
                 .get());
         asList.add(new ApplicationSystemBuilder()
-                .setId("haku6")
+                .setId("1.2.246.562.29.173465377510")
                 .setName(ElementUtil.createI18NAsIs("Korkkari " + KOHDEJOUKKO_KORKEAKOULU))
                 .setApplicationPeriods(Lists.newArrayList(new ApplicationPeriod(getDate(-100), getDate(1000))))
                 .setHakukausiUri(HAKUKAUSI_SYKSY)
@@ -107,6 +107,7 @@ public class HakuServiceMockImpl implements HakuService {
                 .setHakutapa(HAKUTAPA_YHTEISHAKU)
                 .setMaxApplicationOptions(5)
                 .setKohdejoukkoUri(KOHDEJOUKKO_KORKEAKOULU)
+                .setState("JULKAISTU")
                 .get());
     }
 
