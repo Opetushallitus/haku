@@ -1,7 +1,4 @@
 function KkHakemusPage() {
-    var lomakkeenhallintaPage = openPage("/haku-app/lomakkeenhallinta/1.2.246.562.29.173465377510", function() {
-        return S("#form-henkilotiedot").first().is(':visible')
-    });
     var hakemusPage = openPage("/haku-app/virkailija/hakemus", function() {
         return S("#create-application").first().is(':visible')
     });
@@ -74,8 +71,7 @@ function KkHakemusPage() {
             return S("button.save[value=koulutustausta]").first()
         },
         createApplication: function() {
-            return lomakkeenhallintaPage()
-                .then(hakemusPage)
+            return hakemusPage()
                 .then(wait.until(pageFunctions.createApplicationButton().isEnabled))
                 .then(pageFunctions.createApplicationButton().scrollIntoView)
                 .then(pageFunctions.createApplicationButton().click)
@@ -84,10 +80,7 @@ function KkHakemusPage() {
                     pageFunctions.selectHaku().val("1.2.246.562.29.173465377510");
                     pageFunctions.submitConfirm().click()
                 })
-
         }
-
-
     };
 
     return pageFunctions;
