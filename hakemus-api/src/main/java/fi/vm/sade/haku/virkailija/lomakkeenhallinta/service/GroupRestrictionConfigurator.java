@@ -17,6 +17,8 @@ import java.util.List;
 
 public class GroupRestrictionConfigurator {
 
+    public static final String CONFIG_maximumNumberOf = "maximumNumberOf";
+
     private static final Logger LOGGER = LoggerFactory.getLogger(GroupRestrictionConfigurator.class);
     private final FormParameters formParameters;
     private final HakuService hakuService;
@@ -34,8 +36,6 @@ public class GroupRestrictionConfigurator {
     }
 
     public List<Validator> findAndConfigureGroupRestrictions(){
-        if (true)
-            return new ArrayList<Validator>(0);
         FormConfiguration formConfiguration = formParameters.getFormConfiguration();
         // FormParameters got asID
         for (GroupConfiguration groupConfiguration : formConfiguration.getGroupConfigurations()){
@@ -48,7 +48,7 @@ public class GroupRestrictionConfigurator {
         }
         
         /*
-        Erikoistapaus HH-19
+        TODO Erikoistapaus HH-19
         - Hakuservice.getHakukohderyhmäs
           https://itest-virkailija.oph.ware.fi/tarjonta-service/rest/v1/haku/1.2.246.562.29.173465377510
         - every group test type == GroupConfiguration.GroupType.hakukohde_priorisoiva
@@ -57,6 +57,6 @@ public class GroupRestrictionConfigurator {
         - lisää tieto prioriteeteista koulutusinformaatioon
         - varmista että toimii
         */
-        return null;
+        return new ArrayList<Validator>(0);
     }
 }
