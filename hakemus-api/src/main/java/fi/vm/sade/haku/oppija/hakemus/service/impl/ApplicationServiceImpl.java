@@ -152,7 +152,15 @@ public class ApplicationServiceImpl implements ApplicationService {
     @Override
     public Application submitApplication(final String applicationSystemId, String language) {
         final User user = userSession.getUser();
-        Application application = userSession.getApplication(applicationSystemId);
+
+        Application application = null;
+        if(userSession.hasApplication(applicationSystemId)) {
+            application = userSession.getApplication(applicationSystemId);
+        } else {
+            LOGGER.error("Trying to submit application but no application was found from session. ApplicationSystemId: " + applicationSystemId);
+            throw new IllegalStateException("Trying to submit application but no application was found from session. ApplicationSystemId: " + applicationSystemId);
+        }
+
         ApplicationSystem applicationSystem = applicationSystemService.getApplicationSystem(applicationSystemId);
         Form form = applicationSystem.getForm();
         Map<String, String> allAnswers = application.getVastauksetMerged();
@@ -177,8 +185,24 @@ public class ApplicationServiceImpl implements ApplicationService {
             this.userSession.removeApplication(application);
             return application;
         } else {
+            LOGGER.error("Could not send the application | " + getApplicationLogMessage(application, validationResult));
             throw new IllegalStateException("Could not send the application ");
         }
+    }
+
+    private String getApplicationLogMessage(Application application, ValidationResult validationResult) {
+
+        if(application == null) return "Application was null.";
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("Hakemus: ").append(application.getOid());
+        sb.append("\r\n").append(application.getAnswers().toString());
+        if(validationResult != null) {
+            sb.append("\r\n").append(validationResult.getErrorMessages());
+        }
+
+        return sb.toString();
+
     }
 
     @Override

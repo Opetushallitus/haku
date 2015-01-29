@@ -67,8 +67,10 @@ public class LoggerAspect {
     @AfterReturning(pointcut = "execution(* fi.vm.sade.haku.oppija.hakemus.service.ApplicationService.submitApplication(..)) && args(applicationSystemId,..)",
             returning = "application")
     public void logSubmitApplication(final String applicationSystemId, final Application application) {
+
+        Tapahtuma t = null;
         try {
-            Tapahtuma t = new Tapahtuma();
+            t = new Tapahtuma();
 
             t.setTarget("Haku: " + applicationSystemId
                     + ", käyttäjä: " + userSession.getUser().getUserName() + ", hakemus oid: " + application.getOid());
@@ -83,17 +85,20 @@ public class LoggerAspect {
             LOGGER.debug(t.toString());
             logger.log(t);
         } catch (Exception e) {
-            LOGGER.warn("Could not log submit application event");
+            LOGGER.error("Could not log submit application event", e);
+            if(t != null) LOGGER.error(t.toString());
         }
     }
 
     public void logUpdateApplication(final Application application, final ApplicationPhase applicationPhase) {
-        try {
 
+        Tapahtuma tapahtuma = null;
+
+        try {
             MapDifference<String, String> diffAnswers = ApplicationDiffUtil.diffAnswers(application, applicationPhase);
             AnswersDifference answersDifference = new AnswersDifference(diffAnswers);
             List<Difference> differences = answersDifference.getDifferences();
-            Tapahtuma tapahtuma = new Tapahtuma();
+            tapahtuma = new Tapahtuma();
             tapahtuma.setTarget("hakemus: " + application.getOid() + ", vaihe: " + applicationPhase.getPhaseId());
             tapahtuma.setTimestamp(new Date());
             tapahtuma.setUserActsForUser(userSession.getUser().getUserName());
@@ -106,7 +111,8 @@ public class LoggerAspect {
             logger.log(tapahtuma);
 
         } catch (Exception e) {
-            LOGGER.warn("Could not log update application event");
+            LOGGER.error("Could not log update application event", e);
+            if(tapahtuma != null) LOGGER.error(tapahtuma.toString());
         }
     }
 
