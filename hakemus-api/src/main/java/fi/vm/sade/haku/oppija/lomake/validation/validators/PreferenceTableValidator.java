@@ -19,6 +19,7 @@ package fi.vm.sade.haku.oppija.lomake.validation.validators;
 import com.google.common.base.CharMatcher;
 import com.google.common.base.Strings;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
+import fi.vm.sade.haku.oppija.lomake.validation.GroupRestrictionValidator;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationInput;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationResult;
 import fi.vm.sade.haku.oppija.lomake.validation.Validator;
@@ -34,11 +35,13 @@ public class PreferenceTableValidator implements Validator {
 
     public final List<String> learningInstitutionInputIds = new ArrayList<String>();
     public final List<String> educationInputIds = new ArrayList<String>();
+    public final List<GroupRestrictionValidator> groupRestrictionValidators = new ArrayList<GroupRestrictionValidator>();
 
-    public PreferenceTableValidator(final List<String> learningInstitutionInputIds, final List<String> educationInputIds) {
+    public PreferenceTableValidator(final List<String> learningInstitutionInputIds, final List<String> educationInputIds, List<GroupRestrictionValidator> groupRestrictionValidators) {
         Validate.isTrue(learningInstitutionInputIds.size() == educationInputIds.size());
         this.learningInstitutionInputIds.addAll(learningInstitutionInputIds);
         this.educationInputIds.addAll(educationInputIds);
+        this.groupRestrictionValidators.addAll(groupRestrictionValidators);
     }
 
     @Override
@@ -73,7 +76,19 @@ public class PreferenceTableValidator implements Validator {
             educations.add(education);
 
         }
+
+        errors.putAll(runGroupRestictionValidators());
+
         return new ValidationResult(errors);
+    }
+
+    private Map<String, I18nText> runGroupRestictionValidators() {
+        final Map<String, List<String>> aoGroups = new HashMap<String, List<String>>();
+        final Map<String, I18nText> errors = new HashMap<String, I18nText>();
+        for(GroupRestrictionValidator validator: groupRestrictionValidators) {
+            errors.putAll(validator.validate(aoGroups));
+        }
+        return errors;
     }
 
     /**

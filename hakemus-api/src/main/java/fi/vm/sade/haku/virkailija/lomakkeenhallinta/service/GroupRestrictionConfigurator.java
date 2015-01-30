@@ -1,7 +1,9 @@
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.service;
 
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
-import fi.vm.sade.haku.oppija.lomake.validation.Validator;
+import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
+import fi.vm.sade.haku.oppija.lomake.validation.GroupRestrictionValidator;
+import fi.vm.sade.haku.oppija.lomake.validation.groupvalidators.GroupRestrictionMaxNumberValidator;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain.FormConfiguration;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain.GroupConfiguration;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
@@ -9,8 +11,6 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakuService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakukohdeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +21,6 @@ public class GroupRestrictionConfigurator {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GroupRestrictionConfigurator.class);
     private final FormParameters formParameters;
-    private final HakuService hakuService;
     private final HakukohdeService hakukohdeService;
     private final OrganizationService organizationService;
     
@@ -29,18 +28,26 @@ public class GroupRestrictionConfigurator {
                                         final HakukohdeService hakukohdeService,
                                         final OrganizationService organizationService) {
         this.formParameters = formParameters;
-        //TODO: =RS= Tämä tarvitaan vielä jostain
-        this.hakuService = null;
         this.hakukohdeService = hakukohdeService;
         this.organizationService = organizationService;
     }
 
-    public List<Validator> findAndConfigureGroupRestrictions(){
+    public List<GroupRestrictionValidator> findAndConfigureGroupRestrictions(){
         FormConfiguration formConfiguration = formParameters.getFormConfiguration();
+        List<GroupRestrictionValidator> validators = new ArrayList<GroupRestrictionValidator>();
+
         // FormParameters got asID
         for (GroupConfiguration groupConfiguration : formConfiguration.getGroupConfigurations()){
             if (groupConfiguration.getType().equals(GroupConfiguration.GroupType.hakukohde_rajaava)){
-                //TODO: =RS= generate HH-175 säännöt. Huom tarkastellaan vain listoja.
+                if(groupConfiguration.getConfigurations().containsKey(CONFIG_maximumNumberOf)) {
+                    // TODO HH-175 textit
+                    I18nText errorMessage = formParameters.getI18nText("yleinen.virheellinenarvo");
+                    validators.add(new GroupRestrictionMaxNumberValidator(
+                            groupConfiguration.getGroupId(),
+                            Integer.valueOf(groupConfiguration.getConfigurations().get(CONFIG_maximumNumberOf)),
+                            errorMessage
+                    ));
+                }
             }
             if (groupConfiguration.getType().equals(GroupConfiguration.GroupType.CONSTRAINT_GROUP)){
                 //TODO: =RS= generate HH-20 säännöt. Huom tarkastellaan vain listoja.
@@ -57,6 +64,7 @@ public class GroupRestrictionConfigurator {
         - lisää tieto prioriteeteista koulutusinformaatioon
         - varmista että toimii
         */
-        return new ArrayList<Validator>(0);
+
+        return validators;
     }
 }

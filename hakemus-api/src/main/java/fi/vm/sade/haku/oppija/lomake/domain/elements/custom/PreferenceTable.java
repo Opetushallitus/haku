@@ -19,6 +19,7 @@ package fi.vm.sade.haku.oppija.lomake.domain.elements.custom;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Question;
+import fi.vm.sade.haku.oppija.lomake.validation.GroupRestrictionValidator;
 import fi.vm.sade.haku.oppija.lomake.validation.Validator;
 import fi.vm.sade.haku.oppija.lomake.validation.validators.PreferenceTableValidator;
 import org.codehaus.jackson.annotate.JsonProperty;
@@ -38,6 +39,8 @@ public class PreferenceTable extends Question {
     private boolean usePriorities;
     private int preferencesInitiallyVisible;
 
+    private List<GroupRestrictionValidator> groupRestrictionValidators;
+
     public PreferenceTable(@JsonProperty(value = "id") final String id,
                            @JsonProperty(value = "i18nText") final I18nText i18nText,
                            @JsonProperty(value = "usePriorities") final Boolean usePriorities,
@@ -45,6 +48,7 @@ public class PreferenceTable extends Question {
         super(id, i18nText);
         this.usePriorities = usePriorities != null && usePriorities;
         this.preferencesInitiallyVisible = preferencesInitiallyVisible.intValue();
+        this.groupRestrictionValidators = new ArrayList<GroupRestrictionValidator>();
     }
 
     public boolean isUsePriorities() {
@@ -68,9 +72,15 @@ public class PreferenceTable extends Question {
             educationInputIds.add(pr.getEducationInputId());
         }
 
-        listOfValidators.add(new PreferenceTableValidator(learningInstitutionInputIds, educationInputIds));
-        // TODO: =RS= HH-20/HH-19/HH-175
-        listOfValidators.addAll(validators);
+        listOfValidators.add(new PreferenceTableValidator(learningInstitutionInputIds, educationInputIds, groupRestrictionValidators));
         return listOfValidators;
+    }
+
+    public List<GroupRestrictionValidator> getGroupRestrictionValidators() {
+        return groupRestrictionValidators;
+    }
+
+    public void setGroupRestrictionValidators(List<GroupRestrictionValidator> groupRestrictionValidators) {
+        this.groupRestrictionValidators = groupRestrictionValidators;
     }
 }

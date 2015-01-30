@@ -15,6 +15,7 @@
  */
 package fi.vm.sade.haku.oppija.lomake.validation.validators;
 
+import fi.vm.sade.haku.oppija.lomake.validation.GroupRestrictionValidator;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationInput;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationResult;
 import org.junit.Before;
@@ -50,7 +51,7 @@ public class PreferenceTableValidatorTest {
         educationInputIds.add("e3");
         educationInputIds.add("e4");
         educationInputIds.add("e5");
-        validator = new PreferenceTableValidator(learningInstitutionInputIds, educationInputIds);
+        validator = new PreferenceTableValidator(learningInstitutionInputIds, educationInputIds, new ArrayList<GroupRestrictionValidator>());
     }
 
 

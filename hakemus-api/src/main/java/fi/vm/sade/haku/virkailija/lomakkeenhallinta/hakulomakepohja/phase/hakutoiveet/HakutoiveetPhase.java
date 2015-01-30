@@ -97,12 +97,7 @@ public class HakutoiveetPhase {
         ElementUtil.setVerboseHelp(preferenceTable, "form.hakutoiveet.otsikko.verboseHelp", formParameters);
         hakutoiveetTheme.addChild(preferenceTable);
 
-        /*
-        TODO: =RS= HH-20/HH-175/HH-19 Saattaa olla oikea paikka.
-        Perus ajatus on että validaatio tehtäisiin kerran koko hakutoivetaulukolle.
-        */
-
-        preferenceTable.setValidators(formParameters.getGroupRestrictionConfigurator().findAndConfigureGroupRestrictions());
+        preferenceTable.setGroupRestrictionValidators(formParameters.getGroupRestrictionConfigurator().findAndConfigureGroupRestrictions());
 
         ThemeQuestionConfigurator configurator = formParameters.getThemeQuestionConfigurator();
         hakutoiveetTheme.addChild(configurator.findAndConfigure(hakutoiveetTheme.getId(), ConfiguratorFilter.ONLY_GROUP_QUESTIONS));
