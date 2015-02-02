@@ -877,7 +877,8 @@ public final class KoulutustaustaPhase {
                                 Checkbox("LISAKOULUTUS_TALOUS").formParams(formParameters).build(),
                                 Checkbox("LISAKOULUTUS_AMMATTISTARTTI").formParams(formParameters).build(),
                                 Checkbox("LISAKOULUTUS_KANSANOPISTO").formParams(formParameters).build(),
-                                Checkbox("LISAKOULUTUS_MAAHANMUUTTO").formParams(formParameters).build()
+                                Checkbox("LISAKOULUTUS_MAAHANMUUTTO").formParams(formParameters).build(),
+                                Checkbox("LISAKOULUTUS_MAAHANMUUTTO_LUKIO").formParams(formParameters).build()
                         );
 
         Element pkKysymyksetRule = createVarEqualsToValueRule(baseEducation.getId(),
