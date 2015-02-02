@@ -44,6 +44,7 @@ public class PreferenceConcreteValidatorImpl extends PreferenceConcreteValidator
     private final ApplicationOptionService applicationOptionService;
     private final ApplicationSystemService applicationSystemService;
     private final I18nBundleService i18nBundleService;
+    public static final String UNKNOWN_ERROR = "form.odottamaton.virhe";
     private static final String GENERIC_ERROR = "hakutoiveet.virheellinen.hakutoive";
     private static final String LOP_ERROR = "hakutoiveet.opetuspisteristiriita";
     private static final String CAN_BE_APPLIED_ERROR = "hakutoiveet.eivoihakea";
@@ -88,8 +89,8 @@ public class PreferenceConcreteValidatorImpl extends PreferenceConcreteValidator
                     return createError(validationInput.getElement().getId(), BASE_EDUCATION_ERROR, validationInput.getApplicationSystemId());
                 }
             } catch (RuntimeException e) {
-                LOGGER.error("validation error", e);
-                return createError(validationInput.getElement().getId(), GENERIC_ERROR, validationInput.getApplicationSystemId());
+                LOGGER.error("Error in validation: " + e.toString(), e);
+                return createError(validationInput.getElement().getId(), UNKNOWN_ERROR, validationInput.getApplicationSystemId());
             }
         } else {
             final String opetuspisteIdKey = validationInput.getElement().getId() + "-Opetuspiste-id";
