@@ -133,6 +133,8 @@ public final class OppijaConstants {
     public static final String KOHDEJOUKKO_PERUSOPETUKSEN_JALKEINEN_VALMENTAVA = "haunkohdejoukko_17";
     public static final String KOHDEJOUKKO_KORKEAKOULU = "haunkohdejoukko_12";
     public static final String KOHDEJOUKKO_AMMATILLINEN_JA_LUKIO = "haunkohdejoukko_11";
+    public static final String KOHDEJOUKKO_AMMATILLINEN_ERITYISOPETYKSENA = "haunkohdejoukko_15";
+
 
     public static final String HAKUTAPA_YHTEISHAKU = "hakutapa_01";
     public static final String HAKUTAPA_ERILLISHAKU = "hakutapa_02";

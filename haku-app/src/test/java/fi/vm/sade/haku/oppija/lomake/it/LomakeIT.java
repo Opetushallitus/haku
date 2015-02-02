@@ -62,6 +62,12 @@ public class LomakeIT extends DummyModelBaseItTest {
         findById("matkapuhelinnumero2");
         setValue("matkapuhelinnumero2", "09-123 456");
 
+        screenshot("lomake");
+
+        setValue("huoltajannimi", "Äiti Ankka");
+        setValue("huoltajanpuhelinnumero", "0500111011");
+        setValue("huoltajansahkoposti", "aiti.ankka@ankkalinna.al");
+
         nextPhase("henkilotiedot");
 
         findByClassName("notification");

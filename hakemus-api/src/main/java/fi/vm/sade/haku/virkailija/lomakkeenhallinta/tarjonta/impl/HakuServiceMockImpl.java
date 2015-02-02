@@ -26,7 +26,6 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
-import javax.ws.rs.HEAD;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -50,7 +49,7 @@ public class HakuServiceMockImpl implements HakuService {
                 .setApplicationSystemType(HAKUTYYPPI_VARSINAINEN_HAKU)
                 .setHakutapa(HAKUTAPA_YHTEISHAKU)
                 .setMaxApplicationOptions(5)
-                .setKohdejoukkoUri("haunkohdejoukko_1")
+                .setKohdejoukkoUri(KOHDEJOUKKO_AMMATILLINEN_JA_LUKIO)
                 .get());
         asList.add(new ApplicationSystemBuilder()
                 .setId("1.2.246.562.5.50476818906")
@@ -61,7 +60,7 @@ public class HakuServiceMockImpl implements HakuService {
                 .setHakutapa(HAKUTAPA_YHTEISHAKU)
                 .setMaxApplicationOptions(5)
                 .setHakukausiVuosi(2014)
-                .setKohdejoukkoUri("haunkohdejoukko_1")
+                .setKohdejoukkoUri(KOHDEJOUKKO_AMMATILLINEN_JA_LUKIO)
                 .get());
         asList.add(new ApplicationSystemBuilder()
                 .setId("haku3")
@@ -72,7 +71,7 @@ public class HakuServiceMockImpl implements HakuService {
                 .setMaxApplicationOptions(5)
                 .setApplicationSystemType(HAKUTYYPPI_LISAHAKU)
                 .setHakutapa(HAKUTAPA_YHTEISHAKU)
-                .setKohdejoukkoUri("haunkohdejoukko_1")
+                .setKohdejoukkoUri(KOHDEJOUKKO_AMMATILLINEN_JA_LUKIO)
                 .get());
         asList.add(new ApplicationSystemBuilder()
                 .setId("haku4")
@@ -83,7 +82,7 @@ public class HakuServiceMockImpl implements HakuService {
                 .setMaxApplicationOptions(5)
                 .setApplicationSystemType(HAKUTYYPPI_LISAHAKU)
                 .setHakutapa(HAKUTAPA_YHTEISHAKU)
-                .setKohdejoukkoUri("haunkohdejoukko_1")
+                .setKohdejoukkoUri(KOHDEJOUKKO_AMMATILLINEN_JA_LUKIO)
                 .get());
 
         asList.add(new ApplicationSystemBuilder()

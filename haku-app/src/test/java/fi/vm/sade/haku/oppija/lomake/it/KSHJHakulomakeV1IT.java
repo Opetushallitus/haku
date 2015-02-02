@@ -27,6 +27,10 @@ public class KSHJHakulomakeV1IT extends DummyModelBaseItTest {
 
         navigateToPath("lomake", "1.2.246.562.29.173465377510");
         fillOut(defaultValues.kkHenkilotiedot);
+        elementsNotPresentById("huoltajannimi");
+        elementsNotPresentById("huoltajanpuhelinnumero");
+        elementsNotPresentById("huoltajansahkoposti");
+
         nextPhase(OppijaConstants.PHASE_EDUCATION);
         findByIdAndClick("suoritusoikeus_tai_aiempi_tutkinto", "pohjakoulutus_am");
         setValue("pohjakoulutus_am_vuosi", "2012");

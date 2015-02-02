@@ -14,6 +14,8 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import java.util.ArrayList;
 import java.util.List;
 
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.*;
+
 public class FormParameters {
 
     private final ApplicationSystem applicationSystem;
@@ -69,6 +71,25 @@ public class FormParameters {
         return FormConfiguration.FormTemplateType.PERUSOPETUKSEN_JALKEINEN_VALMENTAVA.equals(this.getFormTemplateType());
     }
 
+    public boolean isHuoltajanTiedotKysyttava() {
+        if (KOHDEJOUKKO_PERUSOPETUKSEN_JALKEINEN_VALMENTAVA.equals(applicationSystem.getKohdejoukkoUri())) {
+            return true;
+        }
+        if (KOHDEJOUKKO_AMMATILLINEN_JA_LUKIO.equals(applicationSystem.getKohdejoukkoUri())
+                && HAKUTAPA_YHTEISHAKU.equals(applicationSystem.getHakutapa())
+                && (HAKUTYYPPI_VARSINAINEN_HAKU.equals(applicationSystem.getApplicationSystemType())
+                    || HAKUTYYPPI_LISAHAKU.equals(applicationSystem.getApplicationSystemType()))) {
+            return true;
+        }
+        if (KOHDEJOUKKO_AMMATILLINEN_ERITYISOPETYKSENA.equals(applicationSystem.getKohdejoukkoUri())
+            && HAKUTAPA_YHTEISHAKU.equals(applicationSystem.getHakutapa())
+                && (HAKUTYYPPI_VARSINAINEN_HAKU.equals(applicationSystem.getApplicationSystemType())
+                || HAKUTYYPPI_LISAHAKU.equals(applicationSystem.getApplicationSystemType()))) {
+            return true;
+        }
+        return false;
+    }
+
     public boolean isHigherEd() {
         return applicationSystem.getKohdejoukkoUri().equals(OppijaConstants.KOHDEJOUKKO_KORKEAKOULU);
     }
@@ -81,11 +102,11 @@ public class FormParameters {
         return FormConfiguration.FormTemplateType.YHTEISHAKU_KEVAT.equals(this.getFormTemplateType());
     }
     public boolean isLisahaku() {
-        return applicationSystem.getApplicationSystemType().equals(OppijaConstants.HAKUTYYPPI_LISAHAKU);
+        return applicationSystem.getApplicationSystemType().equals(HAKUTYYPPI_LISAHAKU);
     }
 
     public boolean isUniqueApplicantRequired() {
-        return OppijaConstants.HAKUTYYPPI_VARSINAINEN_HAKU.equals(applicationSystem.getApplicationSystemType());
+        return HAKUTYYPPI_VARSINAINEN_HAKU.equals(applicationSystem.getApplicationSystemType());
     }
 
     public ThemeQuestionConfigurator getThemeQuestionConfigurator() {
@@ -101,9 +122,9 @@ public class FormParameters {
     }
 
     public List<String> getAllowedLanguages() {
-        if (OppijaConstants.KOHDEJOUKKO_AMMATILLINEN_JA_LUKIO.equals(applicationSystem.getKohdejoukkoUri())
-                && OppijaConstants.HAKUTAPA_YHTEISHAKU.equals(applicationSystem.getHakutapa())
-                && OppijaConstants.HAKUTYYPPI_VARSINAINEN_HAKU.equals(applicationSystem.getApplicationSystemType())
+        if (KOHDEJOUKKO_AMMATILLINEN_JA_LUKIO.equals(applicationSystem.getKohdejoukkoUri())
+                && HAKUTAPA_YHTEISHAKU.equals(applicationSystem.getHakutapa())
+                && HAKUTYYPPI_VARSINAINEN_HAKU.equals(applicationSystem.getApplicationSystemType())
                 && new Integer(2014).equals(applicationSystem.getHakukausiVuosi())
                 && OppijaConstants.HAKUKAUSI_SYKSY.equals(applicationSystem.getHakukausiUri())){
             return asList("fi", "sv");

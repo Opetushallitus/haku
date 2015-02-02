@@ -1,9 +1,7 @@
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain;
 
-import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.dao.impl.DBConverter.ComplexObjectIdDeserializer;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.dao.impl.DBConverter.SimpleObjectIdSerializer;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.bson.types.ObjectId;
 import org.codehaus.jackson.annotate.JsonCreator;
 import org.codehaus.jackson.annotate.JsonProperty;
@@ -54,17 +52,15 @@ public class FormConfiguration {
     }
 
     public FormConfiguration(final String applicationSystemId, final FormTemplateType formTemplateType) {
-        this.applicationSystemId = applicationSystemId;
+        this(applicationSystemId);
         this.formTemplateType = formTemplateType;
-        groupConfigurations = new ArrayList<GroupConfiguration>();
     }
 
     @JsonCreator
     protected FormConfiguration(@JsonProperty(value = "applicationSystemId") String applicationSystemId,
                                 @JsonProperty(value = "formTemplateType") FormTemplateType formTemplateType,
                                 @JsonProperty(value = "groupConfigurations") List<GroupConfiguration> groupConfigurations) {
-        this.applicationSystemId = applicationSystemId;
-        this.formTemplateType = formTemplateType;
+        this(applicationSystemId, formTemplateType);
         if (null == groupConfigurations)
             this.groupConfigurations = new ArrayList<GroupConfiguration>();
         else
@@ -86,4 +82,5 @@ public class FormConfiguration {
     public List<GroupConfiguration> getGroupConfigurations() {
         return groupConfigurations;
     }
+
 }
