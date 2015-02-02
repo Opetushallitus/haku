@@ -512,7 +512,9 @@ public final class KoulutustaustaPhase {
                 .labelKey("pohjakoulutus_kk_oppilaitos")
                 .formParams(formParameters);
         ElementBuilder kk_ulkomainen_missaBuilder = Dropdown("pohjakoulutus_kk_ulk_maa" + postfix)
+                .emptyOption()
                 .addOptions(maat)
+                .defaultOption("")
                 .labelKey("pohjakoulutus_kk_ulk_maa")
                 .formParams(formParameters);
 
@@ -704,7 +706,9 @@ public final class KoulutustaustaPhase {
                 .formParams(formParameters).build();
 
         Element ulkomainenYoMissa = Dropdown("pohjakoulutus_yo_ulkomainen_maa")
+                .emptyOption()
                 .addOptions(maat)
+                .defaultOption("")
                 .requiredInline()
                 .formParams(formParameters).build();
 

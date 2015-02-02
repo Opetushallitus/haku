@@ -71,5 +71,11 @@ public class KSHJHakulomakeV1IT extends DummyModelBaseItTest {
         setValue("lukion-paattotodistuksen-keskiarvo", "4,51");
         elementsNotPresentById("keskiarvo", "arvosanaasteikko");
 
+        navigateToPath("lomake", "1.2.246.562.29.173465377510", OppijaConstants.PHASE_EDUCATION);
+        findByIdAndClick("pohjakoulutus_kk_ulk");
+        verifyDropdownSelection("pohjakoulutus_kk_ulk_maa", "", "");
+
+        findByIdAndClick("pohjakoulutus_yo_ulkomainen");
+        verifyDropdownSelection("pohjakoulutus_yo_ulkomainen_maa", "", "");
     }
 }

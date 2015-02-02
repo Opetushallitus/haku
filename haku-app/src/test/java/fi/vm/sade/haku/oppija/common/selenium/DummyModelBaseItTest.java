@@ -162,4 +162,11 @@ public abstract class DummyModelBaseItTest extends AbstractSeleniumBase {
             setValue(questionAndAnswer.getKey(), questionAndAnswer.getValue());
         }
     }
+
+    protected void verifyDropdownSelection(String dropdownId, String expectedText, String expectedValue) {
+        Select countryDropdown = new Select(seleniumContainer.getDriver().findElementById(dropdownId));
+        WebElement selected = countryDropdown.getFirstSelectedOption();
+        assertEquals(expectedText, selected.getText().trim());
+        assertEquals(expectedValue, selected.getAttribute("value"));
+    }
 }
