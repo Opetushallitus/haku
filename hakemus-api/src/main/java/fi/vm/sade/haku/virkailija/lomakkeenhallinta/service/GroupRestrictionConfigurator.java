@@ -39,7 +39,6 @@ public class GroupRestrictionConfigurator {
         for (GroupConfiguration groupConfiguration : formConfiguration.getGroupConfigurations()){
             if (groupConfiguration.getType().equals(GroupConfiguration.GroupType.hakukohde_rajaava)){
                 if(groupConfiguration.getConfigurations().containsKey(CONFIG_maximumNumberOf)) {
-                    // TODO HH-175 textit
                     I18nText errorMessage = formParameters.getI18nText("rajaava.ryhma.max.virhe");
                     validators.add(new GroupRestrictionMaxNumberValidator(
                             groupConfiguration.getGroupId(),
