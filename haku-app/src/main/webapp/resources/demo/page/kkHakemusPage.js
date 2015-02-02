@@ -23,6 +23,9 @@ function KkHakemusPage() {
         addAmmatillinenCheckbox: function() {
             return S("input#pohjakoulutus_am").first()
         },
+        addAvoinCheckbox: function() {
+            return S("input#pohjakoulutus_avoin").first()
+        },
         ammatilliset: function () {
             var el = S("a[name=pohjakoulutus_am]").first();
             if (el.get(0)) el.get(0).scrollIntoView();
@@ -67,8 +70,26 @@ function KkHakemusPage() {
         kkTutkintoSuoritettu: function() {
             return S("input[name=suoritusoikeus_tai_aiempi_tutkinto]")
         },
+        avoinAla: function(index = '') {
+            return S("input#pohjakoulutus_avoin_ala"+index);
+        },
+        avoinKokonaisuus: function(index = '') {
+            return S("input#pohjakoulutus_avoin_kokonaisuus"+index);
+        },
+        avoinLaajuus: function(index = '') {
+            return S("input#pohjakoulutus_avoin_laajuus"+index);
+        },
+        avoinKorkeakoulu: function(index = '') {
+            return S("input#pohjakoulutus_avoin_korkeakoulu"+index);
+        },
+        addSecondAvoinLink: function() {
+            return S("a#addAvoinTutkintoRule2-link").first()
+        },
         saveButton: function() {
             return S("button.save[value=koulutustausta]").first()
+        },
+        answerForQuestion: function(name) {
+            return S('td:has(a[name='+name+'])').next().html()
         },
         createApplication: function() {
             return hakemusPage()

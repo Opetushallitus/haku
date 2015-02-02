@@ -14,7 +14,7 @@
             }
         });
 
-        describe("Muokkaa koulutustaustaa -toiminto", function() {
+        describe("Muokkaa koulutustaustaa -toiminto", function(done) {
             it('mahdollistaa uuden ammatillisen pohjakoulutuksen lisäämisen kaksi kertaa peräkkäin', function () {
                 console.log("testing, testing, 1 2 3");
                 wait.until(function() {return page.editKoulutusTaustaButton().is(':visible')})()
