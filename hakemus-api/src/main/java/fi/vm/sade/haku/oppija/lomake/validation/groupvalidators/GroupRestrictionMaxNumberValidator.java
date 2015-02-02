@@ -17,17 +17,11 @@
 package fi.vm.sade.haku.oppija.lomake.validation.groupvalidators;
 
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.TitledGroup;
-import fi.vm.sade.haku.oppija.lomake.validation.FieldValidator;
 import fi.vm.sade.haku.oppija.lomake.validation.GroupRestrictionValidator;
-import fi.vm.sade.haku.oppija.lomake.validation.ValidationInput;
-import fi.vm.sade.haku.oppija.lomake.validation.ValidationResult;
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.SortedSet;
 
 public class GroupRestrictionMaxNumberValidator extends GroupRestrictionValidator {
 
@@ -42,8 +36,13 @@ public class GroupRestrictionMaxNumberValidator extends GroupRestrictionValidato
     }
 
     @Override
-    public Map<String, I18nText> validate(Map<String, List<String>>  aoGroups) {
-        // TODO HH-175 real implementation
-        return new HashMap<String, I18nText>();
+    public Map<String, I18nText> validate(SortedSet<String> inputAosInGroup) {
+        Map<String, I18nText> errors = new HashMap<String, I18nText>();
+        if(inputAosInGroup.size() > max) {
+            for (String inputElem : inputAosInGroup) {
+                errors.put(inputElem, errorMessage);
+            }
+        }
+        return errors;
     }
 }

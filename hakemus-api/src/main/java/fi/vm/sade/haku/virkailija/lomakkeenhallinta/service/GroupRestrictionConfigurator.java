@@ -7,7 +7,6 @@ import fi.vm.sade.haku.oppija.lomake.validation.groupvalidators.GroupRestriction
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain.FormConfiguration;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain.GroupConfiguration;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakuService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakukohdeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,7 +40,7 @@ public class GroupRestrictionConfigurator {
             if (groupConfiguration.getType().equals(GroupConfiguration.GroupType.hakukohde_rajaava)){
                 if(groupConfiguration.getConfigurations().containsKey(CONFIG_maximumNumberOf)) {
                     // TODO HH-175 textit
-                    I18nText errorMessage = formParameters.getI18nText("yleinen.virheellinenarvo");
+                    I18nText errorMessage = formParameters.getI18nText("rajaava.ryhma.max.virhe");
                     validators.add(new GroupRestrictionMaxNumberValidator(
                             groupConfiguration.getGroupId(),
                             Integer.valueOf(groupConfiguration.getConfigurations().get(CONFIG_maximumNumberOf)),
