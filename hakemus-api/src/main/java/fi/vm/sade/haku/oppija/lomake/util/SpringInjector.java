@@ -1,4 +1,4 @@
-package fi.vm.sade.haku.oppija.configuration;
+package fi.vm.sade.haku.oppija.lomake.util;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
