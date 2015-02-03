@@ -33,11 +33,9 @@ More information about failsave maven plugin:
 
 ### Running against integration test environment (luokka)
 
-Set your local env settings to `~/oph-configuration.local` folder
-
-and copy luokka settings to `~/oph-configuration.luokka` folder
-
-and remove `~/oph-configuration` folder
+1. set your local env settings to `~/oph-configuration.local` folder
+2. copy luokka settings to `~/oph-configuration.luokka` folder
+3. remove `~/oph-configuration` folder
 
 then you can start the server with local settings by
 
@@ -49,18 +47,18 @@ and luokka settings by
 
 You can copy luokka settings (common.properties, ehcache.xml & security-context-backend.xml) from the server, but you need to make these changes (to use local koulutusinformaatio and local mongo db):
 
-  host.haku=localhost:8080/koulutusinformaatio-app
-  mongodb.oppija.uri=mongodb://localhost:27107
-  koulutusinformaatio.ao.resource.url=http\://${host.haku}/ao
-  mongodb.url=mongodb://localhost:27017/${mongo.db.name}
+    host.haku=localhost:8080/koulutusinformaatio-app
+    mongodb.oppija.uri=mongodb://localhost:27107
+    koulutusinformaatio.ao.resource.url=http\://${host.haku}/ao
+    mongodb.url=mongodb://localhost:27017/${mongo.db.name}
 
 The script symlinks the `~/oph-configuration` to right configs.
 
 Script takes also these parameters:
 
-  c = clean
-  b = build
-  d = debug
+    c = clean
+    b = build
+    d = debug
 
 so you can eg. clean, build & debug with luokka settings by
 
