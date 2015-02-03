@@ -866,7 +866,7 @@ public final class KoulutustaustaPhase {
                         new Option(createI18NText("form.yleinen.ei", formParameters), EI)))
                 .required()
                 .formParams(formParameters).build();
-        
+
         Element suorittanutTutkinnonRule = createRuleIfVariableIsTrue(suorittanutAmmatillisenTutkinnon.getId());
         Element warning = Info().labelKey("form.koulutustausta.ammatillinensuoritettu.huom")
                 .validator(new AlwaysFailsValidator(formParameters.getI18nText("yleinen.virheellinenarvo")))

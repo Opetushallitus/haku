@@ -129,6 +129,7 @@ public class GradesTable {
                     new GradeGridColumn(idPrefix + "_column3", false),
                     new GradeGridColumn(idPrefix + "_column4", false),
                     new GradeGridColumn(idPrefix + "_column5", false),
+                    new GradeGridColumn(idPrefix + "_column6", false),
             };
         } else {
             return new Element[]{
@@ -192,8 +193,13 @@ public class GradesTable {
             ElementUtil.addRequiredValidator(child2, formParameters);
             columns[4].addChild(child2);
 
+            GradeGridOptionQuestion child3 = new GradeGridOptionQuestion(id + "_VAL3", gradeGridHelper.getGradeRangesWithDefault(), true, false, null);
+            ElementUtil.addRequiredValidator(child3, formParameters);
+            columns[5].addChild(child3);
+
             gradeGridRow.addChild(columns[3]);
             gradeGridRow.addChild(columns[4]);
+            gradeGridRow.addChild(columns[5]);
         }
         return gradeGridRow;
 

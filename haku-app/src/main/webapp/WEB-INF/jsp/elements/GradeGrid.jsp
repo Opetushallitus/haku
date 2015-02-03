@@ -22,7 +22,7 @@
 <table id="gradegrid-table" class="applicant-grades">
     <thead>
     <tr>
-        <th colspan="5"><fmt:message key="lomake.component.gradegrid.gradesTitle"/></th>
+        <th colspan="6"><fmt:message key="lomake.component.gradegrid.gradesTitle"/></th>
     </tr>
     <tr>
         <td colspan="2"><fmt:message key="lomake.component.gradegrid.subjectTitle"/></td>
@@ -37,6 +37,7 @@
         <c:if test="${element.extraColumn}">
             <td><fmt:message key="lomake.component.gradegrid.optionalSubjectColumnTitle"/></td>
             <td><fmt:message key="lomake.component.gradegrid.second.optionalSubjectColumnTitle"/></td>
+            <td><fmt:message key="lomake.component.gradegrid.third.optionalSubjectColumnTitle"/></td>
         </c:if>
     </tr>
     </thead>

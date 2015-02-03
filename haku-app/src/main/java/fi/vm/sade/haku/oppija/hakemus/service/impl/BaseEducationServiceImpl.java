@@ -321,6 +321,9 @@ public class BaseEducationServiceImpl implements BaseEducationService {
                     if (!proficiencyPhaseAnswers.containsKey(key + "_VAL2")) {
                         toAdd.put(key + "_VAL2", "Ei arvosanaa");
                     }
+                    if (!proficiencyPhaseAnswers.containsKey(key + "_VAL3")) {
+                        toAdd.put(key + "_VAL3", "Ei arvosanaa");
+                    }
                 }
                 String baseKey = key.substring(0, key.length() - "_VAL1".length());
                 if (key.endsWith("_VAL1")) {
@@ -329,6 +332,9 @@ public class BaseEducationServiceImpl implements BaseEducationService {
                     }
                     if (!proficiencyPhaseAnswers.containsKey(baseKey+"_VAL2")) {
                         toAdd.put(baseKey+"_VAL2", "Ei arvosanaa");
+                    }
+                    if (!proficiencyPhaseAnswers.containsKey(baseKey+"_VAL3")) {
+                        toAdd.put(baseKey+"_VAL3", "Ei arvosanaa");
                     }
                 }
             }
