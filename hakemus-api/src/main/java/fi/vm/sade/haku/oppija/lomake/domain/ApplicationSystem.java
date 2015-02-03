@@ -92,6 +92,9 @@ public class ApplicationSystem implements Serializable {
 
     @Transient
     public boolean isActive() {
+        if (!isPublished()) {
+            return false;
+        }
         for (ApplicationPeriod ap : applicationPeriods) {
             if (ap.isActive()) {
                 return true;

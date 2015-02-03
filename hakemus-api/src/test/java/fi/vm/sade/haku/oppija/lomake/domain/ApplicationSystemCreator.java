@@ -18,11 +18,12 @@ public class ApplicationSystemCreator {
         Date end = new Date(instance.getTimeInMillis());
         List<ApplicationPeriod> applicationPeriods = Lists.newArrayList(new ApplicationPeriod(start, end));
         return new ApplicationSystemBuilder().setId(id).setForm(form)
-            .setName(ElementUtil.createI18NAsIs("test application period"))
-            .setApplicationPeriods(applicationPeriods)
-            .setHakukausiUri(OppijaConstants.HAKUKAUSI_SYKSY)
-            .setApplicationSystemType(OppijaConstants.HAKUTYYPPI_VARSINAINEN_HAKU)
-            .setHakutapa(OppijaConstants.HAKUTAPA_YHTEISHAKU)
-            .get();
+                .setName(ElementUtil.createI18NAsIs("test application period"))
+                .setApplicationPeriods(applicationPeriods)
+                .setHakukausiUri(OppijaConstants.HAKUKAUSI_SYKSY)
+                .setApplicationSystemType(OppijaConstants.HAKUTYYPPI_VARSINAINEN_HAKU)
+                .setHakutapa(OppijaConstants.HAKUTAPA_YHTEISHAKU)
+                .setState("JULKAISTU")
+                .get();
     }
 }
