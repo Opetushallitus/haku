@@ -93,11 +93,12 @@ public class PreferenceTableValidator implements Validator {
 
     private Map<String, I18nText> runGroupRestictionValidators(final ValidationInput validationInput) {
         final Map<String, I18nText> errors = new HashMap<String, I18nText>();
-
-        final Map<String, SortedSet<String>> groupToHakukohdeMap = mapGroupsToHakukohde(getGroupInfo(errors, validationInput));
-        for(GroupRestrictionValidator validator: groupRestrictionValidators) {
-            if(groupToHakukohdeMap.containsKey(validator.groupId)) {
-                errors.putAll(validator.validate(groupToHakukohdeMap.get(validator.groupId)));
+        if(!groupRestrictionValidators.isEmpty()) {
+            final Map<String, SortedSet<String>> groupToHakukohdeMap = mapGroupsToHakukohde(getGroupInfo(errors, validationInput));
+            for (GroupRestrictionValidator validator : groupRestrictionValidators) {
+                if (groupToHakukohdeMap.containsKey(validator.groupId)) {
+                    errors.putAll(validator.validate(groupToHakukohdeMap.get(validator.groupId)));
+                }
             }
         }
         return errors;
