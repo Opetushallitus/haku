@@ -107,39 +107,46 @@ public class PreferenceTableValidator implements Validator {
     private Map<String, List<String>> getGroupInfo(Map<String, I18nText> errors, final ValidationInput validationInput) {
         final Map<String, List<String>> hakukohdeGroups = new TreeMap<String, List<String>>();
 
-        for(String aoInput: educationInputIds) {
-            final String aoId = validationInput.getValueByKey(aoInput + "-id");
-            List<String> aoGroups = new ArrayList<String>();
-            if (!Strings.isNullOrEmpty(aoId)) {
-                try {
-                    ApplicationOption ao = applicationOptionService.get(aoId);
-                    aoGroups = ao.getGroups();
-                } catch (RuntimeException e) {
-                    LOGGER.error("Error in validation:" + e.toString(), e);
-                    errors.put(aoInput, i18nBundleService.getBundle(validationInput.getApplicationSystemId()).get(PreferenceConcreteValidatorImpl.UNKNOWN_ERROR));
-                }
-            }
-            hakukohdeGroups.put(aoInput, aoGroups);
+        for(String applicationOptionInput: educationInputIds) {
+            hakukohdeGroups.put(applicationOptionInput, getGroupInfo(errors, validationInput, applicationOptionInput));
         }
         return hakukohdeGroups;
+    }
+
+    private List<String> getGroupInfo(Map<String, I18nText> errors, ValidationInput validationInput, String applicationOptionInput) {
+        final String applicationOptionId = validationInput.getValueByKey(applicationOptionInput + "-id");
+        if (!Strings.isNullOrEmpty(applicationOptionId)) {
+            try {
+                ApplicationOption applicationOption = applicationOptionService.get(applicationOptionId);
+                if(applicationOption.getGroups() != null) {
+                    return applicationOption.getGroups();
+                }
+            } catch (RuntimeException e) {
+                LOGGER.error("Error in validation:" + e.toString(), e);
+                errors.put(applicationOptionInput, i18nBundleService.getBundle(validationInput.getApplicationSystemId()).get(PreferenceConcreteValidatorImpl.UNKNOWN_ERROR));
+            }
+        }
+        return new ArrayList<String>();
     }
 
     private Map<String, SortedSet<String>> mapGroupsToHakukohde(Map<String, List<String>> hakukohdeGroups) {
         final Map<String, SortedSet<String>> groupToHakukohdeMap = new HashMap<String, SortedSet<String>>();
 
-        for(String aoInput: hakukohdeGroups.keySet()){
-            if(hakukohdeGroups.get(aoInput) != null) {
-                for(String groupId: hakukohdeGroups.get(aoInput)) {
-                    SortedSet<String> hakukohdeList = groupToHakukohdeMap.get(groupId);
-                    if(hakukohdeList == null) {
-                        hakukohdeList = new TreeSet<String>();
-                        groupToHakukohdeMap.put(groupId, hakukohdeList);
-                    }
-                    hakukohdeList.add(aoInput);
-                }
+        for(String applicationOptionInput: hakukohdeGroups.keySet()){
+            for(String groupId: hakukohdeGroups.get(applicationOptionInput)) {
+                getHakukohdeSet(groupToHakukohdeMap, groupId).add(applicationOptionInput);
             }
         }
         return groupToHakukohdeMap;
+    }
+
+    private SortedSet<String> getHakukohdeSet(Map<String, SortedSet<String>> groupToHakukohdeMap, String groupId) {
+        SortedSet<String> hakukohdeSet = groupToHakukohdeMap.get(groupId);
+        if(hakukohdeSet == null) {
+            hakukohdeSet = new TreeSet<String>();
+            groupToHakukohdeMap.put(groupId, hakukohdeSet);
+        }
+        return hakukohdeSet;
     }
 
     /**
