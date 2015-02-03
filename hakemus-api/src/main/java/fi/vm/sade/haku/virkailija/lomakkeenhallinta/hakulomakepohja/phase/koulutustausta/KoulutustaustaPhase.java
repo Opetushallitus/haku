@@ -858,6 +858,21 @@ public final class KoulutustaustaPhase {
             ulkomaillaSuoritettuTutkintoRule.addChild(tutkintoUlkomaillaNotification);
         }
 
+        Element suorittanutAmmatillisenTutkinnon = Radio("ammatillinenTutkintoSuoritettu")
+                .addOptions(ImmutableList.of(
+                        new Option(createI18NText("form.yleinen.kylla", formParameters), KYLLA),
+                        new Option(createI18NText("form.yleinen.ei", formParameters), EI)))
+                .required()
+                .formParams(formParameters).build();
+        
+        Element suorittanutTutkinnonRule = createRuleIfVariableIsTrue(suorittanutAmmatillisenTutkinnon.getId());
+        Element warning = Info().labelKey("form.koulutustausta.ammatillinensuoritettu.huom").formParams(formParameters).build();
+
+        suorittanutTutkinnonRule.addChild(warning);
+
+        suorittanutAmmatillisenTutkinnon.addChild(suorittanutTutkinnonRule);
+        ulkomaillaSuoritettuTutkintoRule.addChild(suorittanutAmmatillisenTutkinnon);
+
         baseEducation.addChild(ulkomaillaSuoritettuTutkintoRule);
         baseEducation.addChild(keskeytynytRule);
 
@@ -977,21 +992,7 @@ public final class KoulutustaustaPhase {
 
         baseEducation.addChild(pkKysymyksetRule);
 
-        Element suorittanutAmmatillisenTutkinnon = Radio("ammatillinenTutkintoSuoritettu")
-                .addOptions(ImmutableList.of(
-                        new Option(createI18NText("form.yleinen.kylla", formParameters), KYLLA),
-                        new Option(createI18NText("form.yleinen.ei", formParameters), EI)))
-                .required()
-                .formParams(formParameters).build();
-
         paattotodistusvuosiPeruskouluRule.addChild(suorittanutAmmatillisenTutkinnon);
-
-        Element suorittanutTutkinnonRule = createRuleIfVariableIsTrue(suorittanutAmmatillisenTutkinnon.getId());
-        Element warning = Info().labelKey("form.koulutustausta.ammatillinensuoritettu.huom").formParams(formParameters).build();
-
-        suorittanutTutkinnonRule.addChild(warning);
-
-        suorittanutAmmatillisenTutkinnon.addChild(suorittanutTutkinnonRule);
 
         pkKysymyksetRule.addChild(Dropdown(OppijaConstants.PERUSOPETUS_KIELI)
                 .emptyOption()
