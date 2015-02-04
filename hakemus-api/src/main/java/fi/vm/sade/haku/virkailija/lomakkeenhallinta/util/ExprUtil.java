@@ -81,4 +81,7 @@ public final class ExprUtil {
         return new Equals(new Variable(id), Value.TRUE);
     }
 
+    public static Expr lessThanRule(final String thisIsSmaller, final String whenComparedToThis) {
+        return new LessThan(new Variable(thisIsSmaller), new Value(whenComparedToThis));
+    }
 }

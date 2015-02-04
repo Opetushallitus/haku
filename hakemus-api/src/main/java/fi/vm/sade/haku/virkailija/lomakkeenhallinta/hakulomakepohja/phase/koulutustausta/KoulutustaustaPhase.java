@@ -12,10 +12,12 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.OptionQuestion;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.AddElementRule;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.*;
+import fi.vm.sade.haku.oppija.lomake.validation.validators.AlwaysFailsValidator;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.domain.Code;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ExprUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.apache.commons.lang3.StringUtils;
 
@@ -866,7 +868,9 @@ public final class KoulutustaustaPhase {
                 .formParams(formParameters).build();
         
         Element suorittanutTutkinnonRule = createRuleIfVariableIsTrue(suorittanutAmmatillisenTutkinnon.getId());
-        Element warning = Info().labelKey("form.koulutustausta.ammatillinensuoritettu.huom").formParams(formParameters).build();
+        Element warning = Info().labelKey("form.koulutustausta.ammatillinensuoritettu.huom")
+                .validator(new AlwaysFailsValidator(formParameters.getI18nText("yleinen.virheellinenarvo")))
+                .formParams(formParameters).build();
 
         suorittanutTutkinnonRule.addChild(warning);
 
@@ -899,7 +903,10 @@ public final class KoulutustaustaPhase {
         Element pkKysymyksetRule = createVarEqualsToValueRule(baseEducation.getId(),
                 PERUSKOULU, OSITTAIN_YKSILOLLISTETTY, ALUEITTAIN_YKSILOLLISTETTY, YKSILOLLISTETTY);
 
-        Element paattotodistusvuosiPeruskouluRule = createRegexpRule(paattotodistusvuosiPeruskoulu.getId(), "^(19[0-9][0-9]|200[0-9]|201[0-1])$");
+        Expr vuosiSyotetty = new Regexp(paattotodistusvuosiPeruskoulu.getId(), PAATTOTODISTUSVUOSI_PATTERN);
+        Element paattotodistusvuosiPeruskouluRule = Rule(new And(
+                ExprUtil.lessThanRule(paattotodistusvuosiPeruskoulu.getId(), String.valueOf(hakukausiVuosi - 3)),
+                vuosiSyotetty)).build();
 
         Element koulutuspaikkaAmmatillisenTutkintoon = Radio("KOULUTUSPAIKKA_AMMATILLISEEN_TUTKINTOON")
                 .addOptions(ImmutableList.of(
@@ -908,7 +915,6 @@ public final class KoulutustaustaPhase {
                 .required()
                 .formParams(formParameters).build();
 
-        Expr vuosiSyotetty = new Regexp(paattotodistusvuosiPeruskoulu.getId(), PAATTOTODISTUSVUOSI_PATTERN);
 
         Expr kysytaankoKoulutuspaikka;
         String hakukausi = formParameters.getApplicationSystem().getHakukausiUri();

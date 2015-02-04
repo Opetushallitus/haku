@@ -19,10 +19,13 @@ public abstract class IntegerComparison extends Expr {
     public boolean evaluate(final Map<String, String> context) {
         String leftValue = getLeft().getValue(context);
         String rightValue = getRight().getValue(context);
-        int left = Integer.parseInt(leftValue);
-        int right = Integer.parseInt(rightValue);
-
-        return evaluate(left, right);
-
+        try {
+            int left = Integer.parseInt(leftValue);
+            int right = Integer.parseInt(rightValue);
+            return evaluate(left, right);
+        } catch (NumberFormatException nfe) {
+            // NOP
+        }
+        return false;
     }
 }

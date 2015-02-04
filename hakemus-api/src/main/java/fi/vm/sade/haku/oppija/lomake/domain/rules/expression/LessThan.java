@@ -2,8 +2,8 @@ package fi.vm.sade.haku.oppija.lomake.domain.rules.expression;
 
 public class LessThan extends IntegerComparison {
 
-    public LessThan(final Variable thisIsSmaller, final Value whenComparedToThis) {
-        super(thisIsSmaller, whenComparedToThis);
+    public LessThan(final Variable left, final Value right) {
+        super(left, right);
     }
 
     @Override
