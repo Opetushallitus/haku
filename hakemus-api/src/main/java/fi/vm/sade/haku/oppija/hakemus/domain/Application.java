@@ -52,7 +52,7 @@ public class Application implements Serializable {
 
     @JsonIgnore
     private static final Logger log = LoggerFactory.getLogger(Application.class);
-    public static final Integer CURRENT_MODEL_VERSION = 2;
+    public static final Integer CURRENT_MODEL_VERSION = 3;
     public static final String META_FILING_LANGUAGE = "filingLanguage";
 
     public Integer getModelVersion() {

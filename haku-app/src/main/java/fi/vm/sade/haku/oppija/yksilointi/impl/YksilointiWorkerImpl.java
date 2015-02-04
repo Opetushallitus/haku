@@ -172,6 +172,10 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
         List<Application> applications = getNextUpgradable();
 
         LOGGER.info("Start upgrading application model");
+        List<String> pk = new ArrayList<String>() {{
+            add(OppijaConstants.PERUSKOULU); add(OppijaConstants.OSITTAIN_YKSILOLLISTETTY);
+            add(OppijaConstants.ALUEITTAIN_YKSILOLLISTETTY);  add(OppijaConstants.YKSILOLLISTETTY);}};
+
         while (applications != null && !applications.isEmpty()) {
             for (Application application : applications) {
                 try {
@@ -182,6 +186,22 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
                     if (null == application.getPreferenceEligibilities() || 0 == application.getPreferenceEligibilities().size() ||
                         null == application.getPreferencesChecked() || 0 == application.getPreferencesChecked().size()){
                         application = applicationService.updatePreferenceBasedData(application);
+                    }
+                    Map<String, String> pohjakoulutus = application.getPhaseAnswers(OppijaConstants.PHASE_EDUCATION);
+
+                    if (pk.contains(pohjakoulutus.get(OppijaConstants.ELEMENT_ID_BASE_EDUCATION))) {
+                        Map<String, String> osaaminen = application.getPhaseAnswers(OppijaConstants.PHASE_GRADES);
+                        Map<String, String> toAdd = new HashMap<String, String>();
+                        for (Map.Entry<String, String> entry : osaaminen.entrySet()) {
+                            String key = entry.getKey();
+                            String prefix = key.substring(0, 5);
+                            String val3Key = prefix + "_VAL3";
+                            if (!osaaminen.containsKey(val3Key)) {
+                                toAdd.put(val3Key, "Ei arvosanaa");
+                            }
+                        }
+                        toAdd.putAll(osaaminen);
+                        application.addVaiheenVastaukset(OppijaConstants.PHASE_GRADES, toAdd);
                     }
                     application.setModelVersion(Application.CURRENT_MODEL_VERSION);
                     LOGGER.info("Done upgrading model version for application: " + application.getOid());
