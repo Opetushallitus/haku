@@ -34,16 +34,14 @@ import java.util.*;
 
 public class PreferenceTableValidator implements Validator {
 
-    public final List<String> learningInstitutionInputIds = new ArrayList<String>();
-    public final List<String> educationInputIds = new ArrayList<String>();
-    public final List<GroupRestrictionValidator> groupRestrictionValidators = new ArrayList<GroupRestrictionValidator>();
+    private final List<String> learningInstitutionInputIds = new ArrayList<String>();
+    private final List<String> educationInputIds = new ArrayList<String>();
+    private final List<GroupRestrictionValidator> groupRestrictionValidators = new ArrayList<GroupRestrictionValidator>();
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PreferenceTableValidator.class);
 
-    @Transient
     private I18nBundleService i18nBundleService;
 
-    @Transient
     private ApplicationOptionService applicationOptionService;
 
     public PreferenceTableValidator(final List<String> learningInstitutionInputIds, final List<String> educationInputIds, List<GroupRestrictionValidator> groupRestrictionValidators) {
