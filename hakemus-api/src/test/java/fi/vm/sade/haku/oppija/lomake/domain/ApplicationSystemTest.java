@@ -55,6 +55,7 @@ public class ApplicationSystemTest {
                 .setForm(new Form("", ElementUtil.createI18NAsIs("")))
                 .setName(ElementUtil.createI18NAsIs(""))
                 .setApplicationPeriods(applicationPeriods)
+                .setState("JULKAISTU")
                 .setApplicationSystemType(OppijaConstants.HAKUTYYPPI_VARSINAINEN_HAKU)
                 .setName(ElementUtil.createI18NAsIs("")).get();
         assertTrue(applicationSystem.isActive());

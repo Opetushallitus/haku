@@ -50,6 +50,7 @@ public class HakuServiceMockImpl implements HakuService {
                 .setHakutapa(HAKUTAPA_YHTEISHAKU)
                 .setMaxApplicationOptions(5)
                 .setKohdejoukkoUri(KOHDEJOUKKO_AMMATILLINEN_JA_LUKIO)
+                .setState("JULKAISTU")
                 .get());
         asList.add(new ApplicationSystemBuilder()
                 .setId("1.2.246.562.5.50476818906")
@@ -61,6 +62,7 @@ public class HakuServiceMockImpl implements HakuService {
                 .setMaxApplicationOptions(5)
                 .setHakukausiVuosi(2014)
                 .setKohdejoukkoUri(KOHDEJOUKKO_AMMATILLINEN_JA_LUKIO)
+                .setState("JULKAISTU")
                 .get());
         asList.add(new ApplicationSystemBuilder()
                 .setId("haku3")
@@ -72,6 +74,7 @@ public class HakuServiceMockImpl implements HakuService {
                 .setApplicationSystemType(HAKUTYYPPI_LISAHAKU)
                 .setHakutapa(HAKUTAPA_YHTEISHAKU)
                 .setKohdejoukkoUri(KOHDEJOUKKO_AMMATILLINEN_JA_LUKIO)
+                .setState("JULKAISTU")
                 .get());
         asList.add(new ApplicationSystemBuilder()
                 .setId("haku4")
@@ -83,6 +86,7 @@ public class HakuServiceMockImpl implements HakuService {
                 .setApplicationSystemType(HAKUTYYPPI_LISAHAKU)
                 .setHakutapa(HAKUTAPA_YHTEISHAKU)
                 .setKohdejoukkoUri(KOHDEJOUKKO_AMMATILLINEN_JA_LUKIO)
+                .setState("JULKAISTU")
                 .get());
 
         asList.add(new ApplicationSystemBuilder()
@@ -95,6 +99,7 @@ public class HakuServiceMockImpl implements HakuService {
                 .setApplicationSystemType(HAKUTYYPPI_VARSINAINEN_HAKU)
                 .setHakutapa(HAKUTAPA_YHTEISHAKU)
                 .setMaxApplicationOptions(3)
+                .setState("JULKAISTU")
                 .get());
         asList.add(new ApplicationSystemBuilder()
                 .setId("1.2.246.562.29.173465377510")
