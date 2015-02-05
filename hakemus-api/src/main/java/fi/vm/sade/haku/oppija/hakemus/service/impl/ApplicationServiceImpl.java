@@ -254,7 +254,9 @@ public class ApplicationServiceImpl implements ApplicationService {
         if (isNotEmpty(personOid) && isEmpty(studentOid)) {
             Person person = authenticationService.checkStudentOid(application.getPersonOid());
             application.modifyPersonalData(person);
-            application.studentIdentificationDone();
+            if (!isEmpty(person.getStudentOid())) {
+                application.studentIdentificationDone();
+            }
         }
 
         application.setLastAutomatedProcessingTime(System.currentTimeMillis());

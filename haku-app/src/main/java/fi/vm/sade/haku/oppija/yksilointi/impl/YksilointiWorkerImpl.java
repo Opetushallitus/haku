@@ -143,7 +143,7 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
             application = applicationService.ensureApplicationOptionGroupData(application);
             application = validateApplication(application);
             application.setModelVersion(Application.CURRENT_MODEL_VERSION);
-            this.applicationDAO.update(new Application(application.getOid()), application);
+            this.applicationService.update(new Application(application.getOid()), application);
             if (sendMail) {
                 try {
                     sendMail(application);
@@ -212,7 +212,7 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
                     application.setModelVersion(-1 * Application.CURRENT_MODEL_VERSION);
                     LOGGER.error("Upgrading model failed for application: " + application.getOid() + " " + e.getMessage());
                 } finally {
-                    applicationDAO.update(new Application(application.getOid()), application);
+                    applicationService.update(new Application(application.getOid()), application);
                 }
 
             }
@@ -248,7 +248,7 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
                     application = validateApplication(application);
                     application.setRedoPostProcess(PostProcessingState.DONE);
                     application.setModelVersion(Application.CURRENT_MODEL_VERSION);
-                    this.applicationDAO.update(new Application(application.getOid()), application);
+                    this.applicationService.update(new Application(application.getOid()), application);
                 }
                 if (sendMail && PostProcessingState.FULL.equals(redo)) {
                     try {
