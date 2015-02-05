@@ -38,12 +38,7 @@ public class ApplicationOptionDTOToApplicationOptionFunction implements Function
             ao.setTeachingLanguages(applicationOptionDTO.getTeachingLanguages());
             ao.setAoIdentifier(applicationOptionDTO.getAoIdentifier());
             ao.setKaksoistutkinto(applicationOptionDTO.isKaksoistutkinto());
-            LearningOpportunityProvider lop = new LearningOpportunityProvider();
-            lop.setId(applicationOptionDTO.getProvider().getId());
-            lop.setName(applicationOptionDTO.getProvider().getName());
-            lop.setAthleteEducation(applicationOptionDTO.getProvider().isAthleteEducation());
-            lop.setApplicationSystemIds(applicationOptionDTO.getProvider().getApplicationSystemIds());
-            ao.setProvider(lop);
+            ao.setProvider(getProvider(applicationOptionDTO));
             ao.setAthleteEducation(applicationOptionDTO.isAthleteEducation());
             ao.setEducationCode(applicationOptionDTO.getEducationCodeUri());
             for (OrganizationGroupDTO group : applicationOptionDTO.getOrganizationGroups()) {
@@ -53,5 +48,16 @@ public class ApplicationOptionDTOToApplicationOptionFunction implements Function
         } else {
             return null;
         }
+    }
+
+    private LearningOpportunityProvider getProvider(ApplicationOptionDTO applicationOptionDTO) {
+        LearningOpportunityProvider lop = new LearningOpportunityProvider();
+        if(applicationOptionDTO.getProvider() != null) {
+            lop.setId(applicationOptionDTO.getProvider().getId());
+            lop.setName(applicationOptionDTO.getProvider().getName());
+            lop.setAthleteEducation(applicationOptionDTO.getProvider().isAthleteEducation());
+            lop.setApplicationSystemIds(applicationOptionDTO.getProvider().getApplicationSystemIds());
+        }
+        return lop;
     }
 }
