@@ -162,7 +162,7 @@ public final class HenkilotiedotPhase {
 
         Element syntymaaika = Date("syntymaaika").formParams(formParameters).build();
         syntymaaika.setValidator(new PastDateValidator(formParameters.getI18nText("henkilotiedot.syntymaaika.tulevaisuudessa")));
-        syntymaaika.setValidator(new RegexFieldValidator(createI18NText("henkilotiedot.syntymaaika.virhe"), DATE_PATTERN));
+        syntymaaika.setValidator(new RegexFieldValidator(formParameters.getI18nText("henkilotiedot.syntymaaika.virhe"), DATE_PATTERN));
         addRequiredValidator(syntymaaika, formParameters);
         syntymaaika.setInline(true);
 
