@@ -30,7 +30,7 @@ public class GradesTable {
 
     public GradeGrid createGradeGrid(final String id, final FormParameters formParameters, final boolean isSv) {
         GradeGrid gradeGrid = new GradeGrid(id,
-                ElementUtil.createI18NText(id, formParameters),
+                formParameters.getI18nText(id),
                 gradeGridHelper.isComprehensiveSchool());
 
         ElementUtil.setVerboseHelp(gradeGrid, id + ".verboseHelp", formParameters);
@@ -44,7 +44,7 @@ public class GradesTable {
                     createAdditionalLanguageRow(NATIVE_LANGUAGE_GROUP,
                             nativeLanguage, gradeGridHelper.getLanguageAndLiterature()));
         }
-        I18nText addNativeLangText = ElementUtil.createI18NText("form.add.lang.native", formParameters);
+        I18nText addNativeLangText = formParameters.getI18nText("form.add.lang.native");
         gradeGrid.addChild(createAddLangRow(NATIVE_LANGUAGE_GROUP, addNativeLangText));
 
         for (SubjectRow defaultLanguage : gradeGridHelper.getDefaultLanguages(isSv)) {
@@ -57,7 +57,7 @@ public class GradesTable {
                             additionalLanguages,
                             gradeGridHelper.getSubjectLanguages()));
         }
-        I18nText addAdditionalanguages = ElementUtil.createI18NText("form.add.lang", formParameters);
+        I18nText addAdditionalanguages = formParameters.getI18nText("form.add.lang");
         gradeGrid.addChild(createAddLangRow(ADDITIONAL_LANGUAGES_GROUP, addAdditionalanguages));
 
 
@@ -71,7 +71,7 @@ public class GradesTable {
                 new UniqValuesValidator(
                         uniqLanguagesIds,
                         ImmutableList.of(OppijaConstants.EDUCATION_LANGUAGE_OTHER, OppijaConstants.EDUCATION_LANGUAGE_EI_SUORITUSTA),
-                        ElementUtil.createI18NText("yleinen.kielet.samoja", formParameters)));
+                        formParameters.getI18nText("yleinen.kielet.samoja")));
         return gradeGrid;
     }
 

@@ -71,21 +71,21 @@ public class HakutoiveetPhase {
     private static Element createHakutoiveetTheme(final FormParameters formParameters) {
 
         Element hakutoiveetTheme = Theme(HAKUTOIVEET_THEME_ID).previewable().configurable().formParams(formParameters).build();
-        hakutoiveetTheme.setHelp(createI18NText("form.hakutoiveet.help", formParameters));
+        hakutoiveetTheme.setHelp(formParameters.getI18nText("form.hakutoiveet.help"));
 
         if (formParameters.isOnlyThemeGenerationForFormEditor())
             return hakutoiveetTheme;
 
         PreferenceTable preferenceTable = new PreferenceTable(
                 "preferencelist",
-                createI18NText("form.hakutoiveet.otsikko", formParameters),
+                formParameters.getI18nText("form.hakutoiveet.otsikko"),
                 formParameters.getApplicationSystem().isUsePriorities(),
                 Math.min(6, formParameters.getApplicationSystem().getMaxApplicationOptions()));
 
         List<String> preferenceIds = getPreferenceIds(formParameters);
         PreferenceRow pr1 = createI18NPreferenceRow(preferenceIds.remove(0), formParameters);
-        pr1.setValidator(new RequiredFieldValidator(pr1.getLearningInstitutionInputId(), ElementUtil.createI18NText("yleinen.pakollinen", formParameters)));
-        pr1.setValidator(new RequiredFieldValidator(pr1.getEducationInputId(), ElementUtil.createI18NText("yleinen.pakollinen", formParameters)));
+        pr1.setValidator(new RequiredFieldValidator(pr1.getLearningInstitutionInputId(), formParameters.getI18nText("yleinen.pakollinen")));
+        pr1.setValidator(new RequiredFieldValidator(pr1.getEducationInputId(), formParameters.getI18nText("yleinen.pakollinen")));
         if (formParameters.isLisahaku()) {
             pr1.setValidator(new SsnAndPreferenceUniqueValidator());
         }
@@ -106,11 +106,11 @@ public class HakutoiveetPhase {
 
     public static PreferenceRow createI18NPreferenceRow(final String id, final FormParameters formParameters) {
         PreferenceRow pr = new PreferenceRow(id,
-                createI18NText("form.yleinen.tyhjenna", formParameters),
-                createI18NText("form.hakutoiveet.koulutus", formParameters),
-                createI18NText("form.hakutoiveet.opetuspiste", formParameters),
-                createI18NText("form.hakutoiveet.sisaltyvatKoulutusohjelmat", formParameters),
-                createI18NText("form.hakutoiveet.liitteet", formParameters));
+                formParameters.getI18nText("form.yleinen.tyhjenna"),
+                formParameters.getI18nText("form.hakutoiveet.koulutus"),
+                formParameters.getI18nText("form.hakutoiveet.opetuspiste"),
+                formParameters.getI18nText("form.hakutoiveet.sisaltyvatKoulutusohjelmat"),
+                formParameters.getI18nText("form.hakutoiveet.liitteet"));
 
         if (!formParameters.isPerusopetuksenJalkeinenValmentava()) {
             if (!formParameters.isHigherEd()) {
@@ -183,9 +183,9 @@ public class HakutoiveetPhase {
     private static Element[] createDiscretionaryQuestionsAndRules(final String index, final FormParameters formParameters) {
         Element discretionary = RadioBuilder.Radio(index + "-discretionary")
                 .addOptions(ImmutableList.of(
-                        new Option(createI18NText("form.yleinen.kylla", formParameters), KYLLA),
-                        new Option(createI18NText("form.yleinen.ei", formParameters), EI)))
-                .i18nText(createI18NText("form.hakutoiveet.harkinnanvarainen", formParameters))
+                        new Option(formParameters.getI18nText("form.yleinen.kylla"), KYLLA),
+                        new Option(formParameters.getI18nText("form.yleinen.ei"), EI)))
+                .i18nText(formParameters.getI18nText("form.hakutoiveet.harkinnanvarainen"))
                 .required()
                 .formParams(formParameters).build();
 
@@ -195,7 +195,7 @@ public class HakutoiveetPhase {
                 .addOption((Option) new OptionBuilder().setValue("sosiaalisetsyyt").labelKey("perustelu.sosiaaliset").formParams(formParameters).build())
                 .addOption((Option) new OptionBuilder().setValue("todistustenvertailuvaikeudet").labelKey("perustelu.todistustenvertailuvaikeudet").formParams(formParameters).build())
                 .addOption((Option) new OptionBuilder().setValue(TODISTUSTENPUUTTUMINEN).labelKey("perustelu.todistustenpuuttuminen").formParams(formParameters).build())
-                .i18nText(createI18NText("form.hakutoiveet.harkinnanvarainen.perustelu", formParameters))
+                .i18nText(formParameters.getI18nText("form.hakutoiveet.harkinnanvarainen.perustelu"))
                 .required()
                 .formParams(formParameters).build();
 
@@ -222,13 +222,13 @@ public class HakutoiveetPhase {
         HiddenValue hiddenDiscretionary = new HiddenValue(discretionary.getId(), ElementUtil.KYLLA);
         ElementUtil.addRequiredValidator(hiddenDiscretionary, formParameters);
         hiddenDiscretionary.setValidator(
-                new RegexFieldValidator(ElementUtil.createI18NText("yleinen.virheellinenarvo", formParameters),
+                new RegexFieldValidator(formParameters.getI18nText("yleinen.virheellinenarvo"),
                         ElementUtil.KYLLA));
 
         HiddenValue hiddenDiscretionaryFollowUp = new HiddenValue(discretionaryFollowUp.getId(), TODISTUSTENPUUTTUMINEN);
         ElementUtil.addRequiredValidator(hiddenDiscretionaryFollowUp, formParameters);
         hiddenDiscretionaryFollowUp.setValidator(
-                new RegexFieldValidator(ElementUtil.createI18NText("yleinen.virheellinenarvo", formParameters),
+                new RegexFieldValidator(formParameters.getI18nText("yleinen.virheellinenarvo"),
                         TODISTUSTENPUUTTUMINEN));
 
 
@@ -246,17 +246,18 @@ public class HakutoiveetPhase {
 
         Element sora1 = RadioBuilder.Radio(index + "_sora_terveys")
                 .addOptions(ImmutableList.of(
-                        new Option(createI18NText("form.yleinen.ei", formParameters), EI),
-                        new Option(createI18NText("form.sora.kylla", formParameters), KYLLA)))
+                        new Option(formParameters.getI18nText("form.yleinen.ei"), EI),
+                        new Option(formParameters.getI18nText("form.sora.kylla"), KYLLA)))
                 .labelKey("form.sora.terveys")
                 .required()
                 .formParams(formParameters).build();
-        sora1.setPopup(new Popup("sora-popup", createI18NText("form.hakutoiveet.terveydentilavaatimukset.otsikko", formParameters)));
+        sora1.setPopup(new Popup("sora-popup", formParameters.getI18nText(
+          "form.hakutoiveet.terveydentilavaatimukset.otsikko")));
 
         Element sora2 = RadioBuilder.Radio(index + "_sora_oikeudenMenetys")
                 .addOptions(ImmutableList.of(
-                        new Option(createI18NText("form.yleinen.ei", formParameters), EI),
-                        new Option(createI18NText("form.sora.kylla", formParameters), KYLLA)))
+                        new Option(formParameters.getI18nText("form.yleinen.ei"), EI),
+                        new Option(formParameters.getI18nText("form.sora.kylla"), KYLLA)))
                 .labelKey("form.sora.oikeudenmenetys")
                 .required()
                 .formParams(formParameters).build();
@@ -268,9 +269,9 @@ public class HakutoiveetPhase {
     private static Element createUrheilijanAmmatillisenKoulutuksenLisakysymysAndRule(final String index, final FormParameters formParameters) {
         Element radio = RadioBuilder.Radio(index + "_urheilijan_ammatillisen_koulutuksen_lisakysymys")
                 .addOptions(ImmutableList.of(
-                        new Option(createI18NText("form.yleinen.kylla", formParameters), KYLLA),
-                        new Option(createI18NText("form.yleinen.ei", formParameters), EI)))
-                .i18nText(createI18NText("form.hakutoiveet.urheilijan.ammatillisen.koulutuksen.lisakysymys", formParameters))
+                        new Option(formParameters.getI18nText("form.yleinen.kylla"), KYLLA),
+                        new Option(formParameters.getI18nText("form.yleinen.ei"), EI)))
+                .i18nText(formParameters.getI18nText("form.hakutoiveet.urheilijan.ammatillisen.koulutuksen.lisakysymys"))
                 .required()
                 .formParams(formParameters).build();
         Expr expr = new And(new Equals(new Variable(index + "-Koulutus-id-athlete"), new Value(ElementUtil.KYLLA)),
@@ -292,9 +293,9 @@ public class HakutoiveetPhase {
     private static Element createKaksoistutkintoQuestions(final String index, final FormParameters formParameters) {
         Element radio = RadioBuilder.Radio(index + "_kaksoistutkinnon_lisakysymys")
                 .addOptions(ImmutableList.of(
-                        new Option(createI18NText("form.yleinen.kylla", formParameters), KYLLA),
-                        new Option(createI18NText("form.yleinen.ei", formParameters), EI)))
-                .i18nText(createI18NText("form.hakutoiveet.kaksoistutkinnon.lisakysymys", formParameters))
+                        new Option(formParameters.getI18nText("form.yleinen.kylla"), KYLLA),
+                        new Option(formParameters.getI18nText("form.yleinen.ei"), EI)))
+                .i18nText(formParameters.getI18nText("form.hakutoiveet.kaksoistutkinnon.lisakysymys"))
                 .required()
                 .formParams(formParameters).build();
         Element hasQuestion =

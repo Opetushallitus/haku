@@ -44,7 +44,7 @@ public class ValmisPhase {
         elements.add(Text("valmisP2").labelKey("form.lomake.valmis.p2").formParams(formParameters).build());
         elements.add(Text("valmisP3").labelKey("form.lomake.valmis.p3").formParams(formParameters).build());
 
-        elements.add(new Print("printLink", createI18NText("form.valmis.button.tulosta", formParameters)));
+        elements.add(new Print("printLink", formParameters.getI18nText("form.valmis.button.tulosta")));
 
         Element attachments = new ApplicationAttachments("applicationAttachments");
         elements.add(attachments);
@@ -60,8 +60,8 @@ public class ValmisPhase {
 
         elements.add(Text("palaute").labelKey("form.valmis.palaute").formParams(formParameters).build());
 
-        elements.add(new Link("backLink", createI18NAsIs("https://opintopolku.fi"), createI18NText("form.valmis.takaisin.opintopolkuun.linkki",
-                formParameters)));
+        elements.add(new Link("backLink", createI18NAsIs("https://opintopolku.fi"), formParameters.getI18nText(
+          "form.valmis.takaisin.opintopolkuun.linkki")));
 
         return elements;
     }
@@ -77,8 +77,8 @@ public class ValmisPhase {
         Element athleteGroup = TitledGroup("atheleteGroup").formParams(formParameters).build();
 
         athleteGroup.addChild(Text("athleteP1").labelKey("form.valmis.haetturheilijana").formParams(formParameters).build());
-        Link athleteLink = new Link("athleteLink", createI18NText("form.valmis.haetturheilijana.linkki.url", formParameters),
-                createI18NText("form.valmis.haetturheilijana.linkki.text", formParameters));
+        Link athleteLink = new Link("athleteLink", formParameters.getI18nText("form.valmis.haetturheilijana.linkki.url"),
+                formParameters.getI18nText("form.valmis.haetturheilijana.linkki.text"));
         athleteLink.addAttribute("target", "_blank");
         athleteGroup.addChild(athleteLink);
         athleteRule.addChild(athleteGroup);

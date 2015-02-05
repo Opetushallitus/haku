@@ -247,11 +247,11 @@ public final class KielitaitokysymyksetTheme {
     }
 
     private static Element createKielitutkinto(final String id, final FormParameters formParameters) {
-        I18nText i18NText = createI18NText("form.kielitaito." + CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, id).replace('_', '.'), formParameters);
+        I18nText i18NText = formParameters.getI18nText("form.kielitaito." + CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, id).replace('_', '.'));
         return Radio(id)
                 .addOptions(ImmutableList.of(
-                        new Option(createI18NText("form.yleinen.kylla", formParameters), KYLLA),
-                        new Option(createI18NText("form.yleinen.ei", formParameters), EI)))
+                        new Option(formParameters.getI18nText("form.yleinen.kylla"), KYLLA),
+                        new Option(formParameters.getI18nText("form.yleinen.ei"), EI)))
                 .i18nText(i18NText)
                 .required()
                 .formParams(formParameters).build();

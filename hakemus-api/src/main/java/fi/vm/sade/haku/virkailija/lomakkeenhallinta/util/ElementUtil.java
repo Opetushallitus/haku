@@ -62,10 +62,6 @@ public final class ElementUtil {
         return new I18nText(translations);
     }
 
-    public static I18nText createI18NText(final String key, final FormParameters formParameters) {
-        return formParameters.getI18nText(key);
-    }
-
     public static I18nText createI18NText(final String key) { // Todo get rid of this function
         return createI18NText(key, OppijaConstants.FORM_COMMON_BUNDLE_NAME);
     }
@@ -161,8 +157,7 @@ public final class ElementUtil {
         String required = "required";
         element.addAttribute(required, required);
         element.setValidator(
-                new RequiredFieldValidator(
-                        ElementUtil.createI18NText("yleinen.pakollinen", formParameters)));
+                new RequiredFieldValidator(formParameters.getI18nText("yleinen.pakollinen")));
     }
 
     public static void addUniqueApplicantValidator(final Element element, final FormParameters formParameters) {

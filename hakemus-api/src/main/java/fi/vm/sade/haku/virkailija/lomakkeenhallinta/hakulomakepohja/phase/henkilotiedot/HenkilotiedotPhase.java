@@ -90,8 +90,8 @@ public final class HenkilotiedotPhase {
 
         Element onkoKaksoisKansallisuus = Radio("onkosinullakaksoiskansallisuus")
                 .addOptions(ImmutableList.of(
-                        new Option(createI18NText("form.yleinen.kylla", formParameters), KYLLA),
-                        new Option(createI18NText("form.yleinen.ei", formParameters), EI)))
+                        new Option(formParameters.getI18nText("form.yleinen.kylla"), KYLLA),
+                        new Option(formParameters.getI18nText("form.yleinen.ei"), EI)))
                 .requiredInline()
                 .formParams(formParameters).build();
         henkilotiedotTeema.addChild(onkoKaksoisKansallisuus);
@@ -113,8 +113,8 @@ public final class HenkilotiedotPhase {
         // Ulkomaalaisten tunnisteet
         Element onkoSuomalainenKysymys = Radio("onkoSinullaSuomalainenHetu")
                 .addOptions(ImmutableList.of(
-                        new Option(createI18NText("form.yleinen.kylla", formParameters), KYLLA),
-                        new Option(createI18NText("form.yleinen.ei", formParameters), EI)))
+                        new Option(formParameters.getI18nText("form.yleinen.kylla"), KYLLA),
+                        new Option(formParameters.getI18nText("form.yleinen.ei"), EI)))
                 .requiredInline()
                 .formParams(formParameters).build();
         eiSuomalainen.addChild(onkoSuomalainenKysymys);
@@ -161,7 +161,7 @@ public final class HenkilotiedotPhase {
         kysytaankoHetuSaanto.addChild(socialSecurityNumber, hetuMies, hetuNainen);
 
         Element syntymaaika = Date("syntymaaika").formParams(formParameters).build();
-        syntymaaika.setValidator(new PastDateValidator(createI18NText("henkilotiedot.syntymaaika.tulevaisuudessa", formParameters)));
+        syntymaaika.setValidator(new PastDateValidator(formParameters.getI18nText("henkilotiedot.syntymaaika.tulevaisuudessa")));
         syntymaaika.setValidator(new RegexFieldValidator(createI18NText("henkilotiedot.syntymaaika.virhe"), DATE_PATTERN));
         addRequiredValidator(syntymaaika, formParameters);
         syntymaaika.setInline(true);
