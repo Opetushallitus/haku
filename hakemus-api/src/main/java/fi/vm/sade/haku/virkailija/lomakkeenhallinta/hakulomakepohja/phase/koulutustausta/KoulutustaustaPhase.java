@@ -12,7 +12,6 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.OptionQuestion;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.AddElementRule;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.*;
-import fi.vm.sade.haku.oppija.lomake.validation.validators.AlwaysFailsValidator;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.domain.Code;
@@ -869,7 +868,6 @@ public final class KoulutustaustaPhase {
 
         Element suorittanutTutkinnonRule = createRuleIfVariableIsTrue(suorittanutAmmatillisenTutkinnon.getId());
         Element warning = Info().labelKey("form.koulutustausta.ammatillinensuoritettu.huom")
-                .validator(new AlwaysFailsValidator(formParameters.getI18nText("yleinen.virheellinenarvo")))
                 .formParams(formParameters).build();
 
         suorittanutTutkinnonRule.addChild(warning);
@@ -974,7 +972,6 @@ public final class KoulutustaustaPhase {
                     .required()
                     .formParams(formParameters).build();
             lukioRule.addChild(suorittanutAmmatillisenTutkinnonLukio);
-
 
             lukioRule.addChild(
                     Dropdown(OppijaConstants.LUKIO_KIELI)
