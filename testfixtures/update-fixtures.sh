@@ -29,12 +29,17 @@ if [[ $@ =~ luokka ]]; then
 {"_id"/g' | sed 's/:\[{/:\[\
 {/g' | sed 's/}],/}\
 ],/g' > $fixturesroot/applicationSystem/2013112910452702965370.json
+  mongoexport "$@" -d hakulomake -c applicationSystem --query '{_id:"1.2.246.562.29.95390561488"}'| node process-appsystem.js  | sed 's/\(.\){"_id"/\1\
+{"_id"/g' | sed 's/:\[{/:\[\
+{/g' | sed 's/}],/}\
+],/g' > $fixturesroot/applicationSystem/95390561488.json
   mongoexport "$@" -d hakulomake -c themequestion --query '{applicationSystemId: "1.2.246.562.5.2014022711042555034240"}' --out $fixturesroot/themequestion/2014022711042555034240.json
   mongoexport "$@" -d hakulomake -c themequestion --query '{applicationSystemId: "1.2.246.562.29.173465377510"}' --out $fixturesroot/themequestion/173465377510.json
   mongoexport "$@" -d hakulomake -c application --query '{oid: "1.2.246.562.11.00000877107"}' | node process-application.js 1.2.246.562.24.14229104472 > $fixturesroot/application/00000877107.json
   mongoexport "$@" -d hakulomake -c application --query '{oid: "1.2.246.562.11.00000855417"}' | node process-application.js 1.2.246.562.24.14229104472 > $fixturesroot/application/00000855417.json
   mongoexport "$@" -d hakulomake -c application --query '{oid: "1.2.246.562.11.00000877699"}' | node process-application.js 1.2.246.562.24.14229104472 > $fixturesroot/application/00000877699.json
   mongoexport "$@" -d hakulomake -c application --query '{oid: "1.2.246.562.11.00000877686"}' | node process-application.js 1.2.246.562.24.14229104472 > $fixturesroot/application/00000877686.json
+  mongoexport "$@" -d hakulomake -c application --query '{oid: "1.2.246.562.11.00000000178"}' | node process-application.js 1.2.246.562.24.14229104472 > $fixturesroot/application/00000000178.json
 
 elif [[ $@ =~ reppu ]]; then
   echo Importing from reppu
