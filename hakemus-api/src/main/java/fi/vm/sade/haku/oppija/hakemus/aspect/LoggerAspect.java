@@ -75,6 +75,7 @@ public class LoggerAspect {
             t.setTarget("Haku: " + applicationSystemId
                     + ", käyttäjä: " + userSession.getUser().getUserName() + ", hakemus oid: " + application.getOid());
             t.setTimestamp(new Date());
+            t.setSystem("haku");
             t.setUserActsForUser("" + userSession.getUser().getUserName());
             t.setType("Hakemus lähetetty");
             t.setUser("Hakemus Service");
@@ -101,6 +102,7 @@ public class LoggerAspect {
             tapahtuma = new Tapahtuma();
             tapahtuma.setTarget("hakemus: " + application.getOid() + ", vaihe: " + applicationPhase.getPhaseId());
             tapahtuma.setTimestamp(new Date());
+            tapahtuma.setSystem("haku");
             tapahtuma.setUserActsForUser(userSession.getUser().getUserName());
             tapahtuma.setType("Hakemuksen muokkaus");
             tapahtuma.setUser(userSession.getUser().getUserName());
