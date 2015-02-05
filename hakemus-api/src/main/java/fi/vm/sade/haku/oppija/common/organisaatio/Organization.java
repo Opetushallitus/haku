@@ -109,7 +109,7 @@ public class Organization {
 
     @Override
     public String toString() {
-        StringBuilder str = new StringBuilder("{'").append(name.getTranslations().get("fi")).append("'")
+        StringBuilder str = new StringBuilder("{'").append(name.getText("fi")).append("'")
                 .append(", oid:").append(oid).append(", parent:").append(parentOid).append("}");
         return str.toString();
     }

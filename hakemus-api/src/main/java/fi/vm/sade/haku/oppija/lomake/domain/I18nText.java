@@ -37,6 +37,14 @@ public class I18nText implements Serializable {
         return translations;
     }
 
+    public String getText(String language) {
+        String text = translations.get(language);
+        if (text != null) return text;
+        text = translations.get("fi");
+        if (text != null) return text;
+        return "";
+    }
+
     @Override
     public String toString() {
         return translations.toString();
