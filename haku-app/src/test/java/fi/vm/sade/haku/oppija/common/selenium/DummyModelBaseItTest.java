@@ -83,7 +83,7 @@ public abstract class DummyModelBaseItTest extends AbstractSeleniumBase {
         } else {
             type(id, value, true);
         }
-
+        seleniumContainer.waitForAjax();
     }
 
     protected void navigateToFirstPhase() {
@@ -159,7 +159,7 @@ public abstract class DummyModelBaseItTest extends AbstractSeleniumBase {
 
     protected final void fillOut(final Map<String, String> values) {
         for (Map.Entry<String, String> questionAndAnswer : values.entrySet()) {
-            setValue(questionAndAnswer.getKey(), questionAndAnswer.getValue());
+            setValue(questionAndAnswer.getKey(), questionAndAnswer.getValue(), true);
         }
     }
 

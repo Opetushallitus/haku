@@ -207,9 +207,27 @@ public class OfficerController {
                                @PathParam(OID_PATH_PARAM) final String oid,
                                @PathParam("elementId") final String elementId,
                                final MultivaluedMap<String, String> multiValues) {
+        LOGGER.debug("updateView {}, {}", new Object[]{oid, multiValues});
         ModelResponse modelResponse = officerUIService.getApplicationElement(oid, phaseId, elementId, false);
         modelResponse.addAnswers(toSingleValueMap(multiValues));
         return new Viewable("/elements/Root", modelResponse.getModel());
+    }
+
+    @POST
+    @Path("/hakemus/{applicationSystemId}/{phaseId}/{oid}/rules")
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED + CHARSET_UTF_8)
+    @Produces(MEDIA_TYPE_TEXT_HTML_UTF8)
+    @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_CRUD', 'ROLE_APP_HAKEMUS_OPO')")
+    public Viewable updateMultiRuleView(@PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId,
+                               @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
+                               @PathParam(OID_PATH_PARAM) final String oid,
+                               final MultivaluedMap<String, String> multiValues) {
+
+        LOGGER.debug("updateMultiRuleView {}, {}", new Object[]{oid, multiValues});
+        List<String> ruleIds = multiValues.get("ruleIds[]");
+        ModelResponse modelResponse = officerUIService.getApplicationMultiElement(oid, phaseId, ruleIds, false);
+        modelResponse.addAnswers(toSingleValueMap(multiValues));
+        return new Viewable("/elements/JsonElementList.jsp", modelResponse.getModel());
     }
 
     @POST

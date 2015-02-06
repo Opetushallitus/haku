@@ -30,6 +30,7 @@ public class WorkExperienceThemeIT extends DummyModelBaseItTest {
     public void testWorkExperienceShown() {
         gotoHakutoiveet("010113-668B");
         clickAllElementsByXPath("//option[@data-id='1.2.246.562.14.79893512065']");
+        seleniumContainer.waitForAjax();
         fillOut(defaultValues.preference1);
 
         nextPhase(OppijaConstants.PHASE_GRADES);

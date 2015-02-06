@@ -22,6 +22,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.ModelResponse;
 
 import javax.servlet.http.HttpServletRequest;
 
+import java.util.List;
 import java.util.Map;
 
 public interface UIService {
@@ -41,6 +42,8 @@ public interface UIService {
     Map<String, Object> getAdditionalLanguageRow(final String applicationSystemId, final String gradeGridId);
 
     ModelResponse updateRules(final String applicationSystemId, final String phaseId, final String elementId, Map<String, String> currentAnswers);
+
+    ModelResponse updateRulesMulti(final String applicationSystemId, final String phaseId, final List<String> elementIds, Map<String, String> currentAnswers);
 
     ModelResponse getPhaseElement(final String applicationSystemId, final String phaseId, final String elementId);
 

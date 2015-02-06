@@ -141,6 +141,28 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     }
 
     @Override
+    public ModelResponse getApplicationMultiElement(
+            final String oid,
+            final String phaseId,
+            final List<String> elementIds,
+            final boolean validate) {
+        Application application = this.applicationService.getApplicationByOid(oid);
+        application.setPhaseId(phaseId); // TODO active applications does not have phaseId?
+        Form form = this.formService.getForm(application.getApplicationSystemId());
+        List<Element> elements = new ArrayList();
+        if (elementIds != null) {
+            for (String elementId : elementIds) {
+                ElementTree item = new ElementTree(form);
+                elements.add(item.getChildById(elementId));
+            }
+        }
+        ValidationResult validationResult = elementTreeValidator.validate(new ValidationInput(form, application.getVastauksetMerged(),
+                oid, application.getApplicationSystemId(), false));
+        return new ModelResponse(application, form, elements, validationResult, koulutusinformaatioBaseUrl);
+    }
+
+
+    @Override
     public ModelResponse getValidatedApplication(final String oid, final String phaseId) throws IOException {
         Application application = this.applicationService.getApplicationByOid(oid);
         application.setPhaseId(phaseId); // TODO active applications does not have phaseId?

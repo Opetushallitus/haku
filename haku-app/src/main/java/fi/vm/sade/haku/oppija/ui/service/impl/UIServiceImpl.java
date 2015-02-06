@@ -49,10 +49,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.jstl.core.Config;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
@@ -189,6 +186,33 @@ public class UIServiceImpl implements UIService {
         ModelResponse modelResponse = new ModelResponse();
         modelResponse.addAnswers(values);
         modelResponse.setElement(new ElementTree(activeForm).getChildById(elementId));
+        modelResponse.setForm(activeForm);
+        modelResponse.setApplicationSystemId(applicationSystemId);
+        modelResponse.setKoulutusinformaatioBaseUrl(koulutusinformaatioBaseUrl);
+        modelResponse.addObjectToModel("ongoing", aoSearchOnlyOngoing);
+        return modelResponse;
+    }
+
+    @Override
+    public ModelResponse updateRulesMulti(String applicationSystemId, String phaseId, List<String> elementIds, Map<String, String> currentAnswers) {
+        Form activeForm = applicationSystemService.getActiveApplicationSystem(applicationSystemId).getForm();
+        Application application = applicationService.getApplication(applicationSystemId);
+        Map<String, String> values = application.getVastauksetMerged();
+        for (String key : application.getPhaseAnswers(phaseId).keySet()) {
+            values.remove(key);
+        }
+        values.putAll(currentAnswers);
+        ModelResponse modelResponse = new ModelResponse();
+        modelResponse.addAnswers(values);
+
+        List<Element> elements = new ArrayList();
+        if (elementIds != null) {
+            for (String elementId : elementIds) {
+                ElementTree item = new ElementTree(activeForm);
+                elements.add(item.getChildById(elementId));
+            }
+        }
+        modelResponse.addObjectToModel("elements", elements);
         modelResponse.setForm(activeForm);
         modelResponse.setApplicationSystemId(applicationSystemId);
         modelResponse.setKoulutusinformaatioBaseUrl(koulutusinformaatioBaseUrl);

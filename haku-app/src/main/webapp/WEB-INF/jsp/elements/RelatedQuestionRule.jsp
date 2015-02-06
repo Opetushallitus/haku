@@ -19,6 +19,7 @@
   ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   ~ European Union Public Licence for more details.
   --%>
+<c:set var="answers" value="${it.answers}" scope="request"/>
 <c:set var="nameSelectors" value="${ f:tochildIdList(element)}"/>
 <c:set var="variables" value="${ f:setToList(element.variables)}"/>
 <div id="${element.id}" class="related-question-rule-class">

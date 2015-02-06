@@ -91,6 +91,11 @@ public abstract class AbstractSeleniumBase extends TomcatContainerBase {
         }
     }
 
+    protected void findByAndAjaxClick(By by){
+        seleniumContainer.getDriver().findElement(by).click();
+        seleniumContainer.waitForAjax();
+    }
+
     protected void clickByHref(final String... locations) {
         for (String location : locations) {
             WebDriver driver = seleniumContainer.getDriver();
