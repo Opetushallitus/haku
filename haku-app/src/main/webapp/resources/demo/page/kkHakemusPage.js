@@ -70,16 +70,20 @@ function KkHakemusPage() {
         kkTutkintoSuoritettu: function() {
             return S("input[name=suoritusoikeus_tai_aiempi_tutkinto]")
         },
-        avoinAla: function(index = '') {
+        avoinAla: function(index) {
+            index = index ? index : '';
             return S("input#pohjakoulutus_avoin_ala"+index);
         },
-        avoinKokonaisuus: function(index = '') {
+        avoinKokonaisuus: function(index) {
+            index = index ? index : '';
             return S("input#pohjakoulutus_avoin_kokonaisuus"+index);
         },
-        avoinLaajuus: function(index = '') {
+        avoinLaajuus: function(index) {
+            index = index ? index : '';
             return S("input#pohjakoulutus_avoin_laajuus"+index);
         },
-        avoinKorkeakoulu: function(index = '') {
+        avoinKorkeakoulu: function(index) {
+            index = index ? index : '';
             return S("input#pohjakoulutus_avoin_korkeakoulu"+index);
         },
         addSecondAvoinLink: function() {
