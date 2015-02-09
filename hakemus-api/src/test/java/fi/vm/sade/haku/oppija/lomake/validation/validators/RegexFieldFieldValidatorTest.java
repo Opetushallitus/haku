@@ -23,7 +23,7 @@ public class RegexFieldFieldValidatorTest {
     private static final Element element = new TextQuestion(FIELD_NAME, ElementUtil.createI18NAsIs(FIELD_NAME));
 
     private final RegexFieldValidator regexFieldFieldValidator =
-            new RegexFieldValidator(createI18NText("yleinen.virheellinenarvo"), ElementUtil.ISO88591_NAME_REGEX);
+            new RegexFieldValidator("yleinen.virheellinenarvo", ElementUtil.ISO88591_NAME_REGEX);
 
     private final List<String> listOfValidNames = ImmutableList.of(
             "",
@@ -52,7 +52,7 @@ public class RegexFieldFieldValidatorTest {
     @Test
     public void validateValid() throws Exception {
         Map<String, String> values = ImmutableMap.of(FIELD_NAME, "test");
-        RegexFieldValidator test = new RegexFieldValidator(ElementUtil.createI18NText("yleinen.virheellinenArvo"), "test");
+        RegexFieldValidator test = new RegexFieldValidator("yleinen.virheellinenArvo", "test");
         ValidationResult validationResult = test.validate(new ValidationInput(element, values, null, null, ValidationInput.ValidationContext.officer_modify));
         assertFalse(validationResult.hasErrors());
     }
@@ -60,7 +60,7 @@ public class RegexFieldFieldValidatorTest {
     @Test
     public void validateInvalid() throws Exception {
         Map<String, String> values = ImmutableMap.of(FIELD_NAME, "test2");
-        RegexFieldValidator test = new RegexFieldValidator(ElementUtil.createI18NText("yleinen.virheellinenArvo"), "test");
+        RegexFieldValidator test = new RegexFieldValidator("yleinen.virheellinenArvo", "test");
         ValidationResult validationResult = test.validate(new ValidationInput(element, values, null, null, ValidationInput.ValidationContext.officer_modify));
         assertTrue(validationResult.hasErrors());
     }

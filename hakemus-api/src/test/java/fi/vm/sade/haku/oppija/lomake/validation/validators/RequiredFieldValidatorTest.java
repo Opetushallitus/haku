@@ -32,7 +32,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class RequiredFieldValidatorTest {
-    public static final I18nText ERROR_MESSAGE = createI18NText("kenttä on virheellinen");
+    public static final String ERROR_MESSAGE_KEY = "error.message.key";
     public static final String FIELD_NAME = "kenttä";
     private static final Element element = new TextQuestion(FIELD_NAME, ElementUtil.createI18NAsIs(FIELD_NAME));
     private Map<String, String> values;
@@ -42,7 +42,7 @@ public class RequiredFieldValidatorTest {
     @Before
     public void setUp() throws Exception {
         values = new HashMap<String, String>();
-        requiredFieldValidator = new RequiredFieldValidator(FIELD_NAME, ERROR_MESSAGE);
+        requiredFieldValidator = new RequiredFieldValidator(FIELD_NAME, ERROR_MESSAGE_KEY);
     }
 
     @Test

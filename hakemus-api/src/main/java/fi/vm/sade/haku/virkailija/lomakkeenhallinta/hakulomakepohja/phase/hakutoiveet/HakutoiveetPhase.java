@@ -84,8 +84,8 @@ public class HakutoiveetPhase {
 
         List<String> preferenceIds = getPreferenceIds(formParameters);
         PreferenceRow pr1 = createI18NPreferenceRow(preferenceIds.remove(0), formParameters);
-        pr1.setValidator(new RequiredFieldValidator(pr1.getLearningInstitutionInputId(), formParameters.getI18nText("yleinen.pakollinen")));
-        pr1.setValidator(new RequiredFieldValidator(pr1.getEducationInputId(), formParameters.getI18nText("yleinen.pakollinen")));
+        pr1.setValidator(new RequiredFieldValidator(pr1.getLearningInstitutionInputId(), "yleinen.pakollinen"));
+        pr1.setValidator(new RequiredFieldValidator(pr1.getEducationInputId(), "yleinen.pakollinen"));
         if (formParameters.isLisahaku()) {
             pr1.setValidator(new SsnAndPreferenceUniqueValidator());
         }
@@ -222,15 +222,12 @@ public class HakutoiveetPhase {
         HiddenValue hiddenDiscretionary = new HiddenValue(discretionary.getId(), ElementUtil.KYLLA);
         ElementUtil.addRequiredValidator(hiddenDiscretionary, formParameters);
         hiddenDiscretionary.setValidator(
-                new RegexFieldValidator(formParameters.getI18nText("yleinen.virheellinenarvo"),
-                        ElementUtil.KYLLA));
+                new RegexFieldValidator("yleinen.virheellinenarvo", ElementUtil.KYLLA));
 
         HiddenValue hiddenDiscretionaryFollowUp = new HiddenValue(discretionaryFollowUp.getId(), TODISTUSTENPUUTTUMINEN);
         ElementUtil.addRequiredValidator(hiddenDiscretionaryFollowUp, formParameters);
         hiddenDiscretionaryFollowUp.setValidator(
-                new RegexFieldValidator(formParameters.getI18nText("yleinen.virheellinenarvo"),
-                        TODISTUSTENPUUTTUMINEN));
-
+                new RegexFieldValidator("yleinen.virheellinenarvo", TODISTUSTENPUUTTUMINEN));
 
         keskeytynytTaiUlkomainenRule.addChild(hiddenDiscretionary, hiddenDiscretionaryFollowUp);
         KoulutusValittu.addChild(keskeytynytTaiUlkomainenRule);

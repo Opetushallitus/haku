@@ -1,7 +1,6 @@
 package fi.vm.sade.haku.oppija.lomake.validation.validators;
 
 import com.google.common.collect.ImmutableMap;
-import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.TextQuestion;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationInput;
@@ -18,13 +17,8 @@ import static org.junit.Assert.assertTrue;
 public class LengthValidatorTest {
 
     private static final String FIELD_NAME = "a";
-    private I18nText errorMessage;
+    private static final String errorMessageKey = "error";
     private static final Element element = new TextQuestion(FIELD_NAME, ElementUtil.createI18NAsIs(FIELD_NAME));
-
-    @Before
-    public void setUp() throws Exception {
-        errorMessage = ElementUtil.createI18NAsIs("error");
-    }
 
     @Test
     public void testInValid() throws Exception {
@@ -67,6 +61,6 @@ public class LengthValidatorTest {
     }
 
     private LengthValidator getLengthValidator(int length) {
-        return new LengthValidator(errorMessage, length);
+        return new LengthValidator(errorMessageKey, length);
     }
 }

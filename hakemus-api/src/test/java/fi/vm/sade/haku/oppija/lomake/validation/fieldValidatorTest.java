@@ -16,24 +16,55 @@
 
 package fi.vm.sade.haku.oppija.lomake.validation;
 
-import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
+import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
+import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystemBuilder;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.Text;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.I18nBundle;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.i18n.I18nBundleService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
-import org.apache.commons.lang.NotImplementedException;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
+import net.sf.saxon.functions.Collection;
+import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
+import java.util.Collections;
+
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.isNull;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 public class fieldValidatorTest {
 
-    public static final I18nText ERROR_MESSAGE = ElementUtil.createI18NText("error_message");
+    public static final String ERROR_MESSAGE_KEY = "error_message_key";
+
+    private I18nBundle i18nBundle;
+    private I18nBundleService i18nBundleService;
+
+    @Before
+    public void setUp() {
+        i18nBundleService = spy(new I18nBundleService(null));
+        ApplicationSystem synth = new ApplicationSystemBuilder().setId("haku")
+          .setName(ElementUtil.createI18NAsIs("haku"))
+          .setHakukausiUri(OppijaConstants.HAKUKAUSI_KEVAT)
+          .setApplicationSystemType(OppijaConstants.HAKUTYYPPI_VARSINAINEN_HAKU)
+          .setHakutapa(OppijaConstants.HAKUTAPA_YHTEISHAKU)
+          .get();
+        i18nBundle = spy(i18nBundleService.getBundle(synth));
+        doReturn(i18nBundle).when(i18nBundleService).getBundle((String) isNull());
+    }
 
     @Test
     public void testErrorMessageConstructor() throws Exception {
-        FieldValidator validator = createValidator(ERROR_MESSAGE);
-        assertEquals(ERROR_MESSAGE, validator.getErrorMessage());
+        FieldValidator validator = createValidator(ERROR_MESSAGE_KEY);
+        validator.setI18nBundleService(i18nBundleService);
+        ValidationResult vr = validator.validate(new ValidationInput(new Text("element", null), Collections.EMPTY_MAP,null, null,null));
+        assertTrue(vr.hasErrors());
+        verify(i18nBundle, times(1)).get(ERROR_MESSAGE_KEY);
     }
-
-
 
 
     @Test(expected = NullPointerException.class)
@@ -41,11 +72,11 @@ public class fieldValidatorTest {
         createValidator(null);
     }
 
-    private FieldValidator createValidator(I18nText errorMessage) {
-        return new FieldValidator(errorMessage) {
+    private FieldValidator createValidator(final String errorMessageKey) {
+        return new FieldValidator(errorMessageKey) {
             @Override
             public ValidationResult validate(final ValidationInput validationInput) {
-                throw new NotImplementedException();
+                return this.getInvalidValidationResult(validationInput);
             }
         };
     }

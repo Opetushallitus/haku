@@ -27,7 +27,7 @@ public class PostalCodeBuilder extends OptionQuestionBuilder {
         for (Option option : options) {
             values.add(option.getValue());
         }
-        postalCode.setValidator(new ValueSetValidator(ElementUtil.createI18NText("yleinen.virheellinenArvo"), values));
+        postalCode.setValidator(new ValueSetValidator("yleinen.virheellinenArvo", values));
         return postalCode;
     }
 

@@ -17,26 +17,48 @@
 package fi.vm.sade.haku.oppija.lomake.validation;
 
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
+import fi.vm.sade.haku.oppija.lomake.util.SpringInjector;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.I18nBundle;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.i18n.I18nBundleService;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import org.apache.commons.lang3.Validate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.annotation.Transient;
 
 public abstract class FieldValidator implements Validator {
-    protected final I18nText errorMessage;
+    private final String errorMessageKey;
+
+    @Transient
+    private I18nBundleService i18nBundleService;
+    @Transient
+    private I18nBundle i18nBundle;
     @Transient
     protected ValidationResult validValidationResult;
 
-    protected FieldValidator(final I18nText errorMessage) {
-        Validate.notNull(errorMessage, "ErrorMessage can't be null");
-        this.errorMessage = errorMessage;
+    protected FieldValidator(final String errorMessageKey) {
+        Validate.notNull(errorMessageKey, "ErrorMessageKey can't be null");
+        this.errorMessageKey = errorMessageKey;
         validValidationResult = new ValidationResult();
-    }
-
-
-    public I18nText getErrorMessage() {
-        return errorMessage;
+        SpringInjector.injectSpringDependencies(this);
     }
 
     public ValidationResult getInvalidValidationResult(final ValidationInput validationInput) {
-        return new ValidationResult(validationInput.getFieldName(), getErrorMessage());
+        return new ValidationResult(validationInput.getFieldName(), getI18Text(errorMessageKey,
+          validationInput.getApplicationSystemId()));
+    }
+
+    @Autowired
+    public void setI18nBundleService(I18nBundleService i18nBundleService) {
+        this.i18nBundleService = i18nBundleService;
+    }
+
+    protected I18nText getI18Text(final String key, final String applicationSystemId){
+        if (null == i18nBundle) {
+            if (null == i18nBundleService){
+                return ElementUtil.createI18NAsIs(key);
+            }
+            i18nBundle = i18nBundleService.getBundle(applicationSystemId);
+        }
+        return i18nBundle.get(key);
     }
 }

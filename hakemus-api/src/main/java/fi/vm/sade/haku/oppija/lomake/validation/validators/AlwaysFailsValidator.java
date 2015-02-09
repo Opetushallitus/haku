@@ -16,15 +16,14 @@
 
 package fi.vm.sade.haku.oppija.lomake.validation.validators;
 
-import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.validation.FieldValidator;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationInput;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationResult;
 
 public class AlwaysFailsValidator extends FieldValidator {
 
-    public AlwaysFailsValidator(final I18nText errorMessage) {
-        super(errorMessage);
+    public AlwaysFailsValidator(final String errorMessageKey) {
+        super(errorMessageKey);
     }
 
     @Override

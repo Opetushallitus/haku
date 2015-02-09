@@ -30,13 +30,13 @@ public class RequiredFieldValidator extends FieldValidator {
     private final String id;
 
     @PersistenceConstructor
-    public RequiredFieldValidator(final I18nText errorMessage) {
-        super(errorMessage);
+    public RequiredFieldValidator(final String errorMessageKey) {
+        super(errorMessageKey);
         id = null;
     }
 
-    public RequiredFieldValidator(final String id, final I18nText errorMessage) {
-        super(errorMessage);
+    public RequiredFieldValidator(final String id, final String errorMessageKey) {
+        super(errorMessageKey);
         this.id = id;
     }
 

@@ -21,7 +21,7 @@ import static org.junit.Assert.assertTrue;
 public class UniqValuesValidatorTest {
 
     public static final String ID = "id";
-    public static final I18nText MSG_KEY = ElementUtil.createI18NText("msg.key");
+    public static final String MSG_KEY = "msg.key";
     private static final Element element = new TextQuestion(ID, ElementUtil.createI18NAsIs(ID));
     private UniqValuesValidator uniqValuesValidator;
 

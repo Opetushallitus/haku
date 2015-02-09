@@ -59,24 +59,22 @@ public abstract class ElementBuilder {
             String required = "required";
             element.addAttribute(required, required);
             element.setValidator(
-                    new RequiredFieldValidator(
-                            getI18nText("yleinen.pakollinen", false)));
+                    new RequiredFieldValidator("yleinen.pakollinen"));
         }
         if (minOptions != null && maxOptions != null) {
-            element.setValidator(new MinMaxOptionsValidator(getI18nText("yleinen.virheellinenarvo"),
+            element.setValidator(new MinMaxOptionsValidator("yleinen.virheellinenarvo",
                     minOptions, maxOptions));
         }
         if (pattern != null) {
-            element.setValidator(new RegexFieldValidator(getI18nText("yleinen.virheellinenarvo"), pattern));
+            element.setValidator(new RegexFieldValidator("yleinen.virheellinenarvo", pattern));
         }
 
-        I18nText errorMessage = getI18nText("yleinen.virheellinenarvo");
         if (maxLength != null) {
             element.addAttribute("maxlength", maxLength.toString());
-            element.setValidator(new LengthValidator(errorMessage, maxLength));
+            element.setValidator(new LengthValidator("yleinen.virheellinenarvo", maxLength));
         }
         if (containsInField != null) {
-            element.setValidator(new ContainedInOtherFieldValidator(containsInField, errorMessage));
+            element.setValidator(new ContainedInOtherFieldValidator(containsInField, "yleinen.virheellinenarvo"));
         }
         element.setInline(this.inline);
         element.setValidators(validators);

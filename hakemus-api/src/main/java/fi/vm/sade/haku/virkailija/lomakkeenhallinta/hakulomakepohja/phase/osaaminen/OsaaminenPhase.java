@@ -76,8 +76,7 @@ public class OsaaminenPhase {
             ElementBuilder kysytaankoLukionKeskiarvo = Rule(new And(haettuAMKHon, pohjakoulutusLukio));
             List<Option> asteikkolista = koodistoService.getAmmatillisenTutkinnonArvosteluasteikko();
 
-            RegexFieldValidator validator = new RegexFieldValidator(formParameters.getI18nText(
-              "validator.keskiarvo.desimaaliluku"), "^$|\\d+\\,?\\d{1,2}");
+            RegexFieldValidator validator = new RegexFieldValidator("validator.keskiarvo.desimaaliluku", "^$|\\d+\\,?\\d{1,2}");
             osaaminenTheme.addChild(
                     kysytaankoLukionKeskiarvo.addChild(
                             TextQuestion("lukion-paattotodistuksen-keskiarvo")

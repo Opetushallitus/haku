@@ -16,7 +16,6 @@
 
 package fi.vm.sade.haku.oppija.lomake.validation.validators;
 
-import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.validation.FieldValidator;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationInput;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationResult;
@@ -26,8 +25,8 @@ public class LengthValidator extends FieldValidator {
 
     private final int length;
 
-    public LengthValidator(final I18nText errorMessage, int length) {
-        super(errorMessage);
+    public LengthValidator(final String errorMessageKey, int length) {
+        super(errorMessageKey);
         Validate.isTrue(length >= 0, "Length must be greater than or equal to 0");
         this.length = length;
     }

@@ -31,8 +31,8 @@ public class RegexFieldValidator extends FieldValidator {
     @Transient
     private final Pattern compiledPattern;
 
-    public RegexFieldValidator(final I18nText errorMessage, final String pattern) {
-        super(errorMessage);
+    public RegexFieldValidator(final String errorMessageKey, final String pattern) {
+        super(errorMessageKey);
         Validate.notNull(pattern, "Pattern can't be null");
         this.pattern = pattern;
         this.compiledPattern = Pattern.compile(this.pattern);

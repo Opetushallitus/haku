@@ -135,17 +135,16 @@ public final class ElementUtil {
         return gradeGridRow;
     }
 
-    public static Validator createRegexValidator(final String pattern, final FormParameters formParameters) {
-        return createRegexValidator(pattern, formParameters, "yleinen.virheellinenarvo");
+    public static Validator createRegexValidator(final String pattern) {
+        return createRegexValidator(pattern, "yleinen.virheellinenarvo");
     }
 
-    public static Validator createRegexValidator(final String pattern, final FormParameters formParameters,
-                                                 final String messageKey) {
-        return new RegexFieldValidator(formParameters.getI18nText(messageKey), pattern);
+    public static Validator createRegexValidator(final String pattern, final String messageKey) {
+        return new RegexFieldValidator(messageKey, pattern);
     }
 
-    public static Validator createValueSetValidator(final List<String> validValues, final FormParameters formParameters) {
-        return new ValueSetValidator(formParameters.getI18nText("yleinen.virheellinenarvo"), validValues);
+    public static Validator createValueSetValidator(final List<String> validValues) {
+        return new ValueSetValidator("yleinen.virheellinenarvo", validValues);
     }
 
 
@@ -157,7 +156,7 @@ public final class ElementUtil {
         String required = "required";
         element.addAttribute(required, required);
         element.setValidator(
-                new RequiredFieldValidator(formParameters.getI18nText("yleinen.pakollinen")));
+                new RequiredFieldValidator("yleinen.pakollinen"));
     }
 
     public static void addUniqueApplicantValidator(final Element element, final FormParameters formParameters) {

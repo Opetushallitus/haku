@@ -71,7 +71,7 @@ public class GradesTable {
                 new UniqValuesValidator(
                         uniqLanguagesIds,
                         ImmutableList.of(OppijaConstants.EDUCATION_LANGUAGE_OTHER, OppijaConstants.EDUCATION_LANGUAGE_EI_SUORITUSTA),
-                        formParameters.getI18nText("yleinen.kielet.samoja")));
+                        "yleinen.kielet.samoja"));
         return gradeGrid;
     }
 

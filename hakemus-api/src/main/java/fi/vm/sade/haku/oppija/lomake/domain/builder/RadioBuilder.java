@@ -1,6 +1,5 @@
 package fi.vm.sade.haku.oppija.lomake.domain.builder;
 
-import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Radio;
@@ -25,8 +24,7 @@ public class RadioBuilder extends OptionQuestionBuilder {
                 option.setDefaultOption(option.getValue().equalsIgnoreCase(defaultOption));
             }
         }
-        I18nText i18nText1 = getI18nText("yleinen.virheellinenArvo", false);
-        radio.setValidator(new ValueSetValidator(i18nText1, values));
+        radio.setValidator(new ValueSetValidator("yleinen.virheellinenArvo", values));
         return radio;
     }
 

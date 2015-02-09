@@ -35,7 +35,7 @@ public class ContainedInOtherFieldValidatorTest {
     private static final String thisField = "thisField";
     private static final String thatField = "thatField";
     private static final Element element = new TextQuestion(thisField, ElementUtil.createI18NAsIs(thisField));
-    FieldValidator validator = new ContainedInOtherFieldValidator(thatField, createI18NText("error"));
+    FieldValidator validator = new ContainedInOtherFieldValidator(thatField, "error");
 
     @Test
     public void testExactMatch() {
