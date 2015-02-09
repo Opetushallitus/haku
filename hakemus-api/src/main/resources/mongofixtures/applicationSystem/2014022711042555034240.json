@@ -2415,7 +2415,7 @@
 ],"attributes":{"id":"lisatiedot","name":"lisatiedot"},"inline":false,"_class":"fi.vm.sade.haku.oppija.lomake.domain.elements.Phase"}
 ],"attributes":{"id":"1.2.246.562.5.2014022711042555034240","name":"1.2.246.562.5.2014022711042555034240"},"inline":false},"name":{"translations":{"fi":"Perusopetuksen jälkeisen valmistavan koulutuksen kesän 2014 haku MUOKATTU","sv":"Perusopetuksen jälkeisen valmistavan koulutuksen kesän 2014 haku EDIT"}},"applicationPeriods":[
 {"start":{"$date":1404190831839},"end":{"$date":4131320431839}}
-],"applicationSystemType":"hakutyyppi_01","hakukausiVuosi":2014,"hakukausiUri":"kausi_k","kohdejoukkoUri":"haunkohdejoukko_17","applicationCompleteElements":[
+],"applicationSystemType":"hakutyyppi_01","hakutapa": "hakutapa_01","hakukausiVuosi":2014,"hakukausiUri":"kausi_k","kohdejoukkoUri":"haunkohdejoukko_17","applicationCompleteElements":[
 {"_id":"a0548f7bb-46de-4d4c-aaeb-487643bfefb8","expr":{"_class":"fi.vm.sade.haku.oppija.lomake.domain.rules.expression.Regexp","pattern":".*\\S.*","value":"Sähköposti"},"validators":[],"children":[
 {"_id":"emailP1","i18nText":{"translations":{"fi":"Sinulle  lähetetään vahvistus sähköpostiisi vuorokauden kuluessa, jos olet antanut sähköpostiosoitteesi hakemuksessasi:&nbsp;","sv":"En bekräftelse har skickats till din e-post, om du angett din e-postadress i ansökan:&nbsp;","en":"Sinulle  lähetetään vahvistus sähköpostiisi vuorokauden kuluessa, jos olet antanut sähköpostiosoitteesi hakemuksessasi:&nbsp;"}},"validators":[],"children":[
 {"_id":"Sähköposti","validators":[],"children":[],"attributes":{"id":"Sähköposti"},"inline":false,"_class":"fi.vm.sade.haku.oppija.lomake.domain.elements.custom.Answer"}

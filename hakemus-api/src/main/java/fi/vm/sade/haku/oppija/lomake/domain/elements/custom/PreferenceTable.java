@@ -78,7 +78,6 @@ public class PreferenceTable extends Question {
         }
 
         PreferenceTableValidator validator = new PreferenceTableValidator(learningInstitutionInputIds, educationInputIds, groupRestrictionValidators);
-        SpringInjector.injectSpringDependencies(validator);
         return validator;
     }
 
