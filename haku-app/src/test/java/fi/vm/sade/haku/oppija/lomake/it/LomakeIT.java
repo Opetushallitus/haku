@@ -113,9 +113,7 @@ public class LomakeIT extends DummyModelBaseItTest {
 
         typeWithoutTab("preference1-Opetuspiste", "Esp");
 
-
-        clickLinkByText("FAKTIA, Espoo op");
-
+        findByAndAjaxClick(By.linkText("FAKTIA, Espoo op"));
         findByAndAjaxClick(By.xpath("//option[@data-id='1.2.246.562.14.79893512065']"));
 
         fillOut(defaultValues.getPreference1(ImmutableMap.of("preference1-discretionary", "true")));
