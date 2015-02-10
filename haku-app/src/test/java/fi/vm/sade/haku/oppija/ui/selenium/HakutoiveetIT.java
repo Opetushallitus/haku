@@ -37,13 +37,13 @@ public class HakutoiveetIT extends DummyModelBaseItTest {
         FirefoxDriver driver = seleniumContainer.getDriver();
         findById("preference1-Opetuspiste");
         typeWithoutTab("preference1-Opetuspiste", "Esp");
-        driver.findElement(By.linkText("FAKTIA, Espoo op")).click();
-        findByXPath("//option[@value='Kaivosalan perustutkinto, pk']").click();
+        findByAndAjaxClick(By.linkText("FAKTIA, Espoo op"));
+        findByAndAjaxClick(By.xpath("//option[@value='Kaivosalan perustutkinto, pk']"));
         isTextPresent("Kaivosalan perustutkinto, Kaivosalan koulutusohjelma");
         clickByNameAndValue("preference1_urheilijan_ammatillisen_koulutuksen_lisakysymys", "true");
         clickByNameAndValue("preference1_sora_terveys", "false");
         clickByNameAndValue("preference1_sora_oikeudenMenetys", "false");
-        driver.findElement(By.xpath("//button[@class='right']")).click();
+        findByAndAjaxClick(By.xpath("//button[@class='right']"));
     }
 
     @Test(expected = NoSuchElementException.class)
