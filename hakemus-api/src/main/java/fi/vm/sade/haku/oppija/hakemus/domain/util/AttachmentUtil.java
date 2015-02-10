@@ -7,6 +7,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.util.StringUtil;
 import fi.vm.sade.haku.virkailija.koulutusinformaatio.KoulutusinformaatioService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain.SimpleAddress;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.I18nBundle;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import fi.vm.sade.koulutusinformaatio.domain.dto.*;
@@ -27,9 +28,12 @@ public class AttachmentUtil {
         return attachments;
     }
 
-    public static List<ApplicationAttachmentRequest> resolveAttachmentRequests(ApplicationSystem applicationSystem,
-                                                                               Application application,
-                                                                               KoulutusinformaatioService koulutusinformaatioService) {
+    public static List<ApplicationAttachmentRequest> resolveAttachmentRequests(
+      final ApplicationSystem applicationSystem,
+      final Application application,
+      final KoulutusinformaatioService koulutusinformaatioService,
+      final I18nBundle i18nBundle) {
+
         String lang = application.getMetaValue(Application.META_FILING_LANGUAGE);
         if (lang == null) {
             Map<String, String> miscAnswers = application.getPhaseAnswers(OppijaConstants.PHASE_MISC);
@@ -43,19 +47,21 @@ public class AttachmentUtil {
                 }
             }
         }
-        return resolveAttachmentRequests(applicationSystem, application, koulutusinformaatioService, lang);
+        return resolveAttachmentRequests(applicationSystem, application, koulutusinformaatioService, lang, i18nBundle);
     }
 
-    public static List<ApplicationAttachmentRequest> resolveAttachmentRequests(
-      ApplicationSystem applicationSystem,
-      Application application,
-      KoulutusinformaatioService koulutusinformaatioService,
-      String lang) {
+    private static List<ApplicationAttachmentRequest> resolveAttachmentRequests(
+      final ApplicationSystem applicationSystem,
+      final Application application,
+      final KoulutusinformaatioService koulutusinformaatioService,
+      final String lang,
+      final I18nBundle i18nBundle) {
         List<ApplicationAttachmentRequest> attachments = new ArrayList<ApplicationAttachmentRequest>();
         attachments = addApplicationOptionAttachments(attachments, application, koulutusinformaatioService, lang);
-        attachments = addDiscreationaryAttachments(attachments, application, koulutusinformaatioService, lang);
-        attachments = addHigherEdAttachments(attachments, application, koulutusinformaatioService, lang);
-        attachments = addAmkOpeAttachments(attachments, application, koulutusinformaatioService, lang);
+        attachments = addDiscreationaryAttachments(attachments, application, koulutusinformaatioService, lang,
+          i18nBundle);
+        attachments = addHigherEdAttachments(attachments, application, koulutusinformaatioService, lang, i18nBundle);
+        attachments = addAmkOpeAttachments(attachments, application, koulutusinformaatioService, lang, i18nBundle);
         attachments = addApplicationOptionAttachmentRequestsFromForm(attachments, application, applicationSystem);
 
         return attachments;
@@ -135,10 +141,11 @@ public class AttachmentUtil {
     }
 
     private static List<ApplicationAttachmentRequest> addDiscreationaryAttachments(
-      List<ApplicationAttachmentRequest> attachments,
-      Application application,
-      KoulutusinformaatioService koulutusinformaatioService,
-      String lang) {
+      final List<ApplicationAttachmentRequest> attachments,
+      final Application application,
+      final KoulutusinformaatioService koulutusinformaatioService,
+      final String lang,
+      final I18nBundle i18nBundle) {
 
         for (String aoOid : ApplicationUtil.getDiscretionaryAttachmentAOIds(application)) {
             ApplicationOptionDTO ao = koulutusinformaatioService.getApplicationOption(aoOid, lang);
@@ -155,11 +162,11 @@ public class AttachmentUtil {
             }
 
             ApplicationAttachmentBuilder attachmentBuilder = ApplicationAttachmentBuilder.start()
-              .setName(ElementUtil.createI18NText("form.valmis.liitteet.harkinnanvaraisuus"))
+              .setName(i18nBundle.get("form.valmis.liitteet.harkinnanvaraisuus"))
               .setDeadline(null)
               .setAddress(getAddress(ao));
             if (discreationaryReason != null) {
-                attachmentBuilder.setDescription(ElementUtil.createI18NText("form.valmis.liitteet.harkinnanvaraisuus."
+                attachmentBuilder.setDescription(i18nBundle.get("form.valmis.liitteet.harkinnanvaraisuus."
                   + discreationaryReason));
             }
 
@@ -170,7 +177,6 @@ public class AttachmentUtil {
         }
         return attachments;
     }
-
 
     private static Address getAddress(String recipient, AddressDTO addressDTO) {
         if (null == addressDTO)
@@ -202,10 +208,11 @@ public class AttachmentUtil {
     }
 
     private static List<ApplicationAttachmentRequest> addHigherEdAttachments(
-      List<ApplicationAttachmentRequest> attachments,
-      Application application,
-      KoulutusinformaatioService koulutusinformaatioService,
-      String lang) {
+      final List<ApplicationAttachmentRequest> attachments,
+      final Application application,
+      final KoulutusinformaatioService koulutusinformaatioService,
+      final String lang,
+      final I18nBundle i18nBundle) {
 
         Map<String, List<ApplicationOptionDTO>> higherEdAttachments = getApplicationOptions(
           ApplicationUtil.getHigherEdAttachmentAOIds(application), koulutusinformaatioService, lang);
@@ -234,7 +241,7 @@ public class AttachmentUtil {
                     .setApplicationAttachment(
                       ApplicationAttachmentBuilder.start()
                         .setName(ElementUtil.createI18NAsIs(StringUtil.safeToString(aoDTO.getProvider().getName())))
-                        .setDescription(ElementUtil.createI18NText("form.valmis.todistus." + attachmentType))
+                        .setDescription(i18nBundle.get("form.valmis.todistus." + attachmentType))
                         .setDeadline(deadline)
                         .setAddress(AddressBuilder.start()
                           .setRecipient(name)
@@ -251,8 +258,9 @@ public class AttachmentUtil {
     }
 
     private static List<ApplicationAttachmentRequest> addAmkOpeAttachments(
-      List<ApplicationAttachmentRequest> attachments, Application application,
-      KoulutusinformaatioService koulutusinformaatioService, String lang) {
+      final List<ApplicationAttachmentRequest> attachments, final Application application,
+      final KoulutusinformaatioService koulutusinformaatioService, final String lang,
+      final I18nBundle i18nBundle) {
 
         Map<String, List<ApplicationOptionDTO>> amkOpeAttachments = getApplicationOptions(
           ApplicationUtil.getAmkOpeAttachments(application), koulutusinformaatioService, lang);
@@ -267,14 +275,14 @@ public class AttachmentUtil {
 
         Date deadline = deadlineCal.getTime();
 
-//        // Liite 1. Tutkinto, jolla haet: kopio tutkintotodistuksestasi ja tarvittaessa kopio rinnastamispäätöksestä
-//        attachments.put("tutkintotodistus", aoIds);
-//        // Liite: Rinnastuspäätös tutkinnosta, joka on suoritettu muualla kuin Suomessa
-//        attachments.put("rinnastuspaatos", aoIds);
-//        // Liite 2. Oppilaitoksen/työnantajan lausunto, https://opintopolku.fi/wp/wp-content/uploads/2014/12/2015_Oppilaitoksen_lausunto.pdf (laita linkki aukeamaan uuteen ikkunaan)
-//        attachments.put("tyonantajanLausunto", aoIds);
-//        // Liite 3. Opettajan pedagogiset opinnot: kopio todistuksestasi
-//        attachments.put("pedagogisetOpinnot", aoIds);
+//      // Liite 1. Tutkinto, jolla haet: kopio tutkintotodistuksestasi ja tarvittaessa kopio rinnastamispäätöksestä
+//      attachments.put("tutkintotodistus", aoIds);
+//      // Liite: Rinnastuspäätös tutkinnosta, joka on suoritettu muualla kuin Suomessa
+//      attachments.put("rinnastuspaatos", aoIds);
+//      // Liite 2. Oppilaitoksen/työnantajan lausunto, https://opintopolku.fi/wp/wp-content/uploads/2014/12/2015_Oppilaitoksen_lausunto.pdf (laita linkki aukeamaan uuteen ikkunaan)
+//      attachments.put("tyonantajanLausunto", aoIds);
+//      // Liite 3. Opettajan pedagogiset opinnot: kopio todistuksestasi
+//      attachments.put("pedagogisetOpinnot", aoIds);
 
         for (Map.Entry<String, List<ApplicationOptionDTO>> entry : amkOpeAttachments.entrySet()) {
             String attachmentType = entry.getKey();
@@ -296,9 +304,9 @@ public class AttachmentUtil {
                     .setPreferenceAoGroupId(null)
                     .setApplicationAttachment(
                       ApplicationAttachmentBuilder.start()
-                        .setName(ElementUtil.createI18NAsIs(
-                          StringUtil.safeToString(aoDTO.getProvider().getName())))
-                        .setDescription(ElementUtil.createI18NText("form.valmis.amkope." + attachmentType))
+                        .setName(
+                          ElementUtil.createI18NAsIs(StringUtil.safeToString(aoDTO.getProvider().getName())))
+                        .setDescription(i18nBundle.get("form.valmis.amkope." + attachmentType))
                         .setDeadline(deadline)
                         .setAddress(AddressBuilder.start()
                           .setRecipient(name)
@@ -316,9 +324,9 @@ public class AttachmentUtil {
     }
 
     private static Map<String, List<ApplicationOptionDTO>> getApplicationOptions(
-      Map<String, List<String>> higherEdAttachmentAOIds,
-      KoulutusinformaatioService koulutusinformaatioService,
-      String lang) {
+      final Map<String, List<String>> higherEdAttachmentAOIds,
+      final KoulutusinformaatioService koulutusinformaatioService,
+      final String lang) {
         Map<String, List<ApplicationOptionDTO>> applicationOptions = new HashMap<String, List<ApplicationOptionDTO>>();
         new HashMap<String, List<ApplicationOptionDTO>>();
         for (Map.Entry<String, List<String>> entry : higherEdAttachmentAOIds.entrySet()) {
