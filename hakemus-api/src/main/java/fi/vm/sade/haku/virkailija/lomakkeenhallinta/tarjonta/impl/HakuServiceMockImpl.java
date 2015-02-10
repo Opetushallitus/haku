@@ -61,6 +61,7 @@ public class HakuServiceMockImpl implements HakuService {
                 .setHakutapa(HAKUTAPA_YHTEISHAKU)
                 .setMaxApplicationOptions(5)
                 .setHakukausiVuosi(2014)
+                .setUsePriorities(true)
                 .setKohdejoukkoUri(KOHDEJOUKKO_AMMATILLINEN_JA_LUKIO)
                 .setState("JULKAISTU")
                 .get());

@@ -1,9 +1,5 @@
 function ToinenAsteLomakeHenkilotietoPage() {
 
-    var lomakePage = openPage("/haku-app/lomakkeenhallinta/1.2.246.562.5.50476818906", function() {
-                        return S("form#form-henkilotiedot").first().is(':visible')
-                       });
-
 
     var pageFunctions = {
 
@@ -34,10 +30,14 @@ function ToinenAsteLomakeHenkilotietoPage() {
         },
 
         start: function() {
-            openPage("/haku-app/user/logout", function() {
-                return S("body").is(":visible");
+            return openPage("/haku-app/user/logout", function() {
+                return S("ul").is(":visible");
+            })().then(function() {
+                return openPage("/haku-app/lomakkeenhallinta/1.2.246.562.5.50476818906", function() {
+                    return S("form#form-henkilotiedot").first().is(':visible')
+                })()
+//                .then(wait.until(pageFunctions.sukunimi().is(":visible")));
             });
-            return lomakePage().then(wait.until(pageFunctions.sukunimi().is(":visible")));
         }
     };
 

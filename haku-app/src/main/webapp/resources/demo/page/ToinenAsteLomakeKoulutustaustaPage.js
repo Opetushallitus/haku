@@ -3,7 +3,8 @@ function ToinenAsteLomakeKoulutustaustaPage() {
     var pageFunctions = {
 
         pohjakoulutus : function(koulutus) {
-            S("input#POHJAKOULUTUS[value="+koulutus+"]").prop("checked", true);
+//            S("input#POHJAKOULUTUS[value="+koulutus+"]").prop("checked", true);
+            S("input#POHJAKOULUTUS[value="+koulutus+"]").click();
         },
         pkPaattotodistusVuosi : function() {
             return S("input#PK_PAATTOTODISTUSVUOSI");

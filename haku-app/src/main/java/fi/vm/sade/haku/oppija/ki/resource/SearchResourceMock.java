@@ -72,6 +72,7 @@ public class SearchResourceMock {
                     "\"Käsi- ja taideteollisuusalan perustutkinto, Tuotteen suunnittelun ja valmistuksen koulutusohjelma\"," +
                     "\"Käsi- ja taideteollisuusalan perustutkinto, Ympäristön suunnittelun ja rakentamisen koulutusohjelma" +
                     "\"]}," +
+
                     "{\"id\":\"1.2.246.562.14.79893512065\"," +
                     "\"name\":\"Kaivosalan perustutkinto, pk\"," +
                     "\"aoIdentifier\":\"333\"," +

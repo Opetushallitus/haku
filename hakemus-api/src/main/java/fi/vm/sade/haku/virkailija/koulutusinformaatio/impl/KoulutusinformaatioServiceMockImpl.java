@@ -24,6 +24,8 @@ public class KoulutusinformaatioServiceMockImpl implements
             return getAo2();
         } else if ("1.2.246.562.20.30500448839".equals(oid)) {
             return getAo3();
+        } else if ("1.2.246.562.14.673437691210".equals(oid)) {
+            return getAo4();
         }
 
 		ApplicationOptionDTO applicationOption = new ApplicationOptionDTO();
@@ -107,6 +109,25 @@ public class KoulutusinformaatioServiceMockImpl implements
             setProvider(new LearningOpportunityProviderDTO() {{
                 setId("1.2.246.562.10.35241670047");
                 setName("Anna Tapion koulu");
+            }});
+            setSora(false);
+        }};
+    }
+
+
+    private ApplicationOptionDTO getAo4() {
+        return new ApplicationOptionDTO() {{
+            setId("1.2.246.562.14.673437691210");
+            setName("Talonrakennus ja ymäristösuunnittelu, yo");
+            setEducationDegree("32");
+            setTeachingLanguages(new ArrayList<String>(1) {{
+                add("FI");
+            }});
+            setSora(true);
+            setVocational(true);
+            setProvider(new LearningOpportunityProviderDTO() {{
+                setId("1.2.246.562.10.89537774706");
+                setName("FAKTIA, Espoo op");
             }});
             setSora(false);
         }};

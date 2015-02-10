@@ -31,7 +31,7 @@
         <virkailija:EditButton url="${editUrl}" application="${application}"/>
     </c:if>
 
-    <table class="form-summary-table width-80">
+    <table class="form-summary-table width-80" id="${element.id}">
         <tbody>
         <haku:viewChilds element="${element}"/>
         </tbody>

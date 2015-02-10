@@ -264,7 +264,7 @@ var preferenceRow = {
                                        $educationDegreeEducationCode.val(selectedOption.data("educationcode")).change();
                                        preferenceRow.displayChildLONames(selectedId, $(this).data("childlonames"));
                                    };
-        $('button[name=phaseId]').click(selectChange);
+//        $('button[name=phaseId]').click(function() {throw new Error("foo")});
         $(".field-container-select select").change(selectChange);
     }
 };
