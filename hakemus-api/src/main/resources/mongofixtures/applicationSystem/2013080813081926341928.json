@@ -2204,7 +2204,7 @@
 ],"attributes":{"id":"lisatiedot","name":"lisatiedot"},"inline":false,"_class":"fi.vm.sade.haku.oppija.lomake.domain.elements.Phase"}
 ],"attributes":{"id":"1.2.246.562.5.2013080813081926341928","name":"1.2.246.562.5.2013080813081926341928"},"inline":false},"name":{"translations":{"fi":"Ammatillisen koulutuksen ja lukiokoulutuksen kevään 2013 yhteishaku","sv":"Gemensam ansökan till yrkes- och gymnasieutbildning våren 2013"}},"applicationPeriods":[
 {"start":{"$date":1372654831000},"end":{"$date":1375279200000}}
-],"applicationSystemType":"hakutyyppi_01","hakukausiVuosi":2014,"hakukausiUri":"kausi_k","kohdejoukkoUri":"haunkohdejoukko_11","applicationCompleteElements":[
+],"applicationSystemType":"hakutyyppi_01","hakutapa": "hakutapa_01","hakukausiVuosi":2014,"hakukausiUri":"kausi_k","kohdejoukkoUri":"haunkohdejoukko_11","applicationCompleteElements":[
 {"_id":"a9ebe8eeb-0f35-4075-b52f-d2f20eb7879a","expr":{"_class":"fi.vm.sade.haku.oppija.lomake.domain.rules.expression.Regexp","pattern":".*\\S.*","value":"Sähköposti"},"validators":[],"children":[
 {"_id":"emailP1","i18nText":{"translations":{"fi":"Sinulle  lähetetään vahvistus sähköpostiisi vuorokauden kuluessa, jos olet antanut sähköpostiosoitteesi hakemuksessasi:&nbsp;","sv":"En bekräftelse har skickats till din e-post, om du angett din e-postadress i ansökan:&nbsp;","en":"Sinulle  lähetetään vahvistus sähköpostiisi vuorokauden kuluessa, jos olet antanut sähköpostiosoitteesi hakemuksessasi:&nbsp;"}},"validators":[],"children":[
 {"_id":"Sähköposti","validators":[],"children":[],"attributes":{"id":"Sähköposti"},"inline":false,"_class":"fi.vm.sade.haku.oppija.lomake.domain.elements.custom.Answer"}

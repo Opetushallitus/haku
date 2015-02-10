@@ -1678,7 +1678,7 @@
 ],"attributes":{"id":"lisatiedot","name":"lisatiedot"},"inline":false,"_class":"fi.vm.sade.haku.oppija.lomake.domain.elements.Phase"}
 ],"attributes":{"id":"1.2.246.562.5.2014020613412490531399","name":"1.2.246.562.5.2014020613412490531399"},"inline":false},"name":{"translations":{"fi":"Lisähaku kevään 2014 yhteishaussa vapaaksi jääneille paikoille","sv":"Lisähaku kevään 2014 yhteishaussa vapaaksi jääneille paikoille samma på svenska","en":"same in English"}},"applicationPeriods":[
 {"start":{"$date":1404190831839},"end":{"$date":4131320431839}}
-],"applicationSystemType":"hakutyyppi_03","hakukausiVuosi":2014,"hakukausiUri":"kausi_k","kohdejoukkoUri":"haunkohdejoukko_11","applicationCompleteElements":[
+],"applicationSystemType":"hakutyyppi_03","hakutapa": "hakutapa_01","hakukausiVuosi":2014,"hakukausiUri":"kausi_k","kohdejoukkoUri":"haunkohdejoukko_11","applicationCompleteElements":[
 {"_id":"a2f3348f9-960f-45dc-a6d7-73a9be433a17","expr":{"_class":"fi.vm.sade.haku.oppija.lomake.domain.rules.expression.Regexp","pattern":".*\\S.*","value":"Sähköposti"},"validators":[],"children":[
 {"_id":"emailP1","i18nText":{"translations":{"fi":"Sinulle  lähetetään vahvistus sähköpostiisi vuorokauden kuluessa, jos olet antanut sähköpostiosoitteesi hakemuksessasi:&nbsp;","sv":"Om du har angett din e-postadress i din ansökan skickas en bekräftelse till den inom ett dygn,:&nbsp;","en":"Sinulle  lähetetään vahvistus sähköpostiisi vuorokauden kuluessa, jos olet antanut sähköpostiosoitteesi hakemuksessasi:&nbsp;"}},"validators":[],"children":[
 {"_id":"Sähköposti","validators":[],"children":[],"attributes":{"id":"Sähköposti"},"inline":false,"_class":"fi.vm.sade.haku.oppija.lomake.domain.elements.custom.Answer"}

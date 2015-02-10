@@ -1640,7 +1640,7 @@
 ],"attributes":{},"inline":false,"_class":"fi.vm.sade.haku.oppija.lomake.domain.elements.Phase"}
 ],"attributes":{},"inline":false},"name":{"translations":{"fi":"Korkeakoulujen yhteishaku syksy 2014","sv":"Högskolornas gemensamma ansökan hösten 2014","en":"Joint application to higher education autumn 2014"}},"applicationPeriods":[
 {"start":{"$date":1404190831839},"end":{"$date":4131320431839}}
-],"applicationSystemType":"hakutyyppi_01","hakukausiVuosi":2014,"hakukausiUri":"kausi_s","kohdejoukkoUri":"haunkohdejoukko_12","applicationCompleteElements":[
+],"applicationSystemType":"hakutyyppi_01","hakutapa": "hakutapa_01","hakukausiVuosi":2014,"hakukausiUri":"kausi_s","kohdejoukkoUri":"haunkohdejoukko_12","applicationCompleteElements":[
 {"_id":"a9a30db53-d094-433b-8bf3-429e90088ef0","expr":{"_class":"fi.vm.sade.haku.oppija.lomake.domain.rules.expression.Regexp","pattern":".*\\S.*","value":"Sähköposti"},"validators":[],"children":[
 {"_id":"emailP1","i18nText":{"translations":{"fi":"Sinulle  lähetetään vahvistus sähköpostiisi vuorokauden kuluessa, jos olet antanut sähköpostiosoitteesi hakemuksessasi:&nbsp;","sv":"En bekräftelse har skickats till din e-post, om du angett din e-postadress i ansökan:&nbsp;","en":"You will receive a confirmation e-mail within 24 hours if you have given your e-mail address on the application form:&nbsp;"}},"validators":[],"children":[
 {"_id":"Sähköposti","validators":[],"children":[],"attributes":{},"inline":false,"_class":"fi.vm.sade.haku.oppija.lomake.domain.elements.custom.Answer"}
