@@ -148,6 +148,6 @@ public abstract class AbstractSeleniumBase extends TomcatContainerBase {
     }
 
     protected void clickLinkByText(final String text) {
-        seleniumContainer.getDriver().findElement(By.linkText(text)).click();
+        findByAndAjaxClick(By.linkText(text));
     }
 }
