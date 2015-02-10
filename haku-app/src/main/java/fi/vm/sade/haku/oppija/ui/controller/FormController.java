@@ -40,6 +40,7 @@ import javax.ws.rs.core.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.List;
 import java.util.Locale;
 
 import static fi.vm.sade.haku.oppija.ui.common.MultivaluedMapUtil.toSingleValueMap;
@@ -170,6 +171,20 @@ public class FormController {
         ModelResponse modelResponse = uiService.updateRules(applicationSystemId, phaseId, elementId, toSingleValueMap(multiValues));
         return new Viewable(ROOT_VIEW, modelResponse.getModel());
     }
+
+    @POST
+    @Path("/{applicationSystemId}/{phaseId}/rules")
+    @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED + CHARSET_UTF_8)
+    public Viewable updateRulesMulti(@PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId,
+                                @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
+                                final MultivaluedMap<String, String> multiValues) {
+        LOGGER.debug("updateRulesMulti {}, {}, {}", applicationSystemId, phaseId);
+        List<String> ruleIds = multiValues.get("ruleIds[]");
+        ModelResponse modelResponse = uiService.updateRulesMulti(applicationSystemId, phaseId, ruleIds, toSingleValueMap(multiValues));
+        return new Viewable("/elements/JsonElementList.jsp", modelResponse.getModel());
+    }
+
 
     @POST
     @Path("/{applicationSystemId}/esikatselu")

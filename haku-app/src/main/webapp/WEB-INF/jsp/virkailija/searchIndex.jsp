@@ -33,8 +33,9 @@
     <script src="${contextPath}/resources/jquery/jquery.cookie.js" type="text/javascript"></script>
     <script src="${contextPath}/resources/jquery/jquery.hotkeys.js" type="text/javascript"></script>
     <script src="${contextPath}/resources/javascript/spin.min.js" type="text/javascript"></script>
-    <script src="${contextPath}/resources/javascript/underscore.js" type="text/javascript"></script>
+    <script src="${contextPath}/resources/javascript/underscore-min.js" type="text/javascript"></script>
     <script src="${contextPath}/resources/javascript/virkailija.js" type="text/javascript"></script>
+    <script src="${contextPath}/resources/javascript/bacon.min.js" type="text/javascript"></script>
     <script src="${contextPath}/resources/javascript/master.js" type="text/javascript"></script>
     <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
     <script src="${contextPath}/resources/javascript/bootstrap-paginator.min.js"></script>

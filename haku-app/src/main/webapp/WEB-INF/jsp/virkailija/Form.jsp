@@ -43,6 +43,8 @@
     <script src="${contextPath}/resources/jquery/jquery.min.js" type="text/javascript"></script>
     <script src="${contextPath}/resources/jquery/jquery-ui-1.8.23.custom.min.js" type="text/javascript"></script>
     <script src="${contextPath}/resources/jquery/jquery.ui.datepicker-trans.js" type="text/javascript"></script>
+    <script src="${contextPath}/resources/javascript/underscore-min.js" type="text/javascript"></script>
+    <script src="${contextPath}/resources/javascript/bacon.min.js" type="text/javascript"></script>
     <script src="${contextPath}/resources/jquery/xdr.js"></script>
     <script src="${contextPath}/resources/javascript/rules.js" type="text/javascript"></script>
     <script src="${contextPath}/resources/javascript/master.js" type="text/javascript"></script>
@@ -51,7 +53,6 @@
     <script src="${contextPath}/resources/javascript/virkailija/application.js" type="text/javascript"></script>
     <script src="${contextPath}/resources/javascript/virkailija/tabs.js" type="text/javascript"></script>
     <script type="text/javascript" src="/virkailija-raamit/apply-raamit.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
     <title><fmt:message key="virkailija.otsikko"/></title>
 
     <haku:ie9StyleFix/>

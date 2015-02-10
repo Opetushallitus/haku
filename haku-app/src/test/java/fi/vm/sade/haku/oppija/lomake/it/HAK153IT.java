@@ -35,11 +35,11 @@ public class HAK153IT extends DummyModelBaseItTest {
         nextPhase(OppijaConstants.PHASE_APPLICATION_OPTIONS);
         typeWithoutTab("preference1-Opetuspiste", "Esp");
         clickLinkByText("FAKTIA, Espoo op");
-        seleniumContainer.getDriver().findElement(By.xpath("//*[@data-sora='true']")).click();
+        findByAndAjaxClick(By.xpath("//*[@data-sora='true']"));
         findByXPath("//a[@href='#' and @data-po-show='sora-popup' and @class='popup-link']");
-        seleniumContainer.getDriver().findElement(By.xpath("//*[@data-sora='false']")).click();
+        findByAndAjaxClick(By.xpath("//*[@data-sora='false']"));
         boolean soraNotFound = seleniumContainer.getDriver().findElements(By.xpath("//a[@href='#' and @data-po-show='sora-popup' and @class='popup-link']")).isEmpty();
-        seleniumContainer.getDriver().findElement(By.xpath("//*[@data-athlete='true']")).click();
+        findByAndAjaxClick(By.xpath("//*[@data-athlete='true']"));
         clickByNameAndValue("preference1_urheilijan_ammatillisen_koulutuksen_lisakysymys", "false");
         clickByNameAndValue("preference1_urheilijan_ammatillisen_koulutuksen_lisakysymys", "true");
         assertTrue(soraNotFound);

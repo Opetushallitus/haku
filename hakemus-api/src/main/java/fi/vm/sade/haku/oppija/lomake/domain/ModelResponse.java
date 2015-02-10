@@ -67,6 +67,18 @@ public class ModelResponse {
 
     }
 
+    public ModelResponse(final Application application,
+                         final Form form,
+                         final List<Element> elements,
+                         final ValidationResult validationResult,
+                         final String koulutusinformaatioBaseUrl) {
+        this(application, form);
+        setErrorMessages(validationResult.getErrorMessages());
+        setKoulutusinformaatioBaseUrl(koulutusinformaatioBaseUrl);
+        this.addObjectToModel("elements", elements);
+    }
+
+
     public ModelResponse(final ApplicationSystem applicationSystem) {
         setForm(applicationSystem.getForm());
         setApplicationSystemId(applicationSystem.getId());

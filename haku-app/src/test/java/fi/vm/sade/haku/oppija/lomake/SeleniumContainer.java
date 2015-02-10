@@ -15,8 +15,12 @@
  */
 package fi.vm.sade.haku.oppija.lomake;
 
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxProfile;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
@@ -59,4 +63,17 @@ public class SeleniumContainer {
         return webDriverBaseUrl;
     }
 
+    public void waitForAjax() {
+        // explicit sleep is needed because bacon is grouping the request in 100ms intervals!
+        try {
+            Thread.sleep(101);
+        } catch (InterruptedException e) { }
+
+        (new WebDriverWait(webDriver, 5)).until(new ExpectedCondition<Boolean>() {
+            public Boolean apply(WebDriver d) {
+                JavascriptExecutor js = (JavascriptExecutor) d;
+                return (Boolean) js.executeScript("return jQuery.active == 0");
+            }
+        });
+    }
 }

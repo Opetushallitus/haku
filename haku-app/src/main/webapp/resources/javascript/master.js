@@ -176,9 +176,80 @@ $(document).ready(function () {
 });
 
 var complexRule = {
+    url: function() {
+        var split = document.URL.split("?");
+        var postUrl = split[0] + '/rules';
+        if (split.length > 1) {
+            postUrl = postUrl + "?" + split[1];
+        }
+        return postUrl;
+    },
+    doPost: function(arrayOfRequestsToSend) {
+        arrayOfRequestsToSend.map(function(request) {
+            complexRule.doOnePost(request)
+        })
+    },
+    doOnePost: function(mergedRequest) {
+        $.ajax({
+            type: 'POST',
+            url: complexRule.url(),
+            async: false,
+            data: mergedRequest,
+
+            success: complexRule.doPostResult,
+            error: function (e, ts, et) {
+                //console.log("refresh view error" + ts);
+            }
+        });
+    },
+    doPostResult: function(data, textStatus, jqXHR) {
+        var json = $.parseJSON(data);
+        json.map(function(rule) {
+            $("#" + rule.id).replaceWith(rule.html);
+        })
+    },
+    initBus: function() {
+        complexRule.bus = new Bacon.Bus();
+        complexRule.bus.bufferWithTime(100).onValue(function(arrayOfRuleIds) {
+            var arrayOfRequestsToSend = [];
+            var combinedRuleIds = [];
+            var previousForm;
+
+            if (arrayOfRuleIds) {
+                arrayOfRuleIds.map(function (ruleId) {
+                    var form = _.clone($("form.form").serializeArray());
+                    if (previousForm) {
+                        if (_.isEqual(previousForm, form)) {
+                            combinedRuleIds.push(ruleId);
+                        } else {
+                            arrayOfRequestsToSend.push(addCombinedRuleIdsToFrom(previousForm, combinedRuleIds));
+                            previousForm = form;
+                            combinedRuleIds = [ruleId];
+                        }
+                    } else {
+                        previousForm = form;
+                        combinedRuleIds = [ruleId];
+                    }
+                })
+                arrayOfRequestsToSend.push(addCombinedRuleIdsToFrom(previousForm, combinedRuleIds));
+                complexRule.doPost(arrayOfRequestsToSend);
+            }
+
+
+            function addCombinedRuleIdsToFrom(formToSend, combinedRuleIds) {
+                combinedRuleIds.map(function(ruleId) {
+                    formToSend.push( {
+                        name: 'ruleIds[]',
+                        value: ruleId
+                    })
+                })
+                return formToSend;
+            }
+        })
+    },
+
     init: function (ruleData) {
         for (index in ruleData.variables) {
-
             var question = $("[name=\"" + ruleData.variables[index] + "\"]");
             if (question.length) {
                 var events = $._data(question[0], "events");
@@ -200,24 +271,7 @@ var complexRule = {
     },
 
     refreshView: function (event) {
-        var ruleData = event.data;
-        var split = document.URL.split("?");
-        var url = split[0] + '/' + ruleData.ruleId;
-        if (split.length > 1) {
-            url = url + "?" + split[1];
-        }
-        $.ajax({
-            type: 'POST',
-            url: url,
-            async: false,
-            data: $("form.form").serialize(),
-
-            success: function (data, textStatus, jqXHR) {
-                $("#" + ruleData.ruleId).replaceWith(data);
-            },
-            error: function (e, ts, et) {
-                //console.log("refresh view error" + ts);
-            }
-        });
+        complexRule.bus.push(event.data.ruleId);
     }
 };
+complexRule.initBus()

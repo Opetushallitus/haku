@@ -18,6 +18,11 @@ public interface OfficerUIService {
                                         final String elementId,
                                         final boolean validate);
 
+    ModelResponse getApplicationMultiElement(final String oid,
+                                        final String phaseId,
+                                        final List<String> elementIds,
+                                        final boolean validate);
+
     ModelResponse getValidatedApplication(final String oid, final String phaseId) throws IOException;
 
     ModelResponse getAdditionalInfo(final String oid);
