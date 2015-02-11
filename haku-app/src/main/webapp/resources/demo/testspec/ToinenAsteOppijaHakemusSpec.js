@@ -1,6 +1,6 @@
 (function () {
 
-    describe('2. asteen hakemus', function () {
+    describe('2. asteen lomake', function () {
         var henkilotietoPage = ToinenAsteLomakeHenkilotietoPage();
         var koulutustaustaPage = ToinenAsteLomakeKoulutustaustaPage();
         var hakutoiveetPage = ToinenAsteLomakeHakutoiveetPage();
@@ -45,7 +45,7 @@
             return Q.fcall(headingVisible("Hakutoiveet"));
         };
 
-        describe("Täytä henkilötiedot", function(done) {
+        describe("Täytä lomake", function(done) {
             before(function(done) {
                 henkilotietoPage.start()
                     .then(visible(henkilotietoPage.sukunimi))
@@ -55,6 +55,10 @@
                         input(henkilotietoPage.kutsumanimi, "Asia");
                         henkilotietoPage.kaksoiskansalaisuus(false);
                         input(henkilotietoPage.hetu, "171175-830Y");
+                    })
+                    .then(wait.until(function() {return S("input#sukupuoli").length > 0;}))
+                    .then(function() {
+                        expect(henkilotietoPage.sukupuoli().val()).to.equal('2');
                         input(henkilotietoPage.lahiosoite, "Testikatu 4");
                         input(henkilotietoPage.postinumero, "00100");
                         input(henkilotietoPage.kotikunta, "janakkala");
@@ -104,7 +108,7 @@
                     .then(done, done);
              });
 
-            it('mahdollistaa henkilötietovaiheen täyttämisen', function (done) {
+            it('Täytä hakemus alusta loppuun', function (done) {
                 var expected = {
                     "Sukunimi": "Testikäs",
                     "Etunimet": "Asia Kas",
@@ -112,7 +116,7 @@
                     "Kansalaisuus": "Suomi",
                     "Onko sinulla kaksoiskansalaisuutta?": "Ei",
                     "Henkilötunnus": "171175-830Y",
-                    "Sukupuoli": "",
+                    "Sukupuoli": "Nainen",
                     "Sähköpostiosoite": "",
                     "Matkapuhelinnumero": "",
                     "Asuinmaa": "Suomi",

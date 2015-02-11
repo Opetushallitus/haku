@@ -19,6 +19,12 @@ function ToinenAsteLomakeHenkilotietoPage() {
         hetu : function() {
             return S("input#Henkilotunnus");
         },
+        sukupuoli : function() {
+            return S("input#sukupuoli");
+        },
+        sukupuoliLabel : function() {
+            return S("span#sex");
+        },
         lahiosoite : function() {
             return S("input#lahiosoite");
         },
@@ -36,7 +42,6 @@ function ToinenAsteLomakeHenkilotietoPage() {
                 return openPage("/haku-app/lomakkeenhallinta/1.2.246.562.5.50476818906", function() {
                     return S("form#form-henkilotiedot").first().is(':visible')
                 })()
-//                .then(wait.until(pageFunctions.sukunimi().is(":visible")));
             });
         }
     };
