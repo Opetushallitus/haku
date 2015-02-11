@@ -34,7 +34,6 @@ import fi.vm.sade.haku.oppija.lomake.validation.validators.SsnAndPreferenceUniqu
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.domain.Code;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.service.GroupRestrictionConfigurator;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.service.ThemeQuestionConfigurator;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ExprUtil;
@@ -46,15 +45,15 @@ import static fi.vm.sade.haku.oppija.lomake.domain.builder.NotificationBuilder.W
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.PhaseBuilder.Phase;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.RelatedQuestionRuleBuilder.Rule;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.ThemeBuilder.Theme;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.service.ThemeQuestionConfigurator.ConfiguratorFilter;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.*;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.*;
-import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.service.ThemeQuestionConfigurator.ConfiguratorFilter;
 
 public class HakutoiveetPhase {
     public static final String LISAOPETUS_EDUCATION_DEGREE = "22";
     private static final String DISCRETIONARY_EDUCATION_DEGREE = "32";
     private static final String HAKUTOIVEET_PHASE_ID = "hakutoiveet";
-    private static final String HAKUTOIVEET_THEME_ID = "hakutoiveet.teema";
+    private static final String HAKUTOIVEET_THEME_ID = "hakutoiveet_teema";
     private static final String TODISTUSTENPUUTTUMINEN = "todistustenpuuttuminen";
 
     public static Element create(final FormParameters formParameters) {

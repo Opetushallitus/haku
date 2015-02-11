@@ -54,20 +54,20 @@ public final class KoulutustaustaPhase {
         if (as.getKohdejoukkoUri().equals(OppijaConstants.KOHDEJOUKKO_KORKEAKOULU)){
             if (formParameters.isAmmattillinenEritysopettajaTaiOppilaanohjaajaKoulutus()
                     || formParameters.isAmmattillinenOpettajaKoulutus()) {
-                Element koulutustaustaRyhma = new ThemeBuilder("koulutustausta.teema_kk").previewable().formParams(formParameters).build();
+                Element koulutustaustaRyhma = new ThemeBuilder("koulutustausta_teema_kk").previewable().formParams(formParameters).build();
                 if (!formParameters.isOnlyThemeGenerationForFormEditor()) {
                     koulutustaustaRyhma.addChild(createOpetErkatJaOpotKoulutustausta(formParameters));
                     koulutustausta.addChild(koulutustaustaRyhma);
                 }
             } else {
-                Element koulutustaustaRyhma = new ThemeBuilder("koulutustausta.teema_kk").previewable().formParams(formParameters).build();
+                Element koulutustaustaRyhma = new ThemeBuilder("koulutustausta_teema_kk").previewable().formParams(formParameters).build();
                 if (!formParameters.isOnlyThemeGenerationForFormEditor()) {
                     koulutustaustaRyhma.addChild(createKorkeakouluKoulutustausta(formParameters));
                     koulutustausta.addChild(koulutustaustaRyhma);
                 }
             }
         } else {
-            Element koulutustaustaRyhma = new ThemeBuilder("koulutustausta.teema").previewable().formParams(formParameters).build();
+            Element koulutustaustaRyhma = new ThemeBuilder("koulutustausta_teema").previewable().formParams(formParameters).build();
             if (!formParameters.isOnlyThemeGenerationForFormEditor()) {
                 koulutustaustaRyhma.addChild(createKoulutustaustaRadio(formParameters));
                 koulutustausta.addChild(koulutustaustaRyhma);

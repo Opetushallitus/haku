@@ -56,7 +56,7 @@ public class FormEditorController {
 
     private static final Map<String, Object> hakutoiveTheme =
             new ImmutableMap.Builder<String,Object>()
-                    .put("id", "hakutoiveet.teema")
+                    .put("id", "hakutoiveet_teema")
                     .put("name", new I18nText(ImmutableMap.of("fi", "Hakutoiveet", "sv", "Ansökningsönskemål")))
                     .build();
 

@@ -138,7 +138,7 @@
 //            });
 //
 //            it ('mahdollistaa koulutustausta täyttämisen', function(done) {
-//                expect(S("fieldset#koulutustausta.teema h3").first().html()).to.equal("Koulutustausta");
+//                expect(S("fieldset#koulutustausta_teema h3").first().html()).to.equal("Koulutustausta");
 //            });
 //        });
 
