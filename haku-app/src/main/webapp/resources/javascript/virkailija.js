@@ -57,8 +57,26 @@ $(document).ready(function () {
                     var ass = [];
                     $('#application-system option').remove();
                     $('#application-system').append('<option value="">&nbsp;</option>');
-                    for (var i in data) {
-                        var as = data[i];
+                    
+                    var sorted = _.sortBy(data, function(as){
+                    	var name = as['name_' + page_settings.lang];
+	                	if (!name) {
+                            if (as['name_fi']) {
+                                name = as['name_fi'];
+                            } else if (as['name_sv']) {
+                                name = as['name_sv'];
+                            } else if (as['name_en']) {
+                                name = as['name_en'];
+                            } else {
+                                name = '???';
+                            }
+                        }
+                        return name;
+
+                    });
+                    
+                    for (var i in sorted) {
+                        var as = sorted[i];
                         var year = as.hakukausiVuosi;
                         var semester = as.hakukausiUri;
                         var kohdejoukko = as.kohdejoukko;
