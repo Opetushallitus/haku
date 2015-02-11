@@ -11,7 +11,6 @@ import static org.junit.Assert.assertEquals;
 
 public class ExprTest {
 
-    public static final String VALUE = "value";
     private Expr expr;
 
     @Before
@@ -31,11 +30,11 @@ public class ExprTest {
 
     @Test
     public void testGetValueContext() {
-        assertEquals(VALUE, expr.getValue(null));
+        assertEquals(null, expr.getValue(null));
     }
 
     @Test
     public void testGetValue() {
-        assertEquals(VALUE, expr.getValue());
+        assertEquals(null, expr.getValue());
     }
 }

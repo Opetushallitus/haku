@@ -3,6 +3,7 @@ package fi.vm.sade.haku.virkailija.lomakkeenhallinta.util;
 import com.google.common.base.Preconditions;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public final class ExprUtil {
@@ -15,65 +16,38 @@ public final class ExprUtil {
     }
 
     public static Expr atLeastOneVariableEqualsToValue(final String value, final String... ids) {
-        Expr current = null;
-        Expr equal;
+        List<Expr> exprs = new ArrayList<>();
         for (String id : ids) {
-            equal = new Equals(new Variable(id), new Value(value));
-            if (null == current) {
-                current = equal;
-            } else {
-                current = new Or(current, equal);
-            }
+            Equals equal = new Equals(new Variable(id), new Value(value));
+            exprs.add(equal);
         }
-        return current;
+        return reduceToOr(exprs);
     }
 
     public static Expr atLeastOneVariableContainsValue(final String value, final String... ids) {
-        Expr current = null;
-        Expr rexExp;
+        List<Expr> exprs = new ArrayList<>();
         for (String id : ids) {
-            rexExp = new Regexp(id, "(?:.*\\s*,\\s*|\\s*)" + value + "(?:,.*|\\s*|\\s+.*)");
-            if (current == null) {
-                current = rexExp;
-            } else {
-                current = new Or(current, rexExp);
-            }
+            Regexp rexExp = new Regexp(id, "(?:.*\\s*,\\s*|\\s*)" + value + "(?:,.*|\\s*|\\s+.*)");
+            exprs.add(rexExp);
         }
-        return current;
+        return reduceToOr(exprs);
     }
 
     public static Expr atLeastOneValueEqualsToVariable(final String variable, final String... values) {
-        if (values.length == 1) {
-            return new Equals(new Value(values[0]), new Variable(variable));
-        } else {
-            Expr current = null;
-            Expr equal;
-            for (String value : values) {
-                equal = new Equals(new Variable(variable), new Value(value));
-                if (current == null) {
-                    current = equal;
-                } else {
-                    current = new Or(current, equal);
-                }
-            }
-            return current;
+        List<Expr> exprs = new ArrayList<>();
+        for (String value : values) {
+            Equals equal = new Equals(new Variable(variable), new Value(value));
+            exprs.add(equal);
         }
+        return reduceToOr(exprs);
     }
 
-    public static Expr reduceToOr(final List<Expr> exprs) {
+    public static Expr reduceToOr(final List<? extends Expr> exprs) {
         Preconditions.checkArgument(!exprs.isEmpty());
         if (exprs.size() == 1) {
             return exprs.get(0);
         } else {
-            Expr result = null;
-            for (Expr expr : exprs) {
-                if (result == null) {
-                    result = expr;
-                } else {
-                    result = new Or(result, expr);
-                }
-            }
-            return result;
+            return new Any(exprs);
         }
     }
 
