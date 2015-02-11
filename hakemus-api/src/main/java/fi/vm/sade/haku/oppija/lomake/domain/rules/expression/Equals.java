@@ -4,10 +4,10 @@ import com.google.common.base.Preconditions;
 
 import java.util.Map;
 
-public class Equals extends Expr {
+public class Equals extends BinaryExpr {
 
     public Equals(final Expr left, final Expr right) {
-        super(left, right, null);
+        super(left, right);
         Preconditions.checkNotNull(left);
         Preconditions.checkNotNull(right);
     }

@@ -3,6 +3,8 @@ package fi.vm.sade.haku.oppija.lomake.domain.rules.expression;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
@@ -14,10 +16,15 @@ public class ExprTest {
 
     @Before
     public void setUp() throws Exception {
-        this.expr = new Expr(null, null, VALUE) {
+        this.expr = new Expr() {
             @Override
             public boolean evaluate(Map<String, String> context) {
                 return false;
+            }
+
+            @Override
+            public List<Expr> children() {
+                return Collections.EMPTY_LIST;
             }
         };
     }

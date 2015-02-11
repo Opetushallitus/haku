@@ -7,7 +7,6 @@ import java.util.Map;
 import static com.google.common.base.Strings.nullToEmpty;
 
 public class Regexp extends Variable {
-
     private final String pattern;
 
     public Regexp(final String value, final String pattern) {
@@ -20,6 +19,5 @@ public class Regexp extends Variable {
     public boolean evaluate(Map<String, String> context) {
         return nullToEmpty(getValue(context)).matches(pattern);
     }
-
 }
 

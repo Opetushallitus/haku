@@ -68,8 +68,9 @@ public class RelatedQuestionRule extends Element {
         if (expr instanceof Variable) {
             variableIds.add(expr.getValue());
         }
-        variableIds.addAll(getVariables(expr.getLeft()));
-        variableIds.addAll(getVariables(expr.getRight()));
+        for (Expr child: expr.children()) {
+            variableIds.addAll(getVariables(child));
+        }
         return variableIds;
 
     }

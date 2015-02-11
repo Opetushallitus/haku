@@ -4,12 +4,11 @@ import com.google.common.base.Preconditions;
 
 import java.util.Map;
 
-public class Or extends Expr {
+public class Or extends BinaryExpr {
     public Or(final Expr left, final Expr right) {
-        super(left, right, null);
+        super(left, right);
         Preconditions.checkNotNull(left);
         Preconditions.checkNotNull(right);
-
     }
 
     @Override

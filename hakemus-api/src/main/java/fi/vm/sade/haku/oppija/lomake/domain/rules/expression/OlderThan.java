@@ -6,16 +6,26 @@ import org.joda.time.LocalDate;
 import org.joda.time.Years;
 import org.joda.time.format.DateTimeFormat;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 import static fi.vm.sade.haku.oppija.lomake.domain.rules.RegexRule.getDateOfBirth;
 
 public class OlderThan extends Expr {
+    private final Expr left;
 
     public OlderThan(final Expr left) {
-        super(left, null, null);
+        this.left = left;
         Preconditions.checkNotNull(left);
     }
+
+    @Override
+    public List<Expr> children() {
+        return Arrays.asList(left);
+    }
+
 
     @Override
     public boolean evaluate(final Map<String, String> context) {
@@ -24,7 +34,7 @@ public class OlderThan extends Expr {
             return false;
         } else {
             DateTime dateTime = DateTime.parse(dateOfBirth, DateTimeFormat.forPattern("dd.MM.yyyy"));
-            return Integer.parseInt(getLeft().getValue(context)) <= Years.yearsBetween(new LocalDate(dateTime), new LocalDate()).getYears();
+            return Integer.parseInt(left.getValue(context)) <= Years.yearsBetween(new LocalDate(dateTime), new LocalDate()).getYears();
         }
 
     }

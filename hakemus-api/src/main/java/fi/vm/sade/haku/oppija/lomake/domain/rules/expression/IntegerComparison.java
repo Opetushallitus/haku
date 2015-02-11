@@ -4,10 +4,10 @@ import com.google.common.base.Preconditions;
 
 import java.util.Map;
 
-public abstract class IntegerComparison extends Expr {
+public abstract class IntegerComparison extends BinaryExpr {
 
     public IntegerComparison(final Variable left, final Value right) {
-        super(left, right, null);
+        super(left, right);
         Preconditions.checkNotNull(left);
         Preconditions.checkNotNull(right);
         Integer.parseInt(right.getValue());
