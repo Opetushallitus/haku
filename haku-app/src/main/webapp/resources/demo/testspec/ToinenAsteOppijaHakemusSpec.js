@@ -8,65 +8,123 @@
         var lisatietoPage = ToinenAsteLomakeLisatietoPage();
         var esikatseluPage = ToinenAsteLomakeEsikatseluPage();
 
-        var fillHenkilotiedot = function() {
-            henkilotietoPage.sukunimi().val("Testikäs");
-            henkilotietoPage.sukunimi().blur();
-            henkilotietoPage.etunimet().val("Asia Kas");
-            henkilotietoPage.etunimet().blur();
-            henkilotietoPage.kutsumanimi().val("Asia");
-            henkilotietoPage.kutsumanimi().blur();
-            henkilotietoPage.kaksoiskansalaisuus(false);
-            henkilotietoPage.hetu().val("171175-830Y");
-            henkilotietoPage.hetu().change();
-            henkilotietoPage.lahiosoite().val("Testikatu 4");
-            henkilotietoPage.lahiosoite().blur();
-            henkilotietoPage.postinumero().val("00100");
-            henkilotietoPage.postinumero().blur();
-            henkilotietoPage.kotikunta().val("janakkala");
-            henkilotietoPage.kotikunta().blur();
-            return true;
-        };
-        var fillKoulutustausta = function() {
-            koulutustaustaPage.pkPaattotodistusVuosi().val("2014");
-            koulutustaustaPage.pkPaattotodistusVuosi().blur();
-            koulutustaustaPage.pkKieli().val("FI");
+        function input(fn, value) {
+            fn().val(value).change().blur();
         }
 
-        describe("Täytä henkilötiedot", function(done) {
+        function readTable($tableElement) {
+            return $tableElement.find('tr').toArray().reduce(function(agg, tr) {
+                var tds = tr.getElementsByTagName('td');
+                if (tds.length != 2) {
+                    throw new Error("Cannot read non-2-column table into map")
+                }
+                var key = tds[0].textContent.trim();
+                var value = tds[1].textContent.trim();
+                agg[key] = value;
+                return agg;
+            }, {});
+        }
 
+        function visible(fn) {
+            return wait.until(function() { return fn().is(':visible'); })
+        }
+
+        function headingVisible(heading) {
+            return visible(function() {
+                return S("legend[class=h3]:contains(" + heading + ")");
+            });
+        }
+
+        function fromHenkilotiedotToKoulutustausta() {
+            koulutustaustaPage.fromHenkilotiedot().click();
+            return Q.fcall(headingVisible("Koulutustausta"));
+        };
+
+        function fromKoulututustaustaToHakutoiveet() {
+            hakutoiveetPage.fromKoulutustausta().click();
+            return Q.fcall(headingVisible("Hakutoiveet"));
+        };
+
+        describe("Täytä henkilötiedot", function(done) {
             before(function(done) {
                 henkilotietoPage.start()
-                    .then(wait.until(function() { return henkilotietoPage.sukunimi().is(':visible'); }))
-                    .then(wait.until(fillHenkilotiedot))
-                    .then(function() { koulutustaustaPage.fromHenkilotiedot().click(); })
-                    .then(wait.until(function() { return S("legend[class=h3]:contains(Koulutustausta)").is(":visible"); }))
-                    .then(function() { koulutustaustaPage.pohjakoulutus("1"); })
-                    .then(wait.until(function() { return koulutustaustaPage.pkPaattotodistusVuosi().is(":visible") }))
-                    .then(fillKoulutustausta)
-                    .then(function() { hakutoiveetPage.fromKoulutustausta().click(); } )
-                    .then(wait.until(function() { return S("legend[class=h3]:contains(Hakutoiveet)").is(":visible"); }))
-                    .then(function () { hakutoiveetPage.opetuspiste1().val("Esp")})
-                    .then(function () { hakutoiveetPage.opetuspiste1().trigger("keydown")})
-                    .then(wait.until(function() { return hakutoiveetPage.faktia().is(":visible")}))
-                    .then(function() { return hakutoiveetPage.faktia().mouseover().click()})
-                    .then(wait.until( function() { return hakutoiveetPage.koulutus1().find('option').length > 1 }))
-                    .then(function() { return hakutoiveetPage.koulutus1().val("Talonrakennus ja ymäristösuunnittelu, yo").change() })
-                    .then(wait.until( function() { return hakutoiveetPage.harkinnanvaraisuus1(false).is(':visible') }))
-                    .then(function() { hakutoiveetPage.harkinnanvaraisuus1(false).click() })
-                    .then(function() { hakutoiveetPage.soraTerveys1(false).click() })
-                    .then(function() { hakutoiveetPage.soraOikeudenMenetys1(false).click() })
-                    .then(function() { osaaminenPage.fromHakutoiveet().click() })
-                    .then(wait.until(function() { return S("legend[class=h3]:contains(Arvosanat)").is(":visible"); }))
-                    .then(function() { lisatietoPage.fromOsaaminen().click() })
-                    .then(wait.until(function() { return S("legend[class=h3]:contains(Lupatiedot)").is(":visible"); }))
-                    .then(function() { lisatietoPage.asiointikieli("suomi")})
-                    .then(function() { esikatseluPage.fromLisatieto().click() })
-                    .then(wait.until(function() { return S("legend[class=h3]:contains(Henkilötiedot)").is(":visible"); }))
+                    .then(visible(henkilotietoPage.sukunimi))
+                    .then(function() {
+                        input(henkilotietoPage.sukunimi, "Testikäs");
+                        input(henkilotietoPage.etunimet, "Asia Kas");
+                        input(henkilotietoPage.kutsumanimi, "Asia");
+                        henkilotietoPage.kaksoiskansalaisuus(false);
+                        input(henkilotietoPage.hetu, "171175-830Y");
+                        input(henkilotietoPage.lahiosoite, "Testikatu 4");
+                        input(henkilotietoPage.postinumero, "00100");
+                        input(henkilotietoPage.kotikunta, "janakkala");
+                    })
+                    .then(fromHenkilotiedotToKoulutustausta)
+                    .then(function() {
+                        koulutustaustaPage.pohjakoulutus("1");
+                    })
+                    .then(visible(koulutustaustaPage.pkPaattotodistusVuosi))
+                    .then(function() {
+                        input(koulutustaustaPage.pkPaattotodistusVuosi, "2014");
+                        input(koulutustaustaPage.pkKieli, "FI");
+                    })
+                    .then(fromKoulututustaustaToHakutoiveet)
+                    .then(function () {
+                        return Q.fcall(function() {
+                            hakutoiveetPage.opetuspiste1().val("Esp");
+                            hakutoiveetPage.opetuspiste1().trigger("keydown");
+                        }).then(visible(hakutoiveetPage.faktia)).then(function() {
+                            return hakutoiveetPage.faktia().mouseover().click();
+                        }).then(wait.until(function() {
+                            return hakutoiveetPage.koulutus1().find('option').length > 1;
+                        }))
+                    })
+                    .then(function() {
+                        input(hakutoiveetPage.koulutus1, "Talonrakennus ja ymäristösuunnittelu, yo");
+                    })
+                    .then(visible(function() { return hakutoiveetPage.harkinnanvaraisuus1(false) }))
+                    .then(function() {
+                        hakutoiveetPage.harkinnanvaraisuus1(false).click();
+                        hakutoiveetPage.soraTerveys1(false).click();
+                        hakutoiveetPage.soraOikeudenMenetys1(false).click();
+                        hakutoiveetPage.soraTerveys1(false).click();
+                        hakutoiveetPage.soraOikeudenMenetys1(false).click();
+                        osaaminenPage.fromHakutoiveet().click();
+                    })
+                    .then(headingVisible("Arvosanat"))
+                    .then(function() {
+                        lisatietoPage.fromOsaaminen().click()
+                    })
+                    .then(headingVisible("Lupatiedot"))
+                    .then(function() {
+                        lisatietoPage.asiointikieli("suomi");
+                        esikatseluPage.fromLisatieto().click();
+                    })
+                    .then(headingVisible("Henkilötiedot"))
                     .then(done, done);
              });
 
             it('mahdollistaa henkilötietovaiheen täyttämisen', function (done) {
-                expect()
+                var expected = {
+                    "Sukunimi": "Testikäs",
+                    "Etunimet": "Asia Kas",
+                    "Kutsumanimi": "Asia",
+                    "Kansalaisuus": "Suomi",
+                    "Onko sinulla kaksoiskansalaisuutta?": "Ei",
+                    "Henkilötunnus": "171175-830Y",
+                    "Sukupuoli": "",
+                    "Sähköpostiosoite": "",
+                    "Matkapuhelinnumero": "",
+                    "Asuinmaa": "Suomi",
+                    "Lähiosoite": "Testikatu 4",
+                    "": "00100 Helsinki",
+                    "Kotikunta": "Janakkala",
+                    "Äidinkieli": "Suomi",
+                    "Huoltajan nimi (jos olet alle 18-vuotias)": "",
+                    "Huoltajan puhelinnumero (jos olet alle 18-vuotias)": "",
+                    "Huoltajan sähköpostiosoite (jos olet alle 18-vuotias)": ""
+                };
+                expect(readTable(S('table:first'))).to.deep.equal(expected);
                 done();
             });
         });
