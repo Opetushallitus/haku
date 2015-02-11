@@ -13,6 +13,8 @@ Make sure you have JDK7 on your JAVA_HOME and Java Cryptography Extensions (JCE)
 
 If the site fails to load due to "Input validation failure", make sure you don't have any unwanted cookies stored for localhost on your browser.
 
+Lomakkeet hakijalle: http://localhost:9090/haku-app/lomake/
+
 #### Integration tests
 
 Run all integration tests:
