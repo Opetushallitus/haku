@@ -7,10 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public final class ExprUtil {
-    //
-    // Refactor to use Operator factory or in the future high order function.
-    //
-
     public static Expr equals(final String variable, final String value) {
         return new Equals(new Variable(variable), new Value(value));
     }
