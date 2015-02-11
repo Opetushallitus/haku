@@ -65,12 +65,13 @@ public class HakuServiceImpl implements HakuService {
 
     @Override
     public List<ApplicationSystem> getApplicationSystems() {
-        ResultV1RDTO<List<String>> hakuOidResult = webResource.accept(MEDIA_TYPE)
-                .get(new GenericType<ResultV1RDTO<List<String>>>() { });
+        WebResource asListWebResource = webResource.path("find").queryParam("addHakuKohdes", "false");
+        ResultV1RDTO<List<HakuV1RDTO>> hakuResult = asListWebResource.accept(MEDIA_TYPE)
+                .get(new GenericType<ResultV1RDTO<List<HakuV1RDTO>>>() {
+                });
         List<HakuV1RDTO> hakuDTOs = Lists.newArrayList();
-        if (hakuOidResult != null && hakuOidResult.getResult() != null) {
-            for (String oid : hakuOidResult.getResult()) {
-                HakuV1RDTO haku = fetchApplicationSystem(oid);
+        if (hakuResult != null && hakuResult.getResult() != null) {
+            for (HakuV1RDTO haku : hakuResult.getResult()) {
                 if (haku.isJarjestelmanHakulomake()) {
                     hakuDTOs.add(haku);
                 }
