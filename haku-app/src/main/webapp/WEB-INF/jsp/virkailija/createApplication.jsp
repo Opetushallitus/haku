@@ -2,6 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="haku" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="f" uri="/WEB-INF/tld/functions.tld" %>
 
 <div class="popup-dialog-wrapper" id="createApplication" style="z-index:1000;display:none;">
     <span class="popup-dialog-close">&#8203;</span>
@@ -16,7 +17,7 @@
                 <div class="margin-top-2">
                     <label for="asSelect"><fmt:message key="virkailija.hakemus.syota.valitsehaku"/></label>
                     <select id="asSelect" name="asId">
-                        <c:forEach var="applicationSystem" items="${applicationSystems}">
+                        <c:forEach var="applicationSystem" items="${f:sortApplicationSystems(applicationSystems, requestScope['fi_vm_sade_oppija_language'])}">
                             <option value="${applicationSystem.id}"><haku:i18nText value="${applicationSystem.name}"/></option>
                         </c:forEach>
                     </select>

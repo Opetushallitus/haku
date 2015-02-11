@@ -37,4 +37,9 @@
         <function-class>fi.vm.sade.haku.oppija.lomake.util.StringUtil</function-class>
         <function-signature>java.lang.String parseOidSuffix(java.lang.String)</function-signature>
     </function>
+    <function>
+        <name>sortApplicationSystems</name>
+        <function-class>fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil</function-class>
+        <function-signature>java.util.List sortByLang(java.util.List,  java.lang.String)</function-signature>
+    </function>
 </taglib>
