@@ -50,6 +50,6 @@ then
 fi
 
 MAVEN_OPTS="$MAVEN_OPTS -Xmx4096M" \
-	JAVA_OPTS="$JAVA_OPTS -Xmx4096M -Dlog4j.configuration=file://haku-app/src/main/resources/log4j.properties -XX:+UseParNewGC -XX:+UseConcMarkSweepGC -XX:-UseParallelGC" \
+	JAVA_OPTS="$JAVA_OPTS -Xmx4096M -Dlog4j.configuration.file=./haku-app/src/test/resources/log4j.properties -XX:+UseParNewGC -XX:+UseConcMarkSweepGC -XX:-UseParallelGC" \
 	mvn tomcat7:run ${luokka} --projects haku-app -o -DskipTests=true -Dlog4j.debug
 
