@@ -36,9 +36,7 @@ function ToinenAsteLomakeHenkilotietoPage() {
         },
 
         start: function() {
-            return openPage("/haku-app/user/logout", function() {
-                return S("ul").is(":visible");
-            })().then(function() {
+            return logout().then(function() {
                 return openPage("/haku-app/lomakkeenhallinta/1.2.246.562.5.50476818906", function() {
                     return S("form#form-henkilotiedot").first().is(':visible')
                 })()

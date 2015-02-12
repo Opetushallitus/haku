@@ -200,6 +200,12 @@ function openPage(path, predicate) {
     }
 }
 
+function logout() {
+    return openPage("/haku-app/user/logout", function() {
+        return S("ul").is(":visible");
+    })();
+}
+
 function takeScreenshot() {
     if (window.callPhantom) {
         var date = new Date()

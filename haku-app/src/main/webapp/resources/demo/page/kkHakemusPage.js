@@ -1,6 +1,6 @@
 function KkHakemusPage() {
     var hakemusPage = openPage("/haku-app/virkailija/hakemus", function() {
-        return S("#create-application").first().is(':visible')
+        return testFrame().document.getElementById('loginForm') !== null;
     });
 
     var pageFunctions = {
@@ -96,8 +96,16 @@ function KkHakemusPage() {
             return S('td:has(a[name='+name+'])').next().html()
         },
         createApplication: function() {
-            return hakemusPage()
-                .then(wait.until(pageFunctions.createApplicationButton().isEnabled))
+            return logout().then(function() { return hakemusPage(); })
+                .then(function() {
+                    function input(name) {
+                        return testFrame().document.getElementsByName(name)[0];
+                    }
+                    input("j_username").value = "officer";
+                    input("j_password").value = "officer";
+                    input("login").click();
+                })
+                .then(wait.until(pageFunctions.createApplicationButton().isVisible))
                 .then(pageFunctions.createApplicationButton().scrollIntoView)
                 .then(pageFunctions.createApplicationButton().click)
                 .then(wait.until(function() {return pageFunctions.selectHaku().is(':visible')}))
