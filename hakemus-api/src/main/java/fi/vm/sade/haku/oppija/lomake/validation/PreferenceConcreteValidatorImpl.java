@@ -117,7 +117,7 @@ public class PreferenceConcreteValidatorImpl extends PreferenceConcreteValidator
     }
 
     private boolean checkProvider(final ValidationInput validationInput, final String aoId) {
-        if (!validationInput.isInputValidation()) {
+        if (validationInput.getValidationContext() != ValidationInput.ValidationContext.applicant_submit) {
             return true;
         }
 
@@ -201,7 +201,7 @@ public class PreferenceConcreteValidatorImpl extends PreferenceConcreteValidator
     }
 
     private boolean checkApplicationDates(final ValidationInput validationInput, final ApplicationOption applicationOption) {
-        if (validationInput.isInputValidation() && !applicationOption.isCanBeApplied()) {
+        if (validationInput.getValidationContext() == ValidationInput.ValidationContext.applicant_submit && !applicationOption.isCanBeApplied()) {
             LOGGER.error("Application date validation failed for {}. Application: {}", applicationOption, validationInput.getApplicationOid());
             return false;
         }

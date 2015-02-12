@@ -85,17 +85,17 @@ public class ElementTreeValidatorTest {
 
     @Test(expected = NullPointerException.class)
     public void testValidateNulls() throws Exception {
-        elementTreeValidator.validate(new ValidationInput(null, null, null, null, false));
+        elementTreeValidator.validate(new ValidationInput(null, null, null, null, ValidationInput.ValidationContext.officer_modify));
     }
 
     @Test(expected = NullPointerException.class)
     public void testValidateNullElement() throws Exception {
-        elementTreeValidator.validate(new ValidationInput(null, new HashMap<String, String>(), null, null, false));
+        elementTreeValidator.validate(new ValidationInput(null, new HashMap<String, String>(), null, null, ValidationInput.ValidationContext.officer_modify));
     }
 
     @Test(expected = NullPointerException.class)
     public void testValidateNullValues() throws Exception {
-        elementTreeValidator.validate(new ValidationInput(textQuestion, null, null, null, false));
+        elementTreeValidator.validate(new ValidationInput(textQuestion, null, null, null, ValidationInput.ValidationContext.officer_modify));
     }
 
     @Test()
@@ -103,7 +103,7 @@ public class ElementTreeValidatorTest {
         textQuestion.setValidator
                 (new RequiredFieldValidator("id", createI18NText("Error message")));
         ValidationResult validationResult = elementTreeValidator.validate(new ValidationInput(textQuestion, new HashMap<String, String>(),
-                null, null, false));
+                null, null, ValidationInput.ValidationContext.officer_modify));
         assertTrue(validationResult.hasErrors());
     }
 
@@ -122,7 +122,7 @@ public class ElementTreeValidatorTest {
         Element phase = ElementTree.getFirstChild(applicationSystem.getForm());
         HashMap<String, String> values = fillFormWithoutAsuinmaa();
         values.put("asuinmaa", asuinmaa);
-        ValidationResult validationResult = elementTreeValidator.validate(new ValidationInput(phase, values, null, null, false));
+        ValidationResult validationResult = elementTreeValidator.validate(new ValidationInput(phase, values, null, null, ValidationInput.ValidationContext.officer_modify));
         assertEquals(errorCount, validationResult.getErrorMessages().size());
     }
 

@@ -37,7 +37,7 @@ public class ValidationIT extends IntegrationTestSupport {
                 applicationFixture.getVastauksetMerged(),
                 applicationFixture.getOid(),
                 applicationSystemFixture.getId(),
-                false));
+            ValidationInput.ValidationContext.officer_modify));
         return vr.getErrorMessages();
     }
 }

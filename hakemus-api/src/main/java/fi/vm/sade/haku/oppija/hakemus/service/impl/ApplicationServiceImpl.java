@@ -139,7 +139,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 
         if (elementTree.isValidationNeeded(applicationPhase.getPhaseId(), application.getPhaseId())) {
             ValidationResult validationResult = elementTreeValidator.validate(new ValidationInput(phase, allAnswers,
-                    application.getOid(), applicationSystemId, true));
+                    application.getOid(), applicationSystemId, ValidationInput.ValidationContext.applicant_submit));
             applicationState.addError(validationResult.getErrorMessages());
         }
 
@@ -165,7 +165,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         Form form = applicationSystem.getForm();
         Map<String, String> allAnswers = application.getVastauksetMerged();
         ValidationResult validationResult = elementTreeValidator.validate(new ValidationInput(form, allAnswers,
-                application.getOid(), applicationSystemId, false));
+                application.getOid(), applicationSystemId, ValidationInput.ValidationContext.applicant_submit));
 
         if (!validationResult.hasErrors()) {
 

@@ -29,35 +29,35 @@ public class LengthValidatorTest {
     @Test
     public void testInValid() throws Exception {
         LengthValidator lengthValidator = getLengthValidator(5);
-        ValidationResult validationResult = lengthValidator.validate(new ValidationInput(element, ImmutableMap.of(FIELD_NAME, "123456"), null, null, false));
+        ValidationResult validationResult = lengthValidator.validate(new ValidationInput(element, ImmutableMap.of(FIELD_NAME, "123456"), null, null, ValidationInput.ValidationContext.officer_modify));
         assertTrue(validationResult.hasErrors());
     }
 
     @Test
     public void testValid() throws Exception {
         LengthValidator lengthValidator = getLengthValidator(5);
-        ValidationResult validationResult = lengthValidator.validate(new ValidationInput(element, ImmutableMap.of(FIELD_NAME, "12345"), null, null, false));
+        ValidationResult validationResult = lengthValidator.validate(new ValidationInput(element, ImmutableMap.of(FIELD_NAME, "12345"), null, null, ValidationInput.ValidationContext.officer_modify));
         assertFalse(validationResult.hasErrors());
     }
 
     @Test
     public void testNull() throws Exception {
         LengthValidator lengthValidator = getLengthValidator(5);
-        ValidationResult validationResult = lengthValidator.validate(new ValidationInput(element, new HashMap<String, String>(), null, null, false));
+        ValidationResult validationResult = lengthValidator.validate(new ValidationInput(element, new HashMap<String, String>(), null, null, ValidationInput.ValidationContext.officer_modify));
         assertFalse(validationResult.hasErrors());
     }
 
     @Test
     public void testEmpty() throws Exception {
         LengthValidator lengthValidator = getLengthValidator(5);
-        ValidationResult validationResult = lengthValidator.validate(new ValidationInput(element, ImmutableMap.of(FIELD_NAME, ""), null, null, false));
+        ValidationResult validationResult = lengthValidator.validate(new ValidationInput(element, ImmutableMap.of(FIELD_NAME, ""), null, null, ValidationInput.ValidationContext.officer_modify));
         assertFalse(validationResult.hasErrors());
     }
 
     @Test
     public void testEmptyAndEmptyLength() throws Exception {
         LengthValidator lengthValidator = getLengthValidator(0);
-        ValidationResult validationResult = lengthValidator.validate(new ValidationInput(element, ImmutableMap.of(FIELD_NAME, ""), null, null, false));
+        ValidationResult validationResult = lengthValidator.validate(new ValidationInput(element, ImmutableMap.of(FIELD_NAME, ""), null, null, ValidationInput.ValidationContext.officer_modify));
         assertFalse(validationResult.hasErrors());
     }
 

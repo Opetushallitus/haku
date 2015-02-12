@@ -23,22 +23,26 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ValidationInput {
+    public static enum ValidationContext {
+        applicant_submit, applicant_modify, officer_modify, background;
+    }
+
     private final String applicationOid;
     private final String applicationSystemId;
     private final Element element;
     private final Map<String, String> values;
-    private final Boolean inputValidation;
+    private final ValidationContext validationContext;
 
     public ValidationInput(final Element element,
                            final Map<String, String> values,
                            final String applicationOid,
                            final String applicationSystemId,
-                           final Boolean inputValidation) {
+                           final ValidationContext validationContext) {
         this.element = element;
         this.values = new HashMap<String, String>(values);
         this.applicationOid = applicationOid;
         this.applicationSystemId = applicationSystemId;
-        this.inputValidation = inputValidation;
+        this.validationContext = validationContext;
     }
 
     public ValidationInput(final Element element, ValidationInput validationInput) {
@@ -46,7 +50,7 @@ public class ValidationInput {
                 validationInput.getValues(),
                 validationInput.getApplicationOid(),
                 validationInput.getApplicationSystemId(),
-                validationInput.isInputValidation());
+                validationInput.getValidationContext());
     }
 
     public Element getElement() {
@@ -81,7 +85,7 @@ public class ValidationInput {
         return this.element.getId();
     }
 
-    public Boolean isInputValidation() {
-        return inputValidation;
+    public ValidationContext getValidationContext() {
+        return validationContext;
     }
 }

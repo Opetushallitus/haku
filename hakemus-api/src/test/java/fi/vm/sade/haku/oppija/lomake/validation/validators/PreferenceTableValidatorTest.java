@@ -22,7 +22,7 @@ import fi.vm.sade.haku.oppija.lomake.validation.GroupRestrictionValidator;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationInput;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationResult;
 import fi.vm.sade.haku.oppija.lomake.validation.groupvalidators.GroupRestrictionMaxNumberValidator;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.i18n.I18nBundleService;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -30,7 +30,6 @@ import java.util.*;
 
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 /**
@@ -90,7 +89,7 @@ public class PreferenceTableValidatorTest {
         values.put("e3-id", "ao-with-no-test-group");
         values.put("e4-id", "ao-with-no-test-group");
         values.put("e5-id", "ao-with-no-test-group");
-        ValidationResult result = validator.validate(new ValidationInput(null, values, null, null, false));
+        ValidationResult result = validator.validate(new ValidationInput(null, values, null, null, ValidationInput.ValidationContext.officer_modify));
         assertNotNull(result);
         assertFalse(result.hasErrors());
     }
@@ -113,7 +112,7 @@ public class PreferenceTableValidatorTest {
         values.put("e3-id", "ao-with-no-test-group");
         values.put("e4-id", "ao-with-test-group");
         values.put("e5-id", "ao-with-no-test-group");
-        ValidationResult result = validator.validate(new ValidationInput(null, values, null, null, false));
+        ValidationResult result = validator.validate(new ValidationInput(null, values, null, null, ValidationInput.ValidationContext.officer_modify));
         assertNotNull(result);
         assertTrue(result.hasErrors());
         assertEquals(2, result.getErrorMessages().values().size());
@@ -127,7 +126,7 @@ public class PreferenceTableValidatorTest {
         values.put("li2", "li1");
         values.put("e1", "e1");
         values.put("e2", "e1");
-        ValidationResult result = validator.validate(new ValidationInput(null, values, null, null, false));
+        ValidationResult result = validator.validate(new ValidationInput(null, values, null, null, ValidationInput.ValidationContext.officer_modify));
         assertNotNull(result);
         assertTrue(result.hasErrors());
         assertEquals(1, result.getErrorMessages().values().size());
@@ -143,7 +142,7 @@ public class PreferenceTableValidatorTest {
         values.put("e1", "e1");
         values.put("e2", "e2");
         values.put("e4", "e4");
-        ValidationResult result = validator.validate(new ValidationInput(null, values, null, null, false));
+        ValidationResult result = validator.validate(new ValidationInput(null, values, null, null, ValidationInput.ValidationContext.officer_modify));
         assertNotNull(result);
         assertTrue(result.hasErrors());
         assertEquals(1, result.getErrorMessages().values().size());
@@ -156,7 +155,7 @@ public class PreferenceTableValidatorTest {
         values.put("li1", "li1");
         values.put("li2", "li2");
         values.put("e1", "e1");
-        ValidationResult result = validator.validate(new ValidationInput(null, values, null, null, false));
+        ValidationResult result = validator.validate(new ValidationInput(null, values, null, null, ValidationInput.ValidationContext.officer_modify));
         assertNotNull(result);
         assertTrue(result.hasErrors());
         assertEquals(1, result.getErrorMessages().values().size());
@@ -169,7 +168,7 @@ public class PreferenceTableValidatorTest {
         values.put("li1", "li1");
         values.put("e1", "e1");
         values.put("e2", "e2");
-        ValidationResult result = validator.validate(new ValidationInput(null, values, null, null, false));
+        ValidationResult result = validator.validate(new ValidationInput(null, values, null, null, ValidationInput.ValidationContext.officer_modify));
         assertNotNull(result);
         assertTrue(result.hasErrors());
         assertEquals(1, result.getErrorMessages().values().size());

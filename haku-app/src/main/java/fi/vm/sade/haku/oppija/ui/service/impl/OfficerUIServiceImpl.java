@@ -136,7 +136,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         Form form = this.formService.getForm(application.getApplicationSystemId());
         Element element = new ElementTree(form).getChildById(elementId);
         ValidationResult validationResult = elementTreeValidator.validate(new ValidationInput(form, application.getVastauksetMerged(),
-                oid, application.getApplicationSystemId(), false));
+                oid, application.getApplicationSystemId(), ValidationInput.ValidationContext.officer_modify));
         return new ModelResponse(application, form, element, validationResult, koulutusinformaatioBaseUrl);
     }
 
@@ -157,7 +157,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
             }
         }
         ValidationResult validationResult = elementTreeValidator.validate(new ValidationInput(form, application.getVastauksetMerged(),
-                oid, application.getApplicationSystemId(), false));
+                oid, application.getApplicationSystemId(), ValidationInput.ValidationContext.officer_modify));
         return new ModelResponse(application, form, elements, validationResult, koulutusinformaatioBaseUrl);
     }
 
@@ -168,7 +168,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         application.setPhaseId(phaseId); // TODO active applications does not have phaseId?
         Form form = this.formService.getForm(application.getApplicationSystemId());
         ValidationResult validationResult = elementTreeValidator.validate(new ValidationInput(form, application.getVastauksetMerged(),
-                oid, application.getApplicationSystemId(), false));
+                oid, application.getApplicationSystemId(), ValidationInput.ValidationContext.officer_modify));
         Element element = form;
         if (!PHASE_ID_PREVIEW.equals(phaseId)) {
             element = new ElementTree(form).getChildById(application.getPhaseId());
@@ -382,7 +382,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         application = applicationService.removeOrphanedAnswers(application);
 
         ValidationResult formValidationResult = elementTreeValidator.validate(new ValidationInput(form,
-                allAnswers, oid, application.getApplicationSystemId(), true));
+                allAnswers, oid, application.getApplicationSystemId(), ValidationInput.ValidationContext.officer_modify));
         if (formValidationResult.hasErrors()) {
             application.incomplete();
         } else {
@@ -390,7 +390,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         }
         Element phase = new ElementTree(form).getChildById(applicationPhase.getPhaseId());
         ValidationResult phaseValidationResult = elementTreeValidator.validate(new ValidationInput(phase,
-                allAnswers, oid, application.getApplicationSystemId(), true));
+                allAnswers, oid, application.getApplicationSystemId(), ValidationInput.ValidationContext.officer_modify));
 
         String noteText = "Päivitetty vaihetta '" + applicationPhase.getPhaseId() + "'";
         application.addNote(createNote(noteText));
