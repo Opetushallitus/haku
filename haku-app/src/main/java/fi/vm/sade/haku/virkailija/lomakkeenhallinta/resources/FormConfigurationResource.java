@@ -146,7 +146,7 @@ public class FormConfigurationResource {
     @Path("{asId}/formTemplate")
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     @Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
-    @PreAuthorize("hasAnyRole('ROLE_APP_HAKULOMAKKEENHALLINTA_CRUD')") //TODO HH-175 uus rooli lomakepohjan vaihtoon
+    @PreAuthorize("hasAnyRole('ROLE_APP_HAKULOMAKKEENHALLINTA_LOMAKEPOHJANVAIHTO')")
     public void saveFormTemplateType(@PathParam("asId") String applicationSystemId,
                                      Map<String, String> configuration) throws IOException {
 
