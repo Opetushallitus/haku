@@ -16,6 +16,9 @@
 
 package fi.vm.sade.haku.oppija.hakemus.resource;
 
+import com.wordnik.swagger.annotations.Api;
+import com.wordnik.swagger.annotations.ApiOperation;
+import com.wordnik.swagger.annotations.ApiParam;
 import fi.vm.sade.haku.oppija.common.koulutusinformaatio.ApplicationOption;
 import fi.vm.sade.haku.oppija.common.koulutusinformaatio.ApplicationOptionService;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
@@ -54,6 +57,7 @@ import static org.apache.commons.lang3.StringUtils.isNotEmpty;
  */
 @Component
 @Path("/applications")
+@Api(value = "/applications", description = "Hakemuspalvelun REST-rajapinta")
 public class ApplicationResource {
 
     public static final String CHARSET_UTF_8 = ";charset=UTF-8";
@@ -85,10 +89,13 @@ public class ApplicationResource {
     }
 
     @GET
-    @Path("{oid}")
+    @Path("/{oid}")
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_READ', 'ROLE_APP_HAKEMUS_CRUD', 'ROLE_APP_HAKEMUS_OPO')")
-    public Application getApplicationByOid(@PathParam(OID) String oid) {
+    @ApiOperation(
+            value = "Palauttaa hakemuksen tiedot",
+            response = Application.class)
+    public Application getApplicationByOid(@ApiParam(value="Hakemuksen oid-tunniste") @PathParam(OID) String oid) {
         LOGGER.debug("Getting application by oid : {}", oid);
         try {
             Application application = applicationService.getApplicationByOid(oid);
@@ -100,7 +107,7 @@ public class ApplicationResource {
     }
 
     @GET
-    @Path("excel")
+    @Path("/excel")
     @Produces("application/vnd.ms-excel")
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_READ', 'ROLE_APP_HAKEMUS_CRUD', 'ROLE_APP_HAKEMUS_OPO')")
     public XlsModel getApplicationsByOids(@Context HttpServletRequest request,
@@ -151,44 +158,54 @@ public class ApplicationResource {
     }
 
     @GET
-    @Path("list")
+    @Path("/list")
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_READ', 'ROLE_APP_HAKEMUS_CRUD', 'ROLE_APP_HAKEMUS_OPO')")
-    public List<Application> getApplicationsByOids(@QueryParam("oid") List<String> oids) {
+	@ApiOperation(
+            value = "Palauttaa useamman hakemuksen tiedot oid-listan perusteella. Oid:t annetaan query parametreina.",
+            response = Application.class,
+			responseContainer = "List")
+    public List<Application> getApplicationsByOids(@ApiParam(value="Yksi tai useampi hakemuksen oid") @QueryParam("oid") List<String> oids) {
         return getApplications(oids);
     }
 
     @POST
-    @Path("list")
+    @Path("/list")
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     @Consumes("application/json")
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_READ', 'ROLE_APP_HAKEMUS_CRUD', 'ROLE_APP_HAKEMUS_OPO')")
+	@ApiOperation(
+            value = "Palauttaa useamman hakemuksen tiedot oid-listan perusteella. Oid:t json-listana POST-pyynnön bodyssa.",
+            response = Application.class,
+			responseContainer = "List")
     public List<Application> getApplicationsByOidsPost(final List<String> oids) {
         return getApplications(oids);
     }
 
     @GET
-    @Path("listfull")
+    @Path("/listfull")
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_READ', 'ROLE_APP_HAKEMUS_CRUD', 'ROLE_APP_HAKEMUS_OPO')")
-    public List<Map<String, Object>> findFullApplications(@DefaultValue(value = "") @QueryParam("q") String searchTerms,
-                                                          @QueryParam("appState") List<String> state,
-                                                          @QueryParam("preferenceChecked") Boolean preferenceChecked,
-                                                          @QueryParam("aoid") String aoid,
-                                                          @QueryParam("groupOid") String groupOid,
-                                                          @QueryParam("baseEducation") String baseEducation,
-                                                          @QueryParam("lopoid") String lopoid,
-                                                          @QueryParam("asId") String asId,
-                                                          @QueryParam("asSemester") String asSemester,
-                                                          @QueryParam("asYear") String asYear,
-                                                          @QueryParam("aoOid") String aoOid,
-                                                          @QueryParam("discretionaryOnly") Boolean discretionaryOnly,
-                                                          @QueryParam("primaryPreferenceOnly") Boolean primaryPreferenceOnly,
-                                                          @QueryParam("sendingSchoolOid") String sendingSchoolOid,
-                                                          @QueryParam("sendingClass") String sendingClass,
-                                                          @QueryParam("updatedAfter") DateParam updatedAfter,
-                                                          @DefaultValue(value = "0") @QueryParam("start") int start,
-                                                          @DefaultValue(value = "100") @QueryParam("rows") int rows) {
+	@ApiOperation(
+            value = "Palauttaa hakuehtoihin sopivien hakemusten tiedot.")
+    public List<Map<String, Object>> findFullApplications(@ApiParam(value="Hakutermi, jokin seuraavista: nimi, henkilötunnus, oppijanumero, hakemusnumero.") @DefaultValue(value = "") @QueryParam("q") String searchTerms,
+                                                          @ApiParam(value="Hakemuksen tila", allowableValues="[ACTIVE, PASSIVE, INCOMPLETE, NOT_IDENTIFIED]", allowMultiple=true) @QueryParam("appState") List<String> state,
+                                                          @ApiParam(value="Onko liitetiedot merkitty tarkastetuksi") @QueryParam("preferenceChecked") Boolean preferenceChecked,
+                                                          @ApiParam(value="Hakukohteen koodi") @QueryParam("aoid") String aoid,
+                                                          @ApiParam(value="Hakukohderyhmän oid") @QueryParam("groupOid") String groupOid,
+                                                          @ApiParam(value="Pohjakoulutus") @QueryParam("baseEducation") String baseEducation,
+                                                          @ApiParam(value="Opetuspisteen organisaatiotunniste (oid)") @QueryParam("lopoid") String lopoid,
+                                                          @ApiParam(value="Haun oid") @QueryParam("asId") String asId,
+                                                          @ApiParam(value="Hakukausi") @QueryParam("asSemester") String asSemester,
+                                                          @ApiParam(value="Hakuvuosi") @QueryParam("asYear") String asYear,
+                                                          @ApiParam(value="Hakukohteen oid") @QueryParam("aoOid") String aoOid,
+                                                          @ApiParam(value="Näytetäänkö vain harkinnanvaraisesti hakeneet") @QueryParam("discretionaryOnly") Boolean discretionaryOnly,
+                                                          @ApiParam(value="Haetaanko vain sellaiset hakemukset, joissa hakuehtona oleva hakukohde on ensisijaisena toiveena") @QueryParam("primaryPreferenceOnly") Boolean primaryPreferenceOnly,
+                                                          @ApiParam(value="Lähtökoulun oid") @QueryParam("sendingSchoolOid") String sendingSchoolOid,
+                                                          @ApiParam(value="Lähtöluokka") @QueryParam("sendingClass") String sendingClass,
+                                                          @ApiParam(value="Aikaleima, jonka jälkeen muuttuneet tai saapuneet hakemukset haetaan. Merkkijono muodossa yyyyMMddHHmm.") @QueryParam("updatedAfter") DateParam updatedAfter,
+                                                          @ApiParam(value="Palautetaan tulosjoukosta rivit tästä rivinumerosta alkaen") @DefaultValue(value = "0") @QueryParam("start") int start,
+                                                          @ApiParam(value="Palautetaan tulosjoukosta rivit tähän rivinumeroon saakka") @DefaultValue(value = "100") @QueryParam("rows") int rows) {
 
         LOGGER.debug("findFullApplications start: {}", System.currentTimeMillis());
         List<String> asIds = new ArrayList<String>();
@@ -231,24 +248,26 @@ public class ApplicationResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_READ', 'ROLE_APP_HAKEMUS_CRUD', 'ROLE_APP_HAKEMUS_OPO')")
-    public ApplicationSearchResultDTO findApplications(@DefaultValue(value = "") @QueryParam("q") String query,
-                                                       @QueryParam("appState") List<String> state,
-                                                       @QueryParam("preferenceChecked") Boolean preferenceChecked,
-                                                       @QueryParam("aoid") String aoid,
-                                                       @QueryParam("groupOid") String groupOid,
-                                                       @QueryParam("baseEducation") String baseEducation,
-                                                       @QueryParam("lopoid") String lopoid,
-                                                       @QueryParam("asId") String asId,
-                                                       @QueryParam("asSemester") String asSemester,
-                                                       @QueryParam("asYear") String asYear,
-                                                       @QueryParam("aoOid") String aoOid,
-                                                       @QueryParam("discretionaryOnly") Boolean discretionaryOnly,
-                                                       @QueryParam("primaryPreferenceOnly") Boolean primaryPreferenceOnly,
-                                                       @QueryParam("sendingSchoolOid") String sendingSchoolOid,
-                                                       @QueryParam("sendingClass") String sendingClass,
-                                                       @QueryParam("updatedAfter") DateParam updatedAfter,
-                                                       @DefaultValue(value = "0") @QueryParam("start") int start,
-                                                       @DefaultValue(value = "100") @QueryParam("rows") int rows) {
+	@ApiOperation(
+            value = "Palauttaa hakuehtoihin sopivien hakemusten tiedot.")
+    public ApplicationSearchResultDTO findApplications(@ApiParam(value="Hakutermi, jokin seuraavista: nimi, henkilötunnus, oppijanumero, hakemusnumero.") @DefaultValue(value = "") @QueryParam("q") String query,
+                                                       @ApiParam(value="Hakemuksen tila", allowableValues="[ACTIVE, PASSIVE, INCOMPLETE, NOT_IDENTIFIED]", allowMultiple=true) @QueryParam("appState") List<String> state,
+                                                       @ApiParam(value="Onko liitetiedot merkitty tarkastetuksi") @QueryParam("preferenceChecked") Boolean preferenceChecked,
+                                                       @ApiParam(value="Hakukohteen koodi") @QueryParam("aoid") String aoid,
+                                                       @ApiParam(value="Hakukohderyhmän oid") @QueryParam("groupOid") String groupOid,
+                                                       @ApiParam(value="Pohjakoulutus") @QueryParam("baseEducation") String baseEducation,
+                                                       @ApiParam(value="Opetuspisteen organisaatiotunniste (oid)") @QueryParam("lopoid") String lopoid,
+                                                       @ApiParam(value="Haun oid") @QueryParam("asId") String asId,
+                                                       @ApiParam(value="Hakukausi") @QueryParam("asSemester") String asSemester,
+                                                       @ApiParam(value="Hakuvuosi") @QueryParam("asYear") String asYear,
+                                                       @ApiParam(value="Hakukohteen oid") @QueryParam("aoOid") String aoOid,
+                                                       @ApiParam(value="Näytetäänkö vain harkinnanvaraisesti hakeneet") @QueryParam("discretionaryOnly") Boolean discretionaryOnly,
+                                                       @ApiParam(value="Haetaanko vain sellaiset hakemukset, joissa hakuehtona oleva hakukohde on ensisijaisena toiveena") @QueryParam("primaryPreferenceOnly") Boolean primaryPreferenceOnly,
+                                                       @ApiParam(value="Lähtökoulun oid") @QueryParam("sendingSchoolOid") String sendingSchoolOid,
+                                                       @ApiParam(value="Lähtöluokka") @QueryParam("sendingClass") String sendingClass,
+                                                       @ApiParam(value="Aikaleima, jonka jälkeen muuttuneet tai saapuneet hakemukset haetaan. Merkkijono muodossa yyyyMMddHHmm.") @QueryParam("updatedAfter") DateParam updatedAfter,
+                                                       @ApiParam(value="Palautetaan tulosjoukosta rivit tästä rivinumerosta alkaen") @DefaultValue(value = "0") @QueryParam("start") int start,
+                                                       @ApiParam(value="Palautetaan tulosjoukosta rivit tähän rivinumeroon saakka") @DefaultValue(value = "100") @QueryParam("rows") int rows) {
 
         return findApplicationsOrdered("fullName", "asc", query, state, preferenceChecked, aoid, groupOid, baseEducation, lopoid, asId,
                 asSemester, asYear, aoOid, discretionaryOnly, primaryPreferenceOnly, sendingSchoolOid,
@@ -256,29 +275,31 @@ public class ApplicationResource {
     }
 
     @GET
-    @Path("listshort")
+    @Path("/listshort")
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_READ', 'ROLE_APP_HAKEMUS_CRUD', 'ROLE_APP_HAKEMUS_OPO')")
-    public ApplicationSearchResultDTO findApplicationsOrdered(@DefaultValue(value = "fullName") @QueryParam("orderBy") String orderBy,
-                                                              @DefaultValue(value = "asc") @QueryParam("orderDir") String orderDir,
-                                                              @DefaultValue(value = "") @QueryParam("q") String searchTerms,
-                                                              @QueryParam("appState") List<String> state,
-                                                              @QueryParam("preferenceChecked") Boolean preferenceChecked,
-                                                              @QueryParam("aoidCode") String aoid,
-                                                              @QueryParam("groupOid") String groupOid,
-                                                              @QueryParam("baseEducation") String baseEducation,
-                                                              @QueryParam("lopoid") String lopoid,
-                                                              @QueryParam("asId") String asId,
-                                                              @QueryParam("asSemester") String asSemester,
-                                                              @QueryParam("asYear") String asYear,
-                                                              @QueryParam("aoOid") String aoOid,
-                                                              @QueryParam("discretionaryOnly") Boolean discretionaryOnly,
-                                                              @QueryParam("primaryPreferenceOnly") Boolean primaryPreferenceOnly,
-                                                              @QueryParam("sendingSchoolOid") String sendingSchoolOid,
-                                                              @QueryParam("sendingClass") String sendingClass,
-                                                              @QueryParam("updatedAfter") DateParam updatedAfter,
-                                                              @DefaultValue(value = "0") @QueryParam("start") int start,
-                                                              @DefaultValue(value = "100") @QueryParam("rows") int rows) {
+	@ApiOperation(
+            value = "Palauttaa hakuehtoihin sopivien hakemusten perustiedot.")
+    public ApplicationSearchResultDTO findApplicationsOrdered(@ApiParam(value="Kenttä, jonka perusteella tulosjoukko järjestetään") @DefaultValue(value = "fullName") @QueryParam("orderBy") String orderBy,
+                                                              @ApiParam(value="Järjestys (asc = nouseva, desc = laskeva)") @DefaultValue(value = "asc") @QueryParam("orderDir") String orderDir,
+                                                              @ApiParam(value="Hakutermi, jokin seuraavista: nimi, henkilötunnus, oppijanumero, hakemusnumero.") @DefaultValue(value = "") @QueryParam("q") String searchTerms,
+                                                              @ApiParam(value="Hakemuksen tila", allowableValues="[ACTIVE, PASSIVE, INCOMPLETE, NOT_IDENTIFIED]", allowMultiple=true) @QueryParam("appState") List<String> state,
+                                                              @ApiParam(value="Onko liitetiedot merkitty tarkastetuksi") @QueryParam("preferenceChecked") Boolean preferenceChecked,
+                                                              @ApiParam(value="Hakukohteen koodi") @QueryParam("aoidCode") String aoid,
+                                                              @ApiParam(value="Hakukohderyhmän oid") @QueryParam("groupOid") String groupOid,
+                                                              @ApiParam(value="Pohjakoulutus") @QueryParam("baseEducation") String baseEducation,
+                                                              @ApiParam(value="Opetuspisteen organisaatiotunniste (oid)") @QueryParam("lopoid") String lopoid,
+                                                              @ApiParam(value="Haun oid") @QueryParam("asId") String asId,
+                                                              @ApiParam(value="Hakukausi") @QueryParam("asSemester") String asSemester,
+                                                              @ApiParam(value="Hakuvuosi") @QueryParam("asYear") String asYear,
+                                                              @ApiParam(value="Hakukohteen oid") @QueryParam("aoOid") String aoOid,
+                                                              @ApiParam(value="Näytetäänkö vain harkinnanvaraisesti hakeneet") @QueryParam("discretionaryOnly") Boolean discretionaryOnly,
+                                                              @ApiParam(value="Haetaanko vain sellaiset hakemukset, joissa hakuehtona oleva hakukohde on ensisijaisena toiveena") @QueryParam("primaryPreferenceOnly") Boolean primaryPreferenceOnly,
+                                                              @ApiParam(value="Lähtökoulun oid") @QueryParam("sendingSchoolOid") String sendingSchoolOid,
+                                                              @ApiParam(value="Lähtöluokka") @QueryParam("sendingClass") String sendingClass,
+                                                              @ApiParam(value="Aikaleima, jonka jälkeen muuttuneet tai saapuneet hakemukset haetaan. Merkkijono muodossa yyyyMMddHHmm.") @QueryParam("updatedAfter") DateParam updatedAfter,
+                                                              @ApiParam(value="Palautetaan tulosjoukosta rivit tästä rivinumerosta alkaen") @DefaultValue(value = "0") @QueryParam("start") int start,
+                                                              @ApiParam(value="Palautetaan tulosjoukosta rivit tähän rivinumeroon saakka") @DefaultValue(value = "100") @QueryParam("rows") int rows) {
 //        LOGGER.debug("Finding applications q:{}, state:{}, aoid:{}, lopoid:{}, asId:{}, aoOid:{}, start:{}, rows: {}, " +
 //                "asSemester: {}, asYear: {}, discretionaryOnly: {}, sendingSchoolOid: {}, sendingClass: {}",
 //                q, state, aoid, lopoid, asId, aoOid, start, rows, asSemester, asYear, discretionaryOnly, sendingSchoolOid, sendingClass);
@@ -320,10 +341,12 @@ public class ApplicationResource {
     }
 
     @GET
-    @Path("{oid}/{key}")
+    @Path("/{oid}/{key}")
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_READ', 'ROLE_APP_HAKEMUS_CRUD', 'ROLE_APP_HAKEMUS_LISATIETORU', 'ROLE_APP_HAKEMUS_LISATIETOCRUD')")
-    public Map<String, String> getApplicationKeyValue(@PathParam(OID) String oid, @PathParam("key") String key) {
+	@ApiOperation(
+            value = "Palauttaa hakemuksen {oid} avainta vastaavan {key} arvon.")
+    public Map<String, String> getApplicationKeyValue(@ApiParam(value="Hakemuksen oid") @PathParam(OID) String oid, @ApiParam(value="Hakemuksen kentän avain") @PathParam("key") String key) {
         Map<String, String> keyValue = new HashMap<String, String>();
 
         try {
@@ -336,13 +359,15 @@ public class ApplicationResource {
     }
 
     @PUT
-    @Path("{oid}/{key}")
+    @Path("/{oid}/{key}")
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     @Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_CRUD', 'ROLE_APP_HAKEMUS_LISATIETORU', 'ROLE_APP_HAKEMUS_LISATIETOCRUD')")
-    public void putApplicationAdditionalInfoKeyValue(@PathParam(OID) String oid,
-                                                     @PathParam("key") String key,
-                                                     @QueryParam("value") String value) {
+	@ApiOperation(
+            value = "Päivittää hakemuksen {oid} avaimen {key} arvon.")
+    public void putApplicationAdditionalInfoKeyValue(@ApiParam(value="Hakemuksen oid") @PathParam(OID) String oid,
+                                                     @ApiParam(value="Hakemuksen kentän avain") @PathParam("key") String key,
+                                                     @ApiParam(value="Hakemuksen kentän uusi arvo") @QueryParam("value") String value) {
         try {
             applicationService.putApplicationAdditionalInfoKeyValue(oid, key, value);
         } catch (ResourceNotFoundException e) {
@@ -355,7 +380,7 @@ public class ApplicationResource {
     }
 
     @GET
-    @Path("additionalData/{asId}/{aoId}")
+    @Path("/additionalData/{asId}/{aoId}")
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_READ', 'ROLE_APP_HAKEMUS_CRUD', 'ROLE_APP_HAKEMUS_LISATIETORU', 'ROLE_APP_HAKEMUS_LISATIETOCRUD')")
     public List<ApplicationAdditionalDataDTO> getApplicationAdditionalData(@PathParam("asId") String asId,
@@ -364,7 +389,7 @@ public class ApplicationResource {
     }
 
     @PUT
-    @Path("additionalData/{asId}/{aoId}")
+    @Path("/additionalData/{asId}/{aoId}")
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     @Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_CRUD', 'ROLE_APP_HAKEMUS_LISATIETORU', 'ROLE_APP_HAKEMUS_LISATIETOCRUD')")
@@ -375,11 +400,13 @@ public class ApplicationResource {
     }
 
     @PUT
-    @Path("syntheticApplication")
+    @Path("/syntheticApplication")
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     @Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_READ', 'ROLE_APP_HAKEMUS_CRUD', 'ROLE_APP_HAKEMUS_OPO')")
-    public Response putSyntheticApplication(SyntheticApplication syntheticApplication) {
+	@ApiOperation(
+            value = "Luo keinotekoisen hakemuksen (hyödynnetään ulkoisesti toteutettujen valintojen tulosten tuonnissa).")
+    public Response putSyntheticApplication(@ApiParam(value="Hakemuksen tiedot") SyntheticApplication syntheticApplication) {
         if(new SyntheticApplicationValidator(syntheticApplication).validateSyntheticApplication()) {
             List<Application> applications = syntheticApplicationService.createApplications(syntheticApplication);
             return Response.ok(applications).build();

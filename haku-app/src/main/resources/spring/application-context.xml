@@ -111,6 +111,19 @@
         </task:scheduled-tasks>
 
         <task:scheduler id="scheduler" pool-size="1"/>
+        
+        <!-- Swagger stuff -->
+        <bean id="apiListingResourceJSON" class="com.wordnik.swagger.jersey.listing.ApiListingResourceJSON"/>
+        <bean id="apiDeclarationProvider" class="com.wordnik.swagger.jersey.listing.JerseyApiDeclarationProvider" scope="singleton"/>
+        <bean id="resourceListingProvider" class="com.wordnik.swagger.jersey.listing.JerseyResourceListingProvider" scope="singleton"/>
+        
+        <bean id="beanConfig" class="com.wordnik.swagger.jaxrs.config.BeanConfig">
+            <property name="title" value="Haku App"/>
+            <property name="version" value="1.0.0" />
+            <property name="basePath" value="https://${host.virkailija}/haku-app"/>
+            <property name="resourcePackage" value="fi.vm.sade.haku.oppija.hakemus.resource"/>
+            <property name="scan" value="true"/>
+        </bean>
     </beans>
 
 </beans>
