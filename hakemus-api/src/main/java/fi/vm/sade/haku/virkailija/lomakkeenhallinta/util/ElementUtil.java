@@ -276,6 +276,10 @@ public final class ElementUtil {
         return Rule(ExprUtil.atLeastOneValueEqualsToVariable(variable, values)).build();
     }
 
+    public static Element createRuleIfVariableIsTrue(final String ruleId, final String variable) {
+        return Rule(ruleId, ExprUtil.isAnswerTrue(variable)).build();
+    }
+
     public static Element createRuleIfVariableIsTrue(final String variable) {
         return Rule(ExprUtil.isAnswerTrue(variable)).build();
     }

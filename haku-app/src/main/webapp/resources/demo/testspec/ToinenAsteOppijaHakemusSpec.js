@@ -12,17 +12,19 @@
             fn().val(value).change().blur();
         }
 
-        function readTable($tableElement) {
-            return $tableElement.find('tr').toArray().reduce(function(agg, tr) {
-                var tds = tr.getElementsByTagName('td');
-                if (tds.length != 2) {
-                    throw new Error("Cannot read non-2-column table into map")
-                }
-                var key = tds[0].textContent.trim();
-                var value = tds[1].textContent.trim();
-                agg[key] = value;
-                return agg;
-            }, {});
+        function readTable($tableElement, allowWrongDimensions) {
+            return $tableElement.find('tr').filter(function(i) {
+                    return allowWrongDimensions || testFrame().jQuery("td", this).length === 2
+                }).toArray().reduce(function(agg, tr) {
+                    var tds = tr.getElementsByTagName('td');
+                    if (tds.length != 2) {
+                        throw new Error("Cannot read non-2-column table into map")
+                    }
+                    var key = tds[0].textContent.trim();
+                    var value = tds[1].textContent.trim();
+                    agg[key] = value;
+                    return agg;
+                }, {});
         }
 
         function visible(fn) {
@@ -109,7 +111,7 @@
              });
 
             it('Täytä hakemus alusta loppuun', function (done) {
-                var expected = {
+                var expectedHenkilotiedot = {
                     "Sukunimi": "Testikäs",
                     "Etunimet": "Asia Kas",
                     "Kutsumanimi": "Asia",
@@ -128,24 +130,89 @@
                     "Huoltajan puhelinnumero (jos olet alle 18-vuotias)": "",
                     "Huoltajan sähköpostiosoite (jos olet alle 18-vuotias)": ""
                 };
-                expect(readTable(S('table:first'))).to.deep.equal(expected);
+                expect(readTable(S('table#henkilotiedot_teema'), true)).to.deep.equal(expectedHenkilotiedot);
+
+                var expectedKoulutustausta = {
+                    "Valitse tutkinto, jolla haet koulutukseen:": "Perusopetuksen oppimäärä",
+                    "Minä vuonna sait tai saat peruskoulun päättötodistuksen?:": "2014",
+                    "Millä opetuskielellä olet suorittanut perusopetuksen?:": "Suomi"
+                };
+                expect(readTable(S('table#koulutustausta_teema'), false)).to.deep.equal(expectedKoulutustausta);
+
+                var expectedArvosanat = {
+                };
+                expect(readTable(S('table#arvosanat_teema'), false)).to.deep.equal(expectedArvosanat);
+
                 done();
             });
         });
 
-//        describe("Täytä koulutustausta", function(done) {
-//
-//            before(function(done) {
-//                wait.until(function() {return page.fromHenkilotiedot(); })()
-//                    .then(wait.until(function() { return page.pohjakoulutus().is(":visible")}))
-//                    .then(done);
-//            });
-//
-//            it ('mahdollistaa koulutustausta täyttämisen', function(done) {
-//                expect(S("fieldset#koulutustausta_teema h3").first().html()).to.equal("Koulutustausta");
-//            });
-//        });
+        describe("Sääntötestit", function(done) {
 
+            beforeEach(function(done) {
+                henkilotietoPage.start()
+                    .then(visible(henkilotietoPage.sukunimi))
+                    .then($.post("/haku-app/lomake/1.2.246.562.5.50476818906",
+                        {
+                            "Sukunimi": "Testikäs",
+                            "Etunimet": "Asia Kas",
+                            "Kutsumanimi": "Asia",
+                            "kansalaisuus": "FIN",
+                            "onkosinullakaksoiskansallisuus": "false",
+                            "Henkilotunnus": "171175-830Y",
+                            "sukupuoli": "2",
+                            "asuinmaa": "FIN",
+                            "lahiosoite": "Testikatu 4",
+                            "Postinumero": "00100",
+                            "kotikunta": "janakkala",
+                            "aidinkieli": "FI",
+                            "POHJAKOULUTUS": "1",
+                            "PK_PAATTOTODISTUSVUOSI": "2014",
+                            "perusopetuksen_kieli": "FI",
+                            "preferencesVisible": "5",
+                            "preference1-Opetuspiste": "FAKTIA, Espoo op",
+                            "preference1-Opetuspiste-id": "1.2.246.562.10.89537774706&",
+                            "preference1-Koulutus": "Talonrakennus ja ymäristösuunnittelu, yo",
+                            "preference1-Koulutus-id": "1.2.246.562.14.673437691210",
+                            "preference1-Koulutus-educationDegree": "32",
+                            "preference1-Koulutus-id-lang": "FI",
+                            "preference1-Koulutus-id-sora": "false",
+                            "preference1-Koulutus-id-athlete": "false",
+                            "preference1-Koulutus-id-kaksoistutkinto": "false",
+                            "preference1-Koulutus-id-vocational": "true",
+                            "preference1-Koulutus-id-attachments": "false",
+                            "preference1-discretionary": "false",
+                            "asiointikieli": "suomi"
+                        }))
+                    .then(visible(henkilotietoPage.sukunimi))
+                    .then(done, done);
+            });
+
+            it("PK päättötodistusvuosi 2011", function(done) {
+                $.post("/haku-app/lomake/1.2.246.562.5.50476818906/koulutustausta/rules",
+                    {
+                        "PK_PAATTOTODISTUSVUOSI": "2011",
+                        "POHJAKOULUTUS": "1",
+                        "ruleIds[]": ["paattotodistuvuosiPkRule"]
+                    }, function(data, status) {
+                        expect(data).to.contain('<input type=\\"radio\\" name=\\"ammatillinenTutkintoSuoritettu\\"');
+                        done();
+                    });
+            });
+
+            it("PK päättötodistusvuosi 2012", function(done) {
+                $.post("/haku-app/lomake/1.2.246.562.5.50476818906/koulutustausta/rules",
+                    {
+                        "PK_PAATTOTODISTUSVUOSI": "2012",
+                        "POHJAKOULUTUS": "1",
+                        "ruleIds[]": ["paattotodistuvuosiPkRule"]
+                    }, function(data, status) {
+                        expect(data).not.to.contain('<input type=\\"radio\\" name=\\"ammatillinenTutkintoSuoritettu\\"');
+                        done();
+                    });
+            });
+
+        })
 
     });
 

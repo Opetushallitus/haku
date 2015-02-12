@@ -25,4 +25,8 @@ public class RelatedQuestionRuleBuilder extends ElementBuilder {
     public static RelatedQuestionRuleBuilder Rule(final Expr expr) {
         return new RelatedQuestionRuleBuilder(ElementUtil.randomId()).setExpr(expr);
     }
+
+    public static RelatedQuestionRuleBuilder Rule(final String id, final Expr expr) {
+        return new RelatedQuestionRuleBuilder(id).setExpr(expr);
+    }
 }

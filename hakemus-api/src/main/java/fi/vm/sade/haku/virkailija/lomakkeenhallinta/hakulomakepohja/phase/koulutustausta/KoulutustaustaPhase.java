@@ -866,7 +866,7 @@ public final class KoulutustaustaPhase {
                 .required()
                 .formParams(formParameters).build();
 
-        Element suorittanutTutkinnonRule = createRuleIfVariableIsTrue(suorittanutAmmatillisenTutkinnon.getId());
+        Element suorittanutTutkinnonRule = createRuleIfVariableIsTrue("suorittanutTutkinnonRule", suorittanutAmmatillisenTutkinnon.getId());
         Element warning = Info().labelKey("form.koulutustausta.ammatillinensuoritettu.huom")
                 .formParams(formParameters).build();
 
@@ -902,7 +902,7 @@ public final class KoulutustaustaPhase {
                 PERUSKOULU, OSITTAIN_YKSILOLLISTETTY, ALUEITTAIN_YKSILOLLISTETTY, YKSILOLLISTETTY);
 
         Expr vuosiSyotetty = new Regexp(paattotodistusvuosiPeruskoulu.getId(), PAATTOTODISTUSVUOSI_PATTERN);
-        Element paattotodistusvuosiPeruskouluRule = Rule(new And(
+        Element paattotodistusvuosiPeruskouluRule = Rule("paattotodistuvuosiPkRule", new And(
                 ExprUtil.lessThanRule(paattotodistusvuosiPeruskoulu.getId(), String.valueOf(hakukausiVuosi - 2)),
                 vuosiSyotetty)).build();
 
