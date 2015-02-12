@@ -40,9 +40,8 @@ More information about failsave maven plugin:
 3. Copy luokka settings to `~/oph-configuration.luokka` folder from luokka server
 4. Modify the luokka settings to use local koulutusinformaatio and local mongo db
 
-    host.haku=localhost:8080/koulutusinformaatio-app
     mongodb.oppija.uri=mongodb://localhost:27107
-    koulutusinformaatio.ao.resource.url=http\://${host.haku}/ao
+    koulutusinformaatio.ao.resource.url=https\://${host.haku}/ao
     mongodb.url=mongodb://localhost:27017/${mongo.db.name}
 
 then you can start the server with local settings by
