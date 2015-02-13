@@ -9,7 +9,9 @@
         var esikatseluPage = ToinenAsteLomakeEsikatseluPage();
 
         function input(fn, value) {
-            fn().val(value).change().blur();
+            return visible(fn)().then(function() {
+                return fn().val(value).change().blur();
+            })
         }
 
         function readTable($tableElement, allowWrongDimensions) {
@@ -28,7 +30,29 @@
         }
 
         function visible(fn) {
-            return wait.until(function() { return fn().is(':visible'); })
+            return wait.until(function() {
+                return fn().is(':visible');
+            })
+        }
+
+        function click() {
+            var fns = arguments;
+            return function() {
+                return Q.all(
+                    Object.keys(fns).map(function(i) {
+                        var fn = fns[i];
+                        return visible(fn)().then(function() {
+                            fn().click();
+                        })
+                    })
+                );
+            }
+        }
+
+        function visibleText(fn, text) {
+            return wait.until(function() {
+                return fn().is(':visible') && fn().text().trim().indexOf(text) !== -1;
+            })
         }
 
         function headingVisible(heading) {
@@ -37,44 +61,40 @@
             });
         }
 
-        function fromHenkilotiedotToKoulutustausta() {
-            koulutustaustaPage.fromHenkilotiedot().click();
-            return Q.fcall(headingVisible("Koulutustausta"));
-        };
-
-        function fromKoulututustaustaToHakutoiveet() {
-            hakutoiveetPage.fromKoulutustausta().click();
-            return Q.fcall(headingVisible("Hakutoiveet"));
-        };
-
         describe("Täytä lomake", function(done) {
             before(function(done) {
                 henkilotietoPage.start()
                     .then(visible(henkilotietoPage.sukunimi))
                     .then(function() {
-                        input(henkilotietoPage.sukunimi, "Testikäs");
-                        input(henkilotietoPage.etunimet, "Asia Kas");
-                        input(henkilotietoPage.kutsumanimi, "Asia");
-                        henkilotietoPage.kaksoiskansalaisuus(false);
-                        input(henkilotietoPage.hetu, "171175-830Y");
+                        return Q.all([
+                            input(henkilotietoPage.sukunimi, "Testikäs"),
+                            input(henkilotietoPage.etunimet, "Asia Kas"),
+                            input(henkilotietoPage.kutsumanimi, "Asia"),
+                            input(henkilotietoPage.hetu, "171175-830Y"),
+                            Q.fcall(henkilotietoPage.kaksoiskansalaisuus(false))
+                        ])
                     })
                     .then(wait.until(function() {return S("input#sukupuoli").length > 0;}))
                     .then(function() {
                         expect(henkilotietoPage.sukupuoli().val()).to.equal('2');
-                        input(henkilotietoPage.lahiosoite, "Testikatu 4");
-                        input(henkilotietoPage.postinumero, "00100");
-                        input(henkilotietoPage.kotikunta, "janakkala");
+                        return Q.all([
+                            input(henkilotietoPage.lahiosoite, "Testikatu 4"),
+                            input(henkilotietoPage.postinumero, "00100"),
+                            input(henkilotietoPage.kotikunta, "janakkala")
+                        ])
                     })
-                    .then(fromHenkilotiedotToKoulutustausta)
-                    .then(function() {
-                        koulutustaustaPage.pohjakoulutus("1");
-                    })
+                    .then(click(koulutustaustaPage.fromHenkilotiedot))
+                    .then(headingVisible("Koulutustausta"))
+                    .then(click(koulutustaustaPage.pohjakoulutus("1")))
                     .then(visible(koulutustaustaPage.pkPaattotodistusVuosi))
                     .then(function() {
-                        input(koulutustaustaPage.pkPaattotodistusVuosi, "2014");
-                        input(koulutustaustaPage.pkKieli, "FI");
+                        return Q.all([
+                            input(koulutustaustaPage.pkPaattotodistusVuosi, "2014"),
+                            input(koulutustaustaPage.pkKieli, "FI")
+                        ]);
                     })
-                    .then(fromKoulututustaustaToHakutoiveet)
+                    .then(click(hakutoiveetPage.fromKoulutustausta))
+                    .then(headingVisible("Hakutoiveet"))
                     .then(function () {
                         return Q.fcall(function() {
                             hakutoiveetPage.opetuspiste1().val("Esp");
@@ -88,19 +108,14 @@
                     .then(function() {
                         input(hakutoiveetPage.koulutus1, "Talonrakennus ja ymäristösuunnittelu, yo");
                     })
-                    .then(visible(function() { return hakutoiveetPage.harkinnanvaraisuus1(false) }))
-                    .then(function() {
-                        hakutoiveetPage.harkinnanvaraisuus1(false).click();
-                        hakutoiveetPage.soraTerveys1(false).click();
-                        hakutoiveetPage.soraOikeudenMenetys1(false).click();
-                        hakutoiveetPage.soraTerveys1(false).click();
-                        hakutoiveetPage.soraOikeudenMenetys1(false).click();
-                        osaaminenPage.fromHakutoiveet().click();
-                    })
+                    .then(visible(hakutoiveetPage.harkinnanvaraisuus1(false)))
+                    .then(click(
+                        hakutoiveetPage.harkinnanvaraisuus1(false),
+                        hakutoiveetPage.soraTerveys1(false),
+                        hakutoiveetPage.soraOikeudenMenetys1(false),
+                        osaaminenPage.fromHakutoiveet))
                     .then(headingVisible("Arvosanat"))
-                    .then(function() {
-                        lisatietoPage.fromOsaaminen().click()
-                    })
+                    .then(click(lisatietoPage.fromOsaaminen))
                     .then(headingVisible("Lupatiedot"))
                     .then(function() {
                         lisatietoPage.asiointikieli("suomi");
@@ -144,6 +159,37 @@
                 expect(readTable(S('table#arvosanat_teema'), false)).to.deep.equal(expectedArvosanat);
 
                 done();
+            });
+
+            it('Peruskoulutus-ammattikoulutus-ydistelmä pyytää lukioita', function(done) {
+                Q.fcall(function() { S('#nav-koulutustausta')[0].click() })
+                    .then(headingVisible("Koulutustausta"))
+                    .then(input(koulutustaustaPage.pkPaattotodistusVuosi, "2010"))
+                    .then(visible(koulutustaustaPage.ammatillinenKoulutuspaikka(false)))
+                    .then(click(
+                        koulutustaustaPage.ammatillinenKoulutuspaikka(false),
+                        koulutustaustaPage.ammatillinenSuoritettu(true)))
+                    .then(visibleText(koulutustaustaPage.suorittanutTutkinnonRule,
+                        "Et voi hakea yhteishaussa ammatilliseen koulutukseen"))
+                    .then(click(hakutoiveetPage.fromKoulutustausta))
+                    .then(headingVisible("Hakutoiveet"))
+                    .then(done, done);
+            });
+
+            it('Lukio-ammattikoulutus-ydistelmä estää pääsyn hakutoiveisiin', function(done) {
+                Q.fcall(function() { S('#nav-koulutustausta')[0].click() })
+                    .then(headingVisible("Koulutustausta"))
+                    .then(visible(koulutustaustaPage.pkPaattotodistusVuosi))
+                    .then(click(koulutustaustaPage.pohjakoulutus("9")))
+                    .then(input(koulutustaustaPage.lukioPaattotodistusVuosi, "2010"))
+                    .then(click(koulutustaustaPage.ammatillinenSuoritettu(true)))
+                    .then(visibleText(koulutustaustaPage.warning,
+                        "Et voi hakea yhteishaussa, koska olet jo suorittanut ammatillisen perustutkinnon"
+                    ))
+                    .then(input(koulutustaustaPage.lukionKieli, "FI"))
+                    .then(click(hakutoiveetPage.fromKoulutustausta))
+                    .then(headingVisible("Koulutustausta"))
+                    .then(done, done);
             });
         });
 

@@ -13,8 +13,10 @@ function ToinenAsteLomakeHenkilotietoPage() {
             return S("input#Kutsumanimi");
         },
         kaksoiskansalaisuus : function(onKaksoiskansalaisuus) {
-            S("input#onkosinullakaksoiskansallisuus[value="+onKaksoiskansalaisuus+"]")
-                .prop("checked", true);
+            return function() {
+                S("input#onkosinullakaksoiskansallisuus[value="+onKaksoiskansalaisuus+"]")
+                    .prop("checked", true);
+            }
         },
         hetu : function() {
             return S("input#Henkilotunnus");
