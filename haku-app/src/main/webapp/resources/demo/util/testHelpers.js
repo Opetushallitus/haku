@@ -226,3 +226,30 @@ function takeScreenshot() {
         })
     }
 })();
+
+
+function wrap(elementDefinition) {
+    switch (typeof(elementDefinition)) {
+        case 'string':
+            return function() {
+                return S(elementDefinition);
+            };
+        case 'function':
+            return function() {
+                var args = arguments;
+                return function() {
+                    return S(elementDefinition.apply(this, args));
+                };
+            };
+        default:
+            throw new Error("Element definitions need to be strings or functions that return strings")
+    }
+}
+
+function initSelectors(elements) {
+    return Object.keys(elements).reduce(function(agg, key) {
+        agg[key] = wrap(elements[key]);
+        return agg;
+    }, {})
+}
+

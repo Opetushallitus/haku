@@ -1,44 +1,20 @@
 function ToinenAsteLomakeKoulutustaustaPage() {
-
-    var pageFunctions = {
-
-        pohjakoulutus : function(koulutus) {
-            return function() {
-                return S("input[name=POHJAKOULUTUS][value="+koulutus+"]");
-            }
-        },
-        pkPaattotodistusVuosi : function() {
-            return S("input#PK_PAATTOTODISTUSVUOSI");
-        },
-        pkKieli : function() {
-            return S("select#perusopetuksen_kieli");
-        },
-        fromHenkilotiedot: function() {
-            return S("button[class=right][value=koulutustausta][name=phaseId]").first();
-        },
+    return initSelectors({
+        pkPaattotodistusVuosi : "input#PK_PAATTOTODISTUSVUOSI",
+        pkKieli : "select#perusopetuksen_kieli",
+        fromHenkilotiedot: "button[class=right][value=koulutustausta][name=phaseId]:first",
+        suorittanutTutkinnonRule: '#suorittanutTutkinnonRule',
+        warning: '.notification.warning',
+        lukioPaattotodistusVuosi: 'input#lukioPaattotodistusVuosi',
+        lukionKieli: "select#lukion_kieli",
         ammatillinenKoulutuspaikka: function(bool) {
-            return function() {
-                return S('input[name=KOULUTUSPAIKKA_AMMATILLISEEN_TUTKINTOON][value=' + bool + ']');
-            }
+            return 'input[name=KOULUTUSPAIKKA_AMMATILLISEEN_TUTKINTOON][value=' + bool + ']';
         },
         ammatillinenSuoritettu: function(bool) {
-            return function() {
-                return S('input[name=ammatillinenTutkintoSuoritettu][value=' + bool + ']');
-            }
+            return 'input[name=ammatillinenTutkintoSuoritettu][value=' + bool + ']';
         },
-        suorittanutTutkinnonRule: function() {
-            return S('#suorittanutTutkinnonRule');
-        },
-        warning: function() {
-            return S('.notification.warning');
-        },
-        lukioPaattotodistusVuosi: function() {
-            return S('input#lukioPaattotodistusVuosi');
-        },
-        lukionKieli: function() {
-            return S("select#lukion_kieli");
+        pohjakoulutus : function(koulutus) {
+            return "input[name=POHJAKOULUTUS][value="+koulutus+"]";
         }
-    };
-
-    return pageFunctions;
+    });
 }
