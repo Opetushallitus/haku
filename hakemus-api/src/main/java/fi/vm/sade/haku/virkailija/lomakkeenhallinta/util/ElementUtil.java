@@ -52,7 +52,7 @@ public final class ElementUtil {
     }
 
     /**
-     * For tests
+     * For tests and fallback
      */
     public static I18nText createI18NAsIs(final String text) {
         Map<String, String> translations = new HashMap<String, String>();
@@ -62,10 +62,12 @@ public final class ElementUtil {
         return new I18nText(translations);
     }
 
+    @Deprecated
     public static I18nText createI18NText(final String key) { // Todo get rid of this function
         return createI18NText(key, OppijaConstants.FORM_COMMON_BUNDLE_NAME);
     }
 
+    @Deprecated
     public static I18nText createI18NText(final String key, final String bundleName) { // Todo get rid of this function
         Validate.notNull(key, "key can't be null");
         Validate.notNull(bundleName, "bundleName can't be null");
