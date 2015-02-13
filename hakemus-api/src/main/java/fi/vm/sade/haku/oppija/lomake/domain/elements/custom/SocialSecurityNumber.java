@@ -20,6 +20,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Question;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.I18nBundle;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 
 import java.util.HashMap;
@@ -63,9 +64,9 @@ public class SocialSecurityNumber extends Question {
     }
 
     @Override
-    public Element[] getExtraExcelColumns() {
+    public Element[] getExtraExcelColumns(I18nBundle i18nBundle) {
         Element[] extras = new Element[1];
-        extras[0] = new SsnDateOfBirth("ssnDateOfBirthh", ElementUtil.createI18NText("syntymaaika"));
+        extras[0] = new SsnDateOfBirth("ssnDateOfBirthh", i18nBundle.get("syntymaaika"));
         return extras;
     }
 

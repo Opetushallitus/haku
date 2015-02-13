@@ -8,6 +8,7 @@ import java.util.Map;
 
 import javax.ws.rs.core.Response;
 
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.i18n.I18nBundleService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.junit.Before;
 import org.junit.Test;
@@ -43,9 +44,12 @@ public class SyntheticApplicationIT {
     @Autowired
     private ApplicationResource applicationResource;
 
+    @Autowired
+    private I18nBundleService i18nBundleService;
+
     @Before
     public void setUp() {
-        this.applicationResource = new ApplicationResource(this.applicationService, this.applicationSystemService, null, syntheticApplicationService);
+        this.applicationResource = new ApplicationResource(this.applicationService, this.applicationSystemService, null, syntheticApplicationService, i18nBundleService);
     }
 
     @Test

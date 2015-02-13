@@ -52,7 +52,7 @@ public final class ElementUtil {
     }
 
     /**
-     * For tests
+     * For tests and fallback
      */
     public static I18nText createI18NAsIs(final String text) {
         Map<String, String> translations = new HashMap<String, String>();
@@ -62,14 +62,12 @@ public final class ElementUtil {
         return new I18nText(translations);
     }
 
-    public static I18nText createI18NText(final String key, final FormParameters formParameters) {
-        return formParameters.getI18nText(key);
-    }
-
+    @Deprecated
     public static I18nText createI18NText(final String key) { // Todo get rid of this function
         return createI18NText(key, OppijaConstants.FORM_COMMON_BUNDLE_NAME);
     }
 
+    @Deprecated
     public static I18nText createI18NText(final String key, final String bundleName) { // Todo get rid of this function
         Validate.notNull(key, "key can't be null");
         Validate.notNull(bundleName, "bundleName can't be null");
@@ -139,17 +137,16 @@ public final class ElementUtil {
         return gradeGridRow;
     }
 
-    public static Validator createRegexValidator(final String pattern, final FormParameters formParameters) {
-        return createRegexValidator(pattern, formParameters, "yleinen.virheellinenarvo");
+    public static Validator createRegexValidator(final String pattern) {
+        return createRegexValidator(pattern, "yleinen.virheellinenarvo");
     }
 
-    public static Validator createRegexValidator(final String pattern, final FormParameters formParameters,
-                                                 final String messageKey) {
-        return new RegexFieldValidator(formParameters.getI18nText(messageKey), pattern);
+    public static Validator createRegexValidator(final String pattern, final String messageKey) {
+        return new RegexFieldValidator(messageKey, pattern);
     }
 
-    public static Validator createValueSetValidator(final List<String> validValues, final FormParameters formParameters) {
-        return new ValueSetValidator(formParameters.getI18nText("yleinen.virheellinenarvo"), validValues);
+    public static Validator createValueSetValidator(final List<String> validValues) {
+        return new ValueSetValidator("yleinen.virheellinenarvo", validValues);
     }
 
 
@@ -161,8 +158,7 @@ public final class ElementUtil {
         String required = "required";
         element.addAttribute(required, required);
         element.setValidator(
-                new RequiredFieldValidator(
-                        ElementUtil.createI18NText("yleinen.pakollinen", formParameters)));
+                new RequiredFieldValidator("yleinen.pakollinen"));
     }
 
     public static void addUniqueApplicantValidator(final Element element, final FormParameters formParameters) {

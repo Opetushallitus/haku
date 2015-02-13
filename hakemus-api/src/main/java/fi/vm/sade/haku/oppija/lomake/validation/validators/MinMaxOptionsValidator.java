@@ -16,7 +16,6 @@
 
 package fi.vm.sade.haku.oppija.lomake.validation.validators;
 
-import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.TitledGroup;
 import fi.vm.sade.haku.oppija.lomake.validation.FieldValidator;
@@ -30,8 +29,8 @@ public class MinMaxOptionsValidator extends FieldValidator {
     private final int min;
     private final int max;
 
-    public MinMaxOptionsValidator(final I18nText errorMessage, final Integer min, final Integer max) {
-        super(errorMessage);
+    public MinMaxOptionsValidator(final String errorMessageKey, final Integer min, final Integer max) {
+        super(errorMessageKey);
         if (min == null || min.intValue() < 0) {
             throw new IllegalArgumentException("Minimum must be non null and non negative");
         }

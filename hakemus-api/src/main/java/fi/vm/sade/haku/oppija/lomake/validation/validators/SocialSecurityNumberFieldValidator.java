@@ -15,10 +15,10 @@
  */
 package fi.vm.sade.haku.oppija.lomake.validation.validators;
 
+import fi.vm.sade.haku.oppija.lomake.util.SpringInjector;
 import fi.vm.sade.haku.oppija.lomake.validation.FieldValidator;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationInput;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationResult;
-import org.springframework.data.annotation.Transient;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -29,10 +29,6 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.createI18NText;
-import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.FORM_COMMON_BUNDLE_NAME;
-
-
 public class SocialSecurityNumberFieldValidator extends FieldValidator {
 
     // Sonarin mukaan tässä luokassa on isosti taikanumeroita. Niin on.
@@ -40,10 +36,10 @@ public class SocialSecurityNumberFieldValidator extends FieldValidator {
     // paikoilla, enkä ala tehdä niitä varten erityisjärjestelyjä.
 
     public static final String SOCIAL_SECURITY_NUMBER_PATTERN = "([0-9]{6}[aA+-][0-9]{3}([0-9]|[a-z]|[A-Z]))";
-    public static final String GENERIC_ERROR_MESSAGE = "henkilotiedot.hetu.virhe";
+    public static final String GENERIC_ERROR_MESSAGE_KEY = "henkilotiedot.hetu.virhe";
     private final Pattern socialSecurityNumberPattern;
-    private static final String NOT_A_DATE_ERROR = "henkilotiedot.hetu.eiPvm";
-    private static final String DOB_IN_FUTURE = "henkilotiedot.hetu.tulevaisuudessa";
+    private static final String NOT_A_DATE_ERROR_KEY = "henkilotiedot.hetu.eiPvm";
+    private static final String DOB_IN_FUTURE_ERROR_KEY = "henkilotiedot.hetu.tulevaisuudessa";
     private static Map<String, Integer> centuries = new HashMap<String, Integer>();
     private static String[] checks = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C",
             "D", "E", "F", "H", "J", "K", "L", "M", "N", "P", "R", "S", "T", "U", "V", "W", "X", "Y"};
@@ -56,12 +52,14 @@ public class SocialSecurityNumberFieldValidator extends FieldValidator {
     }
 
     public SocialSecurityNumberFieldValidator() {
-        super(createI18NText(GENERIC_ERROR_MESSAGE));
+        super(GENERIC_ERROR_MESSAGE_KEY);
         this.socialSecurityNumberPattern = Pattern.compile(SOCIAL_SECURITY_NUMBER_PATTERN);
+        SpringInjector.injectSpringDependencies(this);
     }
 
     @Override
     public ValidationResult validate(final ValidationInput validationInput) {
+
         String socialSecurityNumber = validationInput.getValue();
         ValidationResult validationResult = new ValidationResult();
         if (socialSecurityNumber != null) {
@@ -70,7 +68,7 @@ public class SocialSecurityNumberFieldValidator extends FieldValidator {
                 validationResult = getInvalidValidationResult(validationInput);
             }
             if (!validationResult.hasErrors()) {
-                validationResult = checkDOB(validationInput.getFieldName(), socialSecurityNumber);
+                validationResult = checkDOB(validationInput, socialSecurityNumber);
             }
             if (!validationResult.hasErrors() && !validChecksum(socialSecurityNumber)) {
                 validationResult = getInvalidValidationResult(validationInput);
@@ -94,19 +92,19 @@ public class SocialSecurityNumberFieldValidator extends FieldValidator {
      * @param socialSecurityNumber tarkastettavaksi
      * @return ValidationResult-olio mahdollisine virheviesteineen.
      */
-    private ValidationResult checkDOB(String fieldName, String socialSecurityNumber) {
+    private ValidationResult checkDOB(final ValidationInput validationInput, final String socialSecurityNumber) {
         ValidationResult result = new ValidationResult();
         String dayAndMonth = socialSecurityNumber.substring(0, 4); // NOSONAR
         String year = Integer.toString((centuries.get(socialSecurityNumber.substring(6, 7)) + Integer // NOSONAR
-                .valueOf(socialSecurityNumber.substring(4, 6)))); // NOSONAR
+          .valueOf(socialSecurityNumber.substring(4, 6)))); // NOSONAR
         Date dob = null;
         try {
             dob = date().parse(dayAndMonth + year);
         } catch (ParseException e) {
-            result = new ValidationResult(fieldName, createI18NText(NOT_A_DATE_ERROR, FORM_COMMON_BUNDLE_NAME));
+            result = new ValidationResult(validationInput.getFieldName(), getI18Text(NOT_A_DATE_ERROR_KEY, validationInput.getApplicationSystemId()));
         }
         if (dob != null && dob.after(new Date())) {
-            result = new ValidationResult(fieldName, createI18NText(DOB_IN_FUTURE, FORM_COMMON_BUNDLE_NAME));
+            result = new ValidationResult(validationInput.getFieldName(), getI18Text(DOB_IN_FUTURE_ERROR_KEY, validationInput.getApplicationSystemId()));
         }
         return result;
     }

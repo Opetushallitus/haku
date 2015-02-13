@@ -31,8 +31,8 @@ public class ContainedInOtherFieldValidator extends FieldValidator {
     private final String otherFieldName;
 
     public ContainedInOtherFieldValidator(final String otherFieldName,
-                                          final I18nText errorMessage) {
-        super(errorMessage);
+                                          final String errorMessageKey) {
+        super(errorMessageKey);
         Validate.notNull(otherFieldName, "'otherFieldName' can't be null");
         this.otherFieldName = otherFieldName;
     }

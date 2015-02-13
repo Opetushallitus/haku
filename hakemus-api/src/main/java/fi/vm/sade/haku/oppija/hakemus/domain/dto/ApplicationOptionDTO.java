@@ -3,6 +3,7 @@ package fi.vm.sade.haku.oppija.hakemus.domain.dto;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.util.StringUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import fi.vm.sade.haku.virkailija.valinta.dto.HakemuksenTila;
 import fi.vm.sade.haku.virkailija.valinta.dto.ValintatuloksenTila;
 
@@ -29,50 +30,49 @@ public class ApplicationOptionDTO {
 
     private String jonoId;
 
-    private static final String BUNDLE_NAME = "messages";
     private static final Map<HakemuksenTila, I18nText> sijoittelunTulosTranslations;
     private static final Map<ValintatuloksenTila, I18nText> vastaanottoTietoTranslations;
 
     static {
         sijoittelunTulosTranslations = new HashMap<HakemuksenTila, I18nText>(6);
         sijoittelunTulosTranslations.put(HakemuksenTila.HYLATTY,
-                ElementUtil.createI18NText("virkailija.hakemus.valintatiedot.sijoittelu.hylatty", BUNDLE_NAME));
+                ElementUtil.createI18NText("virkailija.hakemus.valintatiedot.sijoittelu.hylatty", OppijaConstants.MESSAGES_BUNDLE_NAME));
         sijoittelunTulosTranslations.put(HakemuksenTila.HYVAKSYTTY,
-                ElementUtil.createI18NText("virkailija.hakemus.valintatiedot.sijoittelu.hyvaksytty", BUNDLE_NAME));
+                ElementUtil.createI18NText("virkailija.hakemus.valintatiedot.sijoittelu.hyvaksytty", OppijaConstants.MESSAGES_BUNDLE_NAME));
         sijoittelunTulosTranslations.put(HakemuksenTila.PERUNUT,
-                ElementUtil.createI18NText("virkailija.hakemus.valintatiedot.sijoittelu.perunut", BUNDLE_NAME));
+                ElementUtil.createI18NText("virkailija.hakemus.valintatiedot.sijoittelu.perunut", OppijaConstants.MESSAGES_BUNDLE_NAME));
         sijoittelunTulosTranslations.put(HakemuksenTila.PERUUNTUNUT,
-                ElementUtil.createI18NText("virkailija.hakemus.valintatiedot.sijoittelu.peruuntunut", BUNDLE_NAME));
+                ElementUtil.createI18NText("virkailija.hakemus.valintatiedot.sijoittelu.peruuntunut", OppijaConstants.MESSAGES_BUNDLE_NAME));
         sijoittelunTulosTranslations.put(HakemuksenTila.PERUUTETTU,
-                ElementUtil.createI18NText("virkailija.hakemus.valintatiedot.sijoittelu.peruutettu", BUNDLE_NAME));
+                ElementUtil.createI18NText("virkailija.hakemus.valintatiedot.sijoittelu.peruutettu", OppijaConstants.MESSAGES_BUNDLE_NAME));
         sijoittelunTulosTranslations.put(HakemuksenTila.VARALLA,
-                ElementUtil.createI18NText("virkailija.hakemus.valintatiedot.sijoittelu.varalla", BUNDLE_NAME));
+                ElementUtil.createI18NText("virkailija.hakemus.valintatiedot.sijoittelu.varalla", OppijaConstants.MESSAGES_BUNDLE_NAME));
         sijoittelunTulosTranslations.put(HakemuksenTila.HARKINNANVARAISESTI_HYVAKSYTTY,
-                ElementUtil.createI18NText("virkailija.hakemus.valintatiedot.sijoittelu.harkinnanvaraisestihyvaksytty", BUNDLE_NAME));
+                ElementUtil.createI18NText("virkailija.hakemus.valintatiedot.sijoittelu.harkinnanvaraisestihyvaksytty", OppijaConstants.MESSAGES_BUNDLE_NAME));
         sijoittelunTulosTranslations.put(HakemuksenTila.VARASIJALTA_HYVAKSYTTY,
-                ElementUtil.createI18NText("virkailija.hakemus.valintatiedot.sijoittelu.varasijaltahyvaksytty", BUNDLE_NAME));
+                ElementUtil.createI18NText("virkailija.hakemus.valintatiedot.sijoittelu.varasijaltahyvaksytty", OppijaConstants.MESSAGES_BUNDLE_NAME));
 
         vastaanottoTietoTranslations = new HashMap<ValintatuloksenTila, I18nText>();
         vastaanottoTietoTranslations.put(ValintatuloksenTila.EI_VASTAANOTETTU_MAARA_AIKANA,
-                ElementUtil.createI18NText("virkailija.hakemus.valintatiedot.vastaanotto.eimaaraaikana", BUNDLE_NAME));
+                ElementUtil.createI18NText("virkailija.hakemus.valintatiedot.vastaanotto.eimaaraaikana", OppijaConstants.MESSAGES_BUNDLE_NAME));
         vastaanottoTietoTranslations.put(ValintatuloksenTila.ILMOITETTU,
-                ElementUtil.createI18NText("virkailija.hakemus.valintatiedot.vastaanotto.ilmoitettu", BUNDLE_NAME));
+                ElementUtil.createI18NText("virkailija.hakemus.valintatiedot.vastaanotto.ilmoitettu", OppijaConstants.MESSAGES_BUNDLE_NAME));
         vastaanottoTietoTranslations.put(ValintatuloksenTila.PERUNUT,
-                ElementUtil.createI18NText("virkailija.hakemus.valintatiedot.vastaanotto.perunut", BUNDLE_NAME));
+                ElementUtil.createI18NText("virkailija.hakemus.valintatiedot.vastaanotto.perunut", OppijaConstants.MESSAGES_BUNDLE_NAME));
         vastaanottoTietoTranslations.put(ValintatuloksenTila.PERUUTETTU,
-                ElementUtil.createI18NText("virkailija.hakemus.valintatiedot.vastaanotto.peruutettu", BUNDLE_NAME));
+                ElementUtil.createI18NText("virkailija.hakemus.valintatiedot.vastaanotto.peruutettu", OppijaConstants.MESSAGES_BUNDLE_NAME));
         vastaanottoTietoTranslations.put(ValintatuloksenTila.VASTAANOTTANUT_LASNA,
-                ElementUtil.createI18NText("virkailija.hakemus.valintatiedot.vastaanotto.lasna", BUNDLE_NAME));
+                ElementUtil.createI18NText("virkailija.hakemus.valintatiedot.vastaanotto.lasna", OppijaConstants.MESSAGES_BUNDLE_NAME));
         vastaanottoTietoTranslations.put(ValintatuloksenTila.VASTAANOTTANUT_POISSAOLEVA,
-                ElementUtil.createI18NText("virkailija.hakemus.valintatiedot.vastaanotto.poissa", BUNDLE_NAME));
+                ElementUtil.createI18NText("virkailija.hakemus.valintatiedot.vastaanotto.poissa", OppijaConstants.MESSAGES_BUNDLE_NAME));
         vastaanottoTietoTranslations.put(ValintatuloksenTila.VASTAANOTTANUT,
-                ElementUtil.createI18NText("virkailija.hakemus.valintatiedot.vastaanotto.vastaanottanut", BUNDLE_NAME));
+                ElementUtil.createI18NText("virkailija.hakemus.valintatiedot.vastaanotto.vastaanottanut", OppijaConstants.MESSAGES_BUNDLE_NAME));
         vastaanottoTietoTranslations.put(ValintatuloksenTila.EHDOLLISESTI_VASTAANOTTANUT,
-                ElementUtil.createI18NText("virkailija.hakemus.valintatiedot.vastaanotto.ehdollisestivastaanottanut", BUNDLE_NAME));
+                ElementUtil.createI18NText("virkailija.hakemus.valintatiedot.vastaanotto.ehdollisestivastaanottanut", OppijaConstants.MESSAGES_BUNDLE_NAME));
         vastaanottoTietoTranslations.put(ValintatuloksenTila.VASTAANOTTANUT_SITOVASTI,
-                ElementUtil.createI18NText("virkailija.hakemus.valintatiedot.vastaanotto.sitovastivastaanottanut", BUNDLE_NAME));
+                ElementUtil.createI18NText("virkailija.hakemus.valintatiedot.vastaanotto.sitovastivastaanottanut", OppijaConstants.MESSAGES_BUNDLE_NAME));
         vastaanottoTietoTranslations.put(ValintatuloksenTila.KESKEN,
-                ElementUtil.createI18NText("virkailija.hakemus.valintatiedot.vastaanotto.kesken", BUNDLE_NAME));
+                ElementUtil.createI18NText("virkailija.hakemus.valintatiedot.vastaanotto.kesken", OppijaConstants.MESSAGES_BUNDLE_NAME));
     }
 
 

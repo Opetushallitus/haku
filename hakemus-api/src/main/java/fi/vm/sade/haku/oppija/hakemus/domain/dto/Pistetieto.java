@@ -3,6 +3,7 @@ package fi.vm.sade.haku.oppija.hakemus.domain.dto;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.util.StringUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import fi.vm.sade.haku.virkailija.valinta.dto.Osallistuminen;
 import fi.vm.sade.haku.virkailija.valinta.dto.PistetietoDTO;
 
@@ -16,18 +17,17 @@ public class Pistetieto {
     private Osallistuminen osallistuminen;
     private I18nText osallistuminenText;
     private String pisteet;
-
-    private static final String BUNDLE_NAME = "messages";
+    
     private static final Map<Osallistuminen, I18nText> osallistuminenTranslations;
 
     static {
         osallistuminenTranslations = new HashMap<Osallistuminen, I18nText>(3);
         osallistuminenTranslations.put(Osallistuminen.OSALLISTUU,
-                ElementUtil.createI18NText("virkailija.hakemus.valintatiedot.osallistuminen.osallistuu", BUNDLE_NAME));
+                ElementUtil.createI18NText("virkailija.hakemus.valintatiedot.osallistuminen.osallistuu", OppijaConstants.MESSAGES_BUNDLE_NAME));
         osallistuminenTranslations.put(Osallistuminen.EI_OSALLISTU,
-                ElementUtil.createI18NText("virkailija.hakemus.valintatiedot.osallistuminen.eiOsallistu", BUNDLE_NAME));
+                ElementUtil.createI18NText("virkailija.hakemus.valintatiedot.osallistuminen.eiOsallistu", OppijaConstants.MESSAGES_BUNDLE_NAME));
         osallistuminenTranslations.put(Osallistuminen.VIRHE,
-                ElementUtil.createI18NText("virkailija.hakemus.valintatiedot.osallistuminen.virhe", BUNDLE_NAME));
+                ElementUtil.createI18NText("virkailija.hakemus.valintatiedot.osallistuminen.virhe", OppijaConstants.MESSAGES_BUNDLE_NAME));
     }
 
     public Pistetieto() {

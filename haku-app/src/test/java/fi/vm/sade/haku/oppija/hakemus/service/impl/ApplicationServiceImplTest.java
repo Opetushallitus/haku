@@ -24,6 +24,7 @@ import fi.vm.sade.haku.oppija.lomake.validation.ValidatorFactory;
 import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
 import fi.vm.sade.haku.virkailija.authentication.impl.AuthenticationServiceMockImpl;
 import fi.vm.sade.haku.virkailija.koulutusinformaatio.KoulutusinformaatioService;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.i18n.I18nBundleService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 
 import org.junit.Before;
@@ -76,6 +77,7 @@ public class ApplicationServiceImplTest {
     private ApplicationFilterParameters filterParameters;
     private ApplicationServiceImpl service;
     private ElementTreeValidator elementTreeValidator;
+    private I18nBundleService i18nBundleService;
 
     @Before
     public void setUp() {
@@ -111,6 +113,7 @@ public class ApplicationServiceImplTest {
         ValidatorFactory validatorFactory = mock(ValidatorFactory.class);
         elementTreeValidator = new ElementTreeValidator(validatorFactory);
         koulutusinformaatioService = mock(KoulutusinformaatioService.class);
+        i18nBundleService = mock(I18nBundleService.class);
 
         ApplicationSearchResultDTO searchResultDTO = new ApplicationSearchResultDTO(1, Lists.newArrayList(new ApplicationSearchResultItemDTO()));
         when(applicationDAO.findAllQueried(eq(applicationQueryParameters), eq(filterParameters))).thenReturn(searchResultDTO);
@@ -125,7 +128,7 @@ public class ApplicationServiceImplTest {
 //        when(suoritusrekisteriService.getLahtoluokka(any(String.class))).thenReturn("9A");
 
         service = new ApplicationServiceImpl(applicationDAO, null, null, applicationOidService, authenticationService, organizationService,
-                hakuPermissionService, applicationSystemService, koulutusinformaatioService, elementTreeValidator);
+                hakuPermissionService, applicationSystemService, koulutusinformaatioService, i18nBundleService, elementTreeValidator);
 
         answerMap = new HashMap<String, String>();
         answerMap.put(OppijaConstants.ELEMENT_ID_FIRST_NAMES, "Etunimi");

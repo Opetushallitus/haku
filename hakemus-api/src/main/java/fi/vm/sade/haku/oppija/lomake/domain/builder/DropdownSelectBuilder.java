@@ -27,7 +27,7 @@ public class DropdownSelectBuilder extends OptionQuestionBuilder {
         for (Option option : options) {
             values.add(option.getValue());
         }
-        dropdownSelect.setValidator(new ValueSetValidator(ElementUtil.createI18NText("yleinen.virheellinenArvo"), values));
+        dropdownSelect.setValidator(new ValueSetValidator("yleinen.virheellinenArvo", values));
         return dropdownSelect;
     }
 

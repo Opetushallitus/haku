@@ -200,7 +200,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         String userOid = userSession.getUser().getUserName();
         if (userOid == null || userOid.equals(application.getPersonOid())) {
             Map<String, I18nText> errors = modelResponse.getErrorMessages();
-            errors.put("common", ElementUtil.createI18NText("virkailija.hakemus.omanMuokkausKielletty", "messages"));
+            errors.put("common", ElementUtil.createI18NText("virkailija.hakemus.omanMuokkausKielletty", OppijaConstants.MESSAGES_BUNDLE_NAME));
             modelResponse.setErrorMessages(errors);
         }
         return modelResponse;
@@ -615,7 +615,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         for (String ed : new String[] {"yo", "am", "amt", "kk", "ulk", "avoin", "muu"}) {
             Map<String, String> opt = new HashMap<String, String>();
             opt.put("value", ed);
-            Map<String, String> trans = ElementUtil.createI18NText("virkailija.hakemus.pohjakoulutus."+ed, "messages").getTranslations();
+            Map<String, String> trans = ElementUtil.createI18NText("virkailija.hakemus.pohjakoulutus."+ed, OppijaConstants.MESSAGES_BUNDLE_NAME).getTranslations();
             for (String lang : new String[] {"fi", "sv", "en"}) {
                 opt.put("name_"+lang, trans.get(lang));
             }

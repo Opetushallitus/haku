@@ -21,7 +21,9 @@ import com.google.common.base.Strings;
 import fi.vm.sade.haku.oppija.common.koulutusinformaatio.ApplicationOption;
 import fi.vm.sade.haku.oppija.common.koulutusinformaatio.ApplicationOptionService;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
+import fi.vm.sade.haku.oppija.lomake.util.SpringInjector;
 import fi.vm.sade.haku.oppija.lomake.validation.*;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.I18nBundle;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.i18n.I18nBundleService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import org.apache.commons.lang.Validate;
@@ -34,16 +36,15 @@ import java.util.*;
 
 public class PreferenceTableValidator implements Validator {
 
-    public final List<String> learningInstitutionInputIds = new ArrayList<String>();
-    public final List<String> educationInputIds = new ArrayList<String>();
-    public final List<GroupRestrictionValidator> groupRestrictionValidators = new ArrayList<GroupRestrictionValidator>();
+    private final List<String> learningInstitutionInputIds = new ArrayList<String>();
+    private final List<String> educationInputIds = new ArrayList<String>();
+    private final List<GroupRestrictionValidator> groupRestrictionValidators = new ArrayList<GroupRestrictionValidator>();
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PreferenceTableValidator.class);
 
-    @Transient
     private I18nBundleService i18nBundleService;
+    private I18nBundle i18nBundle;
 
-    @Transient
     private ApplicationOptionService applicationOptionService;
 
     public PreferenceTableValidator(final List<String> learningInstitutionInputIds, final List<String> educationInputIds, List<GroupRestrictionValidator> groupRestrictionValidators) {
@@ -51,12 +52,15 @@ public class PreferenceTableValidator implements Validator {
         this.learningInstitutionInputIds.addAll(learningInstitutionInputIds);
         this.educationInputIds.addAll(educationInputIds);
         this.groupRestrictionValidators.addAll(groupRestrictionValidators);
+        SpringInjector.injectSpringDependencies(this);
     }
 
     @Override
     public ValidationResult validate(final ValidationInput validationInput) {
         List<String> learningInstitutions = new ArrayList<String>();
         List<String> educations = new ArrayList<String>();
+
+        i18nBundle = i18nBundleService.getBundle(validationInput.getApplicationSystemId());
 
         final Map<String, I18nText> errors = new HashMap<String, I18nText>();
 
@@ -70,15 +74,15 @@ public class PreferenceTableValidator implements Validator {
 
             if (!checkBothNullOrTyped(learningInstitution, education)) {
                 errors.put(Strings.isNullOrEmpty(education) ? educationInputId : learningInstitutionInputId,
-                        ElementUtil.createI18NText("yleinen.pakollinen"));
+                  i18nBundle.get("yleinen.pakollinen"));
             }
 
             if (!checkUnique(learningInstitutions, educations, learningInstitution, education)) {
-                errors.put(educationInputId, ElementUtil.createI18NText("hakutoiveet.duplikaatteja"));
+                errors.put(educationInputId, i18nBundle.get("hakutoiveet.duplikaatteja"));
             }
 
             if (!checkEmptyRowBeforeGivenPreference(educations, education)) {
-                errors.put(educationInputIds.get(i - 1), ElementUtil.createI18NText("hakutoiveet.tyhjia"));
+                errors.put(educationInputIds.get(i - 1), i18nBundle.get("hakutoiveet.tyhjia"));
             }
 
             learningInstitutions.add(learningInstitution);
@@ -123,7 +127,7 @@ public class PreferenceTableValidator implements Validator {
                 }
             } catch (RuntimeException e) {
                 LOGGER.error("Error in validation:" + e.toString(), e);
-                errors.put(applicationOptionInput, i18nBundleService.getBundle(validationInput.getApplicationSystemId()).get(PreferenceConcreteValidatorImpl.UNKNOWN_ERROR));
+                errors.put(applicationOptionInput, i18nBundle.get(PreferenceConcreteValidatorImpl.UNKNOWN_ERROR));
             }
         }
         return new ArrayList<String>();

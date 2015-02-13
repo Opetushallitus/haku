@@ -33,6 +33,8 @@ import fi.vm.sade.haku.oppija.hakemus.service.SyntheticApplicationService;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.I18nBundle;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.i18n.I18nBundleService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,17 +64,15 @@ public class ApplicationResource {
 
     public static final String CHARSET_UTF_8 = ";charset=UTF-8";
 
-    @Autowired
     private ApplicationService applicationService;
 
-    @Autowired
     private ApplicationSystemService applicationSystemService;
 
-    @Autowired
     private ApplicationOptionService applicationOptionService;
 
-    @Autowired
     private SyntheticApplicationService syntheticApplicationService;
+
+    private I18nBundleService i18nBundleService;
 
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ApplicationResource.class);
@@ -81,11 +81,17 @@ public class ApplicationResource {
     public ApplicationResource() {
     }
 
-    public ApplicationResource(final ApplicationService applicationService, final ApplicationSystemService applicationSystemService, final ApplicationOptionService applicationOptionService, final SyntheticApplicationService syntheticApplicationService) {
+    @Autowired
+    public ApplicationResource(final ApplicationService applicationService,
+                               final ApplicationSystemService applicationSystemService,
+                               final ApplicationOptionService applicationOptionService,
+                               final SyntheticApplicationService syntheticApplicationService,
+                               final I18nBundleService i18nBundleService) {
         this.applicationService = applicationService;
         this.applicationSystemService = applicationSystemService;
         this.applicationOptionService = applicationOptionService;
         this.syntheticApplicationService = syntheticApplicationService;
+        this.i18nBundleService = i18nBundleService;
     }
 
     @GET
@@ -154,7 +160,8 @@ public class ApplicationResource {
         List<Map<String, Object>> applications = applicationService.findFullApplications(queryParams);
         Locale userLocale = (Locale) Config.get(request.getSession(), Config.FMT_LOCALE);
         ApplicationOption ao = applicationOptionService.get(aoOid);
-        return new XlsModel(ao, activeApplicationSystem, applications, userLocale.getLanguage());
+        I18nBundle i18nBundle = i18nBundleService.getBundle(activeApplicationSystem);
+        return new XlsModel(ao, activeApplicationSystem, applications, userLocale.getLanguage(), i18nBundle);
     }
 
     @GET

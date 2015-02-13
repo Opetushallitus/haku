@@ -17,7 +17,7 @@ public class NotificationBuilder extends TitledBuilder {
         return this;
     }
     public NotificationBuilder failValidation() {
-        validator(new AlwaysFailsValidator(ElementUtil.createI18NAsIs("")));
+        validator(new AlwaysFailsValidator(""));
         return this;
     }
 

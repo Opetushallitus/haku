@@ -12,7 +12,6 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.RelatedQuestionRuleBuilder.Rule;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.TextBuilder.Text;
-import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.createI18NText;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.createVarEqualsToValueRule;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.*;
 
@@ -221,7 +220,7 @@ public final class ArvosanatTheme {
         GradesTable gradesTable = new GradesTable("pk".equals(suffix), formParameters);
         String id = "arvosanataulukko_" + suffix;
         GradeGrid grid_pk = gradesTable.createGradeGrid(id, formParameters, isSv);
-        grid_pk.setHelp(createI18NText(id + ".help", formParameters));
+        grid_pk.setHelp(formParameters.getI18nText(id + ".help"));
         return grid_pk;
     }
 

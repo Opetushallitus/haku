@@ -63,12 +63,12 @@ public class PreferenceTable extends Question {
     @Override
     @Transient
     public List<Validator> getValidators() {
-        List<Validator> listOfValidators = new ArrayList<Validator>();
-        listOfValidators.add(getPreferenceTableValidator());
+        List<Validator> listOfValidators = new ArrayList<Validator>(1);
+        listOfValidators.add(createPreferenceTableValidator());
         return listOfValidators;
     }
 
-    private PreferenceTableValidator getPreferenceTableValidator() {
+    private PreferenceTableValidator createPreferenceTableValidator() {
         List<String> learningInstitutionInputIds = new ArrayList<String>();
         List<String> educationInputIds = new ArrayList<String>();
         for (Element element : this.getChildren()) {
@@ -78,7 +78,6 @@ public class PreferenceTable extends Question {
         }
 
         PreferenceTableValidator validator = new PreferenceTableValidator(learningInstitutionInputIds, educationInputIds, groupRestrictionValidators);
-        SpringInjector.injectSpringDependencies(validator);
         return validator;
     }
 

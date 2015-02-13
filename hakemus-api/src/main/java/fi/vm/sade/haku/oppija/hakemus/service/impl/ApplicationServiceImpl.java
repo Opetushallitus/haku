@@ -49,6 +49,7 @@ import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
 import fi.vm.sade.haku.virkailija.authentication.Person;
 import fi.vm.sade.haku.virkailija.authentication.PersonBuilder;
 import fi.vm.sade.haku.virkailija.koulutusinformaatio.KoulutusinformaatioService;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.i18n.I18nBundleService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionAttachmentDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO;
@@ -83,6 +84,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     private final HakuPermissionService hakuPermissionService;
     private final ApplicationSystemService applicationSystemService;
     private final KoulutusinformaatioService koulutusinformaatioService;
+    private final I18nBundleService i18nBundleService;
     private final ElementTreeValidator elementTreeValidator;
 
     @Autowired
@@ -95,6 +97,7 @@ public class ApplicationServiceImpl implements ApplicationService {
                                   HakuPermissionService hakuPermissionService,
                                   ApplicationSystemService applicationSystemService,
                                   KoulutusinformaatioService koulutusinformaatioService,
+                                  I18nBundleService i18nBundleService,
                                   ElementTreeValidator elementTreeValidator) {
 
         this.applicationDAO = applicationDAO;
@@ -106,6 +109,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         this.hakuPermissionService = hakuPermissionService;
         this.applicationSystemService = applicationSystemService;
         this.koulutusinformaatioService = koulutusinformaatioService;
+        this.i18nBundleService = i18nBundleService;
         this.elementTreeValidator = elementTreeValidator;
     }
 
@@ -388,7 +392,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         application.setPreferencesChecked(ApplicationUtil.checkAndCreatePreferenceCheckedData(application.getPreferencesChecked(), preferenceAoIds));
 
         ApplicationSystem applicationSystem = applicationSystemService.getApplicationSystem(application.getApplicationSystemId());
-        application.setAttachmentRequests(AttachmentUtil.resolveAttachmentRequests(applicationSystem, application, koulutusinformaatioService));
+        application.setAttachmentRequests(AttachmentUtil.resolveAttachmentRequests(applicationSystem, application, koulutusinformaatioService, i18nBundleService.getBundle(applicationSystem)));
 
         return application;
     }

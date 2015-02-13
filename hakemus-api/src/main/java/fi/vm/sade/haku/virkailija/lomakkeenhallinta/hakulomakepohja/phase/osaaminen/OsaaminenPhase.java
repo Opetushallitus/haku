@@ -42,7 +42,6 @@ import static fi.vm.sade.haku.oppija.lomake.domain.builder.RelatedQuestionRuleBu
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.TextAreaBuilder.TextArea;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.TextQuestionBuilder.TextQuestion;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.ThemeBuilder.Theme;
-import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.createI18NText;
 
 public class OsaaminenPhase {
 
@@ -77,7 +76,7 @@ public class OsaaminenPhase {
             ElementBuilder kysytaankoLukionKeskiarvo = Rule(new And(haettuAMKHon, pohjakoulutusLukio));
             List<Option> asteikkolista = koodistoService.getAmmatillisenTutkinnonArvosteluasteikko();
 
-            RegexFieldValidator validator = new RegexFieldValidator(ElementUtil.createI18NText("validator.keskiarvo.desimaaliluku", formParameters), "^$|\\d+\\,?\\d{1,2}");
+            RegexFieldValidator validator = new RegexFieldValidator("validator.keskiarvo.desimaaliluku", "^$|\\d+\\,?\\d{1,2}");
             osaaminenTheme.addChild(
                     kysytaankoLukionKeskiarvo.addChild(
                             TextQuestion("lukion-paattotodistuksen-keskiarvo")
@@ -119,7 +118,7 @@ public class OsaaminenPhase {
                 new Or(new Or(new And(new Regexp("arvosanaasteikko" + postfix, "^1-3$"), new Regexp("keskiarvo" + postfix, "^([1-2]\\,[0-9][0-9])|(3\\,00)$")),
                 new And(new Regexp("arvosanaasteikko" + postfix, "^1-5$"), new Regexp("keskiarvo" + postfix, "^([1-4]\\,[0-9][0-9])|(5\\,00)$"))),
                         new And(new Regexp("arvosanaasteikko" + postfix, "^4-10$"), new Regexp("keskiarvo" + postfix, "^([4-9]\\,[0-9][0-9])|(10\\,00)$")))),
-                createI18NText("validator.keskiarvo", formParameters));
+          formParameters.getI18nText("validator.keskiarvo"));
 
         parent.addChild(TextQuestion("keskiarvo" + postfix)
                 .inline()

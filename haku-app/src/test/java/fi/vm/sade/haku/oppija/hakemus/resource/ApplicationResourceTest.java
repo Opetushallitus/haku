@@ -28,6 +28,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.User;
 import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
 
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.i18n.I18nBundleService;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -51,6 +52,7 @@ public class ApplicationResourceTest {
     private ApplicationSystemService applicationSystemService;
     private ApplicationResource applicationResource;
     private Application application;
+    private I18nBundleService i18nBundleService;
 
     private final String OID = "1.2.3.4.5.100";
     private final String INVALID_OID = "1.2.3.4.5.999";
@@ -61,7 +63,7 @@ public class ApplicationResourceTest {
     public void setUp() {
         this.applicationService = mock(ApplicationService.class);
         this.applicationSystemService = mock(ApplicationSystemService.class);
-
+        this.i18nBundleService = mock(I18nBundleService.class);
 
         Map<String, String> phase1 = new HashMap<String, String>();
         phase1.put("nimi", "Alan Turing");
@@ -94,7 +96,7 @@ public class ApplicationResourceTest {
         when(applicationService.findApplications(any(ApplicationQueryParameters.class))).thenReturn(searchResultDTO);
         when(applicationService.findApplications(any(ApplicationQueryParameters.class))).thenReturn(emptySearchResultDTO);
         when(applicationSystemService.findByYearAndSemester(any(String.class), any(String.class))).thenReturn(asIds);
-        this.applicationResource = new ApplicationResource(this.applicationService, this.applicationSystemService, null, null);
+        this.applicationResource = new ApplicationResource(this.applicationService, this.applicationSystemService, null, null, i18nBundleService);
     }
 
     @Test
@@ -146,7 +148,7 @@ public class ApplicationResourceTest {
     @Test
     public void testFindApplicationsOrdered() {
         ApplicationServiceMock myApplicationService = new ApplicationServiceMock();
-        ApplicationResource resource = new ApplicationResource(myApplicationService, applicationSystemService, null, null);
+        ApplicationResource resource = new ApplicationResource(myApplicationService, applicationSystemService, null, null, i18nBundleService);
         resource.findApplications("query", null, null, "aoId", "groupOid", "baseEducation", "lopOid", "", "", "", "aoId",
                 false, false, "sendingSchool",
                 "class", new DateParam("201403041506"), 0, 20);
@@ -186,7 +188,7 @@ public class ApplicationResourceTest {
         public ApplicationQueryParameters applicationQueryParameters;
 
         public ApplicationServiceMock() {
-            super(null, null, null, null, null, null, null, applicationSystemService, null, null);
+            super(null, null, null, null, null, null, null, applicationSystemService, null, null, null);
         }
 
         @Override

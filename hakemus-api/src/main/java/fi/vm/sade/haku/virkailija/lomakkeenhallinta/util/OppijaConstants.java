@@ -28,6 +28,7 @@ public final class OppijaConstants {
 
 
     public static String FORM_COMMON_BUNDLE_NAME = "form_common";
+    public static String MESSAGES_BUNDLE_NAME = "messages";
 
     /*
     names of the fields that hold the information about the education degree

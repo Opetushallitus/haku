@@ -92,14 +92,14 @@ public final class KoulutustaustaPhase {
 
         // Tutkinnon taso
         Element tutkinnonTaso = Dropdown("amk_ope_tutkinnontaso")
-                .addOption(ElementUtil.createI18NText("amk_ope_tutkinnontaso.tohtori"), "tohtori")
-                .addOption(ElementUtil.createI18NText("amk_ope_tutkinnontaso.ylempi"), "ylempi")
-                .addOption(ElementUtil.createI18NText("amk_ope_tutkinnontaso.amk"), "amk")
-                .addOption(ElementUtil.createI18NText("amk_ope_tutkinnontaso.alempi"), "alempi")
-                .addOption(ElementUtil.createI18NText("amk_ope_tutkinnontaso.opisto"), "opisto")
-                .addOption(ElementUtil.createI18NText("amk_ope_tutkinnontaso.ammatillinen"), "ammatillinen")
-                .addOption(ElementUtil.createI18NText("amk_ope_tutkinnontaso.ammatti"), "ammatti")
-                .addOption(ElementUtil.createI18NText("amk_ope_tutkinnontaso.muu"), "muu")
+                .addOption(formParameters.getI18nText("amk_ope_tutkinnontaso.tohtori"), "tohtori")
+                .addOption(formParameters.getI18nText("amk_ope_tutkinnontaso.ylempi"), "ylempi")
+                .addOption(formParameters.getI18nText("amk_ope_tutkinnontaso.amk"), "amk")
+                .addOption(formParameters.getI18nText("amk_ope_tutkinnontaso.alempi"), "alempi")
+                .addOption(formParameters.getI18nText("amk_ope_tutkinnontaso.opisto"), "opisto")
+                .addOption(formParameters.getI18nText("amk_ope_tutkinnontaso.ammatillinen"), "ammatillinen")
+                .addOption(formParameters.getI18nText("amk_ope_tutkinnontaso.ammatti"), "ammatti")
+                .addOption(formParameters.getI18nText("amk_ope_tutkinnontaso.muu"), "muu")
                 .formParams(formParameters)
                 .requiredInline()
                 .build();
@@ -119,7 +119,7 @@ public final class KoulutustaustaPhase {
 
         // ...opettajana/kouluttajana tutkintoon johtavassa ammatillisessa koulutuksessa
         eiKorkeakoulututkintoaBuilder
-                .addOption(ElementUtil.createI18NText("ei_korkeakoulututkintoa.opettajana_ammatillisessa_tutkinto"),
+                .addOption(formParameters.getI18nText("ei_korkeakoulututkintoa.opettajana_ammatillisessa_tutkinto"),
                 "opettajana_ammatillisessa_tutkinto");
 
         Element opettajaAmmatillisessaTutkintoRule = createVarEqualsToValueRule("ei_korkeakoulututkintoa",
@@ -166,15 +166,15 @@ public final class KoulutustaustaPhase {
                             .build());
 
             eiKorkeakoulututkintoaBuilder
-                    .addOption(ElementUtil.createI18NText("ei_korkeakoulututkintoa.opettajana_ammatillisessa"),
+                    .addOption(formParameters.getI18nText("ei_korkeakoulututkintoa.opettajana_ammatillisessa"),
                             "opettajana_ammatillisessa")
                     .addChild(opettajaAmmatillisessaRule);
         }
 
         // ...en toimi ammatillisen koulutuksen opetustehtävissä
         eiKorkeakoulututkintoaBuilder.addOption(
-                ElementUtil.createI18NText("ei_korkeakoulututkintoa.ei_opettajana_ammatillisessa"),
-                "ei_opettajana_ammatillisessa");
+          formParameters.getI18nText("ei_korkeakoulututkintoa.ei_opettajana_ammatillisessa"),
+          "ei_opettajana_ammatillisessa");
 
         tutkinnontasoRule.addChild(eiKorkeakoulututkintoaBuilder.formParams(formParameters).requiredInline().build());
 
@@ -212,8 +212,8 @@ public final class KoulutustaustaPhase {
         // Pedagogiset opinnot
         if (formParameters.isAmmattillinenEritysopettajaTaiOppilaanohjaajaKoulutus()) {
             Element pedagogisetOpinnot = Radio("pedagogiset_opinnot")
-                    .addOption(ElementUtil.createI18NText("pedagogiset_opinnot.kylla"), "true")
-                    .addOption(ElementUtil.createI18NText("pedagogiset_opinnot.ei"), "false")
+                    .addOption(formParameters.getI18nText("pedagogiset_opinnot.kylla"), "true")
+                    .addOption(formParameters.getI18nText("pedagogiset_opinnot.ei"), "false")
                     .requiredInline()
                     .formParams(formParameters)
                     .build();
@@ -221,7 +221,7 @@ public final class KoulutustaustaPhase {
 
             Element pedagogisetOpinnotEiSuoritettuRule = createVarEqualsToValueRule("pedagogiset_opinnot", "false");
             pedagogisetOpinnotEiSuoritettuRule.addChild(Info()
-                    .i18nText(ElementUtil.createI18NText("pedagogiset_opinnot.ei.info"))
+                    .i18nText(formParameters.getI18nText("pedagogiset_opinnot.ei.info"))
                     .inline().build());
             elements.add(pedagogisetOpinnotEiSuoritettuRule);
 
@@ -282,8 +282,8 @@ public final class KoulutustaustaPhase {
 
         Element suoritusoikeusTaiAiempitutkinto = Radio("suoritusoikeus_tai_aiempi_tutkinto")
                 .addOptions(ImmutableList.of(
-                        new Option(createI18NText("form.yleinen.kylla", formParameters), KYLLA),
-                        new Option(createI18NText("form.yleinen.ei", formParameters), EI)))
+                        new Option(formParameters.getI18nText("form.yleinen.kylla"), KYLLA),
+                        new Option(formParameters.getI18nText("form.yleinen.ei"), EI)))
                 .required()
                 .formParams(formParameters).build();
 
@@ -634,8 +634,8 @@ public final class KoulutustaustaPhase {
         Element oppilaitos = oppilaitosBuilder.build();
         Element nayttotutkinto = Radio("pohjakoulutus_am_nayttotutkintona" + postfix)
                 .addOptions(ImmutableList.of(
-                        new Option(createI18NText("form.yleinen.kylla", formParameters), KYLLA),
-                        new Option(createI18NText("form.yleinen.ei", formParameters), EI)))
+                        new Option(formParameters.getI18nText("form.yleinen.kylla"), KYLLA),
+                        new Option(formParameters.getI18nText("form.yleinen.ei"), EI)))
                 .defaultOption(EI)
                 .requiredInline()
                 .labelKey("pohjakoulutus_am_nayttotutkintona")
@@ -659,9 +659,9 @@ public final class KoulutustaustaPhase {
                 .validator(ElementUtil.createYearValidator(formParameters.getApplicationSystem().getHakukausiVuosi() + 1, 1900))
                 .formParams(formParameters).build();
         Element yoTutkinto = Dropdown("pohjakoulutus_yo_tutkinto")
-                .addOption(createI18NText("form.koulutustausta.lukio.yotutkinto.fi"), "fi")
-                .addOption(createI18NText("form.koulutustausta.lukio.yotutkinto.lk"), "lk")
-                .addOption(createI18NText("form.koulutustausta.lukio.yotutkinto.lkOnly"), "lkOnly")
+                .addOption(formParameters.getI18nText("form.koulutustausta.lukio.yotutkinto.fi"), "fi")
+                .addOption(formParameters.getI18nText("form.koulutustausta.lukio.yotutkinto.lk"), "lk")
+                .addOption(formParameters.getI18nText("form.koulutustausta.lukio.yotutkinto.lkOnly"), "lkOnly")
                 .requiredInline()
                 .formParams(formParameters).build();
         yoMore.addChild(vuosi, yoTutkinto, buildYoAmmatillinen(formParameters, laajuusYksikot));
@@ -679,9 +679,9 @@ public final class KoulutustaustaPhase {
                 .validator(ElementUtil.createYearValidator(formParameters.getApplicationSystem().getHakukausiVuosi() + 1, 1900))
                 .formParams(formParameters).build();
         Element yoTutkintoKansainvalinenSuomessa = Dropdown("pohjakoulutus_yo_kansainvalinen_suomessa_tutkinto")
-                .addOption(createI18NText("form.koulutustausta.lukio.yotutkinto.ib"), "ib")
-                .addOption(createI18NText("form.koulutustausta.lukio.yotutkinto.eb"), "eb")
-                .addOption(createI18NText("form.koulutustausta.lukio.yotutkinto.rp"), "rp")
+                .addOption(formParameters.getI18nText("form.koulutustausta.lukio.yotutkinto.ib"), "ib")
+                .addOption(formParameters.getI18nText("form.koulutustausta.lukio.yotutkinto.eb"), "eb")
+                .addOption(formParameters.getI18nText("form.koulutustausta.lukio.yotutkinto.rp"), "rp")
                 .requiredInline()
                 .formParams(formParameters).build();
 
@@ -700,11 +700,11 @@ public final class KoulutustaustaPhase {
                 .validator(ElementUtil.createYearValidator(formParameters.getApplicationSystem().getHakukausiVuosi() + 1, 1900))
                 .formParams(formParameters).build();
         Element yoTutkintoUlkomainen = Dropdown("pohjakoulutus_yo_ulkomainen_tutkinto")
-                .addOption(createI18NText("form.koulutustausta.lukio.yotutkinto.ib"), "ib")
-                .addOption(createI18NText("form.koulutustausta.lukio.yotutkinto.eb"), "eb")
-                .addOption(createI18NText("form.koulutustausta.lukio.yotutkinto.rp"), "rp")
+                .addOption(formParameters.getI18nText("form.koulutustausta.lukio.yotutkinto.ib"), "ib")
+                .addOption(formParameters.getI18nText("form.koulutustausta.lukio.yotutkinto.eb"), "eb")
+                .addOption(formParameters.getI18nText("form.koulutustausta.lukio.yotutkinto.rp"), "rp")
                 .requiredInline()
-                .formParams(formParameters).build();
+          .formParams(formParameters).build();
 
         Element ulkomainenYoMissa = Dropdown("pohjakoulutus_yo_ulkomainen_maa")
                 .emptyOption()
@@ -769,7 +769,7 @@ public final class KoulutustaustaPhase {
                 .requiredInline().formParams(formParameters).build();
 
         aiempitutkintoMore.addChild(Info()
-                        .i18nText(ElementUtil.createI18NText("aiempitutkinto_info", formParameters))
+                        .i18nText(formParameters.getI18nText("aiempitutkinto_info"))
                         .formParams(formParameters).build(),
                 aiempitutkintoOppilaitos, aiempitutkintoTutkinto,tutkinto, vuosi
         );
@@ -797,7 +797,7 @@ public final class KoulutustaustaPhase {
                 .formParams(formParameters).build();
 
         suoritusoikeusMore.addChild(Info()
-                        .i18nText(ElementUtil.createI18NText("suoritusoikeus_info", formParameters))
+                        .i18nText(formParameters.getI18nText("suoritusoikeus_info"))
                         .formParams(formParameters)
                         .build(),
                 suoritusoikeusOppilaitos,
@@ -861,15 +861,14 @@ public final class KoulutustaustaPhase {
 
         Element suorittanutAmmatillisenTutkinnon = Radio("ammatillinenTutkintoSuoritettu")
                 .addOptions(ImmutableList.of(
-                        new Option(createI18NText("form.yleinen.kylla", formParameters), KYLLA),
-                        new Option(createI18NText("form.yleinen.ei", formParameters), EI)))
+                        new Option(formParameters.getI18nText("form.yleinen.kylla"), KYLLA),
+                        new Option(formParameters.getI18nText("form.yleinen.ei"), EI)))
                 .required()
                 .formParams(formParameters).build();
 
         Element suorittanutTutkinnonRule = createRuleIfVariableIsTrue("suorittanutTutkinnonRule", suorittanutAmmatillisenTutkinnon.getId());
         Element warning = Info().labelKey("form.koulutustausta.ammatillinensuoritettu.huom")
                 .formParams(formParameters).build();
-
         suorittanutTutkinnonRule.addChild(warning);
 
         suorittanutAmmatillisenTutkinnon.addChild(suorittanutTutkinnonRule);
@@ -908,8 +907,8 @@ public final class KoulutustaustaPhase {
 
         Element koulutuspaikkaAmmatillisenTutkintoon = Radio("KOULUTUSPAIKKA_AMMATILLISEEN_TUTKINTOON")
                 .addOptions(ImmutableList.of(
-                        new Option(createI18NText("form.yleinen.kylla", formParameters), KYLLA),
-                        new Option(createI18NText("form.yleinen.ei", formParameters), EI)))
+                        new Option(formParameters.getI18nText("form.yleinen.kylla"), KYLLA),
+                        new Option(formParameters.getI18nText("form.yleinen.ei"), EI)))
                 .required()
                 .formParams(formParameters).build();
 
@@ -945,19 +944,20 @@ public final class KoulutustaustaPhase {
 
             Element tuoreYoTodistus = createVarEqualsToValueRule(lukioPaattotodistusVuosi.getId(), hakukausiVuosiStr);
             tuoreYoTodistus.addChild(new DropdownSelectBuilder(ELEMENT_ID_SENDING_SCHOOL)
-                    .defaultValueAttribute("")
-                    .addOption(addSpaceAtTheBeginning(ElementUtil.createI18NText("form.koulutustausta.lukio.valitse.oppilaitos", formParameters)), "")
-                    .addOptions(koodistoService.getLukioKoulukoodit())
-                    .requiredInline()
-                    .formParams(formParameters).build());
+              .defaultValueAttribute("")
+              .addOption(
+                addSpaceAtTheBeginning(formParameters.getI18nText("form.koulutustausta.lukio.valitse.oppilaitos")), "")
+              .addOptions(koodistoService.getLukioKoulukoodit())
+              .requiredInline()
+              .formParams(formParameters).build());
 
             Element lukioRule = createVarEqualsToValueRule(baseEducation.getId(), YLIOPPILAS);
             Element ylioppilastutkinto = new DropdownSelectBuilder(OppijaConstants.YLIOPPILASTUTKINTO)
                     .defaultOption(OppijaConstants.YLIOPPILASTUTKINTO_FI)
-                    .addOption(createI18NText("form.koulutustausta.lukio.yotutkinto.fi"), OppijaConstants.YLIOPPILASTUTKINTO_FI)
-                    .addOption(createI18NText("form.koulutustausta.lukio.yotutkinto.ib"), "ib")
-                    .addOption(createI18NText("form.koulutustausta.lukio.yotutkinto.eb"), "eb")
-                    .addOption(createI18NText("form.koulutustausta.lukio.yotutkinto.rp"), "rp")
+                    .addOption(formParameters.getI18nText("form.koulutustausta.lukio.yotutkinto.fi"), OppijaConstants.YLIOPPILASTUTKINTO_FI)
+                    .addOption(formParameters.getI18nText("form.koulutustausta.lukio.yotutkinto.ib"), "ib")
+                    .addOption(formParameters.getI18nText("form.koulutustausta.lukio.yotutkinto.eb"), "eb")
+                    .addOption(formParameters.getI18nText("form.koulutustausta.lukio.yotutkinto.rp"), "rp")
                     .requiredInline()
                     .formParams(formParameters).build();
             lukioRule.addChild(TitledGroup("lukio.suoritus").formParams(formParameters).build()
@@ -967,8 +967,8 @@ public final class KoulutustaustaPhase {
 
             Element suorittanutAmmatillisenTutkinnonLukio = Radio("ammatillinenTutkintoSuoritettu")
                     .addOptions(ImmutableList.of(
-                            new Option(createI18NText("form.yleinen.kylla", formParameters), KYLLA),
-                            new Option(createI18NText("form.yleinen.ei", formParameters), EI)))
+                            new Option(formParameters.getI18nText("form.yleinen.kylla"), KYLLA),
+                            new Option(formParameters.getI18nText("form.yleinen.ei"), EI)))
                     .required()
                     .formParams(formParameters).build();
             lukioRule.addChild(suorittanutAmmatillisenTutkinnonLukio);

@@ -34,7 +34,7 @@ import static org.junit.Assert.assertTrue;
 
 public class RegexFieldValidatorTest {
 
-    public static final I18nText ERROR_MESSAGE = createI18NText("kenttä on virheellinen");
+    public static final String ERROR_MESSAGE_KEY = "error.message.key";
     public static final String FIELD_NAME = "kenttä";
     public static final String PATTERN = "[A-Za-z]{3}";
     public static final String PATTERN_WORK_EXPERIENCE = "^$|^([0-9]|[1-9][0-9]|[1-9][0-9][0-9]|1000)$"; // 0-1000
@@ -230,7 +230,7 @@ public class RegexFieldValidatorTest {
     }
 
     private RegexFieldValidator createValidator(final String pattern) {
-        return new RegexFieldValidator(ERROR_MESSAGE, pattern);
+        return new RegexFieldValidator(ERROR_MESSAGE_KEY, pattern);
 
     }
 }
