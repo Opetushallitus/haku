@@ -15,6 +15,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.Titled;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Question;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.TextQuestion;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.I18nBundle;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 
 import java.util.HashMap;
@@ -36,12 +37,14 @@ public class XlsModel {
     private final ArrayTable<String, Element, Object> table;
 
     private final String lang;
+    private I18nBundle i18nBundle;
     private final List<Element> columnKeyList;
 
     public XlsModel(final ApplicationOption ao,
                     final ApplicationSystem applicationSystem,
                     final List<Map<String, Object>> applications,
-                    final String lang) {
+                    final String lang,
+                    final I18nBundle i18nBundle) {
 
         this.ao = ao;
         this.applicationSystem = applicationSystem;
@@ -50,6 +53,7 @@ public class XlsModel {
         this.hakukausiVuosi = applicationSystem.getHakukausiVuosi().toString();
         this.asId = applicationSystem.getId();
         this.asName = applicationSystem.getName().getTranslations().get(lang);
+        this.i18nBundle = i18nBundle;
 
         List<Element> questions = findQuestions(applicationSystem, ao, lang);
         List<String> aids = Lists.transform(applications, ELEMENT_TO_OID_FUNCTION);
@@ -114,13 +118,13 @@ public class XlsModel {
             }
         }, answers);
         Element applicationOid = TextQuestion("oid")
-                .i18nText(ElementUtil.createI18NText("hakemusnumero"))
+                .i18nText(i18nBundle.get("hakemusnumero"))
                 .build();
         elements.add(0, applicationOid);
         int elementsLength = elements.size();
         for (int i = 0; i < elementsLength; i++) {
             Element element = elements.get(i);
-            Element[] extraExcelColumns = element.getExtraExcelColumns();
+            Element[] extraExcelColumns = element.getExtraExcelColumns(i18nBundle);
             if (extraExcelColumns != null && extraExcelColumns.length > 0) {
                 for (Element extraColumn : extraExcelColumns) {
                     elements.add(i+1, extraColumn);
@@ -133,7 +137,7 @@ public class XlsModel {
                 }
             }
         }
-        Element hakukohteenPrioriteetti = new TextQuestion("hakukohteenPrioriteetti", ElementUtil.createI18NText("Hakukohteen.prioriteetti"));
+        Element hakukohteenPrioriteetti = new TextQuestion("hakukohteenPrioriteetti", i18nBundle.get("Hakukohteen.prioriteetti"));
         elements.add(hakukohteenPrioriteetti);
         if (answers != null) {
             for (Map.Entry<String, String> entry : answers.entrySet()) {
