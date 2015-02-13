@@ -17,6 +17,14 @@ Lomakkeet hakijalle: http://localhost:9090/haku-app/lomake/
 
 #### Integration tests
 
+Project has Selenium and Mocha tests for functional testing.
+
+Run Mocha tests from:
+
+    http://localhost:9090/haku-app/resources/demo/testrunner.html
+
+    or from command line with "mvn -Pintegration-test -Dit.test=MochaIT verify"
+
 Run all integration tests:
 
     mvn clean verify -Pintegration-test

@@ -12,7 +12,7 @@
         <script src="lib/q.js"></script>
         <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
         <script>
-            var testTimeout = 60000;
+            var testTimeout = 30000;
             mocha.ui('bdd');
             mocha.reporter('html');
             mocha.timeout(testTimeout);
@@ -37,11 +37,28 @@
         <script>
             $(document).ready(function() {
                 if (window.mochaPhantomJS) {
-                    mochaPhantomJS.run()
+                    mochaPhantomJS.run();
                 } else {
-                    var runner = mocha.run();
-                    $(document).keyup(function(e) {
-                        if(e.keyCode==27) {
+                    runResults = {allDone: false, passed: 0, failed: 0, pending: 0, details: []};
+                    runner = mocha.run().on('test end', function (test) {
+                        if ('passed' === test.state) {
+                            runResults.passed++;
+                            runResults.details.push("Passed: "+test.title)
+                        } else if (test.pending) {
+                            runResults.pending++;
+                            runResults.details.push("Pending: "+test.title)
+                        } else {
+                            runResults.failed++;
+                            runResults.details.push("Failed: "+test.title + test.err)
+                        }
+                    }).on('suite end', function (suite) {
+                        if (suite.root) {
+                            runResults.allDone = true;
+                            console.log(runResults);
+                        }
+                    });
+                    $(document).keyup(function (e) {
+                        if (e.keyCode == 27) {
                             runner._abort = true
                         }
                     });

@@ -96,7 +96,11 @@ function KkHakemusPage() {
             return S('td:has(a[name='+name+'])').next().html()
         },
         createApplication: function() {
-            return logout().then(function() { return hakemusPage(); })
+            return logout().then(function() {
+                return openPage("/haku-app/lomakkeenhallinta/1.2.246.562.29.173465377510", function() {
+                    return S("form#form-henkilotiedot").first().is(':visible')
+                })()})
+                .then(function() { return hakemusPage(); })
                 .then(function() {
                     function input(name) {
                         return testFrame().document.getElementsByName(name)[0];
