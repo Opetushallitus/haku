@@ -1,12 +1,7 @@
 (function () {
 
     describe('2. asteen lomake', function () {
-        var henkilotietoPage = ToinenAsteLomakeHenkilotietoPage();
-        var koulutustaustaPage = ToinenAsteLomakeKoulutustaustaPage();
-        var hakutoiveetPage = ToinenAsteLomakeHakutoiveetPage();
-        var osaaminenPage = ToinenAsteLomakeOsaaminenPage();
-        var lisatietoPage = ToinenAsteLomakeLisatietoPage();
-        var esikatseluPage = ToinenAsteLomakeEsikatseluPage();
+        var lomake = lomakeSelectors();
 
         function input(fn, value) {
             return visible(fn)().then(function() {
@@ -63,63 +58,63 @@
 
         describe("Täytä lomake", function(done) {
             before(function(done) {
-                henkilotietoPage.start()
-                    .then(visible(henkilotietoPage.sukunimi))
+                lomake.start()
+                    .then(visible(lomake.sukunimi))
                     .then(function() {
                         return Q.all([
-                            input(henkilotietoPage.sukunimi, "Testikäs"),
-                            input(henkilotietoPage.etunimet, "Asia Kas"),
-                            input(henkilotietoPage.kutsumanimi, "Asia"),
-                            input(henkilotietoPage.hetu, "171175-830Y"),
-                            Q.fcall(henkilotietoPage.kaksoiskansalaisuus(false))
+                            input(lomake.sukunimi, "Testikäs"),
+                            input(lomake.etunimet, "Asia Kas"),
+                            input(lomake.kutsumanimi, "Asia"),
+                            input(lomake.hetu, "171175-830Y"),
+                            Q.fcall(lomake.kaksoiskansalaisuus(false))
                         ])
                     })
                     .then(wait.until(function() {return S("input#sukupuoli").length > 0;}))
                     .then(function() {
-                        expect(henkilotietoPage.sukupuoli().val()).to.equal('2');
+                        expect(lomake.sukupuoli().val()).to.equal('2');
                         return Q.all([
-                            input(henkilotietoPage.lahiosoite, "Testikatu 4"),
-                            input(henkilotietoPage.postinumero, "00100"),
-                            input(henkilotietoPage.kotikunta, "janakkala")
+                            input(lomake.lahiosoite, "Testikatu 4"),
+                            input(lomake.postinumero, "00100"),
+                            input(lomake.kotikunta, "janakkala")
                         ])
                     })
-                    .then(click(koulutustaustaPage.fromHenkilotiedot))
+                    .then(click(lomake.fromHenkilotiedot))
                     .then(headingVisible("Koulutustausta"))
-                    .then(click(koulutustaustaPage.pohjakoulutus("1")))
-                    .then(visible(koulutustaustaPage.pkPaattotodistusVuosi))
+                    .then(click(lomake.pohjakoulutus("1")))
+                    .then(visible(lomake.pkPaattotodistusVuosi))
                     .then(function() {
                         return Q.all([
-                            input(koulutustaustaPage.pkPaattotodistusVuosi, "2014"),
-                            input(koulutustaustaPage.pkKieli, "FI")
+                            input(lomake.pkPaattotodistusVuosi, "2014"),
+                            input(lomake.pkKieli, "FI")
                         ]);
                     })
-                    .then(click(hakutoiveetPage.fromKoulutustausta))
+                    .then(click(lomake.fromKoulutustausta))
                     .then(headingVisible("Hakutoiveet"))
                     .then(function () {
                         return Q.fcall(function() {
-                            hakutoiveetPage.opetuspiste1().val("Esp");
-                            hakutoiveetPage.opetuspiste1().trigger("keydown");
-                        }).then(visible(hakutoiveetPage.faktia)).then(function() {
-                            return hakutoiveetPage.faktia().mouseover().click();
+                            lomake.opetuspiste1().val("Esp");
+                            lomake.opetuspiste1().trigger("keydown");
+                        }).then(visible(lomake.faktia)).then(function() {
+                            return lomake.faktia().mouseover().click();
                         }).then(wait.until(function() {
-                            return hakutoiveetPage.koulutus1().find('option').length > 1;
+                            return lomake.koulutus1().find('option').length > 1;
                         }))
                     })
                     .then(function() {
-                        input(hakutoiveetPage.koulutus1, "Talonrakennus ja ymäristösuunnittelu, yo");
+                        input(lomake.koulutus1, "Talonrakennus ja ymäristösuunnittelu, yo");
                     })
-                    .then(visible(hakutoiveetPage.harkinnanvaraisuus1(false)))
+                    .then(visible(lomake.harkinnanvaraisuus1(false)))
                     .then(click(
-                        hakutoiveetPage.harkinnanvaraisuus1(false),
-                        hakutoiveetPage.soraTerveys1(false),
-                        hakutoiveetPage.soraOikeudenMenetys1(false),
-                        osaaminenPage.fromHakutoiveet))
+                        lomake.harkinnanvaraisuus1(false),
+                        lomake.soraTerveys1(false),
+                        lomake.soraOikeudenMenetys1(false),
+                        lomake.fromHakutoiveet))
                     .then(headingVisible("Arvosanat"))
-                    .then(click(lisatietoPage.fromOsaaminen))
+                    .then(click(lomake.fromOsaaminen))
                     .then(headingVisible("Lupatiedot"))
                     .then(function() {
-                        lisatietoPage.asiointikieli("suomi");
-                        esikatseluPage.fromLisatieto().click();
+                        lomake.asiointikieli("suomi");
+                        lomake.fromLisatieto().click();
                     })
                     .then(headingVisible("Henkilötiedot"))
                     .then(done, done);
@@ -164,14 +159,14 @@
             it('Peruskoulutus-ammattikoulutus-ydistelmä pyytää lukioita', function(done) {
                 Q.fcall(function() { S('#nav-koulutustausta')[0].click() })
                     .then(headingVisible("Koulutustausta"))
-                    .then(input(koulutustaustaPage.pkPaattotodistusVuosi, "2010"))
-                    .then(visible(koulutustaustaPage.ammatillinenKoulutuspaikka(false)))
+                    .then(input(lomake.pkPaattotodistusVuosi, "2010"))
+                    .then(visible(lomake.ammatillinenKoulutuspaikka(false)))
                     .then(click(
-                        koulutustaustaPage.ammatillinenKoulutuspaikka(false),
-                        koulutustaustaPage.ammatillinenSuoritettu(true)))
-                    .then(visibleText(koulutustaustaPage.suorittanutTutkinnonRule,
+                        lomake.ammatillinenKoulutuspaikka(false),
+                        lomake.ammatillinenSuoritettu(true)))
+                    .then(visibleText(lomake.suorittanutTutkinnonRule,
                         "Et voi hakea yhteishaussa ammatilliseen koulutukseen"))
-                    .then(click(hakutoiveetPage.fromKoulutustausta))
+                    .then(click(lomake.fromKoulutustausta))
                     .then(headingVisible("Hakutoiveet"))
                     .then(done, done);
             });
@@ -179,15 +174,15 @@
             it('Lukio-ammattikoulutus-ydistelmä estää pääsyn hakutoiveisiin', function(done) {
                 Q.fcall(function() { S('#nav-koulutustausta')[0].click() })
                     .then(headingVisible("Koulutustausta"))
-                    .then(visible(koulutustaustaPage.pkPaattotodistusVuosi))
-                    .then(click(koulutustaustaPage.pohjakoulutus("9")))
-                    .then(input(koulutustaustaPage.lukioPaattotodistusVuosi, "2010"))
-                    .then(click(koulutustaustaPage.ammatillinenSuoritettu(true)))
-                    .then(visibleText(koulutustaustaPage.warning,
+                    .then(visible(lomake.pkPaattotodistusVuosi))
+                    .then(click(lomake.pohjakoulutus("9")))
+                    .then(input(lomake.lukioPaattotodistusVuosi, "2010"))
+                    .then(click(lomake.ammatillinenSuoritettu(true)))
+                    .then(visibleText(lomake.warning,
                         "Et voi hakea yhteishaussa, koska olet jo suorittanut ammatillisen perustutkinnon"
                     ))
-                    .then(input(koulutustaustaPage.lukionKieli, "FI"))
-                    .then(click(hakutoiveetPage.fromKoulutustausta))
+                    .then(input(lomake.lukionKieli, "FI"))
+                    .then(click(lomake.fromKoulutustausta))
                     .then(headingVisible("Koulutustausta"))
                     .then(done, done);
             });
@@ -196,8 +191,8 @@
         describe("Sääntötestit", function(done) {
 
             beforeEach(function(done) {
-                henkilotietoPage.start()
-                    .then(visible(henkilotietoPage.sukunimi))
+                lomake.start()
+                    .then(visible(lomake.sukunimi))
                     .then($.post("/haku-app/lomake/1.2.246.562.5.50476818906",
                         {
                             "Sukunimi": "Testikäs",
@@ -230,7 +225,7 @@
                             "preference1-discretionary": "false",
                             "asiointikieli": "suomi"
                         }))
-                    .then(visible(henkilotietoPage.sukunimi))
+                    .then(visible(lomake.sukunimi))
                     .then(done, done);
             });
 
