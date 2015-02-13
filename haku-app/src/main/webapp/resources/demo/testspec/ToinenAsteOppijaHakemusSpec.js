@@ -63,6 +63,21 @@
             });
         }
 
+        function fromHenkilotiedotToKoulutustausta() {
+            koulutustaustaPage.fromHenkilotiedot().click();
+            return Q.fcall(headingVisible("Koulutustausta"));
+        };
+
+        function fromKoulututustaustaToHakutoiveet() {
+            hakutoiveetPage.fromKoulutustausta().click();
+            return Q.fcall(headingVisible("Hakutoiveet"));
+        };
+
+        function fromHakutoiveetToOsaaminen() {
+            osaaminenPage.fromHakutoiveet().click();
+            return Q.fcall(headingVisible("Arvosanat"));
+        };
+
         describe("Täytä lomake", function(done) {
             before(function(done) {
                 start()
@@ -108,7 +123,7 @@
                         }))
                     })
                     .then(function() {
-                        input(lomake.koulutus1, "Talonrakennus ja ymäristösuunnittelu, yo");
+                        input(lomake.koulutus1, "Talonrakennus ja ymäristösuunnittelu, pk");
                     })
                     .then(visible(lomake.harkinnanvaraisuus1(false)))
                     .then(click(
@@ -161,7 +176,7 @@
                 done();
             });
 
-            it('Peruskoulutus-ammattikoulutus-ydistelmä pyytää lukioita', function(done) {
+            it('Peruskoulutus-ammattikoulutus-yhdistelmä pyytää lukioita', function(done) {
                 Q.fcall(function() { S('#nav-koulutustausta')[0].click() })
                     .then(headingVisible("Koulutustausta"))
                     .then(input(lomake.pkPaattotodistusVuosi, "2010"))
@@ -176,7 +191,7 @@
                     .then(done, done);
             });
 
-            it('Lukio-ammattikoulutus-ydistelmä estää pääsyn hakutoiveisiin', function(done) {
+            it('Lukio-ammattikoulutus-yhdistelmä estää pääsyn hakutoiveisiin', function(done) {
                 Q.fcall(function() { S('#nav-koulutustausta')[0].click() })
                     .then(headingVisible("Koulutustausta"))
                     .then(visible(lomake.pkPaattotodistusVuosi))
@@ -217,7 +232,7 @@
                             "perusopetuksen_kieli": "FI",
                             "preferencesVisible": "5",
                             "preference1-Opetuspiste": "FAKTIA, Espoo op",
-                            "preference1-Opetuspiste-id": "1.2.246.562.10.89537774706&",
+                            "preference1-Opetuspiste-id": "1.2.246.562.10.89537774706",
                             "preference1-Koulutus": "Talonrakennus ja ymäristösuunnittelu, yo",
                             "preference1-Koulutus-id": "1.2.246.562.14.673437691210",
                             "preference1-Koulutus-educationDegree": "32",
@@ -257,11 +272,64 @@
                         done();
                     });
             });
+        });
 
-        })
+        describe("Urheilijakohteet", function(done) {
 
+            before(function(done) {
+                start()
+                    .then(visible(lomake.sukunimi))
+                    .then($.post("/haku-app/lomake/1.2.246.562.5.50476818906",
+                        {
+                            "Sukunimi": "Testikäs",
+                            "Etunimet": "Asia Kas",
+                            "Kutsumanimi": "Asia",
+                            "kansalaisuus": "FIN",
+                            "onkosinullakaksoiskansallisuus": "false",
+                            "Henkilotunnus": "171175-830Y",
+                            "sukupuoli": "2",
+                            "asuinmaa": "FIN",
+                            "lahiosoite": "Testikatu 4",
+                            "Postinumero": "00100",
+                            "kotikunta": "janakkala",
+                            "aidinkieli": "FI",
+                            "POHJAKOULUTUS": "1",
+                            "PK_PAATTOTODISTUSVUOSI": "2014",
+                            "perusopetuksen_kieli": "FI"
+                        }))
+                    .then(visible(lomake.sukunimi))
+                    .then(done, done);
+            });
+
+            it("Urheilevat kokit", function(done) {
+                Q.fcall(function() { S('#nav-henkilotiedot')[0].click() })
+                    .then(click(lomake.fromHenkilotiedot))
+                    .then(headingVisible("Koulutustausta"))
+                    .then(click(lomake.fromKoulutustausta))
+                    .then(headingVisible("Hakutoiveet"))
+                    .then(function () {
+                        return Q.fcall(function() {
+                            lomake.opetuspiste1().val("urh");
+                            lomake.opetuspiste1().trigger("keydown");
+                        }).then(visible(lomake.urheilijoidenKoulu)).then(function() {
+                            return lomake.urheilijoidenKoulu().mouseover().click();
+                        }).then(wait.until(function() {
+                            return lomake.koulutus1().find('option').length > 1;
+                        }))
+                    })
+                    .then(function() {
+                        input(lomake.koulutus1, "Urheilevien kokkien koulutus");
+                    })
+                    .then(visible(lomake.harkinnanvaraisuus1(false)))
+                    .then(click(
+                        lomake.harkinnanvaraisuus1(false),
+                        lomake.urheilija1(true),
+                        lomake.fromHakutoiveet))
+                    .then(headingVisible("Arvosanat"))
+                    .then(done, done);
+            });
+
+        });
     });
-
-    function asyncPrint(s) { return function() { console.log(s) } }
 
 })();

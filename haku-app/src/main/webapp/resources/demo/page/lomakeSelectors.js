@@ -36,6 +36,7 @@ function lomakeSelectors() {
         opetuspiste1: "input#preference1-Opetuspiste",
         koulutus1: "select#preference1-Koulutus",
         faktia: "a.ui-corner-all:contains(FAKTIA, Espoo op)",
+        urheilijoidenKoulu: "a.ui-corner-all:contains(Urheilijoiden koulu)",
         fromKoulutustausta: "button[class=right][value=hakutoiveet][name=phaseId]:first",
         harkinnanvaraisuus1: function(harkinnanvaraisuus) {
             return "input#preference1-discretionary[value=" + harkinnanvaraisuus + "]";

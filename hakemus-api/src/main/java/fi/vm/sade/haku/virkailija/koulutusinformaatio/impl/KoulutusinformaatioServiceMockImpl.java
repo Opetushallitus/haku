@@ -26,6 +26,8 @@ public class KoulutusinformaatioServiceMockImpl implements
             return getAo3();
         } else if ("1.2.246.562.14.673437691210".equals(oid)) {
             return getAo4();
+        } else if ("1.2.246.562.20.17550428336".equals(oid)) {
+            return getAo5();
         }
 
 		ApplicationOptionDTO applicationOption = new ApplicationOptionDTO();
@@ -64,7 +66,7 @@ public class KoulutusinformaatioServiceMockImpl implements
             setTeachingLanguages(new ArrayList<String>(1) {{
                 add("FI");
             }});
-            setAthleteEducation(true);
+            setAthleteEducation(false);
             setProvider(new LearningOpportunityProviderDTO() {{
                 setId("1.2.246.562.10.51872958189");
                 setName("Stadin ammattiopisto, Sturenkadun toimipaikka");
@@ -82,14 +84,14 @@ public class KoulutusinformaatioServiceMockImpl implements
             setTeachingLanguages(new ArrayList<String>(1) {{
                 add("FI");
             }});
-            setAthleteEducation(true);
+            setAthleteEducation(false);
             setKaksoistutkinto(false);
             setVocational(true);
+            setSora(true);
             setProvider(new LearningOpportunityProviderDTO() {{
                 setId("1.2.246.562.10.89537774706");
                 setName("FAKTIA, Espoo op");
             }});
-            setSora(true);
         }};
     }
 
@@ -106,14 +108,13 @@ public class KoulutusinformaatioServiceMockImpl implements
             setAthleteEducation(false);
             setKaksoistutkinto(false);
             setVocational(true);
+            setSora(false);
             setProvider(new LearningOpportunityProviderDTO() {{
                 setId("1.2.246.562.10.35241670047");
                 setName("Anna Tapion koulu");
             }});
-            setSora(false);
         }};
     }
-
 
     private ApplicationOptionDTO getAo4() {
         return new ApplicationOptionDTO() {{
@@ -129,7 +130,24 @@ public class KoulutusinformaatioServiceMockImpl implements
                 setId("1.2.246.562.10.89537774706");
                 setName("FAKTIA, Espoo op");
             }});
+        }};
+    }
+    private ApplicationOptionDTO getAo5() {
+        return new ApplicationOptionDTO() {{
+            setId("1.2.246.562.20.17550428336");
+            setName("Urheilevien kokkien koulutus");
+            setEducationDegree("32");
+            setTeachingLanguages(new ArrayList<String>(1) {{
+                add("FI");
+            }});
             setSora(false);
+            setVocational(true);
+            setAthleteEducation(false);
+            setProvider(new LearningOpportunityProviderDTO() {{
+                setId("1.2.246.562.10.35241670048");
+                setName("Urheilijoiden koulu");
+                setAthleteEducation(true);
+            }});
         }};
     }
 

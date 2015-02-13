@@ -50,6 +50,10 @@ public class SearchResourceMock {
             return ImmutableList.<Map<String, String>>of(
                     ImmutableMap.of("id", "1.2.246.562.10.35241670047", "name", "Anna Tapion koulu")
             );
+        } else if (term.equalsIgnoreCase("urh")) {
+            return ImmutableList.<Map<String, String>>of(
+                    ImmutableMap.of("id", "1.2.246.562.10.35241670048", "name", "Urheilijoiden koulu", "key", "urheilijoiden koulu")
+            );
         } else {
             return ImmutableList.of();
         }
@@ -63,7 +67,7 @@ public class SearchResourceMock {
 
         if (lopId.equalsIgnoreCase("1.2.246.562.10.89537774706")) {
             return "[{\"id\":\"1.2.246.562.14.673437691210\"," +
-                    "\"name\":\"Talonrakennus ja ymäristösuunnittelu, yo\"," +
+                    "\"name\":\"Talonrakennus ja ymäristösuunnittelu, pk\"," +
                     "\"educationDegree\":\"32\", " +
                     "\"sora\": true, " +
                     "\"teachingLanguages\":[\"FI\"], " +
@@ -86,6 +90,7 @@ public class SearchResourceMock {
                     "\"vocational\":true, " +
                     "\"childLONames\":[" +
                     "\"Kaivosalan perustutkinto, Kaivosalan koulutusohjelma\"]}," +
+
                     "{\"id\":\"1.2.246.562.14.39251489298\"," +
                     "\"name\":\"Musiikkiteknologian koulutusohjelma, pk (Musiikkialan perustutkinto)\"," +
                     "\"educationDegree\":\"32\", " +
@@ -94,6 +99,7 @@ public class SearchResourceMock {
                     "\"childLONames\":[" +
                     "\"Musiikkialan perustutkinto, Musiikkiteknologian koulutusohjelma\"," +
                     "\"Musiikkialan perustutkinto, Pianonvirityksen koulutusohjelma\"]}," +
+
                     "{\"id\":\"1.2.246.562.14.71344129359\"," +
                     "\"name\":\"Tuotteen suunnittelun ja valmistuksen koulutusohjelma, pk (Käsi- ja taideteollisuusalan perustutkinto)\", " +
                     "\"educationDegree\":\"30\", " +
@@ -116,8 +122,8 @@ public class SearchResourceMock {
                     "\"teachingLanguages\":[\"FI\"]," +
                     "\"organizationGroups\":[],"+
                     "\"athleteEducation\":true}," +
-                    "{" +
-                    "\"id\":\"1.2.246.562.5.32094353409\"," +
+
+                    "{\"id\":\"1.2.246.562.5.32094353409\"," +
                     "\"name\":\"Turvallisuusalan perustutkinto, yo\"," +
                     "\"aoIdentifier\":\"505\"," +
                     "\"educationDegree\":\"32\"," +
@@ -126,8 +132,8 @@ public class SearchResourceMock {
                     "\"teachingLanguages\":[\"FI\"]," +
                     "\"organizationGroups\":[],"+
                     "\"athleteEducation\":true}," +
-                    "{" +
-                    "\"id\":\"1.2.246.562.5.37738069758\"," +
+
+                    "{\"id\":\"1.2.246.562.5.37738069758\"," +
                     "\"name\":\"Maanmittausalan perustutkinto, yo\"," +
                     "\"aoIdentifier\":\"890\"," +
                     "\"educationDegree\":\"22\"," +
@@ -136,8 +142,8 @@ public class SearchResourceMock {
                     "\"teachingLanguages\":[\"FI\"]," +
                     "\"organizationGroups\":[],"+
                     "\"athleteEducation\":true}," +
-                    "{" +
-                    "\"id\":\"1.2.246.562.5.52308596866\"," +
+
+                    "{\"id\":\"1.2.246.562.5.52308596866\"," +
                     "\"name\":\"Suunnitteluassistentin perustutkinto, yo\"," +
                     "\"aoIdentifier\":\"668\"," +
                     "\"educationDegree\":\"30\"," +
@@ -146,8 +152,8 @@ public class SearchResourceMock {
                     "\"teachingLanguages\":[\"FI\"]," +
                     "\"organizationGroups\":[],"+
                     "\"athleteEducation\":true}," +
-                    "{" +
-                    "\"id\":\"1.2.246.562.5.66688607689\"," +
+
+                    "{\"id\":\"1.2.246.562.5.66688607689\"," +
                     "\"name\":\"Sähkö- ja automaatiotekniikan perustutkinto, yo\"," +
                     "\"aoIdentifier\":\"192\"," +
                     "\"educationDegree\":\"32\"," +
@@ -156,8 +162,8 @@ public class SearchResourceMock {
                     "\"teachingLanguages\":[\"FI\"]," +
                     "\"organizationGroups\":[],"+
                     "\"athleteEducation\":true}," +
-                    "{" +
-                    "\"id\":\"1.2.246.562.5.79820899882\"," +
+
+                    "{\"id\":\"1.2.246.562.5.79820899882\"," +
                     "\"name\":\"Puualan perustutkinto, yo\"," +
                     "\"aoIdentifier\":\"891\"," +
                     "\"educationDegree\":\"32\"," +
@@ -166,8 +172,8 @@ public class SearchResourceMock {
                     "\"teachingLanguages\":[\"FI\"]," +
                     "\"organizationGroups\":[],"+
                     "\"athleteEducation\":true}," +
-                    "{" +
-                    "\"id\":\"1.2.246.562.5.95890367071\"," +
+
+                    "{\"id\":\"1.2.246.562.5.95890367071\"," +
                     "\"name\":\"Verhoilu- ja sisustusalan perustutkinto, yo\"," +
                     "\"aoIdentifier\":\"653\"," +
                     "\"educationDegree\":\"32\"," +
@@ -184,8 +190,20 @@ public class SearchResourceMock {
                     "\"educationDegree\":\"22\"," +
                     "\"childLONames\":[],\"sora\":false," +
                     "\"teachingLanguages\":[\"FI\"]," +
-                    "\"organizationGroups\":[],"+
+                    "\"organizationGroups\":[]," +
                     "\"athleteEducation\":false," +
+                    "\"kaksoistutkinto\":false," +
+                    "\"vocational\":true," +
+                    "\"educationCodeUri\":\"koulutus_222222\"}]";
+        } else if (lopId.equalsIgnoreCase("1.2.246.562.10.35241670048")) {
+            return "[{\"id\":\"1.2.246.562.20.17550428336\"," +
+                    "\"name\":\"Urheilevien kokkien koulutus\"," +
+                    "\"aoIdentifier\":\"892\"," +
+                    "\"educationDegree\":\"32\"," +
+                    "\"childLONames\":[],\"sora\":false," +
+                    "\"teachingLanguages\":[\"FI\"]," +
+                    "\"organizationGroups\":[],"+
+                    "\"athleteEducation\":true," +
                     "\"kaksoistutkinto\":false," +
                     "\"vocational\":true," +
                     "\"educationCodeUri\":\"koulutus_222222\"}]";

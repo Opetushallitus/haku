@@ -531,7 +531,8 @@ public class ApplicationServiceImpl implements ApplicationService {
                 answers.put(basekey+"-Koulutus-educationDegree", safeToString(applicationOption.getEducationDegree()));
                 answers.put(basekey+"-Koulutus-id-sora", String.valueOf(applicationOption.isSora()));
                 answers.put(basekey+"-Koulutus-id-lang", safeToString(teachingLang));
-                answers.put(basekey+"-Koulutus-id-athlete", String.valueOf(applicationOption.isAthleteEducation()));
+                answers.put(basekey+"-Koulutus-id-athlete", String.valueOf(applicationOption.isAthleteEducation()
+                        || applicationOption.getProvider().isAthleteEducation()));
                 answers.put(basekey+"-Koulutus-id-aoIdentifier", safeToString(applicationOption.getAoIdentifier()));
                 answers.put(basekey+"-Koulutus-id-kaksoistutkinto", String.valueOf(applicationOption.isKaksoistutkinto()));
                 answers.put(basekey+"-Koulutus-id-vocational", String.valueOf(applicationOption.isVocational()));
