@@ -1,5 +1,5 @@
 function lomakeSelectors() {
-    var selectors = initSelectors({
+    return initSelectors({
         // Henkilötiedot
         sukunimi: "input#Sukunimi",
         etunimet: "input#Etunimet",
@@ -10,6 +10,9 @@ function lomakeSelectors() {
         lahiosoite: "input#lahiosoite",
         postinumero: "input#Postinumero",
         kotikunta: "select#kotikunta",
+        kaksoiskansalaisuus: function(onKaksoiskansalaisuus) {
+            return "input#onkosinullakaksoiskansallisuus[value=" + onKaksoiskansalaisuus + "]";
+        },
 
         // Koulutustausta
         pkPaattotodistusVuosi : "input#PK_PAATTOTODISTUSVUOSI",
@@ -52,30 +55,11 @@ function lomakeSelectors() {
 
         // Lisätiedot
         fromOsaaminen: "button[class=right][value=lisatiedot][name=phaseId]:first",
+        asiointikieli: function(lang) {
+            return "input#asiointikieli[value="+lang+"]";
+        },
 
         // Esikatselu
         fromLisatieto: "button[class=right][value=esikatselu][name=phaseId]:first"
     });
-
-    // Non-selectors from earlier code structure, refactor.
-    selectors.asiointikieli = function(lang) {
-        return S("input#asiointikieli[value="+lang+"]").click();
-    };
-
-    selectors.kaksoiskansalaisuus = function(onKaksoiskansalaisuus) {
-        return function() {
-            S("input#onkosinullakaksoiskansallisuus[value="+onKaksoiskansalaisuus+"]")
-                .prop("checked", true);
-        }
-    };
-
-    selectors.start = function() {
-        return logout().then(function() {
-            return openPage("/haku-app/lomakkeenhallinta/1.2.246.562.5.50476818906", function() {
-                return S("form#form-henkilotiedot").first().is(':visible')
-            })()
-        });
-    };
-
-    return selectors;
 }

@@ -1,4 +1,11 @@
 (function () {
+    function start() {
+        return logout().then(function() {
+            return openPage("/haku-app/lomakkeenhallinta/1.2.246.562.5.50476818906", function() {
+                return S("form#form-henkilotiedot").first().is(':visible')
+            })()
+        });
+    }
 
     describe('2. asteen lomake', function () {
         var lomake = lomakeSelectors();
@@ -58,18 +65,18 @@
 
         describe("Täytä lomake", function(done) {
             before(function(done) {
-                lomake.start()
+                start()
                     .then(visible(lomake.sukunimi))
                     .then(function() {
                         return Q.all([
                             input(lomake.sukunimi, "Testikäs"),
                             input(lomake.etunimet, "Asia Kas"),
                             input(lomake.kutsumanimi, "Asia"),
-                            input(lomake.hetu, "171175-830Y"),
-                            Q.fcall(lomake.kaksoiskansalaisuus(false))
+                            input(lomake.hetu, "171175-830Y")
                         ])
                     })
                     .then(wait.until(function() {return S("input#sukupuoli").length > 0;}))
+                    .then(click(lomake.kaksoiskansalaisuus(false)))
                     .then(function() {
                         expect(lomake.sukupuoli().val()).to.equal('2');
                         return Q.all([
@@ -112,10 +119,8 @@
                     .then(headingVisible("Arvosanat"))
                     .then(click(lomake.fromOsaaminen))
                     .then(headingVisible("Lupatiedot"))
-                    .then(function() {
-                        lomake.asiointikieli("suomi");
-                        lomake.fromLisatieto().click();
-                    })
+                    .then(click(lomake.asiointikieli("suomi")))
+                    .then(click(lomake.fromLisatieto))
                     .then(headingVisible("Henkilötiedot"))
                     .then(done, done);
              });
@@ -191,7 +196,7 @@
         describe("Sääntötestit", function(done) {
 
             beforeEach(function(done) {
-                lomake.start()
+                start()
                     .then(visible(lomake.sukunimi))
                     .then($.post("/haku-app/lomake/1.2.246.562.5.50476818906",
                         {
