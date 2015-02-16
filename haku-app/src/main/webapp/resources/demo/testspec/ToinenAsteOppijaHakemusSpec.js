@@ -77,11 +77,12 @@
             });
         }
 
-        function autocomplete(dropdownFn, input, pickFn) {
+        function autocomplete(fn, input, text) {
+            var pickFn = lomake.autocomplete(text);
             return function() {
                 return Q.fcall(function() {
-                    dropdownFn().val(input);
-                    dropdownFn().trigger("keydown");
+                    fn().val(input);
+                    fn().trigger("keydown");
                 }).then(visible(pickFn)).then(function() {
                     return pickFn().mouseover()
                 }).then(function() {
@@ -143,7 +144,7 @@
                     })
                     .then(click(lomake.fromKoulutustausta))
                     .then(headingVisible("Hakutoiveet"))
-                    .then(autocomplete(lomake.opetuspiste1, "Esp", lomake.faktia))
+                    .then(autocomplete(lomake.opetuspiste1, "Esp", "FAKTIA, Espoo op"))
                     .then(select(lomake.koulutus1, "Talonrakennus ja ymäristösuunnittelu, pk"))
                     .then(click(
                         lomake.harkinnanvaraisuus1(false),
@@ -323,7 +324,7 @@
                     .then(headingVisible("Koulutustausta"))
                     .then(click(lomake.fromKoulutustausta))
                     .then(headingVisible("Hakutoiveet"))
-                    .then(autocomplete(lomake.opetuspiste1, "urh", lomake.urheilijoidenKoulu))
+                    .then(autocomplete(lomake.opetuspiste1, "urh", "Urheilijoiden koulu"))
                     .then(select(lomake.koulutus1, "Urheilevien kokkien koulutus"))
                     .then(click(
                         lomake.harkinnanvaraisuus1(false),
