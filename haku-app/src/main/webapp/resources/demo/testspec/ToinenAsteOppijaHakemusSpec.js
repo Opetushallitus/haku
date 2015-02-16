@@ -16,6 +16,19 @@
             })
         }
 
+        function select(fn, value) {
+            return function() {
+                return visible(fn)()
+                    .then(wait.until(function() {
+                        var matches = fn().find('option[value="' + value + '"]').length;
+                        if (matches > 1) {
+                            throw new Error('Value "' + value + '" matches ' + matches + ' <option>s from <select> ' + fn().selector)
+                        }
+                        return matches === 1;
+                    })).then(function() { input(fn, value) })
+            }
+        }
+
         function readTable($tableElement, allowWrongDimensions) {
             return $tableElement.find('tr').filter(function(i) {
                     return allowWrongDimensions || testFrame().jQuery("td", this).length === 2
@@ -54,6 +67,31 @@
         function visibleText(fn, text) {
             return wait.until(function() {
                 return fn().is(':visible') && fn().text().trim().indexOf(text) !== -1;
+            })
+        }
+
+        function hasClass(fn, className) {
+            return visible(fn)().then(function() {
+                return fn().hasClass(className);
+            });
+        }
+
+        function autocomplete(dropdownFn, input, pickFn) {
+            return function() {
+                return Q.fcall(function() {
+                    dropdownFn().val(input);
+                    dropdownFn().trigger("keydown");
+                }).then(visible(pickFn)).then(function() {
+                    return pickFn().mouseover()
+                }).then(function() {
+                    return Q.delay(100)
+                }).then(hasClass(pickFn, 'ui-state-hover')).then(click(pickFn))
+            };
+        }
+
+        function hasElements(fn, element) {
+            return wait.until(function() {
+                return fn().find(element).length > 1;
             })
         }
 
@@ -112,19 +150,8 @@
                     })
                     .then(click(lomake.fromKoulutustausta))
                     .then(headingVisible("Hakutoiveet"))
-                    .then(function () {
-                        return Q.fcall(function() {
-                            lomake.opetuspiste1().val("Esp");
-                            lomake.opetuspiste1().trigger("keydown");
-                        }).then(visible(lomake.faktia)).then(function() {
-                            return lomake.faktia().mouseover().click();
-                        }).then(wait.until(function() {
-                            return lomake.koulutus1().find('option').length > 1;
-                        }))
-                    })
-                    .then(function() {
-                        input(lomake.koulutus1, "Talonrakennus ja ymäristösuunnittelu, pk");
-                    })
+                    .then(autocomplete(lomake.opetuspiste1, "Esp", lomake.faktia))
+                    .then(select(lomake.koulutus1, "Talonrakennus ja ymäristösuunnittelu, pk"))
                     .then(visible(lomake.harkinnanvaraisuus1(false)))
                     .then(click(
                         lomake.harkinnanvaraisuus1(false),
@@ -306,19 +333,8 @@
                     .then(headingVisible("Koulutustausta"))
                     .then(click(lomake.fromKoulutustausta))
                     .then(headingVisible("Hakutoiveet"))
-                    .then(function () {
-                        return Q.fcall(function() {
-                            lomake.opetuspiste1().val("urh");
-                            lomake.opetuspiste1().trigger("keydown");
-                        }).then(visible(lomake.urheilijoidenKoulu)).then(function() {
-                            return lomake.urheilijoidenKoulu().mouseover().click();
-                        }).then(wait.until(function() {
-                            return lomake.koulutus1().find('option').length > 1;
-                        }))
-                    })
-                    .then(function() {
-                        input(lomake.koulutus1, "Urheilevien kokkien koulutus");
-                    })
+                    .then(autocomplete(lomake.opetuspiste1, "urh", lomake.urheilijoidenKoulu))
+                    .then(select(lomake.koulutus1, "Urheilevien kokkien koulutus"))
                     .then(visible(lomake.harkinnanvaraisuus1(false)))
                     .then(click(
                         lomake.harkinnanvaraisuus1(false),
