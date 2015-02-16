@@ -90,12 +90,6 @@
             };
         }
 
-        function hasElements(fn, element) {
-            return wait.until(function() {
-                return fn().find(element).length > 1;
-            })
-        }
-
         function headingVisible(heading) {
             return visible(function() {
                 return S("legend[class=h3]:contains(" + heading + ")");
