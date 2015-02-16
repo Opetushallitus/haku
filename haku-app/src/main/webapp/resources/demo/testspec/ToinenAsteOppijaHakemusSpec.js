@@ -79,7 +79,7 @@
         };
 
         describe("Täytä lomake", function(done) {
-            before(function(done) {
+            beforeEach(function(done) {
                 start()
                     .then(visible(lomake.sukunimi))
                     .then(function() {
