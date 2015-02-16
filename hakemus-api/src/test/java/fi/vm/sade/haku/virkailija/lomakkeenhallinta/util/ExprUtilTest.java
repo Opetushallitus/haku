@@ -6,7 +6,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 import org.junit.Test;
-import org.junit.runners.JUnit4;
 
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.Value;
 
@@ -53,8 +52,8 @@ public class ExprUtilTest {
 
     @Test
     public void testReduceToOr() throws Exception {
-        assertTrue(ExprUtil.reduceToOr(Arrays.asList(new Value("false"), new Value("false"), new Value("true"))).evaluate(new HashMap<String, String>() {{}}));
-        assertFalse(ExprUtil.reduceToOr(Arrays.asList(new Value("false"), new Value("false"), new Value("false"))).evaluate(new HashMap<String, String>() {{}}));
+        assertTrue(ExprUtil.any(Arrays.asList(new Value("false"), new Value("false"), new Value("true"))).evaluate(new HashMap<String, String>() {{}}));
+        assertFalse(ExprUtil.any(Arrays.asList(new Value("false"), new Value("false"), new Value("false"))).evaluate(new HashMap<String, String>() {{}}));
     }
 
     @Test

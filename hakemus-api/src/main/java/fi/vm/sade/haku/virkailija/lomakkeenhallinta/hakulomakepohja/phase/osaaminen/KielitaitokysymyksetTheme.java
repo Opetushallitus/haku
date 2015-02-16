@@ -184,7 +184,7 @@ public final class KielitaitokysymyksetTheme {
                 createKielitutkinto("valtionhallinnon_kielitutkinto_vk", formParameters));
 
 
-        Expr naytetaankoKielitaitoteema = ExprUtil.reduceToOr(ImmutableList.of(kysytaankoSuomiPK,
+        Expr naytetaankoKielitaitoteema = ExprUtil.any(ImmutableList.of(kysytaankoSuomiPK,
                 kysytaankoRuotsiPK, kysytaankoSuomiYO, kysytaankoRuotsiYO, kysytaankoSuomiKeskUlk, kysytaankoRuotsiKeskUlk,
                 kysytaankoSaamePK, kysytaankoSaameYO, kysytaankoSaameKeskUlk, kysytaankoViittomaPK, kysytaankoViittomaYO,
                 kysytaankoViittomaKeskUlk));
@@ -214,7 +214,7 @@ public final class KielitaitokysymyksetTheme {
                             new Equals(new Variable(String.format(OppijaConstants.EDUCATION_LANGUAGE, i)), new Value(educationDegreeLang)))
             );
         }
-        return ExprUtil.reduceToOr(exprs);
+        return ExprUtil.any(exprs);
     }
 
     public static Element createKielitaitokysymyksetThemeSyksy(final FormParameters formParameters) {

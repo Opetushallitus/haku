@@ -103,7 +103,7 @@ public class ValmisPhase {
                 String.format(EDUCATION_CODE_KEY, 4),
                 String.format(EDUCATION_CODE_KEY, 5));
 
-        Element musiikkiTanssiLiikuntaRule = Rule(ExprUtil.reduceToOr(ImmutableList.of(isMusiikki, isTanssi, isLiiKunta))).build();
+        Element musiikkiTanssiLiikuntaRule = Rule(ExprUtil.any(ImmutableList.of(isMusiikki, isTanssi, isLiiKunta))).build();
         musiikkiTanssiLiikuntaRule.addChild(TitledGroup("musiikkitanssiliikunta.ryhma").formParams(formParameters).build()
                 .addChild(Text(randomId()).labelKey("musiikkitanssiliikunta").formParams(formParameters).build()));
         return Lists.newArrayList(athleteRule, musiikkiTanssiLiikuntaRule);

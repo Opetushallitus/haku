@@ -17,7 +17,7 @@ public final class ExprUtil {
             Equals equal = new Equals(new Variable(id), new Value(value));
             exprs.add(equal);
         }
-        return reduceToOr(exprs);
+        return any(exprs);
     }
 
     public static Expr atLeastOneVariableContainsValue(final String value, final String... ids) {
@@ -26,7 +26,7 @@ public final class ExprUtil {
             Regexp rexExp = new Regexp(id, "(?:.*\\s*,\\s*|\\s*)" + value + "(?:,.*|\\s*|\\s+.*)");
             exprs.add(rexExp);
         }
-        return reduceToOr(exprs);
+        return any(exprs);
     }
 
     public static Expr atLeastOneValueEqualsToVariable(final String variable, final String... values) {
@@ -35,10 +35,10 @@ public final class ExprUtil {
             Equals equal = new Equals(new Variable(variable), new Value(value));
             exprs.add(equal);
         }
-        return reduceToOr(exprs);
+        return any(exps)
     }
 
-    public static Expr reduceToOr(final List<? extends Expr> exprs) {
+    public static Expr any(final List<? extends Expr> exprs) {
         Preconditions.checkArgument(!exprs.isEmpty());
         if (exprs.size() == 1) {
             return exprs.get(0);
