@@ -53,14 +53,15 @@
         function click() {
             var fns = arguments;
             return function() {
-                return Q.all(
-                    Object.keys(fns).map(function(i) {
+                var clickSequence = Object.keys(fns).map(function(i) {
+                    return function() {
                         var fn = fns[i];
                         return visible(fn)().then(function() {
                             fn().click();
                         })
-                    })
-                );
+                    }
+                });
+                return clickSequence.reduce(Q.when, Q());
             }
         }
 
@@ -119,7 +120,6 @@
         describe("Täytä lomake", function(done) {
             beforeEach(function(done) {
                 start()
-                    .then(visible(lomake.sukunimi))
                     .then(function() {
                         return Q.all([
                             input(lomake.sukunimi, "Testikäs"),
@@ -141,7 +141,6 @@
                     .then(click(lomake.fromHenkilotiedot))
                     .then(headingVisible("Koulutustausta"))
                     .then(click(lomake.pohjakoulutus("1")))
-                    .then(visible(lomake.pkPaattotodistusVuosi))
                     .then(function() {
                         return Q.all([
                             input(lomake.pkPaattotodistusVuosi, "2014"),
@@ -152,7 +151,6 @@
                     .then(headingVisible("Hakutoiveet"))
                     .then(autocomplete(lomake.opetuspiste1, "Esp", lomake.faktia))
                     .then(select(lomake.koulutus1, "Talonrakennus ja ymäristösuunnittelu, pk"))
-                    .then(visible(lomake.harkinnanvaraisuus1(false)))
                     .then(click(
                         lomake.harkinnanvaraisuus1(false),
                         lomake.soraTerveys1(false),
@@ -207,7 +205,6 @@
                 Q.fcall(function() { S('#nav-koulutustausta')[0].click() })
                     .then(headingVisible("Koulutustausta"))
                     .then(input(lomake.pkPaattotodistusVuosi, "2010"))
-                    .then(visible(lomake.ammatillinenKoulutuspaikka(false)))
                     .then(click(
                         lomake.ammatillinenKoulutuspaikka(false),
                         lomake.ammatillinenSuoritettu(true)))
@@ -221,7 +218,6 @@
             it('Lukio-ammattikoulutus-yhdistelmä estää pääsyn hakutoiveisiin', function(done) {
                 Q.fcall(function() { S('#nav-koulutustausta')[0].click() })
                     .then(headingVisible("Koulutustausta"))
-                    .then(visible(lomake.pkPaattotodistusVuosi))
                     .then(click(lomake.pohjakoulutus("9")))
                     .then(input(lomake.lukioPaattotodistusVuosi, "2010"))
                     .then(click(lomake.ammatillinenSuoritettu(true)))
@@ -335,7 +331,6 @@
                     .then(headingVisible("Hakutoiveet"))
                     .then(autocomplete(lomake.opetuspiste1, "urh", lomake.urheilijoidenKoulu))
                     .then(select(lomake.koulutus1, "Urheilevien kokkien koulutus"))
-                    .then(visible(lomake.harkinnanvaraisuus1(false)))
                     .then(click(
                         lomake.harkinnanvaraisuus1(false),
                         lomake.urheilija1(true),
