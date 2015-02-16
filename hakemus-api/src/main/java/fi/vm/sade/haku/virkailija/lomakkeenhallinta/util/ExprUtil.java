@@ -4,6 +4,7 @@ import com.google.common.base.Preconditions;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public final class ExprUtil {
@@ -30,12 +31,7 @@ public final class ExprUtil {
     }
 
     public static Expr atLeastOneValueEqualsToVariable(final String variable, final String... values) {
-        List<Expr> exprs = new ArrayList<>();
-        for (String value : values) {
-            Equals equal = new Equals(new Variable(variable), new Value(value));
-            exprs.add(equal);
-        }
-        return any(exps)
+        return new ValueListContains(Arrays.asList(values), new Variable(variable));
     }
 
     public static Expr any(final List<? extends Expr> exprs) {
