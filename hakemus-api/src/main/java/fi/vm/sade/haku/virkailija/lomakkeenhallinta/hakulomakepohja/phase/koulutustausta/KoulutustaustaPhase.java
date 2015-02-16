@@ -984,8 +984,9 @@ public final class KoulutustaustaPhase {
 
             Element suorittanutTutkinnonLukioRule =
                     createRuleIfVariableIsTrue(suorittanutAmmatillisenTutkinnonLukio.getId());
+            final String failKey = "form.koulutustausta.ammatillinenSuoritettu.lukio.huom";
             Element warningLukio =
-                    Warning(ElementUtil.randomId()).failValidation().labelKey("form.koulutustausta.ammatillinenSuoritettu.lukio.huom").formParams(formParameters).build();
+                    Warning(ElementUtil.randomId()).failValidation(failKey).labelKey(failKey).formParams(formParameters).build();
 
             suorittanutTutkinnonLukioRule.addChild(warningLukio);
 

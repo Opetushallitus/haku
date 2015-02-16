@@ -127,7 +127,7 @@ public class HakutoiveetPhase {
                             ExprUtil.isAnswerTrue("ammatillinenTutkintoSuoritettu"),
                             ExprUtil.atLeastOneValueEqualsToVariable(id + "-Koulutus-educationDegree", LISAOPETUS_EDUCATION_DEGREE, DISCRETIONARY_EDUCATION_DEGREE)))
                     .build();
-            Element ristiriita = Warning("koulutusasteristiriita").failValidation()
+            Element ristiriita = Warning("koulutusasteristiriita").failValidation("koulutusasteristiriita")
                     .formParams(formParameters).build();
             koulutusasteRistiriidassaSuoritettuunTutkintoon.addChild(ristiriita);
             pr.addChild(koulutusasteRistiriidassaSuoritettuunTutkintoon);

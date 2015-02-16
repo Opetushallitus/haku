@@ -16,8 +16,8 @@ public class NotificationBuilder extends TitledBuilder {
         this.notificationType = notificationType;
         return this;
     }
-    public NotificationBuilder failValidation() {
-        validator(new AlwaysFailsValidator(""));
+    public NotificationBuilder failValidation(final String failKey) {
+        validator(new AlwaysFailsValidator(failKey));
         return this;
     }
 
