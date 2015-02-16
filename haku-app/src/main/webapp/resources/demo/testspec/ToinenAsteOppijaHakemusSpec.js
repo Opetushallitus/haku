@@ -296,13 +296,12 @@
                             "POHJAKOULUTUS": "1",
                             "PK_PAATTOTODISTUSVUOSI": "2014",
                             "perusopetuksen_kieli": "FI"
-                        }))
-                    .then(visible(lomake.sukunimi))
-                    .then(done, done);
+                        }, function() {done()}));
             });
 
             it("Urheilevat kokit", function(done) {
-                Q.fcall(function() { S('#nav-henkilotiedot')[0].click() })
+
+                Q.fcall(visible(lomake.sukunimi))
                     .then(click(lomake.fromHenkilotiedot))
                     .then(headingVisible("Koulutustausta"))
                     .then(click(lomake.fromKoulutustausta))

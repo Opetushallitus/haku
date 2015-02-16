@@ -19,6 +19,8 @@ import fi.vm.sade.haku.oppija.lomake.validation.ElementTreeValidator;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidatorFactory;
 import fi.vm.sade.haku.oppija.ui.service.OfficerUIService;
 import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.I18nBundle;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.i18n.I18nBundleService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
@@ -91,7 +93,12 @@ public class OfficerUIServiceImplTest {
         organizationService = mock(OrganizationService.class);
         valintaService = new ValintaServiceMockImpl(); //mock(ValintaService.class);
         userSession = mock(UserSession.class);
-        baseEducationService = mock(BaseEducationService.class);
+        baseEducationService = mock(BaseEducationService.class);        I18nBundleService i18nBundleService = mock(I18nBundleService.class);
+        I18nBundle i18nBundle = mock(I18nBundle.class);
+        when(i18nBundle.get(any(String.class))).thenReturn(new I18nText(new HashMap<String, String>(3) {{
+            put("fi", "osoite");put("en", "osoite");put("sv", "osoite");
+        }}));
+        when(i18nBundleService.getBundle(any(ApplicationSystem.class))).thenReturn(i18nBundle);
 
         officerUIService = new OfficerUIServiceImpl(
                 applicationService,
@@ -106,6 +113,7 @@ public class OfficerUIServiceImplTest {
                 organizationService,
                 valintaService,
                 userSession,
+                null,
                 null,
                 "01.02 - 01.09");
         form.addChild(phase);
@@ -169,7 +177,7 @@ public class OfficerUIServiceImplTest {
 
         return new OfficerUIServiceImpl(applicationService, baseEducationService, formService,
                 null, hakuPermissionService,loggerAspect, "", "", elementTreeValidator,
-                null, null, null, null, userSession, null, null);
+                null, null, null, null, userSession, null, null, null);
     }
 
     @Test

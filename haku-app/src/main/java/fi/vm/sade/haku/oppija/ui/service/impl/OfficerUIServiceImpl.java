@@ -36,6 +36,7 @@ import fi.vm.sade.haku.oppija.ui.service.OfficerUIService;
 import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
 import fi.vm.sade.haku.virkailija.authentication.Person;
 import fi.vm.sade.haku.virkailija.koulutusinformaatio.KoulutusinformaatioService;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.i18n.I18nBundleService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
@@ -84,6 +85,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     private ValintaService valintaService;
     private final UserSession userSession;
     private final KoulutusinformaatioService koulutusinformaatioService;
+    private final I18nBundleService i18nBundleService;
 
     private static final DecimalFormat PISTE_FMT = new DecimalFormat("#.##");
 
@@ -106,6 +108,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
                                 final ValintaService valintaService,
                                 final UserSession userSession,
                                 final KoulutusinformaatioService koulutusinformaatioService,
+                                final I18nBundleService i18nBundleService,
                                 @Value("${hakukausi.kevat}") final String kevatkausi) {
         this.applicationService = applicationService;
         this.baseEducationService = baseEducationService;
@@ -122,6 +125,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         this.valintaService = valintaService;
         this.userSession = userSession;
         this.koulutusinformaatioService = koulutusinformaatioService;
+        this.i18nBundleService = i18nBundleService;
         this.kevatkausi = kevatkausi;
     }
 
@@ -678,12 +682,19 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     @Override
     public ModelResponse getApplicationPrint(final String oid) {
         Application application = applicationService.getApplicationByOid(oid);
-        ApplicationSystem applicationSystem = applicationSystemService.getApplicationSystem(application.getApplicationSystemId());
+        final ApplicationSystem applicationSystem = applicationSystemService.getApplicationSystem(application.getApplicationSystemId());
 
-        return new ModelResponse(application,
+        ModelResponse response = new ModelResponse(application,
                 applicationSystem,
                 AttachmentUtil.resolveAttachments(application),
                 koulutusinformaatioBaseUrl);
+        response.addObjectToModel("alatunnisterivit", new ArrayList<I18nText>(4) {{
+            add(i18nBundleService.getBundle(applicationSystem).get("lomake.tulostus.alatunniste.rivi1"));
+            add(i18nBundleService.getBundle(applicationSystem).get("lomake.tulostus.alatunniste.rivi2"));
+            add(i18nBundleService.getBundle(applicationSystem).get("lomake.tulostus.alatunniste.rivi3"));
+            add(i18nBundleService.getBundle(applicationSystem).get("lomake.tulostus.alatunniste.rivi4"));
+        }});
+        return response;
     }
 
     private ApplicationNote createNote(String note) {

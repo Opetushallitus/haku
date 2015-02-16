@@ -23,6 +23,7 @@ import fi.vm.sade.haku.oppija.hakemus.domain.util.AttachmentUtil;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationState;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
+import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.ModelResponse;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
@@ -35,6 +36,7 @@ import fi.vm.sade.haku.oppija.lomake.util.ElementTree;
 import fi.vm.sade.haku.oppija.ui.service.UIService;
 import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
 import fi.vm.sade.haku.virkailija.koulutusinformaatio.KoulutusinformaatioService;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.i18n.I18nBundleService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.PDFService;
@@ -68,6 +70,7 @@ public class UIServiceImpl implements UIService {
     private final UserSession userSession;
     private final KoulutusinformaatioService koulutusinformaatioService;
     private final AuthenticationService authenticationService;
+    private final I18nBundleService i18nBundleService;
     private final PDFService pdfService;
 
     @Autowired
@@ -76,6 +79,7 @@ public class UIServiceImpl implements UIService {
                          final UserSession userSession,
                          final KoulutusinformaatioService koulutusinformaatioService,
                          final AuthenticationService authenticationService,
+                         final I18nBundleService i18nBundleService,
                          @Value("${koulutusinformaatio.base.url}") final String koulutusinformaatioBaseUrl, PDFService pdfService) {
         this.applicationService = applicationService;
         this.applicationSystemService = applicationSystemService;
@@ -83,17 +87,26 @@ public class UIServiceImpl implements UIService {
         this.koulutusinformaatioService = koulutusinformaatioService;
         this.authenticationService = authenticationService;
         this.koulutusinformaatioBaseUrl = koulutusinformaatioBaseUrl;
+        this.i18nBundleService = i18nBundleService;
         this.pdfService = pdfService;
     }
 
     @Override
     public ModelResponse getCompleteApplication(final String applicationSystemId, final String oid) {
-        ApplicationSystem activeApplicationSystem = applicationSystemService.getActiveApplicationSystem(applicationSystemId);
+        final ApplicationSystem activeApplicationSystem = applicationSystemService.getActiveApplicationSystem(applicationSystemId);
         Application application = applicationService.getSubmittedApplication(applicationSystemId, oid);
 
-        return new ModelResponse(application, activeApplicationSystem,
+        ModelResponse response = new ModelResponse(application, activeApplicationSystem,
                 AttachmentUtil.resolveAttachments(application),
                 koulutusinformaatioBaseUrl);
+
+        response.addObjectToModel("alatunnisterivit", new ArrayList<I18nText>(4) {{
+            add(i18nBundleService.getBundle(activeApplicationSystem).get("lomake.tulostus.alatunniste.rivi1"));
+            add(i18nBundleService.getBundle(activeApplicationSystem).get("lomake.tulostus.alatunniste.rivi2"));
+            add(i18nBundleService.getBundle(activeApplicationSystem).get("lomake.tulostus.alatunniste.rivi3"));
+            add(i18nBundleService.getBundle(activeApplicationSystem).get("lomake.tulostus.alatunniste.rivi4"));
+        }});
+        return response;
     }
 
     @Override

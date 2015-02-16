@@ -5,7 +5,9 @@
 <%@ taglib prefix="haku" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="f" uri="/WEB-INF/tld/functions.tld" %>
 <!DOCTYPE html>
+
 <fmt:setBundle basename="messages" scope="application"/>
+
 <c:set var="form" value="${it.form}" scope="request"/>
 <c:set var="application" value="${it.application}" scope="request"/>
 <c:set var="answers" value="${it.application.vastauksetMerged}" scope="request"/>
@@ -57,10 +59,10 @@
 <hr class="strong">
 <footer>
     <address>
-        <fmt:message key="lomake.tulostus.alatunniste.rivi1"/><br>
-        <fmt:message key="lomake.tulostus.alatunniste.rivi2"/><br>
-        <fmt:message key="lomake.tulostus.alatunniste.rivi3"/><br>
-        <fmt:message key="lomake.tulostus.alatunniste.rivi4"/>
+        <c:forEach var="alatunnisterivi" items="${it.alatunnisterivit}" varStatus="status">
+            <haku:i18nText value="${alatunnisterivi}" />
+            <c:if test="${(not status.last)}"><br/></c:if>
+        </c:forEach>
     </address>
 </footer>
 </body>

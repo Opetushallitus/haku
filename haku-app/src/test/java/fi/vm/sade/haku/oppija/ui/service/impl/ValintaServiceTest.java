@@ -9,6 +9,7 @@ import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.haku.oppija.hakemus.service.BaseEducationService;
 import fi.vm.sade.haku.oppija.hakemus.service.HakuPermissionService;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
+import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.ModelResponse;
 import fi.vm.sade.haku.oppija.lomake.domain.User;
 import fi.vm.sade.haku.oppija.lomake.domain.builder.PhaseBuilder;
@@ -20,6 +21,8 @@ import fi.vm.sade.haku.oppija.lomake.service.UserSession;
 import fi.vm.sade.haku.oppija.lomake.validation.ElementTreeValidator;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidatorFactory;
 import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.I18nBundle;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.i18n.I18nBundleService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
@@ -113,7 +116,12 @@ public class ValintaServiceTest {
         AuthenticationService authenticationService = null;
         OrganizationService organizationService = null;
         BaseEducationService baseEducationService = null;
-
+        I18nBundleService i18nBundleService = mock(I18nBundleService.class);
+        I18nBundle i18nBundle = mock(I18nBundle.class);
+        when(i18nBundle.get(any(String.class))).thenReturn(new I18nText(new HashMap<String, String>(3) {{
+            put("fi", "osoite");put("en", "osoite");put("sv", "osoite");
+        }}));
+        when(i18nBundleService.getBundle(any(ApplicationSystem.class))).thenReturn(i18nBundle);
         officerUIService = new OfficerUIServiceImpl(
                 applicationService,
                 baseEducationService,
@@ -129,6 +137,7 @@ public class ValintaServiceTest {
                 null,
                 userSession,
                 null,
+                i18nBundleService,
                 "01.02 - 01.09");
     }
 
