@@ -175,6 +175,62 @@ function getJson(url) {
     return Q($.ajax({url: url, dataType: "json"}))
 }
 
+function frameJquery() {
+    return wait.until(function() {
+        return testFrame() && testFrame().jQuery;
+    })().then(function() {
+        return testFrame().jQuery;
+    });
+}
+
+// Submit data as if it was a form instead of an AJAX request. Used for
+// rendering the HTML response as a new page.
+// Modified from: http://stackoverflow.com/a/133997
+function postAsForm(path, params) {
+    return function() {
+        var form = document.createElement("form");
+        form.setAttribute("method", 'POST');
+        form.setAttribute("action", path);
+
+        for (var key in params) {
+            if (params.hasOwnProperty(key)) {
+                var hiddenField = document.createElement("input");
+                hiddenField.setAttribute("type", "hidden");
+                hiddenField.setAttribute("name", key);
+                hiddenField.setAttribute("value", params[key]);
+
+                form.appendChild(hiddenField);
+            }
+        }
+
+        testFrame().window.FORM_SUBMISSION_PENDING = true;
+
+        testFrame().document.body.appendChild(form);
+        form.submit();
+
+        return wait.until(function() {
+            // Block until form submission has changed the page
+            return testFrame().window.FORM_SUBMISSION_PENDING === undefined;
+        })();
+    }
+}
+
+function post(url, data) {
+    return function() {
+        return frameJquery().then(function($) {
+            var deferred = Q.defer();
+            $.post(url, data, function(data, status) {
+                if (status === 'success') {
+                    deferred.resolve(data)
+                } else {
+                    deferred.reject("post got status " + status)
+                }
+            });
+            return deferred.promise
+        })
+    }
+}
+
 function testFrame() {
     return $("#testframe").get(0).contentWindow
 }

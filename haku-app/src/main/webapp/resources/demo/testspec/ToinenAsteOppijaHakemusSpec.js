@@ -97,7 +97,7 @@
             });
         }
 
-        describe("Täytä lomake", function(done) {
+        describe("Täytä lomake", function() {
             beforeEach(function(done) {
                 start()
                     .then(function() {
@@ -211,99 +211,93 @@
             });
         });
 
-        describe("Sääntötestit", function(done) {
+        describe("Sääntötestit", function() {
 
             beforeEach(function(done) {
                 start()
                     .then(visible(lomake.sukunimi))
-                    .then($.post("/haku-app/lomake/1.2.246.562.5.50476818906",
-                        {
-                            "Sukunimi": "Testikäs",
-                            "Etunimet": "Asia Kas",
-                            "Kutsumanimi": "Asia",
-                            "kansalaisuus": "FIN",
-                            "onkosinullakaksoiskansallisuus": "false",
-                            "Henkilotunnus": "171175-830Y",
-                            "sukupuoli": "2",
-                            "asuinmaa": "FIN",
-                            "lahiosoite": "Testikatu 4",
-                            "Postinumero": "00100",
-                            "kotikunta": "janakkala",
-                            "aidinkieli": "FI",
-                            "POHJAKOULUTUS": "1",
-                            "PK_PAATTOTODISTUSVUOSI": "2014",
-                            "perusopetuksen_kieli": "FI",
-                            "preferencesVisible": "5",
-                            "preference1-Opetuspiste": "FAKTIA, Espoo op",
-                            "preference1-Opetuspiste-id": "1.2.246.562.10.89537774706",
-                            "preference1-Koulutus": "Talonrakennus ja ymäristösuunnittelu, yo",
-                            "preference1-Koulutus-id": "1.2.246.562.14.673437691210",
-                            "preference1-Koulutus-educationDegree": "32",
-                            "preference1-Koulutus-id-lang": "FI",
-                            "preference1-Koulutus-id-sora": "false",
-                            "preference1-Koulutus-id-athlete": "false",
-                            "preference1-Koulutus-id-kaksoistutkinto": "false",
-                            "preference1-Koulutus-id-vocational": "true",
-                            "preference1-Koulutus-id-attachments": "false",
-                            "preference1-discretionary": "false",
-                            "asiointikieli": "suomi"
-                        }))
+                    .then(postAsForm("/haku-app/lomake/1.2.246.562.5.50476818906", {
+                        "Sukunimi": "Testikäs",
+                        "Etunimet": "Asia Kas",
+                        "Kutsumanimi": "Asia",
+                        "kansalaisuus": "FIN",
+                        "onkosinullakaksoiskansallisuus": "false",
+                        "Henkilotunnus": "171175-830Y",
+                        "sukupuoli": "2",
+                        "asuinmaa": "FIN",
+                        "lahiosoite": "Testikatu 4",
+                        "Postinumero": "00100",
+                        "kotikunta": "janakkala",
+                        "aidinkieli": "FI",
+                        "POHJAKOULUTUS": "1",
+                        "PK_PAATTOTODISTUSVUOSI": "2014",
+                        "perusopetuksen_kieli": "FI",
+                        "preferencesVisible": "5",
+                        "preference1-Opetuspiste": "FAKTIA, Espoo op",
+                        "preference1-Opetuspiste-id": "1.2.246.562.10.89537774706",
+                        "preference1-Koulutus": "Talonrakennus ja ymäristösuunnittelu, yo",
+                        "preference1-Koulutus-id": "1.2.246.562.14.673437691210",
+                        "preference1-Koulutus-educationDegree": "32",
+                        "preference1-Koulutus-id-lang": "FI",
+                        "preference1-Koulutus-id-sora": "false",
+                        "preference1-Koulutus-id-athlete": "false",
+                        "preference1-Koulutus-id-kaksoistutkinto": "false",
+                        "preference1-Koulutus-id-vocational": "true",
+                        "preference1-Koulutus-id-attachments": "false",
+                        "preference1-discretionary": "false",
+                        "asiointikieli": "suomi"
+                    }))
                     .then(visible(lomake.sukunimi))
                     .then(done, done);
             });
 
             it("PK päättötodistusvuosi 2011", function(done) {
-                $.post("/haku-app/lomake/1.2.246.562.5.50476818906/koulutustausta/rules",
-                    {
-                        "PK_PAATTOTODISTUSVUOSI": "2011",
-                        "POHJAKOULUTUS": "1",
-                        "ruleIds[]": ["paattotodistuvuosiPkRule"]
-                    }, function(data, status) {
-                        expect(data).to.contain('<input type=\\"radio\\" name=\\"ammatillinenTutkintoSuoritettu\\"');
-                        done();
-                    });
+                Q.fcall(post("/haku-app/lomake/1.2.246.562.5.50476818906/koulutustausta/rules", {
+                    "PK_PAATTOTODISTUSVUOSI": "2011",
+                    "POHJAKOULUTUS": "1",
+                    "ruleIds[]": ["paattotodistuvuosiPkRule"]
+                })).then(function(data) {
+                    expect(data).to.contain('<input type=\\"radio\\" name=\\"ammatillinenTutkintoSuoritettu\\"');
+                }).then(done, done);
             });
 
             it("PK päättötodistusvuosi 2012", function(done) {
-                $.post("/haku-app/lomake/1.2.246.562.5.50476818906/koulutustausta/rules",
-                    {
-                        "PK_PAATTOTODISTUSVUOSI": "2012",
-                        "POHJAKOULUTUS": "1",
-                        "ruleIds[]": ["paattotodistuvuosiPkRule"]
-                    }, function(data, status) {
-                        expect(data).not.to.contain('<input type=\\"radio\\" name=\\"ammatillinenTutkintoSuoritettu\\"');
-                        done();
-                    });
+                Q.fcall(post("/haku-app/lomake/1.2.246.562.5.50476818906/koulutustausta/rules", {
+                    "PK_PAATTOTODISTUSVUOSI": "2012",
+                    "POHJAKOULUTUS": "1",
+                    "ruleIds[]": ["paattotodistuvuosiPkRule"]
+                })).then(function(data) {
+                    expect(data).not.to.contain('<input type=\\"radio\\" name=\\"ammatillinenTutkintoSuoritettu\\"');
+                }).then(done, done);
             });
         });
 
-        describe("Urheilijakohteet", function(done) {
+        describe("Urheilijakohteet", function() {
 
-            before(function(done) {
+            beforeEach(function(done) {
                 start()
                     .then(visible(lomake.sukunimi))
-                    .then($.post("/haku-app/lomake/1.2.246.562.5.50476818906",
-                        {
-                            "Sukunimi": "Testikäs",
-                            "Etunimet": "Asia Kas",
-                            "Kutsumanimi": "Asia",
-                            "kansalaisuus": "FIN",
-                            "onkosinullakaksoiskansallisuus": "false",
-                            "Henkilotunnus": "171175-830Y",
-                            "sukupuoli": "2",
-                            "asuinmaa": "FIN",
-                            "lahiosoite": "Testikatu 4",
-                            "Postinumero": "00100",
-                            "kotikunta": "janakkala",
-                            "aidinkieli": "FI",
-                            "POHJAKOULUTUS": "1",
-                            "PK_PAATTOTODISTUSVUOSI": "2014",
-                            "perusopetuksen_kieli": "FI"
-                        }, function() {done()}));
+                    .then(postAsForm("/haku-app/lomake/1.2.246.562.5.50476818906", {
+                        "Sukunimi": "Testikäs",
+                        "Etunimet": "Asia Kas",
+                        "Kutsumanimi": "Asia",
+                        "kansalaisuus": "FIN",
+                        "onkosinullakaksoiskansallisuus": "false",
+                        "Henkilotunnus": "171175-830Y",
+                        "sukupuoli": "2",
+                        "asuinmaa": "FIN",
+                        "lahiosoite": "Testikatu 4",
+                        "Postinumero": "00100",
+                        "kotikunta": "janakkala",
+                        "aidinkieli": "FI",
+                        "POHJAKOULUTUS": "1",
+                        "PK_PAATTOTODISTUSVUOSI": "2014",
+                        "perusopetuksen_kieli": "FI"
+                    }))
+                    .then(done, done)
             });
 
             it("Urheilevat kokit", function(done) {
-
                 Q.fcall(visible(lomake.sukunimi))
                     .then(click(lomake.fromHenkilotiedot))
                     .then(headingVisible("Koulutustausta"))
