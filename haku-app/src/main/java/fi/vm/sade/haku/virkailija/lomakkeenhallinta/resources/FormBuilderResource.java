@@ -58,13 +58,16 @@ public class FormBuilderResource {
     @Path("{oid}")
     @Produces(MediaType.TEXT_PLAIN + ";charset=UTF-8")
     public Response generateOne(@PathParam("oid") final String oid) throws URISyntaxException {
+        log.info("Starting to generate application system " + oid);
         doGenerate(oid);
+        log.info("Generated application system " +oid);
         return Response.seeOther(new URI("/lomake/"+oid)).build();
     }
 
     @GET
     @Produces(MediaType.TEXT_PLAIN + ";charset=UTF-8")
     public Response generate() throws URISyntaxException {
+        log.info("Loading application systems for generation");
         List<ApplicationSystem> applicationSystems = hakuService.getApplicationSystems();
         int asCount = applicationSystems.size();
         int index = 1;
