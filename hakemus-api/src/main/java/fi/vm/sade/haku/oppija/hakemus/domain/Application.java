@@ -387,7 +387,7 @@ public class Application implements Serializable {
         }
         addOverriddenAnswer(key, oldValue);
 
-        log.info("Changing value key: {}, value: {} -> {}", key, oldValue, value);
+        log.debug("Changing value key: {}, value: {} -> {}", key, oldValue, value);
         return answers;
     }
 

@@ -320,7 +320,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
             if (!doCount)
                 searchHits = results.size();
 
-            LOG.info("searchListing ends, took {} ms. Found matches: {}, returning: {}, initial set size: {}, did count: {}", (System.currentTimeMillis() - startTime), searchHits, results.size(), listSize, doCount);
+            LOG.debug("searchListing ends, took {} ms. Found matches: {}, returning: {}, initial set size: {}, did count: {}", (System.currentTimeMillis() - startTime), searchHits, results.size(), listSize, doCount);
             return new SearchResults<T>(searchHits, results);
         } catch (MongoException mongoException) {
             LOG.error("Got error {} with query: {} using hint: {}", mongoException.getMessage(), query, null);
