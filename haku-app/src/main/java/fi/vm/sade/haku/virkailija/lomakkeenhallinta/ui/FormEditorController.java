@@ -144,11 +144,9 @@ public class FormEditorController {
 
     private State deduceApplicationSystemState(ApplicationSystem applicationSystem){
         List<ApplicationPeriod> applicationPeriods = applicationSystem.getApplicationPeriods();
-        if (applicationPeriods.size() != 1 ){
-            LOGGER.error("Unexcepted number of periods. Got {} for application system {}",
-                    applicationPeriods.size(), applicationSystem.getId());
-            if (applicationPeriods.size() < 1)
-                return State.ERROR;
+        if (applicationPeriods.size() < 1 ){
+            LOGGER.error("Unexcepted number of periods. Got {} for application system {}", applicationPeriods.size(), applicationSystem.getId());
+            return State.ERROR;
         }
         ApplicationPeriod applicationPeriod = applicationPeriods.get(0);
         final Date now = new Date();
