@@ -650,7 +650,6 @@
                 <configuration>
                     <excludes>
                         <exclude>**/it/*.java</exclude>
-                        <exclude>**/selenium/*.java</exclude>
                     </excludes>
                     <argLine>-Xms512M -Xmx1G -XX:MaxPermSize=512M</argLine>
                     <systemProperties>
