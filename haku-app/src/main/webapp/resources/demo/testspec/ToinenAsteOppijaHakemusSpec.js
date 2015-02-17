@@ -27,33 +27,24 @@
         describe("Täytä lomake", function() {
             beforeEach(function(done) {
                 start()
-                    .then(function() {
-                        return Q.all([
-                            input(lomake.sukunimi, "Testikäs"),
-                            input(lomake.etunimet, "Asia Kas"),
-                            input(lomake.kutsumanimi, "Asia"),
-                            input(lomake.hetu, "171175-830Y")
-                        ])
-                    })
+                    .then(all(
+                        input(lomake.sukunimi, "Testikäs"),
+                        input(lomake.etunimet, "Asia Kas"),
+                        input(lomake.kutsumanimi, "Asia"),
+                        input(lomake.hetu, "171175-830Y")))
                     .then(wait.until(function() {return S("input#sukupuoli").length > 0;}))
                     .then(click(lomake.kaksoiskansalaisuus(false)))
-                    .then(function() {
-                        expect(lomake.sukupuoli().val()).to.equal('2');
-                        return Q.all([
-                            input(lomake.lahiosoite, "Testikatu 4"),
-                            input(lomake.postinumero, "00100"),
-                            input(lomake.kotikunta, "janakkala")
-                        ])
-                    })
+                    .then(function() { expect(lomake.sukupuoli().val()).to.equal('2'); })
+                    .then(all(
+                        input(lomake.lahiosoite, "Testikatu 4"),
+                        input(lomake.postinumero, "00100"),
+                        input(lomake.kotikunta, "janakkala")))
                     .then(click(lomake.fromHenkilotiedot))
                     .then(headingVisible("Koulutustausta"))
                     .then(click(lomake.pohjakoulutus("1")))
-                    .then(function() {
-                        return Q.all([
-                            input(lomake.pkPaattotodistusVuosi, "2014"),
-                            input(lomake.pkKieli, "FI")
-                        ]);
-                    })
+                    .then(all(
+                        input(lomake.pkPaattotodistusVuosi, "2014"),
+                        input(lomake.pkKieli, "FI")))
                     .then(click(lomake.fromKoulutustausta))
                     .then(headingVisible("Hakutoiveet"))
                     .then(autocomplete(lomake.opetuspiste1, "Esp", "FAKTIA, Espoo op"))

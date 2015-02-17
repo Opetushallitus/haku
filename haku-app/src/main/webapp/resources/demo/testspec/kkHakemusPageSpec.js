@@ -31,34 +31,25 @@ describe('KK-hakemus', function () {
     describe("Muokkaa koulutustaustaa -toiminto", function() {
         beforeEach(function(done) {
             Q.fcall(click(virkailija.editKoulutusTaustaButton, virkailija.addAmmatillinenCheckbox))
-                .then(function() {
-                    return Q.all([
-                        input(virkailija.ammatillinenSuoritusVuosi, "2000"),
-                        input(virkailija.ammatillinenTutkintonimike, "Hitsaajan perustutkinto"),
-                        input(virkailija.ammatillinenTutkinnonLaajuus, "120"),
-                        input(virkailija.ammatillinenOppilaitos, "Ammattikoulu X")
-                    ]);
-                })
+                .then(all(
+                    input(virkailija.ammatillinenSuoritusVuosi, "2000"),
+                    input(virkailija.ammatillinenTutkintonimike, "Hitsaajan perustutkinto"),
+                    input(virkailija.ammatillinenTutkinnonLaajuus, "120"),
+                    input(virkailija.ammatillinenOppilaitos, "Ammattikoulu X")))
                 .then(click(
                     virkailija.kkTutkintoSuoritettu(false),
                     virkailija.addAvoinCheckbox))
-                .then(function() {
-                    return Q.all([
-                        input(virkailija.avoinAla(), "Avoin ala 1"),
-                        input(virkailija.avoinKokonaisuus(), "Avoin kokonaisuus 1"),
-                        input(virkailija.avoinLaajuus(), "Avoin laajuus 1"),
-                        input(virkailija.avoinKorkeakoulu(), "Avoin Korkeakoulu 1")
-                    ]);
-                })
+                .then(all(
+                    input(virkailija.avoinAla(), "Avoin ala 1"),
+                    input(virkailija.avoinKokonaisuus(), "Avoin kokonaisuus 1"),
+                    input(virkailija.avoinLaajuus(), "Avoin laajuus 1"),
+                    input(virkailija.avoinKorkeakoulu(), "Avoin Korkeakoulu 1")))
                 .then(click(virkailija.addSecondAvoinLink))
-                .then(function() {
-                    return Q.all([
-                        input(virkailija.avoinAla(2), "Avoin ala 2"),
-                        input(virkailija.avoinKokonaisuus(2), "Avoin kokonaisuus 2"),
-                        input(virkailija.avoinLaajuus(2), "Avoin laajuus 2"),
-                        input(virkailija.avoinKorkeakoulu(2), "Avoin Korkeakoulu 2")
-                    ]);
-                })
+                .then(all(
+                    input(virkailija.avoinAla(2), "Avoin ala 2"),
+                    input(virkailija.avoinKokonaisuus(2), "Avoin kokonaisuus 2"),
+                    input(virkailija.avoinLaajuus(2), "Avoin laajuus 2"),
+                    input(virkailija.avoinKorkeakoulu(2), "Avoin Korkeakoulu 2")))
                 .then(click(virkailija.saveButton))
                 .then(exists(virkailija.ammatilliset))
                 .then(done, done);

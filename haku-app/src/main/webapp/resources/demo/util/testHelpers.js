@@ -365,7 +365,14 @@ function exists(fn) {
     })
 }
 
-function click() {
+function all(/* ...promises */) {
+    var promises = arguments;
+    return function() {
+        return Q.all(Array.prototype.slice.call(promises));
+    }
+}
+
+function click(/* ...promises */) {
     var fns = arguments;
     return function() {
         var clickSequence = Object.keys(fns).map(function(i) {
