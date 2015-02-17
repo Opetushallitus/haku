@@ -1,11 +1,9 @@
 package fi.vm.sade.haku.oppija.hakemus.domain;
 
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
-import org.codehaus.jackson.annotate.JsonProperty;
 
 import java.util.Date;
 
-import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.impl.TranslationsUtil.*;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.impl.TranslationsUtil.ensureDefaultLanguageTranslations;
 
 public class ApplicationAttachmentBuilder {
@@ -14,6 +12,7 @@ public class ApplicationAttachmentBuilder {
     private I18nText header;
     private I18nText description;
     private Date deadline;
+    private I18nText deliveryNote;
     private Address address;
 
     public static ApplicationAttachmentBuilder start() {
@@ -45,13 +44,19 @@ public class ApplicationAttachmentBuilder {
         return this;
     }
 
+    public ApplicationAttachmentBuilder setDeliveryNote(I18nText deliveryNote) {
+        this.deliveryNote = deliveryNote;
+        return this;
+    }
+
     public ApplicationAttachment build() {
         return new ApplicationAttachment(
-          null != name ? ensureDefaultLanguageTranslations(name) : null,
-          null != header ? ensureDefaultLanguageTranslations(header) : null,
-          null != description ? ensureDefaultLanguageTranslations(description) : null,
-          deadline,
-          address);
+                null != name ? ensureDefaultLanguageTranslations(name) : null,
+                null != header ? ensureDefaultLanguageTranslations(header) : null,
+                null != description ? ensureDefaultLanguageTranslations(description) : null,
+                deadline,
+                null != deliveryNote ? ensureDefaultLanguageTranslations(deliveryNote) : null,
+                address);
     }
 
 

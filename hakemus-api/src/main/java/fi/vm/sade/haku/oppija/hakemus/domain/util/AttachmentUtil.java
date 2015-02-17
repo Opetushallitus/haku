@@ -8,16 +8,18 @@ import fi.vm.sade.haku.oppija.lomake.util.StringUtil;
 import fi.vm.sade.haku.virkailija.koulutusinformaatio.KoulutusinformaatioService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain.SimpleAddress;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.I18nBundle;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import fi.vm.sade.koulutusinformaatio.domain.dto.*;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.*;
 
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.createI18NAsIs;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 public class AttachmentUtil {
+
+    public static final String GENERAL_DELIVERY_NOTE = "lomake.tulostus.liite.deadline.tarkista";
 
     public static List<ApplicationAttachment> resolveAttachments(Application application) {
         List<ApplicationAttachmentRequest> attachmentRequests = application.getAttachmentRequests();
@@ -57,20 +59,19 @@ public class AttachmentUtil {
       final String lang,
       final I18nBundle i18nBundle) {
         List<ApplicationAttachmentRequest> attachments = new ArrayList<ApplicationAttachmentRequest>();
-        attachments = addApplicationOptionAttachments(attachments, application, koulutusinformaatioService, lang);
+        attachments = addApplicationOptionAttachments(attachments, application, koulutusinformaatioService, lang, i18nBundle);
         attachments = addDiscreationaryAttachments(attachments, application, koulutusinformaatioService, lang,
           i18nBundle);
         attachments = addHigherEdAttachments(attachments, application, koulutusinformaatioService, lang, i18nBundle);
         attachments = addAmkOpeAttachments(attachments, application, koulutusinformaatioService, lang, i18nBundle);
-        attachments = addApplicationOptionAttachmentRequestsFromForm(attachments, application, applicationSystem);
+        attachments = addApplicationOptionAttachmentRequestsFromForm(attachments, application, applicationSystem, i18nBundle);
 
         return attachments;
     }
 
     private static List<ApplicationAttachmentRequest> addApplicationOptionAttachmentRequestsFromForm(
-      List<ApplicationAttachmentRequest> attachments,
-      Application application,
-      ApplicationSystem applicationSystem) {
+      List<ApplicationAttachmentRequest> attachments, Application application,
+      ApplicationSystem applicationSystem, I18nBundle i18nBundle) {
         if (applicationSystem.getApplicationOptionAttachmentRequests() == null) {
             return attachments;
         }
@@ -84,18 +85,26 @@ public class AttachmentUtil {
                 else
                     attachmentRequestBuilder.setPreferenceAoId(attachmentRequest.getApplicationOptionId());
 
-                attachmentRequestBuilder.setApplicationAttachment(ApplicationAttachmentBuilder.start()
-                  .setHeader(attachmentRequest.getHeader())
-                  .setDescription(attachmentRequest.getDescription())
-                  .setDeadline(attachmentRequest.getDeliveryDue())
-                  .setAddress(AddressBuilder.start()
-                    .setRecipient(address.getRecipient())
-                    .setStreetAddress(address.getStreet())
-                    .setPostalCode(address.getPostCode())
-                    .setPostOffice(address.getPostOffice())
-                    .build())
-                  .build());
-                attachments.add(attachmentRequestBuilder.build());
+                Date deadline = attachmentRequest.getDeliveryDue();
+
+                ApplicationAttachmentBuilder attachmentBuilder = ApplicationAttachmentBuilder.start()
+                        .setHeader(attachmentRequest.getHeader())
+                        .setDescription(attachmentRequest.getDescription())
+                        .setDeadline(deadline)
+                        .setAddress(AddressBuilder.start()
+                                .setRecipient(address.getRecipient())
+                                .setStreetAddress(address.getStreet())
+                                .setPostalCode(address.getPostCode())
+                                .setPostOffice(address.getPostOffice())
+                                .build());
+
+                if (deadline == null) {
+                    attachmentBuilder.setDeliveryNote(i18nBundle.get(GENERAL_DELIVERY_NOTE));
+                }
+
+                attachments.add(attachmentRequestBuilder
+                        .setApplicationAttachment(attachmentBuilder.build())
+                        .build());
             }
         }
         return attachments;
@@ -103,7 +112,7 @@ public class AttachmentUtil {
 
     private static List<ApplicationAttachmentRequest> addApplicationOptionAttachments(
       List<ApplicationAttachmentRequest> attachments, Application application,
-      KoulutusinformaatioService koulutusinformaatioService, String lang) {
+      KoulutusinformaatioService koulutusinformaatioService, String lang, I18nBundle i18nBundle) {
         for (String aoOid : ApplicationUtil.getApplicationOptionAttachmentAOIds(application)) {
             ApplicationOptionDTO ao = koulutusinformaatioService.getApplicationOption(aoOid, lang);
             String name = null;
@@ -118,22 +127,27 @@ public class AttachmentUtil {
                     String descriptionText = attachmentDTO.getDescreption();
                     I18nText description = null;
                     if (isNotBlank(descriptionText)) {
-                        description = ElementUtil.createI18NAsIs(descriptionText);
+                        description = createI18NAsIs(descriptionText);
                     } else {
-                        description = ElementUtil.createI18NAsIs("");
+                        description = createI18NAsIs("");
                     }
-                    attachments.add(
-                      ApplicationAttachmentRequestBuilder.start()
-                        .setPreferenceAoId(ao.getId())
-                        .setApplicationAttachment(
-                          ApplicationAttachmentBuilder.start()
-                            .setName(ElementUtil.createI18NAsIs(attachmentDTO.getType()))
+
+                    Date deadline = attachmentDTO.getDueDate();
+
+                    ApplicationAttachmentBuilder attachmentBuilder = ApplicationAttachmentBuilder.start()
+                            .setName(createI18NAsIs(attachmentDTO.getType()))
                             .setDescription(description)
-                            .setDeadline(attachmentDTO.getDueDate())
-                            .setAddress(getAddress(name, attachmentDTO.getAddress()))
-                            .build()
-                        ).build()
-                    );
+                            .setDeadline(deadline)
+                            .setAddress(getAddress(name, attachmentDTO.getAddress()));
+
+                    if (deadline == null) {
+                        attachmentBuilder.setDeliveryNote(i18nBundle.get(GENERAL_DELIVERY_NOTE));
+                    }
+
+                    attachments.add(ApplicationAttachmentRequestBuilder.start()
+                            .setPreferenceAoId(ao.getId())
+                            .setApplicationAttachment(attachmentBuilder.build())
+                            .build());
                 }
             }
         }
@@ -161,13 +175,17 @@ public class AttachmentUtil {
                 }
             }
 
+            Date deadline = ao.getAttachmentDeliveryDeadline();
             ApplicationAttachmentBuilder attachmentBuilder = ApplicationAttachmentBuilder.start()
-              .setName(i18nBundle.get("form.valmis.liitteet.harkinnanvaraisuus"))
-              .setDeadline(null)
-              .setAddress(getAddress(ao));
+                    .setName(i18nBundle.get("form.valmis.liitteet.harkinnanvaraisuus"))
+                    .setDeliveryNote(i18nBundle.get("lomake.tulostus.liite.deadline.tarkista"))
+                    .setAddress(getAddress(ao));
             if (discreationaryReason != null) {
                 attachmentBuilder.setDescription(i18nBundle.get("form.valmis.liitteet.harkinnanvaraisuus."
                   + discreationaryReason));
+            }
+            if (deadline == null) {
+                attachmentBuilder.setDeliveryNote(i18nBundle.get(GENERAL_DELIVERY_NOTE));
             }
 
             attachments.add(ApplicationAttachmentRequestBuilder.start()
@@ -234,24 +252,27 @@ public class AttachmentUtil {
                     name = aoDTO.getProvider().getName();
                 }
 
-                //TODO =RS= FIX THE NULL
-                attachments.add(ApplicationAttachmentRequestBuilder.start()
-                    .setPreferenceAoId(aoDTO.getId())
-                    .setPreferenceAoGroupId(null)
-                    .setApplicationAttachment(
-                      ApplicationAttachmentBuilder.start()
-                        .setName(ElementUtil.createI18NAsIs(StringUtil.safeToString(aoDTO.getProvider().getName())))
+                ApplicationAttachmentBuilder attachmentBuilder = ApplicationAttachmentBuilder.start()
+                        .setName(createI18NAsIs(StringUtil.safeToString(aoDTO.getProvider().getName())))
                         .setDescription(i18nBundle.get("form.valmis.todistus." + attachmentType))
                         .setDeadline(deadline)
                         .setAddress(AddressBuilder.start()
-                          .setRecipient(name)
-                          .setStreetAddress(addressDTO.getStreetAddress())
-                          .setStreetAddress2(addressDTO.getStreetAddress2())
-                          .setPostalCode(addressDTO.getPostalCode())
-                          .setPostOffice(addressDTO.getPostOffice())
-                          .build())
-                        .build()).build()
-                );
+                                .setRecipient(name)
+                                .setStreetAddress(addressDTO.getStreetAddress())
+                                .setStreetAddress2(addressDTO.getStreetAddress2())
+                                .setPostalCode(addressDTO.getPostalCode())
+                                .setPostOffice(addressDTO.getPostOffice())
+                                .build());
+                if (deadline == null) {
+                    attachmentBuilder.setDeliveryNote(i18nBundle.get(GENERAL_DELIVERY_NOTE));
+                }
+
+                //TODO =RS= FIX THE NULL
+                attachments.add(ApplicationAttachmentRequestBuilder.start()
+                        .setPreferenceAoId(aoDTO.getId())
+                        .setPreferenceAoGroupId(null)
+                        .setApplicationAttachment(attachmentBuilder.build())
+                        .build());
             }
         }
         return attachments;
@@ -298,25 +319,26 @@ public class AttachmentUtil {
                     name = aoDTO.getProvider().getName();
                 }
 
+                ApplicationAttachmentBuilder attachmentBuilder = ApplicationAttachmentBuilder.start()
+                                .setName(createI18NAsIs(StringUtil.safeToString(aoDTO.getProvider().getName())))
+                                .setDescription(i18nBundle.get("form.valmis.amkope." + attachmentType))
+                                .setDeadline(deadline)
+                                .setAddress(AddressBuilder.start()
+                                        .setRecipient(name)
+                                        .setStreetAddress(addressDTO.getStreetAddress())
+                                        .setStreetAddress2(addressDTO.getStreetAddress2())
+                                        .setPostalCode(addressDTO.getPostalCode())
+                                        .setPostOffice(addressDTO.getPostOffice())
+                                        .build());
+                if (deadline == null) {
+                    attachmentBuilder.setDeliveryNote(i18nBundle.get(GENERAL_DELIVERY_NOTE));
+                }
                 //TODO =RS= FIX THE NULL
                 attachments.add(ApplicationAttachmentRequestBuilder.start()
-                    .setPreferenceAoId(aoDTO.getId())
-                    .setPreferenceAoGroupId(null)
-                    .setApplicationAttachment(
-                      ApplicationAttachmentBuilder.start()
-                        .setName(
-                          ElementUtil.createI18NAsIs(StringUtil.safeToString(aoDTO.getProvider().getName())))
-                        .setDescription(i18nBundle.get("form.valmis.amkope." + attachmentType))
-                        .setDeadline(deadline)
-                        .setAddress(AddressBuilder.start()
-                          .setRecipient(name)
-                          .setStreetAddress(addressDTO.getStreetAddress())
-                          .setStreetAddress2(addressDTO.getStreetAddress2())
-                          .setPostalCode(addressDTO.getPostalCode())
-                          .setPostOffice(addressDTO.getPostOffice())
-                          .build())
-                        .build()).build()
-                );
+                        .setPreferenceAoId(aoDTO.getId())
+                        .setPreferenceAoGroupId(null)
+                        .setApplicationAttachment(attachmentBuilder.build())
+                        .build());
             }
         }
 

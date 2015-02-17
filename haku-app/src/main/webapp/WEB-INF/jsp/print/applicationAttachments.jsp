@@ -44,14 +44,13 @@
                     </c:if>
                 </td>
                 <td>
-                    <c:choose>
-                        <c:when test="${empty attachment.deadline}">
-                            <fmt:message key="lomake.tulostus.liite.deadline.tarkista" />
-                        </c:when>
-                        <c:otherwise>
-                            <fmt:formatDate pattern="dd.MM.yyyy HH:mm" value="${attachment.deadline}" />
-                        </c:otherwise>
-                    </c:choose>
+                    <c:if test="${not empty attachment.deliveryNote}">
+                        <haku:i18nText value="${attachment.deliveryNote}" />
+                    </c:if>
+                    <br />
+                    <c:if test="${not empty attachment.deadline}">
+                        <fmt:formatDate pattern="dd.MM.yyyy HH:mm" value="${attachment.deadline}" />
+                    </c:if>
                 </td>
             </tr>
             </c:forEach>

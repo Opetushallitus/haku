@@ -392,7 +392,8 @@ public class ApplicationServiceImpl implements ApplicationService {
         application.setPreferencesChecked(ApplicationUtil.checkAndCreatePreferenceCheckedData(application.getPreferencesChecked(), preferenceAoIds));
 
         ApplicationSystem applicationSystem = applicationSystemService.getApplicationSystem(application.getApplicationSystemId());
-        application.setAttachmentRequests(AttachmentUtil.resolveAttachmentRequests(applicationSystem, application, koulutusinformaatioService, i18nBundleService.getBundle(applicationSystem)));
+        application.setAttachmentRequests(AttachmentUtil.resolveAttachmentRequests(applicationSystem, application,
+                koulutusinformaatioService, i18nBundleService.getBundle(applicationSystem)));
 
         return application;
     }
