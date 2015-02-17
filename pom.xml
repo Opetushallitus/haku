@@ -174,7 +174,7 @@
         </profile>
 
         <profile>
-            <id>integration-test</id>
+            <id>it</id>
             <properties>
                 <springProfileActive>it</springProfileActive>
                 <log4jConfigLocation>/WEB-INF/classes/log4j.properties</log4jConfigLocation>
