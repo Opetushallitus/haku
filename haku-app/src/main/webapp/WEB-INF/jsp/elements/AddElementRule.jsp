@@ -1,6 +1,7 @@
 <%@ page session="false"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="haku" tagdir="/WEB-INF/tags" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <%--
   ~ Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
@@ -24,7 +25,7 @@
         <c:when test="${empty answers[element.children[0].id]}">
             <div class="${styleBaseClass}-content" id="${element.id}-addRemoveLinks">
                 <a id="${element.id}-link" href="#"><haku:i18nText value="${element.text}"/></a>
-                <a id="${element.id}-undolink" style="display: none;" href="#">Poista</a>
+                <a id="${element.id}-undolink" style="display: none;" href="#"><fmt:message key="poista"/></a>
             </div>
             <c:if test="${not empty element.help}">
                 <div class="margin-top-1 ${element.id}-removable" id="help-${element.id}">
