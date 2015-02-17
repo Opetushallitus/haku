@@ -313,3 +313,87 @@ function initSelectors(elements) {
     }, {})
 }
 
+function input(fn, value) {
+    return visible(fn)().then(function() {
+        return fn().val(value).change().blur();
+    })
+}
+
+function select(fn, value) {
+    return function() {
+        return visible(fn)()
+            .then(wait.until(function() {
+                var matches = fn().find('option[value="' + value + '"]').length;
+                if (matches > 1) {
+                    throw new Error('Value "' + value + '" matches ' + matches + ' <option>s from <select> ' + fn().selector)
+                }
+                return matches === 1;
+            })).then(function() { input(fn, value) })
+    }
+}
+
+function readTable($tableElement, allowWrongDimensions) {
+    return $tableElement.find('tr').filter(function(i) {
+        return allowWrongDimensions || testFrame().jQuery("td", this).length === 2
+    }).toArray().reduce(function(agg, tr) {
+        var tds = tr.getElementsByTagName('td');
+        if (tds.length != 2) {
+            throw new Error("Cannot read non-2-column table into map")
+        }
+        var key = tds[0].textContent.trim();
+        var value = tds[1].textContent.trim();
+        agg[key] = value;
+        return agg;
+    }, {});
+}
+
+function visible(fn) {
+    if (typeof(fn) !== 'function') {
+        throw new Error('visible() got a non-function');
+    }
+    return wait.until(function() {
+        return fn().is(':visible');
+    })
+}
+
+function exists(fn) {
+    if (typeof(fn) !== 'function') {
+        throw new Error('exists() got a non-function');
+    }
+    return wait.until(function() {
+        return fn().length > 0;
+    })
+}
+
+function click() {
+    var fns = arguments;
+    return function() {
+        var clickSequence = Object.keys(fns).map(function(i) {
+            return function() {
+                var fn = fns[i];
+                return visible(fn)().then(function() {
+                    fn().click();
+                })
+            }
+        });
+        return clickSequence.reduce(Q.when, Q());
+    }
+}
+
+function visibleText(fn, text) {
+    return wait.until(function() {
+        return fn().is(':visible') && fn().text().trim().indexOf(text) !== -1;
+    })
+}
+
+function hasClass(fn, className) {
+    return visible(fn)().then(function() {
+        return fn().hasClass(className);
+    });
+}
+
+function headingVisible(heading) {
+    return visible(function() {
+        return S("legend[class=h3]:contains(" + heading + ")");
+    });
+}

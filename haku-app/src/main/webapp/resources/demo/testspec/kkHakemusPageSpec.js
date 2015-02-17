@@ -1,73 +1,73 @@
 describe('KK-hakemus', function () {
-    var page = KkHakemusPage();
+    var virkailija = virkailijaSelectors();
 
-    beforeEach(
-        page.createApplication
-    );
+    function answerForQuestion(name) {
+        return S('td:has(a[name=' + name + '])').next().html()
+    }
 
-    afterEach(function () {
-        if (this.currentTest.state == 'failed') {
-            takeScreenshot()
-        }
-    });
+    function start() {
+        return logout().then(function() {
+            return openPage("/haku-app/lomakkeenhallinta/1.2.246.562.29.173465377510", function() {
+                return S("form#form-henkilotiedot").first().is(':visible')
+            })()})
+            .then(openPage("/haku-app/virkailija/hakemus", function() {
+                return testFrame().document.getElementById('loginForm') !== null;
+            }))
+            .then(function() {
+                function input(name) {
+                    return testFrame().document.getElementsByName(name)[0];
+                }
+                input("j_username").value = "officer";
+                input("j_password").value = "officer";
+                input("login").click();
+            })
+            .then(click(virkailija.createApplicationButton))
+            .then(input(virkailija.selectHaku, "1.2.246.562.29.173465377510"))
+            .then(click(virkailija.submitConfirm))
+    }
+
+    beforeEach(start);
 
     describe("Muokkaa koulutustaustaa -toiminto", function() {
-
-        beforeEach(
-            function(done) {
-                wait.until(function() {return page.editKoulutusTaustaButton().is(':visible')})()
-                    .then(function() {return page.editKoulutusTaustaButton().click()})
-                    .then(wait.until(function() {return page.addAmmatillinenCheckbox().is(':visible')}))
-                    .then(function() {return page.addAmmatillinenCheckbox().click()})
-                    .then(wait.until(function() {
-                        return page.ammatillinenSuoritusVuosi().is(':visible')
-                            && page.ammatillinenTutkintonimike().is(':visible')
-                            && page.ammatillinenTutkinnonLaajuus().is(':visible')
-                            && page.ammatillinenOppilaitos().is(':visible')
-                            && page.ammatillinenNayttotutkinto().is(':visible')
-                    }))
-                    .then(function() {
-                        page.ammatillinenSuoritusVuosi().val("2000");
-                        page.ammatillinenTutkintonimike().val("Hitsaajan perustutkinto");
-                        page.ammatillinenTutkinnonLaajuus().val("120");
-                        page.ammatillinenOppilaitos().val("Ammattikoulu X");
-                        page.kkTutkintoSuoritettu().val(['false']);
-                    })
-                    .then(function() {return page.addAvoinCheckbox().click()})
-                    .then(wait.until(function() {
-                        return page.avoinAla().is(':visible')
-                            && page.avoinKokonaisuus().is(':visible')
-                            && page.avoinLaajuus().is(':visible')
-                            && page.avoinKorkeakoulu().is(':visible')
-                    }))
-                    .then(function() {
-                        page.avoinAla().val("Avoin ala 1");
-                        page.avoinKokonaisuus().val("Avoin kokonaisuus 1");
-                        page.avoinLaajuus().val("Avoin laajuus 1");
-                        page.avoinKorkeakoulu().val("Avoin Korkeakoulu 1");
-                    })
-                    .then(function() {page.addSecondAvoinLink().click()})
-                    .then(wait.until(function() {
-                        return page.avoinAla(2).is(':visible')
-                            && page.avoinKokonaisuus(2).is(':visible')
-                            && page.avoinLaajuus(2).is(':visible')
-                            && page.avoinKorkeakoulu(2).is(':visible')
-                    }))
-                    .then(function() {
-                        page.avoinAla(2).val("Avoin ala 2");
-                        page.avoinKokonaisuus(2).val("Avoin kokonaisuus 2");
-                        page.avoinLaajuus(2).val("Avoin laajuus 2");
-                        page.avoinKorkeakoulu(2).val("Avoin Korkeakoulu 2");
-                    })
-                    .then(function() {page.saveButton().click()})
-                    .then(wait.until(function() {return page.ammatilliset().length == 1;}))
-                    .then(done);
+        beforeEach(function(done) {
+            Q.fcall(click(virkailija.editKoulutusTaustaButton, virkailija.addAmmatillinenCheckbox))
+                .then(function() {
+                    return Q.all([
+                        input(virkailija.ammatillinenSuoritusVuosi, "2000"),
+                        input(virkailija.ammatillinenTutkintonimike, "Hitsaajan perustutkinto"),
+                        input(virkailija.ammatillinenTutkinnonLaajuus, "120"),
+                        input(virkailija.ammatillinenOppilaitos, "Ammattikoulu X")
+                    ]);
+                })
+                .then(click(
+                    virkailija.kkTutkintoSuoritettu(false),
+                    virkailija.addAvoinCheckbox))
+                .then(function() {
+                    return Q.all([
+                        input(virkailija.avoinAla(), "Avoin ala 1"),
+                        input(virkailija.avoinKokonaisuus(), "Avoin kokonaisuus 1"),
+                        input(virkailija.avoinLaajuus(), "Avoin laajuus 1"),
+                        input(virkailija.avoinKorkeakoulu(), "Avoin Korkeakoulu 1")
+                    ]);
+                })
+                .then(click(virkailija.addSecondAvoinLink))
+                .then(function() {
+                    return Q.all([
+                        input(virkailija.avoinAla(2), "Avoin ala 2"),
+                        input(virkailija.avoinKokonaisuus(2), "Avoin kokonaisuus 2"),
+                        input(virkailija.avoinLaajuus(2), "Avoin laajuus 2"),
+                        input(virkailija.avoinKorkeakoulu(2), "Avoin Korkeakoulu 2")
+                    ]);
+                })
+                .then(click(virkailija.saveButton))
+                .then(exists(virkailija.ammatilliset))
+                .then(done, done);
         });
 
         it('mahdollistaa uuden ammatillisen pohjakoulutuksen lisäämisen kaksi kertaa peräkkäin', function (done) {
-            expect(page.answerForQuestion('pohjakoulutus_am_vuosi')).to.equal('2000');
-            expect(page.answerForQuestion('pohjakoulutus_avoin_ala')).to.equal('Avoin ala 1');
-            expect(page.answerForQuestion('pohjakoulutus_avoin_ala2')).to.equal('Avoin ala 2');
+            expect(answerForQuestion('pohjakoulutus_am_vuosi')).to.equal('2000');
+            expect(answerForQuestion('pohjakoulutus_avoin_ala')).to.equal('Avoin ala 1');
+            expect(answerForQuestion('pohjakoulutus_avoin_ala2')).to.equal('Avoin ala 2');
             done();
         });
     });
