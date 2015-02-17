@@ -35,23 +35,25 @@ public class GroupRestrictionConfigurator {
         FormConfiguration formConfiguration = formParameters.getFormConfiguration();
         List<GroupRestrictionValidator> validators = new ArrayList<GroupRestrictionValidator>();
 
-        // FormParameters got asID
         for (GroupConfiguration groupConfiguration : formConfiguration.getGroupConfigurations()){
-            if (groupConfiguration.getType().equals(GroupConfiguration.GroupType.hakukohde_rajaava)){
-                if(groupConfiguration.getConfigurations().containsKey(CONFIG_maximumNumberOf)) {
-                    I18nText errorMessage = formParameters.getI18nText("rajaava.ryhma.max.virhe");
-                    validators.add(new GroupRestrictionMaxNumberValidator(
-                            groupConfiguration.getGroupId(),
-                            Integer.valueOf(groupConfiguration.getConfigurations().get(CONFIG_maximumNumberOf)),
-                            errorMessage
-                    ));
-                }
-            }
-            if (groupConfiguration.getType().equals(GroupConfiguration.GroupType.CONSTRAINT_GROUP)){
-                //TODO: =RS= generate HH-20 säännöt. Huom tarkastellaan vain listoja.
+            switch (groupConfiguration.getType()) {
+                case hakukohde_rajaava:
+                    createRajaavaValidator(validators, groupConfiguration);
+                    break;
+                case hakukohde_priorisoiva:
+                    createPriorisoivaValidator(validators, groupConfiguration);
+                    break;
+                case CONSTRAINT_GROUP:
+                    //TODO: =RS= generate HH-20 säännöt. Huom tarkastellaan vain listoja.
+                    break;
             }
         }
         
+
+        return validators;
+    }
+
+    private void createPriorisoivaValidator(List<GroupRestrictionValidator> validators, GroupConfiguration groupConfiguration) {
         /*
         TODO Erikoistapaus HH-19
         - Hakuservice.getHakukohderyhmäs
@@ -62,7 +64,16 @@ public class GroupRestrictionConfigurator {
         - lisää tieto prioriteeteista koulutusinformaatioon
         - varmista että toimii
         */
+    }
 
-        return validators;
+    private void createRajaavaValidator(List<GroupRestrictionValidator> validators, GroupConfiguration groupConfiguration) {
+        if(groupConfiguration.getConfigurations().containsKey(CONFIG_maximumNumberOf)) {
+            I18nText errorMessage = formParameters.getI18nText("rajaava.ryhma.max.virhe");
+            validators.add(new GroupRestrictionMaxNumberValidator(
+                    groupConfiguration.getGroupId(),
+                    Integer.valueOf(groupConfiguration.getConfigurations().get(CONFIG_maximumNumberOf)),
+                    errorMessage
+            ));
+        }
     }
 }
