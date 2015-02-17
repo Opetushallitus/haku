@@ -183,36 +183,40 @@ function frameJquery() {
     });
 }
 
+// Ensure that evaluation of given promise leads into a new page being loaded
+function assertPageChanges(promise) {
+    return function() {
+        return Q.fcall(function() { testFrame().window.SPEC_PAGE_CHANGE_PENDING = true; })
+            .then(promise)
+            .then(wait.until(function() {
+                return testFrame().window.SPEC_PAGE_CHANGE_PENDING === undefined;
+            }));
+    }
+}
+
 // Submit data as if it was a form instead of an AJAX request. Used for
 // rendering the HTML response as a new page.
 // Modified from: http://stackoverflow.com/a/133997
 function postAsForm(path, params) {
-    return function() {
-        var form = document.createElement("form");
-        form.setAttribute("method", 'POST');
-        form.setAttribute("action", path);
+    var form = document.createElement("form");
+    form.setAttribute("method", 'POST');
+    form.setAttribute("action", path);
 
-        for (var key in params) {
-            if (params.hasOwnProperty(key)) {
-                var hiddenField = document.createElement("input");
-                hiddenField.setAttribute("type", "hidden");
-                hiddenField.setAttribute("name", key);
-                hiddenField.setAttribute("value", params[key]);
+    for (var key in params) {
+        if (params.hasOwnProperty(key)) {
+            var hiddenField = document.createElement("input");
+            hiddenField.setAttribute("type", "hidden");
+            hiddenField.setAttribute("name", key);
+            hiddenField.setAttribute("value", params[key]);
 
-                form.appendChild(hiddenField);
-            }
+            form.appendChild(hiddenField);
         }
+    }
 
-        testFrame().window.FORM_SUBMISSION_PENDING = true;
-
+    return assertPageChanges(function() {
         testFrame().document.body.appendChild(form);
         form.submit();
-
-        return wait.until(function() {
-            // Block until form submission has changed the page
-            return testFrame().window.FORM_SUBMISSION_PENDING === undefined;
-        })();
-    }
+    });
 }
 
 function post(url, data) {

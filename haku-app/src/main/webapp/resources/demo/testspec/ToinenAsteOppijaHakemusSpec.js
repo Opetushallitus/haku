@@ -205,7 +205,7 @@
                         "Et voi hakea yhteishaussa, koska olet jo suorittanut ammatillisen perustutkinnon"
                     ))
                     .then(input(lomake.lukionKieli, "FI"))
-                    .then(click(lomake.fromKoulutustausta))
+                    .then(assertPageChanges(click(lomake.fromKoulutustausta)))
                     .then(headingVisible("Koulutustausta"))
                     .then(done, done);
             });
