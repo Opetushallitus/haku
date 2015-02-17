@@ -19,15 +19,19 @@ Lomakkeet hakijalle: http://localhost:9090/haku-app/lomake/
 
 Project has Selenium and Mocha tests for functional testing.
 
-Run Mocha tests by first starting a local Tomcat using `./tomcat.sh` and then
+You can start a local Tomcat with integration-test profile so that it uses an embedded Mongo server:
+
+     mvn clean package tomcat7:run -Pit -DskipTests
+
+Then you can run the Mocha tests in your browser at
 
     http://localhost:9090/haku-app/resources/demo/testrunner.html
 
-Or from command line with
+Or run the whole this from command line with
 
-    (cd haku-app && mvn -Pintegration-test -Dit.test=MochaIT verify)
+    (mvn install -DskipTests && cd haku-app && mvn -Pintegration-test -Dit.test=MochaIT verify)
 
-Run all integration tests:
+Run all integration tests (including Mocha and Selenium tests):
 
     mvn clean verify -Pintegration-test
 
@@ -39,11 +43,7 @@ Run single test class:
 
     -Dit.test=DropdownSelectDefaultValueIT
 
-More information about failsave maven plugin:
-
-    http://maven.apache.org/surefire/maven-failsafe-plugin/
-
-### Running against integration test environment (luokka)
+### Running haku-app against integration test environment (luokka)
 
 1. Optionally set your local env settings to `~/oph-configuration.local` folder
 2. remove `~/oph-configuration` folder
