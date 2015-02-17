@@ -97,21 +97,6 @@
             });
         }
 
-        function fromHenkilotiedotToKoulutustausta() {
-            koulutustaustaPage.fromHenkilotiedot().click();
-            return Q.fcall(headingVisible("Koulutustausta"));
-        };
-
-        function fromKoulututustaustaToHakutoiveet() {
-            hakutoiveetPage.fromKoulutustausta().click();
-            return Q.fcall(headingVisible("Hakutoiveet"));
-        };
-
-        function fromHakutoiveetToOsaaminen() {
-            osaaminenPage.fromHakutoiveet().click();
-            return Q.fcall(headingVisible("Arvosanat"));
-        };
-
         describe("Täytä lomake", function(done) {
             beforeEach(function(done) {
                 start()
