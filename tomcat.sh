@@ -15,7 +15,8 @@ clean=""
 build=""
 debug=""
 luokka=""
-while getopts "bcdl" opt; do
+it=""
+while getopts "bcdli" opt; do
 	case $opt in
 	b)
 		build="build"
@@ -26,8 +27,13 @@ while getopts "bcdl" opt; do
 	d)
 		debug="debug"
 		;;
+	i)
+		it="-Dspring.profiles.active=it -Pit"
+		luokka=""
+		;;
 	l)
 		luokka="-Dspring.profiles.active=devluokka -Pdevluokka"
+		it=""
 		rm $CONFIG_BASE
 		ln -s ${CONFIG_BASE}.luokka ${CONFIG_BASE}
 		;;
@@ -51,5 +57,5 @@ fi
 
 MAVEN_OPTS="$MAVEN_OPTS -Xmx4096M" \
 	JAVA_OPTS="$JAVA_OPTS -Xmx4096M -Dlog4j.configuration.file=./haku-app/src/test/resources/log4j.properties -XX:+UseParNewGC -XX:+UseConcMarkSweepGC -XX:-UseParallelGC" \
-	mvn tomcat7:run ${luokka} --projects haku-app -o -DskipTests=true -Dlog4j.debug
+	mvn tomcat7:run $it ${luokka} --projects haku-app -o -DskipTests=true -Dlog4j.debug
 
