@@ -36,6 +36,7 @@ public class GroupPrioritisationValidator extends GroupRestrictionValidator {
     @Override
     public Map<String, I18nText> validate(SortedSet<ApplicationOptionInfo> inputAosInGroup) {
         Map<String, I18nText> errors = new HashMap<>();
+        // TODO HH-19 ApplicationOptioon tieto prioriteetista ja sitten tähän oikea validointi
         return errors;
     }
 }
