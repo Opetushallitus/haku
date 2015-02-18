@@ -10,20 +10,6 @@
     describe('2. asteen lomake', function () {
         var lomake = lomakeSelectors();
 
-        function autocomplete(fn, input, text) {
-            var pickFn = lomake.autocomplete(text);
-            return function() {
-                return Q.fcall(function() {
-                    fn().val(input);
-                    fn().trigger("keydown");
-                }).then(visible(pickFn)).then(function() {
-                    return pickFn().mouseover()
-                }).then(function() {
-                    return Q.delay(100)
-                }).then(hasClass(pickFn, 'ui-state-hover')).then(click(pickFn))
-            };
-        }
-
         describe("Täytä lomake", function() {
             beforeEach(function(done) {
                 start()

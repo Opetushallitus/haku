@@ -45,12 +45,13 @@ wait = {
     maxWaitMs: testTimeout,
     waitIntervalMs: 10,
     until: function (condition, count) {
-        return function () {
+        return function (/*...promiseArgs*/) {
+            var promiseArgs = arguments;
             var deferred = Q.defer();
             if (count == undefined) count = wait.maxWaitMs / wait.waitIntervalMs;
 
             (function waitLoop(remaining) {
-                var cond = condition();
+                var cond = condition.apply(this, promiseArgs);
                 if (cond) {
                     deferred.resolve()
                 } else if (remaining === 0) {
@@ -403,4 +404,30 @@ function headingVisible(heading) {
     return visible(function() {
         return S("legend[class=h3]:contains(" + heading + ")");
     });
+}
+
+function eventIsBound(fn, event) {
+    return Q.fcall(visible(fn))
+        .then(frameJquery)
+        .then(wait.until(function($) {
+            var events = $._data(fn()[0], 'events');
+            return events && events[event].length > 0;
+        }));
+}
+
+function autocomplete(fn, partialText, suggestionChoiceText) {
+    var pickFn = function() {
+        return S("a.ui-corner-all:contains(" + suggestionChoiceText + ")");
+    };
+
+    return function() {
+        return eventIsBound(fn, 'keydown')
+            .then(function() {
+                fn().val(partialText).trigger("keydown");
+            })
+            .then(visible(pickFn))
+            .then(function() { return pickFn().mouseover() })
+            .then(hasClass(pickFn, 'ui-state-hover'))
+            .then(click(pickFn))
+    };
 }
