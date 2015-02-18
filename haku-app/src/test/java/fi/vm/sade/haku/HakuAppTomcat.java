@@ -15,6 +15,7 @@ public class HakuAppTomcat extends EmbeddedTomcat {
     static final int DEFAULT_PORT = 9090;
 
     public final static void main(String... args) throws ServletException, LifecycleException {
+        useIntegrationTestSettings();
         new HakuAppTomcat(Integer.parseInt(System.getProperty("haku-app.port", String.valueOf(DEFAULT_PORT)))).start().await();
     }
 
@@ -27,10 +28,14 @@ public class HakuAppTomcat extends EmbeddedTomcat {
     }
 
     public static void startForIntegrationTestIfNotRunning() {
-        System.setProperty("application.system.cache", "false");
-        System.setProperty("spring.profiles.active", "it");
+        useIntegrationTestSettings();
         if (PortChecker.isFreeLocalPort(DEFAULT_PORT)) {
             new HakuAppTomcat(DEFAULT_PORT).start();
         }
+    }
+
+    private static void useIntegrationTestSettings() {
+        System.setProperty("application.system.cache", "false");
+        System.setProperty("spring.profiles.active", "it");
     }
 }
