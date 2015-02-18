@@ -124,8 +124,7 @@ public class FormEditorController {
     @GET
     @Path("application-system-form")
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
-    @PreAuthorize("hasAnyRole('ROLE_APP_HAKULOMAKKEENHALLINTA_READ_UPDATE', 'ROLE_APP_HAKULOMAKKEENHALLINTA_CRUD', " +
-            "'ROLE_APP_HAKULOMAKKEENHALLINTA_READ')")
+    @PreAuthorize("hasAnyRole('ROLE_APP_HAKULOMAKKEENHALLINTA_READ_UPDATE', 'ROLE_APP_HAKULOMAKKEENHALLINTA_CRUD', 'ROLE_APP_HAKULOMAKKEENHALLINTA_READ')")
     public List<Map<String, Object>> getApplicationSystemForms(){
         ArrayList<Map<String,Object>> applicationSystemForms = new ArrayList<Map<String, Object>>();
         for (ApplicationSystem applicationSystem : hakuService.getApplicationSystems()){
@@ -145,28 +144,36 @@ public class FormEditorController {
     private State deduceApplicationSystemState(ApplicationSystem applicationSystem){
         List<ApplicationPeriod> applicationPeriods = applicationSystem.getApplicationPeriods();
         if (applicationPeriods.size() < 1 ){
-            LOGGER.error("Unexcepted number of periods. Got {} for application system {}", applicationPeriods.size(), applicationSystem.getId());
+            LOGGER.error("Unexpected number of periods. Got {} for application system {}", applicationPeriods.size(), applicationSystem.getId());
             return State.ERROR;
         }
-        ApplicationPeriod applicationPeriod = applicationPeriods.get(0);
+        for(ApplicationPeriod applicationPeriod: applicationPeriods) {
+            if(applicationPeriod.isActive()) {
+                return State.ACTIVE;
+            }
+        }
+        final Date lastApplicationPeriodEnd = getLastApplicationPeriodEnd(applicationPeriods);
         final Date now = new Date();
-        LOGGER.debug("Decucing state. Now {}. Period Start {}. Period End {}",
-                now, applicationPeriod.getStart(),applicationPeriod.getEnd());
-        if (now.after(applicationPeriod.getEnd())){
+        if (now.after(lastApplicationPeriodEnd)){
             return State.CLOSED;
         }
-        if ( now.after(applicationPeriod.getStart())) {
-            return State.PUBLISHED;
+        for(ApplicationPeriod applicationPeriod: applicationPeriods) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(applicationPeriod.getStart());
+            calendar.roll(Calendar.DATE, -2);
+            if (now.after(calendar.getTime()) && now.before(applicationPeriod.getStart())) {
+                return State.LOCKED;
+            }
         }
-        // TODO: FIX Hardcoding locked to 2 days before application period starts
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(applicationPeriod.getStart());
-        calendar.roll(Calendar.DATE,-2);
-        LOGGER.debug("Testing against {} ", calendar.getTime());
-        if (now.after(calendar.getTime())){
-            return State.LOCKED;
+        return State.PUBLISHED;
+    }
+
+    private Date getLastApplicationPeriodEnd(List<ApplicationPeriod> applicationPeriods) {
+        SortedSet<Date> sort = new TreeSet<Date>();
+        for(ApplicationPeriod applicationPeriod: applicationPeriods) {
+            sort.add(applicationPeriod.getEnd());
         }
-        return State.ACTIVE;
+        return sort.last();
     }
 
     @GET
