@@ -25,26 +25,26 @@
                         input(lomake.lahiosoite, "Testikatu 4"),
                         input(lomake.postinumero, "00100"),
                         input(lomake.kotikunta, "janakkala")))
-                    .then(click(lomake.fromHenkilotiedot))
+                    .then(pageChange(lomake.fromHenkilotiedot))
                     .then(headingVisible("Koulutustausta"))
                     .then(click(lomake.pohjakoulutus("1")))
                     .then(all(
                         input(lomake.pkPaattotodistusVuosi, "2014"),
                         input(lomake.pkKieli, "FI")))
-                    .then(click(lomake.fromKoulutustausta))
+                    .then(pageChange(lomake.fromKoulutustausta))
                     .then(headingVisible("Hakutoiveet"))
                     .then(autocomplete(lomake.opetuspiste1, "Esp", "FAKTIA, Espoo op"))
                     .then(select(lomake.koulutus1, "Talonrakennus ja ymäristösuunnittelu, pk"))
                     .then(click(
                         lomake.harkinnanvaraisuus1(false),
                         lomake.soraTerveys1(false),
-                        lomake.soraOikeudenMenetys1(false),
-                        lomake.fromHakutoiveet))
+                        lomake.soraOikeudenMenetys1(false)))
+                    .then(pageChange(lomake.fromHakutoiveet))
                     .then(headingVisible("Arvosanat"))
-                    .then(click(lomake.fromOsaaminen))
+                    .then(pageChange(lomake.fromOsaaminen))
                     .then(headingVisible("Lupatiedot"))
                     .then(click(lomake.asiointikieli("suomi")))
-                    .then(click(lomake.fromLisatieto))
+                    .then(pageChange(lomake.fromLisatieto))
                     .then(headingVisible("Henkilötiedot"))
                     .then(done, done);
              });
@@ -94,7 +94,7 @@
                         lomake.ammatillinenSuoritettu(true)))
                     .then(visibleText(lomake.suorittanutTutkinnonRule,
                         "Et voi hakea yhteishaussa ammatilliseen koulutukseen"))
-                    .then(click(lomake.fromKoulutustausta))
+                    .then(pageChange(lomake.fromKoulutustausta))
                     .then(headingVisible("Hakutoiveet"))
                     .then(done, done);
             });
@@ -109,7 +109,7 @@
                         "Et voi hakea yhteishaussa, koska olet jo suorittanut ammatillisen perustutkinnon"
                     ))
                     .then(input(lomake.lukionKieli, "FI"))
-                    .then(assertPageChanges(click(lomake.fromKoulutustausta)))
+                    .then(pageChange(lomake.fromKoulutustausta))
                     .then(headingVisible("Koulutustausta"))
                     .then(done, done);
             });
@@ -203,16 +203,16 @@
 
             it("Urheilevat kokit", function(done) {
                 Q.fcall(visible(lomake.sukunimi))
-                    .then(click(lomake.fromHenkilotiedot))
+                    .then(pageChange(lomake.fromHenkilotiedot))
                     .then(headingVisible("Koulutustausta"))
-                    .then(click(lomake.fromKoulutustausta))
+                    .then(pageChange(lomake.fromKoulutustausta))
                     .then(headingVisible("Hakutoiveet"))
                     .then(autocomplete(lomake.opetuspiste1, "urh", "Urheilijoiden koulu"))
                     .then(select(lomake.koulutus1, "Urheilevien kokkien koulutus"))
                     .then(click(
                         lomake.harkinnanvaraisuus1(false),
-                        lomake.urheilija1(true),
-                        lomake.fromHakutoiveet))
+                        lomake.urheilija1(true)))
+                    .then(pageChange(lomake.fromHakutoiveet))
                     .then(headingVisible("Arvosanat"))
                     .then(done, done);
             });

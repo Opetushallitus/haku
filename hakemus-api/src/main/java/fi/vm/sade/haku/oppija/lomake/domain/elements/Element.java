@@ -181,4 +181,4 @@ public abstract class Element implements Serializable {
     public Element[] getExtraExcelColumns(final I18nBundle i18nBundle) {
         return null;
     }
-}
+

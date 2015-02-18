@@ -185,14 +185,21 @@ function frameJquery() {
 }
 
 // Ensure that evaluation of given promise leads into a new page being loaded
-function assertPageChanges(promise) {
+function waitPageLoad(promise) {
     return function() {
         return Q.fcall(function() { testFrame().window.SPEC_PAGE_CHANGE_PENDING = true; })
             .then(promise)
             .then(wait.until(function() {
                 return testFrame().window.SPEC_PAGE_CHANGE_PENDING === undefined;
+            }))
+            .then(wait.until(function() {
+                return (testFrame().document.readyState === 'complete');
             }));
     }
+}
+
+function pageChange(promise) {
+    return waitPageLoad(click(promise))
 }
 
 // Submit data as if it was a form instead of an AJAX request. Used for
@@ -214,7 +221,7 @@ function postAsForm(path, params) {
         }
     }
 
-    return assertPageChanges(function() {
+    return waitPageLoad(function() {
         testFrame().document.body.appendChild(form);
         form.submit();
     });
