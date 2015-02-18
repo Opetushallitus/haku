@@ -118,7 +118,7 @@
                         <artifactId>maven-failsafe-plugin</artifactId>
                         <version>2.13</version>
                         <configuration>
-                            <argLine>-Xms512M -Xmx1G -XX:MaxPermSize=256M -Xss2M</argLine>
+                            <argLine>-Xms512M -Xmx1G -XX:MaxPermSize=256M -Xss2M -Dfile.encoding=UTF-8</argLine>
                             <includes>
                                 <include>**/it/*</include>
                                 <include>**/it/**/*</include>
