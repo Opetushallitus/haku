@@ -21,7 +21,7 @@ Project has Selenium and Mocha tests for functional testing.
 
 You can start a local Tomcat with `it` (integration test) profile so that it uses an embedded Mongo server:
 
-     mvn clean package tomcat7:run -Pit -DskipTests
+     (mvn install -DskipTests && cd haku-app && mvn tomcat7:run -Pit)
 
 Then you can run the Mocha tests in your browser at
 
@@ -45,7 +45,7 @@ Debug integration tests:
 
 Debug local Tomcat
 
-    mvndebug tomcat7:run -Pit
+    (mvn install -DskipTests && cd haku-app && mvndebug tomcat7:run -Pit)
 
 ### Running haku-app against integration test environment (luokka)
 
