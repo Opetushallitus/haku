@@ -1,12 +1,15 @@
 package fi.vm.sade.haku.oppija.configuration;
 
+import de.flapdoodle.embed.mongo.Command;
 import de.flapdoodle.embed.mongo.MongodExecutable;
 import de.flapdoodle.embed.mongo.MongodProcess;
 import de.flapdoodle.embed.mongo.MongodStarter;
 import de.flapdoodle.embed.mongo.config.IMongodConfig;
 import de.flapdoodle.embed.mongo.config.MongodConfigBuilder;
 import de.flapdoodle.embed.mongo.config.Net;
+import de.flapdoodle.embed.mongo.config.RuntimeConfigBuilder;
 import de.flapdoodle.embed.mongo.distribution.Version;
+import de.flapdoodle.embed.process.config.io.ProcessOutput;
 import de.flapdoodle.embed.process.runtime.Network;
 import org.apache.commons.lang.math.NumberUtils;
 import org.slf4j.Logger;
@@ -35,7 +38,10 @@ public class MongoServer {
                 .version(Version.Main.PRODUCTION)
                 .net(new Net(NumberUtils.toInt(port), Network.localhostIsIPv6()))
                 .build();
-            MongodStarter runtime = MongodStarter.getDefaultInstance();
+            MongodStarter runtime = MongodStarter.getInstance(new RuntimeConfigBuilder()
+                .defaults(Command.MongoD)
+                .processOutput(ProcessOutput.getDefaultInstanceSilent())
+                .build());
 
             mongodExecutable = runtime.prepare(mongodConfig);
             mongod = mongodExecutable.start();
