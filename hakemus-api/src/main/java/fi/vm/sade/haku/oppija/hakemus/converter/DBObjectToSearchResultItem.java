@@ -27,6 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.Map;
 
 /**
@@ -35,7 +36,15 @@ import java.util.Map;
 @Service
 public class DBObjectToSearchResultItem implements Function<DBObject, ApplicationSearchResultItemDTO> {
 
-    public static final String[] KEYS = {"oid", "state", "personOid", "answers.henkilotiedot.Henkilotunnus", "answers.henkilotiedot.Etunimet", "answers.henkilotiedot.Sukunimi", "answers.henkilotiedot.syntymaaika" };
+    public static final String[] KEYS = {
+            "oid",
+            "received",
+            "state",
+            "personOid",
+            "answers.henkilotiedot.Henkilotunnus",
+            "answers.henkilotiedot.Etunimet",
+            "answers.henkilotiedot.Sukunimi",
+            "answers.henkilotiedot.syntymaaika" };
 
     private final EncrypterService encrypterService;
 
@@ -47,9 +56,12 @@ public class DBObjectToSearchResultItem implements Function<DBObject, Applicatio
     @Override
     public ApplicationSearchResultItemDTO apply(DBObject dbObject) {
         if (dbObject != null) {
+            Object dbReceived = dbObject.get("received");
+            Date received = dbReceived != null ? new Date((long) dbObject.get("received")) : null;
             ApplicationSearchResultItemDTO item = new ApplicationSearchResultItemDTO();
             item.setOid((String) dbObject.get("oid"));
             item.setPersonOid((String) dbObject.get("personOid"));
+            item.setReceived(received);
             if (dbObject.containsField("state")) {
                 item.setState(Application.State.valueOf((String) dbObject.get("state")));
             }

@@ -521,11 +521,20 @@ $(document).ready(function () {
                     if (data.totalCount > 0) {
                         $(data.results).each(function (index, item) {
                             var cleanOid = item.oid.replace(/\./g, '_');
-                            $tbody.append('<tr><td><input class="check-application" id="check-application-' + cleanOid + '" type="checkbox"/></td><td>' +
-                                (item.lastName ? item.lastName : '') + ' ' + (item.firstNames ? item.firstNames : '') + '</td><td>' +
-                                (item.ssn ? item.ssn : '') + '</td><td><a class="application-link" href="' +
-                                page_settings.contextPath + '/virkailija/hakemus/' + item.oid + '/">' +
-                                item.oid + '</a></td><td>' + (item.state ? page_settings[item.state] : '') + '</td></tr>');
+                            var applicationHref = page_settings.contextPath + '/virkailija/hakemus/' + item.oid + '/';
+                            var received = '';
+                            if (item.received) {
+                                var receivedDate = new Date(item.received);
+                                received = receivedDate.getDate() + "." + (receivedDate.getMonth() + 1) + ". " + receivedDate.getFullYear();
+                            }
+                            $tbody.append('<tr>'
+                                +'<td><input class="check-application" id="check-application-' + cleanOid + '" type="checkbox"/></td>'
+                                +'<td>' + (item.lastName ? item.lastName : '') + ' ' + (item.firstNames ? item.firstNames : '') + '</td>'
+                                +'<td>' + (item.ssn ? item.ssn : '') + '</td>'
+                                +'<td><a class="application-link" href="' + applicationHref + '">' + item.oid + '</a></td>'
+                                +'<td>' + received + '</td>'
+                                +'<td>' + (item.state ? page_settings[item.state] : '') + '</td>'
+                                +'</tr>');
                         });
                         var options = {
                             currentPage: Math.ceil(start / maxRows) + 1,
@@ -682,6 +691,10 @@ $(document).ready(function () {
 
     $('#application-table-header-state').click(function (event) {
         applicationSearch.sort('state');
+    });
+
+    $('#application-table-header-received').click(function (event) {
+        applicationSearch.sort('received');
     });
 
     $('#check-all-applications').change(function () {

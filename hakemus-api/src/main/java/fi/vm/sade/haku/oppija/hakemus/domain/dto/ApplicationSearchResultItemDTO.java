@@ -23,6 +23,7 @@ import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * @author Mikko Majapuro
@@ -32,6 +33,7 @@ public class ApplicationSearchResultItemDTO implements Serializable {
 
     private String oid;
     private Application.State state;
+    private Date received;
     private String firstNames;
     private String lastName;
     private String ssn;
@@ -40,12 +42,14 @@ public class ApplicationSearchResultItemDTO implements Serializable {
     @JsonCreator
     public ApplicationSearchResultItemDTO(@JsonProperty(value = "oid") final String oid,
                                           @JsonProperty(value = "state") final Application.State state,
+                                          @JsonProperty(value = "received") final Date received,
                                           @JsonProperty(value = "firstNames") final String firstNames,
                                           @JsonProperty(value = "lastName") final String lastName,
                                           @JsonProperty(value = "ssn") final String ssn,
                                           @JsonProperty(value = "personOid") final String personOid) {
         this.oid = oid;
         this.state = state;
+        this.received = received;
         this.firstNames = firstNames;
         this.lastName = lastName;
         this.ssn = ssn;
@@ -103,5 +107,13 @@ public class ApplicationSearchResultItemDTO implements Serializable {
 
     public void setPersonOid(String personOid) {
         this.personOid = personOid;
+    }
+
+    public Date getReceived() {
+        return received;
+    }
+
+    public void setReceived(Date received) {
+        this.received = received;
     }
 }

@@ -218,6 +218,8 @@
                             key="virkailija.hakemus.henkilotunnus"/></td>
                     <td id="application-table-header-oid" class="sorted-not"><fmt:message
                             key="virkailija.hakemus.hakemusnro"/></td>
+                    <td id="application-table-header-received" class="sorted-not"><fmt:message
+                            key="virkailija.hakemus.saapumispvm"/></td>
                     <td id="application-table-header-state" class="sorted-not"><fmt:message
                             key="virkailija.hakemus.hakemuksen.tila"/></td>
                 </tr>
