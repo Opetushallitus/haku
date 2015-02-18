@@ -15,39 +15,26 @@ If the site fails to load due to "Input validation failure", make sure you don't
 
 Lomakkeet hakijalle: http://localhost:9090/haku-app/lomake/
 
-#### Running and testing
+### Running and testing
 
-Project has Selenium and Mocha tests for functional testing.
+#### Running from the IDE
+
+You can start a local Tomcat with `it` (integration test) profile so that it uses an embedded Mongo server
+by running the `HakuAppTomcat` class.
+
+You can run individual Selenium / Mocha tests from the IDE too. For instance, you may run `MochaIt` class.
+
+#### Running Tomcat locally using Maven
 
 You can start a local Tomcat with `it` (integration test) profile so that it uses an embedded Mongo server:
 
      (mvn install -DskipTests && cd haku-app && mvn tomcat7:run -Pit)
 
-Then you can run the Mocha tests in your browser at
-
-    http://localhost:9090/haku-app/resources/demo/testrunner.html
-
-Or run the whole this from command line with
-
-    (mvn install -DskipTests && cd haku-app && mvn -Pit -Dit.test=MochaIT verify)
-
-Run all integration tests (including Mocha and Selenium tests):
-
-    mvn clean verify -Pit
-
-Run single test class:
-
-    -Dit.test=DropdownSelectDefaultValueIT
-
-Debug integration tests:
-
-    mvn clean verify -Pit -Dmaven.failsafe.debug="-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=8000 -Xnoagent -Djava.compiler=NONE"
-
 Debug local Tomcat
 
     (mvn install -DskipTests && cd haku-app && mvndebug tomcat7:run -Pit)
 
-### Running haku-app against integration test environment (luokka)
+#### Running haku-app against integration test environment (luokka)
 
 1. Optionally set your local env settings to `~/oph-configuration.local` folder
 2. remove `~/oph-configuration` folder
@@ -77,3 +64,27 @@ Script takes also these parameters:
 so you can eg. clean, build & debug with luokka settings by
 
 `tomcat.sh -cbdl`
+
+#### Running tests
+
+Project has Selenium and Mocha tests for functional testing.
+
+If you already have a Tomcat running, you can run the Mocha tests in your browser at
+
+    http://localhost:9090/haku-app/resources/demo/testrunner.html
+
+Or build, start tomcat and run Mochas from the command line:
+
+    (mvn install -DskipTests && cd haku-app && mvn -Pit -Dit.test=MochaIT verify)
+
+Run all tests (including Mocha and Selenium tests):
+
+    mvn clean verify -Pit
+
+Run single test class:
+
+    -Dit.test=DropdownSelectDefaultValueIT
+
+Debug integration tests:
+
+    mvn clean verify -Pit -Dmaven.failsafe.debug="-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=8000 -Xnoagent -Djava.compiler=NONE"
