@@ -3,6 +3,7 @@ package fi.vm.sade.haku;
 import javax.servlet.ServletException;
 
 import org.apache.catalina.LifecycleException;
+import org.slf4j.LoggerFactory;
 
 import fi.vm.sade.integrationtest.tomcat.EmbeddedTomcat;
 import fi.vm.sade.integrationtest.tomcat.SharedTomcat;
@@ -31,6 +32,8 @@ public class HakuAppTomcat extends EmbeddedTomcat {
         useIntegrationTestSettings();
         if (PortChecker.isFreeLocalPort(DEFAULT_PORT)) {
             new HakuAppTomcat(DEFAULT_PORT).start();
+        } else {
+            LoggerFactory.getLogger(HakuAppTomcat.class).info("Not starting Tomcat: seems to be running on port " + DEFAULT_PORT);
         }
     }
 

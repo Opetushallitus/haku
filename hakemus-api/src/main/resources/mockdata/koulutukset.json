@@ -1,0 +1,311 @@
+{
+  "1.2.246.562.5.20176855623": {
+  "id": "1.2.246.562.5.20176855623",
+  "name": "Tieto- ja tietoliikennetekniikan perustutkinto, yo",
+  "aoIdentifier": "143",
+  "educationDegree": "32",
+  "sora": false,
+  "teachingLanguages": ["FI"],
+  "athleteEducation": false,
+  "provider": {
+    "id": "1.2.246.562.10.2014042514082007985435",
+    "name": "Stadin ammattiopisto, Sturenkadun toimipaikka"
+  }
+},
+  "1.2.246.562.14.79893512065": {
+    "id": "1.2.246.562.14.79893512065",
+    "name": "Kaivosalan perustutkinto, pk",
+    "aoIdentifier": "333",
+    "educationDegree": "32",
+    "educationCodeUri": "koulutus_381203",
+    "sora": true,
+    "vocational": true,
+    "kaksoistutkinto": false,
+    "teachingLanguages": ["FI"],
+    "athleteEducation": false,
+    "provider": {
+      "id": "1.2.246.562.10.89537774706",
+      "name": "FAKTIA, Espoo op"
+    }
+  },
+
+  "1.2.246.562.20.17550428336": {
+    "id": "1.2.246.562.20.17550428336",
+    "name": "Urheilevien kokkien koulutus",
+    "aoIdentifier": "333",
+    "educationDegree": "32",
+    "educationCodeUri": "koulutus_381203",
+    "sora": false,
+    "vocational": true,
+    "kaksoistutkinto": false,
+    "teachingLanguages": ["FI"],
+    "athleteEducation": true,
+    "provider": {
+      "id": "1.2.246.562.10.35241670048",
+      "name": "Urheilijoiden koulu"
+    }
+  },
+
+  "1.2.246.562.20.30500448839": {
+    "id": "1.2.246.562.20.30500448839",
+    "name": "Kymppiluokka",
+    "aoIdentifier": "019",
+    "educationDegree": "22",
+    "educationCodeUri": "koulutus_222222",
+    "sora": false,
+    "vocational": true,
+    "kaksoistutkinto": false,
+    "teachingLanguages": ["FI"],
+    "athleteEducation": false,
+    "provider": {
+      "id": "1.2.246.562.10.35241670047",
+      "name": "Anna Tapion koulu"
+    }
+  },
+
+  "1.2.246.562.14.673437691210": {
+    "id": "1.2.246.562.14.673437691210",
+    "name": "Talonrakennus ja ymäristösuunnittelu, pk",
+    "educationDegree": "32",
+    "sora": true,
+    "teachingLanguages": ["FI"],
+    "aoIdentifier": null,
+    "startingQuota": 14,
+    "startingQuotaDescription": "14",
+    "lowestAcceptedScore": 0,
+    "lowestAcceptedAverage": 0.0,
+    "attachmentDeliveryDeadline": null,
+    "attachmentDeliveryAddress": null,
+    "lastYearApplicantCount": 0,
+    "educationDegree": "koulutusasteoph2002_72",
+
+    "teachingLanguageNames": [],
+    "selectionCriteria": null,
+    "soraDescription": null,
+    "prerequisite": null,
+    "exams": null,
+    "childRefs": [],
+    "higherEdLOSRefs": [
+      {
+        "id": "1.2.246.562.17.544165003510",
+        "asIds": null,
+        "name": "Filosofi, filosofie magister",
+        "qualifications": ["Filosofie magister"],
+        "prerequisite": null,
+        "provider": "Åbo Akademi, Fakulteten för humaniora, psykologi och teologi",
+        "fieldOfExpertise": null
+      }
+    ],
+    "provider": {
+      "id": "1.2.246.562.10.89537774706",
+      "name": "FAKTIA, Espoo op",
+      "applicationSystemIds": [
+        "1.2.246.562.29.95390561488",
+        "1.2.246.562.29.90139171616"
+      ],
+      "postalAddress": {
+        "streetAddress": "Hämeenkatu 13",
+        "streetAddress2": null,
+        "postalCode": "20500",
+        "postOffice": "TURKU"
+      },
+      "visitingAddress": {
+        "streetAddress": "Hämeenkatu 13",
+        "streetAddress2": null,
+        "postalCode": "20500",
+        "postOffice": "TURKU"
+      },
+      "webPage": "http://www.abo.fi/ansok",
+      "email": "studinfo@abo.fi",
+      "fax": null,
+      "phone": "02 215 4169",
+      "description": null,
+      "healthcare": null,
+      "accessibility": null,
+      "learningEnvironment": null,
+      "dining": null,
+      "livingExpenses": null,
+      "living": null,
+      "yearClock": null,
+      "financingStudies": null,
+      "insurances": null,
+      "leisureServices": null,
+      "social": [
+        {
+          "name": "facebook",
+          "url": "https://www.facebook.com/aboakademi"
+        }
+      ],
+      "pictureFound": false,
+      "athleteEducation": false,
+      "applicationOffice": {
+        "name": "Åbo Akademi, Fakulteten för humaniora, psykologi och teologi",
+        "phone": "02 215 4169",
+        "email": "studinfo@abo.fi",
+        "www": "http://www.abo.fi/ansok",
+        "visitingAddress": {
+          "streetAddress": "Hämeenkatu 13",
+          "streetAddress2": null,
+          "postalCode": "20500",
+          "postOffice": "TURKU"
+        },
+        "postalAddress": {
+          "streetAddress": "Hämeenkatu 13",
+          "streetAddress2": null,
+          "postalCode": "20500",
+          "postOffice": "TURKU"
+        }
+      },
+      "homeplace": "Turku"
+    },
+    "specificApplicationDates": false,
+    "applicationStartDate": 1422368397804,
+    "applicationEndDate": 1430395242599,
+    "applicationPeriodName": null,
+    "canBeApplied": true,
+    "nextApplicationPeriodStarts": null,
+    "requiredBaseEducations": [
+      "pohjakoulutusvaatimuskorkeakoulut_101",
+      "pohjakoulutusvaatimuskorkeakoulut_102",
+      "pohjakoulutusvaatimuskorkeakoulut_116"
+    ],
+    "attachments": [],
+    "emphasizedSubjects": null,
+    "additionalInfo": null,
+    "additionalProof": null,
+    "overallScoreLimit": null,
+    "kaksoistutkinto": false,
+    "athleteEducation": false,
+    "vocational": false,
+
+    "status": null,
+    "eligibilityDescription": null,
+    "type": "KORKEAKOULU",
+    "educationTypeUri": null,
+    "hakuaikaId": "434174",
+    "organizationGroups": [],
+    "kotitalous": false
+  },
+
+  "template": {
+    "id": "1.2.246.562.20.10457567187",
+    "name": "Filosofi, filosofie magister",
+    "aoIdentifier": null,
+    "startingQuota": 14,
+    "startingQuotaDescription": "14",
+    "lowestAcceptedScore": 0,
+    "lowestAcceptedAverage": 0.0,
+    "attachmentDeliveryDeadline": null,
+    "attachmentDeliveryAddress": null,
+    "lastYearApplicantCount": 0,
+    "sora": false,
+    "educationDegree": "koulutusasteoph2002_72",
+    "teachingLanguages": ["SV"],
+    "teachingLanguageNames": [],
+    "selectionCriteria": null,
+    "soraDescription": null,
+    "prerequisite": null,
+    "exams": null,
+    "childRefs": [],
+    "higherEdLOSRefs": [
+      {
+        "id": "1.2.246.562.17.544165003510",
+        "asIds": null,
+        "name": "Filosofi, filosofie magister",
+        "qualifications": ["Filosofie magister"],
+        "prerequisite": null,
+        "provider": "Åbo Akademi, Fakulteten för humaniora, psykologi och teologi",
+        "fieldOfExpertise": null
+      }
+    ],
+    "provider": {
+      "id": "1.2.246.562.10.2014042514082007985435",
+      "name": "Åbo Akademi, Fakulteten för humaniora, psykologi och teologi",
+      "applicationSystemIds": [
+        "1.2.246.562.29.95390561488",
+        "1.2.246.562.29.90139171616"
+      ],
+      "postalAddress": {
+        "streetAddress": "Hämeenkatu 13",
+        "streetAddress2": null,
+        "postalCode": "20500",
+        "postOffice": "TURKU"
+      },
+      "visitingAddress": {
+        "streetAddress": "Hämeenkatu 13",
+        "streetAddress2": null,
+        "postalCode": "20500",
+        "postOffice": "TURKU"
+      },
+      "webPage": "http://www.abo.fi/ansok",
+      "email": "studinfo@abo.fi",
+      "fax": null,
+      "phone": "02 215 4169",
+      "description": null,
+      "healthcare": null,
+      "accessibility": null,
+      "learningEnvironment": null,
+      "dining": null,
+      "livingExpenses": null,
+      "living": null,
+      "yearClock": null,
+      "financingStudies": null,
+      "insurances": null,
+      "leisureServices": null,
+      "social": [
+        {
+          "name": "facebook",
+          "url": "https://www.facebook.com/aboakademi"
+        }
+      ],
+      "pictureFound": false,
+      "athleteEducation": false,
+      "applicationOffice": {
+        "name": "Åbo Akademi, Fakulteten för humaniora, psykologi och teologi",
+        "phone": "02 215 4169",
+        "email": "studinfo@abo.fi",
+        "www": "http://www.abo.fi/ansok",
+        "visitingAddress": {
+          "streetAddress": "Hämeenkatu 13",
+          "streetAddress2": null,
+          "postalCode": "20500",
+          "postOffice": "TURKU"
+        },
+        "postalAddress": {
+          "streetAddress": "Hämeenkatu 13",
+          "streetAddress2": null,
+          "postalCode": "20500",
+          "postOffice": "TURKU"
+        }
+      },
+      "homeplace": "Turku"
+    },
+    "specificApplicationDates": false,
+    "applicationStartDate": 1422368397804,
+    "applicationEndDate": 1430395242599,
+    "applicationPeriodName": null,
+    "canBeApplied": true,
+    "nextApplicationPeriodStarts": null,
+    "requiredBaseEducations": [
+      "pohjakoulutusvaatimuskorkeakoulut_101",
+      "pohjakoulutusvaatimuskorkeakoulut_102",
+      "pohjakoulutusvaatimuskorkeakoulut_116"
+    ],
+    "attachments": [],
+    "emphasizedSubjects": null,
+    "additionalInfo": null,
+    "additionalProof": null,
+    "overallScoreLimit": null,
+    "kaksoistutkinto": false,
+    "athleteEducation": false,
+    "vocational": false,
+    "educationCodeUri": "koulutus_726701",
+    "status": null,
+    "eligibilityDescription": null,
+    "type": "KORKEAKOULU",
+    "educationTypeUri": null,
+    "hakuaikaId": "434174",
+    "organizationGroups": [],
+    "kotitalous": false
+  }
+}

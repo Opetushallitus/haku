@@ -1,4 +1,4 @@
-package fi.vm.sade.haku.virkailija.koulutusinformaatio.json;
+package fi.vm.sade.haku.oppija.common.koulutusinformaatio;
 
 import java.lang.reflect.Type;
 import java.util.Date;

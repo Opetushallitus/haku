@@ -5,6 +5,7 @@
       "name": "Talonrakennus ja ymäristösuunnittelu, pk",
       "educationDegree": "32",
       "sora": true,
+      "educationCodeUri": "koulutus_381202",
       "teachingLanguages": ["FI"],
       "organizationGroups": [],
       "childLONames": [
@@ -31,6 +32,7 @@
       "name": "Musiikkiteknologian koulutusohjelma, pk (Musiikkialan perustutkinto)",
       "educationDegree": "32",
       "teachingLanguages": ["FI"],
+      "educationCodeUri": "koulutus_381209",
       "organizationGroups": [],
       "childLONames": [
         "Musiikkialan perustutkinto, Musiikkiteknologian koulutusohjelma",
