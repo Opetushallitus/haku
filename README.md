@@ -15,7 +15,7 @@ If the site fails to load due to "Input validation failure", make sure you don't
 
 Lomakkeet hakijalle: http://localhost:9090/haku-app/lomake/
 
-#### Integration tests
+#### Running and testing
 
 Project has Selenium and Mocha tests for functional testing.
 
@@ -35,13 +35,17 @@ Run all integration tests (including Mocha and Selenium tests):
 
     mvn clean verify -Pit
 
-Debug integration tests:
-
-    -Dmaven.failsafe.debug="-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=8000 -Xnoagent -Djava.compiler=NONE"
-
 Run single test class:
 
     -Dit.test=DropdownSelectDefaultValueIT
+
+Debug integration tests:
+
+    mvn clean verify -Pit -Dmaven.failsafe.debug="-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=8000 -Xnoagent -Djava.compiler=NONE"
+
+Debug local Tomcat
+
+    mvndebug tomcat7:run -Pit
 
 ### Running haku-app against integration test environment (luokka)
 
