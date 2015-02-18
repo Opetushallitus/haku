@@ -70,13 +70,6 @@ public class SearchResourceMock {
         }
     }
 
-    public static void main(String... args) {
-        System.out.println(new SearchResourceMock().hakukohdeSearch(null, "1.2.246.562.10.89537774706", "9"));
-        System.out.println(new SearchResourceMock().hakukohdeSearch(null, "1.2.246.562.10.51872958189", "9"));
-        System.out.println(new SearchResourceMock().hakukohdeSearch(null, "1.2.246.562.10.35241670047", "9"));
-        System.out.println(new SearchResourceMock().hakukohdeSearch(null, "1.2.246.562.10.35241670048", "9"));
-    }
-
     @GET
     @Path("/ao/search/{asId}/{lopId}")
     @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
