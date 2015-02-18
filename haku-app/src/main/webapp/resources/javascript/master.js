@@ -175,6 +175,10 @@ $(document).ready(function () {
 
 });
 
+$(document).ajaxSend(function(event, jqxhr, settings) {
+	jqxhr.setRequestHeader('Caller-Id', 'haku.haku-app.frontend');
+});
+
 var complexRule = {
     url: function() {
         var split = document.URL.split("?");
