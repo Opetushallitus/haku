@@ -24,6 +24,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.ApplicationPeriod;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystemBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.impl.TranslationsUtil;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuaikaV1RDTO;
 
@@ -49,7 +50,7 @@ public class HakuV1RDTOToApplicationSystemFunction implements Function<HakuV1RDT
             namesTransformed.put(key, value);
         }
 
-        I18nText name = new I18nText(namesTransformed);
+        I18nText name = new I18nText(TranslationsUtil.ensureDefaultLanguageTranslations(namesTransformed));
 
         List<ApplicationPeriod> applicationPeriods = Lists.newArrayList();
         List<HakuaikaV1RDTO> hakuaikas = hakuDTO.getHakuaikas();
