@@ -3,6 +3,7 @@ package fi.vm.sade.haku.virkailija.lomakkeenhallinta.service;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.validation.GroupRestrictionValidator;
+import fi.vm.sade.haku.oppija.lomake.validation.groupvalidators.GroupPrioritisationValidator;
 import fi.vm.sade.haku.oppija.lomake.validation.groupvalidators.GroupRestrictionMaxNumberValidator;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain.FormConfiguration;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain.GroupConfiguration;
@@ -54,16 +55,11 @@ public class GroupRestrictionConfigurator {
     }
 
     private void createPriorisoivaValidator(List<GroupRestrictionValidator> validators, GroupConfiguration groupConfiguration) {
-        /*
-        TODO Erikoistapaus HH-19
-        - Hakuservice.getHakukohderyhmäs
-          https://itest-virkailija.oph.ware.fi/tarjonta-service/rest/v1/haku/1.2.246.562.29.173465377510
-        - every group test type == GroupConfiguration.GroupType.hakukohde_priorisoiva
-        - generate HH-19 säännöt
-        - validaattoriin ei tietoa prioriteettitasoista. Katsotaan vain että ovat oikeassa järjestyksessä.
-        - lisää tieto prioriteeteista koulutusinformaatioon
-        - varmista että toimii
-        */
+        I18nText errorMessage = formParameters.getI18nText("priorisoiva.ryhma.virhe");
+        validators.add(new GroupPrioritisationValidator(
+                groupConfiguration.getGroupId(),
+                errorMessage
+        ));
     }
 
     private void createRajaavaValidator(List<GroupRestrictionValidator> validators, GroupConfiguration groupConfiguration) {
