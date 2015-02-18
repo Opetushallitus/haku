@@ -17,13 +17,24 @@ package fi.vm.sade.haku.oppija.ki.resource;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+
+import org.codehaus.jackson.map.DeserializationConfig;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.type.TypeReference;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+
+import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+
+import fi.vm.sade.haku.oppija.common.koulutusinformaatio.ApplicationOption;
+import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionSearchResultDTO;
 
 /**
  * @author Mikko Majapuro
@@ -59,156 +70,32 @@ public class SearchResourceMock {
         }
     }
 
+    public static void main(String... args) {
+        System.out.println(new SearchResourceMock().hakukohdeSearch(null, "1.2.246.562.10.89537774706", "9"));
+        System.out.println(new SearchResourceMock().hakukohdeSearch(null, "1.2.246.562.10.51872958189", "9"));
+        System.out.println(new SearchResourceMock().hakukohdeSearch(null, "1.2.246.562.10.35241670047", "9"));
+        System.out.println(new SearchResourceMock().hakukohdeSearch(null, "1.2.246.562.10.35241670048", "9"));
+    }
+
     @GET
     @Path("/ao/search/{asId}/{lopId}")
     @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
     public String hakukohdeSearch(@PathParam("asId") final String asId, @PathParam("lopId") final String lopId,
                                   @DefaultValue(value = "1") @QueryParam("baseEducation") final String baseEducation) {
-
-        if (lopId.equalsIgnoreCase("1.2.246.562.10.89537774706")) {
-            return "[{\"id\":\"1.2.246.562.14.673437691210\"," +
-                    "\"name\":\"Talonrakennus ja ymäristösuunnittelu, pk\"," +
-                    "\"educationDegree\":\"32\", " +
-                    "\"sora\": true, " +
-                    "\"teachingLanguages\":[\"FI\"], " +
-                    "\"organizationGroups\":[],"+
-                    "\"childLONames\":[" +
-                    "\"Käsi- ja taideteollisuusalan perustutkinto, Tuotteen suunnittelun ja valmistuksen koulutusohjelma\"," +
-                    "\"Käsi- ja taideteollisuusalan perustutkinto, Ympäristön suunnittelun ja rakentamisen koulutusohjelma" +
-                    "\"]}," +
-
-                    "{\"id\":\"1.2.246.562.14.79893512065\"," +
-                    "\"name\":\"Kaivosalan perustutkinto, pk\"," +
-                    "\"aoIdentifier\":\"333\"," +
-                    "\"educationDegree\":\"32\", " +
-                    "\"sora\": true , " +
-                    "\"educationCodeUri\": \"koulutus_381203\", " +
-                    "\"teachingLanguages\":[\"FI\"]," +
-                    "\"organizationGroups\":[], "+
-                    "\"athleteEducation\":true, " +
-                    "\"kaksoistutkinto\":false, " +
-                    "\"vocational\":true, " +
-                    "\"childLONames\":[" +
-                    "\"Kaivosalan perustutkinto, Kaivosalan koulutusohjelma\"]}," +
-
-                    "{\"id\":\"1.2.246.562.14.39251489298\"," +
-                    "\"name\":\"Musiikkiteknologian koulutusohjelma, pk (Musiikkialan perustutkinto)\"," +
-                    "\"educationDegree\":\"32\", " +
-                    "\"teachingLanguages\":[\"FI\"], " +
-                    "\"organizationGroups\":[],"+
-                    "\"childLONames\":[" +
-                    "\"Musiikkialan perustutkinto, Musiikkiteknologian koulutusohjelma\"," +
-                    "\"Musiikkialan perustutkinto, Pianonvirityksen koulutusohjelma\"]}," +
-
-                    "{\"id\":\"1.2.246.562.14.71344129359\"," +
-                    "\"name\":\"Tuotteen suunnittelun ja valmistuksen koulutusohjelma, pk (Käsi- ja taideteollisuusalan perustutkinto)\", " +
-                    "\"educationDegree\":\"30\", " +
-                    "\"athleteEducation\":true, " +
-                    "\"educationCodeUri\":\"koulutus_321204\", " +
-                    "\"sora\": false, " +
-                    "\"teachingLanguages\":[\"SV\"], " +
-                    "\"organizationGroups\":[],"+
-                    "\"childLONames\":[" +
-                    "\"Käsi- ja taideteollisuusalan perustutkinto, Tuotteen suunnittelun ja valmistuksen koulutusohjelma\"]}]";
-        } else if (lopId.equalsIgnoreCase("1.2.246.562.10.51872958189") && baseEducation.equals("9")) {
-            return "[" +
-                    "{" +
-                    "\"id\":\"1.2.246.562.5.20176855623\"," +
-                    "\"name\":\"Tieto- ja tietoliikennetekniikan perustutkinto, yo\"," +
-                    "\"aoIdentifier\":\"143\"," +
-                    "\"educationDegree\":\"32\"," +
-                    "\"childLONames\":[\"Tieto- ja tietoliikennetekniikka, elektroniikka-asentaja\"]," +
-                    "\"sora\":false," +
-                    "\"teachingLanguages\":[\"FI\"]," +
-                    "\"organizationGroups\":[],"+
-                    "\"athleteEducation\":true}," +
-
-                    "{\"id\":\"1.2.246.562.5.32094353409\"," +
-                    "\"name\":\"Turvallisuusalan perustutkinto, yo\"," +
-                    "\"aoIdentifier\":\"505\"," +
-                    "\"educationDegree\":\"32\"," +
-                    "\"childLONames\":[\"Turvallisuusala, turvallisuusvalvoja\"]," +
-                    "\"sora\":false," +
-                    "\"teachingLanguages\":[\"FI\"]," +
-                    "\"organizationGroups\":[],"+
-                    "\"athleteEducation\":true}," +
-
-                    "{\"id\":\"1.2.246.562.5.37738069758\"," +
-                    "\"name\":\"Maanmittausalan perustutkinto, yo\"," +
-                    "\"aoIdentifier\":\"890\"," +
-                    "\"educationDegree\":\"22\"," +
-                    "\"childLONames\":[\"Maanmittaustekniikka, kartoittaja\"]," +
-                    "\"sora\":false," +
-                    "\"teachingLanguages\":[\"FI\"]," +
-                    "\"organizationGroups\":[],"+
-                    "\"athleteEducation\":true}," +
-
-                    "{\"id\":\"1.2.246.562.5.52308596866\"," +
-                    "\"name\":\"Suunnitteluassistentin perustutkinto, yo\"," +
-                    "\"aoIdentifier\":\"668\"," +
-                    "\"educationDegree\":\"30\"," +
-                    "\"childLONames\":[\"Tekninen suunnittelu, suunnitteluassistentti\"]," +
-                    "\"sora\":false," +
-                    "\"teachingLanguages\":[\"FI\"]," +
-                    "\"organizationGroups\":[],"+
-                    "\"athleteEducation\":true}," +
-
-                    "{\"id\":\"1.2.246.562.5.66688607689\"," +
-                    "\"name\":\"Sähkö- ja automaatiotekniikan perustutkinto, yo\"," +
-                    "\"aoIdentifier\":\"192\"," +
-                    "\"educationDegree\":\"32\"," +
-                    "\"childLONames\":[\"Sähkö- ja automaatiotekniikka, sähköasentaja\"]," +
-                    "\"sora\":false," +
-                    "\"teachingLanguages\":[\"FI\"]," +
-                    "\"organizationGroups\":[],"+
-                    "\"athleteEducation\":true}," +
-
-                    "{\"id\":\"1.2.246.562.5.79820899882\"," +
-                    "\"name\":\"Puualan perustutkinto, yo\"," +
-                    "\"aoIdentifier\":\"891\"," +
-                    "\"educationDegree\":\"32\"," +
-                    "\"childLONames\":[\"Teollisuuspuuseppä, puuseppä\"]," +
-                    "\"sora\":false," +
-                    "\"teachingLanguages\":[\"FI\"]," +
-                    "\"organizationGroups\":[],"+
-                    "\"athleteEducation\":true}," +
-
-                    "{\"id\":\"1.2.246.562.5.95890367071\"," +
-                    "\"name\":\"Verhoilu- ja sisustusalan perustutkinto, yo\"," +
-                    "\"aoIdentifier\":\"653\"," +
-                    "\"educationDegree\":\"32\"," +
-                    "\"childLONames\":" +
-                    "[\"Sisustus, sisustaja\",\"Verhoilu, verhoilija\"]," +
-                    "\"sora\":false," +
-                    "\"teachingLanguages\":[\"FI\"]," +
-                    "\"organizationGroups\":[],"+
-                    "\"athleteEducation\":true}]";
-        } else if (lopId.equalsIgnoreCase("1.2.246.562.10.35241670047")) {
-            return "[{\"id\":\"1.2.246.562.20.30500448839\"," +
-                    "\"name\":\"Kymppiluokka\"," +
-                    "\"aoIdentifier\":\"019\"," +
-                    "\"educationDegree\":\"22\"," +
-                    "\"childLONames\":[],\"sora\":false," +
-                    "\"teachingLanguages\":[\"FI\"]," +
-                    "\"organizationGroups\":[]," +
-                    "\"athleteEducation\":false," +
-                    "\"kaksoistutkinto\":false," +
-                    "\"vocational\":true," +
-                    "\"educationCodeUri\":\"koulutus_222222\"}]";
-        } else if (lopId.equalsIgnoreCase("1.2.246.562.10.35241670048")) {
-            return "[{\"id\":\"1.2.246.562.20.17550428336\"," +
-                    "\"name\":\"Urheilevien kokkien koulutus\"," +
-                    "\"aoIdentifier\":\"892\"," +
-                    "\"educationDegree\":\"32\"," +
-                    "\"childLONames\":[],\"sora\":false," +
-                    "\"teachingLanguages\":[\"FI\"]," +
-                    "\"organizationGroups\":[],"+
-                    "\"athleteEducation\":true," +
-                    "\"kaksoistutkinto\":false," +
-                    "\"vocational\":true," +
-                    "\"educationCodeUri\":\"koulutus_222222\"}]";
-        } else {
-            return "[]";
+        try {
+            final ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+            Map<String, List<ApplicationOptionSearchResultDTO>> optionMap = objectMapper.readValue(getClass().getResourceAsStream("/mockdata/koulutukset.json"), new TypeReference<Map<String, List<ApplicationOptionSearchResultDTO>>>() {
+            });
+            List<ApplicationOptionSearchResultDTO> applicationOptions = optionMap.get(lopId);
+            if (applicationOptions == null) applicationOptions = optionMap.get(lopId + "/" + baseEducation);
+            if (applicationOptions == null) applicationOptions = Collections.EMPTY_LIST;
+            for (ApplicationOptionSearchResultDTO x : applicationOptions) {
+                x.getOrganizationGroups().size(); // Just checking for nulls
+            }
+            return objectMapper.writeValueAsString(applicationOptions);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 }

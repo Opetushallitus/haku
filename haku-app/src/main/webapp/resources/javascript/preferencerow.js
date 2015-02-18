@@ -51,7 +51,7 @@ var preferenceRow = {
                         // overrides additional questions rendered in the backend
                         preferenceRow.displayChildLONames(hakukohdeId, $selectInput.data("childlonames"));
                     }
-                    var organizationGroups = item.organizationGroups;
+                    var organizationGroups = item.organizationGroups || [];
                     var aoGroups = new Array();
                     var attachmentGroups = new Array();
                     for (var i = 0; i < organizationGroups.length; i++) {
