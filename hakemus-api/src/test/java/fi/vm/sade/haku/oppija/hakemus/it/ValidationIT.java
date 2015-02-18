@@ -13,7 +13,6 @@ import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 
-
 public class ValidationIT extends IntegrationTestSupport {
     final ElementTreeValidator validator = appContext.getBean(ElementTreeValidator.class);
 

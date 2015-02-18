@@ -19,7 +19,7 @@ package fi.vm.sade.haku.oppija.common.selenium;
 import com.mongodb.BasicDBObject;
 import fi.vm.sade.haku.oppija.common.it.TomcatContainerBase;
 import fi.vm.sade.haku.oppija.lomake.ApplicationSystemHelper;
-import fi.vm.sade.haku.oppija.lomake.SeleniumContainer;
+import fi.vm.sade.hakutest.SeleniumContainer;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import org.apache.commons.io.FileUtils;
 import org.junit.Before;

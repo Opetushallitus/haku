@@ -16,11 +16,14 @@
 
 package fi.vm.sade.haku.oppija.common.it;
 
+import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import fi.vm.sade.haku.HakuAppTomcat;
 
 /**
  * @author jukka
@@ -38,6 +41,11 @@ public abstract class TomcatContainerBase {
 
     @Autowired
     protected AdminResourceClient adminResourceClient;
+
+    @Before
+    public void startTomcat() {
+        HakuAppTomcat.startForIntegrationTestIfNotRunning();
+    }
 
     public String getBaseUrl() {
         return baseUrl;

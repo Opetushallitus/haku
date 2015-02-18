@@ -6,6 +6,8 @@ import fi.vm.sade.haku.oppija.hakemus.it.dao.impl.ApplicationDAOMongoImpl;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.service.impl.ApplicationSystemServiceImpl;
 import fi.vm.sade.haku.testfixtures.MongoFixtureImporter;
+import fi.vm.sade.hakutest.ApiIntegrationTestSpringConfiguration;
+
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;

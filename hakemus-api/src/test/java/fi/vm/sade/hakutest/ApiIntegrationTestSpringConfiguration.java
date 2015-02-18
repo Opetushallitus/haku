@@ -1,6 +1,5 @@
-package fi.vm.sade.haku.oppija.hakemus.it;
+package fi.vm.sade.hakutest;
 
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -15,7 +14,7 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 @PropertySource(value = {"config/it/haku.properties", "config/it/ext.properties", "haku-test.properties"})
 @Profile("it")
 @ImportResource("/META-INF/spring/logger-mock-context.xml")
-class ApiIntegrationTestSpringConfiguration {
+public class ApiIntegrationTestSpringConfiguration {
     @Bean
     public static PropertySourcesPlaceholderConfigurer enablePlaceholderReplacement() {
         return new PropertySourcesPlaceholderConfigurer();
