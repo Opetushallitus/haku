@@ -60,7 +60,7 @@ public class ValmisPhase {
 
         elements.add(Text("palaute").labelKey("form.valmis.palaute").formParams(formParameters).build());
 
-        elements.add(new Link("backLink", createI18NAsIs("https://opintopolku.fi"), formParameters.getI18nText(
+        elements.add(new Link("backLink", createI18NText("form.valmis.takaisin.opintopolkuun.href"), formParameters.getI18nText(
           "form.valmis.takaisin.opintopolkuun.linkki")));
 
         return elements;
