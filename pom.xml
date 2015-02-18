@@ -92,10 +92,6 @@
     <profiles>
         <profile>
             <id>it</id>
-            <properties>
-                <springProfileActive>it</springProfileActive>
-                <log4jConfigLocation>/WEB-INF/classes/log4j.properties</log4jConfigLocation>
-            </properties>
             <build>
                 <plugins>
                     <plugin>

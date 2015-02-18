@@ -828,10 +828,6 @@
             <activation>
                 <activeByDefault>false</activeByDefault>
             </activation>
-            <properties>
-                <springProfileActive>devluokka</springProfileActive>
-                <log4jConfigLocation>/WEB-INF/classes/log4j.properties</log4jConfigLocation>
-            </properties>
             <build>
                 <plugins>
                     <plugin>
@@ -851,10 +847,6 @@
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
-            <properties>
-                <springProfileActive>dev</springProfileActive>
-                <log4jConfigLocation>/WEB-INF/classes/log4j.properties</log4jConfigLocation>
-            </properties>
             <build>
                 <plugins>
                     <plugin>
@@ -880,7 +872,6 @@
                         <configuration>
                             <systemProperties>
                                 <spring.profiles.active>it</spring.profiles.active>
-                                <springProfileActive>it</springProfileActive>
                             </systemProperties>
                         </configuration>
                         <executions>
