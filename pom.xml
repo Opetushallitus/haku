@@ -90,72 +90,6 @@
     </distributionManagement>
 
     <profiles>
-
-        <profile>
-            <id>devluokka</id>
-            <activation>
-                <activeByDefault>false</activeByDefault>
-            </activation>
-            <properties>
-                <springProfileActive>devluokka</springProfileActive>
-                <log4jConfigLocation>/WEB-INF/classes/log4j.properties</log4jConfigLocation>
-            </properties>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.tomcat.maven</groupId>
-                        <artifactId>tomcat7-maven-plugin</artifactId>
-                        <version>2.1</version>
-                        <configuration>
-                            <charset>UTF-8</charset>
-                            <uriEncoding>UTF-8</uriEncoding>
-                            <systemProperties>
-                                <spring.profiles.active>devluokka</spring.profiles.active>
-                            </systemProperties>
-                        </configuration>
-                    </plugin>
-                </plugins>
-                <resources>
-                    <resource>
-                        <directory>src/main/resources</directory>
-                    </resource>
-                </resources>
-            </build>
-        </profile>
-
-        <profile>
-            <id>dev</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <properties>
-                <springProfileActive>dev</springProfileActive>
-                <log4jConfigLocation>/WEB-INF/classes/log4j.properties</log4jConfigLocation>
-            </properties>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.tomcat.maven</groupId>
-                        <artifactId>tomcat7-maven-plugin</artifactId>
-                        <version>2.1</version>
-                        <configuration>
-                            <charset>UTF-8</charset>
-                            <uriEncoding>UTF-8</uriEncoding>
-                            <systemProperties>
-                                <spring.profiles.active>dev</spring.profiles.active>
-                            </systemProperties>
-                        </configuration>
-                    </plugin>
-                </plugins>
-                <resources>
-                    <resource>
-                        <directory>src/main/resources</directory>
-                    </resource>
-                </resources>
-
-            </build>
-        </profile>
-
         <profile>
             <id>deploy</id>
             <properties>
@@ -196,7 +130,7 @@
                         <artifactId>maven-failsafe-plugin</artifactId>
                         <version>2.13</version>
                         <configuration>
-                            <argLine>-Xms512M -Xmx1G -XX:MaxPermSize=256M</argLine>
+                            <argLine>-Xms512M -Xmx1G -XX:MaxPermSize=256M -Xss2M</argLine>
                             <includes>
                                 <include>**/it/*</include>
                                 <include>**/it/**/*</include>
@@ -229,19 +163,6 @@
                                 </goals>
                             </execution>
                         </executions>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.tomcat.maven</groupId>
-                        <artifactId>tomcat7-maven-plugin</artifactId>
-                        <version>2.1</version>
-                        <configuration>
-                            <charset>UTF-8</charset>
-                            <uriEncoding>UTF-8</uriEncoding>
-                            <systemProperties>
-                                <spring.profiles.active>it</spring.profiles.active>
-                                <springProfileActive>it</springProfileActive>
-                            </systemProperties>
-                        </configuration>
                     </plugin>
                 </plugins>
             </build>
