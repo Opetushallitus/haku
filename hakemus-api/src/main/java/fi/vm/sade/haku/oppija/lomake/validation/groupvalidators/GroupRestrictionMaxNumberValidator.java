@@ -17,6 +17,7 @@
 package fi.vm.sade.haku.oppija.lomake.validation.groupvalidators;
 
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
+import fi.vm.sade.haku.oppija.lomake.validation.ApplicationOptionInfo;
 import fi.vm.sade.haku.oppija.lomake.validation.GroupRestrictionValidator;
 
 import java.util.HashMap;
@@ -36,11 +37,11 @@ public class GroupRestrictionMaxNumberValidator extends GroupRestrictionValidato
     }
 
     @Override
-    public Map<String, I18nText> validate(SortedSet<String> inputAosInGroup) {
+    public Map<String, I18nText> validate(SortedSet<ApplicationOptionInfo> inputAosInGroup) {
         Map<String, I18nText> errors = new HashMap<String, I18nText>();
         if(inputAosInGroup.size() > max) {
-            for (String inputElem : inputAosInGroup) {
-                errors.put(inputElem, errorMessage);
+            for (ApplicationOptionInfo aoInfo : inputAosInGroup) {
+                errors.put(aoInfo.aoInputId, errorMessage);
             }
         }
         return errors;

@@ -22,6 +22,6 @@ abstract public class GroupRestrictionValidator {
     /**
      * @param inputAosInGroup input elems which are in this group
      */
-    public abstract Map<String, I18nText> validate(SortedSet<String> inputAosInGroup);
+    public abstract Map<String, I18nText> validate(SortedSet<ApplicationOptionInfo> inputAosInGroup);
 
 }

@@ -25,12 +25,10 @@ import fi.vm.sade.haku.oppija.lomake.util.SpringInjector;
 import fi.vm.sade.haku.oppija.lomake.validation.*;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.I18nBundle;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.i18n.I18nBundleService;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import org.apache.commons.lang.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.annotation.Transient;
 
 import java.util.*;
 
@@ -96,9 +94,9 @@ public class PreferenceTableValidator implements Validator {
     }
 
     private Map<String, I18nText> runGroupRestictionValidators(final ValidationInput validationInput) {
-        final Map<String, I18nText> errors = new HashMap<String, I18nText>();
+        final Map<String, I18nText> errors = new HashMap<>();
         if(!groupRestrictionValidators.isEmpty()) {
-            final Map<String, SortedSet<String>> groupToHakukohdeMap = mapGroupsToHakukohde(getGroupInfo(errors, validationInput));
+            final Map<String, SortedSet<ApplicationOptionInfo>> groupToHakukohdeMap = mapGroupsToHakukohde(getApplicationOptionInfo(errors, validationInput));
             for (GroupRestrictionValidator validator : groupRestrictionValidators) {
                 if (groupToHakukohdeMap.containsKey(validator.groupId)) {
                     errors.putAll(validator.validate(groupToHakukohdeMap.get(validator.groupId)));
@@ -108,46 +106,40 @@ public class PreferenceTableValidator implements Validator {
         return errors;
     }
 
-    private Map<String, List<String>> getGroupInfo(Map<String, I18nText> errors, final ValidationInput validationInput) {
-        final Map<String, List<String>> hakukohdeGroups = new TreeMap<String, List<String>>();
+    private SortedSet<ApplicationOptionInfo> getApplicationOptionInfo(Map<String, I18nText> errors, final ValidationInput validationInput) {
+        final SortedSet<ApplicationOptionInfo> aoInfos = new TreeSet<>();
 
         for(String applicationOptionInput: educationInputIds) {
-            hakukohdeGroups.put(applicationOptionInput, getGroupInfo(errors, validationInput, applicationOptionInput));
-        }
-        return hakukohdeGroups;
-    }
-
-    private List<String> getGroupInfo(Map<String, I18nText> errors, ValidationInput validationInput, String applicationOptionInput) {
-        final String applicationOptionId = validationInput.getValueByKey(applicationOptionInput + "-id");
-        if (!Strings.isNullOrEmpty(applicationOptionId)) {
-            try {
-                ApplicationOption applicationOption = applicationOptionService.get(applicationOptionId);
-                if(applicationOption.getGroups() != null) {
-                    return applicationOption.getGroups();
+            final String applicationOptionId = validationInput.getValueByKey(applicationOptionInput + "-id");
+            if (!Strings.isNullOrEmpty(applicationOptionId)) {
+                try {
+                    aoInfos.add(new ApplicationOptionInfo(applicationOptionInput,  applicationOptionService.get(applicationOptionId)));
+                } catch (RuntimeException e) {
+                    LOGGER.error("Error in validation:" + e.toString(), e);
+                    errors.put(applicationOptionInput, i18nBundle.get(PreferenceConcreteValidatorImpl.UNKNOWN_ERROR));
                 }
-            } catch (RuntimeException e) {
-                LOGGER.error("Error in validation:" + e.toString(), e);
-                errors.put(applicationOptionInput, i18nBundle.get(PreferenceConcreteValidatorImpl.UNKNOWN_ERROR));
             }
         }
-        return new ArrayList<String>();
+        return aoInfos;
     }
 
-    private Map<String, SortedSet<String>> mapGroupsToHakukohde(Map<String, List<String>> hakukohdeGroups) {
-        final Map<String, SortedSet<String>> groupToHakukohdeMap = new HashMap<String, SortedSet<String>>();
+    private Map<String, SortedSet<ApplicationOptionInfo>> mapGroupsToHakukohde(SortedSet<ApplicationOptionInfo> applicationOptionInfos) {
+        final Map<String, SortedSet<ApplicationOptionInfo>> groupToHakukohdeMap = new HashMap<>();
 
-        for(String applicationOptionInput: hakukohdeGroups.keySet()){
-            for(String groupId: hakukohdeGroups.get(applicationOptionInput)) {
-                getHakukohdeSet(groupToHakukohdeMap, groupId).add(applicationOptionInput);
+        for(ApplicationOptionInfo aoInfo: applicationOptionInfos){
+            if(aoInfo.ao.getGroups() != null) {
+                for(String groupId: aoInfo.ao.getGroups()) {
+                    getHakukohdeSet(groupToHakukohdeMap, groupId).add(aoInfo);
+                }
             }
         }
         return groupToHakukohdeMap;
     }
 
-    private SortedSet<String> getHakukohdeSet(Map<String, SortedSet<String>> groupToHakukohdeMap, String groupId) {
-        SortedSet<String> hakukohdeSet = groupToHakukohdeMap.get(groupId);
+    private SortedSet<ApplicationOptionInfo> getHakukohdeSet(Map<String, SortedSet<ApplicationOptionInfo>> groupToHakukohdeMap, String groupId) {
+        SortedSet<ApplicationOptionInfo> hakukohdeSet = groupToHakukohdeMap.get(groupId);
         if(hakukohdeSet == null) {
-            hakukohdeSet = new TreeSet<String>();
+            hakukohdeSet = new TreeSet<>();
             groupToHakukohdeMap.put(groupId, hakukohdeSet);
         }
         return hakukohdeSet;
