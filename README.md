@@ -17,6 +17,17 @@ Lomakkeet hakijalle: http://localhost:9090/haku-app/lomake/
 
 ### Running and testing
 
+Haku-app uses Spring profiles for running in different modes. Spring profile is selected using system property `spring.profiles.active`.
+
+Here's a list of profiles we use:
+
+- `default` is the default profile, that is the profile used in the test and production environments. Uses properties files found in ~/oph-configuration
+- `dev` uses local mongo database in port 27017 and mocked external dependencies
+- `devLuokka` uses local mongo database and real external dependencies.Depends on property files in `~/oph-configuration`. See below for
+- `it` starts an embedded Mongo server. This profile is used in the integration tests.
+
+When running with Maven, you can use Maven profiles to select the Spring profile.
+
 #### Running from the IDE
 
 You can start a local Tomcat with `it` (integration test) profile so that it uses an embedded Mongo server
@@ -34,7 +45,12 @@ Debug local Tomcat
 
     (mvn install -DskipTests && cd haku-app && mvndebug tomcat7:run -Pit)
 
+To use another profile, just replace `-Pit` with `-Pdev` etc. Or use the `tomcat.sh` script as described below.
+
 #### Running haku-app against integration test environment (luokka)
+
+To run locally against external services in the "luokka" environment, you need configuration files in `~/oph-configuration` and
+use Spring profile `devluokka`. See instructions below.
 
 1. Optionally set your local env settings to `~/oph-configuration.local` folder
 2. remove `~/oph-configuration` folder
