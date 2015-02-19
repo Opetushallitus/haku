@@ -9,8 +9,14 @@
   "athleteEducation": false,
   "provider": {
     "id": "1.2.246.562.10.2014042514082007985435",
-    "name": "Stadin ammattiopisto, Sturenkadun toimipaikka"
-  }
+    "name": "Stadin ammattiopisto, Sturenkadun toimipaikka",
+    "applicationSystemIds": []
+  },
+  "organizationGroups": [],
+  "requiredBaseEducations": [
+    "1"
+  ],
+  "canBeApplied": true
 },
   "1.2.246.562.14.79893512065": {
     "id": "1.2.246.562.14.79893512065",
@@ -25,8 +31,16 @@
     "athleteEducation": false,
     "provider": {
       "id": "1.2.246.562.10.89537774706",
-      "name": "FAKTIA, Espoo op"
-    }
+      "name": "FAKTIA, Espoo op",
+      "applicationSystemIds": [
+        "1.2.246.562.5.50476818906"
+      ]
+    },
+    "organizationGroups": [],
+    "requiredBaseEducations": [
+      "1", "9"
+    ],
+    "canBeApplied": true
   },
 
   "1.2.246.562.20.17550428336": {
@@ -42,8 +56,16 @@
     "athleteEducation": true,
     "provider": {
       "id": "1.2.246.562.10.35241670048",
-      "name": "Urheilijoiden koulu"
-    }
+      "name": "Urheilijoiden koulu",
+      "applicationSystemIds": [
+        "1.2.246.562.5.50476818906"
+      ]
+    },
+    "organizationGroups": [],
+    "requiredBaseEducations": [
+      "1"
+    ],
+    "canBeApplied": true
   },
 
   "1.2.246.562.20.30500448839": {
@@ -59,8 +81,83 @@
     "athleteEducation": false,
     "provider": {
       "id": "1.2.246.562.10.35241670047",
-      "name": "Anna Tapion koulu"
-    }
+      "name": "Anna Tapion koulu",
+      "applicationSystemIds": ["1.2.246.562.29.173465377510"]
+    },
+    "organizationGroups": [],
+    "requiredBaseEducations": [
+      "1"
+    ],
+    "canBeApplied": true
+  },
+  "1.2.246.562.14.2014040212501070122979": {
+    "id": "1.2.246.562.14.2014040212501070122979",
+    "name": "JsonMockKoulutus",
+    "aoIdentifier": "030",
+    "educationDegree": "22",
+    "educationCodeUri": "koulutus_039998",
+    "sora": false,
+    "vocational": true,
+    "kaksoistutkinto": false,
+    "teachingLanguages": ["FI"],
+    "athleteEducation": false,
+    "provider": {
+      "id": "1.2.246.562.10.35241670047",
+      "name": "JsonMockSchool",
+      "applicationSystemIds": ["1.2.246.562.5.2014022711042555034240"]
+    },
+    "organizationGroups": [],
+    "requiredBaseEducations": [
+      "1"
+    ],
+    "canBeApplied": true
+  },
+
+  "1.2.246.562.14.2014032610154661183054": {
+    "id": "1.2.246.562.14.2014032610154661183054",
+    "name": "JsonMockKoulutus2",
+    "aoIdentifier": "019",
+    "educationDegree": "22",
+    "educationCodeUri": "koulutus_020075",
+    "sora": false,
+    "vocational": true,
+    "kaksoistutkinto": false,
+    "teachingLanguages": ["FI"],
+    "athleteEducation": false,
+    "provider": {
+      "id": "1.2.246.562.10.35241670047",
+      "name": "JsonMockSchool",
+      "applicationSystemIds": ["1.2.246.562.5.2014022711042555034240"]
+    },
+    "organizationGroups": [],
+    "requiredBaseEducations": [
+      "1"
+    ],
+    "canBeApplied": true
+  },
+
+
+  "1.2.246.562.14.2014032812530780195965": {
+    "id": "1.2.246.562.14.2014032812530780195965",
+    "name": "JsonMockKoulutus3",
+    "aoIdentifier": "019",
+    "educationDegree": "22",
+    "educationCodeUri": "koulutus_020075",
+    "sora": false,
+    "vocational": true,
+    "kaksoistutkinto": false,
+    "teachingLanguages": ["FI"],
+    "athleteEducation": false,
+    "provider": {
+      "id": "1.2.246.562.10.35241670047",
+      "name": "JsonMockSchool",
+      "applicationSystemIds": ["1.2.246.562.5.2014022711042555034240"]
+    },
+    "organizationGroups": [],
+    "requiredBaseEducations": [
+      "1"
+    ],
+    "canBeApplied": true
   },
 
   "1.2.246.562.14.673437691210": {
@@ -71,6 +168,7 @@
     "teachingLanguages": ["FI"],
     "aoIdentifier": null,
     "startingQuota": 14,
+    "educationCodeUri": "balaillaan",
     "startingQuotaDescription": "14",
     "lowestAcceptedScore": 0,
     "lowestAcceptedAverage": 0.0,
@@ -100,8 +198,7 @@
       "id": "1.2.246.562.10.89537774706",
       "name": "FAKTIA, Espoo op",
       "applicationSystemIds": [
-        "1.2.246.562.29.95390561488",
-        "1.2.246.562.29.90139171616"
+        "1.2.246.562.5.50476818906"
       ],
       "postalAddress": {
         "streetAddress": "Hämeenkatu 13",
@@ -165,9 +262,7 @@
     "canBeApplied": true,
     "nextApplicationPeriodStarts": null,
     "requiredBaseEducations": [
-      "pohjakoulutusvaatimuskorkeakoulut_101",
-      "pohjakoulutusvaatimuskorkeakoulut_102",
-      "pohjakoulutusvaatimuskorkeakoulut_116"
+      "1"
     ],
     "attachments": [],
     "emphasizedSubjects": null,

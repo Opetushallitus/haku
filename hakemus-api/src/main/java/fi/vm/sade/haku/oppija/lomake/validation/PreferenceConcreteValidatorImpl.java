@@ -25,6 +25,8 @@ import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.haku.oppija.lomake.util.StringUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.i18n.I18nBundleService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
+
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,12 +35,12 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Mikko Majapuro
  */
 @Component
-@Profile(value = {"default", "devluokka"})
 public class PreferenceConcreteValidatorImpl extends PreferenceConcreteValidator {
 
     private final ApplicationOptionService applicationOptionService;
@@ -108,7 +110,7 @@ public class PreferenceConcreteValidatorImpl extends PreferenceConcreteValidator
     private boolean checkEducationCode(final ValidationInput validationInput, final ApplicationOption applicationOption) {
         final String key = validationInput.getElement().getId() + "-Koulutus-id-educationcode";
         final String value = validationInput.getValueByKey(key);
-        if (value.equals(applicationOption.getEducationCode())) {
+        if (StringUtils.trimToEmpty(value).equals(applicationOption.getEducationCode())) {
             return true;
         }
         LOGGER.error("Education Code validation failed for {}. Application: {}. Expected: {}. Got: {}", applicationOption,
@@ -235,10 +237,11 @@ public class PreferenceConcreteValidatorImpl extends PreferenceConcreteValidator
     }
 
     private boolean checkApplicationSystem(final ValidationInput validationInput, final ApplicationOption applicationOption) {
-        if (applicationOption.getProvider().getApplicationSystemIds().contains(validationInput.getApplicationSystemId())) {
+        final Set<String> allowedIds = applicationOption.getProvider().getApplicationSystemIds();
+        if (allowedIds.contains(validationInput.getApplicationSystemId())) {
             return true;
         }
-        LOGGER.error("Application system validation failed for {}. Application: {}", applicationOption, validationInput.getApplicationOid());
+        LOGGER.error("Application system validation failed for {}. Allowed ids: {}. Application system id: {}", applicationOption, allowedIds, validationInput.getApplicationSystemId());
         return false;
     }
 

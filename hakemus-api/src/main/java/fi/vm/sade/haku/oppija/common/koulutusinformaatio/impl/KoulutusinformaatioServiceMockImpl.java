@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -24,15 +25,37 @@ import fi.vm.sade.koulutusinformaatio.domain.dto.LearningOpportunitySearchResult
 @Service
 @Profile(value = {"dev", "it"})
 public class KoulutusinformaatioServiceMockImpl extends KoulutusinformaatioService {
+    final ObjectMapper objectMapper = new ObjectMapper().configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+    private List<LearningOpportunitySearchResultDTO> organizations = Arrays.asList(mesta("1.2.246.562.10.89537774706", "FAKTIA, Espoo op"), mesta("1.2.246.562.10.10108401950", "Espoon kaupunki"), mesta("1.2.246.562.10.51872958189", "Stadin ammattiopisto, Sturenkadun toimipaikka"), mesta("1.2.246.562.10.35241670047", "Anna Tapion koulu"), mesta("1.2.246.562.10.35241670048", "Urheilijoiden koulu"));
+
+    private Map<String, ApplicationOptionDTO> optionMap() {
+        try {
+            return objectMapper.readValue(getClass().getResourceAsStream("/mockdata/koulutukset.json"), new TypeReference<Map<String, ApplicationOptionDTO>>() {});
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private Map<String, List<ApplicationOptionSearchResultDTO>> searchOptionMap() {
+        try {
+            return objectMapper.readValue(getClass().getResourceAsStream("/mockdata/koulutukset-search.json"), new TypeReference<Map<String, List<ApplicationOptionSearchResultDTO>>>() {
+            });
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     @Override
     public ApplicationOptionDTO getApplicationOption(final String oid) {
-        ApplicationOptionDTO dto = optionMap.get(oid);
+        ApplicationOptionDTO dto = optionMap().get(oid);
         if (dto == null) {
             LoggerFactory.getLogger(KoulutusinformaatioServiceMockImpl.class).warn("ApplicationOption not found: " + oid + " -> returning default");
             dto = new ApplicationOptionDTO();
             dto.setName("MockKoulutus");
             LearningOpportunityProviderDTO provider = new LearningOpportunityProviderDTO();
             provider.setName("MockKoulu");
+            provider.setApplicationSystemIds(new HashSet(Arrays.asList("1.2.246.562.5.2014022711042555034240")));
             AddressDTO addressDTO = new AddressDTO();
             addressDTO.setPostOffice("HELSINKI");
             addressDTO.setPostalCode("00100");
@@ -40,6 +63,11 @@ public class KoulutusinformaatioServiceMockImpl extends KoulutusinformaatioServi
             provider.setPostalAddress(addressDTO);
             dto.setProvider(provider);
             dto.setAttachments(new ArrayList());
+            dto.setOrganizationGroups(new ArrayList());
+            dto.setTeachingLanguages(Arrays.asList("FI"));
+            dto.setEducationCodeUri("koulutus_039998");
+            dto.setAoIdentifier("019");
+            dto.setRequiredBaseEducations(Arrays.asList("1"));
             return dto;
         }
         return dto;
@@ -50,20 +78,6 @@ public class KoulutusinformaatioServiceMockImpl extends KoulutusinformaatioServi
     public ApplicationOptionDTO getApplicationOption(final String oid, final String lang) {
         return getApplicationOption(oid);
     }
-
-    final ObjectMapper objectMapper = new ObjectMapper().configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-    Map<String, List<ApplicationOptionSearchResultDTO>> searchOptionMap;
-    Map<String, ApplicationOptionDTO> optionMap;
-    {
-        try {
-            searchOptionMap = objectMapper.readValue(getClass().getResourceAsStream("/mockdata/koulutukset-search.json"), new TypeReference<Map<String, List<ApplicationOptionSearchResultDTO>>>() {});
-            optionMap = objectMapper.readValue(getClass().getResourceAsStream("/mockdata/koulutukset.json"), new TypeReference<Map<String, ApplicationOptionDTO>>() {});
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private List<LearningOpportunitySearchResultDTO> organizations = Arrays.asList(mesta("1.2.246.562.10.89537774706", "FAKTIA, Espoo op"), mesta("1.2.246.562.10.10108401950", "Espoon kaupunki"), mesta("1.2.246.562.10.51872958189", "Stadin ammattiopisto, Sturenkadun toimipaikka"), mesta("1.2.246.562.10.35241670047", "Anna Tapion koulu"), mesta("1.2.246.562.10.35241670048", "Urheilijoiden koulu"));
 
     public List<LearningOpportunitySearchResultDTO> organizationSearch(final String term, final String baseEducation) {
         List<LearningOpportunitySearchResultDTO> result = new ArrayList<>();
@@ -85,8 +99,8 @@ public class KoulutusinformaatioServiceMockImpl extends KoulutusinformaatioServi
     }
 
     public List<ApplicationOptionSearchResultDTO> hakukohdeSearch(final String lopId, final String baseEducation) {
-        List<ApplicationOptionSearchResultDTO> applicationOptions = searchOptionMap.get(lopId);
-        if (applicationOptions == null) applicationOptions = searchOptionMap.get(lopId + "/" + baseEducation);
+        List<ApplicationOptionSearchResultDTO> applicationOptions = searchOptionMap().get(lopId);
+        if (applicationOptions == null) applicationOptions = searchOptionMap().get(lopId + "/" + baseEducation);
         if (applicationOptions == null) applicationOptions = Collections.EMPTY_LIST;
         return applicationOptions;
     }

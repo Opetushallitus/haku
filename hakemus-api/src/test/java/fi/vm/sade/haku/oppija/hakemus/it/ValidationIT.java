@@ -18,7 +18,7 @@ public class ValidationIT extends IntegrationTestSupport {
 
     @Test
     public void validateFixture() {
-        assertEquals(validateApplication(getTestApplicationSystem(), getTestApplication()).size(), 0);
+        assertEquals(0, validateApplication(getTestApplicationSystem(), getTestApplication()).size());
     }
 
     @Test
