@@ -389,13 +389,6 @@ function exists(fn) {
     })
 }
 
-function all(/* ...promises */) {
-    var promises = arguments;
-    return function() {
-        return Q.all(Array.prototype.slice.call(promises));
-    }
-}
-
 function seq(/* ...promises */) {
     return Array.prototype.slice.call(arguments).reduce(Q.when, Q());
 }
