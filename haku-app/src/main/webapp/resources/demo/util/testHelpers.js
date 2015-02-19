@@ -321,10 +321,26 @@ function initSelectors(elements) {
     }, {})
 }
 
-function input(fn, value) {
-    return visible(fn)().then(function() {
-        return fn().val(value).change().blur();
-    })
+function input1(fn, value) {
+    return function() {
+        return visible(fn)().then(function() {
+            return fn().val(value).change().blur();
+        })
+    }
+}
+
+function input(/* fn, value, fn, value, ... */) {
+    var argv = Array.prototype.slice.call(arguments);
+    if (argv % 2 === 0) {
+        throw new Error("inputs() got odd number of arguments. Give input function and value argument for each input.")
+    }
+    return function() {
+        var sequence = [];
+        for (var i = 0; i < argv.length; i += 2) {
+            sequence.push(input1(argv[i], argv[i + 1]));
+        }
+        return seq.apply(this, sequence);
+    };
 }
 
 function select(fn, value) {
@@ -336,7 +352,7 @@ function select(fn, value) {
                     throw new Error('Value "' + value + '" matches ' + matches + ' <option>s from <select> ' + fn().selector)
                 }
                 return matches === 1;
-            })).then(function() { input(fn, value) })
+            })).then(input(fn, value))
     }
 }
 
@@ -377,6 +393,17 @@ function all(/* ...promises */) {
     var promises = arguments;
     return function() {
         return Q.all(Array.prototype.slice.call(promises));
+    }
+}
+
+function seq(/* ...promises */) {
+    return Array.prototype.slice.call(arguments).reduce(Q.when, Q());
+}
+
+function seqDone(/* ...promises */) {
+    var promiseArgs = arguments;
+    return function(done) {
+        return seq.apply(this, promiseArgs).then(done, done);
     }
 }
 

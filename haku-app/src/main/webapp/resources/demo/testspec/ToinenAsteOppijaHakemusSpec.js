@@ -11,43 +11,45 @@
         var lomake = lomakeSelectors();
 
         describe("Täytä lomake", function() {
-            beforeEach(function(done) {
-                start()
-                    .then(all(
-                        input(lomake.sukunimi, "Testikäs"),
-                        input(lomake.etunimet, "Asia Kas"),
-                        input(lomake.kutsumanimi, "Asia"),
-                        input(lomake.hetu, "171175-830Y")))
-                    .then(wait.until(function() {return S("input#sukupuoli").length > 0;}))
-                    .then(click(lomake.kaksoiskansalaisuus(false)))
-                    .then(function() { expect(lomake.sukupuoli().val()).to.equal('2'); })
-                    .then(all(
-                        input(lomake.lahiosoite, "Testikatu 4"),
-                        input(lomake.postinumero, "00100"),
-                        input(lomake.kotikunta, "janakkala")))
-                    .then(pageChange(lomake.fromHenkilotiedot))
-                    .then(headingVisible("Koulutustausta"))
-                    .then(click(lomake.pohjakoulutus("1")))
-                    .then(all(
-                        input(lomake.pkPaattotodistusVuosi, "2014"),
-                        input(lomake.pkKieli, "FI")))
-                    .then(pageChange(lomake.fromKoulutustausta))
-                    .then(headingVisible("Hakutoiveet"))
-                    .then(autocomplete(lomake.opetuspiste1, "Esp", "FAKTIA, Espoo op"))
-                    .then(select(lomake.koulutus1, "Talonrakennus ja ymäristösuunnittelu, pk"))
-                    .then(click(
-                        lomake.harkinnanvaraisuus1(false),
-                        lomake.soraTerveys1(false),
-                        lomake.soraOikeudenMenetys1(false)))
-                    .then(pageChange(lomake.fromHakutoiveet))
-                    .then(headingVisible("Arvosanat"))
-                    .then(pageChange(lomake.fromOsaaminen))
-                    .then(headingVisible("Lupatiedot"))
-                    .then(click(lomake.asiointikieli("suomi")))
-                    .then(pageChange(lomake.fromLisatieto))
-                    .then(headingVisible("Henkilötiedot"))
-                    .then(done, done);
-             });
+            beforeEach(seqDone(start,
+                input(
+                    lomake.sukunimi, "Testikäs",
+                    lomake.etunimet, "Asia Kas",
+                    lomake.kutsumanimi, "Asia",
+                    lomake.hetu, "171175-830Y"),
+                wait.until(function() {
+                    return S("input#sukupuoli").length > 0;
+                }),
+                click(lomake.kaksoiskansalaisuus(false)),
+                function() {
+                    expect(lomake.sukupuoli().val()).to.equal('2');
+                },
+                input(
+                    lomake.lahiosoite, "Testikatu 4",
+                    lomake.postinumero, "00100",
+                    lomake.kotikunta, "janakkala"),
+                pageChange(lomake.fromHenkilotiedot),
+                headingVisible("Koulutustausta"),
+                click(lomake.pohjakoulutus("1")),
+                input(
+                    lomake.pkPaattotodistusVuosi, "2014",
+                    lomake.pkKieli, "FI"),
+                pageChange(lomake.fromKoulutustausta),
+                headingVisible("Hakutoiveet"),
+                autocomplete(lomake.opetuspiste1, "Esp", "FAKTIA, Espoo op"),
+                select(lomake.koulutus1, "Talonrakennus ja ymäristösuunnittelu, pk"),
+                click(
+                    lomake.harkinnanvaraisuus1(false),
+                    lomake.soraTerveys1(false),
+                    lomake.soraOikeudenMenetys1(false)),
+                pageChange(lomake.fromHakutoiveet),
+                headingVisible("Arvosanat"),
+                pageChange(lomake.fromOsaaminen),
+                headingVisible("Lupatiedot"),
+                click(lomake.asiointikieli("suomi")),
+                pageChange(lomake.fromLisatieto),
+                headingVisible("Henkilötiedot")
+            ));
 
             it('Täytä hakemus alusta loppuun', function (done) {
                 var expectedHenkilotiedot = {
@@ -85,137 +87,125 @@
                 done();
             });
 
-            it('Peruskoulutus-ammattikoulutus-yhdistelmä pyytää lukioita', function(done) {
-                Q.fcall(function() { S('#nav-koulutustausta')[0].click() })
-                    .then(headingVisible("Koulutustausta"))
-                    .then(input(lomake.pkPaattotodistusVuosi, "2010"))
-                    .then(click(
-                        lomake.ammatillinenKoulutuspaikka(false),
-                        lomake.ammatillinenSuoritettu(true)))
-                    .then(visibleText(lomake.suorittanutTutkinnonRule,
-                        "Et voi hakea yhteishaussa ammatilliseen koulutukseen"))
-                    .then(pageChange(lomake.fromKoulutustausta))
-                    .then(headingVisible("Hakutoiveet"))
-                    .then(done, done);
-            });
+            it('Peruskoulutus-ammattikoulutus-yhdistelmä pyytää lukioita', seqDone(
+                function() { S('#nav-koulutustausta')[0].click() },
+                headingVisible("Koulutustausta"),
+                input(lomake.pkPaattotodistusVuosi, "2010"),
+                click(
+                    lomake.ammatillinenKoulutuspaikka(false),
+                    lomake.ammatillinenSuoritettu(true)),
+                visibleText(lomake.suorittanutTutkinnonRule, "Et voi hakea yhteishaussa ammatilliseen koulutukseen"),
+                pageChange(lomake.fromKoulutustausta),
+                headingVisible("Hakutoiveet")
+            ));
 
-            it('Lukio-ammattikoulutus-yhdistelmä estää pääsyn hakutoiveisiin', function(done) {
-                Q.fcall(function() { S('#nav-koulutustausta')[0].click() })
-                    .then(headingVisible("Koulutustausta"))
-                    .then(click(lomake.pohjakoulutus("9")))
-                    .then(input(lomake.lukioPaattotodistusVuosi, "2010"))
-                    .then(click(lomake.ammatillinenSuoritettu(true)))
-                    .then(visibleText(lomake.warning,
-                        "Et voi hakea yhteishaussa, koska olet jo suorittanut ammatillisen perustutkinnon"
-                    ))
-                    .then(input(lomake.lukionKieli, "FI"))
-                    .then(pageChange(lomake.fromKoulutustausta))
-                    .then(headingVisible("Koulutustausta"))
-                    .then(done, done);
-            });
+            it('Lukio-ammattikoulutus-yhdistelmä estää pääsyn hakutoiveisiin', seqDone(
+                function() { S('#nav-koulutustausta')[0].click() },
+                headingVisible("Koulutustausta"),
+                click(lomake.pohjakoulutus("9")),
+                input(lomake.lukioPaattotodistusVuosi, "2010"),
+                click(lomake.ammatillinenSuoritettu(true)),
+                visibleText(lomake.warning, "Et voi hakea yhteishaussa, koska olet jo suorittanut ammatillisen perustutkinnon"),
+                input(lomake.lukionKieli, "FI"),
+                pageChange(lomake.fromKoulutustausta),
+                headingVisible("Koulutustausta")
+            ));
         });
 
         describe("Sääntötestit", function() {
+            beforeEach(seqDone(
+                start,
+                visible(lomake.sukunimi),
+                postAsForm("/haku-app/lomake/1.2.246.562.5.50476818906", {
+                    "Sukunimi": "Testikäs",
+                    "Etunimet": "Asia Kas",
+                    "Kutsumanimi": "Asia",
+                    "kansalaisuus": "FIN",
+                    "onkosinullakaksoiskansallisuus": "false",
+                    "Henkilotunnus": "171175-830Y",
+                    "sukupuoli": "2",
+                    "asuinmaa": "FIN",
+                    "lahiosoite": "Testikatu 4",
+                    "Postinumero": "00100",
+                    "kotikunta": "janakkala",
+                    "aidinkieli": "FI",
+                    "POHJAKOULUTUS": "1",
+                    "PK_PAATTOTODISTUSVUOSI": "2014",
+                    "perusopetuksen_kieli": "FI",
+                    "preferencesVisible": "5",
+                    "preference1-Opetuspiste": "FAKTIA, Espoo op",
+                    "preference1-Opetuspiste-id": "1.2.246.562.10.89537774706",
+                    "preference1-Koulutus": "Talonrakennus ja ymäristösuunnittelu, yo",
+                    "preference1-Koulutus-id": "1.2.246.562.14.673437691210",
+                    "preference1-Koulutus-educationDegree": "32",
+                    "preference1-Koulutus-id-lang": "FI",
+                    "preference1-Koulutus-id-sora": "false",
+                    "preference1-Koulutus-id-athlete": "false",
+                    "preference1-Koulutus-id-kaksoistutkinto": "false",
+                    "preference1-Koulutus-id-vocational": "true",
+                    "preference1-Koulutus-id-attachments": "false",
+                    "preference1-discretionary": "false",
+                    "asiointikieli": "suomi"
+                }),
+                visible(lomake.sukunimi)
+            ));
 
-            beforeEach(function(done) {
-                start()
-                    .then(visible(lomake.sukunimi))
-                    .then(postAsForm("/haku-app/lomake/1.2.246.562.5.50476818906", {
-                        "Sukunimi": "Testikäs",
-                        "Etunimet": "Asia Kas",
-                        "Kutsumanimi": "Asia",
-                        "kansalaisuus": "FIN",
-                        "onkosinullakaksoiskansallisuus": "false",
-                        "Henkilotunnus": "171175-830Y",
-                        "sukupuoli": "2",
-                        "asuinmaa": "FIN",
-                        "lahiosoite": "Testikatu 4",
-                        "Postinumero": "00100",
-                        "kotikunta": "janakkala",
-                        "aidinkieli": "FI",
-                        "POHJAKOULUTUS": "1",
-                        "PK_PAATTOTODISTUSVUOSI": "2014",
-                        "perusopetuksen_kieli": "FI",
-                        "preferencesVisible": "5",
-                        "preference1-Opetuspiste": "FAKTIA, Espoo op",
-                        "preference1-Opetuspiste-id": "1.2.246.562.10.89537774706",
-                        "preference1-Koulutus": "Talonrakennus ja ymäristösuunnittelu, yo",
-                        "preference1-Koulutus-id": "1.2.246.562.14.673437691210",
-                        "preference1-Koulutus-educationDegree": "32",
-                        "preference1-Koulutus-id-lang": "FI",
-                        "preference1-Koulutus-id-sora": "false",
-                        "preference1-Koulutus-id-athlete": "false",
-                        "preference1-Koulutus-id-kaksoistutkinto": "false",
-                        "preference1-Koulutus-id-vocational": "true",
-                        "preference1-Koulutus-id-attachments": "false",
-                        "preference1-discretionary": "false",
-                        "asiointikieli": "suomi"
-                    }))
-                    .then(visible(lomake.sukunimi))
-                    .then(done, done);
-            });
-
-            it("PK päättötodistusvuosi 2011", function(done) {
-                Q.fcall(post("/haku-app/lomake/1.2.246.562.5.50476818906/koulutustausta/rules", {
+            it("PK päättötodistusvuosi 2011", seqDone(
+                post("/haku-app/lomake/1.2.246.562.5.50476818906/koulutustausta/rules", {
                     "PK_PAATTOTODISTUSVUOSI": "2011",
                     "POHJAKOULUTUS": "1",
                     "ruleIds[]": ["paattotodistuvuosiPkRule"]
-                })).then(function(data) {
-                    expect(data).to.contain('<input type=\\"radio\\" name=\\"ammatillinenTutkintoSuoritettu\\"');
-                }).then(done, done);
-            });
+                }),
+                function(data) { expect(data).to.contain('<input type=\\"radio\\" name=\\"ammatillinenTutkintoSuoritettu\\"'); }
+            ));
 
-            it("PK päättötodistusvuosi 2012", function(done) {
-                Q.fcall(post("/haku-app/lomake/1.2.246.562.5.50476818906/koulutustausta/rules", {
+            it("PK päättötodistusvuosi 2012", seqDone(
+                post("/haku-app/lomake/1.2.246.562.5.50476818906/koulutustausta/rules", {
                     "PK_PAATTOTODISTUSVUOSI": "2012",
                     "POHJAKOULUTUS": "1",
                     "ruleIds[]": ["paattotodistuvuosiPkRule"]
-                })).then(function(data) {
-                    expect(data).not.to.contain('<input type=\\"radio\\" name=\\"ammatillinenTutkintoSuoritettu\\"');
-                }).then(done, done);
-            });
+                }),
+                function(data) { expect(data).not.to.contain('<input type=\\"radio\\" name=\\"ammatillinenTutkintoSuoritettu\\"'); }
+            ));
         });
 
         describe("Urheilijakohteet", function() {
+            beforeEach(seqDone(
+                start,
+                visible(lomake.sukunimi),
+                postAsForm("/haku-app/lomake/1.2.246.562.5.50476818906", {
+                    "Sukunimi": "Testikäs",
+                    "Etunimet": "Asia Kas",
+                    "Kutsumanimi": "Asia",
+                    "kansalaisuus": "FIN",
+                    "onkosinullakaksoiskansallisuus": "false",
+                    "Henkilotunnus": "171175-830Y",
+                    "sukupuoli": "2",
+                    "asuinmaa": "FIN",
+                    "lahiosoite": "Testikatu 4",
+                    "Postinumero": "00100",
+                    "kotikunta": "janakkala",
+                    "aidinkieli": "FI",
+                    "POHJAKOULUTUS": "1",
+                    "PK_PAATTOTODISTUSVUOSI": "2014",
+                    "perusopetuksen_kieli": "FI"
+                })
+            ));
 
-            beforeEach(function(done) {
-                start()
-                    .then(visible(lomake.sukunimi))
-                    .then(postAsForm("/haku-app/lomake/1.2.246.562.5.50476818906", {
-                        "Sukunimi": "Testikäs",
-                        "Etunimet": "Asia Kas",
-                        "Kutsumanimi": "Asia",
-                        "kansalaisuus": "FIN",
-                        "onkosinullakaksoiskansallisuus": "false",
-                        "Henkilotunnus": "171175-830Y",
-                        "sukupuoli": "2",
-                        "asuinmaa": "FIN",
-                        "lahiosoite": "Testikatu 4",
-                        "Postinumero": "00100",
-                        "kotikunta": "janakkala",
-                        "aidinkieli": "FI",
-                        "POHJAKOULUTUS": "1",
-                        "PK_PAATTOTODISTUSVUOSI": "2014",
-                        "perusopetuksen_kieli": "FI"
-                    }))
-                    .then(done, done)
-            });
-
-            it("Urheilevat kokit", function(done) {
-                Q.fcall(visible(lomake.sukunimi))
-                    .then(pageChange(lomake.fromHenkilotiedot))
-                    .then(headingVisible("Koulutustausta"))
-                    .then(pageChange(lomake.fromKoulutustausta))
-                    .then(headingVisible("Hakutoiveet"))
-                    .then(autocomplete(lomake.opetuspiste1, "urh", "Urheilijoiden koulu"))
-                    .then(select(lomake.koulutus1, "Urheilevien kokkien koulutus"))
-                    .then(click(
-                        lomake.harkinnanvaraisuus1(false),
-                        lomake.urheilija1(true)))
-                    .then(pageChange(lomake.fromHakutoiveet))
-                    .then(headingVisible("Arvosanat"))
-                    .then(done, done);
-            });
+            it("Urheilevat kokit", seqDone(
+                visible(lomake.sukunimi),
+                pageChange(lomake.fromHenkilotiedot),
+                headingVisible("Koulutustausta"),
+                pageChange(lomake.fromKoulutustausta),
+                headingVisible("Hakutoiveet"),
+                autocomplete(lomake.opetuspiste1, "urh", "Urheilijoiden koulu"),
+                select(lomake.koulutus1, "Urheilevien kokkien koulutus"),
+                click(
+                    lomake.harkinnanvaraisuus1(false),
+                    lomake.urheilija1(true)),
+                pageChange(lomake.fromHakutoiveet),
+                headingVisible("Arvosanat")
+            ));
 
         });
     });
