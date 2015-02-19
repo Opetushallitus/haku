@@ -8,6 +8,7 @@ import com.google.common.collect.ArrayTable;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import fi.vm.sade.haku.oppija.common.koulutusinformaatio.ApplicationOption;
+import fi.vm.sade.haku.oppija.common.koulutusinformaatio.ApplicationOptionGroup;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
@@ -102,13 +103,15 @@ public class XlsModel {
                 if (Question.class.isAssignableFrom(element.getClass()) && ElementUtil.getText(element, lang) != null) {
                     String applicationOptionGroupId = ((Question) element).getApplicationOptionGroupId();
                     String applicationOptionId = ((Question) element).getApplicationOptionId();
-                    List<String> groups = ao.getGroups();
+                    List<ApplicationOptionGroup> groups = ao.getGroups();
 
                     if (applicationOptionGroupId == null && applicationOptionId == null) {
                         return true;
                     } else if (applicationOptionGroupId != null && groups != null) {
-                        if (groups.contains(applicationOptionGroupId)) {
-                            return true;
+                        for(ApplicationOptionGroup group: groups) {
+                            if (applicationOptionGroupId.equals(group.oid)) {
+                                return true;
+                            }
                         }
                     } else {
                         return ao.getId() != null && (ao.getId().equals(applicationOptionGroupId) || ao.getId().equals(applicationOptionId));
