@@ -24,6 +24,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.validation.GroupRestrictionValidator;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationInput;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationResult;
+import fi.vm.sade.haku.oppija.lomake.validation.groupvalidators.GroupPrioritisationValidator;
 import fi.vm.sade.haku.oppija.lomake.validation.groupvalidators.GroupRestrictionMaxNumberValidator;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.i18n.I18nBundleService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
@@ -31,16 +32,9 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.mockito.Matchers.isNull;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
@@ -57,6 +51,10 @@ public class PreferenceTableValidatorTest {
     private final Map<String, String> maxErrors = new HashMap<String, String>();
     {
         maxErrors.put("fi", "max error");
+    }
+    private final Map<String, String> prioErrors = new HashMap<String, String>();
+    {
+        prioErrors.put("fi", "prio error: korkeampi={hakukohde_korkeampi}, alempi={hakukohde_alempi}");
     }
 
     @Before
@@ -79,14 +77,19 @@ public class PreferenceTableValidatorTest {
         educationInputIds.add("e4");
         educationInputIds.add("e5");
         List<GroupRestrictionValidator> groupRestrictionValidators = new ArrayList<GroupRestrictionValidator>();
-        groupRestrictionValidators.add(new GroupRestrictionMaxNumberValidator("test.max.group", 1, new I18nText(maxErrors)));
+        groupRestrictionValidators.add(new GroupRestrictionMaxNumberValidator("test.max.group", 2, new I18nText(maxErrors)));
+        groupRestrictionValidators.add(new GroupPrioritisationValidator("test-group1", new I18nText(prioErrors)));
         validator = new PreferenceTableValidator(learningInstitutionInputIds, educationInputIds, groupRestrictionValidators);
         validator.setI18nBundleService(i18nBundleService);
         ApplicationOptionService aos = mock(ApplicationOptionService.class);
         final ApplicationOption partOfTestGroup = new ApplicationOption();
+        partOfTestGroup.setName("korkeampi prio");
         partOfTestGroup.setGroups(Arrays.asList(new ApplicationOptionGroup("test-group1" , 1), new ApplicationOptionGroup("test.max.group", null)));
         when(aos.get("ao-with-test-group")).thenReturn(partOfTestGroup);
-        when(aos.get("ao-with-no-test-group")).thenReturn(new ApplicationOption());
+        final ApplicationOption notPartOfTestGroup = new ApplicationOption();
+        notPartOfTestGroup.setName("alempi prio");
+        notPartOfTestGroup.setGroups(Arrays.asList(new ApplicationOptionGroup("test-group1", null)));
+        when(aos.get("ao-with-no-test-group")).thenReturn(notPartOfTestGroup);
         validator.setApplicationOptionService(aos);
     }
 
@@ -104,7 +107,7 @@ public class PreferenceTableValidatorTest {
         values.put("e3", "e3");
         values.put("e4", "e4");
         values.put("e5", "e5");
-        values.put("e1-id", "ao-with-no-test-group");
+        values.put("e1-id", "ao-with-test-group");
         values.put("e2-id", "ao-with-test-group");
         values.put("e3-id", "ao-with-no-test-group");
         values.put("e4-id", "ao-with-no-test-group");
@@ -127,16 +130,43 @@ public class PreferenceTableValidatorTest {
         values.put("e3", "e3");
         values.put("e4", "e4");
         values.put("e5", "e5");
-        values.put("e1-id", "ao-with-no-test-group");
+        values.put("e1-id", "ao-with-test-group");
         values.put("e2-id", "ao-with-test-group");
-        values.put("e3-id", "ao-with-no-test-group");
-        values.put("e4-id", "ao-with-test-group");
+        values.put("e3-id", "ao-with-test-group");
+        values.put("e4-id", "ao-with-no-test-group");
+        values.put("e5-id", "ao-with-no-test-group");
+        ValidationResult result = validator.validate(new ValidationInput(null, values, null, null, ValidationInput.ValidationContext.officer_modify));
+        assertNotNull(result);
+        assertTrue(result.hasErrors());
+        assertEquals(3, result.getErrorMessages().values().size());
+        assertEquals(new HashSet<>(Arrays.asList("e1", "e2", "e3")), result.getErrorMessages().keySet());
+        assertEquals("{fi=max error}", getFirstErrorAsString(result));
+    }
+
+    @Test
+    public void testValidateWrongOrder() {
+        Map<String, String> values = new HashMap<String, String>();
+        values.put("li1", "li1");
+        values.put("li2", "li2");
+        values.put("li3", "li3");
+        values.put("li4", "li4");
+        values.put("li5", "li5");
+        values.put("e1", "e1");
+        values.put("e2", "e2");
+        values.put("e3", "e3");
+        values.put("e4", "e4");
+        values.put("e5", "e5");
+        values.put("e1-id", "ao-with-test-group");
+        values.put("e2-id", "ao-with-no-test-group");
+        values.put("e3-id", "ao-with-test-group");
+        values.put("e4-id", "ao-with-no-test-group");
         values.put("e5-id", "ao-with-no-test-group");
         ValidationResult result = validator.validate(new ValidationInput(null, values, null, null, ValidationInput.ValidationContext.officer_modify));
         assertNotNull(result);
         assertTrue(result.hasErrors());
         assertEquals(2, result.getErrorMessages().values().size());
-        assertEquals("{fi=max error}", getFirstErrorAsString(result));
+        assertEquals(new HashSet<>(Arrays.asList("e2", "e3")), result.getErrorMessages().keySet());
+        assertEquals("{fi=prio error: korkeampi=korkeampi prio, alempi=alempi prio}", getFirstErrorAsString(result));
     }
 
     @Test
