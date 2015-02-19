@@ -19,12 +19,15 @@
     <c:otherwise>
         <c:set var="virkailijaEdit" value="true" scope="request"/>
         <form id="form-${it.element.id}" class="form" method="post" novalidate="novalidate">
+            <button class="save" name="phaseId" type="submit" value="${it.element.id}">
+                <span><fmt:message key="lomake.button.save"/></span>
+            </button>
             <c:forEach var="child" items="${it.element.children}">
                 <c:set var="element" value="${child}" scope="request"/>
                 <jsp:include page="../elements/${child.type}.jsp"/>
             </c:forEach>
             <button class="save" name="phaseId" type="submit" value="${it.element.id}">
-                <span><span><fmt:message key="lomake.button.save"/></span></span>
+                <span><fmt:message key="lomake.button.save"/></span>
             </button>
         </form>
     </c:otherwise>
