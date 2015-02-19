@@ -42,7 +42,7 @@ public class ApplicationOptionDTOToApplicationOptionFunction implements Function
             ao.setAthleteEducation(applicationOptionDTO.isAthleteEducation());
             ao.setEducationCode(applicationOptionDTO.getEducationCodeUri());
             for (OrganizationGroupDTO group : applicationOptionDTO.getOrganizationGroups()) {
-                ao.addGroup(group.getOid());
+                ao.addGroup(new ApplicationOptionGroup(group.getOid(), group.getPrioriteetti()));
             }
             return ao;
         } else {

@@ -16,6 +16,7 @@
 package fi.vm.sade.haku.oppija.lomake.validation.validators;
 
 import fi.vm.sade.haku.oppija.common.koulutusinformaatio.ApplicationOption;
+import fi.vm.sade.haku.oppija.common.koulutusinformaatio.ApplicationOptionGroup;
 import fi.vm.sade.haku.oppija.common.koulutusinformaatio.ApplicationOptionService;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystemBuilder;
@@ -83,7 +84,7 @@ public class PreferenceTableValidatorTest {
         validator.setI18nBundleService(i18nBundleService);
         ApplicationOptionService aos = mock(ApplicationOptionService.class);
         final ApplicationOption partOfTestGroup = new ApplicationOption();
-        partOfTestGroup.setGroups(Arrays.asList("test-group1", "test.max.group"));
+        partOfTestGroup.setGroups(Arrays.asList(new ApplicationOptionGroup("test-group1" , 1), new ApplicationOptionGroup("test.max.group", null)));
         when(aos.get("ao-with-test-group")).thenReturn(partOfTestGroup);
         when(aos.get("ao-with-no-test-group")).thenReturn(new ApplicationOption());
         validator.setApplicationOptionService(aos);

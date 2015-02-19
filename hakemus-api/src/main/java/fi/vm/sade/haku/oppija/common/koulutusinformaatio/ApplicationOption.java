@@ -36,7 +36,7 @@ public class ApplicationOption {
     private boolean kaksoistutkinto;
     private boolean athleteEducation;
     private String educationCode;
-    private List<String> groups;
+    private List<ApplicationOptionGroup> groups;
 
     public String getId() {
         return id;
@@ -142,18 +142,18 @@ public class ApplicationOption {
         return builder.toString();
     }
 
-    public void addGroup(String oid) {
+    public void addGroup(ApplicationOptionGroup group) {
         if (groups == null) {
-            groups = new ArrayList<String>();
+            groups = new ArrayList<>();
         }
-        groups.add(oid);
+        groups.add(group);
     }
 
-    public void setGroups(List<String> groups) {
+    public void setGroups(List<ApplicationOptionGroup> groups) {
         this.groups = groups;
     }
 
-    public List<String> getGroups() {
+    public List<ApplicationOptionGroup> getGroups() {
         return groups;
     }
 }

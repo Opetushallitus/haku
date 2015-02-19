@@ -19,6 +19,7 @@ package fi.vm.sade.haku.oppija.lomake.validation.validators;
 import com.google.common.base.CharMatcher;
 import com.google.common.base.Strings;
 import fi.vm.sade.haku.oppija.common.koulutusinformaatio.ApplicationOption;
+import fi.vm.sade.haku.oppija.common.koulutusinformaatio.ApplicationOptionGroup;
 import fi.vm.sade.haku.oppija.common.koulutusinformaatio.ApplicationOptionService;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.util.SpringInjector;
@@ -128,8 +129,8 @@ public class PreferenceTableValidator implements Validator {
 
         for(ApplicationOptionInfo aoInfo: applicationOptionInfos){
             if(aoInfo.ao.getGroups() != null) {
-                for(String groupId: aoInfo.ao.getGroups()) {
-                    getHakukohdeSet(groupToHakukohdeMap, groupId).add(aoInfo);
+                for(ApplicationOptionGroup group: aoInfo.ao.getGroups()) {
+                    getHakukohdeSet(groupToHakukohdeMap, group.oid).add(aoInfo);
                 }
             }
         }
