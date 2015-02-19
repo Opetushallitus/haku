@@ -1,13 +1,12 @@
 package fi.vm.sade.haku.oppija.common.koulutusinformaatio.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriBuilder;
 
 import org.apache.commons.lang3.StringUtils;
 import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
+import org.codehaus.jackson.map.DeserializationConfig;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,8 +35,11 @@ public class KoulutusinformaatioServiceImpl extends KoulutusinformaatioService {
 
 	@Autowired
 	public KoulutusinformaatioServiceImpl(@Value("${koulutusinformaatio.ao.resource.url}") final String koulutusinformaatioAOResourceUrl) {
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+		JacksonJsonProvider jacksProv = new JacksonJsonProvider(mapper);
 		ClientConfig cc = new DefaultClientConfig();
-		cc.getClasses().add(JacksonJsonProvider.class);
+		cc.getSingletons().add(jacksProv);
 		clientWithJacksonSerializer = Client.create(cc);
 		webResource = clientWithJacksonSerializer.resource(koulutusinformaatioAOResourceUrl);
 		converterFunction = new ApplicationOptionDTOToApplicationOptionFunction();
