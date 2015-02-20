@@ -49,7 +49,7 @@ public final class KoulutustaustaPhase {
     }
 
     public static Element create(final FormParameters formParameters) {
-        Element koulutustausta = Phase("koulutustausta").setEditAllowedByRoles("APP_HAKEMUS_READ_UPDATE", "APP_HAKEMUS_CRUD", "APP_HAKEMUS_OPO").formParams(formParameters).build();
+        Element koulutustausta = Phase("koulutustausta").setEditAllowedByRoles("APP_HAKEMUS_READ_UPDATE", "APP_HAKEMUS_CRUD").formParams(formParameters).build();
         ApplicationSystem as = formParameters.getApplicationSystem();
         if (as.getKohdejoukkoUri().equals(OppijaConstants.KOHDEJOUKKO_KORKEAKOULU)){
             if (formParameters.isAmmattillinenEritysopettajaTaiOppilaanohjaajaKoulutus()
