@@ -16,7 +16,7 @@ public class HakuAppTomcat extends EmbeddedTomcat {
     static final int DEFAULT_PORT = 9090;
 
     public final static void main(String... args) throws ServletException, LifecycleException {
-        useIntegrationTestSettings();
+        useIntegrationTestSettingsIfNoProfileSelected();
         new HakuAppTomcat(Integer.parseInt(System.getProperty("haku-app.port", String.valueOf(DEFAULT_PORT)))).start().await();
     }
 
@@ -29,7 +29,7 @@ public class HakuAppTomcat extends EmbeddedTomcat {
     }
 
     public static void startForIntegrationTestIfNotRunning() {
-        useIntegrationTestSettings();
+        useIntegrationTestSettingsIfNoProfileSelected();
         if (PortChecker.isFreeLocalPort(DEFAULT_PORT)) {
             new HakuAppTomcat(DEFAULT_PORT).start();
         } else {
@@ -37,8 +37,11 @@ public class HakuAppTomcat extends EmbeddedTomcat {
         }
     }
 
-    private static void useIntegrationTestSettings() {
+    private static void useIntegrationTestSettingsIfNoProfileSelected() {
         System.setProperty("application.system.cache", "false");
-        System.setProperty("spring.profiles.active", "it");
+        if (System.getProperty("spring.profiles.active") == null) {
+            System.setProperty("spring.profiles.active", "it");
+        }
+        System.out.println("Running embedded with profile " + System.getProperty("spring.profiles.active"));
     }
 }
