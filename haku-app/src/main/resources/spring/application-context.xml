@@ -91,6 +91,27 @@
         <import resource="form-login-security-context.xml"/>
     </beans>
 
+    <beans profile="vagrant">
+        <context:property-placeholder
+                location="classpath:haku-vagrant.properties"
+                ignore-resource-not-found="true" properties-ref="vagrantProps"/>
+
+        <bean id="vagrantProps" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+            <property name="properties">
+                <util:properties local-override="true">
+                    <prop key="cas_mode">front</prop>
+                    <prop key="cas_key">haku</prop>
+                    <prop key="cas_service">${cas.service.haku}</prop>
+                    <prop key="cas_callback_url">${cas.callback.haku}</prop>
+                    <prop key="spring_security_default_access">permitAll</prop>
+                </util:properties>
+
+            </property>
+        </bean>
+        <import resource="classpath:security-context-backend-vagrant.xml"/>
+        <import resource="logger-mock-context.xml"/>
+    </beans>
+
     <beans>
         <context:annotation-config/>
 

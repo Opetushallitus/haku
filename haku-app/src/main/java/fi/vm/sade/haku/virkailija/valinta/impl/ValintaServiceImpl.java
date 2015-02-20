@@ -17,7 +17,7 @@ import java.lang.reflect.Type;
 import java.util.Date;
 
 @Service
-@Profile(value = {"default", "devluokka"})
+@Profile(value = {"default", "devluokka", "vagrant"})
 public class ValintaServiceImpl implements ValintaService {
 
     private static final Logger log = LoggerFactory.getLogger(ValintaServiceImpl.class);

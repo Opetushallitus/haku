@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-@Profile(value = {"default", "devluokka"})
+@Profile(value = {"default", "devluokka", "vagrant"})
 public class PDFServiceImpl implements PDFService {
     @Value("${web.url.cas}")
     private String casUrl;
