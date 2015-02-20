@@ -115,10 +115,18 @@ public class KoodistoServiceImpl implements KoodistoService {
             public int compare(KoodiType o1, KoodiType o2) {
                 String k1 = o1.getKoodiArvo();
                 String k2 = o2.getKoodiArvo();
-                if (k1.length() != k2.length()) {
-                    return k1.length() - k2.length();
+                return makeComparable(k1).compareTo(makeComparable(k2));
+            }
+
+            private String makeComparable(String koodiArvo) {
+                if ("S".equals(koodiArvo)) {
+                    return "11";
+                } else if ("Ei arvosanaa".equals(koodiArvo)) {
+                    return "12";
+                } else if ("10".equals(koodiArvo)) {
+                    return koodiArvo;
                 }
-                return k1.compareTo(k2);
+                return "0"+koodiArvo;
             }
         });
         return ImmutableList.copyOf(
