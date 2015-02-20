@@ -138,20 +138,15 @@ public class BaseEducationServiceImpl implements BaseEducationService {
         boolean kuntouttavaSuoritettu = isNotBlank(kuntouttavaSuoritettuStr) ? Boolean.valueOf(kuntouttavaSuoritettuStr) : false;
         boolean mamuValmentavaSuoritettu = isNotBlank(mamuValmentavaSuoritettuStr) ? Boolean.valueOf(mamuValmentavaSuoritettuStr) : false;
 
-        boolean gradesTransferredPk = false;
-        boolean gradesTransferredLk = false;
-
         if (lukioSuoritus != null && isComplete(lukioSuoritus)) {
             pohjakoulutus = OppijaConstants.YLIOPPILAS;
             valmistuminen = lukioSuoritus.getValmistuminen();
             suorituskieli = lukioSuoritus.getSuorituskieli();
-            gradesTransferredLk = true;
         } else if (ulkomainenSuoritus != null && isComplete(ulkomainenSuoritus)) {
             pohjakoulutus = OppijaConstants.ULKOMAINEN_TUTKINTO;
             clearGrades(application);
         } else {
             if (kymppiSuoritus != null) {
-                gradesTransferredPk = true;
                 if (isComplete(kymppiSuoritus)) {
                     valmistuminen = kymppiSuoritus.getValmistuminen();
                 }
@@ -167,7 +162,6 @@ public class BaseEducationServiceImpl implements BaseEducationService {
                     pohjakoulutus = getPohjakoulutus(kymppiSuoritus);
                 }
             } else if (peruskouluSuoritus != null && isComplete(peruskouluSuoritus)) {
-                gradesTransferredPk = true;
                 valmistuminen = peruskouluSuoritus.getValmistuminen();
                 suorituskieli = peruskouluSuoritus.getSuorituskieli();
                 pohjakoulutus = getPohjakoulutus(peruskouluSuoritus);
@@ -180,17 +174,6 @@ public class BaseEducationServiceImpl implements BaseEducationService {
 
         final boolean pohjakoulutusSuoritettu = pohjakoulutus != null;
 
-        if (gradesTransferredLk) {
-            application.addMeta("grades_transferred_lk", "true");
-            application.addMeta("grades_transferred_pk", "false");
-        } else if (gradesTransferredPk) {
-            application.addMeta("grades_transferred_lk", "false");
-            application.addMeta("grades_transferred_pk", "true");
-        } else {
-            application.addMeta("grades_transferred_lk", "false");
-            application.addMeta("grades_transferred_pk", "false");
-        }
-        
         if (!(ammattistarttiSuoritettu || kuntouttavaSuoritettu || mamuValmentavaSuoritettu || pohjakoulutusSuoritettu)) {
             return application;
         }
