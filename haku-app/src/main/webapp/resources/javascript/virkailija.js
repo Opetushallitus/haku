@@ -738,10 +738,14 @@ $(document).ready(function () {
         var school = $('#sendingSchoolOid').val();
         var clazz = $('#sendingClass').val();
         var as = $('#application-system').val();
+        var year = $('#hakukausiVuosi').val();
+        var season = $('#hakukausi > option:selected').val();
         if (school && as) {
             var url = location.protocol + "//" + location.host + "/suoritusrekisteri/#/eihakeneet?haku=" + as
                 + "&oppilaitos=" + school
-                + (clazz !== "" ? "&luokka=" + clazz : "");
+                + (clazz !== "" ? "&luokka=" + clazz : "")
+                + (year !== "" ? "&vuosi=" + year : "")
+                + (season !== "" ? "&kausi=" + season : "");
             window.location.href = url;
         } else {
             alert('Koulu ja haku ovat pakollisia tietoja')
