@@ -745,7 +745,7 @@ $(document).ready(function () {
                 + "&oppilaitos=" + school
                 + (clazz !== "" ? "&luokka=" + clazz : "")
                 + (year !== "" ? "&vuosi=" + year : "")
-                + (season !== "" ? "&kausi=" + season : "");
+                + (season !== "" ? "&kausi=" + season.slice(-1).toUpperCase() : "");
             window.location.href = url;
         } else {
             alert('Koulu ja haku ovat pakollisia tietoja')
