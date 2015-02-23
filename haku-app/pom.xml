@@ -821,7 +821,7 @@
             <plugin>
                 <artifactId>maven-war-plugin</artifactId>
                 <configuration>
-                    <packagingExcludes>resources/demo/**</packagingExcludes>
+                    <packagingExcludes>test/**</packagingExcludes>
                 </configuration>
             </plugin>
         </plugins>

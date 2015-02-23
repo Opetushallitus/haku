@@ -15,7 +15,7 @@ public class MochaIT extends AbstractSeleniumBase {
     @Before
     public void init() {
         driver = seleniumContainer.getDriver();
-        driver.get(getBaseUrl() + "resources/demo/testrunner.html");
+        driver.get(getBaseUrl() + "test/index.html");
     }
 
     @Test
