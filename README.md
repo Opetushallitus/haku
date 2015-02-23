@@ -87,7 +87,7 @@ Project has Selenium and Mocha tests for functional testing.
 
 If you already have a Tomcat running, you can run the Mocha tests in your browser at
 
-    http://localhost:9090/haku-app/resources/demo/testrunner.html
+    http://localhost:9090/haku-app/test/
 
 Or build, start tomcat and run Mochas from the command line:
 

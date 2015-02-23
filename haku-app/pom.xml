@@ -817,6 +817,13 @@
                     </execution>
                 </executions>
             </plugin>
+
+            <plugin>
+                <artifactId>maven-war-plugin</artifactId>
+                <configuration>
+                    <packagingExcludes>test/**</packagingExcludes>
+                </configuration>
+            </plugin>
         </plugins>
 
         <finalName>haku-app</finalName>
@@ -865,6 +872,10 @@
             <id>it</id>
             <build>
                 <plugins>
+                  <plugin>
+                      <artifactId>maven-war-plugin</artifactId>
+                      <configuration combine.self="override"></configuration>
+                  </plugin>
                     <plugin>
                         <groupId>org.apache.tomcat.maven</groupId>
                         <artifactId>tomcat7-maven-plugin</artifactId>
