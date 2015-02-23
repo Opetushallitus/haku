@@ -17,6 +17,7 @@
 package fi.vm.sade.haku.oppija.lomake.domain.elements.questions;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
@@ -35,50 +36,55 @@ public abstract class OptionQuestion extends Question {
 
     private static final long serialVersionUID = -2304711424350028559L;
 
-    private final List<Option> options = new ArrayList<Option>();
+    private final List<Option> options;
 
     @Transient
-    private final Map<String, Option> optionsMap = new LinkedHashMap<String, Option>();
+    private Map<String, Option> optionsMap;
     @Transient
-    private final Map<String, List<Option>> optionsSortedByText = new HashMap<String, List<Option>>();
+    private Map<String, List<Option>> optionsSortedByText;
+    @Transient
+    private final Object optionsMapLock = new Object();
+    @Transient
+    private final Object optionsSortedByTextLock = new Object();
 
     protected OptionQuestion(final String id, final I18nText i18nText, final List<Option> options) {
         super(id, i18nText);
-        this.options.addAll(options);
+        this.options = ImmutableList.copyOf(options);
     }
 
     public List<Option> getOptions() {
-        return ImmutableList.copyOf(options);
+        return options;
     }
 
     public Map<String, Option> getData() {
-        if (optionsMap.size() < 1 && options.size() > 0)
+        if (null == optionsMap)
             initOptionsMap();
         return optionsMap;
     }
 
     public Map<String, List<Option>> getOptionsSortedByText() {
-        if (optionsSortedByText.size() < 1 && options.size() > 0)
+        if (null == optionsSortedByText)
             initSortedOptions();
         return optionsSortedByText;
     }
 
     private void initSortedOptions() {
-        synchronized (optionsSortedByText) {
-            if (optionsSortedByText.size() > 0)
+        synchronized (optionsSortedByTextLock) {
+            if (null != optionsSortedByText)
                 return;
+            Map<String, List<Option>> tempOptionsSortedByText = new HashMap<>();
             for (Option option : options) {
                 Set<String> langs = option.getI18nText().getTranslations().keySet();
                 for (String lang : langs) {
-                    List<Option> optionListForLang = optionsSortedByText.get(lang);
+                    List<Option> optionListForLang = tempOptionsSortedByText.get(lang);
                     if (optionListForLang == null) {
                         optionListForLang = new ArrayList<Option>(options.size());
-                        optionsSortedByText.put(lang, optionListForLang);
+                        tempOptionsSortedByText.put(lang, optionListForLang);
                     }
                     optionListForLang.add(option);
                 }
             }
-            for (Map.Entry<String, List<Option>> entry : optionsSortedByText.entrySet()) {
+            for (Map.Entry<String, List<Option>> entry : tempOptionsSortedByText.entrySet()) {
                 List<Option> optionList = entry.getValue();
                 final String lang = entry.getKey();
                 Collections.sort(optionList, new Comparator<Option>() {
@@ -90,16 +96,19 @@ public abstract class OptionQuestion extends Question {
                     }
                 });
             }
+            this.optionsSortedByText = ImmutableMap.copyOf(tempOptionsSortedByText);
         }
     }
 
     private void initOptionsMap(){
-        synchronized (optionsMap){
-            if (optionsMap.size() > 0)
+        synchronized (optionsMapLock){
+            if (null != optionsMap)
                 return;
+            Map<String, Option> tempOptionsMap = new LinkedHashMap<String, Option>();
             for (Option option : options) {
-                this.optionsMap.put(option.getValue(), option);
+                tempOptionsMap.put(option.getValue(), option);
             }
+            this.optionsMap = ImmutableMap.copyOf(tempOptionsMap);
         }
     }
 
