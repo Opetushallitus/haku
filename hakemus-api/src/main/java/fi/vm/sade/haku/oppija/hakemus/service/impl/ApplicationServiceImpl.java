@@ -102,7 +102,7 @@ public class ApplicationServiceImpl implements ApplicationService {
                                   KoulutusinformaatioService koulutusinformaatioService,
                                   I18nBundleService i18nBundleService,
                                   ElementTreeValidator elementTreeValidator,
-                                  @Value("onlyBackgroundValidation") String onlyBackgroundValidation) {
+                                  @Value("${onlyBackgroundValidation}") String onlyBackgroundValidation) {
 
         this.applicationDAO = applicationDAO;
         this.userSession = userSession;
