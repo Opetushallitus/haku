@@ -20,14 +20,11 @@ import com.google.common.collect.Lists;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.GenericType;
 import com.sun.jersey.api.client.WebResource;
-import com.sun.jersey.api.client.config.ClientConfig;
-import com.sun.jersey.api.client.config.DefaultClientConfig;
+import fi.vm.sade.haku.oppija.common.jackson.UnknownPropertiesAllowingJacksonJsonClientFactory;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakuService;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.OidV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.ResultV1RDTO;
-import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,9 +51,7 @@ public class HakuServiceImpl implements HakuService {
 
     @Autowired
     public HakuServiceImpl(@Value("${tarjonta.v1.haku.resource.url}") final String tarjontaHakuResourceUrl) {
-        ClientConfig cc = new DefaultClientConfig();
-        cc.getClasses().add(JacksonJsonProvider.class);
-        Client clientWithJacksonSerializer = Client.create(cc);
+        Client clientWithJacksonSerializer = UnknownPropertiesAllowingJacksonJsonClientFactory.create();
         webResource = clientWithJacksonSerializer.resource(tarjontaHakuResourceUrl).queryParam(COUNT_PARAMETER, MAX_COUNT); // todo pagination
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("Tarjonnan uri: " + webResource.getURI().toString());

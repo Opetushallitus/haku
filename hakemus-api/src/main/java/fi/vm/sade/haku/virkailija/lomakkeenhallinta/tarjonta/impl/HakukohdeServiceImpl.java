@@ -19,11 +19,9 @@ package fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.impl;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.GenericType;
 import com.sun.jersey.api.client.WebResource;
-import com.sun.jersey.api.client.config.ClientConfig;
-import com.sun.jersey.api.client.config.DefaultClientConfig;
+import fi.vm.sade.haku.oppija.common.jackson.UnknownPropertiesAllowingJacksonJsonClientFactory;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakukohdeService;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.*;
-import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,9 +47,7 @@ public class HakukohdeServiceImpl implements HakukohdeService {
 
     @Autowired
     public HakukohdeServiceImpl(@Value("${tarjonta.v1.hakukohde.resource.url}") final String tarjontaV1HakukohdeResourceUrl) {
-        ClientConfig cc = new DefaultClientConfig();
-        cc.getClasses().add(JacksonJsonProvider.class);
-        Client clientWithJacksonSerializer = Client.create(cc);
+        Client clientWithJacksonSerializer = UnknownPropertiesAllowingJacksonJsonClientFactory.create();
         hakukohdeV1Resource = clientWithJacksonSerializer.resource(tarjontaV1HakukohdeResourceUrl);
         LOGGER.debug("Tarjonnan v1 hakukohde uri: {} ", hakukohdeV1Resource.getURI().toString());
     }

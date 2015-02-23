@@ -3,10 +3,8 @@ package fi.vm.sade.haku.oppija.common.koulutusinformaatio.impl;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriBuilder;
 
+import fi.vm.sade.haku.oppija.common.jackson.UnknownPropertiesAllowingJacksonJsonClientFactory;
 import org.apache.commons.lang3.StringUtils;
-import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
-import org.codehaus.jackson.map.DeserializationConfig;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +16,6 @@ import com.google.common.base.Strings;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.GenericType;
 import com.sun.jersey.api.client.WebResource;
-import com.sun.jersey.api.client.config.ClientConfig;
-import com.sun.jersey.api.client.config.DefaultClientConfig;
 
 import fi.vm.sade.haku.oppija.common.koulutusinformaatio.ApplicationOptionDTOToApplicationOptionFunction;
 import fi.vm.sade.haku.oppija.common.koulutusinformaatio.KoulutusinformaatioService;
@@ -35,12 +31,7 @@ public class KoulutusinformaatioServiceImpl extends KoulutusinformaatioService {
 
 	@Autowired
 	public KoulutusinformaatioServiceImpl(@Value("${koulutusinformaatio.ao.resource.url}") final String koulutusinformaatioAOResourceUrl) {
-		ObjectMapper mapper = new ObjectMapper();
-		mapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-		JacksonJsonProvider jacksProv = new JacksonJsonProvider(mapper);
-		ClientConfig cc = new DefaultClientConfig();
-		cc.getSingletons().add(jacksProv);
-		clientWithJacksonSerializer = Client.create(cc);
+		clientWithJacksonSerializer = UnknownPropertiesAllowingJacksonJsonClientFactory.create();
 		webResource = clientWithJacksonSerializer.resource(koulutusinformaatioAOResourceUrl);
 		converterFunction = new ApplicationOptionDTOToApplicationOptionFunction();
 	}
