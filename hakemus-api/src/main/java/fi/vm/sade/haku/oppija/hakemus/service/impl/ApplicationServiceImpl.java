@@ -147,12 +147,8 @@ public class ApplicationServiceImpl implements ApplicationService {
         final ApplicationState applicationState = new ApplicationState(application, applicationPhase.getPhaseId(), allAnswers);
 
         if (elementTree.isValidationNeeded(applicationPhase.getPhaseId(), application.getPhaseId())) {
-            ValidationInput.ValidationContext validationContext = ValidationInput.ValidationContext.applicant_submit;
-            if (applicationSystemId.equals(onlyBackgroundValidation)) {
-                validationContext = ValidationInput.ValidationContext.background;
-            }
             ValidationResult validationResult = elementTreeValidator.validate(new ValidationInput(phase, allAnswers,
-                    application.getOid(), applicationSystemId, validationContext));
+                    application.getOid(), applicationSystemId, resolveValidationContext(applicationSystemId)));
             applicationState.addError(validationResult.getErrorMessages());
         }
 
@@ -160,6 +156,14 @@ public class ApplicationServiceImpl implements ApplicationService {
             this.userSession.savePhaseAnswers(applicationPhase);
         }
         return applicationState;
+    }
+
+    private ValidationInput.ValidationContext resolveValidationContext(String asId) {
+        ValidationInput.ValidationContext validationContext = ValidationInput.ValidationContext.applicant_submit;
+        if (asId.equals(onlyBackgroundValidation)) {
+            validationContext = ValidationInput.ValidationContext.background;
+        }
+        return validationContext;
     }
 
     @Override
@@ -178,7 +182,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         Form form = applicationSystem.getForm();
         Map<String, String> allAnswers = application.getVastauksetMerged();
         ValidationResult validationResult = elementTreeValidator.validate(new ValidationInput(form, allAnswers,
-                application.getOid(), applicationSystemId, ValidationInput.ValidationContext.applicant_submit));
+                application.getOid(), applicationSystemId, resolveValidationContext(applicationSystemId)));
 
         if (!validationResult.hasErrors()) {
 
