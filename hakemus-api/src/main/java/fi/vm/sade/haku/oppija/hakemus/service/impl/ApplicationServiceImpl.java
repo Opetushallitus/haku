@@ -16,6 +16,7 @@
 
 package fi.vm.sade.haku.oppija.hakemus.service.impl;
 
+import fi.vm.sade.haku.oppija.common.koulutusinformaatio.KoulutusinformaatioService;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationNote;
@@ -48,7 +49,6 @@ import fi.vm.sade.haku.oppija.lomake.validation.ValidationResult;
 import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
 import fi.vm.sade.haku.virkailija.authentication.Person;
 import fi.vm.sade.haku.virkailija.authentication.PersonBuilder;
-import fi.vm.sade.haku.oppija.common.koulutusinformaatio.KoulutusinformaatioService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.i18n.I18nBundleService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionAttachmentDTO;
@@ -59,6 +59,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -86,6 +87,8 @@ public class ApplicationServiceImpl implements ApplicationService {
     private final KoulutusinformaatioService koulutusinformaatioService;
     private final I18nBundleService i18nBundleService;
     private final ElementTreeValidator elementTreeValidator;
+    // Tee vain background-validointi tälle lomakkeelle
+    private final String onlyBackgroundValidation;
 
     @Autowired
     public ApplicationServiceImpl(@Qualifier("applicationDAOMongoImpl") ApplicationDAO applicationDAO,
@@ -98,7 +101,8 @@ public class ApplicationServiceImpl implements ApplicationService {
                                   ApplicationSystemService applicationSystemService,
                                   KoulutusinformaatioService koulutusinformaatioService,
                                   I18nBundleService i18nBundleService,
-                                  ElementTreeValidator elementTreeValidator) {
+                                  ElementTreeValidator elementTreeValidator,
+                                  @Value("onlyBackgroundValidation") String onlyBackgroundValidation) {
 
         this.applicationDAO = applicationDAO;
         this.userSession = userSession;
@@ -111,6 +115,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         this.koulutusinformaatioService = koulutusinformaatioService;
         this.i18nBundleService = i18nBundleService;
         this.elementTreeValidator = elementTreeValidator;
+        this.onlyBackgroundValidation = onlyBackgroundValidation;
     }
 
 
@@ -142,8 +147,12 @@ public class ApplicationServiceImpl implements ApplicationService {
         final ApplicationState applicationState = new ApplicationState(application, applicationPhase.getPhaseId(), allAnswers);
 
         if (elementTree.isValidationNeeded(applicationPhase.getPhaseId(), application.getPhaseId())) {
+            ValidationInput.ValidationContext validationContext = ValidationInput.ValidationContext.applicant_submit;
+            if (applicationSystemId.equals(onlyBackgroundValidation)) {
+                validationContext = ValidationInput.ValidationContext.background;
+            }
             ValidationResult validationResult = elementTreeValidator.validate(new ValidationInput(phase, allAnswers,
-                    application.getOid(), applicationSystemId, ValidationInput.ValidationContext.applicant_submit));
+                    application.getOid(), applicationSystemId, validationContext));
             applicationState.addError(validationResult.getErrorMessages());
         }
 
