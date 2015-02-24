@@ -26,7 +26,7 @@ import fi.vm.sade.ryhmasahkoposti.api.dto.EmailData;
 import fi.vm.sade.ryhmasahkoposti.api.dto.EmailSendId;
 
 @Service
-@Profile(value = {"default", "devluokka"})
+@Profile(value = {"default", "devluokka", "vagrant"})
 public class EmailServiceImpl implements EmailService {
 	private Logger LOGGER = LoggerFactory.getLogger(EmailServiceImpl.class);
     @Value("${web.url.cas}")

@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 
 @Service
-@Profile(value = {"default", "devluokka"})
+@Profile(value = {"default", "devluokka", "vagrant"})
 public class ApplicationPrintViewServiceImpl implements ApplicationPrintViewService {
     @Value("${web.url.cas}")
     private String casUrl;

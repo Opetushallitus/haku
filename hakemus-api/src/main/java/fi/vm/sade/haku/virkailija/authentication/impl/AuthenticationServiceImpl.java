@@ -47,7 +47,7 @@ import static org.apache.commons.lang3.StringUtils.isNotBlank;
  * @author Hannu Lyytikainen
  */
 @Service
-@Profile(value = {"default"})
+@Profile(value = {"default", "vagrant"})
 public class AuthenticationServiceImpl implements AuthenticationService {
 
     final Logger log = LoggerFactory.getLogger(AuthenticationServiceImpl.class);

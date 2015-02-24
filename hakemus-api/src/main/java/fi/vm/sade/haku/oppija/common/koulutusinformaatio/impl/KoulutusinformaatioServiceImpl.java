@@ -22,7 +22,7 @@ import fi.vm.sade.haku.oppija.common.koulutusinformaatio.KoulutusinformaatioServ
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO;
 
 @Service
-@Profile(value = {"default", "devluokka"})
+@Profile(value = {"default", "devluokka", "vagrant"})
 public class KoulutusinformaatioServiceImpl extends KoulutusinformaatioService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ApplicationOptionServiceImpl.class);
 	private final WebResource webResource;

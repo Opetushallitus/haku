@@ -22,7 +22,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 @Configuration
-@Profile(value = {"default", "devluokka"})
+@Profile(value = {"default", "devluokka", "vagrant"})
 public class WebServices {
 
     @Bean(name = "cachingKoodistoClient")

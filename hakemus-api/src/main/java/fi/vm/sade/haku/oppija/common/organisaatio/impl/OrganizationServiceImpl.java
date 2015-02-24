@@ -50,7 +50,7 @@ import java.util.regex.Pattern;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 @Service
-@Profile(value = {"default", "devluokka"})
+@Profile(value = {"default", "devluokka", "vagrant"})
 public class OrganizationServiceImpl implements OrganizationService {
 
     private static final Logger LOG = LoggerFactory.getLogger(OrganizationServiceImpl.class);

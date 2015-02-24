@@ -31,7 +31,7 @@ import java.util.Set;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
 @Service
-@Profile(value = {"default"})
+@Profile(value = {"default", "vagrant"})
 public class HakuPermissionServiceImpl extends AbstractPermissionService implements HakuPermissionService {
 
     private AuthenticationService authenticationService;

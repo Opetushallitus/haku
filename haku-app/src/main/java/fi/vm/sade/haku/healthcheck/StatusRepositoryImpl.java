@@ -17,7 +17,7 @@ import java.util.*;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 @Repository
-@Profile(value = {"default", "devluokka"})
+@Profile(value = {"default", "devluokka", "vagrant"})
 public class StatusRepositoryImpl implements StatusRepository {
 
     private static final Logger log = LoggerFactory.getLogger(StatusRepositoryImpl.class);
