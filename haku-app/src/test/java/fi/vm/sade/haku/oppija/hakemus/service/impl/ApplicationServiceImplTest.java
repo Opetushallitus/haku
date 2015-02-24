@@ -1,7 +1,7 @@
 package fi.vm.sade.haku.oppija.hakemus.service.impl;
 
 import com.google.common.collect.Lists;
-
+import fi.vm.sade.haku.oppija.common.koulutusinformaatio.KoulutusinformaatioService;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
 import fi.vm.sade.haku.oppija.common.suoritusrekisteri.SuoritusrekisteriService;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
@@ -16,23 +16,26 @@ import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationQueryParametersBuilder;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationOidService;
 import fi.vm.sade.haku.oppija.hakemus.service.HakuPermissionService;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
+import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystemBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
+import fi.vm.sade.haku.oppija.lomake.domain.builder.TextQuestionBuilder;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.Phase;
 import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.haku.oppija.lomake.validation.ElementTreeValidator;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidatorFactory;
 import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
 import fi.vm.sade.haku.virkailija.authentication.impl.AuthenticationServiceMockImpl;
-import fi.vm.sade.haku.oppija.common.koulutusinformaatio.KoulutusinformaatioService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.i18n.I18nBundleService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
-
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
 import java.util.*;
 
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.createI18NAsIs;
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
@@ -335,6 +338,66 @@ public class ApplicationServiceImplTest {
         assertTrue(ao1parents.contains("0.0.0"));
         assertTrue(ao1parents.contains("11.1.2"));
         assertTrue(ao1parents.contains("11.3.4"));
+    }
+
+    @Test
+    public void testRemoveOrphanedAnswers() {
+        Form form = new Form("formId", createI18NAsIs("myForm"));
+        form.addChild(
+                new Phase(OppijaConstants.PHASE_PERSONAL, createI18NAsIs("persPhase"), true, new ArrayList<String>()).addChild(
+                        TextQuestionBuilder.TextQuestion("persQuestion1").build(),
+                        TextQuestionBuilder.TextQuestion("preference1-pers").build()
+                ),
+                new Phase(OppijaConstants.PHASE_EDUCATION, createI18NAsIs("eduPhase"), true, new ArrayList<String>()).addChild(
+                        TextQuestionBuilder.TextQuestion("eduQuestion1").build(),
+                        TextQuestionBuilder.TextQuestion("preference1-edu").build()
+                ),
+                new Phase(OppijaConstants.PHASE_APPLICATION_OPTIONS, createI18NAsIs("aoPhase"), true, new ArrayList<String>()).addChild(
+                        TextQuestionBuilder.TextQuestion("aoQuestion1").build(),
+                        TextQuestionBuilder.TextQuestion("preference1-ao").build()
+                ));
+        Application application = new Application("appOid");
+        application.setApplicationSystemId("myAs");
+        application.addVaiheenVastaukset(OppijaConstants.PHASE_PERSONAL, new HashMap<String, String>() {{
+            put("persQuestion1", "persAnswer1"); put("persQuestion2", "persAnswer2");
+            put("preference1-pers", "preference1-pers"); put("preference2-pers", "preference2-pers");
+        }});
+        application.addVaiheenVastaukset(OppijaConstants.PHASE_EDUCATION, new HashMap<String, String>() {{
+            put("eduQuestion1", "eduAnswer1"); put("lahtokoulu", "eduAnswer2"); put(OppijaConstants.ELEMENT_ID_SENDING_SCHOOL, "koulu");
+            put("preference1-edu", "preference1-edu"); put("preference2-edu", "preference2-edu");
+        }});
+        application.addVaiheenVastaukset(OppijaConstants.PHASE_APPLICATION_OPTIONS, new HashMap<String, String>() {{
+            put("aoQuestion1", "aoAnswer1"); put("aoQuestion2", "aoAnswer2");
+            put("preference1-ao", "preference1-ao"); put("preference2-ao", "preference2-ao");
+        }});
+        ApplicationSystem as = new ApplicationSystemBuilder().setId("myAs").setName(createI18NAsIs("myAs")).setForm(form).get();
+        when(applicationSystemService.getApplicationSystem("myAs")).thenReturn(as);
+
+        ApplicationServiceImpl applicationService = new ApplicationServiceImpl(null, null, null, null, null, null,
+                null, applicationSystemService, null, null, null, null);
+        application = applicationService.removeOrphanedAnswers(application);
+        Map<String, String> persAnswers = application.getPhaseAnswers(OppijaConstants.PHASE_PERSONAL);
+        Map<String, String> eduAnswers = application.getPhaseAnswers(OppijaConstants.PHASE_EDUCATION);
+        Map<String, String> aoAnswers = application.getPhaseAnswers(OppijaConstants.PHASE_APPLICATION_OPTIONS);
+
+        assertEquals("persAnswer1", persAnswers.get("persQuestion1"));
+        assertEquals("eduAnswer1", eduAnswers.get("eduQuestion1"));
+        assertEquals("aoAnswer1", aoAnswers.get("aoQuestion1"));
+
+        assertNull(persAnswers.get("persQuestion2"));
+        assertNull(eduAnswers.get("eduQuestion2"));
+        assertNull(aoAnswers.get("aoQuestion2"));
+
+        assertEquals("preference1-pers", persAnswers.get("preference1-pers"));
+        assertEquals("preference1-edu", eduAnswers.get("preference1-edu"));
+        assertEquals("preference1-ao", aoAnswers.get("preference1-ao"));
+
+        assertNull(persAnswers.get("preference2-pers"));
+        assertNull(eduAnswers.get("preference2-edu"));
+        assertEquals("preference2-ao", aoAnswers.get("preference2-ao"));
+
+        assertEquals("koulu", eduAnswers.get(OppijaConstants.ELEMENT_ID_SENDING_SCHOOL));
+
     }
 
 }

@@ -415,16 +415,22 @@ public class ApplicationServiceImpl implements ApplicationService {
     public Application removeOrphanedAnswers(Application application) {
         ApplicationSystem as = applicationSystemService.getApplicationSystem(application.getApplicationSystemId());
         Form form = as.getForm();
-        List<String> elementIds = new ArrayList<String>();
+        Map<String, Boolean> elementIds = new HashMap<>();
         for (Element element : form.getAllChildren(application.getVastauksetMerged())) {
-            elementIds.add(element.getId());
+            elementIds.put(element.getId(), Boolean.TRUE);
         }
+
+        elementIds.put(OppijaConstants.ELEMENT_ID_SENDING_SCHOOL, Boolean.TRUE);
+        elementIds.put(OppijaConstants.ELEMENT_ID_SENDING_CLASS, Boolean.TRUE);
+        elementIds.put(OppijaConstants.ELEMENT_ID_CLASS_LEVEL, Boolean.TRUE);
+        elementIds.put(OppijaConstants.ELEMENT_ID_SECURITY_ORDER, Boolean.TRUE);
+
         for (Map.Entry<String, Map<String, String>> phase : application.getAnswers().entrySet()) {
             String phaseId = phase.getKey();
             Map<String, String> newAnswers = new HashMap<String, String>();
             for (Map.Entry<String, String> answer : phase.getValue().entrySet()) {
                 String answerKey = answer.getKey();
-                if (elementIds.contains(answerKey)
+                if ((elementIds.get(answerKey) != null && elementIds.get(answerKey))
                         || (OppijaConstants.PHASE_APPLICATION_OPTIONS.equals(phaseId) && answerKey.startsWith("preference"))
                         ) {
                     newAnswers.put(answerKey, answer.getValue());
