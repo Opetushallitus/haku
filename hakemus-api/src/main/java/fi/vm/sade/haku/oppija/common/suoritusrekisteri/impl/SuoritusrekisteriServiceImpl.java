@@ -164,6 +164,9 @@ public class SuoritusrekisteriServiceImpl implements SuoritusrekisteriService {
         for (int i = 0; i < elements.size(); i++) {
             JsonObject elem = elements.get(i).getAsJsonObject();
             SuoritusDTO suoritus = suoritusJsonToDTO(elem);
+            if ("KESKEYTYNYT".equals(suoritus.getTila())) {
+                continue;
+            }
             String komo = suoritus.getKomo();
             if (!validKomos.contains(komo)) {
                 throw new ResourceNotFoundException("Found invalid komo ("+komo+
