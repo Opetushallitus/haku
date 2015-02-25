@@ -1,6 +1,4 @@
 describe('KK-hakemus', function () {
-    var virkailija = virkailijaSelectors();
-
     function answerForQuestion(name) {
         return S('td:has(a[name=' + name + '])').next().html()
     }
