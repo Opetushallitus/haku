@@ -47,6 +47,12 @@ describe('GroupConfiguration', function () {
         }));
     }
 
+    var rajaavuusError = "Liian monta hakukohdetta valittu samasta ryhmästä.";
+
+    function priorityErrorTemplate(a, b) {
+        return "Hakukohde " + a + " tulee olla korkeammalla prioriteetilla kuin hakukohteen " + b + ". Muuta prioriteettijärjestystä.";
+    }
+
     describe("hakukohteiden rajaavuuden validointi", function() {
         before(seqDone(
             login('master', 'master'),
@@ -62,8 +68,6 @@ describe('GroupConfiguration', function () {
         ));
 
         beforeEach(prefill);
-
-        var rajaavuusError = "Liian monta hakukohdetta valittu samasta ryhmästä.";
 
         // RAJAAVUUS, max 1: aasia, afrikka
         it('tasamäärä jatkaa seuraavaan vaiheeseen', seqDone(
@@ -107,10 +111,6 @@ describe('GroupConfiguration', function () {
         ));
 
         beforeEach(prefill);
-
-        function priorityErrorTemplate(a, b) {
-            return "Hakukohde " + a + " tulee olla korkeammalla prioriteetilla kuin hakukohteen " + b + ". Muuta prioriteettijärjestystä.";
-        }
 
         it('oikea järjestys jatkaa seuraavaan vaiheeseen', seqDone(
             syotaJarjestyksessa(
@@ -213,6 +213,70 @@ describe('GroupConfiguration', function () {
             pageChange(lomake.fromHakutoiveet),
             headingVisible("Osaaminen")
         ));
+    });
 
+    describe("hakukohteiden rajaavuuden ja priorisoinnin validointi", function() {
+        before(seqDone(
+            login('master', 'master'),
+            setupGroupConfiguration("1.2.246.562.29.173465377510", "1.2.246.562.28.20907706742", "hakukohde_rajaava", {maximumNumberOf: 1}),
+            setupGroupConfiguration("1.2.246.562.29.173465377510", "1.2.246.562.28.20907706740", "hakukohde_priorisoiva"),
+            openPage("/haku-app/lomakkeenhallinta/1.2.246.562.29.173465377510", function() {
+                return S("form#form-henkilotiedot").first().is(':visible')
+            })
+        ));
+
+        after(seqDone(
+            login('master', 'master'),
+            teardownGroupConfiguration("1.2.246.562.29.173465377510", "1.2.246.562.28.20907706742", "hakukohde_rajaava"),
+            teardownGroupConfiguration("1.2.246.562.29.173465377510", "1.2.246.562.28.20907706740", "hakukohde_priorisoiva")
+        ));
+
+        beforeEach(prefill);
+
+        // PRIORITEETIT  *40
+        // raasepori     1
+        // afrikka       2
+        // oulu          null
+        // aasia         null
+        // RAJAAVUUS, max 1: aasia, afrikka
+        it('virheelliset rajaus ja priorisointi', seqDone(
+            syotaJarjestyksessa(
+                afrikka,
+                raasepori,
+                aasia),
+            pageChange(lomake.fromHakutoiveet),
+            visibleText(lomake.koulutusError(1), priorityErrorTemplate(raaseporiKoulutus, afrikkaKoulutus)),
+            visibleText(lomake.koulutusError(2), priorityErrorTemplate(raaseporiKoulutus, afrikkaKoulutus)),
+            visibleText(lomake.koulutusError(3), rajaavuusError)
+        ));
+        it('virheellinen rajaus', seqDone(
+            syotaJarjestyksessa(
+                raasepori,
+                afrikka,
+                aasia),
+            pageChange(lomake.fromHakutoiveet),
+            notExists(lomake.koulutusError(1)),
+            visibleText(lomake.koulutusError(2), rajaavuusError),
+            visibleText(lomake.koulutusError(3), rajaavuusError)
+        ));
+
+        it('virheellinen priorisointi', seqDone(
+            syotaJarjestyksessa(
+                afrikka,
+                raasepori,
+                oulu),
+            pageChange(lomake.fromHakutoiveet),
+            visibleText(lomake.koulutusError(1), priorityErrorTemplate(raaseporiKoulutus, afrikkaKoulutus)),
+            visibleText(lomake.koulutusError(2), priorityErrorTemplate(raaseporiKoulutus, afrikkaKoulutus)),
+            notExists(lomake.koulutusError(3))
+        ));
+
+        it('oikea rajaus ja priorisointi', seqDone(
+            syotaJarjestyksessa(
+                raasepori,
+                aasia),
+            pageChange(lomake.fromHakutoiveet),
+            headingVisible("Osaaminen")
+        ));
     });
 });
