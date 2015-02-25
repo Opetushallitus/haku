@@ -1810,6 +1810,12 @@
         "prioriteetti": 1,
         "usageGroups": ["hakukohde_priorisoiva"],
         "groupTypes": ["hakukohde"]
+      },
+      {
+        "oid": "1.2.246.562.28.20907706742",
+        "prioriteetti": null,
+        "usageGroups": ["hakukohde_rajaava"],
+        "groupTypes": ["hakukohde"]
       }
     ],
     "kotitalous": false
@@ -2021,6 +2027,12 @@
         "oid": "1.2.246.562.28.20907706740",
         "prioriteetti": 2,
         "usageGroups": ["hakukohde_priorisoiva"],
+        "groupTypes": ["hakukohde"]
+      },
+      {
+        "oid": "1.2.246.562.28.20907706742",
+        "prioriteetti": null,
+        "usageGroups": ["hakukohde_rajaava"],
         "groupTypes": ["hakukohde"]
       },
       {

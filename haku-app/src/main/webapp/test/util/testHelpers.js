@@ -323,6 +323,14 @@ function setupGroupConfiguration(applicationSystemId, groupId, type, configurati
             'application/json'))
 }
 
+function teardownGroupConfiguration(applicationSystemId, groupId, type) {
+    var resource = "/haku-app/application-system-form-editor/configuration";
+    return seq(
+        post(resource + "/" + applicationSystemId + "/groupConfiguration/" + groupId + "/delete",
+            {groupId: groupId, type: type},
+            'application/json'))
+}
+
 function takeScreenshot() {
     if (window.callPhantom) {
         var date = new Date()
