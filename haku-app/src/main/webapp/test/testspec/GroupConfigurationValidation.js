@@ -41,30 +41,24 @@ describe('GroupConfiguration', function () {
         var expectedError = priorityErrorTemplate(raaseporiKoulutus, afrikkaKoulutus);
 
         function raasepori(n) {
-            return function() {
-                return seq(
-                    autocomplete(lomake.opetuspiste(n), "yrk", "Yrkeshögskolan Novia, Raasepori"),
-                    select(lomake.koulutus(n), raaseporiKoulutus)
-                )
-            }
+            return seq(
+                autocomplete(lomake.opetuspiste(n), "yrk", "Yrkeshögskolan Novia, Raasepori"),
+                select(lomake.koulutus(n), raaseporiKoulutus)
+            )
         }
 
         function afrikka(n) {
-            return function() {
-                return seq(
-                    autocomplete(lomake.opetuspiste(n), "hel", "Helsingin yliopisto, Humanistinen tiedekunta"),
-                    select(lomake.koulutus(n), afrikkaKoulutus)
-                )
-            }
+            return seq(
+                autocomplete(lomake.opetuspiste(n), "hel", "Helsingin yliopisto, Humanistinen tiedekunta"),
+                select(lomake.koulutus(n), afrikkaKoulutus)
+            )
         }
 
         function aasia(n) {
-            return function() {
-                return seq(
-                    autocomplete(lomake.opetuspiste(n), "hel", "Helsingin yliopisto, Humanistinen tiedekunta"),
-                    select(lomake.koulutus(n), aasiaKoulutus)
-                )
-            }
+            return seq(
+                autocomplete(lomake.opetuspiste(n), "hel", "Helsingin yliopisto, Humanistinen tiedekunta"),
+                select(lomake.koulutus(n), aasiaKoulutus)
+            )
         }
 
         it('oikea järjestys jatkaa seuraavaan vaiheeseen', seqDone(

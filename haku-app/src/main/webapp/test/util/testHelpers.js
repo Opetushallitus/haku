@@ -299,38 +299,35 @@ function login(username, password) {
     if (username === undefined || password === undefined) {
         throw new Error("Must give username and password for login");
     }
-    return function() {
-        return seq(
-            logout,
-            openPage("/haku-app/user/login", function() {
-                return testFrame().document.getElementById('loginForm') !== null;
-            }),
-            function() {
-                function elementByName(name) {
-                    return testFrame().document.getElementsByName(name)[0];
-                }
-                elementByName("j_username").value = username;
-                elementByName("j_password").value = password;
-                elementByName("login").click();
-            },
-            wait.until(function() {
-                var pathname = testFrame().document.location.pathname;
-                // Page redirection depends on credentials
-                return (pathname === "/haku-app/virkailija/hakemus"
-                    || pathname === "/haku-app/user/login");
-            }));
-    }
+    return seq(
+        logout,
+        openPage("/haku-app/user/login", function() {
+            return testFrame().document.getElementById('loginForm') !== null;
+        }),
+        function() {
+            function elementByName(name) {
+                return testFrame().document.getElementsByName(name)[0];
+            }
+
+            elementByName("j_username").value = username;
+            elementByName("j_password").value = password;
+            elementByName("login").click();
+        },
+        wait.until(function() {
+            var pathname = testFrame().document.location.pathname;
+            // Page redirection depends on credentials
+            return (pathname === "/haku-app/virkailija/hakemus"
+            || pathname === "/haku-app/user/login");
+        }));
 }
 
 function setupGroupConfiguration(applicationSystemId, groupId, type, configurations) {
     var resource = "/haku-app/application-system-form-editor/configuration";
-    return function() {
-        return seq(
-            get(resource + "/" + applicationSystemId),
-            post(resource + "/" + applicationSystemId + "/groupConfiguration/" + groupId,
-                {groupId: groupId, type: type, configurations: configurations},
-                'application/json'))
-    }
+    return seq(
+        get(resource + "/" + applicationSystemId),
+        post(resource + "/" + applicationSystemId + "/groupConfiguration/" + groupId,
+            {groupId: groupId, type: type, configurations: configurations},
+            'application/json'))
 }
 
 function takeScreenshot() {
@@ -406,13 +403,11 @@ function input(/* fn, value, fn, value, ... */) {
     if (argv % 2 === 0) {
         throw new Error("inputs() got odd number of arguments. Give input function and value argument for each input.")
     }
-    return function() {
-        var sequence = [];
-        for (var i = 0; i < argv.length; i += 2) {
-            sequence.push(input1(argv[i], argv[i + 1]));
-        }
-        return seq.apply(this, sequence);
-    };
+    var sequence = [];
+    for (var i = 0; i < argv.length; i += 2) {
+        sequence.push(input1(argv[i], argv[i + 1]));
+    }
+    return seq.apply(this, sequence);
 }
 
 function select(fn, value) {
@@ -471,13 +466,16 @@ function notExists(fn) {
 }
 
 function seq(/* ...promises */) {
-    return Array.prototype.slice.call(arguments).reduce(Q.when, Q());
+    var promises = arguments;
+    return function() {
+        return Array.prototype.slice.call(promises).reduce(Q.when, Q());
+    }
 }
 
 function seqDone(/* ...promises */) {
     var promiseArgs = arguments;
     return function(done) {
-        return seq.apply(this, promiseArgs).then(done, done);
+        return seq.apply(this, promiseArgs)().then(done, done);
     }
 }
 
