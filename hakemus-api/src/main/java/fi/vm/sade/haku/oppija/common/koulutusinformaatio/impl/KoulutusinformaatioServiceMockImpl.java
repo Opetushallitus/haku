@@ -27,7 +27,15 @@ import fi.vm.sade.koulutusinformaatio.domain.dto.LearningOpportunitySearchResult
 public class KoulutusinformaatioServiceMockImpl extends KoulutusinformaatioService {
     final ObjectMapper objectMapper = new ObjectMapper().configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
-    private List<LearningOpportunitySearchResultDTO> organizations = Arrays.asList(mesta("1.2.246.562.10.89537774706", "FAKTIA, Espoo op"), mesta("1.2.246.562.10.10108401950", "Espoon kaupunki"), mesta("1.2.246.562.10.51872958189", "Stadin ammattiopisto, Sturenkadun toimipaikka"), mesta("1.2.246.562.10.35241670047", "Anna Tapion koulu"), mesta("1.2.246.562.10.35241670048", "Urheilijoiden koulu"));
+    private List<LearningOpportunitySearchResultDTO> organizations = Arrays.asList(
+            mesta("1.2.246.562.10.89537774706", "FAKTIA, Espoo op"),
+            mesta("1.2.246.562.10.10108401950", "Espoon kaupunki"),
+            mesta("1.2.246.562.10.51872958189", "Stadin ammattiopisto, Sturenkadun toimipaikka"),
+            mesta("1.2.246.562.10.35241670047", "Anna Tapion koulu"),
+            mesta("1.2.246.562.10.35241670048", "Urheilijoiden koulu"),
+            mesta("1.2.246.562.10.55918814447", "Oulun yliopisto, Humanistinen tiedekunta"),
+            mesta("1.2.246.562.10.62355244518", "Yrkeshögskolan Novia, Raasepori"),
+            mesta("1.2.246.562.10.61397511793", "Helsingin yliopisto, Humanistinen tiedekunta"));
 
     private Map<String, ApplicationOptionDTO> optionMap() {
         try {

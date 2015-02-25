@@ -177,25 +177,18 @@ function getJson(url) {
 }
 
 function frameJquery() {
-    return wait.until(function() {
-        return testFrame() && testFrame().jQuery;
-    })().then(function() {
-        return testFrame().jQuery;
-    });
+    return seq(
+        wait.until(function() { return testFrame() && testFrame().jQuery; }),
+        function() { return testFrame().jQuery; });
 }
 
 // Ensure that evaluation of given promise leads into a new page being loaded
 function waitPageLoad(promise) {
-    return function() {
-        return Q.fcall(function() { testFrame().window.SPEC_PAGE_CHANGE_PENDING = true; })
-            .then(promise)
-            .then(wait.until(function() {
-                return testFrame().window.SPEC_PAGE_CHANGE_PENDING === undefined;
-            }))
-            .then(wait.until(function() {
-                return (testFrame().document.readyState === 'complete');
-            }));
-    }
+    return seq(
+        function() { testFrame().window.SPEC_PAGE_CHANGE_PENDING = true; },
+        promise,
+        wait.until(function() { return testFrame().window.SPEC_PAGE_CHANGE_PENDING === undefined; }),
+        wait.until(function() { return (testFrame().document.readyState === 'complete'); }));
 }
 
 function pageChange(promise) {
@@ -227,20 +220,40 @@ function postAsForm(path, params) {
     });
 }
 
-function post(url, data) {
-    return function() {
-        return frameJquery().then(function($) {
+function get(url) {
+    return seq(
+        frameJquery(),
+        function($) {
             var deferred = Q.defer();
-            $.post(url, data, function(data, status) {
+            $.get(url, function(data, status) {
                 if (status === 'success') {
                     deferred.resolve(data)
                 } else {
-                    deferred.reject("post got status " + status)
+                    deferred.reject("get got status " + status)
                 }
             });
             return deferred.promise
-        })
-    }
+        });
+}
+
+function post(url, data, contentType) {
+    contentType = contentType || 'application/x-www-form-urlencoded';
+    return seq(
+        frameJquery(),
+        function($) {
+            var deferred = Q.defer();
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: contentType === 'application/json' ? JSON.stringify(data) : data,
+                contentType: contentType
+            }).done(function(data) {
+                deferred.resolve(data)
+            }).fail(function(jqXHR, status) {
+                deferred.reject("post got status " + status)
+            });
+            return deferred.promise
+        });
 }
 
 function testFrame() {
@@ -254,24 +267,60 @@ function openPage(path, predicate) {
             return testFrame().jQuery
         }
     }
-    return function () {
-        var newTestFrame = $('<iframe/>').attr({src: path, width: 1024, height: 800, id: "testframe"});
-        $("#testframe").replaceWith(newTestFrame);
-        return wait.until(function () {
-            return predicate()
-        })().then(function () {
+    return seq(
+        function() {
+            var newTestFrame = $('<iframe/>').attr({src: path, width: 1024, height: 800, id: "testframe"});
+            $("#testframe").replaceWith(newTestFrame);
+        },
+        wait.until(predicate),
+        function () {
             window.uiError = null;
             testFrame().onerror = function (err) {
                 window.uiError = err;
             }; // Hack: force mocha to fail on unhandled exceptions
-        })
-    }
+        });
 }
 
 function logout() {
     return openPage("/haku-app/user/logout", function() {
         return S("ul").is(":visible");
     })();
+}
+
+// Enforce login to get authorized JSESSIONID cookie
+function login(username, password) {
+    if (username === undefined || password === undefined) {
+        throw new Error("Must give username and password for login");
+    }
+    return seq(
+        logout,
+        openPage("/haku-app/user/login", function() {
+            return testFrame().document.getElementById('loginForm') !== null;
+        }),
+        function() {
+            function elementByName(name) {
+                return testFrame().document.getElementsByName(name)[0];
+            }
+
+            elementByName("j_username").value = username;
+            elementByName("j_password").value = password;
+            elementByName("login").click();
+        },
+        wait.until(function() {
+            var pathname = testFrame().document.location.pathname;
+            // Page redirection depends on credentials
+            return (pathname === "/haku-app/virkailija/hakemus"
+            || pathname === "/haku-app/user/login");
+        }));
+}
+
+function setupGroupConfiguration(applicationSystemId, groupId, type, configurations) {
+    var resource = "/haku-app/application-system-form-editor/configuration";
+    return seq(
+        get(resource + "/" + applicationSystemId),
+        post(resource + "/" + applicationSystemId + "/groupConfiguration/" + groupId,
+            {groupId: groupId, type: type, configurations: configurations},
+            'application/json'))
 }
 
 function takeScreenshot() {
@@ -294,6 +343,19 @@ function takeScreenshot() {
         })
     }
 })();
+
+function sleep(ms) {
+    return function() {
+        return Q.delay(ms);
+    }
+}
+
+function log(marker) {
+    return function(arg) {
+        console.log(marker, arg);
+        return arg;
+    }
+}
 
 
 function wrap(elementDefinition) {
@@ -322,11 +384,9 @@ function initSelectors(elements) {
 }
 
 function input1(fn, value) {
-    return function() {
-        return visible(fn)().then(function() {
-            return fn().val(value).change().blur();
-        })
-    }
+    return seq(
+        visible(fn),
+        function() { return fn().val(value).change().blur(); });
 }
 
 function input(/* fn, value, fn, value, ... */) {
@@ -334,26 +394,24 @@ function input(/* fn, value, fn, value, ... */) {
     if (argv % 2 === 0) {
         throw new Error("inputs() got odd number of arguments. Give input function and value argument for each input.")
     }
-    return function() {
-        var sequence = [];
-        for (var i = 0; i < argv.length; i += 2) {
-            sequence.push(input1(argv[i], argv[i + 1]));
-        }
-        return seq.apply(this, sequence);
-    };
+    var sequence = [];
+    for (var i = 0; i < argv.length; i += 2) {
+        sequence.push(input1(argv[i], argv[i + 1]));
+    }
+    return seq.apply(this, sequence);
 }
 
 function select(fn, value) {
-    return function() {
-        return visible(fn)()
-            .then(wait.until(function() {
-                var matches = fn().find('option[value="' + value + '"]').length;
-                if (matches > 1) {
-                    throw new Error('Value "' + value + '" matches ' + matches + ' <option>s from <select> ' + fn().selector)
-                }
-                return matches === 1;
-            })).then(input(fn, value))
-    }
+    return seq(
+        visible(fn),
+        wait.until(function() {
+            var matches = fn().find('option[value="' + value + '"]').length;
+            if (matches > 1) {
+                throw new Error('Value "' + value + '" matches ' + matches + ' <option>s from <select> ' + fn().selector)
+            }
+            return matches === 1;
+        }),
+        input(fn, value));
 }
 
 function readTable($tableElement, allowWrongDimensions) {
@@ -389,14 +447,26 @@ function exists(fn) {
     })
 }
 
+function notExists(fn) {
+    if (typeof(fn) !== 'function') {
+        throw new Error('notExists() got a non-function');
+    }
+    return wait.until(function() {
+        return fn().length === 0;
+    });
+}
+
 function seq(/* ...promises */) {
-    return Array.prototype.slice.call(arguments).reduce(Q.when, Q());
+    var promises = arguments;
+    return function() {
+        return Array.prototype.slice.call(promises).reduce(Q.when, Q());
+    }
 }
 
 function seqDone(/* ...promises */) {
     var promiseArgs = arguments;
     return function(done) {
-        return seq.apply(this, promiseArgs).then(done, done);
+        return seq.apply(this, promiseArgs)().then(done, done);
     }
 }
 
@@ -404,12 +474,10 @@ function click(/* ...promises */) {
     var fns = arguments;
     return function() {
         var clickSequence = Object.keys(fns).map(function(i) {
-            return function() {
-                var fn = fns[i];
-                return visible(fn)().then(function() {
-                    fn().click();
-                })
-            }
+            var fn = fns[i];
+            return seq(
+                visible(fn),
+                function() { fn().click(); });
         });
         return clickSequence.reduce(Q.when, Q());
     }
@@ -422,9 +490,9 @@ function visibleText(fn, text) {
 }
 
 function hasClass(fn, className) {
-    return visible(fn)().then(function() {
-        return fn().hasClass(className);
-    });
+    return seq(
+        visible(fn),
+        function() { return fn().hasClass(className); });
 }
 
 function headingVisible(heading) {
@@ -434,9 +502,10 @@ function headingVisible(heading) {
 }
 
 function eventIsBound(fn, event) {
-    return Q.fcall(visible(fn))
-        .then(frameJquery)
-        .then(wait.until(function($) {
+    return seq(
+        visible(fn),
+        frameJquery(),
+        wait.until(function($) {
             var events = $._data(fn()[0], 'events');
             return events && events[event].length > 0;
         }));
@@ -444,17 +513,15 @@ function eventIsBound(fn, event) {
 
 function autocomplete(fn, partialText, suggestionChoiceText) {
     var pickFn = function() {
-        return S("a.ui-corner-all:contains(" + suggestionChoiceText + ")");
+        return S("a.ui-corner-all:visible:contains(" + suggestionChoiceText + ")");
     };
 
-    return function() {
-        return eventIsBound(fn, 'keydown')
-            .then(function() {
-                fn().val(partialText).trigger("keydown");
-            })
-            .then(visible(pickFn))
-            .then(function() { return pickFn().mouseover() })
-            .then(hasClass(pickFn, 'ui-state-hover'))
-            .then(click(pickFn))
-    };
+    return seq(eventIsBound(fn, 'keydown'),
+        function() {
+            fn().val(partialText).trigger("keydown");
+        },
+        visible(pickFn),
+        function() { return pickFn().mouseover() },
+        hasClass(pickFn, 'ui-state-hover'),
+        click(pickFn));
 }
