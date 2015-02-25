@@ -8,11 +8,9 @@
     }
 
     describe('2. asteen lomake', function () {
-        var lomake = lomakeSelectors();
-
         describe("Täytä lomake", function() {
             beforeEach(seqDone(start,
-                henkilotiedotTestikaes(lomake),
+                henkilotiedotTestikaes(),
                 pageChange(lomake.fromHenkilotiedot),
                 headingVisible("Koulutustausta"),
                 click(lomake.pohjakoulutus("1")),
@@ -21,8 +19,7 @@
                     lomake.pkKieli, "FI"),
                 pageChange(lomake.fromKoulutustausta),
                 headingVisible("Hakutoiveet"),
-                autocomplete(lomake.opetuspiste(1), "Esp", "FAKTIA, Espoo op"),
-                select(lomake.koulutus(1), "Talonrakennus ja ymäristösuunnittelu, pk"),
+                valitseKoulutus(1, "FAKTIA, Espoo op", "Talonrakennus ja ymäristösuunnittelu, pk"),
                 click(
                     lomake.harkinnanvaraisuus1(false),
                     lomake.soraTerveys1(false),
@@ -183,8 +180,7 @@
                 headingVisible("Koulutustausta"),
                 pageChange(lomake.fromKoulutustausta),
                 headingVisible("Hakutoiveet"),
-                autocomplete(lomake.opetuspiste(1), "urh", "Urheilijoiden koulu"),
-                select(lomake.koulutus(1), "Urheilevien kokkien koulutus"),
+                valitseKoulutus(1, "Urheilijoiden koulu", "Urheilevien kokkien koulutus"),
                 click(
                     lomake.harkinnanvaraisuus1(false),
                     lomake.urheilija1(true)),

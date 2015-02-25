@@ -8,14 +8,12 @@ describe('GroupConfiguration', function () {
     ));
 
     describe("hakukohteiden prioriteetin validointi", function() {
-        var lomake = lomakeSelectors();
-
         beforeEach(seqDone(
             logout,
             openPage("/haku-app/lomake/1.2.246.562.29.173465377510/henkilotiedot", function() {
                 return S("form#form-henkilotiedot").first().is(':visible')
             }),
-            henkilotiedotTestikaes(lomake),
+            henkilotiedotTestikaes(),
             input(lomake.koulusivistyskieli, "FI"),
             click(
                 lomake.fromHenkilotiedot,
@@ -41,24 +39,15 @@ describe('GroupConfiguration', function () {
         var expectedError = priorityErrorTemplate(raaseporiKoulutus, afrikkaKoulutus);
 
         function raasepori(n) {
-            return seq(
-                autocomplete(lomake.opetuspiste(n), "yrk", "Yrkeshögskolan Novia, Raasepori"),
-                select(lomake.koulutus(n), raaseporiKoulutus)
-            )
+            return valitseKoulutus(n, "Yrkeshögskolan Novia, Raasepori", raaseporiKoulutus);
         }
 
         function afrikka(n) {
-            return seq(
-                autocomplete(lomake.opetuspiste(n), "hel", "Helsingin yliopisto, Humanistinen tiedekunta"),
-                select(lomake.koulutus(n), afrikkaKoulutus)
-            )
+            return valitseKoulutus(n, "Helsingin yliopisto, Humanistinen tiedekunta", afrikkaKoulutus);
         }
 
         function aasia(n) {
-            return seq(
-                autocomplete(lomake.opetuspiste(n), "hel", "Helsingin yliopisto, Humanistinen tiedekunta"),
-                select(lomake.koulutus(n), aasiaKoulutus)
-            )
+            return valitseKoulutus(n, "Helsingin yliopisto, Humanistinen tiedekunta", aasiaKoulutus);
         }
 
         it('oikea järjestys jatkaa seuraavaan vaiheeseen', seqDone(

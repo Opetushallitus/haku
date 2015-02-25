@@ -1,4 +1,4 @@
-function henkilotiedotTestikaes(lomake) {
+function henkilotiedotTestikaes() {
     return seq(
         input(
             lomake.sukunimi, "Testikäs",
@@ -17,4 +17,11 @@ function henkilotiedotTestikaes(lomake) {
             lomake.lahiosoite, "Testikatu 4",
             lomake.postinumero, "00100",
             lomake.kotikunta, "janakkala"));
+}
+
+function valitseKoulutus(prioriteetti, koulunNimi, koulutuksenNimi) {
+    return seq(
+        autocomplete(lomake.opetuspiste(prioriteetti), koulunNimi, koulunNimi),
+        select(lomake.koulutus(prioriteetti), koulutuksenNimi)
+    );
 }
