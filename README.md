@@ -81,6 +81,19 @@ so you can eg. clean, build & debug with luokka settings by
 
 `tomcat.sh -cbdl`
 
+#### Running with QA settings
+
+Just like for "luokka", you need to copy server configuration files from the QA server into `~/oph-configuration.qa`. Then you can use
+the `tomcat.sh` script to run the application on your machine with the same settings as it's run in the QA environment. So now you can
+
+`tomcat.sh -q`
+
+And, of course, also
+
+`tomcat.sh -qd`
+
+to debug it. Just connect your debugger to the local port 8000 and enjoy the ride.
+
 #### Running tests
 
 Project has Selenium and Mocha tests for functional testing.
