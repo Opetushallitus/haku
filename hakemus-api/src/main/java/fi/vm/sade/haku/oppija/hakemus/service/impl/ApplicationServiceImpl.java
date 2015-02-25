@@ -252,7 +252,7 @@ public class ApplicationServiceImpl implements ApplicationService {
             application = application.modifyPersonalData(personAfter);
             LOGGER.debug("Called modifyPersonalData");
         } catch (Throwable t) {
-            LOGGER.debug("Unexpected happened: ", t);
+            LOGGER.error("Unexpected happened: ", t);
         }
         return application;
     }
