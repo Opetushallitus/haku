@@ -1,6 +1,7 @@
 package fi.vm.sade.haku.oppija.ui.service.impl;
 
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
+import fi.vm.sade.haku.oppija.common.suoritusrekisteri.ArvosanaDTO;
 import fi.vm.sade.haku.oppija.hakemus.aspect.LoggerAspect;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationOptionDTO;
@@ -116,7 +117,9 @@ public class ValintaServiceTest {
         LoggerAspect loggerAspect = null;
         AuthenticationService authenticationService = null;
         OrganizationService organizationService = null;
-        BaseEducationService baseEducationService = null;
+        BaseEducationService baseEducationService = mock(BaseEducationService.class);
+        when(baseEducationService.getArvosanat(any(String.class), any(String.class), any(ApplicationSystem.class)))
+                .thenReturn(new HashMap<String, ArvosanaDTO>());
         I18nBundleService i18nBundleService = mock(I18nBundleService.class);
         I18nBundle i18nBundle = mock(I18nBundle.class);
         when(i18nBundle.get(any(String.class))).thenReturn(new I18nText(new HashMap<String, String>(3) {{

@@ -5,6 +5,7 @@ import fi.vm.sade.haku.oppija.common.koulutusinformaatio.KoulutusinformaatioServ
 import fi.vm.sade.haku.oppija.common.organisaatio.Organization;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationGroupRestDTO;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
+import fi.vm.sade.haku.oppija.common.suoritusrekisteri.ArvosanaDTO;
 import fi.vm.sade.haku.oppija.hakemus.aspect.LoggerAspect;
 import fi.vm.sade.haku.oppija.hakemus.domain.*;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationOptionDTO;
@@ -199,6 +200,9 @@ public class OfficerUIServiceImpl implements OfficerUIService {
             modelResponse.addObjectToModel("sendingSchool", sendingSchool.getName());
             modelResponse.addObjectToModel("sendingClass", sendingClass);
         }
+
+        Map<String, ArvosanaDTO> arvosanat = baseEducationService.getArvosanat(application.getPersonOid(),
+                application.getVastauksetMerged().get(OppijaConstants.ELEMENT_ID_BASE_EDUCATION), as);
 
         String userOid = userSession.getUser().getUserName();
         if (userOid == null || userOid.equals(application.getPersonOid())) {

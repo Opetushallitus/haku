@@ -5,6 +5,11 @@ import java.util.Map;
 
 public interface SuoritusrekisteriService {
 
+    /**
+     * Palauttaa henkilön suoritukset mappina komoOid - suoritus.
+     * @param personOid
+     * @return suoritukset mappina komoOid - suoritus
+     */
     Map<String, SuoritusDTO> getSuoritukset(String personOid);
 
     List<OpiskelijaDTO> getOpiskelijat(String personOid);

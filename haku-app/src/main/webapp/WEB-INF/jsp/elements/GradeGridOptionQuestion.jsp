@@ -18,7 +18,7 @@
   ~ European Union Public Licence for more details.
   --%>
 <c:choose>
-    <c:when test="${it.application.meta.grades_transferred_pk eq 'true' || it.application.meta.grades_transferred_lk eq 'true'}">
+    <c:when test="${virkailijaEdit}">
         <jsp:include page="GradeGridOptionQuestionPreview.jsp" />
     </c:when>
     <c:otherwise>
