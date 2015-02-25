@@ -182,7 +182,13 @@
       "organizationGroups": [
         {
           "oid": "1.2.246.562.28.20907706740",
-          "prioriteetti": 1,
+          "prioriteetti": null,
+          "usageGroups": ["hakukohde_priorisoiva"],
+          "groupTypes": ["hakukohde"]
+        },
+        {
+          "oid": "1.2.246.562.28.20907706741",
+          "prioriteetti": 2,
           "usageGroups": ["hakukohde_priorisoiva"],
           "groupTypes": ["hakukohde"]
         }
@@ -207,7 +213,13 @@
       "organizationGroups": [
         {
           "oid": "1.2.246.562.28.20907706740",
-          "prioriteetti": 2,
+          "prioriteetti": 1,
+          "usageGroups": ["hakukohde_priorisoiva"],
+          "groupTypes": ["hakukohde"]
+        },
+        {
+          "oid": "1.2.246.562.28.20907706741",
+          "prioriteetti": null,
           "usageGroups": ["hakukohde_priorisoiva"],
           "groupTypes": ["hakukohde"]
         },
@@ -241,7 +253,7 @@
       "organizationGroups": [
         {
           "oid": "1.2.246.562.28.20907706740",
-          "prioriteetti": null,
+          "prioriteetti": 2,
           "usageGroups": ["hakukohde_priorisoiva"],
           "groupTypes": ["hakukohde"]
         },
@@ -289,6 +301,12 @@
         {
           "oid": "1.2.246.562.28.20907706740",
           "prioriteetti": null,
+          "usageGroups": ["hakukohde_priorisoiva"],
+          "groupTypes": ["hakukohde"]
+        },
+        {
+          "oid": "1.2.246.562.28.20907706741",
+          "prioriteetti": 1,
           "usageGroups": ["hakukohde_priorisoiva"],
           "groupTypes": ["hakukohde"]
         }

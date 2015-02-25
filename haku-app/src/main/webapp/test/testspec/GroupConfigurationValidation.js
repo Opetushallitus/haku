@@ -2,6 +2,7 @@ describe('GroupConfiguration', function () {
     before(seqDone(
         login('master', 'master'),
         setupGroupConfiguration("1.2.246.562.29.173465377510", "1.2.246.562.28.20907706740", "hakukohde_priorisoiva"),
+        setupGroupConfiguration("1.2.246.562.29.173465377510", "1.2.246.562.28.20907706741", "hakukohde_priorisoiva"),
         openPage("/haku-app/lomakkeenhallinta/1.2.246.562.29.173465377510", function() {
             return S("form#form-henkilotiedot").first().is(':visible')
         })
@@ -36,6 +37,7 @@ describe('GroupConfiguration', function () {
         var afrikkaKoulutus = "Afrikan ja Lähi-idän tutkimus, humanististen tieteiden kandidaatti ja filosofian maisteri";
         var aasiaKoulutus = "Aasian tutkimus, humanististen tieteiden kandidaatti ja filosofian maisteri";
         var raaseporiKoulutus = "Agrolog (YH)/Miljöplanerare (YH)/Skogsbruksingenjör (YH), dagstudier";
+        var ouluKoulutus = "Aate- ja oppihistoria, humanististen tieteiden kandidaatti ja filosofian maisteri";
         var expectedError = priorityErrorTemplate(raaseporiKoulutus, afrikkaKoulutus);
 
         function raasepori(n) {
@@ -50,17 +52,29 @@ describe('GroupConfiguration', function () {
             return valitseKoulutus(n, "Helsingin yliopisto, Humanistinen tiedekunta", aasiaKoulutus);
         }
 
+        function oulu(n) {
+            return valitseKoulutus(n, "Oulun yliopisto, Humanistinen tiedekunta", ouluKoulutus)
+        }
+
+        function syotaJarjestyksessa() {
+            return seq.apply(this, Array.prototype.slice.call(arguments).map(function(f, i) {
+                return f(i + 1);
+            }));
+        }
+
         it('oikea järjestys jatkaa seuraavaan vaiheeseen', seqDone(
-            raasepori(1),
-            afrikka(2),
+            syotaJarjestyksessa(
+                raasepori,
+                afrikka),
             pageChange(lomake.fromHakutoiveet),
             headingVisible("Osaaminen")
         ));
 
         it('priorisoimattoman pitää olla priorisoitujen jälkeen', seqDone(
-            aasia(1),
-            raasepori(2),
-            afrikka(3),
+            syotaJarjestyksessa(
+                aasia,
+                raasepori,
+                afrikka),
             pageChange(lomake.fromHakutoiveet),
             visibleText(lomake.koulutusError(1), priorityErrorTemplate(afrikkaKoulutus, aasiaKoulutus)),
             visibleText(lomake.koulutusError(2), priorityErrorTemplate(raaseporiKoulutus, aasiaKoulutus)),
@@ -68,16 +82,18 @@ describe('GroupConfiguration', function () {
         ));
 
         it('väärä järjestys tuottaa virheet', seqDone(
-            afrikka(1),
-            raasepori(2),
+            syotaJarjestyksessa(
+                afrikka,
+                raasepori),
             pageChange(lomake.fromHakutoiveet),
             visibleText(lomake.koulutusError(1), expectedError),
             visibleText(lomake.koulutusError(2), expectedError)
         ));
 
         it('väärän järjestyksen voi korjata alas-nuolella', seqDone(
-            afrikka(1),
-            raasepori(2),
+            syotaJarjestyksessa(
+                afrikka,
+                raasepori),
             pageChange(lomake.fromHakutoiveet),
             visibleText(lomake.koulutusError(1), expectedError),
             visibleText(lomake.koulutusError(2), expectedError),
@@ -89,8 +105,9 @@ describe('GroupConfiguration', function () {
         ));
 
         it('väärän järjestyksen voi korjata ylös-nuolella', seqDone(
-            afrikka(1),
-            raasepori(2),
+            syotaJarjestyksessa(
+                afrikka,
+                raasepori),
             pageChange(lomake.fromHakutoiveet),
             visibleText(lomake.koulutusError(1), expectedError),
             visibleText(lomake.koulutusError(2), expectedError),
@@ -100,5 +117,52 @@ describe('GroupConfiguration', function () {
             pageChange(lomake.fromHakutoiveet),
             headingVisible("Osaaminen")
         ));
+
+        // PRIORITEETIT  *40   *41
+        // oulu          null  2
+        // raasepori     1     null
+        // aasia         null  1
+        // afrikka       2     ----
+        it('virheellinen ensimmäinen ryhmä', seqDone(
+            syotaJarjestyksessa(
+                oulu,
+                raasepori,
+                afrikka),
+            pageChange(lomake.fromHakutoiveet),
+            visibleText(lomake.koulutusError(1), priorityErrorTemplate(afrikkaKoulutus, ouluKoulutus)),
+            visibleText(lomake.koulutusError(2), priorityErrorTemplate(raaseporiKoulutus, ouluKoulutus)),
+            visibleText(lomake.koulutusError(3), priorityErrorTemplate(afrikkaKoulutus, ouluKoulutus))
+        ));
+
+        it('virheellinen toinen ryhmä', seqDone(
+            syotaJarjestyksessa(
+                raasepori,
+                afrikka,
+                aasia),
+            pageChange(lomake.fromHakutoiveet),
+            visibleText(lomake.koulutusError(1), priorityErrorTemplate(aasiaKoulutus, raaseporiKoulutus)),
+            visibleText(lomake.koulutusError(3), priorityErrorTemplate(aasiaKoulutus, raaseporiKoulutus))
+        ));
+
+        it('virheelliset molemmat ryhmät', seqDone(
+            syotaJarjestyksessa(
+                afrikka,
+                raasepori,
+                aasia),
+            pageChange(lomake.fromHakutoiveet),
+            visibleText(lomake.koulutusError(1), priorityErrorTemplate(raaseporiKoulutus, afrikkaKoulutus)),
+            visibleText(lomake.koulutusError(2), priorityErrorTemplate(aasiaKoulutus, raaseporiKoulutus)),
+            visibleText(lomake.koulutusError(3), priorityErrorTemplate(aasiaKoulutus, raaseporiKoulutus))
+        ));
+
+        it('oikeat molemmat ryhmät', seqDone(
+            syotaJarjestyksessa(
+                afrikka,
+                aasia,
+                oulu),
+            pageChange(lomake.fromHakutoiveet),
+            headingVisible("Osaaminen")
+        ));
+
     });
 });
