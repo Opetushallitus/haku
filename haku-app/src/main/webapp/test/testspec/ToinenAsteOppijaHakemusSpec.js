@@ -12,22 +12,7 @@
 
         describe("Täytä lomake", function() {
             beforeEach(seqDone(start,
-                input(
-                    lomake.sukunimi, "Testikäs",
-                    lomake.etunimet, "Asia Kas",
-                    lomake.kutsumanimi, "Asia",
-                    lomake.hetu, "171175-830Y"),
-                wait.until(function() {
-                    return S("input#sukupuoli").length > 0;
-                }),
-                click(lomake.kaksoiskansalaisuus(false)),
-                function() {
-                    expect(lomake.sukupuoli().val()).to.equal('2');
-                },
-                input(
-                    lomake.lahiosoite, "Testikatu 4",
-                    lomake.postinumero, "00100",
-                    lomake.kotikunta, "janakkala"),
+                henkilotiedotTestikaes(lomake),
                 pageChange(lomake.fromHenkilotiedot),
                 headingVisible("Koulutustausta"),
                 click(lomake.pohjakoulutus("1")),
@@ -36,8 +21,8 @@
                     lomake.pkKieli, "FI"),
                 pageChange(lomake.fromKoulutustausta),
                 headingVisible("Hakutoiveet"),
-                autocomplete(lomake.opetuspiste1, "Esp", "FAKTIA, Espoo op"),
-                select(lomake.koulutus1, "Talonrakennus ja ymäristösuunnittelu, pk"),
+                autocomplete(lomake.opetuspiste(1), "Esp", "FAKTIA, Espoo op"),
+                select(lomake.koulutus(1), "Talonrakennus ja ymäristösuunnittelu, pk"),
                 click(
                     lomake.harkinnanvaraisuus1(false),
                     lomake.soraTerveys1(false),
@@ -198,8 +183,8 @@
                 headingVisible("Koulutustausta"),
                 pageChange(lomake.fromKoulutustausta),
                 headingVisible("Hakutoiveet"),
-                autocomplete(lomake.opetuspiste1, "urh", "Urheilijoiden koulu"),
-                select(lomake.koulutus1, "Urheilevien kokkien koulutus"),
+                autocomplete(lomake.opetuspiste(1), "urh", "Urheilijoiden koulu"),
+                select(lomake.koulutus(1), "Urheilevien kokkien koulutus"),
                 click(
                     lomake.harkinnanvaraisuus1(false),
                     lomake.urheilija1(true)),

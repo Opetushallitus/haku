@@ -1538,7 +1538,8 @@
       "name": "Åbo Akademi, Fakulteten för humaniora, psykologi och teologi",
       "applicationSystemIds": [
         "1.2.246.562.29.95390561488",
-        "1.2.246.562.29.90139171616"
+        "1.2.246.562.29.90139171616",
+        "1.2.246.562.29.173465377510"
       ],
       "postalAddress": {
         "streetAddress": "Hämeenkatu 13",
@@ -1621,6 +1622,757 @@
     "educationTypeUri": null,
     "hakuaikaId": "434174",
     "organizationGroups": [],
+    "kotitalous": false
+  },
+  "1.2.246.562.20.53014649395": {
+    "id": "1.2.246.562.20.53014649395",
+    "name": "Aasian tutkimus, humanististen tieteiden kandidaatti ja filosofian maisteri",
+    "aoIdentifier": null,
+    "startingQuota": 16,
+    "startingQuotaDescription": "16",
+    "lowestAcceptedScore": 0,
+    "lowestAcceptedAverage": 0.0,
+    "attachmentDeliveryDeadline": null,
+    "attachmentDeliveryAddress": {
+      "streetAddress": "PL 3",
+      "streetAddress2": null,
+      "postalCode": "00014",
+      "postOffice": "HELSINGIN YLIOPISTO"
+    },
+    "lastYearApplicantCount": 0,
+    "sora": false,
+    "educationDegree": "koulutusasteoph2002_72",
+    "teachingLanguages": ["FI"],
+    "teachingLanguageNames": [],
+    "selectionCriteria": "<h4>Myönnettävä opinto-oikeus</h4> <p>Hakukohteeseen &quot;Aasian tutkimus&quot; valitulle hakijalle myönnetään oikeus suorittaa humanististen tieteiden kandidaatin tutkinto pääaineenaan Aasian tutkimus ja filosofian maisterin tutkinto pääaineenaan Etelä-Aasian tutkimus, Itä-Aasian tutkimus tai indoeuropeistiikka. Hakija ilmoittaa hakemuksessaan minkä aineen hän haluaa pääaineekseen maisterin tutkinnossa.</p> <h4>Valituksi tulemisen edellytykset</h4> <p>Voidaksesi tulla valituksi sinun on</p> <ul> <li>oltava hakukelpoinen,</li> <li>toimitettava hakemus tarvittavine liitteineen määräajan kuluessa,</li> <li>osoitettava tarvittaessa korkeakoulukelpoisuutesi määräajan kuluessa ja</li> <li>saavutettava pienimmät hyväksyttävät pistemäärät valintakokeessa.</li> </ul> <p>Hakukelpoisuudesta löydät lisää tietoa kohdasta &quot;Hakukelpoisuusvaatimukset&quot;. Valintakokeesta löydät lisää tietoa kohdasta &quot;Pääsy- ja soveltuvuuskoe&quot;.</p> <p>Sinulta edellytetään, että osaat riittävästi suomea tai ruotsia. Sinun ei tarvitse toimittaa suomen tai ruotsin taidosta todistusta, sillä taidon riittävyys testataan yhden tai useamman valintakoetehtävän yhteydessä.</p> <h4>Lähtöpisteet</h4> <p>Voit saada enintään 100 lähtöpistettä. Voit saada lähtöpisteitä, jos olet suorittanut suomalaisen ylioppilastutkinnon, International Baccalaureate -tutkinnon, European Baccalaureate -tutkinnon tai Reifeprüfung-tutkinnon. Et voi saada lähtöpisteitä mistään muista tutkinnoista tai millään muilla perusteilla.</p> <p>Jos et ole suorittanut mitään edellä mainituista tutkinnoista, lähtöpisteittesi määrä on nolla. Jos olet suorittanut useamman kuin yhden edellä mainituista tutkinnoista, sinulle annetaan lähtöpisteitä sen tutkinnon perusteella, josta saat eniten lähtöpisteitä.</p> <p>Yksityiskohtaiset tiedot lähtöpisteiden määräytymisestä löydät <a href=\"http://www.helsinki.fi/hum/opiskelijavalinnat/yhteishaku/lahtopisteet.htm\">humanistisen tiedekunnan opiskelijavalintasivustolta</a>.</p> <h4><b>Koepisteet</b></h4> <p>Voit saada enintään 100 koepistettä. Valintakokeen kuvauksessa on ilmoitettu pienin hyväksyttävä pistemäärä</p> <ul> <li>koko kokeelle tai</li> <li>kokeen osille tai</li> <li>sekä koko kokeelle että kokeen osille.</li> </ul> <p>Sinut voidaan valita vain jos saavutat ilmoitetut pienimmät hyväksyttävät pistemäärät. Valintakokeesta löydät lisää tietoa kohdasta &quot;Pääsy- ja soveltuvuuskoe&quot;.</p> <h4><b>Valintamenettely</b></h4> <p>Valintamenettelyn aluksi hylätään hakijat, joita ei missään tapauksessa voida valita. Mahdollisia hylkäämisen syitä ovat esimerkiksi seuraavat:</p> <ul> <li>Hakija ei ole hakukelpoinen.</li> <li>Hakija ei suorittanut valintakoetta.</li> <li>Hakija ei saavuttanut valintakokeessa pienintä hyväksyttävää pistemäärää.</li> </ul> <p>Hakijat, joita ei edellä mainitussa vaiheessa hylätä, järjestetään kahteen jonoon: yhteispistejonoon ja koepistejonoon. Hakija on yhtä aikaa molemmissa jonoissa. Hakijoiden järjestäminen näihin jonoihin selostetaan yksityiskohtaisesti <a href=\"http://www.helsinki.fi/hum/opiskelijavalinnat/yhteishaku/jarjestaminen.htm\">humanistisen tiedekunnan opiskelijavalintasivustolla</a>.</p> <p>Kun hakijat on järjestetty yhteispistejonoon ja koepistejonoon, tiedot näistä jonoista tallennetaan opetushallituksen tietojärjestelmään. Tietojärjestelmä selvittää voidaanko hakijalle tarjota opiskelupaikkaa jossakin niistä hakukohteista, joihin hän on korkeakoulujen yhteishaussa hakenut. Tätä selvitystyötä kutsutaan <i>hakijoiden sijoittelemiseksi opiskelupaikoille</i>.</p> <p>Uusia opiskelijoita pyritään valitsemaan yhteispistejonosta ja koepistejonosta ennalta suunniteltu määrä. Uusien opiskelijoiden suunnitellut määrät luetellaan <a href=\"http://www.helsinki.fi/hum/opiskelijavalinnat/yhteishaku/uusienmaarat.htm\">humanistisen tiedekunnan opiskelijavalintasivustolla</a>. Jos hakija voisi tulla valituksi sekä yhteispistejonosta että koepistejonosta, hänet valitaan yhteispistejonosta.</p> <p>Jos hakija ei ota hänelle tarjottua opiskelupaikka vastaan, opetushallituksen tietojärjestelmä selvittää kuka on seuraava hakija, jolle kyseistä opiskelupaikkaa voidaan tarjota. Tietojärjestelmä sijoittelee hakijoita opiskelupaikoille, kunnes jokainen opiskelupaikka on jonkun hakijan vastaanottama tai jäljellä ei enää ole hakijoita, joille opiskelupaikkoja voitaisiin tarjota. Tietojärjestelmä lopettaa sijoittelemisen kuitenkin viimeistään keskiviikkona 12.8.2015.</p>",
+    "soraDescription": null,
+    "prerequisite": null,
+    "exams": [
+      {
+        "type": "Valintakoe",
+        "description": "<h4>Koekirjallisuus</h4> <p>Valintakoekirjallisuus julkaistaan <a href=\"http://www.helsinki.fi/hum/opiskelijavalinnat/yhteishaku/valintakokeet.htm\">humanistisen tiedekunnan opiskelijavalintasivustolla</a> viimeistään 30.1.2015.</p> <h4>Kokeen kuvaus</h4> <p>Valintakokeen kuvaus julkaistaan <a href=\"http://www.helsinki.fi/hum/opiskelijavalinnat/yhteishaku/valintakokeet.htm\">humanistisen tiedekunnan opiskelijavalintasivustolla</a> viimeistään 30.1.2015.</p> <h4>Kokeen aika</h4> <p>Valintakokeen päivämäärä ja kellonaika julkaistaan <a href=\"http://www.helsinki.fi/hum/opiskelijavalinnat/yhteishaku/koeajat.htm\">humanistisen tiedekunnan opiskelijavalintasivustolla</a> viimeistään 28.11.2014.</p> <p>Saat osallistua niiden hakukohteiden valintakokeisiin, joihin olet hakenut. Sinulle ei lähetetä kutsua valintakokeeseen.</p> <p>Valintakoe kestää neljä tuntia. Voit suorittaa valintakokeen vain kaikille kokelaille yhteisenä ajankohtana. Et siis voi suorittaa valintakoetta aikaisemmin tai myöhemmin kuin muut kokelaat. Et voi suorittaa valintakoetilaisuudessa toisen tiedekunnan tai korkeakoulun valintakokeita. Kukin korkeakoulu päättää itsenäisesti valintakokeittensa järjestelyistä, joten muut korkeakoulut saattavat noudattaa toisenlaisia käytäntöjä.</p> <p>Et saa hakea hakukohteisiin, joiden valintakokeet järjestetään yhtä aikaa. Poikkeuksista tähän sääntöön kerrotaan <a href=\"http://www.helsinki.fi/hum/opiskelijavalinnat/yhteishaku/hakeminen.htm\">humanistisen tiedekunnan opiskelijavalintasivustolla</a>.</p> <h4>Kokeen paikka</h4> <p>Valintakoe järjestetään Helsingissä. Valintakokeen paikka julkaistaan <a href=\"http://www.helsinki.fi/hum/opiskelijavalinnat/yhteishaku/koepaikat.htm\">humanistisen tiedekunnan opiskelijavalintasivustolla</a> viimeistään 21.5.2015 kello 18.00.</p> <p>Voit suorittaa valintakokeen vain humanistisen tiedekunnan järjestämässä ja valvomassa tilassa. Et siis voi suorittaa koetta missään muualla, esimerkiksi toisen yliopiston koetilaisuudessa, toisen tiedekunnan koetilaisuudessa, lukiossa, Suomen suurlähetystössä, Suomen konsulaatissa, Suomen kunniankonsulin luona tai vankilassa. Kukin korkeakoulu päättää itsenäisesti valintakokeittensa järjestelyistä, joten muut korkeakoulut saattavat noudattaa toisenlaisia käytäntöjä.</p> <p>Jotkin koesaleista eivät valitettavasti sovi liikuntaesteisille. Jos käytät pyörätuolia tai liikuntakykysi on jotenkin muuten rajoittunut, sinun on haettava oikeutta <a href=\"http://www.helsinki.fi/hum/opiskelijavalinnat/yhteishaku/erityisjarjestelyt.htm\">erityisjärjestelyihin valintakokeessa</a>, jotta voisit suorittaa kokeen sinulle soveltuvassa tilassa.</p> <h4>Lisätietoja</h4> <p>Tutustu huolellisesti <a href=\"http://www.helsinki.fi/hum/opiskelijavalinnat/yhteishaku/toimiminen.htm\">ohjeeseen</a>, jossa kerrotaan kuinka humanistisen tiedekunnan valintakokeissa toimitaan. Jos arvelet tarvitsevasi valintakokeeseen erityisjärjestelyjä esimerkiksi sairauden tai vammaisuuden vuoksi, tutustu <a href=\"http://www.helsinki.fi/hum/opiskelijavalinnat/yhteishaku/erityisjarjestelyt.htm\">ohjeeseen</a>, jossa on selostettu, miten erityisjärjestelyjä haetaan.</p> <p>Voit halutessasi tutustua <a href=\"http://www.helsinki.fi/hum/opiskelijavalinnat/kysymykset/index.htm\">vanhoihin valintakoetehtäviin</a> ja <a href=\"http://www.helsinki.fi/hum/opiskelijavalinnat/yhteishaku/tilastot.htm\">hakijatilastoihin</a>.</p> <p>Helsingin yliopiston humanistisella tiedekunnalla ei ole haku- eikä valintayhteistyötä muiden yliopistojen kanssa. Niinpä Helsingin yliopiston humanistisen tiedekunnan valintakokeet eivät kelpaa haettaessa muihin yliopistoihin eivätkä muiden yliopistojen valintakokeet kelpaa haettaessa Helsingin yliopiston humanistiseen tiedekuntaan.</p> <p>Helsingin yliopisto ei järjestä opiskelijavalintoihin liittyviä valmennuskursseja eikä rahallisesti tai toiminnallisesti tue valmennuskurssien järjestämistä. Helsingin yliopistoon palvelussuhteessa olevat henkilöt eivät saa järjestää valmennuskursseja tai opettaa valmennuskursseilla. Valmennuskurssien järjestäjillä tai kursseilla opettavilla ei ole humanistisen tiedekunnan tulevien valintakokeiden sisällöstä muuta tietoa kuin mitä valintakokeiden kuvauksissa on kerrottu.</p>",
+        "examEvents": null,
+        "scoreLimit": null
+      },
+      {
+        "type": "Urvalsprovet",
+        "description": "<h4>Provlitteraturen</h4> <p><span lang=\"SV\">Provlitteraturen publiceras på </span><a href=\"http://www.helsinki.fi/hum/svenska/urvalet/gemensamansokan/urvalsprov.htm\"><span lang=\"SV\">Humanistiska fakulteten webbplats om studentantagningen</span></a><span lang=\"SV\"> senast 30.1.2015.</span></p> <h4>Beskrivningen av urvalsprovet</h4> <p><span lang=\"SV\">Beskrivningen av urvalsprovet publiceras på </span><a href=\"http://www.helsinki.fi/hum/svenska/urvalet/gemensamansokan/urvalsprov.htm\"><span lang=\"SV\">Humanistiska fakulteten webbplats om studentantagningen</span></a><span lang=\"SV\"> senast 30.1.2015.</span></p> <h4>Tidpunkten för urvalsprovet</h4> <p><span lang=\"SV\">Tidpunkten för urvalsprovet publiceras på </span><a href=\"http://www.helsinki.fi/hum/svenska/urvalet/gemensamansokan/tidpunkten.htm\"><span lang=\"SV\">Humanistiska fakulteten webbplats om studentantagningen</span></a><span lang=\"SV\"> senast 28.11.2014.</span></p> <p>Du kan delta i urvalsproven för de ansökningsobjekt som du har sökt till. Du får ingen kallelse till urvalsprovet.</p> <p>Tiden som reserverats för urvalsproven är 4 timmar. Du kan skriva ett urvalsprov endast den dag och vid den tidpunkt som är gemensam för alla sökande. Du kan alltså inte skriva urvalsprovet tidigare eller senare än de andra sökande. Du kan inte skriva en annan fakultets eller högskolas urvalsprov eller något annat prov vid urvalsprovtillfället. Högskolorna bestämmer självständigt hur de ordnar sina urvalsprov, vilket betyder att andra högskolor kan tillämpa andra förfaranden.</p> <p>Du får inte söka till flera ansökningsobjekt om urvalsproven ordnas samtidigt. <span lang=\"SV\">Undantag från regeln finns angivna på </span><a href=\"http://www.helsinki.fi/hum/svenska/urvalet/gemensamansokan/ansokan.htm\"><span lang=\"SV\">Humanistiska fakultetens webbplats om studentantagningen</span></a><span lang=\"SV\">.</span></p> <h4>Platsen för urvalsprovet</h4> <p>Urvalsprovet ordnas i Helsingfors. <span lang=\"SV\">Platsen för urvalsprovet publiceras på </span><a href=\"http://www.helsinki.fi/hum/svenska/urvalet/gemensamansokan/platsen.htm\"><span lang=\"SV\">Humanistiska fakulteten webbplats om studentantagningen</span></a><span lang=\"SV\"> senast 21.5.2015 kl. 18.00.</span></p> <p>Du kan endast skriva urvalsprovet på en plats som fakultetens har ordnat och övervakar. Du kan alltså inte göra provet någon annanstans, t.ex. vid en annan högskolas provtillfälle, en annan fakultets provtillfälle, vid ett gymnasium, på en finsk ambassad, ett finskt konsulat, hos en honorärkonsul eller i ett fängelse. Högskolorna bestämmer självständigt hur de ordnar sina urvalsprov, vilket betyder att andra högskolor kan tillämpa andra förfaranden.</p> <p>Alla provsalar är tyvärr inte tillgängliga för rörelsehindrade. Om du använder rullstol eller har andra rörelsehinder, ska du ansöka om rätt till <a href=\"http://www.helsinki.fi/hum/svenska/urvalet/gemensamansokan/special.htm\">specialarrangemang i urvalsprovet</a>, så att du kan skriva provet i en lämplig lokal.</p> <h4>Tilläggsinformation om urvalsprovet</h4> <p><span lang=\"SV\">Läs omsorgsfullt </span><a href=\"http://www.helsinki.fi/hum/svenska/urvalet/gemensamansokan/praktiskarad.htm\"><span lang=\"SV\">anvisningen</span></a><span lang=\"SV\">, där det berättas hur man går till väga vid Humanistiska fakultetens urvalsprov. </span>Om du tror att du behöver specialarrangemang för att kunna delta i provet, t.ex. på grund av sjukdom eller funktionsnedsättning, läs då <a href=\"http://www.helsinki.fi/hum/svenska/urvalet/gemensamansokan/special.htm\">anvisningen</a> om hur man ansöker om specialarrangemang.</p> <p><span lang=\"SV\">Du kan om du vill läsa </span><a href=\"http://www.helsinki.fi/hum/svenska/urvalet/gemensamansokan/uppgifter.htm\"><span lang=\"SV\">gamla urvalsprovsuppgifter</span></a><span lang=\"SV\"> och </span><a href=\"http://www.helsinki.fi/hum/svenska/urvalet/gemensamansokan/statistiken.htm\"><span lang=\"SV\">ansökningsstatistiken</span></a><span lang=\"SV\">.</span></p> <p>Humanistiska fakulteten vid Helsingfors universitet har inget ansöknings- eller antagningssamarbete med andra universitet. Det betyder att fakultetens urvalsprov inte godkänns när man söker till andra universitet, och att inte heller andra universitets urvalsprov godkänns när man söker till Humanistiska fakulteten vid Helsingfors universitet.</p> <p>Helsingfors universitet ordnar inte prepkurser och understöder varken ekonomiskt eller på annat sätt prepkurser. Anställda vid Helsingfors universitet får inte ordna prepkurser eller undervisa på prepkurser. Varken företagen som ordnar prepkurser eller de som är lärare på kurserna har någon annan information om Humanistiska fakultetens kommande urvalsprov än de uppgifter som publiceras i beskrivningarna av urvalsproven.</p>",
+        "examEvents": null,
+        "scoreLimit": null
+      }
+    ],
+    "childRefs": [],
+    "higherEdLOSRefs": [
+      {
+        "id": "1.2.246.562.17.47354222367",
+        "asIds": null,
+        "name": "Aasian tutkimus, humanististen tieteiden kandidaatti",
+        "qualifications": ["Humanististen tieteiden kandidaatti"],
+        "prerequisite": null,
+        "provider": null,
+        "fieldOfExpertise": null
+      },
+      {
+        "id": "1.2.246.562.17.42725319836",
+        "asIds": null,
+        "name": "Etelä-Aasian tutkimus, filosofian maisteri",
+        "qualifications": ["Filosofian maisteri"],
+        "prerequisite": null,
+        "provider": null,
+        "fieldOfExpertise": null
+      },
+      {
+        "id": "1.2.246.562.17.97025463239",
+        "asIds": null,
+        "name": "Indoeuropeistiikka, filosofian maisteri",
+        "qualifications": ["Filosofian maisteri"],
+        "prerequisite": null,
+        "provider": null,
+        "fieldOfExpertise": null
+      },
+      {
+        "id": "1.2.246.562.17.24105147011",
+        "asIds": null,
+        "name": "Itä-Aasian tutkimus, filosofian maisteri",
+        "qualifications": ["Filosofian maisteri"],
+        "prerequisite": null,
+        "provider": null,
+        "fieldOfExpertise": null
+      }
+    ],
+    "provider": {
+      "id": "1.2.246.562.10.61397511793",
+      "name": "Helsingin yliopisto, Humanistinen tiedekunta",
+      "applicationSystemIds": [
+        "1.2.246.562.29.444206299810",
+        "1.2.246.562.29.95390561488",
+        "1.2.246.562.29.173465377510",
+        "1.2.246.562.29.67720080919",
+        "1.2.246.562.29.84888706227"
+      ],
+      "postalAddress": {
+        "streetAddress": "PL 3",
+        "streetAddress2": null,
+        "postalCode": "00014",
+        "postOffice": "HELSINGIN YLIOPISTO"
+      },
+      "visitingAddress": {
+        "streetAddress": "Fabianinkatu 33",
+        "streetAddress2": null,
+        "postalCode": "00014",
+        "postOffice": "HELSINGIN YLIOPISTO"
+      },
+      "webPage": "http://www.helsinki.fi/hum",
+      "email": "hum-info@helsinki.fi",
+      "fax": null,
+      "phone": "02941 22347 - 02941 22350 - 02941 23352",
+      "description": "<p>Helsingin yliopisto kuuluu ainoana suomalaisena yliopistona maailman sadan parhaimman joukkoon. Samalla olemme Suomen suurin ja monitieteisin yliopisto. Tarjolla on noin 300 oppiainetta 11 eri tiedekunnassa. Yliopiston henkilökunta ja sen yli 36 000 opiskelijaa muodostavat kansainvälisen tiedeyhteisön, joka on sijoittunut neljälle kampukselle Helsingissä ja usealle muulle paikkakunnalle Suomessa. Vuosittain Helsingin yliopistossa suoritetaan yli 5800 tutkintoa.</p> <p>Helsingin yliopiston humanistinen tiedekunta on merkittävä kansainvälinen tutkimus-, koulutus- ja kulttuuriyhteisö. Se on Suomen suurin ja vanhin humanistisen opetuksen ja tutkimuksen yksikkö. Tieteenalarakenteeltaan ja oppiainevalikoimaltaan se on Suomen monipuolisin tiedekunta.</p> <p>Kandidaatintutkinnon vaihtoehtoina on 23 erilaista opiskelukokonaisuutta, jotka sisältävät yhteensä 46 pääainetta. Maisterintutkinnossa valittavana on 48 pääainetta, joista 15:stä voi suorittaa maisterintutkinnon vain Helsingissä.</p> <p>Humanistisessa koulutuksessa yhdistyy kansainvälisyys, kielellinen vuorovaikutus, ajattelun taidot ja laaja-alainen sivistys, sekä jatkuva halu uuden oppimiseen ja ihmisen ymmärtämiseen.</p> <p>Tiedekunta ja sen laitokset sijaitsevat Helsingin keskustassa Senaatintorin lähellä keskittyen kolmeen kortteliin: yliopiston päärakennukseen, Topeliaan ja Metsätaloon. Kaikki muu opintoihin tarvittava kirjastoista liikuntatiloihin ja oppimiskeskuksiin löytyy läheltä.</p> <p>Humanisteilla on keskeinen merkitys yhteiskunnan eri alueilla: perinteisillä humanistisilla aloilla koulutuksen ja hallinnon piirissä, mutta myös talouden ja tekniikan maailmassa.</p> <p>Lue lisäät: <a href=\"http://www.helsinki.fi/hum\" rel=\"nofollow\">www.helsinki.fi/hum</a></p>",
+      "healthcare": null,
+      "accessibility": "<p>Hakijoiden erityisjärjestelyillä tarkoitetaan käytännön järjestelyjä valintakoetilanteessa. Tällaisia voivat olla esimerkiksi liikuntaesteiden poistaminen, rauhallinen koetila, lisäaika, laajempi kirjoitustila, apuvälineiden käyttö tai muu vastaava järjestely. Näillä järjestelyillä on tarkoitus huolehtia siitä, että erityisjärjestelyä valintakoetilanteessa tarvitsevat hakijat ovat tasavertaisessa asemassa muiden hakijoiden kanssa. Jos koet tarvitsevasi erityisjärjestelyjä, sinun tulee jättää asiasta kirjallinen anomus siihen tiedekuntaan, jonne olet hakemassa. <a href=\"http://www.helsinki.fi/opiskelijaksi/valintakokeet.html#Erityisjarjestelyt_valintakokeessa\" rel=\"nofollow\">http://www.helsinki.fi/opiskelijaksi/valintakokeet.html#Erityisjarjestelyt_valintakokeessa</a></p> <p>Helsingin yliopiston keskustakampuksen opiskelijaneuvonnassa on tarjolla yleisneuvontaa, mikäli tarvitset vamman, sairauden tai oppimisvaikeuden takia erityisjärjestelyitä opinnoissasi tai esimerkiksi tenttitilanteessa. Lisätietoa saat osoitteesta vammaisneuvonta@helsinki.fi.</p>",
+      "learningEnvironment": "<p>Humanistinen tiedekunta sijaitsee keskellä Helsinkiä ja opiskelijoille keskeisen Helsingin yliopiston Kaisa-kirjaston sekä oppimiskeskus Aleksandrian välittömässä läheisyydessä Uudenaikaiset opiskelutilat ja kirjaston palvelut ovat helposti opiskelijoiden saatavilla. Myös Kansalliskirjasto, jossa on humanistisen alan laajin ja merkittävin kirjastokokoelma, sijaitsee keskustakampuksen alueella.</p>",
+      "dining": null,
+      "livingExpenses": "<p>Yliopisto-opiskelijoille on tarjolla palveluja ja etuja liittyen muun muassa asumiseen, ruokailuun, terveydenhuoltoon sekä hyvinvointiin ja liikuntaan. Lisäksi Helsingin yliopiston ylioppilaskunnan (HYY) reilun 250 opiskelijajärjestön joukosta jokainen voi valita oman juttunsa ja yhteisönsä. Lisätietoa löydät verkkosivuiltamme.</p>",
+      "living": null,
+      "yearClock": null,
+      "financingStudies": null,
+      "insurances": null,
+      "leisureServices": null,
+      "social": [
+        {
+          "name": "facebook",
+          "url": "https://www.facebook.com/humanistinen"
+        }
+      ],
+      "pictureFound": false,
+      "athleteEducation": false,
+      "applicationOffice": {
+        "name": "Helsingin yliopiston hakijapalvelut",
+        "phone": "02941 24140",
+        "email": "hakijapalvelut@helsinki.fi",
+        "www": "https://university.helsinki.fi/fi/opiskelu/hae-opiskelijaksi",
+        "visitingAddress": {
+          "streetAddress": "Fabianinkatu 33, 1. krs",
+          "streetAddress2": null,
+          "postalCode": "00014",
+          "postOffice": "HELSINGIN YLIOPISTO"
+        },
+        "postalAddress": {
+          "streetAddress": "PL 3",
+          "streetAddress2": null,
+          "postalCode": "00014",
+          "postOffice": "HELSINGIN YLIOPISTO"
+        }
+      },
+      "homeplace": "Helsinki"
+    },
+    "specificApplicationDates": false,
+    "applicationStartDate": 1424354948626,
+    "applicationEndDate": 1428580845519,
+    "applicationPeriodName": "Hakuaika 2",
+    "canBeApplied": true,
+    "nextApplicationPeriodStarts": null,
+    "requiredBaseEducations": ["pohjakoulutusvaatimuskorkeakoulut_123"],
+    "attachments": null,
+    "emphasizedSubjects": null,
+    "additionalInfo": "<p>Lisätietoja löydät&nbsp;<a href=\"http://www.helsinki.fi/opiskelijaksi\" target=\"_blank\">Helsingin yliopiston hakijapalveluiden verkkosivuilta</a> ja <a href=\"http://www.helsinki.fi/hum/opiskelijavalinnat/yhteishaku/index.htm\" target=\"_blank\">humanistisen tiedekunnan opiskelijavalintasivustolta</a>.</p>",
+    "additionalProof": null,
+    "overallScoreLimit": null,
+    "kaksoistutkinto": false,
+    "athleteEducation": false,
+    "vocational": false,
+    "educationCodeUri": "koulutus_726403",
+    "status": null,
+    "eligibilityDescription": null,
+    "type": "KORKEAKOULU",
+    "educationTypeUri": null,
+    "hakuaikaId": "220207",
+    "organizationGroups": [
+      {
+        "oid": "1.2.246.562.28.40142428048",
+        "prioriteetti": null,
+        "usageGroups": ["yleinen"],
+        "groupTypes": ["hakukohde"]
+      },
+      {
+        "oid": "1.2.246.562.28.11833727906",
+        "prioriteetti": null,
+        "usageGroups": ["hakukohde_rajaava"],
+        "groupTypes": ["hakukohde"]
+      },
+      {
+        "oid": "1.2.246.562.28.20907706740",
+        "prioriteetti": null,
+        "usageGroups": ["hakukohde_priorisoiva"],
+        "groupTypes": ["hakukohde"]
+      }
+    ],
+    "kotitalous": false
+  },
+
+  "1.2.246.562.20.17389359211": {
+    "id": "1.2.246.562.20.17389359211",
+    "name": "Afrikan ja Lähi-idän tutkimus, humanististen tieteiden kandidaatti ja filosofian maisteri",
+    "aoIdentifier": null,
+    "startingQuota": 12,
+    "startingQuotaDescription": "12",
+    "lowestAcceptedScore": 0,
+    "lowestAcceptedAverage": 0.0,
+    "attachmentDeliveryDeadline": null,
+    "attachmentDeliveryAddress": {
+      "streetAddress": "PL 3",
+      "streetAddress2": null,
+      "postalCode": "00014",
+      "postOffice": "HELSINGIN YLIOPISTO"
+    },
+    "lastYearApplicantCount": 0,
+    "sora": false,
+    "educationDegree": "koulutusasteoph2002_72",
+    "teachingLanguages": [
+      "EN",
+      "FI"
+    ],
+    "teachingLanguageNames": [],
+    "selectionCriteria": "<h4>Myönnettävä opinto-oikeus</h4> <p>Hakukohteeseen &quot;Afrikan ja Lähi-idän tutkimus&quot; valitulle hakijalle myönnetään oikeus suorittaa humanististen tieteiden kandidaatin tutkinto ja filosofian maisterin tutkinto pääaineenaan Afrikan tutkimus, arabian kielen ja islamin tutkimus, assyriologia tai Lähi-idän tutkimus. Hakija ilmoittaa hakemuksessaan minkä aineen hän haluaa pääaineekseen.</p> <h4>Valituksi tulemisen edellytykset</h4> <p>Voidaksesi tulla valituksi sinun on</p> <ul> <li>oltava hakukelpoinen,</li> <li>toimitettava hakemus tarvittavine liitteineen määräajan kuluessa,</li> <li>osoitettava tarvittaessa korkeakoulukelpoisuutesi määräajan kuluessa ja</li> <li>saavutettava pienimmät hyväksyttävät pistemäärät valintakokeessa.</li> </ul> <p>Hakukelpoisuudesta löydät lisää tietoa kohdasta &quot;Hakukelpoisuusvaatimukset&quot;. Valintakokeesta löydät lisää tietoa kohdasta &quot;Pääsy- ja soveltuvuuskoe&quot;.</p> <p>Sinulta edellytetään, että osaat riittävästi suomea tai ruotsia. Sinun ei tarvitse toimittaa suomen tai ruotsin taidosta todistusta, sillä taidon riittävyys testataan yhden tai useamman valintakoetehtävän yhteydessä.</p> <h4>Lähtöpisteet</h4> <p>Voit saada enintään 100 lähtöpistettä. Voit saada lähtöpisteitä, jos olet suorittanut suomalaisen ylioppilastutkinnon, International Baccalaureate -tutkinnon, European Baccalaureate -tutkinnon tai Reifeprüfung-tutkinnon. Et voi saada lähtöpisteitä mistään muista tutkinnoista tai millään muilla perusteilla.</p> <p>Jos et ole suorittanut mitään edellä mainituista tutkinnoista, lähtöpisteittesi määrä on nolla. Jos olet suorittanut useamman kuin yhden edellä mainituista tutkinnoista, sinulle annetaan lähtöpisteitä sen tutkinnon perusteella, josta saat eniten lähtöpisteitä.</p> <p>Yksityiskohtaiset tiedot lähtöpisteiden määräytymisestä löydät <a href=\"http://www.helsinki.fi/hum/opiskelijavalinnat/yhteishaku/lahtopisteet.htm\">humanistisen tiedekunnan opiskelijavalintasivustolta</a>.</p> <h4><b>Koepisteet</b></h4> <p>Voit saada enintään 100 koepistettä. Valintakokeen kuvauksessa on ilmoitettu pienin hyväksyttävä pistemäärä</p> <ul> <li>koko kokeelle tai</li> <li>kokeen osille tai</li> <li>sekä koko kokeelle että kokeen osille.</li> </ul> <p>Sinut voidaan valita vain jos saavutat ilmoitetut pienimmät hyväksyttävät pistemäärät. Valintakokeesta löydät lisää tietoa kohdasta &quot;Pääsy- ja soveltuvuuskoe&quot;.</p> <h4><b>Valintamenettely</b></h4> <p>Valintamenettelyn aluksi hylätään hakijat, joita ei missään tapauksessa voida valita. Mahdollisia hylkäämisen syitä ovat esimerkiksi seuraavat:</p> <ul> <li>Hakija ei ole hakukelpoinen.</li> <li>Hakija ei suorittanut valintakoetta.</li> <li>Hakija ei saavuttanut valintakokeessa pienintä hyväksyttävää pistemäärää.</li> </ul> <p>Hakijat, joita ei edellä mainitussa vaiheessa hylätä, järjestetään kahteen jonoon: yhteispistejonoon ja koepistejonoon. Hakija on yhtä aikaa molemmissa jonoissa. Hakijoiden järjestäminen näihin jonoihin selostetaan yksityiskohtaisesti <a href=\"http://www.helsinki.fi/hum/opiskelijavalinnat/yhteishaku/jarjestaminen.htm\">humanistisen tiedekunnan opiskelijavalintasivustolla</a>.</p> <p>Kun hakijat on järjestetty yhteispistejonoon ja koepistejonoon, tiedot näistä jonoista tallennetaan opetushallituksen tietojärjestelmään. Tietojärjestelmä selvittää voidaanko hakijalle tarjota opiskelupaikkaa jossakin niistä hakukohteista, joihin hän on korkeakoulujen yhteishaussa hakenut. Tätä selvitystyötä kutsutaan <i>hakijoiden sijoittelemiseksi opiskelupaikoille</i>.</p> <p>Uusia opiskelijoita pyritään valitsemaan yhteispistejonosta ja koepistejonosta ennalta suunniteltu määrä. Uusien opiskelijoiden suunnitellut määrät luetellaan <a href=\"http://www.helsinki.fi/hum/opiskelijavalinnat/yhteishaku/uusienmaarat.htm\">humanistisen tiedekunnan opiskelijavalintasivustolla</a>. Jos hakija voisi tulla valituksi sekä yhteispistejonosta että koepistejonosta, hänet valitaan yhteispistejonosta.</p> <p>Jos hakija ei ota hänelle tarjottua opiskelupaikka vastaan, opetushallituksen tietojärjestelmä selvittää kuka on seuraava hakija, jolle kyseistä opiskelupaikkaa voidaan tarjota. Tietojärjestelmä sijoittelee hakijoita opiskelupaikoille, kunnes jokainen opiskelupaikka on jonkun hakijan vastaanottama tai jäljellä ei enää ole hakijoita, joille opiskelupaikkoja voitaisiin tarjota. Tietojärjestelmä lopettaa sijoittelemisen kuitenkin viimeistään keskiviikkona 12.8.2015.</p>",
+    "soraDescription": null,
+    "prerequisite": null,
+    "exams": [
+      {
+        "type": "Urvalsprovet",
+        "description": "<h4>Provlitteraturen</h4> <p><span lang=\"SV\">Provlitteraturen publiceras på </span><a href=\"http://www.helsinki.fi/hum/svenska/urvalet/gemensamansokan/urvalsprov.htm\"><span lang=\"SV\">Humanistiska fakulteten webbplats om studentantagningen</span></a><span lang=\"SV\"> senast 30.1.2015.</span></p> <h4>Beskrivningen av urvalsprovet</h4> <p><span lang=\"SV\">Beskrivningen av urvalsprovet publiceras på </span><a href=\"http://www.helsinki.fi/hum/svenska/urvalet/gemensamansokan/urvalsprov.htm\"><span lang=\"SV\">Humanistiska fakulteten webbplats om studentantagningen</span></a><span lang=\"SV\"> senast 30.1.2015.</span></p> <h4>Tidpunkten för urvalsprovet</h4> <p><span lang=\"SV\">Tidpunkten för urvalsprovet publiceras på </span><a href=\"http://www.helsinki.fi/hum/svenska/urvalet/gemensamansokan/tidpunkten.htm\"><span lang=\"SV\">Humanistiska fakulteten webbplats om studentantagningen</span></a><span lang=\"SV\"> senast 28.11.2014.</span></p> <p>Du kan delta i urvalsproven för de ansökningsobjekt som du har sökt till. Du får ingen kallelse till urvalsprovet.</p> <p>Tiden som reserverats för urvalsproven är 4 timmar. Du kan skriva ett urvalsprov endast den dag och vid den tidpunkt som är gemensam för alla sökande. Du kan alltså inte skriva urvalsprovet tidigare eller senare än de andra sökande. Du kan inte skriva en annan fakultets eller högskolas urvalsprov eller något annat prov vid urvalsprovtillfället. Högskolorna bestämmer självständigt hur de ordnar sina urvalsprov, vilket betyder att andra högskolor kan tillämpa andra förfaranden.</p> <p>Du får inte söka till flera ansökningsobjekt om urvalsproven ordnas samtidigt. <span lang=\"SV\">Undantag från regeln finns angivna på </span><a href=\"http://www.helsinki.fi/hum/svenska/urvalet/gemensamansokan/ansokan.htm\"><span lang=\"SV\">Humanistiska fakultetens webbplats om studentantagningen</span></a><span lang=\"SV\">.</span></p> <h4>Platsen för urvalsprovet</h4> <p>Urvalsprovet ordnas i Helsingfors. <span lang=\"SV\">Platsen för urvalsprovet publiceras på </span><a href=\"http://www.helsinki.fi/hum/svenska/urvalet/gemensamansokan/platsen.htm\"><span lang=\"SV\">Humanistiska fakulteten webbplats om studentantagningen</span></a><span lang=\"SV\"> senast 21.5.2015 kl. 18.00.</span></p> <p>Du kan endast skriva urvalsprovet på en plats som fakultetens har ordnat och övervakar. Du kan alltså inte göra provet någon annanstans, t.ex. vid en annan högskolas provtillfälle, en annan fakultets provtillfälle, vid ett gymnasium, på en finsk ambassad, ett finskt konsulat, hos en honorärkonsul eller i ett fängelse. Högskolorna bestämmer självständigt hur de ordnar sina urvalsprov, vilket betyder att andra högskolor kan tillämpa andra förfaranden.</p> <p>Alla provsalar är tyvärr inte tillgängliga för rörelsehindrade. Om du använder rullstol eller har andra rörelsehinder, ska du ansöka om rätt till <a href=\"http://www.helsinki.fi/hum/svenska/urvalet/gemensamansokan/special.htm\">specialarrangemang i urvalsprovet</a>, så att du kan skriva provet i en lämplig lokal.</p> <h4>Tilläggsinformation om urvalsprovet</h4> <p><span lang=\"SV\">Läs omsorgsfullt </span><a href=\"http://www.helsinki.fi/hum/svenska/urvalet/gemensamansokan/praktiskarad.htm\"><span lang=\"SV\">anvisningen</span></a><span lang=\"SV\">, där det berättas hur man går till väga vid Humanistiska fakultetens urvalsprov. </span>Om du tror att du behöver specialarrangemang för att kunna delta i provet, t.ex. på grund av sjukdom eller funktionsnedsättning, läs då <a href=\"http://www.helsinki.fi/hum/svenska/urvalet/gemensamansokan/special.htm\">anvisningen</a> om hur man ansöker om specialarrangemang.</p> <p><span lang=\"SV\">Du kan om du vill läsa </span><a href=\"http://www.helsinki.fi/hum/svenska/urvalet/gemensamansokan/uppgifter.htm\"><span lang=\"SV\">gamla urvalsprovsuppgifter</span></a><span lang=\"SV\"> och </span><a href=\"http://www.helsinki.fi/hum/svenska/urvalet/gemensamansokan/statistiken.htm\"><span lang=\"SV\">ansökningsstatistiken</span></a><span lang=\"SV\">.</span></p> <p>Humanistiska fakulteten vid Helsingfors universitet har inget ansöknings- eller antagningssamarbete med andra universitet. Det betyder att fakultetens urvalsprov inte godkänns när man söker till andra universitet, och att inte heller andra universitets urvalsprov godkänns när man söker till Humanistiska fakulteten vid Helsingfors universitet.</p> <p>Helsingfors universitet ordnar inte prepkurser och understöder varken ekonomiskt eller på annat sätt prepkurser. Anställda vid Helsingfors universitet får inte ordna prepkurser eller undervisa på prepkurser. Varken företagen som ordnar prepkurser eller de som är lärare på kurserna har någon annan information om Humanistiska fakultetens kommande urvalsprov än de uppgifter som publiceras i beskrivningarna av urvalsproven.</p>",
+        "examEvents": null,
+        "scoreLimit": null
+      },
+      {
+        "type": "Valintakoe",
+        "description": "<h4>Koekirjallisuus</h4> <p>Valintakoekirjallisuus julkaistaan <a href=\"http://www.helsinki.fi/hum/opiskelijavalinnat/yhteishaku/valintakokeet.htm\">humanistisen tiedekunnan opiskelijavalintasivustolla</a> viimeistään 30.1.2015.</p> <h4>Kokeen kuvaus</h4> <p>Valintakokeen kuvaus julkaistaan <a href=\"http://www.helsinki.fi/hum/opiskelijavalinnat/yhteishaku/valintakokeet.htm\">humanistisen tiedekunnan opiskelijavalintasivustolla</a> viimeistään 30.1.2015.</p> <h4>Kokeen aika</h4> <p>Valintakokeen päivämäärä ja kellonaika julkaistaan <a href=\"http://www.helsinki.fi/hum/opiskelijavalinnat/yhteishaku/koeajat.htm\">humanistisen tiedekunnan opiskelijavalintasivustolla</a> viimeistään 28.11.2014.</p> <p>Saat osallistua niiden hakukohteiden valintakokeisiin, joihin olet hakenut. Sinulle ei lähetetä kutsua valintakokeeseen.</p> <p>Valintakoe kestää neljä tuntia. Voit suorittaa valintakokeen vain kaikille kokelaille yhteisenä ajankohtana. Et siis voi suorittaa valintakoetta aikaisemmin tai myöhemmin kuin muut kokelaat. Et voi suorittaa valintakoetilaisuudessa toisen tiedekunnan tai korkeakoulun valintakokeita. Kukin korkeakoulu päättää itsenäisesti valintakokeittensa järjestelyistä, joten muut korkeakoulut saattavat noudattaa toisenlaisia käytäntöjä.</p> <p>Et saa hakea hakukohteisiin, joiden valintakokeet järjestetään yhtä aikaa. Poikkeuksista tähän sääntöön kerrotaan <a href=\"http://www.helsinki.fi/hum/opiskelijavalinnat/yhteishaku/hakeminen.htm\">humanistisen tiedekunnan opiskelijavalintasivustolla</a>.</p> <h4>Kokeen paikka</h4> <p>Valintakoe järjestetään Helsingissä. Valintakokeen paikka julkaistaan <a href=\"http://www.helsinki.fi/hum/opiskelijavalinnat/yhteishaku/koepaikat.htm\">humanistisen tiedekunnan opiskelijavalintasivustolla</a> viimeistään 21.5.2015 kello 18.00.</p> <p>Voit suorittaa valintakokeen vain humanistisen tiedekunnan järjestämässä ja valvomassa tilassa. Et siis voi suorittaa koetta missään muualla, esimerkiksi toisen yliopiston koetilaisuudessa, toisen tiedekunnan koetilaisuudessa, lukiossa, Suomen suurlähetystössä, Suomen konsulaatissa, Suomen kunniankonsulin luona tai vankilassa. Kukin korkeakoulu päättää itsenäisesti valintakokeittensa järjestelyistä, joten muut korkeakoulut saattavat noudattaa toisenlaisia käytäntöjä.</p> <p>Jotkin koesaleista eivät valitettavasti sovi liikuntaesteisille. Jos käytät pyörätuolia tai liikuntakykysi on jotenkin muuten rajoittunut, sinun on haettava oikeutta <a href=\"http://www.helsinki.fi/hum/opiskelijavalinnat/yhteishaku/erityisjarjestelyt.htm\">erityisjärjestelyihin valintakokeessa</a>, jotta voisit suorittaa kokeen sinulle soveltuvassa tilassa.</p> <h4>Lisätietoja</h4> <p>Tutustu huolellisesti <a href=\"http://www.helsinki.fi/hum/opiskelijavalinnat/yhteishaku/toimiminen.htm\">ohjeeseen</a>, jossa kerrotaan kuinka humanistisen tiedekunnan valintakokeissa toimitaan. Jos arvelet tarvitsevasi valintakokeeseen erityisjärjestelyjä esimerkiksi sairauden tai vammaisuuden vuoksi, tutustu <a href=\"http://www.helsinki.fi/hum/opiskelijavalinnat/yhteishaku/erityisjarjestelyt.htm\">ohjeeseen</a>, jossa on selostettu, miten erityisjärjestelyjä haetaan.</p> <p>Voit halutessasi tutustua <a href=\"http://www.helsinki.fi/hum/opiskelijavalinnat/kysymykset/index.htm\">vanhoihin valintakoetehtäviin</a> ja <a href=\"http://www.helsinki.fi/hum/opiskelijavalinnat/yhteishaku/tilastot.htm\">hakijatilastoihin</a>.</p> <p>Helsingin yliopiston humanistisella tiedekunnalla ei ole haku- eikä valintayhteistyötä muiden yliopistojen kanssa. Niinpä Helsingin yliopiston humanistisen tiedekunnan valintakokeet eivät kelpaa haettaessa muihin yliopistoihin eivätkä muiden yliopistojen valintakokeet kelpaa haettaessa Helsingin yliopiston humanistiseen tiedekuntaan.</p> <p>Helsingin yliopisto ei järjestä opiskelijavalintoihin liittyviä valmennuskursseja eikä rahallisesti tai toiminnallisesti tue valmennuskurssien järjestämistä. Helsingin yliopistoon palvelussuhteessa olevat henkilöt eivät saa järjestää valmennuskursseja tai opettaa valmennuskursseilla. Valmennuskurssien järjestäjillä tai kursseilla opettavilla ei ole humanistisen tiedekunnan tulevien valintakokeiden sisällöstä muuta tietoa kuin mitä valintakokeiden kuvauksissa on kerrottu.</p>",
+        "examEvents": null,
+        "scoreLimit": null
+      }
+    ],
+    "childRefs": [],
+    "higherEdLOSRefs": [
+      {
+        "id": "1.2.246.562.17.903812415710",
+        "asIds": null,
+        "name": "Afrikan tutkimus, filosofian maisteri",
+        "qualifications": ["Filosofian maisteri"],
+        "prerequisite": null,
+        "provider": null,
+        "fieldOfExpertise": null
+      },
+      {
+        "id": "1.2.246.562.17.91784966458",
+        "asIds": null,
+        "name": "Afrikan tutkimus, humanististen tieteiden kandidaatti",
+        "qualifications": ["Humanististen tieteiden kandidaatti"],
+        "prerequisite": null,
+        "provider": null,
+        "fieldOfExpertise": null
+      },
+      {
+        "id": "1.2.246.562.17.15892230341",
+        "asIds": null,
+        "name": "Arabian kielen ja islamin tutkimus, filosofian maisteri",
+        "qualifications": ["Filosofian maisteri"],
+        "prerequisite": null,
+        "provider": null,
+        "fieldOfExpertise": null
+      },
+      {
+        "id": "1.2.246.562.17.83082722899",
+        "asIds": null,
+        "name": "Arabian kielen ja islamin tutkimus, humanististen tieteiden kandidaatti",
+        "qualifications": ["Humanististen tieteiden kandidaatti"],
+        "prerequisite": null,
+        "provider": null,
+        "fieldOfExpertise": null
+      },
+      {
+        "id": "1.2.246.562.17.50406025556",
+        "asIds": null,
+        "name": "Assyriologia, filosofian maisteri",
+        "qualifications": ["Filosofian maisteri"],
+        "prerequisite": null,
+        "provider": null,
+        "fieldOfExpertise": null
+      },
+      {
+        "id": "1.2.246.562.17.19600210587",
+        "asIds": null,
+        "name": "Assyriologia, humanististen tieteiden kandidaatti",
+        "qualifications": ["Humanististen tieteiden kandidaatti"],
+        "prerequisite": null,
+        "provider": null,
+        "fieldOfExpertise": null
+      },
+      {
+        "id": "1.2.246.562.17.57643709041",
+        "asIds": null,
+        "name": "Lähi-idän tutkimus, filosofian maisteri",
+        "qualifications": ["Filosofian maisteri"],
+        "prerequisite": null,
+        "provider": null,
+        "fieldOfExpertise": null
+      },
+      {
+        "id": "1.2.246.562.17.55779545551",
+        "asIds": null,
+        "name": "Lähi-idän tutkimus, humanististen tieteiden kandidaatti",
+        "qualifications": ["Humanististen tieteiden kandidaatti"],
+        "prerequisite": null,
+        "provider": null,
+        "fieldOfExpertise": null
+      }
+    ],
+    "provider": {
+      "id": "1.2.246.562.10.61397511793",
+      "name": "Helsingin yliopisto, Humanistinen tiedekunta",
+      "applicationSystemIds": [
+        "1.2.246.562.29.444206299810",
+        "1.2.246.562.29.95390561488",
+        "1.2.246.562.29.173465377510",
+        "1.2.246.562.29.67720080919",
+        "1.2.246.562.29.84888706227"
+      ],
+      "postalAddress": {
+        "streetAddress": "PL 3",
+        "streetAddress2": null,
+        "postalCode": "00014",
+        "postOffice": "HELSINGIN YLIOPISTO"
+      },
+      "visitingAddress": {
+        "streetAddress": "Fabianinkatu 33",
+        "streetAddress2": null,
+        "postalCode": "00014",
+        "postOffice": "HELSINGIN YLIOPISTO"
+      },
+      "webPage": "http://www.helsinki.fi/hum",
+      "email": "hum-info@helsinki.fi",
+      "fax": null,
+      "phone": "02941 22347 - 02941 22350 - 02941 23352",
+      "description": "<p>Helsingin yliopisto kuuluu ainoana suomalaisena yliopistona maailman sadan parhaimman joukkoon. Samalla olemme Suomen suurin ja monitieteisin yliopisto. Tarjolla on noin 300 oppiainetta 11 eri tiedekunnassa. Yliopiston henkilökunta ja sen yli 36 000 opiskelijaa muodostavat kansainvälisen tiedeyhteisön, joka on sijoittunut neljälle kampukselle Helsingissä ja usealle muulle paikkakunnalle Suomessa. Vuosittain Helsingin yliopistossa suoritetaan yli 5800 tutkintoa.</p> <p>Helsingin yliopiston humanistinen tiedekunta on merkittävä kansainvälinen tutkimus-, koulutus- ja kulttuuriyhteisö. Se on Suomen suurin ja vanhin humanistisen opetuksen ja tutkimuksen yksikkö. Tieteenalarakenteeltaan ja oppiainevalikoimaltaan se on Suomen monipuolisin tiedekunta.</p> <p>Kandidaatintutkinnon vaihtoehtoina on 23 erilaista opiskelukokonaisuutta, jotka sisältävät yhteensä 46 pääainetta. Maisterintutkinnossa valittavana on 48 pääainetta, joista 15:stä voi suorittaa maisterintutkinnon vain Helsingissä.</p> <p>Humanistisessa koulutuksessa yhdistyy kansainvälisyys, kielellinen vuorovaikutus, ajattelun taidot ja laaja-alainen sivistys, sekä jatkuva halu uuden oppimiseen ja ihmisen ymmärtämiseen.</p> <p>Tiedekunta ja sen laitokset sijaitsevat Helsingin keskustassa Senaatintorin lähellä keskittyen kolmeen kortteliin: yliopiston päärakennukseen, Topeliaan ja Metsätaloon. Kaikki muu opintoihin tarvittava kirjastoista liikuntatiloihin ja oppimiskeskuksiin löytyy läheltä.</p> <p>Humanisteilla on keskeinen merkitys yhteiskunnan eri alueilla: perinteisillä humanistisilla aloilla koulutuksen ja hallinnon piirissä, mutta myös talouden ja tekniikan maailmassa.</p> <p>Lue lisäät: <a href=\"http://www.helsinki.fi/hum\" rel=\"nofollow\">www.helsinki.fi/hum</a></p>",
+      "healthcare": null,
+      "accessibility": "<p>Hakijoiden erityisjärjestelyillä tarkoitetaan käytännön järjestelyjä valintakoetilanteessa. Tällaisia voivat olla esimerkiksi liikuntaesteiden poistaminen, rauhallinen koetila, lisäaika, laajempi kirjoitustila, apuvälineiden käyttö tai muu vastaava järjestely. Näillä järjestelyillä on tarkoitus huolehtia siitä, että erityisjärjestelyä valintakoetilanteessa tarvitsevat hakijat ovat tasavertaisessa asemassa muiden hakijoiden kanssa. Jos koet tarvitsevasi erityisjärjestelyjä, sinun tulee jättää asiasta kirjallinen anomus siihen tiedekuntaan, jonne olet hakemassa. <a href=\"http://www.helsinki.fi/opiskelijaksi/valintakokeet.html#Erityisjarjestelyt_valintakokeessa\" rel=\"nofollow\">http://www.helsinki.fi/opiskelijaksi/valintakokeet.html#Erityisjarjestelyt_valintakokeessa</a></p> <p>Helsingin yliopiston keskustakampuksen opiskelijaneuvonnassa on tarjolla yleisneuvontaa, mikäli tarvitset vamman, sairauden tai oppimisvaikeuden takia erityisjärjestelyitä opinnoissasi tai esimerkiksi tenttitilanteessa. Lisätietoa saat osoitteesta vammaisneuvonta@helsinki.fi.</p>",
+      "learningEnvironment": "<p>Humanistinen tiedekunta sijaitsee keskellä Helsinkiä ja opiskelijoille keskeisen Helsingin yliopiston Kaisa-kirjaston sekä oppimiskeskus Aleksandrian välittömässä läheisyydessä Uudenaikaiset opiskelutilat ja kirjaston palvelut ovat helposti opiskelijoiden saatavilla. Myös Kansalliskirjasto, jossa on humanistisen alan laajin ja merkittävin kirjastokokoelma, sijaitsee keskustakampuksen alueella.</p>",
+      "dining": null,
+      "livingExpenses": "<p>Yliopisto-opiskelijoille on tarjolla palveluja ja etuja liittyen muun muassa asumiseen, ruokailuun, terveydenhuoltoon sekä hyvinvointiin ja liikuntaan. Lisäksi Helsingin yliopiston ylioppilaskunnan (HYY) reilun 250 opiskelijajärjestön joukosta jokainen voi valita oman juttunsa ja yhteisönsä. Lisätietoa löydät verkkosivuiltamme.</p>",
+      "living": null,
+      "yearClock": null,
+      "financingStudies": null,
+      "insurances": null,
+      "leisureServices": null,
+      "social": [
+        {
+          "name": "facebook",
+          "url": "https://www.facebook.com/humanistinen"
+        }
+      ],
+      "pictureFound": false,
+      "athleteEducation": false,
+      "applicationOffice": {
+        "name": "Helsingin yliopiston hakijapalvelut",
+        "phone": "02941 24140",
+        "email": "hakijapalvelut@helsinki.fi",
+        "www": "https://university.helsinki.fi/fi/opiskelu/hae-opiskelijaksi",
+        "visitingAddress": {
+          "streetAddress": "Fabianinkatu 33, 1. krs",
+          "streetAddress2": null,
+          "postalCode": "00014",
+          "postOffice": "HELSINGIN YLIOPISTO"
+        },
+        "postalAddress": {
+          "streetAddress": "PL 3",
+          "streetAddress2": null,
+          "postalCode": "00014",
+          "postOffice": "HELSINGIN YLIOPISTO"
+        }
+      },
+      "homeplace": "Helsinki"
+    },
+    "specificApplicationDates": false,
+    "applicationStartDate": 1424354948626,
+    "applicationEndDate": 1428580845519,
+    "applicationPeriodName": "Hakuaika 2",
+    "canBeApplied": true,
+    "nextApplicationPeriodStarts": null,
+    "requiredBaseEducations": ["pohjakoulutusvaatimuskorkeakoulut_123"],
+    "attachments": null,
+    "emphasizedSubjects": null,
+    "additionalInfo": "<p>Lisätietoja löydät&nbsp;<a href=\"http://www.helsinki.fi/opiskelijaksi\" target=\"_blank\">Helsingin yliopiston hakijapalveluiden verkkosivuilta</a> ja <a href=\"http://www.helsinki.fi/hum/opiskelijavalinnat/yhteishaku/index.htm\" target=\"_blank\">humanistisen tiedekunnan opiskelijavalintasivustolta</a>.</p>",
+    "additionalProof": null,
+    "overallScoreLimit": null,
+    "kaksoistutkinto": false,
+    "athleteEducation": false,
+    "vocational": false,
+    "educationCodeUri": "koulutus_726402",
+    "status": null,
+    "eligibilityDescription": null,
+    "type": "KORKEAKOULU",
+    "educationTypeUri": null,
+    "hakuaikaId": "220207",
+    "organizationGroups": [
+      {
+        "oid": "1.2.246.562.28.20907706740",
+        "prioriteetti": 3,
+        "usageGroups": ["hakukohde_priorisoiva"],
+        "groupTypes": ["hakukohde"]
+      },
+      {
+        "oid": "1.2.246.562.28.40142428048",
+        "prioriteetti": null,
+        "usageGroups": ["yleinen"],
+        "groupTypes": ["hakukohde"]
+      },
+      {
+        "oid": "1.2.246.562.28.13841322666",
+        "prioriteetti": null,
+        "usageGroups": ["hakukohde_rajaava"],
+        "groupTypes": ["hakukohde"]
+      }
+    ],
+    "kotitalous": false
+  },
+
+  "1.2.246.562.20.90095786571": {
+    "id": "1.2.246.562.20.90095786571",
+    "name": "Agrolog (YH)/Miljöplanerare (YH)/Skogsbruksingenjör (YH), dagstudier",
+    "aoIdentifier": null,
+    "startingQuota": 40,
+    "startingQuotaDescription": "40",
+    "lowestAcceptedScore": 0,
+    "lowestAcceptedAverage": 0.0,
+    "attachmentDeliveryDeadline": null,
+    "attachmentDeliveryAddress": {
+      "streetAddress": "PL 6",
+      "streetAddress2": null,
+      "postalCode": "65201",
+      "postOffice": "VAASA"
+    },
+    "lastYearApplicantCount": 0,
+    "sora": false,
+    "educationDegree": "koulutusasteoph2002_62",
+    "teachingLanguages": ["SV"],
+    "teachingLanguageNames": [],
+    "selectionCriteria": null,
+    "soraDescription": null,
+    "prerequisite": null,
+    "exams": [
+      {
+        "type": "Urvalsprov",
+        "description": "<p>Alla behöriga kallas till urvalsprovet. Vid provtillfället uppvisas ett identitetskort försett med fotografi. Urvalsprovet testar förmågan till logiska slutledningar, tillämpning av matematik och smidig och korrekt produktion av saktexter. Urvalsprovet kan skrivas på svenska eller finska.</p> <p>Vid urvalsprovet kan sökande få totalt högst 40 poäng; högst 20 poäng i kommunikationsdelen och högst 20 poäng i matematikdelen. I varje del måste de få minst sju (7) poäng. I urvalsprovet måste sökande få sammanlagt minst 14 poäng för att bli vald.</p> <p>Yrkeshögskolorna godkänner urvalsprov som genomförts i en annan yrkeshögskola som sådana. En förteckning över de yrkeshögskolor som samarbetar vid ordnandet av urvalsprov finns på adressen www.studieinfo.fi. Resultatet i urvalsprovet är giltigt under ansökningstiden i fråga.</p> <p>Urvalsprovet kan dessutom som extra arrangemang skrivas i Vasa. I webbansökan bör den som vill avlägga provet i Vasa dock välja Raseborg som ort, eftersom ansökningsregistret kräver ett av den nationella alternativen för att fungera. Sökande som vill avlägga provet i Vasa bör senast 27.5.2015 skriftligen meddela Novias antagningsservice om detta per e-post: antagningsservice@novia.fi.</p>",
+        "examEvents": [
+          {
+            "start": 1433278837934,
+            "end": 1433278842893,
+            "description": "Närmare klockslag anges i kallelsen",
+            "address": {
+              "streetAddress": "Raseborgsvägen 9",
+              "streetAddress2": null,
+              "postalCode": "10600",
+              "postOffice": "EKENÄS"
+            },
+            "timeIncluded": true
+          }
+        ],
+        "scoreLimit": null
+      }
+    ],
+    "childRefs": [],
+    "higherEdLOSRefs": [
+      {
+        "id": "1.2.246.562.17.57839424736",
+        "asIds": null,
+        "name": "Agrolog (YH), naturbruk och miljö, dagstudier, Raseborg",
+        "qualifications": ["Agrolog (YH)"],
+        "prerequisite": null,
+        "provider": null,
+        "fieldOfExpertise": null
+      },
+      {
+        "id": "1.2.246.562.17.75135667568",
+        "asIds": null,
+        "name": "Miljöplanerare (YH), naturbruk och miljö, dagstudier, Raseborg",
+        "qualifications": ["Miljöplanerare (YH)"],
+        "prerequisite": null,
+        "provider": null,
+        "fieldOfExpertise": null
+      },
+      {
+        "id": "1.2.246.562.17.57395927775",
+        "asIds": null,
+        "name": "Skogsbruksingenjör (YH), naturbruk och miljö, dagstudier, Raseborg",
+        "qualifications": ["Skogsbruksingenjör (YH)"],
+        "prerequisite": null,
+        "provider": null,
+        "fieldOfExpertise": null
+      }
+    ],
+    "provider": {
+      "id": "1.2.246.562.10.62355244518",
+      "name": "Yrkeshögskolan Novia, Raasepori",
+      "applicationSystemIds": [
+        "1.2.246.562.29.95390561488",
+        "1.2.246.562.29.173465377510"
+      ],
+      "postalAddress": {
+        "streetAddress": "Raaseporintie 9",
+        "streetAddress2": null,
+        "postalCode": "10600",
+        "postOffice": "TAMMISAARI"
+      },
+      "visitingAddress": {
+        "streetAddress": "Raaseporintie 9",
+        "streetAddress2": null,
+        "postalCode": "10600",
+        "postOffice": "TAMMISAARI"
+      },
+      "webPage": "http://www.novia.fi/om-novia/campus/raseborg/",
+      "email": "raseborg@novia.fi",
+      "fax": "+358  0 19 224 8112",
+      "phone": "+358  0 19 224 8100",
+      "description": null,
+      "healthcare": null,
+      "accessibility": null,
+      "learningEnvironment": null,
+      "dining": null,
+      "livingExpenses": null,
+      "living": null,
+      "yearClock": null,
+      "financingStudies": null,
+      "insurances": null,
+      "leisureServices": null,
+      "social": [
+        {
+          "name": "facebook",
+          "url": "https://www.facebook.com/noviaraseborg"
+        },
+        {
+          "name": "muu",
+          "url": "http://www.naturbruk.fi"
+        }
+      ],
+      "pictureFound": true,
+      "athleteEducation": false,
+      "applicationOffice": {
+        "name": "Hakijapalvelut",
+        "phone": "+358 6 328 5555",
+        "email": "hakijapalvelut@novia.fi",
+        "www": "http://ansokan.novia.fi",
+        "visitingAddress": {
+          "streetAddress": "Wolffintie 33",
+          "streetAddress2": null,
+          "postalCode": "65200",
+          "postOffice": "VAASA"
+        },
+        "postalAddress": {
+          "streetAddress": "PL 6",
+          "streetAddress2": null,
+          "postalCode": "65201",
+          "postOffice": "VAASA"
+        }
+      },
+      "homeplace": "Raasepori"
+    },
+    "specificApplicationDates": false,
+    "applicationStartDate": 1424354948626,
+    "applicationEndDate": 1428580845519,
+    "applicationPeriodName": "Ansökningstid 2",
+    "canBeApplied": true,
+    "nextApplicationPeriodStarts": null,
+    "requiredBaseEducations": [
+      "pohjakoulutusvaatimuskorkeakoulut_106",
+      "pohjakoulutusvaatimuskorkeakoulut_100"
+    ],
+    "attachments": null,
+    "emphasizedSubjects": null,
+    "additionalInfo": null,
+    "additionalProof": null,
+    "overallScoreLimit": null,
+    "kaksoistutkinto": false,
+    "athleteEducation": false,
+    "vocational": false,
+    "educationCodeUri": "koulutus_661301",
+    "status": null,
+    "eligibilityDescription": null,
+    "type": "KORKEAKOULU",
+    "educationTypeUri": null,
+    "hakuaikaId": "220207",
+    "organizationGroups": [
+      {
+        "oid": "1.2.246.562.28.20907706740",
+        "prioriteetti": 2,
+        "usageGroups": ["hakukohde_priorisoiva"],
+        "groupTypes": ["hakukohde"]
+      }
+    ],
+    "kotitalous": false
+  },
+
+  "1.2.246.562.20.74195328591": {
+    "id": "1.2.246.562.20.74195328591",
+    "name": "Aate- ja oppihistoria, humanististen tieteiden kandidaatti ja filosofian maisteri",
+    "aoIdentifier": null,
+    "startingQuota": 14,
+    "startingQuotaDescription": "14",
+    "lowestAcceptedScore": 0,
+    "lowestAcceptedAverage": 0.0,
+    "attachmentDeliveryDeadline": null,
+    "attachmentDeliveryAddress": null,
+    "lastYearApplicantCount": 0,
+    "sora": false,
+    "educationDegree": "koulutusasteoph2002_72",
+    "teachingLanguages": ["FI"],
+    "teachingLanguageNames": [],
+    "selectionCriteria": "<p><b>Valintakiintiöt </b></p> <p>Uusien opiskelijoiden aloituspaikkakiintiö jaetaan kahteen osaan: yhteispistevalintakiintiöön ja koepistevalintakiintiöön. Parittomissa kiintiöissä paikat jakautuvat yhteispistekiintiön eduksi.</p> <p><i><b>Yhteispistevalinta</b></i></p> <p>Ensimmäisessä vaiheessa puolet aloituspaikkamäärästä täytetään valitsemalla kaikkien hakijoiden joukosta opiskelijat ylioppilastutkintotodistuksesta ja valintakokeesta saadun yhteispistemäärän perusteella. <br /> Alin hyväksyttävä pistemäärä on 10 pistettä.<br /> Jos hakijat päätyvät tasapisteisiin, hakijoiden keskinäinen järjestys ratkaistaan ensisijaisesti valintakoepisteiden perusteella, toissijaisesti ylioppilastutkintotodistuksen pistemäärän perusteella (ks. pisteitystaulukko).</p> <p>Pisteet lasketaan seuraavasti:</p> <ol> <li>Valintakokeesta voi saada 30 pistettä.</li> <li>Ylioppilastutkintotodistuksesta otetaan neljän arvosanan antama yhteinen pistemäärä, joka lasketaan alla olevan taulukon mukaan. Tämä pistemäärä kerrotaan luvulla 0,75. Todistuksesta voi saada enintään 30 pistettä.</li> </ol> <p><b><i><br /> <i>Koepistevalinta</i></i></b></p> <p>Jos hakija ei tule valituksi yhteispistevalinnassa, hän osallistuu automaattisesti valinnan toisessa vaiheessa koepistevalintaan. Toinen puoli aloituspaikkamäärästä täytetään valitsemalla opiskelijat pelkän valintakokeen perusteella. Valintakokeesta voi saada 30 pistettä.</p> <p>Jos hakijat päätyvät tasapisteisiin, ratkaistaan hakijoiden keskinäinen järjestys ylioppilastutkintotodistuksen pistemäärän perusteella.</p> <p> </p> <p><b>Ylioppilastutkinnon pisteitys</b></p> <p>Ylioppilastutkintotodistuksesta otetaan huomioon <b>neljä</b> arvosanaa seuraavasti:</p> <p>· äidinkieli</p> <p>· ennen vuotta 2006 ylioppilastutkinnon suorittaneilla reaalikoe kaksinkertaisena ja 2006 ja sen jälkeen tutkinnon suorittaneilla historian ainereaalikoe kaksinkertaisena</p> <p>· muista (ei ainereaali) parhaan pistemäärän tuottava arvosana<br /><b><br /> </b></p> <p><b>Ylioppilastutkintotodistuksen pisteitys</b></p> <p> </p> <div> <table> <tbody> <tr> <td width=\"160\"> </td> <td width=\"160\"> <p><b>taso</b></p> </td> <td width=\"30\"> <p><b>l</b></p> </td> <td width=\"30\"> <p><b>e</b></p> </td> <td width=\"30\"> <p><b>m</b></p> </td> <td width=\"30\"> <p><b>c</b></p> </td> <td width=\"30\"> <p><b>b</b></p> </td> <td width=\"30\"> <p><b>a</b></p> </td> </tr> <tr> <td width=\"160\"> <p><b>äidinkieli</b></p> </td> <td width=\"160\"> <p>(suomi/ruotsi/saame)</p> </td> <td width=\"30\"> <p>10</p> </td> <td width=\"30\"> <p>9</p> </td> <td width=\"30\"> <p>8</p> </td> <td width=\"30\"> <p>6</p> </td> <td width=\"30\"> <p>4</p> </td> <td width=\"30\"> <p>2</p> </td> </tr> <tr> <td width=\"160\"> <p><b>suomi</b></p> </td> <td width=\"160\"> <p>(kun äidinkieli saame)</p> </td> <td width=\"30\"> <p>10</p> </td> <td width=\"30\"> <p>9</p> </td> <td width=\"30\"> <p>8</p> </td> <td width=\"30\"> <p>6</p> </td> <td width=\"30\"> <p>4</p> </td> <td width=\"30\"> <p>2</p> </td> </tr> <tr> <td width=\"160\"> <p><b>reaali/ainereaali</b></p> </td> <td width=\"160\"> </td> <td width=\"30\"> <p>10</p> </td> <td width=\"30\"> <p>9</p> </td> <td width=\"30\"> <p>8</p> </td> <td width=\"30\"> <p>6</p> </td> <td width=\"30\"> <p>4</p> </td> <td width=\"30\"> <p>2</p> </td> </tr> <tr> <td width=\"160\"> <p><b>2. kotim. kieli</b></p> </td> <td width=\"160\"> <p>pitkä oppimäärä</p> </td> <td width=\"30\"> <p>10</p> </td> <td width=\"30\"> <p>9</p> </td> <td width=\"30\"> <p>8</p> </td> <td width=\"30\"> <p>6</p> </td> <td width=\"30\"> <p>4</p> </td> <td width=\"30\"> <p>2</p> </td> </tr> <tr> <td width=\"160\"> </td> <td width=\"160\"> <p>keskipitkä oppimäärä</p> </td> <td width=\"30\"> <p>9</p> </td> <td width=\"30\"> <p>8</p> </td> <td width=\"30\"> <p>7</p> </td> <td width=\"30\"> <p>5</p> </td> <td width=\"30\"> <p>2</p> </td> <td width=\"30\"> <p>0</p> </td> </tr> <tr> <td width=\"160\"> <p><b>vieras kieli</b></p> </td> <td width=\"160\"> <p>pitkä oppimäärä</p> </td> <td width=\"30\"> <p>10</p> </td> <td width=\"30\"> <p>9</p> </td> <td width=\"30\"> <p>8</p> </td> <td width=\"30\"> <p>6</p> </td> <td width=\"30\"> <p>4</p> </td> <td width=\"30\"> <p>2</p> </td> </tr> <tr> <td width=\"160\"> </td> <td width=\"160\"> <p>lyhyt oppimäärä</p> </td> <td width=\"30\"> <p>8</p> </td> <td width=\"30\"> <p>7</p> </td> <td width=\"30\"> <p>6</p> </td> <td width=\"30\"> <p>4</p> </td> <td width=\"30\"> <p>2</p> </td> <td width=\"30\"> <p>0</p> </td> </tr> <tr> <td width=\"160\"> <p><b>matematiikka</b></p> </td> <td width=\"160\"> <p>pitkä oppimäärä</p> </td> <td width=\"30\"> <p>10</p> </td> <td width=\"30\"> <p>9</p> </td> <td width=\"30\"> <p>8</p> </td> <td width=\"30\"> <p>7</p> </td> <td width=\"30\"> <p>6</p> </td> <td width=\"30\"> <p>4</p> </td> </tr> <tr> <td width=\"160\"> </td> <td width=\"160\"> <p>lyhyt oppimäärä</p> </td> <td width=\"30\"> <p>7</p> </td> <td width=\"30\"> <p>6</p> </td> <td width=\"30\"> <p>5</p> </td> <td width=\"30\"> <p>3</p> </td> <td width=\"30\"> <p>1</p> </td> <td width=\"30\"> <p>0</p> </td> </tr> </tbody> </table> </div> <div> </div> <p>Higher Level -aineet (HL) rinnastetaan suomalaisen ylioppilastutkinnon vaativamman tason kokeeseen, Subsidiary Level -aineet (SL) muun tason kokeeseen. IB-tutkinnosta otetaan huomioon neljä ainetta kuten suomalaisesta ylioppilastutkinnostakin. Historia-aineiden valinnassa IB-tutkinnon historia rinnastetaan historian ainereaaliin. Luonnontieteelliset aineet ja taideaineet pisteitetään (aine)reaalin mukaan, ruotsin kieli pisteitetään toisen kotimaisen kielen muun tason mukaan, muut kieliaineet muun tason mukaan.</p> <p> </p> <p><b>Reifeprüfung-tutkinnon arvosanat rinnastetaan suomalaisen ylioppilastutkinnon arvosanoihin seuraavasti.</b></p> <p> </p> <div> <table> <tbody> <tr> <td width=\"110\"> <p>Reifeprüfung</p> </td> <td width=\"65\"> <p>15–13</p> </td> <td width=\"65\"> <p>12–10</p> </td> <td width=\"65\"> <p>9–8</p> </td> <td width=\"65\"> <p>7</p> </td> <td width=\"65\"> <p>6–5</p> </td> <td width=\"65\"> <p>4</p> </td> </tr> <tr> <td width=\"110\"> <p>yo-tutkinto</p> </td> <td width=\"65\"> <p>l</p> </td> <td width=\"65\"> <p>e</p> </td> <td width=\"65\"> <p>m</p> </td> <td width=\"65\"> <p>c</p> </td> <td width=\"65\"> <p>b</p> </td> <td width=\"65\"> <p>a</p> </td> </tr> </tbody> </table> </div> <p> </p> <p>Reifeprüfung-tutkinnosta otetaan huomioon neljä ainetta kuten suomalaisesta ylioppilastutkinnostakin. Historia-aineiden valinnassa Reifeprüfung-tutkinnon historia rinnastetaan historian ainereaaliin. Luonnontieteelliset aineet ja taideaineet pisteitetään (aine)reaalin mukaan, ruotsin kieli pisteitetään toisen kotimaisen kielen muun tason mukaan, muut kieliaineet muun tason mukaan.</p> <p> </p> <p><b>European Baccalaureate -tutkinnon pisteet rinnastetaan suomalaisen ylioppilastutkinnon arvosanoihin seuraavasti:</b></p> <p> </p> <div> <table> <tbody> <tr> <td width=\"110\"> <p>EB-tutkinto</p> </td> <td width=\"65\"> <p>10–9,00</p> </td> <td width=\"65\"> <p>8,95–8,00</p> </td> <td width=\"65\"> <p>7,95–7,00</p> </td> <td width=\"65\"> <p>6,95–6,00</p> </td> <td width=\"65\"> <p>5,95–5,00</p> </td> <td width=\"65\"> <p>4,95–4,00</p> </td> </tr> <tr> <td width=\"110\"> <p>yo-tutkinto</p> </td> <td width=\"65\"> <p>l</p> </td> <td width=\"65\"> <p>e</p> </td> <td width=\"65\"> <p>m</p> </td> <td width=\"65\"> <p>c</p> </td> <td width=\"65\"> <p>b</p> </td> <td width=\"65\"> <p>a</p> </td> </tr> </tbody> </table> </div> <p> </p> <p>European Baccalaureate-tutkinnosta otetaan huomioon neljä ainetta kuten suomalaisesta ylioppilastutkinnostakin. Historia-aineiden valinnassa European Baccalaureate-tutkinnon historia rinnastetaan reaaliin. Luonnontieteelliset aineet ja taideaineet pisteitetään reaalin mukaan, ruotsin kieli pisteitetään toisen kotimaisen kielen muun tason mukaan, muut kieliaineet muun tason mukaan.</p> <p><b>Toisessa Pohjoismaassa</b> korkeakoulukelpoisuuden saavuttaneet voivat hakea opiskelijaksi tiedekuntaan. Heidän valintansa tapahtuu kuitenkin pelkästään valintakokeen perusteella.</p>",
+    "soraDescription": "<p><strong>Opiskelijaksi ottamisen rajoitukset</strong></p> <p>Alaikäisten turvallisuuden sekä potilas- ja asiakasturvallisuuden edistämiseksi opiskelijaksi ottamiseen on tullut rajoituksia vuoden 2012 alusta.</p> <p>Rajoitukset koskevat seuraavia aloja:</p> <p>lääketiede<br />hammaslääketiede<br />logopedia<br />psykologia<br />farmasia<br />sosiaalityö<br />opettajankoulutus.<br />Näillä aloilla edellytetään, että opiskelijaksi otettava on terveydentilaltaan ja toimintakyvyltään kykenevä opintoihin liittyviin käytännön tehtäviin tai harjoitteluun. Terveydentilaan tai toimintakykyyn liittyvä rajoitus ei ole este opiskelijaksi ottamiselle, jos sen vaikutukset voidaan kohtuullisin toimin, esimerkiksi erityisjärjestelyin, poistaa. Tarkoituksena ei ole muutenkaan asettaa tarpeettomia esteitä vammaisten tai muista fyysisistä tai psyykkisistä rajoitteista kärsivien henkilöiden koulutukseen pääsylle. Rajoituksia sovelletaan vain niissä tilanteissa, joissa on selvää, ettei hakija voi terveydentilaansa tai toimintakykyynsä liittyvästä syystä osallistua koulutukseen.</p> <p>Katso kunkin yliopiston mahdollisesti määrittelemät alakohtaiset rajoitukset kunkin hakukohteen kohdalta. Tarkempia tietoja saa tarvittaessa myös yliopistojen hakupalveluista ja opintotoimistoista.</p> <p>Myös aiempi opiskeluoikeuden peruuttaminen voi olla este opiskelijaksi ottamiselle. Tämän vuoksi opiskelijaksi hakevan tulee ilmoittaa yliopistolle tällaisesta päätöksestä jo hakuvaiheessa.</p> <p>Opiskeluaikainen huumausainetestaus ja rikosrekisteriote</p> <p>Opiskelija voidaan tietyissä hyvin rajoitetuissa tapauksissa velvoittaa esittämään todistus huumausainetestistä. Tämä tulee lähinnä kyseeseen tilanteissa, joissa testaaminen on välttämätöntä opiskelijan toimintakyvyn selvittämiseksi ja tiettyjen laissa yksityiskohtaisesti määriteltyjen lisäehtojen täyttyessä.</p> <p>Vuonna 2012 tai myöhemmin opiskelijaksi hyväksytyltä opiskelijalta voidaan opiskelukyvyn arviointia varten pyytää myös otetta rikosrekisteristä. Otetta voidaan pyytää vain niiltä opiskelijoilta, joiden opintoihin liittyvä harjoittelu tai muut tehtävät edellyttävät alaikäisten parissa työskentelyä, ja sitä pyydetään ennen harjoittelun tai tehtävien alkamista. Alaikäisten turvallisuuden edistämiseksi on tarpeen tietää, ettei harjoitteluun menevällä opiskelijalla ole rikosrekisterimerkintää tietyistä vakavista rikoksista (seksuaalirikokset, tahalliset henkirikokset, törkeä pahoinpitely, törkeä ryöstö ja huumausainerikokset).</p>",
+    "prerequisite": null,
+    "exams": [
+      {
+        "type": "Valintakoe",
+        "description": "<p>Valintakokeessa on kaksi esseetehtävää ja yksi useampiosainen määrittelytehtävä. Koetta varten luettava kirja on <br> - Rossi, Paolo: Modernin tieteen synty Euroopassa. Vastapaino 2010 (2. painos 2013)</p>\n<p>Jokaisesta vastauksesta voi saada 0–10 pistettä ja koko kokeesta 0–30 pistettä. Vastausten arvioimisessa kiinnitetään huomiota asiatiedon hallinnan lisäksi kykyyn asettaa ilmiöitä yhteyksiinsä, kykyyn hahmottaa kokonaisuuksia ja erottaa olennainen epäolennaisesta. Lisäksi arvioidaan taitoa esittää asiat jäsennellysti ja johdonmukaisesti.</p>",
+        "examEvents": [
+          {
+            "start": 1432188057438,
+            "end": 1432198807773,
+            "description": "sali L 6",
+            "address": {
+              "streetAddress": "Erkki Koiso-Kanttilan katu, ovi 2T",
+              "streetAddress2": null,
+              "postalCode": "90570",
+              "postOffice": "OULU"
+            },
+            "timeIncluded": true
+          }
+        ],
+        "scoreLimit": null
+      }
+    ],
+    "childRefs": [],
+    "higherEdLOSRefs": [
+      {
+        "id": "1.2.246.562.17.89980823234",
+        "asIds": null,
+        "name": "Aate- ja oppihistoria, filosofian maisteri",
+        "qualifications": ["Filosofian maisteri"],
+        "prerequisite": null,
+        "provider": null,
+        "fieldOfExpertise": null
+      },
+      {
+        "id": "1.2.246.562.17.98444340057",
+        "asIds": null,
+        "name": "Aate- ja oppihistoria, humanististen tieteiden kandidaatti",
+        "qualifications": ["Humanististen tieteiden kandidaatti"],
+        "prerequisite": null,
+        "provider": null,
+        "fieldOfExpertise": null
+      }
+    ],
+    "provider": {
+      "id": "1.2.246.562.10.55918814447",
+      "name": "Oulun yliopisto, Humanistinen tiedekunta",
+      "applicationSystemIds": [
+        "1.2.246.562.29.41854177239",
+        "1.2.246.562.29.81699301453",
+        "1.2.246.562.29.95390561488",
+        "1.2.246.562.29.173465377510"
+      ],
+      "postalAddress": {
+        "streetAddress": "PL 1000",
+        "streetAddress2": null,
+        "postalCode": "90014",
+        "postOffice": "OULUN YLIOPISTO"
+      },
+      "visitingAddress": {
+        "streetAddress": "Erkki Koiso-Kanttilan katu",
+        "streetAddress2": null,
+        "postalCode": "90570",
+        "postOffice": "OULU"
+      },
+      "webPage": "http://www.oulu.fi/hutk/",
+      "email": "opintoasiat.hutk@oulu.fi",
+      "fax": null,
+      "phone": "0294 483233",
+      "description": "<div> <div> <div> <div> <p>Suomen pohjoisimman humanistisen tiedekunnan opetus ja tutkimus kattavat historia- ja perinnetieteet, kirjallisuuden, informaatiotutkimuksen sekä kielitieteet, joihin kuuluu myös logopedia. Monipuolisessa oppiainevalikoimassa on yhteensä noin 40 oppiainetta, joista 13 voi olla tutkinnon pääaineena. Tiedekunnan pääaineita ovat arkeologia, englantilainen, germaaninen ja pohjoismainen filologia, historia, informaatiotutkimus, kirjallisuus, kulttuuriantropologia, logopedia ja suomen kieli. Lisäksi humanistisessa tiedekunnassa voi ainoana Suomessa opiskella pääaineena aate- ja oppihistoriaa. Erityisenä valtakunnallisena tehtävänä on saamen kielen ja saamelaisen kulttuurin opetus ja tutkimus, joita hoitaa tiedekunnassa Giellagas-instituutti. Koulutustarjontaan kuuluu myös kaksivuotinen tiedeviestinnän maisteriohjelma (TIEMA).</p> <p>Humanistisen tiedekunnan tarjoama koulutus on korkealaatuista, oppimiskeskeistä ja uudistumiskykyistä. Siinä korostuu opiskelijoiden aktiivinen rooli. Opiskelijat voivat rakentaa oman tutkintonsa varsin vapaasti, ja sitä tuetaan systemaattisella, koko opintoajan kestävällä ohjauksella. Tavoitteena on kouluttaa kielen, kulttuurin ja historian alan asiantuntijoita, joiden saama koulutus takaa hyvät perusvalmiudet työelämään sijoittumiselle.</p> </div> </div> </div> </div>",
+      "healthcare": "<p><a href=\"http://www.yths.fi/\">Ylioppilaiden terveydenhoitosäätiö</a> YTHS tarjoaa yleisterveyden, mielenterveyden ja suunterveyden palveluja yliopisto- ja korkeakouluopiskelijoille.</p>",
+      "accessibility": "<p><strong>Erityisjärjestelyt valintakokeissa</strong></p> <p>Jos hakija aisti- tai liikuntavamman, oppimisvaikeuden tai jonkin sairauden takia tarvitsee erityisjärjestelyjä valintakokeessa, tulee hänen tehdä kirjallinen erityisjärjestelyjä koskeva hakemus. Hakemuksen liitteenä hakijan tulee toimittaa lääkärin, psykologin, puheterapeutin tai vastaavan asiantuntijalausunto, josta selviää vamman tai sairauden laatu sekä erityisjärjestelyn tarve. Hakija voi esittää hakemuksen liitteeksi myös Ylioppilastutkintolautakunnan erityisjärjestelyjä koskevan päätöksen. Tyypillisiä järjestelyjä ovat olleet esimerkiksi liikuntaesteiden poistaminen tai lisäajan järjestäminen valintakoetilanteessa. Järjestelyt vaihtelevat koulutusalasta, koulutusalan valtakunnallisesta yhteistyöstä ja kokeen luonteesta riippuen. Lue lisää tietoa valintaoppaista.</p> <p><strong>Esteetön opiskelu</strong></p> <p>Esteettömyystyössä vaikutetaan monipuolisesti opiskelun esteiden poistamiseen. Tilojen käytettävyyden ohella huomiota kiinnitetään ns. näkymättömien esteiden poistamiseeen. Näitä ovat mm. erilaiset oppimisen ongelmiin liittyvät erityiskysymykset ja mielenterveyteen liittyvät esteet. Esteetöntä opiskelua tuetaan opiskeijoiden henkilökohtaisella ohjauksella sekä ohjaushenkilökunnalle suunnatulla koulutuksella.</p> <p>Lisätietoa <a href=\"http://www.oulu.fi/yliopisto/opiskelu/hyvinvointi/esteetonopiskelu\">esteettömästä opiskelusta</a>.</p>",
+      "learningEnvironment": "<p><strong>Kampukset</strong></p> <p>Oulun yliopiston pääkampusalue sijaitsee Linnanmaalla, noin viiden kilometrin päässä kaupungin keskustasta.  Yliopistossa opiskelee noin 16 000 opiskelijaa.</p> <p>Linnanmaan kampuksen lisäksi Oulun yliopistolla on kaksi muuta kampusta. Lääketieteellinen tiedekunta sekä Biokemian ja molekyylilääketieteen tiedekunta löytyvät Oulun yliopistollisen sairaalan OYSin kupeesta Kontinkankaalta. Arkkitehtuurin tiedekunta sijaitsee omalla minikampuksellaan kaupungin keskustassa, torin naapurissa.</p> <p><strong>Opiskelu aloitetaan yhdessä pienryhmissä</strong></p> <p>Oulun yliopisto järjestää kaikille uusille opiskelijoille pienryhmäohjausta. Ohjaus alkaa opintojen ensimmäisenä päivänä ja kestää intensiivisimmillään ensimmäisen opiskelusyksyn. Noin 10 hengen ryhmissä tutustutaan pienryhmäohjaajan johdolla omaan opiskelualan, tiedekunnan ja koko yliopiston käytäntöihin mutta ennen kaikkea opiskelukavereihin ja Ouluun. Näin kauempaakin muuttanut saa nopeasti uusia kavereita ja kotiutuu paitsi yliopistolle myös Ouluun.</p> <p><strong>Omaopettajat taustatukena</strong></p> <p>Joka ikiseen Oulun yliopiston tiedekunnan jokaiseen koulutusohjelmaan on nimetty omaopettaja tai useampi. Omaopettajan kanssa opiskelija voi suunnitella ja arvioida opintojensa kulkua. Omaopettaja perehdyttää oman alan opintoihin, ammatillisiin asioihin ja työelämän tärkeisiin kysymyksiin. Opiskelijat tapaavat omaopettajan joko yksin tai pienissä ryhmissä.</p> <p>Lue lisää opiskelusta <a href=\"http://www.oulu.fi/yliopisto/opiskelu\">Oulun yliopistossa</a>!</p>",
+      "dining": "<p>Korkeakoulujen perustutkinto-opiskelijat ovat oikeutettuja Kelan ateriatuettuun opiskelijaruokaan. Oulussa edullista opiskelijaruokaa on tarjolla niin Linnanmaan kuin Kontinkankaan kampuksilla sekä keskustassa.</p> <p>Opiskelijahintaisen aterian saa voimassa olevaa opiskelijakorttia tai Kelan ateriatukikorttia näyttämällä. Oulun yliopiston kampuksilla ravintolatoimintaa harjoittavat Uniresta ja Sodexho (Kontinkangas). Ravintolatoimijoista Uniresta on oululaisten opiskelijoiden omistama yritys, joka jatkaa nykyisin Ylioppilasapu ry:n 50 vuotta vanhaa opiskelijaruokailuperinnettä. Unirestasta lisää ja esimerkiksi päivittäiset ruokalistat löytyvät <a href=\"http://www.uniresta.fi\">täältä</a>. </p>",
+      "livingExpenses": null,
+      "living": "<div> <div> <div> <div>Psoas eli <a title=\"PSOAS\" href=\"http://www.psoas.fi/\">Pohjois-Suomen opiskelija-asuntosäätiö</a> on Oulussa opiskelijan oma asunnonvuokraaja. Sillä on tarjota lähes 5 300 asuntoa eri puolilla kaupunkia. Valittavana on niin kimppa- eli soluasuntoja, yksiöitä kuin perheasuntoja. Kaikissa asunnoissa on kiinteä Internet-yhteys. Yksityiset vuokramarkkinat ovat Oulussa myös hyvät: asuntoja on tarjolla mukavasti toisin kuin monissa muissa suurissa opiskelijakaupungeissa. Hieno uutinen on myös se, etteivät vuokrahinnat ole karanneet Oulussa käsistä.</div> <div> </div> <div> </div> </div> </div> </div>",
+      "yearClock": "<p>Yliopistolain mukaan lukuvuosi alkaa 1. päivänä elokuuta ja päättyy 31. päivänä heinäkuuta. Käytännössä opinnot perustutkinnoissa alkavat tiedekuntien ilmoittamana ajankohtana, yleisimmin syyskuun alussa ja päättyvät toukokuussa.</p> <p>Opetusta annetaan opetussuunnitelmissa määrättyinä ajanjaksoina. Lukuvuodessa on kaksi lukukautta: syys- ja kevätlukukausi. Oulun yliopistossa ovat käytössä opetusperiodit, joita voi tiedekunnasta riippuen olla 2, 3, 4 tai 6 lukuvuodessa. Koulutuksen johtosäännön mukaan kesäkuun 1. päivän ja elokuun 31. päivän välisenä aikana on varattava vähintään kuukauden pituinen ajanjakso, jona perustutkinto-opetusta ei anneta.</p> <p>Opetusperiodien ulkopuolella, touko-elokuussa, tutkintoon kuuluvia opintoja on mahdollista suorittaa myös <a href=\"http://www.oulu.fi/yliopisto/kesaopinnot/\">kesäopintoina</a>.</p> <p>Kesän ohella muita yleisiä opetuksessa olevia taukoja ovat joulu (~ 20.12. - 7.1.), pääsiäinen ja vappu (~ 30.4. - 1.5.). Muita mahdollisia taukoja opetuksessa voivat olla hiihto- (vko 10) ja syyslomaviikot (vko 43).</p> <p>Perustietoa <a title=\"Perustietoa yliopisto-opiskelusta\" href=\"http://www.oulu.fi/yliopisto/opiskelu/perustietoa-yliopisto-opiskelusta\">yliopisto-opiskelusta.</a></p>",
+      "financingStudies": "<p>Kelan ja yliopistojen tekemillä sopimuksilla Oulun yliopisto-opiskelijoiden opintotukiasioista vastaa Oulun yliopiston opintotukilautakunta. Opintotuki koostuu opintorahasta, asumislisästä ja opintolainan valtiontakauksesta.</p> <p>Lisätietoa <a href=\"http://www.oulu.fi/yliopisto/opiskelu/opintojen-tueksi/opintotuki\">opintotuesta.</a></p>",
+      "insurances": null,
+      "leisureServices": null,
+      "social": [
+        {
+          "name": "facebook",
+          "url": "https://www.facebook.com/oulunyliopisto?v=wall"
+        },
+        {
+          "name": "linked_in",
+          "url": "http://www.linkedin.com/company/university-of-oulu"
+        },
+        {
+          "name": "twitter",
+          "url": "https://twitter.com/UniOulu"
+        },
+        {
+          "name": "muu",
+          "url": "http://www.youtube.com/user/UniversityOfOulu"
+        }
+      ],
+      "pictureFound": false,
+      "athleteEducation": false,
+      "applicationOffice": {
+        "name": "Hakijapalvelut",
+        "phone": "029 448 4035",
+        "email": "hakijapalvelut@oulu.fi",
+        "www": "http://www.oulu.fi/yliopisto/haeopiskelijaksi/hakeminen",
+        "visitingAddress": {
+          "streetAddress": "Erkki Koiso-Kanttilan katu, ovi 2T",
+          "streetAddress2": null,
+          "postalCode": "90540",
+          "postOffice": "OULU"
+        },
+        "postalAddress": {
+          "streetAddress": "PL 8100",
+          "streetAddress2": null,
+          "postalCode": "90014",
+          "postOffice": "OULUN YLIOPISTO"
+        }
+      },
+      "homeplace": "Oulu"
+    },
+    "specificApplicationDates": false,
+    "applicationStartDate": 1424354948626,
+    "applicationEndDate": 1428580845519,
+    "applicationPeriodName": "Hakuaika 2",
+    "canBeApplied": true,
+    "nextApplicationPeriodStarts": null,
+    "requiredBaseEducations": ["pohjakoulutusvaatimuskorkeakoulut_123"],
+    "attachments": null,
+    "emphasizedSubjects": null,
+    "additionalInfo": "<p>Kaikki tiedot tulee tarkistaa humanistisen tiedekunnan <a href=\"http://www.oulu.fi/hutk/hakeminen\">valintaoppaasta</a>.</p>\n<p>Valintaoppaassa on tärkeitä hakemiseen ja valintakokeisiin liittyviä tietoja ja ohjeita.</p>\n<p>Tässä ilmoitettu, myöhemmin mahdollisesti muuttunut tieto ei voi olla perusteena esimerkiksi oikaisupyynnön tekemiselle.</p>",
+    "additionalProof": null,
+    "overallScoreLimit": null,
+    "kaksoistutkinto": false,
+    "athleteEducation": false,
+    "vocational": false,
+    "educationCodeUri": "koulutus_726301",
+    "status": null,
+    "eligibilityDescription": null,
+    "type": "KORKEAKOULU",
+    "educationTypeUri": null,
+    "hakuaikaId": "220207",
+    "organizationGroups": [
+      {
+        "oid": "1.2.246.562.28.20907706740",
+        "prioriteetti": 1,
+        "usageGroups": ["hakukohde_priorisoiva"],
+        "groupTypes": ["hakukohde"]
+      }
+    ],
     "kotitalous": false
   }
 }

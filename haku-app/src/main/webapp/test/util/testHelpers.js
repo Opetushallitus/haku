@@ -227,16 +227,36 @@ function postAsForm(path, params) {
     });
 }
 
-function post(url, data) {
+function get(url) {
     return function() {
         return frameJquery().then(function($) {
             var deferred = Q.defer();
-            $.post(url, data, function(data, status) {
+            $.get(url, function(data, status) {
                 if (status === 'success') {
                     deferred.resolve(data)
                 } else {
-                    deferred.reject("post got status " + status)
+                    deferred.reject("get got status " + status)
                 }
+            });
+            return deferred.promise
+        })
+    }
+}
+
+function post(url, data, contentType) {
+    contentType = contentType || 'application/x-www-form-urlencoded';
+    return function() {
+        return frameJquery().then(function($) {
+            var deferred = Q.defer();
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: contentType === 'application/json' ? JSON.stringify(data) : data,
+                contentType: contentType
+            }).done(function(data) {
+                deferred.resolve(data)
+            }).fail(function(jqXHR, status) {
+                deferred.reject("post got status " + status)
             });
             return deferred.promise
         })
@@ -274,6 +294,45 @@ function logout() {
     })();
 }
 
+// Enforce login to get authorized JSESSIONID cookie
+function login(username, password) {
+    if (username === undefined || password === undefined) {
+        throw new Error("Must give username and password for login");
+    }
+    return function() {
+        return seq(
+            logout,
+            openPage("/haku-app/user/login", function() {
+                return testFrame().document.getElementById('loginForm') !== null;
+            }),
+            function() {
+                function elementByName(name) {
+                    return testFrame().document.getElementsByName(name)[0];
+                }
+                elementByName("j_username").value = username;
+                elementByName("j_password").value = password;
+                elementByName("login").click();
+            },
+            wait.until(function() {
+                var pathname = testFrame().document.location.pathname;
+                // Page redirection depends on credentials
+                return (pathname === "/haku-app/virkailija/hakemus"
+                    || pathname === "/haku-app/user/login");
+            }));
+    }
+}
+
+function setupGroupConfiguration(applicationSystemId, groupId, type, configurations) {
+    var resource = "/haku-app/application-system-form-editor/configuration";
+    return function() {
+        return seq(
+            get(resource + "/" + applicationSystemId),
+            post(resource + "/" + applicationSystemId + "/groupConfiguration/" + groupId,
+                {groupId: groupId, type: type, configurations: configurations},
+                'application/json'))
+    }
+}
+
 function takeScreenshot() {
     if (window.callPhantom) {
         var date = new Date()
@@ -294,6 +353,19 @@ function takeScreenshot() {
         })
     }
 })();
+
+function sleep(ms) {
+    return function() {
+        return Q.delay(ms);
+    }
+}
+
+function log(marker) {
+    return function(arg) {
+        console.log(marker, arg);
+        return arg;
+    }
+}
 
 
 function wrap(elementDefinition) {
@@ -389,6 +461,15 @@ function exists(fn) {
     })
 }
 
+function notExists(fn) {
+    if (typeof(fn) !== 'function') {
+        throw new Error('notExists() got a non-function');
+    }
+    return wait.until(function() {
+        return fn().length === 0;
+    });
+}
+
 function seq(/* ...promises */) {
     return Array.prototype.slice.call(arguments).reduce(Q.when, Q());
 }
@@ -444,7 +525,7 @@ function eventIsBound(fn, event) {
 
 function autocomplete(fn, partialText, suggestionChoiceText) {
     var pickFn = function() {
-        return S("a.ui-corner-all:contains(" + suggestionChoiceText + ")");
+        return S("a.ui-corner-all:visible:contains(" + suggestionChoiceText + ")");
     };
 
     return function() {

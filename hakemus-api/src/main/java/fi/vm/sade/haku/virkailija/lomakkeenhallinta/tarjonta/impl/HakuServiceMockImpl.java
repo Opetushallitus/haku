@@ -108,6 +108,7 @@ public class HakuServiceMockImpl implements HakuService {
                 .setApplicationPeriods(Lists.newArrayList(new ApplicationPeriod(getDate(-100), getDate(1000))))
                 .setHakukausiUri(HAKUKAUSI_SYKSY)
                 .setHakukausiVuosi(2014)
+                .setUsePriorities(true)
                 .setApplicationSystemType(HAKUTYYPPI_VARSINAINEN_HAKU)
                 .setHakutapa(HAKUTAPA_YHTEISHAKU)
                 .setMaxApplicationOptions(5)

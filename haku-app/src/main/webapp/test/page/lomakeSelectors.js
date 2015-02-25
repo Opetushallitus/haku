@@ -12,12 +12,14 @@ function lomakeSelectors() {
         hetu: "input#Henkilotunnus",
         sukupuoli: "input#sukupuoli",
         sukupuoliLabel: "span#sex",
+        asuinmaa: "select#asuinmaa",
         lahiosoite: "input#lahiosoite",
         postinumero: "input#Postinumero",
         kotikunta: "select#kotikunta",
         kaksoiskansalaisuus: function(onKaksoiskansalaisuus) {
             return "input#onkosinullakaksoiskansallisuus[value=" + onKaksoiskansalaisuus + "]";
         },
+        koulusivistyskieli: "select#koulusivistyskieli",
 
         // Koulutustausta
         pkPaattotodistusVuosi : "input#PK_PAATTOTODISTUSVUOSI",
@@ -36,10 +38,23 @@ function lomakeSelectors() {
         pohjakoulutus : function(koulutus) {
             return "input[name=POHJAKOULUTUS][value="+koulutus+"]";
         },
+        pohjakoulutusMuu: 'input#pohjakoulutus_muu',
+        pohjakoulutusMuuVuosi: 'input#pohjakoulutus_muu_vuosi',
+        pohjakoulutusMuuKuvaus: 'textarea#pohjakoulutus_muu_kuvaus',
+        suoritusoikeusTaiAiempiTutkinto: function(bool) {
+            return "input[type=radio][id=suoritusoikeus_tai_aiempi_tutkinto][value=" + bool + "]";
+        },
+        koulutusError: function(n) {
+            return "#preference" + n + "-Koulutus-error";
+        },
 
         // Hakutoiveet
-        opetuspiste1: "input#preference1-Opetuspiste",
-        koulutus1: "select#preference1-Koulutus",
+        opetuspiste: function(n) {
+            return "input#preference" + n + "-Opetuspiste";
+        },
+        koulutus: function(n) {
+            return "select#preference" + n + "-Koulutus";
+        },
         fromKoulutustausta: "button[class=right][value=hakutoiveet][name=phaseId]:first",
         harkinnanvaraisuus1: function(harkinnanvaraisuus) {
             return "input#preference1-discretionary[value=" + harkinnanvaraisuus + "]";
@@ -52,6 +67,12 @@ function lomakeSelectors() {
         },
         urheilija1: function(value) {
             return "input#preference1_urheilijan_ammatillisen_koulutuksen_lisakysymys[value=" + value + "]";
+        },
+        nuoliAlas: function(n) {
+            return "button.down[data-id=preference" + n + "]";
+        },
+        nuoliYlos: function(n) {
+            return "button.up[data-id=preference" + n + "]";
         },
 
         // Osaaminen

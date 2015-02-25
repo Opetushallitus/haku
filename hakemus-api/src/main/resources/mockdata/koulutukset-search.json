@@ -164,5 +164,136 @@
       "vocational": true,
       "educationCodeUri": "koulutus_222222"
     }
+  ],
+  "1.2.246.562.10.55918814447": [
+    {
+      "id": "1.2.246.562.20.74195328591",
+      "name": "Aate- ja oppihistoria, humanististen tieteiden kandidaatti ja filosofian maisteri",
+      "aoIdentifier": null,
+      "educationDegree": "koulutusasteoph2002_72",
+      "childLONames": [],
+      "sora": false,
+      "teachingLanguages": ["FI"],
+      "teachingLanguageNames": [],
+      "athleteEducation": false,
+      "kaksoistutkinto": false,
+      "vocational": false,
+      "educationCodeUri": "koulutus_726301",
+      "organizationGroups": [
+        {
+          "oid": "1.2.246.562.28.20907706740",
+          "prioriteetti": 1,
+          "usageGroups": ["hakukohde_priorisoiva"],
+          "groupTypes": ["hakukohde"]
+        }
+      ],
+      "attachments": null
+    }
+  ],
+  "1.2.246.562.10.62355244518": [
+    {
+      "id": "1.2.246.562.20.90095786571",
+      "name": "Agrolog (YH)/Miljöplanerare (YH)/Skogsbruksingenjör (YH), dagstudier",
+      "aoIdentifier": null,
+      "educationDegree": "koulutusasteoph2002_62",
+      "childLONames": [],
+      "sora": false,
+      "teachingLanguages": ["SV"],
+      "teachingLanguageNames": [],
+      "athleteEducation": false,
+      "kaksoistutkinto": false,
+      "vocational": false,
+      "educationCodeUri": "koulutus_661301",
+      "organizationGroups": [
+        {
+          "oid": "1.2.246.562.28.20907706740",
+          "prioriteetti": 2,
+          "usageGroups": ["hakukohde_priorisoiva"],
+          "groupTypes": ["hakukohde"]
+        },
+        {
+          "oid": "1.2.246.562.28.68186477204",
+          "prioriteetti": null,
+          "usageGroups": ["yleinen"],
+          "groupTypes": ["hakukohde"]
+        }
+      ],
+      "attachments": null
+    }
+  ],
+  "1.2.246.562.10.61397511793": [
+    {
+      "id": "1.2.246.562.20.17389359211",
+      "name": "Afrikan ja Lähi-idän tutkimus, humanististen tieteiden kandidaatti ja filosofian maisteri",
+      "aoIdentifier": null,
+      "educationDegree": "koulutusasteoph2002_72",
+      "childLONames": [],
+      "sora": false,
+      "teachingLanguages": [
+        "EN",
+        "FI"
+      ],
+      "teachingLanguageNames": [],
+      "athleteEducation": false,
+      "kaksoistutkinto": false,
+      "vocational": false,
+      "educationCodeUri": "koulutus_726402",
+      "organizationGroups": [
+        {
+          "oid": "1.2.246.562.28.20907706740",
+          "prioriteetti": null,
+          "usageGroups": ["hakukohde_priorisoiva"],
+          "groupTypes": ["hakukohde"]
+        },
+        {
+          "oid": "1.2.246.562.28.40142428048",
+          "prioriteetti": null,
+          "usageGroups": ["yleinen"],
+          "groupTypes": ["hakukohde"]
+        },
+        {
+          "oid": "1.2.246.562.28.13841322666",
+          "prioriteetti": null,
+          "usageGroups": ["hakukohde_rajaava"],
+          "groupTypes": ["hakukohde"]
+        }
+      ],
+      "attachments": null
+    },
+    {
+      "id": "1.2.246.562.20.53014649395",
+      "name": "Aasian tutkimus, humanististen tieteiden kandidaatti ja filosofian maisteri",
+      "aoIdentifier": null,
+      "educationDegree": "koulutusasteoph2002_72",
+      "childLONames": [],
+      "sora": false,
+      "teachingLanguages": ["FI"],
+      "teachingLanguageNames": [],
+      "athleteEducation": false,
+      "kaksoistutkinto": false,
+      "vocational": false,
+      "educationCodeUri": "koulutus_726403",
+      "organizationGroups": [
+        {
+          "oid": "1.2.246.562.28.40142428048",
+          "prioriteetti": null,
+          "usageGroups": ["yleinen"],
+          "groupTypes": ["hakukohde"]
+        },
+        {
+          "oid": "1.2.246.562.28.11833727906",
+          "prioriteetti": null,
+          "usageGroups": ["hakukohde_rajaava"],
+          "groupTypes": ["hakukohde"]
+        },
+        {
+          "oid": "1.2.246.562.28.20907706740",
+          "prioriteetti": null,
+          "usageGroups": ["hakukohde_priorisoiva"],
+          "groupTypes": ["hakukohde"]
+        }
+      ],
+      "attachments": null
+    }
   ]
 }
