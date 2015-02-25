@@ -466,7 +466,7 @@ function seq(/* ...promises */) {
 function seqDone(/* ...promises */) {
     var promiseArgs = arguments;
     return function(done) {
-        return seq.apply(this, promiseArgs)().then(done, done);
+        return seq.apply(this, promiseArgs)().then(function() { return done(); }, done);
     }
 }
 
