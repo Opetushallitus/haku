@@ -1,15 +1,14 @@
 (function () {
-    function start() {
-        return logout().then(function() {
-            return openPage("/haku-app/lomakkeenhallinta/1.2.246.562.5.50476818906", function() {
-                return S("form#form-henkilotiedot").first().is(':visible')
-            })()
-        });
-    }
+    var start = seq(
+        logout,
+        openPage("/haku-app/lomakkeenhallinta/1.2.246.562.5.50476818906", function() {
+            return S("form#form-henkilotiedot").first().is(':visible')
+        }));
 
     describe('2. asteen lomake', function () {
         describe("Täytä lomake", function() {
-            beforeEach(seqDone(start,
+            beforeEach(seqDone(
+                start,
                 henkilotiedotTestikaes(),
                 pageChange(lomake.fromHenkilotiedot),
                 headingVisible("Koulutustausta"),
