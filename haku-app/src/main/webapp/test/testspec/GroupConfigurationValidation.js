@@ -47,6 +47,15 @@ describe('GroupConfiguration', function () {
         }));
     }
 
+    function tarkistaVirheetJarjestyksessa() {
+        return seq.apply(this, Array.prototype.slice.call(arguments).map(function(e, i) {
+            if (e === null) {
+                return notExists(lomake.koulutusError(i + 1));
+            }
+            return visibleText(lomake.koulutusError(i + 1),  e)
+        }));
+    }
+
     var rajaavuusError = "Liian monta hakukohdetta valittu samasta ryhmästä.";
 
     function priorityErrorTemplate(a, b) {
@@ -83,8 +92,9 @@ describe('GroupConfiguration', function () {
                 aasia,
                 afrikka),
             pageChange(lomake.fromHakutoiveet),
-            visibleText(lomake.koulutusError(1), rajaavuusError),
-            visibleText(lomake.koulutusError(2), rajaavuusError)
+            tarkistaVirheetJarjestyksessa(
+                rajaavuusError,
+                rajaavuusError)
         ));
 
         it('rajaamaton jatkaa seuraavaan vaiheeseen', seqDone(
@@ -126,9 +136,10 @@ describe('GroupConfiguration', function () {
                 raasepori,
                 afrikka),
             pageChange(lomake.fromHakutoiveet),
-            visibleText(lomake.koulutusError(1), priorityErrorTemplate(afrikkaKoulutus, aasiaKoulutus)),
-            visibleText(lomake.koulutusError(2), priorityErrorTemplate(raaseporiKoulutus, aasiaKoulutus)),
-            visibleText(lomake.koulutusError(3), priorityErrorTemplate(afrikkaKoulutus, aasiaKoulutus))
+            tarkistaVirheetJarjestyksessa(
+                priorityErrorTemplate(afrikkaKoulutus, aasiaKoulutus),
+                priorityErrorTemplate(raaseporiKoulutus, aasiaKoulutus),
+                priorityErrorTemplate(afrikkaKoulutus, aasiaKoulutus))
         ));
 
         it('väärä järjestys tuottaa virheet', seqDone(
@@ -136,8 +147,9 @@ describe('GroupConfiguration', function () {
                 afrikka,
                 raasepori),
             pageChange(lomake.fromHakutoiveet),
-            visibleText(lomake.koulutusError(1), priorityErrorTemplate(raaseporiKoulutus, afrikkaKoulutus)),
-            visibleText(lomake.koulutusError(2), priorityErrorTemplate(raaseporiKoulutus, afrikkaKoulutus))
+            tarkistaVirheetJarjestyksessa(
+                priorityErrorTemplate(raaseporiKoulutus, afrikkaKoulutus),
+                priorityErrorTemplate(raaseporiKoulutus, afrikkaKoulutus))
         ));
 
         it('väärän järjestyksen voi korjata alas-nuolella', seqDone(
@@ -145,11 +157,13 @@ describe('GroupConfiguration', function () {
                 afrikka,
                 raasepori),
             pageChange(lomake.fromHakutoiveet),
-            visibleText(lomake.koulutusError(1), priorityErrorTemplate(raaseporiKoulutus, afrikkaKoulutus)),
-            visibleText(lomake.koulutusError(2), priorityErrorTemplate(raaseporiKoulutus, afrikkaKoulutus)),
+            tarkistaVirheetJarjestyksessa(
+                priorityErrorTemplate(raaseporiKoulutus, afrikkaKoulutus),
+                priorityErrorTemplate(raaseporiKoulutus, afrikkaKoulutus)),
             click(lomake.nuoliAlas(1)),
-            notExists(lomake.koulutusError(1)),
-            notExists(lomake.koulutusError(2)),
+            tarkistaVirheetJarjestyksessa(
+                null,
+                null),
             pageChange(lomake.fromHakutoiveet),
             headingVisible("Osaaminen")
         ));
@@ -159,11 +173,13 @@ describe('GroupConfiguration', function () {
                 afrikka,
                 raasepori),
             pageChange(lomake.fromHakutoiveet),
-            visibleText(lomake.koulutusError(1), priorityErrorTemplate(raaseporiKoulutus, afrikkaKoulutus)),
-            visibleText(lomake.koulutusError(2), priorityErrorTemplate(raaseporiKoulutus, afrikkaKoulutus)),
+            tarkistaVirheetJarjestyksessa(
+                priorityErrorTemplate(raaseporiKoulutus, afrikkaKoulutus),
+                priorityErrorTemplate(raaseporiKoulutus, afrikkaKoulutus)),
             click(lomake.nuoliYlos(2)),
-            notExists(lomake.koulutusError(1)),
-            notExists(lomake.koulutusError(2)),
+            tarkistaVirheetJarjestyksessa(
+                null,
+                null),
             pageChange(lomake.fromHakutoiveet),
             headingVisible("Osaaminen")
         ));
@@ -179,9 +195,10 @@ describe('GroupConfiguration', function () {
                 raasepori,
                 afrikka),
             pageChange(lomake.fromHakutoiveet),
-            visibleText(lomake.koulutusError(1), priorityErrorTemplate(afrikkaKoulutus, ouluKoulutus)),
-            visibleText(lomake.koulutusError(2), priorityErrorTemplate(raaseporiKoulutus, ouluKoulutus)),
-            visibleText(lomake.koulutusError(3), priorityErrorTemplate(afrikkaKoulutus, ouluKoulutus))
+            tarkistaVirheetJarjestyksessa(
+                priorityErrorTemplate(afrikkaKoulutus, ouluKoulutus),
+                priorityErrorTemplate(raaseporiKoulutus, ouluKoulutus),
+                priorityErrorTemplate(afrikkaKoulutus, ouluKoulutus))
         ));
 
         it('virheellinen toinen ryhmä', seqDone(
@@ -190,8 +207,10 @@ describe('GroupConfiguration', function () {
                 afrikka,
                 aasia),
             pageChange(lomake.fromHakutoiveet),
-            visibleText(lomake.koulutusError(1), priorityErrorTemplate(aasiaKoulutus, raaseporiKoulutus)),
-            visibleText(lomake.koulutusError(3), priorityErrorTemplate(aasiaKoulutus, raaseporiKoulutus))
+            tarkistaVirheetJarjestyksessa(
+                priorityErrorTemplate(aasiaKoulutus, raaseporiKoulutus),
+                null,
+                priorityErrorTemplate(aasiaKoulutus, raaseporiKoulutus))
         ));
 
         it('virheelliset molemmat ryhmät', seqDone(
@@ -200,9 +219,10 @@ describe('GroupConfiguration', function () {
                 raasepori,
                 aasia),
             pageChange(lomake.fromHakutoiveet),
-            visibleText(lomake.koulutusError(1), priorityErrorTemplate(raaseporiKoulutus, afrikkaKoulutus)),
-            visibleText(lomake.koulutusError(2), priorityErrorTemplate(aasiaKoulutus, raaseporiKoulutus)),
-            visibleText(lomake.koulutusError(3), priorityErrorTemplate(aasiaKoulutus, raaseporiKoulutus))
+            tarkistaVirheetJarjestyksessa(
+                priorityErrorTemplate(raaseporiKoulutus, afrikkaKoulutus),
+                priorityErrorTemplate(aasiaKoulutus, raaseporiKoulutus),
+                priorityErrorTemplate(aasiaKoulutus, raaseporiKoulutus))
         ));
 
         it('oikeat molemmat ryhmät', seqDone(
@@ -245,9 +265,10 @@ describe('GroupConfiguration', function () {
                 raasepori,
                 aasia),
             pageChange(lomake.fromHakutoiveet),
-            visibleText(lomake.koulutusError(1), priorityErrorTemplate(raaseporiKoulutus, afrikkaKoulutus)),
-            visibleText(lomake.koulutusError(2), priorityErrorTemplate(raaseporiKoulutus, afrikkaKoulutus)),
-            visibleText(lomake.koulutusError(3), rajaavuusError)
+            tarkistaVirheetJarjestyksessa(
+                priorityErrorTemplate(raaseporiKoulutus, afrikkaKoulutus),
+                priorityErrorTemplate(raaseporiKoulutus, afrikkaKoulutus),
+                rajaavuusError)
         ));
         it('virheellinen rajaus', seqDone(
             syotaJarjestyksessa(
@@ -255,9 +276,10 @@ describe('GroupConfiguration', function () {
                 afrikka,
                 aasia),
             pageChange(lomake.fromHakutoiveet),
-            notExists(lomake.koulutusError(1)),
-            visibleText(lomake.koulutusError(2), rajaavuusError),
-            visibleText(lomake.koulutusError(3), rajaavuusError)
+            tarkistaVirheetJarjestyksessa(
+                null,
+                rajaavuusError,
+                rajaavuusError)
         ));
 
         it('virheellinen priorisointi', seqDone(
@@ -266,9 +288,10 @@ describe('GroupConfiguration', function () {
                 raasepori,
                 oulu),
             pageChange(lomake.fromHakutoiveet),
-            visibleText(lomake.koulutusError(1), priorityErrorTemplate(raaseporiKoulutus, afrikkaKoulutus)),
-            visibleText(lomake.koulutusError(2), priorityErrorTemplate(raaseporiKoulutus, afrikkaKoulutus)),
-            notExists(lomake.koulutusError(3))
+            tarkistaVirheetJarjestyksessa(
+                priorityErrorTemplate(raaseporiKoulutus, afrikkaKoulutus),
+                priorityErrorTemplate(raaseporiKoulutus, afrikkaKoulutus),
+                null)
         ));
 
         it('oikea rajaus ja priorisointi', seqDone(
