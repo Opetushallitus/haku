@@ -62,14 +62,22 @@ describe('GroupConfiguration', function () {
         return "Hakukohde " + a + " tulee olla korkeammalla prioriteetilla kuin hakukohteen " + b + ". Muuta prioriteettijärjestystä.";
     }
 
-    describe("hakukohteiden rajaavuuden validointi", function() {
-        before(seqDone(
+    function installGroupConfigurations(configs) {
+        return seq(
             login('master', 'master'),
-            setupGroupConfiguration("1.2.246.562.29.173465377510", "1.2.246.562.28.20907706742", "hakukohde_rajaava", {maximumNumberOf: 1}),
+            seq.apply(this, Array.prototype.slice.call(arguments).map(function(configParams) {
+                return setupGroupConfiguration.apply(this, configParams);
+            })),
             openPage("/haku-app/lomakkeenhallinta/1.2.246.562.29.173465377510", function() {
                 return S("form#form-henkilotiedot").first().is(':visible')
             })
-        ));
+        )
+    }
+
+    describe("hakukohteiden rajaavuuden validointi", function() {
+        before(seqDone(installGroupConfigurations(
+            ["1.2.246.562.29.173465377510", "1.2.246.562.28.20907706742", "hakukohde_rajaava", {maximumNumberOf: 1}]
+        )));
 
         after(seqDone(
             login('master', 'master'),
@@ -105,14 +113,10 @@ describe('GroupConfiguration', function () {
     });
 
     describe("hakukohteiden prioriteetin validointi", function() {
-        before(seqDone(
-            login('master', 'master'),
-            setupGroupConfiguration("1.2.246.562.29.173465377510", "1.2.246.562.28.20907706740", "hakukohde_priorisoiva"),
-            setupGroupConfiguration("1.2.246.562.29.173465377510", "1.2.246.562.28.20907706741", "hakukohde_priorisoiva"),
-            openPage("/haku-app/lomakkeenhallinta/1.2.246.562.29.173465377510", function() {
-                return S("form#form-henkilotiedot").first().is(':visible')
-            })
-        ));
+        before(seqDone(installGroupConfigurations(
+            ["1.2.246.562.29.173465377510", "1.2.246.562.28.20907706740", "hakukohde_priorisoiva"],
+            ["1.2.246.562.29.173465377510", "1.2.246.562.28.20907706741", "hakukohde_priorisoiva"]
+        )));
 
         after(seqDone(
             login('master', 'master'),
@@ -236,14 +240,10 @@ describe('GroupConfiguration', function () {
     });
 
     describe("hakukohteiden rajaavuuden ja priorisoinnin validointi", function() {
-        before(seqDone(
-            login('master', 'master'),
-            setupGroupConfiguration("1.2.246.562.29.173465377510", "1.2.246.562.28.20907706742", "hakukohde_rajaava", {maximumNumberOf: 1}),
-            setupGroupConfiguration("1.2.246.562.29.173465377510", "1.2.246.562.28.20907706740", "hakukohde_priorisoiva"),
-            openPage("/haku-app/lomakkeenhallinta/1.2.246.562.29.173465377510", function() {
-                return S("form#form-henkilotiedot").first().is(':visible')
-            })
-        ));
+        before(seqDone(installGroupConfigurations(
+            ["1.2.246.562.29.173465377510", "1.2.246.562.28.20907706742", "hakukohde_rajaava", {maximumNumberOf: 1}],
+            ["1.2.246.562.29.173465377510", "1.2.246.562.28.20907706740", "hakukohde_priorisoiva"]
+        )));
 
         after(seqDone(
             login('master', 'master'),
