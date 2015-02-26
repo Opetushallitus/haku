@@ -41,11 +41,14 @@
             "preference1-Opetuspiste": "FAKTIA, Espoo op",
             "preference1-Harkinnanvarainen": "false",
             "preference1-Koulutus-educationDegree": "32",
-            "preference1-Koulutus-id": "1.2 .246 .562 .14 .79893512065",
+            "preference1-Koulutus-id": "1.2.246.562.14.79893512065",
             "preference1-Opetuspiste-id": "1.2.246.562.10.89537774706",
             "preference1-Koulutus": "Kaivosalan perustutkinto, pk",
-            "preference1-Koulutus-id-aoIdentifier": "123",
-
+            "preference1-Koulutus-id-aoIdentifier": "333",
+            "preference1-Koulutus-id-educationcode": "koulutus_381203",
+            "preference1_sora_terveys": "false",
+            "preference1_sora_oikeudenMenetys": "false",
+            
             "preference2-Opetuspiste-id": "",
             "preference2-Koulutus-educationDegree": "",
             "preference2-Opetuspiste": "",
@@ -65,10 +68,10 @@
             "preference5-Koulutus-id": "",
             "preference5-Koulutus-educationDegree": "",
 
-            "1_2_246_562_14_79893512065 _additional_question_3": "q3_option_1",
+            "1_2_246_562_14_79893512065_additional_question_3": "q3_option_1",
             "preference4-Koulutus-educationDegree": "",
-            "1_2_246_562_14_79893512065 _additional_question_2": "q2_option_1",
-            "1_2_246_562_14_79893512065 _additional_question_1": "q1_option_1",
+            "1_2_246_562_14_79893512065_additional_question_2": "q2_option_1",
+            "1_2_246_562_14_79893512065_additional_question_1": "q1_option_1",
             "phaseId": "osaaminen"
         },
         "osaaminen": {
