@@ -191,6 +191,12 @@
           "prioriteetti": 2,
           "usageGroups": ["hakukohde_priorisoiva"],
           "groupTypes": ["hakukohde"]
+        },
+        {
+          "oid": "1.2.246.562.28.00000000003",
+          "prioriteetti": null,
+          "usageGroups": ["hakukohde_rajaava"],
+          "groupTypes": ["hakukohde"]
         }
       ],
       "attachments": null
@@ -227,6 +233,18 @@
           "oid": "1.2.246.562.28.68186477204",
           "prioriteetti": null,
           "usageGroups": ["yleinen"],
+          "groupTypes": ["hakukohde"]
+        },
+        {
+          "oid": "1.2.246.562.28.00000000002",
+          "prioriteetti": null,
+          "usageGroups": ["hakukohde_rajaava"],
+          "groupTypes": ["hakukohde"]
+        },
+        {
+          "oid": "1.2.246.562.28.00000000003",
+          "prioriteetti": null,
+          "usageGroups": ["hakukohde_rajaava"],
           "groupTypes": ["hakukohde"]
         }
       ],
@@ -265,6 +283,18 @@
         },
         {
           "oid": "1.2.246.562.28.20907706742",
+          "prioriteetti": null,
+          "usageGroups": ["hakukohde_rajaava"],
+          "groupTypes": ["hakukohde"]
+        },
+        {
+          "oid": "1.2.246.562.28.00000000001",
+          "prioriteetti": null,
+          "usageGroups": ["hakukohde_rajaava"],
+          "groupTypes": ["hakukohde"]
+        },
+        {
+          "oid": "1.2.246.562.28.00000000002",
           "prioriteetti": null,
           "usageGroups": ["hakukohde_rajaava"],
           "groupTypes": ["hakukohde"]
@@ -308,6 +338,12 @@
           "oid": "1.2.246.562.28.20907706741",
           "prioriteetti": 1,
           "usageGroups": ["hakukohde_priorisoiva"],
+          "groupTypes": ["hakukohde"]
+        },
+        {
+          "oid": "1.2.246.562.28.00000000001",
+          "prioriteetti": null,
+          "usageGroups": ["hakukohde_rajaava"],
           "groupTypes": ["hakukohde"]
         }
       ],

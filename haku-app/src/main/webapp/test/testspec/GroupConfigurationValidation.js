@@ -112,6 +112,57 @@ describe('GroupConfiguration', function () {
         ));
     });
 
+    describe("hakukohteiden lomittaisen rajaavuuden validointi", function() {
+        before(seqDone(installGroupConfigurations(
+            ["1.2.246.562.29.173465377510", "1.2.246.562.28.00000000001", "hakukohde_rajaava", {maximumNumberOf: 1}],
+            ["1.2.246.562.29.173465377510", "1.2.246.562.28.00000000002", "hakukohde_rajaava", {maximumNumberOf: 1}],
+            ["1.2.246.562.29.173465377510", "1.2.246.562.28.00000000003", "hakukohde_rajaava", {maximumNumberOf: 1}]
+        )));
+
+        after(seqDone(
+            login('master', 'master'),
+            teardownGroupConfiguration("1.2.246.562.29.173465377510", "1.2.246.562.28.00000000001", "hakukohde_rajaava"),
+            teardownGroupConfiguration("1.2.246.562.29.173465377510", "1.2.246.562.28.00000000002", "hakukohde_rajaava"),
+            teardownGroupConfiguration("1.2.246.562.29.173465377510", "1.2.246.562.28.00000000003", "hakukohde_rajaava")
+        ));
+
+        beforeEach(prefill);
+
+        // RAJAAVUUS *01, max 1: aasia,     afrikka
+        // RAJAAVUUS *02, max 1: raasepori, afrikka
+        // RAJAAVUUS *03, max 1: raasepori, oulu
+        it('tasamäärä ei-lomittaisista ryhmistä jatkaa seuraavaan vaiheeseen', seqDone(
+            syotaJarjestyksessa(
+                aasia,
+                raasepori),
+            pageChange(lomake.fromHakutoiveet),
+            headingVisible("Osaaminen")
+        ));
+
+        it('yli maksimimäärä lomittaisesta ryhmästä tuottaa virheen kaikkiin', seqDone(
+            syotaJarjestyksessa(
+                aasia,
+                afrikka,
+                raasepori),
+            pageChange(lomake.fromHakutoiveet),
+            tarkistaVirheetJarjestyksessa(
+                rajaavuusError,
+                rajaavuusError,
+                rajaavuusError)
+        ));
+
+        it('yli maksimimäärä yhdestä ryhmästä tuottaa virheen vain ryhmäläisille', seqDone(
+            syotaJarjestyksessa(
+                aasia,
+                afrikka,
+                oulu),
+            pageChange(lomake.fromHakutoiveet),
+            tarkistaVirheetJarjestyksessa(
+                rajaavuusError,
+                rajaavuusError)
+        ));
+    });
+
     describe("hakukohteiden prioriteetin validointi", function() {
         before(seqDone(installGroupConfigurations(
             ["1.2.246.562.29.173465377510", "1.2.246.562.28.20907706740", "hakukohde_priorisoiva"],
