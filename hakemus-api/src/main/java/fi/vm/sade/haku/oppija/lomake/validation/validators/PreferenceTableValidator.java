@@ -19,7 +19,6 @@ package fi.vm.sade.haku.oppija.lomake.validation.validators;
 import static com.google.common.base.Strings.isNullOrEmpty;
 
 import com.google.common.base.CharMatcher;
-import com.google.common.base.Strings;
 
 import fi.vm.sade.haku.oppija.common.koulutusinformaatio.ApplicationOptionGroup;
 import fi.vm.sade.haku.oppija.common.koulutusinformaatio.ApplicationOptionService;
@@ -67,7 +66,7 @@ public class PreferenceTableValidator implements Validator {
             String educationName = trimInput(validationInput, row.getEducationInputId());
             String learningInstitutionName = trimInput(validationInput, row.getLearningInstitutionInputId());
 
-            if (!checkOrEmptyOrAllNonEmpty(learningInstitutionId, educationId, learningInstitutionName, educationName)) {
+            if (!checkAllEmptyOrAllNonEmpty(learningInstitutionId, educationId, learningInstitutionName, educationName)) {
                 errors.put(isNullOrEmpty(educationId) ? row.getEducationInputId() : row.getLearningInstitutionInputId(),
                   i18nBundle.get("yleinen.pakollinen"));
             }
@@ -147,7 +146,7 @@ public class PreferenceTableValidator implements Validator {
         return hakukohdeSet;
     }
 
-    private boolean checkOrEmptyOrAllNonEmpty(String... strings) {
+    private boolean checkAllEmptyOrAllNonEmpty(String... strings) {
         boolean empty = isNullOrEmpty(strings[0]);
         for (String s : strings) {
             if (isNullOrEmpty(s) != empty) {
@@ -187,7 +186,9 @@ public class PreferenceTableValidator implements Validator {
      * @return true if valid, false otherwise
      */
     private boolean checkEmptyRowBeforeGivenPreference(final List<String> values, final String value) {
-        return !(!isNullOrEmpty(value) && !values.isEmpty() && (isNullOrEmpty(values.get(values.size() - 1))));
+        if (isNullOrEmpty(value) || values.isEmpty()) return true;
+        final String lastValue = values.get(values.size() - 1);
+        return !isNullOrEmpty(lastValue);
     }
 
     @Autowired
