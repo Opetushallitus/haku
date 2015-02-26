@@ -52,8 +52,8 @@ public class PreferenceTableValidator implements Validator {
 
     @Override
     public ValidationResult validate(final ValidationInput validationInput) {
-        List<String> learningInstitutions = new ArrayList<String>();
-        List<String> educations = new ArrayList<String>();
+        List<String> learningInstitutionsIds = new ArrayList<String>();
+        List<String> educationIds = new ArrayList<String>();
 
         i18nBundle = i18nBundleService.getBundle(validationInput.getApplicationSystemId());
 
@@ -71,16 +71,16 @@ public class PreferenceTableValidator implements Validator {
                   i18nBundle.get("yleinen.pakollinen"));
             }
 
-            if (!checkUnique(learningInstitutions, educations, learningInstitutionId, educationId)) {
+            if (!checkUnique(learningInstitutionsIds, educationIds, learningInstitutionId, educationId)) {
                 errors.put(row.getEducationInputId(), i18nBundle.get("hakutoiveet.duplikaatteja"));
             }
 
-            if (!checkEmptyRowBeforeGivenPreference(educations, educationId)) {
+            if (!checkEmptyRowBeforeGivenPreference(educationIds, educationId)) {
                 errors.put(table.getRows().get(i - 1).getEducationInputId(), i18nBundle.get("hakutoiveet.tyhjia"));
             }
 
-            learningInstitutions.add(learningInstitutionId);
-            educations.add(educationId);
+            learningInstitutionsIds.add(learningInstitutionId);
+            educationIds.add(educationId);
 
         }
 
