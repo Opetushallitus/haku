@@ -16,9 +16,7 @@
 
 package fi.vm.sade.haku.oppija.lomake.domain.elements.custom;
 
-import fi.vm.sade.haku.oppija.lomake.util.SpringInjector;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Question;
 import fi.vm.sade.haku.oppija.lomake.validation.GroupRestrictionValidator;
 import fi.vm.sade.haku.oppija.lomake.validation.Validator;
@@ -27,6 +25,7 @@ import org.codehaus.jackson.annotate.JsonProperty;
 import org.springframework.data.annotation.Transient;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -63,22 +62,12 @@ public class PreferenceTable extends Question {
     @Override
     @Transient
     public List<Validator> getValidators() {
-        List<Validator> listOfValidators = new ArrayList<Validator>(1);
-        listOfValidators.add(createPreferenceTableValidator());
-        return listOfValidators;
+        return (List)Arrays.asList(new PreferenceTableValidator(this));
     }
 
-    private PreferenceTableValidator createPreferenceTableValidator() {
-        List<String> learningInstitutionInputIds = new ArrayList<String>();
-        List<String> educationInputIds = new ArrayList<String>();
-        for (Element element : this.getChildren()) {
-            PreferenceRow pr = (PreferenceRow) element;
-            learningInstitutionInputIds.add(pr.getLearningInstitutionInputId());
-            educationInputIds.add(pr.getEducationInputId());
-        }
-
-        PreferenceTableValidator validator = new PreferenceTableValidator(learningInstitutionInputIds, educationInputIds, groupRestrictionValidators);
-        return validator;
+    @Transient
+    public List<PreferenceRow> getRows() {
+        return (List)getChildren();
     }
 
     public List<GroupRestrictionValidator> getGroupRestrictionValidators() {

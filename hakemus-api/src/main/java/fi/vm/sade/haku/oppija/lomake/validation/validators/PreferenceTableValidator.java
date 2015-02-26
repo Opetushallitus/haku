@@ -22,6 +22,8 @@ import fi.vm.sade.haku.oppija.common.koulutusinformaatio.ApplicationOption;
 import fi.vm.sade.haku.oppija.common.koulutusinformaatio.ApplicationOptionGroup;
 import fi.vm.sade.haku.oppija.common.koulutusinformaatio.ApplicationOptionService;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.PreferenceRow;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.PreferenceTable;
 import fi.vm.sade.haku.oppija.lomake.util.SpringInjector;
 import fi.vm.sade.haku.oppija.lomake.validation.*;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.I18nBundle;
@@ -34,23 +36,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.*;
 
 public class PreferenceTableValidator implements Validator {
-
-    private final List<String> learningInstitutionInputIds = new ArrayList<String>();
-    private final List<String> educationInputIds = new ArrayList<String>();
-    private final List<GroupRestrictionValidator> groupRestrictionValidators = new ArrayList<GroupRestrictionValidator>();
-
     private static final Logger LOGGER = LoggerFactory.getLogger(PreferenceTableValidator.class);
 
     private I18nBundleService i18nBundleService;
     private I18nBundle i18nBundle;
 
     private ApplicationOptionService applicationOptionService;
+    private PreferenceTable table;
 
-    public PreferenceTableValidator(final List<String> learningInstitutionInputIds, final List<String> educationInputIds, List<GroupRestrictionValidator> groupRestrictionValidators) {
-        Validate.isTrue(learningInstitutionInputIds.size() == educationInputIds.size());
-        this.learningInstitutionInputIds.addAll(learningInstitutionInputIds);
-        this.educationInputIds.addAll(educationInputIds);
-        this.groupRestrictionValidators.addAll(groupRestrictionValidators);
+    public PreferenceTableValidator(final PreferenceTable table) {
+        this.table = table;
         SpringInjector.injectSpringDependencies(this);
     }
 
@@ -63,9 +58,10 @@ public class PreferenceTableValidator implements Validator {
 
         final Map<String, I18nText> errors = new HashMap<String, I18nText>();
 
-        for (int i = 0; i < this.learningInstitutionInputIds.size(); ++i) {
-            String learningInstitutionInputId = learningInstitutionInputIds.get(i);
-            String educationInputId = educationInputIds.get(i);
+        for (int i = 0; i < table.getRows().size(); ++i) {
+            final PreferenceRow row = table.getRows().get(i);
+            String learningInstitutionInputId = row.getLearningInstitutionInputId();
+            String educationInputId = row.getEducationInputId();
             String learningInstitution = validationInput.getValueByKey(learningInstitutionInputId);
             learningInstitution = Strings.isNullOrEmpty(learningInstitution) ? null : CharMatcher.WHITESPACE.trimFrom(learningInstitution);
             String education = validationInput.getValueByKey(educationInputId);
@@ -81,7 +77,7 @@ public class PreferenceTableValidator implements Validator {
             }
 
             if (!checkEmptyRowBeforeGivenPreference(educations, education)) {
-                errors.put(educationInputIds.get(i - 1), i18nBundle.get("hakutoiveet.tyhjia"));
+                errors.put(table.getRows().get(i - 1).getEducationInputId(), i18nBundle.get("hakutoiveet.tyhjia"));
             }
 
             learningInstitutions.add(learningInstitution);
@@ -90,15 +86,14 @@ public class PreferenceTableValidator implements Validator {
         }
 
         errors.putAll(runGroupRestictionValidators(validationInput));
-
         return new ValidationResult(errors);
     }
 
     private Map<String, I18nText> runGroupRestictionValidators(final ValidationInput validationInput) {
         final Map<String, I18nText> errors = new HashMap<>();
-        if(!groupRestrictionValidators.isEmpty()) {
+        if(!table.getGroupRestrictionValidators().isEmpty()) {
             final Map<String, SortedSet<ApplicationOptionInfo>> groupToHakukohdeMap = mapGroupsToHakukohde(getApplicationOptionInfo(errors, validationInput));
-            for (GroupRestrictionValidator validator : groupRestrictionValidators) {
+            for (GroupRestrictionValidator validator : table.getGroupRestrictionValidators()) {
                 if (groupToHakukohdeMap.containsKey(validator.groupId)) {
                     errors.putAll(validator.validate(groupToHakukohdeMap.get(validator.groupId)));
                 }
@@ -110,14 +105,14 @@ public class PreferenceTableValidator implements Validator {
     private SortedSet<ApplicationOptionInfo> getApplicationOptionInfo(Map<String, I18nText> errors, final ValidationInput validationInput) {
         final SortedSet<ApplicationOptionInfo> aoInfos = new TreeSet<>();
 
-        for(String applicationOptionInput: educationInputIds) {
-            final String applicationOptionId = validationInput.getValueByKey(applicationOptionInput + "-id");
+        for(PreferenceRow row: table.getRows()) {
+            final String applicationOptionId = validationInput.getValueByKey(row.getEducationInputId() + "-id");
             if (!Strings.isNullOrEmpty(applicationOptionId)) {
                 try {
-                    aoInfos.add(new ApplicationOptionInfo(applicationOptionInput,  applicationOptionService.get(applicationOptionId)));
+                    aoInfos.add(new ApplicationOptionInfo(row.getEducationInputId(),  applicationOptionService.get(applicationOptionId)));
                 } catch (RuntimeException e) {
                     LOGGER.error("Error in validation:" + e.toString(), e);
-                    errors.put(applicationOptionInput, i18nBundle.get(PreferenceConcreteValidatorImpl.UNKNOWN_ERROR));
+                    errors.put(row.getEducationInputId(), i18nBundle.get(PreferenceConcreteValidatorImpl.UNKNOWN_ERROR));
                 }
             }
         }

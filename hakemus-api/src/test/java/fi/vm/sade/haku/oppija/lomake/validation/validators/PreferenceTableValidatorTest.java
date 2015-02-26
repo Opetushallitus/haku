@@ -21,6 +21,8 @@ import fi.vm.sade.haku.oppija.common.koulutusinformaatio.ApplicationOptionServic
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystemBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.PreferenceRow;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.PreferenceTable;
 import fi.vm.sade.haku.oppija.lomake.validation.GroupRestrictionValidator;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationInput;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationResult;
@@ -64,22 +66,18 @@ public class PreferenceTableValidatorTest {
         ApplicationSystem synth = new ApplicationSystemBuilder().setId("haku").setName(ElementUtil.createI18NAsIs("haku")).setHakukausiUri(OppijaConstants.HAKUKAUSI_KEVAT).setApplicationSystemType(OppijaConstants.HAKUTYYPPI_VARSINAINEN_HAKU).setHakutapa(
           OppijaConstants.HAKUTAPA_YHTEISHAKU).get();
         doReturn(i18nBundleService.getBundle(synth)).when(i18nBundleService).getBundle((String) isNull());
-        List<String> learningInstitutionInputIds = new ArrayList<String>();
-        learningInstitutionInputIds.add("li1");
-        learningInstitutionInputIds.add("li2");
-        learningInstitutionInputIds.add("li3");
-        learningInstitutionInputIds.add("li4");
-        learningInstitutionInputIds.add("li5");
-        List<String> educationInputIds = new ArrayList<String>();
-        educationInputIds.add("e1");
-        educationInputIds.add("e2");
-        educationInputIds.add("e3");
-        educationInputIds.add("e4");
-        educationInputIds.add("e5");
+
         List<GroupRestrictionValidator> groupRestrictionValidators = new ArrayList<GroupRestrictionValidator>();
         groupRestrictionValidators.add(new GroupRestrictionMaxNumberValidator("test.max.group", 2, new I18nText(maxErrors)));
         groupRestrictionValidators.add(new GroupPrioritisationValidator("test-group1", new I18nText(prioErrors)));
-        validator = new PreferenceTableValidator(learningInstitutionInputIds, educationInputIds, groupRestrictionValidators);
+
+        final PreferenceTable table = new PreferenceTable("tableid", null, false, 1000000);
+        table.setGroupRestrictionValidators(groupRestrictionValidators);
+        for (int i = 1; i <= 5; i++) {
+            table.addChild(new PreferenceRow("preference" + i, null, null, null, null, null));
+        }
+
+        validator = new PreferenceTableValidator(table);
         validator.setI18nBundleService(i18nBundleService);
         ApplicationOptionService aos = mock(ApplicationOptionService.class);
         final ApplicationOption partOfTestGroup = new ApplicationOption();
@@ -97,21 +95,21 @@ public class PreferenceTableValidatorTest {
     @Test
     public void testValidateValid() {
         Map<String, String> values = new HashMap<String, String>();
-        values.put("li1", "li1");
-        values.put("li2", "li2");
-        values.put("li3", "li3");
-        values.put("li4", "li4");
-        values.put("li5", "li5");
-        values.put("e1", "e1");
-        values.put("e2", "e2");
-        values.put("e3", "e3");
-        values.put("e4", "e4");
-        values.put("e5", "e5");
-        values.put("e1-id", "ao-with-test-group");
-        values.put("e2-id", "ao-with-test-group");
-        values.put("e3-id", "ao-with-no-test-group");
-        values.put("e4-id", "ao-with-no-test-group");
-        values.put("e5-id", "ao-with-no-test-group");
+        values.put("preference1-Opetuspiste", "li1");
+        values.put("preference2-Opetuspiste", "li2");
+        values.put("preference3-Opetuspiste", "li3");
+        values.put("preference4-Opetuspiste", "li4");
+        values.put("preference5-Opetuspiste", "li5");
+        values.put("preference1-Koulutus", "e1");
+        values.put("preference2-Koulutus", "e2");
+        values.put("preference3-Koulutus", "e3");
+        values.put("preference4-Koulutus", "e4");
+        values.put("preference5-Koulutus", "e5");
+        values.put("preference1-Koulutus-id", "ao-with-test-group");
+        values.put("preference2-Koulutus-id", "ao-with-test-group");
+        values.put("preference3-Koulutus-id", "ao-with-no-test-group");
+        values.put("preference4-Koulutus-id", "ao-with-no-test-group");
+        values.put("preference5-Koulutus-id", "ao-with-no-test-group");
         ValidationResult result = validator.validate(new ValidationInput(null, values, null, null, ValidationInput.ValidationContext.officer_modify));
         assertNotNull(result);
         assertFalse(result.hasErrors());
@@ -120,62 +118,62 @@ public class PreferenceTableValidatorTest {
     @Test
     public void testValidateWhenTooManyWithRestrictedGroup() {
         Map<String, String> values = new HashMap<String, String>();
-        values.put("li1", "li1");
-        values.put("li2", "li2");
-        values.put("li3", "li3");
-        values.put("li4", "li4");
-        values.put("li5", "li5");
-        values.put("e1", "e1");
-        values.put("e2", "e2");
-        values.put("e3", "e3");
-        values.put("e4", "e4");
-        values.put("e5", "e5");
-        values.put("e1-id", "ao-with-test-group");
-        values.put("e2-id", "ao-with-test-group");
-        values.put("e3-id", "ao-with-test-group");
-        values.put("e4-id", "ao-with-no-test-group");
-        values.put("e5-id", "ao-with-no-test-group");
+        values.put("preference1-Opetuspiste", "li1");
+        values.put("preference2-Opetuspiste", "li2");
+        values.put("preference3-Opetuspiste", "li3");
+        values.put("preference4-Opetuspiste", "li4");
+        values.put("preference5-Opetuspiste", "li5");
+        values.put("preference1-Koulutus", "e1");
+        values.put("preference2-Koulutus", "e2");
+        values.put("preference3-Koulutus", "e3");
+        values.put("preference4-Koulutus", "e4");
+        values.put("preference5-Koulutus", "e5");
+        values.put("preference1-Koulutus-id", "ao-with-test-group");
+        values.put("preference2-Koulutus-id", "ao-with-test-group");
+        values.put("preference3-Koulutus-id", "ao-with-test-group");
+        values.put("preference4-Koulutus-id", "ao-with-no-test-group");
+        values.put("preference5-Koulutus-id", "ao-with-no-test-group");
         ValidationResult result = validator.validate(new ValidationInput(null, values, null, null, ValidationInput.ValidationContext.officer_modify));
         assertNotNull(result);
         assertTrue(result.hasErrors());
         assertEquals(3, result.getErrorMessages().values().size());
-        assertEquals(new HashSet<>(Arrays.asList("e1", "e2", "e3")), result.getErrorMessages().keySet());
+        assertEquals(new HashSet<>(Arrays.asList("preference1-Koulutus", "preference2-Koulutus", "preference3-Koulutus")), result.getErrorMessages().keySet());
         assertEquals("{fi=max error}", getFirstErrorAsString(result));
     }
 
     @Test
     public void testValidateWrongOrder() {
         Map<String, String> values = new HashMap<String, String>();
-        values.put("li1", "li1");
-        values.put("li2", "li2");
-        values.put("li3", "li3");
-        values.put("li4", "li4");
-        values.put("li5", "li5");
-        values.put("e1", "e1");
-        values.put("e2", "e2");
-        values.put("e3", "e3");
-        values.put("e4", "e4");
-        values.put("e5", "e5");
-        values.put("e1-id", "ao-with-test-group");
-        values.put("e2-id", "ao-with-no-test-group");
-        values.put("e3-id", "ao-with-test-group");
-        values.put("e4-id", "ao-with-no-test-group");
-        values.put("e5-id", "ao-with-no-test-group");
+        values.put("preference1-Opetuspiste", "li1");
+        values.put("preference2-Opetuspiste", "li2");
+        values.put("preference3-Opetuspiste", "li3");
+        values.put("preference4-Opetuspiste", "li4");
+        values.put("preference5-Opetuspiste", "li5");
+        values.put("preference1-Koulutus", "e1");
+        values.put("preference2-Koulutus", "e2");
+        values.put("preference3-Koulutus", "e3");
+        values.put("preference4-Koulutus", "e4");
+        values.put("preference5-Koulutus", "e5");
+        values.put("preference1-Koulutus-id", "ao-with-test-group");
+        values.put("preference2-Koulutus-id", "ao-with-no-test-group");
+        values.put("preference3-Koulutus-id", "ao-with-test-group");
+        values.put("preference4-Koulutus-id", "ao-with-no-test-group");
+        values.put("preference5-Koulutus-id", "ao-with-no-test-group");
         ValidationResult result = validator.validate(new ValidationInput(null, values, null, null, ValidationInput.ValidationContext.officer_modify));
         assertNotNull(result);
         assertTrue(result.hasErrors());
         assertEquals(2, result.getErrorMessages().values().size());
-        assertEquals(new HashSet<>(Arrays.asList("e2", "e3")), result.getErrorMessages().keySet());
+        assertEquals(new HashSet<>(Arrays.asList("preference2-Koulutus", "preference3-Koulutus")), result.getErrorMessages().keySet());
         assertEquals("{fi=prio error: korkeampi=korkeampi prio, alempi=alempi prio}", getFirstErrorAsString(result));
     }
 
     @Test
     public void testValidateNotUniquePreferences() {
         Map<String, String> values = new HashMap<String, String>();
-        values.put("li1", "li1");
-        values.put("li2", "li1");
-        values.put("e1", "e1");
-        values.put("e2", "e1");
+        values.put("preference1-Opetuspiste", "li1");
+        values.put("preference2-Opetuspiste", "li1");
+        values.put("preference1-Koulutus", "e1");
+        values.put("preference2-Koulutus", "e1");
         ValidationResult result = validator.validate(new ValidationInput(null, values, null, null, ValidationInput.ValidationContext.officer_modify));
         assertNotNull(result);
         assertTrue(result.hasErrors());
@@ -186,12 +184,12 @@ public class PreferenceTableValidatorTest {
     @Test
     public void testValidateEmptyRows() {
         Map<String, String> values = new HashMap<String, String>();
-        values.put("li1", "li1");
-        values.put("li2", "li2");
-        values.put("li4", "li4");
-        values.put("e1", "e1");
-        values.put("e2", "e2");
-        values.put("e4", "e4");
+        values.put("preference1-Opetuspiste", "li1");
+        values.put("preference2-Opetuspiste", "li2");
+        values.put("preference4-Opetuspiste", "li4");
+        values.put("preference1-Koulutus", "e1");
+        values.put("preference2-Koulutus", "e2");
+        values.put("preference4-Koulutus", "e4");
         ValidationResult result = validator.validate(new ValidationInput(null, values, null, null, ValidationInput.ValidationContext.officer_modify));
         assertNotNull(result);
         assertTrue(result.hasErrors());
@@ -202,9 +200,9 @@ public class PreferenceTableValidatorTest {
     @Test
     public void testValidateEducationValueMissing() {
         Map<String, String> values = new HashMap<String, String>();
-        values.put("li1", "li1");
-        values.put("li2", "li2");
-        values.put("e1", "e1");
+        values.put("preference1-Opetuspiste", "li1");
+        values.put("preference2-Opetuspiste", "li2");
+        values.put("preference1-Koulutus", "e1");
         ValidationResult result = validator.validate(new ValidationInput(null, values, null, null, ValidationInput.ValidationContext.officer_modify));
         assertNotNull(result);
         assertTrue(result.hasErrors());
@@ -215,9 +213,9 @@ public class PreferenceTableValidatorTest {
     @Test
     public void testValidateLearningInstituteValueMissing() {
         Map<String, String> values = new HashMap<String, String>();
-        values.put("li1", "li1");
-        values.put("e1", "e1");
-        values.put("e2", "e2");
+        values.put("preference1-Opetuspiste", "li1");
+        values.put("preference1-Koulutus", "e1");
+        values.put("preference2-Koulutus", "e2");
         ValidationResult result = validator.validate(new ValidationInput(null, values, null, null, ValidationInput.ValidationContext.officer_modify));
         assertNotNull(result);
         assertTrue(result.hasErrors());

@@ -40,6 +40,7 @@ public class PreferenceRow extends Question {
     private I18nText childLONameListLabel;
     // label text for attachments
     private I18nText attachmentsLabel;
+    // TODO: poista laskennalliset kentät
     private String learningInstitutionInputId;
     private String educationInputId;
     private String educationDegreeId;
