@@ -40,10 +40,6 @@ public class PreferenceRow extends Question {
     private I18nText childLONameListLabel;
     // label text for attachments
     private I18nText attachmentsLabel;
-    // TODO: poista laskennalliset kentät
-    private String learningInstitutionInputId;
-    private String educationInputId;
-    private String educationDegreeId;
 
     public PreferenceRow(@JsonProperty(value = "id") final String id,
                          @JsonProperty(value = "resetLabel") final I18nText resetLabel,
@@ -57,9 +53,6 @@ public class PreferenceRow extends Question {
         this.learningInstitutionLabel = learningInstitutionLabel;
         this.childLONameListLabel = childLONameListLabel;
         this.attachmentsLabel = attachmentsLabel;
-        this.learningInstitutionInputId = this.id + "-Opetuspiste";
-        this.educationInputId = this.id + "-Koulutus";
-        this.educationDegreeId = this.id + "-Koulutus-educationDegree";
     }
 
     public I18nText getResetLabel() {
@@ -82,20 +75,29 @@ public class PreferenceRow extends Question {
         return childLONameListLabel;
     }
 
+    @Transient
     public String getLearningInstitutionInputId() {
-        return learningInstitutionInputId;
+        return this.id + "-Opetuspiste";
     }
 
+    @Transient
     public String getEducationInputId() {
-        return educationInputId;
+        return this.id + "-Koulutus";
     }
 
+    @Transient
     public String getEducationDegreeId() {
-        return educationDegreeId;
+        return this.id + "-Koulutus-educationDegree";
     }
 
     @Transient
     public String getEducationOidInputId() {
-        return educationInputId + "-id";
+        return this.id + "-Koulutus-id";
     }
+
+    @Transient
+    public String getLearningInstitutionOidInputId() {
+        return this.id + "-Opetuspiste-id";
+    }
+
 }
