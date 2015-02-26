@@ -27,8 +27,11 @@ public class ValidationIT extends IntegrationTestSupport {
         Map<String, String> vastaukset = new HashMap<String, String>();
         vastaukset.put("preference1-Koulutus-id", "1.2.246.562.20.30500448839");
         vastaukset.put("preference1-Opetuspiste-id", "1.2.246.562.10.35241670047");
+        vastaukset.put("preference1-Koulutus", "Ökykoulutus");
+        vastaukset.put("preference1-Opetuspiste", "Ökykoulu");
         applicationFixture.addVaiheenVastaukset("hakutoiveet", vastaukset);
-        assertEquals(validateApplication(getTestApplicationSystem(), applicationFixture).size(), 5);
+        final Map<String, I18nText> errors = validateApplication(getTestApplicationSystem(), applicationFixture);
+        assertEquals(errors.size(), 5);
     }
 
     private Map<String, I18nText> validateApplication(ApplicationSystem applicationSystemFixture, Application applicationFixture) {
