@@ -191,6 +191,12 @@
           "prioriteetti": 2,
           "usageGroups": ["hakukohde_priorisoiva"],
           "groupTypes": ["hakukohde"]
+        },
+        {
+          "oid": "1.2.246.562.28.00000000003",
+          "prioriteetti": null,
+          "usageGroups": ["hakukohde_rajaava"],
+          "groupTypes": ["hakukohde"]
         }
       ],
       "attachments": null
@@ -228,6 +234,18 @@
           "prioriteetti": null,
           "usageGroups": ["yleinen"],
           "groupTypes": ["hakukohde"]
+        },
+        {
+          "oid": "1.2.246.562.28.00000000002",
+          "prioriteetti": null,
+          "usageGroups": ["hakukohde_rajaava"],
+          "groupTypes": ["hakukohde"]
+        },
+        {
+          "oid": "1.2.246.562.28.00000000003",
+          "prioriteetti": null,
+          "usageGroups": ["hakukohde_rajaava"],
+          "groupTypes": ["hakukohde"]
         }
       ],
       "attachments": null
@@ -264,7 +282,19 @@
           "groupTypes": ["hakukohde"]
         },
         {
-          "oid": "1.2.246.562.28.13841322666",
+          "oid": "1.2.246.562.28.20907706742",
+          "prioriteetti": null,
+          "usageGroups": ["hakukohde_rajaava"],
+          "groupTypes": ["hakukohde"]
+        },
+        {
+          "oid": "1.2.246.562.28.00000000001",
+          "prioriteetti": null,
+          "usageGroups": ["hakukohde_rajaava"],
+          "groupTypes": ["hakukohde"]
+        },
+        {
+          "oid": "1.2.246.562.28.00000000002",
           "prioriteetti": null,
           "usageGroups": ["hakukohde_rajaava"],
           "groupTypes": ["hakukohde"]
@@ -293,7 +323,7 @@
           "groupTypes": ["hakukohde"]
         },
         {
-          "oid": "1.2.246.562.28.11833727906",
+          "oid": "1.2.246.562.28.20907706742",
           "prioriteetti": null,
           "usageGroups": ["hakukohde_rajaava"],
           "groupTypes": ["hakukohde"]
@@ -308,6 +338,12 @@
           "oid": "1.2.246.562.28.20907706741",
           "prioriteetti": 1,
           "usageGroups": ["hakukohde_priorisoiva"],
+          "groupTypes": ["hakukohde"]
+        },
+        {
+          "oid": "1.2.246.562.28.00000000001",
+          "prioriteetti": null,
+          "usageGroups": ["hakukohde_rajaava"],
           "groupTypes": ["hakukohde"]
         }
       ],
