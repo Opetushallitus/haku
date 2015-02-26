@@ -43,11 +43,7 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
-/**
- * Unit tests for preference table validator
- *
- * @author Mikko Majapuro
- */
+
 public class PreferenceTableValidatorTest {
     private static class TestInput {
         public final String koulutusNimi;
@@ -118,13 +114,13 @@ public class PreferenceTableValidatorTest {
     }
 
     @Test
-    public void testValidateValid() {
+    public void acceptsValidInput() {
         Map<String, String> values = testData(new TestInput(1), new TestInput(2), new TestInput(3), new TestInput(4), new TestInput(5));
         assertFalse(validate(values).hasErrors());
     }
 
     @Test
-    public void testValidateWhenTooManyWithRestrictedGroup() {
+    public void rejectsTooManyWithRestrictedGroup() {
         when(aos.get("koulutus-id-1")).thenReturn(partOfTestGroup);
         when(aos.get("koulutus-id-2")).thenReturn(partOfTestGroup);
         when(aos.get("koulutus-id-3")).thenReturn(partOfTestGroup);
@@ -135,7 +131,7 @@ public class PreferenceTableValidatorTest {
     }
 
     @Test
-    public void testValidateWrongOrder() {
+    public void rejectWrongOrder() {
         when(aos.get("koulutus-id-1")).thenReturn(partOfTestGroup);
         when(aos.get("koulutus-id-3")).thenReturn(partOfTestGroup);
         Map<String, String> values = testData(new TestInput(1), new TestInput(2), new TestInput(3), new TestInput(4), new TestInput(5));
@@ -146,14 +142,14 @@ public class PreferenceTableValidatorTest {
     }
 
     @Test
-    public void testValidateNotUniquePreferences() {
+    public void rejectNotUniquePreferences() {
         Map<String, String> values = testData(new TestInput("koulutus1", "koulutus-id-1", "opetuspiste1", "opetuspiste-id-1"), new TestInput("koulutus1", "koulutus-id-1", "opetuspiste1", "opetuspiste-id-1"));
         ValidationResult result = validate(values);
         verifySingleError(result, "Et voi syöttää samaa hakutoivetta useaan kertaan.");
     }
 
     @Test
-    public void testValidateEmptyRows() {
+    public void rejectEmptyRowBetweenPreferences() {
         Map<String, String> values = new HashMap<String, String>();
         values.put("preference1-Opetuspiste", "opetuspiste1");
         values.put("preference2-Opetuspiste", "opetuspiste2");
@@ -165,7 +161,7 @@ public class PreferenceTableValidatorTest {
     }
 
     @Test
-    public void testValidateEducationValueMissing() {
+    public void rejectMissingEducationName() {
         Map<String, String> values = new HashMap<String, String>();
         values.put("preference1-Opetuspiste", "opetuspiste1");
         values.put("preference2-Opetuspiste", "opetuspiste2");
@@ -174,7 +170,7 @@ public class PreferenceTableValidatorTest {
     }
 
     @Test
-    public void testValidateLearningInstituteValueMissing() {
+    public void rejectMissingOpetuspiste() {
         Map<String, String> values = new HashMap<String, String>();
         values.put("preference1-Opetuspiste", "opetuspiste1");
         values.put("preference1-Koulutus", "koulutus1");
