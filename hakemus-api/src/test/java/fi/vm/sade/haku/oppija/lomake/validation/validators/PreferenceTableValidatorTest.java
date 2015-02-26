@@ -46,6 +46,7 @@ import static org.mockito.Mockito.when;
 
 public class PreferenceTableValidatorTest {
     private static class TestInput {
+        static TestInput EMPTY = new TestInput("", "", "", "");
         public final String koulutusNimi;
         public final String koulutusId;
         public final String opetuspisteNimi;
@@ -142,39 +143,40 @@ public class PreferenceTableValidatorTest {
     }
 
     @Test
-    public void rejectNotUniquePreferences() {
+    public void rejectDuplicatePreferences() {
         Map<String, String> values = testData(new TestInput("koulutus1", "koulutus-id-1", "opetuspiste1", "opetuspiste-id-1"), new TestInput("koulutus1", "koulutus-id-1", "opetuspiste1", "opetuspiste-id-1"));
         ValidationResult result = validate(values);
         verifySingleError(result, "Et voi syöttää samaa hakutoivetta useaan kertaan.");
     }
 
     @Test
+    public void rejectDuplciatePreferenceIds() {
+        Map<String, String> values = testData(new TestInput("koulutus1", "koulutus-id-1", "opetuspiste1", "opetuspiste-id-1"), new TestInput("Toinen nimi, sama koulutus id", "koulutus-id-1", "opetuspiste1", "opetuspiste-id-1"));
+        ValidationResult result = validate(values);
+        verifySingleError(result, "Et voi syöttää samaa hakutoivetta useaan kertaan.");
+    }
+
+    @Test
     public void rejectEmptyRowBetweenPreferences() {
-        Map<String, String> values = new HashMap<String, String>();
-        values.put("preference1-Opetuspiste", "opetuspiste1");
-        values.put("preference2-Opetuspiste", "opetuspiste2");
-        values.put("preference4-Opetuspiste", "opetuspiste4");
-        values.put("preference1-Koulutus", "koulutus1");
-        values.put("preference2-Koulutus", "koulutus2");
-        values.put("preference4-Koulutus", "koulutus4");
-        verifySingleError(validate(values), "Et voi jättää tyhjää hakutoivetta täytettyjen hakutoiveiden väliin.");
+        verifySingleError(validate(testData(new TestInput(1), new TestInput(2), TestInput.EMPTY, new TestInput(4))), "Et voi jättää tyhjää hakutoivetta täytettyjen hakutoiveiden väliin.");
     }
 
     @Test
     public void rejectMissingEducationName() {
-        Map<String, String> values = new HashMap<String, String>();
-        values.put("preference1-Opetuspiste", "opetuspiste1");
-        values.put("preference2-Opetuspiste", "opetuspiste2");
-        values.put("preference1-Koulutus", "koulutus1");
+        final Map<String, String> values = testData(new TestInput(1), new TestInput("", "koutlus2id", "opetuspiste2", "opetuspiste2-id"));
         verifySingleError(validate(values), "Pakollinen tieto.");
     }
 
     @Test
+    public void rejectMissingEducationId() {
+        final Map<String, String> values = testData(new TestInput(1), new TestInput("koulutus2", "", "opetuspiste2", "opetuspiste2-id"));
+        verifySingleError(validate(values), "Pakollinen tieto.");
+    }
+
+
+    @Test
     public void rejectMissingOpetuspiste() {
-        Map<String, String> values = new HashMap<String, String>();
-        values.put("preference1-Opetuspiste", "opetuspiste1");
-        values.put("preference1-Koulutus", "koulutus1");
-        values.put("preference2-Koulutus", "koulutus2");
+        Map<String, String> values = testData(new TestInput("k1", "k1-id", "opetuspiste1", "opetuspiste1-id"), new TestInput("k1", "k1-id", "", ""));
         verifySingleError(validate(values), "Pakollinen tieto.");
     }
 

@@ -16,9 +16,11 @@
 
 package fi.vm.sade.haku.oppija.lomake.validation.validators;
 
+import static com.google.common.base.Strings.isNullOrEmpty;
+
 import com.google.common.base.CharMatcher;
 import com.google.common.base.Strings;
-import fi.vm.sade.haku.oppija.common.koulutusinformaatio.ApplicationOption;
+
 import fi.vm.sade.haku.oppija.common.koulutusinformaatio.ApplicationOptionGroup;
 import fi.vm.sade.haku.oppija.common.koulutusinformaatio.ApplicationOptionService;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
@@ -28,7 +30,7 @@ import fi.vm.sade.haku.oppija.lomake.util.SpringInjector;
 import fi.vm.sade.haku.oppija.lomake.validation.*;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.I18nBundle;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.i18n.I18nBundleService;
-import org.apache.commons.lang.Validate;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,33 +62,37 @@ public class PreferenceTableValidator implements Validator {
 
         for (int i = 0; i < table.getRows().size(); ++i) {
             final PreferenceRow row = table.getRows().get(i);
-            String learningInstitutionInputId = row.getLearningInstitutionInputId();
-            String educationInputId = row.getEducationInputId();
-            String learningInstitution = validationInput.getValueByKey(learningInstitutionInputId);
-            learningInstitution = Strings.isNullOrEmpty(learningInstitution) ? null : CharMatcher.WHITESPACE.trimFrom(learningInstitution);
-            String education = validationInput.getValueByKey(educationInputId);
-            education = Strings.isNullOrEmpty(education) ? null : CharMatcher.WHITESPACE.trimFrom(education);
+            String learningInstitutionId = trimInput(validationInput, row.getLearningInstitutionOidInputId());
+            String educationId = trimInput(validationInput, row.getEducationOidInputId());
+            String educationName = trimInput(validationInput, row.getEducationInputId());
+            String learningInstitutionName = trimInput(validationInput, row.getLearningInstitutionInputId());
 
-            if (!checkBothNullOrTyped(learningInstitution, education)) {
-                errors.put(Strings.isNullOrEmpty(education) ? educationInputId : learningInstitutionInputId,
+            if (!checkOrEmptyOrAllNonEmpty(learningInstitutionId, educationId, learningInstitutionName, educationName)) {
+                errors.put(isNullOrEmpty(educationId) ? row.getEducationInputId() : row.getLearningInstitutionInputId(),
                   i18nBundle.get("yleinen.pakollinen"));
             }
 
-            if (!checkUnique(learningInstitutions, educations, learningInstitution, education)) {
-                errors.put(educationInputId, i18nBundle.get("hakutoiveet.duplikaatteja"));
+            if (!checkUnique(learningInstitutions, educations, learningInstitutionId, educationId)) {
+                errors.put(row.getEducationInputId(), i18nBundle.get("hakutoiveet.duplikaatteja"));
             }
 
-            if (!checkEmptyRowBeforeGivenPreference(educations, education)) {
+            if (!checkEmptyRowBeforeGivenPreference(educations, educationId)) {
                 errors.put(table.getRows().get(i - 1).getEducationInputId(), i18nBundle.get("hakutoiveet.tyhjia"));
             }
 
-            learningInstitutions.add(learningInstitution);
-            educations.add(education);
+            learningInstitutions.add(learningInstitutionId);
+            educations.add(educationId);
 
         }
 
         errors.putAll(runGroupRestictionValidators(validationInput));
         return new ValidationResult(errors);
+    }
+
+    private String trimInput(final ValidationInput validationInput, String key) {
+        String learningInstitutionId = validationInput.getValueByKey(key);
+        return isNullOrEmpty(learningInstitutionId) ? null : CharMatcher.WHITESPACE.trimFrom(learningInstitutionId);
+
     }
 
     private Map<String, I18nText> runGroupRestictionValidators(final ValidationInput validationInput) {
@@ -107,7 +113,7 @@ public class PreferenceTableValidator implements Validator {
 
         for(PreferenceRow row: table.getRows()) {
             final String applicationOptionId = validationInput.getValueByKey(row.getEducationInputId() + "-id");
-            if (!Strings.isNullOrEmpty(applicationOptionId)) {
+            if (!isNullOrEmpty(applicationOptionId)) {
                 try {
                     aoInfos.add(new ApplicationOptionInfo(row.getEducationInputId(),  applicationOptionService.get(applicationOptionId)));
                 } catch (RuntimeException e) {
@@ -141,15 +147,14 @@ public class PreferenceTableValidator implements Validator {
         return hakukohdeSet;
     }
 
-    /**
-     * Checks that the both preference input fields has values or the both is null
-     *
-     * @param learningInstitution learning institution input value
-     * @param education           education input value
-     * @return true if valid, false otherwise
-     */
-    private boolean checkBothNullOrTyped(final String learningInstitution, final String education) {
-        return !(Strings.isNullOrEmpty(learningInstitution) ^ Strings.isNullOrEmpty(education));
+    private boolean checkOrEmptyOrAllNonEmpty(String... strings) {
+        boolean empty = isNullOrEmpty(strings[0]);
+        for (String s : strings) {
+            if (isNullOrEmpty(s) != empty) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
@@ -163,7 +168,7 @@ public class PreferenceTableValidator implements Validator {
     private boolean checkUnique(List<String> learningInstitutions, List<String> educations,
                                 final String learningInstitution, final String education) {
 
-        if (!Strings.isNullOrEmpty(learningInstitution) && !Strings.isNullOrEmpty(education)) {
+        if (!isNullOrEmpty(learningInstitution) && !isNullOrEmpty(education)) {
             for (int i = 0; i < learningInstitutions.size(); ++i) {
                 if (learningInstitution.equals(learningInstitutions.get(i)) &&
                         education.equals(educations.get(i))) {
@@ -182,7 +187,7 @@ public class PreferenceTableValidator implements Validator {
      * @return true if valid, false otherwise
      */
     private boolean checkEmptyRowBeforeGivenPreference(final List<String> values, final String value) {
-        return !(!Strings.isNullOrEmpty(value) && !values.isEmpty() && (Strings.isNullOrEmpty(values.get(values.size() - 1))));
+        return !(!isNullOrEmpty(value) && !values.isEmpty() && (isNullOrEmpty(values.get(values.size() - 1))));
     }
 
     @Autowired
