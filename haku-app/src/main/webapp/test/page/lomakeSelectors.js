@@ -73,6 +73,9 @@ lomake = initSelectors({
     nuoliYlos: function(n) {
         return "button.up[data-id=preference" + n + "]";
     },
+    tyhjenna: function(n) {
+        return "button#preference" + n + "-reset";
+    },
 
     // Osaaminen
     fromHakutoiveet: "button[class=right][value=osaaminen][name=phaseId]:first",

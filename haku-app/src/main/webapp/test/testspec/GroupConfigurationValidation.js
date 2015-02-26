@@ -105,6 +105,19 @@ describe('GroupConfiguration', function () {
                 rajaavuusError)
         ));
 
+        it('maksimimäärän ylittävän kohteen poisto poistaa virheen', seqDone(
+            syotaJarjestyksessa(
+                aasia,
+                afrikka),
+            pageChange(lomake.fromHakutoiveet),
+            tarkistaVirheetJarjestyksessa(
+                rajaavuusError,
+                rajaavuusError),
+            click(lomake.tyhjenna(2)),
+            pageChange(lomake.fromHakutoiveet),
+            headingVisible("Osaaminen")
+        ));
+
         it('rajaamaton jatkaa seuraavaan vaiheeseen', seqDone(
             syotaJarjestyksessa(raasepori),
             pageChange(lomake.fromHakutoiveet),
