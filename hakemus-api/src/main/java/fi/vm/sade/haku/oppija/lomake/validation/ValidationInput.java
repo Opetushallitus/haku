@@ -39,7 +39,7 @@ public class ValidationInput {
                            final String applicationSystemId,
                            final ValidationContext validationContext) {
         this.element = element;
-        this.values = new HashMap<String, String>(values);
+        this.values = ImmutableMap.copyOf(values);
         this.applicationOid = applicationOid;
         this.applicationSystemId = applicationSystemId;
         this.validationContext = validationContext;
@@ -58,7 +58,7 @@ public class ValidationInput {
     }
 
     public Map<String, String> getValues() {
-        return ImmutableMap.copyOf(values);
+        return values;
     }
 
     public boolean containsKey(final String key) {
