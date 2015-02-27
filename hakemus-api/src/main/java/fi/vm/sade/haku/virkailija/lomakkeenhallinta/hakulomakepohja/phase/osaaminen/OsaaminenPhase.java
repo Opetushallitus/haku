@@ -96,7 +96,6 @@ public class OsaaminenPhase {
         return osaaminen;
     }
 
-
     private static void buildKeskiarvotAmmatillinen(FormParameters formParameters, Expr haettuAMKHon, List<Option> asteikkolista, Element parent) {
         Expr pohjakoulutusLukioAmmatillinen = ExprUtil.isAnswerTrue("pohjakoulutus_yo_ammatillinen");
 

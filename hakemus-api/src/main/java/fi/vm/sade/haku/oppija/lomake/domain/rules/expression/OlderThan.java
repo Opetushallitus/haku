@@ -7,7 +7,6 @@ import org.joda.time.Years;
 import org.joda.time.format.DateTimeFormat;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -29,6 +28,7 @@ public class OlderThan extends Expr {
 
     @Override
     public boolean evaluate(final Map<String, String> context) {
+
         String dateOfBirth = getDateOfBirth(context);
         if (dateOfBirth == null) {
             return false;

@@ -10,5 +10,5 @@ public interface BaseEducationService {
     Application addBaseEducation(Application application);
     Application addSendingSchool(Application application);
 
-    Map<String, ArvosanaDTO> getArvosanat(String personOid, String baseEducation, ApplicationSystem applicationSystem);
+    Map<String, String> getArvosanat(String personOid, String baseEducation, ApplicationSystem applicationSystem);
 }

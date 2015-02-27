@@ -72,13 +72,19 @@ public class BaseEducationServiceImplTest {
                     add(new ArvosanaDTO("2", "AI", "8", true, "fi"));
                 }});
 
-        Map<String, ArvosanaDTO> arvosanat = baseEducationService.getArvosanat("personOid", PERUSKOULU, as);
+        Map<String, String> arvosanat = baseEducationService.getArvosanat("personOid", PERUSKOULU, as);
 
-        assertEquals(2, arvosanat.size());
+        assertEquals(5, arvosanat.size());
         assertTrue(arvosanat.containsKey("PK_AI"));
+        assertTrue(arvosanat.containsKey("PK_AI_OPPIAINE"));
         assertTrue(arvosanat.containsKey("PK_AI_VAL1"));
-        assertEquals("9", arvosanat.get("PK_AI").getArvosana());
-        assertEquals("8", arvosanat.get("PK_AI_VAL1").getArvosana());
+        assertTrue(arvosanat.containsKey("PK_AI_VAL2"));
+        assertTrue(arvosanat.containsKey("PK_AI_VAL3"));
+        assertEquals("9", arvosanat.get("PK_AI"));
+        assertEquals("fi", arvosanat.get("PK_AI_OPPIAINE"));
+        assertEquals("8", arvosanat.get("PK_AI_VAL1"));
+        assertEquals("Ei arvosanaa", arvosanat.get("PK_AI_VAL2"));
+        assertEquals("Ei arvosanaa", arvosanat.get("PK_AI_VAL3"));
     }
 
     @Test
@@ -90,31 +96,49 @@ public class BaseEducationServiceImplTest {
                 .thenReturn(new ArrayList<ArvosanaDTO>() {{
                     add(new ArvosanaDTO("1", "AI", "8", false, "fi"));
 
-                    add(new ArvosanaDTO("2", "BI", "8", false, "fi"));
-                    add(new ArvosanaDTO("3", "BI", "7", true, "fi"));
+                    add(new ArvosanaDTO("2", "BI", "8", false, null));
+                    add(new ArvosanaDTO("3", "BI", "7", true, null));
 
-                    add(new ArvosanaDTO("4", "CI", "7", false, "fi"));
+                    add(new ArvosanaDTO("4", "CI", "7", false, null));
                 }});
         when(suoritusrekisteriService.getArvosanat(eq("kymppiKesken")))
                 .thenReturn(new ArrayList<ArvosanaDTO>() {{
                     add(new ArvosanaDTO("5", "AI", "9", false, "fi"));
-                    add(new ArvosanaDTO("6", "BI", "8", false, "fi"));
-                    add(new ArvosanaDTO("7", "BI", "8", true, "fi"));
+                    add(new ArvosanaDTO("6", "BI", "8", false, null));
+                    add(new ArvosanaDTO("7", "BI", "8", true, null));
                 }});
 
         BaseEducationService baseEducationService = getBaseEducationService(suoritusrekisteriService);
-        Map<String, ArvosanaDTO> arvosanat = baseEducationService.getArvosanat("personOid", PERUSKOULU, as);
+        Map<String, String> arvosanat = baseEducationService.getArvosanat("personOid", PERUSKOULU, as);
 
-        assertEquals(4, arvosanat.size());
+        assertEquals(13, arvosanat.size());
         assertTrue(arvosanat.containsKey("PK_AI"));
+        assertTrue(arvosanat.containsKey("PK_AI_OPPIAINE"));
+        assertTrue(arvosanat.containsKey("PK_AI_VAL1"));
+        assertTrue(arvosanat.containsKey("PK_AI_VAL2"));
+        assertTrue(arvosanat.containsKey("PK_AI_VAL3"));
         assertTrue(arvosanat.containsKey("PK_BI"));
         assertTrue(arvosanat.containsKey("PK_BI_VAL1"));
+        assertTrue(arvosanat.containsKey("PK_BI_VAL2"));
+        assertTrue(arvosanat.containsKey("PK_BI_VAL3"));
         assertTrue(arvosanat.containsKey("PK_CI"));
+        assertTrue(arvosanat.containsKey("PK_CI_VAL1"));
+        assertTrue(arvosanat.containsKey("PK_CI_VAL2"));
+        assertTrue(arvosanat.containsKey("PK_CI_VAL3"));
 
-        assertEquals("9", arvosanat.get("PK_AI").getArvosana());
-        assertEquals("8", arvosanat.get("PK_BI").getArvosana());
-        assertEquals("8", arvosanat.get("PK_BI_VAL1").getArvosana());
-        assertEquals("7", arvosanat.get("PK_CI").getArvosana());
+        assertEquals("9", arvosanat.get("PK_AI"));
+        assertEquals("fi", arvosanat.get("PK_AI_OPPIAINE"));
+        assertEquals("Ei arvosanaa", arvosanat.get("PK_AI_VAL1"));
+        assertEquals("Ei arvosanaa", arvosanat.get("PK_AI_VAL2"));
+        assertEquals("Ei arvosanaa", arvosanat.get("PK_AI_VAL3"));
+        assertEquals("8", arvosanat.get("PK_BI"));
+        assertEquals("8", arvosanat.get("PK_BI_VAL1"));
+        assertEquals("Ei arvosanaa", arvosanat.get("PK_BI_VAL2"));
+        assertEquals("Ei arvosanaa", arvosanat.get("PK_BI_VAL3"));
+        assertEquals("7", arvosanat.get("PK_CI"));
+        assertEquals("Ei arvosanaa", arvosanat.get("PK_CI_VAL1"));
+        assertEquals("Ei arvosanaa", arvosanat.get("PK_CI_VAL2"));
+        assertEquals("Ei arvosanaa", arvosanat.get("PK_CI_VAL3"));
     }
 
     private BaseEducationService getBaseEducationService(SuoritusrekisteriService suoritusrekisteriService) {

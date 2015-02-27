@@ -215,8 +215,8 @@ public class BaseEducationServiceImpl implements BaseEducationService {
     }
 
     @Override
-    public Map<String, ArvosanaDTO> getArvosanat(String personOid, String baseEducation, ApplicationSystem as) {
-        Map<String, ArvosanaDTO> arvosanaMap = new HashMap<>();
+    public Map<String, String> getArvosanat(String personOid, String baseEducation, ApplicationSystem as) {
+        Map<String, String> arvosanaMap = new HashMap<>();
         if (ULKOMAINEN_TUTKINTO.equals(baseEducation) || KESKEYTYNYT.equals(baseEducation) || isEmpty(baseEducation)) {
             return arvosanaMap;
         }
@@ -259,23 +259,36 @@ public class BaseEducationServiceImpl implements BaseEducationService {
                 }
             }
         }
-
+        Map<String, String> toAdd = new HashMap<>();
+        for (Map.Entry<String, String> entry : arvosanaMap.entrySet()) {
+            String prefix = entry.getKey().substring(0, 5);
+            for (int i = 1; i <= 3; i++) {
+                if (!arvosanaMap.containsKey(prefix + "_VAL" + i)) {
+                    toAdd.put(prefix + "_VAL" + i, "Ei arvosanaa");
+                }
+            }
+        }
+        arvosanaMap.putAll(toAdd);
         return arvosanaMap;
     }
 
-    private Map<String, ArvosanaDTO> suorituksenArvosanat(String prefix, String id) {
-        Map<String, ArvosanaDTO> suorituksenArvosanat = new HashMap<>();
+    private Map<String, String> suorituksenArvosanat(String prefix, String id) {
+        Map<String, String> suorituksenArvosanat = new HashMap<>();
         List<ArvosanaDTO> arvosanaList = suoritusrekisteriService.getArvosanat(id);
         for (ArvosanaDTO arvosana : arvosanaList) {
             String aine = prefix + arvosana.getAine();
+            String lisatieto = arvosana.getLisatieto();
+            if (isNotBlank(lisatieto)) {
+                suorituksenArvosanat.put(aine + "_OPPIAINE", lisatieto);
+            }
             if (!arvosana.isValinnainen()) {
-                suorituksenArvosanat.put(aine, arvosana);
+                suorituksenArvosanat.put(aine, arvosana.getArvosana());
             } else if (!suorituksenArvosanat.containsKey(aine + "_VAL1")) {
-                suorituksenArvosanat.put(aine + "_VAL1", arvosana);
+                suorituksenArvosanat.put(aine + "_VAL1", arvosana.getArvosana());
             } else if (!suorituksenArvosanat.containsKey(aine + "_VAL2")) {
-                suorituksenArvosanat.put(aine + "_VAL2", arvosana);
+                suorituksenArvosanat.put(aine + "_VAL2", arvosana.getArvosana());
             } else if (!suorituksenArvosanat.containsKey(aine + "_VAL3")) {
-                suorituksenArvosanat.put(aine + "_VAL3", arvosana);
+                suorituksenArvosanat.put(aine + "_VAL3", arvosana.getArvosana());
             }
         }
         return suorituksenArvosanat;
