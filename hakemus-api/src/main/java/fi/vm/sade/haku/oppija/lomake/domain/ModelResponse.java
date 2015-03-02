@@ -11,6 +11,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationResult;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -97,8 +98,8 @@ public class ModelResponse {
     }
 
     public final Map<String, Object> getModel() {
-        model.put(ERROR_MESSAGES, ImmutableMap.copyOf(errors));
-        return ImmutableMap.copyOf(model);
+        model.put(ERROR_MESSAGES, Collections.unmodifiableMap(errors));
+        return Collections.unmodifiableMap(model);
     }
 
     public final void addObjectToModel(final String key, final Object value) {
