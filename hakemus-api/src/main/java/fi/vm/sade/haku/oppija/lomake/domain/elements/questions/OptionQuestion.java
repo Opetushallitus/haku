@@ -114,12 +114,13 @@ public abstract class OptionQuestion extends Question {
 
     @Override
     public List<Element> getChildren() {
-        List<Element> listOfElements = new ArrayList<Element>();
-        listOfElements.addAll(super.getChildren());
+        List<Element> childList = super.getChildren();
+        List<Element> listOfElements = new ArrayList<Element>(childList.size()+ options.size());
+        listOfElements.addAll(childList);
         for (Option option : options) {
             listOfElements.addAll(option.getChildren());
         }
-        return listOfElements;
+        return Collections.unmodifiableList(listOfElements);
     }
 
     @Override
