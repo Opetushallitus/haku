@@ -534,37 +534,36 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public Map<String, String> ensureApplicationOptionGroupData(Map<String, String> answers, String lang) {
-        LOGGER.debug("Input map: " + answers.toString());
-        Set<String> keys = new HashSet<String>(answers.keySet());
-        for (String key: keys) {
+    public Map<String, String> ensureApplicationOptionGroupData(final Map<String, String> originalAnswers, String lang) {
+        final HashMap<String,String> ensuredAnswers = new HashMap<>(originalAnswers);
+        for (String key: originalAnswers.keySet()) {
             if (null != key
               && key.startsWith(OppijaConstants.PREFERENCE_PREFIX)
               && key.endsWith(OppijaConstants.OPTION_ID_POSTFIX)
-              && isNotEmpty(answers.get(key))){
+              && isNotEmpty(ensuredAnswers.get(key))){
                 String basekey = key.replace(OppijaConstants.OPTION_ID_POSTFIX, "");
-                String aoGroups = answers.get(basekey + OppijaConstants.OPTION_GROUP_POSTFIX);
-                String attachmentGroups = answers.get(basekey + OppijaConstants.OPTION_ATTACHMENT_GROUP_POSTFIX);
-                String attachments = answers.get(basekey + OppijaConstants.OPTION_ATTACHMENTS_POSTFIX);
+                String aoGroups = ensuredAnswers.get(basekey + OppijaConstants.OPTION_GROUP_POSTFIX);
+                String attachmentGroups = ensuredAnswers.get(basekey + OppijaConstants.OPTION_ATTACHMENT_GROUP_POSTFIX);
+                String attachments = ensuredAnswers.get(basekey + OppijaConstants.OPTION_ATTACHMENTS_POSTFIX);
 
-                ApplicationOptionDTO applicationOption = koulutusinformaatioService.getApplicationOption(answers.get(key), lang);
+                ApplicationOptionDTO applicationOption = koulutusinformaatioService.getApplicationOption(ensuredAnswers.get(key), lang);
                 List<String> teachingLangs = applicationOption.getTeachingLanguages();
                 String teachingLang = teachingLangs != null && teachingLangs.size() > 0
                         ? teachingLangs.get(0) : "";
 
-                answers.put(basekey + "-Opetuspiste", safeToString(applicationOption.getProvider().getName()));
-                answers.put(basekey+"-Opetuspiste-id", safeToString(applicationOption.getProvider().getId()));
-                answers.put(basekey+"-Koulutus", safeToString(applicationOption.getName()));
-                answers.put(basekey+"-Koulutus-id", safeToString(applicationOption.getId()));
-                answers.put(basekey+"-Koulutus-educationDegree", safeToString(applicationOption.getEducationDegree()));
-                answers.put(basekey+"-Koulutus-id-sora", String.valueOf(applicationOption.isSora()));
-                answers.put(basekey+"-Koulutus-id-lang", safeToString(teachingLang));
-                answers.put(basekey+"-Koulutus-id-athlete", String.valueOf(applicationOption.isAthleteEducation()
+                ensuredAnswers.put(basekey + "-Opetuspiste", safeToString(applicationOption.getProvider().getName()));
+                ensuredAnswers.put(basekey+"-Opetuspiste-id", safeToString(applicationOption.getProvider().getId()));
+                ensuredAnswers.put(basekey+"-Koulutus", safeToString(applicationOption.getName()));
+                ensuredAnswers.put(basekey+"-Koulutus-id", safeToString(applicationOption.getId()));
+                ensuredAnswers.put(basekey+"-Koulutus-educationDegree", safeToString(applicationOption.getEducationDegree()));
+                ensuredAnswers.put(basekey+"-Koulutus-id-sora", String.valueOf(applicationOption.isSora()));
+                ensuredAnswers.put(basekey+"-Koulutus-id-lang", safeToString(teachingLang));
+                ensuredAnswers.put(basekey+"-Koulutus-id-athlete", String.valueOf(applicationOption.isAthleteEducation()
                         || applicationOption.getProvider().isAthleteEducation()));
-                answers.put(basekey+"-Koulutus-id-aoIdentifier", safeToString(applicationOption.getAoIdentifier()));
-                answers.put(basekey+"-Koulutus-id-kaksoistutkinto", String.valueOf(applicationOption.isKaksoistutkinto()));
-                answers.put(basekey+"-Koulutus-id-vocational", String.valueOf(applicationOption.isVocational()));
-                answers.put(basekey+"-Koulutus-id-educationcode", safeToString(applicationOption.getEducationCodeUri()));
+                ensuredAnswers.put(basekey+"-Koulutus-id-aoIdentifier", safeToString(applicationOption.getAoIdentifier()));
+                ensuredAnswers.put(basekey+"-Koulutus-id-kaksoistutkinto", String.valueOf(applicationOption.isKaksoistutkinto()));
+                ensuredAnswers.put(basekey+"-Koulutus-id-vocational", String.valueOf(applicationOption.isVocational()));
+                ensuredAnswers.put(basekey+"-Koulutus-id-educationcode", safeToString(applicationOption.getEducationCodeUri()));
 
                 if (isEmpty(aoGroups) || isEmpty(attachmentGroups)) {
                     List<OrganizationGroupDTO> organizationGroups = applicationOption.getOrganizationGroups();
@@ -577,21 +576,20 @@ public class ApplicationServiceImpl implements ApplicationService {
                                 attachmentGroupList.add(organizationGroup.getOid());
                             }
                         }
-                        answers.put(basekey + OppijaConstants.OPTION_GROUP_POSTFIX, StringUtils.join(aoGroupList, ","));
-                        answers.put(basekey + OppijaConstants.OPTION_ATTACHMENT_GROUP_POSTFIX, StringUtils.join(attachmentGroupList, ","));
+                        ensuredAnswers.put(basekey + OppijaConstants.OPTION_GROUP_POSTFIX, StringUtils.join(aoGroupList, ","));
+                        ensuredAnswers.put(basekey + OppijaConstants.OPTION_ATTACHMENT_GROUP_POSTFIX, StringUtils.join(attachmentGroupList, ","));
                     }
                 }
 
                 if (isEmpty(attachments)) {
                     List<ApplicationOptionAttachmentDTO> attachmentList = applicationOption.getAttachments();
                     if (attachmentList != null && !attachmentList.isEmpty()) {
-                        answers.put(basekey + OppijaConstants.OPTION_ATTACHMENTS_POSTFIX, "true");
+                        ensuredAnswers.put(basekey + OppijaConstants.OPTION_ATTACHMENTS_POSTFIX, "true");
                     }
                 }
             }
         }
-        LOGGER.debug("output map: " + answers.toString());
-        return answers;
+        return ensuredAnswers;
     }
 
     @Override
