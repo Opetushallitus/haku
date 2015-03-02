@@ -35,6 +35,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -236,24 +237,24 @@ public class Application implements Serializable {
 
     @JsonIgnore
     public Map<String, String> getVastauksetMerged() {
-        Map<String, String> answers = new HashMap<String, String>();
+        Map<String, String> answers = new HashMap<String, String>(200);
         for (Map<String, String> phaseAnswers : this.answers.values()) {
             answers.putAll(phaseAnswers);
         }
         answers = addMetaToAnswers(answers);
-        return answers;
+        return Collections.unmodifiableMap(answers);
     }
 
     @JsonIgnore
     public Map<String, String> getVastauksetMergedIgnoringPhase(final String phaseId) {
-        Map<String, String> answers = new HashMap<String, String>();
+        Map<String, String> answers = new HashMap<>(200);
         for (String phaseKey : this.answers.keySet()) {
             if (!phaseKey.equalsIgnoreCase(phaseId)) {
                 answers.putAll(this.answers.get(phaseKey));
             }
         }
         answers = addMetaToAnswers(answers);
-        return answers;
+        return Collections.unmodifiableMap(answers);
     }
 
     private Map<String, String> addMetaToAnswers(Map<String, String> answers) {
@@ -278,7 +279,7 @@ public class Application implements Serializable {
     public Map<String, String> getPhaseAnswers(final String phaseId) {
         Map<String, String> phaseAnswers = this.answers.get(phaseId);
         if (phaseAnswers != null && !phaseAnswers.isEmpty()) {
-            return ImmutableMap.copyOf(phaseAnswers);
+            return Collections.unmodifiableMap(phaseAnswers);
         }
         return new HashMap<String, String>();
     }
@@ -450,7 +451,7 @@ public class Application implements Serializable {
     }
 
     public Map<String, String> getOverriddenAnswers() {
-        return ImmutableMap.copyOf(overriddenAnswers);
+        return Collections.unmodifiableMap(overriddenAnswers);
     }
 
     public boolean addOverriddenAnswer(String key, String value) {
