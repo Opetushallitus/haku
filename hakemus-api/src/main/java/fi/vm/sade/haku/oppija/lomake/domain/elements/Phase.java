@@ -28,12 +28,12 @@ public class Phase extends Titled {
 
     private static final long serialVersionUID = 1369853692287570194L;
     private boolean preview;
-    private List<String> editAllowedByRoles = new ArrayList<String>();
+    private final List<String> editAllowedByRoles;
 
     public Phase(final String id, final I18nText i18nText, final boolean preview, final List<String> editAllowedByRoles) {
         super(id, i18nText);
         this.preview = preview;
-        this.editAllowedByRoles = editAllowedByRoles;
+        this.editAllowedByRoles = ImmutableList.copyOf(editAllowedByRoles);
     }
 
     public boolean isPreview() {
@@ -41,7 +41,7 @@ public class Phase extends Titled {
     }
 
     public List<String> getEditAllowedByRoles() {
-        return ImmutableList.copyOf(editAllowedByRoles);
+        return editAllowedByRoles;
     }
 
     @Transient

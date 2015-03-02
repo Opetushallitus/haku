@@ -18,7 +18,6 @@ package fi.vm.sade.haku.oppija.lomake.domain;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
 import org.springframework.data.annotation.Id;
@@ -73,8 +72,10 @@ public class ApplicationSystem implements Serializable {
         this.form = form;
         this.name = name;
         this.state = state;
-        this.applicationPeriods = applicationPeriods != null ?
-                ImmutableList.copyOf(applicationPeriods) : Lists.<ApplicationPeriod>newArrayList();
+        if (applicationPeriods != null)
+            this.applicationPeriods=ImmutableList.copyOf(applicationPeriods);
+        else
+            this.applicationPeriods=ImmutableList.of();
         this.applicationSystemType = applicationSystemType;
         this.usePriorities = usePriorities;
         this.hakutapa = hakutapa;

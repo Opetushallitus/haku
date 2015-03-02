@@ -26,7 +26,7 @@ public class ApplicationPhase {
 
     private final String applicationSystemId;
     private final String phaseId;
-    private final Map<String, String> answers = new HashMap<String, String>();
+    private final Map<String, String> answers;
 
     public ApplicationPhase(final String applicationSystemId, final String phaseId, final Map<String, String> answers) {
         Preconditions.checkNotNull(applicationSystemId, "applicationSystemId is null");
@@ -34,7 +34,7 @@ public class ApplicationPhase {
         Preconditions.checkNotNull(answers, "answers is null");
         this.applicationSystemId = applicationSystemId;
         this.phaseId = phaseId;
-        this.answers.putAll(answers);
+        this.answers = ImmutableMap.copyOf(answers);
     }
 
     public String getApplicationSystemId() {
@@ -46,6 +46,6 @@ public class ApplicationPhase {
     }
 
     public Map<String, String> getAnswers() {
-        return ImmutableMap.copyOf(this.answers);
+        return answers;
     }
 }
