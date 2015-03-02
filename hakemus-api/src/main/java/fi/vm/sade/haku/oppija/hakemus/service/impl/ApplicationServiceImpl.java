@@ -414,10 +414,15 @@ public class ApplicationServiceImpl implements ApplicationService {
     @Override
     public Application removeOrphanedAnswers(Application application) {
         ApplicationSystem as = applicationSystemService.getApplicationSystem(application.getApplicationSystemId());
-        Form form = as.getForm();
         Map<String, Boolean> elementIds = new HashMap<>();
-        for (Element element : form.getAllChildren(application.getVastauksetMerged())) {
+
+        ArrayList<Element> children = new ArrayList<>(30);
+        children.addAll(as.getForm().getChildren(application.getVastauksetMerged()));
+
+        while(children.size() > 0){
+            Element element = children.remove(children.size()-1);
             elementIds.put(element.getId(), Boolean.TRUE);
+            children.addAll(element.getChildren(application.getVastauksetMerged()));
         }
 
         elementIds.put(OppijaConstants.ELEMENT_ID_SENDING_SCHOOL, Boolean.TRUE);
