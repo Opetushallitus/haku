@@ -17,6 +17,7 @@
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.impl;
 
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.util.StringUtil;
 import fi.vm.sade.koodisto.service.types.common.KieliType;
@@ -45,8 +46,8 @@ public final class TranslationsUtil {
     }
 
     public static Map<String, String> createTranslationsMap(final KoodiType koodiType) {
-        List<KoodiMetadataType> metadata = koodiType.getMetadata();
-        Map<String, String> translations = new HashMap<String, String>();
+        final List<KoodiMetadataType> metadata = koodiType.getMetadata();
+        final Map<String, String> translations = Maps.newHashMapWithExpectedSize(metadata.size());
         for (KoodiMetadataType koodiMetadataType : metadata) {
             translations.put(koodiMetadataType.getKieli().value().toLowerCase(), koodiMetadataType.getNimi());
         }
@@ -54,48 +55,48 @@ public final class TranslationsUtil {
     }
 
     public static Map<String, String> createTranslationsMap(final Map<String, String> partialTranslations) {
+        final HashMap<String, String> translations = new HashMap<String, String>(partialTranslations);
         for (String lang : langs) {
-            if (partialTranslations.get(lang) == null) {
+            if (translations.get(lang) == null) {
                 for (String tryLang : langs) {
-                    if (partialTranslations.get(tryLang) != null) {
-                        partialTranslations.put(lang, partialTranslations.get(tryLang));
+                    if (translations.get(tryLang) != null) {
+                        translations.put(lang, translations.get(tryLang));
                         break;
                     }
                 }
             }
         }
 
-        return ImmutableMap.copyOf(partialTranslations);
+        return translations;
     }
 
     public static Map<String, String> filterCodePrefix(final Map<String, String> translations) {
-        HashMap<String, String> filteredTranslations = new HashMap<String, String>(translations.size());
+        final HashMap<String, String> filteredTranslations = new HashMap<String, String>(translations.size());
         for (String key: translations.keySet()){
             String newKey = key.replace(LANG_CODE_PREFIX, "");
             filteredTranslations.put(newKey, translations.get(key));
 
         }
-        return ImmutableMap.copyOf(filteredTranslations);
+        return filteredTranslations;
     }
 
     public static Map<String, String> ensureDefaultLanguageTranslations(final Map<String, String> translations) {
-        HashMap<String, String> ensusedTranslations = new HashMap<String, String>(translations);
+        final HashMap<String, String> ensuredTranslations = new HashMap<String, String>(translations);
         for (String langKey : langs) {
-            String translation = ensusedTranslations.get(langKey);
+            String translation = ensuredTranslations.get(langKey);
             if (null != translation && !"".equals(translation)) {
                 continue;
             }
             for (String backupLang : langs) {
-                translation = ensusedTranslations.get(backupLang);
+                translation = ensuredTranslations.get(backupLang);
                 if (null != translation && !"".equals(translation)) {
-                    ensusedTranslations.put(langKey, translation);
+                    ensuredTranslations.put(langKey, translation);
                     break;
                 }
             }
         }
-        return ImmutableMap.copyOf(ensusedTranslations);
+        return ensuredTranslations;
     }
-
 
     public static I18nText ensureDefaultLanguageTranslations(final I18nText translations) {
         return new I18nText(ensureDefaultLanguageTranslations(translations.getTranslations()));

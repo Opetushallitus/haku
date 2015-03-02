@@ -16,21 +16,22 @@
 
 package fi.vm.sade.haku.oppija.lomake.domain;
 
-import com.google.common.collect.ImmutableMap;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.Map;
 
 public class I18nText implements Serializable {
 
     private static final long serialVersionUID = 3485756393751579235L;
     public static final String[] LANGS = {"fi", "sv", "en"};
+
     private final Map<String, String> translations;
 
 
     public I18nText(@JsonProperty(value = "translations") final Map<String, String> translations) {
-        this.translations = ImmutableMap.copyOf(translations);
+        this.translations = Collections.unmodifiableMap(translations);
     }
 
     public Map<String, String> getTranslations() {
