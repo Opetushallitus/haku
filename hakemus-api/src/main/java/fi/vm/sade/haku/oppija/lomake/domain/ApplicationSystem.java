@@ -74,7 +74,7 @@ public class ApplicationSystem implements Serializable {
         this.name = name;
         this.state = state;
         this.applicationPeriods = applicationPeriods != null ?
-                ImmutableList.copyOf(applicationPeriods) : Lists.<ApplicationPeriod>newArrayList();
+                applicationPeriods : Lists.<ApplicationPeriod>newArrayList();
         this.applicationSystemType = applicationSystemType;
         this.usePriorities = usePriorities;
         this.hakutapa = hakutapa;

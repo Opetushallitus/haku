@@ -30,7 +30,7 @@ public class I18nText implements Serializable {
 
 
     public I18nText(@JsonProperty(value = "translations") final Map<String, String> translations) {
-        this.translations = ImmutableMap.copyOf(translations);
+        this.translations = translations;
     }
 
     public Map<String, String> getTranslations() {

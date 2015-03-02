@@ -45,7 +45,7 @@ public abstract class OptionQuestion extends Question {
     }
 
     public List<Option> getOptions() {
-        return ImmutableList.copyOf(options);
+        return options;
     }
 
     public Map<String, Option> getData() {

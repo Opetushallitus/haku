@@ -33,7 +33,7 @@ public class HigherEducationAttachments extends Titled {
     }
 
     public Map<String, I18nText> getAttachmentNotes() {
-        return ImmutableMap.copyOf(attachmentNotes);
+        return attachmentNotes;
     }
 
     public void addAttachmentNote(String key, I18nText text) {

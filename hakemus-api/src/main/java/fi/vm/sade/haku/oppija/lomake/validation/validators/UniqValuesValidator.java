@@ -29,8 +29,8 @@ public final class UniqValuesValidator extends FieldValidator {
         Preconditions.checkNotNull(keys);
         Preconditions.checkNotNull(skipValues);
         Preconditions.checkNotNull(errorMessageKey);
-        this.keys = ImmutableList.copyOf(keys);
-        this.skipValues = ImmutableList.copyOf(skipValues);
+        this.keys = keys;
+        this.skipValues = skipValues;
         this.valuePredicate = new Predicate<Map.Entry<String, String>>() {
             @Override
             public boolean apply(Map.Entry<String, String> entry) {

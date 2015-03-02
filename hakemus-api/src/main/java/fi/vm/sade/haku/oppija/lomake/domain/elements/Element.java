@@ -62,7 +62,7 @@ public abstract class Element implements Serializable {
     }
 
     public Map<String, String> getAttributes() {
-        return ImmutableMap.copyOf(attributes);
+        return attributes;
     }
 
     public I18nText getHelp() {
@@ -96,7 +96,7 @@ public abstract class Element implements Serializable {
     }
 
     public List<Validator> getValidators() {
-        return ImmutableList.copyOf(validators);
+        return validators;
     }
 
     public void setValidators(final List<Validator> validators) {
@@ -123,7 +123,7 @@ public abstract class Element implements Serializable {
     }
 
     public List<Element> getChildren() {
-        return ImmutableList.copyOf(children);
+        return children;
     }
 
     public List<Element> getAllChildren(Map<String, String> values) {

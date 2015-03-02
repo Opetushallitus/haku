@@ -58,7 +58,7 @@ public class ValidationInput {
     }
 
     public Map<String, String> getValues() {
-        return ImmutableMap.copyOf(values);
+        return values;
     }
 
     public boolean containsKey(final String key) {

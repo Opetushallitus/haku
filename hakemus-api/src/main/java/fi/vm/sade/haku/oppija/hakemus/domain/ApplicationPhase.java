@@ -46,6 +46,6 @@ public class ApplicationPhase {
     }
 
     public Map<String, String> getAnswers() {
-        return ImmutableMap.copyOf(this.answers);
+        return this.answers;
     }
 }

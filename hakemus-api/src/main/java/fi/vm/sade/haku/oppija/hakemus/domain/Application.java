@@ -278,7 +278,7 @@ public class Application implements Serializable {
     public Map<String, String> getPhaseAnswers(final String phaseId) {
         Map<String, String> phaseAnswers = this.answers.get(phaseId);
         if (phaseAnswers != null && !phaseAnswers.isEmpty()) {
-            return ImmutableMap.copyOf(phaseAnswers);
+            return phaseAnswers;
         }
         return new HashMap<String, String>();
     }
@@ -450,7 +450,7 @@ public class Application implements Serializable {
     }
 
     public Map<String, String> getOverriddenAnswers() {
-        return ImmutableMap.copyOf(overriddenAnswers);
+        return overriddenAnswers;
     }
 
     public boolean addOverriddenAnswer(String key, String value) {

@@ -41,7 +41,7 @@ public class Phase extends Titled {
     }
 
     public List<String> getEditAllowedByRoles() {
-        return ImmutableList.copyOf(editAllowedByRoles);
+        return editAllowedByRoles;
     }
 
     @Transient

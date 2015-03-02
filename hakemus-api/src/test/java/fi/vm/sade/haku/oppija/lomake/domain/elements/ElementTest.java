@@ -71,13 +71,6 @@ public class ElementTest {
         testElement.addAttribute(null, null);
     }
 
-
-    @Test(expected = UnsupportedOperationException.class)
-    public void testAddAttributes() throws Exception {
-        Map<String, String> attributes = testElement.getAttributes();
-        attributes.put("k", "v");
-    }
-
     @Test
     public void testEqualsToNull() throws Exception {
         assertFalse(testElement.equals(null));

@@ -45,11 +45,6 @@ public class ApplicationPhaseTest {
         assertEquals(answers, applicationPhase.getAnswers());
     }
 
-    @Test(expected = java.lang.UnsupportedOperationException.class)
-    public void testGetVastauksetModify() throws Exception {
-        applicationPhase.getAnswers().put(ID, ID);
-    }
-
     @Test(expected = NullPointerException.class)
     public void testConstructNullApplicationSystemId() throws Exception {
         new ApplicationPhase(null, ID, answers);
