@@ -24,6 +24,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Titled;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.gradegrid.GradeGridRow;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.Regexp;
+import fi.vm.sade.haku.oppija.lomake.validation.ValidationInput;
 import fi.vm.sade.haku.oppija.lomake.validation.Validator;
 import fi.vm.sade.haku.oppija.lomake.validation.validators.*;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
@@ -159,6 +160,17 @@ public final class ElementUtil {
         element.addAttribute(required, required);
         element.setValidator(
                 new RequiredFieldValidator("yleinen.pakollinen"));
+    }
+
+    public static void addRequiredValidator(final Element element, final FormParameters formParameters,
+                                            ValidationInput.ValidationContext... context) {
+        String required = "required";
+        element.addAttribute(required, required);
+        List<ValidationInput.ValidationContext> contextList = new ArrayList<>(context.length);
+        for (int i = 0; i < context.length; i++) {
+            contextList.add(context[i]);
+        }
+        element.setValidator(new RequiredFieldValidator("yleinen.pakollinen", contextList));
     }
 
     public static void addUniqueApplicantValidator(final Element element, final FormParameters formParameters) {

@@ -22,16 +22,13 @@
         <c:set var="osaaminen" value="${it.arvosanat}" scope="request" />
     </c:when>
     <c:otherwise>
-        <c:set var="osaaminen" value="${it.application.answers.osaaminen}" scope="request" />
+        <c:set var="osaaminen" value="${answers}" scope="request" />
     </c:otherwise>
 </c:choose>
-
 <c:forEach var="option" items="${element.options}">
     <c:if test="${(osaaminen[element.id] eq option.value)}">
         <c:set var="gradeValue" value="${option.i18nText}"/>
     </c:if>
 </c:forEach>
-
-
 
 <haku:i18nText value="${gradeValue}" />

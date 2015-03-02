@@ -34,7 +34,7 @@ public class SuoritusrekisteriServiceImpl implements SuoritusrekisteriService {
 
     static {
         validKomos.add("1.2.246.562.5.2013112814572438136372"); // AmmOhjaavaJaValmistavaKoulutus
-        validKomos.add("1.2.246.562.5.2013061010184880799984"); // Lukiokoulutus
+        validKomos.add("TODO lukio komo oid"); // Lukiokoulutus
         validKomos.add("1.2.246.562.5.2013112814572441001730"); // MaahanmAmmValmistavaKoulutus
         validKomos.add("1.2.246.562.5.2013112814572435755085"); // ValmentavaJaKuntouttavaOpetus
         validKomos.add("1.2.246.562.5.2013112814572435044876"); // PerusopetuksenLisaopetus
