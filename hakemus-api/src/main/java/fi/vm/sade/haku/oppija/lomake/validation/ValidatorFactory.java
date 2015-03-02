@@ -42,11 +42,12 @@ public class ValidatorFactory {
     }
 
     public Validator buildValidator(final Validator validator) {
-        if (validator instanceof SsnUniqueValidator) {
+        Class validatorClass = validator.getClass();
+        if (SsnUniqueValidator.class.isAssignableFrom(validatorClass)) {
             return ssnUniqueConcreteValidator;
-        } else if (validator instanceof SsnAndPreferenceUniqueValidator) {
+        } else if (SsnAndPreferenceUniqueValidator.class.isAssignableFrom(validatorClass)) {
             return ssnAndPreferenceUniqueConcreteValidator;
-        } else if (validator instanceof PreferenceValidator) {
+        } else if (PreferenceValidator.class.isAssignableFrom(validatorClass)) {
             return preferenceConcreteValidator;
         }
         return validator;
