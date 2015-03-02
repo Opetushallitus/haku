@@ -379,11 +379,9 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         loggerAspect.logUpdateApplication(application, applicationPhase);
 
         application.addVaiheenVastaukset(applicationPhase.getPhaseId(), newPhaseAnswers);
-
-        Map<String, String> allAnswers = application.getVastauksetMergedIgnoringPhase(applicationPhase.getPhaseId());
-        allAnswers.putAll(newPhaseAnswers);
-
         application = applicationService.removeOrphanedAnswers(application);
+
+        Map<String, String> allAnswers = application.getVastauksetMerged();
 
         ValidationResult formValidationResult = elementTreeValidator.validate(new ValidationInput(form,
                 allAnswers, oid, application.getApplicationSystemId(), ValidationInput.ValidationContext.officer_modify));
