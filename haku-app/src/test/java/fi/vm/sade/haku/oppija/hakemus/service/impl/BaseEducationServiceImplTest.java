@@ -13,6 +13,8 @@ import org.junit.Test;
 
 import java.util.*;
 
+import static fi.vm.sade.haku.oppija.common.suoritusrekisteri.SuoritusrekisteriService.LISAOPETUS_KOMO;
+import static fi.vm.sade.haku.oppija.common.suoritusrekisteri.SuoritusrekisteriService.PERUSOPETUS_KOMO;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.PERUSKOULU;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -21,9 +23,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class BaseEducationServiceImplTest {
-
-    private static final String pkKomo = "1.2.246.562.13.62959769647";
-    private static final String kymppiKomo = "1.2.246.562.5.2013112814572435044876";
 
     private Date applicationPeriodStartDate;
     private Date applicationPeriodEndDate;
@@ -50,12 +49,12 @@ public class BaseEducationServiceImplTest {
                     add(new ApplicationPeriod(applicationPeriodStartDate, applicationPeriodEndDate));
                 }})
                 .get();
-        pkKesken = new SuoritusDTO("pkKesken", pkKomo, "myontaja",
+        pkKesken = new SuoritusDTO("pkKesken", PERUSOPETUS_KOMO, "myontaja",
                 "KESKEN", new Date(cal.getTimeInMillis()), "personOid", "Ei", "fi");
-        kymppiKesken = new SuoritusDTO("kymppiKesken", kymppiKomo, "myontaja",
+        kymppiKesken = new SuoritusDTO("kymppiKesken", LISAOPETUS_KOMO, "myontaja",
                 "KESKEN", new Date(cal.getTimeInMillis()), "personOid", "Ei", "fi");
         cal.set(2014, Calendar.JUNE, 1);
-        pkValmis = new SuoritusDTO("pkValmis", pkKomo, "myontaja",
+        pkValmis = new SuoritusDTO("pkValmis", PERUSOPETUS_KOMO, "myontaja",
                 "VALMIS", new Date(cal.getTimeInMillis()), "personOid", "Ei", "fi");
 
     }
@@ -63,9 +62,11 @@ public class BaseEducationServiceImplTest {
     @Test
     public void testGetArvosanatPk() {
         SuoritusrekisteriService suoritusrekisteriService = mockSuoritusrekisteriService("personOid",
-                new HashMap<String, SuoritusDTO>() {{ put(pkKomo, pkKesken); }});
+                new HashMap<String, SuoritusDTO>() {{
+                    put(PERUSOPETUS_KOMO, pkKesken);
+                }});
 
-        BaseEducationService baseEducationService = getBaseEducationService(suoritusrekisteriService);
+        BaseEducationService baseEducationService = new BaseEducationServiceImpl(suoritusrekisteriService);
         when(suoritusrekisteriService.getArvosanat(eq("pkKesken")))
                 .thenReturn(new ArrayList<ArvosanaDTO>() {{
                     add(new ArvosanaDTO("1", "AI", "9", false, "fi"));
@@ -90,7 +91,7 @@ public class BaseEducationServiceImplTest {
     @Test
     public void testGetArvosanatPkJaKymppi() {
         SuoritusrekisteriService suoritusrekisteriService = mockSuoritusrekisteriService("personOid",
-                new HashMap<String, SuoritusDTO>() {{ put(pkKomo, pkValmis); put(kymppiKomo, kymppiKesken);}});
+                new HashMap<String, SuoritusDTO>() {{ put(PERUSOPETUS_KOMO, pkValmis); put(LISAOPETUS_KOMO, kymppiKesken);}});
 
         when(suoritusrekisteriService.getArvosanat(eq("pkValmis")))
                 .thenReturn(new ArrayList<ArvosanaDTO>() {{
@@ -108,7 +109,7 @@ public class BaseEducationServiceImplTest {
                     add(new ArvosanaDTO("7", "BI", "8", true, null));
                 }});
 
-        BaseEducationService baseEducationService = getBaseEducationService(suoritusrekisteriService);
+        BaseEducationService baseEducationService = new BaseEducationServiceImpl(suoritusrekisteriService);
         Map<String, String> arvosanat = baseEducationService.getArvosanat("personOid", PERUSKOULU, as);
 
         assertEquals(13, arvosanat.size());
@@ -139,13 +140,6 @@ public class BaseEducationServiceImplTest {
         assertEquals("Ei arvosanaa", arvosanat.get("PK_CI_VAL1"));
         assertEquals("Ei arvosanaa", arvosanat.get("PK_CI_VAL2"));
         assertEquals("Ei arvosanaa", arvosanat.get("PK_CI_VAL3"));
-    }
-
-    private BaseEducationService getBaseEducationService(SuoritusrekisteriService suoritusrekisteriService) {
-        BaseEducationServiceImpl baseEducationService = new BaseEducationServiceImpl(suoritusrekisteriService);
-        baseEducationService.setPerusopetusKomoOid(pkKomo);
-        baseEducationService.setLisaopetusKomoOid(kymppiKomo);
-        return baseEducationService;
     }
 
     private SuoritusrekisteriService mockSuoritusrekisteriService(String personOid, Map<String, SuoritusDTO> suoritukset) {

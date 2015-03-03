@@ -14,11 +14,11 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 
+import static fi.vm.sade.haku.oppija.common.suoritusrekisteri.SuoritusrekisteriService.*;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.*;
 import static org.apache.commons.lang.StringUtils.*;
 
@@ -28,23 +28,6 @@ public class BaseEducationServiceImpl implements BaseEducationService {
     public static final Logger LOGGER = LoggerFactory.getLogger(BaseEducationServiceImpl.class);
 
     private enum GradePrefix {PK_, LK_};
-
-    @Value("${komo.oid.perusopetus}")
-    private String perusopetusKomoOid;
-    @Value("${komo.oid.lukio}")
-    private String lukioKomoOid;
-    @Value("${komo.oid.lisaopetus}")
-    private String lisaopetusKomoOid;
-    @Value("${komo.oid.ulkomainen}")
-    private String ulkomainenKomoOid;
-    @Value("${komo.oid.valmistava}")
-    private String valmistavaKomoOid;
-    @Value("${komo.oid.mamuValmistava}")
-    private String mamuValmistavaKomoOid;
-    @Value("${komo.oid.kuntouttava}")
-    private String kuntouttavaKomoOid;
-    @Value("${komo.oid.ylioppilastutkinto")
-    private String ylioppilastutkintoKomoOid;
 
     private final SuoritusrekisteriService suoritusrekisteriService;
 
@@ -79,7 +62,7 @@ public class BaseEducationServiceImpl implements BaseEducationService {
                 return application;
             }
 
-            Map<String, String> educationAnswers = new HashMap<String, String>(
+            Map<String, String> educationAnswers = new HashMap<>(
                     application.getPhaseAnswers(OppijaConstants.PHASE_EDUCATION));
 
             educationAnswers = handleOpiskelija(educationAnswers, application, opiskelija);
@@ -123,15 +106,15 @@ public class BaseEducationServiceImpl implements BaseEducationService {
         Date valmistuminen = null;
         String suorituskieli = null;
 
-        SuoritusDTO lukioSuoritus = suoritukset.get(lukioKomoOid);
-        SuoritusDTO ulkomainenSuoritus = suoritukset.get(ulkomainenKomoOid);
-        SuoritusDTO kymppiSuoritus = suoritukset.get(lisaopetusKomoOid);
-        SuoritusDTO ammattistarttiSuoritus = suoritukset.get(valmistavaKomoOid);
-        SuoritusDTO kuntouttavaSuoritus = suoritukset.get(kuntouttavaKomoOid);
-        SuoritusDTO mamuValmentavaSuoritus = suoritukset.get(mamuValmistavaKomoOid);
-        SuoritusDTO peruskouluSuoritus = suoritukset.get(perusopetusKomoOid);
+        SuoritusDTO lukioSuoritus = suoritukset.get(LUKIO_KOMO);
+        SuoritusDTO ulkomainenSuoritus = suoritukset.get(ULKOMAINEN_KOMO);
+        SuoritusDTO kymppiSuoritus = suoritukset.get(LISAOPETUS_KOMO);
+        SuoritusDTO ammattistarttiSuoritus = suoritukset.get(AMMATTISTARTTI_KOMO);
+        SuoritusDTO kuntouttavaSuoritus = suoritukset.get(KUNTOUTTAVA_KOMO);
+        SuoritusDTO mamuValmentavaSuoritus = suoritukset.get(MAMU_VALMENTAVA_KOMO);
+        SuoritusDTO peruskouluSuoritus = suoritukset.get(PERUSOPETUS_KOMO);
 
-        Map<String, String> educationAnswers = new HashMap<String, String>(application.getPhaseAnswers(OppijaConstants.PHASE_EDUCATION));
+        Map<String, String> educationAnswers = new HashMap<>(application.getPhaseAnswers(OppijaConstants.PHASE_EDUCATION));
 
         String ammattistarttiSuoritettuStr = educationAnswers.get(OppijaConstants.ELEMENT_ID_LISAKOULUTUS_AMMATTISTARTTI);
         String kuntouttavaSuoritettuStr = educationAnswers.get(OppijaConstants.ELEMENT_ID_LISAKOULUTUS_VAMMAISTEN);
@@ -231,14 +214,14 @@ public class BaseEducationServiceImpl implements BaseEducationService {
 
         if (YLIOPPILAS.equals(baseEducation)) {
             Map<String, SuoritusDTO> suoritukset = suoritusrekisteriService.getSuoritukset(personOid);
-            if (suoritukset.isEmpty() || suoritukset.get(lukioKomoOid) == null) {
+            if (suoritukset.isEmpty() || suoritukset.get(LUKIO_KOMO) == null) {
                 return arvosanaMap;
             }
-            arvosanaMap.putAll(suorituksenArvosanat("LK_", suoritukset.get(lukioKomoOid).getId()));
+            arvosanaMap.putAll(suorituksenArvosanat("LK_", suoritukset.get(LUKIO_KOMO).getId()));
         } else if (PERUSKOULU.equals(baseEducation) || YKSILOLLISTETTY.equals(baseEducation)
                 || ALUEITTAIN_YKSILOLLISTETTY.equals(baseEducation) || OSITTAIN_YKSILOLLISTETTY.equals(baseEducation)) {
             Map<String, SuoritusDTO> suoritukset = suoritusrekisteriService.getSuoritukset(personOid);
-            if (suoritukset.isEmpty() || suoritukset.get(perusopetusKomoOid) == null) {
+            if (suoritukset.isEmpty() || suoritukset.get(PERUSOPETUS_KOMO) == null) {
                 return arvosanaMap;
             }
             List<SuoritusDTO> suoritusList = new ArrayList<>(suoritukset.values());
@@ -249,11 +232,11 @@ public class BaseEducationServiceImpl implements BaseEducationService {
                 }
             });
             for (SuoritusDTO suoritus : suoritusList) {
-                if ((perusopetusKomoOid.equals(suoritus.getKomo()) ||
-                        lisaopetusKomoOid.equals(suoritus.getKomo()) ||
-                        valmistavaKomoOid.equals(suoritus.getKomo()) ||
-                        kuntouttavaKomoOid.equals(suoritus.getKomo()) ||
-                        mamuValmistavaKomoOid.equals(suoritus.getKomo()))) {
+                if ((PERUSOPETUS_KOMO.equals(suoritus.getKomo()) ||
+                        LISAOPETUS_KOMO.equals(suoritus.getKomo()) ||
+                        AMMATTISTARTTI_KOMO.equals(suoritus.getKomo()) ||
+                        KUNTOUTTAVA_KOMO.equals(suoritus.getKomo()) ||
+                        MAMU_VALMENTAVA_KOMO.equals(suoritus.getKomo()))) {
 
                     arvosanaMap.putAll(suorituksenArvosanat("PK_", suoritus.getId()));
                 }
@@ -297,7 +280,7 @@ public class BaseEducationServiceImpl implements BaseEducationService {
     private void clearGrades(final Application application) {
         LOGGER.info("Clearing grades for application {}", application.getOid());
         Map<String, String> originalGradeAnswers = application.getPhaseAnswers(OppijaConstants.PHASE_GRADES);
-        Map<String, String> gradeAnswers = new HashMap<String, String>(originalGradeAnswers);
+        Map<String, String> gradeAnswers = new HashMap<>(originalGradeAnswers);
         for (String key : originalGradeAnswers.keySet()) {
             for (GradePrefix prefix : GradePrefix.values()) {
                 if (!key.startsWith(prefix.name())) {
@@ -339,11 +322,4 @@ public class BaseEducationServiceImpl implements BaseEducationService {
         return answers;
     }
 
-    public void setPerusopetusKomoOid(String perusopetusKomoOid) {
-        this.perusopetusKomoOid = perusopetusKomoOid;
-    }
-
-    public void setLisaopetusKomoOid(String lisaopetusKomoOid) {
-        this.lisaopetusKomoOid = lisaopetusKomoOid;
-    }
 }

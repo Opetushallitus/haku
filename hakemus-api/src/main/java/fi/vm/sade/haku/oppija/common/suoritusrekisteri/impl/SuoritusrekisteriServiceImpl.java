@@ -33,14 +33,13 @@ public class SuoritusrekisteriServiceImpl implements SuoritusrekisteriService {
     private final static List<String> validKomos = new ArrayList<String>(7);
 
     static {
-        validKomos.add("1.2.246.562.5.2013112814572438136372"); // AmmOhjaavaJaValmistavaKoulutus
-        validKomos.add("TODO lukio komo oid"); // Lukiokoulutus
-        validKomos.add("1.2.246.562.5.2013112814572441001730"); // MaahanmAmmValmistavaKoulutus
-        validKomos.add("1.2.246.562.5.2013112814572435755085"); // ValmentavaJaKuntouttavaOpetus
-        validKomos.add("1.2.246.562.5.2013112814572435044876"); // PerusopetuksenLisaopetus
-        validKomos.add("1.2.246.562.13.62959769647");           // Perusopetus
-        validKomos.add("1.2.246.562.13.86722481404");           // Perusopetuksen ulkomainen vastaava opetus
-        validKomos.add("1.2.246.562.5.2013061010184237348007"); // Ylioppilastutkinto
+        validKomos.add(AMMATTISTARTTI_KOMO);
+        validKomos.add(LUKIO_KOMO);
+        validKomos.add(MAMU_VALMENTAVA_KOMO);
+        validKomos.add(KUNTOUTTAVA_KOMO);
+        validKomos.add(LISAOPETUS_KOMO);
+        validKomos.add(PERUSOPETUS_KOMO);
+        validKomos.add(ULKOMAINEN_KOMO);
     }
 
     @Value("${web.url.cas}")
