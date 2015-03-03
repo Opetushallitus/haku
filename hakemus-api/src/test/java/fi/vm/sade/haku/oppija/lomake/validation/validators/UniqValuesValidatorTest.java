@@ -2,9 +2,9 @@ package fi.vm.sade.haku.oppija.lomake.validation.validators;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.TextQuestion;
+import fi.vm.sade.haku.oppija.lomake.util.SpringInjector;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationInput;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationResult;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
@@ -27,6 +27,7 @@ public class UniqValuesValidatorTest {
 
     @Before
     public void setUp() throws Exception {
+        SpringInjector.setTestMode(true);
         uniqValuesValidator = new UniqValuesValidator(ImmutableList.of("AI", "BI"), Collections.EMPTY_LIST, MSG_KEY);
     }
 

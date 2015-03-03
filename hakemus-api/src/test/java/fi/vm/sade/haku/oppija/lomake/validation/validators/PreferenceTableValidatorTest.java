@@ -23,7 +23,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystemBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.PreferenceRow;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.PreferenceTable;
-import fi.vm.sade.haku.oppija.lomake.validation.GroupRestrictionValidator;
+import fi.vm.sade.haku.oppija.lomake.util.SpringInjector;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationInput;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationResult;
 import fi.vm.sade.haku.oppija.lomake.validation.groupvalidators.GroupPrioritisationValidator;
@@ -35,9 +35,16 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.isNull;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
@@ -83,13 +90,6 @@ public class PreferenceTableValidatorTest {
         }
     }};
 
-    PreferenceTableValidator validator = new PreferenceTableValidator(table) {{
-        I18nBundleService i18nBundleService = spy(new I18nBundleService(null));
-        doReturn(i18nBundleService.getBundle(applicationSystem)).when(i18nBundleService).getBundle((String) isNull());
-        setI18nBundleService(i18nBundleService);
-        setApplicationOptionService(aos);
-    }};
-
     final ApplicationOption partOfTestGroup = new ApplicationOption() {{
         setName("korkeampi prio");
         setGroups(Arrays.asList(new ApplicationOptionGroup(priorizationGroup , 1), new ApplicationOptionGroup(limitedGroup, null)));
@@ -112,6 +112,19 @@ public class PreferenceTableValidatorTest {
             values.put("preference"+(i+1)+"-Koulutus-id", inputs[i].koulutusId);
         }
         return values;
+    }
+
+    private PreferenceTableValidator validator;
+
+    @Before
+    public void setUp() throws Exception {
+        SpringInjector.setTestMode(true);
+        validator = new PreferenceTableValidator(table) {{
+            I18nBundleService i18nBundleService = spy(new I18nBundleService(null));
+            doReturn(i18nBundleService.getBundle(applicationSystem)).when(i18nBundleService).getBundle((String) isNull());
+            setI18nBundleService(i18nBundleService);
+            setApplicationOptionService(aos);
+        }};
     }
 
     @Test

@@ -18,15 +18,16 @@ package fi.vm.sade.haku.oppija.lomake.validation.validators;
 
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.TextQuestion;
+import fi.vm.sade.haku.oppija.lomake.util.SpringInjector;
 import fi.vm.sade.haku.oppija.lomake.validation.FieldValidator;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationInput;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationResult;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.HashMap;
 
-import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.createI18NText;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -35,7 +36,13 @@ public class ContainedInOtherFieldValidatorTest {
     private static final String thisField = "thisField";
     private static final String thatField = "thatField";
     private static final Element element = new TextQuestion(thisField, ElementUtil.createI18NAsIs(thisField));
-    FieldValidator validator = new ContainedInOtherFieldValidator(thatField, "error");
+    private FieldValidator validator;
+
+    @Before
+    public void setUp() throws Exception {
+        SpringInjector.setTestMode(true);
+        validator = new ContainedInOtherFieldValidator(thatField, "error");
+    }
 
     @Test
     public void testExactMatch() {

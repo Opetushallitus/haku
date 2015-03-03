@@ -5,9 +5,10 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 
 @Component
-public class SpringInjector implements ApplicationContextAware {
+public final class SpringInjector implements ApplicationContextAware {
 
     private static ApplicationContext CONTEXT;
+    private static boolean inTestMode;
 
     @Override
     public void setApplicationContext(ApplicationContext context) {
@@ -15,8 +16,12 @@ public class SpringInjector implements ApplicationContextAware {
     }
 
     public static void injectSpringDependencies(Object object) {
-        if (null == CONTEXT)
+        if (inTestMode && null == CONTEXT)
             return;
         CONTEXT.getAutowireCapableBeanFactory().autowireBean(object);
+    }
+
+    public static void setTestMode(boolean testMode){
+        inTestMode = testMode;
     }
 }

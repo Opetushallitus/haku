@@ -20,6 +20,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystemBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Text;
+import fi.vm.sade.haku.oppija.lomake.util.SpringInjector;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.I18nBundle;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.i18n.I18nBundleService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
@@ -46,6 +47,7 @@ public class fieldValidatorTest {
 
     @Before
     public void setUp() {
+        SpringInjector.setTestMode(true);
         i18nBundleService = spy(new I18nBundleService(null));
         ApplicationSystem synth = new ApplicationSystemBuilder().setId("haku")
           .setName(ElementUtil.createI18NAsIs("haku"))

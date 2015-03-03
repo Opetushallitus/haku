@@ -16,6 +16,7 @@
 package fi.vm.sade.haku.oppija.lomake.validation.validators;
 
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.TextQuestion;
+import fi.vm.sade.haku.oppija.lomake.util.SpringInjector;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationInput;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationResult;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
@@ -39,6 +40,7 @@ public class SocialSecurityNumberValidatorTest {
 
     @Before
     public void setUp() throws Exception {
+        SpringInjector.setTestMode(true);
         values = new HashMap<String, String>();
         validator = new SocialSecurityNumberFieldValidator();
         henkilotunnus = new TextQuestion("henkilotunnus", ElementUtil.createI18NAsIs("Henkilotunnus"));

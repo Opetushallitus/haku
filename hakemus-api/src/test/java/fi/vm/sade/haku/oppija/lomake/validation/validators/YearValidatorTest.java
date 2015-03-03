@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableMap;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.TextQuestion;
+import fi.vm.sade.haku.oppija.lomake.util.SpringInjector;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationInput;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationResult;
 import fi.vm.sade.haku.oppija.lomake.validation.Validator;
@@ -35,6 +36,7 @@ public class YearValidatorTest {
 
     @Before
     public void setUp() {
+        SpringInjector.setTestMode(true);
         formParameters = Mockito.mock(FormParameters.class);
         when(formParameters.getI18nText(any(String.class))).thenReturn(new I18nText(new HashMap<String, String>()));
     }

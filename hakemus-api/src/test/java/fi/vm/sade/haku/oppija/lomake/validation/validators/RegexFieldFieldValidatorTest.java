@@ -4,9 +4,11 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.TextQuestion;
+import fi.vm.sade.haku.oppija.lomake.util.SpringInjector;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationInput;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationResult;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.List;
@@ -21,9 +23,6 @@ public class RegexFieldFieldValidatorTest {
 
     private static final String FIELD_NAME = "name";
     private static final Element element = new TextQuestion(FIELD_NAME, ElementUtil.createI18NAsIs(FIELD_NAME));
-
-    private final RegexFieldValidator regexFieldFieldValidator =
-            new RegexFieldValidator("yleinen.virheellinenarvo", ElementUtil.ISO88591_NAME_REGEX);
 
     private final List<String> listOfValidNames = ImmutableList.of(
             "",
@@ -48,6 +47,15 @@ public class RegexFieldFieldValidatorTest {
             "\u00D7",
             "\u00F7",
             "\u20ac");
+
+    private RegexFieldValidator regexFieldFieldValidator;
+
+
+    @Before
+    public void setUp() throws Exception {
+        SpringInjector.setTestMode(true);
+        regexFieldFieldValidator = new RegexFieldValidator("yleinen.virheellinenarvo", ElementUtil.ISO88591_NAME_REGEX);
+    }
 
     @Test
     public void validateValid() throws Exception {
