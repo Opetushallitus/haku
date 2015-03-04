@@ -52,8 +52,7 @@ public class KSHJHakulomakeV1IT extends DummyModelBaseItTest {
         nextPhase(OppijaConstants.PHASE_MISC);
 
         navigateToPath("lomake", "1.2.246.562.29.173465377510", OppijaConstants.PHASE_EDUCATION);
-
-        findByIdAndClick("pohjakoulutus_am", "pohjakoulutus_muu");
+        findByIdAndClick(500, "pohjakoulutus_am", "pohjakoulutus_muu");
         setValue("pohjakoulutus_muu_vuosi", "2012");
         setValue("pohjakoulutus_muu_kuvaus", "kuvaus");
         nextPhase(OppijaConstants.PHASE_APPLICATION_OPTIONS);
