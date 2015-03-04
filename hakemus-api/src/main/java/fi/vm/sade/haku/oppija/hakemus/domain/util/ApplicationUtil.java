@@ -43,46 +43,49 @@ public final class ApplicationUtil {
         Map<String, List<String>> attachments = new LinkedHashMap<String, List<String>>();
 
         List<String> universityAOs = getUniversityAOs(application);
-        List<String> amkAOs = getAmkAOs(application);
         List<String> aspaAmkAOs = getAspaAmkAOs(application);
-
         List<String> universityAndAspaAmkAOs = new ArrayList<String>();
         universityAndAspaAmkAOs.addAll(universityAOs);
         universityAndAspaAmkAOs.addAll(aspaAmkAOs);
 
+        if (!universityAndAspaAmkAOs.isEmpty()) {
+            if (yoNeeded(application)) {
+                attachments.put("yo", universityAndAspaAmkAOs);
+            }
+            if (hasBaseEducation(application, "pohjakoulutus_yo_kansainvalinen_suomessa")) {
+                attachments.put("yo_kv", universityAndAspaAmkAOs);
+            }
+            if (hasBaseEducation(application, "pohjakoulutus_yo_ulkomainen")) {
+                attachments.put("yo_ulk", universityAndAspaAmkAOs);
+            }
+            if (hasBaseEducation(application, "pohjakoulutus_am")) {
+                attachments.put("am", universityAndAspaAmkAOs);
+            }
+            if (hasBaseEducation(application, "pohjakoulutus_amt")) {
+                attachments.put("amt", universityAndAspaAmkAOs);
+            }
+            if (hasBaseEducation(application, "pohjakoulutus_kk")) {
+                attachments.put("kk", universityAndAspaAmkAOs);
+            }
+            if (hasBaseEducation(application, "pohjakoulutus_ulk")) {
+                attachments.put("ulk", universityAndAspaAmkAOs);
+            }
+            if (hasBaseEducation(application, "pohjakoulutus_kk_ulk")) {
+                attachments.put("kk_ulk", universityAndAspaAmkAOs);
+            }
+            if (hasBaseEducation(application, "pohjakoulutus_avoin")) {
+                attachments.put("avoin", universityAndAspaAmkAOs);
+            }
+        }
+
+        List<String> amkAOs = getAmkAOs(application);
         List<String> allAOs = new ArrayList<String>();
         allAOs.addAll(universityAOs);
         allAOs.addAll(amkAOs);
-        if (yoNeeded(application) && !universityAndAspaAmkAOs.isEmpty()) {
-            attachments.put("yo", universityAndAspaAmkAOs);
-        }
-        if (hasBaseEducation(application, "pohjakoulutus_yo_kansainvalinen_suomessa") && !universityAndAspaAmkAOs.isEmpty()) {
-            attachments.put("yo_kv", universityAndAspaAmkAOs);
-        }
-        if (hasBaseEducation(application, "pohjakoulutus_yo_ulkomainen") && !universityAndAspaAmkAOs.isEmpty()) {
-            attachments.put("yo_ulk", universityAndAspaAmkAOs);
-        }
-        if (hasBaseEducation(application, "pohjakoulutus_am") && !universityAndAspaAmkAOs.isEmpty()) {
-            attachments.put("am", universityAndAspaAmkAOs);
-        }
-        if (hasBaseEducation(application, "pohjakoulutus_amt") && !universityAndAspaAmkAOs.isEmpty()) {
-            attachments.put("amt", universityAndAspaAmkAOs);
-        }
-        if (hasBaseEducation(application, "pohjakoulutus_kk") && !universityAndAspaAmkAOs.isEmpty()) {
-            attachments.put("kk", universityAndAspaAmkAOs);
-        }
-        if (hasBaseEducation(application, "pohjakoulutus_ulk") && !universityAndAspaAmkAOs.isEmpty()) {
-            attachments.put("ulk", universityAndAspaAmkAOs);
-        }
-        if (hasBaseEducation(application, "pohjakoulutus_kk_ulk") && !universityAndAspaAmkAOs.isEmpty()) {
-            attachments.put("kk_ulk", universityAndAspaAmkAOs);
-        }
-        if (hasBaseEducation(application, "pohjakoulutus_avoin") && !universityAndAspaAmkAOs.isEmpty()) {
-            attachments.put("avoin", universityAndAspaAmkAOs);
-        }
         if (hasBaseEducation(application, "pohjakoulutus_muu") && !allAOs.isEmpty()) {
             attachments.put("muu", allAOs);
         }
+
         return attachments;
     }
 
