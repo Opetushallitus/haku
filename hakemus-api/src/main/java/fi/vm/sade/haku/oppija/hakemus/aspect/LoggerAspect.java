@@ -23,6 +23,7 @@ import fi.vm.sade.haku.oppija.common.diff.Difference;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.haku.oppija.lomake.service.UserSession;
+import fi.vm.sade.haku.oppija.repository.AuditLogRepository;
 import fi.vm.sade.log.client.Logger;
 import fi.vm.sade.log.model.Tapahtuma;
 import org.aspectj.lang.annotation.AfterReturning;
@@ -52,11 +53,13 @@ public class LoggerAspect {
 
     private final Logger logger;
     private final UserSession userSession;
+    private final AuditLogRepository auditLogRepository;
 
     @Autowired
-    public LoggerAspect(final Logger logger, final UserSession userSession) {
+    public LoggerAspect(final Logger logger, final UserSession userSession, final AuditLogRepository auditLogRepository) {
         this.logger = logger;
         this.userSession = userSession;
+        this.auditLogRepository = auditLogRepository;
     }
 
 
@@ -84,7 +87,8 @@ public class LoggerAspect {
                 t.addValueChange(answer.getKey(), null, answer.getValue());
             }
             LOGGER.debug(t.toString());
-            logger.log(t);
+            auditLogRepository.save(t);
+            //logger.log(t);
         } catch (Exception e) {
             LOGGER.error("Could not log submit application event", e);
             if(t != null) LOGGER.error(t.toString());
@@ -110,7 +114,9 @@ public class LoggerAspect {
                 tapahtuma.addValueChange(difference.getKey(), difference.getOldValue(), difference.getNewValue());
             }
             LOGGER.debug(tapahtuma.toString());
-            logger.log(tapahtuma);
+
+            auditLogRepository.save(tapahtuma);
+            //logger.log(tapahtuma);
 
         } catch (Exception e) {
             LOGGER.error("Could not log update application event", e);

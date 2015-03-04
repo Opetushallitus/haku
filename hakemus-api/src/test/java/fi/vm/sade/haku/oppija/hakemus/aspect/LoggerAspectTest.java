@@ -18,22 +18,29 @@ package fi.vm.sade.haku.oppija.hakemus.aspect;
 
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.lomake.service.mock.UserSessionMock;
+import fi.vm.sade.haku.oppija.repository.AuditLogRepository;
 import fi.vm.sade.log.client.Logger;
 import fi.vm.sade.log.model.Tapahtuma;
 import org.junit.Test;
 
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+
 public class LoggerAspectTest {
 
+    private static AuditLogRepository auditMock = mock(AuditLogRepository.class);
     public static final LoggerAspect LOGGER_ASPECT = new LoggerAspect(new Logger() {
         @Override
         public void log(Tapahtuma tapahtuma) {
 
         }
-    }, new UserSessionMock("test"));
+    }, new UserSessionMock("test"), auditMock);
 
     @Test
     public void testlogSubmitApplication() throws Exception {
         LOGGER_ASPECT.logSubmitApplication("aid", new Application("oid"));
+        verify(auditMock).save((Tapahtuma)any());
     }
 
     @Test
