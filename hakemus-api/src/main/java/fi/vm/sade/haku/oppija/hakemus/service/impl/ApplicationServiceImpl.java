@@ -454,7 +454,10 @@ public class ApplicationServiceImpl implements ApplicationService {
     public void saveApplicationAdditionalInfo(List<ApplicationAdditionalDataDTO> applicationAdditionalData) {
         if (applicationAdditionalData != null) {
             for (ApplicationAdditionalDataDTO data : applicationAdditionalData) {
-                saveApplicationAdditionalInfo(data.getOid(), data.getAdditionalData());
+                Map<String, String> additionalData = data.getAdditionalData();
+                if (additionalData != null && !additionalData.isEmpty()) {
+                    saveApplicationAdditionalInfo(data.getOid(), additionalData);
+                }
             }
         }
     }
