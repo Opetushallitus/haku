@@ -32,6 +32,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import static fi.vm.sade.haku.oppija.hakemus.it.dao.impl.ApplicationOidDAOMongoImpl.SEQUENCE_FIELD;
 import static fi.vm.sade.haku.oppija.hakemus.it.dao.impl.ApplicationOidDAOMongoImpl.SEQUENCE_NAME;
@@ -86,8 +87,19 @@ public abstract class AbstractSeleniumBase extends TomcatContainerBase {
     }
 
     protected void findByIdAndClick(final String... ids) {
+        findByIdAndClick(0, ids);
+    }
+
+    protected void findByIdAndClick(long sleepMillis, final String... ids ) {
         for (String id : ids) {
             seleniumContainer.getDriver().findElement(By.id(id)).click();
+            if (sleepMillis > 0 ) {
+                try {
+                    TimeUnit.MILLISECONDS.sleep(sleepMillis);
+                } catch (InterruptedException e) {
+                    // Not interested
+                }
+            }
         }
     }
 
