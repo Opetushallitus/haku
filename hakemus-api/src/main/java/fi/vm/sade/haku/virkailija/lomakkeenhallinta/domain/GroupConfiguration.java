@@ -12,6 +12,7 @@ public class GroupConfiguration {
 
     //TODO: =RS= Siirrä käyttämään koodistoa ml organisaatiopalvelu.
     public enum GroupType {
+        hakukohde_liiteosoite, // common address
         hakukohde_rajaava,  // maximum number of application options
         hakukohde_priorisoiva, // Priority levels // possible autoconfig
         CONSTRAINT_GROUP // allow_group_id / deny_group_id  -- NOT IMPLEMENTED
