@@ -14,14 +14,17 @@ public class HakuAppTomcat extends EmbeddedTomcat {
     static final String HAKU_MODULE_ROOT = ProjectRootFinder.findProjectRoot() + "/haku-app";
     static final String HAKU_CONTEXT_PATH = "/haku-app";
     static final int DEFAULT_PORT = 9090;
+    static final int DEFAULT_AJP_PORT = 8506;
 
     public final static void main(String... args) throws ServletException, LifecycleException {
         useIntegrationTestSettingsIfNoProfileSelected();
-        new HakuAppTomcat(Integer.parseInt(System.getProperty("haku-app.port", String.valueOf(DEFAULT_PORT)))).start().await();
+        new HakuAppTomcat(Integer.parseInt(System.getProperty("haku-app.port", String.valueOf(DEFAULT_PORT))),
+                Integer.parseInt(System.getProperty("haku-app.port.ajp", String.valueOf(DEFAULT_AJP_PORT)))
+        ).start().await();
     }
 
-    public HakuAppTomcat(int port) {
-        super(port, HAKU_MODULE_ROOT, HAKU_CONTEXT_PATH);
+    public HakuAppTomcat(int port, int ajpPort) {
+        super(port, ajpPort, HAKU_MODULE_ROOT, HAKU_CONTEXT_PATH);
     }
 
     public static void startShared() {
@@ -30,10 +33,10 @@ public class HakuAppTomcat extends EmbeddedTomcat {
 
     public static void startForIntegrationTestIfNotRunning() {
         useIntegrationTestSettingsIfNoProfileSelected();
-        if (PortChecker.isFreeLocalPort(DEFAULT_PORT)) {
-            new HakuAppTomcat(DEFAULT_PORT).start();
+        if (PortChecker.isFreeLocalPort(DEFAULT_PORT) && PortChecker.isFreeLocalPort(DEFAULT_AJP_PORT)) {
+            new HakuAppTomcat(DEFAULT_PORT, DEFAULT_AJP_PORT).start();
         } else {
-            LoggerFactory.getLogger(HakuAppTomcat.class).info("Not starting Tomcat: seems to be running on port " + DEFAULT_PORT);
+            LoggerFactory.getLogger(HakuAppTomcat.class).info("Not starting Tomcat: seems to be running on ports " + DEFAULT_PORT + "," + DEFAULT_AJP_PORT);
         }
     }
 
