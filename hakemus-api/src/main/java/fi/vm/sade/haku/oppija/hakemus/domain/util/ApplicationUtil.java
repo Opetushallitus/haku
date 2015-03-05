@@ -42,51 +42,42 @@ public final class ApplicationUtil {
 
         Map<String, List<String>> attachments = new LinkedHashMap<String, List<String>>();
 
-        List<String> universityAOs = getUniversityAOs(application);
-        List<String> aspaAmkAOs = getAspaAmkAOs(application);
-        List<String> universityAndAspaAmkAOs = new ArrayList<String>();
-        universityAndAspaAmkAOs.addAll(universityAOs);
-        universityAndAspaAmkAOs.addAll(aspaAmkAOs);
+        List<String> allAOs = getAos(application);
 
-        if (!universityAndAspaAmkAOs.isEmpty()) {
+        if (!allAOs.isEmpty()) {
             if (yoNeeded(application)) {
-                attachments.put("yo", universityAndAspaAmkAOs);
+                attachments.put("yo", allAOs);
             }
             if (hasBaseEducation(application, "pohjakoulutus_yo_ammatillinen")) {
-                attachments.put("yo_am", universityAOs);
+                attachments.put("yo_am", allAOs);
             }
             if (hasBaseEducation(application, "pohjakoulutus_yo_kansainvalinen_suomessa")) {
-                attachments.put("yo_kv", universityAndAspaAmkAOs);
+                attachments.put("yo_kv", allAOs);
             }
             if (hasBaseEducation(application, "pohjakoulutus_yo_ulkomainen")) {
-                attachments.put("yo_ulk", universityAndAspaAmkAOs);
+                attachments.put("yo_ulk", allAOs);
             }
             if (hasBaseEducation(application, "pohjakoulutus_am")) {
-                attachments.put("am", universityAOs);
+                attachments.put("am", allAOs);
             }
             if (hasBaseEducation(application, "pohjakoulutus_amt")) {
-                attachments.put("amt", universityAndAspaAmkAOs);
+                attachments.put("amt", allAOs);
             }
             if (hasBaseEducation(application, "pohjakoulutus_kk")) {
-                attachments.put("kk", universityAndAspaAmkAOs);
+                attachments.put("kk", allAOs);
             }
             if (hasBaseEducation(application, "pohjakoulutus_ulk")) {
-                attachments.put("ulk", universityAndAspaAmkAOs);
+                attachments.put("ulk", allAOs);
             }
             if (hasBaseEducation(application, "pohjakoulutus_kk_ulk")) {
-                attachments.put("kk_ulk", universityAndAspaAmkAOs);
+                attachments.put("kk_ulk", allAOs);
             }
             if (hasBaseEducation(application, "pohjakoulutus_avoin")) {
-                attachments.put("avoin", universityAndAspaAmkAOs);
+                attachments.put("avoin", allAOs);
             }
-        }
-
-        List<String> amkAOs = getAmkAOs(application);
-        List<String> allAOs = new ArrayList<String>();
-        allAOs.addAll(universityAOs);
-        allAOs.addAll(amkAOs);
-        if (hasBaseEducation(application, "pohjakoulutus_muu") && !allAOs.isEmpty()) {
-            attachments.put("muu", allAOs);
+            if (hasBaseEducation(application, "pohjakoulutus_muu")) {
+                attachments.put("muu", allAOs);
+            }
         }
 
         return attachments;
@@ -163,17 +154,8 @@ public final class ApplicationUtil {
     }
 
 
-    private static List<String> getAmkAOs(Application application) {
-        return getAosForType(application, "amkLiite");
-    }
-
-    private static List<String> getUniversityAOs(Application application) {
-        return getAosForType(application, "yoLiite");
-    }
-
-    private static List<String> getAosForType(Application application, String liiteKeyBase) {
+    private static List<String> getAos(Application application) {
         Map<String, String> answers = application.getPhaseAnswers(OppijaConstants.PHASE_APPLICATION_OPTIONS);
-        List<String> providers = new ArrayList<String>();
         List<String> aos = new ArrayList<String>();
         int i = 1;
         while (true) {
@@ -182,13 +164,8 @@ public final class ApplicationUtil {
                 break;
             }
             String aoId = answers.get(aoKey);
-            String provider = answers.get("preference" + i + "-Opetuspiste-id");
-            String liiteKey = "preference" + i + "-" + liiteKeyBase;
-            if (isIdGivenAndKeyValueTrue(answers, aoId, liiteKey)
-                    && !aos.contains(aoId)
-                    && !providers.contains(provider)) {
+            if (!Strings.isNullOrEmpty(aoId) && !aos.contains(aoId)) {
                 aos.add(aoId);
-                providers.add(provider);
             }
             i++;
         }
@@ -228,36 +205,6 @@ public final class ApplicationUtil {
             }
         }
         return false;
-    }
-
-    private static List<String> getAspaAmkAOs(Application application) {
-        Set<String> aspaAos = new HashSet<String>();
-        Map<String, String> answers = application.getPhaseAnswers(OppijaConstants.PHASE_APPLICATION_OPTIONS);
-        List<String> aos = new ArrayList<String>();
-        int i = 1;
-        while (true) {
-            String aoKey = String.format(OppijaConstants.PREFERENCE_ID, i);
-            if (!answers.containsKey(aoKey)) {
-                break;
-            }
-            String aoId = answers.get(aoKey);
-            String liiteKey = "preference" + i + "-amkLiite";
-            if (isIdGivenAndKeyValueTrue(answers, aoId, liiteKey) && !aos.contains(aoId)) {
-                String groupsStr = answers.get("preference" + i + "-Koulutus-id-attachmentgroups");
-                if (StringUtils.isBlank(groupsStr)) {
-                    aos.add(aoId);
-                } else {
-                    for (String group : groupsStr.split(",")) {
-                        if (!aspaAos.contains(group)) {
-                            aspaAos.add(group);
-                            aos.add(aoId);
-                        }
-                    }
-                }
-            }
-            i++;
-        }
-        return aos;
     }
 
     public static List<PreferenceEligibility> checkAndCreatePreferenceEligibilities(List<PreferenceEligibility> existingPreferenceEligibilities, List<String> preferenceAoIds) {
