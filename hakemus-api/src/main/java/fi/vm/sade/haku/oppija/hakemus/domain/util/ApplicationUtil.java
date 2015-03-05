@@ -46,37 +46,37 @@ public final class ApplicationUtil {
 
         if (!allAOs.isEmpty()) {
             if (yoNeeded(application)) {
-                attachments.put("yo", allAOs);
+                attachments.put("form.valmis.todistus.yo", allAOs);
             }
             if (hasBaseEducation(application, "pohjakoulutus_yo_ammatillinen")) {
                 attachments.put("yo_am", allAOs);
             }
             if (hasBaseEducation(application, "pohjakoulutus_yo_kansainvalinen_suomessa")) {
-                attachments.put("yo_kv", allAOs);
+                attachments.put("form.valmis.todistus.yo_kv", allAOs);
             }
             if (hasBaseEducation(application, "pohjakoulutus_yo_ulkomainen")) {
-                attachments.put("yo_ulk", allAOs);
+                attachments.put("form.valmis.todistus.yo_ulk", allAOs);
             }
             if (hasBaseEducation(application, "pohjakoulutus_am")) {
-                attachments.put("am", allAOs);
+                attachments.put("form.valmis.todistus.am", allAOs);
             }
             if (hasBaseEducation(application, "pohjakoulutus_amt")) {
-                attachments.put("amt", allAOs);
+                attachments.put("form.valmis.todistus.amt", allAOs);
             }
             if (hasBaseEducation(application, "pohjakoulutus_kk")) {
-                attachments.put("kk", allAOs);
+                attachments.put("form.valmis.todistus.kk", allAOs);
             }
             if (hasBaseEducation(application, "pohjakoulutus_ulk")) {
-                attachments.put("ulk", allAOs);
+                attachments.put("form.valmis.todistus.ulk", allAOs);
             }
             if (hasBaseEducation(application, "pohjakoulutus_kk_ulk")) {
-                attachments.put("kk_ulk", allAOs);
+                attachments.put("form.valmis.todistus.kk_ulk", allAOs);
             }
             if (hasBaseEducation(application, "pohjakoulutus_avoin")) {
-                attachments.put("avoin", allAOs);
+                attachments.put("form.valmis.todistus.avoin", allAOs);
             }
             if (hasBaseEducation(application, "pohjakoulutus_muu")) {
-                attachments.put("muu", allAOs);
+                attachments.put("form.valmis.todistus.muu", allAOs);
             }
         }
 
@@ -92,7 +92,7 @@ public final class ApplicationUtil {
         String tutkintotaso = koulutustaustaAnswers.get("amk_ope_tutkinnontaso");
         if (isNotBlank(tutkintotaso)) {
             // Liite 1. Tutkinto, jolla haet: kopio tutkintotodistuksestasi ja tarvittaessa kopio rinnastamispäätöksestä
-            attachments.put("tutkintotodistus", aoIds);
+            attachments.put("form.valmis.amkope.tutkintotodistus", aoIds);
         }
 
         List<String> eiKorkeakoulututkinto = new ArrayList<String>() {{
@@ -103,21 +103,21 @@ public final class ApplicationUtil {
             if ("opettajana_ammatillisessa_tutkinto".equals(koulutustaustaAnswers.get("ei_korkeakoulututkintoa"))
                     || "opettajana_ammatillisessa".equals(koulutustaustaAnswers.get("ei_korkeakoulututkintoa"))) {
                 // Liite 2. Oppilaitoksen/työnantajan lausunto, https://opintopolku.fi/wp/wp-content/uploads/2014/12/2015_Oppilaitoksen_lausunto.pdf (laita linkki aukeamaan uuteen ikkunaan)
-                attachments.put("tyonantajan_lausunto", aoIds);
+                attachments.put("form.valmis.amkope.tyonantajan_lausunto", aoIds);
             }
         }
 
         String pedagogisetOpinnot = koulutustaustaAnswers.get("pedagogiset_opinnot");
         if (isNotBlank(pedagogisetOpinnot) && pedagogisetOpinnot.equals("true")) {
             // Liite 3. Opettajan pedagogiset opinnot: kopio todistuksestasi
-            attachments.put("pedagogiset_opinnot", aoIds);
+            attachments.put("form.valmis.amkope.pedagogiset_opinnot", aoIds);
         }
 
         for (String t : new String[] {"amt", "am", "kk", "tri"} ) {
             String muuTutkintoId = "muu_tutkinto_" + t;
             String muuTutkinto = koulutustaustaAnswers.get(muuTutkintoId);
             if ("true".equals(muuTutkinto)) {
-                attachments.put("muu_tutkinto", aoIds);
+                attachments.put("form.valmis.amkope.muu_tutkinto", aoIds);
                 break;
             }
         }
