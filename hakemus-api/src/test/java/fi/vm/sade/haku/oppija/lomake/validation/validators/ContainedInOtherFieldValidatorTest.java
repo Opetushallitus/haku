@@ -80,7 +80,7 @@ public class ContainedInOtherFieldValidatorTest {
         assertTrue(result.hasErrors());
     }
 
-    @Test
+    @Test(expected=NullPointerException.class)
     public void testNoMatchNull() {
         HashMap<String, String> values = new HashMap<String, String>();
         values.put(thatField, "FirstName");

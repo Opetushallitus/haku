@@ -17,6 +17,7 @@
 package fi.vm.sade.haku.oppija.lomake.domain.elements.custom;
 
 import com.google.common.collect.ImmutableMap;
+import com.mongodb.util.Hash;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Titled;
 
@@ -27,16 +28,12 @@ public class HigherEducationAttachments extends Titled {
 
     private Map<String, I18nText> attachmentNotes;
 
-    public HigherEducationAttachments(final String id, final I18nText i18nText) {
+    public HigherEducationAttachments(final String id, final I18nText i18nText, Map<String, I18nText> attachmentNotes) {
         super(id, i18nText);
-        attachmentNotes = new HashMap<String, I18nText>();
+        this.attachmentNotes = ImmutableMap.copyOf(attachmentNotes);
     }
 
     public Map<String, I18nText> getAttachmentNotes() {
-        return ImmutableMap.copyOf(attachmentNotes);
-    }
-
-    public void addAttachmentNote(String key, I18nText text) {
-        attachmentNotes.put(key, text);
+        return attachmentNotes;
     }
 }

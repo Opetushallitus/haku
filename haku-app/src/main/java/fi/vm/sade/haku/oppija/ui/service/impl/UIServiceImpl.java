@@ -191,13 +191,11 @@ public class UIServiceImpl implements UIService {
     public ModelResponse updateRules(String applicationSystemId, String phaseId, String elementId, Map<String, String> currentAnswers) {
         Form activeForm = applicationSystemService.getActiveApplicationSystem(applicationSystemId).getForm();
         Application application = applicationService.getApplication(applicationSystemId);
-        Map<String, String> values = application.getVastauksetMerged();
-        for (String key : application.getPhaseAnswers(phaseId).keySet()) {
-            values.remove(key);
-        }
-        values.putAll(currentAnswers);
+        Map<String, String> otherValues = application.getVastauksetMergedIgnoringPhase(phaseId);
+        currentAnswers.putAll(otherValues);
+
         ModelResponse modelResponse = new ModelResponse();
-        modelResponse.addAnswers(values);
+        modelResponse.addAnswers(currentAnswers);
         modelResponse.setElement(new ElementTree(activeForm).getChildById(elementId));
         modelResponse.setForm(activeForm);
         modelResponse.setApplicationSystemId(applicationSystemId);
@@ -210,13 +208,10 @@ public class UIServiceImpl implements UIService {
     public ModelResponse updateRulesMulti(String applicationSystemId, String phaseId, List<String> elementIds, Map<String, String> currentAnswers) {
         Form activeForm = applicationSystemService.getActiveApplicationSystem(applicationSystemId).getForm();
         Application application = applicationService.getApplication(applicationSystemId);
-        Map<String, String> values = application.getVastauksetMerged();
-        for (String key : application.getPhaseAnswers(phaseId).keySet()) {
-            values.remove(key);
-        }
-        values.putAll(currentAnswers);
+        Map<String, String> otherAnswers = application.getVastauksetMergedIgnoringPhase(phaseId);
+        currentAnswers.putAll(otherAnswers);
         ModelResponse modelResponse = new ModelResponse();
-        modelResponse.addAnswers(values);
+        modelResponse.addAnswers(currentAnswers);
 
         List<Element> elements = new ArrayList();
         if (elementIds != null) {

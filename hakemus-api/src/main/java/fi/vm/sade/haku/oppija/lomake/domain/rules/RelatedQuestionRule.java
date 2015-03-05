@@ -40,7 +40,7 @@ public class RelatedQuestionRule extends Element {
         super(id);
         Preconditions.checkNotNull(expr);
         this.expr = expr;
-        variables = getVariables(expr);
+        variables = Collections.unmodifiableSet(getVariables(expr));
     }
 
     @Override

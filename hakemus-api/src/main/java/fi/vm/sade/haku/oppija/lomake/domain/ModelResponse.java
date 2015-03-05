@@ -2,6 +2,7 @@ package fi.vm.sade.haku.oppija.lomake.domain;
 
 import com.google.common.collect.ImmutableMap;
 
+import com.google.common.collect.Maps;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationAttachment;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationState;
@@ -11,6 +12,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationResult;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,7 +35,7 @@ public class ModelResponse {
 
 
     private final Map<String, I18nText> errors = new HashMap<String, I18nText>();
-    private Map<String, Object> model = new HashMap<String, Object>();
+    private final Map<String, Object> model = new HashMap<String, Object>();
 
     public ModelResponse() {
     }
@@ -97,8 +99,8 @@ public class ModelResponse {
     }
 
     public final Map<String, Object> getModel() {
-        model.put(ERROR_MESSAGES, ImmutableMap.copyOf(errors));
-        return ImmutableMap.copyOf(model);
+        model.put(ERROR_MESSAGES, Collections.unmodifiableMap(errors));
+        return Collections.unmodifiableMap(model);
     }
 
     public final void addObjectToModel(final String key, final Object value) {
@@ -128,11 +130,14 @@ public class ModelResponse {
     }
 
     public void addAnswers(final Map<String, String> answers) {
-        Map<String, String> tmp = (Map<String, String>) this.model.get(ANSWERS);
+        final Map<String, String> tmp = (Map<String, String>) this.model.get(ANSWERS);
         if (tmp == null) {
             addObjectToModel(ANSWERS, answers);
         } else {
-            tmp.putAll(answers);
+            final Map<String,String> combinedAnswers = Maps.newHashMapWithExpectedSize(tmp.size() + answers.size());
+            combinedAnswers.putAll(tmp);
+            combinedAnswers.putAll(answers);
+            addObjectToModel(ANSWERS, combinedAnswers);
         }
     }
 

@@ -17,80 +17,110 @@
 package fi.vm.sade.haku.oppija.lomake.domain.elements.questions;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import org.springframework.data.annotation.Transient;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public abstract class OptionQuestion extends Question {
 
     private static final long serialVersionUID = -2304711424350028559L;
 
-    private final List<Option> options = new ArrayList<Option>();
+    private final List<Option> options;
 
     @Transient
-    private final Map<String, Option> optionsMap = new LinkedHashMap<String, Option>();
+    private Map<String, Option> optionsMap;
     @Transient
     private Map<String, List<Option>> optionsSortedByText;
+    @Transient
+    private final Object optionsMapLock = new Object();
+    @Transient
+    private final Object optionsSortedByTextLock = new Object();
 
     protected OptionQuestion(final String id, final I18nText i18nText, final List<Option> options) {
         super(id, i18nText);
-        for (Option option : options) {
-            this.optionsMap.put(option.getValue(), option);
-            this.options.add(option);
-        }
-        initSortedOptions();
+        this.options = ImmutableList.copyOf(options);
     }
 
     public List<Option> getOptions() {
-        return ImmutableList.copyOf(options);
+        return options;
     }
 
     public Map<String, Option> getData() {
+        if (null == optionsMap)
+            initOptionsMap();
         return optionsMap;
     }
 
     public Map<String, List<Option>> getOptionsSortedByText() {
+        if (null == optionsSortedByText)
+            initSortedOptions();
         return optionsSortedByText;
     }
 
     private void initSortedOptions() {
-        optionsSortedByText = new HashMap<String, List<Option>>();
-        for (Option option : options) {
-            Set<String> langs = option.getI18nText().getTranslations().keySet();
-            for (String lang : langs) {
-                List<Option> optionListForLang = optionsSortedByText.get(lang);
-                if (optionListForLang == null) {
-                    optionListForLang = new ArrayList<Option>(options.size());
-                    optionsSortedByText.put(lang, optionListForLang);
+        synchronized (optionsSortedByTextLock) {
+            if (null != optionsSortedByText)
+                return;
+            Map<String, List<Option>> tempOptionsSortedByText = new HashMap<>();
+            for (Option option : options) {
+                Set<String> langs = option.getI18nText().getTranslations().keySet();
+                for (String lang : langs) {
+                    List<Option> optionListForLang = tempOptionsSortedByText.get(lang);
+                    if (optionListForLang == null) {
+                        optionListForLang = new ArrayList<Option>(options.size());
+                        tempOptionsSortedByText.put(lang, optionListForLang);
+                    }
+                    optionListForLang.add(option);
                 }
-                optionListForLang.add(option);
             }
+            for (Map.Entry<String, List<Option>> entry : tempOptionsSortedByText.entrySet()) {
+                List<Option> optionList = entry.getValue();
+                final String lang = entry.getKey();
+                Collections.sort(optionList, new Comparator<Option>() {
+                    @Override
+                    public int compare(Option o1, Option o2) {
+                        String o1Trans = o1.getI18nText().getTranslations().get(lang);
+                        String o2Trans = o2.getI18nText().getTranslations().get(lang);
+                        return o1Trans.compareTo(o2Trans);
+                    }
+                });
+            }
+            this.optionsSortedByText = ImmutableMap.copyOf(tempOptionsSortedByText);
         }
-        for (Map.Entry<String, List<Option>> entry : optionsSortedByText.entrySet()) {
-            List<Option> optionList = entry.getValue();
-            final String lang = entry.getKey();
-            Collections.sort(optionList, new Comparator<Option>() {
-                @Override
-                public int compare(Option o1, Option o2) {
-                    String o1Trans = o1.getI18nText().getTranslations().get(lang);
-                    String o2Trans = o2.getI18nText().getTranslations().get(lang);
-                    return o1Trans.compareTo(o2Trans);
-                }
-            });
+    }
+
+    private void initOptionsMap(){
+        synchronized (optionsMapLock){
+            if (null != optionsMap)
+                return;
+            Map<String, Option> tempOptionsMap = new LinkedHashMap<String, Option>();
+            for (Option option : options) {
+                tempOptionsMap.put(option.getValue(), option);
+            }
+            this.optionsMap = ImmutableMap.copyOf(tempOptionsMap);
         }
     }
 
     @Override
     public List<Element> getChildren() {
-        List<Element> listOfElements = new ArrayList<Element>();
-        listOfElements.addAll(super.getChildren());
+        List<Element> childList = super.getChildren();
+        List<Element> listOfElements = new ArrayList<Element>(childList.size()+ options.size());
+        listOfElements.addAll(childList);
         for (Option option : options) {
             listOfElements.addAll(option.getChildren());
         }
-        return listOfElements;
+        return Collections.unmodifiableList(listOfElements);
     }
 
     @Override

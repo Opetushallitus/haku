@@ -18,8 +18,6 @@ package fi.vm.sade.haku.oppija.lomake.domain.elements;
 
 
 import com.google.common.base.Objects;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.Popup;
 import fi.vm.sade.haku.oppija.lomake.validation.Validator;
@@ -29,7 +27,11 @@ import org.springframework.data.annotation.Transient;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -62,7 +64,7 @@ public abstract class Element implements Serializable {
     }
 
     public Map<String, String> getAttributes() {
-        return ImmutableMap.copyOf(attributes);
+        return Collections.unmodifiableMap(attributes);
     }
 
     public I18nText getHelp() {
@@ -96,7 +98,7 @@ public abstract class Element implements Serializable {
     }
 
     public List<Validator> getValidators() {
-        return ImmutableList.copyOf(validators);
+        return Collections.unmodifiableList(validators);
     }
 
     public void setValidators(final List<Validator> validators) {
@@ -123,16 +125,7 @@ public abstract class Element implements Serializable {
     }
 
     public List<Element> getChildren() {
-        return ImmutableList.copyOf(children);
-    }
-
-    public List<Element> getAllChildren(Map<String, String> values) {
-        List<Element> children = new ArrayList<Element>();
-        for (Element child : getChildren(values)) {
-            children.add(child);
-            children.addAll(child.getAllChildren(values));
-        }
-        return children;
+        return Collections.unmodifiableList(children);
     }
 
     @Transient
