@@ -18,4 +18,4 @@
   ~ European Union Public Licence for more details.
   --%>
 <c:if test="${not empty value}"><c:out value="${value.translations[requestScope['fi_vm_sade_oppija_language']]}"
-                                       escapeXml="false" default="???"/></c:if>
+                                       escapeXml="false" default=""/></c:if>
