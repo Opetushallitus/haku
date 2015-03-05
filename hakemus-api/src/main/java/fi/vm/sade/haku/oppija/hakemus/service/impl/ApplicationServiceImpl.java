@@ -542,8 +542,8 @@ public class ApplicationServiceImpl implements ApplicationService {
               && key.endsWith(OppijaConstants.OPTION_ID_POSTFIX)
               && isNotEmpty(ensuredAnswers.get(key))){
                 String basekey = key.replace(OppijaConstants.OPTION_ID_POSTFIX, "");
+
                 String aoGroups = ensuredAnswers.get(basekey + OppijaConstants.OPTION_GROUP_POSTFIX);
-                String attachmentGroups = ensuredAnswers.get(basekey + OppijaConstants.OPTION_ATTACHMENT_GROUP_POSTFIX);
                 String attachments = ensuredAnswers.get(basekey + OppijaConstants.OPTION_ATTACHMENTS_POSTFIX);
 
                 ApplicationOptionDTO applicationOption = koulutusinformaatioService.getApplicationOption(ensuredAnswers.get(key), lang);
@@ -565,19 +565,14 @@ public class ApplicationServiceImpl implements ApplicationService {
                 ensuredAnswers.put(basekey+"-Koulutus-id-vocational", String.valueOf(applicationOption.isVocational()));
                 ensuredAnswers.put(basekey+"-Koulutus-id-educationcode", safeToString(applicationOption.getEducationCodeUri()));
 
-                if (isEmpty(aoGroups) || isEmpty(attachmentGroups)) {
+                if (isEmpty(aoGroups)) {
                     List<OrganizationGroupDTO> organizationGroups = applicationOption.getOrganizationGroups();
                     if (null != organizationGroups && organizationGroups.size() > 0 ){
                         ArrayList<String> aoGroupList = new ArrayList<String>(organizationGroups.size());
-                        ArrayList<String> attachmentGroupList = new ArrayList<String>();
                         for (OrganizationGroupDTO organizationGroup : organizationGroups) {
                             aoGroupList.add(organizationGroup.getOid());
-                            if (organizationGroup.getUsageGroups().contains(OppijaConstants.OPTION_ATTACHMENT_GROUP_TYPE)){
-                                attachmentGroupList.add(organizationGroup.getOid());
-                            }
                         }
                         ensuredAnswers.put(basekey + OppijaConstants.OPTION_GROUP_POSTFIX, StringUtils.join(aoGroupList, ","));
-                        ensuredAnswers.put(basekey + OppijaConstants.OPTION_ATTACHMENT_GROUP_POSTFIX, StringUtils.join(attachmentGroupList, ","));
                     }
                 }
 
