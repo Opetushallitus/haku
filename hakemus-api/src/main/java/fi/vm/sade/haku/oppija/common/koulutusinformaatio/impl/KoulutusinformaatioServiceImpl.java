@@ -1,9 +1,13 @@
 package fi.vm.sade.haku.oppija.common.koulutusinformaatio.impl;
 
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.UriBuilder;
-
+import com.google.common.base.Strings;
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.GenericType;
+import com.sun.jersey.api.client.WebResource;
 import fi.vm.sade.haku.oppija.common.jackson.UnknownPropertiesAllowingJacksonJsonClientFactory;
+import fi.vm.sade.haku.oppija.common.koulutusinformaatio.ApplicationOptionDTOToApplicationOptionFunction;
+import fi.vm.sade.haku.oppija.common.koulutusinformaatio.KoulutusinformaatioService;
+import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,14 +16,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
-import com.google.common.base.Strings;
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.GenericType;
-import com.sun.jersey.api.client.WebResource;
-
-import fi.vm.sade.haku.oppija.common.koulutusinformaatio.ApplicationOptionDTOToApplicationOptionFunction;
-import fi.vm.sade.haku.oppija.common.koulutusinformaatio.KoulutusinformaatioService;
-import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.UriBuilder;
 
 @Service
 @Profile(value = {"default", "devluokka", "vagrant"})
@@ -50,6 +48,7 @@ public class KoulutusinformaatioServiceImpl extends KoulutusinformaatioService {
 			UriBuilder builder = webResource.path(oid).getUriBuilder();
 			if (!StringUtils.isEmpty(lang)) {
 				builder.queryParam("uiLang", lang);
+				builder.queryParam("lang", lang);
 			}
 			LOGGER.debug(builder.build().toString());
 			WebResource asWebResource = clientWithJacksonSerializer.resource(builder.build());
