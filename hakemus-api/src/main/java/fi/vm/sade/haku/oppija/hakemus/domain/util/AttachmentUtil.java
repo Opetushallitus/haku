@@ -233,17 +233,45 @@ public class AttachmentUtil {
       final I18nBundle i18nBundle) {
 
         Map<String, List<AttachmentAddressInfo>> higherEdAttachments = getAddresses(ApplicationUtil.getHigherEdAttachmentAOIds(application), koulutusinformaatioService, lang, true);
-
-        // This variable intentionally left null.
         Date deadline = null;
+        attachments.addAll(getHigherEdAttachments(higherEdAttachments, deadline, i18nBundle));
+        return attachments;
+    }
 
+    private static List<ApplicationAttachmentRequest> addAmkOpeAttachments(
+            final List<ApplicationAttachmentRequest> attachments, final Application application,
+            final KoulutusinformaatioService koulutusinformaatioService, final String lang,
+            final I18nBundle i18nBundle) {
+
+        Map<String, List<AttachmentAddressInfo>> higherEdAttachments = getAddresses(ApplicationUtil.getAmkOpeAttachments(application), koulutusinformaatioService, lang, false);
+
+        Calendar deadlineCal = GregorianCalendar.getInstance();
+        deadlineCal.set(Calendar.YEAR, 2015);
+        deadlineCal.set(Calendar.MONTH, GregorianCalendar.FEBRUARY);
+        deadlineCal.set(Calendar.DAY_OF_MONTH, 3);
+        deadlineCal.set(Calendar.HOUR_OF_DAY, 15);
+        deadlineCal.set(Calendar.MINUTE, 0);
+        deadlineCal.set(Calendar.SECOND, 0);
+
+        Date deadline = deadlineCal.getTime();
+
+        attachments.addAll(getHigherEdAttachments(higherEdAttachments, deadline, i18nBundle));
+        return attachments;
+    }
+
+    private static List<ApplicationAttachmentRequest> getHigherEdAttachments(
+            final Map<String, List<AttachmentAddressInfo>> higherEdAttachments,
+            final Date deadline,
+            final I18nBundle i18nBundle) {
+
+        List<ApplicationAttachmentRequest> attachments = new ArrayList<>();
         for (Map.Entry<String, List<AttachmentAddressInfo>> entry : higherEdAttachments.entrySet()) {
             String attachmentType = entry.getKey();
             for (AttachmentAddressInfo address : entry.getValue()) {
 
                 ApplicationAttachmentBuilder attachmentBuilder = ApplicationAttachmentBuilder.start()
                         .setName(address.attachmentName)
-                        .setDescription(i18nBundle.get("form.valmis.todistus." + attachmentType))
+                        .setDescription(i18nBundle.get(attachmentType))
                         .setDeadline(deadline)
                         .setAddress(getAddress(address.recipientName, address.addressDTO));
                 if (deadline == null) {
@@ -260,46 +288,6 @@ public class AttachmentUtil {
         return attachments;
     }
 
-    private static List<ApplicationAttachmentRequest> addAmkOpeAttachments(
-      final List<ApplicationAttachmentRequest> attachments, final Application application,
-      final KoulutusinformaatioService koulutusinformaatioService, final String lang,
-      final I18nBundle i18nBundle) {
-
-        Map<String, List<AttachmentAddressInfo>> amkOpeAttachments = getAddresses(ApplicationUtil.getAmkOpeAttachments(application), koulutusinformaatioService, lang, false);
-
-        Calendar deadlineCal = GregorianCalendar.getInstance();
-        deadlineCal.set(Calendar.YEAR, 2015);
-        deadlineCal.set(Calendar.MONTH, GregorianCalendar.FEBRUARY);
-        deadlineCal.set(Calendar.DAY_OF_MONTH, 3);
-        deadlineCal.set(Calendar.HOUR_OF_DAY, 15);
-        deadlineCal.set(Calendar.MINUTE, 0);
-        deadlineCal.set(Calendar.SECOND, 0);
-
-        Date deadline = deadlineCal.getTime();
-
-        for (Map.Entry<String, List<AttachmentAddressInfo>> entry : amkOpeAttachments.entrySet()) {
-            String attachmentType = entry.getKey();
-            for (AttachmentAddressInfo address : entry.getValue()) {
-
-                ApplicationAttachmentBuilder attachmentBuilder = ApplicationAttachmentBuilder.start()
-                                .setName(address.attachmentName)
-                                .setDescription(i18nBundle.get("form.valmis.amkope." + attachmentType))
-                                .setDeadline(deadline)
-                        .setAddress(getAddress(address.recipientName, address.addressDTO));
-                if (deadline == null) {
-                    attachmentBuilder.setDeliveryNote(i18nBundle.get(GENERAL_DELIVERY_NOTE));
-                }
-                attachments.add(ApplicationAttachmentRequestBuilder.start()
-                        .setPreferenceAoId(address.attachmentOriginatorAoId)
-                        .setPreferenceAoGroupId(address.attachmentOriginatorGroupId)
-                        .setApplicationAttachment(attachmentBuilder.build())
-                        .build());
-            }
-        }
-
-        return attachments;
-    }
-
     private static Map<String, List<AttachmentAddressInfo>> getAddresses(
       final Map<String, List<String>> higherEdAttachmentAOIds,
       final KoulutusinformaatioService koulutusinformaatioService,
@@ -309,7 +297,7 @@ public class AttachmentUtil {
         new HashMap<String, List<AttachmentAddressInfo>>();
         for (Map.Entry<String, List<String>> entry : higherEdAttachmentAOIds.entrySet()) {
             String key = entry.getKey();
-            List<AttachmentAddressInfo> addresses = new ArrayList<AttachmentAddressInfo>();
+            List<AttachmentAddressInfo> addresses = new ArrayList<>();
             for (String aoOid : entry.getValue()) {
                 ApplicationOptionDTO ao = koulutusinformaatioService.getApplicationOption(aoOid, lang);
                 AttachmentAddressInfo address = useGroupAddresses ? getAttachmentGroupAddressInfo(ao) : getAttachmentAddressInfo(ao);
@@ -325,8 +313,8 @@ public class AttachmentUtil {
     private static AttachmentAddressInfo getAttachmentGroupAddressInfo(ApplicationOptionDTO ao) {
         AttachmentAddressInfo aoAddress = getAttachmentAddressInfo(ao);
         for (OrganizationGroupDTO organizationGroup : ao.getOrganizationGroups()) {
+            // TODO get group address from form config
             if (organizationGroup.getUsageGroups().contains(OppijaConstants.OPTION_ATTACHMENT_GROUP_TYPE)){
-                // TODO try to get group address from form config
                 return new AttachmentAddressInfo(
                         aoAddress.attachmentName,
                         aoAddress.recipientName,
