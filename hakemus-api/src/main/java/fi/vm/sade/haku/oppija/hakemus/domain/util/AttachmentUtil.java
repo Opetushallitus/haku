@@ -232,7 +232,7 @@ public class AttachmentUtil {
       final String lang,
       final I18nBundle i18nBundle) {
 
-        Map<String, List<AttachmentAddressInfo>> higherEdAttachments = getAddresses(ApplicationUtil.getHigherEdAttachmentAOIds(application), koulutusinformaatioService, lang, true);
+        Map<String, List<AttachmentAddressInfo>> higherEdAttachments = getAddresses(ApplicationUtil.getHigherEdAttachmentAOIds(application), koulutusinformaatioService, lang);
         Date deadline = null;
         attachments.addAll(getHigherEdAttachments(higherEdAttachments, deadline, i18nBundle));
         return attachments;
@@ -243,7 +243,7 @@ public class AttachmentUtil {
             final KoulutusinformaatioService koulutusinformaatioService, final String lang,
             final I18nBundle i18nBundle) {
 
-        Map<String, List<AttachmentAddressInfo>> higherEdAttachments = getAddresses(ApplicationUtil.getAmkOpeAttachments(application), koulutusinformaatioService, lang, false);
+        Map<String, List<AttachmentAddressInfo>> higherEdAttachments = getAddresses(ApplicationUtil.getAmkOpeAttachments(application), koulutusinformaatioService, lang);
 
         Calendar deadlineCal = GregorianCalendar.getInstance();
         deadlineCal.set(Calendar.YEAR, 2015);
@@ -291,8 +291,7 @@ public class AttachmentUtil {
     private static Map<String, List<AttachmentAddressInfo>> getAddresses(
       final Map<String, List<String>> higherEdAttachmentAOIds,
       final KoulutusinformaatioService koulutusinformaatioService,
-      final String lang,
-      final boolean useGroupAddresses) {
+      final String lang) {
         Map<String, List<AttachmentAddressInfo>> applicationOptions = new HashMap<>();
         new HashMap<String, List<AttachmentAddressInfo>>();
         for (Map.Entry<String, List<String>> entry : higherEdAttachmentAOIds.entrySet()) {
@@ -300,7 +299,7 @@ public class AttachmentUtil {
             List<AttachmentAddressInfo> addresses = new ArrayList<>();
             for (String aoOid : entry.getValue()) {
                 ApplicationOptionDTO ao = koulutusinformaatioService.getApplicationOption(aoOid, lang);
-                AttachmentAddressInfo address = useGroupAddresses ? getAttachmentGroupAddressInfo(ao) : getAttachmentAddressInfo(ao);
+                AttachmentAddressInfo address = getAttachmentGroupAddressInfo(ao);
                 if (!addressAlreadyAdded(addresses, address)) {
                     addresses.add(address);
                 }
