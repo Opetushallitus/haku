@@ -169,8 +169,7 @@ public class SuoritusrekisteriServiceImpl implements SuoritusrekisteriService {
             }
             String komo = suoritus.getKomo();
             if (!validKomos.contains(komo)) {
-                throw new ResourceNotFoundException("Found invalid komo ("+komo+
-                        ") for personOid "+suoritus.getHenkiloOid());
+                continue;
             }
             SuoritusDTO prev = suoritukset.put(komo, suoritus);
             if (prev != null) {
