@@ -269,7 +269,14 @@ function openPage(path, predicate) {
     }
     return seq(
         function() {
-            var newTestFrame = $('<iframe/>').attr({src: path, width: 1024, height: 800, id: "testframe"});
+            var pathStr;
+            if (typeof(path) == 'function') {
+                pathStr = path();
+            }
+            else {
+                pathStr = path;
+            }
+            var newTestFrame = $('<iframe/>').attr({src: pathStr, width: 1024, height: 800, id: "testframe"});
             $("#testframe").replaceWith(newTestFrame);
         },
         wait.until(predicate),
