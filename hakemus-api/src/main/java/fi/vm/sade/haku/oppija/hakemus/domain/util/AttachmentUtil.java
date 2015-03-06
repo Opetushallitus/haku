@@ -232,7 +232,7 @@ public class AttachmentUtil {
       final String lang,
       final I18nBundle i18nBundle) {
 
-        Map<String, List<AttachmentAddressInfo>> higherEdAttachments = getAddresses(ApplicationUtil.getHigherEdAttachmentAOIds(application), koulutusinformaatioService, lang);
+        Map<String, List<HigherEdBaseEducationAttachmentInfo>> higherEdAttachments = getAddresses(ApplicationUtil.getHigherEdAttachmentAOIds(application), koulutusinformaatioService, lang);
         Date deadline = null;
         attachments.addAll(getHigherEdAttachments(higherEdAttachments, deadline, i18nBundle));
         return attachments;
@@ -243,7 +243,7 @@ public class AttachmentUtil {
             final KoulutusinformaatioService koulutusinformaatioService, final String lang,
             final I18nBundle i18nBundle) {
 
-        Map<String, List<AttachmentAddressInfo>> higherEdAttachments = getAddresses(ApplicationUtil.getAmkOpeAttachments(application), koulutusinformaatioService, lang);
+        Map<String, List<HigherEdBaseEducationAttachmentInfo>> higherEdAttachments = getAddresses(ApplicationUtil.getAmkOpeAttachments(application), koulutusinformaatioService, lang);
 
         Calendar deadlineCal = GregorianCalendar.getInstance();
         deadlineCal.set(Calendar.YEAR, 2015);
@@ -260,14 +260,14 @@ public class AttachmentUtil {
     }
 
     private static List<ApplicationAttachmentRequest> getHigherEdAttachments(
-            final Map<String, List<AttachmentAddressInfo>> higherEdAttachments,
+            final Map<String, List<HigherEdBaseEducationAttachmentInfo>> higherEdAttachments,
             final Date deadline,
             final I18nBundle i18nBundle) {
 
         List<ApplicationAttachmentRequest> attachments = new ArrayList<>();
-        for (Map.Entry<String, List<AttachmentAddressInfo>> entry : higherEdAttachments.entrySet()) {
+        for (Map.Entry<String, List<HigherEdBaseEducationAttachmentInfo>> entry : higherEdAttachments.entrySet()) {
             String attachmentType = entry.getKey();
-            for (AttachmentAddressInfo address : entry.getValue()) {
+            for (HigherEdBaseEducationAttachmentInfo address : entry.getValue()) {
 
                 ApplicationAttachmentBuilder attachmentBuilder = ApplicationAttachmentBuilder.start()
                         .setName(address.attachmentName)
@@ -288,18 +288,18 @@ public class AttachmentUtil {
         return attachments;
     }
 
-    private static Map<String, List<AttachmentAddressInfo>> getAddresses(
+    private static Map<String, List<HigherEdBaseEducationAttachmentInfo>> getAddresses(
       final Map<String, List<String>> higherEdAttachmentAOIds,
       final KoulutusinformaatioService koulutusinformaatioService,
       final String lang) {
-        Map<String, List<AttachmentAddressInfo>> applicationOptions = new HashMap<>();
-        new HashMap<String, List<AttachmentAddressInfo>>();
+        Map<String, List<HigherEdBaseEducationAttachmentInfo>> applicationOptions = new HashMap<>();
+        new HashMap<String, List<HigherEdBaseEducationAttachmentInfo>>();
         for (Map.Entry<String, List<String>> entry : higherEdAttachmentAOIds.entrySet()) {
             String key = entry.getKey();
-            List<AttachmentAddressInfo> addresses = new ArrayList<>();
+            List<HigherEdBaseEducationAttachmentInfo> addresses = new ArrayList<>();
             for (String aoOid : entry.getValue()) {
                 ApplicationOptionDTO ao = koulutusinformaatioService.getApplicationOption(aoOid, lang);
-                AttachmentAddressInfo address = getAttachmentGroupAddressInfo(ao);
+                HigherEdBaseEducationAttachmentInfo address = getAttachmentGroupAddressInfo(ao);
                 if (!addressAlreadyAdded(addresses, address)) {
                     addresses.add(address);
                 }
@@ -309,16 +309,16 @@ public class AttachmentUtil {
         return applicationOptions;
     }
 
-    private static AttachmentAddressInfo getAttachmentGroupAddressInfo(ApplicationOptionDTO ao) {
-        AttachmentAddressInfo aoAddress = getAttachmentAddressInfo(ao);
+    private static HigherEdBaseEducationAttachmentInfo getAttachmentGroupAddressInfo(ApplicationOptionDTO ao) {
+        HigherEdBaseEducationAttachmentInfo aoAddress = getAttachmentAddressInfo(ao);
         for (OrganizationGroupDTO organizationGroup : ao.getOrganizationGroups()) {
             // TODO get group address from form config
             if (organizationGroup.getUsageGroups().contains(OppijaConstants.OPTION_ATTACHMENT_GROUP_TYPE)){
-                return new AttachmentAddressInfo(
+                return new HigherEdBaseEducationAttachmentInfo(
                         aoAddress.attachmentName,
                         aoAddress.recipientName,
                         aoAddress.addressDTO,
-                        AttachmentAddressInfo.OriginatorType.group,
+                        HigherEdBaseEducationAttachmentInfo.OriginatorType.group,
                         organizationGroup.getOid()
                 );
 
@@ -327,7 +327,7 @@ public class AttachmentUtil {
         return aoAddress;
     }
 
-    private static AttachmentAddressInfo getAttachmentAddressInfo(ApplicationOptionDTO ao) {
+    private static HigherEdBaseEducationAttachmentInfo getAttachmentAddressInfo(ApplicationOptionDTO ao) {
         LearningOpportunityProviderDTO provider = ao.getProvider();
         String recipientName = provider.getName();
         AddressDTO address = provider.getPostalAddress();
@@ -335,17 +335,17 @@ public class AttachmentUtil {
             recipientName = provider.getApplicationOffice().getName();
             address = provider.getApplicationOffice().getPostalAddress();
         }
-        return new AttachmentAddressInfo(
+        return new HigherEdBaseEducationAttachmentInfo(
             createI18NAsIs(StringUtil.safeToString(provider.getName())),
             recipientName,
             address,
-            AttachmentAddressInfo.OriginatorType.applicationOption,
+            HigherEdBaseEducationAttachmentInfo.OriginatorType.applicationOption,
             ao.getId()
         );
     }
 
-    private static boolean addressAlreadyAdded(List<AttachmentAddressInfo> addresses, AttachmentAddressInfo address) {
-        for (AttachmentAddressInfo other : addresses) {
+    private static boolean addressAlreadyAdded(List<HigherEdBaseEducationAttachmentInfo> addresses, HigherEdBaseEducationAttachmentInfo address) {
+        for (HigherEdBaseEducationAttachmentInfo other : addresses) {
             if (StringUtils.equals(address.attachmentOriginatorAoId, other.attachmentOriginatorAoId) &&
                 StringUtils.equals(address.attachmentOriginatorGroupId, other.attachmentOriginatorGroupId)) {
                 return true;
