@@ -97,6 +97,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     private static final String INDEX_FULL_NAME = "index_full_name";
     private static final String INDEX_VERSION = "index_version";
 
+    private static final String FIELD_TYPE = "type";
     private static final String FIELD_AO_T = "answers.hakutoiveet.preference%d-Koulutus-id";
     private static final String FIELD_AO_KOULUTUS_ID_T = "answers.hakutoiveet.preference%d-Koulutus-id-aoIdentifier";
     private static final String FIELD_LOP_T = "answers.hakutoiveet.preference%d-Opetuspiste-id";
@@ -127,6 +128,8 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     private static final String FIELD_OPO_ALLOWED = "authorizationMeta.opoAllowed";
     private static final String FIELD_MODEL_VERSION = "modelVersion";
     private static final String REGEX_LINE_BEGIN = "^";
+
+    private static final String OPERATION_SET = "$set";
 
     private static final Pattern OID_PATTERN = Pattern.compile("((^([0-9]{1,4}\\.){5})|(^))[0-9]{11}$");
     private static final Pattern HETU_PATTERN = Pattern.compile("^[0-3][0-9][0-1][0-9][0-9][0-9][-+Aa][0-9]{3}[0-9a-zA-Z]");
@@ -187,9 +190,9 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         if (!Strings.isNullOrEmpty(ssn)) {
             String encryptedSsn = shaEncrypter.encrypt(ssn.toUpperCase());
             final DBObject query = QueryBuilder.start(FIELD_APPLICATION_SYSTEM_ID).is(asId)
-                    .and("answers.henkilotiedot." + SocialSecurityNumber.HENKILOTUNNUS_HASH).is(encryptedSsn)
-                    .and(FIELD_APPLICATION_OID).exists(true)
-                    .and(FIELD_APPLICATION_STATE).notEquals(Application.State.PASSIVE.toString())
+              .and("answers.henkilotiedot." + SocialSecurityNumber.HENKILOTUNNUS_HASH).is(encryptedSsn)
+              .and(FIELD_APPLICATION_OID).exists(true)
+              .and(FIELD_APPLICATION_STATE).notEquals(Application.State.PASSIVE.toString())
                     .get();
             return resultNotEmpty(query, INDEX_SSN_DIGEST);
         }
@@ -610,7 +613,9 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     private Application getNextForAutomatedProcessing(final DBObject query, final String indexCandidate){
         DBObject sortBy = new BasicDBObject(FIELD_LAST_AUTOMATED_PROCESSING_TIME, 1);
 
-        DBCursor cursor = getCollection().find(query).sort(sortBy).limit(1);
+        DBObject key = generateKeysDBObject(FIELD_TYPE, FIELD_APPLICATION_OID);
+
+        DBCursor cursor = getCollection().find(query, key).sort(sortBy).limit(1);
         String hint = null;
         if (ensureIndex) {
             hint = indexCandidate;
@@ -621,7 +626,13 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
             if (!cursor.hasNext()) {
                 return null;
             }
-            return fromDBObject.apply(cursor.next());
+            String applicationOid = fromDBObject.apply(cursor.next()).getOid();
+
+            DBObject applicationOidDBObject = new BasicDBObject(FIELD_APPLICATION_OID, applicationOid);
+            DBObject updateLastAutomatedProcessingTime = new BasicDBObject(OPERATION_SET, new BasicDBObject(FIELD_LAST_AUTOMATED_PROCESSING_TIME, System.currentTimeMillis()));
+            getCollection().update(applicationOidDBObject, updateLastAutomatedProcessingTime, false, false);
+
+            return fromDBObject.apply(getCollection().findOne(new BasicDBObject(FIELD_APPLICATION_OID, applicationOid)));
         } catch (MongoException mongoException) {
             LOG.error("Got error {} with query: {} using hint: {}", mongoException.getMessage(), query, hint);
             throw mongoException;

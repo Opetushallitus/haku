@@ -430,30 +430,19 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
     }
 
     private Application getNextSubmittedApplication() {
-        Application application = applicationDAO.getNextSubmittedApplication();
-        return setLastAutomatedProcessingTimeAndSave(application);
+        return applicationDAO.getNextSubmittedApplication();
     }
 
     private Application getNextWithoutStudentOid() {
-        Application application = applicationDAO.getNextWithoutStudentOid();
-        return setLastAutomatedProcessingTimeAndSave(application);
+        return applicationDAO.getNextWithoutStudentOid();
     }
 
     public Application getNextRedo() {
-        Application application = applicationDAO.getNextRedo();
-        return setLastAutomatedProcessingTimeAndSave(application);
+        return applicationDAO.getNextRedo();
     }
 
     private List<Application> getNextUpgradable() {
         return applicationDAO.getNextUpgradable(maxBatchSize);
-    }
-
-    private Application setLastAutomatedProcessingTimeAndSave(final Application application) {
-        if (application != null) {
-            application.setLastAutomatedProcessingTime(System.currentTimeMillis());
-            applicationDAO.save(application);
-        }
-        return application;
     }
 
     private void setProcessingStateToFailed(String oid, String message){
