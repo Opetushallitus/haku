@@ -1,12 +1,12 @@
 virkailija = initSelectors({
     selectHaku: "#asSelect:first",
+    hakemusOid: "#_infocell_oid",
     editKoulutusTaustaButton: "a[href*='1.2.246.562.29.173465377510/koulutustausta']:first button",
     addAmmatillinenCheckbox: "input#pohjakoulutus_am",
     addAvoinCheckbox: "input#pohjakoulutus_avoin",
     submitConfirm: "#submit_confirm",
     addSecondAmmatillinenLink: "a#addAmmatillinenRule2-link",
     createApplicationButton: "#create-application",
-    ammatilliset: "a[name=pohjakoulutus_am]:first",
     ammatillinenSuoritusVuosi: "input#pohjakoulutus_am_vuosi",
     ammatillinenTutkintonimike: "input#pohjakoulutus_am_nimike",
     ammatillinenTutkinnonLaajuus: "input#pohjakoulutus_am_laajuus",
@@ -34,5 +34,8 @@ virkailija = initSelectors({
         return "input#pohjakoulutus_avoin_korkeakoulu" + (index ? index : '');
     },
     addSecondAvoinLink: "a#addAvoinTutkintoRule2-link",
-    saveButton: "button.save[value=koulutustausta]:first"
+    saveKoulutusTaustaButton: "button.save[value=koulutustausta]:first",
+    editHakutoiveetButton: "a[href*='1.2.246.562.29.173465377510/hakutoiveet']:first button",
+    saveHakutoiveetButton: "button.save[value=hakutoiveet]:first",
+    previewLiitteet: "#applicationAttachments tr:gt(0)"
 });
