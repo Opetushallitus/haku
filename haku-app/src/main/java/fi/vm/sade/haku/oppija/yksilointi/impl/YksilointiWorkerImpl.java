@@ -159,12 +159,15 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
 
     @Override
     public void processIdentification() {
-        Application application = getNextWithoutStudentOid();
-        if (application != null) {
+        int count = 0;
+        do {
+            Application application = getNextWithoutStudentOid();
+            if (null == application)
+                break;
             writeStatus("identification", "start", application);
             applicationService.checkStudentOid(application);
             writeStatus("identification", "done", application);
-        }
+        } while (++count < maxBatchSize);
     }
 
     @Override
