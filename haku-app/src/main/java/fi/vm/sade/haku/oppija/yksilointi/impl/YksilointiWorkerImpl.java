@@ -121,19 +121,31 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
     }
 
     @Override
-    public void processApplications(final boolean sendMail) {
+    public void processApplications(final ProcessingType processingType, final boolean sendMail) {
         int count = 0;
         do {
-            Application application = getNextSubmittedApplication();
+            Application application = getNextApplicationFor(processingType);
             if (null == application)
                 break;
-            writeStatus("postprocess", "start", application);
-            processOneApplication(application, sendMail);
-            writeStatus("postprocess", "done", application);
+            writeStatus(processingType.toString(), "start", application);
+            switch (processingType) {
+            case IDENTIFICATION:
+                applicationService.checkStudentOid(application);
+                break;
+            case POST_PROCESS:
+                processOneApplication(application, sendMail);
+                break;
+            case REDO_POST_PROCESS:
+                reprocessOneApplication(application, sendMail);
+                break;
+            default:
+                LOGGER.error("processApplication cannot handle process type {}", processingType);
+            }
+            writeStatus(processingType.toString(), "done", application);
         } while (++count < maxBatchSize);
     }
 
-    public void processOneApplication(Application application, final boolean sendMail){
+    private void processOneApplication(Application application, final boolean sendMail){
         try {
             application = applicationService.addPersonOid(application);
             if (!skipSendingSchoolAutomatic) {
@@ -156,19 +168,6 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
             LOGGER.error("post process failed for application: " +application.getOid(), e);
             setProcessingStateToFailed(application.getOid(), e.getMessage());
         }
-    }
-
-    @Override
-    public void processIdentification() {
-        int count = 0;
-        do {
-            Application application = getNextWithoutStudentOid();
-            if (null == application)
-                break;
-            writeStatus("identification", "start", application);
-            applicationService.checkStudentOid(application);
-            writeStatus("identification", "done", application);
-        } while (++count < maxBatchSize);
     }
 
     @Override
@@ -224,19 +223,6 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
             applications = getNextUpgradable();
         }
         LOGGER.info("Done upgrading application model");
-    }
-
-    @Override
-    public void redoPostprocess(boolean sendMail) {
-        int count = 0;
-        do {
-            Application application = getNextRedo();
-            if (null == application)
-                break;
-            writeStatus("redo postprocess", "start", application);
-            reprocessOneApplication(application, sendMail);
-            writeStatus("redo postprocess", "done", application);
-        } while (++count < maxBatchSize);
     }
 
     private void reprocessOneApplication(Application application, final boolean sendMail){
@@ -429,16 +415,17 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
         return email;
     }
 
-    private Application getNextSubmittedApplication() {
-        return applicationDAO.getNextSubmittedApplication();
-    }
-
-    private Application getNextWithoutStudentOid() {
-        return applicationDAO.getNextWithoutStudentOid();
-    }
-
-    public Application getNextRedo() {
-        return applicationDAO.getNextRedo();
+    private Application getNextApplicationFor(final ProcessingType processingType){
+        switch (processingType){
+            case IDENTIFICATION:
+                return applicationDAO.getNextWithoutStudentOid();
+            case POST_PROCESS:
+                return applicationDAO.getNextSubmittedApplication();
+            case REDO_POST_PROCESS:
+                return  applicationDAO.getNextRedo();
+            default:
+                return null;
+        }
     }
 
     private List<Application> getNextUpgradable() {

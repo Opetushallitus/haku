@@ -16,6 +16,8 @@
 package fi.vm.sade.haku.oppija.yksilointi;
 
 import fi.vm.sade.haku.healthcheck.StatusRepository;
+import fi.vm.sade.haku.oppija.lomake.util.StringUtil;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,49 +43,41 @@ public class Scheduler {
     }
 
     public void runProcess() {
-        if (run) {
-            try {
-                statusRepository.write("postprocess scheduler", new HashMap<String, String>() {{ put("state", "start");}});
-                worker.processApplications(sendMail);
-                statusRepository.write("postprocess scheduler", new HashMap<String, String>() {{ put("state", "done");}});
-            } catch (final Exception e) {
-                statusRepository.write("postprocess scheduler", new HashMap<String, String>() {{
-                    put("state", "error");
-                    put("error", e.getMessage());
-                }});
-                LOGGER.error("Error processing applications", e);
-                //run = false;
-            }
-        } else {
-            statusRepository.write("postprocess scheduler", new HashMap<String, String>() {{ put("state", "halted");}});
-        }
+        runProcessing(YksilointiWorker.ProcessingType.POST_PROCESS);
     }
 
     public void runIdentification() {
-        if (run) {
-            statusRepository.write("identification scheduler", new HashMap<String, String>() {{
-                put("state", "start");
-            }});
-            worker.processIdentification();
-            statusRepository.write("identification scheduler", new HashMap<String, String>() {{
-                put("state", "done");
-            }});
-        } else {
-            statusRepository.write("identification scheduler", new HashMap<String, String>() {{ put("state", "halted");}});
-        }
+        runProcessing(YksilointiWorker.ProcessingType.IDENTIFICATION);
     }
 
     public void redoPostprocess() {
-        if (run) {
-            statusRepository.write("redo postprocess scheduler", new HashMap<String, String>() {{
-                put("state", "start");
+        runProcessing(YksilointiWorker.ProcessingType.REDO_POST_PROCESS);
+    }
+
+    private void runProcessing(YksilointiWorker.ProcessingType processingType){
+        final String statusOperation = processingType.toString()+ " scheduler";
+        if (!run) {
+            statusRepository.write(statusOperation, new HashMap<String, String>() {{
+                put("state", "halted");
             }});
-            worker.redoPostprocess(sendMail);
-            statusRepository.write("redo postprocess scheduler", new HashMap<String, String>() {{
+            return;
+        }
+        statusRepository.write(statusOperation, new HashMap<String, String>() {{
+            put("state", "start");
+        }});
+
+        try {
+            worker.processApplications(processingType, sendMail);
+            statusRepository.write(statusOperation, new HashMap<String, String>() {{
                 put("state", "done");
             }});
-        } else {
-            statusRepository.write("redo postprocess scheduler", new HashMap<String, String>() {{ put("state", "halted");}});
+        } catch (final Exception e) {
+            statusRepository.write(statusOperation, new HashMap<String, String>() {{
+                put("state", "error");
+                put("error", e.getMessage());
+            }});
+            LOGGER.error("Error processing application with {}",statusOperation,  e);
+            // run could be set to false. But first it need a method to re-enable it at runtime.
         }
     }
 
