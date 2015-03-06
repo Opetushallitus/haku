@@ -19,9 +19,18 @@ package fi.vm.sade.haku.oppija.hakemus.it.dao.impl;
 import com.google.common.base.Function;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
-import com.mongodb.*;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBCursor;
+import com.mongodb.DBObject;
+import com.mongodb.MongoException;
+import com.mongodb.QueryBuilder;
+import com.mongodb.ReadPreference;
 import fi.vm.sade.haku.oppija.common.dao.AbstractDAOMongoImpl;
-import fi.vm.sade.haku.oppija.hakemus.converter.*;
+import fi.vm.sade.haku.oppija.hakemus.converter.ApplicationToDBObjectFunction;
+import fi.vm.sade.haku.oppija.hakemus.converter.DBObjectToAdditionalDataDTO;
+import fi.vm.sade.haku.oppija.hakemus.converter.DBObjectToApplicationFunction;
+import fi.vm.sade.haku.oppija.hakemus.converter.DBObjectToMapFunction;
+import fi.vm.sade.haku.oppija.hakemus.converter.DBObjectToSearchResultItem;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application.PostProcessingState;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationAdditionalDataDTO;
@@ -44,12 +53,24 @@ import javax.annotation.PostConstruct;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.StringTokenizer;
 import java.util.regex.Pattern;
 
-import static com.mongodb.QueryOperators.*;
+import static com.mongodb.QueryOperators.AND;
+import static com.mongodb.QueryOperators.EXISTS;
+import static com.mongodb.QueryOperators.GTE;
+import static com.mongodb.QueryOperators.IN;
+import static com.mongodb.QueryOperators.LT;
+import static com.mongodb.QueryOperators.NE;
+import static com.mongodb.QueryOperators.OR;
 import static java.lang.String.format;
-import static org.apache.commons.lang.StringUtils.*;
+import static org.apache.commons.lang.StringUtils.isBlank;
+import static org.apache.commons.lang.StringUtils.isEmpty;
+import static org.apache.commons.lang.StringUtils.isNotBlank;
 
 /**
  * @author Hannu Lyytikainen
@@ -76,6 +97,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     private static final String INDEX_FULL_NAME = "index_full_name";
     private static final String INDEX_VERSION = "index_version";
 
+    private static final String FIELD_TYPE = "type";
     private static final String FIELD_AO_T = "answers.hakutoiveet.preference%d-Koulutus-id";
     private static final String FIELD_AO_KOULUTUS_ID_T = "answers.hakutoiveet.preference%d-Koulutus-id-aoIdentifier";
     private static final String FIELD_LOP_T = "answers.hakutoiveet.preference%d-Opetuspiste-id";
@@ -106,6 +128,8 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     private static final String FIELD_OPO_ALLOWED = "authorizationMeta.opoAllowed";
     private static final String FIELD_MODEL_VERSION = "modelVersion";
     private static final String REGEX_LINE_BEGIN = "^";
+
+    private static final String OPERATION_SET = "$set";
 
     private static final Pattern OID_PATTERN = Pattern.compile("((^([0-9]{1,4}\\.){5})|(^))[0-9]{11}$");
     private static final Pattern HETU_PATTERN = Pattern.compile("^[0-3][0-9][0-1][0-9][0-9][0-9][-+Aa][0-9]{3}[0-9a-zA-Z]");
@@ -166,9 +190,9 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         if (!Strings.isNullOrEmpty(ssn)) {
             String encryptedSsn = shaEncrypter.encrypt(ssn.toUpperCase());
             final DBObject query = QueryBuilder.start(FIELD_APPLICATION_SYSTEM_ID).is(asId)
-                    .and("answers.henkilotiedot." + SocialSecurityNumber.HENKILOTUNNUS_HASH).is(encryptedSsn)
-                    .and(FIELD_APPLICATION_OID).exists(true)
-                    .and(FIELD_APPLICATION_STATE).notEquals(Application.State.PASSIVE.toString())
+              .and("answers.henkilotiedot." + SocialSecurityNumber.HENKILOTUNNUS_HASH).is(encryptedSsn)
+              .and(FIELD_APPLICATION_OID).exists(true)
+              .and(FIELD_APPLICATION_STATE).notEquals(Application.State.PASSIVE.toString())
                     .get();
             return resultNotEmpty(query, INDEX_SSN_DIGEST);
         }
@@ -553,24 +577,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
               Application.State.ACTIVE.name(),
               Application.State.INCOMPLETE.name())));
         query.put(FIELD_STUDENT_IDENTIFICATION_DONE, false);
-
-        DBObject sortBy = new BasicDBObject(FIELD_LAST_AUTOMATED_PROCESSING_TIME, 1);
-
-        DBCursor cursor = getCollection().find(query).sort(sortBy).limit(1);
-        String hint = null;
-        if (ensureIndex) {
-            hint = INDEX_STUDENT_IDENTIFICATION_DONE;
-            cursor.hint(INDEX_STUDENT_IDENTIFICATION_DONE);
-        }
-        try {
-            if (!cursor.hasNext()) {
-                return null;
-            }
-            return fromDBObject.apply(cursor.next());
-        } catch (MongoException mongoException) {
-            LOG.error("Got error {} with query: {} using hint: {}", mongoException.getMessage(), query, hint);
-            throw mongoException;
-        }
+        return getNextForAutomatedProcessing(query, INDEX_STUDENT_IDENTIFICATION_DONE);
     }
 
     @Override
@@ -585,55 +592,52 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
                 new BasicDBObject(FIELD_REDO_POSTPROCESS, new BasicDBObject(NE, PostProcessingState.FAILED.toString()))
         });
 
-        DBObject sortBy = new BasicDBObject(FIELD_LAST_AUTOMATED_PROCESSING_TIME, 1);
-
-        DBCursor cursor = getCollection().find(query).sort(sortBy).limit(1);
-        String hint = null;
-        if (ensureIndex) {
-            hint = INDEX_STATE;
-            cursor.hint(INDEX_STATE);
-        }
-        try {
-            if (!cursor.hasNext()) {
-                return null;
-            }
-            return fromDBObject.apply(cursor.next());
-        } catch (MongoException mongoException) {
-            LOG.error("Got error {} with query: {} using hint: {}", mongoException.getMessage(), query, hint);
-            throw mongoException;
-        }
+        return getNextForAutomatedProcessing(query, INDEX_STATE);
     }
 
     @Override
     public Application getNextRedo() {
         QueryBuilder queryBuilder = QueryBuilder.start(FIELD_REDO_POSTPROCESS).in(
-                Lists.newArrayList(
-                        PostProcessingState.FULL.toString(),
-                        PostProcessingState.NOMAIL.toString()));
+          Lists.newArrayList(
+            PostProcessingState.FULL.toString(),
+            PostProcessingState.NOMAIL.toString()));
         queryBuilder.put(FIELD_APPLICATION_STATE).in(
-                Lists.newArrayList(
-                        Application.State.DRAFT.name(),
-                        Application.State.ACTIVE.name(),
-                        Application.State.INCOMPLETE.name()));
+          Lists.newArrayList(
+            Application.State.DRAFT.name(),
+            Application.State.ACTIVE.name(),
+            Application.State.INCOMPLETE.name()));
         DBObject query = queryBuilder.get();
+        return getNextForAutomatedProcessing(query, INDEX_REDO_POSTPROCESS);
+    }
+
+    private Application getNextForAutomatedProcessing(final DBObject query, final String indexCandidate){
         DBObject sortBy = new BasicDBObject(FIELD_LAST_AUTOMATED_PROCESSING_TIME, 1);
-        DBCursor cursor = getCollection().find(query).sort(sortBy).limit(1);
+
+        DBObject key = generateKeysDBObject(FIELD_TYPE, FIELD_APPLICATION_OID);
+
+        DBCursor cursor = getCollection().find(query, key).sort(sortBy).limit(1);
         String hint = null;
         if (ensureIndex) {
-            hint = INDEX_REDO_POSTPROCESS;
-            cursor.hint(INDEX_REDO_POSTPROCESS);
+            hint = indexCandidate;
+            cursor.hint(indexCandidate);
         }
+
         try {
             if (!cursor.hasNext()) {
                 return null;
             }
-            return fromDBObject.apply(cursor.next());
+            String applicationOid = fromDBObject.apply(cursor.next()).getOid();
+
+            DBObject applicationOidDBObject = new BasicDBObject(FIELD_APPLICATION_OID, applicationOid);
+            DBObject updateLastAutomatedProcessingTime = new BasicDBObject(OPERATION_SET, new BasicDBObject(FIELD_LAST_AUTOMATED_PROCESSING_TIME, System.currentTimeMillis()));
+            getCollection().update(applicationOidDBObject, updateLastAutomatedProcessingTime, false, false);
+
+            return fromDBObject.apply(getCollection().findOne(new BasicDBObject(FIELD_APPLICATION_OID, applicationOid)));
         } catch (MongoException mongoException) {
             LOG.error("Got error {} with query: {} using hint: {}", mongoException.getMessage(), query, hint);
             throw mongoException;
         }
     }
-
 
     @Override
     public List<Application> getNextUpgradable(int batchSize) {
@@ -644,7 +648,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
             new BasicDBObject(FIELD_MODEL_VERSION, new BasicDBObject(LT, Application.CURRENT_MODEL_VERSION)),
           })
         });
-          DBCursor cursor = getCollection().find(query).limit(batchSize);
+        DBCursor cursor = getCollection().find(query).limit(batchSize);
         List<Application> applications = new ArrayList<Application>(batchSize);
         while (cursor.hasNext()) {
             applications.add(fromDBObject.apply(cursor.next()));

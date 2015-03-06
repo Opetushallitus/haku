@@ -17,11 +17,9 @@ package fi.vm.sade.haku.oppija.yksilointi;
 
 public interface YksilointiWorker {
 
-    void processApplications(boolean sendMail);
+    public enum ProcessingType {IDENTIFICATION, POST_PROCESS, REDO_POST_PROCESS}
 
-    void processIdentification();
+    void processApplications(ProcessingType processingType, boolean sendMail);
 
     void processModelUpdate();
-
-    void redoPostprocess(boolean sendMail);
 }
