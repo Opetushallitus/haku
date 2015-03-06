@@ -122,14 +122,15 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
 
     @Override
     public void processApplications(final boolean sendMail) {
-        Application application = getNextSubmittedApplication();
         int count = 0;
-        while (application != null && ++count < maxBatchSize) {
+        do {
+            Application application = getNextSubmittedApplication();
+            if (null == application)
+                break;
             writeStatus("postprocess", "start", application);
             processOneApplication(application, sendMail);
             writeStatus("postprocess", "done", application);
-            application = getNextSubmittedApplication();
-        }
+        } while (++count < maxBatchSize);
     }
 
     public void processOneApplication(Application application, final boolean sendMail){
@@ -227,14 +228,15 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
 
     @Override
     public void redoPostprocess(boolean sendMail) {
-        Application application = getNextRedo();
         int count = 0;
-        while (application != null && ++count < maxBatchSize) {
+        do {
+            Application application = getNextRedo();
+            if (null == application)
+                break;
             writeStatus("redo postprocess", "start", application);
             reprocessOneApplication(application, sendMail);
             writeStatus("redo postprocess", "done", application);
-            application = getNextRedo();
-        }
+        } while (++count < maxBatchSize);
     }
 
     private void reprocessOneApplication(Application application, final boolean sendMail){
