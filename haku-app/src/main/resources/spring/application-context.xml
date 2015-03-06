@@ -124,14 +124,23 @@
             <property name="runModelUpgrade" value="${scheduler.runModelUpgrade}"/>
             <property name="sendMail" value="${scheduler.sendMail}"/>
         </bean>
-        <task:scheduled-tasks scheduler="scheduler">
+        
+        <task:scheduler id="postProcessScheduler" pool-size="1"/>
+        <task:scheduled-tasks scheduler="postProcessScheduler">
             <task:scheduled ref="yksilointiScheduler" method="runProcess" fixed-delay="${scheduler.delay}"/>
             <task:scheduled ref="yksilointiScheduler" method="redoPostprocess" fixed-delay="${scheduler.delay}"/>
-            <task:scheduled ref="yksilointiScheduler" method="runIdentification" fixed-delay="${scheduler.delay}"/>
-            <task:scheduled ref="yksilointiScheduler" method="runModelUpgrade" cron="${scheduler.modelUpgradeCron}"/>
         </task:scheduled-tasks>
 
-        <task:scheduler id="scheduler" pool-size="1"/>
+        <task:scheduler id="identificationScheduler" pool-size="1"/>
+        <task:scheduled-tasks scheduler="identificationScheduler">
+            <task:scheduled ref="yksilointiScheduler" method="runIdentification" fixed-delay="${scheduler.delay}"/>
+        </task:scheduled-tasks>
+
+
+        <task:scheduler id="upgradeScheduler" pool-size="1"/>
+        <task:scheduled-tasks scheduler="upgradeScheduler">
+            <task:scheduled ref="yksilointiScheduler" method="runModelUpgrade" cron="${scheduler.modelUpgradeCron}"/>
+        </task:scheduled-tasks>
         
         <!-- Swagger stuff -->
         <bean id="apiListingResourceJSON" class="com.wordnik.swagger.jersey.listing.ApiListingResourceJSON"/>
