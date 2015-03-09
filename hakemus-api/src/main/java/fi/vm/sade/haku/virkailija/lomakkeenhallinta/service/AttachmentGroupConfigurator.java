@@ -7,9 +7,7 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain.SimpleAddress;
 
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain.GroupConfiguration.ConfigKey;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class AttachmentGroupConfigurator {
     private final FormConfiguration formConfiguration;
@@ -18,12 +16,12 @@ public class AttachmentGroupConfigurator {
         this.formConfiguration = formConfiguration;
     }
 
-    public Map<String, AttachmentGroupAddress> configureAttachmentGroupAddresses() {
-        Map<String, AttachmentGroupAddress> addresses = new HashMap<>();
+    public List<AttachmentGroupAddress> configureAttachmentGroupAddresses() {
+        List<AttachmentGroupAddress> addresses = new ArrayList<>();
         for (GroupConfiguration groupConfiguration : formConfiguration.getGroupConfigurations()){
             switch (groupConfiguration.getType()) {
                 case hakukohde_liiteosoite:
-                    addresses.put(groupConfiguration.getGroupId(), createLiiteOsoite(groupConfiguration.getConfigurations()));
+                    addresses.add(createLiiteOsoite(groupConfiguration));
                     break;
             }
         }
@@ -31,11 +29,12 @@ public class AttachmentGroupConfigurator {
 
     }
 
-    private AttachmentGroupAddress createLiiteOsoite(Map<ConfigKey, String> configs) {
+    private AttachmentGroupAddress createLiiteOsoite(GroupConfiguration configuration) {
         return new AttachmentGroupAddress(
-                parseUseFirstAoAddress(configs),
-                parseDeliveryDue(configs),
-                parseDeliveryAddress(configs)
+                configuration.getGroupId(),
+                parseUseFirstAoAddress(configuration.getConfigurations()),
+                parseDeliveryDue(configuration.getConfigurations()),
+                parseDeliveryAddress(configuration.getConfigurations())
         );
     }
 
