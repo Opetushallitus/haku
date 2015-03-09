@@ -36,6 +36,6 @@ public class SuoritusrekisteriServiceMockImpl implements SuoritusrekisteriServic
 
     @Override
     public List<ArvosanaDTO> getArvosanat(String suoritusId) {
-        return null;
+        return new ArrayList<>();
     }
 }

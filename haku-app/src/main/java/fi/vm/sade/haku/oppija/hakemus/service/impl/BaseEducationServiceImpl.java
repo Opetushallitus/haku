@@ -220,27 +220,24 @@ public class BaseEducationServiceImpl implements BaseEducationService {
             arvosanaMap.putAll(suorituksenArvosanat("LK_", suoritukset.get(LUKIO_KOMO).getId()));
         } else if (PERUSKOULU.equals(baseEducation) || YKSILOLLISTETTY.equals(baseEducation)
                 || ALUEITTAIN_YKSILOLLISTETTY.equals(baseEducation) || OSITTAIN_YKSILOLLISTETTY.equals(baseEducation)) {
-            Map<String, SuoritusDTO> suoritukset = suoritusrekisteriService.getSuoritukset(personOid);
-            if (suoritukset.isEmpty() || suoritukset.get(PERUSOPETUS_KOMO) == null) {
-                return arvosanaMap;
-            }
-            List<SuoritusDTO> suoritusList = new ArrayList<>(suoritukset.values());
-            Collections.sort(suoritusList, new Comparator<SuoritusDTO>() {
-                @Override
-                public int compare(SuoritusDTO o1, SuoritusDTO o2) {
-                    return o1.getValmistuminen().compareTo(o2.getValmistuminen());
-                }
-            });
-            for (SuoritusDTO suoritus : suoritusList) {
-                if ((PERUSOPETUS_KOMO.equals(suoritus.getKomo()) ||
-                        LISAOPETUS_KOMO.equals(suoritus.getKomo()) ||
-                        AMMATTISTARTTI_KOMO.equals(suoritus.getKomo()) ||
-                        KUNTOUTTAVA_KOMO.equals(suoritus.getKomo()) ||
-                        MAMU_VALMENTAVA_KOMO.equals(suoritus.getKomo()))) {
 
-                    arvosanaMap.putAll(suorituksenArvosanat("PK_", suoritus.getId()));
+            Map<String, SuoritusDTO> suoritukset = suoritusrekisteriService.getSuoritukset(personOid);
+            SuoritusDTO pkSuoritus = suoritukset.get(PERUSOPETUS_KOMO);
+            SuoritusDTO kymppiSuoritus = suoritukset.get(LISAOPETUS_KOMO);
+            arvosanaMap.putAll(suorituksenArvosanat("PK_", pkSuoritus.getId()));
+            if (kymppiSuoritus != null) {
+                Map<String, String> kympinArvosanat = suorituksenArvosanat("PK_", kymppiSuoritus.getId());
+                for (Map.Entry<String, String> entry : kympinArvosanat.entrySet()) {
+                    String key = entry.getKey();
+                    if (key.endsWith("_OPPIAINE")) {
+                        continue;
+                    }
+                    String ysi = arvosanaMap.get(key);
+                    String kymppi = entry.getValue();
+                    arvosanaMap.put(key, maxGrade(ysi, kymppi));
                 }
             }
+
         }
         Map<String, String> toAdd = new HashMap<>();
         for (Map.Entry<String, String> entry : arvosanaMap.entrySet()) {
@@ -253,6 +250,28 @@ public class BaseEducationServiceImpl implements BaseEducationService {
         }
         arvosanaMap.putAll(toAdd);
         return arvosanaMap;
+    }
+
+    private String maxGrade(String ysi, String kymppi) {
+        if ("Ei arvosanaa".equals(kymppi) || "S".equals(kymppi)) {
+            return ysi;
+        }
+        if ("Ei arvosanaa".equals(ysi) || "S".equals(ysi)) {
+            return !isEmpty(kymppi) ? kymppi : ysi;
+        }
+        Integer ysiInt = 0;
+        Integer kymppiInt = 0;
+        try {
+            ysiInt = Integer.parseInt(ysi);
+        } catch (NumberFormatException nfe) {
+            // NOP
+        }
+        try {
+            kymppiInt = Integer.parseInt(kymppi);
+        } catch (NumberFormatException nfe) {
+            // NOP
+        }
+        return String.valueOf(Math.max(ysiInt, kymppiInt));
     }
 
     private Map<String, String> suorituksenArvosanat(String prefix, String id) {

@@ -36,7 +36,7 @@ public class OfficerIT extends DummyModelBaseItTest {
         final LoginPage loginPage = new LoginPage(seleniumContainer.getDriver());
         navigateToPath("user", "login");
         loginPage.login("officer");
-        activate(applicationOidPrefix + ".00000000013");
+        activate(applicationOidPrefix + ".00000000013", "OfficerIt");
         navigateToPath("virkailija", "hakemus");
     }
 
