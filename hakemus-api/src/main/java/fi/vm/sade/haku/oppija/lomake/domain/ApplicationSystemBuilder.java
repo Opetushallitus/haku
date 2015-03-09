@@ -3,9 +3,7 @@ package fi.vm.sade.haku.oppija.lomake.domain;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 public class ApplicationSystemBuilder {
     private String id;
@@ -21,15 +19,17 @@ public class ApplicationSystemBuilder {
     private List<Element> applicationCompleteElements;
     private List<Element> additionalPrintElements;
     private List<ApplicationOptionAttachmentRequest> applicationOptionAttachmentRequests;
+    private Map<String, AttachmentGroupAddress> attachmentGroupAddresses;
     private int maxApplicationOptions;
     private String kohdejoukkoUri;
     private List<String> allowedLanguages;
     private Date lastGenerated;
 
     public ApplicationSystemBuilder() {
-        this.additionalPrintElements = new ArrayList<Element>();
-        this.applicationCompleteElements = new ArrayList<Element>();
-        this.applicationOptionAttachmentRequests = new ArrayList<ApplicationOptionAttachmentRequest>();
+        this.additionalPrintElements = new ArrayList<>();
+        this.applicationCompleteElements = new ArrayList<>();
+        this.applicationOptionAttachmentRequests = new ArrayList<>();
+        this.attachmentGroupAddresses = new HashMap<>();
     }
 
     public ApplicationSystemBuilder setId(String id) {
@@ -83,10 +83,15 @@ public class ApplicationSystemBuilder {
         return this;
     }
 
+    public ApplicationSystemBuilder addAttachmentGroupAddresses(Map<String, AttachmentGroupAddress> attachmentGroupAddresses) {
+        this.attachmentGroupAddresses.putAll(attachmentGroupAddresses);
+        return this;
+    }
+
     public ApplicationSystem get() {
         return new ApplicationSystem(id, form, name, state, applicationPeriods,
                 applicationSystemType, usePriorities, hakutapa, hakukausiVuosi, hakukausiUri, kohdejoukkoUri, applicationCompleteElements,
-                additionalPrintElements, applicationOptionAttachmentRequests, maxApplicationOptions, allowedLanguages, lastGenerated);
+                additionalPrintElements, applicationOptionAttachmentRequests, attachmentGroupAddresses, maxApplicationOptions, allowedLanguages, lastGenerated);
     }
 
     public ApplicationSystemBuilder setMaxApplicationOptions(int maxHakukohdes) {
