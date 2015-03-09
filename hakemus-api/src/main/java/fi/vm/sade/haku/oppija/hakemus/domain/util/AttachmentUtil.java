@@ -1,6 +1,7 @@
 package fi.vm.sade.haku.oppija.hakemus.domain.util;
 
 import fi.vm.sade.haku.oppija.hakemus.domain.*;
+import fi.vm.sade.haku.oppija.hakemus.domain.HigherEdBaseEducationAttachmentInfo.OriginatorType;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationOptionAttachmentRequest;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
@@ -279,8 +280,9 @@ public class AttachmentUtil {
                 }
 
                 attachments.add(ApplicationAttachmentRequestBuilder.start()
-                        .setPreferenceAoId(address.attachmentOriginatorAoId)
-                        .setPreferenceAoGroupId(address.attachmentOriginatorGroupId)
+                        .setId(attachmentType + '_' + address.originatorType + '_' + address.originatorId)
+                        .setPreferenceAoId(address.originatorType == OriginatorType.applicationOption ? address.originatorId : null)
+                        .setPreferenceAoGroupId(address.originatorType == OriginatorType.group ? address.originatorId : null)
                         .setApplicationAttachment(attachmentBuilder.build())
                         .build());
             }
@@ -318,7 +320,7 @@ public class AttachmentUtil {
                         aoAddress.attachmentName,
                         aoAddress.recipientName,
                         aoAddress.addressDTO,
-                        HigherEdBaseEducationAttachmentInfo.OriginatorType.group,
+                        OriginatorType.group,
                         organizationGroup.getOid()
                 );
 
@@ -339,15 +341,14 @@ public class AttachmentUtil {
             createI18NAsIs(StringUtil.safeToString(provider.getName())),
             recipientName,
             address,
-            HigherEdBaseEducationAttachmentInfo.OriginatorType.applicationOption,
+            OriginatorType.applicationOption,
             ao.getId()
         );
     }
 
     private static boolean addressAlreadyAdded(List<HigherEdBaseEducationAttachmentInfo> addresses, HigherEdBaseEducationAttachmentInfo address) {
         for (HigherEdBaseEducationAttachmentInfo other : addresses) {
-            if (StringUtils.equals(address.attachmentOriginatorAoId, other.attachmentOriginatorAoId) &&
-                StringUtils.equals(address.attachmentOriginatorGroupId, other.attachmentOriginatorGroupId)) {
+            if (StringUtils.equals(address.originatorId, other.originatorId)) {
                 return true;
             }
         }

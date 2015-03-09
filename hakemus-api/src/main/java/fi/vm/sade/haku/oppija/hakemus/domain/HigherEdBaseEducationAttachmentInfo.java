@@ -9,8 +9,8 @@ public class HigherEdBaseEducationAttachmentInfo {
     public final I18nText attachmentName;
     public final String recipientName;
     public final AddressDTO addressDTO;
-    public final String attachmentOriginatorAoId;
-    public final String attachmentOriginatorGroupId;
+    public final OriginatorType originatorType;
+    public final String originatorId;
 
     public enum OriginatorType {
         applicationOption,
@@ -21,13 +21,7 @@ public class HigherEdBaseEducationAttachmentInfo {
         this.attachmentName = attachmentName;
         this.recipientName = StringUtil.safeToString(recipientName);
         this.addressDTO = addressDTO;
-        if (originatorType == OriginatorType.applicationOption) {
-            this.attachmentOriginatorAoId = originatorId;
-            this.attachmentOriginatorGroupId = null;
-        }
-        else {
-            this.attachmentOriginatorGroupId = originatorId;
-            this.attachmentOriginatorAoId = null;
-        }
+        this.originatorType = originatorType;
+        this.originatorId = originatorId;
     }
 }
