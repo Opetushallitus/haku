@@ -3,6 +3,7 @@ package fi.vm.sade.haku.oppija.hakemus.domain;
 import java.util.UUID;
 
 public class ApplicationAttachmentRequestBuilder {
+
     private String id;
     private String preferenceAoId;
     private String preferenceAoGroupId;
@@ -13,6 +14,11 @@ public class ApplicationAttachmentRequestBuilder {
 
     public static ApplicationAttachmentRequestBuilder start(){
         return new ApplicationAttachmentRequestBuilder();
+    }
+
+    public ApplicationAttachmentRequestBuilder setId(String id) {
+        this.id = id;
+        return this;
     }
 
     public ApplicationAttachmentRequestBuilder setPreferenceAoId(final String preferenceAoId) {
