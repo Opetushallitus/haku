@@ -59,7 +59,7 @@ describe('GroupConfiguration', function () {
     var rajaavuusError = "Liian monta hakukohdetta valittu samasta ryhmästä.";
 
     function priorityErrorTemplate(a, b) {
-        return "Hakukohde " + a + " tulee olla korkeammalla prioriteetilla kuin hakukohteen " + b + ". Muuta prioriteettijärjestystä.";
+        return "Hakukohde " + a + " tulee olla korkeammalla prioriteetilla kuin hakukohteen " + b + ". Muuta hakukohteiden ensisijaisuusjärjestystä.";
     }
 
     function installGroupConfigurations(configs) {
