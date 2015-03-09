@@ -33,30 +33,32 @@ import java.util.concurrent.TimeUnit;
 @Profile("it")
 public class SeleniumContainer {
 
-    private final FirefoxDriver webDriver;
+    private FirefoxDriver webDriver;
     private final String webDriverBaseUrl;
 
     @Autowired
     public SeleniumContainer(@Value("${webdriver.base.url:http://localhost:9090/haku-app/}") final String webDriverBaseUrl) {
         this.webDriverBaseUrl = webDriverBaseUrl;
-        FirefoxProfile profile = new FirefoxProfile();
-        profile.setPreference("focusmanager.testmode",true);
-        this.webDriver = new FirefoxDriver(profile);
-        this.webDriver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
     }
 
     @PreDestroy
     public void destroy() throws Exception {
-        webDriver.quit();
-        webDriver.close();
+        getDriver().quit();
+        getDriver().close();
     }
 
     public FirefoxDriver getDriver() {
+        if (webDriver == null) {
+            FirefoxProfile profile = new FirefoxProfile();
+            profile.setPreference("focusmanager.testmode",true);
+            this.webDriver = new FirefoxDriver(profile);
+            this.webDriver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+        }
         return webDriver;
     }
 
     public void logout() {
-        webDriver.navigate().to(this.webDriverBaseUrl + "user/logout");
+        getDriver().navigate().to(this.webDriverBaseUrl + "user/logout");
     }
 
     public String getBaseUrl() {
@@ -69,7 +71,7 @@ public class SeleniumContainer {
             Thread.sleep(101);
         } catch (InterruptedException e) { }
 
-        (new WebDriverWait(webDriver, 5)).until(new ExpectedCondition<Boolean>() {
+        (new WebDriverWait(getDriver(), 5)).until(new ExpectedCondition<Boolean>() {
             public Boolean apply(WebDriver d) {
                 JavascriptExecutor js = (JavascriptExecutor) d;
                 return (Boolean) js.executeScript("return jQuery.active == 0");
