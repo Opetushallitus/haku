@@ -19,7 +19,7 @@ public class ApplicationSystemBuilder {
     private List<Element> applicationCompleteElements;
     private List<Element> additionalPrintElements;
     private List<ApplicationOptionAttachmentRequest> applicationOptionAttachmentRequests;
-    private Map<String, AttachmentGroupAddress> attachmentGroupAddresses;
+    private List<AttachmentGroupAddress> attachmentGroupAddresses;
     private int maxApplicationOptions;
     private String kohdejoukkoUri;
     private List<String> allowedLanguages;
@@ -29,7 +29,7 @@ public class ApplicationSystemBuilder {
         this.additionalPrintElements = new ArrayList<>();
         this.applicationCompleteElements = new ArrayList<>();
         this.applicationOptionAttachmentRequests = new ArrayList<>();
-        this.attachmentGroupAddresses = new HashMap<>();
+        this.attachmentGroupAddresses = new ArrayList<>();
     }
 
     public ApplicationSystemBuilder setId(String id) {
@@ -83,8 +83,8 @@ public class ApplicationSystemBuilder {
         return this;
     }
 
-    public ApplicationSystemBuilder addAttachmentGroupAddresses(Map<String, AttachmentGroupAddress> attachmentGroupAddresses) {
-        this.attachmentGroupAddresses.putAll(attachmentGroupAddresses);
+    public ApplicationSystemBuilder addAttachmentGroupAddresses(List<AttachmentGroupAddress> attachmentGroupAddresses) {
+        this.attachmentGroupAddresses.addAll(attachmentGroupAddresses);
         return this;
     }
 

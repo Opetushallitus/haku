@@ -25,10 +25,7 @@ import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Document
 public class ApplicationSystem implements Serializable {
@@ -51,7 +48,7 @@ public class ApplicationSystem implements Serializable {
     private List<Element> applicationCompleteElements;
     private List<Element> additionalInformationElements;
     private List<ApplicationOptionAttachmentRequest> applicationOptionAttachmentRequests;
-    private Map<String, AttachmentGroupAddress> attachmentGroupAddresses;
+    private List<AttachmentGroupAddress> attachmentGroupAddresses;
     private int maxApplicationOptions;
     private List<String> allowedLanguages;
 
@@ -66,7 +63,7 @@ public class ApplicationSystem implements Serializable {
                              final List<Element> applicationCompleteElements,
                              final List<Element> additionalInformationElements,
                              final List<ApplicationOptionAttachmentRequest> applicationOptionAttachmentRequests,
-                             final Map<String, AttachmentGroupAddress> attachmentGroupAddresses,
+                             final List<AttachmentGroupAddress> attachmentGroupAddresses,
                              final Integer maxApplicationOptions,
                              final List<String> allowedLanguages,
                              final Date lastGenerated) {
@@ -170,9 +167,9 @@ public class ApplicationSystem implements Serializable {
         return applicationOptionAttachmentRequests;
     }
 
-    public Map<String, AttachmentGroupAddress> getAttachmentGroupAddresses() {
+    public List<AttachmentGroupAddress> getAttachmentGroupAddresses() {
         if(attachmentGroupAddresses == null) {
-            return new HashMap<>();
+            return new ArrayList<>();
         }
         return attachmentGroupAddresses;
     }
