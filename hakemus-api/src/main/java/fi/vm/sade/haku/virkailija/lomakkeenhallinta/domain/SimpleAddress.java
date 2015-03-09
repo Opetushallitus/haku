@@ -13,11 +13,11 @@ public final class SimpleAddress {
 
 
     @JsonCreator
-    public SimpleAddress(@JsonProperty(value = "recipient") String recipient, @JsonProperty(value = "street") final String street, @JsonProperty(value = "postOffice") final String postOffice, @JsonProperty(value = "postCode") final String postCode) {
+    public SimpleAddress(@JsonProperty(value = "recipient") String recipient, @JsonProperty(value = "street") final String street, @JsonProperty(value = "postCode") final String postCode, @JsonProperty(value = "postOffice") final String postOffice) {
         this.recipient = recipient;
         this.street = street;
-        this.postOffice = postOffice;
         this.postCode = postCode;
+        this.postOffice = postOffice;
     }
 
     public String getRecipient() {
