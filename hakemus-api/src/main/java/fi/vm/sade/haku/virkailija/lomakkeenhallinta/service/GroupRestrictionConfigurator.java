@@ -7,6 +7,7 @@ import fi.vm.sade.haku.oppija.lomake.validation.groupvalidators.GroupPrioritisat
 import fi.vm.sade.haku.oppija.lomake.validation.groupvalidators.GroupRestrictionMaxNumberValidator;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain.FormConfiguration;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain.GroupConfiguration;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain.GroupConfiguration.ConfigKey;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakukohdeService;
 import org.slf4j.Logger;
@@ -16,8 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GroupRestrictionConfigurator {
-
-    public static final String CONFIG_maximumNumberOf = "maximumNumberOf";
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GroupRestrictionConfigurator.class);
     private final FormParameters formParameters;
@@ -63,11 +62,11 @@ public class GroupRestrictionConfigurator {
     }
 
     private void createRajaavaValidator(List<GroupRestrictionValidator> validators, GroupConfiguration groupConfiguration) {
-        if(groupConfiguration.getConfigurations().containsKey(CONFIG_maximumNumberOf)) {
+        if(groupConfiguration.getConfigurations().containsKey(ConfigKey.maximumNumberOf)) {
             I18nText errorMessage = formParameters.getI18nText("rajaava.ryhma.max.virhe");
             validators.add(new GroupRestrictionMaxNumberValidator(
                     groupConfiguration.getGroupId(),
-                    Integer.valueOf(groupConfiguration.getConfigurations().get(CONFIG_maximumNumberOf)),
+                    Integer.valueOf(groupConfiguration.getConfigurations().get(ConfigKey.maximumNumberOf)),
                     errorMessage
             ));
         }
