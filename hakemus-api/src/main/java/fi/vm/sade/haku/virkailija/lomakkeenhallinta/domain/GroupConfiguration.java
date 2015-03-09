@@ -18,19 +18,23 @@ public class GroupConfiguration {
         CONSTRAINT_GROUP // allow_group_id / deny_group_id  -- NOT IMPLEMENTED
     }
 
+    public enum ConfigKey {
+        maximumNumberOf
+    };
+
     private final String groupId;
     private final GroupType type;
-    private Map<String,String> configurations = new HashMap<String,String>();
+    private Map<ConfigKey,String> configurations = new HashMap<>();
 
 
     @JsonCreator
     public GroupConfiguration(@JsonProperty(value = "groupId") String groupId,
       @JsonProperty(value = "type") final GroupType type,
-      @JsonProperty(value = "configurations") final Map<String,String> configurations) {
+      @JsonProperty(value = "configurations") final Map<ConfigKey,String> configurations) {
         this.groupId = groupId;
         this.type = type;
         if (null != configurations && !configurations.isEmpty())
-            this.configurations = new HashMap<String, String>(configurations);
+            this.configurations = new HashMap<>(configurations);
     }
 
     public String getGroupId() {
@@ -41,7 +45,7 @@ public class GroupConfiguration {
         return type;
     }
 
-    public Map<String,String> getConfigurations() {
+    public Map<ConfigKey,String> getConfigurations() {
         return configurations;
     }
 }
