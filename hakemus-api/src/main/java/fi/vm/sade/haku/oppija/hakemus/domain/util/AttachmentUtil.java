@@ -63,8 +63,8 @@ public class AttachmentUtil {
         attachments = addApplicationOptionAttachments(attachments, application, koulutusinformaatioService, lang, i18nBundle);
         attachments = addDiscreationaryAttachments(attachments, application, koulutusinformaatioService, lang,
           i18nBundle);
-        attachments = addHigherEdAttachments(attachments, application, koulutusinformaatioService, lang, i18nBundle);
-        attachments = addAmkOpeAttachments(attachments, application, koulutusinformaatioService, lang, i18nBundle);
+        attachments = addHigherEdAttachments(applicationSystem, attachments, application, koulutusinformaatioService, lang, i18nBundle);
+        attachments = addAmkOpeAttachments(applicationSystem, attachments, application, koulutusinformaatioService, lang, i18nBundle);
         attachments = addApplicationOptionAttachmentRequestsFromForm(attachments, application, applicationSystem, i18nBundle);
 
         return attachments;
@@ -201,7 +201,7 @@ public class AttachmentUtil {
         if (null == addressDTO)
             return null;
         return AddressBuilder.start()
-          .setRecipient(recipient)
+          .setRecipient(StringUtil.safeToString(recipient))
           .setStreetAddress(addressDTO.getStreetAddress())
           .setStreetAddress2(addressDTO.getStreetAddress2())
           .setPostalCode(addressDTO.getPostalCode())
@@ -227,24 +227,25 @@ public class AttachmentUtil {
     }
 
     private static List<ApplicationAttachmentRequest> addHigherEdAttachments(
-      final List<ApplicationAttachmentRequest> attachments,
-      final Application application,
-      final KoulutusinformaatioService koulutusinformaatioService,
-      final String lang,
-      final I18nBundle i18nBundle) {
+        final ApplicationSystem applicationSystem,
+        final List<ApplicationAttachmentRequest> attachments,
+        final Application application,
+        final KoulutusinformaatioService koulutusinformaatioService,
+        final String lang,
+        final I18nBundle i18nBundle
+    ) {
 
-        Map<String, List<HigherEdBaseEducationAttachmentInfo>> higherEdAttachments = getAddresses(ApplicationUtil.getHigherEdAttachmentAOIds(application), koulutusinformaatioService, lang);
         Date deadline = null;
-        attachments.addAll(getHigherEdAttachments(higherEdAttachments, deadline, i18nBundle));
+        Map<String, List<HigherEdBaseEducationAttachmentInfo>> higherEdAttachments = getAddresses(applicationSystem, ApplicationUtil.getHigherEdAttachmentAOIds(application), koulutusinformaatioService, deadline, lang);
+        attachments.addAll(getHigherEdAttachments(higherEdAttachments, i18nBundle));
         return attachments;
     }
 
     private static List<ApplicationAttachmentRequest> addAmkOpeAttachments(
+            final ApplicationSystem applicationSystem,
             final List<ApplicationAttachmentRequest> attachments, final Application application,
             final KoulutusinformaatioService koulutusinformaatioService, final String lang,
             final I18nBundle i18nBundle) {
-
-        Map<String, List<HigherEdBaseEducationAttachmentInfo>> higherEdAttachments = getAddresses(ApplicationUtil.getAmkOpeAttachments(application), koulutusinformaatioService, lang);
 
         Calendar deadlineCal = GregorianCalendar.getInstance();
         deadlineCal.set(Calendar.YEAR, 2015);
@@ -253,16 +254,16 @@ public class AttachmentUtil {
         deadlineCal.set(Calendar.HOUR_OF_DAY, 15);
         deadlineCal.set(Calendar.MINUTE, 0);
         deadlineCal.set(Calendar.SECOND, 0);
-
         Date deadline = deadlineCal.getTime();
 
-        attachments.addAll(getHigherEdAttachments(higherEdAttachments, deadline, i18nBundle));
+        Map<String, List<HigherEdBaseEducationAttachmentInfo>> higherEdAttachments = getAddresses(applicationSystem, ApplicationUtil.getAmkOpeAttachments(application), koulutusinformaatioService, deadline, lang);
+
+        attachments.addAll(getHigherEdAttachments(higherEdAttachments, i18nBundle));
         return attachments;
     }
 
     private static List<ApplicationAttachmentRequest> getHigherEdAttachments(
             final Map<String, List<HigherEdBaseEducationAttachmentInfo>> higherEdAttachments,
-            final Date deadline,
             final I18nBundle i18nBundle) {
 
         List<ApplicationAttachmentRequest> attachments = new ArrayList<>();
@@ -273,9 +274,11 @@ public class AttachmentUtil {
                 ApplicationAttachmentBuilder attachmentBuilder = ApplicationAttachmentBuilder.start()
                         .setName(address.attachmentName)
                         .setDescription(i18nBundle.get(attachmentType))
-                        .setDeadline(deadline)
-                        .setAddress(getAddress(address.recipientName, address.addressDTO));
-                if (deadline == null) {
+                        .setDeadline(address.deadline)
+                        .setAddress(address.address);
+
+
+                if (address.deadline == null) {
                     attachmentBuilder.setDeliveryNote(i18nBundle.get(GENERAL_DELIVERY_NOTE));
                 }
 
@@ -291,8 +294,10 @@ public class AttachmentUtil {
     }
 
     private static Map<String, List<HigherEdBaseEducationAttachmentInfo>> getAddresses(
+      final ApplicationSystem applicationSystem,
       final Map<String, List<String>> higherEdAttachmentAOIds,
       final KoulutusinformaatioService koulutusinformaatioService,
+      final Date defaultDeadline,
       final String lang) {
         Map<String, List<HigherEdBaseEducationAttachmentInfo>> applicationOptions = new HashMap<>();
         new HashMap<String, List<HigherEdBaseEducationAttachmentInfo>>();
@@ -301,7 +306,7 @@ public class AttachmentUtil {
             List<HigherEdBaseEducationAttachmentInfo> addresses = new ArrayList<>();
             for (String aoOid : entry.getValue()) {
                 ApplicationOptionDTO ao = koulutusinformaatioService.getApplicationOption(aoOid, lang);
-                HigherEdBaseEducationAttachmentInfo address = getAttachmentGroupAddressInfo(ao);
+                HigherEdBaseEducationAttachmentInfo address = getAttachmentGroupAddressInfo(applicationSystem, ao, defaultDeadline);
                 if (!addressAlreadyAdded(addresses, address)) {
                     addresses.add(address);
                 }
@@ -311,25 +316,24 @@ public class AttachmentUtil {
         return applicationOptions;
     }
 
-    private static HigherEdBaseEducationAttachmentInfo getAttachmentGroupAddressInfo(ApplicationOptionDTO ao) {
-        HigherEdBaseEducationAttachmentInfo aoAddress = getAttachmentAddressInfo(ao);
+    private static HigherEdBaseEducationAttachmentInfo getAttachmentGroupAddressInfo(ApplicationSystem applicationSystem, ApplicationOptionDTO ao, Date defaultDeadline) {
+        HigherEdBaseEducationAttachmentInfo aoAddress = getAttachmentAddressInfo(ao, defaultDeadline);
         for (OrganizationGroupDTO organizationGroup : ao.getOrganizationGroups()) {
             // TODO get group address from form config
             if (organizationGroup.getUsageGroups().contains(OppijaConstants.OPTION_ATTACHMENT_GROUP_TYPE)){
                 return new HigherEdBaseEducationAttachmentInfo(
                         aoAddress.attachmentName,
-                        aoAddress.recipientName,
-                        aoAddress.addressDTO,
+                        aoAddress.address,
                         OriginatorType.group,
-                        organizationGroup.getOid()
+                        organizationGroup.getOid(),
+                        defaultDeadline
                 );
-
             }
         }
         return aoAddress;
     }
 
-    private static HigherEdBaseEducationAttachmentInfo getAttachmentAddressInfo(ApplicationOptionDTO ao) {
+    private static HigherEdBaseEducationAttachmentInfo getAttachmentAddressInfo(ApplicationOptionDTO ao, Date deadline) {
         LearningOpportunityProviderDTO provider = ao.getProvider();
         String recipientName = provider.getName();
         AddressDTO address = provider.getPostalAddress();
@@ -339,10 +343,10 @@ public class AttachmentUtil {
         }
         return new HigherEdBaseEducationAttachmentInfo(
             createI18NAsIs(StringUtil.safeToString(provider.getName())),
-            recipientName,
-            address,
+            getAddress(recipientName, address),
             OriginatorType.applicationOption,
-            ao.getId()
+            ao.getId(),
+            deadline
         );
     }
 
