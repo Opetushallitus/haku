@@ -321,6 +321,18 @@ function login(username, password) {
         }));
 }
 
+function installGroupConfigurations(configs) {
+    return seq(
+        login('master', 'master'),
+        seq.apply(this, Array.prototype.slice.call(arguments).map(function(configParams) {
+            return setupGroupConfiguration.apply(this, configParams);
+        })),
+        openPage("/haku-app/lomakkeenhallinta/1.2.246.562.29.173465377510", function() {
+            return S("form#form-henkilotiedot").first().is(':visible')
+        })
+    )
+}
+
 function setupGroupConfiguration(applicationSystemId, groupId, type, configurations) {
     var resource = "/haku-app/application-system-form-editor/configuration";
     return seq(

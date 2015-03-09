@@ -20,27 +20,6 @@ describe('GroupConfiguration', function () {
         )
     );
 
-    var afrikkaKoulutus = "Afrikan ja Lähi-idän tutkimus, humanististen tieteiden kandidaatti ja filosofian maisteri";
-    var aasiaKoulutus = "Aasian tutkimus, humanististen tieteiden kandidaatti ja filosofian maisteri";
-    var raaseporiKoulutus = "Agrolog (YH)/Miljöplanerare (YH)/Skogsbruksingenjör (YH), dagstudier";
-    var ouluKoulutus = "Aate- ja oppihistoria, humanististen tieteiden kandidaatti ja filosofian maisteri";
-
-    function raasepori(n) {
-        return valitseKoulutus(n, "Yrkeshögskolan Novia, Raasepori", raaseporiKoulutus);
-    }
-
-    function afrikka(n) {
-        return valitseKoulutus(n, "Helsingin yliopisto, Humanistinen tiedekunta", afrikkaKoulutus);
-    }
-
-    function aasia(n) {
-        return valitseKoulutus(n, "Helsingin yliopisto, Humanistinen tiedekunta", aasiaKoulutus);
-    }
-
-    function oulu(n) {
-        return valitseKoulutus(n, "Oulun yliopisto, Humanistinen tiedekunta", ouluKoulutus)
-    }
-
     function syotaJarjestyksessa() {
         return seq.apply(this, Array.prototype.slice.call(arguments).map(function(f, i) {
             return f(i + 1);
@@ -60,18 +39,6 @@ describe('GroupConfiguration', function () {
 
     function priorityErrorTemplate(a, b) {
         return "Hakukohde " + a + " tulee olla korkeammalla prioriteetilla kuin hakukohteen " + b + ". Muuta hakukohteiden ensisijaisuusjärjestystä.";
-    }
-
-    function installGroupConfigurations(configs) {
-        return seq(
-            login('master', 'master'),
-            seq.apply(this, Array.prototype.slice.call(arguments).map(function(configParams) {
-                return setupGroupConfiguration.apply(this, configParams);
-            })),
-            openPage("/haku-app/lomakkeenhallinta/1.2.246.562.29.173465377510", function() {
-                return S("form#form-henkilotiedot").first().is(':visible')
-            })
-        )
     }
 
     describe("hakukohteiden rajaavuuden validointi", function() {
