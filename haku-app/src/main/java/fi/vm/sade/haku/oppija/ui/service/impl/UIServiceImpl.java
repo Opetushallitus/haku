@@ -32,7 +32,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.Titled;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.gradegrid.GradeGrid;
 import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
-import fi.vm.sade.haku.oppija.lomake.service.UserSession;
+import fi.vm.sade.haku.oppija.lomake.service.Session;
 import fi.vm.sade.haku.oppija.lomake.util.ElementTree;
 import fi.vm.sade.haku.oppija.ui.service.UIService;
 import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
@@ -68,7 +68,7 @@ public class UIServiceImpl implements UIService {
     private final ApplicationService applicationService;
     private final ApplicationSystemService applicationSystemService;
     private final String koulutusinformaatioBaseUrl;
-    private final UserSession userSession;
+    private final Session userSession;
     private final KoulutusinformaatioService koulutusinformaatioService;
     private final AuthenticationService authenticationService;
     private final I18nBundleService i18nBundleService;
@@ -77,7 +77,7 @@ public class UIServiceImpl implements UIService {
     @Autowired
     public UIServiceImpl(final ApplicationService applicationService,
                          final ApplicationSystemService applicationSystemService,
-                         final UserSession userSession,
+                         final Session userSession,
                          final KoulutusinformaatioService koulutusinformaatioService,
                          final AuthenticationService authenticationService,
                          final I18nBundleService i18nBundleService,

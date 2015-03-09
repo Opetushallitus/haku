@@ -17,7 +17,8 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.haku.oppija.lomake.service.FormService;
-import fi.vm.sade.haku.oppija.lomake.service.UserSession;
+import fi.vm.sade.haku.oppija.lomake.service.Session;
+import fi.vm.sade.haku.oppija.lomake.service.impl.UserSession;
 import fi.vm.sade.haku.oppija.lomake.validation.ElementTreeValidator;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidatorFactory;
 import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
@@ -106,7 +107,7 @@ public class ValintaServiceTest {
         when(hakuPermissionService.userCanDeleteApplication(any(Application.class))).thenReturn(true);
         when(hakuPermissionService.userCanPostProcess(any(Application.class))).thenReturn(true);
 
-        UserSession userSession = mock(UserSession.class);
+        Session userSession = mock(UserSession.class);
         User user = mock(User.class);
         when(userSession.getUser()).thenReturn(user);
         when(user.getUserName()).thenReturn("");

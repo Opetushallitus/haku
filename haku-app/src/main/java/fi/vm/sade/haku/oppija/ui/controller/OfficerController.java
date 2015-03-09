@@ -24,7 +24,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.ModelResponse;
 import fi.vm.sade.haku.oppija.lomake.service.FormService;
-import fi.vm.sade.haku.oppija.lomake.service.UserSession;
+import fi.vm.sade.haku.oppija.lomake.service.Session;
 import fi.vm.sade.haku.oppija.ui.common.UriUtil;
 import fi.vm.sade.haku.oppija.ui.controller.dto.AttachmentsAndEligibilityDTO;
 import fi.vm.sade.haku.oppija.ui.service.OfficerUIService;
@@ -89,7 +89,7 @@ public class OfficerController {
     @Autowired
     FormService formService;
     @Autowired
-    UserSession userSession;
+    Session userSession;
     @Autowired
     private PDFService pdfService;
     @Autowired

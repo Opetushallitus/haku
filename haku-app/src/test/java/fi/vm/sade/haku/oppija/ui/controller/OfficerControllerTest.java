@@ -28,7 +28,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.builder.PhaseBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.haku.oppija.lomake.service.FormService;
-import fi.vm.sade.haku.oppija.lomake.service.UserSession;
+import fi.vm.sade.haku.oppija.lomake.service.impl.UserSession;
 import fi.vm.sade.haku.oppija.ui.service.OfficerUIService;
 
 import org.junit.Before;

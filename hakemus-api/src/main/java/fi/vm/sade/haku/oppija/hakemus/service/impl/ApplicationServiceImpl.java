@@ -41,7 +41,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.haku.oppija.lomake.service.FormService;
-import fi.vm.sade.haku.oppija.lomake.service.UserSession;
+import fi.vm.sade.haku.oppija.lomake.service.Session;
 import fi.vm.sade.haku.oppija.lomake.util.ElementTree;
 import fi.vm.sade.haku.oppija.lomake.validation.ElementTreeValidator;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationInput;
@@ -78,7 +78,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     private final ApplicationDAO applicationDAO;
     private final ApplicationOidService applicationOidService;
-    private final UserSession userSession;
+    private final Session userSession;
     private final FormService formService;
     private final AuthenticationService authenticationService;
     private final OrganizationService organizationService;
@@ -92,7 +92,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     @Autowired
     public ApplicationServiceImpl(@Qualifier("applicationDAOMongoImpl") ApplicationDAO applicationDAO,
-                                  final UserSession userSession,
+                                  final Session userSession,
                                   @Qualifier("formServiceImpl") final FormService formService,
                                   @Qualifier("applicationOidServiceImpl") ApplicationOidService applicationOidService,
                                   AuthenticationService authenticationService,

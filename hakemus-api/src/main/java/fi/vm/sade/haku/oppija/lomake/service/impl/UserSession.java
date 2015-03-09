@@ -13,11 +13,12 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * European Union Public Licence for more details.
  */
-package fi.vm.sade.haku.oppija.lomake.service;
+package fi.vm.sade.haku.oppija.lomake.service.impl;
 
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.haku.oppija.lomake.domain.User;
+import fi.vm.sade.haku.oppija.lomake.service.Session;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.security.core.Authentication;
@@ -32,21 +33,21 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @Component
 @Scope(value = "session", proxyMode = ScopedProxyMode.TARGET_CLASS)
-public class UserSession implements Serializable {
-
+public class UserSession implements Serializable, Session {
+    private static final int MAX_PREFILL_PARAMETERS = 100;
     private static final long serialVersionUID = 8093993846121110534L;
-
-    public static final int MAX_PREFILL_PARAMETERS = 100;
 
     private final Map<String, Application> applications = new ConcurrentHashMap<String, Application>();
     private final Map<String, String> userPrefillData = new ConcurrentHashMap<String, String>();
     private Application submittedApplication = null;
 
+    @Override
     public User getUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return new User(authentication.getName());
     }
 
+    @Override
     public void addPrefillData(final String applicationSystemId, final Map<String, String> data) {
         if (data.size() > MAX_PREFILL_PARAMETERS) {
             throw new IllegalArgumentException("Too many prefill data values");
@@ -56,12 +57,14 @@ public class UserSession implements Serializable {
         this.userPrefillData.putAll(data);
     }
 
+    @Override
     public Map<String, String> populateWithPrefillData(final Map<String, String> data) {
         Map<String, String> populated = new HashMap<String, String>(userPrefillData);
         populated.putAll(data);
         return populated;
     }
 
+    @Override
     public Application getApplication(final String applicationSystemId) {
         if (applications.containsKey(applicationSystemId)) {
             return applications.get(applicationSystemId);
@@ -74,6 +77,7 @@ public class UserSession implements Serializable {
 
     }
 
+    @Override
     public boolean hasApplication(final String applicationSystemId) {
         if (applications.containsKey(applicationSystemId)) {
             return true;
@@ -82,18 +86,21 @@ public class UserSession implements Serializable {
         }
     }
 
+    @Override
     public Application savePhaseAnswers(ApplicationPhase applicationPhase) {
         Application application = this.getApplication(applicationPhase.getApplicationSystemId());
         application.addVaiheenVastaukset(applicationPhase.getPhaseId(), applicationPhase.getAnswers());
         return application;
     }
 
+    @Override
     public void removeApplication(final Application application) {
         if (null != this.applications.remove(application.getApplicationSystemId())) {
             this.submittedApplication = application;
         }
     }
 
+    @Override
     public Application getSubmittedApplication() {
         return submittedApplication;
     }

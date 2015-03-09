@@ -22,7 +22,7 @@ import fi.vm.sade.haku.oppija.common.diff.AnswersDifference;
 import fi.vm.sade.haku.oppija.common.diff.Difference;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
-import fi.vm.sade.haku.oppija.lomake.service.UserSession;
+import fi.vm.sade.haku.oppija.lomake.service.Session;
 import fi.vm.sade.haku.oppija.repository.AuditLogRepository;
 import fi.vm.sade.log.client.Logger;
 import fi.vm.sade.log.model.Tapahtuma;
@@ -52,11 +52,11 @@ public class LoggerAspect {
     private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(LoggerAspect.class);
 
     private final Logger logger;
-    private final UserSession userSession;
+    private final Session userSession;
     private final AuditLogRepository auditLogRepository;
 
     @Autowired
-    public LoggerAspect(final Logger logger, final UserSession userSession, final AuditLogRepository auditLogRepository) {
+    public LoggerAspect(final Logger logger, final Session userSession, final AuditLogRepository auditLogRepository) {
         this.logger = logger;
         this.userSession = userSession;
         this.auditLogRepository = auditLogRepository;
