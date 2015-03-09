@@ -349,5 +349,53 @@
       ],
       "attachments": null
     }
+  ],
+  "1.2.246.562.10.14842710486": [
+    {
+      "id": "1.2.246.562.20.42250016427",
+      "name": "Sosionomi (AMK), monimuotototeutus",
+      "aoIdentifier": null,
+      "educationDegree": "koulutusasteoph2002_62",
+      "sora": false,
+      "teachingLanguages": ["FI"],
+      "athleteEducation": false,
+      "kaksoistutkinto": false,
+      "vocational": false,
+      "educationCodeUri": "koulutus_671201",
+      "organizationGroups": [
+        {
+          "oid": "1.2.246.562.28.90373737623",
+          "usageGroups": ["hakukohde_liiteosoite"],
+          "groupTypes": ["hakukohde"]
+        },
+        {
+          "oid": "1.2.246.562.28.90373737624",
+          "usageGroups": [
+            "testi",
+            "hakukohde_liiteosoite"
+          ],
+          "groupTypes": [
+            "testi",
+            "hakukohde"
+          ]
+        },
+        {
+          "oid": "1.2.246.562.28.90373737625",
+          "usageGroups": ["testi"],
+          "groupTypes": [
+            "testi",
+            "hakukohde"
+          ]
+        },
+        {
+          "oid": "1.2.246.562.28.90373737626",
+          "usageGroups": [
+            "testi",
+            "hakukohde_liiteosoite"
+          ],
+          "groupTypes": ["testi"]
+        }
+      ]
+    }
   ]
 }
