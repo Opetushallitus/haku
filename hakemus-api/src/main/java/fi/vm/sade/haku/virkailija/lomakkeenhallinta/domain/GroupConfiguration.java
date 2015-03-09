@@ -19,7 +19,13 @@ public class GroupConfiguration {
     }
 
     public enum ConfigKey {
-        maximumNumberOf
+        maximumNumberOf,
+        useFirstAoAddress,
+        addressRecipient,
+        addressStreet,
+        addressPostalCode,
+        addressPostOffice,
+        deadline
     };
 
     private final String groupId;

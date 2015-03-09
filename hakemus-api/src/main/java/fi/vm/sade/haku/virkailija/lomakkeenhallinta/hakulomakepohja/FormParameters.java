@@ -7,6 +7,7 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.dao.ThemeQuestionDAO;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain.FormConfiguration;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.i18n.I18nBundleService;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.service.AttachmentGroupConfigurator;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.service.GroupRestrictionConfigurator;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.service.ThemeQuestionConfigurator;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakukohdeService;
@@ -119,6 +120,10 @@ public class FormParameters {
 
     public GroupRestrictionConfigurator getGroupRestrictionConfigurator() {
         return new GroupRestrictionConfigurator(this, hakukohdeService, organizationService);
+    }
+
+    public AttachmentGroupConfigurator getAttachmentGroupConfigurator() {
+        return new AttachmentGroupConfigurator(formConfiguration);
     }
 
     public Boolean isOnlyThemeGenerationForFormEditor() {
