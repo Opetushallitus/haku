@@ -36,7 +36,9 @@ public class KoulutusinformaatioServiceMockImpl extends KoulutusinformaatioServi
             mesta("1.2.246.562.10.55918814447", "Oulun yliopisto, Humanistinen tiedekunta"),
             mesta("1.2.246.562.10.62355244518", "Yrkeshögskolan Novia, Raasepori"),
             mesta("1.2.246.562.10.61397511793", "Helsingin yliopisto, Humanistinen tiedekunta"),
-            mesta("1.2.246.562.10.14842710486", "Diakonia-ammattikorkeakoulu, Järvenpään toimipiste")
+            mesta("1.2.246.562.10.14842710486", "Diakonia-ammattikorkeakoulu, Järvenpään toimipiste"),
+            mesta("1.2.246.562.10.64213824028", "Diakonia-ammattikorkeakoulu, Helsingin toimipiste"),
+            mesta("1.2.246.562.10.78522729439", "Taideyliopisto,  Sibelius-Akatemia")
         );
 
     private Map<String, ApplicationOptionDTO> optionMap() {

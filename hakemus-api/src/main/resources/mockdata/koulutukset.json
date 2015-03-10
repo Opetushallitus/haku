@@ -348,7 +348,7 @@
     "provider": {
       "id": "1.2.246.562.10.78522729439",
       "name": "Taideyliopisto,  Sibelius-Akatemia",
-      "applicationSystemIds": ["1.2.246.562.29.95390561488"],
+      "applicationSystemIds": ["1.2.246.562.29.95390561488", "1.2.246.562.29.173465377510"],
       "postalAddress": {
         "streetAddress": "PL 32",
         "streetAddress2": null,
@@ -607,7 +607,13 @@
     "requiredBaseEducations": [
       "0", "1"
     ],
-    "organizationGroups": []
+    "organizationGroups": [
+      {
+        "oid": "1.2.246.562.28.90373737623",
+        "usageGroups": ["hakukohde_liiteosoite"],
+        "groupTypes": ["hakukohde"]
+      }
+    ]
   },
 
   "1.2.246.562.20.97520172236": {
@@ -1822,6 +1828,12 @@
         "prioriteetti": null,
         "usageGroups": ["hakukohde_rajaava"],
         "groupTypes": ["hakukohde"]
+      },
+      {
+        "oid": "1.2.246.562.28.00000000011",
+        "prioriteetti": null,
+        "usageGroups": ["hakukohde_liiteosoite"],
+        "groupTypes": ["hakukohde"]
       }
     ],
     "kotitalous": false
@@ -2063,6 +2075,12 @@
         "oid": "1.2.246.562.28.13841322666",
         "prioriteetti": null,
         "usageGroups": ["hakukohde_rajaava"],
+        "groupTypes": ["hakukohde"]
+      },
+      {
+        "oid": "1.2.246.562.28.00000000011",
+        "prioriteetti": null,
+        "usageGroups": ["hakukohde_liiteosoite"],
         "groupTypes": ["hakukohde"]
       }
     ],
@@ -2437,8 +2455,13 @@
         "prioriteetti": null,
         "usageGroups": ["hakukohde_rajaava"],
         "groupTypes": ["hakukohde"]
-      }
-    ],
+      },
+      {
+        "oid": "1.2.246.562.28.00000000011",
+        "prioriteetti": null,
+        "usageGroups": ["hakukohde_liiteosoite"],
+        "groupTypes": ["hakukohde"]
+      }    ],
     "kotitalous": false
   }
 }
