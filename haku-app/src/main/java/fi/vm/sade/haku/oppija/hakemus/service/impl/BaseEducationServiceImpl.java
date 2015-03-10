@@ -223,21 +223,11 @@ public class BaseEducationServiceImpl implements BaseEducationService {
 
             Map<String, SuoritusDTO> suoritukset = suoritusrekisteriService.getSuoritukset(personOid);
             SuoritusDTO pkSuoritus = suoritukset.get(PERUSOPETUS_KOMO);
-            SuoritusDTO kymppiSuoritus = suoritukset.get(LISAOPETUS_KOMO);
             arvosanaMap.putAll(suorituksenArvosanat("PK_", pkSuoritus.getId()));
-            if (kymppiSuoritus != null) {
-                Map<String, String> kympinArvosanat = suorituksenArvosanat("PK_", kymppiSuoritus.getId());
-                for (Map.Entry<String, String> entry : kympinArvosanat.entrySet()) {
-                    String key = entry.getKey();
-                    if (key.endsWith("_OPPIAINE")) {
-                        continue;
-                    }
-                    String ysi = arvosanaMap.get(key);
-                    String kymppi = entry.getValue();
-                    arvosanaMap.put(key, maxGrade(ysi, kymppi));
-                }
-            }
-
+            arvosanaMap = getMaxGrades(arvosanaMap, suoritukset.get(LISAOPETUS_KOMO));
+            arvosanaMap = getMaxGrades(arvosanaMap, suoritukset.get(AMMATTISTARTTI_KOMO));
+            arvosanaMap = getMaxGrades(arvosanaMap, suoritukset.get(KUNTOUTTAVA_KOMO));
+            arvosanaMap = getMaxGrades(arvosanaMap, suoritukset.get(MAMU_VALMENTAVA_KOMO));
         }
         Map<String, String> toAdd = new HashMap<>();
         for (Map.Entry<String, String> entry : arvosanaMap.entrySet()) {
@@ -252,22 +242,38 @@ public class BaseEducationServiceImpl implements BaseEducationService {
         return arvosanaMap;
     }
 
-    private String maxGrade(String ysi, String kymppi) {
-        if ("Ei arvosanaa".equals(kymppi) || "S".equals(kymppi)) {
-            return ysi;
+    private Map<String, String> getMaxGrades(Map<String, String> arvosanaMap, SuoritusDTO suoritus) {
+        if (suoritus != null) {
+            Map<String, String> kympinArvosanat = suorituksenArvosanat("PK_", suoritus.getId());
+            for (Map.Entry<String, String> entry : kympinArvosanat.entrySet()) {
+                String key = entry.getKey();
+                if (key.endsWith("_OPPIAINE")) {
+                    continue;
+                }
+                String prev = arvosanaMap.get(key);
+                String curr = entry.getValue();
+                arvosanaMap.put(key, maxGrade(prev, curr));
+            }
         }
-        if ("Ei arvosanaa".equals(ysi) || "S".equals(ysi)) {
-            return !isEmpty(kymppi) ? kymppi : ysi;
+        return arvosanaMap;
+    }
+
+    private String maxGrade(String prev, String curr) {
+        if ("Ei arvosanaa".equals(curr) || "S".equals(curr)) {
+            return prev;
+        }
+        if ("Ei arvosanaa".equals(prev) || "S".equals(prev)) {
+            return !isEmpty(curr) ? curr : prev;
         }
         Integer ysiInt = 0;
         Integer kymppiInt = 0;
         try {
-            ysiInt = Integer.parseInt(ysi);
+            ysiInt = Integer.parseInt(prev);
         } catch (NumberFormatException nfe) {
             // NOP
         }
         try {
-            kymppiInt = Integer.parseInt(kymppi);
+            kymppiInt = Integer.parseInt(curr);
         } catch (NumberFormatException nfe) {
             // NOP
         }
