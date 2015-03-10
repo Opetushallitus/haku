@@ -15,11 +15,14 @@ public interface SuoritusrekisteriService {
 
     public static String MAMU_VALMENTAVA_KOMO = "1.2.246.562.5.2013112814572441001730";
 
+    public static String LUKIOON_VALMISTAVA_KOMO = "1.2.246.562.5.2013112814572429142840";
+
     // Sure tuntee kuntouttavan valmentavana
     public static String KUNTOUTTAVA_KOMO = "1.2.246.562.5.2013112814572435755085";
 
     // Lukion komoOid on aikuisten oikeasti "TODO lukio komo oid", ainakin toistaiseksi
     public static String LUKIO_KOMO = "TODO lukio komo oid";
+
 
     /**
      * Palauttaa henkilön suoritukset mappina komoOid - suoritus.
