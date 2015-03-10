@@ -46,11 +46,6 @@ describe('GroupConfiguration', function () {
             ["1.2.246.562.29.173465377510", "1.2.246.562.28.20907706742", "hakukohde_rajaava", {maximumNumberOf: 1}]
         )));
 
-        after(seqDone(
-            login('master', 'master'),
-            teardownGroupConfiguration("1.2.246.562.29.173465377510", "1.2.246.562.28.20907706742", "hakukohde_rajaava")
-        ));
-
         beforeEach(prefill);
 
         // RAJAAVUUS, max 1: aasia, afrikka
@@ -99,13 +94,6 @@ describe('GroupConfiguration', function () {
             ["1.2.246.562.29.173465377510", "1.2.246.562.28.00000000003", "hakukohde_rajaava", {maximumNumberOf: 1}]
         )));
 
-        after(seqDone(
-            login('master', 'master'),
-            teardownGroupConfiguration("1.2.246.562.29.173465377510", "1.2.246.562.28.00000000001", "hakukohde_rajaava"),
-            teardownGroupConfiguration("1.2.246.562.29.173465377510", "1.2.246.562.28.00000000002", "hakukohde_rajaava"),
-            teardownGroupConfiguration("1.2.246.562.29.173465377510", "1.2.246.562.28.00000000003", "hakukohde_rajaava")
-        ));
-
         beforeEach(prefill);
 
         // RAJAAVUUS *01, max 1: aasia,     afrikka
@@ -148,12 +136,6 @@ describe('GroupConfiguration', function () {
             ["1.2.246.562.29.173465377510", "1.2.246.562.28.20907706740", "hakukohde_priorisoiva"],
             ["1.2.246.562.29.173465377510", "1.2.246.562.28.20907706741", "hakukohde_priorisoiva"]
         )));
-
-        after(seqDone(
-            login('master', 'master'),
-            teardownGroupConfiguration("1.2.246.562.29.173465377510", "1.2.246.562.28.20907706740", "hakukohde_priorisoiva"),
-            teardownGroupConfiguration("1.2.246.562.29.173465377510", "1.2.246.562.28.20907706741", "hakukohde_priorisoiva")
-        ));
 
         beforeEach(prefill);
 
@@ -275,12 +257,6 @@ describe('GroupConfiguration', function () {
             ["1.2.246.562.29.173465377510", "1.2.246.562.28.20907706742", "hakukohde_rajaava", {maximumNumberOf: 1}],
             ["1.2.246.562.29.173465377510", "1.2.246.562.28.20907706740", "hakukohde_priorisoiva"]
         )));
-
-        after(seqDone(
-            login('master', 'master'),
-            teardownGroupConfiguration("1.2.246.562.29.173465377510", "1.2.246.562.28.20907706742", "hakukohde_rajaava"),
-            teardownGroupConfiguration("1.2.246.562.29.173465377510", "1.2.246.562.28.20907706740", "hakukohde_priorisoiva")
-        ));
 
         beforeEach(prefill);
 
