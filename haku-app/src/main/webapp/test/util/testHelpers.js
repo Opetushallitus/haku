@@ -323,7 +323,7 @@ function login(username, password) {
 
 function installGroupConfigurations(configs) {
     return seq(
-        login('master', 'master'),
+        teardownAllTestGroupConfigurations(),
         seq.apply(this, Array.prototype.slice.call(arguments).map(function(configParams) {
             return setupGroupConfiguration.apply(this, configParams);
         })),
@@ -348,6 +348,18 @@ function teardownGroupConfiguration(applicationSystemId, groupId, type) {
         post(resource + "/" + applicationSystemId + "/groupConfiguration/" + groupId + "/delete",
             {groupId: groupId, type: type},
             'application/json'))
+}
+
+function teardownAllTestGroupConfigurations() {
+    return seq(
+        login('master', 'master'),
+        teardownGroupConfiguration("1.2.246.562.29.173465377510", "1.2.246.562.28.00000000001", "hakukohde_rajaava"),
+        teardownGroupConfiguration("1.2.246.562.29.173465377510", "1.2.246.562.28.00000000002", "hakukohde_rajaava"),
+        teardownGroupConfiguration("1.2.246.562.29.173465377510", "1.2.246.562.28.00000000003", "hakukohde_rajaava"),
+        teardownGroupConfiguration("1.2.246.562.29.173465377510", "1.2.246.562.28.20907706740", "hakukohde_priorisoiva"),
+        teardownGroupConfiguration("1.2.246.562.29.173465377510", "1.2.246.562.28.20907706741", "hakukohde_priorisoiva"),
+        teardownGroupConfiguration("1.2.246.562.29.173465377510", "1.2.246.562.28.20907706742", "hakukohde_rajaava")
+    );
 }
 
 function takeScreenshot() {
