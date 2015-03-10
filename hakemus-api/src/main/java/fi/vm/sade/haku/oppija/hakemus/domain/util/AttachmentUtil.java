@@ -4,6 +4,7 @@ import fi.vm.sade.haku.oppija.hakemus.domain.*;
 import fi.vm.sade.haku.oppija.hakemus.domain.HigherEdBaseEducationAttachmentInfo.OriginatorType;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationOptionAttachmentRequest;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
+import fi.vm.sade.haku.oppija.lomake.domain.AttachmentGroupAddress;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.util.StringUtil;
 import fi.vm.sade.haku.oppija.common.koulutusinformaatio.KoulutusinformaatioService;
@@ -209,6 +210,17 @@ public class AttachmentUtil {
           .build();
     }
 
+    private static Address getAddress(SimpleAddress address) {
+        if (null == address)
+            return null;
+        return AddressBuilder.start()
+                .setRecipient(StringUtil.safeToString(address.getRecipient()))
+                .setStreetAddress(address.getStreet())
+                .setPostalCode(address.getPostCode())
+                .setPostOffice(address.getPostOffice())
+                .build();
+    }
+
     private static Address getAddress(ApplicationOptionDTO ao) {
         AddressDTO addressDTO = ao.getAttachmentDeliveryAddress();
         if (addressDTO == null && ao.getProvider() != null) {
@@ -319,18 +331,26 @@ public class AttachmentUtil {
     private static HigherEdBaseEducationAttachmentInfo getAttachmentGroupAddressInfo(ApplicationSystem applicationSystem, ApplicationOptionDTO ao, Date defaultDeadline) {
         HigherEdBaseEducationAttachmentInfo aoAddress = getAttachmentAddressInfo(ao, defaultDeadline);
         for (OrganizationGroupDTO organizationGroup : ao.getOrganizationGroups()) {
-            // TODO get group address from form config
-            if (organizationGroup.getUsageGroups().contains(OppijaConstants.OPTION_ATTACHMENT_GROUP_TYPE)){
-                return new HigherEdBaseEducationAttachmentInfo(
-                        aoAddress.attachmentName,
-                        aoAddress.address,
-                        OriginatorType.group,
-                        organizationGroup.getOid(),
-                        defaultDeadline
-                );
+            for (AttachmentGroupAddress groupAddress: applicationSystem.getAttachmentGroupAddresses()) {
+                if (organizationGroup.getOid().equals(groupAddress.getGroupId())) {
+                    return new HigherEdBaseEducationAttachmentInfo(
+                            aoAddress.attachmentName,
+                            chooseAddress(groupAddress, aoAddress),
+                            OriginatorType.group,
+                            organizationGroup.getOid(),
+                            groupAddress.getDeliveryDue() == null ? defaultDeadline : groupAddress.getDeliveryDue()
+                    );
+                }
             }
         }
         return aoAddress;
+    }
+
+    private static Address chooseAddress(AttachmentGroupAddress groupAddress, HigherEdBaseEducationAttachmentInfo aoAddress) {
+        if(groupAddress.isUseFirstAoAddress()) {
+            return aoAddress.address;
+        }
+        return getAddress(groupAddress.getDeliveryAddress());
     }
 
     private static HigherEdBaseEducationAttachmentInfo getAttachmentAddressInfo(ApplicationOptionDTO ao, Date deadline) {
