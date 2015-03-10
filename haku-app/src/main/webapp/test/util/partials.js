@@ -69,9 +69,6 @@ function tyhjennaHakutoiveet(count) {
 
 function tyhjennaHakutoive(prioriteetti) {
     return seq(
-        function() {
-            console.log("tyhjennaHakutoive: " + prioriteetti);
-        },
         visible(lomake.opetuspiste(prioriteetti)),
         wait.until(function() {
             if(lomake.opetuspiste(prioriteetti)().val() === "") {
