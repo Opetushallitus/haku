@@ -32,7 +32,7 @@ public class KSHJHakulomakeV1IT extends DummyModelBaseItTest {
         elementsNotPresentById("huoltajansahkoposti");
 
         nextPhase(OppijaConstants.PHASE_EDUCATION);
-        findByIdAndClick("suoritusoikeus_tai_aiempi_tutkinto", "pohjakoulutus_am");
+        findByIdAndClick("suoritusoikeus_tai_aiempi_tutkinto_true", "pohjakoulutus_am");
         setValue("pohjakoulutus_am_vuosi", "2012");
         setValue("pohjakoulutus_am_nimike", "pohjakoulutus_am_nimike");
         setValue("pohjakoulutus_am_laajuus", "laajuus");

@@ -16,7 +16,7 @@ lomake = initSelectors({
     postinumero: "input#Postinumero",
     kotikunta: "select#kotikunta",
     kaksoiskansalaisuus: function(onKaksoiskansalaisuus) {
-        return "input#onkosinullakaksoiskansallisuus[value=" + onKaksoiskansalaisuus + "]";
+        return "input#onkosinullakaksoiskansallisuus_"+onKaksoiskansalaisuus;
     },
     koulusivistyskieli: "select#koulusivistyskieli",
 
@@ -29,19 +29,19 @@ lomake = initSelectors({
     lukioPaattotodistusVuosi: 'input#lukioPaattotodistusVuosi',
     lukionKieli: "select#lukion_kieli",
     ammatillinenKoulutuspaikka: function(bool) {
-        return 'input[name=KOULUTUSPAIKKA_AMMATILLISEEN_TUTKINTOON][value=' + bool + ']';
+        return 'input#KOULUTUSPAIKKA_AMMATILLISEEN_TUTKINTOON_'+ bool;
     },
     ammatillinenSuoritettu: function(bool) {
-        return 'input[name=ammatillinenTutkintoSuoritettu][value=' + bool + ']';
+        return 'input#ammatillinenTutkintoSuoritettu_' + bool;
     },
     pohjakoulutus : function(koulutus) {
-        return "input[name=POHJAKOULUTUS][value="+koulutus+"]";
+        return "input#POHJAKOULUTUS_"+koulutus;
     },
     pohjakoulutusMuu: 'input#pohjakoulutus_muu',
     pohjakoulutusMuuVuosi: 'input#pohjakoulutus_muu_vuosi',
     pohjakoulutusMuuKuvaus: 'textarea#pohjakoulutus_muu_kuvaus',
     suoritusoikeusTaiAiempiTutkinto: function(bool) {
-        return "input[type=radio][id=suoritusoikeus_tai_aiempi_tutkinto][value=" + bool + "]";
+        return "input#suoritusoikeus_tai_aiempi_tutkinto_" + bool;
     },
     koulutusError: function(n) {
         return "#preference" + n + "-Koulutus-error";
@@ -56,16 +56,16 @@ lomake = initSelectors({
     },
     fromKoulutustausta: "button[class=right][value=hakutoiveet][name=phaseId]:first",
     harkinnanvaraisuus1: function(harkinnanvaraisuus) {
-        return "input#preference1-discretionary[value=" + harkinnanvaraisuus + "]";
+        return "input#preference1-discretionary_" + harkinnanvaraisuus;
     },
     soraTerveys1: function(value) {
-        return "input#preference1_sora_terveys[value=" + value + "]";
+        return "input#preference1_sora_terveys_" + value;
     },
     soraOikeudenMenetys1: function(value) {
-        return "input#preference1_sora_oikeudenMenetys[value=" + value + "]";
+        return "input#preference1_sora_oikeudenMenetys_" + value;
     },
     urheilija1: function(value) {
-        return "input#preference1_urheilijan_ammatillisen_koulutuksen_lisakysymys[value=" + value + "]";
+        return "input#preference1_urheilijan_ammatillisen_koulutuksen_lisakysymys_" + value;
     },
     nuoliAlas: function(n) {
         return "button.down[data-id=preference" + n + "]";
@@ -83,7 +83,7 @@ lomake = initSelectors({
     // Lisätiedot
     fromOsaaminen: "button[class=right][value=lisatiedot][name=phaseId]:first",
     asiointikieli: function(lang) {
-        return "input#asiointikieli[value="+lang+"]";
+        return "input#asiointikieli_"+lang;
     },
 
     // Esikatselu

@@ -35,8 +35,8 @@
             <haku:errorMessage id="${option.id}"/>
             <div class="field-container-radio">
                 <input type="radio" name="${element.id}"
-                       value="${option.value}" ${(!empty disabled) ? "disabled=\"true\" " : " "} ${checked ? "checked=\"checked\"" : ""} id="${element.id}"  ${option.attributeString}/>
-                <label for="${option.id}"><haku:i18nText value="${option.i18nText}"/></label>
+                       value="${option.value}" ${(!empty disabled) ? "disabled=\"true\" " : " "} ${checked ? "checked=\"checked\"" : ""} id="${element.id}_${option.value}"  ${option.attributeString}/>
+                <label for="${element.id}_${option.value}"><haku:i18nText value="${option.i18nText}"/></label>
                 <haku:help element="${option}"/>
                 <haku:viewChilds element="${option}"/>
             </div>
