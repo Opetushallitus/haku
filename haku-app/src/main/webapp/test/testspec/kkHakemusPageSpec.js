@@ -2,11 +2,30 @@ describe('KK-hakemus', function () {
     function answerForQuestion(name) {
         return S('td:has(a[name=' + name + '])').next().html()
     }
-    function previewPagePath() {
-        return"/haku-app/virkailija/hakemus/" + virkailija.hakemusOid().text() + "/print/view"
+    var hakemusId
+    function hakemusPath() {
+        return "/haku-app/virkailija/hakemus/" + hakemusId
     }
+    function previewPagePath() {
+        return hakemusPath() + "/print/view"
+    }
+
     before(seqDone(
         logout,
+        installGroupConfigurations(
+            ["1.2.246.562.29.173465377510", "1.2.246.562.28.00000000011", "hakukohde_liiteosoite", {
+                useFirstAoAddress: "false",
+                deadline: "1425912995920",
+                addressRecipient: "Liiteosoitteiden vastaanottaja",
+                addressStreet: "Katuosoite 12",
+                addressPostalCode: "12345",
+                addressPostOffice: "TESTIOSOITE"
+            }],
+            ["1.2.246.562.29.173465377510", "1.2.246.562.28.90373737623", "hakukohde_liiteosoite", {
+                useFirstAoAddress: "true",
+                deadline: "1525912995920"
+            }]
+        ),
         function() {
             return openPage("/haku-app/lomakkeenhallinta/1.2.246.562.29.173465377510", function() {
                 return S("form#form-henkilotiedot").first().is(':visible')
@@ -16,6 +35,7 @@ describe('KK-hakemus', function () {
 
     describe("virkailijan näkymä", function() {
         before(seqDone(
+            login('officer', 'officer'),
             openPage("/haku-app/virkailija/hakemus", function() {
                 return testFrame().document.getElementById('loginForm') !== null;
             }),
@@ -30,7 +50,10 @@ describe('KK-hakemus', function () {
             click(virkailija.createApplicationButton),
             input(virkailija.selectHaku, "1.2.246.562.29.173465377510"),
             click(virkailija.submitConfirm),
-            exists(virkailija.hakemusOid)
+            exists(virkailija.hakemusOid),
+            function() {
+                hakemusId = virkailija.hakemusOid().text();
+            }
         ));
 
         describe("syötä hakemus alkutilanne", function() {
@@ -74,42 +97,204 @@ describe('KK-hakemus', function () {
                 });
             });
 
-            describe("kahden hakutoiveen lisäys", function() {
-                var oulunYliopisto = "Oulun yliopisto, Humanistinen tiedekunta";
-                var novia = "Yrkeshögskolan Novia, Raasepori";
-                before(seqDone(
-                    click(virkailija.editHakutoiveetButton),
-                    valitseKoulutus(1, oulunYliopisto, "Aate- ja oppihistoria, humanististen tieteiden kandidaatti ja filosofian maisteri"),
-                    valitseKoulutus(2, novia, "Agrolog (YH)/Miljöplanerare (YH)/Skogsbruksingenjör (YH), dagstudier"),
-                    click(virkailija.saveHakutoiveetButton),
-                    visible(virkailija.editHakutoiveetButton)
-                ));
+            describe("hakutoiveiden lisäys", function() {
 
-                describe("lisäämisen jälkeen", function() {
-                    it("toiveet näkyvät", function () {
-                        expect(answerForQuestion('preference1')).to.equal(oulunYliopisto);
-                        expect(answerForQuestion('preference2')).to.equal(novia);
+                var avoinKkTodistuskopio = 'Todistuskopio tai ote avoimen korkeakoulun opintosuorituksista';
+                var amTodistuskopio = 'Todistuskopio ammatillisesta perustutkinnosta';
+
+                describe("lisättäessä kaksi toivetta, jotka eivät kuulu liiteosoiteryhmiin", function() {
+                    before(seqDone(
+                        click(virkailija.editHakutoiveetButton),
+                        jazz(1),
+                        raasepori(2),
+                        click(virkailija.saveHakutoiveetButton),
+                        visible(virkailija.editHakutoiveetButton)
+                    ));
+
+                    describe("lisäämisen jälkeen", function() {
+                        it("toiveet näkyvät", function () {
+                            expect(answerForQuestion('preference1')).to.equal(sibelusAkatemia);
+                            expect(answerForQuestion('preference2')).to.equal(novia);
+                        });
+                    });
+
+                    describe("esikatselussa", function() {
+                        before(seqDone(
+                            openPage(previewPagePath, function() {
+                                return S("#applicationAttachments").first().is(':visible');
+                            })
+                        ));
+                        it('pyydetään yhteensä 5 liitettä', function () {
+                            expect(virkailija.previewLiitteet()).to.have.length(5);
+                        });
+
+                        it('pyydetään sibelius akatemiaan hakukohdekohtainen liite sekä avoimen kk:n että ammatillisen pohjakoulutuksen liitteet', function () {
+                            expect(virkailija.previewLiitteet().find("td:first:contains(" + sibelusAkatemia + "):contains(" + avoinKkTodistuskopio + ")").length).to.equal(1);
+                            expect(virkailija.previewLiitteet().find("td:first:contains(" + sibelusAkatemia + "):contains(" + amTodistuskopio + ")").length).to.equal(1);
+                            expect(virkailija.previewLiitteet().has("td:eq(1):contains(Sibelius-Akatemian hakijapalvelut)").find("td:first:contains(Ennakkotehtävät)").length).to.equal(1);
+                        });
+
+                        it('pyydetään noviaan avoimen kk:n ja ammatillisen pohjakoulutuksen liitteet', function () {
+                            expect(virkailija.previewLiitteet().find("td:first:contains(" + novia + "):contains(" + avoinKkTodistuskopio + ")").length).to.equal(1);
+                            expect(virkailija.previewLiitteet().find("td:first:contains(" + novia + "):contains(" + amTodistuskopio + ")").length).to.equal(1);
+                        });
                     });
                 });
 
-                describe("esikatselussa", function() {
+                describe("lisättäessä kaksi toivetta, jotka kuuluvat eri liiteosoiteryhmiin", function() {
                     before(seqDone(
-                        openPage(previewPagePath, function() {
-                            return S("#applicationAttachments").first().is(':visible');
-                        })
+                        openPage(hakemusPath, function() {
+                            return visible(virkailija.notes)();
+                        }),
+                        click(virkailija.editHakutoiveetButton),
+                        afrikka(1),
+                        sosionomiJarvenpaa(2),
+                        click(virkailija.saveHakutoiveetButton),
+                        visible(virkailija.notes)
                     ));
-                    it('pyydetään sekä avoimen kk:n että ammatillisen koulutuksen todistusten liitteiden toimittaminen molempiin kouluihin', function () {
-                        var avoinKkTodistuskopio = 'Todistuskopio tai ote avoimen korkeakoulun opintosuorituksista';
-                        var amTodistuskopio = 'Todistuskopio ammatillisesta perustutkinnosta';
-                        expect(virkailija.previewLiitteet()).to.have.length(4);
-                        expect(virkailija.previewLiitteet().find("td:first:contains(" + oulunYliopisto + "):contains(" + avoinKkTodistuskopio + ")").length).to.equal(1);
-                        expect(virkailija.previewLiitteet().find("td:first:contains(" + oulunYliopisto + "):contains(" + amTodistuskopio + ")").length).to.equal(1);
-                        expect(virkailija.previewLiitteet().find("td:first:contains(" + novia + "):contains(" + avoinKkTodistuskopio + ")").length).to.equal(1);
-                        expect(virkailija.previewLiitteet().find("td:first:contains(" + novia + "):contains(" + amTodistuskopio + ")").length).to.equal(1);
+
+                    describe("lisäämisen jälkeen", function() {
+                        it("toiveet näkyvät", function () {
+                            expect(answerForQuestion('preference1')).to.equal(helsinginYliopisto);
+                            expect(answerForQuestion('preference2')).to.equal(jarvenpaanDiakoniaAMK);
+                        });
+                    });
+
+                    describe("esikatselussa", function() {
+                        before(seqDone(
+                            openPage(previewPagePath, function() {
+                                return S("#applicationAttachments").first().is(':visible');
+                            })
+                        ));
+                        it('pyydetään sekä avoimen kk:n että ammatillisen koulutuksen todistusten liitteiden toimittaminen molempiin kouluihin', function () {
+                            expect(virkailija.previewLiitteet()).to.have.length(4);
+                            expect(virkailija.previewLiitteet().find("td:first:contains(" + helsinginYliopisto + "):contains(" + avoinKkTodistuskopio + ")").length).to.equal(1);
+                            expect(virkailija.previewLiitteet().find("td:first:contains(" + helsinginYliopisto + "):contains(" + amTodistuskopio + ")").length).to.equal(1);
+                            expect(virkailija.previewLiitteet().find("td:first:contains(" + jarvenpaanDiakoniaAMK + "):contains(" + avoinKkTodistuskopio + ")").length).to.equal(1);
+                            expect(virkailija.previewLiitteet().find("td:first:contains(" + jarvenpaanDiakoniaAMK + "):contains(" + amTodistuskopio + ")").length).to.equal(1);
+                        });
+                        it('pyydetään helsingin yliopiston liitteet liiteryhmän osoitteeseen', function () {
+                            expect(virkailija.previewLiitteet().find("td:eq(1):contains(Liiteosoitteiden vastaanottaja)").length).to.equal(2);
+                        });
+                        it('pyydetään  helsingin yliopiston liiteryhmän liitteet configuroituun pvm mennessä', function () {
+                            expect(virkailija.previewLiitteet().has("td:first:contains(" + helsinginYliopisto + ")").find("td:eq(2):contains(09.03.2015 16:56)").length).to.equal(2);
+                        });
+                        it('pyydetään diakonia AMK liiteryhmän liitteet toimipisteen osoitteeseen', function () {
+                            expect(virkailija.previewLiitteet().find("td:eq(1):contains(Järvenpääntie 640)").length).to.equal(2);
+                        });
+                        it('pyydetään diakonia AMK liiteryhmän liitteet configuroituun pvm mennessä', function () {
+                            expect(virkailija.previewLiitteet().has("td:first:contains(" + jarvenpaanDiakoniaAMK + ")").find("td:eq(2):contains(10.05.2018 03:43)").length).to.equal(2);
+                        });
+                    });
+                });
+
+                describe("lisättäessä kolme toivetta, jotka kuuluvat samaan osoitteellisen liiteosoiteryhmään", function() {
+                    before(seqDone(
+                        openPage(hakemusPath, function() {
+                            return visible(virkailija.notes)();
+                        }),
+                        click(virkailija.editHakutoiveetButton),
+                        afrikka(1),
+                        aasia(2),
+                        oulu(3),
+                        click(virkailija.saveHakutoiveetButton),
+                        visible(virkailija.notes)
+                    ));
+
+                    describe("lisäämisen jälkeen", function() {
+                        it("toiveet näkyvät", function () {
+                            expect(answerForQuestion('preference1')).to.equal(helsinginYliopisto);
+                            expect(answerForQuestion('preference2')).to.equal(helsinginYliopisto);
+                            expect(answerForQuestion('preference3')).to.equal(oulunYliopisto);
+                        });
+                    });
+
+                    describe("esikatselussa", function() {
+                        before(seqDone(
+                            openPage(previewPagePath, function() {
+                                return S("#applicationAttachments").first().is(':visible');
+                            })
+                        ));
+                        it('pyydetään sekä avoimen kk:n että ammatillisen koulutuksen todistusten liittet ainoastaan liiteryhmän osoitteeseen', function () {
+                            expect(virkailija.previewLiitteet()).to.have.length(2);
+                            expect(virkailija.previewLiitteet().find("td:first:contains(" + helsinginYliopisto + "):contains(" + avoinKkTodistuskopio + ")").length).to.equal(1);
+                            expect(virkailija.previewLiitteet().find("td:first:contains(" + helsinginYliopisto + "):contains(" + amTodistuskopio + ")").length).to.equal(1);
+                            expect(virkailija.previewLiitteet().find("td:eq(1):contains(Liiteosoitteiden vastaanottaja)").length).to.equal(2);
+                        });
+                    });
+                });
+
+                describe("lisättäessä kolme toivetta, jotka kuuluvat samaan osoitteellisen liiteosoiteryhmään", function() {
+                    before(seqDone(
+                        openPage(hakemusPath, function() {
+                            return visible(virkailija.notes)();
+                        }),
+                        click(virkailija.editHakutoiveetButton),
+                        afrikka(1),
+                        aasia(2),
+                        oulu(3),
+                        click(virkailija.saveHakutoiveetButton),
+                        visible(virkailija.notes)
+                    ));
+
+                    describe("lisäämisen jälkeen", function() {
+                        it("toiveet näkyvät", function () {
+                            expect(answerForQuestion('preference1')).to.equal(helsinginYliopisto);
+                            expect(answerForQuestion('preference2')).to.equal(helsinginYliopisto);
+                            expect(answerForQuestion('preference3')).to.equal(oulunYliopisto);
+                        });
+                    });
+
+                    describe("esikatselussa", function() {
+                        before(seqDone(
+                            openPage(previewPagePath, function() {
+                                return S("#applicationAttachments").first().is(':visible');
+                            })
+                        ));
+                        it('pyydetään sekä avoimen kk:n että ammatillisen koulutuksen todistusten liittet ainoastaan liiteryhmän osoitteeseen', function () {
+                            expect(virkailija.previewLiitteet()).to.have.length(2);
+                            expect(virkailija.previewLiitteet().find("td:first:contains(" + helsinginYliopisto + "):contains(" + avoinKkTodistuskopio + ")").length).to.equal(1);
+                            expect(virkailija.previewLiitteet().find("td:first:contains(" + helsinginYliopisto + "):contains(" + amTodistuskopio + ")").length).to.equal(1);
+                            expect(virkailija.previewLiitteet().find("td:eq(1):contains(Liiteosoitteiden vastaanottaja)").length).to.equal(2);
+                        });
+                    });
+                });
+
+                describe("lisättäessä kaksi toivetta, jotka kuuluvat samaan ei osoiteelliseen liiteosoiteryhmään", function() {
+                    before(seqDone(
+                        openPage(hakemusPath, function() {
+                            return visible(virkailija.notes)();
+                        }),
+                        click(virkailija.editHakutoiveetButton),
+                        tyhjennaHakutoiveet(5),
+                        terveydenhoitajaHelsinki(1),
+                        sosionomiJarvenpaa(2),
+                        click(virkailija.saveHakutoiveetButton),
+                        visible(virkailija.notes)
+                    ));
+
+                    describe("lisäämisen jälkeen", function() {
+                        it("toiveet näkyvät", function () {
+                            expect(answerForQuestion('preference1')).to.equal(helsinginDiakoniaAMK);
+                            expect(answerForQuestion('preference2')).to.equal(jarvenpaanDiakoniaAMK);
+                        });
+                    });
+
+                    describe("esikatselussa", function() {
+                        before(seqDone(
+                            openPage(previewPagePath, function() {
+                                return S("#applicationAttachments").first().is(':visible');
+                            })
+                        ));
+                        it('pyydetään sekä avoimen kk:n että ammatillisen koulutuksen todistusten liittet ainoastaan liiteryhmän ensimmäisen hakukohteen osoitteeseen', function () {
+                            expect(virkailija.previewLiitteet()).to.have.length(2);
+                            expect(virkailija.previewLiitteet().find("td:first:contains(" + helsinginDiakoniaAMK + "):contains(" + avoinKkTodistuskopio + ")").length).to.equal(1);
+                            expect(virkailija.previewLiitteet().find("td:first:contains(" + helsinginDiakoniaAMK + "):contains(" + amTodistuskopio + ")").length).to.equal(1);
+                            expect(virkailija.previewLiitteet().find("td:eq(1):contains(HELSINKI)").length).to.equal(2);
+                        });
                     });
                 });
             });
-
         });
     });
 });

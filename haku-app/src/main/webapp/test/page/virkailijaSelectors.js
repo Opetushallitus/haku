@@ -37,5 +37,6 @@ virkailija = initSelectors({
     saveKoulutusTaustaButton: "button.save[value=koulutustausta]:first",
     editHakutoiveetButton: "a[href*='1.2.246.562.29.173465377510/hakutoiveet']:first button",
     saveHakutoiveetButton: "button.save[value=hakutoiveet]:first",
-    previewLiitteet: "#applicationAttachments tr:gt(0)"
+    previewLiitteet: "#applicationAttachments tr:gt(0)",
+    notes: "#notes"
 });

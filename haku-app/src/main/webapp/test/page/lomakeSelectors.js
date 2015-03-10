@@ -48,6 +48,7 @@ lomake = initSelectors({
     },
 
     // Hakutoiveet
+    preferencesVisibleInput: "input#preferencesVisible",
     opetuspiste: function(n) {
         return "input#preference" + n + "-Opetuspiste";
     },
