@@ -62,10 +62,11 @@ public class AttachmentUtil {
       final I18nBundle i18nBundle) {
         List<ApplicationAttachmentRequest> attachments = new ArrayList<ApplicationAttachmentRequest>();
         attachments = addApplicationOptionAttachments(attachments, application, koulutusinformaatioService, lang, i18nBundle);
-        attachments = addDiscreationaryAttachments(attachments, application, koulutusinformaatioService, lang,
-          i18nBundle);
-        attachments = addHigherEdAttachments(applicationSystem, attachments, application, koulutusinformaatioService, lang, i18nBundle);
-        attachments = addAmkOpeAttachments(applicationSystem, attachments, application, koulutusinformaatioService, lang, i18nBundle);
+        attachments = addDiscreationaryAttachments(attachments, application, koulutusinformaatioService, lang, i18nBundle);
+        if(OppijaConstants.KOHDEJOUKKO_KORKEAKOULU.equals(applicationSystem.getKohdejoukkoUri())) {
+            attachments = addHigherEdAttachments(applicationSystem, attachments, application, koulutusinformaatioService, lang, i18nBundle);
+            attachments = addAmkOpeAttachments(applicationSystem, attachments, application, koulutusinformaatioService, lang, i18nBundle);
+        }
         attachments = addApplicationOptionAttachmentRequestsFromForm(attachments, application, applicationSystem, i18nBundle);
 
         return attachments;
