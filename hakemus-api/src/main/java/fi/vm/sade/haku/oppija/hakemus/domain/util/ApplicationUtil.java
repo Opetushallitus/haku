@@ -52,6 +52,9 @@ public final class ApplicationUtil {
             if (yoNeeded(application)) {
                 attachments.put("yo", universityAndAspaAmkAOs);
             }
+            if (hasBaseEducation(application, "pohjakoulutus_yo_ammatillinen")) {
+                attachments.put("yo_am", universityAOs);
+            }
             if (hasBaseEducation(application, "pohjakoulutus_yo_kansainvalinen_suomessa")) {
                 attachments.put("yo_kv", universityAndAspaAmkAOs);
             }
@@ -59,7 +62,7 @@ public final class ApplicationUtil {
                 attachments.put("yo_ulk", universityAndAspaAmkAOs);
             }
             if (hasBaseEducation(application, "pohjakoulutus_am")) {
-                attachments.put("am", universityAndAspaAmkAOs);
+                attachments.put("am", universityAOs);
             }
             if (hasBaseEducation(application, "pohjakoulutus_amt")) {
                 attachments.put("amt", universityAndAspaAmkAOs);
@@ -142,13 +145,17 @@ public final class ApplicationUtil {
         if (!hasBaseEducation(application, "pohjakoulutus_yo")) {
             return false;
         }
+
         Map<String, String> answers = application.getVastauksetMerged();
+        String tutkinto = answers.get("pohjakoulutus_yo_tutkinto");
+        if ("lk".equals(tutkinto)) {
+            return false;
+        }
         int suoritusvuosi = Integer.parseInt(answers.get("pohjakoulutus_yo_vuosi"));
         if (suoritusvuosi < 1990) {
             return true;
         }
-        String tutkinto = answers.get("pohjakoulutus_yo_tutkinto");
-        if ("fi".equals(tutkinto)) {
+        if ("fi".equals(tutkinto) || "lkOnly".equals(tutkinto)) {
             return false;
         }
         return true;

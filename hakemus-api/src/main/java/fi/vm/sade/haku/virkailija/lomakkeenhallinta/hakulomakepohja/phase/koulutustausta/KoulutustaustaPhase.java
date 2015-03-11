@@ -661,7 +661,7 @@ public final class KoulutustaustaPhase {
         Element yoTutkinto = Dropdown("pohjakoulutus_yo_tutkinto")
                 .addOption(formParameters.getI18nText("form.koulutustausta.lukio.yotutkinto.fi"), "fi")
                 .addOption(formParameters.getI18nText("form.koulutustausta.lukio.yotutkinto.lk"), "lk")
-                .addOption(formParameters.getI18nText("form.koulutustausta.lukio.yotutkinto.lkOnly"), "lkOnly")
+                .addOption(formParameters.getI18nText("form.koulutustausta.lukio.yotutkinto.lkonly"), "lkOnly")
                 .requiredInline()
                 .formParams(formParameters).build();
         yoMore.addChild(vuosi, yoTutkinto, buildYoAmmatillinen(formParameters, laajuusYksikot));
