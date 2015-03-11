@@ -270,14 +270,14 @@ public final class KoulutustaustaPhase {
         pohjakoulutusGrp.addChild(
                 buildYoSuomalainen(formParameters, laajuusYksikot),
                 buildYoKansainvalinenSuomessa(formParameters),
-                buildAmmatillinen(formParameters, laajuusYksikot, 5),
-                buildAmmattitutkinto(formParameters, 5),
-                buildKorkeakoulututkinto(formParameters, tutkintotasot, 5),
+                buildAmmatillinen(formParameters, laajuusYksikot, 4),
+                buildAmmattitutkinto(formParameters, 4),
+                buildKorkeakoulututkinto(formParameters, tutkintotasot, 4),
                 buildYoUlkomainen(formParameters, maat),
-                buildKorkeakoulututkintoUlkomaa(formParameters, tutkintotasot, maat, 5),
-                buildUlkomainenTutkinto(formParameters, 5),
-                buildAvoin(formParameters, 5),
-                buildMuu(formParameters, 5));
+                buildKorkeakoulututkintoUlkomaa(formParameters, tutkintotasot, maat, 4),
+                buildUlkomainenTutkinto(formParameters, 4),
+                buildAvoin(formParameters, 4),
+                buildMuu(formParameters, 4));
         elements.add(pohjakoulutusGrp);
 
         Element suoritusoikeusTaiAiempitutkinto = Radio("suoritusoikeus_tai_aiempi_tutkinto")
