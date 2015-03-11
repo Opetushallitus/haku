@@ -284,8 +284,7 @@ public class AttachmentUtil {
             for (HigherEdBaseEducationAttachmentInfo address : entry.getValue()) {
 
                 ApplicationAttachmentBuilder attachmentBuilder = ApplicationAttachmentBuilder.start()
-                        .setName(address.attachmentName)
-                        .setDescription(i18nBundle.get(attachmentType))
+                        .setName(i18nBundle.get(attachmentType))
                         .setDeadline(address.deadline)
                         .setAddress(address.address);
 
@@ -334,7 +333,6 @@ public class AttachmentUtil {
             for (AttachmentGroupAddress groupAddress: applicationSystem.getAttachmentGroupAddresses()) {
                 if (organizationGroup.getOid().equals(groupAddress.getGroupId())) {
                     return new HigherEdBaseEducationAttachmentInfo(
-                            aoAddress.attachmentName,
                             chooseAddress(groupAddress, aoAddress),
                             OriginatorType.group,
                             organizationGroup.getOid(),
@@ -358,11 +356,12 @@ public class AttachmentUtil {
         String recipientName = provider.getName();
         AddressDTO address = provider.getPostalAddress();
         if (provider.getApplicationOffice() != null && provider.getApplicationOffice().getPostalAddress() != null) {
-            recipientName = provider.getApplicationOffice().getName();
+            if(StringUtils.isNotEmpty(provider.getApplicationOffice().getName())) {
+                recipientName += ", " + provider.getApplicationOffice().getName();
+            }
             address = provider.getApplicationOffice().getPostalAddress();
         }
         return new HigherEdBaseEducationAttachmentInfo(
-            createI18NAsIs(StringUtil.safeToString(provider.getName())),
             getAddress(recipientName, address),
             OriginatorType.applicationOption,
             ao.getId(),
