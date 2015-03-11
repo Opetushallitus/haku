@@ -197,6 +197,12 @@
           "prioriteetti": null,
           "usageGroups": ["hakukohde_rajaava"],
           "groupTypes": ["hakukohde"]
+        },
+        {
+          "oid": "1.2.246.562.28.00000000011",
+          "prioriteetti": null,
+          "usageGroups": ["hakukohde_liiteosoite"],
+          "groupTypes": ["hakukohde"]
         }
       ],
       "attachments": null
@@ -298,8 +304,14 @@
           "prioriteetti": null,
           "usageGroups": ["hakukohde_rajaava"],
           "groupTypes": ["hakukohde"]
+        },
+        {
+          "oid": "1.2.246.562.28.00000000011",
+          "prioriteetti": null,
+          "usageGroups": ["hakukohde_liiteosoite"],
+          "groupTypes": ["hakukohde"]
         }
-      ],
+    ],
       "attachments": null
     },
     {
@@ -344,6 +356,12 @@
           "oid": "1.2.246.562.28.00000000001",
           "prioriteetti": null,
           "usageGroups": ["hakukohde_rajaava"],
+          "groupTypes": ["hakukohde"]
+        },
+        {
+          "oid": "1.2.246.562.28.00000000011",
+          "prioriteetti": null,
+          "usageGroups": ["hakukohde_liiteosoite"],
           "groupTypes": ["hakukohde"]
         }
       ],
