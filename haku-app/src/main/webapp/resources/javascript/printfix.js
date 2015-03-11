@@ -8,3 +8,8 @@ $(document).ready(function() {
 		$(this).replaceWith(newElem);
 	});
 });
+
+var complexRule = {
+    init: function(ruleData){
+    }
+};
