@@ -29,6 +29,7 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.NoConnectionReuseStrategy;
 import org.apache.http.impl.client.HttpClientBuilder;
@@ -248,8 +249,11 @@ public class OrganizationServiceImpl implements OrganizationService {
 
     private synchronized HttpClient getHttpClient() {
         if (httpClient == null) {
+            RequestConfig config = RequestConfig.custom().setConnectTimeout(120 * 1000).build();
+
             httpClient = HttpClientBuilder.create()
                     .disableAuthCaching()
+                    .setDefaultRequestConfig(config)
                     .setConnectionReuseStrategy(new NoConnectionReuseStrategy())
                     .build();
         }
