@@ -65,6 +65,8 @@ public interface KoodistoService {
 
     List<Option> getKorkeakouluKoulukoodit();
 
+    List<Option> getAmmattitutkinnot();
+
     List<Option> getHakukohdekoodit();
 
     List<Option> getLaajuusYksikot();

@@ -100,6 +100,7 @@ var preferenceRow = {
                         '" data-attachmentgroups="' + attachmentGroups.join(",") +
                         '" data-athlete="' + item.athleteEducation + '" >' + item.name + '</option>');
                 });
+                
                 if (isInit && !selectedPreferenceOK && hakukohdeId && hakukohdeId !== '') {
                     $selectInput.parent().find(".warning").hide();
                     var $providerInput = $("#" + providerInputId),

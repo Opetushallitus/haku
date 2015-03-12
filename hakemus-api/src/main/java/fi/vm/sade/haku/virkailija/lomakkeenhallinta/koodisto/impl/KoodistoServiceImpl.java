@@ -65,6 +65,7 @@ public class KoodistoServiceImpl implements KoodistoService {
     private static final String CODE_KKTUTKINNOT = "kktutkinnot";
     private static final String CODE_OPINTOALA = "opintoalaoph2002";
     private static final String CODE_KOULUTUSALA = "koulutusalaoph2002";
+    private static final String CODE_AMMATILLISET_OPS_PERUSTAISET = "ammatillisetopsperustaiset";
 
     private static final String LUKIO = "15";
     private static final String LUKIO_JA_PERUSKOULU = "19";
@@ -275,7 +276,8 @@ public class KoodistoServiceImpl implements KoodistoService {
         List<String> kouluNumerot = new ArrayList<String>();
         int i = 0;
         for (KoodiType koodi : koulut) {
-            if (tyyppiMap.get(koodi.getKoodiArvo())) {
+            Boolean pleaseProceed = tyyppiMap.get(koodi.getKoodiArvo());
+            if (pleaseProceed != null && pleaseProceed) {
                 if (i++ >= fetchLimit) {
                     break;
                 }
@@ -307,6 +309,23 @@ public class KoodistoServiceImpl implements KoodistoService {
     @Override
     public List<Option> getKorkeakouluKoulukoodit() {
         return getKoulukoodit(AMMATTIKORKEAKOLU, YLIOPISTO, SOTILASKORKEAKOULU, VALIAIKAINEN_AMK);
+    }
+
+    @Override
+    public List<Option> getAmmattitutkinnot() {
+        KoodiType yes = null;
+
+        for (KoodiType k : getKoodiTypes(CODE_AMMATILLISET_OPS_PERUSTAISET)) {
+            if ("1".equals(k.getKoodiArvo())) {
+                yes = k;
+            }
+        }
+
+        return ImmutableList.copyOf(
+                Lists.reverse(
+                        Lists.transform(
+                                koodiService.getYlakoodis(yes.getKoodiUri()),
+                                new KoodiTypeToOptionFunction())));
     }
 
     @Override

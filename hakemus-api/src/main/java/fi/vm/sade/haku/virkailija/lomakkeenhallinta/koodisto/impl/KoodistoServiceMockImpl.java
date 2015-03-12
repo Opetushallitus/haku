@@ -62,6 +62,8 @@ public class KoodistoServiceMockImpl implements KoodistoService {
     public final List<Code> listOfYliopistokoulutukset;
     public final List<Code> listOfAMKkoulutukset;
     private final List<Option> listOfAmmatillisentutkinnonArvosteluasteikko;
+    public final List<Option> listOfAmmattioppilaitosKoulukoodit;
+    public final List<Option> listOfAmmattitutkinnot;
 
     // koodisto uri -> codes
     public Map<String, List<Code>> codes = Maps.newHashMap();
@@ -224,6 +226,17 @@ public class KoodistoServiceMockImpl implements KoodistoService {
                 getOption("Humanistinen ja kasvatusala", "2")
         );
         this.codes.put(BASE_EDUCATION_KOODISTO_URI, this.listOfBaseEducationCodes);
+
+        this.listOfAmmattioppilaitosKoulukoodit = ImmutableList.of(
+                getOption("Ammattikoulu", "00001"),
+                getOption("Toinen ammattikoulu", "00002")
+        );
+
+        this.listOfAmmattitutkinnot = ImmutableList.of(
+                getOption("-----", "00000"),
+                getOption("Ammattitutkinto", "00001"),
+                getOption("Ammattitutkinto2", "00002")
+        );
     }
 
     private Option getOption(final String labelKey, final String value) {
@@ -318,7 +331,12 @@ public class KoodistoServiceMockImpl implements KoodistoService {
 
     @Override
     public List<Option> getAmmattioppilaitosKoulukoodit() {
-        return null;
+        return this.listOfAmmattioppilaitosKoulukoodit;
+    }
+
+    @Override
+    public List<Option> getAmmattitutkinnot() {
+        return this.listOfAmmattitutkinnot;
     }
 
     @Override
