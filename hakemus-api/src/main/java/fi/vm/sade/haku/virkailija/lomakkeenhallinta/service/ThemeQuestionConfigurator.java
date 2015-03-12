@@ -108,7 +108,7 @@ public final class ThemeQuestionConfigurator {
             try {
                 configuredOptions.add(configureThemeQuestionForOption(baseQuery, optionId, generateTitledGroup, preferenceElementId, groupOption));
             } catch (Exception exception) {
-                LOGGER.error("Failed to configure application " + (groupOption ? "group" : "option") + optionId + " with base query: "+ baseQuery.toString(), exception);
+                LOGGER.error("Failed to configure question for " + (groupOption ? "group " : "application option ") + optionId + " with base query: "+ baseQuery.toString(), exception);
             }
         }
         return configuredOptions;
@@ -316,7 +316,7 @@ public final class ThemeQuestionConfigurator {
             try {
                 configuredAttachmentRequests.addAll(configureAttactmentRequestsForOption(baseQuery, optionId));
             } catch (Exception exception) {
-                LOGGER.error("Failed to configure application " + (groupOption ? "group" : "option") + optionId + " with base query: "+ baseQuery.toString(), exception);
+                LOGGER.error("Failed to configure attachment for " + (groupOption ? "group " : "application option ") + optionId + " with base query: "+ baseQuery.toString(), exception);
             }
         }
         return configuredAttachmentRequests;
