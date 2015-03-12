@@ -25,15 +25,67 @@
     <META http-equiv="Content-Type" content="text/html;charset=UTF-8">
     <meta charset="utf-8"/>
     <title>Haut</title>
+    <script src="${contextPath}/haku-app/resources/jquery/jquery.min.js" type="text/javascript"></script>
     <haku:icons/>
 </head>
 <body>
+<form>
+<input type="checkbox" id="published" checked="checked"><label for="published">Vain julkaistu</label><br />
+<input type="checkbox" id="open" checked="checked"><label for="open">Vain haku käynnissä</label><br />
+<input type="text" id="q" /><br />
+</form>
+<script type="text/javascript">
+function filterApplicationSystems() {
+    var published = $('#published').prop('checked');
+    var open = $('#open').prop('checked');
+    var q = $('#q').val();
+    $('li.as').show();
+    if (published || open) {
+        $('li.as').hide();
+        $('li.as').each(function() {
+            var isPublished = $('ul > li.asState:contains("JULKAISTU")', this).text();
+            var isOpen = $('a.open', this).text();
+
+            if (published && open) {
+                if (isPublished && isOpen) {
+                    $(this).show();
+                }
+            } else if ((published && isPublished) || (open && isOpen)) {
+                $(this).show();
+            }
+        });
+    }
+    if (q) {
+        $('li.as').each(function() {
+            var re = new RegExp(q, 'i');
+            var text = $(this).text();
+            if (!text.match(re)) {
+                $(this).hide();
+            }
+        });
+    }
+}
+
+$(document).ready(function(){
+    $('#published').click(function() {
+        filterApplicationSystems();
+    });
+    $('#open').click(function() {
+        filterApplicationSystems();
+    });
+    $('#q').keyup(function() {
+        filterApplicationSystems();
+    });
+    filterApplicationSystems();
+    $('#q').focus();
+});
+</script>
 <ul>
     <c:forEach var="applicationSystem" items="${it.applicationSystems}">
-        <li>
+        <li class="as">
             <c:choose>
                 <c:when test="${applicationSystem.active}">
-                    <a id="${applicationSystem.id}" href="${applicationSystem.id}"><haku:i18nText
+                    <a class="open" id="${applicationSystem.id}" href="${applicationSystem.id}"><haku:i18nText
                             value="${applicationSystem.name}"/></a> &nbsp;Haku käynnissä!
                 </c:when>
                 <c:otherwise>
@@ -43,7 +95,7 @@
 
             <ul>
                 <li> oid: ${applicationSystem.id}</li>
-                <li> state: ${applicationSystem.state}</li>
+                <li class="asState"> state: ${applicationSystem.state}</li>
                 <li> lastGenerated: <fmt:formatDate value="${applicationSystem.lastGenerated}" pattern="yyyy-MM-dd HH:mm:ss" /></li>
             </ul>
         </li>
