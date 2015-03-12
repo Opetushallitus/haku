@@ -317,6 +317,11 @@ public class KoodistoServiceMockImpl implements KoodistoService {
     }
 
     @Override
+    public List<Option> getAmmattioppilaitosKoulukoodit() {
+        return null;
+    }
+
+    @Override
     public List<Option> getKorkeakouluKoulukoodit() {
         return this.listOfKorkeakoulus;
     }
