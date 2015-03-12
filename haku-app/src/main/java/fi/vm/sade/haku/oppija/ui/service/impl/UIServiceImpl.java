@@ -17,6 +17,7 @@
 package fi.vm.sade.haku.oppija.ui.service.impl;
 
 import com.google.common.base.Predicate;
+import com.google.common.collect.Maps;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.haku.oppija.hakemus.domain.util.AttachmentUtil;
@@ -160,9 +161,10 @@ public class UIServiceImpl implements UIService {
     public Map<String, Object> getElementHelp(final String applicationSystemId, final String elementId, final Map<String, String> answers) {
         ApplicationSystem activeApplicationSystem = applicationSystemService.getActiveApplicationSystem(applicationSystemId);
         Application application = applicationService.getApplication(applicationSystemId);
-        Map<String, Object> model = new HashMap<String, Object>();
-        Map<String, String> vastauksetMerged = application.getVastauksetMerged();
-        vastauksetMerged.putAll(answers);
+        final Map<String, String> vastauksetMerged = application.getVastauksetMerged();
+        final Map<String, String>  combinedAnswers = Maps.newHashMapWithExpectedSize(vastauksetMerged.size() + answers.size());
+        combinedAnswers.putAll(vastauksetMerged);
+        combinedAnswers.putAll(answers);
         Element root = new ElementTree(activeApplicationSystem.getForm()).getChildById(elementId);
         List<Element> listOfTitledElements = ElementUtil.filterElements(root, new Predicate<Element>() {
             @Override
@@ -170,7 +172,8 @@ public class UIServiceImpl implements UIService {
                 return (input instanceof Titled);
             }
         },
-                vastauksetMerged);
+                combinedAnswers);
+        final Map<String, Object> model = new HashMap<String, Object>();
         model.put("theme", root); //why theme?
         model.put("listsOfTitledElements", listOfTitledElements);
         return model;
