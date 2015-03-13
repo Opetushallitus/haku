@@ -286,6 +286,7 @@ public class AttachmentUtil {
 
                 ApplicationAttachmentBuilder attachmentBuilder = ApplicationAttachmentBuilder.start()
                         .setName(i18nBundle.get(attachmentType))
+                        .setDescription(address.description)
                         .setDeadline(address.deadline)
                         .setAddress(address.address);
 
@@ -337,7 +338,7 @@ public class AttachmentUtil {
                             chooseAddress(groupAddress, aoAddress),
                             OriginatorType.group,
                             organizationGroup.getOid(),
-                            groupAddress.getDeliveryDue() == null ? defaultDeadline : groupAddress.getDeliveryDue()
+                            null, groupAddress.getDeliveryDue() == null ? defaultDeadline : groupAddress.getDeliveryDue()
                     );
                 }
             }
@@ -358,7 +359,7 @@ public class AttachmentUtil {
         AddressDTO address = provider.getPostalAddress();
         if (provider.getApplicationOffice() != null && provider.getApplicationOffice().getPostalAddress() != null) {
             if(StringUtils.isNotEmpty(provider.getApplicationOffice().getName())) {
-                recipientName += ", " + provider.getApplicationOffice().getName();
+                recipientName = provider.getApplicationOffice().getName();
             }
             address = provider.getApplicationOffice().getPostalAddress();
         }
@@ -366,6 +367,7 @@ public class AttachmentUtil {
             getAddress(recipientName, address),
             OriginatorType.applicationOption,
             ao.getId(),
+            createI18NAsIs(provider.getName()),
             deadline
         );
     }
