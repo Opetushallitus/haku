@@ -228,14 +228,15 @@ public class KoodistoServiceMockImpl implements KoodistoService {
         this.codes.put(BASE_EDUCATION_KOODISTO_URI, this.listOfBaseEducationCodes);
 
         this.listOfAmmattioppilaitosKoulukoodit = ImmutableList.of(
-                getOption("Ammattikoulu", "00001"),
-                getOption("Toinen ammattikoulu", "00002")
+                getOption("", ""),
+                getOption("Ammattikoulu", "1.2.246.562.10.57118763500"),
+                getOption("Tuntematon koulu", "1.2.246.562.10.57118763579")
         );
 
         this.listOfAmmattitutkinnot = ImmutableList.of(
-                getOption("-----", "00000"),
-                getOption("Ammattitutkinto", "00001"),
-                getOption("Ammattitutkinto2", "00002")
+                getOption("", ""),
+                getOption("Muu tutkinto", "399999"),
+                getOption("Ammattitutkinto", "400000")
         );
     }
 
