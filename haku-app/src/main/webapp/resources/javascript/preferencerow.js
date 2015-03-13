@@ -28,7 +28,10 @@ var preferenceRow = {
                 uiLang: sortabletable_settings.uiLang,
                 ongoing: sortabletable_settings.ongoing
             },
+
             function (data) {
+
+                data = _.sortBy(data, 'name');
 
                 $('#'+selectInputId).prop('readonly', true);
 
