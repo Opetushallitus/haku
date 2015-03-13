@@ -60,8 +60,10 @@ public class AttachmentUtilTest {
         baseEd.put("pohjakoulutus_yo_tutkinto", "eb");
         baseEd.put("pohjakoulutus_muu", "true");
 
+        prefs.put("preference1-amkLiite", "true");
         prefs.put("preference1-Koulutus-id", "1.2.3");
 
+        prefs.put("preference2-yoLiite", "true");
         prefs.put("preference2-Koulutus-id", "4.5.6");
 
         application.addVaiheenVastaukset(OppijaConstants.PHASE_EDUCATION, baseEd);
