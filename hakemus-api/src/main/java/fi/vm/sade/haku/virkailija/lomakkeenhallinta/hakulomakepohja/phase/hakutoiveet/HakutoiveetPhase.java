@@ -142,7 +142,6 @@ public class HakutoiveetPhase {
             for (int i = 0; i < yliopistokoulutukset.size(); i++) {
                 yliopistokoulutuksetArr[i] = "koulutus_" + yliopistokoulutukset.get(i).getValue();
             }
-            // TODO päättely pohjakoulutuksen perusteella
             Element yoLiite = new HiddenValue(id + "-yoLiite", "true");
             Element onYliopistokoulutus = Rule(ExprUtil
                             .atLeastOneValueEqualsToVariable(id + "-Koulutus-id-educationcode", yliopistokoulutuksetArr))
@@ -150,17 +149,6 @@ public class HakutoiveetPhase {
                     .formParams(formParameters)
                     .build();
             pr.addChild(onYliopistokoulutus);
-
-            // AMK
-            Element amkLiite = new HiddenValue(id + "-amkLiite", "true");
-            Element onAMKkoulutus = Rule(ExprUtil
-                            .atLeastOneValueEqualsToVariable(id + "-Koulutus-id-educationcode", getAmkKoulutusIds(koodistoService)))
-                    .addChild(amkLiite)
-                    .formParams(formParameters)
-                    .build();
-
-            pr.addChild(onAMKkoulutus);
-
         }
 
         pr.setValidator(new PreferenceValidator());
