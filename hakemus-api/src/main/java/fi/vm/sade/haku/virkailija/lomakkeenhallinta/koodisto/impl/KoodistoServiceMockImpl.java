@@ -196,7 +196,11 @@ public class KoodistoServiceMockImpl implements KoodistoService {
         );
 
         this.listOfYliopistokoulutukset = ImmutableList.of(
-                new Code("111111", createI18NAsIs("Tohtorin tutkinto"))
+                new Code("723111", createI18NAsIs("Tohtorin tutkinto")),
+                new Code("726301", createI18NAsIs("Tohtorin tutkinto")),
+                new Code("726402", createI18NAsIs("Tohtorin tutkinto")),
+                new Code("726403", createI18NAsIs("Tohtorin tutkinto")),
+                new Code("726701", createI18NAsIs("Tohtorin tutkinto"))
         );
 
         this.listOfAMKkoulutukset = ImmutableList.of(

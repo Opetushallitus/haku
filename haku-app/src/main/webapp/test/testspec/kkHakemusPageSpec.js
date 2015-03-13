@@ -124,19 +124,18 @@ describe('KK-hakemus', function () {
                                 return S("#applicationAttachments").first().is(':visible');
                             })
                         ));
-                        it('pyydetään yhteensä 5 liitettä', function () {
-                            expect(virkailija.previewLiitteet()).to.have.length(5);
+                        it('pyydetään yhteensä 4 liitettä', function () {
+                            expect(virkailija.previewLiitteet()).to.have.length(4);
                         });
 
                         it('pyydetään sibelius akatemiaan hakukohdekohtainen liite sekä avoimen kk:n että ammatillisen pohjakoulutuksen liitteet', function () {
-                            expect(virkailija.previewLiitteet().has("td:eq(1):contains(" + sibelusAkatemia + ")").find("td:first:contains(" + avoinKkTodistuskopio + ")").length).to.equal(1);
-                            expect(virkailija.previewLiitteet().has("td:eq(1):contains(" + sibelusAkatemia + ")").find("td:first:contains(" + amTodistuskopio + ")").length).to.equal(1);
+                            expect(virkailija.previewLiitteet().has("td:eq(0):contains(" + sibelusAkatemia + ")").find("td:first:contains(" + avoinKkTodistuskopio + ")").length).to.equal(1);
+                            expect(virkailija.previewLiitteet().has("td:eq(0):contains(" + sibelusAkatemia + ")").find("td:first:contains(" + amTodistuskopio + ")").length).to.equal(1);
                             expect(virkailija.previewLiitteet().has("td:eq(1):contains(Sibelius-Akatemian hakijapalvelut)").find("td:first:contains(Ennakkotehtävät)").length).to.equal(1);
                         });
 
-                        it('pyydetään noviaan avoimen kk:n ja ammatillisen pohjakoulutuksen liitteet', function () {
-                            expect(virkailija.previewLiitteet().has("td:eq(1):contains(" + novia + ")").find("td:first:contains(" + avoinKkTodistuskopio + ")").length).to.equal(1);
-                            expect(virkailija.previewLiitteet().has("td:eq(1):contains(" + novia + ")").find("td:first:contains(" + amTodistuskopio + ")").length).to.equal(1);
+                        it('pyydetään noviaan vain avoimen kk:n liite (ei ammatillista, koska ei ole yliopisto)', function () {
+                            expect(virkailija.previewLiitteet().has("td:eq(0):contains(" + novia + ")").find("td:first:contains(" + avoinKkTodistuskopio + ")").length).to.equal(1);
                         });
                     });
                 });
@@ -166,24 +165,27 @@ describe('KK-hakemus', function () {
                                 return S("#applicationAttachments").first().is(':visible');
                             })
                         ));
-                        it('pyydetään sekä avoimen kk:n että ammatillisen koulutuksen todistusten liitteiden toimittaminen molempiin ryhmiin', function () {
-                            expect(virkailija.previewLiitteet()).to.have.length(4);
+                        it('pyydetään yhteensä 3 liitettä', function () {
+                            expect(virkailija.previewLiitteet()).to.have.length(3);
+                        });
+                        it('pyydetään yliopistoon kaksi liitettä', function () {
                             expect(virkailija.previewLiitteet().has("td:eq(1):contains(Liiteosoitteiden vastaanottaja)").find("td:first:contains(" + avoinKkTodistuskopio + ")").length).to.equal(1);
                             expect(virkailija.previewLiitteet().has("td:eq(1):contains(Liiteosoitteiden vastaanottaja)").find("td:first:contains(" + amTodistuskopio + ")").length).to.equal(1);
+                        });
+                        it('pyydetään AMK:hon vain yksi (ei ammattillista) kaksi liitettä', function () {
                             expect(virkailija.previewLiitteet().has("td:eq(1):contains(" + jarvenpaanDiakoniaAMK + ")").find("td:first:contains(" + avoinKkTodistuskopio + ")").length).to.equal(1);
-                            expect(virkailija.previewLiitteet().has("td:eq(1):contains(" + jarvenpaanDiakoniaAMK + ")").find("td:first:contains(" + amTodistuskopio + ")").length).to.equal(1);
                         });
                         it('pyydetään helsingin yliopiston liitteet liiteryhmän osoitteeseen', function () {
                             expect(virkailija.previewLiitteet().find("td:eq(1):contains(Liiteosoitteiden vastaanottaja)").length).to.equal(2);
                         });
-                        it('pyydetään  helsingin yliopiston liiteryhmän liitteet configuroituun pvm mennessä', function () {
+                        it('pyydetään helsingin yliopiston liiteryhmän liitteet configuroituun pvm mennessä', function () {
                             expect(virkailija.previewLiitteet().has("td:eq(1):contains(Liiteosoitteiden vastaanottaja)").find("td:eq(2):contains(09.03.2015 16:56)").length).to.equal(2);
                         });
                         it('pyydetään diakonia AMK liiteryhmän liitteet toimipisteen osoitteeseen', function () {
-                            expect(virkailija.previewLiitteet().find("td:eq(1):contains(Järvenpääntie 640)").length).to.equal(2);
+                            expect(virkailija.previewLiitteet().find("td:eq(1):contains(Järvenpääntie 640)").length).to.equal(1);
                         });
                         it('pyydetään diakonia AMK liiteryhmän liitteet configuroituun pvm mennessä', function () {
-                            expect(virkailija.previewLiitteet().has("td:eq(1):contains(" + jarvenpaanDiakoniaAMK + ")").find("td:eq(2):contains(10.05.2018 03:43)").length).to.equal(2);
+                            expect(virkailija.previewLiitteet().has("td:eq(1):contains(" + jarvenpaanDiakoniaAMK + ")").find("td:eq(2):contains(10.05.2018 03:43)").length).to.equal(1);
                         });
                     });
                 });
@@ -249,11 +251,10 @@ describe('KK-hakemus', function () {
                                 return S("#applicationAttachments").first().is(':visible');
                             })
                         ));
-                        it('pyydetään sekä avoimen kk:n että ammatillisen koulutuksen todistusten liittet ainoastaan liiteryhmän ensimmäisen hakukohteen osoitteeseen', function () {
-                            expect(virkailija.previewLiitteet()).to.have.length(2);
+                        it('pyydetään sekä avoimen kk:n todistuksen liite ainoastaan liiteryhmän ensimmäisen hakukohteen osoitteeseen', function () {
+                            expect(virkailija.previewLiitteet()).to.have.length(1);
                             expect(virkailija.previewLiitteet().has("td:eq(1):contains(" + helsinginDiakoniaAMK + ")").find("td:first:contains(" + avoinKkTodistuskopio + ")").length).to.equal(1);
-                            expect(virkailija.previewLiitteet().has("td:eq(1):contains(" + helsinginDiakoniaAMK + ")").find("td:first:contains(" + amTodistuskopio + ")").length).to.equal(1);
-                            expect(virkailija.previewLiitteet().find("td:eq(1):contains(HELSINKI)").length).to.equal(2);
+                            expect(virkailija.previewLiitteet().find("td:eq(1):contains(HELSINKI)").length).to.equal(1);
                         });
                     });
                 });
