@@ -1,6 +1,7 @@
 var oulunYliopisto = "Oulun yliopisto, Humanistinen tiedekunta";
 var helsinginYliopisto = "Helsingin yliopisto, Humanistinen tiedekunta";
 var novia = "Yrkeshögskolan Novia, Raasepori";
+var novia2 = "Yrkeshögskolan Novia, Pietarsaari";
 var jarvenpaanDiakoniaAMK = "Diakonia-ammattikorkeakoulu, Järvenpään toimipiste";
 var helsinginDiakoniaAMK = "Diakonia-ammattikorkeakoulu, Helsingin toimipiste";
 var sibelusAkatemia = "Taideyliopisto,  Sibelius-Akatemia";
@@ -12,6 +13,10 @@ var ouluKoulutus = "Aate- ja oppihistoria, humanististen tieteiden kandidaatti j
 
 function raasepori(n) {
     return valitseKoulutus(n, novia, raaseporiKoulutus);
+}
+
+function pietarsaari(n) {
+    return valitseKoulutus(n, novia2, "Master of Culture and Arts, Entrepreneurship in Arts, part-time studies");
 }
 
 function afrikka(n) {

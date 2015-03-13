@@ -1,5 +1,6 @@
 package fi.vm.sade.haku.oppija.hakemus.domain;
 
+import org.apache.commons.lang3.StringUtils;
 import org.codehaus.jackson.annotate.JsonCreator;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
@@ -45,5 +46,18 @@ public class Address implements Serializable {
 
     public String getStreetAddress2() {
         return streetAddress2;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if(!(object instanceof Address)) {
+            return false;
+        }
+        Address other = (Address)object;
+        return StringUtils.equals(this.recipient, other.recipient)
+                && StringUtils.equals(this.streetAddress, other.streetAddress)
+                && StringUtils.equals(this.streetAddress2, other.streetAddress2)
+                && StringUtils.equals(this.postalCode, other.postalCode)
+                && StringUtils.equals(this.postOffice, other.postOffice);
     }
 }

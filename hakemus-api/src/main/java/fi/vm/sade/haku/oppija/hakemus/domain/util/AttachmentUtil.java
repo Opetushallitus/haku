@@ -385,6 +385,11 @@ public class AttachmentUtil {
                 && StringUtils.equals(address.providerId, other.providerId)) {
                 return true;
             }
+            if (address.originatorType == OriginatorType.applicationOption
+                && other.originatorType == OriginatorType.applicationOption
+                && address.address.equals(other.address)) {
+                return true;
+            }
         }
         return false;
     }

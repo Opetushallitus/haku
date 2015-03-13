@@ -102,21 +102,24 @@ describe('KK-hakemus', function () {
                 var avoinKkTodistuskopio = 'Todistuskopio tai ote avoimen korkeakoulun opintosuorituksista';
                 var amTodistuskopio = 'Todistuskopio ammatillisesta perustutkinnosta';
 
-                describe("lisättäessä kolme toivetta, jotka eivät kuulu liiteosoiteryhmiin", function() {
+                describe("lisättäessä neljä toivetta, jotka eivät kuulu liiteosoiteryhmiin", function() {
                     before(seqDone(
                         click(virkailija.editHakutoiveetButton),
                         tyhjennaHakutoiveet(5),
                         jazz5v(1),
                         raasepori(2),
                         jazz2v(3),
+                        pietarsaari(4),
                         click(virkailija.saveHakutoiveetButton),
-                        visible(virkailija.editHakutoiveetButton)
+                        visible(virkailija.notes)
                     ));
 
                     describe("lisäämisen jälkeen", function() {
                         it("toiveet näkyvät", function () {
                             expect(answerForQuestion('preference1')).to.equal(sibelusAkatemia);
                             expect(answerForQuestion('preference2')).to.equal(novia);
+                            expect(answerForQuestion('preference3')).to.equal(sibelusAkatemia);
+                            expect(answerForQuestion('preference4')).to.equal(novia2);
                         });
                     });
 
@@ -136,7 +139,7 @@ describe('KK-hakemus', function () {
                             expect(virkailija.previewLiitteet().has("td:eq(1):contains(Sibelius-Akatemian hakijapalvelut)").find("td:first:contains(Ennakkotehtävät)").length).to.equal(2);
                         });
 
-                        it('pyydetään noviaan vain avoimen kk:n liite (ei ammatillista, koska ei ole yliopisto)', function () {
+                        it('pyydetään noviaan vain Raaseporin hakutoimistoon (koska samam kuin pietarsaarella) pelkkä avoimen kk:n liite (ei ammatillista, koska ei ole yliopisto)', function () {
                             expect(virkailija.previewLiitteet().has("td:eq(0):contains(" + novia + ")").find("td:first:contains(" + avoinKkTodistuskopio + ")").length).to.equal(1);
                         });
                     });
