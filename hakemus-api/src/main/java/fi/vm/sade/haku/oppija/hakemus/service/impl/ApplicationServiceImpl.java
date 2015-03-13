@@ -474,6 +474,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         Application current = getApplication(query);
         hakuPermissionService.userCanEditApplicationAdditionalData(current);
         current.getAdditionalInfo().putAll(additionalInfo);
+        //TODO =RS= add Version
         applicationDAO.update(query, current);
     }
 

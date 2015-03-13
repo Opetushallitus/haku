@@ -738,12 +738,21 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
 
     @Override
     public void update(Application o, Application n) {
+        if (null == o.getOid()){
+            LOG.error("Not enough parameters for update. Oid: "+ o.getOid() +". Throwing exception");
+            throw new MongoException("Not enough parameters for update. Oid: "+ o.getOid() +" version: "+ o.getVersion());
+        }
         n.setUpdated(new Date());
         super.update(o, n);
     }
 
     @Override
     public void save(Application application) {
+        DBObject check = new BasicDBObject(FIELD_APPLICATION_OID, application.getOid());
+        if (getCollection().find(check).count() > 0) {
+            LOG.error("System already contains and application with oid: " + application.getOid() + ". Throwing exception");
+            throw new MongoException("System Already contains and application with oid: " + application.getOid());
+        }
         application.setUpdated(new Date());
         super.save(application);
     }
