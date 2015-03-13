@@ -40,16 +40,17 @@ public final class ApplicationUtil {
 
     public static Map<String, List<String>> getHigherEdAttachmentAOIds(Application application) {
 
-        Map<String, List<String>> attachments = new LinkedHashMap<String, List<String>>();
+        Map<String, List<String>> attachments = new LinkedHashMap<>();
 
         List<String> allAOs = getAos(application);
+        List<String> universityAOs = getUniversityAOs(application);
 
         if (!allAOs.isEmpty()) {
             if (yoNeeded(application)) {
                 attachments.put("form.valmis.todistus.yo", allAOs);
             }
             if (hasBaseEducation(application, "pohjakoulutus_yo_ammatillinen")) {
-                attachments.put("yo_am", allAOs);
+                attachments.put("form.valmis.todistus.yo_am", universityAOs);
             }
             if (hasBaseEducation(application, "pohjakoulutus_yo_kansainvalinen_suomessa")) {
                 attachments.put("form.valmis.todistus.yo_kv", allAOs);
@@ -58,7 +59,7 @@ public final class ApplicationUtil {
                 attachments.put("form.valmis.todistus.yo_ulk", allAOs);
             }
             if (hasBaseEducation(application, "pohjakoulutus_am")) {
-                attachments.put("form.valmis.todistus.am", allAOs);
+                attachments.put("form.valmis.todistus.am", universityAOs);
             }
             if (hasBaseEducation(application, "pohjakoulutus_amt")) {
                 attachments.put("form.valmis.todistus.amt", allAOs);
@@ -165,6 +166,30 @@ public final class ApplicationUtil {
             }
             String aoId = answers.get(aoKey);
             if (!Strings.isNullOrEmpty(aoId) && !aos.contains(aoId)) {
+                aos.add(aoId);
+            }
+            i++;
+        }
+        return aos;
+    }
+
+    private static List<String> getUniversityAOs(Application application) {
+        return getAosForType(application, "yoLiite");
+    }
+
+    private static List<String> getAosForType(Application application, String liiteKeyBase) {
+        Map<String, String> answers = application.getPhaseAnswers(OppijaConstants.PHASE_APPLICATION_OPTIONS);
+        List<String> aos = new ArrayList<String>();
+        int i = 1;
+        while (true) {
+            String aoKey = String.format(OppijaConstants.PREFERENCE_ID, i);
+            if (!answers.containsKey(aoKey)) {
+                break;
+            }
+            String aoId = answers.get(aoKey);
+            String liiteKey = "preference" + i + "-" + liiteKeyBase;
+            if (isIdGivenAndKeyValueTrue(answers, aoId, liiteKey)
+                    && !aos.contains(aoId)) {
                 aos.add(aoId);
             }
             i++;
