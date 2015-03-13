@@ -102,11 +102,13 @@ describe('KK-hakemus', function () {
                 var avoinKkTodistuskopio = 'Todistuskopio tai ote avoimen korkeakoulun opintosuorituksista';
                 var amTodistuskopio = 'Todistuskopio ammatillisesta perustutkinnosta';
 
-                describe("lisättäessä kaksi toivetta, jotka eivät kuulu liiteosoiteryhmiin", function() {
+                describe("lisättäessä kolme toivetta, jotka eivät kuulu liiteosoiteryhmiin", function() {
                     before(seqDone(
                         click(virkailija.editHakutoiveetButton),
-                        jazz(1),
+                        tyhjennaHakutoiveet(5),
+                        jazz5v(1),
                         raasepori(2),
+                        jazz2v(3),
                         click(virkailija.saveHakutoiveetButton),
                         visible(virkailija.editHakutoiveetButton)
                     ));
@@ -124,14 +126,14 @@ describe('KK-hakemus', function () {
                                 return S("#applicationAttachments").first().is(':visible');
                             })
                         ));
-                        it('pyydetään yhteensä 4 liitettä', function () {
-                            expect(virkailija.previewLiitteet()).to.have.length(4);
+                        it('pyydetään yhteensä 5 liitettä', function () {
+                            expect(virkailija.previewLiitteet()).to.have.length(5);
                         });
 
-                        it('pyydetään sibelius akatemiaan hakukohdekohtainen liite sekä avoimen kk:n että ammatillisen pohjakoulutuksen liitteet', function () {
+                        it('pyydetään sibelius akatemiaan molemman kohteet hakukohdekohtaiset liitteet erikseen, mutta avoimen kk:n että ammatillisen pohjakoulutuksen liitteet vain kerran', function () {
                             expect(virkailija.previewLiitteet().has("td:eq(0):contains(" + sibelusAkatemia + ")").find("td:first:contains(" + avoinKkTodistuskopio + ")").length).to.equal(1);
                             expect(virkailija.previewLiitteet().has("td:eq(0):contains(" + sibelusAkatemia + ")").find("td:first:contains(" + amTodistuskopio + ")").length).to.equal(1);
-                            expect(virkailija.previewLiitteet().has("td:eq(1):contains(Sibelius-Akatemian hakijapalvelut)").find("td:first:contains(Ennakkotehtävät)").length).to.equal(1);
+                            expect(virkailija.previewLiitteet().has("td:eq(1):contains(Sibelius-Akatemian hakijapalvelut)").find("td:first:contains(Ennakkotehtävät)").length).to.equal(2);
                         });
 
                         it('pyydetään noviaan vain avoimen kk:n liite (ei ammatillista, koska ei ole yliopisto)', function () {
@@ -146,6 +148,7 @@ describe('KK-hakemus', function () {
                             return visible(virkailija.notes)();
                         }),
                         click(virkailija.editHakutoiveetButton),
+                        tyhjennaHakutoiveet(5),
                         afrikka(1),
                         sosionomiJarvenpaa(2),
                         click(virkailija.saveHakutoiveetButton),

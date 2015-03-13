@@ -536,6 +536,108 @@
         }
       ],
       "kotitalous": false
+    },
+    {
+      "id": "1.2.246.562.20.14660127086",
+      "name": "Jazzmusiikki, sävellys 2,5-vuotinen koulutus",
+      "aoIdentifier": null,
+      "startingQuota": 1,
+      "startingQuotaDescription": "1",
+      "lowestAcceptedScore": 0,
+      "lowestAcceptedAverage": 0.0,
+      "attachmentDeliveryDeadline": null,
+      "attachmentDeliveryAddress": null,
+      "lastYearApplicantCount": 0,
+      "sora": false,
+      "educationDegree": "koulutusasteoph2002_72",
+      "teachingLanguages": [
+        "SV",
+        "EN",
+        "FI"
+      ],
+      "selectionCriteria": null,
+      "soraDescription": null,
+      "prerequisite": null,
+      "exams": null,
+      "childRefs": [],
+      "higherEdLOSRefs": [
+        {
+          "id": "1.2.246.562.17.48322662478",
+          "asIds": null,
+          "name": "Jazzmusiikki 2,5-vuotinen koulutus",
+          "qualifications": ["Musiikin maisteri"],
+          "prerequisite": null,
+          "provider": "Taideyliopisto,  Sibelius-Akatemia",
+          "fieldOfExpertise": null
+        }
+      ],
+      "specificApplicationDates": false,
+      "applicationStartDate": 1422363647012,
+      "applicationEndDate": 1427033941791,
+      "applicationPeriodName": "Hakuaika 1",
+      "canBeApplied": true,
+      "nextApplicationPeriodStarts": null,
+      "requiredBaseEducations": [
+        "pohjakoulutusvaatimuskorkeakoulut_101",
+        "pohjakoulutusvaatimuskorkeakoulut_102",
+        "pohjakoulutusvaatimuskorkeakoulut_116"
+      ],
+      "attachments": [
+        {
+          "dueDate": 1423573234873,
+          "type": "Ennakkotehtävät",
+          "descreption": "<p>Lue lisää valintaoppaasta.</p>",
+          "address": {
+            "streetAddress": "Sibelius-Akatemian hakijapalvelut, PL 32",
+            "streetAddress2": null,
+            "postalCode": "00097",
+            "postOffice": "TAIDEYLIOPISTO"
+          },
+          "emailAddr": null,
+          "usedInApplicationForm": true
+        }
+      ],
+      "emphasizedSubjects": null,
+      "additionalInfo": "<p><a href=\"http://www.uniarts.fi\" target=\"_blank\">Lue lisää Sibelius-Akatemian valintaoppaasta 2015.</a></p>",
+      "additionalProof": null,
+      "overallScoreLimit": null,
+      "kaksoistutkinto": false,
+      "athleteEducation": false,
+      "vocational": false,
+      "educationCodeUri": "koulutus_723111",
+      "status": null,
+      "eligibilityDescription": null,
+      "type": "KORKEAKOULU",
+      "educationTypeUri": null,
+      "hakuaikaId": "220208",
+      "organizationGroups": [
+        {
+          "oid": "1.2.246.562.28.11386525208",
+          "usageGroups": ["yleinen"],
+          "groupTypes": ["hakukohde"]
+        },
+        {
+          "oid": "1.2.246.562.28.26079071193",
+          "usageGroups": ["yleinen"],
+          "groupTypes": ["hakukohde"]
+        },
+        {
+          "oid": "1.2.246.562.28.32672180497",
+          "usageGroups": ["yleinen"],
+          "groupTypes": ["hakukohde"]
+        },
+        {
+          "oid": "1.2.246.562.28.88952350290",
+          "usageGroups": ["yleinen"],
+          "groupTypes": ["hakukohde"]
+        },
+        {
+          "oid": "1.2.246.562.28.81551131765",
+          "usageGroups": ["hakukohde_rajaava"],
+          "groupTypes": ["hakukohde"]
+        }
+      ],
+      "kotitalous": false
     }
   ]
 }

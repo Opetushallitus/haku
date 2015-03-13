@@ -338,7 +338,9 @@ public class AttachmentUtil {
                             chooseAddress(groupAddress, aoAddress),
                             OriginatorType.group,
                             organizationGroup.getOid(),
-                            null, groupAddress.getDeliveryDue() == null ? defaultDeadline : groupAddress.getDeliveryDue()
+                            null,
+                            null,
+                            groupAddress.getDeliveryDue() == null ? defaultDeadline : groupAddress.getDeliveryDue()
                     );
                 }
             }
@@ -367,6 +369,7 @@ public class AttachmentUtil {
             getAddress(recipientName, address),
             OriginatorType.applicationOption,
             ao.getId(),
+            provider.getId(),
             createI18NAsIs(provider.getName()),
             deadline
         );
@@ -375,6 +378,11 @@ public class AttachmentUtil {
     private static boolean addressAlreadyAdded(List<HigherEdBaseEducationAttachmentInfo> addresses, HigherEdBaseEducationAttachmentInfo address) {
         for (HigherEdBaseEducationAttachmentInfo other : addresses) {
             if (StringUtils.equals(address.originatorId, other.originatorId)) {
+                return true;
+            }
+            if (address.originatorType == OriginatorType.applicationOption
+                && other.originatorType == OriginatorType.applicationOption
+                && StringUtils.equals(address.providerId, other.providerId)) {
                 return true;
             }
         }

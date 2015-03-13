@@ -779,7 +779,7 @@
     "provider": {
       "id": "1.2.246.562.10.78522729439",
       "name": "Taideyliopisto,  Sibelius-Akatemia",
-      "applicationSystemIds": ["1.2.246.562.29.95390561488"],
+      "applicationSystemIds": ["1.2.246.562.29.95390561488", "1.2.246.562.29.173465377510"],
       "postalAddress": {
         "streetAddress": "PL 32",
         "streetAddress2": null,

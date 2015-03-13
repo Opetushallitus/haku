@@ -34,7 +34,11 @@ function terveydenhoitajaHelsinki(n) {
     return valitseKoulutus(n, helsinginDiakoniaAMK, "Terveydenhoitaja (AMK), monimuotototeutus")
 }
 
-function jazz(n) {
+function jazz2v(n) {
+    return valitseKoulutus(n, sibelusAkatemia, "Jazzmusiikki, sävellys 2,5-vuotinen koulutus")
+}
+
+function jazz5v(n) {
     return valitseKoulutus(n, sibelusAkatemia, "Jazzmusiikki, sävellys 5,5-vuotinen koulutus")
 }
 
