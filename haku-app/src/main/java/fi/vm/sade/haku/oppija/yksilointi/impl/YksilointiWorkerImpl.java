@@ -196,7 +196,7 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
             return;
 
         List<Application> applications = applicationDAO.getNextUpgradable(baseVersion, maxBatchSize);
-        while (applications != null && !applications.isEmpty()) {
+        while (applications.size() > 0) {
             for (Application application : applications) {
                 Application queryApplication = new Application(application.getOid(), application.getVersion());
                 try {
@@ -220,7 +220,7 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
                     applicationDAO.update(queryApplication, application);
                 }
             }
-            applications = applicationDAO.getNextUpgradable(2, maxBatchSize);
+            applications = applicationDAO.getNextUpgradable(baseVersion, maxBatchSize);
         }
     }
 
@@ -238,7 +238,7 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
         }};
 
         List<Application> applications = applicationDAO.getNextUpgradable(baseVersion, maxBatchSize);
-        do {
+        while (applications.size() > 0) {
             for (Application application : applications) {
                 Application updateQuery = new Application(application.getOid(), application.getVersion());
                 Map<String, String> pohjakoulutus = application.getPhaseAnswers(OppijaConstants.PHASE_EDUCATION);
@@ -267,7 +267,7 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
                 }
             }
             applications = applicationDAO.getNextUpgradable(baseVersion, maxBatchSize);
-        } while (applications.size() > 0);
+        }
     }
 
     private void upgradeModelVersion3to4() {
@@ -276,17 +276,18 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
         if (!applicationDAO.hasApplicationsWithModelVersion(baseVersion))
             return;
 
-        List<Application> applications = null;
-        do {
-            applications = applicationDAO.getNextUpgradable(baseVersion, maxBatchSize);
+        List<Application> applications = applicationDAO.getNextUpgradable(baseVersion, maxBatchSize);
+        while(applications.size() > 0) {
             for (Application application : applications) {
+                Application queryApplication = new Application(application.getOid(), application.getVersion());
                 if (Level4.requiresPatch(application)) {
-                    applicationDAO.update(new Application(application.getOid()), Level4.fixAmmatillisenKoulutuksenKeskiarvo(application, loggerAspect));
+                    applicationDAO.update(queryApplication, Level4.fixAmmatillisenKoulutuksenKeskiarvo(application, loggerAspect));
                 } else {
-                    applicationDAO.updateModelVersion(application, targetVersion);
+                    applicationDAO.updateModelVersion(queryApplication, targetVersion);
                 }
             }
-        } while(applications.size() > 0);
+            applications = applicationDAO.getNextUpgradable(baseVersion, maxBatchSize);
+        }
     }
 
     private void reprocessOneApplication(Application application, final boolean sendMail){
