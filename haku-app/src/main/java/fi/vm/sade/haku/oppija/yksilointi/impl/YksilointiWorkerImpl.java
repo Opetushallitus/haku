@@ -15,9 +15,12 @@
  */
 package fi.vm.sade.haku.oppija.yksilointi.impl;
 
+import fi.vm.sade.haku.healthcheck.StatusRepository;
+import fi.vm.sade.haku.oppija.hakemus.aspect.LoggerAspect;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application.PostProcessingState;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationNote;
+import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.haku.oppija.hakemus.domain.util.ApplicationUtil;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationDAO;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
@@ -26,11 +29,13 @@ import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.haku.oppija.lomake.service.FormService;
+import fi.vm.sade.haku.oppija.lomake.service.impl.SystemSession;
 import fi.vm.sade.haku.oppija.lomake.validation.ElementTreeValidator;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationInput;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationResult;
-import fi.vm.sade.haku.healthcheck.StatusRepository;
+import fi.vm.sade.haku.oppija.repository.AuditLogRepository;
 import fi.vm.sade.haku.oppija.yksilointi.YksilointiWorker;
+import fi.vm.sade.haku.upgrade.Level4;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.apache.commons.mail.Email;
 import org.apache.commons.mail.EmailException;
@@ -48,23 +53,32 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.ResourceBundle;
 
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.valmis.ValmisPhase.MUSIIKKI_TANSSI_LIIKUNTA_EDUCATION_CODES;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.EDUCATION_CODE_KEY;
 import static org.apache.commons.lang3.StringUtils.isEmpty;
+import static fi.vm.sade.haku.oppija.hakemus.aspect.ApplicationDiffUtil.addHistoryBasedOnChangedAnswers;
 
 @Service
 public class YksilointiWorkerImpl implements YksilointiWorker {
 
     public static final Logger LOGGER = LoggerFactory.getLogger(YksilointiWorkerImpl.class);
     public static final String TRUE = "true";
+    private static final SystemSession systemSession = new SystemSession();
     private final ApplicationService applicationService;
     private final ApplicationSystemService applicationSystemService;
     private final BaseEducationService baseEducationService;
     private final ApplicationDAO applicationDAO;
     private final ElementTreeValidator elementTreeValidator;
     private final StatusRepository statusRepository;
+    private final LoggerAspect loggerAspect;
     private FormService formService;
 
     private Map<String, Template> templateMap;
@@ -88,11 +102,15 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
     @Value("${email.replyTo}")
     private String replyTo;
 
+    final String SYSTEM_USER = "järjestelmä";
+
     @Autowired
     public YksilointiWorkerImpl(ApplicationService applicationService,
                                 ApplicationSystemService applicationSystemService,
                                 BaseEducationService baseEducationService, FormService formService, ApplicationDAO applicationDAO,
-                                ElementTreeValidator elementTreeValidator, StatusRepository statusRepository) {
+                                ElementTreeValidator elementTreeValidator, StatusRepository statusRepository,
+                                fi.vm.sade.log.client.Logger logger, AuditLogRepository auditLogRepository) {
+        this.loggerAspect = new LoggerAspect(logger, systemSession, auditLogRepository);
         this.applicationService = applicationService;
         this.applicationSystemService = applicationSystemService;
         this.baseEducationService = baseEducationService;
@@ -173,15 +191,23 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
 
     @Override
     public void processModelUpdate() {
-        List<Application> applications = getNextUpgradable();
-
         LOGGER.info("Start upgrading application model");
-        List<String> pk = new ArrayList<String>() {{
-            add(OppijaConstants.PERUSKOULU); add(OppijaConstants.OSITTAIN_YKSILOLLISTETTY);
-            add(OppijaConstants.ALUEITTAIN_YKSILOLLISTETTY);  add(OppijaConstants.YKSILOLLISTETTY);}};
+        oldProcess();
+        upgradeModelVersion2to3();
+        upgradeModelVersion3to4();
+        LOGGER.info("Done upgrading application model");
+    }
 
-        while (applications != null && !applications.isEmpty()) {
+    private void oldProcess() {
+        final Integer baseVersion =1;
+        final Integer targetVersion =2;
+        if (!applicationDAO.hasApplicationsWithModelVersion(baseVersion))
+            return;
+
+        List<Application> applications = applicationDAO.getNextUpgradable(baseVersion, maxBatchSize);
+        while (applications.size() > 0) {
             for (Application application : applications) {
+                Application queryApplication = new Application(application.getOid(), application.getVersion());
                 try {
                     LOGGER.info("Start upgrading model version for application: " + application.getOid());
                     if (null == application.getAuthorizationMeta()) {
@@ -191,39 +217,89 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
                         null == application.getPreferencesChecked() || 0 == application.getPreferencesChecked().size()){
                         application = applicationService.updatePreferenceBasedData(application);
                     }
-                    Map<String, String> pohjakoulutus = application.getPhaseAnswers(OppijaConstants.PHASE_EDUCATION);
-
-                    if (pk.contains(pohjakoulutus.get(OppijaConstants.ELEMENT_ID_BASE_EDUCATION))) {
-                        Map<String, String> osaaminen = application.getPhaseAnswers(OppijaConstants.PHASE_GRADES);
-                        Map<String, String> toAdd = new HashMap<String, String>();
-                        for (Map.Entry<String, String> entry : osaaminen.entrySet()) {
-                            String key = entry.getKey();
-                            String prefix = key.substring(0, 5);
-                            String val3Key = prefix + "_VAL3";
-                            if (!osaaminen.containsKey(val3Key)) {
-                                toAdd.put(val3Key, "Ei arvosanaa");
-                            }
-                        }
-                        toAdd.putAll(osaaminen);
-                        application.addVaiheenVastaukset(OppijaConstants.PHASE_GRADES, toAdd);
-                    }
-                    application.setModelVersion(Application.CURRENT_MODEL_VERSION);
+                    application.setModelVersion(targetVersion);
                     LOGGER.info("Done upgrading model version for application: " + application.getOid());
                 } catch (IOException e) {
-                    application.setModelVersion(-1 * Application.CURRENT_MODEL_VERSION);
-                    LOGGER.error("Upgrading model failed for application: " + application.getOid() + " " + e.getMessage());
+                    application.setModelVersion(-1 * targetVersion);
+                    LOGGER.error("Upgrading model to "+ targetVersion+" failed for application: " + application.getOid() + " " + e.getMessage());
                 } catch (RuntimeException e) {
-                    application.setModelVersion(-1 * Application.CURRENT_MODEL_VERSION);
-                    LOGGER.error("Upgrading model failed for application: " + application.getOid() + " " + e.getMessage());
+                    application.setModelVersion(-1 * targetVersion);
+                    LOGGER.error("Upgrading model to "+ targetVersion+" failed for application: " + application.getOid() + " " + e.getMessage());
                 } finally {
-                    //TODO =RS= add Version
-                    applicationDAO.update(new Application(application.getOid()), application);
+                    applicationDAO.update(queryApplication, application);
                 }
-
             }
-            applications = getNextUpgradable();
+            applications = applicationDAO.getNextUpgradable(baseVersion, maxBatchSize);
         }
-        LOGGER.info("Done upgrading application model");
+    }
+
+    private void upgradeModelVersion2to3() {
+        final Integer baseVersion = 2;
+        final Integer targetVersion = 3;
+        if (!applicationDAO.hasApplicationsWithModelVersion(baseVersion))
+            return;
+
+        List<String> pk = new ArrayList<String>() {{
+            add(OppijaConstants.PERUSKOULU);
+            add(OppijaConstants.OSITTAIN_YKSILOLLISTETTY);
+            add(OppijaConstants.ALUEITTAIN_YKSILOLLISTETTY);
+            add(OppijaConstants.YKSILOLLISTETTY);
+        }};
+
+        List<Application> applications = applicationDAO.getNextUpgradable(baseVersion, maxBatchSize);
+        while (applications.size() > 0) {
+            for (Application application : applications) {
+                Application updateQuery = new Application(application.getOid(), application.getVersion());
+                Map<String, String> pohjakoulutus = application.getPhaseAnswers(OppijaConstants.PHASE_EDUCATION);
+
+                if (pk.contains(pohjakoulutus.get(OppijaConstants.ELEMENT_ID_BASE_EDUCATION))) {
+                    Map<String, String> osaaminen = application.getPhaseAnswers(OppijaConstants.PHASE_GRADES);
+                    Map<String, String> toAdd = new HashMap<String, String>();
+                    for (Map.Entry<String, String> entry : osaaminen.entrySet()) {
+                        String key = entry.getKey();
+                        String prefix = key.substring(0, 5);
+                        String val3Key = prefix + "_VAL3";
+                        if (!osaaminen.containsKey(val3Key)) {
+                            toAdd.put(val3Key, "Ei arvosanaa");
+                        }
+                    }
+                    if (toAdd.size() > 0) {
+                        Application original = application.clone();
+                        toAdd.putAll(osaaminen);
+                        application.addVaiheenVastaukset(OppijaConstants.PHASE_GRADES, toAdd);
+                        application.setModelVersion(targetVersion);
+                        addHistoryBasedOnChangedAnswers(application, original, SYSTEM_USER, "model upgrade 2-3" );
+                        applicationDAO.update(updateQuery, application);
+                        loggerAspect.logUpdateApplication(original,
+                          new ApplicationPhase(original.getApplicationSystemId(),
+                            OppijaConstants.PHASE_GRADES, application.getPhaseAnswers(OppijaConstants.PHASE_GRADES)));
+                    } else {
+                        applicationDAO.updateModelVersion(updateQuery, targetVersion);
+                    }
+                }
+            }
+            applications = applicationDAO.getNextUpgradable(baseVersion, maxBatchSize);
+        }
+    }
+
+    private void upgradeModelVersion3to4() {
+        final Integer baseVersion =3;
+        final Integer targetVersion =4;
+        if (!applicationDAO.hasApplicationsWithModelVersion(baseVersion))
+            return;
+
+        List<Application> applications = applicationDAO.getNextUpgradable(baseVersion, maxBatchSize);
+        while(applications.size() > 0) {
+            for (Application application : applications) {
+                Application queryApplication = new Application(application.getOid(), application.getVersion());
+                if (Level4.requiresPatch(application)) {
+                    applicationDAO.update(queryApplication, Level4.fixAmmatillisenKoulutuksenKeskiarvo(application, loggerAspect));
+                } else {
+                    applicationDAO.updateModelVersion(queryApplication, targetVersion);
+                }
+            }
+            applications = applicationDAO.getNextUpgradable(baseVersion, maxBatchSize);
+        }
     }
 
     private void reprocessOneApplication(Application application, final boolean sendMail){
@@ -428,10 +504,6 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
             default:
                 return null;
         }
-    }
-
-    private List<Application> getNextUpgradable() {
-        return applicationDAO.getNextUpgradable(maxBatchSize);
     }
 
     private void setProcessingStateToFailed(String oid, String message){

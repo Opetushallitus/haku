@@ -87,5 +87,9 @@ public interface ApplicationDAO extends BaseDAO<Application> {
 
     Application getNextRedo();
 
-    List<Application> getNextUpgradable(int batchSize);
+    List<Application> getNextUpgradable(int versionLevel, int batchSize);
+
+    void updateModelVersion(Application application, int modelVersion);
+
+    boolean hasApplicationsWithModelVersion(int versionLevel);
 }

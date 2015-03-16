@@ -14,7 +14,8 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.haku.oppija.lomake.service.FormService;
-import fi.vm.sade.haku.oppija.lomake.service.UserSession;
+import fi.vm.sade.haku.oppija.lomake.service.Session;
+import fi.vm.sade.haku.oppija.lomake.service.impl.UserSession;
 import fi.vm.sade.haku.oppija.lomake.validation.ElementTreeValidator;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidatorFactory;
 import fi.vm.sade.haku.oppija.ui.service.OfficerUIService;
@@ -58,7 +59,7 @@ public class OfficerUIServiceImplTest {
     private AuthenticationService authenticationService;
     private OrganizationService organizationService;
     private ValintaService valintaService;
-    private UserSession userSession;
+    private Session userSession;
 
     private Application application;
     private ApplicationSystem as;

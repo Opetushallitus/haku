@@ -59,4 +59,28 @@ public class Change implements Serializable {
     public List<Map<String, String>> getChanges() {
         return changes;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Change)) return false;
+
+        Change change = (Change) o;
+
+        if (!modified.equals(change.modified)) return false;
+        if (!modifier.equals(change.modifier)) return false;
+        if (!reason.equals(change.reason)) return false;
+        if (!changes.equals(change.changes)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = modified != null ? modified.hashCode() : 0;
+        result = 31 * result + (modifier != null ? modifier.hashCode() : 0);
+        result = 31 * result + (reason != null ? reason.hashCode() : 0);
+        result = 31 * result + (changes != null ? changes.hashCode() : 0);
+        return result;
+    }
 }

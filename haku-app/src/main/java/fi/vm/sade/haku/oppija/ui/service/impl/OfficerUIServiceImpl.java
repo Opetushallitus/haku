@@ -26,7 +26,7 @@ import fi.vm.sade.haku.oppija.lomake.exception.IncoherentDataException;
 import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.haku.oppija.lomake.service.FormService;
-import fi.vm.sade.haku.oppija.lomake.service.UserSession;
+import fi.vm.sade.haku.oppija.lomake.service.Session;
 import fi.vm.sade.haku.oppija.lomake.util.ElementTree;
 import fi.vm.sade.haku.oppija.lomake.validation.ElementTreeValidator;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationInput;
@@ -83,7 +83,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     private final AuthenticationService authenticationService;
     private final OrganizationService organizationService;
     private ValintaService valintaService;
-    private final UserSession userSession;
+    private final Session userSession;
     private final KoulutusinformaatioService koulutusinformaatioService;
     private final I18nBundleService i18nBundleService;
 
@@ -106,7 +106,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
                                 final AuthenticationService authenticationService,
                                 final OrganizationService organizationService,
                                 final ValintaService valintaService,
-                                final UserSession userSession,
+                                final Session userSession,
                                 final KoulutusinformaatioService koulutusinformaatioService,
                                 final I18nBundleService i18nBundleService,
                                 @Value("${hakukausi.kevat}") final String kevatkausi) {

@@ -58,4 +58,26 @@ public class ApplicationNote implements Serializable {
     public String getUser() {
         return user;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ApplicationNote)) return false;
+
+        ApplicationNote that = (ApplicationNote) o;
+
+        if (!added.equals(that.added)) return false;
+        if (!noteText.equals(that.noteText)) return false;
+        if (!user.equals(that.user)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = noteText != null ? noteText.hashCode() : 0;
+        result = 31 * result + (added != null ? added.hashCode() : 0);
+        result = 31 * result + (user != null ? user.hashCode() : 0);
+        return result;
+    }
 }

@@ -16,9 +16,7 @@
 package fi.vm.sade.haku.oppija.lomake.service.mock;
 
 import fi.vm.sade.haku.oppija.lomake.domain.User;
-import fi.vm.sade.haku.oppija.lomake.service.UserSession;
-import org.springframework.context.annotation.Profile;
-import org.springframework.stereotype.Component;
+import fi.vm.sade.haku.oppija.lomake.service.impl.UserSession;
 
 public class UserSessionMock extends UserSession {
 

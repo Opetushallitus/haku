@@ -37,6 +37,7 @@ import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationQueryParameters;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.SocialSecurityNumber;
 import fi.vm.sade.haku.oppija.lomake.service.EncrypterService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
+import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,7 +92,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     private static final String INDEX_SEARCH_NAMES = "index_searchNames";
     private static final String INDEX_REDO_POSTPROCESS = "index_redoPostProcess";
     private static final String INDEX_FULL_NAME = "index_full_name";
-    private static final String INDEX_VERSION = "index_version";
+    private static final String INDEX_MODEL_VERSION = "index_model_version";
     private static final String INDEX_ASID_SENDING_SCHOOL_AND_FULL_NAME = "index_asid_sending_school_and_full_name";
     private static final String INDEX_ASID_AND_SENDING_SCHOOL = "index_asid_and_sending_school";
 
@@ -667,20 +668,34 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     }
 
     @Override
-    public List<Application> getNextUpgradable(int batchSize) {
-        DBObject query = new BasicDBObject(OR, new DBObject[] {
-          new BasicDBObject(FIELD_MODEL_VERSION, new BasicDBObject(EXISTS, false)),
-          new BasicDBObject(AND, new DBObject[] {
-            new BasicDBObject(FIELD_MODEL_VERSION, new BasicDBObject(GTE, 0)),
-            new BasicDBObject(FIELD_MODEL_VERSION, new BasicDBObject(LT, Application.CURRENT_MODEL_VERSION)),
-          })
-        });
-        DBCursor cursor = getCollection().find(query).limit(batchSize);
-        List<Application> applications = new ArrayList<Application>(batchSize);
+    public List<Application> getNextUpgradable(int versionLevel, int batchSize) {
+        final DBCursor cursor = buildUpgradableCursor(versionLevel).limit(batchSize);
+        final List<Application> applications = new ArrayList<Application>(batchSize);
         while (cursor.hasNext()) {
             applications.add(fromDBObject.apply(cursor.next()));
         }
         return applications;
+    }
+
+    @Override
+    public boolean hasApplicationsWithModelVersion(int versionLevel){
+        return 0 < buildUpgradableCursor(versionLevel).count();
+    }
+
+    private DBCursor buildUpgradableCursor(int versionLevel){
+        DBObject query;
+        if (versionLevel > 1)
+            query = new BasicDBObject(FIELD_MODEL_VERSION, versionLevel);
+        else {
+            //legacy upgrade
+            query  = new BasicDBObject(FIELD_MODEL_VERSION,
+              new BasicDBObject(IN,
+                new Object[] {null, 0, 1}));
+        }
+        final DBCursor cursor = getCollection().find(query);
+        if (ensureIndex)
+            cursor.hint(INDEX_MODEL_VERSION);
+        return cursor;
     }
 
     @Override
@@ -701,6 +716,11 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         return null;
     }
 
+    public void updateModelVersion(Application application, int modelVersion) {
+        getCollection().update(
+                new BasicDBObject(FIELD_APPLICATION_OID, application.getOid()),
+                new BasicDBObject("$set", new BasicDBObject(FIELD_MODEL_VERSION, modelVersion)));
+    }
 
     private boolean resultNotEmpty(final DBObject query, final String indexName) {
         try {
@@ -735,7 +755,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         ensureSparseIndex(INDEX_ALL_ORGANIZAIONS, FIELD_ALL_ORGANIZATIONS);
         ensureIndex(INDEX_SEARCH_NAMES, FIELD_SEARCH_NAMES);
         ensureIndex(INDEX_FULL_NAME, FIELD_FULL_NAME);
-        ensureIndex(INDEX_VERSION, FIELD_MODEL_VERSION);
+        ensureIndex(INDEX_MODEL_VERSION, FIELD_MODEL_VERSION);
 
         ensureSparseIndex(INDEX_ASID_SENDING_SCHOOL_AND_FULL_NAME, FIELD_APPLICATION_SYSTEM_ID, FIELD_SENDING_SCHOOL_PARENTS, FIELD_FULL_NAME);
         ensureSparseIndex(INDEX_ASID_AND_SENDING_SCHOOL, FIELD_APPLICATION_SYSTEM_ID, FIELD_SENDING_SCHOOL_PARENTS);

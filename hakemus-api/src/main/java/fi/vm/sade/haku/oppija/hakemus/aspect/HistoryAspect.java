@@ -20,7 +20,7 @@ package fi.vm.sade.haku.oppija.hakemus.aspect;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.Change;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationDAO;
-import fi.vm.sade.haku.oppija.lomake.service.UserSession;
+import fi.vm.sade.haku.oppija.lomake.service.Session;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.slf4j.Logger;
@@ -47,12 +47,12 @@ import java.util.Map;
 public class HistoryAspect {
 
     public static final Logger LOGGER = LoggerFactory.getLogger(HistoryAspect.class);
-    private final UserSession userSession;
+    private final Session userSession;
     private final ApplicationDAO applicationDAO;
     private final Boolean disableHistory;
 
     @Autowired
-    public HistoryAspect(final UserSession userSession, final ApplicationDAO applicationDAO,
+    public HistoryAspect(final Session userSession, final ApplicationDAO applicationDAO,
                          @Value("${disableHistory:false}") String disableHistory) {
         this.userSession = userSession;
         this.applicationDAO = applicationDAO;

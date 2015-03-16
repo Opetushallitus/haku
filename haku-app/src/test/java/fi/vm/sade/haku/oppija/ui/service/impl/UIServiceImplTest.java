@@ -6,7 +6,8 @@ import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystemBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
-import fi.vm.sade.haku.oppija.lomake.service.UserSession;
+import fi.vm.sade.haku.oppija.lomake.service.Session;
+import fi.vm.sade.haku.oppija.lomake.service.impl.UserSession;
 import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
 import fi.vm.sade.haku.virkailija.authentication.impl.AuthenticationServiceMockImpl;
 import fi.vm.sade.haku.oppija.common.koulutusinformaatio.KoulutusinformaatioService;
@@ -27,7 +28,7 @@ public class UIServiceImplTest {
 
     ApplicationService applicationService = mock(ApplicationService.class);
     ApplicationSystemService applicationSystemService = mock(ApplicationSystemService.class);
-    UserSession userSession = mock(UserSession.class);
+    Session userSession = mock(UserSession.class);
     KoulutusinformaatioService koulutusinformaatioService = mock(KoulutusinformaatioService.class);
     PDFService pdfService = mock(PDFService.class);
     AuthenticationService authenticationService = new AuthenticationServiceMockImpl();
