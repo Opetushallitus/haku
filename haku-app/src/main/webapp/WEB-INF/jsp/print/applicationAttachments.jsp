@@ -40,7 +40,7 @@
                         <c:out value="${attachment.address.postalCode}"/><br/>
                     </c:if>
                     <c:if test="${not empty attachment.address.postOffice}">
-                        <c:out value="${attachment.address.postOffice}"/>
+                        <c:out value="${attachment.address.postOffice}"/><br/>
                     </c:if>
                     <c:if test="${not empty attachment.emailAddress}">
                         <c:out value="${attachment.emailAddress}"/>
