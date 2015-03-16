@@ -17,6 +17,7 @@ public class ApplicationAttachment implements Serializable {
     private final Date deadline;
     private final I18nText deliveryNote;
     private final Address address;
+    private final String emailAddress;
 
     @JsonCreator
     public ApplicationAttachment(@JsonProperty(value = "name") I18nText name,
@@ -24,13 +25,15 @@ public class ApplicationAttachment implements Serializable {
                                  @JsonProperty(value = "description")I18nText description,
                                  @JsonProperty(value = "deadline") Date deadline,
                                  @JsonProperty(value = "deliveryNote") I18nText deliveryNote,
-                                 @JsonProperty(value = "address") Address address) {
+                                 @JsonProperty(value = "address") Address address,
+                                 @JsonProperty(value = "emailAddress") String emailAddress) {
         this.name = name;
         this.header = header;
         this.description = description;
         this.deadline = deadline;
         this.deliveryNote = deliveryNote;
         this.address = address;
+        this.emailAddress = emailAddress;
     }
 
     public I18nText getName() {
@@ -55,5 +58,9 @@ public class ApplicationAttachment implements Serializable {
 
     public Address getAddress() {
         return address;
+    }
+
+    public String getEmailAddress() {
+        return emailAddress;
     }
 }

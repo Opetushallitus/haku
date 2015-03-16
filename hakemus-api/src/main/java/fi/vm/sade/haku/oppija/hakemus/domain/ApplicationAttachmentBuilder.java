@@ -14,6 +14,7 @@ public class ApplicationAttachmentBuilder {
     private Date deadline;
     private I18nText deliveryNote;
     private Address address;
+    private String emailAddress;
 
     public static ApplicationAttachmentBuilder start() {
         return new ApplicationAttachmentBuilder();
@@ -49,6 +50,11 @@ public class ApplicationAttachmentBuilder {
         return this;
     }
 
+    public ApplicationAttachmentBuilder setEmailAddress(String emailAddress) {
+        this.emailAddress = emailAddress;
+        return this;
+    }
+
     public ApplicationAttachment build() {
         return new ApplicationAttachment(
                 null != name ? ensureDefaultLanguageTranslations(name) : null,
@@ -56,8 +62,8 @@ public class ApplicationAttachmentBuilder {
                 null != description ? ensureDefaultLanguageTranslations(description) : null,
                 deadline,
                 null != deliveryNote ? ensureDefaultLanguageTranslations(deliveryNote) : null,
-                address);
+                address,
+                null != emailAddress ? emailAddress : null);
     }
-
 
 }

@@ -137,10 +137,14 @@ public class AttachmentUtil {
 
                     Date deadline = attachmentDTO.getDueDate();
 
+                    // Jos tarjontaan on merkitty, että liiteet voidaan toimittaa sähköisesti
+                    String email = attachmentDTO.getEmailAddr();
+
                     ApplicationAttachmentBuilder attachmentBuilder = ApplicationAttachmentBuilder.start()
                             .setName(createI18NAsIs(attachmentDTO.getType()))
                             .setDescription(description)
                             .setDeadline(deadline)
+                            .setEmailAddress(email)
                             .setAddress(getAddress(name, attachmentDTO.getAddress()));
 
                     if (deadline == null) {
