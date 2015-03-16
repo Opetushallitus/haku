@@ -684,13 +684,13 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
 
     private DBCursor buildUpgradableCursor(int versionLevel){
         DBObject query;
-        if (versionLevel > 2)
+        if (versionLevel > 1)
             query = new BasicDBObject(FIELD_MODEL_VERSION, versionLevel);
         else {
             //legacy upgrade
             query  = new BasicDBObject(FIELD_MODEL_VERSION,
               new BasicDBObject(IN,
-                new Object[] {null, 0, 1, 2}));
+                new Object[] {null, 0, 1}));
         }
         final DBCursor cursor = getCollection().find(query);
         if (ensureIndex)

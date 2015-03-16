@@ -15,6 +15,7 @@
  */
 package fi.vm.sade.haku.oppija.yksilointi.impl;
 
+import com.mongodb.MongoException;
 import fi.vm.sade.haku.healthcheck.StatusRepository;
 import fi.vm.sade.haku.oppija.hakemus.aspect.LoggerAspect;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
@@ -183,22 +184,21 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
     public void processModelUpdate() {
         LOGGER.info("Start upgrading application model");
         oldProcess();
+        upgradeModelVersion2to3();
         upgradeModelVersion3to4();
         LOGGER.info("Done upgrading application model");
     }
 
     private void oldProcess() {
-        if (!applicationDAO.hasApplicationsWithModelVersion(2))
+        final Integer baseVersion =1;
+        final Integer targetVersion =2;
+        if (!applicationDAO.hasApplicationsWithModelVersion(baseVersion))
             return;
 
-        List<Application> applications = applicationDAO.getNextUpgradable(2, maxBatchSize);
-
-        List<String> pk = new ArrayList<String>() {{
-            add(OppijaConstants.PERUSKOULU); add(OppijaConstants.OSITTAIN_YKSILOLLISTETTY);
-            add(OppijaConstants.ALUEITTAIN_YKSILOLLISTETTY);  add(OppijaConstants.YKSILOLLISTETTY);}};
-
+        List<Application> applications = applicationDAO.getNextUpgradable(baseVersion, maxBatchSize);
         while (applications != null && !applications.isEmpty()) {
             for (Application application : applications) {
+                Application queryApplication = new Application(application.getOid(), application.getVersion());
                 try {
                     LOGGER.info("Start upgrading model version for application: " + application.getOid());
                     if (null == application.getAuthorizationMeta()) {
@@ -208,53 +208,82 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
                         null == application.getPreferencesChecked() || 0 == application.getPreferencesChecked().size()){
                         application = applicationService.updatePreferenceBasedData(application);
                     }
-                    Map<String, String> pohjakoulutus = application.getPhaseAnswers(OppijaConstants.PHASE_EDUCATION);
-
-                    if (pk.contains(pohjakoulutus.get(OppijaConstants.ELEMENT_ID_BASE_EDUCATION))) {
-                        Map<String, String> osaaminen = application.getPhaseAnswers(OppijaConstants.PHASE_GRADES);
-                        Map<String, String> toAdd = new HashMap<String, String>();
-                        for (Map.Entry<String, String> entry : osaaminen.entrySet()) {
-                            String key = entry.getKey();
-                            String prefix = key.substring(0, 5);
-                            String val3Key = prefix + "_VAL3";
-                            if (!osaaminen.containsKey(val3Key)) {
-                                toAdd.put(val3Key, "Ei arvosanaa");
-                            }
-                        }
-                        toAdd.putAll(osaaminen);
-                        application.addVaiheenVastaukset(OppijaConstants.PHASE_GRADES, toAdd);
-                    }
-
-                    application.setModelVersion(Application.CURRENT_MODEL_VERSION);
+                    application.setModelVersion(targetVersion);
                     LOGGER.info("Done upgrading model version for application: " + application.getOid());
                 } catch (IOException e) {
-                    application.setModelVersion(-1 * Application.CURRENT_MODEL_VERSION);
-                    LOGGER.error("Upgrading model failed for application: " + application.getOid() + " " + e.getMessage());
+                    application.setModelVersion(-1 * targetVersion);
+                    LOGGER.error("Upgrading model to "+ targetVersion+" failed for application: " + application.getOid() + " " + e.getMessage());
                 } catch (RuntimeException e) {
-                    application.setModelVersion(-1 * Application.CURRENT_MODEL_VERSION);
-                    LOGGER.error("Upgrading model failed for application: " + application.getOid() + " " + e.getMessage());
+                    application.setModelVersion(-1 * targetVersion);
+                    LOGGER.error("Upgrading model to "+ targetVersion+" failed for application: " + application.getOid() + " " + e.getMessage());
                 } finally {
-                    //TODO =RS= add Version
-                    applicationDAO.update(new Application(application.getOid()), application);
+                    applicationDAO.update(queryApplication, application);
                 }
-
             }
             applications = applicationDAO.getNextUpgradable(2, maxBatchSize);
         }
     }
 
+    private void upgradeModelVersion2to3() {
+        final Integer baseVersion = 2;
+        final Integer targetVersion = 3;
+        if (!applicationDAO.hasApplicationsWithModelVersion(baseVersion))
+            return;
+
+        List<String> pk = new ArrayList<String>() {{
+            add(OppijaConstants.PERUSKOULU);
+            add(OppijaConstants.OSITTAIN_YKSILOLLISTETTY);
+            add(OppijaConstants.ALUEITTAIN_YKSILOLLISTETTY);
+            add(OppijaConstants.YKSILOLLISTETTY);
+        }};
+
+        List<Application> applications = applicationDAO.getNextUpgradable(baseVersion, maxBatchSize);
+        do {
+            for (Application application : applications) {
+                Application updateQuery = new Application(application.getOid(), application.getVersion());
+                Map<String, String> pohjakoulutus = application.getPhaseAnswers(OppijaConstants.PHASE_EDUCATION);
+
+                if (pk.contains(pohjakoulutus.get(OppijaConstants.ELEMENT_ID_BASE_EDUCATION))) {
+                    Map<String, String> osaaminen = application.getPhaseAnswers(OppijaConstants.PHASE_GRADES);
+                    Map<String, String> toAdd = new HashMap<String, String>();
+                    boolean flagChanged = false;
+                    for (Map.Entry<String, String> entry : osaaminen.entrySet()) {
+                        String key = entry.getKey();
+                        String prefix = key.substring(0, 5);
+                        String val3Key = prefix + "_VAL3";
+                        if (!osaaminen.containsKey(val3Key)) {
+                            toAdd.put(val3Key, "Ei arvosanaa");
+                            flagChanged = true;
+                        }
+                    }
+                    if (flagChanged) {
+                        toAdd.putAll(osaaminen);
+                        application.addVaiheenVastaukset(OppijaConstants.PHASE_GRADES, toAdd);
+                        application.setModelVersion(targetVersion);
+                        applicationDAO.update(updateQuery, application);
+                    } else {
+                        applicationDAO.updateModelVersion(updateQuery, targetVersion);
+                    }
+                }
+            }
+            applications = applicationDAO.getNextUpgradable(baseVersion, maxBatchSize);
+        } while (applications.size() > 0);
+    }
+
     private void upgradeModelVersion3to4() {
-        if (!applicationDAO.hasApplicationsWithModelVersion(3))
+        final Integer baseVersion =3;
+        final Integer targetVersion =4;
+        if (!applicationDAO.hasApplicationsWithModelVersion(baseVersion))
             return;
 
         List<Application> applications = null;
         do {
-            applications = applicationDAO.getNextUpgradable(3, maxBatchSize);
+            applications = applicationDAO.getNextUpgradable(baseVersion, maxBatchSize);
             for (Application application : applications) {
                 if (Level4.requiresPatch(application)) {
                     applicationDAO.update(new Application(application.getOid()), Level4.fixAmmatillisenKoulutuksenKeskiarvo(application, loggerAspect));
                 } else {
-                    applicationDAO.updateModelVersion(application, 4);
+                    applicationDAO.updateModelVersion(application, targetVersion);
                 }
             }
         } while(applications.size() > 0);
