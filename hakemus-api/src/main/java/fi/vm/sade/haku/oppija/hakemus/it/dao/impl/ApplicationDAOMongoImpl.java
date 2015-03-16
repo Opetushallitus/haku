@@ -19,12 +19,7 @@ package fi.vm.sade.haku.oppija.hakemus.it.dao.impl;
 import com.google.common.base.Function;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
-import com.mongodb.BasicDBObject;
-import com.mongodb.DBCursor;
-import com.mongodb.DBObject;
-import com.mongodb.MongoException;
-import com.mongodb.QueryBuilder;
-import com.mongodb.ReadPreference;
+import com.mongodb.*;
 import fi.vm.sade.haku.oppija.common.dao.AbstractDAOMongoImpl;
 import fi.vm.sade.haku.oppija.hakemus.converter.ApplicationToDBObjectFunction;
 import fi.vm.sade.haku.oppija.hakemus.converter.DBObjectToAdditionalDataDTO;
@@ -97,6 +92,8 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     private static final String INDEX_REDO_POSTPROCESS = "index_redoPostProcess";
     private static final String INDEX_FULL_NAME = "index_full_name";
     private static final String INDEX_VERSION = "index_version";
+    private static final String INDEX_ASID_SENDING_SCHOOL_AND_FULL_NAME = "index_asid_sending_school_and_full_name";
+    private static final String INDEX_ASID_AND_SENDING_SCHOOL = "index_asid_and_sending_school";
 
     private static final String FIELD_TYPE = "type";
     private static final String FIELD_AO_T = "answers.hakutoiveet.preference%d-Koulutus-id";
@@ -330,6 +327,13 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
             dbCursor.setReadPreference(ReadPreference.secondaryPreferred());
         int searchHits = -1;
         // TODO: Add hint
+
+        if(ensureIndex) {
+            final String hint = addIndexHint(query);
+            if (null == hint)
+                dbCursor.hint(hint);
+        }
+
         try {
             // Trying to avoid needless full table scans caused by data structuring
             if (doCount)
@@ -351,6 +355,28 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
             LOG.error("Got error {} with query: {} using hint: {}", mongoException.getMessage(), query, null);
             throw mongoException;
         }
+    }
+
+    private String addIndexHint(final DBObject query) {
+
+        String queryString = query.toString();
+
+        boolean hasApplicationSystemId = (queryString.contains(FIELD_APPLICATION_SYSTEM_ID) ? true : false);
+        boolean hasFullName = (queryString.contains(FIELD_APPLICATION_SYSTEM_ID) ? true : false);
+        boolean hasSendingSchool = (queryString.contains(FIELD_APPLICATION_SYSTEM_ID) ? true : false);
+
+        if(hasApplicationSystemId) {
+            if (hasFullName && hasSendingSchool) {
+                 return INDEX_ASID_SENDING_SCHOOL_AND_FULL_NAME;
+            } else if(hasFullName) {
+                return INDEX_APPLICATION_SYSTEM_ID;
+            } else if(hasSendingSchool) {
+                return INDEX_ASID_AND_SENDING_SCHOOL;
+            }
+        }
+
+        return null;
+
     }
 
     private DBObject[] buildQueryFilter(final ApplicationQueryParameters applicationQueryParameters,
@@ -711,6 +737,9 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         ensureIndex(INDEX_FULL_NAME, FIELD_FULL_NAME);
         ensureIndex(INDEX_VERSION, FIELD_MODEL_VERSION);
 
+        ensureSparseIndex(INDEX_ASID_SENDING_SCHOOL_AND_FULL_NAME, FIELD_APPLICATION_SYSTEM_ID, FIELD_SENDING_SCHOOL_PARENTS, FIELD_FULL_NAME);
+        ensureSparseIndex(INDEX_ASID_AND_SENDING_SCHOOL, FIELD_APPLICATION_SYSTEM_ID, FIELD_SENDING_SCHOOL_PARENTS);
+
         // System queries
         ensureSparseIndex(INDEX_STUDENT_IDENTIFICATION_DONE, FIELD_APPLICATION_STATE, FIELD_STUDENT_IDENTIFICATION_DONE, FIELD_LAST_AUTOMATED_PROCESSING_TIME);
         ensureSparseIndex(INDEX_REDO_POSTPROCESS, FIELD_REDO_POSTPROCESS, FIELD_LAST_AUTOMATED_PROCESSING_TIME, FIELD_APPLICATION_STATE);
@@ -718,7 +747,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         ensureIndex(INDEX_SSN_DIGEST, FIELD_APPLICATION_SYSTEM_ID, FIELD_SSN_DIGEST);
 
         // Preference Indexes
-        for (int i = 1; i <= 8; i++) {
+        for (int i = 1; i <= 30; i++) {
             createPreferenceIndexes("preference"+i, i>1,
                     format(FIELD_LOP_T, i),
                     format(FIELD_DISCRETIONARY_T, i),
