@@ -15,12 +15,12 @@
  */
 package fi.vm.sade.haku.oppija.yksilointi.impl;
 
-import com.mongodb.MongoException;
 import fi.vm.sade.haku.healthcheck.StatusRepository;
 import fi.vm.sade.haku.oppija.hakemus.aspect.LoggerAspect;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application.PostProcessingState;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationNote;
+import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.haku.oppija.hakemus.domain.util.ApplicationUtil;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationDAO;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
@@ -53,11 +53,18 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.ResourceBundle;
 
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.valmis.ValmisPhase.MUSIIKKI_TANSSI_LIIKUNTA_EDUCATION_CODES;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.EDUCATION_CODE_KEY;
 import static org.apache.commons.lang3.StringUtils.isEmpty;
+import static fi.vm.sade.haku.oppija.hakemus.aspect.ApplicationDiffUtil.addHistoryBasedOnChangedAnswers;
 
 @Service
 public class YksilointiWorkerImpl implements YksilointiWorker {
@@ -94,6 +101,8 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
     private Integer smtpPort;
     @Value("${email.replyTo}")
     private String replyTo;
+
+    final String SYSTEM_USER = "järjestelmä";
 
     @Autowired
     public YksilointiWorkerImpl(ApplicationService applicationService,
@@ -246,21 +255,24 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
                 if (pk.contains(pohjakoulutus.get(OppijaConstants.ELEMENT_ID_BASE_EDUCATION))) {
                     Map<String, String> osaaminen = application.getPhaseAnswers(OppijaConstants.PHASE_GRADES);
                     Map<String, String> toAdd = new HashMap<String, String>();
-                    boolean flagChanged = false;
                     for (Map.Entry<String, String> entry : osaaminen.entrySet()) {
                         String key = entry.getKey();
                         String prefix = key.substring(0, 5);
                         String val3Key = prefix + "_VAL3";
                         if (!osaaminen.containsKey(val3Key)) {
                             toAdd.put(val3Key, "Ei arvosanaa");
-                            flagChanged = true;
                         }
                     }
-                    if (flagChanged) {
+                    if (toAdd.size() > 0) {
+                        Application original = application.clone();
                         toAdd.putAll(osaaminen);
                         application.addVaiheenVastaukset(OppijaConstants.PHASE_GRADES, toAdd);
                         application.setModelVersion(targetVersion);
+                        addHistoryBasedOnChangedAnswers(application, original, SYSTEM_USER, "model upgrade 2-3" );
                         applicationDAO.update(updateQuery, application);
+                        loggerAspect.logUpdateApplication(original,
+                          new ApplicationPhase(original.getApplicationSystemId(),
+                            OppijaConstants.PHASE_GRADES, application.getPhaseAnswers(OppijaConstants.PHASE_GRADES)));
                     } else {
                         applicationDAO.updateModelVersion(updateQuery, targetVersion);
                     }
