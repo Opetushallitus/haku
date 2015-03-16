@@ -46,7 +46,6 @@ public final class KoulutustaustaPhase {
     public static final String PAATTOTODISTUSVUOSI_PATTERN = "^(19[0-9][0-9]|200[0-9]|201[0-5])$";
 
     private static final String TUNTEMATON_OPPILAITOS = "1.2.246.562.10.57118763579";
-    private static final String MUU_TUTKINTO = "399999";
 
     private KoulutustaustaPhase() {
     }
@@ -650,7 +649,7 @@ public final class KoulutustaustaPhase {
                     .build();
             nimike = TextQuestion("pohjakoulutus_am_nimike_muu" + postfix).labelKey("form.yleinen.nbsp").requiredInline()
                     .formParams(formParameters).build();
-            Element muuNimikeRule = createVarEqualsToValueRule(nimikekoodi.getId(), MUU_TUTKINTO);
+            Element muuNimikeRule = createVarEqualsToValueRule(nimikekoodi.getId(), TUTKINTO_MUU);
             muuNimikeRule.addChild(nimike);
 
             Element oppilaitoskoodi = Dropdown("pohjakoulutus_am_oppilaitos" + postfix)
@@ -791,7 +790,7 @@ public final class KoulutustaustaPhase {
                     .requiredInline()
                     .labelKey("pohjakoulutus.tutkintonimike")
                     .build();
-            Element muuAmmatillinenRule = createVarEqualsToValueRule(ammatillinenKoodi.getId(), MUU_TUTKINTO);
+            Element muuAmmatillinenRule = createVarEqualsToValueRule(ammatillinenKoodi.getId(), TUTKINTO_MUU);
 
             muuAmmatillinenRule.addChild(TextQuestion("pohjakoulutus_yo_ammatillinen_nimike_muu")
                     .labelKey("form.yleinen.nbsp")
