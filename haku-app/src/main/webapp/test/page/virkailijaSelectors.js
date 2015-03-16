@@ -13,9 +13,9 @@ virkailija = initSelectors({
     ammatillinenOppilaitos: "input#pohjakoulutus_am_oppilaitos",
     ammatillinenNayttotutkinto: "input[name=pohjakoulutus_am_nayttotutkintona]",
     ammatillinenSuoritusVuosi2: "input#pohjakoulutus_am_vuosi2",
-    ammatillinenTutkintonimike2: "input#pohjakoulutus_am_nimike2",
+    ammatillinenTutkintonimike2: "selecgt#pohjakoulutus_am_nimike2",
     ammatillinenTutkinnonLaajuus2: "input#pohjakoulutus_am_laajuus2",
-    ammatillinenOppilaitos2: "input#pohjakoulutus_am_oppilaitos2",
+    ammatillinenOppilaitos2: "select#pohjakoulutus_am_oppilaitos2",
     ammatillinenOppilaitos2Text: "td:contains(SLK)",
     ammatillinenNayttotutkinto2: "input[name=pohjakoulutus_am_nayttotutkintona2]",
     kkTutkintoSuoritettu: function(bool) {

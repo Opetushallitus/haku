@@ -144,4 +144,5 @@ public final class OppijaConstants {
     public static final String HAKUTYYPPI_TAYDENNYS = "hakutyyppi_02";
     public static final String HAKUTYYPPI_LISAHAKU = "hakutyyppi_03";
 
+    public static final String TUTKINTO_MUU = "399999";
 }
