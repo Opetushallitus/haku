@@ -54,6 +54,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -654,6 +655,24 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
             applications.add(fromDBObject.apply(cursor.next()));
         }
         return applications;
+    }
+
+    @Override
+    public Application getApplication(final String oid, String ... fields) {
+        final DBObject query = new BasicDBObject(FIELD_APPLICATION_OID, oid);
+        if (0 > Arrays.binarySearch(fields, "type")){
+            int originalSize = fields.length;
+            fields = Arrays.copyOf(fields, originalSize +1);
+            fields[originalSize] = "type";
+        }
+        DBObject keys = generateKeysDBObject(fields);
+        DBCursor cursor = getCollection().find(query, keys);
+        if (ensureIndex){
+            cursor.hint(INDEX_APPLICATION_OID);
+        }
+        if (cursor.hasNext())
+            return fromDBObject.apply(cursor.next());
+        return null;
     }
 
 
