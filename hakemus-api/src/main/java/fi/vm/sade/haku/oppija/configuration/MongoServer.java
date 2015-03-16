@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PreDestroy;
@@ -29,6 +30,9 @@ public class MongoServer {
     private Logger logger = LoggerFactory.getLogger(MongoServer.class);
     private MongodExecutable mongodExecutable;
     private MongodProcess mongod;
+
+    @Autowired
+    private MongoTemplate mongoTemplate;
 
     @Autowired
     public MongoServer(@Value("${mongodb.port:27018}") final String port) throws IOException {
@@ -48,6 +52,15 @@ public class MongoServer {
         } else {
             logger.info("Not starting embedded mongo: seems to be running on port " + port);
         }
+    }
+
+    /**
+     * Database reset for tests using this Mongo instance
+     */
+    public void dropCollections() {
+        mongoTemplate.dropCollection("application");
+        mongoTemplate.dropCollection("applicationSystem");
+        mongoTemplate.dropCollection("formconfiguration");
     }
 
     @PreDestroy

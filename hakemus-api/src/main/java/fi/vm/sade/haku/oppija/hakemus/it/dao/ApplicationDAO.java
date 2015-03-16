@@ -38,6 +38,7 @@ public interface ApplicationDAO extends BaseDAO<Application> {
      * @return
      */
     List<Application> find(Application application);
+    List<Application> find(Application application, int limit);
 
     Application getApplication(String oid, String... fields);
 
@@ -88,4 +89,6 @@ public interface ApplicationDAO extends BaseDAO<Application> {
     Application getNextRedo();
 
     List<Application> getNextUpgradable(int batchSize);
+
+    void updateModelVersion(Application application, int modelVersion);
 }

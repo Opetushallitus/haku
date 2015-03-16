@@ -37,6 +37,7 @@ import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationQueryParameters;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.SocialSecurityNumber;
 import fi.vm.sade.haku.oppija.lomake.service.EncrypterService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
+import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -701,6 +702,11 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         return null;
     }
 
+    public void updateModelVersion(Application application, int modelVersion) {
+        getCollection().update(
+                new BasicDBObject(FIELD_APPLICATION_OID, application.getOid()),
+                new BasicDBObject("$set", new BasicDBObject(FIELD_MODEL_VERSION, modelVersion)));
+    }
 
     private boolean resultNotEmpty(final DBObject query, final String indexName) {
         try {

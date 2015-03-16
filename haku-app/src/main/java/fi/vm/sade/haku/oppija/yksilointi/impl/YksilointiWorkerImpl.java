@@ -15,6 +15,8 @@
  */
 package fi.vm.sade.haku.oppija.yksilointi.impl;
 
+import fi.vm.sade.haku.healthcheck.StatusRepository;
+import fi.vm.sade.haku.oppija.hakemus.aspect.LoggerAspect;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application.PostProcessingState;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationNote;
@@ -26,11 +28,13 @@ import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.haku.oppija.lomake.service.FormService;
+import fi.vm.sade.haku.oppija.lomake.service.impl.SystemSession;
 import fi.vm.sade.haku.oppija.lomake.validation.ElementTreeValidator;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationInput;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationResult;
-import fi.vm.sade.haku.healthcheck.StatusRepository;
+import fi.vm.sade.haku.oppija.repository.AuditLogRepository;
 import fi.vm.sade.haku.oppija.yksilointi.YksilointiWorker;
+import fi.vm.sade.haku.upgrade.Level4;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.apache.commons.mail.Email;
 import org.apache.commons.mail.EmailException;
@@ -59,12 +63,14 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
 
     public static final Logger LOGGER = LoggerFactory.getLogger(YksilointiWorkerImpl.class);
     public static final String TRUE = "true";
+    private static final SystemSession systemSession = new SystemSession();
     private final ApplicationService applicationService;
     private final ApplicationSystemService applicationSystemService;
     private final BaseEducationService baseEducationService;
     private final ApplicationDAO applicationDAO;
     private final ElementTreeValidator elementTreeValidator;
     private final StatusRepository statusRepository;
+    private final LoggerAspect loggerAspect;
     private FormService formService;
 
     private Map<String, Template> templateMap;
@@ -92,7 +98,9 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
     public YksilointiWorkerImpl(ApplicationService applicationService,
                                 ApplicationSystemService applicationSystemService,
                                 BaseEducationService baseEducationService, FormService formService, ApplicationDAO applicationDAO,
-                                ElementTreeValidator elementTreeValidator, StatusRepository statusRepository) {
+                                ElementTreeValidator elementTreeValidator, StatusRepository statusRepository,
+                                fi.vm.sade.log.client.Logger logger, AuditLogRepository auditLogRepository) {
+        this.loggerAspect = new LoggerAspect(logger, systemSession, auditLogRepository);
         this.applicationService = applicationService;
         this.applicationSystemService = applicationSystemService;
         this.baseEducationService = baseEducationService;
@@ -207,6 +215,7 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
                         toAdd.putAll(osaaminen);
                         application.addVaiheenVastaukset(OppijaConstants.PHASE_GRADES, toAdd);
                     }
+
                     application.setModelVersion(Application.CURRENT_MODEL_VERSION);
                     LOGGER.info("Done upgrading model version for application: " + application.getOid());
                 } catch (IOException e) {
@@ -223,7 +232,26 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
             }
             applications = getNextUpgradable();
         }
+
+        upgradeModelVersion3to4();
+
         LOGGER.info("Done upgrading application model");
+    }
+
+    private void upgradeModelVersion3to4() {
+        Application findForUpgrade = new Application();
+        findForUpgrade.setModelVersion(3);
+        List<Application> applications = null;
+        do {
+            applications = applicationDAO.find(findForUpgrade, maxBatchSize);
+            for (Application application : applications) {
+                if (Level4.requiresPatch(application)) {
+                    applicationDAO.update(new Application(application.getOid()), Level4.fixAmmatillisenKoulutuksenKeskiarvo(application, loggerAspect));
+                } else {
+                    applicationDAO.updateModelVersion(application, 4);
+                }
+            }
+        } while(applications.size() > 0);
     }
 
     private void reprocessOneApplication(Application application, final boolean sendMail){
