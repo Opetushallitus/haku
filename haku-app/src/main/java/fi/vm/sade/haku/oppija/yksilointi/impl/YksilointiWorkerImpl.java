@@ -104,6 +104,15 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
 
     final String SYSTEM_USER = "järjestelmä";
 
+
+
+    @Value("${scheduler.modelUpgrade.enableV2:false}")
+    private boolean enableUpgradeV2;
+    @Value("${scheduler.modelUpgrade.enableV3:true}")
+    private boolean enableUpgradeV3;
+    @Value("${scheduler.modelUpgrade.enableV4:true}")
+    private boolean enableUpgradeV4;
+
     @Autowired
     public YksilointiWorkerImpl(ApplicationService applicationService,
                                 ApplicationSystemService applicationSystemService,
@@ -201,13 +210,16 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
     private void oldProcess() {
         final Integer baseVersion =1;
         final Integer targetVersion =2;
-        if (!applicationDAO.hasApplicationsWithModelVersion(baseVersion))
+        if ((!enableUpgradeV2) || (!applicationDAO.hasApplicationsWithModelVersion(baseVersion))){
             return;
+        }
 
         List<Application> applications = applicationDAO.getNextUpgradable(baseVersion, maxBatchSize);
         while (applications.size() > 0) {
             for (Application application : applications) {
+                writeStatus("model upgrade old process", "start", application);
                 Application queryApplication = new Application(application.getOid(), application.getVersion());
+
                 try {
                     LOGGER.info("Start upgrading model version for application: " + application.getOid());
                     if (null == application.getAuthorizationMeta()) {
@@ -228,6 +240,7 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
                 } finally {
                     applicationDAO.update(queryApplication, application);
                 }
+                writeStatus("model upgrade old process", "done", application);
             }
             applications = applicationDAO.getNextUpgradable(baseVersion, maxBatchSize);
         }
@@ -236,7 +249,7 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
     private void upgradeModelVersion2to3() {
         final Integer baseVersion = 2;
         final Integer targetVersion = 3;
-        if (!applicationDAO.hasApplicationsWithModelVersion(baseVersion))
+        if ((!enableUpgradeV3) || (!applicationDAO.hasApplicationsWithModelVersion(baseVersion)))
             return;
 
         List<String> pk = new ArrayList<String>() {{
@@ -249,9 +262,11 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
         List<Application> applications = applicationDAO.getNextUpgradable(baseVersion, maxBatchSize);
         while (applications.size() > 0) {
             for (Application application : applications) {
+                writeStatus("model upgrade v3", "start", application);
                 Application updateQuery = new Application(application.getOid(), application.getVersion());
                 Map<String, String> pohjakoulutus = application.getPhaseAnswers(OppijaConstants.PHASE_EDUCATION);
 
+                Application original = null;
                 if (pk.contains(pohjakoulutus.get(OppijaConstants.ELEMENT_ID_BASE_EDUCATION))) {
                     Map<String, String> osaaminen = application.getPhaseAnswers(OppijaConstants.PHASE_GRADES);
                     Map<String, String> toAdd = new HashMap<String, String>();
@@ -264,19 +279,21 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
                         }
                     }
                     if (toAdd.size() > 0) {
-                        Application original = application.clone();
+                        original = application.clone();
                         toAdd.putAll(osaaminen);
                         application.addVaiheenVastaukset(OppijaConstants.PHASE_GRADES, toAdd);
                         application.setModelVersion(targetVersion);
-                        addHistoryBasedOnChangedAnswers(application, original, SYSTEM_USER, "model upgrade 2-3" );
-                        applicationDAO.update(updateQuery, application);
-                        loggerAspect.logUpdateApplication(original,
-                          new ApplicationPhase(original.getApplicationSystemId(),
-                            OppijaConstants.PHASE_GRADES, application.getPhaseAnswers(OppijaConstants.PHASE_GRADES)));
-                    } else {
-                        applicationDAO.updateModelVersion(updateQuery, targetVersion);
+                        addHistoryBasedOnChangedAnswers(application, original, SYSTEM_USER, "model upgrade 2-3");
                     }
                 }
+                if (null != original) {
+                    applicationDAO.update(updateQuery, application);
+                    loggerAspect.logUpdateApplication(original, new ApplicationPhase(original.getApplicationSystemId(),
+                            OppijaConstants.PHASE_GRADES, application.getPhaseAnswers(OppijaConstants.PHASE_GRADES)));
+                } else {
+                    applicationDAO.updateModelVersion(updateQuery, targetVersion);
+                }
+                writeStatus("model upgrade v3", "done", application);
             }
             applications = applicationDAO.getNextUpgradable(baseVersion, maxBatchSize);
         }
@@ -285,18 +302,20 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
     private void upgradeModelVersion3to4() {
         final Integer baseVersion =3;
         final Integer targetVersion =4;
-        if (!applicationDAO.hasApplicationsWithModelVersion(baseVersion))
+        if ((!enableUpgradeV4) || (!applicationDAO.hasApplicationsWithModelVersion(baseVersion)))
             return;
 
         List<Application> applications = applicationDAO.getNextUpgradable(baseVersion, maxBatchSize);
         while(applications.size() > 0) {
             for (Application application : applications) {
+                writeStatus("model upgrade v4", "start", application);
                 Application queryApplication = new Application(application.getOid(), application.getVersion());
                 if (Level4.requiresPatch(application)) {
                     applicationDAO.update(queryApplication, Level4.fixAmmatillisenKoulutuksenKeskiarvo(application, loggerAspect));
                 } else {
                     applicationDAO.updateModelVersion(queryApplication, targetVersion);
                 }
+                writeStatus("model upgrade v4", "done", application);
             }
             applications = applicationDAO.getNextUpgradable(baseVersion, maxBatchSize);
         }
