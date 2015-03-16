@@ -150,6 +150,13 @@ $(document).ready(function () {
                 } else {
                     $('input#application-preference').autocomplete(getAutocomplete());
                 }
+
+                if (kohdejoukko) {
+                    $('#discretionary-only').removeAttr('disabled');
+                } else {
+                    $('#discretionary-only').attr("disabled", "disabled");
+                    $('#discretionary-only').attr('checked', false);
+                }
             });
         }
     };
@@ -643,6 +650,7 @@ $(document).ready(function () {
             $('#sendingSchool').val('');
             $('#sendingClass').val('');
             $('#discretionary-only').attr('checked', false);
+            $('#discretionary-only').attr('disabled', 'disabled');
             $('#primary-preference-only').attr('checked', false);
             $('#check-all-applications').attr('checked', false);
             disableExcel();

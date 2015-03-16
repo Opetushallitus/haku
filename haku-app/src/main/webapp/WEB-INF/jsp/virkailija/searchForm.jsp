@@ -103,7 +103,7 @@
                             </select>
                         </div>
                         <div class="field-search-containerbox">
-                            <input type="checkbox" id="discretionary-only"/>
+                            <input type="checkbox" id="discretionary-only" disabled="disabled"/>
                             <label for="discretionary-only"><fmt:message
                                     key="virkailija.hakemus.vain.harkinnanvaraiset"/></label>
                         </div>
