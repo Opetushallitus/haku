@@ -37,6 +37,7 @@ public class KoulutusinformaatioServiceMockImpl extends KoulutusinformaatioServi
             mesta("1.2.246.562.10.62355244518", "Yrkeshögskolan Novia, Raasepori"),
             mesta("1.2.246.562.10.99415780891", "Yrkeshögskolan Novia, Pietarsaari"),
             mesta("1.2.246.562.10.61397511793", "Helsingin yliopisto, Humanistinen tiedekunta"),
+            mesta("1.2.246.562.10.75213421979", "Metropolia AMK, Espoo, Vanha maantie (Leppävaara)"),
             mesta("1.2.246.562.10.14842710486", "Diakonia-ammattikorkeakoulu, Järvenpään toimipiste"),
             mesta("1.2.246.562.10.64213824028", "Diakonia-ammattikorkeakoulu, Helsingin toimipiste"),
             mesta("1.2.246.562.10.78522729439", "Taideyliopisto,  Sibelius-Akatemia")
@@ -44,6 +45,7 @@ public class KoulutusinformaatioServiceMockImpl extends KoulutusinformaatioServi
 
     private Map<String, ApplicationOptionDTO> optionMap() {
         try {
+            // Sample URL for this mock data: https://testi.opintopolku.fi/ao/1.2.246.562.20.18131989511
             return objectMapper.readValue(getClass().getResourceAsStream("/mockdata/koulutukset.json"), new TypeReference<Map<String, ApplicationOptionDTO>>() {});
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -52,6 +54,7 @@ public class KoulutusinformaatioServiceMockImpl extends KoulutusinformaatioServi
 
     private Map<String, List<ApplicationOptionSearchResultDTO>> searchOptionMap() {
         try {
+            // Sample URL for this mock data: https://testi.opintopolku.fi/ao/search/1.2.246.562.29.95390561488/1.2.246.562.10.75213421979?uiLang=fi&ongoing=true
             return objectMapper.readValue(getClass().getResourceAsStream("/mockdata/koulutukset-search.json"), new TypeReference<Map<String, List<ApplicationOptionSearchResultDTO>>>() {
             });
         } catch (IOException e) {

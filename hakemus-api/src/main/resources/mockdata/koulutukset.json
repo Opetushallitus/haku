@@ -2677,5 +2677,265 @@
         "groupTypes": ["hakukohde"]
       }    ],
     "kotitalous": false
+  },
+
+  "1.2.246.562.20.18131989511": {
+    "id": "1.2.246.562.20.18131989511",
+    "name": "Insinööri (AMK), maanmittaustekniikka, päivätoteutus",
+    "aoIdentifier": null,
+    "startingQuota": 40,
+    "startingQuotaDescription": "40",
+    "lowestAcceptedScore": 0,
+    "lowestAcceptedAverage": 0.0,
+    "attachmentDeliveryDeadline": null,
+    "attachmentDeliveryAddress": {
+      "streetAddress": "PL 4011",
+      "streetAddress2": null,
+      "postalCode": "00079",
+      "postOffice": "METROPOLIA"
+    },
+    "lastYearApplicantCount": 0,
+    "sora": false,
+    "educationDegree": "koulutusasteoph2002_62",
+    "teachingLanguages": ["FI"],
+    "teachingLanguageNames": [],
+    "selectionCriteria": "<h1><b>Poikkeukset ja tarkennukset</b></h1> <p>Ammattikorkeakoulut päättävät valintaperusteensa Ammattikorkeakoulujen rehtorineuvoston (ARENE) antaman valtakunnallisen valintaperustesuorituksen pohjalta.</p> <p>Valintakunnallista valintaperustesuositusta (alla) noudatetaan kyseisessä tutkinto-ohjelmassa seuraavin poikkeuksin ja/tai tarkennuksin:</p> <ul> <li>Yleinen ammattikorkeakoulukelpoisuus.</li> <li>Harkinnanvarainen valinta ei ole käytössä.</li> <li>Kaikki hakukelpoiset kutsutaan valintakokeeseen.</li> <li>Valtakunnallinen valintakoe.</li> <li>Hakijoiden, joiden äidinkieli ei ole suomi, on valintakokeen lisäksi suoritettava Metropolian suomen kielen koe hyväksytysti.</li> <li>Opiskelijavalinnat tehdään valintatapoja 1B (valintakoetuloksen ja koulumenestyspisteiden perusteella) ja 3 (valintakoetuloksen perusteella) käyttäen.</li> </ul> <h1>VALTAKUNNALLINEN VALINTAPERUSTESUOSITUS 2015</h1> <h2>Yleisosio</h2> <p>Valtakunnallisen valintaperustesuosituksen yleisosio löytyy <a href=\"https://opintopolku.fi/wp/fi/ammattikorkeakoulu/miten-opiskelijat-valitaan/amk-tutkintojen-yleiset-valintaperustesuositukset/\">täältä (linkki)</a>.</p> <h2>Alakohtainen suositus: tekniikan ammattikorkeakoulututkinnot (päivätoteutukset)</h2> <p>OPISKELIJAVALINTA</p> <p>Yleinen hakukelpoisuus tutkintoon johtaviin koulutuksiin on kerrottu valintaperustesuositusten yleisessä osassa. Kaikki hakukelpoiset hakijat kutsutaan tekniikan valintakokeeseen. Opiskelijavalinta suoritetaan hakukohteittain valintatapoja 1B ja / tai 3 käyttäen.</p> <p>Valintatapa 1B. Valintapisteet (max 100 p) muodostuvat koulumenestyspisteistä (max 60 p) ja valintakoepisteistä (max 40 p, hyväksymisraja 10 p).</p> <p>Valintatapa 3. Valintapisteissä (max 40 p) ei ole lainkaan mukana koulumenestyspisteitä. <br />Valintapisteet muodostuvat valintakoepisteistä (max 40 p, hyväksymisraja 10 p).</p> <p>Kaikille hakijoille, mikäli on mahdollista, lasketaan valintapisteet molemmilla kyseisen koulutuksen valinnoissa käytössä olevilla tavoilla ja valinta suoritetaan tältä pohjalta.</p> <p>KOULUMENESTYSPISTEYTYS<br />A. Pisteytys ylioppilastutkintotodistuksen ja lukion päättötodistuksen pohjalta<br />B. Pisteytys ammatillisen perustutkinnon todistuksen pohjalta<br />C. Pisteytys ylioppilastutkintotodistuksen ja ammatillisen perustutkinnon päättötodistuksen pohjalta<br />Jos hakijalla on useita tutkintoja siten että hänen koulumenestyspisteytyksensä voidaan suorittaa usealla <br />näistä (A, B, C) menettelyistä, hakija voi valita näistä yhden ja merkitä koulumenestystiedot<br />hakemukseensa tämän mukaisesti.<br />A. Pisteytys ylioppilastutkintotodistuksen ja lukion päättötodistuksen pohjalta</p> <p>Koulumenestyspisteet lasketaan seuraavin perustein:<br /> • yksittäisistä aineista (äidinkieli, paras pitkänä kirjoitettu kieli, matematiikka sekä paras reaalikoe seuraavista: fysiikka, kemia ja biologia) ylioppilastutkintotodistuksesta<br /> • kaikkien aineiden keskiarvo (painottamaton keskiarvo kaikista todistukseen numeroina merkityistä arvosanoista) lukion päättötodistuksesta</p> <p>Abiturientit pyrkivät viimeisellä lukiotodistuksellaan. Abiturienttien ei tarvitse merkitä hakemukseensa ylioppilastutkintotodistuksen arvosanoja, sillä ne kerätään suoraan ylioppilastutkintolautakunnalta.</p> <table> <tbody> <tr> <td> <p>Ylioppilastutkinto arvosanat</p> </td> <td> </td> <td> <p>L/E</p> </td> <td> <p>M</p> </td> <td> <p>C</p> </td> <td> <p>B</p> </td> <td> <p>A</p> </td> </tr> <tr> <td> <p>Pisteet</p> </td> <td> </td> <td> </td> <td> </td> <td> </td> <td> </td> <td> </td> </tr> <tr> <td> <p>Äidinkieli</p> </td> <td> </td> <td> <p>9</p> </td> <td> <p>7</p> </td> <td> <p>5</p> </td> <td> <p>3</p> </td> <td> <p>1</p> </td> </tr> <tr> <td> <p>Paras pitkänä kirjoitettu kieli</p> </td> <td> </td> <td> <p>9</p> </td> <td> <p>7</p> </td> <td> <p>5</p> </td> <td> <p>3</p> </td> <td> <p>1</p> </td> </tr> <tr> <td> <p>Matematiikka, pitkä</p> </td> <td> <p>*</p> </td> <td> <p>9</p> </td> <td> <p>7</p> </td> <td> <p>5</p> </td> <td> <p>3</p> </td> <td> <p>1</p> </td> </tr> <tr> <td> <p>Matematiikka, lyhyt</p> </td> <td> <p>*</p> </td> <td> <p>6</p> </td> <td> <p>4</p> </td> <td> <p>3</p> </td> <td> <p>2</p> </td> <td> <p>1</p> </td> </tr> <tr> <td> <p>Fysiikka reaalikoe</p> </td> <td> <p>**</p> </td> <td> <p>9</p> </td> <td> <p>7</p> </td> <td> <p>5</p> </td> <td> <p>3</p> </td> <td> <p>1</p> </td> </tr> <tr> <td> <p>Kemia reaalikoe</p> </td> <td> <p>**</p> </td> <td> <p>9</p> </td> <td> <p>7</p> </td> <td> <p>5</p> </td> <td> <p>3</p> </td> <td> <p>1</p> </td> </tr> <tr> <td> <p>Biologia reaalikoe</p> </td> <td> <p>**</p> </td> <td> <p>9</p> </td> <td> <p>7</p> </td> <td> <p>5</p> </td> <td> <p>3</p> </td> <td> <p>1</p> </td> </tr> </tbody> </table> <p>* = enintään toinen<br /> ** = enintään yksi</p> <p>Arvosana-asteikko<br />4 – 10 Pisteet<br />≥ 9,50 24 <br />≥ 9,33 23 <br />≥ 9,15 22 <br />≥ 8,98 21 <br />≥ 8,80 20 <br />≥ 8,63 19 <br />≥ 8,46 18 <br />≥ 8,28 17 <br />≥ 8,11 16 <br />≥ 7,93 15 <br />≥ 7,76 14 <br />≥ 7,59 13 <br />≥ 7,41 12 <br />≥ 7,24 11 <br />≥ 7,07 10 <br />≥ 6,89 9 <br />≥ 6,72 8 <br />≥ 6,54 7 <br />≥ 6,37 6 <br />≥ 6,20 5 <br />≥ 6,02 4 <br />≥ 5,85 3 <br />≥ 5,67 2 <br />≥ 5,50 1 <br />&lt; 5,50 0</p> <p>B. Pisteytys ammatillisen perustutkinnon pohjalta</p> <p>Ammatillisen perustutkinnon suorittaneet hakevat päättötodistuksensa perusteella<b>, jos todistuksesta pisteitä tuottavat opintojaksot on arvosteltu. Muussa tapauksessa ammatillisen perustutkinnon suorittaneet valitaan valintatavalla 3. </b>Syksyllä 2015 valmistuvat hakevat viimeisellä todistuksellaan, ja heidän lopulliset arvosanansa kerätään suoraan oppilaitoksilta.</p> <p>Koulumenestyspisteet lasketaan yksittäisistä aineista [äidinkieli tai viestintä, paras kieli (ei äidinkieli), matematiikka, fysiikka tai kemia] sekä kaikkien aineiden keskiarvosta ammatillisen perustutkinnon päättötodistuksen arvosanojen perusteella.</p> <p>Jos hakijalla on useita ammatillisia perustutkintoja, hän voi valita, minkä todistuksen perusteella koulumenestys pisteytetään. Päättötodistuksen keskiarvo lasketaan painottamattomana keskiarvona arvosanoista, jotka on ilmaistu tutkintotodistuksessa numeroina tai jotka voidaan muuntaa sellaisiksi. Mikäli hakijan haussa käyttämään todistukseen on annettu arvosana numeroina muualla suoritetuista, hyväksi luetuista opinnoista, se otetaan mukaan keskiarvoa laskettaessa.</p> <table> <tbody> <tr> <td> <p>Päättötodistus, arvosanat</p> </td> <td> </td> <td> </td> <td> </td> <td> </td> <td> </td> <td> </td> <td> </td> </tr> <tr> <td> <p>asteikko 1-3</p> </td> <td> <p>3</p> </td> <td> </td> <td> <p>2</p> </td> <td> </td> <td> </td> <td> <p>1</p> </td> <td> </td> </tr> <tr> <td> <p>asteikko 1-5</p> </td> <td> <p>5</p> </td> <td> <p>4</p> </td> <td> </td> <td> <p>3</p> </td> <td> <p>2</p> </td> <td> </td> <td> <p>1</p> </td> </tr> <tr> <td> <p>asteikko 4-10</p> </td> <td> <p>10/9</p> </td> <td> <p>8</p> </td> <td> </td> <td> <p>7</p> </td> <td> <p>6</p> </td> <td> </td> <td> <p>5</p> </td> </tr> <tr> <td> <p>Pisteet</p> </td> <td> </td> <td> </td> <td> </td> <td> </td> <td> </td> <td> </td> <td> </td> </tr> <tr> <td> <p>Äidinkieli tai viestintä</p> </td> <td> <p>9</p> </td> <td> <p>6</p> </td> <td> <p>5</p> </td> <td> <p>4</p> </td> <td> <p>2</p> </td> <td> <p>1</p> </td> <td> <p>0</p> </td> </tr> <tr> <td> <p>Paras kieli</p> </td> <td> <p>9</p> </td> <td> <p>6</p> </td> <td> <p>5</p> </td> <td> <p>4</p> </td> <td> <p>2</p> </td> <td> <p>1</p> </td> <td> <p>0</p> </td> </tr> <tr> <td> <p>Matematiikka</p> </td> <td> <p>9</p> </td> <td> <p>6</p> </td> <td> <p>5</p> </td> <td> <p>4</p> </td> <td> <p>2</p> </td> <td> <p>1</p> </td> <td> <p>0</p> </td> </tr> <tr> <td> <p>Fysiikka tai kemia</p> </td> <td> <p>9</p> </td> <td> <p>6</p> </td> <td> <p>5</p> </td> <td> <p>4</p> </td> <td> <p>2</p> </td> <td> <p>1</p> </td> <td> <p>0</p> </td> </tr> </tbody> </table> <p>Päättötodistus: kaikkien aineiden keskiarvo<br /> <br /> Arvosana-asteikko</p> <p>Arvosana-                Arvosana-                Arvosana-              Pisteet<br /> asteikko                   asteikko                   asteikko<br /> 1-3                          1-5                          4-10<br /> <br /> ≥ 2,80                     ≥ 4,60                      ≥ 9,50                    24 <br /> ≥ 2,73                     ≥ 4,46                      ≥ 9,33                    23 <br /> ≥ 2,66                     ≥ 4,32                      ≥ 9,15                    22 <br /> ≥ 2,59                     ≥ 4,18                      ≥ 8,98                    21 <br /> ≥ 2,52                     ≥ 4,04                      ≥ 8,80                    20 <br /> ≥ 2,45                     ≥ 3,90                      ≥ 8,63                    19 <br /> ≥ 2,38                     ≥ 3,77                      ≥ 8,46                    18 <br /> ≥ 2,31                     ≥ 3,63                      ≥ 8,28                    17 <br /> ≥ 2,24                     ≥ 3,49                      ≥ 8,11                    16 <br /> ≥ 2,17                     ≥ 3,35                      ≥ 7,93                    15 <br /> ≥ 2,10                     ≥ 3,21                      ≥ 7,76                    14 <br /> ≥ 2,03                     ≥ 3,07                      ≥ 7,59                    13 <br /> ≥ 1,97                     ≥ 2,93                      ≥ 7,41                    12 <br /> ≥ 1,90                     ≥ 2,79                      ≥ 7,24                    11 <br /> ≥ 1,83                     ≥ 2,65                      ≥ 7,07                    10 <br /> ≥ 1,76                     ≥ 2,51                      ≥ 6,89                     9 <br /> ≥ 1,69                     ≥ 2,37                      ≥ 6,72                     8 <br /> ≥ 1,62                     ≥ 2,23                      ≥ 6,54                     7 <br /> ≥ 1,55                     ≥ 2,10                      ≥ 6,37                     6 <br /> ≥ 1,48                     ≥ 1,96                      ≥ 6,20                     5 <br /> ≥ 1,41                     ≥ 1,82                      ≥ 6,02                     4 <br /> ≥ 1,34                     ≥ 1,68                      ≥ 5,85                     3 <br /> ≥ 1,27                     ≥ 1,54                      ≥ 5,67                     2 <br /> ≥ 1,20                     ≥ 1,40                      ≥ 5,50                     1 <br /> &lt; 1,20                     &lt; 1,40                      &lt; 5,50                     0</p> <p><b>C. Pisteytys ylioppilastutkintotodistuksen ja ammatillisen perustutkinnon pohjalta</b></p> <p>Koulumenestyspisteet lasketaan seuraavin perustein:</p> <p><b>             </b>yksittäisistä aineista (äidinkieli, paras pitkänä kirjoitettu kieli, matematiikka sekä paras reaalikoe seuraavista: fysiikka, kemia ja biologia) ylioppilastutkintotodistuksesta</p> <p>             kaikkien arvosanojen keskiarvo ammatillisen perustutkinnon päättötodistuksesta</p> <p>Abiturienttien ei tarvitse merkitä hakemukseensa ylioppilastutkintotodistuksen arvosanoja, sillä ne kerätään suoraan ylioppilastutkintolautakunnalta.</p> <table> <tbody> <tr> <td> <p>Ylioppilastutkinto arvosanat</p> </td> <td> </td> <td> <p>L/E</p> </td> <td> <p>M</p> </td> <td> <p>C</p> </td> <td> <p>B</p> </td> <td> <p>A</p> </td> </tr> <tr> <td> <p>Pisteet</p> </td> <td> </td> <td> </td> <td> </td> <td> </td> <td> </td> <td> </td> </tr> <tr> <td> <p>Äidinkieli</p> </td> <td> </td> <td> <p>9</p> </td> <td> <p>7</p> </td> <td> <p>5</p> </td> <td> <p>3</p> </td> <td> <p>1</p> </td> </tr> <tr> <td> <p>Paras pitkänä kirjoitettu kieli</p> </td> <td> </td> <td> <p>9</p> </td> <td> <p>7</p> </td> <td> <p>5</p> </td> <td> <p>3</p> </td> <td> <p>1</p> </td> </tr> <tr> <td> <p>Matematiikka, pitkä</p> </td> <td> <p>*</p> </td> <td> <p>9</p> </td> <td> <p>7</p> </td> <td> <p>5</p> </td> <td> <p>3</p> </td> <td> <p>1</p> </td> </tr> <tr> <td> <p>Matematiikka, lyhyt</p> </td> <td> <p>*</p> </td> <td> <p>6</p> </td> <td> <p>4</p> </td> <td> <p>3</p> </td> <td> <p>2</p> </td> <td> <p>1</p> </td> </tr> <tr> <td> <p>Fysiikka reaalikoe</p> </td> <td> <p>**</p> </td> <td> <p>9</p> </td> <td> <p>7</p> </td> <td> <p>5</p> </td> <td> <p>3</p> </td> <td> <p>1</p> </td> </tr> <tr> <td> <p>Kemia reaalikoe</p> </td> <td> <p>**</p> </td> <td> <p>9</p> </td> <td> <p>7</p> </td> <td> <p>5</p> </td> <td> <p>3</p> </td> <td> <p>1</p> </td> </tr> <tr> <td> <p>Biologia reaalikoe</p> </td> <td> <p>**</p> </td> <td> <p>9</p> </td> <td> <p>7</p> </td> <td> <p>5</p> </td> <td> <p>3</p> </td> <td> <p>1</p> </td> </tr> </tbody> </table> <p>* = enintään toinen<br /> ** = enintään yksi</p> <p>Ammatillisen perustutkinnon päättötodistus: kaikkien aineiden keskiarvo</p> <p>Arvosana-                Arvosana-                Arvosana-              Pisteet<br /> asteikko                   asteikko                   asteikko<br /> 1-3                          1-5                          4-10<br /> <br /> ≥ 2,80                     ≥ 4,60                      ≥ 9,50                    24 <br /> ≥ 2,73                     ≥ 4,46                      ≥ 9,33                    23 <br /> ≥ 2,66                     ≥ 4,32                      ≥ 9,15                    22 <br /> ≥ 2,59                     ≥ 4,18                      ≥ 8,98                    21 <br /> ≥ 2,52                     ≥ 4,04                      ≥ 8,80                    20 <br /> ≥ 2,45                     ≥ 3,90                      ≥ 8,63                    19 <br /> ≥ 2,38                     ≥ 3,77                      ≥ 8,46                    18 <br /> ≥ 2,31                     ≥ 3,63                      ≥ 8,28                    17 <br /> ≥ 2,24                     ≥ 3,49                      ≥ 8,11                    16 <br /> ≥ 2,17                     ≥ 3,35                      ≥ 7,93                    15 <br /> ≥ 2,10                     ≥ 3,21                      ≥ 7,76                    14 <br /> ≥ 2,03                     ≥ 3,07                      ≥ 7,59                    13 <br /> ≥ 1,97                     ≥ 2,93                      ≥ 7,41                    12 <br /> ≥ 1,90                     ≥ 2,79                      ≥ 7,24                    11 <br /> ≥ 1,83                     ≥ 2,65                      ≥ 7,07                    10 <br /> ≥ 1,76                     ≥ 2,51                      ≥ 6,89                     9 <br /> ≥ 1,69                     ≥ 2,37                      ≥ 6,72                     8 <br /> ≥ 1,62                     ≥ 2,23                      ≥ 6,54                     7 <br /> ≥ 1,55                     ≥ 2,10                      ≥ 6,37                     6 <br /> ≥ 1,48                     ≥ 1,96                      ≥ 6,20                     5 <br /> ≥ 1,41                     ≥ 1,82                      ≥ 6,02                     4 <br /> ≥ 1,34                     ≥ 1,68                      ≥ 5,85                     3 <br /> ≥ 1,27                     ≥ 1,54                      ≥ 5,67                     2 <br /> ≥ 1,20                     ≥ 1,40                      ≥ 5,50                     1 <br /> &lt; 1,20                     &lt; 1,40                      &lt; 5,50                     0</p> <p>Ammatillisen perustutkinnon todistuksen keskiarvo lasketaan painottamattomana keskiarvona arvosanoista, jotka on ilmaistu tutkintotodistuksessa numeroina tai jotka voidaan muuntaa sellaisiksi.</p> <p>Mikäli hakijan haussa käyttämään todistukseen on annettu arvosana numeroina muualla suoritetuista, hyväksi luetuista opinnoista, se otetaan mukaan keskiarvoa laskettaessa.</p> <p><strong>VALINTAKOE</strong></p> <p>Opiskelijavalinta suoritetaan käyttäen tekniikan valtakunnallista valintakoetta.</p> <p>Kaikki hakukelpoiset hakijat kutsutaan valintakokeeseen (kutsu n. viikkoa ennen koetta). Valintakokeen voi suorittaa ainoastaan tekniikan koulutusta järjestävissä ammattikorkeakouluissa. Opiskelijaksi hakeva voi valita, missä edellä mainituista hän osallistuu valintakokeeseen. Syksyn valintakokeeseen voi osallistua vain niissä ammattikorkeakouluissa, joissa on tammikuussa 2016 alkavaa tekniikan koulutusta.</p> <p>Ilmoitus valintakoepaikasta on merkittävä hakemukseen. Ilmoitus on sitova.</p> <p>Osallistuessaan tekniikan valtakunnalliseen valintakokeeseen hakulomakkeessa ilmoittamassaan ammattikorkeakoulussa, hakija saa koetuloksen kaikkiin insinööri- ja laboratorioanalyytikkokoulutuksen, rakennusmestarikoulutuksen, rakennusarkkitehtikoulutuksen sekä merenkulkualan koulutuksen hakutoiveisiinsa.</p> <p>Valintakoe on 3-4 tuntia kestävä kirjallinen koe. Siinä mitataan opiskeluvalmiuksia ja soveltuvuutta teknilliselle alalle (loogista päättelykykyä sekä matematiikan ja fysiikan/kemian perusosaamista).Kokeeseen osallistuva voi valita joko suomenkieliset tai ruotsinkieliset tehtävät. Koe on yhteinen pohjakoulutuksesta riippumatta. Valintakoetulos on voimassa kyseisen haun ajan. Kokeessa on saavutettava vähintään 10 pistettä maksimiarvosta 40 pistettä.</p> <p>Kevään 2015 valintakoe järjestetään <b>torstaina 28.5.2015</b> ja syksyn valintakoe perjantaina <b>30.10.2015.</b><br /><br /></p> <p><b>Erilliset soveltuvuuskokeet ja suomen/ruotsin kielen kokeet</b></p> <p>Osassa insinöörikoulutusohjelmia tulee hakijan osallistua tekniikan valtakunnallisen valintakokeen lisäksi koulutusta järjestävän ammattikorkeakoulun erillisiin soveltuvuuskokeisiin. Näiden painoarvot, sisällöt ja läpäisyvaatimukset vaihtelevat eri hakukohteissa.</p> <p>Hakijat, joiden äidinkieli tai koulusivistyskieli ei ole suomi, joutuvat joissakin suomenkielisissä ammattikorkeakouluissa suorittamaan erillisen suomen kielen kokeen <b>maanantaina 1.6.2015 </b>ja syksyn haussa <b>maanantaina 2.11.2015.</b></p> <p>Erilliset soveltuvuuskokeet järjestetään <b>perjantaina 29.5.2015</b>. siten, että hakijat voivat osallistua tekniikan valtakunnalliseen valintakokeeseen <b>torstaina 28.5.2015</b> hakulomakkeessa ilmoittamassaan ammattikorkeakoulussa.</p> <p>Hakijat, joiden äidinkieli ja / tai koulusivistyskieli ei ole ruotsi, tanska tai norja, joutuvat joissakin ruotsinkielisissä ammattikorkeakouluissa suorittamaan erillisen ruotsin kielen kokeen, joka järjestetään samana päivänä kuin tekniikan valtakunnallinen valintakoe, <b>28.5.2015</b> ja <b>30.10.2015</b> tai valintakoe- / haastattelutilaisuudessa. Niille hakijoille, jotka osallistuvat em. valintakokeeseen suomenkielisessä ammattikorkeakoulussa, järjestetään mahdollisuus ruotsin kielen kokeen suorittamiselle muuna ajankohtana.</p>",
+    "soraDescription": null,
+    "prerequisite": null,
+    "exams": [
+      {
+        "type": "Metropolian suomen kielen koe",
+        "description": "<p>Hakijoiden, joiden äidinkieli ei ole suomi, on suoritettava hyväksytysti Metropolian suomen kielen koe. Koekutsussa ilmoitettua koepäivää ei voi vaihtaa.</p>",
+        "examEvents": [
+          {
+            "start": 1433152169284,
+            "end": 1433152169284,
+            "description": "",
+            "address": {
+              "streetAddress": "Vanha maantie 6",
+              "streetAddress2": null,
+              "postalCode": "02650",
+              "postOffice": "ESPOO"
+            },
+            "timeIncluded": false
+          }
+        ],
+        "scoreLimit": null
+      },
+      {
+        "type": "Tekniikan valtakunnallinen valintakoe",
+        "description": "<p><b>Valintakoekutsu</b></p> <p>Kaikki hakukelpoiset hakijat kutsutaan valintakokeeseen (kutsu n. viikkoa ennen koetta). Koekutsussa ilmoitettua valintakoepäivää ei voi vaihtaa.</p> <p><b>Valintakoepaikka</b></p> <p>Valintakokeen voi suorittaa ainoastaan tekniikan koulutusta järjestävissä ammattikorkeakouluissa. Opiskelijaksi hakeva voi valita, missä edellä mainituista hän osallistuu valintakokeeseen. Ilmoitus valintakoepaikasta on merkittävä hakemukseen. Ilmoitus on sitova.</p> <p><b>Valintakokeen kuvaus</b></p> <p>Valintakoe on 3-4 tuntia kestävä kirjallinen koe. Siinä mitataan opiskeluvalmiuksia ja soveltuvuutta teknilliselle alalle (loogista päättelykykyä sekä matematiikan ja fysiikan/kemian perusosaamista). Kokeeseen osallistuva voi valita joko suomenkieliset tai ruotsinkieliset tehtävät. Koe on yhteinen pohjakoulutuksesta riippumatta. Valintakoetulos on voimassa kyseisen haun ajan. Kokeessa on saavutettava vähintään 10 pistettä maksimiarvosta 40 pistettä.</p> <p><b>Valintakoetulos</b></p> <p>Osallistuessaan tekniikan valtakunnalliseen valintakokeeseen hakulomakkeessa ilmoittamassaan ammattikorkeakoulussa, hakija saa koetuloksen kaikkiin insinööri- ja laboratorioanalyytikkokoulutuksen, rakennusmestarikoulutuksen, rakennusarkkitehtikoulutuksen sekä merenkulkualan koulutuksen hakutoiveisiinsa. Valintakoetulos on voimassa kyseisen haun ajan.</p>",
+        "examEvents": [
+          {
+            "start": 1432806355622,
+            "end": 1432806355622,
+            "description": "Tarkempi koepaikka ilmoitetaan valintakoekutsussa.",
+            "address": {
+              "streetAddress": "Metropolia Ammattikorkeakoulu",
+              "streetAddress2": null,
+              "postalCode": "00079",
+              "postOffice": "METROPOLIA"
+            },
+            "timeIncluded": false
+          }
+        ],
+        "scoreLimit": null
+      }
+    ],
+    "childRefs": [],
+    "higherEdLOSRefs": [
+      {
+        "id": "1.2.246.562.17.86530085157",
+        "asIds": null,
+        "name": "Insinööri (AMK), maanmittaustekniikka, päivätoteutus",
+        "qualifications": ["Insinööri (AMK)"],
+        "prerequisite": null,
+        "provider": "Metropolia AMK, Espoo, Vanha maantie (Leppävaara)",
+        "fieldOfExpertise": null
+      }
+    ],
+    "provider": {
+      "id": "1.2.246.562.10.75213421979",
+      "name": "Metropolia AMK, Espoo, Vanha maantie (Leppävaara)",
+      "applicationSystemIds": [
+        "1.2.246.562.29.95390561488",
+        "1.2.246.562.29.173465377510"
+      ],
+      "postalAddress": {
+        "streetAddress": "PL 4070",
+        "streetAddress2": null,
+        "postalCode": "00079",
+        "postOffice": "METROPOLIA"
+      },
+      "visitingAddress": {
+        "streetAddress": "Vanha maantie 6",
+        "streetAddress2": null,
+        "postalCode": "02650",
+        "postOffice": "ESPOO"
+      },
+      "webPage": "http://www.metropolia.fi",
+      "email": "kirjaamo@metropolia.fi",
+      "fax": "09 7424 5002",
+      "phone": "09 7424 5000",
+      "description": "<p>Metropolia on pääkaupunkiseudulla toimiva kansainvälinen ja monialainen ammattikorkeakoulu. Koulutamme kulttuurin, liiketalouden, sosiaali- ja terveysalan sekä tekniikan asiantuntijoita ja kehittäjiä.</p> <p>Metropoliassa opiskeluun yhdistyvät käytännönläheisyys, kansainvälisyys ja innovointi. Panostamme korkeatasoiseen opetukseen ja meillä vallitsee tekemisen meininki. Opettajillamme on Suomen parhaat yritys- ja työelämäverkostot. Verkostojen kautta löydät mielenkiintoisia ja työelämätaitojasi edistäviä harjoittelupaikkoja ja projektitehtäviä. Voit suorittaa osan opinnoistasi tai harjoittelusta myös ulkomailla.<br /><br />Vahvuutemme on laaja-alaisuus ja moniosaaminen. Saavutat oman alasi ja tutkintosi vahvan tieto-taito-osaamisen ja lisäksi tutustut jo opintojesi aikana eri alan opiskelijoihin, opit työskentelemään moniammatillisissa tiimeissä ja saat valmiuksia osallistua uusien innovaatioiden tuottamiseen.<br /><br /></p>",
+      "healthcare": null,
+      "accessibility": "<p>Metropoliassa kiinnitetään huomiota opiskelijoiden yhdenvertaisuuden toteutumiseen. Metropolialle on laadittu yhdenvertaisuusohjelma liittyen opiskeluhyvinvoinnin kehittämiseen. Ohjelman päämääränä on edistää fyysisen, psyykkisen ja sosiaalisen opiskelu- ja työympäristön suunnittelua ja toteuttamista siten, että Metropolian opiskelijat, henkilöstö ja vierailijat voivat ominaisuuksistaan riippumatta toimia yhdenvertaisesti. Ohjelma tukee oppimisprosessia ja monimuotoista opetustyötä.</p> <p>Metropolia on vuokralla lähes 20 eri toimipisteessä Helsingin, Espoon ja Vantaan kaupunkien alueilla. Kiinteistöjen rakennusaika vaihtelee 1800-luvun lopusta 2000-luvun alkuun. Vanhimmat kiinteistöt sijaitsevat Helsingin alueella. Erityisesti iäkkäämmissä kiinteistöissä kulkemisen vaivattomuus voi vaihdella huomattavasti. Liikuntarajoitteisten henkilöiden esteetön kulku saattaa edellyttää kiertoreittien käyttöä.<br /><br />Tilojensa vastuullisena vuokralaisena Metropolia kehittää toimipisteidensä esteettömyyttä yhteistyössä kiinteistöjen omistajien kanssa. Esteettömyyden toteutumista ammattikorkeakoulun toimipisteissä tuetaan yhdessä Invalidiliiton kaltaisten kansallisten toimijoiden kanssa toteutettavilla esteettömyyskartoituksilla. Metropolian omat opiskelijat toimivat kartoitusten toteuttajina yhteistyössä sidosryhmien edustajien kanssa. Esteettömyyskartoitusten tuloksia ja kehitysehdotuksia käytetään tiloja koskevan päätöksenteon ja jatkotoimenpiteiden tukena.</p> <p>Lue lisää <a href=\"http://opinto-opas.metropolia.fi/fi/kaytannon-tietoa-opiskelijoille/yhdenvertaisuus/\">Metropolian yhdenvertaisuusohjelmasta</a>.</p>",
+      "learningEnvironment": null,
+      "dining": null,
+      "livingExpenses": null,
+      "living": null,
+      "yearClock": null,
+      "financingStudies": null,
+      "insurances": null,
+      "leisureServices": null,
+      "social": null,
+      "pictureFound": true,
+      "athleteEducation": false,
+      "applicationOffice": {
+        "name": "Hakijapalvelut",
+        "phone": "09 7424 5100",
+        "email": "hakijapalvelut@metropolia.fi",
+        "www": "http://www.metropolia.fi/haku",
+        "visitingAddress": {
+          "streetAddress": "Bulevardi 29",
+          "streetAddress2": null,
+          "postalCode": "00180",
+          "postOffice": "HELSINKI"
+        },
+        "postalAddress": {
+          "streetAddress": "PL 4011",
+          "streetAddress2": null,
+          "postalCode": "00079",
+          "postOffice": "METROPOLIA"
+        }
+      },
+      "homeplace": "Espoo"
+    },
+    "specificApplicationDates": false,
+    "applicationStartDate": 1424354948626,
+    "applicationEndDate": 1428580845519,
+    "applicationPeriodName": "Hakuaika 2",
+    "canBeApplied": true,
+    "nextApplicationPeriodStarts": null,
+    "requiredBaseEducations": ["pohjakoulutusvaatimuskorkeakoulut_100"],
+    "attachments": [
+      {
+        "dueDate": 1429790429462,
+        "type": "Ammatti- ja erikoisammattitutkinnot",
+        "descreption": "<p>Osoittaakseen hakukelpoisuutensa suomalaisella ammatti- tai erikoisammattitutkinnolla hakevan on toimitettava kopio lopullisesta tutkintotodistuksestaan ensisijaisen ammattikorkeakouluhakukohteen hakijapalveluihin viimeistään 23.4.2015 klo 15.00 mennessä. Tämä ei koske suomalaisella ammatillisella perustutkinnolla tai muulla suomalaisella tutkinnolla hakevia. Todistuskopioiden tulee olla perillä ao. ammattikorkeakouluhakukohteen hakijapalveluissa määräaikaan mennessä. </p>",
+        "address": {
+          "streetAddress": "PL 4011",
+          "streetAddress2": null,
+          "postalCode": "00079",
+          "postOffice": "METROPOLIA"
+        },
+        "emailAddr": "hakijapalvelut@metropolia.fi",
+        "usedInApplicationForm": false
+      },
+      {
+        "dueDate": 1429790452412,
+        "type": "IB, EB ja RP -tutkinnot",
+        "descreption": "<p>Osoittaakseen hakukelpoisuutensa International Baccalaureate (IB), European Baccalaureate (EB) tai Reifeprüfung (RP) tutkintotodistuksella hakevan on toimitettava kopio lopullisesta tutkintotodistuksestaan ensisijaisen ammattikorkeakouluhakukohteen hakijapalveluihin viimeistään 23.4.2015 klo 15.00 mennessä. Tämä ei kuitenkaan koske hakukeväänä valmistuvia hakijoita. Todistuskopioiden tulee olla perillä ao. ammattikorkeakouluhakukohteen hakijapalveluissa määräaikaan mennessä.</p>",
+        "address": {
+          "streetAddress": "PL 4011",
+          "streetAddress2": null,
+          "postalCode": "00079",
+          "postOffice": "METROPOLIA"
+        },
+        "emailAddr": "hakijapalvelut@metropolia.fi",
+        "usedInApplicationForm": false
+      },
+      {
+        "dueDate": 1431691211308,
+        "type": "IB Predicted Grades",
+        "descreption": "<p>Hakukeväänä valmistuvat IB-abiturientin on toimitettava kopion todistusarvosanoistaan (predicted grades) viimeistään 15.5.2015 ensisijaisen ammattikorkeakouluhakukohteen hakijapalveluihin. Todistuskopioiden tulee olla perillä ao. ammattikorkeakouluhakukohteen hakijapalveluissa määräaikaan mennessä.</p>",
+        "address": {
+          "streetAddress": "PL 4011",
+          "streetAddress2": null,
+          "postalCode": "00079",
+          "postOffice": "METROPOLIA"
+        },
+        "emailAddr": "hakijapalvelut@metropolia.fi",
+        "usedInApplicationForm": false
+      },
+      {
+        "dueDate": 1429790431218,
+        "type": "Ulkomaiset tutkinnot",
+        "descreption": "<p>Osoittaakseen hakukelpoisuutensa ulkomailla suoritetulla tutkintotodistuksella hakevan on toimitettava kopio lopullisesta tutkintotodistuksestaan ensisijaisen ammattikorkeakouluhakukohteen hakijapalveluihin viimeistään 23.4.2015 klo 15.00 mennessä. Todistuskopioiden tulee olla perillä ao. ammattikorkeakouluhakukohteen hakijapalveluissa määräaikaan mennessä.</p>",
+        "address": {
+          "streetAddress": "PL 4011",
+          "streetAddress2": null,
+          "postalCode": "00079",
+          "postOffice": "METROPOLIA"
+        },
+        "emailAddr": "hakijapalvelut@metropolia.fi",
+        "usedInApplicationForm": false
+      },
+      {
+        "dueDate": 1429790451985,
+        "type": "Käännökset",
+        "descreption": "<p>Todistuskopioiden lisäksi on toimitettava virallisen kielenkääntäjän suomeksi, ruotsiksi tai englanniksi tekemä käännöskopio tutkintotodistuksesta, jos tutkintotodistuksen kieli ei ole mikään näistä. Käännöksessä tulee olla kääntäjän allekirjoitus ja leima. Käännös tulee toimittaa ensisijaisen ammattikorkeakouluhakukohteen hakijapalveluihin viimeistään 23.4.2015 klo 15.00 mennessä. Käännösten tulee olla perillä ao. ammattikorkeakouluhakukohteen hakijapalveluissa määräaikaan mennessä.</p>",
+        "address": {
+          "streetAddress": "PL 4011",
+          "streetAddress2": null,
+          "postalCode": "00079",
+          "postOffice": "METROPOLIA"
+        },
+        "emailAddr": "hakijapalvelut@metropolia.fi",
+        "usedInApplicationForm": false
+      }
+    ],
+    "emphasizedSubjects": null,
+    "additionalInfo": "<p>Yleisohje korkeakoulujen yhteishaussa hakemisesta löytyy Opintopolun sivulta&nbsp;<a href=\"https://opintopolku.fi/wp/fi/ammattikorkeakoulu/nain-haet-yhteishaussa-ammattikorkeakouluun/\">Näin haet yhteishaussa ammattikorkeakouluun</a>.</p>",
+    "additionalProof": null,
+    "overallScoreLimit": null,
+    "kaksoistutkinto": false,
+    "athleteEducation": false,
+    "vocational": false,
+    "educationCodeUri": "koulutus_222222",
+    "status": null,
+    "eligibilityDescription": null,
+    "type": "KORKEAKOULU",
+    "educationTypeUri": null,
+    "hakuaikaId": "220207",
+    "organizationGroups": [
+      {
+        "oid": "1.2.246.562.28.82550511548",
+        "prioriteetti": null,
+        "usageGroups": ["yleinen"],
+        "groupTypes": ["hakukohde"]
+      },
+      {
+        "oid": "1.2.246.562.28.96829962449",
+        "prioriteetti": null,
+        "usageGroups": ["yleinen"],
+        "groupTypes": ["hakukohde"]
+      },
+      {
+        "oid": "1.2.246.562.28.55575526841",
+        "prioriteetti": null,
+        "usageGroups": ["yleinen"],
+        "groupTypes": ["hakukohde"]
+      },
+      {
+        "oid": "1.2.246.562.28.73789724481",
+        "prioriteetti": null,
+        "usageGroups": ["yleinen"],
+        "groupTypes": ["hakukohde"]
+      },
+      {
+        "oid": "1.2.246.562.28.85557110211",
+        "prioriteetti": null,
+        "usageGroups": ["yleinen"],
+        "groupTypes": ["hakukohde"]
+      },
+      {
+        "oid": "1.2.246.562.28.24712637358",
+        "prioriteetti": null,
+        "usageGroups": ["hakukohde_liiteosoite"],
+        "groupTypes": ["hakukohde"]
+      }
+    ],
+    "kotitalous": false
   }
 }

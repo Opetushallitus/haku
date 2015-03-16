@@ -27,6 +27,7 @@ lomake = initSelectors({
     suorittanutTutkinnonRule: '#suorittanutTutkinnonRule',
     warning: '.notification.warning',
     lukioPaattotodistusVuosi: 'input#lukioPaattotodistusVuosi',
+    lukioPaattotodistusKeskiarvo: 'input#lukion-paattotodistuksen-keskiarvo',
     lukionKieli: "select#lukion_kieli",
     ammatillinenKoulutuspaikka: function(bool) {
         return 'input#KOULUTUSPAIKKA_AMMATILLISEEN_TUTKINTOON_'+ bool;
@@ -37,6 +38,31 @@ lomake = initSelectors({
     pohjakoulutus : function(koulutus) {
         return "input#POHJAKOULUTUS_"+koulutus;
     },
+    lisaaUusiAmmatillinenPohjakoulutus: function(n) {
+        return "a#addAmmatillinenRule" + n + "-link";
+    },
+    pohjakoulutusAm: 'input#pohjakoulutus_am',
+    pohjakoulutusAmVuosi: function(n) {
+        return 'input#pohjakoulutus_am_vuosi' + (n == 1 ? "" : n);
+    },
+    pohjakoulutusAmNimike: function(n) {
+        return 'input#pohjakoulutus_am_nimike' + (n == 1 ? "" : n);
+    },
+    pohjakoulutusAmLaajuus: function(n) {
+        return 'input#pohjakoulutus_am_laajuus' + (n == 1 ? "" : n);
+    },
+    pohjakoulutusAmOppilaitos: function(n) {
+        return 'input#pohjakoulutus_am_oppilaitos' + (n == 1 ? "" : n);
+    },
+    pohjakoulutusAmNayttotutkintona: function(n, bool) {
+        return 'input#pohjakoulutus_am_nayttotutkintona' + (n == 1 ? "" : n) + '_' + bool;
+    },
+    pohjakoulutusYo: 'input#pohjakoulutus_yo',
+    pohjakoulutusYoVuosi: 'input#pohjakoulutus_yo_vuosi',
+    pohjakoulutusYoAmmatillinen: 'input#pohjakoulutus_yo_ammatillinen',
+    pohjakoulutusYoAmmatillinenVuosi: 'input#pohjakoulutus_yo_ammatillinen_vuosi',
+    pohjakoulutusYoAmmatillinenNimike: 'input#pohjakoulutus_yo_ammatillinen_nimike',
+    pohjakoulutusYoAmmatillinenLaajuus: 'input#pohjakoulutus_yo_ammatillinen_laajuus',
     pohjakoulutusMuu: 'input#pohjakoulutus_muu',
     pohjakoulutusMuuVuosi: 'input#pohjakoulutus_muu_vuosi',
     pohjakoulutusMuuKuvaus: 'textarea#pohjakoulutus_muu_kuvaus',
@@ -80,6 +106,12 @@ lomake = initSelectors({
 
     // Osaaminen
     fromHakutoiveet: "button[class=right][value=osaaminen][name=phaseId]:first",
+    keskiarvoTutkinto: function(suffix) {
+        return "textarea[name=keskiarvo-tutkinto" + (suffix == 1 ? "" : suffix) + "]";
+    },
+    keskiarvo: function(suffix) {
+        return '[name=keskiarvo' + (suffix == 1 ? "" : suffix) + ']';
+    },
 
     // Lisätiedot
     fromOsaaminen: "button[class=right][value=lisatiedot][name=phaseId]:first",

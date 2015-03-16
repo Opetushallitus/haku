@@ -4,7 +4,7 @@ describe('GroupConfiguration', function () {
         openPage("/haku-app/lomake/1.2.246.562.29.173465377510/henkilotiedot", function() {
             return S("form#form-henkilotiedot").first().is(':visible')
         }),
-        henkilotiedotTestikaes(),
+        partials.henkilotiedotTestikaes,
         input(lomake.koulusivistyskieli, "FI"),
         click(
             lomake.fromHenkilotiedot,
@@ -19,6 +19,27 @@ describe('GroupConfiguration', function () {
             lomake.fromKoulutustausta
         )
     );
+
+    var afrikkaKoulutus = "Afrikan ja Lähi-idän tutkimus, humanististen tieteiden kandidaatti ja filosofian maisteri";
+    var aasiaKoulutus = "Aasian tutkimus, humanististen tieteiden kandidaatti ja filosofian maisteri";
+    var raaseporiKoulutus = "Agrolog (YH)/Miljöplanerare (YH)/Skogsbruksingenjör (YH), dagstudier";
+    var ouluKoulutus = "Aate- ja oppihistoria, humanististen tieteiden kandidaatti ja filosofian maisteri";
+
+    function raasepori(n) {
+        return partials.valitseKoulutus(n, "Yrkeshögskolan Novia, Raasepori", raaseporiKoulutus);
+    }
+
+    function afrikka(n) {
+        return partials.valitseKoulutus(n, "Helsingin yliopisto, Humanistinen tiedekunta", afrikkaKoulutus);
+    }
+
+    function aasia(n) {
+        return partials.valitseKoulutus(n, "Helsingin yliopisto, Humanistinen tiedekunta", aasiaKoulutus);
+    }
+
+    function oulu(n) {
+        return partials.valitseKoulutus(n, "Oulun yliopisto, Humanistinen tiedekunta", ouluKoulutus)
+    }
 
     function syotaJarjestyksessa() {
         return seq.apply(this, Array.prototype.slice.call(arguments).map(function(f, i) {

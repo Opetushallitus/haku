@@ -463,9 +463,9 @@ function readTable($tableElement, allowWrongDimensions) {
         }
         var key = tds[0].textContent.trim();
         var value = tds[1].textContent.trim();
-        agg[key] = value;
+        agg.push([key, value]);
         return agg;
-    }, {});
+    }, []);
 }
 
 function visible(fn) {
