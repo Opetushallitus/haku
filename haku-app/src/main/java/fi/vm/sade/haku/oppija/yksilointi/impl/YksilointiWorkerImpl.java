@@ -181,9 +181,18 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
 
     @Override
     public void processModelUpdate() {
-        List<Application> applications = getNextUpgradable();
-
         LOGGER.info("Start upgrading application model");
+        oldProcess();
+        upgradeModelVersion3to4();
+        LOGGER.info("Done upgrading application model");
+    }
+
+    private void oldProcess() {
+        if (!applicationDAO.hasApplicationsWithModelVersion(2))
+            return;
+
+        List<Application> applications = applicationDAO.getNextUpgradable(2, maxBatchSize);
+
         List<String> pk = new ArrayList<String>() {{
             add(OppijaConstants.PERUSKOULU); add(OppijaConstants.OSITTAIN_YKSILOLLISTETTY);
             add(OppijaConstants.ALUEITTAIN_YKSILOLLISTETTY);  add(OppijaConstants.YKSILOLLISTETTY);}};
@@ -230,20 +239,17 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
                 }
 
             }
-            applications = getNextUpgradable();
+            applications = applicationDAO.getNextUpgradable(2, maxBatchSize);
         }
-
-        upgradeModelVersion3to4();
-
-        LOGGER.info("Done upgrading application model");
     }
 
     private void upgradeModelVersion3to4() {
-        Application findForUpgrade = new Application();
-        findForUpgrade.setModelVersion(3);
+        if (!applicationDAO.hasApplicationsWithModelVersion(3))
+            return;
+
         List<Application> applications = null;
         do {
-            applications = applicationDAO.find(findForUpgrade, maxBatchSize);
+            applications = applicationDAO.getNextUpgradable(3, maxBatchSize);
             for (Application application : applications) {
                 if (Level4.requiresPatch(application)) {
                     applicationDAO.update(new Application(application.getOid()), Level4.fixAmmatillisenKoulutuksenKeskiarvo(application, loggerAspect));
@@ -456,10 +462,6 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
             default:
                 return null;
         }
-    }
-
-    private List<Application> getNextUpgradable() {
-        return applicationDAO.getNextUpgradable(maxBatchSize);
     }
 
     private void setProcessingStateToFailed(String oid, String message){
