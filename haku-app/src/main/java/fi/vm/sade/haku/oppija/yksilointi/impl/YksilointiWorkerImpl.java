@@ -210,13 +210,16 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
     private void oldProcess() {
         final Integer baseVersion =1;
         final Integer targetVersion =2;
-        if ((!enableUpgradeV2) || (!applicationDAO.hasApplicationsWithModelVersion(baseVersion)))
+        if ((!enableUpgradeV2) || (!applicationDAO.hasApplicationsWithModelVersion(baseVersion))){
             return;
+        }
 
         List<Application> applications = applicationDAO.getNextUpgradable(baseVersion, maxBatchSize);
         while (applications.size() > 0) {
             for (Application application : applications) {
+                writeStatus("model upgrade old process", "start", application);
                 Application queryApplication = new Application(application.getOid(), application.getVersion());
+
                 try {
                     LOGGER.info("Start upgrading model version for application: " + application.getOid());
                     if (null == application.getAuthorizationMeta()) {
@@ -237,6 +240,7 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
                 } finally {
                     applicationDAO.update(queryApplication, application);
                 }
+                writeStatus("model upgrade old process", "done", application);
             }
             applications = applicationDAO.getNextUpgradable(baseVersion, maxBatchSize);
         }
@@ -258,6 +262,7 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
         List<Application> applications = applicationDAO.getNextUpgradable(baseVersion, maxBatchSize);
         while (applications.size() > 0) {
             for (Application application : applications) {
+                writeStatus("model upgrade v3", "start", application);
                 Application updateQuery = new Application(application.getOid(), application.getVersion());
                 Map<String, String> pohjakoulutus = application.getPhaseAnswers(OppijaConstants.PHASE_EDUCATION);
 
@@ -286,6 +291,7 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
                         applicationDAO.updateModelVersion(updateQuery, targetVersion);
                     }
                 }
+                writeStatus("model upgrade v3", "done", application);
             }
             applications = applicationDAO.getNextUpgradable(baseVersion, maxBatchSize);
         }
@@ -300,12 +306,14 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
         List<Application> applications = applicationDAO.getNextUpgradable(baseVersion, maxBatchSize);
         while(applications.size() > 0) {
             for (Application application : applications) {
+                writeStatus("model upgrade v4", "start", application);
                 Application queryApplication = new Application(application.getOid(), application.getVersion());
                 if (Level4.requiresPatch(application)) {
                     applicationDAO.update(queryApplication, Level4.fixAmmatillisenKoulutuksenKeskiarvo(application, loggerAspect));
                 } else {
                     applicationDAO.updateModelVersion(queryApplication, targetVersion);
                 }
+                writeStatus("model upgrade v4", "done", application);
             }
             applications = applicationDAO.getNextUpgradable(baseVersion, maxBatchSize);
         }
