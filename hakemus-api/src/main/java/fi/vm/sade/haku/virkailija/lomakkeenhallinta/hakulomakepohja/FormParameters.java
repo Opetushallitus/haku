@@ -158,4 +158,8 @@ public class FormParameters {
         }
         return list;
     }
+
+    public boolean isAmmatillinenDropdown() {
+        return "1.2.246.562.29.95390561488".equals(applicationSystem.getId());
+    }
 }
