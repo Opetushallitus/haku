@@ -54,6 +54,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -656,6 +657,24 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         return applications;
     }
 
+    @Override
+    public Application getApplication(final String oid, String ... fields) {
+        final DBObject query = new BasicDBObject(FIELD_APPLICATION_OID, oid);
+        if (0 > Arrays.binarySearch(fields, "type")){
+            int originalSize = fields.length;
+            fields = Arrays.copyOf(fields, originalSize +1);
+            fields[originalSize] = "type";
+        }
+        DBObject keys = generateKeysDBObject(fields);
+        DBCursor cursor = getCollection().find(query, keys);
+        if (ensureIndex){
+            cursor.hint(INDEX_APPLICATION_OID);
+        }
+        if (cursor.hasNext())
+            return fromDBObject.apply(cursor.next());
+        return null;
+    }
+
 
     private boolean resultNotEmpty(final DBObject query, final String indexName) {
         try {
@@ -719,12 +738,21 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
 
     @Override
     public void update(Application o, Application n) {
+        if (null == o.getOid()){
+            LOG.error("Not enough parameters for update. Oid: "+ o.getOid() +". Throwing exception");
+            throw new MongoException("Not enough parameters for update. Oid: "+ o.getOid() +" version: "+ o.getVersion());
+        }
         n.setUpdated(new Date());
         super.update(o, n);
     }
 
     @Override
     public void save(Application application) {
+        DBObject check = new BasicDBObject(FIELD_APPLICATION_OID, application.getOid());
+        if (getCollection().find(check).count() > 0) {
+            LOG.error("System already contains and application with oid: " + application.getOid() + ". Throwing exception");
+            throw new MongoException("System Already contains and application with oid: " + application.getOid());
+        }
         application.setUpdated(new Date());
         super.save(application);
     }

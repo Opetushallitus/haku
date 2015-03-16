@@ -259,6 +259,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     @Override
     public Application checkStudentOid(Application application) {
+        final Application updateQuery = new Application(application.getOid(), application.getVersion());
         String personOid = application.getPersonOid();
 
         if (isEmpty(personOid)) {
@@ -277,7 +278,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         }
 
         application.setLastAutomatedProcessingTime(System.currentTimeMillis());
-        applicationDAO.save(application);
+        applicationDAO.update(updateQuery, application);
         return application;
     }
 
@@ -473,6 +474,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         Application current = getApplication(query);
         hakuPermissionService.userCanEditApplicationAdditionalData(current);
         current.getAdditionalInfo().putAll(additionalInfo);
+        //TODO =RS= add Version
         applicationDAO.update(query, current);
     }
 

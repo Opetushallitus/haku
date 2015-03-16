@@ -39,6 +39,8 @@ public interface ApplicationDAO extends BaseDAO<Application> {
      */
     List<Application> find(Application application);
 
+    Application getApplication(String oid, String... fields);
+
     List<ApplicationAdditionalDataDTO> findApplicationAdditionalData(String applicationSystemId, String aoId,
                                                                      ApplicationFilterParameters filterParameters);
 

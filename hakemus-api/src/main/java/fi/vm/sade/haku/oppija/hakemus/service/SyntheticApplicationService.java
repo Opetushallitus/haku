@@ -8,6 +8,7 @@ import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.sun.jersey.core.impl.provider.entity.XMLJAXBElementProvider;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,7 +40,13 @@ public class SyntheticApplicationService {
         List<Application> returns = new ArrayList<Application>();
         for (SyntheticApplication.Hakemus hakemus : applicationStub.hakemukset) {
             Application app = applicationForStub(hakemus, applicationStub);
-            applicationDAO.save(app);
+            Application dbApp = applicationDAO.getApplication(app.getOid(), "oid", "version");
+            if (null == dbApp){
+                applicationDAO.save(app);
+            }
+            else {
+                applicationDAO.update(new Application(dbApp.getOid(), dbApp.getVersion()), app);
+            }
             returns.add(app);
         }
         return returns;
