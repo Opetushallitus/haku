@@ -270,17 +270,26 @@ public final class KoulutustaustaPhase {
         Element pohjakoulutusGrp = TitledGroup("pohjakoulutus.korkeakoulut")
                 .required().formParams(formParameters).build();
 
+        int maxTutkintoCount;
+        if(formParameters.isAmmatillinenDropdown()) {
+            maxTutkintoCount = 4;
+        }
+        else {
+            //old applications
+            maxTutkintoCount = 5;
+        }
+
         pohjakoulutusGrp.addChild(
                 buildYoSuomalainen(formParameters, laajuusYksikot, ammattitutkintonimikkeet, ammattioppilaitokset),
                 buildYoKansainvalinenSuomessa(formParameters),
-                buildAmmatillinen(formParameters, laajuusYksikot, ammattitutkintonimikkeet, ammattioppilaitokset, 4),
-                buildAmmattitutkinto(formParameters, 4),
-                buildKorkeakoulututkinto(formParameters, tutkintotasot, 4),
+                buildAmmatillinen(formParameters, laajuusYksikot, ammattitutkintonimikkeet, ammattioppilaitokset, maxTutkintoCount),
+                buildAmmattitutkinto(formParameters, maxTutkintoCount),
+                buildKorkeakoulututkinto(formParameters, tutkintotasot, maxTutkintoCount),
                 buildYoUlkomainen(formParameters, maat),
-                buildKorkeakoulututkintoUlkomaa(formParameters, tutkintotasot, maat, 4),
-                buildUlkomainenTutkinto(formParameters, 4),
-                buildAvoin(formParameters, 4),
-                buildMuu(formParameters, 4));
+                buildKorkeakoulututkintoUlkomaa(formParameters, tutkintotasot, maat, maxTutkintoCount),
+                buildUlkomainenTutkinto(formParameters, maxTutkintoCount),
+                buildAvoin(formParameters, maxTutkintoCount),
+                buildMuu(formParameters, maxTutkintoCount));
         elements.add(pohjakoulutusGrp);
 
         Element suoritusoikeusTaiAiempitutkinto = Radio("suoritusoikeus_tai_aiempi_tutkinto")
