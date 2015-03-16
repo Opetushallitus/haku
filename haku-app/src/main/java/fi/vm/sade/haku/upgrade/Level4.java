@@ -34,7 +34,7 @@ public class Level4 {
         } else {
             emptyInvalidKeskiarvoFields(modified);
             copyKeskiarvoFields(modified);
-            modified.setState(State.INCOMPLETE);
+            //modified.setState(State.INCOMPLETE);
         }
 
         loggerAspect.logUpdateApplication(original,

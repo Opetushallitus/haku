@@ -87,7 +87,7 @@ public class Level4Test extends IntegrationTest {
                 "järjestelmä"));
         assertEquals(expectedNotes, notes);
 
-        assertEquals(fixed.getState(), State.INCOMPLETE);
+        //assertEquals(fixed.getState(), State.INCOMPLETE);
 
         List<Change> history = fixed.getHistory();
         List expectedChanges = list(new Change(
