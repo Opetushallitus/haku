@@ -266,6 +266,7 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
                 Application updateQuery = new Application(application.getOid(), application.getVersion());
                 Map<String, String> pohjakoulutus = application.getPhaseAnswers(OppijaConstants.PHASE_EDUCATION);
 
+                Application original = null;
                 if (pk.contains(pohjakoulutus.get(OppijaConstants.ELEMENT_ID_BASE_EDUCATION))) {
                     Map<String, String> osaaminen = application.getPhaseAnswers(OppijaConstants.PHASE_GRADES);
                     Map<String, String> toAdd = new HashMap<String, String>();
@@ -278,18 +279,19 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
                         }
                     }
                     if (toAdd.size() > 0) {
-                        Application original = application.clone();
+                        original = application.clone();
                         toAdd.putAll(osaaminen);
                         application.addVaiheenVastaukset(OppijaConstants.PHASE_GRADES, toAdd);
                         application.setModelVersion(targetVersion);
-                        addHistoryBasedOnChangedAnswers(application, original, SYSTEM_USER, "model upgrade 2-3" );
-                        applicationDAO.update(updateQuery, application);
-                        loggerAspect.logUpdateApplication(original,
-                          new ApplicationPhase(original.getApplicationSystemId(),
-                            OppijaConstants.PHASE_GRADES, application.getPhaseAnswers(OppijaConstants.PHASE_GRADES)));
-                    } else {
-                        applicationDAO.updateModelVersion(updateQuery, targetVersion);
+                        addHistoryBasedOnChangedAnswers(application, original, SYSTEM_USER, "model upgrade 2-3");
                     }
+                }
+                if (null != original) {
+                    applicationDAO.update(updateQuery, application);
+                    loggerAspect.logUpdateApplication(original, new ApplicationPhase(original.getApplicationSystemId(),
+                            OppijaConstants.PHASE_GRADES, application.getPhaseAnswers(OppijaConstants.PHASE_GRADES)));
+                } else {
+                    applicationDAO.updateModelVersion(updateQuery, targetVersion);
                 }
                 writeStatus("model upgrade v3", "done", application);
             }
