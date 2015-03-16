@@ -104,6 +104,15 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
 
     final String SYSTEM_USER = "järjestelmä";
 
+
+
+    @Value("${scheduler.modelUpgrade.enableV2:false}")
+    private boolean enableUpgradeV2;
+    @Value("${scheduler.modelUpgrade.enableV3:true}")
+    private boolean enableUpgradeV3;
+    @Value("${scheduler.modelUpgrade.enableV4:true}")
+    private boolean enableUpgradeV4;
+
     @Autowired
     public YksilointiWorkerImpl(ApplicationService applicationService,
                                 ApplicationSystemService applicationSystemService,
@@ -201,7 +210,7 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
     private void oldProcess() {
         final Integer baseVersion =1;
         final Integer targetVersion =2;
-        if (!applicationDAO.hasApplicationsWithModelVersion(baseVersion))
+        if ((!enableUpgradeV2) || (!applicationDAO.hasApplicationsWithModelVersion(baseVersion)))
             return;
 
         List<Application> applications = applicationDAO.getNextUpgradable(baseVersion, maxBatchSize);
@@ -236,7 +245,7 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
     private void upgradeModelVersion2to3() {
         final Integer baseVersion = 2;
         final Integer targetVersion = 3;
-        if (!applicationDAO.hasApplicationsWithModelVersion(baseVersion))
+        if ((!enableUpgradeV3) || (!applicationDAO.hasApplicationsWithModelVersion(baseVersion)))
             return;
 
         List<String> pk = new ArrayList<String>() {{
@@ -285,7 +294,7 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
     private void upgradeModelVersion3to4() {
         final Integer baseVersion =3;
         final Integer targetVersion =4;
-        if (!applicationDAO.hasApplicationsWithModelVersion(baseVersion))
+        if ((!enableUpgradeV4) || (!applicationDAO.hasApplicationsWithModelVersion(baseVersion)))
             return;
 
         List<Application> applications = applicationDAO.getNextUpgradable(baseVersion, maxBatchSize);
