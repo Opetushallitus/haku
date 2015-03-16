@@ -26,6 +26,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.Regexp;
 import fi.vm.sade.haku.oppija.lomake.validation.Validator;
 import fi.vm.sade.haku.oppija.lomake.validation.validators.ExprValidator;
 import fi.vm.sade.haku.oppija.lomake.validation.validators.RegexFieldValidator;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain.FormConfiguration;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.hakutoiveet.HakutoiveetPhase;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
@@ -99,8 +100,11 @@ public class OsaaminenPhase {
     private static void buildKeskiarvotAmmatillinen(FormParameters formParameters, Expr haettuAMKHon, List<Option> asteikkolista, Element parent) {
         Expr pohjakoulutusLukioAmmatillinen = ExprUtil.isAnswerTrue("pohjakoulutus_yo_ammatillinen");
 
+        String yoAmmatillinenPostfix = formParameters.getFormConfiguration()
+                .getFeatureFlag(FormConfiguration.FeatureFlag.erotteleAmmatillinenJaYoAmmatillinenKeskiarvo) ? "_yo_ammatillinen" : "";
+
         Element kysytaankoLukioAmmatillinen = Rule(new And(haettuAMKHon, pohjakoulutusLukioAmmatillinen)).build();
-        buildKeskiarvoJaAsteikko(asteikkolista, kysytaankoLukioAmmatillinen, formParameters, "");
+        buildKeskiarvoJaAsteikko(asteikkolista, kysytaankoLukioAmmatillinen, formParameters, yoAmmatillinenPostfix);
         parent.addChild(kysytaankoLukioAmmatillinen);
 
         for (int i = 1; i <= 5; i++) {
