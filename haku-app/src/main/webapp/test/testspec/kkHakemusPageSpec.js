@@ -267,4 +267,68 @@ describe('KK-hakemus', function () {
             });
         });
     });
+
+    describe('täyttö', function() {
+        beforeEach(seqDone(
+            logout,
+            openPage("/haku-app/lomakkeenhallinta/1.2.246.562.29.95390561488", function() {
+                return S("form#form-henkilotiedot").first().is(':visible')
+            })));
+
+        it('tukee useampaa ammatillista peruskoulutusta', seqDone(
+            partials.henkilotiedotTestikaes,
+            input(lomake.koulusivistyskieli, "FI"),
+            click(lomake.fromHenkilotiedot),
+            headingVisible("Koulutustausta"),
+            click(lomake.pohjakoulutusYo),
+            input(lomake.pohjakoulutusYoVuosi, "2000"),
+            click(lomake.pohjakoulutusYoAmmatillinen),
+            input(
+                lomake.pohjakoulutusYoAmmatillinenVuosi, "2000",
+                lomake.pohjakoulutusYoAmmatillinenNimike, "Nimike oli",
+                lomake.pohjakoulutusYoAmmatillinenLaajuus, "1000"),
+            click(
+                lomake.pohjakoulutusAm,
+                lomake.lisaaUusiAmmatillinenPohjakoulutus(2)),
+            partials.syotaAmmatillinenPohjakoulutus(1, "2000", "Ammatillinen 1", "1000", "Joku koulu se oli", false),
+            partials.syotaAmmatillinenPohjakoulutus(2, "2001", "Ammatillinen 2", "1000", "Joku toinen koulu se oli", false),
+            click(
+                lomake.suoritusoikeusTaiAiempiTutkinto(false),
+                lomake.fromKoulutustausta),
+            partials.valitseKoulutus(1, "Metropolia AMK, Espoo, Vanha maantie (Leppävaara)", "Insinööri (AMK), maanmittaustekniikka, päivätoteutus"),
+            click(lomake.fromHakutoiveet),
+            input(lomake.lukioPaattotodistusKeskiarvo, "1,00"),
+            partials.syotaAmmatillinenKeskiarvo('_yo_ammatillinen', '2,00', "Lukio + ammatillinen"),
+            partials.syotaAmmatillinenKeskiarvo(1, '2,50', "Ammatillinen 1 keskiarvo"),
+            partials.syotaAmmatillinenKeskiarvo(2, '3,00', "Ammatillinen 2 keskiarvo"),
+            click(
+                lomake.fromOsaaminen,
+                lomake.asiointikieli("suomi")),
+            pageChange(lomake.fromLisatieto),
+            function() {
+                var expected = [
+                    ["Lukion päättötodistuksen keskiarvo", "1,00"],
+                    ["Ammatillisen tutkinnon keskiarvo", "2,00"],
+                    ["Ammatillisen tutkinnon arvosana-asteikko", "1-3"],
+                    [
+                        "Jos olet suorittanut useampia ammatillisia tutkintoja, kirjoita tähän, mitä antamasi keskiarvo koskee.",
+                        "Lukio + ammatillinen"
+                    ],
+                    ["Ammatillisen tutkinnon keskiarvo", "2,50"],
+                    ["Ammatillisen tutkinnon arvosana-asteikko", "1-3"],
+                    [
+                        "Jos olet suorittanut useampia ammatillisia tutkintoja, kirjoita tähän, mitä antamasi keskiarvo koskee.",
+                        "Ammatillinen 1 keskiarvo"
+                    ],
+                    ["Ammatillisen tutkinnon keskiarvo", "3,00"],
+                    ["Ammatillisen tutkinnon arvosana-asteikko", "1-3"],
+                    [
+                        "Jos olet suorittanut useampia ammatillisia tutkintoja, kirjoita tähän, mitä antamasi keskiarvo koskee.",
+                        "Ammatillinen 2 keskiarvo"
+                    ]
+                ];
+                expect(readTable(S('#osaaminenteema'))).to.deep.equal(expected);
+            }
+        ));
+    })
 });

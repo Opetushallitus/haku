@@ -47,27 +47,6 @@ function jazz5v(n) {
     return valitseKoulutus(n, sibelusAkatemia, "Jazzmusiikki, sävellys 5,5-vuotinen koulutus")
 }
 
-function henkilotiedotTestikaes() {
-    return seq(
-        input(
-            lomake.sukunimi, "Testikäs",
-            lomake.etunimet, "Asia Kas",
-            lomake.kutsumanimi, "Asia",
-            lomake.hetu, "171175-830Y"),
-        wait.until(function() {
-            return S("input#sukupuoli").length > 0;
-        }),
-        click(lomake.kaksoiskansalaisuus(false)),
-        function() {
-            expect(lomake.sukupuoli().val()).to.equal('2');
-        },
-        input(
-            lomake.asuinmaa, 'FIN',
-            lomake.lahiosoite, "Testikatu 4",
-            lomake.postinumero, "00100",
-            lomake.kotikunta, "janakkala"));
-}
-
 function tyhjennaHakutoiveet(count) {
     var tyhjennaHakutoiveArray = [];
     for(var i = 1; i <= count; i++) {
@@ -99,3 +78,47 @@ function valitseKoulutus(prioriteetti, koulunNimi, koulutuksenNimi) {
         select(lomake.koulutus(prioriteetti), koulutuksenNimi)
     );
 }
+
+partials = {
+    henkilotiedotTestikaes: seq(
+        input(
+            lomake.sukunimi, "Testikäs",
+            lomake.etunimet, "Asia Kas",
+            lomake.kutsumanimi, "Asia",
+            lomake.hetu, "171175-830Y"),
+        wait.until(function() {
+            return S("input#sukupuoli").length > 0;
+        }),
+        click(lomake.kaksoiskansalaisuus(false)),
+        function() {
+            expect(lomake.sukupuoli().val()).to.equal('2');
+        },
+        input(
+            lomake.asuinmaa, 'FIN',
+            lomake.lahiosoite, "Testikatu 4",
+            lomake.postinumero, "00100",
+            lomake.kotikunta, "janakkala")),
+    valitseKoulutus: function(prioriteetti, koulunNimi, koulutuksenNimi) {
+        return seq(
+            autocomplete(lomake.opetuspiste(prioriteetti), koulunNimi, koulunNimi),
+            select(lomake.koulutus(prioriteetti), koulutuksenNimi)
+        );
+    },
+    syotaAmmatillinenPohjakoulutus: function(n, vuosi, nimike, laajuus, oppilaitos, nayttotutkintona) {
+        return seq(
+            input(
+                lomake.pohjakoulutusAmVuosi(n), vuosi,
+                lomake.pohjakoulutusAmNimike(n), nimike,
+                lomake.pohjakoulutusAmLaajuus(n), laajuus,
+                lomake.pohjakoulutusAmOppilaitos(n), oppilaitos),
+            click(
+                lomake.pohjakoulutusAmNayttotutkintona(n, nayttotutkintona)
+            ));
+    },
+    syotaAmmatillinenKeskiarvo: function(suffix, keskiarvo, tutkinto) {
+        return seq(
+            input(
+                lomake.keskiarvo(suffix), keskiarvo,
+                lomake.keskiarvoTutkinto(suffix), tutkinto));
+    }
+};

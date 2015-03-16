@@ -748,5 +748,126 @@
       ],
       "kotitalous": false
     }
+  ],
+  "1.2.246.562.10.75213421979": [
+    {
+      "id": "1.2.246.562.20.18131989511",
+      "name": "Insinööri (AMK), maanmittaustekniikka, päivätoteutus",
+      "aoIdentifier": null,
+      "educationDegree": "koulutusasteoph2002_62",
+      "childLONames": [],
+      "sora": false,
+      "teachingLanguages": ["FI"],
+      "teachingLanguageNames": [],
+      "athleteEducation": false,
+      "kaksoistutkinto": false,
+      "vocational": false,
+      "educationCodeUri": "koulutus_222222",
+      "organizationGroups": [
+        {
+          "oid": "1.2.246.562.28.82550511548",
+          "prioriteetti": null,
+          "usageGroups": ["yleinen"],
+          "groupTypes": ["hakukohde"]
+        },
+        {
+          "oid": "1.2.246.562.28.96829962449",
+          "prioriteetti": null,
+          "usageGroups": ["yleinen"],
+          "groupTypes": ["hakukohde"]
+        },
+        {
+          "oid": "1.2.246.562.28.55575526841",
+          "prioriteetti": null,
+          "usageGroups": ["yleinen"],
+          "groupTypes": ["hakukohde"]
+        },
+        {
+          "oid": "1.2.246.562.28.73789724481",
+          "prioriteetti": null,
+          "usageGroups": ["yleinen"],
+          "groupTypes": ["hakukohde"]
+        },
+        {
+          "oid": "1.2.246.562.28.85557110211",
+          "prioriteetti": null,
+          "usageGroups": ["yleinen"],
+          "groupTypes": ["hakukohde"]
+        },
+        {
+          "oid": "1.2.246.562.28.24712637358",
+          "prioriteetti": null,
+          "usageGroups": ["hakukohde_liiteosoite"],
+          "groupTypes": ["hakukohde"]
+        }
+      ],
+      "attachments": [
+        {
+          "dueDate": 1429790429462,
+          "type": "Ammatti- ja erikoisammattitutkinnot",
+          "descreption": "<p>Osoittaakseen hakukelpoisuutensa suomalaisella ammatti- tai erikoisammattitutkinnolla hakevan on toimitettava kopio lopullisesta tutkintotodistuksestaan ensisijaisen ammattikorkeakouluhakukohteen hakijapalveluihin viimeistään 23.4.2015 klo 15.00 mennessä. Tämä ei koske suomalaisella ammatillisella perustutkinnolla tai muulla suomalaisella tutkinnolla hakevia. Todistuskopioiden tulee olla perillä ao. ammattikorkeakouluhakukohteen hakijapalveluissa määräaikaan mennessä. </p>",
+          "address": {
+            "streetAddress": "PL 4011",
+            "streetAddress2": null,
+            "postalCode": "00079",
+            "postOffice": "METROPOLIA"
+          },
+          "emailAddr": "hakijapalvelut@metropolia.fi",
+          "usedInApplicationForm": false
+        },
+        {
+          "dueDate": 1429790452412,
+          "type": "IB, EB ja RP -tutkinnot",
+          "descreption": "<p>Osoittaakseen hakukelpoisuutensa International Baccalaureate (IB), European Baccalaureate (EB) tai Reifeprüfung (RP) tutkintotodistuksella hakevan on toimitettava kopio lopullisesta tutkintotodistuksestaan ensisijaisen ammattikorkeakouluhakukohteen hakijapalveluihin viimeistään 23.4.2015 klo 15.00 mennessä. Tämä ei kuitenkaan koske hakukeväänä valmistuvia hakijoita. Todistuskopioiden tulee olla perillä ao. ammattikorkeakouluhakukohteen hakijapalveluissa määräaikaan mennessä.</p>",
+          "address": {
+            "streetAddress": "PL 4011",
+            "streetAddress2": null,
+            "postalCode": "00079",
+            "postOffice": "METROPOLIA"
+          },
+          "emailAddr": "hakijapalvelut@metropolia.fi",
+          "usedInApplicationForm": false
+        },
+        {
+          "dueDate": 1431691211308,
+          "type": "IB Predicted Grades",
+          "descreption": "<p>Hakukeväänä valmistuvat IB-abiturientin on toimitettava kopion todistusarvosanoistaan (predicted grades) viimeistään 15.5.2015 ensisijaisen ammattikorkeakouluhakukohteen hakijapalveluihin. Todistuskopioiden tulee olla perillä ao. ammattikorkeakouluhakukohteen hakijapalveluissa määräaikaan mennessä.</p>",
+          "address": {
+            "streetAddress": "PL 4011",
+            "streetAddress2": null,
+            "postalCode": "00079",
+            "postOffice": "METROPOLIA"
+          },
+          "emailAddr": "hakijapalvelut@metropolia.fi",
+          "usedInApplicationForm": false
+        },
+        {
+          "dueDate": 1429790431218,
+          "type": "Ulkomaiset tutkinnot",
+          "descreption": "<p>Osoittaakseen hakukelpoisuutensa ulkomailla suoritetulla tutkintotodistuksella hakevan on toimitettava kopio lopullisesta tutkintotodistuksestaan ensisijaisen ammattikorkeakouluhakukohteen hakijapalveluihin viimeistään 23.4.2015 klo 15.00 mennessä. Todistuskopioiden tulee olla perillä ao. ammattikorkeakouluhakukohteen hakijapalveluissa määräaikaan mennessä.</p>",
+          "address": {
+            "streetAddress": "PL 4011",
+            "streetAddress2": null,
+            "postalCode": "00079",
+            "postOffice": "METROPOLIA"
+          },
+          "emailAddr": "hakijapalvelut@metropolia.fi",
+          "usedInApplicationForm": false
+        },
+        {
+          "dueDate": 1429790451985,
+          "type": "Käännökset",
+          "descreption": "<p>Todistuskopioiden lisäksi on toimitettava virallisen kielenkääntäjän suomeksi, ruotsiksi tai englanniksi tekemä käännöskopio tutkintotodistuksesta, jos tutkintotodistuksen kieli ei ole mikään näistä. Käännöksessä tulee olla kääntäjän allekirjoitus ja leima. Käännös tulee toimittaa ensisijaisen ammattikorkeakouluhakukohteen hakijapalveluihin viimeistään 23.4.2015 klo 15.00 mennessä. Käännösten tulee olla perillä ao. ammattikorkeakouluhakukohteen hakijapalveluissa määräaikaan mennessä.</p>",
+          "address": {
+            "streetAddress": "PL 4011",
+            "streetAddress2": null,
+            "postalCode": "00079",
+            "postOffice": "METROPOLIA"
+          },
+          "emailAddr": "hakijapalvelut@metropolia.fi",
+          "usedInApplicationForm": false
+        }
+      ]
+    }
   ]
 }
