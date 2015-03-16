@@ -19,6 +19,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
+
 
 @Service
 public final class FormConfigurationService {
@@ -94,8 +97,11 @@ public final class FormConfigurationService {
     }
 
     private FormConfiguration createAndStoreFormConfiguration(final ApplicationSystem applicationSystem){
+        Map<FormConfiguration.FeatureFlag, Boolean> defaultFeatureFlags = new HashMap<>();
+        defaultFeatureFlags.put(FormConfiguration.FeatureFlag.erotteleAmmatillinenJaYoAmmatillinenKeskiarvo, true);
+
         FormConfiguration formConfiguration = new FormConfiguration(applicationSystem.getId(),
-          figureOutFormTypeForApplicationSystem(applicationSystem));
+                  figureOutFormTypeForApplicationSystem(applicationSystem), defaultFeatureFlags);
         if (persistCreatedNewConfiguration)
             return saveAndFetchFormConfiguration(formConfiguration);
         else

@@ -9,7 +9,9 @@ import org.codehaus.jackson.map.annotate.JsonDeserialize;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_EMPTY)
@@ -29,6 +31,12 @@ public class FormConfiguration {
         AMK_OPET
     }
 
+    public enum FeatureFlag {
+        // BUG-27: Kirjoita kaksoistutkinnon ammatillisen koulutuksen keskiarvo
+        // ja toisen ammatillisen tutkinnon keskiarvo eri kenttiin tietokannassa
+        erotteleAmmatillinenJaYoAmmatillinenKeskiarvo
+    }
+
     // FormConfiguration oid
     @JsonProperty(value = "_id")
     @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL, using = SimpleObjectIdSerializer.class)
@@ -42,25 +50,36 @@ public class FormConfiguration {
 
     private List<GroupConfiguration> groupConfigurations;
 
+    private Map<FeatureFlag, Boolean> featureFlags;
+
     public FormConfiguration() {
         groupConfigurations = new ArrayList<GroupConfiguration>();
+        featureFlags = new HashMap<FeatureFlag, Boolean>();
     }
 
     public FormConfiguration(final String applicationSystemId) {
         this.applicationSystemId = applicationSystemId;
         groupConfigurations = new ArrayList<GroupConfiguration>();
+        featureFlags = new HashMap<FeatureFlag, Boolean>();
     }
 
-    public FormConfiguration(final String applicationSystemId, final FormTemplateType formTemplateType) {
+    public FormConfiguration(final String applicationSystemId,
+                             final FormTemplateType formTemplateType,
+                             final Map<FeatureFlag, Boolean> featureFlags) {
         this(applicationSystemId);
         this.formTemplateType = formTemplateType;
+        if (null == featureFlags)
+            this.featureFlags = new HashMap<FeatureFlag, Boolean>();
+        else
+            this.featureFlags = new HashMap<FeatureFlag, Boolean>(featureFlags);
     }
 
     @JsonCreator
     protected FormConfiguration(@JsonProperty(value = "applicationSystemId") String applicationSystemId,
                                 @JsonProperty(value = "formTemplateType") FormTemplateType formTemplateType,
-                                @JsonProperty(value = "groupConfigurations") List<GroupConfiguration> groupConfigurations) {
-        this(applicationSystemId, formTemplateType);
+                                @JsonProperty(value = "groupConfigurations") List<GroupConfiguration> groupConfigurations,
+                                @JsonProperty(value = "featureFlags") Map<FeatureFlag, Boolean> featureFlags) {
+        this(applicationSystemId, formTemplateType, featureFlags);
         if (null == groupConfigurations)
             this.groupConfigurations = new ArrayList<GroupConfiguration>();
         else
@@ -97,5 +116,17 @@ public class FormConfiguration {
         if (null == toBeRemoved)
             return;
         groupConfigurations.remove(toBeRemoved);
+    }
+
+    public Map<FeatureFlag, Boolean> getFeatureFlags() {
+        return featureFlags;
+    }
+
+    public boolean getFeatureFlag(FeatureFlag feature) {
+        return this.featureFlags.containsKey(feature) && this.featureFlags.get(feature);
+    }
+
+    public void setFeatureFlag(FeatureFlag feature, Boolean enabled) {
+        this.featureFlags.put(feature, enabled);
     }
 }
