@@ -88,7 +88,6 @@ public final class OppijaConstants {
     public static final String PREFERENCE_PREFIX = "preference";
     public static final String OPTION_ID_POSTFIX = "-Koulutus-id";
     public static final String OPTION_GROUP_POSTFIX = "-Koulutus-id-ao-groups";
-    public static final String OPTION_ATTACHMENT_GROUP_POSTFIX = "-Koulutus-id-attachmentgroups";
     public static final String OPTION_ATTACHMENTS_POSTFIX = "-Koulutus-id-attachments";
     public static final String OPTION_ATTACHMENT_GROUP_TYPE = "hakukohde_liiteosoite";
     public static final String PREFERENCE_NAME = "preference%d-Koulutus";

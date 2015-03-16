@@ -25,8 +25,7 @@ import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Document
 public class ApplicationSystem implements Serializable {
@@ -49,6 +48,7 @@ public class ApplicationSystem implements Serializable {
     private List<Element> applicationCompleteElements;
     private List<Element> additionalInformationElements;
     private List<ApplicationOptionAttachmentRequest> applicationOptionAttachmentRequests;
+    private List<AttachmentGroupAddress> attachmentGroupAddresses;
     private int maxApplicationOptions;
     private List<String> allowedLanguages;
 
@@ -63,6 +63,7 @@ public class ApplicationSystem implements Serializable {
                              final List<Element> applicationCompleteElements,
                              final List<Element> additionalInformationElements,
                              final List<ApplicationOptionAttachmentRequest> applicationOptionAttachmentRequests,
+                             final List<AttachmentGroupAddress> attachmentGroupAddresses,
                              final Integer maxApplicationOptions,
                              final List<String> allowedLanguages,
                              final Date lastGenerated) {
@@ -85,6 +86,7 @@ public class ApplicationSystem implements Serializable {
         this.applicationCompleteElements = applicationCompleteElements;
         this.additionalInformationElements = additionalInformationElements;
         this.applicationOptionAttachmentRequests = applicationOptionAttachmentRequests;
+        this.attachmentGroupAddresses = attachmentGroupAddresses;
         this.maxApplicationOptions = maxApplicationOptions != null ?
                 maxApplicationOptions.intValue() : 1;
         this.allowedLanguages = allowedLanguages;
@@ -163,6 +165,13 @@ public class ApplicationSystem implements Serializable {
 
     public List<ApplicationOptionAttachmentRequest> getApplicationOptionAttachmentRequests() {
         return applicationOptionAttachmentRequests;
+    }
+
+    public List<AttachmentGroupAddress> getAttachmentGroupAddresses() {
+        if(attachmentGroupAddresses == null) {
+            return new ArrayList<>();
+        }
+        return attachmentGroupAddresses;
     }
 
     public Date getLastGenerated() {

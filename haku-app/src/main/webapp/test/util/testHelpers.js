@@ -269,7 +269,14 @@ function openPage(path, predicate) {
     }
     return seq(
         function() {
-            var newTestFrame = $('<iframe/>').attr({src: path, width: 1024, height: 800, id: "testframe"});
+            var pathStr;
+            if (typeof(path) == 'function') {
+                pathStr = path();
+            }
+            else {
+                pathStr = path;
+            }
+            var newTestFrame = $('<iframe/>').attr({src: pathStr, width: 1024, height: 800, id: "testframe"});
             $("#testframe").replaceWith(newTestFrame);
         },
         wait.until(predicate),
@@ -314,6 +321,18 @@ function login(username, password) {
         }));
 }
 
+function installGroupConfigurations(configs) {
+    return seq(
+        teardownAllTestGroupConfigurations(),
+        seq.apply(this, Array.prototype.slice.call(arguments).map(function(configParams) {
+            return setupGroupConfiguration.apply(this, configParams);
+        })),
+        openPage("/haku-app/lomakkeenhallinta/1.2.246.562.29.173465377510", function() {
+            return S("form#form-henkilotiedot").first().is(':visible')
+        })
+    )
+}
+
 function setupGroupConfiguration(applicationSystemId, groupId, type, configurations) {
     var resource = "/haku-app/application-system-form-editor/configuration";
     return seq(
@@ -329,6 +348,18 @@ function teardownGroupConfiguration(applicationSystemId, groupId, type) {
         post(resource + "/" + applicationSystemId + "/groupConfiguration/" + groupId + "/delete",
             {groupId: groupId, type: type},
             'application/json'))
+}
+
+function teardownAllTestGroupConfigurations() {
+    return seq(
+        login('master', 'master'),
+        teardownGroupConfiguration("1.2.246.562.29.173465377510", "1.2.246.562.28.00000000001", "hakukohde_rajaava"),
+        teardownGroupConfiguration("1.2.246.562.29.173465377510", "1.2.246.562.28.00000000002", "hakukohde_rajaava"),
+        teardownGroupConfiguration("1.2.246.562.29.173465377510", "1.2.246.562.28.00000000003", "hakukohde_rajaava"),
+        teardownGroupConfiguration("1.2.246.562.29.173465377510", "1.2.246.562.28.20907706740", "hakukohde_priorisoiva"),
+        teardownGroupConfiguration("1.2.246.562.29.173465377510", "1.2.246.562.28.20907706741", "hakukohde_priorisoiva"),
+        teardownGroupConfiguration("1.2.246.562.29.173465377510", "1.2.246.562.28.20907706742", "hakukohde_rajaava")
+    );
 }
 
 function takeScreenshot() {

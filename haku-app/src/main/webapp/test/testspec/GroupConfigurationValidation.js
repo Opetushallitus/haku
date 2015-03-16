@@ -20,27 +20,6 @@ describe('GroupConfiguration', function () {
         )
     );
 
-    var afrikkaKoulutus = "Afrikan ja Lähi-idän tutkimus, humanististen tieteiden kandidaatti ja filosofian maisteri";
-    var aasiaKoulutus = "Aasian tutkimus, humanististen tieteiden kandidaatti ja filosofian maisteri";
-    var raaseporiKoulutus = "Agrolog (YH)/Miljöplanerare (YH)/Skogsbruksingenjör (YH), dagstudier";
-    var ouluKoulutus = "Aate- ja oppihistoria, humanististen tieteiden kandidaatti ja filosofian maisteri";
-
-    function raasepori(n) {
-        return valitseKoulutus(n, "Yrkeshögskolan Novia, Raasepori", raaseporiKoulutus);
-    }
-
-    function afrikka(n) {
-        return valitseKoulutus(n, "Helsingin yliopisto, Humanistinen tiedekunta", afrikkaKoulutus);
-    }
-
-    function aasia(n) {
-        return valitseKoulutus(n, "Helsingin yliopisto, Humanistinen tiedekunta", aasiaKoulutus);
-    }
-
-    function oulu(n) {
-        return valitseKoulutus(n, "Oulun yliopisto, Humanistinen tiedekunta", ouluKoulutus)
-    }
-
     function syotaJarjestyksessa() {
         return seq.apply(this, Array.prototype.slice.call(arguments).map(function(f, i) {
             return f(i + 1);
@@ -62,27 +41,10 @@ describe('GroupConfiguration', function () {
         return "Hakukohde " + a + " tulee olla korkeammalla prioriteetilla kuin hakukohteen " + b + ". Muuta hakukohteiden ensisijaisuusjärjestystä.";
     }
 
-    function installGroupConfigurations(configs) {
-        return seq(
-            login('master', 'master'),
-            seq.apply(this, Array.prototype.slice.call(arguments).map(function(configParams) {
-                return setupGroupConfiguration.apply(this, configParams);
-            })),
-            openPage("/haku-app/lomakkeenhallinta/1.2.246.562.29.173465377510", function() {
-                return S("form#form-henkilotiedot").first().is(':visible')
-            })
-        )
-    }
-
     describe("hakukohteiden rajaavuuden validointi", function() {
         before(seqDone(installGroupConfigurations(
             ["1.2.246.562.29.173465377510", "1.2.246.562.28.20907706742", "hakukohde_rajaava", {maximumNumberOf: 1}]
         )));
-
-        after(seqDone(
-            login('master', 'master'),
-            teardownGroupConfiguration("1.2.246.562.29.173465377510", "1.2.246.562.28.20907706742", "hakukohde_rajaava")
-        ));
 
         beforeEach(prefill);
 
@@ -132,13 +94,6 @@ describe('GroupConfiguration', function () {
             ["1.2.246.562.29.173465377510", "1.2.246.562.28.00000000003", "hakukohde_rajaava", {maximumNumberOf: 1}]
         )));
 
-        after(seqDone(
-            login('master', 'master'),
-            teardownGroupConfiguration("1.2.246.562.29.173465377510", "1.2.246.562.28.00000000001", "hakukohde_rajaava"),
-            teardownGroupConfiguration("1.2.246.562.29.173465377510", "1.2.246.562.28.00000000002", "hakukohde_rajaava"),
-            teardownGroupConfiguration("1.2.246.562.29.173465377510", "1.2.246.562.28.00000000003", "hakukohde_rajaava")
-        ));
-
         beforeEach(prefill);
 
         // RAJAAVUUS *01, max 1: aasia,     afrikka
@@ -181,12 +136,6 @@ describe('GroupConfiguration', function () {
             ["1.2.246.562.29.173465377510", "1.2.246.562.28.20907706740", "hakukohde_priorisoiva"],
             ["1.2.246.562.29.173465377510", "1.2.246.562.28.20907706741", "hakukohde_priorisoiva"]
         )));
-
-        after(seqDone(
-            login('master', 'master'),
-            teardownGroupConfiguration("1.2.246.562.29.173465377510", "1.2.246.562.28.20907706740", "hakukohde_priorisoiva"),
-            teardownGroupConfiguration("1.2.246.562.29.173465377510", "1.2.246.562.28.20907706741", "hakukohde_priorisoiva")
-        ));
 
         beforeEach(prefill);
 
@@ -308,12 +257,6 @@ describe('GroupConfiguration', function () {
             ["1.2.246.562.29.173465377510", "1.2.246.562.28.20907706742", "hakukohde_rajaava", {maximumNumberOf: 1}],
             ["1.2.246.562.29.173465377510", "1.2.246.562.28.20907706740", "hakukohde_priorisoiva"]
         )));
-
-        after(seqDone(
-            login('master', 'master'),
-            teardownGroupConfiguration("1.2.246.562.29.173465377510", "1.2.246.562.28.20907706742", "hakukohde_rajaava"),
-            teardownGroupConfiguration("1.2.246.562.29.173465377510", "1.2.246.562.28.20907706740", "hakukohde_priorisoiva")
-        ));
 
         beforeEach(prefill);
 

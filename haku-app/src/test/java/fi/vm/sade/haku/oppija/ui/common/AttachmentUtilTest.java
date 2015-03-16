@@ -43,9 +43,9 @@ public class AttachmentUtilTest {
         assertFalse(attachmentOids.isEmpty());
 
         assertEquals(2, attachmentOids.size());
-        assertTrue(attachmentOids.containsKey("muu"));
-        assertEquals(1, attachmentOids.get("muu").size());
-        assertEquals("1.2.3", attachmentOids.get("muu").get(0));
+        assertTrue(attachmentOids.containsKey("form.valmis.todistus.muu"));
+        assertEquals(1, attachmentOids.get("form.valmis.todistus.muu").size());
+        assertEquals("1.2.3", attachmentOids.get("form.valmis.todistus.muu").get(0));
     }
 
     @Test
@@ -73,12 +73,12 @@ public class AttachmentUtilTest {
         assertFalse(attachmentOids.isEmpty());
 
         assertEquals(2, attachmentOids.size());
-        assertTrue(attachmentOids.containsKey("muu"));
-        assertTrue(attachmentOids.containsKey("yo"));
-        assertEquals(2, attachmentOids.get("muu").size());
-        assertTrue(attachmentOids.get("muu").contains("1.2.3"));
-        assertTrue(attachmentOids.get("muu").contains("4.5.6"));
-        assertEquals(2, attachmentOids.get("yo").size());
-        assertTrue(attachmentOids.get("yo").contains("4.5.6"));
+        assertTrue(attachmentOids.containsKey("form.valmis.todistus.muu"));
+        assertTrue(attachmentOids.containsKey("form.valmis.todistus.yo"));
+        assertEquals(2, attachmentOids.get("form.valmis.todistus.muu").size());
+        assertTrue(attachmentOids.get("form.valmis.todistus.muu").contains("1.2.3"));
+        assertTrue(attachmentOids.get("form.valmis.todistus.muu").contains("4.5.6"));
+        assertEquals(2, attachmentOids.get("form.valmis.todistus.yo").size());
+        assertTrue(attachmentOids.get("form.valmis.todistus.yo").contains("4.5.6"));
     }
 }

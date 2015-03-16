@@ -197,9 +197,124 @@
           "prioriteetti": null,
           "usageGroups": ["hakukohde_rajaava"],
           "groupTypes": ["hakukohde"]
+        },
+        {
+          "oid": "1.2.246.562.28.00000000011",
+          "prioriteetti": null,
+          "usageGroups": ["hakukohde_liiteosoite"],
+          "groupTypes": ["hakukohde"]
         }
       ],
       "attachments": null
+    }
+  ],
+  "1.2.246.562.10.99415780891": [
+    {
+      "id": "1.2.246.562.20.51800481577",
+      "name": "Master of Culture and Arts, Entrepreneurship in Arts, part-time studies",
+      "aoIdentifier": null,
+      "startingQuota": 10,
+      "startingQuotaDescription": "10",
+      "lowestAcceptedScore": 0,
+      "lowestAcceptedAverage": 0.0,
+      "attachmentDeliveryDeadline": null,
+      "attachmentDeliveryAddress": {
+        "streetAddress": "PB 6",
+        "streetAddress2": null,
+        "postalCode": "65201",
+        "postOffice": "VASA"
+      },
+      "lastYearApplicantCount": 0,
+      "sora": false,
+      "educationDegree": "koulutusasteoph2002_71",
+      "teachingLanguages": ["EN"],
+      "teachingLanguageNames": [],
+      "selectionCriteria": null,
+      "soraDescription": null,
+      "prerequisite": null,
+      "exams": [
+        {
+          "type": "Entrance Examination",
+          "description": "<p>All eligible applicants with approved pre-tasks will be invited to the entrance examination. The entrance examination will be held only in Finland. The entrance examination will consist of an interview, about 20-30 minutes per applicant. The interview will also serve as an English language test, since the program will be taught in English.<br /><br /></p>",
+          "examEvents": [
+            {
+              "start": 1432357880923,
+              "end": 1432444280923,
+              "description": "See invitation letter for details",
+              "address": {
+                "streetAddress": "Köpmansgatan 10",
+                "streetAddress2": null,
+                "postalCode": "68600",
+                "postOffice": "PIETARSAARI"
+              },
+              "timeIncluded": false
+            }
+          ],
+          "scoreLimit": null
+        }
+      ],
+      "childRefs": [],
+      "higherEdLOSRefs": [
+        {
+          "id": "1.2.246.562.17.11008762541",
+          "asIds": null,
+          "name": "Master of Culture and Arts, Entrepreneurship in Arts",
+          "qualifications": ["Master of Culture and Arts"],
+          "prerequisite": null,
+          "provider": "Novia University of Applied Sciences, Pietarsaari",
+          "fieldOfExpertise": null
+        },
+        {
+          "id": "1.2.246.562.17.14084029777",
+          "asIds": null,
+          "name": "Master of Culture and Arts, Entrepreneurship in Arts",
+          "qualifications": ["Kuvataiteilija (ylempi AMK)"],
+          "prerequisite": null,
+          "provider": "Novia University of Applied Sciences, Pietarsaari",
+          "fieldOfExpertise": null
+        }
+      ],
+      "specificApplicationDates": false,
+      "applicationStartDate": 1426076114152,
+      "applicationEndDate": 1428580845519,
+      "applicationPeriodName": "Application period 2",
+      "canBeApplied": true,
+      "nextApplicationPeriodStarts": null,
+      "requiredBaseEducations": [
+        "pohjakoulutusvaatimuskorkeakoulut_101",
+        "pohjakoulutusvaatimuskorkeakoulut_102",
+        "pohjakoulutusvaatimuskorkeakoulut_116",
+        "pohjakoulutusvaatimuskorkeakoulut_100"
+      ],
+      "attachments": [],
+      "emphasizedSubjects": null,
+      "additionalInfo": null,
+      "additionalProof": null,
+      "overallScoreLimit": null,
+      "kaksoistutkinto": false,
+      "athleteEducation": false,
+      "vocational": false,
+      "educationCodeUri": "koulutus_721301",
+      "status": null,
+      "eligibilityDescription": null,
+      "type": "KORKEAKOULU",
+      "educationTypeUri": null,
+      "hakuaikaId": "220207",
+      "organizationGroups": [
+        {
+          "oid": "1.2.246.562.28.54403960693",
+          "prioriteetti": null,
+          "usageGroups": ["yleinen"],
+          "groupTypes": ["hakukohde"]
+        },
+        {
+          "oid": "1.2.246.562.28.10942030083",
+          "prioriteetti": null,
+          "usageGroups": ["yleinen"],
+          "groupTypes": ["hakukohde"]
+        }
+      ],
+      "kotitalous": false
     }
   ],
   "1.2.246.562.10.62355244518": [
@@ -298,8 +413,14 @@
           "prioriteetti": null,
           "usageGroups": ["hakukohde_rajaava"],
           "groupTypes": ["hakukohde"]
+        },
+        {
+          "oid": "1.2.246.562.28.00000000011",
+          "prioriteetti": null,
+          "usageGroups": ["hakukohde_liiteosoite"],
+          "groupTypes": ["hakukohde"]
         }
-      ],
+    ],
       "attachments": null
     },
     {
@@ -345,9 +466,287 @@
           "prioriteetti": null,
           "usageGroups": ["hakukohde_rajaava"],
           "groupTypes": ["hakukohde"]
+        },
+        {
+          "oid": "1.2.246.562.28.00000000011",
+          "prioriteetti": null,
+          "usageGroups": ["hakukohde_liiteosoite"],
+          "groupTypes": ["hakukohde"]
         }
       ],
       "attachments": null
+    }
+  ],
+  "1.2.246.562.10.14842710486": [
+    {
+      "id": "1.2.246.562.20.42250016427",
+      "name": "Sosionomi (AMK), monimuotototeutus",
+      "aoIdentifier": null,
+      "educationDegree": "koulutusasteoph2002_62",
+      "sora": false,
+      "teachingLanguages": ["FI"],
+      "athleteEducation": false,
+      "kaksoistutkinto": false,
+      "vocational": false,
+      "educationCodeUri": "koulutus_671201",
+      "organizationGroups": [
+        {
+          "oid": "1.2.246.562.28.90373737623",
+          "usageGroups": ["hakukohde_liiteosoite"],
+          "groupTypes": ["hakukohde"]
+        },
+        {
+          "oid": "1.2.246.562.28.90373737624",
+          "usageGroups": [
+            "testi",
+            "hakukohde_liiteosoite"
+          ],
+          "groupTypes": [
+            "testi",
+            "hakukohde"
+          ]
+        },
+        {
+          "oid": "1.2.246.562.28.90373737625",
+          "usageGroups": ["testi"],
+          "groupTypes": [
+            "testi",
+            "hakukohde"
+          ]
+        },
+        {
+          "oid": "1.2.246.562.28.90373737626",
+          "usageGroups": [
+            "testi",
+            "hakukohde_liiteosoite"
+          ],
+          "groupTypes": ["testi"]
+        }
+      ]
+    }
+  ],
+  "1.2.246.562.10.64213824028": [
+    {
+      "id": "1.2.246.562.20.656632485510",
+      "name": "Terveydenhoitaja (AMK), monimuotototeutus",
+      "aoIdentifier": null,
+      "educationDegree": "koulutusasteoph2002_62",
+      "provider": {
+        "id": "",
+        "name": "Diakonia-ammattikorkeakoulu, Helsingin toimipiste",
+        "applicationOffice": {
+          "postalAddress": {
+            "streetAddress": "Sturenkatu 2",
+            "postalCode": "00510",
+            "postOffice": "HELSINKI"
+          }
+        },
+        "applicationSystemIds": ["1.2.246.562.29.173465377510", "1.2.246.562.5.2013080813081926341927"]
+      },
+      "sora": false,
+      "teachingLanguages": ["FI"],
+      "athleteEducation": false,
+      "kaksoistutkinto": false,
+      "vocational": false,
+      "educationCodeUri": "koulutus_671103",
+      "requiredBaseEducations": [
+        "0", "1"
+      ],
+      "organizationGroups": [
+        {
+          "oid": "1.2.246.562.28.90373737623",
+          "usageGroups": ["hakukohde_liiteosoite"],
+          "groupTypes": ["hakukohde"]
+        }
+      ]
+    }
+  ],
+  "1.2.246.562.10.78522729439": [
+    {
+      "id": "1.2.246.562.20.18094409226",
+      "name": "Jazzmusiikki, sävellys 5,5-vuotinen koulutus",
+      "aoIdentifier": null,
+      "startingQuota": 1,
+      "startingQuotaDescription": "1",
+      "lowestAcceptedScore": 0,
+      "lowestAcceptedAverage": 0.0,
+      "attachmentDeliveryDeadline": null,
+      "attachmentDeliveryAddress": null,
+      "lastYearApplicantCount": 0,
+      "sora": false,
+      "educationDegree": "koulutusasteoph2002_72",
+      "teachingLanguages": [
+        "SV",
+        "EN",
+        "FI"
+      ],
+      "selectionCriteria": null,
+      "soraDescription": null,
+      "prerequisite": null,
+      "exams": null,
+      "specificApplicationDates": false,
+      "applicationStartDate": 1422363647012,
+      "applicationEndDate": 1427033941791,
+      "applicationPeriodName": "Hakuaika 1",
+      "canBeApplied": true,
+      "nextApplicationPeriodStarts": null,
+      "requiredBaseEducations": [
+        "pohjakoulutusvaatimuskorkeakoulut_123",
+        "pohjakoulutusvaatimuskorkeakoulut_106"
+      ],
+      "attachments": [
+        {
+          "dueDate": 1423573234873,
+          "type": "Ennakkotehtävät",
+          "descreption": "<p>Lue lisää valintaoppaasta.</p>",
+          "address": {
+            "streetAddress": "Sibelius-Akatemian hakijapalvelut, PL 32",
+            "streetAddress2": null,
+            "postalCode": "00097",
+            "postOffice": "TAIDEYLIOPISTO"
+          },
+          "emailAddr": null,
+          "usedInApplicationForm": true
+        }
+      ],
+      "emphasizedSubjects": null,
+      "additionalInfo": "<p><a href=\"http://www.uniarts.fi\" target=\"_blank\">Lue lisää Sibelius-Akatemian valintaoppaasta 2015.</a></p>",
+      "additionalProof": null,
+      "overallScoreLimit": null,
+      "kaksoistutkinto": false,
+      "athleteEducation": false,
+      "vocational": false,
+      "educationCodeUri": "koulutus_723111",
+      "status": null,
+      "eligibilityDescription": null,
+      "type": "KORKEAKOULU",
+      "educationTypeUri": null,
+      "hakuaikaId": "220208",
+      "organizationGroups": [
+        {
+          "oid": "1.2.246.562.28.11386525208",
+          "usageGroups": ["yleinen"],
+          "groupTypes": ["hakukohde"]
+        },
+        {
+          "oid": "1.2.246.562.28.26079071193",
+          "usageGroups": ["yleinen"],
+          "groupTypes": ["hakukohde"]
+        },
+        {
+          "oid": "1.2.246.562.28.81551131765",
+          "usageGroups": ["hakukohde_rajaava"],
+          "groupTypes": ["hakukohde"]
+        },
+        {
+          "oid": "1.2.246.562.28.32672180497",
+          "usageGroups": ["yleinen"],
+          "groupTypes": ["hakukohde"]
+        }
+      ],
+      "kotitalous": false
+    },
+    {
+      "id": "1.2.246.562.20.14660127086",
+      "name": "Jazzmusiikki, sävellys 2,5-vuotinen koulutus",
+      "aoIdentifier": null,
+      "startingQuota": 1,
+      "startingQuotaDescription": "1",
+      "lowestAcceptedScore": 0,
+      "lowestAcceptedAverage": 0.0,
+      "attachmentDeliveryDeadline": null,
+      "attachmentDeliveryAddress": null,
+      "lastYearApplicantCount": 0,
+      "sora": false,
+      "educationDegree": "koulutusasteoph2002_72",
+      "teachingLanguages": [
+        "SV",
+        "EN",
+        "FI"
+      ],
+      "selectionCriteria": null,
+      "soraDescription": null,
+      "prerequisite": null,
+      "exams": null,
+      "childRefs": [],
+      "higherEdLOSRefs": [
+        {
+          "id": "1.2.246.562.17.48322662478",
+          "asIds": null,
+          "name": "Jazzmusiikki 2,5-vuotinen koulutus",
+          "qualifications": ["Musiikin maisteri"],
+          "prerequisite": null,
+          "provider": "Taideyliopisto,  Sibelius-Akatemia",
+          "fieldOfExpertise": null
+        }
+      ],
+      "specificApplicationDates": false,
+      "applicationStartDate": 1422363647012,
+      "applicationEndDate": 1427033941791,
+      "applicationPeriodName": "Hakuaika 1",
+      "canBeApplied": true,
+      "nextApplicationPeriodStarts": null,
+      "requiredBaseEducations": [
+        "pohjakoulutusvaatimuskorkeakoulut_101",
+        "pohjakoulutusvaatimuskorkeakoulut_102",
+        "pohjakoulutusvaatimuskorkeakoulut_116"
+      ],
+      "attachments": [
+        {
+          "dueDate": 1423573234873,
+          "type": "Ennakkotehtävät",
+          "descreption": "<p>Lue lisää valintaoppaasta.</p>",
+          "address": {
+            "streetAddress": "Sibelius-Akatemian hakijapalvelut, PL 32",
+            "streetAddress2": null,
+            "postalCode": "00097",
+            "postOffice": "TAIDEYLIOPISTO"
+          },
+          "emailAddr": null,
+          "usedInApplicationForm": true
+        }
+      ],
+      "emphasizedSubjects": null,
+      "additionalInfo": "<p><a href=\"http://www.uniarts.fi\" target=\"_blank\">Lue lisää Sibelius-Akatemian valintaoppaasta 2015.</a></p>",
+      "additionalProof": null,
+      "overallScoreLimit": null,
+      "kaksoistutkinto": false,
+      "athleteEducation": false,
+      "vocational": false,
+      "educationCodeUri": "koulutus_723111",
+      "status": null,
+      "eligibilityDescription": null,
+      "type": "KORKEAKOULU",
+      "educationTypeUri": null,
+      "hakuaikaId": "220208",
+      "organizationGroups": [
+        {
+          "oid": "1.2.246.562.28.11386525208",
+          "usageGroups": ["yleinen"],
+          "groupTypes": ["hakukohde"]
+        },
+        {
+          "oid": "1.2.246.562.28.26079071193",
+          "usageGroups": ["yleinen"],
+          "groupTypes": ["hakukohde"]
+        },
+        {
+          "oid": "1.2.246.562.28.32672180497",
+          "usageGroups": ["yleinen"],
+          "groupTypes": ["hakukohde"]
+        },
+        {
+          "oid": "1.2.246.562.28.88952350290",
+          "usageGroups": ["yleinen"],
+          "groupTypes": ["hakukohde"]
+        },
+        {
+          "oid": "1.2.246.562.28.81551131765",
+          "usageGroups": ["hakukohde_rajaava"],
+          "groupTypes": ["hakukohde"]
+        }
+      ],
+      "kotitalous": false
     }
   ]
 }

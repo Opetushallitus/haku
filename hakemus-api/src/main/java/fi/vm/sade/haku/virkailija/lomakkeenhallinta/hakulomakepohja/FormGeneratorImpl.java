@@ -3,7 +3,6 @@ package fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystemBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain.FormConfiguration;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.hakutoiveet.HakutoiveetPhase;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.henkilotiedot.HenkilotiedotPhase;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.koulutustausta.KoulutustaustaPhase;
@@ -66,6 +65,7 @@ public class FormGeneratorImpl implements FormGenerator {
                 .setMaxApplicationOptions(as.getMaxApplicationOptions())
                 .addAdditionalInformationElements(ValmisPhase.createAdditionalInformationElements(formParameters))
                 .addApplicationOptionAttachmentRequests(formParameters.getThemeQuestionConfigurator().findAndConfigureAttachmentRequests())
+                .addAttachmentGroupAddresses(formParameters.getAttachmentGroupConfigurator().configureAttachmentGroupAddresses())
                 .setLastGenerated(new Date())
                 .setAllowedLanguages(formParameters.getAllowedLanguages())
                 .get();

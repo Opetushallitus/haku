@@ -1,8 +1,10 @@
 package fi.vm.sade.haku.oppija.hakemus.domain.util;
 
 import fi.vm.sade.haku.oppija.hakemus.domain.*;
+import fi.vm.sade.haku.oppija.hakemus.domain.HigherEdBaseEducationAttachmentInfo.OriginatorType;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationOptionAttachmentRequest;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
+import fi.vm.sade.haku.oppija.lomake.domain.AttachmentGroupAddress;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.util.StringUtil;
 import fi.vm.sade.haku.oppija.common.koulutusinformaatio.KoulutusinformaatioService;
@@ -60,10 +62,11 @@ public class AttachmentUtil {
       final I18nBundle i18nBundle) {
         List<ApplicationAttachmentRequest> attachments = new ArrayList<ApplicationAttachmentRequest>();
         attachments = addApplicationOptionAttachments(attachments, application, koulutusinformaatioService, lang, i18nBundle);
-        attachments = addDiscreationaryAttachments(attachments, application, koulutusinformaatioService, lang,
-          i18nBundle);
-        attachments = addHigherEdAttachments(attachments, application, koulutusinformaatioService, lang, i18nBundle);
-        attachments = addAmkOpeAttachments(attachments, application, koulutusinformaatioService, lang, i18nBundle);
+        attachments = addDiscreationaryAttachments(attachments, application, koulutusinformaatioService, lang, i18nBundle);
+        if(OppijaConstants.KOHDEJOUKKO_KORKEAKOULU.equals(applicationSystem.getKohdejoukkoUri())) {
+            attachments = addHigherEdAttachments(applicationSystem, attachments, application, koulutusinformaatioService, lang, i18nBundle);
+            attachments = addAmkOpeAttachments(applicationSystem, attachments, application, koulutusinformaatioService, lang, i18nBundle);
+        }
         attachments = addApplicationOptionAttachmentRequestsFromForm(attachments, application, applicationSystem, i18nBundle);
 
         return attachments;
@@ -200,12 +203,23 @@ public class AttachmentUtil {
         if (null == addressDTO)
             return null;
         return AddressBuilder.start()
-          .setRecipient(recipient)
+          .setRecipient(StringUtil.safeToString(recipient))
           .setStreetAddress(addressDTO.getStreetAddress())
           .setStreetAddress2(addressDTO.getStreetAddress2())
           .setPostalCode(addressDTO.getPostalCode())
           .setPostOffice(addressDTO.getPostOffice())
           .build();
+    }
+
+    private static Address getAddress(SimpleAddress address) {
+        if (null == address)
+            return null;
+        return AddressBuilder.start()
+                .setRecipient(StringUtil.safeToString(address.getRecipient()))
+                .setStreetAddress(address.getStreet())
+                .setPostalCode(address.getPostCode())
+                .setPostOffice(address.getPostOffice())
+                .build();
     }
 
     private static Address getAddress(ApplicationOptionDTO ao) {
@@ -226,65 +240,25 @@ public class AttachmentUtil {
     }
 
     private static List<ApplicationAttachmentRequest> addHigherEdAttachments(
-      final List<ApplicationAttachmentRequest> attachments,
-      final Application application,
-      final KoulutusinformaatioService koulutusinformaatioService,
-      final String lang,
-      final I18nBundle i18nBundle) {
+        final ApplicationSystem applicationSystem,
+        final List<ApplicationAttachmentRequest> attachments,
+        final Application application,
+        final KoulutusinformaatioService koulutusinformaatioService,
+        final String lang,
+        final I18nBundle i18nBundle
+    ) {
 
-        Map<String, List<ApplicationOptionDTO>> higherEdAttachments = getApplicationOptions(
-          ApplicationUtil.getHigherEdAttachmentAOIds(application), koulutusinformaatioService, lang);
-
-        // This variable intentionally left null.
         Date deadline = null;
-
-        for (Map.Entry<String, List<ApplicationOptionDTO>> entry : higherEdAttachments.entrySet()) {
-            String attachmentType = entry.getKey();
-            for (ApplicationOptionDTO aoDTO : entry.getValue()) {
-                AddressDTO addressDTO = null;
-                String name = null;
-                if (aoDTO.getProvider().getApplicationOffice() != null &&
-                  aoDTO.getProvider().getApplicationOffice().getPostalAddress() != null) {
-                    addressDTO = aoDTO.getProvider().getApplicationOffice().getPostalAddress();
-                    name = aoDTO.getProvider().getApplicationOffice().getName();
-                } else {
-                    addressDTO = aoDTO.getProvider().getPostalAddress();
-                    name = aoDTO.getProvider().getName();
-                }
-
-                ApplicationAttachmentBuilder attachmentBuilder = ApplicationAttachmentBuilder.start()
-                        .setName(createI18NAsIs(StringUtil.safeToString(aoDTO.getProvider().getName())))
-                        .setDescription(i18nBundle.get("form.valmis.todistus." + attachmentType))
-                        .setDeadline(deadline)
-                        .setAddress(AddressBuilder.start()
-                                .setRecipient(name)
-                                .setStreetAddress(addressDTO.getStreetAddress())
-                                .setStreetAddress2(addressDTO.getStreetAddress2())
-                                .setPostalCode(addressDTO.getPostalCode())
-                                .setPostOffice(addressDTO.getPostOffice())
-                                .build());
-                if (deadline == null) {
-                    attachmentBuilder.setDeliveryNote(i18nBundle.get(GENERAL_DELIVERY_NOTE));
-                }
-
-                //TODO =RS= FIX THE NULL
-                attachments.add(ApplicationAttachmentRequestBuilder.start()
-                        .setPreferenceAoId(aoDTO.getId())
-                        .setPreferenceAoGroupId(null)
-                        .setApplicationAttachment(attachmentBuilder.build())
-                        .build());
-            }
-        }
+        Map<String, List<HigherEdBaseEducationAttachmentInfo>> higherEdAttachments = getAddresses(applicationSystem, ApplicationUtil.getHigherEdAttachmentAOIds(application), koulutusinformaatioService, deadline, lang);
+        attachments.addAll(getHigherEdAttachments(higherEdAttachments, i18nBundle));
         return attachments;
     }
 
     private static List<ApplicationAttachmentRequest> addAmkOpeAttachments(
-      final List<ApplicationAttachmentRequest> attachments, final Application application,
-      final KoulutusinformaatioService koulutusinformaatioService, final String lang,
-      final I18nBundle i18nBundle) {
-
-        Map<String, List<ApplicationOptionDTO>> amkOpeAttachments = getApplicationOptions(
-          ApplicationUtil.getAmkOpeAttachments(application), koulutusinformaatioService, lang);
+            final ApplicationSystem applicationSystem,
+            final List<ApplicationAttachmentRequest> attachments, final Application application,
+            final KoulutusinformaatioService koulutusinformaatioService, final String lang,
+            final I18nBundle i18nBundle) {
 
         Calendar deadlineCal = GregorianCalendar.getInstance();
         deadlineCal.set(Calendar.YEAR, 2015);
@@ -293,111 +267,127 @@ public class AttachmentUtil {
         deadlineCal.set(Calendar.HOUR_OF_DAY, 15);
         deadlineCal.set(Calendar.MINUTE, 0);
         deadlineCal.set(Calendar.SECOND, 0);
-
         Date deadline = deadlineCal.getTime();
 
-//      // Liite 1. Tutkinto, jolla haet: kopio tutkintotodistuksestasi ja tarvittaessa kopio rinnastamispäätöksestä
-//      attachments.put("tutkintotodistus", aoIds);
-//      // Liite: Rinnastuspäätös tutkinnosta, joka on suoritettu muualla kuin Suomessa
-//      attachments.put("rinnastuspaatos", aoIds);
-//      // Liite 2. Oppilaitoksen/työnantajan lausunto, https://opintopolku.fi/wp/wp-content/uploads/2014/12/2015_Oppilaitoksen_lausunto.pdf (laita linkki aukeamaan uuteen ikkunaan)
-//      attachments.put("tyonantajanLausunto", aoIds);
-//      // Liite 3. Opettajan pedagogiset opinnot: kopio todistuksestasi
-//      attachments.put("pedagogisetOpinnot", aoIds);
+        Map<String, List<HigherEdBaseEducationAttachmentInfo>> higherEdAttachments = getAddresses(applicationSystem, ApplicationUtil.getAmkOpeAttachments(application), koulutusinformaatioService, deadline, lang);
 
-        for (Map.Entry<String, List<ApplicationOptionDTO>> entry : amkOpeAttachments.entrySet()) {
+        attachments.addAll(getHigherEdAttachments(higherEdAttachments, i18nBundle));
+        return attachments;
+    }
+
+    private static List<ApplicationAttachmentRequest> getHigherEdAttachments(
+            final Map<String, List<HigherEdBaseEducationAttachmentInfo>> higherEdAttachments,
+            final I18nBundle i18nBundle) {
+
+        List<ApplicationAttachmentRequest> attachments = new ArrayList<>();
+        for (Map.Entry<String, List<HigherEdBaseEducationAttachmentInfo>> entry : higherEdAttachments.entrySet()) {
             String attachmentType = entry.getKey();
-            for (ApplicationOptionDTO aoDTO : entry.getValue()) {
-                AddressDTO addressDTO = null;
-                String name = null;
-                if (aoDTO.getProvider().getApplicationOffice() != null &&
-                  aoDTO.getProvider().getApplicationOffice().getPostalAddress() != null) {
-                    addressDTO = aoDTO.getProvider().getApplicationOffice().getPostalAddress();
-                    name = aoDTO.getProvider().getApplicationOffice().getName();
-                } else {
-                    addressDTO = aoDTO.getProvider().getPostalAddress();
-                    name = aoDTO.getProvider().getName();
-                }
+            for (HigherEdBaseEducationAttachmentInfo address : entry.getValue()) {
 
                 ApplicationAttachmentBuilder attachmentBuilder = ApplicationAttachmentBuilder.start()
-                                .setName(createI18NAsIs(StringUtil.safeToString(aoDTO.getProvider().getName())))
-                                .setDescription(i18nBundle.get("form.valmis.amkope." + attachmentType))
-                                .setDeadline(deadline)
-                                .setAddress(AddressBuilder.start()
-                                        .setRecipient(name)
-                                        .setStreetAddress(addressDTO.getStreetAddress())
-                                        .setStreetAddress2(addressDTO.getStreetAddress2())
-                                        .setPostalCode(addressDTO.getPostalCode())
-                                        .setPostOffice(addressDTO.getPostOffice())
-                                        .build());
-                if (deadline == null) {
+                        .setName(i18nBundle.get(attachmentType))
+                        .setDescription(address.description)
+                        .setDeadline(address.deadline)
+                        .setAddress(address.address);
+
+
+                if (address.deadline == null) {
                     attachmentBuilder.setDeliveryNote(i18nBundle.get(GENERAL_DELIVERY_NOTE));
                 }
-                //TODO =RS= FIX THE NULL
+
                 attachments.add(ApplicationAttachmentRequestBuilder.start()
-                        .setPreferenceAoId(aoDTO.getId())
-                        .setPreferenceAoGroupId(null)
+                        .setId(attachmentType + '_' + address.originatorType + '_' + address.originatorId)
+                        .setPreferenceAoId(address.originatorType == OriginatorType.applicationOption ? address.originatorId : null)
+                        .setPreferenceAoGroupId(address.originatorType == OriginatorType.group ? address.originatorId : null)
                         .setApplicationAttachment(attachmentBuilder.build())
                         .build());
             }
         }
-
         return attachments;
     }
 
-    private static Map<String, List<ApplicationOptionDTO>> getApplicationOptions(
+    private static Map<String, List<HigherEdBaseEducationAttachmentInfo>> getAddresses(
+      final ApplicationSystem applicationSystem,
       final Map<String, List<String>> higherEdAttachmentAOIds,
       final KoulutusinformaatioService koulutusinformaatioService,
+      final Date defaultDeadline,
       final String lang) {
-        Map<String, List<ApplicationOptionDTO>> applicationOptions = new HashMap<String, List<ApplicationOptionDTO>>();
-        new HashMap<String, List<ApplicationOptionDTO>>();
+        Map<String, List<HigherEdBaseEducationAttachmentInfo>> applicationOptions = new HashMap<>();
+        new HashMap<String, List<HigherEdBaseEducationAttachmentInfo>>();
         for (Map.Entry<String, List<String>> entry : higherEdAttachmentAOIds.entrySet()) {
             String key = entry.getKey();
-            List<ApplicationOptionDTO> aos = new ArrayList<ApplicationOptionDTO>();
+            List<HigherEdBaseEducationAttachmentInfo> addresses = new ArrayList<>();
             for (String aoOid : entry.getValue()) {
                 ApplicationOptionDTO ao = koulutusinformaatioService.getApplicationOption(aoOid, lang);
-                ao = ensureAddress(ao);
-                if (!addressAlreadyAdded(aos, ao)) {
-                    aos.add(ao);
+                HigherEdBaseEducationAttachmentInfo address = getAttachmentGroupAddressInfo(applicationSystem, ao, defaultDeadline);
+                if (!addressAlreadyAdded(addresses, address)) {
+                    addresses.add(address);
                 }
             }
-            applicationOptions.put(key, aos);
+            applicationOptions.put(key, addresses);
         }
         return applicationOptions;
     }
 
-    private static ApplicationOptionDTO ensureAddress(ApplicationOptionDTO ao) {
-        if (ao.getProvider().getApplicationOffice() != null
-          && ao.getProvider().getApplicationOffice().getPostalAddress() != null) {
-            return ao;
+    private static HigherEdBaseEducationAttachmentInfo getAttachmentGroupAddressInfo(ApplicationSystem applicationSystem, ApplicationOptionDTO ao, Date defaultDeadline) {
+        HigherEdBaseEducationAttachmentInfo aoAddress = getAttachmentAddressInfo(ao, defaultDeadline);
+        for (OrganizationGroupDTO organizationGroup : ao.getOrganizationGroups()) {
+            for (AttachmentGroupAddress groupAddress: applicationSystem.getAttachmentGroupAddresses()) {
+                if (organizationGroup.getOid().equals(groupAddress.getGroupId())) {
+                    return new HigherEdBaseEducationAttachmentInfo(
+                            chooseAddress(groupAddress, aoAddress),
+                            OriginatorType.group,
+                            organizationGroup.getOid(),
+                            null,
+                            null,
+                            groupAddress.getDeliveryDue() == null ? defaultDeadline : groupAddress.getDeliveryDue()
+                    );
+                }
+            }
         }
-        LearningOpportunityProviderDTO provider = ao.getProvider();
-        ApplicationOfficeDTO office = provider.getApplicationOffice();
-        if (office == null) {
-            office = new ApplicationOfficeDTO();
-            office.setName(provider.getName());
-        }
-        office.setPostalAddress(provider.getPostalAddress());
-        provider.setApplicationOffice(office);
-        return ao;
+        return aoAddress;
     }
 
-    private static boolean addressAlreadyAdded(List<ApplicationOptionDTO> aos, ApplicationOptionDTO ao) {
-        if (aos.isEmpty()) {
-            return false;
+    private static Address chooseAddress(AttachmentGroupAddress groupAddress, HigherEdBaseEducationAttachmentInfo aoAddress) {
+        if(groupAddress.isUseFirstAoAddress()) {
+            return aoAddress.address;
         }
-        ApplicationOfficeDTO newOffice = ao.getProvider().getApplicationOffice();
-        for (ApplicationOptionDTO currAo : aos) {
-            ApplicationOfficeDTO currOffice = currAo.getProvider().getApplicationOffice();
-            if (StringUtils.equals(newOffice.getName(), currOffice.getName())
-              && StringUtils.equals(newOffice.getPostalAddress().getStreetAddress(),
-              currOffice.getPostalAddress().getStreetAddress())
-              && StringUtils.equals(newOffice.getPostalAddress().getStreetAddress2(),
-              currOffice.getPostalAddress().getStreetAddress2())
-              && StringUtils.equals(newOffice.getPostalAddress().getPostalCode(),
-              currOffice.getPostalAddress().getPostalCode())
-              && StringUtils.equals(newOffice.getPostalAddress().getPostOffice(),
-              currOffice.getPostalAddress().getPostOffice())) {
+        return getAddress(groupAddress.getDeliveryAddress());
+    }
+
+    private static HigherEdBaseEducationAttachmentInfo getAttachmentAddressInfo(ApplicationOptionDTO ao, Date deadline) {
+        LearningOpportunityProviderDTO provider = ao.getProvider();
+        String recipientName = provider.getName();
+        AddressDTO address = provider.getPostalAddress();
+        if (provider.getApplicationOffice() != null && provider.getApplicationOffice().getPostalAddress() != null) {
+            if(StringUtils.isNotEmpty(provider.getApplicationOffice().getName())) {
+                recipientName = provider.getApplicationOffice().getName();
+            }
+            address = provider.getApplicationOffice().getPostalAddress();
+        }
+        return new HigherEdBaseEducationAttachmentInfo(
+            getAddress(recipientName, address),
+            OriginatorType.applicationOption,
+            ao.getId(),
+            provider.getId(),
+            createI18NAsIs(provider.getName()),
+            deadline
+        );
+    }
+
+    private static boolean addressAlreadyAdded(List<HigherEdBaseEducationAttachmentInfo> addresses, HigherEdBaseEducationAttachmentInfo address) {
+        for (HigherEdBaseEducationAttachmentInfo other : addresses) {
+            if (StringUtils.equals(address.originatorId, other.originatorId)) {
+                return true;
+            }
+            if (address.originatorType == OriginatorType.applicationOption
+                && other.originatorType == OriginatorType.applicationOption
+                && StringUtils.equals(address.providerId, other.providerId)) {
+                return true;
+            }
+            if (address.originatorType == OriginatorType.applicationOption
+                && other.originatorType == OriginatorType.applicationOption
+                && address.address.equals(other.address)) {
                 return true;
             }
         }
