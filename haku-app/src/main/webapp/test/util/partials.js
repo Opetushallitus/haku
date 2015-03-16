@@ -107,9 +107,12 @@ partials = {
     syotaAmmatillinenPohjakoulutus: function(n, vuosi, nimike, laajuus, oppilaitos, nayttotutkintona) {
         return seq(
             input(
-                lomake.pohjakoulutusAmVuosi(n), vuosi,
-                lomake.pohjakoulutusAmNimike(n), nimike,
-                lomake.pohjakoulutusAmLaajuus(n), laajuus,
+                lomake.pohjakoulutusAmVuosi(n), vuosi),
+            select(
+                lomake.pohjakoulutusAmNimike(n), nimike),
+            input(
+                lomake.pohjakoulutusAmLaajuus(n), laajuus),
+            select(
                 lomake.pohjakoulutusAmOppilaitos(n), oppilaitos),
             click(
                 lomake.pohjakoulutusAmNayttotutkintona(n, nayttotutkintona)
