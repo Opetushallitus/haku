@@ -132,7 +132,7 @@ public class UIServiceImpl implements UIService {
     public ModelResponse getPhase(String applicationSystemId, String phaseId, String lang) {
         ApplicationSystem activeApplicationSystem = applicationSystemService.getActiveApplicationSystem(applicationSystemId);
         ElementTree elementTree = new ElementTree(activeApplicationSystem.getForm());
-        Element phase = elementTree.getChildById(phaseId);
+        Element phase = activeApplicationSystem.getForm().getChildById(phaseId);
         Application application = applicationService.getApplication(applicationSystemId);
         elementTree.checkPhaseTransfer(application.getPhaseId(), phaseId);
         ModelResponse modelResponse = new ModelResponse(activeApplicationSystem);
@@ -165,7 +165,7 @@ public class UIServiceImpl implements UIService {
         final Map<String, String>  combinedAnswers = Maps.newHashMapWithExpectedSize(vastauksetMerged.size() + answers.size());
         combinedAnswers.putAll(vastauksetMerged);
         combinedAnswers.putAll(answers);
-        Element root = new ElementTree(activeApplicationSystem.getForm()).getChildById(elementId);
+        Element root = activeApplicationSystem.getForm().getChildById(elementId);
         List<Element> listOfTitledElements = ElementUtil.filterElements(root, new Predicate<Element>() {
             @Override
             public boolean apply(Element input) {
@@ -182,7 +182,7 @@ public class UIServiceImpl implements UIService {
     @Override
     public Map<String, Object> getAdditionalLanguageRow(String applicationSystemId, String gradeGridId) {
         Form activeForm = applicationSystemService.getActiveApplicationSystem(applicationSystemId).getForm();
-        Element element = new ElementTree(activeForm).getChildById(gradeGridId);
+        Element element = activeForm.getChildById(gradeGridId);
         GradeGrid gradeGrid = (GradeGrid) element;
         Map<String, Object> model = new HashMap<String, Object>();
         model.put(ModelResponse.ELEMENT, gradeGrid);
@@ -199,7 +199,7 @@ public class UIServiceImpl implements UIService {
 
         ModelResponse modelResponse = new ModelResponse();
         modelResponse.addAnswers(currentAnswers);
-        modelResponse.setElement(new ElementTree(activeForm).getChildById(elementId));
+        modelResponse.setElement(activeForm.getChildById(elementId));
         modelResponse.setForm(activeForm);
         modelResponse.setApplicationSystemId(applicationSystemId);
         modelResponse.setKoulutusinformaatioBaseUrl(koulutusinformaatioBaseUrl);
@@ -219,8 +219,7 @@ public class UIServiceImpl implements UIService {
         List<Element> elements = new ArrayList();
         if (elementIds != null) {
             for (String elementId : elementIds) {
-                ElementTree item = new ElementTree(activeForm);
-                elements.add(item.getChildById(elementId));
+                elements.add(activeForm.getChildById(elementId));
             }
         }
         modelResponse.addObjectToModel("elements", elements);
@@ -237,7 +236,7 @@ public class UIServiceImpl implements UIService {
         Application application = applicationService.getApplication(applicationSystemId);
         ElementTree elementTree = new ElementTree(activeForm);
         elementTree.checkPhaseTransfer(application.getPhaseId(), phaseId);
-        ModelResponse modelResponse = new ModelResponse(application, activeForm, elementTree.getChildById(elementId));
+        ModelResponse modelResponse = new ModelResponse(application, activeForm, activeForm.getChildById(elementId));
         modelResponse.addAnswers(userSession.populateWithPrefillData(application.getVastauksetMerged()));
         modelResponse.setApplicationSystemId(applicationSystemId);
         modelResponse.setKoulutusinformaatioBaseUrl(koulutusinformaatioBaseUrl);
@@ -257,7 +256,7 @@ public class UIServiceImpl implements UIService {
         if (!applicationState.isValid()) {
             modelResponse.setApplicationState(applicationState);
             modelResponse.setApplicationSystemId(applicationSystemId);
-            modelResponse.setElement(new ElementTree(activeForm).getChildById(phaseId));
+            modelResponse.setElement(activeForm.getChildById(phaseId));
             modelResponse.setForm(activeForm);
             modelResponse.setKoulutusinformaatioBaseUrl(koulutusinformaatioBaseUrl);
         }

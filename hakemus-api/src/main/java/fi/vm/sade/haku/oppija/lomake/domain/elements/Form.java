@@ -17,15 +17,40 @@
 package fi.vm.sade.haku.oppija.lomake.domain.elements;
 
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
+import fi.vm.sade.haku.oppija.lomake.exception.ElementNotFound;
+import org.springframework.data.annotation.Transient;
 
 import javax.xml.bind.annotation.XmlRootElement;
+import java.util.HashMap;
+import java.util.Map;
 
 @XmlRootElement
 public class Form extends Titled {
 
     private static final long serialVersionUID = 8083152169717295356L;
 
+    private transient Map<String, Element> allChildElements;
+
     public Form(final String id, final I18nText i18nText) {
         super(id, i18nText);
+    }
+
+    @Transient
+    public synchronized Element getChildById(String id) {
+        if(allChildElements == null) {
+            allChildElements = new HashMap<>();
+            addToCache(this);
+        }
+        if(allChildElements.containsKey(id)) {
+            return allChildElements.get(id);
+        }
+        throw new ElementNotFound(id);
+    }
+
+    private void addToCache(final Element element) {
+        allChildElements.put(element.getId(), element);
+        for (Element child : element.getChildren()) {
+            addToCache(child);
+        }
     }
 }
