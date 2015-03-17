@@ -25,6 +25,6 @@ public class Radio extends OptionQuestion {
     private static final long serialVersionUID = 7715723881547491714L;
 
     public Radio(final String id, final I18nText i18nText, final List<Option> options) {
-        super(id, i18nText, options);
+        super(id, i18nText, options, null);
     }
 }

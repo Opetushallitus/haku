@@ -15,6 +15,7 @@ public abstract class OptionQuestionBuilder extends QuestionBuilder {
 
     protected String defaultValueAttribute;
     protected String defaultOption;
+    protected String[] keepFirst;
     protected final List<Option> options = new ArrayList<Option>();
 
     public OptionQuestionBuilder emptyOption() {
@@ -55,6 +56,11 @@ public abstract class OptionQuestionBuilder extends QuestionBuilder {
 
     public OptionQuestionBuilder defaultOption(String fin) {
         this.defaultOption = fin;
+        return this;
+    }
+
+    public OptionQuestionBuilder keepFirst(String... values) {
+        this.keepFirst = values;
         return this;
     }
 

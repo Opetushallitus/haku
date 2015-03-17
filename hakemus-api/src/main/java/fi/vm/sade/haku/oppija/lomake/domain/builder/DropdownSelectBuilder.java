@@ -4,7 +4,6 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.DropdownSelect;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
 import fi.vm.sade.haku.oppija.lomake.validation.validators.ValueSetValidator;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +21,7 @@ public class DropdownSelectBuilder extends OptionQuestionBuilder {
                 opt.setDefaultOption(opt.getValue().equalsIgnoreCase(defaultOption));
             }
         }
-        DropdownSelect dropdownSelect = new DropdownSelect(id, this.i18nText, this.options, defaultValueAttribute);
+        DropdownSelect dropdownSelect = new DropdownSelect(id, this.i18nText, this.options, defaultValueAttribute, keepFirst);
         List<String> values = new ArrayList<String>();
         for (Option option : options) {
             values.add(option.getValue());

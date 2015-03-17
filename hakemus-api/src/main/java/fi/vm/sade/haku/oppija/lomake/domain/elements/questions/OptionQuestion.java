@@ -38,6 +38,7 @@ public abstract class OptionQuestion extends Question {
 
     private final List<Option> options;
 
+    private final String[] keepFirst;
     @Transient
     private Map<String, Option> optionsMap;
     @Transient
@@ -47,9 +48,10 @@ public abstract class OptionQuestion extends Question {
     @Transient
     private final Object optionsSortedByTextLock = new Object();
 
-    protected OptionQuestion(final String id, final I18nText i18nText, final List<Option> options) {
+    protected OptionQuestion(final String id, final I18nText i18nText, final List<Option> options, final String[] keepFirst) {
         super(id, i18nText);
         this.options = ImmutableList.copyOf(options);
+        this.keepFirst = keepFirst;
     }
 
     public List<Option> getOptions() {
@@ -92,6 +94,15 @@ public abstract class OptionQuestion extends Question {
                     public int compare(Option o1, Option o2) {
                         String o1Trans = o1.getI18nText().getTranslations().get(lang);
                         String o2Trans = o2.getI18nText().getTranslations().get(lang);
+                        if (keepFirst != null) {
+                            for (String value : keepFirst) {
+                                if (value.equals(o1.getValue())) {
+                                    return o1.getValue().equals(o2.getValue()) ? 0 : -1;
+                                } else if (value.equals(o2.getValue())) {
+                                    return o1.getValue().equals(o2.getValue()) ? 0 : 1;
+                                }
+                            }
+                        }
                         return o1Trans.compareTo(o2Trans);
                     }
                 });

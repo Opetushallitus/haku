@@ -652,6 +652,7 @@ public final class KoulutustaustaPhase {
             Element nimikekoodi = Dropdown("pohjakoulutus_am_nimike" + postfix)
                     .emptyOption()
                     .addOptions(tutkintonimikkeet)
+                    .keepFirst("", TUTKINTO_MUU)
                     .labelKey("pohjakoulutus.tutkintonimike")
                     .formParams(formParameters)
                     .requiredInline()
@@ -663,6 +664,7 @@ public final class KoulutustaustaPhase {
 
             Element oppilaitoskoodi = Dropdown("pohjakoulutus_am_oppilaitos" + postfix)
                     .emptyOption()
+                    .keepFirst("", TUNTEMATON_OPPILAITOS)
                     .addOptions(ammattioppilaitokset)
                     .requiredInline()
                     .labelKey("pohjakoulutus.oppilaitos")
@@ -795,6 +797,7 @@ public final class KoulutustaustaPhase {
             Element ammatillinenKoodi = Dropdown("pohjakoulutus_yo_ammatillinen_nimike")
                     .addOptions(tutkintonimikkeet)
                     .emptyOption()
+                    .keepFirst("", TUTKINTO_MUU)
                     .formParams(formParameters)
                     .requiredInline()
                     .labelKey("pohjakoulutus.tutkintonimike")
@@ -808,6 +811,7 @@ public final class KoulutustaustaPhase {
 
             Element oppilaitos = Dropdown("pohjakoulutus_yo_ammatillinen_oppilaitos")
                     .emptyOption()
+                    .keepFirst("", TUNTEMATON_OPPILAITOS)
                     .addOptions(ammattioppilaitokset)
                     .requiredInline()
                     .formParams(formParameters)

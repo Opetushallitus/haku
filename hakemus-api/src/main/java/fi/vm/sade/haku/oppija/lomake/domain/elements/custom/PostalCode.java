@@ -28,7 +28,7 @@ import java.util.List;
 public class PostalCode extends OptionQuestion {
 
     public PostalCode(final String id, final I18nText i18nText, final List<Option> options) {
-        super(id, i18nText, options);
+        super(id, i18nText, options, null);
     }
 
     @Override
@@ -46,7 +46,7 @@ public class PostalCode extends OptionQuestion {
     class PostalOffice extends OptionQuestion {
 
         public PostalOffice(PostalCode postalCode, I18nBundle i18nBundle) {
-            super("Postitoimipaikka", i18nBundle.get("postitoimipaikka") , postalCode.getOptions());
+            super("Postitoimipaikka", i18nBundle.get("postitoimipaikka") , postalCode.getOptions(), null);
         }
     }
 }
