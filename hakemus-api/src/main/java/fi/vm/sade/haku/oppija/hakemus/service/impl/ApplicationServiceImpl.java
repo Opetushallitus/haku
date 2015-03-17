@@ -131,7 +131,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         final String applicationSystemId = application.getApplicationSystemId();
         final Form activeForm = formService.getActiveForm(applicationSystemId);
         ElementTree elementTree = new ElementTree(activeForm);
-        final Element phase = elementTree.getChildById(applicationPhase.getPhaseId());
+        final Element phase = activeForm.getChildById(applicationPhase.getPhaseId());
         final Map<String, String> answers = applicationPhase.getAnswers();
 
         Map<String, String> allAnswers = new HashMap<String, String>();
