@@ -657,7 +657,7 @@ public final class KoulutustaustaPhase {
                     .formParams(formParameters)
                     .requiredInline()
                     .build();
-            nimike = TextQuestion("pohjakoulutus_am_nimike_muu" + postfix).labelKey("form.yleinen.nbsp").requiredInline()
+            nimike = TextQuestion("pohjakoulutus_am_nimike_muu" + postfix).labelKey("muun.tutkinnon.nimi").requiredInline()
                     .formParams(formParameters).build();
             Element muuNimikeRule = createVarEqualsToValueRule(nimikekoodi.getId(), TUTKINTO_MUU);
             muuNimikeRule.addChild(nimike);
@@ -672,7 +672,7 @@ public final class KoulutustaustaPhase {
                     .build();
 
             Element muuOppilaitosRule = createVarEqualsToValueRule(oppilaitoskoodi.getId(), TUNTEMATON_OPPILAITOS);
-            muuOppilaitosRule.addChild(TextQuestion("pohjakoulutus_am_oppilaitos_muu" + postfix).labelKey("form.yleinen.nbsp")
+            muuOppilaitosRule.addChild(TextQuestion("pohjakoulutus_am_oppilaitos_muu" + postfix).labelKey("muun.oppilaitokseksen.nimi")
                     .requiredInline()
                     .formParams(formParameters).build());
 
@@ -805,7 +805,7 @@ public final class KoulutustaustaPhase {
             Element muuAmmatillinenRule = createVarEqualsToValueRule(ammatillinenKoodi.getId(), TUTKINTO_MUU);
 
             muuAmmatillinenRule.addChild(TextQuestion("pohjakoulutus_yo_ammatillinen_nimike_muu")
-                    .labelKey("form.yleinen.nbsp")
+                    .labelKey("muun.tutkinnon.nimi")
                     .requiredInline()
                     .formParams(formParameters).build());
 
@@ -820,7 +820,7 @@ public final class KoulutustaustaPhase {
             Element muuOppilaitosRule = createVarEqualsToValueRule(oppilaitos.getId(), TUNTEMATON_OPPILAITOS);
             muuOppilaitosRule.addChild(
                     TextQuestion("pohjakoulutus_yo_ammatillinen_oppilaitos_muu").requiredInline()
-                            .labelKey("form.yleinen.nbsp")
+                            .labelKey("muun.oppilaitokseksen.nimi")
                             .formParams(formParameters).build()
             );
 
