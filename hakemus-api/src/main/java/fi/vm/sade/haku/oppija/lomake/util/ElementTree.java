@@ -1,44 +1,25 @@
 package fi.vm.sade.haku.oppija.lomake.util;
 
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.haku.oppija.lomake.exception.ElementNotFound;
 import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public final class ElementTree {
 
     public static final Logger LOGGER = LoggerFactory.getLogger(ElementTree.class);
-    private final Element root;
+    private final Form root;
 
-    public ElementTree(final Element root) {
+    public ElementTree(final Form root) {
         this.root = root;
-    }
-
-    public Element getChildById(final String id) {
-        Element element = getChildById(root, id);
-        if (element == null) {
-            throw new ElementNotFound(id);
-        }
-        return element;
-    }
-
-    private Element getChildById(final Element element, final String id) {
-        if (element.getId().equals(id)) {
-            return element;
-        }
-        Element tmp = null;
-        for (Element child : element.getChildren()) {
-            tmp = getChildById(child, id);
-            if (tmp != null) {
-                return tmp;
-            }
-        }
-        return tmp;
     }
 
     public boolean isValidationNeeded(final String currentId, final String nextId) {
@@ -47,14 +28,14 @@ public final class ElementTree {
             // Last phase needs special treatment
             Element nextPhase = null;
             try {
-                nextPhase = getChildById(nextId);
+                nextPhase = root.getChildById(nextId);
             } catch (ElementNotFound enf) {
                 // Apparently there's no next phase.
                 return true;
             }
         }
-        int nextIndex = children.indexOf(getChildById(nextId));
-        int currentIndex = children.indexOf(getChildById(currentId));
+        int nextIndex = children.indexOf(root.getChildById(nextId));
+        int currentIndex = children.indexOf(root.getChildById(currentId));
         return nextIndex > currentIndex;
     }
 
@@ -69,7 +50,7 @@ public final class ElementTree {
 
     public boolean isStateValid(String currentId, String saveId) {
         List<Element> children = root.getChildren();
-        int nextIndex = children.indexOf(getChildById(saveId));
+        int nextIndex = children.indexOf(root.getChildById(saveId));
         if (nextIndex < 0) {
             return false;
         } else if ((currentId == null && nextIndex == 0) || (currentId != null && currentId.equals(saveId))) {
@@ -81,14 +62,14 @@ public final class ElementTree {
     public void checkPhaseTransfer(String currentId, String nextId) {
 
         List<Element> children = root.getChildren();
-        int nextIndex = children.indexOf(getChildById(nextId));
+        int nextIndex = children.indexOf(root.getChildById(nextId));
         if (currentId == null && nextIndex == 0) {
             return;
         } else if (currentId != null) {
             if (currentId.equals("esikatselu")) {
                 return;
             }
-            int currentIndex = children.indexOf(getChildById(currentId));
+            int currentIndex = children.indexOf(root.getChildById(currentId));
             if (nextIndex <= currentIndex) {
                 return;
             }

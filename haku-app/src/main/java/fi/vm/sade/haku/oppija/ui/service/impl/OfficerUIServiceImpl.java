@@ -138,7 +138,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         Application application = this.applicationService.getApplicationByOid(oid);
         application.setPhaseId(phaseId); // TODO active applications does not have phaseId?
         Form form = this.formService.getForm(application.getApplicationSystemId());
-        Element element = new ElementTree(form).getChildById(elementId);
+        Element element = form.getChildById(elementId);
         ValidationResult validationResult = elementTreeValidator.validate(new ValidationInput(form, application.getVastauksetMerged(),
                 oid, application.getApplicationSystemId(), ValidationInput.ValidationContext.officer_modify));
         return new ModelResponse(application, form, element, validationResult, koulutusinformaatioBaseUrl);
@@ -156,8 +156,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         List<Element> elements = new ArrayList();
         if (elementIds != null) {
             for (String elementId : elementIds) {
-                ElementTree item = new ElementTree(form);
-                elements.add(item.getChildById(elementId));
+                elements.add(form.getChildById(elementId));
             }
         }
         ValidationResult validationResult = elementTreeValidator.validate(new ValidationInput(form, application.getVastauksetMerged(),
@@ -175,7 +174,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
                 oid, application.getApplicationSystemId(), ValidationInput.ValidationContext.officer_modify));
         Element element = form;
         if (!PHASE_ID_PREVIEW.equals(phaseId)) {
-            element = new ElementTree(form).getChildById(application.getPhaseId());
+            element = form.getChildById(application.getPhaseId());
         }
         String asId = application.getApplicationSystemId();
         boolean postProcessAllowed = hakuPermissionService.userCanPostProcess(application)
@@ -390,7 +389,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         } else {
             application.activate();
         }
-        Element phase = new ElementTree(form).getChildById(applicationPhase.getPhaseId());
+        Element phase = form.getChildById(applicationPhase.getPhaseId());
         ValidationResult phaseValidationResult = elementTreeValidator.validate(new ValidationInput(phase,
                 allAnswers, oid, application.getApplicationSystemId(), ValidationInput.ValidationContext.officer_modify));
 
