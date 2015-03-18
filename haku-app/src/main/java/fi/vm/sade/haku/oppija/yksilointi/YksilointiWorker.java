@@ -20,6 +20,4 @@ public interface YksilointiWorker {
     public enum ProcessingType {IDENTIFICATION, POST_PROCESS, REDO_POST_PROCESS}
 
     void processApplications(ProcessingType processingType, boolean sendMail);
-
-    void processModelUpdate();
 }

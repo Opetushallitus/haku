@@ -16,8 +16,6 @@
 package fi.vm.sade.haku.oppija.yksilointi;
 
 import fi.vm.sade.haku.healthcheck.StatusRepository;
-import fi.vm.sade.haku.oppija.lomake.util.StringUtil;
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,12 +31,14 @@ public class Scheduler {
     private boolean runModelUpgrade;
     private boolean sendMail;
 
-    private fi.vm.sade.haku.oppija.yksilointi.YksilointiWorker worker;
+    private YksilointiWorker processWorker;
+    private UpgradeWorker upgradeWorker;
     private StatusRepository statusRepository;
 
     @Autowired
-    public Scheduler(YksilointiWorker worker, StatusRepository statusRepository) {
-        this.worker = worker;
+    public Scheduler(YksilointiWorker processWorker, UpgradeWorker upgradeWorker, StatusRepository statusRepository) {
+        this.processWorker = processWorker;
+        this.upgradeWorker = upgradeWorker;
         this.statusRepository = statusRepository;
     }
 
@@ -67,7 +67,7 @@ public class Scheduler {
         }});
 
         try {
-            worker.processApplications(processingType, sendMail);
+            processWorker.processApplications(processingType, sendMail);
             statusRepository.write(statusOperation, new HashMap<String, String>() {{
                 put("state", "done");
             }});
@@ -83,13 +83,13 @@ public class Scheduler {
 
     public void runModelUpgrade() {
         if (run && runModelUpgrade) {
-            statusRepository.write("model upgrade scheduler", new HashMap<String, String>() {{ put("state", "start");}});
-            worker.processModelUpdate();
-            statusRepository.write("model upgrade scheduler", new HashMap<String, String>() {{
+            statusRepository.write("MODEL UPGRAGE scheduler", new HashMap<String, String>() {{ put("state", "start");}});
+            upgradeWorker.processModelUpdate();
+            statusRepository.write("MODEL UPGRAGE scheduler", new HashMap<String, String>() {{
                 put("state", "done");
             }});
         } else {
-            statusRepository.write("model upgrade scheduler", new HashMap<String, String>() {{ put("state", "halted");}});
+            statusRepository.write("MODEL UPGRAGE scheduler", new HashMap<String, String>() {{ put("state", "halted");}});
         }
     }
 
