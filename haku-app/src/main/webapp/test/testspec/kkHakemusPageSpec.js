@@ -36,17 +36,6 @@ describe('KK-hakemus', function () {
     describe("virkailijan näkymä", function() {
         before(seqDone(
             login('officer', 'officer'),
-            openPage("/haku-app/virkailija/hakemus", function() {
-                return testFrame().document.getElementById('loginForm') !== null;
-            }),
-            function() {
-                function input(name) {
-                    return testFrame().document.getElementsByName(name)[0];
-                }
-                input("j_username").value = "officer";
-                input("j_password").value = "officer";
-                input("login").click();
-            },
             click(virkailija.createApplicationButton),
             input(virkailija.selectHaku, "1.2.246.562.29.173465377510"),
             click(virkailija.submitConfirm),

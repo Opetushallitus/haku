@@ -189,8 +189,6 @@
                 pageChange(lomake.fromHakutoiveet),
                 headingVisible("Arvosanat")
             ));
-
         });
     });
-
 })();
