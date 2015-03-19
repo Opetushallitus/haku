@@ -19,7 +19,12 @@ package fi.vm.sade.haku.oppija.hakemus.it.dao.impl;
 import com.google.common.base.Function;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
-import com.mongodb.*;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBCursor;
+import com.mongodb.DBObject;
+import com.mongodb.MongoException;
+import com.mongodb.QueryBuilder;
+import com.mongodb.ReadPreference;
 import fi.vm.sade.haku.oppija.common.dao.AbstractDAOMongoImpl;
 import fi.vm.sade.haku.oppija.hakemus.converter.ApplicationToDBObjectFunction;
 import fi.vm.sade.haku.oppija.hakemus.converter.DBObjectToAdditionalDataDTO;
@@ -37,7 +42,6 @@ import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationQueryParameters;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.SocialSecurityNumber;
 import fi.vm.sade.haku.oppija.lomake.service.EncrypterService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
-import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,11 +61,8 @@ import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.regex.Pattern;
 
-import static com.mongodb.QueryOperators.AND;
 import static com.mongodb.QueryOperators.EXISTS;
-import static com.mongodb.QueryOperators.GTE;
 import static com.mongodb.QueryOperators.IN;
-import static com.mongodb.QueryOperators.LT;
 import static com.mongodb.QueryOperators.NE;
 import static com.mongodb.QueryOperators.OR;
 import static java.lang.String.format;
@@ -172,7 +173,6 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
                                                                             ApplicationFilterParameters filterParameters) {
         DBObject orgFilter = filterByOrganization(filterParameters);
         DBObject query = QueryBuilder.start().and(queryByPreference(filterParameters, Lists.newArrayList(aoId)).get(),
-                newOIdExistDBObject(),
                 new BasicDBObject(FIELD_APPLICATION_SYSTEM_ID, applicationSystemId),
                 QueryBuilder.start(FIELD_APPLICATION_STATE).in(Lists.newArrayList(
                         Application.State.ACTIVE.toString(), Application.State.INCOMPLETE.toString())).get(),
@@ -190,7 +190,6 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
             String encryptedSsn = shaEncrypter.encrypt(ssn.toUpperCase());
             final DBObject query = QueryBuilder.start(FIELD_APPLICATION_SYSTEM_ID).is(asId)
               .and("answers.henkilotiedot." + SocialSecurityNumber.HENKILOTUNNUS_HASH).is(encryptedSsn)
-              .and(FIELD_APPLICATION_OID).exists(true)
               .and(FIELD_APPLICATION_STATE).notEquals(Application.State.PASSIVE.toString())
                     .get();
             return resultNotEmpty(query, INDEX_SSN_DIGEST);
@@ -205,7 +204,6 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
             String encryptedSsn = shaEncrypter.encrypt(ssn.toUpperCase());
             DBObject query = QueryBuilder.start(FIELD_APPLICATION_SYSTEM_ID).is(asId)
                     .and("answers.henkilotiedot." + SocialSecurityNumber.HENKILOTUNNUS_HASH).is(encryptedSsn)
-                    .and(FIELD_APPLICATION_OID).exists(true)
                     .and(FIELD_APPLICATION_STATE).notEquals(Application.State.PASSIVE.toString())
                     .and(queryByPreference(filterParameters, Lists.newArrayList(aoId)).get())
                     .get();
@@ -522,8 +520,6 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
             }
         }
 
-        filters.add(newOIdExistDBObject());
-
         return filters.toArray(new DBObject[filters.size()]);
     }
 
@@ -582,10 +578,6 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         return query;
     }
 
-    private DBObject newOIdExistDBObject() {
-        return QueryBuilder.start(FIELD_APPLICATION_OID).exists(true).get();
-    }
-
     @Override
     public void updateKeyValue(String oid, String key, String value) {
         DBObject query = new BasicDBObject(FIELD_APPLICATION_OID, oid);
@@ -596,7 +588,6 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     @Override
     public Application getNextWithoutStudentOid() {
         DBObject query = new BasicDBObject();
-        query.put(FIELD_APPLICATION_OID, new BasicDBObject(EXISTS, true));
         query.put(FIELD_PERSON_OID, new BasicDBObject(EXISTS, true));
         query.put(FIELD_STUDENT_OID, new BasicDBObject(EXISTS, false));
         query.put(FIELD_APPLICATION_STATE,
@@ -611,9 +602,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     @Override
     public Application getNextSubmittedApplication() {
         DBObject query = new BasicDBObject();
-
         query.put(FIELD_PERSON_OID, new BasicDBObject(EXISTS, false));
-        query.put(FIELD_APPLICATION_OID, new BasicDBObject(EXISTS, true));
         query.put(FIELD_APPLICATION_STATE, Application.State.SUBMITTED.toString());
         query.put(OR, new BasicDBObject[]{
                 new BasicDBObject(FIELD_REDO_POSTPROCESS, new BasicDBObject(EXISTS, false)),
@@ -796,10 +785,15 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     }
 
     @Override
-    public void save(Application application) {
+    public void save(final Application application) {
+        if (null == application || null == application.getOid()){
+            LOG.error("Missing required attributes. Save aborted and throwing exception. Application data was {}", application);
+            throw new MongoException("Application is missing required attributes");
+        }
+
         DBObject check = new BasicDBObject(FIELD_APPLICATION_OID, application.getOid());
         if (getCollection().find(check).count() > 0) {
-            LOG.error("System already contains and application with oid: " + application.getOid() + ". Throwing exception");
+            LOG.error("System already contains and application with oid: " + application.getOid() + ". Throwing exception. Application data was {}", application);
             throw new MongoException("System Already contains and application with oid: " + application.getOid());
         }
         application.setUpdated(new Date());

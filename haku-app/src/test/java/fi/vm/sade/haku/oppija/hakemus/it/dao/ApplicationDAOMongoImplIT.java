@@ -98,6 +98,7 @@ public class ApplicationDAOMongoImplIT extends AbstractDAOTest {
         final HashMap<String, String> vaiheenVastaukset = new HashMap<String, String>();
         vaiheenVastaukset.put("avain", ARVO);
         final Application application = new Application(TEST_USER, new ApplicationPhase(applicationSystemId, TEST_PHASE, vaiheenVastaukset));
+        application.setOid("oid_arvo");
         applicationDAO.save(application);
         List<Application> listOfApplications = applicationDAO.find(new Application(applicationSystemId, TEST_USER));
         assertEquals(1, listOfApplications.size());
