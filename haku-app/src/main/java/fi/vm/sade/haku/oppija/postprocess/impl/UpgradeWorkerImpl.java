@@ -9,7 +9,7 @@ import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.haku.oppija.lomake.service.impl.SystemSession;
 import fi.vm.sade.haku.oppija.repository.AuditLogRepository;
 import fi.vm.sade.haku.oppija.postprocess.UpgradeWorker;
-import fi.vm.sade.haku.upgrade.Level4;
+import fi.vm.sade.haku.oppija.postprocess.upgrade.Level4;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,4 +1,4 @@
-package fi.vm.sade.haku.upgrade;
+package fi.vm.sade.haku.oppija.postprocess.upgrade;
 
 import fi.vm.sade.haku.oppija.hakemus.aspect.LoggerAspect;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Map;
 
 import static fi.vm.sade.haku.oppija.hakemus.aspect.ApplicationDiffUtil.addHistoryBasedOnChangedAnswers;
-import static fi.vm.sade.haku.oppija.hakemus.domain.Application.*;
 
 /**
  * Erottelee kaksoistutkinnon ja ensimmäisen ammatillisen tutkinnon
