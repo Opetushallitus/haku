@@ -16,6 +16,7 @@
 
 package fi.vm.sade.haku.oppija.hakemus.domain;
 
+import com.google.common.base.Objects;
 import com.google.common.base.Predicates;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
@@ -652,5 +653,40 @@ public class Application implements Serializable {
             newMap.put(key, Maps.newHashMap(getAnswers().get(key)));
         }
         return newMap;
+    }
+
+    @Override
+    public String toString() {
+        return Objects.toStringHelper(this)
+          .add("id", id)
+          .add("oid", oid)
+          .add("state", state)
+          .add("studentIdentificationDone", studentIdentificationDone)
+          .add("applicationSystemId", applicationSystemId)
+          .add("user", user)
+          .add("phaseId", phaseId)
+          .add("personOid", personOid)
+          .add("personOidChecked", personOidChecked)
+          .add("studentOid", studentOid)
+          .add("lastAutomatedProcessingTime", lastAutomatedProcessingTime)
+          .add("studentOidChecked", studentOidChecked)
+          .add("received", received)
+          .add("updated", updated)
+          .add("redoPostProcess", redoPostProcess)
+          .add("fullName", fullName)
+          .add("searchNames", searchNames)
+          .add("answers", answers)
+          .add("meta", meta)
+          .add("authorizationMeta", authorizationMeta)
+          .add("overriddenAnswers", overriddenAnswers)
+          .add("additionalInfo", additionalInfo)
+          .add("notes", notes)
+          .add("history", history)
+          .add("version", version)
+          .add("modelVersion", modelVersion)
+          .add("preferenceEligibilities", preferenceEligibilities)
+          .add("attachmentRequests", attachmentRequests)
+          .add("preferencesChecked", preferencesChecked)
+          .toString();
     }
 }
