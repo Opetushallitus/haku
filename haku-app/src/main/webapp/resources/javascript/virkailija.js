@@ -154,6 +154,18 @@ $(document).ready(function () {
         }
     };
 
+    function toggleExcelLink() {
+        $('#excel-link').hide();
+        $("#application-system option:selected").each(function () {
+            var kohdejoukko = $(this).attr('data-kohdejoukko');
+            if (kohdejoukko === 'haunkohdejoukko_12') {
+                $('#excel-link').show();
+            }
+        });
+    }
+
+    toggleExcelLink();
+
     $('#hakukausi').change(function () {
         applicationSystemSelection.init()
     });
@@ -162,7 +174,8 @@ $(document).ready(function () {
     });
 
     $('#application-system').change(function () {
-        baseEducationSelection.init()
+        baseEducationSelection.init();
+        toggleExcelLink();
     });
 
     $('input#sendingSchool').autocomplete({
