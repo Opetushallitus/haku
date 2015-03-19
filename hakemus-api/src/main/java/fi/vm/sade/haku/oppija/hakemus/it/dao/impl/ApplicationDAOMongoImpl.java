@@ -212,6 +212,10 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         return false;
     }
 
+    private void createIndexForSSNCheck() {
+        ensureIndex(INDEX_SSN_DIGEST, FIELD_APPLICATION_SYSTEM_ID, FIELD_SSN_DIGEST);
+    }
+
     @Override
     public ApplicationSearchResultDTO findAllQueried(ApplicationQueryParameters queryParameters,
                                                      ApplicationFilterParameters filterParameters) {
@@ -532,7 +536,8 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         ArrayList<DBObject> queries = new ArrayList<DBObject>();
 
         if (filterParameters.getOrganizationsReadble().size() > 0) {
-            queries.add(QueryBuilder.start(FIELD_ALL_ORGANIZATIONS).in(filterParameters.getOrganizationsReadble()).get());
+            queries.add(
+                    QueryBuilder.start(FIELD_ALL_ORGANIZATIONS).in(filterParameters.getOrganizationsReadble()).get());
         }
 
         if (filterParameters.getOrganizationsReadble().contains(rooOrganizationOid)) {
@@ -591,8 +596,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
 
     @Override
     public Application getNextWithoutStudentOid() {
-        DBObject query = new BasicDBObject();
-        query.put(FIELD_PERSON_OID, new BasicDBObject(EXISTS, true));
+        DBObject query = new BasicDBObject(FIELD_PERSON_OID, new BasicDBObject(EXISTS, true));
         query.put(FIELD_STUDENT_OID, new BasicDBObject(EXISTS, false));
         query.put(FIELD_APPLICATION_STATE,
                 new BasicDBObject(IN,
@@ -601,6 +605,13 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
                                 Application.State.INCOMPLETE.name())));
         query.put(FIELD_STUDENT_IDENTIFICATION_DONE, false);
         return getNextForAutomatedProcessing(query, INDEX_STUDENT_IDENTIFICATION_DONE);
+    }
+
+    private void createIndexForStudentIdentificationDone() {
+        ensureSparseIndex(INDEX_STUDENT_IDENTIFICATION_DONE,
+                FIELD_APPLICATION_STATE,
+                FIELD_STUDENT_IDENTIFICATION_DONE,
+                FIELD_LAST_AUTOMATED_PROCESSING_TIME);
     }
 
     @Override
@@ -616,6 +627,11 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         return getNextForAutomatedProcessing(query, INDEX_STATE);
     }
 
+    private void createIndexForNewApplications() {
+        ensureIndex(INDEX_STATE, FIELD_APPLICATION_STATE, FIELD_LAST_AUTOMATED_PROCESSING_TIME);
+    }
+
+
     @Override
     public Application getNextRedo() {
         QueryBuilder queryBuilder = QueryBuilder.start(FIELD_REDO_POSTPROCESS).in(
@@ -630,6 +646,14 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         DBObject query = queryBuilder.get();
         return getNextForAutomatedProcessing(query, INDEX_REDO_POSTPROCESS);
     }
+
+    private void createIndexForRedoPostprocess() {
+        ensureSparseIndex(INDEX_REDO_POSTPROCESS,
+                FIELD_REDO_POSTPROCESS,
+                FIELD_LAST_AUTOMATED_PROCESSING_TIME,
+                FIELD_APPLICATION_STATE);
+    }
+
 
     private Application getNextForAutomatedProcessing(final DBObject query, final String indexCandidate) {
         DBObject sortBy = new BasicDBObject(FIELD_LAST_AUTOMATED_PROCESSING_TIME, 1);
@@ -755,10 +779,10 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         ensureSparseIndex(INDEX_ASID_AND_SENDING_SCHOOL, FIELD_APPLICATION_SYSTEM_ID, FIELD_SENDING_SCHOOL_PARENTS);
 
         // System queries
-        ensureSparseIndex(INDEX_STUDENT_IDENTIFICATION_DONE, FIELD_APPLICATION_STATE, FIELD_STUDENT_IDENTIFICATION_DONE, FIELD_LAST_AUTOMATED_PROCESSING_TIME);
-        ensureSparseIndex(INDEX_REDO_POSTPROCESS, FIELD_REDO_POSTPROCESS, FIELD_LAST_AUTOMATED_PROCESSING_TIME, FIELD_APPLICATION_STATE);
-        ensureIndex(INDEX_STATE, FIELD_APPLICATION_STATE, FIELD_LAST_AUTOMATED_PROCESSING_TIME);
-        ensureIndex(INDEX_SSN_DIGEST, FIELD_APPLICATION_SYSTEM_ID, FIELD_SSN_DIGEST);
+        createIndexForStudentIdentificationDone();
+        createIndexForRedoPostprocess();
+        createIndexForNewApplications();
+        createIndexForSSNCheck();
 
         // Preference Indexes
         for (int i = 1; i <= 8; i++) {
