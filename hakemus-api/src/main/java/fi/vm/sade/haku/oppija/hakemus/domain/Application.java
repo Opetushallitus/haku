@@ -329,8 +329,8 @@ public class Application implements Serializable {
     }
 
     @JsonIgnore
-    public void studentIdentificationDone() {
-        this.studentIdentificationDone = Boolean.TRUE;
+    public void flagStudentIdentificationDone() {
+        this.studentIdentificationDone = null;
     }
 
     @JsonIgnore
