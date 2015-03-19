@@ -64,7 +64,6 @@ import java.util.regex.Pattern;
 import static com.mongodb.QueryOperators.EXISTS;
 import static com.mongodb.QueryOperators.IN;
 import static com.mongodb.QueryOperators.NE;
-import static com.mongodb.QueryOperators.OR;
 import static java.lang.String.format;
 import static org.apache.commons.lang.StringUtils.isBlank;
 import static org.apache.commons.lang.StringUtils.isEmpty;
@@ -85,13 +84,12 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     private static final String INDEX_DATE_OF_BIRTH = "index_syntymaaika";
     private static final String INDEX_PERSON_OID = "index_personOid";
     private static final String INDEX_STUDENT_OID = "index_studentOid";
-    private static final String INDEX_STATE = "index_state";
+    private static final String INDEX_POSTPROCESS = "index_postprocess";
     private static final String INDEX_STUDENT_IDENTIFICATION_DONE = "index_studentIdentificationDone";
     private static final String INDEX_SENDING_SCHOOL = "index_lahtokoulu";
     private static final String INDEX_SENDING_CLASS = "index_lahtoluokka";
     private static final String INDEX_ALL_ORGANIZAIONS = "index_allOrganizations";
     private static final String INDEX_SEARCH_NAMES = "index_searchNames";
-    private static final String INDEX_REDO_POSTPROCESS = "index_redoPostProcess";
     private static final String INDEX_FULL_NAME = "index_full_name";
     private static final String INDEX_MODEL_VERSION = "index_model_version";
     private static final String INDEX_ASID_SENDING_SCHOOL_AND_FULL_NAME = "index_asid_sending_school_and_full_name";
@@ -616,21 +614,10 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
 
     @Override
     public Application getNextSubmittedApplication() {
-        DBObject query = new BasicDBObject();
-        query.put(FIELD_PERSON_OID, new BasicDBObject(EXISTS, false));
-        query.put(FIELD_APPLICATION_STATE, Application.State.SUBMITTED.toString());
-        query.put(OR, new BasicDBObject[]{
-                new BasicDBObject(FIELD_REDO_POSTPROCESS, new BasicDBObject(EXISTS, false)),
-                new BasicDBObject(FIELD_REDO_POSTPROCESS, new BasicDBObject(NE, PostProcessingState.FAILED.toString()))
-        });
-
-        return getNextForAutomatedProcessing(query, INDEX_STATE);
+        DBObject query = new BasicDBObject(FIELD_APPLICATION_STATE, Application.State.SUBMITTED.toString());
+        query.put(FIELD_REDO_POSTPROCESS, null);
+        return getNextForAutomatedProcessing(query, INDEX_POSTPROCESS);
     }
-
-    private void createIndexForNewApplications() {
-        ensureIndex(INDEX_STATE, FIELD_APPLICATION_STATE, FIELD_LAST_AUTOMATED_PROCESSING_TIME);
-    }
-
 
     @Override
     public Application getNextRedo() {
@@ -644,16 +631,15 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
                         Application.State.ACTIVE.name(),
                         Application.State.INCOMPLETE.name()));
         DBObject query = queryBuilder.get();
-        return getNextForAutomatedProcessing(query, INDEX_REDO_POSTPROCESS);
+        return getNextForAutomatedProcessing(query, INDEX_POSTPROCESS);
     }
 
-    private void createIndexForRedoPostprocess() {
-        ensureSparseIndex(INDEX_REDO_POSTPROCESS,
+    private void createIndexForPostprocess() {
+        ensureIndex(INDEX_POSTPROCESS,
+                FIELD_APPLICATION_STATE,
                 FIELD_REDO_POSTPROCESS,
-                FIELD_LAST_AUTOMATED_PROCESSING_TIME,
-                FIELD_APPLICATION_STATE);
+                FIELD_LAST_AUTOMATED_PROCESSING_TIME);
     }
-
 
     private Application getNextForAutomatedProcessing(final DBObject query, final String indexCandidate) {
         DBObject sortBy = new BasicDBObject(FIELD_LAST_AUTOMATED_PROCESSING_TIME, 1);
@@ -780,8 +766,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
 
         // System queries
         createIndexForStudentIdentificationDone();
-        createIndexForRedoPostprocess();
-        createIndexForNewApplications();
+        createIndexForPostprocess();
         createIndexForSSNCheck();
 
         // Preference Indexes
