@@ -189,8 +189,8 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         if (!Strings.isNullOrEmpty(ssn)) {
             String encryptedSsn = shaEncrypter.encrypt(ssn.toUpperCase());
             final DBObject query = QueryBuilder.start(FIELD_APPLICATION_SYSTEM_ID).is(asId)
-              .and("answers.henkilotiedot." + SocialSecurityNumber.HENKILOTUNNUS_HASH).is(encryptedSsn)
-              .and(FIELD_APPLICATION_STATE).notEquals(Application.State.PASSIVE.toString())
+                    .and("answers.henkilotiedot." + SocialSecurityNumber.HENKILOTUNNUS_HASH).is(encryptedSsn)
+                    .and(FIELD_APPLICATION_STATE).notEquals(Application.State.PASSIVE.toString())
                     .get();
             return resultNotEmpty(query, INDEX_SSN_DIGEST);
         }
@@ -218,7 +218,8 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         final DBObject query = buildQuery(queryParameters, filterParameters);
         final DBObject keys = generateKeysDBObject(DBObjectToSearchResultItem.KEYS);
         final DBObject sortBy = queryParameters.getOrderBy() == null ? null : new BasicDBObject(queryParameters.getOrderBy(), queryParameters.getOrderDir());
-        final SearchResults<ApplicationSearchResultItemDTO> results = searchListing(query, keys, sortBy, queryParameters.getStart(), queryParameters.getRows(), dbObjectToSearchResultItem, true);
+        final SearchResults<ApplicationSearchResultItemDTO> results = searchListing(query, keys, sortBy, queryParameters.getStart(), queryParameters.getRows(),
+                dbObjectToSearchResultItem, true);
         return new ApplicationSearchResultDTO(results.searchHits, results.searchResultsList);
     }
 
@@ -229,8 +230,9 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         final DBObject query = buildQuery(queryParameters, filterParameters);
         LOG.debug("findFullApplications, query built: {}", System.currentTimeMillis());
         final DBObject keys = generateKeysDBObject(DBObjectToMapFunction.KEYS);
-        final DBObject sortBy = queryParameters.getOrderBy() == null ? null : new BasicDBObject(queryParameters.getOrderBy(),  queryParameters.getOrderDir());
-        final SearchResults<Map<String, Object>> searchResults = searchListing(query, keys, sortBy, queryParameters.getStart(), queryParameters.getRows(), dbObjectToMapFunction, false);
+        final DBObject sortBy = queryParameters.getOrderBy() == null ? null : new BasicDBObject(queryParameters.getOrderBy(), queryParameters.getOrderDir());
+        final SearchResults<Map<String, Object>> searchResults = searchListing(query, keys, sortBy, queryParameters.getStart(), queryParameters.getRows(),
+                dbObjectToMapFunction, false);
         return searchResults.searchResultsList;
     }
 
@@ -312,14 +314,15 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         return QueryBuilder.start().or(queries);
     }
 
-    private <T> SearchResults<T> searchListing(final DBObject query, final DBObject keys, final DBObject sortBy, final int start, final int rows, final Function<DBObject, T> transformationFunction, final boolean doCount){
+    private <T> SearchResults<T> searchListing(final DBObject query, final DBObject keys, final DBObject sortBy, final int start, final int rows,
+                                               final Function<DBObject, T> transformationFunction, final boolean doCount) {
         LOG.debug("searchListing starts Query: {} Keys: {} Skipping: {} Rows: {}", query, keys, start, rows);
         final long startTime = System.currentTimeMillis();
         final DBCursor dbCursor = getCollection().find(query, keys);
         if (null != sortBy)
             dbCursor.sort(sortBy);
         if (start > 0)
-          dbCursor.skip(start);
+            dbCursor.skip(start);
         if (rows > 0)
             dbCursor.limit(rows);
         if (enableSearchOnSecondary)
@@ -327,7 +330,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         int searchHits = -1;
         // TODO: Add hint
 
-        if(ensureIndex) {
+        if (ensureIndex) {
             final String hint = addIndexHint(query);
             if (null == hint)
                 dbCursor.hint(hint);
@@ -348,7 +351,8 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
             if (!doCount)
                 searchHits = results.size();
 
-            LOG.debug("searchListing ends, took {} ms. Found matches: {}, returning: {}, initial set size: {}, did count: {}", (System.currentTimeMillis() - startTime), searchHits, results.size(), listSize, doCount);
+            LOG.debug("searchListing ends, took {} ms. Found matches: {}, returning: {}, initial set size: {}, did count: {}",
+                    (System.currentTimeMillis() - startTime), searchHits, results.size(), listSize, doCount);
             return new SearchResults<T>(searchHits, results);
         } catch (MongoException mongoException) {
             LOG.error("Got error {} with query: {} using hint: {}", mongoException.getMessage(), query, null);
@@ -364,12 +368,12 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         boolean hasFullName = (queryString.contains(FIELD_APPLICATION_SYSTEM_ID) ? true : false);
         boolean hasSendingSchool = (queryString.contains(FIELD_APPLICATION_SYSTEM_ID) ? true : false);
 
-        if(hasApplicationSystemId) {
+        if (hasApplicationSystemId) {
             if (hasFullName && hasSendingSchool) {
-                 return INDEX_ASID_SENDING_SCHOOL_AND_FULL_NAME;
-            } else if(hasFullName) {
+                return INDEX_ASID_SENDING_SCHOOL_AND_FULL_NAME;
+            } else if (hasFullName) {
                 return INDEX_APPLICATION_SYSTEM_ID;
-            } else if(hasSendingSchool) {
+            } else if (hasSendingSchool) {
                 return INDEX_ASID_AND_SENDING_SCHOOL;
             }
         }
@@ -591,10 +595,10 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         query.put(FIELD_PERSON_OID, new BasicDBObject(EXISTS, true));
         query.put(FIELD_STUDENT_OID, new BasicDBObject(EXISTS, false));
         query.put(FIELD_APPLICATION_STATE,
-          new BasicDBObject(IN,
-            Lists.newArrayList(
-              Application.State.ACTIVE.name(),
-              Application.State.INCOMPLETE.name())));
+                new BasicDBObject(IN,
+                        Lists.newArrayList(
+                                Application.State.ACTIVE.name(),
+                                Application.State.INCOMPLETE.name())));
         query.put(FIELD_STUDENT_IDENTIFICATION_DONE, false);
         return getNextForAutomatedProcessing(query, INDEX_STUDENT_IDENTIFICATION_DONE);
     }
@@ -615,19 +619,19 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     @Override
     public Application getNextRedo() {
         QueryBuilder queryBuilder = QueryBuilder.start(FIELD_REDO_POSTPROCESS).in(
-          Lists.newArrayList(
-            PostProcessingState.FULL.toString(),
-            PostProcessingState.NOMAIL.toString()));
+                Lists.newArrayList(
+                        PostProcessingState.FULL.toString(),
+                        PostProcessingState.NOMAIL.toString()));
         queryBuilder.put(FIELD_APPLICATION_STATE).in(
-          Lists.newArrayList(
-            Application.State.DRAFT.name(),
-            Application.State.ACTIVE.name(),
-            Application.State.INCOMPLETE.name()));
+                Lists.newArrayList(
+                        Application.State.DRAFT.name(),
+                        Application.State.ACTIVE.name(),
+                        Application.State.INCOMPLETE.name()));
         DBObject query = queryBuilder.get();
         return getNextForAutomatedProcessing(query, INDEX_REDO_POSTPROCESS);
     }
 
-    private Application getNextForAutomatedProcessing(final DBObject query, final String indexCandidate){
+    private Application getNextForAutomatedProcessing(final DBObject query, final String indexCandidate) {
         DBObject sortBy = new BasicDBObject(FIELD_LAST_AUTOMATED_PROCESSING_TIME, 1);
 
         DBObject key = generateKeysDBObject(FIELD_TYPE, FIELD_APPLICATION_OID);
@@ -646,7 +650,8 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
             String applicationOid = fromDBObject.apply(cursor.next()).getOid();
 
             DBObject applicationOidDBObject = new BasicDBObject(FIELD_APPLICATION_OID, applicationOid);
-            DBObject updateLastAutomatedProcessingTime = new BasicDBObject(OPERATION_SET, new BasicDBObject(FIELD_LAST_AUTOMATED_PROCESSING_TIME, System.currentTimeMillis()));
+            DBObject updateLastAutomatedProcessingTime = new BasicDBObject(OPERATION_SET,
+                    new BasicDBObject(FIELD_LAST_AUTOMATED_PROCESSING_TIME, System.currentTimeMillis()));
             getCollection().update(applicationOidDBObject, updateLastAutomatedProcessingTime, false, false);
 
             return fromDBObject.apply(getCollection().findOne(new BasicDBObject(FIELD_APPLICATION_OID, applicationOid)));
@@ -667,19 +672,19 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     }
 
     @Override
-    public boolean hasApplicationsWithModelVersion(int versionLevel){
+    public boolean hasApplicationsWithModelVersion(int versionLevel) {
         return 0 < buildUpgradableCursor(versionLevel).count();
     }
 
-    private DBCursor buildUpgradableCursor(int versionLevel){
+    private DBCursor buildUpgradableCursor(int versionLevel) {
         DBObject query;
         if (versionLevel > 1)
             query = new BasicDBObject(FIELD_MODEL_VERSION, versionLevel);
         else {
             //legacy upgrade
-            query  = new BasicDBObject(FIELD_MODEL_VERSION,
-              new BasicDBObject(IN,
-                new Object[] {null, 0, 1}));
+            query = new BasicDBObject(FIELD_MODEL_VERSION,
+                    new BasicDBObject(IN,
+                            new Object[]{null, 0, 1}));
         }
         final DBCursor cursor = getCollection().find(query);
         if (ensureIndex)
@@ -688,16 +693,16 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     }
 
     @Override
-    public Application getApplication(final String oid, String ... fields) {
+    public Application getApplication(final String oid, String... fields) {
         final DBObject query = new BasicDBObject(FIELD_APPLICATION_OID, oid);
-        if (0 > Arrays.binarySearch(fields, "type")){
+        if (0 > Arrays.binarySearch(fields, "type")) {
             int originalSize = fields.length;
-            fields = Arrays.copyOf(fields, originalSize +1);
+            fields = Arrays.copyOf(fields, originalSize + 1);
             fields[originalSize] = "type";
         }
         DBObject keys = generateKeysDBObject(fields);
         DBCursor cursor = getCollection().find(query, keys);
-        if (ensureIndex){
+        if (ensureIndex) {
             cursor.hint(INDEX_APPLICATION_OID);
         }
         if (cursor.hasNext())
@@ -714,7 +719,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     private boolean resultNotEmpty(final DBObject query, final String indexName) {
         try {
             DBCursor cursor = getCollection().find(query).limit(1);
-            if(ensureIndex && !isEmpty(indexName))
+            if (ensureIndex && !isEmpty(indexName))
                 cursor.hint(indexName);
             return cursor.size() > 0;
         } catch (MongoException mongoException) {
@@ -757,7 +762,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
 
         // Preference Indexes
         for (int i = 1; i <= 8; i++) {
-            createPreferenceIndexes("preference"+i, i>1,
+            createPreferenceIndexes("preference" + i, i > 1,
                     format(FIELD_LOP_T, i),
                     format(FIELD_DISCRETIONARY_T, i),
                     format(FIELD_AO_T, i),
@@ -767,7 +772,8 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         checkIndexes("after ensures");
     }
 
-    private void createPreferenceIndexes(String preference, Boolean sparsePossible, String lopField, String discretionaryField, String fieldAo, String fieldAoIdentifier) {
+    private void createPreferenceIndexes(String preference, Boolean sparsePossible, String lopField, String discretionaryField, String fieldAo,
+                                         String fieldAoIdentifier) {
         ensureIndex("index_" + preference + "_lop", sparsePossible.booleanValue(), lopField);
         ensureSparseIndex("index_" + preference + "_discretionary", discretionaryField);
         ensureIndex("index_" + preference + "_ao", sparsePossible.booleanValue(), fieldAo);
@@ -776,9 +782,9 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
 
     @Override
     public void update(Application o, Application n) {
-        if (null == o.getOid()){
-            LOG.error("Not enough parameters for update. Oid: "+ o.getOid() +". Throwing exception");
-            throw new MongoException("Not enough parameters for update. Oid: "+ o.getOid() +" version: "+ o.getVersion());
+        if (null == o.getOid()) {
+            LOG.error("Not enough parameters for update. Oid: " + o.getOid() + ". Throwing exception");
+            throw new MongoException("Not enough parameters for update. Oid: " + o.getOid() + " version: " + o.getVersion());
         }
         n.setUpdated(new Date());
         super.update(o, n);
@@ -786,21 +792,22 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
 
     @Override
     public void save(final Application application) {
-        if (null == application || null == application.getOid()){
+        if (null == application || null == application.getOid()) {
             LOG.error("Missing required attributes. Save aborted and throwing exception. Application data was {}", application);
             throw new MongoException("Application is missing required attributes");
         }
 
         DBObject check = new BasicDBObject(FIELD_APPLICATION_OID, application.getOid());
         if (getCollection().find(check).count() > 0) {
-            LOG.error("System already contains and application with oid: " + application.getOid() + ". Throwing exception. Application data was {}", application);
+            LOG.error("System already contains and application with oid: " + application.getOid() + ". Throwing exception. Application data was {}",
+                    application);
             throw new MongoException("System Already contains and application with oid: " + application.getOid());
         }
         application.setUpdated(new Date());
         super.save(application);
     }
 
-    private class SearchResults<T>{
+    private class SearchResults<T> {
         private final int searchHits;
         private final List<T> searchResultsList;
 
