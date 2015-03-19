@@ -8,6 +8,8 @@ import fi.vm.sade.haku.oppija.lomake.service.FormService;
 import fi.vm.sade.haku.oppija.lomake.validation.ElementTreeValidator;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidatorFactory;
 import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
+import fi.vm.sade.haku.virkailija.authentication.Person;
+import fi.vm.sade.haku.virkailija.authentication.PersonBuilder;
 import fi.vm.sade.haku.virkailija.authentication.impl.AuthenticationServiceMockImpl;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.junit.Before;
@@ -16,8 +18,8 @@ import org.junit.Test;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.Assert.assertNotNull;
-import static org.mockito.Mockito.mock;
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 public class ApplicationPostProcessorServiceTest {
 
@@ -30,7 +32,7 @@ public class ApplicationPostProcessorServiceTest {
 
     @Before
     public void setUp() {
-        authenticationService = new AuthenticationServiceMockImpl();
+        authenticationService = spy(new AuthenticationServiceMockImpl());
         ValidatorFactory validatorFactory = mock(ValidatorFactory.class);
         elementTreeValidator = new ElementTreeValidator(validatorFactory);
 
@@ -58,6 +60,9 @@ public class ApplicationPostProcessorServiceTest {
         application.addVaiheenVastaukset("henkilotiedot", answerMap);
         application = applicationPostProcessorService.addPersonOid(application);
         assertNotNull("PersonOid should not be null", application.getPersonOid());
+
+        verify(authenticationService, times(1)).addPerson((Person) anyObject());
+        verifyNoMoreInteractions(authenticationService);
     }
 
     @Test
@@ -68,5 +73,76 @@ public class ApplicationPostProcessorServiceTest {
         application.addVaiheenVastaukset("henkilotiedot", answerMap);
         application = applicationPostProcessorService.addPersonOid(application);
         assertNotNull("PersonOid should not be null", application.getPersonOid());
+
+        verify(authenticationService, times(1)).addPerson((Person) anyObject());
+        verifyNoMoreInteractions(authenticationService);
+    }
+
+    @Test
+    public void testCheckPersonOidMissing(){
+        Application application = new Application();
+        application.addVaiheenVastaukset("henkilotiedot", answerMap);
+        application.flagStudentIdentificationRequired();
+
+        final Application modified = applicationPostProcessorService.checkStudentOid(application.clone());
+
+        assertNotNull(modified.getPersonOid());
+        assertNotNull(modified.getStudentOid());
+        assertNull(modified.getStudentIdentificationDone());
+
+        verify(authenticationService, times(1)).addPerson((Person)anyObject());
+        verify(authenticationService, times(1)).checkStudentOid(anyString());
+        verifyNoMoreInteractions(authenticationService);
+    }
+
+    @Test
+    public void testCheckStudentOidMissing(){
+        Application application = new Application();
+        application.addVaiheenVastaukset("henkilotiedot", answerMap);
+        application.setPersonOid("1.2.3");
+        application.flagStudentIdentificationRequired();
+
+        final Application modified = applicationPostProcessorService.checkStudentOid(application.clone());
+
+        assertEquals(application.getPersonOid(), modified.getPersonOid());
+        assertNotNull(modified.getPersonOid());
+        assertNull(modified.getStudentIdentificationDone());
+
+        verify(authenticationService, times(1)).checkStudentOid(anyString());
+        verifyNoMoreInteractions(authenticationService);
+    }
+
+    @Test
+    public void testCheckStudentOidMissingAfterRun(){
+        Application application = new Application();
+        application.addVaiheenVastaukset("henkilotiedot", answerMap);
+        application.setPersonOid("1.2.3");
+        application.flagStudentIdentificationRequired();
+
+        when(authenticationService.checkStudentOid(anyString())).thenReturn(PersonBuilder.start().setPersonOid("1.2.3").get());
+        final Application modified = applicationPostProcessorService.checkStudentOid(application.clone());
+
+        assertEquals(application, modified);
+        assertNotNull(modified.getStudentIdentificationDone());
+
+        verify(authenticationService, times(1)).checkStudentOid(anyString());
+        verifyNoMoreInteractions(authenticationService);
+    }
+
+    @Test
+    public void testCheckStudentOidAlreadySet(){
+        final Application application = new Application();
+        application.addVaiheenVastaukset("henkilotiedot", answerMap);
+        application.setPersonOid("1.2.3");
+        application.setStudentOid("1.2.3");
+        application.flagStudentIdentificationRequired();
+
+        final Application modified = applicationPostProcessorService.checkStudentOid(application.clone());
+
+        assertEquals(application.getPersonOid(), modified.getPersonOid());
+        assertEquals(application.getStudentOid(), modified.getStudentOid());
+        assertNull(modified.getStudentIdentificationDone());
+
+        verifyZeroInteractions(authenticationService);
     }
 }

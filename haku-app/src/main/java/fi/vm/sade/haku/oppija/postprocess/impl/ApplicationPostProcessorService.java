@@ -130,11 +130,13 @@ public class ApplicationPostProcessorService {
             personOid = application.getPersonOid();
         }
 
-        String studentOid = application.getStudentOid();
+        final String studentOid = application.getStudentOid();
 
-        if (isNotEmpty(personOid) && isEmpty(studentOid)) {
-            Person person = authenticationService.checkStudentOid(application.getPersonOid());
-            if (person != null && !isEmpty(person.getStudentOid())) {
+        if (isNotEmpty(studentOid)){
+            application.flagStudentIdentificationDone();
+        } else if (isNotEmpty(personOid)) {
+            final Person person = authenticationService.checkStudentOid(application.getPersonOid());
+            if (person != null && isNotEmpty(person.getStudentOid())) {
                 application.modifyPersonalData(person);
                 application.flagStudentIdentificationDone();
             }

@@ -143,7 +143,8 @@ public class PostProcessWorkerImpl implements PostProcessWorker {
     private boolean identificationModifiedApplication(final Application application, final Application original){
         return !(Objects.equals(application.getPersonOid(), original.getPersonOid())
                 && Objects.equals(application.getStudentOid(), original.getStudentOid())
-                && application.getHistory().size() == original.getHistory().size());
+                && application.getHistory().size() == original.getHistory().size()
+                && Objects.equals(application.getStudentIdentificationDone(), original.getStudentIdentificationDone()));
     }
 
     private void writeStatus(String operation, String state, Application application) {

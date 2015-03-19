@@ -61,7 +61,6 @@ import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.regex.Pattern;
 
-import static com.mongodb.QueryOperators.EXISTS;
 import static com.mongodb.QueryOperators.IN;
 import static com.mongodb.QueryOperators.NE;
 import static java.lang.String.format;
@@ -595,9 +594,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
 
     @Override
     public Application getNextWithoutStudentOid() {
-        DBObject query = new BasicDBObject(FIELD_PERSON_OID, new BasicDBObject(EXISTS, true));
-        query.put(FIELD_STUDENT_OID, new BasicDBObject(EXISTS, false));
-        query.put(FIELD_APPLICATION_STATE,
+        DBObject query = new BasicDBObject(FIELD_APPLICATION_STATE,
                 new BasicDBObject(IN,
                         Lists.newArrayList(
                                 Application.State.ACTIVE.name(),
