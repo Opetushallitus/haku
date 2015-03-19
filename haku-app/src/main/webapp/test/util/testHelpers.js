@@ -314,10 +314,8 @@ function login(username, password) {
             elementByName("login").click();
         },
         wait.until(function() {
-            var pathname = testFrame().document.location.pathname;
-            // Page redirection depends on credentials
-            return (pathname === "/haku-app/virkailija/hakemus"
-            || pathname === "/haku-app/user/login");
+            return testFrame().document.getElementById('searchSection') !== null ||
+                $("#testframe").contents().find("a[href='/haku-app/user/logout']").length > 0
         }));
 }
 

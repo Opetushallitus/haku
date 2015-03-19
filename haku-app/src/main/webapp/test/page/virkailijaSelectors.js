@@ -7,6 +7,8 @@ virkailija = initSelectors({
     submitConfirm: "#submit_confirm",
     addSecondAmmatillinenLink: "a#addAmmatillinenRule2-link",
     createApplicationButton: "#create-application",
+    searchSelectHaku: "select#application-system",
+    searchHarkinnanvaraiset: "#discretionary-only",
     ammatillinenSuoritusVuosi: "input#pohjakoulutus_am_vuosi",
     ammatillinenTutkintonimike: "input#pohjakoulutus_am_nimike",
     ammatillinenTutkinnonLaajuus: "input#pohjakoulutus_am_laajuus",
