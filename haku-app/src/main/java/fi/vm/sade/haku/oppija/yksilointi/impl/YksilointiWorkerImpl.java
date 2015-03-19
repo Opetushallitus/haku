@@ -182,6 +182,7 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
             application = applicationService.updateAuthorizationMeta(application);
             application = applicationService.ensureApplicationOptionGroupData(application);
             application = validateApplication(application);
+            application.setRedoPostProcess(PostProcessingState.DONE);
             application.setModelVersion(Application.CURRENT_MODEL_VERSION);
             //TODO =RS= add Version
             this.applicationDAO.update(new Application(application.getOid()), application);
@@ -195,6 +196,16 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
         } catch (Exception e) {
             LOGGER.error("post process failed for application: " +application.getOid(), e);
             setProcessingStateToFailed(application.getOid(), e.getMessage());
+        }
+    }
+
+    private void reprocessOneApplication(Application application, final boolean sendMail){
+        PostProcessingState redo = application.getRedoPostProcess();
+        if (PostProcessingState.NOMAIL.equals(redo) || PostProcessingState.FULL.equals(redo)){
+            processOneApplication(application, sendMail && PostProcessingState.FULL.equals(redo));
+        }
+        else {
+            LOGGER.error("Application: {} in reprocess with incompatible flag: {}", application.getOid(), redo);
         }
     }
 
@@ -318,38 +329,6 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
                 writeStatus("model upgrade v4", "done", application);
             }
             applications = applicationDAO.getNextUpgradable(baseVersion, maxBatchSize);
-        }
-    }
-
-    private void reprocessOneApplication(Application application, final boolean sendMail){
-        try {
-            PostProcessingState redo = application.getRedoPostProcess();
-            if (redo != null) {
-                if (PostProcessingState.FULL.equals(redo) || PostProcessingState.NOMAIL.equals(redo)) {
-                    application = applicationService.addPersonOid(application);
-                    if (!skipSendingSchoolManual) {
-                        application = baseEducationService.addSendingSchool(application);
-                        application = baseEducationService.addBaseEducation(application);
-                    }
-                    application = applicationService.updateAuthorizationMeta(application);
-                    application = applicationService.ensureApplicationOptionGroupData(application);
-                    application = validateApplication(application);
-                    application.setRedoPostProcess(PostProcessingState.DONE);
-                    application.setModelVersion(Application.CURRENT_MODEL_VERSION);
-                    //TODO =RS= add Version
-                    this.applicationDAO.update(new Application(application.getOid()), application);
-                }
-                if (sendMail && PostProcessingState.FULL.equals(redo)) {
-                    try {
-                        sendMail(application);
-                    } catch (EmailException e) {
-                        LOGGER.error("Send mail failed in redo for application:" + application.getOid(), e);
-                    }
-                }
-            }
-        } catch (Exception e) {
-            LOGGER.error("redoPostProcess failed for application " + application.getOid(), e);
-            setProcessingStateToFailed(application.getOid(), e.getMessage());
         }
     }
 

@@ -273,7 +273,7 @@ public class ApplicationServiceImpl implements ApplicationService {
             Person person = authenticationService.checkStudentOid(application.getPersonOid());
             if (person != null && !isEmpty(person.getStudentOid())) {
                 application.modifyPersonalData(person);
-                application.studentIdentificationDone();
+                application.flagStudentIdentificationDone();
             }
         }
 
