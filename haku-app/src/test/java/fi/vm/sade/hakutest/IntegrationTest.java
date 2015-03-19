@@ -5,7 +5,7 @@ import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationDAO;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationOidService;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
-import fi.vm.sade.haku.oppija.yksilointi.Scheduler;
+import fi.vm.sade.haku.oppija.postprocess.Scheduler;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.dao.FormConfigurationDAO;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormGenerator;
 import org.junit.Ignore;

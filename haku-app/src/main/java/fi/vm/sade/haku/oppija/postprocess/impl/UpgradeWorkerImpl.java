@@ -1,4 +1,4 @@
-package fi.vm.sade.haku.oppija.yksilointi.impl;
+package fi.vm.sade.haku.oppija.postprocess.impl;
 
 import fi.vm.sade.haku.healthcheck.StatusRepository;
 import fi.vm.sade.haku.oppija.hakemus.aspect.LoggerAspect;
@@ -8,7 +8,7 @@ import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationDAO;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.haku.oppija.lomake.service.impl.SystemSession;
 import fi.vm.sade.haku.oppija.repository.AuditLogRepository;
-import fi.vm.sade.haku.oppija.yksilointi.UpgradeWorker;
+import fi.vm.sade.haku.oppija.postprocess.UpgradeWorker;
 import fi.vm.sade.haku.upgrade.Level4;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.slf4j.Logger;

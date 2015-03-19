@@ -13,7 +13,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * European Union Public Licence for more details.
  */
-package fi.vm.sade.haku.oppija.yksilointi.impl;
+package fi.vm.sade.haku.oppija.postprocess.impl;
 
 import fi.vm.sade.haku.healthcheck.StatusRepository;
 import fi.vm.sade.haku.oppija.hakemus.aspect.LoggerAspect;
@@ -33,7 +33,7 @@ import fi.vm.sade.haku.oppija.lomake.validation.ElementTreeValidator;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationInput;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationResult;
 import fi.vm.sade.haku.oppija.repository.AuditLogRepository;
-import fi.vm.sade.haku.oppija.yksilointi.YksilointiWorker;
+import fi.vm.sade.haku.oppija.postprocess.YksilointiWorker;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.apache.commons.mail.Email;
 import org.apache.commons.mail.EmailException;
