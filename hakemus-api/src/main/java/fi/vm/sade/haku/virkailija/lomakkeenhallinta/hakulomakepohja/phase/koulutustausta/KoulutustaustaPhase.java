@@ -45,8 +45,6 @@ public final class KoulutustaustaPhase {
     public static final int TEXT_AREA_COLS = 60;
     public static final String PAATTOTODISTUSVUOSI_PATTERN = "^(19[0-9][0-9]|200[0-9]|201[0-5])$";
 
-    private static final String TUNTEMATON_OPPILAITOS = "1.2.246.562.10.57118763579";
-
     private KoulutustaustaPhase() {
     }
 
@@ -664,14 +662,14 @@ public final class KoulutustaustaPhase {
 
             Element oppilaitoskoodi = Dropdown("pohjakoulutus_am_oppilaitos" + postfix)
                     .emptyOption()
-                    .keepFirst("", TUNTEMATON_OPPILAITOS)
+                    .keepFirst("", OPPILAITOS_TUNTEMATON)
                     .addOptions(ammattioppilaitokset)
                     .requiredInline()
                     .labelKey("pohjakoulutus.oppilaitos")
                     .formParams(formParameters)
                     .build();
 
-            Element muuOppilaitosRule = createVarEqualsToValueRule(oppilaitoskoodi.getId(), TUNTEMATON_OPPILAITOS);
+            Element muuOppilaitosRule = createVarEqualsToValueRule(oppilaitoskoodi.getId(), OPPILAITOS_TUNTEMATON);
             muuOppilaitosRule.addChild(TextQuestion("pohjakoulutus_am_oppilaitos_muu" + postfix).labelKey("muun.oppilaitokseksen.nimi")
                     .requiredInline()
                     .formParams(formParameters).build());
@@ -811,13 +809,13 @@ public final class KoulutustaustaPhase {
 
             Element oppilaitos = Dropdown("pohjakoulutus_yo_ammatillinen_oppilaitos")
                     .emptyOption()
-                    .keepFirst("", TUNTEMATON_OPPILAITOS)
+                    .keepFirst("", OPPILAITOS_TUNTEMATON)
                     .addOptions(ammattioppilaitokset)
                     .requiredInline()
                     .formParams(formParameters)
                     .labelKey("pohjakoulutus.oppilaitos")
                     .build();
-            Element muuOppilaitosRule = createVarEqualsToValueRule(oppilaitos.getId(), TUNTEMATON_OPPILAITOS);
+            Element muuOppilaitosRule = createVarEqualsToValueRule(oppilaitos.getId(), OPPILAITOS_TUNTEMATON);
             muuOppilaitosRule.addChild(
                     TextQuestion("pohjakoulutus_yo_ammatillinen_oppilaitos_muu").requiredInline()
                             .labelKey("muun.oppilaitokseksen.nimi")

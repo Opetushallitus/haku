@@ -21,11 +21,9 @@ package fi.vm.sade.haku.virkailija.lomakkeenhallinta.util;
  * @author Hannu Lyytikainen
  */
 public final class OppijaConstants {
-
     private OppijaConstants() {
         // Utility class, no need for instances
     }
-
 
     public static String FORM_COMMON_BUNDLE_NAME = "form_common";
     public static String MESSAGES_BUNDLE_NAME = "messages";
@@ -145,4 +143,5 @@ public final class OppijaConstants {
     public static final String HAKUTYYPPI_LISAHAKU = "hakutyyppi_03";
 
     public static final String TUTKINTO_MUU = "399999";
+    public static final String OPPILAITOS_TUNTEMATON = "1.2.246.562.10.57118763579";
 }
