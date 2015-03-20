@@ -7,11 +7,13 @@ import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationDAO;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.haku.oppija.lomake.service.impl.SystemSession;
+import fi.vm.sade.haku.oppija.postprocess.upgrade.ApplicationModelV5Upgrade;
 import fi.vm.sade.haku.oppija.postprocess.upgrade.ModelUpgrade;
 import fi.vm.sade.haku.oppija.postprocess.upgrade.UpgradeResult;
 import fi.vm.sade.haku.oppija.repository.AuditLogRepository;
 import fi.vm.sade.haku.oppija.postprocess.UpgradeWorker;
 import fi.vm.sade.haku.oppija.postprocess.upgrade.Level4;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,11 +58,13 @@ public class UpgradeWorkerImpl implements UpgradeWorker{
                              ApplicationDAO applicationDAO,
                              StatusRepository statusRepository,
                              fi.vm.sade.log.client.Logger logger,
-                             AuditLogRepository auditLogRepository) {
+                             AuditLogRepository auditLogRepository,
+                             KoodistoService koodistoService) {
         this.loggerAspect = new LoggerAspect(logger, systemSession, auditLogRepository);
         this.applicationService = applicationService;
         this.applicationDAO = applicationDAO;
         this.statusRepository = statusRepository;
+        this.applicationUpgrades.add(new ApplicationModelV5Upgrade(koodistoService, loggerAspect));
     }
 
     @Override
