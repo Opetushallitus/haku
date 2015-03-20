@@ -21,7 +21,6 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Question;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.I18nBundle;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -65,8 +64,9 @@ public class SocialSecurityNumber extends Question {
 
     @Override
     public Element[] getExtraExcelColumns(I18nBundle i18nBundle) {
-        Element[] extras = new Element[1];
+        Element[] extras = new Element[2];
         extras[0] = new SsnDateOfBirth("ssnDateOfBirthh", i18nBundle.get("syntymaaika"));
+        extras[1] = new SsnSex("ssnSex", i18nBundle.get("sukupuoli"));
         return extras;
     }
 
@@ -90,6 +90,18 @@ public class SocialSecurityNumber extends Question {
                     .append(month).append(".")
                     .append(centuries.get(century)).append(year)
                     .toString();
+        }
+    }
+
+    class SsnSex extends Question {
+        public SsnSex(final String id, final I18nText i18nText) {
+            super(id, i18nText);
+        }
+
+        @Override
+        public String getExcelValue(String value, String lang) {
+            int sex = Integer.valueOf(String.valueOf(value.charAt(9)));
+            return sex % 2 == 0 ? femaleOption.getI18nText().getText(lang) : maleOption.getI18nText().getText(lang);
         }
     }
 }
