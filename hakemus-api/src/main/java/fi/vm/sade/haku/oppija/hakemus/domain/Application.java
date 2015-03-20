@@ -36,15 +36,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
@@ -356,6 +348,8 @@ public class Application implements Serializable {
                 OppijaConstants.ELEMENT_ID_SEX);
         henkilotiedot = updateHenkilotiedotField(henkilotiedot, String.valueOf(person.getDateOfBirth()),
                 OppijaConstants.ELEMENT_ID_DATE_OF_BIRTH);
+        henkilotiedot = updateHenkilotiedotField(henkilotiedot, String.valueOf(person.getLanguage()),
+                OppijaConstants.ELEMENT_ID_LANGUAGE);
 
         Boolean eiSuomalaistaHetua = person.isNoSocialSecurityNumber();
         if (eiSuomalaistaHetua != null) {

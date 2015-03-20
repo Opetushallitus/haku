@@ -10,6 +10,9 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
 
 import static org.apache.commons.lang3.StringUtils.isEmpty;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
@@ -18,6 +21,17 @@ public class PersonJsonAdapter implements JsonSerializer<Person>, JsonDeserializ
 
     private final static DateFormat AUTH_DATE_FMT = new SimpleDateFormat("yyyy-MM-dd");
     private final static DateFormat HAKU_DATE_FMT = new SimpleDateFormat("dd.MM.yyyy");
+
+    private final static Locale fi = new Locale("fi");
+    private final static Map<String, String> kielityypit = new HashMap<>();
+
+    private final static Map<String, String> asiointikielet = new HashMap<String, String>(6) {{
+        put("suomi", "fi"); put("ruotsi", "sv"); put("englanti", "en");
+    }};
+
+    private final static Map<String, String> asiointikielikoodit = new HashMap<String, String>(6) {{
+        put("fi", "suomi"); put("sv", "ruotsi"); put("en", "englanti");
+    }};
 
     private static Logger log = LoggerFactory.getLogger(PersonJsonAdapter.class);
 
@@ -42,7 +56,6 @@ public class PersonJsonAdapter implements JsonSerializer<Person>, JsonDeserializ
 //        "kielisyys": [],
 //        "kansalaisuus": []
 //    }
-
 
     @Override
     public JsonElement serialize(Person person, Type typeOfSrc, JsonSerializationContext context) {
@@ -81,9 +94,11 @@ public class PersonJsonAdapter implements JsonSerializer<Person>, JsonDeserializ
             personJson.add("sukupuoli", new JsonPrimitive(OppijaConstants.SUKUPUOLI_NAINEN));
         }
 
+        personJson = addJsonLanguage("aidinkieli", person.getLanguage(), personJson);
+//        personJson = addJsonLanguage("asiointiKieli", asiointikielet.get(person.getContactLanguage()), personJson);
+
         return personJson;
     }
-
 
     @Override
     public Person deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
@@ -121,15 +136,24 @@ public class PersonJsonAdapter implements JsonSerializer<Person>, JsonDeserializ
             }
         }
 
-        JsonElement kieliElem = personJson.get("asiointiKieli");
+        JsonElement kieliElem = personJson.get("aidinkieli");
         if (kieliElem != null && !kieliElem.isJsonNull()) {
             JsonObject kieliObj = kieliElem.getAsJsonObject();
             if (kieliObj != null && !kieliObj.isJsonNull()) {
-                personBuilder.setContactLanguage(getJsonString(kieliObj, "kieliKoodi"));
+                String lang = getJsonString(kieliObj, "kieliKoodi");
+                personBuilder.setLanguage(lang != null ? lang.toUpperCase() : null);
             }
         }
-        return personBuilder.get();
+//        kieliElem = personJson.get("asiointiKieli");
+//        if (kieliElem != null && !kieliElem.isJsonNull()) {
+//            JsonObject kieliObj = kieliElem.getAsJsonObject();
+//            if (kieliObj != null && !kieliObj.isJsonNull()) {
+//                String asiointikielikoodi = asiointikielikoodit.get(getJsonString(kieliObj, "kieliKoodi"));
+//                personBuilder.setContactLanguage(asiointikielikoodi);
+//            }
+//        }
 
+        return personBuilder.get();
     }
 
     private String getJsonString(JsonObject personJson, String field) {
@@ -148,5 +172,26 @@ public class PersonJsonAdapter implements JsonSerializer<Person>, JsonDeserializ
             value = elem.getAsBoolean();
         }
         return value;
+    }
+
+    private JsonObject addJsonLanguage(String langElem, String lang, JsonObject personJson) {
+        if (isEmpty(lang)) {
+            return personJson;
+        }
+        lang = lang.toLowerCase(fi);
+        JsonObject langObj = new JsonObject();
+        langObj.add("kieliKoodi", new JsonPrimitive(lang));
+        langObj.add("kieliTyyppi", new JsonPrimitive(getLanguageName(lang)));
+        personJson.add(langElem, langObj);
+        return personJson;
+    }
+
+    private static String getLanguageName(String lang){
+        String name = kielityypit.get(lang);
+        if (name == null) {
+            kielityypit.put(lang, (new Locale(lang)).getDisplayLanguage(fi));
+            name = kielityypit.get(lang);
+        }
+        return name;
     }
 }
