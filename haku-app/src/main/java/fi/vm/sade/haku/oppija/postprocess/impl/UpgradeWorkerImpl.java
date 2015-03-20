@@ -7,6 +7,8 @@ import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationDAO;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.haku.oppija.lomake.service.impl.SystemSession;
+import fi.vm.sade.haku.oppija.postprocess.upgrade.ModelUpgrade;
+import fi.vm.sade.haku.oppija.postprocess.upgrade.UpgradeResult;
 import fi.vm.sade.haku.oppija.repository.AuditLogRepository;
 import fi.vm.sade.haku.oppija.postprocess.UpgradeWorker;
 import fi.vm.sade.haku.oppija.postprocess.upgrade.Level4;
@@ -35,6 +37,8 @@ public class UpgradeWorkerImpl implements UpgradeWorker{
     private final ApplicationService applicationService;
     private final LoggerAspect loggerAspect;
     private final StatusRepository statusRepository;
+
+    private final List<ModelUpgrade<Application>> applicationUpgrades = new ArrayList<>();
 
     final String SYSTEM_USER = "järjestelmä";
 
@@ -65,6 +69,7 @@ public class UpgradeWorkerImpl implements UpgradeWorker{
         oldProcess();
         upgradeModelVersion2to3();
         upgradeModelVersion3to4();
+        modelUpgrade();
         LOGGER.info("Done upgrading application model");
     }
 
@@ -179,6 +184,36 @@ public class UpgradeWorkerImpl implements UpgradeWorker{
                 writeStatus("model upgrade v4", "done", application);
             }
             applications = applicationDAO.getNextUpgradable(baseVersion, maxBatchSize);
+        }
+    }
+
+    private void modelUpgrade() {
+        for (ModelUpgrade<Application> upgrade: applicationUpgrades) {
+            int baseVersion = upgrade.getBaseVersion();
+            int targetVersion = upgrade.getTargetVersion();
+            if (!(upgrade.enabled() && applicationDAO.hasApplicationsWithModelVersion(baseVersion)))
+                continue;
+            String statusOperation = "model upgrade "+upgrade.getClass().getSimpleName();
+            List<Application> applications = applicationDAO.getNextUpgradable(baseVersion, maxBatchSize);
+            while (applications.size() > 0) {
+                for (Application application : applications) {
+                    writeStatus(statusOperation, "start", application);
+                    Application queryApplication = new Application(application.getOid(), application.getVersion());
+                    try {
+                        UpgradeResult<Application> upgradeResult = upgrade.processUpgrade(application);
+                        if (upgradeResult.isModified()) {
+                            applicationDAO.update(queryApplication, upgradeResult.getUpgradedDocument());
+                        } else {
+                            applicationDAO.updateModelVersion(queryApplication, targetVersion);
+                        }
+                    }  catch (Exception e) {
+                        LOGGER.error("Upgrading model to "+ upgrade.getTargetVersion()+" failed for application: " + application.getOid() + " " + e.getMessage());
+                        applicationDAO.updateModelVersion(queryApplication, -1 * targetVersion);
+                    }
+                    writeStatus(statusOperation, "done", application);
+                }
+                applications = applicationDAO.getNextUpgradable(upgrade.getBaseVersion(), maxBatchSize);
+            }
         }
     }
 
