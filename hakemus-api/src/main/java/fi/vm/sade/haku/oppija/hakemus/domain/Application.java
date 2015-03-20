@@ -16,15 +16,16 @@
 
 package fi.vm.sade.haku.oppija.hakemus.domain;
 
-import com.google.common.base.Objects;
 import com.google.common.base.Predicates;
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import fi.vm.sade.haku.oppija.lomake.domain.ObjectIdDeserializer;
 import fi.vm.sade.haku.oppija.lomake.domain.ObjectIdSerializer;
 import fi.vm.sade.haku.oppija.lomake.domain.User;
 import fi.vm.sade.haku.virkailija.authentication.Person;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.codehaus.jackson.annotate.JsonCreator;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
@@ -51,6 +52,8 @@ import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_EMPTY)
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 public class Application implements Serializable {
+
+    private static final String[] EXCLUDED_FIELDS = new String[]{"id"};
 
     @JsonIgnore
     private static final Logger log = LoggerFactory.getLogger(Application.class);
@@ -657,36 +660,21 @@ public class Application implements Serializable {
 
     @Override
     public String toString() {
-        return Objects.toStringHelper(this)
-          .add("id", id)
-          .add("oid", oid)
-          .add("state", state)
-          .add("studentIdentificationDone", studentIdentificationDone)
-          .add("applicationSystemId", applicationSystemId)
-          .add("user", user)
-          .add("phaseId", phaseId)
-          .add("personOid", personOid)
-          .add("personOidChecked", personOidChecked)
-          .add("studentOid", studentOid)
-          .add("lastAutomatedProcessingTime", lastAutomatedProcessingTime)
-          .add("studentOidChecked", studentOidChecked)
-          .add("received", received)
-          .add("updated", updated)
-          .add("redoPostProcess", redoPostProcess)
-          .add("fullName", fullName)
-          .add("searchNames", searchNames)
-          .add("answers", answers)
-          .add("meta", meta)
-          .add("authorizationMeta", authorizationMeta)
-          .add("overriddenAnswers", overriddenAnswers)
-          .add("additionalInfo", additionalInfo)
-          .add("notes", notes)
-          .add("history", history)
-          .add("version", version)
-          .add("modelVersion", modelVersion)
-          .add("preferenceEligibilities", preferenceEligibilities)
-          .add("attachmentRequests", attachmentRequests)
-          .add("preferencesChecked", preferencesChecked)
-          .toString();
+        return ReflectionToStringBuilder.toString(this, null, true);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+
+        return EqualsBuilder.reflectionEquals(this, o, false, null, EXCLUDED_FIELDS);
+    }
+
+    @Override
+    public int hashCode() {
+        return HashCodeBuilder.reflectionHashCode(7, 23, this, false, null, EXCLUDED_FIELDS);
     }
 }
