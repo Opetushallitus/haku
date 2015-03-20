@@ -16,15 +16,16 @@
 
 package fi.vm.sade.haku.oppija.hakemus.domain;
 
-import com.google.common.base.Objects;
 import com.google.common.base.Predicates;
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import fi.vm.sade.haku.oppija.lomake.domain.ObjectIdDeserializer;
 import fi.vm.sade.haku.oppija.lomake.domain.ObjectIdSerializer;
 import fi.vm.sade.haku.oppija.lomake.domain.User;
 import fi.vm.sade.haku.virkailija.authentication.Person;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.codehaus.jackson.annotate.JsonCreator;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
@@ -51,6 +52,8 @@ import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_EMPTY)
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 public class Application implements Serializable {
+
+    private static final String[] EXCLUDED_FIELDS = new String[]{"id"};
 
     @JsonIgnore
     private static final Logger log = LoggerFactory.getLogger(Application.class);
@@ -627,66 +630,65 @@ public class Application implements Serializable {
 
     @Override
     public Application clone() {
-        Application clone = new Application(getApplicationSystemId(), getUser(), copyAnswers(), Maps.newHashMap(getAdditionalInfo()));
-        clone.setOid(getOid())
-             .setLastAutomatedProcessingTime(getLastAutomatedProcessingTime())
-             .setMeta(Maps.newHashMap(getMeta()))
-             .setPersonOid(getPersonOid())
-             .setPhaseId(getPhaseId())
-             .setReceived(getReceived())
-             .setRedoPostProcess(getRedoPostProcess())
-             .setState(getState())
-             .setStudentIdentificationDone(getStudentIdentificationDone())
-             .setStudentOid(getStudentOid())
-             .setUpdated(getUpdated());
-        clone.setPersonOidChecked(getPersonOidChecked());
-        clone.setStudentOidChecked(getStudentOidChecked());
-        clone.setPreferenceEligibilities(getPreferenceEligibilities());
-        clone.setAttachmentRequests(getAttachmentRequests());
-        clone.setPreferencesChecked(getPreferencesChecked());
+        final Application clone = new Application(this.oid);
+        clone.applicationSystemId = this.applicationSystemId;
+        clone.user = this.user;
+        clone.answers = cloneAnswers();
+        clone.additionalInfo = Maps.newHashMap(this.additionalInfo);
+        clone.lastAutomatedProcessingTime = this.lastAutomatedProcessingTime;
+        clone.meta = new HashMap<>(this.meta);
+        clone.personOid = this.personOid;
+        clone.phaseId = this.phaseId;
+        clone.received = this.received;
+        clone.redoPostProcess = this.redoPostProcess;
+        clone.state = this.state;
+        clone.studentIdentificationDone = this.studentIdentificationDone;
+        clone.studentOid = this.studentOid;
+        clone.updated = this.updated;
+        clone.personOidChecked = this.personOidChecked;
+        clone.studentOidChecked = this.studentOidChecked;
+        //TODO =RS= check if too shallow
+        clone.preferenceEligibilities = new ArrayList<>(this.preferenceEligibilities);
+        //TODO =RS= check if too shallow
+        clone.attachmentRequests = new ArrayList<>(this.attachmentRequests);
+        //TODO =RS= check if too shallow
+        clone.preferencesChecked = new ArrayList<>(this.preferencesChecked);
+        clone.fullName = this.fullName;
+        clone.modelVersion = this.modelVersion;
+        clone.version = this.version;
+        clone.overriddenAnswers = new HashMap<>(this.overriddenAnswers);
+        clone.searchNames = new HashSet<>(this.searchNames);
+        clone.history = new ArrayList<>(this.history);
+        clone.notes = new LinkedList<>(this.notes);
+        clone.authorizationMeta = null == this.authorizationMeta ? null: authorizationMeta.clone();
         return clone;
     }
 
-    private Map<String, Map<String,String>> copyAnswers() {
-        Map<String, Map<String,String>> newMap = new HashMap<String, Map<String,String>>();
-        for (String key : getAnswers().keySet()) {
-            newMap.put(key, Maps.newHashMap(getAnswers().get(key)));
+    private Map<String, Map<String, String>> cloneAnswers() {
+        Map<String, Map<String, String>> newMap = Maps.newHashMapWithExpectedSize(this.answers.size());
+        for (String key : this.answers.keySet()) {
+            newMap.put(key, Maps.newHashMap(this.answers.get(key)));
         }
         return newMap;
     }
 
     @Override
     public String toString() {
-        return Objects.toStringHelper(this)
-          .add("id", id)
-          .add("oid", oid)
-          .add("state", state)
-          .add("studentIdentificationDone", studentIdentificationDone)
-          .add("applicationSystemId", applicationSystemId)
-          .add("user", user)
-          .add("phaseId", phaseId)
-          .add("personOid", personOid)
-          .add("personOidChecked", personOidChecked)
-          .add("studentOid", studentOid)
-          .add("lastAutomatedProcessingTime", lastAutomatedProcessingTime)
-          .add("studentOidChecked", studentOidChecked)
-          .add("received", received)
-          .add("updated", updated)
-          .add("redoPostProcess", redoPostProcess)
-          .add("fullName", fullName)
-          .add("searchNames", searchNames)
-          .add("answers", answers)
-          .add("meta", meta)
-          .add("authorizationMeta", authorizationMeta)
-          .add("overriddenAnswers", overriddenAnswers)
-          .add("additionalInfo", additionalInfo)
-          .add("notes", notes)
-          .add("history", history)
-          .add("version", version)
-          .add("modelVersion", modelVersion)
-          .add("preferenceEligibilities", preferenceEligibilities)
-          .add("attachmentRequests", attachmentRequests)
-          .add("preferencesChecked", preferencesChecked)
-          .toString();
+        return ReflectionToStringBuilder.toString(this, null, true);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+
+        return EqualsBuilder.reflectionEquals(this, o, false, null, EXCLUDED_FIELDS);
+    }
+
+    @Override
+    public int hashCode() {
+        return HashCodeBuilder.reflectionHashCode(7, 23, this, false, null, EXCLUDED_FIELDS);
     }
 }

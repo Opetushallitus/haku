@@ -15,8 +15,11 @@
  */
 package fi.vm.sade.haku.oppija.hakemus.domain;
 
+import com.google.common.collect.Maps;
 import fi.vm.sade.haku.oppija.lomake.domain.ObjectIdDeserializer;
 import fi.vm.sade.haku.oppija.lomake.domain.ObjectIdSerializer;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.codehaus.jackson.annotate.JsonCreator;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.annotate.JsonTypeInfo;
@@ -24,12 +27,16 @@ import org.codehaus.jackson.map.annotate.JsonDeserialize;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_EMPTY)
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 public class AuthorizationMeta implements Serializable {
+
+    private static final String[] EXCLUDED_FIELDS = new String[]{"id"};
+
     private Boolean opoAllowed;
     private Map<String, Set<String>> aoOrganizations;
     private Set<String> allAoOrganizations;
@@ -74,5 +81,40 @@ public class AuthorizationMeta implements Serializable {
 
     public void setAllAoOrganizations(Set<String> allAoOrganizations) {
         this.allAoOrganizations = allAoOrganizations;
+    }
+
+    @Override
+    public AuthorizationMeta clone() {
+        final AuthorizationMeta clone = new AuthorizationMeta();
+        clone.opoAllowed = this.opoAllowed;
+        clone.allAoOrganizations = null == this.allAoOrganizations ? null : new HashSet<>(this.allAoOrganizations);
+        clone.sendingSchool = null == sendingSchool ? null : new HashSet<>(this.sendingSchool);
+        clone.aoOrganizations = cloneAoOrganizations();
+        return clone;
+    }
+
+    private Map<String, Set<String>> cloneAoOrganizations() {
+        if (null == this.aoOrganizations)
+            return null;
+        final Map<String, Set<String>> newMap = Maps.newHashMapWithExpectedSize(this.aoOrganizations.size());
+        for (String key : this.aoOrganizations.keySet()) {
+            newMap.put(key, new HashSet<>(this.aoOrganizations.get(key)));
+        }
+        return newMap;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+
+        return EqualsBuilder.reflectionEquals(this, o, false, null, EXCLUDED_FIELDS);
+    }
+
+    @Override
+    public int hashCode() {
+        return HashCodeBuilder.reflectionHashCode(7, 23, this, false, null, EXCLUDED_FIELDS);
     }
 }
