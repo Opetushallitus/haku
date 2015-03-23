@@ -98,7 +98,7 @@ public final class ApplicationModelV5UpgradeTest {
         final Application application = createApplicationWith(brokenYo);
         UpgradeResult<Application> result = applicationModelV5Upgrade.processUpgrade(application.clone());
         hasInteractions(application, result);
-        checkChanges(result.getUpgradedDocument(), YO_AMMATILLINEN_OPPILAITOS, YO_AMMATILLINEN_TUTKINTO);
+        checkChanges(application, result.getUpgradedDocument(), YO_AMMATILLINEN_OPPILAITOS, YO_AMMATILLINEN_TUTKINTO);
     }
 
     @Test
@@ -107,7 +107,7 @@ public final class ApplicationModelV5UpgradeTest {
         UpgradeResult<Application> result = applicationModelV5Upgrade.processUpgrade(application.clone());
         hasInteractions(application, result);
 
-        checkChanges(result.getUpgradedDocument(), AM_OPPILAITOS_PREFIX, AM_TUTKINTO_PREFIX);
+        checkChanges(application, result.getUpgradedDocument(), AM_OPPILAITOS_PREFIX, AM_TUTKINTO_PREFIX);
     }
 
     @Test
@@ -119,7 +119,7 @@ public final class ApplicationModelV5UpgradeTest {
         UpgradeResult<Application> result = applicationModelV5Upgrade.processUpgrade(application.clone());
         hasInteractions(application, result);
 
-        checkChanges(result.getUpgradedDocument(), AM_TUTKINTO_PREFIX+2);
+        checkChanges(application, result.getUpgradedDocument(), AM_TUTKINTO_PREFIX+2);
     }
 
     @Test
@@ -131,7 +131,7 @@ public final class ApplicationModelV5UpgradeTest {
         UpgradeResult<Application> result = applicationModelV5Upgrade.processUpgrade(application.clone());
         hasInteractions(application, result);
 
-        checkChanges(result.getUpgradedDocument(), AM_OPPILAITOS_PREFIX+2);
+        checkChanges(application, result.getUpgradedDocument(), AM_OPPILAITOS_PREFIX+2);
     }
 
     @Test
@@ -143,7 +143,7 @@ public final class ApplicationModelV5UpgradeTest {
         UpgradeResult<Application> result = applicationModelV5Upgrade.processUpgrade(application.clone());
         hasInteractions(application, result);
 
-        checkChanges(result.getUpgradedDocument(), YO_AMMATILLINEN_OPPILAITOS, YO_AMMATILLINEN_TUTKINTO);
+        checkChanges(application, result.getUpgradedDocument(), YO_AMMATILLINEN_OPPILAITOS, YO_AMMATILLINEN_TUTKINTO);
     }
 
 
@@ -156,7 +156,7 @@ public final class ApplicationModelV5UpgradeTest {
         UpgradeResult<Application> result = applicationModelV5Upgrade.processUpgrade(application.clone());
         hasInteractions(application, result);
 
-        checkChanges(result.getUpgradedDocument(), YO_AMMATILLINEN_OPPILAITOS, YO_AMMATILLINEN_TUTKINTO, AM_OPPILAITOS_PREFIX, AM_TUTKINTO_PREFIX, AM_OPPILAITOS_PREFIX+2, AM_TUTKINTO_PREFIX+2);
+        checkChanges(application, result.getUpgradedDocument(), YO_AMMATILLINEN_OPPILAITOS, YO_AMMATILLINEN_TUTKINTO, AM_OPPILAITOS_PREFIX, AM_TUTKINTO_PREFIX, AM_OPPILAITOS_PREFIX+2, AM_TUTKINTO_PREFIX+2);
     }
     private void noInteractions(final Application application) {
         final UpgradeResult<Application> result = applicationModelV5Upgrade.processUpgrade(application.clone());
@@ -171,10 +171,11 @@ public final class ApplicationModelV5UpgradeTest {
         verify(loggerAspect).logUpdateApplication(eq(original), (ApplicationPhase) any());
     }
 
-    private void checkChanges(final Application modified, String... changedFields){
+    private void checkChanges(final Application original, final Application modified, String... changedFields){
 
         List<Map<String, String>> changes = modified.getHistory().get(0).getChanges();
         assertEquals(changedFields.length*2, changes.size());
+        Map<String,String> originalAnswers = original.getPhaseAnswers(OppijaConstants.PHASE_EDUCATION);
         Map<String,String> answers = modified.getPhaseAnswers(OppijaConstants.PHASE_EDUCATION);
         List<String> changeFieldsList = new ArrayList<String>();
         for (String field: changedFields){
@@ -184,11 +185,16 @@ public final class ApplicationModelV5UpgradeTest {
             final String muuField = muuFields.get(field);
             assertTrue("old value missing for field: " + muuField, answers.containsKey(muuField));
             changeFieldsList.add(muuField);
+
+            assertEquals("should match old value", originalAnswers.get(field), answers.get(muuField));
         }
         for (Map<String,String> change : changes){
             if (!changeFieldsList.remove(change.get("field")))
                 fail("Change to field "+ change.get("field")+ " not expected");
         }
+        assertTrue("ChangeFields should be empty", changeFieldsList.size() ==0 );
         assertTrue("Version should have been upgraded", applicationModelV5Upgrade.getTargetVersion()== modified.getModelVersion());
+
+
     }
 }
