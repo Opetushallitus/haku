@@ -62,7 +62,7 @@ public final class ApplicationModelV5UpgradeTest {
             .build();
 
     public ApplicationModelV5UpgradeTest() throws IOException {
-        applicationModelV5Upgrade = new ApplicationModelV5Upgrade(koodistoService, loggerAspect);
+        applicationModelV5Upgrade = new ApplicationModelV5Upgrade(koodistoService, loggerAspect, true);
         this.baseApplication = MongoFixtureImporter.getApplicationFixture(baseApplicationId);
         baseApplication.setApplicationSystemId(ApplicationModelV5Upgrade.APPLICABLE_APPLICATIONSYSTEM_ID);
         brokenAll = new HashMap<String, String>();

@@ -27,7 +27,7 @@ public final class ApplicationModelV5Upgrade implements ModelUpgrade<Application
 
     private static final int baseVersion = 4;
     private static final int targetVersion = 5;
-    @Value("${scheduler.modelUpgrade.enableV5:true}")
+
     private boolean enableUpgradeV5;
 
     static final String APPLICABLE_APPLICATIONSYSTEM_ID = "1.2.246.562.29.95390561488";
@@ -43,7 +43,8 @@ public final class ApplicationModelV5Upgrade implements ModelUpgrade<Application
 
     private final LoggerAspect loggerAspect;
 
-    public ApplicationModelV5Upgrade(final KoodistoService koodistoService, final LoggerAspect loggerAspect) {
+    public ApplicationModelV5Upgrade(final KoodistoService koodistoService, final LoggerAspect loggerAspect, final boolean enabled) {
+        this.enableUpgradeV5 = enabled;
         this.loggerAspect = loggerAspect;
         final List koodistoTutkinnot = Lists.newArrayList(Iterables.transform(koodistoService.getAmmattitutkinnot(), new Function<Option, String>() {
             @Override
