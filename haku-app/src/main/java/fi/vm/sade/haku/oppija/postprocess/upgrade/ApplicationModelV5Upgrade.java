@@ -3,10 +3,8 @@ package fi.vm.sade.haku.oppija.postprocess.upgrade;
 
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
-import com.sun.jersey.core.impl.provider.entity.XMLJAXBElementProvider;
 import fi.vm.sade.haku.oppija.hakemus.aspect.LoggerAspect;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationNote;
@@ -14,7 +12,6 @@ import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
-import org.springframework.beans.factory.annotation.Value;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -27,8 +24,6 @@ public final class ApplicationModelV5Upgrade implements ModelUpgrade<Application
 
     private static final int baseVersion = 4;
     private static final int targetVersion = 5;
-    @Value("${scheduler.modelUpgrade.enableV5:true}")
-    private boolean enableUpgradeV5;
 
     static final String APPLICABLE_APPLICATIONSYSTEM_ID = "1.2.246.562.29.95390561488";
     private final List<String> ammattitutkintonimikkeet;
@@ -62,11 +57,6 @@ public final class ApplicationModelV5Upgrade implements ModelUpgrade<Application
         }));
         koodistoOppilaitokset.add(OppijaConstants.OPPILAITOS_TUNTEMATON);
         ammattioppilaitokset = ImmutableList.copyOf(koodistoOppilaitokset);
-    }
-
-    @Override
-    public boolean enabled() {
-        return enableUpgradeV5;
     }
 
     @Override

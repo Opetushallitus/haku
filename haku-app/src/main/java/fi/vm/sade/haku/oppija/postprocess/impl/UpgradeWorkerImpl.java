@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -39,6 +40,7 @@ public class UpgradeWorkerImpl implements UpgradeWorker{
     private final ApplicationService applicationService;
     private final LoggerAspect loggerAspect;
     private final StatusRepository statusRepository;
+    private final KoodistoService koodistoService;
 
     private final List<ModelUpgrade<Application>> applicationUpgrades = new ArrayList<>();
 
@@ -52,6 +54,8 @@ public class UpgradeWorkerImpl implements UpgradeWorker{
     private boolean enableUpgradeV3;
     @Value("${scheduler.modelUpgrade.enableV4:true}")
     private boolean enableUpgradeV4;
+    @Value("${scheduler.modelUpgrade.enableV5:true}")
+    private boolean enableUpgradeV5;
 
     @Autowired
     public UpgradeWorkerImpl(ApplicationService applicationService,
@@ -64,8 +68,15 @@ public class UpgradeWorkerImpl implements UpgradeWorker{
         this.applicationService = applicationService;
         this.applicationDAO = applicationDAO;
         this.statusRepository = statusRepository;
-        this.applicationUpgrades.add(new ApplicationModelV5Upgrade(koodistoService, loggerAspect));
+        this.koodistoService = koodistoService;
     }
+
+    @PostConstruct
+    public void configure(){
+        if (enableUpgradeV5)
+            this.applicationUpgrades.add(new ApplicationModelV5Upgrade(koodistoService, loggerAspect));
+    }
+
 
     @Override
     public void processModelUpdate() {
@@ -195,7 +206,7 @@ public class UpgradeWorkerImpl implements UpgradeWorker{
         for (ModelUpgrade<Application> upgrade: applicationUpgrades) {
             int baseVersion = upgrade.getBaseVersion();
             int targetVersion = upgrade.getTargetVersion();
-            if (!(upgrade.enabled() && applicationDAO.hasApplicationsWithModelVersion(baseVersion)))
+            if (!applicationDAO.hasApplicationsWithModelVersion(baseVersion))
                 continue;
             String statusOperation = "model upgrade "+upgrade.getClass().getSimpleName();
             List<Application> applications = applicationDAO.getNextUpgradable(baseVersion, maxBatchSize);
