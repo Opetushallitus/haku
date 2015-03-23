@@ -1,4 +1,4 @@
-package fi.vm.sade.haku.upgrade;
+package fi.vm.sade.haku.oppija.postprocess.upgrade;
 
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
@@ -20,7 +20,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static fi.vm.sade.haku.oppija.hakemus.domain.Application.*;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain.FormConfiguration.FeatureFlag.erotteleAmmatillinenJaYoAmmatillinenKeskiarvo;
 import static fi.vm.sade.hakutest.TestHelpers.Tuple.tuple;
 import static fi.vm.sade.hakutest.TestHelpers.list;

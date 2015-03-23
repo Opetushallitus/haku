@@ -119,7 +119,7 @@
                 base-package="fi.vm.sade.haku,fi.vm.sade.security,fi.vm.sade.organisaatio.service.search"/>
         <aop:aspectj-autoproxy/>
 
-        <bean id="yksilointiScheduler" class="fi.vm.sade.haku.oppija.yksilointi.Scheduler">
+        <bean id="yksilointiScheduler" class="fi.vm.sade.haku.oppija.postprocess.Scheduler">
             <property name="run" value="${scheduler.run}"/>
             <property name="runModelUpgrade" value="${scheduler.runModelUpgrade}"/>
             <property name="sendMail" value="${scheduler.sendMail}"/>

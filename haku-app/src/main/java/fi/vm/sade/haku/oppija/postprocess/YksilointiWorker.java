@@ -13,13 +13,11 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * European Union Public Licence for more details.
  */
-package fi.vm.sade.haku.oppija.yksilointi;
+package fi.vm.sade.haku.oppija.postprocess;
 
 public interface YksilointiWorker {
 
     public enum ProcessingType {IDENTIFICATION, POST_PROCESS, REDO_POST_PROCESS}
 
     void processApplications(ProcessingType processingType, boolean sendMail);
-
-    void processModelUpdate();
 }

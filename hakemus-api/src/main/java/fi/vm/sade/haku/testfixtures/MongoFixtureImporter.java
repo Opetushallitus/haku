@@ -2,6 +2,9 @@ package fi.vm.sade.haku.testfixtures;
 
 import java.io.IOException;
 
+import fi.vm.sade.haku.oppija.hakemus.converter.DBObjectToApplicationFunction;
+import fi.vm.sade.haku.oppija.hakemus.domain.Application;
+import fi.vm.sade.haku.oppija.lomake.service.EncrypterService;
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.springframework.core.io.Resource;
@@ -36,15 +39,15 @@ public class MongoFixtureImporter {
 
     private static void insertObject(final MongoTemplate template, final Resource resource) throws IOException {
         String collection = getParentName(resource);
-        final String jsonString = IOUtils.toString(resource.getURI());
+        DBObject dbObject = null;
         try {
             LOGGER.info("Importing " + resource.getURI() + " to collection " + collection);
-            final DBObject dbObject = (DBObject) JSON.parse(jsonString);
+            dbObject = parseDBObject(resource);
             // TODO: doesn't seem to work with multiple objects per file (themequestion/*.json)
             upsert(template, collection, dbObject);
         } catch (Exception e) {
             System.err.println("Dumping JSON:");
-            System.err.println(jsonString);
+            System.err.println(dbObject);
             throw new RuntimeException("Error importing JSON from " + resource.getURL(), e);
         }
     }
@@ -57,5 +60,28 @@ public class MongoFixtureImporter {
     private static String getParentName(Resource resource) throws IOException {
         final String[] components = resource.getURI().toString().split("/");
         return components[components.length - 2];
+    }
+
+    private static DBObject parseDBObject(final Resource resource) throws IOException{
+        final String jsonString = IOUtils.toString(resource.getURI());
+        return (DBObject) JSON.parse(jsonString);
+    }
+
+    public static Application getApplicationFixture(String applicationId)throws IOException{
+        final Resource[] resources = new PathMatchingResourcePatternResolver().getResources(MONGOFIXTURES + "application/" + applicationId +".json");
+        if (resources.length >0)
+            return new DBObjectToApplicationFunction(new EncrypterService() {
+                @Override
+                public String decrypt(String encrypt) {
+                    return null;
+                }
+
+                @Override
+                public String encrypt(String encrypt) {
+                    return null;
+                }
+            }).apply(parseDBObject(resources[0]));
+        else
+            return null;
     }
 }
