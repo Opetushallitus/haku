@@ -7,12 +7,9 @@ import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationDAO;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.haku.oppija.lomake.service.impl.SystemSession;
-import fi.vm.sade.haku.oppija.postprocess.upgrade.ApplicationModelV5Upgrade;
-import fi.vm.sade.haku.oppija.postprocess.upgrade.ModelUpgrade;
-import fi.vm.sade.haku.oppija.postprocess.upgrade.UpgradeResult;
+import fi.vm.sade.haku.oppija.postprocess.upgrade.*;
 import fi.vm.sade.haku.oppija.repository.AuditLogRepository;
 import fi.vm.sade.haku.oppija.postprocess.UpgradeWorker;
-import fi.vm.sade.haku.oppija.postprocess.upgrade.Level4;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.slf4j.Logger;
@@ -56,6 +53,8 @@ public class UpgradeWorkerImpl implements UpgradeWorker{
     private boolean enableUpgradeV4;
     @Value("${scheduler.modelUpgrade.enableV5:true}")
     private boolean enableUpgradeV5;
+    @Value("${scheduler.modelUpgrade.enableV6:true}")
+    private boolean enableUpgradeV6;
 
     @Autowired
     public UpgradeWorkerImpl(ApplicationService applicationService,
@@ -75,6 +74,8 @@ public class UpgradeWorkerImpl implements UpgradeWorker{
     public void configure(){
         if (enableUpgradeV5)
             this.applicationUpgrades.add(new ApplicationModelV5Upgrade(koodistoService, loggerAspect));
+        if (enableUpgradeV6)
+            this.applicationUpgrades.add(new ApplicationModelV6Upgrade(loggerAspect));
     }
 
 
