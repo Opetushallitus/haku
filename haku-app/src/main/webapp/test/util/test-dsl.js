@@ -13,7 +13,6 @@ function wrap(elementDefinition) {
     switch (typeof(elementDefinition)) {
         case 'string':
             return function() {
-                dslDebug("S("+elementDefinition+")")
                 return S(elementDefinition);
             };
         case 'function':
@@ -49,25 +48,32 @@ function seqDone(/* ...promises */) {
     }
 }
 
-function visible(fn) {
+function waitJqueryIs(fn, param, value) {
+    if(typeof value == 'undefined') {
+        value = true
+    }
     if (typeof(fn) !== 'function') {
         throw new Error('visible() got a non-function: ' + fn);
     }
     return function() {
         return wait.until(function() {
-            dslDebug("visible", fn().is(':visible'));
-            return fn().is(':visible');
+            dslDebug(fn().selector, param, fn().is(param));
+            return fn().is(param) === value;
         })().fail(function(error) {
-            throw new Error("Wait for selector '" + fn().selector + "' failed: " + error);
+            throw new Error("Wait for selector '" + fn().selector + "' status: "+param+" to be " +value+ " failed: " + error);
         })
     }
+}
+
+function visible(fn) {
+    return waitJqueryIs(fn, ':visible')
 }
 
 function input1(fn, value) {
     return seq(
         visible(fn),
         function() {
-            dslDebug("element visible and ready for input1", value)
+            dslDebug(fn().selector, "visible and ready for input1: '" + value + "'")
             return fn().val(value).change().blur();
         });
 }
@@ -87,12 +93,12 @@ function input(/* fn, value, fn, value, ... */) {
 function click(/* ...promises */) {
     var fns =  Array.prototype.slice.call(arguments);
     return function() {
-        dslDebug("click")
+        dslDebug("click selector count:", fns.length)
         var clickSequence = fns.map(function(fn) {
             return seq(
                 visible(fn),
                 function() {
-                    dslDebug("element visible and ready to click. matched elements: ", fn().length)
+                    dslDebug(fn().selector, "visible and ready for click. matched elements: ", fn().length)
                     fn().click();
                 });
         });
