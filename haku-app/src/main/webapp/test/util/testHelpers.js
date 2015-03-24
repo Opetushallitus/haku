@@ -388,19 +388,6 @@ function log(marker) {
     }
 }
 
-function select(fn, value) {
-    return seq(
-        visible(fn),
-        wait.until(function() {
-            var matches = fn().find('option[value="' + value + '"]').length;
-            if (matches > 1) {
-                throw new Error('Value "' + value + '" matches ' + matches + ' <option>s from <select> ' + fn().selector)
-            }
-            return matches === 1;
-        }),
-        input(fn, value));
-}
-
 function readTable($tableElement, allowWrongDimensions) {
     return $tableElement.find('tr').filter(function(i) {
         return allowWrongDimensions || testFrame().jQuery("td", this).length === 2
