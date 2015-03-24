@@ -41,62 +41,6 @@ function S(selector) {
     }
 }
 
-wait = {
-    maxWaitMs: testTimeout,
-    waitIntervalMs: 10,
-    until: function (condition, count) {
-        return function (/*...promiseArgs*/) {
-            var promiseArgs = arguments;
-            var deferred = Q.defer();
-            if (count == undefined) count = wait.maxWaitMs / wait.waitIntervalMs;
-
-            (function waitLoop(remaining) {
-                var cond = condition.apply(this, promiseArgs);
-                if (cond) {
-                    deferred.resolve()
-                } else if (remaining < 1) {
-                    deferred.reject("timeout of " + wait.maxWaitMs + " in wait.until")
-                } else {
-                    setTimeout(function () {
-                        waitLoop(remaining - 1)
-                    }, wait.waitIntervalMs)
-                }
-            })(count);
-            return deferred.promise
-        }
-    },
-    untilFalse: function (condition) {
-        return wait.until(function () {
-            return !condition()
-        })
-    },
-    forAngular: function () {
-        var deferred = Q.defer();
-        try {
-            var angular = testFrame().angular;
-            var el = angular.element(S("#appRoot"));
-            var timeout = angular.element(el).injector().get('$timeout');
-            angular.element(el).injector().get('$browser').notifyWhenNoOutstandingRequests(function () {
-                timeout(function () {
-                    deferred.resolve()
-                })
-            })
-        } catch (e) {
-            deferred.reject(e)
-        }
-        return deferred.promise
-    },
-    forMilliseconds: function (ms) {
-        return function () {
-            var deferred = Q.defer();
-            setTimeout(function () {
-                deferred.resolve()
-            }, ms);
-            return deferred.promise
-        }
-    }
-};
-
 uiUtil = {
     inputValues: function (el) {
         function formatKey(key) {
