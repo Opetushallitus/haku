@@ -53,10 +53,14 @@ function visible(fn) {
     if (typeof(fn) !== 'function') {
         throw new Error('visible() got a non-function: ' + fn);
     }
-    return wait.until(function() {
-        dslDebug("visible", fn().is(':visible'))
-        return fn().is(':visible');
-    })
+    return function() {
+        return wait.until(function() {
+            dslDebug("visible", fn().is(':visible'));
+            return fn().is(':visible');
+        })().fail(function(error) {
+            throw new Error("Wait for selector '" + fn().selector + "' failed: " + error);
+        })
+    }
 }
 
 function input1(fn, value) {
@@ -103,7 +107,7 @@ function sleep(ms) {
 }
 
 wait = {
-    maxWaitMs: testTimeout,
+    maxWaitMs: 20000,
     waitIntervalMs: 10,
     until: function (condition, count) {
         return function (/*...promiseArgs*/) {
@@ -135,7 +139,7 @@ wait = {
         var deferred = Q.defer();
         try {
             var angular = testFrame().angular;
-            var el = angular.element(S("#appRoot"));
+            var el = angular.element(S("body"));
             var timeout = angular.element(el).injector().get('$timeout');
             angular.element(el).injector().get('$browser').notifyWhenNoOutstandingRequests(function () {
                 timeout(function () {
