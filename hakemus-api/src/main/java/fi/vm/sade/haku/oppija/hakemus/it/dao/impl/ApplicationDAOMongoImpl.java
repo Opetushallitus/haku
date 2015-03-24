@@ -812,6 +812,8 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
                     application);
             throw new MongoException("System Already contains and application with oid: " + application.getOid());
         }
+        if (null == application.getModelVersion())
+            application.setModelVersion(application.getModelVersion());
         application.setUpdated(new Date());
         super.save(application);
     }

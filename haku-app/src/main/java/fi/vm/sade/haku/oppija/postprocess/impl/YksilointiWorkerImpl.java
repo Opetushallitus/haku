@@ -170,7 +170,8 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
             application = applicationService.ensureApplicationOptionGroupData(application);
             application = validateApplication(application);
             application.setRedoPostProcess(PostProcessingState.DONE);
-            application.setModelVersion(Application.CURRENT_MODEL_VERSION);
+            if (null == application.getModelVersion())
+                application.setModelVersion(Application.CURRENT_MODEL_VERSION);
             //TODO =RS= add Version
             this.applicationDAO.update(new Application(application.getOid()), application);
             if (sendMail) {
