@@ -99,16 +99,18 @@ public final class ApplicationModelV5Upgrade implements ModelUpgrade<Application
     private void addChange(final Map<String, String> changes, final Map.Entry<String, String> answer, final String codeValue, final String prefix) {
         final String key = answer.getKey();
 
-        changes.put(key, codeValue);
         if (null == prefix || prefix.length() == key.length()) {
+            changes.put(key, codeValue);
             changes.put(key + MUU_POSTFIX, answer.getValue());
-        }
-        else  {
+        } else {
             final String index = key.substring(prefix.length());
-            changes.put(prefix + MUU_POSTFIX +index, answer.getValue());
+            if (MUU_POSTFIX.length() <= index.length() && index.contains(MUU_POSTFIX)) {
+                return;
+            }
+            changes.put(key, codeValue);
+            changes.put(prefix + MUU_POSTFIX + index, answer.getValue());
         }
     }
-
 
     @Override
     public UpgradeResult<Application> processUpgrade(final Application application) {

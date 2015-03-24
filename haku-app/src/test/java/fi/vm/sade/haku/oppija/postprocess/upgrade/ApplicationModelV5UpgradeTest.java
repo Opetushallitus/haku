@@ -158,6 +158,21 @@ public final class ApplicationModelV5UpgradeTest {
 
         checkChanges(application, result.getUpgradedDocument(), YO_AMMATILLINEN_OPPILAITOS, YO_AMMATILLINEN_TUTKINTO, AM_OPPILAITOS_PREFIX, AM_TUTKINTO_PREFIX, AM_OPPILAITOS_PREFIX+2, AM_TUTKINTO_PREFIX+2);
     }
+
+    @Test
+    public void doubleRun() {
+        final Map<String,String> overrides = new HashMap(okAll);
+        overrides.putAll(brokenAll);
+        final Application application = createApplicationWith(overrides);
+
+        UpgradeResult<Application> result = applicationModelV5Upgrade.processUpgrade(application.clone());
+        hasInteractions(application, result);
+
+        checkChanges(application, result.getUpgradedDocument(), YO_AMMATILLINEN_OPPILAITOS, YO_AMMATILLINEN_TUTKINTO, AM_OPPILAITOS_PREFIX, AM_TUTKINTO_PREFIX, AM_OPPILAITOS_PREFIX+2, AM_TUTKINTO_PREFIX+2);
+
+        noInteractions(result.getUpgradedDocument());
+    }
+    
     private void noInteractions(final Application application) {
         final UpgradeResult<Application> result = applicationModelV5Upgrade.processUpgrade(application.clone());
         assertEquals("Application has changed", application, result.getUpgradedDocument());
