@@ -125,6 +125,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     private static final String FIELD_REDO_POSTPROCESS = "redoPostProcess";
     private static final String FIELD_OPO_ALLOWED = "authorizationMeta.opoAllowed";
     private static final String FIELD_MODEL_VERSION = "modelVersion";
+    private static final String FIELD_APPLICATION_VERSION = "version";
     private static final String REGEX_LINE_BEGIN = "^";
 
     private static final String OPERATION_SET = "$set";
@@ -724,9 +725,9 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         return null;
     }
 
-    public void updateModelVersion(Application application, int modelVersion) {
+    public void updateModelVersion(final Application application, int modelVersion) {
         getCollection().update(
-                new BasicDBObject(FIELD_APPLICATION_OID, application.getOid()),
+                new BasicDBObject(FIELD_APPLICATION_OID, application.getOid()).append(FIELD_APPLICATION_VERSION, application.getVersion()),
                 new BasicDBObject("$set", new BasicDBObject(FIELD_MODEL_VERSION, modelVersion)));
     }
 
