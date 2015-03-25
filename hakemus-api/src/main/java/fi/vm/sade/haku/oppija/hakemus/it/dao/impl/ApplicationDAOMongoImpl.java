@@ -615,7 +615,11 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     @Override
     public Application getNextSubmittedApplication() {
         DBObject query = new BasicDBObject(FIELD_APPLICATION_STATE, Application.State.SUBMITTED.toString());
-        query.put(FIELD_REDO_POSTPROCESS, null);
+        query.put(FIELD_REDO_POSTPROCESS,
+                new BasicDBObject(IN, Lists.newArrayList(
+                        null,
+                        PostProcessingState.FULL.toString(),
+                        PostProcessingState.NOMAIL.toString())));
         return getNextForAutomatedProcessing(query, INDEX_POSTPROCESS);
     }
 
