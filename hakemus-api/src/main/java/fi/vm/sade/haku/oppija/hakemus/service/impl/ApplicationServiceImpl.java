@@ -47,8 +47,6 @@ import fi.vm.sade.haku.oppija.lomake.validation.ElementTreeValidator;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationInput;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationResult;
 import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
-import fi.vm.sade.haku.virkailija.authentication.Person;
-import fi.vm.sade.haku.virkailija.authentication.PersonBuilder;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.i18n.I18nBundleService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionAttachmentDTO;
@@ -103,7 +101,6 @@ public class ApplicationServiceImpl implements ApplicationService {
                                   I18nBundleService i18nBundleService,
                                   ElementTreeValidator elementTreeValidator,
                                   @Value("${onlyBackgroundValidation}") String onlyBackgroundValidation) {
-
         this.applicationDAO = applicationDAO;
         this.userSession = userSession;
         this.formService = formService;
@@ -208,7 +205,6 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     private String getApplicationLogMessage(Application application, ValidationResult validationResult) {
-
         if(application == null) return "Application was null.";
 
         StringBuilder sb = new StringBuilder();
@@ -219,66 +215,6 @@ public class ApplicationServiceImpl implements ApplicationService {
         }
 
         return sb.toString();
-
-    }
-
-    @Override
-    public Application addPersonOid(Application application) {
-        Map<String, String> allAnswers = application.getVastauksetMerged();
-
-        LOGGER.debug("start addPersonAndAuthenticate, {}", System.currentTimeMillis() / 1000L);
-
-        PersonBuilder personBuilder = PersonBuilder.start()
-                .setFirstNames(allAnswers.get(OppijaConstants.ELEMENT_ID_FIRST_NAMES))
-                .setNickName(allAnswers.get(OppijaConstants.ELEMENT_ID_NICKNAME))
-                .setLastName(allAnswers.get(OppijaConstants.ELEMENT_ID_LAST_NAME))
-                .setSex(allAnswers.get(OppijaConstants.ELEMENT_ID_SEX))
-                .setLanguage(allAnswers.get(OppijaConstants.ELEMENT_ID_LANGUAGE))
-                .setNationality(allAnswers.get(OppijaConstants.ELEMENT_ID_NATIONALITY))
-                .setContactLanguage(allAnswers.get(OppijaConstants.ELEMENT_ID_CONTACT_LANGUAGE))
-                .setSocialSecurityNumber(allAnswers.get(OppijaConstants.ELEMENT_ID_SOCIAL_SECURITY_NUMBER))
-                .setNoSocialSecurityNumber(!Boolean.valueOf(allAnswers.get(OppijaConstants.ELEMENT_ID_HAS_SOCIAL_SECURITY_NUMBER)))
-                .setDateOfBirth(allAnswers.get(OppijaConstants.ELEMENT_ID_DATE_OF_BIRTH))
-                .setPersonOid(application.getPersonOid())
-                .setSecurityOrder(false);
-
-        Person personBefore = personBuilder.get();
-        LOGGER.debug("Calling addPerson");
-        try {
-            Person personAfter = authenticationService.addPerson(personBefore);
-            LOGGER.debug("Called addPerson");
-            LOGGER.debug("Calling modifyPersonalData");
-            application = application.modifyPersonalData(personAfter);
-            LOGGER.debug("Called modifyPersonalData");
-        } catch (Throwable t) {
-            LOGGER.error("Unexpected happened: ", t);
-        }
-        return application;
-    }
-
-    @Override
-    public Application checkStudentOid(Application application) {
-        final Application updateQuery = new Application(application.getOid(), application.getVersion());
-        String personOid = application.getPersonOid();
-
-        if (isEmpty(personOid)) {
-            application = addPersonOid(application);
-            personOid = application.getPersonOid();
-        }
-
-        String studentOid = application.getStudentOid();
-
-        if (isNotEmpty(personOid) && isEmpty(studentOid)) {
-            Person person = authenticationService.checkStudentOid(application.getPersonOid());
-            if (person != null && !isEmpty(person.getStudentOid())) {
-                application.modifyPersonalData(person);
-                application.flagStudentIdentificationDone();
-            }
-        }
-
-        application.setLastAutomatedProcessingTime(System.currentTimeMillis());
-        applicationDAO.update(updateQuery, application);
-        return application;
     }
 
     @Override

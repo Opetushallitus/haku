@@ -42,7 +42,6 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
     public static final Logger LOGGER = LoggerFactory.getLogger(YksilointiWorkerImpl.class);
 
     private static final SystemSession systemSession = new SystemSession();
-    private final ApplicationService applicationService;
     private final ApplicationDAO applicationDAO;
     private final StatusRepository statusRepository;
     private final LoggerAspect loggerAspect;
@@ -55,8 +54,7 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
     final String SYSTEM_USER = "järjestelmä";
 
     @Autowired
-    public YksilointiWorkerImpl(final ApplicationService applicationService,
-                                final ApplicationDAO applicationDAO,
+    public YksilointiWorkerImpl(final ApplicationDAO applicationDAO,
                                 final StatusRepository statusRepository,
                                 final fi.vm.sade.log.client.Logger logger,
                                 final AuditLogRepository auditLogRepository,
@@ -64,7 +62,6 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
                                 final ApplicationPostProcessorService applicationPostProcessorService,
                                 @Value("${server.name}") final String serverName) {
         this.loggerAspect = new LoggerAspect(logger, systemSession, auditLogRepository, serverName);
-        this.applicationService = applicationService;
         this.applicationDAO = applicationDAO;
         this.statusRepository = statusRepository;
         this.sendMailService = sendMailService;
@@ -81,7 +78,7 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
             writeStatus(processingType.toString(), "start", application);
             switch (processingType) {
             case IDENTIFICATION:
-                applicationService.checkStudentOid(application);
+                applicationPostProcessorService.checkStudentOid(application);
                 break;
             case POST_PROCESS:
                 processOneApplication(application, sendMail);

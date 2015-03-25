@@ -75,7 +75,6 @@ public class ApplicationServiceImplTest {
     String NAME = "Test Example";
     String AS_ID = "1.2.246.562.5.741585101110";
     String AO_ID = "1.2.246.562.14.299022856910";
-    Map<String, String> answerMap;
     private ApplicationQueryParameters applicationQueryParameters;
     private ApplicationFilterParameters filterParameters;
     private ApplicationServiceImpl service;
@@ -132,17 +131,6 @@ public class ApplicationServiceImplTest {
 
         service = new ApplicationServiceImpl(applicationDAO, null, null, applicationOidService, authenticationService, organizationService,
                 hakuPermissionService, applicationSystemService, koulutusinformaatioService, i18nBundleService, elementTreeValidator, null);
-
-        answerMap = new HashMap<String, String>();
-        answerMap.put(OppijaConstants.ELEMENT_ID_FIRST_NAMES, "Etunimi");
-        answerMap.put(OppijaConstants.ELEMENT_ID_NICKNAME, "Etunimi");
-        answerMap.put(OppijaConstants.ELEMENT_ID_LAST_NAME, "Sukunimi");
-        answerMap.put(OppijaConstants.ELEMENT_ID_SOCIAL_SECURITY_NUMBER, "030506-229W");
-        answerMap.put(OppijaConstants.ELEMENT_ID_SEX, "Mies");
-        answerMap.put(OppijaConstants.ELEMENT_ID_HOME_CITY, "Kaupunki");
-        answerMap.put(OppijaConstants.ELEMENT_ID_LANGUAGE, "fi");
-        answerMap.put(OppijaConstants.ELEMENT_ID_NATIONALITY, OppijaConstants.NATIONALITY_CODE_FI);
-        answerMap.put(OppijaConstants.ELEMENT_ID_FIRST_LANGUAGE, "fi");
     }
 
     @Test
@@ -214,25 +202,6 @@ public class ApplicationServiceImplTest {
     @Test(expected = IllegalArgumentException.class)
     public void testPutApplicationAdditionalInfoKeyValueNullValue() {
         service.putApplicationAdditionalInfoKeyValue(OID, "key", null);
-    }
-
-    @Test
-    public void testSetPersonFi() {
-        Application application = new Application();
-
-        application.addVaiheenVastaukset("henkilotiedot", answerMap);
-        application = service.addPersonOid(application);
-        assertNotNull("PersonOid should not be null", application.getPersonOid());
-    }
-
-    @Test
-    public void testSetPersonNotFi() {
-        Application application = new Application();
-        answerMap.remove(OppijaConstants.ELEMENT_ID_SOCIAL_SECURITY_NUMBER);
-        answerMap.put(OppijaConstants.ELEMENT_ID_NATIONALITY, "swe");
-        application.addVaiheenVastaukset("henkilotiedot", answerMap);
-        application = service.addPersonOid(application);
-        assertNotNull("PersonOid should not be null", application.getPersonOid());
     }
 
     @Test
