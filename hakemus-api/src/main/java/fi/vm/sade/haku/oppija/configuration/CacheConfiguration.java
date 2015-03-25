@@ -12,12 +12,12 @@ import java.util.concurrent.TimeUnit;
 @Configuration
 public class CacheConfiguration {
     @Bean(name = "applicationSystemCacheBuilder")
-    public CacheBuilder<String, ApplicationSystem> applicationSystemCacheBuilder(@Value("${application.system.cache.refresh:6}") final Integer cacheRefreshTimer) {
+    public CacheBuilder<String, ApplicationSystem> applicationSystemCacheBuilder(@Value("${application.system.cache.refresh:6}") final Integer cacheRefreshTimer, @Value("${application.system.cache.refresh.timeunit : MINUTES}") final TimeUnit cacheRefreshTimeUnits) {
         return CacheBuilder
                 .newBuilder()
                 .recordStats()
                 .maximumWeight(20)
-                .refreshAfterWrite(cacheRefreshTimer, TimeUnit.MINUTES)
+                .refreshAfterWrite(cacheRefreshTimer, cacheRefreshTimeUnits)
                 .weigher(new Weigher<String, ApplicationSystem>() {
                     @Override
                     public int weigh(String key, ApplicationSystem value) {
