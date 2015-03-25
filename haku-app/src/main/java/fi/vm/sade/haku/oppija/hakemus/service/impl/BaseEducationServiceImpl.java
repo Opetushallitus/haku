@@ -223,6 +223,9 @@ public class BaseEducationServiceImpl implements BaseEducationService {
 
             Map<String, SuoritusDTO> suoritukset = suoritusrekisteriService.getSuoritukset(personOid);
             SuoritusDTO pkSuoritus = suoritukset.get(PERUSOPETUS_KOMO);
+            if (pkSuoritus == null) {
+                return arvosanaMap;
+            }
             arvosanaMap.putAll(suorituksenArvosanat("PK_", pkSuoritus.getId()));
             List<SuoritusDTO> suoritusList = new ArrayList<>();
             for (String komo : new String[] { LISAOPETUS_KOMO, AMMATTISTARTTI_KOMO, KUNTOUTTAVA_KOMO,
