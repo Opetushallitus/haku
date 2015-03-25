@@ -16,14 +16,10 @@
 package fi.vm.sade.haku.oppija.hakemus.domain;
 
 import com.google.common.collect.Maps;
-import fi.vm.sade.haku.oppija.lomake.domain.ObjectIdDeserializer;
-import fi.vm.sade.haku.oppija.lomake.domain.ObjectIdSerializer;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.codehaus.jackson.annotate.JsonCreator;
-import org.codehaus.jackson.annotate.JsonProperty;
-import org.codehaus.jackson.annotate.JsonTypeInfo;
-import org.codehaus.jackson.map.annotate.JsonDeserialize;
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
 import java.io.Serializable;
@@ -32,20 +28,13 @@ import java.util.Map;
 import java.util.Set;
 
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_EMPTY)
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonIgnoreProperties({ "type" , "_id"})
 public class AuthorizationMeta implements Serializable {
-
-    private static final String[] EXCLUDED_FIELDS = new String[]{"id"};
 
     private Boolean opoAllowed;
     private Map<String, Set<String>> aoOrganizations;
     private Set<String> allAoOrganizations;
     private Set<String> sendingSchool;
-
-    @JsonProperty(value = "_id")
-    @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL, using = ObjectIdSerializer.class)
-    @JsonDeserialize(using = ObjectIdDeserializer.class)
-    private org.bson.types.ObjectId id; //NOSONAR Json-sarjallistajan käyttämä.
 
     @JsonCreator
     public AuthorizationMeta() {
@@ -110,11 +99,11 @@ public class AuthorizationMeta implements Serializable {
         if (o == null || getClass() != o.getClass())
             return false;
 
-        return EqualsBuilder.reflectionEquals(this, o, false, null, EXCLUDED_FIELDS);
+        return EqualsBuilder.reflectionEquals(this, o, false, null, null);
     }
 
     @Override
     public int hashCode() {
-        return HashCodeBuilder.reflectionHashCode(7, 23, this, false, null, EXCLUDED_FIELDS);
+        return HashCodeBuilder.reflectionHashCode(7, 23, this, false, null, null);
     }
 }

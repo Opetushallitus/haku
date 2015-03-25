@@ -28,8 +28,8 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.codehaus.jackson.annotate.JsonCreator;
 import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
-import org.codehaus.jackson.annotate.JsonTypeInfo;
 import org.codehaus.jackson.map.annotate.JsonDeserialize;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.slf4j.Logger;
@@ -42,7 +42,7 @@ import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_EMPTY)
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonIgnoreProperties({ "type", "personOidChecked", "studentOidChecked" })
 public class Application implements Serializable {
 
     private static final String[] EXCLUDED_FIELDS = new String[]{"id"};
@@ -83,12 +83,8 @@ public class Application implements Serializable {
     private User user;
     private String phaseId;
     private String personOid;
-    @Deprecated
-    private Long personOidChecked;
     private String studentOid;
     private Long lastAutomatedProcessingTime;
-    @Deprecated
-    private Long studentOidChecked;
     private Date received;
     private Date updated;
     //TODO: Rename if/when refactoring
@@ -525,26 +521,6 @@ public class Application implements Serializable {
         return this;
     }
 
-    @Deprecated
-    public Long getPersonOidChecked() {
-        return personOidChecked;
-    }
-
-    @Deprecated
-    public void setPersonOidChecked(Long personOidChecked) {
-        this.personOidChecked = personOidChecked;
-    }
-
-    @Deprecated
-    public Long getStudentOidChecked() {
-        return studentOidChecked;
-    }
-
-    @Deprecated
-    public void setStudentOidChecked(Long studentOidChecked) {
-        this.studentOidChecked = studentOidChecked;
-    }
-
     public Application setRedoPostProcess(PostProcessingState redoPostProcess) {
         this.redoPostProcess = redoPostProcess; return this;
     }
@@ -639,8 +615,6 @@ public class Application implements Serializable {
         clone.studentIdentificationDone = this.studentIdentificationDone;
         clone.studentOid = this.studentOid;
         clone.updated = this.updated;
-        clone.personOidChecked = this.personOidChecked;
-        clone.studentOidChecked = this.studentOidChecked;
         //TODO =RS= check if too shallow
         clone.preferenceEligibilities = new ArrayList<>(this.preferenceEligibilities);
         //TODO =RS= check if too shallow

@@ -54,7 +54,6 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -62,7 +61,7 @@ import java.util.StringTokenizer;
 import java.util.regex.Pattern;
 
 import static com.mongodb.QueryOperators.IN;
-import static com.mongodb.QueryOperators.NE;
+import static com.mongodb.QueryOperators.EXISTS;
 import static java.lang.String.format;
 import static org.apache.commons.lang.StringUtils.isBlank;
 import static org.apache.commons.lang.StringUtils.isEmpty;
@@ -94,7 +93,6 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     private static final String INDEX_ASID_SENDING_SCHOOL_AND_FULL_NAME = "index_asid_sending_school_and_full_name";
     private static final String INDEX_ASID_AND_SENDING_SCHOOL = "index_asid_and_sending_school";
 
-    private static final String FIELD_TYPE = "type";
     private static final String FIELD_AO_T = "answers.hakutoiveet.preference%d-Koulutus-id";
     private static final String FIELD_AO_KOULUTUS_ID_T = "answers.hakutoiveet.preference%d-Koulutus-id-aoIdentifier";
     private static final String FIELD_LOP_T = "answers.hakutoiveet.preference%d-Opetuspiste-id";
@@ -646,7 +644,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     private Application getNextForAutomatedProcessing(final DBObject query, final String indexCandidate) {
         DBObject sortBy = new BasicDBObject(FIELD_LAST_AUTOMATED_PROCESSING_TIME, 1);
 
-        DBObject key = generateKeysDBObject(FIELD_TYPE, FIELD_APPLICATION_OID);
+        DBObject key = generateKeysDBObject(FIELD_APPLICATION_OID);
 
         DBCursor cursor = getCollection().find(query, key).sort(sortBy).limit(1);
         String hint = null;
@@ -707,11 +705,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     @Override
     public Application getApplication(final String oid, String... fields) {
         final DBObject query = new BasicDBObject(FIELD_APPLICATION_OID, oid);
-        if (0 > Arrays.binarySearch(fields, "type")) {
-            int originalSize = fields.length;
-            fields = Arrays.copyOf(fields, originalSize + 1);
-            fields[originalSize] = "type";
-        }
+
         DBObject keys = generateKeysDBObject(fields);
         DBCursor cursor = getCollection().find(query, keys);
         if (ensureIndex) {
