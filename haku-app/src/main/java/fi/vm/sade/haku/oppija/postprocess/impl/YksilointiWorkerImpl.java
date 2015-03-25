@@ -22,14 +22,7 @@ import fi.vm.sade.haku.oppija.hakemus.domain.Application.PostProcessingState;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationNote;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationDAO;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
-import fi.vm.sade.haku.oppija.hakemus.service.BaseEducationService;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
-import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
-import fi.vm.sade.haku.oppija.lomake.service.FormService;
 import fi.vm.sade.haku.oppija.lomake.service.impl.SystemSession;
-import fi.vm.sade.haku.oppija.lomake.validation.ElementTreeValidator;
-import fi.vm.sade.haku.oppija.lomake.validation.ValidationInput;
-import fi.vm.sade.haku.oppija.lomake.validation.ValidationResult;
 import fi.vm.sade.haku.oppija.postprocess.YksilointiWorker;
 import fi.vm.sade.haku.oppija.repository.AuditLogRepository;
 import org.apache.commons.mail.EmailException;
@@ -50,46 +43,32 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
 
     private static final SystemSession systemSession = new SystemSession();
     private final ApplicationService applicationService;
-    private final ApplicationSystemService applicationSystemService;
-    private final BaseEducationService baseEducationService;
     private final ApplicationDAO applicationDAO;
-    private final ElementTreeValidator elementTreeValidator;
     private final StatusRepository statusRepository;
     private final LoggerAspect loggerAspect;
-    private final FormService formService;
     private final SendMailService sendMailService;
+    private final ApplicationPostProcessorService applicationPostProcessorService;
 
     @Value("${scheduler.maxBatchSize:10}")
     private int maxBatchSize;
-
-    @Value("${scheduler.skipSendingSchool.automatic:false}")
-    private boolean skipSendingSchoolAutomatic;
-    @Value("${scheduler.skipSendingSchool.manual:false}")
-    private boolean skipSendingSchoolManual;
 
     final String SYSTEM_USER = "järjestelmä";
 
     @Autowired
     public YksilointiWorkerImpl(final ApplicationService applicationService,
-                                final ApplicationSystemService applicationSystemService,
-                                final BaseEducationService baseEducationService,
-                                final FormService formService,
                                 final ApplicationDAO applicationDAO,
-                                final ElementTreeValidator elementTreeValidator,
                                 final StatusRepository statusRepository,
                                 final fi.vm.sade.log.client.Logger logger,
                                 final AuditLogRepository auditLogRepository,
                                 final SendMailService sendMailService,
+                                final ApplicationPostProcessorService applicationPostProcessorService,
                                 @Value("${server.name}") final String serverName) {
         this.loggerAspect = new LoggerAspect(logger, systemSession, auditLogRepository, serverName);
         this.applicationService = applicationService;
-        this.applicationSystemService = applicationSystemService;
-        this.baseEducationService = baseEducationService;
-        this.formService = formService;
         this.applicationDAO = applicationDAO;
-        this.elementTreeValidator = elementTreeValidator;
         this.statusRepository = statusRepository;
         this.sendMailService = sendMailService;
+        this.applicationPostProcessorService = applicationPostProcessorService;
     }
 
     @Override
@@ -119,20 +98,12 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
 
     private void processOneApplication(Application application, final boolean sendMail){
         try {
-            application = applicationService.addPersonOid(application);
-            if (!skipSendingSchoolAutomatic) {
-                application = baseEducationService.addSendingSchool(application);
-                application = baseEducationService.addBaseEducation(application);
-            }
-            application = applicationService.updateAuthorizationMeta(application);
-            application = applicationService.ensureApplicationOptionGroupData(application);
-            application = validateApplication(application);
-            application.setRedoPostProcess(PostProcessingState.DONE);
-            if (null == application.getModelVersion())
-                application.setModelVersion(Application.CURRENT_MODEL_VERSION);
             //TODO =RS= add Version
+            final Application queryApplication = new Application(application.getOid());
+            application  = applicationPostProcessorService.process(application);
+
             application.setLastAutomatedProcessingTime(System.currentTimeMillis());
-            this.applicationDAO.update(new Application(application.getOid()), application);
+            this.applicationDAO.update(queryApplication, application);
             if (sendMail) {
                 try {
                     sendMailService.sendMail(application);
@@ -162,21 +133,6 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
         statusData.put("state", state);
         statusRepository.write(operation, statusData);
     }
-
-    private Application validateApplication(Application application) {
-        Map<String, String> allAnswers = application.getVastauksetMerged();
-        Form form = formService.getForm(application.getApplicationSystemId());
-        ValidationInput validationInput = new ValidationInput(form, allAnswers,
-                application.getOid(), application.getApplicationSystemId(), ValidationInput.ValidationContext.background);
-        ValidationResult formValidationResult = elementTreeValidator.validate(validationInput);
-        if (formValidationResult.hasErrors()) {
-            application.incomplete();
-        } else {
-            application.activate();
-        }
-        return application;
-    }
-
 
     private Application getNextApplicationFor(final ProcessingType processingType){
         switch (processingType){
