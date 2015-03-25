@@ -242,7 +242,6 @@ public class ApplicationServiceImpl implements ApplicationService {
                 .setPersonOid(application.getPersonOid())
                 .setSecurityOrder(false);
 
-        application.setLastAutomatedProcessingTime(System.currentTimeMillis());
         Person personBefore = personBuilder.get();
         LOGGER.debug("Calling addPerson");
         try {

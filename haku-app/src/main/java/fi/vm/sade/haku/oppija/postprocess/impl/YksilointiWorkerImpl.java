@@ -174,6 +174,7 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
             if (null == application.getModelVersion())
                 application.setModelVersion(Application.CURRENT_MODEL_VERSION);
             //TODO =RS= add Version
+            application.setLastAutomatedProcessingTime(System.currentTimeMillis());
             this.applicationDAO.update(new Application(application.getOid()), application);
             if (sendMail) {
                 try {
