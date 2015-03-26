@@ -77,23 +77,23 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
                 break;
             writeStatus(processingType.toString(), "start", application);
             switch (processingType) {
-            case IDENTIFICATION:
-                applicationPostProcessorService.checkStudentOid(application);
-                break;
-            case POST_PROCESS:
-                processOneApplication(application, sendMail);
-                break;
-            case REDO_POST_PROCESS:
-                reprocessOneApplication(application, sendMail);
-                break;
-            default:
-                LOGGER.error("processApplication cannot handle process type {}", processingType);
+                case IDENTIFICATION:
+                    runIdentification(application);
+                    break;
+                case POST_PROCESS:
+                    processOneApplication(application, sendMail);
+                    break;
+                case REDO_POST_PROCESS:
+                    reprocessOneApplication(application, sendMail);
+                    break;
+                default:
+                    LOGGER.error("processApplication cannot handle process type {}", processingType);
             }
             writeStatus(processingType.toString(), "done", application);
         } while (++count < maxBatchSize);
     }
 
-    private void processOneApplication(Application application, final boolean sendMail){
+    private void processOneApplication(Application application, final boolean sendMail) {
         try {
             //TODO =RS= add Version
             final Application queryApplication = new Application(application.getOid());
@@ -109,18 +109,28 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
                 }
             }
         } catch (Exception e) {
-            LOGGER.error("post process failed for application: " +application.getOid(), e);
+            LOGGER.error("post process failed for application: " + application.getOid(), e);
             setProcessingStateToFailed(application.getOid(), e.getMessage());
         }
     }
 
-    private void reprocessOneApplication(Application application, final boolean sendMail){
+    private void reprocessOneApplication(Application application, final boolean sendMail) {
         PostProcessingState redo = application.getRedoPostProcess();
-        if (PostProcessingState.NOMAIL.equals(redo) || PostProcessingState.FULL.equals(redo)){
+        if (PostProcessingState.NOMAIL.equals(redo) || PostProcessingState.FULL.equals(redo)) {
             processOneApplication(application, sendMail && PostProcessingState.FULL.equals(redo));
-        }
-        else {
+        } else {
             LOGGER.error("Application: {} in reprocess with incompatible flag: {}", application.getOid(), redo);
+        }
+    }
+
+    private void runIdentification(Application application) {
+        final Application updateQuery = new Application(application.getOid(), application.getVersion());
+        try {
+            application = applicationPostProcessorService.checkStudentOid(application);
+            application.setLastAutomatedProcessingTime(System.currentTimeMillis());
+            applicationDAO.update(updateQuery, application);
+        } catch (Exception e) {
+            LOGGER.error("post process failed for application: " + updateQuery.getOid(), e);
         }
     }
 
@@ -131,8 +141,8 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
         statusRepository.write(operation, statusData);
     }
 
-    private Application getNextApplicationFor(final ProcessingType processingType){
-        switch (processingType){
+    private Application getNextApplicationFor(final ProcessingType processingType) {
+        switch (processingType) {
             case IDENTIFICATION:
                 return applicationDAO.getNextWithoutStudentOid();
             case POST_PROCESS:
@@ -144,10 +154,9 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
         }
     }
 
-    private void setProcessingStateToFailed(String oid, String message){
+    private void setProcessingStateToFailed(String oid, String message) {
         Application application = applicationDAO.find(new Application(oid)).get(0);
-        ApplicationNote note = new ApplicationNote("Hakemuksen jälkikäsittely epäonnistui: "+message,
-                new Date(), "");
+        ApplicationNote note = new ApplicationNote("Hakemuksen jälkikäsittely epäonnistui: " + message, new Date(), "");
         application.addNote(note);
         application.setRedoPostProcess(PostProcessingState.FAILED);
         this.applicationDAO.update(new Application(oid), application);

@@ -35,7 +35,6 @@ public class ApplicationPostProcessorService {
     private final ElementTreeValidator elementTreeValidator;
     private final FormService formService;
     private final AuthenticationService authenticationService;
-    private final ApplicationDAO applicationDAO;
 
     @Value("${scheduler.skipSendingSchool.automatic:false}")
     private boolean skipSendingSchoolAutomatic;
@@ -45,14 +44,12 @@ public class ApplicationPostProcessorService {
                                            final BaseEducationService baseEducationService,
                                            final FormService formService,
                                            final ElementTreeValidator elementTreeValidator,
-                                           final AuthenticationService authenticationService,
-                                           final ApplicationDAO applicationDAO){
+                                           final AuthenticationService authenticationService){
         this.applicationService = applicationService;
         this.baseEducationService = baseEducationService;
         this.formService = formService;
         this.elementTreeValidator = elementTreeValidator;
         this.authenticationService = authenticationService;
-        this.applicationDAO = applicationDAO;
     }
 
     public Application process(Application application) throws IOException{
@@ -126,7 +123,6 @@ public class ApplicationPostProcessorService {
 
 
     Application checkStudentOid(Application application) {
-        final Application updateQuery = new Application(application.getOid(), application.getVersion());
         String personOid = application.getPersonOid();
 
         if (isEmpty(personOid)) {
@@ -143,9 +139,6 @@ public class ApplicationPostProcessorService {
                 application.flagStudentIdentificationDone();
             }
         }
-
-        application.setLastAutomatedProcessingTime(System.currentTimeMillis());
-        applicationDAO.update(updateQuery, application);
         return application;
     }
 }

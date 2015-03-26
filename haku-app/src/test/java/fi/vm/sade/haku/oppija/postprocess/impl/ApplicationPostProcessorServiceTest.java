@@ -23,7 +23,6 @@ public class ApplicationPostProcessorServiceTest {
 
 
     private ApplicationPostProcessorService applicationPostProcessorService;
-    private ApplicationDAO applicationDAO;
     private AuthenticationService authenticationService;
 
     Map<String, String> answerMap;
@@ -34,13 +33,12 @@ public class ApplicationPostProcessorServiceTest {
         authenticationService = new AuthenticationServiceMockImpl();
         ValidatorFactory validatorFactory = mock(ValidatorFactory.class);
         elementTreeValidator = new ElementTreeValidator(validatorFactory);
-        applicationDAO = mock(ApplicationDAO.class);
 
         final ApplicationService applicationService = null;
         final BaseEducationService baseEducationService = null;
         final FormService formService = null;
 
-        applicationPostProcessorService = new ApplicationPostProcessorService(applicationService, baseEducationService, formService, elementTreeValidator, authenticationService, applicationDAO);
+        applicationPostProcessorService = new ApplicationPostProcessorService(applicationService, baseEducationService, formService, elementTreeValidator, authenticationService);
         answerMap = new HashMap<>();
         answerMap.put(OppijaConstants.ELEMENT_ID_FIRST_NAMES, "Etunimi");
         answerMap.put(OppijaConstants.ELEMENT_ID_NICKNAME, "Etunimi");
