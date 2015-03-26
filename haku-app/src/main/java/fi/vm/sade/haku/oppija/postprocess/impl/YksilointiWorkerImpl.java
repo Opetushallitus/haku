@@ -35,6 +35,9 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
+
+import static fi.vm.sade.haku.oppija.hakemus.aspect.ApplicationDiffUtil.addHistoryBasedOnChangedAnswers;
 
 @Service
 public class YksilointiWorkerImpl implements YksilointiWorker {
@@ -94,11 +97,12 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
     }
 
     private void processOneApplication(Application application, final boolean sendMail) {
+        final Application queryApplication = new Application(application.getOid(), application.getVersion());
         try {
             //TODO =RS= add Version
-            final Application queryApplication = new Application(application.getOid());
-            application  = applicationPostProcessorService.process(application);
-
+            final Application original = application.clone();
+            application = applicationPostProcessorService.process(application);
+            addHistoryBasedOnChangedAnswers(application, original, SYSTEM_USER, "Post Processing");
             application.setLastAutomatedProcessingTime(System.currentTimeMillis());
             this.applicationDAO.update(queryApplication, application);
             if (sendMail) {
@@ -109,8 +113,8 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
                 }
             }
         } catch (Exception e) {
-            LOGGER.error("post process failed for application: " + application.getOid(), e);
-            setProcessingStateToFailed(application.getOid(), e.getMessage());
+            LOGGER.error("post process failed for application: " + queryApplication, e);
+            setProcessingStateToFailed(queryApplication, e.getMessage());
         }
     }
 
@@ -126,16 +130,26 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
     private void runIdentification(Application application) {
         final Application updateQuery = new Application(application.getOid(), application.getVersion());
         try {
+            final Application original = application.clone();
             application = applicationPostProcessorService.checkStudentOid(application);
-            application.setLastAutomatedProcessingTime(System.currentTimeMillis());
-            applicationDAO.update(updateQuery, application);
+            addHistoryBasedOnChangedAnswers(application, original, SYSTEM_USER, "Identification Post Processing");
+            if (identificationModifiedApplication(application, original)) {
+                application.setLastAutomatedProcessingTime(System.currentTimeMillis());
+                applicationDAO.update(updateQuery, application);
+            }
         } catch (Exception e) {
             LOGGER.error("post process failed for application: " + updateQuery.getOid(), e);
         }
     }
 
+    private boolean identificationModifiedApplication(final Application application, final Application original){
+        return !(Objects.equals(application.getPersonOid(), original.getPersonOid())
+                && Objects.equals(application.getStudentOid(), original.getStudentOid())
+                && application.getHistory().size() == original.getHistory().size());
+    }
+
     private void writeStatus(String operation, String state, Application application) {
-        Map<String, String> statusData = new HashMap<String, String>();
+        Map<String, String> statusData = new HashMap<>();
         statusData.put("applicationOid", application != null ? application.getOid() : "(null)");
         statusData.put("state", state);
         statusRepository.write(operation, statusData);
@@ -153,12 +167,11 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
                 return null;
         }
     }
-
-    private void setProcessingStateToFailed(String oid, String message) {
-        Application application = applicationDAO.find(new Application(oid)).get(0);
-        ApplicationNote note = new ApplicationNote("Hakemuksen jälkikäsittely epäonnistui: " + message, new Date(), "");
+    private void setProcessingStateToFailed(final Application queryApplication, String message) {
+        final Application application = applicationDAO.find(queryApplication).get(0);
+        final ApplicationNote note = new ApplicationNote("Hakemuksen jälkikäsittely epäonnistui: " + message, new Date(), "");
         application.addNote(note);
         application.setRedoPostProcess(PostProcessingState.FAILED);
-        this.applicationDAO.update(new Application(oid), application);
+        this.applicationDAO.update(queryApplication, application);
     }
 }
