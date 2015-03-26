@@ -35,7 +35,7 @@ public class LoggerAspectTest {
         public void log(Tapahtuma tapahtuma) {
 
         }
-    }, new UserSessionMock("test"), auditMock);
+    }, new UserSessionMock("test"), auditMock, null);
 
     @Test
     public void testlogSubmitApplication() throws Exception {

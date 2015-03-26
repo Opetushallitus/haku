@@ -30,6 +30,7 @@ import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -54,14 +55,19 @@ public class LoggerAspect {
     private final Logger logger;
     private final Session userSession;
     private final AuditLogRepository auditLogRepository;
+    private final String serverName;
 
     @Autowired
-    public LoggerAspect(final Logger logger, final Session userSession, final AuditLogRepository auditLogRepository) {
+    public LoggerAspect(final Logger logger, final Session userSession, final AuditLogRepository auditLogRepository, @Value("${server.name}") final String serverName ) {
         this.logger = logger;
         this.userSession = userSession;
         this.auditLogRepository = auditLogRepository;
+        if (null == serverName) {
+            this.serverName = "localhost";
+        }else {
+            this.serverName = serverName;
+        }
     }
-
 
     /**
      * Logs event when a form phase is successfully saved
@@ -73,14 +79,12 @@ public class LoggerAspect {
 
         Tapahtuma t = null;
         try {
-            t = new Tapahtuma();
+            t = createTapahtuma();
+            t.setType("Hakemus lähetetty");
 
             t.setTarget("Haku: " + applicationSystemId
                     + ", käyttäjä: " + userSession.getUser().getUserName() + ", hakemus oid: " + application.getOid());
-            t.setTimestamp(new Date());
-            t.setSystem("haku");
             t.setUserActsForUser("" + userSession.getUser().getUserName());
-            t.setType("Hakemus lähetetty");
             t.setUser("Hakemus Service");
             Map<String, String> answers = application.getVastauksetMerged();
             for (Map.Entry<String, String> answer : answers.entrySet()) {
@@ -90,26 +94,24 @@ public class LoggerAspect {
             auditLogRepository.save(t);
             //logger.log(t);
         } catch (Exception e) {
-            LOGGER.error("Could not log submit application event", e);
-            if(t != null) LOGGER.error(t.toString());
+            LOGGER.error("Could not log submit application event. {}", t, e);
         }
     }
 
     public void logUpdateApplication(final Application application, final ApplicationPhase applicationPhase) {
 
         Tapahtuma tapahtuma = null;
-
         try {
             MapDifference<String, String> diffAnswers = ApplicationDiffUtil.diffAnswers(application, applicationPhase);
             AnswersDifference answersDifference = new AnswersDifference(diffAnswers);
             List<Difference> differences = answersDifference.getDifferences();
-            tapahtuma = new Tapahtuma();
-            tapahtuma.setTarget("hakemus: " + application.getOid() + ", vaihe: " + applicationPhase.getPhaseId());
-            tapahtuma.setTimestamp(new Date());
-            tapahtuma.setSystem("haku");
-            tapahtuma.setUserActsForUser(userSession.getUser().getUserName());
+
+            tapahtuma = createTapahtuma();
             tapahtuma.setType("Hakemuksen muokkaus");
+            tapahtuma.setTarget("hakemus: " + application.getOid() + ", vaihe: " + applicationPhase.getPhaseId());
+            tapahtuma.setUserActsForUser(userSession.getUser().getUserName());
             tapahtuma.setUser(userSession.getUser().getUserName());
+
             for (Difference difference : differences) {
                 tapahtuma.addValueChange(difference.getKey(), difference.getOldValue(), difference.getNewValue());
             }
@@ -119,9 +121,16 @@ public class LoggerAspect {
             //logger.log(tapahtuma);
 
         } catch (Exception e) {
-            LOGGER.error("Could not log update application event", e);
-            if(tapahtuma != null) LOGGER.error(tapahtuma.toString());
+            LOGGER.error("Could not log update application event. {}", tapahtuma, e);
         }
+    }
+
+    private Tapahtuma createTapahtuma(){
+        final Tapahtuma tapahtuma = new Tapahtuma();
+        tapahtuma.setTimestamp(new Date());
+        tapahtuma.setSystem("haku");
+        tapahtuma.setHost(serverName);
+        return tapahtuma;
     }
 
 }

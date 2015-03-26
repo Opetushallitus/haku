@@ -105,8 +105,9 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
                                 ApplicationSystemService applicationSystemService,
                                 BaseEducationService baseEducationService, FormService formService, ApplicationDAO applicationDAO,
                                 ElementTreeValidator elementTreeValidator, StatusRepository statusRepository,
-                                fi.vm.sade.log.client.Logger logger, AuditLogRepository auditLogRepository) {
-        this.loggerAspect = new LoggerAspect(logger, systemSession, auditLogRepository);
+                                fi.vm.sade.log.client.Logger logger, AuditLogRepository auditLogRepository,
+                                @Value("${server.name}") final String serverName) {
+        this.loggerAspect = new LoggerAspect(logger, systemSession, auditLogRepository, serverName);
         this.applicationService = applicationService;
         this.applicationSystemService = applicationSystemService;
         this.baseEducationService = baseEducationService;
