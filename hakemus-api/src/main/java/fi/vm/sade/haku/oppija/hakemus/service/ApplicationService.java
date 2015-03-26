@@ -90,17 +90,6 @@ public interface ApplicationService {
     void putApplicationAdditionalInfoKeyValue(final String applicationOid, final String key, final String value);
 
     /**
-     * Set proper user for this application. If user can be authenticated, activate application. Otherwise, set
-     * application as incomplete.
-     *
-     * @param application to process
-     * @return processed application
-     */
-    Application addPersonOid(Application application);
-
-    Application checkStudentOid(Application application);
-
-    /**
      * Creates a new empty application to specified application system.
      *
      * @param asId application system id

@@ -15,7 +15,7 @@
  */
 package fi.vm.sade.haku.oppija.postprocess;
 
-public interface YksilointiWorker {
+public interface PostProcessWorker {
 
     public enum ProcessingType {IDENTIFICATION, POST_PROCESS, REDO_POST_PROCESS}
 

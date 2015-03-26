@@ -31,30 +31,30 @@ public class Scheduler {
     private boolean runModelUpgrade;
     private boolean sendMail;
 
-    private YksilointiWorker processWorker;
+    private PostProcessWorker processWorker;
     private UpgradeWorker upgradeWorker;
     private StatusRepository statusRepository;
 
     @Autowired
-    public Scheduler(YksilointiWorker processWorker, UpgradeWorker upgradeWorker, StatusRepository statusRepository) {
+    public Scheduler(PostProcessWorker processWorker, UpgradeWorker upgradeWorker, StatusRepository statusRepository) {
         this.processWorker = processWorker;
         this.upgradeWorker = upgradeWorker;
         this.statusRepository = statusRepository;
     }
 
     public void runProcess() {
-        runProcessing(YksilointiWorker.ProcessingType.POST_PROCESS);
+        runProcessing(PostProcessWorker.ProcessingType.POST_PROCESS);
     }
 
     public void runIdentification() {
-        runProcessing(YksilointiWorker.ProcessingType.IDENTIFICATION);
+        runProcessing(PostProcessWorker.ProcessingType.IDENTIFICATION);
     }
 
     public void redoPostprocess() {
-        runProcessing(YksilointiWorker.ProcessingType.REDO_POST_PROCESS);
+        runProcessing(PostProcessWorker.ProcessingType.REDO_POST_PROCESS);
     }
 
-    private void runProcessing(YksilointiWorker.ProcessingType processingType){
+    private void runProcessing(PostProcessWorker.ProcessingType processingType){
         final String statusOperation = processingType.toString()+ " scheduler";
         if (!run) {
             statusRepository.write(statusOperation, new HashMap<String, String>() {{
