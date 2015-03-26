@@ -125,6 +125,29 @@ public class LoggerAspect {
         }
     }
 
+    public void logUpdateApplicationInPostProcessing(final Application application, final List<Map<String, String>> changes, final String changeType) {
+
+        Tapahtuma tapahtuma = null;
+
+        try {
+            tapahtuma = createTapahtuma();
+            tapahtuma.setTarget("hakemus: " + application.getOid());
+            tapahtuma.setUserActsForUser(userSession.getUser().getUserName());
+            tapahtuma.setType(changeType);
+            tapahtuma.setUser(userSession.getUser().getUserName());
+            for (Map<String, String> diff : changes) {
+                tapahtuma.addValueChange(diff.get(ApplicationDiffUtil.FIELD), diff.get(ApplicationDiffUtil.OLD_VALUE), diff.get(ApplicationDiffUtil.NEW_VALUE));
+            }
+            LOGGER.debug(tapahtuma.toString());
+
+            auditLogRepository.save(tapahtuma);
+            //logger.log(tapahtuma);
+
+        } catch (Exception e) {
+            LOGGER.error("Could not log update application event. {}", tapahtuma, e);
+        }
+    }
+
     private Tapahtuma createTapahtuma(){
         final Tapahtuma tapahtuma = new Tapahtuma();
         tapahtuma.setTimestamp(new Date());

@@ -32,10 +32,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 import static fi.vm.sade.haku.oppija.hakemus.aspect.ApplicationDiffUtil.addHistoryBasedOnChangedAnswers;
 
@@ -102,9 +99,10 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
             //TODO =RS= add Version
             final Application original = application.clone();
             application = applicationPostProcessorService.process(application);
-            addHistoryBasedOnChangedAnswers(application, original, SYSTEM_USER, "Post Processing");
+            final List<Map<String, String>> changes = addHistoryBasedOnChangedAnswers(application, original, SYSTEM_USER, "Post Processing");
             application.setLastAutomatedProcessingTime(System.currentTimeMillis());
             this.applicationDAO.update(queryApplication, application);
+            loggerAspect.logUpdateApplicationInPostProcessing(application, changes, "Hakemuksen jälkikäsittely");
             if (sendMail) {
                 try {
                     sendMailService.sendMail(application);
@@ -132,10 +130,11 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
         try {
             final Application original = application.clone();
             application = applicationPostProcessorService.checkStudentOid(application);
-            addHistoryBasedOnChangedAnswers(application, original, SYSTEM_USER, "Identification Post Processing");
+            final List<Map<String, String>> changes = addHistoryBasedOnChangedAnswers(application, original, SYSTEM_USER, "Identification Post Processing");
             if (identificationModifiedApplication(application, original)) {
                 application.setLastAutomatedProcessingTime(System.currentTimeMillis());
                 applicationDAO.update(updateQuery, application);
+                loggerAspect.logUpdateApplicationInPostProcessing(application, changes, "Hakemuksen yksilöinti");
             }
         } catch (Exception e) {
             LOGGER.error("post process failed for application: " + updateQuery.getOid(), e);
