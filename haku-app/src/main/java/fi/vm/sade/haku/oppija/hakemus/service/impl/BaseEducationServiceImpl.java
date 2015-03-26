@@ -10,6 +10,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.ApplicationPeriod;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.exception.IllegalValueException;
 import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
+import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,13 +28,16 @@ public class BaseEducationServiceImpl implements BaseEducationService {
 
     public static final Logger LOGGER = LoggerFactory.getLogger(BaseEducationServiceImpl.class);
 
-    private enum GradePrefix {PK_, LK_};
+    private enum GradePrefix {PK_, LK_}
 
     private final SuoritusrekisteriService suoritusrekisteriService;
+    private final ApplicationSystemService applicationSystemService;
 
     @Autowired
-    public BaseEducationServiceImpl(SuoritusrekisteriService suoritusrekisteriService) {
+    public BaseEducationServiceImpl(SuoritusrekisteriService suoritusrekisteriService,
+                                    ApplicationSystemService applicationSystemService) {
         this.suoritusrekisteriService = suoritusrekisteriService;
+        this.applicationSystemService = applicationSystemService;
     }
 
     @Override
@@ -43,13 +47,19 @@ public class BaseEducationServiceImpl implements BaseEducationService {
             return application;
         }
 
-        List<OpiskelijaDTO> opiskelijat = suoritusrekisteriService.getOpiskelijat(personOid);
+        List<OpiskelijaDTO> opiskelijatiedot = suoritusrekisteriService.getOpiskelijatiedot(personOid);
 
-        if (opiskelijat != null && opiskelijat.size() >= 1) {
+        if (!opiskelijatiedot.isEmpty()) {
+            ApplicationSystem as = applicationSystemService.getApplicationSystem(application.getApplicationSystemId());
+            Date endDate = new Date();
+            for (ApplicationPeriod ap : as.getApplicationPeriods()) {
+                Date apEndDate = ap.getEnd();
+                endDate = apEndDate != null && apEndDate.after(endDate) ? apEndDate : endDate;
+            }
             OpiskelijaDTO opiskelija = null;
             boolean found = false;
-            for (OpiskelijaDTO dto : opiskelijat) {
-                if (dto.getLoppuPaiva() == null || dto.getLoppuPaiva().after(new Date())) {
+            for (OpiskelijaDTO dto : opiskelijatiedot) {
+                if (dto.getLoppuPaiva() == null || dto.getLoppuPaiva().after(endDate)) {
                     if (found) {
                         throw new ResourceNotFoundException("Person " + personOid + " in enrolled in multiple schools");
                     }
@@ -62,11 +72,11 @@ public class BaseEducationServiceImpl implements BaseEducationService {
                 return application;
             }
 
-            Map<String, String> educationAnswers = new HashMap<>(
-                    application.getPhaseAnswers(OppijaConstants.PHASE_EDUCATION));
+            Map<String, String> educationAnswers = new HashMap<String, String>(
+                    application.getPhaseAnswers(PHASE_EDUCATION));
 
             educationAnswers = handleOpiskelija(educationAnswers, application, opiskelija);
-            application.addVaiheenVastaukset(OppijaConstants.PHASE_EDUCATION, educationAnswers);
+            application.addVaiheenVastaukset(PHASE_EDUCATION, educationAnswers);
         }
 
         return application;
@@ -96,7 +106,7 @@ public class BaseEducationServiceImpl implements BaseEducationService {
         if (isEmpty(personOid)) {
             return application;
         }
-        Map<String, SuoritusDTO> suoritukset = suoritusrekisteriService.getSuoritukset(personOid);
+        Map<String, List<SuoritusDTO>> suoritukset = suoritusrekisteriService.getSuoritukset(personOid);
 
         if (suoritukset.isEmpty()) {
             return application;
@@ -106,19 +116,19 @@ public class BaseEducationServiceImpl implements BaseEducationService {
         Date valmistuminen = null;
         String suorituskieli = null;
 
-        SuoritusDTO lukioSuoritus = suoritukset.get(LUKIO_KOMO);
-        SuoritusDTO ulkomainenSuoritus = suoritukset.get(ULKOMAINEN_KOMO);
-        SuoritusDTO kymppiSuoritus = suoritukset.get(LISAOPETUS_KOMO);
-        SuoritusDTO ammattistarttiSuoritus = suoritukset.get(AMMATTISTARTTI_KOMO);
-        SuoritusDTO kuntouttavaSuoritus = suoritukset.get(KUNTOUTTAVA_KOMO);
-        SuoritusDTO mamuValmentavaSuoritus = suoritukset.get(MAMU_VALMENTAVA_KOMO);
-        SuoritusDTO peruskouluSuoritus = suoritukset.get(PERUSOPETUS_KOMO);
+        SuoritusDTO lukioSuoritus = resolveSuoritus(suoritukset, LUKIO_KOMO);
+        SuoritusDTO ulkomainenSuoritus = resolveSuoritus(suoritukset, ULKOMAINEN_KOMO);
+        SuoritusDTO kymppiSuoritus = resolveSuoritus(suoritukset, LISAOPETUS_KOMO);
+        SuoritusDTO ammattistarttiSuoritus = resolveSuoritus(suoritukset, AMMATTISTARTTI_KOMO);
+        SuoritusDTO kuntouttavaSuoritus = resolveSuoritus(suoritukset, KUNTOUTTAVA_KOMO);
+        SuoritusDTO mamuValmentavaSuoritus = resolveSuoritus(suoritukset, MAMU_VALMENTAVA_KOMO);
+        SuoritusDTO peruskouluSuoritus = resolveSuoritus(suoritukset, PERUSOPETUS_KOMO);
 
-        Map<String, String> educationAnswers = new HashMap<>(application.getPhaseAnswers(OppijaConstants.PHASE_EDUCATION));
+        Map<String, String> educationAnswers = new HashMap<>(application.getPhaseAnswers(PHASE_EDUCATION));
 
-        String ammattistarttiSuoritettuStr = educationAnswers.get(OppijaConstants.ELEMENT_ID_LISAKOULUTUS_AMMATTISTARTTI);
-        String kuntouttavaSuoritettuStr = educationAnswers.get(OppijaConstants.ELEMENT_ID_LISAKOULUTUS_VAMMAISTEN);
-        String mamuValmentavaSuoritettuStr = educationAnswers.get(OppijaConstants.ELEMENT_ID_LISAKOULUTUS_MAAHANMUUTTO);
+        String ammattistarttiSuoritettuStr = educationAnswers.get(ELEMENT_ID_LISAKOULUTUS_AMMATTISTARTTI);
+        String kuntouttavaSuoritettuStr = educationAnswers.get(ELEMENT_ID_LISAKOULUTUS_VAMMAISTEN);
+        String mamuValmentavaSuoritettuStr = educationAnswers.get(ELEMENT_ID_LISAKOULUTUS_MAAHANMUUTTO);
 
         boolean ammattistarttiSuoritettu = isNotBlank(ammattistarttiSuoritettuStr) ? Boolean.valueOf(ammattistarttiSuoritettuStr) : false;
         boolean kuntouttavaSuoritettu = isNotBlank(kuntouttavaSuoritettuStr) ? Boolean.valueOf(kuntouttavaSuoritettuStr) : false;
@@ -170,11 +180,11 @@ public class BaseEducationServiceImpl implements BaseEducationService {
         }
 
         educationAnswers = addRegisterValue(application, educationAnswers,
-                OppijaConstants.ELEMENT_ID_LISAKOULUTUS_AMMATTISTARTTI, String.valueOf(ammattistarttiSuoritettu));
+                ELEMENT_ID_LISAKOULUTUS_AMMATTISTARTTI, String.valueOf(ammattistarttiSuoritettu));
         educationAnswers = addRegisterValue(application, educationAnswers,
-                OppijaConstants.ELEMENT_ID_LISAKOULUTUS_VAMMAISTEN, String.valueOf(kuntouttavaSuoritettu));
+                ELEMENT_ID_LISAKOULUTUS_VAMMAISTEN, String.valueOf(kuntouttavaSuoritettu));
         educationAnswers = addRegisterValue(application, educationAnswers,
-                OppijaConstants.ELEMENT_ID_LISAKOULUTUS_MAAHANMUUTTO, String.valueOf(mamuValmentavaSuoritettu));
+                ELEMENT_ID_LISAKOULUTUS_MAAHANMUUTTO, String.valueOf(mamuValmentavaSuoritettu));
 
         String todistusvuosiKey = YLIOPPILAS.equals(pohjakoulutus)
                 ? OppijaConstants.LUKIO_PAATTOTODISTUS_VUOSI
@@ -192,9 +202,58 @@ public class BaseEducationServiceImpl implements BaseEducationService {
             educationAnswers = addRegisterValue(application, educationAnswers, suorituskieliKey, suorituskieli);
         }
 
-        application.addVaiheenVastaukset(OppijaConstants.PHASE_EDUCATION, educationAnswers);
+        application.addVaiheenVastaukset(PHASE_EDUCATION, educationAnswers);
 
         return application;
+    }
+
+    private SuoritusDTO resolveSuoritus(Map<String, List<SuoritusDTO>> suoritukset, String komo) {
+        List<SuoritusDTO> suoritusList = suoritukset.get(komo);
+        if (suoritusList == null || suoritusList.isEmpty()) {
+            return null;
+        }
+        if (suoritusList.size() == 1) {
+            return suoritusList.get(0);
+        }
+        List<SuoritusDTO> vahvistettu = new ArrayList<>();
+        for (SuoritusDTO suoritus : suoritusList) {
+            if (suoritus.getVahvistettu() != null && suoritus.getVahvistettu().booleanValue()) {
+                vahvistettu.add(suoritus);
+            }
+        }
+        if (vahvistettu.size() == 1) {
+            return vahvistettu.get(0);
+        } else if (vahvistettu.size() > 1) {
+            return getNewestWithGrades(vahvistettu);
+        }
+        return getNewestWithGrades(suoritusList);
+    }
+
+    private SuoritusDTO getNewestWithGrades(List<SuoritusDTO> suoritusList) {
+        SuoritusDTO latest = null;
+        Map<String, Boolean> hasGrades = new HashMap<>(suoritusList.size());
+        for (SuoritusDTO suoritus : suoritusList) {
+            if (latest == null) {
+                latest = suoritus;
+            }
+            hasGrades.put(suoritus.getId(), !suoritusrekisteriService.getArvosanat(suoritus.getId()).isEmpty());
+            if (!hasGrades.get(latest.getId()) && hasGrades.get(suoritus.getId())) {
+                latest = suoritus;
+            } else if (hasGrades.get(latest.getId()) == hasGrades.get(suoritus.getId())) {
+                Date latestDate = latest.getValmistuminen();
+                Date currDate = suoritus.getValmistuminen();
+                if (latestDate == null) {
+                    latestDate = new Date(Long.MAX_VALUE);
+                }
+                if (currDate == null) {
+                    currDate = new Date((Long.MAX_VALUE));
+                }
+                if (currDate.after(latestDate)) {
+                    latest = suoritus;
+                }
+            }
+        }
+        return latest;
     }
 
     @Override
@@ -213,16 +272,16 @@ public class BaseEducationServiceImpl implements BaseEducationService {
         }
 
         if (YLIOPPILAS.equals(baseEducation)) {
-            Map<String, SuoritusDTO> suoritukset = suoritusrekisteriService.getSuoritukset(personOid);
-            if (suoritukset.isEmpty() || suoritukset.get(LUKIO_KOMO) == null) {
-                return arvosanaMap;
+            SuoritusDTO lukioSuoritus =
+                    resolveSuoritus(suoritusrekisteriService.getSuoritukset(personOid, LUKIO_KOMO), LUKIO_KOMO);
+            if (lukioSuoritus != null) {
+                arvosanaMap.putAll(suorituksenArvosanat("LK_", lukioSuoritus.getId()));
             }
-            arvosanaMap.putAll(suorituksenArvosanat("LK_", suoritukset.get(LUKIO_KOMO).getId()));
         } else if (PERUSKOULU.equals(baseEducation) || YKSILOLLISTETTY.equals(baseEducation)
                 || ALUEITTAIN_YKSILOLLISTETTY.equals(baseEducation) || OSITTAIN_YKSILOLLISTETTY.equals(baseEducation)) {
 
-            Map<String, SuoritusDTO> suoritukset = suoritusrekisteriService.getSuoritukset(personOid);
-            SuoritusDTO pkSuoritus = suoritukset.get(PERUSOPETUS_KOMO);
+            Map<String, List<SuoritusDTO>> suoritukset = suoritusrekisteriService.getSuoritukset(personOid);
+            SuoritusDTO pkSuoritus = resolveSuoritus(suoritukset, PERUSOPETUS_KOMO);
             if (pkSuoritus == null) {
                 return arvosanaMap;
             }
@@ -230,8 +289,9 @@ public class BaseEducationServiceImpl implements BaseEducationService {
             List<SuoritusDTO> suoritusList = new ArrayList<>();
             for (String komo : new String[] { LISAOPETUS_KOMO, AMMATTISTARTTI_KOMO, KUNTOUTTAVA_KOMO,
                     MAMU_VALMENTAVA_KOMO,LUKIOON_VALMISTAVA_KOMO}) {
-                if (suoritukset.get(komo) != null) {
-                    suoritusList.add(suoritukset.get(komo));
+                SuoritusDTO suoritus = resolveSuoritus(suoritukset, komo);
+                if (suoritus != null) {
+                    suoritusList.add(suoritus);
                 }
             }
             Collections.sort(suoritusList, new Comparator<SuoritusDTO>() {
@@ -306,14 +366,15 @@ public class BaseEducationServiceImpl implements BaseEducationService {
             if (isNotBlank(lisatieto)) {
                 suorituksenArvosanat.put(aine + "_OPPIAINE", lisatieto);
             }
+            String arvio = arvosana.getArvio().getArvosana();
             if (!arvosana.isValinnainen()) {
-                suorituksenArvosanat.put(aine, arvosana.getArvosana());
+                suorituksenArvosanat.put(aine, arvio);
             } else if (!suorituksenArvosanat.containsKey(aine + "_VAL1")) {
-                suorituksenArvosanat.put(aine + "_VAL1", arvosana.getArvosana());
+                suorituksenArvosanat.put(aine + "_VAL1", arvio);
             } else if (!suorituksenArvosanat.containsKey(aine + "_VAL2")) {
-                suorituksenArvosanat.put(aine + "_VAL2", arvosana.getArvosana());
+                suorituksenArvosanat.put(aine + "_VAL2", arvio);
             } else if (!suorituksenArvosanat.containsKey(aine + "_VAL3")) {
-                suorituksenArvosanat.put(aine + "_VAL3", arvosana.getArvosana());
+                suorituksenArvosanat.put(aine + "_VAL3", arvio);
             }
         }
         return suorituksenArvosanat;

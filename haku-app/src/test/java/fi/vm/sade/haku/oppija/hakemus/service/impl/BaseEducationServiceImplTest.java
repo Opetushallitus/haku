@@ -1,5 +1,6 @@
 package fi.vm.sade.haku.oppija.hakemus.service.impl;
 
+import fi.vm.sade.haku.oppija.common.suoritusrekisteri.ArvioDTO;
 import fi.vm.sade.haku.oppija.common.suoritusrekisteri.ArvosanaDTO;
 import fi.vm.sade.haku.oppija.common.suoritusrekisteri.SuoritusDTO;
 import fi.vm.sade.haku.oppija.common.suoritusrekisteri.SuoritusrekisteriService;
@@ -7,6 +8,7 @@ import fi.vm.sade.haku.oppija.hakemus.service.BaseEducationService;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationPeriod;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystemBuilder;
+import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,6 +20,7 @@ import static fi.vm.sade.haku.oppija.common.suoritusrekisteri.SuoritusrekisteriS
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.PERUSKOULU;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -32,6 +35,8 @@ public class BaseEducationServiceImplTest {
     private SuoritusDTO pkKesken;
     private SuoritusDTO kymppiKesken;
     private SuoritusDTO pkValmis;
+
+    private static final long ONE_DAY = 24 * 60 * 60 * 1000;
 
     @Before
     public void setUp() {
@@ -49,28 +54,32 @@ public class BaseEducationServiceImplTest {
                     add(new ApplicationPeriod(applicationPeriodStartDate, applicationPeriodEndDate));
                 }})
                 .get();
-        pkKesken = new SuoritusDTO("pkKesken", PERUSOPETUS_KOMO, "myontaja",
-                "KESKEN", new Date(cal.getTimeInMillis()), "personOid", "Ei", "fi");
-        kymppiKesken = new SuoritusDTO("kymppiKesken", LISAOPETUS_KOMO, "myontaja",
-                "KESKEN", new Date(cal.getTimeInMillis()), "personOid", "Ei", "fi");
-        cal.set(2014, Calendar.JUNE, 1);
-        pkValmis = new SuoritusDTO("pkValmis", PERUSOPETUS_KOMO, "myontaja",
-                "VALMIS", new Date(cal.getTimeInMillis()), "personOid", "Ei", "fi");
-
+        pkKesken = new SuoritusDTO("pkKesken", PERUSOPETUS_KOMO, "myontaja", "KESKEN", tomorrow(), "personOid",
+                "Ei", "FI", "source", true);
+        kymppiKesken = new SuoritusDTO("kymppiKesken", LISAOPETUS_KOMO, "myontaja", "KESKEN", tomorrow(), "personOid",
+                "Ei", "FI", "source", true);
+        pkValmis = new SuoritusDTO("pkValmis", PERUSOPETUS_KOMO, "myontaja", "KESKEN", yesterday(), "personOid",
+                "Ei", "FI", "source", true);
     }
 
     @Test
     public void testGetArvosanatPk() {
         SuoritusrekisteriService suoritusrekisteriService = mockSuoritusrekisteriService("personOid",
-                new HashMap<String, SuoritusDTO>() {{
-                    put(PERUSOPETUS_KOMO, pkKesken);
+                new HashMap<String, List<SuoritusDTO>>() {{
+                    put(PERUSOPETUS_KOMO, Collections.singletonList(pkKesken));
                 }});
 
-        BaseEducationService baseEducationService = new BaseEducationServiceImpl(suoritusrekisteriService);
+        ApplicationSystemService applicationSystemService = mock(ApplicationSystemService.class);
+        ApplicationSystem as = mock(ApplicationSystem.class);
+        when(applicationSystemService.getApplicationSystem(any(String.class))).thenReturn(as);
+        when(as.getApplicationPeriods()).thenReturn(
+                new ArrayList<ApplicationPeriod>() {{ add(new ApplicationPeriod(yesterday(), tomorrow())); }} );
+
+        BaseEducationService baseEducationService = new BaseEducationServiceImpl(suoritusrekisteriService, applicationSystemService);
         when(suoritusrekisteriService.getArvosanat(eq("pkKesken")))
                 .thenReturn(new ArrayList<ArvosanaDTO>() {{
-                    add(new ArvosanaDTO("1", "AI", "9", false, "fi"));
-                    add(new ArvosanaDTO("2", "AI", "8", true, "fi"));
+                    add(new ArvosanaDTO("1", "suoritusId", new ArvioDTO("9", "4-10", null), "AI", "source", false, "fi", yesterday(), null));
+                    add(new ArvosanaDTO("2", "suoritusId", new ArvioDTO("8", "4-10", null), "AI", "source", true, "fi", yesterday(), 1));
                 }});
 
         Map<String, String> arvosanat = baseEducationService.getArvosanat("personOid", PERUSKOULU, as);
@@ -91,25 +100,33 @@ public class BaseEducationServiceImplTest {
     @Test
     public void testGetArvosanatPkJaKymppi() {
         SuoritusrekisteriService suoritusrekisteriService = mockSuoritusrekisteriService("personOid",
-                new HashMap<String, SuoritusDTO>() {{ put(PERUSOPETUS_KOMO, pkValmis); put(LISAOPETUS_KOMO, kymppiKesken);}});
+                new HashMap<String, List<SuoritusDTO>>() {{
+                    put(PERUSOPETUS_KOMO, Collections.singletonList(pkValmis));
+                    put(LISAOPETUS_KOMO, Collections.singletonList(kymppiKesken));
+                }});
+        ApplicationSystemService applicationSystemService = mock(ApplicationSystemService.class);
+        ApplicationSystem as = mock(ApplicationSystem.class);
+        when(applicationSystemService.getApplicationSystem(any(String.class))).thenReturn(as);
+        when(as.getApplicationPeriods()).thenReturn(
+                new ArrayList<ApplicationPeriod>() {{ add(new ApplicationPeriod(yesterday(), tomorrow())); }} );
+
+        BaseEducationService baseEducationService = new BaseEducationServiceImpl(suoritusrekisteriService, applicationSystemService);
 
         when(suoritusrekisteriService.getArvosanat(eq("pkValmis")))
                 .thenReturn(new ArrayList<ArvosanaDTO>() {{
-                    add(new ArvosanaDTO("1", "AI", "8", false, "fi"));
+                    add(new ArvosanaDTO("1", "suoritusId", new ArvioDTO("8", "4-10", null), "AI", "source", false, "fi", yesterday(), null));
 
-                    add(new ArvosanaDTO("2", "BI", "8", false, null));
-                    add(new ArvosanaDTO("3", "BI", "7", true, null));
-
-                    add(new ArvosanaDTO("4", "CI", "7", false, null));
+                    add(new ArvosanaDTO("2", "suoritusId", new ArvioDTO("8", "4-10", null), "BI", "source", false, null, yesterday(), null));
+                    add(new ArvosanaDTO("3", "suoritusId", new ArvioDTO("7", "4-10", null), "BI", "source", true, null, yesterday(), 1));
+                    add(new ArvosanaDTO("4", "suoritusId", new ArvioDTO("7", "4-10", null), "CI", "source", false, null, yesterday(), null));
                 }});
         when(suoritusrekisteriService.getArvosanat(eq("kymppiKesken")))
                 .thenReturn(new ArrayList<ArvosanaDTO>() {{
-                    add(new ArvosanaDTO("5", "AI", "9", false, "fi"));
-                    add(new ArvosanaDTO("6", "BI", "8", false, null));
-                    add(new ArvosanaDTO("7", "BI", "8", true, null));
+                    add(new ArvosanaDTO("5", "suoritusId", new ArvioDTO("9", "4-10", null), "AI", "source", false, null, yesterday(), null));
+                    add(new ArvosanaDTO("6", "suoritusId", new ArvioDTO("8", "4-10", null), "BI", "source", false, null, yesterday(), null));
+                    add(new ArvosanaDTO("7", "suoritusId", new ArvioDTO("8", "4-10", null), "BI", "source", true, null, yesterday(), 1));
                 }});
 
-        BaseEducationService baseEducationService = new BaseEducationServiceImpl(suoritusrekisteriService);
         Map<String, String> arvosanat = baseEducationService.getArvosanat("personOid", PERUSKOULU, as);
 
         assertEquals(13, arvosanat.size());
@@ -142,13 +159,20 @@ public class BaseEducationServiceImplTest {
         assertEquals("Ei arvosanaa", arvosanat.get("PK_CI_VAL3"));
     }
 
-    private SuoritusrekisteriService mockSuoritusrekisteriService(String personOid, Map<String, SuoritusDTO> suoritukset) {
+    private SuoritusrekisteriService mockSuoritusrekisteriService(String personOid, Map<String, List<SuoritusDTO>> suoritukset) {
 
         SuoritusrekisteriService suoritusrekisteriService = mock(SuoritusrekisteriService.class);
         when(suoritusrekisteriService.getSuoritukset(eq(personOid)))
                 .thenReturn(suoritukset);
 
         return suoritusrekisteriService;
+    }
+
+    private Date tomorrow() {
+        return new Date(System.currentTimeMillis() + ONE_DAY);
+    }
+    private Date yesterday() {
+        return new Date(System.currentTimeMillis() - ONE_DAY);
     }
 
 }

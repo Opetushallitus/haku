@@ -1,9 +1,6 @@
 package fi.vm.sade.haku.oppija.common.suoritusrekisteri.impl;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
 import fi.vm.sade.generic.rest.CachingRestClient;
 import fi.vm.sade.haku.oppija.common.suoritusrekisteri.ArvosanaDTO;
 import fi.vm.sade.haku.oppija.common.suoritusrekisteri.OpiskelijaDTO;
@@ -19,10 +16,12 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 @Service
 @Profile(value = {"default", "devluokka", "vagrant"})
@@ -55,16 +54,12 @@ public class SuoritusrekisteriServiceImpl implements SuoritusrekisteriService {
 
     private static CachingRestClient cachingRestClient;
 
+    private Gson suoritusGson = new GsonBuilder().setDateFormat("dd.MM.yyyy").create();
+    private Gson opiskelijaGson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ").create();
+    private Gson arvosanaGson = new GsonBuilder().setDateFormat("dd.MM.yyyy").create();
+
     @Override
-    public List<OpiskelijaDTO> getOpiskelijat(String personOid) {
-//        {
-//            "id":"671a9c6a-3329-4761-a6e5-908da0e98898",
-//            "oppilaitosOid":"1.2.246.562.10.16470831229",
-//            "luokkataso":"10",
-//            "luokka":"10Y",
-//            "henkiloOid":"1.2.246.562.24.59031586696",
-//            "alkuPaiva":"2011-07-31T21:00:00.000Z"
-//        }
+    public List<OpiskelijaDTO> getOpiskelijatiedot(String personOid) {
 
         CachingRestClient cachingRestClient = getCachingRestClient();
         String response;
@@ -79,35 +74,19 @@ public class SuoritusrekisteriServiceImpl implements SuoritusrekisteriService {
         }
 
         JsonArray elements = new JsonParser().parse(response).getAsJsonArray();
-        ArrayList<OpiskelijaDTO> opiskelijat = new ArrayList<OpiskelijaDTO>(elements.size());
+        ArrayList<OpiskelijaDTO> opiskelijatiedot = new ArrayList<>(elements.size());
         for (int i = 0; i < elements.size(); i++) {
-            JsonObject elem = elements.get(i).getAsJsonObject();
-            JsonElement oppilaitos = elem.get("oppilaitosOid");
-            JsonElement luokkataso = elem.get("luokkataso");
-            JsonElement luokka = elem.get("luokka");
-            JsonElement henkiloOid = elem.get("henkiloOid");
-            JsonElement loppuPaiva = elem.get("loppuPaiva");
-
-            OpiskelijaDTO opiskelija = new OpiskelijaDTO();
-            opiskelija.setOppilaitosOid(jsonElementToString(oppilaitos));
-            opiskelija.setLuokkataso(jsonElementToString(luokkataso));
-            opiskelija.setLuokka(jsonElementToString(luokka));
-            opiskelija.setHenkiloOid(jsonElementToString(henkiloOid));
-            try {
-                opiskelija.setLoppuPaiva(jsonElementToDate(loppuPaiva));
-            } catch (ParseException e) {
-                throw new ResourceNotFoundException("LoppuPaiva '"+loppuPaiva+"' can not be parsed as date", e);
-            }
-            opiskelijat.add(opiskelija);
+            opiskelijatiedot.add(opiskelijaGson.fromJson(elements.get(i).getAsJsonObject(), OpiskelijaDTO.class));
         }
 
-        return opiskelijat;
+        return opiskelijatiedot;
     }
 
     @Override
     public List<ArvosanaDTO> getArvosanat(String suoritusId) {
         CachingRestClient cachingRestClient = getCachingRestClient();
-        String response = null;
+        String response;
+
         String url = "/rest/v1/arvosanat/?suoritus="+suoritusId;
         try {
             response = cachingRestClient.getAsString(url);
@@ -116,41 +95,28 @@ public class SuoritusrekisteriServiceImpl implements SuoritusrekisteriService {
             throw new ResourceNotFoundException("Fetching grades failed: ", e);
         }
         JsonArray elements = new JsonParser().parse(response).getAsJsonArray();
-        List<ArvosanaDTO> arvosanat = new ArrayList<ArvosanaDTO>(elements.size());
+        List<ArvosanaDTO> arvosanat = new ArrayList<>(elements.size());
         for (JsonElement elem : elements) {
             JsonObject obj = elem.getAsJsonObject();
-            ArvosanaDTO arvosana = new ArvosanaDTO();
-            arvosana.setId(jsonElementToString(obj.get("id")));
-            arvosana.setAine(jsonElementToString(obj.get("aine")));
-            arvosana.setLisatieto(jsonElementToString(obj.get("lisatieto")));
-            arvosana.setValinnainen(jsonElementToBoolean(obj.get("valinnainen")));
-            JsonObject arvioObj = obj.get("arvio").getAsJsonObject();
-            arvosana.setArvosana(jsonElementToString(arvioObj.get("arvosana")));
+            ArvosanaDTO arvosana = arvosanaGson.fromJson(obj, ArvosanaDTO.class);
             arvosanat.add(arvosana);
         }
         return arvosanat;
     }
 
     @Override
-    public Map<String, SuoritusDTO> getSuoritukset(String personOid) {
+    public Map<String, List<SuoritusDTO>> getSuoritukset(String personOid) {
+        return getSuoritukset(personOid, null);
+    }
 
-//        {
-//            "id":"e482944f-6195-41d6-a456-3637c217096d",
-//            "komoto": {
-//                "oid":"komotoid",
-//                "komo":"peruskoulu",
-//                "tarjoaja":"1.2.246.562.10.89047714871"
-//            },
-//            "tila":"KESKEN",
-//            "valmistuminen":"30.05.2014",
-//            "henkiloOid":"1.2.246.562.24.23805003946",
-//            "yksilollistaminen":"Osittain",
-//            "suoritusKieli":"AM"
-//        }
-
+    @Override
+    public Map<String, List<SuoritusDTO>> getSuoritukset(String personOid, String komoOid) {
         CachingRestClient cachingRestClient = getCachingRestClient();
         String response;
         String url = "/rest/v1/suoritukset?henkilo=" + personOid;
+        if (isNotBlank(komoOid)) {
+            url = url + "&komo=" + komoOid;
+        }
         try {
             InputStream is = cachingRestClient.get(url);
             response = IOUtils.toString(is);
@@ -159,72 +125,29 @@ public class SuoritusrekisteriServiceImpl implements SuoritusrekisteriService {
             log.error("Fetching suoritukset failed: {}", e);
             throw new ResourceNotFoundException("Fetching suoritukset failed", e);
         }
+
         JsonArray elements = new JsonParser().parse(response).getAsJsonArray();
-        Map<String, SuoritusDTO> suoritukset = new HashMap<String, SuoritusDTO>(elements.size());
-        for (int i = 0; i < elements.size(); i++) {
-            JsonObject elem = elements.get(i).getAsJsonObject();
-            SuoritusDTO suoritus = suoritusJsonToDTO(elem);
-            if ("KESKEYTYNYT".equals(suoritus.getTila())) {
+        Map<String, List<SuoritusDTO>> suoritukset = new HashMap<>(elements.size());
+        for (JsonElement elem : elements) {
+            SuoritusDTO suoritus = suoritusGson.fromJson(elem, SuoritusDTO.class);
+
+            if (!SuoritusDTO.TILA_VALMIS.equals(suoritus.getTila())
+                    && !SuoritusDTO.TILA_KESKEN.equals(suoritus.getTila())) {
                 continue;
             }
             String komo = suoritus.getKomo();
             if (!validKomos.contains(komo)) {
                 continue;
             }
-            SuoritusDTO prev = suoritukset.put(komo, suoritus);
-            if (prev != null) {
-                throw new ResourceNotFoundException("Found multiple instances of komo " + komo +
-                  " for personOid " + suoritus.getHenkiloOid());
+            List<SuoritusDTO> komonSuoritukset = suoritukset.get(komo);
+            if (komonSuoritukset == null) {
+                komonSuoritukset = new ArrayList<>(1);
             }
+            komonSuoritukset.add(suoritus);
+            suoritukset.put(komo, komonSuoritukset);
         }
 
         return suoritukset;
-    }
-
-    private SuoritusDTO suoritusJsonToDTO(JsonObject elem) {
-        log.debug("suoritusJsonToDTO, json {}", elem.toString());
-
-        SuoritusDTO suoritus = new SuoritusDTO();
-        suoritus.setId(jsonElementToString(elem.get("id")));
-        suoritus.setTila(jsonElementToString(elem.get("tila")));
-        suoritus.setHenkiloOid(jsonElementToString(elem.get("henkiloOid")));
-        suoritus.setSuorituskieli(jsonElementToString(elem.get("suorituskieli")));
-        suoritus.setKomo(jsonElementToString(elem.get("komo")));
-        suoritus.setYksilollistaminen(jsonElementToString(elem.get("yksilollistaminen")));
-        suoritus.setSuorituskieli(jsonElementToString(elem.get("suoritusKieli")));
-
-        try {
-            Date valmistuminen = valmistuminenPvm().parse(jsonElementToString(elem.get("valmistuminen")));
-            suoritus.setValmistuminen(valmistuminen);
-        } catch (ParseException e) {
-            log.info("Parsing valmistuminen date failed: " + e);
-        }
-
-        log.debug("suoritusJsonToDTO, dto {}", suoritus.toString());
-        return suoritus;
-    }
-
-    private String jsonElementToString(JsonElement elem) {
-        if (elem == null || elem.isJsonNull()) {
-            return null;
-        }
-        return elem.getAsString();
-    }
-
-    private Date jsonElementToDate(JsonElement elem) throws ParseException {
-        String str = jsonElementToString(elem);
-        if (str == null) {
-            return null;
-        }
-        return ISO8601().parse(str);
-    }
-
-    private Boolean jsonElementToBoolean(JsonElement elem) {
-        String str = jsonElementToString(elem);
-        if (str == null) {
-            return null;
-        }
-        return Boolean.valueOf(str);
     }
 
     private synchronized CachingRestClient getCachingRestClient() {
@@ -240,13 +163,5 @@ public class SuoritusrekisteriServiceImpl implements SuoritusrekisteriService {
 
     protected void setCachingRestClient(CachingRestClient cachingRestClient) {
         this.cachingRestClient = cachingRestClient;
-    }
-
-    private DateFormat ISO8601() {
-        return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-    }
-
-    private DateFormat valmistuminenPvm() {
-        return new SimpleDateFormat("dd.MM.yyyy");
     }
 }

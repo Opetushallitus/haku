@@ -29,9 +29,11 @@ public interface SuoritusrekisteriService {
      * @param personOid
      * @return suoritukset mappina komoOid - suoritus
      */
-    Map<String, SuoritusDTO> getSuoritukset(String personOid);
+    Map<String, List<SuoritusDTO>> getSuoritukset(String personOid);
 
-    List<OpiskelijaDTO> getOpiskelijat(String personOid);
+    List<OpiskelijaDTO> getOpiskelijatiedot(String personOid);
 
     List<ArvosanaDTO> getArvosanat(String suoritusId);
+
+    Map<String, List<SuoritusDTO>> getSuoritukset(String personOid, String komoOid);
 }
