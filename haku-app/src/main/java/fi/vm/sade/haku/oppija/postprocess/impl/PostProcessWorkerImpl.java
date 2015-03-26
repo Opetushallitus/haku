@@ -21,9 +21,8 @@ import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application.PostProcessingState;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationNote;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationDAO;
-import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.haku.oppija.lomake.service.impl.SystemSession;
-import fi.vm.sade.haku.oppija.postprocess.YksilointiWorker;
+import fi.vm.sade.haku.oppija.postprocess.PostProcessWorker;
 import fi.vm.sade.haku.oppija.repository.AuditLogRepository;
 import org.apache.commons.mail.EmailException;
 import org.slf4j.Logger;
@@ -37,9 +36,9 @@ import java.util.*;
 import static fi.vm.sade.haku.oppija.hakemus.aspect.ApplicationDiffUtil.addHistoryBasedOnChangedAnswers;
 
 @Service
-public class YksilointiWorkerImpl implements YksilointiWorker {
+public class PostProcessWorkerImpl implements PostProcessWorker {
 
-    public static final Logger LOGGER = LoggerFactory.getLogger(YksilointiWorkerImpl.class);
+    public static final Logger LOGGER = LoggerFactory.getLogger(PostProcessWorkerImpl.class);
 
     private static final SystemSession systemSession = new SystemSession();
     private final ApplicationDAO applicationDAO;
@@ -54,13 +53,13 @@ public class YksilointiWorkerImpl implements YksilointiWorker {
     final String SYSTEM_USER = "järjestelmä";
 
     @Autowired
-    public YksilointiWorkerImpl(final ApplicationDAO applicationDAO,
-                                final StatusRepository statusRepository,
-                                final fi.vm.sade.log.client.Logger logger,
-                                final AuditLogRepository auditLogRepository,
-                                final SendMailService sendMailService,
-                                final ApplicationPostProcessorService applicationPostProcessorService,
-                                @Value("${server.name}") final String serverName) {
+    public PostProcessWorkerImpl(final ApplicationDAO applicationDAO,
+                                 final StatusRepository statusRepository,
+                                 final fi.vm.sade.log.client.Logger logger,
+                                 final AuditLogRepository auditLogRepository,
+                                 final SendMailService sendMailService,
+                                 final ApplicationPostProcessorService applicationPostProcessorService,
+                                 @Value("${server.name}") final String serverName) {
         this.loggerAspect = new LoggerAspect(logger, systemSession, auditLogRepository, serverName);
         this.applicationDAO = applicationDAO;
         this.statusRepository = statusRepository;
