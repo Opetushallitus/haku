@@ -475,7 +475,7 @@ var kjal = {
      * tallennetaan kelpoisuus ja liitteet
      * @param indx hakutoiveen index numero
      */
-    tallennaKelpoisuusJaLiitteet: function (indx) {
+    tallennaKelpoisuusJaLiitteet: function (applicationOid, indx) {
         var submitData = _.clone(hakutoiveet);
         for (var s in submitData) {
             delete submitData[s].indx;
@@ -488,7 +488,7 @@ var kjal = {
         this.LOGS('Lähettävä data:', submitData);
         $.ajax({
             type: 'POST',
-            url: document.URL.split("#")[0] +'processAttachmentsAndEligibility',
+            url: page_settings.contextPath + '/virkailija/hakemus/' +  applicationOid + '/processAttachmentsAndEligibility',
             data: JSON.stringify(submitData),
             async: true,
             contentType: "application/json;charset=utf-8",
@@ -496,8 +496,7 @@ var kjal = {
             cache: false,
             success: function () {
                 var navToY = kjal.documentYposition();
-                window.location = window.location.href.split('#')[0] + '#liitteetkelpoisuusTab#'+navToY;
-                window.location.reload();
+                window.location.href = page_settings.contextPath + '/virkailija/hakemus/' + applicationOid + '/#liitteetkelpoisuusTab#'+navToY;
             },
             error: function (error) {
                 kjal.LOGS('## kelpoisuus ja liitteet tallennuksessa error ## ', error);
