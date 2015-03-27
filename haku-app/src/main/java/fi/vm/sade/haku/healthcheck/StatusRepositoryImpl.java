@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.stereotype.Repository;
 
+import javax.annotation.PostConstruct;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -20,6 +21,10 @@ import static org.apache.commons.lang3.StringUtils.isNotBlank;
 @Profile(value = {"default", "devluokka", "vagrant"})
 public class StatusRepositoryImpl implements StatusRepository {
 
+    private static final String FIELD_HOST= "host";
+    private static final String FIELD_OPERATION= "operation";
+    private static final String FIELD_TIMESTAMP= "ts";
+
     private static final Logger log = LoggerFactory.getLogger(StatusRepositoryImpl.class);
 
     private static final String STATUS_COLLECTION = "systemStatus";
@@ -29,6 +34,9 @@ public class StatusRepositoryImpl implements StatusRepository {
 
     @Value("${server.name}")
     private String serverName;
+
+    @Value("${mongodb.ensureIndex:true}")
+    private boolean ensureIndex;
 
     @Autowired
     public StatusRepositoryImpl(final MongoOperations mongoOperations) {
@@ -54,27 +62,23 @@ public class StatusRepositoryImpl implements StatusRepository {
     public void write(final String operation, final Map<String, String> statusData) {
         Preconditions.checkNotNull(operation, "Operation can not be null");
 
-        DBObject query = new BasicDBObject();
-        query.put("host", serverName);
-        query.put("operation", operation);
+        final DBObject query = new BasicDBObject(FIELD_HOST, serverName).append(FIELD_OPERATION, operation);
 
-        DBObject newObject = new BasicDBObject();
+        final DBObject newObject =  new BasicDBObject(FIELD_HOST, serverName).append(FIELD_OPERATION, operation);
         if (statusData != null && !statusData.isEmpty()) {
             newObject.putAll(statusData);
         }
-        newObject.put("host", serverName);
-        newObject.put("operation", operation);
-        newObject.put("ts", new Date());
+        newObject.put(FIELD_TIMESTAMP, new Date());
 
-        WriteResult result = this.mongo.getCollection(STATUS_COLLECTION).update(query, newObject, true, false, WriteConcern.ACKNOWLEDGED);
-        String error = result.getError();
+        final WriteResult result = this.mongo.getCollection(STATUS_COLLECTION).update(query, newObject, true, false, WriteConcern.ACKNOWLEDGED);
+        final String error = result.getError();
         if (isNotBlank(error)) {
             log.error("Writing systemStatus failed: {}", error);
         }
     }
 
-    private Map<String, String> statusToMap(DBObject status) {
-        Map<String, String> statusMap = new HashMap<String, String>();
+    private Map<String, String> statusToMap(final DBObject status) {
+        final Map<String, String> statusMap = new HashMap<>();
         for (String key : status.keySet()) {
             Object value = status.get(key);
             String valueStr = null;
@@ -88,5 +92,12 @@ public class StatusRepositoryImpl implements StatusRepository {
             statusMap.put(key, valueStr);
         }
         return statusMap;
+    }
+
+    @PostConstruct
+    void initIndexes(){
+        if (!ensureIndex)
+            return;
+        this.mongo.getCollection(STATUS_COLLECTION).ensureIndex(new BasicDBObject(FIELD_HOST, 1).append(FIELD_OPERATION, 1),"index_update");
     }
 }
