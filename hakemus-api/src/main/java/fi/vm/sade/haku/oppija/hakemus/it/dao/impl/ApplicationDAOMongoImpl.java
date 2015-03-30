@@ -84,17 +84,29 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     private static final String FIELD_STUDENT_OID = "studentOid";
 
     // Application answer meta fields
-    private static final String FIELD_OPO_ALLOWED = "authorizationMeta.opoAllowed";
-    private static final String FIELD_LOP_PARENTS_T = "authorizationMeta.aoOrganizations.%d";
-    private static final String FIELD_SENDING_SCHOOL_PARENTS = "authorizationMeta.sendingSchool";
-    private static final String FIELD_ALL_ORGANIZATIONS = "authorizationMeta.allAoOrganizations";
+    private static final String PREFIX_AUTHORIZATION_META = "authorizationMeta";
+    private static final String META_FIELD_OPO_ALLOWED = "authorizationMeta.opoAllowed";
+    private static final String META_LOP_PARENTS_T = "authorizationMeta.aoOrganizations.%d";
+    private static final String META_SENDING_SCHOOL_PARENTS = "authorizationMeta.sendingSchool";
+    private static final String META_ALL_ORGANIZATIONS = "authorizationMeta.allAoOrganizations";
 
     // TODO ApplicationPreferenceMeta
+    private static final String PREFIX_PREFERENCE_META = PREFIX_AUTHORIZATION_META + ".applicationPreferences";
+    private static final String META_FIELD_ORDINAL = PREFIX_PREFERENCE_META +".ordinal";
+    private static final String PREFIX_PREFERENCE_DATA_META = PREFIX_PREFERENCE_META + ".preferenceData";
     private static final String FIELD_AO_T = "answers.hakutoiveet.preference%d-Koulutus-id";
+    private static final String META_FIELD_AO = PREFIX_PREFERENCE_DATA_META +".Koulutus-id";
+
     private static final String FIELD_AO_KOULUTUS_ID_T = "answers.hakutoiveet.preference%d-Koulutus-id-aoIdentifier";
+    private static final String META_FIELD_AO_KOULUTUS_ID = PREFIX_PREFERENCE_DATA_META +".Koulutus-id-aoIdentifier";
+
     private static final String FIELD_LOP_T = "answers.hakutoiveet.preference%d-Opetuspiste-id";
+    private static final String META_FIELD_LOP = PREFIX_PREFERENCE_DATA_META+ ".Opetuspiste-id";
+
     private static final String FIELD_DISCRETIONARY_T = "answers.hakutoiveet.preference%d-discretionary";
+    private static final String META_FIELD_DISCRETIONARY = PREFIX_PREFERENCE_DATA_META+ ".discretionary";
     private static final String FIELD_AO_GROUPS_T = "answers.hakutoiveet.preference%d-Koulutus-id-ao-groups";
+    private static final String META_FIELD_AO_GROUPS = PREFIX_PREFERENCE_DATA_META+ ".Koulutus-id-ao-groups";
 
     //TODO Meta
     private static final String FIELD_HIGHER_ED_BASE_ED_T = "answers.koulutustausta.pohjakoulutus_%s";
@@ -404,7 +416,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
             ArrayList<DBObject> preferenceQuery = new ArrayList<DBObject>(filterParameters.getMaxApplicationOptions());
             if (isNotBlank(lopOid)) {
                 preferenceQuery.add(
-                        QueryBuilder.start(format(FIELD_LOP_PARENTS_T, i)).in(Lists.newArrayList(lopOid)).get());
+                        QueryBuilder.start(format(META_LOP_PARENTS_T, i)).in(Lists.newArrayList(lopOid)).get());
             }
             if (isNotBlank(preference)) {
                 preferenceQuery.add(
@@ -535,17 +547,17 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
 
         if (filterParameters.getOrganizationsReadble().size() > 0) {
             queries.add(
-                    QueryBuilder.start(FIELD_ALL_ORGANIZATIONS).in(filterParameters.getOrganizationsReadble()).get());
+                    QueryBuilder.start(META_ALL_ORGANIZATIONS).in(filterParameters.getOrganizationsReadble()).get());
         }
 
         if (filterParameters.getOrganizationsReadble().contains(rooOrganizationOid)) {
-            queries.add(QueryBuilder.start(FIELD_ALL_ORGANIZATIONS).exists(false).get());
+            queries.add(QueryBuilder.start(META_ALL_ORGANIZATIONS).exists(false).get());
         }
 
         if (filterParameters.getOrganizationsOpo().size() > 0) {
             queries.add(QueryBuilder.start().and(
-                    QueryBuilder.start(FIELD_SENDING_SCHOOL_PARENTS).in(filterParameters.getOrganizationsOpo()).get(),
-                    QueryBuilder.start(FIELD_OPO_ALLOWED).is(true).get()).get());
+                    QueryBuilder.start(META_SENDING_SCHOOL_PARENTS).in(filterParameters.getOrganizationsOpo()).get(),
+                    QueryBuilder.start(META_FIELD_OPO_ALLOWED).is(true).get()).get());
         }
 
         if (OppijaConstants.HAKUTAPA_YHTEISHAKU.equals(filterParameters.getHakutapa())
@@ -754,13 +766,13 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         ensureIndex(INDEX_STUDENT_OID, FIELD_STUDENT_OID);
         ensureSparseIndex(INDEX_SENDING_SCHOOL, FIELD_SENDING_SCHOOL, FIELD_SENDING_CLASS);
         ensureSparseIndex(INDEX_SENDING_CLASS, FIELD_SENDING_CLASS);
-        ensureSparseIndex(INDEX_ALL_ORGANIZAIONS, FIELD_ALL_ORGANIZATIONS);
+        ensureSparseIndex(INDEX_ALL_ORGANIZAIONS, META_ALL_ORGANIZATIONS);
         ensureIndex(INDEX_SEARCH_NAMES, FIELD_SEARCH_NAMES);
         ensureIndex(INDEX_FULL_NAME, FIELD_FULL_NAME);
         ensureIndex(INDEX_MODEL_VERSION, FIELD_MODEL_VERSION);
 
-        ensureSparseIndex(INDEX_ASID_SENDING_SCHOOL_AND_FULL_NAME, FIELD_APPLICATION_SYSTEM_ID, FIELD_SENDING_SCHOOL_PARENTS, FIELD_FULL_NAME);
-        ensureSparseIndex(INDEX_ASID_AND_SENDING_SCHOOL, FIELD_APPLICATION_SYSTEM_ID, FIELD_SENDING_SCHOOL_PARENTS);
+        ensureSparseIndex(INDEX_ASID_SENDING_SCHOOL_AND_FULL_NAME, FIELD_APPLICATION_SYSTEM_ID, META_SENDING_SCHOOL_PARENTS, FIELD_FULL_NAME);
+        ensureSparseIndex(INDEX_ASID_AND_SENDING_SCHOOL, FIELD_APPLICATION_SYSTEM_ID, META_SENDING_SCHOOL_PARENTS);
 
         // System queries
         createIndexForStudentIdentificationDone();
