@@ -177,16 +177,21 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     }
 
     @Override
-    public List<ApplicationAdditionalDataDTO> findApplicationAdditionalData(String applicationSystemId, String aoId,
-                                                                            ApplicationFilterParameters filterParameters) {
-        DBObject orgFilter = filterByOrganization(filterParameters);
-        DBObject query = QueryBuilder.start().and(queryByPreference(filterParameters, Lists.newArrayList(aoId)).get(),
+    public List<ApplicationAdditionalDataDTO> findApplicationAdditionalData(final String applicationSystemId,
+                                                                            final String aoId,
+                                                                            final ApplicationFilterParameters filterParameters) {
+        final DBObject orgFilter = filterByOrganization(filterParameters);
+        final DBObject query = QueryBuilder.start().and(
+                new BasicDBObject(META_FIELD_AO, aoId),
                 new BasicDBObject(FIELD_APPLICATION_SYSTEM_ID, applicationSystemId),
-                QueryBuilder.start(FIELD_APPLICATION_STATE).in(Lists.newArrayList(
-                        Application.State.ACTIVE.toString(), Application.State.INCOMPLETE.toString())).get(),
+                QueryBuilder.start(FIELD_APPLICATION_STATE).in(
+                        Lists.newArrayList(
+                                Application.State.ACTIVE.toString(),
+                                Application.State.INCOMPLETE.toString()))
+                        .get(),
                 orgFilter).get();
 
-        DBObject keys = generateKeysDBObject(DBObjectToAdditionalDataDTO.KEYS);
+        final DBObject keys = generateKeysDBObject(DBObjectToAdditionalDataDTO.KEYS);
 
         SearchResults<ApplicationAdditionalDataDTO> results = searchListing(query, keys, null, 0, 0, new DBObjectToAdditionalDataDTO(), false);
         return results.searchResultsList;
@@ -213,7 +218,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
             DBObject query = QueryBuilder.start(FIELD_APPLICATION_SYSTEM_ID).is(asId)
                     .and("answers.henkilotiedot." + SocialSecurityNumber.HENKILOTUNNUS_HASH).is(encryptedSsn)
                     .and(FIELD_APPLICATION_STATE).notEquals(Application.State.PASSIVE.toString())
-                    .and(queryByPreference(filterParameters, Lists.newArrayList(aoId)).get())
+                    .and(META_FIELD_AO).is(aoId)
                     .get();
             return resultNotEmpty(query, INDEX_SSN_DIGEST);
         }
@@ -320,14 +325,6 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
             // NOP
         }
         return date;
-    }
-
-    private QueryBuilder queryByPreference(final ApplicationFilterParameters filterParams, final List<String> aoIds) {
-        DBObject[] queries = new DBObject[filterParams.getMaxApplicationOptions()];
-        for (int i = 0; i < queries.length; i++) {
-            queries[i] = QueryBuilder.start(format(FIELD_AO_T, i + 1)).in(aoIds).get();
-        }
-        return QueryBuilder.start().or(queries);
     }
 
     private <T> SearchResults<T> searchListing(final DBObject query, final DBObject keys, final DBObject sortBy, final int start, final int rows,
