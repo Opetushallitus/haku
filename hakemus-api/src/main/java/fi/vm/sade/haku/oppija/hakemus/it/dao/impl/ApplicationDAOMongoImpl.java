@@ -250,62 +250,66 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
 
     private DBObject buildQuery(ApplicationQueryParameters applicationQueryParameters,
                                 ApplicationFilterParameters filterParameters) {
-        LOG.debug("Entering findAllQueried");
-        DBObject[] filters = buildQueryFilter(applicationQueryParameters, filterParameters);
-        StringTokenizer st = new StringTokenizer(applicationQueryParameters.getSearchTerms(), " ");
-        ArrayList<DBObject> queries = new ArrayList<DBObject>();
-        while (st.hasMoreTokens()) {
-            String token = st.nextToken();
-            LOG.debug("processing token: {}", token);
-            if (OID_PATTERN.matcher(token).matches()) {
-                if (token.indexOf('.') > -1) { // Long form
-                    if (token.startsWith(applicationOidPrefix)) {
-                        queries.add(QueryBuilder.start(FIELD_APPLICATION_OID).is(token).get());
-                    } else if (token.startsWith(userOidPrefix)) {
-                        queries.add(QueryBuilder.start(FIELD_PERSON_OID).is(token).get());
-                    } else {
-                        queries = addDobOrNameQuery(queries, token);
-                    }
-                } else { // Short form
-                    queries.add(
-                            QueryBuilder.start().or(
-                                    QueryBuilder.start(FIELD_APPLICATION_OID).is(applicationOidPrefix + "." + token).get(),
-                                    QueryBuilder.start(FIELD_PERSON_OID).is(userOidPrefix + "." + token).get()
-                            ).get()
-                    );
-                }
-            } else if (HETU_PATTERN.matcher(token).matches()) {
-                String encryptedSsn = shaEncrypter.encrypt(token.toUpperCase());
-                queries.add(
-                        QueryBuilder.start(FIELD_SSN_DIGEST).is(encryptedSsn).get()
-                );
-            } else { // Name or date of birth
-                queries = addDobOrNameQuery(queries, token);
-            }
-        }
+        LOG.debug("Entering buildQuery");
 
-        QueryBuilder baseQuery = queries.size() > 0 ? QueryBuilder.start().and(queries.toArray(new DBObject[queries.size()])) : QueryBuilder.start();
-        DBObject query = newQueryBuilderWithFilters(filters, filterParameters, baseQuery);
+        final DBObject query = combineSearchTermAndFilterQueries(
+                buildQueryFilter(applicationQueryParameters, filterParameters),
+                filterByOrganization(filterParameters),
+                createSearchTermQuery(applicationQueryParameters));
         LOG.debug("Constructed query: {}", query.toString());
         return query;
     }
 
-    private ArrayList<DBObject> addDobOrNameQuery(ArrayList<DBObject> queries, String token) {
-        String possibleDob = token.replace(".", "");
+    private DBObject createSearchTermQuery(final ApplicationQueryParameters applicationQueryParameters){
+        final StringTokenizer tokenizedSearchTerms = new StringTokenizer(applicationQueryParameters.getSearchTerms(), " ");
+        final ArrayList<DBObject> queries = new ArrayList<>();
+        while (tokenizedSearchTerms.hasMoreTokens()) {
+            final String searchTerm = tokenizedSearchTerms.nextToken();
+            LOG.debug("processing token: {}", searchTerm);
+            if (OID_PATTERN.matcher(searchTerm).matches()) {
+                if (searchTerm.indexOf('.') > -1) { // Long form
+                    if (searchTerm.startsWith(applicationOidPrefix)) {
+                        queries.add(new BasicDBObject(FIELD_APPLICATION_OID, searchTerm));
+                    } else if (searchTerm.startsWith(userOidPrefix)) {
+                        queries.add(new BasicDBObject(FIELD_PERSON_OID, searchTerm));
+                    } else {
+                        queries.add(createDobOrNameQuery(searchTerm));
+                    }
+                } else { // Short form
+                    queries.add(
+                            QueryBuilder.start().or(
+                                    QueryBuilder.start(FIELD_APPLICATION_OID).is(applicationOidPrefix + "." + searchTerm).get(),
+                                    QueryBuilder.start(FIELD_PERSON_OID).is(userOidPrefix + "." + searchTerm).get()
+                            ).get()
+                    );
+                }
+            } else if (HETU_PATTERN.matcher(searchTerm).matches()) {
+                String encryptedSsn = shaEncrypter.encrypt(searchTerm.toUpperCase());
+                queries.add(
+                        QueryBuilder.start(FIELD_SSN_DIGEST).is(encryptedSsn).get()
+                );
+            } else { // Name or date of birth
+                queries.add(createDobOrNameQuery(searchTerm));
+            }
+        }
+
+        if (queries.size() < 1)
+            return null;
+        else if (queries.size() > 1)
+            return QueryBuilder.start().and(queries.toArray(new DBObject[queries.size()])).get();
+        return queries.get(0);
+    }
+
+    private DBObject createDobOrNameQuery(final String searchTerm) {
+        final String possibleDob = searchTerm.replace(".", "");
         Date dob = tryDate(new SimpleDateFormat("ddMMyy"), possibleDob);
         if (dob == null) {
             dob = tryDate(new SimpleDateFormat("ddMMyyyy"), possibleDob);
         }
         if (dob != null) {
-            queries.add(
-                    QueryBuilder.start(FIELD_DATE_OF_BIRTH).is(new SimpleDateFormat("dd.MM.yyyy").format(dob)).get()
-            );
-        } else {
-            queries.add(
-                    QueryBuilder.start(FIELD_SEARCH_NAMES).regex(Pattern.compile(REGEX_LINE_BEGIN + token.toLowerCase())).get()
-            );
+            return QueryBuilder.start(FIELD_DATE_OF_BIRTH).is(new SimpleDateFormat("dd.MM.yyyy").format(dob)).get();
         }
-        return queries;
+        return QueryBuilder.start(FIELD_SEARCH_NAMES).regex(Pattern.compile(REGEX_LINE_BEGIN + searchTerm.toLowerCase())).get();
     }
 
     private Date tryDate(DateFormat df, String str) {
@@ -543,7 +547,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
 
     private DBObject filterByOrganization(ApplicationFilterParameters filterParameters) {
 
-        ArrayList<DBObject> queries = new ArrayList<DBObject>();
+        ArrayList<DBObject> queries = new ArrayList<>();
 
         if (filterParameters.getOrganizationsReadble().size() > 0) {
             queries.add(
@@ -563,7 +567,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         if (OppijaConstants.HAKUTAPA_YHTEISHAKU.equals(filterParameters.getHakutapa())
                 && OppijaConstants.KOHDEJOUKKO_KORKEAKOULU.equals(filterParameters.getKohdejoukko())
                 && !filterParameters.getOrganizationsHetuttomienKasittely().isEmpty()) {
-            queries.add(QueryBuilder.start(FIELD_SSN).exists(false).get());
+            queries.add(QueryBuilder.start(FIELD_SSN).is(null).get());
         }
 
         LOG.debug("queries: {}", queries.size());
@@ -571,30 +575,24 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         return QueryBuilder.start().or(queries.toArray(new DBObject[queries.size()])).get();
     }
 
-    private DBObject newQueryBuilderWithFilters(final DBObject[] filters,
-                                                final ApplicationFilterParameters filterParameters,
-                                                final QueryBuilder baseQuery) {
-        DBObject query;
-        DBObject orgFilter = filterByOrganization(filterParameters);
-
+    private DBObject combineSearchTermAndFilterQueries(final DBObject[] filters,
+                                                       final DBObject orgFilter,
+                                                       final DBObject searchTermQuery) {
         LOG.debug("Filters: {}", filters.length);
-
         if (orgFilter.keySet().isEmpty()) {
-            query = QueryBuilder.start("_id").exists(false).get();
-        } else {
-            if (filters.length > 0) {
-                query = QueryBuilder.start()
-                        .and(baseQuery.get(),
-                                QueryBuilder.start().and(filters).get(), orgFilter)
-                        .get();
-            } else {
-                query = QueryBuilder.start()
-                        .and(baseQuery.get(), orgFilter)
-                        .get();
-            }
+            return QueryBuilder.start("_id").is(null).get();
         }
 
-        return query;
+        final ArrayList<DBObject> queries = new ArrayList<>(3+filters.length);
+        // doing tricks to retain old order. Feel free to refactor later
+        if (null != searchTermQuery)
+            queries.add(searchTermQuery);
+        if (filters.length > 0) {
+            queries.addAll(Lists.newArrayList(filters));
+        }
+        queries.add(orgFilter);
+
+        return QueryBuilder.start().and(queries.toArray(new DBObject[queries.size()])).get();
     }
 
     @Override
