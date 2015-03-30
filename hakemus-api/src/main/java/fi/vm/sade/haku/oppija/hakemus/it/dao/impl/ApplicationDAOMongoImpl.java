@@ -497,6 +497,10 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         boolean discretionaryOnly = applicationQueryParameters.isDiscretionaryOnly();
         boolean primaryPreferenceOnly = applicationQueryParameters.isPrimaryPreferenceOnly();
 
+        // FIXME A dirty Quickfix
+        if (isBlank(lopOid) && isBlank(preference) && isBlank(groupOid) && !discretionaryOnly)
+            return quickfix(aoOid);
+
         int maxOptions = primaryPreferenceOnly && isBlank(groupOid)
                 ? 1
                 : filterParameters.getMaxApplicationOptions();
@@ -546,6 +550,12 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
             }
         }
         return preferenceQueries;
+    }
+
+    private ArrayList<DBObject> quickfix(final String aoOid) {
+        if (isNotBlank(aoOid))
+            return Lists.newArrayList((DBObject) new BasicDBObject(META_FIELD_AO, aoOid));
+        return new ArrayList<>(0);
     }
 
     private DBObject filterByOrganization(ApplicationFilterParameters filterParameters) {
