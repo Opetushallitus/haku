@@ -100,6 +100,8 @@
                                         key="virkailija.hakemus.tila.yksiloimatta"/></option>
                                 <option value="NO_SSN"><fmt:message
                                         key="virkailija.hakemus.tila.hetuttomat"/></option>
+                                <option value="POSTPROCESS_FAILED"><fmt:message
+                                        key="virkailija.hakemus.tila.jalkikasittelyepaonnistui"/></option>
                             </select>
                         </div>
                         <div class="field-search-containerbox">

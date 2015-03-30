@@ -53,7 +53,7 @@
         ACTIVE: '<fmt:message key="virkailija.hakemus.tila.voimassa"/>',
         PASSIVE: '<fmt:message key="virkailija.hakemus.tila.peruttu"/>',
         INCOMPLETE: '<fmt:message key="virkailija.hakemus.tila.puutteellinen"/>',
-        SUBMITTED: '<fmt:message key="virkailija.hakemus.tila."/>',
+        SUBMITTED: '<fmt:message key="virkailija.hakemus.tila.lahetetty"/>',
         DRAFT: '<fmt:message key="virkailija.hakemus.tila.luonnos"/>',
         NOT_IDENTIFIED: '<fmt:message key="virkailija.hakemus.tila.yksiloimatta"/>',
         lang: '${requestScope['fi_vm_sade_oppija_language']}',

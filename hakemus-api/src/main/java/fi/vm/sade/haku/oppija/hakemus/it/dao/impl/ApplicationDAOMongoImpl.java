@@ -19,18 +19,9 @@ package fi.vm.sade.haku.oppija.hakemus.it.dao.impl;
 import com.google.common.base.Function;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
-import com.mongodb.BasicDBObject;
-import com.mongodb.DBCursor;
-import com.mongodb.DBObject;
-import com.mongodb.MongoException;
-import com.mongodb.QueryBuilder;
-import com.mongodb.ReadPreference;
+import com.mongodb.*;
 import fi.vm.sade.haku.oppija.common.dao.AbstractDAOMongoImpl;
-import fi.vm.sade.haku.oppija.hakemus.converter.ApplicationToDBObjectFunction;
-import fi.vm.sade.haku.oppija.hakemus.converter.DBObjectToAdditionalDataDTO;
-import fi.vm.sade.haku.oppija.hakemus.converter.DBObjectToApplicationFunction;
-import fi.vm.sade.haku.oppija.hakemus.converter.DBObjectToMapFunction;
-import fi.vm.sade.haku.oppija.hakemus.converter.DBObjectToSearchResultItem;
+import fi.vm.sade.haku.oppija.hakemus.converter.*;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application.PostProcessingState;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationAdditionalDataDTO;
@@ -53,19 +44,12 @@ import javax.annotation.PostConstruct;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.StringTokenizer;
+import java.util.*;
 import java.util.regex.Pattern;
 
 import static com.mongodb.QueryOperators.IN;
-import static com.mongodb.QueryOperators.EXISTS;
 import static java.lang.String.format;
-import static org.apache.commons.lang.StringUtils.isBlank;
-import static org.apache.commons.lang.StringUtils.isEmpty;
-import static org.apache.commons.lang.StringUtils.isNotBlank;
+import static org.apache.commons.lang.StringUtils.*;
 
 /**
  * @author Hannu Lyytikainen
@@ -477,6 +461,8 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
                 stateQuery = QueryBuilder.start(FIELD_STUDENT_OID).exists(false).get();
             } else if (states.size() == 1 && "NO_SSN".equals(states.get(0))) {
                 stateQuery = QueryBuilder.start(FIELD_SSN).exists(false).get();
+            } else if (states.size() == 1 && "POSTPROCESS_FAILED".equals(states.get(0))) {
+                stateQuery = QueryBuilder.start(FIELD_REDO_POSTPROCESS).is(PostProcessingState.FAILED.toString()).get();
             } else {
                 stateQuery = QueryBuilder.start(FIELD_APPLICATION_STATE).in(states).get();
             }
