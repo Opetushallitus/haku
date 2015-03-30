@@ -193,9 +193,9 @@ public class ApplicationServiceImpl implements ApplicationService {
             application.submitted();
             application.flagStudentIdentificationRequired();
             application.addMeta(Application.META_FILING_LANGUAGE, language);
+            application.setModelVersion(Application.CURRENT_MODEL_VERSION);
 
             application = updatePreferenceBasedData(application);
-
             this.applicationDAO.save(application);
             this.userSession.removeApplication(application);
             return application;
