@@ -77,6 +77,17 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     private static final String INDEX_ASID_SENDING_SCHOOL_AND_FULL_NAME = "index_asid_sending_school_and_full_name";
     private static final String INDEX_ASID_AND_SENDING_SCHOOL = "index_asid_and_sending_school";
 
+    private static final String INDEX_STATE_ASID_FN = "index_state_asid_fn";
+    private static final String INDEX_STATE_FN = "index_state_fn";
+    private static final String INDEX_STATE_ASID_AO_OID = "index_state_asid_ao_org_oid";
+    private static final String INDEX_STATE_AO_OID = "index_state_ao_oid";
+    private static final String INDEX_ASID_AO_OID = "index_asid_ao_oid";
+    private static final String INDEX_AO_OID = "index_ao_oid";
+    private static final String INDEX_STATE_ASID_ORG_OID = "index_state_asid_org_oid";
+    private static final String INDEX_STATE_ORG_OID = "index_state_org_oid";
+    private static final String INDEX_ASID_ORG_OID = "index_asid_org_oid";
+    private static final String INDEX_ORG_OID = "index_org_oid";
+
     //Reference fields
     private static final String FIELD_APPLICATION_SYSTEM_ID = "applicationSystemId";
     private static final String FIELD_APPLICATION_OID = "oid";
@@ -226,7 +237,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     }
 
     private void createIndexForSSNCheck() {
-        ensureIndex(INDEX_SSN_DIGEST, FIELD_APPLICATION_SYSTEM_ID, FIELD_SSN_DIGEST);
+        ensureIndex(INDEX_SSN_DIGEST, FIELD_APPLICATION_SYSTEM_ID, FIELD_SSN_DIGEST, META_FIELD_AO);
     }
 
     @Override
@@ -375,24 +386,58 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
 
     private String addIndexHint(final DBObject query) {
 
-        String queryString = query.toString();
+        final String queryString = query.toString();
 
-        boolean hasApplicationSystemId = (queryString.contains(FIELD_APPLICATION_SYSTEM_ID) ? true : false);
-        boolean hasFullName = (queryString.contains(FIELD_APPLICATION_SYSTEM_ID) ? true : false);
-        boolean hasSendingSchool = (queryString.contains(FIELD_APPLICATION_SYSTEM_ID) ? true : false);
+        boolean hasApplicationState = queryString.contains(FIELD_APPLICATION_STATE);
+        boolean hasApplicationSystemId = queryString.contains(FIELD_APPLICATION_SYSTEM_ID);
+        boolean hasAo = queryString.contains(META_FIELD_AO);
 
-        if (hasApplicationSystemId) {
-            if (hasFullName && hasSendingSchool) {
-                return INDEX_ASID_SENDING_SCHOOL_AND_FULL_NAME;
-            } else if (hasFullName) {
-                return INDEX_APPLICATION_SYSTEM_ID;
-            } else if (hasSendingSchool) {
-                return INDEX_ASID_AND_SENDING_SCHOOL;
+        if (hasAo) {
+            if (hasApplicationState) {
+                if (hasApplicationSystemId)
+                    return LogAndReturnHint(queryString, INDEX_STATE_ASID_AO_OID);
+                else
+                    return LogAndReturnHint(queryString, INDEX_STATE_AO_OID);
+            } else {
+                if (hasApplicationSystemId)
+                    return LogAndReturnHint(queryString, INDEX_ASID_AO_OID);
+                else
+                    return LogAndReturnHint(queryString, INDEX_AO_OID);
             }
         }
 
-        return null;
+        boolean hasAllOrgs = queryString.contains(META_ALL_ORGANIZATIONS)
+                && !queryString.contains(META_FIELD_OPO_ALLOWED)
+                && !queryString.contains(FIELD_SSN);
 
+        if (hasAllOrgs) {
+            if (hasApplicationState) {
+                if (hasApplicationSystemId)
+                    return LogAndReturnHint(queryString, INDEX_STATE_ASID_ORG_OID);
+                else
+                    return LogAndReturnHint(queryString, INDEX_STATE_ORG_OID);
+
+            } else {
+                if (hasApplicationSystemId)
+                    return LogAndReturnHint(queryString, INDEX_ASID_ORG_OID);
+                else
+                    return LogAndReturnHint(queryString, INDEX_ORG_OID);
+            }
+        }
+        if (hasApplicationSystemId) {
+            if (hasApplicationState)
+                return LogAndReturnHint(queryString, INDEX_STATE_ASID_FN);
+            else
+                return LogAndReturnHint(queryString, INDEX_APPLICATION_SYSTEM_ID);
+        }
+        if (hasApplicationState)
+            return LogAndReturnHint(queryString, INDEX_STATE_FN);
+        return LogAndReturnHint(queryString, null);
+    }
+
+    private String LogAndReturnHint(final String query, final String index) {
+        LOG.info("Chose: {} for query: {}", index, query);
+        return index;
     }
 
     private DBObject[] buildQueryFilter(final ApplicationQueryParameters applicationQueryParameters,
@@ -401,8 +446,12 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         final ArrayList<DBObject> preferenceQueries = createPreferenceFilters(applicationQueryParameters, filterParameters);
 
         if (!preferenceQueries.isEmpty()) {
-            filters.add(QueryBuilder.start().or(
-                    preferenceQueries.toArray(new DBObject[preferenceQueries.size()])).get());
+            if (preferenceQueries.size() == 1) {
+                filters.add(preferenceQueries.get(0));
+            } else {
+                filters.add(QueryBuilder.start().or(
+                        preferenceQueries.toArray(new DBObject[preferenceQueries.size()])).get());
+            }
         }
 
         final Boolean preferenceChecked = applicationQueryParameters.getPreferenceChecked();
@@ -770,6 +819,8 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         // constraint indexes
         ensureUniqueIndex(INDEX_APPLICATION_OID, FIELD_APPLICATION_OID);
         // default query indexes
+        ensureIndex(INDEX_STATE_ASID_FN, FIELD_APPLICATION_STATE, FIELD_APPLICATION_SYSTEM_ID, FIELD_FULL_NAME);
+        ensureIndex(INDEX_STATE_FN, FIELD_APPLICATION_STATE, FIELD_FULL_NAME);
         ensureIndex(INDEX_APPLICATION_SYSTEM_ID, FIELD_APPLICATION_SYSTEM_ID, FIELD_FULL_NAME);
         ensureIndex(INDEX_SSN_DIGEST_SEARCH, FIELD_SSN_DIGEST);
         ensureIndex(INDEX_DATE_OF_BIRTH, FIELD_DATE_OF_BIRTH);
@@ -779,16 +830,24 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         ensureSparseIndex(INDEX_SENDING_CLASS, FIELD_SENDING_CLASS);
         ensureSparseIndex(INDEX_ALL_ORGANIZAIONS, META_ALL_ORGANIZATIONS);
         ensureIndex(INDEX_SEARCH_NAMES, FIELD_SEARCH_NAMES);
-        ensureIndex(INDEX_FULL_NAME, FIELD_FULL_NAME);
-        ensureIndex(INDEX_MODEL_VERSION, FIELD_MODEL_VERSION);
+        ensureIndex(INDEX_FULL_NAME, FIELD_FULL_NAME, META_ALL_ORGANIZATIONS);
 
         ensureSparseIndex(INDEX_ASID_SENDING_SCHOOL_AND_FULL_NAME, FIELD_APPLICATION_SYSTEM_ID, META_SENDING_SCHOOL_PARENTS, FIELD_FULL_NAME);
         ensureSparseIndex(INDEX_ASID_AND_SENDING_SCHOOL, FIELD_APPLICATION_SYSTEM_ID, META_SENDING_SCHOOL_PARENTS);
+        ensureIndex(INDEX_STATE_ASID_AO_OID, FIELD_APPLICATION_STATE, FIELD_APPLICATION_SYSTEM_ID, META_FIELD_AO, FIELD_APPLICATION_OID);
+        ensureIndex(INDEX_STATE_AO_OID, FIELD_APPLICATION_STATE, META_FIELD_AO , FIELD_APPLICATION_OID);
+        ensureIndex(INDEX_ASID_AO_OID, FIELD_APPLICATION_SYSTEM_ID, META_FIELD_AO, FIELD_APPLICATION_OID);
+        ensureIndex(INDEX_AO_OID, META_FIELD_AO, FIELD_APPLICATION_OID);
+        ensureIndex(INDEX_STATE_ASID_ORG_OID, FIELD_APPLICATION_STATE, FIELD_APPLICATION_SYSTEM_ID, META_ALL_ORGANIZATIONS, FIELD_APPLICATION_OID);
+        ensureIndex(INDEX_STATE_ORG_OID, FIELD_APPLICATION_STATE, META_ALL_ORGANIZATIONS, FIELD_APPLICATION_OID);
+        ensureIndex(INDEX_ASID_ORG_OID, FIELD_APPLICATION_SYSTEM_ID, META_ALL_ORGANIZATIONS, FIELD_APPLICATION_OID);
+        ensureIndex(INDEX_ORG_OID, META_ALL_ORGANIZATIONS, FIELD_APPLICATION_OID);
 
         // System queries
         createIndexForStudentIdentificationDone();
         createIndexForPostprocess();
         createIndexForSSNCheck();
+        ensureIndex(INDEX_MODEL_VERSION, FIELD_MODEL_VERSION);
 
         // Preference Indexes
         for (int i = 1; i <= 8; i++) {
