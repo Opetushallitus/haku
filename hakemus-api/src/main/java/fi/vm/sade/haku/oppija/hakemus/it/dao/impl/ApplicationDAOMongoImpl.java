@@ -397,24 +397,113 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
 
     private DBObject[] buildQueryFilter(final ApplicationQueryParameters applicationQueryParameters,
                                         final ApplicationFilterParameters filterParameters) {
-        ArrayList<DBObject> filters = new ArrayList<DBObject>();
-        DBObject stateQuery = null;
+        final ArrayList<DBObject> filters = new ArrayList<>();
+        final ArrayList<DBObject> preferenceQueries = createPreferenceFilters(applicationQueryParameters, filterParameters);
 
+        if (!preferenceQueries.isEmpty()) {
+            filters.add(QueryBuilder.start().or(
+                    preferenceQueries.toArray(new DBObject[preferenceQueries.size()])).get());
+        }
+
+        final Boolean preferenceChecked = applicationQueryParameters.getPreferenceChecked();
+        if (preferenceChecked != null) {
+            final String aoOid = applicationQueryParameters.getAoOid();
+            if (isNotBlank(aoOid)) {
+                filters.add(
+                        QueryBuilder.start("preferencesChecked").elemMatch(
+                                QueryBuilder.start().and(
+                                        new BasicDBObject("preferenceAoOid", aoOid),
+                                        new BasicDBObject("checked", preferenceChecked)
+                                ).get()
+                        ).get()
+                );
+            } else {
+                filters.add(
+                        QueryBuilder.start().and(
+                                QueryBuilder.start("preferencesChecked").not().elemMatch(
+                                        new BasicDBObject("checked", !preferenceChecked)).get(),
+                                QueryBuilder.start("preferencesChecked").exists(true).get()
+                        ).get()
+                );
+            }
+        }
+
+        // Koskee koko hakemusta
+        final List<String> states = applicationQueryParameters.getState();
+        if (states != null && !states.isEmpty()) {
+            if (states.size() == 1) {
+                if ("NOT_IDENTIFIED".equals(states.get(0))) {
+                    filters.add(QueryBuilder.start(FIELD_STUDENT_OID).is(null).get());
+                } else if ("NO_SSN".equals(states.get(0))) {
+                    filters.add(QueryBuilder.start(FIELD_SSN).is(null).get());
+                } else if ("POSTPROCESS_FAILED".equals(states.get(0))) {
+                    filters.add(QueryBuilder.start(FIELD_REDO_POSTPROCESS).is(PostProcessingState.FAILED.toString()).get());
+                } else {
+                    filters.add(QueryBuilder.start(FIELD_APPLICATION_STATE).is(Application.State.valueOf(states.get(0))).get());
+                }
+            }else {
+                filters.add(QueryBuilder.start(FIELD_APPLICATION_STATE).in(states).get());
+            }
+        }
+
+        final List<String> asIds = applicationQueryParameters.getAsIds();
+        if (!asIds.isEmpty()) {
+            filters.add(QueryBuilder.start(FIELD_APPLICATION_SYSTEM_ID).in(asIds).get());
+        }
+
+        final String sendingSchool = applicationQueryParameters.getSendingSchool();
+        if (!isEmpty(sendingSchool)) {
+            filters.add(QueryBuilder.start(FIELD_SENDING_SCHOOL).is(sendingSchool).get());
+        }
+
+        final String sendingClass = applicationQueryParameters.getSendingClass();
+        if (!isEmpty(sendingClass)) {
+            filters.add(QueryBuilder.start().or(
+                    QueryBuilder.start(FIELD_SENDING_CLASS).is(sendingClass.toUpperCase()).get(),
+                    QueryBuilder.start(FIELD_CLASS_LEVEL).is(sendingClass.toUpperCase()).get()
+            ).get());
+        }
+
+        final Date updatedAfter = applicationQueryParameters.getUpdatedAfter();
+        if (updatedAfter != null) {
+            filters.add(
+                    QueryBuilder.start().or(
+                            QueryBuilder.start(FIELD_RECEIVED).greaterThanEquals(updatedAfter.getTime()).get(),
+                            QueryBuilder.start(FIELD_UPDATED).greaterThanEquals(updatedAfter.getTime()).get()
+                    ).get()
+            );
+        }
+
+        final String kohdejoukko = filterParameters.getKohdejoukko();
+        final String baseEducation = applicationQueryParameters.getBaseEducation();
+        if (isNotBlank(kohdejoukko) && isNotBlank(baseEducation)) {
+            if (OppijaConstants.KOHDEJOUKKO_KORKEAKOULU.equals(kohdejoukko)) {
+                filters.add(
+                        QueryBuilder.start(format(FIELD_HIGHER_ED_BASE_ED_T, baseEducation))
+                                .is(Boolean.TRUE.toString()).get()
+                );
+            }
+        }
+
+        return filters.toArray(new DBObject[filters.size()]);
+    }
+
+    private ArrayList<DBObject> createPreferenceFilters(final ApplicationQueryParameters applicationQueryParameters, final ApplicationFilterParameters filterParameters){
         // Koskee yksittäistä hakutoivetta
-        String lopOid = applicationQueryParameters.getLopOid();
-        String preference = applicationQueryParameters.getAoId();
-        String groupOid = applicationQueryParameters.getGroupOid();
+        final String aoOid = applicationQueryParameters.getAoOid();
+        final String lopOid = applicationQueryParameters.getLopOid();
+        final String preference = applicationQueryParameters.getAoId();
+        final String groupOid = applicationQueryParameters.getGroupOid();
         boolean discretionaryOnly = applicationQueryParameters.isDiscretionaryOnly();
         boolean primaryPreferenceOnly = applicationQueryParameters.isPrimaryPreferenceOnly();
-        String aoOid = applicationQueryParameters.getAoOid();
-
-        ArrayList<DBObject> preferenceQueries = new ArrayList<DBObject>();
 
         int maxOptions = primaryPreferenceOnly && isBlank(groupOid)
                 ? 1
                 : filterParameters.getMaxApplicationOptions();
-        for (int i = 1; i <= maxOptions; i++) {
-            ArrayList<DBObject> preferenceQuery = new ArrayList<DBObject>(filterParameters.getMaxApplicationOptions());
+
+        final ArrayList<DBObject> preferenceQueries = new ArrayList<>();
+                for (int i = 1; i <= maxOptions; i++) {
+            ArrayList<DBObject> preferenceQuery = new ArrayList<>(filterParameters.getMaxApplicationOptions());
             if (isNotBlank(lopOid)) {
                 preferenceQuery.add(
                         QueryBuilder.start(format(META_LOP_PARENTS_T, i)).in(Lists.newArrayList(lopOid)).get());
@@ -456,90 +545,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
                         preferenceQuery.toArray(new DBObject[preferenceQuery.size()])).get());
             }
         }
-        if (!preferenceQueries.isEmpty()) {
-            filters.add(QueryBuilder.start().or(
-                    preferenceQueries.toArray(new DBObject[preferenceQueries.size()])).get());
-        }
-
-        Boolean preferenceChecked = applicationQueryParameters.getPreferenceChecked();
-        if (preferenceChecked != null) {
-            if (isNotBlank(aoOid)) {
-                filters.add(
-                        QueryBuilder.start("preferencesChecked").elemMatch(
-                                QueryBuilder.start().and(
-                                        new BasicDBObject("preferenceAoOid", aoOid),
-                                        new BasicDBObject("checked", preferenceChecked)
-                                ).get()
-                        ).get()
-                );
-            } else {
-                filters.add(
-                        QueryBuilder.start().and(
-                                QueryBuilder.start("preferencesChecked").not().elemMatch(
-                                        new BasicDBObject("checked", !preferenceChecked)).get(),
-                                QueryBuilder.start("preferencesChecked").exists(true).get()
-                        ).get()
-                );
-            }
-        }
-
-        // Koskee koko hakemusta
-        List<String> states = applicationQueryParameters.getState();
-        if (states != null && !states.isEmpty()) {
-            if (states.size() == 1 && "NOT_IDENTIFIED".equals(states.get(0))) {
-                stateQuery = QueryBuilder.start(FIELD_STUDENT_OID).exists(false).get();
-            } else if (states.size() == 1 && "NO_SSN".equals(states.get(0))) {
-                stateQuery = QueryBuilder.start(FIELD_SSN).exists(false).get();
-            } else if (states.size() == 1 && "POSTPROCESS_FAILED".equals(states.get(0))) {
-                stateQuery = QueryBuilder.start(FIELD_REDO_POSTPROCESS).is(PostProcessingState.FAILED.toString()).get();
-            } else {
-                stateQuery = QueryBuilder.start(FIELD_APPLICATION_STATE).in(states).get();
-            }
-        }
-
-        if (stateQuery != null) {
-            filters.add(stateQuery);
-        }
-        List<String> asIds = applicationQueryParameters.getAsIds();
-        if (!asIds.isEmpty()) {
-            filters.add(QueryBuilder.start(FIELD_APPLICATION_SYSTEM_ID).in(asIds).get());
-        }
-
-        String sendingSchool = applicationQueryParameters.getSendingSchool();
-        if (!isEmpty(sendingSchool)) {
-            filters.add(QueryBuilder.start(FIELD_SENDING_SCHOOL).is(sendingSchool).get());
-        }
-
-        String sendingClass = applicationQueryParameters.getSendingClass();
-        if (!isEmpty(sendingClass)) {
-            filters.add(QueryBuilder.start().or(
-                    QueryBuilder.start(FIELD_SENDING_CLASS).is(sendingClass.toUpperCase()).get(),
-                    QueryBuilder.start(FIELD_CLASS_LEVEL).is(sendingClass.toUpperCase()).get()
-            ).get());
-        }
-
-        Date updatedAfter = applicationQueryParameters.getUpdatedAfter();
-        if (updatedAfter != null) {
-            filters.add(
-                    QueryBuilder.start().or(
-                            QueryBuilder.start(FIELD_RECEIVED).greaterThanEquals(updatedAfter.getTime()).get(),
-                            QueryBuilder.start(FIELD_UPDATED).greaterThanEquals(updatedAfter.getTime()).get()
-                    ).get()
-            );
-        }
-
-        String kohdejoukko = filterParameters.getKohdejoukko();
-        String baseEducation = applicationQueryParameters.getBaseEducation();
-        if (isNotBlank(kohdejoukko) && isNotBlank(baseEducation)) {
-            if (OppijaConstants.KOHDEJOUKKO_KORKEAKOULU.equals(kohdejoukko)) {
-                filters.add(
-                        QueryBuilder.start(format(FIELD_HIGHER_ED_BASE_ED_T, baseEducation))
-                                .is(Boolean.TRUE.toString()).get()
-                );
-            }
-        }
-
-        return filters.toArray(new DBObject[filters.size()]);
+        return preferenceQueries;
     }
 
     private DBObject filterByOrganization(ApplicationFilterParameters filterParameters) {
