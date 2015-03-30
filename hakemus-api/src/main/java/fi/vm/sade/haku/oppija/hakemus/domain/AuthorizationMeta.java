@@ -24,6 +24,7 @@ import org.codehaus.jackson.map.annotate.JsonSerialize;
 
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -35,6 +36,8 @@ public class AuthorizationMeta implements Serializable {
     private Map<String, Set<String>> aoOrganizations;
     private Set<String> allAoOrganizations;
     private Set<String> sendingSchool;
+
+    private List<ApplicationPreferenceMeta> applicationPreferences;
 
     @JsonCreator
     public AuthorizationMeta() {
@@ -70,6 +73,14 @@ public class AuthorizationMeta implements Serializable {
 
     public void setAllAoOrganizations(Set<String> allAoOrganizations) {
         this.allAoOrganizations = allAoOrganizations;
+    }
+
+    public List<ApplicationPreferenceMeta> getApplicationPreferences() {
+        return applicationPreferences;
+    }
+
+    public void setApplicationPreferences(List<ApplicationPreferenceMeta> applicationPreferences) {
+        this.applicationPreferences = applicationPreferences;
     }
 
     @Override
