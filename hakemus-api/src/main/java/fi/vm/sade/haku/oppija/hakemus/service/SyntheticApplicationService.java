@@ -1,5 +1,6 @@
 package fi.vm.sade.haku.oppija.hakemus.service;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -29,18 +30,21 @@ import static org.apache.commons.lang3.StringUtils.isNotBlank;
 public class SyntheticApplicationService {
     private final ApplicationDAO applicationDAO;
     private final ApplicationOidService applicationOidService;
+    private final ApplicationService applicationService;
 
     @Autowired
-    public SyntheticApplicationService(final ApplicationDAO applicationDAO, final ApplicationOidService applicationOidService) {
+    public SyntheticApplicationService(final ApplicationDAO applicationDAO, final ApplicationOidService applicationOidService, final ApplicationService applicationService) {
         this.applicationDAO = applicationDAO;
         this.applicationOidService = applicationOidService;
+        this.applicationService = applicationService;
     }
 
-    public List<Application> createApplications(SyntheticApplication applicationStub) {
+    public List<Application> createApplications(SyntheticApplication applicationStub) throws IOException {
         List<Application> returns = new ArrayList<Application>();
         for (SyntheticApplication.Hakemus hakemus : applicationStub.hakemukset) {
             Application app = applicationForStub(hakemus, applicationStub);
             Application dbApp = applicationDAO.getApplication(app.getOid(), "oid", "version");
+            applicationService.updateAuthorizationMeta(app);
             if (null == dbApp){
                 applicationDAO.save(app);
             }

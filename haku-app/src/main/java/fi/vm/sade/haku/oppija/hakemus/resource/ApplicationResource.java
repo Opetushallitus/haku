@@ -48,6 +48,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.io.IOException;
 import java.util.*;
 
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
@@ -414,11 +415,15 @@ public class ApplicationResource {
 	@ApiOperation(
             value = "Luo keinotekoisen hakemuksen (hyödynnetään ulkoisesti toteutettujen valintojen tulosten tuonnissa).")
     public Response putSyntheticApplication(@ApiParam(value="Hakemuksen tiedot") SyntheticApplication syntheticApplication) {
-        if(new SyntheticApplicationValidator(syntheticApplication).validateSyntheticApplication()) {
-            List<Application> applications = syntheticApplicationService.createApplications(syntheticApplication);
-            return Response.ok(applications).build();
-        } else {
-            return Response.status(Response.Status.BAD_REQUEST).build();
+        try {
+            if(new SyntheticApplicationValidator(syntheticApplication).validateSyntheticApplication()) {
+                List<Application> applications = syntheticApplicationService.createApplications(syntheticApplication);
+                return Response.ok(applications).build();
+            } else {
+                return Response.status(Response.Status.BAD_REQUEST).build();
+            }
+        } catch (IOException e) {
+            throw new JSONException(Response.Status.INTERNAL_SERVER_ERROR, "Could not import application", e);
         }
     }
 
