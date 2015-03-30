@@ -85,12 +85,17 @@ public final class OppijaConstants {
 
     public static final String PREFERENCE_PREFIX = "preference";
     public static final String OPTION_ID_POSTFIX = "-Koulutus-id";
+    public static final String PREFERENCE_FRAGMENT_OPTION_ID= "Koulutus-id";
+
     public static final String OPTION_GROUP_POSTFIX = "-Koulutus-id-ao-groups";
     public static final String OPTION_ATTACHMENTS_POSTFIX = "-Koulutus-id-attachments";
     public static final String OPTION_ATTACHMENT_GROUP_TYPE = "hakukohde_liiteosoite";
     public static final String PREFERENCE_NAME = "preference%d-Koulutus";
+    public static final String PREFERENCE_FRAGMENT_NAME = "Koulutus";
     public static final String PREFERENCE_ORGANIZATION = "preference%d-Opetuspiste";
     public static final String PREFERENCE_ORGANIZATION_ID = "preference%d-Opetuspiste-id";
+    public static final String PREFERENCE_FRAGMENT_ORGANIZATION_ID = "Opetuspiste-id";
+    public static final String PREFERENCES_VISIBLE = "preferencesVisible";
     public static final String EDUCATION_CODE_KEY = PREFERENCE_ID + "-educationcode";
     public static final String EDUCATION_VOCATIONAL = PREFERENCE_ID + "-vocational";
     public static final String EDUCATION_LANGUAGE = PREFERENCE_ID + "-lang";
@@ -102,6 +107,7 @@ public final class OppijaConstants {
     public static final String EDUCATION_LANGUAGE_EI_SUORITUSTA = "97";
 
     public static final String PREFERENCE_DISCRETIONARY = "preference%d-discretionary";
+    public static final String PREFERENCE_FRAGMENT_DISCRETIONARY = "discretionary";
 
     public static final String NATIONALITY_CODE_FI = "FIN";
     public static final String ULKOMAINEN_TUTKINTO = "0";

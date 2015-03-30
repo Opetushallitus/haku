@@ -18,10 +18,7 @@ package fi.vm.sade.haku.oppija.hakemus.service.impl;
 
 import fi.vm.sade.haku.oppija.common.koulutusinformaatio.KoulutusinformaatioService;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
-import fi.vm.sade.haku.oppija.hakemus.domain.Application;
-import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationNote;
-import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
-import fi.vm.sade.haku.oppija.hakemus.domain.AuthorizationMeta;
+import fi.vm.sade.haku.oppija.hakemus.domain.*;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationAdditionalDataDTO;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
 import fi.vm.sade.haku.oppija.hakemus.domain.util.ApplicationUtil;
@@ -87,6 +84,8 @@ public class ApplicationServiceImpl implements ApplicationService {
     private final ElementTreeValidator elementTreeValidator;
     // Tee vain background-validointi tälle lomakkeelle
     private final String onlyBackgroundValidation;
+
+    private static final String REGEX_NOT_DIGIT = "[^0-9]";
 
     @Autowired
     public ApplicationServiceImpl(@Qualifier("applicationDAOMongoImpl") ApplicationDAO applicationDAO,
@@ -168,7 +167,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         final User user = userSession.getUser();
 
         Application application = null;
-        if(userSession.hasApplication(applicationSystemId)) {
+        if (userSession.hasApplication(applicationSystemId)) {
             application = userSession.getApplication(applicationSystemId);
         } else {
             LOGGER.error("Trying to submit application but no application was found from session. ApplicationSystemId: " + applicationSystemId);
@@ -194,6 +193,8 @@ public class ApplicationServiceImpl implements ApplicationService {
             application.submitted();
             application.flagStudentIdentificationRequired();
             application.addMeta(Application.META_FILING_LANGUAGE, language);
+            application.setModelVersion(Application.CURRENT_MODEL_VERSION);
+
             application = updatePreferenceBasedData(application);
             this.applicationDAO.save(application);
             this.userSession.removeApplication(application);
@@ -205,12 +206,12 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     private String getApplicationLogMessage(Application application, ValidationResult validationResult) {
-        if(application == null) return "Application was null.";
+        if (application == null) return "Application was null.";
 
         StringBuilder sb = new StringBuilder();
         sb.append("Hakemus: ").append(application.getOid());
         sb.append("\r\n").append(application.getAnswers().toString());
-        if(validationResult != null) {
+        if (validationResult != null) {
             sb.append("\r\n").append(validationResult.getErrorMessages());
         }
 
@@ -296,45 +297,75 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public Application updateAuthorizationMeta(Application application) throws IOException {
-        boolean opoAllowed = resolveOpoAllowed(application);
-        Map<String, Set<String>> aoOrganizations = new HashMap<String, Set<String>>();
-        Set<String> allOrganizations = new HashSet<String>();
-        Set<String> sendingSchool = new HashSet<String>();
+    public Application updateAuthorizationMeta(final Application application) throws IOException {
+        final Map<String, Set<String>> aoOrganizations = new HashMap<>();
+        final Set<String> allOrganizations = new HashSet<>();
+        final Map<Integer, Map<String, String>> applicationPreferenceData = new HashMap<>();
 
-        int i = 1;
-        Map<String, String> aoAnswers = application.getPhaseAnswers(OppijaConstants.PHASE_APPLICATION_OPTIONS);
-        while (true) {
-            String aoKey = String.format(OppijaConstants.PREFERENCE_ID, i);
-            if (!aoAnswers.containsKey(aoKey)) {
-                break;
+        final Map<String, String> aoAnswers = application.getPhaseAnswers(OppijaConstants.PHASE_APPLICATION_OPTIONS);
+        for (final Map.Entry<String, String> originalEntry : aoAnswers.entrySet()) {
+            final String originalKey = originalEntry.getKey();
+            if (StringUtils.isEmpty(originalEntry.getValue()) || null == originalKey)
+                continue;
+            if (!originalKey.startsWith(OppijaConstants.PREFERENCE_PREFIX) || originalKey.equals(OppijaConstants.PREFERENCES_VISIBLE))
+                continue;
+            final String[] splitKey = originalKey.substring(OppijaConstants.PREFERENCE_PREFIX.length()).split(REGEX_NOT_DIGIT, 2);
+            try {
+                final Integer ordinal = Integer.valueOf(splitKey[0]);
+                final String dataKey = splitKey[1];
+                Map<String, String> preferenceData = applicationPreferenceData.get(ordinal);
+                if (null == preferenceData) {
+                    preferenceData = new HashMap<>();
+                    applicationPreferenceData.put(ordinal, preferenceData);
+                }
+                preferenceData.put(dataKey, originalEntry.getValue());
+
+                if (OppijaConstants.PREFERENCE_FRAGMENT_ORGANIZATION_ID.equals(dataKey)) {
+                    final String lop = originalEntry.getValue();
+                    final HashSet<String> parents = new HashSet<>(organizationService.findParentOids(lop));
+                    aoOrganizations.put(String.valueOf(ordinal), parents);
+                    allOrganizations.addAll(parents);
+                }
+            } catch (NumberFormatException exp) {
+                LOGGER.error("Getting of preference ordinal for application {} failed for entry key: {}  value: {}. Aborting updated Authorization meta", application.getOid(), originalKey, originalEntry.getValue());
+                throw exp;
             }
-            String lop = aoAnswers.get(String.format(OppijaConstants.PREFERENCE_ORGANIZATION_ID, i));
-            if (isNotEmpty(lop)) {
-                List<String> parents = organizationService.findParentOids(lop);
-                aoOrganizations.put(String.valueOf(i), new HashSet<String>(parents));
-                allOrganizations.addAll(parents);
-            }
-            i++;
+
         }
 
-        Map<String, String> educationAnswers = application.getPhaseAnswers(OppijaConstants.PHASE_EDUCATION);
-        String sendingSchoolOrg = educationAnswers.get(OppijaConstants.ELEMENT_ID_SENDING_SCHOOL);
-        if (sendingSchoolOrg != null) {
-            sendingSchool.addAll(organizationService.findParentOids(sendingSchoolOrg));
-        }
-
-        AuthorizationMeta authorizationMeta = new AuthorizationMeta();
-        authorizationMeta.setOpoAllowed(opoAllowed);
+        final AuthorizationMeta authorizationMeta = new AuthorizationMeta();
+        authorizationMeta.setOpoAllowed(resolveOpoAllowed(application));
         authorizationMeta.setAoOrganizations(aoOrganizations);
         authorizationMeta.setAllAoOrganizations(allOrganizations);
-        authorizationMeta.setSendingSchool(sendingSchool);
+        authorizationMeta.setSendingSchool(getSendingSchool(application));
+        authorizationMeta.setApplicationPreferences(buildPreferenceMetas(applicationPreferenceData));
+
         application.setAuthorizationMeta(authorizationMeta);
         return application;
     }
 
+    private Set<String> getSendingSchool(final Application application) throws IOException {
+        final Set<String> sendingSchool = new HashSet<>();
+        final Map<String, String> educationAnswers = application.getPhaseAnswers(OppijaConstants.PHASE_EDUCATION);
+        final String sendingSchoolOrg = educationAnswers.get(OppijaConstants.ELEMENT_ID_SENDING_SCHOOL);
+        if (sendingSchoolOrg != null) {
+            sendingSchool.addAll(organizationService.findParentOids(sendingSchoolOrg));
+        }
+        return sendingSchool;
+    }
+
+    private List<ApplicationPreferenceMeta> buildPreferenceMetas(final Map<Integer, Map<String, String>> applicationPreferenceData){
+        final List<ApplicationPreferenceMeta> preferenceMetas = new ArrayList<>(applicationPreferenceData.size());
+        for (final Integer ordinal : applicationPreferenceData.keySet()) {
+            Map<String, String> preferenceData = applicationPreferenceData.get(ordinal);
+            if (preferenceData.containsKey(OppijaConstants.PREFERENCE_FRAGMENT_OPTION_ID))
+                preferenceMetas.add(new ApplicationPreferenceMeta(ordinal, preferenceData));
+        }
+        return preferenceMetas;
+    }
+
     @Override
-    public Application updatePreferenceBasedData(final Application application){
+    public Application updatePreferenceBasedData(final Application application) {
         List<String> preferenceAoIds = ApplicationUtil.getPreferenceAoIds(application);
 
         application.setPreferenceEligibilities(ApplicationUtil.checkAndCreatePreferenceEligibilities(application.getPreferenceEligibilities(), preferenceAoIds));
@@ -355,8 +386,8 @@ public class ApplicationServiceImpl implements ApplicationService {
         ArrayList<Element> children = new ArrayList<>(30);
         children.addAll(as.getForm().getChildren(application.getVastauksetMerged()));
 
-        while(children.size() > 0){
-            Element element = children.remove(children.size()-1);
+        while (children.size() > 0) {
+            Element element = children.remove(children.size() - 1);
             elementIds.put(element.getId(), Boolean.TRUE);
             children.addAll(element.getChildren(application.getVastauksetMerged()));
         }
@@ -472,12 +503,12 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     @Override
     public Map<String, String> ensureApplicationOptionGroupData(final Map<String, String> originalAnswers, String lang) {
-        final HashMap<String,String> ensuredAnswers = new HashMap<>(originalAnswers);
-        for (String key: originalAnswers.keySet()) {
+        final HashMap<String, String> ensuredAnswers = new HashMap<>(originalAnswers);
+        for (String key : originalAnswers.keySet()) {
             if (null != key
-              && key.startsWith(OppijaConstants.PREFERENCE_PREFIX)
-              && key.endsWith(OppijaConstants.OPTION_ID_POSTFIX)
-              && isNotEmpty(ensuredAnswers.get(key))){
+                    && key.startsWith(OppijaConstants.PREFERENCE_PREFIX)
+                    && key.endsWith(OppijaConstants.OPTION_ID_POSTFIX)
+                    && isNotEmpty(ensuredAnswers.get(key))) {
                 String basekey = key.replace(OppijaConstants.OPTION_ID_POSTFIX, "");
 
                 String aoGroups = ensuredAnswers.get(basekey + OppijaConstants.OPTION_GROUP_POSTFIX);
@@ -489,22 +520,22 @@ public class ApplicationServiceImpl implements ApplicationService {
                         ? teachingLangs.get(0) : "";
 
                 ensuredAnswers.put(basekey + "-Opetuspiste", safeToString(applicationOption.getProvider().getName()));
-                ensuredAnswers.put(basekey+"-Opetuspiste-id", safeToString(applicationOption.getProvider().getId()));
-                ensuredAnswers.put(basekey+"-Koulutus", safeToString(applicationOption.getName()));
-                ensuredAnswers.put(basekey+"-Koulutus-id", safeToString(applicationOption.getId()));
-                ensuredAnswers.put(basekey+"-Koulutus-educationDegree", safeToString(applicationOption.getEducationDegree()));
-                ensuredAnswers.put(basekey+"-Koulutus-id-sora", String.valueOf(applicationOption.isSora()));
-                ensuredAnswers.put(basekey+"-Koulutus-id-lang", safeToString(teachingLang));
-                ensuredAnswers.put(basekey+"-Koulutus-id-athlete", String.valueOf(applicationOption.isAthleteEducation()
+                ensuredAnswers.put(basekey + "-Opetuspiste-id", safeToString(applicationOption.getProvider().getId()));
+                ensuredAnswers.put(basekey + "-Koulutus", safeToString(applicationOption.getName()));
+                ensuredAnswers.put(basekey + "-Koulutus-id", safeToString(applicationOption.getId()));
+                ensuredAnswers.put(basekey + "-Koulutus-educationDegree", safeToString(applicationOption.getEducationDegree()));
+                ensuredAnswers.put(basekey + "-Koulutus-id-sora", String.valueOf(applicationOption.isSora()));
+                ensuredAnswers.put(basekey + "-Koulutus-id-lang", safeToString(teachingLang));
+                ensuredAnswers.put(basekey + "-Koulutus-id-athlete", String.valueOf(applicationOption.isAthleteEducation()
                         || applicationOption.getProvider().isAthleteEducation()));
-                ensuredAnswers.put(basekey+"-Koulutus-id-aoIdentifier", safeToString(applicationOption.getAoIdentifier()));
-                ensuredAnswers.put(basekey+"-Koulutus-id-kaksoistutkinto", String.valueOf(applicationOption.isKaksoistutkinto()));
-                ensuredAnswers.put(basekey+"-Koulutus-id-vocational", String.valueOf(applicationOption.isVocational()));
-                ensuredAnswers.put(basekey+"-Koulutus-id-educationcode", safeToString(applicationOption.getEducationCodeUri()));
+                ensuredAnswers.put(basekey + "-Koulutus-id-aoIdentifier", safeToString(applicationOption.getAoIdentifier()));
+                ensuredAnswers.put(basekey + "-Koulutus-id-kaksoistutkinto", String.valueOf(applicationOption.isKaksoistutkinto()));
+                ensuredAnswers.put(basekey + "-Koulutus-id-vocational", String.valueOf(applicationOption.isVocational()));
+                ensuredAnswers.put(basekey + "-Koulutus-id-educationcode", safeToString(applicationOption.getEducationCodeUri()));
 
                 if (isEmpty(aoGroups)) {
                     List<OrganizationGroupDTO> organizationGroups = applicationOption.getOrganizationGroups();
-                    if (null != organizationGroups && organizationGroups.size() > 0 ){
+                    if (null != organizationGroups && organizationGroups.size() > 0) {
                         ArrayList<String> aoGroupList = new ArrayList<String>(organizationGroups.size());
                         for (OrganizationGroupDTO organizationGroup : organizationGroups) {
                             aoGroupList.add(organizationGroup.getOid());
@@ -526,7 +557,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     @Override
     public Application ensureApplicationOptionGroupData(final Application application) {
-        Map<String, String> phaseAnswers =  application.getAnswers().get(OppijaConstants.PHASE_APPLICATION_OPTIONS);
+        Map<String, String> phaseAnswers = application.getAnswers().get(OppijaConstants.PHASE_APPLICATION_OPTIONS);
         application.addVaiheenVastaukset(OppijaConstants.PHASE_APPLICATION_OPTIONS, phaseAnswers);
         return application;
     }
@@ -537,12 +568,12 @@ public class ApplicationServiceImpl implements ApplicationService {
         List<Application> listOfApplications;
         try {
             listOfApplications = applicationDAO.find(queryApplication);
-            LOGGER.debug("Got "+listOfApplications.size()+" applications");
+            LOGGER.debug("Got " + listOfApplications.size() + " applications");
         } catch (IllegalArgumentException iae) {
             LOGGER.error("Error getting application: ", iae);
             throw new ResourceNotFoundException("Error getting application", iae);
-        } catch(RuntimeException t) {
-            LOGGER.error("Getting application failed: "+t);
+        } catch (RuntimeException t) {
+            LOGGER.error("Getting application failed: " + t);
             throw t;
         }
         if (listOfApplications.isEmpty()) {
@@ -555,7 +586,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         Application application = listOfApplications.get(0);
 
         if (!hakuPermissionService.userCanReadApplication(application)) {
-            throw new ResourceNotFoundException("User "+  authenticationService.getCurrentHenkilo().getPersonOid()  +" is not allowed to read application " + application.getOid());
+            throw new ResourceNotFoundException("User " + authenticationService.getCurrentHenkilo().getPersonOid() + " is not allowed to read application " + application.getOid());
         }
         return application;
     }

@@ -55,6 +55,8 @@ public class UpgradeWorkerImpl implements UpgradeWorker{
     private boolean enableUpgradeV5;
     @Value("${scheduler.modelUpgrade.enableV6:true}")
     private boolean enableUpgradeV6;
+    @Value("${scheduler.modelUpgrade.enableV7:true}")
+    private boolean enableUpgradeV7;
 
     @Autowired
     public UpgradeWorkerImpl(ApplicationService applicationService,
@@ -77,6 +79,8 @@ public class UpgradeWorkerImpl implements UpgradeWorker{
             this.applicationUpgrades.add(new ApplicationModelV5Upgrade(koodistoService, loggerAspect));
         if (enableUpgradeV6)
             this.applicationUpgrades.add(new ApplicationModelV6Upgrade(loggerAspect));
+        if (enableUpgradeV7)
+            this.applicationUpgrades.add(new ApplicationModelV7Upgrade(applicationService));
     }
 
 

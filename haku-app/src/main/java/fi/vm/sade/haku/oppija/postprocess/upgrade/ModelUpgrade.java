@@ -6,5 +6,5 @@ public interface ModelUpgrade<T> {
 
     int getTargetVersion();
 
-    UpgradeResult<T> processUpgrade(T application);
+    UpgradeResult<T> processUpgrade(T application) throws Exception;
 }

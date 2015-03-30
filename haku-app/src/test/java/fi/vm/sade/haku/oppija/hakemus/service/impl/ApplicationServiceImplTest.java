@@ -5,6 +5,7 @@ import fi.vm.sade.haku.oppija.common.koulutusinformaatio.KoulutusinformaatioServ
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
 import fi.vm.sade.haku.oppija.common.suoritusrekisteri.SuoritusrekisteriService;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
+import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPreferenceMeta;
 import fi.vm.sade.haku.oppija.hakemus.domain.AuthorizationMeta;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationAdditionalDataDTO;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
@@ -307,6 +308,55 @@ public class ApplicationServiceImplTest {
         assertTrue(ao1parents.contains("0.0.0"));
         assertTrue(ao1parents.contains("11.1.2"));
         assertTrue(ao1parents.contains("11.3.4"));
+    }
+
+    @Test
+    public void testAuthorizationMetaPreferenceData() throws IOException {
+        Application application = new Application();
+        application.setApplicationSystemId("myAsId");
+        ApplicationSystem as = new ApplicationSystem("myAsId", null, new I18nText(new HashMap<String, String>()), "JULKAISTU", null,
+                null, true, null, null, null, OppijaConstants.KOHDEJOUKKO_PERUSOPETUKSEN_JALKEINEN_VALMENTAVA, null, null, null, null, null, new ArrayList<String>(), null);
+
+        Map<String, String> aoAnswers = new HashMap<>();
+
+        aoAnswers.put(String.format(OppijaConstants.PREFERENCE_ID, 1), "1.2.3");
+        aoAnswers.put(String.format(OppijaConstants.PREFERENCE_ID, 2), "4.5.6");
+        aoAnswers.put(String.format(OppijaConstants.PREFERENCE_DISCRETIONARY, 2), "true");
+        aoAnswers.put(String.format(OppijaConstants.PREFERENCE_NAME, 1), "kohde1");
+        aoAnswers.put(String.format(OppijaConstants.PREFERENCE_NAME, 2), "kohde2");
+        //Preference 3 should be skilled as no id
+        aoAnswers.put(String.format(OppijaConstants.PREFERENCE_ID, 3), "");
+        aoAnswers.put(String.format(OppijaConstants.PREFERENCE_DISCRETIONARY, 3), "true");
+
+        aoAnswers.put(String.format(OppijaConstants.PREFERENCE_ID, 55), "7.8.9");
+        aoAnswers.put(String.format(OppijaConstants.PREFERENCE_NAME, 55), "kohde55");
+
+        application.addVaiheenVastaukset(OppijaConstants.PHASE_APPLICATION_OPTIONS, aoAnswers);
+        when(applicationSystemService.getApplicationSystem(eq("myAsId"))).thenReturn(as);
+
+        application = service.updateAuthorizationMeta(application);
+        List<ApplicationPreferenceMeta> authorizationMeta = application.getAuthorizationMeta().getApplicationPreferences();
+        assertTrue("Expected size 3", authorizationMeta.size() == 3);
+        for (final ApplicationPreferenceMeta applicationPreferenceMeta : authorizationMeta) {
+            if (applicationPreferenceMeta.getOrdinal().equals(Integer.valueOf(1))) {
+                Map<String, String> preferenceData = applicationPreferenceMeta.getPreferenceData();
+                assertEquals("kohde1", preferenceData.remove(OppijaConstants.PREFERENCE_FRAGMENT_NAME));
+                assertEquals("1.2.3", preferenceData.remove(OppijaConstants.PREFERENCE_FRAGMENT_OPTION_ID));
+                assertEquals("Expected to be empty already", new HashMap(), preferenceData);
+            } else if (applicationPreferenceMeta.getOrdinal().equals(Integer.valueOf(2))) {
+                Map<String, String> preferenceData = applicationPreferenceMeta.getPreferenceData();
+                assertEquals("kohde2", preferenceData.remove(OppijaConstants.PREFERENCE_FRAGMENT_NAME));
+                assertEquals("4.5.6", preferenceData.remove(OppijaConstants.PREFERENCE_FRAGMENT_OPTION_ID));
+                assertEquals("true", preferenceData.remove(OppijaConstants.PREFERENCE_FRAGMENT_DISCRETIONARY));
+                assertEquals("Expected to be empty already", new HashMap(), preferenceData);
+            } else if (applicationPreferenceMeta.getOrdinal().equals(Integer.valueOf(55))) {
+                Map<String, String> preferenceData = applicationPreferenceMeta.getPreferenceData();
+                assertEquals("kohde55", preferenceData.remove(OppijaConstants.PREFERENCE_FRAGMENT_NAME));
+                assertEquals("7.8.9", preferenceData.remove(OppijaConstants.PREFERENCE_FRAGMENT_OPTION_ID));
+                assertEquals("Expected to be empty already", new HashMap(), preferenceData);
+            } else
+                fail(applicationPreferenceMeta.getOrdinal() + " not Expected");
+        }
     }
 
     @Test
