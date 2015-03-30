@@ -25,12 +25,10 @@ import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.haku.oppija.lomake.util.StringUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.i18n.I18nBundleService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
-
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -108,6 +106,9 @@ public class PreferenceConcreteValidatorImpl extends PreferenceConcreteValidator
     }
 
     private boolean checkEducationCode(final ValidationInput validationInput, final ApplicationOption applicationOption) {
+        if (!ValidationInput.ValidationContext.applicant_submit.equals(validationInput.getValidationContext())) {
+            return true;
+        }
         final String key = validationInput.getElement().getId() + "-Koulutus-id-educationcode";
         final String value = validationInput.getValueByKey(key);
         if (StringUtils.trimToEmpty(value).equals(applicationOption.getEducationCode())) {
