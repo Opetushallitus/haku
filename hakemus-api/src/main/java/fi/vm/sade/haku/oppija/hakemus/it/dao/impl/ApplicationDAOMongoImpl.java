@@ -77,38 +77,54 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     private static final String INDEX_ASID_SENDING_SCHOOL_AND_FULL_NAME = "index_asid_sending_school_and_full_name";
     private static final String INDEX_ASID_AND_SENDING_SCHOOL = "index_asid_and_sending_school";
 
+    //Reference fields
+    private static final String FIELD_APPLICATION_SYSTEM_ID = "applicationSystemId";
+    private static final String FIELD_APPLICATION_OID = "oid";
+    private static final String FIELD_PERSON_OID = "personOid";
+    private static final String FIELD_STUDENT_OID = "studentOid";
+
+    // Application answer meta fields
+    private static final String FIELD_OPO_ALLOWED = "authorizationMeta.opoAllowed";
+    private static final String FIELD_LOP_PARENTS_T = "authorizationMeta.aoOrganizations.%d";
+    private static final String FIELD_SENDING_SCHOOL_PARENTS = "authorizationMeta.sendingSchool";
+    private static final String FIELD_ALL_ORGANIZATIONS = "authorizationMeta.allAoOrganizations";
+
+    // TODO ApplicationPreferenceMeta
     private static final String FIELD_AO_T = "answers.hakutoiveet.preference%d-Koulutus-id";
     private static final String FIELD_AO_KOULUTUS_ID_T = "answers.hakutoiveet.preference%d-Koulutus-id-aoIdentifier";
     private static final String FIELD_LOP_T = "answers.hakutoiveet.preference%d-Opetuspiste-id";
-    private static final String FIELD_LOP_PARENTS_T = "authorizationMeta.aoOrganizations.%d";
     private static final String FIELD_DISCRETIONARY_T = "answers.hakutoiveet.preference%d-discretionary";
     private static final String FIELD_AO_GROUPS_T = "answers.hakutoiveet.preference%d-Koulutus-id-ao-groups";
-    private static final String FIELD_APPLICATION_OID = "oid";
-    private static final String FIELD_APPLICATION_SYSTEM_ID = "applicationSystemId";
-    private static final String FIELD_PERSON_OID = "personOid";
-    private static final String FIELD_APPLICATION_STATE = "state";
-    private static final String FIELD_LAST_AUTOMATED_PROCESSING_TIME = "lastAutomatedProcessingTime";
-    private static final String FIELD_SENDING_SCHOOL = "answers.koulutustausta.lahtokoulu";
-    private static final String FIELD_SENDING_SCHOOL_PARENTS = "authorizationMeta.sendingSchool";
+
+    //TODO Meta
     private static final String FIELD_HIGHER_ED_BASE_ED_T = "answers.koulutustausta.pohjakoulutus_%s";
-    private static final String FIELD_ALL_ORGANIZATIONS = "authorizationMeta.allAoOrganizations";
+
+    // Application Answers
+    private static final String FIELD_SENDING_SCHOOL = "answers.koulutustausta.lahtokoulu";
     private static final String FIELD_SENDING_CLASS = "answers.koulutustausta.lahtoluokka";
     private static final String FIELD_CLASS_LEVEL = "answers.koulutustausta.luokkataso";
+
     private static final String FIELD_SSN = "answers.henkilotiedot.Henkilotunnus";
     private static final String FIELD_SSN_DIGEST = "answers.henkilotiedot.Henkilotunnus_digest";
     private static final String FIELD_DATE_OF_BIRTH = "answers.henkilotiedot.syntymaaika";
-    private static final String FIELD_SEARCH_NAMES = "searchNames";
-    private static final String FIELD_FULL_NAME = "fullName";
+
+    // Processing information fields
+    private static final String FIELD_APPLICATION_STATE = "state";
     private static final String FIELD_RECEIVED = "received";
     private static final String FIELD_UPDATED = "updated";
-    private static final String FIELD_STUDENT_OID = "studentOid";
-    private static final String FIELD_STUDENT_IDENTIFICATION_DONE = "studentIdentificationDone";
-    private static final String FIELD_REDO_POSTPROCESS = "redoPostProcess";
-    private static final String FIELD_OPO_ALLOWED = "authorizationMeta.opoAllowed";
+
+    //Technical fields
+    private static final String FIELD_SEARCH_NAMES = "searchNames";
+    private static final String FIELD_FULL_NAME = "fullName";
     private static final String FIELD_MODEL_VERSION = "modelVersion";
     private static final String FIELD_APPLICATION_VERSION = "version";
+    private static final String FIELD_STUDENT_IDENTIFICATION_DONE = "studentIdentificationDone";
+    private static final String FIELD_REDO_POSTPROCESS = "redoPostProcess";
+    private static final String FIELD_LAST_AUTOMATED_PROCESSING_TIME = "lastAutomatedProcessingTime";
+
     private static final String REGEX_LINE_BEGIN = "^";
 
+    //Operations
     private static final String OPERATION_SET = "$set";
 
     private static final Pattern OID_PATTERN = Pattern.compile("((^([0-9]{1,4}\\.){5})|(^))[0-9]{11}$");
