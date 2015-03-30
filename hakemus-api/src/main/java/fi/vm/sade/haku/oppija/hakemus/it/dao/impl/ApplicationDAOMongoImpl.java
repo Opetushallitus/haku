@@ -607,17 +607,20 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         return new ArrayList<>(0);
     }
 
-    private DBObject filterByOrganization(ApplicationFilterParameters filterParameters) {
-
-        ArrayList<DBObject> queries = new ArrayList<>();
+    private DBObject filterByOrganization(final ApplicationFilterParameters filterParameters) {
+        final ArrayList<String> allowedOrganizations = new ArrayList<>();
 
         if (filterParameters.getOrganizationsReadble().size() > 0) {
-            queries.add(
-                    QueryBuilder.start(META_ALL_ORGANIZATIONS).in(filterParameters.getOrganizationsReadble()).get());
+            allowedOrganizations.addAll(filterParameters.getOrganizationsReadble());
         }
 
         if (filterParameters.getOrganizationsReadble().contains(rooOrganizationOid)) {
-            queries.add(QueryBuilder.start(META_ALL_ORGANIZATIONS).exists(false).get());
+            allowedOrganizations.add(null);
+        }
+
+        final ArrayList<DBObject> queries = new ArrayList<>();
+        if (allowedOrganizations.size() > 0) {
+            queries.add(QueryBuilder.start(META_ALL_ORGANIZATIONS).in(allowedOrganizations).get());
         }
 
         if (filterParameters.getOrganizationsOpo().size() > 0) {
