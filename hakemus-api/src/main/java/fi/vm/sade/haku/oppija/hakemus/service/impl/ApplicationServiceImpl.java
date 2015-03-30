@@ -35,6 +35,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.User;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
+import fi.vm.sade.haku.oppija.lomake.exception.ApplicationSystemNotFound;
 import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.haku.oppija.lomake.service.FormService;
@@ -414,12 +415,17 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     private boolean resolveOpoAllowed(Application application) {
-        boolean opoAllowed = true;
-        ApplicationSystem as = applicationSystemService.getApplicationSystem(application.getApplicationSystemId());
-        if (as.getKohdejoukkoUri().equals(OppijaConstants.KOHDEJOUKKO_KORKEAKOULU)) {
-            opoAllowed = false;
+        try {
+            boolean opoAllowed = true;
+            ApplicationSystem as = applicationSystemService.getApplicationSystem(application.getApplicationSystemId());
+            if (as.getKohdejoukkoUri().equals(OppijaConstants.KOHDEJOUKKO_KORKEAKOULU)) {
+                opoAllowed = false;
+            }
+            return opoAllowed;
+        }catch (ApplicationSystemNotFound e) {
+            // Probably doesn't use system form. Defaulting to opo not allowed
+            return false;
         }
-        return opoAllowed;
     }
 
     @Override
