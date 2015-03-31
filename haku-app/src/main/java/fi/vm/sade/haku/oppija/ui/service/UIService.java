@@ -16,12 +16,11 @@
 
 package fi.vm.sade.haku.oppija.ui.service;
 
+import fi.vm.sade.haku.oppija.lomake.domain.ModelResponse;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
 import org.apache.http.HttpResponse;
 
-import fi.vm.sade.haku.oppija.lomake.domain.ModelResponse;
-
 import javax.servlet.http.HttpServletRequest;
-
 import java.util.List;
 import java.util.Map;
 
@@ -56,4 +55,6 @@ public interface UIService {
     HttpResponse getUriToPDF(String applicationSystemId, String oid);
 
     String ensureLanguage(HttpServletRequest request, String applicationSystemId);
+
+    Form getApplicationSystemForm(String applicationSystemId);
 }
