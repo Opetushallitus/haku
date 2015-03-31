@@ -27,7 +27,6 @@ import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.haku.oppija.lomake.service.FormService;
 import fi.vm.sade.haku.oppija.lomake.service.Session;
-import fi.vm.sade.haku.oppija.lomake.util.ElementTree;
 import fi.vm.sade.haku.oppija.lomake.validation.ElementTreeValidator;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationInput;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationResult;
@@ -181,10 +180,6 @@ public class OfficerUIServiceImpl implements OfficerUIService {
                 && !Application.State.PASSIVE.equals(application.getState());
         ApplicationSystem as = applicationSystemService.getApplicationSystem(asId);
 
-        Map<String, String> arvosanat = baseEducationService.getArvosanat(application.getPersonOid(),
-                application.getVastauksetMerged().get(OppijaConstants.ELEMENT_ID_BASE_EDUCATION), as);
-        application.addMeta(resolveGradeTransferFlag(application), String.valueOf(!arvosanat.isEmpty()));
-
         ModelResponse modelResponse =
                 new ModelResponse(application, form, element, validationResult, koulutusinformaatioBaseUrl);
         modelResponse.addObjectToModel("preview", PHASE_ID_PREVIEW.equals(phaseId));
@@ -205,7 +200,15 @@ public class OfficerUIServiceImpl implements OfficerUIService {
             modelResponse.addObjectToModel("sendingClass", sendingClass);
         }
 
-        modelResponse.addObjectToModel("arvosanat", arvosanat);
+        try {
+            Map<String, String> arvosanat = baseEducationService.getArvosanat(application.getPersonOid(),
+                    application.getVastauksetMerged().get(OppijaConstants.ELEMENT_ID_BASE_EDUCATION), as);
+            application.addMeta(resolveGradeTransferFlag(application), String.valueOf(!arvosanat.isEmpty()));
+            modelResponse.addObjectToModel("arvosanat", arvosanat);
+        } catch (ResourceNotFoundException e) {
+            modelResponse.getErrorMessages().put("sureNotResponding",
+                    ElementUtil.createI18NAsIs("Arvosanoja ei saatu haettua: " + e.getMessage()));
+        }
         modelResponse.addObjectToModel("officerUi", true);
         String userOid = userSession.getUser().getUserName();
         if (userOid == null || userOid.equals(application.getPersonOid())) {
