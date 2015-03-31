@@ -3,14 +3,22 @@ package fi.vm.sade.haku.oppija.common.suoritusrekisteri;
 import java.util.Date;
 
 public class SuoritusDTO {
-//    "id":"e3599cbd-84a0-4571-8f99-6f47a18b2d92",
-//            "komo":"lisaopetus",
-//            "myontaja":"1.2.246.562.10.16546622305",
-//            "tila":"KESKEN",
-//            "valmistuminen":"30.05.2014",
-//            "henkiloOid":"1.2.246.562.24.76644055995",
-//            "yksilollistaminen":"Kokonaan",
-//            "suoritusKieli":"KK"
+
+    public static final String TILA_KESKEN = "KESKEN";
+    public static final String TILA_VALMIS = "VALMIS";
+
+//    {
+//        "id": "bfe621f5-68f7-49cf-9dad-9e3651f3ee03"
+//        "komo": "1.2.246.562.13.62959769647",
+//        "myontaja": "1.2.246.562.24.28128709553",
+//        "tila": "VALMIS",
+//        "valmistuminen": "31.05.2014",
+//        "henkiloOid": "1.2.246.562.24.28128709553",
+//        "yksilollistaminen": "Ei",
+//        "suoritusKieli": "XX",
+//        "source": "1.2.246.562.24.28128709553",
+//        "vahvistettu": true,
+//    }
 
     private String id;
     private String komo;
@@ -20,9 +28,11 @@ public class SuoritusDTO {
     private String henkiloOid;
     private String yksilollistaminen;
     private String suorituskieli;
+    private String source;
+    private Boolean vahvistettu;
 
     public SuoritusDTO(String id, String komo, String myontaja, String tila, Date valmistuminen, String henkiloOid,
-                       String yksilollistaminen, String suorituskieli) {
+                       String yksilollistaminen, String suorituskieli, String source, Boolean vahvistettu) {
         this.id = id;
         this.komo = komo;
         this.myontaja = myontaja;
@@ -31,6 +41,8 @@ public class SuoritusDTO {
         this.henkiloOid = henkiloOid;
         this.yksilollistaminen = yksilollistaminen;
         this.suorituskieli = suorituskieli;
+        this.source = source;
+        this.vahvistettu = vahvistettu;
     }
 
     public SuoritusDTO() {
@@ -99,5 +111,21 @@ public class SuoritusDTO {
 
     public void setSuorituskieli(String suorituskieli) {
         this.suorituskieli = suorituskieli;
+    }
+
+    public String getSource() {
+        return source;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
+    }
+
+    public Boolean getVahvistettu() {
+        return vahvistettu;
+    }
+
+    public void setVahvistettu(Boolean vahvistettu) {
+        this.vahvistettu = vahvistettu;
     }
 }

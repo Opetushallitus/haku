@@ -29,7 +29,6 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import fi.vm.sade.haku.virkailija.valinta.ValintaService;
 import fi.vm.sade.haku.virkailija.valinta.dto.*;
-
 import org.junit.Before;
 import org.junit.Test;
 
@@ -116,7 +115,9 @@ public class ValintaServiceTest {
         LoggerAspect loggerAspect = null;
         AuthenticationService authenticationService = null;
         OrganizationService organizationService = null;
-        BaseEducationService baseEducationService = null;
+        BaseEducationService baseEducationService = mock(BaseEducationService.class);
+        when(baseEducationService.getArvosanat(any(String.class), any(String.class), any(ApplicationSystem.class)))
+                .thenReturn(new HashMap<String, String>());
         I18nBundleService i18nBundleService = mock(I18nBundleService.class);
         I18nBundle i18nBundle = mock(I18nBundle.class);
         when(i18nBundle.get(any(String.class))).thenReturn(new I18nText(new HashMap<String, String>(3) {{

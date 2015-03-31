@@ -16,26 +16,38 @@ public class SuoritusrekisteriServiceMockImpl implements SuoritusrekisteriServic
     private static final long ONE_DAY = 24 * 60 * 60 * 1000;
 
     @Override
-    public Map<String, SuoritusDTO> getSuoritukset(String personOid) {
-        Map<String, SuoritusDTO> suoritukset = new HashMap<String, SuoritusDTO>(1);
+    public Map<String, List<SuoritusDTO>> getSuoritukset(String personOid) {
+        Map<String, List<SuoritusDTO>> suoritukset = new HashMap<>(1);
         Date tomorrow = new Date(System.currentTimeMillis() + ONE_DAY);
-        SuoritusDTO suoritus = new SuoritusDTO("1.2.246.562.13.62959769647", "peruskoulu", "1.2.3", "KESKEN", tomorrow,
-                personOid, "Ei", "FI");
+        final SuoritusDTO suoritus = new SuoritusDTO("suoritusId", "1.2.246.562.13.62959769647", "myontaja", "KESKEN",
+                tomorrow, personOid, "Ei", "FI", "source", true);
 
-        suoritukset.put("1.2.246.562.13.62959769647", suoritus);
+        suoritukset.put("1.2.246.562.13.62959769647", new ArrayList<SuoritusDTO>() {{ add(suoritus); }});
         return suoritukset;
     }
 
     @Override
-    public List<OpiskelijaDTO> getOpiskelijat(String personOid) {
-        List<OpiskelijaDTO> suoritukset = new ArrayList<OpiskelijaDTO>(1);
-        OpiskelijaDTO opiskelija = new OpiskelijaDTO("1.2.246.562.10.27450788669", "9", "9A", personOid, null);
+    public List<OpiskelijaDTO> getOpiskelijatiedot(String personOid) {
+        List<OpiskelijaDTO> suoritukset = new ArrayList<>(1);
+        OpiskelijaDTO opiskelija = new OpiskelijaDTO("opiskelijaId", "oppilaitos", "9", "9A", personOid, yesterday(), tomorrow(), "source");
         suoritukset.add(opiskelija);
         return suoritukset;
     }
 
     @Override
     public List<ArvosanaDTO> getArvosanat(String suoritusId) {
-        return null;
+        return new ArrayList<>();
+    }
+
+    @Override
+    public Map<String, List<SuoritusDTO>> getSuoritukset(String personOid, String komoOid) {
+        return getSuoritukset(personOid);
+    }
+
+    private Date tomorrow() {
+        return new Date(System.currentTimeMillis() + ONE_DAY);
+    }
+    private Date yesterday() {
+        return new Date(System.currentTimeMillis() - ONE_DAY);
     }
 }

@@ -4,30 +4,47 @@ import java.util.Date;
 
 public class OpiskelijaDTO {
 
+    private String id;
     private String oppilaitosOid;
     private String luokkataso;
     private String luokka;
     private String henkiloOid;
+    private Date alkuPaiva;
     private Date loppuPaiva;
+    private String source;
 
 //    {
-//        "oppilaitosOid": "1.2.246.562.10.15523794103",
-//            "luokkataso": "9",
-//            "luokka": "9C",
-//            "henkiloOid": "1.2.3"
+//        "id":"ca87d0df-1fa6-41f8-9bb0-949fa22a1960",
+//        "oppilaitosOid":"1.2.246.562.10.16546622305",
+//        "luokkataso":"A",
+//        "luokka":"10A",
+//        "henkiloOid":"1.2.246.562.24.62464199838",
+//        "alkuPaiva":"2014-07-31T21:00:00.000Z",
+//        "loppuPaiva":"2015-05-31T21:00:00.000Z",
+//        "source":"1.2.246.562.24.72453542949",
 //    }
 
-    public OpiskelijaDTO(String oppilaitosOid, String luokkataso, String luokka, String henkiloOid,
-                         Date loppuPaiva) {
+    public OpiskelijaDTO(String id, String oppilaitosOid, String luokkataso, String luokka, String henkiloOid, Date alkuPaiva, Date loppuPaiva, String source) {
+        this.id = id;
         this.oppilaitosOid = oppilaitosOid;
         this.luokkataso = luokkataso;
         this.luokka = luokka;
         this.henkiloOid = henkiloOid;
+        this.alkuPaiva = alkuPaiva;
         this.loppuPaiva = loppuPaiva;
+        this.source = source;
     }
 
     public OpiskelijaDTO() {
-        // Empty
+        // NOP
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getOppilaitosOid() {
@@ -62,11 +79,27 @@ public class OpiskelijaDTO {
         this.henkiloOid = henkiloOid;
     }
 
-    public void setLoppuPaiva(Date loppuPaiva) {
-        this.loppuPaiva = loppuPaiva;
+    public Date getAlkuPaiva() {
+        return alkuPaiva;
+    }
+
+    public void setAlkuPaiva(Date alkuPaiva) {
+        this.alkuPaiva = alkuPaiva;
     }
 
     public Date getLoppuPaiva() {
         return loppuPaiva;
+    }
+
+    public void setLoppuPaiva(Date loppuPaiva) {
+        this.loppuPaiva = loppuPaiva;
+    }
+
+    public String getSource() {
+        return source;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
     }
 }

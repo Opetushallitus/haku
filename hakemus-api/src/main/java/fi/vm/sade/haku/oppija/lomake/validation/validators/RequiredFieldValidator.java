@@ -16,7 +16,6 @@
 
 package fi.vm.sade.haku.oppija.lomake.validation.validators;
 
-import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.TitledGroup;
 import fi.vm.sade.haku.oppija.lomake.validation.FieldValidator;
@@ -25,9 +24,13 @@ import fi.vm.sade.haku.oppija.lomake.validation.ValidationResult;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.annotation.PersistenceConstructor;
 
+import java.util.Collections;
+import java.util.List;
+
 public class RequiredFieldValidator extends FieldValidator {
 
     private final String id;
+    private List<ValidationInput.ValidationContext> context;
 
     @PersistenceConstructor
     public RequiredFieldValidator(final String errorMessageKey) {
@@ -35,13 +38,28 @@ public class RequiredFieldValidator extends FieldValidator {
         id = null;
     }
 
+    public RequiredFieldValidator(final String errorMessageKey, List<ValidationInput.ValidationContext> context) {
+        super(errorMessageKey);
+        id = null;
+        this.context = Collections.unmodifiableList(context);
+    }
+
     public RequiredFieldValidator(final String id, final String errorMessageKey) {
         super(errorMessageKey);
         this.id = id;
     }
 
+    public RequiredFieldValidator(final String id, final String errorMessageKey, List<ValidationInput.ValidationContext> context) {
+        super(errorMessageKey);
+        this.context = Collections.unmodifiableList(context);
+        this.id = id;
+    }
+
     @Override
     public ValidationResult validate(final ValidationInput validationInput) {
+        if (!inContext(validationInput)) {
+            return validValidationResult;
+        }
         if (validationInput.getElement().getType().equals(TitledGroup.class.getSimpleName())) {
             for (Element child : validationInput.getElement().getChildren()) {
                 if (hasValue(validationInput, child.getId())) {
@@ -52,6 +70,18 @@ public class RequiredFieldValidator extends FieldValidator {
             return validValidationResult;
         }
         return getInvalidValidationResult(validationInput);
+    }
+
+    private boolean inContext(ValidationInput validationInput) {
+        if (context == null || context.isEmpty()) {
+            return true;
+        }
+        for (ValidationInput.ValidationContext c : context) {
+            if (c.equals(validationInput.getValidationContext())) {
+                return true;
+            }
+        }
+        return validationInput.getValidationContext() == null;
     }
 
     private boolean hasValue(final ValidationInput validationInput, final String id) {

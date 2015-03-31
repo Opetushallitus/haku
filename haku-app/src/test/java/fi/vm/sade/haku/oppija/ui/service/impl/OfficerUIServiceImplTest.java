@@ -9,7 +9,6 @@ import fi.vm.sade.haku.oppija.hakemus.service.BaseEducationService;
 import fi.vm.sade.haku.oppija.hakemus.service.HakuPermissionService;
 import fi.vm.sade.haku.oppija.lomake.domain.*;
 import fi.vm.sade.haku.oppija.lomake.domain.builder.PhaseBuilder;
-import fi.vm.sade.haku.oppija.lomake.domain.builder.TextQuestionBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
@@ -18,7 +17,6 @@ import fi.vm.sade.haku.oppija.lomake.service.Session;
 import fi.vm.sade.haku.oppija.lomake.service.impl.UserSession;
 import fi.vm.sade.haku.oppija.lomake.validation.ElementTreeValidator;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidatorFactory;
-import fi.vm.sade.haku.oppija.ui.service.OfficerUIService;
 import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.I18nBundle;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.i18n.I18nBundleService;
@@ -27,17 +25,16 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import fi.vm.sade.haku.virkailija.valinta.ValintaService;
 import fi.vm.sade.haku.virkailija.valinta.impl.ValintaServiceMockImpl;
-import org.apache.commons.collections.map.SingletonMap;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.AdditionalAnswers.returnsFirstArg;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
@@ -142,112 +139,6 @@ public class OfficerUIServiceImplTest {
         ModelResponse modelResponse = officerUIService.updateApplication(
                 OID, new ApplicationPhase(application.getApplicationSystemId(), ID, new HashMap<String, String>()), new User(User.ANONYMOUS_USER));
         assertTrue(11 == modelResponse.getModel().size());
-    }
-
-    private OfficerUIService createUiServiceForGrades(String oid, String asId, boolean transferred) {
-        ApplicationService applicationService = mock(ApplicationService.class);
-        when(applicationService.removeOrphanedAnswers(any(Application.class))).then(returnsFirstArg());
-        when(applicationService.ensureApplicationOptionGroupData(any(Map.class), any(String.class))).then(returnsFirstArg());
-
-        BaseEducationService baseEducationService = mock(BaseEducationService.class);
-        FormService formService = mock(FormService.class);
-        HakuPermissionService hakuPermissionService = mock(HakuPermissionService.class);
-
-        Application application = new Application();
-        application.setOid(oid);
-        application.setState(Application.State.ACTIVE);
-        application.setApplicationSystemId(asId);
-        Map<String, String> answers = new HashMap<String, String>();
-        answers.put("PK_GRADE", "foo");
-        answers.put("notgrade", "foo");
-        answers.put("stillnotgrade", "foo");
-        application.addVaiheenVastaukset("osaaminen", answers);
-        if (transferred) {
-            application.addMeta("grades_transferred_pk", "true");
-        }
-        Form form = new Form(asId, new I18nText(new HashMap<String, String>()));
-        form.addChild(PhaseBuilder.Phase("osaaminen")
-                .setEditAllowedByRoles("all")
-                .addChild(TextQuestionBuilder.TextQuestion("PK_GRADE"))
-                .addChild(TextQuestionBuilder.TextQuestion("notgrade")).build());
-
-        when(applicationService.getApplicationByOid(eq(oid))).thenReturn(application);
-        when(formService.getForm(asId)).thenReturn(form);
-        when(hakuPermissionService.userHasEditRoleToPhases(any(Application.class), any(Form.class)))
-                .thenReturn(new SingletonMap("osaaminen", Boolean.TRUE));
-
-        return new OfficerUIServiceImpl(applicationService, baseEducationService, formService,
-                null, hakuPermissionService,loggerAspect, "", "", elementTreeValidator,
-                null, null, null, null, userSession, null, null, null);
-    }
-
-    @Test
-    public void testUpdateGrades() {
-        String oid = "1.2.3";
-        String asId = "4.5.6";
-        OfficerUIService uiService = createUiServiceForGrades(oid, asId, false);
-
-        Map<String, String> answers = new HashMap<String, String>();
-        answers.put("PK_GRADE", "bar");
-        answers.put("notgrade", "baz");
-        ApplicationPhase phase = new ApplicationPhase(asId, "osaaminen", answers);
-        ModelResponse response = null;
-        try {
-            response = uiService.updateApplication(oid, phase, null);
-        } catch (IOException e) {
-            fail(e.getMessage());
-        }
-        Map<String, String> newAnswers = response.getApplication().getVastauksetMerged();
-        assertEquals(2, answers.size());
-        assertEquals("bar", newAnswers.get("PK_GRADE"));
-        assertEquals("baz", newAnswers.get("notgrade"));
-    }
-
-    @Test
-    public void testUpdateGradesTransferred() {
-        String oid = "1.2.3";
-        String asId = "4.5.6";
-        OfficerUIService uiService = createUiServiceForGrades(oid, asId, true);
-
-        Map<String, String> answers = new HashMap<String, String>();
-        answers.put("notgrade", "baz");
-        answers.put("stillnotgrade", "foo");
-        ApplicationPhase phase = new ApplicationPhase(asId, "osaaminen", answers);
-        ModelResponse response = null;
-        try {
-            response = uiService.updateApplication(oid, phase, null);
-        } catch (IOException e) {
-            fail(e.getMessage());
-        }
-        Map<String, String> newAnswers = response.getApplication().getVastauksetMerged();
-        assertEquals(4, newAnswers.size());
-        assertEquals("foo", newAnswers.get("PK_GRADE"));
-        assertEquals("baz", newAnswers.get("notgrade"));
-        assertEquals("foo", newAnswers.get("stillnotgrade"));
-        assertEquals("true", newAnswers.get("_meta_grades_transferred_pk"));
-    }
-
-    @Test
-    public void testUpdateGradesFail() {
-        String oid = "1.2.3";
-        String asId = "4.5.6";
-        OfficerUIService uiService = createUiServiceForGrades(oid, asId, true);
-
-        Map<String, String> answers = new HashMap<String, String>();
-        answers.put("PK_GRADE", "bar");
-        answers.put("notgrade", "baz");
-        ApplicationPhase phase = new ApplicationPhase(asId, "osaaminen", answers);
-
-        thrown.expect(fi.vm.sade.haku.oppija.lomake.exception.IllegalStateException.class);
-        thrown.expectMessage("Trying to change transferred grades");
-        ModelResponse response = null;
-        try {
-            response = uiService.updateApplication(oid, phase, null);
-        } catch (IOException e) {
-            fail(e.getMessage());
-        }
-        response.getApplication().getVastauksetMerged();
-        fail("Should have thrown");
     }
 
     @Test

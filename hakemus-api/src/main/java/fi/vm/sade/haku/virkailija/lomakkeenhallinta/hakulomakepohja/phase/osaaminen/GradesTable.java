@@ -7,6 +7,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.SubjectRow;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.gradegrid.*;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
+import fi.vm.sade.haku.oppija.lomake.validation.ValidationInput;
 import fi.vm.sade.haku.oppija.lomake.validation.validators.UniqValuesValidator;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.osaaminen.predicate.IdEndsWith;
@@ -170,13 +171,13 @@ public class GradesTable {
                 subjectLanguages.addAll(gradeGridHelper.getSubjectLanguages());
                 child = new GradeGridOptionQuestion(id + "_OPPIAINE", subjectLanguages, false, true, null);
             }
-            ElementUtil.addRequiredValidator(child, formParameters);
+            ElementUtil.addRequiredValidator(child, formParameters, ValidationInput.ValidationContext.applicant_submit, ValidationInput.ValidationContext.applicant_modify);
             columns[1].addChild(child);
         } else {
             columns[0].addAttribute("colspan", "2");
         }
         GradeGridOptionQuestion child1 = new GradeGridOptionQuestion(id, gradeGridHelper.getGradeRanges(), false, false, null);
-        ElementUtil.addRequiredValidator(child1, formParameters);
+        ElementUtil.addRequiredValidator(child1, formParameters, ValidationInput.ValidationContext.applicant_submit, ValidationInput.ValidationContext.applicant_modify);
         columns[2].addChild(child1);
 
         gradeGridRow.addChild(columns[0]);
@@ -186,15 +187,15 @@ public class GradesTable {
         gradeGridRow.addChild(columns[2]);
         if (gradeGridHelper.isComprehensiveSchool()) {
             GradeGridOptionQuestion gradeGridOptionQuestion = new GradeGridOptionQuestion(id + "_VAL1", gradeGridHelper.getGradeRangesWithDefault(), true, false, null);
-            ElementUtil.addRequiredValidator(gradeGridOptionQuestion, formParameters);
+            ElementUtil.addRequiredValidator(gradeGridOptionQuestion, formParameters, ValidationInput.ValidationContext.applicant_submit, ValidationInput.ValidationContext.applicant_modify);
             columns[3].addChild(gradeGridOptionQuestion);
 
             GradeGridOptionQuestion child2 = new GradeGridOptionQuestion(id + "_VAL2", gradeGridHelper.getGradeRangesWithDefault(), true, false, null);
-            ElementUtil.addRequiredValidator(child2, formParameters);
+            ElementUtil.addRequiredValidator(child2, formParameters, ValidationInput.ValidationContext.applicant_submit, ValidationInput.ValidationContext.applicant_modify);
             columns[4].addChild(child2);
 
             GradeGridOptionQuestion child3 = new GradeGridOptionQuestion(id + "_VAL3", gradeGridHelper.getGradeRangesWithDefault(), true, false, null);
-            ElementUtil.addRequiredValidator(child3, formParameters);
+            ElementUtil.addRequiredValidator(child3, formParameters, ValidationInput.ValidationContext.applicant_submit, ValidationInput.ValidationContext.applicant_modify);
             columns[5].addChild(child3);
 
             gradeGridRow.addChild(columns[3]);

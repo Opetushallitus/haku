@@ -16,23 +16,19 @@
   ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   ~ European Union Public Licence for more details.
   --%>
-<a name="${element.id}"></a>
-<c:set var="osaaminen" value="${it.application.answers.osaaminen}" scope="request" />
-<c:set var="kymppiKey" value="${element.id}_10" scope="page" />
+
+<c:choose>
+    <c:when test="${it.officerUi}">
+        <c:set var="osaaminen" value="${it.arvosanat}" scope="request" />
+    </c:when>
+    <c:otherwise>
+        <c:set var="osaaminen" value="${answers}" scope="request" />
+    </c:otherwise>
+</c:choose>
 <c:forEach var="option" items="${element.options}">
-    <c:if test="${(answers[kymppiKey] eq option.value)}">
-        <c:set var="kymppiValue" value="${option.i18nText}"/>
-    </c:if>
-    <c:if test="${(answers[element.id] eq option.value)}">
+    <c:if test="${(osaaminen[element.id] eq option.value)}">
         <c:set var="gradeValue" value="${option.i18nText}"/>
     </c:if>
 </c:forEach>
 
-<c:choose>
-    <c:when test="${not empty kymppiValue}">
-        <haku:i18nText value="${kymppiValue}" /> (<haku:i18nText value="${gradeValue}"/>)
-    </c:when>
-    <c:otherwise>
-        <haku:i18nText value="${gradeValue}" />
-    </c:otherwise>
-</c:choose>
+<haku:i18nText value="${gradeValue}" />

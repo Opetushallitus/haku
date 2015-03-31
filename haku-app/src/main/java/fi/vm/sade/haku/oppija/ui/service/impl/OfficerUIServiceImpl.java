@@ -180,6 +180,11 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         boolean postProcessAllowed = hakuPermissionService.userCanPostProcess(application)
                 && !Application.State.PASSIVE.equals(application.getState());
         ApplicationSystem as = applicationSystemService.getApplicationSystem(asId);
+
+        Map<String, String> arvosanat = baseEducationService.getArvosanat(application.getPersonOid(),
+                application.getVastauksetMerged().get(OppijaConstants.ELEMENT_ID_BASE_EDUCATION), as);
+        application.addMeta(resolveGradeTransferFlag(application), String.valueOf(!arvosanat.isEmpty()));
+
         ModelResponse modelResponse =
                 new ModelResponse(application, form, element, validationResult, koulutusinformaatioBaseUrl);
         modelResponse.addObjectToModel("preview", PHASE_ID_PREVIEW.equals(phaseId));
@@ -200,6 +205,8 @@ public class OfficerUIServiceImpl implements OfficerUIService {
             modelResponse.addObjectToModel("sendingClass", sendingClass);
         }
 
+        modelResponse.addObjectToModel("arvosanat", arvosanat);
+        modelResponse.addObjectToModel("officerUi", true);
         String userOid = userSession.getUser().getUserName();
         if (userOid == null || userOid.equals(application.getPersonOid())) {
             Map<String, I18nText> errors = modelResponse.getErrorMessages();
@@ -207,6 +214,21 @@ public class OfficerUIServiceImpl implements OfficerUIService {
             modelResponse.setErrorMessages(errors);
         }
         return modelResponse;
+    }
+
+    private String resolveGradeTransferFlag(Application application) {
+        Map<String, String> answers = application.getPhaseAnswers(OppijaConstants.PHASE_EDUCATION);
+        String baseEd = answers.get(OppijaConstants.ELEMENT_ID_BASE_EDUCATION);
+        if (OppijaConstants.PERUSKOULU.equals(baseEd)
+                || OppijaConstants.YKSILOLLISTETTY.equals(baseEd)
+                || OppijaConstants.ALUEITTAIN_YKSILOLLISTETTY.equals(baseEd)
+                || OppijaConstants.OSITTAIN_YKSILOLLISTETTY.equals(baseEd)) {
+            return "grades_transferred_pk";
+        } else if (OppijaConstants.YLIOPPILAS.equals(baseEd)) {
+            return "grades_transferred_lk";
+        }
+
+        return "grades_transferred_unknown";
     }
 
     private List<ApplicationOptionDTO> getValintatiedot(Application application) {
@@ -372,7 +394,6 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         checkUpdatePermission(application, form, applicationPhase.getPhaseId());
 
         Map<String, String> newPhaseAnswers = applicationPhase.getAnswers();
-        newPhaseAnswers = handleGrades(application, applicationPhase, new HashMap<String, String>(newPhaseAnswers));
         newPhaseAnswers = applicationService.ensureApplicationOptionGroupData(newPhaseAnswers, application.getMetaValue(Application.META_FILING_LANGUAGE));
 
         loggerAspect.logUpdateApplication(application, applicationPhase);
@@ -402,34 +423,6 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         ModelResponse response = new ModelResponse(application, form, phase, phaseValidationResult, koulutusinformaatioBaseUrl);
         response.addObjectToModel("ongoing", false);
         return response;
-    }
-
-    private Map<String, String> handleGrades(Application application, ApplicationPhase phase, Map<String, String> newAnswers) {
-        Map<String, String> meta = application.getMeta();
-        Boolean gradesTransferredLk = Boolean.valueOf(meta.get("grades_transferred_lk"));
-        Boolean gradesTransferredPk = Boolean.valueOf(meta.get("grades_transferred_pk"));
-        if (phase.getPhaseId().equals(OppijaConstants.PHASE_GRADES) && gradesTransferredLk || gradesTransferredPk) {
-            Map<String, String> grades = new HashMap<String, String>(application.getPhaseAnswers(OppijaConstants.PHASE_GRADES));
-
-            for (Map.Entry<String, String> entry : newAnswers.entrySet()) {
-                String key = entry.getKey();
-                if ((key.startsWith("LK_") || key.startsWith("PK_")) && grades.containsKey(key)) {
-                    String value = entry.getValue();
-                    String oldValue = grades.get(key);
-                    if (!value.equals(oldValue)) {
-                        throw new IllegalStateException("Trying to change transferred grades");
-                    }
-                }
-            }
-            for (Map.Entry<String, String> entry : grades.entrySet()) {
-                String key = entry.getKey();
-                if (key.startsWith("LK_") || key.startsWith("PK_")) {
-                    newAnswers.put(key, entry.getValue());
-                }
-            }
-        }
-
-        return newAnswers;
     }
 
     private void checkUpdatePermission(Application application, Form form, String phaseId) {

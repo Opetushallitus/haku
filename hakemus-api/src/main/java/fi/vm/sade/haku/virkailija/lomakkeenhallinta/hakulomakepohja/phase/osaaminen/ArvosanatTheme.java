@@ -99,12 +99,14 @@ public final class ArvosanatTheme {
                         new Not(
                                 new Equals(
                                         new Variable(OppijaConstants.PERUSOPETUS_PAATTOTODISTUSVUOSI),
-                                        new Value(String.valueOf(hakukausiVuosi)))),
+                                        new Value(String.valueOf(hakukausiVuosi)))
+                        ),
                         ExprUtil.atLeastOneValueEqualsToVariable(POHJAKOULUTUS_ID,
                                 PERUSKOULU,
                                 OSITTAIN_YKSILOLLISTETTY,
                                 ALUEITTAIN_YKSILOLLISTETTY,
-                                YKSILOLLISTETTY)),
+                                YKSILOLLISTETTY)
+                ),
                 new Regexp("_meta_grades_transferred_pk", "true"));
         Element relatedQuestionPk = Rule(kysyArvosanatPk).build();
 
