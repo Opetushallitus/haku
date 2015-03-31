@@ -8,8 +8,7 @@ public final class ApplicationDAOMongoConstants {
     static final String INDEX_DATE_OF_BIRTH = "index_syntymaaika";
     static final String INDEX_PERSON_OID = "index_personOid";
     static final String INDEX_STUDENT_OID = "index_studentOid";
-    static final String INDEX_POSTPROCESS = "index_postprocess";
-    static final String INDEX_STUDENT_IDENTIFICATION_DONE = "index_studentIdentificationDone";
+
     static final String INDEX_SENDING_SCHOOL = "index_lahtokoulu";
     static final String INDEX_SENDING_CLASS = "index_lahtoluokka";
     static final String INDEX_ALL_ORGANIZAIONS = "index_allOrganizations";

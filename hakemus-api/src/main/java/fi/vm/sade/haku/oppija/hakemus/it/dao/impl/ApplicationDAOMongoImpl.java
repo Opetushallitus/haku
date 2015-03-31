@@ -50,6 +50,7 @@ import java.util.regex.Pattern;
 import static com.mongodb.QueryOperators.IN;
 import static fi.vm.sade.haku.oppija.hakemus.it.dao.impl.ApplicationDAOMongoConstants.*;
 import static fi.vm.sade.haku.oppija.hakemus.it.dao.impl.ApplicationDAOMongoIndexHelper.addIndexHint;
+import static fi.vm.sade.haku.oppija.hakemus.it.dao.impl.ApplicationDAOMongoPostProcessingQueries.*;
 import static java.lang.String.format;
 import static org.apache.commons.lang.StringUtils.*;
 
@@ -520,69 +521,29 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     }
 
     @Override
-    public void updateKeyValue(String oid, String key, String value) {
-        DBObject query = new BasicDBObject(FIELD_APPLICATION_OID, oid);
-        DBObject update = new BasicDBObject("$set", new BasicDBObject(key, value).append(FIELD_UPDATED, new Date()));
+    public void updateKeyValue(final String oid, final String key, final String value) {
+        final DBObject query = new BasicDBObject(FIELD_APPLICATION_OID, oid);
+        final DBObject update = new BasicDBObject("$set", new BasicDBObject(key, value).append(FIELD_UPDATED, new Date()));
         getCollection().findAndModify(query, update);
     }
 
     @Override
     public Application getNextWithoutStudentOid() {
-        DBObject query = new BasicDBObject(FIELD_APPLICATION_STATE,
-                new BasicDBObject(IN,
-                        Lists.newArrayList(
-                                Application.State.ACTIVE.name(),
-                                Application.State.INCOMPLETE.name())));
-        query.put(FIELD_STUDENT_IDENTIFICATION_DONE, false);
-        return getNextForAutomatedProcessing(query, INDEX_STUDENT_IDENTIFICATION_DONE);
-    }
-
-    private void createIndexForStudentIdentificationDone() {
-        ensureSparseIndex(INDEX_STUDENT_IDENTIFICATION_DONE,
-                FIELD_APPLICATION_STATE,
-                FIELD_STUDENT_IDENTIFICATION_DONE,
-                FIELD_LAST_AUTOMATED_PROCESSING_TIME);
+        return getNextForAutomatedProcessing(buildIdentificationQuery(), INDEX_STUDENT_IDENTIFICATION_DONE);
     }
 
     @Override
     public Application getNextSubmittedApplication() {
-        DBObject query = new BasicDBObject(FIELD_APPLICATION_STATE, Application.State.SUBMITTED.toString());
-        query.put(FIELD_REDO_POSTPROCESS,
-                new BasicDBObject(IN, Lists.newArrayList(
-                        null,
-                        PostProcessingState.FULL.toString(),
-                        PostProcessingState.NOMAIL.toString())));
-        return getNextForAutomatedProcessing(query, INDEX_POSTPROCESS);
+        return getNextForAutomatedProcessing(buildSubmittedQuery(), INDEX_POSTPROCESS);
     }
 
     @Override
     public Application getNextRedo() {
-        QueryBuilder queryBuilder = QueryBuilder.start(FIELD_REDO_POSTPROCESS).in(
-                Lists.newArrayList(
-                        PostProcessingState.FULL.toString(),
-                        PostProcessingState.NOMAIL.toString()));
-        queryBuilder.put(FIELD_APPLICATION_STATE).in(
-                Lists.newArrayList(
-                        Application.State.DRAFT.name(),
-                        Application.State.ACTIVE.name(),
-                        Application.State.INCOMPLETE.name()));
-        DBObject query = queryBuilder.get();
-        return getNextForAutomatedProcessing(query, INDEX_POSTPROCESS);
-    }
-
-    private void createIndexForPostprocess() {
-        ensureIndex(INDEX_POSTPROCESS,
-                FIELD_APPLICATION_STATE,
-                FIELD_REDO_POSTPROCESS,
-                FIELD_LAST_AUTOMATED_PROCESSING_TIME);
+        return getNextForAutomatedProcessing(buildRedoQuery(), INDEX_POSTPROCESS);
     }
 
     private Application getNextForAutomatedProcessing(final DBObject query, final String indexCandidate) {
-        DBObject sortBy = new BasicDBObject(FIELD_LAST_AUTOMATED_PROCESSING_TIME, 1);
-
-        DBObject key = generateKeysDBObject(FIELD_APPLICATION_OID);
-
-        DBCursor cursor = getCollection().find(query, key).sort(sortBy).limit(1);
+        final DBCursor cursor = getCollection().find(query, generateKeysDBObject(FIELD_APPLICATION_OID)).sort(generateKeysDBObject(FIELD_LAST_AUTOMATED_PROCESSING_TIME)).limit(1);
         String hint = null;
         if (ensureIndex) {
             hint = indexCandidate;
@@ -593,10 +554,10 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
             if (!cursor.hasNext()) {
                 return null;
             }
-            String applicationOid = fromDBObject.apply(cursor.next()).getOid();
+            final String applicationOid = fromDBObject.apply(cursor.next()).getOid();
 
-            DBObject applicationOidDBObject = new BasicDBObject(FIELD_APPLICATION_OID, applicationOid);
-            DBObject updateLastAutomatedProcessingTime = new BasicDBObject(OPERATION_SET,
+            final DBObject applicationOidDBObject = new BasicDBObject(FIELD_APPLICATION_OID, applicationOid);
+            final DBObject updateLastAutomatedProcessingTime = new BasicDBObject(OPERATION_SET,
                     new BasicDBObject(FIELD_LAST_AUTOMATED_PROCESSING_TIME, System.currentTimeMillis()));
             getCollection().update(applicationOidDBObject, updateLastAutomatedProcessingTime, false, false);
 
@@ -706,8 +667,8 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         ensureIndex(INDEX_ORG_OID, META_ALL_ORGANIZATIONS, FIELD_APPLICATION_OID);
 
         // System queries
-        createIndexForStudentIdentificationDone();
-        createIndexForPostprocess();
+        ensureSparseIndex(INDEX_STUDENT_IDENTIFICATION_DONE, INDEX_STUDENT_IDENTIFICATION_DONE_FIELDS);
+        ensureIndex(INDEX_POSTPROCESS, INDEX_POSTPROCESS_FIELDS);
         createIndexForSSNCheck();
         ensureIndex(INDEX_MODEL_VERSION, FIELD_MODEL_VERSION);
 
