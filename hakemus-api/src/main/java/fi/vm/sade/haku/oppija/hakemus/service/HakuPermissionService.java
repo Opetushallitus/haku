@@ -8,6 +8,13 @@ import java.util.Map;
 
 public interface HakuPermissionService {
 
+    String ROLE_OPO = "APP_HAKEMUS_OPO";
+    String ROLE_RU = "APP_HAKEMUS_READ_UPDATE";
+    String ROLE_CRUD = "APP_HAKEMUS_CRUD";
+    String ROLE_LISATIETORU = "APP_HAKEMUS_LISATIETORU";
+    String ROLE_LISATIETOCRUD = "APP_HAKEMUS_LISATIETOCRUD";
+    String ROLE_HETUTTOMIENKASITTELY = "APP_HAKEMUS_HETUTTOMIENKASITTELY";
+
     /**
      * Return list of organizations such that current user has at least read privilege to applications
      * addressed to that organization. Check is done against every organization user is member of.

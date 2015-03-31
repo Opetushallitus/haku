@@ -41,6 +41,9 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ExprUtil;
 import java.util.ArrayList;
 import java.util.List;
 
+import static fi.vm.sade.haku.oppija.hakemus.service.HakuPermissionService.ROLE_CRUD;
+import static fi.vm.sade.haku.oppija.hakemus.service.HakuPermissionService.ROLE_HETUTTOMIENKASITTELY;
+import static fi.vm.sade.haku.oppija.hakemus.service.HakuPermissionService.ROLE_RU;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.NotificationBuilder.Warning;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.PhaseBuilder.Phase;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.RelatedQuestionRuleBuilder.Rule;
@@ -57,7 +60,7 @@ public class HakutoiveetPhase {
     private static final String TODISTUSTENPUUTTUMINEN = "todistustenpuuttuminen";
 
     public static Element create(final FormParameters formParameters) {
-        return Phase(HAKUTOIVEET_PHASE_ID).setEditAllowedByRoles("APP_HAKEMUS_READ_UPDATE", "APP_HAKEMUS_CRUD").formParams(formParameters)
+        return Phase(HAKUTOIVEET_PHASE_ID).setEditAllowedByRoles(ROLE_RU, ROLE_CRUD, ROLE_HETUTTOMIENKASITTELY).formParams(formParameters)
                 .addChild(createHakutoiveetTheme(formParameters)).build();
     }
     public static List<String> getPreferenceIds(final FormParameters formParameters) {
