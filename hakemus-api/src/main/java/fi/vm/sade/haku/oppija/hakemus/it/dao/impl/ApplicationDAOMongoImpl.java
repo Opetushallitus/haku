@@ -48,10 +48,10 @@ import java.util.*;
 import java.util.regex.Pattern;
 
 import static com.mongodb.QueryOperators.IN;
+import static fi.vm.sade.haku.oppija.hakemus.it.dao.impl.ApplicationDAOMongoConstants.*;
+import static fi.vm.sade.haku.oppija.hakemus.it.dao.impl.ApplicationDAOMongoIndexHelper.addIndexHint;
 import static java.lang.String.format;
 import static org.apache.commons.lang.StringUtils.*;
-import static fi.vm.sade.haku.oppija.hakemus.it.dao.impl.ApplicationDAOMongoConstants.*;
-
 
 /**
  * @author Hannu Lyytikainen
@@ -84,7 +84,6 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     private String userOidPrefix;
     @Value("${root.organisaatio.oid}")
     private String rooOrganizationOid;
-
 
     @Autowired
     public ApplicationDAOMongoImpl(DBObjectToApplicationFunction dbObjectToHakemusConverter,
@@ -192,7 +191,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         return query;
     }
 
-    private DBObject createSearchTermQuery(final ApplicationQueryParameters applicationQueryParameters){
+    private DBObject createSearchTermQuery(final ApplicationQueryParameters applicationQueryParameters) {
         final StringTokenizer tokenizedSearchTerms = new StringTokenizer(applicationQueryParameters.getSearchTerms(), " ");
         final ArrayList<DBObject> queries = new ArrayList<>();
         while (tokenizedSearchTerms.hasMoreTokens()) {
@@ -300,62 +299,6 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         }
     }
 
-    private String addIndexHint(final DBObject query) {
-
-        final String queryString = query.toString();
-
-        boolean hasApplicationState = queryString.contains(FIELD_APPLICATION_STATE);
-        boolean hasApplicationSystemId = queryString.contains(FIELD_APPLICATION_SYSTEM_ID);
-        boolean hasAo = queryString.contains(META_FIELD_AO);
-
-        if (hasAo) {
-            if (hasApplicationState) {
-                if (hasApplicationSystemId)
-                    return LogAndReturnHint(queryString, INDEX_STATE_ASID_AO_OID);
-                else
-                    return LogAndReturnHint(queryString, INDEX_STATE_AO_OID);
-            } else {
-                if (hasApplicationSystemId)
-                    return LogAndReturnHint(queryString, INDEX_ASID_AO_OID);
-                else
-                    return LogAndReturnHint(queryString, INDEX_AO_OID);
-            }
-        }
-
-        boolean hasAllOrgs = queryString.contains(META_ALL_ORGANIZATIONS)
-                && !queryString.contains(META_FIELD_OPO_ALLOWED)
-                && !queryString.contains(FIELD_SSN);
-
-        if (hasAllOrgs) {
-            if (hasApplicationState) {
-                if (hasApplicationSystemId)
-                    return LogAndReturnHint(queryString, INDEX_STATE_ASID_ORG_OID);
-                else
-                    return LogAndReturnHint(queryString, INDEX_STATE_ORG_OID);
-
-            } else {
-                if (hasApplicationSystemId)
-                    return LogAndReturnHint(queryString, INDEX_ASID_ORG_OID);
-                else
-                    return LogAndReturnHint(queryString, INDEX_ORG_OID);
-            }
-        }
-        if (hasApplicationSystemId) {
-            if (hasApplicationState)
-                return LogAndReturnHint(queryString, INDEX_STATE_ASID_FN);
-            else
-                return LogAndReturnHint(queryString, INDEX_APPLICATION_SYSTEM_ID);
-        }
-        if (hasApplicationState)
-            return LogAndReturnHint(queryString, INDEX_STATE_FN);
-        return LogAndReturnHint(queryString, null);
-    }
-
-    private String LogAndReturnHint(final String query, final String index) {
-        LOG.info("Chose: {} for query: {}", index, query);
-        return index;
-    }
-
     private DBObject[] buildQueryFilter(final ApplicationQueryParameters applicationQueryParameters,
                                         final ApplicationFilterParameters filterParameters) {
         final ArrayList<DBObject> filters = new ArrayList<>();
@@ -406,7 +349,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
                 } else {
                     filters.add(QueryBuilder.start(FIELD_APPLICATION_STATE).is(Application.State.valueOf(states.get(0)).toString()).get());
                 }
-            }else {
+            } else {
                 filters.add(QueryBuilder.start(FIELD_APPLICATION_STATE).in(states).get());
             }
         }
@@ -453,7 +396,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         return filters.toArray(new DBObject[filters.size()]);
     }
 
-    private ArrayList<DBObject> createPreferenceFilters(final ApplicationQueryParameters applicationQueryParameters, final ApplicationFilterParameters filterParameters){
+    private ArrayList<DBObject> createPreferenceFilters(final ApplicationQueryParameters applicationQueryParameters, final ApplicationFilterParameters filterParameters) {
         // Koskee yksittäistä hakutoivetta
         final String aoOid = applicationQueryParameters.getAoOid();
         final String lopOid = applicationQueryParameters.getLopOid();
@@ -471,7 +414,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
                 : filterParameters.getMaxApplicationOptions();
 
         final ArrayList<DBObject> preferenceQueries = new ArrayList<>();
-                for (int i = 1; i <= maxOptions; i++) {
+        for (int i = 1; i <= maxOptions; i++) {
             ArrayList<DBObject> preferenceQuery = new ArrayList<>(filterParameters.getMaxApplicationOptions());
             if (isNotBlank(lopOid)) {
                 preferenceQuery.add(
@@ -564,7 +507,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
             return QueryBuilder.start("_id").is(null).get();
         }
 
-        final ArrayList<DBObject> queries = new ArrayList<>(3+filters.length);
+        final ArrayList<DBObject> queries = new ArrayList<>(3 + filters.length);
         // doing tricks to retain old order. Feel free to refactor later
         if (null != searchTermQuery)
             queries.add(searchTermQuery);
@@ -754,7 +697,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         ensureSparseIndex(INDEX_ASID_SENDING_SCHOOL_AND_FULL_NAME, FIELD_APPLICATION_SYSTEM_ID, META_SENDING_SCHOOL_PARENTS, FIELD_FULL_NAME);
         ensureSparseIndex(INDEX_ASID_AND_SENDING_SCHOOL, FIELD_APPLICATION_SYSTEM_ID, META_SENDING_SCHOOL_PARENTS);
         ensureIndex(INDEX_STATE_ASID_AO_OID, FIELD_APPLICATION_STATE, FIELD_APPLICATION_SYSTEM_ID, META_FIELD_AO, FIELD_APPLICATION_OID);
-        ensureIndex(INDEX_STATE_AO_OID, FIELD_APPLICATION_STATE, META_FIELD_AO , FIELD_APPLICATION_OID);
+        ensureIndex(INDEX_STATE_AO_OID, FIELD_APPLICATION_STATE, META_FIELD_AO, FIELD_APPLICATION_OID);
         ensureIndex(INDEX_ASID_AO_OID, FIELD_APPLICATION_SYSTEM_ID, META_FIELD_AO, FIELD_APPLICATION_OID);
         ensureIndex(INDEX_AO_OID, META_FIELD_AO, FIELD_APPLICATION_OID);
         ensureIndex(INDEX_STATE_ASID_ORG_OID, FIELD_APPLICATION_STATE, FIELD_APPLICATION_SYSTEM_ID, META_ALL_ORGANIZATIONS, FIELD_APPLICATION_OID);
