@@ -1,5 +1,8 @@
 package fi.vm.sade.haku.oppija.hakemus.domain.dto;
 
+import fi.vm.sade.haku.oppija.lomake.util.StringUtil;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.codehaus.jackson.annotate.JsonCreator;
 import org.codehaus.jackson.annotate.JsonProperty;
 
@@ -47,6 +50,12 @@ public class SyntheticApplication {
             this.sahkoposti = sahkoposti;
             this.syntymaAika = syntymaAika;
         }
+    }
+
+    @Override
+    public String toString() {
+        return ReflectionToStringBuilder.toString(this);
+
     }
 }
 
