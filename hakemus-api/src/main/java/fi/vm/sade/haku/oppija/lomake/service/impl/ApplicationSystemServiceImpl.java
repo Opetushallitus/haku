@@ -6,6 +6,7 @@ import com.google.common.collect.Lists;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.ListenableFutureTask;
+import com.google.common.util.concurrent.UncheckedExecutionException;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.exception.ApplicationSystemNotFound;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
@@ -59,8 +60,14 @@ public class ApplicationSystemServiceImpl implements ApplicationSystemService {
         }
         try {
             return cache.get(id);
-        } catch (ApplicationSystemNotFound e) {
-            throw new ApplicationSystemNotFound(id);
+        } catch (UncheckedExecutionException e) {
+            // Unwrap exception caused by cache miss
+            final Throwable cause = e.getCause();
+            if (ApplicationSystemNotFound.class.isAssignableFrom(cause.getClass())) {
+                throw (ApplicationSystemNotFound)cause;
+            } else {
+                throw e;
+            }
         } catch (ExecutionException e) {
             throw new RuntimeException(e);
         }
