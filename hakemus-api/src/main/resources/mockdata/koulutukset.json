@@ -2937,5 +2937,317 @@
       }
     ],
     "kotitalous": false
+  },
+  "1.2.246.562.20.809720376110": {
+    "id": "1.2.246.562.20.809720376110",
+    "name": "Bachelor of Engineering, Degree Programme in Logistics Engineering",
+    "organizationGroups": [
+      {
+        "groupTypes": [
+          "hakukohde"
+        ],
+        "oid": "1.2.246.562.28.86635316318",
+        "prioriteetti": null,
+        "usageGroups": [
+          "yleinen"
+        ]
+      },
+      {
+        "groupTypes": [
+          "hakukohde"
+        ],
+        "oid": "1.2.246.562.28.24712637358",
+        "prioriteetti": null,
+        "usageGroups": [
+          "hakukohde_liiteosoite"
+        ]
+      }
+    ],
+    "provider": {
+      "applicationSystemIds": [
+        "1.2.246.562.29.822197749310",
+        "1.2.246.562.29.95390561488",
+        "1.2.246.562.29.79477529105"
+      ]
+    },
+    "aoIdentifier": null,
+    "educationDegree": "koulutusasteoph2002_62",
+    "sora": false,
+    "teachingLanguages": [
+      "EN"
+    ],
+    "athleteEducation": false,
+    "attachments": [
+      {
+        "address": {
+          "postOffice": "JYV\u00c4SKYL\u00c4",
+          "postalCode": "40200",
+          "streetAddress": "Admission Services of JAMK UAS, Rajakatu 35",
+          "streetAddress2": null
+        },
+        "descreption": "<p>Jos haet ammatti-, erikoisammattitutkinnolla tai ulkomailla suoritetulla tutkinnolla, toimita kopio tutkintotodistuksesta sen ammattikorkeakoulun hakijapalveluihin, jonka olet valinnut ensisijaiseksi ammattikorkeakouluhakukohteeksi. (T\u00e4m\u00e4 ei siis koske ammatillista perustutkintoa.)</p> <p>Jos todistuksen kieli on muu kuin suomi, ruotsi tai englanti, todistuksen kopion lis\u00e4ksi on toimitettava virallisen kielenk\u00e4\u00e4nt\u00e4j\u00e4n k\u00e4\u00e4nn\u00f6s. K\u00e4\u00e4nn\u00f6ksess\u00e4 tulee olla k\u00e4\u00e4nt\u00e4j\u00e4n allekirjoitus ja leima.</p> <p>(Jos\u00a0<b>et\u00a0</b>ole EU/ETA-maiden kansalainen, sinun tulee toimittaa my\u00f6s kielitodistus englannin kielest\u00e4,<a href=\"http://www.jamk.fi/en/Education/How-to-apply/Bachelors-Degrees/\">\u00a0lue lis\u00e4\u00e4 JAMKin nettisivuilta</a>.)</p>",
+        "dueDate": 1423573246634,
+        "emailAddr": null,
+        "type": "Kopio tutkintotodistuksesta",
+        "usedInApplicationForm": false
+      }
+    ],
+    "kaksoistutkinto": false,
+    "vocational": false,
+    "educationCodeUri": "koulutus_651602"
+  },
+  "1.2.246.562.20.634960372910": {
+    "aoIdentifier": null,
+    "athleteEducation": false,
+    "attachments": [
+      {
+        "address": {
+          "postOffice": "JYV\u00c4SKYL\u00c4",
+          "postalCode": "40200",
+          "streetAddress": "JAMK, Hakijapalvelut, Rajakatu 35",
+          "streetAddress2": null
+        },
+        "descreption": "<p>Jos haet ammatti-, erikoisammattitutkinnolla tai ulkomailla suoritetulla tutkinnolla, toimita kopio tutkintotodistuksesta sen ammattikorkeakoulun hakijapalveluihin, jonka olet valinnut ensisijaiseksi ammattikorkeakouluhakukohteeksi. (T\u00e4m\u00e4 ei siis koske ammatillista perustutkintoa.)</p> <p>Jos todistuksen kieli on muu kuin suomi, ruotsi tai englanti, todistuksen kopion lis\u00e4ksi on toimitettava virallisen kielenk\u00e4\u00e4nt\u00e4j\u00e4n k\u00e4\u00e4nn\u00f6s. K\u00e4\u00e4nn\u00f6ksess\u00e4 tulee olla k\u00e4\u00e4nt\u00e4j\u00e4n allekirjoitus ja leima.</p>",
+        "dueDate": 1429790413271,
+        "emailAddr": null,
+        "type": "Kopio tutkintotodistuksesta",
+        "usedInApplicationForm": false
+      }
+    ],
+    "educationCodeUri": "koulutus_651602",
+    "educationDegree": "koulutusasteoph2002_62",
+    "id": "1.2.246.562.20.634960372910",
+    "kaksoistutkinto": false,
+    "name": "Insin\u00f6\u00f6ri (AMK), logistiikka, p\u00e4iv\u00e4toteutus",
+    "organizationGroups": [
+      {
+        "groupTypes": [
+          "hakukohde"
+        ],
+        "oid": "1.2.246.562.28.73789724481",
+        "prioriteetti": null,
+        "usageGroups": [
+          "yleinen"
+        ]
+      },
+      {
+        "groupTypes": [
+          "hakukohde"
+        ],
+        "oid": "1.2.246.562.28.24712637358",
+        "prioriteetti": null,
+        "usageGroups": [
+          "hakukohde_liiteosoite"
+        ]
+      },
+      {
+        "groupTypes": [
+          "hakukohde"
+        ],
+        "oid": "1.2.246.562.28.82550511548",
+        "prioriteetti": null,
+        "usageGroups": [
+          "yleinen"
+        ]
+      },
+      {
+        "groupTypes": [
+          "hakukohde"
+        ],
+        "oid": "1.2.246.562.28.85557110211",
+        "prioriteetti": null,
+        "usageGroups": [
+          "yleinen"
+        ]
+      },
+      {
+        "groupTypes": [
+          "hakukohde"
+        ],
+        "oid": "1.2.246.562.28.55575526841",
+        "prioriteetti": null,
+        "usageGroups": [
+          "yleinen"
+        ]
+      },
+      {
+        "groupTypes": [
+          "hakukohde"
+        ],
+        "oid": "1.2.246.562.28.96829962449",
+        "prioriteetti": null,
+        "usageGroups": [
+          "yleinen"
+        ]
+      }
+    ],
+    "provider": {
+      "applicationSystemIds": [
+        "1.2.246.562.29.822197749310",
+        "1.2.246.562.29.95390561488",
+        "1.2.246.562.29.79477529105"
+      ]
+    },
+    "sora": false,
+    "teachingLanguages": [
+      "FI"
+    ],
+    "vocational": false
+  },
+  "1.2.246.562.20.773334214010": {
+    "aoIdentifier": null,
+    "athleteEducation": false,
+    "attachments": [
+      {
+        "address": {
+          "postOffice": "JYV\u00c4SKYL\u00c4",
+          "postalCode": "40200",
+          "streetAddress": "JAMK, Hakijapalvelut, Rajakatu 35",
+          "streetAddress2": null
+        },
+        "descreption": "<p>Jos haet ammatti-, erikoisammattitutkinnolla tai ulkomailla suoritetulla tutkinnolla, toimita kopio tutkintotodistuksesta sen ammattikorkeakoulun hakijapalveluihin, jonka olet valinnut ensisijaiseksi ammattikorkeakouluhakukohteeksi. (T\u00e4m\u00e4 ei siis koske ammatillista perustutkintoa.)</p> <p>Jos todistuksen kieli on muu kuin suomi, ruotsi tai englanti, todistuksen kopion lis\u00e4ksi on toimitettava virallisen kielenk\u00e4\u00e4nt\u00e4j\u00e4n k\u00e4\u00e4nn\u00f6s. K\u00e4\u00e4nn\u00f6ksess\u00e4 tulee olla k\u00e4\u00e4nt\u00e4j\u00e4n allekirjoitus ja leima.</p>",
+        "dueDate": 1429790439113,
+        "emailAddr": null,
+        "type": "Kopio tutkintotodistuksesta",
+        "usedInApplicationForm": false
+      }
+    ],
+    "educationCodeUri": "koulutus_651102",
+    "educationDegree": "koulutusasteoph2002_62",
+    "id": "1.2.246.562.20.773334214010",
+    "kaksoistutkinto": false,
+    "name": "Insin\u00f6\u00f6ri (AMK), energia- ja ymp\u00e4rist\u00f6tekniikka, p\u00e4iv\u00e4toteutus",
+    "organizationGroups": [
+      {
+        "groupTypes": [
+          "hakukohde"
+        ],
+        "oid": "1.2.246.562.28.82550511548",
+        "prioriteetti": null,
+        "usageGroups": [
+          "yleinen"
+        ]
+      },
+      {
+        "groupTypes": [
+          "hakukohde"
+        ],
+        "oid": "1.2.246.562.28.24712637358",
+        "prioriteetti": null,
+        "usageGroups": [
+          "hakukohde_liiteosoite"
+        ]
+      },
+      {
+        "groupTypes": [
+          "hakukohde"
+        ],
+        "oid": "1.2.246.562.28.55575526841",
+        "prioriteetti": null,
+        "usageGroups": [
+          "yleinen"
+        ]
+      },
+      {
+        "groupTypes": [
+          "hakukohde"
+        ],
+        "oid": "1.2.246.562.28.85557110211",
+        "prioriteetti": null,
+        "usageGroups": [
+          "yleinen"
+        ]
+      },
+      {
+        "groupTypes": [
+          "hakukohde"
+        ],
+        "oid": "1.2.246.562.28.96829962449",
+        "prioriteetti": null,
+        "usageGroups": [
+          "yleinen"
+        ]
+      },
+      {
+        "groupTypes": [
+          "hakukohde"
+        ],
+        "oid": "1.2.246.562.28.73789724481",
+        "prioriteetti": null,
+        "usageGroups": [
+          "yleinen"
+        ]
+      }
+    ],
+    "provider": {
+      "applicationSystemIds": [
+        "1.2.246.562.29.822197749310",
+        "1.2.246.562.29.95390561488",
+        "1.2.246.562.29.79477529105"
+      ]
+    },
+    "sora": false,
+    "teachingLanguages": [
+      "FI"
+    ],
+    "vocational": false
+  },
+  "1.2.246.562.20.99933864235": {
+    "aoIdentifier": null,
+    "athleteEducation": false,
+    "attachments": [
+      {
+        "address": {
+          "postOffice": "JYV\u00c4SKYL\u00c4",
+          "postalCode": "40200",
+          "streetAddress": "Admission Services of JAMK UAS, Rajakatu 35",
+          "streetAddress2": null
+        },
+        "descreption": "<p>Jos haet ammatti-, erikoisammattitutkinnolla tai ulkomailla suoritetulla tutkinnolla, toimita kopio tutkintotodistuksesta sen ammattikorkeakoulun hakijapalveluihin, jonka olet valinnut ensisijaiseksi ammattikorkeakouluhakukohteeksi. (T\u00e4m\u00e4 ei siis koske ammatillista perustutkintoa.)</p> <p>Jos todistuksen kieli on muu kuin suomi, ruotsi tai englanti, todistuksen kopion lis\u00e4ksi on toimitettava virallisen kielenk\u00e4\u00e4nt\u00e4j\u00e4n k\u00e4\u00e4nn\u00f6s. K\u00e4\u00e4nn\u00f6ksess\u00e4 tulee olla k\u00e4\u00e4nt\u00e4j\u00e4n allekirjoitus ja leima.</p> <p>(Jos <b>et </b>ole EU/ETA-maiden kansalainen, sinun tulee toimittaa my\u00f6s kielitodistus englannin kielest\u00e4,<a href=\"http://www.jamk.fi/en/Education/How-to-apply/Bachelors-Degrees/\"> lue lis\u00e4\u00e4 JAMKin nettisivuilta</a>.)</p>",
+        "dueDate": 1423573252901,
+        "emailAddr": null,
+        "type": "Kopio tutkintotodistuksesta",
+        "usedInApplicationForm": false
+      }
+    ],
+    "educationCodeUri": "koulutus_631101",
+    "educationDegree": "koulutusasteoph2002_62",
+    "id": "1.2.246.562.20.99933864235",
+    "kaksoistutkinto": false,
+    "name": "Bachelor of Business Administration, Degree Programme in International Business",
+    "organizationGroups": [
+      {
+        "groupTypes": [
+          "hakukohde"
+        ],
+        "oid": "1.2.246.562.28.86635316318",
+        "prioriteetti": null,
+        "usageGroups": [
+          "yleinen"
+        ]
+      },
+      {
+        "groupTypes": [
+          "hakukohde"
+        ],
+        "oid": "1.2.246.562.28.24712637358",
+        "prioriteetti": null,
+        "usageGroups": [
+          "hakukohde_liiteosoite"
+        ]
+      }
+    ],
+    "provider": {
+      "applicationSystemIds": [
+        "1.2.246.562.29.822197749310",
+        "1.2.246.562.29.95390561488",
+        "1.2.246.562.29.79477529105"
+      ]
+    },
+    "sora": false,
+    "teachingLanguages": [
+      "EN"
+    ],
+    "vocational": false
   }
 }
