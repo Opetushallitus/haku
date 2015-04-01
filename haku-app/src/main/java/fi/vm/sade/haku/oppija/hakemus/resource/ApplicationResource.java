@@ -422,7 +422,7 @@ public class ApplicationResource {
             } else {
                 return Response.status(Response.Status.BAD_REQUEST).build();
             }
-        } catch (IOException e) {
+        } catch (Throwable e) {
             LOGGER.error("Could not import application: {} {}", syntheticApplication, e);
             throw new JSONException(Response.Status.INTERNAL_SERVER_ERROR, "Could not import application", e);
         }
