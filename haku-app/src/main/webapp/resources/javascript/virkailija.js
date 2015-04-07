@@ -414,7 +414,6 @@ $(document).ready(function () {
             label.click(function (e) {
                 $('#lopoid').val($(this).attr('id'));
                 $('#lop-title').text($(this).html());
-                applicationSearch.search(0, 'fullName', 'asc');
                 e.preventDefault();
             });
 
