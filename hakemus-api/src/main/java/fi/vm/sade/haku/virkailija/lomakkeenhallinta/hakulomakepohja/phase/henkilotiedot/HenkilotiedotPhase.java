@@ -37,9 +37,7 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import java.util.ArrayList;
 import java.util.List;
 
-import static fi.vm.sade.haku.oppija.hakemus.service.HakuPermissionService.ROLE_CRUD;
-import static fi.vm.sade.haku.oppija.hakemus.service.HakuPermissionService.ROLE_OPO;
-import static fi.vm.sade.haku.oppija.hakemus.service.HakuPermissionService.ROLE_RU;
+import static fi.vm.sade.haku.oppija.hakemus.service.Role.*;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.DateQuestionBuilder.Date;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.DropdownSelectBuilder.Dropdown;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.PhaseBuilder.Phase;

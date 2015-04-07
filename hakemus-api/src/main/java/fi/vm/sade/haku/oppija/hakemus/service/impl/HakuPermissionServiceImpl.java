@@ -28,6 +28,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import static fi.vm.sade.haku.oppija.hakemus.service.Role.*;
+
 @Service
 @Profile(value = {"default", "vagrant"})
 public class HakuPermissionServiceImpl extends AbstractPermissionService implements HakuPermissionService {
@@ -184,19 +186,19 @@ public class HakuPermissionServiceImpl extends AbstractPermissionService impleme
     }
 
     public final String getRoleHetuttomienKasittely() {
-        return ROLE_HETUTTOMIENKASITTELY;
+        return ROLE_HETUTTOMIENKASITTELY.casName;
     }
 
     public final String getOpoRole() {
-        return ROLE_OPO;
+        return ROLE_OPO.casName;
     }
 
     public static String getRoleLisatietoRU() {
-        return ROLE_LISATIETORU;
+        return ROLE_LISATIETORU.casName;
     }
 
     public static String getRoleLisatietoCRUD() {
-        return ROLE_LISATIETOCRUD;
+        return ROLE_LISATIETOCRUD.casName;
     }
 
     private boolean userHasOpoRoleToSendingSchool(Application application) {

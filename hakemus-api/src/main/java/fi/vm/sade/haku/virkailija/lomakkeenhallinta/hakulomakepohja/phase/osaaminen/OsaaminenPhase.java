@@ -36,9 +36,7 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ExprUtil;
 import java.util.ArrayList;
 import java.util.List;
 
-import static fi.vm.sade.haku.oppija.hakemus.service.HakuPermissionService.ROLE_CRUD;
-import static fi.vm.sade.haku.oppija.hakemus.service.HakuPermissionService.ROLE_HETUTTOMIENKASITTELY;
-import static fi.vm.sade.haku.oppija.hakemus.service.HakuPermissionService.ROLE_RU;
+import static fi.vm.sade.haku.oppija.hakemus.service.Role.*;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.DropdownSelectBuilder.Dropdown;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.PhaseBuilder.Phase;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.RelatedQuestionRuleBuilder.Rule;
