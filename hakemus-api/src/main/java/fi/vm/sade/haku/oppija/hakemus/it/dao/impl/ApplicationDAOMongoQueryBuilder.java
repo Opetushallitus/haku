@@ -345,6 +345,12 @@ final class ApplicationDAOMongoQueryBuilder {
             allowedOrganizations.add(null);
         }
 
+        if (OppijaConstants.HAKUTAPA_YHTEISHAKU.equals(filterParameters.getHakutapa())
+                && OppijaConstants.KOHDEJOUKKO_KORKEAKOULU.equals(filterParameters.getKohdejoukko())
+                && !filterParameters.getOrganizationsHetuttomienKasittely().isEmpty()) {
+            return QueryBuilder.start(FIELD_APPLICATION_OID).exists(true).get();
+        }
+
         final ArrayList<DBObject> queries = new ArrayList<>();
         if (allowedOrganizations.size() > 0) {
             queries.add(QueryBuilder.start(META_ALL_ORGANIZATIONS).in(allowedOrganizations).get());
@@ -356,11 +362,6 @@ final class ApplicationDAOMongoQueryBuilder {
                     QueryBuilder.start(META_FIELD_OPO_ALLOWED).is(true).get()).get());
         }
 
-        if (OppijaConstants.HAKUTAPA_YHTEISHAKU.equals(filterParameters.getHakutapa())
-                && OppijaConstants.KOHDEJOUKKO_KORKEAKOULU.equals(filterParameters.getKohdejoukko())
-                && !filterParameters.getOrganizationsHetuttomienKasittely().isEmpty()) {
-            queries.add(QueryBuilder.start(FIELD_SSN).is(null).get());
-        }
 
         LOG.debug("queries: {}", queries.size());
 
