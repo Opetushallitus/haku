@@ -214,7 +214,7 @@ final class ApplicationDAOMongoQueryBuilder {
                 } else if ("POSTPROCESS_FAILED".equals(states.get(0))) {
                     filters.add(QueryBuilder.start(FIELD_REDO_POSTPROCESS).is(Application.PostProcessingState.FAILED.toString()).get());
                 } else {
-                    filters.add(QueryBuilder.start(FIELD_APPLICATION_STATE).is(Application.State.valueOf(states.get(0))).get());
+                    filters.add(QueryBuilder.start(FIELD_APPLICATION_STATE).is(Application.State.valueOf(states.get(0)).toString()).get());
                 }
             } else {
                 filters.add(QueryBuilder.start(FIELD_APPLICATION_STATE).in(states).get());
