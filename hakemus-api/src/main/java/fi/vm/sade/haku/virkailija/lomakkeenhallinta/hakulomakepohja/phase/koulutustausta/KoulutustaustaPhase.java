@@ -864,9 +864,10 @@ public final class KoulutustaustaPhase {
                 .addOption(educationMap.get(KESKEYTYNYT).getValue(), formParameters);
 
 
-        if (!formParameters.isPerusopetuksenJalkeinenValmentava()) {
+        if (formParameters.kysytaankoYlioppilastutkinto()) {
             baseEducationBuilder.addOption(educationMap.get(YLIOPPILAS).getValue(), formParameters);
         }
+
         baseEducationBuilder.addOption(educationMap.get(ULKOMAINEN_TUTKINTO).getValue(), formParameters);
 
         Element baseEducation = baseEducationBuilder.required().formParams(formParameters).build();
@@ -878,7 +879,7 @@ public final class KoulutustaustaPhase {
         }
 
         Element ulkomaillaSuoritettuTutkintoRule = createVarEqualsToValueRule(baseEducation.getId(), ULKOMAINEN_TUTKINTO);
-        if (formParameters.isPerusopetuksenJalkeinenValmentava()) {
+        if (formParameters.kysytaankoUlkomaisenTutkinnonTarkennus()) {
             ulkomaillaSuoritettuTutkintoRule.addChild(
                     TextArea("mika-ulkomainen-koulutus")
                             .cols(TEXT_AREA_COLS)
@@ -968,7 +969,7 @@ public final class KoulutustaustaPhase {
                 onkoTodistusSaatuKuluneenaVuonna, paattotodistusvuosiPeruskouluRule);
 
 
-        if (!formParameters.isPerusopetuksenJalkeinenValmentava()) {
+        if (!formParameters.kysytaankoYlioppilastutkinto()) {
 
             Element lukioPaattotodistusVuosi = TextQuestion(OppijaConstants.LUKIO_PAATTOTODISTUS_VUOSI)
                     .maxLength(4)

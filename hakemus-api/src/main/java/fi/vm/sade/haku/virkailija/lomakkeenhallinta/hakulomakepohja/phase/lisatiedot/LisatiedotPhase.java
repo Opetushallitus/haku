@@ -73,9 +73,8 @@ public class LisatiedotPhase {
 
         Element element = lisatiedot
                 .addChild(createLupatiedot(formParameters));
-        if (!(formParameters.isPerusopetuksenJalkeinenValmentava() || formParameters.isHigherEd())) {
-            lisatiedot
-                    .addChild(createUrheilijanLisakysymykset(formParameters));
+        if (formParameters.kysytaankoUrheilijanLisakysymykset()) {
+            lisatiedot.addChild(createUrheilijanLisakysymykset(formParameters));
         }
         return element;
     }

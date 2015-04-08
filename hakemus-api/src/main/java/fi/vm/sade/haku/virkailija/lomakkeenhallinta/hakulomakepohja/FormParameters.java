@@ -176,4 +176,31 @@ public class FormParameters {
     public boolean kysytaankoErityisopetuksenTarve() {
         return applicationSystem.getKohdejoukkoUri().equals(KOHDEJOUKKO_ERITYISOPETUKSENA_JARJESTETTAVA_AMMATILLINEN);
     }
+
+    public boolean kysytaankoHarkinnanvaraisuus() {
+        return ! (isPerusopetuksenJalkeinenValmentava() || isHigherEd());
+    }
+
+    public boolean kysytaankoSora() {
+        return ! (isPerusopetuksenJalkeinenValmentava() ||
+                applicationSystem.getKohdejoukkoUri().equals(KOHDEJOUKKO_ERITYISOPETUKSENA_JARJESTETTAVA_AMMATILLINEN));
+    }
+
+    public boolean kysytaankoUrheilijanLisakysymykset() {
+        return ! (isPerusopetuksenJalkeinenValmentava() || isHigherEd());
+    }
+
+    public boolean kysytaankoYlioppilastutkinto() {
+        return !isPerusopetuksenJalkeinenValmentava();
+    }
+
+    public boolean kysytaankoKielitaitokysymykset() {
+        return ! (isPerusopetuksenJalkeinenValmentava() ||
+                applicationSystem.getKohdejoukkoUri().equals(KOHDEJOUKKO_ERITYISOPETUKSENA_JARJESTETTAVA_AMMATILLINEN));
+    }
+
+    public boolean kysytaankoUlkomaisenTutkinnonTarkennus() {
+        return isPerusopetuksenJalkeinenValmentava() ||
+                applicationSystem.getKohdejoukkoUri().equals(KOHDEJOUKKO_ERITYISOPETUKSENA_JARJESTETTAVA_AMMATILLINEN);
+    }
 }
