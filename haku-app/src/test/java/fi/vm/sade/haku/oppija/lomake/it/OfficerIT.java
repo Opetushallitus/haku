@@ -1,9 +1,12 @@
 package fi.vm.sade.haku.oppija.lomake.it;
 
+import com.mongodb.DBObject;
+import com.mongodb.util.JSON;
 import fi.vm.sade.haku.oppija.common.selenium.DummyModelBaseItTest;
 import fi.vm.sade.haku.oppija.common.selenium.LoginPage;
 import fi.vm.sade.haku.oppija.lomake.HakuClient;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
+import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
@@ -11,15 +14,18 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import static org.junit.Assert.*;
 
 import java.util.List;
 
 import static fi.vm.sade.haku.oppija.ui.selenium.DefaultValues.KYSYMYS_POHJAKOULUTUS;
 import static fi.vm.sade.haku.oppija.ui.selenium.DefaultValues.TUTKINTO_YLIOPPILAS;
+import static java.lang.ClassLoader.getSystemResourceAsStream;
 
 public class OfficerIT extends DummyModelBaseItTest {
 
@@ -30,6 +36,42 @@ public class OfficerIT extends DummyModelBaseItTest {
 
     @Before
     public void beforeOfficerIt() throws Exception {
+        String content = IOUtils.toString(getSystemResourceAsStream("kk-yhteishaku-hakemuksia.json"), "UTF-8");
+        mongoTemplate.getCollection("application").insert((List<DBObject>)JSON.parse(content));
+        final LoginPage loginPage = new LoginPage(seleniumContainer.getDriver());
+        navigateToPath("user", "login");
+        loginPage.login("officer");
+        navigateToPath("lomakkeenhallinta", "1.2.246.562.29.95390561488");
+    }
+
+    @Test
+    public void testSearchAsEiKKVirkalija() throws Exception {
+        final LoginPage loginPage = new LoginPage(seleniumContainer.getDriver());
+        navigateToPath("user", "login");
+        loginPage.login("eikkvirkailija");
+        navigateToPath("virkailija", "hakemus");
+        clearSearch();
+        clickSearch();
+        List<WebElement> applicationLinks = findByClassName("application-link");
+        assertEquals(applicationLinks.size(), 1);
+    }
+
+    @Test
+    public void testSearchAsKKVirkailija() throws Exception {
+        final LoginPage loginPage = new LoginPage(seleniumContainer.getDriver());
+        navigateToPath("user", "login");
+        loginPage.login("kkvirkailija");
+        navigateToPath("virkailija", "hakemus");
+        clearSearch();
+        Select haku = new Select(getById("application-system").get(0));
+        haku.selectByVisibleText("Korkkaritesti 2015");
+        clickSearch();
+        List<WebElement> applicationLinks = findByClassName("application-link");
+        assertEquals(applicationLinks.size(), 3);
+    }
+
+    @Test
+    public void testSearchAndModify() throws Exception {
         String baseUrl = getBaseUrl();
         HakuClient hakuClient = new HakuClient(baseUrl + "lomake/", "application.json");
         hakuClient.apply();
@@ -38,12 +80,8 @@ public class OfficerIT extends DummyModelBaseItTest {
         loginPage.login("officer");
         activate(applicationOidPrefix + ".00000000013", "OfficerIt");
         navigateToPath("virkailija", "hakemus");
-    }
-
-
-    @Test
-    public void testSearchAndModify() throws Exception {
         clearSearch();
+        setValue("entry", applicationOidPrefix + ".00000000013");
         clickSearch();
         WebElement applicationLink = findByClassName("application-link").get(0);
         applicationLink.click();

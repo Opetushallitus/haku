@@ -18,7 +18,6 @@ package fi.vm.sade.haku.oppija.hakemus.it.dao.impl;
 
 import com.google.common.base.Function;
 import com.google.common.base.Strings;
-import com.google.common.collect.Lists;
 import com.mongodb.*;
 import fi.vm.sade.haku.oppija.common.dao.AbstractDAOMongoImpl;
 import fi.vm.sade.haku.oppija.hakemus.converter.*;
@@ -29,7 +28,6 @@ import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultItemDTO;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationDAO;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationFilterParameters;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationQueryParameters;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.SocialSecurityNumber;
 import fi.vm.sade.haku.oppija.lomake.service.EncrypterService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
