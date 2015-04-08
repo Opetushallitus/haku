@@ -969,7 +969,7 @@ public final class KoulutustaustaPhase {
                 onkoTodistusSaatuKuluneenaVuonna, paattotodistusvuosiPeruskouluRule);
 
 
-        if (!formParameters.kysytaankoYlioppilastutkinto()) {
+        if (formParameters.kysytaankoYlioppilastutkinto()) {
 
             Element lukioPaattotodistusVuosi = TextQuestion(OppijaConstants.LUKIO_PAATTOTODISTUS_VUOSI)
                     .maxLength(4)
