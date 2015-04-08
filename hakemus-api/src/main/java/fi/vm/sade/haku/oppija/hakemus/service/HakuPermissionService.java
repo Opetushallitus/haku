@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 
 public interface HakuPermissionService {
-
     /**
      * Return list of organizations such that current user has at least read privilege to applications
      * addressed to that organization. Check is done against every organization user is member of.

@@ -37,6 +37,7 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import java.util.ArrayList;
 import java.util.List;
 
+import static fi.vm.sade.haku.oppija.hakemus.service.Role.*;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.DateQuestionBuilder.Date;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.DropdownSelectBuilder.Dropdown;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.PhaseBuilder.Phase;
@@ -64,7 +65,7 @@ public final class HenkilotiedotPhase {
     public static Element create(final FormParameters formParameters) {
 
         // Henkilötiedot
-        Element henkilotiedot = Phase(OppijaConstants.PHASE_PERSONAL).setEditAllowedByRoles("APP_HAKEMUS_READ_UPDATE", "APP_HAKEMUS_CRUD", "APP_HAKEMUS_OPO").formParams(formParameters).build();
+        Element henkilotiedot = Phase(OppijaConstants.PHASE_PERSONAL).setEditAllowedByRoles(ROLE_RU, ROLE_CRUD, ROLE_OPO).formParams(formParameters).build();
 
         Element henkilotiedotTeema = Theme("henkilotiedot_teema").previewable().formParams(formParameters).build();
 

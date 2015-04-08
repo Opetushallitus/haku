@@ -1,6 +1,7 @@
 package fi.vm.sade.haku.oppija.lomake.domain.builder;
 
 import com.google.common.collect.ImmutableList;
+import fi.vm.sade.haku.oppija.hakemus.service.Role;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Phase;
 import fi.vm.sade.haku.oppija.lomake.exception.ConfigurationException;
@@ -39,5 +40,13 @@ public class PhaseBuilder extends TitledBuilder {
 
     public PhaseBuilder setEditAllowedByRoles(String... editAllowedByRoles){
         return this.setEditAllowedByRoles(ImmutableList.copyOf(editAllowedByRoles));
+    }
+
+    public PhaseBuilder setEditAllowedByRoles(Role... editAllowedByRoles){
+        final ImmutableList.Builder<String> list = new ImmutableList.Builder<>();
+        for(Role role : editAllowedByRoles) {
+            list.add(role.casName);
+        }
+        return this.setEditAllowedByRoles(list.build());
     }
 }

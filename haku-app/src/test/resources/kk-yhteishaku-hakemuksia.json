@@ -1,0 +1,1521 @@
+[
+  {
+    "_id": {"$oid": "55084e62e4b0907651a8d86e"},
+    "applicationSystemId": "1.2.246.562.29.95390561488",
+    "answers": {
+      "hakutoiveet": {
+        "preference4-Koulutus-id-aoIdentifier": "",
+        "preference4-Koulutus-id-educationcode": "",
+        "preference1-Koulutus-id-ao-groups": "1.2.246.562.28.92529355477,1.2.246.562.28.26750186798,1.2.246.562.28.77463971187",
+        "preference3-Koulutus-id-ao-groups": "",
+        "preference1-Opetuspiste": "Helsinki Metropolia UAS, Helsinki, Tukholmankatu",
+        "preference4-Opetuspiste-id": "",
+        "preference3-Koulutus-id-athlete": "",
+        "preference5-Opetuspiste-id": "",
+        "preference2-Koulutus-id-attachmentgroups": "",
+        "preference4-Koulutus-id-athlete": "",
+        "preference2-Koulutus-id-aoIdentifier": "",
+        "preference2-Koulutus-id-attachments": "",
+        "preference3-Opetuspiste-id": "",
+        "preference6-Koulutus-id-lang": "",
+        "preference4-Koulutus-id-attachmentgroups": "",
+        "preference6-Koulutus-id-vocational": "",
+        "preference2-Koulutus-id-ao-groups": "",
+        "preference1-Koulutus-educationDegree": "koulutusasteoph2002_71",
+        "preference6-Koulutus-id-educationcode": "",
+        "preference6-Koulutus-id-ao-groups": "",
+        "preference5-Koulutus-educationDegree": "",
+        "preference2-Koulutus-id-sora": "",
+        "preference4-Koulutus-id-vocational": "",
+        "preference3-Koulutus-id": "",
+        "54929ac0e4b0a902493ee3b6": "36",
+        "preference5-Koulutus-id-lang": "",
+        "preference1-Opetuspiste-id": "1.2.246.562.10.23178783348",
+        "preference2-Koulutus-educationDegree": "",
+        "preference1-Koulutus-id-sora": "false",
+        "5493fecfe4b065558799bdf6": "8",
+        "preference5-Koulutus-id-sora": "",
+        "preference1-Koulutus-id-aoIdentifier": "",
+        "preference6-Koulutus-id-kaksoistutkinto": "",
+        "preference1-Koulutus-id-educationcode": "koulutus_771999",
+        "preference5-Koulutus-id-ao-groups": "",
+        "preference3-Koulutus-id-attachmentgroups": "",
+        "preference6-Koulutus-id-sora": "",
+        "preference5-Koulutus-id-athlete": "",
+        "preference5-Koulutus-id-attachments": "",
+        "preference2-Koulutus-id": "",
+        "preference1-Koulutus-id-vocational": "false",
+        "preference3-Koulutus-id-vocational": "",
+        "preference6-Koulutus-id-athlete": "",
+        "preference4-Koulutus-educationDegree": "",
+        "preference6-Koulutus-id-attachments": "",
+        "preference6-Koulutus-educationDegree": "",
+        "preference4-Koulutus-id-kaksoistutkinto": "",
+        "preference1-Koulutus-id-athlete": "false",
+        "preference6-Koulutus-id-aoIdentifier": "",
+        "preference5-Koulutus-id-kaksoistutkinto": "",
+        "preference6-Koulutus-id-attachmentgroups": "",
+        "preference5-Koulutus-id": "",
+        "preference2-Opetuspiste": "",
+        "preference2-Koulutus-id-athlete": "",
+        "preference1-Koulutus-id-attachments": "true",
+        "preference3-Koulutus-educationDegree": "",
+        "preference5-Opetuspiste": "",
+        "preference2-Koulutus-id-kaksoistutkinto": "",
+        "preference5-Koulutus-id-educationcode": "",
+        "preference3-Koulutus-id-kaksoistutkinto": "",
+        "preference1-Koulutus-id-attachmentgroups": "",
+        "preference4-Koulutus-id-sora": "",
+        "preference5-Koulutus-id-vocational": "",
+        "preference3-Koulutus-id-lang": "",
+        "preference2-Opetuspiste-id": "",
+        "preference3-Opetuspiste": "",
+        "preference4-Koulutus-id-lang": "",
+        "preference6-Koulutus-id": "",
+        "preference5-Koulutus-id-attachmentgroups": "",
+        "preferencesVisible": "6",
+        "preference2-Koulutus-id-vocational": "",
+        "preference1-Koulutus-id": "1.2.246.562.20.81001529015",
+        "preference3-Koulutus-id-attachments": "",
+        "preference3-Koulutus-id-sora": "",
+        "preference4-Koulutus-id": "",
+        "preference4-Koulutus-id-attachments": "",
+        "preference2-Koulutus-id-lang": "",
+        "preference4-Opetuspiste": "",
+        "preference1-Koulutus-id-kaksoistutkinto": "false",
+        "preference1-Koulutus": "Master of Social Services and/or Health Care, Health Business Management",
+        "preference3-Koulutus-id-educationcode": "",
+        "preference3-Koulutus-id-aoIdentifier": "",
+        "preference5-Koulutus-id-aoIdentifier": "",
+        "preference1-Koulutus-id-lang": "EN",
+        "preference6-Opetuspiste": "",
+        "preference4-Koulutus-id-ao-groups": "",
+        "548af042e4b0c1f15d7db54c": "Associate Diploma 19.11.2005",
+        "preference2-Koulutus-id-educationcode": "",
+        "preference6-Opetuspiste-id": ""
+      },
+      "henkilotiedot": {
+        "Henkilotunnus_plain": "170689-934W",
+        "onkosinullakaksoiskansallisuus": "false",
+        "kansalaisuus": "VNM",
+        "koulusivistyskieli": "EN",
+        "postinumeroUlkomaa": "70000",
+        "kaupunkiUlkomaa": "Ho Chi Minh city",
+        "asuinmaa": "VNM",
+        "syntymapaikka": "Ho Chi Minh city, Viet Nam",
+        "SUKUPUOLI": "2",
+        "matkapuhelinnumero1": "050 88497801",
+        "Henkilotunnus_digest": "e12fcf0d562c9a43179f23599ad466960f3c4a1049c8df96bf1dfe7f148310b0",
+        "passinnumero": "",
+        "lahiosoite": "Umpilampi 756",
+        "turvakielto": "false",
+        "Sähköposti": "hakija-1555611@oph.fi",
+        "kansallinenIdTunnus": "",
+        "onkoSinullaSuomalainenHetu": "false",
+        "aidinkieli": "null",
+        "osoiteUlkomaa": "50/27 Duy Tan street, Ward 15, Phu Nhuan District",
+        "syntymaaika": "null"
+      },
+      "koulutustausta": {
+        "pohjakoulutus_kk_ulk_oppilaitos": "University of Social Sciences and Humanities",
+        "pohjakoulutus_ulk_vuosi": "2005",
+        "pohjakoulutus_ulk_oppilaitos": "Lotus College",
+        "pohjakoulutus_kk_ulk_taso": "2",
+        "pohjakoulutus_ulk": "true",
+        "pohjakoulutus_kk_ulk_pvm": "28.11.2011",
+        "pohjakoulutus_ulk_nimike": "Associate Diploma",
+        "pohjakoulutus_kk_ulk": "true",
+        "pohjakoulutus_ulk_suoritusmaa": "Vietnam",
+        "pohjakoulutus_kk_ulk_maa": "VNM",
+        "pohjakoulutus_kk_ulk_nimike": "Bachelor of Arts",
+        "suoritusoikeus_tai_aiempi_tutkinto": "false"
+      },
+      "lisatiedot": {
+        "lupaSahkoisesti": "true",
+        "lupaJulkaisu": "true",
+        "asiointikieli": "englanti",
+        "lupaSms": "true"
+      },
+      "osaaminen": {}
+    },
+    "oid": "1.2.246.562.11.00002494711",
+    "state": "ACTIVE",
+    "personOid": "1.2.246.562.24.87379236599",
+    "studentOid": "1.2.246.562.24.87379236599",
+    "lastAutomatedProcessingTime": 1428414273312,
+    "received": 1426607714965,
+    "updated": 1428414273312,
+    "searchNames": [
+      "vi",
+      "aleksi",
+      "juupavuori"
+    ],
+    "meta": {
+      "filingLanguage": "en",
+      "sessionId": "anonymousUser"
+    },
+    "authorizationMeta": {
+      "opoAllowed": false,
+      "aoOrganizations": {
+        "1": [
+          "1.2.246.562.10.60198812368",
+          "1.2.246.562.10.23178783348",
+          "1.2.246.562.10.00000000001",
+          "1.2.246.562.10.67476956288"
+        ]
+      },
+      "allAoOrganizations": [
+        "1.2.246.562.10.60198812368",
+        "1.2.246.562.10.23178783348",
+        "1.2.246.562.10.00000000001",
+        "1.2.246.562.10.67476956288"
+      ],
+      "applicationPreferences": [
+        {
+          "ordinal": 1,
+          "preferenceData": {
+            "Koulutus-id-vocational": "false",
+            "Koulutus-id-ao-groups": "1.2.246.562.28.92529355477,1.2.246.562.28.26750186798,1.2.246.562.28.77463971187",
+            "Opetuspiste": "Helsinki Metropolia UAS, Helsinki, Tukholmankatu",
+            "Koulutus-id-athlete": "false",
+            "Koulutus-id": "1.2.246.562.20.81001529015",
+            "Koulutus-id-sora": "false",
+            "Koulutus-id-attachments": "true",
+            "Koulutus-educationDegree": "koulutusasteoph2002_71",
+            "Koulutus-id-kaksoistutkinto": "false",
+            "Opetuspiste-id": "1.2.246.562.10.23178783348",
+            "Koulutus-id-educationcode": "koulutus_771999",
+            "Koulutus": "Master of Social Services and/or Health Care, Health Business Management",
+            "Koulutus-id-lang": "EN"
+          }
+        }
+      ]
+    },
+    "overriddenAnswers": {
+      "sukupuoli": "2",
+      "turvakielto": "(null)",
+      "Kutsumanimi": "Dung",
+      "Etunimet": "Thuy Dung",
+      "Sukunimi": "Bui Ngo",
+      "onkoSinullaSuomalainenHetu": "false",
+      "Henkilotunnus": "(null)",
+      "syntymaaika": "22.11.1985",
+      "aidinkieli": "VI"
+    },
+    "notes": [
+      {
+        "type": "ApplicationNote",
+        "noteText": "Hakemus vastaanotettu",
+        "added": 1426607714965,
+        "user": "anonymousUser"
+      }
+    ],
+    "history": [
+      {
+        "type": "Change",
+        "modified": 1428414273312,
+        "modifier": "järjestelmä",
+        "reason": "Identification Post Processing",
+        "changes": [
+          {
+            "field": "sukupuoli",
+            "old value": "2"
+          },
+          {
+            "field": "Kutsumanimi",
+            "old value": "Aleksi"
+          },
+          {
+            "field": "Etunimet",
+            "old value": "Aleksi VI"
+          },
+          {
+            "field": "Sukunimi",
+            "old value": "Juupavuori"
+          },
+          {
+            "field": "Henkilotunnus",
+            "old value": "170689-934W"
+          },
+          {
+            "field": "aidinkieli",
+            "old value": "VI",
+            "new value": "null"
+          },
+          {
+            "field": "syntymaaika",
+            "old value": "17.06.1989",
+            "new value": "null"
+          }
+        ]
+      }
+    ],
+    "version": 1,
+    "modelVersion": 7,
+    "preferenceEligibilities": [
+      {
+        "aoId": "1.2.246.562.20.81001529015",
+        "status": "NOT_CHECKED",
+        "source": "UNKNOWN"
+      }
+    ],
+    "attachmentRequests": [
+      {
+        "id": "3b59b8df-00bd-499e-a901-a4c0f6176cdf",
+        "preferenceAoId": "1.2.246.562.20.81001529015",
+        "processingStatus": "NOT_CHECKED",
+        "applicationAttachment": {
+          "name": {
+            "translations": {
+              "fi": "Copies of higher education degree certificates",
+              "sv": "Copies of higher education degree certificates",
+              "en": "Copies of higher education degree certificates"
+            }
+          },
+          "description": {
+            "translations": {
+              "fi": "<p>Only final degree certificates awarded by national and regional bodies granting educational certificates will be accepted; temporary ones will be disregarded. Those applying with non-Finnish (non-Finnish = completed outside Finland) qualifications must submit copies of their educational certificates. However, this requirement does not apply to applicants who are applying with a Finnish qualification (Finnish = completed in Finland) or EU/EEA citizens graduating during spring 2015.</p>",
+              "sv": "<p>Only final degree certificates awarded by national and regional bodies granting educational certificates will be accepted; temporary ones will be disregarded. Those applying with non-Finnish (non-Finnish = completed outside Finland) qualifications must submit copies of their educational certificates. However, this requirement does not apply to applicants who are applying with a Finnish qualification (Finnish = completed in Finland) or EU/EEA citizens graduating during spring 2015.</p>",
+              "en": "<p>Only final degree certificates awarded by national and regional bodies granting educational certificates will be accepted; temporary ones will be disregarded. Those applying with non-Finnish (non-Finnish = completed outside Finland) qualifications must submit copies of their educational certificates. However, this requirement does not apply to applicants who are applying with a Finnish qualification (Finnish = completed in Finland) or EU/EEA citizens graduating during spring 2015.</p>"
+            }
+          },
+          "deadline": 1429790451224,
+          "address": {
+            "recipient": "Admission Services",
+            "streetAddress": "PO BOX 4011 (street address: Bulevardi 29, 00180 Helsinki, Finland)",
+            "postalCode": "00079",
+            "postOffice": "METROPOLIA"
+          },
+          "emailAddress": "admissions@metropolia.fi"
+        },
+        "receptionStatus": "NOT_RECEIVED"
+      },
+      {
+        "id": "890eb141-0ed2-4822-9866-c487de47ff08",
+        "preferenceAoId": "1.2.246.562.20.81001529015",
+        "processingStatus": "NOT_CHECKED",
+        "applicationAttachment": {
+          "name": {
+            "translations": {
+              "fi": "Copies of higher education transcripts (mark sheets)",
+              "sv": "Copies of higher education transcripts (mark sheets)",
+              "en": "Copies of higher education transcripts (mark sheets)"
+            }
+          },
+          "description": {
+            "translations": {
+              "fi": "<p>A transcript is an official record from your current or former institution giving a breakdown of the marks or grades you have achieved during your study. Those applying with non-Finnish (non-Finnish = completed outside Finland) qualifications must submit copies of their educational certificates. However, this requirement does not apply to applicants who are applying with a Finnish qualification (Finnish = completed in Finland) or EU/EEA citizens graduating during spring 2015.</p>",
+              "sv": "<p>A transcript is an official record from your current or former institution giving a breakdown of the marks or grades you have achieved during your study. Those applying with non-Finnish (non-Finnish = completed outside Finland) qualifications must submit copies of their educational certificates. However, this requirement does not apply to applicants who are applying with a Finnish qualification (Finnish = completed in Finland) or EU/EEA citizens graduating during spring 2015.</p>",
+              "en": "<p>A transcript is an official record from your current or former institution giving a breakdown of the marks or grades you have achieved during your study. Those applying with non-Finnish (non-Finnish = completed outside Finland) qualifications must submit copies of their educational certificates. However, this requirement does not apply to applicants who are applying with a Finnish qualification (Finnish = completed in Finland) or EU/EEA citizens graduating during spring 2015.</p>"
+            }
+          },
+          "deadline": 1429790427685,
+          "address": {
+            "recipient": "Admission Services",
+            "streetAddress": "PO BOX 4011 (street address: Bulevardi 29, 00180 Helsinki, Finland)",
+            "postalCode": "00079",
+            "postOffice": "METROPOLIA"
+          },
+          "emailAddress": "admissions@metropolia.fi"
+        },
+        "receptionStatus": "NOT_RECEIVED"
+      },
+      {
+        "id": "09fe492f-2f0c-4de6-84cf-379665aac92a",
+        "preferenceAoId": "1.2.246.562.20.81001529015",
+        "processingStatus": "NOT_CHECKED",
+        "applicationAttachment": {
+          "name": {
+            "translations": {
+              "fi": "Copies of official translations",
+              "sv": "Copies of official translations",
+              "en": "Copies of official translations"
+            }
+          },
+          "description": {
+            "translations": {
+              "fi": "<p>A copy of an official Finnish, Swedish or English translation is required if the original certificate is not written in Finnish, English or Swedish. The translation must be signed and stamped by an authorized translator.</p>",
+              "sv": "<p>A copy of an official Finnish, Swedish or English translation is required if the original certificate is not written in Finnish, English or Swedish. The translation must be signed and stamped by an authorized translator.</p>",
+              "en": "<p>A copy of an official Finnish, Swedish or English translation is required if the original certificate is not written in Finnish, English or Swedish. The translation must be signed and stamped by an authorized translator.</p>"
+            }
+          },
+          "deadline": 1429790406667,
+          "address": {
+            "recipient": "Admission Services",
+            "streetAddress": "PO BOX 4011 (street address: Bulevardi 29, 00180 Helsinki, Finland)",
+            "postalCode": "00079",
+            "postOffice": "METROPOLIA"
+          },
+          "emailAddress": "admissions@metropolia.fi"
+        },
+        "receptionStatus": "NOT_RECEIVED"
+      },
+      {
+        "id": "form.valmis.todistus.ulk_applicationOption_1.2.246.562.20.81001529015",
+        "preferenceAoId": "1.2.246.562.20.81001529015",
+        "processingStatus": "NOT_CHECKED",
+        "applicationAttachment": {
+          "name": {
+            "translations": {
+              "fi": "Todistuskopio ulkomailla suoritetusta tutkinnosta",
+              "sv": "Betygskopia av din examen avlagd utomlands",
+              "en": "Copy of your foreign qualification certificate"
+            }
+          },
+          "description": {
+            "translations": {
+              "fi": "Helsinki Metropolia UAS, Helsinki, Tukholmankatu",
+              "sv": "Helsinki Metropolia UAS, Helsinki, Tukholmankatu",
+              "en": "Helsinki Metropolia UAS, Helsinki, Tukholmankatu"
+            }
+          },
+          "deliveryNote": {
+            "translations": {
+              "fi": "23.4.2015 klo 15:00. Jos valmistut hakukeväänä, tarkista palautuspäivämäärä korkeakoulusta johon olet hakemassa.",
+              "sv": "23.4.2015 kl 15:00. Om du blir färdig under våren för ansökan, kontrollera inlämningsdatum från högskolan du söker till. ",
+              "en": "23 April 2015 at 3 PM. Check the delivery deadline from the higher education institution if you will complete your degree during the spring application round."
+            }
+          },
+          "address": {
+            "recipient": "Admission Services",
+            "streetAddress": "PO Box 4011\n00079 Metropolia\nFinland"
+          }
+        },
+        "receptionStatus": "NOT_RECEIVED"
+      },
+      {
+        "id": "form.valmis.todistus.kk_ulk_applicationOption_1.2.246.562.20.81001529015",
+        "preferenceAoId": "1.2.246.562.20.81001529015",
+        "processingStatus": "NOT_CHECKED",
+        "applicationAttachment": {
+          "name": {
+            "translations": {
+              "fi": "Todistuskopio ulkomailla suoritetun korkeakoulututkinnon todistuksesta",
+              "sv": "Betygskopia av din högskoleexamen avlagd utomlands",
+              "en": "Copy of your higher education degree certificate completed outside Finland"
+            }
+          },
+          "description": {
+            "translations": {
+              "fi": "Helsinki Metropolia UAS, Helsinki, Tukholmankatu",
+              "sv": "Helsinki Metropolia UAS, Helsinki, Tukholmankatu",
+              "en": "Helsinki Metropolia UAS, Helsinki, Tukholmankatu"
+            }
+          },
+          "deliveryNote": {
+            "translations": {
+              "fi": "23.4.2015 klo 15:00. Jos valmistut hakukeväänä, tarkista palautuspäivämäärä korkeakoulusta johon olet hakemassa.",
+              "sv": "23.4.2015 kl 15:00. Om du blir färdig under våren för ansökan, kontrollera inlämningsdatum från högskolan du söker till. ",
+              "en": "23 April 2015 at 3 PM. Check the delivery deadline from the higher education institution if you will complete your degree during the spring application round."
+            }
+          },
+          "address": {
+            "recipient": "Admission Services",
+            "streetAddress": "PO Box 4011\n00079 Metropolia\nFinland"
+          }
+        },
+        "receptionStatus": "NOT_RECEIVED"
+      }
+    ],
+    "preferencesChecked": [
+      {
+        "preferenceAoOid": "1.2.246.562.20.81001529015",
+        "checked": false
+      }
+    ]
+  },
+  {
+    "_id": {"$oid": "550854efe4b074495ac71c07"},
+    "applicationSystemId": "1.2.246.562.29.95390561488",
+    "answers": {
+      "hakutoiveet": {
+        "preference4-Koulutus-id-aoIdentifier": "",
+        "preference1-Koulutus-id-ao-groups": "1.2.246.562.28.87409145345,1.2.246.562.28.64715175107",
+        "preference4-Opetuspiste-id": "1.2.246.562.10.35830094294",
+        "preference3-Koulutus-id-athlete": "false",
+        "preference2-Koulutus-id-attachmentgroups": "1.2.246.562.28.44918870433",
+        "preference4-Koulutus-id-athlete": "false",
+        "preference3-Opetuspiste-id": "1.2.246.562.10.28342991297",
+        "preference4-Koulutus-id-attachmentgroups": "1.2.246.562.28.44918870433",
+        "preference2-Koulutus-id-ao-groups": "1.2.246.562.28.44918870433,1.2.246.562.28.56287157855,1.2.246.562.28.24297698602",
+        "preference1-Koulutus-educationDegree": "koulutusasteoph2002_72",
+        "preference6-Koulutus-id-ao-groups": "1.2.246.562.28.82550511548,1.2.246.562.28.96829962449,1.2.246.562.28.55575526841,1.2.246.562.28.73789724481,1.2.246.562.28.85557110211,1.2.246.562.28.24712637358",
+        "preference2-Koulutus-educationDegree": "koulutusasteoph2002_72",
+        "preference1-Koulutus-id-sora": "false",
+        "preference6-Koulutus": "Insinööri (AMK), maanmittaustekniikka, päivätoteutus",
+        "preference5-Koulutus-id-sora": "false",
+        "preference1-Koulutus-id-aoIdentifier": "",
+        "preference5-Koulutus-id-ao-groups": "1.2.246.562.28.24297698602,1.2.246.562.28.44918870433",
+        "preference3-Koulutus-id-attachmentgroups": "1.2.246.562.28.44918870433",
+        "preference1-Koulutus-id-vocational": "false",
+        "preference6-Koulutus-educationDegree": "koulutusasteoph2002_62",
+        "preference4-Koulutus-id-kaksoistutkinto": "false",
+        "preference5-Koulutus-id-kaksoistutkinto": "false",
+        "preference6-Koulutus-id-attachmentgroups": "1.2.246.562.28.24712637358",
+        "preference2-Opetuspiste": "Aalto University, School of Business",
+        "preference2-Koulutus-id-athlete": "false",
+        "preference5-Koulutus": "Taloustiede (Kauppatieteellisen alan yhteisvalinta)",
+        "preference5-Opetuspiste": "Jyväskylä University School of Business and Economics",
+        "preference2-Koulutus-id-kaksoistutkinto": "false",
+        "preference3-Koulutus-id-kaksoistutkinto": "false",
+        "preference4-yoLiite": "true",
+        "preference3-Koulutus-id-lang": "FI",
+        "preference2-Opetuspiste-id": "1.2.246.562.10.61042218794",
+        "preference3-Opetuspiste": "University of Vaasa, Faculty of Business Studies",
+        "preference6-Koulutus-id": "1.2.246.562.20.18131989511",
+        "54c765a2e4b09feaf6e1ffa3": "option_0",
+        "preferencesVisible": "6",
+        "preference1-Koulutus-id": "1.2.246.562.20.68908320747",
+        "preference3-Koulutus-id-sora": "false",
+        "preference4-Koulutus-id-attachments": "false",
+        "preference2-Koulutus-id-lang": "EN",
+        "preference1-Koulutus-id-kaksoistutkinto": "false",
+        "preference5-Koulutus-id-aoIdentifier": "",
+        "preference1-Koulutus-id-lang": "SV",
+        "preference6-Opetuspiste": "Helsinki Metropolia UAS, Espoo, Vanha maantie (Leppävaara)",
+        "preference4-Koulutus-id-ao-groups": "1.2.246.562.28.24297698602,1.2.246.562.28.44918870433,1.2.246.562.28.60471422000,1.2.246.562.28.30702935722",
+        "preference3-yoLiite": "true",
+        "preference4-Koulutus-id-educationcode": "koulutus_732101",
+        "preference3-Koulutus-id-ao-groups": "1.2.246.562.28.24297698602,1.2.246.562.28.44918870433",
+        "preference1-Opetuspiste": "Hanken School of Economics, Helsinki",
+        "preference5-Opetuspiste-id": "1.2.246.562.10.77576502296",
+        "preference2-Koulutus-id-aoIdentifier": "",
+        "preference2-Koulutus-id-attachments": "true",
+        "preference2-Koulutus": "Kauppatieteet (Kauppatieteellisen alan yhteisvalinta)",
+        "preference6-Koulutus-id-lang": "FI",
+        "preference6-Koulutus-id-vocational": "false",
+        "preference6-Koulutus-id-educationcode": "koulutus_651502",
+        "preference5-Koulutus-educationDegree": "koulutusasteoph2002_72",
+        "preference2-Koulutus-id-sora": "false",
+        "preference4-Koulutus-id-vocational": "false",
+        "preference1-yoLiite": "true",
+        "preference3-Koulutus-id": "1.2.246.562.20.53877471911",
+        "54ffe194e4b027da5b4d0337": "asarepapa4@yahoo.com",
+        "preference5-Koulutus-id-lang": "FI",
+        "preference1-Opetuspiste-id": "1.2.246.562.10.88259478563",
+        "preference6-Koulutus-id-kaksoistutkinto": "false",
+        "preference1-Koulutus-id-educationcode": "koulutus_732101",
+        "54e303aae4b08eed6d776181": "option_2",
+        "preference6-Koulutus-id-sora": "false",
+        "preference5-Koulutus-id-athlete": "false",
+        "preference5-Koulutus-id-attachments": "true",
+        "preference2-Koulutus-id": "1.2.246.562.20.40822369126",
+        "preference3-Koulutus-id-vocational": "false",
+        "preference6-Koulutus-id-athlete": "false",
+        "preference4-Koulutus-educationDegree": "koulutusasteoph2002_72",
+        "preference6-Koulutus-id-attachments": "true",
+        "preference1-Koulutus-id-athlete": "false",
+        "preference6-Koulutus-id-aoIdentifier": "",
+        "preference5-Koulutus-id": "1.2.246.562.20.12362897733",
+        "preference1-Koulutus-id-attachments": "false",
+        "preference3-Koulutus-educationDegree": "koulutusasteoph2002_72",
+        "preference5-yoLiite": "true",
+        "preference5-Koulutus-id-educationcode": "koulutus_732199",
+        "preference1-Koulutus-id-attachmentgroups": "",
+        "preference4-Koulutus-id-sora": "false",
+        "preference5-Koulutus-id-vocational": "false",
+        "preference4-Koulutus-id-lang": "FI",
+        "preference5-Koulutus-id-attachmentgroups": "1.2.246.562.28.44918870433",
+        "preference4-Koulutus": "Kauppatieteet, Turku (kauppatieteellisen alan yhteisvalinta)",
+        "preference2-Koulutus-id-vocational": "false",
+        "preference3-Koulutus-id-attachments": "true",
+        "preference4-Koulutus-id": "1.2.246.562.20.17074278668",
+        "preference4-Opetuspiste": "University of Turku, School of Economics and Business Administration",
+        "preference1-Koulutus": "Ansökan via gemensamma ansökan - Ekonomi, ekonomie kandidat (180 sp) och ekonomie magister (120 sp), Helsingfors",
+        "preference3-Koulutus-id-educationcode": "koulutus_732101",
+        "54bfcd9de4b021d892c6584a": "option_0",
+        "preference2-yoLiite": "true",
+        "preference3-Koulutus": "Kauppatieteet (kauppatieteellisen alan yhteisvalinta)",
+        "preference3-Koulutus-id-aoIdentifier": "",
+        "preference2-Koulutus-id-educationcode": "koulutus_732101",
+        "54c0e259e4b021d892c6584c": "option_4",
+        "preference6-Opetuspiste-id": "1.2.246.562.10.75213421979"
+      },
+      "henkilotiedot": {
+        "Henkilotunnus_plain": "051075-970X",
+        "onkosinullakaksoiskansallisuus": "false",
+        "kansalaisuus": "GHA",
+        "koulusivistyskieli": "EN",
+        "postinumeroUlkomaa": "10433",
+        "kaupunkiUlkomaa": "KUMASI",
+        "asuinmaa": "GHA",
+        "syntymapaikka": "BOAMANG and GHANA",
+        "SUKUPUOLI": "2",
+        "matkapuhelinnumero1": "050 45259111",
+        "Henkilotunnus_digest": "c1a65da3433332f9c5a04a822b0986e0c9c31abb8eaea61a7d8325de070241da",
+        "passinnumero": "",
+        "lahiosoite": "Kuoppamäki 670",
+        "turvakielto": "false",
+        "Sähköposti": "hakija-251906@oph.fi",
+        "kansallinenIdTunnus": "",
+        "onkoSinullaSuomalainenHetu": "false",
+        "aidinkieli": "null",
+        "osoiteUlkomaa": "Post Office Box KS",
+        "syntymaaika": "null"
+      },
+      "koulutustausta": {
+        "pohjakoulutus_ulk": "true",
+        "pohjakoulutus_ulk_vuosi": "2006",
+        "pohjakoulutus_ulk_nimike": "HIGHER NATIONAL DIPLOMA IN STATISTICS",
+        "pohjakoulutus_ulk_suoritusmaa": "GHANA",
+        "suoritusoikeus_tai_aiempi_tutkinto": "false",
+        "pohjakoulutus_ulk_oppilaitos": "KUMASI POLYTECHNIC"
+      },
+      "lisatiedot": {
+        "lupaSahkoisesti": "true",
+        "lupaJulkaisu": "true",
+        "asiointikieli": "englanti",
+        "lupaSms": "true",
+        "lupaMarkkinointi": "true"
+      },
+      "osaaminen": {"548ad0dde4b0c1f15d7db546": "option_14"}
+    },
+    "oid": "1.2.246.562.11.00002498238",
+    "state": "ACTIVE",
+    "personOid": "1.2.246.562.24.21108382829",
+    "studentOid": "1.2.246.562.24.21108382829",
+    "lastAutomatedProcessingTime": 1428414383130,
+    "received": 1426609391835,
+    "updated": 1428414383130,
+    "searchNames": [
+      "nelli",
+      "iii",
+      "kisällijärvi"
+    ],
+    "meta": {
+      "filingLanguage": "en",
+      "sessionId": "anonymousUser"
+    },
+    "authorizationMeta": {
+      "opoAllowed": false,
+      "aoOrganizations": {
+        "3": [
+          "1.2.246.562.10.26327467473",
+          "1.2.246.562.10.74057379666",
+          "1.2.246.562.10.00000000001",
+          "1.2.246.562.10.28342991297"
+        ],
+        "2": [
+          "1.2.246.562.10.56753942459",
+          "1.2.246.562.10.00000000001",
+          "1.2.246.562.10.82388989657",
+          "1.2.246.562.10.61042218794"
+        ],
+        "1": [
+          "1.2.246.562.10.31313893492",
+          "1.2.246.562.10.00000000001",
+          "1.2.246.562.10.40060127079",
+          "1.2.246.562.10.88259478563"
+        ],
+        "6": [
+          "1.2.246.562.10.60198812368",
+          "1.2.246.562.10.00000000001",
+          "1.2.246.562.10.75213421979",
+          "1.2.246.562.10.67476956288"
+        ],
+        "5": [
+          "1.2.246.562.10.91392558028",
+          "1.2.246.562.10.00000000001",
+          "1.2.246.562.10.77576502296",
+          "1.2.246.562.10.77055527103"
+        ],
+        "4": [
+          "1.2.246.562.10.79875033395",
+          "1.2.246.562.10.00000000001",
+          "1.2.246.562.10.35830094294",
+          "1.2.246.562.10.78305677532"
+        ]
+      },
+      "allAoOrganizations": [
+        "1.2.246.562.10.60198812368",
+        "1.2.246.562.10.31313893492",
+        "1.2.246.562.10.56753942459",
+        "1.2.246.562.10.91392558028",
+        "1.2.246.562.10.79875033395",
+        "1.2.246.562.10.40060127079",
+        "1.2.246.562.10.82388989657",
+        "1.2.246.562.10.35830094294",
+        "1.2.246.562.10.61042218794",
+        "1.2.246.562.10.28342991297",
+        "1.2.246.562.10.88259478563",
+        "1.2.246.562.10.77055527103",
+        "1.2.246.562.10.78305677532",
+        "1.2.246.562.10.26327467473",
+        "1.2.246.562.10.74057379666",
+        "1.2.246.562.10.00000000001",
+        "1.2.246.562.10.75213421979",
+        "1.2.246.562.10.77576502296",
+        "1.2.246.562.10.67476956288"
+      ],
+      "applicationPreferences": [
+        {
+          "ordinal": 1,
+          "preferenceData": {
+            "Koulutus-id-vocational": "false",
+            "yoLiite": "true",
+            "Koulutus-id-ao-groups": "1.2.246.562.28.87409145345,1.2.246.562.28.64715175107",
+            "Koulutus-id": "1.2.246.562.20.68908320747",
+            "Opetuspiste": "Hanken School of Economics, Helsinki",
+            "Koulutus-id-athlete": "false",
+            "Koulutus-id-attachments": "false",
+            "Koulutus-id-sora": "false",
+            "Koulutus-educationDegree": "koulutusasteoph2002_72",
+            "Koulutus-id-kaksoistutkinto": "false",
+            "Opetuspiste-id": "1.2.246.562.10.88259478563",
+            "Koulutus-id-educationcode": "koulutus_732101",
+            "Koulutus": "Ansökan via gemensamma ansökan - Ekonomi, ekonomie kandidat (180 sp) och ekonomie magister (120 sp), Helsingfors",
+            "Koulutus-id-lang": "SV"
+          }
+        },
+        {
+          "ordinal": 2,
+          "preferenceData": {
+            "Koulutus-id-vocational": "false",
+            "Koulutus-id-attachmentgroups": "1.2.246.562.28.44918870433",
+            "yoLiite": "true",
+            "Koulutus-id-ao-groups": "1.2.246.562.28.44918870433,1.2.246.562.28.56287157855,1.2.246.562.28.24297698602",
+            "Opetuspiste": "Aalto University, School of Business",
+            "Koulutus-id-athlete": "false",
+            "Koulutus-id": "1.2.246.562.20.40822369126",
+            "Koulutus-id-attachments": "true",
+            "Koulutus-id-sora": "false",
+            "Koulutus-educationDegree": "koulutusasteoph2002_72",
+            "Koulutus-id-kaksoistutkinto": "false",
+            "Opetuspiste-id": "1.2.246.562.10.61042218794",
+            "Koulutus-id-educationcode": "koulutus_732101",
+            "Koulutus": "Kauppatieteet (Kauppatieteellisen alan yhteisvalinta)",
+            "Koulutus-id-lang": "EN"
+          }
+        },
+        {
+          "ordinal": 3,
+          "preferenceData": {
+            "Koulutus-id-vocational": "false",
+            "Koulutus-id-attachmentgroups": "1.2.246.562.28.44918870433",
+            "yoLiite": "true",
+            "Koulutus-id-athlete": "false",
+            "Opetuspiste": "University of Vaasa, Faculty of Business Studies",
+            "Koulutus-id-ao-groups": "1.2.246.562.28.24297698602,1.2.246.562.28.44918870433",
+            "Koulutus-id": "1.2.246.562.20.53877471911",
+            "Koulutus-id-attachments": "true",
+            "Koulutus-id-sora": "false",
+            "Koulutus-id-kaksoistutkinto": "false",
+            "Koulutus-educationDegree": "koulutusasteoph2002_72",
+            "Opetuspiste-id": "1.2.246.562.10.28342991297",
+            "Koulutus-id-educationcode": "koulutus_732101",
+            "Koulutus": "Kauppatieteet (kauppatieteellisen alan yhteisvalinta)",
+            "Koulutus-id-lang": "FI"
+          }
+        },
+        {
+          "ordinal": 4,
+          "preferenceData": {
+            "Koulutus-id-vocational": "false",
+            "Koulutus-id-attachmentgroups": "1.2.246.562.28.44918870433",
+            "yoLiite": "true",
+            "Opetuspiste": "University of Turku, School of Economics and Business Administration",
+            "Koulutus-id": "1.2.246.562.20.17074278668",
+            "Koulutus-id-athlete": "false",
+            "Koulutus-id-ao-groups": "1.2.246.562.28.24297698602,1.2.246.562.28.44918870433,1.2.246.562.28.60471422000,1.2.246.562.28.30702935722",
+            "Koulutus-id-attachments": "false",
+            "Koulutus-id-sora": "false",
+            "Koulutus-id-kaksoistutkinto": "false",
+            "Koulutus-educationDegree": "koulutusasteoph2002_72",
+            "Opetuspiste-id": "1.2.246.562.10.35830094294",
+            "Koulutus-id-educationcode": "koulutus_732101",
+            "Koulutus": "Kauppatieteet, Turku (kauppatieteellisen alan yhteisvalinta)",
+            "Koulutus-id-lang": "FI"
+          }
+        },
+        {
+          "ordinal": 5,
+          "preferenceData": {
+            "Koulutus-id-vocational": "false",
+            "Koulutus-educationDegree": "koulutusasteoph2002_72",
+            "Koulutus-id-kaksoistutkinto": "false",
+            "Koulutus-id-attachmentgroups": "1.2.246.562.28.44918870433",
+            "yoLiite": "true",
+            "Opetuspiste-id": "1.2.246.562.10.77576502296",
+            "Koulutus-id-educationcode": "koulutus_732199",
+            "Koulutus": "Taloustiede (Kauppatieteellisen alan yhteisvalinta)",
+            "Koulutus-id": "1.2.246.562.20.12362897733",
+            "Koulutus-id-athlete": "false",
+            "Opetuspiste": "Jyväskylä University School of Business and Economics",
+            "Koulutus-id-ao-groups": "1.2.246.562.28.24297698602,1.2.246.562.28.44918870433",
+            "Koulutus-id-attachments": "true",
+            "Koulutus-id-lang": "FI",
+            "Koulutus-id-sora": "false"
+          }
+        },
+        {
+          "ordinal": 6,
+          "preferenceData": {
+            "Koulutus-id-vocational": "false",
+            "Koulutus-id-attachmentgroups": "1.2.246.562.28.24712637358",
+            "Koulutus-id-ao-groups": "1.2.246.562.28.82550511548,1.2.246.562.28.96829962449,1.2.246.562.28.55575526841,1.2.246.562.28.73789724481,1.2.246.562.28.85557110211,1.2.246.562.28.24712637358",
+            "Koulutus-id": "1.2.246.562.20.18131989511",
+            "Opetuspiste": "Helsinki Metropolia UAS, Espoo, Vanha maantie (Leppävaara)",
+            "Koulutus-id-athlete": "false",
+            "Koulutus-id-attachments": "true",
+            "Koulutus-id-sora": "false",
+            "Koulutus-educationDegree": "koulutusasteoph2002_62",
+            "Koulutus-id-kaksoistutkinto": "false",
+            "Opetuspiste-id": "1.2.246.562.10.75213421979",
+            "Koulutus-id-educationcode": "koulutus_651502",
+            "Koulutus": "Insinööri (AMK), maanmittaustekniikka, päivätoteutus",
+            "Koulutus-id-lang": "FI"
+          }
+        }
+      ]
+    },
+    "overriddenAnswers": {
+      "sukupuoli": "1",
+      "turvakielto": "(null)",
+      "Kutsumanimi": "YAW",
+      "Etunimet": "JOHN YAW",
+      "Sukunimi": "ASARE",
+      "onkoSinullaSuomalainenHetu": "false",
+      "Henkilotunnus": "(null)",
+      "syntymaaika": "26.05.1983",
+      "aidinkieli": "TW"
+    },
+    "notes": [
+      {
+        "type": "ApplicationNote",
+        "noteText": "Hakemus vastaanotettu",
+        "added": 1426609391835,
+        "user": "anonymousUser"
+      }
+    ],
+    "history": [
+      {
+        "type": "Change",
+        "modified": 1428414383130,
+        "modifier": "järjestelmä",
+        "reason": "Identification Post Processing",
+        "changes": [
+          {
+            "field": "sukupuoli",
+            "old value": "1"
+          },
+          {
+            "field": "Kutsumanimi",
+            "old value": "Nelli"
+          },
+          {
+            "field": "Etunimet",
+            "old value": "Nelli III"
+          },
+          {
+            "field": "Sukunimi",
+            "old value": "Kisällijärvi"
+          },
+          {
+            "field": "Henkilotunnus",
+            "old value": "051075-970X"
+          },
+          {
+            "field": "aidinkieli",
+            "old value": "TW",
+            "new value": "null"
+          },
+          {
+            "field": "syntymaaika",
+            "old value": "05.10.1975",
+            "new value": "null"
+          }
+        ]
+      }
+    ],
+    "version": 1,
+    "modelVersion": 7,
+    "preferenceEligibilities": [
+      {
+        "aoId": "1.2.246.562.20.18131989511",
+        "status": "NOT_CHECKED",
+        "source": "UNKNOWN"
+      },
+      {
+        "aoId": "1.2.246.562.20.68908320747",
+        "status": "NOT_CHECKED",
+        "source": "UNKNOWN"
+      },
+      {
+        "aoId": "1.2.246.562.20.53877471911",
+        "status": "NOT_CHECKED",
+        "source": "UNKNOWN"
+      },
+      {
+        "aoId": "1.2.246.562.20.40822369126",
+        "status": "NOT_CHECKED",
+        "source": "UNKNOWN"
+      },
+      {
+        "aoId": "1.2.246.562.20.12362897733",
+        "status": "NOT_CHECKED",
+        "source": "UNKNOWN"
+      },
+      {
+        "aoId": "1.2.246.562.20.17074278668",
+        "status": "NOT_CHECKED",
+        "source": "UNKNOWN"
+      }
+    ],
+    "attachmentRequests": [
+      {
+        "id": "form.valmis.todistus.ulk_applicationOption_1.2.246.562.20.68908320747",
+        "preferenceAoId": "1.2.246.562.20.68908320747",
+        "processingStatus": "NOT_CHECKED",
+        "applicationAttachment": {
+          "name": {
+            "translations": {
+              "fi": "Todistuskopio ulkomailla suoritetusta tutkinnosta",
+              "sv": "Betygskopia av din examen avlagd utomlands",
+              "en": "Copy of your foreign qualification certificate"
+            }
+          },
+          "description": {
+            "translations": {
+              "fi": "Hanken School of Economics, Helsinki",
+              "sv": "Hanken School of Economics, Helsinki",
+              "en": "Hanken School of Economics, Helsinki"
+            }
+          },
+          "deliveryNote": {
+            "translations": {
+              "fi": "23.4.2015 klo 15:00. Jos valmistut hakukeväänä, tarkista palautuspäivämäärä korkeakoulusta johon olet hakemassa.",
+              "sv": "23.4.2015 kl 15:00. Om du blir färdig under våren för ansökan, kontrollera inlämningsdatum från högskolan du söker till. ",
+              "en": "23 April 2015 at 3 PM. Check the delivery deadline from the higher education institution if you will complete your degree during the spring application round."
+            }
+          },
+          "address": {
+            "recipient": "Hanken School of Economics, Helsinki",
+            "streetAddress": "PB 479"
+          }
+        },
+        "receptionStatus": "NOT_RECEIVED"
+      },
+      {
+        "id": "form.valmis.todistus.ulk_group_1.2.246.562.28.44918870433",
+        "preferenceAoGroupId": "1.2.246.562.28.44918870433",
+        "processingStatus": "NOT_CHECKED",
+        "applicationAttachment": {
+          "name": {
+            "translations": {
+              "fi": "Todistuskopio ulkomailla suoritetusta tutkinnosta",
+              "sv": "Betygskopia av din examen avlagd utomlands",
+              "en": "Copy of your foreign qualification certificate"
+            }
+          },
+          "deliveryNote": {
+            "translations": {
+              "fi": "23.4.2015 klo 15:00. Jos valmistut hakukeväänä, tarkista palautuspäivämäärä korkeakoulusta johon olet hakemassa.",
+              "sv": "23.4.2015 kl 15:00. Om du blir färdig under våren för ansökan, kontrollera inlämningsdatum från högskolan du söker till. ",
+              "en": "23 April 2015 at 3 PM. Check the delivery deadline from the higher education institution if you will complete your degree during the spring application round."
+            }
+          },
+          "address": {
+            "recipient": "Aalto-yliopiston hakijapalvelut",
+            "streetAddress": "PL 11110",
+            "postalCode": "00076",
+            "postOffice": "AALTO"
+          }
+        },
+        "receptionStatus": "NOT_RECEIVED"
+      },
+      {
+        "id": "form.valmis.todistus.ulk_group_1.2.246.562.28.24712637358",
+        "preferenceAoGroupId": "1.2.246.562.28.24712637358",
+        "processingStatus": "NOT_CHECKED",
+        "applicationAttachment": {
+          "name": {
+            "translations": {
+              "fi": "Todistuskopio ulkomailla suoritetusta tutkinnosta",
+              "sv": "Betygskopia av din examen avlagd utomlands",
+              "en": "Copy of your foreign qualification certificate"
+            }
+          },
+          "deliveryNote": {
+            "translations": {
+              "fi": "23.4.2015 klo 15:00. Jos valmistut hakukeväänä, tarkista palautuspäivämäärä korkeakoulusta johon olet hakemassa.",
+              "sv": "23.4.2015 kl 15:00. Om du blir färdig under våren för ansökan, kontrollera inlämningsdatum från högskolan du söker till. ",
+              "en": "23 April 2015 at 3 PM. Check the delivery deadline from the higher education institution if you will complete your degree during the spring application round."
+            }
+          },
+          "address": {
+            "recipient": "Admission Services",
+            "streetAddress": "PO Box 4011\n00079 Metropolia\nFinland"
+          }
+        },
+        "receptionStatus": "NOT_RECEIVED"
+      },
+      {
+        "id": "b24ed34e-7cfb-4781-a462-83ef0daabd7c",
+        "preferenceAoGroupId": "1.2.246.562.28.24297698602",
+        "processingStatus": "NOT_CHECKED",
+        "applicationAttachment": {
+          "header": {
+            "translations": {
+              "fi": "Kopio tutkintotodistuksesta",
+              "sv": "En kopia av examensbetyget",
+              "en": "Copy of the Diploma"
+            }
+          },
+          "description": {
+            "translations": {
+              "fi": "Suomalaisen ammatillisen perustutkinnon, ammatti- tai erikoisammattitutkinnon, ammattikorkeakoulututkinnon tai ulkomaisen tutkinnon jo tehneiden kopio tutkintotodistuksesta tulee olla saapunut Aalto-yliopistolle 23.4.2015 klo 15:00 mennessä. Keväällä 2015 valmistuvien kopio tutkintotodistuksesta tulee olla saapunut 4.6.2015 klo 15:00 mennessä.",
+              "sv": "Bifoga en kopia av betyget över en finsk yrkesinriktad grundexamen, specialyrkesexamen, examen på skolnivå, institutnivå eller yrkesinriktad examen på högre nivå eller utländsk examen senast den 23.4.2015 kl. 15:00. Sökande som våren 2015 skall avlägga examen, skall skicka en kopia av betyget senast den 4.6.2015 kl. 15:00 till Aalto-universitetet.",
+              "en": "Submit a copy of the diploma/certificate from any upper secondary school, undergraduate, graduate or professional school attended (showing the eligibility to study in a university) must be received by April 23, 2015. Spring 2015 graduates have to submit a copy of the diploma or another certificate of the final grades given by the school by June 4, 2015."
+            }
+          },
+          "deadline": 1429790400000,
+          "address": {
+            "recipient": "Aalto-yliopiston hakijapalvelut",
+            "streetAddress": "PL 11110",
+            "postalCode": "00076",
+            "postOffice": "AALTO"
+          }
+        },
+        "receptionStatus": "NOT_RECEIVED"
+      }
+    ],
+    "preferencesChecked": [
+      {
+        "preferenceAoOid": "1.2.246.562.20.18131989511",
+        "checked": false
+      },
+      {
+        "preferenceAoOid": "1.2.246.562.20.68908320747",
+        "checked": false
+      },
+      {
+        "preferenceAoOid": "1.2.246.562.20.53877471911",
+        "checked": false
+      },
+      {
+        "preferenceAoOid": "1.2.246.562.20.40822369126",
+        "checked": false
+      },
+      {
+        "preferenceAoOid": "1.2.246.562.20.12362897733",
+        "checked": false
+      },
+      {
+        "preferenceAoOid": "1.2.246.562.20.17074278668",
+        "checked": false
+      }
+    ]
+  },
+  {
+    "_id": {"$oid": "55087022e4b014f70aa3b096"},
+    "applicationSystemId": "1.2.246.562.29.95390561488",
+    "answers": {
+      "hakutoiveet": {
+        "preference4-Koulutus-id-aoIdentifier": "",
+        "preference4-Koulutus-id-educationcode": "",
+        "preference1-Koulutus-id-ao-groups": "1.2.246.562.28.92529355477,1.2.246.562.28.48749718944,1.2.246.562.28.23836924893",
+        "preference3-Koulutus-id-ao-groups": "",
+        "preference4-Opetuspiste-id": "",
+        "preference1-Opetuspiste": "Helsinki Metropolia UAS, Vantaa, Leiritie (Myyrmäki)",
+        "preference3-Koulutus-id-athlete": "",
+        "preference5-Opetuspiste-id": "",
+        "5493ffc4e4b065558799bdf8": "30",
+        "preference2-Koulutus-id-attachmentgroups": "",
+        "preference4-Koulutus-id-athlete": "",
+        "preference2-Koulutus-id-aoIdentifier": "",
+        "preference2-Koulutus-id-attachments": "true",
+        "preference2-Koulutus": "Master of Business Administration, Health Business Management",
+        "preference3-Opetuspiste-id": "",
+        "preference6-Koulutus-id-lang": "",
+        "preference4-Koulutus-id-attachmentgroups": "",
+        "preference6-Koulutus-id-vocational": "",
+        "preference2-Koulutus-id-ao-groups": "1.2.246.562.28.92529355477,1.2.246.562.28.48749718944,1.2.246.562.28.23836924893",
+        "preference1-Koulutus-educationDegree": "koulutusasteoph2002_71",
+        "preference6-Koulutus-id-educationcode": "",
+        "54fd8450e4b0e01a760ebbe1": "option_1",
+        "preference6-Koulutus-id-ao-groups": "",
+        "preference5-Koulutus-educationDegree": "",
+        "preference2-Koulutus-id-sora": "false",
+        "preference4-Koulutus-id-vocational": "",
+        "preference3-Koulutus-id": "",
+        "preference5-Koulutus-id-lang": "",
+        "preference1-Opetuspiste-id": "1.2.246.562.10.875704637010",
+        "preference2-Koulutus-educationDegree": "koulutusasteoph2002_71",
+        "preference1-Koulutus-id-sora": "false",
+        "preference5-Koulutus-id-sora": "",
+        "preference1-Koulutus-id-aoIdentifier": "",
+        "preference6-Koulutus-id-kaksoistutkinto": "",
+        "preference1-Koulutus-id-educationcode": "koulutus_731201",
+        "preference5-Koulutus-id-ao-groups": "",
+        "preference3-Koulutus-id-attachmentgroups": "",
+        "preference6-Koulutus-id-sora": "",
+        "preference5-Koulutus-id-athlete": "",
+        "preference5-Koulutus-id-attachments": "",
+        "preference2-Koulutus-id": "1.2.246.562.20.867715552810",
+        "preference1-Koulutus-id-vocational": "false",
+        "preference3-Koulutus-id-vocational": "",
+        "preference6-Koulutus-id-athlete": "",
+        "preference4-Koulutus-educationDegree": "",
+        "preference6-Koulutus-id-attachments": "",
+        "preference6-Koulutus-educationDegree": "",
+        "preference4-Koulutus-id-kaksoistutkinto": "",
+        "preference1-Koulutus-id-athlete": "false",
+        "preference6-Koulutus-id-aoIdentifier": "",
+        "preference5-Koulutus-id-kaksoistutkinto": "",
+        "preference6-Koulutus-id-attachmentgroups": "",
+        "preference5-Koulutus-id": "",
+        "preference2-Opetuspiste": "Helsinki Metropolia UAS, Vantaa, Leiritie (Myyrmäki)",
+        "preference2-Koulutus-id-athlete": "false",
+        "preference1-Koulutus-id-attachments": "true",
+        "preference3-Koulutus-educationDegree": "",
+        "preference5-Opetuspiste": "",
+        "preference2-Koulutus-id-kaksoistutkinto": "false",
+        "preference5-Koulutus-id-educationcode": "",
+        "preference3-Koulutus-id-kaksoistutkinto": "",
+        "preference1-Koulutus-id-attachmentgroups": "",
+        "preference4-Koulutus-id-sora": "",
+        "preference5-Koulutus-id-vocational": "",
+        "preference3-Koulutus-id-lang": "",
+        "preference2-Opetuspiste-id": "1.2.246.562.10.875704637010",
+        "preference3-Opetuspiste": "",
+        "preference4-Koulutus-id-lang": "",
+        "preference6-Koulutus-id": "",
+        "preference5-Koulutus-id-attachmentgroups": "",
+        "54fd6ca3e4b0e01a760eba25": "option_1",
+        "preferencesVisible": "6",
+        "preference2-Koulutus-id-vocational": "false",
+        "preference1-Koulutus-id": "1.2.246.562.20.20830715601",
+        "preference3-Koulutus-id-attachments": "",
+        "preference3-Koulutus-id-sora": "",
+        "preference4-Koulutus-id": "",
+        "preference4-Koulutus-id-attachments": "",
+        "preference2-Koulutus-id-lang": "EN",
+        "preference4-Opetuspiste": "",
+        "preference1-Koulutus-id-kaksoistutkinto": "false",
+        "preference1-Koulutus": "Master of Business Administration, Business Informatics",
+        "preference3-Koulutus-id-educationcode": "",
+        "preference3-Koulutus-id-aoIdentifier": "",
+        "preference5-Koulutus-id-aoIdentifier": "",
+        "preference1-Koulutus-id-lang": "EN",
+        "preference6-Opetuspiste": "",
+        "preference4-Koulutus-id-ao-groups": "",
+        "548af042e4b0c1f15d7db54c": "Accounting Technician, 18.06.2008",
+        "preference2-Koulutus-id-educationcode": "koulutus_731201",
+        "54929c06e4b0a902493ee3b8": "45",
+        "preference6-Opetuspiste-id": ""
+      },
+      "henkilotiedot": {
+        "Henkilotunnus_plain": "130675-9507",
+        "onkosinullakaksoiskansallisuus": "false",
+        "kansalaisuus": "NGA",
+        "koulusivistyskieli": "EN",
+        "postinumeroUlkomaa": "+234",
+        "kaupunkiUlkomaa": "Lagos",
+        "asuinmaa": "NGA",
+        "syntymapaikka": "U.C.H Ibadan, Nigeria",
+        "SUKUPUOLI": "2",
+        "matkapuhelinnumero1": "050 72084021",
+        "Henkilotunnus_digest": "2a8539a7f7f3273d3c2338049dd15d8095d087e9abbfc6bf3d7a830fac974db9",
+        "passinnumero": "",
+        "lahiosoite": "Junttilantie 736",
+        "turvakielto": "false",
+        "Sähköposti": "hakija-1504120@oph.fi",
+        "kansallinenIdTunnus": "",
+        "onkoSinullaSuomalainenHetu": "false",
+        "aidinkieli": "null",
+        "osoiteUlkomaa": "86, Adebayo Osho Street, Ejigbo, Lagos, Nigeria.",
+        "syntymaaika": "null"
+      },
+      "koulutustausta": {
+        "pohjakoulutus_muu_vuosi2": "2011",
+        "pohjakoulutus_muu_kuvaus": "Bsc Accounting\r\nLagos State University\r\nNigeria",
+        "pohjakoulutus_muu_kuvaus2": "Associate Member\r\nThe Institute of Chartered Accountants of Nigeria",
+        "suoritusoikeus_tai_aiempi_tutkinto": "false",
+        "pohjakoulutus_muu": "true",
+        "pohjakoulutus_muu_vuosi": "2010"
+      },
+      "lisatiedot": {
+        "lupaSahkoisesti": "true",
+        "asiointikieli": "englanti",
+        "lupaSms": "true",
+        "lupaMarkkinointi": "true"
+      },
+      "osaaminen": {}
+    },
+    "oid": "1.2.246.562.11.00002513058",
+    "state": "ACTIVE",
+    "personOid": "1.2.246.562.24.65598126716",
+    "studentOid": "1.2.246.562.24.65598126716",
+    "lastAutomatedProcessingTime": 1428414011247,
+    "received": 1426616354719,
+    "updated": 1428414011247,
+    "searchNames": [
+      "vihtajoki",
+      "jimi",
+      "xx"
+    ],
+    "meta": {
+      "filingLanguage": "en",
+      "sessionId": "anonymousUser"
+    },
+    "authorizationMeta": {
+      "opoAllowed": false,
+      "aoOrganizations": {
+        "2": [
+          "1.2.246.562.10.60198812368",
+          "1.2.246.562.10.00000000001",
+          "1.2.246.562.10.875704637010",
+          "1.2.246.562.10.67476956288"
+        ],
+        "1": [
+          "1.2.246.562.10.60198812368",
+          "1.2.246.562.10.00000000001",
+          "1.2.246.562.10.875704637010",
+          "1.2.246.562.10.67476956288"
+        ]
+      },
+      "allAoOrganizations": [
+        "1.2.246.562.10.60198812368",
+        "1.2.246.562.10.00000000001",
+        "1.2.246.562.10.875704637010",
+        "1.2.246.562.10.67476956288"
+      ],
+      "applicationPreferences": [
+        {
+          "ordinal": 1,
+          "preferenceData": {
+            "Koulutus-id-vocational": "false",
+            "Koulutus-id-ao-groups": "1.2.246.562.28.92529355477,1.2.246.562.28.48749718944,1.2.246.562.28.23836924893",
+            "Opetuspiste": "Helsinki Metropolia UAS, Vantaa, Leiritie (Myyrmäki)",
+            "Koulutus-id-athlete": "false",
+            "Koulutus-id": "1.2.246.562.20.20830715601",
+            "Koulutus-id-sora": "false",
+            "Koulutus-id-attachments": "true",
+            "Koulutus-educationDegree": "koulutusasteoph2002_71",
+            "Koulutus-id-kaksoistutkinto": "false",
+            "Opetuspiste-id": "1.2.246.562.10.875704637010",
+            "Koulutus-id-educationcode": "koulutus_731201",
+            "Koulutus": "Master of Business Administration, Business Informatics",
+            "Koulutus-id-lang": "EN"
+          }
+        },
+        {
+          "ordinal": 2,
+          "preferenceData": {
+            "Koulutus-id-vocational": "false",
+            "Koulutus-id-kaksoistutkinto": "false",
+            "Koulutus-educationDegree": "koulutusasteoph2002_71",
+            "Opetuspiste-id": "1.2.246.562.10.875704637010",
+            "Koulutus-id-educationcode": "koulutus_731201",
+            "Koulutus": "Master of Business Administration, Health Business Management",
+            "Koulutus-id-athlete": "false",
+            "Opetuspiste": "Helsinki Metropolia UAS, Vantaa, Leiritie (Myyrmäki)",
+            "Koulutus-id": "1.2.246.562.20.867715552810",
+            "Koulutus-id-ao-groups": "1.2.246.562.28.92529355477,1.2.246.562.28.48749718944,1.2.246.562.28.23836924893",
+            "Koulutus-id-lang": "EN",
+            "Koulutus-id-sora": "false",
+            "Koulutus-id-attachments": "true"
+          }
+        }
+      ]
+    },
+    "overriddenAnswers": {
+      "sukupuoli": "2",
+      "turvakielto": "(null)",
+      "Kutsumanimi": "Deborah",
+      "Etunimet": "Deborah Oghenevwaire",
+      "Sukunimi": "Bojeghre",
+      "onkoSinullaSuomalainenHetu": "false",
+      "Henkilotunnus": "(null)",
+      "syntymaaika": "30.06.1985",
+      "aidinkieli": "EN"
+    },
+    "notes": [
+      {
+        "type": "ApplicationNote",
+        "noteText": "Hakemus vastaanotettu",
+        "added": 1426616354719,
+        "user": "anonymousUser"
+      }
+    ],
+    "history": [
+      {
+        "type": "Change",
+        "modified": 1428414011247,
+        "modifier": "järjestelmä",
+        "reason": "Identification Post Processing",
+        "changes": [
+          {
+            "field": "sukupuoli",
+            "old value": "2"
+          },
+          {
+            "field": "Kutsumanimi",
+            "old value": "Jimi"
+          },
+          {
+            "field": "Etunimet",
+            "old value": "Jimi XX"
+          },
+          {
+            "field": "Sukunimi",
+            "old value": "Vihtajoki"
+          },
+          {
+            "field": "Henkilotunnus",
+            "old value": "130675-9507"
+          },
+          {
+            "field": "aidinkieli",
+            "old value": "EN",
+            "new value": "null"
+          },
+          {
+            "field": "syntymaaika",
+            "old value": "13.06.1975",
+            "new value": "null"
+          }
+        ]
+      }
+    ],
+    "version": 1,
+    "modelVersion": 7,
+    "preferenceEligibilities": [
+      {
+        "aoId": "1.2.246.562.20.20830715601",
+        "status": "NOT_CHECKED",
+        "source": "UNKNOWN"
+      },
+      {
+        "aoId": "1.2.246.562.20.867715552810",
+        "status": "NOT_CHECKED",
+        "source": "UNKNOWN"
+      }
+    ],
+    "attachmentRequests": [
+      {
+        "id": "c426b1c8-7b3a-4c75-8887-4dad69f56abf",
+        "preferenceAoId": "1.2.246.562.20.20830715601",
+        "processingStatus": "NOT_CHECKED",
+        "applicationAttachment": {
+          "name": {
+            "translations": {
+              "fi": "Copies of higher education degree certificates",
+              "sv": "Copies of higher education degree certificates",
+              "en": "Copies of higher education degree certificates"
+            }
+          },
+          "description": {
+            "translations": {
+              "fi": "<p>Only final degree certificates awarded by national and regional bodies granting educational certificates will be accepted; temporary ones will be disregarded. Those applying with non-Finnish (non-Finnish = completed outside Finland) qualifications must submit copies of their educational certificates. However, this requirement does not apply to applicants who are applying with a Finnish qualification (Finnish = completed in Finland) or EU/EEA citizens graduating during spring 2015.</p>",
+              "sv": "<p>Only final degree certificates awarded by national and regional bodies granting educational certificates will be accepted; temporary ones will be disregarded. Those applying with non-Finnish (non-Finnish = completed outside Finland) qualifications must submit copies of their educational certificates. However, this requirement does not apply to applicants who are applying with a Finnish qualification (Finnish = completed in Finland) or EU/EEA citizens graduating during spring 2015.</p>",
+              "en": "<p>Only final degree certificates awarded by national and regional bodies granting educational certificates will be accepted; temporary ones will be disregarded. Those applying with non-Finnish (non-Finnish = completed outside Finland) qualifications must submit copies of their educational certificates. However, this requirement does not apply to applicants who are applying with a Finnish qualification (Finnish = completed in Finland) or EU/EEA citizens graduating during spring 2015.</p>"
+            }
+          },
+          "deadline": 1429790447823,
+          "address": {
+            "recipient": "Admission Services",
+            "streetAddress": "PO BOX 4011 (street address: Bulevardi 29, 00180 Helsinki, Finland)",
+            "postalCode": "00079",
+            "postOffice": "METROPOLIA"
+          },
+          "emailAddress": "admissions@metropolia.fi"
+        },
+        "receptionStatus": "NOT_RECEIVED"
+      },
+      {
+        "id": "eae93e76-32cb-4565-a3be-fb8d94708070",
+        "preferenceAoId": "1.2.246.562.20.20830715601",
+        "processingStatus": "NOT_CHECKED",
+        "applicationAttachment": {
+          "name": {
+            "translations": {
+              "fi": "Copies of higher education transcripts (mark sheets)",
+              "sv": "Copies of higher education transcripts (mark sheets)",
+              "en": "Copies of higher education transcripts (mark sheets)"
+            }
+          },
+          "description": {
+            "translations": {
+              "fi": "<p>A transcript is an official record from your current or former institution giving a breakdown of the marks or grades you have achieved during your study. Those applying with non-Finnish (non-Finnish = completed outside Finland) qualifications must submit copies of their educational certificates. However, this requirement does not apply to applicants who are applying with a Finnish qualification (Finnish = completed in Finland) or EU/EEA citizens graduating during spring 2015.</p>",
+              "sv": "<p>A transcript is an official record from your current or former institution giving a breakdown of the marks or grades you have achieved during your study. Those applying with non-Finnish (non-Finnish = completed outside Finland) qualifications must submit copies of their educational certificates. However, this requirement does not apply to applicants who are applying with a Finnish qualification (Finnish = completed in Finland) or EU/EEA citizens graduating during spring 2015.</p>",
+              "en": "<p>A transcript is an official record from your current or former institution giving a breakdown of the marks or grades you have achieved during your study. Those applying with non-Finnish (non-Finnish = completed outside Finland) qualifications must submit copies of their educational certificates. However, this requirement does not apply to applicants who are applying with a Finnish qualification (Finnish = completed in Finland) or EU/EEA citizens graduating during spring 2015.</p>"
+            }
+          },
+          "deadline": 1429790405315,
+          "address": {
+            "recipient": "Admission Services",
+            "streetAddress": "PO BOX 4011 (street address: Bulevardi 29, 00180 Helsinki, Finland)",
+            "postalCode": "00079",
+            "postOffice": "METROPOLIA"
+          },
+          "emailAddress": "admissions@metropolia.fi"
+        },
+        "receptionStatus": "NOT_RECEIVED"
+      },
+      {
+        "id": "f63af8b1-1db7-4350-a75b-3fd8117781fe",
+        "preferenceAoId": "1.2.246.562.20.20830715601",
+        "processingStatus": "NOT_CHECKED",
+        "applicationAttachment": {
+          "name": {
+            "translations": {
+              "fi": "Copies of official translations",
+              "sv": "Copies of official translations",
+              "en": "Copies of official translations"
+            }
+          },
+          "description": {
+            "translations": {
+              "fi": "<p>A copy of an official Finnish, Swedish or English translation is required if the original certificate is not written in Finnish, English or Swedish. The translation must be signed and stamped by an authorized translator.</p>",
+              "sv": "<p>A copy of an official Finnish, Swedish or English translation is required if the original certificate is not written in Finnish, English or Swedish. The translation must be signed and stamped by an authorized translator.</p>",
+              "en": "<p>A copy of an official Finnish, Swedish or English translation is required if the original certificate is not written in Finnish, English or Swedish. The translation must be signed and stamped by an authorized translator.</p>"
+            }
+          },
+          "deadline": 1429790443767,
+          "address": {
+            "recipient": "Admission Services",
+            "streetAddress": "PO BOX 4011 (street address: Bulevardi 29, 00180 Helsinki, Finland)",
+            "postalCode": "00079",
+            "postOffice": "METROPOLIA"
+          },
+          "emailAddress": "admissions@metropolia.fi"
+        },
+        "receptionStatus": "NOT_RECEIVED"
+      },
+      {
+        "id": "df7bc43b-7d4d-4d37-9a4a-8b79dde9fec4",
+        "preferenceAoId": "1.2.246.562.20.867715552810",
+        "processingStatus": "NOT_CHECKED",
+        "applicationAttachment": {
+          "name": {
+            "translations": {
+              "fi": "Copies of higher education degree certificates",
+              "sv": "Copies of higher education degree certificates",
+              "en": "Copies of higher education degree certificates"
+            }
+          },
+          "description": {
+            "translations": {
+              "fi": "<p>Only final degree certificates awarded by national and regional bodies granting educational certificates will be accepted; temporary ones will be disregarded. Those applying with non-Finnish (non-Finnish = completed outside Finland) qualifications must submit copies of their educational certificates. However, this requirement does not apply to applicants who are applying with a Finnish qualification (Finnish = completed in Finland) or EU/EEA citizens graduating during spring 2015.</p>",
+              "sv": "<p>Only final degree certificates awarded by national and regional bodies granting educational certificates will be accepted; temporary ones will be disregarded. Those applying with non-Finnish (non-Finnish = completed outside Finland) qualifications must submit copies of their educational certificates. However, this requirement does not apply to applicants who are applying with a Finnish qualification (Finnish = completed in Finland) or EU/EEA citizens graduating during spring 2015.</p>",
+              "en": "<p>Only final degree certificates awarded by national and regional bodies granting educational certificates will be accepted; temporary ones will be disregarded. Those applying with non-Finnish (non-Finnish = completed outside Finland) qualifications must submit copies of their educational certificates. However, this requirement does not apply to applicants who are applying with a Finnish qualification (Finnish = completed in Finland) or EU/EEA citizens graduating during spring 2015.</p>"
+            }
+          },
+          "deadline": 1429790418807,
+          "address": {
+            "recipient": "Admission Services",
+            "streetAddress": "PO BOX 4011 (street address: Bulevardi 29, 00180 Helsinki, Finland)",
+            "postalCode": "00079",
+            "postOffice": "METROPOLIA"
+          },
+          "emailAddress": "admissions@metropolia.fi"
+        },
+        "receptionStatus": "NOT_RECEIVED"
+      },
+      {
+        "id": "37fb040b-a87d-4f8e-b11b-9d155f95ea15",
+        "preferenceAoId": "1.2.246.562.20.867715552810",
+        "processingStatus": "NOT_CHECKED",
+        "applicationAttachment": {
+          "name": {
+            "translations": {
+              "fi": "Copies of higher education transcripts (mark sheets)",
+              "sv": "Copies of higher education transcripts (mark sheets)",
+              "en": "Copies of higher education transcripts (mark sheets)"
+            }
+          },
+          "description": {
+            "translations": {
+              "fi": "<p>A transcript is an official record from your current or former institution giving a breakdown of the marks or grades you have achieved during your study. Those applying with non-Finnish (non-Finnish = completed outside Finland) qualifications must submit copies of their educational certificates. However, this requirement does not apply to applicants who are applying with a Finnish qualification (Finnish = completed in Finland) or EU/EEA citizens graduating during spring 2015.</p>",
+              "sv": "<p>A transcript is an official record from your current or former institution giving a breakdown of the marks or grades you have achieved during your study. Those applying with non-Finnish (non-Finnish = completed outside Finland) qualifications must submit copies of their educational certificates. However, this requirement does not apply to applicants who are applying with a Finnish qualification (Finnish = completed in Finland) or EU/EEA citizens graduating during spring 2015.</p>",
+              "en": "<p>A transcript is an official record from your current or former institution giving a breakdown of the marks or grades you have achieved during your study. Those applying with non-Finnish (non-Finnish = completed outside Finland) qualifications must submit copies of their educational certificates. However, this requirement does not apply to applicants who are applying with a Finnish qualification (Finnish = completed in Finland) or EU/EEA citizens graduating during spring 2015.</p>"
+            }
+          },
+          "deadline": 1429790455164,
+          "address": {
+            "recipient": "Admission Services",
+            "streetAddress": "PO BOX 4011 (street address: Bulevardi 29, 00180 Helsinki, Finland)",
+            "postalCode": "00079",
+            "postOffice": "METROPOLIA"
+          },
+          "emailAddress": "admissions@metropolia.fi"
+        },
+        "receptionStatus": "NOT_RECEIVED"
+      },
+      {
+        "id": "a3d9cb85-7e71-47b4-a753-5f95e5240c75",
+        "preferenceAoId": "1.2.246.562.20.867715552810",
+        "processingStatus": "NOT_CHECKED",
+        "applicationAttachment": {
+          "name": {
+            "translations": {
+              "fi": "Copies of official translations",
+              "sv": "Copies of official translations",
+              "en": "Copies of official translations"
+            }
+          },
+          "description": {
+            "translations": {
+              "fi": "<p>A copy of an official Finnish, Swedish or English translation is required if the original certificate is not written in Finnish, English or Swedish. The translation must be signed and stamped by an authorized translator.</p>",
+              "sv": "<p>A copy of an official Finnish, Swedish or English translation is required if the original certificate is not written in Finnish, English or Swedish. The translation must be signed and stamped by an authorized translator.</p>",
+              "en": "<p>A copy of an official Finnish, Swedish or English translation is required if the original certificate is not written in Finnish, English or Swedish. The translation must be signed and stamped by an authorized translator.</p>"
+            }
+          },
+          "deadline": 1429790429545,
+          "address": {
+            "recipient": "Admission Services",
+            "streetAddress": "PO BOX 4011 (street address: Bulevardi 29, 00180 Helsinki, Finland)",
+            "postalCode": "00079",
+            "postOffice": "METROPOLIA"
+          },
+          "emailAddress": "admissions@metropolia.fi"
+        },
+        "receptionStatus": "NOT_RECEIVED"
+      },
+      {
+        "id": "form.valmis.todistus.muu_applicationOption_1.2.246.562.20.20830715601",
+        "preferenceAoId": "1.2.246.562.20.20830715601",
+        "processingStatus": "NOT_CHECKED",
+        "applicationAttachment": {
+          "name": {
+            "translations": {
+              "fi": "Liitteet muusta korkeakoulukelpoisuudesta",
+              "sv": "Bilagor för annan högskolebehörighet",
+              "en": "Attachments stating your other eligibility for higher education"
+            }
+          },
+          "description": {
+            "translations": {
+              "fi": "Helsinki Metropolia UAS, Vantaa, Leiritie (Myyrmäki)",
+              "sv": "Helsinki Metropolia UAS, Vantaa, Leiritie (Myyrmäki)",
+              "en": "Helsinki Metropolia UAS, Vantaa, Leiritie (Myyrmäki)"
+            }
+          },
+          "deliveryNote": {
+            "translations": {
+              "fi": "23.4.2015 klo 15:00. Jos valmistut hakukeväänä, tarkista palautuspäivämäärä korkeakoulusta johon olet hakemassa.",
+              "sv": "23.4.2015 kl 15:00. Om du blir färdig under våren för ansökan, kontrollera inlämningsdatum från högskolan du söker till. ",
+              "en": "23 April 2015 at 3 PM. Check the delivery deadline from the higher education institution if you will complete your degree during the spring application round."
+            }
+          },
+          "address": {
+            "recipient": "Admission Services",
+            "streetAddress": "PO Box 4011\n00079 Metropolia\nFinland"
+          }
+        },
+        "receptionStatus": "NOT_RECEIVED"
+      }
+    ],
+    "preferencesChecked": [
+      {
+        "preferenceAoOid": "1.2.246.562.20.20830715601",
+        "checked": false
+      },
+      {
+        "preferenceAoOid": "1.2.246.562.20.867715552810",
+        "checked": false
+      }
+    ]
+  }
+]

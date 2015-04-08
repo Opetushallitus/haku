@@ -20,8 +20,10 @@ import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
 import fi.vm.sade.haku.virkailija.authentication.Person;
 import fi.vm.sade.haku.virkailija.authentication.PersonBuilder;
 import org.springframework.context.annotation.Profile;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -45,7 +47,19 @@ public class AuthenticationServiceMockImpl implements AuthenticationService {
 
     @Override
     public List<String> getOrganisaatioHenkilo() {
-        return Lists.newArrayList("1.2.246.562.10.84682192491", "1.2.246.562.10.00000000001", "1.2.246.562.10.94550468022");
+        if (SecurityContextHolder.getContext() == null
+                || SecurityContextHolder.getContext().getAuthentication() == null
+                || SecurityContextHolder.getContext().getAuthentication().getName() == null) {
+            return Lists.newArrayList("1.2.246.562.10.84682192491", "1.2.246.562.10.00000000001", "1.2.246.562.10.94550468022");
+        }
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        if (username.equals("officer")) {
+            return Lists.newArrayList("1.2.246.562.10.84682192491", "1.2.246.562.10.00000000001", "1.2.246.562.10.94550468022");
+        } else if (username.equals("kkvirkailija") || username.equals("eikkvirkailija")) {
+            return Lists.newArrayList("1.2.246.562.10.61042218794");
+        } else {
+            return new ArrayList<>();
+        }
     }
 
     @Override

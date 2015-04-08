@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static org.apache.commons.lang3.StringUtils.isBlank;
+import static fi.vm.sade.haku.oppija.hakemus.service.Role.*;
 
 @Service
 @Profile(value = {"default", "vagrant"})
@@ -37,10 +37,6 @@ public class HakuPermissionServiceImpl extends AbstractPermissionService impleme
     private AuthenticationService authenticationService;
     private ApplicationSystemService applicationSystemService;
     private static final Logger log = LoggerFactory.getLogger(HakuPermissionServiceImpl.class);
-    private static final String ROLE_OPO = "APP_HAKEMUS_OPO";
-    private static final String ROLE_LISATIETORU = "APP_HAKEMUS_LISATIETORU";
-    private static final String ROLE_LISATIETOCRUD = "APP_HAKEMUS_LISATIETOCRUD";
-    private static final String ROLE_HETUTTOMIENKASITTELY = "APP_HAKEMUS_HETUTTOMIENKASITTELY";
 
     @Autowired
     public HakuPermissionServiceImpl(AuthenticationService authenticationService,
@@ -129,7 +125,6 @@ public class HakuPermissionServiceImpl extends AbstractPermissionService impleme
         ApplicationSystem as = applicationSystemService.getApplicationSystem(
                 application.getApplicationSystemId(), "hakutapa", "hakukausiVuosi", "hakukausiUri", "kohdejoukkoUri");
         if (!userHasHetuttomienKasittelyRole().isEmpty()
-                && isBlank(application.getVastauksetMerged().get(OppijaConstants.ELEMENT_ID_SOCIAL_SECURITY_NUMBER))
                 && OppijaConstants.HAKUTAPA_YHTEISHAKU.equals(as.getHakutapa())
                 && OppijaConstants.KOHDEJOUKKO_KORKEAKOULU.equals(as.getKohdejoukkoUri())) {
             return true;
@@ -155,6 +150,9 @@ public class HakuPermissionServiceImpl extends AbstractPermissionService impleme
         if (userHasOpoRoleToSendingSchool(application)) {
             userRolesToApplication.add(getOpoRole());
         }
+        if (!userHasHetuttomienKasittelyRole().isEmpty()) {
+            userRolesToApplication.add(getRoleHetuttomienKasittely());
+        }
         for (Element element : form.getChildren()) {
             Phase phase = (Phase) element;
             String phaseId = phase.getId();
@@ -174,7 +172,6 @@ public class HakuPermissionServiceImpl extends AbstractPermissionService impleme
         ApplicationSystem as = applicationSystemService.getApplicationSystem(
                 application.getApplicationSystemId(), "hakutapa", "hakukausiVuosi", "hakukausiUri", "kohdejoukkoUri");
         if (!userHasHetuttomienKasittelyRole().isEmpty()
-                && isBlank(application.getVastauksetMerged().get(OppijaConstants.ELEMENT_ID_SOCIAL_SECURITY_NUMBER))
                 && OppijaConstants.HAKUTAPA_YHTEISHAKU.equals(as.getHakutapa())
                 && OppijaConstants.KOHDEJOUKKO_KORKEAKOULU.equals(as.getKohdejoukkoUri())) {
             return true;
@@ -189,19 +186,19 @@ public class HakuPermissionServiceImpl extends AbstractPermissionService impleme
     }
 
     public final String getRoleHetuttomienKasittely() {
-        return ROLE_HETUTTOMIENKASITTELY;
+        return ROLE_HETUTTOMIENKASITTELY.casName;
     }
 
     public final String getOpoRole() {
-        return ROLE_OPO;
+        return ROLE_OPO.casName;
     }
 
     public static String getRoleLisatietoRU() {
-        return ROLE_LISATIETORU;
+        return ROLE_LISATIETORU.casName;
     }
 
     public static String getRoleLisatietoCRUD() {
-        return ROLE_LISATIETOCRUD;
+        return ROLE_LISATIETOCRUD.casName;
     }
 
     private boolean userHasOpoRoleToSendingSchool(Application application) {
