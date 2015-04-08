@@ -47,7 +47,7 @@ import static fi.vm.sade.haku.oppija.lomake.domain.builder.ThemeBuilder.Theme;
 public class OsaaminenPhase {
 
     public static Element create(final FormParameters formParameters) {
-        Element osaaminen = Phase("osaaminen").setEditAllowedByRoles(ROLE_RU, ROLE_CRUD, ROLE_HETUTTOMIENKASITTELY).formParams(formParameters).build();
+        Element osaaminen = Phase("osaaminen").setEditAllowedByRoles(ROLE_RU, ROLE_CRUD, ROLE_HETUTTOMIENKASITTELY, ROLE_KKVIRKAILIJA).formParams(formParameters).build();
         if (!formParameters.isHigherEd()) {
             if (formParameters.isKevaanYhteishaku() || formParameters.isPerusopetuksenJalkeinenValmentava() || formParameters.isKevaanLisahaku()) {
                 osaaminen.addChild(ArvosanatTheme.createArvosanatThemeKevat(formParameters));

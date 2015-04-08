@@ -34,7 +34,7 @@ public class LisatiedotPhase {
     }
 
     public static Element create(final FormParameters formParameters) {
-        Element lisatiedot = Phase("lisatiedot").setEditAllowedByRoles(ROLE_RU, ROLE_CRUD, ROLE_OPO, ROLE_HETUTTOMIENKASITTELY).formParams(formParameters).build();
+        Element lisatiedot = Phase("lisatiedot").setEditAllowedByRoles(ROLE_RU, ROLE_CRUD, ROLE_OPO, ROLE_HETUTTOMIENKASITTELY, ROLE_KKVIRKAILIJA).formParams(formParameters).build();
         if (!formParameters.isPerusopetuksenJalkeinenValmentava() && !formParameters.isHigherEd()) {
             lisatiedot.addChild(createTyokokemus(formParameters));
         }

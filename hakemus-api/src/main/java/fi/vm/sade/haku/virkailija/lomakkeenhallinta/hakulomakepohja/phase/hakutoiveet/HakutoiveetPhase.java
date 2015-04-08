@@ -58,7 +58,7 @@ public class HakutoiveetPhase {
     private static final String TODISTUSTENPUUTTUMINEN = "todistustenpuuttuminen";
 
     public static Element create(final FormParameters formParameters) {
-        return Phase(HAKUTOIVEET_PHASE_ID).setEditAllowedByRoles(ROLE_RU, ROLE_CRUD, ROLE_HETUTTOMIENKASITTELY).formParams(formParameters)
+        return Phase(HAKUTOIVEET_PHASE_ID).setEditAllowedByRoles(ROLE_RU, ROLE_CRUD, ROLE_HETUTTOMIENKASITTELY, ROLE_KKVIRKAILIJA).formParams(formParameters)
                 .addChild(createHakutoiveetTheme(formParameters)).build();
     }
     public static List<String> getPreferenceIds(final FormParameters formParameters) {
