@@ -182,8 +182,7 @@ public class FormParameters {
     }
 
     public boolean kysytaankoSora() {
-        return ! (isPerusopetuksenJalkeinenValmentava() ||
-                applicationSystem.getKohdejoukkoUri().equals(KOHDEJOUKKO_ERITYISOPETUKSENA_JARJESTETTAVA_AMMATILLINEN));
+        return !isPerusopetuksenJalkeinenValmentava();
     }
 
     public boolean kysytaankoUrheilijanLisakysymykset() {
