@@ -76,6 +76,15 @@ public class FormParameters {
         return FormConfiguration.FormTemplateType.PERUSOPETUKSEN_JALKEINEN_VALMENTAVA.equals(this.getFormTemplateType());
     }
 
+    public boolean isKoulutustaustaMuuKoulutus() {
+        return isPerusopetuksenJalkeinenValmentava() ||
+                applicationSystem.getKohdejoukkoUri().equals(KOHDEJOUKKO_ERITYISOPETUKSENA_JARJESTETTAVA_AMMATILLINEN);
+    }
+
+    public boolean isAmmatillinenTutkintoEstaaHakemisen() {
+        return ! applicationSystem.getKohdejoukkoUri().equals(KOHDEJOUKKO_ERITYISOPETUKSENA_JARJESTETTAVA_AMMATILLINEN);
+    }
+
     public boolean isHuoltajanTiedotKysyttava() {
         if (KOHDEJOUKKO_PERUSOPETUKSEN_JALKEINEN_VALMENTAVA.equals(applicationSystem.getKohdejoukkoUri())) {
             return true;
@@ -86,7 +95,8 @@ public class FormParameters {
                     || HAKUTYYPPI_LISAHAKU.equals(applicationSystem.getApplicationSystemType()))) {
             return true;
         }
-        if (KOHDEJOUKKO_AMMATILLINEN_ERITYISOPETYKSENA.equals(applicationSystem.getKohdejoukkoUri())
+        if ((KOHDEJOUKKO_AMMATILLINEN_ERITYISOPETYKSENA.equals(applicationSystem.getKohdejoukkoUri())
+             || KOHDEJOUKKO_ERITYISOPETUKSENA_JARJESTETTAVA_AMMATILLINEN.equals(applicationSystem.getKohdejoukkoUri()))
             && HAKUTAPA_YHTEISHAKU.equals(applicationSystem.getHakutapa())
                 && (HAKUTYYPPI_VARSINAINEN_HAKU.equals(applicationSystem.getApplicationSystemType())
                 || HAKUTYYPPI_LISAHAKU.equals(applicationSystem.getApplicationSystemType()))) {
@@ -161,5 +171,9 @@ public class FormParameters {
 
     public boolean isAmmatillinenDropdown() {
         return "1.2.246.562.29.95390561488".equals(applicationSystem.getId());
+    }
+
+    public boolean kysytaankoErityisopetuksenTarve() {
+        return applicationSystem.getKohdejoukkoUri().equals(KOHDEJOUKKO_ERITYISOPETUKSENA_JARJESTETTAVA_AMMATILLINEN);
     }
 }
