@@ -10,7 +10,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.sun.jersey.core.impl.provider.entity.XMLJAXBElementProvider;
+import fi.vm.sade.haku.virkailija.authentication.PersonBuilder;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -70,6 +72,20 @@ public class SyntheticApplicationService {
             return updateApplication(stub, hakemus, current);
         }
     }
+    private Person hakemusToPerson(SyntheticApplication.Hakemus hakemus) {
+        PersonBuilder builder = PersonBuilder.start()
+                .setFirstNames(hakemus.etunimi)
+                .setLastName(hakemus.sukunimi)
+                .setEmail(hakemus.sahkoposti)
+                .setPersonOid(hakemus.hakijaOid)
+                .setDateOfBirth(hakemus.syntymaAika);
+        if(StringUtils.trimToNull(hakemus.henkilotunnus) == null) {
+            builder.setNoSocialSecurityNumber(true);
+        } else {
+            builder.setSocialSecurityNumber(hakemus.henkilotunnus);
+        }
+        return builder.get();
+    }
 
     private Application newApplication(SyntheticApplication stub, SyntheticApplication.Hakemus hakemus) {
         Application app = new Application();
@@ -79,7 +95,7 @@ public class SyntheticApplicationService {
         app.setState(Application.State.ACTIVE);
         app.setPersonOid(hakemus.hakijaOid);
 
-        Person person = new Person(hakemus.etunimi, hakemus.sukunimi, hakemus.henkilotunnus, hakemus.sahkoposti, hakemus.hakijaOid, hakemus.syntymaAika);
+        Person person = hakemusToPerson(hakemus);
         Map<String, String> henkilotiedot = updateHenkiloTiedot(person, new HashMap<String, String>());
         app.addVaiheenVastaukset(OppijaConstants.PHASE_PERSONAL, henkilotiedot);
 
@@ -91,7 +107,7 @@ public class SyntheticApplicationService {
     }
 
     private Application updateApplication(SyntheticApplication stub, SyntheticApplication.Hakemus hakemus, Application current) {
-        Person person = new Person(hakemus.etunimi, hakemus.sukunimi, hakemus.henkilotunnus, hakemus.sahkoposti, hakemus.hakijaOid, hakemus.syntymaAika);
+        Person person = hakemusToPerson(hakemus);
         Map<String, String> henkilotiedot = updateHenkiloTiedot(person, current.getAnswers().get(OppijaConstants.PHASE_PERSONAL));
         current.updateNameMetadata();
         current.addVaiheenVastaukset(OppijaConstants.PHASE_PERSONAL, henkilotiedot);
