@@ -40,6 +40,8 @@
                 <user name="admin" password="admin" authorities="ROLE_APP_HAKEMUS_CRUD,ROLE_APP_HAKULOMAKKEENHALLINTA_READ_UPDATE,ROLE_APP_HAKULOMAKKEENHALLINTA_CRUD,ROLE_APP_HAKULOMAKKEENHALLINTA_READ"/>
                 <user name="master" password="master" authorities="ROLE_APP_HAKULOMAKKEENHALLINTA_CRUD"/>
                 <user name="officer" password="officer" authorities="ROLE_APP_HAKEMUS_CRUD"/>
+                <user name="kkvirkailija" password="kkvirkailija" authorities="ROLE_APP_HAKEMUS_CRUD,ROLE_APP_HAKEMUS_KKVIRKAILIJA"/>
+                <user name="eikkvirkailija" password="eikkvirkailija" authorities="ROLE_APP_HAKEMUS_CRUD"/>
                 <user name="opo" password="opo" authorities="ROLE_APP_HAKEMUS_OPO"/>
                 <user name="lisatieto" password="lisatieto" authorities="ROLE_APP_HAKEMUS_LISATIETOCRUD"/>
                 <user name="heikkve" password="kahdeksan!" authorities="ROLE_APP_HAKEMUS_CRUD"/>
