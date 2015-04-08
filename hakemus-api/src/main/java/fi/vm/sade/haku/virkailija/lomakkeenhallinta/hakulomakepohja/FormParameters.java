@@ -202,4 +202,8 @@ public class FormParameters {
         return isPerusopetuksenJalkeinenValmentava() ||
                 applicationSystem.getKohdejoukkoUri().equals(KOHDEJOUKKO_ERITYISOPETUKSENA_JARJESTETTAVA_AMMATILLINEN);
     }
+
+    public boolean kysytaankoTyokokemus() {
+        return !isPerusopetuksenJalkeinenValmentava() && !isHigherEd();
+    }
 }
