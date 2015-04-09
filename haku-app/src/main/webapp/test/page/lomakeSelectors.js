@@ -67,6 +67,7 @@ lomake = initSelectors({
     pohjakoulutusMuu: 'input#pohjakoulutus_muu',
     pohjakoulutusMuuVuosi: 'input#pohjakoulutus_muu_vuosi',
     pohjakoulutusMuuKuvaus: 'textarea#pohjakoulutus_muu_kuvaus',
+    muukoulutus: 'textarea#muukoulutus',
     suoritusoikeusTaiAiempiTutkinto: function(bool) {
         return "input#suoritusoikeus_tai_aiempi_tutkinto_" + bool;
     },
@@ -119,6 +120,13 @@ lomake = initSelectors({
     asiointikieli: function(lang) {
         return "input#asiointikieli_"+lang;
     },
+    hojks: function(value) {
+        return "input#hojks_" + value;
+    },
+    koulutuskokeilu: function(value) {
+        return "input#koulutuskokeilu_" + value;
+    },
+    miksi_ammatilliseen: 'textarea#miksi_ammatilliseen',
 
     // Esikatselu
     fromLisatieto: "button[class=right][value=esikatselu][name=phaseId]:first"

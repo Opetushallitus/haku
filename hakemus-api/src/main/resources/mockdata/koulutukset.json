@@ -1424,7 +1424,7 @@
       "id": "1.2.246.562.10.89537774706",
       "name": "FAKTIA, Espoo op",
       "applicationSystemIds": [
-        "1.2.246.562.5.50476818906"
+        "1.2.246.562.5.50476818906","1.2.246.562.20.807716131410"
       ],
       "postalAddress": {
         "streetAddress": "Hämeenkatu 13",
@@ -2759,7 +2759,8 @@
       "name": "Metropolia AMK, Espoo, Vanha maantie (Leppävaara)",
       "applicationSystemIds": [
         "1.2.246.562.29.95390561488",
-        "1.2.246.562.29.173465377510"
+        "1.2.246.562.29.173465377510",
+        "1.2.246.562.20.807716131410"
       ],
       "postalAddress": {
         "streetAddress": "PL 4070",
