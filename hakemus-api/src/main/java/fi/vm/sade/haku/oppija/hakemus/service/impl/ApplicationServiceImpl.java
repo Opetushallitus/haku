@@ -234,12 +234,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     public Application getApplication(final String applicationSystemId) {
         User user = userSession.getUser();
         if (user.isKnown()) {
-            Application application = new Application(applicationSystemId, userSession.getUser());
-            List<Application> listOfApplications = applicationDAO.find(application);
-            if (listOfApplications.isEmpty() || listOfApplications.size() > 1) {
-                return application;
-            }
-            return listOfApplications.get(0);
+            return new Application(applicationSystemId, userSession.getUser());
         } else {
             return userSession.getApplication(applicationSystemId);
         }
