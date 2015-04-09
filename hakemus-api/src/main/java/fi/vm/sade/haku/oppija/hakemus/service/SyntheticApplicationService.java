@@ -79,6 +79,12 @@ public class SyntheticApplicationService {
                 .setEmail(hakemus.sahkoposti)
                 .setPersonOid(hakemus.hakijaOid)
                 .setDateOfBirth(hakemus.syntymaAika);
+        if(StringUtils.trimToNull(hakemus.sukupuoli) != null) {
+            builder.setSex(hakemus.sukupuoli);
+        }
+        if(StringUtils.trimToNull(hakemus.aidinkieli) != null) {
+            builder.setLanguage(hakemus.aidinkieli);
+        }
         if(StringUtils.trimToNull(hakemus.henkilotunnus) == null) {
             builder.setNoSocialSecurityNumber(true);
         } else {

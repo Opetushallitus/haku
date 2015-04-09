@@ -31,6 +31,8 @@ public class SyntheticApplication {
 
         public final String hakijaOid;
         public final String etunimi;
+        public final String sukupuoli;
+        public final String aidinkieli;
         public final String sukunimi;
         public final String henkilotunnus;
         public final String sahkoposti;
@@ -40,11 +42,15 @@ public class SyntheticApplication {
         public Hakemus(@JsonProperty("hakijaOid") String hakijaOid,
                        @JsonProperty("etunimi") String etunimi,
                        @JsonProperty("sukunimi") String sukunimi,
+                       @JsonProperty("sukupuoli") String sukupuoli,
+                       @JsonProperty("aidinkieli") String aidinkieli,
                        @JsonProperty("henkilotunnus") String henkilotunnus,
                        @JsonProperty("sahkoposti") String sahkoposti,
                        @JsonProperty("syntymaAika") String syntymaAika) {
             this.hakijaOid = hakijaOid;
             this.etunimi = etunimi;
+            this.sukupuoli = sukupuoli;
+            this.aidinkieli = aidinkieli;
             this.sukunimi = sukunimi;
             this.henkilotunnus = henkilotunnus;
             this.sahkoposti = sahkoposti;
