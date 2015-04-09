@@ -206,4 +206,8 @@ public class FormParameters {
     public boolean kysytaankoTyokokemus() {
         return !isPerusopetuksenJalkeinenValmentava() && !isHigherEd();
     }
+
+    public boolean kysytaankoKaksoistutkinto() {
+        return !isPerusopetuksenJalkeinenValmentava() && !isHigherEd();
+    }
 }

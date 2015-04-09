@@ -191,7 +191,8 @@ public class UIServiceImpl implements UIService {
 
     @Override
     public ModelResponse updateRules(String applicationSystemId, String phaseId, String elementId, Map<String, String> currentAnswers) {
-        Form activeForm = applicationSystemService.getActiveApplicationSystem(applicationSystemId).getForm();
+        ApplicationSystem activeApplicationSystem = applicationSystemService.getActiveApplicationSystem(applicationSystemId);
+        Form activeForm = activeApplicationSystem.getForm();
         Application application = applicationService.getApplication(applicationSystemId);
         Map<String, String> otherValues = application.getVastauksetMergedIgnoringPhase(phaseId);
         currentAnswers.putAll(otherValues);
@@ -203,12 +204,14 @@ public class UIServiceImpl implements UIService {
         modelResponse.setApplicationSystemId(applicationSystemId);
         modelResponse.setKoulutusinformaatioBaseUrl(koulutusinformaatioBaseUrl);
         modelResponse.addObjectToModel("ongoing", aoSearchOnlyOngoing);
+        modelResponse.addObjectToModel("baseEducationDoesNotRestrictApplicationOptions", activeApplicationSystem.baseEducationDoesNotRestrictApplicationOptions());
         return modelResponse;
     }
 
     @Override
     public ModelResponse updateRulesMulti(String applicationSystemId, String phaseId, List<String> elementIds, Map<String, String> currentAnswers) {
-        Form activeForm = applicationSystemService.getActiveApplicationSystem(applicationSystemId).getForm();
+        ApplicationSystem activeApplicationSystem = applicationSystemService.getActiveApplicationSystem(applicationSystemId);
+        Form activeForm = activeApplicationSystem.getForm();
         Application application = applicationService.getApplication(applicationSystemId);
         Map<String, String> otherAnswers = application.getVastauksetMergedIgnoringPhase(phaseId);
         currentAnswers.putAll(otherAnswers);
@@ -226,6 +229,7 @@ public class UIServiceImpl implements UIService {
         modelResponse.setApplicationSystemId(applicationSystemId);
         modelResponse.setKoulutusinformaatioBaseUrl(koulutusinformaatioBaseUrl);
         modelResponse.addObjectToModel("ongoing", aoSearchOnlyOngoing);
+        modelResponse.addObjectToModel("baseEducationDoesNotRestrictApplicationOptions", activeApplicationSystem.baseEducationDoesNotRestrictApplicationOptions());
         return modelResponse;
     }
 

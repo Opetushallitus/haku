@@ -92,6 +92,9 @@ $(document).ready(function(){
                     <haku:i18nText value="${applicationSystem.name}"/>
                 </c:otherwise>
             </c:choose>
+            <c:if test="${not empty it.generatorUrl}">
+                <a href="${it.generatorUrl}${applicationSystem.id}">Generoi lomake</a>
+            </c:if>
 
             <ul>
                 <li> oid: ${applicationSystem.id}</li>

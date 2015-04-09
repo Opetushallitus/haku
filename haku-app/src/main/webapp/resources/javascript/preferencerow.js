@@ -35,8 +35,9 @@ var preferenceRow = {
 
                 $('#'+selectInputId).prop('readonly', true);
 
-                var hakukohdeId = $("#" + selectInputId + "-id").val(), $selectInput = $("#" + selectInputId),
-                    selectedPreferenceOK = false;
+                var hakukohdeId = $("#" + selectInputId + "-id").val();
+                var $selectInput = $("#" + selectInputId);
+                var selectedPreferenceOK = false;
 
                 preferenceRow.clearChildLONames($("#" + selectInputId).data("childlonames"));
 

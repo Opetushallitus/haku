@@ -118,10 +118,14 @@ public class HakutoiveetPhase {
         }
 
         if (formParameters.kysytaankoSora()) {
-            pr.addChild(createSoraQuestions(id, formParameters),
-                    createUrheilijanAmmatillisenKoulutuksenLisakysymysAndRule(id, formParameters),
-                    createUrheilijalinjaRule(id),
-                    createKaksoistutkintoQuestions(id, formParameters));
+            pr.addChild(createSoraQuestions(id, formParameters));
+        }
+        if (formParameters.kysytaankoUrheilijanLisakysymykset()) {
+            pr.addChild(createUrheilijanAmmatillisenKoulutuksenLisakysymysAndRule(id, formParameters),
+                    createUrheilijalinjaRule(id));
+        }
+        if (formParameters.kysytaankoKaksoistutkinto()) {
+            pr.addChild(createKaksoistutkintoQuestions(id, formParameters));
         }
 
         if (formParameters.isPerusopetuksenJalkeinenValmentava()) {

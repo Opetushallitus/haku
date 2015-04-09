@@ -32,6 +32,7 @@ import org.codehaus.jackson.map.SerializationConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
@@ -45,6 +46,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import static fi.vm.sade.haku.oppija.ui.common.MultivaluedMapUtil.toSingleValueMap;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 @Component
 @Path("lomake")
@@ -65,12 +67,16 @@ public class FormController {
     private final PDFService pdfService;
     private final AuthenticationService authenticationService;
 
+    private final String generatorUrl;
+
     @Autowired
     public FormController(final UIService uiService, final PDFService pdfService,
-                          final AuthenticationService authenticationService) {
+                          final AuthenticationService authenticationService,
+                          @Value("${application.system.generatorUrl:null}") final String generatorUrl) {
         this.uiService = uiService;
         this.pdfService = pdfService;
         this.authenticationService = authenticationService;
+        this.generatorUrl = generatorUrl;
     }
 
     @GET
@@ -78,6 +84,9 @@ public class FormController {
     public Viewable listApplicationSystems() {
         LOGGER.debug("listApplicationSystems");
         ModelResponse modelResponse = uiService.getAllApplicationSystems("id", "name", "applicationPeriods", "state", "lastGenerated");
+        if (isNotBlank(generatorUrl)) {
+            modelResponse.addObjectToModel("generatorUrl", generatorUrl);
+        }
         return new Viewable(APPLICATION_SYSTEM_LIST_VIEW, modelResponse.getModel());
     }
 
