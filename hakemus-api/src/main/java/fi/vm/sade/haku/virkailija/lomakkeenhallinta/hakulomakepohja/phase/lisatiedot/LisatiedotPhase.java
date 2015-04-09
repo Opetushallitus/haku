@@ -1,9 +1,11 @@
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.lisatiedot;
 
+import com.google.common.collect.ImmutableList;
 import fi.vm.sade.haku.oppija.lomake.domain.builder.OptionQuestionBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.builder.TextQuestionBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.builder.ThemeBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.*;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.service.ThemeQuestionConfigurator;
@@ -21,8 +23,7 @@ import static fi.vm.sade.haku.oppija.lomake.domain.builder.TextQuestionBuilder.T
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.ThemeBuilder.Theme;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.TitledGroupBuilder.TitledGroup;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.osaaminen.KielitaitokysymyksetTheme.createPohjakoilutusUlkomainenTaiKeskeyttanyt;
-import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.EMAIL_REGEX;
-import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.createRegexValidator;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.*;
 
 public class LisatiedotPhase {
 
@@ -35,14 +36,45 @@ public class LisatiedotPhase {
 
     public static Element create(final FormParameters formParameters) {
         Element lisatiedot = Phase("lisatiedot").setEditAllowedByRoles(ROLE_RU, ROLE_CRUD, ROLE_OPO, ROLE_HETUTTOMIENKASITTELY, ROLE_KKVIRKAILIJA).formParams(formParameters).build();
-        if (!formParameters.isPerusopetuksenJalkeinenValmentava() && !formParameters.isHigherEd()) {
+        if (formParameters.kysytaankoTyokokemus()) {
             lisatiedot.addChild(createTyokokemus(formParameters));
         }
+
+        // Erkkahaun spesiaalit
+        if (formParameters.kysytaankoErityisopetuksenTarve()) {
+            Element erityisopetuksenTarve = Theme("erityisopetuksen_tarve")
+                    .formParams(formParameters)
+                    .build();
+
+            Element hojks = Radio("hojks")
+                    .addOptions(ImmutableList.of(
+                            new Option(formParameters.getI18nText("form.yleinen.kylla"), KYLLA),
+                            new Option(formParameters.getI18nText("form.yleinen.ei"), EI)))
+                    .required()
+                    .formParams(formParameters).build();
+            erityisopetuksenTarve.addChild(hojks);
+
+            Element koulutuskokeilu = Radio("koulutuskokeilu")
+                    .addOptions(ImmutableList.of(
+                            new Option(formParameters.getI18nText("form.yleinen.kylla"), KYLLA),
+                            new Option(formParameters.getI18nText("form.yleinen.ei"), EI)))
+                    .required()
+                    .formParams(formParameters).build();
+            erityisopetuksenTarve.addChild(koulutuskokeilu);
+
+            Element miksiAmmatilliseen = TextArea("miksi_ammatilliseen")
+                    .maxLength(2000)
+                    .required()
+                    .formParams(formParameters)
+                    .build();
+            erityisopetuksenTarve.addChild(miksiAmmatilliseen);
+            lisatiedot.addChild(erityisopetuksenTarve);
+        }
+
         Element element = lisatiedot
                 .addChild(createLupatiedot(formParameters));
-        if (!(formParameters.isPerusopetuksenJalkeinenValmentava() || formParameters.isHigherEd())) {
-            lisatiedot
-                    .addChild(createUrheilijanLisakysymykset(formParameters));
+        if (formParameters.kysytaankoUrheilijanLisakysymykset()) {
+            lisatiedot.addChild(createUrheilijanLisakysymykset(formParameters));
         }
         return element;
     }

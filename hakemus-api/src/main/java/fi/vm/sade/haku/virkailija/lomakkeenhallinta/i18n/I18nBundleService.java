@@ -32,6 +32,7 @@ public class I18nBundleService {
     private static final Map<String, String> KOHDEJOUKOT = new HashMap<String, String>() {{
         put(OppijaConstants.KOHDEJOUKKO_KORKEAKOULU, "korkeakoulu");
         put(OppijaConstants.KOHDEJOUKKO_PERUSOPETUKSEN_JALKEINEN_VALMENTAVA, "pervako");
+        put(OppijaConstants.KOHDEJOUKKO_ERITYISOPETUKSENA_JARJESTETTAVA_AMMATILLINEN, "ammatillinenerityis");
     }};
 
     private static final Map<String, String> HAKUKAUDET = new HashMap<String, String>() {{
@@ -73,7 +74,7 @@ public class I18nBundleService {
     private I18nBundle initializeandReturnBundle(final ApplicationSystem applicationSystem) {
         final I18nBundle i18nBundle = new I18nBundle(getMessageBundleName(FILE_NAME_PREFIX, applicationSystem),
           (FILE_NAME_PREFIX + "_" + applicationSystem.getId().replace('.', '_')));
-        this.applicationSystemTranslations.put(applicationSystem.getId(), new SoftReference<I18nBundle>(i18nBundle));
+        this.applicationSystemTranslations.put(applicationSystem.getId(), new SoftReference<>(i18nBundle));
         return i18nBundle;
     }
 

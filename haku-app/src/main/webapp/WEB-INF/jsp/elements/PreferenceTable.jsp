@@ -154,7 +154,7 @@
             </c:otherwise>
         </c:choose>
         <c:choose>
-            <c:when test="${it.higherEd}">
+            <c:when test="${it.baseEducationDoesNotRestrictApplicationOptions}">
             </c:when>
             <c:otherwise>
                 baseEducation: '<c:out value="${answers.POHJAKOULUTUS}"/>',

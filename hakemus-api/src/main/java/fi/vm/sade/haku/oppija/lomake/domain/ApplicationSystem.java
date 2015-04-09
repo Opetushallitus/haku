@@ -20,6 +20,7 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -109,6 +110,12 @@ public class ApplicationSystem implements Serializable {
     @Transient
     public boolean isPublished() {
         return "JULKAISTU".equals(state);
+    }
+
+    @Transient
+    public boolean baseEducationDoesNotRestrictApplicationOptions() {
+        return OppijaConstants.KOHDEJOUKKO_KORKEAKOULU.equals(getKohdejoukkoUri()) ||
+                OppijaConstants.KOHDEJOUKKO_ERITYISOPETUKSENA_JARJESTETTAVA_AMMATILLINEN.equals(getKohdejoukkoUri());
     }
 
     public String getId() {

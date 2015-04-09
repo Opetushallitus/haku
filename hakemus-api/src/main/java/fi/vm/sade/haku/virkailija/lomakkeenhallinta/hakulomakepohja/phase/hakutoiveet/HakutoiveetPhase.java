@@ -113,16 +113,18 @@ public class HakutoiveetPhase {
                 formParameters.getI18nText("form.hakutoiveet.sisaltyvatKoulutusohjelmat"),
                 formParameters.getI18nText("form.hakutoiveet.liitteet"));
 
-        if (!formParameters.isPerusopetuksenJalkeinenValmentava()) {
-            if (!formParameters.isHigherEd()) {
-                pr.addChild(createDiscretionaryQuestionsAndRules(id, formParameters));
-            }
+        if (formParameters.kysytaankoHarkinnanvaraisuus()) {
+            pr.addChild(createDiscretionaryQuestionsAndRules(id, formParameters));
+        }
 
+        if (formParameters.kysytaankoSora()) {
             pr.addChild(createSoraQuestions(id, formParameters),
                     createUrheilijanAmmatillisenKoulutuksenLisakysymysAndRule(id, formParameters),
                     createUrheilijalinjaRule(id),
                     createKaksoistutkintoQuestions(id, formParameters));
-        } else {
+        }
+
+        if (formParameters.isPerusopetuksenJalkeinenValmentava()) {
             Element koulutusasteRistiriidassaSuoritettuunTutkintoon = Rule(
                     new And(
                             ExprUtil.isAnswerTrue("ammatillinenTutkintoSuoritettu"),

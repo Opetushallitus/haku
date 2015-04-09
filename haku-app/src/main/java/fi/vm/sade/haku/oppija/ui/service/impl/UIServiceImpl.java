@@ -139,8 +139,7 @@ public class UIServiceImpl implements UIService {
         modelResponse.addAnswers(userSession.populateWithPrefillData(ensureApplicationOptionGroupData(phaseId, application.getVastauksetMerged(), lang)));
         modelResponse.setElement(phase);
         modelResponse.setKoulutusinformaatioBaseUrl(koulutusinformaatioBaseUrl);
-        modelResponse.addObjectToModel("higherEd",
-                OppijaConstants.KOHDEJOUKKO_KORKEAKOULU.equals(activeApplicationSystem.getKohdejoukkoUri()));
+        modelResponse.addObjectToModel("baseEducationDoesNotRestrictApplicationOptions", activeApplicationSystem.baseEducationDoesNotRestrictApplicationOptions());
         modelResponse.addObjectToModel("ongoing", aoSearchOnlyOngoing);
         return modelResponse;
     }

@@ -864,9 +864,10 @@ public final class KoulutustaustaPhase {
                 .addOption(educationMap.get(KESKEYTYNYT).getValue(), formParameters);
 
 
-        if (!formParameters.isPerusopetuksenJalkeinenValmentava()) {
+        if (formParameters.kysytaankoYlioppilastutkinto()) {
             baseEducationBuilder.addOption(educationMap.get(YLIOPPILAS).getValue(), formParameters);
         }
+
         baseEducationBuilder.addOption(educationMap.get(ULKOMAINEN_TUTKINTO).getValue(), formParameters);
 
         Element baseEducation = baseEducationBuilder.required().formParams(formParameters).build();
@@ -878,7 +879,7 @@ public final class KoulutustaustaPhase {
         }
 
         Element ulkomaillaSuoritettuTutkintoRule = createVarEqualsToValueRule(baseEducation.getId(), ULKOMAINEN_TUTKINTO);
-        if (formParameters.isPerusopetuksenJalkeinenValmentava()) {
+        if (formParameters.kysytaankoUlkomaisenTutkinnonTarkennus()) {
             ulkomaillaSuoritettuTutkintoRule.addChild(
                     TextArea("mika-ulkomainen-koulutus")
                             .cols(TEXT_AREA_COLS)
@@ -899,12 +900,14 @@ public final class KoulutustaustaPhase {
                 .required()
                 .formParams(formParameters).build();
 
-        Element suorittanutTutkinnonRule = createRuleIfVariableIsTrue("suorittanutTutkinnonRule", suorittanutAmmatillisenTutkinnon.getId());
-        Element warning = Info().labelKey("form.koulutustausta.ammatillinensuoritettu.huom")
-                .formParams(formParameters).build();
-        suorittanutTutkinnonRule.addChild(warning);
+        if (formParameters.isAmmatillinenTutkintoEstaaHakemisen()) {
+            Element suorittanutTutkinnonRule = createRuleIfVariableIsTrue("suorittanutTutkinnonRule", suorittanutAmmatillisenTutkinnon.getId());
+            Element warning = Info().labelKey("form.koulutustausta.ammatillinensuoritettu.huom")
+                    .formParams(formParameters).build();
+            suorittanutTutkinnonRule.addChild(warning);
+            suorittanutAmmatillisenTutkinnon.addChild(suorittanutTutkinnonRule);
+        }
 
-        suorittanutAmmatillisenTutkinnon.addChild(suorittanutTutkinnonRule);
         ulkomaillaSuoritettuTutkintoRule.addChild(suorittanutAmmatillisenTutkinnon);
 
         baseEducation.addChild(ulkomaillaSuoritettuTutkintoRule);
@@ -966,7 +969,7 @@ public final class KoulutustaustaPhase {
                 onkoTodistusSaatuKuluneenaVuonna, paattotodistusvuosiPeruskouluRule);
 
 
-        if (!formParameters.isPerusopetuksenJalkeinenValmentava()) {
+        if (formParameters.kysytaankoYlioppilastutkinto()) {
 
             Element lukioPaattotodistusVuosi = TextQuestion(OppijaConstants.LUKIO_PAATTOTODISTUS_VUOSI)
                     .maxLength(4)
@@ -1012,19 +1015,17 @@ public final class KoulutustaustaPhase {
                             .addOptions(koodistoService.getTeachingLanguages())
                             .required()
                             .formParams(formParameters).build());
-
             baseEducation.addChild(lukioRule);
 
-            Element suorittanutTutkinnonLukioRule =
-                    createRuleIfVariableIsTrue(suorittanutAmmatillisenTutkinnonLukio.getId());
-            final String failKey = "form.koulutustausta.ammatillinenSuoritettu.lukio.huom";
-            Element warningLukio =
-                    Warning(ElementUtil.randomId()).failValidation(failKey).labelKey(failKey).formParams(formParameters).build();
-
-            suorittanutTutkinnonLukioRule.addChild(warningLukio);
-
-            suorittanutAmmatillisenTutkinnonLukio.addChild(suorittanutTutkinnonLukioRule);
-
+            if (formParameters.isAmmatillinenTutkintoEstaaHakemisen()) {
+                Element suorittanutTutkinnonLukioRule =
+                        createRuleIfVariableIsTrue(suorittanutAmmatillisenTutkinnonLukio.getId());
+                final String failKey = "form.koulutustausta.ammatillinenSuoritettu.lukio.huom";
+                Element warningLukio =
+                        Warning(ElementUtil.randomId()).failValidation(failKey).labelKey(failKey).formParams(formParameters).build();
+                suorittanutTutkinnonLukioRule.addChild(warningLukio);
+                suorittanutAmmatillisenTutkinnonLukio.addChild(suorittanutTutkinnonLukioRule);
+            }
         }
 
         baseEducation.addChild(pkKysymyksetRule);
@@ -1038,9 +1039,10 @@ public final class KoulutustaustaPhase {
                 .required()
                 .formParams(formParameters).build());
 
-        if (formParameters.isPerusopetuksenJalkeinenValmentava()) {
+        if (formParameters.isKoulutustaustaMuuKoulutus()) {
             baseEducation.addChild(TextArea("muukoulutus").cols(TEXT_AREA_COLS).maxLength(500).formParams(formParameters).build());
         }
+
         return baseEducation;
     }
 

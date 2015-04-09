@@ -54,7 +54,7 @@ public class OsaaminenPhase {
             } else {
                 osaaminen.addChild(ArvosanatTheme.createArvosanatTheme(formParameters));
             }
-            if (!formParameters.isPerusopetuksenJalkeinenValmentava()) {
+            if (formParameters.kysytaankoKielitaitokysymykset()) {
                 osaaminen.addChild(KielitaitokysymyksetTheme.createKielitaitokysymyksetTheme(formParameters));
             }
         } else {

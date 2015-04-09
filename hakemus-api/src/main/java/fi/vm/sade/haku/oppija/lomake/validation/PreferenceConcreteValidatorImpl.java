@@ -24,7 +24,6 @@ import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.haku.oppija.lomake.util.StringUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.i18n.I18nBundleService;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -223,8 +222,7 @@ public class PreferenceConcreteValidatorImpl extends PreferenceConcreteValidator
 
     private boolean checkEducationDegree(final ValidationInput validationInput, final ApplicationOption applicationOption) {
         ApplicationSystem as = applicationSystemService.getApplicationSystem(validationInput.getApplicationSystemId());
-        if (as.getKohdejoukkoUri().equals(OppijaConstants.KOHDEJOUKKO_KORKEAKOULU)) {
-            // Korkeakouluhaussa ei tarkasteta pohjakoulutusta vastaan.
+        if (as.baseEducationDoesNotRestrictApplicationOptions()) {
             return true;
         }
         final String key = "POHJAKOULUTUS";
