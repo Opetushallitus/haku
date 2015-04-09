@@ -81,6 +81,7 @@ function valitseKoulutus(prioriteetti, koulunNimi, koulutuksenNimi) {
 
 partials = {
     henkilotiedotTestikaes: seq(
+        headingVisible("Henkilötiedot"),
         input(
             lomake.sukunimi, "Testikäs",
             lomake.etunimet, "Asia Kas",

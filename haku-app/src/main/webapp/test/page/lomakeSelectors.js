@@ -46,13 +46,13 @@ lomake = initSelectors({
         return 'input#pohjakoulutus_am_vuosi' + (n == 1 ? "" : n);
     },
     pohjakoulutusAmNimike: function(n) {
-        return 'input#pohjakoulutus_am_nimike' + (n == 1 ? "" : n);
+        return 'select#pohjakoulutus_am_nimike' + (n == 1 ? "" : n);
     },
     pohjakoulutusAmLaajuus: function(n) {
         return 'input#pohjakoulutus_am_laajuus' + (n == 1 ? "" : n);
     },
     pohjakoulutusAmOppilaitos: function(n) {
-        return 'input#pohjakoulutus_am_oppilaitos' + (n == 1 ? "" : n);
+        return 'select#pohjakoulutus_am_oppilaitos' + (n == 1 ? "" : n);
     },
     pohjakoulutusAmNayttotutkintona: function(n, bool) {
         return 'input#pohjakoulutus_am_nayttotutkintona' + (n == 1 ? "" : n) + '_' + bool;
@@ -63,6 +63,7 @@ lomake = initSelectors({
     pohjakoulutusYoAmmatillinenVuosi: 'input#pohjakoulutus_yo_ammatillinen_vuosi',
     pohjakoulutusYoAmmatillinenNimike: 'select#pohjakoulutus_yo_ammatillinen_nimike',
     pohjakoulutusYoAmmatillinenLaajuus: 'input#pohjakoulutus_yo_ammatillinen_laajuus',
+    pohjakoulutusYoAmmatillinenOppilaitos: 'select#pohjakoulutus_yo_ammatillinen_oppilaitos',
     pohjakoulutusMuu: 'input#pohjakoulutus_muu',
     pohjakoulutusMuuVuosi: 'input#pohjakoulutus_muu_vuosi',
     pohjakoulutusMuuKuvaus: 'textarea#pohjakoulutus_muu_kuvaus',

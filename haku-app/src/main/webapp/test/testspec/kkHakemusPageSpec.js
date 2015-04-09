@@ -283,8 +283,8 @@ describe('KK-hakemus', function () {
             click(
                 lomake.pohjakoulutusAm,
                 lomake.lisaaUusiAmmatillinenPohjakoulutus(2)),
-            partials.syotaAmmatillinenPohjakoulutus(1, "2000", "Ammatillinen 1", "1000", "1.2.246.562.10.57118763500", false),
-            partials.syotaAmmatillinenPohjakoulutus(2, "2001", "Ammatillinen 2", "1000", "1.2.246.562.10.57118763500", false),
+            partials.syotaAmmatillinenPohjakoulutus(1, "2000", "400000", "1000", "1.2.246.562.10.57118763500", false),
+            partials.syotaAmmatillinenPohjakoulutus(2, "2001", "400000", "1000", "1.2.246.562.10.57118763500", false),
             click(
                 lomake.suoritusoikeusTaiAiempiTutkinto(false),
                 lomake.fromKoulutustausta),
