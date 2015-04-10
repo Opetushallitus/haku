@@ -186,7 +186,8 @@ public class FormParameters {
     }
 
     public boolean kysytaankoUrheilijanLisakysymykset() {
-        return ! (isPerusopetuksenJalkeinenValmentava() || isHigherEd());
+        return ! (isPerusopetuksenJalkeinenValmentava() || isHigherEd() ||
+                applicationSystem.getKohdejoukkoUri().equals(KOHDEJOUKKO_ERITYISOPETUKSENA_JARJESTETTAVA_AMMATILLINEN));
     }
 
     public boolean kysytaankoYlioppilastutkinto() {
