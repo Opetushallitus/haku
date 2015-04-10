@@ -347,6 +347,10 @@ function readTable($tableElement, allowWrongDimensions) {
     }, []);
 }
 
+function answerForQuestion(name) {
+    return S('td:has(a[name=' + name + '])').next().html()
+}
+
 function exists(fn) {
     if (typeof(fn) !== 'function') {
         throw new Error('exists() got a non-function');

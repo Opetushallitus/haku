@@ -1,8 +1,5 @@
 describe('KK-hakemus', function () {
     var hakuOid = "1.2.246.562.29.173465377510"
-    function answerForQuestion(name) {
-        return S('td:has(a[name=' + name + '])').next().html()
-    }
     var hakemusId
     function hakemusPath() {
         return "/haku-app/virkailija/hakemus/" + hakemusId

@@ -1,31 +1,106 @@
 describe('Erityisoppilaitosten lomake', function () {
-    var start = seq(
+    var hakuOid = "1.2.246.562.20.807716131410"
+    before(seqDone(
         logout,
-        openPage("/haku-app/lomakkeenhallinta/1.2.246.562.20.807716131410", function() {
-            return S("form#form-henkilotiedot").first().is(':visible')
-        }),
-        openPage("/haku-app/lomake/1.2.246.562.20.807716131410")
-    )
-    describe("Täytä lomake", function() {
+        function() {
+            return openPage("/haku-app/lomakkeenhallinta/" + hakuOid, function() {
+                return S("form#form-henkilotiedot").first().is(':visible')
+            })()
+        }
+    ));
+
+    describe("virkailijan näkymä", function() {
+        var hakemusId
+        function hakemusPath() {
+            return "/haku-app/virkailija/hakemus/" + hakemusId
+        }
+        function previewPagePath() {
+            return hakemusPath() + "/print/view"
+        }
         before(seqDone(
-            start
+            login('officer', 'officer'),
+            click(virkailija.createApplicationButton),
+            input(virkailija.selectHaku, hakuOid),
+            click(virkailija.submitConfirm),
+            exists(virkailija.hakemusOid),
+            function() {
+                hakemusId = virkailija.hakemusOid().text();
+            }
         ));
 
-        describe('Henkilötiedot', function () {
+        describe("syötä hakemus alkutilanne", function() {
+            it('avautuu', function () {
+            });
+        });
+
+
+        describe("yksilöllistetyn pohjakoulutuksen lisäys", function() {
+            before(seqDone(
+                click(
+                    virkailija.editKoulutusTaustaButton(hakuOid),
+                    virkailija.addYksilollistettyCheckbox),
+                input(
+                    lomake.pkPaattotodistusVuosi, "2015",
+                    lomake.pkKieli, "FI"
+                ),
+                click(virkailija.saveKoulutusTaustaButton),
+                visible(virkailija.editKoulutusTaustaButton(hakuOid))
+            ));
+
+            describe("lisäämisen jälkeen", function() {
+                it("vastaukset näkyvät", function () {
+                    expect(answerForQuestion('PK_PAATTOTODISTUSVUOSI')).to.equal('2015');
+                    expect(answerForQuestion('perusopetuksen_kieli')).to.equal('Suomi');
+                });
+            });
+
+            describe("hakutoiveiden lisäys", function() {
+
+                describe("lisättäessä kaksi hakutoivetta, joilla eri pohjatietovaatimukset", function() {
+                    before(seqDone(
+                        click(virkailija.editHakutoiveetButton(hakuOid)),
+                        partials.valitseKoulutus(1, faktia, faktiaPkKoulutus),
+                        partials.valitseKoulutus(2, faktia, faktiaErKoulutus),
+                        click(
+                            lomake.soraTerveys1(false),
+                            lomake.soraOikeudenMenetys1(false)
+                        ),
+                        click(virkailija.saveHakutoiveetButton),
+                        visible(virkailija.notes)
+                    ));
+
+                    describe("lisäämisen jälkeen", function() {
+                        it("toiveet näkyvät", function () {
+                            expect(answerForQuestion('preference1')).to.equal(faktia);
+                            expect(answerForQuestion('preference2')).to.equal(faktia);
+                        });
+                    });
+                });
+            });
+        });
+    });
+
+    describe("hakemuksen täyttö oppijana", function() {
+        before(seqDone(
+            logout,
+            openPage("/haku-app/lomake/" + hakuOid)
+        ));
+
+        describe('henkilötietojen täyttö', function () {
             before(seqDone(
                 partials.henkilotiedotTestikaes
             ));
-            describe('Täytön jälkeen', function () {
+            describe('täytön jälkeen', function () {
                 it('ei ongelmia', function () {
                 });
             });
 
-            describe('Koulutustausta', function () {
+            describe('koulutustaustan täyttö', function () {
                 before(seqDone(
                     pageChange(lomake.fromHenkilotiedot),
                     headingVisible("Koulutustausta")
                 ));
-                describe('Syötettäessä pelkkä peruskoulutus', function () {
+                describe('syötettäessä pelkkä peruskoulutus', function () {
                     before(seqDone(
                         click(lomake.pohjakoulutus("1")),
                         input(
@@ -33,39 +108,39 @@ describe('Erityisoppilaitosten lomake', function () {
                             lomake.pkKieli, "FI"
                         )
                     ));
-                    describe('Syötön jälkeen', function () {
+                    describe('syötön jälkeen', function () {
                         it('ei ongelmia', function () {
                         });
                     });
 
-                    describe('Hakutoiveet', function () {
+                    describe('hakutoiveiden täyttö', function () {
                         before(seqDone(
                             function() { S('#nav-koulutustausta')[0].click() },
                             pageChange(lomake.fromKoulutustausta),
                             headingVisible("Hakutoiveet"),
-                            partials.valitseKoulutus(1, "FAKTIA, Espoo op", "Talonrakennus ja ymäristösuunnittelu, pk"),
-                            partials.valitseKoulutus(2, "FAKTIA, Espoo op", "Metsäalan perustutkinto, er"),
+                            partials.valitseKoulutus(1, faktia, faktiaPkKoulutus),
+                            partials.valitseKoulutus(2, faktia, faktiaErKoulutus),
                             click(
-                                lomake.harkinnanvaraisuus1(false),
                                 lomake.soraTerveys1(false),
-                                lomake.soraOikeudenMenetys1(false))
+                                lomake.soraOikeudenMenetys1(false)
+                            )
                         ));
-                        describe('Täytön jälkeen', function () {
+                        describe('täytön jälkeen', function () {
                             it('pohjakoulutus ei vaikuta mitä hakutoiveita voi valita', function () {
                             });
                         });
 
-                        describe('Arvosanat', function () {
+                        describe('arvosanojen täyttö', function () {
                             before(seqDone(
                                 pageChange(lomake.fromHakutoiveet),
                                 headingVisible("Arvosanat")
                             ));
-                            describe('Täytön jälkeen', function () {
+                            describe('täytön jälkeen', function () {
                                 it('ei ongelmia', function () {
                                 });
                             });
 
-                            describe('Lupatiedoissa pyydetään tiedot erityisopetuksen tarpeesta', function () {
+                            describe('lupatiedoissa pyydetään tiedot erityisopetuksen tarpeesta', function () {
                                 before(seqDone(
                                     pageChange(lomake.fromOsaaminen),
                                     headingVisible("Erityisopetuksen tarve"),
@@ -83,7 +158,7 @@ describe('Erityisoppilaitosten lomake', function () {
                                     });
                                 });
 
-                                describe('Esikatselussa', function () {
+                                describe('esikatselussa', function () {
                                     before(seqDone(
                                         click(
                                             lomake.hojks(false),
@@ -136,9 +211,9 @@ describe('Erityisoppilaitosten lomake', function () {
                                 });
                             });
 
-                            describe('Hakutoiveiden järjestyksen muuttaminen', function () {
+                            describe('hakutoiveiden järjestyksen muuttaminen', function () {
                                 before(seqDone(
-                                    openPage("/haku-app/lomake/1.2.246.562.20.807716131410/hakutoiveet"),
+                                    openPage("/haku-app/lomake/" + hakuOid + "/hakutoiveet"),
                                     click(lomake.sortDown(1))
                                 ));
                                 it('ei haittaa', seqDone(
@@ -150,9 +225,9 @@ describe('Erityisoppilaitosten lomake', function () {
                      });
                 });
 
-                describe('Syötettäessä Peruskoulutus-ammattikoulutus-yhdistelmä', function () {
+                describe('syötettäessä peruskoulutus-ammattikoulutus-yhdistelmä', function () {
                     before(seqDone(
-                        openPage("/haku-app/lomake/1.2.246.562.20.807716131410/koulutustausta"),
+                        openPage("/haku-app/lomake/" + hakuOid + "/koulutustausta"),
                         visible(lomake.muukoulutus),
                         click(lomake.pohjakoulutus("1")),
                         input(
@@ -171,9 +246,9 @@ describe('Erityisoppilaitosten lomake', function () {
                     ));
                 });
 
-                describe('Syötettäessä Lukio-ammattikoulutus-yhdistelmä', function () {
+                describe('syötettäessä lukio-ammattikoulutus-yhdistelmä', function () {
                     before(seqDone(
-                        openPage("/haku-app/lomake/1.2.246.562.20.807716131410/koulutustausta"),
+                        openPage("/haku-app/lomake/" + hakuOid + "/koulutustausta"),
                         visible(lomake.muukoulutus),
                         click(lomake.pohjakoulutus("9")),
                         input(lomake.lukioPaattotodistusVuosi, "2010"),

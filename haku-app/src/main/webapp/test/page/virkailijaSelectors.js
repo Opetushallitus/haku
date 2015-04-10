@@ -5,6 +5,7 @@ virkailija = initSelectors({
         return "a[href*='" + hakuOid + "/koulutustausta']:first button"
     },
     addAmmatillinenCheckbox: "input#pohjakoulutus_am",
+    addYksilollistettyCheckbox: "input#POHJAKOULUTUS_6",
     addAvoinCheckbox: "input#pohjakoulutus_avoin",
     submitConfirm: "#submit_confirm",
     addSecondAmmatillinenLink: "a#addAmmatillinenRule2-link",
