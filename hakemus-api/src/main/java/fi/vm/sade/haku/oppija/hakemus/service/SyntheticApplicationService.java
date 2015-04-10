@@ -136,6 +136,9 @@ public class SyntheticApplicationService {
         if (isNotBlank(person.getSex())) {
             henkilotiedot.put(OppijaConstants.ELEMENT_ID_SEX, person.getSex());
         }
+        if (isNotBlank(person.getLanguage())) {
+            henkilotiedot.put(OppijaConstants.ELEMENT_ID_LANGUAGE, person.getLanguage());
+        }
         if (isNotBlank(person.getDateOfBirth())) {
             henkilotiedot.put(OppijaConstants.ELEMENT_ID_DATE_OF_BIRTH, person.getDateOfBirth());
         }
