@@ -72,7 +72,7 @@ public class FormController {
     @Autowired
     public FormController(final UIService uiService, final PDFService pdfService,
                           final AuthenticationService authenticationService,
-                          @Value("${application.system.generatorUrl:null}") final String generatorUrl) {
+                          @Value("${application.system.generatorUrl:}") final String generatorUrl) {
         this.uiService = uiService;
         this.pdfService = pdfService;
         this.authenticationService = authenticationService;
