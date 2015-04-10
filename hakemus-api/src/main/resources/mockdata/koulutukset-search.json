@@ -1,4 +1,16 @@
 {
+  "1.2.246.562.10.19001332592": [
+    {
+      "id": "1.2.246.562.14.2013120511174558582514",
+      "name": "Metsäalan perustutkinto, er",
+      "educationDegree": null,
+      "sora": true,
+      "educationCodeUri": "koulutus_361301",
+      "teachingLanguages": ["FI"],
+      "organizationGroups": [],
+      "vocational": true
+    }
+  ],
   "1.2.246.562.10.89537774706": [
     {
       "id": "1.2.246.562.14.673437691210",
@@ -12,16 +24,6 @@
         "Käsi- ja taideteollisuusalan perustutkinto, Tuotteen suunnittelun ja valmistuksen koulutusohjelma",
         "Käsi- ja taideteollisuusalan perustutkinto, Ympäristön suunnittelun ja rakentamisen koulutusohjelma"
       ]
-    },
-    {
-      "id": "1.2.246.562.14.2013120511174558582514",
-      "name": "Metsäalan perustutkinto, er",
-      "educationDegree": null,
-      "sora": false,
-      "educationCodeUri": "koulutus_361301",
-      "teachingLanguages": ["FI"],
-      "organizationGroups": [],
-      "vocational": true
     },
     {
       "id": "1.2.246.562.14.79893512065",

@@ -87,17 +87,17 @@ lomake = initSelectors({
         return "select#preference" + n + "-Koulutus";
     },
     fromKoulutustausta: "button[class=right][value=hakutoiveet][name=phaseId]:first",
-    harkinnanvaraisuus1: function(harkinnanvaraisuus) {
-        return "input#preference1-discretionary_" + harkinnanvaraisuus;
+    harkinnanvaraisuus: function(n, harkinnanvaraisuus) {
+        return "input#preference" + n + "-discretionary_" + harkinnanvaraisuus;
     },
-    soraTerveys1: function(value) {
-        return "input#preference1_sora_terveys_" + value;
+    soraTerveys: function(n, value) {
+        return "input#preference"+ n + "_sora_terveys_" + value;
     },
-    soraOikeudenMenetys1: function(value) {
-        return "input#preference1_sora_oikeudenMenetys_" + value;
+    soraOikeudenMenetys: function(n, value) {
+        return "input#preference" + n + "_sora_oikeudenMenetys_" + value;
     },
-    urheilija1: function(value) {
-        return "input#preference1_urheilijan_ammatillisen_koulutuksen_lisakysymys_" + value;
+    urheilija: function(n, value) {
+        return "input#preference" + n + "_urheilijan_ammatillisen_koulutuksen_lisakysymys_" + value;
     },
     nuoliAlas: function(n) {
         return "button.down[data-id=preference" + n + "]";

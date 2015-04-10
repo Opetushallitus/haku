@@ -7,9 +7,10 @@ var helsinginDiakoniaAMK = "Diakonia-ammattikorkeakoulu, Helsingin toimipiste";
 var sibelusAkatemia = "Taideyliopisto,  Sibelius-Akatemia";
 var oulunYliopisto = "Oulun yliopisto, Humanistinen tiedekunta";
 var faktia = "FAKTIA, Espoo op";
+var kiipula = "Kiipulan ammattiopisto, Kiipulan toimipaikka";
 
 var faktiaPkKoulutus = "Talonrakennus ja ymäristösuunnittelu, pk";
-var faktiaErKoulutus = "Metsäalan perustutkinto, er";
+var kiipulaErKoulutus = "Metsäalan perustutkinto, er";
 
 var afrikkaKoulutus = "Afrikan ja Lähi-idän tutkimus, humanististen tieteiden kandidaatti ja filosofian maisteri";
 var aasiaKoulutus = "Aasian tutkimus, humanististen tieteiden kandidaatti ja filosofian maisteri";

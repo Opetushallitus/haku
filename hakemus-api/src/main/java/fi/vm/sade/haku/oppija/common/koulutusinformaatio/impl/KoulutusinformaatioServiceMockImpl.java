@@ -29,6 +29,7 @@ public class KoulutusinformaatioServiceMockImpl extends KoulutusinformaatioServi
 
     private List<LearningOpportunitySearchResultDTO> organizations = Arrays.asList(
             mesta("1.2.246.562.10.89537774706", "FAKTIA, Espoo op"),
+            mesta("1.2.246.562.10.19001332592", "Kiipulan ammattiopisto, Kiipulan toimipaikka"),
             mesta("1.2.246.562.10.10108401950", "Espoon kaupunki"),
             mesta("1.2.246.562.10.51872958189", "Stadin ammattiopisto, Sturenkadun toimipaikka"),
             mesta("1.2.246.562.10.35241670047", "Anna Tapion koulu"),

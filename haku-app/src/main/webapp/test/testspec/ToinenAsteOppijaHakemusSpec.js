@@ -20,9 +20,10 @@ describe('2. asteen lomake', function () {
             headingVisible("Hakutoiveet"),
             partials.valitseKoulutus(1, "FAKTIA, Espoo op", "Talonrakennus ja ymäristösuunnittelu, pk"),
             click(
-                lomake.harkinnanvaraisuus1(false),
-                lomake.soraTerveys1(false),
-                lomake.soraOikeudenMenetys1(false)),
+                lomake.harkinnanvaraisuus(1, false),
+                lomake.soraTerveys(1, false),
+                lomake.soraOikeudenMenetys(1, false)
+            ),
             pageChange(lomake.fromHakutoiveet),
             headingVisible("Arvosanat"),
             pageChange(lomake.fromOsaaminen),
@@ -182,8 +183,8 @@ describe('2. asteen lomake', function () {
             headingVisible("Hakutoiveet"),
             partials.valitseKoulutus(1, "Urheilijoiden koulu", "Urheilevien kokkien koulutus"),
             click(
-                lomake.harkinnanvaraisuus1(false),
-                lomake.urheilija1(true)),
+                lomake.harkinnanvaraisuus(1, false),
+                lomake.urheilija(1, true)),
             pageChange(lomake.fromHakutoiveet),
             headingVisible("Arvosanat")
         ));

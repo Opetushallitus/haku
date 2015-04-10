@@ -9,6 +9,20 @@ describe('Erityisoppilaitosten lomake', function () {
         }
     ));
 
+    var valitseFaktiaJaKiipula = seq(
+        partials.valitseKoulutus(1, faktia, faktiaPkKoulutus),
+        click(
+            lomake.harkinnanvaraisuus(1, false),
+            lomake.soraTerveys(1, false),
+            lomake.soraOikeudenMenetys(1, false)
+        ),
+        partials.valitseKoulutus(2, kiipula, kiipulaErKoulutus),
+        click(
+            lomake.soraTerveys(2, false),
+            lomake.soraOikeudenMenetys(2, false)
+        )
+    )
+
     describe("virkailijan näkymä", function() {
         var hakemusId
         function hakemusPath() {
@@ -59,12 +73,7 @@ describe('Erityisoppilaitosten lomake', function () {
                 describe("lisättäessä kaksi hakutoivetta, joilla eri pohjatietovaatimukset", function() {
                     before(seqDone(
                         click(virkailija.editHakutoiveetButton(hakuOid)),
-                        partials.valitseKoulutus(1, faktia, faktiaPkKoulutus),
-                        partials.valitseKoulutus(2, faktia, faktiaErKoulutus),
-                        click(
-                            lomake.soraTerveys1(false),
-                            lomake.soraOikeudenMenetys1(false)
-                        ),
+                        valitseFaktiaJaKiipula,
                         click(virkailija.saveHakutoiveetButton),
                         visible(virkailija.notes)
                     ));
@@ -72,7 +81,7 @@ describe('Erityisoppilaitosten lomake', function () {
                     describe("lisäämisen jälkeen", function() {
                         it("toiveet näkyvät", function () {
                             expect(answerForQuestion('preference1')).to.equal(faktia);
-                            expect(answerForQuestion('preference2')).to.equal(faktia);
+                            expect(answerForQuestion('preference2')).to.equal(kiipula);
                         });
                     });
                 });
@@ -118,12 +127,7 @@ describe('Erityisoppilaitosten lomake', function () {
                             function() { S('#nav-koulutustausta')[0].click() },
                             pageChange(lomake.fromKoulutustausta),
                             headingVisible("Hakutoiveet"),
-                            partials.valitseKoulutus(1, faktia, faktiaPkKoulutus),
-                            partials.valitseKoulutus(2, faktia, faktiaErKoulutus),
-                            click(
-                                lomake.soraTerveys1(false),
-                                lomake.soraOikeudenMenetys1(false)
-                            )
+                            valitseFaktiaJaKiipula
                         ));
                         describe('täytön jälkeen', function () {
                             it('pohjakoulutus ei vaikuta mitä hakutoiveita voi valita', function () {

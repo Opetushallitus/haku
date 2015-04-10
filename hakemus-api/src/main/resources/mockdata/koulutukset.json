@@ -42,7 +42,7 @@
     "name": "Metsäalan perustutkinto, er",
     "aoIdentifier": "962",
     "educationDegree": null,
-    "sora": false,
+    "sora": true,
     "teachingLanguages": [
       "FI"
     ],
@@ -79,15 +79,15 @@
       }
     ],
     "provider": {
-      "id": "1.2.246.562.10.89537774706",
-      "name": "FAKTIA, Espoo op",
+      "id": "1.2.246.562.10.19001332592",
+      "name": "Kiipulan ammattiopisto, Kiipulan toimipaikka",
       "applicationSystemIds": [
         "1.2.246.562.5.2013112910452702965370",
         "1.2.246.562.20.807716131410"
       ]
     },
     "requiredBaseEducations": [
-      "6"
+      "0", "6"
     ]
   },
 
