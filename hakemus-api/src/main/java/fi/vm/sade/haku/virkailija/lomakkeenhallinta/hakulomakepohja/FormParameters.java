@@ -199,8 +199,7 @@ public class FormParameters {
     }
 
     public boolean kysytaankoUlkomaisenTutkinnonTarkennus() {
-        return isPerusopetuksenJalkeinenValmentava() ||
-                applicationSystem.getKohdejoukkoUri().equals(KOHDEJOUKKO_ERITYISOPETUKSENA_JARJESTETTAVA_AMMATILLINEN);
+        return isPerusopetuksenJalkeinenValmentava();
     }
 
     public boolean kysytaankoTyokokemus() {
