@@ -1,4 +1,5 @@
 describe('KK-hakemus', function () {
+    var hakuOid = "1.2.246.562.29.173465377510"
     function answerForQuestion(name) {
         return S('td:has(a[name=' + name + '])').next().html()
     }
@@ -13,7 +14,7 @@ describe('KK-hakemus', function () {
     before(seqDone(
         logout,
         installGroupConfigurations(
-            ["1.2.246.562.29.173465377510", "1.2.246.562.28.00000000011", "hakukohde_liiteosoite", {
+            [hakuOid, "1.2.246.562.28.00000000011", "hakukohde_liiteosoite", {
                 useFirstAoAddress: "false",
                 deadline: "1425912995920",
                 addressRecipient: "Liiteosoitteiden vastaanottaja",
@@ -21,13 +22,13 @@ describe('KK-hakemus', function () {
                 addressPostalCode: "12345",
                 addressPostOffice: "TESTIOSOITE"
             }],
-            ["1.2.246.562.29.173465377510", "1.2.246.562.28.90373737623", "hakukohde_liiteosoite", {
+            [hakuOid, "1.2.246.562.28.90373737623", "hakukohde_liiteosoite", {
                 useFirstAoAddress: "true",
                 deadline: "1525912995920"
             }]
         ),
         function() {
-            return openPage("/haku-app/lomakkeenhallinta/1.2.246.562.29.173465377510", function() {
+            return openPage("/haku-app/lomakkeenhallinta/" + hakuOid, function() {
                 return S("form#form-henkilotiedot").first().is(':visible')
             })()
         }
@@ -37,7 +38,7 @@ describe('KK-hakemus', function () {
         before(seqDone(
             login('officer', 'officer'),
             click(virkailija.createApplicationButton),
-            input(virkailija.selectHaku, "1.2.246.562.29.173465377510"),
+            input(virkailija.selectHaku, hakuOid),
             click(virkailija.submitConfirm),
             exists(virkailija.hakemusOid),
             function() {
@@ -53,7 +54,7 @@ describe('KK-hakemus', function () {
         describe("kahden ammatillisen pohjakoulutuksen lisäys", function() {
             before(seqDone(
                 click(
-                    virkailija.editKoulutusTaustaButton,
+                    virkailija.editKoulutusTaustaButton(hakuOid),
                     virkailija.addAmmatillinenCheckbox),
                 input(
                     virkailija.ammatillinenSuoritusVuosi, "2000",
@@ -75,7 +76,7 @@ describe('KK-hakemus', function () {
                     virkailija.avoinLaajuus(2), "Avoin laajuus 2",
                     virkailija.avoinKorkeakoulu(2), "Avoin Korkeakoulu 2"),
                 click(virkailija.saveKoulutusTaustaButton),
-                visible(virkailija.editKoulutusTaustaButton)
+                visible(virkailija.editKoulutusTaustaButton(hakuOid))
             ));
 
             describe("lisäämisen jälkeen", function() {
@@ -93,7 +94,7 @@ describe('KK-hakemus', function () {
 
                 describe("lisättäessä neljä toivetta, jotka eivät kuulu liiteosoiteryhmiin", function() {
                     before(seqDone(
-                        click(virkailija.editHakutoiveetButton),
+                        click(virkailija.editHakutoiveetButton(hakuOid)),
                         tyhjennaHakutoiveet(5),
                         jazz5v(1),
                         raasepori(2),
@@ -139,7 +140,7 @@ describe('KK-hakemus', function () {
                         openPage(hakemusPath, function() {
                             return visible(virkailija.notes)();
                         }),
-                        click(virkailija.editHakutoiveetButton),
+                        click(virkailija.editHakutoiveetButton(hakuOid)),
                         tyhjennaHakutoiveet(5),
                         afrikka(1),
                         sosionomiJarvenpaa(2),
@@ -190,7 +191,7 @@ describe('KK-hakemus', function () {
                         openPage(hakemusPath, function() {
                             return visible(virkailija.notes)();
                         }),
-                        click(virkailija.editHakutoiveetButton),
+                        click(virkailija.editHakutoiveetButton(hakuOid)),
                         afrikka(1),
                         aasia(2),
                         oulu(3),
@@ -225,7 +226,7 @@ describe('KK-hakemus', function () {
                         openPage(hakemusPath, function() {
                             return visible(virkailija.notes)();
                         }),
-                        click(virkailija.editHakutoiveetButton),
+                        click(virkailija.editHakutoiveetButton(hakuOid)),
                         tyhjennaHakutoiveet(5),
                         terveydenhoitajaHelsinki(1),
                         sosionomiJarvenpaa(2),

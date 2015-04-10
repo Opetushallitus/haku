@@ -1,7 +1,9 @@
 virkailija = initSelectors({
     selectHaku: "#asSelect:first",
     hakemusOid: "#_infocell_oid",
-    editKoulutusTaustaButton: "a[href*='1.2.246.562.29.173465377510/koulutustausta']:first button",
+    editKoulutusTaustaButton: function(hakuOid) {
+        return "a[href*='" + hakuOid + "/koulutustausta']:first button"
+    },
     addAmmatillinenCheckbox: "input#pohjakoulutus_am",
     addAvoinCheckbox: "input#pohjakoulutus_avoin",
     submitConfirm: "#submit_confirm",
@@ -37,7 +39,9 @@ virkailija = initSelectors({
     },
     addSecondAvoinLink: "a#addAvoinTutkintoRule2-link",
     saveKoulutusTaustaButton: "button.save[value=koulutustausta]:first",
-    editHakutoiveetButton: "a[href*='1.2.246.562.29.173465377510/hakutoiveet']:first button",
+    editHakutoiveetButton: function(hakuOid) {
+        return "a[href*='" + hakuOid + "/hakutoiveet']:first button"
+    },
     saveHakutoiveetButton: "button.save[value=hakutoiveet]:first",
     previewLiitteet: "#applicationAttachments tr:gt(0)",
     notes: "#notes"
