@@ -1,4 +1,4 @@
-describe('Eritysoppilaitosten lomake', function () {
+describe('Erityisoppilaitosten lomake', function () {
     var start = seq(
         logout,
         openPage("/haku-app/lomakkeenhallinta/1.2.246.562.20.807716131410", function() {
@@ -44,7 +44,7 @@ describe('Eritysoppilaitosten lomake', function () {
                             pageChange(lomake.fromKoulutustausta),
                             headingVisible("Hakutoiveet"),
                             partials.valitseKoulutus(1, "FAKTIA, Espoo op", "Talonrakennus ja ymäristösuunnittelu, pk"),
-                            partials.valitseKoulutus(2, "Metropolia AMK, Espoo, Vanha maantie (Leppävaara)", "Insinööri (AMK), maanmittaustekniikka, päivätoteutus"),
+                            partials.valitseKoulutus(2, "FAKTIA, Espoo op", "Metsäalan perustutkinto, er"),
                             click(
                                 lomake.harkinnanvaraisuus1(false),
                                 lomake.soraTerveys1(false),
@@ -135,8 +135,19 @@ describe('Eritysoppilaitosten lomake', function () {
                                     });
                                 });
                             });
+
+                            describe('Hakutoiveiden järjestyksen muuttaminen', function () {
+                                before(seqDone(
+                                    openPage("/haku-app/lomake/1.2.246.562.20.807716131410/hakutoiveet"),
+                                    click(lomake.sortDown(1))
+                                ));
+                                it('ei haittaa', seqDone(
+                                    pageChange(lomake.fromHakutoiveet),
+                                    headingVisible("Arvosanat")
+                                ));
+                            });
                         });
-                    });
+                     });
                 });
 
                 describe('Syötettäessä Peruskoulutus-ammattikoulutus-yhdistelmä', function () {

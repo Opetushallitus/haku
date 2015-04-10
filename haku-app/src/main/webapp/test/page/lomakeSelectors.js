@@ -77,6 +77,9 @@ lomake = initSelectors({
 
     // Hakutoiveet
     preferencesVisibleInput: "input#preferencesVisible",
+    sortDown: function(n) {
+        return "button.down.sort[data-id=preference" + n + "]";
+    },
     opetuspiste: function(n) {
         return "input#preference" + n + "-Opetuspiste";
     },

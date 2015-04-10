@@ -42,7 +42,7 @@
     "name": "Metsäalan perustutkinto, er",
     "aoIdentifier": "962",
     "educationDegree": null,
-    "sora": true,
+    "sora": false,
     "teachingLanguages": [
       "FI"
     ],
@@ -51,6 +51,7 @@
     "vocational": true,
     "educationCodeUri": "koulutus_361301",
     "organizationGroups": [],
+    "canBeApplied": true,
     "attachments": [
       {
         "dueDate": 1394806509271,
@@ -78,7 +79,12 @@
       }
     ],
     "provider": {
-      "applicationSystemIds": ["1.2.246.562.5.2013112910452702965370"]
+      "id": "1.2.246.562.10.89537774706",
+      "name": "FAKTIA, Espoo op",
+      "applicationSystemIds": [
+        "1.2.246.562.5.2013112910452702965370",
+        "1.2.246.562.20.807716131410"
+      ]
     },
     "requiredBaseEducations": [
       "0"
@@ -2759,8 +2765,7 @@
       "name": "Metropolia AMK, Espoo, Vanha maantie (Leppävaara)",
       "applicationSystemIds": [
         "1.2.246.562.29.95390561488",
-        "1.2.246.562.29.173465377510",
-        "1.2.246.562.20.807716131410"
+        "1.2.246.562.29.173465377510"
       ],
       "postalAddress": {
         "streetAddress": "PL 4070",
