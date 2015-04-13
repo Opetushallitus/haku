@@ -20,4 +20,4 @@
 <h3><haku:i18nText value="${element.i18nText}"/></h3>
 <haku:viewChilds element="${element}"/>
 <div class="clear"></div>
-<hr/>
+<hr role="presentation"/>
