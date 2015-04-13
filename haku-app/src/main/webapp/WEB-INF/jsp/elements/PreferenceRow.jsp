@@ -19,11 +19,6 @@
   ~ European Union Public Licence for more details.
   --%>
 
-<button class="reset" data-id="${sortableItem.id}" id="${sortableItem.id}-reset" type="button">
-    <span>
-        <span><haku:i18nText value="${sortableItem.resetLabel}"/></span>
-    </span>
-</button>
 <div id="${sortableItem.id}-row-content" class="preference-fields">
     <c:set value="${sortableItem.learningInstitutionInputId}" var="textInputId" scope="page"/>
     <c:set value="${sortableItem.learningInstitutionInputId}-id" var="hiddenInputId" scope="page"/>
@@ -100,5 +95,12 @@
         <span id="${childLONamesId}"></span>
     </div>
 
-    <haku:viewChilds element="${sortableItem}"/>
 </div>
+<button class="reset" data-id="${sortableItem.id}" id="${sortableItem.id}-reset" data-label="<haku:i18nText value='${sortableItem.resetLabel}'/>"
+        aria-label="<haku:i18nText value='${sortableItem.resetLabel}'/>" type="button">
+    <span>
+        <span><haku:i18nText value="${sortableItem.resetLabel}"/></span>
+    </span>
+</button>
+
+<haku:viewChilds element="${sortableItem}"/>
