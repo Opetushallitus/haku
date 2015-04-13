@@ -24,7 +24,7 @@
     <div class="theme-help">
         <div class="help-text"><haku:i18nText value="${element.help}"/></div>
         <button class="helplink" type="submit" formtarget="_blank" formaction="${element.id}/help">?</button>
-        <div class="clear"></div>
+        <div role="presentation" class="clear"></div>
     </div>
     <haku:viewChilds element="${element}"/>
 </fieldset>

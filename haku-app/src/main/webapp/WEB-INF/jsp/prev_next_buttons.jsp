@@ -36,7 +36,7 @@
                    </span>
                 </button>
             </div>
-            <div class="clear"></div>
+            <div role="presentation" class="clear"></div>
         </c:if>
     </c:if>
     <c:if test="${(tmpPrev eq vaihe)}">
@@ -47,7 +47,7 @@
                 </span>
             </button>
         </div>
-        <div class="clear"></div>
+        <div role="presentation" class="clear"></div>
     </c:if>
     <c:set var="tmpPrev" value="${item}" scope="page"/>
 </c:forEach>

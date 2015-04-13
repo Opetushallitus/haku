@@ -23,7 +23,7 @@
 									<span><fmt:message key="lomake.send.confirm.yes"/></span>
 								</span>
                         </button>
-                        <div class="clear"></div>
+                        <div role="presentation" class="clear"></div>
                     </form>
                 </div>
             </div>

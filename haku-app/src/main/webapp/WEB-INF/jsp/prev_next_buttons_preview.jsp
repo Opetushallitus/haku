@@ -34,4 +34,4 @@
             <span><span><fmt:message key="lomake.button.send"/></span></span>
     </button>
 </div>
-<div class="clear"></div>
+<div role="presentation" class="clear"></div>

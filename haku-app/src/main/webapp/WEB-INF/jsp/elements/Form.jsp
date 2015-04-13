@@ -79,7 +79,7 @@
                         </span>
                     </li>
                 </ul>
-                <div class="clear"></div>
+                <div role="presentation" class="clear"></div>
             </div>
 
             <div class="form">
@@ -87,7 +87,7 @@
                 <div class="phase-help">
                     <div class="help-text"><fmt:message key="form.esikatselu.help"/></div>
                 </div>
-                <div class="clear"></div>
+                <div role="presentation" class="clear"></div>
                 <c:forEach var="child" items="${element.children}">
                     <c:set var="element" value="${child}" scope="request"/>
                     <jsp:include page="./${child.type}Preview.jsp"/>

@@ -116,7 +116,7 @@
                         </span>
                     </li>
                 </ul>
-                <div class="clear"></div>
+                <div role="presentation" class="clear"></div>
             </div>
             <c:choose>
                 <c:when test="${preview}">
