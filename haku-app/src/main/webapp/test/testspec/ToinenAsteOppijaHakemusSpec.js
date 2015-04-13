@@ -133,23 +133,29 @@ describe('2. asteen lomake', function () {
             visible(lomake.sukunimi)
         ));
 
-        it("PK päättötodistusvuosi 2011", seqDone(
-            post("/haku-app/lomake/1.2.246.562.5.50476818906/koulutustausta/rules", {
-                "PK_PAATTOTODISTUSVUOSI": "2011",
-                "POHJAKOULUTUS": "1",
-                "ruleIds[]": ["paattotodistuvuosiPkRule"]
-            }),
-            function(data) { expect(data).to.contain('<input type=\\"radio\\" name=\\"ammatillinenTutkintoSuoritettu\\"'); }
-        ));
+        describe("Jos PK päättötodistusvuosi 2011", function() {
+            it("Kysytäään myös ammatillinen tutkinto", seqDone(
+                post("/haku-app/lomake/1.2.246.562.5.50476818906/koulutustausta/rules", {
+                    "PK_PAATTOTODISTUSVUOSI": "2011",
+                    "POHJAKOULUTUS": "1",
+                    "ruleIds[]": ["paattotodistuvuosiPkRule"]
+                }),
+                function (data) {
+                    expect(data).to.contain('type=\\"radio\\" name=\\"ammatillinenTutkintoSuoritettu\\"');
+                }
+            ));
+        });
 
-        it("PK päättötodistusvuosi 2012", seqDone(
-            post("/haku-app/lomake/1.2.246.562.5.50476818906/koulutustausta/rules", {
-                "PK_PAATTOTODISTUSVUOSI": "2012",
-                "POHJAKOULUTUS": "1",
-                "ruleIds[]": ["paattotodistuvuosiPkRule"]
-            }),
-            function(data) { expect(data).not.to.contain('<input type=\\"radio\\" name=\\"ammatillinenTutkintoSuoritettu\\"'); }
-        ));
+        describe("Jos PK päättötodistusvuosi on 2012", function() {
+            it("Ei kysytä ammatillista tutkintoa", seqDone(
+                post("/haku-app/lomake/1.2.246.562.5.50476818906/koulutustausta/rules", {
+                    "PK_PAATTOTODISTUSVUOSI": "2012",
+                    "POHJAKOULUTUS": "1",
+                    "ruleIds[]": ["paattotodistuvuosiPkRule"]
+                }),
+                function(data) { expect(data).not.to.contain('type=\\"radio\\" name=\\"ammatillinenTutkintoSuoritettu\\"'); }
+            ));
+        });
     });
 
     describe("Urheilijakohteet", function() {
