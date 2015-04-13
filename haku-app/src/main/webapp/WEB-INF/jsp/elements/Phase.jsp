@@ -131,7 +131,13 @@
                     </div>
                 </c:when>
                 <c:otherwise>
+                    <c:if test="${not empty errorMessages}">
+                        <div class="notification warning">
+                            <fmt:message key="lomake.phase.contains.errors"/>
+                        </div>
+                    </c:if>
                     <form id="form-${vaihe.id}" class="form" method="post" novalidate="novalidate">
+
                         <jsp:include page="../prev_next_buttons.jsp"/>
 
                         <c:forEach var="child" items="${vaihe.children}">
