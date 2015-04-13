@@ -30,7 +30,7 @@
     </c:if>
 </c:forEach>
 <div class="float-right">
-    <button class="right" name="nav-send" data-po-show="areyousure" value="true">
+    <button class="right" name="nav-send" aria-haspopup="true" data-po-show="areyousure" value="true">
             <span><span><fmt:message key="lomake.button.send"/></span></span>
     </button>
 </div>
