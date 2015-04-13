@@ -150,11 +150,17 @@ describe('Erityisoppilaitosten lomake', function () {
                                     headingVisible("Erityisopetuksen tarve"),
                                     click(lomake.asiointikieli("suomi"))
                                 ));
-                                describe('Jos yrittää siirtyä eteenpäin antamatta', function () {
+                                describe('Jos yrittää siirtyä eteenpäin antamatta pakollisia tietoja', function () {
                                     before(seqDone(
                                         pageChange(lomake.fromLisatieto),
                                         headingVisible("Erityisopetuksen tarve")
                                     ));
+                                    it('näkyy sivun alussa että tuli virheitä', function () {
+                                        expect(firstWarningText()).to.contain("Lomakkeella puuttuvia tai virheellisiä tietoja, tarkista lomakkeen tiedot")
+                                    });
+                                    it('näkyy sivun titlessä, että tuli virheitä', function () {
+                                        expect(S("title").text()).to.contain("Lomakkeella puuttuvia tai virheellisiä tietoja, tarkista lomakkeen tiedot")
+                                    });
                                     it('näkyy pakollisuus virheet', function () {
                                         expect(S("#hojks-error").text()).to.equal("Pakollinen tieto.");
                                         expect(S("#koulutuskokeilu-error").text()).to.equal("Pakollinen tieto.");

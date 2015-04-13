@@ -381,6 +381,10 @@ function hasClass(fn, className) {
         function() { return fn().hasClass(className); });
 }
 
+function firstWarningText() {
+    return S("div.warning:visible:first").text();
+}
+
 function headingVisible(heading) {
     return visible(function() {
         return S("legend[class=h3]:contains(" + heading + ")");
