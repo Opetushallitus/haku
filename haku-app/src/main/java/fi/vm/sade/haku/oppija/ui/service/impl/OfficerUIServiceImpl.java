@@ -189,8 +189,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         modelResponse.addObjectToModel("applicationSystem", as);
 
         modelResponse.addObjectToModel("hakukohteet", getValintatiedot(application));
-        modelResponse.addObjectToModel("higherEd",
-                OppijaConstants.KOHDEJOUKKO_KORKEAKOULU.equals(as.getKohdejoukkoUri()));
+        modelResponse.addObjectToModel("baseEducationDoesNotRestrictApplicationOptions", as.baseEducationDoesNotRestrictApplicationOptions());
 
         String sendingSchoolOid = application.getVastauksetMerged().get(OppijaConstants.ELEMENT_ID_SENDING_SCHOOL);
         if (sendingSchoolOid != null) {
