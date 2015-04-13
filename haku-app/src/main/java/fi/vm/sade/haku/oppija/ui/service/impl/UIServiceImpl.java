@@ -235,7 +235,8 @@ public class UIServiceImpl implements UIService {
 
     @Override
     public ModelResponse getPhaseElement(String applicationSystemId, String phaseId, String elementId) {
-        Form activeForm = applicationSystemService.getActiveApplicationSystem(applicationSystemId).getForm();
+        ApplicationSystem activeApplicationSystem = applicationSystemService.getActiveApplicationSystem(applicationSystemId);
+        Form activeForm = activeApplicationSystem.getForm();
         Application application = applicationService.getApplication(applicationSystemId);
         ElementTree elementTree = new ElementTree(activeForm);
         elementTree.checkPhaseTransfer(application.getPhaseId(), phaseId);
@@ -244,17 +245,20 @@ public class UIServiceImpl implements UIService {
         modelResponse.setApplicationSystemId(applicationSystemId);
         modelResponse.setKoulutusinformaatioBaseUrl(koulutusinformaatioBaseUrl);
         modelResponse.addObjectToModel("ongoing", aoSearchOnlyOngoing);
+        modelResponse.addObjectToModel("baseEducationDoesNotRestrictApplicationOptions", activeApplicationSystem.baseEducationDoesNotRestrictApplicationOptions());
         return modelResponse;
     }
 
     @Override
     public ModelResponse savePhase(String applicationSystemId, String phaseId, Map<String, String> originalAnswers, String lang) {
         Map<String, String> ensuredAnswers = ensureApplicationOptionGroupData(phaseId, originalAnswers, lang);
-        Form activeForm = applicationSystemService.getActiveApplicationSystem(applicationSystemId).getForm();
+        ApplicationSystem activeApplicationSystem = applicationSystemService.getActiveApplicationSystem(applicationSystemId);
+        Form activeForm = activeApplicationSystem.getForm();
         ApplicationState applicationState = applicationService.saveApplicationPhase(
                 new ApplicationPhase(applicationSystemId, phaseId, ensuredAnswers));
         ModelResponse modelResponse = new ModelResponse();
         modelResponse.addObjectToModel("ongoing", aoSearchOnlyOngoing);
+        modelResponse.addObjectToModel("baseEducationDoesNotRestrictApplicationOptions", activeApplicationSystem.baseEducationDoesNotRestrictApplicationOptions());
         modelResponse.setApplicationState(applicationState);
         if (!applicationState.isValid()) {
             modelResponse.setApplicationState(applicationState);
