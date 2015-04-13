@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -114,10 +115,10 @@ public class SuoritusrekisteriServiceImpl implements SuoritusrekisteriService {
         CachingRestClient cachingRestClient = getCachingRestClient();
         String response;
         String url = "/rest/v1/suoritukset?henkilo=" + personOid;
-        if (isNotBlank(komoOid)) {
-            url = url + "&komo=" + komoOid;
-        }
         try {
+            if (isNotBlank(komoOid)) {
+                url = url + "&komo=" + URLEncoder.encode(komoOid, "UTF-8");
+            }
             InputStream is = cachingRestClient.get(url);
             response = IOUtils.toString(is);
             log.debug("url: {}, response: {}", url, response);
