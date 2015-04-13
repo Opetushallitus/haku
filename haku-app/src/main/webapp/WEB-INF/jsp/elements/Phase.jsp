@@ -66,8 +66,14 @@
             });
         });
     </script>
-    <title><fmt:message key="lomake.opintopolku"/> - <fmt:message key="form.title"/> - <haku:i18nText
-            value="${vaihe.i18nText}"/></title>
+    <title>
+        <c:if test="${not empty errorMessages}">
+            <fmt:message key="lomake.phase.contains.errors"/> -
+        </c:if>
+        <fmt:message key="lomake.opintopolku"/>
+        - <fmt:message key="form.title"/>
+        - <haku:i18nText value="${vaihe.i18nText}"/>
+    </title>
 </head>
 <body>
 <div id="viewport">
