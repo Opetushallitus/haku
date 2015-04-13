@@ -99,7 +99,7 @@ public class KoulutusinformaatioServiceMockImpl extends KoulutusinformaatioServi
     public List<LearningOpportunitySearchResultDTO> organizationSearch(final String term, final String baseEducation) {
         List<LearningOpportunitySearchResultDTO> result = new ArrayList<>();
         for (LearningOpportunitySearchResultDTO organization: organizations) {
-            if (organization.getName().toLowerCase().contains(term.toLowerCase())) {
+            if (term.equals("*") || organization.getName().toLowerCase().contains(term.toLowerCase())) {
                 if (!organization.getId().equals("1.2.246.562.10.51872958189") || baseEducation.equals("9")) {
                     result.add(organization);
                 }
