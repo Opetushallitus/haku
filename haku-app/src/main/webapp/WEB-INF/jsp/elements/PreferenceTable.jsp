@@ -48,7 +48,7 @@
                         <span>${status.index + 1}.</span>
                         <div class="sort-arrows">
                             <c:if test="${not status.first}">
-                                <button class="up sort" data-id="${child.id}" data-target="${element.children[status.index - 1].id}"
+                                <button aria-label="<fmt:message key="hakutoiveet.sort.up.button.label"/>" class="up sort" data-id="${child.id}" data-target="${element.children[status.index - 1].id}"
                                         type="button">
                                     <span>
                                         <span>^</span>
@@ -57,7 +57,7 @@
                                 <br/>
                             </c:if>
                             <c:if test="${status.index lt preferencesVisible - 1}">
-                                <button class="down sort" data-id="${child.id}"
+                                <button aria-label="<fmt:message key="hakutoiveet.sort.down.button.label"/>" class="down sort" data-id="${child.id}"
                                         data-target="${element.children[status.index + 1].id}" type="button">
                                     <span>
                                         <span>v</span>
