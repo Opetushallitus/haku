@@ -76,10 +76,10 @@
     </title>
 </head>
 <body>
-<div id="viewport">
-    <div id="site">
-        <div id="sitecontent">
-            <div class="content">
+<div role="presentation id="viewport">
+    <div role="presentation" id="site">
+        <div role="presentation" id="sitecontent">
+            <div role="navigation" class="content">
                 <fmt:message key="lomake.lisaakoulutuksia.href" var="lisaaKoulutuksiaHref"/>
                 <a href="${lisaaKoulutuksiaHref}"><fmt:message key="lomake.lisaakoulutuksia"/></a>
 
@@ -118,9 +118,10 @@
                 </ul>
                 <div role="presentation" class="clear"></div>
             </div>
+            <div role="main">
             <c:choose>
                 <c:when test="${preview}">
-                    <div class="form">
+                    <div role="form" class="form">
                         <jsp:include page="../prev_next_buttons_preview.jsp"/>
 
                         <c:forEach var="child" items="${vaihe.children}">
@@ -136,7 +137,7 @@
                             <fmt:message key="lomake.phase.contains.errors"/>
                         </div>
                     </c:if>
-                    <form id="form-${vaihe.id}" class="form" method="post" novalidate="novalidate">
+                    <form role="form" id="form-${vaihe.id}" class="form" method="post" novalidate="novalidate">
 
                         <jsp:include page="../prev_next_buttons.jsp"/>
 
@@ -148,6 +149,7 @@
                     </form>
                 </c:otherwise>
             </c:choose>
+            </div>
         </div>
     </div>
 </div>

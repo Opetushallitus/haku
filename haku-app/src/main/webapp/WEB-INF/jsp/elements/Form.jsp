@@ -50,11 +50,11 @@
             key="lomake.esikatselu"/></title>
 </head>
 <body>
-<div id="viewport">
+<div role="presentation" id="viewport">
     <%@include file="common/confirmDialog.jsp" %>
-    <div id="site">
-        <div id="sitecontent">
-            <div class="content">
+    <div role="presentation" id="site">
+        <div role="presentation" id="sitecontent">
+            <div role="navigation" class="content">
                 <fmt:message key="lomake.lisaakoulutuksia.href" var="lisaaKoulutuksiaHref"/>
                 <a href="${lisaaKoulutuksiaHref}"><fmt:message key="lomake.lisaakoulutuksia"/></a>
 
@@ -82,7 +82,7 @@
                 <div role="presentation" class="clear"></div>
             </div>
 
-            <div class="form">
+            <div role="main" class="form">
                 <jsp:include page="../prev_next_buttons_preview.jsp"/>
                 <div class="phase-help">
                     <div class="help-text"><fmt:message key="form.esikatselu.help"/></div>
