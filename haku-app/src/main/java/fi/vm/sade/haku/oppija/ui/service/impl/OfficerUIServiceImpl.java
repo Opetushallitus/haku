@@ -136,11 +136,14 @@ public class OfficerUIServiceImpl implements OfficerUIService {
             final boolean validate) {
         Application application = this.applicationService.getApplicationByOid(oid);
         application.setPhaseId(phaseId); // TODO active applications does not have phaseId?
-        Form form = this.formService.getForm(application.getApplicationSystemId());
+        ApplicationSystem as = applicationSystemService.getApplicationSystem(application.getApplicationSystemId());
+        Form form = as.getForm();
         Element element = form.getChildById(elementId);
         ValidationResult validationResult = elementTreeValidator.validate(new ValidationInput(form, application.getVastauksetMerged(),
                 oid, application.getApplicationSystemId(), ValidationInput.ValidationContext.officer_modify));
-        return new ModelResponse(application, form, element, validationResult, koulutusinformaatioBaseUrl);
+        ModelResponse modelResponse = new ModelResponse(application, form, element, validationResult, koulutusinformaatioBaseUrl);
+        modelResponse.addObjectToModel("baseEducationDoesNotRestrictApplicationOptions", as.baseEducationDoesNotRestrictApplicationOptions());
+        return modelResponse;
     }
 
     @Override
