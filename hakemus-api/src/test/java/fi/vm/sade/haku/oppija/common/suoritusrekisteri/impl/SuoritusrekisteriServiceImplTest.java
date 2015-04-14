@@ -130,6 +130,6 @@ public class SuoritusrekisteriServiceImplTest {
     }
 
     private DateFormat zulu() {
-        return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+        return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
     }
 }

@@ -56,7 +56,7 @@ public class SuoritusrekisteriServiceImpl implements SuoritusrekisteriService {
     private static CachingRestClient cachingRestClient;
 
     private Gson suoritusGson = new GsonBuilder().setDateFormat("dd.MM.yyyy").create();
-    private Gson opiskelijaGson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ").create();
+    private Gson opiskelijaGson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX").create();
     private Gson arvosanaGson = new GsonBuilder().setDateFormat("dd.MM.yyyy").create();
 
     @Override
