@@ -1,5 +1,6 @@
 <%@ page session="false" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="haku" tagdir="/WEB-INF/tags" %>
 <%--
   ~ Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
@@ -23,7 +24,7 @@
     <hr role="presentation"/>
     <div class="theme-help">
         <div class="help-text"><haku:i18nText value="${element.help}"/></div>
-        <button class="helplink" type="submit" formtarget="_blank" formaction="${element.id}/help">?</button>
+        <button aria-haspopup="true" aria-label="<fmt:message key="lomake.theme.button.helplink.label"/>" class="helplink" type="submit" formtarget="_blank" formaction="${element.id}/help">?</button>
         <div role="presentation" class="clear"></div>
     </div>
     <haku:viewChilds element="${element}"/>
