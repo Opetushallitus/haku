@@ -20,7 +20,9 @@
     <c:if test="${(status.last)}">
         <div class="float-left">
             <form method="get" action="${item.id}">
-                <button class="left" name="phaseId" type="submit" value="${item.id}">
+                <button
+                        <c:if test="${param.notfocusable}"> tabindex="-1" aria-hidden="true" </c:if>
+                        class="left" name="phaseId" type="submit" value="${item.id}">
                 <span>
                     <span><fmt:message key="lomake.button.previous"/></span>
                 </span>
@@ -30,7 +32,9 @@
     </c:if>
 </c:forEach>
 <div class="float-right">
-    <button class="right" name="nav-send" aria-haspopup="true" data-po-show="areyousure" value="true">
+    <button
+            <c:if test="${param.notfocusable}"> tabindex="-1" aria-hidden="true" </c:if>
+            class="right" name="nav-send" aria-haspopup="true" data-po-show="areyousure" value="true">
             <span><span><fmt:message key="lomake.button.send"/></span></span>
     </button>
 </div>

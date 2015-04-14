@@ -21,7 +21,9 @@
     <c:if test="${(item eq vaihe)}">
         <c:if test="${(not status.first)}">
             <div class="float-left">
-                <button class="left" name="phaseId" type="submit" value="${tmpPrev.id}">
+                <button
+                        <c:if test="${param.notfocusable}"> tabindex="-1" aria-hidden="true" </c:if>
+                        class="left" name="phaseId" type="submit" value="${tmpPrev.id}">
                 <span>
                     <span><fmt:message key="lomake.button.previous"/></span>
                 </span>
@@ -30,7 +32,9 @@
         </c:if>
         <c:if test="${status.last}">
             <div class="float-right">
-                <button class="right" name="phaseId" type="submit" value="esikatselu">
+                <button
+                        <c:if test="${param.notfocusable}"> tabindex="-1" aria-hidden="true" </c:if>
+                        class="right" name="phaseId" type="submit" value="esikatselu">
                    <span>
                        <span><fmt:message key="lomake.button.preview"/></span>
                    </span>
@@ -41,7 +45,9 @@
     </c:if>
     <c:if test="${(tmpPrev eq vaihe)}">
         <div class="float-right">
-            <button class="right" name="phaseId" type="submit" value="${item.id}">
+            <button
+                    <c:if test="${param.notfocusable}"> tabindex="-1" aria-hidden="true" </c:if>
+                    class="right" name="phaseId" type="submit" value="${item.id}">
                 <span>
                     <span><fmt:message key="lomake.button.next"/></span>
                 </span>

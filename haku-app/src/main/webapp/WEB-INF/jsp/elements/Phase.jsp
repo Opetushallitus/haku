@@ -122,7 +122,9 @@
             <c:choose>
                 <c:when test="${preview}">
                     <div role="form" class="form">
-                        <jsp:include page="../prev_next_buttons_preview.jsp"/>
+                        <jsp:include page="../prev_next_buttons_preview.jsp">
+                            <jsp:param name="notfocusable" value="true" />
+                        </jsp:include>
 
                         <c:forEach var="child" items="${vaihe.children}">
                             <c:set var="element" value="${child}" scope="request"/>
@@ -139,7 +141,9 @@
                     </c:if>
                     <form role="form" id="form-${vaihe.id}" class="form" method="post" novalidate="novalidate">
 
-                        <jsp:include page="../prev_next_buttons.jsp"/>
+                        <jsp:include page="../prev_next_buttons.jsp">
+                            <jsp:param name="notfocusable" value="true" />
+                        </jsp:include>
 
                         <c:forEach var="child" items="${vaihe.children}">
                             <c:set var="element" value="${child}" scope="request"/>

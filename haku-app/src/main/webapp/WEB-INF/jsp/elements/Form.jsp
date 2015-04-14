@@ -83,7 +83,9 @@
             </div>
 
             <div role="main" class="form">
-                <jsp:include page="../prev_next_buttons_preview.jsp"/>
+                <jsp:include page="../prev_next_buttons_preview.jsp">
+                    <jsp:param name="notfocusable" value="true" />
+                </jsp:include>
                 <div class="phase-help">
                     <div class="help-text"><fmt:message key="form.esikatselu.help"/></div>
                 </div>
