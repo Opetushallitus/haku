@@ -24,7 +24,7 @@
     <hr role="presentation"/>
     <div class="theme-help">
         <div class="help-text"><haku:i18nText value="${element.help}"/></div>
-        <button aria-haspopup="true" aria-label="<fmt:message key="lomake.theme.button.helplink.label"/>" class="helplink" type="submit" formtarget="_blank" formaction="${element.id}/help">?</button>
+        <button aria-haspopup="true" aria-label="<haku:i18nText value="${element.i18nText}"/> <fmt:message key="lomake.theme.button.helplink.label"/>" class="helplink" type="submit" formtarget="_blank" formaction="${element.id}/help">?</button>
         <div role="presentation" class="clear"></div>
     </div>
     <haku:viewChilds element="${element}"/>
