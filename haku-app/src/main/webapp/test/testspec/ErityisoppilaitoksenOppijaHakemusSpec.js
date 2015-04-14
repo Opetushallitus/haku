@@ -133,6 +133,12 @@ describe('Erityisoppilaitosten lomake', function () {
                         describe('täytön jälkeen', function () {
                             it('pohjakoulutus ei vaikuta mitä hakutoiveita voi valita', function () {
                             });
+
+                            it('hakutoiveiden tyhjennysnapeissa oikeat aria-labelit', seqDone(
+                                hasAriaLabel(lomake.tyhjenna(1), 'Tyhjennä: FAKTIA, Espoo op, Talonrakennus ja ymäristösuunnittelu, pk'),
+                                hasAriaLabel(lomake.tyhjenna(2), 'Tyhjennä: Kiipulan ammattiopisto, Kiipulan toimipaikka, Metsäalan perustutkinto, er'),
+                                hasAriaLabel(lomake.tyhjenna(3), 'Tyhjennä')
+                            ));
                         });
 
                         describe('arvosanojen täyttö', function () {
@@ -227,26 +233,16 @@ describe('Erityisoppilaitosten lomake', function () {
                                     openPage("/haku-app/lomake/" + hakuOid + "/hakutoiveet"),
                                     click(lomake.sortDown(1))
                                 ));
-                                it('ei haittaa', seqDone(
-                                    pageChange(lomake.fromHakutoiveet),
-                                    headingVisible("Arvosanat")
-                                ));
-                            });
 
-
-                            describe('hakutoiveiden tyhjennysnapeissa oikeat aria-labelit', function() {
-                                before(seqDone(
-                                    openPage("/haku-app/lomake/" + hakuOid + "/hakutoiveet")
-                                ));
-                                it('ei haittaa', seqDone(
-                                    hasAriaLabel(lomake.tyhjenna(1), 'Tyhjennä: FAKTIA, Espoo op, Talonrakennus ja ymäristösuunnittelu, pk'),
-                                    hasAriaLabel(lomake.tyhjenna(2), 'Tyhjennä: Kiipulan ammattiopisto, Kiipulan toimipaikka, Metsäalan perustutkinto, er'),
-                                    hasAriaLabel(lomake.tyhjenna(3), 'Tyhjennä'),
-                                    click(lomake.sortDown(1)),
+                                it('hakutoiveiden tyhjennysnapeissa oikeat aria-labelit', seqDone(
                                     hasAriaLabel(lomake.tyhjenna(1), 'Tyhjennä: Kiipulan ammattiopisto, Kiipulan toimipaikka, Metsäalan perustutkinto, er'),
                                     hasAriaLabel(lomake.tyhjenna(2), 'Tyhjennä: FAKTIA, Espoo op, Talonrakennus ja ymäristösuunnittelu, pk'),
-                                    hasAriaLabel(lomake.tyhjenna(3), 'Tyhjennä'),
-                                    click(lomake.sortDown(1))
+                                    hasAriaLabel(lomake.tyhjenna(3), 'Tyhjennä')
+                                ));
+
+                                it('siirtyminen arvosanoihin yhä onnistuu', seqDone(
+                                    pageChange(lomake.fromHakutoiveet),
+                                    headingVisible("Arvosanat")
                                 ));
                             });
                         });
