@@ -56,7 +56,7 @@
 
 <jsp:include page="../print/applicationAttachments.jsp"/>
 
-<hr class="strong">
+<hr role="presentation" class="strong">
 <footer>
     <address>
         <c:forEach var="alatunnisterivi" items="${it.alatunnisterivit}" varStatus="status">
