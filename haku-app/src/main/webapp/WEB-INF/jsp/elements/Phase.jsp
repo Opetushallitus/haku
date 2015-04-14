@@ -133,7 +133,7 @@
                 </c:when>
                 <c:otherwise>
                     <c:if test="${not empty errorMessages}">
-                        <div class="notification warning">
+                        <div role="status" tabindex="0" class="notification warning">
                             <fmt:message key="lomake.phase.contains.errors"/>
                         </div>
                     </c:if>
