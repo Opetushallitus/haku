@@ -23,7 +23,9 @@
     </c:when>
     <c:otherwise>
         <haku:setSelectedValue element="${element}"/>
-        <select ${element.attributeString} id="${element.id}" name="${element.id}">
+        <select
+                aria-labelledby='${parent.id.substring(0,parent.id.length() - 1).concat("1")} ${" gradegrid-table-header-column".concat(parent.id.substring(parent.id.length() - 1))}'
+                ${element.attributeString} id="${element.id}" name="${element.id}">
             <c:if test="${not element.selected}">
                 <option value="">&nbsp;</option>
             </c:if>
