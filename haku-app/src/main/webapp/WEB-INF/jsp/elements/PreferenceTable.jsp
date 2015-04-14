@@ -116,16 +116,16 @@
             <fmt:message key="popup.sulje"/>
         </span>
 
-        <div class="popup-dialog-header">
+        <div id="sora-popup_header" class="popup-dialog-header">
             <h3>
                 <fmt:message key="hakutoiveet.terveydentilavaatimukset.otsikko"/>
             </h3>
         </div>
         <div class="popup-dialog-content">
             <fmt:message key="hakutoiveet.terveydentilavaatimukset.sisalto"/>
-            <button type="button" class="primary popup-dialog-close">
+            <button aria-labelledby="sora-popup_header sora-popup_sulje" type="button" class="primary popup-dialog-close">
                 <span>
-                    <span>
+                    <span id="sora-popup_sulje">
                         <fmt:message key="popup.sulje"/>
                     </span>
                 </span>
