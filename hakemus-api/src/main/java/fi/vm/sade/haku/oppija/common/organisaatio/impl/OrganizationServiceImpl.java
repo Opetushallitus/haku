@@ -249,7 +249,7 @@ public class OrganizationServiceImpl implements OrganizationService {
 
     private synchronized HttpClient getHttpClient() {
         if (httpClient == null) {
-            RequestConfig config = RequestConfig.custom().setConnectTimeout(120 * 1000).build();
+            RequestConfig config = RequestConfig.custom().setConnectTimeout(120 * 1000).setSocketTimeout(60 * 1000).build();
 
             httpClient = HttpClientBuilder.create()
                     .disableAuthCaching()
