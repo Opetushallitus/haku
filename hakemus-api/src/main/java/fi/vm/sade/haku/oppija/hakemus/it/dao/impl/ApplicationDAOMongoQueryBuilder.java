@@ -194,11 +194,8 @@ final class ApplicationDAOMongoQueryBuilder {
                 );
             } else {
                 filters.add(
-                        QueryBuilder.start().and(
-                                QueryBuilder.start("preferencesChecked").not().elemMatch(
-                                        new BasicDBObject("checked", !preferenceChecked)).get(),
-                                QueryBuilder.start("preferencesChecked").exists(true).get()
-                        ).get()
+                        QueryBuilder.start("preferencesChecked")
+                                .elemMatch(new BasicDBObject("checked", preferenceChecked)).get()
                 );
             }
         }
