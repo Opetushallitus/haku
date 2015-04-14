@@ -249,7 +249,7 @@ describe('Erityisoppilaitosten lomake', function () {
                      });
                 });
 
-                describe('syötettäessä peruskoulutus-ammattikoulutus-yhdistelmä', function () {
+                describe('syötettäessä yli vuoden vanha peruskoulu ja ammattikoulutus pohjakoulutukseksi', function () {
                     before(seqDone(
                         openPage("/haku-app/lomake/" + hakuOid + "/koulutustausta"),
                         visible(lomake.muukoulutus),
@@ -263,11 +263,45 @@ describe('Erityisoppilaitosten lomake', function () {
                             lomake.ammatillinenSuoritettu(true)
                         )
                     ));
-                    it('ei haittaa', seqDone(
-                        notExists(lomake.suorittanutTutkinnonRule),
-                        pageChange(lomake.fromKoulutustausta),
-                        headingVisible("Hakutoiveet")
-                    ));
+                    describe('ennen siirtymistä hakutoiveisiin', function () {
+                        it('ei tule varoitusta ammattitutkinnon vaikutuksesta', seqDone(
+                            notExists(lomake.suorittanutTutkinnonRule)
+                        ));
+                    });
+
+                    describe('siirtuminen hakutoiveisiin', function () {
+                        before(seqDone(
+                            pageChange(lomake.fromKoulutustausta)
+                        ));
+
+                        it('onnistuu', seqDone(
+                            headingVisible("Hakutoiveet")
+                        ));
+
+                        describe('arvosanat vaiheessa', function () {
+                            before(seqDone(
+                                valitseFaktiaJaKiipula,
+                                pageChange(lomake.fromHakutoiveet),
+                                headingVisible("Arvosanat")
+                            ));
+
+                            it('kysytään peruskoulun päättötodistuksen arvosanat', function () {
+                                expect(S('table#gradegrid-table tbody > tr:visible').size()).to.equal(18);
+                            });
+
+                            it('on äidinkielen oppiaineen valinnalle aria label', function () {
+                                var ariaLabelledBy = S('table#gradegrid-table select#PK_AI_OPPIAINE').attr('aria-labelledby').split(" ");
+                                expect(S("#" + ariaLabelledBy[0]).text()).to.contain("Äidinkieli ja kirjallisuus");
+                                expect(S("#" + ariaLabelledBy[1]).text()).to.equal("Oppiaine");
+                            });
+
+                            it('on äidinkielen yhteiselle arvosanalle aria label', function () {
+                                var ariaLabelledBy = S('table#gradegrid-table select#PK_AI').attr('aria-labelledby').split(" ");
+                                expect(S("#" + ariaLabelledBy[0]).text()).to.contain("Äidinkieli ja kirjallisuus");
+                                expect(S("#" + ariaLabelledBy[1]).attr("aria-label")).to.equal("Yhteinen oppiaine: Arvosana");
+                            });
+                        });
+                    });
                 });
 
                 describe('syötettäessä lukio-ammattikoulutus-yhdistelmä', function () {
