@@ -10,6 +10,7 @@ describe('Erityisoppilaitosten lomake', function () {
     ));
 
     var valitseFaktiaJaKiipula = seq(
+        tyhjennaHakutoiveet(5),
         partials.valitseKoulutus(1, faktia, faktiaPkKoulutus),
         click(
             lomake.harkinnanvaraisuus(1, false),
