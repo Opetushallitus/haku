@@ -49,14 +49,14 @@
 </c:forEach>
 
 <c:forEach var="additionalInformationElement" items="${it.additionalInformationElements}">
-    <hr>
+    <hr role="presentation">
     <c:set var="element" value="${additionalInformationElement}" scope="request"/>
     <haku:viewChilds element="${element}"/>
 </c:forEach>
 
 <jsp:include page="../print/applicationAttachments.jsp"/>
 
-<hr class="strong">
+<hr role="presentation" class="strong">
 <footer>
     <address>
         <c:forEach var="alatunnisterivi" items="${it.alatunnisterivit}" varStatus="status">

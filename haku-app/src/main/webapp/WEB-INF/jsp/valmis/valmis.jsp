@@ -56,7 +56,7 @@
 
         <section id="page">
 
-            <div class="clear"></div>
+            <div role="presentation" class="clear"></div>
 
             <section class="content-container">
 
@@ -80,9 +80,9 @@
                                     key="lomake.valmis"/></a>
                         </li>
                     </ul>
-                    <div class="clear"></div>
+                    <div role="presentation" class="clear"></div>
                 </div>
-                <div class="clear"></div>
+                <div role="presentation" class="clear"></div>
 
                 <div class="form" data-form-step-id="7">
 

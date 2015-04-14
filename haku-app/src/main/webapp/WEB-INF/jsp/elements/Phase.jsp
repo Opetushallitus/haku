@@ -76,10 +76,10 @@
     </title>
 </head>
 <body>
-<div id="viewport">
-    <div id="site">
-        <div id="sitecontent">
-            <div class="content">
+<div role="presentation id="viewport">
+    <div role="presentation" id="site">
+        <div role="presentation" id="sitecontent">
+            <div role="navigation" class="content">
                 <fmt:message key="lomake.lisaakoulutuksia.href" var="lisaaKoulutuksiaHref"/>
                 <a href="${lisaaKoulutuksiaHref}"><fmt:message key="lomake.lisaakoulutuksia"/></a>
 
@@ -116,12 +116,15 @@
                         </span>
                     </li>
                 </ul>
-                <div class="clear"></div>
+                <div role="presentation" class="clear"></div>
             </div>
+            <div role="main">
             <c:choose>
                 <c:when test="${preview}">
-                    <div class="form">
-                        <jsp:include page="../prev_next_buttons_preview.jsp"/>
+                    <div role="form" class="form">
+                        <jsp:include page="../prev_next_buttons_preview.jsp">
+                            <jsp:param name="notfocusable" value="true" />
+                        </jsp:include>
 
                         <c:forEach var="child" items="${vaihe.children}">
                             <c:set var="element" value="${child}" scope="request"/>
@@ -132,13 +135,15 @@
                 </c:when>
                 <c:otherwise>
                     <c:if test="${not empty errorMessages}">
-                        <div class="notification warning">
+                        <div role="status" tabindex="0" class="notification warning">
                             <fmt:message key="lomake.phase.contains.errors"/>
                         </div>
                     </c:if>
-                    <form id="form-${vaihe.id}" class="form" method="post" novalidate="novalidate">
+                    <form role="form" id="form-${vaihe.id}" class="form" method="post" novalidate="novalidate">
 
-                        <jsp:include page="../prev_next_buttons.jsp"/>
+                        <jsp:include page="../prev_next_buttons.jsp">
+                            <jsp:param name="notfocusable" value="true" />
+                        </jsp:include>
 
                         <c:forEach var="child" items="${vaihe.children}">
                             <c:set var="element" value="${child}" scope="request"/>
@@ -148,6 +153,7 @@
                     </form>
                 </c:otherwise>
             </c:choose>
+            </div>
         </div>
     </div>
 </div>

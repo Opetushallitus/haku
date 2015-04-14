@@ -50,11 +50,11 @@
             key="lomake.esikatselu"/></title>
 </head>
 <body>
-<div id="viewport">
+<div role="presentation" id="viewport">
     <%@include file="common/confirmDialog.jsp" %>
-    <div id="site">
-        <div id="sitecontent">
-            <div class="content">
+    <div role="presentation" id="site">
+        <div role="presentation" id="sitecontent">
+            <div role="navigation" class="content">
                 <fmt:message key="lomake.lisaakoulutuksia.href" var="lisaaKoulutuksiaHref"/>
                 <a href="${lisaaKoulutuksiaHref}"><fmt:message key="lomake.lisaakoulutuksia"/></a>
 
@@ -79,15 +79,17 @@
                         </span>
                     </li>
                 </ul>
-                <div class="clear"></div>
+                <div role="presentation" class="clear"></div>
             </div>
 
-            <div class="form">
-                <jsp:include page="../prev_next_buttons_preview.jsp"/>
+            <div role="main" class="form">
+                <jsp:include page="../prev_next_buttons_preview.jsp">
+                    <jsp:param name="notfocusable" value="true" />
+                </jsp:include>
                 <div class="phase-help">
                     <div class="help-text"><fmt:message key="form.esikatselu.help"/></div>
                 </div>
-                <div class="clear"></div>
+                <div role="presentation" class="clear"></div>
                 <c:forEach var="child" items="${element.children}">
                     <c:set var="element" value="${child}" scope="request"/>
                     <jsp:include page="./${child.type}Preview.jsp"/>

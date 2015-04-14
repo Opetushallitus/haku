@@ -28,19 +28,19 @@
         <th colspan="6"><fmt:message key="lomake.component.gradegrid.gradesTitle"/></th>
     </tr>
     <tr>
-        <td colspan="2"><fmt:message key="lomake.component.gradegrid.subjectTitle"/></td>
+        <td colspan="2" id="gradegrid-table-header-column2"><fmt:message key="lomake.component.gradegrid.subjectTitle"/></td>
         <c:choose>
             <c:when test="${element.extraColumn}">
-                <td><fmt:message key="lomake.component.gradegrid.commonSubjectColumnTitle"/></td>
+                <td aria-label='<fmt:message key="lomake.component.gradegrid.commonSubjectColumnTitle"/>: <fmt:message key="lomake.component.gradegrid.subjectColumnTitle"/>' id="gradegrid-table-header-column3"><fmt:message key="lomake.component.gradegrid.commonSubjectColumnTitle"/></td>
             </c:when>
             <c:otherwise>
-                <td><fmt:message key="lomake.component.gradegrid.subjectColumnTitle"/></td>
+                <td id="gradegrid-table-header-column3"><fmt:message key="lomake.component.gradegrid.subjectColumnTitle"/></td>
             </c:otherwise>
         </c:choose>
         <c:if test="${element.extraColumn}">
-            <td><fmt:message key="lomake.component.gradegrid.optionalSubjectColumnTitle"/></td>
-            <td><fmt:message key="lomake.component.gradegrid.second.optionalSubjectColumnTitle"/></td>
-            <td><fmt:message key="lomake.component.gradegrid.third.optionalSubjectColumnTitle"/></td>
+            <td aria-label="<fmt:message key="lomake.component.gradegrid.optionalSubjectColumnTitle"/>: <fmt:message key="lomake.component.gradegrid.subjectColumnTitle"/>" id="gradegrid-table-header-column4"><fmt:message key="lomake.component.gradegrid.optionalSubjectColumnTitle"/></td>
+            <td aria-label="<fmt:message key="lomake.component.gradegrid.optionalSubjectColumnTitle"/>: <fmt:message key="lomake.component.gradegrid.subjectColumnTitle"/>" id="gradegrid-table-header-column5"><fmt:message key="lomake.component.gradegrid.second.optionalSubjectColumnTitle"/></td>
+            <td aria-label="<fmt:message key="lomake.component.gradegrid.optionalSubjectColumnTitle"/>: <fmt:message key="lomake.component.gradegrid.subjectColumnTitle"/>" id="gradegrid-table-header-column6"><fmt:message key="lomake.component.gradegrid.third.optionalSubjectColumnTitle"/></td>
         </c:if>
     </tr>
     </thead>

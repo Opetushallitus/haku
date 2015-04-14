@@ -10,6 +10,7 @@ describe('Erityisoppilaitosten lomake', function () {
     ));
 
     var valitseFaktiaJaKiipula = seq(
+        tyhjennaHakutoiveet(5),
         partials.valitseKoulutus(1, faktia, faktiaPkKoulutus),
         click(
             lomake.harkinnanvaraisuus(1, false),
@@ -132,6 +133,12 @@ describe('Erityisoppilaitosten lomake', function () {
                         describe('täytön jälkeen', function () {
                             it('pohjakoulutus ei vaikuta mitä hakutoiveita voi valita', function () {
                             });
+
+                            it('hakutoiveiden tyhjennysnapeissa oikeat aria-labelit', seqDone(
+                                hasAriaLabel(lomake.tyhjenna(1), 'Tyhjennä: FAKTIA, Espoo op, Talonrakennus ja ymäristösuunnittelu, pk'),
+                                hasAriaLabel(lomake.tyhjenna(2), 'Tyhjennä: Kiipulan ammattiopisto, Kiipulan toimipaikka, Metsäalan perustutkinto, er'),
+                                hasAriaLabel(lomake.tyhjenna(3), 'Tyhjennä')
+                            ));
                         });
 
                         describe('arvosanojen täyttö', function () {
@@ -150,11 +157,17 @@ describe('Erityisoppilaitosten lomake', function () {
                                     headingVisible("Erityisopetuksen tarve"),
                                     click(lomake.asiointikieli("suomi"))
                                 ));
-                                describe('Jos yrittää siirtyä eteenpäin antamatta', function () {
+                                describe('Jos yrittää siirtyä eteenpäin antamatta pakollisia tietoja', function () {
                                     before(seqDone(
                                         pageChange(lomake.fromLisatieto),
                                         headingVisible("Erityisopetuksen tarve")
                                     ));
+                                    it('näkyy sivun alussa että tuli virheitä', function () {
+                                        expect(firstWarningText()).to.contain("Lomakkeella puuttuvia tai virheellisiä tietoja, tarkista lomakkeen tiedot")
+                                    });
+                                    it('näkyy sivun titlessä, että tuli virheitä', function () {
+                                        expect(S("title").text()).to.contain("Lomakkeella puuttuvia tai virheellisiä tietoja, tarkista lomakkeen tiedot")
+                                    });
                                     it('näkyy pakollisuus virheet', function () {
                                         expect(S("#hojks-error").text()).to.equal("Pakollinen tieto.");
                                         expect(S("#koulutuskokeilu-error").text()).to.equal("Pakollinen tieto.");
@@ -220,7 +233,14 @@ describe('Erityisoppilaitosten lomake', function () {
                                     openPage("/haku-app/lomake/" + hakuOid + "/hakutoiveet"),
                                     click(lomake.sortDown(1))
                                 ));
-                                it('ei haittaa', seqDone(
+
+                                it('hakutoiveiden tyhjennysnapeissa oikeat aria-labelit', seqDone(
+                                    hasAriaLabel(lomake.tyhjenna(1), 'Tyhjennä: Kiipulan ammattiopisto, Kiipulan toimipaikka, Metsäalan perustutkinto, er'),
+                                    hasAriaLabel(lomake.tyhjenna(2), 'Tyhjennä: FAKTIA, Espoo op, Talonrakennus ja ymäristösuunnittelu, pk'),
+                                    hasAriaLabel(lomake.tyhjenna(3), 'Tyhjennä')
+                                ));
+
+                                it('siirtyminen arvosanoihin yhä onnistuu', seqDone(
                                     pageChange(lomake.fromHakutoiveet),
                                     headingVisible("Arvosanat")
                                 ));
@@ -229,7 +249,7 @@ describe('Erityisoppilaitosten lomake', function () {
                      });
                 });
 
-                describe('syötettäessä peruskoulutus-ammattikoulutus-yhdistelmä', function () {
+                describe('syötettäessä yli vuoden vanha peruskoulu ja ammattikoulutus pohjakoulutukseksi', function () {
                     before(seqDone(
                         openPage("/haku-app/lomake/" + hakuOid + "/koulutustausta"),
                         visible(lomake.muukoulutus),
@@ -243,11 +263,45 @@ describe('Erityisoppilaitosten lomake', function () {
                             lomake.ammatillinenSuoritettu(true)
                         )
                     ));
-                    it('ei haittaa', seqDone(
-                        notExists(lomake.suorittanutTutkinnonRule),
-                        pageChange(lomake.fromKoulutustausta),
-                        headingVisible("Hakutoiveet")
-                    ));
+                    describe('ennen siirtymistä hakutoiveisiin', function () {
+                        it('ei tule varoitusta ammattitutkinnon vaikutuksesta', seqDone(
+                            notExists(lomake.suorittanutTutkinnonRule)
+                        ));
+                    });
+
+                    describe('siirtuminen hakutoiveisiin', function () {
+                        before(seqDone(
+                            pageChange(lomake.fromKoulutustausta)
+                        ));
+
+                        it('onnistuu', seqDone(
+                            headingVisible("Hakutoiveet")
+                        ));
+
+                        describe('arvosanat vaiheessa', function () {
+                            before(seqDone(
+                                valitseFaktiaJaKiipula,
+                                pageChange(lomake.fromHakutoiveet),
+                                headingVisible("Arvosanat")
+                            ));
+
+                            it('kysytään peruskoulun päättötodistuksen arvosanat', function () {
+                                expect(S('table#gradegrid-table tbody > tr:visible').size()).to.equal(18);
+                            });
+
+                            it('on äidinkielen oppiaineen valinnalle aria label', function () {
+                                var ariaLabelledBy = S('table#gradegrid-table select#PK_AI_OPPIAINE').attr('aria-labelledby').split(" ");
+                                expect(S("#" + ariaLabelledBy[0]).text()).to.contain("Äidinkieli ja kirjallisuus");
+                                expect(S("#" + ariaLabelledBy[1]).text()).to.equal("Oppiaine");
+                            });
+
+                            it('on äidinkielen yhteiselle arvosanalle aria label', function () {
+                                var ariaLabelledBy = S('table#gradegrid-table select#PK_AI').attr('aria-labelledby').split(" ");
+                                expect(S("#" + ariaLabelledBy[0]).text()).to.contain("Äidinkieli ja kirjallisuus");
+                                expect(S("#" + ariaLabelledBy[1]).attr("aria-label")).to.equal("Yhteinen oppiaine: Arvosana");
+                            });
+                        });
+                    });
                 });
 
                 describe('syötettäessä lukio-ammattikoulutus-yhdistelmä', function () {

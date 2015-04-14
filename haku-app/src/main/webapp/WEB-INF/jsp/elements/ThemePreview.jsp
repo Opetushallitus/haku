@@ -22,7 +22,7 @@
   --%>
 <fieldset>
     <legend class="h3"><haku:i18nText value="${element.i18nText}"/></legend>
-    <hr>
+    <hr role="presentation">
 
     <c:set var="editUrl"
            value="${pageContext.request.contextPath}/virkailija/hakemus/${application.applicationSystemId}/${currentPhase.id}/${oid}"/>

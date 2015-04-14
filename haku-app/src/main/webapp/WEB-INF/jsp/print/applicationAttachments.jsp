@@ -5,7 +5,7 @@
 
  <c:if test="${not empty applicationAttachments}">
     <section id="applicationAttachments">
-        <hr>
+        <hr role="presentation">
         <h3><fmt:message key="lomake.tulostus.liitteet"/></h3>
         <table class="striped">
             <tr>

@@ -62,6 +62,7 @@ $(document).ready(function () {
                 popover.set.overlay();
                 popover.set.size($('#' + id + ' .popup-dialog'));
                 popover.set.position($('#' + id + ' .popup-dialog'));
+                $('#' + id + " :focusable:first").focus();
             }
         },
         set: {

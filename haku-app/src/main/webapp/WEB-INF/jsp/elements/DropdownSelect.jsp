@@ -34,7 +34,7 @@
         <haku:errorMessage id="${element.id}" additionalClass="margin-top-1"/>
         <haku:help element="${element}"/>
     </div>
-    <div class="clear"></div>
+    <div role="presentation" class="clear"></div>
 
     <haku:viewChilds element="${element}"/>
 </div>

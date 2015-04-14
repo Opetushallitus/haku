@@ -19,11 +19,6 @@
   ~ European Union Public Licence for more details.
   --%>
 
-<button class="reset" data-id="${sortableItem.id}" id="${sortableItem.id}-reset" type="button">
-    <span>
-        <span><haku:i18nText value="${sortableItem.resetLabel}"/></span>
-    </span>
-</button>
 <div id="${sortableItem.id}-row-content" class="preference-fields">
     <c:set value="${sortableItem.learningInstitutionInputId}" var="textInputId" scope="page"/>
     <c:set value="${sortableItem.learningInstitutionInputId}-id" var="hiddenInputId" scope="page"/>
@@ -64,7 +59,7 @@
                        type="hidden"/>
             </div>
         </div>
-        <div class="clear"></div>
+        <div role="presentation" class="clear"></div>
     </div>
     <div class="form-row">
         <label class="form-row-label ${sortableItem.attributes['required']}" for="${selectInputId}"><haku:i18nText
@@ -93,12 +88,19 @@
                 <haku:input-hidden id="${hiddenAttachments}" data="${answers}"/>
             </div>
         </div>
-        <div class="clear"></div>
+        <div role="presentation" class="clear"></div>
     </div>
     <div id="container-${childLONamesId}" class="notification block light-grey margin-2" style="display: none">
         <span><haku:i18nText value="${sortableItem.childLONameListLabel}"/>:&nbsp;</span>
         <span id="${childLONamesId}"></span>
     </div>
 
-    <haku:viewChilds element="${sortableItem}"/>
 </div>
+<button class="reset" data-id="${sortableItem.id}" id="${sortableItem.id}-reset" data-label="<haku:i18nText value='${sortableItem.resetLabel}'/>"
+        aria-label="<haku:i18nText value='${sortableItem.resetLabel}'/>" type="button">
+    <span>
+        <span><haku:i18nText value="${sortableItem.resetLabel}"/></span>
+    </span>
+</button>
+
+<haku:viewChilds element="${sortableItem}"/>

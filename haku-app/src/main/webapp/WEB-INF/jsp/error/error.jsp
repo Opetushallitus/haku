@@ -66,7 +66,7 @@
     </p>
 
     <!-- på svenska -->
-    <hr class="margin-top-2"/>
+    <hr role="presentation" class="margin-top-2"/>
     <div class="logo-bg">
         <div class="container">
             <a id="home-link" href="/wp/sv/"><img src="${contextPath}/resources/img/Opintopolku_SV_logo.png" alt="Studieinfo.fi"/></a>
@@ -100,7 +100,7 @@
     </p>
 
     <!-- in english -->
-    <hr class="margin-top-2"/>
+    <hr role="presentation" class="margin-top-2"/>
     <div class="logo-bg">
         <div class="container">
             <a id="home-link" href="/wp2/en/"><img src="${contextPath}/resources/img/Opintopolku_EN_logo.png" alt="Studyinfo.fi"/></a>

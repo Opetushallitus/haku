@@ -118,6 +118,14 @@ var preferenceRow = {
                 }
 
                 $('#'+selectInputId).prop('readonly', false);
+
+                var idx = selectInputId.indexOf('-');
+                var id = selectInputId.substring(0, idx);
+                var opetuspiste = $("#" + id + "-Opetuspiste").val();
+                var hakukohde = $("#" + id + "-Koulutus").val();
+                $('#'+id+'-reset').attr('aria-label',
+                       $('#'+id+'-reset').data('label') + ': ' + opetuspiste + ", " + hakukohde);
+
             });
     },
 
@@ -136,6 +144,7 @@ var preferenceRow = {
         $("#" + selectInputId + "-id-attachmentgroups").val("").change();
         $("#" + selectInputId).html("<option>&nbsp;</option>");
         preferenceRow.clearChildLONames($("#" + selectInputId).data("childlonames"));
+        "${sortableItem.id}-reset"
     },
 
     displayChildLONames: function (hakukohdeId, childLONamesId) {
@@ -167,9 +176,10 @@ var preferenceRow = {
             preferenceRow.clearSelectInput(id + "-Koulutus");
             $(this).parent().find(".warning").hide();
             $('[id|="' + id + '"]').change();
+            $(this).attr('aria-label', $(this).data('label'))
         });
 
-            $('[data-special-id="preferenceLopInput"]').each(function (index) {
+        $('[data-special-id="preferenceLopInput"]').each(function (index) {
             var selectInputId = $(this).data('selectinputid');
             var $hiddenInput = $("#" + this.id + "-id");
             $(this).autocomplete({
@@ -212,6 +222,10 @@ var preferenceRow = {
                     $hiddenInput.val(ui.item.dataId);
                     preferenceRow.clearSelectInput(selectInputId);
                     preferenceRow.populateSelectInput(ui.item.dataId, selectInputId, false, this.id);
+                    var idx = selectInputId.indexOf('-');
+                    var id = selectInputId.substring(0, idx);
+                    $('#'+id+'-reset').attr('aria-label',
+                            $('#'+id+'-reset').data('label') + ': ' + ui.item.label)
                     $(this).prop("readonly", true);
                 },
                 change: function (ev, ui) {
@@ -268,9 +282,17 @@ var preferenceRow = {
                                        $educationAttachmentGroups.val(selectedOption.data("attachmentgroups")).change();
                                        $educationDegreeEducationCode.val(selectedOption.data("educationcode")).change();
                                        preferenceRow.displayChildLONames(selectedId, $(this).data("childlonames"));
+                                       var idx = this.id.indexOf('-');
+                                       var id = this.id.substring(0, idx);
+                                       var opetuspiste = $("#" + id + "-Opetuspiste").val();
+                                       var hakukohde = $("#" + id + "-Koulutus").val();
+                                       $('#'+id+'-reset').attr('aria-label',
+                                               $('#'+id+'-reset').data('label') + ': ' + opetuspiste + ", " + hakukohde);
+
                                    };
 //        $('button[name=phaseId]').click(function() {throw new Error("foo")});
         $(".field-container-select select").change(selectChange);
+
     }
 };
 

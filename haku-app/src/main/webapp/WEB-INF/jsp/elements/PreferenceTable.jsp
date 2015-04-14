@@ -48,7 +48,7 @@
                         <span>${status.index + 1}.</span>
                         <div class="sort-arrows">
                             <c:if test="${not status.first}">
-                                <button class="up sort" data-id="${child.id}" data-target="${element.children[status.index - 1].id}"
+                                <button aria-label="<fmt:message key="hakutoiveet.sort.up.button.label"/>" class="up sort" data-id="${child.id}" data-target="${element.children[status.index - 1].id}"
                                         type="button">
                                     <span>
                                         <span>^</span>
@@ -57,7 +57,7 @@
                                 <br/>
                             </c:if>
                             <c:if test="${status.index lt preferencesVisible - 1}">
-                                <button class="down sort" data-id="${child.id}"
+                                <button aria-label="<fmt:message key="hakutoiveet.sort.down.button.label"/>" class="down sort" data-id="${child.id}"
                                         data-target="${element.children[status.index + 1].id}" type="button">
                                     <span>
                                         <span>v</span>
@@ -116,16 +116,16 @@
             <fmt:message key="popup.sulje"/>
         </span>
 
-        <div class="popup-dialog-header">
+        <div id="sora-popup_header" class="popup-dialog-header">
             <h3>
                 <fmt:message key="hakutoiveet.terveydentilavaatimukset.otsikko"/>
             </h3>
         </div>
         <div class="popup-dialog-content">
             <fmt:message key="hakutoiveet.terveydentilavaatimukset.sisalto"/>
-            <button type="button" class="primary popup-dialog-close">
+            <button aria-labelledby="sora-popup_header sora-popup_sulje" type="button" class="primary popup-dialog-close">
                 <span>
-                    <span>
+                    <span id="sora-popup_sulje">
                         <fmt:message key="popup.sulje"/>
                     </span>
                 </span>
