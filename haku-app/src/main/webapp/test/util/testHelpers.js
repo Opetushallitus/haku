@@ -381,6 +381,12 @@ function hasClass(fn, className) {
         function() { return fn().hasClass(className); });
 }
 
+function hasAriaLabel(fn, ariaLabel) {
+    return wait.until(function() {
+        return fn().is(':visible') && fn().attr('aria-label').trim().indexOf(ariaLabel) !== -1;
+    })
+}
+
 function firstWarningText() {
     return S("div.warning:visible:first").text();
 }

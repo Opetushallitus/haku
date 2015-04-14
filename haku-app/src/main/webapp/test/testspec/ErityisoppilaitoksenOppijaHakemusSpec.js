@@ -231,6 +231,23 @@ describe('Erityisoppilaitosten lomake', function () {
                                     headingVisible("Arvosanat")
                                 ));
                             });
+
+
+                            describe('hakutoiveiden tyhjennysnapeissa oikeat aria-labelit', function() {
+                                before(seqDone(
+                                    openPage("/haku-app/lomake/" + hakuOid + "/hakutoiveet")
+                                ));
+                                it('ei haittaa', seqDone(
+                                    hasAriaLabel(lomake.tyhjenna(1), 'Tyhjennä: FAKTIA, Espoo op, Talonrakennus ja ymäristösuunnittelu, pk'),
+                                    hasAriaLabel(lomake.tyhjenna(2), 'Tyhjennä: Kiipulan ammattiopisto, Kiipulan toimipaikka, Metsäalan perustutkinto, er'),
+                                    hasAriaLabel(lomake.tyhjenna(3), 'Tyhjennä'),
+                                    click(lomake.sortDown(1)),
+                                    hasAriaLabel(lomake.tyhjenna(1), 'Tyhjennä: Kiipulan ammattiopisto, Kiipulan toimipaikka, Metsäalan perustutkinto, er'),
+                                    hasAriaLabel(lomake.tyhjenna(2), 'Tyhjennä: FAKTIA, Espoo op, Talonrakennus ja ymäristösuunnittelu, pk'),
+                                    hasAriaLabel(lomake.tyhjenna(3), 'Tyhjennä'),
+                                    click(lomake.sortDown(1))
+                                ));
+                            });
                         });
                      });
                 });
