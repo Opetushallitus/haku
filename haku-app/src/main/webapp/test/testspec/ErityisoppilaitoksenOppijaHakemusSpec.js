@@ -89,6 +89,52 @@ describe('Erityisoppilaitosten lomake', function () {
         });
     });
 
+    describe("hakemuksen tuonti oppijana", function() {
+        before(seqDone(
+            logout,
+            postAsForm("/haku-app/lomake/" + hakuOid, {
+                "preference1-Opetuspiste-id": "1.2.246.562.10.89537774706", // FAKTIA, Espoo op
+                "preference1-Koulutus-id": "1.2.246.562.14.673437691210", // Talonrakennus ja ymäristösuunnittelu, pk
+                "preference1_sora_terveys": "false",
+                "preference1_sora_oikeudenMenetys": "false",
+                "preference2-Opetuspiste-id": "1.2.246.562.10.19001332592", // Kiipulan ammattiopisto, Kiipulan toimipaikka
+                "preference2-Koulutus-id": "1.2.246.562.14.2013120511174558582514", // Metsäalan perustutkinto, er
+                "preference2_sora_terveys": "true",
+                "preference2_sora_oikeudenMenetys": "true"
+
+            }),
+            partials.henkilotiedotTestikaes,
+            pageChange(lomake.fromHenkilotiedot),
+            click(lomake.pohjakoulutus("1")),
+            input(
+                lomake.pkPaattotodistusVuosi, "2015",
+                lomake.pkKieli, "FI"
+            ),
+            pageChange(lomake.fromKoulutustausta)
+        ));
+
+        it("sisältää ennakkotäytetyt hakukohteet", seqDone(
+            function() {
+                expect(lomake.opetuspisteDropdown(1)().val()).to.equal("FAKTIA, Espoo op");
+                expect(lomake.koulutus(1)().val()).to.equal("Talonrakennus ja ymäristösuunnittelu, pk");
+                expect(lomake.soraTerveys(1, false)().is(":checked"), true);
+                expect(lomake.soraOikeudenMenetys(1, false)().is(":checked"), true);
+                expect(lomake.soraTerveys(1, true)().is(":checked"), false);
+                expect(lomake.soraOikeudenMenetys(1, true)().is(":checked"), false);
+                expect(lomake.opetuspisteDropdown(2)().val()).to.equal("Kiipulan ammattiopisto, Kiipulan toimipaikka");
+                expect(lomake.koulutus(2)().val()).to.equal("Metsäalan perustutkinto, er");
+                expect(lomake.soraTerveys(2, true)().is(":checked"), true);
+                expect(lomake.soraOikeudenMenetys(2, true)().is(":checked"), true);
+                expect(lomake.soraTerveys(2, false)().is(":checked"), false);
+                expect(lomake.soraOikeudenMenetys(2, false)().is(":checked"), false);
+            }));
+
+        describe('hakukohteiden validointi', function () {
+            before(seqDone(click(lomake.fromHakutoiveet)));
+            it('onnistuu', seqDone(headingVisible("Arvosanat")));
+        });
+    });
+
     describe("hakemuksen täyttö oppijana", function() {
         before(seqDone(
             logout,
