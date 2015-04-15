@@ -19,9 +19,37 @@ var attachments = {};
 var lopCache = {};
 
 var preferenceRow = {
-    populateSelectInput: function (orgId, selectInputId, isInit, providerInputId) {
-        
-            $.getJSON(sortabletable_settings.koulutusinformaatioBaseUrl + "/ao/search/" + sortabletable_settings.applicationSystemId + "/" + orgId,
+    searchLOP: function(term, response) {
+        function resultToResponse(result) {
+            return {
+                label: result.name,
+                value: result.name,
+                dataId: result.id
+            }
+        }
+        if (term in lopCache) {
+            response($.map(lopCache[term], resultToResponse));
+            return;
+        }
+        var lopParams = {
+            asId: sortabletable_settings.applicationSystemId,
+            vocational: sortabletable_settings.vocational,
+            start: 0,
+            rows: 999999,
+            lang: sortabletable_settings.uiLang
+        };
+        if (sortabletable_settings.baseEducation) {
+            lopParams.baseEducation = sortabletable_settings.baseEducation;
+        }
+        $.getJSON(sortabletable_settings.koulutusinformaatioBaseUrl + "/lop/search/" + encodeURI(term),
+            lopParams, function(data) {
+                lopCache[term] = data;
+                response($.map(data, resultToResponse));
+            });
+    },
+    populateSelectInput: function(orgId, selectInputId, isInit, providerInputId) {
+
+        $.getJSON(sortabletable_settings.koulutusinformaatioBaseUrl + "/ao/search/" + sortabletable_settings.applicationSystemId + "/" + orgId,
             {
                 baseEducation: sortabletable_settings.baseEducation,
                 vocational: sortabletable_settings.vocational,
@@ -179,74 +207,71 @@ var preferenceRow = {
             $(this).attr('aria-label', $(this).data('label'))
         });
 
-        $('[data-special-id="preferenceLopInput"]').each(function (index) {
-            var selectInputId = $(this).data('selectinputid');
-            var $hiddenInput = $("#" + this.id + "-id");
-            $(this).autocomplete({
-                minLength: 1,
-                source: function (request, response) {
-                    var term = request.term;
-                    if ( term in lopCache ) {
-                        response($.map(lopCache[ term ], function (result) {
-                            return {
-                                label: result.name,
-                                value: result.name,
-                                dataId: result.id
-                            }
-                        }));
-                        return;
-                    }
-                    var lopParams = {
-                        asId: sortabletable_settings.applicationSystemId,
-                        vocational: sortabletable_settings.vocational,
-                        start: 0,
-                        rows: 999999,
-                        lang: sortabletable_settings.uiLang
-                    }
-                    if (sortabletable_settings.baseEducation) {
-                        lopParams.baseEducation = sortabletable_settings.baseEducation;
-                    }
-                    $.getJSON(sortabletable_settings.koulutusinformaatioBaseUrl + "/lop/search/" + encodeURI(request.term),
-                            lopParams, function (data) {
-                        lopCache[request.term] = data;
-                        response($.map(data, function (result) {
-                            return {
-                                label: result.name,
-                                value: result.name,
-                                dataId: result.id
-                            }
-                        }));
+        var $lopInputs = $('[data-special-id="preferenceLopInput"]');
+        if ($lopInputs.first().is('select')) {
+            preferenceRow.searchLOP("*", function(options) {
+                $lopInputs.each(function() {
+                    var html = '<option value=""></option>';
+                    var $select = $(this);
+                    options.forEach(function(o) {
+                        var selected = ($("#" + $select.attr('id') + "-id").val() === o.dataId ? ' selected' : '');
+                        html += '<option data-id="' + o.dataId + '" value="' + o.value + '"' + selected + '>' + o.label + '</option>';
                     });
-                },
-                select: function (event, ui) {
-                    $hiddenInput.val(ui.item.dataId);
-                    preferenceRow.clearSelectInput(selectInputId);
-                    preferenceRow.populateSelectInput(ui.item.dataId, selectInputId, false, this.id);
-                    var idx = selectInputId.indexOf('-');
-                    var id = selectInputId.substring(0, idx);
-                    $('#'+id+'-reset').attr('aria-label',
-                            $('#'+id+'-reset').data('label') + ': ' + ui.item.label)
+                    $select.html(html);
+                    $select.change(function(event) {
+                        var $option = $(event.target).find(":selected");
+                        preferenceRow.clearSelectInput($select.data('id') + "-Koulutus");
+                        preferenceRow.populateSelectInput($option.data('id'), $(event.target).data('selectinputid'), false, event.target.id);
+                    })
+                });
+            });
+            $lopInputs.each(function() {
+                var selectInputId = $(this).data('selectinputid');
+                var $hiddenInput = $("#" + this.id + "-id");
+                if ($hiddenInput.val() && $hiddenInput.val() !== '') {
                     $(this).prop("readonly", true);
-                },
-                change: function (ev, ui) {
-                    if (!ui.item) {
-                        $(this).val("");
-                        $hiddenInput.val("");
+                    preferenceRow.populateSelectInput($hiddenInput.val(), selectInputId, true, this.id);
+                }
+            });
+        } else {
+            $lopInputs.each(function(index) {
+                var selectInputId = $(this).data('selectinputid');
+                var $hiddenInput = $("#" + this.id + "-id");
+                $(this).autocomplete({
+                    minLength: 1,
+                    source: function(request, response) {
+                        preferenceRow.searchLOP(request.term, response);
+                    },
+                    select: function(event, ui) {
+                        $hiddenInput.val(ui.item.dataId);
                         preferenceRow.clearSelectInput(selectInputId);
+                        preferenceRow.populateSelectInput(ui.item.dataId, selectInputId, false, this.id);
+                        var idx = selectInputId.indexOf('-');
+                        var id = selectInputId.substring(0, idx);
+                        $('#'+id+'-reset').attr('aria-label',
+                            $('#'+id+'-reset').data('label') + ': ' + ui.item.label)
+                        $(this).prop("readonly", true);
+                    },
+                    change: function(ev, ui) {
+                        if (!ui.item) {
+                            $(this).val("");
+                            $hiddenInput.val("");
+                            preferenceRow.clearSelectInput(selectInputId);
+                        }
                     }
+                });
+                $(this).focus(function(event) {
+                    wasOpen = $(this).autocomplete("widget").is(":visible");
+                    if (!wasOpen && (!$(this).val() || $(this).val() === '')) {
+                        $(this).autocomplete("search", "*");
+                    }
+                });
+                if ($hiddenInput.val() && $hiddenInput.val() !== '') {
+                    $(this).prop("readonly", true);
+                    preferenceRow.populateSelectInput($hiddenInput.val(), selectInputId, true, this.id);
                 }
             });
-            $(this).focus(function(event) {
-                wasOpen = $(this).autocomplete( "widget" ).is( ":visible" );
-                if (!wasOpen && (!$(this).val() || $(this).val() === '')) {
-                    $(this).autocomplete("search", "*");
-                }
-            });
-            if ($hiddenInput.val() && $hiddenInput.val() !== '') {
-                $(this).prop("readonly", true);
-                preferenceRow.populateSelectInput($hiddenInput.val(), selectInputId, true, this.id);
-            }
-        });
+        }
         $(".field-container-select select").unbind();
         var selectChange = function (event) {
                                        var $hiddenInput = $("#" + this.id + "-id"),

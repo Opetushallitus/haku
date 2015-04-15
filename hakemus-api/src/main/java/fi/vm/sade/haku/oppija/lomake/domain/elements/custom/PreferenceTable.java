@@ -38,17 +38,20 @@ public class PreferenceTable extends Question {
     private static final long serialVersionUID = 1289678491786047575L;
     private boolean usePriorities;
     private int preferencesInitiallyVisible;
+    private final Boolean useDropdowns;
 
     private List<GroupRestrictionValidator> groupRestrictionValidators;
 
     public PreferenceTable(@JsonProperty(value = "id") final String id,
                            @JsonProperty(value = "i18nText") final I18nText i18nText,
                            @JsonProperty(value = "usePriorities") final Boolean usePriorities,
-                           @JsonProperty(value = "preferencesInitiallyVisible") final Integer preferencesInitiallyVisible) {
+                           @JsonProperty(value = "preferencesInitiallyVisible") final Integer preferencesInitiallyVisible,
+                           @JsonProperty(value = "useDropdowns") final Boolean useDropdowns) {
         super(id, i18nText);
         this.usePriorities = usePriorities != null && usePriorities;
         this.preferencesInitiallyVisible = preferencesInitiallyVisible.intValue();
         this.groupRestrictionValidators = new ArrayList<GroupRestrictionValidator>();
+        this.useDropdowns = useDropdowns;
     }
 
     public boolean isUsePriorities() {
@@ -72,6 +75,10 @@ public class PreferenceTable extends Question {
 
     public List<GroupRestrictionValidator> getGroupRestrictionValidators() {
         return groupRestrictionValidators;
+    }
+
+    public Boolean getUseDropdownForLearningInstitution() {
+        return useDropdowns;
     }
 
     public void setGroupRestrictionValidators(List<GroupRestrictionValidator> groupRestrictionValidators) {

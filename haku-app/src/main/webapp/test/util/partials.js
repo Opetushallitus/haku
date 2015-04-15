@@ -105,6 +105,12 @@ partials = {
             lomake.lahiosoite, "Testikatu 4",
             lomake.postinumero, "00100",
             lomake.kotikunta, "janakkala")),
+    valitseKoulutusVetovalikosta: function(prioriteetti, koulunNimi, koulutuksenNimi) {
+        return seq(
+            select(lomake.opetuspisteDropdown(prioriteetti), koulunNimi),
+            select(lomake.koulutus(prioriteetti), koulutuksenNimi)
+        );
+    },
     valitseKoulutus: function(prioriteetti, koulunNimi, koulutuksenNimi) {
         return seq(
             autocomplete(lomake.opetuspiste(prioriteetti), koulunNimi, koulunNimi),

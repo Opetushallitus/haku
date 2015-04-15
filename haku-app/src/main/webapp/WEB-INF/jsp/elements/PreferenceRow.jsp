@@ -44,20 +44,40 @@
                 value="${sortableItem.learningInstitutionLabel}"/></label>
 
         <div class="form-row-content">
-            <div class="field-container-text">
-                <input id="${textInputId}"
-                       name="${textInputId}"
-                       <haku:value value='${answers[textInputId]}'/>
-                       type="text"
-                       data-special-id="preferenceLopInput"
-                       data-selectinputid="${selectInputId}"
-                       size="60"
-                ${sortableItem.attributes['required']}/>
-                <haku:errorMessage id="${textInputId}" additionalClass="margin-top-1"/>
-                <input id="${hiddenInputId}" name="${hiddenInputId}"
-                       <haku:value value='${answers[hiddenInputId]}'/>
-                       type="hidden"/>
-            </div>
+            <c:choose>
+                <c:when test="${useDropdown}">
+                    <div class="field-container-select">
+                        <select id="${textInputId}"
+                                data-id="${sortableItem.id}"
+                                name="${textInputId}"
+                                data-special-id="preferenceLopInput"
+                                data-selectinputid="${selectInputId}"
+                                data-selectedname="<c:out value='${answers[textInputId]}'/>"
+                                ${sortableItem.attributes['required']}>
+                        </select>
+                        <haku:errorMessage id="${textInputId}" additionalClass="margin-top-1"/>
+                        <input id="${hiddenInputId}" name="${hiddenInputId}"
+                                <haku:value value='${answers[hiddenInputId]}'/>
+                                type="hidden"/>
+                    </div>
+                </c:when>
+                <c:otherwise>
+                    <div class="field-container-text">
+                        <input id="${textInputId}"
+                                name="${textInputId}"
+                                <haku:value value='${answers[textInputId]}'/>
+                                type="text"
+                                data-special-id="preferenceLopInput"
+                                data-selectinputid="${selectInputId}"
+                                size="60"
+                                ${sortableItem.attributes['required']}/>
+                        <haku:errorMessage id="${textInputId}" additionalClass="margin-top-1"/>
+                        <input id="${hiddenInputId}" name="${hiddenInputId}"
+                                <haku:value value='${answers[hiddenInputId]}'/>
+                                type="hidden"/>
+                    </div>
+                </c:otherwise>
+            </c:choose>
         </div>
         <div role="presentation" class="clear"></div>
     </div>

@@ -81,7 +81,8 @@ public class HakutoiveetPhase {
                 "preferencelist",
                 formParameters.getI18nText("form.hakutoiveet.otsikko"),
                 formParameters.getApplicationSystem().isUsePriorities(),
-                Math.min(6, formParameters.getApplicationSystem().getMaxApplicationOptions()));
+                Math.min(6, formParameters.getApplicationSystem().getMaxApplicationOptions()),
+                formParameters.isOpetuspisteetVetovalikossa());
 
         List<String> preferenceIds = getPreferenceIds(formParameters);
         PreferenceRow pr1 = createI18NPreferenceRow(preferenceIds.remove(0), formParameters);

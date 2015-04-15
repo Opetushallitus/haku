@@ -19,6 +19,7 @@
   ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   ~ European Union Public Licence for more details.
   --%>
+<c:set var="useDropdown" value="${element.getUseDropdownForLearningInstitution()}" scope="request"/>
 <haku:errorMessage id="${element.id}" additionalClass="margin-top-1"/>
 <table id="${element.id}" class="preference-sort">
     <tbody>

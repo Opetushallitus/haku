@@ -83,6 +83,9 @@ lomake = initSelectors({
     opetuspiste: function(n) {
         return "input#preference" + n + "-Opetuspiste";
     },
+    opetuspisteDropdown: function(n) {
+        return "select#preference" + n + "-Opetuspiste";
+    },
     koulutus: function(n) {
         return "select#preference" + n + "-Koulutus";
     },
