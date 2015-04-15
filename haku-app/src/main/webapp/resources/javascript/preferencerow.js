@@ -214,7 +214,7 @@ var preferenceRow = {
                     var html = '<option value=""></option>';
                     var $select = $(this);
                     options.forEach(function(o) {
-                        var selected = ($select.data('selectedname') === o.value ? ' selected' : '');
+                        var selected = ($("#" + $select.attr('id') + "-id").val() === o.dataId ? ' selected' : '');
                         html += '<option data-id="' + o.dataId + '" value="' + o.value + '"' + selected + '>' + o.label + '</option>';
                     });
                     $select.html(html);
