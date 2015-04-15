@@ -54,12 +54,12 @@
     <%@include file="common/confirmDialog.jsp" %>
     <div role="presentation" id="site">
         <div role="presentation" id="sitecontent">
-            <div role="navigation" class="content">
+            <div aria-label='<fmt:message key="lomake.navigation.aria.label"/>' role="navigation" class="content">
                 <fmt:message key="lomake.lisaakoulutuksia.href" var="lisaaKoulutuksiaHref"/>
                 <a href="${lisaaKoulutuksiaHref}"><fmt:message key="lomake.lisaakoulutuksia"/></a>
 
                 <h1><haku:i18nText value="${element.i18nText}"/> - <fmt:message key="form.title"/></h1>
-                <ul class="form-steps">
+                <ul aria-label='<fmt:message key="lomake.vaiheet.aria.label"/>' class="form-steps">
                     <c:set var="pastPhases" value="true" scope="request"/>
                     <c:forEach var="phase" items="${element.children}" varStatus="status">
                         <li>
@@ -70,10 +70,10 @@
                             </c:if>
                         </li>
                     </c:forEach>
-                    <li>
+                    <li aria-label='<fmt:message key="lomake.esikatselu"/>'>
                         <a id="nav-esikatselu" class="current"><span class="index"><c:out value="${phaseCount + 1}"/></span><fmt:message key="lomake.esikatselu"/></a>
                     </li>
-                    <li>
+                    <li aria-label='<fmt:message key="lomake.valmis"/>'>
                         <span>
                             <span class="index"><c:out value="${phaseCount + 2}"/></span><fmt:message key="lomake.valmis"/>
                         </span>

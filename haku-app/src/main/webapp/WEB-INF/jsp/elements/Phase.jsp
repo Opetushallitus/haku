@@ -79,15 +79,15 @@
 <div role="presentation id="viewport">
     <div role="presentation" id="site">
         <div role="presentation" id="sitecontent">
-            <div role="navigation" class="content">
+            <div aria-label='<fmt:message key="lomake.navigation.aria.label"/>' role="navigation" class="content">
                 <fmt:message key="lomake.lisaakoulutuksia.href" var="lisaaKoulutuksiaHref"/>
                 <a href="${lisaaKoulutuksiaHref}"><fmt:message key="lomake.lisaakoulutuksia"/></a>
 
                 <h1><haku:i18nText value="${form.i18nText}"/> - <fmt:message key="form.title"/></h1>
-                <ul class="form-steps">
+                <ul aria-label='<fmt:message key="lomake.vaiheet.aria.label"/>' class="form-steps">
                     <c:set var="pastPhases" value="true" scope="request"/>
                     <c:forEach var="phase" items="${form.children}" varStatus="status">
-                        <li>
+                        <li aria-label='<haku:i18nText value="${phase.i18nText}"/>'>
                             <c:if test="${pastPhases}">
                                 <a id="nav-${phase.id}" href="javascript:pastPhase('${phase.id}')"
                                    <c:if test="${phase.id eq vaihe.id}">class="current"</c:if>>
@@ -104,12 +104,12 @@
                             </c:if>
                         </li>
                     </c:forEach>
-                    <li>
+                    <li aria-label='<fmt:message key="lomake.esikatselu"/>'>
                         <span>
                             <span class="index"><c:out value="${phaseCount + 1}"/></span><fmt:message
                                 key="lomake.esikatselu"/></span>
                     </li>
-                    <li>
+                    <li aria-label='<fmt:message key="lomake.valmis"/>'>
                         <span>
                             <span class="index"><c:out value="${phaseCount + 2}"/></span>
                             <fmt:message key="lomake.valmis"/>
