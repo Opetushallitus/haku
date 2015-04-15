@@ -1,17 +1,6 @@
 describe('Erityisoppilaitosten lomake', function () {
     var hakuOid = "1.2.246.562.20.807716131410"
-    var formConfiguration = {
-        "applicationSystemId": "1.2.246.562.20.807716131410",
-        "formTemplateType": "YHTEISHAKU_KEVAT",
-        "featureFlags": {
-            "erotteleAmmatillinenJaYoAmmatillinenKeskiarvo": true,
-            "hakutoiveidenOpetuspisteetVetovalikkoon": true
-        }
-    };
-
     before(seqDone(
-        login('master', 'master'),
-        post("/haku-app/testResource/1.2.246.562.20.807716131410/formConfiguration", formConfiguration, 'application/json'),
         logout,
         function() {
             return openPage("/haku-app/lomakkeenhallinta/" + hakuOid, function() {

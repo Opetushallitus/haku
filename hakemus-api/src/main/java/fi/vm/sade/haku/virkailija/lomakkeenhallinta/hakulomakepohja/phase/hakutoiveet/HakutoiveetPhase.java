@@ -46,7 +46,6 @@ import static fi.vm.sade.haku.oppija.lomake.domain.builder.NotificationBuilder.W
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.PhaseBuilder.Phase;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.RelatedQuestionRuleBuilder.Rule;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.ThemeBuilder.Theme;
-import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain.FormConfiguration.FeatureFlag.hakutoiveidenOpetuspisteetVetovalikkoon;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.service.ThemeQuestionConfigurator.ConfiguratorFilter;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.*;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.*;
@@ -83,7 +82,7 @@ public class HakutoiveetPhase {
                 formParameters.getI18nText("form.hakutoiveet.otsikko"),
                 formParameters.getApplicationSystem().isUsePriorities(),
                 Math.min(6, formParameters.getApplicationSystem().getMaxApplicationOptions()),
-                formParameters.getFormConfiguration().getFeatureFlag(hakutoiveidenOpetuspisteetVetovalikkoon));
+                formParameters.isOpetuspisteetVetovalikossa());
 
         List<String> preferenceIds = getPreferenceIds(formParameters);
         PreferenceRow pr1 = createI18NPreferenceRow(preferenceIds.remove(0), formParameters);

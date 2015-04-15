@@ -85,6 +85,10 @@ public class FormParameters {
         return ! applicationSystem.getKohdejoukkoUri().equals(KOHDEJOUKKO_ERITYISOPETUKSENA_JARJESTETTAVA_AMMATILLINEN);
     }
 
+    public boolean isOpetuspisteetVetovalikossa() {
+        return applicationSystem.getKohdejoukkoUri().equals(KOHDEJOUKKO_ERITYISOPETUKSENA_JARJESTETTAVA_AMMATILLINEN);
+    }
+
     public boolean isHuoltajanTiedotKysyttava() {
         if (KOHDEJOUKKO_PERUSOPETUKSEN_JALKEINEN_VALMENTAVA.equals(applicationSystem.getKohdejoukkoUri())) {
             return true;
