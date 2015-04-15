@@ -86,8 +86,8 @@
                 <jsp:include page="../prev_next_buttons_preview.jsp">
                     <jsp:param name="notfocusable" value="true" />
                 </jsp:include>
-                <div class="phase-help">
-                    <div class="help-text"><fmt:message key="form.esikatselu.help"/></div>
+                <div aria-label='<fmt:message key="form.esikatselu.help.aria.label"/>' class="phase-help">
+                    <div role="presentation" class="help-text"><fmt:message key="form.esikatselu.help"/></div>
                 </div>
                 <div role="presentation" class="clear"></div>
                 <c:forEach var="child" items="${element.children}">
