@@ -19,8 +19,8 @@
   ~ European Union Public Licence for more details.
   --%>
 <c:if test="${not empty errorMessages[id]}">
-    <div id="${id}-error" class="notification warning ${additionalClass}"><haku:i18nText
-            value="${errorMessages[id]}"/></div>
+    <button onclick='$("#${id}-error").fadeOut()' type="button" id="${id}-error" class="notification warning ${additionalClass}"><haku:i18nText
+            value="${errorMessages[id]}"/></button>
     <script>$("[name='${id}']").change(function () {
         $("#${id}-error").fadeOut();
     });</script>

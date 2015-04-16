@@ -388,7 +388,7 @@ function hasAriaLabel(fn, ariaLabel) {
 }
 
 function firstWarningText() {
-    return S("div.warning:visible:first").text();
+    return S(".warning:visible:first").text();
 }
 
 function headingVisible(heading) {

@@ -135,9 +135,9 @@
                 </c:when>
                 <c:otherwise>
                     <c:if test="${not empty errorMessages}">
-                        <div role="status" tabindex="0" class="notification warning">
+                        <button id="phase-contains-errors" onclick='$("#phase-contains-errors").fadeOut()'type="button" class="notification warning">
                             <fmt:message key="lomake.phase.contains.errors"/>
-                        </div>
+                        </button>
                     </c:if>
                     <form role="form" id="form-${vaihe.id}" class="form" method="post" novalidate="novalidate">
 
