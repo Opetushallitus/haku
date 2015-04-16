@@ -39,8 +39,8 @@
         </c:choose>
         <c:if test="${element.extraColumn}">
             <td aria-label="<fmt:message key="lomake.component.gradegrid.optionalSubjectColumnTitle"/>: <fmt:message key="lomake.component.gradegrid.subjectColumnTitle"/>" id="gradegrid-table-header-column4"><fmt:message key="lomake.component.gradegrid.optionalSubjectColumnTitle"/></td>
-            <td aria-label="<fmt:message key="lomake.component.gradegrid.optionalSubjectColumnTitle"/>: <fmt:message key="lomake.component.gradegrid.subjectColumnTitle"/>" id="gradegrid-table-header-column5"><fmt:message key="lomake.component.gradegrid.second.optionalSubjectColumnTitle"/></td>
-            <td aria-label="<fmt:message key="lomake.component.gradegrid.optionalSubjectColumnTitle"/>: <fmt:message key="lomake.component.gradegrid.subjectColumnTitle"/>" id="gradegrid-table-header-column6"><fmt:message key="lomake.component.gradegrid.third.optionalSubjectColumnTitle"/></td>
+            <td aria-label="<fmt:message key="lomake.component.gradegrid.second.optionalSubjectColumnTitle"/>: <fmt:message key="lomake.component.gradegrid.subjectColumnTitle"/>" id="gradegrid-table-header-column5"><fmt:message key="lomake.component.gradegrid.second.optionalSubjectColumnTitle"/></td>
+            <td aria-label="<fmt:message key="lomake.component.gradegrid.third.optionalSubjectColumnTitle"/>: <fmt:message key="lomake.component.gradegrid.subjectColumnTitle"/>" id="gradegrid-table-header-column6"><fmt:message key="lomake.component.gradegrid.third.optionalSubjectColumnTitle"/></td>
         </c:if>
     </tr>
     </thead>

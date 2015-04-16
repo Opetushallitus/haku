@@ -340,10 +340,16 @@ describe('Erityisoppilaitosten lomake', function () {
                                 expect(S("#" + ariaLabelledBy[1]).text()).to.equal("Oppiaine");
                             });
 
-                            it('on äidinkielen yhteiselle arvosanalle aria label', function () {
+                            it('on äidinkielen yhteisen aineen arvosana aria label', function () {
                                 var ariaLabelledBy = S('table#gradegrid-table select#PK_AI').attr('aria-labelledby').split(" ");
                                 expect(S("#" + ariaLabelledBy[0]).text()).to.contain("Äidinkieli ja kirjallisuus");
                                 expect(S("#" + ariaLabelledBy[1]).attr("aria-label")).to.equal("Yhteinen oppiaine: Arvosana");
+                            });
+
+                            it('on äidinkielen kolmannn valinnaisen aineen arvosana aria label', function () {
+                                var ariaLabelledBy = S('table#gradegrid-table select#PK_AI_VAL3').attr('aria-labelledby').split(" ");
+                                expect(S("#" + ariaLabelledBy[0]).text()).to.contain("Äidinkieli ja kirjallisuus");
+                                expect(S("#" + ariaLabelledBy[1]).attr("aria-label")).to.equal("Kolmas valinnainen aine: Arvosana");
                             });
                         });
                     });
