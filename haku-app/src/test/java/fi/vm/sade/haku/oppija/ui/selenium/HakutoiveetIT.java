@@ -47,10 +47,11 @@ public class HakutoiveetIT extends DummyModelBaseItTest {
     }
 
     @Test(expected = NoSuchElementException.class)
-    public void testEducationPreferenceNoAdditionalQuestion() throws InterruptedException {
+    public void testNonExistingEducationPreferenceNotAutocompleted() throws InterruptedException {
         toApplicationOptionPhase();
         FirefoxDriver driver = seleniumContainer.getDriver();
         typeWithoutTab("preference1-Opetuspiste", "Eso");
+        Thread.sleep(500);
         driver.findElement(By.linkText("FAKTIA, Espoo op")).click();
     }
 
