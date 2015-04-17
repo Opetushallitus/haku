@@ -90,7 +90,7 @@ public class ValintaServiceImpl implements ValintaService {
 
     private synchronized CachingRestClient getCachingRestClientValinta() {
         if (cachingRestClientValinta == null) {
-            cachingRestClientValinta = new CachingRestClient();
+            cachingRestClientValinta = new CachingRestClient(4000);
             cachingRestClientValinta.setWebCasUrl(casUrl);
             cachingRestClientValinta.setCasService(targetServiceValinta);
             cachingRestClientValinta.setUsername(clientAppUserValinta);
@@ -107,7 +107,7 @@ public class ValintaServiceImpl implements ValintaService {
 
     private synchronized CachingRestClient getCachingRestClientSijoittelu() {
         if (cachingRestClientSijoittelu == null) {
-            cachingRestClientSijoittelu = new CachingRestClient();
+            cachingRestClientSijoittelu = new CachingRestClient(4000);
             cachingRestClientSijoittelu.setWebCasUrl(casUrl);
             cachingRestClientSijoittelu.setCasService(targetServiceSijoittelu);
             cachingRestClientSijoittelu.setUsername(clientAppUserSijoittelu);
