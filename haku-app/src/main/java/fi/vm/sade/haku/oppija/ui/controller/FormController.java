@@ -25,6 +25,7 @@ import fi.vm.sade.haku.oppija.ui.common.RedirectToPhaseViewPath;
 import fi.vm.sade.haku.oppija.ui.common.UriUtil;
 import fi.vm.sade.haku.oppija.ui.service.UIService;
 import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.PDFService;
 import org.apache.http.HttpResponse;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -236,6 +237,16 @@ public class FormController {
         if (modelResponse.hasErrors()) {
             return Response.status(Response.Status.OK).entity(new Viewable(ROOT_VIEW, modelResponse.getModel())).build();
         } else {
+            if(OppijaConstants.PHASE_PERSONAL.equals(phaseId)) {
+                LOGGER.info(OppijaConstants.PHASE_PERSONAL + " phase of " +  applicationSystemId + " filled:"
+                                + " session: " + request.getSession().getId()
+                                + ", first names: " + answers.get(OppijaConstants.ELEMENT_ID_FIRST_NAMES)
+                                + ", nickname: " +  answers.get(OppijaConstants.ELEMENT_ID_NICKNAME)
+                                + ", surname: " + answers.get(OppijaConstants.ELEMENT_ID_LAST_NAME)
+                                + ", email: " + answers.get(OppijaConstants.ELEMENT_ID_EMAIL)
+                                + ", mobilephone: " + answers.get(OppijaConstants.ELEMENT_ID_PREFIX_PHONENUMBER + 1)
+                );
+            }
             return Response.seeOther(new URI(
                     new RedirectToPhaseViewPath(applicationSystemId,
                             modelResponse.getPhaseId()).getPath())).build();

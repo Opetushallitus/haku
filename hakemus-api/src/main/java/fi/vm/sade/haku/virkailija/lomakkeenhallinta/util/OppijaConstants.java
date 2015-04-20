@@ -42,7 +42,6 @@ public final class OppijaConstants {
     public static final String ELEMENT_ID_PERSON_OID = "personOid";
     public static final String ELEMENT_ID_STUDENT_OID = "studentOid";
     public static final String ELEMENT_ID_FIRST_NAMES = "Etunimet";
-
     public static final String ELEMENT_ID_NICKNAME = "Kutsumanimi";
     public static final String ELEMENT_ID_LAST_NAME = "Sukunimi";
     public static final String ELEMENT_ID_SOCIAL_SECURITY_NUMBER = "Henkilotunnus";

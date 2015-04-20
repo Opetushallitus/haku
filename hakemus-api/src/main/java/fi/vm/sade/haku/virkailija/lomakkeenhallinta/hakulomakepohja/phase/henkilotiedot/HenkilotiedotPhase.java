@@ -75,10 +75,10 @@ public final class HenkilotiedotPhase {
         }
 
         henkilotiedotTeema.addChild(
-                createNameQuestionBuilder("Sukunimi", 30).formParams(formParameters).build(),
-                createNameQuestionBuilder("Etunimet", 30).formParams(formParameters).build(),
-                createNameQuestionBuilder("Kutsumanimi", 20)
-                        .containsInField("Etunimet")
+                createNameQuestionBuilder(OppijaConstants.ELEMENT_ID_LAST_NAME, 30).formParams(formParameters).build(),
+                createNameQuestionBuilder(OppijaConstants.ELEMENT_ID_FIRST_NAMES, 30).formParams(formParameters).build(),
+                createNameQuestionBuilder(OppijaConstants.ELEMENT_ID_NICKNAME, 20)
+                        .containsInField(OppijaConstants.ELEMENT_ID_FIRST_NAMES)
                         .formParams(formParameters).build());
 
 
