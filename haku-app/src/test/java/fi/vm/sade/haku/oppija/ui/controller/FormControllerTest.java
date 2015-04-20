@@ -35,10 +35,14 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Matchers;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpSessionContext;
 import javax.ws.rs.core.Response;
 import java.net.URI;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -133,6 +137,7 @@ public class FormControllerTest {
         Cookie[] cookies = new Cookie[1];
         cookies[0] = new Cookie("testi18next", "fi");
         when(request.getCookies()).thenReturn(cookies);
+        when(request.getSession()).thenReturn(mock(HttpSession.class));
         return request;
     }
 }
