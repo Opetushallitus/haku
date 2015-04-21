@@ -6,7 +6,7 @@ import java.util.List;
 public class HakukohdeDTO {
     private String hakuoid;
     private String tarjoajaoid;
-    private String hakukohdeoid;
+    private String oid;
     private List<ValinnanvaiheDTO> valinnanvaihe = new ArrayList<ValinnanvaiheDTO>();
 
     public String getHakuoid() {
@@ -18,11 +18,11 @@ public class HakukohdeDTO {
     }
 
     public String getOid() {
-        return hakukohdeoid;
+        return oid;
     }
 
     public void setOid(String oid) {
-        this.hakukohdeoid = oid;
+        this.oid = oid;
     }
 
     public List<ValinnanvaiheDTO> getValinnanvaihe() {

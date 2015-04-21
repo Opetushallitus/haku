@@ -12,7 +12,6 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 import java.util.Date;
 
@@ -55,16 +54,16 @@ public class ValintaServiceImpl implements ValintaService {
                     return new Date(json.getAsJsonPrimitive().getAsLong());
                 }
             });
-            FieldNamingStrategy fieldNamingStrategy = new FieldNamingStrategy() {
-                @Override
-                public String translateName(Field f) {
-                    if (f.getName().equals("valintatapajonooid")) {
-                        return "oid";
-                    }
-                    return f.getName();
-                }
-            };
-            builder.setFieldNamingStrategy(fieldNamingStrategy);
+//            FieldNamingStrategy fieldNamingStrategy = new FieldNamingStrategy() {
+//                @Override
+//                public String translateName(Field f) {
+//                    if (f.getName().equals("valintatapajonooid")) {
+//                        return "oid";
+//                    }
+//                    return f.getName();
+//                }
+//            };
+//            builder.setFieldNamingStrategy(fieldNamingStrategy);
             Gson gson = builder.create();
             return gson.fromJson(client.getAsString(url), HakemusDTO.class);
         } catch (IOException e) {
@@ -123,10 +122,10 @@ public class ValintaServiceImpl implements ValintaService {
         return cachingRestClientSijoittelu;
     }
 
-    protected void setCachingRestClientValinta(CachingRestClient cachingRestClientValinta) {
+    public void setCachingRestClientValinta(CachingRestClient cachingRestClientValinta) {
         this.cachingRestClientValinta = cachingRestClientValinta;
     }
-    protected void setCachingRestClientSijoittelu(CachingRestClient cachingRestClientSijoittelu) {
+    public void setCachingRestClientSijoittelu(CachingRestClient cachingRestClientSijoittelu) {
         this.cachingRestClientSijoittelu = cachingRestClientSijoittelu;
     }
 
