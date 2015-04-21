@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Iterator;
 import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -63,13 +64,18 @@ public class SyntheticApplicationService {
         Application query = new Application();
         query.setPersonOid(hakemus.hakijaOid);
         query.setApplicationSystemId(stub.hakuOid);
-        List<Application> applications = applicationDAO.find(query);
 
-        if(applications.isEmpty()) {
+        Iterator<Application> applications = Iterables.filter(applicationDAO.find(query), new Predicate<Application>() {
+            @Override
+            public boolean apply(Application application) {
+                return !application.isPassive();
+            }
+        }).iterator();
+
+        if (!applications.hasNext()) {
             return newApplication(stub, hakemus);
         } else {
-            Application current = Iterables.getFirst(applications, query);
-            return updateApplication(stub, hakemus, current);
+            return updateApplication(stub, hakemus, applications.next());
         }
     }
     private Person hakemusToPerson(SyntheticApplication.Hakemus hakemus) {
