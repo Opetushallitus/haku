@@ -206,9 +206,8 @@ function testFrame() {
 
 function openPage(path, predicate) {
     if (!predicate) {
-        console.log("nopredicate for: " + path);
         predicate = function () {
-            return testFrame().jQuery
+            return testFrame().jQuery && testFrame().document.readyState === 'complete'
         }
     }
     return seq(
