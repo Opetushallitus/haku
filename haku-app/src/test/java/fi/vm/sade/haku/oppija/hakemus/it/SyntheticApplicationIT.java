@@ -2,12 +2,15 @@ package fi.vm.sade.haku.oppija.hakemus.it;
 
 import static org.junit.Assert.assertEquals;
 
+import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
 import javax.ws.rs.core.Response;
 
+import fi.vm.sade.haku.oppija.hakemus.domain.Application.State;
+import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationDAO;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.i18n.I18nBundleService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.junit.Before;
@@ -43,6 +46,9 @@ public class SyntheticApplicationIT {
 
     @Autowired
     private ApplicationResource applicationResource;
+
+    @Autowired
+    private ApplicationDAO applicationDAO;
 
     @Autowired
     private I18nBundleService i18nBundleService;
@@ -125,6 +131,36 @@ public class SyntheticApplicationIT {
         assertEquals(1, applications.size());
     }
 
+    @Test
+    public void testPassivatedApplicationsGetIgnored() throws URISyntaxException {
+        final String hakijaOid = "hakijaOid";
+        final String hetu = "210495-995C";
+
+        // 1. haku
+        Response resp1 = put("hakukohde1", "tarjoaja1", hakijaOid, hetu, email1);
+        verifyPutResponse(resp1);
+        Application app1 = takeApplication(resp1, 0);
+        assertEquals(app1.getState(), State.ACTIVE);
+        Map<String, String> hakutoiveet = app1.getAnswers().get("hakutoiveet");
+        assertEquals("hakukohde1", hakutoiveet.get("preference1-Koulutus-id"));
+        assertEquals("tarjoaja1", hakutoiveet.get("preference1-Opetuspiste-id"));
+
+        // 1. haun passivointi
+        String oid = takeApplication(resp1, 0).getOid();
+        Application application = applicationService.getApplicationByOid(oid);
+        application.setState(State.PASSIVE);
+        applicationDAO.update(new Application(oid), application);
+
+        // 2. haku
+        Response resp2 = put("hakukohde2", "tarjoaja2", hakijaOid, hetu, email1);
+        verifyPutResponse(resp2);
+        Application app2 = takeApplication(resp2, 0);
+        assertEquals(app2.getState(), State.ACTIVE);
+        hakutoiveet = app2.getAnswers().get("hakutoiveet");
+        assertEquals("hakukohde2", hakutoiveet.get("preference1-Koulutus-id"));
+        assertEquals("tarjoaja2", hakutoiveet.get("preference1-Opetuspiste-id"));
+    }
+
     private Response put(String hakukohdeOid, String tarjoajaOid, String hakijaOid, String hetu, String email) {
         SyntheticApplication firstInput = new SyntheticApplication(
                 hakukohdeOid, hakuOid,
@@ -139,5 +175,9 @@ public class SyntheticApplicationIT {
         List<Application> applications = (List<Application>) response.getEntity();
         assertEquals(1, applications.size());
         return applications;
+    }
+
+    private static Application takeApplication(Response response, int nth) {
+        return ((List<Application>)response.getEntity()).get(nth);
     }
 }
