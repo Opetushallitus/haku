@@ -80,6 +80,9 @@ lomake = initSelectors({
     sortDown: function(n) {
         return "button.down.sort[data-id=preference" + n + "]";
     },
+    sortUp: function(n) {
+        return "button.up.sort[data-id=preference" + n + "]";
+    },
     opetuspiste: function(n) {
         return "input#preference" + n + "-Opetuspiste";
     },
