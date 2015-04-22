@@ -16,16 +16,16 @@
 
 package fi.vm.sade.haku.oppija.hakemus.service;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.Map;
-
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationAdditionalDataDTO;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationQueryParameters;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationState;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
 public interface ApplicationService {
 
@@ -71,6 +71,9 @@ public interface ApplicationService {
     void saveApplicationAdditionalInfo(final String oid, final Map<String, String> additionalInfo);
 
     void update(final Application queryApplication, final Application application);
+
+    void update(Application queryApplication, Application application,
+                boolean postProcess);
 
     /**
      * Gets the value of the specified application and key
