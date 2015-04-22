@@ -447,6 +447,15 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     @Override
     public void update(final Application queryApplication, final Application application) {
+        this.update(queryApplication, application, false);
+    }
+
+    @Override
+    public void update(final Application queryApplication, final Application application,
+                       final boolean postProcess) {
+        if (postProcess) {
+            application.setRedoPostProcess(Application.PostProcessingState.NOMAIL);
+        }
         this.applicationDAO.update(queryApplication, application);
     }
 
