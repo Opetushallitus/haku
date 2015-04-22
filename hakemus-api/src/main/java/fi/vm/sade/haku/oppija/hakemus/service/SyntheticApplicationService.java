@@ -1,30 +1,23 @@
 package fi.vm.sade.haku.oppija.hakemus.service;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeSet;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import com.sun.jersey.core.impl.provider.entity.XMLJAXBElementProvider;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
+import fi.vm.sade.haku.oppija.hakemus.domain.Application;
+import fi.vm.sade.haku.oppija.hakemus.domain.dto.SyntheticApplication;
+import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationDAO;
+import fi.vm.sade.haku.virkailija.authentication.Person;
 import fi.vm.sade.haku.virkailija.authentication.PersonBuilder;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.google.common.base.Predicate;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
-
-import fi.vm.sade.haku.oppija.hakemus.domain.Application;
-import fi.vm.sade.haku.oppija.hakemus.domain.dto.SyntheticApplication;
-import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationDAO;
-import fi.vm.sade.haku.virkailija.authentication.Person;
+import java.io.IOException;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
@@ -63,13 +56,19 @@ public class SyntheticApplicationService {
         Application query = new Application();
         query.setPersonOid(hakemus.hakijaOid);
         query.setApplicationSystemId(stub.hakuOid);
-        List<Application> applications = applicationDAO.find(query);
 
-        if(applications.isEmpty()) {
+        Iterator<Application> applications = Iterables.filter(applicationDAO.find(query), new Predicate<Application>() {
+            @Override
+            public boolean apply(Application application) {
+                return Application.State.ACTIVE.equals(application.getState())
+                        || Application.State.INCOMPLETE.equals(application.getState());
+            }
+        }).iterator();
+
+        if (!applications.hasNext()) {
             return newApplication(stub, hakemus);
         } else {
-            Application current = Iterables.getFirst(applications, query);
-            return updateApplication(stub, hakemus, current);
+            return updateApplication(stub, hakemus, applications.next());
         }
     }
     private Person hakemusToPerson(SyntheticApplication.Hakemus hakemus) {
