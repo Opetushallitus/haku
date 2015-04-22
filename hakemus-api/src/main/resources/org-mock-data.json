@@ -2724,5 +2724,41 @@
         "types": ["TOIMIPISTE"],
         "parentOid": "1.2.246.562.10.59057515068",
         "startDate": 1353362400000
+    },
+    {
+        "endDate": null,
+        "name": {
+            "translations": {
+                "fi": "Koulutuskeskus Salpaus, Lahti, Ståhlberginkatu"
+            }
+        },
+        "oid": "1.2.246.562.10.43328767116",
+        "types": ["TOIMIPISTE"],
+        "parentOid": "1.2.246.562.10.81934895871",
+        "startDate": 1353362400000
+    },
+    {
+        "endDate": null,
+        "name": {
+            "translations": {
+                "fi": "Koulutuskeskus Salpaus"
+            }
+        },
+        "oid": "1.2.246.562.10.81934895871",
+        "types": ["OPPILAITOS"],
+        "parentOid": "1.2.246.562.10.594252633210",
+        "startDate": 1353362400000
+    },
+    {
+        "endDate": null,
+        "name": {
+            "translations": {
+                "fi": "Päijät-Hämeen koulutuskonserni"
+            }
+        },
+        "oid": "1.2.246.562.10.594252633210",
+        "types": ["KOULUTUSTOIMIJA"],
+        "parentOid": "1.2.246.562.10.00000000001",
+        "startDate": 1353362400000
     }
 ]
