@@ -16,35 +16,78 @@
 
 package fi.vm.sade.haku.oppija.hakemus.aspect;
 
+import com.google.common.collect.Lists;
+import com.mongodb.DBObject;
+import com.mongodb.util.JSON;
+import fi.vm.sade.haku.oppija.common.dao.AbstractDAOTest;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
+import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationDAO;
+import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationFilterParameters;
+import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.haku.oppija.lomake.service.mock.UserSessionMock;
 import fi.vm.sade.haku.oppija.repository.AuditLogRepository;
 import fi.vm.sade.log.client.Logger;
 import fi.vm.sade.log.model.Tapahtuma;
+import org.apache.commons.io.IOUtils;
+import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.util.ArrayList;
+
+import static java.lang.ClassLoader.getSystemResourceAsStream;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-public class LoggerAspectTest {
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration("classpath:spring/tomcat-container-context.xml")
+@ActiveProfiles(profiles = {"it"})
+public class LoggerAspectTest extends AbstractDAOTest {
 
-    private static AuditLogRepository auditMock = mock(AuditLogRepository.class);
-    public static final LoggerAspect LOGGER_ASPECT = new LoggerAspect(new Logger() {
-        @Override
-        public void log(Tapahtuma tapahtuma) {
+    @Autowired
+    private AuditLogRepository audit;
 
-        }
-    }, new UserSessionMock("test"), auditMock, null);
+    @Autowired
+    @Qualifier("applicationDAOMongoImpl")
+    private ApplicationDAO applicationDAO;
+
+    @Autowired
+    @Qualifier("applicationServiceImpl")
+    private ApplicationService applicationService;
+
+    private Application application;
+
+    private LoggerAspect LOGGER_ASPECT;
+
+    @Before
+    public void setUp() throws Exception {
+        LOGGER_ASPECT = new LoggerAspect(new Logger() {
+            @Override
+            public void log(Tapahtuma tapahtuma) {
+                System.err.println("foobar");
+            }
+        }, new UserSessionMock("test"), audit, "localhost");
+
+        String content = IOUtils.toString(getSystemResourceAsStream("hakemus_audit_log.json"), "UTF-8");
+        DBObject applicationFromJson = (DBObject) JSON.parse(content);
+        mongoTemplate.getCollection(getCollectionName()).insert(applicationFromJson);
+        application = applicationDAO.find(new Application((String) applicationFromJson.get("oid"))).get(0);
+    }
+
 
     @Test
     public void testlogSubmitApplication() throws Exception {
-        LOGGER_ASPECT.logSubmitApplication("aid", new Application("oid"));
-        verify(auditMock).save((Tapahtuma)any());
+        LOGGER_ASPECT.logSubmitApplication("aid", application);
     }
 
-    @Test
-    public void testLogSavePhaseNulls() throws Exception {
-        LOGGER_ASPECT.logSubmitApplication(null, null);
+    @Override
+    protected String getCollectionName() {
+        return "application";
     }
 }
