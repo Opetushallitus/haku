@@ -1,0 +1,304 @@
+{
+    "additionalInfo" : {
+        "1_2_246_562_5_41197971199_urheilija_lisapiste" : "",
+        "1_2_246_562_5_41197971199_urheilija_lisapiste-OSALLISTUMINEN" : "MERKITSEMATTA",
+        "kielikoe_fi" : "",
+        "kielikoe_fi-OSALLISTUMINEN" : "MERKITSEMATTA",
+        "Kauneudenhoitoalan perustutkinto, pk, pääsy- ja soveltuvuuskoe" : "",
+        "Kauneudenhoitoalan perustutkinto, pk, pääsy- ja soveltuvuuskoe-OSALLISTUMINEN" : "EI_OSALLISTUNUT",
+        "1_2_246_562_5_14273398983_urheilija_lisapiste" : "",
+        "1_2_246_562_5_14273398983_urheilija_lisapiste-OSALLISTUMINEN" : "MERKITSEMATTA",
+        "Pintakäsittelyalan perustutkinto, pk, pääsy- ja soveltuvuuskoe" : "10",
+        "Pintakäsittelyalan perustutkinto, pk, pääsy- ja soveltuvuuskoe-OSALLISTUMINEN" : "OSALLISTUI"
+    },
+    "answers" : {
+        "hakutoiveet" : {
+            "preference2_kaksoistutkinnon_lisakysymys" : "false",
+            "preference4-Koulutus-id-aoIdentifier" : "",
+            "preference4-Koulutus-id-educationcode" : "",
+            "preference1-Opetuspiste" : "Koulutuskeskus Salpaus, Lahti, Vipusenkatu",
+            "preference4-Opetuspiste-id" : "",
+            "preference3-Koulutus-id-athlete" : "",
+            "preference5-Opetuspiste-id" : "",
+            "preference4-Koulutus-id-athlete" : "",
+            "preference2-Koulutus-id-aoIdentifier" : "284",
+            "preference2-Koulutus" : "Kauneudenhoitoalan perustutkinto, pk",
+            "preference3-Opetuspiste-id" : "",
+            "preference1-Koulutus-educationDegree" : "32",
+            "preference5-Koulutus-educationDegree" : "",
+            "preference2-Koulutus-id-sora" : "false",
+            "preference1_kaksoistutkinnon_lisakysymys" : "false",
+            "preference4-Koulutus-id-vocational" : "",
+            "preference3-Koulutus-id" : "",
+            "preference5-Koulutus-id-lang" : "",
+            "preference1-Opetuspiste-id" : "1.2.246.562.10.19460928302",
+            "preference2_urheilijan_ammatillisen_koulutuksen_lisakysymys" : "false",
+            "preference2-Koulutus-educationDegree" : "32",
+            "preference1-Koulutus-id-sora" : "false",
+            "preference5-Koulutus-id-sora" : "",
+            "preference1-Koulutus-id-aoIdentifier" : "864",
+            "preference1-Koulutus-id-educationcode" : "koulutus_351805",
+            "preference2-discretionary-follow-up" : "oppimisvaikudet",
+            "preference5-Koulutus-id-athlete" : "",
+            "preference2-Koulutus-id" : "1.2.246.562.5.41197971199",
+            "preference2-discretionary" : "true",
+            "preference1-Koulutus-id-vocational" : "true",
+            "preference3-Koulutus-id-vocational" : "",
+            "preference4-Koulutus-educationDegree" : "",
+            "preference4-Koulutus-id-kaksoistutkinto" : "",
+            "preference1-Koulutus-id-athlete" : "true",
+            "preference5-Koulutus-id-kaksoistutkinto" : "",
+            "preference5-Koulutus-id" : "",
+            "preference2-Opetuspiste" : "Koulutuskeskus Salpaus, Lahti, Ståhlberginkatu",
+            "preference2-Koulutus-id-athlete" : "true",
+            "preference3-Koulutus-educationDegree" : "",
+            "preference5-Opetuspiste" : "",
+            "preference2-Koulutus-id-kaksoistutkinto" : "true",
+            "preference5-Koulutus-id-educationcode" : "",
+            "preference3-Koulutus-id-kaksoistutkinto" : "",
+            "preference1-discretionary" : "true",
+            "preference4-Koulutus-id-sora" : "",
+            "preference5-Koulutus-id-vocational" : "",
+            "preference1_urheilijan_ammatillisen_koulutuksen_lisakysymys" : "false",
+            "preference1-discretionary-follow-up" : "oppimisvaikudet",
+            "preference3-Koulutus-id-lang" : "",
+            "preference2-Opetuspiste-id" : "1.2.246.562.10.43328767116",
+            "preference3-Opetuspiste" : "",
+            "preference4-Koulutus-id-lang" : "",
+            "preference1-Opetuspiste-id-parents" : "1.2.246.562.10.19460928302,1.2.246.562.10.81934895871,1.2.246.562.10.594252633210,1.2.246.562.10.00000000001,1.2.246.562.10.19460928302",
+            "preference2-Koulutus-id-vocational" : "true",
+            "preference1-Koulutus-id" : "1.2.246.562.5.14273398983",
+            "preference3-Koulutus-id-sora" : "",
+            "preference2-Opetuspiste-id-parents" : "1.2.246.562.10.43328767116,1.2.246.562.10.81934895871,1.2.246.562.10.594252633210,1.2.246.562.10.00000000001,1.2.246.562.10.43328767116",
+            "preference4-Koulutus-id" : "",
+            "preference2-Koulutus-id-lang" : "FI",
+            "preference4-Opetuspiste" : "",
+            "preference1-Koulutus" : "Pintakäsittelyalan perustutkinto, pk",
+            "preference1-Koulutus-id-kaksoistutkinto" : "true",
+            "preference3-Koulutus-id-educationcode" : "",
+            "preference3-Koulutus-id-aoIdentifier" : "",
+            "preference5-Koulutus-id-aoIdentifier" : "",
+            "preference1-Koulutus-id-lang" : "FI",
+            "preference2-Koulutus-id-educationcode" : "koulutus_381304"
+        },
+        "henkilotiedot" : {
+            "Etunimet" : "Elias IV",
+            "Etunimet_user" : "Kirsi Maria",
+            "Henkilotunnus" : "TEMQzqKD+9+BKqF5c7MiyPszEyPJXBLM0ggDJ7S1C6c=",
+            "Henkilotunnus_digest" : "5f6bb02ddad07618f169a69ed033fbaeeac0431b2ff09700250a8292e2a8e238",
+            "Henkilotunnus_plain" : "220761-905S",
+            "Kutsumanimi" : "Elias",
+            "Kutsumanimi_user" : "Kirsi",
+            "Postinumero" : "15200",
+            "Sähköposti" : "hakija-531030@oph.fi",
+            "SUKUPUOLI" : "1",
+            "Sukunimi" : "Hippisalo",
+            "Sukunimi_user" : "Koistinen",
+            "aidinkieli" : "FI",
+            "asuinmaa" : "FIN",
+            "kansalaisuus" : "FIN",
+            "kotikunta" : "398",
+            "lahiosoite" : "Sveitsinpyhtää 790",
+            "matkapuhelinnumero1" : "050 57555651",
+            "onkoSinullaSuomalainenHetu" : "true",
+            "sukupuoli" : "2",
+            "syntymaaika" : "22.07.1961",
+            "turvakielto" : "false"
+        },
+        "koulutustausta" : {
+            "PK_PAATTOTODISTUSVUOSI" : "2008",
+            "LISAKOULUTUS_VAMMAISTEN" : "true",
+            "ammatillinenTutkintoSuoritettu" : "false",
+            "KOULUTUSPAIKKA_AMMATILLISEEN_TUTKINTOON" : "false",
+            "POHJAKOULUTUS" : "1",
+            "perusopetuksen_kieli" : "FI"
+        },
+        "lisatiedot" : {
+            "lupaSahkoisesti" : "true",
+            "lupaJulkaisu" : "true",
+            "asiointikieli" : "suomi",
+            "TYOKOKEMUSKUUKAUDET" : "2",
+            "lupaMarkkinointi" : "true"
+        },
+        "osaaminen" : { }
+    },
+    "applicationSystemId" : "1.2.246.562.5.2013080813081926341927",
+    "attachmentRequests" : [
+        {
+            "id" : "79aa138f-0e47-4f0b-8632-e49cfd48620c",
+            "preferenceAoId" : "1.2.246.562.5.14273398983",
+            "processingStatus" : "NOT_CHECKED",
+            "applicationAttachment" : {
+                "name" : {
+                    "translations" : {
+                        "fi" : "Perustelut harkinnanvaraiselle haulle",
+                        "sv" : "Motivering för ansökan enligt prövning",
+                        "en" : "[en] Harkinnanvaraisuus, syy:"
+                    }
+                },
+                "description" : {
+                    "translations" : {
+                        "fi" : "Syy: Oppimisvaikeudet",
+                        "sv" : "Orsak: inlärningssvårigheter",
+                        "en" : "[en] Oppimisvaikeudet"
+                    }
+                },
+                "address" : {
+                    "recipient" : "Koulutuskeskus Salpaus, Lahti, Vipusenkatu Pintakäsittelyalan perustutkinto, pk",
+                    "streetAddress" : "PL 170",
+                    "postalCode" : "15141",
+                    "postOffice" : "LAHTI"
+                }
+            },
+            "receptionStatus" : "NOT_RECEIVED"
+        },
+        {
+            "id" : "ba7f40e2-dfaf-470f-80f6-75b0242f5568",
+            "preferenceAoId" : "1.2.246.562.5.41197971199",
+            "processingStatus" : "NOT_CHECKED",
+            "applicationAttachment" : {
+                "name" : {
+                    "translations" : {
+                        "fi" : "Perustelut harkinnanvaraiselle haulle",
+                        "sv" : "Motivering för ansökan enligt prövning",
+                        "en" : "[en] Harkinnanvaraisuus, syy:"
+                    }
+                },
+                "description" : {
+                    "translations" : {
+                        "fi" : "Syy: Oppimisvaikeudet",
+                        "sv" : "Orsak: inlärningssvårigheter",
+                        "en" : "[en] Oppimisvaikeudet"
+                    }
+                },
+                "address" : {
+                    "recipient" : "Koulutuskeskus Salpaus, Lahti, Ståhlberginkatu Kauneudenhoitoalan perustutkinto, pk",
+                    "streetAddress" : "PL 170",
+                    "postalCode" : "15141",
+                    "postOffice" : "LAHTI"
+                }
+            },
+            "receptionStatus" : "NOT_RECEIVED"
+        }
+    ],
+    "authorizationMeta" : {
+        "opoAllowed" : true,
+        "aoOrganizations" : {
+            "2" : [
+                "1.2.246.562.10.00000000001",
+                "1.2.246.562.10.594252633210",
+                "1.2.246.562.10.81934895871",
+                "1.2.246.562.10.43328767116"
+            ],
+            "1" : [
+                "1.2.246.562.10.00000000001",
+                "1.2.246.562.10.594252633210",
+                "1.2.246.562.10.81934895871",
+                "1.2.246.562.10.19460928302"
+            ]
+        },
+        "allAoOrganizations" : [
+            "1.2.246.562.10.00000000001",
+            "1.2.246.562.10.594252633210",
+            "1.2.246.562.10.81934895871",
+            "1.2.246.562.10.19460928302",
+            "1.2.246.562.10.43328767116"
+        ],
+        "applicationPreferences" : [
+            {
+                "ordinal" : 1,
+                "preferenceData" : {
+                    "Koulutus-id-vocational" : "true",
+                    "Koulutus-id-aoIdentifier" : "864",
+                    "discretionary-follow-up" : "oppimisvaikudet",
+                    "Koulutus-id" : "1.2.246.562.5.14273398983",
+                    "Opetuspiste" : "Koulutuskeskus Salpaus, Lahti, Vipusenkatu",
+                    "Koulutus-id-athlete" : "true",
+                    "Koulutus-id-sora" : "false",
+                    "kaksoistutkinnon_lisakysymys" : "false",
+                    "urheilijan_ammatillisen_koulutuksen_lisakysymys" : "false",
+                    "Koulutus-id-kaksoistutkinto" : "true",
+                    "Koulutus-educationDegree" : "32",
+                    "Opetuspiste-id" : "1.2.246.562.10.19460928302",
+                    "Koulutus-id-educationcode" : "koulutus_351805",
+                    "Koulutus" : "Pintakäsittelyalan perustutkinto, pk",
+                    "Opetuspiste-id-parents" : "1.2.246.562.10.19460928302,1.2.246.562.10.81934895871,1.2.246.562.10.594252633210,1.2.246.562.10.00000000001,1.2.246.562.10.19460928302",
+                    "Koulutus-id-lang" : "FI",
+                    "discretionary" : "true"
+                }
+            },
+            {
+                "ordinal" : 2,
+                "preferenceData" : {
+                    "Koulutus-id-vocational" : "true",
+                    "Koulutus-id-aoIdentifier" : "284",
+                    "discretionary-follow-up" : "oppimisvaikudet",
+                    "Koulutus-id" : "1.2.246.562.5.41197971199",
+                    "Opetuspiste" : "Koulutuskeskus Salpaus, Lahti, Ståhlberginkatu",
+                    "Koulutus-id-athlete" : "true",
+                    "Koulutus-id-sora" : "false",
+                    "kaksoistutkinnon_lisakysymys" : "false",
+                    "urheilijan_ammatillisen_koulutuksen_lisakysymys" : "false",
+                    "Koulutus-educationDegree" : "32",
+                    "Koulutus-id-kaksoistutkinto" : "true",
+                    "Opetuspiste-id" : "1.2.246.562.10.43328767116",
+                    "Koulutus-id-educationcode" : "koulutus_381304",
+                    "Opetuspiste-id-parents" : "1.2.246.562.10.43328767116,1.2.246.562.10.81934895871,1.2.246.562.10.594252633210,1.2.246.562.10.00000000001,1.2.246.562.10.43328767116",
+                    "Koulutus" : "Kauneudenhoitoalan perustutkinto, pk",
+                    "Koulutus-id-lang" : "FI",
+                    "discretionary" : "true"
+                }
+            }
+        ]
+    },
+    "fullName" : "hippisalo elias iv",
+    "history" : [],
+    "meta" : {
+        "sessionId" : "anonymousUser"
+    },
+    "modelVersion" : 7,
+    "notes" : [],
+    "oid" : "1.2.246.562.11.00000840422",
+    "overriddenAnswers" : {
+        "Kutsumanimi" : "Kirsi",
+        "Etunimet" : "Kirsi Maria",
+        "Sukunimi" : "Koistinen",
+        "Henkilotunnus" : "220192-1729",
+        "kotikunta" : "398",
+        "Sukupuoli" : "(null)",
+        "onkoSinullaSuomalainenHetu" : "(null)",
+        "turvakielto" : "(null)"
+    },
+    "personOid" : "1.2.246.562.24.35431249586",
+    "preferenceEligibilities" : [
+        {
+            "aoId" : "1.2.246.562.5.14273398983",
+            "status" : "NOT_CHECKED",
+            "source" : "UNKNOWN"
+        },
+        {
+            "aoId" : "1.2.246.562.5.41197971199",
+            "status" : "NOT_CHECKED",
+            "source" : "UNKNOWN"
+        }
+    ],
+    "preferencesChecked" : [
+        {
+            "preferenceAoOid" : "1.2.246.562.5.14273398983",
+            "checked" : false
+        },
+        {
+            "preferenceAoOid" : "1.2.246.562.5.41197971199",
+            "checked" : false
+        }
+    ],
+    "redoPostProcess" : "DONE",
+    "searchNames" : [
+        "hippisalo",
+        "elias",
+        "iv"
+    ],
+    "state" : "ACTIVE",
+    "studentOid" : "1.2.246.562.24.35431249586",
+    "version" : 1
+}
