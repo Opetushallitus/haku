@@ -5,6 +5,7 @@ import com.google.common.collect.Maps;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.haku.oppija.hakemus.domain.Change;
+import fi.vm.sade.haku.oppija.hakemus.domain.PreferenceEligibility;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -71,5 +72,13 @@ public final class ApplicationDiffUtil {
             changes.add(change);
         }
         return changes;
+    }
+
+    public static String auditLogKey(PreferenceEligibility e) {
+        return "eligibility_" + e.getAoId().replaceAll("\\.", "_");
+    }
+
+    public static String auditLogValue(PreferenceEligibility e) {
+        return e.getStatus().toString() + ":" + e.getSource().toString() + ":" + e.getRejectionBasis();
     }
 }
