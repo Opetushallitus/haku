@@ -31,7 +31,7 @@ public class MongoConfiguration {
     @Bean
     public MongoClient mongo(@Value("${mongodb.url}") final String mongoUri,
                              @Value("${mongo.writeconcern") final String writeConcern) throws UnknownHostException {
-        LOGGER.info("Creating MongoClient with uri: " + mongoUri);
+        LOGGER.info("Creating MongoClient for server(s): " + getMongoUrl(mongoUri));
         MongoClientURI mongoClientURI = new MongoClientURI(mongoUri);
         MongoClient mongoClient = new MongoClient(mongoClientURI);
         WriteConcern wc = resolveWriteConcern(writeConcern);
@@ -39,6 +39,16 @@ public class MongoConfiguration {
             mongoClient.setWriteConcern(wc);
         }
         return mongoClient;
+    }
+
+    private String getMongoUrl(String mongoUri) {
+        if(mongoUri.contains("@")) {
+            return mongoUri.substring(mongoUri.indexOf("@"));
+        }
+        if(mongoUri.contains("//")) {
+            return mongoUri.substring(mongoUri.indexOf("//"));
+        }
+        return mongoUri;
     }
 
     private WriteConcern resolveWriteConcern(String writeConcern) {
