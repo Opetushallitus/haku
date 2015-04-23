@@ -41,7 +41,7 @@ public class MongoConfiguration {
         return mongoClient;
     }
 
-    private String getMongoUrl(String mongoUri) {
+    public static String getMongoUrl(String mongoUri) {
         if(mongoUri.contains("@")) {
             return mongoUri.substring(mongoUri.indexOf("@"));
         }
