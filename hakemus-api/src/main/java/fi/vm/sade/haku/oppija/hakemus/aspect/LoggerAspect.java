@@ -22,6 +22,7 @@ import fi.vm.sade.haku.oppija.common.diff.AnswersDifference;
 import fi.vm.sade.haku.oppija.common.diff.Difference;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
+import fi.vm.sade.haku.oppija.hakemus.domain.PreferenceEligibility;
 import fi.vm.sade.haku.oppija.lomake.service.Session;
 import fi.vm.sade.haku.oppija.repository.AuditLogRepository;
 import fi.vm.sade.log.client.Logger;
@@ -88,7 +89,10 @@ public class LoggerAspect {
             t.setUser("Hakemus Service");
             Map<String, String> answers = application.getVastauksetMerged();
             for (Map.Entry<String, String> answer : answers.entrySet()) {
-                t.addValueChange(answer.getKey(), null, answer.getValue());
+                t.addValueChange("answers_" + answer.getKey(), null, answer.getValue());
+            }
+            for (PreferenceEligibility e: application.getPreferenceEligibilities()) {
+                t.addValueChange(ApplicationDiffUtil.auditLogKey(e), null, ApplicationDiffUtil.auditLogValue(e));
             }
             LOGGER.debug(t.toString());
             auditLogRepository.save(t);
