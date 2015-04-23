@@ -4,6 +4,7 @@ import com.mongodb.Mongo;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
 import com.mongodb.WriteConcern;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,6 +14,8 @@ import java.net.UnknownHostException;
 
 @Configuration
 public class MongoConfiguration {
+
+    private final Logger LOGGER = Logger.getLogger(MongoConfiguration.class);
 
     @Bean
     public MongoTemplate mongoTemplate(final Mongo mongo, @Value("${mongo.db.name}") final String databaseName,
@@ -28,6 +31,7 @@ public class MongoConfiguration {
     @Bean
     public MongoClient mongo(@Value("${mongodb.url}") final String mongoUri,
                              @Value("${mongo.writeconcern") final String writeConcern) throws UnknownHostException {
+        LOGGER.info("Creating MongoClient with uri: " + mongoUri);
         MongoClientURI mongoClientURI = new MongoClientURI(mongoUri);
         MongoClient mongoClient = new MongoClient(mongoClientURI);
         WriteConcern wc = resolveWriteConcern(writeConcern);
