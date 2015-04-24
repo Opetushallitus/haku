@@ -16,64 +16,41 @@
 
 package fi.vm.sade.haku.oppija.hakemus.aspect;
 
-import com.google.common.collect.Lists;
 import com.mongodb.DBObject;
 import com.mongodb.util.JSON;
-import fi.vm.sade.haku.oppija.common.dao.AbstractDAOTest;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
-import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.haku.oppija.hakemus.domain.PreferenceEligibility;
+import fi.vm.sade.haku.oppija.hakemus.it.IntegrationTestSupport;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationDAO;
-import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationFilterParameters;
-import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
+import fi.vm.sade.haku.oppija.hakemus.it.dao.impl.ApplicationDAOMongoImpl;
 import fi.vm.sade.haku.oppija.lomake.service.mock.UserSessionMock;
 import fi.vm.sade.haku.oppija.repository.AuditLogRepository;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import fi.vm.sade.log.client.Logger;
 import fi.vm.sade.log.model.Tapahtuma;
 import org.apache.commons.io.IOUtils;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.data.mongodb.core.MongoTemplate;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 import static fi.vm.sade.haku.oppija.hakemus.aspect.ApplicationDiffUtil.addHistoryBasedOnChangedAnswers;
 import static java.lang.ClassLoader.getSystemResourceAsStream;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("classpath:spring/tomcat-container-context.xml")
-@ActiveProfiles(profiles = {"it"})
-public class LoggerAspectTest extends AbstractDAOTest {
-
-    @Autowired
-    private AuditLogRepository audit;
-
-    @Autowired
-    @Qualifier("applicationDAOMongoImpl")
-    private ApplicationDAO applicationDAO;
-
-    @Autowired
-    @Qualifier("applicationServiceImpl")
-    private ApplicationService applicationService;
-
+public class LoggerAspectTest extends IntegrationTestSupport {
+    protected MongoTemplate mongoTemplate;
     private Application application;
-
     private LoggerAspect LOGGER_ASPECT;
 
     @Before
     public void setUp() throws Exception {
+        mongoTemplate = IntegrationTestSupport.appContext.getBean(MongoTemplate.class);
+        AuditLogRepository audit = IntegrationTestSupport.appContext.getBean(AuditLogRepository.class);
+        ApplicationDAO applicationDAO = IntegrationTestSupport.appContext.getBean(ApplicationDAOMongoImpl.class);
+
         LOGGER_ASPECT = new LoggerAspect(new Logger() {
             @Override
             public void log(Tapahtuma tapahtuma) {
@@ -87,6 +64,10 @@ public class LoggerAspectTest extends AbstractDAOTest {
         application = applicationDAO.find(new Application((String) applicationFromJson.get("oid"))).get(0);
     }
 
+    @After
+    public void removeTestData() {
+        mongoTemplate.getCollection(getCollectionName()).drop();
+    }
 
     @Test
     public void testlogSubmitApplication() throws Exception {
@@ -107,7 +88,6 @@ public class LoggerAspectTest extends AbstractDAOTest {
         //todo: add asserts
     }
 
-    @Override
     protected String getCollectionName() {
         return "application";
     }
