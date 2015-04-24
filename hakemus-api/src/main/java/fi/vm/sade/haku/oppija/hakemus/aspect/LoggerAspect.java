@@ -89,7 +89,7 @@ public class LoggerAspect {
             t.setUser("Hakemus Service");
             Map<String, String> answers = application.getVastauksetMerged();
             for (Map.Entry<String, String> answer : answers.entrySet()) {
-                t.addValueChange("answers_" + answer.getKey(), null, answer.getValue());
+                t.addValueChange(answer.getKey(), null, answer.getValue());
             }
             for (PreferenceEligibility e: application.getPreferenceEligibilities()) {
                 t.addValueChange(ApplicationDiffUtil.auditLogKey(e), null, ApplicationDiffUtil.auditLogValue(e));
