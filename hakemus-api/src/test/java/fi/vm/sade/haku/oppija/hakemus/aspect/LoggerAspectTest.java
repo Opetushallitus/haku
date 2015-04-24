@@ -21,11 +21,14 @@ import com.mongodb.DBObject;
 import com.mongodb.util.JSON;
 import fi.vm.sade.haku.oppija.common.dao.AbstractDAOTest;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
+import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
+import fi.vm.sade.haku.oppija.hakemus.domain.PreferenceEligibility;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationDAO;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationFilterParameters;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.haku.oppija.lomake.service.mock.UserSessionMock;
 import fi.vm.sade.haku.oppija.repository.AuditLogRepository;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import fi.vm.sade.log.client.Logger;
 import fi.vm.sade.log.model.Tapahtuma;
 import org.apache.commons.io.IOUtils;
@@ -39,7 +42,11 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
+import static fi.vm.sade.haku.oppija.hakemus.aspect.ApplicationDiffUtil.addHistoryBasedOnChangedAnswers;
 import static java.lang.ClassLoader.getSystemResourceAsStream;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
@@ -84,6 +91,20 @@ public class LoggerAspectTest extends AbstractDAOTest {
     @Test
     public void testlogSubmitApplication() throws Exception {
         LOGGER_ASPECT.logSubmitApplication("aid", application);
+        //todo: add asserts
+    }
+
+    @Test
+    public void testlogUpdateApplication() throws Exception {
+        final Application newApplication = application.clone();
+
+        List<PreferenceEligibility> newEligibilities = new LinkedList<>();
+        newEligibilities.add(new PreferenceEligibility("1.2.246.562.5.14273398983", PreferenceEligibility.Status.NOT_CHECKED, PreferenceEligibility.Source.UNKNOWN, null));
+        newEligibilities.add(new PreferenceEligibility("1.2.246.562.5.41197971199", PreferenceEligibility.Status.ELIGIBLE, PreferenceEligibility.Source.UNKNOWN, null));
+        newApplication.setPreferenceEligibilities(newEligibilities);
+        final List<Map<String, String>> changes = addHistoryBasedOnChangedAnswers(newApplication, application, "junit", "Post Processing");
+        LOGGER_ASPECT.logUpdateApplicationInPostProcessing(application, changes, "LoggerAspectTest");
+        //todo: add asserts
     }
 
     @Override
