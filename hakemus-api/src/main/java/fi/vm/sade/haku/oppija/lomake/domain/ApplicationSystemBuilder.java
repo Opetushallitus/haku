@@ -23,6 +23,7 @@ public class ApplicationSystemBuilder {
     private int maxApplicationOptions;
     private String kohdejoukkoUri;
     private List<String> allowedLanguages;
+    private List<String> aosForAutomaticEligibility;
     private Date lastGenerated;
 
     public ApplicationSystemBuilder() {
@@ -91,7 +92,8 @@ public class ApplicationSystemBuilder {
     public ApplicationSystem get() {
         return new ApplicationSystem(id, form, name, state, applicationPeriods,
                 applicationSystemType, usePriorities, hakutapa, hakukausiVuosi, hakukausiUri, kohdejoukkoUri, applicationCompleteElements,
-                additionalPrintElements, applicationOptionAttachmentRequests, attachmentGroupAddresses, maxApplicationOptions, allowedLanguages, lastGenerated);
+                additionalPrintElements, applicationOptionAttachmentRequests, attachmentGroupAddresses, maxApplicationOptions, allowedLanguages,
+                aosForAutomaticEligibility, lastGenerated);
     }
 
     public ApplicationSystemBuilder setMaxApplicationOptions(int maxHakukohdes) {
@@ -128,4 +130,10 @@ public class ApplicationSystemBuilder {
         this.allowedLanguages = allowedLanguages;
         return this;
     }
+
+    public ApplicationSystemBuilder setAosForAutomaticEligibility(List<String> aosForAutomaticEligibility) {
+        this.aosForAutomaticEligibility = aosForAutomaticEligibility;
+        return this;
+    }
+
 }

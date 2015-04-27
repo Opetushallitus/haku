@@ -52,6 +52,7 @@ public class ApplicationSystem implements Serializable {
     private List<AttachmentGroupAddress> attachmentGroupAddresses;
     private int maxApplicationOptions;
     private List<String> allowedLanguages;
+    private List<String> aosForAutomaticEligibility;
 
     public ApplicationSystem(final String id, final Form form, final I18nText name, final String state,
                              final List<ApplicationPeriod> applicationPeriods,
@@ -67,6 +68,7 @@ public class ApplicationSystem implements Serializable {
                              final List<AttachmentGroupAddress> attachmentGroupAddresses,
                              final Integer maxApplicationOptions,
                              final List<String> allowedLanguages,
+                             final List<String> aosForAutomaticEligibility,
                              final Date lastGenerated) {
         Preconditions.checkNotNull(id);
         Preconditions.checkNotNull(name);
@@ -91,6 +93,7 @@ public class ApplicationSystem implements Serializable {
         this.maxApplicationOptions = maxApplicationOptions != null ?
                 maxApplicationOptions.intValue() : 1;
         this.allowedLanguages = allowedLanguages;
+        this.aosForAutomaticEligibility = aosForAutomaticEligibility;
         this.lastGenerated = lastGenerated;
     }
 
@@ -192,6 +195,10 @@ public class ApplicationSystem implements Serializable {
 
     public List<String> getAllowedLanguages() {
         return allowedLanguages;
+    }
+
+    public List<String> getAosForAutomaticEligibility() {
+        return aosForAutomaticEligibility;
     }
 
 }

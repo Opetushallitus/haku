@@ -67,6 +67,7 @@ public class FormGeneratorImpl implements FormGenerator {
                 .addApplicationOptionAttachmentRequests(formParameters.getThemeQuestionConfigurator().findAndConfigureAttachmentRequests())
                 .addAttachmentGroupAddresses(formParameters.getAttachmentGroupConfigurator().configureAttachmentGroupAddresses())
                 .setLastGenerated(new Date())
+                .setAosForAutomaticEligibility(as.getAosForAutomaticEligibility())
                 .setAllowedLanguages(formParameters.getAllowedLanguages())
                 .get();
     }

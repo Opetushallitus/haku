@@ -72,6 +72,7 @@ public class HakuV1RDTOToApplicationSystemFunction implements Function<HakuV1RDT
                 .setHakukausiVuosi(hakuDTO.getHakukausiVuosi())
                 .setMaxApplicationOptions(hakuDTO.getMaxHakukohdes())
                 .setKohdejoukkoUri(hakuDTO.getKohdejoukkoUri().split("#")[0])
+                .setAosForAutomaticEligibility(hakuDTO.getHakukohdeOidsYlioppilastutkintoAntaaHakukelpoisuuden())
                 .get();
         return applicationSystem;
     }
