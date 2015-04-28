@@ -99,7 +99,14 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         SearchResults<ApplicationAdditionalDataDTO> results = searchListing(query, keys, null, 0, 0, new DBObjectToAdditionalDataDTO(), false);
         return results.searchResultsList;
     }
-
+    @Override
+    public List<ApplicationAdditionalDataDTO> findApplicationAdditionalData(final List<String> oids,
+                                                                            final ApplicationFilterParameters filterParameters) {
+        final DBObject query = applicationQueryBuilder.buildApplicationByApplicationOption(oids, filterParameters);
+        final DBObject keys = generateKeysDBObject(DBObjectToAdditionalDataDTO.KEYS);
+        SearchResults<ApplicationAdditionalDataDTO> results = searchListing(query, keys, null, 0, 0, new DBObjectToAdditionalDataDTO(), false);
+        return results.searchResultsList;
+    }
     @Override
     public boolean checkIfExistsBySocialSecurityNumber(String asId, String ssn) {
         if (!Strings.isNullOrEmpty(ssn)) {

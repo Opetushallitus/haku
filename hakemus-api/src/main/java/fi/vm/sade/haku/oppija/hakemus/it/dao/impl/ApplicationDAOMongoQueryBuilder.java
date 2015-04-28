@@ -1,9 +1,7 @@
 package fi.vm.sade.haku.oppija.hakemus.it.dao.impl;
 
 import com.google.common.collect.Lists;
-import com.mongodb.BasicDBObject;
-import com.mongodb.DBObject;
-import com.mongodb.QueryBuilder;
+import com.mongodb.*;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationFilterParameters;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationQueryParameters;
@@ -65,7 +63,13 @@ final class ApplicationDAOMongoQueryBuilder {
                 QueryBuilder.start(FIELD_APPLICATION_STATE).in(STATE_CONSIDERED_ACTIVE).get(),
                 orgFilter).get();
     }
-
+    public DBObject buildApplicationByApplicationOption(final List<String> oids, final ApplicationFilterParameters filterParameters) {
+        final DBObject orgFilter = _filterByOrganization(filterParameters);
+        return QueryBuilder.start().and(
+                new BasicDBObject(FIELD_APPLICATION_OID, new BasicDBObject(QueryOperators.IN, oids)),
+                QueryBuilder.start(FIELD_APPLICATION_STATE).in(STATE_CONSIDERED_ACTIVE).get(),
+                orgFilter).get();
+    }
     public DBObject buildApplicationExistsForSSN(final String ssn, final String asId) {
         return _buildApplicationExistsForSSN(ssn, asId).get();
     }

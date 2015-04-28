@@ -57,6 +57,7 @@ public interface ApplicationService {
     ApplicationSearchResultDTO findApplications(final ApplicationQueryParameters applicationQueryParameters);
 
     List<ApplicationAdditionalDataDTO> findApplicationAdditionalData(final String applicationSystemId, final String aoId);
+    List<ApplicationAdditionalDataDTO> findApplicationAdditionalData(final List<String> oids);
 
     void saveApplicationAdditionalInfo(final List<ApplicationAdditionalDataDTO> applicationAdditionalData);
 

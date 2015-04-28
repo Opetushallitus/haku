@@ -396,6 +396,15 @@ public class ApplicationResource {
         return applicationService.findApplicationAdditionalData(asId, aoId);
     }
 
+    @POST
+    @Path("/additionalData")
+    @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
+    @Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
+    @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_READ', 'ROLE_APP_HAKEMUS_CRUD', 'ROLE_APP_HAKEMUS_LISATIETORU', 'ROLE_APP_HAKEMUS_LISATIETOCRUD')")
+    public List<ApplicationAdditionalDataDTO> getApplicationAdditionalData(List<String> oids) {
+        return applicationService.findApplicationAdditionalData(oids);
+    }
+
     @PUT
     @Path("/additionalData/{asId}/{aoId}")
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)

@@ -486,6 +486,13 @@ public class ApplicationServiceImpl implements ApplicationService {
 
         return applicationDAO.findApplicationAdditionalData(applicationSystemId, aoId, builder.build());
     }
+    @Override
+    public List<ApplicationAdditionalDataDTO> findApplicationAdditionalData(final List<String> oids) {
+        ApplicationFilterParametersBuilder builder = new ApplicationFilterParametersBuilder()
+                .addOrganizationsReadable(hakuPermissionService.userCanReadApplications())
+                .addOrganizationsOpo(hakuPermissionService.userHasOpoRole());
+        return applicationDAO.findApplicationAdditionalData(oids, builder.build());
+    }
 
     @Override
     public Application officerCreateNewApplication(String asId) {

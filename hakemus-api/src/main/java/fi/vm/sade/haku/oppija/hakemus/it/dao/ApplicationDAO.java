@@ -43,7 +43,8 @@ public interface ApplicationDAO extends BaseDAO<Application> {
 
     List<ApplicationAdditionalDataDTO> findApplicationAdditionalData(String applicationSystemId, String aoId,
                                                                      ApplicationFilterParameters filterParameters);
-
+    List<ApplicationAdditionalDataDTO> findApplicationAdditionalData(List<String> oids,
+                                                                     ApplicationFilterParameters filterParameters);
     /**
      * Checks if submitted application already exists by specified social security number and
      * application system
