@@ -14,10 +14,11 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.haku.oppija.hakemus.aspect;
+package fi.vm.sade.haku.oppija.hakemus.it;
 
 import com.mongodb.DBObject;
 import com.mongodb.util.JSON;
+import fi.vm.sade.haku.oppija.hakemus.aspect.LoggerAspect;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.PreferenceEligibility;
 import fi.vm.sade.haku.oppija.hakemus.it.IntegrationTestSupport;
@@ -41,14 +42,7 @@ import java.util.Map;
 import static fi.vm.sade.haku.oppija.hakemus.aspect.ApplicationDiffUtil.addHistoryBasedOnChangedAnswers;
 import static java.lang.ClassLoader.getSystemResourceAsStream;
 
-/*
-  Tämän luokan testit on kommentoitu pois ajosta, koska jostain syystä koko testisetin ajaminen ei toimi.
-  Jotain hajoaa siis springin alustuksessa, mutta elämä on liian lyhyt asian debuggaamiseen.
-
-  Käytännössä näitä testejä voi käyttää siten, että ajaa debuggerilla yksittäistä testiä breakpointtiin ennen
-  kuin testisetup ajetaan alas, ja katsoo embedded-mongosta, että mitä sinne tulee kirjoitettua.
- */
-public class LoggerAspectTest extends IntegrationTestSupport {
+public class LoggerAspectTestIT extends IntegrationTestSupport {
     protected MongoTemplate mongoTemplate;
     private Application application;
     private LoggerAspect LOGGER_ASPECT;
@@ -77,13 +71,13 @@ public class LoggerAspectTest extends IntegrationTestSupport {
         mongoTemplate.getCollection(getCollectionName()).drop();
     }
 
-    @Ignore
+    @Test
     public void testlogSubmitApplication() throws Exception {
         LOGGER_ASPECT.logSubmitApplication("aid", application);
         //todo: add asserts
     }
 
-    @Ignore
+    @Test
     public void testlogUpdateApplication() throws Exception {
         final Application newApplication = application.clone();
 
