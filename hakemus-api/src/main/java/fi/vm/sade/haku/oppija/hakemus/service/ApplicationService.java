@@ -107,6 +107,8 @@ public interface ApplicationService {
 
     Application updateAuthorizationMeta(Application application) throws IOException;
 
+    Application updateAutomaticEligibilities(Application application);
+
     Application updatePreferenceBasedData(final Application application);
 
     Application removeOrphanedAnswers(Application application);
