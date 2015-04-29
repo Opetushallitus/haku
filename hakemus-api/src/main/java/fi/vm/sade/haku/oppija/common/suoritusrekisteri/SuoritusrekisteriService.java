@@ -23,6 +23,8 @@ public interface SuoritusrekisteriService {
     // Lukion komoOid on aikuisten oikeasti "TODO lukio komo oid", ainakin toistaiseksi
     public static String LUKIO_KOMO = "TODO lukio komo oid";
 
+    public static String YO_TUTKINTO_KOMO = "1.2.246.562.5.2013061010184237348007";
+
 
     /**
      * Palauttaa henkilön suoritukset mappina komoOid - suoritus.

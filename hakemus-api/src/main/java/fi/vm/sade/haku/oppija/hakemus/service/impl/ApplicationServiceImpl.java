@@ -18,6 +18,8 @@ package fi.vm.sade.haku.oppija.hakemus.service.impl;
 
 import fi.vm.sade.haku.oppija.common.koulutusinformaatio.KoulutusinformaatioService;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
+import fi.vm.sade.haku.oppija.common.suoritusrekisteri.SuoritusDTO;
+import fi.vm.sade.haku.oppija.common.suoritusrekisteri.SuoritusrekisteriService;
 import fi.vm.sade.haku.oppija.hakemus.domain.*;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationAdditionalDataDTO;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
@@ -82,6 +84,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     private final ApplicationSystemService applicationSystemService;
     private final KoulutusinformaatioService koulutusinformaatioService;
     private final I18nBundleService i18nBundleService;
+    private final SuoritusrekisteriService suoritusrekisteriService;
     private final ElementTreeValidator elementTreeValidator;
     // Tee vain background-validointi tälle lomakkeelle
     private final String onlyBackgroundValidation;
@@ -99,6 +102,7 @@ public class ApplicationServiceImpl implements ApplicationService {
                                   ApplicationSystemService applicationSystemService,
                                   KoulutusinformaatioService koulutusinformaatioService,
                                   I18nBundleService i18nBundleService,
+                                  SuoritusrekisteriService suoritusrekisteriService,
                                   ElementTreeValidator elementTreeValidator,
                                   @Value("${onlyBackgroundValidation}") String onlyBackgroundValidation) {
         this.applicationDAO = applicationDAO;
@@ -111,6 +115,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         this.applicationSystemService = applicationSystemService;
         this.koulutusinformaatioService = koulutusinformaatioService;
         this.i18nBundleService = i18nBundleService;
+        this.suoritusrekisteriService = suoritusrekisteriService;
         this.elementTreeValidator = elementTreeValidator;
         this.onlyBackgroundValidation = onlyBackgroundValidation;
     }
@@ -340,6 +345,39 @@ public class ApplicationServiceImpl implements ApplicationService {
         return application;
     }
 
+    @Override
+    public Application updateAutomaticEligibilities(Application application) {
+        ApplicationSystem as = applicationSystemService.getApplicationSystem(application.getApplicationSystemId());
+        List<String> aosForAutomaticEligibility = as.getAosForAutomaticEligibility();
+        if (aosForAutomaticEligibility == null || aosForAutomaticEligibility.isEmpty()) {
+            return application;
+        }
+        Map<String, List<SuoritusDTO>> suoritusMap = suoritusrekisteriService
+                .getSuoritukset(application.getPersonOid(), SuoritusrekisteriService.YO_TUTKINTO_KOMO);
+        if (suoritusMap == null || suoritusMap.isEmpty()) {
+            return application;
+        }
+        List<SuoritusDTO> yoSuoritukset = suoritusMap.get(SuoritusrekisteriService.YO_TUTKINTO_KOMO);
+        boolean acceptedYo = false;
+        for (SuoritusDTO suoritus : yoSuoritukset) {
+            if (SuoritusDTO.TILA_VALMIS.equals(suoritus.getTila())) {
+                acceptedYo = true;
+                break;
+            }
+        }
+        for (PreferenceEligibility eligibility : application.getPreferenceEligibilities()) {
+            PreferenceEligibility.Status status = eligibility.getStatus();
+            if ((PreferenceEligibility.Status.NOT_CHECKED.equals(status)
+                            || PreferenceEligibility.Status.AUTOMATICALLY_CHECKED_ELIGIBLE.equals(status))
+                    && aosForAutomaticEligibility.contains(eligibility.getAoId())) {
+                eligibility.setStatus(acceptedYo
+                        ? PreferenceEligibility.Status.AUTOMATICALLY_CHECKED_ELIGIBLE
+                        : PreferenceEligibility.Status.NOT_CHECKED);
+            }
+        }
+        return application;
+    }
+
     private Set<String> getSendingSchool(final Application application) throws IOException {
         final Set<String> sendingSchool = new HashSet<>();
         final Map<String, String> educationAnswers = application.getPhaseAnswers(OppijaConstants.PHASE_EDUCATION);
@@ -364,8 +402,10 @@ public class ApplicationServiceImpl implements ApplicationService {
     public Application updatePreferenceBasedData(final Application application) {
         List<String> preferenceAoIds = ApplicationUtil.getPreferenceAoIds(application);
 
-        application.setPreferenceEligibilities(ApplicationUtil.checkAndCreatePreferenceEligibilities(application.getPreferenceEligibilities(), preferenceAoIds));
-        application.setPreferencesChecked(ApplicationUtil.checkAndCreatePreferenceCheckedData(application.getPreferencesChecked(), preferenceAoIds));
+        application.setPreferenceEligibilities(ApplicationUtil.checkAndCreatePreferenceEligibilities(
+                application.getPreferenceEligibilities(), preferenceAoIds));
+        application.setPreferencesChecked(ApplicationUtil.checkAndCreatePreferenceCheckedData(
+                application.getPreferencesChecked(), preferenceAoIds));
 
         ApplicationSystem applicationSystem = applicationSystemService.getApplicationSystem(application.getApplicationSystemId());
         application.setAttachmentRequests(AttachmentUtil.resolveAttachmentRequests(applicationSystem, application,

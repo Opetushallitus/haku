@@ -41,6 +41,7 @@ public class SuoritusrekisteriServiceImpl implements SuoritusrekisteriService {
         validKomos.add(PERUSOPETUS_KOMO);
         validKomos.add(ULKOMAINEN_KOMO);
         validKomos.add(LUKIOON_VALMISTAVA_KOMO);
+        validKomos.add(YO_TUTKINTO_KOMO);
     }
 
     @Value("${web.url.cas}")

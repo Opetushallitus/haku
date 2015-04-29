@@ -12,7 +12,8 @@ public class PreferenceEligibility implements Serializable {
         NOT_CHECKED,
         ELIGIBLE,
         INELIGIBLE,
-        INADEQUATE
+        INADEQUATE,
+        AUTOMATICALLY_CHECKED_ELIGIBLE
     }
 
     public static enum Source {

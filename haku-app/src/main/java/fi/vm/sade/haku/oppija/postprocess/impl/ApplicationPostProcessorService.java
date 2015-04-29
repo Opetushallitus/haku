@@ -59,6 +59,7 @@ public class ApplicationPostProcessorService {
         }
         application = applicationService.updateAuthorizationMeta(application);
         application = applicationService.ensureApplicationOptionGroupData(application);
+        application = applicationService.updateAutomaticEligibilities(application);
         application = validateApplication(application);
         application.setRedoPostProcess(Application.PostProcessingState.DONE);
         if (null == application.getModelVersion())
