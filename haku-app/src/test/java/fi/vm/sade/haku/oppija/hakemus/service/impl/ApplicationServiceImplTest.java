@@ -435,39 +435,9 @@ public class ApplicationServiceImplTest {
 
     @Test
     public void testAutomaticEligibility() {
-        ApplicationSystemService applicationSystemService = mock(ApplicationSystemService.class);
-        ApplicationSystem as = new ApplicationSystemBuilder()
-                .setId("asId")
-                .setName(ElementUtil.createI18NAsIs("asName"))
-                .setAosForAutomaticEligibility(new ArrayList<String>() {{
-                    add("automaticallyEligibile1");
-                    add("automaticallyEligibile2");
-                    add("automaticallyEligibile3");
-                    add("automaticallyEligibile4");
-                }})
-                .get();
-        when(applicationSystemService.getApplicationSystem(eq("hakuOid"))).thenReturn(as);
-        SuoritusrekisteriService suoritusrekisteriService = mock(SuoritusrekisteriService.class);
-        Map<String, List<SuoritusDTO>> suoritusMap = new HashMap<String, List<SuoritusDTO>>() {{
-            put(YO_TUTKINTO_KOMO, new ArrayList<SuoritusDTO>() {{
-                add(new SuoritusDTO(null, null, null, SuoritusDTO.TILA_VALMIS, null, null, null, null, null, null));
-            }});
-        }};
-        when(suoritusrekisteriService.getSuoritukset(any(String.class), eq(YO_TUTKINTO_KOMO)))
-                .thenReturn(suoritusMap);
-        Application application = new Application();
-        application.setApplicationSystemId("hakuOid");
-        application.setPreferenceEligibilities(new ArrayList<PreferenceEligibility>() {{
-            add(new PreferenceEligibility("automaticallyEligibile1", NOT_CHECKED, null, null));
-            add(new PreferenceEligibility("automaticallyEligibile2", ELIGIBLE, null, null));
-            add(new PreferenceEligibility("automaticallyEligibile3", INELIGIBLE, null, null));
-            add(new PreferenceEligibility("automaticallyEligibile4", AUTOMATICALLY_CHECKED_ELIGIBLE, null, null));
-            add(new PreferenceEligibility("manuallyEligibile", NOT_CHECKED, null, null));
-        }});
+        Application application = applicationForAutoEligibility(asServiceForAutoEligibility(),
+                sureServiceForAutoEligibility(true));
 
-        ApplicationServiceImpl applicationService = new ApplicationServiceImpl(null, null, null, null, null, null, null,
-                applicationSystemService, null, null, suoritusrekisteriService, null, null);
-        application = applicationService.updateAutomaticEligibilities(application);
         for (PreferenceEligibility eligibility : application.getPreferenceEligibilities()) {
             switch (eligibility.getAoId()) {
                 case "automaticallyEligibile1":
@@ -481,13 +451,85 @@ public class ApplicationServiceImplTest {
                     break;
                 case "automaticallyEligibile4":
                     assertEquals(AUTOMATICALLY_CHECKED_ELIGIBLE, eligibility.getStatus());
-                    assertEquals(AUTOMATICALLY_CHECKED_ELIGIBLE, eligibility.getStatus());
                     break;
                 case "manuallyEligibile":
                     assertEquals(NOT_CHECKED, eligibility.getStatus());
                     break;
             }
         }
+    }
+    @Test
+    public void testAutomaticEligibilityNotYo() {
+        Application application = applicationForAutoEligibility(asServiceForAutoEligibility(),
+                sureServiceForAutoEligibility(false));
 
+        for (PreferenceEligibility eligibility : application.getPreferenceEligibilities()) {
+            switch (eligibility.getAoId()) {
+                case "automaticallyEligibile1":
+                    assertEquals(NOT_CHECKED, eligibility.getStatus());
+                    break;
+                case "automaticallyEligibile2":
+                    assertEquals(ELIGIBLE, eligibility.getStatus());
+                    break;
+                case "automaticallyEligibile3":
+                    assertEquals(INELIGIBLE, eligibility.getStatus());
+                    break;
+                case "automaticallyEligibile4":
+                    assertEquals(NOT_CHECKED, eligibility.getStatus());
+                    break;
+                case "manuallyEligibile":
+                    assertEquals(NOT_CHECKED, eligibility.getStatus());
+                    break;
+            }
+        }
+    }
+
+    private Application applicationForAutoEligibility(ApplicationSystemService applicationSystemService,
+                                                      SuoritusrekisteriService suoritusrekisteriService) {
+        Application application = new Application();
+        application.setApplicationSystemId("hakuOid");
+        application.setPreferenceEligibilities(new ArrayList<PreferenceEligibility>() {{
+            add(new PreferenceEligibility("automaticallyEligibile1", NOT_CHECKED, null, null));
+            add(new PreferenceEligibility("automaticallyEligibile2", ELIGIBLE, null, null));
+            add(new PreferenceEligibility("automaticallyEligibile3", INELIGIBLE, null, null));
+            add(new PreferenceEligibility("automaticallyEligibile4", AUTOMATICALLY_CHECKED_ELIGIBLE, null, null));
+            add(new PreferenceEligibility("manuallyEligibile", NOT_CHECKED, null, null));
+        }});
+
+        ApplicationServiceImpl applicationService = new ApplicationServiceImpl(null, null, null, null, null, null, null,
+                applicationSystemService, null, null, suoritusrekisteriService, null, null);
+
+        application = applicationService.updateAutomaticEligibilities(application);
+
+        return application;
+    }
+
+    private SuoritusrekisteriService sureServiceForAutoEligibility(final boolean valmis) {
+        SuoritusrekisteriService suoritusrekisteriService = mock(SuoritusrekisteriService.class);
+        Map<String, List<SuoritusDTO>> suoritusMap = new HashMap<String, List<SuoritusDTO>>() {{
+            put(YO_TUTKINTO_KOMO, new ArrayList<SuoritusDTO>() {{
+                add(new SuoritusDTO(null, null, null, valmis ? SuoritusDTO.TILA_VALMIS : SuoritusDTO.TILA_KESKEN,
+                        null, null, null, null, null, null));
+            }});
+        }};
+        when(suoritusrekisteriService.getSuoritukset(any(String.class), eq(YO_TUTKINTO_KOMO)))
+                .thenReturn(suoritusMap);
+        return suoritusrekisteriService;
+    }
+
+    private ApplicationSystemService asServiceForAutoEligibility() {
+        ApplicationSystemService applicationSystemService = mock(ApplicationSystemService.class);
+        ApplicationSystem as = new ApplicationSystemBuilder()
+                .setId("asId")
+                .setName(ElementUtil.createI18NAsIs("asName"))
+                .setAosForAutomaticEligibility(new ArrayList<String>() {{
+                    add("automaticallyEligibile1");
+                    add("automaticallyEligibile2");
+                    add("automaticallyEligibile3");
+                    add("automaticallyEligibile4");
+                }})
+                .get();
+        when(applicationSystemService.getApplicationSystem(eq("hakuOid"))).thenReturn(as);
+        return applicationSystemService;
     }
 }
