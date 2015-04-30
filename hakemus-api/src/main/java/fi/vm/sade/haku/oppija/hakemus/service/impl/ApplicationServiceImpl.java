@@ -510,21 +510,18 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public Map<String, String> ensureApplicationOptionGroupData(final Map<String, String> originalAnswers, String lang) {
+    public Map<String, String> ensureApplicationOptionGroupData(final Map<String, String> originalAnswers, final String lang) {
         final HashMap<String, String> ensuredAnswers = new HashMap<>(originalAnswers);
-        for (String key : originalAnswers.keySet()) {
+        for (final String key : originalAnswers.keySet()) {
             if (null != key
                     && key.startsWith(OppijaConstants.PREFERENCE_PREFIX)
                     && key.endsWith(OppijaConstants.OPTION_ID_POSTFIX)
                     && isNotEmpty(ensuredAnswers.get(key))) {
-                String basekey = key.replace(OppijaConstants.OPTION_ID_POSTFIX, "");
+                final String basekey = key.replace(OppijaConstants.OPTION_ID_POSTFIX, "");
 
-                String aoGroups = ensuredAnswers.get(basekey + OppijaConstants.OPTION_GROUP_POSTFIX);
-                String attachments = ensuredAnswers.get(basekey + OppijaConstants.OPTION_ATTACHMENTS_POSTFIX);
-
-                ApplicationOptionDTO applicationOption = koulutusinformaatioService.getApplicationOption(ensuredAnswers.get(key), lang);
-                List<String> teachingLangs = applicationOption.getTeachingLanguages();
-                String teachingLang = teachingLangs != null && teachingLangs.size() > 0
+                final ApplicationOptionDTO applicationOption = koulutusinformaatioService.getApplicationOption(ensuredAnswers.get(key), lang);
+                final List<String> teachingLangs = applicationOption.getTeachingLanguages();
+                final String teachingLang = teachingLangs != null && teachingLangs.size() > 0
                         ? teachingLangs.get(0) : "";
 
                 ensuredAnswers.put(basekey + "-Opetuspiste", safeToString(applicationOption.getProvider().getName()));
@@ -541,19 +538,19 @@ public class ApplicationServiceImpl implements ApplicationService {
                 ensuredAnswers.put(basekey + "-Koulutus-id-vocational", String.valueOf(applicationOption.isVocational()));
                 ensuredAnswers.put(basekey + "-Koulutus-id-educationcode", safeToString(applicationOption.getEducationCodeUri()));
 
-                if (isEmpty(aoGroups)) {
-                    List<OrganizationGroupDTO> organizationGroups = applicationOption.getOrganizationGroups();
-                    if (null != organizationGroups && organizationGroups.size() > 0) {
-                        ArrayList<String> aoGroupList = new ArrayList<String>(organizationGroups.size());
-                        for (OrganizationGroupDTO organizationGroup : organizationGroups) {
-                            aoGroupList.add(organizationGroup.getOid());
-                        }
-                        ensuredAnswers.put(basekey + OppijaConstants.OPTION_GROUP_POSTFIX, StringUtils.join(aoGroupList, ","));
+                final ArrayList<String> aoGroupList = new ArrayList<String>();
+                final List<OrganizationGroupDTO> organizationGroups = applicationOption.getOrganizationGroups();
+                if (null != organizationGroups && organizationGroups.size() > 0) {
+                    for (final OrganizationGroupDTO organizationGroup : organizationGroups) {
+                        aoGroupList.add(organizationGroup.getOid());
                     }
-                }
 
+                }
+                ensuredAnswers.put(basekey + OppijaConstants.OPTION_GROUP_POSTFIX, StringUtils.join(aoGroupList, ","));
+
+                final String attachments = ensuredAnswers.get(basekey + OppijaConstants.OPTION_ATTACHMENTS_POSTFIX);
                 if (isEmpty(attachments)) {
-                    List<ApplicationOptionAttachmentDTO> attachmentList = applicationOption.getAttachments();
+                    final List<ApplicationOptionAttachmentDTO> attachmentList = applicationOption.getAttachments();
                     if (attachmentList != null && !attachmentList.isEmpty()) {
                         ensuredAnswers.put(basekey + OppijaConstants.OPTION_ATTACHMENTS_POSTFIX, "true");
                     }
