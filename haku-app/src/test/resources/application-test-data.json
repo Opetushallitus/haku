@@ -1,293 +1,496 @@
 [
     {
-        "type":"Application",
-        "oid": "1.2.246.562.11.00000010003",
-        "state": "ACTIVE",
-        "personOid": "9.8.7.6.5.1234567890",
-        "applicationSystemId": "Yhteishaku",
         "answers": {
             "henkilotiedot": {
-                "sukupuoli": "Mies",
-                "kansalaisuus": "fin",
-                "asuinmaa": "fi",
-                "Sukunimi": "Huippu",
-                "Henkilotunnus": "pjNZ8of2CryfXkLnJgWM9eYYSWv/VAx1XA2EQgRGP1k=",
-                "matkapuhelinnumero": "0304484857",
-                "äidinkieli": "Suomi",
+                "huoltajannimi": "",
+                "onkosinullakaksoiskansallisuus": "false",
+                "kansalaisuus": "FIN",
+                "asuinmaa": "FIN",
+                "matkapuhelinnumero1": "",
+                "Sukunimi": "Mäkinen",
+                "Henkilotunnus_plain": "010101-123N",
+                "Henkilotunnus": "tbHn9eCSo6Lk3VaPqSJ7es/pKOFKKLoZEzQgL6Fy3SA=",
+                "Henkilotunnus_digest": "a8d9888c08032e0d42afe3a0700b78bd9a29be24556068838343e702908a1ab5",
+                "huoltajansahkoposti": "",
                 "Postinumero": "00100",
-                "lahiosoite": "koulukuja 3",
-                "Sähköposti": "mail.address@happi.de",
-                "Kutsumanimi": "Heikki",
-                "Etunimet": "Heikki Happi",
-                "kotikunta": "Jalasjärvi",
-                "syntymaaika": "1998-09-05",
-                "Henkilotunnus_digest": "6c7a90ff7012fc8048c75b9c624582c34f0620d80b3bc3af379c322a76137ca0"
-            },
-            "koulutustausta": {
-                "millatutkinnolla": "tutkinto1",
-                "peruskoulu2012": "Kyllä",
-                "osallistunut": "Ei",
-                "opetuskieli": "Suomi"
-            },
-            "hakutoiveet": {
-                "preference3-Koulutus-id-aoIdentifier": "",
-                "preference1-Koulutus-id-aoIdentifier": "776",
-                "preference5-Koulutus-id-aoIdentifier": "",
-                "preference2-Opetuspiste": "",
-                "preference1-Opetuspiste-id": "P1",
-                "preference4-Opetuspiste-id": "",
-                "preference1-Opetuspiste": "Helsingin sosiaali- ja terveysalan oppilaitos, Laakson koulutusyksikkö",
-                "preference4-Koulutus-id-aoIdentifier": "",
-                "preference5-Opetuspiste": "",
-                "preference5-Opetuspiste-id": "",
-                "preference4-Opetuspiste": "",
-                "preference1-Koulutus": "Ensihoidon koulutusohjelma, yo",
-                "preference3-Opetuspiste-id": "",
-                "preference2-Koulutus-id-aoIdentifier": "",
-                "preference2-Opetuspiste-id": "",
-                "preference3-Opetuspiste": ""
-            },
-            "arvosanat": {
-                "optional-subject_yhteiskuntaoppi": "",
-                "lang_a1": "eng",
-                "common-lang_a1": "6",
-                "common-subject_matematiikka": "6",
-                "optional-subject_uskonto": "",
-                "optional-subject_kemia": "",
-                "common-subject_maantieto": "7",
-                "optional-subject_kotitalous": "",
-                "optional-subject_kuvataide": "",
-                "optional-subject_terveystieto": "",
-                "optional-subject_maantieto": "-1",
-                "common-subject_kemia": "",
-                "optional-subject_finnish": "-1",
-                "custom-language_0": "fra",
-                "common-subject_terveystieto": "",
-                "custom-optionalgrade_0": "-1",
-                "common-lang_b1": "8",
-                "common-subject_historia": "",
-                "optional-lang_b1": "-1",
-                "lang_b1": "swe",
-                "custom-scope_0": "b2",
-                "optional-subject_matematiikka": "-1",
-                "optional-subject_fysiikka": "-1",
-                "common-subject_kasityo": "",
-                "common-subject_uskonto": "",
-                "optional-subject_kasityo": "",
-                "common-subject_liikunta": "",
-                "common-subject_kuvataide": "",
-                "optional-subject_musiikki": "",
-                "custom-commongrade_0": "6",
-                "common-subject_yhteiskuntaoppi": "",
-                "common-subject_kotitalous": "",
-                "optional-lang_a1": "-1",
-                "optional-subject_biologia": "-1",
-                "common-subject_finnish": "9",
-                "optional-subject_historia": "",
-                "optional-subject_liikunta": "",
-                "common-subject_biologia": "7",
-                "common-subject_fysiikka": "8",
-                "common-subject_musiikki": ""
+                "lahiosoite": "Testikatu 4",
+                "sukupuoli": "2",
+                "turvakielto": "false",
+                "Sähköposti": "",
+                "Kutsumanimi": "Tiina",
+                "Etunimet": "Tiina",
+                "kotikunta": "020",
+                "onkoSinullaSuomalainenHetu": "false",
+                "aidinkieli": "FI",
+                "huoltajanpuhelinnumero": "",
+                "syntymaaika": "14.11.1930"
             },
             "lisatiedot": {
-                "asiointikieli": "suomi",
-                "lupa_lupaSms": "lupaSms",
-                "tyokokemuskuukaudet": "5"
+                "asiointikieli": "suomi"
+            },
+            "hakutoiveet": {
+                "preference1-Koulutus": "Lukio",
+                "preference1-Koulutus-educationDegree": "",
+                "preference1-Koulutus-id": "1.2.246.562.20.18097797874",
+                "preference1-Koulutus-id-ao-groups": "",
+                "preference1-Koulutus-id-aoIdentifier": "000",
+                "preference1-Koulutus-id-athlete": "false",
+                "preference1-Koulutus-id-attachmentgroups": "",
+                "preference1-Koulutus-id-attachments": "false",
+                "preference1-Koulutus-id-educationcode": "koulutus_301101",
+                "preference1-Koulutus-id-kaksoistutkinto": "false",
+                "preference1-Koulutus-id-lang": "FI",
+                "preference1-Koulutus-id-sora": "false",
+                "preference1-Koulutus-id-vocational": "false",
+                "preference1-Opetuspiste": "Alavuden lukio",
+                "preference1-Opetuspiste-id": "1.2.246.562.10.10464399921"
+            },
+            "koulutustausta": {
+                "luokkataso": "9",
+                "LISAKOULUTUS_AMMATTISTARTTI": "false",
+                "PK_PAATTOTODISTUSVUOSI": "2015",
+                "LISAKOULUTUS_VAMMAISTEN": "false",
+                "lahtoluokka": "9A",
+                "POHJAKOULUTUS": "1",
+                "perusopetuksen_kieli": "FI",
+                "lahtokoulu": "1.2.246.562.10.16546622305",
+                "LISAKOULUTUS_MAAHANMUUTTO": "false"
+            },
+            "osaaminen": {
             }
-        }
+        },
+        "applicationSystemId": "1.2.246.562.29.90697286251",
+        "authorizationMeta": {
+            "opoAllowed": true,
+            "aoOrganizations": {
+                "1": [
+                    "1.2.246.562.10.328060821310",
+                    "1.2.246.562.10.10464399921",
+                    "1.2.246.562.10.00000000001",
+                    "1.2.246.562.10.23511028237"
+                ]
+            },
+            "allAoOrganizations": [
+                "1.2.246.562.10.328060821310",
+                "1.2.246.562.10.10464399921",
+                "1.2.246.562.10.00000000001",
+                "1.2.246.562.10.23511028237"
+            ],
+            "sendingSchool": [
+                "1.2.246.562.10.16546622305",
+                "1.2.246.562.10.00000000001",
+                "1.2.246.562.10.77047788581"
+            ],
+            "applicationPreferences": [
+                {
+                    "ordinal": 1,
+                    "preferenceData": {
+                        "Koulutus-id-vocational": "false",
+                        "Koulutus-id-kaksoistutkinto": "false",
+                        "Koulutus-id-aoIdentifier": "000",
+                        "Opetuspiste-id": "1.2.246.562.10.10464399921",
+                        "Koulutus-id-educationcode": "koulutus_301101",
+                        "Koulutus": "Lukio",
+                        "Koulutus-id": "1.2.246.562.20.18097797874",
+                        "Koulutus-id-athlete": "false",
+                        "Opetuspiste": "Alavuden lukio",
+                        "Koulutus-id-lang": "FI",
+                        "Koulutus-id-attachments": "false",
+                        "Koulutus-id-sora": "false"
+                    }
+                }
+            ]
+        },
+        "fullName": "mäkinen tiina",
+        "lastAutomatedProcessingTime": 1430307194719,
+        "meta": {
+            "filingLanguage": "fi",
+            "sessionId": "anonymousUser"
+        },
+        "modelVersion": 7,
+        "notes": [
+            {
+                "type": "ApplicationNote",
+                "noteText": "Hakemus vastaanotettu",
+                "added": 1424444503999,
+                "user": "anonymousUser"
+            }
+        ],
+        "oid": "1.2.246.562.11.00000000259",
+        "overriddenAnswers": {
+            "PK_PAATTOTODISTUSVUOSI": "2015",
+            "LISAKOULUTUS_VAMMAISTEN": "(null)",
+            "Sukunimi": "Testikäs",
+            "Henkilotunnus": "(hidden)",
+            "POHJAKOULUTUS": "1",
+            "LISAKOULUTUS_MAAHANMUUTTO": "(null)",
+            "sukupuoli": "2",
+            "turvakielto": "(null)",
+            "Kutsumanimi": "Asia",
+            "LISAKOULUTUS_AMMATTISTARTTI": "(null)",
+            "luokkataso": "(null)",
+            "Etunimet": "Asia Kas",
+            "lahtoluokka": "(null)",
+            "onkoSinullaSuomalainenHetu": "(null)",
+            "perusopetuksen_kieli": "SV",
+            "lahtokoulu": "(null)",
+            "syntymaaika": "14.11.1930",
+            "aidinkieli": "FI"
+        },
+        "personOid": "1.2.246.562.24.00000000001",
+        "preferenceEligibilities": [
+            {
+                "aoId": "1.2.246.562.20.18097797874",
+                "status": "NOT_CHECKED",
+                "source": "UNKNOWN"
+            }
+        ],
+        "preferencesChecked": [
+            {
+                "preferenceAoOid": "1.2.246.562.20.18097797874",
+                "checked": false
+            }
+        ],
+        "received": 1424444503999,
+        "redoPostProcess": "DONE",
+        "searchNames": [
+            "tiina",
+            "testikäs",
+            "kas",
+            "asia",
+            "mäkinen"
+        ],
+        "state": "ACTIVE",
+        "studentIdentificationDone": false,
+        "updated": 1427797912421
     },
     {
-        "type":"Application",
-        "oid": "1.2.246.562.11.00000020006",
-        "state": "ACTIVE",
-        "personOid": "9.8.7.6.5.1234567891",
-        "applicationSystemId": "Yhteishaku",
         "answers": {
             "henkilotiedot": {
-                "sukupuoli": "Mies",
-                "kansalaisuus": "fi",
-                "asuinmaa": "fi",
-                "Sukunimi": "Huippu",
-                "Henkilotunnus": "pjNZ8of2CryfXkLnJgWM9eYYSWv/VAx1XA2EQgRGP1k=",
-                "matkapuhelinnumero": "0304484857",
-                "äidinkieli": "Suomi",
+                "huoltajannimi": "",
+                "onkosinullakaksoiskansallisuus": "false",
+                "kansalaisuus": "FIN",
+                "asuinmaa": "FIN",
+                "matkapuhelinnumero1": "",
+                "Sukunimi": "Mäkinen",
+                "Henkilotunnus_plain": "020202-123C",
+                "Henkilotunnus": "B6fAlIPwGop+lHyZiJBv62bD+AcdpYP+WGg5KXovsX0=",
+                "Henkilotunnus_digest": "a7fddaa01026c1996e3c97a43e2bdc4984ca6460570ed4746f8d7540fea4c865",
+                "huoltajansahkoposti": "",
                 "Postinumero": "00100",
-                "lahiosoite": "koulukuja 3",
-                "Sähköposti": "mail.address@happi.de",
-                "Kutsumanimi": "Hessu",
-                "Etunimet": "Hessu Huima",
-                "kotikunta": "Jalasjärvi",
-                "syntymaaika": "1998-09-05",
-                "Henkilotunnus_digest": "6c7a90ff7012fc8048c75b9c624582c34f0620d80b3bc3af379c322a76137ca0"
-            },
-            "koulutustausta": {
-                "millatutkinnolla": "tutkinto1",
-                "peruskoulu2012": "Kyllä",
-                "osallistunut": "Ei",
-                "opetuskieli": "Suomi"
-            },
-            "hakutoiveet": {
-                "preference3-Koulutus-id-aoIdentifier": "",
-                "preference1-Koulutus-id-aoIdentifier": "776",
-                "preference5-Koulutus-id-aoIdentifier": "",
-                "preference2-Opetuspiste": "Some random school",
-                "preference1-Opetuspiste-id": "P1",
-                "preference4-Opetuspiste-id": "",
-                "preference1-Opetuspiste": "Helsingin sosiaali- ja terveysalan oppilaitos, Laakson koulutusyksikkö",
-                "preference4-Koulutus-id-aoIdentifier": "",
-                "preference5-Opetuspiste": "",
-                "preference5-Opetuspiste-id": "",
-                "preference4-Opetuspiste": "",
-                "preference1-Koulutus": "Ensihoidon koulutusohjelma, yo",
-                "preference3-Opetuspiste-id": "",
-                "preference2-Koulutus-id-aoIdentifier": "873",
-                "preference2-Opetuspiste-id": "P2",
-                "preference3-Opetuspiste": ""
-            },
-            "arvosanat": {
-                "optional-subject_yhteiskuntaoppi": "",
-                "lang_a1": "eng",
-                "common-lang_a1": "6",
-                "common-subject_matematiikka": "6",
-                "optional-subject_uskonto": "",
-                "optional-subject_kemia": "",
-                "common-subject_maantieto": "7",
-                "optional-subject_kotitalous": "",
-                "optional-subject_kuvataide": "",
-                "optional-subject_terveystieto": "",
-                "optional-subject_maantieto": "-1",
-                "common-subject_kemia": "",
-                "optional-subject_finnish": "-1",
-                "custom-language_0": "fra",
-                "common-subject_terveystieto": "",
-                "custom-optionalgrade_0": "-1",
-                "common-lang_b1": "8",
-                "common-subject_historia": "",
-                "optional-lang_b1": "-1",
-                "lang_b1": "swe",
-                "custom-scope_0": "b2",
-                "optional-subject_matematiikka": "-1",
-                "optional-subject_fysiikka": "-1",
-                "common-subject_kasityo": "",
-                "common-subject_uskonto": "",
-                "optional-subject_kasityo": "",
-                "common-subject_liikunta": "",
-                "common-subject_kuvataide": "",
-                "optional-subject_musiikki": "",
-                "custom-commongrade_0": "6",
-                "common-subject_yhteiskuntaoppi": "",
-                "common-subject_kotitalous": "",
-                "optional-lang_a1": "-1",
-                "optional-subject_biologia": "-1",
-                "common-subject_finnish": "9",
-                "optional-subject_historia": "",
-                "optional-subject_liikunta": "",
-                "common-subject_biologia": "7",
-                "common-subject_fysiikka": "8",
-                "common-subject_musiikki": ""
+                "lahiosoite": "Testikatu 4",
+                "sukupuoli": "2",
+                "turvakielto": "false",
+                "Sähköposti": "",
+                "Kutsumanimi": "Tiina",
+                "Etunimet": "Tiina",
+                "kotikunta": "020",
+                "onkoSinullaSuomalainenHetu": "false",
+                "aidinkieli": "FI",
+                "huoltajanpuhelinnumero": "",
+                "syntymaaika": "14.11.1930"
             },
             "lisatiedot": {
-                "asiointikieli": "suomi",
-                "lupa_lupaSms": "lupaSms",
-                "tyokokemuskuukaudet": "5"
+                "asiointikieli": "suomi"
+            },
+            "hakutoiveet": {"preference1-Koulutus": "Lukio",
+                "preference1-Koulutus-educationDegree": "",
+                "preference1-Koulutus-id": "1.2.246.562.20.18097797874",
+                "preference1-Koulutus-id-ao-groups": "",
+                "preference1-Koulutus-id-aoIdentifier": "000",
+                "preference1-Koulutus-id-athlete": "false",
+                "preference1-Koulutus-id-attachmentgroups": "",
+                "preference1-Koulutus-id-attachments": "false",
+                "preference1-Koulutus-id-educationcode": "koulutus_301101",
+                "preference1-Koulutus-id-kaksoistutkinto": "false",
+                "preference1-Koulutus-id-lang": "FI",
+                "preference1-Koulutus-id-sora": "false",
+                "preference1-Koulutus-id-vocational": "false",
+                "preference1-Opetuspiste": "Alavuden lukio",
+                "preference1-Opetuspiste-id": "1.2.246.562.10.10464399921"
+            },
+            "koulutustausta": {
+                "luokkataso": "9",
+                "LISAKOULUTUS_AMMATTISTARTTI": "false",
+                "PK_PAATTOTODISTUSVUOSI": "2015",
+                "LISAKOULUTUS_VAMMAISTEN": "false",
+                "lahtoluokka": "9A",
+                "POHJAKOULUTUS": "1",
+                "perusopetuksen_kieli": "FI",
+                "lahtokoulu": "1.2.246.562.10.16546622305",
+                "LISAKOULUTUS_MAAHANMUUTTO": "false"
+            },
+            "osaaminen": {
             }
-        }
+        },
+        "applicationSystemId": "1.2.246.562.29.90697286251",
+        "authorizationMeta": {
+            "opoAllowed": true,
+            "aoOrganizations": {
+                "1": [
+                    "1.2.246.562.10.328060821310",
+                    "1.2.246.562.10.10464399921",
+                    "1.2.246.562.10.00000000001",
+                    "1.2.246.562.10.23511028237"
+                ]
+            },
+            "allAoOrganizations": [
+                "1.2.246.562.10.328060821310",
+                "1.2.246.562.10.10464399921",
+                "1.2.246.562.10.00000000001",
+                "1.2.246.562.10.23511028237"
+            ],
+            "sendingSchool": [
+                "1.2.246.562.10.16546622305",
+                "1.2.246.562.10.00000000001",
+                "1.2.246.562.10.77047788581"
+            ],
+            "applicationPreferences": [
+                {
+                    "ordinal": 1,
+                    "preferenceData": {
+                        "Koulutus-id-vocational": "false",
+                        "Koulutus-id-kaksoistutkinto": "false",
+                        "Koulutus-id-aoIdentifier": "000",
+                        "Opetuspiste-id": "1.2.246.562.10.10464399921",
+                        "Koulutus-id-educationcode": "koulutus_301101",
+                        "Koulutus": "Lukio",
+                        "Koulutus-id": "1.2.246.562.20.18097797874",
+                        "Koulutus-id-athlete": "false",
+                        "Opetuspiste": "Alavuden lukio",
+                        "Koulutus-id-lang": "FI",
+                        "Koulutus-id-attachments": "false",
+                        "Koulutus-id-sora": "false"
+                    }
+                }
+            ]
+        },
+        "fullName": "mäkinen tiina",
+        "lastAutomatedProcessingTime": 1430307194719,
+        "meta": {
+            "filingLanguage": "fi",
+            "sessionId": "anonymousUser"
+        },
+        "modelVersion": 7,
+        "notes": [
+            {
+                "type": "ApplicationNote",
+                "noteText": "Hakemus vastaanotettu",
+                "added": 1424444503999,
+                "user": "anonymousUser"
+            }
+        ],
+        "oid": "1.2.246.562.11.00000000260",
+        "overriddenAnswers": {
+            "PK_PAATTOTODISTUSVUOSI": "2015",
+            "LISAKOULUTUS_VAMMAISTEN": "(null)",
+            "Sukunimi": "Testikäs",
+            "Henkilotunnus": "(hidden)",
+            "POHJAKOULUTUS": "1",
+            "LISAKOULUTUS_MAAHANMUUTTO": "(null)",
+            "sukupuoli": "2",
+            "turvakielto": "(null)",
+            "Kutsumanimi": "Asia",
+            "LISAKOULUTUS_AMMATTISTARTTI": "(null)",
+            "luokkataso": "(null)",
+            "Etunimet": "Asia Kas",
+            "lahtoluokka": "(null)",
+            "onkoSinullaSuomalainenHetu": "(null)",
+            "perusopetuksen_kieli": "SV",
+            "lahtokoulu": "(null)",
+            "syntymaaika": "14.11.1930",
+            "aidinkieli": "FI"
+        },
+        "personOid": "1.2.246.562.24.00000000002",
+        "preferenceEligibilities": [
+            {
+                "aoId": "1.2.246.562.20.18097797874",
+                "status": "NOT_CHECKED",
+                "source": "UNKNOWN"
+            }
+        ],
+        "preferencesChecked": [
+            {
+                "preferenceAoOid": "1.2.246.562.20.18097797874",
+                "checked": false
+            }
+        ],
+        "received": 1424444503999,
+        "redoPostProcess": "DONE",
+        "searchNames": [
+            "tiina",
+            "testikäs",
+            "kas",
+            "asia",
+            "mäkinen"
+        ],
+        "state": "ACTIVE",
+        "studentIdentificationDone": false,
+        "updated": 1427797912421
     },
     {
-        "type":"Application",
-        "oid": "1.2.246.562.11.00000030009",
-        "state": "PASSIVE",
-        "personOid": "9.8.7.6.5.1234567892",
-        "applicationSystemId": "Yhteishaku",
         "answers": {
             "henkilotiedot": {
-                "Sukupuoli": "Mies",
-                "kansalaisuus": "fi",
-                "asuinmaa": "fi",
-                "Sukunimi": "Huippu",
-                "Henkilotunnus": "pjNZ8of2CryfXkLnJgWM9eYYSWv/VAx1XA2EQgRGP1k=",
-                "matkapuhelinnumero": "0304484857",
-                "äidinkieli": "Suomi",
+                "huoltajannimi": "",
+                "onkosinullakaksoiskansallisuus": "false",
+                "kansalaisuus": "FIN",
+                "asuinmaa": "FIN",
+                "matkapuhelinnumero1": "",
+                "Sukunimi": "Mäkinen",
+                "Henkilotunnus_plain": "030303-1233",
+                "Henkilotunnus": "YwzR1LnSz12bORXSVxnjlvcHIar/F1tNnEREec/02Ks=",
+                "Henkilotunnus": "9Z3v0QirC9nG4PQm/1fxnMG+kQoVeOhXrc2Wxw0G8L4=",
+                "Henkilotunnus_digest": "267778e60d2a5777a3d25230de2b72beab820aaadc5ded7281e961bd545db75d",
+                "huoltajansahkoposti": "",
                 "Postinumero": "00100",
-                "lahiosoite": "koulukuja 3",
-                "Sähköposti": "mail.address@happi.de",
-                "Kutsumanimi": "Hessu",
-                "Etunimet": "Hessu Huima",
-                "kotikunta": "Jalasjärvi",
-                "syntymaaika": "1998-09-05",
-                "Henkilotunnus_digest": "6c7a90ff7012fc8048c75b9c624582c34f0620d80b3bc3af379c322a76137ca0"
-            },
-            "koulutustausta": {
-                "millatutkinnolla": "tutkinto1",
-                "peruskoulu2012": "Kyllä",
-                "osallistunut": "Ei",
-                "opetuskieli": "Suomi"
-            },
-            "hakutoiveet": {
-                "preference3-Koulutus-id-aoIdentifier": "",
-                "preference1-Koulutus-id-aoIdentifier": "882",
-                "preference5-Koulutus-id-aoIdentifier": "",
-                "preference2-Opetuspiste": "Some random school",
-                "preference1-Opetuspiste-id": "P1",
-                "preference4-Opetuspiste-id": "",
-                "preference1-Opetuspiste": "Helsingin sosiaali- ja terveysalan oppilaitos, Laakson koulutusyksikkö",
-                "preference4-Koulutus-id-aoIdentifier": "",
-                "preference5-Opetuspiste": "",
-                "preference5-Opetuspiste-id": "",
-                "preference4-Opetuspiste": "",
-                "preference1-Koulutus": "Ensihoidon koulutusohjelma, yo",
-                "preference3-Opetuspiste-id": "",
-                "preference2-Koulutus-id-aoIdentifier": "873",
-                "preference2-Opetuspiste-id": "P2",
-                "preference3-Opetuspiste": ""
-            },
-            "arvosanat": {
-                "optional-subject_yhteiskuntaoppi": "",
-                "lang_a1": "eng",
-                "common-lang_a1": "6",
-                "common-subject_matematiikka": "6",
-                "optional-subject_uskonto": "",
-                "optional-subject_kemia": "",
-                "common-subject_maantieto": "7",
-                "optional-subject_kotitalous": "",
-                "optional-subject_kuvataide": "",
-                "optional-subject_terveystieto": "",
-                "optional-subject_maantieto": "-1",
-                "common-subject_kemia": "",
-                "optional-subject_finnish": "-1",
-                "custom-language_0": "fra",
-                "common-subject_terveystieto": "",
-                "custom-optionalgrade_0": "-1",
-                "common-lang_b1": "8",
-                "common-subject_historia": "",
-                "optional-lang_b1": "-1",
-                "lang_b1": "swe",
-                "custom-scope_0": "b2",
-                "optional-subject_matematiikka": "-1",
-                "optional-subject_fysiikka": "-1",
-                "common-subject_kasityo": "",
-                "common-subject_uskonto": "",
-                "optional-subject_kasityo": "",
-                "common-subject_liikunta": "",
-                "common-subject_kuvataide": "",
-                "optional-subject_musiikki": "",
-                "custom-commongrade_0": "6",
-                "common-subject_yhteiskuntaoppi": "",
-                "common-subject_kotitalous": "",
-                "optional-lang_a1": "-1",
-                "optional-subject_biologia": "-1",
-                "common-subject_finnish": "9",
-                "optional-subject_historia": "",
-                "optional-subject_liikunta": "",
-                "common-subject_biologia": "7",
-                "common-subject_fysiikka": "8",
-                "common-subject_musiikki": ""
+                "lahiosoite": "Testikatu 4",
+                "sukupuoli": "2",
+                "turvakielto": "false",
+                "Sähköposti": "",
+                "Kutsumanimi": "Tiina",
+                "Etunimet": "Tiina",
+                "kotikunta": "020",
+                "onkoSinullaSuomalainenHetu": "false",
+                "aidinkieli": "FI",
+                "huoltajanpuhelinnumero": "",
+                "syntymaaika": "14.11.1930"
             },
             "lisatiedot": {
-                "asiointikieli": "suomi",
-                "lupa_lupaSms": "lupaSms",
-                "tyokokemuskuukaudet": "5"
+                "asiointikieli": "suomi"
+            },
+            "hakutoiveet": {
+                "preference1-Koulutus" : "Pintakäsittelyalan perustutkinto, pk",
+                "preference1-Koulutus-educationDegree" : "32",
+                "preference1-Koulutus-id" : "1.2.246.562.20.52010929637",
+                "preference1-Koulutus-id-ao-groups" : "",
+                "preference1-Koulutus-id-aoIdentifier" : "864",
+                "preference1-Koulutus-id-athlete" : "false",
+                "preference1-Koulutus-id-attachmentgroups" : "",
+                "preference1-Koulutus-id-attachments" : "",
+                "preference1-Koulutus-id-educationcode" : "koulutus_351805",
+                "preference1-Koulutus-id-kaksoistutkinto" : "true",
+                "preference1-Koulutus-id-lang" : "FI",
+                "preference1-Koulutus-id-sora" : "false",
+                "preference1-Koulutus-id-vocational" : "true",
+                "preference1-Opetuspiste" : "Vammalan ammattikoulu, Ratakatu, Sasky",
+                "preference1-Opetuspiste-id" : "1.2.246.562.10.84451661825",
+                "preference1-discretionary" : "false",
+                "preference1_kaksoistutkinnon_lisakysymys" : "false"
+            },
+            "koulutustausta": {
+                "luokkataso": "9",
+                "LISAKOULUTUS_AMMATTISTARTTI": "false",
+                "PK_PAATTOTODISTUSVUOSI": "2015",
+                "LISAKOULUTUS_VAMMAISTEN": "false",
+                "lahtoluokka": "9A",
+                "POHJAKOULUTUS": "1",
+                "perusopetuksen_kieli": "FI",
+                "lahtokoulu": "1.2.246.562.10.16546622305",
+                "LISAKOULUTUS_MAAHANMUUTTO": "false"
+            },
+            "osaaminen": {
             }
-        }
+        },
+        "applicationSystemId": "1.2.246.562.29.90697286251",
+        "authorizationMeta" : {
+            "opoAllowed" : true,
+            "aoOrganizations" : {
+                "1" : [
+                    "1.2.246.562.10.83391443328",
+                    "1.2.246.562.10.00000000001",
+                    "1.2.246.562.10.84451661825",
+                    "1.2.246.562.10.39207785088"
+                ]
+            },
+            "allAoOrganizations" : [
+                "1.2.246.562.10.83391443328",
+                "1.2.246.562.10.00000000001",
+                "1.2.246.562.10.84451661825",
+                "1.2.246.562.10.39207785088"
+            ],
+            "applicationPreferences" : [
+                {
+                    "ordinal" : 1,
+                    "preferenceData" : {
+                        "Koulutus-id-vocational" : "true",
+                        "Koulutus-id-aoIdentifier" : "864",
+                        "Opetuspiste" : "Vammalan ammattikoulu, Ratakatu, Sasky",
+                        "Koulutus-id-athlete" : "false",
+                        "Koulutus-id" : "1.2.246.562.20.52010929637",
+                        "Koulutus-id-sora" : "false",
+                        "kaksoistutkinnon_lisakysymys" : "false",
+                        "Koulutus-educationDegree" : "32",
+                        "Koulutus-id-kaksoistutkinto" : "true",
+                        "Opetuspiste-id" : "1.2.246.562.10.84451661825",
+                        "Koulutus-id-educationcode" : "koulutus_351805",
+                        "Koulutus" : "Pintakäsittelyalan perustutkinto, pk",
+                        "Koulutus-id-lang" : "FI",
+                        "discretionary" : "false"
+                    }
+                }
+            ]
+        },
+        "fullName": "mäkinen tiina",
+        "lastAutomatedProcessingTime": 1430307194719,
+        "meta": {
+            "filingLanguage": "fi",
+            "sessionId": "anonymousUser"
+        },
+        "modelVersion": 7,
+        "notes": [
+            {
+                "type": "ApplicationNote",
+                "noteText": "Hakemus vastaanotettu",
+                "added": 1424444503999,
+                "user": "anonymousUser"
+            }
+        ],
+        "oid": "1.2.246.562.11.00000000261",
+        "overriddenAnswers": {
+            "PK_PAATTOTODISTUSVUOSI": "2015",
+            "LISAKOULUTUS_VAMMAISTEN": "(null)",
+            "Sukunimi": "Testikäs",
+            "Henkilotunnus": "(hidden)",
+            "POHJAKOULUTUS": "1",
+            "LISAKOULUTUS_MAAHANMUUTTO": "(null)",
+            "sukupuoli": "2",
+            "turvakielto": "(null)",
+            "Kutsumanimi": "Asia",
+            "LISAKOULUTUS_AMMATTISTARTTI": "(null)",
+            "luokkataso": "(null)",
+            "Etunimet": "Asia Kas",
+            "lahtoluokka": "(null)",
+            "onkoSinullaSuomalainenHetu": "(null)",
+            "perusopetuksen_kieli": "SV",
+            "lahtokoulu": "(null)",
+            "syntymaaika": "14.11.1930",
+            "aidinkieli": "FI"
+        },
+        "personOid": "1.2.246.562.24.00000000003",
+        "preferenceEligibilities": [
+            {
+                "aoId": "1.2.246.562.20.52010929637",
+                "status": "NOT_CHECKED",
+                "source": "UNKNOWN"
+            }
+        ],
+        "preferencesChecked": [
+            {
+                "preferenceAoOid": "1.2.246.562.20.52010929637",
+                "checked": false
+            }
+        ],
+        "received": 1424444503999,
+        "redoPostProcess": "DONE",
+        "searchNames": [
+            "tiina",
+            "testikäs",
+            "kas",
+            "asia",
+            "mäkinen"
+        ],
+        "state": "ACTIVE",
+        "studentIdentificationDone": false,
+        "updated": 1427797912421
     }
 ]

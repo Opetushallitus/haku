@@ -186,12 +186,12 @@ final class ApplicationDAOMongoQueryBuilder {
 
         final Boolean preferenceChecked = applicationQueryParameters.getPreferenceChecked();
         if (preferenceChecked != null) {
-            final String aoOid = applicationQueryParameters.getAoOid();
-            if (isNotBlank(aoOid)) {
+            final List<String> aoOids = applicationQueryParameters.getAoOids() ;
+            if (aoOids != null && !aoOids.isEmpty()) {
                 filters.add(
                         QueryBuilder.start("preferencesChecked").elemMatch(
                                 QueryBuilder.start().and(
-                                        new BasicDBObject("preferenceAoOid", aoOid),
+                                        QueryBuilder.start("preferenceAoOid").in(aoOids).get(),
                                         new BasicDBObject("checked", preferenceChecked)
                                 ).get()
                         ).get()
@@ -223,7 +223,7 @@ final class ApplicationDAOMongoQueryBuilder {
         }
 
         final List<String> asIds = applicationQueryParameters.getAsIds();
-        if (!asIds.isEmpty()) {
+        if (asIds != null && !asIds.isEmpty()) {
             filters.add(QueryBuilder.start(FIELD_APPLICATION_SYSTEM_ID).in(asIds).get());
         }
 
@@ -261,12 +261,17 @@ final class ApplicationDAOMongoQueryBuilder {
             }
         }
 
+        final List<String> personOids = applicationQueryParameters.getPersonOids();
+        if (personOids != null && !personOids.isEmpty()) {
+            filters.add(QueryBuilder.start(FIELD_PERSON_OID).in(personOids).get());
+        }
+
         return filters;
     }
 
     private DBObject _createPreferenceFilters(final ApplicationQueryParameters applicationQueryParameters, final ApplicationFilterParameters filterParameters) {
         // Koskee yksittäistä hakutoivetta
-        final String aoOid = applicationQueryParameters.getAoOid();
+        final List<String> aoOids = applicationQueryParameters.getAoOids();
         final String lopOid = applicationQueryParameters.getLopOid();
         final String preference = applicationQueryParameters.getAoId();
         final String groupOid = applicationQueryParameters.getGroupOid();
@@ -275,7 +280,7 @@ final class ApplicationDAOMongoQueryBuilder {
 
         // FIXME A dirty Quickfix
         if (isBlank(lopOid) && isBlank(preference) && isBlank(groupOid) && !discretionaryOnly)
-            return _quickfix(aoOid);
+            return _quickfix(aoOids);
 
         int maxOptions = primaryPreferenceOnly && isBlank(groupOid)
                 ? 1
@@ -296,9 +301,9 @@ final class ApplicationDAOMongoQueryBuilder {
                 preferenceQuery.add(
                         QueryBuilder.start(format(FIELD_DISCRETIONARY_T, i)).is("true").get());
             }
-            if (isNotBlank(aoOid)) {
+            if (aoOids != null && !aoOids.isEmpty()) {
                 preferenceQuery.add(
-                        QueryBuilder.start(format(FIELD_AO_T, i)).is(aoOid).get());
+                        QueryBuilder.start(format(FIELD_AO_T, i)).in(aoOids).get());
             }
             if (isNotBlank(groupOid)) {
                 if (!primaryPreferenceOnly) {
@@ -314,7 +319,7 @@ final class ApplicationDAOMongoQueryBuilder {
                     preferenceQuery.add(
                             QueryBuilder.start().and(
                                     QueryBuilder.start(format(FIELD_AO_GROUPS_T, i)).regex(Pattern.compile(groupOid)).get(),
-                                    QueryBuilder.start(format(FIELD_AO_T, i)).is(aoOid).get()
+                                    QueryBuilder.start(format(FIELD_AO_T, i)).in(aoOids).get()
                             ).get()
                     );
                 }
@@ -329,9 +334,9 @@ final class ApplicationDAOMongoQueryBuilder {
         return _combineQueries(OPERATOR_OR, preferenceQueries);
     }
 
-    private DBObject _quickfix(final String aoOid) {
-        if (isNotBlank(aoOid))
-            return new BasicDBObject(META_FIELD_AO, aoOid);
+    private DBObject _quickfix(final List<String> aoOids) {
+        if (aoOids != null && !aoOids.isEmpty())
+            return QueryBuilder.start(META_FIELD_AO).in(aoOids).get();
         return null;
     }
 

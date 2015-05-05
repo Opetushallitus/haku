@@ -95,7 +95,6 @@ public class ApplicationServiceImplTest {
                 .setAsIds(null)
                 .setAoId("")
                 .setLopOid("")
-                .setAoOid("")
                 .setGroupOid("")
                 .setBaseEducation("")
                 .setDiscretionaryOnly(false)
