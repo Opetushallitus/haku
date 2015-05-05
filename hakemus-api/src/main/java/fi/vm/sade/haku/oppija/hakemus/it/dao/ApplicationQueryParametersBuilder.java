@@ -2,6 +2,7 @@ package fi.vm.sade.haku.oppija.hakemus.it.dao;
 
 import com.google.common.collect.ImmutableList;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -12,7 +13,8 @@ public class ApplicationQueryParametersBuilder {
     private Boolean preferenceChecked;
     private String aoId;
     private String lopOid;
-    private String aoOid;
+    private List<String> aoOids;
+    private List<String> personOids;
     private Boolean discretionaryOnly;
     private Boolean primaryPreferenceOnly;
     private String sendingSchool;
@@ -55,8 +57,33 @@ public class ApplicationQueryParametersBuilder {
         return this;
     }
 
-    public ApplicationQueryParametersBuilder setAoOid(String aoOid) {
-        this.aoOid = aoOid;
+    public ApplicationQueryParametersBuilder setAoOids(List<String> aoOids) {
+        this.aoOids = aoOids;
+        return this;
+    }
+
+    public ApplicationQueryParametersBuilder addAoOid(String... aoOids) {
+        if (this.aoOids == null)
+            this.aoOids = new ArrayList<>(aoOids.length);
+
+        for (String aoOid : aoOids) {
+            this.aoOids.add(aoOid);
+        }
+        return this;
+    }
+
+    public ApplicationQueryParametersBuilder setPersonOids(List<String> personOids) {
+        this.personOids = personOids;
+        return this;
+    }
+
+    public ApplicationQueryParametersBuilder addPersonOid(String... personOids) {
+        if (this.personOids == null)
+            this.personOids = new ArrayList<>(personOids.length);
+
+        for (String personOid : personOids) {
+            this.personOids.add(personOid);
+        }
         return this;
     }
 
@@ -111,9 +138,9 @@ public class ApplicationQueryParametersBuilder {
     }
 
     public ApplicationQueryParameters build() {
-        return new ApplicationQueryParameters(searchTerms, state, preferenceChecked, asIds, aoId, lopOid, aoOid, groupOid, baseEducation,
-                discretionaryOnly, primaryPreferenceOnly, sendingSchool, sendingClass, updatedAfter, start, rows,
-                orderBy, orderDir);
+        return new ApplicationQueryParameters(searchTerms, state, preferenceChecked, asIds, aoId, lopOid, aoOids,
+                personOids, groupOid, baseEducation, discretionaryOnly, primaryPreferenceOnly, sendingSchool,
+                sendingClass, updatedAfter, start, rows, orderBy, orderDir);
     }
 
     public ApplicationQueryParametersBuilder setSearchTerms(String searchTerms) {

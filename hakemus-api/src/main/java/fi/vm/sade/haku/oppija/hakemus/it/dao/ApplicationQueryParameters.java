@@ -19,6 +19,7 @@ package fi.vm.sade.haku.oppija.hakemus.it.dao;
 import java.util.Date;
 import java.util.List;
 
+import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.StringUtils.isEmpty;
 
 public class ApplicationQueryParameters {
@@ -27,7 +28,8 @@ public class ApplicationQueryParameters {
     private final List<String> asIds;
     private final String aoId;
     private final String lopOid;
-    private final String aoOid;
+    private final List<String> aoOids;
+    private final List<String> personOids;
     private final String groupOid;
     private final String baseEducation;
     private final boolean discretionaryOnly;
@@ -42,10 +44,10 @@ public class ApplicationQueryParameters {
     private final String searchTerms;
 
     public ApplicationQueryParameters(final String searchTerms, final List<String> state, final Boolean preferenceChecked,
-                                      final List<String> asIds, final String aoId, final String lopOid, final String aoOid,
-                                      final String groupOid, String baseEducation, final Boolean discretionaryOnly,
-                                      final Boolean primaryPreferenceOnly, final String sendingSchool,
-                                      final String sendingClass, final Date updatedAfter,
+                                      final List<String> asIds, final String aoId, final String lopOid,
+                                      final List<String> aoOids, final List<String> personOids, final String groupOid,
+                                      final String baseEducation, final Boolean discretionaryOnly, final Boolean primaryPreferenceOnly,
+                                      final String sendingSchool, final String sendingClass, final Date updatedAfter,
                                       final int start, final int rows, final String orderBy, final int orderDir) {
         this.searchTerms = searchTerms;
         this.lopOid = isEmpty(lopOid) ? null : lopOid;
@@ -53,7 +55,24 @@ public class ApplicationQueryParameters {
         this.state = state;
         this.preferenceChecked = preferenceChecked;
         this.aoId = isEmpty(aoId) ? null : aoId;
-        this.aoOid = isEmpty(aoOid) ? null : aoOid;
+        if (aoOids != null && !aoOids.isEmpty()) {
+            if (aoOids.size() == 1 && isBlank(aoOids.get(0))) {
+                this.aoOids = null;
+            } else {
+                this.aoOids = aoOids;
+            }
+        } else {
+            this.aoOids = null;
+        }
+        if (personOids != null && !personOids.isEmpty()) {
+            if (personOids.size() == 1 && isBlank(personOids.get(0))) {
+                this.personOids = null;
+            } else {
+                this.personOids = personOids;
+            }
+        } else {
+            this.personOids = null;
+        }
         this.groupOid = isEmpty(groupOid) ? null : groupOid;
         this.baseEducation = isEmpty(baseEducation) ? null : baseEducation;
         this.discretionaryOnly = discretionaryOnly == null ? false : discretionaryOnly;
@@ -87,8 +106,8 @@ public class ApplicationQueryParameters {
         return lopOid;
     }
 
-    public String getAoOid() {
-        return aoOid;
+    public List<String> getAoOids() {
+        return aoOids;
     }
 
     public String getGroupOid() {
@@ -130,6 +149,11 @@ public class ApplicationQueryParameters {
     }
 
     public String getSearchTerms() {
-        return searchTerms;
+        return searchTerms != null ? searchTerms : "";
     }
+
+    public List<String> getPersonOids() {
+        return personOids;
+    }
+
 }

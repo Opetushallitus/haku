@@ -65,7 +65,7 @@ public class ApplicationIT extends DummyModelBaseItTest {
     @Test
     public void testFindApplications() throws IOException {
         navigateToPath("applications");
-        navigateToPath("applications?q=1.2.246.562.11.00000010003");
+        navigateToPath("applications?q=1.2.246.562.11.00000000259");
         ApplicationSearchResultDTO applications = responseToSearchResult();
         assertEquals(1, applications.getResults().size());
         assertEquals(1, applications.getTotalCount());
@@ -80,7 +80,7 @@ public class ApplicationIT extends DummyModelBaseItTest {
 
     //    @Test
     public void testGetApplication() throws IOException {
-        navigateToPath("applications/1.2.246.562.11.00000010003/");
+        navigateToPath("applications/1.2.246.562.11.00000000259/");
         String response = getBodyText();
         ObjectMapper mapper = new ObjectMapper();
         Application application = mapper.readValue(response, new TypeReference<Application>() {
