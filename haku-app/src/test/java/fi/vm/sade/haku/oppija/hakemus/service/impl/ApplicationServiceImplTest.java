@@ -31,6 +31,7 @@ import fi.vm.sade.haku.oppija.lomake.validation.ValidatorFactory;
 import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
 import fi.vm.sade.haku.virkailija.authentication.impl.AuthenticationServiceMockImpl;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.i18n.I18nBundleService;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakuService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.junit.Before;
@@ -135,7 +136,7 @@ public class ApplicationServiceImplTest {
 //        when(suoritusrekisteriService.getLahtoluokka(any(String.class))).thenReturn("9A");
 
         service = new ApplicationServiceImpl(applicationDAO, null, null, applicationOidService, authenticationService, organizationService,
-                hakuPermissionService, applicationSystemService, koulutusinformaatioService, i18nBundleService, null, elementTreeValidator, null);
+                hakuPermissionService, applicationSystemService, koulutusinformaatioService, i18nBundleService, null, null, elementTreeValidator, null);
     }
 
     @Test
@@ -406,7 +407,7 @@ public class ApplicationServiceImplTest {
         when(applicationSystemService.getApplicationSystem("myAs")).thenReturn(as);
 
         ApplicationServiceImpl applicationService = new ApplicationServiceImpl(null, null, null, null, null, null,
-                null, applicationSystemService, null, null, null, null, null);
+                null, applicationSystemService, null, null, null, null, null, null);
         application = applicationService.removeOrphanedAnswers(application);
         Map<String, String> persAnswers = application.getPhaseAnswers(OppijaConstants.PHASE_PERSONAL);
         Map<String, String> eduAnswers = application.getPhaseAnswers(OppijaConstants.PHASE_EDUCATION);
@@ -434,8 +435,8 @@ public class ApplicationServiceImplTest {
 
     @Test
     public void testAutomaticEligibility() {
-        Application application = applicationForAutoEligibility(asServiceForAutoEligibility(),
-                sureServiceForAutoEligibility(true));
+        Application application = applicationForAutoEligibility(sureServiceForAutoEligibility(true),
+                hakuServiceForAutoEligibility());
 
         for (PreferenceEligibility eligibility : application.getPreferenceEligibilities()) {
             switch (eligibility.getAoId()) {
@@ -459,8 +460,8 @@ public class ApplicationServiceImplTest {
     }
     @Test
     public void testAutomaticEligibilityNotYo() {
-        Application application = applicationForAutoEligibility(asServiceForAutoEligibility(),
-                sureServiceForAutoEligibility(false));
+        Application application = applicationForAutoEligibility(sureServiceForAutoEligibility(false),
+                hakuServiceForAutoEligibility());
 
         for (PreferenceEligibility eligibility : application.getPreferenceEligibilities()) {
             switch (eligibility.getAoId()) {
@@ -483,8 +484,8 @@ public class ApplicationServiceImplTest {
         }
     }
 
-    private Application applicationForAutoEligibility(ApplicationSystemService applicationSystemService,
-                                                      SuoritusrekisteriService suoritusrekisteriService) {
+    private Application applicationForAutoEligibility(SuoritusrekisteriService suoritusrekisteriService,
+                                                      HakuService hakuService) {
         Application application = new Application();
         application.setApplicationSystemId("hakuOid");
         application.setPreferenceEligibilities(new ArrayList<PreferenceEligibility>() {{
@@ -496,7 +497,7 @@ public class ApplicationServiceImplTest {
         }});
 
         ApplicationServiceImpl applicationService = new ApplicationServiceImpl(null, null, null, null, null, null, null,
-                applicationSystemService, null, null, suoritusrekisteriService, null, null);
+                null, null, null, suoritusrekisteriService, hakuService, null, null);
 
         application = applicationService.updateAutomaticEligibilities(application);
 
@@ -516,8 +517,8 @@ public class ApplicationServiceImplTest {
         return suoritusrekisteriService;
     }
 
-    private ApplicationSystemService asServiceForAutoEligibility() {
-        ApplicationSystemService applicationSystemService = mock(ApplicationSystemService.class);
+    private HakuService hakuServiceForAutoEligibility() {
+        HakuService hakuService = mock(HakuService.class);
         ApplicationSystem as = new ApplicationSystemBuilder()
                 .setId("asId")
                 .setName(ElementUtil.createI18NAsIs("asName"))
@@ -528,7 +529,9 @@ public class ApplicationServiceImplTest {
                     add("automaticallyEligibile4");
                 }})
                 .get();
-        when(applicationSystemService.getApplicationSystem(eq("hakuOid"))).thenReturn(as);
-        return applicationSystemService;
+        when(hakuService.getApplicationSystem(eq("hakuOid"))).thenReturn(as);
+        return hakuService;
     }
+
+
 }
