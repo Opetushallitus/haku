@@ -115,7 +115,8 @@ public class ApplicationSystem implements Serializable {
     @Transient
     public boolean baseEducationDoesNotRestrictApplicationOptions() {
         return OppijaConstants.KOHDEJOUKKO_KORKEAKOULU.equals(getKohdejoukkoUri()) ||
-                OppijaConstants.KOHDEJOUKKO_ERITYISOPETUKSENA_JARJESTETTAVA_AMMATILLINEN.equals(getKohdejoukkoUri());
+                OppijaConstants.KOHDEJOUKKO_ERITYISOPETUKSENA_JARJESTETTAVA_AMMATILLINEN.equals(getKohdejoukkoUri()) ||
+                OppijaConstants.KOHDEJOUKKO_PERUSOPETUKSEN_JALKEINEN_VALMENTAVA.equals(getKohdejoukkoUri());
     }
 
     public String getId() {
