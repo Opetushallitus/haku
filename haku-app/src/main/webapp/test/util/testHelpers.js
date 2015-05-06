@@ -222,7 +222,7 @@ function openPage(path, predicate) {
             var newTestFrame = $('<iframe/>').attr({src: pathStr, width: 1024, height: 800, id: "testframe"});
             $("#testframe").replaceWith(newTestFrame);
         },
-        wait.until(predicate),
+        wait.until(predicate, testTimeoutPageLoad),
         function () {
             window.uiError = null;
             testFrame().onerror = function (err) {

@@ -113,13 +113,13 @@ function sleep(ms) {
 }
 
 wait = {
-    maxWaitMs: 20000,
     waitIntervalMs: 10,
-    until: function (condition, count) {
+    until: function(condition, maxWaitMs) {
         return function (/*...promiseArgs*/) {
             var promiseArgs = arguments;
+            if (maxWaitMs == undefined) maxWaitMs = testTimeoutDefault;
             var deferred = Q.defer();
-            if (count == undefined) count = wait.maxWaitMs / wait.waitIntervalMs;
+            var count = maxWaitMs / wait.waitIntervalMs;
 
             (function waitLoop(remaining) {
                 var cond = condition.apply(this, promiseArgs);

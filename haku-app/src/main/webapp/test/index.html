@@ -12,10 +12,11 @@
         <script src="lib/q.js"></script>
         <script src="../resources/jquery//jquery.min.js"></script>
         <script>
-            var testTimeout = 60000;
+            var testTimeoutPageLoad = 120000
+            var testTimeoutDefault = 30000
             mocha.ui('bdd');
             mocha.reporter('html');
-            mocha.timeout(testTimeout);
+            mocha.timeout(testTimeoutDefault);
         </script>
         <script src="util/testHelpers.js"></script>
         <script src="util/test-dsl.js"></script>
