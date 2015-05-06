@@ -48,6 +48,7 @@ import fi.vm.sade.haku.oppija.lomake.validation.ValidationInput;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationResult;
 import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.i18n.I18nBundleService;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakuService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionAttachmentDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO;
@@ -85,6 +86,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     private final KoulutusinformaatioService koulutusinformaatioService;
     private final I18nBundleService i18nBundleService;
     private final SuoritusrekisteriService suoritusrekisteriService;
+    private final HakuService hakuService;
     private final ElementTreeValidator elementTreeValidator;
     // Tee vain background-validointi tälle lomakkeelle
     private final String onlyBackgroundValidation;
@@ -103,7 +105,7 @@ public class ApplicationServiceImpl implements ApplicationService {
                                   KoulutusinformaatioService koulutusinformaatioService,
                                   I18nBundleService i18nBundleService,
                                   SuoritusrekisteriService suoritusrekisteriService,
-                                  ElementTreeValidator elementTreeValidator,
+                                  HakuService hakuService, ElementTreeValidator elementTreeValidator,
                                   @Value("${onlyBackgroundValidation}") String onlyBackgroundValidation) {
         this.applicationDAO = applicationDAO;
         this.userSession = userSession;
@@ -116,6 +118,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         this.koulutusinformaatioService = koulutusinformaatioService;
         this.i18nBundleService = i18nBundleService;
         this.suoritusrekisteriService = suoritusrekisteriService;
+        this.hakuService = hakuService;
         this.elementTreeValidator = elementTreeValidator;
         this.onlyBackgroundValidation = onlyBackgroundValidation;
     }
@@ -347,22 +350,21 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     @Override
     public Application updateAutomaticEligibilities(Application application) {
-        ApplicationSystem as = applicationSystemService.getApplicationSystem(application.getApplicationSystemId());
+        ApplicationSystem as = hakuService.getApplicationSystem(application.getApplicationSystemId());
         List<String> aosForAutomaticEligibility = as.getAosForAutomaticEligibility();
         if (aosForAutomaticEligibility == null || aosForAutomaticEligibility.isEmpty()) {
             return application;
         }
         Map<String, List<SuoritusDTO>> suoritusMap = suoritusrekisteriService
                 .getSuoritukset(application.getPersonOid(), SuoritusrekisteriService.YO_TUTKINTO_KOMO);
-        if (suoritusMap == null || suoritusMap.isEmpty()) {
-            return application;
-        }
-        List<SuoritusDTO> yoSuoritukset = suoritusMap.get(SuoritusrekisteriService.YO_TUTKINTO_KOMO);
         boolean acceptedYo = false;
-        for (SuoritusDTO suoritus : yoSuoritukset) {
-            if (SuoritusDTO.TILA_VALMIS.equals(suoritus.getTila())) {
-                acceptedYo = true;
-                break;
+        if (suoritusMap != null && !suoritusMap.isEmpty()) {
+            List<SuoritusDTO> yoSuoritukset = suoritusMap.get(SuoritusrekisteriService.YO_TUTKINTO_KOMO);
+            for (SuoritusDTO suoritus : yoSuoritukset) {
+                if (SuoritusDTO.TILA_VALMIS.equals(suoritus.getTila())) {
+                    acceptedYo = true;
+                    break;
+                }
             }
         }
         for (PreferenceEligibility eligibility : application.getPreferenceEligibilities()) {
