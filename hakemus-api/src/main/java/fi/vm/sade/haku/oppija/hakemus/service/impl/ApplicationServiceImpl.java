@@ -375,6 +375,7 @@ public class ApplicationServiceImpl implements ApplicationService {
                 eligibility.setStatus(acceptedYo
                         ? PreferenceEligibility.Status.AUTOMATICALLY_CHECKED_ELIGIBLE
                         : PreferenceEligibility.Status.NOT_CHECKED);
+                eligibility.setSource(PreferenceEligibility.Source.REGISTER);
             }
         }
         return application;
@@ -501,6 +502,10 @@ public class ApplicationServiceImpl implements ApplicationService {
         this.applicationDAO.update(queryApplication, application);
     }
 
+    @Override
+    public List<String> massRedoPostProcess(List<String> applicationOids, Application.PostProcessingState newState) {
+        return applicationDAO.massRedoPostProcess(applicationOids, newState);
+    }
 
     @Override
     public String getApplicationKeyValue(String applicationOid, String key) {
