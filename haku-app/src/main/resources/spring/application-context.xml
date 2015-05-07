@@ -122,6 +122,7 @@
         <bean id="yksilointiScheduler" class="fi.vm.sade.haku.oppija.postprocess.Scheduler">
             <property name="run" value="${scheduler.run}"/>
             <property name="runModelUpgrade" value="${scheduler.runModelUpgrade}"/>
+            <property name="runEligibilityCheck" value="${scheduler.runEligibilityCheck}"/>
             <property name="sendMail" value="${scheduler.sendMail}"/>
         </bean>
         
@@ -136,12 +137,17 @@
             <task:scheduled ref="yksilointiScheduler" method="runIdentification" fixed-delay="${scheduler.delay}"/>
         </task:scheduled-tasks>
 
-
         <task:scheduler id="upgradeScheduler" pool-size="1"/>
         <task:scheduled-tasks scheduler="upgradeScheduler">
             <task:scheduled ref="yksilointiScheduler" method="runModelUpgrade" cron="${scheduler.modelUpgradeCron}"/>
         </task:scheduled-tasks>
-        
+
+        <task:scheduler id="eligibilityCheckScheduler" pool-size="1"/>
+        <task:scheduled-tasks scheduler="eligibilityCheckScheduler">
+            <task:scheduled ref="yksilointiScheduler" method="runEligibilityCheck" cron="${scheduler.eligibilityCheckCron}"/>
+        </task:scheduled-tasks>
+
+
         <!-- Swagger stuff -->
         <bean id="apiListingResourceJSON" class="com.wordnik.swagger.jersey.listing.ApiListingResourceJSON"/>
         <bean id="apiDeclarationProvider" class="com.wordnik.swagger.jersey.listing.JerseyApiDeclarationProvider" scope="singleton"/>

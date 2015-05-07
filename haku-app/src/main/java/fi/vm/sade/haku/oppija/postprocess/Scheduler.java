@@ -29,17 +29,21 @@ public class Scheduler {
     public static final Logger LOGGER = LoggerFactory.getLogger(Scheduler.class);
     private boolean run;
     private boolean runModelUpgrade;
+    private boolean runEligibilityCheck;
     private boolean sendMail;
 
     private PostProcessWorker processWorker;
     private UpgradeWorker upgradeWorker;
+    private EligibilityCheckWorker eligibilityCheckWorker;
     private StatusRepository statusRepository;
 
     @Autowired
-    public Scheduler(PostProcessWorker processWorker, UpgradeWorker upgradeWorker, StatusRepository statusRepository) {
+    public Scheduler(PostProcessWorker processWorker, UpgradeWorker upgradeWorker, StatusRepository statusRepository,
+                     EligibilityCheckWorker eligibilityCheckWorker) {
         this.processWorker = processWorker;
         this.upgradeWorker = upgradeWorker;
         this.statusRepository = statusRepository;
+        this.eligibilityCheckWorker = eligibilityCheckWorker;
     }
 
     public void runProcess() {
@@ -93,6 +97,18 @@ public class Scheduler {
         }
     }
 
+    public void runEligibilityCheck() {
+        if (run && runEligibilityCheck) {
+            statusRepository.write("ELIGIBILITY CHECK scheduler", new HashMap<String, String>() {{ put("state", "start");}});
+            eligibilityCheckWorker.checkEligibilities();
+            statusRepository.write("ELIGIBILITY CHECK scheduler", new HashMap<String, String>() {{
+                put("state", "done");
+            }});
+        } else {
+            statusRepository.write("ELIGIBILITY CHECK scheduler", new HashMap<String, String>() {{ put("state", "halted");}});
+        }
+    }
+
     public void setRun(boolean run) {
         this.run = run;
     }
@@ -103,5 +119,9 @@ public class Scheduler {
 
     public void setRunModelUpgrade(boolean runModelUpgrade) {
         this.runModelUpgrade = runModelUpgrade;
+    }
+
+    public void setRunEligibilityCheck(boolean runEligibilityCheck) {
+        this.runEligibilityCheck = runEligibilityCheck;
     }
 }
