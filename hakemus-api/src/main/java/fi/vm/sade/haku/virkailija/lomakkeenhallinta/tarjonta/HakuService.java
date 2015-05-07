@@ -27,6 +27,8 @@ public interface HakuService {
 
     List<ApplicationSystem> getApplicationSystems();
 
+    List<ApplicationSystem> getApplicationSystems(boolean addHakuKohdes);
+
     ApplicationSystem getApplicationSystem(String oid);
 
     List<String> getRelatedApplicationOptionIds(String oid);
