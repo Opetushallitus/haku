@@ -60,7 +60,12 @@ public class HakuServiceImpl implements HakuService {
 
     @Override
     public List<ApplicationSystem> getApplicationSystems() {
-        WebResource asListWebResource = webResource.path("find").queryParam("addHakuKohdes", "false");
+        return getApplicationSystems(false);
+    }
+
+    @Override
+    public List<ApplicationSystem> getApplicationSystems(boolean addHakuKohdes) {
+        WebResource asListWebResource = webResource.path("find").queryParam("addHakuKohdes", String.valueOf(addHakuKohdes));
         ResultV1RDTO<List<HakuV1RDTO>> hakuResult = asListWebResource.accept(MEDIA_TYPE)
                 .get(new GenericType<ResultV1RDTO<List<HakuV1RDTO>>>() {
                 });
