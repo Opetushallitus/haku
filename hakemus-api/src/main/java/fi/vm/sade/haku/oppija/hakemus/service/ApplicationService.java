@@ -75,6 +75,8 @@ public interface ApplicationService {
     void update(Application queryApplication, Application application,
                 boolean postProcess);
 
+    List<String> massRedoPostProcess(List<String> applicationOids, Application.PostProcessingState newState);
+
     /**
      * Gets the value of the specified application and key
      *

@@ -88,6 +88,8 @@ public interface ApplicationDAO extends BaseDAO<Application> {
 
     Application getNextRedo();
 
+    List<String> massRedoPostProcess(List<String> applicationOids, Application.PostProcessingState state);
+
     List<Application> getNextUpgradable(int versionLevel, int batchSize);
 
     void updateModelVersion(Application application, int modelVersion);
