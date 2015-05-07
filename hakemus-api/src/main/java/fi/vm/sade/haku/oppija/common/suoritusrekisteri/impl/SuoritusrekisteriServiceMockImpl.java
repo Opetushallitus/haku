@@ -40,7 +40,17 @@ public class SuoritusrekisteriServiceMockImpl implements SuoritusrekisteriServic
     }
 
     @Override
+    public List<String> getChanges(String komoOid, Date since) {
+        return null;
+    }
+
+    @Override
     public Map<String, List<SuoritusDTO>> getSuoritukset(String personOid, String komoOid) {
+        return getSuoritukset(personOid);
+    }
+
+    @Override
+    public Map<String, List<SuoritusDTO>> getSuoritukset(String personOid, String komoOid, Date since) {
         return getSuoritukset(personOid);
     }
 

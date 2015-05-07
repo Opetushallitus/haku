@@ -1,5 +1,6 @@
 package fi.vm.sade.haku.oppija.common.suoritusrekisteri;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -37,5 +38,16 @@ public interface SuoritusrekisteriService {
 
     List<ArvosanaDTO> getArvosanat(String suoritusId);
 
+    /**
+     * Palautta henkilöt, joiden suorituksissa on muutoksia annetun ajan jälkeen.
+     *
+     * @param komoOid, josta ollaan kiinnostuneita. Voi olla tyhjä
+     * @param since Date, jonka jälkeiset muutokset halutaan
+     * @return Lista personOideja, joiden mukaisilla henkilöillä on muutoksia.
+     */
+    List<String> getChanges(String komoOid, Date since);
+
     Map<String, List<SuoritusDTO>> getSuoritukset(String personOid, String komoOid);
+
+    Map<String, List<SuoritusDTO>> getSuoritukset(String personOid, String komoOid, Date since);
 }
