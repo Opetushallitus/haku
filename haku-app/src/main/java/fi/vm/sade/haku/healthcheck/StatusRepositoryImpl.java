@@ -2,6 +2,7 @@ package fi.vm.sade.haku.healthcheck;
 
 import com.google.common.base.Preconditions;
 import com.mongodb.*;
+import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,7 @@ public class StatusRepositoryImpl implements StatusRepository {
     private static final String FIELD_HOST= "host";
     private static final String FIELD_OPERATION= "operation";
     private static final String FIELD_TIMESTAMP= "ts";
+    private static final String FIELD_STARTED= "started";
 
     private static final Logger log = LoggerFactory.getLogger(StatusRepositoryImpl.class);
 
@@ -77,6 +79,38 @@ public class StatusRepositoryImpl implements StatusRepository {
         }
     }
 
+    @Override
+    public void recordLastSuccess(String operation, Date started) {
+        Preconditions.checkNotNull(operation, "Operation can not be null");
+
+        final DBObject query = new BasicDBObject(FIELD_HOST, serverName).append(FIELD_OPERATION, operation);
+        final DBObject newRecord = new BasicDBObject(FIELD_HOST, serverName)
+                .append(FIELD_OPERATION, operation)
+                .append(FIELD_TIMESTAMP, new Date())
+                .append(FIELD_STARTED, started);
+        final WriteResult result = mongo.getCollection(STATUS_COLLECTION).update(query, newRecord);
+        final String error = result.getError();
+        if (isNotBlank(error)) {
+            log.error("Writing systemStatus failed: {}", error);
+        }
+    }
+
+    @Override
+    public Date getLastSuccessStarted(String operation) {
+        final DBObject query = new BasicDBObject(FIELD_HOST, serverName)
+                .append(FIELD_OPERATION, operation);
+        DBCursor cursor = mongo.getCollection(STATUS_COLLECTION).find(query);
+        Date lastSuccess = null;
+        if (cursor.hasNext()) {
+            DBObject result = cursor.next();
+            lastSuccess = (Date) result.get(FIELD_STARTED);
+        }
+        if (cursor.hasNext()) {
+            throw new ResourceNotFoundException("Found multiple last success records for "+operation);
+        }
+        return lastSuccess;
+    }
+
     private Map<String, String> statusToMap(final DBObject status) {
         final Map<String, String> statusMap = new HashMap<>();
         for (String key : status.keySet()) {
@@ -84,7 +118,7 @@ public class StatusRepositoryImpl implements StatusRepository {
             String valueStr = null;
             if (key.equals("_id")) {
                 valueStr = value.toString();
-            } else if (key.equals("ts")) {
+            } else if (key.equals(FIELD_TIMESTAMP)) {
                 valueStr = tsFmt.format((Date) value);
             } else {
                 valueStr = (String) value;

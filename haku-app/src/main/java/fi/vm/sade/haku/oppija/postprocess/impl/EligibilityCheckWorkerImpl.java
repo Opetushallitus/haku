@@ -36,8 +36,11 @@ public class EligibilityCheckWorkerImpl implements EligibilityCheckWorker {
     }
 
     @Override
-    public void checkEligibilities() {
-        List<String> personOids = suoritusrekisteriService.getChanges(YO_TUTKINTO_KOMO, yesterday());
+    public void checkEligibilities(Date since) {
+        since = since != null
+                ? since
+                : new Date(1L);
+        List<String> personOids = suoritusrekisteriService.getChanges(YO_TUTKINTO_KOMO, since);
         List<ApplicationSystem> ass = hakuService.getApplicationSystems(true);
         // TODO ohjausparameista haun päättymispäivä, käsittele vain relevantit haut
         for (ApplicationSystem as : ass) {
@@ -67,8 +70,4 @@ public class EligibilityCheckWorkerImpl implements EligibilityCheckWorker {
         }
     }
 
-    private Date yesterday() {
-        long oneDay = 1000 * 60 * 60 * 24;
-        return new Date(System.currentTimeMillis() - oneDay);
-    }
 }
