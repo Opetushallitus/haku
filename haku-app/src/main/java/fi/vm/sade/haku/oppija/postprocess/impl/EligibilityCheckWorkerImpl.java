@@ -1,5 +1,6 @@
 package fi.vm.sade.haku.oppija.postprocess.impl;
 
+import fi.vm.sade.haku.healthcheck.StatusRepository;
 import fi.vm.sade.haku.oppija.common.suoritusrekisteri.SuoritusrekisteriService;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
@@ -25,14 +26,17 @@ public class EligibilityCheckWorkerImpl implements EligibilityCheckWorker {
     private final SuoritusrekisteriService suoritusrekisteriService;
     private final HakuService hakuService;
     private final ApplicationService applicationService;
+    private final StatusRepository statusRepository;
     private static final int PERSON_BATCH = 1000;
 
     @Autowired
     public EligibilityCheckWorkerImpl(final SuoritusrekisteriService suoritusrekisteriService,
-                                      final HakuService hakuService, final ApplicationService applicationService) {
+                                      final HakuService hakuService, final ApplicationService applicationService,
+                                      final StatusRepository statusRepository) {
         this.suoritusrekisteriService = suoritusrekisteriService;
         this.hakuService = hakuService;
         this.applicationService = applicationService;
+        this.statusRepository = statusRepository;
     }
 
     @Override
@@ -48,6 +52,7 @@ public class EligibilityCheckWorkerImpl implements EligibilityCheckWorker {
             if (aos == null || aos.isEmpty()) {
                 continue;
             }
+            statusRepository.startOperation(SCHEDULER_ELIGIBILITY_CHECK, as.getId());
             int idx = 0;
             List<String> personBatch = personOids.subList(idx, Math.min(idx + PERSON_BATCH, personOids.size()));
             while (!personBatch.isEmpty()) {
@@ -67,6 +72,7 @@ public class EligibilityCheckWorkerImpl implements EligibilityCheckWorker {
                 idx = Math.min(idx + PERSON_BATCH, personOids.size());
                 personBatch = personOids.subList(idx, Math.min(idx + PERSON_BATCH, personOids.size()));
             }
+            statusRepository.endOperation(SCHEDULER_ELIGIBILITY_CHECK, as.getId());
         }
     }
 
