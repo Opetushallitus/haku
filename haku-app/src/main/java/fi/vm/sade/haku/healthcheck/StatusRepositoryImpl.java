@@ -26,6 +26,12 @@ public class StatusRepositoryImpl implements StatusRepository {
     private static final String FIELD_OPERATION= "operation";
     private static final String FIELD_TIMESTAMP= "ts";
     private static final String FIELD_STARTED= "started";
+    private static final String FIELD_STATE= "state";
+    private static final String FIELD_ERROR= "error";
+    private static final String FIELD_TARGET = "operationTarget";
+
+    private static final String LAST_SUCCESS = " last success";
+    private static final String SCHEDULER = " scheduler";
 
     private static final Logger log = LoggerFactory.getLogger(StatusRepositoryImpl.class);
 
@@ -55,13 +61,7 @@ public class StatusRepositoryImpl implements StatusRepository {
         return statuses;
     }
 
-    @Override
-    public void write(final String operation) {
-        write(operation, null);
-    }
-
-    @Override
-    public void write(final String operation, final Map<String, String> statusData) {
+    private void write(final String operation, final Map<String, String> statusData) {
         Preconditions.checkNotNull(operation, "Operation can not be null");
 
         final DBObject query = new BasicDBObject(FIELD_HOST, serverName).append(FIELD_OPERATION, operation);
@@ -83,7 +83,7 @@ public class StatusRepositoryImpl implements StatusRepository {
     public void recordLastSuccess(String operation, Date started) {
         Preconditions.checkNotNull(operation, "Operation can not be null");
 
-        final DBObject query = new BasicDBObject(FIELD_HOST, serverName).append(FIELD_OPERATION, operation);
+        final DBObject query = new BasicDBObject(FIELD_HOST, serverName).append(FIELD_OPERATION, operation + LAST_SUCCESS);
         final DBObject newRecord = new BasicDBObject(FIELD_HOST, serverName)
                 .append(FIELD_OPERATION, operation)
                 .append(FIELD_TIMESTAMP, new Date())
@@ -98,7 +98,7 @@ public class StatusRepositoryImpl implements StatusRepository {
     @Override
     public Date getLastSuccessStarted(String operation) {
         final DBObject query = new BasicDBObject(FIELD_HOST, serverName)
-                .append(FIELD_OPERATION, operation);
+                .append(FIELD_OPERATION, operation + LAST_SUCCESS);
         DBCursor cursor = mongo.getCollection(STATUS_COLLECTION).find(query);
         Date lastSuccess = null;
         if (cursor.hasNext()) {
@@ -109,6 +109,49 @@ public class StatusRepositoryImpl implements StatusRepository {
             throw new ResourceNotFoundException("Found multiple last success records for "+operation);
         }
         return lastSuccess;
+    }
+
+    @Override
+    public void startSchedulerRun(String operation) {
+        write(operation + SCHEDULER, new HashMap<String, String>(1) {{
+            put(FIELD_STATE, OperationState.START.toString()); }});
+    }
+
+    @Override
+    public void startOperation(String operation, final String operationTarget) {
+        write(operation, new HashMap<String, String>(1) {{
+            put(FIELD_STATE, OperationState.START.toString());
+            put(FIELD_TARGET, operationTarget);
+        }});
+    }
+
+    @Override
+    public void endOperation(String operation, final String operationTarget) {
+        write(operation, new HashMap<String, String>(1) {{
+            put(FIELD_STATE, OperationState.DONE.toString());
+            put(FIELD_TARGET, operationTarget);
+        }});
+    }
+
+    @Override
+    public void endSchedulerRun(String operation) {
+        write(operation + SCHEDULER, new HashMap<String, String>(1) {{
+            put(FIELD_STATE, OperationState.DONE.toString()); }});
+    }
+
+    @Override
+    public void haltSchedulerRun(String operation) {
+        write(operation + SCHEDULER, new HashMap<String, String>(1) {{
+            put(FIELD_STATE, OperationState.HALTED.toString()); }});
+    }
+
+    @Override
+    public void schedulerError(final String operation, final String message) {
+        write(operation + SCHEDULER, new HashMap<String, String>(2) {{
+            put(FIELD_STATE, OperationState.ERROR.toString());
+            put(FIELD_ERROR, message);
+        }});
+
     }
 
     private Map<String, String> statusToMap(final DBObject status) {

@@ -15,18 +15,23 @@ public class StatusRepositoryMockImpl implements StatusRepository {
     private Date lastSuccessStarted;
 
     @Override
+    public void endSchedulerRun(String operation) {
+        // NOP
+    }
+
+    @Override
+    public void haltSchedulerRun(String operation) {
+        // NOP
+    }
+
+    @Override
+    public void schedulerError(String operation, String message) {
+        // NOP
+    }
+
+    @Override
     public List<Map<String, String>> read() {
         return new ArrayList<Map<String, String>>();
-    }
-
-    @Override
-    public void write(final String operation) {
-        // NOP
-    }
-
-    @Override
-    public void write(final String operation, final Map<String, String> statusData) {
-        // NOP
     }
 
     @Override
@@ -37,6 +42,21 @@ public class StatusRepositoryMockImpl implements StatusRepository {
     @Override
     public Date getLastSuccessStarted(String operation) {
         return lastSuccessStarted;
+    }
+
+    @Override
+    public void startSchedulerRun(String operation) {
+        // NOP
+    }
+
+    @Override
+    public void startOperation(String operation, String operationTarget) {
+        // NOP
+    }
+
+    @Override
+    public void endOperation(String operation, String operationTarget) {
+        // NOP
     }
 
 }
