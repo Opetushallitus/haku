@@ -21,6 +21,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.HashMap;
 
 @Service
@@ -99,8 +100,12 @@ public class Scheduler {
 
     public void runEligibilityCheck() {
         if (run && runEligibilityCheck) {
-            statusRepository.write("ELIGIBILITY CHECK scheduler", new HashMap<String, String>() {{ put("state", "start");}});
-            eligibilityCheckWorker.checkEligibilities();
+            statusRepository.write("ELIGIBILITY CHECK scheduler", new HashMap<String, String>() {{
+                put("state", "start");
+            }});
+            Date started = new Date();
+            eligibilityCheckWorker.checkEligibilities(statusRepository.getLastSuccessStarted("ELIGIBILITY CHECK last success"));
+            statusRepository.recordLastSuccess("ELIGIBILITY CHECK last success", started);
             statusRepository.write("ELIGIBILITY CHECK scheduler", new HashMap<String, String>() {{
                 put("state", "done");
             }});
