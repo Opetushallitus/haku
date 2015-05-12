@@ -223,6 +223,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     public List<String> massRedoPostProcess(List<String> applicationOids, Application.PostProcessingState state) {
         List<String> affected = new ArrayList<>(applicationOids.size());
         for (String oid : applicationOids) {
+            LOG.debug("Setting redoPostProcess ({}) for application {}", state.name(), oid);
             try {
                 WriteResult result = getCollection().update(
                         QueryBuilder.start().and(
