@@ -85,10 +85,10 @@ public class StatusRepositoryImpl implements StatusRepository {
 
         final DBObject query = new BasicDBObject(FIELD_HOST, serverName).append(FIELD_OPERATION, operation + LAST_SUCCESS);
         final DBObject newRecord = new BasicDBObject(FIELD_HOST, serverName)
-                .append(FIELD_OPERATION, operation)
+                .append(FIELD_OPERATION, operation + LAST_SUCCESS)
                 .append(FIELD_TIMESTAMP, new Date())
                 .append(FIELD_STARTED, started);
-        final WriteResult result = mongo.getCollection(STATUS_COLLECTION).update(query, newRecord);
+        final WriteResult result = mongo.getCollection(STATUS_COLLECTION).update(query, newRecord, true, false, WriteConcern.ACKNOWLEDGED);
         final String error = result.getError();
         if (isNotBlank(error)) {
             log.error("Writing systemStatus failed: {}", error);
@@ -161,7 +161,7 @@ public class StatusRepositoryImpl implements StatusRepository {
             String valueStr = null;
             if (key.equals("_id")) {
                 valueStr = value.toString();
-            } else if (key.equals(FIELD_TIMESTAMP)) {
+            } else if (Date.class.isAssignableFrom(value.getClass())) {
                 valueStr = tsFmt.format((Date) value);
             } else {
                 valueStr = (String) value;
