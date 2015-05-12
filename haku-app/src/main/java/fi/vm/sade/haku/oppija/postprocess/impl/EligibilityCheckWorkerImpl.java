@@ -11,6 +11,8 @@ import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.postprocess.EligibilityCheckWorker;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakuService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +24,8 @@ import static fi.vm.sade.haku.oppija.common.suoritusrekisteri.SuoritusrekisteriS
 
 @Service
 public class EligibilityCheckWorkerImpl implements EligibilityCheckWorker {
+
+    private static final Logger log = LoggerFactory.getLogger(EligibilityCheckWorkerImpl.class);
 
     private final SuoritusrekisteriService suoritusrekisteriService;
     private final HakuService hakuService;
@@ -48,6 +52,7 @@ public class EligibilityCheckWorkerImpl implements EligibilityCheckWorker {
         List<ApplicationSystem> ass = hakuService.getApplicationSystems(true);
         // TODO ohjausparameista haun päättymispäivä, käsittele vain relevantit haut
         for (ApplicationSystem as : ass) {
+            log.debug("Processing applicatinSystem {}", as.getId());
             List<String> aos = as.getAosForAutomaticEligibility();
             if (aos == null || aos.isEmpty()) {
                 continue;
@@ -56,6 +61,7 @@ public class EligibilityCheckWorkerImpl implements EligibilityCheckWorker {
             int idx = 0;
             List<String> personBatch = personOids.subList(idx, Math.min(idx + PERSON_BATCH, personOids.size()));
             while (!personBatch.isEmpty()) {
+                log.debug("Processing changes for applicationSystem {}, batch idx {}", as.getId(), idx);
                 ApplicationQueryParameters params = new ApplicationQueryParametersBuilder()
                         .setAsId(as.getId())
                         .setAoOids(aos)
@@ -66,12 +72,14 @@ public class EligibilityCheckWorkerImpl implements EligibilityCheckWorker {
                 for (ApplicationSearchResultItemDTO resultItem : result.getResults()) {
                     toRedo.add(resultItem.getOid());
                 }
+                log.debug("Processing changes for applicationSystem {}, batch idx {}, to redo {}", as.getId(), idx, toRedo.size());
                 if (!toRedo.isEmpty()) {
                     applicationService.massRedoPostProcess(toRedo, Application.PostProcessingState.NOMAIL);
                 }
                 idx = Math.min(idx + PERSON_BATCH, personOids.size());
                 personBatch = personOids.subList(idx, Math.min(idx + PERSON_BATCH, personOids.size()));
             }
+            log.debug("Done processing applicationSystem {}", as.getId());
             statusRepository.endOperation(SCHEDULER_ELIGIBILITY_CHECK, as.getId());
         }
     }
