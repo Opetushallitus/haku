@@ -104,7 +104,7 @@ public class UpgradeWorkerImpl implements UpgradeWorker{
         List<Application> applications = applicationDAO.getNextUpgradable(baseVersion, maxBatchSize);
         while (applications.size() > 0) {
             for (Application application : applications) {
-                writeStatus("model upgrade old process", "start", application);
+                statusRepository.startOperation(SCHEDULER_MODEL_UPGRADE + " old process", application.getOid());
                 Application queryApplication = new Application(application.getOid(), application.getVersion());
 
                 try {
@@ -118,16 +118,13 @@ public class UpgradeWorkerImpl implements UpgradeWorker{
                     }
                     application.setModelVersion(targetVersion);
                     LOGGER.info("Done upgrading model version for application: " + application.getOid());
-                } catch (IOException e) {
-                    application.setModelVersion(-1 * targetVersion);
-                    LOGGER.error("Upgrading model to "+ targetVersion+" failed for application: " + application.getOid() + " " + e.getMessage());
-                } catch (RuntimeException e) {
+                } catch (IOException | RuntimeException e) {
                     application.setModelVersion(-1 * targetVersion);
                     LOGGER.error("Upgrading model to "+ targetVersion+" failed for application: " + application.getOid() + " " + e.getMessage());
                 } finally {
                     applicationDAO.update(queryApplication, application);
                 }
-                writeStatus("model upgrade old process", "done", application);
+                statusRepository.endOperation(SCHEDULER_MODEL_UPGRADE + " old process", application.getOid());
             }
             applications = applicationDAO.getNextUpgradable(baseVersion, maxBatchSize);
         }
@@ -149,7 +146,7 @@ public class UpgradeWorkerImpl implements UpgradeWorker{
         List<Application> applications = applicationDAO.getNextUpgradable(baseVersion, maxBatchSize);
         while (applications.size() > 0) {
             for (Application application : applications) {
-                writeStatus("model upgrade v3", "start", application);
+                statusRepository.startOperation(SCHEDULER_MODEL_UPGRADE + " v3", application.getOid());
                 Application updateQuery = new Application(application.getOid(), application.getVersion());
                 Map<String, String> pohjakoulutus = application.getPhaseAnswers(OppijaConstants.PHASE_EDUCATION);
 
@@ -180,7 +177,7 @@ public class UpgradeWorkerImpl implements UpgradeWorker{
                 } else {
                     applicationDAO.updateModelVersion(updateQuery, targetVersion);
                 }
-                writeStatus("model upgrade v3", "done", application);
+                statusRepository.endOperation(SCHEDULER_MODEL_UPGRADE + " v3", application.getOid());
             }
             applications = applicationDAO.getNextUpgradable(baseVersion, maxBatchSize);
         }
@@ -195,14 +192,14 @@ public class UpgradeWorkerImpl implements UpgradeWorker{
         List<Application> applications = applicationDAO.getNextUpgradable(baseVersion, maxBatchSize);
         while(applications.size() > 0) {
             for (Application application : applications) {
-                writeStatus("model upgrade v4", "start", application);
+                statusRepository.startOperation(SCHEDULER_MODEL_UPGRADE + " v4", application.getOid());
                 Application queryApplication = new Application(application.getOid(), application.getVersion());
                 if (Level4.requiresPatch(application)) {
                     applicationDAO.update(queryApplication, Level4.fixAmmatillisenKoulutuksenKeskiarvo(application, loggerAspect));
                 } else {
                     applicationDAO.updateModelVersion(queryApplication, targetVersion);
                 }
-                writeStatus("model upgrade v4", "done", application);
+                statusRepository.endOperation(SCHEDULER_MODEL_UPGRADE + " v4", application.getOid());
             }
             applications = applicationDAO.getNextUpgradable(baseVersion, maxBatchSize);
         }
@@ -214,11 +211,11 @@ public class UpgradeWorkerImpl implements UpgradeWorker{
             int targetVersion = upgrade.getTargetVersion();
             if (!applicationDAO.hasApplicationsWithModelVersion(baseVersion))
                 continue;
-            String statusOperation = "model upgrade "+upgrade.getClass().getSimpleName();
+            String statusOperation = SCHEDULER_MODEL_UPGRADE + " " + upgrade.getClass().getSimpleName();
             List<Application> applications = applicationDAO.getNextUpgradable(baseVersion, maxBatchSize);
             while (applications.size() > 0) {
                 for (Application application : applications) {
-                    writeStatus(statusOperation, "start", application);
+                    statusRepository.startOperation(statusOperation, application.getOid());
                     Application queryApplication = new Application(application.getOid(), application.getVersion());
                     try {
                         UpgradeResult<Application> upgradeResult = upgrade.processUpgrade(application);
@@ -231,18 +228,11 @@ public class UpgradeWorkerImpl implements UpgradeWorker{
                         LOGGER.error("Upgrading model to "+ upgrade.getTargetVersion()+" failed for application: " + application.getOid() + " " + e.getMessage());
                         applicationDAO.updateModelVersion(queryApplication, -1 * targetVersion);
                     }
-                    writeStatus(statusOperation, "done", application);
+                    statusRepository.endOperation(statusOperation, application.getOid());
                 }
                 applications = applicationDAO.getNextUpgradable(upgrade.getBaseVersion(), maxBatchSize);
             }
         }
-    }
-
-    private void writeStatus(String operation, String state, Application application) {
-        Map<String, String> statusData = new HashMap<String, String>();
-        statusData.put("applicationOid", application != null ? application.getOid() : "(null)");
-        statusData.put("state", state);
-        statusRepository.write(operation, statusData);
     }
 
 }

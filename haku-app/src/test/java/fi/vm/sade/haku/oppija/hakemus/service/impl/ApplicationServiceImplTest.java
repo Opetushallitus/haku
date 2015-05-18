@@ -3,10 +3,12 @@ package fi.vm.sade.haku.oppija.hakemus.service.impl;
 import com.google.common.collect.Lists;
 import fi.vm.sade.haku.oppija.common.koulutusinformaatio.KoulutusinformaatioService;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
+import fi.vm.sade.haku.oppija.common.suoritusrekisteri.SuoritusDTO;
 import fi.vm.sade.haku.oppija.common.suoritusrekisteri.SuoritusrekisteriService;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPreferenceMeta;
 import fi.vm.sade.haku.oppija.hakemus.domain.AuthorizationMeta;
+import fi.vm.sade.haku.oppija.hakemus.domain.PreferenceEligibility;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationAdditionalDataDTO;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultItemDTO;
@@ -29,6 +31,8 @@ import fi.vm.sade.haku.oppija.lomake.validation.ValidatorFactory;
 import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
 import fi.vm.sade.haku.virkailija.authentication.impl.AuthenticationServiceMockImpl;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.i18n.I18nBundleService;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakuService;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.junit.Before;
 import org.junit.Test;
@@ -36,6 +40,8 @@ import org.junit.Test;
 import java.io.IOException;
 import java.util.*;
 
+import static fi.vm.sade.haku.oppija.common.suoritusrekisteri.SuoritusrekisteriService.YO_TUTKINTO_KOMO;
+import static fi.vm.sade.haku.oppija.hakemus.domain.PreferenceEligibility.Status.*;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.createI18NAsIs;
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.any;
@@ -90,7 +96,6 @@ public class ApplicationServiceImplTest {
                 .setAsIds(null)
                 .setAoId("")
                 .setLopOid("")
-                .setAoOid("")
                 .setGroupOid("")
                 .setBaseEducation("")
                 .setDiscretionaryOnly(false)
@@ -131,7 +136,7 @@ public class ApplicationServiceImplTest {
 //        when(suoritusrekisteriService.getLahtoluokka(any(String.class))).thenReturn("9A");
 
         service = new ApplicationServiceImpl(applicationDAO, null, null, applicationOidService, authenticationService, organizationService,
-                hakuPermissionService, applicationSystemService, koulutusinformaatioService, i18nBundleService, elementTreeValidator, null);
+                hakuPermissionService, applicationSystemService, koulutusinformaatioService, i18nBundleService, null, null, elementTreeValidator, null);
     }
 
     @Test
@@ -209,8 +214,10 @@ public class ApplicationServiceImplTest {
     public void testAuthorizationMetaEmptyApplication() {
         Application application = new Application();
         application.setApplicationSystemId("myAsId");
-        ApplicationSystem as = new ApplicationSystem("myAsId", null, new I18nText(new HashMap<String, String>()), "JULKAISTU", null,
-                null, true, null, null, null, OppijaConstants.KOHDEJOUKKO_PERUSOPETUKSEN_JALKEINEN_VALMENTAVA, null, null, null, null, null, new ArrayList<String>(), null);
+        ApplicationSystem as = new ApplicationSystem("myAsId", null, new I18nText(new HashMap<String, String>()),
+                "JULKAISTU", null, null, true, null, null, null,
+                OppijaConstants.KOHDEJOUKKO_PERUSOPETUKSEN_JALKEINEN_VALMENTAVA, null, null, null, null, null,
+                new ArrayList<String>(), new ArrayList<String>(), null);
         when(applicationSystemService.getApplicationSystem(eq("myAsId"))).thenReturn(as);
 
         try {
@@ -222,7 +229,8 @@ public class ApplicationServiceImplTest {
         assertTrue(authorizationMeta.isOpoAllowed());
 
         as = new ApplicationSystem("myAsId", null, new I18nText(new HashMap<String, String>()), "JULKAISTU", null,
-                null, true, null, null, null, OppijaConstants.KOHDEJOUKKO_KORKEAKOULU, null, null, null, null, null, new ArrayList<String>(), null);
+                null, true, null, null, null, OppijaConstants.KOHDEJOUKKO_KORKEAKOULU, null, null, null, null, null,
+                new ArrayList<String>(), new ArrayList<String>(), null);
         when(applicationSystemService.getApplicationSystem(eq("myAsId"))).thenReturn(as);
 
         try {
@@ -238,8 +246,10 @@ public class ApplicationServiceImplTest {
     public void testAuthorizationMetaSendingSchool() {
         Application application = new Application();
         application.setApplicationSystemId("myAsId");
-        ApplicationSystem as = new ApplicationSystem("myAsId", null, new I18nText(new HashMap<String, String>()), "JULKAISTU", null,
-                null, true, null, null, null, OppijaConstants.KOHDEJOUKKO_PERUSOPETUKSEN_JALKEINEN_VALMENTAVA, null, null, null, null, null, new ArrayList<String>(), null);
+        ApplicationSystem as = new ApplicationSystem("myAsId", null, new I18nText(new HashMap<String, String>()),
+                "JULKAISTU", null, null, true, null, null, null,
+                OppijaConstants.KOHDEJOUKKO_PERUSOPETUKSEN_JALKEINEN_VALMENTAVA, null, null, null, null, null,
+                new ArrayList<String>(), new ArrayList<String>(), null);
         Map<String, String> educationAnswers = new HashMap<String, String>();
         educationAnswers.put(OppijaConstants.ELEMENT_ID_SENDING_SCHOOL, "1.2.3.4");
 
@@ -270,8 +280,10 @@ public class ApplicationServiceImplTest {
     public void testAuthorizationMetaAoParents() throws IOException {
         Application application = new Application();
         application.setApplicationSystemId("myAsId");
-        ApplicationSystem as = new ApplicationSystem("myAsId", null, new I18nText(new HashMap<String, String>()), "JULKAISTU", null,
-                null, true, null, null, null, OppijaConstants.KOHDEJOUKKO_PERUSOPETUKSEN_JALKEINEN_VALMENTAVA, null, null, null, null, null, new ArrayList<String>(), null);
+        ApplicationSystem as = new ApplicationSystem("myAsId", null, new I18nText(new HashMap<String, String>()),
+                "JULKAISTU", null, null, true, null, null, null,
+                OppijaConstants.KOHDEJOUKKO_PERUSOPETUKSEN_JALKEINEN_VALMENTAVA, null, null, null, null, null,
+                new ArrayList<String>(), new ArrayList<String>(), null);
 
         Map<String, String> aoAnswers = new HashMap<String, String>();
         aoAnswers.put(String.format(OppijaConstants.PREFERENCE_ID, 1), "1.2.3");
@@ -314,8 +326,10 @@ public class ApplicationServiceImplTest {
     public void testAuthorizationMetaPreferenceData() throws IOException {
         Application application = new Application();
         application.setApplicationSystemId("myAsId");
-        ApplicationSystem as = new ApplicationSystem("myAsId", null, new I18nText(new HashMap<String, String>()), "JULKAISTU", null,
-                null, true, null, null, null, OppijaConstants.KOHDEJOUKKO_PERUSOPETUKSEN_JALKEINEN_VALMENTAVA, null, null, null, null, null, new ArrayList<String>(), null);
+        ApplicationSystem as = new ApplicationSystem("myAsId", null, new I18nText(new HashMap<String, String>()),
+                "JULKAISTU", null, null, true, null, null, null,
+                OppijaConstants.KOHDEJOUKKO_PERUSOPETUKSEN_JALKEINEN_VALMENTAVA, null, null, null, null, null,
+                new ArrayList<String>(), new ArrayList<String>(), null);
 
         Map<String, String> aoAnswers = new HashMap<>();
 
@@ -393,7 +407,7 @@ public class ApplicationServiceImplTest {
         when(applicationSystemService.getApplicationSystem("myAs")).thenReturn(as);
 
         ApplicationServiceImpl applicationService = new ApplicationServiceImpl(null, null, null, null, null, null,
-                null, applicationSystemService, null, null, null, null);
+                null, applicationSystemService, null, null, null, null, null, null);
         application = applicationService.removeOrphanedAnswers(application);
         Map<String, String> persAnswers = application.getPhaseAnswers(OppijaConstants.PHASE_PERSONAL);
         Map<String, String> eduAnswers = application.getPhaseAnswers(OppijaConstants.PHASE_EDUCATION);
@@ -418,5 +432,106 @@ public class ApplicationServiceImplTest {
         assertEquals("koulu", eduAnswers.get(OppijaConstants.ELEMENT_ID_SENDING_SCHOOL));
 
     }
+
+    @Test
+    public void testAutomaticEligibility() {
+        Application application = applicationForAutoEligibility(sureServiceForAutoEligibility(true),
+                hakuServiceForAutoEligibility());
+
+        for (PreferenceEligibility eligibility : application.getPreferenceEligibilities()) {
+            switch (eligibility.getAoId()) {
+                case "automaticallyEligibile1":
+                    assertEquals(AUTOMATICALLY_CHECKED_ELIGIBLE, eligibility.getStatus());
+                    break;
+                case "automaticallyEligibile2":
+                    assertEquals(ELIGIBLE, eligibility.getStatus());
+                    break;
+                case "automaticallyEligibile3":
+                    assertEquals(INELIGIBLE, eligibility.getStatus());
+                    break;
+                case "automaticallyEligibile4":
+                    assertEquals(AUTOMATICALLY_CHECKED_ELIGIBLE, eligibility.getStatus());
+                    break;
+                case "manuallyEligibile":
+                    assertEquals(NOT_CHECKED, eligibility.getStatus());
+                    break;
+            }
+        }
+    }
+    @Test
+    public void testAutomaticEligibilityNotYo() {
+        Application application = applicationForAutoEligibility(sureServiceForAutoEligibility(false),
+                hakuServiceForAutoEligibility());
+
+        for (PreferenceEligibility eligibility : application.getPreferenceEligibilities()) {
+            switch (eligibility.getAoId()) {
+                case "automaticallyEligibile1":
+                    assertEquals(NOT_CHECKED, eligibility.getStatus());
+                    break;
+                case "automaticallyEligibile2":
+                    assertEquals(ELIGIBLE, eligibility.getStatus());
+                    break;
+                case "automaticallyEligibile3":
+                    assertEquals(INELIGIBLE, eligibility.getStatus());
+                    break;
+                case "automaticallyEligibile4":
+                    assertEquals(NOT_CHECKED, eligibility.getStatus());
+                    break;
+                case "manuallyEligibile":
+                    assertEquals(NOT_CHECKED, eligibility.getStatus());
+                    break;
+            }
+        }
+    }
+
+    private Application applicationForAutoEligibility(SuoritusrekisteriService suoritusrekisteriService,
+                                                      HakuService hakuService) {
+        Application application = new Application();
+        application.setApplicationSystemId("hakuOid");
+        application.setPreferenceEligibilities(new ArrayList<PreferenceEligibility>() {{
+            add(new PreferenceEligibility("automaticallyEligibile1", NOT_CHECKED, null, null));
+            add(new PreferenceEligibility("automaticallyEligibile2", ELIGIBLE, null, null));
+            add(new PreferenceEligibility("automaticallyEligibile3", INELIGIBLE, null, null));
+            add(new PreferenceEligibility("automaticallyEligibile4", AUTOMATICALLY_CHECKED_ELIGIBLE, null, null));
+            add(new PreferenceEligibility("manuallyEligibile", NOT_CHECKED, null, null));
+        }});
+
+        ApplicationServiceImpl applicationService = new ApplicationServiceImpl(null, null, null, null, null, null, null,
+                null, null, null, suoritusrekisteriService, hakuService, null, null);
+
+        application = applicationService.updateAutomaticEligibilities(application);
+
+        return application;
+    }
+
+    private SuoritusrekisteriService sureServiceForAutoEligibility(final boolean valmis) {
+        SuoritusrekisteriService suoritusrekisteriService = mock(SuoritusrekisteriService.class);
+        Map<String, List<SuoritusDTO>> suoritusMap = new HashMap<String, List<SuoritusDTO>>() {{
+            put(YO_TUTKINTO_KOMO, new ArrayList<SuoritusDTO>() {{
+                add(new SuoritusDTO(null, null, null, valmis ? SuoritusDTO.TILA_VALMIS : SuoritusDTO.TILA_KESKEN,
+                        null, null, null, null, null, null));
+            }});
+        }};
+        when(suoritusrekisteriService.getSuoritukset(any(String.class), eq(YO_TUTKINTO_KOMO)))
+                .thenReturn(suoritusMap);
+        return suoritusrekisteriService;
+    }
+
+    private HakuService hakuServiceForAutoEligibility() {
+        HakuService hakuService = mock(HakuService.class);
+        ApplicationSystem as = new ApplicationSystemBuilder()
+                .setId("asId")
+                .setName(ElementUtil.createI18NAsIs("asName"))
+                .setAosForAutomaticEligibility(new ArrayList<String>() {{
+                    add("automaticallyEligibile1");
+                    add("automaticallyEligibile2");
+                    add("automaticallyEligibile3");
+                    add("automaticallyEligibile4");
+                }})
+                .get();
+        when(hakuService.getApplicationSystem(eq("hakuOid"))).thenReturn(as);
+        return hakuService;
+    }
+
 
 }

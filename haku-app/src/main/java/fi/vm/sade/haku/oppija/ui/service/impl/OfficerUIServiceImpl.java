@@ -423,7 +423,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         application.addNote(createNote(noteText));
         this.applicationService.updatePreferenceBasedData(application);
         this.applicationService.updateAuthorizationMeta(application);
-        this.applicationService.update(queryApplication, application);
+        this.applicationService.update(queryApplication, application, true);
         application.setPhaseId(applicationPhase.getPhaseId());
         ModelResponse response = new ModelResponse(application, form, phase, phaseValidationResult, koulutusinformaatioBaseUrl);
         response.addObjectToModel("ongoing", false);

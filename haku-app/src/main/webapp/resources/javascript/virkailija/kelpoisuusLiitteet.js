@@ -27,6 +27,7 @@ var kjal = {
                         + "<td>"
                         + "<select class=\"width-12-11\" id=\"hakukelpoisuus-select\" onchange=\"kjal.hakuKelpoisuus(" + ind + ", false)\">"
                         + "<option value=\"NOT_CHECKED\">Kelpoisuus tarkistamatta</option>"
+                        + "<option value=\"AUTOMATICALLY_CHECKED_ELIGIBLE\">Kelpoisuus hyväksytty automaattisesti</option>"
                         + "<option value=\"ELIGIBLE\">Hakukelpoinen</option>"
                         + "<option value=\"INELIGIBLE\">Ei hakukelpoinen</option>"
                         + "<option value=\"INADEQUATE\">Puutteelinen</option>"

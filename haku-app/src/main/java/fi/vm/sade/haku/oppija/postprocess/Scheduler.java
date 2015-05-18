@@ -21,7 +21,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
+import java.util.Date;
+
+import static fi.vm.sade.haku.oppija.postprocess.EligibilityCheckWorker.SCHEDULER_ELIGIBILITY_CHECK;
+import static fi.vm.sade.haku.oppija.postprocess.UpgradeWorker.SCHEDULER_MODEL_UPGRADE;
 
 @Service
 public class Scheduler {
@@ -29,17 +32,21 @@ public class Scheduler {
     public static final Logger LOGGER = LoggerFactory.getLogger(Scheduler.class);
     private boolean run;
     private boolean runModelUpgrade;
+    private boolean runEligibilityCheck;
     private boolean sendMail;
 
     private PostProcessWorker processWorker;
     private UpgradeWorker upgradeWorker;
+    private EligibilityCheckWorker eligibilityCheckWorker;
     private StatusRepository statusRepository;
 
     @Autowired
-    public Scheduler(PostProcessWorker processWorker, UpgradeWorker upgradeWorker, StatusRepository statusRepository) {
+    public Scheduler(PostProcessWorker processWorker, UpgradeWorker upgradeWorker, StatusRepository statusRepository,
+                     EligibilityCheckWorker eligibilityCheckWorker) {
         this.processWorker = processWorker;
         this.upgradeWorker = upgradeWorker;
         this.statusRepository = statusRepository;
+        this.eligibilityCheckWorker = eligibilityCheckWorker;
     }
 
     public void runProcess() {
@@ -55,41 +62,43 @@ public class Scheduler {
     }
 
     private void runProcessing(PostProcessWorker.ProcessingType processingType){
-        final String statusOperation = processingType.toString()+ " scheduler";
-        if (!run) {
-            statusRepository.write(statusOperation, new HashMap<String, String>() {{
-                put("state", "halted");
-            }});
-            return;
-        }
-        statusRepository.write(statusOperation, new HashMap<String, String>() {{
-            put("state", "start");
-        }});
+        final String statusOperation = processingType.toString();
+        if (run) {
+            statusRepository.startSchedulerRun(statusOperation);
 
-        try {
-            processWorker.processApplications(processingType, sendMail);
-            statusRepository.write(statusOperation, new HashMap<String, String>() {{
-                put("state", "done");
-            }});
-        } catch (final Exception e) {
-            statusRepository.write(statusOperation, new HashMap<String, String>() {{
-                put("state", "error");
-                put("error", e.getMessage());
-            }});
-            LOGGER.error("Error processing application with {}",statusOperation,  e);
-            // run could be set to false. But first it need a method to re-enable it at runtime.
+            try {
+                processWorker.processApplications(processingType, sendMail);
+                statusRepository.endSchedulerRun(statusOperation);
+            } catch (final Exception e) {
+                statusRepository.schedulerError(statusOperation, e.getMessage());
+                LOGGER.error("Error processing application with {} scheduler", statusOperation, e);
+                // run could be set to false. But first it need a method to re-enable it at runtime.
+            }
+
+        } else {
+            statusRepository.haltSchedulerRun(statusOperation);
         }
     }
 
     public void runModelUpgrade() {
         if (run && runModelUpgrade) {
-            statusRepository.write("MODEL UPGRAGE scheduler", new HashMap<String, String>() {{ put("state", "start");}});
+            statusRepository.startSchedulerRun(SCHEDULER_MODEL_UPGRADE);
             upgradeWorker.processModelUpdate();
-            statusRepository.write("MODEL UPGRAGE scheduler", new HashMap<String, String>() {{
-                put("state", "done");
-            }});
+            statusRepository.endSchedulerRun(SCHEDULER_MODEL_UPGRADE);
         } else {
-            statusRepository.write("MODEL UPGRAGE scheduler", new HashMap<String, String>() {{ put("state", "halted");}});
+            statusRepository.haltSchedulerRun(SCHEDULER_MODEL_UPGRADE);
+        }
+    }
+
+    public void runEligibilityCheck() {
+        if (run && runEligibilityCheck) {
+            statusRepository.startSchedulerRun(SCHEDULER_ELIGIBILITY_CHECK);
+            Date started = new Date();
+            eligibilityCheckWorker.checkEligibilities(statusRepository.getLastSuccessStarted(SCHEDULER_ELIGIBILITY_CHECK));
+            statusRepository.recordLastSuccess(SCHEDULER_ELIGIBILITY_CHECK, started);
+            statusRepository.endSchedulerRun(SCHEDULER_ELIGIBILITY_CHECK);
+        } else {
+            statusRepository.haltSchedulerRun(SCHEDULER_ELIGIBILITY_CHECK);
         }
     }
 
@@ -103,5 +112,9 @@ public class Scheduler {
 
     public void setRunModelUpgrade(boolean runModelUpgrade) {
         this.runModelUpgrade = runModelUpgrade;
+    }
+
+    public void setRunEligibilityCheck(boolean runEligibilityCheck) {
+        this.runEligibilityCheck = runEligibilityCheck;
     }
 }

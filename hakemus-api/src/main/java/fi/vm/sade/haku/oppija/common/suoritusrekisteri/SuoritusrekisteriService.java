@@ -1,5 +1,6 @@
 package fi.vm.sade.haku.oppija.common.suoritusrekisteri;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -23,6 +24,8 @@ public interface SuoritusrekisteriService {
     // Lukion komoOid on aikuisten oikeasti "TODO lukio komo oid", ainakin toistaiseksi
     public static String LUKIO_KOMO = "TODO lukio komo oid";
 
+    public static String YO_TUTKINTO_KOMO = "1.2.246.562.5.2013061010184237348007";
+
 
     /**
      * Palauttaa henkilön suoritukset mappina komoOid - suoritus.
@@ -35,5 +38,16 @@ public interface SuoritusrekisteriService {
 
     List<ArvosanaDTO> getArvosanat(String suoritusId);
 
+    /**
+     * Palautta henkilöt, joiden suorituksissa on muutoksia annetun ajan jälkeen.
+     *
+     * @param komoOid, josta ollaan kiinnostuneita. Voi olla tyhjä
+     * @param since Date, jonka jälkeiset muutokset halutaan
+     * @return Lista personOideja, joiden mukaisilla henkilöillä on muutoksia.
+     */
+    List<String> getChanges(String komoOid, Date since);
+
     Map<String, List<SuoritusDTO>> getSuoritukset(String personOid, String komoOid);
+
+    Map<String, List<SuoritusDTO>> getSuoritukset(String personOid, String komoOid, Date since);
 }

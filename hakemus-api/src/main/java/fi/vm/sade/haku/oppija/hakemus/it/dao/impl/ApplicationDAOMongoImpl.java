@@ -28,6 +28,7 @@ import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultItemDTO;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationDAO;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationFilterParameters;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationQueryParameters;
+import fi.vm.sade.haku.oppija.lomake.exception.IncoherentDataException;
 import fi.vm.sade.haku.oppija.lomake.service.EncrypterService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -216,6 +217,37 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     @Override
     public Application getNextRedo() {
         return getNextForAutomatedProcessing(buildRedoQuery(), INDEX_POSTPROCESS);
+    }
+
+    @Override
+    public List<String> massRedoPostProcess(List<String> applicationOids, Application.PostProcessingState state) {
+        List<String> affected = new ArrayList<>(applicationOids.size());
+        for (String oid : applicationOids) {
+            LOG.debug("Setting redoPostProcess ({}) for application {}", state.name(), oid);
+            try {
+                WriteResult result = getCollection().update(
+                        QueryBuilder.start().and(
+                                QueryBuilder.start(FIELD_APPLICATION_OID).is(oid).get(),
+                                QueryBuilder.start(FIELD_APPLICATION_STATE).in(new ArrayList<String>() {{
+                                    add(Application.State.ACTIVE.name());
+                                    add(Application.State.INCOMPLETE.name());
+                                }}).get()
+                        ).get(),
+                        new BasicDBObject(SET, new BasicDBObject(FIELD_REDO_POSTPROCESS, state.name())));
+                int n = result.getN();
+                if (n == 1) {
+                    affected.add(oid);
+                } else if (n > 0) {
+                    LOG.error("Multiple applications for oid {}", oid);
+                    throw new IncoherentDataException(String.format("Multiple applications for oid %s", oid));
+                }
+            } catch (MongoException mongoException) {
+                LOG.error("Error when marking application {} for redo: ", oid, mongoException);
+                throw mongoException;
+            }
+        }
+        return affected;
+
     }
 
     private Application getNextForAutomatedProcessing(final DBObject query, final String indexCandidate) {

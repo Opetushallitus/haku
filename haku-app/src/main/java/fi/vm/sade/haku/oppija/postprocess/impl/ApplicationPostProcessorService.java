@@ -1,7 +1,6 @@
 package fi.vm.sade.haku.oppija.postprocess.impl;
 
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
-import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationDAO;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.haku.oppija.hakemus.service.BaseEducationService;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
@@ -60,6 +59,7 @@ public class ApplicationPostProcessorService {
         }
         application = applicationService.updateAuthorizationMeta(application);
         application = applicationService.ensureApplicationOptionGroupData(application);
+        application = applicationService.updateAutomaticEligibilities(application);
         application = validateApplication(application);
         application.setRedoPostProcess(Application.PostProcessingState.DONE);
         if (null == application.getModelVersion())

@@ -48,7 +48,6 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.io.IOException;
 import java.util.*;
 
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
@@ -146,7 +145,7 @@ public class ApplicationResource {
                 .setGroupOid(groupOid)
                 .setBaseEducation(baseEducation)
                 .setLopOid(lopoid)
-                .setAoOid(aoOid)
+                .addAoOid(aoOid)
                 .setDiscretionaryOnly(discretionaryOnly)
                 .setPrimaryPreferenceOnly(primaryPreferenceOnly)
                 .setSendingSchool(sendingSchoolOid)
@@ -236,7 +235,7 @@ public class ApplicationResource {
                 .setGroupOid(groupOid)
                 .setBaseEducation(baseEducation)
                 .setLopOid(lopoid)
-                .setAoOid(aoOid)
+                .addAoOid(aoOid)
                 .setDiscretionaryOnly(discretionaryOnly)
                 .setPrimaryPreferenceOnly(primaryPreferenceOnly)
                 .setSendingSchool(sendingSchoolOid)
@@ -334,7 +333,7 @@ public class ApplicationResource {
                 .setGroupOid(groupOid)
                 .setBaseEducation(baseEducation)
                 .setLopOid(lopoid)
-                .setAoOid(aoOid)
+                .addAoOid(aoOid)
                 .setDiscretionaryOnly(discretionaryOnly)
                 .setPrimaryPreferenceOnly(primaryPreferenceOnly)
                 .setSendingSchool(sendingSchoolOid)

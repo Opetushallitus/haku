@@ -31,7 +31,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 import static fi.vm.sade.haku.oppija.hakemus.aspect.ApplicationDiffUtil.addHistoryBasedOnChangedAnswers;
 
@@ -74,7 +77,7 @@ public class PostProcessWorkerImpl implements PostProcessWorker {
             Application application = getNextApplicationFor(processingType);
             if (null == application)
                 break;
-            writeStatus(processingType.toString(), "start", application);
+            statusRepository.startOperation(processingType.toString(), application.getOid());
             switch (processingType) {
                 case IDENTIFICATION:
                     runIdentification(application);
@@ -88,7 +91,7 @@ public class PostProcessWorkerImpl implements PostProcessWorker {
                 default:
                     LOGGER.error("processApplication cannot handle process type {}", processingType);
             }
-            writeStatus(processingType.toString(), "done", application);
+            statusRepository.endOperation(processingType.toString(), application.getOid());
         } while (++count < maxBatchSize);
     }
 
@@ -145,13 +148,6 @@ public class PostProcessWorkerImpl implements PostProcessWorker {
                 && Objects.equals(application.getStudentOid(), original.getStudentOid())
                 && application.getHistory().size() == original.getHistory().size()
                 && Objects.equals(application.getStudentIdentificationDone(), original.getStudentIdentificationDone()));
-    }
-
-    private void writeStatus(String operation, String state, Application application) {
-        Map<String, String> statusData = new HashMap<>();
-        statusData.put("applicationOid", application != null ? application.getOid() : "(null)");
-        statusData.put("state", state);
-        statusRepository.write(operation, statusData);
     }
 
     private Application getNextApplicationFor(final ProcessingType processingType) {

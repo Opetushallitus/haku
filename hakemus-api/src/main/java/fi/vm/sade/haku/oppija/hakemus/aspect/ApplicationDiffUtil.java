@@ -1,16 +1,14 @@
 package fi.vm.sade.haku.oppija.hakemus.aspect;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.MapDifference;
 import com.google.common.collect.Maps;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.haku.oppija.hakemus.domain.Change;
+import fi.vm.sade.haku.oppija.hakemus.domain.PreferenceEligibility;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public final class ApplicationDiffUtil {
 
@@ -28,7 +26,12 @@ public final class ApplicationDiffUtil {
     public static List<Map<String, String>> addHistoryBasedOnChangedAnswers(final Application newApplication, final Application oldApplication, String userName, String reason) {
         Map<String, String> oldAnswers = oldApplication.getVastauksetMerged();
         Map<String, String> newAnswers = newApplication.getVastauksetMerged();
-        List<Map<String, String>> changes = ApplicationDiffUtil.oldAndNewAnswersToListOfChanges(oldAnswers, newAnswers);
+        List<Map<String, String>> answerChanges = ApplicationDiffUtil.oldAndNewAnswersToListOfChanges(oldAnswers, newAnswers);
+        List<Map<String, String>> eligibilityChanges = ApplicationDiffUtil.oldAndNewEligibilitiesToListOfChanges(oldApplication.getPreferenceEligibilities(), newApplication.getPreferenceEligibilities());
+
+        List<Map<String, String>> changes = new LinkedList<>();
+        changes.addAll(answerChanges);
+        changes.addAll(eligibilityChanges);
         if (!changes.isEmpty()) {
             Change change = new Change(new Date(), userName, reason, changes);
             newApplication.addHistory(change);
@@ -71,5 +74,53 @@ public final class ApplicationDiffUtil {
             changes.add(change);
         }
         return changes;
+    }
+
+    public static List<Map<String, String>> oldAndNewEligibilitiesToListOfChanges(List<PreferenceEligibility> oldEligibilities, List<PreferenceEligibility> newEligibilities) {
+        List<Map<String, String>> changes = new ArrayList<>();
+
+        for (PreferenceEligibility oldEligibility: oldEligibilities) {
+            PreferenceEligibility e = getByAoId(newEligibilities, oldEligibility.getAoId());
+            if (e == null) {
+                Map<String, String> change = new HashMap<>();
+                change.put(FIELD, auditLogKey(oldEligibility));
+                change.put(OLD_VALUE, auditLogValue(oldEligibility));
+                changes.add(change);
+            } else {
+                if (!auditLogValue(e).equals(auditLogValue(oldEligibility))) {
+                    Map<String, String> change = new HashMap<>();
+                    change.put(FIELD, auditLogKey(oldEligibility));
+                    change.put(OLD_VALUE, auditLogValue(oldEligibility));
+                    change.put(NEW_VALUE, auditLogValue(e));
+                    changes.add(change);
+                }
+            }
+        }
+
+        for (PreferenceEligibility newEligibility: newEligibilities) {
+            PreferenceEligibility e = getByAoId(oldEligibilities, newEligibility.getAoId());
+            if (e == null) {
+                Map<String, String> change = new HashMap<>();
+                change.put(FIELD, auditLogKey(newEligibility));
+                change.put(NEW_VALUE, auditLogValue(newEligibility));
+                changes.add(change);
+            }
+        }
+        return changes;
+    }
+
+    private static PreferenceEligibility getByAoId(List<PreferenceEligibility> eligibilities, String aoId) {
+        for (PreferenceEligibility e: eligibilities) {
+            if (e.getAoId().equals(aoId)) return e;
+        }
+        return null;
+    }
+
+    public static String auditLogKey(PreferenceEligibility e) {
+        return "eligibility_" + e.getAoId().replaceAll("\\.", "_");
+    }
+
+    public static String auditLogValue(PreferenceEligibility e) {
+        return e.getStatus().toString() + ":" + e.getSource().toString() + ":" + e.getRejectionBasis();
     }
 }

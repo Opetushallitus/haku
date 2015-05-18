@@ -17,7 +17,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import java.io.IOException;
 
 public class IntegrationTestSupport {
-    static AnnotationConfigApplicationContext appContext;
+    public static AnnotationConfigApplicationContext appContext;
 
     @BeforeClass
     public static void createApplicationContextWithFixtures() throws IOException {

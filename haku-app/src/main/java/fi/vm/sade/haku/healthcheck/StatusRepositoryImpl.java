@@ -2,6 +2,7 @@ package fi.vm.sade.haku.healthcheck;
 
 import com.google.common.base.Preconditions;
 import com.mongodb.*;
+import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,13 @@ public class StatusRepositoryImpl implements StatusRepository {
     private static final String FIELD_HOST= "host";
     private static final String FIELD_OPERATION= "operation";
     private static final String FIELD_TIMESTAMP= "ts";
+    private static final String FIELD_STARTED= "started";
+    private static final String FIELD_STATE= "state";
+    private static final String FIELD_ERROR= "error";
+    private static final String FIELD_TARGET = "operationTarget";
+
+    private static final String LAST_SUCCESS = " last success";
+    private static final String SCHEDULER = " scheduler";
 
     private static final Logger log = LoggerFactory.getLogger(StatusRepositoryImpl.class);
 
@@ -53,13 +61,7 @@ public class StatusRepositoryImpl implements StatusRepository {
         return statuses;
     }
 
-    @Override
-    public void write(final String operation) {
-        write(operation, null);
-    }
-
-    @Override
-    public void write(final String operation, final Map<String, String> statusData) {
+    private void write(final String operation, final Map<String, String> statusData) {
         Preconditions.checkNotNull(operation, "Operation can not be null");
 
         final DBObject query = new BasicDBObject(FIELD_HOST, serverName).append(FIELD_OPERATION, operation);
@@ -77,6 +79,81 @@ public class StatusRepositoryImpl implements StatusRepository {
         }
     }
 
+    @Override
+    public void recordLastSuccess(String operation, Date started) {
+        Preconditions.checkNotNull(operation, "Operation can not be null");
+
+        final DBObject query = new BasicDBObject(FIELD_HOST, serverName).append(FIELD_OPERATION, operation + LAST_SUCCESS);
+        final DBObject newRecord = new BasicDBObject(FIELD_HOST, serverName)
+                .append(FIELD_OPERATION, operation + LAST_SUCCESS)
+                .append(FIELD_TIMESTAMP, new Date())
+                .append(FIELD_STARTED, started);
+        final WriteResult result = mongo.getCollection(STATUS_COLLECTION).update(query, newRecord, true, false, WriteConcern.ACKNOWLEDGED);
+        final String error = result.getError();
+        if (isNotBlank(error)) {
+            log.error("Writing systemStatus failed: {}", error);
+        }
+    }
+
+    @Override
+    public Date getLastSuccessStarted(String operation) {
+        final DBObject query = new BasicDBObject(FIELD_HOST, serverName)
+                .append(FIELD_OPERATION, operation + LAST_SUCCESS);
+        DBCursor cursor = mongo.getCollection(STATUS_COLLECTION).find(query);
+        Date lastSuccess = null;
+        if (cursor.hasNext()) {
+            DBObject result = cursor.next();
+            lastSuccess = (Date) result.get(FIELD_STARTED);
+        }
+        if (cursor.hasNext()) {
+            throw new ResourceNotFoundException("Found multiple last success records for "+operation);
+        }
+        return lastSuccess;
+    }
+
+    @Override
+    public void startSchedulerRun(String operation) {
+        write(operation + SCHEDULER, new HashMap<String, String>(1) {{
+            put(FIELD_STATE, OperationState.START.toString()); }});
+    }
+
+    @Override
+    public void startOperation(String operation, final String operationTarget) {
+        write(operation, new HashMap<String, String>(1) {{
+            put(FIELD_STATE, OperationState.START.toString());
+            put(FIELD_TARGET, operationTarget);
+        }});
+    }
+
+    @Override
+    public void endOperation(String operation, final String operationTarget) {
+        write(operation, new HashMap<String, String>(1) {{
+            put(FIELD_STATE, OperationState.DONE.toString());
+            put(FIELD_TARGET, operationTarget);
+        }});
+    }
+
+    @Override
+    public void endSchedulerRun(String operation) {
+        write(operation + SCHEDULER, new HashMap<String, String>(1) {{
+            put(FIELD_STATE, OperationState.DONE.toString()); }});
+    }
+
+    @Override
+    public void haltSchedulerRun(String operation) {
+        write(operation + SCHEDULER, new HashMap<String, String>(1) {{
+            put(FIELD_STATE, OperationState.HALTED.toString()); }});
+    }
+
+    @Override
+    public void schedulerError(final String operation, final String message) {
+        write(operation + SCHEDULER, new HashMap<String, String>(2) {{
+            put(FIELD_STATE, OperationState.ERROR.toString());
+            put(FIELD_ERROR, message);
+        }});
+
+    }
+
     private Map<String, String> statusToMap(final DBObject status) {
         final Map<String, String> statusMap = new HashMap<>();
         for (String key : status.keySet()) {
@@ -84,7 +161,7 @@ public class StatusRepositoryImpl implements StatusRepository {
             String valueStr = null;
             if (key.equals("_id")) {
                 valueStr = value.toString();
-            } else if (key.equals("ts")) {
+            } else if (Date.class.isAssignableFrom(value.getClass())) {
                 valueStr = tsFmt.format((Date) value);
             } else {
                 valueStr = (String) value;

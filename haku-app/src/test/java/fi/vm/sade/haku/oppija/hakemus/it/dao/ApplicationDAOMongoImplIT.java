@@ -40,6 +40,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -98,7 +99,7 @@ public class ApplicationDAOMongoImplIT extends AbstractDAOTest {
         final HashMap<String, String> vaiheenVastaukset = new HashMap<String, String>();
         vaiheenVastaukset.put("avain", ARVO);
         final Application application = new Application(TEST_USER, new ApplicationPhase(applicationSystemId, TEST_PHASE, vaiheenVastaukset));
-        application.setOid("oid_arvo");
+        application.setOid("1.2.246.562.11.00000000258");
         applicationDAO.save(application);
         List<Application> listOfApplications = applicationDAO.find(new Application(applicationSystemId, TEST_USER));
         assertEquals(1, listOfApplications.size());
@@ -112,15 +113,16 @@ public class ApplicationDAOMongoImplIT extends AbstractDAOTest {
 
     @Test
     public void testCheckIfExistsBySocialSecurityNumber() {
-        assertTrue(applicationDAO.checkIfExistsBySocialSecurityNumber("Yhteishaku", "050998-957M"));
-        assertFalse(applicationDAO.checkIfExistsBySocialSecurityNumber("Yhteishaku", "040597-334D"));
-        assertFalse(applicationDAO.checkIfExistsBySocialSecurityNumber("Yhteishaku", ""));
-        assertFalse(applicationDAO.checkIfExistsBySocialSecurityNumber("Yhteishaku", null));
+        assertTrue(applicationDAO.checkIfExistsBySocialSecurityNumber("1.2.246.562.29.90697286251", "010101-123N"));
+        assertFalse(applicationDAO.checkIfExistsBySocialSecurityNumber("1.2.246.562.29.90697286251", "040404-123T"));
+        assertFalse(applicationDAO.checkIfExistsBySocialSecurityNumber("1.2.246.562.29.90697286251", ""));
+        assertFalse(applicationDAO.checkIfExistsBySocialSecurityNumber("1.2.246.562.29.90697286251", null));
     }
 
     @Test
     public void testfindAllQueriedByApplicationSystemAndApplicationOption() {
-        ApplicationQueryParameters applicationQueryParameters  = new ApplicationQueryParametersBuilder().setSearchTerms("").setAsId("Yhteishaku").setAoId("776").build();
+        ApplicationQueryParameters applicationQueryParameters  = new ApplicationQueryParametersBuilder()
+                .setSearchTerms("").setAsId("1.2.246.562.29.90697286251").setAoId("000").build();
         AuthenticationServiceMockImpl authenticationServiceMock = new AuthenticationServiceMockImpl();
         ApplicationFilterParameters filterParameters = new ApplicationFilterParameters(5,
                 authenticationServiceMock.getOrganisaatioHenkilo(), authenticationServiceMock.getOrganisaatioHenkilo(),
@@ -128,6 +130,61 @@ public class ApplicationDAOMongoImplIT extends AbstractDAOTest {
         ApplicationSearchResultDTO resultDTO = applicationDAO.findAllQueried(applicationQueryParameters, filterParameters);
         assertFalse(CollectionUtils.isEmpty(resultDTO.getResults()));
         assertEquals(2, resultDTO.getResults().size());
+    }
+
+    @Test
+    public void testSearchWithMultipleuserOids() {
+        ApplicationQueryParameters applicationQueryParameters = new ApplicationQueryParametersBuilder()
+                .setPersonOids(new ArrayList<String>(2) {{
+                    add("1.2.246.562.24.00000000001");
+                    add("1.2.246.562.24.00000000002");
+                }})
+                .build();
+        AuthenticationServiceMockImpl authenticationServiceMock = new AuthenticationServiceMockImpl();
+        ApplicationFilterParameters filterParameters = new ApplicationFilterParameters(5,
+                authenticationServiceMock.getOrganisaatioHenkilo(), authenticationServiceMock.getOrganisaatioHenkilo(),
+                authenticationServiceMock.getOrganisaatioHenkilo(), null, null);
+        ApplicationSearchResultDTO resultDTO = applicationDAO.findAllQueried(applicationQueryParameters, filterParameters);
+        assertFalse(CollectionUtils.isEmpty(resultDTO.getResults()));
+        assertEquals(2, resultDTO.getResults().size());
+    }
+
+    @Test
+    public void testfindAllQueriedByApplicationSystemAndMultipleApplicationOptions() {
+        ApplicationQueryParameters applicationQueryParameters = new ApplicationQueryParametersBuilder()
+                .setAoOids(new ArrayList<String>(1) {{
+                    add("1.2.246.562.20.52010929637");
+                }})
+                .build();
+        AuthenticationServiceMockImpl authenticationServiceMock = new AuthenticationServiceMockImpl();
+        ApplicationFilterParameters filterParameters = new ApplicationFilterParameters(5,
+                authenticationServiceMock.getOrganisaatioHenkilo(), authenticationServiceMock.getOrganisaatioHenkilo(),
+                authenticationServiceMock.getOrganisaatioHenkilo(), null, null);
+        ApplicationSearchResultDTO resultDTO = applicationDAO.findAllQueried(applicationQueryParameters, filterParameters);
+        assertFalse(CollectionUtils.isEmpty(resultDTO.getResults()));
+        assertEquals(1, resultDTO.getResults().size());
+
+
+        applicationQueryParameters = new ApplicationQueryParametersBuilder()
+                .setAoOids(new ArrayList<String>(1) {{
+                    add("1.2.246.562.20.18097797874");
+                }})
+                .build();
+
+        resultDTO = applicationDAO.findAllQueried(applicationQueryParameters, filterParameters);
+        assertFalse(CollectionUtils.isEmpty(resultDTO.getResults()));
+        assertEquals(2, resultDTO.getResults().size());
+
+        applicationQueryParameters = new ApplicationQueryParametersBuilder()
+                .setAoOids(new ArrayList<String>(1) {{
+                    add("1.2.246.562.20.18097797874");
+                    add("1.2.246.562.20.52010929637");
+                }})
+                .build();
+
+        resultDTO = applicationDAO.findAllQueried(applicationQueryParameters, filterParameters);
+        assertFalse(CollectionUtils.isEmpty(resultDTO.getResults()));
+        assertEquals(3, resultDTO.getResults().size());
     }
 
     @Override

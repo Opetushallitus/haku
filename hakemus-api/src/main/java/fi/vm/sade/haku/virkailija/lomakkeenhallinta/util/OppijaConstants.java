@@ -149,4 +149,5 @@ public final class OppijaConstants {
 
     public static final String TUTKINTO_MUU = "399999";
     public static final String OPPILAITOS_TUNTEMATON = "1.2.246.562.10.57118763579";
+    public static final String ROOT_ORGANIZATION_OID = "1.2.246.562.10.00000000001";
 }
