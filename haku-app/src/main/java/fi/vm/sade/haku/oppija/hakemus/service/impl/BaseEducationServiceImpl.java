@@ -108,10 +108,6 @@ public class BaseEducationServiceImpl implements BaseEducationService {
         }
         Map<String, List<SuoritusDTO>> suoritukset = suoritusrekisteriService.getSuoritukset(personOid);
 
-        if (suoritukset.isEmpty()) {
-            return application;
-        }
-
         String pohjakoulutus = null;
         Date valmistuminen = null;
         String suorituskieli = null;
@@ -133,35 +129,30 @@ public class BaseEducationServiceImpl implements BaseEducationService {
         boolean ammattistarttiSuoritettu = isNotBlank(ammattistarttiSuoritettuStr) ? Boolean.valueOf(ammattistarttiSuoritettuStr) : false;
         boolean kuntouttavaSuoritettu = isNotBlank(kuntouttavaSuoritettuStr) ? Boolean.valueOf(kuntouttavaSuoritettuStr) : false;
         boolean mamuValmentavaSuoritettu = isNotBlank(mamuValmentavaSuoritettuStr) ? Boolean.valueOf(mamuValmentavaSuoritettuStr) : false;
+        boolean kymppiSuoritettu = false;
 
         if (lukioSuoritus != null && isComplete(lukioSuoritus)) {
             pohjakoulutus = YLIOPPILAS;
             valmistuminen = lukioSuoritus.getValmistuminen();
-            suorituskieli = lukioSuoritus.getSuorituskieli();
+            suorituskieli = lukioSuoritus.getSuoritusKieli();
         } else if (ulkomainenSuoritus != null && isComplete(ulkomainenSuoritus)) {
             pohjakoulutus = ULKOMAINEN_TUTKINTO;
-            clearGrades(application);
-        } else {
-            if (kymppiSuoritus != null) {
-                if (isComplete(kymppiSuoritus)) {
-                    valmistuminen = kymppiSuoritus.getValmistuminen();
-                }
-                if (peruskouluSuoritus != null) {
-                    if (!isComplete(kymppiSuoritus)) {
-                        valmistuminen = peruskouluSuoritus.getValmistuminen();
-                    }
-                    pohjakoulutus = getPohjakoulutus(peruskouluSuoritus);
-                    suorituskieli = peruskouluSuoritus.getSuorituskieli();
-                } else {
-                    LOGGER.error("Missing pk-suoritus with kymppi-suoritus for application: {} of person: {}", application.getOid(), application.getPersonOid());
-                    suorituskieli = kymppiSuoritus.getSuorituskieli();
-                    pohjakoulutus = getPohjakoulutus(kymppiSuoritus);
-                }
-            } else if (peruskouluSuoritus != null && isComplete(peruskouluSuoritus)) {
-                valmistuminen = peruskouluSuoritus.getValmistuminen();
-                suorituskieli = peruskouluSuoritus.getSuorituskieli();
-                pohjakoulutus = getPohjakoulutus(peruskouluSuoritus);
+        } else if (kymppiSuoritus != null && isComplete(kymppiSuoritus)) {
+            if (peruskouluSuoritus == null || !isComplete(peruskouluSuoritus)) {
+                LOGGER.error("Missing pk-suoritus with kymppi-suoritus for application: {} of person: {}", application.getOid(), application.getPersonOid());
+                throw new ResourceNotFoundException(String.format("Missing pk-suoritus with kymppi-suoritus for application: %s of person: %s",
+                        application.getOid(), application.getPersonOid()));
             }
+            pohjakoulutus = getPohjakoulutus(peruskouluSuoritus);
+            valmistuminen = kymppiSuoritus.getValmistuminen();
+            suorituskieli = peruskouluSuoritus.getSuoritusKieli();
+            kymppiSuoritettu = true;
+        } else if (peruskouluSuoritus != null && isComplete(peruskouluSuoritus)) {
+            pohjakoulutus = getPohjakoulutus(peruskouluSuoritus);
+            valmistuminen = peruskouluSuoritus.getValmistuminen();
+            suorituskieli = peruskouluSuoritus.getSuoritusKieli();
+        } else {
+            pohjakoulutus = KESKEYTYNYT;
         }
 
         ammattistarttiSuoritettu = ammattistarttiSuoritettu || ammattistarttiSuoritus != null && isComplete(ammattistarttiSuoritus);
@@ -180,26 +171,40 @@ public class BaseEducationServiceImpl implements BaseEducationService {
         }
 
         educationAnswers = addRegisterValue(application, educationAnswers,
+                ELEMENT_ID_LISAKOULUTUS_KYMPPI, String.valueOf(kymppiSuoritettu));
+        educationAnswers = addRegisterValue(application, educationAnswers,
                 ELEMENT_ID_LISAKOULUTUS_AMMATTISTARTTI, String.valueOf(ammattistarttiSuoritettu));
         educationAnswers = addRegisterValue(application, educationAnswers,
                 ELEMENT_ID_LISAKOULUTUS_VAMMAISTEN, String.valueOf(kuntouttavaSuoritettu));
         educationAnswers = addRegisterValue(application, educationAnswers,
                 ELEMENT_ID_LISAKOULUTUS_MAAHANMUUTTO, String.valueOf(mamuValmentavaSuoritettu));
 
-        String todistusvuosiKey = YLIOPPILAS.equals(pohjakoulutus)
-                ? OppijaConstants.LUKIO_PAATTOTODISTUS_VUOSI
-                : OppijaConstants.PERUSOPETUS_PAATTOTODISTUSVUOSI;
         if (valmistuminen != null) {
             Calendar cal = GregorianCalendar.getInstance();
             cal.setTime(valmistuminen);
             String todistusvuosi = String.valueOf(cal.get(Calendar.YEAR));
-            educationAnswers = addRegisterValue(application, educationAnswers, todistusvuosiKey, todistusvuosi);
+            educationAnswers = addRegisterValue(application, educationAnswers, YLIOPPILAS.equals(pohjakoulutus)
+                    ? LUKIO_PAATTOTODISTUS_VUOSI
+                    : PERUSOPETUS_PAATTOTODISTUSVUOSI, todistusvuosi);
+            educationAnswers = addRegisterValue(application, educationAnswers, YLIOPPILAS.equals(pohjakoulutus)
+                    ? PERUSOPETUS_PAATTOTODISTUSVUOSI
+                    : LUKIO_PAATTOTODISTUS_VUOSI,
+                    null);
+        } else {
+            educationAnswers = addRegisterValue(application, educationAnswers, LUKIO_PAATTOTODISTUS_VUOSI, null);
+            educationAnswers = addRegisterValue(application, educationAnswers, PERUSOPETUS_PAATTOTODISTUSVUOSI, null);
         }
-        String suorituskieliKey = YLIOPPILAS.equals(pohjakoulutus)
-                ? OppijaConstants.LUKIO_KIELI
-                : OppijaConstants.PERUSOPETUS_KIELI;
+
         if (suorituskieli != null) {
-            educationAnswers = addRegisterValue(application, educationAnswers, suorituskieliKey, suorituskieli);
+            educationAnswers = addRegisterValue(application, educationAnswers, YLIOPPILAS.equals(pohjakoulutus)
+                    ? LUKIO_KIELI
+                    : PERUSOPETUS_KIELI, suorituskieli);
+            educationAnswers = addRegisterValue(application, educationAnswers, YLIOPPILAS.equals(pohjakoulutus)
+                    ? PERUSOPETUS_KIELI
+                    : LUKIO_KIELI, null);
+        } else {
+            educationAnswers = addRegisterValue(application, educationAnswers, LUKIO_KIELI, null);
+            educationAnswers = addRegisterValue(application, educationAnswers, PERUSOPETUS_KIELI, null);
         }
 
         application.addVaiheenVastaukset(PHASE_EDUCATION, educationAnswers);
@@ -277,7 +282,7 @@ public class BaseEducationServiceImpl implements BaseEducationService {
         if (YLIOPPILAS.equals(baseEducation)) {
             SuoritusDTO lukioSuoritus =
                     resolveSuoritus(suoritusrekisteriService.getSuoritukset(personOid, LUKIO_KOMO), LUKIO_KOMO);
-            if (lukioSuoritus != null) {
+            if (lukioSuoritus != null && !SuoritusDTO.TILA_KESKEYTYNYT.equals(lukioSuoritus.getTila())) {
                 arvosanaMap.putAll(suorituksenArvosanat("LK_", lukioSuoritus.getId()));
             }
         } else if (PERUSKOULU.equals(baseEducation) || YKSILOLLISTETTY.equals(baseEducation)
@@ -416,13 +421,16 @@ public class BaseEducationServiceImpl implements BaseEducationService {
     }
 
     private boolean isComplete(SuoritusDTO suoritus) {
-        return !"KESKEYTYNYT".equals(suoritus.getTila());
+        return !SuoritusDTO.TILA_KESKEYTYNYT.equals(suoritus.getTila());
     }
 
 
     private Map<String, String> addRegisterValue(Application application, Map<String, String> answers,
                                                  String key, String value) {
         String oldValue = answers.put(key, value);
+        if (value == null) {
+            answers.remove(key);
+        }
         application.addOverriddenAnswer(key, oldValue);
         LOGGER.debug("Changing value key: {}, value: {} -> {}", key, oldValue, value);
         return answers;

@@ -5,6 +5,7 @@ import java.util.Date;
 public class SuoritusDTO {
 
     public static final String TILA_KESKEN = "KESKEN";
+    public static final String TILA_KESKEYTYNYT = "KESKEYTYNYT";
     public static final String TILA_VALMIS = "VALMIS";
 
 //    {
@@ -27,12 +28,12 @@ public class SuoritusDTO {
     private Date valmistuminen;
     private String henkiloOid;
     private String yksilollistaminen;
-    private String suorituskieli;
+    private String suoritusKieli;
     private String source;
     private Boolean vahvistettu;
 
     public SuoritusDTO(String id, String komo, String myontaja, String tila, Date valmistuminen, String henkiloOid,
-                       String yksilollistaminen, String suorituskieli, String source, Boolean vahvistettu) {
+                       String yksilollistaminen, String suoritusKieli, String source, Boolean vahvistettu) {
         this.id = id;
         this.komo = komo;
         this.myontaja = myontaja;
@@ -40,7 +41,7 @@ public class SuoritusDTO {
         this.valmistuminen = valmistuminen;
         this.henkiloOid = henkiloOid;
         this.yksilollistaminen = yksilollistaminen;
-        this.suorituskieli = suorituskieli;
+        this.suoritusKieli = suoritusKieli;
         this.source = source;
         this.vahvistettu = vahvistettu;
     }
@@ -105,12 +106,12 @@ public class SuoritusDTO {
         this.yksilollistaminen = yksilollistaminen;
     }
 
-    public String getSuorituskieli() {
-        return suorituskieli;
+    public String getSuoritusKieli() {
+        return suoritusKieli;
     }
 
-    public void setSuorituskieli(String suorituskieli) {
-        this.suorituskieli = suorituskieli;
+    public void setSuoritusKieli(String suorituskieli) {
+        this.suoritusKieli = suorituskieli;
     }
 
     public String getSource() {

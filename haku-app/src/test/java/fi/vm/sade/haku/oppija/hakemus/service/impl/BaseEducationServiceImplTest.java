@@ -4,6 +4,7 @@ import fi.vm.sade.haku.oppija.common.suoritusrekisteri.ArvioDTO;
 import fi.vm.sade.haku.oppija.common.suoritusrekisteri.ArvosanaDTO;
 import fi.vm.sade.haku.oppija.common.suoritusrekisteri.SuoritusDTO;
 import fi.vm.sade.haku.oppija.common.suoritusrekisteri.SuoritusrekisteriService;
+import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.service.BaseEducationService;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationPeriod;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
@@ -15,9 +16,8 @@ import org.junit.Test;
 
 import java.util.*;
 
-import static fi.vm.sade.haku.oppija.common.suoritusrekisteri.SuoritusrekisteriService.LISAOPETUS_KOMO;
-import static fi.vm.sade.haku.oppija.common.suoritusrekisteri.SuoritusrekisteriService.PERUSOPETUS_KOMO;
-import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.PERUSKOULU;
+import static fi.vm.sade.haku.oppija.common.suoritusrekisteri.SuoritusrekisteriService.*;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
@@ -35,6 +35,7 @@ public class BaseEducationServiceImplTest {
     private SuoritusDTO pkKesken;
     private SuoritusDTO kymppiKesken;
     private SuoritusDTO pkValmis;
+    private SuoritusDTO ulkValmis;
 
     private static final long ONE_DAY = 24 * 60 * 60 * 1000;
 
@@ -58,7 +59,9 @@ public class BaseEducationServiceImplTest {
                 "Ei", "FI", "source", true);
         kymppiKesken = new SuoritusDTO("kymppiKesken", LISAOPETUS_KOMO, "myontaja", "KESKEN", tomorrow(), "personOid",
                 "Ei", "FI", "source", true);
-        pkValmis = new SuoritusDTO("pkValmis", PERUSOPETUS_KOMO, "myontaja", "KESKEN", yesterday(), "personOid",
+        pkValmis = new SuoritusDTO("pkValmis", PERUSOPETUS_KOMO, "myontaja", "VALMIS", yesterday(), "personOid",
+                "Ei", "FI", "source", true);
+        ulkValmis = new SuoritusDTO("ulkValmis", ULKOMAINEN_KOMO, "myontaja", "VALMIS", yesterday(), "personOid",
                 "Ei", "FI", "source", true);
     }
 
@@ -159,12 +162,88 @@ public class BaseEducationServiceImplTest {
         assertEquals("Ei arvosanaa", arvosanat.get("PK_CI_VAL3"));
     }
 
-    private SuoritusrekisteriService mockSuoritusrekisteriService(String personOid, Map<String, List<SuoritusDTO>> suoritukset) {
+    @Test
+    public void testAddBaseEducationKeskeytynyt() {
+        SuoritusrekisteriService suoritusrekisteriService = mockSuoritusrekisteriService("personOid",
+                new HashMap<String, List<SuoritusDTO>>());
+        BaseEducationService baseEducationService = new BaseEducationServiceImpl(suoritusrekisteriService, null);
+        Application application = new Application("oid");
+        application.setPersonOid("personOid");
+        application.addVaiheenVastaukset(PHASE_EDUCATION, new HashMap<String, String>() {{
+            put(ELEMENT_ID_BASE_EDUCATION, "1");
+            put(PERUSOPETUS_PAATTOTODISTUSVUOSI, "2015");
+        }});
+        application = baseEducationService.addBaseEducation(application);
+        Map<String, String> answers = application.getPhaseAnswers(PHASE_EDUCATION);
+
+        assertEquals(5, answers.size());
+        assertEquals("7", answers.get(ELEMENT_ID_BASE_EDUCATION));
+        assertLisakoulutuksetFalse(answers);
+    }
+
+    @Test
+    public void testAddBaseEducationUlkkari() {
+        SuoritusrekisteriService suoritusrekisteriService = mockSuoritusrekisteriService("personOid",
+                new HashMap<String, List<SuoritusDTO>>() {{
+                    put(ULKOMAINEN_KOMO, Collections.singletonList(ulkValmis));
+                }});
+        BaseEducationService baseEducationService = new BaseEducationServiceImpl(suoritusrekisteriService, null);
+        Application application = new Application("oid");
+        application.setPersonOid("personOid");
+        application.addVaiheenVastaukset(PHASE_EDUCATION, new HashMap<String, String>() {{
+            put(ELEMENT_ID_BASE_EDUCATION, "1");
+            put(PERUSOPETUS_PAATTOTODISTUSVUOSI, "2015");
+            put(PERUSOPETUS_KIELI, "SV");
+        }});
+        application = baseEducationService.addBaseEducation(application);
+        Map<String, String> answers = application.getPhaseAnswers(PHASE_EDUCATION);
+
+        assertEquals(5, answers.size());
+        assertEquals("0", answers.get(ELEMENT_ID_BASE_EDUCATION));
+        assertLisakoulutuksetFalse(answers);
+    }
+
+    @Test
+    public void testAddBaseEducationPK() {
+        SuoritusrekisteriService suoritusrekisteriService = mockSuoritusrekisteriService("personOid",
+                new HashMap<String, List<SuoritusDTO>>() {{
+                    put(PERUSOPETUS_KOMO, Collections.singletonList(pkValmis));
+                }});
+        BaseEducationService baseEducationService = new BaseEducationServiceImpl(suoritusrekisteriService, null);
+        Application application = new Application("oid");
+        application.setPersonOid("personOid");
+        application.addVaiheenVastaukset(PHASE_EDUCATION, new HashMap<String, String>() {{
+            put(ELEMENT_ID_BASE_EDUCATION, YLIOPPILAS);
+            put(LUKIO_KIELI, "SV");
+            put(LUKIO_PAATTOTODISTUS_VUOSI, "2014");
+        }});
+        application = baseEducationService.addBaseEducation(application);
+        Map<String, String> answers = application.getPhaseAnswers(PHASE_EDUCATION);
+
+        assertEquals(7, answers.size());
+        assertEquals("1", answers.get(ELEMENT_ID_BASE_EDUCATION));
+        Calendar cal = GregorianCalendar.getInstance();
+        String year = String.valueOf(cal.get(Calendar.YEAR));
+        assertEquals(year, answers.get(PERUSOPETUS_PAATTOTODISTUSVUOSI));
+        assertEquals("FI", answers.get(PERUSOPETUS_KIELI));
+        assertLisakoulutuksetFalse(answers);
+    }
+
+    private void assertLisakoulutuksetFalse(Map<String, String> answers, String... except) {
+        List<String> exceptionList = Arrays.asList(except);
+        for (String edu : new String[] { ELEMENT_ID_LISAKOULUTUS_AMMATTISTARTTI, ELEMENT_ID_LISAKOULUTUS_MAAHANMUUTTO,
+                ELEMENT_ID_LISAKOULUTUS_KYMPPI, ELEMENT_ID_LISAKOULUTUS_VAMMAISTEN }) {
+            String expected = String.valueOf(exceptionList.contains(edu));
+            assertEquals(expected, answers.get(edu));
+        }
+    }
+
+    private SuoritusrekisteriService mockSuoritusrekisteriService(String personOid,
+                                                                  Map<String, List<SuoritusDTO>> suoritukset) {
 
         SuoritusrekisteriService suoritusrekisteriService = mock(SuoritusrekisteriService.class);
         when(suoritusrekisteriService.getSuoritukset(eq(personOid)))
                 .thenReturn(suoritukset);
-
         return suoritusrekisteriService;
     }
 

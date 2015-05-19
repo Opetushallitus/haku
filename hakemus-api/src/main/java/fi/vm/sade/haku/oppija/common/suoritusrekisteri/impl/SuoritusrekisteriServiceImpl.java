@@ -162,7 +162,8 @@ public class SuoritusrekisteriServiceImpl implements SuoritusrekisteriService {
             SuoritusDTO suoritus = suoritusGson.fromJson(elem, SuoritusDTO.class);
 
             if (!SuoritusDTO.TILA_VALMIS.equals(suoritus.getTila())
-                    && !SuoritusDTO.TILA_KESKEN.equals(suoritus.getTila())) {
+                    && !SuoritusDTO.TILA_KESKEN.equals(suoritus.getTila())
+                    && !SuoritusDTO.TILA_KESKEYTYNYT.equals(suoritus.getTila())) {
                 continue;
             }
             String komo = suoritus.getKomo();
