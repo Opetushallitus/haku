@@ -259,6 +259,9 @@ public class BaseEducationServiceImpl implements BaseEducationService {
     @Override
     public Map<String, String> getArvosanat(String personOid, String baseEducation, ApplicationSystem as) {
         Map<String, String> arvosanaMap = new HashMap<>();
+        if (isBlank(personOid)) {
+            return arvosanaMap;
+        }
         if (ULKOMAINEN_TUTKINTO.equals(baseEducation) || KESKEYTYNYT.equals(baseEducation) || isEmpty(baseEducation)) {
             return arvosanaMap;
         }
