@@ -171,7 +171,7 @@
                 </tr>
                 <tr>
                     <td>&nbsp;</td>
-                    <td>&nbsp;</td>
+                    <td>Hakijan tiedot <a href="/suoritusrekisteri/#/muokkaa/${application.personOid}" target="_blank">suoritusrekisteriss&auml;</a></td>
                     <haku:infoCell key="virkailija.hakemus.sahkoposti" value="${answers['Sähköposti']}"/>
                 </tr>
             </table>

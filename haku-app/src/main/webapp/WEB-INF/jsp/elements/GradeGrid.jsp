@@ -19,9 +19,7 @@
   --%>
 <haku:errorMessage id="${element.id}" additionalClass="margin-top-1"/>
 <haku:help element="${element}"/>
-<c:if test="${virkailijaEdit}">
-    Muokkaa arvosanoja <a href="/suoritusrekisteri/#/muokkaa/${it.application.personOid}">suoritusrekisteriss&auml;</a>
-</c:if>
+
 <table id="gradegrid-table" class="applicant-grades">
     <thead>
     <tr>

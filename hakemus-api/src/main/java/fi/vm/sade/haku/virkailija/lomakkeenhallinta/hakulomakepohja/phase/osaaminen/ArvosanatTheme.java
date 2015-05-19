@@ -95,20 +95,20 @@ public final class ArvosanatTheme {
 
         // Peruskoulu
         Integer hakukausiVuosi = formParameters.getApplicationSystem().getHakukausiVuosi();
-        Expr kysyArvosanatPk = new Or(
-                new And(
+        Expr kysyArvosanatPk = new And(
+                ExprUtil.atLeastOneValueEqualsToVariable(POHJAKOULUTUS_ID,
+                        PERUSKOULU,
+                        OSITTAIN_YKSILOLLISTETTY,
+                        ALUEITTAIN_YKSILOLLISTETTY,
+                        YKSILOLLISTETTY),
+                new Or(
                         new Not(
                                 new Equals(
                                         new Variable(OppijaConstants.PERUSOPETUS_PAATTOTODISTUSVUOSI),
                                         new Value(String.valueOf(hakukausiVuosi)))
                         ),
-                        ExprUtil.atLeastOneValueEqualsToVariable(POHJAKOULUTUS_ID,
-                                PERUSKOULU,
-                                OSITTAIN_YKSILOLLISTETTY,
-                                ALUEITTAIN_YKSILOLLISTETTY,
-                                YKSILOLLISTETTY)
-                ),
-                new Regexp("_meta_grades_transferred_pk", "true"));
+                        new Equals(new Variable("_meta_officerUi"), new Value("true"))
+                ));
         Element relatedQuestionPk = Rule(kysyArvosanatPk).build();
 
         Element arvosanataulukkoPkSv = Rule(
@@ -132,10 +132,9 @@ public final class ArvosanatTheme {
         arvosanatTheme.addChild(relatedQuestionPk);
 
         // Ei arvosanoja
-        Element eiNaytetaPk = Rule(new Or(
-                new Equals(new Variable(OppijaConstants.PERUSOPETUS_PAATTOTODISTUSVUOSI), new Value(String.valueOf(hakukausiVuosi))),
-                new Regexp("_meta_grades_transferred_pk", "true")
-        )).build();
+        Element eiNaytetaPk = Rule(
+                new Equals(new Variable(OppijaConstants.PERUSOPETUS_PAATTOTODISTUSVUOSI), new Value(String.valueOf(hakukausiVuosi)))
+        ).build();
 
         eiNaytetaPk.addChild(Text("nogradegrid").labelKey("form.arvosanat.eiKysyta.pk").formParams(formParameters).build());
         arvosanatTheme.addChild(eiNaytetaPk);
@@ -146,17 +145,14 @@ public final class ArvosanatTheme {
             if (formParameters.isLisahaku()) {
                 naytetaankoLukionArvosanataulukko = Rule(new Equals(new Variable(POHJAKOULUTUS_ID), new Value(OppijaConstants.YLIOPPILAS)));
             } else {
-                naytetaankoLukionArvosanataulukko = Rule(
+                naytetaankoLukionArvosanataulukko = Rule(new And(
+                        new Equals(new Variable(POHJAKOULUTUS_ID), new Value(OppijaConstants.YLIOPPILAS)),
                         new Or(
-                                new And(
-                                        new Not(
-                                                new Equals(
-                                                        new Variable(OppijaConstants.LUKIO_PAATTOTODISTUS_VUOSI),
-                                                        new Value(String.valueOf(hakukausiVuosi)))),
-                                        new Equals(new Variable(POHJAKOULUTUS_ID), new Value(OppijaConstants.YLIOPPILAS))),
-                                new Equals(
-                                        new Variable("_meta_grades_transferred_lk"),
-                                        new Value("true"))));
+                                new Not(
+                                        new Equals(
+                                                new Variable(OppijaConstants.LUKIO_PAATTOTODISTUS_VUOSI),
+                                                new Value(String.valueOf(hakukausiVuosi)))),
+                                new Equals(new Variable("_meta_officerUi"), new Value("true")))));
             }
             Element arvosanataulukkoYoSv = Rule(
                     new Equals(
@@ -179,10 +175,8 @@ public final class ArvosanatTheme {
             arvosanatTheme.addChild(naytetaankoLukionArvosanataulukko.build());
             if (!formParameters.isLisahaku()) {
                 arvosanatTheme.addChild(Rule(
-                        new Or(
-                                new Equals(new Variable("lukioPaattotodistusVuosi"), new Value(String.valueOf(hakukausiVuosi))),
-                                new Regexp("_meta_grades_transferred_lk", "true")
-                        ))
+                                new Equals(new Variable("lukioPaattotodistusVuosi"), new Value(String.valueOf(hakukausiVuosi)))
+                        )
                         .formParams(formParameters)
                         .addChild(Text().labelKey("form.arvosanat.eikysyta.yo"))
                         .build());

@@ -205,13 +205,13 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         try {
             Map<String, String> arvosanat = baseEducationService.getArvosanat(application.getPersonOid(),
                     application.getVastauksetMerged().get(OppijaConstants.ELEMENT_ID_BASE_EDUCATION), as);
-            application.addMeta(resolveGradeTransferFlag(application), String.valueOf(!arvosanat.isEmpty()));
             modelResponse.addObjectToModel("arvosanat", arvosanat);
         } catch (ResourceNotFoundException e) {
             modelResponse.getErrorMessages().put("sureNotResponding",
                     ElementUtil.createI18NAsIs("Arvosanoja ei saatu haettua: " + e.getMessage()));
         }
         modelResponse.addObjectToModel("officerUi", true);
+        modelResponse.addAnswers(new HashMap<String, String>(){{put("_meta_officerUi", "true");}});
         String userOid = userSession.getUser().getUserName();
         if (userOid == null || userOid.equals(application.getPersonOid())) {
             Map<String, I18nText> errors = modelResponse.getErrorMessages();
@@ -219,21 +219,6 @@ public class OfficerUIServiceImpl implements OfficerUIService {
             modelResponse.setErrorMessages(errors);
         }
         return modelResponse;
-    }
-
-    private String resolveGradeTransferFlag(Application application) {
-        Map<String, String> answers = application.getPhaseAnswers(OppijaConstants.PHASE_EDUCATION);
-        String baseEd = answers.get(OppijaConstants.ELEMENT_ID_BASE_EDUCATION);
-        if (OppijaConstants.PERUSKOULU.equals(baseEd)
-                || OppijaConstants.YKSILOLLISTETTY.equals(baseEd)
-                || OppijaConstants.ALUEITTAIN_YKSILOLLISTETTY.equals(baseEd)
-                || OppijaConstants.OSITTAIN_YKSILOLLISTETTY.equals(baseEd)) {
-            return "grades_transferred_pk";
-        } else if (OppijaConstants.YLIOPPILAS.equals(baseEd)) {
-            return "grades_transferred_lk";
-        }
-
-        return "grades_transferred_unknown";
     }
 
     private List<ApplicationOptionDTO> getValintatiedot(Application application) {

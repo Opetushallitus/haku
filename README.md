@@ -17,7 +17,7 @@ Lomakkeet hakijalle: http://localhost:9090/haku-app/lomake/
 
 ### Running and testing
 
-Haku-app uses Spring profiles for running in different modes. Spring profile is selected using system property `spring.profiles.active`.
+Haku-app uses Spring profiles for running in different modes. Spring profile is selected using system property `spring.profiles.active`, like this: `-Dspring.profiles.active=devluokka`.
 
 Here's a list of profiles we use:
 
@@ -108,7 +108,7 @@ Or build, start tomcat and run Mochas from the command line:
 
 Run all tests (including Mocha and Selenium tests):
 
-    mvn clean verify -Pit
+    MAVEN_OPTS="-Xmx2048m -XX:PermSize=512M" mvn clean verify -Pit
 
 Run single test class:
 
