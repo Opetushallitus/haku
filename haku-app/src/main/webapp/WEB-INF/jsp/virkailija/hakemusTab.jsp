@@ -5,6 +5,7 @@
 <%@ taglib prefix="haku" tagdir="/WEB-INF/tags" %>
 
 <haku:messages messages="${errorMessages}" additionalClass="warning" form="${it.form}"/>
+<c:set var="officerUi" value="true" scope="request"/>
 <c:choose>
     <c:when test="${preview}">
         <c:set var="virkailijaPreview" value="true" scope="request"/>

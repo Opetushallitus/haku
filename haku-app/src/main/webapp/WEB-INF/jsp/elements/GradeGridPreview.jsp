@@ -17,6 +17,15 @@
   ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   ~ European Union Public Licence for more details.
   --%>
+
+<c:if test="${officerUi}">
+    <tr>
+        <td colspan="8">
+            Muokkaa arvosanoja <a href="/suoritusrekisteri/#/muokkaa/${it.application.personOid}" target="_blank">suoritusrekisteriss&auml;</a>
+        </td>
+    </tr>
+</c:if>
+
 <tr>
     <td colspan="2"><a name="${element.id}"></a><fmt:message key="lomake.component.gradegrid.subjectTitle"/></td>
     <c:choose>
