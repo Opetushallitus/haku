@@ -485,7 +485,8 @@ public class ApplicationServiceImpl implements ApplicationService {
         hakuPermissionService.userCanEditApplicationAdditionalData(current);
         current.getAdditionalInfo().putAll(additionalInfo);
         //TODO =RS= add Version
-        applicationDAO.update(query, current);
+        //applicationDAO.update(query, current);
+        update(query, current);
     }
 
     @Override
