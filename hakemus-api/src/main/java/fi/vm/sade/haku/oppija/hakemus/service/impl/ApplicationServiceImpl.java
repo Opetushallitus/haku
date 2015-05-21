@@ -20,6 +20,7 @@ import fi.vm.sade.haku.oppija.common.koulutusinformaatio.KoulutusinformaatioServ
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
 import fi.vm.sade.haku.oppija.common.suoritusrekisteri.SuoritusDTO;
 import fi.vm.sade.haku.oppija.common.suoritusrekisteri.SuoritusrekisteriService;
+import fi.vm.sade.haku.oppija.hakemus.aspect.ApplicationDiffUtil;
 import fi.vm.sade.haku.oppija.hakemus.domain.*;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationAdditionalDataDTO;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
@@ -486,6 +487,8 @@ public class ApplicationServiceImpl implements ApplicationService {
         current.getAdditionalInfo().putAll(additionalInfo);
         //TODO =RS= add Version
         //applicationDAO.update(query, current);
+        Application oldApplication = applicationDAO.find(query).get(0);
+        ApplicationDiffUtil.addHistoryBasedOnChangedAnswers(current, oldApplication, userSession.getUser().getUserName(), "update");
         update(query, current);
     }
 
