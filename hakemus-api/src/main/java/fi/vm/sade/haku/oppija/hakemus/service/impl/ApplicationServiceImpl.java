@@ -488,7 +488,12 @@ public class ApplicationServiceImpl implements ApplicationService {
         //TODO =RS= add Version
         //applicationDAO.update(query, current);
         Application oldApplication = applicationDAO.find(query).get(0);
-        ApplicationDiffUtil.addHistoryBasedOnChangedAnswers(current, oldApplication, userSession.getUser().getUserName(), "update");
+        String username;
+        if(userSession == null || userSession.getUser() == null)
+            username = "system";
+        else
+            username = userSession.getUser().getUserName();
+        ApplicationDiffUtil.addHistoryBasedOnChangedAnswers(current, oldApplication, username, "update");
         update(query, current);
     }
 
