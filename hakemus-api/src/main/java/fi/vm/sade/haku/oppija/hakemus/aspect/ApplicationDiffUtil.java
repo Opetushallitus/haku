@@ -28,10 +28,12 @@ public final class ApplicationDiffUtil {
         Map<String, String> newAnswers = newApplication.getVastauksetMerged();
         List<Map<String, String>> answerChanges = ApplicationDiffUtil.oldAndNewAnswersToListOfChanges(oldAnswers, newAnswers);
         List<Map<String, String>> eligibilityChanges = ApplicationDiffUtil.oldAndNewEligibilitiesToListOfChanges(oldApplication.getPreferenceEligibilities(), newApplication.getPreferenceEligibilities());
+        List<Map<String, String>> additionalInfoChanges = ApplicationDiffUtil.oldAndNewAdditinalInfoToListOfChanges(oldApplication.getAdditionalInfo(), newApplication.getAdditionalInfo());
 
         List<Map<String, String>> changes = new LinkedList<>();
         changes.addAll(answerChanges);
         changes.addAll(eligibilityChanges);
+        changes.addAll(additionalInfoChanges);
         if (!changes.isEmpty()) {
             Change change = new Change(new Date(), userName, reason, changes);
             newApplication.addHistory(change);
@@ -114,6 +116,42 @@ public final class ApplicationDiffUtil {
             if (e.getAoId().equals(aoId)) return e;
         }
         return null;
+    }
+
+    public static List<Map<String, String>> oldAndNewAdditinalInfoToListOfChanges(Map<String, String> oldAdditionalInfo, Map<String, String> newAdditionalInfo) {
+        List<Map<String, String>> changes = new ArrayList<>();
+
+        for(String key : oldAdditionalInfo.keySet()) {
+            String oldValue = oldAdditionalInfo.get(key);
+            String newValue = newAdditionalInfo.get(key);
+
+            if(newValue == null) {
+                Map<String, String> change = new HashMap<>();
+                change.put(FIELD, key);
+                change.put(OLD_VALUE, oldValue);
+                changes.add(change);
+            } else {
+                if(!newValue.equals(oldValue)) {
+                    Map<String, String> change = new HashMap<>();
+                    change.put(FIELD, key);
+                    change.put(OLD_VALUE, oldValue);
+                    change.put(NEW_VALUE, newValue);
+                    changes.add(change);
+                }
+            }
+        }
+
+        for(String key : newAdditionalInfo.keySet()) {
+            if(!oldAdditionalInfo.containsKey(key)) {
+                String newValue = newAdditionalInfo.get(key);
+                Map<String, String> change = new HashMap<>();
+                change.put(FIELD, key);
+                change.put(NEW_VALUE, newValue);
+                changes.add(change);
+            }
+        }
+
+        return changes;
     }
 
     public static String auditLogKey(PreferenceEligibility e) {
