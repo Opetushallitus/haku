@@ -21,6 +21,7 @@ import java.util.*;
 
 import static fi.vm.sade.haku.oppija.common.suoritusrekisteri.SuoritusrekisteriService.*;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.*;
+import static java.util.Calendar.*;
 import static org.apache.commons.lang.StringUtils.*;
 
 @Service
@@ -51,15 +52,11 @@ public class BaseEducationServiceImpl implements BaseEducationService {
 
         if (!opiskelijatiedot.isEmpty()) {
             ApplicationSystem as = applicationSystemService.getApplicationSystem(application.getApplicationSystemId());
-            Date endDate = new Date();
-            for (ApplicationPeriod ap : as.getApplicationPeriods()) {
-                Date apEndDate = ap.getEnd();
-                endDate = apEndDate != null && apEndDate.after(endDate) ? apEndDate : endDate;
-            }
+            Date hakukausiStart = resolveHakukausiStart(as);
             OpiskelijaDTO opiskelija = null;
             boolean found = false;
             for (OpiskelijaDTO dto : opiskelijatiedot) {
-                if (dto.getLoppuPaiva() == null || dto.getLoppuPaiva().after(endDate)) {
+                if (dto.getLoppuPaiva() == null || dto.getLoppuPaiva().after(hakukausiStart)) {
                     if (found) {
                         throw new ResourceNotFoundException("Person " + personOid + " in enrolled in multiple schools");
                     }
@@ -67,11 +64,6 @@ public class BaseEducationServiceImpl implements BaseEducationService {
                     found = true;
                 }
             }
-            if (opiskelija == null) {
-                // Jos hakija ei ole missään koulussa, ei aseteta lähtökoulua
-                return application;
-            }
-
             Map<String, String> educationAnswers = new HashMap<String, String>(
                     application.getPhaseAnswers(PHASE_EDUCATION));
 
@@ -82,21 +74,30 @@ public class BaseEducationServiceImpl implements BaseEducationService {
         return application;
     }
 
+    private Date resolveHakukausiStart(ApplicationSystem as) {
+        Calendar start = GregorianCalendar.getInstance();
+        start.set(DAY_OF_MONTH, 1);
+        start.set(MONTH, HAKUKAUSI_KEVAT.equals(as.getHakukausiUri()) ? JANUARY : AUGUST);
+        start.set(YEAR, as.getHakukausiVuosi());
+        return start.getTime();
+    }
+
     private Map<String, String> handleOpiskelija(Map<String, String> answers, Application application, OpiskelijaDTO opiskelija) {
-        String sendingSchool = opiskelija.getOppilaitosOid();
-        String sendingClass = opiskelija.getLuokka();
-        String classLevel = opiskelija.getLuokkataso();
-        if (isNotEmpty(sendingSchool)) {
-            answers = addRegisterValue(application, answers, OppijaConstants.ELEMENT_ID_SENDING_SCHOOL, sendingSchool);
-        }
+        String sendingSchool = opiskelija != null ? opiskelija.getOppilaitosOid() : null;
+        String sendingClass = opiskelija != null ? opiskelija.getLuokka() : null;
+        String classLevel = opiskelija != null ? opiskelija.getLuokkataso() : null;
+
         if (isNotEmpty(sendingClass)) {
             sendingClass = sendingClass.toUpperCase();
-            answers = addRegisterValue(application, answers, OppijaConstants.ELEMENT_ID_SENDING_CLASS, sendingClass);
         }
         if (isNotEmpty(classLevel)) {
             classLevel = classLevel.toUpperCase();
-            answers = addRegisterValue(application, answers, OppijaConstants.ELEMENT_ID_CLASS_LEVEL, classLevel);
         }
+
+        answers = addRegisterValue(application, answers, OppijaConstants.ELEMENT_ID_SENDING_SCHOOL, sendingSchool);
+        answers = addRegisterValue(application, answers, OppijaConstants.ELEMENT_ID_SENDING_CLASS, sendingClass);
+        answers = addRegisterValue(application, answers, OppijaConstants.ELEMENT_ID_CLASS_LEVEL, classLevel);
+
         return answers;
     }
 
@@ -182,7 +183,7 @@ public class BaseEducationServiceImpl implements BaseEducationService {
         if (valmistuminen != null) {
             Calendar cal = GregorianCalendar.getInstance();
             cal.setTime(valmistuminen);
-            String todistusvuosi = String.valueOf(cal.get(Calendar.YEAR));
+            String todistusvuosi = String.valueOf(cal.get(YEAR));
             educationAnswers = addRegisterValue(application, educationAnswers, YLIOPPILAS.equals(pohjakoulutus)
                     ? LUKIO_PAATTOTODISTUS_VUOSI
                     : PERUSOPETUS_PAATTOTODISTUSVUOSI, todistusvuosi);
