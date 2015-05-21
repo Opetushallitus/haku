@@ -59,7 +59,7 @@ public class HistoryAspect {
         this.disableHistory = Boolean.valueOf(disableHistory);
     }
 
-    @Before("execution(* fi.vm.sade.haku.oppija.hakemus.service.ApplicationServiceImpl.update(..)) && args(queryApplication,application)")
+    @Before("execution(* fi.vm.sade.haku.oppija.hakemus.service.impl.ApplicationServiceImpl.update(fi.vm.sade.haku.oppija.hakemus.domain.Application, fi.vm.sade.haku.oppija.hakemus.domain.Application)) && args(queryApplication,application)")
     public void addChangeHistoryToApplication(final Application queryApplication, final Application application) {
         LOGGER.debug("addChangeHistoryToApplication");
         if (!disableHistory) {
