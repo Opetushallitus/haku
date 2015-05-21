@@ -55,7 +55,7 @@ public class ApplicationPostProcessorService {
         application = addPersonOid(application);
         if (!skipSendingSchoolAutomatic) {
             application = baseEducationService.addSendingSchool(application);
-            application = baseEducationService.addBaseEducation(application);
+//            application = baseEducationService.addBaseEducation(application);
         }
         application = applicationService.updateAuthorizationMeta(application);
         application = applicationService.ensureApplicationOptionGroupData(application);
