@@ -15,7 +15,6 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -35,9 +34,6 @@ public class ApplicationPostProcessorService {
     private final FormService formService;
     private final AuthenticationService authenticationService;
 
-    @Value("${scheduler.skipSendingSchool.automatic:false}")
-    private boolean skipSendingSchoolAutomatic;
-
     @Autowired
     public ApplicationPostProcessorService(final ApplicationService applicationService,
                                            final BaseEducationService baseEducationService,
@@ -53,10 +49,7 @@ public class ApplicationPostProcessorService {
 
     public Application process(Application application) throws IOException{
         application = addPersonOid(application);
-        if (!skipSendingSchoolAutomatic) {
-            application = baseEducationService.addSendingSchool(application);
-//            application = baseEducationService.addBaseEducation(application);
-        }
+        application = baseEducationService.addSendingSchool(application);
         application = applicationService.updateAuthorizationMeta(application);
         application = applicationService.ensureApplicationOptionGroupData(application);
         application = applicationService.updateAutomaticEligibilities(application);

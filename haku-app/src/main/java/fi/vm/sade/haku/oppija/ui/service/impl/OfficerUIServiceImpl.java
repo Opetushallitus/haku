@@ -1,7 +1,6 @@
 package fi.vm.sade.haku.oppija.ui.service.impl;
 
 import com.google.common.base.Strings;
-import fi.vm.sade.haku.oppija.common.koulutusinformaatio.KoulutusinformaatioService;
 import fi.vm.sade.haku.oppija.common.organisaatio.Organization;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationGroupRestDTO;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
@@ -11,7 +10,6 @@ import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationOptionDTO;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.Pistetieto;
 import fi.vm.sade.haku.oppija.hakemus.domain.util.AttachmentUtil;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
-import fi.vm.sade.haku.oppija.hakemus.service.BaseEducationService;
 import fi.vm.sade.haku.oppija.hakemus.service.HakuPermissionService;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
@@ -70,7 +68,6 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     public static final String PHASE_ID_PREVIEW = "esikatselu";
 
     private final ApplicationService applicationService;
-    private final BaseEducationService baseEducationService;
     private final FormService formService;
     private final KoodistoService koodistoService;
     private final HakuPermissionService hakuPermissionService;
@@ -83,7 +80,6 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     private final OrganizationService organizationService;
     private ValintaService valintaService;
     private final Session userSession;
-    private final KoulutusinformaatioService koulutusinformaatioService;
     private final I18nBundleService i18nBundleService;
 
     private static final DecimalFormat PISTE_FMT = new DecimalFormat("#.##");
@@ -93,7 +89,6 @@ public class OfficerUIServiceImpl implements OfficerUIService {
 
     @Autowired
     public OfficerUIServiceImpl(final ApplicationService applicationService,
-                                final BaseEducationService baseEducationService,
                                 final FormService formService,
                                 final KoodistoService koodistoService,
                                 final HakuPermissionService hakuPermissionService,
@@ -106,11 +101,9 @@ public class OfficerUIServiceImpl implements OfficerUIService {
                                 final OrganizationService organizationService,
                                 final ValintaService valintaService,
                                 final Session userSession,
-                                final KoulutusinformaatioService koulutusinformaatioService,
                                 final I18nBundleService i18nBundleService,
                                 @Value("${hakukausi.kevat}") final String kevatkausi) {
         this.applicationService = applicationService;
-        this.baseEducationService = baseEducationService;
         this.formService = formService;
         this.koodistoService = koodistoService;
         this.hakuPermissionService = hakuPermissionService;
@@ -123,7 +116,6 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         this.organizationService = organizationService;
         this.valintaService = valintaService;
         this.userSession = userSession;
-        this.koulutusinformaatioService = koulutusinformaatioService;
         this.i18nBundleService = i18nBundleService;
         this.kevatkausi = kevatkausi;
     }
@@ -202,14 +194,9 @@ public class OfficerUIServiceImpl implements OfficerUIService {
             modelResponse.addObjectToModel("sendingClass", sendingClass);
         }
 
-        try {
-            Map<String, String> arvosanat = baseEducationService.getArvosanat(application.getPersonOid(),
-                    application.getVastauksetMerged().get(OppijaConstants.ELEMENT_ID_BASE_EDUCATION), as);
-            modelResponse.addObjectToModel("arvosanat", arvosanat);
-        } catch (ResourceNotFoundException e) {
-            modelResponse.getErrorMessages().put("sureNotResponding",
-                    ElementUtil.createI18NAsIs("Arvosanoja ei saatu haettua: " + e.getMessage()));
-        }
+        // TODO: Arvosanat valinnoista
+        // TODO: Suoritukset valinnoista
+
         modelResponse.addObjectToModel("officerUi", true);
         modelResponse.addAnswers(new HashMap<String, String>(){{put("_meta_officerUi", "true");}});
         String userOid = userSession.getUser().getUserName();
