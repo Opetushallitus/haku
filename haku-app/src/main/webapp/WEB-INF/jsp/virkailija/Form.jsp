@@ -182,27 +182,36 @@
             <div class="tabs">
                 <a href="#" data-tabs-group="applicationtabs" data-tabs-id="application" id="applicationTab"
                    class="tab current"><span>Hakemus</span></a>
+
+                <a href="#" data-tabs-group="applicationtabs" data-tabs-id="applicationValinta" id="applicationValintaTab"
+                   class="tab"><span>Hakemus valintapalvelussa</span></a>
+
                 <a href="#" data-tabs-group="applicationtabs" data-tabs-id="valinta" id="valintaTab"
                    class="tab"><span>Valinta</span></a>
+
                 <c:if test="${applicationSystem.kohdejoukkoUri eq 'haunkohdejoukko_12'}">
                 <a href="#" data-tabs-group="applicationtabs" data-tabs-id="kelpoisuusliitteet" id="kelpoisuusliitteetTab"
                    class="tab"><span>Kk-haut: Kelpoisuus ja liitteet</span></a>
                 </c:if>
+
             </div>
 
             <div class="tabsheets">
                 <section id="application" class="tabsheet" data-tabs-group="applicationtabs" data-tabs-id="application"
                          style="display: block">
-
                     <jsp:include page="hakemusTab.jsp"/>
+                </section>
 
+                <section id="applicationValinta" class="tabsheet" data-tabs-group="applicationtabs" data-tabs-id="applicationValinta"
+                         style="display: none">
+                    <jsp:include page="hakemusValinnassaTab.jsp"/>
                 </section>
 
                 <section id="valinta" class="tabsheet" data-tabs-group="applicationtabs" data-tabs-id="valinta"
                          style="display: none">
-
                     <jsp:include page="valintaTab.jsp"/>
                 </section>
+
                 <c:if test="${applicationSystem.kohdejoukkoUri eq 'haunkohdejoukko_12'}">
                 <section id="kelpoisuusliitteet" class="tabsheet" data-tabs-group="applicationtabs" data-tabs-id="kelpoisuusliitteet"
                          style="display: none">

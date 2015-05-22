@@ -149,11 +149,10 @@ $(document).ready(function() {
      * Hotkey init
      */
 
-    $(document).bind('keypress', 'ctrl+left', function() { $('#applicationTab').click() });
-    $(document).bind('keypress', 'ctrl+right', function() { $('#valintaTab').click() });
     $(document).bind('keypress', '1', function() { $('#applicationTab').click() });
     $(document).bind('keypress', '2', function() { $('#valintaTab').click() });
-    $(document).bind('keypress', '3', function() { $('#kelpoisuusliitteetTab').click() });
+    $(document).bind('keypress', '3', function() { $('#applicationValintaTab').click() });
+    $(document).bind('keypress', '4', function() { $('#kelpoisuusliitteetTab').click() });
     $(document).bind('keypress', 'b', function() { location.href = $('#back').attr('href') });
 
     if (page_settings.preview === "true") {

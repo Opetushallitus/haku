@@ -664,6 +664,26 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         return response;
     }
 
+    @Override
+    public ModelResponse getApplicationValinta(final String oid) {
+        Application application = this.applicationService.getApplicationByOid(oid);
+        Form form = this.formService.getForm(application.getApplicationSystemId());
+        ValidationResult validationResult = elementTreeValidator.validate(new ValidationInput(form, application.getVastauksetMerged(),
+                oid, application.getApplicationSystemId(), ValidationInput.ValidationContext.officer_modify));
+        Element element = form;
+        String asId = application.getApplicationSystemId();
+        ApplicationSystem as = applicationSystemService.getApplicationSystem(asId);
+
+        ModelResponse modelResponse =
+                new ModelResponse(application, form, element, validationResult, koulutusinformaatioBaseUrl);
+        modelResponse.addObjectToModel("applicationSystem", as);
+
+        // TODO: Arvosanat valinnoista
+        // TODO: Suoritukset valinnoista
+
+        return modelResponse;
+    }
+
     private ApplicationNote createNote(String note) {
         return new ApplicationNote(note, new Date(), userSession.getUser().getUserName());
     }

@@ -80,6 +80,7 @@ public class OfficerController {
     public static final String CHARSET_UTF_8 = ";charset=UTF-8";
     public static final String MEDIA_TYPE_TEXT_HTML_UTF8 = MediaType.TEXT_HTML + CHARSET_UTF_8;
     public static final String APPLICATION_PRINT_VIEW = "/print/print";
+    public static final String APPLICATION_VALINTA_VIEW = "/virkailija/hakemusValinnassa";
     public static final String PHASE_ID_PREVIEW = "esikatselu";
 
     @Autowired
@@ -320,6 +321,14 @@ public class OfficerController {
     public Viewable getApplicationPrintView(@PathParam(OID_PATH_PARAM) final String oid) {
         ModelResponse modelResponse = officerUIService.getApplicationPrint(oid);
         return new Viewable(APPLICATION_PRINT_VIEW, modelResponse.getModel());
+    }
+
+    @GET
+    @Path("/hakemus/{oid}/valintaView")
+    @Produces(MEDIA_TYPE_TEXT_HTML_UTF8)
+    public Viewable getValintaView(@PathParam(OID_PATH_PARAM) final String oid) {
+        ModelResponse modelResponse = officerUIService.getApplicationValinta(oid);
+        return new Viewable(APPLICATION_VALINTA_VIEW, modelResponse.getModel());
     }
 
     @POST
