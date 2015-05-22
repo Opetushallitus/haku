@@ -4,7 +4,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib prefix="haku" tagdir="/WEB-INF/tags" %>
 
-<haku:messages messages="${errorMessages}" additionalClass="warning" form="${it.form}"/>
+<haku:messages messages="${it.errorMessages}" additionalClass="warning" form="${it.form}"/>
 <c:set var="officerUi" value="true" scope="request"/>
 <c:choose>
     <c:when test="${preview}">
