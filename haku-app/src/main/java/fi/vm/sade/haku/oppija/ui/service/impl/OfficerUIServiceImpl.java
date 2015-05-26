@@ -665,22 +665,34 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     }
 
     @Override
-    public ModelResponse getApplicationValinta(final String oid) {
-        Application application = this.applicationService.getApplicationByOid(oid);
+    public ModelResponse getApplicationValinta(final String oid) throws IOException {
+        Application application = this.applicationService.getApplicationWithValintadata(oid);
         Form form = this.formService.getForm(application.getApplicationSystemId());
         ValidationResult validationResult = elementTreeValidator.validate(new ValidationInput(form, application.getVastauksetMerged(),
                 oid, application.getApplicationSystemId(), ValidationInput.ValidationContext.officer_modify));
+
         Element element = form;
         String asId = application.getApplicationSystemId();
         ApplicationSystem as = applicationSystemService.getApplicationSystem(asId);
 
         ModelResponse modelResponse =
                 new ModelResponse(application, form, element, validationResult, koulutusinformaatioBaseUrl);
+//        modelResponse.addObjectToModel("preview", true);
+//        modelResponse.addObjectToModel("phaseEditAllowed", new HashMap<>());
+//        modelResponse.addObjectToModel("virkailijaDeleteAllowed", false);
+//        modelResponse.addObjectToModel("postProcessAllowed", false);
         modelResponse.addObjectToModel("applicationSystem", as);
 
-        // TODO: Arvosanat valinnoista
-        // TODO: Suoritukset valinnoista
+        String sendingSchoolOid = application.getVastauksetMerged().get(OppijaConstants.ELEMENT_ID_SENDING_SCHOOL);
+        if (sendingSchoolOid != null) {
+            Organization sendingSchool = organizationService.findByOid(sendingSchoolOid);
+            String sendingClass = application.getVastauksetMerged().get("lahtoluokka");
+            modelResponse.addObjectToModel("sendingSchool", sendingSchool.getName());
+            modelResponse.addObjectToModel("sendingClass", sendingClass);
+        }
 
+        modelResponse.addObjectToModel("officerUi", true);
+        modelResponse.addAnswers(new HashMap<String, String>(){{put("_meta_officerUi", "true");}});
         return modelResponse;
     }
 

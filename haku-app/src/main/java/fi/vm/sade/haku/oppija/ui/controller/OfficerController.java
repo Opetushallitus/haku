@@ -326,7 +326,7 @@ public class OfficerController {
     @GET
     @Path("/hakemus/{oid}/valintaView")
     @Produces(MEDIA_TYPE_TEXT_HTML_UTF8)
-    public Viewable getValintaView(@PathParam(OID_PATH_PARAM) final String oid) {
+    public Viewable getValintaView(@PathParam(OID_PATH_PARAM) final String oid) throws IOException {
         ModelResponse modelResponse = officerUIService.getApplicationValinta(oid);
         return new Viewable(APPLICATION_VALINTA_VIEW, modelResponse.getModel());
     }

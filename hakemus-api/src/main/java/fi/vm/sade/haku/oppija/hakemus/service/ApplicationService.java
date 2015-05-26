@@ -114,4 +114,6 @@ public interface ApplicationService {
     Application updatePreferenceBasedData(final Application application);
 
     Application removeOrphanedAnswers(Application application);
+
+    Application getApplicationWithValintadata(String oid);
 }
