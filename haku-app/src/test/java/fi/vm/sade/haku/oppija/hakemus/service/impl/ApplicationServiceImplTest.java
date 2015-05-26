@@ -26,6 +26,8 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Phase;
 import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
+import fi.vm.sade.haku.oppija.lomake.service.FormService;
+import fi.vm.sade.haku.oppija.lomake.service.impl.UserSession;
 import fi.vm.sade.haku.oppija.lomake.validation.ElementTreeValidator;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidatorFactory;
 import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
@@ -34,6 +36,7 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.i18n.I18nBundleService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakuService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
+import fi.vm.sade.haku.virkailija.valinta.ValintaService;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -135,8 +138,15 @@ public class ApplicationServiceImplTest {
 //        when(suoritusrekisteriService.getLahtokoulu(any(String.class))).thenReturn("1.2.246.562.10.56695937518");
 //        when(suoritusrekisteriService.getLahtoluokka(any(String.class))).thenReturn("9A");
 
-        service = new ApplicationServiceImpl(applicationDAO, null, null, applicationOidService, authenticationService, organizationService,
-                hakuPermissionService, applicationSystemService, koulutusinformaatioService, i18nBundleService, null, null, elementTreeValidator, null);
+        UserSession userSession = null;
+        FormService formService = null;
+        HakuService hakuService = null;
+        ValintaService valintaService = null;
+        String onlyBackgroundValidation = null;
+        service = new ApplicationServiceImpl(applicationDAO, userSession, formService, applicationOidService,
+                authenticationService, organizationService, hakuPermissionService, applicationSystemService,
+                koulutusinformaatioService, i18nBundleService, suoritusrekisteriService, hakuService,
+                elementTreeValidator, valintaService, onlyBackgroundValidation);
     }
 
     @Test
@@ -407,7 +417,7 @@ public class ApplicationServiceImplTest {
         when(applicationSystemService.getApplicationSystem("myAs")).thenReturn(as);
 
         ApplicationServiceImpl applicationService = new ApplicationServiceImpl(null, null, null, null, null, null,
-                null, applicationSystemService, null, null, null, null, null, null);
+                null, applicationSystemService, null, null, null, null, null, null, null);
         application = applicationService.removeOrphanedAnswers(application);
         Map<String, String> persAnswers = application.getPhaseAnswers(OppijaConstants.PHASE_PERSONAL);
         Map<String, String> eduAnswers = application.getPhaseAnswers(OppijaConstants.PHASE_EDUCATION);
@@ -497,7 +507,7 @@ public class ApplicationServiceImplTest {
         }});
 
         ApplicationServiceImpl applicationService = new ApplicationServiceImpl(null, null, null, null, null, null, null,
-                null, null, null, suoritusrekisteriService, hakuService, null, null);
+                null, null, null, suoritusrekisteriService, hakuService, null, null, null);
 
         application = applicationService.updateAutomaticEligibilities(application);
 
