@@ -119,13 +119,15 @@ public class AttachmentUtil {
         for (String aoOid : ApplicationUtil.getApplicationOptionAttachmentAOIds(application)) {
             ApplicationOptionDTO ao = koulutusinformaatioService.getApplicationOption(aoOid, lang);
             String name = null;
-            if (ao.getProvider().getApplicationOffice() != null &&
-              ao.getProvider().getApplicationOffice().getPostalAddress() != null) {
+            if (ao.getApplicationOffice() != null) {
+                name = ao.getApplicationOffice().getName();
+            } else if (ao.getProvider().getApplicationOffice() != null
+                    && ao.getProvider().getApplicationOffice().getPostalAddress() != null) {
                 name = ao.getProvider().getApplicationOffice().getName();
             } else {
                 name = ao.getProvider().getName();
             }
-            for (ApplicationOptionAttachmentDTO attachmentDTO : ao.getAttachments()) {
+       for (ApplicationOptionAttachmentDTO attachmentDTO : ao.getAttachments()) {
                 if (attachmentDTO.isUsedInApplicationForm()) {
                     String descriptionText = attachmentDTO.getDescreption();
                     I18nText description = null;
@@ -363,7 +365,10 @@ public class AttachmentUtil {
         LearningOpportunityProviderDTO provider = ao.getProvider();
         String recipientName = provider.getName();
         AddressDTO address = provider.getPostalAddress();
-        if (provider.getApplicationOffice() != null && provider.getApplicationOffice().getPostalAddress() != null) {
+        if(ao.getApplicationOffice()!= null){
+            recipientName = ao.getApplicationOffice().getName();
+            address = ao.getApplicationOffice().getPostalAddress();
+        } else if (provider.getApplicationOffice() != null && provider.getApplicationOffice().getPostalAddress() != null) {
             if(StringUtils.isNotEmpty(provider.getApplicationOffice().getName())) {
                 recipientName = provider.getApplicationOffice().getName();
             }
