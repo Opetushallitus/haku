@@ -115,7 +115,7 @@ public class AttachmentUtil {
 
     private static List<ApplicationAttachmentRequest> addApplicationOptionAttachments(
       List<ApplicationAttachmentRequest> attachments, Application application,
-      KoulutusinformaatioService koulutusinformaatioService, String lang, I18nBundle i18nBundle) {
+            KoulutusinformaatioService koulutusinformaatioService, String lang, I18nBundle i18nBundle) {
         for (String aoOid : ApplicationUtil.getApplicationOptionAttachmentAOIds(application)) {
             ApplicationOptionDTO ao = koulutusinformaatioService.getApplicationOption(aoOid, lang);
             String name = null;
@@ -127,7 +127,7 @@ public class AttachmentUtil {
             } else {
                 name = ao.getProvider().getName();
             }
-       for (ApplicationOptionAttachmentDTO attachmentDTO : ao.getAttachments()) {
+            for (ApplicationOptionAttachmentDTO attachmentDTO : ao.getAttachments()) {
                 if (attachmentDTO.isUsedInApplicationForm()) {
                     String descriptionText = attachmentDTO.getDescreption();
                     I18nText description = null;
@@ -365,7 +365,7 @@ public class AttachmentUtil {
         LearningOpportunityProviderDTO provider = ao.getProvider();
         String recipientName = provider.getName();
         AddressDTO address = provider.getPostalAddress();
-        if(ao.getApplicationOffice()!= null){
+        if (ao.getApplicationOffice() != null) {
             recipientName = ao.getApplicationOffice().getName();
             address = ao.getApplicationOffice().getPostalAddress();
         } else if (provider.getApplicationOffice() != null && provider.getApplicationOffice().getPostalAddress() != null) {
