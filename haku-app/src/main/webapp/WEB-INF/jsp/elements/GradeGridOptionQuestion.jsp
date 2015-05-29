@@ -17,41 +17,34 @@
   ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   ~ European Union Public Licence for more details.
   --%>
-<c:choose>
-    <c:when test="${virkailijaEdit}">
-        <jsp:include page="GradeGridOptionQuestionPreview.jsp" />
-    </c:when>
-    <c:otherwise>
-        <haku:setSelectedValue element="${element}"/>
-        <select
-                aria-labelledby='${parent.id.substring(0,parent.id.length() - 1).concat("1")} ${" gradegrid-table-header-column".concat(parent.id.substring(parent.id.length() - 1))}'
-                ${element.attributeString} id="${element.id}" name="${element.id}">
-            <c:if test="${not element.selected}">
-                <option value="">&nbsp;</option>
-            </c:if>
-            <c:choose>
-                <c:when test="${element.sortByText}">
-                    <c:set var="options" value="${element.optionsSortedByText[requestScope['fi_vm_sade_oppija_language']]}"/>
-                </c:when>
-                <c:otherwise>
-                    <c:set var="options" value="${element.options}"/>
-                </c:otherwise>
-            </c:choose>
-            <haku:options options="${options}"/>
-        </select>
-        <c:remove var="selected_value" scope="request"/>
-        <script>
-            $(document).ready(function () {
-                if (${not (answers[element.id] eq null)}) {
-                    var element = $("#${element.id}");
-                    var row = element.closest('tr');
-                    row.removeAttr('hidden');
-                    row.find('*:disabled').attr("disabled", false);
-                    var group = element.closest('tr').attr('data-group');
-                }
-            })
-        </script>
-        <haku:errorMessage id="${element.id}" additionalClass="margin-top-1"/>
-        <haku:help element="${element}"/>
-    </c:otherwise>
-</c:choose>
+<haku:setSelectedValue element="${element}"/>
+<select
+        aria-labelledby='${parent.id.substring(0,parent.id.length() - 1).concat("1")} ${" gradegrid-table-header-column".concat(parent.id.substring(parent.id.length() - 1))}'
+        ${element.attributeString} id="${element.id}" name="${element.id}">
+    <c:if test="${not element.selected}">
+        <option value="">&nbsp;</option>
+    </c:if>
+    <c:choose>
+        <c:when test="${element.sortByText}">
+            <c:set var="options" value="${element.optionsSortedByText[requestScope['fi_vm_sade_oppija_language']]}"/>
+        </c:when>
+        <c:otherwise>
+            <c:set var="options" value="${element.options}"/>
+        </c:otherwise>
+    </c:choose>
+    <haku:options options="${options}"/>
+</select>
+<c:remove var="selected_value" scope="request"/>
+<script>
+    $(document).ready(function () {
+        if (${not (answers[element.id] eq null)}) {
+            var element = $("#${element.id}");
+            var row = element.closest('tr');
+            row.removeAttr('hidden');
+            row.find('*:disabled').attr("disabled", false);
+            var group = element.closest('tr').attr('data-group');
+        }
+    })
+</script>
+<haku:errorMessage id="${element.id}" additionalClass="margin-top-1"/>
+<haku:help element="${element}"/>
