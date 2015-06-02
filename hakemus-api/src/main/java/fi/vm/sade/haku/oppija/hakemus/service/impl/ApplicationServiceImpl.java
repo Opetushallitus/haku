@@ -38,6 +38,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.User;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.Phase;
 import fi.vm.sade.haku.oppija.lomake.exception.ApplicationSystemNotFound;
 import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
@@ -51,6 +52,7 @@ import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.i18n.I18nBundleService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakuService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
+import fi.vm.sade.haku.virkailija.valinta.ValintaService;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionAttachmentDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.OrganizationGroupDTO;
@@ -89,6 +91,8 @@ public class ApplicationServiceImpl implements ApplicationService {
     private final SuoritusrekisteriService suoritusrekisteriService;
     private final HakuService hakuService;
     private final ElementTreeValidator elementTreeValidator;
+    private final ValintaService valintaService;
+
     // Tee vain background-validointi tälle lomakkeelle
     private final String onlyBackgroundValidation;
 
@@ -107,6 +111,7 @@ public class ApplicationServiceImpl implements ApplicationService {
                                   I18nBundleService i18nBundleService,
                                   SuoritusrekisteriService suoritusrekisteriService,
                                   HakuService hakuService, ElementTreeValidator elementTreeValidator,
+                                  ValintaService valintaService,
                                   @Value("${onlyBackgroundValidation}") String onlyBackgroundValidation) {
         this.applicationDAO = applicationDAO;
         this.userSession = userSession;
@@ -120,6 +125,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         this.i18nBundleService = i18nBundleService;
         this.suoritusrekisteriService = suoritusrekisteriService;
         this.hakuService = hakuService;
+        this.valintaService = valintaService;
         this.elementTreeValidator = elementTreeValidator;
         this.onlyBackgroundValidation = onlyBackgroundValidation;
     }
@@ -450,6 +456,43 @@ public class ApplicationServiceImpl implements ApplicationService {
             }
             application.addVaiheenVastaukset(phaseId, newAnswers);
         }
+        return application;
+    }
+
+    @Override
+    public Application getApplicationWithValintadata(String oid) {
+        Application application = getApplicationByOid(oid);
+        ApplicationSystem as = applicationSystemService.getApplicationSystem(application.getApplicationSystemId());
+        Form form = as.getForm();
+        Phase educationPhase = (Phase) form.getChildById(OppijaConstants.PHASE_EDUCATION);
+
+        HashMap<String, Element> educationElements = new HashMap<>();
+        for (Element elem : educationPhase.getAllChildren()) {
+            educationElements.put(elem.getId(), elem);
+        }
+
+        HashMap<String, String> educationAnswers = new HashMap<>();
+        HashMap<String, String> newGradeAnswers = new HashMap<>();
+        Map<String, String> valintaData = valintaService.fetchValintaData(application);
+        for (Map.Entry<String, String> entry : valintaData.entrySet()) {
+            String key = entry.getKey();
+            String value = entry.getValue();
+            if (educationElements.containsKey(key)) {
+                educationAnswers.put(key, value);
+            } else if (key.startsWith("PK_") || key.startsWith("LK_")) {
+                newGradeAnswers.put(key, value);
+            }
+        }
+        HashMap<String, String> oldGradeAnswers = new HashMap<>(application.getPhaseAnswers(OppijaConstants.PHASE_GRADES));
+        for (Map.Entry<String, String> entry : oldGradeAnswers.entrySet()) {
+            String key = entry.getKey();
+            if (key.startsWith("PK_") || key.startsWith("LK_")) {
+                continue;
+            }
+            newGradeAnswers.put(key, entry.getValue());
+        }
+        application.addVaiheenVastaukset(OppijaConstants.PHASE_EDUCATION, educationAnswers);
+        application.addVaiheenVastaukset(OppijaConstants.PHASE_GRADES, newGradeAnswers);
         return application;
     }
 

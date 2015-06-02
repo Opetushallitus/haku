@@ -91,7 +91,7 @@ public class OfficerUIServiceImplTest {
         organizationService = mock(OrganizationService.class);
         valintaService = new ValintaServiceMockImpl(); //mock(ValintaService.class);
         userSession = mock(UserSession.class);
-        baseEducationService = mock(BaseEducationService.class);        I18nBundleService i18nBundleService = mock(I18nBundleService.class);
+        I18nBundleService i18nBundleService = mock(I18nBundleService.class);
         I18nBundle i18nBundle = mock(I18nBundle.class);
         when(i18nBundle.get(any(String.class))).thenReturn(new I18nText(new HashMap<String, String>(3) {{
             put("fi", "osoite");put("en", "osoite");put("sv", "osoite");
@@ -100,7 +100,6 @@ public class OfficerUIServiceImplTest {
 
         officerUIService = new OfficerUIServiceImpl(
                 applicationService,
-                baseEducationService,
                 formService,
                 koodistoService,
                 hakuPermissionService,
@@ -111,7 +110,6 @@ public class OfficerUIServiceImplTest {
                 organizationService,
                 valintaService,
                 userSession,
-                null,
                 null,
                 "01.02 - 01.09");
         form.addChild(phase);

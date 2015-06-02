@@ -132,7 +132,9 @@ public class PersonJsonAdapter implements JsonSerializer<Person>, JsonDeserializ
                 Date dob = AUTH_DATE_FMT.parse(dobStr);
                 personBuilder.setDateOfBirth(HAKU_DATE_FMT.format(dob));
             } catch (ParseException e) {
-                log.error("Couldn't parse date of birth: "+dobStr);
+                log.error("Couldn't parse date of birth: '"+dobStr+"' for user "+personBuilder.getPersonOid());
+            } catch (NumberFormatException nfe) {
+                log.error("Couldn't format date of birth: '"+dobStr+"' for user "+personBuilder.getPersonOid());
             }
         }
 

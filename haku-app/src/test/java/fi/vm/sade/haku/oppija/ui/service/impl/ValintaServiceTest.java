@@ -5,13 +5,11 @@ import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationOptionDTO;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.Pistetieto;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
-import fi.vm.sade.haku.oppija.hakemus.service.BaseEducationService;
 import fi.vm.sade.haku.oppija.hakemus.service.HakuPermissionService;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.ModelResponse;
 import fi.vm.sade.haku.oppija.lomake.domain.User;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
-import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.haku.oppija.lomake.service.FormService;
 import fi.vm.sade.haku.oppija.lomake.service.impl.UserSession;
@@ -107,18 +105,14 @@ public class ValintaServiceTest {
 
         when(applicationSystemService.getApplicationSystem(any(String.class))).thenReturn(applicationSystem);
 
-        BaseEducationService baseEducationService = mock(BaseEducationService.class);
-        when(baseEducationService.getArvosanat(any(String.class), any(String.class), any(ApplicationSystem.class)))
-                .thenThrow(new ResourceNotFoundException("not found"));
-
         UserSession session = mock(UserSession.class);
         User user = mock(User.class);
         when(user.getUserName()).thenReturn(null);
         when(session.getUser()).thenReturn(user);
 
-        OfficerUIServiceImpl officerUIService = new OfficerUIServiceImpl(applicationService, baseEducationService, formService, null,
+        OfficerUIServiceImpl officerUIService = new OfficerUIServiceImpl(applicationService, formService, null,
                 hakupermissionService, null, null, null, elementTreeValidator, applicationSystemService,
-                null, null, valintaService, session, null, null, null);
+                null, null, valintaService, session, null, null);
         ModelResponse response = officerUIService.getValidatedApplication("oid", "esikatselu");
 
         List<ApplicationOptionDTO> hakukohteet = (List<ApplicationOptionDTO>) response.getModel().get("hakukohteet");

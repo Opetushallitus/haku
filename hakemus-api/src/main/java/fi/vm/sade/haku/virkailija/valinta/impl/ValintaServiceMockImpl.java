@@ -1,6 +1,7 @@
 package fi.vm.sade.haku.virkailija.valinta.impl;
 
 import com.google.gson.*;
+import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.virkailija.valinta.ValintaService;
 import fi.vm.sade.haku.virkailija.valinta.dto.HakemusDTO;
 import fi.vm.sade.haku.virkailija.valinta.dto.HakijaDTO;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Type;
 import java.util.Date;
+import java.util.Map;
 
 @Service
 @Profile(value = {"dev", "it"})
@@ -840,6 +842,11 @@ public class ValintaServiceMockImpl implements ValintaService {
         HakijaDTO hakijaDTO = gson.fromJson(response, HakijaDTO.class);
         return hakijaDTO;
     }
+
+        @Override
+        public Map<String, String> fetchValintaData(Application application) {
+                return null;
+        }
 
 
 }
