@@ -128,6 +128,7 @@ public abstract class Element implements Serializable {
         return Collections.unmodifiableList(children);
     }
 
+    @Transient
     public List<Element> getAllChildren() {
         List<Element> allChildren = new ArrayList();
         for (Element child : children) {
