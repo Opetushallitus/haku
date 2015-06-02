@@ -26,7 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.annotation.Transient;
 
 public abstract class FieldValidator implements Validator {
-    private final String errorMessageKey;
+    private String errorMessageKey;
 
     @Transient
     private I18nBundleService i18nBundleService;
@@ -45,6 +45,14 @@ public abstract class FieldValidator implements Validator {
     public ValidationResult getInvalidValidationResult(final ValidationInput validationInput) {
         return new ValidationResult(validationInput.getFieldName(), getI18Text(errorMessageKey,
           validationInput.getApplicationSystemId()));
+    }
+
+    public String getErrorMessageKey() {
+        return errorMessageKey;
+    }
+
+    public void setErrorMessageKey(String errorMessageKey) {
+        this.errorMessageKey = errorMessageKey;
     }
 
     @Autowired

@@ -22,6 +22,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.Popup;
 import fi.vm.sade.haku.oppija.lomake.validation.Validator;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.I18nBundle;
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.springframework.data.annotation.Transient;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -128,6 +129,7 @@ public abstract class Element implements Serializable {
         return Collections.unmodifiableList(children);
     }
 
+    @JsonIgnore
     public List<Element> getAllChildren() {
         List<Element> allChildren = new ArrayList();
         for (Element child : children) {

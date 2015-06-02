@@ -55,6 +55,14 @@ public class RequiredFieldValidator extends FieldValidator {
         this.id = id;
     }
 
+    public List<ValidationInput.ValidationContext> getContext() {
+        return context;
+    }
+
+    public void setContext(List<ValidationInput.ValidationContext> context) {
+        this.context = context;
+    }
+
     @Override
     public ValidationResult validate(final ValidationInput validationInput) {
         if (!inContext(validationInput)) {

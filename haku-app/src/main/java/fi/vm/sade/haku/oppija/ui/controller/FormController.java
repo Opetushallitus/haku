@@ -18,6 +18,7 @@ package fi.vm.sade.haku.oppija.ui.controller;
 
 import com.sun.jersey.api.view.Viewable;
 import fi.vm.sade.haku.oppija.lomake.domain.ModelResponse;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.haku.oppija.ui.common.RedirectToFormViewPath;
 import fi.vm.sade.haku.oppija.ui.common.RedirectToPendingViewPath;
@@ -70,6 +71,8 @@ public class FormController {
 
     private final String generatorUrl;
 
+    private final ObjectMapper mapper;
+
     @Autowired
     public FormController(final UIService uiService, final PDFService pdfService,
                           final AuthenticationService authenticationService,
@@ -78,6 +81,12 @@ public class FormController {
         this.pdfService = pdfService;
         this.authenticationService = authenticationService;
         this.generatorUrl = generatorUrl;
+
+        mapper = new ObjectMapper()
+                .disable(SerializationConfig.Feature.INDENT_OUTPUT)
+                .disable(SerializationConfig.Feature.FAIL_ON_EMPTY_BEANS)
+                .disable(SerializationConfig.Feature.WRITE_EMPTY_JSON_ARRAYS)
+                .disable(SerializationConfig.Feature.WRITE_NULL_MAP_VALUES);
     }
 
     @GET
@@ -111,16 +120,11 @@ public class FormController {
                                    @PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId) throws URISyntaxException {
         LOGGER.info("Getting form for as "+applicationSystemId);
         Form form = uiService.getApplicationSystemForm(applicationSystemId);
+        Element element = form.getChildById("osaaminen");
         LOGGER.info("Got form for as "+applicationSystemId);
-
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.disable(SerializationConfig.Feature.INDENT_OUTPUT);
-        mapper.disable(SerializationConfig.Feature.FAIL_ON_EMPTY_BEANS);
-
-        Map retMap = mapper.convertValue(form, Map.class);
+        Map retMap = mapper.convertValue(element, Map.class);
         LOGGER.info("Returning form as map for as "+applicationSystemId);
         return retMap;
-
     }
 
     @POST

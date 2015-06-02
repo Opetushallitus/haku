@@ -21,6 +21,7 @@ import com.google.common.collect.ImmutableMap;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.springframework.data.annotation.Transient;
 
 import java.util.ArrayList;
@@ -43,9 +44,9 @@ public abstract class OptionQuestion extends Question {
     private Map<String, Option> optionsMap;
     @Transient
     private Map<String, List<Option>> optionsSortedByText;
-    @Transient
+    @Transient @JsonIgnore
     private final Object optionsMapLock = new Object();
-    @Transient
+    @Transient @JsonIgnore
     private final Object optionsSortedByTextLock = new Object();
 
     protected OptionQuestion(final String id, final I18nText i18nText, final List<Option> options, final String[] keepFirst) {
@@ -57,6 +58,7 @@ public abstract class OptionQuestion extends Question {
     public List<Option> getOptions() {
         return options;
     }
+
 
     public Map<String, Option> getData() {
         if (null == optionsMap)
