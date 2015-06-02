@@ -5,13 +5,19 @@
 <%@ taglib prefix="haku" tagdir="/WEB-INF/tags" %>
 
 <script>
-$.get("${contextPath}/virkailija/hakemus/${it.application.oid}/valintaView",
-        function (data) {
+$.ajax({
+    url: "${contextPath}/virkailija/hakemus/${it.application.oid}/valintaView",
+    type: "GET",
+    success: function (data) {
             $('#hakemusValinnassa').html(data);
             $('#hakemusValinnassa').find('*').prop('disabled', true);
+        },
+    error: function (data) {
+            $('#hakemusValinnassa').html("<p>Hakemuksen tietojen lataaminen valintalaskennasta epäonnistui</p>");
         }
+    }
 );
 
 </script>
 
-<div id="hakemusValinnassa">here be the hakemus</div>
+<div id="hakemusValinnassa">Ladataan hakemuksen tietoja valintalaskennasta</div>
