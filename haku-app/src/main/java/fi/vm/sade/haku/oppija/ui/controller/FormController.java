@@ -70,6 +70,8 @@ public class FormController {
 
     private final String generatorUrl;
 
+    private final ObjectMapper mapper;
+
     @Autowired
     public FormController(final UIService uiService, final PDFService pdfService,
                           final AuthenticationService authenticationService,
@@ -78,6 +80,12 @@ public class FormController {
         this.pdfService = pdfService;
         this.authenticationService = authenticationService;
         this.generatorUrl = generatorUrl;
+
+        mapper = new ObjectMapper()
+                .disable(SerializationConfig.Feature.INDENT_OUTPUT)
+                .disable(SerializationConfig.Feature.FAIL_ON_EMPTY_BEANS)
+                .disable(SerializationConfig.Feature.WRITE_EMPTY_JSON_ARRAYS)
+                .disable(SerializationConfig.Feature.WRITE_NULL_MAP_VALUES);
     }
 
     @GET
@@ -112,15 +120,9 @@ public class FormController {
         LOGGER.info("Getting form for as "+applicationSystemId);
         Form form = uiService.getApplicationSystemForm(applicationSystemId);
         LOGGER.info("Got form for as "+applicationSystemId);
-
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.disable(SerializationConfig.Feature.INDENT_OUTPUT);
-        mapper.disable(SerializationConfig.Feature.FAIL_ON_EMPTY_BEANS);
-
         Map retMap = mapper.convertValue(form, Map.class);
         LOGGER.info("Returning form as map for as "+applicationSystemId);
         return retMap;
-
     }
 
     @POST
