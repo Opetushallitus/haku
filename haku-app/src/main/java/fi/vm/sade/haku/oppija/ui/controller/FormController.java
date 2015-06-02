@@ -109,6 +109,7 @@ public class FormController {
     @Path("/{applicationSystemId}/form")
     public Map getApplicationSystemForm(@Context HttpServletRequest request,
                                    @PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId) throws URISyntaxException {
+        LOGGER.info("Getting form for as "+applicationSystemId);
         Form form = uiService.getApplicationSystemForm(applicationSystemId);
 
         ObjectMapper mapper = new ObjectMapper();
