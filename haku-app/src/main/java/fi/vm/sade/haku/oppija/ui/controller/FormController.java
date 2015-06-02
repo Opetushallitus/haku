@@ -111,12 +111,16 @@ public class FormController {
                                    @PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId) throws URISyntaxException {
         LOGGER.info("Getting form for as "+applicationSystemId);
         Form form = uiService.getApplicationSystemForm(applicationSystemId);
+        LOGGER.info("Got form for as "+applicationSystemId);
 
         ObjectMapper mapper = new ObjectMapper();
         mapper.disable(SerializationConfig.Feature.INDENT_OUTPUT);
         mapper.disable(SerializationConfig.Feature.FAIL_ON_EMPTY_BEANS);
 
-        return mapper.convertValue(form, Map.class);
+        Map retMap = mapper.convertValue(form, Map.class);
+        LOGGER.info("Returning form as map for as "+applicationSystemId);
+        return retMap;
+
     }
 
     @POST
