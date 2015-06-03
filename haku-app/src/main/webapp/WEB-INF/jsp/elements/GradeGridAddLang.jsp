@@ -17,38 +17,31 @@
   ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   ~ European Union Public Licence for more details.
   --%>
-<c:choose>
-    <c:when test="${virkailijaEdit}">
-        <jsp:include page="GradeGridAddLangPreview.jsp" />
-    </c:when>
-    <c:otherwise>
-        <select aria-labelledby="${element.id}" id="${element.id}-add-lang-select"></select>
-        <button ${element.attributeString} id="${element.id}" class="link" type="button"><haku:i18nText value="${element.i18nText}"/></button>
-        <script>
-            $(document).ready(function () {
+<select aria-labelledby="${element.id}" id="${element.id}-add-lang-select"></select>
+<button ${element.attributeString} id="${element.id}" class="link" type="button"><haku:i18nText value="${element.i18nText}"/></button>
+<script>
+    $(document).ready(function () {
 
-                $("#${element.id}").on('click', function (event) {
-                    var select = $("#${element.id}-add-lang-select");
-                    var selectedOption = select.children(":selected");
-                    var tr = $("#" + selectedOption.val());
-                    tr.show();
-                    tr.find('*').removeAttr("disabled");
-                    selectedOption.remove();
-                    if (select.children().length == 0) {
-                        $(this).closest('tr').hide();
-                    }
-                });
+        $("#${element.id}").on('click', function (event) {
+            var select = $("#${element.id}-add-lang-select");
+            var selectedOption = select.children(":selected");
+            var tr = $("#" + selectedOption.val());
+            tr.show();
+            tr.find('*').removeAttr("disabled");
+            selectedOption.remove();
+            if (select.children().length == 0) {
+                $(this).closest('tr').hide();
+            }
+        });
 
-                var select = $("#${element.id}-add-lang-select");
-                $("tr[data-group=${element.id}]:hidden").each(
-                        function (index, item) {
-                            var option = $('<option>&nbsp;</option>');
-                            option.html($(item).children('td:first').text());
-                            option.val($(item).attr('id'));
-                            select.append(option);
-                        }
-                )
-            })
-        </script>
-    </c:otherwise>
-</c:choose>
+        var select = $("#${element.id}-add-lang-select");
+        $("tr[data-group=${element.id}]:hidden").each(
+                function (index, item) {
+                    var option = $('<option>&nbsp;</option>');
+                    option.html($(item).children('td:first').text());
+                    option.val($(item).attr('id'));
+                    select.append(option);
+                }
+        )
+    })
+</script>
