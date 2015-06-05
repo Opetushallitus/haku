@@ -22,6 +22,7 @@ import com.sun.jersey.api.client.GenericType;
 import com.sun.jersey.api.client.WebResource;
 import fi.vm.sade.haku.oppija.common.jackson.UnknownPropertiesAllowingJacksonJsonClientFactory;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
+import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakuService;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.ResultV1RDTO;
@@ -72,7 +73,7 @@ public class HakuServiceImpl implements HakuService {
         List<HakuV1RDTO> hakuDTOs = Lists.newArrayList();
         if (hakuResult != null && hakuResult.getResult() != null) {
             for (HakuV1RDTO haku : hakuResult.getResult()) {
-                if (haku.isJarjestelmanHakulomake()) {
+                if (haku.isJarjestelmanHakulomake() && !"POISTETTU".equals(haku.getTila())) {
                     hakuDTOs.add(haku);
                 }
             }
@@ -100,6 +101,9 @@ public class HakuServiceImpl implements HakuService {
         ResultV1RDTO<HakuV1RDTO> result = asWebResource.accept(MEDIA_TYPE).get(new GenericType<ResultV1RDTO<HakuV1RDTO>>() {
         });
         HakuV1RDTO haku = result.getResult();
-        return haku;
+        if (haku != null && !"POISTETTU".equals(haku.getTila())) {
+            return haku;
+        }
+        throw new ResourceNotFoundException(oid + " does not match any usable applicationSystem");
     }
 }
