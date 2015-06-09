@@ -311,8 +311,9 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         });
         HakutoiveenValintatapajonoDTO jono = jonot.get(0);
         BigDecimal pisteet = jono.getPisteet();
+        boolean reallyShowScores = showScores && pisteet != null && pisteet.compareTo(new BigDecimal(0)) > 0;
+        ao.setYhteispisteet(reallyShowScores ? PISTE_FMT.format(pisteet) : "");
         ao.setJonoId(jono.getValintatapajonoOid());
-        ao.setYhteispisteet(pisteet != null && showScores ? PISTE_FMT.format(pisteet) : "");
         ao.setSijoittelunTulos(jono.getTila());
         ao.setVastaanottoTieto(jono.getVastaanottotieto());
 
