@@ -683,6 +683,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
 //        modelResponse.addObjectToModel("virkailijaDeleteAllowed", false);
 //        modelResponse.addObjectToModel("postProcessAllowed", false);
         modelResponse.addObjectToModel("applicationSystem", as);
+        modelResponse.addObjectToModel("baseEducationDoesNotRestrictApplicationOptions", as.baseEducationDoesNotRestrictApplicationOptions());
 
         String sendingSchoolOid = application.getVastauksetMerged().get(OppijaConstants.ELEMENT_ID_SENDING_SCHOOL);
         if (sendingSchoolOid != null) {
