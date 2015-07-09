@@ -22,10 +22,7 @@ import com.wordnik.swagger.annotations.ApiParam;
 import fi.vm.sade.haku.oppija.common.koulutusinformaatio.ApplicationOption;
 import fi.vm.sade.haku.oppija.common.koulutusinformaatio.ApplicationOptionService;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
-import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationAdditionalDataDTO;
-import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
-import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultItemDTO;
-import fi.vm.sade.haku.oppija.hakemus.domain.dto.SyntheticApplication;
+import fi.vm.sade.haku.oppija.hakemus.domain.dto.*;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationQueryParameters;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationQueryParametersBuilder;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
@@ -33,6 +30,7 @@ import fi.vm.sade.haku.oppija.hakemus.service.SyntheticApplicationService;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
+import fi.vm.sade.haku.oppija.ui.service.OfficerUIService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.I18nBundle;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.i18n.I18nBundleService;
 import org.apache.commons.lang3.StringUtils;
@@ -48,6 +46,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.net.URISyntaxException;
 import java.util.*;
 
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
@@ -74,6 +73,8 @@ public class ApplicationResource {
 
     private I18nBundleService i18nBundleService;
 
+    @Autowired
+    private OfficerUIService officerUIService;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ApplicationResource.class);
     private static final String OID = "oid";
@@ -448,5 +449,24 @@ public class ApplicationResource {
             }
         }
         return result;
+    }
+
+    @POST
+    @Path("/state/passivate")
+    @Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
+    @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
+    @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_CRUD')")
+    @ApiOperation(value = "Asettaa hakemusten tilan passiiviseksi")
+    public Response passifyApplication(final ApplicationOidsAndReason applicationOidsAndReason) throws URISyntaxException {
+        try {
+            LOGGER.info("Setting state of applications to passive: {}", applicationOidsAndReason);
+            for (String oid : applicationOidsAndReason.applicationOids) {
+                officerUIService.changeState(oid, Application.State.PASSIVE, applicationOidsAndReason.reason);
+            }
+            return Response.ok().build();
+        } catch (Throwable e) {
+            LOGGER.error("Passivation failed {}", e);
+            throw new JSONException(Response.Status.INTERNAL_SERVER_ERROR, "Passivation failed", e);
+        }
     }
 }
