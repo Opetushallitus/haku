@@ -279,7 +279,7 @@ final class ApplicationDAOMongoQueryBuilder {
         boolean primaryPreferenceOnly = applicationQueryParameters.isPrimaryPreferenceOnly();
 
         // FIXME A dirty Quickfix
-        if (isBlank(lopOid) && isBlank(preference) && isBlank(groupOid) && !discretionaryOnly)
+        if (isBlank(lopOid) && isBlank(preference) && isBlank(groupOid) && !discretionaryOnly && !primaryPreferenceOnly)
             return _quickfix(aoOids);
 
         int maxOptions = primaryPreferenceOnly && isBlank(groupOid)
