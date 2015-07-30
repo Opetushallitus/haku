@@ -48,5 +48,5 @@ if [[ $@ =~ luokka ]] || [[ $@ =~ "qa.oph" ]]; then
   export_theme_questions ${ASID} "$@" \
     > ${FIXTURES_ROOT}/themequestion/${FILENAME}.json
 else
-  echo Please specify mongo params for luokka.
+  echo 'export-fixtures.sh <application OID> <person OID> -u <user> -p <passwd> -h <mongo-host>'
 fi
