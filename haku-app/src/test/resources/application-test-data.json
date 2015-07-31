@@ -43,7 +43,26 @@
                 "preference1-Koulutus-id-sora": "false",
                 "preference1-Koulutus-id-vocational": "false",
                 "preference1-Opetuspiste": "Alavuden lukio",
-                "preference1-Opetuspiste-id": "1.2.246.562.10.10464399921"
+                "preference1-Opetuspiste-id": "1.2.246.562.10.10464399921",
+
+                "preference2-Koulutus" : "Pintakäsittelyalan perustutkinto, pk",
+                "preference2-Koulutus-educationDegree" : "32",
+                "preference2-Koulutus-id" : "1.2.246.562.20.52010929637",
+                "preference2-Koulutus-id-ao-groups" : "",
+                "preference2-Koulutus-id-aoIdentifier" : "864",
+                "preference2-Koulutus-id-athlete" : "false",
+                "preference2-Koulutus-id-attachmentgroups" : "",
+                "preference2-Koulutus-id-attachments" : "",
+                "preference2-Koulutus-id-educationcode" : "koulutus_351805",
+                "preference2-Koulutus-id-kaksoistutkinto" : "true",
+                "preference2-Koulutus-id-lang" : "FI",
+                "preference2-Koulutus-id-sora" : "false",
+                "preference2-Koulutus-id-vocational" : "true",
+                "preference2-Opetuspiste" : "Vammalan ammattikoulu, Ratakatu, Sasky",
+                "preference2-Opetuspiste-id" : "1.2.246.562.10.84451661825",
+                "preference2-discretionary" : "false",
+                "preference2_kaksoistutkinnon_lisakysymys" : "false"
+
             },
             "koulutustausta": {
                 "luokkataso": "9",
@@ -97,6 +116,25 @@
                         "Koulutus-id-lang": "FI",
                         "Koulutus-id-attachments": "false",
                         "Koulutus-id-sora": "false"
+                    }
+                },
+                {
+                    "ordinal" : 2,
+                    "preferenceData" : {
+                        "Koulutus-id-vocational" : "true",
+                        "Koulutus-id-aoIdentifier" : "864",
+                        "Opetuspiste" : "Vammalan ammattikoulu, Ratakatu, Sasky",
+                        "Koulutus-id-athlete" : "false",
+                        "Koulutus-id" : "1.2.246.562.20.52010929637",
+                        "Koulutus-id-sora" : "false",
+                        "kaksoistutkinnon_lisakysymys" : "false",
+                        "Koulutus-educationDegree" : "32",
+                        "Koulutus-id-kaksoistutkinto" : "true",
+                        "Opetuspiste-id" : "1.2.246.562.10.84451661825",
+                        "Koulutus-id-educationcode" : "koulutus_351805",
+                        "Koulutus" : "Pintakäsittelyalan perustutkinto, pk",
+                        "Koulutus-id-lang" : "FI",
+                        "discretionary" : "false"
                     }
                 }
             ]

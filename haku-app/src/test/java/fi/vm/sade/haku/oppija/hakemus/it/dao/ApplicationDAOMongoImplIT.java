@@ -16,19 +16,15 @@
 
 package fi.vm.sade.haku.oppija.hakemus.it.dao;
 
-import static java.lang.ClassLoader.getSystemResourceAsStream;
 import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
-import org.apache.commons.io.IOUtils;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +34,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.mongodb.DBObject;
-import com.mongodb.util.JSON;
 
 import fi.vm.sade.haku.oppija.common.dao.AbstractDAOTest;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
@@ -92,24 +87,25 @@ public class ApplicationDAOMongoImplIT extends AbstractDAOTest {
 
     @Test
     public void testFindAllQueriedByApplicationSystemAndApplicationOption() {
-        assertEquals(2, findByQuery(query().setSearchTerms("").setAsId("1.2.246.562.29.90697286251").setAoId("000")).getResults().size());
+        assertEquals(2, findAllQueried(query().setSearchTerms("").setAsId("1.2.246.562.29.90697286251").setAoId("000")).getResults().size());
     }
 
     @Test
-    public void testSearchWithMultipleuserOids() {
-        assertEquals(2, findByQuery(query().setPersonOids(asList("1.2.246.562.24.00000000001", "1.2.246.562.24.00000000002"))).getResults().size());
+    public void testFindAllQueriedWithMultipleuserOids() {
+        assertEquals(2, findAllQueried(query().setPersonOids(asList("1.2.246.562.24.00000000001", "1.2.246.562.24.00000000002"))).getResults().size());
     }
 
-    // TODO: test findAllQueried with aoOids and primaryPreferenceOnly
-
+    @Test
+    public void testFindAllQueriedByApplicationOptions() {
+        assertEquals(2, findAllQueried(query().setAoOids(asList("1.2.246.562.20.52010929637"))).getResults().size());
+        assertEquals(2, findAllQueried(query().setAoOids(asList("1.2.246.562.20.18097797874"))).getResults().size());
+        assertEquals(3, findAllQueried(query().setAoOids(asList("1.2.246.562.20.18097797874", "1.2.246.562.20.52010929637"))).getResults().size());
+    }
 
     @Test
-    public void testfindAllQueriedByApplicationSystemAndMultipleApplicationOptions() {
-        assertEquals(1, findByQuery(query().setAoOids(asList("1.2.246.562.20.52010929637"))).getResults().size());
-
-        assertEquals(2, findByQuery(query().setAoOids(asList("1.2.246.562.20.18097797874"))).getResults().size());
-
-        assertEquals(3, findByQuery(query().setAoOids(asList("1.2.246.562.20.18097797874", "1.2.246.562.20.52010929637"))).getResults().size());
+    public void testFindAllQueriedByApplicationOptionsWithPrimaryPreferenceOnly() {
+        assertEquals(2, findAllQueried(query().setAoOids(asList("1.2.246.562.20.52010929637"))).getResults().size());
+        assertEquals(1, findAllQueried(query().setAoOids(asList("1.2.246.562.20.52010929637")).setPrimaryPreferenceOnly(true)).getResults().size());
     }
 
     private ApplicationQueryParametersBuilder query() {
@@ -121,10 +117,11 @@ public class ApplicationDAOMongoImplIT extends AbstractDAOTest {
         return "application";
     }
 
-    private ApplicationSearchResultDTO findByQuery(final ApplicationQueryParametersBuilder queryBuilder) {
+    private ApplicationSearchResultDTO findAllQueried(final ApplicationQueryParametersBuilder queryBuilder) {
         ApplicationQueryParameters applicationQueryParameters = queryBuilder.build();
         AuthenticationServiceMockImpl authenticationServiceMock = new AuthenticationServiceMockImpl();
         ApplicationFilterParameters filterParameters = new ApplicationFilterParameters(5, authenticationServiceMock.getOrganisaatioHenkilo(), authenticationServiceMock.getOrganisaatioHenkilo(), authenticationServiceMock.getOrganisaatioHenkilo(), null, null);
-        return applicationDAO.findAllQueried(applicationQueryParameters, filterParameters);
+        final ApplicationSearchResultDTO result = applicationDAO.findAllQueried(applicationQueryParameters, filterParameters);
+        return result;
     }
 }
