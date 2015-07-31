@@ -16,35 +16,27 @@
 
 package fi.vm.sade.haku.oppija.hakemus.it;
 
-import com.mongodb.DBObject;
-import com.mongodb.util.JSON;
-import fi.vm.sade.haku.oppija.common.selenium.DummyModelBaseItTest;
-import fi.vm.sade.haku.oppija.common.selenium.LoginPage;
-import fi.vm.sade.haku.oppija.hakemus.domain.Application;
-import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
-import org.apache.commons.io.IOUtils;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.type.TypeReference;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.io.IOException;
 import java.util.List;
 
-import static java.lang.ClassLoader.getSystemResourceAsStream;
-import static org.junit.Assert.*;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.type.TypeReference;
+import org.junit.Before;
+import org.junit.Test;
+
+import com.mongodb.DBObject;
+
+import fi.vm.sade.haku.oppija.common.selenium.DummyModelBaseItTest;
+import fi.vm.sade.haku.oppija.common.selenium.LoginPage;
+import fi.vm.sade.haku.oppija.hakemus.domain.Application;
+import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
+import fi.vm.sade.haku.util.JsonTestData;
 
 public class ApplicationIT extends DummyModelBaseItTest {
-
-    protected static List<DBObject> applicationTestDataObject;
-
-    @SuppressWarnings("unchecked")
-    @BeforeClass
-    public static void readTestData() throws IOException {
-        String content = IOUtils.toString(getSystemResourceAsStream("application-test-data.json"), "UTF-8");
-        applicationTestDataObject = (List<DBObject>) JSON.parse(content);
-    }
+    protected static List<DBObject> applicationTestDataObject = JsonTestData.readTestData("application-test-data.json");
 
     @Before
     public void beforeApplicationIT() throws Exception {

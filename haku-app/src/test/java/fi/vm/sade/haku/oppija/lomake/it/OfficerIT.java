@@ -1,12 +1,11 @@
 package fi.vm.sade.haku.oppija.lomake.it;
 
-import com.mongodb.DBObject;
-import com.mongodb.util.JSON;
-import fi.vm.sade.haku.oppija.common.selenium.DummyModelBaseItTest;
-import fi.vm.sade.haku.oppija.common.selenium.LoginPage;
-import fi.vm.sade.haku.oppija.lomake.HakuClient;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
-import org.apache.commons.io.IOUtils;
+import static fi.vm.sade.haku.oppija.ui.selenium.DefaultValues.KYSYMYS_POHJAKOULUTUS;
+import static fi.vm.sade.haku.oppija.ui.selenium.DefaultValues.TUTKINTO_YLIOPPILAS;
+import static org.junit.Assert.assertEquals;
+
+import java.util.List;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
@@ -19,13 +18,14 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import static org.junit.Assert.*;
 
-import java.util.List;
+import com.mongodb.DBObject;
 
-import static fi.vm.sade.haku.oppija.ui.selenium.DefaultValues.KYSYMYS_POHJAKOULUTUS;
-import static fi.vm.sade.haku.oppija.ui.selenium.DefaultValues.TUTKINTO_YLIOPPILAS;
-import static java.lang.ClassLoader.getSystemResourceAsStream;
+import fi.vm.sade.haku.oppija.common.selenium.DummyModelBaseItTest;
+import fi.vm.sade.haku.oppija.common.selenium.LoginPage;
+import fi.vm.sade.haku.oppija.lomake.HakuClient;
+import fi.vm.sade.haku.util.JsonTestData;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 
 public class OfficerIT extends DummyModelBaseItTest {
 
@@ -36,8 +36,7 @@ public class OfficerIT extends DummyModelBaseItTest {
 
     @Before
     public void beforeOfficerIt() throws Exception {
-        String content = IOUtils.toString(getSystemResourceAsStream("kk-yhteishaku-hakemuksia.json"), "UTF-8");
-        mongoTemplate.getCollection("application").insert((List<DBObject>)JSON.parse(content));
+        mongoTemplate.getCollection("application").insert((List<DBObject>) JsonTestData.readTestData("kk-yhteishaku-hakemuksia.json"));
         final LoginPage loginPage = new LoginPage(seleniumContainer.getDriver());
         navigateToPath("user", "login");
         loginPage.login("officer");

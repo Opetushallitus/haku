@@ -16,99 +16,70 @@
 
 package fi.vm.sade.haku.oppija.hakemus.it.dao;
 
-import com.mongodb.DBObject;
-import com.mongodb.util.JSON;
-import fi.vm.sade.haku.oppija.common.dao.AbstractDAOTest;
-import fi.vm.sade.haku.oppija.hakemus.domain.Application;
-import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
-import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
-import fi.vm.sade.haku.oppija.lomake.domain.User;
-import fi.vm.sade.haku.virkailija.authentication.impl.AuthenticationServiceMockImpl;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
-import org.apache.commons.collections.CollectionUtils;
+import static java.lang.ClassLoader.getSystemResourceAsStream;
+import static java.util.Arrays.asList;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+
 import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import com.mongodb.DBObject;
+import com.mongodb.util.JSON;
 
-import static java.lang.ClassLoader.getSystemResourceAsStream;
-import static org.junit.Assert.*;
+import fi.vm.sade.haku.oppija.common.dao.AbstractDAOTest;
+import fi.vm.sade.haku.oppija.hakemus.domain.Application;
+import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
+import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
+import fi.vm.sade.haku.oppija.lomake.domain.User;
+import fi.vm.sade.haku.util.JsonTestData;
+import fi.vm.sade.haku.virkailija.authentication.impl.AuthenticationServiceMockImpl;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:spring/tomcat-container-context.xml")
 @ActiveProfiles(profiles = {"it"})
 public class ApplicationDAOMongoImplIT extends AbstractDAOTest {
-
-    public static final Logger LOGGER = LoggerFactory.getLogger(ApplicationDAOMongoImplIT.class);
     public static final User TEST_USER = new User("test");
-    public static final String ARVO = "arvo";
-    public static final String TEST_PHASE = "vaihe1";
     @Autowired
     @Qualifier("applicationDAOMongoImpl")
     private ApplicationDAO applicationDAO;
 
     private String applicationSystemId;
 
-    protected static List<DBObject> applicationTestDataObject;
-
-    @SuppressWarnings("unchecked")
-    @BeforeClass
-    public static void readTestData() throws IOException {
-        String content = IOUtils.toString(getSystemResourceAsStream("application-test-data.json"), "UTF-8");
-        applicationTestDataObject = (List<DBObject>) JSON.parse(content);
-    }
+    protected static List<DBObject> applicationTestDataObject = JsonTestData.readTestData("application-test-data.json");
 
     @Before
     public void setUpMongo() throws Exception {
-        try {
-            mongoTemplate.getCollection(getCollectionName()).insert(applicationTestDataObject);
-        } catch (Exception e) {
-            LOGGER.error("Error set up test", e);
-        }
+        mongoTemplate.getCollection(getCollectionName()).insert(applicationTestDataObject);
         this.applicationSystemId = ElementUtil.randomId();
     }
 
-//    @Test
-//    public void testFindPersonOidExists() {
-//        BasicDBObject query = new BasicDBObject();
-//        query.put("personOid", new BasicDBObject("$exists", false));
-//        List<Application> notExists = applicationDAO.find(query);
-//        assertEquals(2, notExists.size());
-//
-//        query = new BasicDBObject();
-//        query.put("personOid", new BasicDBObject("$exists", true));
-//        List<Application> exists = applicationDAO.find(query);
-//        assertEquals(1, exists.size());
-//    }
-
     @Test
     public void testFindAll() throws Exception {
-        final HashMap<String, String> vaiheenVastaukset = new HashMap<String, String>();
-        vaiheenVastaukset.put("avain", ARVO);
-        final Application application = new Application(TEST_USER, new ApplicationPhase(applicationSystemId, TEST_PHASE, vaiheenVastaukset));
-        application.setOid("1.2.246.562.11.00000000258");
-        applicationDAO.save(application);
-        List<Application> listOfApplications = applicationDAO.find(new Application(applicationSystemId, TEST_USER));
-        assertEquals(1, listOfApplications.size());
+        final HashMap<String, String> vaiheenVastaukset = new HashMap<String, String>() {{
+            put("avain", "arvo");
+        }};
+        applicationDAO.save(new Application(TEST_USER, new ApplicationPhase(applicationSystemId, "vaihe1", vaiheenVastaukset)).setOid("1.2.246.562.11.00000000258"));
+        assertEquals(1, applicationDAO.find(new Application(applicationSystemId, TEST_USER)).size());
     }
 
     @Test
     public void testFindAllNotFound() throws Exception {
-        List<Application> applications = applicationDAO.find(new Application(applicationSystemId, TEST_USER));
-        assertTrue(applications.isEmpty());
+        assertTrue(applicationDAO.find(new Application(applicationSystemId, TEST_USER)).isEmpty());
     }
 
     @Test
@@ -120,75 +91,40 @@ public class ApplicationDAOMongoImplIT extends AbstractDAOTest {
     }
 
     @Test
-    public void testfindAllQueriedByApplicationSystemAndApplicationOption() {
-        ApplicationQueryParameters applicationQueryParameters  = new ApplicationQueryParametersBuilder()
-                .setSearchTerms("").setAsId("1.2.246.562.29.90697286251").setAoId("000").build();
-        AuthenticationServiceMockImpl authenticationServiceMock = new AuthenticationServiceMockImpl();
-        ApplicationFilterParameters filterParameters = new ApplicationFilterParameters(5,
-                authenticationServiceMock.getOrganisaatioHenkilo(), authenticationServiceMock.getOrganisaatioHenkilo(),
-                authenticationServiceMock.getOrganisaatioHenkilo(), null, null);
-        ApplicationSearchResultDTO resultDTO = applicationDAO.findAllQueried(applicationQueryParameters, filterParameters);
-        assertFalse(CollectionUtils.isEmpty(resultDTO.getResults()));
-        assertEquals(2, resultDTO.getResults().size());
+    public void testFindAllQueriedByApplicationSystemAndApplicationOption() {
+        assertEquals(2, findByQuery(query().setSearchTerms("").setAsId("1.2.246.562.29.90697286251").setAoId("000")).getResults().size());
     }
 
     @Test
     public void testSearchWithMultipleuserOids() {
-        ApplicationQueryParameters applicationQueryParameters = new ApplicationQueryParametersBuilder()
-                .setPersonOids(new ArrayList<String>(2) {{
-                    add("1.2.246.562.24.00000000001");
-                    add("1.2.246.562.24.00000000002");
-                }})
-                .build();
-        AuthenticationServiceMockImpl authenticationServiceMock = new AuthenticationServiceMockImpl();
-        ApplicationFilterParameters filterParameters = new ApplicationFilterParameters(5,
-                authenticationServiceMock.getOrganisaatioHenkilo(), authenticationServiceMock.getOrganisaatioHenkilo(),
-                authenticationServiceMock.getOrganisaatioHenkilo(), null, null);
-        ApplicationSearchResultDTO resultDTO = applicationDAO.findAllQueried(applicationQueryParameters, filterParameters);
-        assertFalse(CollectionUtils.isEmpty(resultDTO.getResults()));
-        assertEquals(2, resultDTO.getResults().size());
+        assertEquals(2, findByQuery(query().setPersonOids(asList("1.2.246.562.24.00000000001", "1.2.246.562.24.00000000002"))).getResults().size());
     }
+
+    // TODO: test findAllQueried with aoOids and primaryPreferenceOnly
+
 
     @Test
     public void testfindAllQueriedByApplicationSystemAndMultipleApplicationOptions() {
-        ApplicationQueryParameters applicationQueryParameters = new ApplicationQueryParametersBuilder()
-                .setAoOids(new ArrayList<String>(1) {{
-                    add("1.2.246.562.20.52010929637");
-                }})
-                .build();
-        AuthenticationServiceMockImpl authenticationServiceMock = new AuthenticationServiceMockImpl();
-        ApplicationFilterParameters filterParameters = new ApplicationFilterParameters(5,
-                authenticationServiceMock.getOrganisaatioHenkilo(), authenticationServiceMock.getOrganisaatioHenkilo(),
-                authenticationServiceMock.getOrganisaatioHenkilo(), null, null);
-        ApplicationSearchResultDTO resultDTO = applicationDAO.findAllQueried(applicationQueryParameters, filterParameters);
-        assertFalse(CollectionUtils.isEmpty(resultDTO.getResults()));
-        assertEquals(1, resultDTO.getResults().size());
+        assertEquals(1, findByQuery(query().setAoOids(asList("1.2.246.562.20.52010929637"))).getResults().size());
 
+        assertEquals(2, findByQuery(query().setAoOids(asList("1.2.246.562.20.18097797874"))).getResults().size());
 
-        applicationQueryParameters = new ApplicationQueryParametersBuilder()
-                .setAoOids(new ArrayList<String>(1) {{
-                    add("1.2.246.562.20.18097797874");
-                }})
-                .build();
+        assertEquals(3, findByQuery(query().setAoOids(asList("1.2.246.562.20.18097797874", "1.2.246.562.20.52010929637"))).getResults().size());
+    }
 
-        resultDTO = applicationDAO.findAllQueried(applicationQueryParameters, filterParameters);
-        assertFalse(CollectionUtils.isEmpty(resultDTO.getResults()));
-        assertEquals(2, resultDTO.getResults().size());
-
-        applicationQueryParameters = new ApplicationQueryParametersBuilder()
-                .setAoOids(new ArrayList<String>(1) {{
-                    add("1.2.246.562.20.18097797874");
-                    add("1.2.246.562.20.52010929637");
-                }})
-                .build();
-
-        resultDTO = applicationDAO.findAllQueried(applicationQueryParameters, filterParameters);
-        assertFalse(CollectionUtils.isEmpty(resultDTO.getResults()));
-        assertEquals(3, resultDTO.getResults().size());
+    private ApplicationQueryParametersBuilder query() {
+        return new ApplicationQueryParametersBuilder();
     }
 
     @Override
     protected String getCollectionName() {
         return "application";
+    }
+
+    private ApplicationSearchResultDTO findByQuery(final ApplicationQueryParametersBuilder queryBuilder) {
+        ApplicationQueryParameters applicationQueryParameters = queryBuilder.build();
+        AuthenticationServiceMockImpl authenticationServiceMock = new AuthenticationServiceMockImpl();
+        ApplicationFilterParameters filterParameters = new ApplicationFilterParameters(5, authenticationServiceMock.getOrganisaatioHenkilo(), authenticationServiceMock.getOrganisaatioHenkilo(), authenticationServiceMock.getOrganisaatioHenkilo(), null, null);
+        return applicationDAO.findAllQueried(applicationQueryParameters, filterParameters);
     }
 }

@@ -8,6 +8,8 @@ import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultItemDTO;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
+import fi.vm.sade.haku.util.JsonTestData;
+
 import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -52,12 +54,10 @@ public class ApplicationSearchMongoIT extends AbstractDAOTest {
 
     @Before
     public void setUp() throws Exception {
-        String content = IOUtils.toString(getSystemResourceAsStream("harkinnanvarainen_salpaus_ei_sirkus.json"), "UTF-8");
-
         ArrayList<String> org = Lists.newArrayList(KOULUTUSKESKUS_SALPAUS);
         koulutuskeskusSalpausOrganization = new ApplicationFilterParameters(5, org, org, org, null, null);
 
-        DBObject applicationFromJson = (DBObject) JSON.parse(content);
+        DBObject applicationFromJson = JsonTestData.readTestData("harkinnanvarainen_salpaus_ei_sirkus.json");
         mongoTemplate.getCollection(getCollectionName()).insert(applicationFromJson);
 
         Application savedApplication = applicationDAO.find(new Application((String) applicationFromJson.get("oid"))).get(0);
