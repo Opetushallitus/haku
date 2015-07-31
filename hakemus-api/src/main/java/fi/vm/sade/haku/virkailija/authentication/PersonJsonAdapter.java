@@ -35,27 +35,47 @@ public class PersonJsonAdapter implements JsonSerializer<Person>, JsonDeserializ
 
     private static Logger log = LoggerFactory.getLogger(PersonJsonAdapter.class);
 
-//    {
-//        "id": 73628,
-//        "etunimet": "Asiakas",
-//        "hetu": "240582-988J",
-//        "kotikunta": null,
-//        "kutsumanimi": "Asiakas",
-//        "oidHenkilo": "1.2.246.562.24.30165282063",
-//        "oppijanumero": null,
-//        "sukunimi": "Testi",
-//        "sukupuoli": null,
-//        "turvakielto": null,
-//        "kayttajatunnus": "240582-988J",
-//        "henkiloTyyppi": "OPPIJA",
-//        "eiSuomalaistaHetua": false,
-//        "passivoitu": false,
-//        "yksiloity": false,
-//        "asiointiKieli": null,
-//        "yksilointitieto": null,
-//        "kielisyys": [],
-//        "kansalaisuus": []
-//    }
+    /*
+        Esimerkki-JSON, haettu henkilöpalvelusta:
+
+        {
+          "id": 4056760,
+          "etunimet": "sven",
+          "syntymaaika": "1995-07-31",
+          "passinnumero": null,
+          "hetu": "310795-9958",
+          "kutsumanimi": "sven",
+          "oidHenkilo": "1.2.246.562.24.64490029019",
+          "oppijanumero": null,
+          "sukunimi": "svensson",
+          "sukupuoli": "1",
+          "turvakielto": null,
+          "henkiloTyyppi": "VIRKAILIJA",
+          "eiSuomalaistaHetua": false,
+          "passivoitu": false,
+          "yksiloity": false,
+          "yksiloityVTJ": false,
+          "yksilointiYritetty": false,
+          "duplicate": false,
+          "created": 1438332515439,
+          "modified": 1438332515439,
+          "kasittelijaOid": "1.2.246.562.24.18542484257",
+          "asiointiKieli": {
+            "id": 3,
+            "kieliKoodi": "sv",
+            "kieliTyyppi": "svenska"
+          },
+          "aidinkieli": null,
+          "huoltaja": null,
+          "kayttajatiedot": {
+            "id": 4056761,
+            "username": "svensson"
+          },
+          "kielisyys": [],
+          "kansalaisuus": [],
+          "yhteystiedotRyhma": []
+        }
+     */
 
     @Override
     public JsonElement serialize(Person person, Type typeOfSrc, JsonSerializationContext context) {
@@ -95,7 +115,7 @@ public class PersonJsonAdapter implements JsonSerializer<Person>, JsonDeserializ
         }
 
         personJson = addJsonLanguage("aidinkieli", person.getLanguage(), personJson);
-//        personJson = addJsonLanguage("asiointiKieli", asiointikielet.get(person.getContactLanguage()), personJson);
+        personJson = addJsonLanguage("asiointiKieli", asiointikielet.get(person.getContactLanguage()), personJson);
 
         return personJson;
     }
@@ -146,14 +166,14 @@ public class PersonJsonAdapter implements JsonSerializer<Person>, JsonDeserializ
                 personBuilder.setLanguage(lang != null ? lang.toUpperCase() : null);
             }
         }
-//        kieliElem = personJson.get("asiointiKieli");
-//        if (kieliElem != null && !kieliElem.isJsonNull()) {
-//            JsonObject kieliObj = kieliElem.getAsJsonObject();
-//            if (kieliObj != null && !kieliObj.isJsonNull()) {
-//                String asiointikielikoodi = asiointikielikoodit.get(getJsonString(kieliObj, "kieliKoodi"));
-//                personBuilder.setContactLanguage(asiointikielikoodi);
-//            }
-//        }
+        kieliElem = personJson.get("asiointiKieli");
+        if (kieliElem != null && !kieliElem.isJsonNull()) {
+            JsonObject kieliObj = kieliElem.getAsJsonObject();
+            if (kieliObj != null && !kieliObj.isJsonNull()) {
+                String asiointikielikoodi = asiointikielikoodit.get(getJsonString(kieliObj, "kieliKoodi"));
+                personBuilder.setContactLanguage(asiointikielikoodi);
+            }
+        }
 
         return personBuilder.get();
     }
