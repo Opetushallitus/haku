@@ -16,6 +16,7 @@
 
 package fi.vm.sade.haku.oppija.hakemus.it.dao;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -57,12 +58,12 @@ public class ApplicationQueryParameters {
         this.aoId = isEmpty(aoId) ? null : aoId;
         if (aoOids != null && !aoOids.isEmpty()) {
             if (aoOids.size() == 1 && isBlank(aoOids.get(0))) {
-                this.aoOids = null;
+                this.aoOids = Collections.emptyList();
             } else {
                 this.aoOids = aoOids;
             }
         } else {
-            this.aoOids = null;
+            this.aoOids =  Collections.emptyList();
         }
         if (personOids != null && !personOids.isEmpty()) {
             if (personOids.size() == 1 && isBlank(personOids.get(0))) {

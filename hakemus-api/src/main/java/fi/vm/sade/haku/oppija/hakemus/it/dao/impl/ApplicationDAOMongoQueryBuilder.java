@@ -187,7 +187,7 @@ final class ApplicationDAOMongoQueryBuilder {
         final Boolean preferenceChecked = applicationQueryParameters.getPreferenceChecked();
         if (preferenceChecked != null) {
             final List<String> aoOids = applicationQueryParameters.getAoOids() ;
-            if (aoOids != null && !aoOids.isEmpty()) {
+            if (!aoOids.isEmpty()) {
                 filters.add(
                         QueryBuilder.start("preferencesChecked").elemMatch(
                                 QueryBuilder.start().and(
@@ -278,12 +278,12 @@ final class ApplicationDAOMongoQueryBuilder {
         boolean primaryPreferenceOnly = applicationQueryParameters.isPrimaryPreferenceOnly();
 
         if (isBlank(lopOid) && isBlank(preference) && isBlank(groupOid) && !discretionaryOnly && !primaryPreferenceOnly) {
-            if (aoOids != null && !aoOids.isEmpty())
+            if (!aoOids.isEmpty())
                 return QueryBuilder.start(META_FIELD_AO).in(aoOids).get();
             return null;
         }
 
-        int maxOptions = primaryPreferenceOnly && isBlank(groupOid)
+        int maxOptions = primaryPreferenceOnly && (isBlank(groupOid) || aoOids.isEmpty())
                 ? 1
                 : filterParameters.getMaxApplicationOptions();
 
@@ -302,27 +302,31 @@ final class ApplicationDAOMongoQueryBuilder {
                 preferenceQuery.add(
                         QueryBuilder.start(format(FIELD_DISCRETIONARY_T, i)).is("true").get());
             }
-            if (aoOids != null && !aoOids.isEmpty()) {
+            if (!aoOids.isEmpty()) {
                 preferenceQuery.add(
                         QueryBuilder.start(format(FIELD_AO_T, i)).in(aoOids).get());
             }
             if (isNotBlank(groupOid)) {
                 if (!primaryPreferenceOnly) {
-                    preferenceQuery.add(
-                            QueryBuilder.start(format(FIELD_AO_GROUPS_T, i))
-                                    .regex(Pattern.compile(groupOid)).get());
+                    preferenceQuery.add(QueryBuilder.start(format(FIELD_AO_GROUPS_T, i)).regex(Pattern.compile(groupOid)).get());
                 } else {
-                    for (int j = 1; j < i; j++) {
-                        preferenceQuery.add(
+                    if (!aoOids.isEmpty()) {
+                        // Hakukohteen pitää olla jokin annetuista, ja lisäksi olla hakemuksella valittuun ryhmään kuuluvista ensisijainen
+                        for (int j = 1; j < i; j++) {
+                            preferenceQuery.add(
                                 QueryBuilder.start(format(FIELD_AO_GROUPS_T, j)).not().regex(Pattern.compile(groupOid)).get()
-                        );
-                    }
-                    preferenceQuery.add(
+                            );
+                        }
+                        preferenceQuery.add(
                             QueryBuilder.start().and(
-                                    QueryBuilder.start(format(FIELD_AO_GROUPS_T, i)).regex(Pattern.compile(groupOid)).get(),
-                                    QueryBuilder.start(format(FIELD_AO_T, i)).in(aoOids).get()
+                                QueryBuilder.start(format(FIELD_AO_GROUPS_T, i)).regex(Pattern.compile(groupOid)).get(),
+                                QueryBuilder.start(format(FIELD_AO_T, i)).in(aoOids).get()
                             ).get()
-                    );
+                        );
+                    } else {
+                        // Hakukohteen pitää olla ensisijainen ja kuulua valittuun ryhmään
+                        preferenceQuery.add(QueryBuilder.start(format(FIELD_AO_GROUPS_T, i)).regex(Pattern.compile(groupOid)).get());
+                    }
                 }
             }
 

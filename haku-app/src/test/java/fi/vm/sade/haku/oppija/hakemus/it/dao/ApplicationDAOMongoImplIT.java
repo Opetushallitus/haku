@@ -116,7 +116,7 @@ public class ApplicationDAOMongoImplIT extends AbstractDAOTest {
     }
 
     @Test
-    public void testQueryCombinations() {
+    public void testFindAllQueriedWithQueryCombinations() {
         assertEquals(1, findAllQueried(query().setLopOid("1.2.246.562.10.84451661825").setPrimaryPreferenceOnly(true)).getResults().size());
         assertEquals(1, findAllQueried(query().setLopOid("1.2.246.562.10.84451661825").setPrimaryPreferenceOnly(true).setAsId("1.2.246.562.29.90697286251")).getResults().size());
         assertEquals(0, findAllQueried(query().setLopOid("1.2.246.562.10.84451661825").setAsId("FAIL")).getResults().size());
@@ -128,13 +128,31 @@ public class ApplicationDAOMongoImplIT extends AbstractDAOTest {
     }
 
     @Test
-    public void testPreferencesChecked() {
+    public void testFindAllQueriedPreferencesChecked() {
         assertEquals(3, findAllQueried(query().setPreferenceChecked(false)).getResults().size());
         assertEquals(1, findAllQueried(query().setPreferenceChecked(true)).getResults().size());
         assertEquals(2, findAllQueried(query().setAoOids(asList("1.2.246.562.20.52010929637"))).getResults().size());
         assertEquals(1, findAllQueried(query().setAoOids(asList("1.2.246.562.20.52010929637")).setPreferenceChecked(true)).getResults().size());
         assertEquals(1, findAllQueried(query().setAoOids(asList("1.2.246.562.20.52010929637")).setPreferenceChecked(false)).getResults().size());
     }
+
+    @Test
+    public void testFindAllQueriedApplicationOptionGroups() {
+        assertEquals(1, findAllQueried(query().setGroupOid("1.2.246.562.28.26750186798")).getResults().size());
+        assertEquals(0, findAllQueried(query().setGroupOid("1.2.246.562.28.26750186798").setPrimaryPreferenceOnly(true)).getResults().size());
+    }
+
+    @Test
+    public void testFindAllQueriedApplicationOptionGroupsAndApplicationOptions() {
+        assertEquals(1, findAllQueried(query().setGroupOid("1.2.246.562.28.26750186798").setAoOids(asList("1.2.246.562.20.52010929637"))).getResults().size());
+        // hakukohteen 52010929637 tulee olla hakemuksella ensisijainen niistä hakukohteista jotka kuuluvat ryhmään 26750186798
+        assertEquals(1, findAllQueried(query().setGroupOid("1.2.246.562.28.26750186798").setAoOids(asList("1.2.246.562.20.52010929637")).setPrimaryPreferenceOnly(true)).getResults().size());
+        // hakukohteen 52010929637 tulee olla hakemuksella ensisijainen niistä hakukohteista jotka kuuluvat ryhmään 92529355477 (ei ole!)
+        assertEquals(0, findAllQueried(query().setGroupOid("1.2.246.562.28.92529355477").setAoOids(asList("1.2.246.562.20.52010929637")).setPrimaryPreferenceOnly(true)).getResults().size());
+        // hakukohteen 18097797874 tulee olla hakemuksella ensisijainen niistä hakukohteista jotka kuuluvat ryhmään 92529355477
+        assertEquals(1, findAllQueried(query().setGroupOid("1.2.246.562.28.92529355477").setAoOids(asList("1.2.246.562.20.18097797874")).setPrimaryPreferenceOnly(true)).getResults().size());
+    }
+
 
     private ApplicationQueryParametersBuilder query() {
         return new ApplicationQueryParametersBuilder();
