@@ -86,8 +86,35 @@ public class ApplicationDAOMongoImplIT extends AbstractDAOTest {
     }
 
     @Test
+    public void testFindAllQueriedByEmptyQuery() {
+        assertEquals(3, findAllQueried(query()).getResults().size());
+    }
+
+    @Test
+    public void testFindAllQueriedByApplicationSystem() {
+        assertEquals(3, findAllQueried(query().setAsId("1.2.246.562.29.90697286251")).getResults().size());
+    }
+
+    @Test
     public void testFindAllQueriedByApplicationSystemAndApplicationOption() {
         assertEquals(2, findAllQueried(query().setSearchTerms("").setAsId("1.2.246.562.29.90697286251").setAoId("000")).getResults().size());
+    }
+
+    @Test
+    public void testFindAllQueriedBySearchTerms() {
+        assertEquals(3, findAllQueried(query().setSearchTerms("")).getResults().size());
+        assertEquals(0, findAllQueried(query().setSearchTerms("FAIL")).getResults().size());
+        assertEquals(2, findAllQueried(query().setSearchTerms("Mäkinen")).getResults().size());
+        assertEquals(2, findAllQueried(query().setSearchTerms("mäkinen")).getResults().size());
+        assertEquals(1, findAllQueried(query().setSearchTerms("Jill")).getResults().size());
+        assertEquals(1, findAllQueried(query().setSearchTerms("14.11.1940")).getResults().size());
+        assertEquals(1, findAllQueried(query().setSearchTerms("1.2.246.562.11.00000000259")).getResults().size());
+        assertEquals(1, findAllQueried(query().setSearchTerms("1.2.246.562.24.00000000001")).getResults().size());
+        assertEquals(1, findAllQueried(query().setSearchTerms("00000000001")).getResults().size());
+        assertEquals(1, findAllQueried(query().setSearchTerms("00000000259")).getResults().size());
+        assertEquals(0, findAllQueried(query().setSearchTerms("00000001259")).getResults().size());
+        assertEquals(1, findAllQueried(query().setSearchTerms("010101-123N")).getResults().size());
+        assertEquals(0, findAllQueried(query().setSearchTerms("010101-123K")).getResults().size());
     }
 
     @Test

@@ -278,8 +278,11 @@ final class ApplicationDAOMongoQueryBuilder {
         boolean primaryPreferenceOnly = applicationQueryParameters.isPrimaryPreferenceOnly();
 
         if (isBlank(lopOid) && isBlank(preference) && isBlank(groupOid) && !discretionaryOnly && !primaryPreferenceOnly) {
-            if (!aoOids.isEmpty())
+            if (!aoOids.isEmpty()) {
+                // Simple query: just find by application option oid
                 return QueryBuilder.start(META_FIELD_AO).in(aoOids).get();
+            }
+            // No query parameters related to application options
             return null;
         }
 
@@ -333,6 +336,8 @@ final class ApplicationDAOMongoQueryBuilder {
             if (!preferenceQuery.isEmpty()) {
                 preferenceQueries.add(QueryBuilder.start().and(
                         preferenceQuery.toArray(new DBObject[preferenceQuery.size()])).get());
+            } else {
+                System.out.println();
             }
         }
 
