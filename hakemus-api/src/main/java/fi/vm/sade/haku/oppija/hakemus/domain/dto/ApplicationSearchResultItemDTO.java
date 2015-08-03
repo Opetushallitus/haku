@@ -17,6 +17,8 @@
 package fi.vm.sade.haku.oppija.hakemus.domain.dto;
 
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
+
+import org.apache.commons.lang.builder.ToStringBuilder;
 import org.codehaus.jackson.annotate.JsonCreator;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
@@ -115,5 +117,10 @@ public class ApplicationSearchResultItemDTO implements Serializable {
 
     public void setReceived(Date received) {
         this.received = received;
+    }
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this);
     }
 }

@@ -16,6 +16,7 @@
 
 package fi.vm.sade.haku.oppija.hakemus.domain.dto;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
 import org.codehaus.jackson.annotate.JsonCreator;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
@@ -45,5 +46,10 @@ public class ApplicationSearchResultDTO implements Serializable {
 
     public List<ApplicationSearchResultItemDTO> getResults() {
         return results;
+    }
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this);
     }
 }

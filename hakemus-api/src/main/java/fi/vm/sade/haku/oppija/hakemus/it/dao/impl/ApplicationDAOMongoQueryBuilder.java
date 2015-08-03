@@ -270,7 +270,6 @@ final class ApplicationDAOMongoQueryBuilder {
     }
 
     private DBObject _createPreferenceFilters(final ApplicationQueryParameters applicationQueryParameters, final ApplicationFilterParameters filterParameters) {
-        // Koskee yksittäistä hakutoivetta
         final List<String> aoOids = applicationQueryParameters.getAoOids();
         final String lopOid = applicationQueryParameters.getLopOid();
         final String preference = applicationQueryParameters.getAoId();
@@ -278,9 +277,11 @@ final class ApplicationDAOMongoQueryBuilder {
         boolean discretionaryOnly = applicationQueryParameters.isDiscretionaryOnly();
         boolean primaryPreferenceOnly = applicationQueryParameters.isPrimaryPreferenceOnly();
 
-        // FIXME A dirty Quickfix
-        if (isBlank(lopOid) && isBlank(preference) && isBlank(groupOid) && !discretionaryOnly && !primaryPreferenceOnly)
-            return _quickfix(aoOids);
+        if (isBlank(lopOid) && isBlank(preference) && isBlank(groupOid) && !discretionaryOnly && !primaryPreferenceOnly) {
+            if (aoOids != null && !aoOids.isEmpty())
+                return QueryBuilder.start(META_FIELD_AO).in(aoOids).get();
+            return null;
+        }
 
         int maxOptions = primaryPreferenceOnly && isBlank(groupOid)
                 ? 1
@@ -332,12 +333,6 @@ final class ApplicationDAOMongoQueryBuilder {
         }
 
         return _combineQueries(OPERATOR_OR, preferenceQueries);
-    }
-
-    private DBObject _quickfix(final List<String> aoOids) {
-        if (aoOids != null && !aoOids.isEmpty())
-            return QueryBuilder.start(META_FIELD_AO).in(aoOids).get();
-        return null;
     }
 
     private DBObject _filterByOrganization(final ApplicationFilterParameters filterParameters) {
