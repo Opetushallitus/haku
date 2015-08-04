@@ -100,6 +100,19 @@ public class ApplicationDAOMongoImplIT extends AbstractDAOTest {
     }
 
     @Test
+    public void testFindAllQueriedPaging() {
+        assertEquals(1, countQueried(query().setRows(1)));
+        assertEquals(1, countQueried(query().setStart(3)));
+    }
+
+    @Test
+    public void testFindAllQueriedSorting() {
+        assertEquals("Erillishaku", findAllQueried(query().setOrderBy("fullName")).getResults().get(0).getLastName());
+        assertEquals("Romppainen", findAllQueried(query().setOrderBy("fullName").setOrderDir(-1)).getResults().get(0).getLastName());
+    }
+
+
+    @Test
     public void testFindAllQueriedByApplicationSystem() {
         assertEquals(3, countQueried(query().setAsId("1.2.246.562.29.90697286251")));
     }
