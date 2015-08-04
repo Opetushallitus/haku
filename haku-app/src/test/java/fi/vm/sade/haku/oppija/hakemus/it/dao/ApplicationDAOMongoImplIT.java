@@ -43,6 +43,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.User;
 import fi.vm.sade.haku.util.JsonTestData;
 import fi.vm.sade.haku.virkailija.authentication.impl.AuthenticationServiceMockImpl;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:spring/tomcat-container-context.xml")
@@ -110,6 +111,14 @@ public class ApplicationDAOMongoImplIT extends AbstractDAOTest {
     @Test
     public void testFindAllQueriedBySendingSchool() {
         assertEquals(2, countQueried(query().setSendingSchool("1.2.246.562.10.16546622305")));
+    }
+
+    @Test
+    public void testFindAllQueriesByBaseEducation() {
+        // pohjakoulutuksella hakeminen toimii vain korkeakouluhauille, joissa käytetään pohjakoulutus_yo:true -tyyppisiä arvoja
+        // toisen asteen haussa käytettän POHJAKOULUTU:1 tyyppistä yhtä arvoa
+        assertEquals(1, countQueried(query().setBaseEducation("yo")));
+        assertEquals(0, countQueried(query().setBaseEducation("fail")));
     }
 
     @Test
@@ -223,7 +232,7 @@ public class ApplicationDAOMongoImplIT extends AbstractDAOTest {
     private ApplicationSearchResultDTO findAllQueried(final ApplicationQueryParametersBuilder queryBuilder) {
         ApplicationQueryParameters applicationQueryParameters = queryBuilder.build();
         AuthenticationServiceMockImpl authenticationServiceMock = new AuthenticationServiceMockImpl();
-        ApplicationFilterParameters filterParameters = new ApplicationFilterParameters(5, authenticationServiceMock.getOrganisaatioHenkilo(), authenticationServiceMock.getOrganisaatioHenkilo(), authenticationServiceMock.getOrganisaatioHenkilo(), null, null);
+        ApplicationFilterParameters filterParameters = new ApplicationFilterParameters(5, authenticationServiceMock.getOrganisaatioHenkilo(), authenticationServiceMock.getOrganisaatioHenkilo(), authenticationServiceMock.getOrganisaatioHenkilo(), OppijaConstants.KOHDEJOUKKO_KORKEAKOULU, null);
         final ApplicationSearchResultDTO result = applicationDAO.findAllQueried(applicationQueryParameters, filterParameters);
         return result;
     }

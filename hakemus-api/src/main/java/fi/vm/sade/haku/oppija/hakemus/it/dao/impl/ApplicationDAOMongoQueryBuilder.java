@@ -253,7 +253,7 @@ final class ApplicationDAOMongoQueryBuilder {
         final String kohdejoukko = filterParameters.getKohdejoukko();
         final String baseEducation = applicationQueryParameters.getBaseEducation();
         if (isNotBlank(kohdejoukko) && isNotBlank(baseEducation)) {
-            if (OppijaConstants.KOHDEJOUKKO_KORKEAKOULU.equals(kohdejoukko)) {
+            if (OppijaConstants.KOHDEJOUKKO_KORKEAKOULU.equals(kohdejoukko)) { // TODO: tää on yllättävää
                 filters.add(
                         QueryBuilder.start(format(FIELD_HIGHER_ED_BASE_ED_T, baseEducation))
                                 .is(Boolean.TRUE.toString()).get()
