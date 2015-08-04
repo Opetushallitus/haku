@@ -16,12 +16,14 @@
 
 package fi.vm.sade.haku.oppija.hakemus.it.dao;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.StringUtils.isEmpty;
+
+import org.apache.commons.lang.StringUtils;
 
 public class ApplicationQueryParameters {
     private final List<String> state;
@@ -56,24 +58,8 @@ public class ApplicationQueryParameters {
         this.state = state;
         this.preferenceChecked = preferenceChecked;
         this.aoId = isEmpty(aoId) ? null : aoId;
-        if (aoOids != null && !aoOids.isEmpty()) {
-            if (aoOids.size() == 1 && isBlank(aoOids.get(0))) {
-                this.aoOids = Collections.emptyList();
-            } else {
-                this.aoOids = aoOids;
-            }
-        } else {
-            this.aoOids =  Collections.emptyList();
-        }
-        if (personOids != null && !personOids.isEmpty()) {
-            if (personOids.size() == 1 && isBlank(personOids.get(0))) {
-                this.personOids = null;
-            } else {
-                this.personOids = personOids;
-            }
-        } else {
-            this.personOids = null;
-        }
+        this.aoOids = nonEmptyStrings(aoOids);
+        this.personOids = nonEmptyStrings(personOids);
         this.groupOid = isEmpty(groupOid) ? null : groupOid;
         this.baseEducation = isEmpty(baseEducation) ? null : baseEducation;
         this.discretionaryOnly = discretionaryOnly == null ? false : discretionaryOnly;
@@ -85,6 +71,15 @@ public class ApplicationQueryParameters {
         this.rows = rows;
         this.orderBy = orderBy;
         this.orderDir = orderDir;
+    }
+
+    private List<String> nonEmptyStrings(List<String> xs) {
+        if (xs == null) return Collections.emptyList();
+        List<String> nonEmpty = new ArrayList<>();
+        for (String x : xs) {
+            if (!StringUtils.isBlank(x)) nonEmpty.add(x);
+        }
+        return nonEmpty;
     }
 
     public List<String> getState() {

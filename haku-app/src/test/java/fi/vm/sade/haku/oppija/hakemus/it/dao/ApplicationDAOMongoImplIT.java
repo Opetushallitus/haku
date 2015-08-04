@@ -173,6 +173,13 @@ public class ApplicationDAOMongoImplIT extends AbstractDAOTest {
     }
 
     @Test
+    public void ignoresEmptyStringsInOidLists() {
+        assertEquals(3, countQueried(query().setAoOids(asList(""))));
+        assertEquals(3, countQueried(query().setPersonOids(asList("", null, ""))));
+        assertEquals(1, countQueried(query().setPersonOids(asList("", null, "1.2.246.562.24.00000000001"))));
+    }
+
+    @Test
     public void testFindAllQueriedPreferencesChecked() {
         assertEquals(3, countQueried(query().setPreferenceChecked(false)));
         assertEquals(1, countQueried(query().setPreferenceChecked(true)));

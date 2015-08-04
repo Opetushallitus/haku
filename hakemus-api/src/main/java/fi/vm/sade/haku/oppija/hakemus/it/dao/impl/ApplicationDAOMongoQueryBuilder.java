@@ -262,7 +262,7 @@ final class ApplicationDAOMongoQueryBuilder {
         }
 
         final List<String> personOids = applicationQueryParameters.getPersonOids();
-        if (personOids != null && !personOids.isEmpty()) {
+        if (!personOids.isEmpty()) {
             filters.add(QueryBuilder.start(FIELD_PERSON_OID).in(personOids).get());
         }
 
