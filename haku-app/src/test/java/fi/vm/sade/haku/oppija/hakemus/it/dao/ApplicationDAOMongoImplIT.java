@@ -59,6 +59,7 @@ public class ApplicationDAOMongoImplIT extends AbstractDAOTest {
 
     @Before
     public void setUpMongo() throws Exception {
+        removeTestData();
         mongoTemplate.getCollection(getCollectionName()).insert(applicationTestDataObject);
         this.applicationSystemId = ElementUtil.randomId();
     }
