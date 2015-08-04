@@ -94,7 +94,7 @@ public class ApplicationDAOMongoImplIT extends AbstractDAOTest {
 
     @Test
     public void testFindAllQueriedByEmptyQuery() {
-        assertEquals(3, countQueried(query()));
+        assertEquals(4, countQueried(query()));
     }
 
     @Test
@@ -114,7 +114,7 @@ public class ApplicationDAOMongoImplIT extends AbstractDAOTest {
 
     @Test
     public void testFindAllQueriedBySearchTerms() {
-        assertEquals(3, countQueried(query().setSearchTerms("")));
+        assertEquals(4, countQueried(query().setSearchTerms("")));
         assertEquals(0, countQueried(query().setSearchTerms("FAIL")));
         assertEquals(2, countQueried(query().setSearchTerms("Mäkinen")));
         assertEquals(2, countQueried(query().setSearchTerms("mäkinen")));
@@ -175,14 +175,14 @@ public class ApplicationDAOMongoImplIT extends AbstractDAOTest {
 
     @Test
     public void ignoresEmptyStringsInOidLists() {
-        assertEquals(3, countQueried(query().setAoOids(asList(""))));
-        assertEquals(3, countQueried(query().setPersonOids(asList("", null, ""))));
+        assertEquals(4, countQueried(query().setAoOids(asList(""))));
+        assertEquals(4, countQueried(query().setPersonOids(asList("", null, ""))));
         assertEquals(1, countQueried(query().setPersonOids(asList("", null, "1.2.246.562.24.00000000001"))));
     }
 
     @Test
     public void testFindAllQueriedPreferencesChecked() {
-        assertEquals(3, countQueried(query().setPreferenceChecked(false)));
+        assertEquals(4, countQueried(query().setPreferenceChecked(false)));
         assertEquals(1, countQueried(query().setPreferenceChecked(true)));
         assertEquals(2, countQueried(query().setAoOids(asList("1.2.246.562.20.52010929637"))));
         assertEquals(1, countQueried(query().setAoOids(asList("1.2.246.562.20.52010929637")).setPreferenceChecked(true)));
