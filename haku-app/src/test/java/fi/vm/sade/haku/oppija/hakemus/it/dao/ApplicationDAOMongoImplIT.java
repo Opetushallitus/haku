@@ -134,7 +134,7 @@ public class ApplicationDAOMongoImplIT extends AbstractDAOTest {
     }
 
     @Test
-    public void testFindAllQueriedByApplicationOptions() {
+    public void testFindAllQueriedByApplicationOptionOids() {
         assertEquals(2, countQueried(query().setAoOids(asList("1.2.246.562.20.52010929637"))));
         assertEquals(2, countQueried(query().setAoOids(asList("1.2.246.562.20.18097797874"))));
         assertEquals(3, countQueried(query().setAoOids(asList("1.2.246.562.20.18097797874", "1.2.246.562.20.52010929637"))));
@@ -144,6 +144,13 @@ public class ApplicationDAOMongoImplIT extends AbstractDAOTest {
     public void testFindAllQueriedByApplicationOptionsWithPrimaryPreferenceOnly() {
         assertEquals(2, countQueried(query().setAoOids(asList("1.2.246.562.20.52010929637"))));
         assertEquals(1, countQueried(query().setAoOids(asList("1.2.246.562.20.52010929637")).setPrimaryPreferenceOnly(true)));
+    }
+
+    @Test
+    public void testFindAllQueriedByApplicationOptionId() {
+        assertEquals(2, countQueried(query().setAoId("000")));
+        assertEquals(2, countQueried(query().setAoId("864")));
+        assertEquals(1, countQueried(query().setAoId("864").setPrimaryPreferenceOnly(true)));
     }
 
     @Test
