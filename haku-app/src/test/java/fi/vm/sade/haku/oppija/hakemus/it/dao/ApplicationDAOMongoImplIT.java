@@ -86,98 +86,113 @@ public class ApplicationDAOMongoImplIT extends AbstractDAOTest {
     }
 
     @Test
+    public void testFindAllQueriedByState() {
+        assertEquals(3, countQueried(query().setState("ACTIVE")));
+        assertEquals(0, countQueried(query().setState("SUBMITTED")));
+    }
+
+    @Test
     public void testFindAllQueriedByEmptyQuery() {
-        assertEquals(3, findAllQueried(query()).getResults().size());
+        assertEquals(3, countQueried(query()));
     }
 
     @Test
     public void testFindAllQueriedByApplicationSystem() {
-        assertEquals(3, findAllQueried(query().setAsId("1.2.246.562.29.90697286251")).getResults().size());
+        assertEquals(3, countQueried(query().setAsId("1.2.246.562.29.90697286251")));
     }
 
     @Test
     public void testFindAllQueriedByApplicationSystemAndApplicationOption() {
-        assertEquals(2, findAllQueried(query().setSearchTerms("").setAsId("1.2.246.562.29.90697286251").setAoId("000")).getResults().size());
+        assertEquals(2, countQueried(query().setSearchTerms("").setAsId("1.2.246.562.29.90697286251").setAoId("000")));
+    }
+
+    @Test
+    public void testFindAllQueriedBySendingSchool() {
+        assertEquals(2, countQueried(query().setSendingSchool("1.2.246.562.10.16546622305")));
     }
 
     @Test
     public void testFindAllQueriedBySearchTerms() {
-        assertEquals(3, findAllQueried(query().setSearchTerms("")).getResults().size());
-        assertEquals(0, findAllQueried(query().setSearchTerms("FAIL")).getResults().size());
-        assertEquals(2, findAllQueried(query().setSearchTerms("Mäkinen")).getResults().size());
-        assertEquals(2, findAllQueried(query().setSearchTerms("mäkinen")).getResults().size());
-        assertEquals(1, findAllQueried(query().setSearchTerms("Jill")).getResults().size());
-        assertEquals(1, findAllQueried(query().setSearchTerms("14.11.1940")).getResults().size());
-        assertEquals(1, findAllQueried(query().setSearchTerms("1.2.246.562.11.00000000259")).getResults().size());
-        assertEquals(1, findAllQueried(query().setSearchTerms("1.2.246.562.24.00000000001")).getResults().size());
-        assertEquals(1, findAllQueried(query().setSearchTerms("00000000001")).getResults().size());
-        assertEquals(1, findAllQueried(query().setSearchTerms("00000000259")).getResults().size());
-        assertEquals(0, findAllQueried(query().setSearchTerms("00000001259")).getResults().size());
-        assertEquals(1, findAllQueried(query().setSearchTerms("010101-123N")).getResults().size());
-        assertEquals(0, findAllQueried(query().setSearchTerms("010101-123K")).getResults().size());
+        assertEquals(3, countQueried(query().setSearchTerms("")));
+        assertEquals(0, countQueried(query().setSearchTerms("FAIL")));
+        assertEquals(2, countQueried(query().setSearchTerms("Mäkinen")));
+        assertEquals(2, countQueried(query().setSearchTerms("mäkinen")));
+        assertEquals(1, countQueried(query().setSearchTerms("Jill")));
+        assertEquals(1, countQueried(query().setSearchTerms("14.11.1940")));
+        assertEquals(1, countQueried(query().setSearchTerms("1.2.246.562.11.00000000259")));
+        assertEquals(1, countQueried(query().setSearchTerms("1.2.246.562.24.00000000001")));
+        assertEquals(1, countQueried(query().setSearchTerms("00000000001")));
+        assertEquals(1, countQueried(query().setSearchTerms("00000000259")));
+        assertEquals(0, countQueried(query().setSearchTerms("00000001259")));
+        assertEquals(1, countQueried(query().setSearchTerms("010101-123N")));
+        assertEquals(0, countQueried(query().setSearchTerms("010101-123K")));
     }
 
     @Test
     public void testFindAllQueriedByPersonOids() {
-        assertEquals(2, findAllQueried(query().setPersonOids(asList("1.2.246.562.24.00000000001", "1.2.246.562.24.00000000002"))).getResults().size());
+        assertEquals(2, countQueried(query().setPersonOids(asList("1.2.246.562.24.00000000001", "1.2.246.562.24.00000000002"))));
     }
 
     @Test
     public void testFindAllQueriedByApplicationOptions() {
-        assertEquals(2, findAllQueried(query().setAoOids(asList("1.2.246.562.20.52010929637"))).getResults().size());
-        assertEquals(2, findAllQueried(query().setAoOids(asList("1.2.246.562.20.18097797874"))).getResults().size());
-        assertEquals(3, findAllQueried(query().setAoOids(asList("1.2.246.562.20.18097797874", "1.2.246.562.20.52010929637"))).getResults().size());
+        assertEquals(2, countQueried(query().setAoOids(asList("1.2.246.562.20.52010929637"))));
+        assertEquals(2, countQueried(query().setAoOids(asList("1.2.246.562.20.18097797874"))));
+        assertEquals(3, countQueried(query().setAoOids(asList("1.2.246.562.20.18097797874", "1.2.246.562.20.52010929637"))));
     }
 
     @Test
     public void testFindAllQueriedByApplicationOptionsWithPrimaryPreferenceOnly() {
-        assertEquals(2, findAllQueried(query().setAoOids(asList("1.2.246.562.20.52010929637"))).getResults().size());
-        assertEquals(1, findAllQueried(query().setAoOids(asList("1.2.246.562.20.52010929637")).setPrimaryPreferenceOnly(true)).getResults().size());
+        assertEquals(2, countQueried(query().setAoOids(asList("1.2.246.562.20.52010929637"))));
+        assertEquals(1, countQueried(query().setAoOids(asList("1.2.246.562.20.52010929637")).setPrimaryPreferenceOnly(true)));
     }
 
     @Test
     public void testFindAllQueriedByLopOids() {
-        assertEquals(0, findAllQueried(query().setLopOid("FAIL")).getResults().size());
-        assertEquals(2, findAllQueried(query().setLopOid("1.2.246.562.10.10464399921")).getResults().size());
-        assertEquals(2, findAllQueried(query().setLopOid("1.2.246.562.10.84451661825")).getResults().size());
+        assertEquals(0, countQueried(query().setLopOid("FAIL")));
+        assertEquals(2, countQueried(query().setLopOid("1.2.246.562.10.10464399921")));
+        assertEquals(2, countQueried(query().setLopOid("1.2.246.562.10.84451661825")));
     }
 
     @Test
     public void testFindAllQueriedWithQueryCombinations() {
-        assertEquals(1, findAllQueried(query().setLopOid("1.2.246.562.10.84451661825").setPrimaryPreferenceOnly(true)).getResults().size());
-        assertEquals(1, findAllQueried(query().setLopOid("1.2.246.562.10.84451661825").setPrimaryPreferenceOnly(true).setAsId("1.2.246.562.29.90697286251")).getResults().size());
-        assertEquals(0, findAllQueried(query().setLopOid("1.2.246.562.10.84451661825").setAsId("FAIL")).getResults().size());
-        assertEquals(0, findAllQueried(query().setLopOid("1.2.246.562.10.84451661825").setPrimaryPreferenceOnly(true).setDiscretionaryOnly(true)).getResults().size());
-        assertEquals(1, findAllQueried(query().setLopOid("1.2.246.562.10.84451661825").setPrimaryPreferenceOnly(true).setDiscretionaryOnly(false)).getResults().size());
-        assertEquals(0, findAllQueried(query().setLopOid("1.2.246.562.10.84451661825").setPrimaryPreferenceOnly(true).setAoOids(asList("1.2.246.562.20.18097797874"))).getResults().size());
-        assertEquals(1, findAllQueried(query().setAoOids(asList("1.2.246.562.20.52010929637")).setPrimaryPreferenceOnly(true).setPreferenceChecked(false)).getResults().size());
-        assertEquals(0, findAllQueried(query().setAoOids(asList("1.2.246.562.20.52010929637")).setPrimaryPreferenceOnly(true).setPreferenceChecked(true)).getResults().size());
+        assertEquals(1, countQueried(query().setLopOid("1.2.246.562.10.84451661825").setPrimaryPreferenceOnly(true)));
+        assertEquals(1, countQueried(query().setLopOid("1.2.246.562.10.84451661825").setPrimaryPreferenceOnly(true).setAsId("1.2.246.562.29.90697286251")));
+        assertEquals(0, countQueried(query().setLopOid("1.2.246.562.10.84451661825").setAsId("FAIL")));
+        assertEquals(0, countQueried(query().setLopOid("1.2.246.562.10.84451661825").setPrimaryPreferenceOnly(true).setDiscretionaryOnly(true)));
+        assertEquals(1, countQueried(query().setLopOid("1.2.246.562.10.84451661825").setPrimaryPreferenceOnly(true).setDiscretionaryOnly(false)));
+        assertEquals(0, countQueried(query().setLopOid("1.2.246.562.10.84451661825").setPrimaryPreferenceOnly(true).setAoOids(asList("1.2.246.562.20.18097797874"))));
+        assertEquals(1, countQueried(query().setAoOids(asList("1.2.246.562.20.52010929637")).setPrimaryPreferenceOnly(true).setPreferenceChecked(false)));
+        assertEquals(0, countQueried(query().setAoOids(asList("1.2.246.562.20.52010929637")).setPrimaryPreferenceOnly(true).setPreferenceChecked(true)));
     }
 
     @Test
     public void testFindAllQueriedPreferencesChecked() {
-        assertEquals(3, findAllQueried(query().setPreferenceChecked(false)).getResults().size());
-        assertEquals(1, findAllQueried(query().setPreferenceChecked(true)).getResults().size());
-        assertEquals(2, findAllQueried(query().setAoOids(asList("1.2.246.562.20.52010929637"))).getResults().size());
-        assertEquals(1, findAllQueried(query().setAoOids(asList("1.2.246.562.20.52010929637")).setPreferenceChecked(true)).getResults().size());
-        assertEquals(1, findAllQueried(query().setAoOids(asList("1.2.246.562.20.52010929637")).setPreferenceChecked(false)).getResults().size());
+        assertEquals(3, countQueried(query().setPreferenceChecked(false)));
+        assertEquals(1, countQueried(query().setPreferenceChecked(true)));
+        assertEquals(2, countQueried(query().setAoOids(asList("1.2.246.562.20.52010929637"))));
+        assertEquals(1, countQueried(query().setAoOids(asList("1.2.246.562.20.52010929637")).setPreferenceChecked(true)));
+        assertEquals(1, countQueried(query().setAoOids(asList("1.2.246.562.20.52010929637")).setPreferenceChecked(false)));
+    }
+
+    private int countQueried(final ApplicationQueryParametersBuilder queryBuilder) {
+        return findAllQueried(queryBuilder).getResults().size();
     }
 
     @Test
     public void testFindAllQueriedApplicationOptionGroups() {
-        assertEquals(1, findAllQueried(query().setGroupOid("1.2.246.562.28.26750186798")).getResults().size());
-        assertEquals(0, findAllQueried(query().setGroupOid("1.2.246.562.28.26750186798").setPrimaryPreferenceOnly(true)).getResults().size());
+        assertEquals(1, countQueried(query().setGroupOid("1.2.246.562.28.26750186798")));
+        assertEquals(0, countQueried(query().setGroupOid("1.2.246.562.28.26750186798").setPrimaryPreferenceOnly(true)));
     }
 
     @Test
     public void testFindAllQueriedApplicationOptionGroupsAndApplicationOptions() {
-        assertEquals(1, findAllQueried(query().setGroupOid("1.2.246.562.28.26750186798").setAoOids(asList("1.2.246.562.20.52010929637"))).getResults().size());
+        assertEquals(1, countQueried(query().setGroupOid("1.2.246.562.28.26750186798").setAoOids(asList("1.2.246.562.20.52010929637"))));
         // hakukohteen 52010929637 tulee olla hakemuksella ensisijainen niistä hakukohteista jotka kuuluvat ryhmään 26750186798
-        assertEquals(1, findAllQueried(query().setGroupOid("1.2.246.562.28.26750186798").setAoOids(asList("1.2.246.562.20.52010929637")).setPrimaryPreferenceOnly(true)).getResults().size());
+        assertEquals(1, countQueried(query().setGroupOid("1.2.246.562.28.26750186798").setAoOids(asList("1.2.246.562.20.52010929637")).setPrimaryPreferenceOnly(true)));
         // hakukohteen 52010929637 tulee olla hakemuksella ensisijainen niistä hakukohteista jotka kuuluvat ryhmään 92529355477 (ei ole!)
-        assertEquals(0, findAllQueried(query().setGroupOid("1.2.246.562.28.92529355477").setAoOids(asList("1.2.246.562.20.52010929637")).setPrimaryPreferenceOnly(true)).getResults().size());
+        assertEquals(0, countQueried(query().setGroupOid("1.2.246.562.28.92529355477").setAoOids(asList("1.2.246.562.20.52010929637")).setPrimaryPreferenceOnly(true)));
         // hakukohteen 18097797874 tulee olla hakemuksella ensisijainen niistä hakukohteista jotka kuuluvat ryhmään 92529355477
-        assertEquals(1, findAllQueried(query().setGroupOid("1.2.246.562.28.92529355477").setAoOids(asList("1.2.246.562.20.18097797874")).setPrimaryPreferenceOnly(true)).getResults().size());
+        assertEquals(1, countQueried(query().setGroupOid("1.2.246.562.28.92529355477").setAoOids(asList("1.2.246.562.20.18097797874")).setPrimaryPreferenceOnly(true)));
     }
 
 
