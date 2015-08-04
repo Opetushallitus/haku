@@ -21,6 +21,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -111,6 +112,19 @@ public class ApplicationDAOMongoImplIT extends AbstractDAOTest {
     @Test
     public void testFindAllQueriedBySendingSchool() {
         assertEquals(2, countQueried(query().setSendingSchool("1.2.246.562.10.16546622305")));
+    }
+
+    @Test
+    public void testFindAllQueriedBySendingClass() {
+        assertEquals(3, countQueried(query().setSendingClass("9A")));
+        assertEquals(3, countQueried(query().setSendingClass("9")));
+        assertEquals(0, countQueried(query().setSendingClass("FAIL")));
+    }
+
+    @Test
+    public void testFindAllQueriedByUpdatedAfter() {
+        assertEquals(0, countQueried(query().setUpdatedAfter(new Date())));
+        assertEquals(4, countQueried(query().setUpdatedAfter(new Date(0))));
     }
 
     @Test
