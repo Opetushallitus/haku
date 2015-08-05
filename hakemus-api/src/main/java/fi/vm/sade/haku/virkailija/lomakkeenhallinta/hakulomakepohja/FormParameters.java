@@ -174,7 +174,7 @@ public class FormParameters {
     }
 
     public boolean isAmmatillinenDropdown() {
-        return "1.2.246.562.29.95390561488".equals(applicationSystem.getId());
+        return applicationSystem.getKohdejoukkoUri().equals(KOHDEJOUKKO_KORKEAKOULU);
     }
 
     public boolean kysytaankoErityisopetuksenTarve() {
