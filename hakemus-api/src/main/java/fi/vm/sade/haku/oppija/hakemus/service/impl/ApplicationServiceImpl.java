@@ -427,35 +427,41 @@ public class ApplicationServiceImpl implements ApplicationService {
     @Override
     public Application removeOrphanedAnswers(Application application) {
         Form form = applicationSystemService.getApplicationSystem(application.getApplicationSystemId()).getForm();
-        Map<String, String> answers = application.getVastauksetMerged();
-        Set<String> questions = new HashSet<>();
+        boolean answersRemoved = true;
 
-        Deque<Element> children = new LinkedList<>();
-        children.push(form);
-        while (children.size() > 0) {
-            Element e = children.pop();
-            questions.add(e.getId());
-            for (Element child : e.getChildren(answers)) {
-                children.push(child);
-            }
-        }
-
-        questions.add(OppijaConstants.ELEMENT_ID_SENDING_SCHOOL);
-        questions.add(OppijaConstants.ELEMENT_ID_SENDING_CLASS);
-        questions.add(OppijaConstants.ELEMENT_ID_CLASS_LEVEL);
-        questions.add(OppijaConstants.ELEMENT_ID_SECURITY_ORDER);
-
-        for (Map.Entry<String, Map<String, String>> phase : application.getAnswers().entrySet()) {
-            String phaseId = phase.getKey();
-            Map<String, String> newAnswers = new HashMap<>();
-            for (Map.Entry<String, String> answer : phase.getValue().entrySet()) {
-                String answerKey = answer.getKey();
-                if (questions.contains(answerKey)
-                        || (OppijaConstants.PHASE_APPLICATION_OPTIONS.equals(phaseId) && answerKey.startsWith("preference"))) {
-                    newAnswers.put(answerKey, answer.getValue());
+        while (answersRemoved) {
+            answersRemoved = false;
+            Map<String, String> answers = application.getVastauksetMerged();
+            Set<String> questions = new HashSet<>();
+            Deque<Element> children = new LinkedList<>();
+            children.push(form);
+            while (children.size() > 0) {
+                Element e = children.pop();
+                questions.add(e.getId());
+                for (Element child : e.getChildren(answers)) {
+                    children.push(child);
                 }
             }
-            application.addVaiheenVastaukset(phaseId, newAnswers);
+
+            questions.add(OppijaConstants.ELEMENT_ID_SENDING_SCHOOL);
+            questions.add(OppijaConstants.ELEMENT_ID_SENDING_CLASS);
+            questions.add(OppijaConstants.ELEMENT_ID_CLASS_LEVEL);
+            questions.add(OppijaConstants.ELEMENT_ID_SECURITY_ORDER);
+
+            for (Map.Entry<String, Map<String, String>> phase : application.getAnswers().entrySet()) {
+                String phaseId = phase.getKey();
+                Map<String, String> newAnswers = new HashMap<>();
+                for (Map.Entry<String, String> answer : phase.getValue().entrySet()) {
+                    String answerKey = answer.getKey();
+                    if (questions.contains(answerKey)
+                            || (OppijaConstants.PHASE_APPLICATION_OPTIONS.equals(phaseId) && answerKey.startsWith("preference"))) {
+                        newAnswers.put(answerKey, answer.getValue());
+                    } else {
+                        answersRemoved = true;
+                    }
+                }
+                application.addVaiheenVastaukset(phaseId, newAnswers);
+            }
         }
         return application;
     }
