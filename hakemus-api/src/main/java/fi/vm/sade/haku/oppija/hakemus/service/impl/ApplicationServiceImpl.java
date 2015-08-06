@@ -426,31 +426,32 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     @Override
     public Application removeOrphanedAnswers(Application application) {
-        ApplicationSystem as = applicationSystemService.getApplicationSystem(application.getApplicationSystemId());
-        Map<String, Boolean> elementIds = new HashMap<>();
+        Form form = applicationSystemService.getApplicationSystem(application.getApplicationSystemId()).getForm();
+        Map<String, String> answers = application.getVastauksetMerged();
+        Set<String> questions = new HashSet<>();
 
-        ArrayList<Element> children = new ArrayList<>(30);
-        children.addAll(as.getForm().getChildren(application.getVastauksetMerged()));
-
+        Deque<Element> children = new LinkedList<>();
+        children.push(form);
         while (children.size() > 0) {
-            Element element = children.remove(children.size() - 1);
-            elementIds.put(element.getId(), Boolean.TRUE);
-            children.addAll(element.getChildren(application.getVastauksetMerged()));
+            Element e = children.pop();
+            questions.add(e.getId());
+            for (Element child : e.getChildren(answers)) {
+                children.push(child);
+            }
         }
 
-        elementIds.put(OppijaConstants.ELEMENT_ID_SENDING_SCHOOL, Boolean.TRUE);
-        elementIds.put(OppijaConstants.ELEMENT_ID_SENDING_CLASS, Boolean.TRUE);
-        elementIds.put(OppijaConstants.ELEMENT_ID_CLASS_LEVEL, Boolean.TRUE);
-        elementIds.put(OppijaConstants.ELEMENT_ID_SECURITY_ORDER, Boolean.TRUE);
+        questions.add(OppijaConstants.ELEMENT_ID_SENDING_SCHOOL);
+        questions.add(OppijaConstants.ELEMENT_ID_SENDING_CLASS);
+        questions.add(OppijaConstants.ELEMENT_ID_CLASS_LEVEL);
+        questions.add(OppijaConstants.ELEMENT_ID_SECURITY_ORDER);
 
         for (Map.Entry<String, Map<String, String>> phase : application.getAnswers().entrySet()) {
             String phaseId = phase.getKey();
-            Map<String, String> newAnswers = new HashMap<String, String>();
+            Map<String, String> newAnswers = new HashMap<>();
             for (Map.Entry<String, String> answer : phase.getValue().entrySet()) {
                 String answerKey = answer.getKey();
-                if ((elementIds.get(answerKey) != null && elementIds.get(answerKey))
-                        || (OppijaConstants.PHASE_APPLICATION_OPTIONS.equals(phaseId) && answerKey.startsWith("preference"))
-                        ) {
+                if (questions.contains(answerKey)
+                        || (OppijaConstants.PHASE_APPLICATION_OPTIONS.equals(phaseId) && answerKey.startsWith("preference"))) {
                     newAnswers.put(answerKey, answer.getValue());
                 }
             }
