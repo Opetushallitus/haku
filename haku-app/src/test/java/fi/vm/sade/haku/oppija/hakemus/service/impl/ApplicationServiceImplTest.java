@@ -21,9 +21,14 @@ import fi.vm.sade.haku.oppija.hakemus.service.HakuPermissionService;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystemBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
+import fi.vm.sade.haku.oppija.lomake.domain.builder.RelatedQuestionRuleBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.builder.TextQuestionBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Phase;
+import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.Equals;
+import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.Expr;
+import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.Value;
+import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.Variable;
 import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.haku.oppija.lomake.service.FormService;
@@ -389,10 +394,15 @@ public class ApplicationServiceImplTest {
         form.addChild(
                 new Phase(OppijaConstants.PHASE_PERSONAL, createI18NAsIs("persPhase"), true, new ArrayList<String>()).addChild(
                         TextQuestionBuilder.TextQuestion("persQuestion1").build(),
+                        TextQuestionBuilder.TextQuestion("persQuestion3").build(),
                         TextQuestionBuilder.TextQuestion("preference1-pers").build()
                 ),
                 new Phase(OppijaConstants.PHASE_EDUCATION, createI18NAsIs("eduPhase"), true, new ArrayList<String>()).addChild(
                         TextQuestionBuilder.TextQuestion("eduQuestion1").build(),
+                        RelatedQuestionRuleBuilder.Rule("conditionalEquQuestion3", new Equals(new Variable("persQuestion3"), new Value("answer")))
+                                .addChild(TextQuestionBuilder.TextQuestion("eduRelatedQuestion4").build()).build(),
+                        RelatedQuestionRuleBuilder.Rule("conditionalEquQuestion5", new Equals(new Variable("eduRelatedQuestion4"), new Value("answer")))
+                                .addChild(TextQuestionBuilder.TextQuestion("eduRelatedQuestion6").build()).build(),
                         TextQuestionBuilder.TextQuestion("preference1-edu").build()
                 ),
                 new Phase(OppijaConstants.PHASE_APPLICATION_OPTIONS, createI18NAsIs("aoPhase"), true, new ArrayList<String>()).addChild(
@@ -402,11 +412,12 @@ public class ApplicationServiceImplTest {
         Application application = new Application("appOid");
         application.setApplicationSystemId("myAs");
         application.addVaiheenVastaukset(OppijaConstants.PHASE_PERSONAL, new HashMap<String, String>() {{
-            put("persQuestion1", "persAnswer1"); put("persQuestion2", "persAnswer2");
+            put("persQuestion1", "persAnswer1"); put("persQuestion2", "persAnswer2"); put("persQuestion3", "wrong_answer");
             put("preference1-pers", "preference1-pers"); put("preference2-pers", "preference2-pers");
         }});
         application.addVaiheenVastaukset(OppijaConstants.PHASE_EDUCATION, new HashMap<String, String>() {{
             put("eduQuestion1", "eduAnswer1"); put("lahtokoulu", "eduAnswer2"); put(OppijaConstants.ELEMENT_ID_SENDING_SCHOOL, "koulu");
+            put("eduRelatedQuestion4", "answer"); put("eduRelatedQuestion6", "answer");
             put("preference1-edu", "preference1-edu"); put("preference2-edu", "preference2-edu");
         }});
         application.addVaiheenVastaukset(OppijaConstants.PHASE_APPLICATION_OPTIONS, new HashMap<String, String>() {{
@@ -426,6 +437,10 @@ public class ApplicationServiceImplTest {
         assertEquals("persAnswer1", persAnswers.get("persQuestion1"));
         assertEquals("eduAnswer1", eduAnswers.get("eduQuestion1"));
         assertEquals("aoAnswer1", aoAnswers.get("aoQuestion1"));
+
+        assertEquals("wrong_answer", persAnswers.get("persQuestion3"));
+        assertNull(eduAnswers.get("eduRelatedQuestion4"));
+        assertNull(eduAnswers.get("eduRelatedQuestion6"));
 
         assertNull(persAnswers.get("persQuestion2"));
         assertNull(eduAnswers.get("eduQuestion2"));
