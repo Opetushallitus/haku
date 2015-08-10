@@ -269,14 +269,7 @@ public final class KoulutustaustaPhase {
         Element pohjakoulutusGrp = TitledGroup("pohjakoulutus.korkeakoulut")
                 .required().formParams(formParameters).build();
 
-        int maxTutkintoCount;
-        if(formParameters.isAmmatillinenDropdown()) {
-            maxTutkintoCount = 4;
-        }
-        else {
-            //old applications
-            maxTutkintoCount = 5;
-        }
+        int maxTutkintoCount = formParameters.getTutkintoCountMax();
 
         pohjakoulutusGrp.addChild(
                 buildYoSuomalainen(formParameters, laajuusYksikot, ammattitutkintonimikkeet, ammattioppilaitokset),
