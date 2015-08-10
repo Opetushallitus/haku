@@ -163,16 +163,18 @@ public class OrganizationServiceImpl implements OrganizationService {
     public List<Organization> findByOppilaitosnumero(List<String> oppilaitosnumeros) {
         List<Organization> orgs = new ArrayList<Organization>(oppilaitosnumeros.size());
         int i = 1;
+        String numero = null;
         try {
             LOG.debug("Getting {} oppilaitosnumeros", oppilaitosnumeros.size());
-            for (String numero : oppilaitosnumeros) {
+            for (String nro : oppilaitosnumeros) {
+                numero = nro;
                 LOG.debug("Getting oppilaitosnumero {} ({} / {})", numero, i++, oppilaitosnumeros.size());
                 orgs.add(findByOid(numero));
             }
             LOG.debug("Got numbers");
             return orgs;
         } catch (IOException e) {
-            LOG.error("Couldn't find organization for oppilaitosnumero", e);
+            LOG.error("Couldn't find organization for oppilaitosnumero ("+ numero +")", e);
         }
         return null;
     }
