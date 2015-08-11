@@ -55,9 +55,9 @@ describe('KK-hakemus', function () {
                     virkailija.addAmmatillinenCheckbox),
                 input(
                     virkailija.ammatillinenSuoritusVuosi, "2000",
-                    virkailija.ammatillinenTutkintonimike, "Hitsaajan perustutkinto",
+                    virkailija.ammatillinenTutkintonimike, "400000",
                     virkailija.ammatillinenTutkinnonLaajuus, "120",
-                    virkailija.ammatillinenOppilaitos, "Ammattikoulu X"),
+                    virkailija.ammatillinenOppilaitos, "1.2.246.562.10.57118763500"),
                 click(
                     virkailija.kkTutkintoSuoritettu(false),
                     virkailija.addAvoinCheckbox),

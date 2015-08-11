@@ -11,6 +11,10 @@ $.ajax({
     success: function (data) {
             $('#hakemusValinnassa').html(data);
             $('#hakemusValinnassa').find('*').prop('disabled', true);
+            $('#hakemusValinnassa').find('*').each(function(index) {
+                var currId = $(this).attr('id');
+                $(this).attr('id', 'valinta_'+currId);
+            });
         },
     error: function (data) {
             $('#hakemusValinnassa').html("<p>Hakemuksen tietojen lataaminen valintalaskennasta epäonnistui</p>");

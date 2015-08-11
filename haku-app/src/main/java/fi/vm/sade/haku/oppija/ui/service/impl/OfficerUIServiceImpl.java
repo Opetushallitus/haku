@@ -678,10 +678,6 @@ public class OfficerUIServiceImpl implements OfficerUIService {
 
         ModelResponse modelResponse =
                 new ModelResponse(application, form, element, validationResult, koulutusinformaatioBaseUrl);
-//        modelResponse.addObjectToModel("preview", true);
-//        modelResponse.addObjectToModel("phaseEditAllowed", new HashMap<>());
-//        modelResponse.addObjectToModel("virkailijaDeleteAllowed", false);
-//        modelResponse.addObjectToModel("postProcessAllowed", false);
         modelResponse.addObjectToModel("applicationSystem", as);
         modelResponse.addObjectToModel("baseEducationDoesNotRestrictApplicationOptions", as.baseEducationDoesNotRestrictApplicationOptions());
 

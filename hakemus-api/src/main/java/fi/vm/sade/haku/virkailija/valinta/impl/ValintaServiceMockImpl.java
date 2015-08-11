@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Type;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 @Service
@@ -843,10 +844,10 @@ public class ValintaServiceMockImpl implements ValintaService {
         return hakijaDTO;
     }
 
-        @Override
-        public Map<String, String> fetchValintaData(Application application) {
-                return null;
-        }
+    @Override
+    public Map<String, String> fetchValintaData(Application application) {
+        return new HashMap<String, String>();
+    }
 
 
 }
