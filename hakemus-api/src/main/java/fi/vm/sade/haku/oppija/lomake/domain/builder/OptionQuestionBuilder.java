@@ -54,8 +54,8 @@ public abstract class OptionQuestionBuilder extends QuestionBuilder {
         return this;
     }
 
-    public OptionQuestionBuilder defaultOption(String fin) {
-        this.defaultOption = fin;
+    public OptionQuestionBuilder defaultOption(String value) {
+        this.defaultOption = value;
         return this;
     }
 
