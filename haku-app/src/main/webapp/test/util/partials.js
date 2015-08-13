@@ -131,8 +131,9 @@ partials = {
                 lomake.pohjakoulutusAmNayttotutkintona(n, nayttotutkintona)
             ));
     },
-    syotaAmmatillinenKeskiarvo: function(suffix, keskiarvo, tutkinto) {
+    syotaAmmatillinenKeskiarvo: function(suffix, keskiarvo, asteikko, tutkinto) {
         return seq(
+            select(lomake.asteikko(suffix), asteikko),
             input(
                 lomake.keskiarvo(suffix), keskiarvo,
                 lomake.keskiarvoTutkinto(suffix), tutkinto));

@@ -133,6 +133,7 @@ public class OsaaminenPhase {
                 .labelKey("keskiarvo")
                 .build())
                 .addChild(Dropdown("arvosanaasteikko" + postfix)
+                        .emptyOptionDefault()
                         .addOptions(asteikkolista)
                         .inline()
                         .required()

@@ -186,7 +186,7 @@ public class HakutoiveetPhase {
                 .formParams(formParameters).build();
 
         Element discretionaryFollowUp = new DropdownSelectBuilder(discretionary.getId() + "-follow-up")
-                .emptyOption()
+                .emptyOptionDefault()
                 .addOption((Option) new OptionBuilder().setValue("oppimisvaikudet").labelKey("perustelu.oppimisvaikeudet").formParams(formParameters).build())
                 .addOption((Option) new OptionBuilder().setValue("sosiaalisetsyyt").labelKey("perustelu.sosiaaliset").formParams(formParameters).build())
                 .addOption((Option) new OptionBuilder().setValue("todistustenvertailuvaikeudet").labelKey("perustelu.todistustenvertailuvaikeudet").formParams(formParameters).build())
