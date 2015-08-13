@@ -269,6 +269,7 @@ describe('KK-hakemus', function () {
             headingVisible("Koulutustausta"),
             click(lomake.pohjakoulutusYo),
             input(lomake.pohjakoulutusYoVuosi, "2000"),
+            select(lomake.pohjakoulutusYoTutkinto, "fi"),
             click(lomake.pohjakoulutusYoAmmatillinen),
             input(
                 lomake.pohjakoulutusYoAmmatillinenVuosi, "2000"),
@@ -289,9 +290,9 @@ describe('KK-hakemus', function () {
             partials.valitseKoulutus(1, "Metropolia AMK, Espoo, Vanha maantie (Leppävaara)", "Insinööri (AMK), maanmittaustekniikka, päivätoteutus"),
             click(lomake.fromHakutoiveet),
             input(lomake.lukioPaattotodistusKeskiarvo, "1,00"),
-            partials.syotaAmmatillinenKeskiarvo('_yo_ammatillinen', '2,00', "Lukio + ammatillinen"),
-            partials.syotaAmmatillinenKeskiarvo(1, '2,50', "Ammatillinen 1 keskiarvo"),
-            partials.syotaAmmatillinenKeskiarvo(2, '3,00', "Ammatillinen 2 keskiarvo"),
+            partials.syotaAmmatillinenKeskiarvo('_yo_ammatillinen', '2,00', '1-3', "Lukio + ammatillinen"),
+            partials.syotaAmmatillinenKeskiarvo(1, '2,50', '1-3', "Ammatillinen 1 keskiarvo"),
+            partials.syotaAmmatillinenKeskiarvo(2, '3,00', '1-3', "Ammatillinen 2 keskiarvo"),
             click(
                 lomake.fromOsaaminen,
                 lomake.asiointikieli("suomi")),

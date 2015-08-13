@@ -13,7 +13,6 @@ public abstract class OptionQuestionBuilder extends QuestionBuilder {
         super(id);
     }
 
-    protected String defaultValueAttribute;
     protected String defaultOption;
     protected String[] keepFirst;
     protected final List<Option> options = new ArrayList<Option>();
@@ -46,11 +45,6 @@ public abstract class OptionQuestionBuilder extends QuestionBuilder {
 
     public OptionQuestionBuilder addOption(Option option) {
         this.options.add(option);
-        return this;
-    }
-
-    public OptionQuestionBuilder defaultValueAttribute(String attributeName) {
-        this.defaultValueAttribute = attributeName;
         return this;
     }
 
