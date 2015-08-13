@@ -240,7 +240,7 @@ public final class HenkilotiedotPhase {
 
         Element kotikunta =
                 new DropdownSelectBuilder("kotikunta")
-                        .emptyOption()
+                        .emptyOptionDefault()
                         .addOptions(formParameters.getKoodistoService().getMunicipalities())
                         .requiredInline()
                         .formParams(formParameters).build();
@@ -269,7 +269,7 @@ public final class HenkilotiedotPhase {
                 && ! (formParameters.isAmmattillinenEritysopettajaTaiOppilaanohjaajaKoulutus()
                     || formParameters.isAmmattillinenOpettajaKoulutus())) {
             henkilotiedotTeema.addChild(Dropdown("koulusivistyskieli")
-                            .emptyOption()
+                            .emptyOptionDefault()
                             .addOptions(formParameters.getKoodistoService().getTeachingLanguages())
                             .requiredInline()
                             .formParams(formParameters)
