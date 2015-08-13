@@ -59,6 +59,7 @@ lomake = initSelectors({
     },
     pohjakoulutusYo: 'input#pohjakoulutus_yo',
     pohjakoulutusYoVuosi: 'input#pohjakoulutus_yo_vuosi',
+    pohjakoulutusYoTutkinto: 'select#pohjakoulutus_yo_tutkinto',
     pohjakoulutusYoAmmatillinen: 'input#pohjakoulutus_yo_ammatillinen',
     pohjakoulutusYoAmmatillinenVuosi: 'input#pohjakoulutus_yo_ammatillinen_vuosi',
     pohjakoulutusYoAmmatillinenNimike: 'select#pohjakoulutus_yo_ammatillinen_nimike',
@@ -122,6 +123,9 @@ lomake = initSelectors({
     },
     keskiarvo: function(suffix) {
         return '[name=keskiarvo' + (suffix == 1 ? "" : suffix) + ']';
+    },
+    asteikko: function(suffix) {
+        return 'select#arvosanaasteikko' + (suffix === 1 ? '' : suffix);
     },
 
     // Lisätiedot
