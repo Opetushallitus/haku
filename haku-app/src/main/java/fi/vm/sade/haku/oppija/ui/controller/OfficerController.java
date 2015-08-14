@@ -59,7 +59,7 @@ import java.util.Map;
 import static fi.vm.sade.haku.oppija.ui.common.MultivaluedMapUtil.toSingleValueMap;
 import static javax.ws.rs.core.Response.ok;
 import static javax.ws.rs.core.Response.seeOther;
-
+import static fi.vm.sade.haku.AuditHelper.*;
 
 @Path("virkailija")
 @Controller
@@ -112,6 +112,11 @@ public class OfficerController {
     public Response newApplication(final MultivaluedMap<String, String> multiValues) throws URISyntaxException {
         LOGGER.debug("create new application");
         Application application = officerUIService.createApplication(multiValues.getFirst("asId"));
+        AUDIT.log(builder()
+                .hakuOid(multiValues.getFirst("asId"))
+                .hakemusOid(application.getOid())
+                .message("Created new application")
+                .build());
         return redirectToOidResponse(application.getOid());
     }
 
@@ -129,6 +134,7 @@ public class OfficerController {
     public Viewable redirectToLastPhase(@PathParam(OID_PATH_PARAM) final String oid) throws URISyntaxException, IOException {
         LOGGER.debug("get application  {}", oid);
         ModelResponse modelResponse = officerUIService.getValidatedApplication(oid, "esikatselu");
+        AUDIT.log(builder().hakemusOid(oid).message("Viewed application").build());
         return new Viewable(DEFAULT_VIEW, modelResponse.getModel());
     }
 
@@ -138,9 +144,9 @@ public class OfficerController {
     public Viewable getPreview(@PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId,
                                @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
                                @PathParam(OID_PATH_PARAM) final String oid) throws IOException {
-
         LOGGER.debug("getPreview {}, {}, {}", applicationSystemId, phaseId, oid);
         ModelResponse modelResponse = officerUIService.getValidatedApplication(oid, phaseId);
+        AUDIT.log(builder().hakuOid(applicationSystemId).hakemusOid(oid).message("Previewed application").build());
         return new Viewable(DEFAULT_VIEW, modelResponse.getModel()); // TODO remove hardcoded Phase
     }
 
@@ -157,7 +163,6 @@ public class OfficerController {
             LOGGER.debug("Entry: {} -> {}", entry.getKey(), entry.getValue());
         }
         ModelResponse modelResponse = officerUIService.getMultipleApplicationResponse(applicationList, selectedApplication);
-
         return new Viewable(DEFAULT_VIEW, modelResponse.getModel());
     }
 
@@ -170,6 +175,7 @@ public class OfficerController {
                                       @PathParam("elementId") final String elementId) {
         LOGGER.debug("getPreviewElement {}, {}, {}", applicationSystemId, phaseId, oid);
         ModelResponse modelResponse = officerUIService.getApplicationElement(oid, phaseId, elementId, true);
+        AUDIT.log(builder().hakuOid(applicationSystemId).hakemusOid(oid).message("Previewed application").build());
         return new Viewable("/elements/Root", modelResponse.getModel()); // TODO remove hardcoded Phase
     }
 
@@ -189,8 +195,10 @@ public class OfficerController {
         ModelResponse modelResponse = officerUIService.updateApplication(oid,
                 new ApplicationPhase(applicationSystemId, phaseId, toSingleValueMap(multiValues)),
                 userSession.getUser());
-
         if (modelResponse.hasErrors()) {
+            AUDIT.log(builder()
+                    .hakuOid(applicationSystemId)
+                    .hakemusOid(oid).add("phaseid", phaseId).message("Updated application phase").build());
             return ok(new Viewable(DEFAULT_VIEW, modelResponse.getModel())).build();
         } else {
             URI path = UriUtil.pathSegmentsToUri(VIRKAILIJA_HAKEMUS_VIEW, applicationSystemId, PHASE_ID_PREVIEW, oid);
@@ -211,6 +219,9 @@ public class OfficerController {
         LOGGER.debug("updateView {}, {}", new Object[]{oid, multiValues});
         ModelResponse modelResponse = officerUIService.getApplicationElement(oid, phaseId, elementId, false);
         modelResponse.addAnswers(toSingleValueMap(multiValues));
+        AUDIT.log(builder()
+                .hakuOid(applicationSystemId)
+                .hakemusOid(oid).add("phaseid", phaseId).message("Refreshed application view").build());
         return new Viewable("/elements/Root", modelResponse.getModel());
     }
 
@@ -228,6 +239,9 @@ public class OfficerController {
         List<String> ruleIds = multiValues.get("ruleIds[]");
         ModelResponse modelResponse = officerUIService.getApplicationMultiElement(oid, phaseId, ruleIds, false);
         modelResponse.addAnswers(toSingleValueMap(multiValues));
+        AUDIT.log(builder()
+                .hakuOid(applicationSystemId)
+                .hakemusOid(oid).add("phaseid", phaseId).message("Refreshed application view").build());
         return new Viewable("/elements/JsonElementList.jsp", modelResponse.getModel());
     }
 
@@ -239,7 +253,12 @@ public class OfficerController {
     public Response saveAdditionalInfo(@PathParam(OID_PATH_PARAM) final String oid,
                                        final MultivaluedMap<String, String> multiValues) throws URISyntaxException {
         LOGGER.debug("saveAdditionalInfo {}, {}", new Object[]{oid, multiValues});
-        officerUIService.saveApplicationAdditionalInfo(oid, toSingleValueMap(multiValues));
+        Map<String,String> vals = toSingleValueMap(multiValues);
+        officerUIService.saveApplicationAdditionalInfo(oid, vals);
+        AUDIT.log(builder()
+                .hakemusOid(oid)
+                .addAll(vals)
+                .message("Saved application additional info").build());
         return redirectToOidResponse(oid);
     }
 
@@ -249,6 +268,9 @@ public class OfficerController {
     public Viewable getAdditionalInfo(@PathParam(OID_PATH_PARAM) final String oid) {
         LOGGER.debug("getAdditionalInfo  {}, {}", new Object[]{oid});
         ModelResponse modelResponse = officerUIService.getAdditionalInfo(oid);
+        AUDIT.log(builder()
+                .hakemusOid(oid)
+                .message("Viewed additional info").build());
         return new Viewable(ADDITIONAL_INFO_VIEW, modelResponse.getModel());
     }
 
@@ -259,7 +281,13 @@ public class OfficerController {
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_CRUD')")
     public Response state(@PathParam(OID_PATH_PARAM) final String oid, final MultivaluedMap<String, String> multiValues) throws URISyntaxException {
         String reason = concatMultivaluedQueryParam("note", multiValues);
-        officerUIService.changeState(oid, Application.State.valueOf(multiValues.getFirst("state")), reason);
+        Application.State state = Application.State.valueOf(multiValues.getFirst("state"));
+        officerUIService.changeState(oid, state, reason);
+        AUDIT.log(builder()
+                .hakemusOid(oid)
+                .add("state", state)
+                .add("reason", reason)
+                .message("Changed application state").build());
         return redirectToOidResponse(oid);
     }
 
@@ -270,6 +298,10 @@ public class OfficerController {
     public Response addNote(@PathParam(OID_PATH_PARAM) final String oid, final MultivaluedMap<String, String> multiValues) throws URISyntaxException {
         String note = concatMultivaluedQueryParam("note-text", multiValues);
         officerUIService.addNote(oid, note);
+        AUDIT.log(builder()
+                .hakemusOid(oid)
+                .add("note", note)
+                .message("Added note on application").build());
         return redirectToOidResponse(oid);
     }
 
@@ -312,6 +344,9 @@ public class OfficerController {
 		String url = "/virkailija/hakemus/" + oid + "/print/view";
     	HttpResponse httpResponse = pdfService.getUriToPDF(url);
     	URI location = UriUtil.pathSegmentsToUri(httpResponse.getFirstHeader("Content-Location").getValue());
+        AUDIT.log(builder()
+                .hakemusOid(oid)
+                .message("Printed application").build());
     	return Response.seeOther(location).build();
     }
 
@@ -320,6 +355,9 @@ public class OfficerController {
     @Produces(MEDIA_TYPE_TEXT_HTML_UTF8)
     public Viewable getApplicationPrintView(@PathParam(OID_PATH_PARAM) final String oid) {
         ModelResponse modelResponse = officerUIService.getApplicationPrint(oid);
+        AUDIT.log(builder()
+                .hakemusOid(oid)
+                .message("Print previewed application").build());
         return new Viewable(APPLICATION_PRINT_VIEW, modelResponse.getModel());
     }
 
@@ -328,6 +366,9 @@ public class OfficerController {
     @Produces(MEDIA_TYPE_TEXT_HTML_UTF8)
     public Viewable getValintaView(@PathParam(OID_PATH_PARAM) final String oid) throws IOException {
         ModelResponse modelResponse = officerUIService.getApplicationValinta(oid);
+        AUDIT.log(builder()
+                .hakemusOid(oid)
+                .message("Previewed application in Valinnat").build());
         return new Viewable(APPLICATION_VALINTA_VIEW, modelResponse.getModel());
     }
 
@@ -337,7 +378,11 @@ public class OfficerController {
     @Produces(MediaType.TEXT_PLAIN)
     public Response applicationEmail(ApplicationByEmailDTO applicationByEmail) throws URISyntaxException, IOException {
     	String id = emailService.sendApplicationByEmail(applicationByEmail);
-    	return Response.ok(id).build();
+        AUDIT.log(builder()
+                .hakemusOid(applicationByEmail.getApplicationOID())
+                //.add("email", applicationByEmail.getApplicantEmailAddress())
+                .message("Sent application by email").build());
+        return Response.ok(id).build();
     }
 
     @GET

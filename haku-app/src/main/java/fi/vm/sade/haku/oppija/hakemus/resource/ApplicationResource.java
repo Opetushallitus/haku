@@ -49,6 +49,8 @@ import javax.ws.rs.core.Response;
 import java.net.URISyntaxException;
 import java.util.*;
 
+import static fi.vm.sade.haku.AuditHelper.AUDIT;
+import static fi.vm.sade.haku.AuditHelper.builder;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 /**
@@ -107,6 +109,7 @@ public class ApplicationResource {
         try {
             Application application = applicationService.getApplicationByOid(oid);
             LOGGER.debug("Got applicatoin by oid : {}", application.getOid());
+            AUDIT.log(builder().hakemusOid(oid).message("Viewed application").build());
             return application;
         } catch (ResourceNotFoundException e) {
             throw new JSONException(Response.Status.NOT_FOUND, "Could not find requested application", e);
@@ -413,7 +416,20 @@ public class ApplicationResource {
     public void putApplicationAdditionalData(@PathParam("asId") String asId,
                                              @PathParam("aoId") String aoId,
                                              List<ApplicationAdditionalDataDTO> additionalData) {
-        applicationService.saveApplicationAdditionalInfo(additionalData);
+        boolean saveSucceeded = false;
+        try {
+            applicationService.saveApplicationAdditionalInfo(additionalData);
+            saveSucceeded = true;
+        } finally {
+            if(saveSucceeded) {
+                for (ApplicationAdditionalDataDTO applicationAdditionalDataDTO : additionalData) {
+                    AUDIT.log(builder().hakuOid(asId).hakukohdeOid(aoId)
+                            .addAll(applicationAdditionalDataDTO.getAdditionalData())
+                            .hakemusOid(applicationAdditionalDataDTO.getOid()).message("Saved additional data").build());
+                }
+
+            }
+        }
     }
 
     @PUT
