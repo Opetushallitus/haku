@@ -235,4 +235,19 @@ public class FormParameters {
     public boolean kysytaankoKaksoistutkinto() {
         return !isPerusopetuksenJalkeinenValmentava() && !isHigherEd();
     }
+
+    public boolean useCustomGradeAverageComponent() {
+        Date firstStarted = new Date(Long.MAX_VALUE);
+        for (ApplicationPeriod period : applicationSystem.getApplicationPeriods()) {
+            if (period.getStart().before(firstStarted)) {
+                firstStarted = period.getStart();
+            }
+        }
+        Calendar flagDay = GregorianCalendar.getInstance();
+        flagDay.set(Calendar.YEAR, 2015);
+        flagDay.set(Calendar.MONTH, Calendar.AUGUST);
+        flagDay.set(Calendar.DAY_OF_MONTH, 1);
+
+        return flagDay.getTime().before(firstStarted);
+    }
 }
