@@ -19,6 +19,7 @@ package fi.vm.sade.haku.oppija.hakemus.resource;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 import com.wordnik.swagger.annotations.ApiParam;
+import fi.vm.sade.auditlog.haku.HakuOperation;
 import fi.vm.sade.haku.oppija.common.koulutusinformaatio.ApplicationOption;
 import fi.vm.sade.haku.oppija.common.koulutusinformaatio.ApplicationOptionService;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
@@ -109,7 +110,8 @@ public class ApplicationResource {
         try {
             Application application = applicationService.getApplicationByOid(oid);
             LOGGER.debug("Got applicatoin by oid : {}", application.getOid());
-            AUDIT.log(builder().hakemusOid(oid).message("Viewed application").build());
+            AUDIT.log(builder().hakemusOid(oid)
+                    .setOperaatio(HakuOperation.VIEW_APPLICATION).build());
             return application;
         } catch (ResourceNotFoundException e) {
             throw new JSONException(Response.Status.NOT_FOUND, "Could not find requested application", e);
@@ -425,7 +427,8 @@ public class ApplicationResource {
                 for (ApplicationAdditionalDataDTO applicationAdditionalDataDTO : additionalData) {
                     AUDIT.log(builder().hakuOid(asId).hakukohdeOid(aoId)
                             .addAll(applicationAdditionalDataDTO.getAdditionalData())
-                            .hakemusOid(applicationAdditionalDataDTO.getOid()).message("Saved additional data").build());
+                            .hakemusOid(applicationAdditionalDataDTO.getOid())
+                            .setOperaatio(HakuOperation.SAVE_ADDITIONAL_DATA).build());
                 }
 
             }

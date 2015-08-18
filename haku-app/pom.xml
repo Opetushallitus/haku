@@ -32,7 +32,7 @@
         <dependency>
             <groupId>fi.vm.sade</groupId>
             <artifactId>auditlogger</artifactId>
-            <version>1.0.3-SNAPSHOT</version>
+            <version>${auditlog.api.version}</version>
         </dependency>
         <dependency>
             <groupId>fi.vm.sade.haku</groupId>

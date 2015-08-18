@@ -18,6 +18,7 @@ package fi.vm.sade.haku.oppija.ui.controller;
 
 import com.sun.jersey.api.view.Viewable;
 
+import fi.vm.sade.auditlog.haku.HakuOperation;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
@@ -115,7 +116,7 @@ public class OfficerController {
         AUDIT.log(builder()
                 .hakuOid(multiValues.getFirst("asId"))
                 .hakemusOid(application.getOid())
-                .message("Created new application")
+                .setOperaatio(HakuOperation.CREATE_NEW_APPLICATION)
                 .build());
         return redirectToOidResponse(application.getOid());
     }
@@ -134,7 +135,7 @@ public class OfficerController {
     public Viewable redirectToLastPhase(@PathParam(OID_PATH_PARAM) final String oid) throws URISyntaxException, IOException {
         LOGGER.debug("get application  {}", oid);
         ModelResponse modelResponse = officerUIService.getValidatedApplication(oid, "esikatselu");
-        AUDIT.log(builder().hakemusOid(oid).message("Viewed application").build());
+        AUDIT.log(builder().hakemusOid(oid).setOperaatio(HakuOperation.VIEW_APPLICATION).build());
         return new Viewable(DEFAULT_VIEW, modelResponse.getModel());
     }
 
@@ -146,7 +147,7 @@ public class OfficerController {
                                @PathParam(OID_PATH_PARAM) final String oid) throws IOException {
         LOGGER.debug("getPreview {}, {}, {}", applicationSystemId, phaseId, oid);
         ModelResponse modelResponse = officerUIService.getValidatedApplication(oid, phaseId);
-        AUDIT.log(builder().hakuOid(applicationSystemId).hakemusOid(oid).message("Previewed application").build());
+        AUDIT.log(builder().hakuOid(applicationSystemId).hakemusOid(oid).setOperaatio(HakuOperation.PREVIEW_APPLICATION).build());
         return new Viewable(DEFAULT_VIEW, modelResponse.getModel()); // TODO remove hardcoded Phase
     }
 
@@ -175,7 +176,7 @@ public class OfficerController {
                                       @PathParam("elementId") final String elementId) {
         LOGGER.debug("getPreviewElement {}, {}, {}", applicationSystemId, phaseId, oid);
         ModelResponse modelResponse = officerUIService.getApplicationElement(oid, phaseId, elementId, true);
-        AUDIT.log(builder().hakuOid(applicationSystemId).hakemusOid(oid).message("Previewed application").build());
+        AUDIT.log(builder().hakuOid(applicationSystemId).hakemusOid(oid).setOperaatio(HakuOperation.PREVIEW_APPLICATION).build());
         return new Viewable("/elements/Root", modelResponse.getModel()); // TODO remove hardcoded Phase
     }
 
@@ -198,7 +199,8 @@ public class OfficerController {
         if (modelResponse.hasErrors()) {
             AUDIT.log(builder()
                     .hakuOid(applicationSystemId)
-                    .hakemusOid(oid).add("phaseid", phaseId).message("Updated application phase").build());
+                    .hakemusOid(oid).add("phaseid", phaseId)
+                    .setOperaatio(HakuOperation.UPDATE_APPLICATION_PHASE).build());
             return ok(new Viewable(DEFAULT_VIEW, modelResponse.getModel())).build();
         } else {
             URI path = UriUtil.pathSegmentsToUri(VIRKAILIJA_HAKEMUS_VIEW, applicationSystemId, PHASE_ID_PREVIEW, oid);
@@ -221,7 +223,8 @@ public class OfficerController {
         modelResponse.addAnswers(toSingleValueMap(multiValues));
         AUDIT.log(builder()
                 .hakuOid(applicationSystemId)
-                .hakemusOid(oid).add("phaseid", phaseId).message("Refreshed application view").build());
+                .hakemusOid(oid).add("phaseid", phaseId)
+                .setOperaatio(HakuOperation.REFRESH_APPLICATION_VIEW).build());
         return new Viewable("/elements/Root", modelResponse.getModel());
     }
 
@@ -241,7 +244,8 @@ public class OfficerController {
         modelResponse.addAnswers(toSingleValueMap(multiValues));
         AUDIT.log(builder()
                 .hakuOid(applicationSystemId)
-                .hakemusOid(oid).add("phaseid", phaseId).message("Refreshed application view").build());
+                .hakemusOid(oid).add("phaseid", phaseId)
+                .setOperaatio(HakuOperation.REFRESH_APPLICATION_VIEW).build());
         return new Viewable("/elements/JsonElementList.jsp", modelResponse.getModel());
     }
 
@@ -258,7 +262,7 @@ public class OfficerController {
         AUDIT.log(builder()
                 .hakemusOid(oid)
                 .addAll(vals)
-                .message("Saved application additional info").build());
+                .setOperaatio(HakuOperation.SAVE_ADDITIONAL_INFO).build());
         return redirectToOidResponse(oid);
     }
 
@@ -270,7 +274,7 @@ public class OfficerController {
         ModelResponse modelResponse = officerUIService.getAdditionalInfo(oid);
         AUDIT.log(builder()
                 .hakemusOid(oid)
-                .message("Viewed additional info").build());
+                .setOperaatio(HakuOperation.VIEW_ADDITIONAL_INFO).build());
         return new Viewable(ADDITIONAL_INFO_VIEW, modelResponse.getModel());
     }
 
@@ -287,7 +291,7 @@ public class OfficerController {
                 .hakemusOid(oid)
                 .add("state", state)
                 .add("reason", reason)
-                .message("Changed application state").build());
+                .setOperaatio(HakuOperation.CHANGE_APPLICATION_STATE).build());
         return redirectToOidResponse(oid);
     }
 
@@ -301,7 +305,7 @@ public class OfficerController {
         AUDIT.log(builder()
                 .hakemusOid(oid)
                 .add("note", note)
-                .message("Added note on application").build());
+                .setOperaatio(HakuOperation.ADD_NOTE).build());
         return redirectToOidResponse(oid);
     }
 
@@ -346,7 +350,7 @@ public class OfficerController {
     	URI location = UriUtil.pathSegmentsToUri(httpResponse.getFirstHeader("Content-Location").getValue());
         AUDIT.log(builder()
                 .hakemusOid(oid)
-                .message("Printed application").build());
+                .setOperaatio(HakuOperation.PRINT_APPLICATION).build());
     	return Response.seeOther(location).build();
     }
 
@@ -357,7 +361,7 @@ public class OfficerController {
         ModelResponse modelResponse = officerUIService.getApplicationPrint(oid);
         AUDIT.log(builder()
                 .hakemusOid(oid)
-                .message("Print previewed application").build());
+                .setOperaatio(HakuOperation.PRINT_PREVIEW_APPLICATION).build());
         return new Viewable(APPLICATION_PRINT_VIEW, modelResponse.getModel());
     }
 
@@ -368,7 +372,7 @@ public class OfficerController {
         ModelResponse modelResponse = officerUIService.getApplicationValinta(oid);
         AUDIT.log(builder()
                 .hakemusOid(oid)
-                .message("Previewed application in Valinnat").build());
+                .setOperaatio(HakuOperation.PREVIEW_APPLICATION_VALINNAT).build());
         return new Viewable(APPLICATION_VALINTA_VIEW, modelResponse.getModel());
     }
 
@@ -380,8 +384,8 @@ public class OfficerController {
     	String id = emailService.sendApplicationByEmail(applicationByEmail);
         AUDIT.log(builder()
                 .hakemusOid(applicationByEmail.getApplicationOID())
-                //.add("email", applicationByEmail.getApplicantEmailAddress())
-                .message("Sent application by email").build());
+                        //.add("email", applicationByEmail.getApplicantEmailAddress())´
+                .setOperaatio(HakuOperation.SEND_BY_EMAIL).build());
         return Response.ok(id).build();
     }
 
