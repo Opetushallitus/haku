@@ -659,7 +659,7 @@ public final class KoulutustaustaPhase {
             muuNimikeRule.addChild(nimike);
 
             Element oppilaitoskoodi = Dropdown("pohjakoulutus_am_oppilaitos" + postfix)
-                    .emptyOption()
+                    .emptyOptionDefault()
                     .keepFirst("", OPPILAITOS_TUNTEMATON)
                     .addOptions(ammattioppilaitokset)
                     .requiredInline()
@@ -810,7 +810,7 @@ public final class KoulutustaustaPhase {
                     .formParams(formParameters).build());
 
             Element oppilaitos = Dropdown("pohjakoulutus_yo_ammatillinen_oppilaitos")
-                    .emptyOption()
+                    .emptyOptionDefault()
                     .keepFirst("", OPPILAITOS_TUNTEMATON)
                     .addOptions(ammattioppilaitokset)
                     .requiredInline()

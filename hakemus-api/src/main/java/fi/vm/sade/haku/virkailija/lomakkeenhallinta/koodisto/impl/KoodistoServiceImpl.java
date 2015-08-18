@@ -334,11 +334,17 @@ public class KoodistoServiceImpl implements KoodistoService {
             }
         }
 
+        Map<String, KoodiType> koodit = new LinkedHashMap<>();
+        for (KoodiType koodi : koodiService.getYlakoodis(yes.getKoodiUri())) {
+            KoodiType oldKoodi = koodit.get(koodi.getKoodiArvo());
+            if (oldKoodi == null || oldKoodi.getVersio() < koodi.getVersio()) {
+                koodit.put(koodi.getKoodiArvo(), koodi);
+            }
+        }
+        ArrayList<KoodiType> koodilista = new ArrayList<>(koodit.size());
+        koodilista.addAll(koodit.values());
         return ImmutableList.copyOf(
-                Lists.reverse(
-                        Lists.transform(
-                                koodiService.getYlakoodis(yes.getKoodiUri()),
-                                new KoodiTypeToOptionFunction())));
+                Lists.reverse(Lists.transform(koodilista, new KoodiTypeToOptionFunction())));
     }
 
     @Override
