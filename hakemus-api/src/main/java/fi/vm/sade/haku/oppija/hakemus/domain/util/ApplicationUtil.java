@@ -43,7 +43,8 @@ public final class ApplicationUtil {
         Map<String, List<String>> attachments = new LinkedHashMap<>();
 
         List<String> allAOs = getAos(application);
-        List<String> universityAOs = getUniversityAOs(application);
+        List<String> universityAOs = getAosForType(application, "yoLiite");
+        List<String> higherAMKAOs = getAosForType(application, "ylempiAMKLiite");
 
         if (!allAOs.isEmpty()) {
             if (yoNeeded(application)) {
@@ -65,13 +66,13 @@ public final class ApplicationUtil {
                 attachments.put("form.valmis.todistus.amt", allAOs);
             }
             if (hasBaseEducation(application, "pohjakoulutus_kk")) {
-                attachments.put("form.valmis.todistus.kk", allAOs);
+                attachments.put("form.valmis.todistus.kk", higherAMKAOs);
             }
             if (hasBaseEducation(application, "pohjakoulutus_ulk")) {
                 attachments.put("form.valmis.todistus.ulk", allAOs);
             }
             if (hasBaseEducation(application, "pohjakoulutus_kk_ulk")) {
-                attachments.put("form.valmis.todistus.kk_ulk", allAOs);
+                attachments.put("form.valmis.todistus.kk_ulk", higherAMKAOs);
             }
             if (hasBaseEducation(application, "pohjakoulutus_avoin")) {
                 attachments.put("form.valmis.todistus.avoin", allAOs);
@@ -171,10 +172,6 @@ public final class ApplicationUtil {
             i++;
         }
         return aos;
-    }
-
-    private static List<String> getUniversityAOs(Application application) {
-        return getAosForType(application, "yoLiite");
     }
 
     private static List<String> getAosForType(Application application, String liiteKeyBase) {

@@ -81,4 +81,35 @@ public class AttachmentUtilTest {
         assertEquals(2, attachmentOids.get("form.valmis.todistus.yo").size());
         assertTrue(attachmentOids.get("form.valmis.todistus.yo").contains("4.5.6"));
     }
+
+    @Test
+    public void higherEdAttachmentYlempiAMKTest() {
+        Application application = new Application();
+        Map<String, String> baseEd = new HashMap<String, String>();
+        Map<String, String> prefs = new HashMap<String, String>();
+        baseEd.put("pohjakoulutus_yo", "true");
+        baseEd.put("pohjakoulutus_yo_vuosi", "2012");
+        baseEd.put("pohjakoulutus_yo_tutkinto", "eb");
+        baseEd.put("pohjakoulutus_kk", "true");
+        baseEd.put("pohjakoulutus_kk_vuosi", "2015");
+        prefs.put("preference1-ylempiAMKLiite", "true");
+        prefs.put("preference1-Koulutus-id", "1.2.3");
+        prefs.put("preference2-yoLiite", "true");
+        prefs.put("preference2-Koulutus-id", "4.5.6");
+        prefs.put("preference3-Koulutus-id", "7.8.9");
+        application.addVaiheenVastaukset(OppijaConstants.PHASE_EDUCATION, baseEd);
+        application.addVaiheenVastaukset(OppijaConstants.PHASE_APPLICATION_OPTIONS, prefs);
+        Map<String, List<String>> attachmentOids = ApplicationUtil.getHigherEdAttachmentAOIds(application);
+
+        assertFalse(attachmentOids.isEmpty());
+        assertEquals(2, attachmentOids.size());
+        assertTrue(attachmentOids.containsKey("form.valmis.todistus.yo"));
+        assertTrue(attachmentOids.containsKey("form.valmis.todistus.kk"));
+        assertEquals(3, attachmentOids.get("form.valmis.todistus.yo").size());
+        assertTrue(attachmentOids.get("form.valmis.todistus.yo").contains("1.2.3"));
+        assertTrue(attachmentOids.get("form.valmis.todistus.yo").contains("4.5.6"));
+        assertTrue(attachmentOids.get("form.valmis.todistus.yo").contains("7.8.9"));
+        assertEquals(1, attachmentOids.get("form.valmis.todistus.kk").size());
+        assertTrue(attachmentOids.get("form.valmis.todistus.kk").contains("1.2.3"));
+    }
 }
