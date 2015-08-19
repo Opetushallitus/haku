@@ -61,6 +61,7 @@ public class KoodistoServiceMockImpl implements KoodistoService {
     public final List<Code> listOfBaseEducationCodes;
     public final List<Code> listOfYliopistokoulutukset;
     public final List<Code> listOfAMKkoulutukset;
+    public final List<Code> listOfYlemmatAMKkoulutukset;
     private final List<Option> listOfAmmatillisentutkinnonArvosteluasteikko;
     public final List<Option> listOfAmmattioppilaitosKoulukoodit;
     public final List<Option> listOfAmmattitutkinnot;
@@ -206,7 +207,12 @@ public class KoodistoServiceMockImpl implements KoodistoService {
         );
 
         this.listOfAMKkoulutukset = ImmutableList.of(
-                new Code("222222", createI18NAsIs("Amkkarin tutkinto"))
+                new Code("222222", createI18NAsIs("Amkkarin tutkinto")),
+                new Code("222223", createI18NAsIs("Ylempi Amkkarin tutkinto"))
+        );
+
+        this.listOfYlemmatAMKkoulutukset = ImmutableList.of(
+                new Code("222223", createI18NAsIs("Ylempi Amkkarin tutkinto"))
         );
 
         this.listOfKorkealuTutkintotasot = ImmutableList.of(
@@ -363,6 +369,11 @@ public class KoodistoServiceMockImpl implements KoodistoService {
     @Override
     public List<Code> getAMKkoulutukset() {
         return this.listOfAMKkoulutukset;
+    }
+
+    @Override
+    public List<Code> getYlemmatAMKkoulutukset() {
+        return this.listOfYlemmatAMKkoulutukset;
     }
 
     @Override

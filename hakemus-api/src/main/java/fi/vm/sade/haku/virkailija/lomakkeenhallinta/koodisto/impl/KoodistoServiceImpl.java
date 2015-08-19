@@ -256,6 +256,19 @@ public class KoodistoServiceImpl implements KoodistoService {
     }
 
     @Override
+    public List<Code> getYlemmatAMKkoulutukset() {
+        List<KoodiType> tutkintotyypit = getKoodiTypes(CODE_TUTKINTOTYYPPI);
+        List<KoodiType> koulutukset = new ArrayList<KoodiType>();
+        for (KoodiType koodi : tutkintotyypit) {
+            if (koodi.getKoodiArvo().equals(YLEMPI_AMMATTIKORKEAKOULUTUTKINTO)) {
+                List<KoodiType> ylakoodit = koodiService.getYlakoodis(koodi.getKoodiUri());
+                koulutukset.addAll(ylakoodit);
+            }
+        }
+        return Lists.transform(koulutukset, new KoodiTypeToCodeFunction());
+    }
+
+    @Override
     public List<Option> getAmmattioppilaitosKoulukoodit() {
         return getKoulukoodit(AMMATILLINEN_OPPILAITOS, AMMATILLINEN_ERITYISOPPILAITOS, AMMATILLINEN_ERIKOISOPPILAITOS,
                 AMMATILLINEN_AIKUISKOULUTUSKESKUS, PALO_POLIISI_VARTIOINTI_OPPILAITOS, SOTILASALAN_OPPILAITOS,
