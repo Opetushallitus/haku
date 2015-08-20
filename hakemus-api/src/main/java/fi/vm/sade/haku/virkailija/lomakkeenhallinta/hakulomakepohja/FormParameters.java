@@ -236,18 +236,15 @@ public class FormParameters {
         return !isPerusopetuksenJalkeinenValmentava() && !isHigherEd();
     }
 
-    public boolean useCustomGradeAverageComponent() {
-        Date firstStarted = new Date(Long.MAX_VALUE);
-        for (ApplicationPeriod period : applicationSystem.getApplicationPeriods()) {
-            if (period.getStart().before(firstStarted)) {
-                firstStarted = period.getStart();
-            }
-        }
-        Calendar flagDay = GregorianCalendar.getInstance();
-        flagDay.set(Calendar.YEAR, 2015);
-        flagDay.set(Calendar.MONTH, Calendar.AUGUST);
-        flagDay.set(Calendar.DAY_OF_MONTH, 1);
+    public boolean useOptionalGradeAverageLukio() {
+        return formConfiguration.getFeatureFlag(FormConfiguration.FeatureFlag.lukioKeskiarvoVapaaehtoinen);
+    }
 
-        return flagDay.getTime().before(firstStarted);
+    public boolean useOptionalGradeAverageLukioAmmatillinen() {
+        return formConfiguration.getFeatureFlag(FormConfiguration.FeatureFlag.lukioAmmatillinenKeskiarvoVapaaehtoinen);
+    }
+
+    public boolean useOptionalGradeAverageAmmatillinen() {
+        return formConfiguration.getFeatureFlag(FormConfiguration.FeatureFlag.ammatillinenKeskiarvoVapaaehtoinen);
     }
 }

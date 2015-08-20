@@ -84,7 +84,7 @@ public class OsaaminenPhase {
                     .size(5)
                     .validator(new RegexFieldValidator("validator.keskiarvo.desimaaliluku", "^$|\\d+\\,?\\d{1,2}"))
                     .formParams(formParameters);
-            if (formParameters.useCustomGradeAverageComponent()) {
+            if (formParameters.useOptionalGradeAverageLukio()) {
                 GradeAverage gradeAverage = new GradeAverage("keskiarvo_lukio", "", null, null, formParameters.getI18nText("lukio"),
                         null, null, null);
                 Element eiOleKeskiarvoa = Checkbox("ei_ole_keskiarvoa_lukio")
@@ -119,7 +119,7 @@ public class OsaaminenPhase {
                 .getFeatureFlag(FormConfiguration.FeatureFlag.erotteleAmmatillinenJaYoAmmatillinenKeskiarvo) ? "_yo_ammatillinen" : "";
 
         Element kysytaankoLukioAmmatillinen = Rule(new And(haettuAMKHon, pohjakoulutusLukioAmmatillinen)).build();
-        if (formParameters.useCustomGradeAverageComponent()) {
+        if (formParameters.useOptionalGradeAverageLukioAmmatillinen()) {
             buildCustomGradeAverage(kysytaankoLukioAmmatillinen, "pohjakoulutus_yo_ammatillinen_nimike", ammattitutkintonimikkeet,
                     "pohjakoulutus_yo_ammatillinen_nimike_muu", "pohjakoulutus_yo_ammatillinen_oppilaitos",
                     "pohjakoulutus_yo_ammatillinen_oppilaitos_muu", oppilaitokset,
@@ -133,7 +133,7 @@ public class OsaaminenPhase {
             String postfix = i == 1 ? "" : String.valueOf(i);
             Expr pohjakoulutusAmmatillinen = new Regexp("pohjakoulutus_am_vuosi" + postfix, "^\\d+$");
             Element kysytaankoAmmatillinen = Rule(new And(haettuAMKHon, pohjakoulutusAmmatillinen)).build();
-            if (formParameters.useCustomGradeAverageComponent()) {
+            if (formParameters.useOptionalGradeAverageAmmatillinen()) {
                 buildCustomGradeAverage(kysytaankoAmmatillinen, "pohjakoulutus_am_nimike" + postfix, ammattitutkintonimikkeet,
                         "pohjakoulutus_am_nimike_muu" + postfix, "pohjakoulutus_am_oppilaitos" + postfix, "pohjakoulutus_am_oppilaitos_muu" + postfix, oppilaitokset,
                         asteikkolista, postfix, formParameters);
