@@ -237,6 +237,9 @@ public class FormParameters {
     }
 
     public boolean useCustomGradeAverageComponent() {
+        if (formConfiguration.getFeatureFlag(FormConfiguration.FeatureFlag.ammatillisissaPerustutkinnoissaVoiOllaNolla)) {
+            return true;
+        }
         Date firstStarted = new Date(Long.MAX_VALUE);
         for (ApplicationPeriod period : applicationSystem.getApplicationPeriods()) {
             if (period.getStart().before(firstStarted)) {
