@@ -2,12 +2,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="haku" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <fmt:setBundle basename="messages" scope="application"/>
-<c:set var="nimikeKoodi" value="${answers[element.referedId]}" />
-<c:if test="${empty nimikeKoodi}">
-    <c:set var="nimikeKoodi" value="nimikeFallback" />
-</c:if>
 
 <tr>
     <td class="label"><a name="${element.id}"></a>
@@ -21,7 +18,31 @@
         </c:choose>
     </td>
     <td>
-        <haku:i18nText value="${element.ammattitutkintonimikkeet[nimikeKoodi].i18nText}" />
+        <c:set var="nimikekoodi" value="${answers[element.relatedNimikeId]}" />
+        <c:if test="${empty nimikekoodi}">
+            <c:set var="nimikekoodi" value="nimikeFallback" />
+        </c:if>
+        <c:choose>
+            <c:when test="${nimikekoodi=='399999'}">
+                <c:out value="${answers[element.relatedMuuNimike]}" />
+            </c:when>
+            <c:otherwise>
+                <haku:i18nText value="${element.ammattitutkintonimikkeet[nimikekoodi].i18nText}" />
+            </c:otherwise>
+        </c:choose>
+
+        <c:set var="oppilaitoskoodi" value="${fn:replace(answers[element.relatedOppilaitosId], '.', '_')}"/>
+        <c:if test="${not empty oppilaitoskoodi}">
+            <c:choose>
+                <c:when test="${oppilaitoskoodi=='1_2_246_562_10_57118763579'}">
+                    (<c:out value="${answers[element.relatedMuuOppilaitos]}" />)
+                </c:when>
+                <c:otherwise>
+                    (<haku:i18nText value="${element.oppilaitokset[oppilaitoskoodi].i18nText}" />)
+                </c:otherwise>
+            </c:choose>
+        </c:if>
+
     </td>
 </tr>
 <haku:viewChilds element="${element}"/>
