@@ -118,7 +118,8 @@ public class OsaaminenPhase {
         Element kysytaankoLukioAmmatillinen = Rule(new And(haettuAMKHon, pohjakoulutusLukioAmmatillinen)).build();
         if (formParameters.useCustomGradeAverageComponent()) {
             buildCustomGradeAverage(kysytaankoLukioAmmatillinen, "pohjakoulutus_yo_ammatillinen_nimike", ammattitutkintonimikkeet,
-                    "pohjakoulutus_yo_ammatillinen_muu", "pohjakoulutus_yo_ammatillinen_oppilaitos", "pohjakoulutus_yo_ammatillinen_oppilaitos_muu", oppilaitokset,
+                    "pohjakoulutus_yo_ammatillinen_nimike_muu", "pohjakoulutus_yo_ammatillinen_oppilaitos",
+                    "pohjakoulutus_yo_ammatillinen_oppilaitos_muu", oppilaitokset,
                     asteikkolista, yoAmmatillinenPostfix, formParameters);
         } else {
             buildKeskiarvoJaAsteikko(asteikkolista, kysytaankoLukioAmmatillinen, formParameters, yoAmmatillinenPostfix, true);
