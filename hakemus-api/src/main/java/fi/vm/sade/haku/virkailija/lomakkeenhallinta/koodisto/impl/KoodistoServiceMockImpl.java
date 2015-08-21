@@ -105,6 +105,7 @@ public class KoodistoServiceMockImpl implements KoodistoService {
 
         this.listOfCountries =
                 ImmutableList.of(
+                        getOption("Tuntematon", OppijaConstants.EDUCATION_COUNTRY_OTHER),
                         getOption("Suomi", SUOMI),
                         getOption("Ruotsi", RUOTSI));
 
