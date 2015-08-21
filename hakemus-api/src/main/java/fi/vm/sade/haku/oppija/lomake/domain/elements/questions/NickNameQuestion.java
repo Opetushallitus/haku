@@ -19,12 +19,19 @@ package fi.vm.sade.haku.oppija.lomake.domain.elements.questions;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import org.codehaus.jackson.annotate.JsonProperty;
 
-public class TextQuestion extends Question {
+public class NickNameQuestion extends TextQuestion {
 
     private static final long serialVersionUID = -4941045359062359811L;
+    private String firstName;
 
-    public TextQuestion(@JsonProperty(value = "id") final String id,
-                        @JsonProperty(value = "i18nText") final I18nText i18nText) {
+    public NickNameQuestion(@JsonProperty(value = "id") final String id,
+                            @JsonProperty(value = "i18nText") final I18nText i18nText,
+                            @JsonProperty(value = "firstName") final String firstName) {
         super(id, i18nText);
+        this.firstName = firstName;
+    }
+
+    public String getFirstName() {
+        return firstName;
     }
 }
