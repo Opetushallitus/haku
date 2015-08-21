@@ -104,6 +104,7 @@ public final class OppijaConstants {
     public static final String EDUCATION_LANGUAGE_VE = "VE";
     public static final String EDUCATION_LANGUAGE_OTHER = "XX";
     public static final String EDUCATION_LANGUAGE_EI_SUORITUSTA = "97";
+    public static final String EDUCATION_COUNTRY_OTHER = "XXX";
 
     public static final String PREFERENCE_DISCRETIONARY = "preference%d-discretionary";
     public static final String PREFERENCE_FRAGMENT_DISCRETIONARY = "discretionary";
