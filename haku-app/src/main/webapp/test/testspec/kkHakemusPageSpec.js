@@ -323,5 +323,20 @@ describe('KK-hakemus', function () {
                 expect(readTable(S('#osaaminenteema'))).to.deep.equal(expected);
             }
         ));
+
+        it('koodistettu ulkomaisen pohjakoulutuksen suoritusmaa', seqDone(
+            partials.henkilotiedotTestikaes,
+            input(lomake.koulusivistyskieli, "FI"),
+            click(lomake.fromHenkilotiedot),
+            headingVisible("Koulutustausta"),
+            click(lomake.pohjakoulutusYoUlkomainen),
+            partials.syotaUlkomainenYoPohjakoulutus('2000', 'eb', 'XXX', 'Finlandia'),
+            click(lomake.pohjakoulutusKKUlk),
+            partials.syotaUlkomainenKKPohjakoulutus(1, '1', '21.08.2015', 'tutkinto', 'koulusta', 'XXX', 'Finlandia'),
+            click(lomake.pohjakoulutusUlk),
+            partials.syotaUlkomainenPohjakoulutus(1, '2015', 'tutkinto', 'koulusta', 'XXX', 'Finlandia'),
+            click(lomake.suoritusoikeusTaiAiempiTutkinto(false)),
+            click(lomake.fromKoulutustausta)
+        ));
     })
 });
