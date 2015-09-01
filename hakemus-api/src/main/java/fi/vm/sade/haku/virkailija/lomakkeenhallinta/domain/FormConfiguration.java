@@ -35,8 +35,8 @@ public class FormConfiguration {
         // BUG-27: Kirjoita kaksoistutkinnon ammatillisen koulutuksen keskiarvo
         // ja toisen ammatillisen tutkinnon keskiarvo eri kenttiin tietokannassa
         erotteleAmmatillinenJaYoAmmatillinenKeskiarvo,
+        gradeAverageKomponentti,
         lukioKeskiarvoVapaaehtoinen,
-        lukioAmmatillinenKeskiarvoVapaaehtoinen,
         ammatillinenKeskiarvoVapaaehtoinen
     }
 

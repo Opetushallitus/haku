@@ -84,16 +84,20 @@ public class OsaaminenPhase {
                     .size(5)
                     .validator(new RegexFieldValidator("validator.keskiarvo.desimaaliluku", "^$|\\d+\\,?\\d{1,2}"))
                     .formParams(formParameters);
-            if (formParameters.useOptionalGradeAverageLukio()) {
+            if (formParameters.useGradeAverage()) {
                 GradeAverage gradeAverage = new GradeAverage("keskiarvo_lukio", "", null, null, formParameters.getI18nText("lukio"),
                         null, null, null);
-                Element eiOleKeskiarvoa = Checkbox("ei_ole_keskiarvoa_lukio")
-                        .labelKey("eiolekeskiarvoa")
-                        .formParams(formParameters).build();
-                Element eiKysyta = Rule(new Not(new Equals(new Variable(eiOleKeskiarvoa.getId()), Value.TRUE)))
-                        .formParams(formParameters).build();
-                eiKysyta.addChild(lukioKeskiarvo.build());
-                gradeAverage.addChild(eiOleKeskiarvoa, eiKysyta);
+                if (formParameters.useOptionalGradeAverageLukio()) {
+                    Element eiOleKeskiarvoa = Checkbox("ei_ole_keskiarvoa_lukio")
+                            .labelKey("eiolekeskiarvoa")
+                            .formParams(formParameters).build();
+                    Element eiKysyta = Rule(new Not(new Equals(new Variable(eiOleKeskiarvoa.getId()), Value.TRUE)))
+                            .formParams(formParameters).build();
+                    eiKysyta.addChild(lukioKeskiarvo.build());
+                    gradeAverage.addChild(eiOleKeskiarvoa, eiKysyta);
+                } else {
+                    gradeAverage.addChild(lukioKeskiarvo.build());
+                }
                 kysytaankoLukionKeskiarvo.addChild(gradeAverage);
             } else {
                 kysytaankoLukionKeskiarvo.addChild(lukioKeskiarvo.build());
@@ -119,7 +123,7 @@ public class OsaaminenPhase {
                 .getFeatureFlag(FormConfiguration.FeatureFlag.erotteleAmmatillinenJaYoAmmatillinenKeskiarvo) ? "_yo_ammatillinen" : "";
 
         Element kysytaankoLukioAmmatillinen = Rule(new And(haettuAMKHon, pohjakoulutusLukioAmmatillinen)).build();
-        if (formParameters.useOptionalGradeAverageLukioAmmatillinen()) {
+        if (formParameters.useGradeAverage()) {
             buildCustomGradeAverage(kysytaankoLukioAmmatillinen, "pohjakoulutus_yo_ammatillinen_nimike", ammattitutkintonimikkeet,
                     "pohjakoulutus_yo_ammatillinen_nimike_muu", "pohjakoulutus_yo_ammatillinen_oppilaitos",
                     "pohjakoulutus_yo_ammatillinen_oppilaitos_muu", oppilaitokset,
@@ -133,7 +137,7 @@ public class OsaaminenPhase {
             String postfix = i == 1 ? "" : String.valueOf(i);
             Expr pohjakoulutusAmmatillinen = new Regexp("pohjakoulutus_am_vuosi" + postfix, "^\\d+$");
             Element kysytaankoAmmatillinen = Rule(new And(haettuAMKHon, pohjakoulutusAmmatillinen)).build();
-            if (formParameters.useOptionalGradeAverageAmmatillinen()) {
+            if (formParameters.useGradeAverage()) {
                 buildCustomGradeAverage(kysytaankoAmmatillinen, "pohjakoulutus_am_nimike" + postfix, ammattitutkintonimikkeet,
                         "pohjakoulutus_am_nimike_muu" + postfix, "pohjakoulutus_am_oppilaitos" + postfix, "pohjakoulutus_am_oppilaitos_muu" + postfix, oppilaitokset,
                         asteikkolista, postfix, formParameters);
@@ -149,14 +153,18 @@ public class OsaaminenPhase {
                                                 List<Option> oppilaitokset, List<Option> asteikkolista, String postfix, FormParameters formParameters) {
         GradeAverage gradeAverage = new GradeAverage("keskiarvo_"+relatedNimikeId, relatedNimikeId, ammattitutkintonimikkeet, relatedMuuNimike,
                 ElementUtil.createI18NAsIs(""), relatedOppilaitosId, relatedMuuOppilaitos, oppilaitokset);
-        Element eiOleKeskiarvoa = Checkbox("ei_ole_keskiarvoa_"+relatedNimikeId)
-                .labelKey("eiolekeskiarvoa")
-                .formParams(formParameters).build();
-        Element eiKysyta = Rule(new Not(new Equals(new Variable(eiOleKeskiarvoa.getId()), Value.TRUE)))
-                .formParams(formParameters)
-                .build();
-        buildKeskiarvoJaAsteikko(asteikkolista, eiKysyta, formParameters, postfix, false);
-        gradeAverage.addChild(eiOleKeskiarvoa, eiKysyta);
+        if (formParameters.useOptionalGradeAverageAmmatillinen()) {
+            Element eiOleKeskiarvoa = Checkbox("ei_ole_keskiarvoa_" + relatedNimikeId)
+                    .labelKey("eiolekeskiarvoa")
+                    .formParams(formParameters).build();
+            Element eiKysyta = Rule(new Not(new Equals(new Variable(eiOleKeskiarvoa.getId()), Value.TRUE)))
+                    .formParams(formParameters)
+                    .build();
+            buildKeskiarvoJaAsteikko(asteikkolista, eiKysyta, formParameters, postfix, false);
+            gradeAverage.addChild(eiOleKeskiarvoa, eiKysyta);
+        } else {
+            buildKeskiarvoJaAsteikko(asteikkolista, gradeAverage, formParameters, postfix, false);
+        }
         kysytaankoKeskiarvo.addChild(gradeAverage);
     }
 
