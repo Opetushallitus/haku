@@ -4,14 +4,14 @@ Ansökningsnummer: $applicationId
 Datum och lagringstidpunkt för ansökan: $applicationDate
 
 
-Dina ansökningsönskemål:
+Dina ansökningsmål:
 
 #foreach ($preference in $preferences)
 $preference
 
 #end
 
-Logga in på tjänsten Min Studieinfo på Studieinfos framsida ifall du vill ändra dina ansökningsönskemål. Ändringarna bör göras under ansökningstiden.
+Logga in på tjänsten Min Studieinfo på Studieinfos framsida ifall du vill ändra dina ansökningsmål. Ändringarna bör göras under ansökningstiden.
 Kontakta ansökningsservicen vid något av de universitet eller yrkeshögskolor du sökt till, ifall du inte kan använda tjänsten.
 
 Det här är ett automatiskt e-postmeddelande. Svara inte på detta. 
