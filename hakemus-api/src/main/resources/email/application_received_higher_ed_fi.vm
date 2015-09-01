@@ -4,14 +4,14 @@ Hakemusnumero: $applicationId
 Hakemuksen päivämäärä ja tallennusaika: $applicationDate
 
 
-Hakutoiveesi:
+Hakukohteesi:
 
 #foreach ($preference in $preferences)
 $preference
 
 #end
 
-Jos haluat muuttaa hakutoiveitasi, kirjaudu Oma Opintopolku -palveluun Opintopolun etusivulla, ja tee muutokset hakuajan kuluessa. 
-Jos et voi käyttää palvelua, ota yhteyttä jonkin hakutoiveenasi olevan yliopiston tai ammattikorkeakoulun hakijapalveluihin.
+Jos haluat muuttaa hakukohteitasi, kirjaudu Oma Opintopolku -palveluun Opintopolun etusivulla, ja tee muutokset hakuajan kuluessa. 
+Jos et voi käyttää palvelua, ota yhteyttä jonkin hakukohteenasi olevan yliopiston tai ammattikorkeakoulun hakijapalveluihin.
 
 Tämä on automaattinen sähköpostiviesti. Älä vastaa tähän.
