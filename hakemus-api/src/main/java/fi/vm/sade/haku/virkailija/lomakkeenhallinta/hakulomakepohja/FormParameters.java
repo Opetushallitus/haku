@@ -236,12 +236,12 @@ public class FormParameters {
         return !isPerusopetuksenJalkeinenValmentava() && !isHigherEd();
     }
 
-    public boolean useOptionalGradeAverageLukio() {
-        return formConfiguration.getFeatureFlag(FormConfiguration.FeatureFlag.lukioKeskiarvoVapaaehtoinen);
+    public boolean useGradeAverage() {
+        return formConfiguration.getFeatureFlag(FormConfiguration.FeatureFlag.gradeAverageKomponentti);
     }
 
-    public boolean useOptionalGradeAverageLukioAmmatillinen() {
-        return formConfiguration.getFeatureFlag(FormConfiguration.FeatureFlag.lukioAmmatillinenKeskiarvoVapaaehtoinen);
+    public boolean useOptionalGradeAverageLukio() {
+        return formConfiguration.getFeatureFlag(FormConfiguration.FeatureFlag.lukioKeskiarvoVapaaehtoinen);
     }
 
     public boolean useOptionalGradeAverageAmmatillinen() {
