@@ -13,9 +13,11 @@ describe("Virkailija, hakemusten haku", function() {
                 expect(virkailija.searchHarkinnanvaraiset().attr("disabled")).to.exist
             });
             describe("valitse haku", function() {
-                beforeEach(
+                beforeEach(seq(
+                    select(virkailija.hakukausi, "kausi_k"),
+                    input(virkailija.hakukausiVuosi, "2015"),
                     select(virkailija.searchSelectHaku, "1.2.246.562.29.95390561488")
-                );
+                ));
                 it('harkinnanvaraiset enabloitu', function() {
                     expect(virkailija.searchHarkinnanvaraiset().attr("disabled")).to.undefined
                 });
