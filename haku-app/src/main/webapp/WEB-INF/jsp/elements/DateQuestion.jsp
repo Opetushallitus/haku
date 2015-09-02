@@ -31,13 +31,22 @@
 
     </div>
     <script>
-      $(function() {
-        $.datepicker.setDefaults( $.datepicker.regional[ '${requestScope['fi_vm_sade_oppija_language']}'] );
-        $( "#" + "${element.id}" ).datepicker({changeMonth: true, changeYear: true, maxDate: new Date(), yearRange: "-150:+0",
-                                                showOn: "both", buttonImage: "${pageContext.request.contextPath}/resources/img/dateEditor_calendar_hover.png",
-                                                dateFormat: 'dd.mm.yy',
-                                                buttonImageOnly: false});
-      });
+        $(function () {
+            $.datepicker.setDefaults($.datepicker.regional['${requestScope['fi_vm_sade_oppija_language']}']);
+            var params = {
+                changeMonth: true,
+                changeYear: true,
+                yearRange: "-150:+0",
+                showOn: "both",
+                buttonImage: "${pageContext.request.contextPath}/resources/img/dateEditor_calendar_hover.png",
+                dateFormat: 'dd.mm.yy',
+                buttonImageOnly: false
+            };
+            <c:if test="${not element.allowFutureDates}">
+            params.maxDate = new Date();
+            </c:if>
+            $("#" + "${element.id}").datepicker(params);
+        });
     </script>
     <div role="presentation" class="clear"></div>
     <haku:viewChilds element="${element}"/>
