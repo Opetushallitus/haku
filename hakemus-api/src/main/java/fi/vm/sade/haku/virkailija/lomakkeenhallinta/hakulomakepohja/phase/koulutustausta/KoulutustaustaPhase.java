@@ -457,6 +457,7 @@ public final class KoulutustaustaPhase {
                 .emptyOptionDefault()
                 .addOptions(tutkintotasot).labelKey("pohjakoulutus.tutkintotaso").formParams(formParameters);
         ElementBuilder pvmBuilder = Date("pohjakoulutus_kk_pvm" + postfix)
+                .allowFutureDates()
                 .labelKey("pohjakoulutus_kk_pvm")
                 .formParams(formParameters);
         ElementBuilder nimikeBuilder = TextQuestion("pohjakoulutus_kk_nimike" + postfix).labelKey("pohjakoulutus.tutkintonimike")
@@ -511,6 +512,7 @@ public final class KoulutustaustaPhase {
                 .emptyOptionDefault()
                 .addOptions(tutkintotasot).labelKey("pohjakoulutus.tutkintotaso").formParams(formParameters);
         ElementBuilder pvmBuilder = Date("pohjakoulutus_kk_ulk_pvm" + postfix)
+                .allowFutureDates()
                 .labelKey("pohjakoulutus_kk_pvm")
                 .formParams(formParameters);
         ElementBuilder nimikeBuilder = TextQuestion("pohjakoulutus_kk_ulk_nimike" + postfix).labelKey("pohjakoulutus.tutkintonimike")
