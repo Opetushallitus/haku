@@ -22,6 +22,7 @@ import static org.apache.commons.lang3.StringUtils.isNotBlank;
 public class AttachmentUtil {
 
     public static final String GENERAL_DELIVERY_NOTE = "lomake.tulostus.liite.deadline.tarkista";
+    public static final String GENERAL_DEADLINE_NOTE = "lomake.tulostus.liite.deadline.ohje";
 
     public static List<ApplicationAttachment> resolveAttachments(Application application) {
         List<ApplicationAttachmentRequest> attachmentRequests = application.getAttachmentRequests();
@@ -299,6 +300,8 @@ public class AttachmentUtil {
 
                 if (address.deadline == null) {
                     attachmentBuilder.setDeliveryNote(i18nBundle.get(GENERAL_DELIVERY_NOTE));
+                } else {
+                    attachmentBuilder.setDeliveryNote(i18nBundle.get(GENERAL_DEADLINE_NOTE));
                 }
 
                 attachments.add(ApplicationAttachmentRequestBuilder.start()
