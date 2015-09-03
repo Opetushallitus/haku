@@ -36,7 +36,7 @@
 {"_id":"syntymaaika","i18nText":{"translations":{"fi":"Syntymäaika"}},"placeholder":{"translations":{"fi":"pp.kk.vvvv","sv":"pp.kk.vvvv","en":"dd.mm.yyyy"}},"validators":[
 {"errorMessageKey":"henkilotiedot.syntymaaika.tulevaisuudessa","_class":"fi.vm.sade.haku.oppija.lomake.validation.validators.PastDateValidator"},{"pattern":"^(0[1-9]|[12][0-9]|3[01])\\.(0[1-9]|1[012])\\.(19|20)\\d\\d$","errorMessageKey":"henkilotiedot.syntymaaika.virhe","_class":"fi.vm.sade.haku.oppija.lomake.validation.validators.RegexFieldValidator"},
 {"_id":null,"errorMessageKey":"yleinen.pakollinen","_class":"fi.vm.sade.haku.oppija.lomake.validation.validators.RequiredFieldValidator"}
-],"children":[],"attributes":{"required":"required"},"inline":true,"_class":"fi.vm.sade.haku.oppija.lomake.domain.elements.questions.DateQuestion"},
+],"children":[],"attributes":{"required":"required"},"inline":true,"allowFutureDates":false,"_class":"fi.vm.sade.haku.oppija.lomake.domain.elements.questions.DateQuestion"},
 {"_id":"syntymapaikka","i18nText":{"translations":{"fi":"Syntymäpaikkakunta ja -maa"}},"validators":[
 {"_id":null,"errorMessageKey":"yleinen.pakollinen","_class":"fi.vm.sade.haku.oppija.lomake.validation.validators.RequiredFieldValidator"}
 ],"children":[],"attributes":{"required":"required","size":"30"},"inline":true,"_class":"fi.vm.sade.haku.oppija.lomake.domain.elements.questions.TextQuestion"},
@@ -277,7 +277,7 @@
 ],"children":[],"attributes":{"required":"required"},"inline":true,"_class":"fi.vm.sade.haku.oppija.lomake.domain.elements.questions.DropdownSelect"},
 {"_id":"pohjakoulutus_kk_pvm","i18nText":{"translations":{"fi":"Suoritusvuosi ja päivämäärä"}},"validators":[
 {"_id":null,"errorMessageKey":"yleinen.pakollinen","_class":"fi.vm.sade.haku.oppija.lomake.validation.validators.RequiredFieldValidator"}
-],"children":[],"attributes":{"required":"required"},"inline":true,"_class":"fi.vm.sade.haku.oppija.lomake.domain.elements.questions.DateQuestion"},
+],"children":[],"attributes":{"required":"required"},"inline":true,"allowFutureDates":true,"_class":"fi.vm.sade.haku.oppija.lomake.domain.elements.questions.DateQuestion"},
 {"_id":"pohjakoulutus_kk_nimike","i18nText":{"translations":{"fi":"Tutkintonimike"}},"validators":[
 {"_id":null,"errorMessageKey":"yleinen.pakollinen","_class":"fi.vm.sade.haku.oppija.lomake.validation.validators.RequiredFieldValidator"}
 ],"children":[],"attributes":{"required":"required"},"inline":true,"_class":"fi.vm.sade.haku.oppija.lomake.domain.elements.questions.TextQuestion"},
