@@ -345,7 +345,7 @@ public class AttachmentUtil {
                             OriginatorType.group,
                             organizationGroup.getOid(),
                             null,
-                            null,
+                            groupAddress.isUseFirstAoAddress() ? createI18NAsIs(ao.getProvider().getName()) : null,
                             groupAddress.getDeliveryDue() == null ? defaultDeadline : groupAddress.getDeliveryDue()
                     );
                 }
