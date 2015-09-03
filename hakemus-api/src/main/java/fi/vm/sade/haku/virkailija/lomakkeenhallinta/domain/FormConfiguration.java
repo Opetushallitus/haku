@@ -34,7 +34,10 @@ public class FormConfiguration {
     public enum FeatureFlag {
         // BUG-27: Kirjoita kaksoistutkinnon ammatillisen koulutuksen keskiarvo
         // ja toisen ammatillisen tutkinnon keskiarvo eri kenttiin tietokannassa
-        erotteleAmmatillinenJaYoAmmatillinenKeskiarvo
+        erotteleAmmatillinenJaYoAmmatillinenKeskiarvo,
+        gradeAverageKomponentti,
+        lukioKeskiarvoVapaaehtoinen,
+        ammatillinenKeskiarvoVapaaehtoinen
     }
 
     // FormConfiguration oid

@@ -131,8 +131,42 @@ partials = {
                 lomake.pohjakoulutusAmNayttotutkintona(n, nayttotutkintona)
             ));
     },
-    syotaAmmatillinenKeskiarvo: function(suffix, keskiarvo, tutkinto) {
+    syotaUlkomainenYoPohjakoulutus: function(vuosi, tutkinto, maa, muumaa) {
+        var common = seq(
+            input(lomake.pohjakoulutusYoUlkomainenVuosi, vuosi),
+            select(lomake.pohjakoulutusYoUlkomainenTutkinto, tutkinto),
+            select(lomake.pohjakoulutusYoUlkomainenMaa, maa));
+        if (maa === 'XXX') {
+            return seq(common, input(lomake.pohjakoulutusYoUlkomainenMaaMuu, muumaa));
+        }
+        return common;
+    },
+    syotaUlkomainenKKPohjakoulutus: function(n, taso, pvm, tutkinto, korkeakoulu, maa, muumaa) {
+        var common = seq(
+            select(lomake.pohjakoulutusKKUlkTaso(n), taso),
+            input(lomake.pohjakoulutusKKUlkPvm(n), pvm),
+            input(lomake.pohjakoulutusKKUlkTutkinto(n), tutkinto),
+            input(lomake.pohjakoulutusKKUlkOppilaitos(n), korkeakoulu),
+            select(lomake.pohjakoulutusKKUlkMaa(n), maa));
+        if (maa === 'XXX') {
+            return seq(common, input(lomake.pohjakoulutusKKUlkMaaMuu(n), muumaa));
+        }
+        return common;
+    },
+    syotaUlkomainenPohjakoulutus: function(n, vuosi, tutkinto, oppilaitos, maa, muumaa) {
+        var common = seq(
+            input(lomake.pohjakoulutusUlkVuosi(n), vuosi),
+            input(lomake.pohjakoulutusUlkTutkinto(n), tutkinto),
+            input(lomake.pohjakoulutusUlkOppilaitos(n), oppilaitos),
+            select(lomake.pohjakoulutusUlkSuoritusmaa(n), maa));
+        if (maa === 'XXX') {
+            return seq(common, input(lomake.pohjakoulutusUlkSuoritusmaaMuu(n), muumaa));
+        }
+        return common;
+    },
+    syotaAmmatillinenKeskiarvo: function(suffix, keskiarvo, asteikko, tutkinto) {
         return seq(
+            select(lomake.asteikko(suffix), asteikko),
             input(
                 lomake.keskiarvo(suffix), keskiarvo,
                 lomake.keskiarvoTutkinto(suffix), tutkinto));

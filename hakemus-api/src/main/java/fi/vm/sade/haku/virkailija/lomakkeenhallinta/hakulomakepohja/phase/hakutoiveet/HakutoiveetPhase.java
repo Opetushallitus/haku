@@ -145,18 +145,24 @@ public class HakutoiveetPhase {
             KoodistoService koodistoService = formParameters.getKoodistoService();
 
             // Yliopisto
-            List<Code> yliopistokoulutukset = koodistoService.getYliopistokoulutukset();
-            String[] yliopistokoulutuksetArr =  new String[yliopistokoulutukset.size()];
-            for (int i = 0; i < yliopistokoulutukset.size(); i++) {
-                yliopistokoulutuksetArr[i] = "koulutus_" + yliopistokoulutukset.get(i).getValue();
+            List<String> yliopistokoulutukset = new ArrayList<>();
+            List<String> ylemmatAMKKoulutukset = new ArrayList<>();
+            for (Code c : koodistoService.getYliopistokoulutukset()) {
+                yliopistokoulutukset.add("koulutus_" + c.getValue());
             }
-            Element yoLiite = new HiddenValue(id + "-yoLiite", "true");
-            Element onYliopistokoulutus = Rule(ExprUtil
-                            .atLeastOneValueEqualsToVariable(id + "-Koulutus-id-educationcode", yliopistokoulutuksetArr))
-                    .addChild(yoLiite)
+            for (Code c : koodistoService.getYlemmatAMKkoulutukset()) {
+                ylemmatAMKKoulutukset.add("koulutus_" + c.getValue());
+            }
+            pr.addChild(Rule(ExprUtil
+                    .atLeastOneValueEqualsToVariable(id + "-Koulutus-id-educationcode", yliopistokoulutukset.toArray(new String[yliopistokoulutukset.size()])))
+                    .addChild(new HiddenValue(id + "-yoLiite", "true"))
                     .formParams(formParameters)
-                    .build();
-            pr.addChild(onYliopistokoulutus);
+                    .build());
+            pr.addChild(Rule(ExprUtil
+                    .atLeastOneValueEqualsToVariable(id + "-Koulutus-id-educationcode", ylemmatAMKKoulutukset.toArray(new String[ylemmatAMKKoulutukset.size()])))
+                    .addChild(new HiddenValue(id + "-ylempiAMKLiite", "true"))
+                    .formParams(formParameters)
+                    .build());
         }
 
         pr.setValidator(new PreferenceValidator());
@@ -186,7 +192,7 @@ public class HakutoiveetPhase {
                 .formParams(formParameters).build();
 
         Element discretionaryFollowUp = new DropdownSelectBuilder(discretionary.getId() + "-follow-up")
-                .emptyOption()
+                .emptyOptionDefault()
                 .addOption((Option) new OptionBuilder().setValue("oppimisvaikudet").labelKey("perustelu.oppimisvaikeudet").formParams(formParameters).build())
                 .addOption((Option) new OptionBuilder().setValue("sosiaalisetsyyt").labelKey("perustelu.sosiaaliset").formParams(formParameters).build())
                 .addOption((Option) new OptionBuilder().setValue("todistustenvertailuvaikeudet").labelKey("perustelu.todistustenvertailuvaikeudet").formParams(formParameters).build())

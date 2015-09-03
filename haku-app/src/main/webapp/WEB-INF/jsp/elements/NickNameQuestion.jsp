@@ -18,37 +18,32 @@
   --%>
 <c:set var="styleBaseClass" value="${element.inline ? 'form-row' : 'form-item'}"/>
 <div class="${styleBaseClass}">
-
     <haku:label element="${element}" styleBaseClass="${styleBaseClass}"/>
-
     <div class="${styleBaseClass}-content">
+        <c:if test="${!element.inline}">
+            <haku:help element="${element}"/>
+        </c:if>
         <div class="field-container-text">
-            <input type="text" name="${element.id}" <haku:placeholder titled="${element}"/>id="${element.id}" ${element.attributeString} <haku:value value='${answers[element.id]}'/> />
+            <input type="text" ${element.attributeString} id="${element.id}" name="${element.id}" <haku:placeholder titled="${element}"/> <haku:value value='${answers[element.id]}'/> />
             <haku:errorMessage id="${element.id}" additionalClass="margin-top-1"/>
         </div>
-
-        <haku:help element="${element}"/>
-
+        <c:if test="${element.inline}">
+            <haku:help element="${element}"/>
+        </c:if>
     </div>
-    <script>
-        $(function () {
-            $.datepicker.setDefaults($.datepicker.regional['${requestScope['fi_vm_sade_oppija_language']}']);
-            var params = {
-                changeMonth: true,
-                changeYear: true,
-                yearRange: "-150:+0",
-                showOn: "both",
-                buttonImage: "${pageContext.request.contextPath}/resources/img/dateEditor_calendar_hover.png",
-                dateFormat: 'dd.mm.yy',
-                buttonImageOnly: false
-            };
-            <c:if test="${not element.allowFutureDates}">
-            params.maxDate = new Date();
-            </c:if>
-            $("#" + "${element.id}").datepicker(params);
-        });
-    </script>
     <div role="presentation" class="clear"></div>
     <haku:viewChilds element="${element}"/>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $("#" + "${element.firstName}").change(function() {
+                var firstName = $("#" + "${element.firstName}").val();
+                if ($("#" + "${element.id}").val() || !firstName) {
+                    return;
+                }
+                var cut = firstName.indexOf(" ") === -1 ? firstName.length : firstName.indexOf(" ");
+                var nickName = firstName.substring(0, cut);
+                $("#" + "${element.id}").val(nickName);
+            });
+        });
+    </script>
 </div>
-

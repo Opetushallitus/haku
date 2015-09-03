@@ -40,6 +40,7 @@ import java.util.List;
 import static fi.vm.sade.haku.oppija.hakemus.service.Role.*;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.DateQuestionBuilder.Date;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.DropdownSelectBuilder.Dropdown;
+import static fi.vm.sade.haku.oppija.lomake.domain.builder.NickNameQuestionBuilder.NickNameQuestion;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.PhaseBuilder.Phase;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.PostalCodeBuilder.PostalCode;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.RadioBuilder.Radio;
@@ -47,6 +48,7 @@ import static fi.vm.sade.haku.oppija.lomake.domain.builder.RelatedQuestionRuleBu
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.TextQuestionBuilder.TextQuestion;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.ThemeBuilder.Theme;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.*;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.*;
 
 public final class HenkilotiedotPhase {
 
@@ -75,12 +77,13 @@ public final class HenkilotiedotPhase {
         }
 
         henkilotiedotTeema.addChild(
-                createNameQuestionBuilder(OppijaConstants.ELEMENT_ID_LAST_NAME, 30).formParams(formParameters).build(),
-                createNameQuestionBuilder(OppijaConstants.ELEMENT_ID_FIRST_NAMES, 30).formParams(formParameters).build(),
-                createNameQuestionBuilder(OppijaConstants.ELEMENT_ID_NICKNAME, 20)
-                        .containsInField(OppijaConstants.ELEMENT_ID_FIRST_NAMES)
+                createNameQuestionBuilder(ELEMENT_ID_LAST_NAME, 30).formParams(formParameters).build(),
+                createNameQuestionBuilder(ELEMENT_ID_FIRST_NAMES, 30).formParams(formParameters).build(),
+                NickNameQuestion(ELEMENT_ID_NICKNAME)
+                        .firstName(ELEMENT_ID_FIRST_NAMES)
+                        .containsInField(ELEMENT_ID_FIRST_NAMES)
+                        .requiredInline().pattern(ElementUtil.ISO88591_NAME_REGEX).size(30)
                         .formParams(formParameters).build());
-
 
         Element kansalaisuus = new DropdownSelectBuilder("kansalaisuus")
                 .addOptions(formParameters.getKoodistoService().getNationalities())
@@ -240,7 +243,7 @@ public final class HenkilotiedotPhase {
 
         Element kotikunta =
                 new DropdownSelectBuilder("kotikunta")
-                        .emptyOption()
+                        .emptyOptionDefault()
                         .addOptions(formParameters.getKoodistoService().getMunicipalities())
                         .requiredInline()
                         .formParams(formParameters).build();
@@ -269,7 +272,7 @@ public final class HenkilotiedotPhase {
                 && ! (formParameters.isAmmattillinenEritysopettajaTaiOppilaanohjaajaKoulutus()
                     || formParameters.isAmmattillinenOpettajaKoulutus())) {
             henkilotiedotTeema.addChild(Dropdown("koulusivistyskieli")
-                            .emptyOption()
+                            .emptyOptionDefault()
                             .addOptions(formParameters.getKoodistoService().getTeachingLanguages())
                             .requiredInline()
                             .formParams(formParameters)

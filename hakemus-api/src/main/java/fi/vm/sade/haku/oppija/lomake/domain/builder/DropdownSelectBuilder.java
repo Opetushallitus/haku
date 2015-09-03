@@ -10,6 +10,8 @@ import java.util.List;
 
 public class DropdownSelectBuilder extends OptionQuestionBuilder {
 
+    protected String defaultValueAttribute;
+
     public DropdownSelectBuilder(String id) {
         super(id);
     }
@@ -28,6 +30,24 @@ public class DropdownSelectBuilder extends OptionQuestionBuilder {
         }
         dropdownSelect.setValidator(new ValueSetValidator("yleinen.virheellinenArvo", values));
         return dropdownSelect;
+    }
+
+    public OptionQuestionBuilder emptyOptionDefault() {
+        options.add(OptionBuilder.EmptyOption());
+        this.defaultOption = "";
+        this.defaultValueAttribute = "";
+        return this;
+    }
+
+    public OptionQuestionBuilder defaultOption(String value) {
+        this.defaultOption = value;
+        this.defaultValueAttribute = value;
+        return this;
+    }
+
+    public OptionQuestionBuilder defaultValueAttribute(String attributeName) {
+        this.defaultValueAttribute = attributeName;
+        return this;
     }
 
     public static DropdownSelectBuilder Dropdown(final String id) {

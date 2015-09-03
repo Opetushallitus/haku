@@ -1,20 +1,20 @@
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja;
 
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
+import fi.vm.sade.haku.oppija.lomake.domain.ApplicationPeriod;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.dao.ThemeQuestionDAO;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain.FormConfiguration;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.i18n.I18nBundleService;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.service.AttachmentGroupConfigurator;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.service.GroupRestrictionConfigurator;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.service.ThemeQuestionConfigurator;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakukohdeService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.*;
 
@@ -177,6 +177,27 @@ public class FormParameters {
         return applicationSystem.getKohdejoukkoUri().equals(KOHDEJOUKKO_KORKEAKOULU);
     }
 
+    public int getTutkintoCountMax() {
+        Date firstStarted = new Date(Long.MAX_VALUE);
+        for (ApplicationPeriod period : applicationSystem.getApplicationPeriods()) {
+            if (period.getStart().before(firstStarted)) {
+                firstStarted = period.getStart();
+            }
+        }
+        Calendar flagDay = GregorianCalendar.getInstance();
+        flagDay.set(Calendar.YEAR, 2015);
+        flagDay.set(Calendar.MONTH, Calendar.AUGUST);
+        flagDay.set(Calendar.DAY_OF_MONTH, 1);
+
+        if (flagDay.getTime().before(firstStarted)) {
+            return 2;
+        }
+        return "1.2.246.562.29.95390561488".equals(applicationSystem.getId())
+                ? 4
+                : 5;
+    }
+
+
     public boolean kysytaankoErityisopetuksenTarve() {
         return applicationSystem.getKohdejoukkoUri().equals(KOHDEJOUKKO_ERITYISOPETUKSENA_JARJESTETTAVA_AMMATILLINEN);
     }
@@ -213,5 +234,17 @@ public class FormParameters {
 
     public boolean kysytaankoKaksoistutkinto() {
         return !isPerusopetuksenJalkeinenValmentava() && !isHigherEd();
+    }
+
+    public boolean useGradeAverage() {
+        return formConfiguration.getFeatureFlag(FormConfiguration.FeatureFlag.gradeAverageKomponentti);
+    }
+
+    public boolean useOptionalGradeAverageLukio() {
+        return formConfiguration.getFeatureFlag(FormConfiguration.FeatureFlag.lukioKeskiarvoVapaaehtoinen);
+    }
+
+    public boolean useOptionalGradeAverageAmmatillinen() {
+        return formConfiguration.getFeatureFlag(FormConfiguration.FeatureFlag.ammatillinenKeskiarvoVapaaehtoinen);
     }
 }

@@ -256,6 +256,19 @@ public class KoodistoServiceImpl implements KoodistoService {
     }
 
     @Override
+    public List<Code> getYlemmatAMKkoulutukset() {
+        List<KoodiType> tutkintotyypit = getKoodiTypes(CODE_TUTKINTOTYYPPI);
+        List<KoodiType> koulutukset = new ArrayList<KoodiType>();
+        for (KoodiType koodi : tutkintotyypit) {
+            if (koodi.getKoodiArvo().equals(YLEMPI_AMMATTIKORKEAKOULUTUTKINTO)) {
+                List<KoodiType> ylakoodit = koodiService.getYlakoodis(koodi.getKoodiUri());
+                koulutukset.addAll(ylakoodit);
+            }
+        }
+        return Lists.transform(koulutukset, new KoodiTypeToCodeFunction());
+    }
+
+    @Override
     public List<Option> getAmmattioppilaitosKoulukoodit() {
         return getKoulukoodit(AMMATILLINEN_OPPILAITOS, AMMATILLINEN_ERITYISOPPILAITOS, AMMATILLINEN_ERIKOISOPPILAITOS,
                 AMMATILLINEN_AIKUISKOULUTUSKESKUS, PALO_POLIISI_VARTIOINTI_OPPILAITOS, SOTILASALAN_OPPILAITOS,
@@ -321,11 +334,17 @@ public class KoodistoServiceImpl implements KoodistoService {
             }
         }
 
+        Map<String, KoodiType> koodit = new LinkedHashMap<>();
+        for (KoodiType koodi : koodiService.getYlakoodis(yes.getKoodiUri())) {
+            KoodiType oldKoodi = koodit.get(koodi.getKoodiArvo());
+            if (oldKoodi == null || oldKoodi.getVersio() < koodi.getVersio()) {
+                koodit.put(koodi.getKoodiArvo(), koodi);
+            }
+        }
+        ArrayList<KoodiType> koodilista = new ArrayList<>(koodit.size());
+        koodilista.addAll(koodit.values());
         return ImmutableList.copyOf(
-                Lists.reverse(
-                        Lists.transform(
-                                koodiService.getYlakoodis(yes.getKoodiUri()),
-                                new KoodiTypeToOptionFunction())));
+                Lists.reverse(Lists.transform(koodilista, new KoodiTypeToOptionFunction())));
     }
 
     @Override

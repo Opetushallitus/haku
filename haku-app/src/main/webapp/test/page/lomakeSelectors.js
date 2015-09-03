@@ -59,11 +59,56 @@ lomake = initSelectors({
     },
     pohjakoulutusYo: 'input#pohjakoulutus_yo',
     pohjakoulutusYoVuosi: 'input#pohjakoulutus_yo_vuosi',
+    pohjakoulutusYoTutkinto: 'select#pohjakoulutus_yo_tutkinto',
     pohjakoulutusYoAmmatillinen: 'input#pohjakoulutus_yo_ammatillinen',
     pohjakoulutusYoAmmatillinenVuosi: 'input#pohjakoulutus_yo_ammatillinen_vuosi',
     pohjakoulutusYoAmmatillinenNimike: 'select#pohjakoulutus_yo_ammatillinen_nimike',
     pohjakoulutusYoAmmatillinenLaajuus: 'input#pohjakoulutus_yo_ammatillinen_laajuus',
     pohjakoulutusYoAmmatillinenOppilaitos: 'select#pohjakoulutus_yo_ammatillinen_oppilaitos',
+
+    pohjakoulutusYoUlkomainen: 'input#pohjakoulutus_yo_ulkomainen',
+    pohjakoulutusYoUlkomainenVuosi: 'input#pohjakoulutus_yo_ulkomainen_vuosi',
+    pohjakoulutusYoUlkomainenTutkinto: 'select#pohjakoulutus_yo_ulkomainen_tutkinto',
+    pohjakoulutusYoUlkomainenMaa: 'select#pohjakoulutus_yo_ulkomainen_maa',
+    pohjakoulutusYoUlkomainenMaaMuu: 'input#pohjakoulutus_yo_ulkomainen_maa_muu',
+
+    pohjakoulutusKKUlk: 'input#pohjakoulutus_kk_ulk',
+    pohjakoulutusKKUlkTaso: function(n) {
+        return 'select#pohjakoulutus_kk_ulk_taso' + (n === 1 ? '' : n);
+    },
+    pohjakoulutusKKUlkPvm: function(n) {
+        return 'input#pohjakoulutus_kk_ulk_pvm' + (n === 1 ? '' : n);
+    },
+    pohjakoulutusKKUlkTutkinto: function(n) {
+        return 'input#pohjakoulutus_kk_ulk_nimike' + (n === 1 ? '' : n);
+    },
+    pohjakoulutusKKUlkOppilaitos: function(n) {
+        return 'input#pohjakoulutus_kk_ulk_oppilaitos' + (n === 1 ? '' : n);
+    },
+    pohjakoulutusKKUlkMaa: function(n) {
+        return 'select#pohjakoulutus_kk_ulk_maa' + (n === 1 ? '' : n);
+    },
+    pohjakoulutusKKUlkMaaMuu: function(n) {
+        return 'input#pohjakoulutus_kk_ulk_maa_muu' + (n === 1 ? '' : n);
+    },
+
+    pohjakoulutusUlk: 'input#pohjakoulutus_ulk',
+    pohjakoulutusUlkVuosi: function(n) {
+        return 'input#pohjakoulutus_ulk_vuosi' + (n === 1 ? '' : n);
+    },
+    pohjakoulutusUlkTutkinto: function(n) {
+        return 'input#pohjakoulutus_ulk_nimike' + (n === 1 ? '' : n);
+    },
+    pohjakoulutusUlkOppilaitos: function(n) {
+        return 'input#pohjakoulutus_ulk_oppilaitos' + (n === 1 ? '' : n);
+    },
+    pohjakoulutusUlkSuoritusmaa: function(n) {
+        return 'select#pohjakoulutus_ulk_suoritusmaa' + (n === 1 ? '' : n);
+    },
+    pohjakoulutusUlkSuoritusmaaMuu: function(n) {
+        return 'input#pohjakoulutus_ulk_suoritusmaa_muu' + (n === 1 ? '' : n);
+    },
+
     pohjakoulutusMuu: 'input#pohjakoulutus_muu',
     pohjakoulutusMuuVuosi: 'input#pohjakoulutus_muu_vuosi',
     pohjakoulutusMuuKuvaus: 'textarea#pohjakoulutus_muu_kuvaus',
@@ -122,6 +167,9 @@ lomake = initSelectors({
     },
     keskiarvo: function(suffix) {
         return '[name=keskiarvo' + (suffix == 1 ? "" : suffix) + ']';
+    },
+    asteikko: function(suffix) {
+        return 'select#arvosanaasteikko' + (suffix === 1 ? '' : suffix);
     },
 
     // Lisätiedot

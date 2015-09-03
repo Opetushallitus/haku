@@ -47,12 +47,11 @@
                     </c:if>
                 </td>
                 <td>
+                    <c:if test="${not empty attachment.deadline}">
+                        <fmt:formatDate pattern="dd.MM.yyyy HH:mm. " value="${attachment.deadline}" />
+                    </c:if>
                     <c:if test="${not empty attachment.deliveryNote}">
                         <haku:i18nText value="${attachment.deliveryNote}" />
-                    </c:if>
-                    <br />
-                    <c:if test="${not empty attachment.deadline}">
-                        <fmt:formatDate pattern="dd.MM.yyyy HH:mm" value="${attachment.deadline}" />
                     </c:if>
                 </td>
             </tr>
