@@ -4,6 +4,7 @@ var ulkomainenYo = function() {
     var q = {};
     var u = {};
     q[dropdownKey] = "XXX";
+    q[otherKey] = {$exists: false};
     u[otherKey] = "Tuntematon";
     db.application.update(q, {$set: u}, {multi: true});
 };
@@ -16,6 +17,7 @@ var ulkomainenKK = function() {
         var q = {};
         var u = {};
         q[dropdownKey] = "XXX";
+        q[otherKey] = {$exists: false};
         u[otherKey] = "Tuntematon";
         db.application.update(q, {$set: u}, {multi: true});
     }
@@ -29,10 +31,12 @@ var ulkomainen = function() {
         var q = {};
         var u = {};
         q[oldTextKey] = {$exists: true};
+        q[otherKey] = {$exists: false};
         u[oldTextKey] = otherKey;
         db.application.update(q, {$rename: u}, {multi: true});
         q = {};
         u = {};
+        q[oldTextKey] = {$exists: false};
         q[otherKey] = {$exists: true};
         u[oldTextKey] = "XXX";
         db.application.update(q, {$set: u}, {multi: true});
