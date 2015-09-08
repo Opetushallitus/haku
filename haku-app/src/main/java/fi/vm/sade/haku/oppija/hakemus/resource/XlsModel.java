@@ -62,6 +62,8 @@ public class XlsModel {
 
         table = ArrayTable.create(aids, questions);
 
+        Map<String, Element> specialColumns = getSpecialColumns(table);
+
         for (Map<String, Object> application : applications) {
             Map<String, String> answers = getAllAnswers(application);
             List<Element> applicationQuestions = findQuestionsWithAnswers(applicationSystem, ao, lang, answers);
@@ -69,6 +71,12 @@ public class XlsModel {
             for (Element applicationQuestion : applicationQuestions) {
                 if (table.containsColumn(applicationQuestion) && isNotEmpty(answers.get(applicationQuestion.getId()))) {
                     String questionAnswer = getQuestionAnswer(answers, applicationQuestion.getId(), applicationQuestion);
+
+                    Element overrideQuestion = specialColumns.get(applicationQuestion.getId());
+                    if (overrideQuestion != null) {
+                        applicationQuestion = overrideQuestion;
+                    }
+
                     table.put((String) application.get("oid"), applicationQuestion, questionAnswer);
                 }
             }
@@ -81,6 +89,25 @@ public class XlsModel {
             }
         }));
 
+    }
+
+    private static Map<String, Element> getSpecialColumns(ArrayTable table) {
+        Map<String, Element> map = new HashMap<>();
+
+        map.put("ssnSex", getColumn(table, "sukupuoli"));
+        map.put("ssnDateOfBirthh", getColumn(table, "syntymaaika"));
+
+        return map;
+    }
+
+    private static Element getColumn(ArrayTable table, String id) {
+        for (Object obj : table.columnKeySet()) {
+            Element element = (Element) obj;
+            if (id.equals(element.getId())) {
+                return element;
+            }
+        }
+        return null;
     }
 
     private Map<String, String> getAllAnswers(Map<String, Object> application) {
