@@ -13,6 +13,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Titled;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.CheckBox;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Question;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.TextQuestion;
@@ -129,6 +130,7 @@ public class XlsModel {
                 .i18nText(i18nBundle.get("oppijanumero"))
                 .build();
         elements.add(1, personOid);
+        elements.add(2, new CheckBox("turvakielto", i18nBundle.get("turvakielto")));
         int elementsLength = elements.size();
         for (int i = 0; i < elementsLength; i++) {
             Element element = elements.get(i);
