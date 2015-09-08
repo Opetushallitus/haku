@@ -89,6 +89,7 @@ public class XlsModel {
             allAnswers.putAll((Map<String, String>) vastauksetVaiheittain.getValue());
         }
         allAnswers.put("oid", (String) application.get("oid"));
+        allAnswers.put("personOid", (String) application.get("personOid"));
         return allAnswers;
     }
 
@@ -124,6 +125,10 @@ public class XlsModel {
                 .i18nText(i18nBundle.get("hakemusnumero"))
                 .build();
         elements.add(0, applicationOid);
+        Element personOid = TextQuestion("personOid")
+                .i18nText(i18nBundle.get("oppijanumero"))
+                .build();
+        elements.add(1, personOid);
         int elementsLength = elements.size();
         for (int i = 0; i < elementsLength; i++) {
             Element element = elements.get(i);
