@@ -7,10 +7,12 @@ import com.google.common.base.Predicates;
 import com.google.common.collect.ArrayTable;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import fi.vm.sade.haku.oppija.common.koulutusinformaatio.ApplicationOption;
 import fi.vm.sade.haku.oppija.common.koulutusinformaatio.ApplicationOptionGroup;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
+import fi.vm.sade.haku.oppija.lomake.domain.builder.DropdownSelectBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Titled;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.CheckBox;
@@ -21,6 +23,7 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.I18nBundle;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -42,6 +45,9 @@ public class XlsModel {
     private I18nBundle i18nBundle;
     private final List<Element> columnKeyList;
 
+    private static final String ELIGIBILITY_STATUS = "eligibility_status";
+    private static final String ELIGIBILITY_SOURCE = "eligibility_source";
+
     public XlsModel(final ApplicationOption ao,
                     final ApplicationSystem applicationSystem,
                     final List<Map<String, Object>> applications,
@@ -58,6 +64,8 @@ public class XlsModel {
         this.i18nBundle = i18nBundle;
 
         List<Element> questions = findQuestions(applicationSystem, ao, lang);
+        Map<String, Element> additionalQuestions = getAdditionalQuestions(i18nBundle);
+        questions.addAll(additionalQuestions.values());
         List<String> aids = Lists.transform(applications, ELEMENT_TO_OID_FUNCTION);
 
         table = ArrayTable.create(aids, questions);
@@ -65,6 +73,23 @@ public class XlsModel {
         Map<String, Element> specialColumns = getSpecialColumns(table);
 
         for (Map<String, Object> application : applications) {
+            @SuppressWarnings("unchecked")
+            Map<String, String> preferenceEligibility = getPreferenceEligibility(
+                    (List<Map<String, String>>) application.get("preferenceEligibilities"), this.ao
+            );
+            if (preferenceEligibility != null) {
+                table.put(
+                        (String) application.get("oid"),
+                        additionalQuestions.get(ELIGIBILITY_STATUS),
+                        getTranslatedAnswer(i18nBundle, lang, preferenceEligibility.get(ELIGIBILITY_STATUS), "hakukelpoisuus_")
+                );
+                table.put(
+                        (String) application.get("oid"),
+                        additionalQuestions.get(ELIGIBILITY_SOURCE),
+                        getTranslatedAnswer(i18nBundle, lang, preferenceEligibility.get(ELIGIBILITY_SOURCE), "hakukelpoisuus_lahde_")
+                );
+            }
+
             Map<String, String> answers = getAllAnswers(application);
             List<Element> applicationQuestions = findQuestionsWithAnswers(applicationSystem, ao, lang, answers);
 
@@ -252,5 +277,35 @@ public class XlsModel {
             return (String) input.get("oid");
         }
     };
+
+    public static Map<String, String> getPreferenceEligibility(List<Map<String, String>> preferenceEligibilities, ApplicationOption ao) {
+        if (preferenceEligibilities != null) {
+            for (Map<String, String> preference : preferenceEligibilities) {
+                if (ao.getId().equals(preference.get("aoId"))) {
+                    Map<String, String> map = Maps.newHashMap();
+                    map.put(ELIGIBILITY_STATUS, preference.get("status"));
+                    map.put(ELIGIBILITY_SOURCE, preference.get("source"));
+                    return map;
+                }
+            }
+        }
+        return null;
+    }
+
+    public static Map<String, Element> getAdditionalQuestions(I18nBundle i18nBundle) {
+        Map<String, Element> elements = new HashMap<>();
+
+        elements.put(ELIGIBILITY_STATUS, TextQuestion("hakukelpoisuus").i18nText(i18nBundle.get("hakukelpoisuus")).build());
+        elements.put(ELIGIBILITY_SOURCE, TextQuestion("hakukelpoisuus_lahde").i18nText(i18nBundle.get("hakukelpoisuus_lahde")).build());
+
+        return elements;
+    }
+
+    private static String getTranslatedAnswer(I18nBundle i18nBundle, String lang, String answer, String translationPrefix) {
+        if (i18nBundle.get(translationPrefix + answer) != null) {
+            return i18nBundle.get(translationPrefix + answer).getText(lang);
+        }
+        return answer;
+    }
 
 }
