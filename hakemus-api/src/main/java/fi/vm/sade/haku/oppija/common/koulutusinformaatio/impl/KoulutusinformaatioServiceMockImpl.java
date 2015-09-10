@@ -70,6 +70,7 @@ public class KoulutusinformaatioServiceMockImpl extends KoulutusinformaatioServi
             LoggerFactory.getLogger(KoulutusinformaatioServiceMockImpl.class).warn("ApplicationOption not found: " + oid + " -> returning default");
             dto = new ApplicationOptionDTO();
             dto.setName("MockKoulutus");
+            dto.setId("1.2.246.562.20.92555013215");
             LearningOpportunityProviderDTO provider = new LearningOpportunityProviderDTO();
             provider.setName("MockKoulu");
             provider.setApplicationSystemIds(new HashSet(Arrays.asList("1.2.246.562.5.2014022711042555034240")));
