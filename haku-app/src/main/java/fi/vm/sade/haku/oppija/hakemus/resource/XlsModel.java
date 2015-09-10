@@ -351,18 +351,28 @@ public class XlsModel {
 
     private Map<String, Element> findAttachmentQuestions(List<Map<String, Object>> applications) {
         Map<String, Element> attachmentQuestions = new HashMap<>();
+        int uniqueQuestions = 0;
 
         for (Map<String, Object> application : applications) {
             List<ApplicationAttachmentRequest> requests = getAttachmentRequests(application);
 
             for (ApplicationAttachmentRequest request : requests) {
                 String id = request.getApplicationAttachment().getDescription().toString();
+
+                if (attachmentQuestions.containsKey(id)) {
+                    continue;
+                }
+
+                uniqueQuestions ++;
+                int number = uniqueQuestions;
+
                 attachmentQuestions.put(
                         id,
                         TextQuestion(id).i18nText(
                                 getPrefixedText(
                                         request.getApplicationAttachment().getDescription(),
-                                        i18nBundle.get("liite_column_prefix")
+                                        i18nBundle.get("liite_column_prefix"),
+                                        number
                                 )
                         ).build()
                 );
@@ -370,7 +380,9 @@ public class XlsModel {
                 String tilaId = id + "_tila";
                 attachmentQuestions.put(
                         tilaId,
-                        TextQuestion(tilaId).i18nText(i18nBundle.get("liite_tila")).build()
+                        TextQuestion(tilaId).i18nText(
+                                getPrefixedText(i18nBundle.get("liite_tila"), null, number)
+                        ).build()
                 );
             }
         }
@@ -378,14 +390,20 @@ public class XlsModel {
         return attachmentQuestions;
     }
 
-    public static I18nText getPrefixedText(I18nText original, I18nText prefix) {
-        Map<String, String> prefixed = new HashMap<>();
+    public static I18nText getPrefixedText(I18nText original, I18nText prefix, int number) {
+        Map<String, String> modified = new HashMap<>();
 
-        for (String lang : original.getTranslations().keySet()) {
-            prefixed.put(lang, prefix.getText(lang) + original.getText(lang));
+        if (prefix == null) {
+            prefix = new I18nText(new HashMap<String, String>());
         }
 
-        return new I18nText(prefixed);
+        for (String lang : original.getTranslations().keySet()) {
+            String newText = prefix.getText(lang) + original.getText(lang);
+            newText = String.format(newText, number);
+            modified.put(lang, newText);
+        }
+
+        return new I18nText(modified);
     }
 
 }
