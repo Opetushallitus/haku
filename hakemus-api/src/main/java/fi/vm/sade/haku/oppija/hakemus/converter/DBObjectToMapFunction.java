@@ -39,7 +39,8 @@ public class DBObjectToMapFunction implements Function<DBObject, Map<String, Obj
             "received",
             "authorizationMeta",
             "preferenceEligibilities",
-            "additionalInfo"
+            "additionalInfo",
+            "attachmentRequests"
     };
 
     private final EncrypterService encrypterService;
