@@ -7,12 +7,11 @@ import com.google.common.base.Predicates;
 import com.google.common.collect.ArrayTable;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import fi.vm.sade.haku.oppija.common.koulutusinformaatio.ApplicationOption;
 import fi.vm.sade.haku.oppija.common.koulutusinformaatio.ApplicationOptionGroup;
+import fi.vm.sade.haku.oppija.hakemus.domain.PreferenceEligibility;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
-import fi.vm.sade.haku.oppija.lomake.domain.builder.DropdownSelectBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Titled;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.CheckBox;
@@ -21,9 +20,10 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Question;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.TextQuestion;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.I18nBundle;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.map.type.TypeFactory;
 
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -40,6 +40,7 @@ public class XlsModel {
     private final ApplicationSystem applicationSystem;
     private final List<Map<String, Object>> applications;
     private final ArrayTable<String, Element, Object> table;
+    private ObjectMapper objectMapper;
 
     private final String lang;
     private I18nBundle i18nBundle;
@@ -62,6 +63,7 @@ public class XlsModel {
         this.asId = applicationSystem.getId();
         this.asName = applicationSystem.getName().getTranslations().get(lang);
         this.i18nBundle = i18nBundle;
+        this.objectMapper = new ObjectMapper();
 
         List<Element> questions = findQuestions(applicationSystem, ao, lang);
         Map<String, Element> additionalQuestions = getAdditionalQuestions(i18nBundle);
@@ -73,20 +75,20 @@ public class XlsModel {
         Map<String, Element> specialColumns = getSpecialColumns(table);
 
         for (Map<String, Object> application : applications) {
-            @SuppressWarnings("unchecked")
-            Map<String, String> preferenceEligibility = getPreferenceEligibility(
-                    (List<Map<String, String>>) application.get("preferenceEligibilities"), this.ao
+
+            PreferenceEligibility preferenceEligibility = getPreferenceEligibility(
+                    application.get("preferenceEligibilities").toString()
             );
             if (preferenceEligibility != null) {
                 table.put(
                         (String) application.get("oid"),
                         additionalQuestions.get(ELIGIBILITY_STATUS),
-                        getTranslatedAnswer(i18nBundle, lang, preferenceEligibility.get(ELIGIBILITY_STATUS), "hakukelpoisuus_")
+                        getTranslatedAnswer(i18nBundle, lang, preferenceEligibility.getStatus().toString(), "hakukelpoisuus_")
                 );
                 table.put(
                         (String) application.get("oid"),
                         additionalQuestions.get(ELIGIBILITY_SOURCE),
-                        getTranslatedAnswer(i18nBundle, lang, preferenceEligibility.get(ELIGIBILITY_SOURCE), "hakukelpoisuus_lahde_")
+                        getTranslatedAnswer(i18nBundle, lang, preferenceEligibility.getSource().toString(), "hakukelpoisuus_lahde_")
                 );
             }
 
@@ -278,16 +280,20 @@ public class XlsModel {
         }
     };
 
-    public static Map<String, String> getPreferenceEligibility(List<Map<String, String>> preferenceEligibilities, ApplicationOption ao) {
-        if (preferenceEligibilities != null) {
-            for (Map<String, String> preference : preferenceEligibilities) {
-                if (ao.getId().equals(preference.get("aoId"))) {
-                    Map<String, String> map = Maps.newHashMap();
-                    map.put(ELIGIBILITY_STATUS, preference.get("status"));
-                    map.put(ELIGIBILITY_SOURCE, preference.get("source"));
-                    return map;
+    private PreferenceEligibility getPreferenceEligibility(String preferenceEligibilities) {
+        try {
+            List<PreferenceEligibility> eligibilities = this.objectMapper.readValue(
+                    preferenceEligibilities,
+                    TypeFactory.defaultInstance().constructCollectionType(List.class, PreferenceEligibility.class)
+            );
+            for (PreferenceEligibility eligibility : eligibilities) {
+                if (this.ao.getId().equals(eligibility.getAoId())) {
+                    return eligibility;
                 }
             }
+        }
+        catch (Exception e) {
+            return null;
         }
         return null;
     }
