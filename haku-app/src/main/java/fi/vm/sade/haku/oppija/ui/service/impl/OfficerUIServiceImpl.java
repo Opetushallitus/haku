@@ -1,6 +1,8 @@
 package fi.vm.sade.haku.oppija.ui.service.impl;
 
 import com.google.common.base.Strings;
+import fi.vm.sade.auditlog.haku.HakuOperation;
+import fi.vm.sade.auditlog.haku.LogMessage;
 import fi.vm.sade.haku.oppija.common.organisaatio.Organization;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationGroupRestDTO;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
@@ -58,6 +60,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import static fi.vm.sade.haku.AuditHelper.AUDIT;
+import static fi.vm.sade.haku.AuditHelper.builder;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
@@ -737,8 +741,38 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         for (ApplicationAttachmentRequest attachment : application.getAttachmentRequests()){
             AttachmentDTO dto = attachmentDTOs.get(attachment.getId());
             if (null != dto) {
-                attachment.setReceptionStatus(ApplicationAttachmentRequest.ReceptionStatus.valueOf(dto.getReceptionStatus()));
-                attachment.setProcessingStatus(ApplicationAttachmentRequest.ProcessingStatus.valueOf(dto.getProcessingStatus()));
+                ApplicationAttachmentRequest.ReceptionStatus newReceptionStatus = ApplicationAttachmentRequest.ReceptionStatus.valueOf(dto.getReceptionStatus());
+                if (newReceptionStatus != attachment.getReceptionStatus()) {
+                    LogMessage.LogMessageBuilder msgBuilder = builder()
+                            .setOperaatio(HakuOperation.UPDATE_ATTACHMENT_RECEPTION_STATUS)
+                            .hakuOid(application.getApplicationSystemId())
+                            .hakemusOid(application.getOid())
+                            .add("receptionStatus", newReceptionStatus, attachment.getReceptionStatus());
+                    if (null != attachment.getPreferenceAoId()) {
+                        msgBuilder.hakukohdeOid(attachment.getPreferenceAoId());
+                    }
+                    if (null != attachment.getPreferenceAoGroupId()) {
+                        msgBuilder.hakukohderyhmaOid(attachment.getPreferenceAoGroupId());
+                    }
+                    AUDIT.log(msgBuilder.build());
+                    attachment.setReceptionStatus(newReceptionStatus);
+                }
+                ApplicationAttachmentRequest.ProcessingStatus newProcessingStatus = ApplicationAttachmentRequest.ProcessingStatus.valueOf(dto.getProcessingStatus());
+                if (newProcessingStatus != attachment.getProcessingStatus()) {
+                    LogMessage.LogMessageBuilder msgBuilder = builder()
+                            .setOperaatio(HakuOperation.UPDATE_ATTACHMENT_PROCESSING_STATUS)
+                            .hakuOid(application.getApplicationSystemId())
+                            .hakemusOid(application.getOid())
+                            .add("processingStatus", newProcessingStatus, attachment.getProcessingStatus());
+                    if (null != attachment.getPreferenceAoId()) {
+                        msgBuilder.hakukohdeOid(attachment.getPreferenceAoId());
+                    }
+                    if (null != attachment.getPreferenceAoGroupId()) {
+                        msgBuilder.hakukohderyhmaOid(attachment.getPreferenceAoGroupId());
+                    }
+                    AUDIT.log(msgBuilder.build());
+                    attachment.setProcessingStatus(newProcessingStatus);
+                }
             }
         }
 
