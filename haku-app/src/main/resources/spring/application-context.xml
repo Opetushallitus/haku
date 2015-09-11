@@ -53,6 +53,10 @@
     </beans>
 
     <beans profile="devluokka">
+        <bean class="fi.vm.sade.haku.LoggerConfigurer">
+          <constructor-arg><value>config/dev/log4j.properties</value></constructor-arg>
+        </bean>
+
         <context:property-placeholder
                 location="classpath:config/dev/haku.properties, config/dev/classpath:ext.properties,
                     file:///${user.home:''}/oph-configuration/haku.properties,
