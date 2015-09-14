@@ -1,4 +1,4 @@
-package fi.vm.sade.haku.oppija.hakemus.service.impl;
+package fi.vm.sade.haku.oppija.hakemus.it;
 
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationAttachment;
