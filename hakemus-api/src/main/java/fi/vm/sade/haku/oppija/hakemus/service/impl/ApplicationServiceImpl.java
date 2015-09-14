@@ -410,6 +410,8 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     @Override
     public Application updatePreferenceBasedData(final Application application) {
+        List<ApplicationAttachmentRequest> appReqOrig = application.cloneAttachmentRequests();
+
         List<String> preferenceAoIds = ApplicationUtil.getPreferenceAoIds(application);
 
         application.setPreferenceEligibilities(ApplicationUtil.checkAndCreatePreferenceEligibilities(
@@ -420,6 +422,24 @@ public class ApplicationServiceImpl implements ApplicationService {
         ApplicationSystem applicationSystem = applicationSystemService.getApplicationSystem(application.getApplicationSystemId());
         application.setAttachmentRequests(AttachmentUtil.resolveAttachmentRequests(applicationSystem, application,
                 koulutusinformaatioService, i18nBundleService.getBundle(applicationSystem)));
+
+        for(ApplicationAttachmentRequest orig: appReqOrig) {
+            if(ApplicationAttachmentRequest.ReceptionStatus.ARRIVED.equals(orig.getReceptionStatus()) ||
+                    ApplicationAttachmentRequest.ReceptionStatus.ARRIVED_LATE.equals(orig.getReceptionStatus())) {
+                boolean foundMatch = false;
+                for(ApplicationAttachmentRequest newReq : application.getAttachmentRequests()) {
+                    if(orig.equals(newReq)) {
+                        foundMatch = true;
+                        newReq.setReceptionStatus(orig.getReceptionStatus());
+                        newReq.setProcessingStatus(orig.getProcessingStatus());
+                        break;
+                    }
+                }
+                if(foundMatch == false) {
+                    // TODO log warning for loosing attachmentrequest receptionstatus
+                }
+            }
+        }
 
         return application;
     }

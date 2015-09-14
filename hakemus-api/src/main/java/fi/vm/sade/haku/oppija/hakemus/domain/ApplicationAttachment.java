@@ -63,4 +63,58 @@ public class ApplicationAttachment implements Serializable {
     public String getEmailAddress() {
         return emailAddress;
     }
+
+    @Override
+    public ApplicationAttachment clone() {
+        Date dl = null;
+        if(this.deadline != null) {
+            dl = (Date) this.deadline.clone();
+        }
+        Address addr = null;
+        if(this.address != null) {
+            addr = this.address.clone();
+        }
+
+        return new ApplicationAttachment(I18nText.copy(this.name), I18nText.copy(this.header), I18nText.copy(this.description), dl, I18nText.copy(this.deliveryNote), addr, this.emailAddress);
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if(object == null) {
+            return false;
+        }
+
+        if(!(object instanceof ApplicationAttachment)) {
+            return false;
+        }
+        ApplicationAttachment newObj = (ApplicationAttachment)object;
+
+        if((!I18nText.compare(this.name, newObj.name)) ||
+           (!I18nText.compare(this.header, newObj.header)) ||
+           (!I18nText.compare(this.description, newObj.description)) ||
+           (!I18nText.compare(this.deliveryNote, newObj.deliveryNote))) {
+            return false;
+        }
+
+        if(deadline == null && newObj.deadline != null) {
+            return false;
+        } else if(deadline != null && !deadline.equals(newObj.deadline)) {
+            return false;
+        }
+
+        if(emailAddress == null && newObj.emailAddress != null) {
+            return false;
+        } else if(emailAddress != null && !emailAddress.equals(newObj.emailAddress)) {
+            return false;
+        }
+
+        if(address == null && newObj.address != null) {
+            return false;
+        } else if(address != null && !address.equals(newObj.address)) {
+            return false;
+        }
+
+        return true;
+    }
+
 }

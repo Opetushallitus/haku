@@ -20,6 +20,7 @@ import org.codehaus.jackson.annotate.JsonProperty;
 
 import java.io.Serializable;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
 public class I18nText implements Serializable {
@@ -50,4 +51,25 @@ public class I18nText implements Serializable {
     public String toString() {
         return translations.toString();
     }
+
+    public static I18nText copy(I18nText obj) {
+        if(obj != null) {
+            Map copy = new HashMap();
+            copy.putAll(obj.getTranslations());
+            return new I18nText(copy);
+        }
+        return null;
+    }
+
+    public static boolean compare(I18nText obj1, I18nText obj2) {
+        if(obj1 == null && obj2 != null) {
+            return false;
+        } else if(obj1 != null && obj2 == null) {
+            return false;
+        } else if(obj1 != null && obj2 != null && !obj1.getTranslations().equals(obj2.getTranslations())) {
+            return false;
+        }
+        return true;
+    }
+
 }
