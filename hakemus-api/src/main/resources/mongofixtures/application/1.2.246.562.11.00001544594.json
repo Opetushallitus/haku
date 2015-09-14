@@ -1,0 +1,656 @@
+{
+  "_id" : {"$oid": "54c73ad0e4b07957e51d05bc"},
+  "additionalInfo" : {
+    "fc8d6057-1ee3-b20a-4f17-fb5d803235e7-OSALLISTUMINEN" : "EI_VAADITA",
+    "fc8d6057-1ee3-b20a-4f17-fb5d803235e7" : ""
+  },
+  "answers" : {
+    "hakutoiveet" : {
+      "preference4-Koulutus-id-aoIdentifier" : "",
+      "preference1-Koulutus-id-ao-groups" : "1.2.246.562.28.24712637358,1.2.246.562.28.86635316318",
+      "preference4-Opetuspiste-id" : "1.2.246.562.10.2013102114565876612670",
+      "preference3-Koulutus-id-athlete" : "false",
+      "preference2-Koulutus-id-attachmentgroups" : "1.2.246.562.28.24712637358",
+      "preference4-Koulutus-id-athlete" : "false",
+      "preference3-Opetuspiste-id" : "1.2.246.562.10.72974448119",
+      "preference4-Koulutus-id-attachmentgroups" : "1.2.246.562.28.24712637358",
+      "preference4-amkLiite" : "true",
+      "preference2-Koulutus-id-ao-groups" : "1.2.246.562.28.86635316318,1.2.246.562.28.24712637358",
+      "preference1-Koulutus-educationDegree" : "koulutusasteoph2002_62",
+      "preference6-Koulutus-id-ao-groups" : "1.2.246.562.28.24712637358,1.2.246.562.28.86635316318,1.2.246.562.28.43874209561,1.2.246.562.28.52442859893",
+      "preference1-Koulutus-id-sora" : "false",
+      "preference2-Koulutus-educationDegree" : "koulutusasteoph2002_62",
+      "preference6-Koulutus" : "Bachelor of Health Care, Nursing, full-time studies",
+      "preference5-Koulutus-id-sora" : "false",
+      "preference1-Koulutus-id-aoIdentifier" : "",
+      "preference5-Koulutus-id-ao-groups" : "1.2.246.562.28.24712637358,1.2.246.562.28.86635316318,1.2.246.562.28.61806595731,1.2.246.562.28.24530680345",
+      "preference3-Koulutus-id-attachmentgroups" : "1.2.246.562.28.24712637358",
+      "preference1-Koulutus-id-vocational" : "false",
+      "preference4-Koulutus-id-kaksoistutkinto" : "false",
+      "preference6-Koulutus-educationDegree" : "koulutusasteoph2002_62",
+      "preference5-Koulutus-id-kaksoistutkinto" : "false",
+      "preference6-Koulutus-id-attachmentgroups" : "1.2.246.562.28.24712637358",
+      "preference2-Opetuspiste" : "Lahti University of Applied Sciences, Faculty of Social and Health Care",
+      "preference2-Koulutus-id-athlete" : "false",
+      "preference5-Koulutus" : "Bachelor of Health Care, Nursing",
+      "preference2-Koulutus-id-kaksoistutkinto" : "false",
+      "preference5-Opetuspiste" : "Turku University of Applied Sciences, Salo, Ylhäistentie 2, 24130 Salo, Finland",
+      "preference3-Koulutus-id-kaksoistutkinto" : "false",
+      "548ee993e4b0a902493ee364" : "option_1",
+      "preference2-amkLiite" : "true",
+      "preference3-Koulutus-id-lang" : "EN",
+      "preference2-Opetuspiste-id" : "1.2.246.562.10.21989237215",
+      "preference3-Opetuspiste" : "Centria University of Applied Sciences",
+      "preference6-Koulutus-id" : "1.2.246.562.20.27031429205",
+      "preferencesVisible" : "6",
+      "preference1-Koulutus-id" : "1.2.246.562.20.92555013215",
+      "preference3-Koulutus-id-sora" : "false",
+      "preference2-Koulutus-id-lang" : "EN",
+      "preference4-Koulutus-id-attachments" : "true",
+      "preference1-Koulutus-id-kaksoistutkinto" : "false",
+      "548ea252e4b0a902493ee323" : "option_1",
+      "preference6-amkLiite" : "true",
+      "preference5-Koulutus-id-aoIdentifier" : "",
+      "preference1-Koulutus-id-lang" : "EN",
+      "preference4-Koulutus-id-ao-groups" : "1.2.246.562.28.24712637358,1.2.246.562.28.86635316318",
+      "preference6-Opetuspiste" : "Novia University of Applied Sciences, Vaasa, Sarjakatu",
+      "preference3-Koulutus-id-ao-groups" : "1.2.246.562.28.24712637358,1.2.246.562.28.61806595731,1.2.246.562.28.24530680345,1.2.246.562.28.86635316318",
+      "preference4-Koulutus-id-educationcode" : "koulutus_671101",
+      "preference1-Opetuspiste" : "JAMK University of Applied Sciences, Social Services and Health Care",
+      "preference5-Opetuspiste-id" : "1.2.246.562.10.53170463706",
+      "preference2-Koulutus-id-aoIdentifier" : "",
+      "preference2-Koulutus-id-attachments" : "true",
+      "preference2-Koulutus" : "Bachelor's Degree Programme, Nursing, full-time studies",
+      "preference6-Koulutus-id-lang" : "EN",
+      "preference6-Koulutus-id-vocational" : "false",
+      "preference6-Koulutus-id-educationcode" : "koulutus_671101",
+      "preference5-Koulutus-educationDegree" : "koulutusasteoph2002_62",
+      "preference2-Koulutus-id-sora" : "false",
+      "preference4-Koulutus-id-vocational" : "false",
+      "preference3-Koulutus-id" : "1.2.246.562.20.40936694286",
+      "preference1-Opetuspiste-id" : "1.2.246.562.10.14661553223",
+      "preference5-Koulutus-id-lang" : "EN",
+      "preference5-amkLiite" : "true",
+      "548e90f1e4b0a902493ee306" : "option_1",
+      "preference1-Koulutus-id-educationcode" : "koulutus_671101",
+      "preference6-Koulutus-id-kaksoistutkinto" : "false",
+      "preference6-Koulutus-id-sora" : "false",
+      "preference5-Koulutus-id-athlete" : "false",
+      "preference2-Koulutus-id" : "1.2.246.562.20.91374364379",
+      "preference5-Koulutus-id-attachments" : "",
+      "preference3-Koulutus-id-vocational" : "false",
+      "preference6-Koulutus-id-athlete" : "false",
+      "preference4-Koulutus-educationDegree" : "koulutusasteoph2002_62",
+      "preference1-Koulutus-id-athlete" : "false",
+      "preference6-Koulutus-id-attachments" : "true",
+      "preference6-Koulutus-id-aoIdentifier" : "",
+      "548eddece4b0a902493ee356" : "option_1",
+      "preference5-Koulutus-id" : "1.2.246.562.20.27012653492",
+      "preference1-Koulutus-id-attachments" : "true",
+      "preference3-Koulutus-educationDegree" : "koulutusasteoph2002_62",
+      "preference5-Koulutus-id-educationcode" : "koulutus_671101",
+      "preference1-Koulutus-id-attachmentgroups" : "1.2.246.562.28.24712637358",
+      "preference4-Koulutus-id-sora" : "false",
+      "preference5-Koulutus-id-vocational" : "false",
+      "preference1-amkLiite" : "true",
+      "preference4-Koulutus-id-lang" : "EN",
+      "preference5-Koulutus-id-attachmentgroups" : "1.2.246.562.28.24712637358",
+      "preference4-Koulutus" : "Bachelor's Degree Programme, Nursing, Kemi",
+      "preference2-Koulutus-id-vocational" : "false",
+      "preference3-Koulutus-id-attachments" : "",
+      "preference3-amkLiite" : "true",
+      "preference4-Koulutus-id" : "1.2.246.562.20.63351226459",
+      "preference4-Opetuspiste" : "Lapland University of Applied Sciences, Nursing, Kemi",
+      "preference3-Koulutus-id-educationcode" : "koulutus_671101",
+      "preference1-Koulutus" : "Bachelor of Health Care, Degree Programme in Nursing",
+      "preference3-Koulutus" : "Bachelor of Health Care, Nursing, full-time studies",
+      "preference3-Koulutus-id-aoIdentifier" : "",
+      "preference2-Koulutus-id-educationcode" : "koulutus_671101",
+      "preference6-Opetuspiste-id" : "1.2.246.562.10.66542030912"
+    },
+    "henkilotiedot" : {
+      "Henkilotunnus_plain" : "010101-123N",
+      "kansalaisuus" : "NPL",
+      "koulusivistyskieli" : "EN",
+      "postinumeroUlkomaa" : "44600",
+      "asuinmaa" : "NPL",
+      "syntymapaikka" : "Dhading, Nepal",
+      "Sukunimi" : "Heppalahti",
+      "passinnumero" : "",
+      "sukupuoli" : "2",
+      "turvakielto" : "true",
+      "Kutsumanimi" : "Joel",
+      "Etunimet" : "Joel IX",
+      "kansallinenIdTunnus" : "",
+      "onkoSinullaSuomalainenHetu" : "false",
+      "onkosinullakaksoiskansallisuus" : "false",
+      "kaupunkiUlkomaa" : "Kathmandu",
+      "SUKUPUOLI" : "2",
+      "matkapuhelinnumero1" : "050 1813961",
+      "lahiosoite" : "Kalmarinraitti 980",
+      "Sähköposti" : "hakija-19995@oph.fi",
+      "aidinkieli" : "NE",
+      "osoiteUlkomaa" : "Lorem osoite",
+      "syntymaaika" : "19.09.1988"
+    },
+    "koulutustausta" : {
+      "pohjakoulutus_ulk" : "true",
+      "pohjakoulutus_ulk_nimike" : "Proficiency Certificate Level in Nursing",
+      "pohjakoulutus_ulk_oppilaitos" : "Green Tara College of Health Science",
+      "pohjakoulutus_ulk_suoritusmaa" : "XXX",
+      "pohjakoulutus_ulk_suoritusmaa_muu" : "Nepal",
+      "pohjakoulutus_ulk_vuosi" : "2014",
+      "suoritusoikeus_tai_aiempi_tutkinto" : "true"
+    },
+    "lisatiedot" : {
+      "lupaSahkoisesti" : "true",
+      "lupaJulkaisu" : "true",
+      "asiointikieli" : "englanti",
+      "lupaSms" : "true",
+      "lupaMarkkinointi" : "true"
+    },
+    "osaaminen" : {
+      "548ac11de4b0c1f15d7db544" : "option_14"
+    }
+  },
+  "applicationSystemId" : "1.2.246.562.29.95390561488",
+  "attachmentRequests" : [
+    {
+      "id" : "26c6ba2c-0424-4129-a73d-74b31d30859f",
+      "preferenceAoId" : "1.2.246.562.20.91374364379",
+      "processingStatus" : "NOT_CHECKED",
+      "applicationAttachment" : {
+        "name" : {
+          "translations" : {
+            "fi" : "Enclosures",
+            "sv" : "Enclosures",
+            "en" : "Enclosures"
+          }
+        },
+        "description" : {
+          "translations" : {
+            "fi" : "<p>Applicants applying with non-Finnish qualifications must send the required enclosures to their first-preference UAS admission services by 10 February 2015 by 3:00 p.m. Finnish time (UTC+2) at the latest.<br /><br />Required enclosures:<br />• copies of the original degree certificates (high school/secondary school)<br />• authorised translation of the certificate if needed (in English, Finnish or Swedish, the translation must have the translators' signature and stamp)<br />• NON-EU/EEA Citizens: English language proficiency certificate<br /><br />If you are an EU/EEA citizen, you are able to apply even if your degree certificate is completed during the spring of applying (secondary school certificate).</p>",
+            "sv" : "<p>Applicants applying with non-Finnish qualifications must send the required enclosures to their first-preference UAS admission services by 10 February 2015 by 3:00 p.m. Finnish time (UTC+2) at the latest.<br /><br />Required enclosures:<br />• copies of the original degree certificates (high school/secondary school)<br />• authorised translation of the certificate if needed (in English, Finnish or Swedish, the translation must have the translators' signature and stamp)<br />• NON-EU/EEA Citizens: English language proficiency certificate<br /><br />If you are an EU/EEA citizen, you are able to apply even if your degree certificate is completed during the spring of applying (secondary school certificate).</p>",
+            "en" : "<p>Applicants applying with non-Finnish qualifications must send the required enclosures to their first-preference UAS admission services by 10 February 2015 by 3:00 p.m. Finnish time (UTC+2) at the latest.<br /><br />Required enclosures:<br />• copies of the original degree certificates (high school/secondary school)<br />• authorised translation of the certificate if needed (in English, Finnish or Swedish, the translation must have the translators' signature and stamp)<br />• NON-EU/EEA Citizens: English language proficiency certificate<br /><br />If you are an EU/EEA citizen, you are able to apply even if your degree certificate is completed during the spring of applying (secondary school certificate).</p>"
+          }
+        },
+        "deadline" : 1423573214780,
+        "address" : {
+          "recipient" : "Admission services",
+          "streetAddress" : "Lahti University of Applied Sciences, Admission services, Kirkkokatu 27, 4 th floor , 4th floor",
+          "postalCode" : "15140",
+          "postOffice" : "LAHTI"
+        }
+      },
+      "receptionStatus" : "NOT_RECEIVED"
+    },
+    {
+      "id" : "067d9262-0d70-4d96-b0f9-a77c5c55b07f",
+      "preferenceAoId" : "1.2.246.562.20.63351226459",
+      "processingStatus" : "NOT_CHECKED",
+      "applicationAttachment" : {
+        "name" : {
+          "translations" : {
+            "fi" : "Copies of certificates",
+            "sv" : "Copies of certificates",
+            "en" : "Copies of certificates"
+          }
+        },
+        "description" : {
+          "translations" : {
+            "fi" : "<p><b><span lang=\"EN\">Application attachments</span></b></p> <h4><span lang=\"EN\">Intake 2015</span></h4> <p><span lang=\"EN\">Please, send your attachments <b>by post</b> in good time because the speed of postal services varies a lot in different countries. The postmark on your attachment package is not taken into account: It will NOT be sufficient. It is your responsibility to make sure that all attachments arrive at the Admission Office by the closing date. All attachments arriving after the closing date will not be considered.</span></p> <p><b><span lang=\"EN\">1) Copies of certificates</span></b><b><span lang=\"EN\"><br /> <br /> </span></b><span lang=\"EN\">Applicants with a Finnish qualification<br /> <br /> </span><span lang=\"EN\">If you are a candidate for the <b>Finnish matriculation examination</b>, you apply with your latest upper secondary school certificate, you do not need to send copies of your certificates as the UAS will receive the results of your matriculation examination directly from the Matriculation Examination Board.<br /> <br /> If you apply with a <b>Finnish competence-based further vocational or specialist vocational qualification</b>, you must submit copy of your original certificate to the Admissions Office of the UAS of your first choice by the 10th of February 2015 3.00 pm at the latest. <br /> <br /> If you are completing an <b>IB-examination</b> in a Finnish upper secondary school in the spring 2015, you must submit a copy of your Predicted Grades to the Admissions Office of the UAS of your first choice by the 15th of May 2015 Finnish time (+2 hrs GMT). <br /> <br /> <br /> </span></p> <p><span lang=\"EN\">Applicants with a non-Finnish qualification<br /> <br /> </span><span lang=\"EN\">If you apply with a non-Finnish qualification, you must submit copies of your original certificates to demonstrate your eligibility to UAS studies. This does not apply to you if you are a citizen of an EU/EEA-country and you are completing your qualification in the spring of applying.<br /> <br /> The copies must arrive at the Admissions Office of the UAS of your first choice by the 10th of February 2015 at 3.00 pm Finnish time (+2 hrs GMT). The UAS accepts only final certificates awarded by national and regional bodies granting educational certificates. Therefore other documents such as &quot;Testimonials&quot;, &quot;Statements of Results&quot;, &quot;Examination Results&quot; or &quot;Result Slips&quot; are not considered as official certificates.<br /> <br /> If you are a <b>refugee</b> or in a refugee-like situation and you cannot prove the qualifications you have obtained through documentary evidence, the UAS can consider, whether you can be invited to the entrance examination. You must prove your refugee status by decision made by a competent authority and send a copy of the decision to the Admissions Office of the UAS of your first choice by the 10th of February 2015 at 3.00 pm Finnish time (+2 hrs GMT).</span></p> <p> </p> <p><b><span lang=\"EN\">2) Translations of certificates</span></b></p> <p><span lang=\"EN\">If your certificate is not written in Finnish, English or Swedish, you must also enclose certified translation of your certificate into Finnish, English or Swedish translated by a licensed translator. The translations must have translator’s signature and stamp on them.<br /> <br /> The translations of the certificates must arrive at the Admissions Office of the UAS of your first choice by the 10th of February 2015 at 3.00 pm Finnish time (+2 hrs GMT).</span></p> <p> </p> <p><b><span lang=\"EN\">3) Certificate of language skills</span></b></p> <p><span lang=\"EN\">If you are applying with a non-Finnish qualification and you are not a citizen of an EU/EEA-country, you must provide proof of your English language skills to demonstrate your eligibility to UAS studies by sending a certificate of your language skills to the Admissions Office of the UAS of your first choice by the 10th of February 2015 at 3.00 pm Finnish time (+2 hrs GMT). You must provide one of the following minimum requirements:</span></p> <ul> <li><span lang=\"EN\">an <a href=\"http://www.ielts.org/default.aspx\">IELTS</a> score academic level 6.0. Order your <a href=\"http://www.ielts.org/test_takers_information/getting_my_results.aspx\">IELTS Test Report</a> (Getting my results). The test result is valid for two years.</span></li> <li><span lang=\"EN\">a <a href=\"http://www.ets.org/portal/site/ets/menuitem.fab2360b1645a1de9b3a0779f1751509/?vgnextoid=69c0197a484f4010VgnVCM10000022f95190RCRD\">TOEFL</a> score 550 paper-based test / 79 - 80 internet-based test. TOEFL score results are only accepted directly from the <a href=\"http://www.ets.org/portal/site/ets/menuitem.3a88fea28f42ada7c6ce5a10c3921509/?vgnextoid=85b65784623f4010VgnVCM10000022f95190RCRD\">Educational Testing Service (= ETS)</a>. When you take the test, you will have to designate the institutions you would like to receive your score reports. The Designated Institution (= DI) code for Lapland UAS is 4992.  After taking the test you can order <a href=\"http://www.ets.org/portal/site/ets/menuitem.1488512ecfd5b8849a77b13bc3921509/?vgnextoid=be70fa5947946110VgnVCM10000022f95190RCRD&amp;vgnextchannel=fb26a1e13bf36110VgnVCM10000022f95190RCRD\">additional official score reports</a> for institutions you did not identify in the test. The test result is valid for two years.</span></li> <li><span lang=\"EN\">a <a href=\"http://www.cambridgeesol.org/exams/cpe/index.html\">Cambridge ESOL’s Certificate of Proficiency in English (CPE)</a> or <a href=\"http://www.cambridgeesol.org/exams/cae/index.html\">Cambridge ESOL’s Certificate in Advanced English (CAE)</a> CEFR level C1 or Cambridge IGSCE Certificate level C</span></li> <li><span lang=\"EN\">a <a href=\"http://www.pearsonpte.com/Pages/Home.aspx\">Pearson Test of English</a> General level 4 or Academic overall score 51. The PTE General certificate is valid permanently. The PTE Academic score report is considered valid for two years and only if it is accessed via the Pearson score report website. </span></li> <li><span lang=\"EN\">skills level 4 in English in all subtests (reading comprehension, listening comprehension, writing and speaking) in the <a href=\"http://193.166.43.17/english/mobility/testing_language_skills\">National Certificate of Language Proficiency</a> by <a href=\"http://www.oph.fi/english\">the Finnish National Board of Education</a>. The certificate is valid permanently.</span></li> <li><span lang=\"EN\">an upper secondary school education in English or a Bachelor’s or Master’s degree completed in English and completed in Great Britain, Ireland, the United States, Canada, Australia or New Zealand. The language of education can be seen in your certificate. No other countries will be considered. </span></li> <li><span lang=\"EN\">a Bachelor’s or Master’s degree conducted in English in an EU/EEA-country</span></li> </ul>",
+            "sv" : "<p><b><span lang=\"EN\">Application attachments</span></b></p> <h4><span lang=\"EN\">Intake 2015</span></h4> <p><span lang=\"EN\">Please, send your attachments <b>by post</b> in good time because the speed of postal services varies a lot in different countries. The postmark on your attachment package is not taken into account: It will NOT be sufficient. It is your responsibility to make sure that all attachments arrive at the Admission Office by the closing date. All attachments arriving after the closing date will not be considered.</span></p> <p><b><span lang=\"EN\">1) Copies of certificates</span></b><b><span lang=\"EN\"><br /> <br /> </span></b><span lang=\"EN\">Applicants with a Finnish qualification<br /> <br /> </span><span lang=\"EN\">If you are a candidate for the <b>Finnish matriculation examination</b>, you apply with your latest upper secondary school certificate, you do not need to send copies of your certificates as the UAS will receive the results of your matriculation examination directly from the Matriculation Examination Board.<br /> <br /> If you apply with a <b>Finnish competence-based further vocational or specialist vocational qualification</b>, you must submit copy of your original certificate to the Admissions Office of the UAS of your first choice by the 10th of February 2015 3.00 pm at the latest. <br /> <br /> If you are completing an <b>IB-examination</b> in a Finnish upper secondary school in the spring 2015, you must submit a copy of your Predicted Grades to the Admissions Office of the UAS of your first choice by the 15th of May 2015 Finnish time (+2 hrs GMT). <br /> <br /> <br /> </span></p> <p><span lang=\"EN\">Applicants with a non-Finnish qualification<br /> <br /> </span><span lang=\"EN\">If you apply with a non-Finnish qualification, you must submit copies of your original certificates to demonstrate your eligibility to UAS studies. This does not apply to you if you are a citizen of an EU/EEA-country and you are completing your qualification in the spring of applying.<br /> <br /> The copies must arrive at the Admissions Office of the UAS of your first choice by the 10th of February 2015 at 3.00 pm Finnish time (+2 hrs GMT). The UAS accepts only final certificates awarded by national and regional bodies granting educational certificates. Therefore other documents such as &quot;Testimonials&quot;, &quot;Statements of Results&quot;, &quot;Examination Results&quot; or &quot;Result Slips&quot; are not considered as official certificates.<br /> <br /> If you are a <b>refugee</b> or in a refugee-like situation and you cannot prove the qualifications you have obtained through documentary evidence, the UAS can consider, whether you can be invited to the entrance examination. You must prove your refugee status by decision made by a competent authority and send a copy of the decision to the Admissions Office of the UAS of your first choice by the 10th of February 2015 at 3.00 pm Finnish time (+2 hrs GMT).</span></p> <p> </p> <p><b><span lang=\"EN\">2) Translations of certificates</span></b></p> <p><span lang=\"EN\">If your certificate is not written in Finnish, English or Swedish, you must also enclose certified translation of your certificate into Finnish, English or Swedish translated by a licensed translator. The translations must have translator’s signature and stamp on them.<br /> <br /> The translations of the certificates must arrive at the Admissions Office of the UAS of your first choice by the 10th of February 2015 at 3.00 pm Finnish time (+2 hrs GMT).</span></p> <p> </p> <p><b><span lang=\"EN\">3) Certificate of language skills</span></b></p> <p><span lang=\"EN\">If you are applying with a non-Finnish qualification and you are not a citizen of an EU/EEA-country, you must provide proof of your English language skills to demonstrate your eligibility to UAS studies by sending a certificate of your language skills to the Admissions Office of the UAS of your first choice by the 10th of February 2015 at 3.00 pm Finnish time (+2 hrs GMT). You must provide one of the following minimum requirements:</span></p> <ul> <li><span lang=\"EN\">an <a href=\"http://www.ielts.org/default.aspx\">IELTS</a> score academic level 6.0. Order your <a href=\"http://www.ielts.org/test_takers_information/getting_my_results.aspx\">IELTS Test Report</a> (Getting my results). The test result is valid for two years.</span></li> <li><span lang=\"EN\">a <a href=\"http://www.ets.org/portal/site/ets/menuitem.fab2360b1645a1de9b3a0779f1751509/?vgnextoid=69c0197a484f4010VgnVCM10000022f95190RCRD\">TOEFL</a> score 550 paper-based test / 79 - 80 internet-based test. TOEFL score results are only accepted directly from the <a href=\"http://www.ets.org/portal/site/ets/menuitem.3a88fea28f42ada7c6ce5a10c3921509/?vgnextoid=85b65784623f4010VgnVCM10000022f95190RCRD\">Educational Testing Service (= ETS)</a>. When you take the test, you will have to designate the institutions you would like to receive your score reports. The Designated Institution (= DI) code for Lapland UAS is 4992.  After taking the test you can order <a href=\"http://www.ets.org/portal/site/ets/menuitem.1488512ecfd5b8849a77b13bc3921509/?vgnextoid=be70fa5947946110VgnVCM10000022f95190RCRD&amp;vgnextchannel=fb26a1e13bf36110VgnVCM10000022f95190RCRD\">additional official score reports</a> for institutions you did not identify in the test. The test result is valid for two years.</span></li> <li><span lang=\"EN\">a <a href=\"http://www.cambridgeesol.org/exams/cpe/index.html\">Cambridge ESOL’s Certificate of Proficiency in English (CPE)</a> or <a href=\"http://www.cambridgeesol.org/exams/cae/index.html\">Cambridge ESOL’s Certificate in Advanced English (CAE)</a> CEFR level C1 or Cambridge IGSCE Certificate level C</span></li> <li><span lang=\"EN\">a <a href=\"http://www.pearsonpte.com/Pages/Home.aspx\">Pearson Test of English</a> General level 4 or Academic overall score 51. The PTE General certificate is valid permanently. The PTE Academic score report is considered valid for two years and only if it is accessed via the Pearson score report website. </span></li> <li><span lang=\"EN\">skills level 4 in English in all subtests (reading comprehension, listening comprehension, writing and speaking) in the <a href=\"http://193.166.43.17/english/mobility/testing_language_skills\">National Certificate of Language Proficiency</a> by <a href=\"http://www.oph.fi/english\">the Finnish National Board of Education</a>. The certificate is valid permanently.</span></li> <li><span lang=\"EN\">an upper secondary school education in English or a Bachelor’s or Master’s degree completed in English and completed in Great Britain, Ireland, the United States, Canada, Australia or New Zealand. The language of education can be seen in your certificate. No other countries will be considered. </span></li> <li><span lang=\"EN\">a Bachelor’s or Master’s degree conducted in English in an EU/EEA-country</span></li> </ul>",
+            "en" : "<p><b><span lang=\"EN\">Application attachments</span></b></p> <h4><span lang=\"EN\">Intake 2015</span></h4> <p><span lang=\"EN\">Please, send your attachments <b>by post</b> in good time because the speed of postal services varies a lot in different countries. The postmark on your attachment package is not taken into account: It will NOT be sufficient. It is your responsibility to make sure that all attachments arrive at the Admission Office by the closing date. All attachments arriving after the closing date will not be considered.</span></p> <p><b><span lang=\"EN\">1) Copies of certificates</span></b><b><span lang=\"EN\"><br /> <br /> </span></b><span lang=\"EN\">Applicants with a Finnish qualification<br /> <br /> </span><span lang=\"EN\">If you are a candidate for the <b>Finnish matriculation examination</b>, you apply with your latest upper secondary school certificate, you do not need to send copies of your certificates as the UAS will receive the results of your matriculation examination directly from the Matriculation Examination Board.<br /> <br /> If you apply with a <b>Finnish competence-based further vocational or specialist vocational qualification</b>, you must submit copy of your original certificate to the Admissions Office of the UAS of your first choice by the 10th of February 2015 3.00 pm at the latest. <br /> <br /> If you are completing an <b>IB-examination</b> in a Finnish upper secondary school in the spring 2015, you must submit a copy of your Predicted Grades to the Admissions Office of the UAS of your first choice by the 15th of May 2015 Finnish time (+2 hrs GMT). <br /> <br /> <br /> </span></p> <p><span lang=\"EN\">Applicants with a non-Finnish qualification<br /> <br /> </span><span lang=\"EN\">If you apply with a non-Finnish qualification, you must submit copies of your original certificates to demonstrate your eligibility to UAS studies. This does not apply to you if you are a citizen of an EU/EEA-country and you are completing your qualification in the spring of applying.<br /> <br /> The copies must arrive at the Admissions Office of the UAS of your first choice by the 10th of February 2015 at 3.00 pm Finnish time (+2 hrs GMT). The UAS accepts only final certificates awarded by national and regional bodies granting educational certificates. Therefore other documents such as &quot;Testimonials&quot;, &quot;Statements of Results&quot;, &quot;Examination Results&quot; or &quot;Result Slips&quot; are not considered as official certificates.<br /> <br /> If you are a <b>refugee</b> or in a refugee-like situation and you cannot prove the qualifications you have obtained through documentary evidence, the UAS can consider, whether you can be invited to the entrance examination. You must prove your refugee status by decision made by a competent authority and send a copy of the decision to the Admissions Office of the UAS of your first choice by the 10th of February 2015 at 3.00 pm Finnish time (+2 hrs GMT).</span></p> <p> </p> <p><b><span lang=\"EN\">2) Translations of certificates</span></b></p> <p><span lang=\"EN\">If your certificate is not written in Finnish, English or Swedish, you must also enclose certified translation of your certificate into Finnish, English or Swedish translated by a licensed translator. The translations must have translator’s signature and stamp on them.<br /> <br /> The translations of the certificates must arrive at the Admissions Office of the UAS of your first choice by the 10th of February 2015 at 3.00 pm Finnish time (+2 hrs GMT).</span></p> <p> </p> <p><b><span lang=\"EN\">3) Certificate of language skills</span></b></p> <p><span lang=\"EN\">If you are applying with a non-Finnish qualification and you are not a citizen of an EU/EEA-country, you must provide proof of your English language skills to demonstrate your eligibility to UAS studies by sending a certificate of your language skills to the Admissions Office of the UAS of your first choice by the 10th of February 2015 at 3.00 pm Finnish time (+2 hrs GMT). You must provide one of the following minimum requirements:</span></p> <ul> <li><span lang=\"EN\">an <a href=\"http://www.ielts.org/default.aspx\">IELTS</a> score academic level 6.0. Order your <a href=\"http://www.ielts.org/test_takers_information/getting_my_results.aspx\">IELTS Test Report</a> (Getting my results). The test result is valid for two years.</span></li> <li><span lang=\"EN\">a <a href=\"http://www.ets.org/portal/site/ets/menuitem.fab2360b1645a1de9b3a0779f1751509/?vgnextoid=69c0197a484f4010VgnVCM10000022f95190RCRD\">TOEFL</a> score 550 paper-based test / 79 - 80 internet-based test. TOEFL score results are only accepted directly from the <a href=\"http://www.ets.org/portal/site/ets/menuitem.3a88fea28f42ada7c6ce5a10c3921509/?vgnextoid=85b65784623f4010VgnVCM10000022f95190RCRD\">Educational Testing Service (= ETS)</a>. When you take the test, you will have to designate the institutions you would like to receive your score reports. The Designated Institution (= DI) code for Lapland UAS is 4992.  After taking the test you can order <a href=\"http://www.ets.org/portal/site/ets/menuitem.1488512ecfd5b8849a77b13bc3921509/?vgnextoid=be70fa5947946110VgnVCM10000022f95190RCRD&amp;vgnextchannel=fb26a1e13bf36110VgnVCM10000022f95190RCRD\">additional official score reports</a> for institutions you did not identify in the test. The test result is valid for two years.</span></li> <li><span lang=\"EN\">a <a href=\"http://www.cambridgeesol.org/exams/cpe/index.html\">Cambridge ESOL’s Certificate of Proficiency in English (CPE)</a> or <a href=\"http://www.cambridgeesol.org/exams/cae/index.html\">Cambridge ESOL’s Certificate in Advanced English (CAE)</a> CEFR level C1 or Cambridge IGSCE Certificate level C</span></li> <li><span lang=\"EN\">a <a href=\"http://www.pearsonpte.com/Pages/Home.aspx\">Pearson Test of English</a> General level 4 or Academic overall score 51. The PTE General certificate is valid permanently. The PTE Academic score report is considered valid for two years and only if it is accessed via the Pearson score report website. </span></li> <li><span lang=\"EN\">skills level 4 in English in all subtests (reading comprehension, listening comprehension, writing and speaking) in the <a href=\"http://193.166.43.17/english/mobility/testing_language_skills\">National Certificate of Language Proficiency</a> by <a href=\"http://www.oph.fi/english\">the Finnish National Board of Education</a>. The certificate is valid permanently.</span></li> <li><span lang=\"EN\">an upper secondary school education in English or a Bachelor’s or Master’s degree completed in English and completed in Great Britain, Ireland, the United States, Canada, Australia or New Zealand. The language of education can be seen in your certificate. No other countries will be considered. </span></li> <li><span lang=\"EN\">a Bachelor’s or Master’s degree conducted in English in an EU/EEA-country</span></li> </ul>"
+          }
+        },
+        "deadline" : 1423573246930,
+        "address" : {
+          "recipient" : "Admissions Office",
+          "streetAddress" : "Jokiväylä 11 C",
+          "postalCode" : "96300",
+          "postOffice" : "ROVANIEMI"
+        }
+      },
+      "receptionStatus" : "NOT_RECEIVED"
+    },
+    {
+      "id" : "8302a7f4-5cb5-4960-9771-0c468e2aad38",
+      "preferenceAoId" : "1.2.246.562.20.27031429205",
+      "processingStatus" : "NOT_CHECKED",
+      "applicationAttachment" : {
+        "name" : {
+          "translations" : {
+            "fi" : "Health certificate",
+            "sv" : "Health certificate",
+            "en" : "Health certificate"
+          }
+        },
+        "description" : {
+          "translations" : {
+            "fi" : "<p>Admitted students to the Nursing program required to provide a health certificate to the Student Health Services, Sarjakatu 2, 65320 Vaasa in connection with the start of the studies.  The health certificate is required for practice placements. Please read more about the requirements at: <a href=\"http://www.novia.fi/degree-students/bachelor-degree-programmes/bachelor-of-health-care-nursing/entrance-requirements-2/\">novia.fi</a></p>",
+            "sv" : "<p>Admitted students to the Nursing program required to provide a health certificate to the Student Health Services, Sarjakatu 2, 65320 Vaasa in connection with the start of the studies.  The health certificate is required for practice placements. Please read more about the requirements at: <a href=\"http://www.novia.fi/degree-students/bachelor-degree-programmes/bachelor-of-health-care-nursing/entrance-requirements-2/\">novia.fi</a></p>",
+            "en" : "<p>Admitted students to the Nursing program required to provide a health certificate to the Student Health Services, Sarjakatu 2, 65320 Vaasa in connection with the start of the studies.  The health certificate is required for practice placements. Please read more about the requirements at: <a href=\"http://www.novia.fi/degree-students/bachelor-degree-programmes/bachelor-of-health-care-nursing/entrance-requirements-2/\">novia.fi</a></p>"
+          }
+        },
+        "deadline" : 1442264440176,
+        "address" : {
+          "recipient" : "Admissions Services",
+          "streetAddress" : "Student Health Services, Sarjakatu 2",
+          "postalCode" : "65320",
+          "postOffice" : "VAASA"
+        }
+      },
+      "receptionStatus" : "NOT_RECEIVED"
+    },
+    {
+      "id" : "cb2b2ef6-4067-4ab8-a1d4-7e8529a7ad3e",
+      "preferenceAoId" : "1.2.246.562.20.27031429205",
+      "processingStatus" : "NOT_CHECKED",
+      "applicationAttachment" : {
+        "name" : {
+          "translations" : {
+            "fi" : "Application Attachments",
+            "sv" : "Application Attachments",
+            "en" : "Application Attachments"
+          }
+        },
+        "description" : {
+          "translations" : {
+            "fi" : "<ul> <li>Senior secondary school certificate</li> <li>English language test, please read more about the requirements at: <a href=\"http://www.novia.fi/degree-students/application/language-tests-3/\">novia.fi</a></li> </ul> <p>Please submit the application attachments to:<br />Novia UAS / Admissions Services<br />PO BOX 6<br />FI-65201 Vaasa<br />FINLAND</p>",
+            "sv" : "<ul> <li>Senior secondary school certificate</li> <li>English language test, please read more about the requirements at: <a href=\"http://www.novia.fi/degree-students/application/language-tests-3/\">novia.fi</a></li> </ul> <p>Please submit the application attachments to:<br />Novia UAS / Admissions Services<br />PO BOX 6<br />FI-65201 Vaasa<br />FINLAND</p>",
+            "en" : "<ul> <li>Senior secondary school certificate</li> <li>English language test, please read more about the requirements at: <a href=\"http://www.novia.fi/degree-students/application/language-tests-3/\">novia.fi</a></li> </ul> <p>Please submit the application attachments to:<br />Novia UAS / Admissions Services<br />PO BOX 6<br />FI-65201 Vaasa<br />FINLAND</p>"
+          }
+        },
+        "deadline" : 1423573200335,
+        "address" : {
+          "recipient" : "Admissions Services",
+          "streetAddress" : "Novia UAS, Admissions Services, PO BOX 6",
+          "postalCode" : "65201",
+          "postOffice" : "VAASA"
+        }
+      },
+      "receptionStatus" : "NOT_RECEIVED"
+    },
+    {
+      "id" : "f1e87761-19fa-41f2-852f-4d4442406b08",
+      "preferenceAoId" : "1.2.246.562.20.92555013215",
+      "processingStatus" : "CHECKED",
+      "applicationAttachment" : {
+        "name" : {
+          "translations" : {
+            "fi" : "JAMK University of Applied Sciences, Social Services and Health Care",
+            "sv" : "JAMK University of Applied Sciences, Social Services and Health Care",
+            "en" : "JAMK University of Applied Sciences, Social Services and Health Care"
+          }
+        },
+        "description" : {
+          "translations" : {
+            "fi" : "Todistuskopio ulkomailla suoritetusta tutkinnosta",
+            "sv" : "Betygskopia av din examen avlagd utomlands",
+            "en" : "Copy of your foreign qualification certificate"
+          }
+        },
+        "address" : {
+          "recipient" : "JAMK University of Applied Sciences, Admission Services",
+          "streetAddress" : "Piippukatu 2\n40100 Jyväskylä\nFinland"
+        }
+      },
+      "receptionStatus" : "ARRIVED"
+    }
+  ],
+  "authorizationMeta" : {
+    "opoAllowed" : false,
+    "aoOrganizations" : {
+      "3" : [
+        "1.2.246.562.10.34676359085",
+        "1.2.246.562.10.36025978549",
+        "1.2.246.562.10.72974448119",
+        "1.2.246.562.10.00000000001"
+      ],
+      "2" : [
+        "1.2.246.562.10.21989237215",
+        "1.2.246.562.10.00000000001",
+        "1.2.246.562.10.27756776996",
+        "1.2.246.562.10.594252633210"
+      ],
+      "1" : [
+        "1.2.246.562.10.57572539237",
+        "1.2.246.562.10.14661553223",
+        "1.2.246.562.10.00000000001",
+        "1.2.246.562.10.38382525541"
+      ],
+      "6" : [
+        "1.2.246.562.10.66542030912",
+        "1.2.246.562.10.18994865832",
+        "1.2.246.562.10.00000000001",
+        "1.2.246.562.10.212457094610"
+      ],
+      "5" : [
+        "1.2.246.562.10.58083501534",
+        "1.2.246.562.10.53170463706",
+        "1.2.246.562.10.00000000001",
+        "1.2.246.562.10.2014032612400514508638"
+      ],
+      "4" : [
+        "1.2.246.562.10.00000000001",
+        "1.2.246.562.10.2013102114310829376114",
+        "1.2.246.562.10.2013102114284069378000",
+        "1.2.246.562.10.2013102114565876612670"
+      ]
+    },
+    "allAoOrganizations" : [
+      "1.2.246.562.10.36025978549",
+      "1.2.246.562.10.18994865832",
+      "1.2.246.562.10.2014032612400514508638",
+      "1.2.246.562.10.27756776996",
+      "1.2.246.562.10.594252633210",
+      "1.2.246.562.10.212457094610",
+      "1.2.246.562.10.2013102114565876612670",
+      "1.2.246.562.10.57572539237",
+      "1.2.246.562.10.34676359085",
+      "1.2.246.562.10.58083501534",
+      "1.2.246.562.10.66542030912",
+      "1.2.246.562.10.14661553223",
+      "1.2.246.562.10.21989237215",
+      "1.2.246.562.10.72974448119",
+      "1.2.246.562.10.53170463706",
+      "1.2.246.562.10.00000000001",
+      "1.2.246.562.10.2013102114310829376114",
+      "1.2.246.562.10.2013102114284069378000",
+      "1.2.246.562.10.38382525541"
+    ],
+    "applicationPreferences" : [
+      {
+        "ordinal" : 1,
+        "preferenceData" : {
+          "Koulutus-id-vocational" : "false",
+          "Koulutus-id-kaksoistutkinto" : "false",
+          "Koulutus-educationDegree" : "koulutusasteoph2002_62",
+          "Koulutus-id-attachmentgroups" : "1.2.246.562.28.24712637358",
+          "Opetuspiste-id" : "1.2.246.562.10.14661553223",
+          "Koulutus-id-educationcode" : "koulutus_671101",
+          "Koulutus" : "Bachelor of Health Care, Degree Programme in Nursing",
+          "Koulutus-id-athlete" : "false",
+          "Opetuspiste" : "JAMK University of Applied Sciences, Social Services and Health Care",
+          "Koulutus-id" : "1.2.246.562.20.92555013215",
+          "Koulutus-id-ao-groups" : "1.2.246.562.28.86635316318,1.2.246.562.28.24712637358",
+          "Koulutus-id-attachments" : "true",
+          "Koulutus-id-lang" : "EN",
+          "Koulutus-id-sora" : "false",
+          "amkLiite" : "true"
+        }
+      },
+      {
+        "ordinal" : 2,
+        "preferenceData" : {
+          "Koulutus-id-vocational" : "false",
+          "Koulutus-id-attachmentgroups" : "1.2.246.562.28.24712637358",
+          "Koulutus-id" : "1.2.246.562.20.91374364379",
+          "Koulutus-id-ao-groups" : "1.2.246.562.28.86635316318,1.2.246.562.28.24712637358",
+          "Opetuspiste" : "Lahti University of Applied Sciences, Faculty of Sosial and Health Care",
+          "Koulutus-id-athlete" : "false",
+          "Koulutus-id-attachments" : "true",
+          "Koulutus-id-sora" : "false",
+          "amkLiite" : "true",
+          "Koulutus-educationDegree" : "koulutusasteoph2002_62",
+          "Koulutus-id-kaksoistutkinto" : "false",
+          "Opetuspiste-id" : "1.2.246.562.10.21989237215",
+          "Koulutus-id-educationcode" : "koulutus_671101",
+          "Koulutus" : "Bacheor's Degree Programme, Nursing, full-time studies",
+          "Koulutus-id-lang" : "EN"
+        }
+      },
+      {
+        "ordinal" : 3,
+        "preferenceData" : {
+          "Koulutus-id-vocational" : "false",
+          "Koulutus-educationDegree" : "koulutusasteoph2002_62",
+          "Koulutus-id-kaksoistutkinto" : "false",
+          "Koulutus-id-attachmentgroups" : "1.2.246.562.28.24712637358",
+          "Opetuspiste-id" : "1.2.246.562.10.72974448119",
+          "Koulutus-id-educationcode" : "koulutus_671101",
+          "Koulutus" : "Bachelor of Health Care, Nursing, full-time studies",
+          "Koulutus-id" : "1.2.246.562.20.40936694286",
+          "Koulutus-id-ao-groups" : "1.2.246.562.28.86635316318,1.2.246.562.28.24530680345,1.2.246.562.28.61806595731,1.2.246.562.28.24712637358",
+          "Opetuspiste" : "Centria University of Applied Sciences",
+          "Koulutus-id-athlete" : "false",
+          "Koulutus-id-sora" : "false",
+          "Koulutus-id-lang" : "EN",
+          "amkLiite" : "true"
+        }
+      },
+      {
+        "ordinal" : 4,
+        "preferenceData" : {
+          "Koulutus-id-vocational" : "false",
+          "Koulutus-id-attachmentgroups" : "1.2.246.562.28.24712637358",
+          "Opetuspiste" : "Lapland University of Applied Sciences, Nursing, Kemi",
+          "Koulutus-id" : "1.2.246.562.20.63351226459",
+          "Koulutus-id-athlete" : "false",
+          "Koulutus-id-ao-groups" : "1.2.246.562.28.86635316318,1.2.246.562.28.24712637358",
+          "Koulutus-id-attachments" : "true",
+          "Koulutus-id-sora" : "false",
+          "amkLiite" : "true",
+          "Koulutus-id-kaksoistutkinto" : "false",
+          "Koulutus-educationDegree" : "koulutusasteoph2002_62",
+          "Opetuspiste-id" : "1.2.246.562.10.2013102114565876612670",
+          "Koulutus-id-educationcode" : "koulutus_671101",
+          "Koulutus" : "Bachelor's Degree Programme, Nursing, Kemi",
+          "Koulutus-id-lang" : "EN"
+        }
+      },
+      {
+        "ordinal" : 5,
+        "preferenceData" : {
+          "Koulutus-id-vocational" : "false",
+          "Koulutus-educationDegree" : "koulutusasteoph2002_62",
+          "Koulutus-id-kaksoistutkinto" : "false",
+          "Koulutus-id-attachmentgroups" : "1.2.246.562.28.24712637358",
+          "Opetuspiste-id" : "1.2.246.562.10.53170463706",
+          "Koulutus-id-educationcode" : "koulutus_671101",
+          "Koulutus" : "Bachelor of Health Care, Nursing",
+          "Koulutus-id" : "1.2.246.562.20.27012653492",
+          "Koulutus-id-athlete" : "false",
+          "Opetuspiste" : "Turku University of Applied Sciences, Salo, Ylhäistentie 2, 24130 Salo, Finland",
+          "Koulutus-id-ao-groups" : "1.2.246.562.28.86635316318,1.2.246.562.28.24712637358,1.2.246.562.28.24530680345,1.2.246.562.28.61806595731",
+          "Koulutus-id-lang" : "EN",
+          "Koulutus-id-sora" : "false",
+          "amkLiite" : "true"
+        }
+      },
+      {
+        "ordinal" : 6,
+        "preferenceData" : {
+          "Koulutus-id-vocational" : "false",
+          "Koulutus-id-attachmentgroups" : "1.2.246.562.28.24712637358",
+          "Koulutus-id-athlete" : "false",
+          "Koulutus-id-ao-groups" : "1.2.246.562.28.86635316318,1.2.246.562.28.52442859893,1.2.246.562.28.43874209561,1.2.246.562.28.24712637358",
+          "Koulutus-id" : "1.2.246.562.20.27031429205",
+          "Opetuspiste" : "Novia University of Applied Sciences, Vaasa, Sarjakatu",
+          "Koulutus-id-attachments" : "true",
+          "Koulutus-id-sora" : "false",
+          "amkLiite" : "true",
+          "Koulutus-educationDegree" : "koulutusasteoph2002_62",
+          "Koulutus-id-kaksoistutkinto" : "false",
+          "Opetuspiste-id" : "1.2.246.562.10.66542030912",
+          "Koulutus-id-educationcode" : "koulutus_671101",
+          "Koulutus" : "Bachelor of Health Care, Nursing, full-time studies",
+          "Koulutus-id-lang" : "EN"
+        }
+      }
+    ]
+  },
+  "fullName" : "heppalahti joel ix",
+  "history" : [
+    {
+      "type" : "Change",
+      "modified" : 1433492903668,
+      "modifier" : "1.2.246.562.24.17885662533",
+      "reason" : "update",
+      "changes" : [
+        {
+          "field" : "fc8d6057-1ee3-b20a-4f17-fb5d803235e7-OSALLISTUMINEN",
+          "new value" : "EI_VAADITA"
+        },
+        {
+          "field" : "fc8d6057-1ee3-b20a-4f17-fb5d803235e7",
+          "new value" : ""
+        }
+      ]
+    },
+    {
+      "type" : "Change",
+      "modified" : 1431562026818,
+      "modifier" : "järjestelmä",
+      "reason" : "Post Processing",
+      "changes" : [
+        {
+          "field" : "preference2-Koulutus",
+          "old value" : "Bacheor's Degree Programme, Nursing, full-time studies",
+          "new value" : "Bachelor's Degree Programme, Nursing, full-time studies"
+        },
+        {
+          "field" : "preference5-Koulutus-id-ao-groups",
+          "old value" : "1.2.246.562.28.86635316318,1.2.246.562.28.24712637358,1.2.246.562.28.24530680345,1.2.246.562.28.61806595731",
+          "new value" : "1.2.246.562.28.24712637358,1.2.246.562.28.86635316318,1.2.246.562.28.61806595731,1.2.246.562.28.24530680345"
+        },
+        {
+          "field" : "preference2-Opetuspiste",
+          "old value" : "Lahti University of Applied Sciences, Faculty of Sosial and Health Care",
+          "new value" : "Lahti University of Applied Sciences, Faculty of Social and Health Care"
+        },
+        {
+          "field" : "preference3-Koulutus-id-ao-groups",
+          "old value" : "1.2.246.562.28.86635316318,1.2.246.562.28.24530680345,1.2.246.562.28.61806595731,1.2.246.562.28.24712637358",
+          "new value" : "1.2.246.562.28.24712637358,1.2.246.562.28.61806595731,1.2.246.562.28.24530680345,1.2.246.562.28.86635316318"
+        },
+        {
+          "field" : "preference1-Koulutus-id-ao-groups",
+          "old value" : "1.2.246.562.28.86635316318,1.2.246.562.28.24712637358",
+          "new value" : "1.2.246.562.28.24712637358,1.2.246.562.28.86635316318"
+        },
+        {
+          "field" : "preference4-Koulutus-id-ao-groups",
+          "old value" : "1.2.246.562.28.86635316318,1.2.246.562.28.24712637358",
+          "new value" : "1.2.246.562.28.24712637358,1.2.246.562.28.86635316318"
+        },
+        {
+          "field" : "preference6-Koulutus-id-ao-groups",
+          "old value" : "1.2.246.562.28.86635316318,1.2.246.562.28.52442859893,1.2.246.562.28.43874209561,1.2.246.562.28.24712637358",
+          "new value" : "1.2.246.562.28.24712637358,1.2.246.562.28.86635316318,1.2.246.562.28.43874209561,1.2.246.562.28.52442859893"
+        }
+      ]
+    }
+  ],
+  "lastAutomatedProcessingTime" : 1431562026818,
+  "meta" : {
+    "filingLanguage" : "en",
+    "sessionId" : "anonymousUser"
+  },
+  "modelVersion" : 7,
+  "notes" : [
+    {
+      "type" : "ApplicationNote",
+      "noteText" : "JAMK/RS koulutodistus ok, toisen asteen tutkinto nursingistä, ei kielitodistusta.",
+      "added" : 1423127545367,
+      "user" : "1.2.246.562.24.67837291054"
+    },
+    {
+      "type" : "ApplicationNote",
+      "noteText" : "Hakemus vastaanotettu",
+      "added" : 1422342864609,
+      "user" : "anonymousUser"
+    }
+  ],
+  "oid" : "1.2.246.562.11.00001544594",
+  "overriddenAnswers" : {
+    "sukupuoli" : "2",
+    "turvakielto" : "(null)",
+    "Sähköposti" : "(null)",
+    "Kutsumanimi" : "Mohammed",
+    "Etunimet" : "Mohammed",
+    "Sukunimi" : "Ghandi",
+    "onkoSinullaSuomalainenHetu" : "false",
+    "Henkilotunnus": "010101-123N",
+    "syntymaaika" : "27.07.1980",
+    "aidinkieli" : "NE"
+  },
+  "personOid" : "1.2.246.562.24.39736979832",
+  "preferenceEligibilities" : [
+    {
+      "aoId" : "1.2.246.562.20.27031429205",
+      "status" : "INELIGIBLE",
+      "source" : "UNKNOWN",
+      "rejectionBasis" : "Applicant has not provided compulsory proof of English language skills. Therefore the application cannot be taken into consideration for admission."
+    },
+    {
+      "aoId" : "1.2.246.562.20.92555013215",
+      "status" : "INELIGIBLE",
+      "source" : "UNKNOWN",
+      "rejectionBasis" : "Applicant has not provided compulsory proof of English language skills."
+    },
+    {
+      "aoId" : "1.2.246.562.20.40936694286",
+      "status" : "INELIGIBLE",
+      "source" : "UNKNOWN",
+      "rejectionBasis" : "Applicant has not provided compulsory proof of English language skills."
+    },
+    {
+      "aoId" : "1.2.246.562.20.91374364379",
+      "status" : "INELIGIBLE",
+      "source" : "UNKNOWN",
+      "rejectionBasis" : "Applicant has not provided compulsory proof of English language skills."
+    },
+    {
+      "aoId" : "1.2.246.562.20.27012653492",
+      "status" : "INELIGIBLE",
+      "source" : "UNKNOWN",
+      "rejectionBasis" : "Applicant has not provided compulsory proof of English language skills."
+    },
+    {
+      "aoId" : "1.2.246.562.20.63351226459",
+      "status" : "INELIGIBLE",
+      "source" : "UNKNOWN",
+      "rejectionBasis" : "Applicant has not provided compulsory proof of English language skills."
+    }
+  ],
+  "preferencesChecked" : [
+    {
+      "preferenceAoOid" : "1.2.246.562.20.27031429205",
+      "checked" : true,
+      "checkedByOfficerOid" : "1.2.246.562.24.63290491754"
+    },
+    {
+      "preferenceAoOid" : "1.2.246.562.20.92555013215",
+      "checked" : false
+    },
+    {
+      "preferenceAoOid" : "1.2.246.562.20.40936694286",
+      "checked" : false
+    },
+    {
+      "preferenceAoOid" : "1.2.246.562.20.91374364379",
+      "checked" : true,
+      "checkedByOfficerOid" : "1.2.246.562.24.63290491754"
+    },
+    {
+      "preferenceAoOid" : "1.2.246.562.20.27012653492",
+      "checked" : false
+    },
+    {
+      "preferenceAoOid" : "1.2.246.562.20.63351226459",
+      "checked" : false
+    }
+  ],
+  "received" : 1422342864609,
+  "redoPostProcess" : "DONE",
+  "searchNames" : [
+    "heppalahti",
+    "joel",
+    "ix"
+  ],
+  "state" : "ACTIVE",
+  "studentOid" : "1.2.246.562.24.39736979832",
+  "updated" : 1435231445561,
+  "version" : 2
+}
