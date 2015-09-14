@@ -743,34 +743,26 @@ public class OfficerUIServiceImpl implements OfficerUIService {
             if (null != dto) {
                 ApplicationAttachmentRequest.ReceptionStatus newReceptionStatus = ApplicationAttachmentRequest.ReceptionStatus.valueOf(dto.getReceptionStatus());
                 if (newReceptionStatus != attachment.getReceptionStatus()) {
-                    LogMessage.LogMessageBuilder msgBuilder = builder()
+                    AUDIT.log(builder()
                             .setOperaatio(HakuOperation.UPDATE_ATTACHMENT_RECEPTION_STATUS)
                             .hakuOid(application.getApplicationSystemId())
+                            .hakukohdeOid(attachment.getPreferenceAoId())
+                            .hakukohderyhmaOid(attachment.getPreferenceAoGroupId())
                             .hakemusOid(application.getOid())
-                            .add("receptionStatus", newReceptionStatus, attachment.getReceptionStatus());
-                    if (null != attachment.getPreferenceAoId()) {
-                        msgBuilder.hakukohdeOid(attachment.getPreferenceAoId());
-                    }
-                    if (null != attachment.getPreferenceAoGroupId()) {
-                        msgBuilder.hakukohderyhmaOid(attachment.getPreferenceAoGroupId());
-                    }
-                    AUDIT.log(msgBuilder.build());
+                            .add("receptionStatus", newReceptionStatus, attachment.getReceptionStatus())
+                            .build());
                     attachment.setReceptionStatus(newReceptionStatus);
                 }
                 ApplicationAttachmentRequest.ProcessingStatus newProcessingStatus = ApplicationAttachmentRequest.ProcessingStatus.valueOf(dto.getProcessingStatus());
                 if (newProcessingStatus != attachment.getProcessingStatus()) {
-                    LogMessage.LogMessageBuilder msgBuilder = builder()
+                    AUDIT.log(builder()
                             .setOperaatio(HakuOperation.UPDATE_ATTACHMENT_PROCESSING_STATUS)
                             .hakuOid(application.getApplicationSystemId())
+                            .hakukohdeOid(attachment.getPreferenceAoId())
+                            .hakukohderyhmaOid(attachment.getPreferenceAoGroupId())
                             .hakemusOid(application.getOid())
-                            .add("processingStatus", newProcessingStatus, attachment.getProcessingStatus());
-                    if (null != attachment.getPreferenceAoId()) {
-                        msgBuilder.hakukohdeOid(attachment.getPreferenceAoId());
-                    }
-                    if (null != attachment.getPreferenceAoGroupId()) {
-                        msgBuilder.hakukohderyhmaOid(attachment.getPreferenceAoGroupId());
-                    }
-                    AUDIT.log(msgBuilder.build());
+                            .add("processingStatus", newProcessingStatus, attachment.getProcessingStatus())
+                            .build());
                     attachment.setProcessingStatus(newProcessingStatus);
                 }
             }
