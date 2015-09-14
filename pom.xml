@@ -47,7 +47,7 @@
         <organisaatio-api.version>2015-04</organisaatio-api.version>
         <tarjonta-api.version>2015-17-SNAPSHOT</tarjonta-api.version>
         <viestintapalvelu.version>9.8</viestintapalvelu.version>
-        <auditlog.api.version>2.0.0-SNAPSHOT</auditlog.api.version>
+        <auditlog.api.version>3.0.0-SNAPSHOT</auditlog.api.version>
     </properties>
 
     <repositories>

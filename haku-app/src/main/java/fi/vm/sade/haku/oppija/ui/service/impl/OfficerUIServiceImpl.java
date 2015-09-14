@@ -43,8 +43,6 @@ import fi.vm.sade.haku.virkailija.valinta.ValintaService;
 import fi.vm.sade.haku.virkailija.valinta.dto.*;
 import fi.vm.sade.organisaatio.api.model.types.OrganisaatioTyyppi;
 import fi.vm.sade.organisaatio.api.search.OrganisaatioSearchCriteria;
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.Predicate;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -710,81 +708,121 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     public void processAttachmentsAndEligibility(String oid, List<AttachmentsAndEligibilityDTO> attachementsAndEligibilities) {
         LOGGER.debug("Got attachementsAndEligibilities " + StringUtils.join(attachementsAndEligibilities, ","));
         final Application application = applicationService.getApplicationByOid(oid);
-        final HashMap<String, AttachmentDTO> attachmentDTOs = new HashMap<String, AttachmentDTO>();
-        for (AttachmentsAndEligibilityDTO dto : attachementsAndEligibilities){
-            PreferencePredicate predicate = new PreferencePredicate(dto.getAoId());
-            PreferenceEligibility preferenceEligibility = (PreferenceEligibility) CollectionUtils.find(application.getPreferenceEligibilities(), predicate);
-            if (null == preferenceEligibility) {
-                LOGGER.error("No preference found with " + dto.getAoId() + " for application " + oid);
-                throw new IncoherentDataException("No preference found with " + dto.getAoId() + " for application " + oid);
+        final Map<String, PreferenceEligibility> preferenceEligibilities = new HashMap<>();
+        final Map<String, PreferenceChecked> preferenceCheckeds = new HashMap<>();
+        final Map<String, ApplicationAttachmentRequest> attachmentRequests = new HashMap<>();
+        for (PreferenceEligibility e : application.getPreferenceEligibilities()) {
+            preferenceEligibilities.put(e.getAoId(), e);
+        }
+        for (PreferenceChecked e : application.getPreferencesChecked()) {
+            preferenceCheckeds.put(e.getPreferenceAoOid(), e);
+        }
+        for (ApplicationAttachmentRequest e : application.getAttachmentRequests()) {
+            attachmentRequests.put(e.getId(), e);
+        }
+        for (AttachmentsAndEligibilityDTO dto : attachementsAndEligibilities) {
+            PreferenceEligibility preferenceEligibility = preferenceEligibilities.get(dto.getAoId());
+            PreferenceChecked preferenceChecked = preferenceCheckeds.get(dto.getAoId());
+            if (null == preferenceEligibility || null == preferenceChecked) {
+                String msg = "No preference found with " + dto.getAoId() + " for application " + oid;
+                LOGGER.error(msg);
+                throw new IncoherentDataException(msg);
             }
-            preferenceEligibility.setStatus(PreferenceEligibility.Status.valueOf(dto.getStatus()));
-            preferenceEligibility.setSource(PreferenceEligibility.Source.valueOf(dto.getSource()));
-            preferenceEligibility.setRejectionBasis(dto.getRejectionBasis());
-
-            PreferenceChecked preferenceChecked = (PreferenceChecked) CollectionUtils.find(application.getPreferencesChecked(), predicate);
-            preferenceChecked.setChecked(dto.getPreferencesChecked());
-            if (dto.getPreferencesChecked()){
-                preferenceChecked.setCheckedByOfficerOid(userSession.getUser().getUserName());
-            }
-            for (AttachmentDTO attachmentDTO : dto.getAttachments()){
-                AttachmentDTO old = attachmentDTOs.put(attachmentDTO.getId(), attachmentDTO);
-                if (null != old){
-                    LOGGER.debug("Got duplicates old: {}, new {}", old, attachmentDTO);
-                    if (!old.equals(attachmentDTO)){
-                        LOGGER.error("Duplicates do not match old: {}, new {}", old, attachmentDTO);
-                        throw new IncoherentDataException("Multiple values for attachment proceesing with mismatching data");
-                    }
+            updateEligibilityStatus(application, dto, preferenceEligibility, preferenceChecked, userSession.getUser().getUserName());
+            for (AttachmentDTO attachmentDTO : dto.getAttachments()) {
+                checkDuplicateAttachmentDTO(attachmentDTO, dto.getAttachments());
+                ApplicationAttachmentRequest attachment = attachmentRequests.get(attachmentDTO.getId());
+                if (null == attachment) {
+                    String msg = "No attachment request " + attachmentDTO.getId() + " found in application " + oid;
+                    LOGGER.error(msg);
+                    throw new IncoherentDataException(msg);
                 }
+                updateAttachmentRequestStatus(application, attachmentDTO, attachment);
             }
         }
-        for (ApplicationAttachmentRequest attachment : application.getAttachmentRequests()){
-            AttachmentDTO dto = attachmentDTOs.get(attachment.getId());
-            if (null != dto) {
-                ApplicationAttachmentRequest.ReceptionStatus newReceptionStatus = ApplicationAttachmentRequest.ReceptionStatus.valueOf(dto.getReceptionStatus());
-                if (newReceptionStatus != attachment.getReceptionStatus()) {
-                    AUDIT.log(builder()
-                            .setOperaatio(HakuOperation.UPDATE_ATTACHMENT_RECEPTION_STATUS)
-                            .hakuOid(application.getApplicationSystemId())
-                            .hakukohdeOid(attachment.getPreferenceAoId())
-                            .hakukohderyhmaOid(attachment.getPreferenceAoGroupId())
-                            .hakemusOid(application.getOid())
-                            .add("receptionStatus", newReceptionStatus, attachment.getReceptionStatus())
-                            .build());
-                    attachment.setReceptionStatus(newReceptionStatus);
-                }
-                ApplicationAttachmentRequest.ProcessingStatus newProcessingStatus = ApplicationAttachmentRequest.ProcessingStatus.valueOf(dto.getProcessingStatus());
-                if (newProcessingStatus != attachment.getProcessingStatus()) {
-                    AUDIT.log(builder()
-                            .setOperaatio(HakuOperation.UPDATE_ATTACHMENT_PROCESSING_STATUS)
-                            .hakuOid(application.getApplicationSystemId())
-                            .hakukohdeOid(attachment.getPreferenceAoId())
-                            .hakukohderyhmaOid(attachment.getPreferenceAoGroupId())
-                            .hakemusOid(application.getOid())
-                            .add("processingStatus", newProcessingStatus, attachment.getProcessingStatus())
-                            .build());
-                    attachment.setProcessingStatus(newProcessingStatus);
-                }
-            }
-        }
-
         applicationService.update(new Application(oid), application);
     }
 
-    private class PreferencePredicate implements Predicate {
-        private final  String preferenceAoId;
-
-        private PreferencePredicate(String preferenceAoId) {
-            this.preferenceAoId = preferenceAoId;
+    private static void checkDuplicateAttachmentDTO(AttachmentDTO attachmentDTO, List<AttachmentDTO> allAttachmentDTOs) {
+        for (AttachmentDTO old : allAttachmentDTOs) {
+            if (attachmentDTO.getId().equals(old.getId()) && !attachmentDTO.equals(old)) {
+                String msg = "Duplicate attachment requests with non matching data. " + old + ", " + attachmentDTO;
+                LOGGER.error(msg);
+                throw new IncoherentDataException(msg);
+            }
         }
+    }
 
-        @Override
-        public boolean evaluate(Object object) {
-            if (object instanceof PreferenceEligibility)
-                return preferenceAoId.equals(((PreferenceEligibility) object).getAoId());
-            if (object instanceof PreferenceChecked)
-                return preferenceAoId.equals(((PreferenceChecked) object).getPreferenceAoOid());
-            return false;
+    private static LogMessage.LogMessageBuilder eligibilityAuditLogBuilder(Application application, AttachmentsAndEligibilityDTO dto) {
+        return builder()
+                .setOperaatio(HakuOperation.UPDATE_ELIGIBILITY)
+                .hakuOid(application.getApplicationSystemId())
+                .hakukohdeOid(dto.getAoId())
+                .hakemusOid(application.getOid());
+    }
+
+    private static void updateEligibilityStatus(Application application,
+                                                AttachmentsAndEligibilityDTO dto,
+                                                PreferenceEligibility preferenceEligibility,
+                                                PreferenceChecked preferenceChecked,
+                                                String officerOid) {
+        PreferenceEligibility.Status newStatus = PreferenceEligibility.Status.valueOf(dto.getStatus());
+        PreferenceEligibility.Source newSource = PreferenceEligibility.Source.valueOf(dto.getSource());
+        String newRejectionBasis = dto.getRejectionBasis();
+        Boolean newChecked = dto.getPreferencesChecked();
+        if (newStatus != preferenceEligibility.getStatus()) {
+            AUDIT.log(eligibilityAuditLogBuilder(application, dto)
+                    .add("status", newStatus, preferenceEligibility.getStatus())
+                    .build());
+            preferenceEligibility.setStatus(newStatus);
+        }
+        if (newSource != preferenceEligibility.getSource()) {
+            AUDIT.log(eligibilityAuditLogBuilder(application, dto)
+                    .add("source", newSource, preferenceEligibility.getSource())
+                    .build());
+            preferenceEligibility.setSource(newSource);
+        }
+        if (!newRejectionBasis.equals(preferenceEligibility.getRejectionBasis())) {
+            AUDIT.log(eligibilityAuditLogBuilder(application, dto)
+                    .add("rejectionBasis", newRejectionBasis, preferenceEligibility.getRejectionBasis())
+                    .build());
+            preferenceEligibility.setRejectionBasis(newRejectionBasis);
+        }
+        if (!newChecked.equals(preferenceChecked.isChecked())) {
+            AUDIT.log(eligibilityAuditLogBuilder(application, dto)
+                    .add("checked", newChecked, preferenceChecked.getChecked())
+                    .build());
+            preferenceChecked.setChecked(newChecked);
+            if (newChecked) {
+                preferenceChecked.setCheckedByOfficerOid(officerOid);
+            }
+        }
+    }
+
+    private static void updateAttachmentRequestStatus(Application application, AttachmentDTO attachmentDTO, ApplicationAttachmentRequest attachment) {
+        ApplicationAttachmentRequest.ReceptionStatus newReceptionStatus = ApplicationAttachmentRequest.ReceptionStatus.valueOf(attachmentDTO.getReceptionStatus());
+        if (newReceptionStatus != attachment.getReceptionStatus()) {
+            AUDIT.log(builder()
+                    .setOperaatio(HakuOperation.UPDATE_ATTACHMENT_RECEPTION_STATUS)
+                    .hakuOid(application.getApplicationSystemId())
+                    .hakukohdeOid(attachment.getPreferenceAoId())
+                    .hakukohderyhmaOid(attachment.getPreferenceAoGroupId())
+                    .hakemusOid(application.getOid())
+                    .add("receptionStatus", newReceptionStatus, attachment.getReceptionStatus())
+                    .build());
+            attachment.setReceptionStatus(newReceptionStatus);
+        }
+        ApplicationAttachmentRequest.ProcessingStatus newProcessingStatus = ApplicationAttachmentRequest.ProcessingStatus.valueOf(attachmentDTO.getProcessingStatus());
+        if (newProcessingStatus != attachment.getProcessingStatus()) {
+            AUDIT.log(builder()
+                    .setOperaatio(HakuOperation.UPDATE_ATTACHMENT_PROCESSING_STATUS)
+                    .hakuOid(application.getApplicationSystemId())
+                    .hakukohdeOid(attachment.getPreferenceAoId())
+                    .hakukohderyhmaOid(attachment.getPreferenceAoGroupId())
+                    .hakemusOid(application.getOid())
+                    .add("processingStatus", newProcessingStatus, attachment.getProcessingStatus())
+                    .build());
+            attachment.setProcessingStatus(newProcessingStatus);
         }
     }
 }
