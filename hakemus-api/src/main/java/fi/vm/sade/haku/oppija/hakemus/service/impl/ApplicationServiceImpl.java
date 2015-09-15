@@ -36,6 +36,7 @@ import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.haku.oppija.hakemus.service.HakuPermissionService;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationState;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
+import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.User;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
@@ -50,6 +51,7 @@ import fi.vm.sade.haku.oppija.lomake.validation.ElementTreeValidator;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationInput;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationResult;
 import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.I18nBundle;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.i18n.I18nBundleService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakuService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
@@ -453,7 +455,9 @@ public class ApplicationServiceImpl implements ApplicationService {
                         note += orig.getApplicationAttachment().getName().getText("fi");
                     }
                     application.addNote(new ApplicationNote(note, new Date(), userSession.getUser().getUserName()));
-                    resp.setAttachmentRequestLost(true);
+
+                    ValidationResult vr = new ValidationResult("liitetiedot.status.poistettu", this.i18nBundleService.getBundle(applicationSystem).get("liitetiedot.status.poistettu"));
+                    resp.setValidationResult(vr);
                 }
             }
         }

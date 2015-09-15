@@ -54,6 +54,10 @@ public class ValidationResult {
         return !errors.isEmpty();
     }
 
+    public void addValidationResult(ValidationResult validationResult) {
+        this.errors.putAll(validationResult.getErrorMessages());
+    }
+
     public Map<String, I18nText> getErrorMessages() {
         return Collections.unmodifiableMap(this.errors);
     }

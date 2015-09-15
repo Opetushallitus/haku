@@ -17,6 +17,7 @@
 package fi.vm.sade.haku.oppija.hakemus.domain.dto;
 
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
+import fi.vm.sade.haku.oppija.lomake.validation.ValidationResult;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.codehaus.jackson.annotate.JsonCreator;
 import org.codehaus.jackson.annotate.JsonProperty;
@@ -28,7 +29,7 @@ import java.util.List;
 public class UpdatePreferenceResult implements Serializable {
 
     private Application application;
-    private boolean attachmentRequestLost;
+    private ValidationResult validationResult;
 
     public UpdatePreferenceResult(Application application) {
         this.application = application;
@@ -38,12 +39,12 @@ public class UpdatePreferenceResult implements Serializable {
         return application;
     }
 
-    public void setAttachmentRequestLost(boolean attachmentRequestLost) {
-        this.attachmentRequestLost = attachmentRequestLost;
+    public ValidationResult getValidationResult() {
+        return validationResult;
     }
 
-    public boolean isAttachmentRequestLost() {
-        return attachmentRequestLost;
+    public void setValidationResult(ValidationResult validationResult) {
+        this.validationResult = validationResult;
     }
 
 
