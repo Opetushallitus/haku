@@ -323,7 +323,7 @@ public class XlsModel {
             );
             for (ApplicationAttachmentRequest request : requests) {
                 if (this.ao.getId().equals(request.getPreferenceAoId())
-                        || this.ao.groupsContainsOid(request.getPreferenceAoId())) {
+                        || this.ao.groupsContainsOid(request.getPreferenceAoGroupId())) {
                     filteredRequests.add(request);
                 }
             }
