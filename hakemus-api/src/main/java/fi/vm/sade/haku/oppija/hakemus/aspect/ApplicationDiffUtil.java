@@ -41,15 +41,7 @@ public final class ApplicationDiffUtil {
         return changes;
     }
 
-    public static List<Map<String, String>> oldAndNewAnswersToListOfChanges(final Map<String, String> oldAnswers, final Map<String, String> newAnswers, String... skipKeys) {
-
-        if (skipKeys != null) {
-            for (String key : skipKeys) {
-                oldAnswers.remove(key);
-                newAnswers.remove(key);
-            }
-        }
-
+    public static List<Map<String, String>> oldAndNewAnswersToListOfChanges(final Map<String, String> oldAnswers, final Map<String, String> newAnswers) {
         MapDifference<String, String> diffAnswers = Maps.difference(oldAnswers, newAnswers);
 
         ArrayList<Map<String, String>> changes = new ArrayList<Map<String, String>>();
