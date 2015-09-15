@@ -36,6 +36,7 @@ var preferenceRow = {
             vocational: sortabletable_settings.vocational,
             start: 0,
             rows: 999999,
+            ongoing: true,
             lang: sortabletable_settings.uiLang
         };
         if (sortabletable_settings.baseEducation) {
