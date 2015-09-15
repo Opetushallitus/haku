@@ -452,7 +452,14 @@ public class ApplicationServiceImpl implements ApplicationService {
                     note += " Kuvaus: ";
 
                     if(orig.getApplicationAttachment() != null && orig.getApplicationAttachment().getName() != null) {
-                        note += orig.getApplicationAttachment().getName().getText("fi");
+                        I18nText nameText = orig.getApplicationAttachment().getName();
+                        if(nameText.getTranslations().containsKey("fi")) {
+                            note += nameText.getText("fi");
+                        } else if(nameText.getTranslations().containsKey("sv")) {
+                            note += nameText.getText("sv");
+                        } else if(nameText.getTranslations().containsKey("en")) {
+                            note += nameText.getText("en");
+                        }
                     }
                     application.addNote(new ApplicationNote(note, new Date(), userSession.getUser().getUserName()));
 
