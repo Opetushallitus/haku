@@ -640,6 +640,14 @@ public class Application implements Serializable {
         return newMap;
     }
 
+    public List<ApplicationAttachmentRequest> cloneAttachmentRequests() {
+        List<ApplicationAttachmentRequest> list = new ArrayList<ApplicationAttachmentRequest>();
+        for(ApplicationAttachmentRequest req : this.attachmentRequests) {
+            list.add(req.clone());
+        }
+        return list;
+    }
+
     @Override
     public String toString() {
         return ReflectionToStringBuilder.toString(this, null, true);

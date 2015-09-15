@@ -54,10 +54,30 @@ public class Address implements Serializable {
             return false;
         }
         Address other = (Address)object;
-        return StringUtils.equals(this.recipient, other.recipient)
-                && StringUtils.equals(this.streetAddress, other.streetAddress)
-                && StringUtils.equals(this.streetAddress2, other.streetAddress2)
-                && StringUtils.equals(this.postalCode, other.postalCode)
-                && StringUtils.equals(this.postOffice, other.postOffice);
+        return addrEquals(this.recipient, other.recipient)
+                && addrEquals(this.streetAddress, other.streetAddress)
+                && addrEquals(this.streetAddress2, other.streetAddress2)
+                && addrEquals(this.postalCode, other.postalCode)
+                && addrEquals(this.postOffice, other.postOffice);
     }
+
+    /**
+     * Returns are two address equal, with support for ""==null
+     */
+    private boolean addrEquals(String addr1, String addr2) {
+        if("".equals(addr1)) {
+            addr1 = null;
+        }
+        if("".equals(addr2)) {
+            addr2 = null;
+        }
+        return StringUtils.equals(addr1,addr2);
+    }
+
+    @Override
+    public Address clone() {
+        return new Address(recipient,streetAddress,streetAddress2,postalCode,postOffice);
+    }
+
+
 }

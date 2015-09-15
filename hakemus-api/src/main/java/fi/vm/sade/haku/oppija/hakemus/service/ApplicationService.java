@@ -20,6 +20,7 @@ import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationAdditionalDataDTO;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
+import fi.vm.sade.haku.oppija.hakemus.domain.dto.UpdatePreferenceResult;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationQueryParameters;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationState;
 
@@ -111,7 +112,7 @@ public interface ApplicationService {
 
     Application updateAutomaticEligibilities(Application application);
 
-    Application updatePreferenceBasedData(final Application application);
+    UpdatePreferenceResult updatePreferenceBasedData(final Application application);
 
     Application removeOrphanedAnswers(Application application);
 

@@ -24,6 +24,7 @@ import fi.vm.sade.haku.oppija.hakemus.aspect.ApplicationDiffUtil;
 import fi.vm.sade.haku.oppija.hakemus.domain.*;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationAdditionalDataDTO;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
+import fi.vm.sade.haku.oppija.hakemus.domain.dto.UpdatePreferenceResult;
 import fi.vm.sade.haku.oppija.hakemus.domain.util.ApplicationUtil;
 import fi.vm.sade.haku.oppija.hakemus.domain.util.AttachmentUtil;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationDAO;
@@ -35,6 +36,7 @@ import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.haku.oppija.hakemus.service.HakuPermissionService;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationState;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
+import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.User;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
@@ -49,6 +51,7 @@ import fi.vm.sade.haku.oppija.lomake.validation.ElementTreeValidator;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationInput;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationResult;
 import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.I18nBundle;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.i18n.I18nBundleService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakuService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
@@ -211,7 +214,7 @@ public class ApplicationServiceImpl implements ApplicationService {
             application.addMeta(Application.META_FILING_LANGUAGE, language);
             application.setModelVersion(Application.CURRENT_MODEL_VERSION);
 
-            application = updatePreferenceBasedData(application);
+            application = updatePreferenceBasedData(application).getApplication();
             this.applicationDAO.save(application);
             this.userSession.removeApplication(application);
             return application;
@@ -409,7 +412,9 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public Application updatePreferenceBasedData(final Application application) {
+    public UpdatePreferenceResult updatePreferenceBasedData(final Application application) {
+        List<ApplicationAttachmentRequest> appReqOrig = application.cloneAttachmentRequests();
+
         List<String> preferenceAoIds = ApplicationUtil.getPreferenceAoIds(application);
 
         application.setPreferenceEligibilities(ApplicationUtil.checkAndCreatePreferenceEligibilities(
@@ -421,7 +426,51 @@ public class ApplicationServiceImpl implements ApplicationService {
         application.setAttachmentRequests(AttachmentUtil.resolveAttachmentRequests(applicationSystem, application,
                 koulutusinformaatioService, i18nBundleService.getBundle(applicationSystem)));
 
-        return application;
+        UpdatePreferenceResult resp = new UpdatePreferenceResult(application);
+
+        for(ApplicationAttachmentRequest orig: appReqOrig) {
+            if(ApplicationAttachmentRequest.ReceptionStatus.ARRIVED.equals(orig.getReceptionStatus()) ||
+                    ApplicationAttachmentRequest.ReceptionStatus.ARRIVED_LATE.equals(orig.getReceptionStatus())) {
+                boolean foundMatch = false;
+                for(ApplicationAttachmentRequest newReq : application.getAttachmentRequests()) {
+                    if(orig.equals(newReq)) {
+                        foundMatch = true;
+                        newReq.setReceptionStatus(orig.getReceptionStatus());
+                        newReq.setProcessingStatus(orig.getProcessingStatus());
+                        break;
+                    }
+                }
+                if(foundMatch == false) {
+                    String note = "Liitteen saapumistieto ei kohdistunut.";
+                    note +=" Saapunut: " + (ApplicationAttachmentRequest.ReceptionStatus.ARRIVED.equals(orig.getReceptionStatus())?"Kyllä.":"Myöhässä.");
+                    if(orig.getPreferenceAoId() != null) {
+                        note += " Hakukohde: " + orig.getPreferenceAoId() + ".";
+                    }
+                    if(orig.getPreferenceAoGroupId() != null) {
+                        note += " Hakuryhmä: " + orig.getPreferenceAoGroupId() + ".";
+                    }
+                    note += " Kuvaus: ";
+
+                    if(orig.getApplicationAttachment() != null && orig.getApplicationAttachment().getName() != null) {
+                        I18nText nameText = orig.getApplicationAttachment().getName();
+                        if(nameText.getTranslations().containsKey("fi")) {
+                            note += nameText.getText("fi");
+                        } else if(nameText.getTranslations().containsKey("sv")) {
+                            note += nameText.getText("sv");
+                        } else if(nameText.getTranslations().containsKey("en")) {
+                            note += nameText.getText("en");
+                        }
+                    }
+                    application.addNote(new ApplicationNote(note, new Date(), userSession.getUser().getUserName()));
+
+                    ValidationResult vr = new ValidationResult("liitetiedot.status.poistettu", this.i18nBundleService.getBundle(applicationSystem).get("liitetiedot.status.poistettu"));
+                    resp.setValidationResult(vr);
+                }
+            }
+        }
+
+        return resp;
+
     }
 
     @Override
