@@ -23,7 +23,7 @@ Here's a list of profiles we use:
 
 - `default` is the default profile, that is the profile used in the test and production environments. Uses properties files found in ~/oph-configuration
 - `dev` uses local mongo database in port 27017 and mocked external dependencies
-- `devLuokka` uses local mongo database and real external dependencies.Depends on property files in `~/oph-configuration`. See below for
+- `devluokka` uses local mongo database and real external dependencies.Depends on property files in `~/oph-configuration`. See below for
 - `it` starts an embedded Mongo server. This profile is used in the integration tests.
 
 When running with Maven, you can use Maven profiles to select the Spring profile.
@@ -60,6 +60,10 @@ use Spring profile `devluokka`. See instructions below.
     mongodb.oppija.uri=mongodb://localhost:27107
     koulutusinformaatio.ao.resource.url=https\://${host.haku}/ao
     mongodb.url=mongodb://localhost:27017/${mongo.db.name}
+
+    Note: the koulutusinformaatio base url may need also "https" at start, otherwise ajax ui load will fail on local machine when editing preferences.
+    koulutusinformaatio.base.url=https://itest-oppija.oph.ware.fi
+
 
 then you can start the server with local settings by
 

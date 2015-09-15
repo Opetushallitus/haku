@@ -10,6 +10,7 @@ import fi.vm.sade.haku.oppija.hakemus.aspect.LoggerAspect;
 import fi.vm.sade.haku.oppija.hakemus.domain.*;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationOptionDTO;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.Pistetieto;
+import fi.vm.sade.haku.oppija.hakemus.domain.dto.UpdatePreferenceResult;
 import fi.vm.sade.haku.oppija.hakemus.domain.util.AttachmentUtil;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.haku.oppija.hakemus.service.HakuPermissionService;
@@ -396,7 +397,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
 
         String noteText = "Päivitetty vaihetta '" + applicationPhase.getPhaseId() + "'";
         application.addNote(createNote(noteText));
-        this.applicationService.updatePreferenceBasedData(application);
+        UpdatePreferenceResult prefRes = this.applicationService.updatePreferenceBasedData(application);
         this.applicationService.updateAuthorizationMeta(application);
         this.applicationService.update(queryApplication, application, true);
         application.setPhaseId(applicationPhase.getPhaseId());

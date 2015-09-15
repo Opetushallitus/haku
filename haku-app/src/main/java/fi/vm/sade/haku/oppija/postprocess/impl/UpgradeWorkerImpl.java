@@ -114,7 +114,7 @@ public class UpgradeWorkerImpl implements UpgradeWorker{
                     }
                     if (null == application.getPreferenceEligibilities() || 0 == application.getPreferenceEligibilities().size() ||
                       null == application.getPreferencesChecked() || 0 == application.getPreferencesChecked().size()){
-                        application = applicationService.updatePreferenceBasedData(application);
+                        application = applicationService.updatePreferenceBasedData(application).getApplication();
                     }
                     application.setModelVersion(targetVersion);
                     LOGGER.info("Done upgrading model version for application: " + application.getOid());

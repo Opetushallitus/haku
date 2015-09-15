@@ -24,6 +24,7 @@ import fi.vm.sade.haku.oppija.hakemus.aspect.ApplicationDiffUtil;
 import fi.vm.sade.haku.oppija.hakemus.domain.*;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationAdditionalDataDTO;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
+import fi.vm.sade.haku.oppija.hakemus.domain.dto.UpdatePreferenceResult;
 import fi.vm.sade.haku.oppija.hakemus.domain.util.ApplicationUtil;
 import fi.vm.sade.haku.oppija.hakemus.domain.util.AttachmentUtil;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationDAO;
@@ -211,7 +212,7 @@ public class ApplicationServiceImpl implements ApplicationService {
             application.addMeta(Application.META_FILING_LANGUAGE, language);
             application.setModelVersion(Application.CURRENT_MODEL_VERSION);
 
-            application = updatePreferenceBasedData(application);
+            application = updatePreferenceBasedData(application).getApplication();
             this.applicationDAO.save(application);
             this.userSession.removeApplication(application);
             return application;
@@ -409,7 +410,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public Application updatePreferenceBasedData(final Application application) {
+    public UpdatePreferenceResult updatePreferenceBasedData(final Application application) {
         List<ApplicationAttachmentRequest> appReqOrig = application.cloneAttachmentRequests();
 
         List<String> preferenceAoIds = ApplicationUtil.getPreferenceAoIds(application);
@@ -422,6 +423,8 @@ public class ApplicationServiceImpl implements ApplicationService {
         ApplicationSystem applicationSystem = applicationSystemService.getApplicationSystem(application.getApplicationSystemId());
         application.setAttachmentRequests(AttachmentUtil.resolveAttachmentRequests(applicationSystem, application,
                 koulutusinformaatioService, i18nBundleService.getBundle(applicationSystem)));
+
+        UpdatePreferenceResult resp = new UpdatePreferenceResult(application);
 
         for(ApplicationAttachmentRequest orig: appReqOrig) {
             if(ApplicationAttachmentRequest.ReceptionStatus.ARRIVED.equals(orig.getReceptionStatus()) ||
@@ -436,12 +439,27 @@ public class ApplicationServiceImpl implements ApplicationService {
                     }
                 }
                 if(foundMatch == false) {
-                    // TODO log warning for loosing attachmentrequest receptionstatus
+                    String note = "Liitteen saapumistieto ei kohdistunut.";
+                    note +=" Saapunut: " + (ApplicationAttachmentRequest.ReceptionStatus.ARRIVED.equals(orig.getReceptionStatus())?"Kyllä.":"Myöhässä.");
+                    if(orig.getPreferenceAoId() != null) {
+                        note += " Hakukohde: " + orig.getPreferenceAoId() + ".";
+                    }
+                    if(orig.getPreferenceAoGroupId() != null) {
+                        note += " Hakuryhmä: " + orig.getPreferenceAoGroupId() + ".";
+                    }
+                    note += " Kuvaus: ";
+
+                    if(orig.getApplicationAttachment() != null && orig.getApplicationAttachment().getName() != null) {
+                        note += orig.getApplicationAttachment().getName().getText("fi");
+                    }
+                    application.addNote(new ApplicationNote(note, new Date(), userSession.getUser().getUserName()));
+                    resp.setAttachmentRequestLost(true);
                 }
             }
         }
 
-        return application;
+        return resp;
+
     }
 
     @Override
