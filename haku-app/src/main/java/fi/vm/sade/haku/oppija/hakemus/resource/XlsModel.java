@@ -322,7 +322,8 @@ public class XlsModel {
                     TypeFactory.defaultInstance().constructCollectionType(List.class, ApplicationAttachmentRequest.class)
             );
             for (ApplicationAttachmentRequest request : requests) {
-                if (this.ao.getId().equals(request.getPreferenceAoId())) {
+                if (this.ao.getId().equals(request.getPreferenceAoId())
+                        || this.ao.groupsContainsOid(request.getPreferenceAoId())) {
                     filteredRequests.add(request);
                 }
             }
@@ -370,7 +371,7 @@ public class XlsModel {
                         id,
                         TextQuestion(id).i18nText(
                                 getPrefixedText(
-                                        request.getApplicationAttachment().getDescription(),
+                                        request.getApplicationAttachment().getName(),
                                         i18nBundle.get("liite_column_prefix"),
                                         number
                                 )

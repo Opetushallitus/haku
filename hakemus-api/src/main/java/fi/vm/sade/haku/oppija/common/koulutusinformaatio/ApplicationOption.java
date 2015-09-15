@@ -156,4 +156,17 @@ public class ApplicationOption {
     public List<ApplicationOptionGroup> getGroups() {
         return groups;
     }
+
+    public boolean groupsContainsOid(String oid) {
+        if (this.getGroups() == null || oid == null) {
+            return false;
+        }
+        for (ApplicationOptionGroup group : this.getGroups()) {
+            if (oid.equals(group.oid)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }
