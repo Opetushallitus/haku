@@ -18,6 +18,7 @@ package fi.vm.sade.haku.oppija.hakemus.aspect;
 
 
 import com.google.common.collect.MapDifference;
+import com.google.common.collect.Maps;
 import fi.vm.sade.haku.oppija.common.diff.AnswersDifference;
 import fi.vm.sade.haku.oppija.common.diff.Difference;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
@@ -106,7 +107,7 @@ public class LoggerAspect {
 
         Tapahtuma tapahtuma = null;
         try {
-            MapDifference<String, String> diffAnswers = ApplicationDiffUtil.diffAnswers(application, applicationPhase);
+            MapDifference<String, String> diffAnswers = Maps.difference(application.getPhaseAnswers(applicationPhase.getPhaseId()), applicationPhase.getAnswers());
             AnswersDifference answersDifference = new AnswersDifference(diffAnswers);
             List<Difference> differences = answersDifference.getDifferences();
 
