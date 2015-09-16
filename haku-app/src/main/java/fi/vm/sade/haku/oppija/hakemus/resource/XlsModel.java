@@ -358,7 +358,11 @@ public class XlsModel {
             List<ApplicationAttachmentRequest> requests = getAttachmentRequests(application);
 
             for (ApplicationAttachmentRequest request : requests) {
-                String id = request.getApplicationAttachment().getDescription().toString();
+
+                if(request == null || request.getApplicationAttachment() == null || request.getApplicationAttachment().getName() == null )
+                    continue;
+                
+                String id = request.getApplicationAttachment().getName().toString() +  "#" + (request.getApplicationAttachment().getDescription().toString() != null ? request.getApplicationAttachment().getDescription().toString() : "");
 
                 if (attachmentQuestions.containsKey(id)) {
                     continue;
