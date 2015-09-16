@@ -84,12 +84,12 @@ public class XlsModel {
             for (ApplicationAttachmentRequest request : attachmentRequests) {
                 table.put(
                         (String) application.get("oid"),
-                        attachmentQuestions.get(request.getApplicationAttachment().getDescription().toString()),
+                        attachmentQuestions.get(request.getApplicationAttachment().getName().toString()),
                         getTranslatedAnswer(i18nBundle, lang, request.getReceptionStatus().toString(), "liite_vastaanotto_")
                 );
                 table.put(
                         (String) application.get("oid"),
-                        attachmentQuestions.get(request.getApplicationAttachment().getDescription().toString() + "_tila"),
+                        attachmentQuestions.get(request.getApplicationAttachment().getName().toString() + "_tila"),
                         getTranslatedAnswer(i18nBundle, lang, request.getProcessingStatus().toString(), "liite_tila_")
                 );
             }
@@ -361,7 +361,7 @@ public class XlsModel {
 
                 if(request == null || request.getApplicationAttachment() == null || request.getApplicationAttachment().getName() == null )
                     continue;
-                
+
                 String id = request.getApplicationAttachment().getName().toString() +  "#" + (request.getApplicationAttachment().getDescription().toString() != null ? request.getApplicationAttachment().getDescription().toString() : "");
 
                 if (attachmentQuestions.containsKey(id)) {
