@@ -41,7 +41,7 @@ public class ModelResponseTest {
     public void testSetApplication() throws Exception {
         application.setApplicationSystemId("");
         modelResponse.setApplication(application);
-        assertEquals(6, modelResponse.getModel().size());
+        assertEquals(7, modelResponse.getModel().size());
     }
 
     @Test

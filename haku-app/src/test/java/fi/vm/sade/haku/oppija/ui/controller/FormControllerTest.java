@@ -100,7 +100,7 @@ public class FormControllerTest {
     @Test
     public void testGetPhaseModelSize() throws Exception {
         Viewable viewable = (Viewable) formController.getPhase(createRequest(), APPLICATION_SYSTEM_ID, FIRST_PHASE_ID).getEntity();
-        assertEquals(4, ((Map) viewable.getModel()).size());
+        assertEquals(5, ((Map) viewable.getModel()).size());
     }
 
     @Test

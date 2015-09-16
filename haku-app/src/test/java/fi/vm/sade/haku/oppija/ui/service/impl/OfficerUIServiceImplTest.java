@@ -136,7 +136,7 @@ public class OfficerUIServiceImplTest {
     public void testUpdateApplication() throws Exception {
         ModelResponse modelResponse = officerUIService.updateApplication(
                 OID, new ApplicationPhase(application.getApplicationSystemId(), ID, new HashMap<String, String>()), new User(User.ANONYMOUS_USER));
-        assertTrue(11 == modelResponse.getModel().size());
+        assertTrue(12 == modelResponse.getModel().size());
     }
 
     @Test
@@ -148,7 +148,7 @@ public class OfficerUIServiceImplTest {
     @Test
     public void testGetOrganizationAndLearningInstitutions() throws Exception {
         ModelResponse modelResponse = officerUIService.getOrganizationAndLearningInstitutions();
-        assertEquals("Model size does not match", 10, modelResponse.getModel().size());
+        assertEquals("Model size does not match", 11, modelResponse.getModel().size());
     }
 
     @Test
