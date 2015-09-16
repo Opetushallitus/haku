@@ -2,6 +2,7 @@ package fi.vm.sade.haku.oppija.lomake.service;
 
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
+import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.User;
 
 import java.util.Map;
@@ -22,4 +23,9 @@ public interface Session {
     void removeApplication(Application application);
 
     Application getSubmittedApplication();
+
+    Map<String, I18nText> getNotes();
+    void addNote(String key, I18nText note);
+    void clearNotes();
+
 }

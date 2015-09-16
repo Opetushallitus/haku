@@ -147,6 +147,9 @@ public class OfficerController {
                                @PathParam(OID_PATH_PARAM) final String oid) throws IOException {
         LOGGER.debug("getPreview {}, {}, {}", applicationSystemId, phaseId, oid);
         ModelResponse modelResponse = officerUIService.getValidatedApplication(oid, phaseId);
+
+        modelResponse.setNoteMessages(this.userSession.getNotes());
+        this.userSession.clearNotes();
         AUDIT.log(builder().hakuOid(applicationSystemId).hakemusOid(oid).setOperaatio(HakuOperation.PREVIEW_APPLICATION).build());
         return new Viewable(DEFAULT_VIEW, modelResponse.getModel()); // TODO remove hardcoded Phase
     }
@@ -196,6 +199,7 @@ public class OfficerController {
         ModelResponse modelResponse = officerUIService.updateApplication(oid,
                 new ApplicationPhase(applicationSystemId, phaseId, toSingleValueMap(multiValues)),
                 userSession.getUser());
+
         if (modelResponse.hasErrors()) {
             AUDIT.log(builder()
                     .hakuOid(applicationSystemId)

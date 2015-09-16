@@ -17,6 +17,7 @@ package fi.vm.sade.haku.oppija.lomake.service.impl;
 
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
+import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.User;
 import fi.vm.sade.haku.oppija.lomake.service.Session;
 import org.springframework.context.annotation.Scope;
@@ -40,6 +41,8 @@ public class UserSession implements Serializable, Session {
     private final Map<String, Application> applications = new ConcurrentHashMap<String, Application>();
     private final Map<String, String> userPrefillData = new ConcurrentHashMap<String, String>();
     private Application submittedApplication = null;
+
+    private Map<String, I18nText> notes = new ConcurrentHashMap<String, I18nText>();
 
     @Override
     public User getUser() {
@@ -103,5 +106,20 @@ public class UserSession implements Serializable, Session {
     @Override
     public Application getSubmittedApplication() {
         return submittedApplication;
+    }
+
+    @Override
+    public Map<String, I18nText> getNotes() {
+        return this.notes;
+    }
+
+    @Override
+    public void addNote(String key, I18nText note) {
+        this.notes.put(key, note);
+    }
+
+    @Override
+    public void clearNotes() {
+        this.notes = new ConcurrentHashMap<String, I18nText>();
     }
 }

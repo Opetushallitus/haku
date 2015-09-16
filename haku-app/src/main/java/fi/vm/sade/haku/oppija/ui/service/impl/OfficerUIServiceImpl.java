@@ -399,7 +399,9 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         application.addNote(createNote(noteText));
         UpdatePreferenceResult prefRes = this.applicationService.updatePreferenceBasedData(application);
         if(prefRes != null && prefRes.getValidationResult() != null) {
-            phaseValidationResult.addValidationResult(prefRes.getValidationResult());
+            for(Map.Entry<String, I18nText> entry : prefRes.getValidationResult().getErrorMessages().entrySet()) {
+                this.userSession.addNote(entry.getKey(), entry.getValue());
+            }
         }
         this.applicationService.updateAuthorizationMeta(application);
         this.applicationService.update(queryApplication, application, true);
@@ -649,7 +651,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     @Override
     public void postProcess(String oid, boolean email) {
         Application application = applicationService.getApplicationByOid(oid);
-        application.setRedoPostProcess(email ? Application.PostProcessingState.FULL: Application.PostProcessingState.NOMAIL);
+        application.setRedoPostProcess(email ? Application.PostProcessingState.FULL : Application.PostProcessingState.NOMAIL);
         applicationService.update(new Application(oid), application);
     }
 

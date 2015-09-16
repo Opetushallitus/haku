@@ -24,6 +24,7 @@ public class ModelResponse {
     public static final String ANSWERS = "answers";
     public static final String APPLICATION_PHASE_ID = "applicationPhaseId";
     public static final String ERROR_MESSAGES = "errorMessages";
+    public static final String NOTE_MESSAGES = "noteMessages";
     public static final String KOULUTUSINFORMAATIO_BASE_URL = "koulutusinformaatioBaseUrl";
     public static final String ELEMENT = "element";
     public static final String TEMPLATE = "template";
@@ -35,6 +36,7 @@ public class ModelResponse {
 
 
     private final Map<String, I18nText> errors = new HashMap<String, I18nText>();
+    private final Map<String, I18nText> notes = new HashMap<String, I18nText>();
     private final Map<String, Object> model = new HashMap<String, Object>();
 
     public ModelResponse() {
@@ -100,6 +102,7 @@ public class ModelResponse {
 
     public final Map<String, Object> getModel() {
         model.put(ERROR_MESSAGES, Collections.unmodifiableMap(errors));
+        model.put(NOTE_MESSAGES, Collections.unmodifiableMap(notes));
         return Collections.unmodifiableMap(model);
     }
 
@@ -128,6 +131,20 @@ public class ModelResponse {
     public boolean hasErrors() {
         return !errors.isEmpty();
     }
+
+    public void setNoteMessages(final Map<String, I18nText> notes) {
+        this.notes.putAll(notes);
+    }
+
+    public Map<String, I18nText> getNoteMessages() {
+        return notes;
+    }
+
+    public boolean hasNotes() {
+        return !notes.isEmpty();
+    }
+
+
 
     public void addAnswers(final Map<String, String> answers) {
         final Map<String, String> tmp = (Map<String, String>) this.model.get(ANSWERS);
@@ -186,4 +203,7 @@ public class ModelResponse {
     public Application getApplication() {
         return (Application) model.get(APPLICATION);
     }
+
 }
+
+

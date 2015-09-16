@@ -2,6 +2,7 @@ package fi.vm.sade.haku.oppija.lomake.service.impl;
 
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
+import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.User;
 import fi.vm.sade.haku.oppija.lomake.service.Session;
 
@@ -47,6 +48,21 @@ public class SystemSession implements Session {
 
     @Override
     public Application getSubmittedApplication() {
+        throw new RuntimeException("Not supported");
+    }
+
+    @Override
+    public Map<String, I18nText> getNotes() {
+        throw new RuntimeException("Not supported");
+    }
+
+    @Override
+    public void addNote(String key, I18nText note) {
+        throw new RuntimeException("Not supported");
+    }
+
+    @Override
+    public void clearNotes() {
         throw new RuntimeException("Not supported");
     }
 }
