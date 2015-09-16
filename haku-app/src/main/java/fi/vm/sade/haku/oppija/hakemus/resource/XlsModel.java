@@ -84,12 +84,12 @@ public class XlsModel {
             for (ApplicationAttachmentRequest request : attachmentRequests) {
                 table.put(
                         (String) application.get("oid"),
-                        attachmentQuestions.get(request.getApplicationAttachment().getName().toString()),
+                        attachmentQuestions.get(getAttachmentId(request)),
                         getTranslatedAnswer(i18nBundle, lang, request.getReceptionStatus().toString(), "liite_vastaanotto_")
                 );
                 table.put(
                         (String) application.get("oid"),
-                        attachmentQuestions.get(request.getApplicationAttachment().getName().toString() + "_tila"),
+                        attachmentQuestions.get(getAttachmentId(request) + "_tila"),
                         getTranslatedAnswer(i18nBundle, lang, request.getProcessingStatus().toString(), "liite_tila_")
                 );
             }
@@ -314,6 +314,16 @@ public class XlsModel {
         return null;
     }
 
+    private static boolean isValidRequest(ApplicationAttachmentRequest request) {
+        return request != null && request.getApplicationAttachment() != null
+                && request.getApplicationAttachment().getName() != null;
+    }
+
+    private static boolean attachmentBelongsToAo(ApplicationOption ao, ApplicationAttachmentRequest request) {
+        return ao.getId().equals(request.getPreferenceAoId())
+                || ao.groupsContainsOid(request.getPreferenceAoGroupId());
+    }
+
     private List<ApplicationAttachmentRequest> getAttachmentRequests(Map<String, Object> application) {
         List<ApplicationAttachmentRequest> filteredRequests = new ArrayList<>();
         try {
@@ -322,8 +332,7 @@ public class XlsModel {
                     TypeFactory.defaultInstance().constructCollectionType(List.class, ApplicationAttachmentRequest.class)
             );
             for (ApplicationAttachmentRequest request : requests) {
-                if (this.ao.getId().equals(request.getPreferenceAoId())
-                        || this.ao.groupsContainsOid(request.getPreferenceAoGroupId())) {
+                if (isValidRequest(request) && attachmentBelongsToAo(this.ao, request)) {
                     filteredRequests.add(request);
                 }
             }
@@ -359,10 +368,7 @@ public class XlsModel {
 
             for (ApplicationAttachmentRequest request : requests) {
 
-                if(request == null || request.getApplicationAttachment() == null || request.getApplicationAttachment().getName() == null )
-                    continue;
-
-                String id = request.getApplicationAttachment().getName().toString() +  "#" + (request.getApplicationAttachment().getDescription().toString() != null ? request.getApplicationAttachment().getDescription().toString() : "");
+                String id = getAttachmentId(request);
 
                 if (attachmentQuestions.containsKey(id)) {
                     continue;
@@ -409,6 +415,14 @@ public class XlsModel {
         }
 
         return new I18nText(modified);
+    }
+
+    private static String getAttachmentId(ApplicationAttachmentRequest request) {
+        String id = request.getApplicationAttachment().getName().toString();
+        if (request.getApplicationAttachment().getDescription() != null) {
+            id += "#" + request.getApplicationAttachment().getDescription().toString();
+        }
+        return id;
     }
 
 }
