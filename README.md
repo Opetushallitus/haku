@@ -64,6 +64,10 @@ use Spring profile `devluokka`. See instructions below.
     Note: the koulutusinformaatio base url may need also "https" at start, otherwise ajax ui load will fail on local machine when editing preferences.
     koulutusinformaatio.base.url=https://itest-oppija.oph.ware.fi
 
+    Note2: For quicker local tomcat startup, disable scheduled tasks if you dont need them:
+    scheduler.runModelUpgrade=false
+    scheduler.modelUpgrade.enableV5=false
+    scheduler.runEligibilityCheck=false
 
 then you can start the server with local settings by
 
