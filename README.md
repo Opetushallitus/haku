@@ -65,9 +65,9 @@ use Spring profile `devluokka`. See instructions below.
     koulutusinformaatio.base.url=https://itest-oppija.oph.ware.fi
 
     Note2: For quicker local tomcat startup, disable scheduled tasks if you dont need them:
-    scheduler.runModelUpgrade=false
-    scheduler.modelUpgrade.enableV5=false
-    scheduler.runEligibilityCheck=false
+    scheduler.runModelUpgrade=false  
+    scheduler.modelUpgrade.enableV5=false  
+    scheduler.runEligibilityCheck=false  
 
 then you can start the server with local settings by
 
