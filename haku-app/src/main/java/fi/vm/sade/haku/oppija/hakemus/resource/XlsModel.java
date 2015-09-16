@@ -24,10 +24,7 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.type.TypeFactory;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.TextQuestionBuilder.TextQuestion;
 import static org.apache.commons.lang.StringUtils.isNotBlank;
@@ -344,7 +341,7 @@ public class XlsModel {
     }
 
     public static Map<String, Element> getAdditionalQuestions(I18nBundle i18nBundle) {
-        Map<String, Element> elements = new HashMap<>();
+        Map<String, Element> elements = new LinkedHashMap<>();
 
         elements.put(ELIGIBILITY_STATUS, TextQuestion("hakukelpoisuus").i18nText(i18nBundle.get("hakukelpoisuus")).build());
         elements.put(ELIGIBILITY_SOURCE, TextQuestion("hakukelpoisuus_lahde").i18nText(i18nBundle.get("hakukelpoisuus_lahde")).build());
@@ -360,7 +357,7 @@ public class XlsModel {
     }
 
     private Map<String, Element> findAttachmentQuestions(List<Map<String, Object>> applications) {
-        Map<String, Element> attachmentQuestions = new HashMap<>();
+        Map<String, Element> attachmentQuestions = new LinkedHashMap<>();
         int uniqueQuestions = 0;
 
         for (Map<String, Object> application : applications) {
