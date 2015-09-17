@@ -8,6 +8,7 @@ import fi.vm.sade.organisaatio.api.search.OrganisaatioPerustieto;
 import fi.vm.sade.organisaatio.api.search.OrganisaatioSearchCriteria;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.StatusLine;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.junit.Test;
@@ -99,9 +100,12 @@ public class OrganizationServiceImplTest {
     private HttpClient mockClient(InputStream content) throws IOException {
         HttpClient httpClient =mock(HttpClient.class);
         HttpResponse response = mock(HttpResponse.class);
+        StatusLine status = mock(StatusLine.class);
         HttpEntity entity = mock(HttpEntity.class);
         when(httpClient.execute(any(HttpGet.class))).thenReturn(response);
+        when(response.getStatusLine()).thenReturn(status);
         when(response.getEntity()).thenReturn(entity);
+        when(status.getStatusCode()).thenReturn(200);
         when(entity.getContent()).thenReturn(content);
         return httpClient;
     }

@@ -24,15 +24,16 @@ import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
 import fi.vm.sade.organisaatio.api.search.OrganisaatioHakutulos;
 import fi.vm.sade.organisaatio.api.search.OrganisaatioPerustieto;
 import fi.vm.sade.organisaatio.api.search.OrganisaatioSearchCriteria;
-import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.NoConnectionReuseStrategy;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -40,8 +41,8 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.lang.ref.SoftReference;
 import java.net.URLEncoder;
@@ -56,24 +57,28 @@ public class OrganizationServiceImpl implements OrganizationService {
 
     private static final Logger LOG = LoggerFactory.getLogger(OrganizationServiceImpl.class);
 
-    private static Map<String, SoftReference<Object>> cache;
     private static final String ROOT_ORGANIZATION_OPH = "1.2.246.562.10.00000000001";
     private static final String ORGANIZATION_PREFIX = "1.2.246.562.10";
     private static final Pattern SUFFIX_PATTERN = Pattern.compile("^[0-9]{11}$");
 
+    private final Map<String, SoftReference<Object>> cache;
     private HttpClient httpClient;
-
     private Gson gson;
 
     @Value("${cas.service.organisaatio-service}")
     private String targetService;
 
     public OrganizationServiceImpl() {
-        this.cache = new HashMap<String, SoftReference<Object>>();
         GsonBuilder builder = new GsonBuilder();
         builder.registerTypeAdapter(Date.class, new TimestampDateAdapter());
         builder.registerTypeAdapter(OrganizationGroupListRestDTO.class, new OrganizationGroupListRestDTOAdapter());
+        this.cache = new HashMap<>();
         this.gson = builder.create();
+        this.httpClient = HttpClientBuilder.create()
+                .disableAuthCaching()
+                .setDefaultRequestConfig(RequestConfig.custom().setConnectTimeout(120 * 1000).setSocketTimeout(60 * 1000).build())
+                .setConnectionReuseStrategy(new NoConnectionReuseStrategy())
+                .build();
     }
 
     @Override
@@ -198,13 +203,13 @@ public class OrganizationServiceImpl implements OrganizationService {
         return filtered;
     }
 
-    private <T> T getCached(String url, Class<? extends T> resultType) throws IOException {
+    private <T> T getCached(String url, Class<T> resultType) throws IOException {
         if (cache.containsKey(url)) {
             LOG.debug("Hit cache, url: {}", url);
             Object result = cache.get(url).get();
 
             if (null != result && resultType.isAssignableFrom(result.getClass())) {
-                return (T) result;
+                return resultType.cast(result);
             }
             LOG.debug("Cache reference for key {} is stale or unassignable. Result object was of type {} expected {}", url, null == result ? null : result.getClass(), resultType.getClass());
         }
@@ -215,51 +220,37 @@ public class OrganizationServiceImpl implements OrganizationService {
 
     }
 
-    private <T> T get(String url, Class<? extends T> resultType) throws IOException {
-        HttpClient client = getHttpClient();
+    private <T> T get(String url, Class<T> resultType) throws IOException {
         HttpGet get = new HttpGet(targetService + url);
-        HttpResponse response = client.execute(get);
-        HttpEntity entity = response.getEntity();
-        if (entity != null) {
-            if (resultType.isAssignableFrom(String.class)) {
-                StringWriter writer = new StringWriter();
-                IOUtils.copy(entity.getContent(), writer, "UTF-8");
-                T ret = (T) writer.toString();
-                entity.consumeContent();
-                get.releaseConnection();
-                return ret;
-            } else {
-                try {
-                    T ret = gson.fromJson(new InputStreamReader(entity.getContent()), resultType);
-                    entity.consumeContent();
-                    get.releaseConnection();
-                    return ret;
-                } catch (JsonSyntaxException jse) {
-                    LOG.error("Deserializing organisation failed. url: "+url);
-                    throw jse;
-                }
+        try {
+            HttpResponse response = this.httpClient.execute(get);
+            StatusLine status = response.getStatusLine();
+            HttpEntity entity = response.getEntity();
+            if (404 == status.getStatusCode() || null == entity) {
+                throw new ResourceNotFoundException("fetch failed. url: " + url +
+                        " statusCode: " + status.getStatusCode() +
+                        " reason: " + status.getReasonPhrase());
             }
-        }
-
-        if (get != null) {
+            if (status.getStatusCode() >= 300) {
+                throw new HttpResponseException(status.getStatusCode(), status.getReasonPhrase());
+            }
+            if (resultType.isAssignableFrom(String.class)) {
+                return resultType.cast(EntityUtils.toString(entity, "UTF-8"));
+            }
+            InputStream in = entity.getContent();
+            try {
+                T t = gson.fromJson(new InputStreamReader(in), resultType);
+                EntityUtils.consume(entity);
+                return t;
+            } catch (JsonSyntaxException jse) {
+                LOG.error("Deserializing organisation failed. url: " + url);
+                throw jse;
+            } finally {
+                in.close();
+            }
+        } finally {
             get.releaseConnection();
         }
-        StatusLine statusLine = response.getStatusLine();
-        throw new ResourceNotFoundException("fetch failed. url: "+url+" statusCode: "+statusLine.getStatusCode()
-                +" reason: "+statusLine.getReasonPhrase());
-    }
-
-    private synchronized HttpClient getHttpClient() {
-        if (httpClient == null) {
-            RequestConfig config = RequestConfig.custom().setConnectTimeout(120 * 1000).setSocketTimeout(60 * 1000).build();
-
-            httpClient = HttpClientBuilder.create()
-                    .disableAuthCaching()
-                    .setDefaultRequestConfig(config)
-                    .setConnectionReuseStrategy(new NoConnectionReuseStrategy())
-                    .build();
-        }
-        return httpClient;
     }
 
     public void setHttpClient(HttpClient httpClient) {
