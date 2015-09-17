@@ -134,8 +134,8 @@
                         <div class="field-search-containerbox">
                             <select id="base-education" multiple="multiple">
                             </select>
-                            <small><fmt:message key="ctrl.valitse.useita"/></small>
                         </div>
+                        <small><fmt:message key="ctrl.valitse.useita"/></small>
                     </td>
 
                     <td class="padding-top-4">
