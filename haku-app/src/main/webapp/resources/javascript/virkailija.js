@@ -524,21 +524,6 @@ $(document).ready(function () {
             }
         }
 
-        function serializeParams(params) {
-            var parts = [];
-            _.each(params, function(value, key) {
-                if ($.isArray(value)) {
-                    _.each(value, function(arrayItem) {
-                        parts.push(encodeURIComponent(key) + '=' + encodeURIComponent(arrayItem));
-                    });
-                }
-                else {
-                    parts.push(encodeURIComponent(key) + '=' + encodeURIComponent(value));
-                }
-            });
-            return parts.join('&');
-        }
-
         this.search = function (start, orderBy, orderDir) {
             $('#application-table thead tr td').removeAttr('class');
             var queryParameters = createQueryParameters(start, orderBy, orderDir);
@@ -579,7 +564,7 @@ $(document).ready(function () {
                         $('#pagination').bootstrapPaginator(options);
                         applicationSearch.setSortOrder(queryParameters.orderBy, queryParameters.orderDir);
                         if (queryParameters.asId && (queryParameters.aoOid || queryParameters.aoidCode)) {
-                            var href = page_settings.contextPath + '/applications/excel?' + objectToQueryParameterString(_.omit(queryParameters, ['rows','start']));
+                            var href = page_settings.contextPath + '/applications/excel?' + serializeParams(_.omit(queryParameters, ['rows','start']));
                             enableExcel(href);
                         } else {
                             disableExcel();
@@ -907,7 +892,7 @@ $(document).ready(function () {
                     searchTerms: req.term,
                     organisationOid : $('#lopoid').val()
                 }
-                var url = page_settings.tarjontaUrl + '/search?' + objectToQueryParameterString(qParams);
+                var url = page_settings.tarjontaUrl + '/search?' + serializeParams(qParams);
                 $.get(url, function (data) {
                     var applicationOptions = _.reduce(data.result.tulokset, function (aos, provider) {
                         var tulokset = provider.tulokset;
@@ -987,14 +972,22 @@ $(document).ready(function () {
     }
 });
 
-function objectToQueryParameterString(queryParameters) {
-    return Object.keys(queryParameters).reduce(function (a, k) {
-        var value = queryParameters[k];
-        if (k && value) {
-            a.push(k + '=' + encodeURIComponent(value));
+function serializeParams(params) {
+    var parts = [];
+    _.each(params, function(value, key) {
+        if (!value || !key) {
+            return;
         }
-        return a
-    }, []) .join('&');
+        if ($.isArray(value)) {
+            _.each(value, function(arrayItem) {
+                parts.push(encodeURIComponent(key) + '=' + encodeURIComponent(arrayItem));
+            });
+        }
+        else {
+            parts.push(encodeURIComponent(key) + '=' + encodeURIComponent(value));
+        }
+    });
+    return parts.join('&');
 }
 function disableExcel() {
     var link = $('#excel-link');
