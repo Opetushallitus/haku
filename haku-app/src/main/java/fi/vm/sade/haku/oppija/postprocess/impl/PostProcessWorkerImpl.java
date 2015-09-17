@@ -132,6 +132,7 @@ public class PostProcessWorkerImpl implements PostProcessWorker {
         try {
             final Application original = application.clone();
             application = applicationPostProcessorService.checkStudentOid(application);
+
             final List<Map<String, String>> changes = addHistoryBasedOnChangedAnswers(application, original, SYSTEM_USER, "Identification Post Processing");
             if (identificationModifiedApplication(application, original)) {
                 application.setLastAutomatedProcessingTime(System.currentTimeMillis());
@@ -147,7 +148,8 @@ public class PostProcessWorkerImpl implements PostProcessWorker {
         return !(Objects.equals(application.getPersonOid(), original.getPersonOid())
                 && Objects.equals(application.getStudentOid(), original.getStudentOid())
                 && application.getHistory().size() == original.getHistory().size()
-                && Objects.equals(application.getStudentIdentificationDone(), original.getStudentIdentificationDone()));
+                && Objects.equals(application.getStudentIdentificationDone(), original.getStudentIdentificationDone())
+                && Objects.equals(application.getAutomatedProcessingFailCount(), original.getAutomatedProcessingFailCount()));
     }
 
     private Application getNextApplicationFor(final ProcessingType processingType) {

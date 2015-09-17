@@ -15,6 +15,7 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -33,6 +34,12 @@ public class ApplicationPostProcessorService {
     private final ElementTreeValidator elementTreeValidator;
     private final FormService formService;
     private final AuthenticationService authenticationService;
+
+    @Value("${scheduler.retryFailQuickCount:20}")
+    private int retryFailQuickCount;
+
+    @Value("${scheduler.retryFailedAgainTime:43200000}")
+    private int retryFailedAgainTime;
 
     @Autowired
     public ApplicationPostProcessorService(final ApplicationService applicationService,
@@ -128,12 +135,38 @@ public class ApplicationPostProcessorService {
         if (isNotEmpty(studentOid)){
             application.flagStudentIdentificationDone();
         } else if (isNotEmpty(personOid)) {
-            final Person person = authenticationService.checkStudentOid(application.getPersonOid());
-            if (person != null && isNotEmpty(person.getStudentOid())) {
-                application.modifyPersonalData(person);
-                application.flagStudentIdentificationDone();
+
+            Long lastProcessTime = application.getLastAutomatedProcessingTime();
+            Integer failCount = application.getAutomatedProcessingFailCount();
+            Person person = null;
+            if(lastProcessTime == null || failCount == null || failCount < this.retryFailQuickCount || lastProcessTime < (System.currentTimeMillis() - retryFailedAgainTime)) {
+                person = authenticationService.checkStudentOid(application.getPersonOid());
+                if (person != null && isNotEmpty(person.getStudentOid())) {
+                    application.modifyPersonalData(person);
+                    application.flagStudentIdentificationDone();
+                } else {
+                    application.setAutomatedProcessingFailCount(application.getAutomatedProcessingFailCount() == null ? 1 : application.getAutomatedProcessingFailCount() + 1);
+                }
             }
         }
         return application;
     }
+
+    public int getRetryFailQuickCount() {
+        return retryFailQuickCount;
+    }
+
+    public void setRetryFailQuickCount(int retryFailQuickCount) {
+        this.retryFailQuickCount = retryFailQuickCount;
+    }
+
+    public int getRetryFailedAgainTime() {
+        return retryFailedAgainTime;
+    }
+
+    public void setRetryFailedAgainTime(int retryFailedAgainTime) {
+        this.retryFailedAgainTime = retryFailedAgainTime;
+    }
+
+
 }
