@@ -16,14 +16,11 @@
 
 package fi.vm.sade.haku.oppija.hakemus.it.dao;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import org.apache.commons.lang.StringUtils;
+
+import java.util.*;
 
 import static org.apache.commons.lang3.StringUtils.isEmpty;
-
-import org.apache.commons.lang.StringUtils;
 
 public class ApplicationQueryParameters {
     private final List<String> state;
@@ -34,7 +31,7 @@ public class ApplicationQueryParameters {
     private final List<String> aoOids;
     private final List<String> personOids;
     private final String groupOid;
-    private final String baseEducation;
+    private final Set<String> baseEducation;
     private final boolean discretionaryOnly;
     private final boolean primaryPreferenceOnly;
     private final String sendingSchool;
@@ -49,7 +46,7 @@ public class ApplicationQueryParameters {
     public ApplicationQueryParameters(final String searchTerms, final List<String> state, final Boolean preferenceChecked,
                                       final List<String> asIds, final String aoId, final String lopOid,
                                       final List<String> aoOids, final List<String> personOids, final String groupOid,
-                                      final String baseEducation, final Boolean discretionaryOnly, final Boolean primaryPreferenceOnly,
+                                      final Set<String> baseEducation, final Boolean discretionaryOnly, final Boolean primaryPreferenceOnly,
                                       final String sendingSchool, final String sendingClass, final Date updatedAfter,
                                       final int start, final int rows, final String orderBy, final int orderDir) {
         this.searchTerms = searchTerms;
@@ -61,7 +58,7 @@ public class ApplicationQueryParameters {
         this.aoOids = nonEmptyStrings(aoOids);
         this.personOids = nonEmptyStrings(personOids);
         this.groupOid = isEmpty(groupOid) ? null : groupOid;
-        this.baseEducation = isEmpty(baseEducation) ? null : baseEducation;
+        this.baseEducation = baseEducation;
         this.discretionaryOnly = discretionaryOnly == null ? false : discretionaryOnly;
         this.primaryPreferenceOnly = primaryPreferenceOnly == null ? false : primaryPreferenceOnly;
         this.sendingSchool = sendingSchool;
@@ -140,7 +137,7 @@ public class ApplicationQueryParameters {
 
     public Date getUpdatedAfter() { return updatedAfter; }
 
-    public String getBaseEducation() {
+    public Set<String> getBaseEducation() {
         return baseEducation;
     }
 

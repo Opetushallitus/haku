@@ -1,7 +1,10 @@
 package fi.vm.sade.haku.oppija.hakemus.it.dao.impl;
 
 import com.google.common.collect.Lists;
-import com.mongodb.*;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
+import com.mongodb.QueryBuilder;
+import com.mongodb.QueryOperators;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationFilterParameters;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationQueryParameters;
@@ -14,10 +17,7 @@ import org.slf4j.LoggerFactory;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.StringTokenizer;
+import java.util.*;
 import java.util.regex.Pattern;
 
 import static fi.vm.sade.haku.oppija.hakemus.domain.Application.State;
@@ -251,13 +251,26 @@ final class ApplicationDAOMongoQueryBuilder {
         }
 
         final String kohdejoukko = filterParameters.getKohdejoukko();
-        final String baseEducation = applicationQueryParameters.getBaseEducation();
-        if (isNotBlank(kohdejoukko) && isNotBlank(baseEducation)) {
+        final Set<String> baseEducation = applicationQueryParameters.getBaseEducation();
+        if (isNotBlank(kohdejoukko) && !baseEducation.isEmpty()) {
             if (OppijaConstants.KOHDEJOUKKO_KORKEAKOULU.equals(kohdejoukko)) { // TODO: tää on yllättävää
-                filters.add(
-                        QueryBuilder.start(format(FIELD_HIGHER_ED_BASE_ED_T, baseEducation))
-                                .is(Boolean.TRUE.toString()).get()
-                );
+
+                List<DBObject> ors = new LinkedList<>();
+
+                for (String education : baseEducation) {
+                    if (isNotBlank(education)) {
+                        ors.add(
+                                QueryBuilder.start(format(FIELD_HIGHER_ED_BASE_ED_T, education))
+                                        .is(Boolean.TRUE.toString()).get()
+                        );
+                    }
+                }
+
+                if (!ors.isEmpty()) {
+                    filters.add(
+                            QueryBuilder.start().or(ors.toArray(new DBObject[ors.size()])).get()
+                    );
+                }
             }
         }
 

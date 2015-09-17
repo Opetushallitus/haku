@@ -1,10 +1,9 @@
 package fi.vm.sade.haku.oppija.hakemus.it.dao;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Sets;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 public class ApplicationQueryParametersBuilder {
     private String searchTerms;
@@ -25,7 +24,7 @@ public class ApplicationQueryParametersBuilder {
     private String orderBy;
     private int orderDir= 1;
     private String groupOid;
-    private String baseEducation;
+    private Set<String> baseEducation = new HashSet<>();
 
     public ApplicationQueryParametersBuilder setStates(List<String> state) {
         this.state = state;
@@ -133,6 +132,14 @@ public class ApplicationQueryParametersBuilder {
     }
 
     public ApplicationQueryParametersBuilder setBaseEducation(String baseEducation) {
+        this.baseEducation.add(baseEducation);
+        return this;
+    }
+
+    public ApplicationQueryParametersBuilder setBaseEducation(Set<String> baseEducation) {
+        if (baseEducation == null) {
+            baseEducation = Sets.newHashSet();
+        }
         this.baseEducation = baseEducation;
         return this;
     }

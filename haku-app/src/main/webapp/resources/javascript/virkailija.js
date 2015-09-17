@@ -122,26 +122,23 @@ $(document).ready(function () {
                     url: page_settings.contextPath + "/virkailija/hakemus/baseEducations/" + kohdejoukko,
                     data: null,
                     success: function (data) {
-                        var baseEds = [];
                         $('#base-education option').remove();
                         $('#base-education').append('<option value="">&nbsp</option>');
-                        for (var i in data) {
-                            var baseEd = data[i];
+
+                        var baseEds = [];
+                        _.each(data, function(baseEd) {
                             var value = baseEd.value;
-                            var name = baseEd['name_' + page_settings.lang];
-                            if (!name) {
-                                if (baseEd['name_fi']) {
-                                    name = baseEd['name_fi'];
-                                } else if (baseEd['name_sv']) {
-                                    name = baseEd['name_sv'];
-                                } else if (baseEd['name_en']) {
-                                    name = baseEd['name_en'];
-                                } else {
-                                    name = "???";
-                                }
-                            }
-                            $('#base-education').append('<option value="' + value + '">' + name + '</option>');
-                        }
+                            var name = baseEd['name_' + page_settings.lang] || baseEd['name_fi'] ||
+                                baseEd['name_sv'] || baseEd['name_en'] || '???';
+                            baseEds.push({
+                                value: value,
+                                name: name
+                            });
+                        });
+
+                        _.chain(baseEds).sortBy('name').each(function(ed) {
+                            $('#base-education').append('<option value="' + ed.value + '">' + ed.name + '</option>');
+                        });
                     },
                     async: isAsync
                 });
@@ -526,6 +523,21 @@ $(document).ready(function () {
             }
         }
 
+        function serializeParams(params) {
+            var parts = [];
+            _.each(params, function(value, key) {
+                if ($.isArray(value)) {
+                    _.each(value, function(arrayItem) {
+                        parts.push(encodeURIComponent(key) + '=' + encodeURIComponent(arrayItem));
+                    });
+                }
+                else {
+                    parts.push(encodeURIComponent(key) + '=' + encodeURIComponent(value));
+                }
+            });
+            return parts.join('&');
+        }
+
         this.search = function (start, orderBy, orderDir) {
             $('#application-table thead tr td').removeAttr('class');
             var queryParameters = createQueryParameters(start, orderBy, orderDir);
@@ -533,7 +545,7 @@ $(document).ready(function () {
             spinner.stop();
             spinner.spin(document.getElementById('search-spinner'));
             $.getJSON(page_settings.contextPath + "/applications/listshort",
-                queryParameters,
+                serializeParams(queryParameters),
                 function (data) {
                     $tbody.empty();
                     self.updateCounters(data.totalCount);

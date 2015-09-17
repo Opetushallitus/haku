@@ -132,8 +132,9 @@
                         <label for="base-education"><fmt:message key="virkailija.hakemus.pohjakoulutus"/></label>
 
                         <div class="field-search-containerbox">
-                            <select id="base-education">
+                            <select id="base-education" multiple="multiple">
                             </select>
+                            <small><fmt:message key="ctrl.valitse.useita"/></small>
                         </div>
                     </td>
 

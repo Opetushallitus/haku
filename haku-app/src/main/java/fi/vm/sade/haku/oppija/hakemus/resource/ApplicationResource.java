@@ -16,6 +16,7 @@
 
 package fi.vm.sade.haku.oppija.hakemus.resource;
 
+import com.google.common.collect.Sets;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 import com.wordnik.swagger.annotations.ApiParam;
@@ -132,7 +133,7 @@ public class ApplicationResource {
                                           @QueryParam("lopoid") String lopoid,
                                           @QueryParam("aoOid") String aoOid,
                                           @QueryParam("groupOid") String groupOid,
-                                          @QueryParam("baseEducation") String baseEducation,
+                                          @QueryParam("baseEducation") Set<String> baseEducation,
                                           @QueryParam("discretionaryOnly") Boolean discretionaryOnly,
                                           @QueryParam("primaryPreferenceOnly") Boolean primaryPreferenceOnly,
                                           @QueryParam("sendingSchoolOid") String sendingSchoolOid,
@@ -206,7 +207,7 @@ public class ApplicationResource {
                                                           @ApiParam(value="Onko liitetiedot merkitty tarkastetuksi") @QueryParam("preferenceChecked") Boolean preferenceChecked,
                                                           @ApiParam(value="Hakukohteen koodi") @QueryParam("aoid") String aoid,
                                                           @ApiParam(value="Hakukohderyhmän oid") @QueryParam("groupOid") String groupOid,
-                                                          @ApiParam(value="Pohjakoulutus") @QueryParam("baseEducation") String baseEducation,
+                                                          @ApiParam(value="Pohjakoulutus") @QueryParam("baseEducation") Set<String> baseEducation,
                                                           @ApiParam(value="Opetuspisteen organisaatiotunniste (oid)") @QueryParam("lopoid") String lopoid,
                                                           @ApiParam(value="Haun oid") @QueryParam("asId") String asId,
                                                           @ApiParam(value="Hakukausi") @QueryParam("asSemester") String asSemester,
@@ -282,7 +283,7 @@ public class ApplicationResource {
                                                        @ApiParam(value="Palautetaan tulosjoukosta rivit tästä rivinumerosta alkaen") @DefaultValue(value = "0") @QueryParam("start") int start,
                                                        @ApiParam(value="Palautetaan tulosjoukosta rivit tähän rivinumeroon saakka") @DefaultValue(value = "100") @QueryParam("rows") int rows) {
 
-        return findApplicationsOrdered("fullName", "asc", query, state, preferenceChecked, aoid, groupOid, baseEducation, lopoid, asId,
+        return findApplicationsOrdered("fullName", "asc", query, state, preferenceChecked, aoid, groupOid, Sets.newHashSet(baseEducation), lopoid, asId,
                 asSemester, asYear, aoOid, discretionaryOnly, primaryPreferenceOnly, sendingSchoolOid,
                 sendingClass, updatedAfter, start, rows);
     }
@@ -300,7 +301,7 @@ public class ApplicationResource {
                                                               @ApiParam(value="Onko liitetiedot merkitty tarkastetuksi") @QueryParam("preferenceChecked") Boolean preferenceChecked,
                                                               @ApiParam(value="Hakukohteen koodi") @QueryParam("aoidCode") String aoid,
                                                               @ApiParam(value="Hakukohderyhmän oid") @QueryParam("groupOid") String groupOid,
-                                                              @ApiParam(value="Pohjakoulutus") @QueryParam("baseEducation") String baseEducation,
+                                                              @ApiParam(value="Pohjakoulutus") @QueryParam("baseEducation") Set<String> baseEducation,
                                                               @ApiParam(value="Opetuspisteen organisaatiotunniste (oid)") @QueryParam("lopoid") String lopoid,
                                                               @ApiParam(value="Haun oid") @QueryParam("asId") String asId,
                                                               @ApiParam(value="Hakukausi") @QueryParam("asSemester") String asSemester,
