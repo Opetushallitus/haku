@@ -1,4 +1,4 @@
-package fi.vm.sade.haku.virkailija.excel;
+package fi.vm.sade.haku.virkailija;
 
 import fi.vm.sade.haku.oppija.hakemus.it.IntegrationTestSupport;
 import fi.vm.sade.haku.oppija.hakemus.resource.ApplicationResource;
@@ -21,7 +21,7 @@ import static junit.framework.Assert.assertEquals;
 @ContextConfiguration(locations = "classpath:spring/test-context.xml")
 @RunWith(SpringJUnit4ClassRunner.class)
 @ActiveProfiles("it")
-public class TestHakukohteenHakijatExcel extends IntegrationTestSupport {
+public class TestApplicationResource extends IntegrationTestSupport {
 
     @Autowired
     ApplicationResource applicationResource;
