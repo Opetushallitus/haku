@@ -38,7 +38,7 @@ public class ApplicationPostProcessorService {
     @Value("${scheduler.retryFailQuickCount:20}")
     private int retryFailQuickCount;
 
-    @Value("${scheduler.retryFailedAgainTime:43200000}")
+    @Value("${scheduler.retryFailedAgainTime:21600000}")
     private int retryFailedAgainTime;
 
     @Autowired
