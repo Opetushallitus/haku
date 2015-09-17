@@ -588,7 +588,7 @@ $(document).ready(function () {
                         $('#pagination').empty();
                     }
                     spinner.stop();
-                    window.location.hash = '';
+                    window.location.hash = 'useLast';
 
                     $('.application-link').click(function () {
                         var applicationList = '';
