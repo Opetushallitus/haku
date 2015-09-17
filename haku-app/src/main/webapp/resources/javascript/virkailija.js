@@ -513,6 +513,7 @@ $(document).ready(function () {
                 $.removeCookie(cookieName);
                 $.cookie(cookieName, obj);
             }
+            toggleExcelLink();
             return obj;
         }
 
