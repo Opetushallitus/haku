@@ -42,7 +42,7 @@ public class ApplicationPostProcessorServiceTest {
 
         applicationPostProcessorService = new ApplicationPostProcessorService(applicationService, baseEducationService, formService, elementTreeValidator, authenticationService);
         applicationPostProcessorService.setRetryFailQuickCount(5);
-        applicationPostProcessorService.setRetryFailedAgainTime(1000);
+        applicationPostProcessorService.setRetryFailedAgainTime(10000);
 
         answerMap = new HashMap<>();
         answerMap.put(OppijaConstants.ELEMENT_ID_FIRST_NAMES, "Etunimi");
@@ -174,7 +174,6 @@ public class ApplicationPostProcessorServiceTest {
         application.setPersonOid("1.2.3");
         application.setLastAutomatedProcessingTime(System.currentTimeMillis());
         application.setAutomatedProcessingFailCount(20);
-        application.flagStudentIdentificationRequired();
 
         when(authenticationService.checkStudentOid(anyString())).thenReturn(null);
         final Application modified = applicationPostProcessorService.checkStudentOid(application.clone());
