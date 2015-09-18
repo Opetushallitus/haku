@@ -41,6 +41,9 @@ public class ApplicationPostProcessorServiceTest {
         final FormService formService = null;
 
         applicationPostProcessorService = new ApplicationPostProcessorService(applicationService, baseEducationService, formService, elementTreeValidator, authenticationService);
+        applicationPostProcessorService.setRetryFailQuickCount(5);
+        applicationPostProcessorService.setRetryFailedAgainTime(10000);
+
         answerMap = new HashMap<>();
         answerMap.put(OppijaConstants.ELEMENT_ID_FIRST_NAMES, "Etunimi");
         answerMap.put(OppijaConstants.ELEMENT_ID_NICKNAME, "Etunimi");
@@ -90,7 +93,7 @@ public class ApplicationPostProcessorServiceTest {
         assertNotNull(modified.getStudentOid());
         assertNull(modified.getStudentIdentificationDone());
 
-        verify(authenticationService, times(1)).addPerson((Person)anyObject());
+        verify(authenticationService, times(1)).addPerson((Person) anyObject());
         verify(authenticationService, times(1)).checkStudentOid(anyString());
         verifyNoMoreInteractions(authenticationService);
     }
@@ -122,7 +125,7 @@ public class ApplicationPostProcessorServiceTest {
         when(authenticationService.checkStudentOid(anyString())).thenReturn(PersonBuilder.start().setPersonOid("1.2.3").get());
         final Application modified = applicationPostProcessorService.checkStudentOid(application.clone());
 
-        assertEquals(application, modified);
+        assertNotEquals(application.getAutomatedProcessingFailCount(), modified.getAutomatedProcessingFailCount());
         assertNotNull(modified.getStudentIdentificationDone());
 
         verify(authenticationService, times(1)).checkStudentOid(anyString());
@@ -145,4 +148,44 @@ public class ApplicationPostProcessorServiceTest {
 
         verifyZeroInteractions(authenticationService);
     }
+
+
+    @Test
+    public void testFailCountIncrementTransitionToSlowDown() {
+        Application application = new Application();
+        application.addVaiheenVastaukset("henkilotiedot", answerMap);
+        application.setPersonOid("1.2.3");
+        application.flagStudentIdentificationRequired();
+
+        when(authenticationService.checkStudentOid(anyString())).thenReturn(null);
+        Application modified = applicationPostProcessorService.checkStudentOid(application.clone());
+        assertEquals(new Integer(1), modified.getAutomatedProcessingFailCount());
+
+        for(int i=0;i<10;i++) {
+            modified = applicationPostProcessorService.checkStudentOid(modified);
+        }
+        assertEquals(new Integer(5), modified.getAutomatedProcessingFailCount());
+    }
+
+    @Test
+    public void testFailCountSlowDown() {
+        Application application = new Application();
+        application.addVaiheenVastaukset("henkilotiedot", answerMap);
+        application.setPersonOid("1.2.3");
+        application.setLastAutomatedProcessingTime(System.currentTimeMillis());
+        application.setAutomatedProcessingFailCount(20);
+        application.setAutomatedProcessingFailRetryTime(System.currentTimeMillis());
+
+        when(authenticationService.checkStudentOid(anyString())).thenReturn(null);
+        final Application modified = applicationPostProcessorService.checkStudentOid(application.clone());
+        verifyZeroInteractions(authenticationService);
+        assertEquals(new Integer(20), modified.getAutomatedProcessingFailCount());
+
+        application.setAutomatedProcessingFailRetryTime(System.currentTimeMillis()-20000);
+        final Application modified2 = applicationPostProcessorService.checkStudentOid(application.clone());
+        verify(authenticationService, times(1)).checkStudentOid(anyString());
+        assertEquals(new Integer(21), modified2.getAutomatedProcessingFailCount());
+    }
+
+
 }
