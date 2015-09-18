@@ -86,6 +86,7 @@ public class Application implements Serializable {
     private String studentOid;
     private Long lastAutomatedProcessingTime;
     private Integer automatedProcessingFailCount;
+    private Long automatedProcessingFailRetryTime;
     private Date received;
     private Date updated;
     //TODO: Rename if/when refactoring
@@ -324,12 +325,14 @@ public class Application implements Serializable {
     public void flagStudentIdentificationDone() {
         this.studentIdentificationDone = null;
         this.automatedProcessingFailCount = null;
+        this.automatedProcessingFailRetryTime = null;
     }
 
     @JsonIgnore
     public void flagStudentIdentificationRequired() {
         this.studentIdentificationDone = Boolean.FALSE;
         this.automatedProcessingFailCount = null;
+        this.automatedProcessingFailRetryTime = null;
     }
 
     @JsonIgnore
@@ -533,6 +536,13 @@ public class Application implements Serializable {
         return this;
     }
 
+    public Long getAutomatedProcessingFailRetryTime() {
+        return automatedProcessingFailRetryTime;
+    }
+
+    public void setAutomatedProcessingFailRetryTime(Long automatedProcessingFailRetryTime) {
+        this.automatedProcessingFailRetryTime = automatedProcessingFailRetryTime;
+    }
 
     public Application setRedoPostProcess(PostProcessingState redoPostProcess) {
         this.redoPostProcess = redoPostProcess; return this;
@@ -643,6 +653,7 @@ public class Application implements Serializable {
         clone.notes = new LinkedList<>(this.notes);
         clone.authorizationMeta = null == this.authorizationMeta ? null: authorizationMeta.clone();
         clone.automatedProcessingFailCount = this.automatedProcessingFailCount;
+        clone.automatedProcessingFailRetryTime = this.automatedProcessingFailRetryTime;
         return clone;
     }
 

@@ -136,16 +136,17 @@ public class ApplicationPostProcessorService {
             application.flagStudentIdentificationDone();
         } else if (isNotEmpty(personOid)) {
 
-            Long lastProcessTime = application.getLastAutomatedProcessingTime();
+            Long lastFailedRetryTime = application.getAutomatedProcessingFailRetryTime();
             Integer failCount = application.getAutomatedProcessingFailCount();
             Person person = null;
-            if(lastProcessTime == null || failCount == null || failCount < this.retryFailQuickCount || lastProcessTime < (System.currentTimeMillis() - retryFailedAgainTime)) {
+            if(lastFailedRetryTime == null || failCount == null || failCount < this.retryFailQuickCount || lastFailedRetryTime < (System.currentTimeMillis() - retryFailedAgainTime)) {
                 person = authenticationService.checkStudentOid(application.getPersonOid());
                 if (person != null && isNotEmpty(person.getStudentOid())) {
                     application.modifyPersonalData(person);
                     application.flagStudentIdentificationDone();
                 } else {
                     application.setAutomatedProcessingFailCount(application.getAutomatedProcessingFailCount() == null ? 1 : application.getAutomatedProcessingFailCount() + 1);
+                    application.setAutomatedProcessingFailRetryTime(System.currentTimeMillis());
                 }
             }
         }
