@@ -3787,3 +3787,7 @@ select#application-system {
 select#base-education option {
   padding: 0;
 }
+
+#pagination li a {
+  cursor:pointer;
+}
