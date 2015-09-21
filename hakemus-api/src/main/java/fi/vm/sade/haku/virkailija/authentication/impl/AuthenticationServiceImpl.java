@@ -74,6 +74,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         cachingRestClient.setCasService(targetService);
         cachingRestClient.setUsername(clientAppUser);
         cachingRestClient.setPassword(clientAppPass);
+        cachingRestClient.setCallerId("callerid.haku.haku-app.backend");
         this.targetService = targetService;
         this.userOidPrefix = userOidPrefix;
         this.langCookieName = langCookieName;
