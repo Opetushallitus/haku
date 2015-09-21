@@ -1,5 +1,7 @@
-package fi.vm.sade.haku.virkailija.excel;
+package fi.vm.sade.haku.virkailija;
 
+import com.google.common.collect.Sets;
+import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
 import fi.vm.sade.haku.oppija.hakemus.it.IntegrationTestSupport;
 import fi.vm.sade.haku.oppija.hakemus.resource.ApplicationResource;
 import fi.vm.sade.haku.oppija.hakemus.resource.XlsModel;
@@ -21,7 +23,7 @@ import static junit.framework.Assert.assertEquals;
 @ContextConfiguration(locations = "classpath:spring/test-context.xml")
 @RunWith(SpringJUnit4ClassRunner.class)
 @ActiveProfiles("it")
-public class TestHakukohteenHakijatExcel extends IntegrationTestSupport {
+public class TestApplicationResource extends IntegrationTestSupport {
 
     @Autowired
     ApplicationResource applicationResource;
@@ -33,7 +35,7 @@ public class TestHakukohteenHakijatExcel extends IntegrationTestSupport {
 
         XlsModel xlsModel = applicationResource.getApplicationsByOids(
                 request, "1.2.246.562.29.95390561488", "test", "", "", null,
-                null, "", "1.2.246.562.20.92555013215", "", "", false, false,
+                null, "", "1.2.246.562.20.92555013215", "", Sets.newHashSet("ulk"), false, false,
                 "", "", null, 0, 100);
 
         String[][] expected = new String[][]{
@@ -49,6 +51,84 @@ public class TestHakukohteenHakijatExcel extends IntegrationTestSupport {
             }
         }
 
+    }
+
+    @Test
+    public void testBaseEducationFilter() {
+        // Should not find any when using non existing base education
+        ApplicationSearchResultDTO result = applicationResource.findApplicationsOrdered(
+                "fullName",
+                "asc",
+                "",
+                null,
+                null,
+                "",
+                "",
+                Sets.newHashSet("base_education_that_does_not_exist"),
+                "",
+                "1.2.246.562.29.95390561488",
+                "kausi_k",
+                "2015",
+                "1.2.246.562.20.63351226459",
+                false,
+                false,
+                "",
+                "",
+                null,
+                0,
+                50
+        );
+        assertEquals(0, result.getTotalCount());
+
+        // 2 applications exist with base education "ulk"
+        result = applicationResource.findApplicationsOrdered(
+                "fullName",
+                "asc",
+                "",
+                null,
+                null,
+                "",
+                "",
+                Sets.newHashSet("ulk"),
+                "",
+                "1.2.246.562.29.95390561488",
+                "kausi_k",
+                "2015",
+                "1.2.246.562.20.63351226459",
+                false,
+                false,
+                "",
+                "",
+                null,
+                0,
+                50
+        );
+        assertEquals(2, result.getTotalCount());
+
+        // 2 applications with base education "ulk" and 1 with base education "yo_ulkomainen" exist
+        result = applicationResource.findApplicationsOrdered(
+                "fullName",
+                "asc",
+                "",
+                null,
+                null,
+                "",
+                "",
+                Sets.newHashSet("ulk", "yo_ulkomainen"),
+                "",
+                "1.2.246.562.29.95390561488",
+                "kausi_k",
+                "2015",
+                "1.2.246.562.20.63351226459",
+                false,
+                false,
+                "",
+                "",
+                null,
+                0,
+                50
+        );
+        assertEquals(3, result.getTotalCount());
     }
 
 }

@@ -1,6 +1,7 @@
 package fi.vm.sade.haku.oppija.ui.service.impl;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.Maps;
 import fi.vm.sade.auditlog.haku.HakuOperation;
 import fi.vm.sade.auditlog.haku.LogMessage;
 import fi.vm.sade.haku.oppija.common.organisaatio.Organization;
@@ -592,10 +593,26 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     @Override
     public List<Map<String, String>> getHigherEdBaseEdOptions() {
         List<Map<String, String>> options = new ArrayList<Map<String, String>>();
-        for (String ed : new String[] {"yo", "am", "amt", "kk", "ulk", "avoin", "muu"}) {
+        String[] baseEducations = new String[] {
+                "am",
+                "amt",
+                "avoin",
+                "kk",
+                "kk_ulk",
+                "muu",
+                "ulk",
+                "yo_ammatillinen",
+                "yo_kansainvalinen_suomessa",
+                "yo",
+                "yo_ulkomainen"
+        };
+        for (String ed : baseEducations) {
             Map<String, String> opt = new HashMap<String, String>();
             opt.put("value", ed);
-            Map<String, String> trans = ElementUtil.createI18NText("virkailija.hakemus.pohjakoulutus."+ed, OppijaConstants.MESSAGES_BUNDLE_NAME).getTranslations();
+
+            Map<String, String> trans = Maps.newHashMap(ElementUtil.createI18NText("pohjakoulutus_" + ed, OppijaConstants.FORM_COMMON_BUNDLE_NAME).getTranslations());
+            Map<String, String> transOverride = ElementUtil.createI18NText("virkailija.hakemus.pohjakoulutus." + ed, OppijaConstants.MESSAGES_BUNDLE_NAME).getTranslations();
+            trans.putAll(transOverride);
             for (String lang : new String[] {"fi", "sv", "en"}) {
                 opt.put("name_"+lang, trans.get(lang));
             }
