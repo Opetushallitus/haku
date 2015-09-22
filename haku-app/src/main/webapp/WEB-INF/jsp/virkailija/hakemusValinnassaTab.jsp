@@ -4,24 +4,15 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib prefix="haku" tagdir="/WEB-INF/tags" %>
 
+<iframe id="hakemusValinnassa"
+        src="http://localhost:9090${contextPath}/virkailija/hakemus/${it.application.oid}/valintaView"
+        width="100%"
+        frameborder="0">
+</iframe>
 <script>
-$.ajax({
-    url: "${contextPath}/virkailija/hakemus/${it.application.oid}/valintaView",
-    type: "GET",
-    success: function (data) {
-            $('#hakemusValinnassa').html(data);
-            $('#hakemusValinnassa').find('*').prop('disabled', true);
-            $('#hakemusValinnassa').find('*').each(function(index) {
-                var currId = $(this).attr('id');
-                $(this).attr('id', 'valinta_'+currId);
-            });
-        },
-    error: function (data) {
-            $('#hakemusValinnassa').html("<p>Hakemuksen tietojen lataaminen valintalaskennasta epäonnistui</p>");
-        }
-    }
-);
-
+    setInterval(function() {
+        var frame = $('#hakemusValinnassa');
+        frame.height(frame.contents().find('body').height() + 30);
+        frame.contents().find('input,select,button').prop('disabled', true);
+    }, 3000);
 </script>
-
-<div id="hakemusValinnassa">Ladataan hakemuksen tietoja valintalaskennasta</div>
