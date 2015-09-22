@@ -5,7 +5,7 @@
 <%@ taglib prefix="haku" tagdir="/WEB-INF/tags" %>
 
 <iframe id="hakemusValinnassa"
-        src="http://localhost:9090${contextPath}/virkailija/hakemus/${it.application.oid}/valintaView"
+        src="${contextPath}/virkailija/hakemus/${it.application.oid}/valintaView"
         width="100%"
         frameborder="0">
 </iframe>
