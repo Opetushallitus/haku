@@ -141,6 +141,19 @@ public class HakuServiceMockImpl implements HakuService {
                 .setKohdejoukkoUri(KOHDEJOUKKO_ERITYISOPETUKSENA_JARJESTETTAVA_AMMATILLINEN)
                 .setState("JULKAISTU")
                 .get());
+        asList.add(new ApplicationSystemBuilder()
+                .setId("1.2.246.562.29.80306203979")
+                .setName(ElementUtil.createI18NAsIs("Ammatillisen koulutuksen ja lukiokoulutuksen syksyn 2015 yhteishaku"))
+                .setApplicationPeriods(Lists.newArrayList(new ApplicationPeriod(getDate(-100), getDate(1000))))
+                .setHakukausiUri(HAKUKAUSI_SYKSY)
+                .setHakukausiVuosi(2015)
+                .setUsePriorities(true)
+                .setApplicationSystemType(HAKUTYYPPI_VARSINAINEN_HAKU)
+                .setHakutapa(HAKUTAPA_YHTEISHAKU)
+                .setMaxApplicationOptions(5)
+                .setKohdejoukkoUri(KOHDEJOUKKO_AMMATILLINEN_JA_LUKIO)
+                .setState("JULKAISTU")
+                .get());
     }
 
     @Override

@@ -37,7 +37,8 @@ public class FormConfiguration {
         erotteleAmmatillinenJaYoAmmatillinenKeskiarvo,
         gradeAverageKomponentti,
         lukioKeskiarvoVapaaehtoinen,
-        ammatillinenKeskiarvoVapaaehtoinen
+        ammatillinenKeskiarvoVapaaehtoinen,
+        koulutusasteURI
     }
 
     // FormConfiguration oid
