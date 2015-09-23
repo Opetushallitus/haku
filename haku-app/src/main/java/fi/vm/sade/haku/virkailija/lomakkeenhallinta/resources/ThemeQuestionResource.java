@@ -16,6 +16,8 @@
 
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.resources;
 
+import com.mongodb.WriteResult;
+import fi.vm.sade.auditlog.haku.HakuOperation;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
 import fi.vm.sade.haku.oppija.hakemus.resource.JSONException;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
@@ -54,6 +56,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import static fi.vm.sade.haku.AuditHelper.AUDIT;
+import static fi.vm.sade.haku.AuditHelper.builder;
 
 @Controller
 @Path("/application-system-form-editor/theme-question")
@@ -125,6 +129,13 @@ public class ThemeQuestionResource {
             throw new JSONException(Response.Status.BAD_REQUEST, "question.has.followup.questions.deletion.not.allowed", null);
         }
         themeQuestionDAO.delete(themeQuestionId);
+
+        AUDIT.log(builder().hakuOid(dbThemeQuestion.getApplicationSystemId())
+                .setOperaatio(HakuOperation.APPSYS_THEMEQUESTION_DELETE)
+                .add("themeQuestionId", themeQuestionId)
+                .add("learningOpportunityId", dbThemeQuestion.getLearningOpportunityId())
+                .add("themeId", dbThemeQuestion.getTheme())
+                .build());
         renumerateThemeQuestionOrdinals(dbThemeQuestion.getApplicationSystemId(), dbThemeQuestion.getLearningOpportunityId(), dbThemeQuestion.getTheme());
     }
 
@@ -167,6 +178,13 @@ public class ThemeQuestionResource {
         LOGGER.debug("Saving Theme Question with id: " + dbThemeQuestion.getId().toString());
         themeQuestionDAO.save(themeQuestion);
         LOGGER.debug("Saved Theme Question with id: " + themeQuestionId);
+
+        AUDIT.log(builder().hakuOid(dbThemeQuestion.getApplicationSystemId())
+                .setOperaatio(HakuOperation.APPSYS_THEMEQUESTION_UPDATE)
+                .add("themeQuestionId", themeQuestion.getId())
+                .add("learningOpportunityId", dbThemeQuestion.getLearningOpportunityId())
+                .add("themeId", themeQuestion.getTheme())
+                .build());
     }
 
     private ThemeQuestion fetchThemeQuestion(String themeQuestionId){
@@ -239,6 +257,12 @@ public class ThemeQuestionResource {
         LOGGER.debug("Saving Theme Question");
         themeQuestionDAO.save(themeQuestion);
         LOGGER.debug("Saved Theme Question");
+
+        AUDIT.log(builder().hakuOid(applicationSystemId)
+                .setOperaatio(HakuOperation.APPSYS_THEMEQUESTION_INSERT)
+                .add("learningOpportunityId", learningOpportunityId)
+                .add("themeId", themeId)
+                .build());
     }
 
     @POST
