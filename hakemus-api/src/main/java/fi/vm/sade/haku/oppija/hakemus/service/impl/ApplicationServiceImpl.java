@@ -17,6 +17,7 @@
 package fi.vm.sade.haku.oppija.hakemus.service.impl;
 
 import fi.vm.sade.haku.oppija.common.koulutusinformaatio.KoulutusinformaatioService;
+import fi.vm.sade.haku.oppija.common.organisaatio.Organization;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
 import fi.vm.sade.haku.oppija.common.suoritusrekisteri.SuoritusDTO;
 import fi.vm.sade.haku.oppija.common.suoritusrekisteri.SuoritusrekisteriService;
@@ -441,24 +442,53 @@ public class ApplicationServiceImpl implements ApplicationService {
                     }
                 }
                 if(foundMatch == false) {
-                    String note = "Liitteen saapumistieto ei kohdistunut.";
+                    String note = "Liitemerkintä poistettu.";
                     note +=" Saapunut: " + (ApplicationAttachmentRequest.ReceptionStatus.ARRIVED.equals(orig.getReceptionStatus())?"Kyllä.":"Myöhässä.");
                     if(orig.getPreferenceAoId() != null) {
-                        note += " Hakukohde: " + orig.getPreferenceAoId() + ".";
+                        note += " Hakukohde: (" + orig.getPreferenceAoId() + ").";
+                        try {
+                            final ApplicationOptionDTO applicationOption = koulutusinformaatioService.getApplicationOption(orig.getPreferenceAoId());
+                            if (applicationOption != null) {
+                                if(applicationOption.getProvider() != null) {
+                                    note += " " + applicationOption.getProvider().getName() + ".";
+                                }
+                                note += " " + applicationOption.getName() + ".";
+                            }
+                        } catch(Exception e) {
+                            LOGGER.error("Failed to query KI aoId:" + orig.getPreferenceAoId(), e);
+                        }
                     }
                     if(orig.getPreferenceAoGroupId() != null) {
-                        note += " Hakuryhmä: " + orig.getPreferenceAoGroupId() + ".";
+                        note += " Hakuryhmä: (" +orig.getPreferenceAoGroupId() + ").";
+
+                        try {
+                            Organization organization = this.organizationService.findByOid(orig.getPreferenceAoGroupId());
+                            if(organization != null && organization.getName() != null) {
+                                note += " " + organization.getName().getText("fi");
+                            }
+                        } catch(Exception e) {
+                            LOGGER.error("Failed to query organization:" + orig.getPreferenceAoGroupId(), e);
+                        }
                     }
                     note += " Kuvaus: ";
 
                     if(orig.getApplicationAttachment() != null && orig.getApplicationAttachment().getName() != null) {
                         I18nText nameText = orig.getApplicationAttachment().getName();
-                        if(nameText.getTranslations().containsKey("fi")) {
+                        if (nameText.getTranslations().containsKey("fi")) {
                             note += nameText.getText("fi");
-                        } else if(nameText.getTranslations().containsKey("sv")) {
+                        } else if (nameText.getTranslations().containsKey("sv")) {
                             note += nameText.getText("sv");
-                        } else if(nameText.getTranslations().containsKey("en")) {
+                        } else if (nameText.getTranslations().containsKey("en")) {
                             note += nameText.getText("en");
+                        }
+                    } else if(orig.getApplicationAttachment() != null && orig.getApplicationAttachment().getHeader() != null) {
+                        I18nText headerText = orig.getApplicationAttachment().getHeader();
+                        if (headerText.getTranslations().containsKey("fi")) {
+                            note += headerText.getText("fi");
+                        } else if (headerText.getTranslations().containsKey("sv")) {
+                            note += headerText.getText("sv");
+                        } else if (headerText.getTranslations().containsKey("en")) {
+                            note += headerText.getText("en");
                         }
                     }
                     application.addNote(new ApplicationNote(note, new Date(), userSession.getUser().getUserName()));
