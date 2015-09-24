@@ -113,7 +113,7 @@ public class ApplicationAttachmentRequest implements Serializable {
         } else if(this.applicationAttachment == null && newReq.getApplicationAttachment() == null) {
             return true;
         }
-        return this.applicationAttachment.equals(newReq.getApplicationAttachment());
+        return this.applicationAttachment.comparePartially(newReq.getApplicationAttachment(),true);
     }
 
 }

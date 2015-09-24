@@ -80,6 +80,10 @@ public class ApplicationAttachment implements Serializable {
 
     @Override
     public boolean equals(Object object) {
+        return comparePartially(object, false);
+    }
+
+    public boolean comparePartially(Object object, boolean skipChanging) {
         if(object == null) {
             return false;
         }
@@ -90,9 +94,12 @@ public class ApplicationAttachment implements Serializable {
         ApplicationAttachment newObj = (ApplicationAttachment)object;
 
         if((!I18nText.compare(this.name, newObj.name)) ||
-           (!I18nText.compare(this.header, newObj.header)) ||
-           (!I18nText.compare(this.description, newObj.description)) ||
-           (!I18nText.compare(this.deliveryNote, newObj.deliveryNote))) {
+                (!I18nText.compare(this.header, newObj.header)) ||
+                (!I18nText.compare(this.description, newObj.description))) {
+            return false;
+        }
+
+        if(skipChanging == false && !I18nText.compare(this.deliveryNote, newObj.deliveryNote)) {
             return false;
         }
 
@@ -115,6 +122,7 @@ public class ApplicationAttachment implements Serializable {
         }
 
         return true;
+
     }
 
 }
