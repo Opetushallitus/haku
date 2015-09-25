@@ -459,7 +459,7 @@ public class ApplicationServiceImpl implements ApplicationService {
                         }
                     }
                     if(orig.getPreferenceAoGroupId() != null) {
-                        note += " Hakuryhmä: (" +orig.getPreferenceAoGroupId() + ").";
+                        note += " Hakukohderyhmä: (" +orig.getPreferenceAoGroupId() + ").";
 
                         try {
                             Organization organization = this.organizationService.findByOid(orig.getPreferenceAoGroupId());
