@@ -247,4 +247,8 @@ public class FormParameters {
     public boolean useOptionalGradeAverageAmmatillinen() {
         return formConfiguration.getFeatureFlag(FormConfiguration.FeatureFlag.ammatillinenKeskiarvoVapaaehtoinen);
     }
+
+    public boolean useEducationDegreeURI() {
+        return formConfiguration.getFeatureFlag(FormConfiguration.FeatureFlag.koulutusasteURI);
+    }
 }

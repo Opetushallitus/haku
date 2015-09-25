@@ -51,8 +51,6 @@ import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.*;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.*;
 
 public class HakutoiveetPhase {
-    public static final String LISAOPETUS_EDUCATION_DEGREE = "22";
-    private static final String DISCRETIONARY_EDUCATION_DEGREE = "32";
     private static final String HAKUTOIVEET_PHASE_ID = "hakutoiveet";
     private static final String HAKUTOIVEET_THEME_ID = "hakutoiveet_teema";
     private static final String TODISTUSTENPUUTTUMINEN = "todistustenpuuttuminen";
@@ -107,6 +105,8 @@ public class HakutoiveetPhase {
     }
 
     public static PreferenceRow createI18NPreferenceRow(final String id, final FormParameters formParameters) {
+        final String LISAOPETUS_EDUCATION_DEGREE = formParameters.useEducationDegreeURI() ? "koulutusasteoph2002_22" : "22";
+        final String DISCRETIONARY_EDUCATION_DEGREE = formParameters.useEducationDegreeURI() ? "koulutusasteoph2002_32" : "32";
         PreferenceRow pr = new PreferenceRow(id,
                 formParameters.getI18nText("form.yleinen.tyhjenna"),
                 formParameters.getI18nText("form.hakutoiveet.koulutus"),
@@ -115,7 +115,7 @@ public class HakutoiveetPhase {
                 formParameters.getI18nText("form.hakutoiveet.liitteet"));
 
         if (formParameters.kysytaankoHarkinnanvaraisuus()) {
-            pr.addChild(createDiscretionaryQuestionsAndRules(id, formParameters));
+            pr.addChild(createDiscretionaryQuestionsAndRules(id, DISCRETIONARY_EDUCATION_DEGREE, formParameters));
         }
 
         if (formParameters.kysytaankoSora()) {
@@ -182,7 +182,9 @@ public class HakutoiveetPhase {
         return amkkoulutuksetArr;
     }
 
-    private static Element[] createDiscretionaryQuestionsAndRules(final String index, final FormParameters formParameters) {
+    private static Element[] createDiscretionaryQuestionsAndRules(final String index,
+                                                                  final String discretionary_education_degree,
+                                                                  final FormParameters formParameters) {
         Element discretionary = RadioBuilder.Radio(index + "-discretionary")
                 .addOptions(ImmutableList.of(
                         new Option(formParameters.getI18nText("form.yleinen.kylla"), KYLLA),
@@ -207,7 +209,7 @@ public class HakutoiveetPhase {
         discretionary.addChild(discretionaryFollowUpRule);
 
         Element discretionaryRule =
-                createVarEqualsToValueRule(index + "-Koulutus-educationDegree", DISCRETIONARY_EDUCATION_DEGREE);
+                createVarEqualsToValueRule(index + "-Koulutus-educationDegree", discretionary_education_degree);
 
         Element discretionaryRule2 = createVarEqualsToValueRule("POHJAKOULUTUS",
                 PERUSKOULU, YLIOPPILAS, OSITTAIN_YKSILOLLISTETTY, ALUEITTAIN_YKSILOLLISTETTY, YKSILOLLISTETTY);
