@@ -151,7 +151,7 @@ public class ApplicationServiceImplTest {
         service = new ApplicationServiceImpl(applicationDAO, userSession, formService, applicationOidService,
                 authenticationService, organizationService, hakuPermissionService, applicationSystemService,
                 koulutusinformaatioService, i18nBundleService, suoritusrekisteriService, hakuService,
-                elementTreeValidator, valintaService, onlyBackgroundValidation);
+                elementTreeValidator, valintaService, onlyBackgroundValidation, "true");
     }
 
     @Test
@@ -428,7 +428,7 @@ public class ApplicationServiceImplTest {
         when(applicationSystemService.getApplicationSystem("myAs")).thenReturn(as);
 
         ApplicationServiceImpl applicationService = new ApplicationServiceImpl(null, null, null, null, null, null,
-                null, applicationSystemService, null, null, null, null, null, null, null);
+                null, applicationSystemService, null, null, null, null, null, null, null, "true");
         application = applicationService.removeOrphanedAnswers(application);
         Map<String, String> persAnswers = application.getPhaseAnswers(OppijaConstants.PHASE_PERSONAL);
         Map<String, String> eduAnswers = application.getPhaseAnswers(OppijaConstants.PHASE_EDUCATION);
@@ -522,7 +522,7 @@ public class ApplicationServiceImplTest {
         }});
 
         ApplicationServiceImpl applicationService = new ApplicationServiceImpl(null, null, null, null, null, null, null,
-                null, null, null, suoritusrekisteriService, hakuService, null, null, null);
+                null, null, null, suoritusrekisteriService, hakuService, null, null, null, "true");
 
         application = applicationService.updateAutomaticEligibilities(application);
 

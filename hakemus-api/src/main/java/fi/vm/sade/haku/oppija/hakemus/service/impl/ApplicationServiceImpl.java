@@ -96,6 +96,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     private final HakuService hakuService;
     private final ElementTreeValidator elementTreeValidator;
     private final ValintaService valintaService;
+    private final Boolean disableHistory;
 
     // Tee vain background-validointi tälle lomakkeelle
     private final String onlyBackgroundValidation;
@@ -116,7 +117,8 @@ public class ApplicationServiceImpl implements ApplicationService {
                                   SuoritusrekisteriService suoritusrekisteriService,
                                   HakuService hakuService, ElementTreeValidator elementTreeValidator,
                                   ValintaService valintaService,
-                                  @Value("${onlyBackgroundValidation}") String onlyBackgroundValidation) {
+                                  @Value("${onlyBackgroundValidation}") String onlyBackgroundValidation,
+                                  @Value("${disableHistory:false}") String disableHistory) {
         this.applicationDAO = applicationDAO;
         this.userSession = userSession;
         this.formService = formService;
@@ -132,6 +134,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         this.valintaService = valintaService;
         this.elementTreeValidator = elementTreeValidator;
         this.onlyBackgroundValidation = onlyBackgroundValidation;
+        this.disableHistory = Boolean.valueOf(disableHistory);
     }
 
 
@@ -614,15 +617,6 @@ public class ApplicationServiceImpl implements ApplicationService {
         Application current = getApplication(query);
         hakuPermissionService.userCanEditApplicationAdditionalData(current);
         current.getAdditionalInfo().putAll(additionalInfo);
-        //TODO =RS= add Version
-        //applicationDAO.update(query, current);
-        Application oldApplication = applicationDAO.find(query).get(0);
-        String username;
-        if(userSession == null || userSession.getUser() == null)
-            username = "system";
-        else
-            username = userSession.getUser().getUserName();
-        ApplicationDiffUtil.addHistoryBasedOnChangedAnswers(current, oldApplication, username, "update");
         update(query, current);
     }
 
@@ -636,6 +630,11 @@ public class ApplicationServiceImpl implements ApplicationService {
                        final boolean postProcess) {
         if (postProcess) {
             application.setRedoPostProcess(Application.PostProcessingState.NOMAIL);
+        }
+        if (!disableHistory) {
+            LOGGER.debug("addChangeHistoryToApplication");
+            Application oldApplication = applicationDAO.find(queryApplication).get(0);
+            ApplicationDiffUtil.addHistoryBasedOnChangedAnswers(application, oldApplication, userSession.getUser().getUserName(), "update");
         }
         this.applicationDAO.update(queryApplication, application);
     }
