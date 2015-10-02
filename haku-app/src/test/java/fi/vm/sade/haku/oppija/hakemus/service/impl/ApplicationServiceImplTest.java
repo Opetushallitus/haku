@@ -5,10 +5,7 @@ import fi.vm.sade.haku.oppija.common.koulutusinformaatio.KoulutusinformaatioServ
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
 import fi.vm.sade.haku.oppija.common.suoritusrekisteri.SuoritusDTO;
 import fi.vm.sade.haku.oppija.common.suoritusrekisteri.SuoritusrekisteriService;
-import fi.vm.sade.haku.oppija.hakemus.domain.Application;
-import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPreferenceMeta;
-import fi.vm.sade.haku.oppija.hakemus.domain.AuthorizationMeta;
-import fi.vm.sade.haku.oppija.hakemus.domain.PreferenceEligibility;
+import fi.vm.sade.haku.oppija.hakemus.domain.*;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationAdditionalDataDTO;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultItemDTO;
@@ -32,6 +29,8 @@ import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.Variable;
 import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.haku.oppija.lomake.service.FormService;
+import fi.vm.sade.haku.oppija.lomake.service.Session;
+import fi.vm.sade.haku.oppija.lomake.service.impl.SystemSession;
 import fi.vm.sade.haku.oppija.lomake.service.impl.UserSession;
 import fi.vm.sade.haku.oppija.lomake.validation.ElementTreeValidator;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidatorFactory;
@@ -44,6 +43,9 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import fi.vm.sade.haku.virkailija.valinta.ValintaService;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 
 import java.io.IOException;
 import java.util.*;
@@ -136,22 +138,32 @@ public class ApplicationServiceImplTest {
         when(applicationDAO.findAllQueried(eq(applicationQueryParameters), eq(filterParameters))).thenReturn(searchResultDTO);
         when(applicationDAO.findAllQueried(eq(applicationQueryParameters), eq(filterParameters))).thenReturn(searchResultDTO);
         when(applicationDAO.findAllQueried(eq(applicationQueryParameters), eq(filterParameters))).thenReturn(searchResultDTO);
-        when(applicationDAO.find(any(Application.class))).thenReturn(Lists.newArrayList(application));
+        when(applicationDAO.find(any(Application.class)))
+                .thenAnswer(new Answer<List<Application>>() {
+                    @Override
+                    public List<Application> answer(InvocationOnMock invocationOnMock) throws Throwable {
+                        Application a = new Application();
+                        Map<String, String> answers = new HashMap<String, String>();
+                        answers.put("avain", "arvo");
+                        a.addVaiheenVastaukset("test", answers);
+                        return Lists.newArrayList(a);
+                    }
+                });
         //when(authenticationService.addPerson(any(Person.class))).thenReturn(PERSON_OID);
         when(applicationDAO.findApplicationAdditionalData(eq(AS_ID), eq(AO_ID), eq(filterParameters))).thenReturn(Lists.newArrayList(new ApplicationAdditionalDataDTO()));
         when(hakuPermissionService.userCanReadApplication(any(Application.class))).thenReturn(true);
 //        when(suoritusrekisteriService.getLahtokoulu(any(String.class))).thenReturn("1.2.246.562.10.56695937518");
 //        when(suoritusrekisteriService.getLahtoluokka(any(String.class))).thenReturn("9A");
 
-        UserSession userSession = null;
+        Session session = new SystemSession();
         FormService formService = null;
         HakuService hakuService = null;
         ValintaService valintaService = null;
         String onlyBackgroundValidation = null;
-        service = new ApplicationServiceImpl(applicationDAO, userSession, formService, applicationOidService,
+        service = new ApplicationServiceImpl(applicationDAO, session, formService, applicationOidService,
                 authenticationService, organizationService, hakuPermissionService, applicationSystemService,
                 koulutusinformaatioService, i18nBundleService, suoritusrekisteriService, hakuService,
-                elementTreeValidator, valintaService, onlyBackgroundValidation, "true");
+                elementTreeValidator, valintaService, onlyBackgroundValidation, "false");
     }
 
     @Test
@@ -193,7 +205,37 @@ public class ApplicationServiceImplTest {
         Map<String, String> additionalInfo = new HashMap<String, String>();
         additionalInfo.put("key", "value");
         service.saveApplicationAdditionalInfo(OID, additionalInfo);
-        verify(applicationDAO, times(1)).update(any(Application.class), any(Application.class));
+        ArgumentCaptor<Application> hakemus = ArgumentCaptor.forClass(Application.class);
+        verify(applicationDAO, times(1)).update(any(Application.class), hakemus.capture());
+        assertFalse("kirjoitettiin historia", hakemus.getValue().getHistory().isEmpty());
+        Change c = hakemus.getValue().getHistory().get(0);
+        assertEquals("key", c.getChanges().get(0).get("field"));
+        assertEquals("value", c.getChanges().get(0).get("new value"));
+    }
+
+    @Test
+    public void testUpdateRecordsChanges() {
+        Map<String, String> answers = new HashMap<>();
+        answers.put("avain", "uusi arvo");
+        Application change = new Application(OID);
+        change.addVaiheenVastaukset("test", answers);
+
+        service.update(new Application(OID), change);
+        ArgumentCaptor<Application> hakemus = ArgumentCaptor.forClass(Application.class);
+        verify(applicationDAO, times(1)).update(any(Application.class), hakemus.capture());
+        assertFalse("kirjoitettiin historia", hakemus.getValue().getHistory().isEmpty());
+        Change c = hakemus.getValue().getHistory().get(0);
+        assertEquals("avain", c.getChanges().get(0).get("field"));
+        assertEquals("arvo", c.getChanges().get(0).get("old value"));
+        assertEquals("uusi arvo", c.getChanges().get(0).get("new value"));
+
+        service.update(new Application(OID), change, false);
+        verify(applicationDAO, times(2)).update(any(Application.class), hakemus.capture());
+        assertFalse("kirjoitettiin historia", hakemus.getValue().getHistory().isEmpty());
+        c = hakemus.getValue().getHistory().get(0);
+        assertEquals("avain", c.getChanges().get(0).get("field"));
+        assertEquals("arvo", c.getChanges().get(0).get("old value"));
+        assertEquals("uusi arvo", c.getChanges().get(0).get("new value"));
     }
 
     @Test
