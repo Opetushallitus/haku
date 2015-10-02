@@ -189,7 +189,7 @@ public class ApplicationResourceTest {
 
         public ApplicationServiceMock() {
             super(null, null, null, null, null, null, null, applicationSystemService, null, null, null, null,
-                    null, null, null);
+                    null, null, null, "true");
         }
 
         @Override
