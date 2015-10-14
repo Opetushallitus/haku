@@ -31,6 +31,7 @@ import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationFilterParameters;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationQueryParameters;
 import fi.vm.sade.haku.oppija.lomake.exception.IncoherentDataException;
 import fi.vm.sade.haku.oppija.lomake.service.EncrypterService;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,6 +72,8 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
 
     @Value("${mongodb.enableSearchOnSecondary:true}")
     private boolean enableSearchOnSecondary;
+
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Autowired
     public ApplicationDAOMongoImpl(final DBObjectToApplicationFunction dbObjectToHakemusConverter,
@@ -294,14 +297,13 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
 
     @Override
     public List<Application> getApplicationsByPersonOid(String personOid) {
-        DBObjectToApplicationFunction transform = new DBObjectToApplicationFunction();
         final DBObject query = new BasicDBObject(FIELD_PERSON_OID, personOid);
         DBObject keys = generateKeysDBObject("answers.hakutoiveet");
         DBCursor dbCursor = getCollection().find(query, keys);
         List<Application> results = Lists.newArrayList();
         while (dbCursor.hasNext()) {
             DBObject obj = dbCursor.next();
-            results.add(transform.apply(obj));
+            results.add(objectMapper.convertValue(obj, Application.class));
         }
         return results;
     }

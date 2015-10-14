@@ -1,5 +1,6 @@
 package fi.vm.sade.haku.oppija.hakemus.resource;
 
+import com.google.common.base.Preconditions;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 import fi.vm.sade.authentication.permissionchecker.PermissionCheckInterface;
