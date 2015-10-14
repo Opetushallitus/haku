@@ -1,6 +1,5 @@
 package fi.vm.sade.haku.oppija.hakemus.resource;
 
-import com.google.common.base.Preconditions;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 import fi.vm.sade.authentication.permissionchecker.PermissionCheckInterface;
@@ -8,6 +7,7 @@ import fi.vm.sade.authentication.permissionchecker.PermissionCheckRequestDTO;
 import fi.vm.sade.authentication.permissionchecker.PermissionCheckResponseDTO;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationDAO;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -39,11 +39,17 @@ public class PermissionResource implements PermissionCheckInterface {
     )
     @Override
     public PermissionCheckResponseDTO checkPermission(PermissionCheckRequestDTO request) {
+        if (request == null || StringUtils.isBlank(request.getPersonOid()) || request.getOrganisationOids() == null)
+            return permissionDenied("Null or empty oid.");
+        for (String org : request.getOrganisationOids()) {
+            if (StringUtils.isBlank(org)) return permissionDenied("Empty organisation oid.");
+        }
+
         List<Application> result = applicationDao.getApplicationsByPersonOid(request.getPersonOid());
         for (Application hakemus : result) {
             Map<String, String> answers = hakemus.getAnswers().get("hakutoiveet");
             for (String hakutoive : answers.keySet()) {
-                if(hakutoive.contains("-Opetuspiste-id") && request.getOrganisationOids().contains(answers.get(hakutoive)))
+                if (hakutoive.contains("-Opetuspiste-id") && request.getOrganisationOids().contains(answers.get(hakutoive)))
                     return permissionAllowed();
             }
         }
