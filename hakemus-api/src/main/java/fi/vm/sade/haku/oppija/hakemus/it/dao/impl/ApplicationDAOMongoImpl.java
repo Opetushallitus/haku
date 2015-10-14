@@ -18,6 +18,7 @@ package fi.vm.sade.haku.oppija.hakemus.it.dao.impl;
 
 import com.google.common.base.Function;
 import com.google.common.base.Strings;
+import com.google.common.collect.Lists;
 import com.mongodb.*;
 import fi.vm.sade.haku.oppija.common.dao.AbstractDAOMongoImpl;
 import fi.vm.sade.haku.oppija.hakemus.converter.*;
@@ -289,6 +290,20 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     @Override
     public boolean hasApplicationsWithModelVersion(int versionLevel) {
         return 0 < buildUpgradableCursor(versionLevel).count();
+    }
+
+    @Override
+    public List<Application> getApplicationsByPersonOid(String personOid) {
+        DBObjectToApplicationFunction transform = new DBObjectToApplicationFunction();
+        final DBObject query = new BasicDBObject(FIELD_PERSON_OID, personOid);
+        DBObject keys = generateKeysDBObject("answers.hakutoiveet");
+        DBCursor dbCursor = getCollection().find(query, keys);
+        List<Application> results = Lists.newArrayList();
+        while (dbCursor.hasNext()) {
+            DBObject obj = dbCursor.next();
+            results.add(transform.apply(obj));
+        }
+        return results;
     }
 
     private DBCursor buildUpgradableCursor(int versionLevel) {
