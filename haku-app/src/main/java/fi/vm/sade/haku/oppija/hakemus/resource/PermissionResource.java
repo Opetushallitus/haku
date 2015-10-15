@@ -1,5 +1,6 @@
 package fi.vm.sade.haku.oppija.hakemus.resource;
 
+import com.google.common.base.Preconditions;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 import fi.vm.sade.authentication.permissionchecker.PermissionCheckInterface;
@@ -39,21 +40,27 @@ public class PermissionResource implements PermissionCheckInterface {
     )
     @Override
     public PermissionCheckResponseDTO checkPermission(PermissionCheckRequestDTO request) {
-        if (request == null || StringUtils.isBlank(request.getPersonOid()) || request.getOrganisationOids() == null)
-            return permissionDenied("Null or empty oid.");
-        for (String org : request.getOrganisationOids()) {
-            if (StringUtils.isBlank(org)) return permissionDenied("Empty organisation oid.");
-        }
-
-        List<Application> result = applicationDao.getApplicationsByPersonOid(request.getPersonOid());
-        for (Application hakemus : result) {
-            Map<String, String> answers = hakemus.getAnswers().get("hakutoiveet");
-            for (String hakutoive : answers.keySet()) {
-                if (hakutoive.contains("-Opetuspiste-id") && request.getOrganisationOids().contains(answers.get(hakutoive)))
-                    return permissionAllowed();
+        try {
+            Preconditions.checkNotNull(request, "Null request.");
+            Preconditions.checkArgument(!StringUtils.isBlank(request.getPersonOid()), "Blank person oid.");
+            Preconditions.checkNotNull(request.getOrganisationOids(), "Null organisation oid list.");
+            for (String org : request.getOrganisationOids()) {
+                Preconditions.checkArgument(!StringUtils.isBlank(org), "Blank organisation oid in oid list.");
             }
+
+            List<Application> result = applicationDao.getApplicationsByPersonOid(request.getPersonOid());
+            for (Application hakemus : result) {
+                Map<String, String> answers = hakemus.getAnswers().get("hakutoiveet");
+                for (String hakutoive : answers.keySet()) {
+                    if (hakutoive.contains("-Opetuspiste-id") && request.getOrganisationOids().contains(answers.get(hakutoive)))
+                        return permissionAllowed();
+                }
+            }
+
+            return permissionDenied("No organisation found.");
+        } catch(Exception e){
+            return permissionDenied(e.getMessage());
         }
-        return permissionDenied("No organisation found.");
     }
 
     private PermissionCheckResponseDTO permissionAllowed() {
