@@ -44,6 +44,7 @@ public class PermissionResource implements PermissionCheckInterface {
             Preconditions.checkNotNull(request, "Null request.");
             Preconditions.checkArgument(!StringUtils.isBlank(request.getPersonOid()), "Blank person oid.");
             Preconditions.checkNotNull(request.getOrganisationOids(), "Null organisation oid list.");
+            Preconditions.checkArgument(!request.getOrganisationOids().isEmpty(), "Organisation oid list empty.");
             for (String org : request.getOrganisationOids()) {
                 Preconditions.checkArgument(!StringUtils.isBlank(org), "Blank organisation oid in oid list.");
             }
