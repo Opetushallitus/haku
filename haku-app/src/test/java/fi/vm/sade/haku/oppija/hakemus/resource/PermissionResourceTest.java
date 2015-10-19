@@ -2,49 +2,59 @@ package fi.vm.sade.haku.oppija.hakemus.resource;
 
 import fi.vm.sade.authentication.permissionchecker.PermissionCheckRequestDTO;
 import fi.vm.sade.authentication.permissionchecker.PermissionCheckResponseDTO;
-import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationDAO;
-import org.junit.Before;
+import fi.vm.sade.haku.oppija.hakemus.it.IntegrationTestSupport;
 import org.junit.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
 import static org.junit.Assert.assertEquals;
 
-public class PermissionResourceTest {
+@ContextConfiguration(locations = "classpath:spring/test-context.xml")
+@RunWith(SpringJUnit4ClassRunner.class)
+@ActiveProfiles("it")
+public class PermissionResourceTest extends IntegrationTestSupport {
 
     public static final String NULL_REQUEST = "Null request.";
     public static final String BLANK_OID = "Blank person oid.";
     public static final String BLANK_ORGANISATION_OID = "Blank organisation oid in oid list.";
     public static final String EMPTY_LIST = "Organisation oid list empty.";
     public static final String NULL_LIST = "Null organisation oid list.";
+    public static final String NO_RESULTS = "No organisation found.";
 
-    @Mock
-    private ApplicationDAO applicationDao;
+    @Autowired
+    PermissionResource permissionResource;
 
-    @InjectMocks
-    private PermissionResource permissionResource = new PermissionResource();
-
-    public PermissionResourceTest() {
-    }
-
-    @Before()
-    public void init() {
-
-    }
+    /*
+     * Testataan että virkailija, joka kuuluu organisaatioon, voi nähdä vain niiden henkilöiden tietoja, jotka ovat
+     * hakeneet hänen organisaatioonsa tai johonkin sen lapsiorganisaatioon.
+     */
 
     @Test
     public void personMatchesOrganisation() {
-    }
-
-    @Test
-    public void personMatchesParentOrganisation() {
+        String studentOid = "1.2.246.562.24.14229104472";
+        String organisationOid = "1.2.246.562.10.21989237215";
+        validate(permissionResource.checkPermission(getRequest(studentOid, organisationOid)), true, null);
     }
 
     @Test
     public void personDoesNotMatchChildOrganisation() {
+        String studentOid = "1.2.246.562.24.14229104472";
+        String[] organisationOids = {"childOrganisationOid", "secondChildOrganisationOid"};
+        validate(permissionResource.checkPermission(getRequest(studentOid, organisationOids)), false, NO_RESULTS);
+    }
+
+    @Test
+    public void personMatchesParentOrganisation() {
+        String studentOid = "1.2.246.562.24.14229104472";
+        String organisationOid = "1.2.246.562.10.85149969462";
+        String[] organisationOids = {organisationOid, "1.2.246.562.10.27756776996", "1.2.246.562.10.21989237215"};
+        validate(permissionResource.checkPermission(getRequest(studentOid, organisationOids)), true, null);
     }
 
     @Test
