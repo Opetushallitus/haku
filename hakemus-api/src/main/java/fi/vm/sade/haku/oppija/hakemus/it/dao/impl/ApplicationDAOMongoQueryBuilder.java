@@ -95,7 +95,7 @@ final class ApplicationDAOMongoQueryBuilder {
             startTime = System.currentTimeMillis();
         }
         final DBObject orgFilter = _filterByOrganization(filterParameters);
-        if (null == orgFilter && false) {
+        if (null == orgFilter) {
             return QueryBuilder.start("_id").is(null).get();
         }
 
@@ -108,9 +108,7 @@ final class ApplicationDAOMongoQueryBuilder {
         if (filters.size() > 0) {
             queries.addAll(filters);
         }
-        if (orgFilter != null) {
-            queries.add(orgFilter);
-        }
+        queries.add(orgFilter);
 
         final DBObject query = QueryBuilder.start().and(queries.toArray(new DBObject[queries.size()])).get();
 
