@@ -35,7 +35,10 @@ public class PermissionResource implements PermissionCheckInterface {
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     @Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     @ApiOperation(
-            value = "",
+            value = "Tarkistaa onko hakija hakenut johonkin listatuista organisaatioista.",
+            notes = "Vain virkailijat hakemuksen hakukohteiden organisaatioista saavat katsella hakijan tietoja.\n" +
+                    "personOid: Hakijan numero\n" +
+                    "organisationOids: Virkailijan organisaatiot ja niiden lapsiorganisaatiot",
             response = PermissionCheckResponseDTO.class
     )
     @Override
