@@ -4,19 +4,13 @@ import fi.vm.sade.authentication.permissionchecker.PermissionCheckRequestDTO;
 import fi.vm.sade.authentication.permissionchecker.PermissionCheckResponseDTO;
 import fi.vm.sade.haku.oppija.hakemus.it.IntegrationTestSupport;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
 import static org.junit.Assert.assertEquals;
 
-@ContextConfiguration(locations = "classpath:spring/test-context.xml")
-@RunWith(SpringJUnit4ClassRunner.class)
 @ActiveProfiles("it")
 public class PermissionResourceTest extends IntegrationTestSupport {
 
@@ -27,8 +21,8 @@ public class PermissionResourceTest extends IntegrationTestSupport {
     public static final String NULL_LIST = "Null organisation oid list.";
     public static final String NO_RESULTS = "No organisation found.";
 
-    @Autowired
-    PermissionResource permissionResource;
+    PermissionResource permissionResource = appContext.getBean(PermissionResource.class);;
+
 
     /*
      * Testataan että virkailija, joka kuuluu organisaatioon, voi nähdä vain niiden henkilöiden tietoja, jotka ovat
