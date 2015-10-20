@@ -26,6 +26,14 @@ import java.util.Map;
 public class PermissionResource implements PermissionCheckInterface {
 
     public static final String CHARSET_UTF_8 = ";charset=UTF-8";
+    public static final String NULL_REQUEST = "Null request.";
+    public static final String NULL_PERSON_OID_LIST = "Null person oid list.";
+    public static final String NULL_ORGANISATION_OID_LIST = "Null organisation oid list.";
+    public static final String PERSON_LIST_EMPTY = "Person oid list empty.";
+    public static final String ORGANISATION_LIST_EMPTY = "Organisation oid list empty.";
+    public static final String BLANK_PERSON_OID = "Blank person oid in oid list.";
+    public static final String BLANK_ORGANISATION_OID = "Blank organisation oid in organisation oid list.";
+    public static final String NO_ORGANISATION_FOUND = "No organisation found.";
 
     @Autowired
     private ApplicationDAO applicationDao;
@@ -37,31 +45,36 @@ public class PermissionResource implements PermissionCheckInterface {
     @ApiOperation(
             value = "Tarkistaa onko hakija hakenut johonkin listatuista organisaatioista.",
             notes = "Vain virkailijat hakemuksen hakukohteiden organisaatioista saavat katsella hakijan tietoja.\n" +
-                    "personOid: Hakijan numero\n" +
+                    "personOids: Hakijan henkilöoidit\n" +
                     "organisationOids: Virkailijan organisaatiot ja niiden lapsiorganisaatiot",
             response = PermissionCheckResponseDTO.class
     )
     @Override
     public PermissionCheckResponseDTO checkPermission(PermissionCheckRequestDTO request) {
         try {
-            Preconditions.checkNotNull(request, "Null request.");
-            Preconditions.checkArgument(!StringUtils.isBlank(request.getPersonOid()), "Blank person oid.");
-            Preconditions.checkNotNull(request.getOrganisationOids(), "Null organisation oid list.");
-            Preconditions.checkArgument(!request.getOrganisationOids().isEmpty(), "Organisation oid list empty.");
+            Preconditions.checkNotNull(request, NULL_REQUEST);
+            Preconditions.checkNotNull(request.getPersonOidsForSamePerson(), NULL_PERSON_OID_LIST);
+            Preconditions.checkNotNull(request.getOrganisationOids(), NULL_ORGANISATION_OID_LIST);
+            Preconditions.checkArgument(!request.getPersonOidsForSamePerson().isEmpty(), PERSON_LIST_EMPTY);
+            Preconditions.checkArgument(!request.getOrganisationOids().isEmpty(), ORGANISATION_LIST_EMPTY);
+            for (String oid : request.getPersonOidsForSamePerson()) {
+                Preconditions.checkArgument(!StringUtils.isBlank(oid), BLANK_PERSON_OID);
+            }
             for (String org : request.getOrganisationOids()) {
-                Preconditions.checkArgument(!StringUtils.isBlank(org), "Blank organisation oid in oid list.");
+                Preconditions.checkArgument(!StringUtils.isBlank(org), BLANK_ORGANISATION_OID);
             }
 
-            List<Application> result = applicationDao.getApplicationsByPersonOid(request.getPersonOid());
+            List<Application> result = applicationDao.getApplicationsByPersonOid(request.getPersonOidsForSamePerson());
             for (Application hakemus : result) {
                 Map<String, String> answers = hakemus.getAnswers().get("hakutoiveet");
                 for (String hakutoive : answers.keySet()) {
-                    if (hakutoive.contains("-Opetuspiste-id") && request.getOrganisationOids().contains(answers.get(hakutoive)))
+                    if (hakutoive.contains("-Opetuspiste-id")
+                            && request.getOrganisationOids().contains(answers.get(hakutoive)))
                         return permissionAllowed();
                 }
             }
 
-            return permissionDenied("No organisation found.");
+            return permissionDenied(NO_ORGANISATION_FOUND);
         } catch(Exception e){
             return permissionDenied(e.getMessage());
         }

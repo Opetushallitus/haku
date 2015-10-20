@@ -296,14 +296,15 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     }
 
     @Override
-    public List<Application> getApplicationsByPersonOid(String personOid) {
-        final DBObject query = new BasicDBObject(FIELD_PERSON_OID, personOid);
+    public List<Application> getApplicationsByPersonOid(List<String> personOids) {
+        final DBObject query = new BasicDBObject(FIELD_PERSON_OID, new BasicDBObject("$in", personOids));
         DBObject keys = generateKeysDBObject("answers.hakutoiveet");
         DBCursor dbCursor = getCollection().find(query, keys);
         List<Application> results = Lists.newArrayList();
         while (dbCursor.hasNext()) {
             DBObject obj = dbCursor.next();
-            results.add(objectMapper.convertValue(obj, Application.class));
+            Application application = objectMapper.convertValue(obj, Application.class);
+            results.add(application);
         }
         return results;
     }

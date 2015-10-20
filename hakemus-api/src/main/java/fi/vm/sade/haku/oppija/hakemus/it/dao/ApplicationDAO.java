@@ -96,6 +96,6 @@ public interface ApplicationDAO extends BaseDAO<Application> {
 
     boolean hasApplicationsWithModelVersion(int versionLevel);
 
-    List<Application> getApplicationsByPersonOid(String personOid);
+    List<Application> getApplicationsByPersonOid(List<String> personOids);
 
 }
