@@ -7,12 +7,8 @@ import fi.vm.sade.haku.oppija.hakemus.resource.ApplicationResource;
 import fi.vm.sade.haku.oppija.hakemus.resource.XlsModel;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.servlet.jsp.jstl.core.Config;
 import java.util.List;
@@ -20,13 +16,10 @@ import java.util.Locale;
 
 import static junit.framework.Assert.assertEquals;
 
-@ContextConfiguration(locations = "classpath:spring/test-context.xml")
-@RunWith(SpringJUnit4ClassRunner.class)
 @ActiveProfiles("it")
 public class TestApplicationResource extends IntegrationTestSupport {
 
-    @Autowired
-    ApplicationResource applicationResource;
+    ApplicationResource applicationResource = appContext.getBean(ApplicationResource.class);
 
     @Test
     public void testKorkeakouluExcel() {

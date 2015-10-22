@@ -18,6 +18,7 @@ package fi.vm.sade.haku.oppija.hakemus.it.dao.impl;
 
 import com.google.common.base.Function;
 import com.google.common.base.Strings;
+import com.google.common.collect.Lists;
 import com.mongodb.*;
 import fi.vm.sade.haku.oppija.common.dao.AbstractDAOMongoImpl;
 import fi.vm.sade.haku.oppija.hakemus.converter.*;
@@ -30,6 +31,7 @@ import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationFilterParameters;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationQueryParameters;
 import fi.vm.sade.haku.oppija.lomake.exception.IncoherentDataException;
 import fi.vm.sade.haku.oppija.lomake.service.EncrypterService;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,6 +72,8 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
 
     @Value("${mongodb.enableSearchOnSecondary:true}")
     private boolean enableSearchOnSecondary;
+
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Autowired
     public ApplicationDAOMongoImpl(final DBObjectToApplicationFunction dbObjectToHakemusConverter,
@@ -289,6 +293,20 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     @Override
     public boolean hasApplicationsWithModelVersion(int versionLevel) {
         return 0 < buildUpgradableCursor(versionLevel).count();
+    }
+
+    @Override
+    public List<Application> getApplicationsByPersonOid(List<String> personOids) {
+        final DBObject query = new BasicDBObject(FIELD_PERSON_OID, new BasicDBObject("$in", personOids));
+        DBObject keys = generateKeysDBObject("answers.hakutoiveet");
+        DBCursor dbCursor = getCollection().find(query, keys);
+        List<Application> results = Lists.newArrayList();
+        while (dbCursor.hasNext()) {
+            DBObject obj = dbCursor.next();
+            Application application = objectMapper.convertValue(obj, Application.class);
+            results.add(application);
+        }
+        return results;
     }
 
     private DBCursor buildUpgradableCursor(int versionLevel) {
