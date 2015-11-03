@@ -42,7 +42,7 @@
         <authentication-api.version>2015-42-SNAPSHOT</authentication-api.version>
         <generic-common.version>9.1-SNAPSHOT</generic-common.version>
 	    <koodisto-api.version>11.5</koodisto-api.version>
-        <koulutusinformaatio-api.version>2015-21-SNAPSHOT</koulutusinformaatio-api.version>
+        <koulutusinformaatio-api.version>2015-42-SNAPSHOT</koulutusinformaatio-api.version>
         <log-client.version>8.0</log-client.version>
         <organisaatio-api.version>2015-04</organisaatio-api.version>
         <tarjonta-api.version>2015-17-SNAPSHOT</tarjonta-api.version>

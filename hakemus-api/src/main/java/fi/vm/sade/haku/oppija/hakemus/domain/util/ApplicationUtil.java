@@ -134,7 +134,7 @@ public final class ApplicationUtil {
     }
 
 
-    private static boolean yoNeeded(Application application) {
+    public static boolean yoNeeded(Application application) {
         if (!hasBaseEducation(application, "pohjakoulutus_yo")) {
             return false;
         }
@@ -194,7 +194,7 @@ public final class ApplicationUtil {
         return aos;
     }
 
-    private static boolean hasBaseEducation(Application application, String field) {
+    public static boolean hasBaseEducation(Application application, String field) {
         Map<String, String> answers = application.getVastauksetMerged();
         return Boolean.parseBoolean(answers.get(field));
     }

@@ -1,10 +1,14 @@
 package fi.vm.sade.haku.oppija.ui.common;
 
+import fi.vm.sade.haku.oppija.common.koulutusinformaatio.ApplicationOption;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.util.ApplicationUtil;
+import fi.vm.sade.haku.oppija.hakemus.domain.util.AttachmentUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
+import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -114,5 +118,40 @@ public class AttachmentUtilTest {
         assertTrue(attachmentOids.get("form.valmis.todistus.yo").contains("7.8.9"));
         assertEquals(1, attachmentOids.get("form.valmis.todistus.kk_ulk").size());
         assertTrue(attachmentOids.get("form.valmis.todistus.kk_ulk").contains("1.2.3"));
+    }
+
+    @Test
+    public void pohjakoulutusliitteetFromKITest() {
+        Application application = new Application() {{
+            addVaiheenVastaukset(OppijaConstants.PHASE_EDUCATION, new HashMap<String, String>() {{
+                put("pohjakoulutus_yo", "true");
+                put("pohjakoulutus_yo_vuosi", "1980");
+                put("pohjakoulutus_yo_tutkinto", "fi");
+                put("pohjakoulutus_kk", "true");
+                put("pohjakoulutus_kk_ulk", "true");
+            }});
+        }};
+        List<ApplicationOptionDTO> aos = new ArrayList<>();
+        ApplicationOptionDTO ao1 = new ApplicationOptionDTO() {{
+                setPohjakoulutusLiitteet(new ArrayList<String>() {{
+                    add("pohjakoulutuskklomake_pohjakoulutuskk");
+                    add("pohjakoulutuskklomake_pohjakoulutuskkulk");
+                }});
+            }};
+        ApplicationOptionDTO ao2 = new ApplicationOptionDTO() {{
+                setPohjakoulutusLiitteet(new ArrayList<String>() {{
+                    add("pohjakoulutuskklomake_pohjakoulutuskk");
+                }});
+            }};
+        aos.add(ao1);
+        aos.add(ao2);
+        Map<String, List<ApplicationOptionDTO>> liiteet = AttachmentUtil.pohjakoulutusliitepyynnot(application, aos);
+
+        assertEquals(2, liiteet.keySet().size());
+        assertEquals(2, liiteet.get("form.valmis.todistus.kk").size());
+        assertEquals(1, liiteet.get("form.valmis.todistus.kk_ulk").size());
+        assertTrue(liiteet.get("form.valmis.todistus.kk").contains(ao1));
+        assertTrue(liiteet.get("form.valmis.todistus.kk").contains(ao2));
+        assertTrue(liiteet.get("form.valmis.todistus.kk_ulk").contains(ao1));
     }
 }
