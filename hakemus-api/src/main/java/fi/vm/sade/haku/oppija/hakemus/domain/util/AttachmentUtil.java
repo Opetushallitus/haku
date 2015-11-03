@@ -1,5 +1,8 @@
 package fi.vm.sade.haku.oppija.hakemus.domain.util;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import fi.vm.sade.haku.oppija.hakemus.domain.*;
 import fi.vm.sade.haku.oppija.hakemus.domain.HigherEdBaseEducationAttachmentInfo.OriginatorType;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationOptionAttachmentRequest;
@@ -12,6 +15,7 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain.SimpleAddress;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.I18nBundle;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import fi.vm.sade.koulutusinformaatio.domain.dto.*;
+import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.*;
@@ -246,6 +250,24 @@ public class AttachmentUtil {
           .build();
     }
 
+    private static Map<String, List<ApplicationOptionDTO>> fetchAOs(Map<String, List<String>> attachmentsToAOoids,
+                                                                    final KoulutusinformaatioService koulutusinformaatioService,
+                                                                    final String lang) {
+        final Map<String, ApplicationOptionDTO> cache = new HashMap<>();
+        return Maps.transformValues(attachmentsToAOoids, new Function<List<String>, List<ApplicationOptionDTO>>() {
+            public List<ApplicationOptionDTO> apply(List<String> oids) {
+                return Lists.transform(oids, new Function<String, ApplicationOptionDTO>() {
+                    public ApplicationOptionDTO apply(String oid) {
+                        if (!cache.containsKey(oid)) {
+                            cache.put(oid, koulutusinformaatioService.getApplicationOption(oid, lang));
+                        }
+                        return cache.get(oid);
+                    }
+                });
+            }
+        });
+    }
+
     private static List<ApplicationAttachmentRequest> addHigherEdAttachments(
         final ApplicationSystem applicationSystem,
         final List<ApplicationAttachmentRequest> attachments,
@@ -254,9 +276,9 @@ public class AttachmentUtil {
         final String lang,
         final I18nBundle i18nBundle
     ) {
-
         Date deadline = null;
-        Map<String, List<HigherEdBaseEducationAttachmentInfo>> higherEdAttachments = getAddresses(applicationSystem, ApplicationUtil.getHigherEdAttachmentAOIds(application), koulutusinformaatioService, deadline, lang);
+        Map<String, List<ApplicationOptionDTO>> higherEdAttachmentAOs = fetchAOs(ApplicationUtil.getHigherEdAttachmentAOIds(application), koulutusinformaatioService, lang);
+        Map<String, List<HigherEdBaseEducationAttachmentInfo>> higherEdAttachments = getAddresses(applicationSystem.getAttachmentGroupAddresses(), higherEdAttachmentAOs, deadline);
         attachments.addAll(getHigherEdAttachments(higherEdAttachments, i18nBundle));
         return attachments;
     }
@@ -276,7 +298,8 @@ public class AttachmentUtil {
         deadlineCal.set(Calendar.SECOND, 0);
         Date deadline = deadlineCal.getTime();
 
-        Map<String, List<HigherEdBaseEducationAttachmentInfo>> higherEdAttachments = getAddresses(applicationSystem, ApplicationUtil.getAmkOpeAttachments(application), koulutusinformaatioService, deadline, lang);
+        Map<String, List<ApplicationOptionDTO>> amkOpeAttachmentAOs = fetchAOs(ApplicationUtil.getAmkOpeAttachments(application), koulutusinformaatioService, lang);
+        Map<String, List<HigherEdBaseEducationAttachmentInfo>> higherEdAttachments = getAddresses(applicationSystem.getAttachmentGroupAddresses(), amkOpeAttachmentAOs, deadline);
 
         attachments.addAll(getHigherEdAttachments(higherEdAttachments, i18nBundle));
         return attachments;
@@ -316,32 +339,28 @@ public class AttachmentUtil {
     }
 
     private static Map<String, List<HigherEdBaseEducationAttachmentInfo>> getAddresses(
-      final ApplicationSystem applicationSystem,
-      final Map<String, List<String>> higherEdAttachmentAOIds,
-      final KoulutusinformaatioService koulutusinformaatioService,
-      final Date defaultDeadline,
-      final String lang) {
-        Map<String, List<HigherEdBaseEducationAttachmentInfo>> applicationOptions = new HashMap<>();
-        new HashMap<String, List<HigherEdBaseEducationAttachmentInfo>>();
-        for (Map.Entry<String, List<String>> entry : higherEdAttachmentAOIds.entrySet()) {
-            String key = entry.getKey();
-            List<HigherEdBaseEducationAttachmentInfo> addresses = new ArrayList<>();
-            for (String aoOid : entry.getValue()) {
-                ApplicationOptionDTO ao = koulutusinformaatioService.getApplicationOption(aoOid, lang);
-                HigherEdBaseEducationAttachmentInfo address = getAttachmentGroupAddressInfo(applicationSystem, ao, defaultDeadline);
-                if (!addressAlreadyAdded(addresses, address)) {
-                    addresses.add(address);
+      final List<AttachmentGroupAddress> attachmentGroupAddresses,
+      final Map<String, List<ApplicationOptionDTO>> attachmentAOs,
+      final Date defaultDeadline) {
+        return Maps.transformValues(attachmentAOs, new Function<List<ApplicationOptionDTO>, List<HigherEdBaseEducationAttachmentInfo>>() {
+            @Override
+            public List<HigherEdBaseEducationAttachmentInfo> apply(List<ApplicationOptionDTO> applicationOptionDTOs) {
+                List<HigherEdBaseEducationAttachmentInfo> addresses = new ArrayList<>();
+                for (ApplicationOptionDTO ao : applicationOptionDTOs) {
+                    HigherEdBaseEducationAttachmentInfo address = getAttachmentGroupAddressInfo(attachmentGroupAddresses, ao, defaultDeadline);
+                    if (!addressAlreadyAdded(addresses, address)) {
+                        addresses.add(address);
+                    }
                 }
+                return addresses;
             }
-            applicationOptions.put(key, addresses);
-        }
-        return applicationOptions;
+        });
     }
 
-    private static HigherEdBaseEducationAttachmentInfo getAttachmentGroupAddressInfo(ApplicationSystem applicationSystem, ApplicationOptionDTO ao, Date defaultDeadline) {
+    private static HigherEdBaseEducationAttachmentInfo getAttachmentGroupAddressInfo(List<AttachmentGroupAddress> attachmentGroupAddresses, ApplicationOptionDTO ao, Date defaultDeadline) {
         HigherEdBaseEducationAttachmentInfo aoAddress = getAttachmentAddressInfo(ao, defaultDeadline);
         for (OrganizationGroupDTO organizationGroup : ao.getOrganizationGroups()) {
-            for (AttachmentGroupAddress groupAddress: applicationSystem.getAttachmentGroupAddresses()) {
+            for (AttachmentGroupAddress groupAddress: attachmentGroupAddresses) {
                 if (organizationGroup.getOid().equals(groupAddress.getGroupId())) {
                     return new HigherEdBaseEducationAttachmentInfo(
                             chooseAddress(groupAddress, aoAddress),
