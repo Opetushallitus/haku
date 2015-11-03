@@ -3335,3 +3335,12 @@ table {
   width: 80%; }
 .form-summary-table fieldset {
   margin: 1em 0 0; }
+
+/*** Demo mode
+*************************************************/
+#float-banner {
+  position: fixed;
+  right: 0;
+  top: 40%;
+  width: 25%;
+}

@@ -98,6 +98,11 @@
         </div>
     </div>
 </div>
+
+<c:if test="${it.demoMode}">
+    <jsp:include page="../demo/warning.jsp"/>
+</c:if>
+
 <!-- Piwik -->
 <script src="${contextPath}/resources/piwik/piwik.js" type="text/javascript"></script>
 <!-- End Piwik Code -->
