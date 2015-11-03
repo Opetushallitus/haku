@@ -14,11 +14,16 @@ import static fi.vm.sade.haku.oppija.lomake.domain.rules.RegexRule.getDateOfBirt
 
 public class OlderThan extends Expr {
     private final Expr left;
-    private final boolean demoMode;
+    private boolean demoMode;
 
     public OlderThan(final Expr left, boolean demoMode) {
         this.left = left;
         this.demoMode = demoMode;
+        Preconditions.checkNotNull(left);
+    }
+
+    public OlderThan(final Expr left) {
+        this.left = left;
         Preconditions.checkNotNull(left);
     }
 
