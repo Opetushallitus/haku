@@ -10,11 +10,10 @@ public abstract class KoulutusinformaatioService {
 
 	public abstract ApplicationOptionDTO getApplicationOption(String aoOid, String lang);
 
-
-	public List<ApplicationOptionDTO> getApplicationOptions(List<String> oids) {
-		List<ApplicationOptionDTO> applicationOptions = new ArrayList<ApplicationOptionDTO>();
+	public List<ApplicationOptionDTO> getApplicationOptions(List<String> oids, String lang) {
+		List<ApplicationOptionDTO> applicationOptions = new ArrayList<>();
 		for (String oid : oids) {
-			applicationOptions.add(getApplicationOption(oid));
+			applicationOptions.add(getApplicationOption(oid, lang));
 		}
 		return applicationOptions;
 	}
