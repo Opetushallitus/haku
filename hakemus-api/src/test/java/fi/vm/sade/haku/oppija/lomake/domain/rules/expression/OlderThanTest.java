@@ -16,7 +16,7 @@ public class OlderThanTest {
 
     @Before
     public void setUp() throws Exception {
-        this.olderThan = new OlderThan(new Value("16"), false);
+        this.olderThan = new OlderThan(new Value("16"));
     }
 
     @Test
