@@ -45,6 +45,11 @@ public final class FormConfigurationService {
     @Autowired
     private final I18nBundleService i18nBundleService;
 
+    @Value("${mode.demo:false}")
+    public boolean demoMode;
+    @Value("${opintopolku.baseurl:https://opintopolku.fi}")
+    public String opintopolkuBaseUrl;
+
     @Autowired
     public FormConfigurationService(final KoodistoService koodistoService,
                                     final HakuService hakuService,
@@ -70,7 +75,7 @@ public final class FormConfigurationService {
     public FormParameters getFormParameters(final ApplicationSystem applicationSystem) {
         FormConfiguration formConfiguration = createOrGetFormConfiguration(applicationSystem);
         return new FormParameters(applicationSystem, formConfiguration, koodistoService, themeQuestionDAO,
-          hakukohdeService, organizationService, i18nBundleService);
+          hakukohdeService, organizationService, i18nBundleService, this.demoMode, this.opintopolkuBaseUrl);
     }
 
     public FormConfiguration createOrGetFormConfiguration(final String applicationSystemId){

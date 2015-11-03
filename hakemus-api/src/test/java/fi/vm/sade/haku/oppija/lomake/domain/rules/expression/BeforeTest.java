@@ -12,7 +12,7 @@ public class BeforeTest {
 
     public static final String AGE = "16";
 
-    private OlderThan olderThan = new OlderThan(new Value(AGE));
+    private OlderThan olderThan = new OlderThan(new Value(AGE), false);
 
     private HashMap<String, String> ctx;
 

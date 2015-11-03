@@ -3,6 +3,7 @@ package fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.valmi
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Link;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.Answer;
@@ -10,10 +11,13 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.ApplicationAttachmen
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.Print;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.Expr;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.impl.TranslationsUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ExprUtil;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.RelatedQuestionRuleBuilder.Rule;
@@ -33,12 +37,13 @@ public class ValmisPhase {
     public static List<Element> create(FormParameters formParameters, final String... paragraphs) {
         List<Element> elements = Lists.newArrayList();
 
-        Element emailRule = ElementUtil.createRegexpRule("Sähköposti", REGEX_NON_EMPTY);
-        Element emailP1 = Text("emailP1").labelKey("form.valmis.sinulleonlahetettyvahvistussahkopostiisi").formParams(formParameters).build();
-        emailP1.addChild(new Answer("Sähköposti"));
-        emailRule.addChild(emailP1);
-
-        elements.add(emailRule);
+        if(!formParameters.isDemoMode()) {
+            Element emailRule = ElementUtil.createRegexpRule("Sähköposti", REGEX_NON_EMPTY);
+            Element emailP1 = Text("emailP1").labelKey("form.valmis.sinulleonlahetettyvahvistussahkopostiisi").formParams(formParameters).build();
+            emailP1.addChild(new Answer("Sähköposti"));
+            emailRule.addChild(emailP1);
+            elements.add(emailRule);
+        }
 
         elements.add(Text("valmisP1").labelKey("form.lomake.valmis.p1").formParams(formParameters).build());
         elements.add(Text("valmisP2").labelKey("form.lomake.valmis.p2").formParams(formParameters).build());
@@ -60,8 +65,9 @@ public class ValmisPhase {
 
         elements.add(Text("palaute").labelKey("form.valmis.palaute").formParams(formParameters).build());
 
-        elements.add(new Link("backLink", createI18NText("form.valmis.takaisin.opintopolkuun.href"), formParameters.getI18nText(
-          "form.valmis.takaisin.opintopolkuun.linkki")));
+        Map<String, String> url = new HashMap();
+        url.put("fi", formParameters.getOpintopolkuBaseUrl());
+        elements.add(new Link("backLink", new I18nText(TranslationsUtil.createTranslationsMap(url)), formParameters.getI18nText("form.valmis.takaisin.opintopolkuun.linkki")));
 
         return elements;
     }

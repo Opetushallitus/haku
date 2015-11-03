@@ -73,6 +73,8 @@ public class UIServiceImpl implements UIService {
     private final AuthenticationService authenticationService;
     private final I18nBundleService i18nBundleService;
     private final PDFService pdfService;
+    private final boolean demoMode;
+    private final String opintopolkuBaseUrl;
 
     @Autowired
     public UIServiceImpl(final ApplicationService applicationService,
@@ -81,7 +83,9 @@ public class UIServiceImpl implements UIService {
                          final KoulutusinformaatioService koulutusinformaatioService,
                          final AuthenticationService authenticationService,
                          final I18nBundleService i18nBundleService,
-                         @Value("${koulutusinformaatio.base.url}") final String koulutusinformaatioBaseUrl, PDFService pdfService) {
+                         @Value("${koulutusinformaatio.base.url}") final String koulutusinformaatioBaseUrl, PDFService pdfService,
+                         @Value("${mode.demo:false}") boolean demoMode,
+                         @Value("${opintopolku.baseurl:https://opintopolku.fi}") String opintopolkuBaseUrl) {
         this.applicationService = applicationService;
         this.applicationSystemService = applicationSystemService;
         this.userSession = userSession;
@@ -90,6 +94,8 @@ public class UIServiceImpl implements UIService {
         this.koulutusinformaatioBaseUrl = koulutusinformaatioBaseUrl;
         this.i18nBundleService = i18nBundleService;
         this.pdfService = pdfService;
+        this.demoMode = demoMode;
+        this.opintopolkuBaseUrl = opintopolkuBaseUrl;
     }
 
     @Override
@@ -125,6 +131,8 @@ public class UIServiceImpl implements UIService {
         ModelResponse modelResponse = new ModelResponse();
         modelResponse.addAnswers(application.getVastauksetMerged());
         modelResponse.setElement(activeApplicationSystem.getForm());
+        modelResponse.addObjectToModel("demoMode", this.demoMode);
+        modelResponse.addObjectToModel("opintopolkuBaseUrl", this.opintopolkuBaseUrl);
         return modelResponse;
     }
 
@@ -141,6 +149,8 @@ public class UIServiceImpl implements UIService {
         modelResponse.setKoulutusinformaatioBaseUrl(koulutusinformaatioBaseUrl);
         modelResponse.addObjectToModel("baseEducationDoesNotRestrictApplicationOptions", activeApplicationSystem.baseEducationDoesNotRestrictApplicationOptions());
         modelResponse.addObjectToModel("ongoing", aoSearchOnlyOngoing);
+        modelResponse.addObjectToModel("demoMode", this.demoMode);
+        modelResponse.addObjectToModel("opintopolkuBaseUrl", this.opintopolkuBaseUrl);
         return modelResponse;
     }
 
@@ -205,6 +215,8 @@ public class UIServiceImpl implements UIService {
         modelResponse.setKoulutusinformaatioBaseUrl(koulutusinformaatioBaseUrl);
         modelResponse.addObjectToModel("ongoing", aoSearchOnlyOngoing);
         modelResponse.addObjectToModel("baseEducationDoesNotRestrictApplicationOptions", activeApplicationSystem.baseEducationDoesNotRestrictApplicationOptions());
+        modelResponse.addObjectToModel("demoMode", this.demoMode);
+        modelResponse.addObjectToModel("opintopolkuBaseUrl", this.opintopolkuBaseUrl);
         return modelResponse;
     }
 
@@ -230,6 +242,8 @@ public class UIServiceImpl implements UIService {
         modelResponse.setKoulutusinformaatioBaseUrl(koulutusinformaatioBaseUrl);
         modelResponse.addObjectToModel("ongoing", aoSearchOnlyOngoing);
         modelResponse.addObjectToModel("baseEducationDoesNotRestrictApplicationOptions", activeApplicationSystem.baseEducationDoesNotRestrictApplicationOptions());
+        modelResponse.addObjectToModel("demoMode", this.demoMode);
+        modelResponse.addObjectToModel("opintopolkuBaseUrl", this.opintopolkuBaseUrl);
         return modelResponse;
     }
 
@@ -246,6 +260,9 @@ public class UIServiceImpl implements UIService {
         modelResponse.setKoulutusinformaatioBaseUrl(koulutusinformaatioBaseUrl);
         modelResponse.addObjectToModel("ongoing", aoSearchOnlyOngoing);
         modelResponse.addObjectToModel("baseEducationDoesNotRestrictApplicationOptions", activeApplicationSystem.baseEducationDoesNotRestrictApplicationOptions());
+        modelResponse.addObjectToModel("demoMode", this.demoMode);
+        modelResponse.addObjectToModel("opintopolkuBaseUrl", this.opintopolkuBaseUrl);
+
         return modelResponse;
     }
 
@@ -259,6 +276,8 @@ public class UIServiceImpl implements UIService {
         ModelResponse modelResponse = new ModelResponse();
         modelResponse.addObjectToModel("ongoing", aoSearchOnlyOngoing);
         modelResponse.addObjectToModel("baseEducationDoesNotRestrictApplicationOptions", activeApplicationSystem.baseEducationDoesNotRestrictApplicationOptions());
+        modelResponse.addObjectToModel("demoMode", this.demoMode);
+        modelResponse.addObjectToModel("opintopolkuBaseUrl", this.opintopolkuBaseUrl);
         modelResponse.setApplicationState(applicationState);
         if (!applicationState.isValid()) {
             modelResponse.setApplicationState(applicationState);

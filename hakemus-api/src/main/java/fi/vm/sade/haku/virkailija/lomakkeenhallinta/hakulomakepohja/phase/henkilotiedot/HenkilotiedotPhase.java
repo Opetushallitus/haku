@@ -142,19 +142,26 @@ public final class HenkilotiedotPhase {
         Option female = genders.get(0).getI18nText().getTranslations().get("fi").equalsIgnoreCase("Nainen") ?
                 genders.get(0) : genders.get(1);
 
-        Element socialSecurityNumber = new SocialSecurityNumberBuilder(OppijaConstants.ELEMENT_ID_SOCIAL_SECURITY_NUMBER)
-                        .setSexI18nText(sukupuoli.getI18nText())
-                        .setMaleOption(male)
-                        .setFemaleOption(female)
-                        .setSexId(sukupuoli.getId())
-                        .formParams(formParameters)
-                        .requiredInline()
-                        .size(11)
-                        .maxLength(11)
-                        .validator(new SocialSecurityNumberFieldValidator())
-                        .pattern(HETU_PATTERN)
-                        .build();
-        addUniqueApplicantValidator(socialSecurityNumber, formParameters);
+        ElementBuilder ssnElemBuilder = new SocialSecurityNumberBuilder(OppijaConstants.ELEMENT_ID_SOCIAL_SECURITY_NUMBER)
+                .setSexI18nText(sukupuoli.getI18nText())
+                .setMaleOption(male)
+                .setFemaleOption(female)
+                .setSexId(sukupuoli.getId())
+                .formParams(formParameters)
+                .size(11)
+                .maxLength(11)
+                .validator(new SocialSecurityNumberFieldValidator());
+
+        if(formParameters.isDemoMode()) {
+            ssnElemBuilder = ssnElemBuilder.inline().pattern("^$");
+        } else {
+            ssnElemBuilder = ssnElemBuilder.requiredInline().pattern(HETU_PATTERN);
+        }
+        Element socialSecurityNumber = ssnElemBuilder.build();
+
+        if(!formParameters.isDemoMode()) {
+            addUniqueApplicantValidator(socialSecurityNumber, formParameters);
+        }
 
         Element hetuNainen = Rule(new Regexp(socialSecurityNumber.getId(), FEMALE_HETU_PATTERN))
                 .addChild(new HiddenValue(sukupuoli.getId(), female.getValue()))

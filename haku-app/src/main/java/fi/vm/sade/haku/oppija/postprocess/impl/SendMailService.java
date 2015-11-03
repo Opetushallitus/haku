@@ -47,6 +47,9 @@ public class SendMailService {
     @Value("${email.replyTo}")
     private String replyTo;
 
+    @Value("${mode.demo:false}")
+    public boolean demoMode;
+
     @Autowired
     public SendMailService(final ApplicationSystemService applicationSystemService,
                            final FormService formService){
@@ -75,10 +78,12 @@ public class SendMailService {
 
 
     public void sendMail(Application application) throws EmailException {
-        Map<String, String> answers = application.getVastauksetMerged();
-        String email = answers.get(OppijaConstants.ELEMENT_ID_EMAIL);
-        if (!isEmpty(email)) {
-            sendConfirmationMail(application);
+        if(!demoMode) {
+            Map<String, String> answers = application.getVastauksetMerged();
+            String email = answers.get(OppijaConstants.ELEMENT_ID_EMAIL);
+            if (!isEmpty(email)) {
+                sendConfirmationMail(application);
+            }
         }
     }
 

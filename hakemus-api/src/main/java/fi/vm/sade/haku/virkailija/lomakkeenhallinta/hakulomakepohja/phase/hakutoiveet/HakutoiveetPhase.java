@@ -86,7 +86,7 @@ public class HakutoiveetPhase {
         PreferenceRow pr1 = createI18NPreferenceRow(preferenceIds.remove(0), formParameters);
         pr1.setValidator(new RequiredFieldValidator(pr1.getLearningInstitutionInputId(), "yleinen.pakollinen"));
         pr1.setValidator(new RequiredFieldValidator(pr1.getEducationInputId(), "yleinen.pakollinen"));
-        if (formParameters.isLisahaku()) {
+        if (formParameters.isLisahaku() && !formParameters.isDemoMode()) {
             pr1.setValidator(new SsnAndPreferenceUniqueValidator());
         }
         preferenceTable.addChild(pr1);

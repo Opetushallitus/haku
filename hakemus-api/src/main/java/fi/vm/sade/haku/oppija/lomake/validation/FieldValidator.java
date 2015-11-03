@@ -23,6 +23,7 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.i18n.I18nBundleService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.annotation.Transient;
 
 public abstract class FieldValidator implements Validator {
@@ -34,6 +35,9 @@ public abstract class FieldValidator implements Validator {
     private I18nBundle i18nBundle;
     @Transient
     protected ValidationResult validValidationResult;
+
+    @Value("${mode.demo:false}")
+    public boolean demoMode;
 
     protected FieldValidator(final String errorMessageKey) {
         Validate.notNull(errorMessageKey, "ErrorMessageKey can't be null");

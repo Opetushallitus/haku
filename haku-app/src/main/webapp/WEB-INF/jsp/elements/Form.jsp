@@ -55,8 +55,7 @@
     <div role="presentation" id="site">
         <div role="presentation" id="sitecontent">
             <div aria-label='<fmt:message key="lomake.navigation.aria.label"/>' role="navigation" class="content">
-                <fmt:message key="lomake.lisaakoulutuksia.href" var="lisaaKoulutuksiaHref"/>
-                <a href="${lisaaKoulutuksiaHref}"><fmt:message key="lomake.lisaakoulutuksia"/></a>
+                <a href="${it.opintopolkuBaseUrl}"><fmt:message key="lomake.lisaakoulutuksia"/></a>
 
                 <h1><haku:i18nText value="${element.i18nText}"/> - <fmt:message key="form.title"/></h1>
                 <ul aria-label='<fmt:message key="lomake.vaiheet.aria.label"/>' class="form-steps">

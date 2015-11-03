@@ -31,9 +31,12 @@ public class FormParameters {
 
     private Boolean onlyThemeGenerationForFormEditor = Boolean.FALSE;
 
+    private boolean demoMode;
+    private String opintopolkuBaseUrl;
+
     public FormParameters(final ApplicationSystem applicationSystem, final FormConfiguration formConfiguration, final KoodistoService koodistoService,
                           final ThemeQuestionDAO themeQuestionDAO, final HakukohdeService hakukohdeService,
-                          final OrganizationService organizationService, final I18nBundleService i18nBundleService) {
+                          final OrganizationService organizationService, final I18nBundleService i18nBundleService, final boolean demoMode, final String opintopolkuBaseUrl) {
         this.applicationSystem = applicationSystem;
         this.koodistoService = koodistoService;
         this.themeQuestionDAO = themeQuestionDAO;
@@ -41,6 +44,8 @@ public class FormParameters {
         this.organizationService = organizationService;
         this.formConfiguration = formConfiguration;
         this.i18nBundle = i18nBundleService.getBundle(applicationSystem);
+        this.demoMode = demoMode;
+        this.opintopolkuBaseUrl = opintopolkuBaseUrl;
     }
 
     public ApplicationSystem getApplicationSystem() {
@@ -251,4 +256,13 @@ public class FormParameters {
     public boolean useEducationDegreeURI() {
         return formConfiguration.getFeatureFlag(FormConfiguration.FeatureFlag.koulutusasteURI);
     }
+
+    public boolean isDemoMode() {
+        return isDemoMode();
+    }
+
+    public String getOpintopolkuBaseUrl() {
+        return opintopolkuBaseUrl;
+    }
+
 }

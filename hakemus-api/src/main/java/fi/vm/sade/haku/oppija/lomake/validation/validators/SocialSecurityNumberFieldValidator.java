@@ -62,6 +62,9 @@ public class SocialSecurityNumberFieldValidator extends FieldValidator {
 
         String socialSecurityNumber = validationInput.getValue();
         ValidationResult validationResult = new ValidationResult();
+        if(this.demoMode) {
+            return validationResult;
+        }
         if (socialSecurityNumber != null) {
             Matcher matcher = socialSecurityNumberPattern.matcher(socialSecurityNumber);
             if (!matcher.matches()) {
