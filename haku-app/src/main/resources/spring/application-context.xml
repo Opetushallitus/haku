@@ -64,7 +64,6 @@
                 ignore-resource-not-found="true" properties-ref="devProps"/>
         <bean id="devProps" class="org.springframework.beans.factory.config.PropertiesFactoryBean"/>
         <import resource="form-login-security-context.xml"/>
-        <import resource="logger-mock-context.xml"/>
     </beans>
 
     <beans profile="dev">
@@ -79,7 +78,6 @@
                 ignore-resource-not-found="true" properties-ref="devProps"/>
         <bean id="devProps" class="org.springframework.beans.factory.config.PropertiesFactoryBean"/>
         <import resource="form-login-security-context.xml"/>
-        <import resource="logger-mock-context.xml"/>
     </beans>
 
     <beans profile="it">
@@ -91,7 +89,6 @@
                 location="classpath:config/it/haku.properties, classpath:config/it/ext.properties, classpath:haku-test.properties"
                 ignore-resource-not-found="true" properties-ref="itProps"/>
         <bean id="itProps" class="org.springframework.beans.factory.config.PropertiesFactoryBean"/>
-        <import resource="logger-mock-context.xml"/>
         <import resource="form-login-security-context.xml"/>
     </beans>
 
@@ -113,7 +110,6 @@
             </property>
         </bean>
         <import resource="classpath:security-context-backend-vagrant.xml"/>
-        <import resource="logger-mock-context.xml"/>
     </beans>
 
     <beans>

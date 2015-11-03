@@ -37,7 +37,6 @@
                 location="classpath:config/it/haku.properties, classpath:config/it/ext.properties, classpath:haku-test.properties"
                 ignore-resource-not-found="true" properties-ref="itProps"/>
         <bean id="itProps" class="org.springframework.beans.factory.config.PropertiesFactoryBean"/>
-        <import resource="logger-mock-context.xml"/>
         <!--<import resource="form-login-security-context.xml"/>-->
 
         <context:annotation-config/>
