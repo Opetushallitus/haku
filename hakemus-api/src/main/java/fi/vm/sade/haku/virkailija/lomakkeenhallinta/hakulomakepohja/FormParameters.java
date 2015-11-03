@@ -258,7 +258,7 @@ public class FormParameters {
     }
 
     public boolean isDemoMode() {
-        return isDemoMode();
+        return this.demoMode;
     }
 
     public String getOpintopolkuBaseUrl() {
