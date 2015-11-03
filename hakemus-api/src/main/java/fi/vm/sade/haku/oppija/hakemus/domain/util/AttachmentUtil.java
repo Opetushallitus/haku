@@ -1,8 +1,8 @@
 package fi.vm.sade.haku.oppija.hakemus.domain.util;
 
 import com.google.common.base.Function;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
+import com.google.common.base.Predicate;
+import com.google.common.collect.*;
 import fi.vm.sade.haku.oppija.hakemus.domain.*;
 import fi.vm.sade.haku.oppija.hakemus.domain.HigherEdBaseEducationAttachmentInfo.OriginatorType;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationOptionAttachmentRequest;
@@ -27,6 +27,33 @@ public class AttachmentUtil {
 
     public static final String GENERAL_DELIVERY_NOTE = "lomake.tulostus.liite.deadline.tarkista";
     public static final String GENERAL_DEADLINE_NOTE = "lomake.tulostus.liite.deadline.ohje";
+    public static final String YO_I18N_KEY = "form.valmis.todistus.yo";
+    public static final HashMap<String, String> POHJAKOULUTUSKOODI_TO_I18N_KEY = new HashMap<String, String>() {{
+        put("pohjakoulutuskklomake_amsuomi", "form.valmis.todistus.am");
+        put("pohjakoulutuskklomake_pohjakoulutusamt", "form.valmis.todistus.amt");
+        put("pohjakoulutuskklomake_pohjakoulutusavoin", "form.valmis.todistus.avoin");
+        put("pohjakoulutuskklomake_pohjakoulutuskk", "form.valmis.todistus.kk");
+        put("pohjakoulutuskklomake_pohjakoulutuskkulk", "form.valmis.todistus.kk_ulk");
+        put("pohjakoulutuskklomake_pohjakoulutusmuu", "form.valmis.todistus.muu");
+        put("pohjakoulutuskklomake_muuulk", "form.valmis.todistus.ulk");
+        put("pohjakoulutuskklomake_yosuomi", YO_I18N_KEY);
+        put("pohjakoulutuskklomake_pohjakoulutusyoammatillinen", "form.valmis.todistus.yo_am");
+        put("pohjakoulutuskklomake_yokvsuomi", "form.valmis.todistus.yo_kv");
+        put("pohjakoulutuskklomake_pohjakoulutusyoulkomainen", "form.valmis.todistus.yo_ulk");
+    }};
+    public static final HashMap<String, String> POHJAKOULUTUSKOODI_TO_FORM_ID = new HashMap<String, String>() {{
+        put("pohjakoulutuskklomake_amsuomi", "pohjakoulutus_am");
+        put("pohjakoulutuskklomake_pohjakoulutusamt", "pohjakoulutus_amt");
+        put("pohjakoulutuskklomake_pohjakoulutusavoin", "pohjakoulutus_avoin");
+        put("pohjakoulutuskklomake_pohjakoulutuskk", "pohjakoulutus_kk");
+        put("pohjakoulutuskklomake_pohjakoulutuskkulk", "pohjakoulutus_kk_ulk");
+        put("pohjakoulutuskklomake_pohjakoulutusmuu", "pohjakoulutus_muu");
+        put("pohjakoulutuskklomake_muuulk", "pohjakoulutus_ulk");
+        put("pohjakoulutuskklomake_yosuomi", "pohjakoulutus_yo");
+        put("pohjakoulutuskklomake_pohjakoulutusyoammatillinen", "pohjakoulutus_yo_ammatillinen");
+        put("pohjakoulutuskklomake_yokvsuomi", "pohjakoulutus_yo_kansainvalinen_suomessa");
+        put("pohjakoulutuskklomake_pohjakoulutusyoulkomainen", "pohjakoulutus_yo_ulkomainen");
+    }};
 
     public static List<ApplicationAttachment> resolveAttachments(Application application) {
         List<ApplicationAttachmentRequest> attachmentRequests = application.getAttachmentRequests();
@@ -268,6 +295,24 @@ public class AttachmentUtil {
         });
     }
 
+    public static Map<String, List<ApplicationOptionDTO>> pohjakoulutusliitepyynnot(Application application, List<ApplicationOptionDTO> aos) {
+        Map<String, List<ApplicationOptionDTO>> liitepyynnot = new HashMap<>();
+        for (ApplicationOptionDTO ao : aos) {
+            for (String koodi : ao.getPohjakoulutusLiitteet()) {
+                String i18nKey = POHJAKOULUTUSKOODI_TO_I18N_KEY.get(koodi);
+                String formId = POHJAKOULUTUSKOODI_TO_FORM_ID.get(koodi);
+                if ((YO_I18N_KEY.equals(i18nKey) && ApplicationUtil.yoNeeded(application))
+                        || (!YO_I18N_KEY.equals(i18nKey) && ApplicationUtil.hasBaseEducation(application, formId))) {
+                    if (!liitepyynnot.containsKey(i18nKey)) {
+                        liitepyynnot.put(i18nKey, new ArrayList<ApplicationOptionDTO>());
+                    }
+                    liitepyynnot.get(i18nKey).add(ao);
+                }
+            }
+        }
+        return liitepyynnot;
+    }
+
     private static List<ApplicationAttachmentRequest> addHigherEdAttachments(
         final ApplicationSystem applicationSystem,
         final List<ApplicationAttachmentRequest> attachments,
@@ -278,6 +323,9 @@ public class AttachmentUtil {
     ) {
         Date deadline = null;
         Map<String, List<ApplicationOptionDTO>> higherEdAttachmentAOs = fetchAOs(ApplicationUtil.getHigherEdAttachmentAOIds(application), koulutusinformaatioService, lang);
+        if (true) {
+            higherEdAttachmentAOs = pohjakoulutusliitepyynnot(application, koulutusinformaatioService.getApplicationOptions(ApplicationUtil.getPreferenceAoIds(application), lang));
+        }
         Map<String, List<HigherEdBaseEducationAttachmentInfo>> higherEdAttachments = getAddresses(applicationSystem.getAttachmentGroupAddresses(), higherEdAttachmentAOs, deadline);
         attachments.addAll(getHigherEdAttachments(higherEdAttachments, i18nBundle));
         return attachments;
