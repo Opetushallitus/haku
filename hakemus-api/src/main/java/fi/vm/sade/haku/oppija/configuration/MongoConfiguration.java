@@ -4,33 +4,32 @@ import com.mongodb.Mongo;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
 import com.mongodb.WriteConcern;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.mongodb.core.MongoTemplate;
-
-import java.net.UnknownHostException;
+import org.springframework.data.mongodb.config.AbstractMongoConfiguration;
 
 @Configuration
-public class MongoConfiguration {
+public class MongoConfiguration extends AbstractMongoConfiguration {
+    private static final Logger LOGGER = LoggerFactory.getLogger(MongoConfiguration.class);
 
-    private final Logger LOGGER = Logger.getLogger(MongoConfiguration.class);
+    @Value("${mongo.db.name}")
+    private String databaseName;
 
-    @Bean
-    public MongoTemplate mongoTemplate(final Mongo mongo, @Value("${mongo.db.name}") final String databaseName,
-                                       @Value("${mongo.writeconcern") final String writeConcern) {
-        MongoTemplate tmpl = new MongoTemplate(mongo, databaseName);
-        WriteConcern wc = resolveWriteConcern(writeConcern);
-        if (wc != null) {
-            tmpl.setWriteConcern(wc);
-        }
-        return tmpl;
+    @Value("${mongo.writeconcern")
+    private String writeConcern;
+
+    @Value("${mongodb.url}")
+    private String mongoUri;
+
+    @Override
+    protected String getDatabaseName() {
+        return databaseName;
     }
 
-    @Bean
-    public MongoClient mongo(@Value("${mongodb.url}") final String mongoUri,
-                             @Value("${mongo.writeconcern") final String writeConcern) throws UnknownHostException {
+    @Override
+    public Mongo mongo() throws Exception {
         LOGGER.info("Creating MongoClient for server(s): " + getMongoUrl(mongoUri));
         MongoClientURI mongoClientURI = new MongoClientURI(mongoUri);
         MongoClient mongoClient = new MongoClient(mongoClientURI);
@@ -41,25 +40,22 @@ public class MongoConfiguration {
         return mongoClient;
     }
 
-    public static String getMongoUrl(String mongoUri) {
-        if(mongoUri.contains("@")) {
+    private static String getMongoUrl(String mongoUri) {
+        if (mongoUri.contains("@")) {
             return mongoUri.substring(mongoUri.indexOf("@"));
         }
-        if(mongoUri.contains("//")) {
+        if (mongoUri.contains("//")) {
             return mongoUri.substring(mongoUri.indexOf("//"));
         }
         return mongoUri;
     }
 
-    private WriteConcern resolveWriteConcern(String writeConcern) {
+    private static WriteConcern resolveWriteConcern(String writeConcern) {
         if ("ACKNOWLEDGED".equals(writeConcern)) {
             return WriteConcern.ACKNOWLEDGED;
         } else if ("MAJORITY".equals(writeConcern)) {
             return WriteConcern.MAJORITY;
         }
-
         return null;
     }
-
-
 }

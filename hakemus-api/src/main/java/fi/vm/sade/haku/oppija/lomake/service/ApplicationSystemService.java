@@ -1,5 +1,6 @@
 package fi.vm.sade.haku.oppija.lomake.service;
 
+import com.google.common.cache.LoadingCache;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 
 import java.util.List;
@@ -19,4 +20,5 @@ public interface ApplicationSystemService {
 
     List<String> findByYearAndSemester(String asSemester, String asYear);
 
+    LoadingCache<String, ApplicationSystem> getCache();
 }
