@@ -44,6 +44,10 @@ public class ApplicationSystemServiceImpl implements ApplicationSystemService {
         }
     }
 
+    public LoadingCache<String, ApplicationSystem> getCache() {
+        return cache;
+    }
+
     private ApplicationSystem findById(String key) {
         final ApplicationSystem applicationSystem = applicationSystemRepository.findById(key);
         if (applicationSystem != null) {
@@ -114,10 +118,6 @@ public class ApplicationSystemServiceImpl implements ApplicationSystemService {
                 return as.getId();
             }
         });
-    }
-
-    public CacheStats getCacheStats() {
-        return cache.stats();
     }
 
     private class ApplicationSystemCacheLoader extends CacheLoader<String, ApplicationSystem> {

@@ -34,7 +34,13 @@ public class ApplicationSystem implements Serializable {
     private static final long serialVersionUID = 709005625385191180L;
     @Id
     private String id;
+
+    /**
+     * When persisted by MongoTemplate, this field is de/compressed by hooks.
+     * @see {@link ApplicationSystemMongoEventListener}.
+     */
     private Form form;
+
     private I18nText name;
     private String state;
     private List<ApplicationPeriod> applicationPeriods;
