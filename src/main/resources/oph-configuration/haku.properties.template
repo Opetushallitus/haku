@@ -6,6 +6,7 @@
 #
 
 # Aseta vähintään nämä ympäristökohtaiset arvot
+activemq.brokerurl={{activemq_brokerurl}}
 auth.mode={{auth_mode}}
 authentication.app.username.to.organisaatioservice={{authentication_app_username_to_organisaatioservice}}
 authentication.app.password.to.organisaatioservice={{authentication_app_password_to_organisaatioservice}}
