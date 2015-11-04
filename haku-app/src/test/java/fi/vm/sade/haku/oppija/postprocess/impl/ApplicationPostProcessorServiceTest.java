@@ -11,6 +11,7 @@ import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
 import fi.vm.sade.haku.virkailija.authentication.Person;
 import fi.vm.sade.haku.virkailija.authentication.PersonBuilder;
 import fi.vm.sade.haku.virkailija.authentication.impl.AuthenticationServiceMockImpl;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakuService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.junit.Before;
 import org.junit.Test;
@@ -39,8 +40,9 @@ public class ApplicationPostProcessorServiceTest {
         final ApplicationService applicationService = null;
         final BaseEducationService baseEducationService = null;
         final FormService formService = null;
+        final HakuService hakuService = null;
 
-        applicationPostProcessorService = new ApplicationPostProcessorService(applicationService, baseEducationService, formService, elementTreeValidator, authenticationService);
+        applicationPostProcessorService = new ApplicationPostProcessorService(applicationService, baseEducationService, formService, elementTreeValidator, authenticationService, hakuService);
         applicationPostProcessorService.setRetryFailQuickCount(5);
         applicationPostProcessorService.setRetryFailedAgainTime(10000);
 

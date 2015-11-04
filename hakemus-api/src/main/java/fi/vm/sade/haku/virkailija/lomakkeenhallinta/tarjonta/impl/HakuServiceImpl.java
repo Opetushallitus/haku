@@ -95,6 +95,12 @@ public class HakuServiceImpl implements HakuService {
         return null != applicationOptionOids ? applicationOptionOids : new ArrayList<String>(0);
     }
 
+    @Override
+    public boolean kayttaaJarjestelmanLomaketta(String oid) {
+        HakuV1RDTO haku = fetchApplicationSystem(oid);
+        return haku.isJarjestelmanHakulomake();
+    }
+
 
     private HakuV1RDTO fetchApplicationSystem(String oid) {
         WebResource asWebResource = webResource.path(oid);
