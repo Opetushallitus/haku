@@ -32,4 +32,6 @@ public interface HakuService {
     ApplicationSystem getApplicationSystem(String oid);
 
     List<String> getRelatedApplicationOptionIds(String oid);
+
+    boolean kayttaaJarjestelmanLomaketta(String oid);
 }

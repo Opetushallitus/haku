@@ -181,6 +181,16 @@ public class HakuServiceMockImpl implements HakuService {
         return null;
     }
 
+    @Override
+    public boolean kayttaaJarjestelmanLomaketta(String oid) {
+        for (ApplicationSystem as : asList) {
+            if (as.getId().equals(oid)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static final Date getDate(int years) {
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.YEAR, years);

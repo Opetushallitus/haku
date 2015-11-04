@@ -11,6 +11,7 @@ import fi.vm.sade.haku.oppija.lomake.validation.ValidationResult;
 import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
 import fi.vm.sade.haku.virkailija.authentication.Person;
 import fi.vm.sade.haku.virkailija.authentication.PersonBuilder;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakuService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,6 +35,7 @@ public class ApplicationPostProcessorService {
     private final ElementTreeValidator elementTreeValidator;
     private final FormService formService;
     private final AuthenticationService authenticationService;
+    private final HakuService hakuService;
 
     @Value("${scheduler.retryFailQuickCount:20}")
     private int retryFailQuickCount;
@@ -46,12 +48,14 @@ public class ApplicationPostProcessorService {
                                            final BaseEducationService baseEducationService,
                                            final FormService formService,
                                            final ElementTreeValidator elementTreeValidator,
-                                           final AuthenticationService authenticationService){
+                                           final AuthenticationService authenticationService,
+                                           final HakuService hakuService){
         this.applicationService = applicationService;
         this.baseEducationService = baseEducationService;
         this.formService = formService;
         this.elementTreeValidator = elementTreeValidator;
         this.authenticationService = authenticationService;
+        this.hakuService = hakuService;
     }
 
     public Application process(Application application) throws IOException{
@@ -60,7 +64,9 @@ public class ApplicationPostProcessorService {
         application = applicationService.updateAuthorizationMeta(application);
         application = applicationService.ensureApplicationOptionGroupData(application);
         application = applicationService.updateAutomaticEligibilities(application);
-        application = validateApplication(application);
+        if (hakuService.kayttaaJarjestelmanLomaketta(application.getApplicationSystemId())) {
+            application = validateApplication(application);
+        }
         application.setRedoPostProcess(Application.PostProcessingState.DONE);
         if (null == application.getModelVersion())
             application.setModelVersion(Application.CURRENT_MODEL_VERSION);
