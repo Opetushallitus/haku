@@ -30,7 +30,7 @@ public class ApplicationSystemMongoEventListener extends AbstractMongoEventListe
     public void onAfterLoad(DBObject dbo) {
         try {
             Object data = dbo.get(FORM_FIELD);
-            if (data.getClass().equals(byte[].class)) {
+            if (data != null && data.getClass().equals(byte[].class)) {
                 byte[] compressedBinary = (byte[]) data;
                 if (isGZIP(compressedBinary)) {
                     dbo.put(FORM_FIELD, decompressDBObject(compressedBinary));
@@ -46,7 +46,9 @@ public class ApplicationSystemMongoEventListener extends AbstractMongoEventListe
     public void onBeforeSave(ApplicationSystem source, DBObject dbo) {
         try {
             BasicDBObject form = (BasicDBObject) dbo.get(FORM_FIELD);
-            dbo.put(FORM_FIELD, compressDBObject(form));
+            if (form != null) {
+                dbo.put(FORM_FIELD, compressDBObject(form));
+            }
         } catch (IOException e) {
             logger.error("Failed to compress form", e);
             throw new IllegalArgumentException(e);
