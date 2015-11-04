@@ -133,6 +133,19 @@ public final class ApplicationUtil {
         return preferenceAnswers.get(aoKey);
     }
 
+    public static boolean hasBaseEducationYo(Application application) {
+        if (!hasBaseEducation(application, "pohjakoulutus_yo")) {
+            return false;
+        }
+        String tutkinto = application.getVastauksetMerged().get("pohjakoulutus_yo_tutkinto");
+        return "fi".equals(tutkinto) || "lkOnly".equals(tutkinto);
+    }
+
+    public static boolean hasBaseEducationYoOrKvYo(Application application) {
+        return hasBaseEducationYo(application)
+                || hasBaseEducation(application, "pohjakoulutus_yo_kansainvalinen_suomessa")
+                || hasBaseEducation(application, "pohjakoulutus_yo_ulkomainen");
+    }
 
     public static boolean yoNeeded(Application application) {
         if (!hasBaseEducation(application, "pohjakoulutus_yo")) {
