@@ -32,7 +32,11 @@
 </head>
 <body>
 <header>
-    <h1><haku:i18nText value="${form.i18nText}"/></h1>
+    <h1><haku:i18nText value="${form.i18nText}"/>
+        <c:if test="${it.demoMode}">
+            <span class="demo-note">DEMO</span>
+        </c:if>
+    </h1>
 
     <h2><c:out value="${answers['Etunimet']}" escapeXml="true"/>&nbsp;<c:out value="${answers['Sukunimi']}"
                                                                              escapeXml="true"/></h2>
@@ -40,8 +44,16 @@
     <p><fmt:message key="lomake.tulostus.vastaanotettu"/>&nbsp;
         <time><fmt:formatDate value="${application.received}" pattern="dd.MM.yyyy HH:mm"/></time>
     </p>
-    <div class="application-number"><fmt:message key="virkailija.hakemus.hakemusnro"/>&nbsp;<c:out
-            value="${f:formatOid(application.oid)}" escapeXml="true"/></div>
+    <div class="application-number"><fmt:message key="virkailija.hakemus.hakemusnro"/>&nbsp;
+        <c:choose>
+            <c:when test="${it.demoMode}">
+                <fmt:message key="lomake.valmis.demo.hakulomakenumero"/>
+            </c:when>
+            <c:otherwise>
+                <c:out value="${f:formatOid(application.oid)}" escapeXml="true"/>
+            </c:otherwise>
+        </c:choose>
+    </div>
 </header>
 <c:forEach var="phase" items="${form.children}">
     <c:set var="element" value="${phase}" scope="request"/>

@@ -57,7 +57,11 @@
             <div aria-label='<fmt:message key="lomake.navigation.aria.label"/>' role="navigation" class="content">
                 <a href="${it.opintopolkuBaseUrl}"><fmt:message key="lomake.lisaakoulutuksia"/></a>
 
-                <h1><haku:i18nText value="${element.i18nText}"/> - <fmt:message key="form.title"/></h1>
+                <h1><haku:i18nText value="${element.i18nText}"/> - <fmt:message key="form.title"/>
+                    <c:if test="${it.demoMode}">
+                        <span class="demo-note">DEMO</span>
+                    </c:if>
+                </h1>
                 <ul aria-label='<fmt:message key="lomake.vaiheet.aria.label"/>' class="form-steps">
                     <c:set var="pastPhases" value="true" scope="request"/>
                     <c:forEach var="phase" items="${element.children}" varStatus="status">
@@ -86,7 +90,16 @@
                     <jsp:param name="notfocusable" value="true" />
                 </jsp:include>
                 <div aria-label='<fmt:message key="form.esikatselu.help.aria.label"/>' class="phase-help">
-                    <div role="presentation" class="help-text"><fmt:message key="form.esikatselu.help"/></div>
+                    <div role="presentation" class="help-text">
+                    <c:choose>
+                        <c:when test="${it.demoMode}">
+                            <fmt:message key="form.esikatselu.help.demo"/>
+                        </c:when>
+                        <c:otherwise>
+                            <fmt:message key="form.esikatselu.help"/>
+                        </c:otherwise>
+                    </c:choose>
+                    </div>
                 </div>
                 <div role="presentation" class="clear"></div>
                 <c:forEach var="child" items="${element.children}">
