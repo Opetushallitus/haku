@@ -298,32 +298,30 @@ public class AttachmentUtil {
         });
     }
 
-    private static void addLiitepyynto(Map<String, List<ApplicationOptionDTO>> liitepyynnot, ApplicationOptionDTO ao, String i18nKey) {
-        if (!liitepyynnot.containsKey(i18nKey)) {
-            liitepyynnot.put(i18nKey, new ArrayList<ApplicationOptionDTO>());
+    private static boolean liitepyynto(Application application, ApplicationOptionDTO ao, String pohjakoulutuskoodi) {
+        if (!ApplicationUtil.hasBaseEducation(application, POHJAKOULUTUSKOODI_TO_FORM_ID.get(pohjakoulutuskoodi))) {
+            return false;
         }
-        liitepyynnot.get(i18nKey).add(ao);
+        if (YO_POHJAKOULUTUSKOODI.equals(pohjakoulutuskoodi)) {
+            return ApplicationUtil.yoNeeded(application);
+        }
+        if (ao.isJosYoEiMuitaLiitepyyntoja()) {
+            return (KV_YO_POHJAKOULUTUSKOODI.contains(pohjakoulutuskoodi) || !ApplicationUtil.hasBaseEducationYoOrKvYo(application));
+        }
+        return true;
     }
 
     public static Map<String, List<ApplicationOptionDTO>> pohjakoulutusliitepyynnot(Application application, List<ApplicationOptionDTO> aos) {
         Map<String, List<ApplicationOptionDTO>> liitepyynnot = new HashMap<>();
         for (ApplicationOptionDTO ao : aos) {
             if (ao.getPohjakoulutusLiitteet() != null) {
-                for (String koodi : ao.getPohjakoulutusLiitteet()) {
-                    String i18nKey = POHJAKOULUTUSKOODI_TO_I18N_KEY.get(koodi);
-                    String formId = POHJAKOULUTUSKOODI_TO_FORM_ID.get(koodi);
-                    if (ApplicationUtil.hasBaseEducation(application, formId)) {
-                        if (ao.isJosYoEiMuitaLiitepyyntoja()) {
-                            if (YO_POHJAKOULUTUSKOODI.equals(koodi)) {
-                                if (ApplicationUtil.yoNeeded(application)) {
-                                    addLiitepyynto(liitepyynnot, ao, i18nKey);
-                                }
-                            } else if (KV_YO_POHJAKOULUTUSKOODI.contains(koodi) || !ApplicationUtil.hasBaseEducationYoOrKvYo(application)) {
-                                addLiitepyynto(liitepyynnot, ao, i18nKey);
-                            }
-                        } else if (!YO_POHJAKOULUTUSKOODI.equals(koodi) || ApplicationUtil.yoNeeded(application)) {
-                            addLiitepyynto(liitepyynnot, ao, i18nKey);
+                for (String pohjakoulutuskoodi : ao.getPohjakoulutusLiitteet()) {
+                    if (liitepyynto(application, ao, pohjakoulutuskoodi)) {
+                        String i18nKey = POHJAKOULUTUSKOODI_TO_I18N_KEY.get(pohjakoulutuskoodi);
+                        if (!liitepyynnot.containsKey(i18nKey)) {
+                            liitepyynnot.put(i18nKey, new ArrayList<ApplicationOptionDTO>());
                         }
+                        liitepyynnot.get(i18nKey).add(ao);
                     }
                 }
             }
