@@ -8,6 +8,8 @@ import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultItemDTO;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.*;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.postprocess.EligibilityCheckWorker;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.ohjausparametrit.OhjausparametritService;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.ohjausparametrit.domain.Ohjausparametrit;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakuService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,6 +31,7 @@ public class EligibilityCheckWorkerImpl implements EligibilityCheckWorker {
 
     private final SuoritusrekisteriService suoritusrekisteriService;
     private final HakuService hakuService;
+    private final OhjausparametritService ohjausparametritService;
     private final ApplicationDAO applicationDAO;
     private final StatusRepository statusRepository;
     private static final int PERSON_BATCH = 1000;
@@ -36,12 +39,16 @@ public class EligibilityCheckWorkerImpl implements EligibilityCheckWorker {
     @Autowired
     public EligibilityCheckWorkerImpl(final SuoritusrekisteriService suoritusrekisteriService,
                                       final HakuService hakuService,
-                                      final ApplicationDAO applicationDAO, final StatusRepository statusRepository) {
+                                      final ApplicationDAO applicationDAO, final StatusRepository statusRepository,
+                                      final OhjausparametritService ohjausparametritService
+    ) {
         this.suoritusrekisteriService = suoritusrekisteriService;
         this.hakuService = hakuService;
         this.applicationDAO = applicationDAO;
         this.statusRepository = statusRepository;
+        this.ohjausparametritService = ohjausparametritService;
     }
+
 
     @Override
     public void checkEligibilities(Date since) {
@@ -54,9 +61,10 @@ public class EligibilityCheckWorkerImpl implements EligibilityCheckWorker {
         for (ApplicationSystem as : ass) {
             log.debug("Processing applicatinSystem {}", as.getId());
             List<String> aos = as.getAosForAutomaticEligibility();
-            if (aos == null || aos.isEmpty()) {
+            if (!hasHakukohteitaWithAutomaticHakukelpoisuus(as) || !hasValidOhjausparametriWithAutomaticHakukelpoisuus(as)) {
                 continue;
             }
+
             statusRepository.startOperation(SCHEDULER_ELIGIBILITY_CHECK, as.getId());
             int idx = 0;
             List<String> personBatch = personOids.subList(idx, Math.min(idx + PERSON_BATCH, personOids.size()));
@@ -90,4 +98,27 @@ public class EligibilityCheckWorkerImpl implements EligibilityCheckWorker {
         }
     }
 
+    private boolean hasHakukohteitaWithAutomaticHakukelpoisuus(ApplicationSystem as) {
+        List<String> aos = as.getAosForAutomaticEligibility();
+        return !(aos == null || aos.isEmpty());
+    }
+
+    private boolean hasValidOhjausparametriWithAutomaticHakukelpoisuus(ApplicationSystem as) {
+        Ohjausparametrit ohjausparametrit;
+        try {
+            ohjausparametrit = ohjausparametritService.fetchOhjausparametritForHaku(as.getId());
+        } catch(Throwable t) {
+            log.error("Unable to fetch 'ohjausparametrit' to 'haku' {}! Skipping processing!", as.getId(), t);
+            return false;
+        }
+        if(ohjausparametrit.getPH_AHP() != null && ohjausparametrit.getPH_AHP().getDate() != null) {
+            final Date NOW = new Date();
+            final Date automaattinenHakukelpoisuusPaattyy = ohjausparametrit.getPH_AHP().getDate();
+            if(NOW.after(automaattinenHakukelpoisuusPaattyy)) {
+                log.warn("Now is after 'automaattinenHakukelpoisuusPaattyy' so skipping 'haku' {}", as.getId());
+                return false;
+            }
+        }
+        return true;
+    }
 }
