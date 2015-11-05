@@ -63,7 +63,11 @@
 
                 <div class="grid16-16">
 
-                    <h1><haku:i18nText value="${form.i18nText}"/> - <fmt:message key="form.title"/></h1>
+                    <h1><haku:i18nText value="${form.i18nText}"/> - <fmt:message key="form.title"/>
+                    <c:if test="${it.demoMode}">
+                        <span class="demo-note">DEMO</span>
+                    </c:if>
+                    </h1>
 
                     <ul class="form-steps">
                         <c:forEach var="phase" items="${form.children}" varStatus="status">
@@ -89,8 +93,16 @@
                     <h3 class="h2"><fmt:message key="lomake.valmis.hakemuksesionvastaanotettu"/></h3>
 
                     <p class="application-number">
-                        <fmt:message key="lomake.valmis.hakulomakenumerosi"/>: <span class="number"><c:out
-                            value="${ f:formatOid(application.oid)}"/></span>
+                        <fmt:message key="lomake.valmis.hakulomakenumerosi"/>: <span class="number">
+                        <c:choose>
+                            <c:when test="${it.demoMode}">
+                                <fmt:message key="lomake.valmis.demo.hakulomakenumero"/>
+                            </c:when>
+                            <c:otherwise>
+                                <c:out value="${ f:formatOid(application.oid)}"/>
+                            </c:otherwise>
+                        </c:choose>
+                        </span>
                     </p>
 
                     <c:forEach var="cElement" items="${completeElements}">

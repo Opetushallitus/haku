@@ -113,6 +113,8 @@ public class UIServiceImpl implements UIService {
             add(i18nBundleService.getBundle(activeApplicationSystem).get("lomake.tulostus.alatunniste.rivi3"));
             add(i18nBundleService.getBundle(activeApplicationSystem).get("lomake.tulostus.alatunniste.rivi4"));
         }});
+        response.addObjectToModel("demoMode", this.demoMode);
+        response.addObjectToModel("opintopolkuBaseUrl", this.opintopolkuBaseUrl);
         return response;
     }
 
