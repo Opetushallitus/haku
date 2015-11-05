@@ -147,6 +147,14 @@ public final class ApplicationUtil {
                 || hasBaseEducation(application, "pohjakoulutus_yo_ulkomainen");
     }
 
+    public static boolean hasBaseEducationLukio(Application application) {
+        return hasBaseEducation(application, "pohjakoulutus_yo") && !hasBaseEducationYo(application);
+    }
+
+    public static int yoSuoritusvuosi(Application application) {
+        return Integer.parseInt(application.getVastauksetMerged().get("pohjakoulutus_yo_vuosi"));
+    }
+
     public static boolean yoNeeded(Application application) {
         if (!hasBaseEducation(application, "pohjakoulutus_yo")) {
             return false;
