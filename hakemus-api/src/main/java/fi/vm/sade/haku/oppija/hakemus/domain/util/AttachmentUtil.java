@@ -27,6 +27,7 @@ public class AttachmentUtil {
     public static final String GENERAL_DELIVERY_NOTE = "lomake.tulostus.liite.deadline.tarkista";
     public static final String GENERAL_DEADLINE_NOTE = "lomake.tulostus.liite.deadline.ohje";
     public static final String YO_POHJAKOULUTUSKOODI = "pohjakoulutuskklomake_yosuomi";
+    public static final String LUKIO_POHJAKOULUTUSKOODI = "pohjakoulutuskklomake_pohjakoulutuslk";
     public static final Set<String> KV_YO_POHJAKOULUTUSKOODI = new HashSet<String>() {{
         add("pohjakoulutuskklomake_yokvsuomi");
         add("pohjakoulutuskklomake_pohjakoulutusyoulkomainen");
@@ -39,7 +40,8 @@ public class AttachmentUtil {
         put("pohjakoulutuskklomake_pohjakoulutuskkulk", "form.valmis.todistus.kk_ulk");
         put("pohjakoulutuskklomake_pohjakoulutusmuu", "form.valmis.todistus.muu");
         put("pohjakoulutuskklomake_muuulk", "form.valmis.todistus.ulk");
-        put("pohjakoulutuskklomake_yosuomi", "form.valmis.todistus.yo");
+        put(YO_POHJAKOULUTUSKOODI, "form.valmis.todistus.yo");
+        put(LUKIO_POHJAKOULUTUSKOODI, "form.valmis.todistus.lukio");
         put("pohjakoulutuskklomake_pohjakoulutusyoammatillinen", "form.valmis.todistus.yo_am");
         put("pohjakoulutuskklomake_yokvsuomi", "form.valmis.todistus.yo_kv");
         put("pohjakoulutuskklomake_pohjakoulutusyoulkomainen", "form.valmis.todistus.yo_ulk");
@@ -52,7 +54,8 @@ public class AttachmentUtil {
         put("pohjakoulutuskklomake_pohjakoulutuskkulk", "pohjakoulutus_kk_ulk");
         put("pohjakoulutuskklomake_pohjakoulutusmuu", "pohjakoulutus_muu");
         put("pohjakoulutuskklomake_muuulk", "pohjakoulutus_ulk");
-        put("pohjakoulutuskklomake_yosuomi", "pohjakoulutus_yo");
+        put(YO_POHJAKOULUTUSKOODI, "pohjakoulutus_yo");
+        put(LUKIO_POHJAKOULUTUSKOODI, "pohjakoulutus_yo");
         put("pohjakoulutuskklomake_pohjakoulutusyoammatillinen", "pohjakoulutus_yo_ammatillinen");
         put("pohjakoulutuskklomake_yokvsuomi", "pohjakoulutus_yo_kansainvalinen_suomessa");
         put("pohjakoulutuskklomake_pohjakoulutusyoulkomainen", "pohjakoulutus_yo_ulkomainen");
@@ -303,7 +306,10 @@ public class AttachmentUtil {
             return false;
         }
         if (YO_POHJAKOULUTUSKOODI.equals(pohjakoulutuskoodi)) {
-            return ApplicationUtil.yoNeeded(application);
+            return ApplicationUtil.hasBaseEducationYo(application) && ApplicationUtil.yoSuoritusvuosi(application) < 1990;
+        }
+        if (LUKIO_POHJAKOULUTUSKOODI.equals(pohjakoulutuskoodi)) {
+            return ApplicationUtil.hasBaseEducationLukio(application);
         }
         if (ao.isJosYoEiMuitaLiitepyyntoja()) {
             return (KV_YO_POHJAKOULUTUSKOODI.contains(pohjakoulutuskoodi) || !ApplicationUtil.hasBaseEducationYoOrKvYo(application));
