@@ -107,6 +107,7 @@ public class EligibilityCheckWorkerImpl implements EligibilityCheckWorker {
         Ohjausparametrit ohjausparametrit;
         try {
             ohjausparametrit = ohjausparametritService.fetchOhjausparametritForHaku(as.getId());
+            ohjausparametrit.getPH_AHP(); // Catch NPE here!
         } catch(Throwable t) {
             log.error("Unable to fetch 'ohjausparametrit' to 'haku' {}! Skipping processing!", as.getId(), t);
             return false;
