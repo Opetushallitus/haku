@@ -3344,3 +3344,8 @@ table {
   top: 40%;
   width: 25%;
 }
+.demo-note {
+  padding-left: 20px;
+  color: red;
+  font-size: 2em;
+}
