@@ -90,7 +90,16 @@
                     <jsp:param name="notfocusable" value="true" />
                 </jsp:include>
                 <div aria-label='<fmt:message key="form.esikatselu.help.aria.label"/>' class="phase-help">
-                    <div role="presentation" class="help-text"><fmt:message key="form.esikatselu.help"/></div>
+                    <div role="presentation" class="help-text">
+                    <c:choose>
+                        <c:when test="${it.demoMode}">
+                            <fmt:message key="form.esikatselu.help.demo"/>
+                        </c:when>
+                        <c:otherwise>
+                            <fmt:message key="form.esikatselu.help"/>
+                        </c:otherwise>
+                    </c:choose>
+                    </div>
                 </div>
                 <div role="presentation" class="clear"></div>
                 <c:forEach var="child" items="${element.children}">
