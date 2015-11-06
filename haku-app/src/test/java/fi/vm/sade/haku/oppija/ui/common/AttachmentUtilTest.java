@@ -238,7 +238,7 @@ public class AttachmentUtilTest {
         }};
         ApplicationOptionDTO ao2 = new ApplicationOptionDTO() {{
             setPohjakoulutusLiitteet(new ArrayList<String>() {{
-                add(AttachmentUtil.LUKIO_POHJAKOULUTUSKOODI);
+                add("pohjakoulutuskklomake_pohjakoulutuslk");
             }});
             setJosYoEiMuitaLiitepyyntoja(false);
         }};
@@ -269,7 +269,7 @@ public class AttachmentUtilTest {
         }};
         ApplicationOptionDTO ao2 = new ApplicationOptionDTO() {{
             setPohjakoulutusLiitteet(new ArrayList<String>() {{
-                add(AttachmentUtil.LUKIO_POHJAKOULUTUSKOODI);
+                add("pohjakoulutuskklomake_pohjakoulutuslk");
             }});
             setJosYoEiMuitaLiitepyyntoja(false);
         }};
