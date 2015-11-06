@@ -30,7 +30,7 @@ public class MongoConfiguration extends AbstractMongoConfiguration {
 
     @Override
     public Mongo mongo() throws Exception {
-        LOGGER.info("Creating MongoClient for server(s): " + getMongoUrl(mongoUri));
+        LOGGER.info("Creating MongoClient for server(s): " + sanitizeMongoUri(mongoUri));
         MongoClientURI mongoClientURI = new MongoClientURI(mongoUri);
         MongoClient mongoClient = new MongoClient(mongoClientURI);
         WriteConcern wc = resolveWriteConcern(writeConcern);
@@ -40,7 +40,7 @@ public class MongoConfiguration extends AbstractMongoConfiguration {
         return mongoClient;
     }
 
-    private static String getMongoUrl(String mongoUri) {
+    private static String sanitizeMongoUri(String mongoUri) {
         if (mongoUri.contains("@")) {
             return mongoUri.substring(mongoUri.indexOf("@"));
         }
