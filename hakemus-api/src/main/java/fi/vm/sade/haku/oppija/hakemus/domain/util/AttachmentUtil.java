@@ -23,43 +23,42 @@ import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.crea
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 public class AttachmentUtil {
+    private enum Pohjakoulutusliite {
+        AMMATTI("pohjakoulutuskklomake_amsuomi", "form.valmis.todistus.am", "pohjakoulutus_am"),
+        AMMATILLINEN("pohjakoulutuskklomake_pohjakoulutusamt", "form.valmis.todistus.amt", "pohjakoulutus_amt"),
+        AVOIN("pohjakoulutuskklomake_pohjakoulutusavoin", "form.valmis.todistus.avoin", "pohjakoulutus_avoin"),
+        KK("pohjakoulutuskklomake_pohjakoulutuskk", "form.valmis.todistus.kk", "pohjakoulutus_kk"),
+        KK_ULK("pohjakoulutuskklomake_pohjakoulutuskkulk", "form.valmis.todistus.kk_ulk", "pohjakoulutus_kk_ulk"),
+        MUU("pohjakoulutuskklomake_pohjakoulutusmuu", "form.valmis.todistus.muu", "pohjakoulutus_muu"),
+        MUU_ULK("pohjakoulutuskklomake_muuulk", "form.valmis.todistus.ulk", "pohjakoulutus_ulk"),
+        YO("pohjakoulutuskklomake_yosuomi", "form.valmis.todistus.yo", "pohjakoulutus_yo"),
+        LUKIO("pohjakoulutuskklomake_pohjakoulutuslk", "form.valmis.todistus.lukio", "pohjakoulutus_yo"),
+        YO_AMMATILLINEN("pohjakoulutuskklomake_pohjakoulutusyoammatillinen", "form.valmis.todistus.yo_am", "pohjakoulutus_yo_ammatillinen"),
+        KV_YO("pohjakoulutuskklomake_yokvsuomi", "form.valmis.todistus.yo_kv", "pohjakoulutus_yo_kansainvalinen_suomessa"),
+        KV_YO_ULK("pohjakoulutuskklomake_pohjakoulutusyoulkomainen", "form.valmis.todistus.yo_ulk", "pohjakoulutus_yo_ulkomainen");
+
+        public final String koodiUri;
+        public final String i18nKey;
+        public final String formId;
+
+        Pohjakoulutusliite(String koodiUri, String i18nKey, String formId) {
+            this.koodiUri = koodiUri;
+            this.i18nKey = i18nKey;
+            this.formId = formId;
+        }
+
+        public static Pohjakoulutusliite byKoodiUri(String koodiUri) {
+            for (Pohjakoulutusliite p : Pohjakoulutusliite.values()) {
+                if (p.koodiUri.equals(koodiUri)) {
+                    return p;
+                }
+            }
+            throw new EnumConstantNotPresentException(Pohjakoulutusliite.class, koodiUri);
+        }
+    }
 
     public static final String GENERAL_DELIVERY_NOTE = "lomake.tulostus.liite.deadline.tarkista";
     public static final String GENERAL_DEADLINE_NOTE = "lomake.tulostus.liite.deadline.ohje";
-    public static final String YO_POHJAKOULUTUSKOODI = "pohjakoulutuskklomake_yosuomi";
-    public static final String LUKIO_POHJAKOULUTUSKOODI = "pohjakoulutuskklomake_pohjakoulutuslk";
-    public static final Set<String> KV_YO_POHJAKOULUTUSKOODI = new HashSet<String>() {{
-        add("pohjakoulutuskklomake_yokvsuomi");
-        add("pohjakoulutuskklomake_pohjakoulutusyoulkomainen");
-    }};
-    public static final HashMap<String, String> POHJAKOULUTUSKOODI_TO_I18N_KEY = new HashMap<String, String>() {{
-        put("pohjakoulutuskklomake_amsuomi", "form.valmis.todistus.am");
-        put("pohjakoulutuskklomake_pohjakoulutusamt", "form.valmis.todistus.amt");
-        put("pohjakoulutuskklomake_pohjakoulutusavoin", "form.valmis.todistus.avoin");
-        put("pohjakoulutuskklomake_pohjakoulutuskk", "form.valmis.todistus.kk");
-        put("pohjakoulutuskklomake_pohjakoulutuskkulk", "form.valmis.todistus.kk_ulk");
-        put("pohjakoulutuskklomake_pohjakoulutusmuu", "form.valmis.todistus.muu");
-        put("pohjakoulutuskklomake_muuulk", "form.valmis.todistus.ulk");
-        put(YO_POHJAKOULUTUSKOODI, "form.valmis.todistus.yo");
-        put(LUKIO_POHJAKOULUTUSKOODI, "form.valmis.todistus.lukio");
-        put("pohjakoulutuskklomake_pohjakoulutusyoammatillinen", "form.valmis.todistus.yo_am");
-        put("pohjakoulutuskklomake_yokvsuomi", "form.valmis.todistus.yo_kv");
-        put("pohjakoulutuskklomake_pohjakoulutusyoulkomainen", "form.valmis.todistus.yo_ulk");
-    }};
-    public static final HashMap<String, String> POHJAKOULUTUSKOODI_TO_FORM_ID = new HashMap<String, String>() {{
-        put("pohjakoulutuskklomake_amsuomi", "pohjakoulutus_am");
-        put("pohjakoulutuskklomake_pohjakoulutusamt", "pohjakoulutus_amt");
-        put("pohjakoulutuskklomake_pohjakoulutusavoin", "pohjakoulutus_avoin");
-        put("pohjakoulutuskklomake_pohjakoulutuskk", "pohjakoulutus_kk");
-        put("pohjakoulutuskklomake_pohjakoulutuskkulk", "pohjakoulutus_kk_ulk");
-        put("pohjakoulutuskklomake_pohjakoulutusmuu", "pohjakoulutus_muu");
-        put("pohjakoulutuskklomake_muuulk", "pohjakoulutus_ulk");
-        put(YO_POHJAKOULUTUSKOODI, "pohjakoulutus_yo");
-        put(LUKIO_POHJAKOULUTUSKOODI, "pohjakoulutus_yo");
-        put("pohjakoulutuskklomake_pohjakoulutusyoammatillinen", "pohjakoulutus_yo_ammatillinen");
-        put("pohjakoulutuskklomake_yokvsuomi", "pohjakoulutus_yo_kansainvalinen_suomessa");
-        put("pohjakoulutuskklomake_pohjakoulutusyoulkomainen", "pohjakoulutus_yo_ulkomainen");
-    }};
 
     public static List<ApplicationAttachment> resolveAttachments(Application application) {
         List<ApplicationAttachmentRequest> attachmentRequests = application.getAttachmentRequests();
@@ -301,18 +300,20 @@ public class AttachmentUtil {
         });
     }
 
-    private static boolean liitepyynto(Application application, ApplicationOptionDTO ao, String pohjakoulutuskoodi) {
-        if (!ApplicationUtil.hasBaseEducation(application, POHJAKOULUTUSKOODI_TO_FORM_ID.get(pohjakoulutuskoodi))) {
+    private static boolean liitepyynto(Application application, ApplicationOptionDTO ao, Pohjakoulutusliite pohjakoulutusliite) {
+        if (!ApplicationUtil.hasBaseEducation(application, pohjakoulutusliite.formId)) {
             return false;
         }
-        if (YO_POHJAKOULUTUSKOODI.equals(pohjakoulutuskoodi)) {
+        if (Pohjakoulutusliite.YO == pohjakoulutusliite) {
             return ApplicationUtil.hasBaseEducationYo(application) && ApplicationUtil.yoSuoritusvuosi(application) < 1990;
         }
-        if (LUKIO_POHJAKOULUTUSKOODI.equals(pohjakoulutuskoodi)) {
+        if (Pohjakoulutusliite.LUKIO == pohjakoulutusliite) {
             return ApplicationUtil.hasBaseEducationLukio(application);
         }
         if (ao.isJosYoEiMuitaLiitepyyntoja()) {
-            return (KV_YO_POHJAKOULUTUSKOODI.contains(pohjakoulutuskoodi) || !ApplicationUtil.hasBaseEducationYoOrKvYo(application));
+            return (Pohjakoulutusliite.KV_YO == pohjakoulutusliite ||
+                    Pohjakoulutusliite.KV_YO_ULK == pohjakoulutusliite ||
+                    !ApplicationUtil.hasBaseEducationYoOrKvYo(application));
         }
         return true;
     }
@@ -322,12 +323,12 @@ public class AttachmentUtil {
         for (ApplicationOptionDTO ao : aos) {
             if (ao.getPohjakoulutusLiitteet() != null) {
                 for (String pohjakoulutuskoodi : ao.getPohjakoulutusLiitteet()) {
-                    if (liitepyynto(application, ao, pohjakoulutuskoodi)) {
-                        String i18nKey = POHJAKOULUTUSKOODI_TO_I18N_KEY.get(pohjakoulutuskoodi);
-                        if (!liitepyynnot.containsKey(i18nKey)) {
-                            liitepyynnot.put(i18nKey, new ArrayList<ApplicationOptionDTO>());
+                    Pohjakoulutusliite p = Pohjakoulutusliite.byKoodiUri(pohjakoulutuskoodi);
+                    if (liitepyynto(application, ao, p)) {
+                        if (!liitepyynnot.containsKey(p.i18nKey)) {
+                            liitepyynnot.put(p.i18nKey, new ArrayList<ApplicationOptionDTO>());
                         }
-                        liitepyynnot.get(i18nKey).add(ao);
+                        liitepyynnot.get(p.i18nKey).add(ao);
                     }
                 }
             }
