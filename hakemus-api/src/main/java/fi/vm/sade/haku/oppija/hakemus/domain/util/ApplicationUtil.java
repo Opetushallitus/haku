@@ -4,9 +4,11 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import fi.vm.sade.haku.oppija.hakemus.domain.*;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
-import org.apache.commons.lang3.StringUtils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.OPTION_ID_POSTFIX;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.PREFERENCE_PREFIX;
@@ -36,53 +38,6 @@ public final class ApplicationUtil {
 
     public static List<String> getApplicationOptionAttachmentAOIds(Application application) {
         return getAttachmentAOIds(application, "preference%d-Koulutus-id-attachments");
-    }
-
-    public static Map<String, List<String>> getHigherEdAttachmentAOIds(Application application) {
-
-        Map<String, List<String>> attachments = new LinkedHashMap<>();
-
-        List<String> allAOs = getAos(application);
-        List<String> universityAOs = getAosForType(application, "yoLiite");
-        List<String> higherAMKAOs = getAosForType(application, "ylempiAMKLiite");
-
-        if (!allAOs.isEmpty()) {
-            if (yoNeeded(application)) {
-                attachments.put("form.valmis.todistus.yo", allAOs);
-            }
-            if (hasBaseEducation(application, "pohjakoulutus_yo_ammatillinen")) {
-                attachments.put("form.valmis.todistus.yo_am", universityAOs);
-            }
-            if (hasBaseEducation(application, "pohjakoulutus_yo_kansainvalinen_suomessa")) {
-                attachments.put("form.valmis.todistus.yo_kv", allAOs);
-            }
-            if (hasBaseEducation(application, "pohjakoulutus_yo_ulkomainen")) {
-                attachments.put("form.valmis.todistus.yo_ulk", allAOs);
-            }
-            if (hasBaseEducation(application, "pohjakoulutus_am")) {
-                attachments.put("form.valmis.todistus.am", universityAOs);
-            }
-            if (hasBaseEducation(application, "pohjakoulutus_amt")) {
-                attachments.put("form.valmis.todistus.amt", allAOs);
-            }
-            if (hasBaseEducation(application, "pohjakoulutus_kk")) {
-                // add for no one
-            }
-            if (hasBaseEducation(application, "pohjakoulutus_ulk")) {
-                attachments.put("form.valmis.todistus.ulk", allAOs);
-            }
-            if (hasBaseEducation(application, "pohjakoulutus_kk_ulk")) {
-                attachments.put("form.valmis.todistus.kk_ulk", higherAMKAOs);
-            }
-            if (hasBaseEducation(application, "pohjakoulutus_avoin")) {
-                attachments.put("form.valmis.todistus.avoin", allAOs);
-            }
-            if (hasBaseEducation(application, "pohjakoulutus_muu")) {
-                attachments.put("form.valmis.todistus.muu", allAOs);
-            }
-        }
-
-        return attachments;
     }
 
     public static Map<String, List<String>> getAmkOpeAttachments(final Application application) {
@@ -153,66 +108,6 @@ public final class ApplicationUtil {
 
     public static int yoSuoritusvuosi(Application application) {
         return Integer.parseInt(application.getVastauksetMerged().get("pohjakoulutus_yo_vuosi"));
-    }
-
-    public static boolean yoNeeded(Application application) {
-        if (!hasBaseEducation(application, "pohjakoulutus_yo")) {
-            return false;
-        }
-
-        Map<String, String> answers = application.getVastauksetMerged();
-        String tutkinto = answers.get("pohjakoulutus_yo_tutkinto");
-        if ("lk".equals(tutkinto)) {
-            return false;
-        }
-        int suoritusvuosi = Integer.parseInt(answers.get("pohjakoulutus_yo_vuosi"));
-        if (suoritusvuosi < 1990) {
-            return true;
-        }
-        if ("fi".equals(tutkinto) || "lkOnly".equals(tutkinto)) {
-            return false;
-        }
-        return true;
-
-    }
-
-
-    private static List<String> getAos(Application application) {
-        Map<String, String> answers = application.getPhaseAnswers(OppijaConstants.PHASE_APPLICATION_OPTIONS);
-        List<String> aos = new ArrayList<String>();
-        int i = 1;
-        while (true) {
-            String aoKey = String.format(OppijaConstants.PREFERENCE_ID, i);
-            if (!answers.containsKey(aoKey)) {
-                break;
-            }
-            String aoId = answers.get(aoKey);
-            if (!Strings.isNullOrEmpty(aoId) && !aos.contains(aoId)) {
-                aos.add(aoId);
-            }
-            i++;
-        }
-        return aos;
-    }
-
-    private static List<String> getAosForType(Application application, String liiteKeyBase) {
-        Map<String, String> answers = application.getPhaseAnswers(OppijaConstants.PHASE_APPLICATION_OPTIONS);
-        List<String> aos = new ArrayList<String>();
-        int i = 1;
-        while (true) {
-            String aoKey = String.format(OppijaConstants.PREFERENCE_ID, i);
-            if (!answers.containsKey(aoKey)) {
-                break;
-            }
-            String aoId = answers.get(aoKey);
-            String liiteKey = "preference" + i + "-" + liiteKeyBase;
-            if (isIdGivenAndKeyValueTrue(answers, aoId, liiteKey)
-                    && !aos.contains(aoId)) {
-                aos.add(aoId);
-            }
-            i++;
-        }
-        return aos;
     }
 
     public static boolean hasBaseEducation(Application application, String field) {
