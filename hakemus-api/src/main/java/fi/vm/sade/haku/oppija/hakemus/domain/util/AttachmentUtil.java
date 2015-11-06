@@ -345,9 +345,7 @@ public class AttachmentUtil {
         final I18nBundle i18nBundle
     ) {
         Date deadline = null;
-        Map<String, List<ApplicationOptionDTO>> higherEdAttachmentAOs = true ?
-                pohjakoulutusliitepyynnot(application, koulutusinformaatioService.getApplicationOptions(ApplicationUtil.getPreferenceAoIds(application), lang)) :
-                fetchAOs(ApplicationUtil.getHigherEdAttachmentAOIds(application), koulutusinformaatioService, lang);
+        Map<String, List<ApplicationOptionDTO>> higherEdAttachmentAOs = pohjakoulutusliitepyynnot(application, koulutusinformaatioService.getApplicationOptions(ApplicationUtil.getPreferenceAoIds(application), lang));
         Map<String, List<HigherEdBaseEducationAttachmentInfo>> higherEdAttachments = getAddresses(applicationSystem.getAttachmentGroupAddresses(), higherEdAttachmentAOs, deadline);
         attachments.addAll(getHigherEdAttachments(higherEdAttachments, i18nBundle));
         return attachments;
