@@ -1,5 +1,6 @@
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja;
 
+import fi.vm.sade.haku.oppija.lomake.domain.ApplicationPeriod;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystemBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
@@ -17,7 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import java.util.*;
 
 @Service
 public class FormGeneratorImpl implements FormGenerator {
@@ -27,11 +28,21 @@ public class FormGeneratorImpl implements FormGenerator {
     private final HakuService hakuService;
     private final FormConfigurationService formConfigurationService;
 
+    private final boolean demoMode;
+    private final List<String> demoOids = new ArrayList<>();
+
     @Autowired
     public FormGeneratorImpl(final HakuService hakuService,
-                             final FormConfigurationService formConfigurationService) {
+                             final FormConfigurationService formConfigurationService,
+                             @Value("${mode.demo:false}") boolean demoMode,
+                             @Value("${demo.hakuoids}") String demoOids) {
         this.hakuService = hakuService;
         this.formConfigurationService = formConfigurationService;
+        this.demoMode = demoMode;
+
+        if(demoOids != null) {
+            this.demoOids.addAll(Arrays.asList(demoOids.split(",")));
+        }
     }
 
     @Override
@@ -50,12 +61,11 @@ public class FormGeneratorImpl implements FormGenerator {
 
     private ApplicationSystem createApplicationSystem(ApplicationSystem as) {
         FormParameters formParameters = formConfigurationService.getFormParameters(as);
-        return new ApplicationSystemBuilder()
+        ApplicationSystemBuilder appBuilder =  new ApplicationSystemBuilder()
                 .setId(as.getId())
                 .setForm(generateForm(formParameters))
                 .setName(as.getName())
                 .setState(as.getState())
-                .setApplicationPeriods(as.getApplicationPeriods())
                 .setApplicationSystemType(as.getApplicationSystemType())
                 .setUsePriorities(as.isUsePriorities())
                 .setHakutapa(as.getHakutapa())
@@ -69,8 +79,23 @@ public class FormGeneratorImpl implements FormGenerator {
                 .addAttachmentGroupAddresses(formParameters.getAttachmentGroupConfigurator().configureAttachmentGroupAddresses())
                 .setLastGenerated(new Date())
                 .setAosForAutomaticEligibility(as.getAosForAutomaticEligibility())
-                .setAllowedLanguages(formParameters.getAllowedLanguages())
-                .get();
+                .setAllowedLanguages(formParameters.getAllowedLanguages());
+
+        if(demoMode && demoOids.contains(as.getId())) {
+            List<ApplicationPeriod> demoPeriods = new ArrayList<>();
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(new Date());
+            cal.add(Calendar.MONTH, -6);
+            Date start = cal.getTime();
+            cal.add(Calendar.MONTH, 12);
+            Date end = cal.getTime();
+            demoPeriods.add(new ApplicationPeriod(start, end));
+            appBuilder = appBuilder.setApplicationPeriods(demoPeriods);
+        } else {
+            appBuilder = appBuilder.setApplicationPeriods(as.getApplicationPeriods());
+        }
+
+        return appBuilder.get();
     }
 
     public static Form generateForm(final FormParameters formParameters) {

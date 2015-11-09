@@ -71,7 +71,7 @@ public class ElementTreeValidatorTest {
         I18nBundleService i18nBundleService = new I18nBundleService(null);
         //TODO: Not Mocked
         FormConfigurationService formConfigurationService = new FormConfigurationService(new KoodistoServiceMockImpl(), new HakuServiceMockImpl(), themeQuestionDAOMock, mock(HakukohdeService.class), mock(OrganizationService.class), formConfigurationDAOMock, i18nBundleService);
-        FormGenerator formGeneratorMock = new FormGeneratorImpl(hakuServiceMock, formConfigurationService);
+        FormGenerator formGeneratorMock = new FormGeneratorImpl(hakuServiceMock, formConfigurationService, false, null);
         applicationSystemServiceMock = mock(ApplicationSystemService.class);
         when(applicationSystemServiceMock.getApplicationSystem(anyString())).thenReturn(formGeneratorMock.generate(ASID));
         SsnUniqueConcreteValidator ssnUniqueConcreteValidator = mock(SsnUniqueConcreteValidator.class);
