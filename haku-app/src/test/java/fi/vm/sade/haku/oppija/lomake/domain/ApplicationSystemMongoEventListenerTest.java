@@ -13,6 +13,7 @@ import java.util.Map;
 
 import static fi.vm.sade.haku.oppija.common.mongo.DBObjectUtils.decompressDBObject;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 public class ApplicationSystemMongoEventListenerTest extends IntegrationTest {
@@ -47,6 +48,14 @@ public class ApplicationSystemMongoEventListenerTest extends IntegrationTest {
         DBObject decompressedResult = collection.findOne(AFFECTED_APPLICATION_SYSTEM_ID);
         assertEquals(AFFECTED_APPLICATION_SYSTEM_ID, ((Map)decompressedResult.get("form")).get("_id"));
         assertApplicationSystem(applicationSystemService.getApplicationSystem(AFFECTED_APPLICATION_SYSTEM_ID));
+    }
+
+    @Test
+    public void applicationSystemFormDecompressionForOtherApis() throws IOException, ClassNotFoundException {
+        ApplicationSystem as = applicationSystemService.getAllApplicationSystems("_id", "form").get(0);
+        assertEquals(AFFECTED_APPLICATION_SYSTEM_ID, as.getId());
+        assertEquals(AFFECTED_APPLICATION_SYSTEM_ID, as.getForm().getId());
+        assertNull(as.getApplicationSystemType());
     }
 
     private void assertApplicationSystem(ApplicationSystem readFromDatabase) {
