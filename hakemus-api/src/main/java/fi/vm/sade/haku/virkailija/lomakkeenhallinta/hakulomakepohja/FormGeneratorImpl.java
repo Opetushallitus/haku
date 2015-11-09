@@ -35,7 +35,7 @@ public class FormGeneratorImpl implements FormGenerator {
     public FormGeneratorImpl(final HakuService hakuService,
                              final FormConfigurationService formConfigurationService,
                              @Value("${mode.demo:false}") boolean demoMode,
-                             @Value("${demo.hakuoids}") String demoOids) {
+                             @Value("${demo.hakuoids:}") String demoOids) {
         this.hakuService = hakuService;
         this.formConfigurationService = formConfigurationService;
         this.demoMode = demoMode;
