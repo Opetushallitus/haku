@@ -51,6 +51,7 @@ scheduler.modelUpgradeCron={{haku_scheduler_modelupgrade_cron}}
 scheduler.eligibilityCheckCron={{haku_scheduler_eligibilitycheck_cron}}
 scheduler.sendMail={{haku_scheduler_sendMail}}
 haku.langCookie={{ haku_lang_cookie | default('i18next') }}
+demo.hakuoids={{demo_hakuoids}}
 
 # Oletusarvoja
 accessRight.webservice.url.backend=https\://${host.virkailija}/authentication-service/services/accessRightService
