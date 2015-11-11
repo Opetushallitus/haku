@@ -74,6 +74,10 @@ final class ApplicationDAOMongoQueryBuilder {
         return _buildApplicationExistsForSSN(ssn, asId).get();
     }
 
+    public DBObject buildApplicationExistsForEmail(final String email, final String asId) {
+        return _buildApplicationExistsForEmail(email, asId).get();
+    }
+
     public DBObject buildApplicationExistsForSSN(final String ssn, final String asId, final String aoId) {
         return _buildApplicationExistsForSSN(ssn, asId)
                 .and(META_FIELD_AO).is(aoId)
@@ -84,6 +88,12 @@ final class ApplicationDAOMongoQueryBuilder {
         final String encryptedSsn = shaEncrypter.encrypt(ssn.toUpperCase());
         return QueryBuilder.start(FIELD_APPLICATION_SYSTEM_ID).is(asId)
                 .and("answers.henkilotiedot." + SocialSecurityNumber.HENKILOTUNNUS_HASH).is(encryptedSsn)
+                .and(FIELD_APPLICATION_STATE).in(STATE_NOT_PASSIVE);
+    }
+
+    private QueryBuilder _buildApplicationExistsForEmail(final String email, final String asId) {
+        return QueryBuilder.start(FIELD_APPLICATION_SYSTEM_ID).is(asId)
+                .and(FIELD_EMAIL).is(email)
                 .and(FIELD_APPLICATION_STATE).in(STATE_NOT_PASSIVE);
     }
 

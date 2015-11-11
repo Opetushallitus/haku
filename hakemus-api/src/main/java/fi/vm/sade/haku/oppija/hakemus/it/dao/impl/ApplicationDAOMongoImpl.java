@@ -121,6 +121,14 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     }
 
     @Override
+    public boolean checkIfExistsByEmail(String asId, String email) {
+        if (!Strings.isNullOrEmpty(email)) {
+            return resultNotEmpty(applicationQueryBuilder.buildApplicationExistsForEmail(email, asId), INDEX_EMAIL);
+        }
+        return false;
+    }
+
+    @Override
     public boolean checkIfExistsBySocialSecurityNumberAndAo(final ApplicationFilterParameters filterParameters,
                                                             final String asId, final String ssn, final String aoId) {
         if (!Strings.isNullOrEmpty(ssn)) {
@@ -375,6 +383,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         ensureIndex(INDEX_DATE_OF_BIRTH, FIELD_DATE_OF_BIRTH);
         ensureIndex(INDEX_PERSON_OID, FIELD_PERSON_OID);
         ensureIndex(INDEX_STUDENT_OID, FIELD_STUDENT_OID);
+        ensureIndex(INDEX_EMAIL, FIELD_EMAIL);
         ensureSparseIndex(INDEX_SENDING_SCHOOL, FIELD_SENDING_SCHOOL, FIELD_SENDING_CLASS);
         ensureSparseIndex(INDEX_SENDING_CLASS, FIELD_SENDING_CLASS);
         ensureSparseIndex(INDEX_ALL_ORGANIZAIONS, META_ALL_ORGANIZATIONS);
