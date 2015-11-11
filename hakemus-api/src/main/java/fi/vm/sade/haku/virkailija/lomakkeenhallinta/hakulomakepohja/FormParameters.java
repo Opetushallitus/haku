@@ -95,20 +95,10 @@ public class FormParameters {
     }
 
     public boolean isHuoltajanTiedotKysyttava() {
-        if (KOHDEJOUKKO_PERUSOPETUKSEN_JALKEINEN_VALMENTAVA.equals(applicationSystem.getKohdejoukkoUri())) {
-            return true;
-        }
-        if (KOHDEJOUKKO_AMMATILLINEN_JA_LUKIO.equals(applicationSystem.getKohdejoukkoUri())
-                && HAKUTAPA_YHTEISHAKU.equals(applicationSystem.getHakutapa())
-                && (HAKUTYYPPI_VARSINAINEN_HAKU.equals(applicationSystem.getApplicationSystemType())
-                    || HAKUTYYPPI_LISAHAKU.equals(applicationSystem.getApplicationSystemType()))) {
-            return true;
-        }
-        if ((KOHDEJOUKKO_AMMATILLINEN_ERITYISOPETYKSENA.equals(applicationSystem.getKohdejoukkoUri())
-             || KOHDEJOUKKO_ERITYISOPETUKSENA_JARJESTETTAVA_AMMATILLINEN.equals(applicationSystem.getKohdejoukkoUri()))
-            && HAKUTAPA_YHTEISHAKU.equals(applicationSystem.getHakutapa())
-                && (HAKUTYYPPI_VARSINAINEN_HAKU.equals(applicationSystem.getApplicationSystemType())
-                || HAKUTYYPPI_LISAHAKU.equals(applicationSystem.getApplicationSystemType()))) {
+        if (KOHDEJOUKKO_PERUSOPETUKSEN_JALKEINEN_VALMENTAVA.equals(applicationSystem.getKohdejoukkoUri())
+            || KOHDEJOUKKO_AMMATILLINEN_JA_LUKIO.equals(applicationSystem.getKohdejoukkoUri())
+            || KOHDEJOUKKO_AMMATILLINEN_ERITYISOPETYKSENA.equals(applicationSystem.getKohdejoukkoUri())
+            || KOHDEJOUKKO_ERITYISOPETUKSENA_JARJESTETTAVA_AMMATILLINEN.equals(applicationSystem.getKohdejoukkoUri())) {
             return true;
         }
         return false;
