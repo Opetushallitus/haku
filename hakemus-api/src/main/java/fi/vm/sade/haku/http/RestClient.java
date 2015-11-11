@@ -16,7 +16,7 @@ public class RestClient {
     static final ExecutorService executorThreadPool = new ThreadPoolExecutor(1, 100, 60, TimeUnit.SECONDS, new ArrayBlockingQueue<Runnable>(100));
     static final ListeningExecutorService executor = MoreExecutors.listeningDecorator(executorThreadPool);
 
-    public static <T> Future<T> get(final String url, final Class<T> responseClass) throws IOException {
+    public static <T> ListenableFuture<T> get(final String url, final Class<T> responseClass) throws IOException {
         HttpRequestFactory requestFactory = HTTP_TRANSPORT.createRequestFactory(new HttpRequestInitializer() {
             @Override
             public void initialize(HttpRequest request) {
