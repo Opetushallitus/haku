@@ -3,6 +3,7 @@ package fi.vm.sade.haku.oppija.postprocess.impl;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.haku.oppija.hakemus.service.BaseEducationService;
+import fi.vm.sade.haku.oppija.hakemus.service.HakumaksuService;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.haku.oppija.lomake.service.FormService;
 import fi.vm.sade.haku.oppija.lomake.validation.ElementTreeValidator;
@@ -12,6 +13,7 @@ import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
 import fi.vm.sade.haku.virkailija.authentication.Person;
 import fi.vm.sade.haku.virkailija.authentication.PersonBuilder;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakuService;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.HakumaksuUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,6 +38,7 @@ public class ApplicationPostProcessorService {
     private final FormService formService;
     private final AuthenticationService authenticationService;
     private final HakuService hakuService;
+    private final HakumaksuService hakumaksuService;
 
     @Value("${scheduler.retryFailQuickCount:20}")
     private int retryFailQuickCount;
@@ -49,13 +52,15 @@ public class ApplicationPostProcessorService {
                                            final FormService formService,
                                            final ElementTreeValidator elementTreeValidator,
                                            final AuthenticationService authenticationService,
-                                           final HakuService hakuService){
+                                           final HakuService hakuService,
+                                           final HakumaksuService hakumaksuService){
         this.applicationService = applicationService;
         this.baseEducationService = baseEducationService;
         this.formService = formService;
         this.elementTreeValidator = elementTreeValidator;
         this.authenticationService = authenticationService;
         this.hakuService = hakuService;
+        this.hakumaksuService = hakumaksuService;
     }
 
     public Application process(Application application) throws IOException{
@@ -64,6 +69,7 @@ public class ApplicationPostProcessorService {
         application = applicationService.updateAuthorizationMeta(application);
         application = applicationService.ensureApplicationOptionGroupData(application);
         application = applicationService.updateAutomaticEligibilities(application);
+        application = hakumaksuService.processPayment(application);
         if (hakuService.kayttaaJarjestelmanLomaketta(application.getApplicationSystemId())) {
             application = validateApplication(application);
         }
