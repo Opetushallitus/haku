@@ -72,16 +72,22 @@ public class OsaaminenPhase {
                     HakutoiveetPhase.getAmkKoulutusIds(formParameters.getKoodistoService()),
                     HakutoiveetPhase.getPreferenceIds(formParameters));
 
-            osaaminenTheme.addChild(kysytaanLukionKeskiarvo(haettuAMKHon).addChild(buildLukionKeskiarvo(formParameters)));
+            if (formParameters.gradeAverageLukio()) {
+                osaaminenTheme.addChild(kysytaanLukionKeskiarvo(haettuAMKHon).addChild(buildLukionKeskiarvo(formParameters)));
+            }
             if (formParameters.isKansainvalinenYoAmkKysymys()) {
                 osaaminenTheme.addChild(kysytaanYoArvosanat(haettuAMKHon).addChild(buildYoArvosanat(formParameters)));
             }
-            osaaminenTheme.addChild(kysytaanYoAmmatillinenKeskiarvo(haettuAMKHon)
-                    .addChild(buildKeskiarvoYoAmmatillinen(formParameters, ammattitutkinnot, ammattioppilaitokset, ammatillisenTutkinnonArvosteluasteikko)));
-            for (int i = 1; i <= 5; i++) {
-                String postfix = i == 1 ? "" : String.valueOf(i);
-                osaaminenTheme.addChild(kysytaanAmmatillinenKeskiarvo(haettuAMKHon, postfix)
-                        .addChild(buildKeskiarvoAmmatillinen(formParameters, postfix, ammattitutkinnot, ammattioppilaitokset, ammatillisenTutkinnonArvosteluasteikko)));
+            if (formParameters.gradeAverageYoAmmatillinen()) {
+                osaaminenTheme.addChild(kysytaanYoAmmatillinenKeskiarvo(haettuAMKHon)
+                        .addChild(buildKeskiarvoYoAmmatillinen(formParameters, ammattitutkinnot, ammattioppilaitokset, ammatillisenTutkinnonArvosteluasteikko)));
+            }
+            if (formParameters.gradeAverageAmmatillinen()) {
+                for (int i = 1; i <= 5; i++) {
+                    String postfix = i == 1 ? "" : String.valueOf(i);
+                    osaaminenTheme.addChild(kysytaanAmmatillinenKeskiarvo(haettuAMKHon, postfix)
+                            .addChild(buildKeskiarvoAmmatillinen(formParameters, postfix, ammattitutkinnot, ammattioppilaitokset, ammatillisenTutkinnonArvosteluasteikko)));
+                }
             }
             osaaminenTheme.addChild(formParameters.getThemeQuestionConfigurator().findAndConfigure(osaaminenTheme.getId()));
         }
