@@ -6,6 +6,7 @@ import com.google.common.base.Predicate;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.util.concurrent.Futures;
@@ -18,6 +19,10 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 public class HakumaksuUtil {
+    public static List<String> getNonEaaApplicationOptions(List<String> applicationOptions) {
+        return applicationOptions;
+    }
+
     static private class HakumaksuQuery {
         final String serviceUrl;
         final String threeLetterCountryCode;
@@ -125,6 +130,31 @@ public class HakumaksuUtil {
 
     public static boolean isExemptFromPayment(String koodistoServiceUrl, String threeLetterCountryCode) throws ExecutionException {
         return exemptions.get(new HakumaksuQuery(koodistoServiceUrl, threeLetterCountryCode));
+    }
+
+    public static class EducationRequirements {
+        public final String applicationOptionId;
+        public final ImmutableSet<String> baseEducationRequirements;
+
+        public EducationRequirements(String applicationOptionId, ImmutableSet<String> requiredBaseEducations) {
+            this.applicationOptionId = applicationOptionId;
+            this.baseEducationRequirements = requiredBaseEducations;
+        }
+    }
+
+    public static Iterable<EducationRequirements> getEducationRequirements(List<String> applicationOptions) {
+        Iterable<String> requiringPayment = Iterables.filter(applicationOptions, new Predicate<String>() {
+            @Override
+            public boolean apply(String applicationOptionId) {
+                return true;
+            }
+        });
+        return Iterables.transform(requiringPayment, new Function<String, EducationRequirements>() {
+            @Override
+            public EducationRequirements apply(String applicationOptionId) {
+                return new EducationRequirements(applicationOptionId, ImmutableSet.of("pohjakoulutusvaatimuskorkeakoulut_123"));
+            }
+        });
     }
 
     public static void main(String[] args) {
