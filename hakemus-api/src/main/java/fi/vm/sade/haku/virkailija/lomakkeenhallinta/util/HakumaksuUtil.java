@@ -93,7 +93,7 @@ public class HakumaksuUtil {
                 }
             });
 
-    public static boolean isExemptFromPayment(String threeLetterCountryCode) throws InterruptedException, ExecutionException, IOException {
+    public static boolean isExemptFromPayment(String threeLetterCountryCode) throws ExecutionException {
         return exemptions.get(threeLetterCountryCode);
     }
 
