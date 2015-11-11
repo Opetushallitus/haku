@@ -3,6 +3,9 @@ package fi.vm.sade.haku.virkailija.lomakkeenhallinta.util;
 import com.google.api.client.util.Key;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.util.concurrent.Futures;
@@ -12,6 +15,7 @@ import fi.vm.sade.haku.http.RestClient;
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 
 public class HakumaksuUtil {
     public static class CodeElement {
@@ -62,13 +66,35 @@ public class HakumaksuUtil {
         });
     }
 
+    private static final LoadingCache<String, Boolean> exemptions = CacheBuilder.newBuilder()
+            .maximumSize(1000)
+            .expireAfterWrite(10, TimeUnit.MINUTES)
+            .build(
+                    new CacheLoader<String, Boolean>() {
+                        public Boolean load(String threeLetterCountryCode) {
+                            try {
+                                return isSwitzerland(threeLetterCountryCode) ||
+                                        getEaaCountryCodes().get().contains(asciiToNumericCountryCode(threeLetterCountryCode).get());
+                            } catch (InterruptedException|ExecutionException e) {
+                                throw new RuntimeException(e);
+                            } catch (IOException e) {
+                                throw new IllegalArgumentException("Country code " + threeLetterCountryCode + " not found", e);
+                            }
+                        }
+                    });
+
+    public static boolean isExemptFromPayment(String threeLetterCountryCode) throws InterruptedException, ExecutionException, IOException {
+        return exemptions.get(threeLetterCountryCode);
+    }
+
+    private static boolean isSwitzerland(String threeLetterCountryCode) {
+        return threeLetterCountryCode.equals("CHE");
+    }
+
     public static void main(String[] args) {
         try {
-            ListenableFuture<List<String>> eaaCountryCodes = HakumaksuUtil.getEaaCountryCodes();
-            String asciiCountryCode = "FIN";
-            String numericCountryCode = asciiToNumericCountryCode(asciiCountryCode).get();
-            boolean isEaa = eaaCountryCodes.get().contains(numericCountryCode);
-            System.out.println(asciiCountryCode + " is in EAA: " + isEaa);
+            String countryCode = "FIN";
+            System.out.println(countryCode + " is in EAA: " + isExemptFromPayment(countryCode));
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
