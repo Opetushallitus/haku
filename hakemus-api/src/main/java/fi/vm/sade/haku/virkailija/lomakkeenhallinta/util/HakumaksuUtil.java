@@ -30,17 +30,25 @@ public class HakumaksuUtil {
         public List<CodeElement> withinCodeElements;
     }
 
+    private static final Predicate<CodeElement> maatJaValtiot2 = new Predicate<CodeElement>() {
+        @Override
+        public boolean apply(CodeElement input) {
+            return input.codeElementUri.equals("maatjavaltiot2_" + input.codeElementValue);
+        }
+    };
+
     public static ListenableFuture<List<String>> getEaaCountryCodes() throws IOException, ExecutionException, InterruptedException {
         String url = "https://testi.virkailija.opintopolku.fi/koodisto-service/rest/codeelement/valtioryhmat_2/1";
         return Futures.transform(RestClient.get(url, KoodistoEAA.class), new Function<KoodistoEAA, List<String>>() {
             @Override
             public List<String> apply(KoodistoEAA input) {
-                return Lists.transform(input.withinCodeElements, new Function<CodeElement, String>() {
+                Iterable<CodeElement> validatedCodeElements = Iterables.filter(input.withinCodeElements, maatJaValtiot2);
+                return Lists.newArrayList(Iterables.transform(validatedCodeElements, new Function<CodeElement, String>() {
                     @Override
                     public String apply(CodeElement input) {
                         return input.codeElementValue;
                     }
-                });
+                }));
             }
         });
     }
@@ -55,12 +63,7 @@ public class HakumaksuUtil {
         return Futures.transform(RestClient.get(url, KoodistoMaakoodi.class), new Function<KoodistoMaakoodi, String>() {
             @Override
             public String apply(KoodistoMaakoodi input) {
-                CodeElement codeElement = Iterables.find(input.levelsWithCodeElements, new Predicate<CodeElement>() {
-                    @Override
-                    public boolean apply(CodeElement input) {
-                        return input.codeElementUri.equals("maatjavaltiot2_" + input.codeElementValue);
-                    }
-                });
+                CodeElement codeElement = Iterables.find(input.levelsWithCodeElements, maatJaValtiot2);
                 return codeElement.codeElementValue;
             }
         });
