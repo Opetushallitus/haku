@@ -37,7 +37,7 @@ public class HakumaksuUtil {
         }
     };
 
-    public static ListenableFuture<List<String>> getEaaCountryCodes() throws IOException, ExecutionException, InterruptedException {
+    private static ListenableFuture<List<String>> getEaaCountryCodes() throws IOException, ExecutionException, InterruptedException {
         String url = "https://testi.virkailija.opintopolku.fi/koodisto-service/rest/codeelement/valtioryhmat_2/1";
         return Futures.transform(RestClient.get(url, KoodistoEAA.class), new Function<KoodistoEAA, List<String>>() {
             @Override
@@ -58,7 +58,7 @@ public class HakumaksuUtil {
         List<CodeElement> levelsWithCodeElements;
     }
 
-    public static ListenableFuture<String> asciiToNumericCountryCode(String threeLetterCountryCode) throws IOException {
+    private static ListenableFuture<String> asciiToNumericCountryCode(String threeLetterCountryCode) throws IOException {
         String url = "https://testi.virkailija.opintopolku.fi/koodisto-service/rest/codeelement/maatjavaltiot1_" + threeLetterCountryCode.toLowerCase() + "/1";
         return Futures.transform(RestClient.get(url, KoodistoMaakoodi.class), new Function<KoodistoMaakoodi, String>() {
             @Override
@@ -69,29 +69,32 @@ public class HakumaksuUtil {
         });
     }
 
+    private static boolean isSwitzerland(String threeLetterCountryCode) {
+        return threeLetterCountryCode.equals("CHE");
+    }
+
+    private static Boolean _isExemptFromPayment(String threeLetterCountryCode) {
+        try {
+            return isSwitzerland(threeLetterCountryCode) ||
+                    getEaaCountryCodes().get().contains(asciiToNumericCountryCode(threeLetterCountryCode).get());
+        } catch (InterruptedException | ExecutionException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new IllegalArgumentException("Country code " + threeLetterCountryCode + " not found", e);
+        }
+    }
+
     private static final LoadingCache<String, Boolean> exemptions = CacheBuilder.newBuilder()
             .maximumSize(1000)
             .expireAfterWrite(10, TimeUnit.MINUTES)
-            .build(
-                    new CacheLoader<String, Boolean>() {
-                        public Boolean load(String threeLetterCountryCode) {
-                            try {
-                                return isSwitzerland(threeLetterCountryCode) ||
-                                        getEaaCountryCodes().get().contains(asciiToNumericCountryCode(threeLetterCountryCode).get());
-                            } catch (InterruptedException|ExecutionException e) {
-                                throw new RuntimeException(e);
-                            } catch (IOException e) {
-                                throw new IllegalArgumentException("Country code " + threeLetterCountryCode + " not found", e);
-                            }
-                        }
-                    });
+            .build(new CacheLoader<String, Boolean>() {
+                public Boolean load(String threeLetterCountryCode) {
+                    return _isExemptFromPayment(threeLetterCountryCode);
+                }
+            });
 
     public static boolean isExemptFromPayment(String threeLetterCountryCode) throws InterruptedException, ExecutionException, IOException {
         return exemptions.get(threeLetterCountryCode);
-    }
-
-    private static boolean isSwitzerland(String threeLetterCountryCode) {
-        return threeLetterCountryCode.equals("CHE");
     }
 
     public static void main(String[] args) {
