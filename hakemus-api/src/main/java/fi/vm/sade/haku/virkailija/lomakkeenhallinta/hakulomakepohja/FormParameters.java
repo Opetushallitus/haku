@@ -262,6 +262,18 @@ public class FormParameters {
         return formConfiguration.getFeatureFlag(FormConfiguration.FeatureFlag.koulutusasteURI);
     }
 
+    public boolean gradeAverageLukio() {
+        return formConfiguration.getFeatureFlag(FormConfiguration.FeatureFlag.gradeAverageLukio);
+    }
+
+    public boolean gradeAverageYoAmmatillinen() {
+        return formConfiguration.getFeatureFlag(FormConfiguration.FeatureFlag.gradeAverageYoAmmatillinen);
+    }
+
+    public boolean gradeAverageAmmatillinen() {
+        return formConfiguration.getFeatureFlag(FormConfiguration.FeatureFlag.gradeAverageAmmatillinen);
+    }
+
     public boolean isDemoMode() {
         return this.demoMode;
     }
