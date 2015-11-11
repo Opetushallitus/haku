@@ -54,6 +54,8 @@ import fi.vm.sade.haku.oppija.lomake.validation.ValidationResult;
 import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.I18nBundle;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.i18n.I18nBundleService;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.ohjausparametrit.OhjausparametritService;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.ohjausparametrit.domain.Ohjausparametrit;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakuService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import fi.vm.sade.haku.virkailija.valinta.ValintaService;
@@ -97,6 +99,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     private final ElementTreeValidator elementTreeValidator;
     private final ValintaService valintaService;
     private final Boolean disableHistory;
+    private final OhjausparametritService ohjausparametritService;
 
     // Tee vain background-validointi tälle lomakkeelle
     private final String onlyBackgroundValidation;
@@ -117,6 +120,7 @@ public class ApplicationServiceImpl implements ApplicationService {
                                   SuoritusrekisteriService suoritusrekisteriService,
                                   HakuService hakuService, ElementTreeValidator elementTreeValidator,
                                   ValintaService valintaService,
+                                  OhjausparametritService ohjausparametritService,
                                   @Value("${onlyBackgroundValidation}") String onlyBackgroundValidation,
                                   @Value("${disableHistory:false}") String disableHistory) {
         this.applicationDAO = applicationDAO;
@@ -132,6 +136,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         this.suoritusrekisteriService = suoritusrekisteriService;
         this.hakuService = hakuService;
         this.valintaService = valintaService;
+        this.ohjausparametritService = ohjausparametritService;
         this.elementTreeValidator = elementTreeValidator;
         this.onlyBackgroundValidation = onlyBackgroundValidation;
         this.disableHistory = Boolean.valueOf(disableHistory);
@@ -366,7 +371,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     public Application updateAutomaticEligibilities(Application application) {
         ApplicationSystem as = hakuService.getApplicationSystem(application.getApplicationSystemId());
         List<String> aosForAutomaticEligibility = as.getAosForAutomaticEligibility();
-        if (aosForAutomaticEligibility == null || aosForAutomaticEligibility.isEmpty()) {
+        if (aosForAutomaticEligibility == null || aosForAutomaticEligibility.isEmpty() || !hasValidOhjausparametriWithAutomaticHakukelpoisuus(as)) {
             return application;
         }
         Map<String, List<SuoritusDTO>> suoritusMap = suoritusrekisteriService
@@ -393,6 +398,25 @@ public class ApplicationServiceImpl implements ApplicationService {
             }
         }
         return application;
+    }
+
+    private boolean hasValidOhjausparametriWithAutomaticHakukelpoisuus(ApplicationSystem as) {
+        Ohjausparametrit ohjausparametrit;
+        try {
+            ohjausparametrit = ohjausparametritService.fetchOhjausparametritForHaku(as.getId());
+            if(ohjausparametrit == null) return true;
+        } catch(Throwable t) {
+            LOGGER.error("Unable to fetch 'ohjausparametrit' to 'haku' {}!", as.getId(), t);
+            return true;
+        }
+        if(ohjausparametrit.getPH_AHP() != null && ohjausparametrit.getPH_AHP().getDate() != null) {
+            final Date NOW = new Date();
+            final Date automaattinenHakukelpoisuusPaattyy = ohjausparametrit.getPH_AHP().getDate();
+            if(NOW.after(automaattinenHakukelpoisuusPaattyy)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     private Set<String> getSendingSchool(final Application application) throws IOException {

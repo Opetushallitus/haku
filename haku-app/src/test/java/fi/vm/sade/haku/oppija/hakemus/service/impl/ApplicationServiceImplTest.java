@@ -37,6 +37,9 @@ import fi.vm.sade.haku.oppija.lomake.validation.ValidatorFactory;
 import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
 import fi.vm.sade.haku.virkailija.authentication.impl.AuthenticationServiceMockImpl;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.i18n.I18nBundleService;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.ohjausparametrit.OhjausparametritService;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.ohjausparametrit.domain.Ohjausparametri;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.ohjausparametrit.domain.Ohjausparametrit;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakuService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
@@ -44,11 +47,13 @@ import fi.vm.sade.haku.virkailija.valinta.ValintaService;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
+import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 import static fi.vm.sade.haku.oppija.common.suoritusrekisteri.SuoritusrekisteriService.YO_TUTKINTO_KOMO;
 import static fi.vm.sade.haku.oppija.hakemus.domain.PreferenceEligibility.Status.*;
@@ -85,6 +90,7 @@ public class ApplicationServiceImplTest {
     ApplicationSystemService applicationSystemService;
     SuoritusrekisteriService suoritusrekisteriService;
     KoulutusinformaatioService koulutusinformaatioService;
+    OhjausparametritService ohjausparametritService;
 
     String SSN = "250584-3847";
     String OID = "1.2.3.4.5.12345678901";
@@ -132,6 +138,7 @@ public class ApplicationServiceImplTest {
         elementTreeValidator = new ElementTreeValidator(validatorFactory);
         koulutusinformaatioService = mock(KoulutusinformaatioService.class);
         i18nBundleService = mock(I18nBundleService.class);
+        ohjausparametritService = mock(OhjausparametritService.class);
 
         ApplicationSearchResultDTO searchResultDTO = new ApplicationSearchResultDTO(1, Lists.newArrayList(new ApplicationSearchResultItemDTO()));
         when(applicationDAO.findAllQueried(eq(applicationQueryParameters), eq(filterParameters))).thenReturn(searchResultDTO);
@@ -163,7 +170,7 @@ public class ApplicationServiceImplTest {
         service = new ApplicationServiceImpl(applicationDAO, session, formService, applicationOidService,
                 authenticationService, organizationService, hakuPermissionService, applicationSystemService,
                 koulutusinformaatioService, i18nBundleService, suoritusrekisteriService, hakuService,
-                elementTreeValidator, valintaService, onlyBackgroundValidation, "false");
+                elementTreeValidator, valintaService, ohjausparametritService, onlyBackgroundValidation, "false");
     }
 
     @Test
@@ -470,7 +477,7 @@ public class ApplicationServiceImplTest {
         when(applicationSystemService.getApplicationSystem("myAs")).thenReturn(as);
 
         ApplicationServiceImpl applicationService = new ApplicationServiceImpl(null, null, null, null, null, null,
-                null, applicationSystemService, null, null, null, null, null, null, null, "true");
+                null, applicationSystemService, null, null, null, null, null, null, null, null, "true");
         application = applicationService.removeOrphanedAnswers(application);
         Map<String, String> persAnswers = application.getPhaseAnswers(OppijaConstants.PHASE_PERSONAL);
         Map<String, String> eduAnswers = application.getPhaseAnswers(OppijaConstants.PHASE_EDUCATION);
@@ -551,6 +558,43 @@ public class ApplicationServiceImplTest {
         }
     }
 
+    @Test
+    public void testAutomaticEligibilityEnded() {
+
+        Mockito.when(ohjausparametritService.fetchOhjausparametritForHaku(Mockito.anyString())).thenReturn(createOhjausparametritWithOldEligibilityCheckTimestamp());
+
+        Application application = applicationForAutoEligibility(sureServiceForAutoEligibility(true),
+                hakuServiceForAutoEligibility());
+
+        for (PreferenceEligibility eligibility : application.getPreferenceEligibilities()) {
+            switch (eligibility.getAoId()) {
+                case "automaticallyEligibile1":
+                    assertEquals(NOT_CHECKED, eligibility.getStatus());
+                    break;
+                case "automaticallyEligibile2":
+                    assertEquals(ELIGIBLE, eligibility.getStatus());
+                    break;
+                case "automaticallyEligibile3":
+                    assertEquals(INELIGIBLE, eligibility.getStatus());
+                    break;
+                case "automaticallyEligibile4":
+                    assertEquals(AUTOMATICALLY_CHECKED_ELIGIBLE, eligibility.getStatus());
+                    break;
+                case "manuallyEligibile":
+                    assertEquals(NOT_CHECKED, eligibility.getStatus());
+                    break;
+            }
+        }
+    }
+
+    private static Ohjausparametrit createOhjausparametritWithOldEligibilityCheckTimestamp() {
+        Ohjausparametrit o = new Ohjausparametrit();
+        Ohjausparametri op = new Ohjausparametri();
+        op.setDate(new Date(new Date().getTime() - TimeUnit.DAYS.toMillis(7)));
+        o.setPH_AHP(op);
+        return o;
+    }
+
     private Application applicationForAutoEligibility(SuoritusrekisteriService suoritusrekisteriService,
                                                       HakuService hakuService) {
         Application application = new Application();
@@ -564,7 +608,7 @@ public class ApplicationServiceImplTest {
         }});
 
         ApplicationServiceImpl applicationService = new ApplicationServiceImpl(null, null, null, null, null, null, null,
-                null, null, null, suoritusrekisteriService, hakuService, null, null, null, "true");
+                null, null, null, suoritusrekisteriService, hakuService, null, null, ohjausparametritService, null, "true");
 
         application = applicationService.updateAutomaticEligibilities(application);
 
