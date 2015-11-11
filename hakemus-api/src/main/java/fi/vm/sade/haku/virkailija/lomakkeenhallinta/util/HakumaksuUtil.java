@@ -105,5 +105,6 @@ public class HakumaksuUtil {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        System.exit(0);
     }
 }
