@@ -55,7 +55,7 @@
     <div role="presentation" id="site">
         <div role="presentation" id="sitecontent">
             <div aria-label='<fmt:message key="lomake.navigation.aria.label"/>' role="navigation" class="content">
-                <a href="${it.opintopolkuBaseUrl}"><fmt:message key="lomake.lisaakoulutuksia"/></a>
+                <a href="/"><fmt:message key="lomake.lisaakoulutuksia"/></a>
 
                 <h1><haku:i18nText value="${element.i18nText}"/> - <fmt:message key="form.title"/>
                     <c:if test="${it.demoMode}">
