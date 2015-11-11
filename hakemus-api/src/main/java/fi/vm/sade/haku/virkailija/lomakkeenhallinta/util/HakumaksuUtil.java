@@ -18,6 +18,36 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 public class HakumaksuUtil {
+    static private class HakumaksuQuery {
+        final String serviceUrl;
+        final String threeLetterCountryCode;
+
+        public HakumaksuQuery(String serviceUrl, String threeLetterCountryCode) {
+            this.serviceUrl = serviceUrl;
+            this.threeLetterCountryCode = threeLetterCountryCode;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            HakumaksuQuery that = (HakumaksuQuery) o;
+
+            if (serviceUrl != null ? !serviceUrl.equals(that.serviceUrl) : that.serviceUrl != null)
+                return false;
+            return !(threeLetterCountryCode != null ? !threeLetterCountryCode.equals(that.threeLetterCountryCode) : that.threeLetterCountryCode != null);
+
+        }
+
+        @Override
+        public int hashCode() {
+            int result = serviceUrl != null ? serviceUrl.hashCode() : 0;
+            result = 31 * result + (threeLetterCountryCode != null ? threeLetterCountryCode.hashCode() : 0);
+            return result;
+        }
+    }
+
     public static class CodeElement {
         @Key
         String codeElementValue;
@@ -37,8 +67,8 @@ public class HakumaksuUtil {
         }
     };
 
-    private static ListenableFuture<List<String>> getEaaCountryCodes() throws IOException, ExecutionException, InterruptedException {
-        String url = "https://testi.virkailija.opintopolku.fi/koodisto-service/rest/codeelement/valtioryhmat_2/1";
+    private static ListenableFuture<List<String>> getEaaCountryCodes(HakumaksuQuery query) throws IOException, ExecutionException, InterruptedException {
+        String url = query.serviceUrl + "/rest/codeelement/valtioryhmat_2/1";
         return Futures.transform(RestClient.get(url, KoodistoEAA.class), new Function<KoodistoEAA, List<String>>() {
             @Override
             public List<String> apply(KoodistoEAA input) {
@@ -58,8 +88,8 @@ public class HakumaksuUtil {
         List<CodeElement> levelsWithCodeElements;
     }
 
-    private static ListenableFuture<String> asciiToNumericCountryCode(String threeLetterCountryCode) throws IOException {
-        String url = "https://testi.virkailija.opintopolku.fi/koodisto-service/rest/codeelement/maatjavaltiot1_" + threeLetterCountryCode.toLowerCase() + "/1";
+    private static ListenableFuture<String> asciiToNumericCountryCode(HakumaksuQuery query) throws IOException {
+        String url = query.serviceUrl + "/rest/codeelement/maatjavaltiot1_" + query.threeLetterCountryCode.toLowerCase() + "/1";
         return Futures.transform(RestClient.get(url, KoodistoMaakoodi.class), new Function<KoodistoMaakoodi, String>() {
             @Override
             public String apply(KoodistoMaakoodi input) {
@@ -73,39 +103,36 @@ public class HakumaksuUtil {
         return threeLetterCountryCode.equals("CHE");
     }
 
-    private static Boolean _isExemptFromPayment(String threeLetterCountryCode) {
+    private static Boolean _isExemptFromPayment(HakumaksuQuery query) {
         try {
-            return isSwitzerland(threeLetterCountryCode) ||
-                    getEaaCountryCodes().get().contains(asciiToNumericCountryCode(threeLetterCountryCode).get());
+            return isSwitzerland(query.threeLetterCountryCode) ||
+                    getEaaCountryCodes(query).get().contains(asciiToNumericCountryCode(query).get());
         } catch (InterruptedException | ExecutionException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {
-            throw new IllegalArgumentException("Country code " + threeLetterCountryCode + " not found", e);
+            throw new IllegalArgumentException("Country code " + query.threeLetterCountryCode + " not found", e);
         }
     }
 
-    private static final LoadingCache<String, Boolean> exemptions = CacheBuilder.newBuilder()
+    private static final LoadingCache<HakumaksuQuery, Boolean> exemptions = CacheBuilder.newBuilder()
             .maximumSize(1000)
             .expireAfterWrite(10, TimeUnit.MINUTES)
-            .build(new CacheLoader<String, Boolean>() {
-                public Boolean load(String threeLetterCountryCode) {
-                    return _isExemptFromPayment(threeLetterCountryCode);
+            .build(new CacheLoader<HakumaksuQuery, Boolean>() {
+                public Boolean load(HakumaksuQuery query) {
+                    return _isExemptFromPayment(query);
                 }
             });
 
-    public static boolean isExemptFromPayment(String threeLetterCountryCode) throws ExecutionException {
-        return exemptions.get(threeLetterCountryCode);
+    public static boolean isExemptFromPayment(String koodistoServiceUrl, String threeLetterCountryCode) throws ExecutionException {
+        return exemptions.get(new HakumaksuQuery(koodistoServiceUrl, threeLetterCountryCode));
     }
 
     public static void main(String[] args) {
         try {
             String countryCode = "FIN";
-            System.out.println(countryCode + " is in EAA: " + isExemptFromPayment(countryCode));
-        } catch (IOException e) {
-            e.printStackTrace();
+            String url = "https://testi.virkailija.opintopolku.fi/koodisto-service";
+            System.out.println(countryCode + " is in EAA: " + isExemptFromPayment(url, countryCode));
         } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
             e.printStackTrace();
         }
         System.exit(0);
