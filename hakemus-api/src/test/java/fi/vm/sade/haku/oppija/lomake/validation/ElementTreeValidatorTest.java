@@ -79,6 +79,7 @@ public class ElementTreeValidatorTest {
         PreferenceConcreteValidator preferenceConcreteValidator = mock(PreferenceConcreteValidator.class);
         when(ssnUniqueConcreteValidator.validate(any(ValidationInput.class))).thenReturn(new ValidationResult());
         EmailUniqueConcreteValidator emailUniqueConcreteValidator = mock(EmailUniqueConcreteValidator.class);
+        when(emailUniqueConcreteValidator.validate(any(ValidationInput.class))).thenReturn(new ValidationResult());
         ValidatorFactory validatorFactory = new ValidatorFactory(ssnUniqueConcreteValidator, ssnAndPreferenceUniqueConcreteValidator,
                 preferenceConcreteValidator, emailUniqueConcreteValidator);
 
