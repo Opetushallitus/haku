@@ -27,6 +27,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Radio;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.AddElementRule;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.*;
+import fi.vm.sade.haku.oppija.lomake.validation.validators.EmailUniqueValidator;
 import fi.vm.sade.haku.oppija.lomake.validation.validators.PastDateValidator;
 import fi.vm.sade.haku.oppija.lomake.validation.validators.RegexFieldValidator;
 import fi.vm.sade.haku.oppija.lomake.validation.validators.SocialSecurityNumberFieldValidator;
@@ -187,9 +188,12 @@ public final class HenkilotiedotPhase {
 
         onkoSuomalainenKysymys.addChild(eiHetuaSaanto);
 
-
-        henkilotiedotTeema.addChild(
-                TextQuestion(OppijaConstants.ELEMENT_ID_EMAIL).inline().size(50).pattern(EMAIL_REGEX).formParams(formParameters).build());
+        Element email = TextQuestion(OppijaConstants.ELEMENT_ID_EMAIL).inline().size(50).pattern(EMAIL_REGEX)
+                            .formParams(formParameters).build();
+        if (formParameters.isUniqueApplicantRequired()) {
+            email.setValidator(new EmailUniqueValidator());
+        }
+        henkilotiedotTeema.addChild(email);
 
         // Matkapuhelinnumerot
         Element puhelinnumero1 = TextQuestion(OppijaConstants.ELEMENT_ID_PREFIX_PHONENUMBER + 1).labelKey("matkapuhelinnumero")
