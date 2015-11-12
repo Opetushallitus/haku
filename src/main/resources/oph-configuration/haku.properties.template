@@ -50,6 +50,7 @@ scheduler.runEligibilityCheck={{haku_scheduler_run_eligibilitycheck}}
 scheduler.modelUpgradeCron={{haku_scheduler_modelupgrade_cron}}
 scheduler.eligibilityCheckCron={{haku_scheduler_eligibilitycheck_cron}}
 scheduler.sendMail={{haku_scheduler_sendMail}}
+scheduler.demoCleanup={{haku_scheduler_demoCleanup | default('false')}}
 haku.langCookie={{ haku_lang_cookie | default('i18next') }}
 demo.hakuoids={{demo_hakuoids}}
 
@@ -124,3 +125,7 @@ koulutusinformaatio.oppija.aosearch.ongoing = true
 # Intentionally left blank. Jos jollekin lomakkeella halutaan hakuvaiheessa
 # tehdä vain background-tason validointi, oid tähän.
 onlyBackgroundValidation =
+
+#Run every hour, cron enabled only on DEMO environment!
+scheduler.runDemoModeCleanupCron=0 0 * * * *
+

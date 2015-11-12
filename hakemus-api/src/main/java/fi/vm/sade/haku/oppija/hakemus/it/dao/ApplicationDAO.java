@@ -21,6 +21,7 @@ import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationAdditionalDataDTO;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -97,5 +98,8 @@ public interface ApplicationDAO extends BaseDAO<Application> {
     boolean hasApplicationsWithModelVersion(int versionLevel);
 
     List<Application> getApplicationsByPersonOid(List<String> personOids);
+
+    int removeApplicationsReceivedBeforeDate(Date after);
+
 
 }

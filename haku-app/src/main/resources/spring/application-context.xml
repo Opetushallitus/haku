@@ -127,6 +127,7 @@
             <property name="runModelUpgrade" value="${scheduler.runModelUpgrade}"/>
             <property name="runEligibilityCheck" value="${scheduler.runEligibilityCheck}"/>
             <property name="sendMail" value="${scheduler.sendMail}"/>
+            <property name="demoCleanup" value="${scheduler.demoCleanup}"/>
         </bean>
         
         <task:scheduler id="postProcessScheduler" pool-size="1"/>
@@ -150,6 +151,10 @@
             <task:scheduled ref="yksilointiScheduler" method="runEligibilityCheck" cron="${scheduler.eligibilityCheckCron}"/>
         </task:scheduled-tasks>
 
+        <task:scheduler id="demoCleanupScheduler" pool-size="1"/>
+        <task:scheduled-tasks scheduler="demoCleanupScheduler">
+            <task:scheduled ref="yksilointiScheduler" method="runDemoModeCleanup" cron="${scheduler.runDemoModeCleanupCron}"/>
+        </task:scheduled-tasks>
 
         <!-- Swagger stuff -->
         <bean id="apiListingResourceJSON" class="com.wordnik.swagger.jersey.listing.ApiListingResourceJSON"/>

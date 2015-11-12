@@ -37,13 +37,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.mongodb.QueryOperators.IN;
 import static fi.vm.sade.haku.oppija.hakemus.it.dao.impl.ApplicationDAOMongoConstants.*;
@@ -308,6 +307,21 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         }
         return results;
     }
+
+    @Override
+    public int removeApplicationsReceivedBeforeDate(Date after) {
+        String host = mongoTemplate.getDb().getMongo().getAddress().getHost();
+        if("oph-mongodb-hakemus.hard.ware.fi".equals(host) == false) {
+            throw new RuntimeException("Tried to run cleanup on wrong database. Host: " + host);
+        }
+
+        final DBObject query = QueryBuilder.start(FIELD_RECEIVED).lessThanEquals(after.getTime()).get();
+        WriteResult result = getCollection().remove(query);
+
+        LOG.info("Removed applications: " + result.getN());
+        return result.getN();
+    }
+
 
     private DBCursor buildUpgradableCursor(int versionLevel) {
         DBObject query;
