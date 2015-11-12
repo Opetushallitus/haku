@@ -1,4 +1,5 @@
 <div id= "float-banner" class="notification warning" onclick="$('#float-banner').hide()">
+    <span onclick="$('#float-banner').hide()" class="demo-close">X</span>
     <h1>Huom!</h1>
     <strong>Tämä on demoympäristö, jonka kautta ei pysty hakemaan koulutuksiin!</strong><br/>
     <strong>Detta är en demoplattform som inte kan användas för att ansöka om utbildning!</strong><br/>
