@@ -19,6 +19,7 @@ import fi.vm.sade.haku.healthcheck.StatusRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -34,19 +35,26 @@ public class Scheduler {
     private boolean runModelUpgrade;
     private boolean runEligibilityCheck;
     private boolean sendMail;
+    private boolean demoCleanup;
 
     private PostProcessWorker processWorker;
     private UpgradeWorker upgradeWorker;
     private EligibilityCheckWorker eligibilityCheckWorker;
     private StatusRepository statusRepository;
+    private DemoCleanupWorker demoCleanupWorker;
+
+    private boolean demoMode;
 
     @Autowired
     public Scheduler(PostProcessWorker processWorker, UpgradeWorker upgradeWorker, StatusRepository statusRepository,
-                     EligibilityCheckWorker eligibilityCheckWorker) {
+                     EligibilityCheckWorker eligibilityCheckWorker, @Value("${mode.demo:false}") boolean demoMode,
+                     DemoCleanupWorker demoCleanupWorker) {
         this.processWorker = processWorker;
         this.upgradeWorker = upgradeWorker;
         this.statusRepository = statusRepository;
         this.eligibilityCheckWorker = eligibilityCheckWorker;
+        this.demoMode = demoMode;
+        this.demoCleanupWorker = demoCleanupWorker;
     }
 
     public void runProcess() {
@@ -117,4 +125,19 @@ public class Scheduler {
     public void setRunEligibilityCheck(boolean runEligibilityCheck) {
         this.runEligibilityCheck = runEligibilityCheck;
     }
+
+    public void setDemoCleanup(boolean demoCleanup) {
+        this.demoCleanup = demoCleanup;
+    }
+
+    public void runDemoModeCleanup() {
+        if(this.demoMode && this.demoCleanup) {
+            LOGGER.info("Starting cleanup for demo environment");
+            int deleted = this.demoCleanupWorker.cleanup();
+            LOGGER.info("Deleted rows: " + deleted);
+        } else if(this.demoCleanup) {
+            throw new RuntimeException("Tried to run demo mode mongo cleanup when not in demo environment!");
+        }
+    }
+
 }
