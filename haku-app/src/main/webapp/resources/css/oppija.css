@@ -3351,14 +3351,16 @@ table {
 }
 
 .demo-close {
+  color: #0;
   font-size: 19.5px;
   font-weight: bold;
   position: absolute;
   top: 20px;
   right: 20px;
+  opacity: 0.2;
 }
 
-.demo-close:hover .demo-close:focus {
+.demo-close:hover, .demo-close:focus {
   color: #0;
   cursor:pointer;
   opacity: 0.5;
