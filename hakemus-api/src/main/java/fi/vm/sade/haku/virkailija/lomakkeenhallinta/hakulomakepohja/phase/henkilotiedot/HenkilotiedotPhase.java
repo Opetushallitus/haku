@@ -154,7 +154,7 @@ public final class HenkilotiedotPhase {
                 .validator(new SocialSecurityNumberFieldValidator());
 
         if(formParameters.isDemoMode()) {
-            ssnElemBuilder = ssnElemBuilder.inline().pattern("^$").help(formParameters.getI18nText(OppijaConstants.ELEMENT_ID_SOCIAL_SECURITY_NUMBER+".help.demo"));
+            ssnElemBuilder = ssnElemBuilder.inline().pattern("^$|" + HETU_PATTERN).help(formParameters.getI18nText(OppijaConstants.ELEMENT_ID_SOCIAL_SECURITY_NUMBER + ".help.demo"));
         } else {
             ssnElemBuilder = ssnElemBuilder.requiredInline().pattern(HETU_PATTERN);
         }
