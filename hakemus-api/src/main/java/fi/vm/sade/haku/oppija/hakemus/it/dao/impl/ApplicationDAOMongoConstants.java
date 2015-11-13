@@ -1,5 +1,7 @@
 package fi.vm.sade.haku.oppija.hakemus.it.dao.impl;
 
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
+
 public final class ApplicationDAOMongoConstants {
     static final String INDEX_APPLICATION_OID = "index_oid";
     static final String INDEX_APPLICATION_SYSTEM_ID = "index_as_oid";
@@ -8,6 +10,7 @@ public final class ApplicationDAOMongoConstants {
     static final String INDEX_DATE_OF_BIRTH = "index_syntymaaika";
     static final String INDEX_PERSON_OID = "index_personOid";
     static final String INDEX_STUDENT_OID = "index_studentOid";
+    static final String INDEX_EMAIL = "index_email";
 
     static final String INDEX_SENDING_SCHOOL = "index_lahtokoulu";
     static final String INDEX_SENDING_CLASS = "index_lahtoluokka";
@@ -67,6 +70,8 @@ public final class ApplicationDAOMongoConstants {
     static final String FIELD_SENDING_SCHOOL = "answers.koulutustausta.lahtokoulu";
     static final String FIELD_SENDING_CLASS = "answers.koulutustausta.lahtoluokka";
     static final String FIELD_CLASS_LEVEL = "answers.koulutustausta.luokkataso";
+
+    static final String FIELD_EMAIL = "answers.henkilotiedot." + OppijaConstants.ELEMENT_ID_EMAIL;
 
     static final String FIELD_SSN = "answers.henkilotiedot.Henkilotunnus";
     static final String FIELD_SSN_DIGEST = "answers.henkilotiedot.Henkilotunnus_digest";

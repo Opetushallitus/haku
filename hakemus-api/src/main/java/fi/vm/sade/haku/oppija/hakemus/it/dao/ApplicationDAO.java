@@ -56,6 +56,8 @@ public interface ApplicationDAO extends BaseDAO<Application> {
      */
     boolean checkIfExistsBySocialSecurityNumber(String asId, String ssn);
 
+    boolean checkIfExistsByEmail(String asId, String email);
+
     /**
      * Checks if submitted application already exists by specified social security number, application option and
      * application system

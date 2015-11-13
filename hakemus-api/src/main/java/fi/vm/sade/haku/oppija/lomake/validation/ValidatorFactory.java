@@ -16,6 +16,7 @@
 
 package fi.vm.sade.haku.oppija.lomake.validation;
 
+import fi.vm.sade.haku.oppija.lomake.validation.validators.EmailUniqueValidator;
 import fi.vm.sade.haku.oppija.lomake.validation.validators.PreferenceValidator;
 import fi.vm.sade.haku.oppija.lomake.validation.validators.SsnAndPreferenceUniqueValidator;
 import fi.vm.sade.haku.oppija.lomake.validation.validators.SsnUniqueValidator;
@@ -31,14 +32,17 @@ public class ValidatorFactory {
     private final SsnUniqueConcreteValidator ssnUniqueConcreteValidator;
     private final SsnAndPreferenceUniqueConcreteValidator ssnAndPreferenceUniqueConcreteValidator;
     private final PreferenceConcreteValidator preferenceConcreteValidator;
+    private final EmailUniqueConcreteValidator emailUniqueConcreteValidator;
 
     @Autowired
     public ValidatorFactory(SsnUniqueConcreteValidator ssnUniqueConcreteValidator,
                             SsnAndPreferenceUniqueConcreteValidator ssnAndPreferenceUniqueConcreteValidator,
-                            PreferenceConcreteValidator preferenceConcreteValidator) {
+                            PreferenceConcreteValidator preferenceConcreteValidator,
+                            EmailUniqueConcreteValidator emailUniqueConcreteValidator) {
         this.ssnUniqueConcreteValidator = ssnUniqueConcreteValidator;
         this.ssnAndPreferenceUniqueConcreteValidator = ssnAndPreferenceUniqueConcreteValidator;
         this.preferenceConcreteValidator = preferenceConcreteValidator;
+        this.emailUniqueConcreteValidator = emailUniqueConcreteValidator;
     }
 
     public Validator buildValidator(final Validator validator) {
@@ -49,6 +53,8 @@ public class ValidatorFactory {
             return ssnAndPreferenceUniqueConcreteValidator;
         } else if (PreferenceValidator.class.isAssignableFrom(validatorClass)) {
             return preferenceConcreteValidator;
+        } else if (EmailUniqueValidator.class.isAssignableFrom(validatorClass)) {
+            return emailUniqueConcreteValidator;
         }
         return validator;
     }
