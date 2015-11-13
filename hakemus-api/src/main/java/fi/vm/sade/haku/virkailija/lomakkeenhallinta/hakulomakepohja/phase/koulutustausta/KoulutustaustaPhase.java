@@ -285,16 +285,18 @@ public final class KoulutustaustaPhase {
                 buildMuu(formParameters, maxTutkintoCount));
         elements.add(pohjakoulutusGrp);
 
-        Element suoritusoikeusTaiAiempitutkinto = Radio("suoritusoikeus_tai_aiempi_tutkinto")
+        elements.add(buildSuoritusoikeusTaiAiempiTutkinto(formParameters));
+
+        return elements.toArray(new Element[elements.size()]);
+    }
+
+    private static Element buildSuoritusoikeusTaiAiempiTutkinto(FormParameters formParameters) {
+        return Radio("suoritusoikeus_tai_aiempi_tutkinto")
                 .addOptions(ImmutableList.of(
                         new Option(formParameters.getI18nText("form.yleinen.kylla"), KYLLA),
                         new Option(formParameters.getI18nText("form.yleinen.ei"), EI)))
                 .required()
                 .formParams(formParameters).build();
-
-        elements.add(suoritusoikeusTaiAiempitutkinto);
-
-        return elements.toArray(new Element[elements.size()]);
     }
 
     private static Element buildMuu(FormParameters formParameters, int count) {
