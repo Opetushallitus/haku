@@ -22,9 +22,18 @@ import org.codehaus.jackson.annotate.JsonProperty;
 public class TextQuestion extends Question {
 
     private static final long serialVersionUID = -4941045359062359811L;
+    private boolean showAsTextarea = false;
 
     public TextQuestion(@JsonProperty(value = "id") final String id,
                         @JsonProperty(value = "i18nText") final I18nText i18nText) {
         super(id, i18nText);
+    }
+
+    public boolean isShowAsTextarea() {
+        return showAsTextarea;
+    }
+
+    public void setShowAsTextarea(boolean showAsTextarea) {
+        this.showAsTextarea = showAsTextarea;
     }
 }
