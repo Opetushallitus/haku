@@ -9,13 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 import static fi.vm.sade.haku.oppija.hakemus.domain.util.ApplicationUtil.getPreferenceAoIds;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.HakumaksuUtil.*;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.*;
 
 @Service
 public class HakumaksuService {
@@ -28,25 +28,17 @@ public class HakumaksuService {
 
     static class Eligibility {
         String nimike;
-        String suoritusmaa;
+        AsciiCountryCode suoritusmaa;
 
-        public Eligibility(String nimike, String suoritusmaa) {
+        public Eligibility(String nimike, AsciiCountryCode suoritusmaa) {
             this.nimike = nimike;
             this.suoritusmaa = suoritusmaa;
         }
     }
 
-    static class ApplicationOptionOid {
-        String value;
-
-        public ApplicationOptionOid(String value) {
-            this.value = value;
-        }
-    }
-
     private final Predicate<Eligibility> onlyNonExempt = new Predicate<Eligibility>() {
         @Override
-        public boolean apply(@Nullable Eligibility kelpoisuus) {
+        public boolean apply(Eligibility kelpoisuus) {
             try {
                 return !isExemptFromPayment(koodistoServiceUrl, kelpoisuus.suoritusmaa);
             } catch (ExecutionException e) {
@@ -62,7 +54,7 @@ public class HakumaksuService {
             public List<Eligibility> apply(Application application) {
                 Map<String, String> baseEducation = application.getPhaseAnswers(OppijaConstants.PHASE_EDUCATION);
                 String taso = baseEducation.get(multipleChoiceField + "_taso");
-                String maa = baseEducation.get(multipleChoiceField + "_maa");
+                AsciiCountryCode maa = AsciiCountryCode.of(baseEducation.get(multipleChoiceField + "_maa"));
                 String nimike = baseEducation.get(multipleChoiceField + "_nimike");
                 return value.equals(taso)
                         ? Lists.newArrayList(new Eligibility(nimike, maa))
@@ -150,7 +142,7 @@ public class HakumaksuService {
                 }
             }
 
-            maksullisetKelpoisuudet.put(new ApplicationOptionOid(applicationOptionRequirement.applicationOptionId), kelpoisuudet.build());
+            maksullisetKelpoisuudet.put(ApplicationOptionOid.of(applicationOptionRequirement.applicationOptionId), kelpoisuudet.build());
         }
 
         return maksullisetKelpoisuudet.build();
