@@ -153,6 +153,12 @@ public class HakumaksuUtil {
         return Iterables.transform(requiringPayment, new Function<String, EducationRequirements>() {
             @Override
             public EducationRequirements apply(String applicationOptionId) {
+                // TODO: Hae RESTillä hakutoiveiden vaatimukset (ja cacheta niitä)
+                // Esimerkki: GET https://testi.opintopolku.fi/ao/1.2.246.562.20.40822369126
+                //
+                // requiredBaseEducations: [
+                //   "pohjakoulutusvaatimuskorkeakoulut_123"
+                // ]
                 return new EducationRequirements(applicationOptionId, ImmutableSet.of("pohjakoulutusvaatimuskorkeakoulut_123"));
             }
         });
