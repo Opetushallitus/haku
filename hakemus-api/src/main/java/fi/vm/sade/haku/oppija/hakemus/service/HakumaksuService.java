@@ -34,6 +34,11 @@ public class HakumaksuService {
             this.nimike = nimike;
             this.suoritusmaa = suoritusmaa;
         }
+
+        // Suomalainen koulutus
+        public Eligibility(String nimike) {
+            this(nimike, AsciiCountryCode.of("FIN"));
+        }
     }
 
     private final Predicate<Eligibility> onlyNonExempt = new Predicate<Eligibility>() {
@@ -63,55 +68,155 @@ public class HakumaksuService {
         };
     }
 
+    private static Function<Application, List<Eligibility>> multipleChoiceKkEquals(final String multipleChoiceField, final String value) {
+        return new Function<Application, List<Eligibility>>() {
+            @Override
+            public List<Eligibility> apply(Application application) {
+                Map<String, String> baseEducation = application.getPhaseAnswers(OppijaConstants.PHASE_EDUCATION);
+                String taso = baseEducation.get(multipleChoiceField + "_taso");
+                String nimike = baseEducation.get(multipleChoiceField + "_nimike");
+                return value.equals(taso)
+                        ? Lists.newArrayList(new Eligibility(nimike))
+                        : Lists.<Eligibility>newArrayList();
+            }
+        };
+    }
+
+    private static final Function<Application, List<Eligibility>> pohjakoulutusUlkCheckbox =  new Function<Application, List<Eligibility>>() {
+        @Override
+        public List<Eligibility> apply(Application application) {
+            Map<String, String> baseEducation = application.getPhaseAnswers(OppijaConstants.PHASE_EDUCATION);
+            AsciiCountryCode maa = AsciiCountryCode.of(baseEducation.get("pohjakoulutus_ulk_suoritusmaa"));
+            return "true".equals(baseEducation.get("pohjakoulutus_ulk"))
+                    ? Lists.newArrayList(new Eligibility(baseEducation.get("pohjakoulutus_ulk_nimike"), maa))
+                    : Lists.<Eligibility>newArrayList();
+        }
+    };
+
+    private static Function<Application, List<Eligibility>> checkboxSelected(final String fieldName, final String descriptionField) {
+        return new Function<Application, List<Eligibility>>() {
+            @Override
+            public List<Eligibility> apply(Application application) {
+                Map<String, String> baseEducation = application.getPhaseAnswers(OppijaConstants.PHASE_EDUCATION);
+                return "true".equals(baseEducation.get(fieldName))
+                        ? Lists.newArrayList(new Eligibility(baseEducation.get(descriptionField)))
+                        : Lists.<Eligibility>newArrayList();
+            }
+        };
+    }
+
+    private static Function<Application, List<Eligibility>> mergeEligibilities(final Function<Application, List<Eligibility>>... validators) {
+        return new Function<Application, List<Eligibility>>() {
+            @Override
+            public List<Eligibility> apply(Application application) {
+                ImmutableList.Builder<Eligibility> results = ImmutableList.builder();
+                for (Function<Application, List<Eligibility>> v : validators) {
+                    results.addAll(v.apply(application));
+                }
+                return results.build();
+            }
+        };
+    }
+
+    private static Function<Application, List<Eligibility>> ignore() {
+        return new Function<Application, List<Eligibility>>() {
+            @Override
+            public List<Eligibility> apply(Application application) {
+                return Lists.newArrayList();
+            }
+        };
+    }
+
+    private static final Function<Application, List<Eligibility>> opistoTaiAmmatillisenKorkeaAsteenTutkinto = checkboxSelected("pohjakoulutus_am", "pohjakoulutus_am_nimike");
+    private static final Function<Application, List<Eligibility>> ammattiTaiErikoisammattitutkinto = checkboxSelected("pohjakoulutus_amt", "pohjakoulutus_amt_nimike");
+    private static final Function<Application, List<Eligibility>> suomalaisenLukionOppimaaaraTaiYlioppilastutkinto = mergeEligibilities(
+            multipleChoiceKkEquals("pohjakoulutusYo", "lk"),
+            multipleChoiceKkEquals("pohjakoulutusYo", "fi"),
+            multipleChoiceKkEquals("pohjakoulutusYo", "lkOnly"));
+    private static final Function<Application,List<Eligibility>> europeanBaccalaureateTutkinto = mergeEligibilities(
+            multipleChoiceKkEquals("pohjakoulutus_yo_kansainvalinen_suomessa", "eb"),
+            multipleChoiceKkEquals("pohjakoulutus_yo_ulkomainen_tutkinto", "eb"));
+    private static final Function<Application,List<Eligibility>> internationalBaccalaureateTutkinto = mergeEligibilities(
+            multipleChoiceKkEquals("pohjakoulutus_yo_kansainvalinen_suomessa", "ib"),
+            multipleChoiceKkEquals("pohjakoulutus_yo_ulkomainen_tutkinto", "ib"));
+    private static final Function<Application,List<Eligibility>> suomalainenYlioppilastutkinto = mergeEligibilities(
+            multipleChoiceKkEquals("pohjakoulutusYo", "fi"),
+            multipleChoiceKkEquals("pohjakoulutusYo", "lkOnly"));
+    private static final Function<Application,List<Eligibility>> reifeprufungTutkinto = mergeEligibilities(
+            multipleChoiceKkEquals("pohjakoulutus_yo_kansainvalinen_suomessa", "rp"),
+            multipleChoiceKkEquals("pohjakoulutus_yo_ulkomainen_tutkinto", "rp"));
+
     /* Determine which ApplicationSystem fields fullfills the given base education requirements */
+    // Pohjakoulutuskoodit: https://testi.virkailija.opintopolku.fi/koodisto-service/rest/codeelement/codes/pohjakoulutusvaatimuskorkeakoulut/1
     private static final ImmutableMap<String, Function<Application, List<Eligibility>>> kkBaseEducationRequirements = ImmutableMap.<String, Function<Application, List<Eligibility>>>builder()
             // Ylempi korkeakoulututkinto
-            .put("pohjakoulutusvaatimuskorkeakoulut_103", multipleChoiceKkUlkEquals("pohjakoulutus_kk_ulk", "1"))
-            // Ulkomainen korkeakoulututkinto (Bachelor)
-            .put("pohjakoulutusvaatimuskorkeakoulut_116", multipleChoiceKkUlkEquals("pohjakoulutus_kk_ulk", "2"))
+            .put("pohjakoulutusvaatimuskorkeakoulut_103", multipleChoiceKkEquals("pohjakoulutus_kk", "1"))
             // Ylempi ammattikorkeakoulututkinto
-            .put("pohjakoulutusvaatimuskorkeakoulut_119", multipleChoiceKkUlkEquals("pohjakoulutus_kk_ulk", "3"))
+            .put("pohjakoulutusvaatimuskorkeakoulut_119", multipleChoiceKkEquals("pohjakoulutus_kk", "3"))
             // Ulkomainen korkeakoulututkinto (Master)
-            .put("pohjakoulutusvaatimuskorkeakoulut_117", multipleChoiceKkUlkEquals("pohjakoulutus_kk_ulk", "4"))
+            .put("pohjakoulutusvaatimuskorkeakoulut_117", mergeEligibilities(
+                    multipleChoiceKkUlkEquals("pohjakoulutus_kk_ulk", "3"),
+                    multipleChoiceKkUlkEquals("pohjakoulutus_kk_ulk", "4")))
+            // Ulkomainen korkeakoulututkinto (Bachelor)
+            .put("pohjakoulutusvaatimuskorkeakoulut_116", mergeEligibilities(
+                    multipleChoiceKkUlkEquals("pohjakoulutus_kk_ulk", "1"),
+                    multipleChoiceKkUlkEquals("pohjakoulutus_kk_ulk", "2")))
             // Lisensiaatin tutkinto
-            .put("pohjakoulutusvaatimuskorkeakoulut_120", multipleChoiceKkUlkEquals("pohjakoulutus_kk_ulk", "5"))
-
+            .put("pohjakoulutusvaatimuskorkeakoulut_120", mergeEligibilities(
+                    multipleChoiceKkUlkEquals("pohjakoulutus_kk_ulk", "5"),
+                    multipleChoiceKkEquals("pohjakoulutus_kk", "5")))
             // Alempi korkeakoulututkinto
-            .put("pohjakoulutusvaatimuskorkeakoulut_102", multipleChoiceKkUlkEquals("", ""))
-            // Ylioppilastutkinto ja ammatillinen perustutkinto (120 ov)
-            .put("pohjakoulutusvaatimuskorkeakoulut_107", multipleChoiceKkUlkEquals("", ""))
-            // Suomalainen ylioppilastutkinto
-            .put("pohjakoulutusvaatimuskorkeakoulut_109", multipleChoiceKkUlkEquals("", ""))
-            // Opisto- tai ammatillisen korkea-asteen tutkinto
-            .put("pohjakoulutusvaatimuskorkeakoulut_108", multipleChoiceKkUlkEquals("", ""))
-            // Yrkeshögskoleexamen
-            .put("pohjakoulutusvaatimuskorkeakoulut_101", multipleChoiceKkUlkEquals("", ""))
-            // Avoimen yliopiston opinnot
-            .put("pohjakoulutusvaatimuskorkeakoulut_118", multipleChoiceKkUlkEquals("", ""))
-            // Tohtorin tutkinto
-            .put("pohjakoulutusvaatimuskorkeakoulut_121", multipleChoiceKkUlkEquals("", ""))
-            // Avoimen ammattikorkeakoulun opinnot
-            .put("pohjakoulutusvaatimuskorkeakoulut_115", multipleChoiceKkUlkEquals("", ""))
-            // Ammatti- tai erikoisammattitutkinto
-            .put("pohjakoulutusvaatimuskorkeakoulut_105", multipleChoiceKkUlkEquals("", ""))
-            // Reifeprüfung-tutkinto
-            .put("pohjakoulutusvaatimuskorkeakoulut_111", multipleChoiceKkUlkEquals("", ""))
-            // Yleinen ammattikorkeakoulukelpoisuus
-            .put("pohjakoulutusvaatimuskorkeakoulut_100", multipleChoiceKkUlkEquals("", ""))
-            // Harkinnanvaraisuus tai erivapaus
-            .put("pohjakoulutusvaatimuskorkeakoulut_106", multipleChoiceKkUlkEquals("", ""))
-            // Suomalaisen lukion oppimÃ¤Ã¤rÃ¤ tai ylioppilastutkinto
-            .put("pohjakoulutusvaatimuskorkeakoulut_122", multipleChoiceKkUlkEquals("", ""))
-            // Ulkomainen toisen asteen tutkinto
-            .put("pohjakoulutusvaatimuskorkeakoulut_114", multipleChoiceKkUlkEquals("", ""))
-            // European baccalaureate -tutkinto
-            .put("pohjakoulutusvaatimuskorkeakoulut_110", multipleChoiceKkUlkEquals("", ""))
-            // Yleinen yliopistokelpoisuus
-            .put("pohjakoulutusvaatimuskorkeakoulut_123", multipleChoiceKkUlkEquals("", ""))
+            .put("pohjakoulutusvaatimuskorkeakoulut_102", multipleChoiceKkEquals("pohjakoulutus_kk", "2"))
+            // Ammattikorkeakoulututkinto
+            .put("pohjakoulutusvaatimuskorkeakoulut_101", multipleChoiceKkUlkEquals("pohjakoulutus_kk", "1"))
             // Ammatillinen perustutkinto tai vastaava aikaisempi tutkinto
-            .put("pohjakoulutusvaatimuskorkeakoulut_104", multipleChoiceKkUlkEquals("", ""))
+            .put("pohjakoulutusvaatimuskorkeakoulut_104", checkboxSelected("pohjakoulutus_am", "pohjakoulutus_am_nimike"))
+            // Ammatti- tai erikoisammattitutkinto
+            .put("pohjakoulutusvaatimuskorkeakoulut_105", ammattiTaiErikoisammattitutkinto)
+            // Avoimen ammattikorkeakoulun opinnot
+            .put("pohjakoulutusvaatimuskorkeakoulut_115", checkboxSelected("pohjakoulutus_avoin", "pohjakoulutus_avoin_kokonaisuus"))
+            // Avoimen yliopiston opinnot
+            .put("pohjakoulutusvaatimuskorkeakoulut_118", checkboxSelected("pohjakoulutus_avoin", "pohjakoulutus_avoin_kokonaisuus"))
+            // European baccalaureate -tutkinto
+            // TODO: tällä ei ole _nimike-kenttää
+            .put("pohjakoulutusvaatimuskorkeakoulut_110", europeanBaccalaureateTutkinto)
+            // Harkinnanvaraisuus tai erivapaus
+            .put("pohjakoulutusvaatimuskorkeakoulut_106", ignore())
             // International Baccalaureate -tutkinto
-            .put("pohjakoulutusvaatimuskorkeakoulut_112", multipleChoiceKkUlkEquals("", ""))
+            .put("pohjakoulutusvaatimuskorkeakoulut_112", internationalBaccalaureateTutkinto)
+            // Opisto- tai ammatillisen korkea-asteen tutkinto
+            .put("pohjakoulutusvaatimuskorkeakoulut_108", opistoTaiAmmatillisenKorkeaAsteenTutkinto)
+            // Reifeprüfung-tutkinto
+            .put("pohjakoulutusvaatimuskorkeakoulut_111", reifeprufungTutkinto)
+            // Suomalainen ylioppilastutkinto
+            .put("pohjakoulutusvaatimuskorkeakoulut_109", suomalainenYlioppilastutkinto)
+            // Suomalaisen lukion oppimäärä tai ylioppilastutkinto
+            .put("pohjakoulutusvaatimuskorkeakoulut_122", suomalaisenLukionOppimaaaraTaiYlioppilastutkinto)
+            // Tohtorin tutkinto
+            .put("pohjakoulutusvaatimuskorkeakoulut_121", mergeEligibilities(
+                    multipleChoiceKkUlkEquals("pohjakoulutus_kk_ulk", "5"),
+                    multipleChoiceKkEquals("pohjakoulutus_kk", "5")))
+            // Ulkomainen toisen asteen tutkinto
+            .put("pohjakoulutusvaatimuskorkeakoulut_114", pohjakoulutusUlkCheckbox)
+            // Yleinen ammattikorkeakoulukelpoisuus
+            .put("pohjakoulutusvaatimuskorkeakoulut_100", mergeEligibilities(
+                    suomalaisenLukionOppimaaaraTaiYlioppilastutkinto,
+                    opistoTaiAmmatillisenKorkeaAsteenTutkinto,
+                    ammattiTaiErikoisammattitutkinto,
+                    europeanBaccalaureateTutkinto,
+                    internationalBaccalaureateTutkinto,
+                    reifeprufungTutkinto,
+                    pohjakoulutusUlkCheckbox))
+            // Yleinen yliopistokelpoisuus
+            .put("pohjakoulutusvaatimuskorkeakoulut_123", mergeEligibilities(
+                    suomalainenYlioppilastutkinto,
+                    europeanBaccalaureateTutkinto,
+                    internationalBaccalaureateTutkinto,
+                    reifeprufungTutkinto,
+                    ammattiTaiErikoisammattitutkinto,
+                    pohjakoulutusUlkCheckbox))
+            // Ylioppilastutkinto ja ammatillinen perustutkinto (120 ov)
+            .put("pohjakoulutusvaatimuskorkeakoulut_107", checkboxSelected("pohjakoulutus_yo_ammatillinen", "pohjakoulutus_yo_tutkinto"))
             .build();
 
     /*
