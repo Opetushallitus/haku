@@ -17,6 +17,7 @@
   ~ European Union Public Licence for more details.
   --%>
 <c:set var="styleBaseClass" value="${element.inline ? 'form-row' : 'form-item'}"/>
+<c:set var="displayAsInputMaxChars" value="${element.inline ? 80 : 100}"/>
 <div class="${styleBaseClass}">
     <haku:label element="${element}" styleBaseClass="${styleBaseClass}"/>
     <div class="${styleBaseClass}-content">
@@ -24,7 +25,15 @@
             <haku:help element="${element}"/>
         </c:if>
         <div class="field-container-text">
-            <input type="text" ${element.attributeString} id="${element.id}" name="${element.id}" <haku:placeholder titled="${element}"/> <haku:value value='${answers[element.id]}'/> />
+            <c:choose>
+                <c:when test="${empty element.attributes.size || element.attributes.size <= displayAsInputMaxChars}">
+                    <input type="text" ${element.attributeString} id="${element.id}" name="${element.id}" <haku:placeholder titled="${element}"/> <haku:value value='${answers[element.id]}'/> />
+                </c:when>
+                <c:otherwise>
+                    <textarea cols="80" rows="4" ${element.attributeString} id="${element.id}" name="${element.id}"
+                            <haku:placeholder titled="${element}"/>><c:out value="${answers[element.id]}"/></textarea>
+                </c:otherwise>
+            </c:choose>
             <haku:errorMessage id="${element.id}" additionalClass="margin-top-1"/>
         </div>
         <c:if test="${element.inline}">
