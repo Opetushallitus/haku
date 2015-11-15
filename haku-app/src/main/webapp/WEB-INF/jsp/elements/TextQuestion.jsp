@@ -17,7 +17,6 @@
   ~ European Union Public Licence for more details.
   --%>
 <c:set var="styleBaseClass" value="${element.inline ? 'form-row' : 'form-item'}"/>
-<c:catch var="textareaPropDoesNotExist">${element.showAsTextarea}</c:catch>
 <div class="${styleBaseClass}">
     <haku:label element="${element}" styleBaseClass="${styleBaseClass}"/>
     <div class="${styleBaseClass}-content">
@@ -26,7 +25,7 @@
         </c:if>
         <div class="field-container-text">
             <c:choose>
-                <c:when test="${empty textareaPropDoesNotExist and element.showAsTextarea}">
+                <c:when test="${element.showAsTextarea}">
                     <textarea cols="80" rows="4" ${element.attributeString} id="${element.id}" name="${element.id}"
                             <haku:placeholder titled="${element}"/>><c:out value="${answers[element.id]}"/></textarea>
                 </c:when>

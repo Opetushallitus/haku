@@ -16,10 +16,9 @@
   ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   ~ European Union Public Licence for more details.
   --%>
-<c:catch var="textareaPropDoesNotExist">${element.showAsTextarea}</c:catch>
 <tr>
     <c:choose>
-        <c:when test="${empty textareaPropDoesNotExist and element.showAsTextarea}">
+        <c:when test="${element.showAsTextarea}">
             <td class="label">
                 <a name="${element.id}"></a><span><haku:i18nText value="${element.i18nText}"/>:</span>
                 <div class="textareaPreview"><c:out value="${answers[element.id]}"/></div>
