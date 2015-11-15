@@ -3350,6 +3350,10 @@ table {
   white-space: pre;
 }
 
+.textareaPreview:empty {
+  display: none;
+}
+
 /*** Demo mode
 *************************************************/
 #float-banner {
