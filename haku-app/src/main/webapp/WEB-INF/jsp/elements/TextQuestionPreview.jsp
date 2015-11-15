@@ -19,7 +19,7 @@
 <tr>
     <c:choose>
         <c:when test="${element.showAsTextarea}">
-            <td class="label">
+            <td class="label" colspan="2">
                 <a name="${element.id}"></a><span><haku:i18nText value="${element.i18nText}"/>:</span>
                 <div class="textareaPreview"><c:out value="${answers[element.id]}"/></div>
             </td>

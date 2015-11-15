@@ -3347,7 +3347,7 @@ table {
   border: 1px solid #ccc;
   border-radius: 4px;
   font-weight: normal;
-  white-space: pre;
+  white-space: pre-wrap;
 }
 
 .textareaPreview:empty {
