@@ -2,8 +2,12 @@ package fi.vm.sade.haku.oppija.hakemus.service;
 
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
-import com.google.common.collect.*;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
+import fi.vm.sade.haku.oppija.hakemus.domain.BaseEducations.UlkomaalainenKoulutus;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,7 +19,8 @@ import java.util.concurrent.ExecutionException;
 
 import static fi.vm.sade.haku.oppija.hakemus.domain.util.ApplicationUtil.getPreferenceAoIds;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.HakumaksuUtil.*;
-import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.*;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.ApplicationOptionOid;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.AsciiCountryCode;
 
 @Service
 public class HakumaksuService {
@@ -107,14 +112,19 @@ public class HakumaksuService {
         };
     }
 
+    private static <T> List<T> toImmutable(Iterable<T> it) {
+        return ImmutableList.<T>builder().addAll(it).build();
+    }
+
     private static final Function<Application, List<Eligibility>> pohjakoulutusUlkCheckbox =  new Function<Application, List<Eligibility>>() {
         @Override
         public List<Eligibility> apply(Application application) {
-            Map<String, String> baseEducation = application.getPhaseAnswers(OppijaConstants.PHASE_EDUCATION);
-            String pohjakoulutus_ulk_suoritusmaa = baseEducation.get("pohjakoulutus_ulk_suoritusmaa");
-            return "true".equals(baseEducation.get("pohjakoulutus_ulk")) && pohjakoulutus_ulk_suoritusmaa != null
-                    ? Lists.newArrayList(new Eligibility(baseEducation.get("pohjakoulutus_ulk_nimike"), AsciiCountryCode.of(pohjakoulutus_ulk_suoritusmaa)))
-                    : Lists.<Eligibility>newArrayList();
+            return toImmutable(Iterables.transform(UlkomaalainenKoulutus.of(application), new Function<UlkomaalainenKoulutus, Eligibility>() {
+                @Override
+                public Eligibility apply(UlkomaalainenKoulutus koulutus) {
+                    return new Eligibility(koulutus.nimike, koulutus.maa);
+                }
+            }));
         }
     };
 
