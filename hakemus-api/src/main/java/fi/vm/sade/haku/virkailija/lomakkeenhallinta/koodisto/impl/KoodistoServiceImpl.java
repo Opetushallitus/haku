@@ -17,8 +17,11 @@
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.impl;
 
 import com.google.common.base.Function;
+import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
+import com.google.common.collect.UnmodifiableIterator;
 import fi.vm.sade.haku.oppija.common.organisaatio.Organization;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
@@ -367,6 +370,41 @@ public class KoodistoServiceImpl implements KoodistoService {
     @Override
     public List<Option> getKorkeakouluTutkintotasot() {
         return codesToOptions(CODE_KKTUTKINNOT);
+    }
+
+    @Override
+    public List<KoodiType> getKorkeakoulukoulutukset() {
+        Set<KoodiType> koulutukset = new HashSet<>();
+        for (String aste : new String[] {
+                "koulutusasteoph2002_60",
+                "koulutusasteoph2002_61",
+                "koulutusasteoph2002_62",
+                "koulutusasteoph2002_63",
+                "koulutusasteoph2002_70",
+                "koulutusasteoph2002_71",
+                "koulutusasteoph2002_72",
+                "koulutusasteoph2002_73",
+                "koulutusasteoph2002_80",
+                "koulutusasteoph2002_81",
+                "koulutusasteoph2002_82"}) {
+            for (KoodiType koodi : koodiService.getYlakoodis(aste)) {
+                if ("koulutus".equals(koodi.getKoodisto().getKoodistoUri())) {
+                    koulutukset.add(koodi);
+                }
+            }
+        }
+        return new ArrayList<>(latestKoodiTypes(koulutukset));
+    }
+
+    private static Collection<KoodiType> latestKoodiTypes(Collection<KoodiType> koodiTypes) {
+        Map<String, KoodiType> latest = new HashMap<>(koodiTypes.size());
+        for (KoodiType koodi : koodiTypes) {
+            String uri = koodi.getKoodiUri();
+            if (koodi.getVersio() > (latest.containsKey(uri) ? latest.get(uri).getVersio() : Integer.MIN_VALUE)) {
+                latest.put(uri, koodi);
+            }
+        }
+        return latest.values();
     }
 
     private List<Option> codesToOptions(final String codeName) {

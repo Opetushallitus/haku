@@ -24,9 +24,11 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.domain.Code;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
+import fi.vm.sade.koodisto.service.types.common.KoodiType;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -380,6 +382,11 @@ public class KoodistoServiceMockImpl implements KoodistoService {
     @Override
     public List<Option> getKorkeakouluTutkintotasot() {
         return this.listOfKorkealuTutkintotasot;
+    }
+
+    @Override
+    public List<KoodiType> getKorkeakoulukoulutukset() {
+        return new ArrayList<>();
     }
 
     @Override
