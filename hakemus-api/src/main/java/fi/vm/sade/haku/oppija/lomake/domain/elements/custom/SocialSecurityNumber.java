@@ -20,12 +20,13 @@ import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Question;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.TextQuestion;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.I18nBundle;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class SocialSecurityNumber extends Question {
+public class SocialSecurityNumber extends TextQuestion {
 
     private static final long serialVersionUID = -5573908500482185095L;
 

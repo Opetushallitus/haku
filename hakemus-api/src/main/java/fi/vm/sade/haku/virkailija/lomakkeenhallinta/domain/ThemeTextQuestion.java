@@ -3,6 +3,7 @@ package fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain;
 
 import fi.vm.sade.haku.oppija.lomake.domain.builder.TextQuestionBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.TextQuestion;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.Expr;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.Regexp;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
@@ -44,16 +45,24 @@ public class ThemeTextQuestion extends ThemeQuestion {
         elementBuilder.i18nText(getMessageText());
         elementBuilder.help(getHelpText());
         elementBuilder.verboseHelp(getVerboseHelpText());
-        elementBuilder.size(50);
         if (this.size != null) {
+            elementBuilder.size(this.size);
             elementBuilder.maxLength(this.getSize());
+        }
+        else {
+            elementBuilder.size(50);
         }
         //elementBuilder.inline();
         if (this.getRequiredFieldValidator()) {
             elementBuilder.required();
         }
         addAoidOrAoidGroup(elementBuilder);
-        return elementBuilder.build();
+        TextQuestion element = (TextQuestion) elementBuilder.build();
+
+        int showAsTextareaCharLimit = element.isInline() ? 80 : 100;
+        element.setShowAsTextarea(this.getSize() != null && this.getSize() > showAsTextareaCharLimit);
+
+        return element;
     }
 
     public Integer getSize() {
