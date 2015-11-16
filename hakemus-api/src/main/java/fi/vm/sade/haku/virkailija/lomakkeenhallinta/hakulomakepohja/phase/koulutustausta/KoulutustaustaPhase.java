@@ -3,6 +3,7 @@ package fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.koulu
 
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
@@ -11,16 +12,22 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.OptionQuestion;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.AddElementRule;
+import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionRule;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.*;
+import fi.vm.sade.haku.oppija.lomake.validation.validators.YearValidator;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.domain.Code;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.impl.KoodiTypeToOptionFunction;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.impl.TranslationsUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ExprUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
+import fi.vm.sade.koodisto.service.types.common.KoodiType;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -45,6 +52,7 @@ public final class KoulutustaustaPhase {
 
     public static final int TEXT_AREA_COLS = 60;
     public static final String PAATTOTODISTUSVUOSI_PATTERN = "^(19[0-9][0-9]|200[0-9]|201[0-5])$";
+    public static final String UNKNOWN_OID = "0.0.0.0.0.0";
 
     private KoulutustaustaPhase() {
     }
@@ -264,8 +272,8 @@ public final class KoulutustaustaPhase {
         List<Option> maat = koodistoService.getCountries();
         List<Option> ammattitutkintonimikkeet = koodistoService.getAmmattitutkinnot();
         List<Option> ammattioppilaitokset = koodistoService.getAmmattioppilaitosKoulukoodit();
-        //elements.add(buildSuoritusoikeus(formParameters));
-        //elements.add(buildAiempiTutkinto(formParameters, tutkintotasot));
+        List<Option> korkeakoulut = koodistoService.getKorkeakoulutMyosPassiiviset();
+        List<Option> korkeakoulukoulutukset = Lists.transform(koodistoService.getKorkeakoulukoulutukset(), new KoodiTypeToOptionFunction());
 
         Element pohjakoulutusGrp = TitledGroup("pohjakoulutus.korkeakoulut")
                 .required().formParams(formParameters).build();
@@ -285,18 +293,63 @@ public final class KoulutustaustaPhase {
                 buildMuu(formParameters, maxTutkintoCount));
         elements.add(pohjakoulutusGrp);
 
-        elements.add(buildSuoritusoikeusTaiAiempiTutkinto(formParameters));
+        elements.addAll(buildSuoritusoikeusTaiAiempiTutkinto(formParameters, korkeakoulut, korkeakoulukoulutukset));
 
         return elements.toArray(new Element[elements.size()]);
     }
 
-    private static Element buildSuoritusoikeusTaiAiempiTutkinto(FormParameters formParameters) {
-        return Radio("suoritusoikeus_tai_aiempi_tutkinto")
+    private static List<Element> buildSuoritusoikeusTaiAiempiTutkinto(FormParameters formParameters,
+                                                                      List<Option> korkeakoulut,
+                                                                      List<Option> korkeakoulukoulutukset) {
+        Element suoritusoikeusTaiAiempiTutkinto = Radio("suoritusoikeus_tai_aiempi_tutkinto")
                 .addOptions(ImmutableList.of(
                         new Option(formParameters.getI18nText("form.yleinen.kylla"), KYLLA),
                         new Option(formParameters.getI18nText("form.yleinen.ei"), EI)))
                 .required()
                 .formParams(formParameters).build();
+        if (formParameters.additionalInfoForPreviousDegree()) {
+            Element kysytaanAiemmanTutkinnonLisatiedot = Rule(new Equals(new Variable("suoritusoikeus_tai_aiempi_tutkinto"), new Value(KYLLA))).build();
+            kysytaanAiemmanTutkinnonLisatiedot.addChild(buildAiemmanTutkinnonLisatiedot(formParameters, korkeakoulut, korkeakoulukoulutukset));
+            return Lists.newArrayList(suoritusoikeusTaiAiempiTutkinto, kysytaanAiemmanTutkinnonLisatiedot);
+        } else {
+            return Lists.newArrayList(suoritusoikeusTaiAiempiTutkinto);
+        }
+    }
+
+    private static Element[] buildAiemmanTutkinnonLisatiedot(FormParameters formParameters,
+                                                             List<Option> korkeakoulut,
+                                                             List<Option> korkeakoulukoulutukset) {
+        YearValidator yearValidator = (YearValidator)ElementUtil.createYearValidator(1994, 1900);
+        yearValidator.setTooLateErrorKey("suoritusoikeus_tai_aiempi_tutkinto_vuosi_liian_uusi");
+        Element vuosi = TextQuestion("suoritusoikeus_tai_aiempi_tutkinto_vuosi")
+                .labelKey("suoritusoikeus_tai_aiempi_tutkinto_vuosi")
+                .validator(yearValidator)
+                .requiredInline()
+                .formParams(formParameters)
+                .build();
+        Element nimi = Dropdown("suoritusoikeus_tai_aiempi_tutkinto_nimi")
+                .emptyOptionDefault()
+                .addOptions(korkeakoulukoulutukset)
+                .labelKey("suoritusoikeus_tai_aiempi_tutkinto_nimi")
+                .requiredInline()
+                .formParams(formParameters)
+                .build();
+        Element oppilaitos = Dropdown("suoritusoikeus_tai_aiempi_tutkinto_oppilaitos")
+                .emptyOptionDefault()
+                .addOption(formParameters.getI18nText("suoritusoikeus_tai_aiempi_tutkinto_oppilaitos_muu"), UNKNOWN_OID)
+                .addOptions(korkeakoulut)
+                .keepFirst("", UNKNOWN_OID)
+                .labelKey("suoritusoikeus_tai_aiempi_tutkinto_oppilaitos")
+                .requiredInline()
+                .formParams(formParameters)
+                .build();
+        Element muuOppilaitosRule = createVarEqualsToValueRule(oppilaitos.getId(), UNKNOWN_OID);
+        muuOppilaitosRule.addChild(TextQuestion("suoritusoikeus_tai_aiempi_tutkinto_oppilaitos_muu")
+                .labelKey("suoritusoikeus_tai_aiempi_tutkinto_oppilaitos_muu")
+                .requiredInline()
+                .formParams(formParameters)
+                .build());
+        return new Element[]{vuosi, nimi, oppilaitos, muuOppilaitosRule};
     }
 
     private static Element buildMuu(FormParameters formParameters, int count) {

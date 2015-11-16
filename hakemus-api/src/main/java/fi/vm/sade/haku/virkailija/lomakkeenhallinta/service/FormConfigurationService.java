@@ -110,6 +110,7 @@ public final class FormConfigurationService {
         defaultFeatureFlags.put(FormConfiguration.FeatureFlag.requireEmail, true);
         defaultFeatureFlags.put(FormConfiguration.FeatureFlag.kansainvalinenYoAmkKysymys, true);
         defaultFeatureFlags.put(FormConfiguration.FeatureFlag.sahkoinenViestintaLupa, OppijaConstants.KOHDEJOUKKO_KORKEAKOULU.equals(applicationSystem.getKohdejoukkoUri()));
+        defaultFeatureFlags.put(FormConfiguration.FeatureFlag.additionalInfoForPreviousDegree, true);
 
         FormConfiguration formConfiguration = new FormConfiguration(applicationSystem.getId(),
                   figureOutFormTypeForApplicationSystem(applicationSystem), defaultFeatureFlags);

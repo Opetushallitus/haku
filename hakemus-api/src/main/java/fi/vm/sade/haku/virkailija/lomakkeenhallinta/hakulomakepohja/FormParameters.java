@@ -274,6 +274,10 @@ public class FormParameters {
         return formConfiguration.getFeatureFlag(FormConfiguration.FeatureFlag.gradeAverageAmmatillinen);
     }
 
+    public boolean additionalInfoForPreviousDegree() {
+        return formConfiguration.getFeatureFlag(FormConfiguration.FeatureFlag.additionalInfoForPreviousDegree);
+    }
+
     public boolean isDemoMode() {
         return this.demoMode;
     }
