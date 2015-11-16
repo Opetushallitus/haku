@@ -287,58 +287,48 @@ public class KoodistoServiceImpl implements KoodistoService {
 
     @Override
     public List<Option> getAmmattioppilaitosKoulukoodit() {
-        return getKoulukoodit(AMMATILLINEN_OPPILAITOS, AMMATILLINEN_ERITYISOPPILAITOS, AMMATILLINEN_ERIKOISOPPILAITOS,
+        return getKoulukoodit(false, AMMATILLINEN_OPPILAITOS, AMMATILLINEN_ERITYISOPPILAITOS, AMMATILLINEN_ERIKOISOPPILAITOS,
                 AMMATILLINEN_AIKUISKOULUTUSKESKUS, PALO_POLIISI_VARTIOINTI_OPPILAITOS, SOTILASALAN_OPPILAITOS,
                 LIIKUNNAN_KOULUTUSKEKUS, MUSIIKKIOPPILAITOS, KANSANOPISTO);
     }
 
     @Override
     public List<Option> getLukioKoulukoodit() {
-        return getKoulukoodit(LUKIO, LUKIO_JA_PERUSKOULU, KANSANOPISTO);
+        return getKoulukoodit(false, LUKIO, LUKIO_JA_PERUSKOULU, KANSANOPISTO);
     }
 
-    private List<Option> getKoulukoodit(String... oppilaitosyypit) {
-        Map<String, Boolean> tyyppiMap = new HashMap<>(oppilaitosyypit.length);
-        for (String oppilaitostyyppi : oppilaitosyypit) {
-            tyyppiMap.put(oppilaitostyyppi, true);
-        }
-        List<KoodiType> koulut = getKoodiTypes(CODE_OPPILAITOSTYYPPI);
-        List<String> kouluNumerot = new ArrayList<String>();
-        int i = 0;
-        for (KoodiType koodi : koulut) {
-            Boolean pleaseProceed = tyyppiMap.get(koodi.getKoodiArvo());
-            if (pleaseProceed != null && pleaseProceed) {
-                if (i++ >= fetchLimit) {
-                    break;
-                }
-                List<KoodiType> ylakoodit = koodiService.getYlakoodis(koodi.getKoodiUri());
-                int j = 0;
-                for (KoodiType ylakoodi : ylakoodit) {
-                    if (ylakoodi.getKoodisto().getKoodistoUri().equals("oppilaitosnumero")
-                            && !ylakoodi.getTila().equals(TilaType.PASSIIVINEN) ) {
-                        if (j++ >= fetchLimit) {
-                            break;
-                        }
-                        kouluNumerot.add(ylakoodi.getKoodiArvo());
+    private List<Option> getKoulukoodit(boolean passives, String... oppilaitosyypit) {
+        Set<String> tyypit = new HashSet<>(oppilaitosyypit.length);
+        Collections.addAll(tyypit, oppilaitosyypit);
+        List<String> oppilaitosnumerot = new ArrayList<>();
+        for (KoodiType koodi : getKoodiTypes(CODE_OPPILAITOSTYYPPI)) {
+            if (tyypit.contains(koodi.getKoodiArvo())) {
+                for (KoodiType ylakoodi : koodiService.getYlakoodis(koodi.getKoodiUri())) {
+                    if ("oppilaitosnumero".equals(ylakoodi.getKoodisto().getKoodistoUri())
+                            && (passives || TilaType.PASSIIVINEN != ylakoodi.getTila())) {
+                        oppilaitosnumerot.add(ylakoodi.getKoodiArvo());
                     }
                 }
             }
         }
 
-        List<Option> opts = new ArrayList<Option>(kouluNumerot.size());
-        List<Organization> orgs = organisaatioService.findByOppilaitosnumero(kouluNumerot);
-        for (Organization org : orgs) {
-            List<String> types = org.getTypes();
-            if (types.contains("Oppilaitos")) {
-                opts.add((Option) new OptionBuilder().setValue(org.getOid()).i18nText(org.getName()).build());
+        List<Option> oppilaitokset = new ArrayList<>(oppilaitosnumerot.size());
+        for (Organization org : organisaatioService.findByOppilaitosnumero(oppilaitosnumerot)) {
+            if (org.getTypes().contains("Oppilaitos")) {
+                oppilaitokset.add((Option) new OptionBuilder().setValue(org.getOid()).i18nText(org.getName()).build());
             }
         }
-        return opts;
+        return oppilaitokset;
     }
 
     @Override
-    public List<Option> getKorkeakouluKoulukoodit() {
-        return getKoulukoodit(AMMATTIKORKEAKOLU, YLIOPISTO, SOTILASKORKEAKOULU, VALIAIKAINEN_AMK);
+    public List<Option> getKorkeakoulut() {
+        return getKoulukoodit(false, AMMATTIKORKEAKOLU, YLIOPISTO, SOTILASKORKEAKOULU, VALIAIKAINEN_AMK);
+    }
+
+    @Override
+    public List<Option> getKorkeakoulutMyosPassiiviset() {
+        return getKoulukoodit(true, AMMATTIKORKEAKOLU, YLIOPISTO, SOTILASKORKEAKOULU, VALIAIKAINEN_AMK);
     }
 
     @Override

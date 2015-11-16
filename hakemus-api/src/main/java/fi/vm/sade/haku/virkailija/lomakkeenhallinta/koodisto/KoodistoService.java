@@ -63,7 +63,9 @@ public interface KoodistoService {
 
     List<Option> getAmmattioppilaitosKoulukoodit();
 
-    List<Option> getKorkeakouluKoulukoodit();
+    List<Option> getKorkeakoulut();
+
+    List<Option> getKorkeakoulutMyosPassiiviset();
 
     List<Option> getAmmattitutkinnot();
 
