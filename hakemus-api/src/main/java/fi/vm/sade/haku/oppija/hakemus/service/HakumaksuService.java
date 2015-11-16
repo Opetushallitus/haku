@@ -31,7 +31,7 @@ public class HakumaksuService {
         this.koulutusinformaatioUrl = koulutusinformaatioUrl;
     }
 
-    static class Eligibility {
+    public static class Eligibility {
         String nimike;
         AsciiCountryCode suoritusmaa;
 
@@ -43,6 +43,26 @@ public class HakumaksuService {
         // Suomalainen koulutus
         public Eligibility(String nimike) {
             this(nimike, AsciiCountryCode.of("FIN"));
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            Eligibility that = (Eligibility) o;
+
+            if (nimike != null ? !nimike.equals(that.nimike) : that.nimike != null)
+                return false;
+            return !(suoritusmaa != null ? !suoritusmaa.equals(that.suoritusmaa) : that.suoritusmaa != null);
+
+        }
+
+        @Override
+        public int hashCode() {
+            int result = nimike != null ? nimike.hashCode() : 0;
+            result = 31 * result + (suoritusmaa != null ? suoritusmaa.hashCode() : 0);
+            return result;
         }
     }
 
@@ -91,9 +111,9 @@ public class HakumaksuService {
         @Override
         public List<Eligibility> apply(Application application) {
             Map<String, String> baseEducation = application.getPhaseAnswers(OppijaConstants.PHASE_EDUCATION);
-            AsciiCountryCode maa = AsciiCountryCode.of(baseEducation.get("pohjakoulutus_ulk_suoritusmaa"));
-            return "true".equals(baseEducation.get("pohjakoulutus_ulk"))
-                    ? Lists.newArrayList(new Eligibility(baseEducation.get("pohjakoulutus_ulk_nimike"), maa))
+            String pohjakoulutus_ulk_suoritusmaa = baseEducation.get("pohjakoulutus_ulk_suoritusmaa");
+            return "true".equals(baseEducation.get("pohjakoulutus_ulk")) && pohjakoulutus_ulk_suoritusmaa != null
+                    ? Lists.newArrayList(new Eligibility(baseEducation.get("pohjakoulutus_ulk_nimike"), AsciiCountryCode.of(pohjakoulutus_ulk_suoritusmaa)))
                     : Lists.<Eligibility>newArrayList();
         }
     };
