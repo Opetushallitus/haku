@@ -118,14 +118,12 @@ public class HakumaksuService {
         };
     }
 
-    private static Function<Application, List<Eligibility>> ignore() {
-        return new Function<Application, List<Eligibility>>() {
-            @Override
-            public List<Eligibility> apply(Application application) {
-                return Lists.newArrayList();
-            }
-        };
-    }
+    private final static Function<Application, List<Eligibility>> ignore = new Function<Application, List<Eligibility>>() {
+        @Override
+        public List<Eligibility> apply(Application application) {
+            return Lists.newArrayList();
+        }
+    };
 
     private static final Function<Application, List<Eligibility>> opistoTaiAmmatillisenKorkeaAsteenTutkinto = checkboxSelected("pohjakoulutus_am", "pohjakoulutus_am_nimike");
     private static final Function<Application, List<Eligibility>> ammattiTaiErikoisammattitutkinto = checkboxSelected("pohjakoulutus_amt", "pohjakoulutus_amt_nimike");
@@ -181,7 +179,7 @@ public class HakumaksuService {
             // TODO: tällä ei ole _nimike-kenttää
             .put("pohjakoulutusvaatimuskorkeakoulut_110", europeanBaccalaureateTutkinto)
             // Harkinnanvaraisuus tai erivapaus
-            .put("pohjakoulutusvaatimuskorkeakoulut_106", ignore())
+            .put("pohjakoulutusvaatimuskorkeakoulut_106", ignore)
             // International Baccalaureate -tutkinto
             .put("pohjakoulutusvaatimuskorkeakoulut_112", internationalBaccalaureateTutkinto)
             // Opisto- tai ammatillisen korkea-asteen tutkinto
