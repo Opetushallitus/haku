@@ -15,6 +15,22 @@ public final class Types {
         public String toString() {
             return value.toString();
         }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            Base<?> base = (Base<?>) o;
+
+            return !(value != null ? !value.equals(base.value) : base.value != null);
+
+        }
+
+        @Override
+        public int hashCode() {
+            return value != null ? value.hashCode() : 0;
+        }
     }
 
     public static final class ApplicationOptionOid extends Base<String> {
