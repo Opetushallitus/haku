@@ -20,10 +20,15 @@ import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.*;
 @Service
 public class HakumaksuService {
     private final String koodistoServiceUrl;
+    private final String koulutusinformaatioUrl;
 
     @Autowired
-    public HakumaksuService(@Value("${cas.service.koodisto-service}") final String koodistoServiceUrl) {
+    public HakumaksuService(
+            @Value("${cas.service.koodisto-service}") final String koodistoServiceUrl,
+            @Value("${koulutusinformaatio.ao.resource.url}") final String koulutusinformaatioUrl
+    ) {
         this.koodistoServiceUrl = koodistoServiceUrl;
+        this.koulutusinformaatioUrl = koulutusinformaatioUrl;
     }
 
     static class Eligibility {
@@ -231,7 +236,7 @@ public class HakumaksuService {
     public Map<ApplicationOptionOid, List<Eligibility>> paymentRequirements(Application application) throws ExecutionException {
         ImmutableMap.Builder<ApplicationOptionOid, List<Eligibility>> maksullisetKelpoisuudet = ImmutableMap.builder();
 
-        for (EducationRequirements applicationOptionRequirement : getEducationRequirements(getPreferenceAoIds(application))) {
+        for (EducationRequirements applicationOptionRequirement : getEducationRequirements(koulutusinformaatioUrl, getPreferenceAoIds(application))) {
             ImmutableList.Builder<Eligibility> kelpoisuudet = ImmutableList.builder();
 
             for (String key : applicationOptionRequirement.baseEducationRequirements) {
@@ -245,7 +250,7 @@ public class HakumaksuService {
                 }
             }
 
-            maksullisetKelpoisuudet.put(ApplicationOptionOid.of(applicationOptionRequirement.applicationOptionId), kelpoisuudet.build());
+            maksullisetKelpoisuudet.put(applicationOptionRequirement.applicationOptionId, kelpoisuudet.build());
         }
 
         return maksullisetKelpoisuudet.build();

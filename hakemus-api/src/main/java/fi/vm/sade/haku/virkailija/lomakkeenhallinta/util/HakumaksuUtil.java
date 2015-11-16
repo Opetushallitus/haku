@@ -12,6 +12,7 @@ import com.google.common.collect.Lists;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import fi.vm.sade.haku.http.RestClient;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.ApplicationOptionOid;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.AsciiCountryCode;
 
 import java.io.IOException;
@@ -134,23 +135,23 @@ public class HakumaksuUtil {
     }
 
     public static class EducationRequirements {
-        public final String applicationOptionId;
+        public final ApplicationOptionOid applicationOptionId;
         public final ImmutableSet<String> baseEducationRequirements;
 
-        public EducationRequirements(String applicationOptionId, ImmutableSet<String> requiredBaseEducations) {
+        public EducationRequirements(ApplicationOptionOid applicationOptionId, ImmutableSet<String> requiredBaseEducations) {
             this.applicationOptionId = applicationOptionId;
             this.baseEducationRequirements = requiredBaseEducations;
         }
     }
 
-    public static Iterable<EducationRequirements> getEducationRequirements(List<String> applicationOptions) {
-        Iterable<String> requiringPayment = Iterables.filter(applicationOptions, new Predicate<String>() {
-            @Override
-            public boolean apply(String applicationOptionId) {
-                return true;
-            }
-        });
-        return Iterables.transform(requiringPayment, new Function<String, EducationRequirements>() {
+    public static class BaseEducationRequirements {
+        @Key
+        List<String> requiredBaseEducations;
+    }
+
+    public static Iterable<EducationRequirements> getEducationRequirements(final String koulutusinformaatioUrl,
+                                                                           List<String> applicationOptions) {
+        return Iterables.transform(applicationOptions, new Function<String, EducationRequirements>() {
             @Override
             public EducationRequirements apply(String applicationOptionId) {
                 // TODO: Hae RESTillä hakutoiveiden vaatimukset (ja cacheta niitä)
@@ -159,7 +160,16 @@ public class HakumaksuUtil {
                 // requiredBaseEducations: [
                 //   "pohjakoulutusvaatimuskorkeakoulut_123"
                 // ]
-                return new EducationRequirements(applicationOptionId, ImmutableSet.of("pohjakoulutusvaatimuskorkeakoulut_123"));
+                String url = koulutusinformaatioUrl + "/" + applicationOptionId;
+                try {
+                    System.err.println(url);
+                    BaseEducationRequirements requirements = RestClient.get(url, BaseEducationRequirements.class).get();
+                    return new EducationRequirements(ApplicationOptionOid.of(applicationOptionId), ImmutableSet.copyOf(requirements.requiredBaseEducations));
+                } catch (ExecutionException|InterruptedException|IOException e) {
+                    // TODO: what to do?
+                    e.printStackTrace();
+                    return null;
+                }
             }
         });
     }
@@ -167,8 +177,11 @@ public class HakumaksuUtil {
     public static void main(String[] args) {
         try {
             AsciiCountryCode countryCode = AsciiCountryCode.of("FIN");
-            String url = "https://testi.virkailija.opintopolku.fi/koodisto-service";
-            System.out.println(countryCode + " is in EAA: " + isExemptFromPayment(url, countryCode));
+            System.out.println(countryCode + " is in EAA: " + isExemptFromPayment("https://testi.virkailija.opintopolku.fi/koodisto-service", countryCode));
+            for (EducationRequirements e : getEducationRequirements("https://testi.opintopolku.fi/ao", Lists.newArrayList("1.2.246.562.20.40822369126"))) {
+                System.out.println(e.applicationOptionId + " " + e.baseEducationRequirements);
+            }
+
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
