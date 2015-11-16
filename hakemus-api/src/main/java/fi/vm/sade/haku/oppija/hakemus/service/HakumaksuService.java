@@ -2,6 +2,7 @@ package fi.vm.sade.haku.oppija.hakemus.service;
 
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
+import com.google.common.base.Predicates;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Iterables;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
 import static fi.vm.sade.haku.oppija.hakemus.domain.util.ApplicationUtil.getPreferenceAoIds;
@@ -86,161 +88,123 @@ public class HakumaksuService {
         }
     };
 
-    private static Function<Application, List<Eligibility>> multipleChoiceKkEquals(final String value) {
-        return new Function<Application, List<Eligibility>>() {
-            @Override
-            public List<Eligibility> apply(Application application) {
-                Iterable<SuomalainenKorkeakoulutus> tasoaVastaavatKoulutukset = Iterables.filter(
-                        SuomalainenKorkeakoulutus.of(application),
-                        new Predicate<SuomalainenKorkeakoulutus>() {
-                            @Override
-                            public boolean apply(SuomalainenKorkeakoulutus input) {
-                                return input.taso.equals(value);
-                            }
-                        });
-                return toImmutable(Iterables.transform(tasoaVastaavatKoulutukset, new Function<SuomalainenKorkeakoulutus, Eligibility>() {
-                    @Override
-                    public Eligibility apply(SuomalainenKorkeakoulutus koulutus) {
-                        return new Eligibility(koulutus.nimike);
-                    }
-                }));
-            }
-        };
-    }
-
-    private static Function<Application, List<Eligibility>> multipleChoiceKkUlkEquals(final String value) {
-        return new Function<Application, List<Eligibility>>() {
-            @Override
-            public List<Eligibility> apply(Application application) {
-                Iterable<UlkomaalainenKorkeakoulutus> tasoaVastaavatKoulutukset = Iterables.filter(
-                        UlkomaalainenKorkeakoulutus.of(application),
-                        new Predicate<UlkomaalainenKorkeakoulutus>() {
-                            @Override
-                            public boolean apply(UlkomaalainenKorkeakoulutus input) {
-                                return input.taso.equals(value);
-                            }
-                        });
-                return toImmutable(Iterables.transform(tasoaVastaavatKoulutukset, new Function<UlkomaalainenKorkeakoulutus, Eligibility>() {
-                    @Override
-                    public Eligibility apply(UlkomaalainenKorkeakoulutus koulutus) {
-                        return new Eligibility(koulutus.nimike, koulutus.maa);
-                    }
-                }));
-            }
-        };
-    }
-
-    private static Function<Application, List<Eligibility>> suomalainenYo(final String value) {
-        return new Function<Application, List<Eligibility>>() {
-            @Override
-            public List<Eligibility> apply(Application application) {
-                return SuomalainenYo.of(application).transform(new Function<SuomalainenYo, List<Eligibility>>() {
-                    @Override
-                    public List<Eligibility> apply(SuomalainenYo koulutus) {
-                        return value.equals(koulutus.tutkinto)
-                                ? ImmutableList.of(new Eligibility(koulutus.tutkinto))
-                                : ImmutableList.<Eligibility>of();
-                    }
-                }).or(ImmutableList.<Eligibility>of());
-            }
-        };
-    }
-
-    private static final Function<Application, List<Eligibility>> suomalainenYoAmmatillinen = new Function<Application, List<Eligibility>>() {
-        @Override
-        public List<Eligibility> apply(Application application) {
-            return SuomalainenYoAmmatillinen.of(application).transform(new Function<SuomalainenYoAmmatillinen, List<Eligibility>>() {
-                @Override
-                public List<Eligibility> apply(SuomalainenYoAmmatillinen koulutus) {
-                    return ImmutableList.of(new Eligibility(koulutus.nimike));
-                }
-            }).or(ImmutableList.<Eligibility>of());
-        }
-    };
-
-    private static Function<Application, List<Eligibility>> suomalainenKansainvalinenYo(final String value) {
-        return new Function<Application, List<Eligibility>>() {
-            @Override
-            public List<Eligibility> apply(Application application) {
-                return SuomalainenKansainvalinenYo.of(application).transform(new Function<SuomalainenKansainvalinenYo, List<Eligibility>>() {
-                    @Override
-                    public List<Eligibility> apply(SuomalainenKansainvalinenYo koulutus) {
-                        return value.equals(koulutus.tutkinto)
-                                ? ImmutableList.of(new Eligibility(koulutus.tutkinto))
-                                : ImmutableList.<Eligibility>of();
-                    }
-                }).or(ImmutableList.<Eligibility>of());
-            }
-        };
-    }
-
-    private static Function<Application, List<Eligibility>> ulkomainenKansainvalinenYo(final String value) {
-        return new Function<Application, List<Eligibility>>() {
-            @Override
-            public List<Eligibility> apply(Application application) {
-                return UlkomainenKansainvalinenYo.of(application).transform(new Function<UlkomainenKansainvalinenYo, List<Eligibility>>() {
-                    @Override
-                    public List<Eligibility> apply(UlkomainenKansainvalinenYo koulutus) {
-                        return value.equals(koulutus.tutkinto)
-                                ? ImmutableList.of(new Eligibility(koulutus.tutkinto, koulutus.maa))
-                                : ImmutableList.<Eligibility>of();
-                    }
-                }).or(ImmutableList.<Eligibility>of());
-            }
-        };
-    }
-
     private static <T> List<T> toImmutable(Iterable<T> it) {
         return ImmutableList.<T>builder().addAll(it).build();
     }
 
-    private static final Function<Application, List<Eligibility>> pohjakoulutusUlkCheckbox =  new Function<Application, List<Eligibility>>() {
-        @Override
-        public List<Eligibility> apply(Application application) {
-            return toImmutable(Iterables.transform(UlkomaalainenKoulutus.of(application), new Function<UlkomaalainenKoulutus, Eligibility>() {
+    private static <T> Function<Application, List<Eligibility>> wrapSetWhere(final Function<Application, Set<T>> set,
+                                                                             final Predicate<T> filter,
+                                                                             final Function<T, Eligibility> transform) {
+        return new Function<Application, List<Eligibility>>() {
+            @Override
+            public List<Eligibility> apply(Application application) {
+                return toImmutable(Iterables.transform(Iterables.filter(set.apply(application), filter), transform));
+            }
+        };
+    }
+
+    private static <T> Function<Application, List<Eligibility>> wrapSet(final Function<Application, Set<T>> set, final Function<T, Eligibility> transform) {
+        return wrapSetWhere(set, Predicates.<T>alwaysTrue(), transform);
+    }
+
+    private static Function<Application, List<Eligibility>> multipleChoiceKkEquals(final String value) {
+        return wrapSetWhere(
+                SuomalainenKorkeakoulutus.of,
+                new Predicate<SuomalainenKorkeakoulutus>() {
+                    @Override
+                    public boolean apply(SuomalainenKorkeakoulutus input) {
+                        return input.taso.equals(value);
+                    }
+                },
+                HakumaksuService.<SuomalainenKorkeakoulutus>transformWithNimike());
+    }
+
+    private static Function<Application, List<Eligibility>> multipleChoiceKkUlkEquals(final String value) {
+        return wrapSetWhere(
+                UlkomaalainenKorkeakoulutus.of,
+                new Predicate<UlkomaalainenKorkeakoulutus>() {
+                    @Override
+                    public boolean apply(UlkomaalainenKorkeakoulutus input) {
+                        return input.taso.equals(value);
+                    }
+                },
+                new Function<UlkomaalainenKorkeakoulutus, Eligibility>() {
+                    @Override
+                    public Eligibility apply(UlkomaalainenKorkeakoulutus koulutus) {
+                        return new Eligibility(koulutus.nimike, koulutus.maa);
+                    }
+                });
+    }
+
+
+    private static Function<Application, List<Eligibility>> suomalainenYo(final String value) {
+        return wrapSetWhere(
+                SuomalainenYo.of,
+                new Predicate<SuomalainenYo>() {
+                    @Override
+                    public boolean apply(SuomalainenYo input) {
+                        return input.tutkinto.equals(value);
+                    }
+                },
+                new Function<SuomalainenYo, Eligibility>() {
+                    @Override
+                    public Eligibility apply(SuomalainenYo koulutus) {
+                        return new Eligibility(koulutus.tutkinto);
+                    }
+                });
+    }
+
+    private static Function<Application, List<Eligibility>> suomalainenKansainvalinenYo(final String value) {
+        return wrapSetWhere(
+                SuomalainenKansainvalinenYo.of,
+                new Predicate<SuomalainenKansainvalinenYo>() {
+                    @Override
+                    public boolean apply(SuomalainenKansainvalinenYo input) {
+                        return input.tutkinto.equals(value);
+                    }
+                },
+                new Function<SuomalainenKansainvalinenYo, Eligibility>() {
+                    @Override
+                    public Eligibility apply(SuomalainenKansainvalinenYo koulutus) {
+                        return new Eligibility(koulutus.tutkinto);
+                    }
+                });
+    }
+
+    private static Function<Application, List<Eligibility>> ulkomainenKansainvalinenYo(final String value) {
+        return wrapSetWhere(
+                UlkomainenKansainvalinenYo.of,
+                new Predicate<UlkomainenKansainvalinenYo>() {
+                    @Override
+                    public boolean apply(UlkomainenKansainvalinenYo input) {
+                        return input.tutkinto.equals(value);
+                    }
+                },
+                new Function<UlkomainenKansainvalinenYo, Eligibility>() {
+                    @Override
+                    public Eligibility apply(UlkomainenKansainvalinenYo koulutus) {
+                        return new Eligibility(koulutus.tutkinto, koulutus.maa);
+                    }
+                });
+    }
+
+    private static final Function<Application, List<Eligibility>> ulkomainenPohjakoulutus = wrapSet(
+            UlkomaalainenKoulutus.of,
+            new Function<UlkomaalainenKoulutus, Eligibility>() {
                 @Override
                 public Eligibility apply(UlkomaalainenKoulutus koulutus) {
                     return new Eligibility(koulutus.nimike, koulutus.maa);
                 }
-            }));
-        }
-    };
+            });
 
-    private static final Function<Application, List<Eligibility>> suomalainenAvoinTutkinto = new Function<Application, List<Eligibility>>() {
-        @Override
-        public List<Eligibility> apply(Application application) {
-            return SuomalainenAvoinKoulutus.of(application).transform(new Function<SuomalainenAvoinKoulutus, List<Eligibility>>() {
-                @Override
-                public List<Eligibility> apply(SuomalainenAvoinKoulutus koulutus) {
-                    return ImmutableList.of(new Eligibility(koulutus.nimike));
-                }
-            }).or(ImmutableList.<Eligibility>of());
-        }
-    };
-
-    private static final Function<Application, List<Eligibility>> suomalainenAmtTutkinto = new Function<Application, List<Eligibility>>() {
-        @Override
-        public List<Eligibility> apply(Application application) {
-            return SuomalainenAmtKoulutus.of(application).transform(new Function<SuomalainenAmtKoulutus, List<Eligibility>>() {
-                @Override
-                public List<Eligibility> apply(SuomalainenAmtKoulutus koulutus) {
-                    return ImmutableList.of(new Eligibility(koulutus.nimike));
-                }
-            }).or(ImmutableList.<Eligibility>of());
-        }
-    };
-
-    private static final Function<Application, List<Eligibility>> suomalainenAmTutkinto = new Function<Application, List<Eligibility>>() {
-        @Override
-        public List<Eligibility> apply(Application application) {
-            return SuomalainenAmKoulutus.of(application).transform(new Function<SuomalainenAmKoulutus, List<Eligibility>>() {
-                @Override
-                public List<Eligibility> apply(SuomalainenAmKoulutus koulutus) {
-                    return ImmutableList.of(new Eligibility(koulutus.nimike));
-                }
-            }).or(ImmutableList.<Eligibility>of());
-        }
-    };
+    private static <T extends ProvideNimike> Function<T, Eligibility> transformWithNimike() {
+        return new Function<T, Eligibility>() {
+            @Override
+            public Eligibility apply(T koulutus) {
+                return new Eligibility(koulutus.getNimike());
+            }
+        };
+    }
 
     private static Function<Application, List<Eligibility>> mergeEligibilities(final Function<Application, List<Eligibility>>... validators) {
         return new Function<Application, List<Eligibility>>() {
@@ -262,8 +226,10 @@ public class HakumaksuService {
         }
     };
 
-    private static final Function<Application, List<Eligibility>> opistoTaiAmmatillisenKorkeaAsteenTutkinto = suomalainenAmTutkinto;
-    private static final Function<Application, List<Eligibility>> ammattiTaiErikoisammattitutkinto = suomalainenAmtTutkinto;
+    private static final Function<Application, List<Eligibility>> suomalainenYoAmmatillinen = wrapSet(SuomalainenYoAmmatillinen.of, HakumaksuService.<SuomalainenYoAmmatillinen>transformWithNimike());
+    private static final Function<Application, List<Eligibility>> suomalainenAvoinTutkinto = wrapSet(SuomalainenAvoinKoulutus.of, HakumaksuService.<SuomalainenAvoinKoulutus>transformWithNimike());
+    private static final Function<Application, List<Eligibility>> opistoTaiAmmatillisenKorkeaAsteenTutkinto = wrapSet(SuomalainenAmKoulutus.of, HakumaksuService.<SuomalainenAmKoulutus>transformWithNimike());
+    private static final Function<Application, List<Eligibility>> ammattiTaiErikoisammattitutkinto = wrapSet(SuomalainenAmtKoulutus.of, HakumaksuService.<SuomalainenAmtKoulutus>transformWithNimike());
     private static final Function<Application, List<Eligibility>> suomalaisenLukionOppimaaaraTaiYlioppilastutkinto = mergeEligibilities(
             suomalainenYo("lk"),
             suomalainenYo("fi"),
@@ -305,7 +271,7 @@ public class HakumaksuService {
             // Ammattikorkeakoulututkinto
             .put("pohjakoulutusvaatimuskorkeakoulut_101", multipleChoiceKkEquals("1"))
             // Ammatillinen perustutkinto tai vastaava aikaisempi tutkinto
-            .put("pohjakoulutusvaatimuskorkeakoulut_104", suomalainenAmTutkinto)
+            .put("pohjakoulutusvaatimuskorkeakoulut_104", opistoTaiAmmatillisenKorkeaAsteenTutkinto)
             // Ammatti- tai erikoisammattitutkinto
             .put("pohjakoulutusvaatimuskorkeakoulut_105", ammattiTaiErikoisammattitutkinto)
             // Avoimen ammattikorkeakoulun opinnot
@@ -332,7 +298,7 @@ public class HakumaksuService {
                     multipleChoiceKkUlkEquals("5"),
                     multipleChoiceKkEquals("5")))
             // Ulkomainen toisen asteen tutkinto
-            .put("pohjakoulutusvaatimuskorkeakoulut_114", pohjakoulutusUlkCheckbox)
+            .put("pohjakoulutusvaatimuskorkeakoulut_114", ulkomainenPohjakoulutus)
             // Yleinen ammattikorkeakoulukelpoisuus
             .put("pohjakoulutusvaatimuskorkeakoulut_100", mergeEligibilities(
                     suomalaisenLukionOppimaaaraTaiYlioppilastutkinto,
@@ -341,7 +307,7 @@ public class HakumaksuService {
                     europeanBaccalaureateTutkinto,
                     internationalBaccalaureateTutkinto,
                     reifeprufungTutkinto,
-                    pohjakoulutusUlkCheckbox))
+                    ulkomainenPohjakoulutus))
             // Yleinen yliopistokelpoisuus
             .put("pohjakoulutusvaatimuskorkeakoulut_123", mergeEligibilities(
                     suomalainenYlioppilastutkinto,
@@ -349,7 +315,7 @@ public class HakumaksuService {
                     internationalBaccalaureateTutkinto,
                     reifeprufungTutkinto,
                     ammattiTaiErikoisammattitutkinto,
-                    pohjakoulutusUlkCheckbox))
+                    ulkomainenPohjakoulutus))
             // Ylioppilastutkinto ja ammatillinen perustutkinto (120 ov)
             .put("pohjakoulutusvaatimuskorkeakoulut_107", suomalainenYoAmmatillinen)
             .build();
