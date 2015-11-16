@@ -44,7 +44,8 @@ public class FormConfiguration {
         sahkoinenViestintaLupa,
         gradeAverageLukio,
         gradeAverageYoAmmatillinen,
-        gradeAverageAmmatillinen
+        gradeAverageAmmatillinen,
+        additionalInfoForPreviousDegree
     }
 
     // FormConfiguration oid
