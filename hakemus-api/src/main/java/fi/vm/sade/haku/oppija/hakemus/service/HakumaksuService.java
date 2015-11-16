@@ -183,7 +183,7 @@ public class HakumaksuService {
     // Pohjakoulutuskoodit: https://testi.virkailija.opintopolku.fi/koodisto-service/rest/codeelement/codes/pohjakoulutusvaatimuskorkeakoulut/1
     private static final ImmutableMap<String, Function<Application, List<Eligibility>>> kkBaseEducationRequirements = ImmutableMap.<String, Function<Application, List<Eligibility>>>builder()
             // Ylempi korkeakoulututkinto
-            .put("pohjakoulutusvaatimuskorkeakoulut_103", multipleChoiceKkEquals("pohjakoulutus_kk", "1"))
+            .put("pohjakoulutusvaatimuskorkeakoulut_103", multipleChoiceKkEquals("pohjakoulutus_kk", "4"))
             // Ylempi ammattikorkeakoulututkinto
             .put("pohjakoulutusvaatimuskorkeakoulut_119", multipleChoiceKkEquals("pohjakoulutus_kk", "3"))
             // Ulkomainen korkeakoulututkinto (Master)
