@@ -163,9 +163,9 @@ public class HakumaksuService {
     private static final Function<Application, List<Eligibility>> opistoTaiAmmatillisenKorkeaAsteenTutkinto = checkboxSelected("pohjakoulutus_am", "pohjakoulutus_am_nimike");
     private static final Function<Application, List<Eligibility>> ammattiTaiErikoisammattitutkinto = checkboxSelected("pohjakoulutus_amt", "pohjakoulutus_amt_nimike");
     private static final Function<Application, List<Eligibility>> suomalaisenLukionOppimaaaraTaiYlioppilastutkinto = mergeEligibilities(
-            multipleChoiceKkEquals("pohjakoulutusYo", "lk"),
-            multipleChoiceKkEquals("pohjakoulutusYo", "fi"),
-            multipleChoiceKkEquals("pohjakoulutusYo", "lkOnly"));
+            multipleChoiceKkEquals("pohjakoulutus_yo", "lk"),
+            multipleChoiceKkEquals("pohjakoulutus_yo", "fi"),
+            multipleChoiceKkEquals("pohjakoulutus_yo", "lkOnly"));
     private static final Function<Application,List<Eligibility>> europeanBaccalaureateTutkinto = mergeEligibilities(
             multipleChoiceKkEquals("pohjakoulutus_yo_kansainvalinen_suomessa", "eb"),
             multipleChoiceKkEquals("pohjakoulutus_yo_ulkomainen_tutkinto", "eb"));
