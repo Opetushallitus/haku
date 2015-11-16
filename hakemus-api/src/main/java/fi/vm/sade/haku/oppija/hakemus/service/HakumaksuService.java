@@ -173,8 +173,8 @@ public class HakumaksuService {
             multipleChoiceKkEquals("pohjakoulutus_yo_kansainvalinen_suomessa", "ib"),
             multipleChoiceKkEquals("pohjakoulutus_yo_ulkomainen_tutkinto", "ib"));
     private static final Function<Application,List<Eligibility>> suomalainenYlioppilastutkinto = mergeEligibilities(
-            multipleChoiceKkEquals("pohjakoulutusYo", "fi"),
-            multipleChoiceKkEquals("pohjakoulutusYo", "lkOnly"));
+            multipleChoiceKkEquals("pohjakoulutus_yo", "fi"),
+            multipleChoiceKkEquals("pohjakoulutus_yo", "lkOnly"));
     private static final Function<Application,List<Eligibility>> reifeprufungTutkinto = mergeEligibilities(
             multipleChoiceKkEquals("pohjakoulutus_yo_kansainvalinen_suomessa", "rp"),
             multipleChoiceKkEquals("pohjakoulutus_yo_ulkomainen_tutkinto", "rp"));
