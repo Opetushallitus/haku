@@ -16,7 +16,6 @@ import java.util.concurrent.ExecutionException;
 
 import static fi.vm.sade.haku.oppija.hakemus.TestApplicationData.*;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 public class HakumaksuTest {
 
@@ -26,39 +25,29 @@ public class HakumaksuTest {
     );
 
     @Test
-    public void shouldBeExempt() {
+    public void shouldBeExempt() throws ExecutionException {
         for (Map.Entry<Hakukelpoisuusvaatimus, List<Pohjakoulutus>> entry : exemptions.entrySet()) {
             for (Pohjakoulutus pohjakoulutus : entry.getValue()) {
-                try {
-                    final Map<ApplicationOptionOid, List<Eligibility>> requirements =
-                            service.paymentRequirements(getApplication(entry.getKey(), pohjakoulutus));
+                final Map<ApplicationOptionOid, List<Eligibility>> requirements =
+                        service.paymentRequirements(getApplication(entry.getKey(), pohjakoulutus));
 
-                    assertTrue(
-                            "paymentRequirements were not empty for '" + entry.getKey().getName() + "', '" + pohjakoulutus.getName() + "': " + requirements.entrySet().iterator().next().getValue().toString(),
-                            !requirements.isEmpty() && requirements.entrySet().iterator().next().getValue().isEmpty()
-                    );
-                } catch (ExecutionException e) {
-                    fail(e.getMessage());
-                }
+                assertTrue(
+                        "paymentRequirements were not empty for '" + entry.getKey().getName() + "', '" + pohjakoulutus.getName() + "': " + requirements.entrySet().iterator().next().getValue().toString(),
+                        !requirements.isEmpty() && requirements.entrySet().iterator().next().getValue().isEmpty());
             }
         }
     }
 
     @Test
-    public void shouldNotBeExempt() {
+    public void shouldNotBeExempt() throws ExecutionException {
         for (Map.Entry<Hakukelpoisuusvaatimus, List<Pohjakoulutus>> entry : nonExempting.entrySet()) {
             for (Pohjakoulutus pohjakoulutus : entry.getValue()) {
-                try {
-                    final Map<Types.ApplicationOptionOid, List<HakumaksuService.Eligibility>> requirements =
-                            service.paymentRequirements(getApplication(entry.getKey(), pohjakoulutus));
+                final Map<Types.ApplicationOptionOid, List<HakumaksuService.Eligibility>> requirements =
+                        service.paymentRequirements(getApplication(entry.getKey(), pohjakoulutus));
 
-                    assertTrue(
-                            "paymentRequirements were empty for '" + entry.getKey().getName() + "', '" + pohjakoulutus.getName() + "'",
-                            !requirements.isEmpty() && !requirements.entrySet().iterator().next().getValue().isEmpty()
-                    );
-                } catch (ExecutionException e) {
-                    fail(e.getMessage());
-                }
+                assertTrue(
+                        "paymentRequirements were empty for '" + entry.getKey().getName() + "', '" + pohjakoulutus.getName() + "'",
+                        !requirements.isEmpty() && !requirements.entrySet().iterator().next().getValue().isEmpty());
             }
         }
     }
@@ -71,6 +60,7 @@ public class HakumaksuTest {
                         Pohjakoulutus.MUUALLA_KUIN_SUOMESSA_SUORITETTU_KORKEAKOULUTUTKINTO_YLEMPI_YLIOPISTOTUTKINTO_MAISTERI_ARUBA, // Requires payment
                         Pohjakoulutus.SUOMESSA_SUORITETTU_KORKEAKOULUTUTKINTO_YLEMPI_YLIOPISTOTUTKINTO_MAISTERI // Does exempt
                 )));
+
         assertTrue(
                 "Exempting base education did not remove need for payment, result: " + paymentRequirements,
                 paymentRequirements.equals(ImmutableMap.of(ApplicationOptionOid.of(APPLICATION_OPTION_WITH_MULTIPLE_BASE_EDUCATION_REQUIREMENTS), ImmutableList.of())));
