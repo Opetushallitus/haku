@@ -2,7 +2,6 @@ package fi.vm.sade.haku.oppija.hakemus;
 
 
 import fi.vm.sade.haku.oppija.hakemus.service.HakumaksuService;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.List;
@@ -19,7 +18,7 @@ public class HakumaksuTest {
             new MockedRestClient(testMappings())
     );
 
-    @Ignore
+    @Test
     public void shouldBeExempt() {
         for (Map.Entry<Hakukelpoisuusvaatimus, List<Pohjakoulutus>> entry : exemptions.entrySet()) {
             for (Pohjakoulutus pohjakoulutus : entry.getValue()) {
