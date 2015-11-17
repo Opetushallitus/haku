@@ -29,7 +29,7 @@ public class HakumaksuTest {
                             service.paymentRequirements(getApplication(entry.getKey(), pohjakoulutus));
 
                     assertTrue(
-                            "paymentRequirements were not empty for " + entry.getKey() + ", " + pohjakoulutus.name() + ": " + requirements.entrySet().iterator().next().getValue().toString(),
+                            "paymentRequirements were not empty for '" + entry.getKey().getName() + "', '" + pohjakoulutus.getName() + "': " + requirements.entrySet().iterator().next().getValue().toString(),
                             !requirements.isEmpty() && requirements.entrySet().iterator().next().getValue().isEmpty()
                     );
                 } catch (ExecutionException e) {
@@ -48,7 +48,7 @@ public class HakumaksuTest {
                             service.paymentRequirements(getApplication(entry.getKey(), pohjakoulutus));
 
                     assertTrue(
-                            "paymentRequirements were empty for " + entry.getKey() + ", " + pohjakoulutus.name(),
+                            "paymentRequirements were empty for '" + entry.getKey().getName() + "', '" + pohjakoulutus.getName() + "'",
                             !requirements.isEmpty() && !requirements.entrySet().iterator().next().getValue().isEmpty()
                     );
                 } catch (ExecutionException e) {
