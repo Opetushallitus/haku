@@ -23,10 +23,11 @@ import org.apache.http.HttpResponse;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 public interface UIService {
 
-    ModelResponse getCompleteApplication(final String applicationSystemId, final String oid);
+    ModelResponse getCompleteApplication(final String applicationSystemId, final String oid) throws ExecutionException;
 
     ModelResponse getAllApplicationSystems(final String... includeFields);
 
