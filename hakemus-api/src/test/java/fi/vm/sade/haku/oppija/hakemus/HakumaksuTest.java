@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
+import static fi.vm.sade.haku.oppija.hakemus.Pohjakoulutus.MUUALLA_KUIN_SUOMESSA_SUORITETTU_KORKEAKOULUTUTKINTO_YLEMPI_YLIOPISTOTUTKINTO_MAISTERI_ARUBA;
 import static fi.vm.sade.haku.oppija.hakemus.TestApplicationData.*;
 import static org.junit.Assert.assertTrue;
 
@@ -57,12 +58,36 @@ public class HakumaksuTest {
         Map<ApplicationOptionOid, List<Eligibility>> paymentRequirements = service.paymentRequirements(getApplication(
                 ImmutableSet.of(APPLICATION_OPTION_WITH_MULTIPLE_BASE_EDUCATION_REQUIREMENTS),
                 ImmutableSet.of(
-                        Pohjakoulutus.MUUALLA_KUIN_SUOMESSA_SUORITETTU_KORKEAKOULUTUTKINTO_YLEMPI_YLIOPISTOTUTKINTO_MAISTERI_ARUBA, // Requires payment
+                        MUUALLA_KUIN_SUOMESSA_SUORITETTU_KORKEAKOULUTUTKINTO_YLEMPI_YLIOPISTOTUTKINTO_MAISTERI_ARUBA, // Requires payment
                         Pohjakoulutus.SUOMESSA_SUORITETTU_KORKEAKOULUTUTKINTO_YLEMPI_YLIOPISTOTUTKINTO_MAISTERI // Does exempt
                 )));
 
         assertTrue(
                 "Exempting base education did not remove need for payment, result: " + paymentRequirements,
                 paymentRequirements.equals(ImmutableMap.of(ApplicationOptionOid.of(APPLICATION_OPTION_WITH_MULTIPLE_BASE_EDUCATION_REQUIREMENTS), ImmutableList.of())));
+    }
+
+    @Test
+    public void harkinnanvarainenAloneDoesntTriggerPayment() throws ExecutionException {
+        Map<ApplicationOptionOid, List<Eligibility>> paymentRequirements = service.paymentRequirements(getApplication(
+                Hakukelpoisuusvaatimus.HARKINNANVARAISUUS_TAI_ERIVAPAUS,
+                MUUALLA_KUIN_SUOMESSA_SUORITETTU_KORKEAKOULUTUTKINTO_YLEMPI_YLIOPISTOTUTKINTO_MAISTERI_ARUBA));
+
+        assertTrue(
+                "Harkinnanvaraisuus affected expected outcome: " + paymentRequirements,
+                paymentRequirements.equals(ImmutableMap.of(ApplicationOptionOid.of(Hakukelpoisuusvaatimus.HARKINNANVARAISUUS_TAI_ERIVAPAUS.toString()), ImmutableList.of())));
+    }
+
+    @Test
+    public void harkinnanvarainenDoesntExemptFromPayment() throws ExecutionException {
+        Map<ApplicationOptionOid, List<Eligibility>> paymentRequirements = service.paymentRequirements(getApplication(
+                ImmutableSet.of(APPLICATION_OPTION_WITH_IGNORE_AND_PAYMENT_EDUCATION_REQUIREMENTS),
+                ImmutableSet.of(MUUALLA_KUIN_SUOMESSA_SUORITETTU_KORKEAKOULUTUTKINTO_YLEMPI_YLIOPISTOTUTKINTO_MAISTERI_ARUBA)));
+
+        assertTrue(
+                "Harkinnanvaraisuus affected expected outcome: " + paymentRequirements,
+                paymentRequirements.equals(ImmutableMap.of(
+                        ApplicationOptionOid.of(APPLICATION_OPTION_WITH_IGNORE_AND_PAYMENT_EDUCATION_REQUIREMENTS),
+                        ImmutableList.of(new Eligibility("maisteri", Types.AsciiCountryCode.of("ABW"))))));
     }
 }

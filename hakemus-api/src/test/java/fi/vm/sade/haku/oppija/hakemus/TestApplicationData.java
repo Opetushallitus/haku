@@ -183,7 +183,15 @@ public class TestApplicationData {
         };
     }
 
+    private static final Function<Hakukelpoisuusvaatimus, String> vaatimusToArvo = new Function<Hakukelpoisuusvaatimus, String>() {
+        @Override
+        public String apply(Hakukelpoisuusvaatimus input) {
+            return "pohjakoulutusvaatimuskorkeakoulut_" + input.getArvo();
+        }
+    };
+
     public static final String APPLICATION_OPTION_WITH_MULTIPLE_BASE_EDUCATION_REQUIREMENTS = "multiple_pohjakoulutusvaatimuskorkeakoulut";
+    public static final String APPLICATION_OPTION_WITH_IGNORE_AND_PAYMENT_EDUCATION_REQUIREMENTS = "ignore_and_payment_pohjakoulutusvaatimuskorkeakoulut";
 
     public static Map<String, Object> testMappings() {
         final ImmutableMap.Builder<String, Object> builder = new ImmutableMap.Builder<>();
@@ -199,13 +207,16 @@ public class TestApplicationData {
                 ImmutableList.of(
                         Hakukelpoisuusvaatimus.ULKOMAINEN_KORKEAKOULUTUTKINTO_MASTER, // Foreign masters
                         Hakukelpoisuusvaatimus.YLEMPI_KORKEAKOULUTUTKINTO), // Finnish masters
-                new Function<Hakukelpoisuusvaatimus, String>() {
-                    @Override
-                    public String apply(Hakukelpoisuusvaatimus input) {
-                        return "pohjakoulutusvaatimuskorkeakoulut_" + input.getArvo() ;
-                    }});
+                vaatimusToArvo);
         builder.put("http://localhost/ao/" + APPLICATION_OPTION_WITH_MULTIPLE_BASE_EDUCATION_REQUIREMENTS, future(r));
 
+        r = new HakumaksuUtil.BaseEducationRequirements();
+        r.requiredBaseEducations = Lists.transform(
+                ImmutableList.of(
+                        Hakukelpoisuusvaatimus.ULKOMAINEN_KORKEAKOULUTUTKINTO_MASTER,
+                        Hakukelpoisuusvaatimus.HARKINNANVARAISUUS_TAI_ERIVAPAUS),
+                vaatimusToArvo);
+        builder.put("http://localhost/ao/" + APPLICATION_OPTION_WITH_IGNORE_AND_PAYMENT_EDUCATION_REQUIREMENTS, future(r));
 
         HakumaksuUtil.KoodistoMaakoodi finKoodit = new HakumaksuUtil.KoodistoMaakoodi();
         HakumaksuUtil.CodeElement fin = new HakumaksuUtil.CodeElement();
