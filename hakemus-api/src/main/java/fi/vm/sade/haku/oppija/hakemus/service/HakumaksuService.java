@@ -75,6 +75,14 @@ public class HakumaksuService {
             result = 31 * result + (suoritusmaa != null ? suoritusmaa.hashCode() : 0);
             return result;
         }
+
+        @Override
+        public String toString() {
+            return "Eligibility{" +
+                    "nimike='" + nimike + '\'' +
+                    ", suoritusmaa=" + suoritusmaa +
+                    '}';
+        }
     }
 
     private final Predicate<Eligibility> onlyNonExempt = new Predicate<Eligibility>() {
