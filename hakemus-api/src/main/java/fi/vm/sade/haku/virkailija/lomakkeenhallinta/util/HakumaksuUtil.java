@@ -177,19 +177,4 @@ public class HakumaksuUtil {
             }
         });
     }
-
-    public static void main(String[] args) {
-        try {
-            final HakumaksuUtil util = new HakumaksuUtil(new HttpRestClient());
-            AsciiCountryCode countryCode = AsciiCountryCode.of("FIN");
-            System.out.println(countryCode + " is in EAA: " + util.isExemptFromPayment("https://testi.virkailija.opintopolku.fi/koodisto-service", countryCode));
-            for (EducationRequirements e : util.getEducationRequirements("https://testi.opintopolku.fi/ao", Lists.newArrayList("1.2.246.562.20.40822369126"))) {
-                System.out.println(e.applicationOptionId + " " + e.baseEducationRequirements);
-            }
-
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
-        System.exit(0);
-    }
 }
