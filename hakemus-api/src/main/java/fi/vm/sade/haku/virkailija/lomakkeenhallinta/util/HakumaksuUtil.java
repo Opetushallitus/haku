@@ -29,10 +29,6 @@ public class HakumaksuUtil {
         this.restClient = restClient;
     }
 
-    public List<String> getNonEaaApplicationOptions(List<String> applicationOptions) {
-        return applicationOptions;
-    }
-
     static private class HakumaksuQuery {
         final String serviceUrl;
         final AsciiCountryCode countryCode;
