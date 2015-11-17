@@ -22,6 +22,7 @@ import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.haku.oppija.hakemus.domain.util.AttachmentUtil;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
+import fi.vm.sade.haku.oppija.hakemus.service.HakumaksuService;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationState;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
@@ -40,6 +41,7 @@ import fi.vm.sade.haku.oppija.common.koulutusinformaatio.KoulutusinformaatioServ
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.i18n.I18nBundleService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.PDFService;
 import org.apache.http.HttpResponse;
 import org.slf4j.Logger;
@@ -53,6 +55,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.jstl.core.Config;
 import java.util.*;
+import java.util.concurrent.ExecutionException;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
@@ -73,6 +76,7 @@ public class UIServiceImpl implements UIService {
     private final AuthenticationService authenticationService;
     private final I18nBundleService i18nBundleService;
     private final PDFService pdfService;
+    private final HakumaksuService hakumaksuService;
     private final boolean demoMode;
     private final String opintopolkuBaseUrl;
 
@@ -83,9 +87,11 @@ public class UIServiceImpl implements UIService {
                          final KoulutusinformaatioService koulutusinformaatioService,
                          final AuthenticationService authenticationService,
                          final I18nBundleService i18nBundleService,
-                         @Value("${koulutusinformaatio.base.url}") final String koulutusinformaatioBaseUrl, PDFService pdfService,
-                         @Value("${mode.demo:false}") boolean demoMode,
-                         @Value("${opintopolku.baseurl:https://opintopolku.fi}") String opintopolkuBaseUrl) {
+                         @Value("${koulutusinformaatio.base.url}") final String koulutusinformaatioBaseUrl,
+                         final PDFService pdfService,
+                         final HakumaksuService hakumaksuService,
+                         @Value("${mode.demo:false}") final boolean demoMode,
+                         @Value("${opintopolku.baseurl:https://opintopolku.fi}") final String opintopolkuBaseUrl) {
         this.applicationService = applicationService;
         this.applicationSystemService = applicationSystemService;
         this.userSession = userSession;
@@ -94,12 +100,23 @@ public class UIServiceImpl implements UIService {
         this.koulutusinformaatioBaseUrl = koulutusinformaatioBaseUrl;
         this.i18nBundleService = i18nBundleService;
         this.pdfService = pdfService;
+        this.hakumaksuService = hakumaksuService;
         this.demoMode = demoMode;
         this.opintopolkuBaseUrl = opintopolkuBaseUrl;
     }
 
+    private boolean isPaymentRequired(Application application) throws ExecutionException {
+        final Map<Types.ApplicationOptionOid, List<HakumaksuService.Eligibility>> requirements = hakumaksuService.paymentRequirements(application);
+        for (final List<HakumaksuService.Eligibility> eligibilities : requirements.values()) {
+            if (!eligibilities.isEmpty()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     @Override
-    public ModelResponse getCompleteApplication(final String applicationSystemId, final String oid) {
+    public ModelResponse getCompleteApplication(final String applicationSystemId, final String oid) throws ExecutionException {
         final ApplicationSystem activeApplicationSystem = applicationSystemService.getActiveApplicationSystem(applicationSystemId);
         Application application = applicationService.getSubmittedApplication(applicationSystemId, oid);
 
@@ -115,6 +132,8 @@ public class UIServiceImpl implements UIService {
         }});
         response.addObjectToModel("demoMode", this.demoMode);
         response.addObjectToModel("opintopolkuBaseUrl", this.opintopolkuBaseUrl);
+        response.addObjectToModel("paymentRequired", isPaymentRequired(application));
+
         return response;
     }
 

@@ -105,6 +105,12 @@
                         </span>
                     </p>
 
+                    <c:if test="${paymentRequired}">
+                    <p class="needs-payment">
+                        <fmt:message key="lomake.valmis.pitaa.maksaa"/>
+                    </p>
+                    </c:if>
+
                     <c:forEach var="cElement" items="${completeElements}">
                         <c:set var="element" value="${cElement}" scope="request"/>
                         <jsp:include page="/WEB-INF/jsp/valmis/${element.type}.jsp"/>

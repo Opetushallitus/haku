@@ -46,6 +46,7 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 import static fi.vm.sade.haku.oppija.ui.common.MultivaluedMapUtil.toSingleValueMap;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
@@ -266,7 +267,7 @@ public class FormController {
     @Path("/{applicationSystemId}/valmis/{oid}")
     @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
     public Viewable getComplete(@PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId,
-                                @PathParam("oid") final String oid) {
+                                @PathParam("oid") final String oid) throws ExecutionException {
 
         LOGGER.debug("getComplete {}, {}", new Object[]{applicationSystemId});
         ModelResponse response = uiService.getCompleteApplication(applicationSystemId, oid);
@@ -277,7 +278,7 @@ public class FormController {
     @Path("/{applicationSystemId}/tulostus/{oid}")
     @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
     public Viewable getPrint(@PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId,
-                             @PathParam("oid") final String oid) {
+                             @PathParam("oid") final String oid) throws ExecutionException {
         LOGGER.debug("getPrint {}, {}", new Object[]{applicationSystemId, oid});
         ModelResponse modelResponse = uiService.getCompleteApplication(applicationSystemId, oid);
         return new Viewable(PRINT_VIEW, modelResponse.getModel());
