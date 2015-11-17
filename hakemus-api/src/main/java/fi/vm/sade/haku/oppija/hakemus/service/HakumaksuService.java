@@ -3,12 +3,14 @@ package fi.vm.sade.haku.oppija.hakemus.service;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
-import com.google.common.collect.*;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
 import fi.vm.sade.haku.http.RestClient;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.BaseEducations;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.HakumaksuUtil;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -18,16 +20,15 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
-import static fi.vm.sade.haku.oppija.hakemus.domain.util.ApplicationUtil.getPreferenceAoIds;
-import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.HakumaksuUtil.*;
-import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.*;
 import static fi.vm.sade.haku.oppija.hakemus.domain.BaseEducations.*;
+import static fi.vm.sade.haku.oppija.hakemus.domain.util.ApplicationUtil.getPreferenceAoIds;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.ApplicationOptionOid;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.AsciiCountryCode;
 
 @Service
 public class HakumaksuService {
     private final String koodistoServiceUrl;
     private final String koulutusinformaatioUrl;
-    private final RestClient restClient;
     private final HakumaksuUtil util;
 
     @Autowired
@@ -38,7 +39,6 @@ public class HakumaksuService {
     ) {
         this.koodistoServiceUrl = koodistoServiceUrl;
         this.koulutusinformaatioUrl = koulutusinformaatioUrl;
-        this.restClient = restClient;
         util = new HakumaksuUtil(restClient);
     }
 
