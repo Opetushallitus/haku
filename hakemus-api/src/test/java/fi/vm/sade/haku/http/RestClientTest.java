@@ -1,6 +1,7 @@
 package fi.vm.sade.haku.http;
 
 import com.google.api.client.util.Key;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -16,7 +17,7 @@ public class RestClientTest {
         @Key
         public String koodiUri;
     }
-    @Test
+    @Ignore
     public void fooTest() throws ExecutionException, InterruptedException {
         Future<String> f = new FutureTask<>(new Callable<String>() {
             @Override
@@ -29,7 +30,7 @@ public class RestClientTest {
     @Test
     public void getTest() throws ExecutionException, InterruptedException, IOException {
         String url = "https://testi.virkailija.opintopolku.fi/koodisto-service/rest/codeelement/valtioryhmat_2/1";
-        Future<Output> response = RestClient.get(url, Output.class);
+        Future<Output> response = new HttpRestClient().get(url, Output.class);
         Output output = response.get();
         assertNotNull(output);
     }

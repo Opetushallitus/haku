@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 import static org.apache.commons.lang.StringUtils.isEmpty;
 import static org.apache.commons.lang.StringUtils.isNotEmpty;
@@ -63,7 +64,7 @@ public class ApplicationPostProcessorService {
         this.hakumaksuService = hakumaksuService;
     }
 
-    public Application process(Application application) throws IOException{
+    public Application process(Application application) throws IOException, ExecutionException {
         application = addPersonOid(application);
         application = baseEducationService.addSendingSchool(application);
         application = applicationService.updateAuthorizationMeta(application);

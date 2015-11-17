@@ -2,6 +2,7 @@ package fi.vm.sade.haku.oppija.hakemus.it;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import fi.vm.sade.haku.http.HttpRestClient;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.service.HakumaksuService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
@@ -18,7 +19,7 @@ import static org.junit.Assert.assertEquals;
 public class HakumaksuServiceIT {
     private static final HakumaksuService hakumaksuService = new HakumaksuService(
             "https://testi.virkailija.opintopolku.fi/koodisto-service",
-            "https://testi.opintopolku.fi/ao");
+            "https://testi.opintopolku.fi/ao", new HttpRestClient());
 
     @Test
     public void endToEndPaymentRequirementTest() throws ExecutionException {

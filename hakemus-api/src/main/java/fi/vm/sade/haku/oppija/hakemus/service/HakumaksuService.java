@@ -3,13 +3,12 @@ package fi.vm.sade.haku.oppija.hakemus.service;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
+import com.google.common.collect.*;
 import fi.vm.sade.haku.http.RestClient;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
-import fi.vm.sade.haku.oppija.hakemus.domain.BaseEducations.*;
+import fi.vm.sade.haku.oppija.hakemus.domain.BaseEducations;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.HakumaksuUtil;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -21,24 +20,26 @@ import java.util.concurrent.ExecutionException;
 
 import static fi.vm.sade.haku.oppija.hakemus.domain.util.ApplicationUtil.getPreferenceAoIds;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.HakumaksuUtil.*;
-import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.ApplicationOptionOid;
-import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.AsciiCountryCode;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.*;
+import static fi.vm.sade.haku.oppija.hakemus.domain.BaseEducations.*;
 
 @Service
 public class HakumaksuService {
     private final String koodistoServiceUrl;
     private final String koulutusinformaatioUrl;
-
-    @Autowired
-    RestClient restClient;
+    private final RestClient restClient;
+    private final HakumaksuUtil util;
 
     @Autowired
     public HakumaksuService(
             @Value("${cas.service.koodisto-service}") final String koodistoServiceUrl,
-            @Value("${koulutusinformaatio.ao.resource.url}") final String koulutusinformaatioUrl
+            @Value("${koulutusinformaatio.ao.resource.url}") final String koulutusinformaatioUrl,
+            RestClient restClient
     ) {
         this.koodistoServiceUrl = koodistoServiceUrl;
         this.koulutusinformaatioUrl = koulutusinformaatioUrl;
+        this.restClient = restClient;
+        util = new HakumaksuUtil(restClient);
     }
 
     public static class Eligibility {
@@ -80,7 +81,7 @@ public class HakumaksuService {
         @Override
         public boolean apply(Eligibility kelpoisuus) {
             try {
-                return !isExemptFromPayment(koodistoServiceUrl, kelpoisuus.suoritusmaa);
+                return !util.isExemptFromPayment(koodistoServiceUrl, kelpoisuus.suoritusmaa);
             } catch (ExecutionException e) {
                 // TODO: log + let pass as our system is unexpectedly broken?
                 return false;
@@ -112,11 +113,11 @@ public class HakumaksuService {
                 SuomalainenKorkeakoulutus.of,
                 new Predicate<SuomalainenKorkeakoulutus>() {
                     @Override
-                    public boolean apply(SuomalainenKorkeakoulutus input) {
+                    public boolean apply(BaseEducations.SuomalainenKorkeakoulutus input) {
                         return input.taso.equals(value);
                     }
                 },
-                HakumaksuService.<SuomalainenKorkeakoulutus>transformWithNimike());
+                HakumaksuService.<BaseEducations.SuomalainenKorkeakoulutus>transformWithNimike());
     }
 
     private static Function<Application, List<Eligibility>> multipleChoiceKkUlkEquals(final String value) {
@@ -334,7 +335,7 @@ public class HakumaksuService {
     public Map<ApplicationOptionOid, List<Eligibility>> paymentRequirements(Application application) throws ExecutionException {
         ImmutableMap.Builder<ApplicationOptionOid, List<Eligibility>> maksullisetKelpoisuudet = ImmutableMap.builder();
 
-        for (EducationRequirements applicationOptionRequirement : getEducationRequirements(koulutusinformaatioUrl, getPreferenceAoIds(application))) {
+        for (HakumaksuUtil.EducationRequirements applicationOptionRequirement : util.getEducationRequirements(koulutusinformaatioUrl, getPreferenceAoIds(application))) {
             ImmutableList.Builder<Eligibility> kelpoisuudet = ImmutableList.builder();
 
             for (String key : applicationOptionRequirement.baseEducationRequirements) {
