@@ -35,7 +35,7 @@ public enum Pohjakoulutus {
     SUOMESSA_SUORITETTU_YLIOPPILASTUTKINTO_JA_TAI_LUKION_OPPIMAARA_OLEN_SUORITTANUT_YLIOPPILASTUTKINNON_OHELLA_AMMATILLISEN_TUTKINNON_KAKSOISTUTKINTO("Suomessa suoritettu ylioppilastutkinto ja/tai lukion oppimäärä, olen suorittanut ylioppilastutkinnon ohella ammatillisen tutkinnon (kaksoistutkinto)",
             getKoulutustausta(new KoulutustaustaEntry("pohjakoulutus_yo", "true"), new KoulutustaustaEntry("pohjakoulutus_yo_ammatillinen", "true"))),
     KORKEAKOULUN_EDELLYTTAMAT_AVOIMEN_KORKEAKOULUN_OPINNOT("Korkeakoulun edellyttämät avoimen korkeakoulun opinnot",
-            getKoulutustausta(new KoulutustaustaEntry("pohjakoulutus_avoin", "true"))),
+            getKoulutustausta(new KoulutustaustaEntry("pohjakoulutus_avoin", "true"), new KoulutustaustaEntry("pohjakoulutus_avoin_nimike", "avoin"))),
     MUUALLA_KUIN_SUOMESSA_SUORITETTU_KORKEAKOULUTUTKINTO_AMMATTIKORKEAKOULUTUTKINTO_ETA_TAI_SVEITSI("Muualla kuin Suomessa suoritettu korkeakoulututkinto, ammattikorkeakoulututkinto (ETA tai Sveitsi)",
             getKoulutustausta(new KoulutustaustaEntry("pohjakoulutus_kk_ulk", "true"), new KoulutustaustaEntry("pohjakoulutus_kk_ulk_taso", "1"), new KoulutustaustaEntry("pohjakoulutus_kk_ulk_maa", "SWE"), new KoulutustaustaEntry("pohjakoulutus_kk_ulk_nimike", "amk"))),
     MUUALLA_KUIN_SUOMESSA_SUORITETTU_KORKEAKOULUTUTKINTO_ALEMPI_YLIOPISTOTUTKINTO_KANDIDAATTI_ETA_TAI_SVEITSI("Muualla kuin Suomessa suoritettu korkeakoulututkinto, alempi yliopistotutkinto (kandidaatti) (ETA tai Sveitsi",
@@ -47,11 +47,11 @@ public enum Pohjakoulutus {
     MUUALLA_KUIN_SUOMESSA_SUORITETTU_KORKEAKOULUTUTKINTO_LISENSIAATTI_TOHTORI_ETA_TAI_SVEITSI("Muualla kuin Suomessa suoritettu korkeakoulututkinto, lisensiaatti/tohtori (ETA tai Sveitsi)",
             getKoulutustausta(new KoulutustaustaEntry("pohjakoulutus_kk_ulk", "true"), new KoulutustaustaEntry("pohjakoulutus_kk_ulk_taso", "5"), new KoulutustaustaEntry("pohjakoulutus_kk_ulk_maa", "SWE"), new KoulutustaustaEntry("pohjakoulutus_kk_ulk_nimike", "tohtori"))),
     MUUALLA_KUIN_SUOMESSA_SUORITETTU_KANSAINVALINEN_YLIOPPILASTUTKINTO_INTERNATIONAL_BACCALAUREATE_IB_TUTKINTO("Muualla kuin Suomessa suoritettu kansainvälinen ylioppilastutkinto, International Baccalaureate (IB) -tutkinto",
-            getKoulutustausta(new KoulutustaustaEntry("pohjakoulutus_yo_ulkomainen", "true"), new KoulutustaustaEntry("pohjakoulutus_yo_ulkomainen_tutkinto", "ib"))),
+            getKoulutustausta(new KoulutustaustaEntry("pohjakoulutus_yo_ulkomainen", "true"), new KoulutustaustaEntry("pohjakoulutus_yo_ulkomainen_tutkinto", "ib"), new KoulutustaustaEntry("pohjakoulutus_yo_ulkomainen_maa", "SWE"))),
     MUUALLA_KUIN_SUOMESSA_SUORITETTU_KANSAINVALINEN_YLIOPPILASTUTKINTO_EUROPEAN_BACCALAUREATE_EB_TUTKINTO("Muualla kuin Suomessa suoritettu kansainvälinen ylioppilastutkinto, European Baccalaureate (EB) -tutkinto",
-            getKoulutustausta(new KoulutustaustaEntry("pohjakoulutus_yo_ulkomainen", "true"), new KoulutustaustaEntry("pohjakoulutus_yo_ulkomainen_tutkinto", "eb"))),
+            getKoulutustausta(new KoulutustaustaEntry("pohjakoulutus_yo_ulkomainen", "true"), new KoulutustaustaEntry("pohjakoulutus_yo_ulkomainen_tutkinto", "eb"), new KoulutustaustaEntry("pohjakoulutus_yo_ulkomainen_maa", "SWE"))),
     MUUALLA_KUIN_SUOMESSA_SUORITETTU_KANSAINVALINEN_YLIOPPILASTUTKINTO_REIFEPRUFUNG_RB_TUTKINTO("Muualla kuin Suomessa suoritettu kansainvälinen ylioppilastutkinto, Reifeprüfung (RB) -tutkinto",
-            getKoulutustausta(new KoulutustaustaEntry("pohjakoulutus_yo_ulkomainen", "true"), new KoulutustaustaEntry("pohjakoulutus_yo_ulkomainen_tutkinto", "rp"))),
+            getKoulutustausta(new KoulutustaustaEntry("pohjakoulutus_yo_ulkomainen", "true"), new KoulutustaustaEntry("pohjakoulutus_yo_ulkomainen_tutkinto", "rp"), new KoulutustaustaEntry("pohjakoulutus_yo_ulkomainen_maa", "SWE"))),
     MUUALLA_KUIN_SUOMESSA_SUORITETTU_MUU_TUTKINTO_JOKA_ASIANOMAISESSA_MAASSA_ANTAA_HAKUKELPOISUUDEN_KORKEAKOULUUN_ETA_TAI_SVEITSI("Muualla kuin Suomessa suoritettu muu tutkinto, joka asianomaisessa maassa antaa hakukelpoisuuden korkeakouluun (ETA tai Sveitsi)",
             getKoulutustausta(new KoulutustaustaEntry("pohjakoulutus_ulk", "true"), new KoulutustaustaEntry("pohjakoulutus_ulk_suoritusmaa", "SWE"), new KoulutustaustaEntry("pohjakoulutus_ulk_nimike", "muu")));
 

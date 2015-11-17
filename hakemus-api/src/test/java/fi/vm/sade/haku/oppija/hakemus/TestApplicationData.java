@@ -154,18 +154,22 @@ public class TestApplicationData {
             builder.put("http://localhost/ao/" + hakukelpoisuusvaatimus.name(), future(r));
         }
 
-        HakumaksuUtil.KoodistoMaakoodi koodit = new HakumaksuUtil.KoodistoMaakoodi();
-        HakumaksuUtil.CodeElement koodi = new HakumaksuUtil.CodeElement();
-        koodi.codeElementUri = "maatjavaltiot2_246";
-        koodi.codeElementValue = "246";
-        koodit.levelsWithCodeElements = ImmutableList.of(koodi);
-        builder.put("http://localhost/koodisto-service/rest/codeelement/maatjavaltiot1_fin/1", future(koodit));
+        HakumaksuUtil.KoodistoMaakoodi finKoodit = new HakumaksuUtil.KoodistoMaakoodi();
+        HakumaksuUtil.CodeElement fin = new HakumaksuUtil.CodeElement();
+        fin.codeElementUri = "maatjavaltiot2_246";
+        fin.codeElementValue = "246";
+        finKoodit.levelsWithCodeElements = ImmutableList.of(fin);
+        builder.put("http://localhost/koodisto-service/rest/codeelement/maatjavaltiot1_fin/1", future(finKoodit));
+
+        HakumaksuUtil.KoodistoMaakoodi sweKoodit = new HakumaksuUtil.KoodistoMaakoodi();
+        HakumaksuUtil.CodeElement swe = new HakumaksuUtil.CodeElement();
+        swe.codeElementUri = "maatjavaltiot2_752";
+        swe.codeElementValue = "752";
+        sweKoodit.levelsWithCodeElements = ImmutableList.of(swe);
+        builder.put("http://localhost/koodisto-service/rest/codeelement/maatjavaltiot1_swe/1", future(sweKoodit));
 
         HakumaksuUtil.KoodistoEAA eea = new HakumaksuUtil.KoodistoEAA();
-        HakumaksuUtil.CodeElement eaaFin = new HakumaksuUtil.CodeElement();
-        eaaFin.codeElementUri = "maatjavaltiot2_246";
-        eaaFin.codeElementValue = "246";
-        eea.withinCodeElements = ImmutableList.of(eaaFin);
+        eea.withinCodeElements = ImmutableList.of(fin, swe);
         builder.put("http://localhost/koodisto-service/rest/codeelement/valtioryhmat_2/1", future(eea));
 
         return builder.build();
