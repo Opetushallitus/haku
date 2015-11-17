@@ -29,8 +29,27 @@ public class HakumaksuTest {
                             service.paymentRequirements(getApplication(entry.getKey(), pohjakoulutus));
 
                     assertTrue(
-                            "paymentRequirements were not empty for " + entry.getKey() + ", " + pohjakoulutus.name() + ": " + requirements.toString(),
+                            "paymentRequirements were not empty for " + entry.getKey() + ", " + pohjakoulutus.name() + ": " + requirements.entrySet().iterator().next().getValue().toString(),
                             !requirements.isEmpty() && requirements.entrySet().iterator().next().getValue().isEmpty()
+                    );
+                } catch (ExecutionException e) {
+                    fail(e.getMessage());
+                }
+            }
+        }
+    }
+
+    @Test
+    public void shouldNotBeExempt() {
+        for (Map.Entry<Hakukelpoisuusvaatimus, List<Pohjakoulutus>> entry : nonExempting.entrySet()) {
+            for (Pohjakoulutus pohjakoulutus : entry.getValue()) {
+                try {
+                    final Map<Types.ApplicationOptionOid, List<HakumaksuService.Eligibility>> requirements =
+                            service.paymentRequirements(getApplication(entry.getKey(), pohjakoulutus));
+
+                    assertTrue(
+                            "paymentRequirements were empty for " + entry.getKey() + ", " + pohjakoulutus.name(),
+                            !requirements.isEmpty() && !requirements.entrySet().iterator().next().getValue().isEmpty()
                     );
                 } catch (ExecutionException e) {
                     fail(e.getMessage());
