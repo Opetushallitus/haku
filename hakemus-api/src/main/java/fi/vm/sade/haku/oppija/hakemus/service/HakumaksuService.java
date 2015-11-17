@@ -341,26 +341,33 @@ public class HakumaksuService {
      *       - Jos mikään koulutus ei ETA/Sveitsi -> MAKSU (ei-ETA/Sveitsi-alueen pohjakoulutusten seurauksena)
      */
     public Map<ApplicationOptionOid, List<Eligibility>> paymentRequirements(Application application) throws ExecutionException {
-        ImmutableMap.Builder<ApplicationOptionOid, List<Eligibility>> maksullisetKelpoisuudet = ImmutableMap.builder();
+        ImmutableMap.Builder<ApplicationOptionOid, List<Eligibility>> applicationPaymentEligibilities = ImmutableMap.builder();
 
         for (HakumaksuUtil.EducationRequirements applicationOptionRequirement : util.getEducationRequirements(koulutusinformaatioUrl, getPreferenceAoIds(application))) {
-            ImmutableList.Builder<Eligibility> kelpoisuudet = ImmutableList.builder();
+            ImmutableList.Builder<Eligibility> aoPaymentEligibilityBuilder = ImmutableList.builder();
+            boolean exemptingAoFound = false;
 
-            for (String key : applicationOptionRequirement.baseEducationRequirements) {
-                List<Eligibility> allKelpoisuudet = kkBaseEducationRequirements.get(key).apply(application);
-                List<Eligibility> nonExempt = Lists.newLinkedList(Iterables.filter(allKelpoisuudet, onlyNonExempt));
+            for (String baseEducationRequirement : applicationOptionRequirement.baseEducationRequirements) {
+                List<Eligibility> allEligibilities = kkBaseEducationRequirements.get(baseEducationRequirement).apply(application);
+                List<Eligibility> paymentEligibilities = Lists.newLinkedList(Iterables.filter(allEligibilities, onlyNonExempt));
 
-                // Ei löytynyt yhtään maksusta vapauttavaa kelpoisuutta,
-                // otetaan talteen logitusta / UI:ta varten
-                if (allKelpoisuudet.size() == nonExempt.size()) {
-                    kelpoisuudet.addAll(nonExempt);
+                if (allEligibilities.size() == paymentEligibilities.size()) {
+                    // Ei löytynyt yhtään maksusta vapauttavaa kelpoisuutta,
+                    // otetaan talteen logitusta / UI:ta varten
+                    aoPaymentEligibilityBuilder.addAll(paymentEligibilities);
+                } else {
+                    // Löytyi yksikin maksusta vapauttava kohde,
+                    // vapautetaan koko kohde maksuista
+                    exemptingAoFound = true;
+                    break;
                 }
             }
 
-            maksullisetKelpoisuudet.put(applicationOptionRequirement.applicationOptionId, kelpoisuudet.build());
+            List<Eligibility> aoPaymentEligibilities = exemptingAoFound ? ImmutableList.<Eligibility>of() : aoPaymentEligibilityBuilder.build();
+            applicationPaymentEligibilities.put(applicationOptionRequirement.applicationOptionId, aoPaymentEligibilities);
         }
 
-        return maksullisetKelpoisuudet.build();
+        return applicationPaymentEligibilities.build();
     }
 
     public Application processPayment(Application application) throws ExecutionException {

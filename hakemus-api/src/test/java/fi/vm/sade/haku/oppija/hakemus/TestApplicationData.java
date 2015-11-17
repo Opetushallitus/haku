@@ -1,12 +1,15 @@
 package fi.vm.sade.haku.oppija.hakemus;
 
+import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Lists;
 import com.google.common.util.concurrent.ListenableFuture;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.lomake.domain.User;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.HakumaksuUtil;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
@@ -122,6 +125,30 @@ public class TestApplicationData {
         return new Application(asId, user, answers.build(), additionalInfo.build());
     }
 
+    public static Application getApplication(Iterable<String> hakutoiveIds,
+                                             Iterable<Pohjakoulutus> pohjakoulutukset) {
+        final String asId = "foo";
+        final User user = new User("bar");
+        final ImmutableMap.Builder<String, Map<String, String>> answers = ImmutableMap.builder();
+
+        ImmutableMap.Builder<String, String> koulutustaustat = ImmutableMap.builder();
+        for (Pohjakoulutus p : pohjakoulutukset) {
+            koulutustaustat.putAll(p.getKoulutustausta());
+        }
+
+        ImmutableMap.Builder<String, String> hakutoiveet = ImmutableMap.builder();
+        Iterator<String> iterator = hakutoiveIds.iterator();
+        for (int i = 1; iterator.hasNext(); i++) {
+            hakutoiveet.put(String.format("preference%d-Koulutus-id", i), iterator.next());
+        }
+
+        answers.putAll(ImmutableMap.of(
+                "koulutustausta", koulutustaustat.build(),
+                "hakutoiveet", hakutoiveet.build()));
+
+        return new Application(asId, user, answers.build(), ImmutableMap.<String, String>of());
+    }
+
     private static <T> ListenableFuture<T> future(final T t) {
         return new ListenableFuture<T>() {
             @Override
@@ -156,6 +183,8 @@ public class TestApplicationData {
         };
     }
 
+    public static final String APPLICATION_OPTION_WITH_MULTIPLE_BASE_EDUCATION_REQUIREMENTS = "multiple_pohjakoulutusvaatimuskorkeakoulut";
+
     public static Map<String, Object> testMappings() {
         final ImmutableMap.Builder<String, Object> builder = new ImmutableMap.Builder<>();
 
@@ -164,6 +193,19 @@ public class TestApplicationData {
             r.requiredBaseEducations = ImmutableList.of("pohjakoulutusvaatimuskorkeakoulut_" + hakukelpoisuusvaatimus.getArvo());
             builder.put("http://localhost/ao/" + hakukelpoisuusvaatimus.name(), future(r));
         }
+
+        HakumaksuUtil.BaseEducationRequirements r = new HakumaksuUtil.BaseEducationRequirements();
+        r.requiredBaseEducations = Lists.transform(
+                ImmutableList.of(
+                        Hakukelpoisuusvaatimus.ULKOMAINEN_KORKEAKOULUTUTKINTO_MASTER, // Foreign masters
+                        Hakukelpoisuusvaatimus.YLEMPI_KORKEAKOULUTUTKINTO), // Finnish masters
+                new Function<Hakukelpoisuusvaatimus, String>() {
+                    @Override
+                    public String apply(Hakukelpoisuusvaatimus input) {
+                        return "pohjakoulutusvaatimuskorkeakoulut_" + input.getArvo() ;
+                    }});
+        builder.put("http://localhost/ao/" + APPLICATION_OPTION_WITH_MULTIPLE_BASE_EDUCATION_REQUIREMENTS, future(r));
+
 
         HakumaksuUtil.KoodistoMaakoodi finKoodit = new HakumaksuUtil.KoodistoMaakoodi();
         HakumaksuUtil.CodeElement fin = new HakumaksuUtil.CodeElement();
