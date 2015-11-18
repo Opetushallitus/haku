@@ -105,16 +105,6 @@ public class UIServiceImpl implements UIService {
         this.opintopolkuBaseUrl = opintopolkuBaseUrl;
     }
 
-    private boolean isPaymentRequired(Application application) throws ExecutionException {
-        final Map<Types.ApplicationOptionOid, List<HakumaksuService.Eligibility>> requirements = hakumaksuService.paymentRequirements(application);
-        for (final List<HakumaksuService.Eligibility> eligibilities : requirements.values()) {
-            if (!eligibilities.isEmpty()) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     @Override
     public ModelResponse getCompleteApplication(final String applicationSystemId, final String oid) throws ExecutionException {
         final ApplicationSystem activeApplicationSystem = applicationSystemService.getActiveApplicationSystem(applicationSystemId);
@@ -132,7 +122,7 @@ public class UIServiceImpl implements UIService {
         }});
         response.addObjectToModel("demoMode", this.demoMode);
         response.addObjectToModel("opintopolkuBaseUrl", this.opintopolkuBaseUrl);
-        response.addObjectToModel("paymentRequired", isPaymentRequired(application));
+        response.addObjectToModel("paymentRequired", hakumaksuService.isPaymentRequired(application));
 
         return response;
     }
