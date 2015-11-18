@@ -3380,3 +3380,10 @@ table {
   opacity: 0.5;
   text-decoration: none;
 }
+
+/* Hakumaksu-notifikaatiot */
+.needs-payment {
+  color: red;
+  font-size: 1.385em;
+  font-weight: bold;
+}
