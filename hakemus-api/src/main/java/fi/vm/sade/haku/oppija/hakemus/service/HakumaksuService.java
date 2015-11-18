@@ -12,6 +12,8 @@ import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.BaseEducations;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.HakumaksuUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -28,6 +30,8 @@ import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.AsciiCount
 
 @Service
 public class HakumaksuService {
+    public static final Logger LOGGER = LoggerFactory.getLogger(HakumaksuService.class);
+
     private final String koodistoServiceUrl;
     private final String koulutusinformaatioUrl;
     private final HakumaksuUtil util;
@@ -382,20 +386,20 @@ public class HakumaksuService {
     }
 
     public Application processPayment(Application application) throws ExecutionException {
-        if (applicationSystemRequiresPaymentCheck(application)) {
+        if (!applicationSystemRequiresPaymentCheck(application)) {
             return application;
         }
 
         Map<ApplicationOptionOid, List<Eligibility>> paymentRequirements = paymentRequirements(application);
         // TODO: Audit/log reason for payment requirement, e.g. which hakukohde and what base education reason
         boolean isExemptFromPayment = paymentRequirements.size() == 0;
-        System.err.println("Application " + application.getOid() + " is exempt from payment: " + isExemptFromPayment);
+        LOGGER.info("Application " + application.getOid() + " payment requirements: " + (isExemptFromPayment ? "none" : paymentRequirements));
         return isExemptFromPayment ? application : markPaymentRequirements(application);
     }
 
     private static boolean applicationSystemRequiresPaymentCheck(Application application) {
         // TODO: Korkeakouluhaku + syksy 2016 ->
-        return application.getApplicationSystemId() != null;
+        return application != null;
     }
 
     private static Application markPaymentRequirements(Application application) {

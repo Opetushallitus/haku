@@ -14,6 +14,7 @@ import org.junit.Test;
 import java.util.concurrent.ExecutionException;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 @Ignore
 public class HakumaksuServiceIT {
@@ -21,17 +22,18 @@ public class HakumaksuServiceIT {
             "https://testi.virkailija.opintopolku.fi/koodisto-service",
             "https://testi.opintopolku.fi/ao", new HttpRestClient());
 
+    private static final String koulutuksenNimike = "Ulkomaalainen korkeakoulutus";
+    private static final String koulutuksenMaa = "AFG";
+    private static final ImmutableMap<String, String> ulkomainenPohjakoulutus = ImmutableMap.of(
+            "pohjakoulutus_ulk", "true",
+            "pohjakoulutus_ulk_nimike", koulutuksenNimike,
+            "pohjakoulutus_ulk_suoritusmaa", koulutuksenMaa);
+    private static final ApplicationOptionOid hakutoiveenOid = ApplicationOptionOid.of("1.2.246.562.20.40822369126");
+
     @Test
     public void endToEndPaymentRequirementTest() throws ExecutionException {
-        final String koulutuksenNimike = "Ulkomaalainen korkeakoulutus";
-        final String koulutuksenMaa = "AFG";
-        final ApplicationOptionOid hakutoiveenOid = ApplicationOptionOid.of("1.2.246.562.20.40822369126");
-
         Application application = new Application() {{
-            addVaiheenVastaukset(OppijaConstants.PHASE_EDUCATION, ImmutableMap.of(
-                    "pohjakoulutus_ulk", "true",
-                    "pohjakoulutus_ulk_nimike", koulutuksenNimike,
-                    "pohjakoulutus_ulk_suoritusmaa", koulutuksenMaa));
+            addVaiheenVastaukset(OppijaConstants.PHASE_EDUCATION, ulkomainenPohjakoulutus);
             addVaiheenVastaukset(OppijaConstants.PHASE_APPLICATION_OPTIONS, ImmutableMap.of(
                     String.format(OppijaConstants.PREFERENCE_ID, 1), hakutoiveenOid.toString()));
         }};
@@ -39,5 +41,18 @@ public class HakumaksuServiceIT {
         assertEquals(
                 hakumaksuService.paymentRequirements(application).get(hakutoiveenOid),
                 ImmutableList.of(new HakumaksuService.Eligibility(koulutuksenNimike, Types.AsciiCountryCode.of(koulutuksenMaa))));
+    }
+
+    @Test
+    public void processingTest() throws ExecutionException {
+        Application application = new Application() {{
+            setOid("1.2.3.4.5.6.7.8.9");
+            addVaiheenVastaukset(OppijaConstants.PHASE_EDUCATION, ulkomainenPohjakoulutus);
+            addVaiheenVastaukset(OppijaConstants.PHASE_APPLICATION_OPTIONS, ImmutableMap.of(
+                    String.format(OppijaConstants.PREFERENCE_ID, 1), hakutoiveenOid.toString()));
+        }};
+
+        // Payment requirement must be visible in logs
+        assertTrue(hakumaksuService.processPayment(application) == application);
     }
 }
