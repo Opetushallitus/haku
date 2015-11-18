@@ -117,6 +117,7 @@ public class ApplicationPostProcessorService {
                 .setSocialSecurityNumber(allAnswers.get(OppijaConstants.ELEMENT_ID_SOCIAL_SECURITY_NUMBER))
                 .setNoSocialSecurityNumber(!Boolean.valueOf(allAnswers.get(OppijaConstants.ELEMENT_ID_HAS_SOCIAL_SECURITY_NUMBER)))
                 .setDateOfBirth(allAnswers.get(OppijaConstants.ELEMENT_ID_DATE_OF_BIRTH))
+                .setEmail(allAnswers.get(OppijaConstants.ELEMENT_ID_EMAIL))
                 .setPersonOid(application.getPersonOid())
                 .setSecurityOrder(false);
 
