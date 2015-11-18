@@ -234,7 +234,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     private Person fetchPersonByStudentToken(String token) {
         String responseString = null;
-        String url = "/resources/henkilo/identification?idp=oppijaToken&" + token;
+        String url = "/resources/henkilo/identification?idp=oppijaToken&id=" + token;
         try {
             responseString = cachingRestClient.getAsString(url);
         } catch (CachingRestClient.HttpException hte) {
