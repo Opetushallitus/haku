@@ -105,7 +105,7 @@
                         </span>
                     </p>
 
-                    <c:if test="${paymentRequired}">
+                    <c:if test="${it.paymentRequired}">
                     <p class="needs-payment">
                         <fmt:message key="lomake.valmis.pitaa.maksaa"/>
                     </p>
