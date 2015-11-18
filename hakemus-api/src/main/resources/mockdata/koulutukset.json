@@ -613,6 +613,15 @@
     "requiredBaseEducations": [
       "0", "1"
     ],
+    "pohjakoulutusLiitteet": [
+      "pohjakoulutuskklomake_yokvsuomi",
+      "pohjakoulutuskklomake_pohjakoulutusamt",
+      "pohjakoulutuskklomake_muuulk",
+      "pohjakoulutuskklomake_pohjakoulutusyoulkomainen",
+      "pohjakoulutuskklomake_pohjakoulutusmuu",
+      "pohjakoulutuskklomake_yosuomi",
+      "pohjakoulutuskklomake_pohjakoulutusavoin"
+    ],
     "organizationGroups": [
       {
         "oid": "1.2.246.562.28.90373737623",
