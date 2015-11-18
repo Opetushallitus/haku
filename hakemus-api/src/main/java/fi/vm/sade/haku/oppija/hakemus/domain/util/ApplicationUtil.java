@@ -4,6 +4,7 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import fi.vm.sade.haku.oppija.hakemus.domain.*;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.MergedAnswers;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -22,9 +23,12 @@ public final class ApplicationUtil {
     }
 
     public static List<String> getPreferenceAoIds(final Application application){
-        Map<String, String> answers = application.getVastauksetMerged();
-        List<String> preferenceAoIds = new ArrayList<String>();
-        for (String key: answers.keySet()){
+        return getPreferenceAoIds(MergedAnswers.of(application.getVastauksetMerged()));
+    }
+
+    public static List<String> getPreferenceAoIds(MergedAnswers answers) {
+        List<String> preferenceAoIds = new ArrayList<>();
+        for (String key: answers.getValue().keySet()){
             if (null != key && key.startsWith(PREFERENCE_PREFIX) && key.endsWith(OPTION_ID_POSTFIX) && isNotEmpty(answers.get(key))){
                preferenceAoIds.add(answers.get(key));
             }

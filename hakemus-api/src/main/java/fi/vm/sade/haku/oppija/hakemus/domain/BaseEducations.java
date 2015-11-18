@@ -2,11 +2,10 @@ package fi.vm.sade.haku.oppija.hakemus.domain;
 
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableSet;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.AsciiCountryCode;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.MergedAnswers;
 
 import java.util.Arrays;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -53,14 +52,13 @@ public class BaseEducations {
             this.nimike = nimike;
         }
 
-        public static final Function<Application, Set<SuomalainenAvoinKoulutus>> of = new Function<Application, Set<SuomalainenAvoinKoulutus>>() {
+        public static final Function<MergedAnswers, Set<SuomalainenAvoinKoulutus>> of = new Function<MergedAnswers, Set<SuomalainenAvoinKoulutus>>() {
             @Override
-            public Set<SuomalainenAvoinKoulutus> apply(Application application) {
-                Map<String, String> baseEducation = application.getPhaseAnswers(OppijaConstants.PHASE_EDUCATION);
-                String valinta = baseEducation.get(fieldPrefix);
+            public Set<SuomalainenAvoinKoulutus> apply(MergedAnswers answers) {
+                String valinta = answers.get(fieldPrefix);
 
                 if ("true".equals(valinta)) {
-                    String nimike = baseEducation.get(fieldPrefix + "_kokonaisuus");
+                    String nimike = answers.get(fieldPrefix + "_kokonaisuus");
                     variablesNotNull(nimike);
                     return ImmutableSet.of(new SuomalainenAvoinKoulutus(nimike));
                 } else {
@@ -85,14 +83,13 @@ public class BaseEducations {
             this.nimike = nimike;
         }
 
-        public static final Function<Application, Set<SuomalainenAmKoulutus>> of = new Function<Application, Set<SuomalainenAmKoulutus>>() {
+        public static final Function<MergedAnswers, Set<SuomalainenAmKoulutus>> of = new Function<MergedAnswers, Set<SuomalainenAmKoulutus>>() {
             @Override
-            public Set<SuomalainenAmKoulutus> apply(Application application) {
-                Map<String, String> baseEducation = application.getPhaseAnswers(OppijaConstants.PHASE_EDUCATION);
-                String valinta = baseEducation.get(fieldPrefix);
+            public Set<SuomalainenAmKoulutus> apply(MergedAnswers answers) {
+                String valinta = answers.get(fieldPrefix);
 
                 if ("true".equals(valinta)) {
-                    String nimike = baseEducation.get(fieldPrefix + "_nimike");
+                    String nimike = answers.get(fieldPrefix + "_nimike");
                     variablesNotNull(nimike);
                     return ImmutableSet.of(new SuomalainenAmKoulutus(nimike));
                 } else {
@@ -117,14 +114,13 @@ public class BaseEducations {
             this.nimike = nimike;
         }
 
-        public static final Function<Application, Set<SuomalainenAmtKoulutus>> of = new Function<Application, Set<SuomalainenAmtKoulutus>>() {
+        public static final Function<MergedAnswers, Set<SuomalainenAmtKoulutus>> of = new Function<MergedAnswers, Set<SuomalainenAmtKoulutus>>() {
             @Override
-            public Set<SuomalainenAmtKoulutus> apply(Application application) {
-                Map<String, String> baseEducation = application.getPhaseAnswers(OppijaConstants.PHASE_EDUCATION);
-                String valinta = baseEducation.get(fieldPrefix);
+            public Set<SuomalainenAmtKoulutus> apply(MergedAnswers answers) {
+                String valinta = answers.get(fieldPrefix);
 
                 if ("true".equals(valinta)) {
-                    String nimike = baseEducation.get(fieldPrefix + "_nimike");
+                    String nimike = answers.get(fieldPrefix + "_nimike");
                     variablesNotNull(nimike);
                     return ImmutableSet.of(new SuomalainenAmtKoulutus(nimike));
                 } else {
@@ -145,15 +141,14 @@ public class BaseEducations {
             this.tutkinto = tutkinto;
         }
 
-        public static final Function<Application, Set<UlkomainenKansainvalinenYo>> of = new Function<Application, Set<UlkomainenKansainvalinenYo>>() {
+        public static final Function<MergedAnswers, Set<UlkomainenKansainvalinenYo>> of = new Function<MergedAnswers, Set<UlkomainenKansainvalinenYo>>() {
             @Override
-            public Set<UlkomainenKansainvalinenYo> apply(Application application) {
-                Map<String, String> baseEducation = application.getPhaseAnswers(OppijaConstants.PHASE_EDUCATION);
-                String valinta = baseEducation.get(fieldPrefix);
+            public Set<UlkomainenKansainvalinenYo> apply(MergedAnswers answers) {
+                String valinta = answers.get(fieldPrefix);
 
                 if ("true".equals(valinta)) {
-                    String tutkinto = baseEducation.get(fieldPrefix + "_tutkinto");
-                    String maa = baseEducation.get(fieldPrefix + "_maa");
+                    String tutkinto = answers.get(fieldPrefix + "_tutkinto");
+                    String maa = answers.get(fieldPrefix + "_maa");
                     variablesNotNull(tutkinto, maa);
                     return ImmutableSet.of(new UlkomainenKansainvalinenYo(AsciiCountryCode.of(maa), tutkinto));
                 } else {
@@ -172,14 +167,13 @@ public class BaseEducations {
             this.tutkinto = tutkinto;
         }
 
-        public static final Function<Application, Set<SuomalainenKansainvalinenYo>> of = new Function<Application, Set<SuomalainenKansainvalinenYo>>() {
+        public static final Function<MergedAnswers, Set<SuomalainenKansainvalinenYo>> of = new Function<MergedAnswers, Set<SuomalainenKansainvalinenYo>>() {
             @Override
-            public Set<SuomalainenKansainvalinenYo> apply(Application application) {
-                Map<String, String> baseEducation = application.getPhaseAnswers(OppijaConstants.PHASE_EDUCATION);
-                String valinta = baseEducation.get(fieldPrefix);
+            public Set<SuomalainenKansainvalinenYo> apply(MergedAnswers answers) {
+                String valinta = answers.get(fieldPrefix);
 
                 if ("true".equals(valinta)) {
-                    String tutkinto = baseEducation.get(fieldPrefix + "_tutkinto");
+                    String tutkinto = answers.get(fieldPrefix + "_tutkinto");
                     variablesNotNull(tutkinto);
                     return ImmutableSet.of(new SuomalainenKansainvalinenYo(tutkinto));
                 } else {
@@ -198,14 +192,13 @@ public class BaseEducations {
             this.tutkinto = tutkinto;
         }
 
-        public static final Function<Application, Set<SuomalainenYo>> of = new Function<Application, Set<SuomalainenYo>>() {
+        public static final Function<MergedAnswers, Set<SuomalainenYo>> of = new Function<MergedAnswers, Set<SuomalainenYo>>() {
             @Override
-            public Set<SuomalainenYo> apply(Application application) {
-                Map<String, String> baseEducation = application.getPhaseAnswers(OppijaConstants.PHASE_EDUCATION);
-                String valinta = baseEducation.get(fieldPrefix);
+            public Set<SuomalainenYo> apply(MergedAnswers answers) {
+                String valinta = answers.get(fieldPrefix);
 
                 if ("true".equals(valinta)) {
-                    String tutkinto = baseEducation.get(fieldPrefix + "_tutkinto");
+                    String tutkinto = answers.get(fieldPrefix + "_tutkinto");
                     variablesNotNull(tutkinto);
                     return ImmutableSet.of(new SuomalainenYo(tutkinto));
                 } else {
@@ -229,14 +222,13 @@ public class BaseEducations {
             this.nimike = nimike;
         }
 
-        public static final Function<Application, Set<SuomalainenYoAmmatillinen>> of = new Function<Application, Set<SuomalainenYoAmmatillinen>>() {
+        public static final Function<MergedAnswers, Set<SuomalainenYoAmmatillinen>> of = new Function<MergedAnswers, Set<SuomalainenYoAmmatillinen>>() {
             @Override
-            public Set<SuomalainenYoAmmatillinen> apply(Application application) {
-                Map<String, String> baseEducation = application.getPhaseAnswers(OppijaConstants.PHASE_EDUCATION);
-                String valinta = baseEducation.get(fieldPrefix);
+            public Set<SuomalainenYoAmmatillinen> apply(MergedAnswers answers) {
+                String valinta = answers.get(fieldPrefix);
 
                 if ("true".equals(valinta)) {
-                    String nimike = baseEducation.get(fieldPrefix + "_nimike");
+                    String nimike = answers.get(fieldPrefix + "_nimike");
                     variablesNotNull(nimike);
                     return ImmutableSet.of(new SuomalainenYoAmmatillinen(nimike));
                 } else {
@@ -262,20 +254,19 @@ public class BaseEducations {
             this.nimike = nimike;
         }
 
-        public static final Function<Application, Set<UlkomaalainenKoulutus>> of = new Function<Application, Set<UlkomaalainenKoulutus>>() {
+        public static final Function<MergedAnswers, Set<UlkomaalainenKoulutus>> of = new Function<MergedAnswers, Set<UlkomaalainenKoulutus>>() {
             @Override
-            public Set<UlkomaalainenKoulutus> apply(Application application) {
+            public Set<UlkomaalainenKoulutus> apply(MergedAnswers answers) {
 
-                Map<String, String> baseEducation = application.getPhaseAnswers(OppijaConstants.PHASE_EDUCATION);
-                String valinta = baseEducation.get(fieldPrefix);
+                String valinta = answers.get(fieldPrefix);
 
                 ImmutableSet.Builder<UlkomaalainenKoulutus> result = ImmutableSet.builder();
 
                 if ("true".equals(valinta)) {
                     for (int i = 1; ; i++) {
                         String index = (i == 1) ? "" : Integer.toString(i);
-                        String nimike = baseEducation.get(fieldPrefix + "_nimike" + index);
-                        String maa = baseEducation.get(fieldPrefix + "_suoritusmaa" + index);
+                        String nimike = answers.get(fieldPrefix + "_nimike" + index);
+                        String maa = answers.get(fieldPrefix + "_suoritusmaa" + index);
 
                         if (variablesNotNull(nimike, maa)) {
                             result.add(new UlkomaalainenKoulutus(AsciiCountryCode.of(maa), nimike));
@@ -308,21 +299,20 @@ public class BaseEducations {
             this.nimike = nimike;
         }
 
-        public static final Function<Application, Set<UlkomaalainenKorkeakoulutus>> of = new Function<Application, Set<UlkomaalainenKorkeakoulutus>>() {
+        public static final Function<MergedAnswers, Set<UlkomaalainenKorkeakoulutus>> of = new Function<MergedAnswers, Set<UlkomaalainenKorkeakoulutus>>() {
             @Override
-            public Set<UlkomaalainenKorkeakoulutus> apply(Application application) {
+            public Set<UlkomaalainenKorkeakoulutus> apply(MergedAnswers answers) {
 
-                Map<String, String> baseEducation = application.getPhaseAnswers(OppijaConstants.PHASE_EDUCATION);
-                String valinta = baseEducation.get(fieldPrefix);
+                String valinta = answers.get(fieldPrefix);
 
                 ImmutableSet.Builder<UlkomaalainenKorkeakoulutus> result = ImmutableSet.builder();
 
                 if ("true".equals(valinta)) {
                     for (int i = 1; ; i++) {
                         String index = (i == 1) ? "" : Integer.toString(i);
-                        String taso = baseEducation.get(fieldPrefix + "_taso" + index);
-                        String nimike = baseEducation.get(fieldPrefix + "_nimike" + index);
-                        String maa = baseEducation.get(fieldPrefix + "_maa" + index);
+                        String taso = answers.get(fieldPrefix + "_taso" + index);
+                        String nimike = answers.get(fieldPrefix + "_nimike" + index);
+                        String maa = answers.get(fieldPrefix + "_maa" + index);
 
                         if (variablesNotNull(taso, nimike, maa)) {
                             result.add(new UlkomaalainenKorkeakoulutus(taso, AsciiCountryCode.of(maa), nimike));
@@ -353,19 +343,18 @@ public class BaseEducations {
             this.nimike = nimike;
         }
 
-        public static final Function<Application, Set<SuomalainenKorkeakoulutus>> of = new Function<Application, Set<SuomalainenKorkeakoulutus>>() {
+        public static final Function<MergedAnswers, Set<SuomalainenKorkeakoulutus>> of = new Function<MergedAnswers, Set<SuomalainenKorkeakoulutus>>() {
             @Override
-            public Set<SuomalainenKorkeakoulutus> apply(Application application) {
-                Map<String, String> baseEducation = application.getPhaseAnswers(OppijaConstants.PHASE_EDUCATION);
-                String valinta = baseEducation.get(fieldPrefix);
+            public Set<SuomalainenKorkeakoulutus> apply(MergedAnswers answers) {
+                String valinta = answers.get(fieldPrefix);
 
                 ImmutableSet.Builder<SuomalainenKorkeakoulutus> result = ImmutableSet.builder();
 
                 if ("true".equals(valinta)) {
                     for (int i = 1; ; i++) {
                         String index = (i == 1) ? "" : Integer.toString(i);
-                        String taso = baseEducation.get(fieldPrefix + "_taso" + index);
-                        String nimike = baseEducation.get(fieldPrefix + "_nimike" + index);
+                        String taso = answers.get(fieldPrefix + "_taso" + index);
+                        String nimike = answers.get(fieldPrefix + "_nimike" + index);
 
                         if (variablesNotNull(taso, nimike)) {
                             result.add(new SuomalainenKorkeakoulutus(taso, nimike));
