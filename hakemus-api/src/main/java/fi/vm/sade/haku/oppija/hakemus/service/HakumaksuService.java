@@ -11,6 +11,7 @@ import fi.vm.sade.haku.http.RestClient;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.BaseEducations;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.HakumaksuUtil;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -368,6 +369,16 @@ public class HakumaksuService {
         }
 
         return applicationPaymentEligibilities.build();
+    }
+
+    public boolean isPaymentRequired(Application application) throws ExecutionException {
+        final Map<Types.ApplicationOptionOid, List<HakumaksuService.Eligibility>> requirements = paymentRequirements(application);
+        for (final List<HakumaksuService.Eligibility> eligibilities : requirements.values()) {
+            if (!eligibilities.isEmpty()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public Application processPayment(Application application) throws ExecutionException {
