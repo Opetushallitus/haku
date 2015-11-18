@@ -3365,7 +3365,7 @@ table {
 }
 
 .demo-close {
-  color: #0;
+  color: #000;
   font-size: 19.5px;
   font-weight: bold;
   position: absolute;
@@ -3375,7 +3375,7 @@ table {
 }
 
 .demo-close:hover, .demo-close:focus {
-  color: #0;
+  color: #000;
   cursor:pointer;
   opacity: 0.5;
   text-decoration: none;
