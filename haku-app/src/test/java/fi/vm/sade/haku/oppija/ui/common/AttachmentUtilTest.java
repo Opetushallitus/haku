@@ -1,118 +1,153 @@
 package fi.vm.sade.haku.oppija.ui.common;
 
+import com.google.common.collect.ImmutableMap;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
-import fi.vm.sade.haku.oppija.hakemus.domain.util.ApplicationUtil;
+import fi.vm.sade.haku.oppija.hakemus.domain.util.AttachmentUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
+import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.*;
+import static com.google.common.collect.Lists.newArrayList;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class AttachmentUtilTest {
 
-    @Test
-    public void higherEdAttachmentEmptyTest() {
-        Application application = new Application();
+    public static Application mergePohjakoulutus(Application application, Application ... applications) {
+        final Map<String, String> answers = new HashMap<>(application.getPhaseAnswers(OppijaConstants.PHASE_EDUCATION));
+        for (final Application b : applications) {
+            answers.putAll(b.getPhaseAnswers(OppijaConstants.PHASE_EDUCATION));
+        }
+        return new Application() {{
+            addVaiheenVastaukset(OppijaConstants.PHASE_EDUCATION, answers);
+        }};
+    }
 
-        Map<String, List<String>> attachmentOids = ApplicationUtil.getHigherEdAttachmentAOIds(application);
-        assertTrue(attachmentOids.isEmpty());
+    public static ApplicationOptionDTO mergeLiitepyynnot(ApplicationOptionDTO ao, ApplicationOptionDTO ... aos) {
+        final List<String> liitepyynnot = new ArrayList<>(ao.getPohjakoulutusLiitteet());
+        for (final ApplicationOptionDTO b : aos) {
+            liitepyynnot.addAll(b.getPohjakoulutusLiitteet());
+        }
+        return new ApplicationOptionDTO() {{
+            setPohjakoulutusLiitteet(liitepyynnot);
+        }};
+    }
+
+    public static final Application hakemusLukio = new Application() {{
+        addVaiheenVastaukset(OppijaConstants.PHASE_EDUCATION, ImmutableMap.of(
+                "pohjakoulutus_yo", "true",
+                "pohjakoulutus_yo_vuosi", "2000",
+                "pohjakoulutus_yo_tutkinto", "lk"));
+    }};
+
+    public static final Application hakemusYoVanha = new Application() {{
+        addVaiheenVastaukset(OppijaConstants.PHASE_EDUCATION, ImmutableMap.of(
+                "pohjakoulutus_yo", "true",
+                "pohjakoulutus_yo_vuosi", "1980",
+                "pohjakoulutus_yo_tutkinto", "fi"));
+    }};
+
+    public static final Application hakemusYoKv = new Application() {{
+        addVaiheenVastaukset(OppijaConstants.PHASE_EDUCATION, ImmutableMap.of("pohjakoulutus_yo_kansainvalinen_suomessa", "true"));
+    }};
+
+    public static final Application hakemusYoKvUlk = new Application() {{
+        addVaiheenVastaukset(OppijaConstants.PHASE_EDUCATION, ImmutableMap.of("pohjakoulutus_yo_ulkomainen", "true"));
+    }};
+
+    public static final Application hakemusKK = new Application() {{
+        addVaiheenVastaukset(OppijaConstants.PHASE_EDUCATION, ImmutableMap.of("pohjakoulutus_kk", "true"));
+    }};
+
+    public static final Application hakemusKKUlk = new Application() {{
+        addVaiheenVastaukset(OppijaConstants.PHASE_EDUCATION, ImmutableMap.of("pohjakoulutus_kk_ulk", "true"));
+    }};
+
+    public static final ApplicationOptionDTO hakukohdeKK = new ApplicationOptionDTO() {{
+        setPohjakoulutusLiitteet(newArrayList("pohjakoulutuskklomake_pohjakoulutuskk"));
+    }};
+
+    public static final ApplicationOptionDTO hakukohdeKKUlk = new ApplicationOptionDTO() {{
+        setPohjakoulutusLiitteet(newArrayList("pohjakoulutuskklomake_pohjakoulutuskkulk"));
+    }};
+
+    public static final ApplicationOptionDTO hakukohdeYo = new ApplicationOptionDTO() {{
+        setPohjakoulutusLiitteet(newArrayList("pohjakoulutuskklomake_yosuomi"));
+    }};
+
+    public static final ApplicationOptionDTO hakukohdeLukio = new ApplicationOptionDTO() {{
+        setPohjakoulutusLiitteet(newArrayList("pohjakoulutuskklomake_pohjakoulutuslk"));
+    }};
+
+    @Test
+    public void pohjakoulutusliitteetFromThoseSelectedInTarjontaTest() {
+        ApplicationOptionDTO hakukohdeKKandKKUlk = mergeLiitepyynnot(hakukohdeKK, hakukohdeKKUlk);
+        Map<String, List<ApplicationOptionDTO>> liiteet = AttachmentUtil.pohjakoulutusliitepyynnot(
+                mergePohjakoulutus(hakemusYoVanha, hakemusKK, hakemusKKUlk),
+                newArrayList(hakukohdeKK, hakukohdeKKandKKUlk));
+
+        assertEquals(2, liiteet.keySet().size());
+        assertEquals(2, liiteet.get("form.valmis.todistus.kk").size());
+        assertEquals(1, liiteet.get("form.valmis.todistus.kk_ulk").size());
+        assertTrue(liiteet.get("form.valmis.todistus.kk").contains(hakukohdeKKandKKUlk));
+        assertTrue(liiteet.get("form.valmis.todistus.kk").contains(hakukohdeKK));
+        assertTrue(liiteet.get("form.valmis.todistus.kk_ulk").contains(hakukohdeKKandKKUlk));
     }
 
     @Test
-    public void higherEdAttachmentAmkTest() {
-        Application application = new Application();
+    public void pohjakoulutusliitteetFromYoAndKVYoOnlyIfSoSelectedInTarjontaTest() {
+        ApplicationOptionDTO hakukohdeKKandKKUlk = mergeLiitepyynnot(hakukohdeKK, hakukohdeKKUlk);
+        hakukohdeKKandKKUlk.setJosYoEiMuitaLiitepyyntoja(true);
+        ApplicationOptionDTO hakukohdeYoAndKK = mergeLiitepyynnot(hakukohdeYo, hakukohdeKK);
+        List<ApplicationOptionDTO> aos = newArrayList(hakukohdeKKandKKUlk, hakukohdeYoAndKK);
+        Map<String, List<ApplicationOptionDTO>> liiteet1 = AttachmentUtil.pohjakoulutusliitepyynnot(
+                mergePohjakoulutus(hakemusYoVanha, hakemusKK, hakemusKKUlk), aos);
 
-        Map<String, String> baseEd = new HashMap<String, String>();
-        Map<String, String> prefs = new HashMap<String, String>();
+        assertEquals(2, liiteet1.keySet().size());
+        assertEquals(1, liiteet1.get("form.valmis.todistus.kk").size());
+        assertEquals(1, liiteet1.get("form.valmis.todistus.yo").size());
+        assertTrue(liiteet1.get("form.valmis.todistus.kk").contains(hakukohdeYoAndKK));
+        assertTrue(liiteet1.get("form.valmis.todistus.yo").contains(hakukohdeYoAndKK));
 
-        baseEd.put("pohjakoulutus_yo", "true");
-        baseEd.put("pohjakoulutus_yo_vuosi", "2012");
-        baseEd.put("pohjakoulutus_yo_tutkinto", "eb");
-        baseEd.put("pohjakoulutus_muu", "true");
+        Map<String, List<ApplicationOptionDTO>> liiteet2 = AttachmentUtil.pohjakoulutusliitepyynnot(
+                mergePohjakoulutus(hakemusYoKv, hakemusKK, hakemusKKUlk), aos);
 
-        prefs.put("preference1-amkLiite", "true");
-        prefs.put("preference1-Koulutus-id", "1.2.3");
+        assertEquals(1, liiteet2.keySet().size());
+        assertEquals(1, liiteet2.get("form.valmis.todistus.kk").size());
+        assertTrue(liiteet2.get("form.valmis.todistus.kk").contains(hakukohdeYoAndKK));
 
-        application.addVaiheenVastaukset(OppijaConstants.PHASE_EDUCATION, baseEd);
-        application.addVaiheenVastaukset(OppijaConstants.PHASE_APPLICATION_OPTIONS, prefs);
+        Map<String, List<ApplicationOptionDTO>> liiteet3 = AttachmentUtil.pohjakoulutusliitepyynnot(
+                mergePohjakoulutus(hakemusYoKvUlk, hakemusKK, hakemusKKUlk), aos);
 
-        Map<String, List<String>> attachmentOids = ApplicationUtil.getHigherEdAttachmentAOIds(application);
-        assertFalse(attachmentOids.isEmpty());
-
-        assertEquals(2, attachmentOids.size());
-        assertTrue(attachmentOids.containsKey("form.valmis.todistus.muu"));
-        assertEquals(1, attachmentOids.get("form.valmis.todistus.muu").size());
-        assertEquals("1.2.3", attachmentOids.get("form.valmis.todistus.muu").get(0));
+        assertEquals(1, liiteet3.keySet().size());
+        assertEquals(1, liiteet3.get("form.valmis.todistus.kk").size());
+        assertTrue(liiteet3.get("form.valmis.todistus.kk").contains(hakukohdeYoAndKK));
     }
 
     @Test
-    public void higherEdAttachmentAmkAndYoTest() {
-        Application application = new Application();
+    public void pohjakoulutusliitteetFromYoTest() {
+        Map<String, List<ApplicationOptionDTO>> liiteet = AttachmentUtil.pohjakoulutusliitepyynnot(
+                hakemusYoVanha,
+                newArrayList(hakukohdeYo, hakukohdeLukio));
 
-        Map<String, String> baseEd = new HashMap<String, String>();
-        Map<String, String> prefs = new HashMap<String, String>();
-
-        baseEd.put("pohjakoulutus_yo", "true");
-        baseEd.put("pohjakoulutus_yo_vuosi", "2012");
-        baseEd.put("pohjakoulutus_yo_tutkinto", "eb");
-        baseEd.put("pohjakoulutus_muu", "true");
-
-        prefs.put("preference1-amkLiite", "true");
-        prefs.put("preference1-Koulutus-id", "1.2.3");
-
-        prefs.put("preference2-yoLiite", "true");
-        prefs.put("preference2-Koulutus-id", "4.5.6");
-
-        application.addVaiheenVastaukset(OppijaConstants.PHASE_EDUCATION, baseEd);
-        application.addVaiheenVastaukset(OppijaConstants.PHASE_APPLICATION_OPTIONS, prefs);
-
-        Map<String, List<String>> attachmentOids = ApplicationUtil.getHigherEdAttachmentAOIds(application);
-        assertFalse(attachmentOids.isEmpty());
-
-        assertEquals(2, attachmentOids.size());
-        assertTrue(attachmentOids.containsKey("form.valmis.todistus.muu"));
-        assertTrue(attachmentOids.containsKey("form.valmis.todistus.yo"));
-        assertEquals(2, attachmentOids.get("form.valmis.todistus.muu").size());
-        assertTrue(attachmentOids.get("form.valmis.todistus.muu").contains("1.2.3"));
-        assertTrue(attachmentOids.get("form.valmis.todistus.muu").contains("4.5.6"));
-        assertEquals(2, attachmentOids.get("form.valmis.todistus.yo").size());
-        assertTrue(attachmentOids.get("form.valmis.todistus.yo").contains("4.5.6"));
+        assertEquals(1, liiteet.keySet().size());
+        assertEquals(1, liiteet.get("form.valmis.todistus.yo").size());
+        assertTrue(liiteet.get("form.valmis.todistus.yo").contains(hakukohdeYo));
     }
 
     @Test
-    public void higherEdAttachmentYlempiAMKTest() {
-        Application application = new Application();
-        Map<String, String> baseEd = new HashMap<String, String>();
-        Map<String, String> prefs = new HashMap<String, String>();
-        baseEd.put("pohjakoulutus_yo", "true");
-        baseEd.put("pohjakoulutus_yo_vuosi", "2012");
-        baseEd.put("pohjakoulutus_yo_tutkinto", "eb");
-        baseEd.put("pohjakoulutus_kk", "true");
-        baseEd.put("pohjakoulutus_kk_vuosi", "2015");
-        baseEd.put("pohjakoulutus_kk_ulk", "true");
-        baseEd.put("pohjakoulutus_kk_ulk_vuosi", "2015");
-        prefs.put("preference1-ylempiAMKLiite", "true");
-        prefs.put("preference1-Koulutus-id", "1.2.3");
-        prefs.put("preference2-yoLiite", "true");
-        prefs.put("preference2-Koulutus-id", "4.5.6");
-        prefs.put("preference3-Koulutus-id", "7.8.9");
-        application.addVaiheenVastaukset(OppijaConstants.PHASE_EDUCATION, baseEd);
-        application.addVaiheenVastaukset(OppijaConstants.PHASE_APPLICATION_OPTIONS, prefs);
-        Map<String, List<String>> attachmentOids = ApplicationUtil.getHigherEdAttachmentAOIds(application);
+    public void pohjakoulutusliitteetFromOnlyLukioTest() {
+        Map<String, List<ApplicationOptionDTO>> liiteet = AttachmentUtil.pohjakoulutusliitepyynnot(
+                hakemusLukio,
+                newArrayList(hakukohdeYo, hakukohdeLukio));
 
-        assertFalse(attachmentOids.isEmpty());
-        assertEquals(2, attachmentOids.size());
-        assertTrue(attachmentOids.containsKey("form.valmis.todistus.yo"));
-        assertTrue(attachmentOids.containsKey("form.valmis.todistus.kk_ulk"));
-        assertFalse(attachmentOids.containsKey("form.valmis.todistus.kk"));
-        assertEquals(3, attachmentOids.get("form.valmis.todistus.yo").size());
-        assertTrue(attachmentOids.get("form.valmis.todistus.yo").contains("1.2.3"));
-        assertTrue(attachmentOids.get("form.valmis.todistus.yo").contains("4.5.6"));
-        assertTrue(attachmentOids.get("form.valmis.todistus.yo").contains("7.8.9"));
-        assertEquals(1, attachmentOids.get("form.valmis.todistus.kk_ulk").size());
-        assertTrue(attachmentOids.get("form.valmis.todistus.kk_ulk").contains("1.2.3"));
+        assertEquals(1, liiteet.keySet().size());
+        assertEquals(1, liiteet.get("form.valmis.todistus.lukio").size());
+        assertTrue(liiteet.get("form.valmis.todistus.lukio").contains(hakukohdeLukio));
     }
 }
