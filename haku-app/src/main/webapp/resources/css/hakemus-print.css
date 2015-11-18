@@ -2296,6 +2296,20 @@ input, input:focus,
 select, select:focus, select:active {
   outline: none; }
 
+.textareaPreview {
+  display: block;
+  margin: 0 0 10px;
+  color: #333;
+  word-break: break-all;
+  word-wrap: break-word;
+  font-weight: normal;
+  white-space: pre-wrap;
+}
+
+.textareaPreview:empty {
+  display: none;
+}
+
 /*** Fieldset
 **********************************/
 fieldset {
