@@ -5,6 +5,9 @@ public final class Types {
         private final T value;
 
         protected Base(T value) {
+            if (value == null) {
+                throw new IllegalArgumentException("Typed value cannot be initialized to null");
+            }
             this.value = value;
         }
 
@@ -46,12 +49,12 @@ public final class Types {
     public static final class AsciiCountryCode extends Base<String> {
         private AsciiCountryCode(String value) {
             super(value);
-        }
-
-        public static AsciiCountryCode of(String value) {
             if (value.length() != 3) {
                 throw new IllegalArgumentException("Country code must be 3 characters long, got '" + value + "'");
             }
+        }
+
+        public static AsciiCountryCode of(String value) {
             return new AsciiCountryCode(value);
         }
     }
