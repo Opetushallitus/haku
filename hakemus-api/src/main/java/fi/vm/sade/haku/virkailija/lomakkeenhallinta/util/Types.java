@@ -1,5 +1,7 @@
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.util;
 
+import java.util.Map;
+
 public final class Types {
     protected static class Base<T> {
         private final T value;
@@ -56,6 +58,20 @@ public final class Types {
 
         public static AsciiCountryCode of(String value) {
             return new AsciiCountryCode(value);
+        }
+    }
+
+    public static final class MergedAnswers extends Base<Map<String, String>> {
+        private MergedAnswers(Map<String, String> value) {
+            super(value);
+        }
+
+        public static MergedAnswers of(Map<String, String> value) {
+            return new MergedAnswers(value);
+        }
+
+        public String get(String field) {
+            return getValue().get(field);
         }
     }
 }
