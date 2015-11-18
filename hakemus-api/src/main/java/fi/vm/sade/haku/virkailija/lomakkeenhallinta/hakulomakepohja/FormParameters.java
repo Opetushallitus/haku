@@ -1,6 +1,7 @@
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja;
 
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
+import fi.vm.sade.haku.oppija.hakemus.service.HakumaksuService;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationPeriod;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
@@ -25,6 +26,7 @@ public class FormParameters {
     private final ThemeQuestionDAO themeQuestionDAO;
     private final HakukohdeService hakukohdeService;
     private final OrganizationService organizationService;
+    private final HakumaksuService hakumaksuService;
 
     private final FormConfiguration formConfiguration;
     private final I18nBundle i18nBundle;
@@ -34,9 +36,16 @@ public class FormParameters {
     private boolean demoMode;
     private String opintopolkuBaseUrl;
 
-    public FormParameters(final ApplicationSystem applicationSystem, final FormConfiguration formConfiguration, final KoodistoService koodistoService,
-                          final ThemeQuestionDAO themeQuestionDAO, final HakukohdeService hakukohdeService,
-                          final OrganizationService organizationService, final I18nBundleService i18nBundleService, final boolean demoMode, final String opintopolkuBaseUrl) {
+    public FormParameters(final ApplicationSystem applicationSystem,
+                          final FormConfiguration formConfiguration,
+                          final KoodistoService koodistoService,
+                          final ThemeQuestionDAO themeQuestionDAO,
+                          final HakukohdeService hakukohdeService,
+                          final OrganizationService organizationService,
+                          final I18nBundleService i18nBundleService,
+                          final HakumaksuService hakumaksuService,
+                          final boolean demoMode,
+                          final String opintopolkuBaseUrl) {
         this.applicationSystem = applicationSystem;
         this.koodistoService = koodistoService;
         this.themeQuestionDAO = themeQuestionDAO;
@@ -44,6 +53,7 @@ public class FormParameters {
         this.organizationService = organizationService;
         this.formConfiguration = formConfiguration;
         this.i18nBundle = i18nBundleService.getBundle(applicationSystem);
+        this.hakumaksuService = hakumaksuService;
         this.demoMode = demoMode;
         this.opintopolkuBaseUrl = opintopolkuBaseUrl;
     }
@@ -54,6 +64,10 @@ public class FormParameters {
 
     public KoodistoService getKoodistoService() {
         return koodistoService;
+    }
+
+    public HakumaksuService getHakumaksuService() {
+        return hakumaksuService;
     }
 
     public FormConfiguration getFormConfiguration() {

@@ -22,6 +22,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.builder.OptionBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.builder.RadioBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.HiddenValue;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.Notification;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.Popup;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.PreferenceRow;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.PreferenceTable;
@@ -40,6 +41,7 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ExprUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static fi.vm.sade.haku.oppija.hakemus.service.Role.*;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.NotificationBuilder.Warning;
@@ -112,7 +114,8 @@ public class HakutoiveetPhase {
                 formParameters.getI18nText("form.hakutoiveet.koulutus"),
                 formParameters.getI18nText("form.hakutoiveet.opetuspiste"),
                 formParameters.getI18nText("form.hakutoiveet.sisaltyvatKoulutusohjelmat"),
-                formParameters.getI18nText("form.hakutoiveet.liitteet"));
+                formParameters.getI18nText("form.hakutoiveet.liitteet"),
+                formParameters.getI18nText("form.hakutoiveet.hakumaksu"));
 
         if (formParameters.kysytaankoHarkinnanvaraisuus()) {
             pr.addChild(createDiscretionaryQuestionsAndRules(id, DISCRETIONARY_EDUCATION_DEGREE, formParameters));
@@ -169,6 +172,26 @@ public class HakutoiveetPhase {
 
         ThemeQuestionConfigurator configurator = formParameters.getThemeQuestionConfigurator();
         pr.addChild(configurator.findAndConfigure(HAKUTOIVEET_THEME_ID, pr.getId(), ConfiguratorFilter.NO_GROUP_QUESTIONS));
+
+        /*
+        if (formParameters.isHigherEd()) {
+            pr.addChild(Rule(
+                    new Expr() {
+                        @Override
+                        public boolean evaluate(Map<String, String> context) {
+                            //TODO tee päättely joko tässä tai "rules"-apissa
+                            return false;
+                        }
+
+                        @Override
+                        public List<Expr> children() {
+                            return null;
+                        }
+                    })
+                    .addChild(createPaymentNotification(id, formParameters))
+                    .build());
+        }
+        */
 
         return pr;
     }
@@ -238,6 +261,10 @@ public class HakutoiveetPhase {
 
         return new Element[]{discretionaryRule2, KoulutusValittu};
 
+    }
+
+    private static Element createPaymentNotification(final String index, final FormParameters formParameters) {
+        return new Notification(index + "_payment_notification", formParameters.getI18nText("form.hakutoiveet.vaatiihakumaksun"), Notification.NotificationType.INFO);
     }
 
     private static Element createSoraQuestions(final String index, final FormParameters formParameters) {

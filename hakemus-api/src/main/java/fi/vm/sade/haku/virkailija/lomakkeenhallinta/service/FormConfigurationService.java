@@ -1,6 +1,7 @@
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.service;
 
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
+import fi.vm.sade.haku.oppija.hakemus.service.HakumaksuService;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain.GroupConfiguration;
@@ -44,6 +45,8 @@ public final class FormConfigurationService {
     private final FormConfigurationDAO formConfigurationDAO;
     @Autowired
     private final I18nBundleService i18nBundleService;
+    @Autowired
+    private final HakumaksuService hakumaksuService;
 
     @Value("${mode.demo:false}")
     public boolean demoMode;
@@ -57,7 +60,8 @@ public final class FormConfigurationService {
                                     final HakukohdeService hakukohdeService,
                                     final OrganizationService organizationService,
                                     final FormConfigurationDAO formConfigurationDAO,
-                                    final I18nBundleService i18nBundleService) {
+                                    final I18nBundleService i18nBundleService,
+                                    final HakumaksuService hakumaksuService) {
         this.koodistoService = koodistoService;
         this.hakuService = hakuService;
         this.themeQuestionDAO = themeQuestionDAO;
@@ -65,6 +69,7 @@ public final class FormConfigurationService {
         this.organizationService = organizationService;
         this.formConfigurationDAO = formConfigurationDAO;
         this.i18nBundleService = i18nBundleService;
+        this.hakumaksuService = hakumaksuService;
     }
 
     public FormParameters getFormParameters(final String applicationSystemId) {
@@ -75,7 +80,8 @@ public final class FormConfigurationService {
     public FormParameters getFormParameters(final ApplicationSystem applicationSystem) {
         FormConfiguration formConfiguration = createOrGetFormConfiguration(applicationSystem);
         return new FormParameters(applicationSystem, formConfiguration, koodistoService, themeQuestionDAO,
-          hakukohdeService, organizationService, i18nBundleService, this.demoMode, this.opintopolkuBaseUrl);
+                hakukohdeService, organizationService, i18nBundleService, hakumaksuService,
+                this.demoMode, this.opintopolkuBaseUrl);
     }
 
     public FormConfiguration createOrGetFormConfiguration(final String applicationSystemId){
