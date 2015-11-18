@@ -26,6 +26,7 @@ import java.util.Map;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonSubTypes({
   @JsonSubTypes.Type(value = ThemeTextQuestion.class, name = "TextQuestion"),
+  @JsonSubTypes.Type(value = ThemeRichText.class, name = "RichText"),
   @JsonSubTypes.Type(value = ThemeRadioButtonQuestion.class, name = "RadioButton"),
   @JsonSubTypes.Type(value = ThemeCheckBoxQuestion.class, name = "CheckBox")
 })
