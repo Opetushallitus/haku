@@ -215,7 +215,7 @@ public class FormController {
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED + CHARSET_UTF_8)
     public Viewable updateRulesMulti(@PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId,
                                 @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
-                                final MultivaluedMap<String, String> multiValues) {
+                                final MultivaluedMap<String, String> multiValues) throws ExecutionException {
         LOGGER.debug("updateRulesMulti {}, {}, {}", applicationSystemId, phaseId);
         List<String> ruleIds = firstNonNull(multiValues.get("ruleIds[]"), ImmutableList.<String>of());
         ModelResponse modelResponse = uiService.updateRulesMulti(applicationSystemId, phaseId, ruleIds, toSingleValueMap(multiValues));
