@@ -19,6 +19,7 @@ package fi.vm.sade.haku.oppija.ui.service.impl;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import fi.vm.sade.haku.oppija.common.koulutusinformaatio.KoulutusinformaatioService;
@@ -239,11 +240,11 @@ public class UIServiceImpl implements UIService {
         return modelResponse;
     }
 
-    private static ImmutableMap<String, String> paymentNotificationAnswers(Map<String, String> answers, Map<ApplicationOptionOid, List<Eligibility>> paymentRequirements) {
+    private static ImmutableMap<String, String> paymentNotificationAnswers(Map<String, String> answers, ImmutableMap<ApplicationOptionOid, ImmutableSet<Eligibility>> paymentRequirements) {
         ImmutableMap.Builder<String, String> builder = ImmutableMap.builder();
         for (String key: answers.keySet()){
             if (key != null && key.startsWith(PREFERENCE_PREFIX) && key.endsWith(OPTION_ID_POSTFIX) && isNotEmpty(answers.get(key))){
-                List<Eligibility> eligibilities = paymentRequirements.get(ApplicationOptionOid.of(answers.get(key)));
+                ImmutableSet<Eligibility> eligibilities = paymentRequirements.get(ApplicationOptionOid.of(answers.get(key)));
                 if (!eligibilities.isEmpty()) {
                     int preferenceId = new Scanner(key).nextInt();
                     String paymentRequirementKey = PREFERENCE_PREFIX + Integer.toString(preferenceId) + "_payment_notificatioin_visible";
