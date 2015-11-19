@@ -13,6 +13,7 @@ public class ApplicationOptionAttachmentRequestBuilder {
     private I18nText description;
     private Date deliveryDue;
     private Boolean useGroupAddress;
+    private Boolean useLopAddress;
     private SimpleAddress deliveryAddress;
 
     protected ApplicationOptionAttachmentRequestBuilder(){}
@@ -56,12 +57,17 @@ public class ApplicationOptionAttachmentRequestBuilder {
         return this;
     }
 
+    public ApplicationOptionAttachmentRequestBuilder setUseLopAddress(Boolean useLopAddress) {
+        this.useLopAddress = useLopAddress;
+        return this;
+    }
+
     public ApplicationOptionAttachmentRequestBuilder setDeliveryAddress(SimpleAddress deliveryAddress) {
         this.deliveryAddress = deliveryAddress;
         return this;
     }
 
     public ApplicationOptionAttachmentRequest build() {
-        return new ApplicationOptionAttachmentRequest(condition, applicationOptionId, groupOption, header, description, deliveryDue, useGroupAddress, deliveryAddress);
+        return new ApplicationOptionAttachmentRequest(condition, applicationOptionId, groupOption, header, description, deliveryDue, useGroupAddress, deliveryAddress, useLopAddress);
     }
 }

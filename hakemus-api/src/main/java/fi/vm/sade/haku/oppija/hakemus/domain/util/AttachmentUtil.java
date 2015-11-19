@@ -104,14 +104,15 @@ public class AttachmentUtil {
             attachments = addHigherEdAttachments(applicationSystem, attachments, application, koulutusinformaatioService, lang, i18nBundle);
             attachments = addAmkOpeAttachments(applicationSystem, attachments, application, koulutusinformaatioService, lang, i18nBundle);
         }
-        attachments = addApplicationOptionAttachmentRequestsFromForm(attachments, application, applicationSystem, i18nBundle);
+        attachments = addApplicationOptionAttachmentRequestsFromForm(attachments, application, applicationSystem, i18nBundle, koulutusinformaatioService, lang);
 
         return attachments;
     }
 
     private static List<ApplicationAttachmentRequest> addApplicationOptionAttachmentRequestsFromForm(
       List<ApplicationAttachmentRequest> attachments, Application application,
-      ApplicationSystem applicationSystem, I18nBundle i18nBundle) {
+      ApplicationSystem applicationSystem, I18nBundle i18nBundle,
+      KoulutusinformaatioService koulutusinformaatioService, String lang) {
         if (applicationSystem.getApplicationOptionAttachmentRequests() == null) {
             return attachments;
         }
@@ -130,13 +131,34 @@ public class AttachmentUtil {
                 ApplicationAttachmentBuilder attachmentBuilder = ApplicationAttachmentBuilder.start()
                         .setHeader(attachmentRequest.getHeader())
                         .setDescription(attachmentRequest.getDescription())
-                        .setDeadline(deadline)
-                        .setAddress(AddressBuilder.start()
-                                .setRecipient(address.getRecipient())
-                                .setStreetAddress(address.getStreet())
-                                .setPostalCode(address.getPostCode())
-                                .setPostOffice(address.getPostOffice())
-                                .build());
+                        .setDeadline(deadline);
+
+                if(attachmentRequest.getUseLopAddress() != null && attachmentRequest.getUseLopAddress()) {
+                    ApplicationOptionDTO ao = koulutusinformaatioService.getApplicationOption(attachmentRequest.getApplicationOptionId(), lang);
+                    AddressDTO postAddress = ao.getProvider().getApplicationOffice().getPostalAddress();
+                    attachmentBuilder.setAddress(AddressBuilder.start()
+                            .setRecipient(address.getRecipient())
+                            .setStreetAddress(postAddress.getStreetAddress())
+                            .setPostalCode(postAddress.getPostalCode())
+                            .setPostOffice(postAddress.getPostOffice())
+                            .build());
+                } else if(attachmentRequest.getUseGroupAddress() != null && attachmentRequest.getUseGroupAddress()) {
+                    //TODO
+                    attachmentBuilder.setAddress(AddressBuilder.start()
+                            .setRecipient(address.getRecipient())
+                            .setStreetAddress(address.getStreet())
+                            .setPostalCode(address.getPostCode())
+                            .setPostOffice(address.getPostOffice())
+                            .build());
+                } else {
+                    attachmentBuilder.setAddress(AddressBuilder.start()
+                            .setRecipient(address.getRecipient())
+                            .setStreetAddress(address.getStreet())
+                            .setPostalCode(address.getPostCode())
+                            .setPostOffice(address.getPostOffice())
+                            .build());
+                }
+
 
                 if (deadline == null) {
                     attachmentBuilder.setDeliveryNote(i18nBundle.get(GENERAL_DELIVERY_NOTE));
