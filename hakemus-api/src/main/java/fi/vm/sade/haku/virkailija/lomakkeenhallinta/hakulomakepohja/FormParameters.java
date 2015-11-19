@@ -118,8 +118,12 @@ public class FormParameters {
         return false;
     }
 
-    public boolean isHigherEd() {
+    public static boolean isHigherEd(ApplicationSystem applicationSystem) {
         return applicationSystem.getKohdejoukkoUri().equals(OppijaConstants.KOHDEJOUKKO_KORKEAKOULU);
+    }
+
+    public boolean isHigherEd() {
+        return isHigherEd(applicationSystem);
     }
 
     public boolean isKevaanLisahaku() {
