@@ -173,25 +173,11 @@ public class HakutoiveetPhase {
         ThemeQuestionConfigurator configurator = formParameters.getThemeQuestionConfigurator();
         pr.addChild(configurator.findAndConfigure(HAKUTOIVEET_THEME_ID, pr.getId(), ConfiguratorFilter.NO_GROUP_QUESTIONS));
 
-        /*
         if (formParameters.isHigherEd()) {
-            pr.addChild(Rule(
-                    new Expr() {
-                        @Override
-                        public boolean evaluate(Map<String, String> context) {
-                            //TODO tee päättely joko tässä tai "rules"-apissa
-                            return false;
-                        }
-
-                        @Override
-                        public List<Expr> children() {
-                            return null;
-                        }
-                    })
+            pr.addChild(Rule(ExprUtil.isAnswerTrue("preference" + id + "_payment_notification_visible"))
                     .addChild(createPaymentNotification(id, formParameters))
                     .build());
         }
-        */
 
         return pr;
     }
