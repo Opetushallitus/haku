@@ -15,11 +15,12 @@ public class ApplicationOptionAttachmentRequest {
     private final I18nText description;
     private final Date deliveryDue;
     private final Boolean useGroupAddress;
+    private final Boolean useLopAddress;
     private final SimpleAddress deliveryAddress;
 
     public ApplicationOptionAttachmentRequest(Expr condition, String applicationOptionId, Boolean groupOption,
                                               I18nText header, I18nText description, Date deliveryDue,
-                                              Boolean useGroupAddress, SimpleAddress deliveryAddress) {
+                                              Boolean useGroupAddress, SimpleAddress deliveryAddress, Boolean useLopAddress) {
         this.condition = condition;
         this.applicationOptionId = applicationOptionId;
         this.groupOption = groupOption;
@@ -27,6 +28,7 @@ public class ApplicationOptionAttachmentRequest {
         this.description = description;
         this.deliveryDue = deliveryDue;
         this.useGroupAddress = useGroupAddress;
+        this.useLopAddress = useLopAddress;
         this.deliveryAddress = deliveryAddress;
     }
 
@@ -60,6 +62,10 @@ public class ApplicationOptionAttachmentRequest {
 
     public Boolean getUseGroupAddress() {
         return useGroupAddress;
+    }
+
+    public Boolean getUseLopAddress() {
+        return useLopAddress;
     }
 
     public SimpleAddress getDeliveryAddress() {

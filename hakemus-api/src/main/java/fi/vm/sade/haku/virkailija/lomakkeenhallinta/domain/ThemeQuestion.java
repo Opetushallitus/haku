@@ -145,19 +145,21 @@ public abstract class ThemeQuestion implements ConfiguredElement {
         this.attachmentRequests = new ArrayList<AttachmentRequest>(attachmentRequests);
     }
 
-    public List<ApplicationOptionAttachmentRequest> generateAttactmentRequests(FormParameters formParameters){
+    public List<ApplicationOptionAttachmentRequest> generateAttachmentRequests(FormParameters formParameters){
         List<ApplicationOptionAttachmentRequest> generatedRequests = new ArrayList<ApplicationOptionAttachmentRequest>(attachmentRequests.size());
         for (AttachmentRequest attachmentRequest : attachmentRequests){
             generatedRequests.add(
-              ApplicationOptionAttachmentRequestBuilder.start()
-              .setApplicationOptionId(learningOpportunityId)
-              .setGroupOption(getTargetIsGroup())
-              .setCondition(generateAttachmentCondition(formParameters, attachmentRequest))
-              .setDeliveryAddress(attachmentRequest.getDeliveryAddress())
-              .setDeliveryDue(attachmentRequest.getDeliveryDue())
-              .setHeader(attachmentRequest.getHeader())
-              .setDescription(attachmentRequest.getDescription())
-              .build());
+                    ApplicationOptionAttachmentRequestBuilder.start()
+                            .setApplicationOptionId(learningOpportunityId)
+                            .setGroupOption(getTargetIsGroup())
+                            .setCondition(generateAttachmentCondition(formParameters, attachmentRequest))
+                            .setDeliveryAddress(attachmentRequest.getDeliveryAddress())
+                            .setDeliveryDue(attachmentRequest.getDeliveryDue())
+                            .setUseGroupAddress(attachmentRequest.getUseGroupAddress())
+                            .setUseLopAddress(attachmentRequest.getUseLopAddress())
+                            .setHeader(attachmentRequest.getHeader())
+                            .setDescription(attachmentRequest.getDescription())
+                            .build());
         }
         return generatedRequests;
     }

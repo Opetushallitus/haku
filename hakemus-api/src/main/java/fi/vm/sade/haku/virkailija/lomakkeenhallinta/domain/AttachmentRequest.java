@@ -17,21 +17,23 @@ public final class AttachmentRequest {
     private final I18nText description;
     private final Date deliveryDue;
 
-    // TODO: =RS= refactor rename to useLearning provider address.
     private final Boolean useGroupAddress;
+    private final Boolean useLopAddress;
     private final SimpleAddress deliveryAddress;
     private final String attachedToOptionId;
 
     @JsonCreator
     public AttachmentRequest(@JsonProperty(value = "header") final I18nText header, @JsonProperty(value = "description") final I18nText description,
       @JsonProperty(value = "deliveryDue") final  Date deliveryDue,  @JsonProperty(value = "useGroupAddress") final Boolean useGroupAddress,
-      @JsonProperty(value = "deliveryAddress") final SimpleAddress deliveryAddress, @JsonProperty(value = "attachedToOption") final String attachedToOptionId) {
+      @JsonProperty(value = "deliveryAddress") final SimpleAddress deliveryAddress, @JsonProperty(value = "attachedToOption") final String attachedToOptionId,
+      @JsonProperty(value = "useLopAddress") final Boolean useLopAddress) {
         this.header = header;
         this.description = description;
         this.deliveryDue = deliveryDue;
         this.useGroupAddress = useGroupAddress;
         this.deliveryAddress = deliveryAddress;
         this.attachedToOptionId = attachedToOptionId;
+        this.useLopAddress = useLopAddress;
     }
 
     public I18nText getHeader() {
@@ -48,6 +50,11 @@ public final class AttachmentRequest {
 
     public Boolean getUseGroupAddress() {
         return useGroupAddress;
+    }
+
+
+    public Boolean getUseLopAddress() {
+        return useLopAddress;
     }
 
     public SimpleAddress getDeliveryAddress() {
