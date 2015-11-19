@@ -16,8 +16,11 @@
 
 package fi.vm.sade.haku.oppija.ui.service.impl;
 
+import com.google.common.base.Function;
 import com.google.common.base.Predicate;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import fi.vm.sade.haku.oppija.common.koulutusinformaatio.KoulutusinformaatioService;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.haku.oppija.hakemus.domain.util.AttachmentUtil;
@@ -37,11 +40,9 @@ import fi.vm.sade.haku.oppija.lomake.service.Session;
 import fi.vm.sade.haku.oppija.lomake.util.ElementTree;
 import fi.vm.sade.haku.oppija.ui.service.UIService;
 import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
-import fi.vm.sade.haku.oppija.common.koulutusinformaatio.KoulutusinformaatioService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.i18n.I18nBundleService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.PDFService;
 import org.apache.http.HttpResponse;
 import org.slf4j.Logger;
@@ -232,22 +233,23 @@ public class UIServiceImpl implements UIService {
     }
 
     @Override
-    public ModelResponse updateRulesMulti(String applicationSystemId, String phaseId, List<String> elementIds, Map<String, String> currentAnswers) {
+    public ModelResponse updateRulesMulti(String applicationSystemId, String phaseId, List<String> ruleIds, Map<String, String> currentAnswers) {
         ApplicationSystem activeApplicationSystem = applicationSystemService.getActiveApplicationSystem(applicationSystemId);
-        Form activeForm = activeApplicationSystem.getForm();
+        final Form activeForm = activeApplicationSystem.getForm();
         Application application = applicationService.getApplication(applicationSystemId);
         Map<String, String> otherAnswers = application.getVastauksetMergedIgnoringPhase(phaseId);
         currentAnswers.putAll(otherAnswers);
+
+        List<Element> ruleElements = Lists.transform(ruleIds, new Function<String, Element>() {
+            @Override
+            public Element apply(String input) {
+                return activeForm.getChildById(input);
+            }
+        });
+
         ModelResponse modelResponse = new ModelResponse();
         modelResponse.addAnswers(currentAnswers);
-
-        List<Element> elements = new ArrayList();
-        if (elementIds != null) {
-            for (String elementId : elementIds) {
-                elements.add(activeForm.getChildById(elementId));
-            }
-        }
-        modelResponse.addObjectToModel("elements", elements);
+        modelResponse.addObjectToModel("elements", ruleElements);
         modelResponse.setForm(activeForm);
         modelResponse.setApplicationSystemId(applicationSystemId);
         modelResponse.setKoulutusinformaatioBaseUrl(koulutusinformaatioBaseUrl);
