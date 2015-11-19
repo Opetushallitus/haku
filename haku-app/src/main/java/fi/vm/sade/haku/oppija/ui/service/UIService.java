@@ -43,7 +43,7 @@ public interface UIService {
 
     ModelResponse updateRules(final String applicationSystemId, final String phaseId, final String elementId, Map<String, String> currentAnswers);
 
-    ModelResponse updateRulesMulti(final String applicationSystemId, final String phaseId, final List<String> elementIds, Map<String, String> currentAnswers);
+    ModelResponse updateRulesMulti(final String applicationSystemId, final String phaseId, final List<String> elementIds, Map<String, String> currentAnswers) throws ExecutionException;
 
     ModelResponse getPhaseElement(final String applicationSystemId, final String phaseId, final String elementId);
 

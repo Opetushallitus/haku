@@ -18,6 +18,7 @@ package fi.vm.sade.haku.oppija.ui.service.impl;
 
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import fi.vm.sade.haku.oppija.common.koulutusinformaatio.KoulutusinformaatioService;
@@ -26,6 +27,7 @@ import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.haku.oppija.hakemus.domain.util.AttachmentUtil;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.haku.oppija.hakemus.service.HakumaksuService;
+import fi.vm.sade.haku.oppija.hakemus.service.HakumaksuService.Eligibility;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationState;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
@@ -43,6 +45,8 @@ import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.i18n.I18nBundleService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.ApplicationOptionOid;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.PDFService;
 import org.apache.http.HttpResponse;
 import org.slf4j.Logger;
@@ -58,6 +62,9 @@ import javax.servlet.jsp.jstl.core.Config;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
 
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters.isHigherEd;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.*;
+import static org.apache.commons.lang.StringUtils.isNotEmpty;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
 @Service
@@ -232,8 +239,24 @@ public class UIServiceImpl implements UIService {
         return modelResponse;
     }
 
+    private static ImmutableMap<String, String> paymentNotificationAnswers(Map<String, String> answers, Map<ApplicationOptionOid, List<Eligibility>> paymentRequirements) {
+        ImmutableMap.Builder<String, String> builder = ImmutableMap.builder();
+        for (String key: answers.keySet()){
+            if (key != null && key.startsWith(PREFERENCE_PREFIX) && key.endsWith(OPTION_ID_POSTFIX) && isNotEmpty(answers.get(key))){
+                List<Eligibility> eligibilities = paymentRequirements.get(ApplicationOptionOid.of(answers.get(key)));
+                if (!eligibilities.isEmpty()) {
+                    int preferenceId = new Scanner(key).nextInt();
+                    String paymentRequirementKey = PREFERENCE_PREFIX + Integer.toString(preferenceId) + "_payment_notificatioin_visible";
+                    builder.put(paymentRequirementKey, "true");
+                }
+
+            }
+        }
+        return builder.build();
+    }
+
     @Override
-    public ModelResponse updateRulesMulti(String applicationSystemId, String phaseId, List<String> ruleIds, Map<String, String> currentAnswers) {
+    public ModelResponse updateRulesMulti(String applicationSystemId, String phaseId, List<String> ruleIds, Map<String, String> currentAnswers) throws ExecutionException {
         ApplicationSystem activeApplicationSystem = applicationSystemService.getActiveApplicationSystem(applicationSystemId);
         final Form activeForm = activeApplicationSystem.getForm();
         Application application = applicationService.getApplication(applicationSystemId);
@@ -246,6 +269,10 @@ public class UIServiceImpl implements UIService {
                 return activeForm.getChildById(input);
             }
         });
+
+        if (phaseId.equals(PHASE_APPLICATION_OPTIONS) && isHigherEd(activeApplicationSystem)) {
+            currentAnswers.putAll(paymentNotificationAnswers(currentAnswers, hakumaksuService.paymentRequirements(Types.MergedAnswers.of(currentAnswers))));
+        }
 
         ModelResponse modelResponse = new ModelResponse();
         modelResponse.addAnswers(currentAnswers);
