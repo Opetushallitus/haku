@@ -247,7 +247,7 @@ public class UIServiceImpl implements UIService {
                 ImmutableSet<Eligibility> eligibilities = paymentRequirements.get(ApplicationOptionOid.of(answers.get(key)));
                 if (!eligibilities.isEmpty()) {
                     String preferenceString = key.replace(OPTION_ID_POSTFIX, "");
-                    String paymentRequirementKey = preferenceString + "_payment_notificatioin_visible";
+                    String paymentRequirementKey = preferenceString + PAYMENT_NOTIFICATION_POSTFIX;
                     builder.put(paymentRequirementKey, "true");
                 }
 
