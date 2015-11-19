@@ -327,7 +327,7 @@ public final class ThemeQuestionConfigurator {
         LOGGER.debug("Configuring a list of "+ themeQuestions.size() +" themequestions");
         final ArrayList<ApplicationOptionAttachmentRequest> configuredAttachmentRequests = new ArrayList<ApplicationOptionAttachmentRequest>(themeQuestions.size());
         for (ThemeQuestion tq : themeQuestions) {
-            configuredAttachmentRequests.addAll(tq.generateAttactmentRequests(formParameters));
+            configuredAttachmentRequests.addAll(tq.generateAttachmentRequests(formParameters));
             LOGGER.debug("configured question {} of type {}", tq.getId(), tq.getClass().getSimpleName());
         }
         LOGGER.debug("Configuration of the list complete");
