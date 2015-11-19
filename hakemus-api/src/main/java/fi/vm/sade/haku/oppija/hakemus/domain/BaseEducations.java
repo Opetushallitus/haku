@@ -6,7 +6,6 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.AsciiCountryCode;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.MergedAnswers;
 
 import java.util.Arrays;
-import java.util.Set;
 
 /**
  * Typing of Applications' base education Map<String, String> to concrete
@@ -52,9 +51,9 @@ public class BaseEducations {
             this.nimike = nimike;
         }
 
-        public static final Function<MergedAnswers, Set<SuomalainenAvoinKoulutus>> of = new Function<MergedAnswers, Set<SuomalainenAvoinKoulutus>>() {
+        public static final Function<MergedAnswers, ImmutableSet<SuomalainenAvoinKoulutus>> of = new Function<MergedAnswers, ImmutableSet<SuomalainenAvoinKoulutus>>() {
             @Override
-            public Set<SuomalainenAvoinKoulutus> apply(MergedAnswers answers) {
+            public ImmutableSet<SuomalainenAvoinKoulutus> apply(MergedAnswers answers) {
                 String valinta = answers.get(fieldPrefix);
 
                 if ("true".equals(valinta)) {
@@ -83,9 +82,9 @@ public class BaseEducations {
             this.nimike = nimike;
         }
 
-        public static final Function<MergedAnswers, Set<SuomalainenAmKoulutus>> of = new Function<MergedAnswers, Set<SuomalainenAmKoulutus>>() {
+        public static final Function<MergedAnswers, ImmutableSet<SuomalainenAmKoulutus>> of = new Function<MergedAnswers, ImmutableSet<SuomalainenAmKoulutus>>() {
             @Override
-            public Set<SuomalainenAmKoulutus> apply(MergedAnswers answers) {
+            public ImmutableSet<SuomalainenAmKoulutus> apply(MergedAnswers answers) {
                 String valinta = answers.get(fieldPrefix);
 
                 if ("true".equals(valinta)) {
@@ -114,9 +113,9 @@ public class BaseEducations {
             this.nimike = nimike;
         }
 
-        public static final Function<MergedAnswers, Set<SuomalainenAmtKoulutus>> of = new Function<MergedAnswers, Set<SuomalainenAmtKoulutus>>() {
+        public static final Function<MergedAnswers, ImmutableSet<SuomalainenAmtKoulutus>> of = new Function<MergedAnswers, ImmutableSet<SuomalainenAmtKoulutus>>() {
             @Override
-            public Set<SuomalainenAmtKoulutus> apply(MergedAnswers answers) {
+            public ImmutableSet<SuomalainenAmtKoulutus> apply(MergedAnswers answers) {
                 String valinta = answers.get(fieldPrefix);
 
                 if ("true".equals(valinta)) {
@@ -141,9 +140,9 @@ public class BaseEducations {
             this.tutkinto = tutkinto;
         }
 
-        public static final Function<MergedAnswers, Set<UlkomainenKansainvalinenYo>> of = new Function<MergedAnswers, Set<UlkomainenKansainvalinenYo>>() {
+        public static final Function<MergedAnswers, ImmutableSet<UlkomainenKansainvalinenYo>> of = new Function<MergedAnswers, ImmutableSet<UlkomainenKansainvalinenYo>>() {
             @Override
-            public Set<UlkomainenKansainvalinenYo> apply(MergedAnswers answers) {
+            public ImmutableSet<UlkomainenKansainvalinenYo> apply(MergedAnswers answers) {
                 String valinta = answers.get(fieldPrefix);
 
                 if ("true".equals(valinta)) {
@@ -167,9 +166,9 @@ public class BaseEducations {
             this.tutkinto = tutkinto;
         }
 
-        public static final Function<MergedAnswers, Set<SuomalainenKansainvalinenYo>> of = new Function<MergedAnswers, Set<SuomalainenKansainvalinenYo>>() {
+        public static final Function<MergedAnswers, ImmutableSet<SuomalainenKansainvalinenYo>> of = new Function<MergedAnswers, ImmutableSet<SuomalainenKansainvalinenYo>>() {
             @Override
-            public Set<SuomalainenKansainvalinenYo> apply(MergedAnswers answers) {
+            public ImmutableSet<SuomalainenKansainvalinenYo> apply(MergedAnswers answers) {
                 String valinta = answers.get(fieldPrefix);
 
                 if ("true".equals(valinta)) {
@@ -192,9 +191,9 @@ public class BaseEducations {
             this.tutkinto = tutkinto;
         }
 
-        public static final Function<MergedAnswers, Set<SuomalainenYo>> of = new Function<MergedAnswers, Set<SuomalainenYo>>() {
+        public static final Function<MergedAnswers, ImmutableSet<SuomalainenYo>> of = new Function<MergedAnswers, ImmutableSet<SuomalainenYo>>() {
             @Override
-            public Set<SuomalainenYo> apply(MergedAnswers answers) {
+            public ImmutableSet<SuomalainenYo> apply(MergedAnswers answers) {
                 String valinta = answers.get(fieldPrefix);
 
                 if ("true".equals(valinta)) {
@@ -222,9 +221,9 @@ public class BaseEducations {
             this.nimike = nimike;
         }
 
-        public static final Function<MergedAnswers, Set<SuomalainenYoAmmatillinen>> of = new Function<MergedAnswers, Set<SuomalainenYoAmmatillinen>>() {
+        public static final Function<MergedAnswers, ImmutableSet<SuomalainenYoAmmatillinen>> of = new Function<MergedAnswers, ImmutableSet<SuomalainenYoAmmatillinen>>() {
             @Override
-            public Set<SuomalainenYoAmmatillinen> apply(MergedAnswers answers) {
+            public ImmutableSet<SuomalainenYoAmmatillinen> apply(MergedAnswers answers) {
                 String valinta = answers.get(fieldPrefix);
 
                 if ("true".equals(valinta)) {
@@ -254,9 +253,9 @@ public class BaseEducations {
             this.nimike = nimike;
         }
 
-        public static final Function<MergedAnswers, Set<UlkomaalainenKoulutus>> of = new Function<MergedAnswers, Set<UlkomaalainenKoulutus>>() {
+        public static final Function<MergedAnswers, ImmutableSet<UlkomaalainenKoulutus>> of = new Function<MergedAnswers, ImmutableSet<UlkomaalainenKoulutus>>() {
             @Override
-            public Set<UlkomaalainenKoulutus> apply(MergedAnswers answers) {
+            public ImmutableSet<UlkomaalainenKoulutus> apply(MergedAnswers answers) {
 
                 String valinta = answers.get(fieldPrefix);
 
@@ -299,9 +298,9 @@ public class BaseEducations {
             this.nimike = nimike;
         }
 
-        public static final Function<MergedAnswers, Set<UlkomaalainenKorkeakoulutus>> of = new Function<MergedAnswers, Set<UlkomaalainenKorkeakoulutus>>() {
+        public static final Function<MergedAnswers, ImmutableSet<UlkomaalainenKorkeakoulutus>> of = new Function<MergedAnswers, ImmutableSet<UlkomaalainenKorkeakoulutus>>() {
             @Override
-            public Set<UlkomaalainenKorkeakoulutus> apply(MergedAnswers answers) {
+            public ImmutableSet<UlkomaalainenKorkeakoulutus> apply(MergedAnswers answers) {
 
                 String valinta = answers.get(fieldPrefix);
 
@@ -343,9 +342,9 @@ public class BaseEducations {
             this.nimike = nimike;
         }
 
-        public static final Function<MergedAnswers, Set<SuomalainenKorkeakoulutus>> of = new Function<MergedAnswers, Set<SuomalainenKorkeakoulutus>>() {
+        public static final Function<MergedAnswers, ImmutableSet<SuomalainenKorkeakoulutus>> of = new Function<MergedAnswers, ImmutableSet<SuomalainenKorkeakoulutus>>() {
             @Override
-            public Set<SuomalainenKorkeakoulutus> apply(MergedAnswers answers) {
+            public ImmutableSet<SuomalainenKorkeakoulutus> apply(MergedAnswers answers) {
                 String valinta = answers.get(fieldPrefix);
 
                 ImmutableSet.Builder<SuomalainenKorkeakoulutus> result = ImmutableSet.builder();
