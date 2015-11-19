@@ -246,8 +246,8 @@ public class UIServiceImpl implements UIService {
             if (key != null && key.startsWith(PREFERENCE_PREFIX) && key.endsWith(OPTION_ID_POSTFIX) && isNotEmpty(answers.get(key))){
                 ImmutableSet<Eligibility> eligibilities = paymentRequirements.get(ApplicationOptionOid.of(answers.get(key)));
                 if (!eligibilities.isEmpty()) {
-                    int preferenceId = new Scanner(key).nextInt();
-                    String paymentRequirementKey = PREFERENCE_PREFIX + Integer.toString(preferenceId) + "_payment_notificatioin_visible";
+                    String preferenceString = key.replace(OPTION_ID_POSTFIX, "");
+                    String paymentRequirementKey = preferenceString + "_payment_notificatioin_visible";
                     builder.put(paymentRequirementKey, "true");
                 }
 
