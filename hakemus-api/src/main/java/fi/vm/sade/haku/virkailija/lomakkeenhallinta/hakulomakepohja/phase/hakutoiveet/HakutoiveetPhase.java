@@ -117,6 +117,16 @@ public class HakutoiveetPhase {
                 formParameters.getI18nText("form.hakutoiveet.liitteet"),
                 formParameters.getI18nText("form.hakutoiveet.hakumaksu"));
 
+        if (formParameters.isHigherEd()) {
+            pr.addChild(Rule(
+                    new And(
+                            new Not(new Equals(new Variable(id + "-Koulutus-id"), new Value(""))),
+                            ExprUtil.isAnswerTrue(id + PAYMENT_NOTIFICATION_POSTFIX))
+                    )
+                    .addChild(createPaymentNotification(id, formParameters))
+                    .build());
+        }
+
         if (formParameters.kysytaankoHarkinnanvaraisuus()) {
             pr.addChild(createDiscretionaryQuestionsAndRules(id, DISCRETIONARY_EDUCATION_DEGREE, formParameters));
         }
@@ -172,12 +182,6 @@ public class HakutoiveetPhase {
 
         ThemeQuestionConfigurator configurator = formParameters.getThemeQuestionConfigurator();
         pr.addChild(configurator.findAndConfigure(HAKUTOIVEET_THEME_ID, pr.getId(), ConfiguratorFilter.NO_GROUP_QUESTIONS));
-
-        if (formParameters.isHigherEd()) {
-            pr.addChild(Rule(ExprUtil.isAnswerTrue(id + PAYMENT_NOTIFICATION_POSTFIX))
-                    .addChild(createPaymentNotification(id, formParameters))
-                    .build());
-        }
 
         return pr;
     }
