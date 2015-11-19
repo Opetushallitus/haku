@@ -3,31 +3,27 @@ package fi.vm.sade.haku.oppija.hakemus.service;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
 import fi.vm.sade.haku.http.RestClient;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.BaseEducations;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.HakumaksuUtil;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.HakumaksuUtil.EducationRequirements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
+import static com.google.common.collect.Iterables.filter;
 import static fi.vm.sade.haku.oppija.hakemus.domain.BaseEducations.*;
 import static fi.vm.sade.haku.oppija.hakemus.domain.util.ApplicationUtil.getPreferenceAoIds;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.*;
-import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.ApplicationOptionOid;
-import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.AsciiCountryCode;
 
 @Service
 public class HakumaksuService {
@@ -103,26 +99,26 @@ public class HakumaksuService {
         }
     };
 
-    private static <T> List<T> toImmutable(Iterable<T> it) {
-        return ImmutableList.<T>builder().addAll(it).build();
+    private static <T> ImmutableSet<T> toImmutable(Iterable<T> it) {
+        return ImmutableSet.<T>builder().addAll(it).build();
     }
 
-    private static <T> Function<MergedAnswers, List<Eligibility>> wrapSetWhere(final Function<MergedAnswers, Set<T>> set,
-                                                                             final Predicate<T> filter,
-                                                                             final Function<T, Eligibility> transform) {
-        return new Function<MergedAnswers, List<Eligibility>>() {
+    private static <T> Function<MergedAnswers, ImmutableSet<Eligibility>> wrapSetWhere(final Function<MergedAnswers, ImmutableSet<T>> set,
+                                                                               final Predicate<T> filter,
+                                                                               final Function<T, Eligibility> transform) {
+        return new Function<MergedAnswers, ImmutableSet<Eligibility>>() {
             @Override
-            public List<Eligibility> apply(MergedAnswers answers) {
-                return toImmutable(Iterables.transform(Iterables.filter(set.apply(answers), filter), transform));
+            public ImmutableSet<Eligibility> apply(MergedAnswers answers) {
+                return toImmutable(Iterables.transform(filter(set.apply(answers), filter), transform));
             }
         };
     }
 
-    private static <T> Function<MergedAnswers, List<Eligibility>> wrapSet(final Function<MergedAnswers, Set<T>> set, final Function<T, Eligibility> transform) {
+    private static <T> Function<MergedAnswers, ImmutableSet<Eligibility>> wrapSet(final Function<MergedAnswers, ImmutableSet<T>> set, final Function<T, Eligibility> transform) {
         return wrapSetWhere(set, Predicates.<T>alwaysTrue(), transform);
     }
 
-    private static Function<MergedAnswers, List<Eligibility>> multipleChoiceKkEquals(final String value) {
+    private static Function<MergedAnswers, ImmutableSet<Eligibility>> multipleChoiceKkEquals(final String value) {
         return wrapSetWhere(
                 SuomalainenKorkeakoulutus.of,
                 new Predicate<SuomalainenKorkeakoulutus>() {
@@ -134,7 +130,7 @@ public class HakumaksuService {
                 HakumaksuService.<BaseEducations.SuomalainenKorkeakoulutus>transformWithNimike());
     }
 
-    private static Function<MergedAnswers, List<Eligibility>> multipleChoiceKkUlkEquals(final String value) {
+    private static Function<MergedAnswers, ImmutableSet<Eligibility>> multipleChoiceKkUlkEquals(final String value) {
         return wrapSetWhere(
                 UlkomaalainenKorkeakoulutus.of,
                 new Predicate<UlkomaalainenKorkeakoulutus>() {
@@ -152,7 +148,7 @@ public class HakumaksuService {
     }
 
 
-    private static Function<MergedAnswers, List<Eligibility>> suomalainenYo(final String value) {
+    private static Function<MergedAnswers, ImmutableSet<Eligibility>> suomalainenYo(final String value) {
         return wrapSetWhere(
                 SuomalainenYo.of,
                 new Predicate<SuomalainenYo>() {
@@ -169,7 +165,7 @@ public class HakumaksuService {
                 });
     }
 
-    private static Function<MergedAnswers, List<Eligibility>> suomalainenKansainvalinenYo(final String value) {
+    private static Function<MergedAnswers, ImmutableSet<Eligibility>> suomalainenKansainvalinenYo(final String value) {
         return wrapSetWhere(
                 SuomalainenKansainvalinenYo.of,
                 new Predicate<SuomalainenKansainvalinenYo>() {
@@ -186,7 +182,7 @@ public class HakumaksuService {
                 });
     }
 
-    private static Function<MergedAnswers, List<Eligibility>> ulkomainenKansainvalinenYo(final String value) {
+    private static Function<MergedAnswers, ImmutableSet<Eligibility>> ulkomainenKansainvalinenYo(final String value) {
         return wrapSetWhere(
                 UlkomainenKansainvalinenYo.of,
                 new Predicate<UlkomainenKansainvalinenYo>() {
@@ -203,7 +199,7 @@ public class HakumaksuService {
                 });
     }
 
-    private static final Function<MergedAnswers, List<Eligibility>> ulkomainenPohjakoulutus = wrapSet(
+    private static final Function<MergedAnswers, ImmutableSet<Eligibility>> ulkomainenPohjakoulutus = wrapSet(
             UlkomaalainenKoulutus.of,
             new Function<UlkomaalainenKoulutus, Eligibility>() {
                 @Override
@@ -221,12 +217,12 @@ public class HakumaksuService {
         };
     }
 
-    private static Function<MergedAnswers, List<Eligibility>> mergeEligibilities(final Function<MergedAnswers, List<Eligibility>>... validators) {
-        return new Function<MergedAnswers, List<Eligibility>>() {
+    private static Function<MergedAnswers, ImmutableSet<Eligibility>> mergeEligibilities(final Function<MergedAnswers, ImmutableSet<Eligibility>>... validators) {
+        return new Function<MergedAnswers, ImmutableSet<Eligibility>>() {
             @Override
-            public List<Eligibility> apply(MergedAnswers answers) {
-                ImmutableList.Builder<Eligibility> results = ImmutableList.builder();
-                for (Function<MergedAnswers, List<Eligibility>> v : validators) {
+            public ImmutableSet<Eligibility> apply(MergedAnswers answers) {
+                ImmutableSet.Builder<Eligibility> results = ImmutableSet.builder();
+                for (Function<MergedAnswers, ImmutableSet<Eligibility>> v : validators) {
                     results.addAll(v.apply(answers));
                 }
                 return results.build();
@@ -234,37 +230,37 @@ public class HakumaksuService {
         };
     }
 
-    private final static Function<MergedAnswers, List<Eligibility>> ignore = new Function<MergedAnswers, List<Eligibility>>() {
+    private final static Function<MergedAnswers, ImmutableSet<Eligibility>> ignore = new Function<MergedAnswers, ImmutableSet<Eligibility>>() {
         @Override
-        public List<Eligibility> apply(MergedAnswers answers) {
-            return Lists.newArrayList();
+        public ImmutableSet<Eligibility> apply(MergedAnswers answers) {
+            return ImmutableSet.of();
         }
     };
 
-    private static final Function<MergedAnswers, List<Eligibility>> suomalainenYoAmmatillinen = wrapSet(SuomalainenYoAmmatillinen.of, HakumaksuService.<SuomalainenYoAmmatillinen>transformWithNimike());
-    private static final Function<MergedAnswers, List<Eligibility>> suomalainenAvoinTutkinto = wrapSet(SuomalainenAvoinKoulutus.of, HakumaksuService.<SuomalainenAvoinKoulutus>transformWithNimike());
-    private static final Function<MergedAnswers, List<Eligibility>> opistoTaiAmmatillisenKorkeaAsteenTutkinto = wrapSet(SuomalainenAmKoulutus.of, HakumaksuService.<SuomalainenAmKoulutus>transformWithNimike());
-    private static final Function<MergedAnswers, List<Eligibility>> ammattiTaiErikoisammattitutkinto = wrapSet(SuomalainenAmtKoulutus.of, HakumaksuService.<SuomalainenAmtKoulutus>transformWithNimike());
-    private static final Function<MergedAnswers, List<Eligibility>> suomalaisenLukionOppimaaaraTaiYlioppilastutkinto = mergeEligibilities(
+    private static final Function<MergedAnswers, ImmutableSet<Eligibility>> suomalainenYoAmmatillinen = wrapSet(SuomalainenYoAmmatillinen.of, HakumaksuService.<SuomalainenYoAmmatillinen>transformWithNimike());
+    private static final Function<MergedAnswers, ImmutableSet<Eligibility>> suomalainenAvoinTutkinto = wrapSet(SuomalainenAvoinKoulutus.of, HakumaksuService.<SuomalainenAvoinKoulutus>transformWithNimike());
+    private static final Function<MergedAnswers, ImmutableSet<Eligibility>> opistoTaiAmmatillisenKorkeaAsteenTutkinto = wrapSet(SuomalainenAmKoulutus.of, HakumaksuService.<SuomalainenAmKoulutus>transformWithNimike());
+    private static final Function<MergedAnswers, ImmutableSet<Eligibility>> ammattiTaiErikoisammattitutkinto = wrapSet(SuomalainenAmtKoulutus.of, HakumaksuService.<SuomalainenAmtKoulutus>transformWithNimike());
+    private static final Function<MergedAnswers, ImmutableSet<Eligibility>> suomalaisenLukionOppimaaaraTaiYlioppilastutkinto = mergeEligibilities(
             suomalainenYo("lk"),
             suomalainenYo("fi"),
             suomalainenYo("lkOnly"));
-    private static final Function<MergedAnswers,List<Eligibility>> europeanBaccalaureateTutkinto = mergeEligibilities(
+    private static final Function<MergedAnswers, ImmutableSet<Eligibility>> europeanBaccalaureateTutkinto = mergeEligibilities(
             suomalainenKansainvalinenYo("eb"),
             ulkomainenKansainvalinenYo("eb"));
-    private static final Function<MergedAnswers,List<Eligibility>> internationalBaccalaureateTutkinto = mergeEligibilities(
+    private static final Function<MergedAnswers, ImmutableSet<Eligibility>> internationalBaccalaureateTutkinto = mergeEligibilities(
             suomalainenKansainvalinenYo("ib"),
             ulkomainenKansainvalinenYo("ib"));
-    private static final Function<MergedAnswers,List<Eligibility>> suomalainenYlioppilastutkinto = mergeEligibilities(
+    private static final Function<MergedAnswers, ImmutableSet<Eligibility>> suomalainenYlioppilastutkinto = mergeEligibilities(
             suomalainenYo("fi"),
             suomalainenYo("lkOnly"));
-    private static final Function<MergedAnswers,List<Eligibility>> reifeprufungTutkinto = mergeEligibilities(
+    private static final Function<MergedAnswers, ImmutableSet<Eligibility>> reifeprufungTutkinto = mergeEligibilities(
             suomalainenKansainvalinenYo("rp"),
             ulkomainenKansainvalinenYo("rp"));
 
     /* Determine which ApplicationSystem fields fullfills the given base education requirements */
     // Pohjakoulutuskoodit: https://testi.virkailija.opintopolku.fi/koodisto-service/rest/codeelement/codes/pohjakoulutusvaatimuskorkeakoulut/1
-    private static final ImmutableMap<String, Function<MergedAnswers, List<Eligibility>>> kkBaseEducationRequirements = ImmutableMap.<String, Function<MergedAnswers, List<Eligibility>>>builder()
+    private static final ImmutableMap<String, Function<MergedAnswers, ImmutableSet<Eligibility>>> kkBaseEducationRequirements = ImmutableMap.<String, Function<MergedAnswers, ImmutableSet<Eligibility>>>builder()
             // Ylempi korkeakoulututkinto
             .put("pohjakoulutusvaatimuskorkeakoulut_103", multipleChoiceKkEquals("4"))
             // Ylempi ammattikorkeakoulututkinto
@@ -346,16 +342,16 @@ public class HakumaksuService {
      *         - Koulutus on ETA/Sveitsi-alueelta -> EI MAKSUA (tämän hakutoiveen seurauksena)
      *       - Jos mikään koulutus ei ETA/Sveitsi -> MAKSU (ei-ETA/Sveitsi-alueen pohjakoulutusten seurauksena)
      */
-    public Map<ApplicationOptionOid, List<Eligibility>> paymentRequirements(MergedAnswers answers) throws ExecutionException {
-        ImmutableMap.Builder<ApplicationOptionOid, List<Eligibility>> applicationPaymentEligibilities = ImmutableMap.builder();
+    public ImmutableMap<ApplicationOptionOid, ImmutableSet<Eligibility>> paymentRequirements(MergedAnswers answers) throws ExecutionException {
+        ImmutableMap.Builder<ApplicationOptionOid, ImmutableSet<Eligibility>> applicationPaymentEligibilities = ImmutableMap.builder();
 
-        for (HakumaksuUtil.EducationRequirements applicationOptionRequirement : util.getEducationRequirements(koulutusinformaatioUrl, getPreferenceAoIds(answers))) {
-            ImmutableList.Builder<Eligibility> aoPaymentEligibilityBuilder = ImmutableList.builder();
+        for (EducationRequirements applicationOptionRequirement : util.getEducationRequirements(koulutusinformaatioUrl, getPreferenceAoIds(answers))) {
+            ImmutableSet.Builder<Eligibility> aoPaymentEligibilityBuilder = ImmutableSet.builder();
             boolean exemptingAoFound = false;
 
             for (String baseEducationRequirement : applicationOptionRequirement.baseEducationRequirements) {
-                List<Eligibility> allEligibilities = kkBaseEducationRequirements.get(baseEducationRequirement).apply(answers);
-                List<Eligibility> paymentEligibilities = Lists.newLinkedList(Iterables.filter(allEligibilities, onlyNonExempt));
+                ImmutableSet<Eligibility> allEligibilities = kkBaseEducationRequirements.get(baseEducationRequirement).apply(answers);
+                ImmutableSet<Eligibility> paymentEligibilities = ImmutableSet.copyOf(filter(allEligibilities, onlyNonExempt));
 
                 if (allEligibilities.size() == paymentEligibilities.size()) {
                     // Ei löytynyt yhtään maksusta vapauttavaa kelpoisuutta,
@@ -369,20 +365,20 @@ public class HakumaksuService {
                 }
             }
 
-            List<Eligibility> aoPaymentEligibilities = exemptingAoFound ? ImmutableList.<Eligibility>of() : aoPaymentEligibilityBuilder.build();
+            ImmutableSet<Eligibility> aoPaymentEligibilities = exemptingAoFound ? ImmutableSet.<Eligibility>of() : aoPaymentEligibilityBuilder.build();
             applicationPaymentEligibilities.put(applicationOptionRequirement.applicationOptionId, aoPaymentEligibilities);
         }
 
         return applicationPaymentEligibilities.build();
     }
 
-    public Map<ApplicationOptionOid, List<Eligibility>> paymentRequirements(Application application) throws ExecutionException {
+    public ImmutableMap<ApplicationOptionOid, ImmutableSet<Eligibility>> paymentRequirements(Application application) throws ExecutionException {
         return paymentRequirements(MergedAnswers.of(application.getVastauksetMerged()));
     }
 
     public boolean isPaymentRequired(Application application) throws ExecutionException {
-        final Map<Types.ApplicationOptionOid, List<HakumaksuService.Eligibility>> requirements = paymentRequirements(application);
-        for (final List<HakumaksuService.Eligibility> eligibilities : requirements.values()) {
+        final ImmutableMap<ApplicationOptionOid, ImmutableSet<Eligibility>> requirements = paymentRequirements(application);
+        for (ImmutableSet<Eligibility> eligibilities : requirements.values()) {
             if (!eligibilities.isEmpty()) {
                 return true;
             }
@@ -395,7 +391,7 @@ public class HakumaksuService {
             return application;
         }
 
-        Map<ApplicationOptionOid, List<Eligibility>> paymentRequirements = paymentRequirements(application);
+        Map<ApplicationOptionOid, ImmutableSet<Eligibility>> paymentRequirements = paymentRequirements(application);
         // TODO: Audit/log reason for payment requirement, e.g. which hakukohde and what base education reason
         boolean isExemptFromPayment = paymentRequirements.size() == 0;
         LOGGER.info("Application " + application.getOid() + " payment requirements: " + (isExemptFromPayment ? "none" : paymentRequirements));

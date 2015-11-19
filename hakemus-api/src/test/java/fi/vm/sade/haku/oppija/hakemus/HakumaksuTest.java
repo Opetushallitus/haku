@@ -1,9 +1,8 @@
 package fi.vm.sade.haku.oppija.hakemus;
 
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.ImmutableMap;
 import fi.vm.sade.haku.oppija.hakemus.service.HakumaksuService;
 import fi.vm.sade.haku.oppija.hakemus.service.HakumaksuService.Eligibility;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types;
@@ -29,7 +28,7 @@ public class HakumaksuTest {
     public void shouldBeExempt() throws ExecutionException {
         for (Map.Entry<Hakukelpoisuusvaatimus, List<Pohjakoulutus>> entry : exemptions.entrySet()) {
             for (Pohjakoulutus pohjakoulutus : entry.getValue()) {
-                final Map<ApplicationOptionOid, List<Eligibility>> requirements =
+                final Map<ApplicationOptionOid, ImmutableSet<Eligibility>> requirements =
                         service.paymentRequirements(getApplication(entry.getKey(), pohjakoulutus));
 
                 assertTrue(
@@ -43,7 +42,7 @@ public class HakumaksuTest {
     public void shouldNotBeExempt() throws ExecutionException {
         for (Map.Entry<Hakukelpoisuusvaatimus, List<Pohjakoulutus>> entry : nonExempting.entrySet()) {
             for (Pohjakoulutus pohjakoulutus : entry.getValue()) {
-                final Map<Types.ApplicationOptionOid, List<HakumaksuService.Eligibility>> requirements =
+                final Map<ApplicationOptionOid, ImmutableSet<Eligibility>> requirements =
                         service.paymentRequirements(getApplication(entry.getKey(), pohjakoulutus));
 
                 assertTrue(
@@ -55,7 +54,7 @@ public class HakumaksuTest {
 
     @Test
     public void exemptingBaseEducationOverridesOneRequiringPayment() throws ExecutionException {
-        Map<ApplicationOptionOid, List<Eligibility>> paymentRequirements = service.paymentRequirements(getApplication(
+        ImmutableMap<ApplicationOptionOid, ImmutableSet<Eligibility>> paymentRequirements = service.paymentRequirements(getApplication(
                 ImmutableSet.of(APPLICATION_OPTION_WITH_MULTIPLE_BASE_EDUCATION_REQUIREMENTS),
                 ImmutableSet.of(
                         MUUALLA_KUIN_SUOMESSA_SUORITETTU_KORKEAKOULUTUTKINTO_YLEMPI_YLIOPISTOTUTKINTO_MAISTERI_ARUBA, // Requires payment
@@ -64,23 +63,23 @@ public class HakumaksuTest {
 
         assertTrue(
                 "Exempting base education did not remove need for payment, result: " + paymentRequirements,
-                paymentRequirements.equals(ImmutableMap.of(ApplicationOptionOid.of(APPLICATION_OPTION_WITH_MULTIPLE_BASE_EDUCATION_REQUIREMENTS), ImmutableList.of())));
+                paymentRequirements.equals(ImmutableMap.of(ApplicationOptionOid.of(APPLICATION_OPTION_WITH_MULTIPLE_BASE_EDUCATION_REQUIREMENTS), ImmutableSet.of())));
     }
 
     @Test
     public void harkinnanvarainenAloneDoesntTriggerPayment() throws ExecutionException {
-        Map<ApplicationOptionOid, List<Eligibility>> paymentRequirements = service.paymentRequirements(getApplication(
+        ImmutableMap<ApplicationOptionOid, ImmutableSet<Eligibility>> paymentRequirements = service.paymentRequirements(getApplication(
                 Hakukelpoisuusvaatimus.HARKINNANVARAISUUS_TAI_ERIVAPAUS,
                 MUUALLA_KUIN_SUOMESSA_SUORITETTU_KORKEAKOULUTUTKINTO_YLEMPI_YLIOPISTOTUTKINTO_MAISTERI_ARUBA));
 
         assertTrue(
                 "Harkinnanvaraisuus affected expected outcome: " + paymentRequirements,
-                paymentRequirements.equals(ImmutableMap.of(ApplicationOptionOid.of(Hakukelpoisuusvaatimus.HARKINNANVARAISUUS_TAI_ERIVAPAUS.toString()), ImmutableList.of())));
+                paymentRequirements.equals(ImmutableMap.of(ApplicationOptionOid.of(Hakukelpoisuusvaatimus.HARKINNANVARAISUUS_TAI_ERIVAPAUS.toString()), ImmutableSet.of())));
     }
 
     @Test
     public void harkinnanvarainenDoesntExemptFromPayment() throws ExecutionException {
-        Map<ApplicationOptionOid, List<Eligibility>> paymentRequirements = service.paymentRequirements(getApplication(
+        ImmutableMap<ApplicationOptionOid, ImmutableSet<Eligibility>> paymentRequirements = service.paymentRequirements(getApplication(
                 ImmutableSet.of(APPLICATION_OPTION_WITH_IGNORE_AND_PAYMENT_EDUCATION_REQUIREMENTS),
                 ImmutableSet.of(MUUALLA_KUIN_SUOMESSA_SUORITETTU_KORKEAKOULUTUTKINTO_YLEMPI_YLIOPISTOTUTKINTO_MAISTERI_ARUBA)));
 
@@ -88,6 +87,6 @@ public class HakumaksuTest {
                 "Harkinnanvaraisuus affected expected outcome: " + paymentRequirements,
                 paymentRequirements.equals(ImmutableMap.of(
                         ApplicationOptionOid.of(APPLICATION_OPTION_WITH_IGNORE_AND_PAYMENT_EDUCATION_REQUIREMENTS),
-                        ImmutableList.of(new Eligibility("maisteri", Types.AsciiCountryCode.of("ABW"))))));
+                        ImmutableSet.of(new Eligibility("maisteri", Types.AsciiCountryCode.of("ABW"))))));
     }
 }
