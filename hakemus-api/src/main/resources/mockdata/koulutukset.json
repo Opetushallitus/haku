@@ -5,7 +5,9 @@
     "aoIdentifier": "143",
     "educationDegree": "32",
     "sora": false,
-    "teachingLanguages": ["FI"],
+    "teachingLanguages": [
+      "FI"
+    ],
     "athleteEducation": false,
     "provider": {
       "id": "1.2.246.562.10.2014042514082007985435",
@@ -34,7 +36,9 @@
     "organizationGroups": [],
     "attachments": null,
     "provider": {
-      "applicationSystemIds": ["1.2.246.562.29.95390561488"]
+      "applicationSystemIds": [
+        "1.2.246.562.29.95390561488"
+      ]
     }
   },
   "1.2.246.562.14.2013120511174558582514": {
@@ -87,14 +91,10 @@
       ]
     },
     "requiredBaseEducations": [
-      "0", "6"
+      "0",
+      "6"
     ]
   },
-
-
-
-
-
   "1.2.246.562.20.85668637847": {
     "id": "1.2.246.562.20.85668637847",
     "name": "Kansanmusiikki 5,5-vuotinen koulutus",
@@ -114,7 +114,10 @@
       "0"
     ],
     "provider": {
-      "applicationSystemIds": ["1.2.246.562.5.2013112910452702965370", "1.2.246.562.29.95390561488"]
+      "applicationSystemIds": [
+        "1.2.246.562.5.2013112910452702965370",
+        "1.2.246.562.29.95390561488"
+      ]
     }
   },
   "1.2.246.562.20.48556982121": {
@@ -136,10 +139,12 @@
       "0"
     ],
     "provider": {
-      "applicationSystemIds": ["1.2.246.562.5.2013112910452702965370", "1.2.246.562.29.95390561488"]
+      "applicationSystemIds": [
+        "1.2.246.562.5.2013112910452702965370",
+        "1.2.246.562.29.95390561488"
+      ]
     }
   },
-
   "1.2.246.562.14.2013102812460331191879": {
     "id": "1.2.246.562.14.2013102812460331191879",
     "name": "CopyPaste1",
@@ -156,13 +161,15 @@
     "organizationGroups": [],
     "attachments": null,
     "requiredBaseEducations": [
-      "0", "1"
+      "0",
+      "1"
     ],
     "provider": {
-      "applicationSystemIds": ["1.2.246.562.5.2013080813081926341927"]
+      "applicationSystemIds": [
+        "1.2.246.562.5.2013080813081926341927"
+      ]
     }
   },
-
   "1.2.246.562.20.94964838901": {
     "id": "1.2.246.562.20.94964838901",
     "name": "CopyPaste2",
@@ -182,10 +189,11 @@
       "0"
     ],
     "provider": {
-      "applicationSystemIds": ["1.2.246.562.29.173465377510"]
+      "applicationSystemIds": [
+        "1.2.246.562.29.173465377510"
+      ]
     }
   },
-
   "1.2.246.562.5.68672543292": {
     "id": "1.2.246.562.5.68672543292",
     "name": "CopyPaste3",
@@ -202,20 +210,25 @@
     "organizationGroups": [],
     "attachments": null,
     "requiredBaseEducations": [
-      "0", "1"
+      "0",
+      "1"
     ],
     "provider": {
-      "applicationSystemIds": ["1.2.246.562.5.2013112910452702965370", "1.2.246.562.5.2013080813081926341927"]
+      "applicationSystemIds": [
+        "1.2.246.562.5.2013112910452702965370",
+        "1.2.246.562.5.2013080813081926341927"
+      ]
     }
   },
-
   "1.2.246.562.5.19132087818": {
     "id": "1.2.246.562.5.19132087818",
     "name": "Grundexamen i fiskeri, gr",
     "aoIdentifier": "852",
     "educationDegree": "32",
     "sora": false,
-    "teachingLanguages": ["SV"],
+    "teachingLanguages": [
+      "SV"
+    ],
     "athleteEducation": false,
     "kaksoistutkinto": false,
     "vocational": true,
@@ -226,10 +239,11 @@
       "0"
     ],
     "provider": {
-      "applicationSystemIds": ["1.2.246.562.5.2014020613412490531399"]
+      "applicationSystemIds": [
+        "1.2.246.562.5.2014020613412490531399"
+      ]
     }
   },
-
   "1.2.246.562.20.645785477510": {
     "id": "1.2.246.562.20.645785477510",
     "name": "CopyPaste5",
@@ -249,17 +263,21 @@
       "0"
     ],
     "provider": {
-      "applicationSystemIds": ["1.2.246.562.5.2013112910452702965370", "1.2.246.562.29.173465377510"]
+      "applicationSystemIds": [
+        "1.2.246.562.5.2013112910452702965370",
+        "1.2.246.562.29.173465377510"
+      ]
     }
   },
-
   "1.2.246.562.5.31982630126": {
     "id": "1.2.246.562.5.31982630126",
     "name": "Hevostalouden perustutkinto, pk",
     "aoIdentifier": "215",
     "educationDegree": "32",
     "sora": false,
-    "teachingLanguages": ["FI"],
+    "teachingLanguages": [
+      "FI"
+    ],
     "athleteEducation": false,
     "kaksoistutkinto": true,
     "vocational": true,
@@ -269,7 +287,9 @@
       "1"
     ],
     "provider": {
-      "applicationSystemIds": ["1.2.246.562.5.2013080813081926341927"]
+      "applicationSystemIds": [
+        "1.2.246.562.5.2013080813081926341927"
+      ]
     }
   },
   "1.2.246.562.20.35798482663": {
@@ -289,7 +309,9 @@
     "organizationGroups": [],
     "attachments": null,
     "provider": {
-      "applicationSystemIds": ["1.2.246.562.29.95390561488"]
+      "applicationSystemIds": [
+        "1.2.246.562.29.95390561488"
+      ]
     },
     "requiredBaseEducations": [
       "0"
@@ -311,7 +333,9 @@
     "organizationGroups": [],
     "attachments": null,
     "provider": {
-      "applicationSystemIds": ["1.2.246.562.29.95390561488"]
+      "applicationSystemIds": [
+        "1.2.246.562.29.95390561488"
+      ]
     }
   },
   "1.2.246.562.20.18094409226": {
@@ -354,7 +378,10 @@
     "provider": {
       "id": "1.2.246.562.10.78522729439",
       "name": "Taideyliopisto,  Sibelius-Akatemia",
-      "applicationSystemIds": ["1.2.246.562.29.95390561488", "1.2.246.562.29.173465377510"],
+      "applicationSystemIds": [
+        "1.2.246.562.29.95390561488",
+        "1.2.246.562.29.173465377510"
+      ],
       "postalAddress": {
         "streetAddress": "PL 32",
         "streetAddress2": null,
@@ -446,23 +473,39 @@
     "organizationGroups": [
       {
         "oid": "1.2.246.562.28.11386525208",
-        "usageGroups": ["yleinen"],
-        "groupTypes": ["hakukohde"]
+        "usageGroups": [
+          "yleinen"
+        ],
+        "groupTypes": [
+          "hakukohde"
+        ]
       },
       {
         "oid": "1.2.246.562.28.26079071193",
-        "usageGroups": ["yleinen"],
-        "groupTypes": ["hakukohde"]
+        "usageGroups": [
+          "yleinen"
+        ],
+        "groupTypes": [
+          "hakukohde"
+        ]
       },
       {
         "oid": "1.2.246.562.28.81551131765",
-        "usageGroups": ["hakukohde_rajaava"],
-        "groupTypes": ["hakukohde"]
+        "usageGroups": [
+          "hakukohde_rajaava"
+        ],
+        "groupTypes": [
+          "hakukohde"
+        ]
       },
       {
         "oid": "1.2.246.562.28.32672180497",
-        "usageGroups": ["yleinen"],
-        "groupTypes": ["hakukohde"]
+        "usageGroups": [
+          "yleinen"
+        ],
+        "groupTypes": [
+          "hakukohde"
+        ]
       }
     ],
     "kotitalous": false
@@ -481,7 +524,11 @@
     "vocational": true,
     "educationCodeUri": "koulutus_039996",
     "provider": {
-      "applicationSystemIds": ["1.2.246.562.5.2014022711042555034240", "1.2.246.562.5.2013080813081926341927", "1.2.246.562.29.173465377510"]
+      "applicationSystemIds": [
+        "1.2.246.562.5.2014022711042555034240",
+        "1.2.246.562.5.2013080813081926341927",
+        "1.2.246.562.29.173465377510"
+      ]
     },
     "requiredBaseEducations": [
       "1"
@@ -494,7 +541,9 @@
     "aoIdentifier": "803",
     "educationDegree": null,
     "sora": false,
-    "teachingLanguages": ["FI"],
+    "teachingLanguages": [
+      "FI"
+    ],
     "athleteEducation": false,
     "kaksoistutkinto": false,
     "vocational": false,
@@ -503,7 +552,10 @@
     "provider": {
       "id": "1.2.246.562.10.591352080610",
       "name": "Kallion lukio",
-      "applicationSystemIds": ["1.2.246.562.5.2013080813081926341927", "1.2.246.562.5.2013080813081926341928"]
+      "applicationSystemIds": [
+        "1.2.246.562.5.2013080813081926341927",
+        "1.2.246.562.5.2013080813081926341928"
+      ]
     },
     "attachmentDeliveryAddress": {
       "streetAddress": "PL 3805",
@@ -511,7 +563,8 @@
       "postOffice": "HELSINGIN KAUPUNKI"
     },
     "requiredBaseEducations": [
-      "0", "1"
+      "0",
+      "1"
     ],
     "organizationGroups": []
   },
@@ -521,7 +574,9 @@
     "aoIdentifier": "000",
     "educationDegree": null,
     "sora": false,
-    "teachingLanguages": ["FI"],
+    "teachingLanguages": [
+      "FI"
+    ],
     "athleteEducation": false,
     "kaksoistutkinto": false,
     "vocational": false,
@@ -530,7 +585,10 @@
     "provider": {
       "id": "1.2.246.562.10.591352080610",
       "name": "Salon lukio",
-      "applicationSystemIds": ["1.2.246.562.5.2013080813081926341927", "1.2.246.562.5.2013080813081926341928"]
+      "applicationSystemIds": [
+        "1.2.246.562.5.2013080813081926341927",
+        "1.2.246.562.5.2013080813081926341928"
+      ]
     },
     "attachmentDeliveryAddress": {
       "streetAddress": "PL 3805",
@@ -538,7 +596,8 @@
       "postOffice": "HELSINGIN KAUPUNKI"
     },
     "requiredBaseEducations": [
-      "0", "1"
+      "0",
+      "1"
     ],
     "organizationGroups": []
   },
@@ -548,28 +607,35 @@
     "aoIdentifier": "149",
     "educationDegree": "32",
     "sora": false,
-    "teachingLanguages": ["FI"],
+    "teachingLanguages": [
+      "FI"
+    ],
     "athleteEducation": false,
     "kaksoistutkinto": false,
     "vocational": true,
     "educationCodeUri": "koulutus_361101",
     "requiredBaseEducations": [
-      "0", "1"
+      "0",
+      "1"
     ],
     "organizationGroups": [],
     "provider": {
       "id": "1.2.246.562.10.591352080610",
       "name": "Ahlmanin ammattiopisto",
-      "applicationSystemIds": ["1.2.246.562.5.2013080813081926341927"]
+      "applicationSystemIds": [
+        "1.2.246.562.5.2013080813081926341927"
+      ]
     }
   },
-  "1.2.246.562.20.78030966705":     {
+  "1.2.246.562.20.78030966705": {
     "id": "1.2.246.562.20.78030966705",
     "name": "Kalatalouden perustutkinto, pk",
     "aoIdentifier": "852",
     "educationDegree": "32",
     "sora": false,
-    "teachingLanguages": ["FI"],
+    "teachingLanguages": [
+      "FI"
+    ],
     "athleteEducation": true,
     "kaksoistutkinto": true,
     "vocational": true,
@@ -580,14 +646,17 @@
     "provider": {
       "id": "1.2.246.562.10.591352080610",
       "name": "Tampereen seudun ammattiopisto Tredu",
-      "applicationSystemIds": ["1.2.246.562.5.2014020613412490531399", "1.2.246.562.5.2013080813081926341927"]
+      "applicationSystemIds": [
+        "1.2.246.562.5.2014020613412490531399",
+        "1.2.246.562.5.2013080813081926341927"
+      ]
     },
     "requiredBaseEducations": [
-      "0", "1"
+      "0",
+      "1"
     ]
   },
-
-  "1.2.246.562.20.656632485510":     {
+  "1.2.246.562.20.656632485510": {
     "id": "1.2.246.562.20.656632485510",
     "name": "Terveydenhoitaja (AMK), monimuotototeutus",
     "aoIdentifier": null,
@@ -602,16 +671,22 @@
           "postOffice": "HELSINKI"
         }
       },
-      "applicationSystemIds": ["1.2.246.562.29.173465377510", "1.2.246.562.5.2013080813081926341927"]
+      "applicationSystemIds": [
+        "1.2.246.562.29.173465377510",
+        "1.2.246.562.5.2013080813081926341927"
+      ]
     },
     "sora": false,
-    "teachingLanguages": ["FI"],
+    "teachingLanguages": [
+      "FI"
+    ],
     "athleteEducation": false,
     "kaksoistutkinto": false,
     "vocational": false,
     "educationCodeUri": "koulutus_671103",
     "requiredBaseEducations": [
-      "0", "1"
+      "0",
+      "1"
     ],
     "pohjakoulutusLiitteet": [
       "pohjakoulutuskklomake_yokvsuomi",
@@ -625,19 +700,24 @@
     "organizationGroups": [
       {
         "oid": "1.2.246.562.28.90373737623",
-        "usageGroups": ["hakukohde_liiteosoite"],
-        "groupTypes": ["hakukohde"]
+        "usageGroups": [
+          "hakukohde_liiteosoite"
+        ],
+        "groupTypes": [
+          "hakukohde"
+        ]
       }
     ]
   },
-
   "1.2.246.562.20.97520172236": {
     "id": "1.2.246.562.20.97520172236",
     "name": "Sosiaali- ja terveysalan perustutkinto, pk",
     "aoIdentifier": "873",
     "sora": true,
     "educationDegree": "32",
-    "teachingLanguages": ["FI"],
+    "teachingLanguages": [
+      "FI"
+    ],
     "kaksoistutkinto": true,
     "athleteEducation": false,
     "vocational": true,
@@ -645,15 +725,17 @@
     "provider": {
       "id": "1.2.246.562.10.64213824028",
       "name": "Etelä-Savon ammattiopisto,  Otavankatu 4",
-      "applicationSystemIds": ["1.2.246.562.29.173465377510"]
+      "applicationSystemIds": [
+        "1.2.246.562.29.173465377510"
+      ]
     },
     "requiredBaseEducations": [
-      "0", "1"
+      "0",
+      "1"
     ],
     "organizationGroups": []
   },
-
-  "1.2.246.562.20.42250016427":     {
+  "1.2.246.562.20.42250016427": {
     "id": "1.2.246.562.20.42250016427",
     "name": "Sosionomi (AMK), monimuotototeutus",
     "aoIdentifier": null,
@@ -668,10 +750,14 @@
           "postOffice": "JÄRVENPÄÄ"
         }
       },
-      "applicationSystemIds": ["1.2.246.562.29.173465377510"]
+      "applicationSystemIds": [
+        "1.2.246.562.29.173465377510"
+      ]
     },
     "sora": false,
-    "teachingLanguages": ["FI"],
+    "teachingLanguages": [
+      "FI"
+    ],
     "athleteEducation": false,
     "kaksoistutkinto": false,
     "vocational": false,
@@ -679,8 +765,12 @@
     "organizationGroups": [
       {
         "oid": "1.2.246.562.28.90373737623",
-        "usageGroups": ["hakukohde_liiteosoite"],
-        "groupTypes": ["hakukohde"]
+        "usageGroups": [
+          "hakukohde_liiteosoite"
+        ],
+        "groupTypes": [
+          "hakukohde"
+        ]
       },
       {
         "oid": "1.2.246.562.28.90373737624",
@@ -695,7 +785,9 @@
       },
       {
         "oid": "1.2.246.562.28.90373737625",
-        "usageGroups": ["testi"],
+        "usageGroups": [
+          "testi"
+        ],
         "groupTypes": [
           "testi",
           "hakukohde"
@@ -707,7 +799,9 @@
           "testi",
           "hakukohde_liiteosoite"
         ],
-        "groupTypes": ["testi"]
+        "groupTypes": [
+          "testi"
+        ]
       }
     ]
   },
@@ -728,7 +822,9 @@
     "organizationGroups": [],
     "attachments": null,
     "provider": {
-      "applicationSystemIds": ["1.2.246.562.5.2013112910452702965370"]
+      "applicationSystemIds": [
+        "1.2.246.562.5.2013112910452702965370"
+      ]
     },
     "requiredBaseEducations": [
       "0"
@@ -751,13 +847,15 @@
     "organizationGroups": [],
     "attachments": null,
     "provider": {
-      "applicationSystemIds": ["1.2.246.562.5.2013112910452702965370"]
+      "applicationSystemIds": [
+        "1.2.246.562.5.2013112910452702965370"
+      ]
     },
     "requiredBaseEducations": [
       "0"
     ]
   },
-  "1.2.246.562.20.14660127086":     {
+  "1.2.246.562.20.14660127086": {
     "id": "1.2.246.562.20.14660127086",
     "name": "Jazzmusiikki, sävellys 2,5-vuotinen koulutus",
     "aoIdentifier": null,
@@ -785,7 +883,9 @@
         "id": "1.2.246.562.17.48322662478",
         "asIds": null,
         "name": "Jazzmusiikki 2,5-vuotinen koulutus",
-        "qualifications": ["Musiikin maisteri"],
+        "qualifications": [
+          "Musiikin maisteri"
+        ],
         "prerequisite": null,
         "provider": "Taideyliopisto,  Sibelius-Akatemia",
         "fieldOfExpertise": null
@@ -794,7 +894,10 @@
     "provider": {
       "id": "1.2.246.562.10.78522729439",
       "name": "Taideyliopisto,  Sibelius-Akatemia",
-      "applicationSystemIds": ["1.2.246.562.29.95390561488", "1.2.246.562.29.173465377510"],
+      "applicationSystemIds": [
+        "1.2.246.562.29.95390561488",
+        "1.2.246.562.29.173465377510"
+      ],
       "postalAddress": {
         "streetAddress": "PL 32",
         "streetAddress2": null,
@@ -887,28 +990,48 @@
     "organizationGroups": [
       {
         "oid": "1.2.246.562.28.11386525208",
-        "usageGroups": ["yleinen"],
-        "groupTypes": ["hakukohde"]
+        "usageGroups": [
+          "yleinen"
+        ],
+        "groupTypes": [
+          "hakukohde"
+        ]
       },
       {
         "oid": "1.2.246.562.28.26079071193",
-        "usageGroups": ["yleinen"],
-        "groupTypes": ["hakukohde"]
+        "usageGroups": [
+          "yleinen"
+        ],
+        "groupTypes": [
+          "hakukohde"
+        ]
       },
       {
         "oid": "1.2.246.562.28.32672180497",
-        "usageGroups": ["yleinen"],
-        "groupTypes": ["hakukohde"]
+        "usageGroups": [
+          "yleinen"
+        ],
+        "groupTypes": [
+          "hakukohde"
+        ]
       },
       {
         "oid": "1.2.246.562.28.88952350290",
-        "usageGroups": ["yleinen"],
-        "groupTypes": ["hakukohde"]
+        "usageGroups": [
+          "yleinen"
+        ],
+        "groupTypes": [
+          "hakukohde"
+        ]
       },
       {
         "oid": "1.2.246.562.28.81551131765",
-        "usageGroups": ["hakukohde_rajaava"],
-        "groupTypes": ["hakukohde"]
+        "usageGroups": [
+          "hakukohde_rajaava"
+        ],
+        "groupTypes": [
+          "hakukohde"
+        ]
       }
     ],
     "kotitalous": false
@@ -953,7 +1076,9 @@
     "provider": {
       "id": "1.2.246.562.10.78522729439",
       "name": "Taideyliopisto,  Sibelius-Akatemia",
-      "applicationSystemIds": ["1.2.246.562.29.95390561488"],
+      "applicationSystemIds": [
+        "1.2.246.562.29.95390561488"
+      ],
       "postalAddress": {
         "streetAddress": "PL 32",
         "streetAddress2": null,
@@ -1031,38 +1156,62 @@
     "organizationGroups": [
       {
         "oid": "1.2.246.562.28.11386525208",
-        "usageGroups": ["yleinen"],
-        "groupTypes": ["hakukohde"]
+        "usageGroups": [
+          "yleinen"
+        ],
+        "groupTypes": [
+          "hakukohde"
+        ]
       },
       {
         "oid": "1.2.246.562.28.26079071193",
-        "usageGroups": ["yleinen"],
-        "groupTypes": ["hakukohde"]
+        "usageGroups": [
+          "yleinen"
+        ],
+        "groupTypes": [
+          "hakukohde"
+        ]
       },
       {
         "oid": "1.2.246.562.28.32672180497",
-        "usageGroups": ["yleinen"],
-        "groupTypes": ["hakukohde"]
+        "usageGroups": [
+          "yleinen"
+        ],
+        "groupTypes": [
+          "hakukohde"
+        ]
       },
       {
         "oid": "1.2.246.562.28.25992753605",
-        "usageGroups": ["hakukohde_rajaava"],
-        "groupTypes": ["hakukohde"]
+        "usageGroups": [
+          "hakukohde_rajaava"
+        ],
+        "groupTypes": [
+          "hakukohde"
+        ]
       },
       {
         "oid": "1.2.246.562.28.81551131765",
-        "usageGroups": ["hakukohde_rajaava"],
-        "groupTypes": ["hakukohde"]
+        "usageGroups": [
+          "hakukohde_rajaava"
+        ],
+        "groupTypes": [
+          "hakukohde"
+        ]
       },
       {
         "oid": "1.2.246.562.28.91748614279",
-        "usageGroups": ["hakukohde_rajaava"],
-        "groupTypes": ["hakukohde"]
+        "usageGroups": [
+          "hakukohde_rajaava"
+        ],
+        "groupTypes": [
+          "hakukohde"
+        ]
       }
     ],
     "kotitalous": false
   },
-  "1.2.246.562.20.19202370003":     {
+  "1.2.246.562.20.19202370003": {
     "id": "1.2.246.562.20.19202370003",
     "name": "Jazzmusiikki, instrumentti- ja lauluopinnot 2,5-vuotinen koulutus",
     "aoIdentifier": null,
@@ -1090,7 +1239,9 @@
         "id": "1.2.246.562.17.48322662478",
         "asIds": null,
         "name": "Jazzmusiikki 2,5-vuotinen koulutus",
-        "qualifications": ["Musiikin maisteri"],
+        "qualifications": [
+          "Musiikin maisteri"
+        ],
         "prerequisite": null,
         "provider": "Taideyliopisto,  Sibelius-Akatemia",
         "fieldOfExpertise": null
@@ -1099,7 +1250,9 @@
     "provider": {
       "id": "1.2.246.562.10.78522729439",
       "name": "Taideyliopisto,  Sibelius-Akatemia",
-      "applicationSystemIds": ["1.2.246.562.29.95390561488"],
+      "applicationSystemIds": [
+        "1.2.246.562.29.95390561488"
+      ],
       "postalAddress": {
         "streetAddress": "PL 32",
         "streetAddress2": null,
@@ -1178,38 +1331,66 @@
     "organizationGroups": [
       {
         "oid": "1.2.246.562.28.81551131765",
-        "usageGroups": ["hakukohde_rajaava"],
-        "groupTypes": ["hakukohde"]
+        "usageGroups": [
+          "hakukohde_rajaava"
+        ],
+        "groupTypes": [
+          "hakukohde"
+        ]
       },
       {
         "oid": "1.2.246.562.28.88952350290",
-        "usageGroups": ["yleinen"],
-        "groupTypes": ["hakukohde"]
+        "usageGroups": [
+          "yleinen"
+        ],
+        "groupTypes": [
+          "hakukohde"
+        ]
       },
       {
         "oid": "1.2.246.562.28.11386525208",
-        "usageGroups": ["yleinen"],
-        "groupTypes": ["hakukohde"]
+        "usageGroups": [
+          "yleinen"
+        ],
+        "groupTypes": [
+          "hakukohde"
+        ]
       },
       {
         "oid": "1.2.246.562.28.26079071193",
-        "usageGroups": ["yleinen"],
-        "groupTypes": ["hakukohde"]
+        "usageGroups": [
+          "yleinen"
+        ],
+        "groupTypes": [
+          "hakukohde"
+        ]
       },
       {
         "oid": "1.2.246.562.28.80295457855",
-        "usageGroups": ["hakukohde_rajaava"],
-        "groupTypes": ["hakukohde"]
+        "usageGroups": [
+          "hakukohde_rajaava"
+        ],
+        "groupTypes": [
+          "hakukohde"
+        ]
       },
       {
         "oid": "1.2.246.562.28.91748614279",
-        "usageGroups": ["hakukohde_rajaava"],
-        "groupTypes": ["hakukohde"]
+        "usageGroups": [
+          "hakukohde_rajaava"
+        ],
+        "groupTypes": [
+          "hakukohde"
+        ]
       },
       {
         "oid": "1.2.246.562.28.32672180497",
-        "usageGroups": ["yleinen"],
-        "groupTypes": ["hakukohde"]
+        "usageGroups": [
+          "yleinen"
+        ],
+        "groupTypes": [
+          "hakukohde"
+        ]
       }
     ],
     "kotitalous": false
@@ -1223,7 +1404,9 @@
     "sora": true,
     "vocational": true,
     "kaksoistutkinto": false,
-    "teachingLanguages": ["FI"],
+    "teachingLanguages": [
+      "FI"
+    ],
     "athleteEducation": false,
     "provider": {
       "id": "1.2.246.562.10.89537774706",
@@ -1234,11 +1417,11 @@
     },
     "organizationGroups": [],
     "requiredBaseEducations": [
-      "1", "9"
+      "1",
+      "9"
     ],
     "canBeApplied": true
   },
-
   "1.2.246.562.20.17550428336": {
     "id": "1.2.246.562.20.17550428336",
     "name": "Urheilevien kokkien koulutus",
@@ -1248,7 +1431,9 @@
     "sora": false,
     "vocational": true,
     "kaksoistutkinto": false,
-    "teachingLanguages": ["FI"],
+    "teachingLanguages": [
+      "FI"
+    ],
     "athleteEducation": true,
     "provider": {
       "id": "1.2.246.562.10.35241670048",
@@ -1263,7 +1448,6 @@
     ],
     "canBeApplied": true
   },
-
   "1.2.246.562.20.30500448839": {
     "id": "1.2.246.562.20.30500448839",
     "name": "Kymppiluokka",
@@ -1273,12 +1457,16 @@
     "sora": false,
     "vocational": true,
     "kaksoistutkinto": false,
-    "teachingLanguages": ["FI"],
+    "teachingLanguages": [
+      "FI"
+    ],
     "athleteEducation": false,
     "provider": {
       "id": "1.2.246.562.10.35241670047",
       "name": "Anna Tapion koulu",
-      "applicationSystemIds": ["1.2.246.562.29.173465377510"]
+      "applicationSystemIds": [
+        "1.2.246.562.29.173465377510"
+      ]
     },
     "organizationGroups": [],
     "requiredBaseEducations": [
@@ -1295,12 +1483,16 @@
     "sora": false,
     "vocational": true,
     "kaksoistutkinto": false,
-    "teachingLanguages": ["FI"],
+    "teachingLanguages": [
+      "FI"
+    ],
     "athleteEducation": false,
     "provider": {
       "id": "1.2.246.562.10.35241670047",
       "name": "JsonMockSchool",
-      "applicationSystemIds": ["1.2.246.562.5.2014022711042555034240"]
+      "applicationSystemIds": [
+        "1.2.246.562.5.2014022711042555034240"
+      ]
     },
     "organizationGroups": [],
     "requiredBaseEducations": [
@@ -1308,7 +1500,6 @@
     ],
     "canBeApplied": true
   },
-
   "1.2.246.562.14.2014032610154661183054": {
     "id": "1.2.246.562.14.2014032610154661183054",
     "name": "JsonMockKoulutus2",
@@ -1318,12 +1509,16 @@
     "sora": false,
     "vocational": true,
     "kaksoistutkinto": false,
-    "teachingLanguages": ["FI"],
+    "teachingLanguages": [
+      "FI"
+    ],
     "athleteEducation": false,
     "provider": {
       "id": "1.2.246.562.10.35241670047",
       "name": "JsonMockSchool",
-      "applicationSystemIds": ["1.2.246.562.5.2014022711042555034240"]
+      "applicationSystemIds": [
+        "1.2.246.562.5.2014022711042555034240"
+      ]
     },
     "organizationGroups": [],
     "requiredBaseEducations": [
@@ -1331,7 +1526,6 @@
     ],
     "canBeApplied": true
   },
-
   "1.2.246.562.20.60377543290": {
     "id": "1.2.246.562.20.60377543290",
     "name": "Copy-paste",
@@ -1341,12 +1535,16 @@
     "sora": false,
     "vocational": true,
     "kaksoistutkinto": false,
-    "teachingLanguages": ["FI"],
+    "teachingLanguages": [
+      "FI"
+    ],
     "athleteEducation": false,
     "provider": {
       "id": "1.2.246.562.10.35241670047",
       "name": "Copy-paste",
-      "applicationSystemIds": ["1.2.246.562.5.2013080813081926341928"]
+      "applicationSystemIds": [
+        "1.2.246.562.5.2013080813081926341928"
+      ]
     },
     "organizationGroups": [],
     "requiredBaseEducations": [
@@ -1354,8 +1552,6 @@
     ],
     "canBeApplied": true
   },
-
-
   "1.2.246.562.14.2014032812530780195965": {
     "id": "1.2.246.562.14.2014032812530780195965",
     "name": "Kymppiluokka",
@@ -1365,12 +1561,17 @@
     "sora": false,
     "vocational": true,
     "kaksoistutkinto": false,
-    "teachingLanguages": ["FI"],
+    "teachingLanguages": [
+      "FI"
+    ],
     "athleteEducation": false,
     "provider": {
       "id": "1.2.246.562.10.35241670047",
       "name": "Turun Kristillinen opisto",
-      "applicationSystemIds": ["1.2.246.562.5.2014022711042555034240", "1.2.246.562.5.2013080813081926341927"]
+      "applicationSystemIds": [
+        "1.2.246.562.5.2014022711042555034240",
+        "1.2.246.562.5.2013080813081926341927"
+      ]
     },
     "organizationGroups": [],
     "requiredBaseEducations": [
@@ -1378,14 +1579,15 @@
     ],
     "canBeApplied": true
   },
-
   "1.2.246.562.14.2014030415375012208392": {
     "id": "1.2.246.562.14.2014030415375012208392",
     "name": "Ammattistartti",
     "aoIdentifier": "028",
     "educationDegree": "32",
     "sora": false,
-    "teachingLanguages": ["FI"],
+    "teachingLanguages": [
+      "FI"
+    ],
     "athleteEducation": false,
     "kaksoistutkinto": false,
     "vocational": true,
@@ -1397,16 +1599,20 @@
     "provider": {
       "id": "1.2.246.562.10.35241670047",
       "name": "Mock",
-      "applicationSystemIds": ["1.2.246.562.5.2014022711042555034240", "1.2.246.562.5.2013080813081926341927"]
+      "applicationSystemIds": [
+        "1.2.246.562.5.2014022711042555034240",
+        "1.2.246.562.5.2013080813081926341927"
+      ]
     }
   },
-
   "1.2.246.562.14.673437691210": {
     "id": "1.2.246.562.14.673437691210",
     "name": "Talonrakennus ja ymäristösuunnittelu, pk",
     "educationDegree": "koulutusasteoph2002_32",
     "sora": true,
-    "teachingLanguages": ["FI"],
+    "teachingLanguages": [
+      "FI"
+    ],
     "aoIdentifier": null,
     "startingQuota": 14,
     "educationCodeUri": "balaillaan",
@@ -1417,7 +1623,6 @@
     "attachmentDeliveryAddress": null,
     "lastYearApplicantCount": 0,
     "educationDegree": "koulutusasteoph2002_72",
-
     "teachingLanguageNames": [],
     "selectionCriteria": null,
     "soraDescription": null,
@@ -1429,7 +1634,9 @@
         "id": "1.2.246.562.17.544165003510",
         "asIds": null,
         "name": "Filosofi, filosofie magister",
-        "qualifications": ["Filosofie magister"],
+        "qualifications": [
+          "Filosofie magister"
+        ],
         "prerequisite": null,
         "provider": "Åbo Akademi, Fakulteten för humaniora, psykologi och teologi",
         "fieldOfExpertise": null
@@ -1439,7 +1646,8 @@
       "id": "1.2.246.562.10.89537774706",
       "name": "FAKTIA, Espoo op",
       "applicationSystemIds": [
-        "1.2.246.562.5.50476818906","1.2.246.562.20.807716131410"
+        "1.2.246.562.5.50476818906",
+        "1.2.246.562.20.807716131410"
       ],
       "postalAddress": {
         "streetAddress": "Hämeenkatu 13",
@@ -1513,7 +1721,6 @@
     "kaksoistutkinto": false,
     "athleteEducation": false,
     "vocational": false,
-
     "status": null,
     "eligibilityDescription": null,
     "type": "KORKEAKOULU",
@@ -1522,7 +1729,6 @@
     "organizationGroups": [],
     "kotitalous": false
   },
-
   "template": {
     "id": "1.2.246.562.20.10457567187",
     "name": "Filosofi, filosofie magister",
@@ -1536,7 +1742,9 @@
     "lastYearApplicantCount": 0,
     "sora": false,
     "educationDegree": "koulutusasteoph2002_72",
-    "teachingLanguages": ["SV"],
+    "teachingLanguages": [
+      "SV"
+    ],
     "teachingLanguageNames": [],
     "selectionCriteria": null,
     "soraDescription": null,
@@ -1548,7 +1756,9 @@
         "id": "1.2.246.562.17.544165003510",
         "asIds": null,
         "name": "Filosofi, filosofie magister",
-        "qualifications": ["Filosofie magister"],
+        "qualifications": [
+          "Filosofie magister"
+        ],
         "prerequisite": null,
         "provider": "Åbo Akademi, Fakulteten för humaniora, psykologi och teologi",
         "fieldOfExpertise": null
@@ -1663,7 +1873,9 @@
     "lastYearApplicantCount": 0,
     "sora": false,
     "educationDegree": "koulutusasteoph2002_72",
-    "teachingLanguages": ["FI"],
+    "teachingLanguages": [
+      "FI"
+    ],
     "teachingLanguageNames": [],
     "selectionCriteria": "<h4>Myönnettävä opinto-oikeus</h4> <p>Hakukohteeseen &quot;Aasian tutkimus&quot; valitulle hakijalle myönnetään oikeus suorittaa humanististen tieteiden kandidaatin tutkinto pääaineenaan Aasian tutkimus ja filosofian maisterin tutkinto pääaineenaan Etelä-Aasian tutkimus, Itä-Aasian tutkimus tai indoeuropeistiikka. Hakija ilmoittaa hakemuksessaan minkä aineen hän haluaa pääaineekseen maisterin tutkinnossa.</p> <h4>Valituksi tulemisen edellytykset</h4> <p>Voidaksesi tulla valituksi sinun on</p> <ul> <li>oltava hakukelpoinen,</li> <li>toimitettava hakemus tarvittavine liitteineen määräajan kuluessa,</li> <li>osoitettava tarvittaessa korkeakoulukelpoisuutesi määräajan kuluessa ja</li> <li>saavutettava pienimmät hyväksyttävät pistemäärät valintakokeessa.</li> </ul> <p>Hakukelpoisuudesta löydät lisää tietoa kohdasta &quot;Hakukelpoisuusvaatimukset&quot;. Valintakokeesta löydät lisää tietoa kohdasta &quot;Pääsy- ja soveltuvuuskoe&quot;.</p> <p>Sinulta edellytetään, että osaat riittävästi suomea tai ruotsia. Sinun ei tarvitse toimittaa suomen tai ruotsin taidosta todistusta, sillä taidon riittävyys testataan yhden tai useamman valintakoetehtävän yhteydessä.</p> <h4>Lähtöpisteet</h4> <p>Voit saada enintään 100 lähtöpistettä. Voit saada lähtöpisteitä, jos olet suorittanut suomalaisen ylioppilastutkinnon, International Baccalaureate -tutkinnon, European Baccalaureate -tutkinnon tai Reifeprüfung-tutkinnon. Et voi saada lähtöpisteitä mistään muista tutkinnoista tai millään muilla perusteilla.</p> <p>Jos et ole suorittanut mitään edellä mainituista tutkinnoista, lähtöpisteittesi määrä on nolla. Jos olet suorittanut useamman kuin yhden edellä mainituista tutkinnoista, sinulle annetaan lähtöpisteitä sen tutkinnon perusteella, josta saat eniten lähtöpisteitä.</p> <p>Yksityiskohtaiset tiedot lähtöpisteiden määräytymisestä löydät <a href=\"http://www.helsinki.fi/hum/opiskelijavalinnat/yhteishaku/lahtopisteet.htm\">humanistisen tiedekunnan opiskelijavalintasivustolta</a>.</p> <h4><b>Koepisteet</b></h4> <p>Voit saada enintään 100 koepistettä. Valintakokeen kuvauksessa on ilmoitettu pienin hyväksyttävä pistemäärä</p> <ul> <li>koko kokeelle tai</li> <li>kokeen osille tai</li> <li>sekä koko kokeelle että kokeen osille.</li> </ul> <p>Sinut voidaan valita vain jos saavutat ilmoitetut pienimmät hyväksyttävät pistemäärät. Valintakokeesta löydät lisää tietoa kohdasta &quot;Pääsy- ja soveltuvuuskoe&quot;.</p> <h4><b>Valintamenettely</b></h4> <p>Valintamenettelyn aluksi hylätään hakijat, joita ei missään tapauksessa voida valita. Mahdollisia hylkäämisen syitä ovat esimerkiksi seuraavat:</p> <ul> <li>Hakija ei ole hakukelpoinen.</li> <li>Hakija ei suorittanut valintakoetta.</li> <li>Hakija ei saavuttanut valintakokeessa pienintä hyväksyttävää pistemäärää.</li> </ul> <p>Hakijat, joita ei edellä mainitussa vaiheessa hylätä, järjestetään kahteen jonoon: yhteispistejonoon ja koepistejonoon. Hakija on yhtä aikaa molemmissa jonoissa. Hakijoiden järjestäminen näihin jonoihin selostetaan yksityiskohtaisesti <a href=\"http://www.helsinki.fi/hum/opiskelijavalinnat/yhteishaku/jarjestaminen.htm\">humanistisen tiedekunnan opiskelijavalintasivustolla</a>.</p> <p>Kun hakijat on järjestetty yhteispistejonoon ja koepistejonoon, tiedot näistä jonoista tallennetaan opetushallituksen tietojärjestelmään. Tietojärjestelmä selvittää voidaanko hakijalle tarjota opiskelupaikkaa jossakin niistä hakukohteista, joihin hän on korkeakoulujen yhteishaussa hakenut. Tätä selvitystyötä kutsutaan <i>hakijoiden sijoittelemiseksi opiskelupaikoille</i>.</p> <p>Uusia opiskelijoita pyritään valitsemaan yhteispistejonosta ja koepistejonosta ennalta suunniteltu määrä. Uusien opiskelijoiden suunnitellut määrät luetellaan <a href=\"http://www.helsinki.fi/hum/opiskelijavalinnat/yhteishaku/uusienmaarat.htm\">humanistisen tiedekunnan opiskelijavalintasivustolla</a>. Jos hakija voisi tulla valituksi sekä yhteispistejonosta että koepistejonosta, hänet valitaan yhteispistejonosta.</p> <p>Jos hakija ei ota hänelle tarjottua opiskelupaikka vastaan, opetushallituksen tietojärjestelmä selvittää kuka on seuraava hakija, jolle kyseistä opiskelupaikkaa voidaan tarjota. Tietojärjestelmä sijoittelee hakijoita opiskelupaikoille, kunnes jokainen opiskelupaikka on jonkun hakijan vastaanottama tai jäljellä ei enää ole hakijoita, joille opiskelupaikkoja voitaisiin tarjota. Tietojärjestelmä lopettaa sijoittelemisen kuitenkin viimeistään keskiviikkona 12.8.2015.</p>",
     "soraDescription": null,
@@ -1688,7 +1900,9 @@
         "id": "1.2.246.562.17.47354222367",
         "asIds": null,
         "name": "Aasian tutkimus, humanististen tieteiden kandidaatti",
-        "qualifications": ["Humanististen tieteiden kandidaatti"],
+        "qualifications": [
+          "Humanististen tieteiden kandidaatti"
+        ],
         "prerequisite": null,
         "provider": null,
         "fieldOfExpertise": null
@@ -1697,7 +1911,9 @@
         "id": "1.2.246.562.17.42725319836",
         "asIds": null,
         "name": "Etelä-Aasian tutkimus, filosofian maisteri",
-        "qualifications": ["Filosofian maisteri"],
+        "qualifications": [
+          "Filosofian maisteri"
+        ],
         "prerequisite": null,
         "provider": null,
         "fieldOfExpertise": null
@@ -1706,7 +1922,9 @@
         "id": "1.2.246.562.17.97025463239",
         "asIds": null,
         "name": "Indoeuropeistiikka, filosofian maisteri",
-        "qualifications": ["Filosofian maisteri"],
+        "qualifications": [
+          "Filosofian maisteri"
+        ],
         "prerequisite": null,
         "provider": null,
         "fieldOfExpertise": null
@@ -1715,7 +1933,9 @@
         "id": "1.2.246.562.17.24105147011",
         "asIds": null,
         "name": "Itä-Aasian tutkimus, filosofian maisteri",
-        "qualifications": ["Filosofian maisteri"],
+        "qualifications": [
+          "Filosofian maisteri"
+        ],
         "prerequisite": null,
         "provider": null,
         "fieldOfExpertise": null
@@ -1792,7 +2012,9 @@
     "applicationPeriodName": "Hakuaika 2",
     "canBeApplied": true,
     "nextApplicationPeriodStarts": null,
-    "requiredBaseEducations": ["pohjakoulutusvaatimuskorkeakoulut_123"],
+    "requiredBaseEducations": [
+      "pohjakoulutusvaatimuskorkeakoulut_123"
+    ],
     "attachments": null,
     "emphasizedSubjects": null,
     "additionalInfo": "<p>Lisätietoja löydät&nbsp;<a href=\"http://www.helsinki.fi/opiskelijaksi\" target=\"_blank\">Helsingin yliopiston hakijapalveluiden verkkosivuilta</a> ja <a href=\"http://www.helsinki.fi/hum/opiskelijavalinnat/yhteishaku/index.htm\" target=\"_blank\">humanistisen tiedekunnan opiskelijavalintasivustolta</a>.</p>",
@@ -1811,49 +2033,76 @@
       {
         "oid": "1.2.246.562.28.40142428048",
         "prioriteetti": null,
-        "usageGroups": ["yleinen"],
-        "groupTypes": ["hakukohde"]
+        "usageGroups": [
+          "yleinen"
+        ],
+        "groupTypes": [
+          "hakukohde"
+        ]
       },
       {
         "oid": "1.2.246.562.28.11833727906",
         "prioriteetti": null,
-        "usageGroups": ["hakukohde_rajaava"],
-        "groupTypes": ["hakukohde"]
+        "usageGroups": [
+          "hakukohde_rajaava"
+        ],
+        "groupTypes": [
+          "hakukohde"
+        ]
       },
       {
         "oid": "1.2.246.562.28.20907706740",
         "prioriteetti": null,
-        "usageGroups": ["hakukohde_priorisoiva"],
-        "groupTypes": ["hakukohde"]
+        "usageGroups": [
+          "hakukohde_priorisoiva"
+        ],
+        "groupTypes": [
+          "hakukohde"
+        ]
       },
       {
         "oid": "1.2.246.562.28.20907706741",
         "prioriteetti": 1,
-        "usageGroups": ["hakukohde_priorisoiva"],
-        "groupTypes": ["hakukohde"]
+        "usageGroups": [
+          "hakukohde_priorisoiva"
+        ],
+        "groupTypes": [
+          "hakukohde"
+        ]
       },
       {
         "oid": "1.2.246.562.28.20907706742",
         "prioriteetti": null,
-        "usageGroups": ["hakukohde_rajaava"],
-        "groupTypes": ["hakukohde"]
+        "usageGroups": [
+          "hakukohde_rajaava"
+        ],
+        "groupTypes": [
+          "hakukohde"
+        ]
       },
       {
         "oid": "1.2.246.562.28.00000000001",
         "prioriteetti": null,
-        "usageGroups": ["hakukohde_rajaava"],
-        "groupTypes": ["hakukohde"]
+        "usageGroups": [
+          "hakukohde_rajaava"
+        ],
+        "groupTypes": [
+          "hakukohde"
+        ]
       },
       {
         "oid": "1.2.246.562.28.00000000011",
         "prioriteetti": null,
-        "usageGroups": ["hakukohde_liiteosoite"],
-        "groupTypes": ["hakukohde"]
+        "usageGroups": [
+          "hakukohde_liiteosoite"
+        ],
+        "groupTypes": [
+          "hakukohde"
+        ]
       }
     ],
     "kotitalous": false
   },
-
   "1.2.246.562.20.17389359211": {
     "id": "1.2.246.562.20.17389359211",
     "name": "Afrikan ja Lähi-idän tutkimus, humanististen tieteiden kandidaatti ja filosofian maisteri",
@@ -1900,7 +2149,9 @@
         "id": "1.2.246.562.17.903812415710",
         "asIds": null,
         "name": "Afrikan tutkimus, filosofian maisteri",
-        "qualifications": ["Filosofian maisteri"],
+        "qualifications": [
+          "Filosofian maisteri"
+        ],
         "prerequisite": null,
         "provider": null,
         "fieldOfExpertise": null
@@ -1909,7 +2160,9 @@
         "id": "1.2.246.562.17.91784966458",
         "asIds": null,
         "name": "Afrikan tutkimus, humanististen tieteiden kandidaatti",
-        "qualifications": ["Humanististen tieteiden kandidaatti"],
+        "qualifications": [
+          "Humanististen tieteiden kandidaatti"
+        ],
         "prerequisite": null,
         "provider": null,
         "fieldOfExpertise": null
@@ -1918,7 +2171,9 @@
         "id": "1.2.246.562.17.15892230341",
         "asIds": null,
         "name": "Arabian kielen ja islamin tutkimus, filosofian maisteri",
-        "qualifications": ["Filosofian maisteri"],
+        "qualifications": [
+          "Filosofian maisteri"
+        ],
         "prerequisite": null,
         "provider": null,
         "fieldOfExpertise": null
@@ -1927,7 +2182,9 @@
         "id": "1.2.246.562.17.83082722899",
         "asIds": null,
         "name": "Arabian kielen ja islamin tutkimus, humanististen tieteiden kandidaatti",
-        "qualifications": ["Humanististen tieteiden kandidaatti"],
+        "qualifications": [
+          "Humanististen tieteiden kandidaatti"
+        ],
         "prerequisite": null,
         "provider": null,
         "fieldOfExpertise": null
@@ -1936,7 +2193,9 @@
         "id": "1.2.246.562.17.50406025556",
         "asIds": null,
         "name": "Assyriologia, filosofian maisteri",
-        "qualifications": ["Filosofian maisteri"],
+        "qualifications": [
+          "Filosofian maisteri"
+        ],
         "prerequisite": null,
         "provider": null,
         "fieldOfExpertise": null
@@ -1945,7 +2204,9 @@
         "id": "1.2.246.562.17.19600210587",
         "asIds": null,
         "name": "Assyriologia, humanististen tieteiden kandidaatti",
-        "qualifications": ["Humanististen tieteiden kandidaatti"],
+        "qualifications": [
+          "Humanististen tieteiden kandidaatti"
+        ],
         "prerequisite": null,
         "provider": null,
         "fieldOfExpertise": null
@@ -1954,7 +2215,9 @@
         "id": "1.2.246.562.17.57643709041",
         "asIds": null,
         "name": "Lähi-idän tutkimus, filosofian maisteri",
-        "qualifications": ["Filosofian maisteri"],
+        "qualifications": [
+          "Filosofian maisteri"
+        ],
         "prerequisite": null,
         "provider": null,
         "fieldOfExpertise": null
@@ -1963,7 +2226,9 @@
         "id": "1.2.246.562.17.55779545551",
         "asIds": null,
         "name": "Lähi-idän tutkimus, humanististen tieteiden kandidaatti",
-        "qualifications": ["Humanististen tieteiden kandidaatti"],
+        "qualifications": [
+          "Humanististen tieteiden kandidaatti"
+        ],
         "prerequisite": null,
         "provider": null,
         "fieldOfExpertise": null
@@ -2040,7 +2305,9 @@
     "applicationPeriodName": "Hakuaika 2",
     "canBeApplied": true,
     "nextApplicationPeriodStarts": null,
-    "requiredBaseEducations": ["pohjakoulutusvaatimuskorkeakoulut_123"],
+    "requiredBaseEducations": [
+      "pohjakoulutusvaatimuskorkeakoulut_123"
+    ],
     "attachments": null,
     "emphasizedSubjects": null,
     "additionalInfo": "<p>Lisätietoja löydät&nbsp;<a href=\"http://www.helsinki.fi/opiskelijaksi\" target=\"_blank\">Helsingin yliopiston hakijapalveluiden verkkosivuilta</a> ja <a href=\"http://www.helsinki.fi/hum/opiskelijavalinnat/yhteishaku/index.htm\" target=\"_blank\">humanistisen tiedekunnan opiskelijavalintasivustolta</a>.</p>",
@@ -2059,44 +2326,72 @@
       {
         "oid": "1.2.246.562.28.20907706740",
         "prioriteetti": 2,
-        "usageGroups": ["hakukohde_priorisoiva"],
-        "groupTypes": ["hakukohde"]
+        "usageGroups": [
+          "hakukohde_priorisoiva"
+        ],
+        "groupTypes": [
+          "hakukohde"
+        ]
       },
       {
         "oid": "1.2.246.562.28.20907706742",
         "prioriteetti": null,
-        "usageGroups": ["hakukohde_rajaava"],
-        "groupTypes": ["hakukohde"]
+        "usageGroups": [
+          "hakukohde_rajaava"
+        ],
+        "groupTypes": [
+          "hakukohde"
+        ]
       },
       {
         "oid": "1.2.246.562.28.00000000001",
         "prioriteetti": null,
-        "usageGroups": ["hakukohde_rajaava"],
-        "groupTypes": ["hakukohde"]
+        "usageGroups": [
+          "hakukohde_rajaava"
+        ],
+        "groupTypes": [
+          "hakukohde"
+        ]
       },
       {
         "oid": "1.2.246.562.28.00000000002",
         "prioriteetti": null,
-        "usageGroups": ["hakukohde_rajaava"],
-        "groupTypes": ["hakukohde"]
+        "usageGroups": [
+          "hakukohde_rajaava"
+        ],
+        "groupTypes": [
+          "hakukohde"
+        ]
       },
       {
         "oid": "1.2.246.562.28.40142428048",
         "prioriteetti": null,
-        "usageGroups": ["yleinen"],
-        "groupTypes": ["hakukohde"]
+        "usageGroups": [
+          "yleinen"
+        ],
+        "groupTypes": [
+          "hakukohde"
+        ]
       },
       {
         "oid": "1.2.246.562.28.13841322666",
         "prioriteetti": null,
-        "usageGroups": ["hakukohde_rajaava"],
-        "groupTypes": ["hakukohde"]
+        "usageGroups": [
+          "hakukohde_rajaava"
+        ],
+        "groupTypes": [
+          "hakukohde"
+        ]
       },
       {
         "oid": "1.2.246.562.28.00000000011",
         "prioriteetti": null,
-        "usageGroups": ["hakukohde_liiteosoite"],
-        "groupTypes": ["hakukohde"]
+        "usageGroups": [
+          "hakukohde_liiteosoite"
+        ],
+        "groupTypes": [
+          "hakukohde"
+        ]
       }
     ],
     "kotitalous": false
@@ -2108,7 +2403,9 @@
     "educationDegree": "koulutusasteoph2002_62",
     "childLONames": [],
     "sora": false,
-    "teachingLanguages": ["SV"],
+    "teachingLanguages": [
+      "SV"
+    ],
     "teachingLanguageNames": [],
     "athleteEducation": false,
     "kaksoistutkinto": false,
@@ -2118,20 +2415,32 @@
       {
         "oid": "1.2.246.562.28.10942030083",
         "prioriteetti": null,
-        "usageGroups": ["yleinen"],
-        "groupTypes": ["hakukohde"]
+        "usageGroups": [
+          "yleinen"
+        ],
+        "groupTypes": [
+          "hakukohde"
+        ]
       },
       {
         "oid": "1.2.246.562.28.10942030083",
         "prioriteetti": null,
-        "usageGroups": ["yleinen"],
-        "groupTypes": ["hakukohde"]
+        "usageGroups": [
+          "yleinen"
+        ],
+        "groupTypes": [
+          "hakukohde"
+        ]
       },
       {
         "oid": "1.2.246.562.28.24712637358",
         "prioriteetti": null,
-        "usageGroups": ["hakukohde_liiteosoite"],
-        "groupTypes": ["hakukohde"]
+        "usageGroups": [
+          "hakukohde_liiteosoite"
+        ],
+        "groupTypes": [
+          "hakukohde"
+        ]
       }
     ],
     "attachments": [
@@ -2168,7 +2477,9 @@
     "lastYearApplicantCount": 0,
     "sora": false,
     "educationDegree": "koulutusasteoph2002_71",
-    "teachingLanguages": ["EN"],
+    "teachingLanguages": [
+      "EN"
+    ],
     "teachingLanguageNames": [],
     "selectionCriteria": null,
     "soraDescription": null,
@@ -2200,7 +2511,9 @@
         "id": "1.2.246.562.17.11008762541",
         "asIds": null,
         "name": "Master of Culture and Arts, Entrepreneurship in Arts",
-        "qualifications": ["Master of Culture and Arts"],
+        "qualifications": [
+          "Master of Culture and Arts"
+        ],
         "prerequisite": null,
         "provider": "Novia University of Applied Sciences, Pietarsaari",
         "fieldOfExpertise": null
@@ -2209,7 +2522,9 @@
         "id": "1.2.246.562.17.14084029777",
         "asIds": null,
         "name": "Master of Culture and Arts, Entrepreneurship in Arts",
-        "qualifications": ["Kuvataiteilija (ylempi AMK)"],
+        "qualifications": [
+          "Kuvataiteilija (ylempi AMK)"
+        ],
         "prerequisite": null,
         "provider": "Novia University of Applied Sciences, Pietarsaari",
         "fieldOfExpertise": null
@@ -2218,7 +2533,10 @@
     "provider": {
       "id": "1.2.246.562.10.99415780891",
       "name": "Yrkeshögskolan Novia, Pietarsaari",
-      "applicationSystemIds": ["1.2.246.562.29.95390561488", "1.2.246.562.29.173465377510"],
+      "applicationSystemIds": [
+        "1.2.246.562.29.95390561488",
+        "1.2.246.562.29.173465377510"
+      ],
       "postalAddress": {
         "streetAddress": "Isokatu 9",
         "streetAddress2": null,
@@ -2304,14 +2622,22 @@
       {
         "oid": "1.2.246.562.28.54403960693",
         "prioriteetti": null,
-        "usageGroups": ["yleinen"],
-        "groupTypes": ["hakukohde"]
+        "usageGroups": [
+          "yleinen"
+        ],
+        "groupTypes": [
+          "hakukohde"
+        ]
       },
       {
         "oid": "1.2.246.562.28.10942030083",
         "prioriteetti": null,
-        "usageGroups": ["yleinen"],
-        "groupTypes": ["hakukohde"]
+        "usageGroups": [
+          "yleinen"
+        ],
+        "groupTypes": [
+          "hakukohde"
+        ]
       }
     ],
     "kotitalous": false
@@ -2334,7 +2660,9 @@
     "lastYearApplicantCount": 0,
     "sora": false,
     "educationDegree": "koulutusasteoph2002_62",
-    "teachingLanguages": ["SV"],
+    "teachingLanguages": [
+      "SV"
+    ],
     "teachingLanguageNames": [],
     "selectionCriteria": null,
     "soraDescription": null,
@@ -2366,7 +2694,9 @@
         "id": "1.2.246.562.17.57839424736",
         "asIds": null,
         "name": "Agrolog (YH), naturbruk och miljö, dagstudier, Raseborg",
-        "qualifications": ["Agrolog (YH)"],
+        "qualifications": [
+          "Agrolog (YH)"
+        ],
         "prerequisite": null,
         "provider": null,
         "fieldOfExpertise": null
@@ -2375,7 +2705,9 @@
         "id": "1.2.246.562.17.75135667568",
         "asIds": null,
         "name": "Miljöplanerare (YH), naturbruk och miljö, dagstudier, Raseborg",
-        "qualifications": ["Miljöplanerare (YH)"],
+        "qualifications": [
+          "Miljöplanerare (YH)"
+        ],
         "prerequisite": null,
         "provider": null,
         "fieldOfExpertise": null
@@ -2384,7 +2716,9 @@
         "id": "1.2.246.562.17.57395927775",
         "asIds": null,
         "name": "Skogsbruksingenjör (YH), naturbruk och miljö, dagstudier, Raseborg",
-        "qualifications": ["Skogsbruksingenjör (YH)"],
+        "qualifications": [
+          "Skogsbruksingenjör (YH)"
+        ],
         "prerequisite": null,
         "provider": null,
         "fieldOfExpertise": null
@@ -2484,31 +2818,46 @@
       {
         "oid": "1.2.246.562.28.20907706740",
         "prioriteetti": 1,
-        "usageGroups": ["hakukohde_priorisoiva"],
-        "groupTypes": ["hakukohde"]
+        "usageGroups": [
+          "hakukohde_priorisoiva"
+        ],
+        "groupTypes": [
+          "hakukohde"
+        ]
       },
       {
         "oid": "1.2.246.562.28.20907706741",
         "prioriteetti": null,
-        "usageGroups": ["hakukohde_priorisoiva"],
-        "groupTypes": ["hakukohde"]
+        "usageGroups": [
+          "hakukohde_priorisoiva"
+        ],
+        "groupTypes": [
+          "hakukohde"
+        ]
       },
       {
         "oid": "1.2.246.562.28.00000000002",
         "prioriteetti": null,
-        "usageGroups": ["hakukohde_rajaava"],
-        "groupTypes": ["hakukohde"]
+        "usageGroups": [
+          "hakukohde_rajaava"
+        ],
+        "groupTypes": [
+          "hakukohde"
+        ]
       },
       {
         "oid": "1.2.246.562.28.00000000003",
         "prioriteetti": null,
-        "usageGroups": ["hakukohde_rajaava"],
-        "groupTypes": ["hakukohde"]
+        "usageGroups": [
+          "hakukohde_rajaava"
+        ],
+        "groupTypes": [
+          "hakukohde"
+        ]
       }
     ],
     "kotitalous": false
   },
-
   "1.2.246.562.20.74195328591": {
     "id": "1.2.246.562.20.74195328591",
     "name": "Aate- ja oppihistoria, humanististen tieteiden kandidaatti ja filosofian maisteri",
@@ -2522,7 +2871,9 @@
     "lastYearApplicantCount": 0,
     "sora": false,
     "educationDegree": "koulutusasteoph2002_72",
-    "teachingLanguages": ["FI"],
+    "teachingLanguages": [
+      "FI"
+    ],
     "teachingLanguageNames": [],
     "selectionCriteria": "<p><b>Valintakiintiöt </b></p> <p>Uusien opiskelijoiden aloituspaikkakiintiö jaetaan kahteen osaan: yhteispistevalintakiintiöön ja koepistevalintakiintiöön. Parittomissa kiintiöissä paikat jakautuvat yhteispistekiintiön eduksi.</p> <p><i><b>Yhteispistevalinta</b></i></p> <p>Ensimmäisessä vaiheessa puolet aloituspaikkamäärästä täytetään valitsemalla kaikkien hakijoiden joukosta opiskelijat ylioppilastutkintotodistuksesta ja valintakokeesta saadun yhteispistemäärän perusteella. <br /> Alin hyväksyttävä pistemäärä on 10 pistettä.<br /> Jos hakijat päätyvät tasapisteisiin, hakijoiden keskinäinen järjestys ratkaistaan ensisijaisesti valintakoepisteiden perusteella, toissijaisesti ylioppilastutkintotodistuksen pistemäärän perusteella (ks. pisteitystaulukko).</p> <p>Pisteet lasketaan seuraavasti:</p> <ol> <li>Valintakokeesta voi saada 30 pistettä.</li> <li>Ylioppilastutkintotodistuksesta otetaan neljän arvosanan antama yhteinen pistemäärä, joka lasketaan alla olevan taulukon mukaan. Tämä pistemäärä kerrotaan luvulla 0,75. Todistuksesta voi saada enintään 30 pistettä.</li> </ol> <p><b><i><br /> <i>Koepistevalinta</i></i></b></p> <p>Jos hakija ei tule valituksi yhteispistevalinnassa, hän osallistuu automaattisesti valinnan toisessa vaiheessa koepistevalintaan. Toinen puoli aloituspaikkamäärästä täytetään valitsemalla opiskelijat pelkän valintakokeen perusteella. Valintakokeesta voi saada 30 pistettä.</p> <p>Jos hakijat päätyvät tasapisteisiin, ratkaistaan hakijoiden keskinäinen järjestys ylioppilastutkintotodistuksen pistemäärän perusteella.</p> <p> </p> <p><b>Ylioppilastutkinnon pisteitys</b></p> <p>Ylioppilastutkintotodistuksesta otetaan huomioon <b>neljä</b> arvosanaa seuraavasti:</p> <p>· äidinkieli</p> <p>· ennen vuotta 2006 ylioppilastutkinnon suorittaneilla reaalikoe kaksinkertaisena ja 2006 ja sen jälkeen tutkinnon suorittaneilla historian ainereaalikoe kaksinkertaisena</p> <p>· muista (ei ainereaali) parhaan pistemäärän tuottava arvosana<br /><b><br /> </b></p> <p><b>Ylioppilastutkintotodistuksen pisteitys</b></p> <p> </p> <div> <table> <tbody> <tr> <td width=\"160\"> </td> <td width=\"160\"> <p><b>taso</b></p> </td> <td width=\"30\"> <p><b>l</b></p> </td> <td width=\"30\"> <p><b>e</b></p> </td> <td width=\"30\"> <p><b>m</b></p> </td> <td width=\"30\"> <p><b>c</b></p> </td> <td width=\"30\"> <p><b>b</b></p> </td> <td width=\"30\"> <p><b>a</b></p> </td> </tr> <tr> <td width=\"160\"> <p><b>äidinkieli</b></p> </td> <td width=\"160\"> <p>(suomi/ruotsi/saame)</p> </td> <td width=\"30\"> <p>10</p> </td> <td width=\"30\"> <p>9</p> </td> <td width=\"30\"> <p>8</p> </td> <td width=\"30\"> <p>6</p> </td> <td width=\"30\"> <p>4</p> </td> <td width=\"30\"> <p>2</p> </td> </tr> <tr> <td width=\"160\"> <p><b>suomi</b></p> </td> <td width=\"160\"> <p>(kun äidinkieli saame)</p> </td> <td width=\"30\"> <p>10</p> </td> <td width=\"30\"> <p>9</p> </td> <td width=\"30\"> <p>8</p> </td> <td width=\"30\"> <p>6</p> </td> <td width=\"30\"> <p>4</p> </td> <td width=\"30\"> <p>2</p> </td> </tr> <tr> <td width=\"160\"> <p><b>reaali/ainereaali</b></p> </td> <td width=\"160\"> </td> <td width=\"30\"> <p>10</p> </td> <td width=\"30\"> <p>9</p> </td> <td width=\"30\"> <p>8</p> </td> <td width=\"30\"> <p>6</p> </td> <td width=\"30\"> <p>4</p> </td> <td width=\"30\"> <p>2</p> </td> </tr> <tr> <td width=\"160\"> <p><b>2. kotim. kieli</b></p> </td> <td width=\"160\"> <p>pitkä oppimäärä</p> </td> <td width=\"30\"> <p>10</p> </td> <td width=\"30\"> <p>9</p> </td> <td width=\"30\"> <p>8</p> </td> <td width=\"30\"> <p>6</p> </td> <td width=\"30\"> <p>4</p> </td> <td width=\"30\"> <p>2</p> </td> </tr> <tr> <td width=\"160\"> </td> <td width=\"160\"> <p>keskipitkä oppimäärä</p> </td> <td width=\"30\"> <p>9</p> </td> <td width=\"30\"> <p>8</p> </td> <td width=\"30\"> <p>7</p> </td> <td width=\"30\"> <p>5</p> </td> <td width=\"30\"> <p>2</p> </td> <td width=\"30\"> <p>0</p> </td> </tr> <tr> <td width=\"160\"> <p><b>vieras kieli</b></p> </td> <td width=\"160\"> <p>pitkä oppimäärä</p> </td> <td width=\"30\"> <p>10</p> </td> <td width=\"30\"> <p>9</p> </td> <td width=\"30\"> <p>8</p> </td> <td width=\"30\"> <p>6</p> </td> <td width=\"30\"> <p>4</p> </td> <td width=\"30\"> <p>2</p> </td> </tr> <tr> <td width=\"160\"> </td> <td width=\"160\"> <p>lyhyt oppimäärä</p> </td> <td width=\"30\"> <p>8</p> </td> <td width=\"30\"> <p>7</p> </td> <td width=\"30\"> <p>6</p> </td> <td width=\"30\"> <p>4</p> </td> <td width=\"30\"> <p>2</p> </td> <td width=\"30\"> <p>0</p> </td> </tr> <tr> <td width=\"160\"> <p><b>matematiikka</b></p> </td> <td width=\"160\"> <p>pitkä oppimäärä</p> </td> <td width=\"30\"> <p>10</p> </td> <td width=\"30\"> <p>9</p> </td> <td width=\"30\"> <p>8</p> </td> <td width=\"30\"> <p>7</p> </td> <td width=\"30\"> <p>6</p> </td> <td width=\"30\"> <p>4</p> </td> </tr> <tr> <td width=\"160\"> </td> <td width=\"160\"> <p>lyhyt oppimäärä</p> </td> <td width=\"30\"> <p>7</p> </td> <td width=\"30\"> <p>6</p> </td> <td width=\"30\"> <p>5</p> </td> <td width=\"30\"> <p>3</p> </td> <td width=\"30\"> <p>1</p> </td> <td width=\"30\"> <p>0</p> </td> </tr> </tbody> </table> </div> <div> </div> <p>Higher Level -aineet (HL) rinnastetaan suomalaisen ylioppilastutkinnon vaativamman tason kokeeseen, Subsidiary Level -aineet (SL) muun tason kokeeseen. IB-tutkinnosta otetaan huomioon neljä ainetta kuten suomalaisesta ylioppilastutkinnostakin. Historia-aineiden valinnassa IB-tutkinnon historia rinnastetaan historian ainereaaliin. Luonnontieteelliset aineet ja taideaineet pisteitetään (aine)reaalin mukaan, ruotsin kieli pisteitetään toisen kotimaisen kielen muun tason mukaan, muut kieliaineet muun tason mukaan.</p> <p> </p> <p><b>Reifeprüfung-tutkinnon arvosanat rinnastetaan suomalaisen ylioppilastutkinnon arvosanoihin seuraavasti.</b></p> <p> </p> <div> <table> <tbody> <tr> <td width=\"110\"> <p>Reifeprüfung</p> </td> <td width=\"65\"> <p>15–13</p> </td> <td width=\"65\"> <p>12–10</p> </td> <td width=\"65\"> <p>9–8</p> </td> <td width=\"65\"> <p>7</p> </td> <td width=\"65\"> <p>6–5</p> </td> <td width=\"65\"> <p>4</p> </td> </tr> <tr> <td width=\"110\"> <p>yo-tutkinto</p> </td> <td width=\"65\"> <p>l</p> </td> <td width=\"65\"> <p>e</p> </td> <td width=\"65\"> <p>m</p> </td> <td width=\"65\"> <p>c</p> </td> <td width=\"65\"> <p>b</p> </td> <td width=\"65\"> <p>a</p> </td> </tr> </tbody> </table> </div> <p> </p> <p>Reifeprüfung-tutkinnosta otetaan huomioon neljä ainetta kuten suomalaisesta ylioppilastutkinnostakin. Historia-aineiden valinnassa Reifeprüfung-tutkinnon historia rinnastetaan historian ainereaaliin. Luonnontieteelliset aineet ja taideaineet pisteitetään (aine)reaalin mukaan, ruotsin kieli pisteitetään toisen kotimaisen kielen muun tason mukaan, muut kieliaineet muun tason mukaan.</p> <p> </p> <p><b>European Baccalaureate -tutkinnon pisteet rinnastetaan suomalaisen ylioppilastutkinnon arvosanoihin seuraavasti:</b></p> <p> </p> <div> <table> <tbody> <tr> <td width=\"110\"> <p>EB-tutkinto</p> </td> <td width=\"65\"> <p>10–9,00</p> </td> <td width=\"65\"> <p>8,95–8,00</p> </td> <td width=\"65\"> <p>7,95–7,00</p> </td> <td width=\"65\"> <p>6,95–6,00</p> </td> <td width=\"65\"> <p>5,95–5,00</p> </td> <td width=\"65\"> <p>4,95–4,00</p> </td> </tr> <tr> <td width=\"110\"> <p>yo-tutkinto</p> </td> <td width=\"65\"> <p>l</p> </td> <td width=\"65\"> <p>e</p> </td> <td width=\"65\"> <p>m</p> </td> <td width=\"65\"> <p>c</p> </td> <td width=\"65\"> <p>b</p> </td> <td width=\"65\"> <p>a</p> </td> </tr> </tbody> </table> </div> <p> </p> <p>European Baccalaureate-tutkinnosta otetaan huomioon neljä ainetta kuten suomalaisesta ylioppilastutkinnostakin. Historia-aineiden valinnassa European Baccalaureate-tutkinnon historia rinnastetaan reaaliin. Luonnontieteelliset aineet ja taideaineet pisteitetään reaalin mukaan, ruotsin kieli pisteitetään toisen kotimaisen kielen muun tason mukaan, muut kieliaineet muun tason mukaan.</p> <p><b>Toisessa Pohjoismaassa</b> korkeakoulukelpoisuuden saavuttaneet voivat hakea opiskelijaksi tiedekuntaan. Heidän valintansa tapahtuu kuitenkin pelkästään valintakokeen perusteella.</p>",
     "soraDescription": "<p><strong>Opiskelijaksi ottamisen rajoitukset</strong></p> <p>Alaikäisten turvallisuuden sekä potilas- ja asiakasturvallisuuden edistämiseksi opiskelijaksi ottamiseen on tullut rajoituksia vuoden 2012 alusta.</p> <p>Rajoitukset koskevat seuraavia aloja:</p> <p>lääketiede<br />hammaslääketiede<br />logopedia<br />psykologia<br />farmasia<br />sosiaalityö<br />opettajankoulutus.<br />Näillä aloilla edellytetään, että opiskelijaksi otettava on terveydentilaltaan ja toimintakyvyltään kykenevä opintoihin liittyviin käytännön tehtäviin tai harjoitteluun. Terveydentilaan tai toimintakykyyn liittyvä rajoitus ei ole este opiskelijaksi ottamiselle, jos sen vaikutukset voidaan kohtuullisin toimin, esimerkiksi erityisjärjestelyin, poistaa. Tarkoituksena ei ole muutenkaan asettaa tarpeettomia esteitä vammaisten tai muista fyysisistä tai psyykkisistä rajoitteista kärsivien henkilöiden koulutukseen pääsylle. Rajoituksia sovelletaan vain niissä tilanteissa, joissa on selvää, ettei hakija voi terveydentilaansa tai toimintakykyynsä liittyvästä syystä osallistua koulutukseen.</p> <p>Katso kunkin yliopiston mahdollisesti määrittelemät alakohtaiset rajoitukset kunkin hakukohteen kohdalta. Tarkempia tietoja saa tarvittaessa myös yliopistojen hakupalveluista ja opintotoimistoista.</p> <p>Myös aiempi opiskeluoikeuden peruuttaminen voi olla este opiskelijaksi ottamiselle. Tämän vuoksi opiskelijaksi hakevan tulee ilmoittaa yliopistolle tällaisesta päätöksestä jo hakuvaiheessa.</p> <p>Opiskeluaikainen huumausainetestaus ja rikosrekisteriote</p> <p>Opiskelija voidaan tietyissä hyvin rajoitetuissa tapauksissa velvoittaa esittämään todistus huumausainetestistä. Tämä tulee lähinnä kyseeseen tilanteissa, joissa testaaminen on välttämätöntä opiskelijan toimintakyvyn selvittämiseksi ja tiettyjen laissa yksityiskohtaisesti määriteltyjen lisäehtojen täyttyessä.</p> <p>Vuonna 2012 tai myöhemmin opiskelijaksi hyväksytyltä opiskelijalta voidaan opiskelukyvyn arviointia varten pyytää myös otetta rikosrekisteristä. Otetta voidaan pyytää vain niiltä opiskelijoilta, joiden opintoihin liittyvä harjoittelu tai muut tehtävät edellyttävät alaikäisten parissa työskentelyä, ja sitä pyydetään ennen harjoittelun tai tehtävien alkamista. Alaikäisten turvallisuuden edistämiseksi on tarpeen tietää, ettei harjoitteluun menevällä opiskelijalla ole rikosrekisterimerkintää tietyistä vakavista rikoksista (seksuaalirikokset, tahalliset henkirikokset, törkeä pahoinpitely, törkeä ryöstö ja huumausainerikokset).</p>",
@@ -2554,7 +2905,9 @@
         "id": "1.2.246.562.17.89980823234",
         "asIds": null,
         "name": "Aate- ja oppihistoria, filosofian maisteri",
-        "qualifications": ["Filosofian maisteri"],
+        "qualifications": [
+          "Filosofian maisteri"
+        ],
         "prerequisite": null,
         "provider": null,
         "fieldOfExpertise": null
@@ -2563,7 +2916,9 @@
         "id": "1.2.246.562.17.98444340057",
         "asIds": null,
         "name": "Aate- ja oppihistoria, humanististen tieteiden kandidaatti",
-        "qualifications": ["Humanististen tieteiden kandidaatti"],
+        "qualifications": [
+          "Humanististen tieteiden kandidaatti"
+        ],
         "prerequisite": null,
         "provider": null,
         "fieldOfExpertise": null
@@ -2651,7 +3006,9 @@
     "applicationPeriodName": "Hakuaika 2",
     "canBeApplied": true,
     "nextApplicationPeriodStarts": null,
-    "requiredBaseEducations": ["pohjakoulutusvaatimuskorkeakoulut_123"],
+    "requiredBaseEducations": [
+      "pohjakoulutusvaatimuskorkeakoulut_123"
+    ],
     "attachments": null,
     "emphasizedSubjects": null,
     "additionalInfo": "<p>Kaikki tiedot tulee tarkistaa humanistisen tiedekunnan <a href=\"http://www.oulu.fi/hutk/hakeminen\">valintaoppaasta</a>.</p>\n<p>Valintaoppaassa on tärkeitä hakemiseen ja valintakokeisiin liittyviä tietoja ja ohjeita.</p>\n<p>Tässä ilmoitettu, myöhemmin mahdollisesti muuttunut tieto ei voi olla perusteena esimerkiksi oikaisupyynnön tekemiselle.</p>",
@@ -2670,30 +3027,46 @@
       {
         "oid": "1.2.246.562.28.20907706740",
         "prioriteetti": null,
-        "usageGroups": ["hakukohde_priorisoiva"],
-        "groupTypes": ["hakukohde"]
+        "usageGroups": [
+          "hakukohde_priorisoiva"
+        ],
+        "groupTypes": [
+          "hakukohde"
+        ]
       },
       {
         "oid": "1.2.246.562.28.20907706741",
         "prioriteetti": 2,
-        "usageGroups": ["hakukohde_priorisoiva"],
-        "groupTypes": ["hakukohde"]
+        "usageGroups": [
+          "hakukohde_priorisoiva"
+        ],
+        "groupTypes": [
+          "hakukohde"
+        ]
       },
       {
         "oid": "1.2.246.562.28.00000000003",
         "prioriteetti": null,
-        "usageGroups": ["hakukohde_rajaava"],
-        "groupTypes": ["hakukohde"]
+        "usageGroups": [
+          "hakukohde_rajaava"
+        ],
+        "groupTypes": [
+          "hakukohde"
+        ]
       },
       {
         "oid": "1.2.246.562.28.00000000011",
         "prioriteetti": null,
-        "usageGroups": ["hakukohde_liiteosoite"],
-        "groupTypes": ["hakukohde"]
-      }    ],
+        "usageGroups": [
+          "hakukohde_liiteosoite"
+        ],
+        "groupTypes": [
+          "hakukohde"
+        ]
+      }
+    ],
     "kotitalous": false
   },
-
   "1.2.246.562.20.18131989511": {
     "id": "1.2.246.562.20.18131989511",
     "name": "Insinööri (AMK), maanmittaustekniikka, päivätoteutus",
@@ -2712,7 +3085,9 @@
     "lastYearApplicantCount": 0,
     "sora": false,
     "educationDegree": "koulutusasteoph2002_62",
-    "teachingLanguages": ["FI"],
+    "teachingLanguages": [
+      "FI"
+    ],
     "teachingLanguageNames": [],
     "selectionCriteria": "<h1><b>Poikkeukset ja tarkennukset</b></h1> <p>Ammattikorkeakoulut päättävät valintaperusteensa Ammattikorkeakoulujen rehtorineuvoston (ARENE) antaman valtakunnallisen valintaperustesuorituksen pohjalta.</p> <p>Valintakunnallista valintaperustesuositusta (alla) noudatetaan kyseisessä tutkinto-ohjelmassa seuraavin poikkeuksin ja/tai tarkennuksin:</p> <ul> <li>Yleinen ammattikorkeakoulukelpoisuus.</li> <li>Harkinnanvarainen valinta ei ole käytössä.</li> <li>Kaikki hakukelpoiset kutsutaan valintakokeeseen.</li> <li>Valtakunnallinen valintakoe.</li> <li>Hakijoiden, joiden äidinkieli ei ole suomi, on valintakokeen lisäksi suoritettava Metropolian suomen kielen koe hyväksytysti.</li> <li>Opiskelijavalinnat tehdään valintatapoja 1B (valintakoetuloksen ja koulumenestyspisteiden perusteella) ja 3 (valintakoetuloksen perusteella) käyttäen.</li> </ul> <h1>VALTAKUNNALLINEN VALINTAPERUSTESUOSITUS 2015</h1> <h2>Yleisosio</h2> <p>Valtakunnallisen valintaperustesuosituksen yleisosio löytyy <a href=\"https://opintopolku.fi/wp/fi/ammattikorkeakoulu/miten-opiskelijat-valitaan/amk-tutkintojen-yleiset-valintaperustesuositukset/\">täältä (linkki)</a>.</p> <h2>Alakohtainen suositus: tekniikan ammattikorkeakoulututkinnot (päivätoteutukset)</h2> <p>OPISKELIJAVALINTA</p> <p>Yleinen hakukelpoisuus tutkintoon johtaviin koulutuksiin on kerrottu valintaperustesuositusten yleisessä osassa. Kaikki hakukelpoiset hakijat kutsutaan tekniikan valintakokeeseen. Opiskelijavalinta suoritetaan hakukohteittain valintatapoja 1B ja / tai 3 käyttäen.</p> <p>Valintatapa 1B. Valintapisteet (max 100 p) muodostuvat koulumenestyspisteistä (max 60 p) ja valintakoepisteistä (max 40 p, hyväksymisraja 10 p).</p> <p>Valintatapa 3. Valintapisteissä (max 40 p) ei ole lainkaan mukana koulumenestyspisteitä. <br />Valintapisteet muodostuvat valintakoepisteistä (max 40 p, hyväksymisraja 10 p).</p> <p>Kaikille hakijoille, mikäli on mahdollista, lasketaan valintapisteet molemmilla kyseisen koulutuksen valinnoissa käytössä olevilla tavoilla ja valinta suoritetaan tältä pohjalta.</p> <p>KOULUMENESTYSPISTEYTYS<br />A. Pisteytys ylioppilastutkintotodistuksen ja lukion päättötodistuksen pohjalta<br />B. Pisteytys ammatillisen perustutkinnon todistuksen pohjalta<br />C. Pisteytys ylioppilastutkintotodistuksen ja ammatillisen perustutkinnon päättötodistuksen pohjalta<br />Jos hakijalla on useita tutkintoja siten että hänen koulumenestyspisteytyksensä voidaan suorittaa usealla <br />näistä (A, B, C) menettelyistä, hakija voi valita näistä yhden ja merkitä koulumenestystiedot<br />hakemukseensa tämän mukaisesti.<br />A. Pisteytys ylioppilastutkintotodistuksen ja lukion päättötodistuksen pohjalta</p> <p>Koulumenestyspisteet lasketaan seuraavin perustein:<br /> • yksittäisistä aineista (äidinkieli, paras pitkänä kirjoitettu kieli, matematiikka sekä paras reaalikoe seuraavista: fysiikka, kemia ja biologia) ylioppilastutkintotodistuksesta<br /> • kaikkien aineiden keskiarvo (painottamaton keskiarvo kaikista todistukseen numeroina merkityistä arvosanoista) lukion päättötodistuksesta</p> <p>Abiturientit pyrkivät viimeisellä lukiotodistuksellaan. Abiturienttien ei tarvitse merkitä hakemukseensa ylioppilastutkintotodistuksen arvosanoja, sillä ne kerätään suoraan ylioppilastutkintolautakunnalta.</p> <table> <tbody> <tr> <td> <p>Ylioppilastutkinto arvosanat</p> </td> <td> </td> <td> <p>L/E</p> </td> <td> <p>M</p> </td> <td> <p>C</p> </td> <td> <p>B</p> </td> <td> <p>A</p> </td> </tr> <tr> <td> <p>Pisteet</p> </td> <td> </td> <td> </td> <td> </td> <td> </td> <td> </td> <td> </td> </tr> <tr> <td> <p>Äidinkieli</p> </td> <td> </td> <td> <p>9</p> </td> <td> <p>7</p> </td> <td> <p>5</p> </td> <td> <p>3</p> </td> <td> <p>1</p> </td> </tr> <tr> <td> <p>Paras pitkänä kirjoitettu kieli</p> </td> <td> </td> <td> <p>9</p> </td> <td> <p>7</p> </td> <td> <p>5</p> </td> <td> <p>3</p> </td> <td> <p>1</p> </td> </tr> <tr> <td> <p>Matematiikka, pitkä</p> </td> <td> <p>*</p> </td> <td> <p>9</p> </td> <td> <p>7</p> </td> <td> <p>5</p> </td> <td> <p>3</p> </td> <td> <p>1</p> </td> </tr> <tr> <td> <p>Matematiikka, lyhyt</p> </td> <td> <p>*</p> </td> <td> <p>6</p> </td> <td> <p>4</p> </td> <td> <p>3</p> </td> <td> <p>2</p> </td> <td> <p>1</p> </td> </tr> <tr> <td> <p>Fysiikka reaalikoe</p> </td> <td> <p>**</p> </td> <td> <p>9</p> </td> <td> <p>7</p> </td> <td> <p>5</p> </td> <td> <p>3</p> </td> <td> <p>1</p> </td> </tr> <tr> <td> <p>Kemia reaalikoe</p> </td> <td> <p>**</p> </td> <td> <p>9</p> </td> <td> <p>7</p> </td> <td> <p>5</p> </td> <td> <p>3</p> </td> <td> <p>1</p> </td> </tr> <tr> <td> <p>Biologia reaalikoe</p> </td> <td> <p>**</p> </td> <td> <p>9</p> </td> <td> <p>7</p> </td> <td> <p>5</p> </td> <td> <p>3</p> </td> <td> <p>1</p> </td> </tr> </tbody> </table> <p>* = enintään toinen<br /> ** = enintään yksi</p> <p>Arvosana-asteikko<br />4 – 10 Pisteet<br />≥ 9,50 24 <br />≥ 9,33 23 <br />≥ 9,15 22 <br />≥ 8,98 21 <br />≥ 8,80 20 <br />≥ 8,63 19 <br />≥ 8,46 18 <br />≥ 8,28 17 <br />≥ 8,11 16 <br />≥ 7,93 15 <br />≥ 7,76 14 <br />≥ 7,59 13 <br />≥ 7,41 12 <br />≥ 7,24 11 <br />≥ 7,07 10 <br />≥ 6,89 9 <br />≥ 6,72 8 <br />≥ 6,54 7 <br />≥ 6,37 6 <br />≥ 6,20 5 <br />≥ 6,02 4 <br />≥ 5,85 3 <br />≥ 5,67 2 <br />≥ 5,50 1 <br />&lt; 5,50 0</p> <p>B. Pisteytys ammatillisen perustutkinnon pohjalta</p> <p>Ammatillisen perustutkinnon suorittaneet hakevat päättötodistuksensa perusteella<b>, jos todistuksesta pisteitä tuottavat opintojaksot on arvosteltu. Muussa tapauksessa ammatillisen perustutkinnon suorittaneet valitaan valintatavalla 3. </b>Syksyllä 2015 valmistuvat hakevat viimeisellä todistuksellaan, ja heidän lopulliset arvosanansa kerätään suoraan oppilaitoksilta.</p> <p>Koulumenestyspisteet lasketaan yksittäisistä aineista [äidinkieli tai viestintä, paras kieli (ei äidinkieli), matematiikka, fysiikka tai kemia] sekä kaikkien aineiden keskiarvosta ammatillisen perustutkinnon päättötodistuksen arvosanojen perusteella.</p> <p>Jos hakijalla on useita ammatillisia perustutkintoja, hän voi valita, minkä todistuksen perusteella koulumenestys pisteytetään. Päättötodistuksen keskiarvo lasketaan painottamattomana keskiarvona arvosanoista, jotka on ilmaistu tutkintotodistuksessa numeroina tai jotka voidaan muuntaa sellaisiksi. Mikäli hakijan haussa käyttämään todistukseen on annettu arvosana numeroina muualla suoritetuista, hyväksi luetuista opinnoista, se otetaan mukaan keskiarvoa laskettaessa.</p> <table> <tbody> <tr> <td> <p>Päättötodistus, arvosanat</p> </td> <td> </td> <td> </td> <td> </td> <td> </td> <td> </td> <td> </td> <td> </td> </tr> <tr> <td> <p>asteikko 1-3</p> </td> <td> <p>3</p> </td> <td> </td> <td> <p>2</p> </td> <td> </td> <td> </td> <td> <p>1</p> </td> <td> </td> </tr> <tr> <td> <p>asteikko 1-5</p> </td> <td> <p>5</p> </td> <td> <p>4</p> </td> <td> </td> <td> <p>3</p> </td> <td> <p>2</p> </td> <td> </td> <td> <p>1</p> </td> </tr> <tr> <td> <p>asteikko 4-10</p> </td> <td> <p>10/9</p> </td> <td> <p>8</p> </td> <td> </td> <td> <p>7</p> </td> <td> <p>6</p> </td> <td> </td> <td> <p>5</p> </td> </tr> <tr> <td> <p>Pisteet</p> </td> <td> </td> <td> </td> <td> </td> <td> </td> <td> </td> <td> </td> <td> </td> </tr> <tr> <td> <p>Äidinkieli tai viestintä</p> </td> <td> <p>9</p> </td> <td> <p>6</p> </td> <td> <p>5</p> </td> <td> <p>4</p> </td> <td> <p>2</p> </td> <td> <p>1</p> </td> <td> <p>0</p> </td> </tr> <tr> <td> <p>Paras kieli</p> </td> <td> <p>9</p> </td> <td> <p>6</p> </td> <td> <p>5</p> </td> <td> <p>4</p> </td> <td> <p>2</p> </td> <td> <p>1</p> </td> <td> <p>0</p> </td> </tr> <tr> <td> <p>Matematiikka</p> </td> <td> <p>9</p> </td> <td> <p>6</p> </td> <td> <p>5</p> </td> <td> <p>4</p> </td> <td> <p>2</p> </td> <td> <p>1</p> </td> <td> <p>0</p> </td> </tr> <tr> <td> <p>Fysiikka tai kemia</p> </td> <td> <p>9</p> </td> <td> <p>6</p> </td> <td> <p>5</p> </td> <td> <p>4</p> </td> <td> <p>2</p> </td> <td> <p>1</p> </td> <td> <p>0</p> </td> </tr> </tbody> </table> <p>Päättötodistus: kaikkien aineiden keskiarvo<br /> <br /> Arvosana-asteikko</p> <p>Arvosana-                Arvosana-                Arvosana-              Pisteet<br /> asteikko                   asteikko                   asteikko<br /> 1-3                          1-5                          4-10<br /> <br /> ≥ 2,80                     ≥ 4,60                      ≥ 9,50                    24 <br /> ≥ 2,73                     ≥ 4,46                      ≥ 9,33                    23 <br /> ≥ 2,66                     ≥ 4,32                      ≥ 9,15                    22 <br /> ≥ 2,59                     ≥ 4,18                      ≥ 8,98                    21 <br /> ≥ 2,52                     ≥ 4,04                      ≥ 8,80                    20 <br /> ≥ 2,45                     ≥ 3,90                      ≥ 8,63                    19 <br /> ≥ 2,38                     ≥ 3,77                      ≥ 8,46                    18 <br /> ≥ 2,31                     ≥ 3,63                      ≥ 8,28                    17 <br /> ≥ 2,24                     ≥ 3,49                      ≥ 8,11                    16 <br /> ≥ 2,17                     ≥ 3,35                      ≥ 7,93                    15 <br /> ≥ 2,10                     ≥ 3,21                      ≥ 7,76                    14 <br /> ≥ 2,03                     ≥ 3,07                      ≥ 7,59                    13 <br /> ≥ 1,97                     ≥ 2,93                      ≥ 7,41                    12 <br /> ≥ 1,90                     ≥ 2,79                      ≥ 7,24                    11 <br /> ≥ 1,83                     ≥ 2,65                      ≥ 7,07                    10 <br /> ≥ 1,76                     ≥ 2,51                      ≥ 6,89                     9 <br /> ≥ 1,69                     ≥ 2,37                      ≥ 6,72                     8 <br /> ≥ 1,62                     ≥ 2,23                      ≥ 6,54                     7 <br /> ≥ 1,55                     ≥ 2,10                      ≥ 6,37                     6 <br /> ≥ 1,48                     ≥ 1,96                      ≥ 6,20                     5 <br /> ≥ 1,41                     ≥ 1,82                      ≥ 6,02                     4 <br /> ≥ 1,34                     ≥ 1,68                      ≥ 5,85                     3 <br /> ≥ 1,27                     ≥ 1,54                      ≥ 5,67                     2 <br /> ≥ 1,20                     ≥ 1,40                      ≥ 5,50                     1 <br /> &lt; 1,20                     &lt; 1,40                      &lt; 5,50                     0</p> <p><b>C. Pisteytys ylioppilastutkintotodistuksen ja ammatillisen perustutkinnon pohjalta</b></p> <p>Koulumenestyspisteet lasketaan seuraavin perustein:</p> <p><b>             </b>yksittäisistä aineista (äidinkieli, paras pitkänä kirjoitettu kieli, matematiikka sekä paras reaalikoe seuraavista: fysiikka, kemia ja biologia) ylioppilastutkintotodistuksesta</p> <p>             kaikkien arvosanojen keskiarvo ammatillisen perustutkinnon päättötodistuksesta</p> <p>Abiturienttien ei tarvitse merkitä hakemukseensa ylioppilastutkintotodistuksen arvosanoja, sillä ne kerätään suoraan ylioppilastutkintolautakunnalta.</p> <table> <tbody> <tr> <td> <p>Ylioppilastutkinto arvosanat</p> </td> <td> </td> <td> <p>L/E</p> </td> <td> <p>M</p> </td> <td> <p>C</p> </td> <td> <p>B</p> </td> <td> <p>A</p> </td> </tr> <tr> <td> <p>Pisteet</p> </td> <td> </td> <td> </td> <td> </td> <td> </td> <td> </td> <td> </td> </tr> <tr> <td> <p>Äidinkieli</p> </td> <td> </td> <td> <p>9</p> </td> <td> <p>7</p> </td> <td> <p>5</p> </td> <td> <p>3</p> </td> <td> <p>1</p> </td> </tr> <tr> <td> <p>Paras pitkänä kirjoitettu kieli</p> </td> <td> </td> <td> <p>9</p> </td> <td> <p>7</p> </td> <td> <p>5</p> </td> <td> <p>3</p> </td> <td> <p>1</p> </td> </tr> <tr> <td> <p>Matematiikka, pitkä</p> </td> <td> <p>*</p> </td> <td> <p>9</p> </td> <td> <p>7</p> </td> <td> <p>5</p> </td> <td> <p>3</p> </td> <td> <p>1</p> </td> </tr> <tr> <td> <p>Matematiikka, lyhyt</p> </td> <td> <p>*</p> </td> <td> <p>6</p> </td> <td> <p>4</p> </td> <td> <p>3</p> </td> <td> <p>2</p> </td> <td> <p>1</p> </td> </tr> <tr> <td> <p>Fysiikka reaalikoe</p> </td> <td> <p>**</p> </td> <td> <p>9</p> </td> <td> <p>7</p> </td> <td> <p>5</p> </td> <td> <p>3</p> </td> <td> <p>1</p> </td> </tr> <tr> <td> <p>Kemia reaalikoe</p> </td> <td> <p>**</p> </td> <td> <p>9</p> </td> <td> <p>7</p> </td> <td> <p>5</p> </td> <td> <p>3</p> </td> <td> <p>1</p> </td> </tr> <tr> <td> <p>Biologia reaalikoe</p> </td> <td> <p>**</p> </td> <td> <p>9</p> </td> <td> <p>7</p> </td> <td> <p>5</p> </td> <td> <p>3</p> </td> <td> <p>1</p> </td> </tr> </tbody> </table> <p>* = enintään toinen<br /> ** = enintään yksi</p> <p>Ammatillisen perustutkinnon päättötodistus: kaikkien aineiden keskiarvo</p> <p>Arvosana-                Arvosana-                Arvosana-              Pisteet<br /> asteikko                   asteikko                   asteikko<br /> 1-3                          1-5                          4-10<br /> <br /> ≥ 2,80                     ≥ 4,60                      ≥ 9,50                    24 <br /> ≥ 2,73                     ≥ 4,46                      ≥ 9,33                    23 <br /> ≥ 2,66                     ≥ 4,32                      ≥ 9,15                    22 <br /> ≥ 2,59                     ≥ 4,18                      ≥ 8,98                    21 <br /> ≥ 2,52                     ≥ 4,04                      ≥ 8,80                    20 <br /> ≥ 2,45                     ≥ 3,90                      ≥ 8,63                    19 <br /> ≥ 2,38                     ≥ 3,77                      ≥ 8,46                    18 <br /> ≥ 2,31                     ≥ 3,63                      ≥ 8,28                    17 <br /> ≥ 2,24                     ≥ 3,49                      ≥ 8,11                    16 <br /> ≥ 2,17                     ≥ 3,35                      ≥ 7,93                    15 <br /> ≥ 2,10                     ≥ 3,21                      ≥ 7,76                    14 <br /> ≥ 2,03                     ≥ 3,07                      ≥ 7,59                    13 <br /> ≥ 1,97                     ≥ 2,93                      ≥ 7,41                    12 <br /> ≥ 1,90                     ≥ 2,79                      ≥ 7,24                    11 <br /> ≥ 1,83                     ≥ 2,65                      ≥ 7,07                    10 <br /> ≥ 1,76                     ≥ 2,51                      ≥ 6,89                     9 <br /> ≥ 1,69                     ≥ 2,37                      ≥ 6,72                     8 <br /> ≥ 1,62                     ≥ 2,23                      ≥ 6,54                     7 <br /> ≥ 1,55                     ≥ 2,10                      ≥ 6,37                     6 <br /> ≥ 1,48                     ≥ 1,96                      ≥ 6,20                     5 <br /> ≥ 1,41                     ≥ 1,82                      ≥ 6,02                     4 <br /> ≥ 1,34                     ≥ 1,68                      ≥ 5,85                     3 <br /> ≥ 1,27                     ≥ 1,54                      ≥ 5,67                     2 <br /> ≥ 1,20                     ≥ 1,40                      ≥ 5,50                     1 <br /> &lt; 1,20                     &lt; 1,40                      &lt; 5,50                     0</p> <p>Ammatillisen perustutkinnon todistuksen keskiarvo lasketaan painottamattomana keskiarvona arvosanoista, jotka on ilmaistu tutkintotodistuksessa numeroina tai jotka voidaan muuntaa sellaisiksi.</p> <p>Mikäli hakijan haussa käyttämään todistukseen on annettu arvosana numeroina muualla suoritetuista, hyväksi luetuista opinnoista, se otetaan mukaan keskiarvoa laskettaessa.</p> <p><strong>VALINTAKOE</strong></p> <p>Opiskelijavalinta suoritetaan käyttäen tekniikan valtakunnallista valintakoetta.</p> <p>Kaikki hakukelpoiset hakijat kutsutaan valintakokeeseen (kutsu n. viikkoa ennen koetta). Valintakokeen voi suorittaa ainoastaan tekniikan koulutusta järjestävissä ammattikorkeakouluissa. Opiskelijaksi hakeva voi valita, missä edellä mainituista hän osallistuu valintakokeeseen. Syksyn valintakokeeseen voi osallistua vain niissä ammattikorkeakouluissa, joissa on tammikuussa 2016 alkavaa tekniikan koulutusta.</p> <p>Ilmoitus valintakoepaikasta on merkittävä hakemukseen. Ilmoitus on sitova.</p> <p>Osallistuessaan tekniikan valtakunnalliseen valintakokeeseen hakulomakkeessa ilmoittamassaan ammattikorkeakoulussa, hakija saa koetuloksen kaikkiin insinööri- ja laboratorioanalyytikkokoulutuksen, rakennusmestarikoulutuksen, rakennusarkkitehtikoulutuksen sekä merenkulkualan koulutuksen hakutoiveisiinsa.</p> <p>Valintakoe on 3-4 tuntia kestävä kirjallinen koe. Siinä mitataan opiskeluvalmiuksia ja soveltuvuutta teknilliselle alalle (loogista päättelykykyä sekä matematiikan ja fysiikan/kemian perusosaamista).Kokeeseen osallistuva voi valita joko suomenkieliset tai ruotsinkieliset tehtävät. Koe on yhteinen pohjakoulutuksesta riippumatta. Valintakoetulos on voimassa kyseisen haun ajan. Kokeessa on saavutettava vähintään 10 pistettä maksimiarvosta 40 pistettä.</p> <p>Kevään 2015 valintakoe järjestetään <b>torstaina 28.5.2015</b> ja syksyn valintakoe perjantaina <b>30.10.2015.</b><br /><br /></p> <p><b>Erilliset soveltuvuuskokeet ja suomen/ruotsin kielen kokeet</b></p> <p>Osassa insinöörikoulutusohjelmia tulee hakijan osallistua tekniikan valtakunnallisen valintakokeen lisäksi koulutusta järjestävän ammattikorkeakoulun erillisiin soveltuvuuskokeisiin. Näiden painoarvot, sisällöt ja läpäisyvaatimukset vaihtelevat eri hakukohteissa.</p> <p>Hakijat, joiden äidinkieli tai koulusivistyskieli ei ole suomi, joutuvat joissakin suomenkielisissä ammattikorkeakouluissa suorittamaan erillisen suomen kielen kokeen <b>maanantaina 1.6.2015 </b>ja syksyn haussa <b>maanantaina 2.11.2015.</b></p> <p>Erilliset soveltuvuuskokeet järjestetään <b>perjantaina 29.5.2015</b>. siten, että hakijat voivat osallistua tekniikan valtakunnalliseen valintakokeeseen <b>torstaina 28.5.2015</b> hakulomakkeessa ilmoittamassaan ammattikorkeakoulussa.</p> <p>Hakijat, joiden äidinkieli ja / tai koulusivistyskieli ei ole ruotsi, tanska tai norja, joutuvat joissakin ruotsinkielisissä ammattikorkeakouluissa suorittamaan erillisen ruotsin kielen kokeen, joka järjestetään samana päivänä kuin tekniikan valtakunnallinen valintakoe, <b>28.5.2015</b> ja <b>30.10.2015</b> tai valintakoe- / haastattelutilaisuudessa. Niille hakijoille, jotka osallistuvat em. valintakokeeseen suomenkielisessä ammattikorkeakoulussa, järjestetään mahdollisuus ruotsin kielen kokeen suorittamiselle muuna ajankohtana.</p>",
     "soraDescription": null,
@@ -2763,7 +3138,9 @@
         "id": "1.2.246.562.17.86530085157",
         "asIds": null,
         "name": "Insinööri (AMK), maanmittaustekniikka, päivätoteutus",
-        "qualifications": ["Insinööri (AMK)"],
+        "qualifications": [
+          "Insinööri (AMK)"
+        ],
         "prerequisite": null,
         "provider": "Metropolia AMK, Espoo, Vanha maantie (Leppävaara)",
         "fieldOfExpertise": null
@@ -2832,7 +3209,9 @@
     "applicationPeriodName": "Hakuaika 2",
     "canBeApplied": true,
     "nextApplicationPeriodStarts": null,
-    "requiredBaseEducations": ["pohjakoulutusvaatimuskorkeakoulut_100"],
+    "requiredBaseEducations": [
+      "pohjakoulutusvaatimuskorkeakoulut_100"
+    ],
     "attachments": [
       {
         "dueDate": 1429790429462,
@@ -2917,38 +3296,62 @@
       {
         "oid": "1.2.246.562.28.82550511548",
         "prioriteetti": null,
-        "usageGroups": ["yleinen"],
-        "groupTypes": ["hakukohde"]
+        "usageGroups": [
+          "yleinen"
+        ],
+        "groupTypes": [
+          "hakukohde"
+        ]
       },
       {
         "oid": "1.2.246.562.28.96829962449",
         "prioriteetti": null,
-        "usageGroups": ["yleinen"],
-        "groupTypes": ["hakukohde"]
+        "usageGroups": [
+          "yleinen"
+        ],
+        "groupTypes": [
+          "hakukohde"
+        ]
       },
       {
         "oid": "1.2.246.562.28.55575526841",
         "prioriteetti": null,
-        "usageGroups": ["yleinen"],
-        "groupTypes": ["hakukohde"]
+        "usageGroups": [
+          "yleinen"
+        ],
+        "groupTypes": [
+          "hakukohde"
+        ]
       },
       {
         "oid": "1.2.246.562.28.73789724481",
         "prioriteetti": null,
-        "usageGroups": ["yleinen"],
-        "groupTypes": ["hakukohde"]
+        "usageGroups": [
+          "yleinen"
+        ],
+        "groupTypes": [
+          "hakukohde"
+        ]
       },
       {
         "oid": "1.2.246.562.28.85557110211",
         "prioriteetti": null,
-        "usageGroups": ["yleinen"],
-        "groupTypes": ["hakukohde"]
+        "usageGroups": [
+          "yleinen"
+        ],
+        "groupTypes": [
+          "hakukohde"
+        ]
       },
       {
         "oid": "1.2.246.562.28.24712637358",
         "prioriteetti": null,
-        "usageGroups": ["hakukohde_liiteosoite"],
-        "groupTypes": ["hakukohde"]
+        "usageGroups": [
+          "hakukohde_liiteosoite"
+        ],
+        "groupTypes": [
+          "hakukohde"
+        ]
       }
     ],
     "kotitalous": false
@@ -3265,6 +3668,251 @@
     ],
     "vocational": false
   },
-"1.2.246.562.20.14048800487":
-{"id":"1.2.246.562.20.14048800487","name":"Ensihoitaja, (AMK), ensihoito, päivätoteutus","aoIdentifier":null,"startingQuota":28,"firstTimerStartingQuota":null,"startingQuotaDescription":null,"lowestAcceptedScore":0,"lowestAcceptedAverage":0.0,"attachmentDeliveryDeadline":null,"attachmentDeliveryAddress":{"streetAddress":"PL 4011","streetAddress2":null,"postalCode":"00079","postOffice":"METROPOLIA"},"lastYearApplicantCount":0,"sora":false,"educationDegree":"koulutusasteoph2002_62","teachingLanguages":["FI"],"teachingLanguageNames":[],"selectionCriteria":"<h1>VALTAKUNNALLINEN VALINTAPERUSTESUOSITUS 2015</h1> <h2><b>Poikkeukset ja tarkennukset</b></h2> <p>Ammattikorkeakoulut päättävät valintaperusteensa Ammattikorkeakoulujen rehtorineuvoston (ARENE) antaman valtakunnallisen valintaperustesuorituksen pohjalta.</p> <p>Valintakunnallista valintaperustesuositusta (alla) noudatetaan kyseisessä tutkinto-ohjelmassa seuraavin poikkeuksin ja/tai tarkennuksin:</p> <ul> <li><a href=\"https://opintopolku.fi/wp/ammattikorkeakoulu/miten-opiskelijat-valitaan/amk-tutkintojen-yleiset-valintaperustesuositukset/\">Yleinen ammattikorkeakoulukelpoisuus</a>.</li> <li>Harkinnanvarainen valinta ei ole käytössä.</li> <li>Valintakokeeseen kutsutaan vähintään nelinkertainen määrä hakukelpoisia hakijoita aloituspaikkoihin nähden. Hakijat valitaan kokeeseen koulumenestyksestä annettavien pisteiden perusteella.</li> <li>Metropolian oma valintakoe, joka hyväksytään kaikissa kyseisen valintakoeryhmän koulutuksissa.</li> <li>Opiskelijavalinnat tehdään valintatapaa 3 (valintakoetuloksen perusteella) käyttäen.</li> </ul> <h2>Yleisosio</h2> <p>Valtakunnallisen valintaperustesuosituksen yleisosio löytyy <a href=\"https://opintopolku.fi/wp/fi/ammattikorkeakoulu/miten-opiskelijat-valitaan/amk-tutkintojen-yleiset-valintaperustesuositukset/\">täältä (linkki)</a>.</p> <h2>Alakohtainen suositus: sosiaali- ja terveysalan ammattikorkeakoulututkinnot</h2> <p>Hakukelpoisuus ammattikorkeakouluopintoihin on määritelty <a href=\"https://opintopolku.fi/wp/fi/ammattikorkeakoulu/miten-opiskelijat-valitaan/amk-tutkintojen-yleiset-valintaperustesuositukset/\">valintaperustesuosituksen yleisessä osassa</a>.</p> <p><b>Sosiaali- ja terveysalalle hakijan terveydentilan ja toimintakyvyn tulee olla sellainen, että opiskelija kykenee opintoihin liittyviin käytännön tehtäviin ja harjoitteluun.</b></p> <p>Bioanalyytikkokoulutukseen hakeutuvalla on oltava mikroskoopilla työskentelyyn riittävä näkökyky ja normaali värinäkö. Koulutukseen valittujen tulee toimittaa silmälääkärin, optikon tai optometristin todistus koulutuksen alkaessa ammattikorkeakoulun antamien ohjeiden mukaisesti. Ammattikorkeakoulu voi purkaa valinnan, mikäli todistusta ei toimiteta määräajassa tai valituksi tullutta opiskelijaa ei todistuksen perusteella voida pitää soveltuvana bioanalyytikko-opiskelijaksi.</p> <p>Alalle hakeutuvan tulee huomioida, että</p> <ul> <li>opiskelu ja ammatissa toimiminen edellyttävät hyvää henkistä tasapainoa</li> <li>ala ei sovellu huumeiden käyttäjälle eikä alkoholin tai lääkkeiden ongelmakäyttäjälle</li> <li>esimerkiksi tuki- ja liikuntaelimistön sairaudet, krooniset ihosairaudet ja allergiat voivat muuttua terveydelliseksi ongelmaksi opiskeluaikana tai myöhemmin työelämässä</li> <li>veriteitse tarttuva tauti saattaa rajoittaa opintoja ja työhön sijoittumista.</li> </ul> <p>Ennen opiskeluihin kuuluvaan ohjattuun harjoitteluun siirtymistä ammattikorkeakoulu voi pyytää rikostaustaotteen esittämistä, jos harjoitteluun kuuluu olennaisesti alaikäisten parissa työskentelyä. Ammattikorkeakouluilla on oikeus lähettää opiskelija huumausainetesteihin, jos on perusteltu epäilys huumeiden käytöstä. Opiskelijaksi pyrkivän tulee ammattikorkeakoulun pyynnöstä antaa opiskelijaksi ottamisen arvioinnin edellyttämät terveydentilaansa koskevat tiedot sekä tieto opiskeluoikeuden peruuttamista koskevasta päätöksestä.</p> <p>Valinta on ehdollinen, kunnes ammattikorkeakoulu on tarkistanut koulutukseen valituilta koulutodistukset, bioanalyytikko-opiskelijaksi valituilta todistuksen riittävästä näkökyvystä ja saanut hakijalta mahdollisesti pyydetyn selvityksen terveydentilasta. Ammattikorkeakoulu voi purkaa valinnan seuraavista syistä:</p> <ul> <li>jos todistuksia ei toimiteta ammattikorkeakoulun ilmoittamassa määräajassa</li> <li>jos hakija on antanut arvosanoistaan virheellisiä tietoja</li> <li>jos bioanalyytikko-opiskelijaksi valittua ei voida pitää koulutukseen soveltuvana näkökyvystä annetun todistuksen perusteella</li> <li>jos hakijaa ei voida pitää sosiaali- ja terveysalan koulutukseen terveydentilaltaan sopivana.</li> </ul> <p><b>Opiskelijavalinta on kaksivaiheinen.</b> Osa hakijoista kutsutaan valintakokeisiin koulumenestyksestä kertyvien pisteiden perusteella paremmuusjärjestyksessä. Lopullinen valinta tehdään kahdella eri tavalla. Hakijat valitaan koulumenestyksestä ja valintakokeesta kertyvän yhteispistemäärän perusteella (valintatapa 1) tai valintakokeen pistemäärän perusteella (valintatapa 3), jolloin koulumenestyspisteet eivät vaikuta enää lopullisessa valinnassa.</p> <p><b>Jono 1</b>: Valintatapa 1,vaihtoehto 1 A (koulumenestys ja valintakoe)</p> <ul> <li>Koulumenestys                          30 pistettä</li> <li>Valintakoe                                 70 pistettä</li> <li>Yhteensä                                   100 pistettä</li> </ul> <p> <b>Jono 2</b>: Valintatapa 3 (valintakoe)</p> <ul> <li>Valintakoe                                 70 pistettä</li> </ul> <p>Valintatapajonoista täytetään ensin jono 1(koulumenestys ja valintakoe) ja sitten jono 2 (valintakoe). Ammattikorkeakoulut määrittelevät hakukohdekohtaisesti, kuinka monta aloituspaikkaa osoittavat kumpaankin jonoon. Hakijalla on mahdollisuus tulla valituksi jommastakummasta jonosta.</p> <h3><b>Valintakokeet</b></h3> <p>Valintakokeeseen kutsutaan vähintään nelinkertainen määrä hakijoita aloituspaikkoihin nähden. Hakijat valitaan kokeeseen koulumenestyksestä annettavien pisteiden perusteella. Ammatti-, erikoisammattitutkinnoilla ja ulkomailla suoritetuilla tutkinnolla hakevat hakukelpoiset hakijat kutsutaan suoraan valintakokeeseen ilman esivalintaa. Valinta tehdään valintatapa 3:n mukaan (valintakoe 100 pistettä).</p> <p>Sosiaali- ja terveysalan valintakokeessa painotetaan alalle soveltuvuutta arvioimalla motivaatiota, sosiaalisia valmiuksia sekä oppimis- ja työskentelyvalmiuksia. Koulutukseen valitulta edellytetään alalle soveltuvaa terveyttä. Valintakokeesta on saatava vähintään 30 pistettä (maks.70).</p> <p>Ammattikorkeakoulut voivat tehdä valintakoeyhteistyötä. Sosiaali- ja terveysalalla on neljä valintaryhmää. Hakija saa saman valintaryhmän sisällä hakemiinsa koulutuksiin yhden valintakoekutsun esivalinnassa saadun koulumenestyspistemäärän perusteella. Valintakokeesta hakija saa valintakoetuloksen kaikkiin samaan valintaryhmään kuuluviin koulutuksiin. Valintakoetulos voi vaihdella valintaryhmän sisällä eri koulutusten vaatimusten mukaisesti.</p> <p>Valintakoetulos on voimassa kyseisen haun ajan. Ammattikorkeakoulut ilmoittavat opintopolku.fi -sivustolla ja omilla www-sivuillaan valintakoepäivät ja valintakokeen sisällön.</p> <p><b>Valintaryhmät ovat seuraavat:</b></p> <p>1. valintaryhmä</p> <ul> <li>Ensihoitaja</li> <li>Kätilö</li> <li>Sairaanhoitaja</li> <li>Sairaanhoitaja, diakoninen hoitotyö</li> <li>Terveydenhoitaja</li> </ul> <p>2. valintaryhmä</p> <ul> <li>Bioanalyytikko</li> <li>Hammasteknikko</li> <li>Optometristi</li> <li>Röntgenhoitaja</li> <li>Suuhygienisti</li> </ul> <p> 3. valintaryhmä</p> <ul> <li>Apuvälineteknikko</li> <li>Fysioterapeutti</li> <li>Jalkaterapeutti</li> <li>Naprapaatti</li> <li>Osteopaatti</li> <li>Toimintaterapeutti</li> </ul> <p> 4. valintaryhmä</p> <ul> <li>Geronomi</li> <li>Kuntoutuksen ohjaaja</li> <li>Sosionomi</li> <li>Sosionomi, diakoniatyö</li> <li>Sosionomi, kirkon nuorisotyö</li> <li>Sosionomi, kirkon varhaiskasvatus</li> <li>Sosionomi, rikosseuraamus</li> </ul>","soraDescription":"<p>Sosiaali- ja terveysalalle hakijan terveydentilan ja toimintakyvyn tulee olla sellainen, että opiskelija kykenee opintoihin liittyviin käytännön tehtäviin ja harjoitteluun.</p> <p>Bioanalytiikan koulutukseen koulutukseen hakeutuvalla on oltava mikroskoopilla työskentelyyn riittävä näkökyky ja normaali värinäkö. Koulutukseen valittujen tulee toimittaa silmälääkärin, optikon tai optometristin todistus koulutuksen alkaessa ammattikorkeakoulun antamien ohjeiden mukaisesti. Ammattikorkeakoulu voi purkaa valinnan, mikäli todistusta ei toimiteta määräajassa tai valituksi tullutta opiskelijaa ei todistuksen perusteella voida pitää soveltuvana bioanalytiikan koulutukseen koulutukseen.</p> <p>Alalle hakeutuvan tulee huomioida, että:</p> <ul> <li>opiskelu ja ammatissa toimiminen edellyttävät hyvää henkistä tasapainoa</li> <li>ala ei sovellu huumeiden käyttäjälle eikä alkoholin tai lääkkeiden ongelmakäyttäjälle</li> <li>esimerkiksi tuki- ja liikuntaelimistön sairaudet, krooniset ihosairaudet ja allergiat voivat muuttua terveydelliseksi ongelmaksi opiskeluaikana tai myöhemmin työelämässä</li> <li>veriteitse tarttuva tauti saattaa rajoittaa opintopolkua ja työhön sijoittumista.</li> </ul> <p>Ennen opiskeluihin kuuluvaan ohjattuun harjoitteluun siirtymistä ammattikorkeakoulu voi pyytää rikosrekisteriotteen esittämistä, jos harjoitteluun kuuluu olennaisesti alaikäisten parissa työskentelyä.<br />Opiskelijaksi pyrkivän tulee ammattikorkeakoulun pyynnöstä antaa opiskelijaksi ottamisen arvioinnin edellyttämät terveydentilaansa koskevat tiedot sekä tieto opiskeluoikeuden peruuttamista koskevasta päätöksestä.</p>","prerequisite":null,"exams":[{"type":"Valintakoe","description":"<ul> <li>Koulutus ottaa osaa valtakunnalliseen valintakoeyhteistyöhön: sosiaali- ja terveysalan valintakoeryhmä 1</li> <li>Valintakokeeseen kutsutaan aloituspaikkoihin nähden noin nelinkertainen määrä hakijoita. Hakijat valitaan kokeeseen koulumenestyksestä annettavien pisteiden perusteella. Ammatti-, erikoisammattitutkinnoilla ja ulkomailla suoritetuilla tutkinnolla hakevat hakukelpoiset hakijat kutsutaan suoraan valintakokeeseen ilman esivalintaa.</li> <li><strong>Valintakoekutsut lähetetään sähköpostitse arviolta noin viikkoa ennen valintakoetta.</strong></li> <li>Valintakoe on hakijalle yksipäiväinen.</li> <li>Valintakoepäivää ei voi vaihtaa.</li> <li>Sosiaali- ja terveysalan valintakokeessa painotetaan alalle soveltuvuutta arvioimalla motivaatiota, sosiaalisia valmiuksia ja oppimis- ja työskentelyvalmiuksia. Koulutukseen valitulta edellytetään alalle soveltuvaa terveyttä.</li> <li>Valintakoeaineisto ja lisätiedot valintakokeesta julkaistaan haun alkaessa <a href=\"http://www.metropolia.fi/haku\">Metropolian hakusivuilla</a>.</li> <li>Valintakoetulos on voimassa kyseisen haun ajan.</li> </ul>","examEvents":[{"start":1446588000000,"end":1446760800000,"description":"www.metropolia.fi/haku","address":{"streetAddress":"Tukholmankatu 10","streetAddress2":null,"postalCode":"00290","postOffice":"HELSINKI"},"timeIncluded":false}],"scoreLimit":null}],"childRefs":[],"higherEdLOSRefs":[{"id":"1.2.246.562.17.77035664521","asIds":null,"name":"Ensihoitaja, (AMK), ensihoito, päivätoteutus","qualifications":["Ensihoitaja (AMK)"],"prerequisite":null,"provider":"Metropolia Ammattikorkeakoulu","fieldOfExpertise":null}],"provider":{"id":"1.2.246.562.10.67476956288","name":"Metropolia Ammattikorkeakoulu","applicationSystemIds":["1.2.246.562.29.10714450698"],"postalAddress":{"streetAddress":"PL 4011","streetAddress2":null,"postalCode":"00079","postOffice":"METROPOLIA"},"visitingAddress":{"streetAddress":"Bulevardi 31","streetAddress2":null,"postalCode":"00180","postOffice":"HELSINKI"},"webPage":"http://www.metropolia.fi","email":"hakijapalvelut@metropolia.fi","fax":null,"phone":"09 7424 5100","description":"<p>Metropolia on pääkaupunkiseudulla toimiva kansainvälinen ja monialainen ammattikorkeakoulu. Koulutamme kulttuurin, liiketalouden, sosiaali- ja terveysalan sekä tekniikan asiantuntijoita ja kehittäjiä.</p> <p>Metropoliassa opiskeluun yhdistyvät käytännönläheisyys, kansainvälisyys ja innovointi. Panostamme korkeatasoiseen opetukseen ja meillä vallitsee tekemisen meininki. Opettajillamme on Suomen parhaat yritys- ja työelämäverkostot. Verkostojen kautta löydät mielenkiintoisia ja työelämätaitojasi edistäviä harjoittelupaikkoja ja projektitehtäviä. Voit suorittaa osan opinnoistasi tai harjoittelusta myös ulkomailla.<br /><br />Vahvuutemme on laaja-alaisuus ja moniosaaminen. Saavutat oman alasi ja tutkintosi vahvan tieto-taito-osaamisen ja lisäksi tutustut jo opintojesi aikana eri alan opiskelijoihin, opit työskentelemään moniammatillisissa tiimeissä ja saat valmiuksia osallistua uusien innovaatioiden tuottamiseen.<br /><br /></p>","healthcare":null,"accessibility":"<p>Metropoliassa kiinnitetään huomiota opiskelijoiden yhdenvertaisuuden toteutumiseen. Metropolialle on laadittu yhdenvertaisuusohjelma liittyen opiskeluhyvinvoinnin kehittämiseen. Ohjelman päämääränä on edistää fyysisen, psyykkisen ja sosiaalisen opiskelu- ja työympäristön suunnittelua ja toteuttamista siten, että Metropolian opiskelijat, henkilöstö ja vierailijat voivat ominaisuuksistaan riippumatta toimia yhdenvertaisesti. Ohjelma tukee oppimisprosessia ja monimuotoista opetustyötä.</p> <p>Metropolia on vuokralla lähes 20 eri toimipisteessä Helsingin, Espoon ja Vantaan kaupunkien alueilla. Kiinteistöjen rakennusaika vaihtelee 1800-luvun lopusta 2000-luvun alkuun. Vanhimmat kiinteistöt sijaitsevat Helsingin alueella. Erityisesti iäkkäämmissä kiinteistöissä kulkemisen vaivattomuus voi vaihdella huomattavasti. Liikuntarajoitteisten henkilöiden esteetön kulku saattaa edellyttää kiertoreittien käyttöä.<br /><br />Tilojensa vastuullisena vuokralaisena Metropolia kehittää toimipisteidensä esteettömyyttä yhteistyössä kiinteistöjen omistajien kanssa. Esteettömyyden toteutumista ammattikorkeakoulun toimipisteissä tuetaan yhdessä Invalidiliiton kaltaisten kansallisten toimijoiden kanssa toteutettavilla esteettömyyskartoituksilla. Metropolian omat opiskelijat toimivat kartoitusten toteuttajina yhteistyössä sidosryhmien edustajien kanssa. Esteettömyyskartoitusten tuloksia ja kehitysehdotuksia käytetään tiloja koskevan päätöksenteon ja jatkotoimenpiteiden tukena.</p> <p>Lue lisää <a href=\"http://opinto-opas.metropolia.fi/fi/kaytannon-tietoa-opiskelijoille/yhdenvertaisuus/\">Metropolian yhdenvertaisuusohjelmasta</a>.</p>","learningEnvironment":null,"dining":null,"livingExpenses":null,"living":null,"yearClock":null,"financingStudies":null,"insurances":null,"leisureServices":null,"social":null,"pictureFound":false,"athleteEducation":false,"applicationOffice":{"name":"Hakijapalvelut","phone":"09 7424 5100","email":"hakijapalvelut@metropolia.fi","www":"http://www.metropolia.fi/haku","visitingAddress":{"streetAddress":"Bulevardi 29","streetAddress2":null,"postalCode":"00180","postOffice":"HELSINKI"},"postalAddress":{"streetAddress":"PL 4011","streetAddress2":null,"postalCode":"00079","postOffice":"METROPOLIA"}},"homeplace":"Helsinki"},"applicationOffice":{"name":"Hakijapalvelut","phone":"09 7424 5100","email":"hakijapalvelut@metropolia.fi","www":"http://www.metropolia.fi/haku","visitingAddress":{"streetAddress":"Bulevardi 29","streetAddress2":"","postalCode":"00180","postOffice":"HELSINKI"},"postalAddress":{"streetAddress":"PL 4011","streetAddress2":"","postalCode":"00079","postOffice":"METROPOLIA"}},"specificApplicationDates":false,"applicationStartDate":1440997231839,"applicationEndDate":1442923243439,"applicationPeriodName":null,"canBeApplied":true,"nextApplicationPeriodStarts":null,"requiredBaseEducations":["pohjakoulutusvaatimuskorkeakoulut_100"],"attachments":[{"dueDate":1443528000000,"type":"Ammatti- ja erikoisammattitutkinnot","descreption":"<p>Osoittaakseen hakukelpoisuutensa suomalaisella ammatti- tai erikoisammattitutkinnolla hakevan on toimitettava kopio lopullisesta tutkintotodistuksestaan ensisijaisen ammattikorkeakouluhakukohteen hakijapalveluihin viimeistään 6.10.2015 klo 15.00 mennessä. <b>Tämä ei koske suomalaisella ammatillisella perustutkinnolla tai muulla suomalaisella tutkinnolla hakevia.</b> Todistuskopioiden tulee olla perillä ao. ammattikorkeakouluhakukohteen hakijapalveluissa määräaikaan mennessä.</p>","address":{"streetAddress":"PL 4011","streetAddress2":null,"postalCode":"00079","postOffice":"METROPOLIA"},"emailAddr":"hakijapalvelut@metropolia.fi","usedInApplicationForm":false},{"dueDate":1443528000000,"type":"Ennen vuotta 1990 suoritetut ylioppilastutkinnot","descreption":"<p>Ylioppilastutkintonsa Suomessa ennen vuotta 1990 suorittaneiden tulee toiimittaa kopio ylioppilastutkintotodistuksestaan ensisijaisen ammattikorkeakouluhakukohteen hakijapalveluihin viimeistään 6.10.2015 klo 15.00 mennessä. <b>Tämä ei koske vuonna 1990 tai sen jälkeen valmistuneita.</b> Todistuskopioiden tulee olla perillä ao. ammattikorkeakouluhakukohteen hakijapalveluissa määräaikaan mennessä.</p>","address":{"streetAddress":"PL 4011","streetAddress2":null,"postalCode":"00079","postOffice":"METROPOLIA"},"emailAddr":"hakijapalvelut@metropolia.fi","usedInApplicationForm":false},{"dueDate":1443528000000,"type":"IB, EB ja RP -tutkinnot","descreption":"<p>International Baccalaureate (IB), European Baccalaureate (EB) tai Reifeprüfung (RP) tutkintotodistuksella hakevan on toimitettava kopio lopullisesta tutkintotodistuksestaan ensisijaisen ammattikorkeakouluhakukohteen hakijapalveluihin viimeistään 6.10.2015 klo 15.00 mennessä. <b>Tämä ei kuitenkaan koske syksyllä 2015 valmistuvia hakijoita.</b> Todistuskopioiden tulee olla perillä ao. ammattikorkeakouluhakukohteen hakijapalveluissa määräaikaan mennessä.</p>","address":{"streetAddress":"PL 4011","streetAddress2":null,"postalCode":"00079","postOffice":"METROPOLIA"},"emailAddr":"hakijapalvelut@metropolia.fi","usedInApplicationForm":false},{"dueDate":1443528000000,"type":"Ulkomaiset tutkinnot","descreption":"<p>Osoittaakseen hakukelpoisuutensa ulkomailla suoritetulla tutkintotodistuksella hakevan on toimitettava kopio lopullisesta tutkintotodistuksestaan ensisijaisen ammattikorkeakouluhakukohteen hakijapalveluihin viimeistään 6.10.2015 klo 15.00 mennessä. Todistuskopioiden tulee olla perillä ao. ammattikorkeakouluhakukohteen hakijapalveluissa määräaikaan mennessä.</p>","address":{"streetAddress":"PL 4011","streetAddress2":null,"postalCode":"00079","postOffice":"METROPOLIA"},"emailAddr":"hakijapalvelut@metropolia.fi","usedInApplicationForm":false},{"dueDate":1443528000000,"type":"Käännökset","descreption":"<p>Todistuskopioiden lisäksi on toimitettava virallisen kielenkääntäjän suomeksi, ruotsiksi tai englanniksi tekemä käännöskopio tutkintotodistuksesta, jos tutkintotodistuksen kieli ei ole mikään näistä. Käännöksessä tulee olla kääntäjän allekirjoitus ja leima. Käännös tulee toimittaa ensisijaisen ammattikorkeakouluhakukohteen hakijapalveluihin viimeistään 6.10.2015 klo 15.00 mennessä. Käännösten tulee olla perillä ao. ammattikorkeakouluhakukohteen hakijapalveluissa määräaikaan mennessä.</p>","address":{"streetAddress":"PL 4011","streetAddress2":null,"postalCode":"00079","postOffice":"METROPOLIA"},"emailAddr":"hakijapalvelut@metropolia.fi","usedInApplicationForm":false}],"emphasizedSubjects":null,"additionalInfo":"<p>Yleisohje korkeakoulujen yhteishaussa hakemisesta löytyy Opintopolun sivulta <a href=\"https://opintopolku.fi/wp/ammattikorkeakoulu/nain-haet-yhteishaussa-ammattikorkeakouluun/\">Näin haet yhteishaussa ammattikorkeakouluun</a>. </p>","additionalProof":null,"overallScoreLimit":null,"kaksoistutkinto":false,"athleteEducation":false,"vocational":false,"educationCodeUri":"koulutus_671116","status":null,"eligibilityDescription":null,"type":"KORKEAKOULU","educationTypeUri":null,"hakuaikaId":"1956813","organizationGroups":[{"oid":"1.2.246.562.28.24712637358","prioriteetti":null,"usageGroups":["hakukohde_liiteosoite"],"groupTypes":["hakukohde"]}],"kotitalous":false}
+  "1.2.246.562.20.14048800487": {
+    "id": "1.2.246.562.20.14048800487",
+    "name": "Ensihoitaja, (AMK), ensihoito, päivätoteutus",
+    "aoIdentifier": null,
+    "startingQuota": 28,
+    "firstTimerStartingQuota": null,
+    "startingQuotaDescription": null,
+    "lowestAcceptedScore": 0,
+    "lowestAcceptedAverage": 0.0,
+    "attachmentDeliveryDeadline": null,
+    "attachmentDeliveryAddress": {
+      "streetAddress": "PL 4011",
+      "streetAddress2": null,
+      "postalCode": "00079",
+      "postOffice": "METROPOLIA"
+    },
+    "lastYearApplicantCount": 0,
+    "sora": false,
+    "educationDegree": "koulutusasteoph2002_62",
+    "teachingLanguages": [
+      "FI"
+    ],
+    "pohjakoulutusLiitteet": [
+      "pohjakoulutuskklomake_yokvsuomi",
+      "pohjakoulutuskklomake_pohjakoulutusamt",
+      "pohjakoulutuskklomake_muuulk",
+      "pohjakoulutuskklomake_pohjakoulutusyoulkomainen",
+      "pohjakoulutuskklomake_pohjakoulutusmuu",
+      "pohjakoulutuskklomake_yosuomi",
+      "pohjakoulutuskklomake_pohjakoulutusavoin"
+    ],
+    "teachingLanguageNames": [],
+    "selectionCriteria": "<h1>VALTAKUNNALLINEN VALINTAPERUSTESUOSITUS 2015</h1> <h2><b>Poikkeukset ja tarkennukset</b></h2> <p>Ammattikorkeakoulut päättävät valintaperusteensa Ammattikorkeakoulujen rehtorineuvoston (ARENE) antaman valtakunnallisen valintaperustesuorituksen pohjalta.</p> <p>Valintakunnallista valintaperustesuositusta (alla) noudatetaan kyseisessä tutkinto-ohjelmassa seuraavin poikkeuksin ja/tai tarkennuksin:</p> <ul> <li><a href=\"https://opintopolku.fi/wp/ammattikorkeakoulu/miten-opiskelijat-valitaan/amk-tutkintojen-yleiset-valintaperustesuositukset/\">Yleinen ammattikorkeakoulukelpoisuus</a>.</li> <li>Harkinnanvarainen valinta ei ole käytössä.</li> <li>Valintakokeeseen kutsutaan vähintään nelinkertainen määrä hakukelpoisia hakijoita aloituspaikkoihin nähden. Hakijat valitaan kokeeseen koulumenestyksestä annettavien pisteiden perusteella.</li> <li>Metropolian oma valintakoe, joka hyväksytään kaikissa kyseisen valintakoeryhmän koulutuksissa.</li> <li>Opiskelijavalinnat tehdään valintatapaa 3 (valintakoetuloksen perusteella) käyttäen.</li> </ul> <h2>Yleisosio</h2> <p>Valtakunnallisen valintaperustesuosituksen yleisosio löytyy <a href=\"https://opintopolku.fi/wp/fi/ammattikorkeakoulu/miten-opiskelijat-valitaan/amk-tutkintojen-yleiset-valintaperustesuositukset/\">täältä (linkki)</a>.</p> <h2>Alakohtainen suositus: sosiaali- ja terveysalan ammattikorkeakoulututkinnot</h2> <p>Hakukelpoisuus ammattikorkeakouluopintoihin on määritelty <a href=\"https://opintopolku.fi/wp/fi/ammattikorkeakoulu/miten-opiskelijat-valitaan/amk-tutkintojen-yleiset-valintaperustesuositukset/\">valintaperustesuosituksen yleisessä osassa</a>.</p> <p><b>Sosiaali- ja terveysalalle hakijan terveydentilan ja toimintakyvyn tulee olla sellainen, että opiskelija kykenee opintoihin liittyviin käytännön tehtäviin ja harjoitteluun.</b></p> <p>Bioanalyytikkokoulutukseen hakeutuvalla on oltava mikroskoopilla työskentelyyn riittävä näkökyky ja normaali värinäkö. Koulutukseen valittujen tulee toimittaa silmälääkärin, optikon tai optometristin todistus koulutuksen alkaessa ammattikorkeakoulun antamien ohjeiden mukaisesti. Ammattikorkeakoulu voi purkaa valinnan, mikäli todistusta ei toimiteta määräajassa tai valituksi tullutta opiskelijaa ei todistuksen perusteella voida pitää soveltuvana bioanalyytikko-opiskelijaksi.</p> <p>Alalle hakeutuvan tulee huomioida, että</p> <ul> <li>opiskelu ja ammatissa toimiminen edellyttävät hyvää henkistä tasapainoa</li> <li>ala ei sovellu huumeiden käyttäjälle eikä alkoholin tai lääkkeiden ongelmakäyttäjälle</li> <li>esimerkiksi tuki- ja liikuntaelimistön sairaudet, krooniset ihosairaudet ja allergiat voivat muuttua terveydelliseksi ongelmaksi opiskeluaikana tai myöhemmin työelämässä</li> <li>veriteitse tarttuva tauti saattaa rajoittaa opintoja ja työhön sijoittumista.</li> </ul> <p>Ennen opiskeluihin kuuluvaan ohjattuun harjoitteluun siirtymistä ammattikorkeakoulu voi pyytää rikostaustaotteen esittämistä, jos harjoitteluun kuuluu olennaisesti alaikäisten parissa työskentelyä. Ammattikorkeakouluilla on oikeus lähettää opiskelija huumausainetesteihin, jos on perusteltu epäilys huumeiden käytöstä. Opiskelijaksi pyrkivän tulee ammattikorkeakoulun pyynnöstä antaa opiskelijaksi ottamisen arvioinnin edellyttämät terveydentilaansa koskevat tiedot sekä tieto opiskeluoikeuden peruuttamista koskevasta päätöksestä.</p> <p>Valinta on ehdollinen, kunnes ammattikorkeakoulu on tarkistanut koulutukseen valituilta koulutodistukset, bioanalyytikko-opiskelijaksi valituilta todistuksen riittävästä näkökyvystä ja saanut hakijalta mahdollisesti pyydetyn selvityksen terveydentilasta. Ammattikorkeakoulu voi purkaa valinnan seuraavista syistä:</p> <ul> <li>jos todistuksia ei toimiteta ammattikorkeakoulun ilmoittamassa määräajassa</li> <li>jos hakija on antanut arvosanoistaan virheellisiä tietoja</li> <li>jos bioanalyytikko-opiskelijaksi valittua ei voida pitää koulutukseen soveltuvana näkökyvystä annetun todistuksen perusteella</li> <li>jos hakijaa ei voida pitää sosiaali- ja terveysalan koulutukseen terveydentilaltaan sopivana.</li> </ul> <p><b>Opiskelijavalinta on kaksivaiheinen.</b> Osa hakijoista kutsutaan valintakokeisiin koulumenestyksestä kertyvien pisteiden perusteella paremmuusjärjestyksessä. Lopullinen valinta tehdään kahdella eri tavalla. Hakijat valitaan koulumenestyksestä ja valintakokeesta kertyvän yhteispistemäärän perusteella (valintatapa 1) tai valintakokeen pistemäärän perusteella (valintatapa 3), jolloin koulumenestyspisteet eivät vaikuta enää lopullisessa valinnassa.</p> <p><b>Jono 1</b>: Valintatapa 1,vaihtoehto 1 A (koulumenestys ja valintakoe)</p> <ul> <li>Koulumenestys                          30 pistettä</li> <li>Valintakoe                                 70 pistettä</li> <li>Yhteensä                                   100 pistettä</li> </ul> <p> <b>Jono 2</b>: Valintatapa 3 (valintakoe)</p> <ul> <li>Valintakoe                                 70 pistettä</li> </ul> <p>Valintatapajonoista täytetään ensin jono 1(koulumenestys ja valintakoe) ja sitten jono 2 (valintakoe). Ammattikorkeakoulut määrittelevät hakukohdekohtaisesti, kuinka monta aloituspaikkaa osoittavat kumpaankin jonoon. Hakijalla on mahdollisuus tulla valituksi jommastakummasta jonosta.</p> <h3><b>Valintakokeet</b></h3> <p>Valintakokeeseen kutsutaan vähintään nelinkertainen määrä hakijoita aloituspaikkoihin nähden. Hakijat valitaan kokeeseen koulumenestyksestä annettavien pisteiden perusteella. Ammatti-, erikoisammattitutkinnoilla ja ulkomailla suoritetuilla tutkinnolla hakevat hakukelpoiset hakijat kutsutaan suoraan valintakokeeseen ilman esivalintaa. Valinta tehdään valintatapa 3:n mukaan (valintakoe 100 pistettä).</p> <p>Sosiaali- ja terveysalan valintakokeessa painotetaan alalle soveltuvuutta arvioimalla motivaatiota, sosiaalisia valmiuksia sekä oppimis- ja työskentelyvalmiuksia. Koulutukseen valitulta edellytetään alalle soveltuvaa terveyttä. Valintakokeesta on saatava vähintään 30 pistettä (maks.70).</p> <p>Ammattikorkeakoulut voivat tehdä valintakoeyhteistyötä. Sosiaali- ja terveysalalla on neljä valintaryhmää. Hakija saa saman valintaryhmän sisällä hakemiinsa koulutuksiin yhden valintakoekutsun esivalinnassa saadun koulumenestyspistemäärän perusteella. Valintakokeesta hakija saa valintakoetuloksen kaikkiin samaan valintaryhmään kuuluviin koulutuksiin. Valintakoetulos voi vaihdella valintaryhmän sisällä eri koulutusten vaatimusten mukaisesti.</p> <p>Valintakoetulos on voimassa kyseisen haun ajan. Ammattikorkeakoulut ilmoittavat opintopolku.fi -sivustolla ja omilla www-sivuillaan valintakoepäivät ja valintakokeen sisällön.</p> <p><b>Valintaryhmät ovat seuraavat:</b></p> <p>1. valintaryhmä</p> <ul> <li>Ensihoitaja</li> <li>Kätilö</li> <li>Sairaanhoitaja</li> <li>Sairaanhoitaja, diakoninen hoitotyö</li> <li>Terveydenhoitaja</li> </ul> <p>2. valintaryhmä</p> <ul> <li>Bioanalyytikko</li> <li>Hammasteknikko</li> <li>Optometristi</li> <li>Röntgenhoitaja</li> <li>Suuhygienisti</li> </ul> <p> 3. valintaryhmä</p> <ul> <li>Apuvälineteknikko</li> <li>Fysioterapeutti</li> <li>Jalkaterapeutti</li> <li>Naprapaatti</li> <li>Osteopaatti</li> <li>Toimintaterapeutti</li> </ul> <p> 4. valintaryhmä</p> <ul> <li>Geronomi</li> <li>Kuntoutuksen ohjaaja</li> <li>Sosionomi</li> <li>Sosionomi, diakoniatyö</li> <li>Sosionomi, kirkon nuorisotyö</li> <li>Sosionomi, kirkon varhaiskasvatus</li> <li>Sosionomi, rikosseuraamus</li> </ul>",
+    "soraDescription": "<p>Sosiaali- ja terveysalalle hakijan terveydentilan ja toimintakyvyn tulee olla sellainen, että opiskelija kykenee opintoihin liittyviin käytännön tehtäviin ja harjoitteluun.</p> <p>Bioanalytiikan koulutukseen koulutukseen hakeutuvalla on oltava mikroskoopilla työskentelyyn riittävä näkökyky ja normaali värinäkö. Koulutukseen valittujen tulee toimittaa silmälääkärin, optikon tai optometristin todistus koulutuksen alkaessa ammattikorkeakoulun antamien ohjeiden mukaisesti. Ammattikorkeakoulu voi purkaa valinnan, mikäli todistusta ei toimiteta määräajassa tai valituksi tullutta opiskelijaa ei todistuksen perusteella voida pitää soveltuvana bioanalytiikan koulutukseen koulutukseen.</p> <p>Alalle hakeutuvan tulee huomioida, että:</p> <ul> <li>opiskelu ja ammatissa toimiminen edellyttävät hyvää henkistä tasapainoa</li> <li>ala ei sovellu huumeiden käyttäjälle eikä alkoholin tai lääkkeiden ongelmakäyttäjälle</li> <li>esimerkiksi tuki- ja liikuntaelimistön sairaudet, krooniset ihosairaudet ja allergiat voivat muuttua terveydelliseksi ongelmaksi opiskeluaikana tai myöhemmin työelämässä</li> <li>veriteitse tarttuva tauti saattaa rajoittaa opintopolkua ja työhön sijoittumista.</li> </ul> <p>Ennen opiskeluihin kuuluvaan ohjattuun harjoitteluun siirtymistä ammattikorkeakoulu voi pyytää rikosrekisteriotteen esittämistä, jos harjoitteluun kuuluu olennaisesti alaikäisten parissa työskentelyä.<br />Opiskelijaksi pyrkivän tulee ammattikorkeakoulun pyynnöstä antaa opiskelijaksi ottamisen arvioinnin edellyttämät terveydentilaansa koskevat tiedot sekä tieto opiskeluoikeuden peruuttamista koskevasta päätöksestä.</p>",
+    "prerequisite": null,
+    "exams": [
+      {
+        "type": "Valintakoe",
+        "description": "<ul> <li>Koulutus ottaa osaa valtakunnalliseen valintakoeyhteistyöhön: sosiaali- ja terveysalan valintakoeryhmä 1</li> <li>Valintakokeeseen kutsutaan aloituspaikkoihin nähden noin nelinkertainen määrä hakijoita. Hakijat valitaan kokeeseen koulumenestyksestä annettavien pisteiden perusteella. Ammatti-, erikoisammattitutkinnoilla ja ulkomailla suoritetuilla tutkinnolla hakevat hakukelpoiset hakijat kutsutaan suoraan valintakokeeseen ilman esivalintaa.</li> <li><strong>Valintakoekutsut lähetetään sähköpostitse arviolta noin viikkoa ennen valintakoetta.</strong></li> <li>Valintakoe on hakijalle yksipäiväinen.</li> <li>Valintakoepäivää ei voi vaihtaa.</li> <li>Sosiaali- ja terveysalan valintakokeessa painotetaan alalle soveltuvuutta arvioimalla motivaatiota, sosiaalisia valmiuksia ja oppimis- ja työskentelyvalmiuksia. Koulutukseen valitulta edellytetään alalle soveltuvaa terveyttä.</li> <li>Valintakoeaineisto ja lisätiedot valintakokeesta julkaistaan haun alkaessa <a href=\"http://www.metropolia.fi/haku\">Metropolian hakusivuilla</a>.</li> <li>Valintakoetulos on voimassa kyseisen haun ajan.</li> </ul>",
+        "examEvents": [
+          {
+            "start": 1446588000000,
+            "end": 1446760800000,
+            "description": "www.metropolia.fi/haku",
+            "address": {
+              "streetAddress": "Tukholmankatu 10",
+              "streetAddress2": null,
+              "postalCode": "00290",
+              "postOffice": "HELSINKI"
+            },
+            "timeIncluded": false
+          }
+        ],
+        "scoreLimit": null
+      }
+    ],
+    "childRefs": [],
+    "higherEdLOSRefs": [
+      {
+        "id": "1.2.246.562.17.77035664521",
+        "asIds": null,
+        "name": "Ensihoitaja, (AMK), ensihoito, päivätoteutus",
+        "qualifications": [
+          "Ensihoitaja (AMK)"
+        ],
+        "prerequisite": null,
+        "provider": "Metropolia Ammattikorkeakoulu",
+        "fieldOfExpertise": null
+      }
+    ],
+    "provider": {
+      "id": "1.2.246.562.10.67476956288",
+      "name": "Metropolia Ammattikorkeakoulu",
+      "applicationSystemIds": [
+        "1.2.246.562.29.10714450698"
+      ],
+      "postalAddress": {
+        "streetAddress": "PL 4011",
+        "streetAddress2": null,
+        "postalCode": "00079",
+        "postOffice": "METROPOLIA"
+      },
+      "visitingAddress": {
+        "streetAddress": "Bulevardi 31",
+        "streetAddress2": null,
+        "postalCode": "00180",
+        "postOffice": "HELSINKI"
+      },
+      "webPage": "http://www.metropolia.fi",
+      "email": "hakijapalvelut@metropolia.fi",
+      "fax": null,
+      "phone": "09 7424 5100",
+      "description": "<p>Metropolia on pääkaupunkiseudulla toimiva kansainvälinen ja monialainen ammattikorkeakoulu. Koulutamme kulttuurin, liiketalouden, sosiaali- ja terveysalan sekä tekniikan asiantuntijoita ja kehittäjiä.</p> <p>Metropoliassa opiskeluun yhdistyvät käytännönläheisyys, kansainvälisyys ja innovointi. Panostamme korkeatasoiseen opetukseen ja meillä vallitsee tekemisen meininki. Opettajillamme on Suomen parhaat yritys- ja työelämäverkostot. Verkostojen kautta löydät mielenkiintoisia ja työelämätaitojasi edistäviä harjoittelupaikkoja ja projektitehtäviä. Voit suorittaa osan opinnoistasi tai harjoittelusta myös ulkomailla.<br /><br />Vahvuutemme on laaja-alaisuus ja moniosaaminen. Saavutat oman alasi ja tutkintosi vahvan tieto-taito-osaamisen ja lisäksi tutustut jo opintojesi aikana eri alan opiskelijoihin, opit työskentelemään moniammatillisissa tiimeissä ja saat valmiuksia osallistua uusien innovaatioiden tuottamiseen.<br /><br /></p>",
+      "healthcare": null,
+      "accessibility": "<p>Metropoliassa kiinnitetään huomiota opiskelijoiden yhdenvertaisuuden toteutumiseen. Metropolialle on laadittu yhdenvertaisuusohjelma liittyen opiskeluhyvinvoinnin kehittämiseen. Ohjelman päämääränä on edistää fyysisen, psyykkisen ja sosiaalisen opiskelu- ja työympäristön suunnittelua ja toteuttamista siten, että Metropolian opiskelijat, henkilöstö ja vierailijat voivat ominaisuuksistaan riippumatta toimia yhdenvertaisesti. Ohjelma tukee oppimisprosessia ja monimuotoista opetustyötä.</p> <p>Metropolia on vuokralla lähes 20 eri toimipisteessä Helsingin, Espoon ja Vantaan kaupunkien alueilla. Kiinteistöjen rakennusaika vaihtelee 1800-luvun lopusta 2000-luvun alkuun. Vanhimmat kiinteistöt sijaitsevat Helsingin alueella. Erityisesti iäkkäämmissä kiinteistöissä kulkemisen vaivattomuus voi vaihdella huomattavasti. Liikuntarajoitteisten henkilöiden esteetön kulku saattaa edellyttää kiertoreittien käyttöä.<br /><br />Tilojensa vastuullisena vuokralaisena Metropolia kehittää toimipisteidensä esteettömyyttä yhteistyössä kiinteistöjen omistajien kanssa. Esteettömyyden toteutumista ammattikorkeakoulun toimipisteissä tuetaan yhdessä Invalidiliiton kaltaisten kansallisten toimijoiden kanssa toteutettavilla esteettömyyskartoituksilla. Metropolian omat opiskelijat toimivat kartoitusten toteuttajina yhteistyössä sidosryhmien edustajien kanssa. Esteettömyyskartoitusten tuloksia ja kehitysehdotuksia käytetään tiloja koskevan päätöksenteon ja jatkotoimenpiteiden tukena.</p> <p>Lue lisää <a href=\"http://opinto-opas.metropolia.fi/fi/kaytannon-tietoa-opiskelijoille/yhdenvertaisuus/\">Metropolian yhdenvertaisuusohjelmasta</a>.</p>",
+      "learningEnvironment": null,
+      "dining": null,
+      "livingExpenses": null,
+      "living": null,
+      "yearClock": null,
+      "financingStudies": null,
+      "insurances": null,
+      "leisureServices": null,
+      "social": null,
+      "pictureFound": false,
+      "athleteEducation": false,
+      "applicationOffice": {
+        "name": "Hakijapalvelut",
+        "phone": "09 7424 5100",
+        "email": "hakijapalvelut@metropolia.fi",
+        "www": "http://www.metropolia.fi/haku",
+        "visitingAddress": {
+          "streetAddress": "Bulevardi 29",
+          "streetAddress2": null,
+          "postalCode": "00180",
+          "postOffice": "HELSINKI"
+        },
+        "postalAddress": {
+          "streetAddress": "PL 4011",
+          "streetAddress2": null,
+          "postalCode": "00079",
+          "postOffice": "METROPOLIA"
+        }
+      },
+      "homeplace": "Helsinki"
+    },
+    "applicationOffice": {
+      "name": "Hakijapalvelut",
+      "phone": "09 7424 5100",
+      "email": "hakijapalvelut@metropolia.fi",
+      "www": "http://www.metropolia.fi/haku",
+      "visitingAddress": {
+        "streetAddress": "Bulevardi 29",
+        "streetAddress2": "",
+        "postalCode": "00180",
+        "postOffice": "HELSINKI"
+      },
+      "postalAddress": {
+        "streetAddress": "PL 4011",
+        "streetAddress2": "",
+        "postalCode": "00079",
+        "postOffice": "METROPOLIA"
+      }
+    },
+    "specificApplicationDates": false,
+    "applicationStartDate": 1440997231839,
+    "applicationEndDate": 1442923243439,
+    "applicationPeriodName": null,
+    "canBeApplied": true,
+    "nextApplicationPeriodStarts": null,
+    "requiredBaseEducations": [
+      "pohjakoulutusvaatimuskorkeakoulut_100"
+    ],
+    "attachments": [
+      {
+        "dueDate": 1443528000000,
+        "type": "Ammatti- ja erikoisammattitutkinnot",
+        "descreption": "<p>Osoittaakseen hakukelpoisuutensa suomalaisella ammatti- tai erikoisammattitutkinnolla hakevan on toimitettava kopio lopullisesta tutkintotodistuksestaan ensisijaisen ammattikorkeakouluhakukohteen hakijapalveluihin viimeistään 6.10.2015 klo 15.00 mennessä. <b>Tämä ei koske suomalaisella ammatillisella perustutkinnolla tai muulla suomalaisella tutkinnolla hakevia.</b> Todistuskopioiden tulee olla perillä ao. ammattikorkeakouluhakukohteen hakijapalveluissa määräaikaan mennessä.</p>",
+        "address": {
+          "streetAddress": "PL 4011",
+          "streetAddress2": null,
+          "postalCode": "00079",
+          "postOffice": "METROPOLIA"
+        },
+        "emailAddr": "hakijapalvelut@metropolia.fi",
+        "usedInApplicationForm": false
+      },
+      {
+        "dueDate": 1443528000000,
+        "type": "Ennen vuotta 1990 suoritetut ylioppilastutkinnot",
+        "descreption": "<p>Ylioppilastutkintonsa Suomessa ennen vuotta 1990 suorittaneiden tulee toiimittaa kopio ylioppilastutkintotodistuksestaan ensisijaisen ammattikorkeakouluhakukohteen hakijapalveluihin viimeistään 6.10.2015 klo 15.00 mennessä. <b>Tämä ei koske vuonna 1990 tai sen jälkeen valmistuneita.</b> Todistuskopioiden tulee olla perillä ao. ammattikorkeakouluhakukohteen hakijapalveluissa määräaikaan mennessä.</p>",
+        "address": {
+          "streetAddress": "PL 4011",
+          "streetAddress2": null,
+          "postalCode": "00079",
+          "postOffice": "METROPOLIA"
+        },
+        "emailAddr": "hakijapalvelut@metropolia.fi",
+        "usedInApplicationForm": false
+      },
+      {
+        "dueDate": 1443528000000,
+        "type": "IB, EB ja RP -tutkinnot",
+        "descreption": "<p>International Baccalaureate (IB), European Baccalaureate (EB) tai Reifeprüfung (RP) tutkintotodistuksella hakevan on toimitettava kopio lopullisesta tutkintotodistuksestaan ensisijaisen ammattikorkeakouluhakukohteen hakijapalveluihin viimeistään 6.10.2015 klo 15.00 mennessä. <b>Tämä ei kuitenkaan koske syksyllä 2015 valmistuvia hakijoita.</b> Todistuskopioiden tulee olla perillä ao. ammattikorkeakouluhakukohteen hakijapalveluissa määräaikaan mennessä.</p>",
+        "address": {
+          "streetAddress": "PL 4011",
+          "streetAddress2": null,
+          "postalCode": "00079",
+          "postOffice": "METROPOLIA"
+        },
+        "emailAddr": "hakijapalvelut@metropolia.fi",
+        "usedInApplicationForm": false
+      },
+      {
+        "dueDate": 1443528000000,
+        "type": "Ulkomaiset tutkinnot",
+        "descreption": "<p>Osoittaakseen hakukelpoisuutensa ulkomailla suoritetulla tutkintotodistuksella hakevan on toimitettava kopio lopullisesta tutkintotodistuksestaan ensisijaisen ammattikorkeakouluhakukohteen hakijapalveluihin viimeistään 6.10.2015 klo 15.00 mennessä. Todistuskopioiden tulee olla perillä ao. ammattikorkeakouluhakukohteen hakijapalveluissa määräaikaan mennessä.</p>",
+        "address": {
+          "streetAddress": "PL 4011",
+          "streetAddress2": null,
+          "postalCode": "00079",
+          "postOffice": "METROPOLIA"
+        },
+        "emailAddr": "hakijapalvelut@metropolia.fi",
+        "usedInApplicationForm": false
+      },
+      {
+        "dueDate": 1443528000000,
+        "type": "Käännökset",
+        "descreption": "<p>Todistuskopioiden lisäksi on toimitettava virallisen kielenkääntäjän suomeksi, ruotsiksi tai englanniksi tekemä käännöskopio tutkintotodistuksesta, jos tutkintotodistuksen kieli ei ole mikään näistä. Käännöksessä tulee olla kääntäjän allekirjoitus ja leima. Käännös tulee toimittaa ensisijaisen ammattikorkeakouluhakukohteen hakijapalveluihin viimeistään 6.10.2015 klo 15.00 mennessä. Käännösten tulee olla perillä ao. ammattikorkeakouluhakukohteen hakijapalveluissa määräaikaan mennessä.</p>",
+        "address": {
+          "streetAddress": "PL 4011",
+          "streetAddress2": null,
+          "postalCode": "00079",
+          "postOffice": "METROPOLIA"
+        },
+        "emailAddr": "hakijapalvelut@metropolia.fi",
+        "usedInApplicationForm": false
+      }
+    ],
+    "emphasizedSubjects": null,
+    "additionalInfo": "<p>Yleisohje korkeakoulujen yhteishaussa hakemisesta löytyy Opintopolun sivulta <a href=\"https://opintopolku.fi/wp/ammattikorkeakoulu/nain-haet-yhteishaussa-ammattikorkeakouluun/\">Näin haet yhteishaussa ammattikorkeakouluun</a>. </p>",
+    "additionalProof": null,
+    "overallScoreLimit": null,
+    "kaksoistutkinto": false,
+    "athleteEducation": false,
+    "vocational": false,
+    "educationCodeUri": "koulutus_671116",
+    "status": null,
+    "eligibilityDescription": null,
+    "type": "KORKEAKOULU",
+    "educationTypeUri": null,
+    "hakuaikaId": "1956813",
+    "organizationGroups": [
+      {
+        "oid": "1.2.246.562.28.24712637358",
+        "prioriteetti": null,
+        "usageGroups": [
+          "hakukohde_liiteosoite"
+        ],
+        "groupTypes": [
+          "hakukohde"
+        ]
+      }
+    ],
+    "kotitalous": false
+  }
 }
