@@ -16,6 +16,7 @@
 
 package fi.vm.sade.haku.oppija.ui.controller;
 
+import com.google.common.collect.ImmutableList;
 import com.sun.jersey.api.view.Viewable;
 import fi.vm.sade.haku.oppija.lomake.domain.ModelResponse;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
@@ -48,6 +49,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
+import static com.google.common.base.Objects.firstNonNull;
 import static fi.vm.sade.haku.oppija.ui.common.MultivaluedMapUtil.toSingleValueMap;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
@@ -215,7 +217,7 @@ public class FormController {
                                 @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
                                 final MultivaluedMap<String, String> multiValues) {
         LOGGER.debug("updateRulesMulti {}, {}, {}", applicationSystemId, phaseId);
-        List<String> ruleIds = multiValues.get("ruleIds[]");
+        List<String> ruleIds = firstNonNull(multiValues.get("ruleIds[]"), ImmutableList.<String>of());
         ModelResponse modelResponse = uiService.updateRulesMulti(applicationSystemId, phaseId, ruleIds, toSingleValueMap(multiValues));
         return new Viewable("/elements/JsonElementList.jsp", modelResponse.getModel());
     }
