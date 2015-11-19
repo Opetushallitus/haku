@@ -174,7 +174,7 @@ public class HakutoiveetPhase {
         pr.addChild(configurator.findAndConfigure(HAKUTOIVEET_THEME_ID, pr.getId(), ConfiguratorFilter.NO_GROUP_QUESTIONS));
 
         if (formParameters.isHigherEd()) {
-            pr.addChild(Rule(ExprUtil.isAnswerTrue(id + "_payment_notification_visible"))
+            pr.addChild(Rule(ExprUtil.isAnswerTrue(id + PAYMENT_NOTIFICATION_POSTFIX))
                     .addChild(createPaymentNotification(id, formParameters))
                     .build());
         }

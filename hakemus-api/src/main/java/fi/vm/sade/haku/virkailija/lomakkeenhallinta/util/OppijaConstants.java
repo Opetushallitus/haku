@@ -91,6 +91,7 @@ public final class OppijaConstants {
     public static final String OPTION_ID_POSTFIX = "-Koulutus-id";
     public static final String PREFERENCE_FRAGMENT_OPTION_ID= "Koulutus-id";
 
+    public static final String PAYMENT_NOTIFICATION_POSTFIX = "_payment_notification_visible";
     public static final String OPTION_GROUP_POSTFIX = "-Koulutus-id-ao-groups";
     public static final String OPTION_ATTACHMENTS_POSTFIX = "-Koulutus-id-attachments";
     public static final String OPTION_ATTACHMENT_GROUP_TYPE = "hakukohde_liiteosoite";
