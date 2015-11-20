@@ -68,7 +68,7 @@ public class ApplicationPostProcessorService {
         this.hakumaksuService = hakumaksuService;
     }
 
-    public Application process(Application application) throws IOException, ExecutionException {
+    public Application process(Application application) throws IOException, ExecutionException, InterruptedException {
         application = addPersonOid(application);
         application = baseEducationService.addSendingSchool(application);
         application = applicationService.updateAuthorizationMeta(application);

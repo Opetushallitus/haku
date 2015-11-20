@@ -1,6 +1,7 @@
 package fi.vm.sade.haku.oppija.hakemus.service;
 
 import com.google.common.base.Function;
+import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.google.common.collect.ImmutableMap;
@@ -8,9 +9,12 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
 import fi.vm.sade.haku.http.RestClient;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
+import fi.vm.sade.haku.oppija.hakemus.domain.Application.PaymentState;
 import fi.vm.sade.haku.oppija.hakemus.domain.BaseEducations;
+import fi.vm.sade.haku.oppija.lomake.exception.IllegalStateException;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.HakumaksuUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.HakumaksuUtil.EducationRequirements;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +25,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
+import static com.google.common.collect.Iterables.all;
 import static com.google.common.collect.Iterables.any;
 import static com.google.common.collect.Iterables.filter;
 import static fi.vm.sade.haku.oppija.hakemus.domain.BaseEducations.*;
@@ -383,16 +388,55 @@ public class HakumaksuService {
         });
     }
 
-    public Application processPayment(Application application) throws ExecutionException {
-        Map<ApplicationOptionOid, ImmutableSet<Eligibility>> paymentRequirements = paymentRequirements(MergedAnswers.of(application));
-        // TODO: Audit/log reason for payment requirement, e.g. which hakukohde and what base education reason
-        boolean isExemptFromPayment = paymentRequirements.size() == 0;
-        LOGGER.info("Application " + application.getOid() + " payment requirements: " + (isExemptFromPayment ? "none" : paymentRequirements));
-        return isExemptFromPayment ? application : markPaymentRequirements(application);
+    private static boolean isExemptFromPayment(Map<ApplicationOptionOid, ImmutableSet<Eligibility>> paymentRequirements) {
+        return all(paymentRequirements.values(), new Predicate<Set<Eligibility>>() {
+            @Override
+            public boolean apply(Set<Eligibility> input) {
+                return input.isEmpty();
+            }
+        });
     }
 
-    private static Application markPaymentRequirements(Application application) {
-        // TODO: Aseta hakemukselle maksuvelvoite
-        return application;
+    public Application processPayment(Application application) throws ExecutionException, InterruptedException {
+        Optional<PaymentState> requiredPaymentState = Optional.fromNullable(application.getRequiredPaymentState());
+        if (alreadyPaid(requiredPaymentState)) {
+            return application;
+        } else {
+            Map<ApplicationOptionOid, ImmutableSet<Eligibility>> paymentRequirements = paymentRequirements(MergedAnswers.of(application));
+
+            // Tullut maksuvelvolliseksi tai pyydetty maksulinkin uudelleenlähetystä
+            if (!isExemptFromPayment(paymentRequirements)
+                    && (!requiredPaymentState.isPresent() || requireResend(application, requiredPaymentState))) {
+
+                // TODO: Audit/log reason for payment requirement, e.g. which hakukohde and what base education reason
+                LOGGER.info("Application " + application.getOid() + " payment requirements: " + paymentRequirements);
+
+                return markPaymentRequirements(application);
+            } else {
+                return application;
+            }
+        }
+    }
+
+    private static boolean alreadyPaid(Optional<PaymentState> requiredPaymentState) {
+        return requiredPaymentState.isPresent() && requiredPaymentState.get() == PaymentState.OK;
+    }
+
+    private static boolean requireResend(Application application, Optional<PaymentState> requiredPaymentState) {
+        return requiredPaymentState.isPresent()
+                && requiredPaymentState.get() == PaymentState.NOTIFIED
+                && application.getRedoPostProcess() == Application.PostProcessingState.FULL;
+    }
+
+    private Application markPaymentRequirements(Application application) throws ExecutionException, InterruptedException {
+        String emailAddress = application.getPhaseAnswers(OppijaConstants.PHASE_PERSONAL).get("Sähköposti");
+        if (util.sendPaymentRequest(application.getOid(), application.getPersonOid(), emailAddress).get()) {
+            application.setRequiredPaymentState(PaymentState.NOTIFIED);
+            return application;
+        } else {
+            application.setRequiredPaymentState(null);
+            throw new IllegalStateException("Could not send payment processing request to oppijan-tunnistus: hakemusOid " +
+                    application.getOid() + ", personOid " + application.getPersonOid() + ", emailAddress " + emailAddress);
+        }
     }
 }

@@ -1,16 +1,22 @@
 package fi.vm.sade.haku.oppija.hakemus;
 
+import com.google.api.client.http.HttpResponse;
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
+import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
+import fi.vm.sade.haku.http.HttpRestClient;
+import fi.vm.sade.haku.http.HttpRestClient.Response;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.lomake.domain.User;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.HakumaksuUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.MergedAnswers;
+import org.mockito.Mockito;
 
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -137,40 +143,6 @@ public class TestApplicationData {
         return MergedAnswers.of(ImmutableMap.<String, String>builder().putAll(koulutustaustat.build()).putAll(hakutoiveet.build()).build());
     }
 
-    private static <T> ListenableFuture<T> future(final T t) {
-        return new ListenableFuture<T>() {
-            @Override
-            public void addListener(Runnable listener, Executor executor) {
-                listener.run();
-            }
-
-            @Override
-            public boolean cancel(boolean mayInterruptIfRunning) {
-                return false;
-            }
-
-            @Override
-            public boolean isCancelled() {
-                return false;
-            }
-
-            @Override
-            public boolean isDone() {
-                return true;
-            }
-
-            @Override
-            public T get() throws InterruptedException, ExecutionException {
-                return t;
-            }
-
-            @Override
-            public T get(long timeout, TimeUnit unit) throws InterruptedException, ExecutionException, TimeoutException {
-                return t;
-            }
-        };
-    }
-
     private static final Function<Hakukelpoisuusvaatimus, String> vaatimusToArvo = new Function<Hakukelpoisuusvaatimus, String>() {
         @Override
         public String apply(Hakukelpoisuusvaatimus input) {
@@ -232,6 +204,11 @@ public class TestApplicationData {
         builder.put("http://localhost/koodisto-service/rest/codeelement/valtioryhmat_2/1", future(eea));
 
         return builder.build();
+    }
+
+    private static <T> ListenableFuture<Response<T>> future(T t) {
+        HttpResponse r = null;
+        return Futures.immediateFuture(new Response<T>(r, t));
     }
 
 }

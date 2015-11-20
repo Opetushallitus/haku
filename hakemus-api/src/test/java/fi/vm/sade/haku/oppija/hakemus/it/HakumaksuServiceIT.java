@@ -45,7 +45,7 @@ public class HakumaksuServiceIT {
     }
 
     @Test
-    public void processingTest() throws ExecutionException {
+    public void processingTest() throws ExecutionException, InterruptedException {
         Application application = new Application() {{
             setOid("1.2.3.4.5.6.7.8.9");
             addVaiheenVastaukset(OppijaConstants.PHASE_EDUCATION, ulkomainenPohjakoulutus);
