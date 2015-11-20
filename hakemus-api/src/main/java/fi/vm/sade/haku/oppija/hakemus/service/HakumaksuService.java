@@ -18,8 +18,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
+import static com.google.common.collect.Iterables.any;
 import static com.google.common.collect.Iterables.filter;
 import static fi.vm.sade.haku.oppija.hakemus.domain.BaseEducations.*;
 import static fi.vm.sade.haku.oppija.hakemus.domain.util.ApplicationUtil.getPreferenceAoIds;
@@ -373,13 +375,12 @@ public class HakumaksuService {
     }
 
     public boolean isPaymentRequired(MergedAnswers mergedAnswers) throws ExecutionException {
-        final ImmutableMap<ApplicationOptionOid, ImmutableSet<Eligibility>> requirements = paymentRequirements(mergedAnswers);
-        for (ImmutableSet<Eligibility> eligibilities : requirements.values()) {
-            if (!eligibilities.isEmpty()) {
-                return true;
+        return any(paymentRequirements(mergedAnswers).values(), new Predicate<Set<Eligibility>>() {
+            @Override
+            public boolean apply(Set<Eligibility> input) {
+                return !input.isEmpty();
             }
-        }
-        return false;
+        });
     }
 
     public Application processPayment(Application application) throws ExecutionException {
