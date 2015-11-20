@@ -1,6 +1,8 @@
 package fi.vm.sade.haku.http;
 
 import com.google.api.client.util.Key;
+import com.google.common.util.concurrent.ListenableFuture;
+import fi.vm.sade.haku.http.HttpRestClient.Response;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -30,8 +32,8 @@ public class RestClientTest {
     @Test
     public void getTest() throws ExecutionException, InterruptedException, IOException {
         String url = "https://testi.virkailija.opintopolku.fi/koodisto-service/rest/codeelement/valtioryhmat_2/1";
-        Future<Output> response = new HttpRestClient().get(url, Output.class);
-        Output output = response.get();
+        ListenableFuture<Response<Output>> response = new HttpRestClient().get(url, Output.class);
+        Response<Output> output = response.get();
         assertNotNull(output);
     }
 }
