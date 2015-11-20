@@ -8,6 +8,7 @@ import fi.vm.sade.haku.oppija.hakemus.service.HakumaksuService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.ApplicationOptionOid;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.MergedAnswers;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -39,7 +40,7 @@ public class HakumaksuServiceIT {
         }};
 
         assertEquals(
-                hakumaksuService.paymentRequirements(application).get(hakutoiveenOid),
+                hakumaksuService.paymentRequirements(MergedAnswers.of(application)).get(hakutoiveenOid),
                 ImmutableList.of(new HakumaksuService.Eligibility(koulutuksenNimike, Types.AsciiCountryCode.of(koulutuksenMaa))));
     }
 

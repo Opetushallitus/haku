@@ -46,8 +46,8 @@ import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.i18n.I18nBundleService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.ApplicationOptionOid;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.MergedAnswers;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.PDFService;
 import org.apache.http.HttpResponse;
 import org.slf4j.Logger;
@@ -63,7 +63,6 @@ import javax.servlet.jsp.jstl.core.Config;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
 
-import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters.isHigherEd;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.*;
 import static org.apache.commons.lang.StringUtils.isNotEmpty;
 import static org.apache.commons.lang3.StringUtils.isBlank;
@@ -133,7 +132,7 @@ public class UIServiceImpl implements UIService {
         response.addObjectToModel("opintopolkuBaseUrl", this.opintopolkuBaseUrl);
 
         if (activeApplicationSystem.isMaksumuuriKaytossa()) {
-            response.addObjectToModel("paymentRequired", hakumaksuService.isPaymentRequired(application));
+            response.addObjectToModel("paymentRequired", hakumaksuService.isPaymentRequired(MergedAnswers.of(application)));
         }
 
         return response;
@@ -169,7 +168,7 @@ public class UIServiceImpl implements UIService {
         Map<String, String> answers = userSession.populateWithPrefillData(ensureApplicationOptionGroupData(phaseId, application.getVastauksetMerged(), lang));
 
         if (phaseId.equals(PHASE_APPLICATION_OPTIONS) && activeApplicationSystem.isMaksumuuriKaytossa()) {
-            answers.putAll(paymentNotificationAnswers(answers, hakumaksuService.paymentRequirements(Types.MergedAnswers.of(answers))));
+            answers.putAll(paymentNotificationAnswers(answers, hakumaksuService.paymentRequirements(MergedAnswers.of(answers))));
         }
 
         elementTree.checkPhaseTransfer(application.getPhaseId(), phaseId);
@@ -282,7 +281,7 @@ public class UIServiceImpl implements UIService {
         });
 
         if (phaseId.equals(PHASE_APPLICATION_OPTIONS) && activeApplicationSystem.isMaksumuuriKaytossa()) {
-            currentAnswers.putAll(paymentNotificationAnswers(currentAnswers, hakumaksuService.paymentRequirements(Types.MergedAnswers.of(currentAnswers))));
+            currentAnswers.putAll(paymentNotificationAnswers(currentAnswers, hakumaksuService.paymentRequirements(MergedAnswers.of(currentAnswers))));
         }
 
         ModelResponse modelResponse = new ModelResponse();
@@ -323,7 +322,7 @@ public class UIServiceImpl implements UIService {
         ApplicationSystem activeApplicationSystem = applicationSystemService.getActiveApplicationSystem(applicationSystemId);
 
         if (phaseId.equals(PHASE_APPLICATION_OPTIONS) && activeApplicationSystem.isMaksumuuriKaytossa()) {
-            ensuredAnswers.putAll(paymentNotificationAnswers(ensuredAnswers, hakumaksuService.paymentRequirements(Types.MergedAnswers.of(ensuredAnswers))));
+            ensuredAnswers.putAll(paymentNotificationAnswers(ensuredAnswers, hakumaksuService.paymentRequirements(MergedAnswers.of(ensuredAnswers))));
         }
 
         Form activeForm = activeApplicationSystem.getForm();

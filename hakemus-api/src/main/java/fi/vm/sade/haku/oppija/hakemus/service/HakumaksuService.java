@@ -372,12 +372,8 @@ public class HakumaksuService {
         return applicationPaymentEligibilities.build();
     }
 
-    public ImmutableMap<ApplicationOptionOid, ImmutableSet<Eligibility>> paymentRequirements(Application application) throws ExecutionException {
-        return paymentRequirements(MergedAnswers.of(application.getVastauksetMerged()));
-    }
-
-    public boolean isPaymentRequired(Application application) throws ExecutionException {
-        final ImmutableMap<ApplicationOptionOid, ImmutableSet<Eligibility>> requirements = paymentRequirements(application);
+    public boolean isPaymentRequired(MergedAnswers mergedAnswers) throws ExecutionException {
+        final ImmutableMap<ApplicationOptionOid, ImmutableSet<Eligibility>> requirements = paymentRequirements(mergedAnswers);
         for (ImmutableSet<Eligibility> eligibilities : requirements.values()) {
             if (!eligibilities.isEmpty()) {
                 return true;
@@ -387,7 +383,7 @@ public class HakumaksuService {
     }
 
     public Application processPayment(Application application) throws ExecutionException {
-        Map<ApplicationOptionOid, ImmutableSet<Eligibility>> paymentRequirements = paymentRequirements(application);
+        Map<ApplicationOptionOid, ImmutableSet<Eligibility>> paymentRequirements = paymentRequirements(MergedAnswers.of(application));
         // TODO: Audit/log reason for payment requirement, e.g. which hakukohde and what base education reason
         boolean isExemptFromPayment = paymentRequirements.size() == 0;
         LOGGER.info("Application " + application.getOid() + " payment requirements: " + (isExemptFromPayment ? "none" : paymentRequirements));
