@@ -21,12 +21,15 @@ import com.google.common.collect.ImmutableList;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
+import org.apache.commons.lang.BooleanUtils;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
 import java.util.*;
+
+import static org.apache.commons.lang.BooleanUtils.toBoolean;
 
 @Document
 public class ApplicationSystem implements Serializable {
@@ -51,6 +54,7 @@ public class ApplicationSystem implements Serializable {
     private String kohdejoukkoUri;
     private Date lastGenerated;
     private Boolean usePriorities;
+    private Boolean maksumuuriKaytossa;
 
     private List<Element> applicationCompleteElements;
     private List<Element> additionalInformationElements;
@@ -75,7 +79,8 @@ public class ApplicationSystem implements Serializable {
                              final Integer maxApplicationOptions,
                              final List<String> allowedLanguages,
                              final List<String> aosForAutomaticEligibility,
-                             final Date lastGenerated) {
+                             final Date lastGenerated,
+                             final Boolean maksumuuriKaytossa) {
         Preconditions.checkNotNull(id);
         Preconditions.checkNotNull(name);
         this.id = id;
@@ -101,6 +106,7 @@ public class ApplicationSystem implements Serializable {
         this.allowedLanguages = allowedLanguages;
         this.aosForAutomaticEligibility = aosForAutomaticEligibility;
         this.lastGenerated = lastGenerated;
+        this.maksumuuriKaytossa = maksumuuriKaytossa;
     }
 
     @Transient
@@ -207,4 +213,8 @@ public class ApplicationSystem implements Serializable {
         return aosForAutomaticEligibility;
     }
 
+    public boolean isMaksumuuriKaytossa() {
+        // Applications prior to paywall may not have var set, make null-safe
+        return toBoolean(maksumuuriKaytossa);
+    }
 }

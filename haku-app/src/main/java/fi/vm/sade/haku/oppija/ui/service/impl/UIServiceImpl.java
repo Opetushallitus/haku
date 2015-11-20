@@ -131,7 +131,10 @@ public class UIServiceImpl implements UIService {
         }});
         response.addObjectToModel("demoMode", this.demoMode);
         response.addObjectToModel("opintopolkuBaseUrl", this.opintopolkuBaseUrl);
-        response.addObjectToModel("paymentRequired", hakumaksuService.isPaymentRequired(application));
+
+        if (activeApplicationSystem.isMaksumuuriKaytossa()) {
+            response.addObjectToModel("paymentRequired", hakumaksuService.isPaymentRequired(application));
+        }
 
         return response;
     }
@@ -165,7 +168,7 @@ public class UIServiceImpl implements UIService {
 
         Map<String, String> answers = userSession.populateWithPrefillData(ensureApplicationOptionGroupData(phaseId, application.getVastauksetMerged(), lang));
 
-        if (phaseId.equals(PHASE_APPLICATION_OPTIONS) && isHigherEd(activeApplicationSystem)) {
+        if (phaseId.equals(PHASE_APPLICATION_OPTIONS) && activeApplicationSystem.isMaksumuuriKaytossa()) {
             answers.putAll(paymentNotificationAnswers(answers, hakumaksuService.paymentRequirements(Types.MergedAnswers.of(answers))));
         }
 
@@ -278,7 +281,7 @@ public class UIServiceImpl implements UIService {
             }
         });
 
-        if (phaseId.equals(PHASE_APPLICATION_OPTIONS) && isHigherEd(activeApplicationSystem)) {
+        if (phaseId.equals(PHASE_APPLICATION_OPTIONS) && activeApplicationSystem.isMaksumuuriKaytossa()) {
             currentAnswers.putAll(paymentNotificationAnswers(currentAnswers, hakumaksuService.paymentRequirements(Types.MergedAnswers.of(currentAnswers))));
         }
 
@@ -319,7 +322,7 @@ public class UIServiceImpl implements UIService {
         Map<String, String> ensuredAnswers = ensureApplicationOptionGroupData(phaseId, originalAnswers, lang);
         ApplicationSystem activeApplicationSystem = applicationSystemService.getActiveApplicationSystem(applicationSystemId);
 
-        if (phaseId.equals(PHASE_APPLICATION_OPTIONS) && isHigherEd(activeApplicationSystem)) {
+        if (phaseId.equals(PHASE_APPLICATION_OPTIONS) && activeApplicationSystem.isMaksumuuriKaytossa()) {
             ensuredAnswers.putAll(paymentNotificationAnswers(ensuredAnswers, hakumaksuService.paymentRequirements(Types.MergedAnswers.of(ensuredAnswers))));
         }
 

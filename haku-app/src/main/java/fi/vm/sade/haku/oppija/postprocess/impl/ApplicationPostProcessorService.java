@@ -5,6 +5,7 @@ import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.haku.oppija.hakemus.service.BaseEducationService;
 import fi.vm.sade.haku.oppija.hakemus.service.HakumaksuService;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
+import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.haku.oppija.lomake.service.FormService;
 import fi.vm.sade.haku.oppija.lomake.validation.ElementTreeValidator;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationInput;
@@ -34,6 +35,7 @@ public class ApplicationPostProcessorService {
     public static final Logger LOGGER = LoggerFactory.getLogger(ApplicationPostProcessorService.class);
 
     private final ApplicationService applicationService;
+    private final ApplicationSystemService applicationSystemService;
     private final BaseEducationService baseEducationService;
     private final ElementTreeValidator elementTreeValidator;
     private final FormService formService;
@@ -49,6 +51,7 @@ public class ApplicationPostProcessorService {
 
     @Autowired
     public ApplicationPostProcessorService(final ApplicationService applicationService,
+                                           final ApplicationSystemService applicationSystemService,
                                            final BaseEducationService baseEducationService,
                                            final FormService formService,
                                            final ElementTreeValidator elementTreeValidator,
@@ -56,6 +59,7 @@ public class ApplicationPostProcessorService {
                                            final HakuService hakuService,
                                            final HakumaksuService hakumaksuService){
         this.applicationService = applicationService;
+        this.applicationSystemService = applicationSystemService;
         this.baseEducationService = baseEducationService;
         this.formService = formService;
         this.elementTreeValidator = elementTreeValidator;
@@ -70,7 +74,11 @@ public class ApplicationPostProcessorService {
         application = applicationService.updateAuthorizationMeta(application);
         application = applicationService.ensureApplicationOptionGroupData(application);
         application = applicationService.updateAutomaticEligibilities(application);
-        application = hakumaksuService.processPayment(application);
+
+        if (applicationSystemService.getApplicationSystem(application.getApplicationSystemId()).isMaksumuuriKaytossa()) {
+            application = hakumaksuService.processPayment(application);
+        }
+
         if (hakuService.kayttaaJarjestelmanLomaketta(application.getApplicationSystemId())) {
             application = validateApplication(application);
         }

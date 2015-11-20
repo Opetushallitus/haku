@@ -26,7 +26,6 @@ public class FormParameters {
     private final ThemeQuestionDAO themeQuestionDAO;
     private final HakukohdeService hakukohdeService;
     private final OrganizationService organizationService;
-    private final HakumaksuService hakumaksuService;
 
     private final FormConfiguration formConfiguration;
     private final I18nBundle i18nBundle;
@@ -43,7 +42,6 @@ public class FormParameters {
                           final HakukohdeService hakukohdeService,
                           final OrganizationService organizationService,
                           final I18nBundleService i18nBundleService,
-                          final HakumaksuService hakumaksuService,
                           final boolean demoMode,
                           final String opintopolkuBaseUrl) {
         this.applicationSystem = applicationSystem;
@@ -53,7 +51,6 @@ public class FormParameters {
         this.organizationService = organizationService;
         this.formConfiguration = formConfiguration;
         this.i18nBundle = i18nBundleService.getBundle(applicationSystem);
-        this.hakumaksuService = hakumaksuService;
         this.demoMode = demoMode;
         this.opintopolkuBaseUrl = opintopolkuBaseUrl;
     }
@@ -64,10 +61,6 @@ public class FormParameters {
 
     public KoodistoService getKoodistoService() {
         return koodistoService;
-    }
-
-    public HakumaksuService getHakumaksuService() {
-        return hakumaksuService;
     }
 
     public FormConfiguration getFormConfiguration() {

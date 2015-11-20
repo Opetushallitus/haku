@@ -45,8 +45,6 @@ public final class FormConfigurationService {
     private final FormConfigurationDAO formConfigurationDAO;
     @Autowired
     private final I18nBundleService i18nBundleService;
-    @Autowired
-    private final HakumaksuService hakumaksuService;
 
     @Value("${mode.demo:false}")
     public boolean demoMode;
@@ -60,8 +58,7 @@ public final class FormConfigurationService {
                                     final HakukohdeService hakukohdeService,
                                     final OrganizationService organizationService,
                                     final FormConfigurationDAO formConfigurationDAO,
-                                    final I18nBundleService i18nBundleService,
-                                    final HakumaksuService hakumaksuService) {
+                                    final I18nBundleService i18nBundleService) {
         this.koodistoService = koodistoService;
         this.hakuService = hakuService;
         this.themeQuestionDAO = themeQuestionDAO;
@@ -69,7 +66,6 @@ public final class FormConfigurationService {
         this.organizationService = organizationService;
         this.formConfigurationDAO = formConfigurationDAO;
         this.i18nBundleService = i18nBundleService;
-        this.hakumaksuService = hakumaksuService;
     }
 
     public FormParameters getFormParameters(final String applicationSystemId) {
@@ -80,7 +76,7 @@ public final class FormConfigurationService {
     public FormParameters getFormParameters(final ApplicationSystem applicationSystem) {
         FormConfiguration formConfiguration = createOrGetFormConfiguration(applicationSystem);
         return new FormParameters(applicationSystem, formConfiguration, koodistoService, themeQuestionDAO,
-                hakukohdeService, organizationService, i18nBundleService, hakumaksuService,
+                hakukohdeService, organizationService, i18nBundleService,
                 this.demoMode, this.opintopolkuBaseUrl);
     }
 

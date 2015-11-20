@@ -74,8 +74,6 @@ public class ElementTreeValidatorTest {
         //TODO : Not Mocked
         I18nBundleService i18nBundleService = new I18nBundleService(null);
         //TODO: Not Mocked
-        HakumaksuService hakumaksuService = new HakumaksuService("", "", new MockedRestClient(ImmutableMap.<String, Object>of()));
-        //TODO: Not Mocked
         FormConfigurationService formConfigurationService =
                 new FormConfigurationService(
                         new KoodistoServiceMockImpl(),
@@ -84,9 +82,7 @@ public class ElementTreeValidatorTest {
                         mock(HakukohdeService.class),
                         mock(OrganizationService.class),
                         formConfigurationDAOMock,
-                        i18nBundleService,
-                        hakumaksuService
-                );
+                        i18nBundleService);
         FormGenerator formGeneratorMock = new FormGeneratorImpl(hakuServiceMock, formConfigurationService, false, null);
         applicationSystemServiceMock = mock(ApplicationSystemService.class);
         when(applicationSystemServiceMock.getApplicationSystem(anyString())).thenReturn(formGeneratorMock.generate(ASID));

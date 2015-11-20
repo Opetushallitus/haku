@@ -387,20 +387,11 @@ public class HakumaksuService {
     }
 
     public Application processPayment(Application application) throws ExecutionException {
-        if (!applicationSystemRequiresPaymentCheck(application)) {
-            return application;
-        }
-
         Map<ApplicationOptionOid, ImmutableSet<Eligibility>> paymentRequirements = paymentRequirements(application);
         // TODO: Audit/log reason for payment requirement, e.g. which hakukohde and what base education reason
         boolean isExemptFromPayment = paymentRequirements.size() == 0;
         LOGGER.info("Application " + application.getOid() + " payment requirements: " + (isExemptFromPayment ? "none" : paymentRequirements));
         return isExemptFromPayment ? application : markPaymentRequirements(application);
-    }
-
-    private static boolean applicationSystemRequiresPaymentCheck(Application application) {
-        // TODO: Korkeakouluhaku + syksy 2016 ->
-        return application != null;
     }
 
     private static Application markPaymentRequirements(Application application) {
