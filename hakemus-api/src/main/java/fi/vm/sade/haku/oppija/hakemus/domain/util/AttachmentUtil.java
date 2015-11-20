@@ -427,8 +427,9 @@ public class AttachmentUtil {
                         .setDeadline(address.deadline)
                         .setAddress(address.address);
 
-
-                if (address.deadline == null) {
+                if (null != address.helpText) {
+                    attachmentBuilder.setDeliveryNote(address.helpText);
+                } else if (null == address.deadline) {
                     attachmentBuilder.setDeliveryNote(i18nBundle.get(GENERAL_DELIVERY_NOTE));
                 } else {
                     attachmentBuilder.setDeliveryNote(i18nBundle.get(GENERAL_DEADLINE_NOTE));
