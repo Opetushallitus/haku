@@ -33,7 +33,7 @@ public interface UIService {
 
     ModelResponse getPreview(final String applicationSystemId);
 
-    ModelResponse getPhase(final String applicationSystemId, final String phaseId, final String lang);
+    ModelResponse getPhase(final String applicationSystemId, final String phaseId, final String lang) throws ExecutionException;
 
     void storePrefilledAnswers(final String applicationSystemId, final Map<String, String> answers, String lang);
 
@@ -47,7 +47,7 @@ public interface UIService {
 
     ModelResponse getPhaseElement(final String applicationSystemId, final String phaseId, final String elementId);
 
-    ModelResponse savePhase(final String applicationSystemId, final String phaseId, Map<String, String> answers, String lang);
+    ModelResponse savePhase(final String applicationSystemId, final String phaseId, Map<String, String> answers, String lang) throws ExecutionException;
 
     ModelResponse submitApplication(final String applicationSystemId, String language);
 

@@ -25,6 +25,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 import static junit.framework.Assert.*;
 
@@ -72,7 +73,7 @@ public class EmailUniqueValidatorTest extends IntegrationTestSupport {
     }
 
     @Test
-    public void testThatDuplicateErrorWhenEmailIsAlreadyUsed() throws URISyntaxException {
+    public void testThatDuplicateErrorWhenEmailIsAlreadyUsed() throws URISyntaxException, ExecutionException {
         answers.put("Sähköposti", Lists.newArrayList("hakija-19995@oph.fi"));
 
         Response response = formController.savePhase(request, APPLICATION_SYSTEM_ID, "henkilotiedot", answers);
@@ -84,7 +85,7 @@ public class EmailUniqueValidatorTest extends IntegrationTestSupport {
     }
 
     @Test
-    public void testThatNoErrorWhenEmailIsNotUsed() throws URISyntaxException {
+    public void testThatNoErrorWhenEmailIsNotUsed() throws URISyntaxException, ExecutionException {
         answers.put("Sähköposti", Lists.newArrayList("unique-email@not-used.com"));
 
         Response response = formController.savePhase(request, APPLICATION_SYSTEM_ID, "henkilotiedot", answers);

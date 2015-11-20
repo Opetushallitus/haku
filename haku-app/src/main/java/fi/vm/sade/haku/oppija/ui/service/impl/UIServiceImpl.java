@@ -157,14 +157,21 @@ public class UIServiceImpl implements UIService {
     }
 
     @Override
-    public ModelResponse getPhase(String applicationSystemId, String phaseId, String lang) {
+    public ModelResponse getPhase(String applicationSystemId, String phaseId, String lang) throws ExecutionException {
         ApplicationSystem activeApplicationSystem = applicationSystemService.getActiveApplicationSystem(applicationSystemId);
         ElementTree elementTree = new ElementTree(activeApplicationSystem.getForm());
         Element phase = activeApplicationSystem.getForm().getChildById(phaseId);
         Application application = applicationService.getApplication(applicationSystemId);
+
+        Map<String, String> answers = userSession.populateWithPrefillData(ensureApplicationOptionGroupData(phaseId, application.getVastauksetMerged(), lang));
+
+        if (phaseId.equals(PHASE_APPLICATION_OPTIONS) && isHigherEd(activeApplicationSystem)) {
+            answers.putAll(paymentNotificationAnswers(answers, hakumaksuService.paymentRequirements(Types.MergedAnswers.of(answers))));
+        }
+
         elementTree.checkPhaseTransfer(application.getPhaseId(), phaseId);
         ModelResponse modelResponse = new ModelResponse(activeApplicationSystem);
-        modelResponse.addAnswers(userSession.populateWithPrefillData(ensureApplicationOptionGroupData(phaseId, application.getVastauksetMerged(), lang)));
+        modelResponse.addAnswers(answers);
         modelResponse.setElement(phase);
         modelResponse.setKoulutusinformaatioBaseUrl(koulutusinformaatioBaseUrl);
         modelResponse.addObjectToModel("baseEducationDoesNotRestrictApplicationOptions", activeApplicationSystem.baseEducationDoesNotRestrictApplicationOptions());
@@ -308,12 +315,18 @@ public class UIServiceImpl implements UIService {
     }
 
     @Override
-    public ModelResponse savePhase(String applicationSystemId, String phaseId, Map<String, String> originalAnswers, String lang) {
+    public ModelResponse savePhase(String applicationSystemId, String phaseId, Map<String, String> originalAnswers, String lang) throws ExecutionException {
         Map<String, String> ensuredAnswers = ensureApplicationOptionGroupData(phaseId, originalAnswers, lang);
         ApplicationSystem activeApplicationSystem = applicationSystemService.getActiveApplicationSystem(applicationSystemId);
+
+        if (phaseId.equals(PHASE_APPLICATION_OPTIONS) && isHigherEd(activeApplicationSystem)) {
+            ensuredAnswers.putAll(paymentNotificationAnswers(ensuredAnswers, hakumaksuService.paymentRequirements(Types.MergedAnswers.of(ensuredAnswers))));
+        }
+
         Form activeForm = activeApplicationSystem.getForm();
         ApplicationState applicationState = applicationService.saveApplicationPhase(
                 new ApplicationPhase(applicationSystemId, phaseId, ensuredAnswers));
+
         ModelResponse modelResponse = new ModelResponse();
         modelResponse.addObjectToModel("ongoing", aoSearchOnlyOngoing);
         modelResponse.addObjectToModel("baseEducationDoesNotRestrictApplicationOptions", activeApplicationSystem.baseEducationDoesNotRestrictApplicationOptions());
