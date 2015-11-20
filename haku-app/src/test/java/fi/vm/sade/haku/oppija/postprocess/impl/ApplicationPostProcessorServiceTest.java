@@ -5,6 +5,7 @@ import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationDAO;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.haku.oppija.hakemus.service.BaseEducationService;
 import fi.vm.sade.haku.oppija.hakemus.service.HakumaksuService;
+import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.haku.oppija.lomake.service.FormService;
 import fi.vm.sade.haku.oppija.lomake.validation.ElementTreeValidator;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidatorFactory;
@@ -42,9 +43,10 @@ public class ApplicationPostProcessorServiceTest {
         final BaseEducationService baseEducationService = null;
         final FormService formService = null;
         final HakuService hakuService = null;
+        final ApplicationSystemService applicationSystemService = null;
         final HakumaksuService hakumaksuService = null;
 
-        applicationPostProcessorService = new ApplicationPostProcessorService(applicationService, baseEducationService, formService, elementTreeValidator, authenticationService, hakuService, hakumaksuService);
+        applicationPostProcessorService = new ApplicationPostProcessorService(applicationService, applicationSystemService, baseEducationService, formService, elementTreeValidator, authenticationService, hakuService, hakumaksuService);
         applicationPostProcessorService.setRetryFailQuickCount(5);
         applicationPostProcessorService.setRetryFailedAgainTime(10000);
 

@@ -117,7 +117,7 @@ public class HakutoiveetPhase {
                 formParameters.getI18nText("form.hakutoiveet.liitteet"),
                 formParameters.getI18nText("form.hakutoiveet.hakumaksu"));
 
-        if (formParameters.isHigherEd()) {
+        if (formParameters.getApplicationSystem().isMaksumuuriKaytossa()) {
             pr.addChild(Rule(
                     new And(
                             new Not(new Equals(new Variable(id + "-Koulutus-id"), new Value(""))),

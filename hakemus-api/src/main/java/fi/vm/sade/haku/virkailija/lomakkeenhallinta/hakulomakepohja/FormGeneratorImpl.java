@@ -79,7 +79,8 @@ public class FormGeneratorImpl implements FormGenerator {
                 .addAttachmentGroupAddresses(formParameters.getAttachmentGroupConfigurator().configureAttachmentGroupAddresses())
                 .setLastGenerated(new Date())
                 .setAosForAutomaticEligibility(as.getAosForAutomaticEligibility())
-                .setAllowedLanguages(formParameters.getAllowedLanguages());
+                .setAllowedLanguages(formParameters.getAllowedLanguages())
+                .setMaksumuuriKaytossa(as.isMaksumuuriKaytossa());
 
         if(demoMode && demoOids.contains(as.getId())) {
             List<ApplicationPeriod> demoPeriods = new ArrayList<>();
