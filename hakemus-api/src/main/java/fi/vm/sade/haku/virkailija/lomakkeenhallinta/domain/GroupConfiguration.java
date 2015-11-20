@@ -1,5 +1,6 @@
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain;
 
+import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import org.codehaus.jackson.annotate.JsonCreator;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
@@ -18,29 +19,48 @@ public class GroupConfiguration {
         CONSTRAINT_GROUP // allow_group_id / deny_group_id  -- NOT IMPLEMENTED
     }
 
-    public enum ConfigKey {
-        maximumNumberOf,
-        useFirstAoAddress,
-        addressRecipient,
-        addressStreet,
-        addressPostalCode,
-        addressPostOffice,
-        deadline
-    };
+    @JsonSerialize(include = JsonSerialize.Inclusion.NON_EMPTY)
+    public static class Configuration {
+        public final String maximumNumberOf;
+        public final String useFirstAoAddress;
+        public final String addressRecipient;
+        public final String addressStreet;
+        public final String addressPostalCode;
+        public final String addressPostOffice;
+        public final String deadline;
+        public final I18nText helpText;
+
+        @JsonCreator
+        public Configuration(@JsonProperty(value = "maximumNumberOf") String maximumNumberOf,
+                             @JsonProperty(value = "useFirstAoAddress") String useFirstAoAddress,
+                             @JsonProperty(value = "addressRecipient") String addressRecipient,
+                             @JsonProperty(value = "addressStreet") String addressStreet,
+                             @JsonProperty(value = "addressPostalCode") String addressPostalCode,
+                             @JsonProperty(value = "addressPostOffice") String addressPostOffice,
+                             @JsonProperty(value = "deadline") String deadline,
+                             @JsonProperty(value = "helpText") I18nText helpText) {
+            this.maximumNumberOf = maximumNumberOf;
+            this.useFirstAoAddress = useFirstAoAddress;
+            this.addressRecipient = addressRecipient;
+            this.addressStreet = addressStreet;
+            this.addressPostalCode = addressPostalCode;
+            this.addressPostOffice = addressPostOffice;
+            this.deadline = deadline;
+            this.helpText = helpText;
+        }
+    }
 
     private final String groupId;
     private final GroupType type;
-    private Map<ConfigKey,String> configurations = new HashMap<>();
-
+    private final Configuration configurations;
 
     @JsonCreator
     public GroupConfiguration(@JsonProperty(value = "groupId") String groupId,
       @JsonProperty(value = "type") final GroupType type,
-      @JsonProperty(value = "configurations") final Map<ConfigKey,String> configurations) {
+      @JsonProperty(value = "configurations") final Configuration configurations) {
         this.groupId = groupId;
         this.type = type;
-        if (null != configurations && !configurations.isEmpty())
-            this.configurations = new HashMap<>(configurations);
+        this.configurations = configurations;
     }
 
     public String getGroupId() {
@@ -51,7 +71,7 @@ public class GroupConfiguration {
         return type;
     }
 
-    public Map<ConfigKey,String> getConfigurations() {
+    public Configuration getConfigurations() {
         return configurations;
     }
 }

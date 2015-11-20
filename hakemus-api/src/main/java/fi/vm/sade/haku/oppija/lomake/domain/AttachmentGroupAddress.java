@@ -9,12 +9,14 @@ public class AttachmentGroupAddress {
     private final boolean useFirstAoAddress;
     private final Date deliveryDue;
     private final SimpleAddress deliveryAddress;
+    private final I18nText helpText;
 
-    public AttachmentGroupAddress(String groupId, boolean useFirstAoAddress, Date deliveryDue, SimpleAddress deliveryAddress) {
+    public AttachmentGroupAddress(String groupId, boolean useFirstAoAddress, Date deliveryDue, SimpleAddress deliveryAddress, I18nText helpText) {
         this.groupId = groupId;
         this.useFirstAoAddress = useFirstAoAddress;
         this.deliveryDue = deliveryDue;
         this.deliveryAddress = deliveryAddress;
+        this.helpText = helpText;
     }
 
     public String getGroupId() {
@@ -31,5 +33,9 @@ public class AttachmentGroupAddress {
 
     public SimpleAddress getDeliveryAddress() {
         return deliveryAddress;
+    }
+
+    public I18nText getHelpText() {
+        return helpText;
     }
 }
