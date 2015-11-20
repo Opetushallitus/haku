@@ -16,6 +16,8 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import fi.vm.sade.koulutusinformaatio.domain.dto.*;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
@@ -23,6 +25,9 @@ import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.crea
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 public class AttachmentUtil {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(AttachmentUtil.class);
+
     private enum Pohjakoulutusliite {
         AMMATTI("pohjakoulutuskklomake_amsuomi", "form.valmis.todistus.am", "pohjakoulutus_am"),
         AMMATILLINEN("pohjakoulutuskklomake_pohjakoulutusamt", "form.valmis.todistus.amt", "pohjakoulutus_amt"),
@@ -129,11 +134,6 @@ public class AttachmentUtil {
                 SimpleAddress address = attachmentRequest.getDeliveryAddress();
                 ApplicationAttachmentRequestBuilder attachmentRequestBuilder = ApplicationAttachmentRequestBuilder.start();
 
-                if (attachmentRequest.isGroupOption())
-                    attachmentRequestBuilder.setPreferenceAoGroupId(attachmentRequest.getApplicationOptionId());
-                else
-                    attachmentRequestBuilder.setPreferenceAoId(attachmentRequest.getApplicationOptionId());
-
                 Date deadline = attachmentRequest.getDeliveryDue();
 
                 ApplicationAttachmentBuilder attachmentBuilder = ApplicationAttachmentBuilder.start()
@@ -141,22 +141,34 @@ public class AttachmentUtil {
                         .setDescription(attachmentRequest.getDescription())
                         .setDeadline(deadline);
 
-                if (attachmentRequest.getUseLopAddress() != null && attachmentRequest.getUseLopAddress()) {
-                    // Override specified address, use ao/provider address instead
-                    ApplicationOptionDTO ao = koulutusinformaatioService.getApplicationOption(attachmentRequest.getApplicationOptionId(), lang);
-                    attachmentBuilder.setAddress(selectPreferredAddress(ao));
-                } else if (attachmentRequest.getUseGroupAddress() != null && attachmentRequest.getUseGroupAddress()) {
-                    // Override specified address, use first ao/provider address of the group instead
-                    ApplicationOptionDTO ao = prefMap.get(attachmentRequest.getApplicationOptionId());
-                    attachmentBuilder.setAddress(parseFirstGroupAddress(ao, prefAOs));
+                Address addressObj = null;
+                if (attachmentRequest.isGroupOption()) {
+                    attachmentRequestBuilder.setPreferenceAoGroupId(attachmentRequest.getApplicationOptionId());
+
+                    if (attachmentRequest.getUseGroupAddress() != null && attachmentRequest.getUseGroupAddress()) {
+                        // Override specified address, use first ao/provider address of the group instead
+                        addressObj = parseFirstGroupAddress(attachmentRequest.getApplicationOptionId(), prefAOs);
+                    }
                 } else {
-                    attachmentBuilder.setAddress(AddressBuilder.start()
+                    attachmentRequestBuilder.setPreferenceAoId(attachmentRequest.getApplicationOptionId());
+
+                    if (attachmentRequest.getUseLopAddress() != null && attachmentRequest.getUseLopAddress()) {
+                        // Override specified address, use ao/provider address instead
+                        ApplicationOptionDTO ao = koulutusinformaatioService.getApplicationOption(attachmentRequest.getApplicationOptionId(), lang);
+                        addressObj = selectPreferredAddress(ao);
+                    }
+                }
+
+                if(addressObj == null) {
+                    addressObj = AddressBuilder.start()
                             .setRecipient(address.getRecipient())
                             .setStreetAddress(address.getStreet())
                             .setPostalCode(address.getPostCode())
                             .setPostOffice(address.getPostOffice())
-                            .build());
+                            .build();
                 }
+
+                attachmentBuilder.setAddress(addressObj);
 
                 if (deadline == null) {
                     attachmentBuilder.setDeliveryNote(i18nBundle.get(GENERAL_DELIVERY_NOTE));
@@ -170,19 +182,17 @@ public class AttachmentUtil {
         return attachments;
     }
 
-    private static Address parseFirstGroupAddress(ApplicationOptionDTO ao, List<ApplicationOptionDTO> prefAOs) {
-        if(ao.getOrganizationGroups() != null && ao.getOrganizationGroups().size() > 0) {
-            OrganizationGroupDTO aoOrgGroup = ao.getOrganizationGroups().get(0);
-            for (ApplicationOptionDTO aolistItem : prefAOs) {
-                if(aolistItem.getOrganizationGroups() != null && aolistItem.getOrganizationGroups().size() > 0) {
-                    OrganizationGroupDTO aoOrgGroupInList = aolistItem.getOrganizationGroups().get(0);
-                    if (aoOrgGroupInList.getOid().equals(aoOrgGroup.getOid())) {
-                        return selectPreferredAddress(aolistItem);
-                    }
+    private static Address parseFirstGroupAddress(String groupId, List<ApplicationOptionDTO> prefAOs) {
+        LOGGER.debug("Searching attachment address for orgGroupId:" + groupId);
+        for (ApplicationOptionDTO aolistItem : prefAOs) {
+            for (OrganizationGroupDTO aoOrgGroupInList : aolistItem.getOrganizationGroups()) {
+                if (groupId.equals(aoOrgGroupInList.getOid())) {
+                    LOGGER.debug("Using attachment address for orgGroupId:" + groupId + " from first ao id:" + aolistItem.getId());
+                    return selectPreferredAddress(aolistItem);
                 }
             }
         }
-        return selectPreferredAddress(ao);
+        return null;
     }
 
     private static List<ApplicationAttachmentRequest> addApplicationOptionAttachments(
