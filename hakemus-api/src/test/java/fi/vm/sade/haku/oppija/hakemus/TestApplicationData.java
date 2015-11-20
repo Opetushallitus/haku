@@ -8,6 +8,8 @@ import com.google.common.util.concurrent.ListenableFuture;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.lomake.domain.User;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.HakumaksuUtil;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.MergedAnswers;
 
 import java.util.Iterator;
 import java.util.List;
@@ -113,24 +115,14 @@ public class TestApplicationData {
                     ImmutableList.of(MUUALLA_KUIN_SUOMESSA_SUORITETTU_MUU_TUTKINTO_JOKA_ASIANOMAISESSA_MAASSA_ANTAA_HAKUKELPOISUUDEN_KORKEAKOULUUN_ARUBA))
             .build();
 
-    public static Application getApplication(Hakukelpoisuusvaatimus hakukelpoisuusvaatimus, Pohjakoulutus pohjakoulutus) {
-        final String asId = "foo";
-        final User user = new User("bar");
-        final ImmutableMap.Builder<String, Map<String, String>> answers = ImmutableMap.builder();
-        final ImmutableMap.Builder<String, String> additionalInfo = ImmutableMap.builder();
-
-        answers.put("koulutustausta", pohjakoulutus.getKoulutustausta());
-        answers.put("hakutoiveet", ImmutableMap.of("preference1-Koulutus-id", hakukelpoisuusvaatimus.name()));
-
-        return new Application(asId, user, answers.build(), additionalInfo.build());
+    public static MergedAnswers getAnswers(Hakukelpoisuusvaatimus hakukelpoisuusvaatimus, Pohjakoulutus pohjakoulutus) {
+        return MergedAnswers.of(ImmutableMap.<String, String>builder()
+                .putAll(pohjakoulutus.getKoulutustausta())
+                .put("preference1-Koulutus-id", hakukelpoisuusvaatimus.name()).build());
     }
 
-    public static Application getApplication(Iterable<String> hakutoiveIds,
-                                             Iterable<Pohjakoulutus> pohjakoulutukset) {
-        final String asId = "foo";
-        final User user = new User("bar");
-        final ImmutableMap.Builder<String, Map<String, String>> answers = ImmutableMap.builder();
-
+    public static MergedAnswers getAnswers(Iterable<String> hakutoiveIds,
+                                           Iterable<Pohjakoulutus> pohjakoulutukset) {
         ImmutableMap.Builder<String, String> koulutustaustat = ImmutableMap.builder();
         for (Pohjakoulutus p : pohjakoulutukset) {
             koulutustaustat.putAll(p.getKoulutustausta());
@@ -142,11 +134,7 @@ public class TestApplicationData {
             hakutoiveet.put(String.format("preference%d-Koulutus-id", i), iterator.next());
         }
 
-        answers.putAll(ImmutableMap.of(
-                "koulutustausta", koulutustaustat.build(),
-                "hakutoiveet", hakutoiveet.build()));
-
-        return new Application(asId, user, answers.build(), ImmutableMap.<String, String>of());
+        return MergedAnswers.of(ImmutableMap.<String, String>builder().putAll(koulutustaustat.build()).putAll(hakutoiveet.build()).build());
     }
 
     private static <T> ListenableFuture<T> future(final T t) {

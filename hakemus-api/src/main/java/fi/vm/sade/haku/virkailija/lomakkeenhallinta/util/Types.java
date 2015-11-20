@@ -1,5 +1,7 @@
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.util;
 
+import fi.vm.sade.haku.oppija.hakemus.domain.Application;
+
 import java.util.Map;
 
 public final class Types {
@@ -68,6 +70,10 @@ public final class Types {
 
         public static MergedAnswers of(Map<String, String> value) {
             return new MergedAnswers(value);
+        }
+
+        public static MergedAnswers of(Application application) {
+            return of(application.getVastauksetMerged());
         }
 
         public String get(String field) {
