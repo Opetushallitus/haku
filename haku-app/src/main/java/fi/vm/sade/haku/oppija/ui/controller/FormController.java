@@ -151,7 +151,7 @@ public class FormController {
     @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
     public Response getPhase(@Context HttpServletRequest request,
                              @PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId,
-                             @PathParam(PHASE_ID_PATH_PARAM) final String phaseId) {
+                             @PathParam(PHASE_ID_PATH_PARAM) final String phaseId) throws ExecutionException {
 
         LOGGER.debug("getPhase {}, {}", applicationSystemId, phaseId);
         String lang = uiService.ensureLanguage(request, applicationSystemId);
@@ -242,7 +242,7 @@ public class FormController {
     public Response savePhase(@Context HttpServletRequest request,
                               @PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId,
                               @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
-                              final MultivaluedMap<String, String> answers) throws URISyntaxException {
+                              final MultivaluedMap<String, String> answers) throws URISyntaxException, ExecutionException {
         LOGGER.debug("savePhase {}, {}", applicationSystemId, phaseId);
         String lang = uiService.ensureLanguage(request, applicationSystemId);
         ModelResponse modelResponse = uiService.savePhase(applicationSystemId, phaseId, toSingleValueMap(answers), lang);
