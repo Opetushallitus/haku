@@ -116,6 +116,14 @@ public class AttachmentUtil {
         if (applicationSystem.getApplicationOptionAttachmentRequests() == null) {
             return attachments;
         }
+
+        List<ApplicationOptionDTO> prefAOs = koulutusinformaatioService.getApplicationOptions(ApplicationUtil.getPreferenceAoIds(application), lang);
+        Map<String, ApplicationOptionDTO> prefMap = Maps.uniqueIndex(prefAOs, new Function<ApplicationOptionDTO, String>() {
+            public String apply(ApplicationOptionDTO item) {
+                return item.getId();
+            }
+        });
+
         for (ApplicationOptionAttachmentRequest attachmentRequest : applicationSystem.getApplicationOptionAttachmentRequests()) {
             if (attachmentRequest.include(application.getVastauksetMerged())) {
                 SimpleAddress address = attachmentRequest.getDeliveryAddress();
@@ -133,23 +141,14 @@ public class AttachmentUtil {
                         .setDescription(attachmentRequest.getDescription())
                         .setDeadline(deadline);
 
-                if(attachmentRequest.getUseLopAddress() != null && attachmentRequest.getUseLopAddress()) {
+                if (attachmentRequest.getUseLopAddress() != null && attachmentRequest.getUseLopAddress()) {
+                    // Override specified address, use ao/provider address instead
                     ApplicationOptionDTO ao = koulutusinformaatioService.getApplicationOption(attachmentRequest.getApplicationOptionId(), lang);
-                    AddressDTO postAddress = ao.getProvider().getApplicationOffice().getPostalAddress();
-                    attachmentBuilder.setAddress(AddressBuilder.start()
-                            .setRecipient(address.getRecipient())
-                            .setStreetAddress(postAddress.getStreetAddress())
-                            .setPostalCode(postAddress.getPostalCode())
-                            .setPostOffice(postAddress.getPostOffice())
-                            .build());
-                } else if(attachmentRequest.getUseGroupAddress() != null && attachmentRequest.getUseGroupAddress()) {
-                    //TODO
-                    attachmentBuilder.setAddress(AddressBuilder.start()
-                            .setRecipient(address.getRecipient())
-                            .setStreetAddress(address.getStreet())
-                            .setPostalCode(address.getPostCode())
-                            .setPostOffice(address.getPostOffice())
-                            .build());
+                    attachmentBuilder.setAddress(selectPreferredAddress(ao));
+                } else if (attachmentRequest.getUseGroupAddress() != null && attachmentRequest.getUseGroupAddress()) {
+                    // Override specified address, use first ao/provider address of the group instead
+                    ApplicationOptionDTO ao = prefMap.get(attachmentRequest.getApplicationOptionId());
+                    attachmentBuilder.setAddress(parseFirstGroupAddress(ao, prefAOs));
                 } else {
                     attachmentBuilder.setAddress(AddressBuilder.start()
                             .setRecipient(address.getRecipient())
@@ -158,7 +157,6 @@ public class AttachmentUtil {
                             .setPostOffice(address.getPostOffice())
                             .build());
                 }
-
 
                 if (deadline == null) {
                     attachmentBuilder.setDeliveryNote(i18nBundle.get(GENERAL_DELIVERY_NOTE));
@@ -172,8 +170,23 @@ public class AttachmentUtil {
         return attachments;
     }
 
+    private static Address parseFirstGroupAddress(ApplicationOptionDTO ao, List<ApplicationOptionDTO> prefAOs) {
+        if(ao.getOrganizationGroups() != null && ao.getOrganizationGroups().size() > 0) {
+            OrganizationGroupDTO aoOrgGroup = ao.getOrganizationGroups().get(0);
+            for (ApplicationOptionDTO aolistItem : prefAOs) {
+                if(aolistItem.getOrganizationGroups() != null && aolistItem.getOrganizationGroups().size() > 0) {
+                    OrganizationGroupDTO aoOrgGroupInList = aolistItem.getOrganizationGroups().get(0);
+                    if (aoOrgGroupInList.getOid().equals(aoOrgGroup.getOid())) {
+                        return selectPreferredAddress(aolistItem);
+                    }
+                }
+            }
+        }
+        return selectPreferredAddress(ao);
+    }
+
     private static List<ApplicationAttachmentRequest> addApplicationOptionAttachments(
-      List<ApplicationAttachmentRequest> attachments, Application application,
+            List<ApplicationAttachmentRequest> attachments, Application application,
             KoulutusinformaatioService koulutusinformaatioService, String lang, I18nBundle i18nBundle) {
         for (String aoOid : ApplicationUtil.getApplicationOptionAttachmentAOIds(application)) {
             ApplicationOptionDTO ao = koulutusinformaatioService.getApplicationOption(aoOid, lang);
@@ -223,11 +236,11 @@ public class AttachmentUtil {
     }
 
     private static List<ApplicationAttachmentRequest> addDiscreationaryAttachments(
-      final List<ApplicationAttachmentRequest> attachments,
-      final Application application,
-      final KoulutusinformaatioService koulutusinformaatioService,
-      final String lang,
-      final I18nBundle i18nBundle) {
+            final List<ApplicationAttachmentRequest> attachments,
+            final Application application,
+            final KoulutusinformaatioService koulutusinformaatioService,
+            final String lang,
+            final I18nBundle i18nBundle) {
 
         for (String aoOid : ApplicationUtil.getDiscretionaryAttachmentAOIds(application)) {
             ApplicationOptionDTO ao = koulutusinformaatioService.getApplicationOption(aoOid, lang);
@@ -250,16 +263,16 @@ public class AttachmentUtil {
                     .setAddress(getAddress(ao));
             if (discreationaryReason != null) {
                 attachmentBuilder.setDescription(i18nBundle.get("form.valmis.liitteet.harkinnanvaraisuus."
-                  + discreationaryReason));
+                        + discreationaryReason));
             }
             if (deadline == null) {
                 attachmentBuilder.setDeliveryNote(i18nBundle.get(GENERAL_DELIVERY_NOTE));
             }
 
             attachments.add(ApplicationAttachmentRequestBuilder.start()
-              .setPreferenceAoId(aoOid)
-              .setApplicationAttachment(attachmentBuilder.build())
-              .build());
+                    .setPreferenceAoId(aoOid)
+                    .setApplicationAttachment(attachmentBuilder.build())
+                    .build());
         }
         return attachments;
     }
@@ -268,12 +281,12 @@ public class AttachmentUtil {
         if (null == addressDTO)
             return null;
         return AddressBuilder.start()
-          .setRecipient(StringUtil.safeToString(recipient))
-          .setStreetAddress(addressDTO.getStreetAddress())
-          .setStreetAddress2(addressDTO.getStreetAddress2())
-          .setPostalCode(addressDTO.getPostalCode())
-          .setPostOffice(addressDTO.getPostOffice())
-          .build();
+                .setRecipient(StringUtil.safeToString(recipient))
+                .setStreetAddress(addressDTO.getStreetAddress())
+                .setStreetAddress2(addressDTO.getStreetAddress2())
+                .setPostalCode(addressDTO.getPostalCode())
+                .setPostOffice(addressDTO.getPostOffice())
+                .build();
     }
 
     private static Address getAddress(SimpleAddress address) {
@@ -296,12 +309,12 @@ public class AttachmentUtil {
             return null;
         }
         return AddressBuilder.start()
-          .setRecipient(ao.getProvider().getName() + " " + ao.getName())
-          .setStreetAddress(addressDTO.getStreetAddress())
-          .setStreetAddress2(addressDTO.getStreetAddress2())
-          .setPostalCode(addressDTO.getPostalCode())
-          .setPostOffice(addressDTO.getPostOffice())
-          .build();
+                .setRecipient(ao.getProvider().getName() + " " + ao.getName())
+                .setStreetAddress(addressDTO.getStreetAddress())
+                .setStreetAddress2(addressDTO.getStreetAddress2())
+                .setPostalCode(addressDTO.getPostalCode())
+                .setPostOffice(addressDTO.getPostOffice())
+                .build();
     }
 
     private static Map<String, List<ApplicationOptionDTO>> fetchAOs(Map<String, List<String>> attachmentsToAOoids,
@@ -359,12 +372,12 @@ public class AttachmentUtil {
     }
 
     private static List<ApplicationAttachmentRequest> addHigherEdAttachments(
-        final ApplicationSystem applicationSystem,
-        final List<ApplicationAttachmentRequest> attachments,
-        final Application application,
-        final KoulutusinformaatioService koulutusinformaatioService,
-        final String lang,
-        final I18nBundle i18nBundle
+            final ApplicationSystem applicationSystem,
+            final List<ApplicationAttachmentRequest> attachments,
+            final Application application,
+            final KoulutusinformaatioService koulutusinformaatioService,
+            final String lang,
+            final I18nBundle i18nBundle
     ) {
         Date deadline = null;
         Map<String, List<ApplicationOptionDTO>> higherEdAttachmentAOs = pohjakoulutusliitepyynnot(application, koulutusinformaatioService.getApplicationOptions(ApplicationUtil.getPreferenceAoIds(application), lang));
@@ -429,9 +442,9 @@ public class AttachmentUtil {
     }
 
     private static Map<String, List<HigherEdBaseEducationAttachmentInfo>> getAddresses(
-      final List<AttachmentGroupAddress> attachmentGroupAddresses,
-      final Map<String, List<ApplicationOptionDTO>> attachmentAOs,
-      final Date defaultDeadline) {
+            final List<AttachmentGroupAddress> attachmentGroupAddresses,
+            final Map<String, List<ApplicationOptionDTO>> attachmentAOs,
+            final Date defaultDeadline) {
         return Maps.transformValues(attachmentAOs, new Function<List<ApplicationOptionDTO>, List<HigherEdBaseEducationAttachmentInfo>>() {
             @Override
             public List<HigherEdBaseEducationAttachmentInfo> apply(List<ApplicationOptionDTO> applicationOptionDTOs) {
@@ -450,7 +463,7 @@ public class AttachmentUtil {
     private static HigherEdBaseEducationAttachmentInfo getAttachmentGroupAddressInfo(List<AttachmentGroupAddress> attachmentGroupAddresses, ApplicationOptionDTO ao, Date defaultDeadline) {
         HigherEdBaseEducationAttachmentInfo aoAddress = getAttachmentAddressInfo(ao, defaultDeadline);
         for (OrganizationGroupDTO organizationGroup : ao.getOrganizationGroups()) {
-            for (AttachmentGroupAddress groupAddress: attachmentGroupAddresses) {
+            for (AttachmentGroupAddress groupAddress : attachmentGroupAddresses) {
                 if (organizationGroup.getOid().equals(groupAddress.getGroupId())) {
                     return new HigherEdBaseEducationAttachmentInfo(
                             chooseAddress(groupAddress, aoAddress),
@@ -467,7 +480,7 @@ public class AttachmentUtil {
     }
 
     private static Address chooseAddress(AttachmentGroupAddress groupAddress, HigherEdBaseEducationAttachmentInfo aoAddress) {
-        if(groupAddress.isUseFirstAoAddress()) {
+        if (groupAddress.isUseFirstAoAddress()) {
             return aoAddress.address;
         }
         return getAddress(groupAddress.getDeliveryAddress());
@@ -475,25 +488,30 @@ public class AttachmentUtil {
 
     private static HigherEdBaseEducationAttachmentInfo getAttachmentAddressInfo(ApplicationOptionDTO ao, Date deadline) {
         LearningOpportunityProviderDTO provider = ao.getProvider();
+        return new HigherEdBaseEducationAttachmentInfo(
+                selectPreferredAddress(ao),
+                OriginatorType.applicationOption,
+                ao.getId(),
+                provider.getId(),
+                createI18NAsIs(provider.getName()),
+                deadline
+        );
+    }
+
+    private static Address selectPreferredAddress(ApplicationOptionDTO ao) {
+        LearningOpportunityProviderDTO provider = ao.getProvider();
         String recipientName = provider.getName();
         AddressDTO address = provider.getPostalAddress();
         if (ao.getApplicationOffice() != null) {
             recipientName = ao.getApplicationOffice().getName();
             address = ao.getApplicationOffice().getPostalAddress();
         } else if (provider.getApplicationOffice() != null && provider.getApplicationOffice().getPostalAddress() != null) {
-            if(StringUtils.isNotEmpty(provider.getApplicationOffice().getName())) {
+            if (StringUtils.isNotEmpty(provider.getApplicationOffice().getName())) {
                 recipientName = provider.getApplicationOffice().getName();
             }
             address = provider.getApplicationOffice().getPostalAddress();
         }
-        return new HigherEdBaseEducationAttachmentInfo(
-            getAddress(recipientName, address),
-            OriginatorType.applicationOption,
-            ao.getId(),
-            provider.getId(),
-            createI18NAsIs(provider.getName()),
-            deadline
-        );
+        return getAddress(recipientName, address);
     }
 
     private static boolean addressAlreadyAdded(List<HigherEdBaseEducationAttachmentInfo> addresses, HigherEdBaseEducationAttachmentInfo address) {
@@ -502,13 +520,13 @@ public class AttachmentUtil {
                 return true;
             }
             if (address.originatorType == OriginatorType.applicationOption
-                && other.originatorType == OriginatorType.applicationOption
-                && StringUtils.equals(address.providerId, other.providerId)) {
+                    && other.originatorType == OriginatorType.applicationOption
+                    && StringUtils.equals(address.providerId, other.providerId)) {
                 return true;
             }
             if (address.originatorType == OriginatorType.applicationOption
-                && other.originatorType == OriginatorType.applicationOption
-                && address.address.equals(other.address)) {
+                    && other.originatorType == OriginatorType.applicationOption
+                    && address.address.equals(other.address)) {
                 return true;
             }
         }
