@@ -675,6 +675,7 @@ public class Application implements Serializable {
         clone.authorizationMeta = null == this.authorizationMeta ? null: authorizationMeta.clone();
         clone.automatedProcessingFailCount = this.automatedProcessingFailCount;
         clone.automatedProcessingFailRetryTime = this.automatedProcessingFailRetryTime;
+        clone.requiredPaymentState = this.requiredPaymentState;
         return clone;
     }
 
