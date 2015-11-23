@@ -12,7 +12,7 @@ public class ApplicationOptionAttachmentRequestBuilder {
     private I18nText header;
     private I18nText description;
     private Date deliveryDue;
-    private Boolean useGroupAddress;
+    private Boolean overrideAddress;
     private SimpleAddress deliveryAddress;
 
     protected ApplicationOptionAttachmentRequestBuilder(){}
@@ -51,8 +51,8 @@ public class ApplicationOptionAttachmentRequestBuilder {
         return this;
     }
 
-    public ApplicationOptionAttachmentRequestBuilder setUseGroupAddress(Boolean useGroupAddress) {
-        this.useGroupAddress = useGroupAddress;
+    public ApplicationOptionAttachmentRequestBuilder setOverrideAddress(Boolean overrideAddress) {
+        this.overrideAddress = overrideAddress;
         return this;
     }
 
@@ -62,6 +62,6 @@ public class ApplicationOptionAttachmentRequestBuilder {
     }
 
     public ApplicationOptionAttachmentRequest build() {
-        return new ApplicationOptionAttachmentRequest(condition, applicationOptionId, groupOption, header, description, deliveryDue, useGroupAddress, deliveryAddress);
+        return new ApplicationOptionAttachmentRequest(condition, applicationOptionId, groupOption, header, description, deliveryDue, overrideAddress, deliveryAddress);
     }
 }

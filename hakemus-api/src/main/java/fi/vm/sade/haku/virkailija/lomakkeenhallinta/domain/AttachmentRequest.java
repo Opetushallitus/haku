@@ -2,34 +2,31 @@ package fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain;
 
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.organisaatio.api.model.types.OsoiteDTO;
-import org.codehaus.jackson.annotate.JsonCreator;
-import org.codehaus.jackson.annotate.JsonProperty;
-import org.codehaus.jackson.annotate.JsonSubTypes;
-import org.codehaus.jackson.annotate.JsonTypeInfo;
+import org.codehaus.jackson.annotate.*;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
 import java.util.Date;
 import java.util.Set;
 
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_EMPTY)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public final class AttachmentRequest {
     private final I18nText header;
     private final I18nText description;
     private final Date deliveryDue;
 
-    // TODO: =RS= refactor rename to useLearning provider address.
-    private final Boolean useGroupAddress;
+    private final Boolean overrideAddress;
     private final SimpleAddress deliveryAddress;
     private final String attachedToOptionId;
 
     @JsonCreator
     public AttachmentRequest(@JsonProperty(value = "header") final I18nText header, @JsonProperty(value = "description") final I18nText description,
-      @JsonProperty(value = "deliveryDue") final  Date deliveryDue,  @JsonProperty(value = "useGroupAddress") final Boolean useGroupAddress,
+      @JsonProperty(value = "deliveryDue") final  Date deliveryDue,  @JsonProperty(value = "overrideAddress") final Boolean overrideAddress,
       @JsonProperty(value = "deliveryAddress") final SimpleAddress deliveryAddress, @JsonProperty(value = "attachedToOption") final String attachedToOptionId) {
         this.header = header;
         this.description = description;
         this.deliveryDue = deliveryDue;
-        this.useGroupAddress = useGroupAddress;
+        this.overrideAddress = overrideAddress;
         this.deliveryAddress = deliveryAddress;
         this.attachedToOptionId = attachedToOptionId;
     }
@@ -46,9 +43,10 @@ public final class AttachmentRequest {
         return deliveryDue;
     }
 
-    public Boolean getUseGroupAddress() {
-        return useGroupAddress;
+    public Boolean getOverrideAddress() {
+        return overrideAddress;
     }
+
 
     public SimpleAddress getDeliveryAddress() {
         return deliveryAddress;
