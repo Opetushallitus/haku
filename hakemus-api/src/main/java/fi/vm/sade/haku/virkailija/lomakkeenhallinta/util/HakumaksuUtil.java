@@ -11,7 +11,6 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
-import fi.vm.sade.haku.http.HttpRestClient;
 import fi.vm.sade.haku.http.HttpRestClient.Response;
 import fi.vm.sade.haku.http.RestClient;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.ApplicationOptionOid;
@@ -33,6 +32,12 @@ public class HakumaksuUtil {
         this.restClient = restClient;
     }
 
+    public enum LanguageCodeISO6391 {
+        fi,
+        sv,
+        en
+    }
+
     public static class OppijanTunnistus {
         public static class Metadata {
             @Key
@@ -48,17 +53,25 @@ public class HakumaksuUtil {
         public String email;
 
         @Key
+        public LanguageCodeISO6391 lang;
+
+        @Key
         public Metadata metadata;
     }
 
     /**
      * @return true if send was successful
      */
-    public ListenableFuture<Boolean> sendPaymentRequest(final String _hakemusOid, final String _personOid, final String emailAddress) {
-        String oppijanTunnistusUrl = "https://itest-virkailija.oph.ware.fi/oppijan-tunnistus/swagger/index.html#!/default/post_oppijan_tunnistus_api_v1_token";
+    public ListenableFuture<Boolean> sendPaymentRequest(final String oppijanTunnistusUrl,
+                                                        final String redirectUrl,
+                                                        final LanguageCodeISO6391 languageCode,
+                                                        final String _hakemusOid,
+                                                        final String _personOid,
+                                                        final String emailAddress) {
         OppijanTunnistus body = new OppijanTunnistus() {{
-            this.url = "example.com";
+            this.url = redirectUrl;
             this.email = emailAddress;
+            this.lang = languageCode;
             this.metadata = new Metadata() {{
                 this.hakemusOid = _hakemusOid;
                 this.personOid = _personOid;
