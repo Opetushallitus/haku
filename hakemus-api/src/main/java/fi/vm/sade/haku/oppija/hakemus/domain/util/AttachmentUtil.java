@@ -122,13 +122,6 @@ public class AttachmentUtil {
             return attachments;
         }
 
-        List<ApplicationOptionDTO> prefAOs = koulutusinformaatioService.getApplicationOptions(ApplicationUtil.getPreferenceAoIds(application), lang);
-        Map<String, ApplicationOptionDTO> prefMap = Maps.uniqueIndex(prefAOs, new Function<ApplicationOptionDTO, String>() {
-            public String apply(ApplicationOptionDTO item) {
-                return item.getId();
-            }
-        });
-
         for (ApplicationOptionAttachmentRequest attachmentRequest : applicationSystem.getApplicationOptionAttachmentRequests()) {
             if (attachmentRequest.include(application.getVastauksetMerged())) {
                 SimpleAddress address = attachmentRequest.getDeliveryAddress();
@@ -147,6 +140,7 @@ public class AttachmentUtil {
 
                     if (attachmentRequest.getOverrideAddress() != null && attachmentRequest.getOverrideAddress()) {
                         // Override specified address, use first ao/provider address of the group instead
+                        List<ApplicationOptionDTO> prefAOs = koulutusinformaatioService.getApplicationOptions(ApplicationUtil.getPreferenceAoIds(application), lang);
                         addressObj = parseFirstGroupAddress(attachmentRequest.getApplicationOptionId(), prefAOs);
                     }
                 } else {
