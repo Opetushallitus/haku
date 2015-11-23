@@ -21,6 +21,7 @@ public class HakumaksuTest {
 
     final HakumaksuService service = new HakumaksuService(
             "http://localhost/koodisto-service", "http://localhost/ao",
+            "http://localhost/oppijan-tunnistus", "http://localhost/hakuperusteet",
             new MockedRestClient(testMappings())
     );
 

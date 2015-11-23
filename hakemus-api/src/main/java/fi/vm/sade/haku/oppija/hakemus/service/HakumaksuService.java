@@ -14,6 +14,7 @@ import fi.vm.sade.haku.oppija.hakemus.domain.BaseEducations;
 import fi.vm.sade.haku.oppija.lomake.exception.IllegalStateException;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.HakumaksuUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.HakumaksuUtil.EducationRequirements;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.HakumaksuUtil.LanguageCodeISO6391;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,6 +31,7 @@ import static com.google.common.collect.Iterables.any;
 import static com.google.common.collect.Iterables.filter;
 import static fi.vm.sade.haku.oppija.hakemus.domain.BaseEducations.*;
 import static fi.vm.sade.haku.oppija.hakemus.domain.util.ApplicationUtil.getPreferenceAoIds;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.HakumaksuUtil.LanguageCodeISO6391.*;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.*;
 
 @Service
@@ -39,15 +41,21 @@ public class HakumaksuService {
     private final String koodistoServiceUrl;
     private final String koulutusinformaatioUrl;
     private final HakumaksuUtil util;
+    private final String oppijanTunnistusUrl;
+    private final String hakuperusteetUrl;
 
     @Autowired
     public HakumaksuService(
             @Value("${cas.service.koodisto-service}") final String koodistoServiceUrl,
             @Value("${koulutusinformaatio.ao.resource.url}") final String koulutusinformaatioUrl,
+            @Value("${oppijantunnistus.create.url}") final String oppijanTunnistusUrl,
+            @Value("${hakuperusteet.url}") final String hakuperusteetUrl,
             RestClient restClient
     ) {
         this.koodistoServiceUrl = koodistoServiceUrl;
         this.koulutusinformaatioUrl = koulutusinformaatioUrl;
+        this.oppijanTunnistusUrl = oppijanTunnistusUrl;
+        this.hakuperusteetUrl = hakuperusteetUrl;
         util = new HakumaksuUtil(restClient);
     }
 
@@ -428,9 +436,27 @@ public class HakumaksuService {
                 && application.getRedoPostProcess() == Application.PostProcessingState.FULL;
     }
 
+    static final ImmutableMap<String, LanguageCodeISO6391> applicationLanguageToLanguageCodeMap = ImmutableMap.of(
+            "suomi", fi,
+            "ruotsi", sv,
+            "englanti", en
+    );
+
+    private LanguageCodeISO6391 languageCodeFromApplication(Application application) {
+        String applicationLanguage = application.getPhaseAnswers(OppijaConstants.PHASE_MISC).get(OppijaConstants.ELEMENT_ID_CONTACT_LANGUAGE);
+        return Optional.fromNullable(applicationLanguageToLanguageCodeMap.get(applicationLanguage)).or(en);
+    }
+
     private Application markPaymentRequirements(Application application) throws ExecutionException, InterruptedException {
         String emailAddress = application.getPhaseAnswers(OppijaConstants.PHASE_PERSONAL).get("Sähköposti");
-        if (util.sendPaymentRequest(application.getOid(), application.getPersonOid(), emailAddress).get()) {
+        String redirectUrl = hakuperusteetUrl + "/app/" + application.getOid() + "#/token/";
+        if (util.sendPaymentRequest(
+                oppijanTunnistusUrl,
+                redirectUrl,
+                languageCodeFromApplication(application),
+                application.getOid(),
+                application.getPersonOid(),
+                emailAddress).get()) {
             application.setRequiredPaymentState(PaymentState.NOTIFIED);
             return application;
         } else {

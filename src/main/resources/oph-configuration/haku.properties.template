@@ -81,6 +81,7 @@ cas.service.viestintapalvelu=https://${host.virkailija}/viestintapalvelu
 cas.service.ryhmasahkoposti=https://${host.virkailija}/ryhmasahkoposti-service
 customAttribute.webservice.url.backend=https://${host.virkailija}/authentication-service/services/customAttributeService
 flyway.initOnMigrate=true
+hakuperusteet.url=https://${host.haku}/hakuperusteet
 komo.oid.kuntouttava=1.2.246.562.5.2013112814572435755085
 komo.oid.lisaopetus=1.2.246.562.5.2013112814572435044876
 komo.oid.lukio=TODO lukio komo oid
@@ -109,6 +110,7 @@ mongo.writeconcern={{ haku_mongo_writeconcern | default('ACKNOWLEDGED') }}
 mongodb.url=${mongodb.oppija.uri}/${mongo.db.name}?maxpoolsize=${mongo.db.maxpoolsize}
 oid.rest.url.backend=${host.ilb}/oid-service/rest/oid
 oid.webservice.url.backend=${host.ilb}/services/oidService
+oppijantunnistus.create.url=https://${host.virkailija}/oppijan-tunnistus/api/v1/token
 root.organisaatio.oid=1.2.246.562.10.00000000001
 tarjonta.v1.haku.resource.url=https\://${host.virkailija}/tarjonta-service/rest/v1/haku
 tarjonta.v1.hakukohde.resource.url=https\://${host.virkailija}/tarjonta-service/rest/v1/hakukohde

@@ -21,7 +21,10 @@ import static org.junit.Assert.assertTrue;
 public class HakumaksuServiceIT {
     private static final HakumaksuService hakumaksuService = new HakumaksuService(
             "https://testi.virkailija.opintopolku.fi/koodisto-service",
-            "https://testi.opintopolku.fi/ao", new HttpRestClient());
+            "https://testi.opintopolku.fi/ao",
+            "https://testi.virkailija.opintopolku.fi/oppijan-tunnistus",
+            "https://testi.opintopolku.fi/hakuperusteet",
+            new HttpRestClient());
 
     private static final String koulutuksenNimike = "Ulkomaalainen korkeakoulutus";
     private static final String koulutuksenMaa = "AFG";
