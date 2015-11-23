@@ -19,79 +19,58 @@ public class HttpRestClient implements RestClient {
     static final JsonFactory JSON_FACTORY = new JacksonFactory();
     static final ExecutorService executorThreadPool = new ThreadPoolExecutor(1, 100, 60, TimeUnit.SECONDS, new ArrayBlockingQueue<Runnable>(100));
     static final ListeningExecutorService executor = MoreExecutors.listeningDecorator(executorThreadPool);
+    static final HttpRequestFactory requestFactory = HTTP_TRANSPORT.createRequestFactory(new HttpRequestInitializer() {
+        @Override
+        public void initialize(HttpRequest request) {
+            request.setParser(new JsonObjectParser(JSON_FACTORY));
+        }
+    });
 
     @Override
     public <T> ListenableFuture<Response<T>> get(final String url, final Class<T> responseClass) throws IOException {
-        HttpRequestFactory requestFactory = HTTP_TRANSPORT.createRequestFactory(new HttpRequestInitializer() {
-            @Override
-            public void initialize(HttpRequest request) {
-                request.setParser(new JsonObjectParser(JSON_FACTORY));
-            }
-        });
-
-        ListenableFuture<HttpResponse> request = executor.submit(new GetRequest(url, requestFactory));
-        AsyncFunction<HttpResponse, Response<T>> response = new AsyncFunction<HttpResponse, Response<T>>() {
-            @Override
-            public ListenableFuture<Response<T>> apply(HttpResponse response) throws Exception {
-                Parse<T> task = new Parse<>(response, responseClass);
-                return executor.submit(task);
-            }
-        };
-
-        return Futures.transform(request, response);
+        return submitRequest(new GetRequest(url, requestFactory), responseClass);
     }
 
+    @Override
     public <T, B> ListenableFuture<Response<T>> post(final String url, final B body, final Class<T> responseClass) throws IOException {
-        HttpRequestFactory requestFactory = HTTP_TRANSPORT.createRequestFactory(new HttpRequestInitializer() {
+        return submitRequest(new PostRequest(url, new JsonHttpContent(new JacksonFactory(), body), requestFactory), responseClass);
+    }
+
+    private static <T> ListenableFuture<Response<T>> submitRequest(Callable<HttpResponse> request, final Class<T> responseClass) {
+        return Futures.transform(executor.submit(request), new AsyncFunction<HttpResponse, Response<T>>() {
             @Override
-            public void initialize(HttpRequest request) {
-                request.setParser(new JsonObjectParser(JSON_FACTORY));
+            public ListenableFuture<Response<T>> apply(HttpResponse response1) throws Exception {
+                return executor.submit(new Parse<>(response1, responseClass));
             }
         });
-
-        ListenableFuture<HttpResponse> request = executor.submit(new PostRequest(url, new JsonHttpContent(new JacksonFactory(), body), requestFactory));
-        AsyncFunction<HttpResponse, Response<T>> response = new AsyncFunction<HttpResponse, Response<T>>() {
-            @Override
-            public ListenableFuture<Response<T>> apply(HttpResponse response) throws Exception {
-                Parse<T> task = new Parse<>(response, responseClass);
-                return executor.submit(task);
-            }
-        };
-
-        return Futures.transform(request, response);
     }
 
-    private static class GetRequest implements Callable<HttpResponse> {
+    private static class RestRequest implements Callable<HttpResponse> {
         private final HttpRequest request;
 
+        protected RestRequest(HttpRequest request) {
+            this.request = request;
+        }
+
+        @Override
+        public HttpResponse call() throws Exception {
+            try {
+                return request.execute();
+            } catch (IOException e) {
+                throw new ExecutionException(e);
+            }
+        }
+    }
+
+    private final static class GetRequest extends RestRequest {
         public GetRequest(String url, HttpRequestFactory requestFactory) throws IOException {
-            this.request = requestFactory.buildGetRequest(new GenericUrl(url));
-        }
-
-        @Override
-        public HttpResponse call() throws Exception {
-            try {
-                return request.execute();
-            } catch (IOException e) {
-                throw new ExecutionException(e);
-            }
+            super(requestFactory.buildGetRequest(new GenericUrl(url)));
         }
     }
 
-    private static class PostRequest implements Callable<HttpResponse> {
-        private final HttpRequest request;
-
+    private final static class PostRequest extends RestRequest {
         public PostRequest(String url, HttpContent content, HttpRequestFactory requestFactory) throws IOException {
-            this.request = requestFactory.buildPostRequest(new GenericUrl(url), content);
-        }
-
-        @Override
-        public HttpResponse call() throws Exception {
-            try {
-                return request.execute();
-            } catch (IOException e) {
-                throw new ExecutionException(e);
-            }
+            super(requestFactory.buildPostRequest(new GenericUrl(url), content));
         }
     }
 
