@@ -1,6 +1,7 @@
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.util;
 
 import com.google.api.client.util.Key;
+import com.google.api.client.util.Value;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.cache.CacheBuilder;
@@ -33,9 +34,9 @@ public class HakumaksuUtil {
     }
 
     public enum LanguageCodeISO6391 {
-        fi,
-        sv,
-        en
+        @Value fi,
+        @Value sv,
+        @Value en
     }
 
     public static class OppijanTunnistus {
