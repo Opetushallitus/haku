@@ -155,8 +155,7 @@ public abstract class ThemeQuestion implements ConfiguredElement {
                             .setCondition(generateAttachmentCondition(formParameters, attachmentRequest))
                             .setDeliveryAddress(attachmentRequest.getDeliveryAddress())
                             .setDeliveryDue(attachmentRequest.getDeliveryDue())
-                            .setUseGroupAddress(attachmentRequest.getUseGroupAddress())
-                            .setUseLopAddress(attachmentRequest.getUseLopAddress())
+                            .setOverrideAddress(attachmentRequest.getOverrideAddress())
                             .setHeader(attachmentRequest.getHeader())
                             .setDescription(attachmentRequest.getDescription())
                             .build());
