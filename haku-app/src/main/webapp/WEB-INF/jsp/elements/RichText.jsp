@@ -18,4 +18,6 @@
   --%>
 <div class="form-item richText" id="${element.id}">
     <haku:i18nText value="${element.i18nText}"/>
+    <div role="presentation" class="clear"></div>
+    <haku:viewChilds element="${element}"/>
 </div>

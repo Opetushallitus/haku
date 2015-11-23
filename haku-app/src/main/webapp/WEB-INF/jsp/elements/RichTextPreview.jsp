@@ -16,6 +16,11 @@
   ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   ~ European Union Public Licence for more details.
   --%>
-<div class="form-item richText" id="${element.id}">
-    <haku:i18nText value="${element.i18nText}"/>
-</div>
+<tr>
+    <td colspan="2">
+        <div class="form-item richText" id="${element.id}">
+            <haku:i18nText value="${element.i18nText}"/>
+        </div>
+    </td>
+    <haku:viewChilds element="${element}"/>
+</tr>
