@@ -145,14 +145,14 @@ public class AttachmentUtil {
                 if (attachmentRequest.isGroupOption()) {
                     attachmentRequestBuilder.setPreferenceAoGroupId(attachmentRequest.getApplicationOptionId());
 
-                    if (attachmentRequest.getUseGroupAddress() != null && attachmentRequest.getUseGroupAddress()) {
+                    if (attachmentRequest.getOverrideAddress() != null && attachmentRequest.getOverrideAddress()) {
                         // Override specified address, use first ao/provider address of the group instead
                         addressObj = parseFirstGroupAddress(attachmentRequest.getApplicationOptionId(), prefAOs);
                     }
                 } else {
                     attachmentRequestBuilder.setPreferenceAoId(attachmentRequest.getApplicationOptionId());
 
-                    if (attachmentRequest.getUseLopAddress() != null && attachmentRequest.getUseLopAddress()) {
+                    if (attachmentRequest.getOverrideAddress() != null && attachmentRequest.getOverrideAddress()) {
                         // Override specified address, use ao/provider address instead
                         ApplicationOptionDTO ao = koulutusinformaatioService.getApplicationOption(attachmentRequest.getApplicationOptionId(), lang);
                         addressObj = selectPreferredAddress(ao);
