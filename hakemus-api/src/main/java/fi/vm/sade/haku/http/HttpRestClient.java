@@ -33,14 +33,14 @@ public class HttpRestClient implements RestClient {
 
     @Override
     public <T, B> ListenableFuture<Response<T>> post(final String url, final B body, final Class<T> responseClass) throws IOException {
-        return submitRequest(new PostRequest(url, new JsonHttpContent(new JacksonFactory(), body), requestFactory), responseClass);
+        return submitRequest(new PostRequest(url, new JsonHttpContent(JSON_FACTORY, body), requestFactory), responseClass);
     }
 
     private static <T> ListenableFuture<Response<T>> submitRequest(Callable<HttpResponse> request, final Class<T> responseClass) {
         return Futures.transform(executor.submit(request), new AsyncFunction<HttpResponse, Response<T>>() {
             @Override
-            public ListenableFuture<Response<T>> apply(HttpResponse response1) throws Exception {
-                return executor.submit(new Parse<>(response1, responseClass));
+            public ListenableFuture<Response<T>> apply(HttpResponse response) throws Exception {
+                return executor.submit(new Parse<>(response, responseClass));
             }
         });
     }
