@@ -7,26 +7,18 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
-import fi.vm.sade.haku.http.HttpRestClient;
 import fi.vm.sade.haku.http.HttpRestClient.Response;
-import fi.vm.sade.haku.oppija.hakemus.domain.Application;
-import fi.vm.sade.haku.oppija.lomake.domain.User;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.HakumaksuUtil;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.MergedAnswers;
-import org.mockito.Mockito;
 
-import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Executor;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 import static fi.vm.sade.haku.oppija.hakemus.Hakukelpoisuusvaatimus.*;
 import static fi.vm.sade.haku.oppija.hakemus.Pohjakoulutus.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class TestApplicationData {
 
@@ -207,8 +199,10 @@ public class TestApplicationData {
     }
 
     private static <T> ListenableFuture<Response<T>> future(T t) {
-        HttpResponse r = null;
-        return Futures.immediateFuture(new Response<T>(r, t));
+        Response<T> response = mock(Response.class);
+        when(response.getResult()).thenReturn(t);
+        when(response.isSuccessStatusCode()).thenReturn(true);
+        return Futures.immediateFuture(response);
     }
 
 }

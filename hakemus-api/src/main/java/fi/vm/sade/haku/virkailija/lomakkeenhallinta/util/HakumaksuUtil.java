@@ -82,7 +82,7 @@ public class HakumaksuUtil {
             return Futures.transform(restClient.post(oppijanTunnistusUrl, body, Object.class), new Function<Response<Object>, Boolean>() {
                 @Override
                 public Boolean apply(Response<Object> input) {
-                    return input.getResponse().isSuccessStatusCode();
+                    return input.isSuccessStatusCode();
                 }
             });
         } catch (IOException e) {
