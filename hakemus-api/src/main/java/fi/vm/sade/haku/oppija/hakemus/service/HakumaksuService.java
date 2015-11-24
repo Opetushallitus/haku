@@ -1,15 +1,11 @@
 package fi.vm.sade.haku.oppija.hakemus.service;
 
-import com.google.common.base.Function;
-import com.google.common.base.Optional;
-import com.google.common.base.Predicate;
-import com.google.common.base.Predicates;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Iterables;
+import com.google.common.base.*;
+import com.google.common.collect.*;
 import fi.vm.sade.haku.http.RestClient;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application.PaymentState;
+import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationNote;
 import fi.vm.sade.haku.oppija.hakemus.domain.BaseEducations;
 import fi.vm.sade.haku.oppija.lomake.exception.IllegalStateException;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.HakumaksuUtil;
@@ -22,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
@@ -421,20 +418,62 @@ public class HakumaksuService {
         } else {
             Map<ApplicationOptionOid, ImmutableSet<Eligibility>> paymentRequirements = paymentRequirements(MergedAnswers.of(application));
 
+            boolean exemptFromPayment = isExemptFromPayment(paymentRequirements);
+
             // Tullut maksuvelvolliseksi tai pyydetty maksulinkin uudelleenlähetystä
-            if (!isExemptFromPayment(paymentRequirements)
+            if (!exemptFromPayment
                     && (!requiredPaymentState.isPresent() || requireResend(application, requiredPaymentState))) {
 
                 final Application marked = markPaymentRequirements(application);
+
+                if (!requiredPaymentState.isPresent() && marked.getRequiredPaymentState() == PaymentState.NOTIFIED) {
+                    addPaymentRequiredNote(application, paymentRequirements);
+                }
 
                 // TODO: Audit/log reason for payment requirement, e.g. which hakukohde and what base education reason
                 LOGGER.info("Marked application " + application.getOid() + " payment requirements: " + paymentRequirements + ", payment state: " + application.getRequiredPaymentState());
 
                 return marked;
             } else {
+                if (exemptFromPayment && requiredPaymentState.isPresent()) {
+                    addPaymentNote(application, new ApplicationNote("Hakija ei enää maksuvelvollinen", new Date(), "järjestelmä"));
+
+                    application.setRequiredPaymentState(null);
+                }
+
                 return application;
             }
         }
+    }
+
+    private void addPaymentNote(Application application, ApplicationNote järjestelmä) {
+        application.addNote(järjestelmä);
+    }
+
+    private void addPaymentRequiredNote(Application application, Map<ApplicationOptionOid, ImmutableSet<Eligibility>> paymentRequirements) {
+        final Joiner joiner = Joiner.on(", ");
+
+        Iterable<String> requirements = Iterables.transform(Iterables.filter(paymentRequirements.entrySet(), new Predicate<Map.Entry<ApplicationOptionOid, ImmutableSet<Eligibility>>>() {
+            @Override
+            public boolean apply(Map.Entry<ApplicationOptionOid, ImmutableSet<Eligibility>> input) {
+                return !input.getValue().isEmpty();
+            }
+        }), new Function<Map.Entry<ApplicationOptionOid, ImmutableSet<Eligibility>>, String>() {
+            @Override
+            public String apply(Map.Entry<ApplicationOptionOid, ImmutableSet<Eligibility>> input) {
+                String pohjakoulutukset = joiner.join(Iterables.transform(input.getValue(), new Function<Eligibility, String>() {
+                    @Override
+                    public String apply(Eligibility input) {
+                        return "'" + input.nimike + "'";
+                    }
+                }));
+                return "hakukohde " + input.getKey().getValue() + " vaatii hakumaksun pohjakoulutusten " + pohjakoulutukset + " johdosta";
+            }
+        });
+
+        String hakukohteet = joiner.join(requirements);
+
+        addPaymentNote(application, new ApplicationNote("Hakija maksuvelvollinen: " + hakukohteet, new Date(), "järjestelmä"));
     }
 
     private static boolean alreadyPaid(Optional<PaymentState> requiredPaymentState) {
@@ -470,11 +509,8 @@ public class HakumaksuService {
                 emailAddress).get()) {
             application.setRequiredPaymentState(PaymentState.NOTIFIED);
 
-            LOGGER.info("");
-
             return application;
         } else {
-            application.setRequiredPaymentState(null);
             throw new IllegalStateException("Could not send payment processing request to oppijan-tunnistus: hakemusOid " +
                     application.getOid() + ", personOid " + application.getPersonOid() + ", emailAddress " + emailAddress);
         }

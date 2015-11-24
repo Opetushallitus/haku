@@ -1,10 +1,13 @@
 package fi.vm.sade.haku.oppija.hakemus.aspect;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.MapDifference;
 import com.google.common.collect.Maps;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
+import fi.vm.sade.haku.oppija.hakemus.domain.Application.PaymentState;
 import fi.vm.sade.haku.oppija.hakemus.domain.Change;
 import fi.vm.sade.haku.oppija.hakemus.domain.PreferenceEligibility;
+import org.apache.commons.lang.StringUtils;
 
 import java.util.*;
 
@@ -14,10 +17,25 @@ public final class ApplicationDiffUtil {
     public static final String OLD_VALUE = "old value";
     public static final String NEW_VALUE = "new value";
 
+    private static String paymentStateAsString(PaymentState state) {
+        if (state == null) {
+            return StringUtils.EMPTY;
+        } else {
+            return state.name();
+        }
+    }
+
+    private static Map<String, String> addPaymentState(Map<String, String> map, PaymentState paymentState) {
+        return ImmutableMap.<String, String>builder().putAll(map).put(Application.REQUIRED_PAYMENT_STATE, paymentStateAsString(paymentState)).build();
+    }
+
     public static List<Map<String, String>> addHistoryBasedOnChangedAnswers(final Application newApplication, final Application oldApplication, String userName, String reason) {
         Map<String, String> oldAnswers = oldApplication.getVastauksetMerged();
         Map<String, String> newAnswers = newApplication.getVastauksetMerged();
-        List<Map<String, String>> answerChanges = mapsToChanges(oldAnswers, newAnswers);
+        List<Map<String, String>> answerChanges = mapsToChanges(
+                addPaymentState(oldAnswers, oldApplication.getRequiredPaymentState()),
+                addPaymentState(newAnswers, newApplication.getRequiredPaymentState())
+        );
         List<Map<String, String>> eligibilityChanges = ApplicationDiffUtil.oldAndNewEligibilitiesToListOfChanges(oldApplication.getPreferenceEligibilities(), newApplication.getPreferenceEligibilities());
         List<Map<String, String>> additionalInfoChanges = mapsToChanges(oldApplication.getAdditionalInfo(), newApplication.getAdditionalInfo());
 
