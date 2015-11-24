@@ -98,7 +98,7 @@ public class HakumaksuTest {
 
         assertTrue(
                 "Harkinnanvaraisuus affected expected outcome: " + paymentRequirements,
-                paymentRequirements.equals(ImmutableMap.of(ApplicationOptionOid.of(Hakukelpoisuusvaatimus.HARKINNANVARAISUUS_TAI_ERIVAPAUS.toString()), ImmutableSet.of())));
+                paymentRequirements.equals(ImmutableMap.of(ApplicationOptionOid.of(Hakukelpoisuusvaatimus.HARKINNANVARAISUUS_TAI_ERIVAPAUS.getArvo()), ImmutableSet.of())));
     }
 
     @Test
@@ -118,7 +118,7 @@ public class HakumaksuTest {
             "pohjakoulutus_ulk", "true",
             "pohjakoulutus_ulk_nimike", "Ulkomaalainen korkeakoulutus",
             "pohjakoulutus_ulk_suoritusmaa", "abw");
-    private static final String hakutoiveenOid = Hakukelpoisuusvaatimus.YLEINEN_YLIOPISTOKELPOISUUS.toString();
+    private static final String hakutoiveenOid = Hakukelpoisuusvaatimus.YLEINEN_YLIOPISTOKELPOISUUS.getArvo();
 
     @Test
     public void successfulProcessingSetsPaymentStateToNotified() throws ExecutionException, InterruptedException, IOException {

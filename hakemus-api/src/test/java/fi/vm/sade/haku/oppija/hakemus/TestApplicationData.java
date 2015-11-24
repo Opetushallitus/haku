@@ -116,7 +116,7 @@ public class TestApplicationData {
     public static MergedAnswers getAnswers(Hakukelpoisuusvaatimus hakukelpoisuusvaatimus, Pohjakoulutus pohjakoulutus) {
         return MergedAnswers.of(ImmutableMap.<String, String>builder()
                 .putAll(pohjakoulutus.getKoulutustausta())
-                .put("preference1-Koulutus-id", hakukelpoisuusvaatimus.name()).build());
+                .put("preference1-Koulutus-id", hakukelpoisuusvaatimus.getArvo()).build());
     }
 
     public static MergedAnswers getAnswers(Iterable<String> hakutoiveIds,
@@ -142,8 +142,8 @@ public class TestApplicationData {
         }
     };
 
-    public static final String APPLICATION_OPTION_WITH_MULTIPLE_BASE_EDUCATION_REQUIREMENTS = "multiple_pohjakoulutusvaatimuskorkeakoulut";
-    public static final String APPLICATION_OPTION_WITH_IGNORE_AND_PAYMENT_EDUCATION_REQUIREMENTS = "ignore_and_payment_pohjakoulutusvaatimuskorkeakoulut";
+    public static final String APPLICATION_OPTION_WITH_MULTIPLE_BASE_EDUCATION_REQUIREMENTS = "4.7.3.8.4";
+    public static final String APPLICATION_OPTION_WITH_IGNORE_AND_PAYMENT_EDUCATION_REQUIREMENTS = "7.3.2.9.3";
 
     public static Map<String, Object> testMappings() {
         final ImmutableMap.Builder<String, Object> builder = new ImmutableMap.Builder<>();
@@ -151,7 +151,7 @@ public class TestApplicationData {
         for (Hakukelpoisuusvaatimus hakukelpoisuusvaatimus : Hakukelpoisuusvaatimus.values()) {
             HakumaksuUtil.BaseEducationRequirements r = new HakumaksuUtil.BaseEducationRequirements();
             r.requiredBaseEducations = ImmutableList.of("pohjakoulutusvaatimuskorkeakoulut_" + hakukelpoisuusvaatimus.getArvo());
-            builder.put("http://localhost/ao/" + hakukelpoisuusvaatimus.name(), future(r));
+            builder.put("http://localhost/ao/" + hakukelpoisuusvaatimus.getArvo(), future(r));
         }
 
         HakumaksuUtil.BaseEducationRequirements r = new HakumaksuUtil.BaseEducationRequirements();

@@ -16,6 +16,8 @@ import fi.vm.sade.haku.http.HttpRestClient.Response;
 import fi.vm.sade.haku.http.RestClient;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.ApplicationOptionOid;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.AsciiCountryCode;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.Oid;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.SafeString;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -66,16 +68,16 @@ public class HakumaksuUtil {
     public ListenableFuture<Boolean> sendPaymentRequest(final String oppijanTunnistusUrl,
                                                         final String redirectUrl,
                                                         final LanguageCodeISO6391 languageCode,
-                                                        final String _hakemusOid,
-                                                        final String _personOid,
-                                                        final String emailAddress) {
+                                                        final Oid _hakemusOid,
+                                                        final Oid _personOid,
+                                                        final SafeString emailAddress) {
         OppijanTunnistus body = new OppijanTunnistus() {{
             this.url = redirectUrl;
-            this.email = emailAddress;
+            this.email = emailAddress.getValue();
             this.lang = languageCode;
             this.metadata = new Metadata() {{
-                this.hakemusOid = _hakemusOid;
-                this.personOid = _personOid;
+                this.hakemusOid = _hakemusOid.getValue();
+                this.personOid = _personOid.getValue();
             }};
         }};
         try {
