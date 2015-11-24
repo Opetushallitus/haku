@@ -424,16 +424,23 @@ public class HakumaksuService {
             if (!exemptFromPayment
                     && (!requiredPaymentState.isPresent() || requireResend(application, requiredPaymentState))) {
 
-                final Application marked = markPaymentRequirements(application);
+                Oid applicationOid = Oid.of(application.getOid());
+                paymentRequestOrThrow(
+                        SafeString.of(application.getPhaseAnswers(OppijaConstants.PHASE_PERSONAL).get("Sähköposti")),
+                        SafeString.of(application.getPhaseAnswers(OppijaConstants.PHASE_MISC).get(OppijaConstants.ELEMENT_ID_CONTACT_LANGUAGE)),
+                        applicationOid,
+                        Oid.of(application.getPersonOid()));
 
-                if (!requiredPaymentState.isPresent() && marked.getRequiredPaymentState() == PaymentState.NOTIFIED) {
+                application.setRequiredPaymentState(PaymentState.NOTIFIED);
+
+                if (!requiredPaymentState.isPresent() && application.getRequiredPaymentState() == PaymentState.NOTIFIED) {
                     addPaymentRequiredNote(application, paymentRequirements);
                 }
 
                 // TODO: Audit/log reason for payment requirement, e.g. which hakukohde and what base education reason
-                LOGGER.info("Marked application " + application.getOid() + " payment requirements: " + paymentRequirements + ", payment state: " + application.getRequiredPaymentState());
+                LOGGER.info("Marked application " + applicationOid + " payment requirements: " + paymentRequirements + ", payment state: " + application.getRequiredPaymentState());
 
-                return marked;
+                return application;
             } else {
                 if (exemptFromPayment && requiredPaymentState.isPresent()) {
                     addPaymentNote(application, new ApplicationNote("Hakija ei enää maksuvelvollinen", new Date(), "järjestelmä"));
@@ -492,31 +499,28 @@ public class HakumaksuService {
             "englanti", en
     );
 
-    private LanguageCodeISO6391 languageCodeFromApplication(Application application) {
-        String applicationLanguage = application.getPhaseAnswers(OppijaConstants.PHASE_MISC).get(OppijaConstants.ELEMENT_ID_CONTACT_LANGUAGE);
-        return Optional.fromNullable(applicationLanguageToLanguageCodeMap.get(applicationLanguage)).or(en);
+    private LanguageCodeISO6391 languageCodeFromApplication(SafeString contactLanguage) {
+        return Optional.fromNullable(applicationLanguageToLanguageCodeMap.get(contactLanguage.getValue())).or(en);
     }
 
-    private Application markPaymentRequirements(Application application) throws ExecutionException, InterruptedException {
-        String emailAddress = application.getPhaseAnswers(OppijaConstants.PHASE_PERSONAL).get("Sähköposti");
-        LanguageCodeISO6391 languageCode = languageCodeFromApplication(application);
-        if (util.sendPaymentRequest(
+    private void paymentRequestOrThrow(SafeString emailAddress,
+                                       SafeString contactLanguage,
+                                       Oid applicationOid,
+                                       Oid personOid) throws ExecutionException, InterruptedException {
+        LanguageCodeISO6391 languageCode = languageCodeFromApplication(contactLanguage);
+        if (!util.sendPaymentRequest(
                 oppijanTunnistusUrl,
-                getServiceUrl(application, languageCode),
+                getServiceUrl(applicationOid, languageCode),
                 languageCode,
-                application.getOid(),
-                application.getPersonOid(),
+                applicationOid,
+                personOid,
                 emailAddress).get()) {
-            application.setRequiredPaymentState(PaymentState.NOTIFIED);
-
-            return application;
-        } else {
             throw new IllegalStateException("Could not send payment processing request to oppijan-tunnistus: hakemusOid " +
-                    application.getOid() + ", personOid " + application.getPersonOid() + ", emailAddress " + emailAddress);
+                    applicationOid + ", personOid " + personOid + ", emailAddress " + emailAddress);
         }
     }
 
-    private String getServiceUrl(Application application, LanguageCodeISO6391 languageCode) {
-        return languageCodeToServiceUrlMap.get(languageCode) + "/app/" + application.getOid() + "#/token/";
+    private String getServiceUrl(Oid applicationOid, LanguageCodeISO6391 languageCode) {
+        return languageCodeToServiceUrlMap.get(languageCode) + "/app/" + applicationOid + "#/token/";
     }
 }
