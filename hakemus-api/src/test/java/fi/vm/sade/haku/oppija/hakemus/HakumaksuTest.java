@@ -56,7 +56,8 @@ public class HakumaksuTest {
 
                 assertTrue(
                         "paymentRequirements were not empty for '" + entry.getKey().getName() + "', '" + pohjakoulutus.getName() + "': " + paymentRequired,
-                        !paymentRequired);
+                        !paymentRequired
+                );
             }
         }
     }

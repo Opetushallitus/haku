@@ -52,6 +52,7 @@ public class Application implements Serializable {
     private static final Logger log = LoggerFactory.getLogger(Application.class);
     public static final Integer CURRENT_MODEL_VERSION = 7;
     public static final String META_FILING_LANGUAGE = "filingLanguage";
+    public static final String REQUIRED_PAYMENT_STATE = "requiredPaymentState";
 
     public Integer getModelVersion() {
         return modelVersion;
