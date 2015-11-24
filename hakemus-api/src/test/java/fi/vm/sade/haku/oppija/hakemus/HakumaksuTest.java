@@ -3,6 +3,7 @@ package fi.vm.sade.haku.oppija.hakemus;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.ImmutableMap;
+import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.service.HakumaksuService;
 import fi.vm.sade.haku.oppija.hakemus.service.HakumaksuService.Eligibility;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types;
@@ -15,6 +16,10 @@ import java.util.concurrent.ExecutionException;
 
 import static fi.vm.sade.haku.oppija.hakemus.Pohjakoulutus.MUUALLA_KUIN_SUOMESSA_SUORITETTU_KORKEAKOULUTUTKINTO_YLEMPI_YLIOPISTOTUTKINTO_MAISTERI_ARUBA;
 import static fi.vm.sade.haku.oppija.hakemus.TestApplicationData.*;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.*;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.PHASE_EDUCATION;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 public class HakumaksuTest {
@@ -92,5 +97,29 @@ public class HakumaksuTest {
                 paymentRequirements.equals(ImmutableMap.of(
                         ApplicationOptionOid.of(APPLICATION_OPTION_WITH_IGNORE_AND_PAYMENT_EDUCATION_REQUIREMENTS),
                         ImmutableSet.of(new Eligibility("maisteri", Types.AsciiCountryCode.of("ABW"))))));
+    }
+
+    private static final ImmutableMap<String, String> ulkomainenPohjakoulutus = ImmutableMap.of(
+            "pohjakoulutus_ulk", "true",
+            "pohjakoulutus_ulk_nimike", "Ulkomaalainen korkeakoulutus",
+            "pohjakoulutus_ulk_suoritusmaa", "abw");
+    private static final String hakutoiveenOid = Hakukelpoisuusvaatimus.YLEINEN_YLIOPISTOKELPOISUUS.toString();
+
+    @Test
+    public void successfulProcessingSetsPaymentStateToNotified() throws ExecutionException, InterruptedException {
+        Application application = new Application() {{
+            setOid("");
+            addVaiheenVastaukset(PHASE_EDUCATION, ulkomainenPohjakoulutus);
+            addVaiheenVastaukset(PHASE_APPLICATION_OPTIONS, ImmutableMap.of(
+                    String.format(PREFERENCE_ID, 1), hakutoiveenOid));
+        }};
+
+        assertNull(application.getRequiredPaymentState());
+
+        // Payment requirement must also be visible in logs
+        Application processedApplication = service.processPayment(application);
+
+        assertTrue(processedApplication == application);
+        assertEquals(Application.PaymentState.NOTIFIED, processedApplication.getRequiredPaymentState());
     }
 }

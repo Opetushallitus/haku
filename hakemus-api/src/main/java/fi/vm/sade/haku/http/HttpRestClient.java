@@ -75,15 +75,19 @@ public class HttpRestClient implements RestClient {
     }
 
     public static class Response<T> {
+        // Do not expose HttpResponse directly in order to allow mocking
+        // Response objects in tests. Duplicate getters to Response class if
+        // access to HttpResponse class is needed.
         private final HttpResponse response;
-        private final T result;
 
-        public HttpResponse getResponse() {
-            return response;
-        }
+        private final T result;
 
         public T getResult() {
             return result;
+        }
+
+        public boolean isSuccessStatusCode() {
+            return response.isSuccessStatusCode();
         }
 
         public Response(HttpResponse response, T result) {

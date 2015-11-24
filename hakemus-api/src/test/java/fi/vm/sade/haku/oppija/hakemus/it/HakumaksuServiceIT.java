@@ -48,17 +48,4 @@ public class HakumaksuServiceIT {
                 hakumaksuService.paymentRequirements(MergedAnswers.of(application)).get(hakutoiveenOid),
                 ImmutableList.of(new HakumaksuService.Eligibility(koulutuksenNimike, Types.AsciiCountryCode.of(koulutuksenMaa))));
     }
-
-    @Test
-    public void processingTest() throws ExecutionException, InterruptedException {
-        Application application = new Application() {{
-            setOid("1.2.3.4.5.6.7.8.9");
-            addVaiheenVastaukset(OppijaConstants.PHASE_EDUCATION, ulkomainenPohjakoulutus);
-            addVaiheenVastaukset(OppijaConstants.PHASE_APPLICATION_OPTIONS, ImmutableMap.of(
-                    String.format(OppijaConstants.PREFERENCE_ID, 1), hakutoiveenOid.toString()));
-        }};
-
-        // Payment requirement must be visible in logs
-        assertTrue(hakumaksuService.processPayment(application) == application);
-    }
 }
