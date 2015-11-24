@@ -40,7 +40,7 @@ public final class Types {
         }
     }
 
-    public static final class ApplicationOptionOid extends Base<String> {
+    public static final class ApplicationOptionOid extends Oid {
         private ApplicationOptionOid(String value) {
             super(value);
         }
@@ -50,7 +50,7 @@ public final class Types {
         }
     }
 
-    public static final class AsciiCountryCode extends Base<String> {
+    public static final class AsciiCountryCode extends SafeString {
         private AsciiCountryCode(String value) {
             super(value);
             if (value.length() != 3) {
@@ -78,6 +78,32 @@ public final class Types {
 
         public String get(String field) {
             return getValue().get(field);
+        }
+    }
+
+    public static class SafeString extends Base<String> {
+        private SafeString(String value) {
+            super(value);
+            if (value.isEmpty()) {
+                throw new IllegalArgumentException("Safe String cannot be empty");
+            }
+        }
+
+        public static SafeString of(String value) {
+            return new SafeString(value);
+        }
+    }
+
+    public static class Oid extends SafeString {
+        private Oid(String value) {
+            super(value);
+            if (!value.matches("[0-9]+(.[.0-9]+)*")) {
+                throw new IllegalArgumentException("OID must consist of dot-separated integers, got: '" + value + "'");
+            }
+        }
+
+        public static Oid of(String value) {
+            return new Oid(value);
         }
     }
 }
