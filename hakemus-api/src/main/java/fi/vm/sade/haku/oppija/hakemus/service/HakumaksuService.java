@@ -42,20 +42,29 @@ public class HakumaksuService {
     private final String koulutusinformaatioUrl;
     private final HakumaksuUtil util;
     private final String oppijanTunnistusUrl;
-    private final String hakuperusteetUrl;
+
+    private final ImmutableMap<LanguageCodeISO6391, String> languageCodeToServiceUrlMap;
 
     @Autowired
     public HakumaksuService(
             @Value("${cas.service.koodisto-service}") final String koodistoServiceUrl,
             @Value("${koulutusinformaatio.ao.resource.url}") final String koulutusinformaatioUrl,
             @Value("${oppijantunnistus.create.url}") final String oppijanTunnistusUrl,
-            @Value("${hakuperusteet.url}") final String hakuperusteetUrl,
+            @Value("${hakuperusteet.url.fi}") final String hakuperusteetUrlFi,
+            @Value("${hakuperusteet.url.sv}") final String hakuperusteetUrlSv,
+            @Value("${hakuperusteet.url.en}") final String hakuperusteetUrlEn,
             RestClient restClient
     ) {
         this.koodistoServiceUrl = koodistoServiceUrl;
         this.koulutusinformaatioUrl = koulutusinformaatioUrl;
         this.oppijanTunnistusUrl = oppijanTunnistusUrl;
-        this.hakuperusteetUrl = hakuperusteetUrl;
+
+        this.languageCodeToServiceUrlMap = ImmutableMap.of(
+                fi, hakuperusteetUrlFi,
+                sv, hakuperusteetUrlSv,
+                en, hakuperusteetUrlEn
+        );
+
         util = new HakumaksuUtil(restClient);
     }
 
@@ -451,11 +460,11 @@ public class HakumaksuService {
 
     private Application markPaymentRequirements(Application application) throws ExecutionException, InterruptedException {
         String emailAddress = application.getPhaseAnswers(OppijaConstants.PHASE_PERSONAL).get("Sähköposti");
-        String redirectUrl = hakuperusteetUrl + "/app/" + application.getOid() + "#/token/";
+        LanguageCodeISO6391 languageCode = languageCodeFromApplication(application);
         if (util.sendPaymentRequest(
                 oppijanTunnistusUrl,
-                redirectUrl,
-                languageCodeFromApplication(application),
+                getServiceUrl(application, languageCode),
+                languageCode,
                 application.getOid(),
                 application.getPersonOid(),
                 emailAddress).get()) {
@@ -469,5 +478,9 @@ public class HakumaksuService {
             throw new IllegalStateException("Could not send payment processing request to oppijan-tunnistus: hakemusOid " +
                     application.getOid() + ", personOid " + application.getPersonOid() + ", emailAddress " + emailAddress);
         }
+    }
+
+    private String getServiceUrl(Application application, LanguageCodeISO6391 languageCode) {
+        return languageCodeToServiceUrlMap.get(languageCode) + "/app/" + application.getOid() + "#/token/";
     }
 }
