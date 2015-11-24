@@ -1,38 +1,52 @@
 package fi.vm.sade.haku.oppija.hakemus;
 
 
-import com.google.common.collect.ImmutableSet;
+import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
+import fi.vm.sade.haku.oppija.hakemus.MockedRestClient.Captured;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.service.HakumaksuService;
 import fi.vm.sade.haku.oppija.hakemus.service.HakumaksuService.Eligibility;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.HakumaksuUtil;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.HakumaksuUtil.OppijanTunnistus;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.ApplicationOptionOid;
+import org.junit.Before;
 import org.junit.Test;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
+import static com.google.common.collect.Iterables.find;
 import static fi.vm.sade.haku.oppija.hakemus.Pohjakoulutus.MUUALLA_KUIN_SUOMESSA_SUORITETTU_KORKEAKOULUTUTKINTO_YLEMPI_YLIOPISTOTUTKINTO_MAISTERI_ARUBA;
 import static fi.vm.sade.haku.oppija.hakemus.TestApplicationData.*;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.*;
-import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.PHASE_EDUCATION;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class HakumaksuTest {
+
+    static final MockedRestClient mockRestClient = new MockedRestClient(testMappings());
+    static final String oppijanTunnistusUrl = "http://localhost/oppijan-tunnistus";
+    static final String hakuperusteetUrlFi = "http://localhost/hakuperusteet-fi";
+    static final String hakuperusteetUrlSv = "http://localhost/hakuperusteet-sv";
+    static final String hakuperusteetUrlEn = "http://localhost/hakuperusteet-en";
 
     final HakumaksuService service = new HakumaksuService(
             "http://localhost/koodisto-service",
             "http://localhost/ao",
-            "http://localhost/oppijan-tunnistus",
-            "http://localhost/hakuperusteet",
-            "http://localhost/hakuperusteet",
-            "http://localhost/hakuperusteet",
-            new MockedRestClient(testMappings())
-    );
+            oppijanTunnistusUrl,
+            hakuperusteetUrlFi,
+            hakuperusteetUrlSv,
+            hakuperusteetUrlEn,
+            mockRestClient);
+
+    @Before
+    public void before() {
+        mockRestClient.clearCaptured();
+    }
 
     @Test
     public void shouldBeExempt() throws ExecutionException {
@@ -106,9 +120,18 @@ public class HakumaksuTest {
     private static final String hakutoiveenOid = Hakukelpoisuusvaatimus.YLEINEN_YLIOPISTOKELPOISUUS.toString();
 
     @Test
-    public void successfulProcessingSetsPaymentStateToNotified() throws ExecutionException, InterruptedException {
+    public void successfulProcessingSetsPaymentStateToNotified() throws ExecutionException, InterruptedException, IOException {
+        final String expectedEmail = "test@example.com";
+        final String expectedHakemusOid = "1.2.3.4.5.6.7.8.9";
+        final String expectedPersonOid = "9.8.7.6.6.5.4.3.2.1";
+
         Application application = new Application() {{
-            setOid("");
+            setOid(expectedHakemusOid);
+            setPersonOid(expectedPersonOid);
+            addVaiheenVastaukset(PHASE_PERSONAL, ImmutableMap.of(
+                    ELEMENT_ID_EMAIL, expectedEmail));
+            addVaiheenVastaukset(PHASE_MISC, ImmutableMap.of(
+                    ELEMENT_ID_CONTACT_LANGUAGE, "ruotsi"));
             addVaiheenVastaukset(PHASE_EDUCATION, ulkomainenPohjakoulutus);
             addVaiheenVastaukset(PHASE_APPLICATION_OPTIONS, ImmutableMap.of(
                     String.format(PREFERENCE_ID, 1), hakutoiveenOid));
@@ -118,6 +141,23 @@ public class HakumaksuTest {
 
         // Payment requirement must also be visible in logs
         Application processedApplication = service.processPayment(application);
+        List<Captured> captured = mockRestClient.getCaptured();
+        Captured match = find(captured, new Predicate<Captured>() {
+            @Override
+            public boolean apply(Captured input) {
+                return input.url.equals(oppijanTunnistusUrl);
+            }
+        });
+
+        assertEquals("POST", match.method);
+        assertEquals(oppijanTunnistusUrl, match.url);
+
+        OppijanTunnistus body = (OppijanTunnistus)match.body;
+        assertEquals(expectedEmail, body.email); // Not checked
+        assertEquals(hakuperusteetUrlSv + "/app/" + expectedHakemusOid + "#/token/", body.url);
+        assertEquals(HakumaksuUtil.LanguageCodeISO6391.sv, body.lang);
+        assertEquals(expectedHakemusOid, body.metadata.hakemusOid); // Not checked
+        assertEquals(expectedPersonOid, body.metadata.personOid); // Not checked
 
         assertTrue(processedApplication == application);
         assertEquals(Application.PaymentState.NOTIFIED, processedApplication.getRequiredPaymentState());
