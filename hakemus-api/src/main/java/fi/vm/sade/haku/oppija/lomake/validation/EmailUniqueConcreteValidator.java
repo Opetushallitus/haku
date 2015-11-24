@@ -39,7 +39,8 @@ public class EmailUniqueConcreteValidator implements Validator {
 
     @Override
     public ValidationResult validate(ValidationInput validationInput) {
-        if (applicationDAO.checkIfExistsByEmail(validationInput.getApplicationSystemId(),
+        if (validationInput.getApplicationOid() == null // validate only when submitting a new application
+            && applicationDAO.checkIfExistsByEmail(validationInput.getApplicationSystemId(),
                 validationInput.getValueByKey(OppijaConstants.ELEMENT_ID_EMAIL))) {
             I18nText texts = i18nBundleService.getBundle(validationInput.getApplicationSystemId()).get("form.email.duplicate");
             return new ValidationResult(OppijaConstants.ELEMENT_ID_EMAIL, texts);
