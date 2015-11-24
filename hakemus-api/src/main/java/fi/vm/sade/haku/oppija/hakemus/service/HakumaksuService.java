@@ -416,10 +416,12 @@ public class HakumaksuService {
             if (!isExemptFromPayment(paymentRequirements)
                     && (!requiredPaymentState.isPresent() || requireResend(application, requiredPaymentState))) {
 
-                // TODO: Audit/log reason for payment requirement, e.g. which hakukohde and what base education reason
-                LOGGER.info("Application " + application.getOid() + " payment requirements: " + paymentRequirements);
+                final Application marked = markPaymentRequirements(application);
 
-                return markPaymentRequirements(application);
+                // TODO: Audit/log reason for payment requirement, e.g. which hakukohde and what base education reason
+                LOGGER.info("Marked application " + application.getOid() + " payment requirements: " + paymentRequirements + ", payment state: " + application.getRequiredPaymentState());
+
+                return marked;
             } else {
                 return application;
             }
@@ -458,6 +460,9 @@ public class HakumaksuService {
                 application.getPersonOid(),
                 emailAddress).get()) {
             application.setRequiredPaymentState(PaymentState.NOTIFIED);
+
+            LOGGER.info("");
+
             return application;
         } else {
             application.setRequiredPaymentState(null);
