@@ -24,6 +24,8 @@ public class HakumaksuServiceIT {
             "https://testi.opintopolku.fi/ao",
             "https://testi.virkailija.opintopolku.fi/oppijan-tunnistus",
             "https://testi.opintopolku.fi/hakuperusteet",
+            "https://testi.studieinfo.fi/hakuperusteet",
+            "https://testi.studyinfo.fi/hakuperusteet",
             new HttpRestClient());
 
     private static final String koulutuksenNimike = "Ulkomaalainen korkeakoulutus";
