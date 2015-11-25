@@ -6,6 +6,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import fi.vm.sade.haku.oppija.hakemus.MockedRestClient.Captured;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
+import fi.vm.sade.haku.oppija.hakemus.domain.Application.PaymentState;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationNote;
 import fi.vm.sade.haku.oppija.hakemus.service.HakumaksuService;
 import fi.vm.sade.haku.oppija.hakemus.service.HakumaksuService.Eligibility;
@@ -162,7 +163,7 @@ public class HakumaksuTest {
         assertEquals(expectedPersonOid, body.metadata.personOid);
 
         assertTrue(processedApplication == application);
-        assertEquals(Application.PaymentState.NOTIFIED, processedApplication.getRequiredPaymentState());
+        assertEquals(PaymentState.NOTIFIED, processedApplication.getRequiredPaymentState());
 
         List<ApplicationNote> notes = processedApplication.getNotes();
         assertEquals(1, notes.size());
@@ -172,5 +173,29 @@ public class HakumaksuTest {
         assertEquals("järjestelmä", applicationNote.getUser());
 
         assertTrue(processedApplication.getHistory().isEmpty());
+    }
+
+    @Test
+    public void previouslyOkPaymentStateIsPreserved() throws ExecutionException, InterruptedException, IOException {
+        Application application = new Application() {{
+            setRequiredPaymentState(PaymentState.OK);
+        }};
+        assertEquals(PaymentState.OK, service.processPayment(application).getRequiredPaymentState());
+    }
+
+    @Test
+    public void previouslyNotOkPaymentStateIsDroppedIfNoLongerExempt() throws ExecutionException, InterruptedException, IOException {
+        Application application = new Application() {{
+            setRequiredPaymentState(PaymentState.NOT_OK);
+        }};
+        assertNull(service.processPayment(application).getRequiredPaymentState());
+    }
+
+    @Test
+    public void previouslyNotifiedPaymentStateIsDroppedIfNoLongerExempt() throws ExecutionException, InterruptedException, IOException {
+        Application application = new Application() {{
+            setRequiredPaymentState(PaymentState.NOTIFIED);
+        }};
+        assertNull(service.processPayment(application).getRequiredPaymentState());
     }
 }
