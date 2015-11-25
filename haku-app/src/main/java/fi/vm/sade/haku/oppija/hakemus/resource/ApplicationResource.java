@@ -131,28 +131,30 @@ public class ApplicationResource {
     @ApiOperation(
             value = "Asettaa maksun tilan hakemukselle"
     )
-    public void setPaymentState(@ApiParam(value = "Hakemuksen oid-tunniste") @PathParam(OID) String oid,
+    public void setPaymentState(@ApiParam(value = "Hakemuksen oid-tunniste") @PathParam(OID) String applicationOid,
                                 @RequestBody Map<String, String> body) {
         try {
-            Application application = applicationService.getApplicationByOid(Oid.of(oid).getValue());
+            Application application = applicationService.getApplicationByOid(Oid.of(applicationOid).getValue());
 
             PaymentState state = PaymentState.valueOf(body.get("paymentState"));
             PaymentState oldState = application.getRequiredPaymentState();
 
             if (oldState == null) {
-              throw new IllegalStateException("Application is exempt from payment");
+                throw new IllegalStateException("Application " + applicationOid + " is exempt from payment");
             }
 
-            application.setRequiredPaymentState(state);
+            if (state != oldState) {
+                application.setRequiredPaymentState(state);
 
-            applicationService.update(new Application(application.getOid()), application, false);
+                applicationService.update(new Application(application.getOid()), application, false);
 
-            AUDIT.log(builder()
-                    .hakemusOid(application.getOid())
-                    .setOperaatio(HakuOperation.PAYMENT_STATE_CHANGE)
-                    .add("oldValue", nameOrEmpty(oldState))
-                    .add("newValue", nameOrEmpty(state))
-                    .build());
+                AUDIT.log(builder()
+                        .hakemusOid(application.getOid())
+                        .setOperaatio(HakuOperation.PAYMENT_STATE_CHANGE)
+                        .add("oldValue", nameOrEmpty(oldState))
+                        .add("newValue", nameOrEmpty(state))
+                        .build());
+            }
         } catch (NullPointerException|IllegalArgumentException e) {
             throw new JSONException(Status.BAD_REQUEST, e.getMessage(), e);
         } catch (IllegalStateException e) {
