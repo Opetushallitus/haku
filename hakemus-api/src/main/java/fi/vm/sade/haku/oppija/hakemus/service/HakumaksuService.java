@@ -36,6 +36,7 @@ import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.*;
 @Service
 public class HakumaksuService {
     public static final Logger LOGGER = LoggerFactory.getLogger(HakumaksuService.class);
+    public static final String SYSTEM_USER = "järjestelmä";
 
     private final SafeString koodistoServiceUrl;
     private final SafeString koulutusinformaatioUrl;
@@ -455,7 +456,7 @@ public class HakumaksuService {
                 return application;
             } else {
                 if (exemptFromPayment && requiredPaymentState.isPresent()) {
-                    addPaymentNote(application, new ApplicationNote("Hakija ei enää maksuvelvollinen", new Date(), "järjestelmä"));
+                    addPaymentNote(application, new ApplicationNote("Hakija ei enää maksuvelvollinen", new Date(), SYSTEM_USER));
 
                     application.setRequiredPaymentState(null);
                 }
@@ -492,7 +493,7 @@ public class HakumaksuService {
 
         String hakukohteet = joiner.join(requirements);
 
-        addPaymentNote(application, new ApplicationNote("Hakija maksuvelvollinen: " + hakukohteet, new Date(), "järjestelmä"));
+        addPaymentNote(application, new ApplicationNote("Hakija maksuvelvollinen: " + hakukohteet, new Date(), SYSTEM_USER));
     }
 
     private static boolean alreadyPaid(Optional<PaymentState> requiredPaymentState) {
