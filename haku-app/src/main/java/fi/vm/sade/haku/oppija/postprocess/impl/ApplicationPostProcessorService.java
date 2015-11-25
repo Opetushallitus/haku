@@ -31,6 +31,7 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
+import static fi.vm.sade.haku.oppija.lomake.util.StringUtil.nameOrEmpty;
 import static org.apache.commons.lang.StringUtils.EMPTY;
 import static org.apache.commons.lang.StringUtils.isEmpty;
 import static org.apache.commons.lang.StringUtils.isNotEmpty;
@@ -74,10 +75,6 @@ public class ApplicationPostProcessorService {
         this.authenticationService = authenticationService;
         this.hakuService = hakuService;
         this.hakumaksuService = hakumaksuService;
-    }
-
-    private static String nameOrEmpty(Enum paymentState) {
-        return paymentState == null ? EMPTY : paymentState.name();
     }
 
     public Application process(Application application) throws IOException, ExecutionException, InterruptedException {
