@@ -18,7 +18,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Nullable;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
@@ -35,12 +37,12 @@ import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.*;
 public class HakumaksuService {
     public static final Logger LOGGER = LoggerFactory.getLogger(HakumaksuService.class);
 
-    private final String koodistoServiceUrl;
-    private final String koulutusinformaatioUrl;
+    private final SafeString koodistoServiceUrl;
+    private final SafeString koulutusinformaatioUrl;
     private final HakumaksuUtil util;
-    private final String oppijanTunnistusUrl;
+    private final SafeString oppijanTunnistusUrl;
 
-    private final ImmutableMap<LanguageCodeISO6391, String> languageCodeToServiceUrlMap;
+    private final ImmutableMap<LanguageCodeISO6391, SafeString> languageCodeToServiceUrlMap;
 
     @Autowired
     public HakumaksuService(
@@ -52,14 +54,14 @@ public class HakumaksuService {
             @Value("${hakuperusteet.url.en}") final String hakuperusteetUrlEn,
             RestClient restClient
     ) {
-        this.koodistoServiceUrl = koodistoServiceUrl;
-        this.koulutusinformaatioUrl = koulutusinformaatioUrl;
-        this.oppijanTunnistusUrl = oppijanTunnistusUrl;
+        this.koodistoServiceUrl = SafeString.of(koodistoServiceUrl);
+        this.koulutusinformaatioUrl = SafeString.of(koulutusinformaatioUrl);
+        this.oppijanTunnistusUrl = SafeString.of(oppijanTunnistusUrl);
 
         this.languageCodeToServiceUrlMap = ImmutableMap.of(
-                fi, hakuperusteetUrlFi,
-                sv, hakuperusteetUrlSv,
-                en, hakuperusteetUrlEn
+                fi, SafeString.of(hakuperusteetUrlFi),
+                sv, SafeString.of(hakuperusteetUrlSv),
+                en, SafeString.of(hakuperusteetUrlEn)
         );
 
         util = new HakumaksuUtil(restClient);
@@ -366,7 +368,8 @@ public class HakumaksuService {
     public ImmutableMap<ApplicationOptionOid, ImmutableSet<Eligibility>> paymentRequirements(MergedAnswers answers) throws ExecutionException {
         ImmutableMap.Builder<ApplicationOptionOid, ImmutableSet<Eligibility>> applicationPaymentEligibilities = ImmutableMap.builder();
 
-        for (EducationRequirements applicationOptionRequirement : util.getEducationRequirements(koulutusinformaatioUrl, getPreferenceAoIds(answers))) {
+        List<ApplicationOptionOid> preferenceAoIds = asApplicationOptionOids(getPreferenceAoIds(answers));
+        for (EducationRequirements applicationOptionRequirement : util.getEducationRequirements(koulutusinformaatioUrl, preferenceAoIds)) {
             ImmutableSet.Builder<Eligibility> aoPaymentEligibilityBuilder = ImmutableSet.builder();
             boolean exemptingAoFound = false;
 
@@ -391,6 +394,15 @@ public class HakumaksuService {
         }
 
         return applicationPaymentEligibilities.build();
+    }
+
+    private List<ApplicationOptionOid> asApplicationOptionOids(List<String> preferenceAoIds) {
+        return Lists.transform(preferenceAoIds, new Function<String, ApplicationOptionOid>() {
+            @Override
+            public ApplicationOptionOid apply(String input) {
+                return ApplicationOptionOid.of(input);
+            }
+        });
     }
 
     public boolean isPaymentRequired(MergedAnswers mergedAnswers) throws ExecutionException {
@@ -520,7 +532,7 @@ public class HakumaksuService {
         }
     }
 
-    private String getServiceUrl(Oid applicationOid, LanguageCodeISO6391 languageCode) {
-        return languageCodeToServiceUrlMap.get(languageCode) + "/app/" + applicationOid + "#/token/";
+    private SafeString getServiceUrl(Oid applicationOid, LanguageCodeISO6391 languageCode) {
+        return SafeString.of(languageCodeToServiceUrlMap.get(languageCode) + "/app/" + applicationOid + "#/token/");
     }
 }

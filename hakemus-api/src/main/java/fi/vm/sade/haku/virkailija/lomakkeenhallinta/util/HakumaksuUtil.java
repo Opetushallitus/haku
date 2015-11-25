@@ -65,14 +65,14 @@ public class HakumaksuUtil {
     /**
      * @return true if send was successful
      */
-    public ListenableFuture<Boolean> sendPaymentRequest(final String oppijanTunnistusUrl,
-                                                        final String redirectUrl,
+    public ListenableFuture<Boolean> sendPaymentRequest(final SafeString oppijanTunnistusUrl,
+                                                        final SafeString redirectUrl,
                                                         final LanguageCodeISO6391 languageCode,
                                                         final Oid _hakemusOid,
                                                         final Oid _personOid,
                                                         final SafeString emailAddress) {
         OppijanTunnistus body = new OppijanTunnistus() {{
-            this.url = redirectUrl;
+            this.url = redirectUrl.getValue();
             this.email = emailAddress.getValue();
             this.lang = languageCode;
             this.metadata = new Metadata() {{
@@ -81,7 +81,7 @@ public class HakumaksuUtil {
             }};
         }};
         try {
-            return Futures.transform(restClient.post(oppijanTunnistusUrl, body, Object.class), new Function<Response<Object>, Boolean>() {
+            return Futures.transform(restClient.post(oppijanTunnistusUrl.getValue(), body, Object.class), new Function<Response<Object>, Boolean>() {
                 @Override
                 public Boolean apply(Response<Object> input) {
                     return input.isSuccessStatusCode();
@@ -94,10 +94,10 @@ public class HakumaksuUtil {
     }
 
     static private class HakumaksuQuery {
-        final String serviceUrl;
+        final SafeString serviceUrl;
         final AsciiCountryCode countryCode;
 
-        public HakumaksuQuery(String serviceUrl, AsciiCountryCode countryCode) {
+        public HakumaksuQuery(SafeString serviceUrl, AsciiCountryCode countryCode) {
             this.serviceUrl = serviceUrl;
             this.countryCode = countryCode;
         }
@@ -198,7 +198,7 @@ public class HakumaksuUtil {
                 }
             });
 
-    public boolean isExemptFromPayment(String koodistoServiceUrl, AsciiCountryCode threeLetterCountryCode) throws ExecutionException {
+    public boolean isExemptFromPayment(SafeString koodistoServiceUrl, AsciiCountryCode threeLetterCountryCode) throws ExecutionException {
         return exemptions.get(new HakumaksuQuery(koodistoServiceUrl, threeLetterCountryCode));
     }
 
@@ -217,11 +217,11 @@ public class HakumaksuUtil {
         public List<String> requiredBaseEducations;
     }
 
-    public Iterable<EducationRequirements> getEducationRequirements(final String koulutusinformaatioUrl,
-                                                                           List<String> applicationOptions) {
-        return Iterables.transform(applicationOptions, new Function<String, EducationRequirements>() {
+    public Iterable<EducationRequirements> getEducationRequirements(final SafeString koulutusinformaatioUrl,
+                                                                    List<ApplicationOptionOid> applicationOptions) {
+        return Iterables.transform(applicationOptions, new Function<ApplicationOptionOid, EducationRequirements>() {
             @Override
-            public EducationRequirements apply(String applicationOptionId) {
+            public EducationRequirements apply(ApplicationOptionOid applicationOptionId) {
                 // TODO: Hae RESTillä hakutoiveiden vaatimukset (ja cacheta niitä)
                 // Esimerkki: GET https://testi.opintopolku.fi/ao/1.2.246.562.20.40822369126
                 //
@@ -232,7 +232,7 @@ public class HakumaksuUtil {
                 try {
                     System.err.println(url);
                     BaseEducationRequirements requirements = restClient.get(url, BaseEducationRequirements.class).get().getResult();
-                    return new EducationRequirements(ApplicationOptionOid.of(applicationOptionId), ImmutableSet.copyOf(requirements.requiredBaseEducations));
+                    return new EducationRequirements(applicationOptionId, ImmutableSet.copyOf(requirements.requiredBaseEducations));
                 } catch (ExecutionException|InterruptedException|IOException e) {
                     // TODO: what to do?
                     e.printStackTrace();
