@@ -17,6 +17,7 @@
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.osaaminen;
 
 import fi.vm.sade.haku.oppija.lomake.domain.builder.ElementBuilder;
+import fi.vm.sade.haku.oppija.lomake.domain.builder.TitledGroupBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.GradeAverage;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
@@ -31,6 +32,7 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.service.ThemeQuestionConfigurator;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ExprUtil;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +45,7 @@ import static fi.vm.sade.haku.oppija.lomake.domain.builder.RelatedQuestionRuleBu
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.TextAreaBuilder.TextArea;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.TextQuestionBuilder.TextQuestion;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.ThemeBuilder.Theme;
+import static fi.vm.sade.haku.oppija.lomake.domain.builder.TitledGroupBuilder.TitledGroup;
 
 public class OsaaminenPhase {
 
@@ -65,6 +68,8 @@ public class OsaaminenPhase {
 
             Expr pohjakoulutusLukio = ExprUtil.isAnswerTrue("pohjakoulutus_yo");
 
+            Expr pohjakoulutusYoKansainvalinen = new Or(ExprUtil.isAnswerTrue("pohjakoulutus_yo_kansainvalinen_suomessa"), ExprUtil.isAnswerTrue("pohjakoulutus_yo_ulkomainen"));
+
             KoodistoService koodistoService = formParameters.getKoodistoService();
             String[] amkkoulutuksetArr = HakutoiveetPhase.getAmkKoulutusIds(koodistoService);
             List<Expr> exprs = new ArrayList<Expr>();
@@ -75,6 +80,7 @@ public class OsaaminenPhase {
             Expr haettuAMKHon = ExprUtil.any(exprs);
 
             ElementBuilder kysytaankoLukionKeskiarvo = Rule(new And(haettuAMKHon, pohjakoulutusLukio));
+            ElementBuilder kysytaankoYoArvosanat = Rule(new And(haettuAMKHon, pohjakoulutusYoKansainvalinen));
             List<Option> asteikkolista = koodistoService.getAmmatillisenTutkinnonArvosteluasteikko();
 
             ElementBuilder lukioKeskiarvo = TextQuestion("lukion-paattotodistuksen-keskiarvo")
@@ -103,16 +109,33 @@ public class OsaaminenPhase {
                 kysytaankoLukionKeskiarvo.addChild(lukioKeskiarvo.build());
             }
 
+            ElementBuilder yoKysymysRyhma = TitledGroup("osaaminen.kansainvalinenyo.arvosanat").required();
+            addYoAsteikkoQuestion(OppijaConstants.ELEMENT_ID_OSAAMINEN_YOARVOSANAT_PARAS_KIELI, yoKysymysRyhma, formParameters);
+            addYoAsteikkoQuestion(OppijaConstants.ELEMENT_ID_OSAAMINEN_YOARVOSANAT_AIDINKIELI, yoKysymysRyhma, formParameters);
+            addYoAsteikkoQuestion(OppijaConstants.ELEMENT_ID_OSAAMINEN_YOARVOSANAT_MATEMATIIKKA, yoKysymysRyhma, formParameters);
+            addYoAsteikkoQuestion(OppijaConstants.ELEMENT_ID_OSAAMINEN_YOARVOSANAT_REAALI, yoKysymysRyhma, formParameters);
+
+            kysytaankoYoArvosanat.addChild(yoKysymysRyhma);
+
             List<Option> ammattitutkintonimikkeet = koodistoService.getAmmattitutkinnot();
             List<Option> oppilaitokset = koodistoService.getAmmattioppilaitosKoulukoodit();
 
             osaaminenTheme.addChild(kysytaankoLukionKeskiarvo.build());
+            osaaminenTheme.addChild(kysytaankoYoArvosanat.build());
             buildKeskiarvotAmmatillinen(formParameters, ammattitutkintonimikkeet, oppilaitokset,
                     haettuAMKHon, asteikkolista, osaaminenTheme);
             ThemeQuestionConfigurator configurator = formParameters.getThemeQuestionConfigurator();
             osaaminenTheme.addChild(configurator.findAndConfigure(osaaminenTheme.getId()));
         }
         return osaaminen;
+    }
+
+    private static void addYoAsteikkoQuestion(String elementId,ElementBuilder parent, FormParameters formParameters) {
+        parent.addChild(Dropdown(elementId)
+                .emptyOption()
+                .addOptions(formParameters.getKoodistoService().getYoArvosanaasteikko())
+                .requiredInline()
+                .formParams(formParameters).build());
     }
 
     private static void buildKeskiarvotAmmatillinen(FormParameters formParameters, List<Option> ammattitutkintonimikkeet,

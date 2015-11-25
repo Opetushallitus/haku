@@ -203,6 +203,12 @@ public class KoodistoServiceImpl implements KoodistoService {
     }
 
     @Override
+    public List<Option> getYoArvosanaasteikko() {
+        return codesToOptions(CODE_ARVOSTELUASTEIKKO); // TODO
+    }
+
+
+    @Override
     public List<Option> getOpintoalat() {
         return codesToOptions(CODE_OPINTOALA);
     }

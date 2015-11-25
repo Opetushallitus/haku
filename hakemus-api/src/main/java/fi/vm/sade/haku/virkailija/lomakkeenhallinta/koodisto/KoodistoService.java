@@ -78,4 +78,7 @@ public interface KoodistoService {
     List<Code> getYlemmatAMKkoulutukset();
 
     List<Option> getAmmatillisenTutkinnonArvosteluasteikko();
+
+    List<Option> getYoArvosanaasteikko();
+
 }
