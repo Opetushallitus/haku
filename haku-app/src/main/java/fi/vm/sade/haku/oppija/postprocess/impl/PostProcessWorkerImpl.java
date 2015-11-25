@@ -166,7 +166,7 @@ public class PostProcessWorkerImpl implements PostProcessWorker {
     }
     private void setProcessingStateToFailed(final Application queryApplication, String message) {
         final Application application = applicationDAO.find(queryApplication).get(0);
-        final ApplicationNote note = new ApplicationNote("Hakemuksen jälkikäsittely epäonnistui: " + message, new Date(), "");
+        final ApplicationNote note = new ApplicationNote("Hakemuksen jälkikäsittely epäonnistui: " + message, new Date(), SYSTEM_USER);
         application.addNote(note);
         application.setRedoPostProcess(PostProcessingState.FAILED);
         this.applicationDAO.update(queryApplication, application);
