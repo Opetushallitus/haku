@@ -424,6 +424,8 @@ public class HakumaksuService {
 
     public Application processPayment(Application application) throws ExecutionException, InterruptedException {
         Optional<PaymentState> requiredPaymentState = Optional.fromNullable(application.getRequiredPaymentState());
+
+        // Jos hakumaksu on suoritettu, edes maksuvelvollisuuden katoaminen ei poista onnistunutta maksumerkintää
         if (alreadyPaid(requiredPaymentState)) {
             return application;
         } else {
@@ -455,6 +457,7 @@ public class HakumaksuService {
                 if (exemptFromPayment && requiredPaymentState.isPresent()) {
                     addPaymentNote(application, new ApplicationNote("Hakija ei enää maksuvelvollinen", new Date(), SYSTEM_USER));
 
+                    // Muut kuin onnistuneet maksumerkinnät poistetaan jos maksuvelvollisuus poistuu
                     application.setRequiredPaymentState(null);
                 }
 
