@@ -1,5 +1,7 @@
 package fi.vm.sade.haku.oppija.lomake.util;
 
+import static org.apache.commons.lang.StringUtils.EMPTY;
+
 public final class StringUtil {
     private StringUtil() {
     }
@@ -15,9 +17,11 @@ public final class StringUtil {
     }
 
     public static String safeToString(Object o) {
-        if (o == null) {
-            return "";
-        }
-        return o.toString();
+        return o == null ? EMPTY : o.toString();
     }
+
+    public static String nameOrEmpty(Enum paymentState) {
+        return paymentState == null ? EMPTY : paymentState.name();
+    }
+
 }

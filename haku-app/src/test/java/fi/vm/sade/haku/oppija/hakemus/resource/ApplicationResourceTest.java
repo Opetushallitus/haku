@@ -16,9 +16,11 @@
 
 package fi.vm.sade.haku.oppija.hakemus.resource;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
+import fi.vm.sade.haku.oppija.hakemus.domain.Application.PaymentState;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultItemDTO;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationQueryParameters;
@@ -52,9 +54,11 @@ public class ApplicationResourceTest {
     private ApplicationSystemService applicationSystemService;
     private ApplicationResource applicationResource;
     private Application application;
+    private Application applicationWithPaymentState;
     private I18nBundleService i18nBundleService;
 
     private final String OID = "1.2.3.4.5.100";
+    private final String OID_WITH_PAYMENT_STATE = "1.2.3.4.5.101";
     private final String INVALID_OID = "1.2.3.4.5.999";
     private final String ASID = "yhteishaku";
 
@@ -73,8 +77,12 @@ public class ApplicationResourceTest {
         this.application = new Application(ASID, new User(User.ANONYMOUS_USER), phases, null);
         this.application.setOid(OID);
 
+        applicationWithPaymentState = new Application(OID_WITH_PAYMENT_STATE);
+        applicationWithPaymentState.setRequiredPaymentState(PaymentState.NOTIFIED);
+
         try {
             when(applicationService.getApplicationByOid(OID)).thenReturn(this.application);
+            when(applicationService.getApplicationByOid(OID_WITH_PAYMENT_STATE)).thenReturn(applicationWithPaymentState);
             when(applicationService.getApplicationByOid(INVALID_OID)).thenThrow(new ResourceNotFoundException("Application Not Found"));
             when(applicationService.getApplicationKeyValue(eq(OID), eq("key"))).thenReturn("value");
             when(applicationService.getApplicationKeyValue(eq(INVALID_OID), eq("key"))).thenThrow(new ResourceNotFoundException("Application Not Found"));
@@ -103,6 +111,63 @@ public class ApplicationResourceTest {
     public void testGetApplicationsByOid() {
         Application application = this.applicationResource.getApplicationByOid(OID);
         assertNotNull(application);
+    }
+
+    @Test
+    public void testSetPaymentStateToSame() {
+        PaymentState requiredPaymentState = applicationWithPaymentState.getRequiredPaymentState();
+        this.applicationResource.setPaymentState(OID_WITH_PAYMENT_STATE, ImmutableMap.of("paymentState", requiredPaymentState.name()));
+        Application application = this.applicationResource.getApplicationByOid(OID_WITH_PAYMENT_STATE);
+
+        assertEquals(requiredPaymentState, application.getRequiredPaymentState());
+    }
+
+    @Test
+    public void testSetPaymentState() {
+        this.applicationResource.setPaymentState(OID_WITH_PAYMENT_STATE, ImmutableMap.of("paymentState", PaymentState.OK.name()));
+        Application application = this.applicationResource.getApplicationByOid(OID_WITH_PAYMENT_STATE);
+
+        assertEquals(PaymentState.OK, application.getRequiredPaymentState());
+    }
+
+    @Test
+    public void testSetPaymentStateForExempt() {
+        try {
+            this.applicationResource.setPaymentState(OID, ImmutableMap.of("paymentState", PaymentState.OK.name()));
+            fail();
+        } catch (JSONException e) {
+            assertEquals(403, e.getResponse().getStatus());
+        }
+    }
+
+    @Test
+    public void testSetPaymentStateBadRequestForOid() {
+        try {
+            this.applicationResource.setPaymentState("foo", ImmutableMap.<String, String>of());
+            fail();
+        } catch (JSONException e) {
+            assertEquals(400, e.getResponse().getStatus());
+        }
+    }
+
+    @Test
+    public void testSetPaymentStateBadRequestForState() {
+        try {
+            this.applicationResource.setPaymentState(OID, ImmutableMap.<String, String>of());
+            fail();
+        } catch (JSONException e) {
+            assertEquals(400, e.getResponse().getStatus());
+        }
+    }
+
+    @Test
+    public void testSetPaymentStateBadRequestForIllegalState() {
+        try {
+            this.applicationResource.setPaymentState(OID, ImmutableMap.of("paymentState", "foo"));
+            fail();
+        } catch (JSONException e) {
+            assertEquals(400, e.getResponse().getStatus());
+        }
     }
 
     @Test(expected = JSONException.class)
