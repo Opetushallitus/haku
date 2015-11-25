@@ -80,7 +80,7 @@ public class OsaaminenPhase {
             Expr haettuAMKHon = ExprUtil.any(exprs);
 
             ElementBuilder kysytaankoLukionKeskiarvo = Rule(new And(haettuAMKHon, pohjakoulutusLukio));
-            ElementBuilder kysytaankoYoArvosanat = Rule(new And(haettuAMKHon, pohjakoulutusYoKansainvalinen));
+            ElementBuilder kysytaankoYoArvosanat = Rule(new And(haettuAMKHon, pohjakoulutusYoKansainvalinen)).formParams(formParameters);
             List<Option> asteikkolista = koodistoService.getAmmatillisenTutkinnonArvosteluasteikko();
 
             ElementBuilder lukioKeskiarvo = TextQuestion("lukion-paattotodistuksen-keskiarvo")
@@ -109,7 +109,7 @@ public class OsaaminenPhase {
                 kysytaankoLukionKeskiarvo.addChild(lukioKeskiarvo.build());
             }
 
-            ElementBuilder yoKysymysRyhma = TitledGroup("osaaminen.kansainvalinenyo.arvosanat");
+            ElementBuilder yoKysymysRyhma = TitledGroup("osaaminen.kansainvalinenyo.arvosanat").formParams(formParameters);
             addYoAsteikkoQuestion(OppijaConstants.ELEMENT_ID_OSAAMINEN_YOARVOSANAT_PARAS_KIELI, yoKysymysRyhma, formParameters);
             addYoAsteikkoQuestion(OppijaConstants.ELEMENT_ID_OSAAMINEN_YOARVOSANAT_AIDINKIELI, yoKysymysRyhma, formParameters);
             addYoAsteikkoQuestion(OppijaConstants.ELEMENT_ID_OSAAMINEN_YOARVOSANAT_MATEMATIIKKA, yoKysymysRyhma, formParameters);
