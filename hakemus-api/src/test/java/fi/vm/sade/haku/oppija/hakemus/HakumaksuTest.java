@@ -6,6 +6,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import fi.vm.sade.haku.oppija.hakemus.MockedRestClient.Captured;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
+import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationNote;
 import fi.vm.sade.haku.oppija.hakemus.service.HakumaksuService;
 import fi.vm.sade.haku.oppija.hakemus.service.HakumaksuService.Eligibility;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.HakumaksuUtil;
@@ -154,13 +155,22 @@ public class HakumaksuTest {
         assertEquals(oppijanTunnistusUrl, match.url);
 
         OppijanTunnistus body = (OppijanTunnistus)match.body;
-        assertEquals(expectedEmail, body.email); // Not checked
+        assertEquals(expectedEmail, body.email);
         assertEquals(hakuperusteetUrlSv + "/app/" + expectedHakemusOid + "#/token/", body.url);
         assertEquals(HakumaksuUtil.LanguageCodeISO6391.sv, body.lang);
-        assertEquals(expectedHakemusOid, body.metadata.hakemusOid); // Not checked
-        assertEquals(expectedPersonOid, body.metadata.personOid); // Not checked
+        assertEquals(expectedHakemusOid, body.metadata.hakemusOid);
+        assertEquals(expectedPersonOid, body.metadata.personOid);
 
         assertTrue(processedApplication == application);
         assertEquals(Application.PaymentState.NOTIFIED, processedApplication.getRequiredPaymentState());
+
+        List<ApplicationNote> notes = processedApplication.getNotes();
+        assertEquals(1, notes.size());
+
+        ApplicationNote applicationNote = notes.get(0);
+        assertEquals("Hakija maksuvelvollinen: hakukohde 123 vaatii hakumaksun pohjakoulutusten 'Ulkomaalainen korkeakoulutus' johdosta", applicationNote.getNoteText());
+        assertEquals("järjestelmä", applicationNote.getUser());
+
+        assertTrue(processedApplication.getHistory().isEmpty());
     }
 }
