@@ -12,6 +12,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.User;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain.FormConfiguration;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain.FormConfiguration.FeatureFlag;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import fi.vm.sade.hakutest.IntegrationTest;
 import org.junit.Before;
 import org.junit.Test;
@@ -226,12 +227,16 @@ public class Level4Test extends IntegrationTest {
         return as.getForm().getChildren().get(3).getChildren().get(0).getChildren();
     }
 
-    private static List<Element> getYoKysymykset(ApplicationSystem as) {
+    private static List<Element> getKansainvalinenYoKysymykset(ApplicationSystem as) {
         return getOsaaminenQuestions(as).get(1).getChildren();
     }
 
-    private static List<Element> getAmKysymykset(ApplicationSystem as) {
+    private static List<Element> getYoKysymykset(ApplicationSystem as) {
         return getOsaaminenQuestions(as).get(2).getChildren();
+    }
+
+    private static List<Element> getAmKysymykset(ApplicationSystem as) {
+        return getOsaaminenQuestions(as).get(3).getChildren();
     }
 
     @Test
@@ -240,6 +245,10 @@ public class Level4Test extends IntegrationTest {
         assertEquals(true, formConfigurationDAO.findByApplicationSystem(AFFECTED_APPLICATION_SYSTEM_ID).getFeatureFlag(erotteleAmmatillinenJaYoAmmatillinenKeskiarvo));
 
         ApplicationSystem as = applicationSystemService.getApplicationSystem(AFFECTED_APPLICATION_SYSTEM_ID);
+
+        List<Element> yoKansainvalinenAmmatillinen = getKansainvalinenYoKysymykset(as);
+        assertEquals("osaaminen.kansainvalinenyo.arvosanat", yoKansainvalinenAmmatillinen.get(0).getId());
+        assertEquals(OppijaConstants.ELEMENT_ID_OSAAMINEN_YOARVOSANAT_PARAS_KIELI, yoKansainvalinenAmmatillinen.get(0).getChildren().get(0).getId());
 
         List<Element> yoAmmatillinen = getYoKysymykset(as);
         assertEquals("keskiarvo_yo_ammatillinen", yoAmmatillinen.get(0).getId());
