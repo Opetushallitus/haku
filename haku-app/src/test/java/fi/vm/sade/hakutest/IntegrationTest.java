@@ -15,7 +15,6 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormGenerato
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.i18n.I18nBundleService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.ohjausparametrit.OhjausparametritService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakuService;
-import org.junit.Ignore;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -26,8 +25,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:spring/tomcat-container-context.xml")
 @ActiveProfiles(profiles = {"it"})
-@Ignore
-public class IntegrationTest {
+public abstract class IntegrationTest {
     @Autowired
     protected ApplicationDAO applicationDAO;
 
