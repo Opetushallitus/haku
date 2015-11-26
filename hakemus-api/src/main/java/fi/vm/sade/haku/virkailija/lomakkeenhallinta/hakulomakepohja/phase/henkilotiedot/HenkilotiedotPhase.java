@@ -23,6 +23,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.builder.ElementBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.builder.SocialSecurityNumberBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.HiddenValue;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.Notification;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Radio;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.AddElementRule;
@@ -188,12 +189,21 @@ public final class HenkilotiedotPhase {
 
         onkoSuomalainenKysymys.addChild(eiHetuaSaanto);
 
-        Element email = TextQuestion(OppijaConstants.ELEMENT_ID_EMAIL).inline().size(50).pattern(EMAIL_REGEX)
-                            .formParams(formParameters).build();
+        ElementBuilder emailBuilder = TextQuestion(OppijaConstants.ELEMENT_ID_EMAIL).inline().size(50).pattern(EMAIL_REGEX)
+                            .formParams(formParameters);
         if (formParameters.isUniqueApplicantRequired()) {
-            email.setValidator(new EmailUniqueValidator());
+            emailBuilder.validator(new EmailUniqueValidator());
         }
-        henkilotiedotTeema.addChild(email);
+        if (formParameters.isEmailRequired()) {
+            emailBuilder.required();
+            Element emailRequiredNotification = new Notification(
+                    "emailRequiredNotification",
+                    formParameters.getI18nText("form.henkilotiedot.sahkoposti.pakollinen"),
+                    Notification.NotificationType.INFO
+            );
+            emailBuilder.addChild(emailRequiredNotification);
+        }
+        henkilotiedotTeema.addChild(emailBuilder.build());
 
         // Matkapuhelinnumerot
         Element puhelinnumero1 = TextQuestion(OppijaConstants.ELEMENT_ID_PREFIX_PHONENUMBER + 1).labelKey("matkapuhelinnumero")
