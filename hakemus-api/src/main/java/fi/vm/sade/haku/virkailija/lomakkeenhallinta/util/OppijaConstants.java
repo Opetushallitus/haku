@@ -69,6 +69,11 @@ public final class OppijaConstants {
     public static final String ELEMENT_ID_LISAKOULUTUS_MAAHANMUUTTO = "LISAKOULUTUS_MAAHANMUUTTO";
     public static final String ELEMENT_ID_LISAKOULUTUS_VAMMAISTEN = "LISAKOULUTUS_VAMMAISTEN";
 
+    public static final String ELEMENT_ID_OSAAMINEN_YOARVOSANAT_PARAS_KIELI = "yo-arvosana-paraskieli";
+    public static final String ELEMENT_ID_OSAAMINEN_YOARVOSANAT_AIDINKIELI = "yo-arvosana-aidinkieli";
+    public static final String ELEMENT_ID_OSAAMINEN_YOARVOSANAT_MATEMATIIKKA = "yo-arvosana-matematiikka";
+    public static final String ELEMENT_ID_OSAAMINEN_YOARVOSANAT_REAALI = "yo-arvosana-reaali";
+
     public static final String PHASE_PERSONAL = "henkilotiedot";
     public static final String PHASE_EDUCATION = "koulutustausta";
     public static final String PHASE_APPLICATION_OPTIONS = "hakutoiveet";
@@ -151,4 +156,6 @@ public final class OppijaConstants {
     public static final String TUTKINTO_MUU = "399999";
     public static final String OPPILAITOS_TUNTEMATON = "1.2.246.562.10.57118763579";
     public static final String ROOT_ORGANIZATION_OID = "1.2.246.562.10.00000000001";
+
+
 }

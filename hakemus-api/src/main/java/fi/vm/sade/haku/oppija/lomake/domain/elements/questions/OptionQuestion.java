@@ -40,6 +40,9 @@ public abstract class OptionQuestion extends Question {
     private final List<Option> options;
 
     private final String[] keepFirst;
+
+    private final Boolean useGivenOrder;
+
     @Transient
     private Map<String, Option> optionsMap;
     @Transient
@@ -49,10 +52,11 @@ public abstract class OptionQuestion extends Question {
     @Transient @JsonIgnore
     private final Object optionsSortedByTextLock = new Object();
 
-    protected OptionQuestion(final String id, final I18nText i18nText, final List<Option> options, final String[] keepFirst) {
+    protected OptionQuestion(final String id, final I18nText i18nText, final List<Option> options, final String[] keepFirst, final Boolean useGivenOrder) {
         super(id, i18nText);
         this.options = ImmutableList.copyOf(options);
         this.keepFirst = keepFirst;
+        this.useGivenOrder = useGivenOrder;
     }
 
     public List<Option> getOptions() {
@@ -88,26 +92,28 @@ public abstract class OptionQuestion extends Question {
                     optionListForLang.add(option);
                 }
             }
-            for (Map.Entry<String, List<Option>> entry : tempOptionsSortedByText.entrySet()) {
-                List<Option> optionList = entry.getValue();
-                final String lang = entry.getKey();
-                Collections.sort(optionList, new Comparator<Option>() {
-                    @Override
-                    public int compare(Option o1, Option o2) {
-                        String o1Trans = o1.getI18nText().getTranslations().get(lang);
-                        String o2Trans = o2.getI18nText().getTranslations().get(lang);
-                        if (keepFirst != null) {
-                            for (String value : keepFirst) {
-                                if (value.equals(o1.getValue())) {
-                                    return o1.getValue().equals(o2.getValue()) ? 0 : -1;
-                                } else if (value.equals(o2.getValue())) {
-                                    return o1.getValue().equals(o2.getValue()) ? 0 : 1;
+            if(useGivenOrder == null || useGivenOrder.equals(false)) {
+                for (Map.Entry<String, List<Option>> entry : tempOptionsSortedByText.entrySet()) {
+                    List<Option> optionList = entry.getValue();
+                    final String lang = entry.getKey();
+                    Collections.sort(optionList, new Comparator<Option>() {
+                        @Override
+                        public int compare(Option o1, Option o2) {
+                            String o1Trans = o1.getI18nText().getTranslations().get(lang);
+                            String o2Trans = o2.getI18nText().getTranslations().get(lang);
+                            if (keepFirst != null) {
+                                for (String value : keepFirst) {
+                                    if (value.equals(o1.getValue())) {
+                                        return o1.getValue().equals(o2.getValue()) ? 0 : -1;
+                                    } else if (value.equals(o2.getValue())) {
+                                        return o1.getValue().equals(o2.getValue()) ? 0 : 1;
+                                    }
                                 }
                             }
+                            return o1Trans.compareTo(o2Trans);
                         }
-                        return o1Trans.compareTo(o2Trans);
-                    }
-                });
+                    });
+                }
             }
             this.optionsSortedByText = ImmutableMap.copyOf(tempOptionsSortedByText);
         }

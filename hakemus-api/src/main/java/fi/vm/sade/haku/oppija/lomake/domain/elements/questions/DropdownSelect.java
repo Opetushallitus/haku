@@ -25,8 +25,8 @@ public class DropdownSelect extends OptionQuestion {
     private final String defaultValueAttribute;
 
     public DropdownSelect(final String id, final I18nText i18nText, final List<Option> options,
-                          final String defaultValueAttribute, final String[] keepFirst) {
-        super(id, i18nText, options, keepFirst);
+                          final String defaultValueAttribute, final String[] keepFirst, final Boolean useGivenOrder) {
+        super(id, i18nText, options, keepFirst, useGivenOrder);
         this.defaultValueAttribute = defaultValueAttribute;
     }
 

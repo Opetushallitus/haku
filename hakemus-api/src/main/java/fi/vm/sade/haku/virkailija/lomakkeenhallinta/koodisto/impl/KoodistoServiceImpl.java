@@ -66,6 +66,7 @@ public class KoodistoServiceImpl implements KoodistoService {
     private static final String CODE_OPINTOALA = "opintoalaoph2002";
     private static final String CODE_KOULUTUSALA = "koulutusalaoph2002";
     private static final String CODE_AMMATILLISET_OPS_PERUSTAISET = "ammatillisetopsperustaiset";
+    private static final String CODE_YOARVOSANAT = "yoarvosanatkansainvalinen";
 
     private static final String LUKIO = "15";
     private static final String LUKIO_JA_PERUSKOULU = "19";
@@ -200,6 +201,22 @@ public class KoodistoServiceImpl implements KoodistoService {
     @Override
     public List<Option> getAmmatillisenTutkinnonArvosteluasteikko() {
         return codesToOptions(CODE_ARVOSTELUASTEIKKO);
+    }
+
+    @Override
+    public List<Option> getYoArvosanaasteikko() {
+
+        ArrayList<KoodiType> grades = new ArrayList(getKoodiTypes(CODE_YOARVOSANAT));
+        Collections.sort(grades, new Comparator<KoodiType>() {
+            @Override
+            public int compare(KoodiType o1, KoodiType o2) {
+                return o1.getKoodiArvo().compareTo(o2.getKoodiArvo());
+            }
+        });
+        return ImmutableList.copyOf(
+                        Lists.transform(
+                                grades,
+                                new KoodiTypeToOptionFunction()));
     }
 
     @Override
