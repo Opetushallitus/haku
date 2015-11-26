@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain.FormConfiguration.FeatureFlag.erotteleAmmatillinenJaYoAmmatillinenKeskiarvo;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain.FormConfiguration.FeatureFlag.kansainvalinenYoAmkKysymys;
 import static fi.vm.sade.hakutest.TestHelpers.Tuple.tuple;
 import static fi.vm.sade.hakutest.TestHelpers.list;
 import static fi.vm.sade.hakutest.TestHelpers.map;
@@ -267,6 +268,7 @@ public class Level4Test extends IntegrationTest {
         // Emulates old forms that will not be migrated but must still be re-generable
         Map<FeatureFlag, Boolean> flags = new HashMap<>();
         flags.put(erotteleAmmatillinenJaYoAmmatillinenKeskiarvo, false);
+        flags.put(kansainvalinenYoAmkKysymys, true);
         formConfigurationDAO.save(new FormConfiguration(AFFECTED_APPLICATION_SYSTEM_ID, FormConfiguration.FormTemplateType.YHTEISHAKU_KEVAT_KORKEAKOULU, flags));
         applicationSystemService.save(formGenerator.generate(AFFECTED_APPLICATION_SYSTEM_ID));
         assertEquals(false, formConfigurationDAO.findByApplicationSystem(AFFECTED_APPLICATION_SYSTEM_ID).getFeatureFlag(erotteleAmmatillinenJaYoAmmatillinenKeskiarvo));
