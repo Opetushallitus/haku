@@ -11,6 +11,7 @@ import java.util.List;
 public class DropdownSelectBuilder extends OptionQuestionBuilder {
 
     protected String defaultValueAttribute;
+    protected Boolean useGivenOrder;
 
     public DropdownSelectBuilder(String id) {
         super(id);
@@ -23,7 +24,7 @@ public class DropdownSelectBuilder extends OptionQuestionBuilder {
                 opt.setDefaultOption(opt.getValue().equalsIgnoreCase(defaultOption));
             }
         }
-        DropdownSelect dropdownSelect = new DropdownSelect(id, this.i18nText, this.options, defaultValueAttribute, keepFirst);
+        DropdownSelect dropdownSelect = new DropdownSelect(id, this.i18nText, this.options, defaultValueAttribute, keepFirst, useGivenOrder);
         List<String> values = new ArrayList<String>();
         for (Option option : options) {
             values.add(option.getValue());
@@ -44,6 +45,12 @@ public class DropdownSelectBuilder extends OptionQuestionBuilder {
         this.defaultValueAttribute = value;
         return this;
     }
+
+    public OptionQuestionBuilder useGivenOrder() {
+        this.useGivenOrder = true;
+        return this;
+    }
+
 
     public OptionQuestionBuilder defaultValueAttribute(String attributeName) {
         this.defaultValueAttribute = attributeName;

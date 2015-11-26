@@ -132,6 +132,7 @@ public class OsaaminenPhase {
 
     private static void addYoAsteikkoQuestion(String elementId,ElementBuilder parent, FormParameters formParameters) {
         parent.addChild(Dropdown(elementId)
+                .useGivenOrder()
                 .emptyOption()
                 .addOptions(formParameters.getKoodistoService().getYoArvosanaasteikko())
                 .requiredInline()
