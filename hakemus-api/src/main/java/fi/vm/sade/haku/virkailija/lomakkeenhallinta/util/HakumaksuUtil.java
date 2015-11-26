@@ -28,6 +28,7 @@ import java.util.concurrent.TimeUnit;
 
 public class HakumaksuUtil {
     public static final Logger LOGGER = LoggerFactory.getLogger(HakumaksuUtil.class);
+    private static final String templateName = "maksulinkki";
 
     private RestClient restClient;
     private final SafeString koulutusinformaatioUrl;
@@ -50,6 +51,8 @@ public class HakumaksuUtil {
             @Key
             public String personOid;
         }
+        @Key
+        public String template;
 
         @Key
         public String url;
@@ -74,6 +77,7 @@ public class HakumaksuUtil {
                                                         final Oid _personOid,
                                                         final SafeString emailAddress) {
         OppijanTunnistus body = new OppijanTunnistus() {{
+            this.template = templateName;
             this.url = redirectUrl.getValue();
             this.email = emailAddress.getValue();
             this.lang = languageCode;
