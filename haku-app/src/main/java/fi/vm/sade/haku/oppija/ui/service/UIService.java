@@ -27,7 +27,7 @@ import java.util.concurrent.ExecutionException;
 
 public interface UIService {
 
-    ModelResponse getCompleteApplication(final String applicationSystemId, final String oid) throws ExecutionException;
+    ModelResponse getCompleteApplication(final String applicationSystemId, final String oid);
 
     ModelResponse getAllApplicationSystems(final String... includeFields);
 

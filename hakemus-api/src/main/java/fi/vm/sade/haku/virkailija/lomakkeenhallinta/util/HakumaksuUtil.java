@@ -142,7 +142,7 @@ public class HakumaksuUtil {
         }
     };
 
-    private ListenableFuture<List<String>> getEaaCountryCodes(HakumaksuQuery query) throws IOException, ExecutionException, InterruptedException {
+    private ListenableFuture<List<String>> getEaaCountryCodes(HakumaksuQuery query) throws IOException {
         String url = query.serviceUrl + "/rest/codeelement/valtioryhmat_2/1";
         return Futures.transform(restClient.get(url, KoodistoEAA.class), new Function<Response<KoodistoEAA>, List<String>>() {
             @Override
@@ -230,13 +230,10 @@ public class HakumaksuUtil {
                 // ]
                 String url = koulutusinformaatioUrl + "/" + applicationOptionId;
                 try {
-                    System.err.println(url);
                     BaseEducationRequirements requirements = restClient.get(url, BaseEducationRequirements.class).get().getResult();
                     return new EducationRequirements(applicationOptionId, ImmutableSet.copyOf(requirements.requiredBaseEducations));
-                } catch (ExecutionException|InterruptedException|IOException e) {
-                    // TODO: what to do?
-                    e.printStackTrace();
-                    return null;
+                } catch (ExecutionException | InterruptedException | IOException e) {
+                    throw new IllegalStateException("Request to " + url + " failed", e);
                 }
             }
         });

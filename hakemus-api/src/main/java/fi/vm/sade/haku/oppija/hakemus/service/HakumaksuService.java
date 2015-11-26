@@ -364,7 +364,7 @@ public class HakumaksuService {
      *         - Koulutus on ETA/Sveitsi-alueelta -> EI MAKSUA (tämän hakutoiveen seurauksena)
      *       - Jos mikään koulutus ei ETA/Sveitsi -> MAKSU (ei-ETA/Sveitsi-alueen pohjakoulutusten seurauksena)
      */
-    public ImmutableMap<ApplicationOptionOid, ImmutableSet<Eligibility>> paymentRequirements(MergedAnswers answers) throws ExecutionException {
+    public ImmutableMap<ApplicationOptionOid, ImmutableSet<Eligibility>> paymentRequirements(MergedAnswers answers) {
         ImmutableMap.Builder<ApplicationOptionOid, ImmutableSet<Eligibility>> applicationPaymentEligibilities = ImmutableMap.builder();
 
         List<ApplicationOptionOid> preferenceAoIds = asApplicationOptionOids(getPreferenceAoIds(answers));
@@ -404,7 +404,7 @@ public class HakumaksuService {
         });
     }
 
-    public boolean isPaymentRequired(MergedAnswers mergedAnswers) throws ExecutionException {
+    public boolean isPaymentRequired(MergedAnswers mergedAnswers) {
         return any(paymentRequirements(mergedAnswers).values(), new Predicate<Set<Eligibility>>() {
             @Override
             public boolean apply(Set<Eligibility> input) {
