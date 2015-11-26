@@ -134,6 +134,10 @@ public class FormParameters {
         return HAKUTYYPPI_VARSINAINEN_HAKU.equals(applicationSystem.getApplicationSystemType());
     }
 
+    public boolean isEmailRequired() {
+        return formConfiguration.getFeatureFlag(FormConfiguration.FeatureFlag.requireEmail);
+    }
+
     public ThemeQuestionConfigurator getThemeQuestionConfigurator() {
         return new ThemeQuestionConfigurator(themeQuestionDAO, hakukohdeService, this, organizationService);
     }

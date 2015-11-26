@@ -107,6 +107,7 @@ public final class FormConfigurationService {
         Map<FormConfiguration.FeatureFlag, Boolean> defaultFeatureFlags = new HashMap<>();
         defaultFeatureFlags.put(FormConfiguration.FeatureFlag.erotteleAmmatillinenJaYoAmmatillinenKeskiarvo, true);
         defaultFeatureFlags.put(FormConfiguration.FeatureFlag.koulutusasteURI, true);
+        defaultFeatureFlags.put(FormConfiguration.FeatureFlag.requireEmail, true);
 
         FormConfiguration formConfiguration = new FormConfiguration(applicationSystem.getId(),
                   figureOutFormTypeForApplicationSystem(applicationSystem), defaultFeatureFlags);
