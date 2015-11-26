@@ -1,13 +1,11 @@
 package fi.vm.sade.haku.oppija.postprocess;
 
-import clover.retrotranslator.edu.emory.mathcs.backport.java.util.Arrays;
 import com.google.common.collect.ImmutableMap;
 import de.flapdoodle.embed.process.collections.Collections;
 import fi.vm.sade.haku.healthcheck.StatusRepository;
 import fi.vm.sade.haku.oppija.common.suoritusrekisteri.SuoritusrekisteriService;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationDAO;
 import fi.vm.sade.haku.oppija.lomake.domain.*;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.postprocess.impl.EligibilityCheckWorkerImpl;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.ohjausparametrit.OhjausparametritService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.ohjausparametrit.domain.Ohjausparametri;
@@ -15,12 +13,8 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.ohjausparametrit.domain.Ohja
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakuService;
 import org.junit.Test;
 import org.mockito.Mockito;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class EligibilityCheckWorkerImplTest {
@@ -90,7 +84,7 @@ public class EligibilityCheckWorkerImplTest {
     }
     private static ApplicationSystem createApplicationSystemWithEligibilities() {
         ApplicationSystem as = new ApplicationSystem("hakuOid", null, new I18nText(ImmutableMap.of("fi","hakuWithEligibilities")), "JULKAISTU",
-                null, null, null, null, null, null, null, null, null, null, null, null, null, Collections.newArrayList("aosWithEligibility"), null);
+                null, null, null, null, null, null, null, null, null, null, null, null, null, Collections.newArrayList("aosWithEligibility"), null, false);
         return as;
     }
 }

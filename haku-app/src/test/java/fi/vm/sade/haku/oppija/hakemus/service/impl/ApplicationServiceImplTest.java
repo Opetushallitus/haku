@@ -23,7 +23,6 @@ import fi.vm.sade.haku.oppija.lomake.domain.builder.TextQuestionBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Phase;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.Equals;
-import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.Expr;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.Value;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.Variable;
 import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
@@ -31,7 +30,6 @@ import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.haku.oppija.lomake.service.FormService;
 import fi.vm.sade.haku.oppija.lomake.service.Session;
 import fi.vm.sade.haku.oppija.lomake.service.impl.SystemSession;
-import fi.vm.sade.haku.oppija.lomake.service.impl.UserSession;
 import fi.vm.sade.haku.oppija.lomake.validation.ElementTreeValidator;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidatorFactory;
 import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
@@ -281,7 +279,7 @@ public class ApplicationServiceImplTest {
         ApplicationSystem as = new ApplicationSystem("myAsId", null, new I18nText(new HashMap<String, String>()),
                 "JULKAISTU", null, null, true, null, null, null,
                 OppijaConstants.KOHDEJOUKKO_PERUSOPETUKSEN_JALKEINEN_VALMENTAVA, null, null, null, null, null,
-                new ArrayList<String>(), new ArrayList<String>(), null);
+                new ArrayList<String>(), new ArrayList<String>(), null, false);
         when(applicationSystemService.getApplicationSystem(eq("myAsId"))).thenReturn(as);
 
         try {
@@ -294,7 +292,7 @@ public class ApplicationServiceImplTest {
 
         as = new ApplicationSystem("myAsId", null, new I18nText(new HashMap<String, String>()), "JULKAISTU", null,
                 null, true, null, null, null, OppijaConstants.KOHDEJOUKKO_KORKEAKOULU, null, null, null, null, null,
-                new ArrayList<String>(), new ArrayList<String>(), null);
+                new ArrayList<String>(), new ArrayList<String>(), null, false);
         when(applicationSystemService.getApplicationSystem(eq("myAsId"))).thenReturn(as);
 
         try {
@@ -313,7 +311,7 @@ public class ApplicationServiceImplTest {
         ApplicationSystem as = new ApplicationSystem("myAsId", null, new I18nText(new HashMap<String, String>()),
                 "JULKAISTU", null, null, true, null, null, null,
                 OppijaConstants.KOHDEJOUKKO_PERUSOPETUKSEN_JALKEINEN_VALMENTAVA, null, null, null, null, null,
-                new ArrayList<String>(), new ArrayList<String>(), null);
+                new ArrayList<String>(), new ArrayList<String>(), null, false);
         Map<String, String> educationAnswers = new HashMap<String, String>();
         educationAnswers.put(OppijaConstants.ELEMENT_ID_SENDING_SCHOOL, "1.2.3.4");
 
@@ -347,7 +345,7 @@ public class ApplicationServiceImplTest {
         ApplicationSystem as = new ApplicationSystem("myAsId", null, new I18nText(new HashMap<String, String>()),
                 "JULKAISTU", null, null, true, null, null, null,
                 OppijaConstants.KOHDEJOUKKO_PERUSOPETUKSEN_JALKEINEN_VALMENTAVA, null, null, null, null, null,
-                new ArrayList<String>(), new ArrayList<String>(), null);
+                new ArrayList<String>(), new ArrayList<String>(), null, false);
 
         Map<String, String> aoAnswers = new HashMap<String, String>();
         aoAnswers.put(String.format(OppijaConstants.PREFERENCE_ID, 1), "1.2.3");
@@ -393,7 +391,7 @@ public class ApplicationServiceImplTest {
         ApplicationSystem as = new ApplicationSystem("myAsId", null, new I18nText(new HashMap<String, String>()),
                 "JULKAISTU", null, null, true, null, null, null,
                 OppijaConstants.KOHDEJOUKKO_PERUSOPETUKSEN_JALKEINEN_VALMENTAVA, null, null, null, null, null,
-                new ArrayList<String>(), new ArrayList<String>(), null);
+                new ArrayList<String>(), new ArrayList<String>(), null, false);
 
         Map<String, String> aoAnswers = new HashMap<>();
 

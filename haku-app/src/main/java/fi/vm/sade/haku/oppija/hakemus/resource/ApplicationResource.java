@@ -24,6 +24,7 @@ import fi.vm.sade.auditlog.haku.HakuOperation;
 import fi.vm.sade.haku.oppija.common.koulutusinformaatio.ApplicationOption;
 import fi.vm.sade.haku.oppija.common.koulutusinformaatio.ApplicationOptionService;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
+import fi.vm.sade.haku.oppija.hakemus.domain.Application.PaymentState;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.*;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationQueryParameters;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationQueryParametersBuilder;
@@ -35,12 +36,14 @@ import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.haku.oppija.ui.service.OfficerUIService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.I18nBundle;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.i18n.I18nBundleService;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.Oid;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.jstl.core.Config;
@@ -48,11 +51,13 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 import java.net.URISyntaxException;
 import java.util.*;
 
 import static fi.vm.sade.haku.AuditHelper.AUDIT;
 import static fi.vm.sade.haku.AuditHelper.builder;
+import static fi.vm.sade.haku.oppija.lomake.util.StringUtil.nameOrEmpty;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 /**
@@ -115,7 +120,47 @@ public class ApplicationResource {
                     .setOperaatio(HakuOperation.VIEW_APPLICATION).build());
             return application;
         } catch (ResourceNotFoundException e) {
-            throw new JSONException(Response.Status.NOT_FOUND, "Could not find requested application", e);
+            throw new JSONException(Status.NOT_FOUND, "Could not find requested application", e);
+        }
+    }
+
+    @POST
+    @Path("/{oid}/updatePaymentStatus")
+    @Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
+    @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_CRUD')")
+    @ApiOperation(
+            value = "Asettaa maksun tilan hakemukselle"
+    )
+    public void setPaymentState(@ApiParam(value = "Hakemuksen oid-tunniste") @PathParam(OID) String applicationOid,
+                                @RequestBody Map<String, String> body) {
+        try {
+            Application application = applicationService.getApplicationByOid(Oid.of(applicationOid).getValue());
+
+            PaymentState state = PaymentState.valueOf(body.get("paymentState"));
+            PaymentState oldState = application.getRequiredPaymentState();
+
+            if (oldState == null) {
+                throw new IllegalStateException("Application " + applicationOid + " is exempt from payment");
+            }
+
+            if (state != oldState) {
+                application.setRequiredPaymentState(state);
+
+                applicationService.update(new Application(application.getOid()), application, false);
+
+                AUDIT.log(builder()
+                        .hakemusOid(application.getOid())
+                        .setOperaatio(HakuOperation.PAYMENT_STATE_CHANGE)
+                        .add("oldValue", nameOrEmpty(oldState))
+                        .add("newValue", nameOrEmpty(state))
+                        .build());
+            }
+        } catch (NullPointerException|IllegalArgumentException e) {
+            throw new JSONException(Status.BAD_REQUEST, e.getMessage(), e);
+        } catch (IllegalStateException e) {
+            throw new JSONException(Status.FORBIDDEN, e.getMessage(), e);
+        } catch (Exception e) {
+            throw new JSONException(Status.INTERNAL_SERVER_ERROR, e.getMessage(), e);
         }
     }
 
@@ -367,7 +412,7 @@ public class ApplicationResource {
             String value = applicationService.getApplicationKeyValue(oid, key);
             keyValue.put(key, value);
         } catch (ResourceNotFoundException e) {
-            throw new JSONException(Response.Status.NOT_FOUND, e.getMessage(), e);
+            throw new JSONException(Status.NOT_FOUND, e.getMessage(), e);
         }
         return keyValue;
     }
@@ -385,11 +430,11 @@ public class ApplicationResource {
         try {
             applicationService.putApplicationAdditionalInfoKeyValue(oid, key, value);
         } catch (ResourceNotFoundException e) {
-            throw new JSONException(Response.Status.NOT_FOUND, e.getMessage(), e);
+            throw new JSONException(Status.NOT_FOUND, e.getMessage(), e);
         } catch (IllegalStateException e) {
-            throw new JSONException(Response.Status.CONFLICT, e.getMessage(), e);
+            throw new JSONException(Status.CONFLICT, e.getMessage(), e);
         } catch (IllegalArgumentException e) {
-            throw new JSONException(Response.Status.BAD_REQUEST, e.getMessage(), e);
+            throw new JSONException(Status.BAD_REQUEST, e.getMessage(), e);
         }
     }
 
@@ -449,11 +494,11 @@ public class ApplicationResource {
                 List<Application> applications = syntheticApplicationService.createApplications(syntheticApplication);
                 return Response.ok(applications).build();
             } else {
-                return Response.status(Response.Status.BAD_REQUEST).build();
+                return Response.status(Status.BAD_REQUEST).build();
             }
         } catch (Throwable e) {
             LOGGER.error("Could not import application: {} {}", syntheticApplication, e);
-            throw new JSONException(Response.Status.INTERNAL_SERVER_ERROR, "Could not import application", e);
+            throw new JSONException(Status.INTERNAL_SERVER_ERROR, "Could not import application", e);
         }
     }
 
@@ -465,7 +510,7 @@ public class ApplicationResource {
                 Application app = applicationService.getApplicationByOid(oid);
                 result.add(app);
             } catch (ResourceNotFoundException e) {
-                throw new JSONException(Response.Status.NOT_FOUND, "Could not find requested application with oid: " + oid, e);
+                throw new JSONException(Status.NOT_FOUND, "Could not find requested application with oid: " + oid, e);
             }
         }
         return result;
@@ -486,7 +531,7 @@ public class ApplicationResource {
             return Response.ok().build();
         } catch (Throwable e) {
             LOGGER.error("Passivation failed {}", e);
-            throw new JSONException(Response.Status.INTERNAL_SERVER_ERROR, "Passivation failed", e);
+            throw new JSONException(Status.INTERNAL_SERVER_ERROR, "Passivation failed", e);
         }
     }
 }

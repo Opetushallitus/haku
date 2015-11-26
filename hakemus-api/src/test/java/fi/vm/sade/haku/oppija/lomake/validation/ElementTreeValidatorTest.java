@@ -16,7 +16,10 @@
 
 package fi.vm.sade.haku.oppija.lomake.validation;
 
+import com.google.common.collect.ImmutableMap;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
+import fi.vm.sade.haku.oppija.hakemus.MockedRestClient;
+import fi.vm.sade.haku.oppija.hakemus.service.HakumaksuService;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.builder.TextQuestionBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
@@ -42,6 +45,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.createI18NAsIs;
 import static org.junit.Assert.assertEquals;
@@ -70,7 +74,15 @@ public class ElementTreeValidatorTest {
         //TODO : Not Mocked
         I18nBundleService i18nBundleService = new I18nBundleService(null);
         //TODO: Not Mocked
-        FormConfigurationService formConfigurationService = new FormConfigurationService(new KoodistoServiceMockImpl(), new HakuServiceMockImpl(), themeQuestionDAOMock, mock(HakukohdeService.class), mock(OrganizationService.class), formConfigurationDAOMock, i18nBundleService);
+        FormConfigurationService formConfigurationService =
+                new FormConfigurationService(
+                        new KoodistoServiceMockImpl(),
+                        new HakuServiceMockImpl(),
+                        themeQuestionDAOMock,
+                        mock(HakukohdeService.class),
+                        mock(OrganizationService.class),
+                        formConfigurationDAOMock,
+                        i18nBundleService);
         FormGenerator formGeneratorMock = new FormGeneratorImpl(hakuServiceMock, formConfigurationService, false, null);
         applicationSystemServiceMock = mock(ApplicationSystemService.class);
         when(applicationSystemServiceMock.getApplicationSystem(anyString())).thenReturn(formGeneratorMock.generate(ASID));
@@ -112,12 +124,12 @@ public class ElementTreeValidatorTest {
 
     @Test
     public void testValidateAsuinmaaSV() throws Exception {
-        testAsuinmaa("SWE", 3);
+        testAsuinmaa("SWE", 4);
     }
 
     @Test
     public void testValidateAsuinmaaFI() throws Exception {
-        testAsuinmaa("FIN", 3);
+        testAsuinmaa("FIN", 4);
     }
 
     private void testAsuinmaa(final String asuinmaa, final int errorCount) {

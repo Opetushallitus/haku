@@ -1,6 +1,7 @@
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.service;
 
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
+import fi.vm.sade.haku.oppija.hakemus.service.HakumaksuService;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain.GroupConfiguration;
@@ -75,7 +76,8 @@ public final class FormConfigurationService {
     public FormParameters getFormParameters(final ApplicationSystem applicationSystem) {
         FormConfiguration formConfiguration = createOrGetFormConfiguration(applicationSystem);
         return new FormParameters(applicationSystem, formConfiguration, koodistoService, themeQuestionDAO,
-          hakukohdeService, organizationService, i18nBundleService, this.demoMode, this.opintopolkuBaseUrl);
+                hakukohdeService, organizationService, i18nBundleService,
+                this.demoMode, this.opintopolkuBaseUrl);
     }
 
     public FormConfiguration createOrGetFormConfiguration(final String applicationSystemId){
@@ -105,6 +107,7 @@ public final class FormConfigurationService {
         Map<FormConfiguration.FeatureFlag, Boolean> defaultFeatureFlags = new HashMap<>();
         defaultFeatureFlags.put(FormConfiguration.FeatureFlag.erotteleAmmatillinenJaYoAmmatillinenKeskiarvo, true);
         defaultFeatureFlags.put(FormConfiguration.FeatureFlag.koulutusasteURI, true);
+        defaultFeatureFlags.put(FormConfiguration.FeatureFlag.requireEmail, true);
 
         FormConfiguration formConfiguration = new FormConfiguration(applicationSystem.getId(),
                   figureOutFormTypeForApplicationSystem(applicationSystem), defaultFeatureFlags);

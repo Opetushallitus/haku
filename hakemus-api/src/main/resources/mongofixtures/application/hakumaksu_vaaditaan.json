@@ -1,0 +1,337 @@
+{
+  "_id": {
+    "$oid": "5641cee2e4b009fa1f71118a"
+  },
+  "applicationSystemId" : "1.2.246.562.29.95390561488",
+  "answers" : {
+    "henkilotiedot": {
+      "kansalaisuus": "FIN",
+      "asuinmaa": "FIN",
+      "matkapuhelinnumero1": "",
+      "Sukunimi": "Testi",
+      "Postinumero": "00100",
+      "lahiosoite": "Testikatu 4",
+      "sukupuoli": "2",
+      "turvakielto": "false",
+      "Sähköposti": "",
+      "Kutsumanimi": "Asia",
+      "preference1-amkLiite": "true",
+      "Etunimet": "Asia kas",
+      "kotikunta": "020",
+      "onkoSinullaSuomalainenHetu": "true",
+      "aidinkieli": "FI",
+      "koulusivistyskieli": "FI",
+      "syntymaaika" : "10.11.1995"
+    },
+    "lisatiedot" : {
+      "asiointikieli" : "suomi"
+    },
+    "hakutoiveet" : {
+      "preference4-Koulutus-id-aoIdentifier" : "",
+      "preference3-Koulutus-id-ao-groups" : "",
+      "preference1-Koulutus-id-ao-groups" : "1.2.246.562.28.44918870433,1.2.246.562.28.56287157855,1.2.246.562.28.24297698602",
+      "preference4-Koulutus-id-educationcode" : "",
+      "preference4-Opetuspiste-id" : "",
+      "preference1-Opetuspiste" : "Aalto-yliopisto, Kauppakorkeakoulu",
+      "preference3-Koulutus-id-athlete" : "",
+      "preference5-Opetuspiste-id" : "",
+      "preference2-Koulutus-id-attachmentgroups" : "",
+      "preference4-Koulutus-id-athlete" : "",
+      "preference2-Koulutus-id-aoIdentifier" : "",
+      "preference2-Koulutus-id-attachments" : "",
+      "preference3-Opetuspiste-id" : "",
+      "preference4-Koulutus-id-attachmentgroups" : "",
+      "preference6-Koulutus-id-lang" : "",
+      "preference6-Koulutus-id-vocational" : "",
+      "preference2-Koulutus-id-ao-groups" : "",
+      "preference1-Koulutus-educationDegree" : "koulutusasteoph2002_72",
+      "preference6-Koulutus-id-educationcode" : "",
+      "preference5-Koulutus-educationDegree" : "",
+      "preference6-Koulutus-id-ao-groups" : "",
+      "preference2-Koulutus-id-sora" : "",
+      "preference4-Koulutus-id-vocational" : "",
+      "preference3-Koulutus-id" : "",
+      "preference1-yoLiite" : "true",
+      "54ffe194e4b027da5b4d0337" : "a.b@example.com",
+      "preference1-Opetuspiste-id" : "1.2.246.562.10.61042218794",
+      "preference5-Koulutus-id-lang" : "",
+      "preference1-Koulutus-id-sora" : "false",
+      "preference2-Koulutus-educationDegree" : "",
+      "preference5-Koulutus-id-sora" : "",
+      "preference1-Koulutus-id-aoIdentifier" : "",
+      "preference1-Koulutus-id-educationcode" : "koulutus_732101",
+      "preference6-Koulutus-id-kaksoistutkinto" : "",
+      "preference5-Koulutus-id-ao-groups" : "",
+      "preference3-Koulutus-id-attachmentgroups" : "",
+      "preference6-Koulutus-id-sora" : "",
+      "preference5-Koulutus-id-athlete" : "",
+      "preference2-Koulutus-id" : "",
+      "preference5-Koulutus-id-attachments" : "",
+      "preference3-Koulutus-id-vocational" : "",
+      "preference1-Koulutus-id-vocational" : "false",
+      "preference6-Koulutus-id-athlete" : "",
+      "preference4-Koulutus-educationDegree" : "",
+      "preference1-Koulutus-id-athlete" : "false",
+      "preference4-Koulutus-id-kaksoistutkinto" : "",
+      "preference6-Koulutus-educationDegree" : "",
+      "preference6-Koulutus-id-attachments" : "",
+      "preference5-Koulutus-id-kaksoistutkinto" : "",
+      "preference6-Koulutus-id-aoIdentifier" : "",
+      "preference6-Koulutus-id-attachmentgroups" : "",
+      "preference5-Koulutus-id" : "",
+      "preference2-Opetuspiste" : "",
+      "preference2-Koulutus-id-athlete" : "",
+      "preference1-Koulutus-id-attachments" : "true",
+      "preference3-Koulutus-educationDegree" : "",
+      "preference2-Koulutus-id-kaksoistutkinto" : "",
+      "preference5-Opetuspiste" : "",
+      "preference3-Koulutus-id-kaksoistutkinto" : "",
+      "preference5-Koulutus-id-educationcode" : "",
+      "preference1-Koulutus-id-attachmentgroups" : "1.2.246.562.28.44918870433",
+      "preference4-Koulutus-id-sora" : "",
+      "preference5-Koulutus-id-vocational" : "",
+      "preference3-Koulutus-id-lang" : "",
+      "preference2-Opetuspiste-id" : "",
+      "preference3-Opetuspiste" : "",
+      "preference4-Koulutus-id-lang" : "",
+      "preference6-Koulutus-id" : "",
+      "preference5-Koulutus-id-attachmentgroups" : "",
+      "preference2-Koulutus-id-vocational" : "",
+      "preferencesVisible" : "6",
+      "preference1-Koulutus-id" : "1.2.246.562.20.40822369126",
+      "preference3-Koulutus-id-attachments" : "",
+      "preference3-Koulutus-id-sora" : "",
+      "preference4-Koulutus-id" : "",
+      "preference2-Koulutus-id-lang" : "",
+      "preference4-Koulutus-id-attachments" : "",
+      "preference4-Opetuspiste" : "",
+      "preference3-Koulutus-id-educationcode" : "",
+      "preference1-Koulutus" : "Kauppatieteet (Kauppatieteellisen alan yhteisvalinta)",
+      "preference1-Koulutus-id-kaksoistutkinto" : "false",
+      "preference3-Koulutus-id-aoIdentifier" : "",
+      "preference5-Koulutus-id-aoIdentifier" : "",
+      "preference1-Koulutus-id-lang" : "EN",
+      "preference4-Koulutus-id-ao-groups" : "",
+      "preference6-Opetuspiste" : "",
+      "preference2-Koulutus-id-educationcode" : "",
+      "preference6-Opetuspiste-id" : "",
+      "54c0e259e4b021d892c6584c" : "option_4"
+    },
+    "koulutustausta" : {
+      "pohjakoulutus_yo_ulkomainen" : "true",
+      "pohjakoulutus_kk_ulk_oppilaitos" : "bar",
+      "pohjakoulutus_ulk_vuosi" : "2014",
+      "pohjakoulutus_yo_ulkomainen_vuosi" : "1900",
+      "pohjakoulutus_yo_ulkomainen_maa" : "TGO",
+      "pohjakoulutus_yo_ulkomainen_tutkinto" : "ib",
+      "pohjakoulutus_ulk_oppilaitos" : "bar",
+      "pohjakoulutus_kk_ulk_taso" : "4",
+      "pohjakoulutus_kk_ulk_pvm" : "09.11.2015",
+      "pohjakoulutus_ulk" : "true",
+      "pohjakoulutus_ulk_nimike" : "...oka asianomaisessa maassa antaa hakukelpoisuuden korkeakouluun",
+      "pohjakoulutus_kk_ulk" : "true",
+      "pohjakoulutus_ulk_suoritusmaa" : "BHR",
+      "pohjakoulutus_kk_ulk_nimike" : "Muualla kuin Suomessa suoritettu korkeakoulututkinto",
+      "pohjakoulutus_kk_ulk_maa" : "AFG",
+      "suoritusoikeus_tai_aiempi_tutkinto" : "false"
+    },
+    "osaaminen" : {}
+  },
+  "oid" : "1.2.246.562.11.00004580445",
+  "state" : "ACTIVE",
+  "studentIdentificationDone" : false,
+  "personOid" : "1.2.246.562.24.25780876607",
+  "lastAutomatedProcessingTime" : 1447153513805,
+  "automatedProcessingFailCount" : 8,
+  "automatedProcessingFailRetryTime" : 1447153513804,
+  "received" : 1447153378550,
+  "updated" : 1447153513805,
+  "redoPostProcess" : "DONE",
+  "fullName" : "a b",
+  "searchNames" : [
+    "b",
+    "a"
+  ],
+  "meta" : {
+    "filingLanguage" : "fi",
+    "sessionId" : "anonymousUser"
+  },
+  "authorizationMeta" : {
+    "opoAllowed" : false,
+    "aoOrganizations" : {
+      "1" : [
+        "1.2.246.562.10.56753942459",
+        "1.2.246.562.10.82388989657",
+        "1.2.246.562.10.00000000001",
+        "1.2.246.562.10.61042218794"
+      ]
+    },
+    "allAoOrganizations" : [
+      "1.2.246.562.10.56753942459",
+      "1.2.246.562.10.00000000001",
+      "1.2.246.562.10.82388989657",
+      "1.2.246.562.10.61042218794"
+    ],
+    "applicationPreferences" : [
+      {
+        "ordinal" : 1,
+        "preferenceData" : {
+          "Koulutus-id-vocational" : "false",
+          "Koulutus-id-attachmentgroups" : "1.2.246.562.28.44918870433",
+          "yoLiite" : "true",
+          "Koulutus-id-ao-groups" : "1.2.246.562.28.44918870433,1.2.246.562.28.56287157855,1.2.246.562.28.24297698602",
+          "Opetuspiste" : "Aalto-yliopisto, Kauppakorkeakoulu",
+          "Koulutus-id-athlete" : "false",
+          "Koulutus-id" : "1.2.246.562.20.40822369126",
+          "Koulutus-id-sora" : "false",
+          "Koulutus-id-attachments" : "true",
+          "Koulutus-id-kaksoistutkinto" : "false",
+          "Koulutus-educationDegree" : "koulutusasteoph2002_72",
+          "Opetuspiste-id" : "1.2.246.562.10.61042218794",
+          "Koulutus-id-educationcode" : "koulutus_732101",
+          "Koulutus" : "Kauppatieteet (Kauppatieteellisen alan yhteisvalinta)",
+          "Koulutus-id-lang" : "EN"
+        }
+      }
+    ]
+  },
+  "overriddenAnswers" : {
+    "sukupuoli" : "1",
+    "turvakielto" : "false",
+    "Kutsumanimi" : "b",
+    "Etunimet" : "b",
+    "Sukunimi" : "a",
+    "onkoSinullaSuomalainenHetu" : "true",
+    "Henkilotunnus" : "101195-915B",
+    "aidinkieli" : "FI",
+    "syntymaaika" : "10.11.1995"
+  },
+  "notes" : [
+    {
+      "type" : "ApplicationNote",
+      "noteText" : "Hakemus vastaanotettu",
+      "added" : 1447153378550,
+      "user" : "anonymousUser"
+    }
+  ],
+  "history" : [
+    {
+      "type" : "Change",
+      "modified" : 1447153379792,
+      "modifier" : "järjestelmä",
+      "reason" : "Post Processing",
+      "changes" : [
+        {
+          "field" : "turvakielto",
+          "new value" : "false"
+        },
+        {
+          "field" : "onkoSinullaSuomalainenHetu",
+          "new value" : "false"
+        }
+      ]
+    }
+  ],
+  "version" : 1,
+  "modelVersion" : 7,
+  "preferenceEligibilities" : [
+    {
+      "aoId" : "1.2.246.562.20.40822369126",
+      "status" : "NOT_CHECKED",
+      "source" : "REGISTER"
+    }
+  ],
+  "attachmentRequests" : [
+    {
+      "id" : "form.valmis.todistus.yo_ulk_group_1.2.246.562.28.44918870433",
+      "preferenceAoGroupId" : "1.2.246.562.28.44918870433",
+      "processingStatus" : "NOT_CHECKED",
+      "applicationAttachment" : {
+        "name" : {
+          "translations" : {
+            "fi" : "Todistuskopio ulkomailla suoritetun ylioppilastutkinnon todistuksesta",
+            "sv" : "Betygskopia av ditt studentexamensbetyg avlagd utomlands",
+            "en" : "Copy of your matriculation examination certificate completed outside Finland"
+          }
+        },
+        "deliveryNote" : {
+          "translations" : {
+            "fi" : "23.4.2015 klo 15:00. Jos valmistut hakukautena, tarkista palautuspäivämäärä korkeakoulusta johon olet hakemassa.",
+            "sv" : "23.4.2015 kl 15:00. Om du blir färdig under ansökningsperioden, kontrollera inlämningsdatum från högskolan du söker till. ",
+            "en" : "23 April 2015 at 3 PM. Check the delivery deadline from the higher education institution if you will complete your degree during the spring application round."
+          }
+        },
+        "address" : {
+          "recipient" : "Aalto-yliopiston hakijapalvelut",
+          "streetAddress" : "PL 11110",
+          "postalCode" : "00076",
+          "postOffice" : "AALTO"
+        }
+      },
+      "receptionStatus" : "NOT_RECEIVED"
+    },
+    {
+      "id" : "form.valmis.todistus.ulk_group_1.2.246.562.28.44918870433",
+      "preferenceAoGroupId" : "1.2.246.562.28.44918870433",
+      "processingStatus" : "NOT_CHECKED",
+      "applicationAttachment" : {
+        "name" : {
+          "translations" : {
+            "fi" : "Todistuskopio ulkomailla suoritetusta tutkinnosta",
+            "sv" : "Betygskopia av din examen avlagd utomlands",
+            "en" : "Copy of your foreign qualification certificate"
+          }
+        },
+        "deliveryNote" : {
+          "translations" : {
+            "fi" : "23.4.2015 klo 15:00. Jos valmistut hakukautena, tarkista palautuspäivämäärä korkeakoulusta johon olet hakemassa.",
+            "sv" : "23.4.2015 kl 15:00. Om du blir färdig under ansökningsperioden, kontrollera inlämningsdatum från högskolan du söker till. ",
+            "en" : "23 April 2015 at 3 PM. Check the delivery deadline from the higher education institution if you will complete your degree during the spring application round."
+          }
+        },
+        "address" : {
+          "recipient" : "Aalto-yliopiston hakijapalvelut",
+          "streetAddress" : "PL 11110",
+          "postalCode" : "00076",
+          "postOffice" : "AALTO"
+        }
+      },
+      "receptionStatus" : "NOT_RECEIVED"
+    },
+    {
+      "id" : "c62d0791-d6ed-44be-ac30-5c420addea57",
+      "preferenceAoGroupId" : "1.2.246.562.28.24297698602",
+      "processingStatus" : "NOT_CHECKED",
+      "applicationAttachment" : {
+        "header" : {
+          "translations" : {
+            "fi" : "Kopio tutkintotodistuksesta",
+            "sv" : "En kopia av examensbetyget",
+            "en" : "Copy of the Diploma"
+          }
+        },
+        "description" : {
+          "translations" : {
+            "fi" : "Suomalaisen ammatillisen perustutkinnon, ammatti- tai erikoisammattitutkinnon, ammattikorkeakoulututkinnon tai ulkomaisen tutkinnon jo tehneiden kopio tutkintotodistuksesta tulee olla saapunut Aalto-yliopistolle 23.4.2015 klo 15:00 mennessä. Keväällä 2015 valmistuvien kopio tutkintotodistuksesta tulee olla saapunut 4.6.2015 klo 15:00 mennessä.",
+            "sv" : "Bifoga en kopia av betyget över en finsk yrkesinriktad grundexamen, specialyrkesexamen, examen på skolnivå, institutnivå eller yrkesinriktad examen på högre nivå eller utländsk examen senast den 23.4.2015 kl. 15:00. Sökande som våren 2015 skall avlägga examen, skall skicka en kopia av betyget senast den 4.6.2015 kl. 15:00 till Aalto-universitetet.",
+            "en" : "Submit a copy of the diploma/certificate from any upper secondary school, undergraduate, graduate or professional school attended (showing the eligibility to study in a university) must be received by April 23, 2015. Spring 2015 graduates have to submit a copy of the diploma or another certificate of the final grades given by the school by June 4, 2015."
+          }
+        },
+        "deadline" : 1429790400000,
+        "address" : {
+          "recipient" : "Aalto-yliopiston hakijapalvelut",
+          "streetAddress" : "PL 11110",
+          "postalCode" : "00076",
+          "postOffice" : "AALTO"
+        }
+      },
+      "receptionStatus" : "NOT_RECEIVED"
+    }
+  ],
+  "preferencesChecked" : [
+    {
+      "preferenceAoOid" : "1.2.246.562.20.40822369126",
+      "checked" : false
+    }
+  ]
+}

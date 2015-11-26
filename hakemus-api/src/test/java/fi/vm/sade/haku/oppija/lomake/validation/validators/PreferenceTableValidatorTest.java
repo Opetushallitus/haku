@@ -86,7 +86,7 @@ public class PreferenceTableValidatorTest {
     final PreferenceTable table = new PreferenceTable("tableid", null, false, 1000000, false) {{
         setGroupRestrictionValidators(Arrays.asList(new GroupRestrictionMaxNumberValidator(limitedGroup, 2, new I18nText(maxErrors)), new GroupPrioritisationValidator(priorizationGroup, new I18nText(prioErrors))));
         for (int i = 1; i <= 5; i++) {
-            addChild(new PreferenceRow("preference" + i, null, null, null, null, null));
+            addChild(new PreferenceRow("preference" + i, null, null, null, null, null, null));
         }
     }};
 

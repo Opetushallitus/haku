@@ -1,6 +1,7 @@
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja;
 
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
+import fi.vm.sade.haku.oppija.hakemus.service.HakumaksuService;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationPeriod;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
@@ -34,9 +35,15 @@ public class FormParameters {
     private boolean demoMode;
     private String opintopolkuBaseUrl;
 
-    public FormParameters(final ApplicationSystem applicationSystem, final FormConfiguration formConfiguration, final KoodistoService koodistoService,
-                          final ThemeQuestionDAO themeQuestionDAO, final HakukohdeService hakukohdeService,
-                          final OrganizationService organizationService, final I18nBundleService i18nBundleService, final boolean demoMode, final String opintopolkuBaseUrl) {
+    public FormParameters(final ApplicationSystem applicationSystem,
+                          final FormConfiguration formConfiguration,
+                          final KoodistoService koodistoService,
+                          final ThemeQuestionDAO themeQuestionDAO,
+                          final HakukohdeService hakukohdeService,
+                          final OrganizationService organizationService,
+                          final I18nBundleService i18nBundleService,
+                          final boolean demoMode,
+                          final String opintopolkuBaseUrl) {
         this.applicationSystem = applicationSystem;
         this.koodistoService = koodistoService;
         this.themeQuestionDAO = themeQuestionDAO;
@@ -104,8 +111,12 @@ public class FormParameters {
         return false;
     }
 
-    public boolean isHigherEd() {
+    public static boolean isHigherEd(ApplicationSystem applicationSystem) {
         return applicationSystem.getKohdejoukkoUri().equals(OppijaConstants.KOHDEJOUKKO_KORKEAKOULU);
+    }
+
+    public boolean isHigherEd() {
+        return isHigherEd(applicationSystem);
     }
 
     public boolean isKevaanLisahaku() {
@@ -121,6 +132,10 @@ public class FormParameters {
 
     public boolean isUniqueApplicantRequired() {
         return HAKUTYYPPI_VARSINAINEN_HAKU.equals(applicationSystem.getApplicationSystemType());
+    }
+
+    public boolean isEmailRequired() {
+        return formConfiguration.getFeatureFlag(FormConfiguration.FeatureFlag.requireEmail);
     }
 
     public ThemeQuestionConfigurator getThemeQuestionConfigurator() {

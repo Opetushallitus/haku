@@ -16,7 +16,8 @@
 
 package fi.vm.sade.haku.oppija.hakemus.domain;
 
-import com.google.common.base.Predicates;
+import com.google.common.base.*;
+import com.google.common.base.Optional;
 import com.google.common.collect.Maps;
 import fi.vm.sade.haku.oppija.lomake.domain.ObjectIdDeserializer;
 import fi.vm.sade.haku.oppija.lomake.domain.ObjectIdSerializer;
@@ -51,6 +52,7 @@ public class Application implements Serializable {
     private static final Logger log = LoggerFactory.getLogger(Application.class);
     public static final Integer CURRENT_MODEL_VERSION = 7;
     public static final String META_FILING_LANGUAGE = "filingLanguage";
+    public static final String REQUIRED_PAYMENT_STATE = "requiredPaymentState";
 
     public Integer getModelVersion() {
         return modelVersion;
@@ -66,6 +68,18 @@ public class Application implements Serializable {
 
     public enum PostProcessingState {
         NOMAIL, FULL, DONE, FAILED
+    }
+
+    public enum PaymentState {
+        NOTIFIED, // Successfully notified payment system
+        OK, // Payment done according to payment system
+        NOT_OK // Payment system indicated that payment will not be made
+    }
+
+    private PaymentState requiredPaymentState;
+
+    public boolean paymentIsOk() {
+        return requiredPaymentState == null || requiredPaymentState == PaymentState.OK;
     }
 
     private static final long serialVersionUID = -7491168801255850954L;
@@ -621,6 +635,14 @@ public class Application implements Serializable {
         this.preferencesChecked = preferencesChecked;
     }
 
+    public PaymentState getRequiredPaymentState() {
+        return requiredPaymentState;
+    }
+
+    public void setRequiredPaymentState(PaymentState requiredPaymentState) {
+        this.requiredPaymentState = requiredPaymentState;
+    }
+
     @Override
     public Application clone() {
         final Application clone = new Application(this.oid);
@@ -654,6 +676,7 @@ public class Application implements Serializable {
         clone.authorizationMeta = null == this.authorizationMeta ? null: authorizationMeta.clone();
         clone.automatedProcessingFailCount = this.automatedProcessingFailCount;
         clone.automatedProcessingFailRetryTime = this.automatedProcessingFailRetryTime;
+        clone.requiredPaymentState = this.requiredPaymentState;
         return clone;
     }
 

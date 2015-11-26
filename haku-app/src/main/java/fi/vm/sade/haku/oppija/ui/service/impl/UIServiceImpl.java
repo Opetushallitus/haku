@@ -16,12 +16,19 @@
 
 package fi.vm.sade.haku.oppija.ui.service.impl;
 
+import com.google.common.base.Function;
 import com.google.common.base.Predicate;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import fi.vm.sade.haku.oppija.common.koulutusinformaatio.KoulutusinformaatioService;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.haku.oppija.hakemus.domain.util.AttachmentUtil;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
+import fi.vm.sade.haku.oppija.hakemus.service.HakumaksuService;
+import fi.vm.sade.haku.oppija.hakemus.service.HakumaksuService.Eligibility;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationState;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
@@ -36,10 +43,11 @@ import fi.vm.sade.haku.oppija.lomake.service.Session;
 import fi.vm.sade.haku.oppija.lomake.util.ElementTree;
 import fi.vm.sade.haku.oppija.ui.service.UIService;
 import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
-import fi.vm.sade.haku.oppija.common.koulutusinformaatio.KoulutusinformaatioService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.i18n.I18nBundleService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.ApplicationOptionOid;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.MergedAnswers;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.PDFService;
 import org.apache.http.HttpResponse;
 import org.slf4j.Logger;
@@ -53,7 +61,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.jstl.core.Config;
 import java.util.*;
+import java.util.concurrent.ExecutionException;
 
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.*;
+import static org.apache.commons.lang.StringUtils.isNotEmpty;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
 @Service
@@ -73,6 +84,7 @@ public class UIServiceImpl implements UIService {
     private final AuthenticationService authenticationService;
     private final I18nBundleService i18nBundleService;
     private final PDFService pdfService;
+    private final HakumaksuService hakumaksuService;
     private final boolean demoMode;
     private final String opintopolkuBaseUrl;
 
@@ -83,9 +95,11 @@ public class UIServiceImpl implements UIService {
                          final KoulutusinformaatioService koulutusinformaatioService,
                          final AuthenticationService authenticationService,
                          final I18nBundleService i18nBundleService,
-                         @Value("${koulutusinformaatio.base.url}") final String koulutusinformaatioBaseUrl, PDFService pdfService,
-                         @Value("${mode.demo:false}") boolean demoMode,
-                         @Value("${opintopolku.baseurl:https://opintopolku.fi}") String opintopolkuBaseUrl) {
+                         @Value("${koulutusinformaatio.base.url}") final String koulutusinformaatioBaseUrl,
+                         final PDFService pdfService,
+                         final HakumaksuService hakumaksuService,
+                         @Value("${mode.demo:false}") final boolean demoMode,
+                         @Value("${opintopolku.baseurl:https://opintopolku.fi}") final String opintopolkuBaseUrl) {
         this.applicationService = applicationService;
         this.applicationSystemService = applicationSystemService;
         this.userSession = userSession;
@@ -94,6 +108,7 @@ public class UIServiceImpl implements UIService {
         this.koulutusinformaatioBaseUrl = koulutusinformaatioBaseUrl;
         this.i18nBundleService = i18nBundleService;
         this.pdfService = pdfService;
+        this.hakumaksuService = hakumaksuService;
         this.demoMode = demoMode;
         this.opintopolkuBaseUrl = opintopolkuBaseUrl;
     }
@@ -115,6 +130,11 @@ public class UIServiceImpl implements UIService {
         }});
         response.addObjectToModel("demoMode", this.demoMode);
         response.addObjectToModel("opintopolkuBaseUrl", this.opintopolkuBaseUrl);
+
+        if (activeApplicationSystem.isMaksumuuriKaytossa()) {
+            response.addObjectToModel("paymentRequired", hakumaksuService.isPaymentRequired(MergedAnswers.of(application)));
+        }
+
         return response;
     }
 
@@ -139,14 +159,21 @@ public class UIServiceImpl implements UIService {
     }
 
     @Override
-    public ModelResponse getPhase(String applicationSystemId, String phaseId, String lang) {
+    public ModelResponse getPhase(String applicationSystemId, String phaseId, String lang) throws ExecutionException {
         ApplicationSystem activeApplicationSystem = applicationSystemService.getActiveApplicationSystem(applicationSystemId);
         ElementTree elementTree = new ElementTree(activeApplicationSystem.getForm());
         Element phase = activeApplicationSystem.getForm().getChildById(phaseId);
         Application application = applicationService.getApplication(applicationSystemId);
+
+        Map<String, String> answers = userSession.populateWithPrefillData(ensureApplicationOptionGroupData(phaseId, application.getVastauksetMerged(), lang));
+
+        if (phaseId.equals(PHASE_APPLICATION_OPTIONS) && activeApplicationSystem.isMaksumuuriKaytossa()) {
+            answers.putAll(paymentNotificationAnswers(answers, hakumaksuService.paymentRequirements(MergedAnswers.of(answers))));
+        }
+
         elementTree.checkPhaseTransfer(application.getPhaseId(), phaseId);
         ModelResponse modelResponse = new ModelResponse(activeApplicationSystem);
-        modelResponse.addAnswers(userSession.populateWithPrefillData(ensureApplicationOptionGroupData(phaseId, application.getVastauksetMerged(), lang)));
+        modelResponse.addAnswers(answers);
         modelResponse.setElement(phase);
         modelResponse.setKoulutusinformaatioBaseUrl(koulutusinformaatioBaseUrl);
         modelResponse.addObjectToModel("baseEducationDoesNotRestrictApplicationOptions", activeApplicationSystem.baseEducationDoesNotRestrictApplicationOptions());
@@ -222,23 +249,44 @@ public class UIServiceImpl implements UIService {
         return modelResponse;
     }
 
+    private static ImmutableMap<String, String> paymentNotificationAnswers(Map<String, String> answers, ImmutableMap<ApplicationOptionOid, ImmutableSet<Eligibility>> paymentRequirements) {
+        ImmutableMap.Builder<String, String> builder = ImmutableMap.builder();
+        for (String key: answers.keySet()){
+            if (key != null && key.startsWith(PREFERENCE_PREFIX) && key.endsWith(OPTION_ID_POSTFIX) && isNotEmpty(answers.get(key))){
+                ImmutableSet<Eligibility> eligibilities = paymentRequirements.get(ApplicationOptionOid.of(answers.get(key)));
+                if (!eligibilities.isEmpty()) {
+                    String preferenceString = key.replace(OPTION_ID_POSTFIX, "");
+                    String paymentRequirementKey = preferenceString + PAYMENT_NOTIFICATION_POSTFIX;
+                    builder.put(paymentRequirementKey, "true");
+                }
+
+            }
+        }
+        return builder.build();
+    }
+
     @Override
-    public ModelResponse updateRulesMulti(String applicationSystemId, String phaseId, List<String> elementIds, Map<String, String> currentAnswers) {
+    public ModelResponse updateRulesMulti(String applicationSystemId, String phaseId, List<String> ruleIds, Map<String, String> currentAnswers) throws ExecutionException {
         ApplicationSystem activeApplicationSystem = applicationSystemService.getActiveApplicationSystem(applicationSystemId);
-        Form activeForm = activeApplicationSystem.getForm();
+        final Form activeForm = activeApplicationSystem.getForm();
         Application application = applicationService.getApplication(applicationSystemId);
         Map<String, String> otherAnswers = application.getVastauksetMergedIgnoringPhase(phaseId);
         currentAnswers.putAll(otherAnswers);
+
+        List<Element> ruleElements = Lists.transform(ruleIds, new Function<String, Element>() {
+            @Override
+            public Element apply(String input) {
+                return activeForm.getChildById(input);
+            }
+        });
+
+        if (phaseId.equals(PHASE_APPLICATION_OPTIONS) && activeApplicationSystem.isMaksumuuriKaytossa()) {
+            currentAnswers.putAll(paymentNotificationAnswers(currentAnswers, hakumaksuService.paymentRequirements(MergedAnswers.of(currentAnswers))));
+        }
+
         ModelResponse modelResponse = new ModelResponse();
         modelResponse.addAnswers(currentAnswers);
-
-        List<Element> elements = new ArrayList();
-        if (elementIds != null) {
-            for (String elementId : elementIds) {
-                elements.add(activeForm.getChildById(elementId));
-            }
-        }
-        modelResponse.addObjectToModel("elements", elements);
+        modelResponse.addObjectToModel("elements", ruleElements);
         modelResponse.setForm(activeForm);
         modelResponse.setApplicationSystemId(applicationSystemId);
         modelResponse.setKoulutusinformaatioBaseUrl(koulutusinformaatioBaseUrl);
@@ -269,12 +317,18 @@ public class UIServiceImpl implements UIService {
     }
 
     @Override
-    public ModelResponse savePhase(String applicationSystemId, String phaseId, Map<String, String> originalAnswers, String lang) {
+    public ModelResponse savePhase(String applicationSystemId, String phaseId, Map<String, String> originalAnswers, String lang) throws ExecutionException {
         Map<String, String> ensuredAnswers = ensureApplicationOptionGroupData(phaseId, originalAnswers, lang);
         ApplicationSystem activeApplicationSystem = applicationSystemService.getActiveApplicationSystem(applicationSystemId);
+
+        if (phaseId.equals(PHASE_APPLICATION_OPTIONS) && activeApplicationSystem.isMaksumuuriKaytossa()) {
+            ensuredAnswers.putAll(paymentNotificationAnswers(ensuredAnswers, hakumaksuService.paymentRequirements(MergedAnswers.of(ensuredAnswers))));
+        }
+
         Form activeForm = activeApplicationSystem.getForm();
         ApplicationState applicationState = applicationService.saveApplicationPhase(
                 new ApplicationPhase(applicationSystemId, phaseId, ensuredAnswers));
+
         ModelResponse modelResponse = new ModelResponse();
         modelResponse.addObjectToModel("ongoing", aoSearchOnlyOngoing);
         modelResponse.addObjectToModel("baseEducationDoesNotRestrictApplicationOptions", activeApplicationSystem.baseEducationDoesNotRestrictApplicationOptions());

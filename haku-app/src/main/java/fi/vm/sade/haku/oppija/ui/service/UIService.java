@@ -23,6 +23,7 @@ import org.apache.http.HttpResponse;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 public interface UIService {
 
@@ -32,7 +33,7 @@ public interface UIService {
 
     ModelResponse getPreview(final String applicationSystemId);
 
-    ModelResponse getPhase(final String applicationSystemId, final String phaseId, final String lang);
+    ModelResponse getPhase(final String applicationSystemId, final String phaseId, final String lang) throws ExecutionException;
 
     void storePrefilledAnswers(final String applicationSystemId, final Map<String, String> answers, String lang);
 
@@ -42,11 +43,11 @@ public interface UIService {
 
     ModelResponse updateRules(final String applicationSystemId, final String phaseId, final String elementId, Map<String, String> currentAnswers);
 
-    ModelResponse updateRulesMulti(final String applicationSystemId, final String phaseId, final List<String> elementIds, Map<String, String> currentAnswers);
+    ModelResponse updateRulesMulti(final String applicationSystemId, final String phaseId, final List<String> elementIds, Map<String, String> currentAnswers) throws ExecutionException;
 
     ModelResponse getPhaseElement(final String applicationSystemId, final String phaseId, final String elementId);
 
-    ModelResponse savePhase(final String applicationSystemId, final String phaseId, Map<String, String> answers, String lang);
+    ModelResponse savePhase(final String applicationSystemId, final String phaseId, Map<String, String> answers, String lang) throws ExecutionException;
 
     ModelResponse submitApplication(final String applicationSystemId, String language);
 

@@ -16,6 +16,7 @@
 
 package fi.vm.sade.haku.virkailija.authentication.impl;
 
+import com.google.common.base.Optional;
 import com.google.gson.*;
 import fi.vm.sade.generic.rest.CachingRestClient;
 import fi.vm.sade.haku.RemoteServiceException;
@@ -83,22 +84,30 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public Person addPerson(Person person) {
         String hetu = person.getSocialSecurityNumber();
         String personOid = person.getPersonOid();
-        Person newPerson = null;
+        String email = person.getEmail();
+        Optional<Person> newPerson = Optional.absent();
+
         if (isNotBlank(personOid)) {
-            newPerson = getHenkilo(personOid);
+            newPerson = Optional.fromNullable(getHenkilo(personOid));
         }
 
-        if (newPerson == null && isNotBlank(hetu)) {
-            newPerson = fetchPerson(hetu);
+        if (!newPerson.isPresent() && isNotBlank(hetu)) {
+            newPerson = Optional.fromNullable(fetchPerson(hetu));
         }
 
-        if (newPerson == null) {
-            newPerson = createPerson(person);
+        if (!newPerson.isPresent() && isNotBlank(email)) {
+            newPerson = Optional.fromNullable(fetchPersonByStudentToken(email));
         }
 
-        person.mergeWith(newPerson);
+        if (!newPerson.isPresent()) {
+            newPerson = Optional.fromNullable(createPerson(person));
+        }
 
-        return person;
+        try {
+            return person.mergeWith(newPerson.get());
+        } catch (IllegalStateException e) {
+            throw new RemoteServiceException("Could not create new person from " + person, e);
+        }
     }
 
     @Override
@@ -148,16 +157,15 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public Person getHenkilo(String personOid) {
         String url = "/resources/s2s/" + personOid;
-        Person person = null;
         try {
             String personJson = cachingRestClient.getAsString(url);
             log.debug("Got person: {}", personJson);
-            person = gson.fromJson(personJson, Person.class);
+            Person person = gson.fromJson(personJson, Person.class);
             log.debug("Deserialized person: {}", person);
+            return person;
         } catch (IOException e) {
             throw new RemoteServiceException(targetService + url, e);
         }
-        return person;
     }
 
     @Override
@@ -177,6 +185,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         log.debug("Person found: {}", responseString);
         return gson.fromJson(responseString, Person.class);
     }
+
     @Override
     public Person checkStudentOid(String personOid) {
 
@@ -193,25 +202,39 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         return null;
     }
 
-
     private Person createPerson(Person person) {
         String personJson = gson.toJson(person, Person.class);
         String url = "/resources/henkilo";
-        String oid = null;
         try {
             log.debug("Creating person: {}", personJson);
             HttpResponse response = cachingRestClient.post(url, MediaType.APPLICATION_JSON, personJson);
             BasicResponseHandler handler = new BasicResponseHandler();
-            oid = handler.handleResponse(response);
+            String oid = handler.handleResponse(response);
+            return getHenkilo(oid);
         } catch (IOException e) {
             throw new RemoteServiceException(targetService + url, e);
         }
-        return getHenkilo(oid);
     }
 
     private Person fetchPerson(String hetu) {
         String responseString = null;
         String url = "/resources/s2s/byHetu/" + hetu;
+        try {
+            responseString = cachingRestClient.getAsString(url);
+        } catch (CachingRestClient.HttpException hte) {
+            if (hte.getStatusCode() == 404) {
+                return null;
+            }
+        } catch (IOException e) {
+            throw new RemoteServiceException(targetService + url, e);
+        }
+
+        return gson.fromJson(responseString, Person.class);
+    }
+
+    private Person fetchPersonByStudentToken(String token) {
+        String responseString = null;
+        String url = "/resources/henkilo/identification?idp=oppijaToken&id=" + token;
         try {
             responseString = cachingRestClient.getAsString(url);
         } catch (CachingRestClient.HttpException hte) {

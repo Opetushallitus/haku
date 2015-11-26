@@ -40,19 +40,23 @@ public class PreferenceRow extends Question {
     private I18nText childLONameListLabel;
     // label text for attachments
     private I18nText attachmentsLabel;
+    // label text for payment
+    private I18nText paymentLabel;
 
     public PreferenceRow(@JsonProperty(value = "id") final String id,
                          @JsonProperty(value = "resetLabel") final I18nText resetLabel,
                          @JsonProperty(value = "educationLabel") final I18nText educationLabel,
                          @JsonProperty(value = "learningInstitutionLabel") final I18nText learningInstitutionLabel,
                          @JsonProperty(value = "childLONameListLabel") final I18nText childLONameListLabel,
-                         @JsonProperty(value = "attachmentsLabel") final I18nText attachmentsLabel) {
+                         @JsonProperty(value = "attachmentsLabel") final I18nText attachmentsLabel,
+                         @JsonProperty(value = "paymentLabel") final I18nText paymentLabel) {
         super(id, null);
         this.resetLabel = resetLabel;
         this.educationLabel = educationLabel;
         this.learningInstitutionLabel = learningInstitutionLabel;
         this.childLONameListLabel = childLONameListLabel;
         this.attachmentsLabel = attachmentsLabel;
+        this.paymentLabel = paymentLabel;
     }
 
     public I18nText getResetLabel() {
@@ -69,6 +73,10 @@ public class PreferenceRow extends Question {
 
     public I18nText getAttachmentsLabel() {
         return attachmentsLabel;
+    }
+
+    public I18nText getPaymentLabel() {
+        return paymentLabel;
     }
 
     public I18nText getChildLONameListLabel() {

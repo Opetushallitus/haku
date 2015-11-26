@@ -16,6 +16,7 @@
 
 package fi.vm.sade.haku.oppija.ui.controller;
 
+import com.google.common.collect.ImmutableList;
 import com.sun.jersey.api.view.Viewable;
 import fi.vm.sade.haku.oppija.lomake.domain.ModelResponse;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
@@ -46,7 +47,9 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
+import static com.google.common.base.Objects.firstNonNull;
 import static fi.vm.sade.haku.oppija.ui.common.MultivaluedMapUtil.toSingleValueMap;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
@@ -148,7 +151,7 @@ public class FormController {
     @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
     public Response getPhase(@Context HttpServletRequest request,
                              @PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId,
-                             @PathParam(PHASE_ID_PATH_PARAM) final String phaseId) {
+                             @PathParam(PHASE_ID_PATH_PARAM) final String phaseId) throws ExecutionException {
 
         LOGGER.debug("getPhase {}, {}", applicationSystemId, phaseId);
         String lang = uiService.ensureLanguage(request, applicationSystemId);
@@ -212,9 +215,9 @@ public class FormController {
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED + CHARSET_UTF_8)
     public Viewable updateRulesMulti(@PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId,
                                 @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
-                                final MultivaluedMap<String, String> multiValues) {
+                                final MultivaluedMap<String, String> multiValues) throws ExecutionException {
         LOGGER.debug("updateRulesMulti {}, {}, {}", applicationSystemId, phaseId);
-        List<String> ruleIds = multiValues.get("ruleIds[]");
+        List<String> ruleIds = firstNonNull(multiValues.get("ruleIds[]"), ImmutableList.<String>of());
         ModelResponse modelResponse = uiService.updateRulesMulti(applicationSystemId, phaseId, ruleIds, toSingleValueMap(multiValues));
         return new Viewable("/elements/JsonElementList.jsp", modelResponse.getModel());
     }
@@ -239,7 +242,7 @@ public class FormController {
     public Response savePhase(@Context HttpServletRequest request,
                               @PathParam(APPLICATION_SYSTEM_ID_PATH_PARAM) final String applicationSystemId,
                               @PathParam(PHASE_ID_PATH_PARAM) final String phaseId,
-                              final MultivaluedMap<String, String> answers) throws URISyntaxException {
+                              final MultivaluedMap<String, String> answers) throws URISyntaxException, ExecutionException {
         LOGGER.debug("savePhase {}, {}", applicationSystemId, phaseId);
         String lang = uiService.ensureLanguage(request, applicationSystemId);
         ModelResponse modelResponse = uiService.savePhase(applicationSystemId, phaseId, toSingleValueMap(answers), lang);
