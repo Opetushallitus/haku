@@ -205,7 +205,18 @@ public class KoodistoServiceImpl implements KoodistoService {
 
     @Override
     public List<Option> getYoArvosanaasteikko() {
-        return codesToOptions(CODE_YOARVOSANAT);
+
+        ArrayList<KoodiType> grades = new ArrayList(getKoodiTypes(CODE_YOARVOSANAT));
+        Collections.sort(grades, new Comparator<KoodiType>() {
+            @Override
+            public int compare(KoodiType o1, KoodiType o2) {
+                return o1.getKoodiArvo().compareTo(o2.getKoodiArvo());
+            }
+        });
+        return ImmutableList.copyOf(
+                        Lists.transform(
+                                grades,
+                                new KoodiTypeToOptionFunction()));
     }
 
     @Override
