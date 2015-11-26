@@ -114,7 +114,7 @@ public class UIServiceImpl implements UIService {
     }
 
     @Override
-    public ModelResponse getCompleteApplication(final String applicationSystemId, final String oid) throws ExecutionException {
+    public ModelResponse getCompleteApplication(final String applicationSystemId, final String oid) {
         final ApplicationSystem activeApplicationSystem = applicationSystemService.getActiveApplicationSystem(applicationSystemId);
         Application application = applicationService.getSubmittedApplication(applicationSystemId, oid);
 
