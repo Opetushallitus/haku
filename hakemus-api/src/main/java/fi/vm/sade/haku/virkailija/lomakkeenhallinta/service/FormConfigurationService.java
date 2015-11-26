@@ -108,6 +108,7 @@ public final class FormConfigurationService {
         defaultFeatureFlags.put(FormConfiguration.FeatureFlag.erotteleAmmatillinenJaYoAmmatillinenKeskiarvo, true);
         defaultFeatureFlags.put(FormConfiguration.FeatureFlag.koulutusasteURI, true);
         defaultFeatureFlags.put(FormConfiguration.FeatureFlag.requireEmail, true);
+        defaultFeatureFlags.put(FormConfiguration.FeatureFlag.kansainvalinenYoAmkKysymys, true);
 
         FormConfiguration formConfiguration = new FormConfiguration(applicationSystem.getId(),
                   figureOutFormTypeForApplicationSystem(applicationSystem), defaultFeatureFlags);

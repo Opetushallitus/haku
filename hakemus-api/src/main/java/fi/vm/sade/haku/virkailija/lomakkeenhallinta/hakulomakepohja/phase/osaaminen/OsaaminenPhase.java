@@ -121,7 +121,10 @@ public class OsaaminenPhase {
             List<Option> oppilaitokset = koodistoService.getAmmattioppilaitosKoulukoodit();
 
             osaaminenTheme.addChild(kysytaankoLukionKeskiarvo.build());
-            osaaminenTheme.addChild(kysytaankoYoArvosanat.build());
+            if(formParameters.isKansainvalinenYoAmkKysymys()) {
+                osaaminenTheme.addChild(kysytaankoYoArvosanat.build());
+            }
+
             buildKeskiarvotAmmatillinen(formParameters, ammattitutkintonimikkeet, oppilaitokset,
                     haettuAMKHon, asteikkolista, osaaminenTheme);
             ThemeQuestionConfigurator configurator = formParameters.getThemeQuestionConfigurator();

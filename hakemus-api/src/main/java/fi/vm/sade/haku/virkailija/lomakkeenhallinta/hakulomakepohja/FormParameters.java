@@ -270,4 +270,8 @@ public class FormParameters {
         return opintopolkuBaseUrl;
     }
 
+    public boolean isKansainvalinenYoAmkKysymys() {
+        return formConfiguration.getFeatureFlag(FormConfiguration.FeatureFlag.kansainvalinenYoAmkKysymys);
+    }
+
 }
