@@ -30,9 +30,11 @@ public class HakumaksuUtil {
     public static final Logger LOGGER = LoggerFactory.getLogger(HakumaksuUtil.class);
 
     private RestClient restClient;
+    private final SafeString koulutusinformaatioUrl;
 
-    public HakumaksuUtil(RestClient restClient) {
+    public HakumaksuUtil(RestClient restClient, SafeString koulutusinformaatioUrl) {
         this.restClient = restClient;
+        this.koulutusinformaatioUrl = koulutusinformaatioUrl;
     }
 
     public enum LanguageCodeISO6391 {
@@ -217,23 +219,25 @@ public class HakumaksuUtil {
         public List<String> requiredBaseEducations;
     }
 
-    public Iterable<EducationRequirements> getEducationRequirements(final SafeString koulutusinformaatioUrl,
-                                                                    List<ApplicationOptionOid> applicationOptions) {
+    private final LoadingCache<ApplicationOptionOid, EducationRequirements> koulutusinformaatioBaseEducationRequirementsCache = CacheBuilder.newBuilder()
+            .maximumSize(1000)
+            .expireAfterWrite(10, TimeUnit.MINUTES)
+            .build(new CacheLoader<ApplicationOptionOid, EducationRequirements>() {
+                public EducationRequirements load(ApplicationOptionOid applicationOptionOid) throws Exception {
+                    String url = koulutusinformaatioUrl.getValue() + "/" + applicationOptionOid.getValue();
+                    BaseEducationRequirements requirements = restClient.get(url, BaseEducationRequirements.class).get().getResult();
+                    return new EducationRequirements(applicationOptionOid, ImmutableSet.copyOf(requirements.requiredBaseEducations));
+                }
+            });
+
+    public Iterable<EducationRequirements> getEducationRequirements(final List<ApplicationOptionOid> applicationOptions) {
         return Iterables.transform(applicationOptions, new Function<ApplicationOptionOid, EducationRequirements>() {
             @Override
             public EducationRequirements apply(ApplicationOptionOid applicationOptionId) {
-                // TODO: Hae RESTillä hakutoiveiden vaatimukset (ja cacheta niitä)
-                // Esimerkki: GET https://testi.opintopolku.fi/ao/1.2.246.562.20.40822369126
-                //
-                // requiredBaseEducations: [
-                //   "pohjakoulutusvaatimuskorkeakoulut_123"
-                // ]
-                String url = koulutusinformaatioUrl + "/" + applicationOptionId;
                 try {
-                    BaseEducationRequirements requirements = restClient.get(url, BaseEducationRequirements.class).get().getResult();
-                    return new EducationRequirements(applicationOptionId, ImmutableSet.copyOf(requirements.requiredBaseEducations));
-                } catch (ExecutionException | InterruptedException | IOException e) {
-                    throw new IllegalStateException("Request to " + url + " failed", e);
+                    return koulutusinformaatioBaseEducationRequirementsCache.get(applicationOptionId);
+                } catch (ExecutionException e) {
+                    throw new IllegalStateException("Getting education requirements for " + applicationOptionId, e);
                 }
             }
         });

@@ -11,6 +11,7 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.HakumaksuUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.HakumaksuUtil.EducationRequirements;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.HakumaksuUtil.LanguageCodeISO6391;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +38,6 @@ public class HakumaksuService {
     public static final String SYSTEM_USER = "järjestelmä";
 
     private final SafeString koodistoServiceUrl;
-    private final SafeString koulutusinformaatioUrl;
     private final HakumaksuUtil util;
     private final SafeString oppijanTunnistusUrl;
 
@@ -54,7 +54,6 @@ public class HakumaksuService {
             RestClient restClient
     ) {
         this.koodistoServiceUrl = SafeString.of(koodistoServiceUrl);
-        this.koulutusinformaatioUrl = SafeString.of(koulutusinformaatioUrl);
         this.oppijanTunnistusUrl = SafeString.of(oppijanTunnistusUrl);
 
         this.languageCodeToServiceUrlMap = ImmutableMap.of(
@@ -63,7 +62,7 @@ public class HakumaksuService {
                 en, SafeString.of(hakuperusteetUrlEn)
         );
 
-        util = new HakumaksuUtil(restClient);
+        util = new HakumaksuUtil(restClient, SafeString.of(koulutusinformaatioUrl));
     }
 
     public static class Eligibility {
@@ -368,7 +367,7 @@ public class HakumaksuService {
         ImmutableMap.Builder<ApplicationOptionOid, ImmutableSet<Eligibility>> applicationPaymentEligibilities = ImmutableMap.builder();
 
         List<ApplicationOptionOid> preferenceAoIds = asApplicationOptionOids(getPreferenceAoIds(answers));
-        for (EducationRequirements applicationOptionRequirement : util.getEducationRequirements(koulutusinformaatioUrl, preferenceAoIds)) {
+        for (EducationRequirements applicationOptionRequirement : util.getEducationRequirements(preferenceAoIds)) {
             ImmutableSet.Builder<Eligibility> aoPaymentEligibilityBuilder = ImmutableSet.builder();
             boolean exemptingAoFound = false;
 
