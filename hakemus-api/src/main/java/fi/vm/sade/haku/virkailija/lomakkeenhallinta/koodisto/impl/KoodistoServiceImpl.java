@@ -66,6 +66,7 @@ public class KoodistoServiceImpl implements KoodistoService {
     private static final String CODE_OPINTOALA = "opintoalaoph2002";
     private static final String CODE_KOULUTUSALA = "koulutusalaoph2002";
     private static final String CODE_AMMATILLISET_OPS_PERUSTAISET = "ammatillisetopsperustaiset";
+    private static final String CODE_YOARVOSANAT = "yoarvosanatkansainvalinen";
 
     private static final String LUKIO = "15";
     private static final String LUKIO_JA_PERUSKOULU = "19";
@@ -204,9 +205,8 @@ public class KoodistoServiceImpl implements KoodistoService {
 
     @Override
     public List<Option> getYoArvosanaasteikko() {
-        return codesToOptions(CODE_ARVOSTELUASTEIKKO); // TODO
+        return codesToOptions(CODE_YOARVOSANAT);
     }
-
 
     @Override
     public List<Option> getOpintoalat() {
