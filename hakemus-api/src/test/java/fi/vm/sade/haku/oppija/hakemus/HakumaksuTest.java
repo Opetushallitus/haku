@@ -1,6 +1,7 @@
 package fi.vm.sade.haku.oppija.hakemus;
 
 
+import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
@@ -10,13 +11,16 @@ import fi.vm.sade.haku.oppija.hakemus.domain.Application.PaymentState;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationNote;
 import fi.vm.sade.haku.oppija.hakemus.service.HakumaksuService;
 import fi.vm.sade.haku.oppija.hakemus.service.HakumaksuService.Eligibility;
+import fi.vm.sade.haku.oppija.hakemus.service.HakumaksuService.PaymentEmail;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.HakumaksuUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.HakumaksuUtil.OppijanTunnistus;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.ApplicationOptionOid;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.SafeString;
 import org.junit.Before;
 import org.junit.Test;
 
+import javax.annotation.Nullable;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -122,6 +126,19 @@ public class HakumaksuTest {
             "pohjakoulutus_ulk_suoritusmaa", "abw");
     private static final String hakutoiveenOid = Hakukelpoisuusvaatimus.YLEINEN_YLIOPISTOKELPOISUUS.getArvo();
 
+    private static final PaymentEmail testEmail = new PaymentEmail(SafeString.of("email title"),
+            SafeString.of("empty tempalote"), HakumaksuUtil.LanguageCodeISO6391.sv);
+
+    // The real utility is in haku-app but unfortunately this code is not
+    // easily movable there, need to duplicate for test
+    private static final Function<Application, PaymentEmail> returnTestEmail = new Function<Application, PaymentEmail>() {
+        @Nullable
+        @Override
+        public PaymentEmail apply(@Nullable Application input) {
+            return testEmail;
+        }
+    };
+
     @Test
     public void successfulProcessingSetsPaymentStateToNotified() throws ExecutionException, InterruptedException, IOException {
         final String expectedEmail = "test@example.com";
@@ -143,7 +160,7 @@ public class HakumaksuTest {
         assertNull(application.getRequiredPaymentState());
 
         // Payment requirement must also be visible in logs
-        Application processedApplication = service.processPayment(application);
+        Application processedApplication = service.processPayment(application, returnTestEmail);
         List<Captured> captured = mockRestClient.getCaptured();
         Captured match = find(captured, new Predicate<Captured>() {
             @Override
@@ -161,6 +178,8 @@ public class HakumaksuTest {
         assertEquals(HakumaksuUtil.LanguageCodeISO6391.sv, body.lang);
         assertEquals(expectedHakemusOid, body.metadata.hakemusOid);
         assertEquals(expectedPersonOid, body.metadata.personOid);
+        assertEquals(testEmail.subject.getValue(), body.subject);
+        assertEquals(testEmail.template.getValue(), body.template);
 
         assertTrue(processedApplication == application);
         assertEquals(PaymentState.NOTIFIED, processedApplication.getRequiredPaymentState());
@@ -180,7 +199,7 @@ public class HakumaksuTest {
         Application application = new Application() {{
             setRequiredPaymentState(PaymentState.OK);
         }};
-        assertEquals(PaymentState.OK, service.processPayment(application).getRequiredPaymentState());
+        assertEquals(PaymentState.OK, service.processPayment(application, returnTestEmail).getRequiredPaymentState());
     }
 
     @Test
@@ -188,7 +207,7 @@ public class HakumaksuTest {
         Application application = new Application() {{
             setRequiredPaymentState(PaymentState.NOT_OK);
         }};
-        assertNull(service.processPayment(application).getRequiredPaymentState());
+        assertNull(service.processPayment(application, returnTestEmail).getRequiredPaymentState());
     }
 
     @Test
@@ -196,6 +215,6 @@ public class HakumaksuTest {
         Application application = new Application() {{
             setRequiredPaymentState(PaymentState.NOTIFIED);
         }};
-        assertNull(service.processPayment(application).getRequiredPaymentState());
+        assertNull(service.processPayment(application, returnTestEmail).getRequiredPaymentState());
     }
 }

@@ -1,7 +1,5 @@
 package fi.vm.sade.haku.oppija.postprocess.impl;
 
-import com.google.common.base.Function;
-import com.google.common.base.Optional;
 import fi.vm.sade.auditlog.haku.HakuOperation;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application.PaymentState;
@@ -19,23 +17,22 @@ import fi.vm.sade.haku.virkailija.authentication.Person;
 import fi.vm.sade.haku.virkailija.authentication.PersonBuilder;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakuService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Nullable;
 import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
+import static fi.vm.sade.haku.AuditHelper.AUDIT;
+import static fi.vm.sade.haku.AuditHelper.builder;
 import static fi.vm.sade.haku.oppija.lomake.util.StringUtil.nameOrEmpty;
-import static org.apache.commons.lang.StringUtils.EMPTY;
+import static fi.vm.sade.haku.oppija.postprocess.MailTemplateUtil.paymentEmailFromApplication;
 import static org.apache.commons.lang.StringUtils.isEmpty;
 import static org.apache.commons.lang.StringUtils.isNotEmpty;
-import static fi.vm.sade.haku.AuditHelper.*;
 
 
 @Service
@@ -87,7 +84,7 @@ public class ApplicationPostProcessorService {
         if (applicationSystemService.getApplicationSystem(application.getApplicationSystemId()).isMaksumuuriKaytossa()) {
             PaymentState oldPaymentState = application.getRequiredPaymentState();
 
-            application = hakumaksuService.processPayment(application);
+            application = hakumaksuService.processPayment(application, paymentEmailFromApplication);
 
             if (application.getRequiredPaymentState() != oldPaymentState) {
                 AUDIT.log(builder()
