@@ -69,10 +69,10 @@ public final class OppijaConstants {
     public static final String ELEMENT_ID_LISAKOULUTUS_MAAHANMUUTTO = "LISAKOULUTUS_MAAHANMUUTTO";
     public static final String ELEMENT_ID_LISAKOULUTUS_VAMMAISTEN = "LISAKOULUTUS_VAMMAISTEN";
 
-    public static final String ELEMENT_ID_OSAAMINEN_YOARVOSANAT_PARAS_KIELI = "yoArvosanaParasKieli";
-    public static final String ELEMENT_ID_OSAAMINEN_YOARVOSANAT_AIDINKIELI = "yoArvosanaAidinkieli";
-    public static final String ELEMENT_ID_OSAAMINEN_YOARVOSANAT_MATEMATIIKKA = "yoArvosanaMatematiikka";
-    public static final String ELEMENT_ID_OSAAMINEN_YOARVOSANAT_REAALI = "yoArvosanaReaali";
+    public static final String ELEMENT_ID_OSAAMINEN_YOARVOSANAT_PARAS_KIELI = "yo-arvosana-paraskieli";
+    public static final String ELEMENT_ID_OSAAMINEN_YOARVOSANAT_AIDINKIELI = "yo-arvosana-aidinkieli";
+    public static final String ELEMENT_ID_OSAAMINEN_YOARVOSANAT_MATEMATIIKKA = "yo-arvosana-matematiikka";
+    public static final String ELEMENT_ID_OSAAMINEN_YOARVOSANAT_REAALI = "yo-arvosana-reaali";
 
     public static final String PHASE_PERSONAL = "henkilotiedot";
     public static final String PHASE_EDUCATION = "koulutustausta";
