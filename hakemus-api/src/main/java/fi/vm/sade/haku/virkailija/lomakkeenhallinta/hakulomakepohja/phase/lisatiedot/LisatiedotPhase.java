@@ -1,18 +1,20 @@
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.lisatiedot;
 
 import com.google.common.collect.ImmutableList;
-import fi.vm.sade.haku.oppija.lomake.domain.builder.OptionQuestionBuilder;
-import fi.vm.sade.haku.oppija.lomake.domain.builder.TextQuestionBuilder;
-import fi.vm.sade.haku.oppija.lomake.domain.builder.ThemeBuilder;
+import fi.vm.sade.haku.oppija.lomake.domain.builder.*;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.*;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain.FormConfiguration;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain.ThemeQuestionOption;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.service.ThemeQuestionConfigurator;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ExprUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static fi.vm.sade.haku.oppija.hakemus.service.Role.*;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.CheckBoxBuilder.Checkbox;
@@ -106,13 +108,29 @@ public class LisatiedotPhase {
             return lupatiedotTheme;
 
         Element lupatietoGrp = TitledGroup("lupatiedot.ryhma").formParams(formParameters).build();
-        lupatietoGrp.addChild(
-                Checkbox("lupaMarkkinointi").formParams(formParameters).build(),
-                Checkbox("lupaJulkaisu").formParams(formParameters).build(),
-                Checkbox("lupaSahkoisesti").formParams(formParameters).build(),
-                Checkbox("lupaSms").formParams(formParameters).build());
+        lupatietoGrp.addChild(Checkbox("lupaMarkkinointi").formParams(formParameters).build());
+        lupatietoGrp.addChild(Checkbox("lupaJulkaisu").formParams(formParameters).build());
+        if(!formParameters.isSahkoinenViestintaLupa()) {
+            lupatietoGrp.addChild(Checkbox("lupaSahkoisesti").formParams(formParameters).build());
+        }
+        lupatietoGrp.addChild(Checkbox("lupaSms").formParams(formParameters).build());
 
         lupatiedotTheme.addChild(lupatietoGrp);
+
+        if(formParameters.isSahkoinenViestintaLupa()) {
+
+            Option kylla = new Option(formParameters.getI18nText("lupatiedot.sahkoinen.suostun"), KYLLA);
+            kylla.setHelp(formParameters.getI18nText("lupatiedot.sahkoinen.suostun.help"));
+            Element sahkoinenViestintaGrp = RadioBuilder.Radio("lupatiedot.sahkoinen.viestinta")
+                    .addOptions(ImmutableList.of(
+                            kylla,
+                            new Option(formParameters.getI18nText("lupatiedot.sahkoinen.ensuostu"), EI)))
+                    .i18nText(formParameters.getI18nText("lupatiedot.sahkoinen.viestinta"))
+                    .required()
+                    .formParams(formParameters).build();
+
+            lupatiedotTheme.addChild(sahkoinenViestintaGrp);
+        }
 
         OptionQuestionBuilder kieliRadioBuilder = Radio(OppijaConstants.ELEMENT_ID_CONTACT_LANGUAGE)
                 .addOption("suomi", formParameters);
