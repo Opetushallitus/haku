@@ -14,7 +14,6 @@ import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import fi.vm.sade.haku.http.HttpRestClient.Response;
 import fi.vm.sade.haku.http.RestClient;
-import fi.vm.sade.haku.oppija.hakemus.service.HakumaksuService;
 import fi.vm.sade.haku.oppija.hakemus.service.HakumaksuService.PaymentEmail;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.ApplicationOptionOid;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.AsciiCountryCode;
@@ -62,6 +61,9 @@ public class HakumaksuUtil {
         public String url;
 
         @Key
+        public long expires; // Url expiration time in Unix milliseconds
+
+        @Key
         public String email;
 
         @Key
@@ -82,6 +84,7 @@ public class HakumaksuUtil {
                                                         final SafeString emailAddress) {
         OppijanTunnistus body = new OppijanTunnistus() {{
             this.url = redirectUrl.getValue();
+            this.expires = paymentEmail.expirationDate.getTime();
             this.email = emailAddress.getValue();
             this.subject = paymentEmail.subject.getValue();
             this.template = paymentEmail.template.getValue();

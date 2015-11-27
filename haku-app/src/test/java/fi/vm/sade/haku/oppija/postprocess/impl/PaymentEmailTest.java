@@ -6,6 +6,8 @@ import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationPeriod;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystemBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.HakumaksuUtil;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.HakumaksuUtil.LanguageCodeISO6391;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -44,10 +46,11 @@ public class PaymentEmailTest {
                     ELEMENT_ID_CONTACT_LANGUAGE, "englanti"));
         }};
 
+        Date expectedExpidateionDate = fromString(expectedEndDate);
         ApplicationSystemBuilder builder = new ApplicationSystemBuilder()
                 .setApplicationPeriods(ImmutableList.of(
                         new ApplicationPeriod(fromString("2000-01-01"), fromString("2000-06-01")),
-                        new ApplicationPeriod(fromString("2222-01-01"), fromString(expectedEndDate)),
+                        new ApplicationPeriod(fromString("2222-01-01"), expectedExpidateionDate),
                         new ApplicationPeriod(fromString("2111-01-01"), fromString("2111-06-01"))))
                 .setId("1.2.3")
                 .setName(new I18nText(ImmutableMap.<String, String>of()));
@@ -56,6 +59,8 @@ public class PaymentEmailTest {
 
         String subject = paymentEmail.subject.getValue();
         assertEquals("Studyinfo - payment link", subject);
+        assertEquals(expectedExpidateionDate, paymentEmail.expirationDate); // Expiration date for the redirect link
+        assertEquals(LanguageCodeISO6391.en, paymentEmail.language);
         String template = paymentEmail.template.getValue();
         assertTrue(template.contains(subject));
         assertTrue(template.contains("{{verification-link}}"));

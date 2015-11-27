@@ -423,12 +423,14 @@ public class HakumaksuService {
     public static class PaymentEmail {
         public final SafeString subject;
         public final SafeString template;
+        public final Date expirationDate;
         public final LanguageCodeISO6391 language;
 
-        public PaymentEmail(SafeString subject, SafeString template, LanguageCodeISO6391 language) {
+        public PaymentEmail(SafeString subject, SafeString template, LanguageCodeISO6391 language, Date expirationDate) {
             this.subject = subject;
             this.template = template;
             this.language = language;
+            this.expirationDate = expirationDate;
         }
     }
 

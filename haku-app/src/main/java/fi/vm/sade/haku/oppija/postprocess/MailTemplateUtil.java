@@ -24,6 +24,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
 import java.util.TimeZone;
+import java.util.concurrent.TimeUnit;
 
 import static com.google.common.base.Optional.fromNullable;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.HakumaksuUtil.LanguageCodeISO6391.*;
@@ -93,11 +94,17 @@ public final class MailTemplateUtil {
         }));
     }
 
-    private static SafeString createEmailTemplate(LanguageCodeISO6391 language, SafeString subject, ApplicationSystem applicationSystem) throws IOException {
+    private static Date calculateDueDate(ApplicationSystem applicationSystem, Date relativeTime, long minimumMillisecondsToDueDate) {
+        Date lastClosingDate = applicationSystemLastClosingDate(applicationSystem);
+        long dueDateTimestamp = Math.max(lastClosingDate.getTime(), relativeTime.getTime() + minimumMillisecondsToDueDate);
+        return new Date(dueDateTimestamp);
+    }
+
+    private static SafeString createEmailTemplate(LanguageCodeISO6391 language, SafeString subject, Date dueDate) throws IOException {
         ImmutableMap<String, String> templateValues = ImmutableMap.of(
                 "subject", subject.getValue(),
                 "submit_time", iso8601Time(),
-                "due_date", iso8601Time(applicationSystemLastClosingDate(applicationSystem)),
+                "due_date", iso8601Time(dueDate),
                 // Leave intact for receiver to fill
                 PLACEHOLDER_LINK_EXPIRATION_TIME, c(PLACEHOLDER_LINK_EXPIRATION_TIME),
                 PLACEHOLDER_LINK, c(PLACEHOLDER_LINK));
@@ -116,7 +123,8 @@ public final class MailTemplateUtil {
                 LanguageCodeISO6391 language = languageCodeFromApplication(application);
                 SafeString subject = getOrGet(emailSubjectTranslations, language, en);
                 try {
-                    return new PaymentEmail(subject, createEmailTemplate(language, subject, applicationSystem), language);
+                    Date dueDate = calculateDueDate(applicationSystem, new Date(), TimeUnit.DAYS.toMillis(10));
+                    return new PaymentEmail(subject, createEmailTemplate(language, subject, dueDate), language, dueDate);
                 } catch (IOException e) {
                     LOGGER.error("Failed to create payment email from application " + application.getOid(), e);
                     return null;

@@ -22,6 +22,7 @@ import org.junit.Test;
 
 import javax.annotation.Nullable;
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
@@ -127,7 +128,7 @@ public class HakumaksuTest {
     private static final String hakutoiveenOid = Hakukelpoisuusvaatimus.YLEINEN_YLIOPISTOKELPOISUUS.getArvo();
 
     private static final PaymentEmail testEmail = new PaymentEmail(SafeString.of("email title"),
-            SafeString.of("empty tempalote"), HakumaksuUtil.LanguageCodeISO6391.sv);
+            SafeString.of("empty tempalote"), HakumaksuUtil.LanguageCodeISO6391.sv, new Date(0));
 
     // The real utility is in haku-app but unfortunately this code is not
     // easily movable there, need to duplicate for test
@@ -180,6 +181,7 @@ public class HakumaksuTest {
         assertEquals(expectedPersonOid, body.metadata.personOid);
         assertEquals(testEmail.subject.getValue(), body.subject);
         assertEquals(testEmail.template.getValue(), body.template);
+        assertEquals(testEmail.expirationDate.getTime(), body.expires);
 
         assertTrue(processedApplication == application);
         assertEquals(PaymentState.NOTIFIED, processedApplication.getRequiredPaymentState());
