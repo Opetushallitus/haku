@@ -248,7 +248,7 @@ public class Level4Test extends IntegrationTest {
         ApplicationSystem as = applicationSystemService.getApplicationSystem(AFFECTED_APPLICATION_SYSTEM_ID);
 
         List<Element> yoKansainvalinenAmmatillinen = getKansainvalinenYoKysymykset(as);
-        assertEquals("osaaminen.kansainvalinenyo.arvosanat", yoKansainvalinenAmmatillinen.get(0).getId());
+        assertEquals("osaaminen-kansainvalinenyo-arvosanat", yoKansainvalinenAmmatillinen.get(0).getId());
         assertEquals(OppijaConstants.ELEMENT_ID_OSAAMINEN_YOARVOSANAT_PARAS_KIELI, yoKansainvalinenAmmatillinen.get(0).getChildren().get(0).getId());
 
         List<Element> yoAmmatillinen = getYoKysymykset(as);
