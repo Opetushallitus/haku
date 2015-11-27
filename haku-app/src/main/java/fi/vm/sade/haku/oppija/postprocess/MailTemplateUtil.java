@@ -39,12 +39,6 @@ public final class MailTemplateUtil {
     private static final String PLACEHOLDER_LINK = "verification-link";
     private static final String PLACEHOLDER_LINK_EXPIRATION_TIME = "expires";
 
-    private static final DateFormat iso8601Format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ");
-
-    static {
-        iso8601Format.setTimeZone(TimeZone.getTimeZone("UTC"));
-    }
-
     private static final ImmutableMap<LanguageCodeISO6391, SafeString> emailSubjectTranslations = ImmutableMap.of(
             en, SafeString.of("Studyinfo - payment link"),
             fi, SafeString.of("Opintopolku - maksulinkki"),
@@ -67,14 +61,6 @@ public final class MailTemplateUtil {
     private static LanguageCodeISO6391 languageCodeFromApplication(Application application) {
         SafeString language = SafeString.of(application.getPhaseAnswers(OppijaConstants.PHASE_MISC).get(ELEMENT_ID_CONTACT_LANGUAGE));
         return getOrValue(applicationLanguageToLanguageCodeMap, language.getValue(), en);
-    }
-
-    public static String iso8601Time() {
-        return iso8601Time(new Date());
-    }
-
-    public static String iso8601Time(Date date) {
-        return iso8601Format.format(date);
     }
 
     private static String c(String s) {
