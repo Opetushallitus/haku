@@ -274,4 +274,8 @@ public class FormParameters {
         return formConfiguration.getFeatureFlag(FormConfiguration.FeatureFlag.kansainvalinenYoAmkKysymys);
     }
 
+    public boolean isSahkoinenViestintaLupa() {
+        return formConfiguration.getFeatureFlag(FormConfiguration.FeatureFlag.sahkoinenViestintaLupa);
+    }
+
 }

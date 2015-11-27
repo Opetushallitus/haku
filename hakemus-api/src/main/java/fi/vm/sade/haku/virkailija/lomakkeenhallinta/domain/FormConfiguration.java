@@ -40,7 +40,8 @@ public class FormConfiguration {
         ammatillinenKeskiarvoVapaaehtoinen,
         koulutusasteURI,
         requireEmail,
-        kansainvalinenYoAmkKysymys
+        kansainvalinenYoAmkKysymys,
+        sahkoinenViestintaLupa
     }
 
     // FormConfiguration oid
