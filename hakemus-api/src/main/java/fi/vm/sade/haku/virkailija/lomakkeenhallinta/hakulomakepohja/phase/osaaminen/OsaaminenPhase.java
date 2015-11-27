@@ -109,7 +109,7 @@ public class OsaaminenPhase {
                 kysytaankoLukionKeskiarvo.addChild(lukioKeskiarvo.build());
             }
 
-            ElementBuilder yoKysymysRyhma = TitledGroup("osaaminen.kansainvalinenyo.arvosanat").formParams(formParameters);
+            ElementBuilder yoKysymysRyhma = TitledGroup("osaaminen-kansainvalinenyo-arvosanat").formParams(formParameters);
             addYoAsteikkoQuestion(OppijaConstants.ELEMENT_ID_OSAAMINEN_YOARVOSANAT_PARAS_KIELI, yoKysymysRyhma, formParameters);
             addYoAsteikkoQuestion(OppijaConstants.ELEMENT_ID_OSAAMINEN_YOARVOSANAT_AIDINKIELI, yoKysymysRyhma, formParameters);
             addYoAsteikkoQuestion(OppijaConstants.ELEMENT_ID_OSAAMINEN_YOARVOSANAT_MATEMATIIKKA, yoKysymysRyhma, formParameters);

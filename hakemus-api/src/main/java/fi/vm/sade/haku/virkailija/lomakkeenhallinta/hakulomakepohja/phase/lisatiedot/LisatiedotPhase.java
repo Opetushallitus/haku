@@ -118,7 +118,7 @@ public class LisatiedotPhase {
         lupatiedotTheme.addChild(lupatietoGrp);
 
         if(formParameters.isSahkoinenViestintaLupa()) {
-            Element sahkoinenViestintaGrp = RadioBuilder.Radio("lupatiedot.sahkoinen.viestinta")
+            Element sahkoinenViestintaGrp = RadioBuilder.Radio("lupatiedot-sahkoinen-viestinta")
                     .addOptions(ImmutableList.of(
                             new Option(formParameters.getI18nText("lupatiedot.sahkoinen.suostun"), KYLLA),
                             new Option(formParameters.getI18nText("lupatiedot.sahkoinen.ensuostu"), EI)))
