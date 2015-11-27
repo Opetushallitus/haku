@@ -41,7 +41,7 @@ public class PaymentEmailTest {
             addVaiheenVastaukset(PHASE_PERSONAL, ImmutableMap.of(
                     ELEMENT_ID_EMAIL, expectedEmail));
             addVaiheenVastaukset(PHASE_MISC, ImmutableMap.of(
-                    ELEMENT_ID_CONTACT_LANGUAGE, "ruotsi"));
+                    ELEMENT_ID_CONTACT_LANGUAGE, "englanti"));
         }};
 
         ApplicationSystemBuilder builder = new ApplicationSystemBuilder()
@@ -55,12 +55,10 @@ public class PaymentEmailTest {
         PaymentEmail paymentEmail = paymentEmailFromApplication(builder.get()).apply(application);
 
         String subject = paymentEmail.subject.getValue();
-        assertEquals("Studieinfo – maksulinkki", subject);
+        assertEquals("Studyinfo - payment link", subject);
         String template = paymentEmail.template.getValue();
         assertTrue(template.contains(subject));
-        assertTrue(template.contains("{{expires}}"));
         assertTrue(template.contains("{{verification-link}}"));
         assertTrue(template.contains(expectedEndDate + "T00:00+0000")); // Last of the ending dates
-        assertTrue(!template.contains("{{submit_time}}")); // Replaced by current timestamp
     }
 }
