@@ -14,6 +14,8 @@ import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import fi.vm.sade.haku.http.HttpRestClient.Response;
 import fi.vm.sade.haku.http.RestClient;
+import fi.vm.sade.haku.oppija.hakemus.service.HakumaksuService;
+import fi.vm.sade.haku.oppija.hakemus.service.HakumaksuService.PaymentEmail;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.ApplicationOptionOid;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.AsciiCountryCode;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.Oid;
@@ -28,7 +30,6 @@ import java.util.concurrent.TimeUnit;
 
 public class HakumaksuUtil {
     public static final Logger LOGGER = LoggerFactory.getLogger(HakumaksuUtil.class);
-    private static final String templateName = "maksulinkki";
 
     private RestClient restClient;
     private final SafeString koulutusinformaatioUrl;
@@ -52,7 +53,10 @@ public class HakumaksuUtil {
             public String personOid;
         }
         @Key
-        public String template;
+        public String subject; // Email subject
+
+        @Key
+        public String template; // Email body template
 
         @Key
         public String url;
@@ -70,17 +74,18 @@ public class HakumaksuUtil {
     /**
      * @return true if send was successful
      */
-    public ListenableFuture<Boolean> sendPaymentRequest(final SafeString oppijanTunnistusUrl,
+    public ListenableFuture<Boolean> sendPaymentRequest(final PaymentEmail paymentEmail,
+                                                        final SafeString oppijanTunnistusUrl,
                                                         final SafeString redirectUrl,
-                                                        final LanguageCodeISO6391 languageCode,
                                                         final Oid _hakemusOid,
                                                         final Oid _personOid,
                                                         final SafeString emailAddress) {
         OppijanTunnistus body = new OppijanTunnistus() {{
-            this.template = templateName;
             this.url = redirectUrl.getValue();
             this.email = emailAddress.getValue();
-            this.lang = languageCode;
+            this.subject = paymentEmail.subject.getValue();
+            this.template = paymentEmail.template.getValue();
+            this.lang = paymentEmail.language;
             this.metadata = new Metadata() {{
                 this.hakemusOid = _hakemusOid.getValue();
                 this.personOid = _personOid.getValue();

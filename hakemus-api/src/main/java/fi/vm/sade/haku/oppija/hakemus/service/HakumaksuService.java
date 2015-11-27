@@ -11,7 +11,6 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.HakumaksuUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.HakumaksuUtil.EducationRequirements;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.HakumaksuUtil.LanguageCodeISO6391;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -421,7 +420,19 @@ public class HakumaksuService {
         });
     }
 
-    public Application processPayment(Application application) throws ExecutionException, InterruptedException {
+    public static class PaymentEmail {
+        public final SafeString subject;
+        public final SafeString template;
+        public final LanguageCodeISO6391 language;
+
+        public PaymentEmail(SafeString subject, SafeString template, LanguageCodeISO6391 language) {
+            this.subject = subject;
+            this.template = template;
+            this.language = language;
+        }
+    }
+
+    public Application processPayment(Application application, Function<Application, PaymentEmail> buildEmail) throws ExecutionException, InterruptedException {
         Optional<PaymentState> requiredPaymentState = Optional.fromNullable(application.getRequiredPaymentState());
 
         // Jos hakumaksu on suoritettu, edes maksuvelvollisuuden katoaminen ei poista onnistunutta maksumerkintää
@@ -438,8 +449,8 @@ public class HakumaksuService {
 
                 Oid applicationOid = Oid.of(application.getOid());
                 paymentRequestOrThrow(
+                        buildEmail.apply(application),
                         SafeString.of(application.getPhaseAnswers(OppijaConstants.PHASE_PERSONAL).get("Sähköposti")),
-                        SafeString.of(application.getPhaseAnswers(OppijaConstants.PHASE_MISC).get(OppijaConstants.ELEMENT_ID_CONTACT_LANGUAGE)),
                         applicationOid,
                         Oid.of(application.getPersonOid()));
 
@@ -505,25 +516,14 @@ public class HakumaksuService {
                 && application.getRedoPostProcess() == Application.PostProcessingState.FULL;
     }
 
-    static final ImmutableMap<String, LanguageCodeISO6391> applicationLanguageToLanguageCodeMap = ImmutableMap.of(
-            "suomi", fi,
-            "ruotsi", sv,
-            "englanti", en
-    );
-
-    private LanguageCodeISO6391 languageCodeFromApplication(SafeString contactLanguage) {
-        return Optional.fromNullable(applicationLanguageToLanguageCodeMap.get(contactLanguage.getValue())).or(en);
-    }
-
-    private void paymentRequestOrThrow(SafeString emailAddress,
-                                       SafeString contactLanguage,
+    private void paymentRequestOrThrow(PaymentEmail paymentEmail,
+                                       SafeString emailAddress,
                                        Oid applicationOid,
                                        Oid personOid) throws ExecutionException, InterruptedException {
-        LanguageCodeISO6391 languageCode = languageCodeFromApplication(contactLanguage);
         if (!util.sendPaymentRequest(
+                paymentEmail,
                 oppijanTunnistusUrl,
-                getServiceUrl(applicationOid, languageCode),
-                languageCode,
+                getServiceUrl(applicationOid, paymentEmail.language),
                 applicationOid,
                 personOid,
                 emailAddress).get()) {
