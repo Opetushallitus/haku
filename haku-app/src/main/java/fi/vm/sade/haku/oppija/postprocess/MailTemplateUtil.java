@@ -11,17 +11,20 @@ import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.service.HakumaksuService.PaymentEmail;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationPeriod;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.HakumaksuUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.HakumaksuUtil.LanguageCodeISO6391;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.SafeString;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import sun.java2d.pipe.SpanShapeRenderer;
 
 import java.io.IOException;
 import java.io.StringWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
@@ -103,7 +106,7 @@ public final class MailTemplateUtil {
     private static SafeString createEmailTemplate(LanguageCodeISO6391 language, SafeString subject, Date dueDate) throws IOException {
         ImmutableMap<String, String> templateValues = ImmutableMap.of(
                 "subject", subject.getValue(),
-                "due_date", iso8601Time(dueDate),
+                "due_date", localizedDateString(dueDate, language),
                 // Leave intact for receiver to fill
                 PLACEHOLDER_LINK_EXPIRATION_TIME, c(PLACEHOLDER_LINK_EXPIRATION_TIME),
                 PLACEHOLDER_LINK, c(PLACEHOLDER_LINK));
@@ -113,6 +116,11 @@ public final class MailTemplateUtil {
         StringWriter stringWriter = new StringWriter();
         mustache.execute(stringWriter, templateValues).flush();
         return SafeString.of(stringWriter.toString());
+    }
+
+    public static String localizedDateString(Date dueDate, LanguageCodeISO6391 language) {
+        DateFormat dateTimeInstance = DateFormat.getDateTimeInstance(DateFormat.FULL, DateFormat.FULL, Locale.forLanguageTag(language.toString()));
+        return dateTimeInstance.format(dueDate);
     }
 
     public static Function<Application, PaymentEmail> paymentEmailFromApplication(final ApplicationSystem applicationSystem) {

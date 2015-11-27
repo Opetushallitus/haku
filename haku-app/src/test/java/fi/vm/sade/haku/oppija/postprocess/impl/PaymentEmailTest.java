@@ -6,7 +6,6 @@ import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationPeriod;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystemBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.HakumaksuUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.HakumaksuUtil.LanguageCodeISO6391;
 import org.junit.Test;
 
@@ -17,6 +16,7 @@ import java.util.Date;
 import java.util.TimeZone;
 
 import static fi.vm.sade.haku.oppija.hakemus.service.HakumaksuService.PaymentEmail;
+import static fi.vm.sade.haku.oppija.postprocess.MailTemplateUtil.localizedDateString;
 import static fi.vm.sade.haku.oppija.postprocess.MailTemplateUtil.paymentEmailFromApplication;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.*;
 import static org.junit.Assert.assertEquals;
@@ -35,7 +35,6 @@ public class PaymentEmailTest {
         final String expectedEmail = "test@example.com";
         final String expectedHakemusOid = "1.2.3.4.5.6.7.8.9";
         final String expectedPersonOid = "9.8.7.6.6.5.4.3.2.1";
-        final String expectedEndDate = "2222-06-01";
 
         Application application = new Application() {{
             setOid(expectedHakemusOid);
@@ -46,7 +45,7 @@ public class PaymentEmailTest {
                     ELEMENT_ID_CONTACT_LANGUAGE, "englanti"));
         }};
 
-        Date expectedExpidateionDate = fromString(expectedEndDate);
+        Date expectedExpidateionDate = fromString("2222-06-01");
         ApplicationSystemBuilder builder = new ApplicationSystemBuilder()
                 .setApplicationPeriods(ImmutableList.of(
                         new ApplicationPeriod(fromString("2000-01-01"), fromString("2000-06-01")),
@@ -64,6 +63,16 @@ public class PaymentEmailTest {
         String template = paymentEmail.template.getValue();
         assertTrue(template.contains(subject));
         assertTrue(template.contains("{{verification-link}}"));
-        assertTrue(template.contains(expectedEndDate + "T00:00+0000")); // Last of the ending dates
+        assertTrue(template.contains("Saturday, June 1, 2222 3:00:00 AM EEST")); // Last of the ending dates
+    }
+
+    @Test
+    public void testSwedishLocaleDateFormat() {
+        assertEquals("den 1 januari 1970 kl 2:00 EET", localizedDateString(new Date(0), LanguageCodeISO6391.sv));
+    }
+
+    @Test
+    public void testFinnishLocaleDateFormat() {
+        assertEquals("1. tammikuuta 1970 2.00.00 EET", localizedDateString(new Date(0), LanguageCodeISO6391.fi));
     }
 }
