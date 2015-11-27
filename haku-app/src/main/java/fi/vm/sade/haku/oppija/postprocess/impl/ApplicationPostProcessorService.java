@@ -6,6 +6,7 @@ import fi.vm.sade.haku.oppija.hakemus.domain.Application.PaymentState;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.haku.oppija.hakemus.service.BaseEducationService;
 import fi.vm.sade.haku.oppija.hakemus.service.HakumaksuService;
+import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.haku.oppija.lomake.service.FormService;
@@ -81,10 +82,11 @@ public class ApplicationPostProcessorService {
         application = applicationService.ensureApplicationOptionGroupData(application);
         application = applicationService.updateAutomaticEligibilities(application);
 
-        if (applicationSystemService.getApplicationSystem(application.getApplicationSystemId()).isMaksumuuriKaytossa()) {
+        ApplicationSystem applicationSystem = applicationSystemService.getApplicationSystem(application.getApplicationSystemId());
+        if (applicationSystem.isMaksumuuriKaytossa()) {
             PaymentState oldPaymentState = application.getRequiredPaymentState();
 
-            application = hakumaksuService.processPayment(application, paymentEmailFromApplication);
+            application = hakumaksuService.processPayment(application, paymentEmailFromApplication(applicationSystem));
 
             if (application.getRequiredPaymentState() != oldPaymentState) {
                 AUDIT.log(builder()
