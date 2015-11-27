@@ -23,7 +23,6 @@ import fi.vm.sade.haku.oppija.lomake.domain.builder.ElementBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.builder.SocialSecurityNumberBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.HiddenValue;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.Notification;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Radio;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.AddElementRule;
@@ -196,12 +195,6 @@ public final class HenkilotiedotPhase {
         }
         if (formParameters.isEmailRequired()) {
             emailBuilder.required();
-            Element emailRequiredNotification = new Notification(
-                    "emailRequiredNotification",
-                    formParameters.getI18nText("form.henkilotiedot.sahkoposti.pakollinen"),
-                    Notification.NotificationType.INFO
-            );
-            emailBuilder.addChild(emailRequiredNotification);
         }
         henkilotiedotTeema.addChild(emailBuilder.build());
 
