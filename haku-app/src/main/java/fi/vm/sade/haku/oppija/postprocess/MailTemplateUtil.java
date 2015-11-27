@@ -103,7 +103,6 @@ public final class MailTemplateUtil {
     private static SafeString createEmailTemplate(LanguageCodeISO6391 language, SafeString subject, Date dueDate) throws IOException {
         ImmutableMap<String, String> templateValues = ImmutableMap.of(
                 "subject", subject.getValue(),
-                "submit_time", iso8601Time(),
                 "due_date", iso8601Time(dueDate),
                 // Leave intact for receiver to fill
                 PLACEHOLDER_LINK_EXPIRATION_TIME, c(PLACEHOLDER_LINK_EXPIRATION_TIME),
