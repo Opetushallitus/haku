@@ -42,7 +42,7 @@ public final class MailTemplateUtil {
     }
 
     private static final ImmutableMap<LanguageCodeISO6391, SafeString> emailSubjectTranslations = ImmutableMap.of(
-            en, SafeString.of("Studyinfo – maksulinkki"),
+            en, SafeString.of("Studyinfo - payment link"),
             fi, SafeString.of("Opintopolku - maksulinkki"),
             sv, SafeString.of("Studieinfo – maksulinkki"));
 
