@@ -5,8 +5,12 @@ import com.github.mustachejava.Mustache;
 import com.github.mustachejava.MustacheFactory;
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Ordering;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.service.HakumaksuService.PaymentEmail;
+import fi.vm.sade.haku.oppija.lomake.domain.ApplicationPeriod;
+import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.HakumaksuUtil.LanguageCodeISO6391;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.SafeString;
@@ -61,18 +65,39 @@ public final class MailTemplateUtil {
         return getOrValue(applicationLanguageToLanguageCodeMap, language.getValue(), en);
     }
 
-    public static String nowIso8601() {
-        return iso8601Format.format(new Date());
+    public static String iso8601Time() {
+        return iso8601Time(new Date());
+    }
+
+    public static String iso8601Time(Date date) {
+        return iso8601Format.format(date);
     }
 
     private static String c(String s) {
         return "{{" + s + "}}";
     }
 
-    private static SafeString createEmailTemplate(LanguageCodeISO6391 language, SafeString subject) throws IOException {
+    private static final Ordering<Date> dateComparator = new Ordering<Date>() {
+        @Override
+        public int compare(Date left, Date right) {
+            return left.compareTo(right);
+        }
+    };
+
+    private static Date applicationSystemLastClosingDate(ApplicationSystem applicationSystem) {
+        return dateComparator.max(Iterables.transform(applicationSystem.getApplicationPeriods(), new Function<ApplicationPeriod, Date>() {
+            @Override
+            public Date apply(ApplicationPeriod applicationPeriod) {
+                return applicationPeriod.getEnd();
+            }
+        }));
+    }
+
+    private static SafeString createEmailTemplate(LanguageCodeISO6391 language, SafeString subject, ApplicationSystem applicationSystem) throws IOException {
         ImmutableMap<String, String> templateValues = ImmutableMap.of(
                 "subject", subject.getValue(),
-                "submit_time", nowIso8601(),
+                "submit_time", iso8601Time(),
+                "due_date", iso8601Time(applicationSystemLastClosingDate(applicationSystem)),
                 // Leave intact for receiver to fill
                 PLACEHOLDER_LINK_EXPIRATION_TIME, c(PLACEHOLDER_LINK_EXPIRATION_TIME),
                 PLACEHOLDER_LINK, c(PLACEHOLDER_LINK));
@@ -84,17 +109,19 @@ public final class MailTemplateUtil {
         return SafeString.of(stringWriter.toString());
     }
 
-    public static final Function<Application, PaymentEmail> paymentEmailFromApplication = new Function<Application, PaymentEmail>() {
-        @Override
-        public PaymentEmail apply(Application application) {
-            LanguageCodeISO6391 language = languageCodeFromApplication(application);
-            SafeString subject = getOrGet(emailSubjectTranslations, language, en);
-            try {
-                return new PaymentEmail(subject, createEmailTemplate(language, subject), language);
-            } catch (IOException e) {
-                LOGGER.error("Failed to create payment email from application " + application.getOid(), e);
-                return null;
+    public static Function<Application, PaymentEmail> paymentEmailFromApplication(final ApplicationSystem applicationSystem) {
+        return new Function<Application, PaymentEmail>() {
+            @Override
+            public PaymentEmail apply(Application application) {
+                LanguageCodeISO6391 language = languageCodeFromApplication(application);
+                SafeString subject = getOrGet(emailSubjectTranslations, language, en);
+                try {
+                    return new PaymentEmail(subject, createEmailTemplate(language, subject, applicationSystem), language);
+                } catch (IOException e) {
+                    LOGGER.error("Failed to create payment email from application " + application.getOid(), e);
+                    return null;
+                }
             }
-        }
-    };
+        };
+    }
 }
