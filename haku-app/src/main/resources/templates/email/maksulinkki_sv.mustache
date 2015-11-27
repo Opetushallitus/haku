@@ -8,15 +8,25 @@
 <body>
   <div>
     <p>{{subject}}</p>
-    <p>Du har beställt en inloggningslänk till ansökningsblanketten:</p>
-    <a href="{{verification-link}}">{{verification-link}}</a>
-    <br/>
-    <p>Ifall länken inte fungerar, kan du kopiera den och infoga den i webbläsarens adressfält. Om du använder en dator som är i allmänt bruk, bör du komma ihåg att tömma webbhistoriken efter att du använt datorn. </p>
-    <p>Om du av misstag har fått det här e-postmeddelandet, kan du radera det. </p>
-    <p>Förfallodatum: {{due_date}}</p>
-    <p>Länken har beställts: {{submit_time}}</p>
-    <p>Länken är i kraft fram till {{expires}}. Efter detta kan du logga in på nytt genom att beställa en ny länk till din e-post. <p>
-    <p>Svara inte på detta meddelande – det har skickats automatiskt. </p>
+    <p><a href="{{verification-link}}">{{verification-link}}</a></p>
+    <p>
+      På basis av din grundutbildning måste du betala handläggningsavgiften
+      för ansökan. Ansökan behandlas inte före betalningen har utförts.
+      Handläggningsavgiften för ansökan gäller för en termin och du kan söka i
+      flera olika ansökningar med samma avgift. Använd länken ovan för att
+      betala handläggningsavgiften för ansökan. Om du redan har betalat
+      handläggningsavgiften för ansökan måste du bekräfta det genom länken
+      ovan. Handläggningsavgiften för ansökan måste betalas eller bekräftas
+      senast: {{due_date}}. Om betalningen inte har utförts eller bekräftats
+      inom utsatt tid, kommer din ansökan inte att behandlas.
+    </p>
+    <p>
+      Om länken inte fungerar kan du kopiera och klistra in den i
+      webbläsarens adressfält i ett nytt webbläsarfönster. Om du använder en
+      allmän dator, kom ihåg att tömma sidohistorian då du går bort från
+      datorn.
+    </p>
+    <p>Svara inte på detta meddelande – det har skickats automatiskt.</p>
   </div>
 </body>
 </html>
