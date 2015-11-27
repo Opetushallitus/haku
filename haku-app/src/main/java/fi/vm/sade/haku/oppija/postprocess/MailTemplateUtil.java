@@ -83,7 +83,7 @@ public final class MailTemplateUtil {
         }));
     }
 
-    private static Date calculateDueDate(ApplicationSystem applicationSystem, Date relativeTime, long minimumMillisecondsToDueDate) {
+    public static Date calculateDueDate(ApplicationSystem applicationSystem, Date relativeTime, long minimumMillisecondsToDueDate) {
         Date lastClosingDate = applicationSystemLastClosingDate(applicationSystem);
         long dueDateTimestamp = Math.max(lastClosingDate.getTime(), relativeTime.getTime() + minimumMillisecondsToDueDate);
         return new Date(dueDateTimestamp);

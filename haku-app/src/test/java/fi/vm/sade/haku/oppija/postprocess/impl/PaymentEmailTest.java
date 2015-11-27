@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationPeriod;
+import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystemBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.HakumaksuUtil.LanguageCodeISO6391;
@@ -14,8 +15,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
+import java.util.concurrent.TimeUnit;
 
 import static fi.vm.sade.haku.oppija.hakemus.service.HakumaksuService.PaymentEmail;
+import static fi.vm.sade.haku.oppija.postprocess.MailTemplateUtil.calculateDueDate;
 import static fi.vm.sade.haku.oppija.postprocess.MailTemplateUtil.localizedDateString;
 import static fi.vm.sade.haku.oppija.postprocess.MailTemplateUtil.paymentEmailFromApplication;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.*;
@@ -74,5 +77,25 @@ public class PaymentEmailTest {
     @Test
     public void testFinnishLocaleDateFormat() {
         assertEquals("1. tammikuuta 1970 2.00.00 EET", localizedDateString(new Date(0), LanguageCodeISO6391.fi));
+    }
+
+    @Test
+    public void testDueDateCalculationWhenNearOriginalExpirationDate() throws ParseException {
+        Date relativeEndDate = fromString("2000-01-20");
+        ApplicationSystem applicationSystem = new ApplicationSystemBuilder()
+                .setApplicationPeriods(ImmutableList.of(
+                        new ApplicationPeriod(fromString("2000-01-01"), relativeEndDate)))
+                .setId("1.2.3")
+                .setName(new I18nText(ImmutableMap.<String, String>of()))
+                .get();
+
+        long gracePeriod = TimeUnit.DAYS.toMillis(10);
+
+        // Before end but less than grace period
+        assertEquals(fromString("2000-01-25"), calculateDueDate(applicationSystem, fromString("2000-01-15"), gracePeriod));
+        // After end
+        assertEquals(fromString("2000-01-31"), calculateDueDate(applicationSystem, fromString("2000-01-21"), gracePeriod));
+        // Before end and more than grace period
+        assertEquals(relativeEndDate, calculateDueDate(applicationSystem, fromString("2000-01-05"), gracePeriod));
     }
 }
