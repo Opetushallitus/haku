@@ -127,6 +127,11 @@ public class HakutoiveetPhase {
                     .build());
         }
 
+        Element vaaraPohjakoulutus = Rule(new ValidateEducationExpr(id)).build();
+        Element pohjakoulutusristiriita = Warning("pohjakoulutuseiriita").formParams(formParameters).build();
+        vaaraPohjakoulutus.addChild(pohjakoulutusristiriita);
+        pr.addChild(vaaraPohjakoulutus);
+
         if (formParameters.kysytaankoHarkinnanvaraisuus()) {
             pr.addChild(createDiscretionaryQuestionsAndRules(id, DISCRETIONARY_EDUCATION_DEGREE, formParameters));
         }
