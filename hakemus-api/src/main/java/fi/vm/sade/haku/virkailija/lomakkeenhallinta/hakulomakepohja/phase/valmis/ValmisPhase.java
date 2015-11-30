@@ -48,6 +48,7 @@ public class ValmisPhase {
         elements.add(Text("valmisP1").labelKey("form.lomake.valmis.p1").formParams(formParameters).build());
         elements.add(Text("valmisP2").labelKey("form.lomake.valmis.p2").formParams(formParameters).build());
         elements.add(Text("valmisP3").labelKey("form.lomake.valmis.p3").formParams(formParameters).build());
+        elements.add(Text("valmisP4").labelKey("form.lomake.valmis.p4").formParams(formParameters).build());
 
         elements.add(new Print("printLink", formParameters.getI18nText("form.valmis.button.tulosta")));
 
