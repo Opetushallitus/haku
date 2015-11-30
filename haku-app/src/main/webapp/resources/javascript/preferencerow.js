@@ -119,6 +119,7 @@ var preferenceRow = {
                     $selectInput.append('<option value="' + item.name
                         + '" ' + selected + ' data-id="' + item.id +
                         '" data-educationdegree="' + item.educationDegree +
+                        '" data-requiredbaseeducations="' + item.requiredBaseEducations.join(",") +
                         '" data-lang="' + item.teachingLanguages[0] +
                         '" data-sora="' + item.sora +
                         '" data-aoidentifier="' + item.aoIdentifier +
@@ -161,6 +162,7 @@ var preferenceRow = {
     clearSelectInput: function (selectInputId) {
         $("#" + selectInputId + "-id").val("").change();
         $("#" + selectInputId + "-educationDegree").val("").change();
+        $("#" + selectInputId + "-requiredBaseEducations").val("").change();
         $("#" + selectInputId + "-id-lang").val("").change();
         $("#" + selectInputId + "-id-sora").val(false).change();
         $("#" + selectInputId + "-id-aoIdentifier").val("").change();
@@ -277,6 +279,7 @@ var preferenceRow = {
         var selectChange = function (event) {
                                        var $hiddenInput = $("#" + this.id + "-id"),
                                            $educationDegreeInput = $("#" + this.id + "-educationDegree"),
+                                           $educationDegreeRequiredBaseEdInput = $("#" + this.id + "-requiredBaseEducations"),
                                            $educationDegreeLang = $("#" + this.id + "-id-lang"),
                                            $educationDegreeSora = $("#" + this.id + "-id-sora"),
                                            $educationDegreeKaksoistutkinto = $("#" + this.id + "-id-kaksoistutkinto"),
@@ -297,6 +300,7 @@ var preferenceRow = {
                                        $hiddenInput.val(selectedId).change();
                                        var educationDegree = selectedOption.data("educationdegree");
                                        $educationDegreeInput.val(educationDegree).change();
+                                       $educationDegreeRequiredBaseEdInput.val(selectedOption.data("requiredbaseeducations")).change();
                                        $educationDegreeLang.val(selectedOption.data("lang")).change();
                                        $educationDegreeSora.val(selectedOption.data("sora")).change();
                                        $educationDegreeKaksoistutkinto.val(selectedOption.data("kaksoistutkinto")).change();
