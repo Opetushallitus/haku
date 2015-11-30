@@ -15,12 +15,12 @@ public class ValidateEducationExprTest {
         ValidateEducationExpr expr = new ValidateEducationExpr("Preference1");
         Map<String, String> answers = new HashMap<String, String>();
 
-        answers.put("Preference1-ao-baseEducationRequirements", "1234,pohjakoulutusvaatimuskorkeakoulut_102");
+        answers.put("Preference1-Koulutus-baseEducationRequirements", "1234,pohjakoulutusvaatimuskorkeakoulut_102");
         answers.put("pohjakoulutus_kk_taso", "2");
         answers.put("pohjakoulutus_kk_nimike", "xxxx");
         answers.put("pohjakoulutus_kk", "true");
 
-        assertTrue(expr.evaluate(answers));
+        assertFalse(expr.evaluate(answers));
     }
 
     @Test
@@ -28,12 +28,12 @@ public class ValidateEducationExprTest {
         ValidateEducationExpr expr = new ValidateEducationExpr("Preference1");
         Map<String, String> answers = new HashMap<String, String>();
 
-        answers.put("Preference1-ao-baseEducationRequirements", "1234");
+        answers.put("Preference1-Koulutus-baseEducationRequirements", "1234");
         answers.put("pohjakoulutus_kk_taso", "2");
         answers.put("pohjakoulutus_kk_nimike", "xxxx");
         answers.put("pohjakoulutus_kk", "true");
 
-        assertFalse(expr.evaluate(answers));
+        assertTrue(expr.evaluate(answers));
     }
 
 
