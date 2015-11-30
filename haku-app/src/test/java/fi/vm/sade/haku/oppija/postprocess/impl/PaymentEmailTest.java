@@ -48,12 +48,12 @@ public class PaymentEmailTest {
                     ELEMENT_ID_CONTACT_LANGUAGE, "englanti"));
         }};
 
-        Date expectedExpidateionDate = fromString("2222-06-01");
+        Date expectedExpirationDate = fromString("2111-06-01");
         ApplicationSystemBuilder builder = new ApplicationSystemBuilder()
                 .setApplicationPeriods(ImmutableList.of(
                         new ApplicationPeriod(fromString("2000-01-01"), fromString("2000-06-01")),
-                        new ApplicationPeriod(fromString("2222-01-01"), expectedExpidateionDate),
-                        new ApplicationPeriod(fromString("2111-01-01"), fromString("2111-06-01"))))
+                        new ApplicationPeriod(fromString("2222-01-01"), fromString("2222-06-01")),
+                        new ApplicationPeriod(fromString("2111-01-01"), expectedExpirationDate)))
                 .setId("1.2.3")
                 .setName(new I18nText(ImmutableMap.<String, String>of()));
 
@@ -61,12 +61,12 @@ public class PaymentEmailTest {
 
         String subject = paymentEmail.subject.getValue();
         assertEquals("Studyinfo - payment link", subject);
-        assertEquals(expectedExpidateionDate, paymentEmail.expirationDate); // Expiration date for the redirect link
+        assertEquals(expectedExpirationDate, paymentEmail.expirationDate); // Expiration date for the redirect link
         assertEquals(LanguageCodeISO6391.en, paymentEmail.language);
         String template = paymentEmail.template.getValue();
         assertTrue(template.contains(subject));
         assertTrue(template.contains("{{verification-link}}"));
-        assertTrue(template.contains("Saturday, June 1, 2222 3:00:00 AM EEST")); // Last of the ending dates
+        assertTrue(template.contains("Monday, June 1, 2111 3:00:00 AM EEST")); // Next upcoming end date
     }
 
     @Test
@@ -94,8 +94,36 @@ public class PaymentEmailTest {
         // Before end but less than grace period
         assertEquals(fromString("2000-01-25"), calculateDueDate(applicationSystem, fromString("2000-01-15"), gracePeriod));
         // After end
-        assertEquals(fromString("2000-01-31"), calculateDueDate(applicationSystem, fromString("2000-01-21"), gracePeriod));
+        assertEquals(fromString("2000-01-20"), calculateDueDate(applicationSystem, fromString("2000-01-21"), gracePeriod));
         // Before end and more than grace period
         assertEquals(relativeEndDate, calculateDueDate(applicationSystem, fromString("2000-01-05"), gracePeriod));
+    }
+
+    @Test
+    public void testDueDateWithNextUpcomingEndDateIsSelected() throws ParseException {
+        ApplicationSystem applicationSystem = new ApplicationSystemBuilder()
+                .setApplicationPeriods(ImmutableList.of(
+                        // Keep unordered to validate ordering
+                        new ApplicationPeriod(fromString("2000-06-01"), fromString("2000-07-01")),
+                        new ApplicationPeriod(fromString("2000-02-01"), fromString("2000-03-01")),
+                        new ApplicationPeriod(fromString("2000-04-01"), fromString("2000-05-01"))))
+                .setId("1.2.3")
+                .setName(new I18nText(ImmutableMap.<String, String>of()))
+                .get();
+
+        long gracePeriod = TimeUnit.DAYS.toMillis(10);
+
+        // Before first
+        assertEquals(fromString("2000-03-01"), calculateDueDate(applicationSystem, fromString("2000-01-01"), gracePeriod));
+        // Within first, not using grace period
+        assertEquals(fromString("2000-03-01"), calculateDueDate(applicationSystem, fromString("2000-02-10"), gracePeriod));
+        // After first, before second
+        assertEquals(fromString("2000-05-01"), calculateDueDate(applicationSystem, fromString("2000-03-10"), gracePeriod));
+        // Within second
+        assertEquals(fromString("2000-05-01"), calculateDueDate(applicationSystem, fromString("2000-04-10"), gracePeriod));
+        // Within second, using grace period
+        assertEquals(fromString("2000-05-05"), calculateDueDate(applicationSystem, fromString("2000-04-25"), gracePeriod));
+        // After last period, no grace period given
+        assertEquals(fromString("2000-07-01"), calculateDueDate(applicationSystem, fromString("2000-07-02"), gracePeriod));
     }
 }
