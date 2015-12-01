@@ -7,6 +7,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.TextQuestion;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.Expr;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.Regexp;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import org.codehaus.jackson.annotate.JsonCreator;
 import org.codehaus.jackson.annotate.JsonProperty;
 
@@ -18,6 +19,8 @@ import static fi.vm.sade.haku.oppija.lomake.domain.builder.TextQuestionBuilder.T
 public class ThemeTextQuestion extends ThemeQuestion {
 
     private Integer size;
+    private Boolean decimal;
+    private Integer decimals;
 
     @JsonCreator
     public ThemeTextQuestion(@JsonProperty(value = "applicationSystemId") String applicationSystemId,
@@ -45,6 +48,15 @@ public class ThemeTextQuestion extends ThemeQuestion {
         elementBuilder.i18nText(getMessageText());
         elementBuilder.help(getHelpText());
         elementBuilder.verboseHelp(getVerboseHelpText());
+        if (this.decimal != null && this.decimal) {
+            if (this.decimals != null && this.decimals > 0) {
+                String p = "(0|[1-9][0-9]*),[0-9]{1," + this.decimals + "}";
+                elementBuilder.validator(ElementUtil.createRegexValidator(p, "yleinen.virheellinendesimaaliluku"));
+            } else {
+                String p = "(0|[1-9][0-9]*)";
+                elementBuilder.validator(ElementUtil.createRegexValidator(p, "yleinen.virheellinenkokonaisluku"));
+            }
+        }
         if (this.size != null) {
             elementBuilder.size(this.size);
             elementBuilder.maxLength(this.getSize());
@@ -77,5 +89,21 @@ public class ThemeTextQuestion extends ThemeQuestion {
     protected Expr generateAttachmentCondition(FormParameters formParameters, AttachmentRequest attachmentRequest) {
         Regexp expr = new Regexp(this.getId().toString(), ".+");
         return expr;
+    }
+
+    public Boolean getDecimal() {
+        return decimal;
+    }
+
+    public void setDecimal(Boolean decimal) {
+        this.decimal = decimal;
+    }
+
+    public Integer getDecimals() {
+        return decimals;
+    }
+
+    public void setDecimals(Integer decimals) {
+        this.decimals = decimals;
     }
 }
