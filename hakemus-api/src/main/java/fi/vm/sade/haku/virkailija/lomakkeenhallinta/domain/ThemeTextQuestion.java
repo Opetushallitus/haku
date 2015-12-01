@@ -49,11 +49,13 @@ public class ThemeTextQuestion extends ThemeQuestion {
         elementBuilder.help(getHelpText());
         elementBuilder.verboseHelp(getVerboseHelpText());
         if (this.decimal != null && this.decimal) {
-            String p = "[1-9]+[0-9]*";
             if (this.decimals != null && this.decimals > 0) {
-                p += ",[0-9]{1," + this.decimals + "}";
+                String p = "[1-9][0-9]*,[0-9]{1," + this.decimals + "}";
+                elementBuilder.validator(ElementUtil.createRegexValidator(p, "yleinen.virheellinendesimaaliluku"));
+            } else {
+                String p = "[1-9][0-9]*";
+                elementBuilder.validator(ElementUtil.createRegexValidator(p, "yleinen.virheellinenkokonaisluku"));
             }
-            elementBuilder.validator(ElementUtil.createRegexValidator(p, "yleinen.virheellinendesimaaliluku"));
         }
         if (this.size != null) {
             elementBuilder.size(this.size);
