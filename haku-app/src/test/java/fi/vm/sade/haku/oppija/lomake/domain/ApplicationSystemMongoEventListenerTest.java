@@ -62,7 +62,7 @@ public class ApplicationSystemMongoEventListenerTest extends IntegrationTest {
         assertEquals(1, applicationSystemService.getCache().size());
         assertEquals(5, readFromDatabase.getForm().getChildren().size());
         assertEquals(AFFECTED_APPLICATION_SYSTEM_ID, readFromDatabase.getForm().getId());
-        assertEquals("lukion-paattotodistuksen-keskiarvo", readFromDatabase.getForm()
+        assertEquals("osaaminen-kansainvalinenyo-arvosanat", readFromDatabase.getForm()
                 .getChildren().get(3).getChildren().get(0)
                 .getChildren().get(0).getChildren().get(0).getId());
     }

@@ -21,8 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain.FormConfiguration.FeatureFlag.erotteleAmmatillinenJaYoAmmatillinenKeskiarvo;
-import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain.FormConfiguration.FeatureFlag.kansainvalinenYoAmkKysymys;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain.FormConfiguration.FeatureFlag.*;
 import static fi.vm.sade.hakutest.TestHelpers.Tuple.tuple;
 import static fi.vm.sade.hakutest.TestHelpers.list;
 import static fi.vm.sade.hakutest.TestHelpers.map;
@@ -244,6 +243,12 @@ public class Level4Test extends IntegrationTest {
     public void testNewFormGenerationUpgradesQuestionIds() {
         applicationSystemService.save(formGenerator.generate(AFFECTED_APPLICATION_SYSTEM_ID));
         assertEquals(true, formConfigurationDAO.findByApplicationSystem(AFFECTED_APPLICATION_SYSTEM_ID).getFeatureFlag(erotteleAmmatillinenJaYoAmmatillinenKeskiarvo));
+        FormConfiguration formConfig = formConfigurationDAO.findByApplicationSystem(AFFECTED_APPLICATION_SYSTEM_ID);
+        formConfig.setFeatureFlag(FeatureFlag.gradeAverageAmmatillinen, true);
+        formConfig.setFeatureFlag(FeatureFlag.gradeAverageYoAmmatillinen, true);
+        formConfig.setFeatureFlag(FeatureFlag.gradeAverageLukio, true);
+        formConfigurationDAO.update(formConfig);
+        applicationSystemService.save(formGenerator.generate(AFFECTED_APPLICATION_SYSTEM_ID));
 
         ApplicationSystem as = applicationSystemService.getApplicationSystem(AFFECTED_APPLICATION_SYSTEM_ID);
 
@@ -269,6 +274,9 @@ public class Level4Test extends IntegrationTest {
         Map<FeatureFlag, Boolean> flags = new HashMap<>();
         flags.put(erotteleAmmatillinenJaYoAmmatillinenKeskiarvo, false);
         flags.put(kansainvalinenYoAmkKysymys, true);
+        flags.put(gradeAverageLukio, true);
+        flags.put(gradeAverageYoAmmatillinen, true);
+        flags.put(gradeAverageAmmatillinen, true);
         formConfigurationDAO.save(new FormConfiguration(AFFECTED_APPLICATION_SYSTEM_ID, FormConfiguration.FormTemplateType.YHTEISHAKU_KEVAT_KORKEAKOULU, flags));
         applicationSystemService.save(formGenerator.generate(AFFECTED_APPLICATION_SYSTEM_ID));
         assertEquals(false, formConfigurationDAO.findByApplicationSystem(AFFECTED_APPLICATION_SYSTEM_ID).getFeatureFlag(erotteleAmmatillinenJaYoAmmatillinenKeskiarvo));
