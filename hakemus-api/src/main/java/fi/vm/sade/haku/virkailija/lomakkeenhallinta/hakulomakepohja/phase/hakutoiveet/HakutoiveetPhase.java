@@ -127,11 +127,6 @@ public class HakutoiveetPhase {
                     .build());
         }
 
-        Element vaaraPohjakoulutus = Rule(new ValidateEducationExpr(id)).build();
-        Element pohjakoulutusristiriita = Warning("pohjakoulutuseiriita").formParams(formParameters).build();
-        vaaraPohjakoulutus.addChild(pohjakoulutusristiriita);
-        pr.addChild(vaaraPohjakoulutus);
-
         if (formParameters.kysytaankoHarkinnanvaraisuus()) {
             pr.addChild(createDiscretionaryQuestionsAndRules(id, DISCRETIONARY_EDUCATION_DEGREE, formParameters));
         }
@@ -160,6 +155,8 @@ public class HakutoiveetPhase {
         }
 
         if (formParameters.isHigherEd()) {
+            pr.addChild(createTarkistaPohjakoulutusRiittavyys(id,formParameters));
+
             KoodistoService koodistoService = formParameters.getKoodistoService();
 
             // Yliopisto
@@ -287,6 +284,16 @@ public class HakutoiveetPhase {
 
         hasSora.addChild(sora1, sora2);
         return hasSora;
+    }
+
+    private static Element createTarkistaPohjakoulutusRiittavyys(final String id, final FormParameters formParameters) {
+        Element pohjakoulutusValidation = Rule(new Equals(new ValidateEducationExpr(id), Value.TRUE))
+                .addChild(new Notification(id + "_pohjakoulutus_ei_riita", formParameters.getI18nText("form.hakutoiveet.pohjakoulutuseiriita"), Notification.NotificationType.INFO))
+                .build();
+
+        Element koulutusValittu = Rule(new Not(new Equals(new Variable(id + "-Koulutus-id"), new Value("")))).build();
+        koulutusValittu.addChild(pohjakoulutusValidation);
+        return koulutusValittu;
     }
 
     private static Element createUrheilijanAmmatillisenKoulutuksenLisakysymysAndRule(final String index, final FormParameters formParameters) {

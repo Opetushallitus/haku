@@ -18,6 +18,11 @@ public class ValidateEducationExpr extends Expr {
     }
 
     @Override
+    public String getValue(final Map<String, String> context) {
+        return ""+this.evaluate(context);
+    }
+
+    @Override
     public boolean evaluate(Map<String, String> context) {
         if(context.get(rowId + "-Koulutus-requiredBaseEducations") == null) {
             return false;
