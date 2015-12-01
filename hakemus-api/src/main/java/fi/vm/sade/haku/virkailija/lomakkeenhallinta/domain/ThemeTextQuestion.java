@@ -50,10 +50,10 @@ public class ThemeTextQuestion extends ThemeQuestion {
         elementBuilder.verboseHelp(getVerboseHelpText());
         if (this.decimal != null && this.decimal) {
             if (this.decimals != null && this.decimals > 0) {
-                String p = "[1-9][0-9]*,[0-9]{1," + this.decimals + "}";
+                String p = "(0|[1-9][0-9]*),[0-9]{1," + this.decimals + "}";
                 elementBuilder.validator(ElementUtil.createRegexValidator(p, "yleinen.virheellinendesimaaliluku"));
             } else {
-                String p = "[1-9][0-9]*";
+                String p = "(0|[1-9][0-9]*)";
                 elementBuilder.validator(ElementUtil.createRegexValidator(p, "yleinen.virheellinenkokonaisluku"));
             }
         }
