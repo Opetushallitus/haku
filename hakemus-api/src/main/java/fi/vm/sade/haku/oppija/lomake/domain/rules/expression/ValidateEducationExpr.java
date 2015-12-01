@@ -19,12 +19,12 @@ public class ValidateEducationExpr extends Expr {
 
     @Override
     public boolean evaluate(Map<String, String> context) {
-        if(context.get(rowId + "-Koulutus-baseEducationRequirements") == null) {
+        if(context.get(rowId + "-Koulutus-requiredBaseEducations") == null) {
             return false;
         }
 
         ImmutableSet<String> baseEducationRequirements =  new ImmutableSet.Builder<String>()
-                .add(context.get(rowId + "-Koulutus-baseEducationRequirements").split(","))
+                .add(context.get(rowId + "-Koulutus-requiredBaseEducations").split(","))
                 .build();
 
         return !HakumaksuService.validateBaseEdsAgainstAoRequirement(Types.MergedAnswers.of(context), baseEducationRequirements);
