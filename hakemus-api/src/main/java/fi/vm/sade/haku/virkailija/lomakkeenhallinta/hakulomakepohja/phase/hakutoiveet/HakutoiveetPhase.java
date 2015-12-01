@@ -155,6 +155,8 @@ public class HakutoiveetPhase {
         }
 
         if (formParameters.isHigherEd()) {
+            pr.addChild(createTarkistaPohjakoulutusRiittavyys(id,formParameters));
+
             KoodistoService koodistoService = formParameters.getKoodistoService();
 
             // Yliopisto
@@ -282,6 +284,16 @@ public class HakutoiveetPhase {
 
         hasSora.addChild(sora1, sora2);
         return hasSora;
+    }
+
+    private static Element createTarkistaPohjakoulutusRiittavyys(final String id, final FormParameters formParameters) {
+        Element pohjakoulutusValidation = Rule(new Equals(new ValidateEducationExpr(id), Value.TRUE))
+                .addChild(new Notification(id + "_pohjakoulutus_ei_riita", formParameters.getI18nText("form.hakutoiveet.pohjakoulutuseiriita"), Notification.NotificationType.INFO))
+                .build();
+
+        Element koulutusValittu = Rule(new Not(new Equals(new Variable(id + "-Koulutus-id"), new Value("")))).build();
+        koulutusValittu.addChild(pohjakoulutusValidation);
+        return koulutusValittu;
     }
 
     private static Element createUrheilijanAmmatillisenKoulutuksenLisakysymysAndRule(final String index, final FormParameters formParameters) {

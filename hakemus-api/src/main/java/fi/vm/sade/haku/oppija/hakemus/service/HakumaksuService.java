@@ -393,6 +393,21 @@ public class HakumaksuService {
         return applicationPaymentEligibilities.build();
     }
 
+    public static boolean validateBaseEdsAgainstAoRequirement(MergedAnswers answers, ImmutableSet<String> baseEducationRequirements) {
+        ImmutableMap.Builder<ApplicationOptionOid, ImmutableSet<Eligibility>> applicationPaymentEligibilities = ImmutableMap.builder();
+
+        for (String baseEducationRequirement : baseEducationRequirements) {
+            if(kkBaseEducationRequirements.get(baseEducationRequirement) != null) {
+                ImmutableSet<Eligibility> allEligibilities = kkBaseEducationRequirements.get(baseEducationRequirement).apply(answers);
+                if (allEligibilities.size() > 0) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+
     private List<ApplicationOptionOid> asApplicationOptionOids(List<String> preferenceAoIds) {
         return Lists.transform(preferenceAoIds, new Function<String, ApplicationOptionOid>() {
             @Override
