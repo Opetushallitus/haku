@@ -15,6 +15,8 @@ import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.HakumaksuUtil.LanguageCodeISO6391;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.SafeString;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,7 +37,7 @@ public final class MailTemplateUtil {
 
     private static final String PLACEHOLDER_LINK = "verification-link";
     private static final String PLACEHOLDER_LINK_EXPIRATION_TIME = "expires";
-    private static final long MINIMUM_MILLISECONDS_TO_DUE_DATE = TimeUnit.DAYS.toMillis(10);
+    public static final long GRACE_PERIOD = TimeUnit.DAYS.toMillis(10);
 
     private static final ImmutableMap<LanguageCodeISO6391, SafeString> emailSubjectTranslations = ImmutableMap.of(
             en, SafeString.of("Studyinfo - payment link"),
@@ -79,28 +81,41 @@ public final class MailTemplateUtil {
         }
     };
 
-    private static Date finalDeadline(ApplicationSystem applicationSystem) {
-        return dateComparator.max(Iterables.transform(applicationSystem.getApplicationPeriods(), periodEnd));
+    private static boolean isSane(Date d) {
+        return d.getTime() < Long.MAX_VALUE;
     }
 
-    private static Date nextApplicationPeriodEndDate(ApplicationSystem applicationSystem, final Date relativeTime) {
-        Iterable<ApplicationPeriod> ongoingOrFutureApplicationPeriods = Iterables.filter(applicationSystem.getApplicationPeriods(), new Predicate<ApplicationPeriod>() {
+    private static Date nextEndDate(ApplicationSystem applicationSystem, final Date changeTime) {
+        return dateComparator.min(Iterables.transform(Iterables.filter(applicationSystem.getApplicationPeriods(), new Predicate<ApplicationPeriod>() {
             @Override
             public boolean apply(ApplicationPeriod applicationPeriod) {
-                return applicationPeriod.getEnd().after(relativeTime);
+                final Date end = applicationPeriod.getEnd();
+                return isSane(end) && end.after(changeTime);
             }
-        });
-        return dateComparator.min(Iterables.transform(ongoingOrFutureApplicationPeriods, periodEnd));
+        }), periodEnd));
     }
 
-    public static Date calculateDueDate(ApplicationSystem applicationSystem, Date relativeTime, long minimumMillisecondsToDueDate) {
-        final Date finalDeadline = finalDeadline(applicationSystem);
-        if (relativeTime.after(finalDeadline)) {
-            return finalDeadline; // Too late to apply, no grace period granted
+    private static Date withGracePeriod(Date changeTime, long gracePeriod) {
+        return new DateTime(changeTime.getTime(), DateTimeZone.UTC).plus(gracePeriod).toDateMidnight().toDate();
+    }
+
+    private static boolean isWithinApplicationPeriods(ApplicationSystem applicationSystem, final Date changeTime) {
+        return Iterables.any(applicationSystem.getApplicationPeriods(), new Predicate<ApplicationPeriod>() {
+            @Override
+            public boolean apply(ApplicationPeriod period) {
+                final Date start = period.getStart();
+                final Date end = period.getEnd();
+
+                return start.before(changeTime) && isSane(end) && end.after(changeTime);
+            }
+        });
+    }
+
+    public static Date calculateDueDate(ApplicationSystem applicationSystem, final Date changeTime, long gracePeriod) {
+        if (isWithinApplicationPeriods(applicationSystem, changeTime)) {
+            return dateComparator.max(nextEndDate(applicationSystem, changeTime), withGracePeriod(changeTime, gracePeriod));
         } else {
-            Date lastClosingDate = nextApplicationPeriodEndDate(applicationSystem, relativeTime);
-            long dueDateTimestamp = Math.max(lastClosingDate.getTime(), relativeTime.getTime() + minimumMillisecondsToDueDate);
-            return new Date(dueDateTimestamp);
+            return withGracePeriod(changeTime, gracePeriod);
         }
     }
 
@@ -131,7 +146,7 @@ public final class MailTemplateUtil {
                 LanguageCodeISO6391 language = languageCodeFromApplication(application);
                 SafeString subject = getOrGet(emailSubjectTranslations, language, en);
                 try {
-                    Date dueDate = calculateDueDate(applicationSystem, new Date(), MINIMUM_MILLISECONDS_TO_DUE_DATE);
+                    Date dueDate = calculateDueDate(applicationSystem, new Date(), GRACE_PERIOD);
                     return new PaymentEmail(subject, createEmailTemplate(language, subject, dueDate), language, dueDate);
                 } catch (IOException e) {
                     LOGGER.error("Failed to create payment email from application " + application.getOid(), e);
