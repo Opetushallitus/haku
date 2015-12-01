@@ -110,16 +110,16 @@
                 </c:if>
             </h3>
             <table class="margin-top-2">
-                <c:if test="${application.redoPostProcess == 'DONE'}">
+                <c:if test="${application.redoPostProcess eq 'DONE'}">
                     <fmt:message key="virkailija.hakemus.kasittely.done" var="redoProcessState"/>
                 </c:if>
-                <c:if test="${application.redoPostProcess == 'NOMAIL'}">
+                <c:if test="${application.redoPostProcess eq 'NOMAIL'}">
                     <fmt:message key="virkailija.hakemus.kasittely.nomail" var="redoProcessState"/>
                 </c:if>
-                <c:if test="${application.redoPostProcess == 'FULL'}">
+                <c:if test="${application.redoPostProcess eq 'FULL'}">
                     <fmt:message key="virkailija.hakemus.kasittely.full" var="redoProcessState"/>
                 </c:if>
-                <c:if test="${application.redoPostProcess == 'FAILED'}">
+                <c:if test="${application.redoPostProcess eq 'FAILED'}">
                     <fmt:message key="virkailija.hakemus.kasittely.fail" var="redoProcessState"/>
                 </c:if>
 
@@ -132,6 +132,19 @@
                 </c:if>
                 <c:if test="${application.state eq 'INCOMPLETE'}">
                     <fmt:message key="virkailija.hakemus.tila.puutteellinen" var="applicationState"/>
+                </c:if>
+
+                <c:if test="${application.requiredPaymentState eq null}">
+                    <c:set value="" var="paymentState"/>
+                </c:if>
+                <c:if test="${application.requiredPaymentState eq 'NOTIFIED'}">
+                    <fmt:message key="virkailija.hakemus.maksun.tila.odottaa" var="paymentState"/>
+                </c:if>
+                <c:if test="${application.requiredPaymentState eq 'OK'}">
+                    <fmt:message key="virkailija.hakemus.maksun.tila.maksettu" var="paymentState"/>
+                </c:if>
+                <c:if test="${application.requiredPaymentState eq 'NOT_OK'}">
+                    <fmt:message key="virkailija.hakemus.maksun.tila.eitehda" var="paymentState"/>
                 </c:if>
 
                 <tr>
@@ -170,11 +183,21 @@
                     <haku:infoCell key="virkailija.hakemus.puhelin" value="${answers['matkapuhelinnumero1']}"/>
                 </tr>
                 <tr>
-                    <td>&nbsp;</td>
+                    <c:choose>
+                        <c:when test="${paymentState ne ''}">
+                            <haku:infoCell key="virkailija.hakemus.maksun.tila" value='${paymentState}'/>
+                        </c:when>
+                        <c:otherwise>
+                            <td>&nbsp;</td>
+                        </c:otherwise>
+                    </c:choose>
+
+
                     <td>
                         Hakijan tiedot <a href="/suoritusrekisteri/#/muokkaa/${application.personOid}" target="_blank">suoritusrekisteriss&auml;</a></br>
                         Hakijan tiedot <a href="/authentication-henkiloui/html/index.html#/henkilo/${application.personOid}/?permissionCheckService=HAKU_APP" target="_blank">henkil&ouml;palvelussa</a>
                     </td>
+
                     <haku:infoCell key="virkailija.hakemus.sahkoposti" value="${answers['Sähköposti']}"/>
                 </tr>
             </table>
