@@ -84,7 +84,7 @@ public class EligibilityCheckWorkerImplTest {
     }
     private static ApplicationSystem createApplicationSystemWithEligibilities() {
         ApplicationSystem as = new ApplicationSystem("hakuOid", null, new I18nText(ImmutableMap.of("fi","hakuWithEligibilities")), "JULKAISTU",
-                null, null, null, null, null, null, null, null, null, null, null, null, null, Collections.newArrayList("aosWithEligibility"), null, false);
+                null, null, null, null, null, null, null, null, null, null, null, null, null, null, Collections.newArrayList("aosWithEligibility"), null, false);
         return as;
     }
 }

@@ -52,6 +52,7 @@ public class ApplicationSystem implements Serializable {
     private Integer hakukausiVuosi;
     private String hakukausiUri;
     private String kohdejoukkoUri;
+    private String kohdejoukonTarkenne;
     private Date lastGenerated;
     private Boolean usePriorities;
     private Boolean maksumuuriKaytossa;
@@ -72,6 +73,7 @@ public class ApplicationSystem implements Serializable {
                              final Integer hakukausiVuosi,
                              final String hakukausiUri,
                              final String kohdejoukkoUri,
+                             final String kohdejoukonTarkenne,
                              final List<Element> applicationCompleteElements,
                              final List<Element> additionalInformationElements,
                              final List<ApplicationOptionAttachmentRequest> applicationOptionAttachmentRequests,
@@ -97,6 +99,7 @@ public class ApplicationSystem implements Serializable {
         this.hakukausiVuosi = hakukausiVuosi;
         this.hakukausiUri = hakukausiUri;
         this.kohdejoukkoUri = kohdejoukkoUri;
+        this.kohdejoukonTarkenne = kohdejoukonTarkenne;
         this.applicationCompleteElements = applicationCompleteElements;
         this.additionalInformationElements = additionalInformationElements;
         this.applicationOptionAttachmentRequests = applicationOptionAttachmentRequests;
@@ -216,5 +219,9 @@ public class ApplicationSystem implements Serializable {
     public boolean isMaksumuuriKaytossa() {
         // Applications prior to paywall may not have var set, make null-safe
         return toBoolean(maksumuuriKaytossa);
+    }
+
+    public String getKohdejoukonTarkenne() {
+        return kohdejoukonTarkenne;
     }
 }
