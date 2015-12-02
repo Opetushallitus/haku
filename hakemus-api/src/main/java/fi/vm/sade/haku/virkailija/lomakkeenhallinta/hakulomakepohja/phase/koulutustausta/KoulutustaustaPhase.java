@@ -275,7 +275,7 @@ public final class KoulutustaustaPhase {
         List<Option> korkeakoulut = Lists.newArrayList(Iterables.transform(
                 Iterables.filter(koodistoService.getKorkeakoulutMyosRinnasteiset(), new Predicate<Organization>() {
                     public boolean apply(Organization organization) {
-                        // Ei Högskolan på Åland
+                        // Högskolan på Åland ei kuulu Suomen KK järjestelmään vaikka löytyykin koodistosta
                         return !("1.2.246.562.10.444626308710".equals(organization.getOid())
                                 || "1.2.246.562.10.50686854907".equals(organization.getOid()));
                     }
