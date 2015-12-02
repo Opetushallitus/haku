@@ -16,8 +16,9 @@
 
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.osaaminen;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
 import fi.vm.sade.haku.oppija.lomake.domain.builder.ElementBuilder;
-import fi.vm.sade.haku.oppija.lomake.domain.builder.TitledGroupBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.GradeAverage;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
@@ -28,13 +29,10 @@ import fi.vm.sade.haku.oppija.lomake.validation.validators.RegexFieldValidator;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain.FormConfiguration;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.hakutoiveet.HakutoiveetPhase;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.service.ThemeQuestionConfigurator;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ExprUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static fi.vm.sade.haku.oppija.hakemus.service.Role.*;
@@ -46,6 +44,7 @@ import static fi.vm.sade.haku.oppija.lomake.domain.builder.TextAreaBuilder.TextA
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.TextQuestionBuilder.TextQuestion;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.ThemeBuilder.Theme;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.TitledGroupBuilder.TitledGroup;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.*;
 
 public class OsaaminenPhase {
 
@@ -66,119 +65,141 @@ public class OsaaminenPhase {
             if (formParameters.isOnlyThemeGenerationForFormEditor())
                 return osaaminen;
 
-            Expr pohjakoulutusLukio = ExprUtil.isAnswerTrue("pohjakoulutus_yo");
+            List<Option> ammattitutkinnot = formParameters.getKoodistoService().getAmmattitutkinnot();
+            List<Option> ammattioppilaitokset = formParameters.getKoodistoService().getAmmattioppilaitosKoulukoodit();
+            List<Option> ammatillisenTutkinnonArvosteluasteikko = formParameters.getKoodistoService().getAmmatillisenTutkinnonArvosteluasteikko();
+            Expr haettuAMKHon = haettuAMKHon(
+                    HakutoiveetPhase.getAmkKoulutusIds(formParameters.getKoodistoService()),
+                    HakutoiveetPhase.getPreferenceIds(formParameters));
 
-            Expr pohjakoulutusYoKansainvalinen = new Or(ExprUtil.isAnswerTrue("pohjakoulutus_yo_kansainvalinen_suomessa"), ExprUtil.isAnswerTrue("pohjakoulutus_yo_ulkomainen"));
-
-            KoodistoService koodistoService = formParameters.getKoodistoService();
-            String[] amkkoulutuksetArr = HakutoiveetPhase.getAmkKoulutusIds(koodistoService);
-            List<Expr> exprs = new ArrayList<Expr>();
-            for (String preferenceId : HakutoiveetPhase.getPreferenceIds(formParameters)) {
-                exprs.add(ExprUtil.atLeastOneValueEqualsToVariable(preferenceId + "-Koulutus-id-educationcode", amkkoulutuksetArr));
+            if (formParameters.gradeAverageLukio()) {
+                osaaminenTheme.addChild(kysytaanLukionKeskiarvo(haettuAMKHon).addChild(buildLukionKeskiarvo(formParameters)));
             }
-
-            Expr haettuAMKHon = ExprUtil.any(exprs);
-
-            ElementBuilder kysytaankoLukionKeskiarvo = Rule(new And(haettuAMKHon, pohjakoulutusLukio));
-            ElementBuilder kysytaankoYoArvosanat = Rule(new And(haettuAMKHon, pohjakoulutusYoKansainvalinen)).formParams(formParameters);
-            List<Option> asteikkolista = koodistoService.getAmmatillisenTutkinnonArvosteluasteikko();
-
-            ElementBuilder lukioKeskiarvo = TextQuestion("lukion-paattotodistuksen-keskiarvo")
-                    .inline()
-                    .required()
-                    .maxLength(5)
-                    .size(5)
-                    .validator(new RegexFieldValidator("validator.keskiarvo.desimaaliluku", "^$|\\d+\\,?\\d{1,2}"))
-                    .formParams(formParameters);
-            if (formParameters.useGradeAverage()) {
-                GradeAverage gradeAverage = new GradeAverage("keskiarvo_lukio", "", null, null, formParameters.getI18nText("lukio"),
-                        null, null, null);
-                if (formParameters.useOptionalGradeAverageLukio()) {
-                    Element eiOleKeskiarvoa = Checkbox("ei_ole_keskiarvoa_lukio")
-                            .labelKey("eiolekeskiarvoa")
-                            .formParams(formParameters).build();
-                    Element eiKysyta = Rule(new Not(new Equals(new Variable(eiOleKeskiarvoa.getId()), Value.TRUE)))
-                            .formParams(formParameters).build();
-                    eiKysyta.addChild(lukioKeskiarvo.build());
-                    gradeAverage.addChild(eiOleKeskiarvoa, eiKysyta);
-                } else {
-                    gradeAverage.addChild(lukioKeskiarvo.build());
+            if (formParameters.isKansainvalinenYoAmkKysymys()) {
+                osaaminenTheme.addChild(kysytaanYoArvosanat(haettuAMKHon).addChild(buildYoArvosanat(formParameters)));
+            }
+            if (formParameters.gradeAverageYoAmmatillinen()) {
+                osaaminenTheme.addChild(kysytaanYoAmmatillinenKeskiarvo(haettuAMKHon)
+                        .addChild(buildKeskiarvoYoAmmatillinen(formParameters, ammattitutkinnot, ammattioppilaitokset, ammatillisenTutkinnonArvosteluasteikko)));
+            }
+            if (formParameters.gradeAverageAmmatillinen()) {
+                for (int i = 1; i <= 5; i++) {
+                    String postfix = i == 1 ? "" : String.valueOf(i);
+                    osaaminenTheme.addChild(kysytaanAmmatillinenKeskiarvo(haettuAMKHon, postfix)
+                            .addChild(buildKeskiarvoAmmatillinen(formParameters, postfix, ammattitutkinnot, ammattioppilaitokset, ammatillisenTutkinnonArvosteluasteikko)));
                 }
-                kysytaankoLukionKeskiarvo.addChild(gradeAverage);
-            } else {
-                kysytaankoLukionKeskiarvo.addChild(lukioKeskiarvo.build());
             }
-
-            ElementBuilder yoKysymysRyhma = TitledGroup("osaaminen-kansainvalinenyo-arvosanat").formParams(formParameters);
-            addYoAsteikkoQuestion(OppijaConstants.ELEMENT_ID_OSAAMINEN_YOARVOSANAT_PARAS_KIELI, yoKysymysRyhma, formParameters);
-            addYoAsteikkoQuestion(OppijaConstants.ELEMENT_ID_OSAAMINEN_YOARVOSANAT_AIDINKIELI, yoKysymysRyhma, formParameters);
-            addYoAsteikkoQuestion(OppijaConstants.ELEMENT_ID_OSAAMINEN_YOARVOSANAT_MATEMATIIKKA, yoKysymysRyhma, formParameters);
-            addYoAsteikkoQuestion(OppijaConstants.ELEMENT_ID_OSAAMINEN_YOARVOSANAT_REAALI, yoKysymysRyhma, formParameters);
-
-            kysytaankoYoArvosanat.addChild(yoKysymysRyhma);
-
-            List<Option> ammattitutkintonimikkeet = koodistoService.getAmmattitutkinnot();
-            List<Option> oppilaitokset = koodistoService.getAmmattioppilaitosKoulukoodit();
-
-            osaaminenTheme.addChild(kysytaankoLukionKeskiarvo.build());
-            if(formParameters.isKansainvalinenYoAmkKysymys()) {
-                osaaminenTheme.addChild(kysytaankoYoArvosanat.build());
-            }
-
-            buildKeskiarvotAmmatillinen(formParameters, ammattitutkintonimikkeet, oppilaitokset,
-                    haettuAMKHon, asteikkolista, osaaminenTheme);
-            ThemeQuestionConfigurator configurator = formParameters.getThemeQuestionConfigurator();
-            osaaminenTheme.addChild(configurator.findAndConfigure(osaaminenTheme.getId()));
+            osaaminenTheme.addChild(formParameters.getThemeQuestionConfigurator().findAndConfigure(osaaminenTheme.getId()));
         }
         return osaaminen;
     }
 
-    private static void addYoAsteikkoQuestion(String elementId,ElementBuilder parent, FormParameters formParameters) {
-        parent.addChild(Dropdown(elementId)
+    private static Element kysytaanLukionKeskiarvo(Expr haettuAMKHon) {
+        return Rule(new And(haettuAMKHon, ExprUtil.isAnswerTrue("pohjakoulutus_yo"))).build();
+    }
+
+    private static Element kysytaanYoAmmatillinenKeskiarvo(Expr haettuAMKHon) {
+        return Rule(new And(haettuAMKHon, ExprUtil.isAnswerTrue("pohjakoulutus_yo_ammatillinen"))).build();
+    }
+
+    private static Element kysytaanAmmatillinenKeskiarvo(Expr haettuAMKHon, String postfix) {
+        return Rule(new And(haettuAMKHon, new Regexp("pohjakoulutus_am_vuosi" + postfix, "^\\d+$"))).build();
+    }
+
+    private static Element kysytaanYoArvosanat(Expr haettuAMKHon) {
+        Expr pohjakoulutusYoKansainvalinen = new Or(ExprUtil.isAnswerTrue("pohjakoulutus_yo_kansainvalinen_suomessa"), ExprUtil.isAnswerTrue("pohjakoulutus_yo_ulkomainen"));
+        return Rule(new And(haettuAMKHon, pohjakoulutusYoKansainvalinen)).build();
+    }
+
+    private static Expr haettuAMKHon(final String[] amkKoulutukset, List<String> preferenceIds) {
+        return ExprUtil.any(Lists.transform(preferenceIds, new Function<String, Expr>() {
+            public Expr apply(String preferenceId) {
+                return ExprUtil.atLeastOneValueEqualsToVariable(preferenceId + "-Koulutus-id-educationcode", amkKoulutukset);
+            }
+        }));
+    }
+
+    private static Element buildLukionKeskiarvo(FormParameters formParameters) {
+        ElementBuilder lukioKeskiarvo = TextQuestion("lukion-paattotodistuksen-keskiarvo")
+                .inline()
+                .required()
+                .maxLength(5)
+                .size(5)
+                .validator(new RegexFieldValidator("validator.keskiarvo.desimaaliluku", "^$|\\d+\\,?\\d{1,2}"))
+                .formParams(formParameters);
+        if (formParameters.useGradeAverage()) {
+            GradeAverage gradeAverage = new GradeAverage("keskiarvo_lukio", "", null, null, formParameters.getI18nText("lukio"),
+                    null, null, null);
+            if (formParameters.useOptionalGradeAverageLukio()) {
+                Element eiOleKeskiarvoa = Checkbox("ei_ole_keskiarvoa_lukio")
+                        .labelKey("eiolekeskiarvoa")
+                        .formParams(formParameters).build();
+                Element eiKysyta = Rule(new Not(new Equals(new Variable(eiOleKeskiarvoa.getId()), Value.TRUE)))
+                        .formParams(formParameters).build();
+                eiKysyta.addChild(lukioKeskiarvo.build());
+                gradeAverage.addChild(eiOleKeskiarvoa, eiKysyta);
+            } else {
+                gradeAverage.addChild(lukioKeskiarvo.build());
+            }
+            return gradeAverage;
+        } else {
+            return lukioKeskiarvo.build();
+        }
+    }
+
+    private static Element buildYoAsteikkoQuestion(String elementId, FormParameters formParameters) {
+        return Dropdown(elementId)
                 .useGivenOrder()
                 .emptyOption()
                 .addOptions(formParameters.getKoodistoService().getYoArvosanaasteikko())
                 .requiredInline()
-                .formParams(formParameters).build());
+                .formParams(formParameters)
+                .build();
     }
 
-    private static void buildKeskiarvotAmmatillinen(FormParameters formParameters, List<Option> ammattitutkintonimikkeet,
-                                                    List<Option> oppilaitokset, Expr haettuAMKHon, List<Option> asteikkolista, Element parent) {
-        Expr pohjakoulutusLukioAmmatillinen = ExprUtil.isAnswerTrue("pohjakoulutus_yo_ammatillinen");
+    private static Element buildYoArvosanat(FormParameters formParameters) {
+        return TitledGroup("osaaminen-kansainvalinenyo-arvosanat").formParams(formParameters).build()
+                .addChild(buildYoAsteikkoQuestion(ELEMENT_ID_OSAAMINEN_YOARVOSANAT_PARAS_KIELI, formParameters),
+                        buildYoAsteikkoQuestion(ELEMENT_ID_OSAAMINEN_YOARVOSANAT_AIDINKIELI, formParameters),
+                        buildYoAsteikkoQuestion(ELEMENT_ID_OSAAMINEN_YOARVOSANAT_MATEMATIIKKA, formParameters),
+                        buildYoAsteikkoQuestion(ELEMENT_ID_OSAAMINEN_YOARVOSANAT_REAALI, formParameters));
+    }
 
+    private static Element[] buildKeskiarvoYoAmmatillinen(FormParameters formParameters,
+                                                          List<Option> ammattitutkintonimikkeet,
+                                                          List<Option> oppilaitokset,
+                                                          List<Option> asteikkolista) {
         String yoAmmatillinenPostfix = formParameters.getFormConfiguration()
                 .getFeatureFlag(FormConfiguration.FeatureFlag.erotteleAmmatillinenJaYoAmmatillinenKeskiarvo) ? "_yo_ammatillinen" : "";
-
-        Element kysytaankoLukioAmmatillinen = Rule(new And(haettuAMKHon, pohjakoulutusLukioAmmatillinen)).build();
         if (formParameters.useGradeAverage()) {
-            buildCustomGradeAverage(kysytaankoLukioAmmatillinen, "pohjakoulutus_yo_ammatillinen_nimike", ammattitutkintonimikkeet,
-                    "pohjakoulutus_yo_ammatillinen_nimike_muu", "pohjakoulutus_yo_ammatillinen_oppilaitos",
-                    "pohjakoulutus_yo_ammatillinen_oppilaitos_muu", oppilaitokset,
-                    asteikkolista, yoAmmatillinenPostfix, formParameters);
+            return buildCustomGradeAverage("pohjakoulutus_yo_ammatillinen_nimike", ammattitutkintonimikkeet,
+                    "pohjakoulutus_yo_ammatillinen_nimike_muu", "pohjakoulutus_yo_ammatillinen_oppilaitos", "pohjakoulutus_yo_ammatillinen_oppilaitos_muu",
+                    oppilaitokset, asteikkolista, yoAmmatillinenPostfix, formParameters);
         } else {
-            buildKeskiarvoJaAsteikko(asteikkolista, kysytaankoLukioAmmatillinen, formParameters, yoAmmatillinenPostfix, true);
-        }
-        parent.addChild(kysytaankoLukioAmmatillinen);
-
-        for (int i = 1; i <= 5; i++) {
-            String postfix = i == 1 ? "" : String.valueOf(i);
-            Expr pohjakoulutusAmmatillinen = new Regexp("pohjakoulutus_am_vuosi" + postfix, "^\\d+$");
-            Element kysytaankoAmmatillinen = Rule(new And(haettuAMKHon, pohjakoulutusAmmatillinen)).build();
-            if (formParameters.useGradeAverage()) {
-                buildCustomGradeAverage(kysytaankoAmmatillinen, "pohjakoulutus_am_nimike" + postfix, ammattitutkintonimikkeet,
-                        "pohjakoulutus_am_nimike_muu" + postfix, "pohjakoulutus_am_oppilaitos" + postfix, "pohjakoulutus_am_oppilaitos_muu" + postfix, oppilaitokset,
-                        asteikkolista, postfix, formParameters);
-            } else {
-                buildKeskiarvoJaAsteikko(asteikkolista, kysytaankoAmmatillinen, formParameters, postfix, true);
-            }
-            parent.addChild(kysytaankoAmmatillinen);
+            return buildKeskiarvoTutkinnolla(formParameters, asteikkolista, yoAmmatillinenPostfix);
         }
     }
 
-    private static void buildCustomGradeAverage(Element kysytaankoKeskiarvo, String relatedNimikeId, List<Option> ammattitutkintonimikkeet,
-                                                String relatedMuuNimike, String relatedOppilaitosId, String relatedMuuOppilaitos,
-                                                List<Option> oppilaitokset, List<Option> asteikkolista, String postfix, FormParameters formParameters) {
-        GradeAverage gradeAverage = new GradeAverage("keskiarvo_"+relatedNimikeId, relatedNimikeId, ammattitutkintonimikkeet, relatedMuuNimike,
+    private static Element[] buildKeskiarvoAmmatillinen(FormParameters formParameters,
+                                                        String postfix,
+                                                        List<Option> ammattitutkintonimikkeet,
+                                                        List<Option> oppilaitokset,
+                                                        List<Option> asteikkolista) {
+        if (formParameters.useGradeAverage()) {
+            return buildCustomGradeAverage("pohjakoulutus_am_nimike" + postfix, ammattitutkintonimikkeet,
+                    "pohjakoulutus_am_nimike_muu" + postfix, "pohjakoulutus_am_oppilaitos" + postfix, "pohjakoulutus_am_oppilaitos_muu" + postfix,
+                    oppilaitokset, asteikkolista, postfix, formParameters);
+        } else {
+            return buildKeskiarvoTutkinnolla(formParameters, asteikkolista, postfix);
+        }
+    }
+
+    private static Element[] buildCustomGradeAverage(String relatedNimikeId, List<Option> ammattitutkintonimikkeet,
+                                                   String relatedMuuNimike, String relatedOppilaitosId,
+                                                   String relatedMuuOppilaitos, List<Option> oppilaitokset,
+                                                   List<Option> asteikkolista, String postfix,
+                                                   FormParameters formParameters) {
+        GradeAverage gradeAverage = new GradeAverage("keskiarvo_" + relatedNimikeId, relatedNimikeId, ammattitutkintonimikkeet, relatedMuuNimike,
                 ElementUtil.createI18NAsIs(""), relatedOppilaitosId, relatedMuuOppilaitos, oppilaitokset);
         if (formParameters.useOptionalGradeAverageAmmatillinen()) {
             Element eiOleKeskiarvoa = Checkbox("ei_ole_keskiarvoa_" + relatedNimikeId)
@@ -187,16 +208,24 @@ public class OsaaminenPhase {
             Element eiKysyta = Rule(new Not(new Equals(new Variable(eiOleKeskiarvoa.getId()), Value.TRUE)))
                     .formParams(formParameters)
                     .build();
-            buildKeskiarvoJaAsteikko(asteikkolista, eiKysyta, formParameters, postfix, false);
+            eiKysyta.addChild(buildKeskiarvo(formParameters, postfix));
+            eiKysyta.addChild(buildArvosanaasteikko(formParameters, asteikkolista, postfix));
             gradeAverage.addChild(eiOleKeskiarvoa, eiKysyta);
         } else {
-            buildKeskiarvoJaAsteikko(asteikkolista, gradeAverage, formParameters, postfix, false);
+            gradeAverage.addChild(buildKeskiarvo(formParameters, postfix));
+            gradeAverage.addChild(buildArvosanaasteikko(formParameters, asteikkolista, postfix));
         }
-        kysytaankoKeskiarvo.addChild(gradeAverage);
+        return new Element[] {gradeAverage};
     }
 
-    private static void buildKeskiarvoJaAsteikko(List<Option> asteikkolista, Element parent,
-                                                 FormParameters formParameters, String postfix, boolean kysyTutkinto) {
+    private static Element[] buildKeskiarvoTutkinnolla(FormParameters formParameters, List<Option> asteikkolista, String yoAmmatillinenPostfix) {
+        return new Element[]{
+                buildKeskiarvo(formParameters, yoAmmatillinenPostfix),
+                buildArvosanaasteikko(formParameters, asteikkolista, yoAmmatillinenPostfix),
+                buildKeskiarvonTutkinto(formParameters, yoAmmatillinenPostfix)};
+    }
+
+    private static Element buildKeskiarvo(FormParameters formParameters, String postfix) {
         Validator validator = new ExprValidator(
                 new And(
                         new Regexp("keskiarvo" + postfix, "^$|\\d+\\,?\\d{1,2}"),
@@ -218,32 +247,34 @@ public class OsaaminenPhase {
                         )
                 ),
                 formParameters.getI18nText("validator.keskiarvo"));
+        return TextQuestion("keskiarvo" + postfix)
+                .inline()
+                .required()
+                .maxLength(5)
+                .size(5)
+                .validator(validator)
+                .formParams(formParameters)
+                .labelKey("keskiarvo")
+                .build();
+    }
 
-        parent.addChild(TextQuestion("keskiarvo" + postfix)
-                    .inline()
-                    .required()
-                    .maxLength(5)
-                    .size(5)
-                    .validator(validator)
-                    .formParams(formParameters)
-                    .labelKey("keskiarvo")
-                    .build())
-                .addChild(Dropdown("arvosanaasteikko" + postfix)
-                    .emptyOptionDefault()
-                    .addOptions(asteikkolista)
-                    .inline()
-                    .required()
-                    .formParams(formParameters)
-                    .labelKey("arvosanaasteikko")
-                    .build());
-        if (kysyTutkinto) {
-            parent.addChild(TextArea("keskiarvo-tutkinto" + postfix)
-                    .inline()
-                    .formParams(formParameters)
-                    .labelKey("keskiarvo-tutkinto")
-                    .build());
-        }
+    private static Element buildArvosanaasteikko(FormParameters formParameters, List<Option> asteikkolista, String postfix) {
+        return Dropdown("arvosanaasteikko" + postfix)
+                .emptyOptionDefault()
+                .addOptions(asteikkolista)
+                .inline()
+                .required()
+                .formParams(formParameters)
+                .labelKey("arvosanaasteikko")
+                .build();
+    }
 
+    private static Element buildKeskiarvonTutkinto(FormParameters formParameters, String postfix) {
+        return TextArea("keskiarvo-tutkinto" + postfix)
+                .inline()
+                .formParams(formParameters)
+                .labelKey("keskiarvo-tutkinto")
+                .build();
     }
 
 }
