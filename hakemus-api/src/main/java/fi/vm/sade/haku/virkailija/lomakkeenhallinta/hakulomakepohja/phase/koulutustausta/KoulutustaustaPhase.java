@@ -2,9 +2,12 @@
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.koulutustausta;
 
 import com.google.common.base.Function;
+import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import fi.vm.sade.haku.oppija.common.organisaatio.Organization;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.builder.*;
@@ -269,7 +272,15 @@ public final class KoulutustaustaPhase {
         List<Option> maat = koodistoService.getCountries();
         List<Option> ammattitutkintonimikkeet = koodistoService.getAmmattitutkinnot();
         List<Option> ammattioppilaitokset = koodistoService.getAmmattioppilaitosKoulukoodit();
-        List<Option> korkeakoulut = Lists.transform(koodistoService.getKorkeakoulutMyosRinnasteiset(), new OrganizationToOptionFunction());
+        List<Option> korkeakoulut = Lists.newArrayList(Iterables.transform(
+                Iterables.filter(koodistoService.getKorkeakoulutMyosRinnasteiset(), new Predicate<Organization>() {
+                    public boolean apply(Organization organization) {
+                        // Ei Högskolan på Åland
+                        return !("1.2.246.562.10.444626308710".equals(organization.getOid())
+                                || "1.2.246.562.10.50686854907".equals(organization.getOid()));
+                    }
+                }),
+                new OrganizationToOptionFunction()));
         List<Option> korkeakoulukoulutukset = Lists.transform(koodistoService.getKorkeakoulukoulutukset(), new KoodiTypeToOptionFunction());
 
         Element pohjakoulutusGrp = TitledGroup("pohjakoulutus.korkeakoulut")
