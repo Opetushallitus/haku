@@ -28,7 +28,7 @@ import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.haku.oppija.hakemus.domain.util.AttachmentUtil;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.haku.oppija.hakemus.service.HakumaksuService;
-import fi.vm.sade.haku.oppija.hakemus.service.HakumaksuService.Eligibility;
+import fi.vm.sade.haku.oppija.hakemus.service.EducationRequirementsUtil.Eligibility;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationState;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
