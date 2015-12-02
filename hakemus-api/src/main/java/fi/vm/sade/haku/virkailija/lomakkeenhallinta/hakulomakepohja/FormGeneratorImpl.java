@@ -72,6 +72,7 @@ public class FormGeneratorImpl implements FormGenerator {
                 .setHakukausiUri(as.getHakukausiUri())
                 .setHakukausiVuosi(as.getHakukausiVuosi())
                 .setKohdejoukkoUri(as.getKohdejoukkoUri())
+                .setKohdejoukonTarkenne(as.getKohdejoukonTarkenne())
                 .addApplicationCompleteElements(ValmisPhase.create(formParameters))
                 .setMaxApplicationOptions(as.getMaxApplicationOptions())
                 .addAdditionalInformationElements(ValmisPhase.createAdditionalInformationElements(formParameters))

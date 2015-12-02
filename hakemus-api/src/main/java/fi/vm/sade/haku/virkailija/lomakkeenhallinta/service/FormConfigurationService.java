@@ -134,6 +134,13 @@ public final class FormConfigurationService {
         if (OppijaConstants.KOHDEJOUKKO_PERUSOPETUKSEN_JALKEINEN_VALMENTAVA.equals(as.getKohdejoukkoUri())) {
             return FormConfiguration.FormTemplateType.PERUSOPETUKSEN_JALKEINEN_VALMENTAVA;
         } else if (OppijaConstants.KOHDEJOUKKO_KORKEAKOULU.equals(as.getKohdejoukkoUri())) {
+            if (OppijaConstants.KOHDEJOUKON_TARKENNE_AMK_OPE.equals(as.getKohdejoukonTarkenne())) {
+                return FormConfiguration.FormTemplateType.AMK_OPET;
+            }
+            if (OppijaConstants.KOHDEJOUKON_TARKENNE_AMK_ERKKA.equals(as.getKohdejoukonTarkenne())
+                    || OppijaConstants.KOHDEJOUKON_TARKENNE_AMK_OPO.equals(as.getKohdejoukonTarkenne())) {
+                return FormConfiguration.FormTemplateType.AMK_ERKAT_JA_OPOT;
+            }
             return FormConfiguration.FormTemplateType.YHTEISHAKU_SYKSY_KORKEAKOULU;
         }
         if (as.getApplicationSystemType().equals(OppijaConstants.HAKUTYYPPI_LISAHAKU)) {

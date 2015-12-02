@@ -22,6 +22,7 @@ public class ApplicationSystemBuilder {
     private List<AttachmentGroupAddress> attachmentGroupAddresses;
     private int maxApplicationOptions;
     private String kohdejoukkoUri;
+    private String kohdejoukonTarkenne;
     private List<String> allowedLanguages;
     private List<String> aosForAutomaticEligibility;
     private Date lastGenerated;
@@ -92,7 +93,7 @@ public class ApplicationSystemBuilder {
 
     public ApplicationSystem get() {
         return new ApplicationSystem(id, form, name, state, applicationPeriods,
-                applicationSystemType, usePriorities, hakutapa, hakukausiVuosi, hakukausiUri, kohdejoukkoUri, applicationCompleteElements,
+                applicationSystemType, usePriorities, hakutapa, hakukausiVuosi, hakukausiUri, kohdejoukkoUri, kohdejoukonTarkenne, applicationCompleteElements,
                 additionalPrintElements, applicationOptionAttachmentRequests, attachmentGroupAddresses, maxApplicationOptions, allowedLanguages,
                 aosForAutomaticEligibility, lastGenerated, maksumuuriKaytossa);
     }
@@ -139,6 +140,11 @@ public class ApplicationSystemBuilder {
 
     public ApplicationSystemBuilder setMaksumuuriKaytossa(boolean maksumuuriKaytossa) {
         this.maksumuuriKaytossa = maksumuuriKaytossa;
+        return this;
+    }
+
+    public ApplicationSystemBuilder setKohdejoukonTarkenne(String kohdejoukonTarkenne) {
+        this.kohdejoukonTarkenne = kohdejoukonTarkenne;
         return this;
     }
 }
