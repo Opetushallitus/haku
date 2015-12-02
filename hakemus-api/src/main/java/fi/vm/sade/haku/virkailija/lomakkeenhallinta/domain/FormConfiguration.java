@@ -45,7 +45,8 @@ public class FormConfiguration {
         gradeAverageLukio,
         gradeAverageYoAmmatillinen,
         gradeAverageAmmatillinen,
-        additionalInfoForPreviousDegree
+        additionalInfoForPreviousDegree,
+        amkOpeMuutTutkinnotKysymys
     }
 
     // FormConfiguration oid
