@@ -3,12 +3,15 @@ package fi.vm.sade.haku.oppija.lomake.domain.rules.expression;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
+import fi.vm.sade.haku.oppija.hakemus.service.EducationRequirementsUtil;
 import fi.vm.sade.haku.oppija.hakemus.service.HakumaksuService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+
+import static fi.vm.sade.haku.oppija.hakemus.service.EducationRequirementsUtil.kkBaseEducationRequirements;
 
 public class ValidateEducationExpr extends Expr {
     private final String rowId;
@@ -32,8 +35,9 @@ public class ValidateEducationExpr extends Expr {
                 .add(context.get(rowId + "-Koulutus-requiredBaseEducations").split(","))
                 .build();
 
-        return !HakumaksuService.validateBaseEdsAgainstAoRequirement(Types.MergedAnswers.of(context), baseEducationRequirements);
+        return !EducationRequirementsUtil.validateBaseEdsAgainstAoRequirement(Types.MergedAnswers.of(context), baseEducationRequirements);
     }
+
 
     @Override
     public List<Expr> children() {
