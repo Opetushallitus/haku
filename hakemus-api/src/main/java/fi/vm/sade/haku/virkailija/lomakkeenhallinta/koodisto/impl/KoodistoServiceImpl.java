@@ -18,10 +18,7 @@ package fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.impl;
 
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Iterators;
-import com.google.common.collect.Lists;
-import com.google.common.collect.UnmodifiableIterator;
+import com.google.common.collect.*;
 import fi.vm.sade.haku.oppija.common.organisaatio.Organization;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
@@ -324,14 +321,41 @@ public class KoodistoServiceImpl implements KoodistoService {
         return oppilaitokset;
     }
 
-    @Override
-    public List<Option> getKorkeakoulut() {
-        return getKoulukoodit(false, AMMATTIKORKEAKOLU, YLIOPISTO, SOTILASKORKEAKOULU, VALIAIKAINEN_AMK);
+    private Set<KoodiType> oppilaitostyypit(final Set<String> oppilaitostyypit) {
+        return Sets.newHashSet(Iterables.filter(getKoodiTypes(CODE_OPPILAITOSTYYPPI), new Predicate<KoodiType>() {
+            @Override
+            public boolean apply(KoodiType koodi) {
+                return oppilaitostyypit.contains(koodi.getKoodiArvo());
+            }
+        }));
     }
 
+    private static final Predicate<KoodiType> isOppilaitosnumero = new Predicate<KoodiType>() {
+        @Override
+        public boolean apply(KoodiType koodi) {
+            return "oppilaitosnumero".equals(koodi.getKoodisto().getKoodistoUri());
+        }
+    };
+
+    private static final Predicate<Organization> isOppilaitos = new Predicate<Organization>() {
+        @Override
+        public boolean apply(Organization organization) {
+            return organization.getTypes().contains("Oppilaitos");
+        }
+    };
+
     @Override
-    public List<Option> getKorkeakoulutMyosPassiiviset() {
-        return getKoulukoodit(true, AMMATTIKORKEAKOLU, YLIOPISTO, SOTILASKORKEAKOULU, VALIAIKAINEN_AMK);
+    public List<Organization> getKorkeakoulutMyosRinnasteiset() {
+        List<String> oppilaitosnumerot = new ArrayList<>();
+        for (KoodiType tyyppi : oppilaitostyypit(Sets.newHashSet(AMMATTIKORKEAKOLU, YLIOPISTO, SOTILASKORKEAKOULU, VALIAIKAINEN_AMK))) {
+            for (KoodiType oppilaitosnumero : Iterables.filter(koodiService.getYlakoodis(tyyppi.getKoodiUri()), isOppilaitosnumero)) {
+                oppilaitosnumerot.add(oppilaitosnumero.getKoodiArvo());
+                for (KoodiType rinnasteinen : Iterables.filter(koodiService.getRinnasteiset(oppilaitosnumero.getKoodiUri()), isOppilaitosnumero)) {
+                    oppilaitosnumerot.add(rinnasteinen.getKoodiArvo());
+                }
+            }
+        }
+        return Lists.newArrayList(Iterables.filter(organisaatioService.findByOppilaitosnumero(oppilaitosnumerot), isOppilaitos));
     }
 
     @Override

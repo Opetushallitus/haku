@@ -12,22 +12,19 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.OptionQuestion;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.AddElementRule;
-import fi.vm.sade.haku.oppija.lomake.domain.rules.RelatedQuestionRule;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.*;
 import fi.vm.sade.haku.oppija.lomake.validation.validators.YearValidator;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.domain.Code;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.impl.KoodiTypeToOptionFunction;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.impl.TranslationsUtil;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.impl.OrganizationToOptionFunction;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ExprUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
-import fi.vm.sade.koodisto.service.types.common.KoodiType;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -272,7 +269,7 @@ public final class KoulutustaustaPhase {
         List<Option> maat = koodistoService.getCountries();
         List<Option> ammattitutkintonimikkeet = koodistoService.getAmmattitutkinnot();
         List<Option> ammattioppilaitokset = koodistoService.getAmmattioppilaitosKoulukoodit();
-        List<Option> korkeakoulut = koodistoService.getKorkeakoulutMyosPassiiviset();
+        List<Option> korkeakoulut = Lists.transform(koodistoService.getKorkeakoulutMyosRinnasteiset(), new OrganizationToOptionFunction());
         List<Option> korkeakoulukoulutukset = Lists.transform(koodistoService.getKorkeakoulukoulutukset(), new KoodiTypeToOptionFunction());
 
         Element pohjakoulutusGrp = TitledGroup("pohjakoulutus.korkeakoulut")
