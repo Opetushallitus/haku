@@ -1,7 +1,6 @@
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja;
 
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
-import fi.vm.sade.haku.oppija.hakemus.service.HakumaksuService;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationPeriod;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
@@ -292,6 +291,10 @@ public class FormParameters {
 
     public boolean isSahkoinenViestintaLupa() {
         return formConfiguration.getFeatureFlag(FormConfiguration.FeatureFlag.sahkoinenViestintaLupa);
+    }
+
+    public boolean isAMKOpeMuutTutkinnotKysymys() {
+        return formConfiguration.getFeatureFlag(FormConfiguration.FeatureFlag.amkOpeMuutTutkinnotKysymys);
     }
 
 }
