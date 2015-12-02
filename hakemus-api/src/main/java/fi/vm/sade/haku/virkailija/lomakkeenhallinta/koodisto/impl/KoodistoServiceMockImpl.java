@@ -16,8 +16,12 @@
 
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.impl;
 
+import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import fi.vm.sade.haku.oppija.common.organisaatio.Organization;
+import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.builder.OptionBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.SubjectRow;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
@@ -360,13 +364,8 @@ public class KoodistoServiceMockImpl implements KoodistoService {
     }
 
     @Override
-    public List<Option> getKorkeakoulut() {
-        return this.listOfKorkeakoulus;
-    }
-
-    @Override
-    public List<Option> getKorkeakoulutMyosPassiiviset() {
-        return this.listOfKorkeakoulus;
+    public List<Organization> getKorkeakoulutMyosRinnasteiset() {
+        return Lists.newArrayList();
     }
 
     @Override
