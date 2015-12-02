@@ -148,14 +148,13 @@ public class HakutoiveetPhase {
                             ExprUtil.isAnswerTrue("ammatillinenTutkintoSuoritettu"),
                             ExprUtil.atLeastOneValueEqualsToVariable(id + "-Koulutus-educationDegree", LISAOPETUS_EDUCATION_DEGREE, DISCRETIONARY_EDUCATION_DEGREE)))
                     .build();
-            Element ristiriita = Warning("koulutusasteristiriita").failValidation("koulutusasteristiriita")
-                    .formParams(formParameters).build();
+            Element ristiriita = new Notification("koulutusasteristiriita",formParameters.getI18nText("form.koulutustausta.ammatillinensuoritettu.huom"), Notification.NotificationType.INFO);
             koulutusasteRistiriidassaSuoritettuunTutkintoon.addChild(ristiriita);
             pr.addChild(koulutusasteRistiriidassaSuoritettuunTutkintoon);
         }
 
         if (formParameters.isHigherEd()) {
-            pr.addChild(createTarkistaPohjakoulutusRiittavyys(id,formParameters));
+            pr.addChild(createTarkistaPohjakoulutusRiittavyys(id, formParameters));
 
             KoodistoService koodistoService = formParameters.getKoodistoService();
 
