@@ -79,6 +79,7 @@ public final class ApplicationDAOMongoConstants {
 
     // Processing information fields
     static final String FIELD_APPLICATION_STATE = "state";
+    static final String FIELD_REQUIRED_PAYMENT_STATE = "requiredPaymentState";
     static final String FIELD_RECEIVED = "received";
     static final String FIELD_UPDATED = "updated";
 

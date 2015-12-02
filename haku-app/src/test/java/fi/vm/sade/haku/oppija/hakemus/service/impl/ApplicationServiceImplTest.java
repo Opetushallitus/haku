@@ -97,6 +97,7 @@ public class ApplicationServiceImplTest {
     String AS_ID = "1.2.246.562.5.741585101110";
     String AO_ID = "1.2.246.562.14.299022856910";
     private ApplicationQueryParameters applicationQueryParameters;
+    private ApplicationQueryParameters applicationQueryParametersWithPaymentState;
     private ApplicationFilterParameters filterParameters;
     private ApplicationServiceImpl service;
     private ElementTreeValidator elementTreeValidator;
@@ -107,6 +108,22 @@ public class ApplicationServiceImplTest {
 
         applicationQueryParameters = new ApplicationQueryParametersBuilder()
                 .setStates(null)
+                .setAsIds(null)
+                .setAoId("")
+                .setLopOid("")
+                .setGroupOid("")
+                .setBaseEducation("")
+                .setDiscretionaryOnly(false)
+                .setSendingSchool("")
+                .setSendingClass("")
+                .setUpdatedAfter(new Date())
+                .setStart(0)
+                .setRows(Integer.MAX_VALUE)
+                .setOrderBy("fullName")
+                .setOrderDir(1).build();
+        applicationQueryParametersWithPaymentState = new ApplicationQueryParametersBuilder()
+                .setStates(null)
+                .setPaymentState("NOTIFIED")
                 .setAsIds(null)
                 .setAoId("")
                 .setLopOid("")
@@ -139,6 +156,7 @@ public class ApplicationServiceImplTest {
         ohjausparametritService = mock(OhjausparametritService.class);
 
         ApplicationSearchResultDTO searchResultDTO = new ApplicationSearchResultDTO(1, Lists.newArrayList(new ApplicationSearchResultItemDTO()));
+        when(applicationDAO.findAllQueried(eq(applicationQueryParametersWithPaymentState), eq(filterParameters))).thenReturn(searchResultDTO);
         when(applicationDAO.findAllQueried(eq(applicationQueryParameters), eq(filterParameters))).thenReturn(searchResultDTO);
         when(applicationDAO.findAllQueried(eq(applicationQueryParameters), eq(filterParameters))).thenReturn(searchResultDTO);
         when(applicationDAO.findAllQueried(eq(applicationQueryParameters), eq(filterParameters))).thenReturn(searchResultDTO);
@@ -203,6 +221,15 @@ public class ApplicationServiceImplTest {
         assertNotNull(results);
         assertEquals(1, results.getResults().size());
         verify(applicationDAO, only()).findAllQueried(eq(applicationQueryParameters), eq(filterParameters));
+    }
+
+    @Test
+    public void testFindApplicationsByPaymentState() {
+        application.setOid(OID);
+        ApplicationSearchResultDTO results = service.findApplications(applicationQueryParametersWithPaymentState);
+        assertNotNull(results);
+        assertEquals(1, results.getResults().size());
+        verify(applicationDAO, only()).findAllQueried(eq(applicationQueryParametersWithPaymentState), eq(filterParameters));
     }
 
     @Test

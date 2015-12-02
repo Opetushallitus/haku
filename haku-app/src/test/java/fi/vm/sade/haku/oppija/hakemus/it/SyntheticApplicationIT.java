@@ -127,7 +127,7 @@ public class SyntheticApplicationIT {
     public void testCreateRoundTrip() {
         Response resp1 = put(hakukohde1, "1", "hakijaOid2", "070195-991T", email1);
         verifyPutResponse(resp1);
-        final List<Map<String, Object>> applications = applicationResource.findFullApplications("", Arrays.asList("ACTIVE", "INCOMPLETE"), null, null, null, null, null, hakuOid, null, null, hakukohde1, null, null, null, null, null, 0, 10000);
+        final List<Map<String, Object>> applications = applicationResource.findFullApplications("", Arrays.asList("ACTIVE", "INCOMPLETE"), null, null, null, null, null, null, hakuOid, null, null, hakukohde1, null, null, null, null, null, 0, 10000);
         assertEquals(1, applications.size());
     }
 

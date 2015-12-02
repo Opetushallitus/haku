@@ -174,6 +174,7 @@ public class ApplicationResource {
                                           @QueryParam("aoidCode") String aoidCode,
                                           @QueryParam("q") @DefaultValue(value = "") String searchTerms,
                                           @QueryParam("appState") List<String> state,
+                                          @QueryParam("paymentState") String paymentState,
                                           @QueryParam("preferenceChecked") Boolean preferenceChecked,
                                           @QueryParam("lopoid") String lopoid,
                                           @QueryParam("aoOid") String aoOid,
@@ -191,6 +192,7 @@ public class ApplicationResource {
         ApplicationQueryParameters queryParams = new ApplicationQueryParametersBuilder()
                 .setSearchTerms(searchTerms)
                 .setStates(state)
+                .setPaymentState(paymentState)
                 .setPreferenceChecked(preferenceChecked)
                 .setAsId(asid)
                 .setAoId(StringUtils.trimToNull(aoidCode))
@@ -249,6 +251,7 @@ public class ApplicationResource {
             value = "Palauttaa hakuehtoihin sopivien hakemusten tiedot.")
     public List<Map<String, Object>> findFullApplications(@ApiParam(value="Hakutermi, jokin seuraavista: nimi, henkilötunnus, oppijanumero, hakemusnumero.") @DefaultValue(value = "") @QueryParam("q") String searchTerms,
                                                           @ApiParam(value="Hakemuksen tila", allowableValues="[ACTIVE, PASSIVE, INCOMPLETE, NOT_IDENTIFIED]", allowMultiple=true) @QueryParam("appState") List<String> state,
+                                                          @ApiParam(value="Maksun tila", allowableValues="[NOTIFIED, OK, NOT_OK]") @QueryParam("paymentState") String paymentState,
                                                           @ApiParam(value="Onko liitetiedot merkitty tarkastetuksi") @QueryParam("preferenceChecked") Boolean preferenceChecked,
                                                           @ApiParam(value="Hakukohteen koodi") @QueryParam("aoid") String aoid,
                                                           @ApiParam(value="Hakukohderyhmän oid") @QueryParam("groupOid") String groupOid,
@@ -281,6 +284,7 @@ public class ApplicationResource {
         ApplicationQueryParameters queryParams = new ApplicationQueryParametersBuilder()
                 .setSearchTerms(searchTerms)
                 .setStates(state)
+                .setPaymentState(paymentState)
                 .setPreferenceChecked(preferenceChecked)
                 .setAsIds(asIds)
                 .setAoId(aoid)
@@ -311,6 +315,7 @@ public class ApplicationResource {
             value = "Palauttaa hakuehtoihin sopivien hakemusten tiedot.")
     public ApplicationSearchResultDTO findApplications(@ApiParam(value="Hakutermi, jokin seuraavista: nimi, henkilötunnus, oppijanumero, hakemusnumero.") @DefaultValue(value = "") @QueryParam("q") String query,
                                                        @ApiParam(value="Hakemuksen tila", allowableValues="[ACTIVE, PASSIVE, INCOMPLETE, NOT_IDENTIFIED]", allowMultiple=true) @QueryParam("appState") List<String> state,
+                                                       @ApiParam(value="Maksun tila", allowableValues="[NOTIFIED, OK, NOT_OK]") @QueryParam("paymentState") String paymentState,
                                                        @ApiParam(value="Onko liitetiedot merkitty tarkastetuksi") @QueryParam("preferenceChecked") Boolean preferenceChecked,
                                                        @ApiParam(value="Hakukohteen koodi") @QueryParam("aoid") String aoid,
                                                        @ApiParam(value="Hakukohderyhmän oid") @QueryParam("groupOid") String groupOid,
@@ -328,7 +333,7 @@ public class ApplicationResource {
                                                        @ApiParam(value="Palautetaan tulosjoukosta rivit tästä rivinumerosta alkaen") @DefaultValue(value = "0") @QueryParam("start") int start,
                                                        @ApiParam(value="Palautetaan tulosjoukosta rivit tähän rivinumeroon saakka") @DefaultValue(value = "100") @QueryParam("rows") int rows) {
 
-        return findApplicationsOrdered("fullName", "asc", query, state, preferenceChecked, aoid, groupOid, Sets.newHashSet(baseEducation), lopoid, asId,
+        return findApplicationsOrdered("fullName", "asc", query, state, paymentState, preferenceChecked, aoid, groupOid, Sets.newHashSet(baseEducation), lopoid, asId,
                 asSemester, asYear, aoOid, discretionaryOnly, primaryPreferenceOnly, sendingSchoolOid,
                 sendingClass, updatedAfter, start, rows);
     }
@@ -343,6 +348,7 @@ public class ApplicationResource {
                                                               @ApiParam(value="Järjestys (asc = nouseva, desc = laskeva)") @DefaultValue(value = "asc") @QueryParam("orderDir") String orderDir,
                                                               @ApiParam(value="Hakutermi, jokin seuraavista: nimi, henkilötunnus, oppijanumero, hakemusnumero.") @DefaultValue(value = "") @QueryParam("q") String searchTerms,
                                                               @ApiParam(value="Hakemuksen tila", allowableValues="[ACTIVE, PASSIVE, INCOMPLETE, NOT_IDENTIFIED]", allowMultiple=true) @QueryParam("appState") List<String> state,
+                                                              @ApiParam(value="Maksun tila", allowableValues="[NOTIFIED, OK, NOT_OK]") @QueryParam("paymentState") String paymentState,
                                                               @ApiParam(value="Onko liitetiedot merkitty tarkastetuksi") @QueryParam("preferenceChecked") Boolean preferenceChecked,
                                                               @ApiParam(value="Hakukohteen koodi") @QueryParam("aoidCode") String aoid,
                                                               @ApiParam(value="Hakukohderyhmän oid") @QueryParam("groupOid") String groupOid,
@@ -379,6 +385,7 @@ public class ApplicationResource {
         ApplicationQueryParameters queryParams = new ApplicationQueryParametersBuilder()
                 .setSearchTerms(searchTerms)
                 .setStates(state)
+                .setPaymentState(paymentState)
                 .setPreferenceChecked(preferenceChecked)
                 .setAsIds(asIds)
                 .setAoId(aoid)

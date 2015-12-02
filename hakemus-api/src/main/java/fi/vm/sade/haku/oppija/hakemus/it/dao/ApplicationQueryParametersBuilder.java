@@ -8,6 +8,7 @@ import java.util.*;
 public class ApplicationQueryParametersBuilder {
     private String searchTerms;
     private List<String> state;
+    private String paymentState;
     private List<String> asIds;
     private Boolean preferenceChecked;
     private String aoId;
@@ -28,6 +29,11 @@ public class ApplicationQueryParametersBuilder {
 
     public ApplicationQueryParametersBuilder setStates(List<String> state) {
         this.state = state;
+        return this;
+    }
+
+    public ApplicationQueryParametersBuilder setPaymentState(String paymentState) {
+        this.paymentState = paymentState;
         return this;
     }
 
@@ -145,7 +151,7 @@ public class ApplicationQueryParametersBuilder {
     }
 
     public ApplicationQueryParameters build() {
-        return new ApplicationQueryParameters(searchTerms, state, preferenceChecked, asIds, aoId, lopOid, aoOids,
+        return new ApplicationQueryParameters(searchTerms, state, paymentState, preferenceChecked, asIds, aoId, lopOid, aoOids,
                 personOids, groupOid, baseEducation, discretionaryOnly, primaryPreferenceOnly, sendingSchool,
                 sendingClass, updatedAfter, start, rows, orderBy, orderDir);
     }

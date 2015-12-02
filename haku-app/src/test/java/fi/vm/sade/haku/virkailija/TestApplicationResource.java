@@ -27,7 +27,7 @@ public class TestApplicationResource extends IntegrationTestSupport {
         request.getSession().setAttribute(Config.FMT_LOCALE + ".session", new Locale("fi"));
 
         XlsModel xlsModel = applicationResource.getApplicationsByOids(
-                request, "1.2.246.562.29.95390561488", "test", "", "", null,
+                request, "1.2.246.562.29.95390561488", "test", "", "", null, null,
                 null, "", "1.2.246.562.20.92555013215", "", Sets.newHashSet("ulk"), false, false,
                 "", "", null, 0, 100);
 
@@ -55,6 +55,7 @@ public class TestApplicationResource extends IntegrationTestSupport {
                 "",
                 null,
                 null,
+                null,
                 "",
                 "",
                 Sets.newHashSet("base_education_that_does_not_exist"),
@@ -80,6 +81,7 @@ public class TestApplicationResource extends IntegrationTestSupport {
                 "",
                 null,
                 null,
+                null,
                 "",
                 "",
                 Sets.newHashSet("ulk"),
@@ -103,6 +105,7 @@ public class TestApplicationResource extends IntegrationTestSupport {
                 "fullName",
                 "asc",
                 "",
+                null,
                 null,
                 null,
                 "",

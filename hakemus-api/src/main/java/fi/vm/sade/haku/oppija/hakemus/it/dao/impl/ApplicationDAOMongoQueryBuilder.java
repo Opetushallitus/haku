@@ -232,6 +232,11 @@ final class ApplicationDAOMongoQueryBuilder {
             }
         }
 
+        final String paymentState = applicationQueryParameters.getPaymentState();
+        if (paymentState != null) {
+            filters.add(QueryBuilder.start(FIELD_REQUIRED_PAYMENT_STATE).is(paymentState).get());
+        }
+
         final List<String> asIds = applicationQueryParameters.getAsIds();
         if (asIds != null && !asIds.isEmpty()) {
             filters.add(QueryBuilder.start(FIELD_APPLICATION_SYSTEM_ID).in(asIds).get());

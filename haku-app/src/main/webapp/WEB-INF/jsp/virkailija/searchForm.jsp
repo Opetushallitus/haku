@@ -111,7 +111,17 @@
                         </div>
                     </td>
                     <td>
-                        &nbsp;
+                        <div id="payment-state-select">
+                            <label for="payment-state"><fmt:message key="virkailija.hakemus.maksun.tila.otsikko"/></label>
+                            <div class="field-select-containerbox">
+                                <select class="width-50" id="payment-state" name="payment-state">
+                                    <option selected="selected" value=""></option>
+                                    <option value="NOTIFIED"><fmt:message key="virkailija.hakemus.maksun.tila.odottaa"/></option>
+                                    <option value="OK"><fmt:message key="virkailija.hakemus.maksun.tila.maksettu"/></option>
+                                    <option value="NOT_OK"><fmt:message key="virkailija.hakemus.maksun.tila.eitehda"/></option>
+                                </select>
+                            </div>
+                        </div>
                     </td>
                 </tr>
 

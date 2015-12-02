@@ -24,6 +24,7 @@ import static org.apache.commons.lang3.StringUtils.isEmpty;
 
 public class ApplicationQueryParameters {
     private final List<String> state;
+    private final String paymentState;
     private final Boolean preferenceChecked;
     private final List<String> asIds;
     private final String aoId;
@@ -43,7 +44,7 @@ public class ApplicationQueryParameters {
     private final int orderDir;
     private final String searchTerms;
 
-    public ApplicationQueryParameters(final String searchTerms, final List<String> state, final Boolean preferenceChecked,
+    public ApplicationQueryParameters(final String searchTerms, final List<String> state, final String paymentState, final Boolean preferenceChecked,
                                       final List<String> asIds, final String aoId, final String lopOid,
                                       final List<String> aoOids, final List<String> personOids, final String groupOid,
                                       final Set<String> baseEducation, final Boolean discretionaryOnly, final Boolean primaryPreferenceOnly,
@@ -53,6 +54,7 @@ public class ApplicationQueryParameters {
         this.lopOid = isEmpty(lopOid) ? null : lopOid;
         this.asIds = asIds;
         this.state = state;
+        this.paymentState = paymentState;
         this.preferenceChecked = preferenceChecked;
         this.aoId = isEmpty(aoId) ? null : aoId;
         this.aoOids = nonEmptyStrings(aoOids);
@@ -81,6 +83,10 @@ public class ApplicationQueryParameters {
 
     public List<String> getState() {
         return state;
+    }
+
+    public String getPaymentState() {
+        return paymentState;
     }
 
     public Boolean getPreferenceChecked() {
