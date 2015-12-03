@@ -172,12 +172,12 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         answers.putAll(application.getVastauksetMerged());
         answers.putAll(currentAnswers);
 
-        if ((phaseId.equals(PHASE_APPLICATION_OPTIONS) || phaseId.equals(PHASE_EDUCATION))
+        if ((PHASE_APPLICATION_OPTIONS.equals(phaseId) || PHASE_EDUCATION.equals(phaseId))
                 && applicationSystemService.getActiveApplicationSystem(application.getApplicationSystemId()).isMaksumuuriKaytossa()) {
             try {
                 answers.putAll(paymentNotificationAnswers(answers, hakumaksuService.paymentRequirements(Types.MergedAnswers.of(answers))));
-            } catch (NullPointerException e) {
-                // Answereissa voi olla puutteellista dataa, koska tätä ajetaan joka kentän syöttämisen jälkeen
+            } catch (NullPointerException | IllegalArgumentException e) {
+                // FIXME: Answereissa voi olla puutteellista dataa, koska tätä ajetaan joka kentän syöttämisen jälkeen. Validoi HakumaksuServicessä?
             }
         }
 
