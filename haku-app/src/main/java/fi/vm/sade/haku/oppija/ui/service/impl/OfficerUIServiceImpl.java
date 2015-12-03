@@ -168,15 +168,21 @@ public class OfficerUIServiceImpl implements OfficerUIService {
             }
         }
 
+        ImmutableMap.Builder<String, String> answerBuilder = ImmutableMap.builder();
+
+        answerBuilder.putAll(application.getVastauksetMerged());
+        answerBuilder.putAll(currentAnswers);
+
         if ((phaseId.equals(PHASE_APPLICATION_OPTIONS) || phaseId.equals(PHASE_EDUCATION))
                 && applicationSystemService.getActiveApplicationSystem(application.getApplicationSystemId()).isMaksumuuriKaytossa()) {
-            currentAnswers.putAll(paymentNotificationAnswers(currentAnswers, hakumaksuService.paymentRequirements(Types.MergedAnswers.of(currentAnswers))));
+            Map<String, String> answers = answerBuilder.build();
+            answerBuilder.putAll(paymentNotificationAnswers(answers, hakumaksuService.paymentRequirements(Types.MergedAnswers.of(answers))));
         }
 
         ValidationResult validationResult = elementTreeValidator.validate(new ValidationInput(form, application.getVastauksetMerged(),
                 oid, application.getApplicationSystemId(), ValidationInput.ValidationContext.officer_modify));
         ModelResponse modelResponse = new ModelResponse(application, form, elements, validationResult, koulutusinformaatioBaseUrl);
-        modelResponse.addAnswers(currentAnswers);
+        modelResponse.addAnswers(answerBuilder.build());
 
         return modelResponse;
     }
