@@ -155,27 +155,30 @@ public class OfficerUIServiceImpl implements OfficerUIService {
             final String oid,
             final String phaseId,
             final List<String> elementIds,
-            final boolean validate) {
+            final boolean validate,
+            final Map<String, String> currentAnswers) {
         Application application = this.applicationService.getApplicationByOid(oid);
         application.setPhaseId(phaseId); // TODO active applications does not have phaseId?
         Form form = this.formService.getForm(application.getApplicationSystemId());
+
         List<Element> elements = new ArrayList<>();
         if (elementIds != null) {
             for (String elementId : elementIds) {
                 elements.add(form.getChildById(elementId));
             }
         }
-        Map<String, String> vastauksetMerged = application.getVastauksetMerged();
 
-        ApplicationSystem applicationSystem = applicationSystemService.getApplicationSystem(application.getApplicationSystemId());
-
-        if ((phaseId.equals(PHASE_APPLICATION_OPTIONS) || phaseId.equals(PHASE_EDUCATION)) && applicationSystem.isMaksumuuriKaytossa()) {
-            application.addVaiheenVastaukset(PHASE_APPLICATION_OPTIONS, paymentNotificationAnswers(vastauksetMerged, hakumaksuService.paymentRequirements(Types.MergedAnswers.of(vastauksetMerged))));
+        if ((phaseId.equals(PHASE_APPLICATION_OPTIONS) || phaseId.equals(PHASE_EDUCATION))
+                && applicationSystemService.getActiveApplicationSystem(application.getApplicationSystemId()).isMaksumuuriKaytossa()) {
+            currentAnswers.putAll(paymentNotificationAnswers(currentAnswers, hakumaksuService.paymentRequirements(Types.MergedAnswers.of(currentAnswers))));
         }
 
-        ValidationResult validationResult = elementTreeValidator.validate(new ValidationInput(form, vastauksetMerged,
+        ValidationResult validationResult = elementTreeValidator.validate(new ValidationInput(form, application.getVastauksetMerged(),
                 oid, application.getApplicationSystemId(), ValidationInput.ValidationContext.officer_modify));
-        return new ModelResponse(application, form, elements, validationResult, koulutusinformaatioBaseUrl);
+        ModelResponse modelResponse = new ModelResponse(application, form, elements, validationResult, koulutusinformaatioBaseUrl);
+        modelResponse.addAnswers(currentAnswers);
+
+        return modelResponse;
     }
 
 

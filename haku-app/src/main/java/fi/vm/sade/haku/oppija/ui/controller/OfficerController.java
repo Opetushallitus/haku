@@ -17,7 +17,6 @@
 package fi.vm.sade.haku.oppija.ui.controller;
 
 import com.sun.jersey.api.view.Viewable;
-
 import fi.vm.sade.auditlog.haku.HakuOperation;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
@@ -36,7 +35,6 @@ import fi.vm.sade.haku.virkailija.viestintapalvelu.PDFService;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.dto.ApplicationByEmailDTO;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.dto.ApplicationReplacementDTO;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.dto.ApplicationTemplateDTO;
-
 import org.apache.http.HttpResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,7 +46,6 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
-
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -57,10 +54,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static fi.vm.sade.haku.AuditHelper.AUDIT;
+import static fi.vm.sade.haku.AuditHelper.builder;
 import static fi.vm.sade.haku.oppija.ui.common.MultivaluedMapUtil.toSingleValueMap;
 import static javax.ws.rs.core.Response.ok;
 import static javax.ws.rs.core.Response.seeOther;
-import static fi.vm.sade.haku.AuditHelper.*;
 
 @Path("virkailija")
 @Controller
@@ -244,8 +242,7 @@ public class OfficerController {
 
         LOGGER.debug("updateMultiRuleView {}, {}", new Object[]{oid, multiValues});
         List<String> ruleIds = multiValues.get("ruleIds[]");
-        ModelResponse modelResponse = officerUIService.getApplicationMultiElement(oid, phaseId, ruleIds, false);
-        modelResponse.addAnswers(toSingleValueMap(multiValues));
+        ModelResponse modelResponse = officerUIService.getApplicationMultiElement(oid, phaseId, ruleIds, false, toSingleValueMap(multiValues));
         AUDIT.log(builder()
                 .hakuOid(applicationSystemId)
                 .hakemusOid(oid).add("phaseid", phaseId)
