@@ -5,9 +5,9 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain.FormConfiguration;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain.GroupConfiguration;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain.SimpleAddress;
 
-import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain.GroupConfiguration.ConfigKey;
-
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 public class AttachmentGroupConfigurator {
     private final FormConfiguration formConfiguration;
@@ -34,30 +34,33 @@ public class AttachmentGroupConfigurator {
                 configuration.getGroupId(),
                 parseUseFirstAoAddress(configuration.getConfigurations()),
                 parseDeliveryDue(configuration.getConfigurations()),
-                parseDeliveryAddress(configuration.getConfigurations())
+                parseDeliveryAddress(configuration.getConfigurations()),
+                configuration.getConfigurations() != null ? configuration.getConfigurations().helpText : null
         );
     }
 
-    private boolean parseUseFirstAoAddress(Map<ConfigKey, String> configs) {
-        if(configs.containsKey(ConfigKey.useFirstAoAddress)) {
-            return Boolean.valueOf(configs.get(ConfigKey.useFirstAoAddress));
+    private boolean parseUseFirstAoAddress(GroupConfiguration.Configuration configs) {
+        if(null != configs && null != configs.useFirstAoAddress) {
+            return Boolean.valueOf(configs.useFirstAoAddress);
         }
         return true;
     }
 
-    private Date parseDeliveryDue(Map<ConfigKey, String> configs) {
-        if(configs.containsKey(ConfigKey.deadline)) {
-            return new Date(Long.valueOf(configs.get(ConfigKey.deadline)));
+    private Date parseDeliveryDue(GroupConfiguration.Configuration configs) {
+        if(null != configs && null != configs.deadline) {
+            return new Date(Long.valueOf(configs.deadline));
         }
         return null;
     }
 
-    private SimpleAddress parseDeliveryAddress(Map<ConfigKey, String> configs) {
+    private SimpleAddress parseDeliveryAddress(GroupConfiguration.Configuration configs) {
+        if (null == configs) {
+            return new SimpleAddress(null, null, null, null);
+        }
         return new SimpleAddress(
-                configs.get(ConfigKey.addressRecipient),
-                configs.get(ConfigKey.addressStreet),
-                configs.get(ConfigKey.addressPostalCode),
-                configs.get(ConfigKey.addressPostOffice)
-        );
+                configs.addressRecipient,
+                configs.addressStreet,
+                configs.addressPostalCode,
+                configs.addressPostOffice);
     }
 }

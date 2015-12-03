@@ -427,8 +427,9 @@ public class AttachmentUtil {
                         .setDeadline(address.deadline)
                         .setAddress(address.address);
 
-
-                if (address.deadline == null) {
+                if (null != address.helpText) {
+                    attachmentBuilder.setDeliveryNote(address.helpText);
+                } else if (null == address.deadline) {
                     attachmentBuilder.setDeliveryNote(i18nBundle.get(GENERAL_DELIVERY_NOTE));
                 } else {
                     attachmentBuilder.setDeliveryNote(i18nBundle.get(GENERAL_DEADLINE_NOTE));
@@ -475,7 +476,8 @@ public class AttachmentUtil {
                             organizationGroup.getOid(),
                             null,
                             groupAddress.isUseFirstAoAddress() ? createI18NAsIs(ao.getProvider().getName()) : null,
-                            groupAddress.getDeliveryDue() == null ? defaultDeadline : groupAddress.getDeliveryDue()
+                            groupAddress.getDeliveryDue() == null ? defaultDeadline : groupAddress.getDeliveryDue(),
+                            groupAddress.getHelpText()
                     );
                 }
             }
@@ -498,7 +500,8 @@ public class AttachmentUtil {
                 ao.getId(),
                 provider.getId(),
                 createI18NAsIs(provider.getName()),
-                deadline
+                deadline,
+                null
         );
     }
 

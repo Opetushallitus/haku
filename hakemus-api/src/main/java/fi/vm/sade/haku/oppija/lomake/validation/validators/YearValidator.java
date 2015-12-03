@@ -19,8 +19,6 @@ package fi.vm.sade.haku.oppija.lomake.validation.validators;
 import fi.vm.sade.haku.oppija.lomake.validation.FieldValidator;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationInput;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationResult;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.apache.commons.lang3.StringUtils;
 
 public class YearValidator extends FieldValidator {
@@ -30,12 +28,17 @@ public class YearValidator extends FieldValidator {
 
     private static final String NOT_A_NUMBER_ERROR_KEY = "yearValidator.notANumber";
     private static final String TOO_EARLY_ERROR_KEY = "yearValidator.tooEarly";
-    private static final String TOO_LATE_ERROR_KEY = "yearValidator.tooLate";
+    private String tooLateErrorKey;
 
     public YearValidator(final Integer fromYear, final Integer toYear) {
         super("yleinen.virheellinenarvo");
         this.fromYear = fromYear;
         this.toYear = toYear;
+        this.tooLateErrorKey = "yearValidator.tooLate";
+    }
+
+    public void setTooLateErrorKey(String key) {
+        this.tooLateErrorKey = key;
     }
 
     @Override
@@ -54,7 +57,7 @@ public class YearValidator extends FieldValidator {
             return new ValidationResult(validationInput.getFieldName(),  getI18Text(TOO_EARLY_ERROR_KEY, validationInput.getApplicationSystemId()));
         }
         if (toYear != null && toYear < year) {
-            return new ValidationResult(validationInput.getFieldName(),  getI18Text(TOO_LATE_ERROR_KEY, validationInput.getApplicationSystemId()));
+            return new ValidationResult(validationInput.getFieldName(),  getI18Text(tooLateErrorKey, validationInput.getApplicationSystemId()));
         }
         return new ValidationResult();
     }

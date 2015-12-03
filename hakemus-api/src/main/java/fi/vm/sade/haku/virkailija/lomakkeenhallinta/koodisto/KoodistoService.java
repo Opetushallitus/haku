@@ -16,9 +16,11 @@
 
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto;
 
+import fi.vm.sade.haku.oppija.common.organisaatio.Organization;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.SubjectRow;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.domain.Code;
+import fi.vm.sade.koodisto.service.types.common.KoodiType;
 
 import java.util.List;
 
@@ -63,7 +65,7 @@ public interface KoodistoService {
 
     List<Option> getAmmattioppilaitosKoulukoodit();
 
-    List<Option> getKorkeakouluKoulukoodit();
+    List<Organization> getKorkeakoulutMyosRinnasteiset();
 
     List<Option> getAmmattitutkinnot();
 
@@ -72,6 +74,8 @@ public interface KoodistoService {
     List<Option> getLaajuusYksikot();
 
     List<Option> getKorkeakouluTutkintotasot();
+
+    List<KoodiType> getKorkeakoulukoulutukset();
 
     List<Code> getAMKkoulutukset();
 

@@ -17,8 +17,8 @@
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.impl;
 
 import com.google.common.base.Function;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
+import com.google.common.base.Predicate;
+import com.google.common.collect.*;
 import fi.vm.sade.haku.oppija.common.organisaatio.Organization;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
@@ -287,58 +287,75 @@ public class KoodistoServiceImpl implements KoodistoService {
 
     @Override
     public List<Option> getAmmattioppilaitosKoulukoodit() {
-        return getKoulukoodit(AMMATILLINEN_OPPILAITOS, AMMATILLINEN_ERITYISOPPILAITOS, AMMATILLINEN_ERIKOISOPPILAITOS,
+        return getKoulukoodit(false, AMMATILLINEN_OPPILAITOS, AMMATILLINEN_ERITYISOPPILAITOS, AMMATILLINEN_ERIKOISOPPILAITOS,
                 AMMATILLINEN_AIKUISKOULUTUSKESKUS, PALO_POLIISI_VARTIOINTI_OPPILAITOS, SOTILASALAN_OPPILAITOS,
                 LIIKUNNAN_KOULUTUSKEKUS, MUSIIKKIOPPILAITOS, KANSANOPISTO);
     }
 
     @Override
     public List<Option> getLukioKoulukoodit() {
-        return getKoulukoodit(LUKIO, LUKIO_JA_PERUSKOULU, KANSANOPISTO);
+        return getKoulukoodit(false, LUKIO, LUKIO_JA_PERUSKOULU, KANSANOPISTO);
     }
 
-    private List<Option> getKoulukoodit(String... oppilaitosyypit) {
-        Map<String, Boolean> tyyppiMap = new HashMap<>(oppilaitosyypit.length);
-        for (String oppilaitostyyppi : oppilaitosyypit) {
-            tyyppiMap.put(oppilaitostyyppi, true);
-        }
-        List<KoodiType> koulut = getKoodiTypes(CODE_OPPILAITOSTYYPPI);
-        List<String> kouluNumerot = new ArrayList<String>();
-        int i = 0;
-        for (KoodiType koodi : koulut) {
-            Boolean pleaseProceed = tyyppiMap.get(koodi.getKoodiArvo());
-            if (pleaseProceed != null && pleaseProceed) {
-                if (i++ >= fetchLimit) {
-                    break;
-                }
-                List<KoodiType> ylakoodit = koodiService.getYlakoodis(koodi.getKoodiUri());
-                int j = 0;
-                for (KoodiType ylakoodi : ylakoodit) {
-                    if (ylakoodi.getKoodisto().getKoodistoUri().equals("oppilaitosnumero")
-                            && !ylakoodi.getTila().equals(TilaType.PASSIIVINEN) ) {
-                        if (j++ >= fetchLimit) {
-                            break;
-                        }
-                        kouluNumerot.add(ylakoodi.getKoodiArvo());
+    private List<Option> getKoulukoodit(boolean passives, String... oppilaitosyypit) {
+        Set<String> tyypit = new HashSet<>(oppilaitosyypit.length);
+        Collections.addAll(tyypit, oppilaitosyypit);
+        List<String> oppilaitosnumerot = new ArrayList<>();
+        for (KoodiType koodi : getKoodiTypes(CODE_OPPILAITOSTYYPPI)) {
+            if (tyypit.contains(koodi.getKoodiArvo())) {
+                for (KoodiType ylakoodi : koodiService.getYlakoodis(koodi.getKoodiUri())) {
+                    if ("oppilaitosnumero".equals(ylakoodi.getKoodisto().getKoodistoUri())
+                            && (passives || TilaType.PASSIIVINEN != ylakoodi.getTila())) {
+                        oppilaitosnumerot.add(ylakoodi.getKoodiArvo());
                     }
                 }
             }
         }
 
-        List<Option> opts = new ArrayList<Option>(kouluNumerot.size());
-        List<Organization> orgs = organisaatioService.findByOppilaitosnumero(kouluNumerot);
-        for (Organization org : orgs) {
-            List<String> types = org.getTypes();
-            if (types.contains("Oppilaitos")) {
-                opts.add((Option) new OptionBuilder().setValue(org.getOid()).i18nText(org.getName()).build());
+        List<Option> oppilaitokset = new ArrayList<>(oppilaitosnumerot.size());
+        for (Organization org : organisaatioService.findByOppilaitosnumero(oppilaitosnumerot)) {
+            if (org.getTypes().contains("Oppilaitos")) {
+                oppilaitokset.add((Option) new OptionBuilder().setValue(org.getOid()).i18nText(org.getName()).build());
             }
         }
-        return opts;
+        return oppilaitokset;
     }
 
+    private Set<KoodiType> oppilaitostyypit(final Set<String> oppilaitostyypit) {
+        return Sets.newHashSet(Iterables.filter(getKoodiTypes(CODE_OPPILAITOSTYYPPI), new Predicate<KoodiType>() {
+            @Override
+            public boolean apply(KoodiType koodi) {
+                return oppilaitostyypit.contains(koodi.getKoodiArvo());
+            }
+        }));
+    }
+
+    private static final Predicate<KoodiType> isOppilaitosnumero = new Predicate<KoodiType>() {
+        @Override
+        public boolean apply(KoodiType koodi) {
+            return "oppilaitosnumero".equals(koodi.getKoodisto().getKoodistoUri());
+        }
+    };
+
+    private static final Predicate<Organization> isOppilaitos = new Predicate<Organization>() {
+        @Override
+        public boolean apply(Organization organization) {
+            return organization.getTypes().contains("Oppilaitos");
+        }
+    };
+
     @Override
-    public List<Option> getKorkeakouluKoulukoodit() {
-        return getKoulukoodit(AMMATTIKORKEAKOLU, YLIOPISTO, SOTILASKORKEAKOULU, VALIAIKAINEN_AMK);
+    public List<Organization> getKorkeakoulutMyosRinnasteiset() {
+        List<String> oppilaitosnumerot = new ArrayList<>();
+        for (KoodiType tyyppi : oppilaitostyypit(Sets.newHashSet(AMMATTIKORKEAKOLU, YLIOPISTO, SOTILASKORKEAKOULU, VALIAIKAINEN_AMK))) {
+            for (KoodiType oppilaitosnumero : Iterables.filter(koodiService.getYlakoodis(tyyppi.getKoodiUri()), isOppilaitosnumero)) {
+                oppilaitosnumerot.add(oppilaitosnumero.getKoodiArvo());
+                for (KoodiType rinnasteinen : Iterables.filter(koodiService.getRinnasteiset(oppilaitosnumero.getKoodiUri()), isOppilaitosnumero)) {
+                    oppilaitosnumerot.add(rinnasteinen.getKoodiArvo());
+                }
+            }
+        }
+        return Lists.newArrayList(Iterables.filter(organisaatioService.findByOppilaitosnumero(oppilaitosnumerot), isOppilaitos));
     }
 
     @Override
@@ -377,6 +394,41 @@ public class KoodistoServiceImpl implements KoodistoService {
     @Override
     public List<Option> getKorkeakouluTutkintotasot() {
         return codesToOptions(CODE_KKTUTKINNOT);
+    }
+
+    @Override
+    public List<KoodiType> getKorkeakoulukoulutukset() {
+        Set<KoodiType> koulutukset = new HashSet<>();
+        for (String aste : new String[] {
+                "koulutusasteoph2002_60",
+                "koulutusasteoph2002_61",
+                "koulutusasteoph2002_62",
+                "koulutusasteoph2002_63",
+                "koulutusasteoph2002_70",
+                "koulutusasteoph2002_71",
+                "koulutusasteoph2002_72",
+                "koulutusasteoph2002_73",
+                "koulutusasteoph2002_80",
+                "koulutusasteoph2002_81",
+                "koulutusasteoph2002_82"}) {
+            for (KoodiType koodi : koodiService.getYlakoodis(aste)) {
+                if ("koulutus".equals(koodi.getKoodisto().getKoodistoUri())) {
+                    koulutukset.add(koodi);
+                }
+            }
+        }
+        return new ArrayList<>(latestKoodiTypes(koulutukset));
+    }
+
+    private static Collection<KoodiType> latestKoodiTypes(Collection<KoodiType> koodiTypes) {
+        Map<String, KoodiType> latest = new HashMap<>(koodiTypes.size());
+        for (KoodiType koodi : koodiTypes) {
+            String uri = koodi.getKoodiUri();
+            if (koodi.getVersio() > (latest.containsKey(uri) ? latest.get(uri).getVersio() : Integer.MIN_VALUE)) {
+                latest.put(uri, koodi);
+            }
+        }
+        return latest.values();
     }
 
     private List<Option> codesToOptions(final String codeName) {

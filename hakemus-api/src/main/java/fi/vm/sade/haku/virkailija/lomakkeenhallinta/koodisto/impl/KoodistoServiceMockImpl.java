@@ -16,17 +16,23 @@
 
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.impl;
 
+import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import fi.vm.sade.haku.oppija.common.organisaatio.Organization;
+import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.builder.OptionBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.custom.SubjectRow;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.domain.Code;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
+import fi.vm.sade.koodisto.service.types.common.KoodiType;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -358,8 +364,8 @@ public class KoodistoServiceMockImpl implements KoodistoService {
     }
 
     @Override
-    public List<Option> getKorkeakouluKoulukoodit() {
-        return this.listOfKorkeakoulus;
+    public List<Organization> getKorkeakoulutMyosRinnasteiset() {
+        return Lists.newArrayList();
     }
 
     @Override
@@ -375,6 +381,11 @@ public class KoodistoServiceMockImpl implements KoodistoService {
     @Override
     public List<Option> getKorkeakouluTutkintotasot() {
         return this.listOfKorkealuTutkintotasot;
+    }
+
+    @Override
+    public List<KoodiType> getKorkeakoulukoulutukset() {
+        return new ArrayList<>();
     }
 
     @Override
