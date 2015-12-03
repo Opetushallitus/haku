@@ -123,17 +123,16 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             InputStream is = cachingRestClient.get(url);
 
             JsonArray orgJson = new JsonParser().parse(IOUtils.toString(is)).getAsJsonArray();
-            Iterator<JsonElement> elems = orgJson.iterator();
-            while (elems.hasNext()) {
-                JsonObject orgObj = elems.next().getAsJsonObject();
+            for (JsonElement elem: orgJson) {
+                JsonObject orgObj = elem.getAsJsonObject();
                 String organization = orgObj.get("organisaatioOid").getAsString();
                 if (!orgObj.get("passivoitu").getAsBoolean()){
                     orgs.add(organization);
-                }
-                else {
+                } else {
                     log.debug("Ignoring inactive organization: " + organization);
                 }
             }
+
             return orgs;
         } catch (IOException e) {
             throw new RemoteServiceException(targetService + url, e);
