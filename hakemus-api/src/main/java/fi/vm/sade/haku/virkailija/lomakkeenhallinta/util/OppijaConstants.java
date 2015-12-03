@@ -86,7 +86,6 @@ public final class OppijaConstants {
     public static final String SUKUPUOLI_MIES = "1";
     public static final String SUKUPUOLI_NAINEN = "2";
 
-
     public static final String PREFERENCE_PREFIX = "preference";
     public static final String OPTION_ID_POSTFIX = "-Koulutus-id";
     public static final String PREFERENCE_FRAGMENT_OPTION_ID= "Koulutus-id";

@@ -30,9 +30,7 @@ import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
-import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.OPTION_ID_POSTFIX;
-import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.PAYMENT_NOTIFICATION_POSTFIX;
-import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.PREFERENCE_PREFIX;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.*;
 import static org.apache.commons.lang.StringUtils.isNotEmpty;
 
 public class HakumaksuUtil {
@@ -246,6 +244,7 @@ public class HakumaksuUtil {
                     String preferenceString = key.replace(OPTION_ID_POSTFIX, "");
                     String paymentRequirementKey = preferenceString + PAYMENT_NOTIFICATION_POSTFIX;
                     builder.put(paymentRequirementKey, "true");
+                    builder.put(PHASE_EDUCATION + PAYMENT_NOTIFICATION_POSTFIX, "true");
                 }
 
             }

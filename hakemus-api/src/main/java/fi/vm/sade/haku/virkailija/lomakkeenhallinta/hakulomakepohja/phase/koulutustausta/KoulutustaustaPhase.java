@@ -12,6 +12,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.builder.*;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.Notification;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.OptionQuestion;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.AddElementRule;
@@ -86,7 +87,7 @@ public final class KoulutustaustaPhase {
     }
 
     private static Element[] createOpetErkatJaOpotKoulutustausta(FormParameters formParameters) {
-        ArrayList<Element> elements = new ArrayList<Element>();
+        ArrayList<Element> elements = new ArrayList<>();
         KoodistoService koodistoService = formParameters.getKoodistoService();
 
         // Tutkinto ja suoritusvuosi
@@ -189,7 +190,7 @@ public final class KoulutustaustaPhase {
         tutkinnontasoRule.addChild(eiKorkeakoulututkintoaBuilder.formParams(formParameters).requiredInline().build());
 
         List<Option> koulutusalatRaw = koodistoService.getKoulutusalat();
-        List<Option> koulutusalat = new ArrayList<Option>(koulutusalatRaw.size() - 1);
+        List<Option> koulutusalat = new ArrayList<>(koulutusalatRaw.size() - 1);
         for (Option o : koulutusalatRaw) {
             if (!o.getValue().equals("0")) {
                 koulutusalat.add(o);
@@ -265,7 +266,7 @@ public final class KoulutustaustaPhase {
     }
 
     private static Element[] createKorkeakouluKoulutustausta(FormParameters formParameters) {
-        ArrayList<Element> elements = new ArrayList<Element>();
+        ArrayList<Element> elements = new ArrayList<>();
         KoodistoService koodistoService = formParameters.getKoodistoService();
         List<Option> laajuusYksikot = koodistoService.getLaajuusYksikot();
         List<Option> tutkintotasot = koodistoService.getKorkeakouluTutkintotasot();
@@ -299,6 +300,17 @@ public final class KoulutustaustaPhase {
                 buildUlkomainenTutkinto(formParameters, maat, maxTutkintoCount),
                 buildAvoin(formParameters, maxTutkintoCount),
                 buildMuu(formParameters, maxTutkintoCount));
+
+        if (formParameters.getApplicationSystem().isMaksumuuriKaytossa()) {
+            pohjakoulutusGrp.addChild(
+                    Rule(ExprUtil.isAnswerTrue(PHASE_EDUCATION + PAYMENT_NOTIFICATION_POSTFIX))
+                            .addChild(new Notification(
+                                    PHASE_EDUCATION + "_payment_notification",
+                                    formParameters.getI18nText("form.koulutustausta.vaatiihakumaksun"),
+                                    Notification.NotificationType.INFO))
+                            .build());
+        }
+
         elements.add(pohjakoulutusGrp);
 
         elements.addAll(buildSuoritusoikeusTaiAiempiTutkinto(formParameters, korkeakoulut, korkeakoulukoulutukset));
@@ -366,7 +378,7 @@ public final class KoulutustaustaPhase {
         muu.addChild(muuMore);
 
         Element prevElement = buildMuuElement(formParameters, 1, muuMore);
-        List<String> prevLinks = new ArrayList<String>();
+        List<String> prevLinks = new ArrayList<>();
 
         for (int i = 2; i <= count; i++) {
             I18nText i18nText = formParameters.getI18nText("pohjakoulutus.lisaa");
@@ -406,7 +418,7 @@ public final class KoulutustaustaPhase {
         avoin.addChild(avoinMore);
 
         Element prevElement = buildAvoinElement(formParameters, 1, avoinMore);
-        List<String> prevLinks = new ArrayList<String>();
+        List<String> prevLinks = new ArrayList<>();
 
         for (int i = 2; i <= count; i++) {
             I18nText i18nText = formParameters.getI18nText("pohjakoulutus.lisaa");
@@ -452,7 +464,7 @@ public final class KoulutustaustaPhase {
 
         Element parent = ulkMore;
         buildUlkomainenTutkintoElement(formParameters, maat, 1, parent);
-        List<String> prevLinks = new ArrayList<String>();
+        List<String> prevLinks = new ArrayList<>();
         for (int i = 2; i <= count; i++) {
             I18nText i18nText = formParameters.getI18nText("pohjakoulutus.lisaa");
             AddElementRule extraUlkTutkintoRule = new AddElementRule("addUlkTutkintoRule" + i,
@@ -498,7 +510,7 @@ public final class KoulutustaustaPhase {
         kk.addChild(kkMore);
 
         Element prevElement = buildKorkeakoulututkintoElement(formParameters, tutkintotasot, 1, kkMore);
-        List<String> prevLinks = new ArrayList<String>();
+        List<String> prevLinks = new ArrayList<>();
 
         for (int i = 2; i <= count; i++) {
             I18nText i18nText = formParameters.getI18nText("pohjakoulutus.lisaa");
@@ -552,7 +564,7 @@ public final class KoulutustaustaPhase {
 
         Element parent = kkUlkomainenMore;
         buildKorkeakoulututkintoUlkomaaElement(formParameters, tutkintotasot, maat, 1, parent);
-        List<String> prevLinks = new ArrayList<String>();
+        List<String> prevLinks = new ArrayList<>();
         for (int i = 2; i <= count; i++) {
             I18nText i18nText = formParameters.getI18nText("pohjakoulutus.lisaa");
             AddElementRule extraKKUlkomaaRule = new AddElementRule("addKKUlkomaaRule" + i,
@@ -604,7 +616,7 @@ public final class KoulutustaustaPhase {
         amt.addChild(amtMore);
 
         Element prevElement = buildAmmattitutkintoElement(formParameters, 1, amtMore);
-        List<String> prevLinks = new ArrayList<String>();
+        List<String> prevLinks = new ArrayList<>();
 
         for (int i = 2; i <= count; i++) {
             I18nText i18nText = formParameters.getI18nText("pohjakoulutus.lisaa");
@@ -653,7 +665,7 @@ public final class KoulutustaustaPhase {
 
         Element prevElement = buildAmmatillinenElement(formParameters, laajuusYksikot, tutkintonimikkeet,
                 ammattioppilaitokset, 1, amMore);
-        List<String> prevLinks = new ArrayList<String>();
+        List<String> prevLinks = new ArrayList<>();
 
         for (int i = 2; i <= count; i++) {
             I18nText i18nText = formParameters.getI18nText("pohjakoulutus.lisaa");
