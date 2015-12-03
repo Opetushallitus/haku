@@ -7,6 +7,7 @@ import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.haku.oppija.hakemus.service.BaseEducationService;
 import fi.vm.sade.haku.oppija.hakemus.service.HakuPermissionService;
+import fi.vm.sade.haku.oppija.hakemus.service.HakumaksuService;
 import fi.vm.sade.haku.oppija.lomake.domain.*;
 import fi.vm.sade.haku.oppija.lomake.domain.builder.PhaseBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
@@ -111,6 +112,7 @@ public class OfficerUIServiceImplTest {
                 valintaService,
                 userSession,
                 null,
+                mock(HakumaksuService.class),
                 "01.02 - 01.09");
         form.addChild(phase);
         when(applicationSystemService.getApplicationSystem(any(String.class))).thenReturn(as);

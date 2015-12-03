@@ -1,6 +1,7 @@
 package fi.vm.sade.haku.oppija.ui.service.impl;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import fi.vm.sade.auditlog.haku.HakuOperation;
 import fi.vm.sade.auditlog.haku.LogMessage;
@@ -15,6 +16,7 @@ import fi.vm.sade.haku.oppija.hakemus.domain.dto.UpdatePreferenceResult;
 import fi.vm.sade.haku.oppija.hakemus.domain.util.AttachmentUtil;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.haku.oppija.hakemus.service.HakuPermissionService;
+import fi.vm.sade.haku.oppija.hakemus.service.HakumaksuService;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.ModelResponse;
@@ -41,6 +43,7 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.i18n.I18nBundleService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.koodisto.KoodistoService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types;
 import fi.vm.sade.haku.virkailija.valinta.ValintaService;
 import fi.vm.sade.haku.virkailija.valinta.dto.*;
 import fi.vm.sade.organisaatio.api.model.types.OrganisaatioTyyppi;
@@ -62,6 +65,9 @@ import java.util.*;
 
 import static fi.vm.sade.haku.AuditHelper.AUDIT;
 import static fi.vm.sade.haku.AuditHelper.builder;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.HakumaksuUtil.paymentNotificationAnswers;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.PHASE_APPLICATION_OPTIONS;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.PHASE_EDUCATION;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
@@ -85,6 +91,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     private ValintaService valintaService;
     private final Session userSession;
     private final I18nBundleService i18nBundleService;
+    private final HakumaksuService hakumaksuService;
 
     private static final DecimalFormat PISTE_FMT = new DecimalFormat("#.##");
 
@@ -106,7 +113,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
                                 final ValintaService valintaService,
                                 final Session userSession,
                                 final I18nBundleService i18nBundleService,
-                                @Value("${hakukausi.kevat}") final String kevatkausi) {
+                                HakumaksuService hakumaksuService, @Value("${hakukausi.kevat}") final String kevatkausi) {
         this.applicationService = applicationService;
         this.formService = formService;
         this.koodistoService = koodistoService;
@@ -121,6 +128,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         this.valintaService = valintaService;
         this.userSession = userSession;
         this.i18nBundleService = i18nBundleService;
+        this.hakumaksuService = hakumaksuService;
         this.kevatkausi = kevatkausi;
     }
 
@@ -151,13 +159,21 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         Application application = this.applicationService.getApplicationByOid(oid);
         application.setPhaseId(phaseId); // TODO active applications does not have phaseId?
         Form form = this.formService.getForm(application.getApplicationSystemId());
-        List<Element> elements = new ArrayList();
+        List<Element> elements = new ArrayList<>();
         if (elementIds != null) {
             for (String elementId : elementIds) {
                 elements.add(form.getChildById(elementId));
             }
         }
-        ValidationResult validationResult = elementTreeValidator.validate(new ValidationInput(form, application.getVastauksetMerged(),
+        Map<String, String> vastauksetMerged = application.getVastauksetMerged();
+
+        ApplicationSystem applicationSystem = applicationSystemService.getApplicationSystem(application.getApplicationSystemId());
+
+        if ((phaseId.equals(PHASE_APPLICATION_OPTIONS) || phaseId.equals(PHASE_EDUCATION)) && applicationSystem.isMaksumuuriKaytossa()) {
+            application.addVaiheenVastaukset(PHASE_APPLICATION_OPTIONS, paymentNotificationAnswers(vastauksetMerged, hakumaksuService.paymentRequirements(Types.MergedAnswers.of(vastauksetMerged))));
+        }
+
+        ValidationResult validationResult = elementTreeValidator.validate(new ValidationInput(form, vastauksetMerged,
                 oid, application.getApplicationSystemId(), ValidationInput.ValidationContext.officer_modify));
         return new ModelResponse(application, form, elements, validationResult, koulutusinformaatioBaseUrl);
     }
@@ -178,6 +194,11 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         boolean postProcessAllowed = hakuPermissionService.userCanPostProcess(application)
                 && !Application.State.PASSIVE.equals(application.getState());
         ApplicationSystem as = applicationSystemService.getApplicationSystem(asId);
+
+        if ((phaseId.equals(PHASE_APPLICATION_OPTIONS) || phaseId.equals(PHASE_EDUCATION)) && as.isMaksumuuriKaytossa()) {
+            Map<String, String> vastauksetMerged = application.getVastauksetMerged();
+            application.addVaiheenVastaukset(PHASE_APPLICATION_OPTIONS, paymentNotificationAnswers(vastauksetMerged, hakumaksuService.paymentRequirements(Types.MergedAnswers.of(vastauksetMerged))));
+        }
 
         ModelResponse modelResponse =
                 new ModelResponse(application, form, element, validationResult, koulutusinformaatioBaseUrl);
