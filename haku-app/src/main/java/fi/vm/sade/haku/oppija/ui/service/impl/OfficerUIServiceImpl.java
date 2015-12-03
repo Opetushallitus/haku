@@ -1,7 +1,6 @@
 package fi.vm.sade.haku.oppija.ui.service.impl;
 
 import com.google.common.base.Strings;
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import fi.vm.sade.auditlog.haku.HakuOperation;
 import fi.vm.sade.auditlog.haku.LogMessage;
@@ -168,21 +167,20 @@ public class OfficerUIServiceImpl implements OfficerUIService {
             }
         }
 
-        ImmutableMap.Builder<String, String> answerBuilder = ImmutableMap.builder();
+        final Map<String, String> answers = new HashMap<>();
 
-        answerBuilder.putAll(application.getVastauksetMerged());
-        answerBuilder.putAll(currentAnswers);
+        answers.putAll(application.getVastauksetMerged());
+        answers.putAll(currentAnswers);
 
         if ((phaseId.equals(PHASE_APPLICATION_OPTIONS) || phaseId.equals(PHASE_EDUCATION))
                 && applicationSystemService.getActiveApplicationSystem(application.getApplicationSystemId()).isMaksumuuriKaytossa()) {
-            Map<String, String> answers = answerBuilder.build();
-            answerBuilder.putAll(paymentNotificationAnswers(answers, hakumaksuService.paymentRequirements(Types.MergedAnswers.of(answers))));
+            answers.putAll(paymentNotificationAnswers(answers, hakumaksuService.paymentRequirements(Types.MergedAnswers.of(answers))));
         }
 
         ValidationResult validationResult = elementTreeValidator.validate(new ValidationInput(form, application.getVastauksetMerged(),
                 oid, application.getApplicationSystemId(), ValidationInput.ValidationContext.officer_modify));
         ModelResponse modelResponse = new ModelResponse(application, form, elements, validationResult, koulutusinformaatioBaseUrl);
-        modelResponse.addAnswers(answerBuilder.build());
+        modelResponse.addAnswers(answers);
 
         return modelResponse;
     }
