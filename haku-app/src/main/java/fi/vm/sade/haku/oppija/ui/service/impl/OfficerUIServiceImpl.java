@@ -174,7 +174,11 @@ public class OfficerUIServiceImpl implements OfficerUIService {
 
         if ((phaseId.equals(PHASE_APPLICATION_OPTIONS) || phaseId.equals(PHASE_EDUCATION))
                 && applicationSystemService.getActiveApplicationSystem(application.getApplicationSystemId()).isMaksumuuriKaytossa()) {
-            answers.putAll(paymentNotificationAnswers(answers, hakumaksuService.paymentRequirements(Types.MergedAnswers.of(answers))));
+            try {
+                answers.putAll(paymentNotificationAnswers(answers, hakumaksuService.paymentRequirements(Types.MergedAnswers.of(answers))));
+            } catch (NullPointerException e) {
+                // Answereissa voi olla puutteellista dataa, koska tätä ajetaan joka kentän syöttämisen jälkeen
+            }
         }
 
         ValidationResult validationResult = elementTreeValidator.validate(new ValidationInput(form, application.getVastauksetMerged(),
