@@ -27,9 +27,13 @@ import static com.google.common.collect.Iterables.any;
 import static com.google.common.collect.Iterables.filter;
 import static fi.vm.sade.haku.oppija.hakemus.domain.util.ApplicationUtil.getPreferenceAoIds;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.HakumaksuUtil.LanguageCodeISO6391.*;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.OPTION_ID_POSTFIX;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.PAYMENT_NOTIFICATION_POSTFIX;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.PREFERENCE_PREFIX;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.*;
 
 import static fi.vm.sade.haku.oppija.hakemus.service.EducationRequirementsUtil.*;
+import static org.apache.commons.lang.StringUtils.isNotEmpty;
 
 @Service
 public class HakumaksuService {
@@ -135,6 +139,22 @@ public class HakumaksuService {
                 return !input.isEmpty();
             }
         });
+    }
+
+    public ImmutableMap<String, String> paymentNotificationAnswers(Map<String, String> answers) {
+        ImmutableMap<ApplicationOptionOid, ImmutableSet<Eligibility>> paymentRequirements = paymentRequirements(MergedAnswers.of(answers));
+        ImmutableMap.Builder<String, String> builder = ImmutableMap.builder();
+        for (String key: answers.keySet()){
+            if (key != null && key.startsWith(PREFERENCE_PREFIX) && key.endsWith(OPTION_ID_POSTFIX) && isNotEmpty(answers.get(key))){
+                ImmutableSet<Eligibility> eligibilities = paymentRequirements.get(ApplicationOptionOid.of(answers.get(key)));
+                if (!eligibilities.isEmpty()) {
+                    String preferenceString = key.replace(OPTION_ID_POSTFIX, "");
+                    String paymentRequirementKey = preferenceString + PAYMENT_NOTIFICATION_POSTFIX;
+                    builder.put(paymentRequirementKey, "true");
+                }
+            }
+        }
+        return builder.build();
     }
 
     private static boolean isExemptFromPayment(Map<ApplicationOptionOid, ImmutableSet<Eligibility>> paymentRequirements) {

@@ -168,7 +168,7 @@ public class UIServiceImpl implements UIService {
         Map<String, String> answers = userSession.populateWithPrefillData(ensureApplicationOptionGroupData(phaseId, application.getVastauksetMerged(), lang));
 
         if (phaseId.equals(PHASE_APPLICATION_OPTIONS) && activeApplicationSystem.isMaksumuuriKaytossa()) {
-            answers.putAll(paymentNotificationAnswers(answers, hakumaksuService.paymentRequirements(MergedAnswers.of(answers))));
+            answers.putAll(hakumaksuService.paymentNotificationAnswers(answers));
         }
 
         elementTree.checkPhaseTransfer(application.getPhaseId(), phaseId);
@@ -249,22 +249,6 @@ public class UIServiceImpl implements UIService {
         return modelResponse;
     }
 
-    private static ImmutableMap<String, String> paymentNotificationAnswers(Map<String, String> answers, ImmutableMap<ApplicationOptionOid, ImmutableSet<Eligibility>> paymentRequirements) {
-        ImmutableMap.Builder<String, String> builder = ImmutableMap.builder();
-        for (String key: answers.keySet()){
-            if (key != null && key.startsWith(PREFERENCE_PREFIX) && key.endsWith(OPTION_ID_POSTFIX) && isNotEmpty(answers.get(key))){
-                ImmutableSet<Eligibility> eligibilities = paymentRequirements.get(ApplicationOptionOid.of(answers.get(key)));
-                if (!eligibilities.isEmpty()) {
-                    String preferenceString = key.replace(OPTION_ID_POSTFIX, "");
-                    String paymentRequirementKey = preferenceString + PAYMENT_NOTIFICATION_POSTFIX;
-                    builder.put(paymentRequirementKey, "true");
-                }
-
-            }
-        }
-        return builder.build();
-    }
-
     @Override
     public ModelResponse updateRulesMulti(String applicationSystemId, String phaseId, List<String> ruleIds, Map<String, String> currentAnswers) throws ExecutionException {
         ApplicationSystem activeApplicationSystem = applicationSystemService.getActiveApplicationSystem(applicationSystemId);
@@ -281,7 +265,7 @@ public class UIServiceImpl implements UIService {
         });
 
         if (phaseId.equals(PHASE_APPLICATION_OPTIONS) && activeApplicationSystem.isMaksumuuriKaytossa()) {
-            currentAnswers.putAll(paymentNotificationAnswers(currentAnswers, hakumaksuService.paymentRequirements(MergedAnswers.of(currentAnswers))));
+            currentAnswers.putAll(hakumaksuService.paymentNotificationAnswers(currentAnswers));
         }
 
         ModelResponse modelResponse = new ModelResponse();
@@ -322,7 +306,7 @@ public class UIServiceImpl implements UIService {
         ApplicationSystem activeApplicationSystem = applicationSystemService.getActiveApplicationSystem(applicationSystemId);
 
         if (phaseId.equals(PHASE_APPLICATION_OPTIONS) && activeApplicationSystem.isMaksumuuriKaytossa()) {
-            ensuredAnswers.putAll(paymentNotificationAnswers(ensuredAnswers, hakumaksuService.paymentRequirements(MergedAnswers.of(ensuredAnswers))));
+            ensuredAnswers.putAll(hakumaksuService.paymentNotificationAnswers(ensuredAnswers));
         }
 
         Form activeForm = activeApplicationSystem.getForm();
