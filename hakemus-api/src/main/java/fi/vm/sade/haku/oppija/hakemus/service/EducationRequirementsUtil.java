@@ -8,23 +8,34 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
 import fi.vm.sade.haku.oppija.hakemus.domain.BaseEducations;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.AsciiCountryCode;
 
 import static com.google.common.collect.Iterables.filter;
 
 public class EducationRequirementsUtil {
 
     public static class Eligibility {
-        public String nimike;
-        public Types.AsciiCountryCode suoritusmaa;
+        public final String nimike;
+        public final AsciiCountryCode suoritusmaa;
+        public final boolean pohjakoulutusVapauttaaHakumaksusta; // ...suoritusmaasta riippumatta
 
-        public Eligibility(String nimike, Types.AsciiCountryCode suoritusmaa) {
+        private Eligibility(String nimike, AsciiCountryCode suoritusmaa, boolean pohjakoulutusVapauttaaHakumaksusta) {
             this.nimike = nimike;
             this.suoritusmaa = suoritusmaa;
+            this.pohjakoulutusVapauttaaHakumaksusta = pohjakoulutusVapauttaaHakumaksusta;
         }
 
-        // Suomalainen koulutus
-        public Eligibility(String nimike) {
-            this(nimike, Types.AsciiCountryCode.of("FIN"));
+        // IB, EB, RP
+        public static Eligibility ulkomainenYo(String nimike, AsciiCountryCode suoritusmaa) {
+            return new Eligibility(nimike, suoritusmaa, true);
+        }
+
+        public static Eligibility ulkomainen(String nimike, AsciiCountryCode suoritusmaa) {
+            return new Eligibility(nimike, suoritusmaa, false);
+        }
+
+        public static Eligibility suomalainen(String nimike) {
+            return new Eligibility(nimike, AsciiCountryCode.of("FIN"), true);
         }
 
         @Override
@@ -85,7 +96,7 @@ public class EducationRequirementsUtil {
                         return input.taso.equals(value);
                     }
                 },
-                EducationRequirementsUtil.<BaseEducations.SuomalainenKorkeakoulutus>transformWithNimike());
+                EducationRequirementsUtil.<BaseEducations.SuomalainenKorkeakoulutus>transformSuomalainenKoulutusWithNimike());
     }
 
     private static Function<Types.MergedAnswers, ImmutableSet<Eligibility>> multipleChoiceKkUlkEquals(final String value) {
@@ -100,7 +111,7 @@ public class EducationRequirementsUtil {
                 new Function<BaseEducations.UlkomaalainenKorkeakoulutus, Eligibility>() {
                     @Override
                     public Eligibility apply(BaseEducations.UlkomaalainenKorkeakoulutus koulutus) {
-                        return new Eligibility(koulutus.nimike, koulutus.maa);
+                        return Eligibility.ulkomainen(koulutus.nimike, koulutus.maa);
                     }
                 });
     }
@@ -118,7 +129,7 @@ public class EducationRequirementsUtil {
                 new Function<BaseEducations.SuomalainenYo, Eligibility>() {
                     @Override
                     public Eligibility apply(BaseEducations.SuomalainenYo koulutus) {
-                        return new Eligibility(koulutus.tutkinto);
+                        return Eligibility.suomalainen(koulutus.tutkinto);
                     }
                 });
     }
@@ -135,7 +146,7 @@ public class EducationRequirementsUtil {
                 new Function<BaseEducations.SuomalainenKansainvalinenYo, Eligibility>() {
                     @Override
                     public Eligibility apply(BaseEducations.SuomalainenKansainvalinenYo koulutus) {
-                        return new Eligibility(koulutus.tutkinto);
+                        return Eligibility.suomalainen(koulutus.tutkinto);
                     }
                 });
     }
@@ -152,7 +163,7 @@ public class EducationRequirementsUtil {
                 new Function<BaseEducations.UlkomainenKansainvalinenYo, Eligibility>() {
                     @Override
                     public Eligibility apply(BaseEducations.UlkomainenKansainvalinenYo koulutus) {
-                        return new Eligibility(koulutus.tutkinto, koulutus.maa);
+                        return Eligibility.ulkomainenYo(koulutus.tutkinto, koulutus.maa);
                     }
                 });
     }
@@ -162,15 +173,15 @@ public class EducationRequirementsUtil {
             new Function<BaseEducations.UlkomaalainenKoulutus, Eligibility>() {
                 @Override
                 public Eligibility apply(BaseEducations.UlkomaalainenKoulutus koulutus) {
-                    return new Eligibility(koulutus.nimike, koulutus.maa);
+                    return Eligibility.ulkomainen(koulutus.nimike, koulutus.maa);
                 }
             });
 
-    private static <T extends BaseEducations.ProvideNimike> Function<T, Eligibility> transformWithNimike() {
+    private static <T extends BaseEducations.ProvideNimike> Function<T, Eligibility> transformSuomalainenKoulutusWithNimike() {
         return new Function<T, Eligibility>() {
             @Override
             public Eligibility apply(T koulutus) {
-                return new Eligibility(koulutus.getNimike());
+                return Eligibility.suomalainen(koulutus.getNimike());
             }
         };
     }
@@ -195,10 +206,10 @@ public class EducationRequirementsUtil {
         }
     };
 
-    private static final Function<Types.MergedAnswers, ImmutableSet<Eligibility>> suomalainenYoAmmatillinen = wrapSet(BaseEducations.SuomalainenYoAmmatillinen.of, EducationRequirementsUtil.<BaseEducations.SuomalainenYoAmmatillinen>transformWithNimike());
-    private static final Function<Types.MergedAnswers, ImmutableSet<Eligibility>> suomalainenAvoinTutkinto = wrapSet(BaseEducations.SuomalainenAvoinKoulutus.of, EducationRequirementsUtil.<BaseEducations.SuomalainenAvoinKoulutus>transformWithNimike());
-    private static final Function<Types.MergedAnswers, ImmutableSet<Eligibility>> opistoTaiAmmatillisenKorkeaAsteenTutkinto = wrapSet(BaseEducations.SuomalainenAmKoulutus.of, EducationRequirementsUtil.<BaseEducations.SuomalainenAmKoulutus>transformWithNimike());
-    private static final Function<Types.MergedAnswers, ImmutableSet<Eligibility>> ammattiTaiErikoisammattitutkinto = wrapSet(BaseEducations.SuomalainenAmtKoulutus.of, EducationRequirementsUtil.<BaseEducations.SuomalainenAmtKoulutus>transformWithNimike());
+    private static final Function<Types.MergedAnswers, ImmutableSet<Eligibility>> suomalainenYoAmmatillinen = wrapSet(BaseEducations.SuomalainenYoAmmatillinen.of, EducationRequirementsUtil.<BaseEducations.SuomalainenYoAmmatillinen>transformSuomalainenKoulutusWithNimike());
+    private static final Function<Types.MergedAnswers, ImmutableSet<Eligibility>> suomalainenAvoinTutkinto = wrapSet(BaseEducations.SuomalainenAvoinKoulutus.of, EducationRequirementsUtil.<BaseEducations.SuomalainenAvoinKoulutus>transformSuomalainenKoulutusWithNimike());
+    private static final Function<Types.MergedAnswers, ImmutableSet<Eligibility>> opistoTaiAmmatillisenKorkeaAsteenTutkinto = wrapSet(BaseEducations.SuomalainenAmKoulutus.of, EducationRequirementsUtil.<BaseEducations.SuomalainenAmKoulutus>transformSuomalainenKoulutusWithNimike());
+    private static final Function<Types.MergedAnswers, ImmutableSet<Eligibility>> ammattiTaiErikoisammattitutkinto = wrapSet(BaseEducations.SuomalainenAmtKoulutus.of, EducationRequirementsUtil.<BaseEducations.SuomalainenAmtKoulutus>transformSuomalainenKoulutusWithNimike());
     private static final Function<Types.MergedAnswers, ImmutableSet<Eligibility>> suomalaisenLukionOppimaaaraTaiYlioppilastutkinto = mergeEligibilities(
             suomalainenYo("lk"),
             suomalainenYo("fi"),

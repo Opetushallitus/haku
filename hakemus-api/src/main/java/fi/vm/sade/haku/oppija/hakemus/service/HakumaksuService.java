@@ -6,7 +6,6 @@ import fi.vm.sade.haku.http.RestClient;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application.PaymentState;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationNote;
-import fi.vm.sade.haku.oppija.hakemus.domain.BaseEducations;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.HakumaksuUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.HakumaksuUtil.EducationRequirements;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.HakumaksuUtil.LanguageCodeISO6391;
@@ -26,7 +25,6 @@ import java.util.concurrent.ExecutionException;
 import static com.google.common.collect.Iterables.all;
 import static com.google.common.collect.Iterables.any;
 import static com.google.common.collect.Iterables.filter;
-import static fi.vm.sade.haku.oppija.hakemus.domain.BaseEducations.*;
 import static fi.vm.sade.haku.oppija.hakemus.domain.util.ApplicationUtil.getPreferenceAoIds;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.HakumaksuUtil.LanguageCodeISO6391.*;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.*;
@@ -66,11 +64,12 @@ public class HakumaksuService {
         util = new HakumaksuUtil(restClient, SafeString.of(koulutusinformaatioUrl));
     }
 
-    private final Predicate<Eligibility> onlyNonExempt = new Predicate<Eligibility>() {
+    private final Predicate<Eligibility> eligibilityRequiresPayment = new Predicate<Eligibility>() {
         @Override
         public boolean apply(Eligibility kelpoisuus) {
             try {
-                return !util.isExemptFromPayment(koodistoServiceUrl, kelpoisuus.suoritusmaa);
+                return !kelpoisuus.pohjakoulutusVapauttaaHakumaksusta &&
+                        !util.isEducationCountryExemptFromPayment(koodistoServiceUrl, kelpoisuus.suoritusmaa);
             } catch (ExecutionException e) {
                 // TODO: log + let pass as our system is unexpectedly broken?
                 return false;
@@ -99,7 +98,7 @@ public class HakumaksuService {
 
             for (String baseEducationRequirement : applicationOptionRequirement.baseEducationRequirements) {
                 ImmutableSet<Eligibility> allEligibilities = kkBaseEducationRequirements.get(baseEducationRequirement).apply(answers);
-                ImmutableSet<Eligibility> paymentEligibilities = ImmutableSet.copyOf(filter(allEligibilities, onlyNonExempt));
+                ImmutableSet<Eligibility> paymentEligibilities = ImmutableSet.copyOf(filter(allEligibilities, eligibilityRequiresPayment));
 
                 if (allEligibilities.size() == paymentEligibilities.size()) {
                     // Ei löytynyt yhtään maksusta vapauttavaa kelpoisuutta,

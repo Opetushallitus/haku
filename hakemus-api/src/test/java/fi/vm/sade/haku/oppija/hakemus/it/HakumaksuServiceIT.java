@@ -5,6 +5,7 @@ import com.google.common.collect.ImmutableMap;
 import fi.vm.sade.haku.http.HttpRestClient;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.service.EducationRequirementsUtil;
+import fi.vm.sade.haku.oppija.hakemus.service.EducationRequirementsUtil.Eligibility;
 import fi.vm.sade.haku.oppija.hakemus.service.HakumaksuService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types;
@@ -47,6 +48,6 @@ public class HakumaksuServiceIT {
 
         assertEquals(
                 hakumaksuService.paymentRequirements(MergedAnswers.of(application)).get(hakutoiveenOid),
-                ImmutableList.of(new EducationRequirementsUtil.Eligibility(koulutuksenNimike, Types.AsciiCountryCode.of(koulutuksenMaa))));
+                ImmutableList.of(Eligibility.ulkomainen(koulutuksenNimike, Types.AsciiCountryCode.of(koulutuksenMaa))));
     }
 }

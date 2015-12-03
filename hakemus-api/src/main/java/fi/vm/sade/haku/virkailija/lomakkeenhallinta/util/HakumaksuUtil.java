@@ -188,8 +188,10 @@ public class HakumaksuUtil {
         });
     }
 
+    public static final AsciiCountryCode SVEITSI = AsciiCountryCode.of("CHE");
+
     private boolean isSwitzerland(AsciiCountryCode countryCode) {
-        return countryCode.getValue().equals("CHE");
+        return countryCode.equals(SVEITSI);
     }
 
     private Boolean _isExemptFromPayment(HakumaksuQuery query) {
@@ -212,7 +214,7 @@ public class HakumaksuUtil {
                 }
             });
 
-    public boolean isExemptFromPayment(SafeString koodistoServiceUrl, AsciiCountryCode threeLetterCountryCode) throws ExecutionException {
+    public boolean isEducationCountryExemptFromPayment(SafeString koodistoServiceUrl, AsciiCountryCode threeLetterCountryCode) throws ExecutionException {
         return exemptions.get(new HakumaksuQuery(koodistoServiceUrl, threeLetterCountryCode));
     }
 

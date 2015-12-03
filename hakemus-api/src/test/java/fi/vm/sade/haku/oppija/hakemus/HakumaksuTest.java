@@ -118,7 +118,7 @@ public class HakumaksuTest {
                 "Harkinnanvaraisuus affected expected outcome: " + paymentRequirements,
                 paymentRequirements.equals(ImmutableMap.of(
                         ApplicationOptionOid.of(APPLICATION_OPTION_WITH_IGNORE_AND_PAYMENT_EDUCATION_REQUIREMENTS),
-                        ImmutableSet.of(new Eligibility("maisteri", Types.AsciiCountryCode.of("ABW"))))));
+                        ImmutableSet.of(Eligibility.ulkomainen("maisteri", Types.AsciiCountryCode.of("ABW"))))));
     }
 
     private static final ImmutableMap<String, String> ulkomainenPohjakoulutus = ImmutableMap.of(
