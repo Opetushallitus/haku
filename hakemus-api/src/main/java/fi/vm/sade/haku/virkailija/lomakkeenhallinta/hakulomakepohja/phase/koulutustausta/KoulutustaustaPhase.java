@@ -16,6 +16,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Notification;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.OptionQuestion;
+import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Question;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.AddElementRule;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.*;
 import fi.vm.sade.haku.oppija.lomake.validation.validators.YearValidator;
@@ -267,9 +268,20 @@ public final class KoulutustaustaPhase {
         return elements.toArray(new Element[elements.size()]);
     }
 
-    private static Expr anyElementNotEmpty(List<Element> elements) {
+    private static Expr anyQuestionNotEmpty(final List<Element> elements) {
+        final List<Element> questions = ImmutableList.copyOf(Iterables.filter(elements, new Predicate<Element>() {
+            @Override
+            public boolean apply(@Nullable Element input) {
+                return input instanceof Question;
+            }
+        }));
+
+        if (questions.size() == 0) {
+            throw new IllegalStateException("no questions");
+        }
+
         return new Any(
-                ImmutableList.copyOf(Iterables.transform(elements, new Function<Element, Expr>() {
+                ImmutableList.copyOf(Iterables.transform(questions, new Function<Element, Expr>() {
                     @Override
                     public Expr apply(Element child) {
                         return new Not(new Equals(new Variable(child.getId()), new Value("")));
@@ -317,7 +329,7 @@ public final class KoulutustaustaPhase {
         if (formParameters.getApplicationSystem().isMaksumuuriKaytossa()) {
             final Element rule = Rule(
                     new And(
-                        anyElementNotEmpty(pohjakoulutusGrp.getChildren()),
+                        anyQuestionNotEmpty(pohjakoulutusGrp.getAllChildren()),
                         ExprUtil.isAnswerTrue(PHASE_EDUCATION + PAYMENT_NOTIFICATION_POSTFIX)
                     )
             ).addChild(
