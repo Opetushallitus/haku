@@ -40,7 +40,6 @@ public class HakumaksuService {
     public static final Logger LOGGER = LoggerFactory.getLogger(HakumaksuService.class);
     public static final String SYSTEM_USER = "järjestelmä";
 
-    private final SafeString koodistoServiceUrl;
     private final HakumaksuUtil util;
     private final SafeString oppijanTunnistusUrl;
 
@@ -56,7 +55,6 @@ public class HakumaksuService {
             @Value("${hakuperusteet.url.en}") final String hakuperusteetUrlEn,
             RestClient restClient
     ) {
-        this.koodistoServiceUrl = SafeString.of(koodistoServiceUrl);
         this.oppijanTunnistusUrl = SafeString.of(oppijanTunnistusUrl);
 
         this.languageCodeToServiceUrlMap = ImmutableMap.of(
@@ -65,7 +63,7 @@ public class HakumaksuService {
                 en, SafeString.of(hakuperusteetUrlEn)
         );
 
-        util = new HakumaksuUtil(restClient, SafeString.of(koulutusinformaatioUrl));
+        util = new HakumaksuUtil(restClient, SafeString.of(koulutusinformaatioUrl), SafeString.of(koodistoServiceUrl));
     }
 
     private final Predicate<Eligibility> eligibilityRequiresPayment = new Predicate<Eligibility>() {
@@ -73,7 +71,7 @@ public class HakumaksuService {
         public boolean apply(Eligibility kelpoisuus) {
             try {
                 return !kelpoisuus.pohjakoulutusVapauttaaHakumaksusta &&
-                        !util.isEducationCountryExemptFromPayment(koodistoServiceUrl, kelpoisuus.suoritusmaa);
+                        !util.isEducationCountryExemptFromPayment(kelpoisuus.suoritusmaa);
             } catch (ExecutionException e) {
                 // TODO: log + let pass as our system is unexpectedly broken?
                 return false;

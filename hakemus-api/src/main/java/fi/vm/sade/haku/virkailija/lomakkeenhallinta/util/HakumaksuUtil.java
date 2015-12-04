@@ -32,10 +32,12 @@ public class HakumaksuUtil {
 
     private RestClient restClient;
     private final SafeString koulutusinformaatioUrl;
+    private SafeString koodistoServiceUrl;
 
-    public HakumaksuUtil(RestClient restClient, SafeString koulutusinformaatioUrl) {
+    public HakumaksuUtil(RestClient restClient, SafeString koulutusinformaatioUrl, SafeString koodistoServiceUrl) {
         this.restClient = restClient;
         this.koulutusinformaatioUrl = koulutusinformaatioUrl;
+        this.koodistoServiceUrl = koodistoServiceUrl;
     }
 
     public enum LanguageCodeISO6391 {
@@ -107,36 +109,6 @@ public class HakumaksuUtil {
         }
     }
 
-    static private class HakumaksuQuery {
-        final SafeString serviceUrl;
-        final AsciiCountryCode countryCode;
-
-        public HakumaksuQuery(SafeString serviceUrl, AsciiCountryCode countryCode) {
-            this.serviceUrl = serviceUrl;
-            this.countryCode = countryCode;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-
-            HakumaksuQuery that = (HakumaksuQuery) o;
-
-            if (serviceUrl != null ? !serviceUrl.equals(that.serviceUrl) : that.serviceUrl != null)
-                return false;
-            return !(countryCode != null ? !countryCode.equals(that.countryCode) : that.countryCode != null);
-
-        }
-
-        @Override
-        public int hashCode() {
-            int result = serviceUrl != null ? serviceUrl.hashCode() : 0;
-            result = 31 * result + (countryCode != null ? countryCode.hashCode() : 0);
-            return result;
-        }
-    }
-
     public static class CodeElement {
         @Key
         public String codeElementValue;
@@ -156,8 +128,8 @@ public class HakumaksuUtil {
         }
     };
 
-    private ListenableFuture<List<String>> getEaaCountryCodes(HakumaksuQuery query) throws IOException {
-        String url = query.serviceUrl + "/rest/codeelement/valtioryhmat_2/1";
+    private ListenableFuture<List<String>> getEaaCountryCodes() throws IOException {
+        String url = koodistoServiceUrl + "/rest/codeelement/valtioryhmat_2/1";
         return Futures.transform(restClient.get(url, KoodistoEAA.class), new Function<Response<KoodistoEAA>, List<String>>() {
             @Override
             public List<String> apply(Response<KoodistoEAA> response) {
@@ -177,8 +149,8 @@ public class HakumaksuUtil {
         public List<CodeElement> levelsWithCodeElements;
     }
 
-    private ListenableFuture<String> asciiToNumericCountryCode(HakumaksuQuery query) throws IOException {
-        String url = query.serviceUrl + "/rest/codeelement/maatjavaltiot1_" + query.countryCode.getValue().toLowerCase() + "/1";
+    private ListenableFuture<String> asciiToNumericCountryCode(AsciiCountryCode countryCode) throws IOException {
+        String url = koodistoServiceUrl + "/rest/codeelement/maatjavaltiot1_" + countryCode.getValue().toLowerCase() + "/1";
         return Futures.transform(restClient.get(url, KoodistoMaakoodi.class), new Function<Response<KoodistoMaakoodi>, String>() {
             @Override
             public String apply(Response<KoodistoMaakoodi> response) {
@@ -194,28 +166,28 @@ public class HakumaksuUtil {
         return countryCode.equals(SVEITSI);
     }
 
-    private Boolean _isExemptFromPayment(HakumaksuQuery query) {
+    private Boolean _isExemptFromPayment(AsciiCountryCode countryCode) {
         try {
-            return isSwitzerland(query.countryCode) ||
-                    getEaaCountryCodes(query).get().contains(asciiToNumericCountryCode(query).get());
+            return isSwitzerland(countryCode) ||
+                    getEaaCountryCodes().get().contains(asciiToNumericCountryCode(countryCode).get());
         } catch (InterruptedException | ExecutionException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {
-            throw new IllegalArgumentException("Country code " + query.countryCode + " not found", e);
+            throw new IllegalArgumentException("Country code " + countryCode + " not found", e);
         }
     }
 
-    private final LoadingCache<HakumaksuQuery, Boolean> exemptions = CacheBuilder.newBuilder()
+    private final LoadingCache<AsciiCountryCode, Boolean> exemptions = CacheBuilder.newBuilder()
             .maximumSize(1000)
             .expireAfterWrite(10, TimeUnit.MINUTES)
-            .build(new CacheLoader<HakumaksuQuery, Boolean>() {
-                public Boolean load(HakumaksuQuery query) {
-                    return _isExemptFromPayment(query);
+            .build(new CacheLoader<AsciiCountryCode, Boolean>() {
+                public Boolean load(AsciiCountryCode countryCode) {
+                    return _isExemptFromPayment(countryCode);
                 }
             });
 
-    public boolean isEducationCountryExemptFromPayment(SafeString koodistoServiceUrl, AsciiCountryCode threeLetterCountryCode) throws ExecutionException {
-        return exemptions.get(new HakumaksuQuery(koodistoServiceUrl, threeLetterCountryCode));
+    public boolean isEducationCountryExemptFromPayment(AsciiCountryCode threeLetterCountryCode) throws ExecutionException {
+        return exemptions.get(threeLetterCountryCode);
     }
 
     public static class EducationRequirements {
