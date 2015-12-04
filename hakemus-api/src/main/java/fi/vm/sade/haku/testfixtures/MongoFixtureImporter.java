@@ -1,6 +1,7 @@
 package fi.vm.sade.haku.testfixtures;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 import fi.vm.sade.haku.oppija.hakemus.converter.DBObjectToApplicationFunction;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
@@ -63,7 +64,7 @@ public class MongoFixtureImporter {
     }
 
     private static DBObject parseDBObject(final Resource resource) throws IOException{
-        final String jsonString = IOUtils.toString(resource.getURI());
+        final String jsonString = IOUtils.toString(resource.getURI(), StandardCharsets.UTF_8);
         return (DBObject) JSON.parse(jsonString);
     }
 
