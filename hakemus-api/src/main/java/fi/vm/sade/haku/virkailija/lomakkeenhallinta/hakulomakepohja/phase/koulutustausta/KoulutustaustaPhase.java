@@ -5,6 +5,7 @@ import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import fi.vm.sade.haku.oppija.common.organisaatio.Organization;
@@ -28,6 +29,7 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ExprUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.apache.commons.lang3.StringUtils;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -265,6 +267,17 @@ public final class KoulutustaustaPhase {
         return elements.toArray(new Element[elements.size()]);
     }
 
+    private static Expr anyElementNotEmpty(List<Element> elements) {
+        return new Any(
+                ImmutableList.copyOf(Iterables.transform(elements, new Function<Element, Expr>() {
+                    @Override
+                    public Expr apply(Element child) {
+                        return new Not(new Equals(new Variable(child.getId()), new Value("")));
+                    }
+                }))
+        );
+    }
+
     private static Element[] createKorkeakouluKoulutustausta(FormParameters formParameters) {
         ArrayList<Element> elements = new ArrayList<>();
         KoodistoService koodistoService = formParameters.getKoodistoService();
@@ -302,21 +315,19 @@ public final class KoulutustaustaPhase {
                 buildMuu(formParameters, maxTutkintoCount));
 
         if (formParameters.getApplicationSystem().isMaksumuuriKaytossa()) {
-            pohjakoulutusGrp.addChild(
-                    Rule(
-                            new And(
-                                    new Any(
-                                            ImmutableList.<Expr>of(
-                                                    new Not(new Equals(new Variable("pohjakoulutus_yo"), new Value(""))),
-                                                    new Not(new Equals(new Variable("pohjakoulutus_ulk_suoritusmaa"), new Value("")))
-                                            )
-                                    ),
-                                    ExprUtil.isAnswerTrue(PHASE_EDUCATION + PAYMENT_NOTIFICATION_POSTFIX)
-                            )
-                    ).addChild(new Notification(
-                            PHASE_EDUCATION + "_payment_notification",
-                            formParameters.getI18nText("form.koulutustausta.vaatiihakumaksun"),
-                            Notification.NotificationType.INFO)).build());
+            final Element rule = Rule(
+                    new And(
+                        anyElementNotEmpty(pohjakoulutusGrp.getChildren()),
+                        ExprUtil.isAnswerTrue(PHASE_EDUCATION + PAYMENT_NOTIFICATION_POSTFIX)
+                    )
+            ).addChild(
+                    new Notification(
+                        PHASE_EDUCATION + "_payment_notification",
+                        formParameters.getI18nText("form.koulutustausta.vaatiihakumaksun"),
+                        Notification.NotificationType.INFO
+                    )
+            ).build();
+            pohjakoulutusGrp.addChild(rule);
         }
 
         elements.add(pohjakoulutusGrp);
