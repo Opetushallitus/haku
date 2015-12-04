@@ -303,12 +303,20 @@ public final class KoulutustaustaPhase {
 
         if (formParameters.getApplicationSystem().isMaksumuuriKaytossa()) {
             pohjakoulutusGrp.addChild(
-                    Rule(ExprUtil.isAnswerTrue(PHASE_EDUCATION + PAYMENT_NOTIFICATION_POSTFIX))
-                            .addChild(new Notification(
-                                    PHASE_EDUCATION + "_payment_notification",
-                                    formParameters.getI18nText("form.koulutustausta.vaatiihakumaksun"),
-                                    Notification.NotificationType.INFO))
-                            .build());
+                    Rule(
+                            new And(
+                                    new Any(
+                                            ImmutableList.<Expr>of(
+                                                    new Not(new Equals(new Variable("pohjakoulutus_yo"), new Value(""))),
+                                                    new Not(new Equals(new Variable("pohjakoulutus_ulk_suoritusmaa"), new Value("")))
+                                            )
+                                    ),
+                                    ExprUtil.isAnswerTrue(PHASE_EDUCATION + PAYMENT_NOTIFICATION_POSTFIX)
+                            )
+                    ).addChild(new Notification(
+                            PHASE_EDUCATION + "_payment_notification",
+                            formParameters.getI18nText("form.koulutustausta.vaatiihakumaksun"),
+                            Notification.NotificationType.INFO)).build());
         }
 
         elements.add(pohjakoulutusGrp);
