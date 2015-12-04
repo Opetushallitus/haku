@@ -247,7 +247,7 @@ public final class KoulutustaustaPhase {
         }
         
         // Muut tutkinnot
-        if (formParameters.isAmmattillinenOpettajaKoulutus()) {
+        if (formParameters.isAmmattillinenOpettajaKoulutus() && formParameters.isAMKOpeMuutTutkinnotKysymys()) {
             Element muutTutkinnotGrp = TitledGroup("muut_tutkinnot").formParams(formParameters).inline().build();
             elements.add(muutTutkinnotGrp);
             for (String t : new String[] {"amt", "am", "kk", "tri"} ) {

@@ -146,6 +146,10 @@ public final class OppijaConstants {
     public static final String KOHDEJOUKKO_AMMATILLINEN_JA_LUKIO = "haunkohdejoukko_11";
     public static final String KOHDEJOUKKO_AMMATILLINEN_ERITYISOPETYKSENA = "haunkohdejoukko_15";
 
+    public static final String KOHDEJOUKON_TARKENNE_AMK_OPE = "haunkohdejoukontarkenne_2";
+    public static final String KOHDEJOUKON_TARKENNE_AMK_OPO = "haunkohdejoukontarkenne_5";
+    public static final String KOHDEJOUKON_TARKENNE_AMK_ERKKA = "haunkohdejoukontarkenne_4";
+
     public static final String HAKUTAPA_YHTEISHAKU = "hakutapa_01";
     public static final String HAKUTAPA_ERILLISHAKU = "hakutapa_02";
     public static final String HAKUTAPA_JATKUVA_HAKU = "hakutapa_03";
