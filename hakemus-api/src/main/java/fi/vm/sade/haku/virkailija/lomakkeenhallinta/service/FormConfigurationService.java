@@ -141,6 +141,9 @@ public final class FormConfigurationService {
                     || OppijaConstants.KOHDEJOUKON_TARKENNE_AMK_OPO.equals(as.getKohdejoukonTarkenne())) {
                 return FormConfiguration.FormTemplateType.AMK_ERKAT_JA_OPOT;
             }
+            if (OppijaConstants.HAKUKAUSI_KEVAT.equals(as.getHakukausiUri())) {
+                return FormConfiguration.FormTemplateType.YHTEISHAKU_KEVAT_KORKEAKOULU;
+            }
             return FormConfiguration.FormTemplateType.YHTEISHAKU_SYKSY_KORKEAKOULU;
         }
         if (as.getApplicationSystemType().equals(OppijaConstants.HAKUTYYPPI_LISAHAKU)) {
