@@ -306,4 +306,10 @@ public class FormController {
         return new Viewable(VERBOSE_HELP_VIEW, uiService.getElementHelp(applicationSystemId, elementId,toSingleValueMap(answers)));
     }
 
+    @POST
+    @Path("/session/refresh")
+    @Produces(MediaType.TEXT_PLAIN)
+    public String refreshSession() {
+        return "OK";
+    }
 }

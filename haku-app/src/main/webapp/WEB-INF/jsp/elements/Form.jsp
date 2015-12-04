@@ -115,6 +115,7 @@
 <c:if test="${it.demoMode}">
     <jsp:include page="../demo/warning.jsp"/>
 </c:if>
+<jsp:include page="../session/timeout.jsp"/>
 
 <!-- Piwik -->
 <script src="${contextPath}/resources/piwik/piwik.js" type="text/javascript"></script>
