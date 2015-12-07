@@ -70,6 +70,7 @@ public class Level4Test extends IntegrationTest {
     @Before
     public void setup() {
         mongoServer.dropCollections();
+        applicationSystemService.getCache().invalidateAll();
     }
 
     @Test

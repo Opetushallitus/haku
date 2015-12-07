@@ -25,6 +25,7 @@ public class KoulutusasteURITest extends IntegrationTest {
     @Before
     public void setup() {
         mongoServer.dropCollections();
+        applicationSystemService.getCache().invalidateAll();
     }
 
     @Test

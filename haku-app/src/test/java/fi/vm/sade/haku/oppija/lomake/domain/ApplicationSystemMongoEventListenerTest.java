@@ -22,6 +22,7 @@ public class ApplicationSystemMongoEventListenerTest extends IntegrationTest {
     @Before
     public void setup() {
         mongoServer.dropCollections();
+        applicationSystemService.getCache().invalidateAll();
 
         // Save compressed application and clear cache
         applicationSystemService.save(formGenerator.generate(AFFECTED_APPLICATION_SYSTEM_ID));

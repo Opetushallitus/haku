@@ -23,6 +23,7 @@ public class GradeAverageAMKTest extends IntegrationTest {
     @Before
     public void setup() {
         mongoServer.dropCollections();
+        applicationSystemService.getCache().invalidateAll();
     }
 
     @Test
