@@ -4,6 +4,7 @@ import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationDAO;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.impl.ApplicationDAOMongoImpl;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
+import fi.vm.sade.haku.oppija.lomake.exception.IllegalStateException;
 import fi.vm.sade.haku.oppija.lomake.service.impl.ApplicationSystemServiceImpl;
 import fi.vm.sade.haku.testfixtures.MongoFixtureImporter;
 import fi.vm.sade.hakutest.ApiIntegrationTestSpringConfiguration;
@@ -15,6 +16,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.data.mongodb.core.MongoTemplate;
 
 import java.io.IOException;
+import java.util.List;
 
 public class IntegrationTestSupport {
     public static AnnotationConfigApplicationContext appContext;
@@ -39,7 +41,10 @@ public class IntegrationTestSupport {
     }
 
     public static Application getTestApplication(String oid) {
-        return appContext.getBean(ApplicationDAOMongoImpl.class).find(new Application().setOid(oid)).get(0);
+        List<Application> applications = appContext.getBean(ApplicationDAOMongoImpl.class).find(new Application().setOid(oid));
+        if (applications.isEmpty())
+            throw new IllegalStateException("application not found with oid " + oid);
+        return applications.get(0);
     }
 
     public static ApplicationSystem getTestApplicationSystem() {
