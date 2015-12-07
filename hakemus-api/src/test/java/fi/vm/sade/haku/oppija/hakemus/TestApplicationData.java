@@ -112,14 +112,19 @@ public class TestApplicationData {
                     ImmutableList.of(MUUALLA_KUIN_SUOMESSA_SUORITETTU_MUU_TUTKINTO_JOKA_ASIANOMAISESSA_MAASSA_ANTAA_HAKUKELPOISUUDEN_KORKEAKOULUUN_ARUBA))
             .build();
 
-    public static MergedAnswers getAnswers(Hakukelpoisuusvaatimus hakukelpoisuusvaatimus, Pohjakoulutus pohjakoulutus) {
+    public static MergedAnswers getMergedAnswers(Hakukelpoisuusvaatimus hakukelpoisuusvaatimus, Pohjakoulutus pohjakoulutus) {
         return MergedAnswers.of(ImmutableMap.<String, String>builder()
                 .putAll(pohjakoulutus.getKoulutustausta())
                 .put("preference1-Koulutus-id", hakukelpoisuusvaatimus.getArvo()).build());
     }
 
-    public static MergedAnswers getAnswers(Iterable<String> hakutoiveIds,
-                                           Iterable<Pohjakoulutus> pohjakoulutukset) {
+    public static MergedAnswers getMergedAnswers(Iterable<String> hakutoiveIds,
+                                                 Iterable<Pohjakoulutus> pohjakoulutukset) {
+        return MergedAnswers.of(getAnswers(hakutoiveIds, pohjakoulutukset));
+    }
+
+    public static Map<String, String> getAnswers(Iterable<String> hakutoiveIds,
+                                                 Iterable<Pohjakoulutus> pohjakoulutukset) {
         ImmutableMap.Builder<String, String> koulutustaustat = ImmutableMap.builder();
         for (Pohjakoulutus p : pohjakoulutukset) {
             koulutustaustat.putAll(p.getKoulutustausta());
@@ -131,7 +136,7 @@ public class TestApplicationData {
             hakutoiveet.put(String.format("preference%d-Koulutus-id", i), iterator.next());
         }
 
-        return MergedAnswers.of(ImmutableMap.<String, String>builder().putAll(koulutustaustat.build()).putAll(hakutoiveet.build()).build());
+        return ImmutableMap.<String, String>builder().putAll(koulutustaustat.build()).putAll(hakutoiveet.build()).build();
     }
 
     private static final Function<Hakukelpoisuusvaatimus, String> vaatimusToArvo = new Function<Hakukelpoisuusvaatimus, String>() {
@@ -143,6 +148,7 @@ public class TestApplicationData {
 
     public static final String APPLICATION_OPTION_WITH_MULTIPLE_BASE_EDUCATION_REQUIREMENTS = "4.7.3.8.4";
     public static final String APPLICATION_OPTION_WITH_IGNORE_AND_PAYMENT_EDUCATION_REQUIREMENTS = "7.3.2.9.3";
+    public static final String APPLICATION_OPTION_WITHOUT_PAYMENT_EDUCATION_REQUIREMENTS = "912.123.2.123.12";
 
     public static Map<String, Object> testMappings() {
         final ImmutableMap.Builder<String, Object> builder = new ImmutableMap.Builder<>();
@@ -168,6 +174,13 @@ public class TestApplicationData {
                         Hakukelpoisuusvaatimus.HARKINNANVARAISUUS_TAI_ERIVAPAUS),
                 vaatimusToArvo);
         builder.put("http://localhost/ao/" + APPLICATION_OPTION_WITH_IGNORE_AND_PAYMENT_EDUCATION_REQUIREMENTS, future(r));
+
+        r = new HakumaksuUtil.BaseEducationRequirements();
+        r.requiredBaseEducations = Lists.transform(
+                ImmutableList.of(Hakukelpoisuusvaatimus.HARKINNANVARAISUUS_TAI_ERIVAPAUS),
+                vaatimusToArvo
+        );
+        builder.put("http://localhost/ao/" + APPLICATION_OPTION_WITHOUT_PAYMENT_EDUCATION_REQUIREMENTS, future(r));
 
         HakumaksuUtil.KoodistoMaakoodi finKoodit = new HakumaksuUtil.KoodistoMaakoodi();
         HakumaksuUtil.CodeElement fin = new HakumaksuUtil.CodeElement();

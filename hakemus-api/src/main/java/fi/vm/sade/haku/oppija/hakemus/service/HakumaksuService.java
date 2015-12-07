@@ -1,6 +1,9 @@
 package fi.vm.sade.haku.oppija.hakemus.service;
 
-import com.google.common.base.*;
+import com.google.common.base.Function;
+import com.google.common.base.Joiner;
+import com.google.common.base.Optional;
+import com.google.common.base.Predicate;
 import com.google.common.collect.*;
 import fi.vm.sade.haku.http.RestClient;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
@@ -22,17 +25,13 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
-import static com.google.common.collect.Iterables.all;
-import static com.google.common.collect.Iterables.any;
-import static com.google.common.collect.Iterables.filter;
+import static com.google.common.collect.Iterables.*;
 import static fi.vm.sade.haku.oppija.hakemus.domain.util.ApplicationUtil.getPreferenceAoIds;
+import static fi.vm.sade.haku.oppija.hakemus.service.EducationRequirementsUtil.Eligibility;
+import static fi.vm.sade.haku.oppija.hakemus.service.EducationRequirementsUtil.kkBaseEducationRequirements;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.HakumaksuUtil.LanguageCodeISO6391.*;
-import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.OPTION_ID_POSTFIX;
-import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.PAYMENT_NOTIFICATION_POSTFIX;
-import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.PREFERENCE_PREFIX;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.*;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.*;
-
-import static fi.vm.sade.haku.oppija.hakemus.service.EducationRequirementsUtil.*;
 import static org.apache.commons.lang.StringUtils.isNotEmpty;
 
 @Service
@@ -139,20 +138,27 @@ public class HakumaksuService {
         });
     }
 
-    public ImmutableMap<String, String> paymentNotificationAnswers(Map<String, String> answers) {
-        ImmutableMap<ApplicationOptionOid, ImmutableSet<Eligibility>> paymentRequirements = paymentRequirements(MergedAnswers.of(answers));
-        ImmutableMap.Builder<String, String> builder = ImmutableMap.builder();
-        for (String key: answers.keySet()){
-            if (key != null && key.startsWith(PREFERENCE_PREFIX) && key.endsWith(OPTION_ID_POSTFIX) && isNotEmpty(answers.get(key))){
-                ImmutableSet<Eligibility> eligibilities = paymentRequirements.get(ApplicationOptionOid.of(answers.get(key)));
-                if (!eligibilities.isEmpty()) {
-                    String preferenceString = key.replace(OPTION_ID_POSTFIX, "");
-                    String paymentRequirementKey = preferenceString + PAYMENT_NOTIFICATION_POSTFIX;
-                    builder.put(paymentRequirementKey, "true");
-                }
+    public static ImmutableSet<ApplicationOptionOid> getAoOidsFromAnswers(Map<String, String> answers) {
+        ImmutableSet.Builder<ApplicationOptionOid> aoListBuilder = ImmutableSet.builder();
+
+        for (String key : answers.keySet()) {
+            if (key != null && key.startsWith(PREFERENCE_PREFIX) && key.endsWith(OPTION_ID_POSTFIX) && isNotEmpty(answers.get(key))) {
+                aoListBuilder.add(ApplicationOptionOid.of(answers.get(key)));
             }
         }
-        return builder.build();
+
+        return aoListBuilder.build();
+    }
+
+    public ImmutableMap<ApplicationOptionOid, Boolean> getPaymentRequirementsForApplicationOptions(Map<String, String> answers) {
+        final ImmutableMap<ApplicationOptionOid, ImmutableSet<Eligibility>> paymentRequirements = paymentRequirements(MergedAnswers.of(answers));
+
+        return ImmutableMap.copyOf(Maps.asMap(getAoOidsFromAnswers(answers), new Function<ApplicationOptionOid, Boolean>() {
+            @Override
+            public Boolean apply(ApplicationOptionOid applicationOptionOid) {
+                return !paymentRequirements.get(applicationOptionOid).isEmpty();
+            }
+        }));
     }
 
     private static boolean isExemptFromPayment(Map<ApplicationOptionOid, ImmutableSet<Eligibility>> paymentRequirements) {
