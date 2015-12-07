@@ -41,7 +41,7 @@ public class HakuAppTomcat extends EmbeddedTomcat {
     }
 
     private static void useIntegrationTestSettingsIfNoProfileSelected() {
-        System.setProperty("application.system.cache", "false");
+        //System.setProperty("application.system.cache", "false");
         if (System.getProperty("spring.profiles.active") == null) {
             System.setProperty("spring.profiles.active", "it");
         }
