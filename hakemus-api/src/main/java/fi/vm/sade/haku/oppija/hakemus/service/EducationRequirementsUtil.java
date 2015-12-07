@@ -294,6 +294,7 @@ public class EducationRequirementsUtil {
                     europeanBaccalaureateTutkinto,
                     internationalBaccalaureateTutkinto,
                     reifeprufungTutkinto,
+                    opistoTaiAmmatillisenKorkeaAsteenTutkinto,
                     ammattiTaiErikoisammattitutkinto,
                     ulkomainenPohjakoulutus))
                     // Ylioppilastutkinto ja ammatillinen perustutkinto (120 ov)
