@@ -106,6 +106,7 @@ partials = {
             expect(lomake.sukupuoli().val()).to.equal('2');
         },
         input(
+            lomake.Sähköposti, "foo-" + getRandomInt(1, 999999) + "@example.com",
             lomake.asuinmaa, 'FIN',
             lomake.lahiosoite, "Testikatu 4",
             lomake.postinumero, "00100",

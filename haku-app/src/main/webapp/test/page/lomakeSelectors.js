@@ -11,6 +11,7 @@ lomake = initSelectors({
     hetu: "input#Henkilotunnus",
     sukupuoli: "input#sukupuoli",
     sukupuoliLabel: "span#sex",
+    Sähköposti: "input#Sähköposti",
     asuinmaa: "select#asuinmaa",
     lahiosoite: "input#lahiosoite",
     postinumero: "input#Postinumero",

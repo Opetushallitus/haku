@@ -49,15 +49,15 @@ describe("KK-hakemus hakumaksulla", function() {
             describe("lisättäessä hakumaksun vaativa hakutoive", function() {
                 before(seqDone(
                     click(virkailija.editHakutoiveetButton(hakuOid)),
-                    tyhjennaHakutoiveet(5) //,
-                    //aaltoTekniikanKandi(1),
-                    //click(virkailija.saveHakutoiveetButton),
-                    //visible(virkailija.notes)
+                    tyhjennaHakutoiveet(5),
+                    aaltoTekniikanKandi(1),
+                    click(virkailija.saveHakutoiveetButton),
+                    visible(virkailija.notes)
                 ));
 
                 describe("lisäämisen jälkeen", function() {
                     it("toiveet näkyvät", function () {
-                        //expect(answerForQuestion('preference1')).to.equal(aalto)
+                        expect(answerForQuestion('preference1')).to.equal(aalto);
                         // TODO jatka plz
                     });
                 });
