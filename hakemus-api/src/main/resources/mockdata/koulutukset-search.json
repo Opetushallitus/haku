@@ -217,7 +217,20 @@
           "groupTypes": ["hakukohde"]
         }
       ],
-      "attachments": null
+      "attachments": null,
+      "requiredBaseEducations": [
+        "pohjakoulutusvaatimustoinenaste_yo",
+        "hakukelpoisuusvaatimusta_3",
+        "9",
+        "pohjakoulutusvaatimustoinenaste_pk",
+        "hakukelpoisuusvaatimusta_5",
+        "3",
+        "2",
+        "6",
+        "1",
+        "7",
+        "0"
+      ]
     }
   ],
   "1.2.246.562.10.99415780891": [
@@ -375,7 +388,20 @@
           "groupTypes": ["hakukohde"]
         }
       ],
-      "attachments": null
+      "attachments": null,
+      "requiredBaseEducations": [
+        "pohjakoulutusvaatimustoinenaste_yo",
+        "hakukelpoisuusvaatimusta_3",
+        "9",
+        "pohjakoulutusvaatimustoinenaste_pk",
+        "hakukelpoisuusvaatimusta_5",
+        "3",
+        "2",
+        "6",
+        "1",
+        "7",
+        "0"
+      ]
     }
   ],
   "1.2.246.562.10.61397511793": [
@@ -433,7 +459,20 @@
           "groupTypes": ["hakukohde"]
         }
     ],
-      "attachments": null
+      "attachments": null,
+      "requiredBaseEducations": [
+        "pohjakoulutusvaatimustoinenaste_yo",
+        "hakukelpoisuusvaatimusta_3",
+        "9",
+        "pohjakoulutusvaatimustoinenaste_pk",
+        "hakukelpoisuusvaatimusta_5",
+        "3",
+        "2",
+        "6",
+        "1",
+        "7",
+        "0"
+      ]
     },
     {
       "id": "1.2.246.562.20.53014649395",
@@ -486,7 +525,20 @@
           "groupTypes": ["hakukohde"]
         }
       ],
-      "attachments": null
+      "attachments": null,
+      "requiredBaseEducations": [
+        "pohjakoulutusvaatimustoinenaste_yo",
+        "hakukelpoisuusvaatimusta_3",
+        "9",
+        "pohjakoulutusvaatimustoinenaste_pk",
+        "hakukelpoisuusvaatimusta_5",
+        "3",
+        "2",
+        "6",
+        "1",
+        "7",
+        "0"
+      ]
     }
   ],
   "1.2.246.562.10.14842710486": [
@@ -534,6 +586,19 @@
           ],
           "groupTypes": ["testi"]
         }
+      ],
+      "requiredBaseEducations": [
+        "pohjakoulutusvaatimustoinenaste_yo",
+        "hakukelpoisuusvaatimusta_3",
+        "9",
+        "pohjakoulutusvaatimustoinenaste_pk",
+        "hakukelpoisuusvaatimusta_5",
+        "3",
+        "2",
+        "6",
+        "1",
+        "7",
+        "0"
       ]
     }
   ],
@@ -888,6 +953,19 @@
           "emailAddr": "hakijapalvelut@metropolia.fi",
           "usedInApplicationForm": false
         }
+      ],
+      "requiredBaseEducations": [
+        "pohjakoulutusvaatimustoinenaste_yo",
+        "hakukelpoisuusvaatimusta_3",
+        "9",
+        "pohjakoulutusvaatimustoinenaste_pk",
+        "hakukelpoisuusvaatimusta_5",
+        "3",
+        "2",
+        "6",
+        "1",
+        "7",
+        "0"
       ]
     }
   ]
