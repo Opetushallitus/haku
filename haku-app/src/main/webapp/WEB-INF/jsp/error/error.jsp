@@ -88,6 +88,9 @@
             <li>ansökningsservicen vid universiteten:
                 <a href="/wp/sv/universitet/universitetens-ansokningsservice">https://opintopolku.fi/wp/sv/universitet/universitetens-ansokningsservice</a>
           </li>
+            <li>ansökningsservicen vid yrkespedagogiska lärarhögskolor (på finska):
+                <a href="/wp/fi/ammattikorkeakoulu/ammatilliset-opettajakorkeakoulut/ammatillisten-opettajakorkeakoulujen-yhteystiedot/">https://opintopolku.fi/wp/ammattikorkeakoulu/ammatilliset-opettajakorkeakoulut/ammatillisten-opettajakorkeakoulujen-yhteystiedot</a>
+          </li>
         </ul>
         <li>om du sökt till yrkesutbildning</li>
         <ul>
@@ -121,6 +124,9 @@
             </li>
             <li>the admissions services at universities:
                 <a href="/wp2/en/higher-education/universities">https://opintopolku.fi/wp2/en/higher-education/universities</a>
+            </li>
+            <li>the admissions services for vocational teacher education (in Finnish:
+                <a href="/wp/fi/ammattikorkeakoulu/ammatilliset-opettajakorkeakoulut/ammatillisten-opettajakorkeakoulujen-yhteystiedot/">https://opintopolku.fi/wp/ammattikorkeakoulu/ammatilliset-opettajakorkeakoulut/ammatillisten-opettajakorkeakoulujen-yhteystiedot</a>
             </li>
         </ul>
         
