@@ -5,6 +5,7 @@ virkailija = initSelectors({
         return "a[href*='" + hakuOid + "/koulutustausta']:first button"
     },
     addAmmatillinenCheckbox: "input#pohjakoulutus_am",
+    addUlkomainenKkKelpoisuus: "input#pohjakoulutus_ulk",
     addYksilollistettyCheckbox: "input#POHJAKOULUTUS_6",
     addAvoinCheckbox: "input#pohjakoulutus_avoin",
     submitConfirm: "#submit_confirm",
@@ -29,6 +30,15 @@ virkailija = initSelectors({
     ammatillinenOppilaitos2: "select#pohjakoulutus_am_oppilaitos2",
     ammatillinenOppilaitos2Text: "td:contains(SLK)",
     ammatillinenNayttotutkinto2: "input[name=pohjakoulutus_am_nayttotutkintona2]",
+    ulkomainenKkKelpoisuusVuosi: "input#pohjakoulutus_ulk_vuosi",
+    ulkomainenKkKelpoisuusNimike: "input#pohjakoulutus_ulk_nimike",
+    ulkomainenKkKelpoisuusOppilaitos: "input#pohjakoulutus_ulk_oppilaitos",
+    ulkomainenKkKelpoisuusMaa: "select#pohjakoulutus_ulk_suoritusmaa",
+    ulkomainenKkKelpoisuusMuuMaa: "input#pohjakoulutus_ulk_suoritusmaa_muu",
+    preference1KoulutusId: "input#preference1-Koulutus-id",
+    koulutustaustaPaymentNotification: "#koulutustausta_payment_notification",
+    pohjakoulutusYo: "#pohjakoulutus_yo",
+    pohjakoulutusYoVuosi: "#pohjakoulutus_yo_vuosi",
     kkTutkintoSuoritettu: function(bool) {
         return "input[name=suoritusoikeus_tai_aiempi_tutkinto][value=" + bool + "]";
     },

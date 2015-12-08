@@ -8,6 +8,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
 import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
@@ -21,6 +23,8 @@ import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionSearchResultDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.LearningOpportunityProviderDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.LearningOpportunitySearchResultDTO;
+
+import javax.annotation.Nullable;
 
 @Service
 @Profile(value = {"dev", "it"})
@@ -41,7 +45,8 @@ public class KoulutusinformaatioServiceMockImpl extends KoulutusinformaatioServi
             mesta("1.2.246.562.10.75213421979", "Metropolia AMK, Espoo, Vanha maantie (Leppävaara)"),
             mesta("1.2.246.562.10.14842710486", "Diakonia-ammattikorkeakoulu, Järvenpään toimipiste"),
             mesta("1.2.246.562.10.64213824028", "Diakonia-ammattikorkeakoulu, Helsingin toimipiste"),
-            mesta("1.2.246.562.10.78522729439", "Taideyliopisto,  Sibelius-Akatemia")
+            mesta("1.2.246.562.10.78522729439", "Taideyliopisto,  Sibelius-Akatemia"),
+            mesta("1.2.246.562.10.72985435253", "Aalto-yliopisto, Insinööritieteiden korkeakoulu")
         );
 
     private Map<String, ApplicationOptionDTO> optionMap() {
@@ -86,6 +91,7 @@ public class KoulutusinformaatioServiceMockImpl extends KoulutusinformaatioServi
             dto.setEducationCodeUri("koulutus_039998");
             dto.setAoIdentifier("019");
             dto.setRequiredBaseEducations(Arrays.asList("1"));
+            dto.setProvider(provider);
             return dto;
         }
         return dto;
@@ -121,5 +127,15 @@ public class KoulutusinformaatioServiceMockImpl extends KoulutusinformaatioServi
         if (applicationOptions == null) applicationOptions = searchOptionMap().get(lopId + "/" + baseEducation);
         if (applicationOptions == null) applicationOptions = Collections.EMPTY_LIST;
         return applicationOptions;
+    }
+
+    public ApplicationOptionSearchResultDTO hakukohde(final String aoId) {
+        final Iterable<ApplicationOptionSearchResultDTO> allValues = Iterables.concat(searchOptionMap().values());
+        return Iterables.find(allValues, new Predicate<ApplicationOptionSearchResultDTO>() {
+            @Override
+            public boolean apply(ApplicationOptionSearchResultDTO ao) {
+                return ao.getId().equals(aoId);
+            }
+        });
     }
 }

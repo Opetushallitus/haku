@@ -21,7 +21,8 @@ public interface OfficerUIService {
     ModelResponse getApplicationMultiElement(final String oid,
                                         final String phaseId,
                                         final List<String> elementIds,
-                                        final boolean validate);
+                                        final boolean validate,
+                                        final Map<String, String> currentAnswers);
 
     ModelResponse getValidatedApplication(final String oid, final String phaseId) throws IOException;
 

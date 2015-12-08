@@ -125,6 +125,10 @@ function sleep(ms) {
     }
 }
 
+function getRandomInt(min, max) {
+    return Math.round(Math.random() * (max - min) + min);
+}
+
 wait = {
     waitIntervalMs: 10,
     until: function(condition, maxWaitMs) {

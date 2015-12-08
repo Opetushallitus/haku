@@ -13,7 +13,7 @@
       "lahiosoite": "Testikatu 4",
       "sukupuoli": "2",
       "turvakielto": "false",
-      "Sähköposti": "",
+      "Sähköposti": "foo@example.com",
       "Kutsumanimi": "Asia",
       "preference1-amkLiite": "true",
       "Etunimet": "Asia kas",

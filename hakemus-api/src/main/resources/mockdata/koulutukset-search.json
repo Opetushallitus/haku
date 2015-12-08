@@ -968,5 +968,139 @@
         "0"
       ]
     }
+  ],
+  "1.2.246.562.10.72985435253": [
+    {
+      "id": "1.2.246.562.20.66232176843",
+      "name": "Rakennettu ympäristö, tekniikan kandidaatti ja diplomi-insinööri, DIA-yhteisvalinta",
+      "aoIdentifier": null,
+      "educationDegree": "koulutusasteoph2002_63",
+      "childLONames": [],
+      "sora": false,
+      "teachingLanguages": [
+        "SV",
+        "FI"
+      ],
+      "teachingLanguageNames": [],
+      "athleteEducation": false,
+      "kaksoistutkinto": false,
+      "vocational": false,
+      "educationCodeUri": "koulutus_655502",
+      "organizationGroups": [
+        {
+          "oid": "1.2.246.562.28.70142948556",
+          "prioriteetti": null,
+          "usageGroups": [
+            "yleinen"
+          ],
+          "groupTypes": [
+            "hakukohde"
+          ]
+        },
+        {
+          "oid": "1.2.246.562.28.73315409214",
+          "prioriteetti": null,
+          "usageGroups": [
+            "hakukohde_liiteosoite"
+          ],
+          "groupTypes": [
+            "hakukohde"
+          ]
+        },
+        {
+          "oid": "1.2.246.562.28.22210028309",
+          "prioriteetti": null,
+          "usageGroups": [
+            "hakukohde_rajaava"
+          ],
+          "groupTypes": [
+            "hakukohde"
+          ]
+        }
+      ],
+      "attachments": [
+        {
+          "dueDate": 1461412829610,
+          "type": "Yrkesinriktad grundexamen",
+          "descreption": "<p><span lang=\"SV\">Sökande som inte har studentexamen, men har avlagt en yrkesinriktad grundexamen som omfattar minst tre år eller motsvarande tidigare studier, sådan yrkesinriktad grundexamen, yrkesexamen, specialyrkesexamen eller motsvarande tidigare examen som avses i lagen om yrkesinriktad vuxenutbildning (631/1998) ska skicka bestyrkta betygskopior till Aalto universitets ansökningsservice.</span></p> <p><span lang=\"SV\">Sökande som avlägger examen våren 2015, senast 30.5.2015, bör bifoga intyg utfärdat av skolan över att sista studieterminen för examen pågår. Intyget skickas till Aalto universitets ansökningsservice. Bestyrkt kopia av det slutliga examensbetyget ska skickas till det universitet där man har fått en studieplats.</span></p>",
+          "address": {
+            "streetAddress": "PB 11110",
+            "streetAddress2": null,
+            "postalCode": "00076",
+            "postOffice": "AALTO"
+          },
+          "emailAddr": "ansokningsservice@aalto.fi",
+          "usedInApplicationForm": false
+        },
+        {
+          "dueDate": 1461412833981,
+          "type": "Studentexamensbetyg",
+          "descreption": "<p><span lang=\"SV\">Sökande som avlagt studentexamen år 1989 eller tidigare ska skicka bestyrkta kopior av studentexamensbetyget till Aalto universitets ansökningsservice. <b>Sökande, som har avlagt hela sin studentexamen i Finland 1990 eller senare behöver inte sända in betygskopia av studentexamensbetyget.</b></span></p>",
+          "address": {
+            "streetAddress": "PB 11110",
+            "streetAddress2": null,
+            "postalCode": "00076",
+            "postOffice": "AALTO"
+          },
+          "emailAddr": "ansokningsservice@aalto.fi",
+          "usedInApplicationForm": false
+        },
+        {
+          "dueDate": 1461412803350,
+          "type": "Ylioppilastutkintotodistuksen kopio",
+          "descreption": "<p>Vuonna 1989 tai aikaisemmin ylioppilastutkinnon suorittaneet toimittavat ylioppilastutkintotodistuksen kopion  Aalto-yliopiston hakijapalveluihin. </p> <p>Yliopistot saavat tiedot vuonna 1990 ja sen jälkeen suoritetuista ylioppilastutkinnoista suoraan ylioppilastutkintolautakunnan rekisteristä. <b>Vuonna 1990 tai sen jälkeen ylioppilaaksi kirjoittaneiden ei tarvitse toimittaa yliopistoon todistuskopioita.</b></p>",
+          "address": {
+            "streetAddress": "PL 11110",
+            "streetAddress2": null,
+            "postalCode": "00076",
+            "postOffice": "AALTO"
+          },
+          "emailAddr": "hakijapalvelut@aalto.fi",
+          "usedInApplicationForm": false
+        },
+        {
+          "dueDate": 1461412849158,
+          "type": "EB-, IB-, RP-tutkintotodistuksen kopio",
+          "descreption": "<p>EB-, IB- ja RP-tutkinnon v. 2014 tai aiemmin suorittaneiden tulee toimittaa todistuskopio Aalto-yliopiston hakijapalveluihin.</p> <p>Vuoden 2015 keväällä valmistuvien tulee toimittaa koulun antama todistus tutkintoon osallistumisesta Aalto-yliopiston hakijapalveluihin. Lisäksi kopio lopullisesta tutkintotodistuksesta tulee toimittaa myöhemmin siihen yliopistoon, josta vastaanottaa opiskelupaikan.</p>",
+          "address": {
+            "streetAddress": "PL 11110",
+            "streetAddress2": null,
+            "postalCode": "00076",
+            "postOffice": "AALTO"
+          },
+          "emailAddr": "hakijapalvelut@aalto.fi",
+          "usedInApplicationForm": false
+        },
+        {
+          "dueDate": 1461412827991,
+          "type": "EB-, IB-, RP-examen",
+          "descreption": "<p><span lang=\"SV\">Sökande som avlagt EB-, IB- eller RP-examen 2014 eller tidigare ska skicka bestyrkta betygskopior till Aalto universitets ansökningsservice.</span></p> <p><span lang=\"SV\">Sökande som avlägger EB-, IB- eller RP-examen våren 2015 bör bifoga intyg utfärdat av skolan över deltagande i examen. Intyget skickas till Aalto universitets ansökningsservice. Bestyrkt kopia av det slutliga examensbetyget ska skickas till det universitet där man har fått en studieplats.</span></p>",
+          "address": {
+            "streetAddress": "PB 11110",
+            "streetAddress2": null,
+            "postalCode": "00076",
+            "postOffice": "AALTO"
+          },
+          "emailAddr": "ansokningsservice@aalto.fi",
+          "usedInApplicationForm": false
+        },
+        {
+          "dueDate": 1461412854796,
+          "type": "Ammatillisen koulutuksen tutkintotodistuksen kopio",
+          "descreption": "<p>Hakijat, jotka eivät ole ylioppilaita, mutta ovat suorittaneet vähintään kolmivuotisen ammatillisen perustutkinnon tai sitä vastaavat aikaisemmat opinnot; ammatillisesta aikuiskoulutuksesta annetussa laissa (631/1998) tarkoitetun ammatillisen perustutkinnon, ammattitutkinnon, erikoisammattitutkinnon tai niitä vastaavan aikaisemman tutkinnon, toimittavat tutkintotodistuksen kopion Aalto-yliopiston hakijapalveluihin. Tutkinnon tulee olla suoritettuna 30.5.2015 mennessä.</p> <p>Vuoden 2015 keväällä, viimeistään 30.5.2015 mennessä, valmistuvien tulee toimittaa koulun antama todistus viimeistä lukukautta ko. tutkinnossa opiskelemisesta Aalto-yliopiston hakijapalveluihin. Lisäksi kopio lopullisesta tutkintotodistuksesta tulee toimittaa myöhemmin siihen yliopistoon, josta vastaanottaa opiskelupaikan.</p>",
+          "address": {
+            "streetAddress": "PL 11110",
+            "streetAddress2": null,
+            "postalCode": "00076",
+            "postOffice": "AALTO"
+          },
+          "emailAddr": "hakijapalvelut@aalto.fi",
+          "usedInApplicationForm": false
+        }
+      ],
+      "requiredBaseEducations": [
+        "pohjakoulutusvaatimuskorkeakoulut_123"
+      ]
+    }
   ]
 }

@@ -7,6 +7,7 @@ import com.google.common.base.Predicate;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
@@ -14,6 +15,7 @@ import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import fi.vm.sade.haku.http.HttpRestClient.Response;
 import fi.vm.sade.haku.http.RestClient;
+import fi.vm.sade.haku.oppija.hakemus.service.EducationRequirementsUtil;
 import fi.vm.sade.haku.oppija.hakemus.service.HakumaksuService.PaymentEmail;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.ApplicationOptionOid;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.AsciiCountryCode;
@@ -24,8 +26,12 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
+
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.*;
+import static org.apache.commons.lang.StringUtils.isNotEmpty;
 
 public class HakumaksuUtil {
     public static final Logger LOGGER = LoggerFactory.getLogger(HakumaksuUtil.class);
@@ -227,5 +233,22 @@ public class HakumaksuUtil {
                 }
             }
         });
+    }
+
+    public static ImmutableMap<String, String> paymentNotificationAnswers(Map<String, String> answers, ImmutableMap<ApplicationOptionOid, ImmutableSet<EducationRequirementsUtil.Eligibility>> paymentRequirements) {
+        ImmutableMap.Builder<String, String> builder = ImmutableMap.builder();
+        for (String key: answers.keySet()){
+            if (key != null && key.startsWith(PREFERENCE_PREFIX) && key.endsWith(OPTION_ID_POSTFIX) && isNotEmpty(answers.get(key))){
+                ImmutableSet<EducationRequirementsUtil.Eligibility> eligibilities = paymentRequirements.get(ApplicationOptionOid.of(answers.get(key)));
+                if (!eligibilities.isEmpty()) {
+                    String preferenceString = key.replace(OPTION_ID_POSTFIX, "");
+                    String paymentRequirementKey = preferenceString + PAYMENT_NOTIFICATION_POSTFIX;
+                    builder.put(paymentRequirementKey, "true");
+                    builder.put(PHASE_EDUCATION + PAYMENT_NOTIFICATION_POSTFIX, "true");
+                }
+
+            }
+        }
+        return builder.build();
     }
 }
