@@ -52,6 +52,9 @@
             <li>yliopistojen hakijapalvelut:
                 <a href="/wp/fi/yliopisto/yliopistojen-hakijapalvelut">https://opintopolku.fi/wp/fi/yliopisto/yliopistojen-hakijapalvelut</a>
           </li>
+           <li>ammatillisten opettajakorkeakoulujen hakijapalvelut:
+                <a href="/wp/fi/ammattikorkeakoulu/ammatilliset-opettajakorkeakoulut/ammatillisten-opettajakorkeakoulujen-yhteystiedot/">https://opintopolku.fi/wp/ammattikorkeakoulu/ammatilliset-opettajakorkeakoulut/ammatillisten-opettajakorkeakoulujen-yhteystiedot</a>
+          </li>
         </ul>
         <li>haettuasi ammatillisiin koulutuksiin</li>
         <ul>
