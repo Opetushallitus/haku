@@ -20,7 +20,7 @@ describe("KK-hakemus hakumaksulla", function() {
         ));
 
         describe("syötä hakemus alkutilanne", function() {
-            it('avautuu', function () {
+            it("avautuu", function () {
 
             });
         });
@@ -55,17 +55,39 @@ describe("KK-hakemus hakumaksulla", function() {
                 before(seqDone(
                     click(virkailija.editHakutoiveetButton(hakuOid)),
                     tyhjennaHakutoiveet(5),
-                    jazz5v(1),
+                    aaltoTekniikanKandiJaDi(1),
                     click(virkailija.saveHakutoiveetButton),
                     visible(virkailija.notes)
                 ));
 
                 describe("lisäämisen jälkeen", function() {
                     it("toiveet näkyvät", function () {
-                        expect(answerForQuestion('preference1')).to.equal(sibelusAkatemia);
+                        expect(answerForQuestion('preference1')).to.equal(aalto);
                         // TODO jatka plz
                     });
                 });
+            })
+        });
+
+        describe("palattaessa pohjakoulutusten muokkaukseen", function() {
+            before(seqDone(
+                click(virkailija.editKoulutusTaustaButton(hakuOid)),
+                visible(virkailija.saveKoulutusTaustaButton)
+            ));
+
+            it("maksunotifikaatio näkyy", function() {
+                expect(virkailija.koulutustaustaPaymentNotification().is(':visible')).to.equal(true)
+            });
+
+            describe("valittaessa Suomessa suoritettu ylioppilastutkinto ja/tai lukion oppimäärä", function() {
+                before(seqDone(
+                    click(virkailija.pohjakoulutusYo),
+                    visible(virkailija.pohjakoulutusYoVuosi)
+                ));
+
+                it("maksunotifikaatio katoaa", function() {
+                    expect(virkailija.koulutustaustaPaymentNotification().is(':visible')).to.equal(false)
+                })
             })
         });
     });

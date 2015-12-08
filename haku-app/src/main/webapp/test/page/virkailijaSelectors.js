@@ -36,6 +36,9 @@ virkailija = initSelectors({
     ulkomainenKkKelpoisuusMaa: "select#pohjakoulutus_ulk_suoritusmaa",
     ulkomainenKkKelpoisuusMuuMaa: "input#pohjakoulutus_ulk_suoritusmaa_muu",
     preference1KoulutusId: "input#preference1-Koulutus-id",
+    koulutustaustaPaymentNotification: "#koulutustausta_payment_notification",
+    pohjakoulutusYo: "#pohjakoulutus_yo",
+    pohjakoulutusYoVuosi: "#pohjakoulutus_yo_vuosi",
     kkTutkintoSuoritettu: function(bool) {
         return "input[name=suoritusoikeus_tai_aiempi_tutkinto][value=" + bool + "]";
     },

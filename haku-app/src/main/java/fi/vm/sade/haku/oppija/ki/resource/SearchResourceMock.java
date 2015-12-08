@@ -16,6 +16,7 @@
 package fi.vm.sade.haku.oppija.ki.resource;
 
 import java.io.IOException;
+import java.util.NoSuchElementException;
 
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
@@ -24,6 +25,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +38,7 @@ import fi.vm.sade.haku.oppija.common.koulutusinformaatio.impl.Koulutusinformaati
  * @author Mikko Majapuro
  */
 @Component
-@Path("/education/")
+@Path("/education")
 @Profile(value = {"dev", "it"})
 public class SearchResourceMock {
     @Autowired
@@ -55,5 +57,16 @@ public class SearchResourceMock {
     public String hakukohdeSearch(@PathParam("asId") final String asId, @PathParam("lopId") final String lopId,
                                   @DefaultValue(value = "1") @QueryParam("baseEducation") final String baseEducation) throws IOException {
         return new ObjectMapper().writeValueAsString(koulutusInformaatioMock.hakukohdeSearch(lopId, baseEducation));
+    }
+
+    @GET
+    @Path("/{aoId}")
+    @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
+    public Response education(@PathParam("aoId") final String aoId) throws IOException {
+        try {
+            return Response.ok(new ObjectMapper().writeValueAsString(koulutusInformaatioMock.hakukohde(aoId))).build();
+        } catch (NoSuchElementException e) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
     }
 }
