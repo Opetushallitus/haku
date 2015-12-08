@@ -4,6 +4,11 @@ describe("KK-hakemus hakumaksulla", function() {
 
     describe("virkailijan näkymä", function() {
         before(seqDone(
+            function() {
+                return openPage("/haku-app/lomakkeenhallinta/" + hakuOid, function() {
+                    return S("form#form-henkilotiedot").first().is(':visible')
+                })()
+            },
             login('officer', 'officer'),
             click(virkailija.createApplicationButton),
             input(virkailija.selectHaku, hakuOid),
@@ -50,14 +55,14 @@ describe("KK-hakemus hakumaksulla", function() {
                 before(seqDone(
                     click(virkailija.editHakutoiveetButton(hakuOid)),
                     tyhjennaHakutoiveet(5),
-                    aaltoTekniikanKandi(1),
+                    jazz5v(1),
                     click(virkailija.saveHakutoiveetButton),
                     visible(virkailija.notes)
                 ));
 
                 describe("lisäämisen jälkeen", function() {
                     it("toiveet näkyvät", function () {
-                        expect(answerForQuestion('preference1')).to.equal(aalto);
+                        expect(answerForQuestion('preference1')).to.equal(sibelusAkatemia);
                         // TODO jatka plz
                     });
                 });

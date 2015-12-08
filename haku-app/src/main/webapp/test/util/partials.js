@@ -8,7 +8,6 @@ var sibelusAkatemia = "Taideyliopisto,  Sibelius-Akatemia";
 var oulunYliopisto = "Oulun yliopisto, Humanistinen tiedekunta";
 var faktia = "FAKTIA, Espoo op";
 var kiipula = "Kiipulan ammattiopisto, Kiipulan toimipaikka";
-var aalto = "Aalto yliopisto";
 
 var faktiaPkKoulutus = "Talonrakennus ja ymäristösuunnittelu, pk";
 var kiipulaErKoulutus = "Metsäalan perustutkinto, er";
@@ -52,10 +51,6 @@ function jazz2v(n) {
 
 function jazz5v(n) {
     return valitseKoulutus(n, sibelusAkatemia, "Jazzmusiikki, sävellys 5,5-vuotinen koulutus")
-}
-
-function aaltoTekniikanKandi(n) {
-    return valitseKoulutus(n, aalto, "Rakennettu ympäristö, tekniikan kandidaatti ja diplomi-insinööri, DIA-yhteisvalinta")
 }
 
 function tyhjennaHakutoiveet(count) {
