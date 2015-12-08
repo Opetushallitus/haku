@@ -1,8 +1,10 @@
 package fi.vm.sade.haku.oppija.ui.service.impl;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import fi.vm.sade.haku.oppija.hakemus.HakumaksuTest;
 import fi.vm.sade.haku.oppija.hakemus.TestApplicationData;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.junit.Test;
 
 import java.util.Map;
@@ -47,6 +49,14 @@ public class UIServiceImplTest extends HakumaksuTest {
                 )
         ));
 
+        assertEquals(0, result.size());
+    }
+
+    // Previously crashed when iterating over unselected application options
+    @Test
+    public void testThatHandlesUnsetApplicationOptions() {
+        Map<String, String> answers = ImmutableMap.of(OppijaConstants.PREFERENCE_PREFIX + "1" + OppijaConstants.OPTION_ID_POSTFIX, "");
+        Map<String, String> result = uiService.paymentNotificationAnswers(answers);
         assertEquals(0, result.size());
     }
 

@@ -255,6 +255,7 @@ public class UIServiceImpl implements UIService {
 
         for (String key : answers.keySet()) {
             if (key != null && key.startsWith(PREFERENCE_PREFIX) && key.endsWith(OPTION_ID_POSTFIX)
+                    && isNotEmpty(answers.get(key))
                     && payments.get(ApplicationOptionOid.of(answers.get(key)))) {
                 String paymentRequirementKey = key.replace(OPTION_ID_POSTFIX, PAYMENT_NOTIFICATION_POSTFIX);
                 builder.put(paymentRequirementKey, "true");
