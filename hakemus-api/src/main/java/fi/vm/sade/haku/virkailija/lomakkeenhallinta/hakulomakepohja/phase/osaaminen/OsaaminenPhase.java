@@ -17,6 +17,7 @@
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.osaaminen;
 
 import com.google.common.base.Function;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import fi.vm.sade.haku.oppija.lomake.domain.builder.ElementBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
@@ -33,6 +34,7 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ExprUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static fi.vm.sade.haku.oppija.hakemus.service.Role.*;
@@ -158,11 +160,14 @@ public class OsaaminenPhase {
     }
 
     private static Element buildYoArvosanat(FormParameters formParameters) {
-        return TitledGroup("osaaminen-kansainvalinenyo-arvosanat").formParams(formParameters).build()
-                .addChild(buildYoAsteikkoQuestion(ELEMENT_ID_OSAAMINEN_YOARVOSANAT_PARAS_KIELI, formParameters),
-                        buildYoAsteikkoQuestion(ELEMENT_ID_OSAAMINEN_YOARVOSANAT_AIDINKIELI, formParameters),
-                        buildYoAsteikkoQuestion(ELEMENT_ID_OSAAMINEN_YOARVOSANAT_MATEMATIIKKA, formParameters),
-                        buildYoAsteikkoQuestion(ELEMENT_ID_OSAAMINEN_YOARVOSANAT_REAALI, formParameters));
+        final List<String> list = Arrays.asList(ELEMENT_ID_OSAAMINEN_YOARVOSANAT_PARAS_KIELI_PITKA, ELEMENT_ID_OSAAMINEN_YOARVOSANAT_PARAS_KIELI_LYHYT,ELEMENT_ID_OSAAMINEN_YOARVOSANAT_AIDINKIELI,
+                ELEMENT_ID_OSAAMINEN_YOARVOSANAT_MATEMATIIKKA_PITKA,ELEMENT_ID_OSAAMINEN_YOARVOSANAT_MATEMATIIKKA_LYHYT,ELEMENT_ID_OSAAMINEN_YOARVOSANAT_REAALI,ELEMENT_ID_OSAAMINEN_YOARVOSANAT_REAALI_RYHMA);
+
+        Element el = TitledGroup("osaaminen-kansainvalinenyo-arvosanat").formParams(formParameters).build();
+        for(String item: list) {
+            el = el.addChild(buildYoAsteikkoQuestion(item, formParameters));
+        }
+        return el;
     }
 
     private static Element[] buildKeskiarvoYoAmmatillinen(FormParameters formParameters,
