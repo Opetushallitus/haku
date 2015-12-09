@@ -31,10 +31,12 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.*;
+import static org.apache.commons.lang.StringUtils.EMPTY;
 import static org.apache.commons.lang.StringUtils.isNotEmpty;
 
 public class HakumaksuUtil {
     public static final Logger LOGGER = LoggerFactory.getLogger(HakumaksuUtil.class);
+    public static final String TRUE = "true";
 
     private RestClient restClient;
     private final SafeString koulutusinformaatioUrl;
@@ -216,7 +218,7 @@ public class HakumaksuUtil {
             .expireAfterWrite(10, TimeUnit.MINUTES)
             .build(new CacheLoader<ApplicationOptionOid, EducationRequirements>() {
                 public EducationRequirements load(ApplicationOptionOid applicationOptionOid) throws Exception {
-                    String url = koulutusinformaatioUrl.getValue() + "/" + applicationOptionOid.getValue();
+                    String url = String.format("%s/%s", koulutusinformaatioUrl.getValue(), applicationOptionOid.getValue());
                     BaseEducationRequirements requirements = restClient.get(url, BaseEducationRequirements.class).get().getResult();
                     return new EducationRequirements(applicationOptionOid, ImmutableSet.copyOf(requirements.requiredBaseEducations));
                 }
@@ -229,26 +231,34 @@ public class HakumaksuUtil {
                 try {
                     return koulutusinformaatioBaseEducationRequirementsCache.get(applicationOptionId);
                 } catch (ExecutionException e) {
-                    throw new IllegalStateException("Getting education requirements for " + applicationOptionId, e);
+                    throw new IllegalStateException(String.format("Getting education requirements for %s", applicationOptionId), e);
                 }
             }
         });
     }
 
-    public static ImmutableMap<String, String> paymentNotificationAnswers(Map<String, String> answers, ImmutableMap<ApplicationOptionOid, ImmutableSet<EducationRequirementsUtil.Eligibility>> paymentRequirements) {
-        ImmutableMap.Builder<String, String> builder = ImmutableMap.builder();
-        for (String key: answers.keySet()){
+    public static ImmutableMap<String, String> paymentNotificationAnswers(final Map<String, String> answers,
+                                                                          final ImmutableMap<ApplicationOptionOid, ImmutableSet<EducationRequirementsUtil.Eligibility>> paymentRequirements) {
+
+        final ImmutableMap.Builder<String, String> builder = ImmutableMap.builder();
+
+        for (String key: answers.keySet()) {
             if (key != null && key.startsWith(PREFERENCE_PREFIX) && key.endsWith(OPTION_ID_POSTFIX) && isNotEmpty(answers.get(key))){
                 ImmutableSet<EducationRequirementsUtil.Eligibility> eligibilities = paymentRequirements.get(ApplicationOptionOid.of(answers.get(key)));
                 if (!eligibilities.isEmpty()) {
-                    String preferenceString = key.replace(OPTION_ID_POSTFIX, "");
-                    String paymentRequirementKey = preferenceString + PAYMENT_NOTIFICATION_POSTFIX;
-                    builder.put(paymentRequirementKey, "true");
-                    builder.put(PHASE_EDUCATION + PAYMENT_NOTIFICATION_POSTFIX, "true");
+                    builder.put(String.format("%s%s", key.replace(OPTION_ID_POSTFIX, EMPTY), PAYMENT_NOTIFICATION_POSTFIX), TRUE);
                 }
-
             }
         }
-        return builder.build();
+
+        final ImmutableMap<String, String> paymentAnswers = builder.build();
+
+        if (!paymentAnswers.isEmpty())  {
+            builder.put(String.format("%s%s", PHASE_EDUCATION, PAYMENT_NOTIFICATION_POSTFIX), TRUE);
+
+            return builder.build();
+        } else {
+            return paymentAnswers;
+        }
     }
 }
