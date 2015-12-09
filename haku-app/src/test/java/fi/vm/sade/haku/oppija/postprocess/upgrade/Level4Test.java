@@ -255,7 +255,7 @@ public class Level4Test extends IntegrationTest {
 
         List<Element> yoKansainvalinenAmmatillinen = getKansainvalinenYoKysymykset(as);
         assertEquals("osaaminen-kansainvalinenyo-arvosanat", yoKansainvalinenAmmatillinen.get(0).getId());
-        assertEquals(OppijaConstants.ELEMENT_ID_OSAAMINEN_YOARVOSANAT_PARAS_KIELI, yoKansainvalinenAmmatillinen.get(0).getChildren().get(0).getId());
+        assertEquals(OppijaConstants.ELEMENT_ID_OSAAMINEN_YOARVOSANAT_PARAS_KIELI_PITKA, yoKansainvalinenAmmatillinen.get(0).getChildren().get(0).getId());
 
         List<Element> yoAmmatillinen = getYoKysymykset(as);
         assertEquals("keskiarvo_yo_ammatillinen", yoAmmatillinen.get(0).getId());
