@@ -102,7 +102,7 @@ public class I18nBundleService {
                     HAKUTYYPIT.get(as.getApplicationSystemType()),
                     HAKUKAUDET.get(as.getHakukausiUri()),
                     KOHDEJOUKOT.containsKey(as.getKohdejoukkoUri()) ? KOHDEJOUKOT.get(as.getKohdejoukkoUri()) : "muu",
-                    KOHDEJOUKON_TARKENTEET.containsKey(as.getKohdejoukonTarkenne()) ? KOHDEJOUKOT.get(as.getKohdejoukonTarkenne()) : "muu");
+                    KOHDEJOUKON_TARKENTEET.containsKey(as.getKohdejoukonTarkenne()) ? KOHDEJOUKON_TARKENTEET.get(as.getKohdejoukonTarkenne()) : "muu");
         }
     }
 }
