@@ -31,7 +31,7 @@ public class RestClientTest {
     }
     @Test
     public void getTest() throws ExecutionException, InterruptedException, IOException {
-        String url = "https://testi.virkailija.opintopolku.fi/koodisto-service/rest/codeelement/valtioryhmat_2/1";
+        String url = "https://virkailija.opintopolku.fi/koodisto-service/rest/codeelement/valtioryhmat_2/1";
         ListenableFuture<Response<Output>> response = new HttpRestClient().get(url, Output.class);
         Response<Output> output = response.get();
         assertNotNull(output);

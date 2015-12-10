@@ -14,17 +14,20 @@ public class SessionTimeoutCookieFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws IOException, ServletException {
 
+        filterChain.doFilter(request, response);
+        
         HttpSession session = ((HttpServletRequest)request).getSession(false);
 
         if(null != session) {
-
-            long expiration = session.getLastAccessedTime() + (1000 * session.getMaxInactiveInterval());
-            long counter = expiration - System.currentTimeMillis();
+            
+            long currentTimeMillis = System.currentTimeMillis();
+            
+            long expiration = currentTimeMillis + (1000 * session.getMaxInactiveInterval());
+            long counter = expiration - currentTimeMillis;
             setCookie(response, SESSION_EXPIRES_COOKIE_NAME, "" + counter);
             
         }
-        
-        filterChain.doFilter(request, response);
+
     }
     
     private void setCookie(ServletResponse response, String name, String value) {
