@@ -40,6 +40,12 @@ public class I18nBundleService {
         put(OppijaConstants.HAKUKAUSI_SYKSY, "syksy");
     }};
 
+    private static final Map<String, String> KOHDEJOUKON_TARKENTEET = new HashMap<String, String>() {{
+        put(OppijaConstants.KOHDEJOUKON_TARKENNE_AMK_OPE, "amk_ope");
+        put(OppijaConstants.KOHDEJOUKON_TARKENNE_AMK_OPO, "amk_opo");
+        put(OppijaConstants.KOHDEJOUKON_TARKENNE_AMK_ERKKA, "amk_erkka");
+    }};
+
     /* file naming mappings END */
 
     private static final String FILE_NAME_PREFIX = "form_messages";
@@ -73,16 +79,30 @@ public class I18nBundleService {
 
     private I18nBundle initializeandReturnBundle(final ApplicationSystem applicationSystem) {
         final I18nBundle i18nBundle = new I18nBundle(getMessageBundleName(FILE_NAME_PREFIX, applicationSystem),
-          (FILE_NAME_PREFIX + "_" + applicationSystem.getId().replace('.', '_')));
+                getMessageBundleNameWithTarkenne(FILE_NAME_PREFIX, applicationSystem),
+                (FILE_NAME_PREFIX + "_" + applicationSystem.getId().replace('.', '_')));
         this.applicationSystemTranslations.put(applicationSystem.getId(), new SoftReference<>(i18nBundle));
         return i18nBundle;
     }
 
     private static String getMessageBundleName(final String baseName, final ApplicationSystem as) {
         return Joiner.on('_').join(baseName,
-          HAKUTAVAT.get(as.getHakutapa()),
-          HAKUTYYPIT.get(as.getApplicationSystemType()),
-          HAKUKAUDET.get(as.getHakukausiUri()),
-          KOHDEJOUKOT.containsKey(as.getKohdejoukkoUri()) ? KOHDEJOUKOT.get(as.getKohdejoukkoUri()) : "muu");
+                HAKUTAVAT.get(as.getHakutapa()),
+                HAKUTYYPIT.get(as.getApplicationSystemType()),
+                HAKUKAUDET.get(as.getHakukausiUri()),
+                KOHDEJOUKOT.containsKey(as.getKohdejoukkoUri()) ? KOHDEJOUKOT.get(as.getKohdejoukkoUri()) : "muu");
+    }
+
+    private static String getMessageBundleNameWithTarkenne(final String baseName, final ApplicationSystem as) {
+        if(as.getKohdejoukonTarkenne() == null || as.getKohdejoukonTarkenne().trim().equals("")) {
+            return null;
+        } else {
+            return Joiner.on('_').join(baseName,
+                    HAKUTAVAT.get(as.getHakutapa()),
+                    HAKUTYYPIT.get(as.getApplicationSystemType()),
+                    HAKUKAUDET.get(as.getHakukausiUri()),
+                    KOHDEJOUKOT.containsKey(as.getKohdejoukkoUri()) ? KOHDEJOUKOT.get(as.getKohdejoukkoUri()) : "muu",
+                    KOHDEJOUKON_TARKENTEET.containsKey(as.getKohdejoukonTarkenne()) ? KOHDEJOUKOT.get(as.getKohdejoukonTarkenne()) : "muu");
+        }
     }
 }
