@@ -61,11 +61,13 @@ public class FormBuilderResource {
         log.info("Starting to generate application system " + oid);
         if("ALL".equals(oid)) {
             doGgenerate();
+            log.info("Generated all application systems");
+            return Response.seeOther(new URI("/lomake")).build();
         } else {
             doGenerate(oid);
+            log.info("Generated application system " +oid);
+            return Response.seeOther(new URI("/lomake/" + oid)).build();
         }
-        log.info("Generated application system " +oid);
-        return Response.seeOther(new URI("/lomake/"+oid)).build();
     }
 
     private void doGgenerate() throws URISyntaxException {

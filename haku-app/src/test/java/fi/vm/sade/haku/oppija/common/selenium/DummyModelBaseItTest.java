@@ -1,6 +1,7 @@
 package fi.vm.sade.haku.oppija.common.selenium;
 
 import com.google.common.base.Joiner;
+import com.google.common.base.Predicate;
 import fi.vm.sade.haku.oppija.lomake.ApplicationSystemHelper;
 import fi.vm.sade.haku.oppija.ui.selenium.DefaultValues;
 import org.apache.commons.lang3.ArrayUtils;
@@ -15,6 +16,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Date;
 
 import static org.junit.Assert.*;
 
@@ -27,7 +29,8 @@ public abstract class DummyModelBaseItTest extends AbstractSeleniumBase {
     public void setUDummyModelBaseIt() throws Exception {
         //FormGenerator formGeneratorMock = new FormGeneratorImpl(new KoodistoServiceMockImpl(), new HakuServiceMockImpl());
         //applicationSystemHelper = updateApplicationSystem(formGeneratorMock.generate(ASID));
-        seleniumContainer.getDriver().get((getBaseUrl() + "lomakkeenhallinta"));
+        seleniumContainer.getDriver().get((getBaseUrl() + "lomakkeenhallinta/ALL"));
+        seleniumContainer.getDriver().getTitle();
     }
 
 
@@ -46,9 +49,10 @@ public abstract class DummyModelBaseItTest extends AbstractSeleniumBase {
     }
 
     protected void expectPhase(String expected) {
+        new WebDriverWait(seleniumContainer.getDriver(), 30)
+                .until(ExpectedConditions.presenceOfElementLocated(By.id("nav-" + expected)));
         WebElement form = findBy(By.id("nav-" + expected));
-        String clazz = form.getAttribute("class");
-        assertEquals("current", clazz);
+        assertEquals("current", form.getAttribute("class"));
     }
 
     private void clickAllElements(List<WebElement> elements) {
@@ -151,6 +155,16 @@ public abstract class DummyModelBaseItTest extends AbstractSeleniumBase {
         for (String id : ids) {
             seleniumContainer.getDriver().findElement(new By.ById(id));
         }
+    }
+
+    protected void waitForMillis(final long millis) {
+        final long t1 = new Date().getTime();
+        new WebDriverWait(seleniumContainer.getDriver(), (millis * 1000) + 10, 5).until(new Predicate<WebDriver>() {
+            @Override
+            public boolean apply(WebDriver input) {
+                return (new Date().getTime() - t1) > millis;
+            }
+        });
     }
 
     protected List<WebElement> getById(final String id) {

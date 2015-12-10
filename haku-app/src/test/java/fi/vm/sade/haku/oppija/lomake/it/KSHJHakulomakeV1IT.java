@@ -24,57 +24,34 @@ public class KSHJHakulomakeV1IT extends DummyModelBaseItTest {
 
     @Test
     public void runKSHJForm() throws Exception {
-
         navigateToPath("lomake", "1.2.246.562.29.173465377510");
+
         fillOut(defaultValues.kkHenkilotiedot);
-        elementsNotPresentById("huoltajannimi");
-        elementsNotPresentById("huoltajanpuhelinnumero");
-        elementsNotPresentById("huoltajansahkoposti");
+        waitForMillis(500);
+
+        elementsNotPresentById("huoltajannimi", "huoltajanpuhelinnumero", "huoltajansahkoposti");
 
         nextPhase(OppijaConstants.PHASE_EDUCATION);
-        findByIdAndClick("suoritusoikeus_tai_aiempi_tutkinto_true", "pohjakoulutus_am");
+
+        findByIdAndClick("suoritusoikeus_tai_aiempi_tutkinto_false");
+        findByIdAndClick("pohjakoulutus_am");
         setValue("pohjakoulutus_am_vuosi", "2012");
         setValue("pohjakoulutus_am_nimike", "400000");
         setValue("pohjakoulutus_am_laajuus", "laajuus");
         setValue("pohjakoulutus_am_oppilaitos", "1.2.246.562.10.57118763500");
         setValue("pohjakoulutus_am_nayttotutkintona", "false");
+        waitForMillis(500);
+
         nextPhase(OppijaConstants.PHASE_APPLICATION_OPTIONS);
 
         findById("preference1-Opetuspiste");
         typeWithoutTab("preference1-Opetuspiste", "anna");
         clickLinkByText("Anna Tapion koulu");
         clickAllElementsByXPath("//option[@value='Kymppiluokka']");
+        waitForMillis(500);
 
         nextPhase(OppijaConstants.PHASE_GRADES);
 
-        setValue("keskiarvo", "10,00");
-        setValue("arvosanaasteikko", "4-10");
-        nextPhase(OppijaConstants.PHASE_MISC);
-
-        navigateToPath("lomake", "1.2.246.562.29.173465377510", OppijaConstants.PHASE_EDUCATION);
-        findByIdAndClick(500, "pohjakoulutus_am", "pohjakoulutus_muu");
-        setValue("pohjakoulutus_muu_vuosi", "2012");
-        setValue("pohjakoulutus_muu_kuvaus", "kuvaus");
-        nextPhase(OppijaConstants.PHASE_APPLICATION_OPTIONS);
-        nextPhase(OppijaConstants.PHASE_GRADES);
         elementsNotPresentById("keskiarvo", "arvosanaasteikko");
-
-
-        navigateToPath("lomake", "1.2.246.562.29.173465377510", OppijaConstants.PHASE_EDUCATION);
-        findByIdAndClick("pohjakoulutus_yo");
-        setValue("pohjakoulutus_yo_vuosi", "2002");
-        setValue("pohjakoulutus_yo_tutkinto", "fi");
-
-        nextPhase(OppijaConstants.PHASE_APPLICATION_OPTIONS);
-        nextPhase(OppijaConstants.PHASE_GRADES);
-        setValue("lukion-paattotodistuksen-keskiarvo", "4,51");
-        elementsNotPresentById("keskiarvo", "arvosanaasteikko");
-
-        navigateToPath("lomake", "1.2.246.562.29.173465377510", OppijaConstants.PHASE_EDUCATION);
-        findByIdAndClick("pohjakoulutus_kk_ulk");
-        verifyDropdownSelection("pohjakoulutus_kk_ulk_maa", "", "");
-
-        findByIdAndClick("pohjakoulutus_yo_ulkomainen");
-        verifyDropdownSelection("pohjakoulutus_yo_ulkomainen_maa", "", "");
     }
 }

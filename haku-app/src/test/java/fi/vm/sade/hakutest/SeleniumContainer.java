@@ -52,7 +52,7 @@ public class SeleniumContainer {
             FirefoxProfile profile = new FirefoxProfile();
             profile.setPreference("focusmanager.testmode",true);
             this.webDriver = new FirefoxDriver(profile);
-            this.webDriver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
+            this.webDriver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
         }
         return webDriver;
     }

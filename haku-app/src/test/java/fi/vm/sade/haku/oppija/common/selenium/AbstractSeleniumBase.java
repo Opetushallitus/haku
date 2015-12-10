@@ -51,7 +51,7 @@ public abstract class AbstractSeleniumBase extends TomcatContainerBase {
         mongoTemplate.getCollection(SEQUENCE_NAME)
                 .insert(new BasicDBObject(SEQUENCE_FIELD, Long.valueOf(0)));
         seleniumContainer.logout();
-        seleniumContainer.getDriver().manage().deleteAllCookies();
+        //seleniumContainer.getDriver().manage().deleteAllCookies();
     }
 
     protected void navigateTo(String url) {
