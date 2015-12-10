@@ -182,7 +182,20 @@ public class HakuPermissionServiceImpl extends AbstractPermissionService impleme
 
     @Override
     public boolean userCanPostProcess(Application application) {
-        return checkAccess(getRootOrgOid(), getReadUpdateRole(), getCreateReadUpdateDeleteRole());
+
+        if(checkAccess(getRootOrgOid(), getReadUpdateRole(), getCreateReadUpdateDeleteRole())) {
+            return true;
+        }
+
+        ApplicationSystem as = applicationSystemService.getApplicationSystem(
+                application.getApplicationSystemId(), "hakutapa", "hakukausiVuosi", "hakukausiUri", "kohdejoukkoUri");
+        if(OppijaConstants.KOHDEJOUKKO_KORKEAKOULU.equals(as.getKohdejoukkoUri())
+                && checkAccess(getReadUpdateRole(), getCreateReadUpdateDeleteRole())) {
+            return true;
+        }
+
+        return false;
+
     }
 
     public final String getRoleHetuttomienKasittely() {
