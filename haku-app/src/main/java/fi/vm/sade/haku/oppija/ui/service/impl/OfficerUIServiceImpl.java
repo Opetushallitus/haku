@@ -701,6 +701,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     public void postProcess(String oid, boolean email) {
         Application application = applicationService.getApplicationByOid(oid);
         application.setRedoPostProcess(email ? Application.PostProcessingState.FULL : Application.PostProcessingState.NOMAIL);
+        application.setPostProcessingRequestedBy(Application.PostProcessingRequestedBy.HAKUAPP);
         applicationService.update(new Application(oid), application);
     }
 
