@@ -190,7 +190,7 @@ public class HakuPermissionServiceImpl extends AbstractPermissionService impleme
         ApplicationSystem as = applicationSystemService.getApplicationSystem(
                 application.getApplicationSystemId(), "hakutapa", "hakukausiVuosi", "hakukausiUri", "kohdejoukkoUri");
         if(OppijaConstants.KOHDEJOUKKO_KORKEAKOULU.equals(as.getKohdejoukkoUri())
-                && checkAccess(getReadUpdateRole(), getCreateReadUpdateDeleteRole())) {
+                && userCanAccessApplication(application, getReadUpdateRole(), getCreateReadUpdateDeleteRole())) {
             return true;
         }
 
