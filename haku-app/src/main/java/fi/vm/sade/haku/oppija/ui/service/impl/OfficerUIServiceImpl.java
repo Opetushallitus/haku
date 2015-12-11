@@ -210,11 +210,12 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         if ((phaseId.equals(PHASE_APPLICATION_OPTIONS) || phaseId.equals(PHASE_EDUCATION)) && as.isMaksumuuriKaytossa()) {
             Map<String, String> vastauksetMerged = application.getVastauksetMerged();
             ImmutableMap<String, String> answersForPaymentNotification = paymentNotificationAnswers(vastauksetMerged, hakumaksuService.paymentRequirements(Types.MergedAnswers.of(vastauksetMerged)));
+            String originalPhaseId = application.getPhaseId();
             application.setVaiheenVastauksetAndSetPhaseId(PHASE_APPLICATION_OPTIONS,
                     ImmutableMap.<String, String>builder()
-                            .putAll(vastauksetMerged)
+                            .putAll(application.getPhaseAnswers(phaseId))
                             .putAll(answersForPaymentNotification)
-                            .build());
+                            .build()).setPhaseId(originalPhaseId);
         }
 
         ModelResponse modelResponse =
