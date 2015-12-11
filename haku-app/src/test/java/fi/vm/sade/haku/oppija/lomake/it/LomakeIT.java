@@ -93,6 +93,8 @@ public class LomakeIT extends DummyModelBaseItTest {
         clickLinkByText("Stadin ammattiopisto, Sturenkadun toimipaikka");
 
         driver.findElement(By.xpath("//option[@data-id='1.2.246.562.5.20176855623']")).click();
+        waitForMillis(500);
+
         prevPhase(OppijaConstants.PHASE_EDUCATION);
 
         clickByNameAndValue(KYSYMYS_POHJAKOULUTUS, TUTKINTO_PERUSKOULU);
