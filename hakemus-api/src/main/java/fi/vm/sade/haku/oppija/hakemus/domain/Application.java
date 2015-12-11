@@ -70,10 +70,6 @@ public class Application implements Serializable {
         NOMAIL, FULL, DONE, FAILED
     }
 
-    public enum PostProcessingRequestedBy {
-        HAKUAPP, OMATSIVUT
-    }
-
     public enum PaymentState {
         NOTIFIED, // Successfully notified payment system
         OK, // Payment done according to payment system
@@ -109,7 +105,6 @@ public class Application implements Serializable {
     private Date updated;
     //TODO: Rename if/when refactoring
     private PostProcessingState redoPostProcess;
-    private PostProcessingRequestedBy postProcessingRequestedBy;
 
     private String fullName;
     private HashSet<String> searchNames = new HashSet<String>();
@@ -571,14 +566,6 @@ public class Application implements Serializable {
         return redoPostProcess;
     }
 
-    public PostProcessingRequestedBy getPostProcessingRequestedBy() {
-        return postProcessingRequestedBy;
-    }
-
-    public void setPostProcessingRequestedBy(PostProcessingRequestedBy postProcessingRequestedBy) {
-        this.postProcessingRequestedBy = postProcessingRequestedBy;
-    }
-
     public Application setFullname(String fullName) {
         this.fullName = fullName; return this;
     }
@@ -669,7 +656,6 @@ public class Application implements Serializable {
         clone.phaseId = this.phaseId;
         clone.received = this.received;
         clone.redoPostProcess = this.redoPostProcess;
-        clone.postProcessingRequestedBy = this.postProcessingRequestedBy;
         clone.state = this.state;
         clone.studentIdentificationDone = this.studentIdentificationDone;
         clone.studentOid = this.studentOid;

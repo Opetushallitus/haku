@@ -102,7 +102,6 @@ public class ApplicationPostProcessorService {
             application = validateApplication(application);
         }
         application.setRedoPostProcess(Application.PostProcessingState.DONE);
-        application.setPostProcessingRequestedBy(null);
         if (null == application.getModelVersion())
             application.setModelVersion(Application.CURRENT_MODEL_VERSION);
         return application;

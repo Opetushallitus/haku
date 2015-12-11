@@ -654,7 +654,6 @@ public class ApplicationServiceImpl implements ApplicationService {
                        final boolean postProcess) {
         if (postProcess) {
             application.setRedoPostProcess(Application.PostProcessingState.NOMAIL);
-            application.setPostProcessingRequestedBy(Application.PostProcessingRequestedBy.HAKUAPP);
         }
         if (!disableHistory) {
             LOGGER.debug("addChangeHistoryToApplication");
