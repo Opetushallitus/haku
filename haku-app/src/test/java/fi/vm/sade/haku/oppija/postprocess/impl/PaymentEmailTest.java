@@ -20,7 +20,7 @@ import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
 import static fi.vm.sade.haku.oppija.hakemus.service.HakumaksuService.PaymentEmail;
-import static fi.vm.sade.haku.oppija.postprocess.MailTemplateUtil.*;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.MailTemplateUtil.*;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;

@@ -31,7 +31,7 @@ import java.util.concurrent.ExecutionException;
 import static fi.vm.sade.haku.AuditHelper.AUDIT;
 import static fi.vm.sade.haku.AuditHelper.builder;
 import static fi.vm.sade.haku.oppija.lomake.util.StringUtil.nameOrEmpty;
-import static fi.vm.sade.haku.oppija.postprocess.MailTemplateUtil.paymentEmailFromApplication;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.MailTemplateUtil.paymentEmailFromApplication;
 import static org.apache.commons.lang.StringUtils.isEmpty;
 import static org.apache.commons.lang.StringUtils.isNotEmpty;
 
