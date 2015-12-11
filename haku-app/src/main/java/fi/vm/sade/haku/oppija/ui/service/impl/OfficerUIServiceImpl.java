@@ -1,6 +1,7 @@
 package fi.vm.sade.haku.oppija.ui.service.impl;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import fi.vm.sade.auditlog.haku.HakuOperation;
 import fi.vm.sade.auditlog.haku.LogMessage;
@@ -208,7 +209,12 @@ public class OfficerUIServiceImpl implements OfficerUIService {
 
         if ((phaseId.equals(PHASE_APPLICATION_OPTIONS) || phaseId.equals(PHASE_EDUCATION)) && as.isMaksumuuriKaytossa()) {
             Map<String, String> vastauksetMerged = application.getVastauksetMerged();
-            application.addVaiheenVastaukset(PHASE_APPLICATION_OPTIONS, paymentNotificationAnswers(vastauksetMerged, hakumaksuService.paymentRequirements(Types.MergedAnswers.of(vastauksetMerged))));
+            ImmutableMap<String, String> answersWithPaymentNotification = paymentNotificationAnswers(vastauksetMerged, hakumaksuService.paymentRequirements(Types.MergedAnswers.of(vastauksetMerged)));
+            application.addVaiheenVastaukset(PHASE_APPLICATION_OPTIONS,
+                    ImmutableMap.<String, String>builder()
+                            .putAll(vastauksetMerged)
+                            .putAll(answersWithPaymentNotification)
+                            .build());
         }
 
         ModelResponse modelResponse =
