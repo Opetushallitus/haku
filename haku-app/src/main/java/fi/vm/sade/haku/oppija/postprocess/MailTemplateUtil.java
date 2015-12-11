@@ -25,7 +25,6 @@ import java.io.StringWriter;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.Locale;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import static com.google.common.base.Optional.fromNullable;
@@ -50,17 +49,9 @@ public final class MailTemplateUtil {
             "englanti", en
     );
 
-    public static <K, V> V getOrGet(Map<K, V> map, K key, K defaultKey) {
-        return fromNullable(map.get(key)).or(map.get(defaultKey));
-    }
-
-    public static <K, V> V getOrValue(Map<K, V> map, K key, V defaultValue) {
-        return fromNullable(map.get(key)).or(defaultValue);
-    }
-
     private static LanguageCodeISO6391 languageCodeFromApplication(Application application) {
         SafeString language = SafeString.of(application.getPhaseAnswers(OppijaConstants.PHASE_MISC).get(ELEMENT_ID_CONTACT_LANGUAGE));
-        return getOrValue(applicationLanguageToLanguageCodeMap, language.getValue(), en);
+        return fromNullable(applicationLanguageToLanguageCodeMap.get(language.getValue())).or(en);
     }
 
     private static String c(String s) {
@@ -144,7 +135,7 @@ public final class MailTemplateUtil {
             @Override
             public PaymentEmail apply(Application application) {
                 LanguageCodeISO6391 language = languageCodeFromApplication(application);
-                SafeString subject = getOrGet(emailSubjectTranslations, language, en);
+                SafeString subject = fromNullable(emailSubjectTranslations.get(language)).or(emailSubjectTranslations.get(en));
                 try {
                     Date dueDate = calculateDueDate(applicationSystem, new Date(), GRACE_PERIOD);
                     return new PaymentEmail(subject, createEmailTemplate(language, subject, dueDate), language, dueDate);
