@@ -1,4 +1,4 @@
-package fi.vm.sade.haku.oppija.postprocess.impl;
+package fi.vm.sade.haku.virkailija.lomakkeenhallinta.util;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
