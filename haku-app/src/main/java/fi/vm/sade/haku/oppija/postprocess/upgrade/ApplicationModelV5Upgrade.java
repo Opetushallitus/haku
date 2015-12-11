@@ -128,7 +128,7 @@ public final class ApplicationModelV5Upgrade implements ModelUpgrade<Application
 
     private UpgradeResult<Application> logAndReturnModified(Application application, Map<String, String> newEducationPhaseAnswers) {
         final Application original = application.clone();
-        application.addVaiheenVastaukset(OppijaConstants.PHASE_EDUCATION, newEducationPhaseAnswers);
+        application.setVaiheenVastauksetAndSetPhaseId(OppijaConstants.PHASE_EDUCATION, newEducationPhaseAnswers);
         application.setModelVersion(targetVersion);
         application = logOperation(original, application, "Automaattikäsittely: ammatilliset pohjakoulutukset sidottu koodeihin ja vapaa selite siirretty.");
         loggerAspect.logUpdateApplication(original,

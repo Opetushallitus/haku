@@ -141,7 +141,7 @@ public class ApplicationServiceImplTest {
         application = new Application();
         Map<String, String> answers = new HashMap<String, String>();
         answers.put("avain", "arvo");
-        application.addVaiheenVastaukset("test", answers);
+        application.setVaiheenVastauksetAndSetPhaseId("test", answers);
         applicationDAO = mock(ApplicationDAO.class);
         applicationOidService = mock(ApplicationOidService.class);
         authenticationService = new AuthenticationServiceMockImpl();
@@ -168,7 +168,7 @@ public class ApplicationServiceImplTest {
                         Application a = new Application();
                         Map<String, String> answers = new HashMap<String, String>();
                         answers.put("avain", "arvo");
-                        a.addVaiheenVastaukset("test", answers);
+                        a.setVaiheenVastauksetAndSetPhaseId("test", answers);
                         return Lists.newArrayList(a);
                     }
                 });
@@ -250,7 +250,7 @@ public class ApplicationServiceImplTest {
         Map<String, String> answers = new HashMap<>();
         answers.put("avain", "uusi arvo");
         Application change = new Application(OID);
-        change.addVaiheenVastaukset("test", answers);
+        change.setVaiheenVastauksetAndSetPhaseId("test", answers);
 
         service.update(new Application(OID), change);
         ArgumentCaptor<Application> hakemus = ArgumentCaptor.forClass(Application.class);
@@ -351,7 +351,7 @@ public class ApplicationServiceImplTest {
         } catch (IOException e) {
             fail(e.getMessage());
         }
-        application.addVaiheenVastaukset(OppijaConstants.PHASE_EDUCATION, educationAnswers);
+        application.setVaiheenVastauksetAndSetPhaseId(OppijaConstants.PHASE_EDUCATION, educationAnswers);
         try {
             application = service.updateAuthorizationMeta(application);
         } catch (IOException e) {
@@ -379,7 +379,7 @@ public class ApplicationServiceImplTest {
         aoAnswers.put(String.format(OppijaConstants.PREFERENCE_ID, 2), "4.5.6");
         aoAnswers.put(String.format(OppijaConstants.PREFERENCE_ORGANIZATION_ID, 1), "10.1.2");
         aoAnswers.put(String.format(OppijaConstants.PREFERENCE_ORGANIZATION_ID, 2), "10.3.4");
-        application.addVaiheenVastaukset(OppijaConstants.PHASE_APPLICATION_OPTIONS, aoAnswers);
+        application.setVaiheenVastauksetAndSetPhaseId(OppijaConstants.PHASE_APPLICATION_OPTIONS, aoAnswers);
 
         List<String> org1parents = new ArrayList<String>();
         org1parents.add("0.0.0");
@@ -434,7 +434,7 @@ public class ApplicationServiceImplTest {
         aoAnswers.put(String.format(OppijaConstants.PREFERENCE_ID, 55), "7.8.9");
         aoAnswers.put(String.format(OppijaConstants.PREFERENCE_NAME, 55), "kohde55");
 
-        application.addVaiheenVastaukset(OppijaConstants.PHASE_APPLICATION_OPTIONS, aoAnswers);
+        application.setVaiheenVastauksetAndSetPhaseId(OppijaConstants.PHASE_APPLICATION_OPTIONS, aoAnswers);
         when(applicationSystemService.getApplicationSystem(eq("myAsId"))).thenReturn(as);
 
         application = service.updateAuthorizationMeta(application);
@@ -485,18 +485,27 @@ public class ApplicationServiceImplTest {
                 ));
         Application application = new Application("appOid");
         application.setApplicationSystemId("myAs");
-        application.addVaiheenVastaukset(OppijaConstants.PHASE_PERSONAL, new HashMap<String, String>() {{
-            put("persQuestion1", "persAnswer1"); put("persQuestion2", "persAnswer2"); put("persQuestion3", "wrong_answer");
-            put("preference1-pers", "preference1-pers"); put("preference2-pers", "preference2-pers");
+        application.setVaiheenVastauksetAndSetPhaseId(OppijaConstants.PHASE_PERSONAL, new HashMap<String, String>() {{
+            put("persQuestion1", "persAnswer1");
+            put("persQuestion2", "persAnswer2");
+            put("persQuestion3", "wrong_answer");
+            put("preference1-pers", "preference1-pers");
+            put("preference2-pers", "preference2-pers");
         }});
-        application.addVaiheenVastaukset(OppijaConstants.PHASE_EDUCATION, new HashMap<String, String>() {{
-            put("eduQuestion1", "eduAnswer1"); put("lahtokoulu", "eduAnswer2"); put(OppijaConstants.ELEMENT_ID_SENDING_SCHOOL, "koulu");
-            put("eduRelatedQuestion4", "answer"); put("eduRelatedQuestion6", "answer");
-            put("preference1-edu", "preference1-edu"); put("preference2-edu", "preference2-edu");
+        application.setVaiheenVastauksetAndSetPhaseId(OppijaConstants.PHASE_EDUCATION, new HashMap<String, String>() {{
+            put("eduQuestion1", "eduAnswer1");
+            put("lahtokoulu", "eduAnswer2");
+            put(OppijaConstants.ELEMENT_ID_SENDING_SCHOOL, "koulu");
+            put("eduRelatedQuestion4", "answer");
+            put("eduRelatedQuestion6", "answer");
+            put("preference1-edu", "preference1-edu");
+            put("preference2-edu", "preference2-edu");
         }});
-        application.addVaiheenVastaukset(OppijaConstants.PHASE_APPLICATION_OPTIONS, new HashMap<String, String>() {{
-            put("aoQuestion1", "aoAnswer1"); put("aoQuestion2", "aoAnswer2");
-            put("preference1-ao", "preference1-ao"); put("preference2-ao", "preference2-ao");
+        application.setVaiheenVastauksetAndSetPhaseId(OppijaConstants.PHASE_APPLICATION_OPTIONS, new HashMap<String, String>() {{
+            put("aoQuestion1", "aoAnswer1");
+            put("aoQuestion2", "aoAnswer2");
+            put("preference1-ao", "preference1-ao");
+            put("preference2-ao", "preference2-ao");
         }});
         ApplicationSystem as = new ApplicationSystemBuilder().setId("myAs").setName(createI18NAsIs("myAs")).setForm(form).get();
         when(applicationSystemService.getApplicationSystem("myAs")).thenReturn(as);

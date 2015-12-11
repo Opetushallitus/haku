@@ -63,7 +63,7 @@ public class BaseEducationServiceImpl implements BaseEducationService {
                     application.getPhaseAnswers(PHASE_EDUCATION));
 
             educationAnswers = handleOpiskelija(educationAnswers, application, opiskelija);
-            application.addVaiheenVastaukset(PHASE_EDUCATION, educationAnswers);
+            application.setVaiheenVastauksetAndSetPhaseId(PHASE_EDUCATION, educationAnswers);
         }
 
         return application;

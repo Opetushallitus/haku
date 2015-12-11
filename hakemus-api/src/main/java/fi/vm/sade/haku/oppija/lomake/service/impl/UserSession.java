@@ -92,7 +92,7 @@ public class UserSession implements Serializable, Session {
     @Override
     public Application savePhaseAnswers(ApplicationPhase applicationPhase) {
         Application application = this.getApplication(applicationPhase.getApplicationSystemId());
-        application.addVaiheenVastaukset(applicationPhase.getPhaseId(), applicationPhase.getAnswers());
+        application.setVaiheenVastauksetAndSetPhaseId(applicationPhase.getPhaseId(), applicationPhase.getAnswers());
         return application;
     }
 

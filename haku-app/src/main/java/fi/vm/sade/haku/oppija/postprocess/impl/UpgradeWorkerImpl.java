@@ -165,7 +165,7 @@ public class UpgradeWorkerImpl implements UpgradeWorker{
                     if (toAdd.size() > 0) {
                         original = application.clone();
                         toAdd.putAll(osaaminen);
-                        application.addVaiheenVastaukset(OppijaConstants.PHASE_GRADES, toAdd);
+                        application.setVaiheenVastauksetAndSetPhaseId(OppijaConstants.PHASE_GRADES, toAdd);
                         application.setModelVersion(targetVersion);
                         addHistoryBasedOnChangedAnswers(application, original, SYSTEM_USER, "model upgrade 2-3");
                     }

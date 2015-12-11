@@ -149,12 +149,12 @@ public class HakumaksuTest {
         Application application = new Application() {{
             setOid(expectedHakemusOid);
             setPersonOid(expectedPersonOid);
-            addVaiheenVastaukset(PHASE_PERSONAL, ImmutableMap.of(
+            setVaiheenVastauksetAndSetPhaseId(PHASE_PERSONAL, ImmutableMap.of(
                     ELEMENT_ID_EMAIL, expectedEmail));
-            addVaiheenVastaukset(PHASE_MISC, ImmutableMap.of(
+            setVaiheenVastauksetAndSetPhaseId(PHASE_MISC, ImmutableMap.of(
                     ELEMENT_ID_CONTACT_LANGUAGE, "ruotsi"));
-            addVaiheenVastaukset(PHASE_EDUCATION, ulkomainenPohjakoulutus);
-            addVaiheenVastaukset(PHASE_APPLICATION_OPTIONS, ImmutableMap.of(
+            setVaiheenVastauksetAndSetPhaseId(PHASE_EDUCATION, ulkomainenPohjakoulutus);
+            setVaiheenVastauksetAndSetPhaseId(PHASE_APPLICATION_OPTIONS, ImmutableMap.of(
                     String.format(PREFERENCE_ID, 1), hakutoiveenOid));
         }};
 

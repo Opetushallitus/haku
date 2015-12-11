@@ -1,7 +1,6 @@
 package fi.vm.sade.haku.oppija.postprocess.impl;
 
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
-import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationDAO;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.haku.oppija.hakemus.service.BaseEducationService;
 import fi.vm.sade.haku.oppija.hakemus.service.HakumaksuService;
@@ -15,8 +14,6 @@ import fi.vm.sade.haku.virkailija.authentication.PersonBuilder;
 import fi.vm.sade.haku.virkailija.authentication.impl.AuthenticationServiceMockImpl;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakuService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.SafeString;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -68,7 +65,7 @@ public class ApplicationPostProcessorServiceTest {
     public void testSetPersonFi() {
         Application application = new Application();
 
-        application.addVaiheenVastaukset("henkilotiedot", answerMap);
+        application.setVaiheenVastauksetAndSetPhaseId("henkilotiedot", answerMap);
         application = applicationPostProcessorService.addPersonOid(application);
         assertNotNull("PersonOid should not be null", application.getPersonOid());
 
@@ -81,7 +78,7 @@ public class ApplicationPostProcessorServiceTest {
         Application application = new Application();
         answerMap.remove(OppijaConstants.ELEMENT_ID_SOCIAL_SECURITY_NUMBER);
         answerMap.put(OppijaConstants.ELEMENT_ID_NATIONALITY, "swe");
-        application.addVaiheenVastaukset("henkilotiedot", answerMap);
+        application.setVaiheenVastauksetAndSetPhaseId("henkilotiedot", answerMap);
         application = applicationPostProcessorService.addPersonOid(application);
         assertNotNull("PersonOid should not be null", application.getPersonOid());
 
@@ -92,7 +89,7 @@ public class ApplicationPostProcessorServiceTest {
     @Test
     public void testCheckPersonOidMissing(){
         Application application = new Application();
-        application.addVaiheenVastaukset("henkilotiedot", answerMap);
+        application.setVaiheenVastauksetAndSetPhaseId("henkilotiedot", answerMap);
         application.flagStudentIdentificationRequired();
 
         final Application modified = applicationPostProcessorService.checkStudentOid(application.clone());
@@ -109,7 +106,7 @@ public class ApplicationPostProcessorServiceTest {
     @Test
     public void testCheckStudentOidMissing(){
         Application application = new Application();
-        application.addVaiheenVastaukset("henkilotiedot", answerMap);
+        application.setVaiheenVastauksetAndSetPhaseId("henkilotiedot", answerMap);
         application.setPersonOid("1.2.3");
         application.flagStudentIdentificationRequired();
 
@@ -126,7 +123,7 @@ public class ApplicationPostProcessorServiceTest {
     @Test
     public void testCheckStudentOidMissingAfterRun(){
         Application application = new Application();
-        application.addVaiheenVastaukset("henkilotiedot", answerMap);
+        application.setVaiheenVastauksetAndSetPhaseId("henkilotiedot", answerMap);
         application.setPersonOid("1.2.3");
         application.flagStudentIdentificationRequired();
 
@@ -143,7 +140,7 @@ public class ApplicationPostProcessorServiceTest {
     @Test
     public void testCheckStudentOidAlreadySet(){
         final Application application = new Application();
-        application.addVaiheenVastaukset("henkilotiedot", answerMap);
+        application.setVaiheenVastauksetAndSetPhaseId("henkilotiedot", answerMap);
         application.setPersonOid("1.2.3");
         application.setStudentOid("1.2.3");
         application.flagStudentIdentificationRequired();
@@ -161,7 +158,7 @@ public class ApplicationPostProcessorServiceTest {
     @Test
     public void testFailCountIncrementTransitionToSlowDown() {
         Application application = new Application();
-        application.addVaiheenVastaukset("henkilotiedot", answerMap);
+        application.setVaiheenVastauksetAndSetPhaseId("henkilotiedot", answerMap);
         application.setPersonOid("1.2.3");
         application.flagStudentIdentificationRequired();
 
@@ -178,7 +175,7 @@ public class ApplicationPostProcessorServiceTest {
     @Test
     public void testFailCountSlowDown() {
         Application application = new Application();
-        application.addVaiheenVastaukset("henkilotiedot", answerMap);
+        application.setVaiheenVastauksetAndSetPhaseId("henkilotiedot", answerMap);
         application.setPersonOid("1.2.3");
         application.setLastAutomatedProcessingTime(System.currentTimeMillis());
         application.setAutomatedProcessingFailCount(20);

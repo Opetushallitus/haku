@@ -88,8 +88,8 @@ public class ValintaServiceTest {
             put("POHJAKOULUTUS", "1");
             put("perusopetuksen_kieli", "SV");
         }};
-        application.addVaiheenVastaukset(OppijaConstants.PHASE_APPLICATION_OPTIONS, aoMap);
-        application.addVaiheenVastaukset(OppijaConstants.PHASE_EDUCATION, eduMap);
+        application.setVaiheenVastauksetAndSetPhaseId(OppijaConstants.PHASE_APPLICATION_OPTIONS, aoMap);
+        application.setVaiheenVastauksetAndSetPhaseId(OppijaConstants.PHASE_EDUCATION, eduMap);
         when(applicationService.getApplicationByOid(eq("oid"))).thenReturn(application);
 
         FormService formService = mock(FormService.class);

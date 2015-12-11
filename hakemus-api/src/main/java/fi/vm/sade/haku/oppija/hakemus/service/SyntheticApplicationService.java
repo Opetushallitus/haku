@@ -102,12 +102,12 @@ public class SyntheticApplicationService {
 
         Person person = hakemusToPerson(hakemus);
         Map<String, String> henkilotiedot = updateHenkiloTiedot(person, new HashMap<String, String>());
-        app.addVaiheenVastaukset(OppijaConstants.PHASE_PERSONAL, henkilotiedot);
+        app.setVaiheenVastauksetAndSetPhaseId(OppijaConstants.PHASE_PERSONAL, henkilotiedot);
 
         HashMap<String, String> hakutoiveet = new HashMap<String, String>();
         hakutoiveet.put("preference1-Koulutus-id", stub.hakukohdeOid);
         hakutoiveet.put("preference1-Opetuspiste-id", stub.tarjoajaOid);
-        app.addVaiheenVastaukset(OppijaConstants.PHASE_APPLICATION_OPTIONS, hakutoiveet);
+        app.setVaiheenVastauksetAndSetPhaseId(OppijaConstants.PHASE_APPLICATION_OPTIONS, hakutoiveet);
         return app;
     }
 
@@ -115,7 +115,7 @@ public class SyntheticApplicationService {
         Person person = hakemusToPerson(hakemus);
         Map<String, String> henkilotiedot = updateHenkiloTiedot(person, current.getAnswers().get(OppijaConstants.PHASE_PERSONAL));
         current.updateNameMetadata();
-        current.addVaiheenVastaukset(OppijaConstants.PHASE_PERSONAL, henkilotiedot);
+        current.setVaiheenVastauksetAndSetPhaseId(OppijaConstants.PHASE_PERSONAL, henkilotiedot);
 
         addHakutoive(current, stub.hakukohdeOid, stub.tarjoajaOid);
         return current;

@@ -24,7 +24,7 @@ public class AttachmentUtilTest {
             answers.putAll(b.getPhaseAnswers(OppijaConstants.PHASE_EDUCATION));
         }
         return new Application() {{
-            addVaiheenVastaukset(OppijaConstants.PHASE_EDUCATION, answers);
+            setVaiheenVastauksetAndSetPhaseId(OppijaConstants.PHASE_EDUCATION, answers);
         }};
     }
 
@@ -39,33 +39,33 @@ public class AttachmentUtilTest {
     }
 
     public static final Application hakemusLukio = new Application() {{
-        addVaiheenVastaukset(OppijaConstants.PHASE_EDUCATION, ImmutableMap.of(
+        setVaiheenVastauksetAndSetPhaseId(OppijaConstants.PHASE_EDUCATION, ImmutableMap.of(
                 "pohjakoulutus_yo", "true",
                 "pohjakoulutus_yo_vuosi", "2000",
                 "pohjakoulutus_yo_tutkinto", "lk"));
     }};
 
     public static final Application hakemusYoVanha = new Application() {{
-        addVaiheenVastaukset(OppijaConstants.PHASE_EDUCATION, ImmutableMap.of(
+        setVaiheenVastauksetAndSetPhaseId(OppijaConstants.PHASE_EDUCATION, ImmutableMap.of(
                 "pohjakoulutus_yo", "true",
                 "pohjakoulutus_yo_vuosi", "1980",
                 "pohjakoulutus_yo_tutkinto", "fi"));
     }};
 
     public static final Application hakemusYoKv = new Application() {{
-        addVaiheenVastaukset(OppijaConstants.PHASE_EDUCATION, ImmutableMap.of("pohjakoulutus_yo_kansainvalinen_suomessa", "true"));
+        setVaiheenVastauksetAndSetPhaseId(OppijaConstants.PHASE_EDUCATION, ImmutableMap.of("pohjakoulutus_yo_kansainvalinen_suomessa", "true"));
     }};
 
     public static final Application hakemusYoKvUlk = new Application() {{
-        addVaiheenVastaukset(OppijaConstants.PHASE_EDUCATION, ImmutableMap.of("pohjakoulutus_yo_ulkomainen", "true"));
+        setVaiheenVastauksetAndSetPhaseId(OppijaConstants.PHASE_EDUCATION, ImmutableMap.of("pohjakoulutus_yo_ulkomainen", "true"));
     }};
 
     public static final Application hakemusKK = new Application() {{
-        addVaiheenVastaukset(OppijaConstants.PHASE_EDUCATION, ImmutableMap.of("pohjakoulutus_kk", "true"));
+        setVaiheenVastauksetAndSetPhaseId(OppijaConstants.PHASE_EDUCATION, ImmutableMap.of("pohjakoulutus_kk", "true"));
     }};
 
     public static final Application hakemusKKUlk = new Application() {{
-        addVaiheenVastaukset(OppijaConstants.PHASE_EDUCATION, ImmutableMap.of("pohjakoulutus_kk_ulk", "true"));
+        setVaiheenVastauksetAndSetPhaseId(OppijaConstants.PHASE_EDUCATION, ImmutableMap.of("pohjakoulutus_kk_ulk", "true"));
     }};
 
     public static final ApplicationOptionDTO hakukohdeKK = new ApplicationOptionDTO() {{

@@ -16,13 +16,13 @@ public class ApplicationTest {
         Application application = new Application();
         Map<String, String> answers = new HashMap<String, String>();
         answers.put(OppijaConstants.ELEMENT_ID_FIRST_NAMES, "Reino Matti-Jalmari");
-        application.addVaiheenVastaukset(OppijaConstants.PHASE_PERSONAL, answers);
+        application.setVaiheenVastauksetAndSetPhaseId(OppijaConstants.PHASE_PERSONAL, answers);
         application.updateNameMetadata();
 
         assertEquals("", application.getFullName());
 
         answers.put(OppijaConstants.ELEMENT_ID_LAST_NAME, "Aalto-setälä");
-        application.addVaiheenVastaukset(OppijaConstants.PHASE_PERSONAL, answers);
+        application.setVaiheenVastauksetAndSetPhaseId(OppijaConstants.PHASE_PERSONAL, answers);
         application.updateNameMetadata();
 
         assertEquals("aaltosetälä reino mattijalmari", application.getFullName());

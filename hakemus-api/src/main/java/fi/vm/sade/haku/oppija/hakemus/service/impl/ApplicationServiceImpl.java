@@ -52,7 +52,6 @@ import fi.vm.sade.haku.oppija.lomake.validation.ElementTreeValidator;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationInput;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationResult;
 import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.I18nBundle;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.i18n.I18nBundleService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.ohjausparametrit.OhjausparametritService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.ohjausparametrit.domain.Ohjausparametrit;
@@ -566,7 +565,7 @@ public class ApplicationServiceImpl implements ApplicationService {
                         answersRemoved = true;
                     }
                 }
-                application.addVaiheenVastaukset(phaseId, newAnswers);
+                application.setVaiheenVastauksetAndSetPhaseId(phaseId, newAnswers);
             }
         }
         return application;
@@ -604,8 +603,8 @@ public class ApplicationServiceImpl implements ApplicationService {
             }
             newGradeAnswers.put(key, entry.getValue());
         }
-        application.addVaiheenVastaukset(OppijaConstants.PHASE_EDUCATION, educationAnswers);
-        application.addVaiheenVastaukset(OppijaConstants.PHASE_GRADES, newGradeAnswers);
+        application.setVaiheenVastauksetAndSetPhaseId(OppijaConstants.PHASE_EDUCATION, educationAnswers);
+        application.setVaiheenVastauksetAndSetPhaseId(OppijaConstants.PHASE_GRADES, newGradeAnswers);
         return application;
     }
 
@@ -782,7 +781,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         Map<String, String> phaseAnswers = application.getAnswers().get(OppijaConstants.PHASE_APPLICATION_OPTIONS);
         String lang = application.getMeta().get(Application.META_FILING_LANGUAGE);
         phaseAnswers = ensureApplicationOptionGroupData(phaseAnswers, lang);
-        application.addVaiheenVastaukset(OppijaConstants.PHASE_APPLICATION_OPTIONS, phaseAnswers);
+        application.setVaiheenVastauksetAndSetPhaseId(OppijaConstants.PHASE_APPLICATION_OPTIONS, phaseAnswers);
         return application;
     }
 

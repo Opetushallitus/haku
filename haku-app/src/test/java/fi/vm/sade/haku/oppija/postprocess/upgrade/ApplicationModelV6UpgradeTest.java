@@ -76,7 +76,7 @@ public final class ApplicationModelV6UpgradeTest {
         phaseAnswers.put(AM_TUTKINTO_PREFIX, OppijaConstants.TUTKINTO_MUU);
         phaseAnswers.put(AM_OPPILAITOS_PREFIX + MUU_POSTFIX, FREEHAND_AM_LAITOS + 1);
         phaseAnswers.put(AM_TUTKINTO_PREFIX + MUU_POSTFIX, FREEHAND_AM_TUTKINTO + 1);
-        application.addVaiheenVastaukset(OppijaConstants.PHASE_EDUCATION, phaseAnswers);
+        application.setVaiheenVastauksetAndSetPhaseId(OppijaConstants.PHASE_EDUCATION, phaseAnswers);
         // 1st run
         phaseAnswers.put(AM_OPPILAITOS_PREFIX + MUU_POSTFIX, OppijaConstants.OPPILAITOS_TUNTEMATON);
         phaseAnswers.put(AM_TUTKINTO_PREFIX + MUU_POSTFIX, OppijaConstants.TUTKINTO_MUU);
@@ -84,7 +84,7 @@ public final class ApplicationModelV6UpgradeTest {
         phaseAnswers.put(AM_TUTKINTO_PREFIX + MUU_POSTFIX + MUU_POSTFIX, FREEHAND_AM_TUTKINTO + 1);
 
         Application original = application.clone();
-        application.addVaiheenVastaukset(OppijaConstants.PHASE_EDUCATION, phaseAnswers);
+        application.setVaiheenVastauksetAndSetPhaseId(OppijaConstants.PHASE_EDUCATION, phaseAnswers);
         if (createHistory)
             addHistoryBasedOnChangedAnswers(application, original, "järjestelmä", "Automaattikäsittely: ammatilliset pohjakoulutukset sidottu koodeihin ja vapaa selite siirretty.");
         // add more
@@ -94,7 +94,7 @@ public final class ApplicationModelV6UpgradeTest {
         phaseAnswers.put(AM_TUTKINTO_PREFIX + MUU_POSTFIX + 2, FREEHAND_AM_TUTKINTO + 2);
 
         original = application.clone();
-        application.addVaiheenVastaukset(OppijaConstants.PHASE_EDUCATION, phaseAnswers);
+        application.setVaiheenVastauksetAndSetPhaseId(OppijaConstants.PHASE_EDUCATION, phaseAnswers);
         if (createHistory)
             addHistoryBasedOnChangedAnswers(application, original, "käyttäjä", "Lisätty taustaan jotain");
         // 2nd run
@@ -109,7 +109,7 @@ public final class ApplicationModelV6UpgradeTest {
         phaseAnswers.put(AM_TUTKINTO_PREFIX + MUU_POSTFIX + MUU_POSTFIX + 2, FREEHAND_AM_TUTKINTO + 2);
 
         original = application.clone();
-        application.addVaiheenVastaukset(OppijaConstants.PHASE_EDUCATION, phaseAnswers);
+        application.setVaiheenVastauksetAndSetPhaseId(OppijaConstants.PHASE_EDUCATION, phaseAnswers);
         if (createHistory)
             addHistoryBasedOnChangedAnswers(application, original, "järjestelmä", "Automaattikäsittely: ammatilliset pohjakoulutukset sidottu koodeihin ja vapaa selite siirretty.");
         return application;

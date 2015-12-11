@@ -209,11 +209,11 @@ public class OfficerUIServiceImpl implements OfficerUIService {
 
         if ((phaseId.equals(PHASE_APPLICATION_OPTIONS) || phaseId.equals(PHASE_EDUCATION)) && as.isMaksumuuriKaytossa()) {
             Map<String, String> vastauksetMerged = application.getVastauksetMerged();
-            ImmutableMap<String, String> answersWithPaymentNotification = paymentNotificationAnswers(vastauksetMerged, hakumaksuService.paymentRequirements(Types.MergedAnswers.of(vastauksetMerged)));
-            application.addVaiheenVastaukset(PHASE_APPLICATION_OPTIONS,
+            ImmutableMap<String, String> answersForPaymentNotification = paymentNotificationAnswers(vastauksetMerged, hakumaksuService.paymentRequirements(Types.MergedAnswers.of(vastauksetMerged)));
+            application.setVaiheenVastauksetAndSetPhaseId(PHASE_APPLICATION_OPTIONS,
                     ImmutableMap.<String, String>builder()
                             .putAll(vastauksetMerged)
-                            .putAll(answersWithPaymentNotification)
+                            .putAll(answersForPaymentNotification)
                             .build());
         }
 
@@ -418,7 +418,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
 
         loggerAspect.logUpdateApplication(application, applicationPhase);
 
-        application.addVaiheenVastaukset(applicationPhase.getPhaseId(), newPhaseAnswers);
+        application.setVaiheenVastauksetAndSetPhaseId(applicationPhase.getPhaseId(), newPhaseAnswers);
         application = applicationService.removeOrphanedAnswers(application);
 
         Map<String, String> allAnswers = application.getVastauksetMerged();

@@ -17,7 +17,6 @@
 package fi.vm.sade.haku.oppija.hakemus.domain;
 
 import com.google.common.base.*;
-import com.google.common.base.Optional;
 import com.google.common.collect.Maps;
 import fi.vm.sade.haku.oppija.lomake.domain.ObjectIdDeserializer;
 import fi.vm.sade.haku.oppija.lomake.domain.ObjectIdSerializer;
@@ -178,7 +177,7 @@ public class Application implements Serializable {
 
     public Application(final User user, final ApplicationPhase phase) {
         this(phase.getApplicationSystemId(), user);
-        addVaiheenVastaukset(phase.getPhaseId(), phase.getAnswers());
+        setVaiheenVastauksetAndSetPhaseId(phase.getPhaseId(), phase.getAnswers());
     }
 
     public Application(final String applicationSystemId, final String oid) {
@@ -222,7 +221,7 @@ public class Application implements Serializable {
     }
 
     // final, koska kutsutaan rakentajasta
-    public final Application addVaiheenVastaukset(final String phaseId, Map<String, String> answers) {
+    public final Application setVaiheenVastauksetAndSetPhaseId(final String phaseId, Map<String, String> answers) {
         this.phaseId = answers.get(VAIHE_ID);
         Map<String, String> answersWithoutPhaseId = new HashMap<String, String>(
                 Maps.filterKeys(answers, Predicates.not(Predicates.equalTo(VAIHE_ID))));
@@ -389,7 +388,7 @@ public class Application implements Serializable {
         }
 
         updateNameMetadata();
-        addVaiheenVastaukset("henkilotiedot", henkilotiedot);
+        setVaiheenVastauksetAndSetPhaseId("henkilotiedot", henkilotiedot);
         return this;
     }
 

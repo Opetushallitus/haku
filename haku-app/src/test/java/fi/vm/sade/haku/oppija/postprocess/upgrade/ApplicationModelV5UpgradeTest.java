@@ -76,7 +76,7 @@ public final class ApplicationModelV5UpgradeTest {
         final Application application = baseApplication.clone();
         Map<String,String> phaseAnwsers = new HashMap(application.getPhaseAnswers(OppijaConstants.PHASE_EDUCATION));
         phaseAnwsers.putAll(answerChanges);
-        application.addVaiheenVastaukset(OppijaConstants.PHASE_EDUCATION, phaseAnwsers);
+        application.setVaiheenVastauksetAndSetPhaseId(OppijaConstants.PHASE_EDUCATION, phaseAnwsers);
         return application;
     }
 

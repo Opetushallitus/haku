@@ -2,7 +2,6 @@ package fi.vm.sade.haku.oppija.hakemus.it.dao;
 
 import com.google.common.collect.Lists;
 import com.mongodb.DBObject;
-import com.mongodb.util.JSON;
 import fi.vm.sade.haku.oppija.common.dao.AbstractDAOTest;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
@@ -10,7 +9,6 @@ import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultItemDTO;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.haku.util.JsonTestData;
 
-import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,7 +22,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
 
-import static java.lang.ClassLoader.getSystemResourceAsStream;
 import static junit.framework.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -78,12 +75,12 @@ public class ApplicationSearchMongoIT extends AbstractDAOTest {
                                                               PAIJAT_HAMEEN_KOUTUTUSKONSERNI + "," +
                                                               ROOT_ORGANIZATION);
         hakutoiveet.put("preference2-discretionary", "true");
-        applicationToSalpausSirkus.addVaiheenVastaukset("hakutoiveet", hakutoiveet);
+        applicationToSalpausSirkus.setVaiheenVastauksetAndSetPhaseId("hakutoiveet", hakutoiveet);
 
         Map<String, String> henkilotiedot = applicationToSalpausSirkus.getAnswers().get("henkilotiedot");
         henkilotiedot.put("Henkilotunnus", SIRKUSLAINEN_HETU);
         henkilotiedot.put("Henkilotunnus_plain", "221158-956V");
-        applicationToSalpausSirkus.addVaiheenVastaukset("henkilotiedot", henkilotiedot);
+        applicationToSalpausSirkus.setVaiheenVastauksetAndSetPhaseId("henkilotiedot", henkilotiedot);
 
         return applicationService.updateAuthorizationMeta(applicationToSalpausSirkus);
     }

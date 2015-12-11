@@ -66,11 +66,11 @@ public class ApplicationGenerator {
         Map<String, String> koulutustausta = generateKoulutustausta();
         Map<String, String> osaaminen = generateOsaaminen();
 
-        application.addVaiheenVastaukset("henkilotiedot", henkilotiedot);
-        application.addVaiheenVastaukset("lisatiedot", lisatiedot);
-        application.addVaiheenVastaukset("hakutoiveet", hakutoiveet);
-        application.addVaiheenVastaukset("koulutustausta", koulutustausta);
-        application.addVaiheenVastaukset("osaaminen", osaaminen);
+        application.setVaiheenVastauksetAndSetPhaseId("henkilotiedot", henkilotiedot);
+        application.setVaiheenVastauksetAndSetPhaseId("lisatiedot", lisatiedot);
+        application.setVaiheenVastauksetAndSetPhaseId("hakutoiveet", hakutoiveet);
+        application.setVaiheenVastauksetAndSetPhaseId("koulutustausta", koulutustausta);
+        application.setVaiheenVastauksetAndSetPhaseId("osaaminen", osaaminen);
         application.updateNameMetadata();
 
         application.setOid(oidDao.generateNewOid());

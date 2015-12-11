@@ -46,9 +46,9 @@ public class PaymentEmailTest {
         Application application = new Application() {{
             setOid(expectedHakemusOid);
             setPersonOid(expectedPersonOid);
-            addVaiheenVastaukset(PHASE_PERSONAL, ImmutableMap.of(
+            setVaiheenVastauksetAndSetPhaseId(PHASE_PERSONAL, ImmutableMap.of(
                     ELEMENT_ID_EMAIL, expectedEmail));
-            addVaiheenVastaukset(PHASE_MISC, ImmutableMap.of(
+            setVaiheenVastauksetAndSetPhaseId(PHASE_MISC, ImmutableMap.of(
                     ELEMENT_ID_CONTACT_LANGUAGE, "englanti"));
         }};
 

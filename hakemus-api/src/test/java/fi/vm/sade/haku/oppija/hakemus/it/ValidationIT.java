@@ -29,7 +29,7 @@ public class ValidationIT extends IntegrationTestSupport {
         vastaukset.put("preference1-Opetuspiste-id", "1.2.246.562.10.35241670047");
         vastaukset.put("preference1-Koulutus", "Ökykoulutus");
         vastaukset.put("preference1-Opetuspiste", "Ökykoulu");
-        applicationFixture.addVaiheenVastaukset("hakutoiveet", vastaukset);
+        applicationFixture.setVaiheenVastauksetAndSetPhaseId("hakutoiveet", vastaukset);
         final Map<String, I18nText> errors = validateApplication(getTestApplicationSystem(), applicationFixture);
         assertEquals(errors.size(), 5);
     }
