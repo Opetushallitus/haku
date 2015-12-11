@@ -20,8 +20,11 @@ public class I18nBundle {
         final List<String> bundleNamesList = new ArrayList<String>(bundleNames.length + 1);
 
         bundleNamesList.add(FORM_COMMON_BUNDLE_NAME);
+        log.debug("Creating message bundle...");
         for (String bundleName : bundleNames) {
-            bundleNamesList.add(bundleName);
+            log.debug("Adding file to bundle: " + bundleName);
+            if(bundleName != null)
+                bundleNamesList.add(bundleName);
         }
 
         initializeBundle(bundleNamesList);
