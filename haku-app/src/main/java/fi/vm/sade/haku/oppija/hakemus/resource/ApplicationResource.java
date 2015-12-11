@@ -36,7 +36,7 @@ import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.haku.oppija.ui.service.OfficerUIService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.I18nBundle;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.i18n.I18nBundleService;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.Oid;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.ApplicationOid;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -134,7 +134,7 @@ public class ApplicationResource {
     public void setPaymentState(@ApiParam(value = "Hakemuksen oid-tunniste") @PathParam(OID) String applicationOid,
                                 @RequestBody Map<String, String> body) {
         try {
-            Application application = applicationService.getApplicationByOid(Oid.of(applicationOid).getValue());
+            Application application = applicationService.getApplicationByOid(ApplicationOid.of(applicationOid).getValue());
 
             PaymentState state = PaymentState.valueOf(body.get("paymentState"));
             PaymentState oldState = application.getRequiredPaymentState();
