@@ -50,6 +50,26 @@ public final class Types {
         }
     }
 
+    public static final class ApplicationOid extends Oid {
+        private ApplicationOid(String value) {
+            super(value);
+        }
+
+        public static ApplicationOid of(String value) {
+            return new ApplicationOid(value);
+        }
+    }
+
+    public static final class PersonOid extends Oid {
+        private PersonOid(String value) {
+            super(value);
+        }
+
+        public static PersonOid of(String value) {
+            return new PersonOid(value);
+        }
+    }
+
     public static final class AsciiCountryCode extends SafeString {
         private AsciiCountryCode(String value) {
             super(value);
@@ -94,16 +114,13 @@ public final class Types {
         }
     }
 
-    public static class Oid extends SafeString {
+    // Extend "Oid" to reflect real purpose of the OID
+    private static abstract class Oid extends SafeString {
         private Oid(String value) {
             super(value);
             if (!value.matches("[0-9]+(.[.0-9]+)*")) {
                 throw new IllegalArgumentException("OID must consist of dot-separated integers, got: '" + value + "'");
             }
-        }
-
-        public static Oid of(String value) {
-            return new Oid(value);
         }
     }
 }

@@ -19,7 +19,6 @@ import fi.vm.sade.haku.oppija.hakemus.service.EducationRequirementsUtil;
 import fi.vm.sade.haku.oppija.hakemus.service.HakumaksuService.PaymentEmail;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.ApplicationOptionOid;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.AsciiCountryCode;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.Oid;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.SafeString;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,6 +30,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.*;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.*;
 import static org.apache.commons.lang.StringUtils.EMPTY;
 import static org.apache.commons.lang.StringUtils.isNotEmpty;
 
@@ -89,8 +89,8 @@ public class HakumaksuUtil {
     public ListenableFuture<Boolean> sendPaymentRequest(final PaymentEmail paymentEmail,
                                                         final SafeString oppijanTunnistusUrl,
                                                         final SafeString redirectUrl,
-                                                        final Oid _hakemusOid,
-                                                        final Oid _personOid,
+                                                        final ApplicationOid _hakemusOid,
+                                                        final PersonOid _personOid,
                                                         final SafeString emailAddress) {
         OppijanTunnistus body = new OppijanTunnistus() {{
             this.url = redirectUrl.getValue();

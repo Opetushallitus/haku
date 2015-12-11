@@ -199,12 +199,12 @@ public class HakumaksuService {
             if (!exemptFromPayment
                     && (!requiredPaymentState.isPresent() || requireResend(application, requiredPaymentState))) {
 
-                Oid applicationOid = Oid.of(application.getOid());
+                ApplicationOid applicationOid = ApplicationOid.of(application.getOid());
                 paymentRequestOrThrow(
                         buildEmail.apply(application),
                         SafeString.of(application.getPhaseAnswers(OppijaConstants.PHASE_PERSONAL).get("Sähköposti")),
                         applicationOid,
-                        Oid.of(application.getPersonOid()));
+                        PersonOid.of(application.getPersonOid()));
 
                 application.setRequiredPaymentState(PaymentState.NOTIFIED);
 
@@ -270,8 +270,8 @@ public class HakumaksuService {
 
     private void paymentRequestOrThrow(PaymentEmail paymentEmail,
                                        SafeString emailAddress,
-                                       Oid applicationOid,
-                                       Oid personOid) throws ExecutionException, InterruptedException {
+                                       ApplicationOid applicationOid,
+                                       PersonOid personOid) throws ExecutionException, InterruptedException {
         if (!util.sendPaymentRequest(
                 paymentEmail,
                 oppijanTunnistusUrl,
@@ -284,7 +284,7 @@ public class HakumaksuService {
         }
     }
 
-    private SafeString getServiceUrl(Oid applicationOid, LanguageCodeISO6391 languageCode) {
+    private SafeString getServiceUrl(ApplicationOid applicationOid, LanguageCodeISO6391 languageCode) {
         return SafeString.of(languageCodeToServiceUrlMap.get(languageCode) + "/app/" + applicationOid + "#/token/");
     }
 }
