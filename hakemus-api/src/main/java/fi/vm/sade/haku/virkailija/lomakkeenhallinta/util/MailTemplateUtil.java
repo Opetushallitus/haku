@@ -11,7 +11,6 @@ import com.google.common.collect.Ordering;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.service.HakumaksuService.PaymentEmail;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationPeriod;
-import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.HakumaksuUtil.LanguageCodeISO6391;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.SafeString;
 import org.joda.time.DateTime;
@@ -23,6 +22,7 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.text.DateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
@@ -75,8 +75,8 @@ public final class MailTemplateUtil {
         return d.getTime() < Long.MAX_VALUE;
     }
 
-    private static Date nextEndDate(ApplicationSystem applicationSystem, final Date changeTime) {
-        return dateComparator.min(Iterables.transform(Iterables.filter(applicationSystem.getApplicationPeriods(), new Predicate<ApplicationPeriod>() {
+    private static Date nextEndDate(List<ApplicationPeriod> applicationPeriods, final Date changeTime) {
+        return dateComparator.min(Iterables.transform(Iterables.filter(applicationPeriods, new Predicate<ApplicationPeriod>() {
             @Override
             public boolean apply(ApplicationPeriod applicationPeriod) {
                 final Date end = applicationPeriod.getEnd();
@@ -89,8 +89,8 @@ public final class MailTemplateUtil {
         return new DateTime(changeTime.getTime(), DateTimeZone.UTC).plus(gracePeriod).toDateMidnight().toDate();
     }
 
-    private static boolean isWithinApplicationPeriods(ApplicationSystem applicationSystem, final Date changeTime) {
-        return Iterables.any(applicationSystem.getApplicationPeriods(), new Predicate<ApplicationPeriod>() {
+    private static boolean isWithinApplicationPeriods(List<ApplicationPeriod> applicationPeriods, final Date changeTime) {
+        return Iterables.any(applicationPeriods, new Predicate<ApplicationPeriod>() {
             @Override
             public boolean apply(ApplicationPeriod period) {
                 final Date start = period.getStart();
@@ -101,9 +101,9 @@ public final class MailTemplateUtil {
         });
     }
 
-    public static Date calculateDueDate(ApplicationSystem applicationSystem, final Date changeTime, long gracePeriod) {
-        if (isWithinApplicationPeriods(applicationSystem, changeTime)) {
-            return dateComparator.max(nextEndDate(applicationSystem, changeTime), withGracePeriod(changeTime, gracePeriod));
+    public static Date calculateDueDate(List<ApplicationPeriod> applicationPeriods, final Date changeTime, long gracePeriod) {
+        if (isWithinApplicationPeriods(applicationPeriods, changeTime)) {
+            return dateComparator.max(nextEndDate(applicationPeriods, changeTime), withGracePeriod(changeTime, gracePeriod));
         } else {
             return withGracePeriod(changeTime, gracePeriod);
         }
@@ -129,14 +129,14 @@ public final class MailTemplateUtil {
         return dateTimeInstance.format(dueDate);
     }
 
-    public static Function<Application, PaymentEmail> paymentEmailFromApplication(final ApplicationSystem applicationSystem) {
+    public static Function<Application, PaymentEmail> paymentEmailFromApplication(final List<ApplicationPeriod> applicationPeriods) {
         return new Function<Application, PaymentEmail>() {
             @Override
             public PaymentEmail apply(Application application) {
                 LanguageCodeISO6391 language = languageCodeFromApplication(application);
                 SafeString subject = fromNullable(emailSubjectTranslations.get(language)).or(emailSubjectTranslations.get(en));
                 try {
-                    Date dueDate = calculateDueDate(applicationSystem, new Date(), GRACE_PERIOD);
+                    Date dueDate = calculateDueDate(applicationPeriods, new Date(), GRACE_PERIOD);
                     return new PaymentEmail(subject, createEmailTemplate(language, subject, dueDate), language, dueDate);
                 } catch (IOException e) {
                     LOGGER.error("Failed to create payment email from application " + application.getOid(), e);

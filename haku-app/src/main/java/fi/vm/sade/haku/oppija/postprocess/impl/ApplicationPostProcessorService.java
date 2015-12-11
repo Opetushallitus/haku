@@ -86,7 +86,7 @@ public class ApplicationPostProcessorService {
         if (applicationSystem.isMaksumuuriKaytossa()) {
             PaymentState oldPaymentState = application.getRequiredPaymentState();
 
-            application = hakumaksuService.processPayment(application, paymentEmailFromApplication(applicationSystem));
+            application = hakumaksuService.processPayment(application, paymentEmailFromApplication(applicationSystem.getApplicationPeriods()));
 
             if (application.getRequiredPaymentState() != oldPaymentState) {
                 AUDIT.log(builder()

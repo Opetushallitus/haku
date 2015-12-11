@@ -61,7 +61,7 @@ public class PaymentEmailTest {
                 .setId("1.2.3")
                 .setName(new I18nText(ImmutableMap.<String, String>of()));
 
-        PaymentEmail paymentEmail = paymentEmailFromApplication(builder.get()).apply(application);
+        PaymentEmail paymentEmail = paymentEmailFromApplication(builder.get().getApplicationPeriods()).apply(application);
 
         String subject = paymentEmail.subject.getValue();
         assertEquals("Studyinfo - payment link", subject);
@@ -99,11 +99,11 @@ public class PaymentEmailTest {
         long gracePeriod = TimeUnit.DAYS.toMillis(10);
 
         // Before end but less than grace period
-        assertEquals(fromString("2000-01-25"), calculateDueDate(applicationSystem, fromString("2000-01-15"), gracePeriod));
+        assertEquals(fromString("2000-01-25"), calculateDueDate(applicationSystem.getApplicationPeriods(), fromString("2000-01-15"), gracePeriod));
         // After end
-        assertEquals(fromString("2000-01-31"), calculateDueDate(applicationSystem, fromString("2000-01-21"), gracePeriod));
+        assertEquals(fromString("2000-01-31"), calculateDueDate(applicationSystem.getApplicationPeriods(), fromString("2000-01-21"), gracePeriod));
         // Before end and more than grace period
-        assertEquals(relativeEndDate, calculateDueDate(applicationSystem, fromString("2000-01-05"), gracePeriod));
+        assertEquals(relativeEndDate, calculateDueDate(applicationSystem.getApplicationPeriods(), fromString("2000-01-05"), gracePeriod));
     }
 
     @Test
@@ -121,19 +121,19 @@ public class PaymentEmailTest {
         long gracePeriod = TimeUnit.DAYS.toMillis(10);
 
         // Before first
-        assertEquals(fromString("2000-01-11"), calculateDueDate(applicationSystem, fromString("2000-01-01"), gracePeriod));
+        assertEquals(fromString("2000-01-11"), calculateDueDate(applicationSystem.getApplicationPeriods(), fromString("2000-01-01"), gracePeriod));
         // Near first start
-        assertEquals(fromString("2000-02-04"), calculateDueDate(applicationSystem, fromString("2000-01-25"), gracePeriod));
+        assertEquals(fromString("2000-02-04"), calculateDueDate(applicationSystem.getApplicationPeriods(), fromString("2000-01-25"), gracePeriod));
         // Within first
-        assertEquals(fromString("2000-03-01"), calculateDueDate(applicationSystem, fromString("2000-02-10"), gracePeriod));
+        assertEquals(fromString("2000-03-01"), calculateDueDate(applicationSystem.getApplicationPeriods(), fromString("2000-02-10"), gracePeriod));
         // Between first and second, grace period should be applied
-        assertEquals(fromString("2000-03-20"), calculateDueDate(applicationSystem, fromString("2000-03-10"), gracePeriod));
+        assertEquals(fromString("2000-03-20"), calculateDueDate(applicationSystem.getApplicationPeriods(), fromString("2000-03-10"), gracePeriod));
         // Within second
-        assertEquals(fromString("2000-05-01"), calculateDueDate(applicationSystem, fromString("2000-04-10"), gracePeriod));
+        assertEquals(fromString("2000-05-01"), calculateDueDate(applicationSystem.getApplicationPeriods(), fromString("2000-04-10"), gracePeriod));
         // Within second, near end date, grace period should be applied
-        assertEquals(fromString("2000-05-05"), calculateDueDate(applicationSystem, fromString("2000-04-25"), gracePeriod));
+        assertEquals(fromString("2000-05-05"), calculateDueDate(applicationSystem.getApplicationPeriods(), fromString("2000-04-25"), gracePeriod));
         // After last period, grace period should be applied
-        assertEquals(fromString("2000-07-12"), calculateDueDate(applicationSystem, fromString("2000-07-02"), gracePeriod));
+        assertEquals(fromString("2000-07-12"), calculateDueDate(applicationSystem.getApplicationPeriods(), fromString("2000-07-02"), gracePeriod));
     }
 
     @Test
@@ -149,13 +149,13 @@ public class PaymentEmailTest {
         long gracePeriod = TimeUnit.DAYS.toMillis(10);
 
         // Before start
-        assertEquals(fromString("2000-03-11"), calculateDueDate(applicationSystem, fromString("2000-03-01"), gracePeriod));
+        assertEquals(fromString("2000-03-11"), calculateDueDate(applicationSystem.getApplicationPeriods(), fromString("2000-03-01"), gracePeriod));
         // Within
-        assertEquals(fromString("2000-05-01"), calculateDueDate(applicationSystem, fromString("2000-04-02"), gracePeriod));
+        assertEquals(fromString("2000-05-01"), calculateDueDate(applicationSystem.getApplicationPeriods(), fromString("2000-04-02"), gracePeriod));
         // Within, near end date
-        assertEquals(fromString("2000-05-05"), calculateDueDate(applicationSystem, fromString("2000-04-25"), gracePeriod));
+        assertEquals(fromString("2000-05-05"), calculateDueDate(applicationSystem.getApplicationPeriods(), fromString("2000-04-25"), gracePeriod));
         // After end
-        assertEquals(fromString("2000-05-15"), calculateDueDate(applicationSystem, fromString("2000-05-05"), gracePeriod));
+        assertEquals(fromString("2000-05-15"), calculateDueDate(applicationSystem.getApplicationPeriods(), fromString("2000-05-05"), gracePeriod));
     }
 
     @Test
@@ -171,13 +171,13 @@ public class PaymentEmailTest {
         long gracePeriod = TimeUnit.DAYS.toMillis(10);
 
         // Before start
-        assertEquals(fromString("2000-03-11"), calculateDueDate(applicationSystem, fromString("2000-03-01"), gracePeriod));
+        assertEquals(fromString("2000-03-11"), calculateDueDate(applicationSystem.getApplicationPeriods(), fromString("2000-03-01"), gracePeriod));
         // Near start
-        assertEquals(fromString("2000-04-10"), calculateDueDate(applicationSystem, fromString("2000-03-31"), gracePeriod));
+        assertEquals(fromString("2000-04-10"), calculateDueDate(applicationSystem.getApplicationPeriods(), fromString("2000-03-31"), gracePeriod));
         // Within
-        assertEquals(fromString("2000-04-11"), calculateDueDate(applicationSystem, fromString("2000-04-01"), gracePeriod));
+        assertEquals(fromString("2000-04-11"), calculateDueDate(applicationSystem.getApplicationPeriods(), fromString("2000-04-01"), gracePeriod));
         // After end
-        assertEquals(fromString("2000-05-15"), calculateDueDate(applicationSystem, fromString("2000-05-05"), gracePeriod));
+        assertEquals(fromString("2000-05-15"), calculateDueDate(applicationSystem.getApplicationPeriods(), fromString("2000-05-05"), gracePeriod));
     }
 
 
@@ -194,11 +194,11 @@ public class PaymentEmailTest {
         long gracePeriod = TimeUnit.DAYS.toMillis(10);
 
         // Before start
-        assertEquals(fromString("2000-03-11"), calculateDueDate(applicationSystem, fromString("2000-03-01"), gracePeriod));
+        assertEquals(fromString("2000-03-11"), calculateDueDate(applicationSystem.getApplicationPeriods(), fromString("2000-03-01"), gracePeriod));
         // Near start
-        assertEquals(fromString("2000-04-10"), calculateDueDate(applicationSystem, fromString("2000-03-31"), gracePeriod));
+        assertEquals(fromString("2000-04-10"), calculateDueDate(applicationSystem.getApplicationPeriods(), fromString("2000-03-31"), gracePeriod));
         // After start
-        assertEquals(fromString("2000-05-15"), calculateDueDate(applicationSystem, fromString("2000-05-05"), gracePeriod));
+        assertEquals(fromString("2000-05-15"), calculateDueDate(applicationSystem.getApplicationPeriods(), fromString("2000-05-05"), gracePeriod));
     }
 
 }
