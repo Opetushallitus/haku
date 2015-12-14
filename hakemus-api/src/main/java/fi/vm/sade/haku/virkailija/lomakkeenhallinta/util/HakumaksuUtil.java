@@ -18,7 +18,7 @@ import fi.vm.sade.haku.http.RestClient;
 import fi.vm.sade.haku.oppija.hakemus.service.EducationRequirementsUtil;
 import fi.vm.sade.haku.oppija.hakemus.service.HakumaksuService.PaymentEmail;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.ApplicationOptionOid;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.AsciiCountryCode;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.IsoCountryCode;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.SafeString;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -170,11 +170,13 @@ public class HakumaksuUtil {
 
     public static final AsciiCountryCode SVEITSI = AsciiCountryCode.of("CHE");
 
-    private boolean isSwitzerland(AsciiCountryCode countryCode) {
+    public static final IsoCountryCode SVEITSI = IsoCountryCode.of("CHE");
+
+    private boolean isSwitzerland(IsoCountryCode countryCode) {
         return countryCode.equals(SVEITSI);
     }
 
-    private Boolean _isExemptFromPayment(AsciiCountryCode countryCode) {
+    private Boolean _isExemptFromPayment(IsoCountryCode countryCode) {
         try {
             return isSwitzerland(countryCode) ||
                     getEaaCountryCodes().get().contains(asciiToNumericCountryCode(countryCode).get());
@@ -185,16 +187,24 @@ public class HakumaksuUtil {
         }
     }
 
-    private final LoadingCache<AsciiCountryCode, Boolean> exemptions = CacheBuilder.newBuilder()
+    private final LoadingCache<IsoCountryCode, Boolean> exemptions = CacheBuilder.newBuilder()
             .maximumSize(1000)
             .expireAfterWrite(10, TimeUnit.MINUTES)
-            .build(new CacheLoader<AsciiCountryCode, Boolean>() {
-                public Boolean load(AsciiCountryCode countryCode) {
+            .build(new CacheLoader<IsoCountryCode, Boolean>() {
+                public Boolean load(IsoCountryCode countryCode) {
                     return _isExemptFromPayment(countryCode);
                 }
             });
 
-    public boolean isEducationCountryExemptFromPayment(AsciiCountryCode threeLetterCountryCode) throws ExecutionException {
+    private final LoadingCache<CacheKeys, Set<IsoCountryCode>> koodistoCache = CacheBuilder.newBuilder()
+            .maximumSize(1000)
+            .build(new CacheLoader<CacheKeys, Set<IsoCountryCode>>() {
+                public Set<IsoCountryCode> load(CacheKeys cacheKey) throws Exception {
+                    return null;
+                }
+            });
+
+    public boolean isEducationCountryExemptFromPayment(IsoCountryCode threeLetterCountryCode) throws ExecutionException {
         return exemptions.get(threeLetterCountryCode);
     }
 

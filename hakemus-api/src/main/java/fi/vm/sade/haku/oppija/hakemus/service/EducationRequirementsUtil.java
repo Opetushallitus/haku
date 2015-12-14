@@ -8,7 +8,7 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
 import fi.vm.sade.haku.oppija.hakemus.domain.BaseEducations;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.AsciiCountryCode;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.IsoCountryCode;
 
 import static com.google.common.collect.Iterables.filter;
 
@@ -16,26 +16,26 @@ public class EducationRequirementsUtil {
 
     public static class Eligibility {
         public final String nimike;
-        public final AsciiCountryCode suoritusmaa;
+        public final IsoCountryCode suoritusmaa;
         public final boolean pohjakoulutusVapauttaaHakumaksusta; // ...suoritusmaasta riippumatta
 
-        private Eligibility(String nimike, AsciiCountryCode suoritusmaa, boolean pohjakoulutusVapauttaaHakumaksusta) {
+        private Eligibility(String nimike, IsoCountryCode suoritusmaa, boolean pohjakoulutusVapauttaaHakumaksusta) {
             this.nimike = nimike;
             this.suoritusmaa = suoritusmaa;
             this.pohjakoulutusVapauttaaHakumaksusta = pohjakoulutusVapauttaaHakumaksusta;
         }
 
         // IB, EB, RP
-        public static Eligibility ulkomainenYo(String nimike, AsciiCountryCode suoritusmaa) {
+        public static Eligibility ulkomainenYo(String nimike, IsoCountryCode suoritusmaa) {
             return new Eligibility(nimike, suoritusmaa, true);
         }
 
-        public static Eligibility ulkomainen(String nimike, AsciiCountryCode suoritusmaa) {
+        public static Eligibility ulkomainen(String nimike, IsoCountryCode suoritusmaa) {
             return new Eligibility(nimike, suoritusmaa, false);
         }
 
         public static Eligibility suomalainen(String nimike) {
-            return new Eligibility(nimike, AsciiCountryCode.of("FIN"), true);
+            return new Eligibility(nimike, IsoCountryCode.of("FIN"), true);
         }
 
         @Override

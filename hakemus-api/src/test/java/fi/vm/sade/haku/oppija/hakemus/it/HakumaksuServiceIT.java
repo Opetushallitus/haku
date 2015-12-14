@@ -47,6 +47,6 @@ public class HakumaksuServiceIT {
 
         assertEquals(
                 hakumaksuService.paymentRequirements(MergedAnswers.of(application)).get(hakutoiveenOid),
-                ImmutableList.of(Eligibility.ulkomainen(koulutuksenNimike, Types.AsciiCountryCode.of(koulutuksenMaa))));
+                ImmutableList.of(Eligibility.ulkomainen(koulutuksenNimike, Types.IsoCountryCode.of(koulutuksenMaa))));
     }
 }
