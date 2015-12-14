@@ -182,32 +182,33 @@ public class TestApplicationData {
         );
         builder.put("http://localhost/ao/" + APPLICATION_OPTION_WITHOUT_PAYMENT_EDUCATION_REQUIREMENTS, future(r));
 
-        HakumaksuUtil.KoodistoMaakoodi finKoodit = new HakumaksuUtil.KoodistoMaakoodi();
-        HakumaksuUtil.CodeElement fin = new HakumaksuUtil.CodeElement();
-        fin.codeElementUri = "maatjavaltiot2_246";
-        fin.codeElementValue = "246";
-        finKoodit.levelsWithCodeElements = ImmutableList.of(fin);
-        builder.put("http://localhost/koodisto-service/rest/codeelement/maatjavaltiot1_fin/1", future(finKoodit));
+        HakumaksuUtil.CodeElement fin = countryCode("246");
+        mockCountry(builder, "fin", fin);
 
-        HakumaksuUtil.KoodistoMaakoodi sweKoodit = new HakumaksuUtil.KoodistoMaakoodi();
-        HakumaksuUtil.CodeElement swe = new HakumaksuUtil.CodeElement();
-        swe.codeElementUri = "maatjavaltiot2_752";
-        swe.codeElementValue = "752";
-        sweKoodit.levelsWithCodeElements = ImmutableList.of(swe);
-        builder.put("http://localhost/koodisto-service/rest/codeelement/maatjavaltiot1_swe/1", future(sweKoodit));
+        HakumaksuUtil.CodeElement swe = countryCode("752");
+        mockCountry(builder, "swe", swe);
 
-        HakumaksuUtil.KoodistoMaakoodi abwKoodit = new HakumaksuUtil.KoodistoMaakoodi();
-        HakumaksuUtil.CodeElement abw = new HakumaksuUtil.CodeElement();
-        abw.codeElementUri = "maatjavaltiot2_533";
-        abw.codeElementValue = "533";
-        abwKoodit.levelsWithCodeElements = ImmutableList.of(abw);
-        builder.put("http://localhost/koodisto-service/rest/codeelement/maatjavaltiot1_abw/1", future(abwKoodit));
+        HakumaksuUtil.CodeElement abw = countryCode("533");
+        mockCountry(builder, "abw", abw);
 
         HakumaksuUtil.KoodistoEAA eea = new HakumaksuUtil.KoodistoEAA();
         eea.withinCodeElements = ImmutableList.of(fin, swe);
         builder.put("http://localhost/koodisto-service/rest/codeelement/valtioryhmat_2/1", future(eea));
 
         return builder.build();
+    }
+
+    private static void mockCountry(ImmutableMap.Builder<String, Object> builder, String asciiCode, HakumaksuUtil.CodeElement codeElement) {
+        HakumaksuUtil.KoodistoMaakoodi koodit = new HakumaksuUtil.KoodistoMaakoodi();
+        koodit.levelsWithCodeElements = ImmutableList.of(codeElement);
+        builder.put("http://localhost/koodisto-service/rest/codeelement/maatjavaltiot1_" + asciiCode + "/1", future(koodit));
+    }
+
+    private static HakumaksuUtil.CodeElement countryCode(String codeValue) {
+        HakumaksuUtil.CodeElement code = new HakumaksuUtil.CodeElement();
+        code.codeElementUri = "maatjavaltiot2_" + codeValue;
+        code.codeElementValue = codeValue;
+        return code;
     }
 
     private static <T> ListenableFuture<Response<T>> future(T t) {
