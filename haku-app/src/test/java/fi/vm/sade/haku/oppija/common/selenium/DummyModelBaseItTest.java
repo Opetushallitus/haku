@@ -63,7 +63,7 @@ public abstract class DummyModelBaseItTest extends AbstractSeleniumBase {
 
     protected void setValue(final String id, final String value, final boolean wait) {
         if (wait) {
-            new WebDriverWait(seleniumContainer.getDriver(), 10)
+            new WebDriverWait(seleniumContainer.getDriver(), 20)
                     .until(ExpectedConditions.presenceOfElementLocated(By.name(id)));
         }
         setValue(id, value);
