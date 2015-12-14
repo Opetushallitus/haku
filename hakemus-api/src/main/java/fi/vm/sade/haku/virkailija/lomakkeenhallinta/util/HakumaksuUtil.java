@@ -165,7 +165,7 @@ public class HakumaksuUtil {
         return new Predicate<CodeElement>() {
             @Override
             public boolean apply(CodeElement input) {
-                return input.codeElementUri.equals(koodisto + "_" + input.codeElementValue);
+                return input.codeElementUri.startsWith(koodisto + "_");
             }
         };
     }
