@@ -49,7 +49,7 @@ public abstract class DummyModelBaseItTest extends AbstractSeleniumBase {
     }
 
     protected void expectPhase(String expected) {
-        new WebDriverWait(seleniumContainer.getDriver(), 30)
+        new WebDriverWait(seleniumContainer.getDriver(), 60)
                 .until(ExpectedConditions.presenceOfElementLocated(By.id("nav-" + expected)));
         WebElement form = findBy(By.id("nav-" + expected));
         assertEquals("current", form.getAttribute("class"));
