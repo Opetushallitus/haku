@@ -106,7 +106,7 @@ describe('Erityisoppilaitosten lomake', function () {
             pageChange(lomake.fromHenkilotiedot),
             click(lomake.pohjakoulutus("1")),
             input(
-                lomake.pkPaattotodistusVuosi, "2015",
+                lomake.pkPaattotodistusVuosi, ("" + new Date().getFullYear()),
                 lomake.pkKieli, "FI"
             ),
             pageChange(lomake.fromKoulutustausta)
