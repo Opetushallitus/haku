@@ -12,7 +12,6 @@ describe('Erityisoppilaitosten lomake', function () {
     var valitseFaktiaJaKiipula = seq(
         partials.valitseKoulutusVetovalikosta(1, faktia, faktiaPkKoulutus),
         click(
-            lomake.harkinnanvaraisuus(1, false),
             lomake.soraTerveys(1, false),
             lomake.soraOikeudenMenetys(1, false)
         ),
@@ -239,7 +238,7 @@ describe('Erityisoppilaitosten lomake', function () {
                                             ["Onko sinulla kaksoiskansalaisuutta?", "Ei"],
                                             ["Henkilötunnus", "171175-830Y"],
                                             ["Sukupuoli", "Nainen"],
-                                            ["Sähköpostiosoite", ""],
+                                            ["Sähköpostiosoite", "foo@example.com"],
                                             ["Matkapuhelinnumero", ""],
                                             ["Asuinmaa", "Suomi"],
                                             ["Lähiosoite", "Testikatu 4"],
@@ -364,7 +363,6 @@ describe('Erityisoppilaitosten lomake', function () {
                         click(lomake.ammatillinenSuoritettu(true))
                     ));
                     it('ei estä pääsyä hakutoiveisiin', seqDone(
-                        notExists(lomake.warning),
                         input(lomake.lukionKieli, "FI"),
                         pageChange(lomake.fromKoulutustausta),
                         headingVisible("Hakutoiveet")
