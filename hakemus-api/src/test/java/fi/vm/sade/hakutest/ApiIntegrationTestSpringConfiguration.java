@@ -13,7 +13,7 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 @ComponentScan(basePackages = {"fi.vm.sade.haku"})
 @PropertySource(value = {"config/it/haku.properties", "config/it/ext.properties", "haku-test.properties"})
 @Profile("it")
-@ImportResource("/spring/logger-mock-context.xml")
+@ImportResource("/spring/integration-test-mock-context.xml")
 public class ApiIntegrationTestSpringConfiguration {
     @Bean
     public static PropertySourcesPlaceholderConfigurer enablePlaceholderReplacement() {
