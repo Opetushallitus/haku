@@ -23,7 +23,7 @@
 <c:if test="${not empty value}"><c:out value="${value.translations[requestScope['fi_vm_sade_oppija_language']]}"
                                        escapeXml="${escape}" default=""/><%
   Object lang = request.getAttribute("fi_vm_sade_oppija_language");
-  I18nText i18Text = (I18nText) pageContext.getAttribute("value");
+  I18nText i18Text = (I18nText) jspContext.getAttribute("value");
   System.out.println("i18nText: '" + i18Text.getTranslations().get(lang) + "'");
 %>
 </c:if>
