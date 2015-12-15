@@ -38,8 +38,7 @@
         </c:if>
     </h1>
 
-    <h2><c:out value="${answers['Etunimet']}" escapeXml="true"/>&nbsp;<c:out value="${answers['Sukunimi']}"
-                                                                             escapeXml="true"/></h2>
+    <h2><c:out value="${answers['Etunimet']}"/>&nbsp;<c:out value="${answers['Sukunimi']}" /></h2>
 
     <p><fmt:message key="lomake.tulostus.vastaanotettu"/>&nbsp;
         <time><fmt:formatDate value="${application.received}" pattern="dd.MM.yyyy HH:mm"/></time>
@@ -50,7 +49,7 @@
                 <fmt:message key="lomake.valmis.demo.hakulomakenumero"/>
             </c:when>
             <c:otherwise>
-                <c:out value="${f:formatOid(application.oid)}" escapeXml="true"/>
+                <c:out value="${f:formatOid(application.oid)}"/>
             </c:otherwise>
         </c:choose>
     </div>

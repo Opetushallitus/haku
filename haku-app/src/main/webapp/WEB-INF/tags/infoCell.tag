@@ -27,7 +27,7 @@
         </c:if>
         <c:remove var="tmp_element"/>
     </c:if>
-    <span class="bold"><fmt:message key="${key}"/>: </span><span ${tmpIdValue}><c:out value="${(optionValue != null) ? optionValue : value}" escapeXml="true"/></span>
+    <span class="bold"><fmt:message key="${key}"/>: </span><span ${tmpIdValue}><c:out value="${(optionValue != null) ? optionValue : value}"/></span>
 </td>
 <c:remove var="tmpId"/>
 <c:remove var="optionValue"/>

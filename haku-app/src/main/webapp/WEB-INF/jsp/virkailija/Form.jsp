@@ -98,8 +98,8 @@
                                   applicationSystem="${applicationSystem}"/>
 
         <div class="grid16-16">
-            <h3><c:out value="${answers['Etunimet']}" escapeXml="true"/>&nbsp;<c:out
-                    value="${answers['Sukunimi']}" escapeXml="true"/>
+            <h3><c:out value="${answers['Etunimet']}" />&nbsp;<c:out
+                    value="${answers['Sukunimi']}" />
                 <c:if test="${not empty overridden['Etunimet'] or not empty overridden['Sukunimi_user']}">
                     &nbsp;<span title="<c:out value="${overridden['Etunimet']}"/>&nbsp;<c:out
                         value="${overridden['Sukunimi']}"/>">[*]</span>
