@@ -147,9 +147,13 @@ public class HakumaksuUtil {
                     try {
                         return getIsoEaaCountryCodes();
                     } catch (IOException e) {
-                        throw new RuntimeException("Koodisto fetch failed: " + e);
+                        String msg = "Koodisto fetch failed: " + e.toString();
+                        LOGGER.error(msg);
+                        throw new RuntimeException(msg);
                     } catch (InterruptedException | ExecutionException e) {
-                        throw new RuntimeException("Koodisto cache failed to load: " + e);
+                        String msg = "Koodisto cache failed to load: " + e.toString();
+                        LOGGER.error(msg);
+                        throw new RuntimeException(msg);
                     }
                 }
             });
@@ -157,7 +161,9 @@ public class HakumaksuUtil {
     private void populateEaaCountriesCache() {
         Set<IsoCountryCode> eeaCountries = koodistoCache.getUnchecked(CacheKeys.EAA_COUNTRIES);
         if (eeaCountries.isEmpty()) {
-            throw new RuntimeException("Eaa countries cannot be empty!");
+            String msg = "Koodisto cache failed: EAA countries cannot be empty!";
+            LOGGER.error(msg);
+            throw new RuntimeException(msg);
         }
     }
 
