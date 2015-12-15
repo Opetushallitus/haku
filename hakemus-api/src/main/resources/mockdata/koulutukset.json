@@ -470,6 +470,10 @@
     "type": "KORKEAKOULU",
     "educationTypeUri": null,
     "hakuaikaId": "220208",
+    "pohjakoulutusLiitteet": [
+      "pohjakoulutuskklomake_amsuomi",
+      "pohjakoulutuskklomake_pohjakoulutusavoin"
+    ],
     "organizationGroups": [
       {
         "oid": "1.2.246.562.28.11386525208",
@@ -762,6 +766,9 @@
     "kaksoistutkinto": false,
     "vocational": false,
     "educationCodeUri": "koulutus_671201",
+    "pohjakoulutusLiitteet": [
+      "pohjakoulutuskklomake_pohjakoulutusavoin"
+    ],
     "organizationGroups": [
       {
         "oid": "1.2.246.562.28.90373737623",
@@ -2322,6 +2329,10 @@
     "type": "KORKEAKOULU",
     "educationTypeUri": null,
     "hakuaikaId": "220207",
+    "pohjakoulutusLiitteet": [
+      "pohjakoulutuskklomake_amsuomi",
+      "pohjakoulutuskklomake_pohjakoulutusavoin"
+    ],
     "organizationGroups": [
       {
         "oid": "1.2.246.562.28.20907706740",
@@ -2814,6 +2825,9 @@
     "type": "KORKEAKOULU",
     "educationTypeUri": null,
     "hakuaikaId": "220207",
+    "pohjakoulutusLiitteet": [
+      "pohjakoulutuskklomake_pohjakoulutusavoin"
+    ],
     "organizationGroups": [
       {
         "oid": "1.2.246.562.28.20907706740",

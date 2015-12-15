@@ -110,7 +110,7 @@ describe('KK-hakemus', function () {
                         });
                     });
 
-                    ignore("esikatselussa", function() { // FIXME
+                    describe("esikatselussa", function() {
                         before(seqDone(
                             openPage(previewPagePath, function() {
                                 return S("#applicationAttachments").first().is(':visible');
@@ -289,38 +289,10 @@ describe('KK-hakemus', function () {
                 lomake.fromKoulutustausta),
             partials.valitseKoulutus(1, "Metropolia AMK, Espoo, Vanha maantie (Leppävaara)", "Insinööri (AMK), maanmittaustekniikka, päivätoteutus"),
             click(lomake.fromHakutoiveet),
-            input(lomake.lukioPaattotodistusKeskiarvo, "1,00"),
-            partials.syotaAmmatillinenKeskiarvo('_yo_ammatillinen', '2,00', '1-3', "Lukio + ammatillinen"),
-            partials.syotaAmmatillinenKeskiarvo(1, '2,50', '1-3', "Ammatillinen 1 keskiarvo"),
-            partials.syotaAmmatillinenKeskiarvo(2, '3,00', '1-3', "Ammatillinen 2 keskiarvo"),
             click(
                 lomake.fromOsaaminen,
                 lomake.asiointikieli("suomi")),
-            pageChange(lomake.fromLisatieto),
-            function() {
-                var expected = [
-                    ["Lukion päättötodistuksen keskiarvo", "1,00"],
-                    ["Ammatillisen tutkinnon keskiarvo", "2,00"],
-                    ["Ammatillisen tutkinnon arvosana-asteikko", "1-3"],
-                    [
-                        "Jos olet suorittanut useampia ammatillisia tutkintoja, kirjoita tähän, mitä antamasi keskiarvo koskee.",
-                        "Lukio + ammatillinen"
-                    ],
-                    ["Ammatillisen tutkinnon keskiarvo", "2,50"],
-                    ["Ammatillisen tutkinnon arvosana-asteikko", "1-3"],
-                    [
-                        "Jos olet suorittanut useampia ammatillisia tutkintoja, kirjoita tähän, mitä antamasi keskiarvo koskee.",
-                        "Ammatillinen 1 keskiarvo"
-                    ],
-                    ["Ammatillisen tutkinnon keskiarvo", "3,00"],
-                    ["Ammatillisen tutkinnon arvosana-asteikko", "1-3"],
-                    [
-                        "Jos olet suorittanut useampia ammatillisia tutkintoja, kirjoita tähän, mitä antamasi keskiarvo koskee.",
-                        "Ammatillinen 2 keskiarvo"
-                    ]
-                ];
-                expect(readTable(S('#osaaminenteema'))).to.deep.equal(expected);
-            }
+            pageChange(lomake.fromLisatieto)
         ));
 
         it('koodistettu ulkomaisen pohjakoulutuksen suoritusmaa', seqDone(
