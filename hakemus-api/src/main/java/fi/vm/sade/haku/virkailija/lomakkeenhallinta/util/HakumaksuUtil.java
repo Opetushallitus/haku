@@ -1,16 +1,15 @@
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.util;
 
 import com.google.api.client.util.Key;
+import com.google.api.client.util.Throwables;
 import com.google.api.client.util.Value;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
+import com.google.common.collect.*;
+import com.google.common.util.concurrent.AsyncFunction;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import fi.vm.sade.haku.http.HttpRestClient.Response;
@@ -18,7 +17,7 @@ import fi.vm.sade.haku.http.RestClient;
 import fi.vm.sade.haku.oppija.hakemus.service.EducationRequirementsUtil;
 import fi.vm.sade.haku.oppija.hakemus.service.HakumaksuService.PaymentEmail;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.ApplicationOptionOid;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.AsciiCountryCode;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.IsoCountryCode;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.SafeString;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,11 +25,13 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.*;
-import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.*;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.ApplicationOid;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.PersonOid;
 import static org.apache.commons.lang.StringUtils.EMPTY;
 import static org.apache.commons.lang.StringUtils.isNotEmpty;
 
@@ -46,6 +47,7 @@ public class HakumaksuUtil {
         this.restClient = restClient;
         this.koulutusinformaatioUrl = koulutusinformaatioUrl;
         this.koodistoServiceUrl = koodistoServiceUrl;
+        populateEaaCountriesCache();
     }
 
     public enum LanguageCodeISO6391 {
@@ -53,6 +55,15 @@ public class HakumaksuUtil {
         @Value sv,
         @Value en
     }
+
+    public enum CacheKeys {
+        EAA_COUNTRIES
+    }
+
+    public static final String NUMERIC_COUNTRY_KOODISTO = "maatjavaltiot2";
+    public static final String ISO_COUNTRY_KOODISTO = "maatjavaltiot1";
+    public static final String EEA_KOODI = "valtioryhmat_2";
+    public static final IsoCountryCode SVEITSI = IsoCountryCode.of("CHE");
 
     public static class OppijanTunnistus {
         public static class Metadata {
@@ -129,19 +140,67 @@ public class HakumaksuUtil {
         public List<CodeElement> withinCodeElements;
     }
 
-    private final Predicate<CodeElement> maatJaValtiot2 = new Predicate<CodeElement>() {
-        @Override
-        public boolean apply(CodeElement input) {
-            return input.codeElementUri.equals("maatjavaltiot2_" + input.codeElementValue);
-        }
-    };
+    private final LoadingCache<CacheKeys, ImmutableSet<IsoCountryCode>> koodistoCache = CacheBuilder.newBuilder()
+            .maximumSize(1) // There is only one value to cache
+            .build(new CacheLoader<CacheKeys, ImmutableSet<IsoCountryCode>>() {
+                public ImmutableSet<IsoCountryCode> load(CacheKeys cacheKey) {
+                    try {
+                        return getIsoEaaCountryCodes();
+                    } catch (IOException e) {
+                        String msg = "Koodisto fetch failed: " + e.toString();
+                        LOGGER.error(msg);
+                        throw new RuntimeException(msg);
+                    } catch (InterruptedException | ExecutionException e) {
+                        String msg = "Koodisto cache failed to load: " + e.toString();
+                        LOGGER.error(msg);
+                        throw new RuntimeException(msg);
+                    }
+                }
+            });
 
-    private ListenableFuture<List<String>> getEaaCountryCodes() throws IOException {
-        String url = koodistoServiceUrl + "/rest/codeelement/valtioryhmat_2/1";
+    private void populateEaaCountriesCache() {
+        Set<IsoCountryCode> eeaCountries = koodistoCache.getUnchecked(CacheKeys.EAA_COUNTRIES);
+        if (eeaCountries.isEmpty()) {
+            String msg = "Koodisto cache failed: EAA countries cannot be empty!";
+            LOGGER.error(msg);
+            throw new RuntimeException(msg);
+        }
+    }
+
+    private static Predicate<CodeElement> filterByKoodisto(final String koodisto) {
+        return new Predicate<CodeElement>() {
+            @Override
+            public boolean apply(CodeElement input) {
+                return input.codeElementUri.startsWith(koodisto + "_");
+            }
+        };
+    }
+
+    private ImmutableSet<IsoCountryCode> getIsoEaaCountryCodes() throws IOException, InterruptedException, ExecutionException {
+        List<IsoCountryCode> isoCountries = Futures.transform(getNumericEaaCountryCodes(), new AsyncFunction<List<String>, List<IsoCountryCode>>() {
+            @Override
+            public ListenableFuture<List<IsoCountryCode>> apply(List<String> numericCodes) {
+                return Futures.allAsList(Iterables.transform(numericCodes, new Function<String, ListenableFuture<IsoCountryCode>>() {
+                    @Override
+                    public ListenableFuture<IsoCountryCode> apply(String numericCode) {
+                        try {
+                            return numericCountryCodeToIsoCountryCode(numericCode);
+                        } catch (Throwable t) {
+                            throw Throwables.propagate(t);
+                        }
+                    }
+                }));
+            }
+        }).get();
+        return ImmutableSet.copyOf(isoCountries);
+    }
+
+    private ListenableFuture<List<String>> getNumericEaaCountryCodes() throws IOException {
+        String url = koodistoServiceUrl + "/rest/codeelement/" + EEA_KOODI + "/1";
         return Futures.transform(restClient.get(url, KoodistoEAA.class), new Function<Response<KoodistoEAA>, List<String>>() {
             @Override
             public List<String> apply(Response<KoodistoEAA> response) {
-                Iterable<CodeElement> validatedCodeElements = Iterables.filter(response.getResult().withinCodeElements, maatJaValtiot2);
+                Iterable<CodeElement> validatedCodeElements = Iterables.filter(response.getResult().withinCodeElements, filterByKoodisto(NUMERIC_COUNTRY_KOODISTO));
                 return Lists.newArrayList(Iterables.transform(validatedCodeElements, new Function<CodeElement, String>() {
                     @Override
                     public String apply(CodeElement input) {
@@ -157,45 +216,23 @@ public class HakumaksuUtil {
         public List<CodeElement> levelsWithCodeElements;
     }
 
-    private ListenableFuture<String> asciiToNumericCountryCode(AsciiCountryCode countryCode) throws IOException {
-        String url = koodistoServiceUrl + "/rest/codeelement/maatjavaltiot1_" + countryCode.getValue().toLowerCase() + "/1";
-        return Futures.transform(restClient.get(url, KoodistoMaakoodi.class), new Function<Response<KoodistoMaakoodi>, String>() {
+    private ListenableFuture<IsoCountryCode> numericCountryCodeToIsoCountryCode(String numericCode) throws IOException {
+        String url = koodistoServiceUrl + "/rest/codeelement/" + NUMERIC_COUNTRY_KOODISTO + "_" + numericCode + "/1";
+        return Futures.transform(restClient.get(url, KoodistoMaakoodi.class), new Function<Response<KoodistoMaakoodi>, IsoCountryCode>() {
             @Override
-            public String apply(Response<KoodistoMaakoodi> response) {
-                CodeElement codeElement = Iterables.find(response.getResult().levelsWithCodeElements, maatJaValtiot2);
-                return codeElement.codeElementValue;
+            public IsoCountryCode apply(Response<KoodistoMaakoodi> response) {
+                CodeElement codeElement = Iterables.find(response.getResult().levelsWithCodeElements, filterByKoodisto(ISO_COUNTRY_KOODISTO));
+                return IsoCountryCode.of(codeElement.codeElementValue);
             }
         });
     }
 
-    public static final AsciiCountryCode SVEITSI = AsciiCountryCode.of("CHE");
-
-    private boolean isSwitzerland(AsciiCountryCode countryCode) {
+    private boolean isSwitzerland(IsoCountryCode countryCode) {
         return countryCode.equals(SVEITSI);
     }
 
-    private Boolean _isExemptFromPayment(AsciiCountryCode countryCode) {
-        try {
-            return isSwitzerland(countryCode) ||
-                    getEaaCountryCodes().get().contains(asciiToNumericCountryCode(countryCode).get());
-        } catch (InterruptedException | ExecutionException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new IllegalArgumentException("Country code " + countryCode + " not found", e);
-        }
-    }
-
-    private final LoadingCache<AsciiCountryCode, Boolean> exemptions = CacheBuilder.newBuilder()
-            .maximumSize(1000)
-            .expireAfterWrite(10, TimeUnit.MINUTES)
-            .build(new CacheLoader<AsciiCountryCode, Boolean>() {
-                public Boolean load(AsciiCountryCode countryCode) {
-                    return _isExemptFromPayment(countryCode);
-                }
-            });
-
-    public boolean isEducationCountryExemptFromPayment(AsciiCountryCode threeLetterCountryCode) throws ExecutionException {
-        return exemptions.get(threeLetterCountryCode);
+    public boolean isEducationCountryExemptFromPayment(IsoCountryCode isoCountryCode) throws ExecutionException {
+        return isSwitzerland(isoCountryCode) || koodistoCache.get(CacheKeys.EAA_COUNTRIES).contains(isoCountryCode);
     }
 
     public static class EducationRequirements {

@@ -70,16 +70,16 @@ public final class Types {
         }
     }
 
-    public static final class AsciiCountryCode extends SafeString {
-        private AsciiCountryCode(String value) {
+    public static final class IsoCountryCode extends SafeString {
+        private IsoCountryCode(String value) {
             super(value);
             if (value.length() != 3) {
                 throw new IllegalArgumentException("Country code must be 3 characters long, got '" + value + "'");
             }
         }
 
-        public static AsciiCountryCode of(String value) {
-            return new AsciiCountryCode(value);
+        public static IsoCountryCode of(String value) {
+            return new IsoCountryCode(value);
         }
     }
 

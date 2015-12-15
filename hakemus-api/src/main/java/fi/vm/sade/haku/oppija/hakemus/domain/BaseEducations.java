@@ -2,7 +2,7 @@ package fi.vm.sade.haku.oppija.hakemus.domain;
 
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableSet;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.AsciiCountryCode;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.IsoCountryCode;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.MergedAnswers;
 
 import java.util.Arrays;
@@ -132,10 +132,10 @@ public class BaseEducations {
     public static class UlkomainenKansainvalinenYo {
         private static final String fieldPrefix = "pohjakoulutus_yo_ulkomainen";
 
-        public final AsciiCountryCode maa;
+        public final IsoCountryCode maa;
         public final String tutkinto;
 
-        private UlkomainenKansainvalinenYo(AsciiCountryCode maa, String tutkinto) {
+        private UlkomainenKansainvalinenYo(IsoCountryCode maa, String tutkinto) {
             this.maa = maa;
             this.tutkinto = tutkinto;
         }
@@ -149,7 +149,7 @@ public class BaseEducations {
                     String tutkinto = answers.get(fieldPrefix + "_tutkinto");
                     String maa = answers.get(fieldPrefix + "_maa");
                     variablesNotNull(tutkinto, maa);
-                    return ImmutableSet.of(new UlkomainenKansainvalinenYo(AsciiCountryCode.of(maa), tutkinto));
+                    return ImmutableSet.of(new UlkomainenKansainvalinenYo(IsoCountryCode.of(maa), tutkinto));
                 } else {
                     return ImmutableSet.of();
                 }
@@ -240,7 +240,7 @@ public class BaseEducations {
     public static class UlkomaalainenKoulutus implements ProvideNimike {
         private static final String fieldPrefix = "pohjakoulutus_ulk";
 
-        public final AsciiCountryCode maa;
+        public final IsoCountryCode maa;
         public final String nimike;
 
         @Override
@@ -248,7 +248,7 @@ public class BaseEducations {
             return nimike;
         }
 
-        private UlkomaalainenKoulutus(AsciiCountryCode maa, String nimike) {
+        private UlkomaalainenKoulutus(IsoCountryCode maa, String nimike) {
             this.maa = maa;
             this.nimike = nimike;
         }
@@ -268,7 +268,7 @@ public class BaseEducations {
                         String maa = answers.get(fieldPrefix + "_suoritusmaa" + index);
 
                         if (variablesNotNull(nimike, maa)) {
-                            result.add(new UlkomaalainenKoulutus(AsciiCountryCode.of(maa), nimike));
+                            result.add(new UlkomaalainenKoulutus(IsoCountryCode.of(maa), nimike));
                         } else {
                             break;
                         }
@@ -284,7 +284,7 @@ public class BaseEducations {
         private static final String fieldPrefix = "pohjakoulutus_kk_ulk";
 
         public final String taso;
-        public final AsciiCountryCode maa;
+        public final IsoCountryCode maa;
         public final String nimike;
 
         @Override
@@ -292,7 +292,7 @@ public class BaseEducations {
             return nimike;
         }
 
-        private UlkomaalainenKorkeakoulutus(String taso, AsciiCountryCode maa, String nimike) {
+        private UlkomaalainenKorkeakoulutus(String taso, IsoCountryCode maa, String nimike) {
             this.taso = taso;
             this.maa = maa;
             this.nimike = nimike;
@@ -314,7 +314,7 @@ public class BaseEducations {
                         String maa = answers.get(fieldPrefix + "_maa" + index);
 
                         if (variablesNotNull(taso, nimike, maa)) {
-                            result.add(new UlkomaalainenKorkeakoulutus(taso, AsciiCountryCode.of(maa), nimike));
+                            result.add(new UlkomaalainenKorkeakoulutus(taso, IsoCountryCode.of(maa), nimike));
                         } else {
                             break;
                         }
