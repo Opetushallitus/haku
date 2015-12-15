@@ -140,10 +140,10 @@ public class HakumaksuUtil {
         public List<CodeElement> withinCodeElements;
     }
 
-    private final LoadingCache<CacheKeys, Set<IsoCountryCode>> koodistoCache = CacheBuilder.newBuilder()
-            .maximumSize(1000)
-            .build(new CacheLoader<CacheKeys, Set<IsoCountryCode>>() {
-                public Set<IsoCountryCode> load(CacheKeys cacheKey) {
+    private final LoadingCache<CacheKeys, ImmutableSet<IsoCountryCode>> koodistoCache = CacheBuilder.newBuilder()
+            .maximumSize(1) // There is only one value to cache
+            .build(new CacheLoader<CacheKeys, ImmutableSet<IsoCountryCode>>() {
+                public ImmutableSet<IsoCountryCode> load(CacheKeys cacheKey) {
                     try {
                         return getIsoEaaCountryCodes();
                     } catch (IOException e) {
@@ -176,7 +176,7 @@ public class HakumaksuUtil {
         };
     }
 
-    private Set<IsoCountryCode> getIsoEaaCountryCodes() throws IOException, InterruptedException, ExecutionException {
+    private ImmutableSet<IsoCountryCode> getIsoEaaCountryCodes() throws IOException, InterruptedException, ExecutionException {
         List<IsoCountryCode> isoCountries = Futures.transform(getNumericEaaCountryCodes(), new AsyncFunction<List<String>, List<IsoCountryCode>>() {
             @Override
             public ListenableFuture<List<IsoCountryCode>> apply(List<String> numericCodes) {
@@ -192,7 +192,7 @@ public class HakumaksuUtil {
                 }));
             }
         }).get();
-        return FluentIterable.from(isoCountries).toSet();
+        return ImmutableSet.copyOf(isoCountries);
     }
 
     private ListenableFuture<List<String>> getNumericEaaCountryCodes() throws IOException {
