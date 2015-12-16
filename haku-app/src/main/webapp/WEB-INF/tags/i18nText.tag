@@ -19,7 +19,7 @@
   ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   ~ European Union Public Licence for more details.
   --%>
-<c:set var="escape" value="${(empty escape) ? 'false' : escape}" />
+<c:set var="escape" value="${(empty escape) ? 'true' : escape}" />
 <c:if test="${not empty value}"><c:out value="${value.translations[requestScope['fi_vm_sade_oppija_language']]}"
                                        escapeXml="${escape}" default=""/><%
   Object lang = request.getAttribute("fi_vm_sade_oppija_language");
