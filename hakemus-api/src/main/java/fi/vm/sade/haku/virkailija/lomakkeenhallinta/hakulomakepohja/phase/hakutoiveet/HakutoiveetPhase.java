@@ -153,7 +153,7 @@ public class HakutoiveetPhase {
             pr.addChild(koulutusasteRistiriidassaSuoritettuunTutkintoon);
         }
 
-        if (formParameters.isHigherEd()) {
+        if (formParameters.isTarkistaPohjakoulutusRiittavyys()) {
             pr.addChild(createTarkistaPohjakoulutusRiittavyys(id, formParameters));
 
             KoodistoService koodistoService = formParameters.getKoodistoService();

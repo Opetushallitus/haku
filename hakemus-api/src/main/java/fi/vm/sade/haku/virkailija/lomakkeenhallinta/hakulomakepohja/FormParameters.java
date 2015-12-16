@@ -13,6 +13,7 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.service.GroupRestrictionConf
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.service.ThemeQuestionConfigurator;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakukohdeService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.*;
 
@@ -116,6 +117,13 @@ public class FormParameters {
 
     public boolean isHigherEd() {
         return isHigherEd(applicationSystem);
+    }
+
+    public boolean isTarkistaPohjakoulutusRiittavyys() {
+        if(isHigherEd() && StringUtils.isEmpty(applicationSystem.getKohdejoukonTarkenne())) {
+            return true;
+        }
+        return false;
     }
 
     public boolean isKevaanLisahaku() {
