@@ -64,7 +64,7 @@
                 ignore-resource-not-found="true" properties-ref="devProps"/>
         <bean id="devProps" class="org.springframework.beans.factory.config.PropertiesFactoryBean"/>
         <import resource="form-login-security-context.xml"/>
-        <import resource="integration-test-mock-context.xml"/>
+        <bean id="logger" class="fi.vm.sade.log.client.LoggerMock" />
     </beans>
 
     <beans profile="dev">
