@@ -1,3 +1,4 @@
+<%@ tag import="fi.vm.sade.haku.oppija.lomake.domain.I18nText" %>
 <%@ tag description="i18nText" body-content="empty" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ attribute name="value" required="true" type="fi.vm.sade.haku.oppija.lomake.domain.I18nText" %>
@@ -20,4 +21,11 @@
   --%>
 <c:set var="escape" value="${(empty escape) ? 'false' : escape}" />
 <c:if test="${not empty value}"><c:out value="${value.translations[requestScope['fi_vm_sade_oppija_language']]}"
-                                       escapeXml="${escape}" default=""/></c:if>
+                                       escapeXml="${escape}" default=""/><%
+  Object lang = request.getAttribute("fi_vm_sade_oppija_language");
+  I18nText i18Text = (I18nText) jspContext.getAttribute("value");
+  String text = i18Text.getTranslations().get(lang);
+  if("true".equals(jspContext.getAttribute("escape")) && text.contains("<")) {
+    System.out.println("i18nText, escaped text: '" + text + "'");
+  }
+%></c:if>
