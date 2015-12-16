@@ -101,8 +101,8 @@
                         attachment.aoId = "<c:out value="${liite.preferenceAoId}"/>";
                         attachment.aoGroupId = "<c:out value="${liite.preferenceAoGroupId}"/>";
                         attachment.receptionStatus = "<c:out value="${liite.receptionStatus}"/>";
-                        attachment.name = "<haku:i18nText value="${liite.applicationAttachment.name}" escape="true" />";
-                        attachment.header = "<haku:i18nText value="${liite.applicationAttachment.header}" escape="true" />";
+                        attachment.name = "<haku:i18nText value="${liite.applicationAttachment.name}" />";
+                        attachment.header = "<haku:i18nText value="${liite.applicationAttachment.header}" />";
                         attachment.processingStatus = "<c:out value="${liite.processingStatus}"/>";
                         <c:set var="desc" value="${fn:replace(liite.applicationAttachment.description, newLineChar, newLineEscaped)}"/>;
                         var desc = "<c:out value="${desc}"/>",
