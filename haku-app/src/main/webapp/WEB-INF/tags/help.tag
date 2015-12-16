@@ -20,6 +20,6 @@
   --%>
 <c:if test="${not empty element.help}">
     <div id="help-${element.id}" class="element-help">
-        <p class="small italic"><haku:i18nText value="${element.help}"/></p>
+        <p class="small italic"><haku:i18nText value="${element.help}" escape="false"/></p>
     </div>
 </c:if>

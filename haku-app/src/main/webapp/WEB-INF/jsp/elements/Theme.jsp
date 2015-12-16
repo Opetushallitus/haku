@@ -23,7 +23,7 @@
     <legend class="h3"><haku:i18nText value="${element.i18nText}"/></legend>
     <hr role="presentation"/>
     <div class="theme-help">
-        <div class="help-text"><haku:i18nText value="${element.help}"/></div>
+        <div class="help-text"><haku:i18nText value="${element.help}" escape="false"/></div>
         <button aria-haspopup="true" aria-label="<haku:i18nText value="${element.i18nText}"/> <fmt:message key="lomake.theme.button.helplink.label"/>" class="helplink" type="submit" formtarget="_blank" formaction="${element.id}/help">?</button>
         <div role="presentation" class="clear"></div>
     </div>
