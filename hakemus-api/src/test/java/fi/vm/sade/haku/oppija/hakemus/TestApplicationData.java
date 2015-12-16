@@ -185,7 +185,6 @@ public class TestApplicationData {
 
         HakumaksuUtil.CodeElement fin = mockCountry(builder, "FIN", "246");
         HakumaksuUtil.CodeElement swe = mockCountry(builder, "SWE", "752");
-        HakumaksuUtil.CodeElement abw = mockCountry(builder, "ABW", "533");
 
         HakumaksuUtil.KoodistoEAA eea = new HakumaksuUtil.KoodistoEAA();
         eea.withinCodeElements = ImmutableList.of(fin, swe);
