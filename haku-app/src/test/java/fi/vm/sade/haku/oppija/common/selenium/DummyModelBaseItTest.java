@@ -63,8 +63,7 @@ public abstract class DummyModelBaseItTest extends AbstractSeleniumBase {
 
     protected void setValue(final String id, final String value, final boolean wait) {
         if (wait) {
-            new WebDriverWait(seleniumContainer.getDriver(), 20)
-                    .until(ExpectedConditions.presenceOfElementLocated(By.name(id)));
+            waitForElement(20, By.id(id));
         }
         setValue(id, value);
     }
@@ -165,6 +164,11 @@ public abstract class DummyModelBaseItTest extends AbstractSeleniumBase {
                 return (new Date().getTime() - t1) > millis;
             }
         });
+    }
+
+    protected void waitForElement(final long seconds, final By by) {
+        new WebDriverWait(seleniumContainer.getDriver(), seconds)
+                .until(ExpectedConditions.presenceOfElementLocated(by));
     }
 
     protected List<WebElement> getById(final String id) {
