@@ -7,16 +7,15 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import fi.vm.sade.haku.http.MockedRestClient;
 import fi.vm.sade.haku.http.MockedRestClient.Captured;
+import fi.vm.sade.haku.oppija.common.oppijantunnistus.OppijanTunnistusDTO;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application.PaymentState;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationNote;
-import fi.vm.sade.haku.oppija.hakemus.service.HakumaksuService;
 import fi.vm.sade.haku.oppija.hakemus.service.EducationRequirementsUtil.Eligibility;
+import fi.vm.sade.haku.oppija.hakemus.service.HakumaksuService;
 import fi.vm.sade.haku.oppija.hakemus.service.HakumaksuService.PaymentEmail;
 import fi.vm.sade.haku.testfixtures.Hakukelpoisuusvaatimus;
 import fi.vm.sade.haku.testfixtures.Pohjakoulutus;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.HakumaksuUtil;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.HakumaksuUtil.OppijanTunnistus;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.ApplicationOptionOid;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.SafeString;
@@ -131,7 +130,7 @@ public class HakumaksuTest {
     private static final String hakutoiveenOid = Hakukelpoisuusvaatimus.YLEINEN_YLIOPISTOKELPOISUUS.getArvo();
 
     private static final PaymentEmail testEmail = new PaymentEmail(SafeString.of("email title"),
-            SafeString.of("empty tempalote"), HakumaksuUtil.LanguageCodeISO6391.sv, new Date(0));
+            SafeString.of("empty tempalote"), OppijanTunnistusDTO.LanguageCodeISO6391.sv, new Date(0));
 
     // The real utility is in haku-app but unfortunately this code is not
     // easily movable there, need to duplicate for test
@@ -176,10 +175,10 @@ public class HakumaksuTest {
         assertEquals("POST", match.method);
         assertEquals(oppijanTunnistusUrl, match.url);
 
-        OppijanTunnistus body = (OppijanTunnistus)match.body;
+        OppijanTunnistusDTO body = (OppijanTunnistusDTO) match.body;
         assertEquals(expectedEmail, body.email);
         assertEquals(hakuperusteetUrlSv + "/app/" + expectedHakemusOid + "#/token/", body.url);
-        assertEquals(HakumaksuUtil.LanguageCodeISO6391.sv, body.lang);
+        assertEquals(OppijanTunnistusDTO.LanguageCodeISO6391.sv, body.lang);
         assertEquals(expectedHakemusOid, body.metadata.hakemusOid);
         assertEquals(expectedPersonOid, body.metadata.personOid);
         assertEquals(testEmail.subject.getValue(), body.subject);
