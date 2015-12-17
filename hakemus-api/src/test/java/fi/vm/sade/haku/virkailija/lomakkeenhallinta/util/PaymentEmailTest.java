@@ -2,12 +2,12 @@ package fi.vm.sade.haku.virkailija.lomakkeenhallinta.util;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import fi.vm.sade.haku.oppija.common.oppijantunnistus.OppijanTunnistusDTO;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationPeriod;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystemBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.HakumaksuUtil.LanguageCodeISO6391;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.junit.Test;
@@ -68,22 +68,22 @@ public class PaymentEmailTest {
         assertEquals(expectedExpirationDate.getYear(), paymentEmail.expirationDate.getYear()); // Expiration date for the redirect link
         assertEquals(expectedExpirationDate.getMonth(), paymentEmail.expirationDate.getMonth()); // Expiration date for the redirect link
         assertEquals(expectedExpirationDate.getDate(), paymentEmail.expirationDate.getDate()); // Expiration date for the redirect link
-        assertEquals(LanguageCodeISO6391.en, paymentEmail.language);
+        assertEquals(OppijanTunnistusDTO.LanguageCodeISO6391.en, paymentEmail.language);
         String template = paymentEmail.template.getValue();
         assertTrue(template.contains(subject));
         assertTrue(template.contains("{{verification-link}}"));
-        assertTrue(template.contains(localizedDateString(expectedExpirationDate, LanguageCodeISO6391.en))); // Next upcoming end date
+        assertTrue(template.contains(localizedDateString(expectedExpirationDate, OppijanTunnistusDTO.LanguageCodeISO6391.en))); // Next upcoming end date
         System.out.println(template);
     }
 
     @Test
     public void testSwedishLocaleDateFormat() {
-        assertEquals("den 1 januari 1970 kl 2:00 EET", localizedDateString(new Date(0), LanguageCodeISO6391.sv));
+        assertEquals("den 1 januari 1970 kl 2:00 EET", localizedDateString(new Date(0), OppijanTunnistusDTO.LanguageCodeISO6391.sv));
     }
 
     @Test
     public void testFinnishLocaleDateFormat() {
-        assertEquals("1. tammikuuta 1970 2.00.00 EET", localizedDateString(new Date(0), LanguageCodeISO6391.fi));
+        assertEquals("1. tammikuuta 1970 2.00.00 EET", localizedDateString(new Date(0), OppijanTunnistusDTO.LanguageCodeISO6391.fi));
     }
 
     @Test
