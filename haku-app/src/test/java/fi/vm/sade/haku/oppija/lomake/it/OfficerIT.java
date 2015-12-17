@@ -80,8 +80,8 @@ public class OfficerIT extends DummyModelBaseItTest {
         clickSearch();
         WebElement applicationLink = findByClassName("application-link").get(0);
         applicationLink.click();
-        List<WebElement> editLinks = findByClassName("edit-link");
-        WebElement editLink = editLinks.get(1);
+        waitForElement(120, By.id("application"));
+        WebElement editLink = findBy(By.cssSelector("a[href*=koulutustausta] button.edit-link"));
         editLink.click();
         waitForElement(120, By.id(KYSYMYS_POHJAKOULUTUS + "_" + TUTKINTO_YLIOPPILAS));
         findByAndAjaxClick(By.id(KYSYMYS_POHJAKOULUTUS + "_" + TUTKINTO_YLIOPPILAS));
