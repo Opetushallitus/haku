@@ -65,6 +65,9 @@
         <bean id="devProps" class="org.springframework.beans.factory.config.PropertiesFactoryBean"/>
         <import resource="form-login-security-context.xml"/>
         <bean id="logger" class="fi.vm.sade.log.client.LoggerMock" />
+        <bean id="hakumaksuService" class="org.mockito.Mockito" factory-method="mock">
+            <constructor-arg value="fi.vm.sade.haku.oppija.hakemus.service.HakumaksuService" />
+        </bean>
     </beans>
 
     <beans profile="dev">

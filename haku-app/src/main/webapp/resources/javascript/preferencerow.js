@@ -62,25 +62,24 @@ var preferenceRow = {
 
                 data = _.sortBy(data, 'name');
 
-                $('#'+selectInputId).prop('readonly', true);
-
                 var hakukohdeId = $("#" + selectInputId + "-id").val();
                 var $selectInput = $("#" + selectInputId);
                 var selectedPreferenceOK = false;
 
-                preferenceRow.clearChildLONames($("#" + selectInputId).data("childlonames"));
+                $selectInput.prop('readonly', true);
+                preferenceRow.clearChildLONames($selectInput.data("childlonames"));
 
-                $("#" + selectInputId).html("<option value=''>&nbsp;</option>");
+                $selectInput.html("<option value=''>&nbsp;</option>");
 
                 $(data).each(function (index, item) {
-                    var selected = "";
+                    var selected = null;
                     childLONames[item.id] = item.childLONames;
                     if (item.attachments) {
                         attachments[item.id] = item.attachments;
                     }
                     if (hakukohdeId == item.id) {
                         selectedPreferenceOK = true;
-                        selected = 'selected = "selected"';
+                        selected = "selected";
                         // overrides additional questions rendered in the backend
                         preferenceRow.displayChildLONames(hakukohdeId, $selectInput.data("childlonames"));
                     }
@@ -116,20 +115,37 @@ var preferenceRow = {
                         hasAttachments = true;
                     }
 
-                    $selectInput.append('<option value="' + item.name
-                        + '" ' + selected + ' data-id="' + item.id +
-                        '" data-educationdegree="' + item.educationDegree +
-                        '" data-requiredbaseeducations="' + (item.requiredBaseEducations ? item.requiredBaseEducations.join(",") : '') +
-                        '" data-lang="' + item.teachingLanguages[0] +
-                        '" data-sora="' + item.sora +
-                        '" data-aoidentifier="' + item.aoIdentifier +
-                        '" data-ao-groups="' + aoGroups.join(",") +
-                        '" data-kaksoistutkinto="' + item.kaksoistutkinto +
-                        '" data-vocational="' + item.vocational +
-                        '" data-educationcode="' + item.educationCodeUri +
-                        '" data-attachments="' + hasAttachments +
-                        '" data-attachmentgroups="' + attachmentGroups.join(",") +
-                        '" data-athlete="' + item.athleteEducation + '" >' + item.name + '</option>');
+                    function addAttributes(elem, map) {
+                        for (var property in map) {
+                            if (map.hasOwnProperty(property)) {
+                                var value = map[property];
+                                if(value) {
+                                    elem.attr(property, value)
+                                }
+                            }
+                        }
+                        return elem;
+                    }
+
+                    var option = addAttributes($("<option/>"), {
+                        "value": item.name,
+                        "selected": selected,
+                        "data-id": item.id,
+                        "data-educationdegree": item.educationDegree,
+                        "data-requiredbaseeducations": item.requiredBaseEducations ? item.requiredBaseEducations.join(",") : '',
+                        "data-lang": item.teachingLanguages[0],
+                        "data-sora": item.sora,
+                        "data-aoidentifier": item.aoIdentifier,
+                        "data-ao-groups": aoGroups.join(","),
+                        "data-kaksoistutkinto": item.kaksoistutkinto,
+                        "data-vocational": item.vocational,
+                        "data-educationcode": item.educationCodeUri,
+                        "data-attachments": hasAttachments,
+                        "data-attachmentgroups": attachmentGroups.join(","),
+                        "data-athlete": item.athleteEducation
+                    });
+                    option.text(item.name);
+                    $selectInput.append(option);
                 });
                 
                 if (isInit && !selectedPreferenceOK && hakukohdeId && hakukohdeId !== '') {
@@ -147,7 +163,7 @@ var preferenceRow = {
                     $selectInput.after(warning);
                 }
 
-                $('#'+selectInputId).prop('readonly', false);
+                $selectInput.prop('readonly', false);
 
                 var idx = selectInputId.indexOf('-');
                 var id = selectInputId.substring(0, idx);
