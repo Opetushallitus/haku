@@ -24,7 +24,9 @@ import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import org.apache.commons.io.FileUtils;
 import org.junit.Before;
 import org.openqa.selenium.*;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 
@@ -56,6 +58,11 @@ public abstract class AbstractSeleniumBase extends TomcatContainerBase {
 
     protected void navigateTo(String url) {
         seleniumContainer.getDriver().get(url);
+    }
+
+    protected void waitForElement(final long seconds, final By by) {
+        new WebDriverWait(seleniumContainer.getDriver(), seconds)
+                .until(ExpectedConditions.presenceOfElementLocated(by));
     }
 
     protected ApplicationSystemHelper updateApplicationSystem(final ApplicationSystem applicationSystem) {

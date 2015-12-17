@@ -166,11 +166,6 @@ public abstract class DummyModelBaseItTest extends AbstractSeleniumBase {
         });
     }
 
-    protected void waitForElement(final long seconds, final By by) {
-        new WebDriverWait(seleniumContainer.getDriver(), seconds)
-                .until(ExpectedConditions.presenceOfElementLocated(by));
-    }
-
     protected List<WebElement> getById(final String id) {
         return seleniumContainer.getDriver().findElements(new By.ById(id));
     }

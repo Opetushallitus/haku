@@ -1,8 +1,9 @@
 package fi.vm.sade.haku.oppija.ui.selenium;
 
-import fi.vm.sade.haku.oppija.common.selenium.DummyModelBaseItTest;
+import fi.vm.sade.haku.oppija.common.selenium.AbstractSeleniumBase;
 import org.junit.Before;
 import org.junit.Test;
+import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedCondition;
@@ -12,15 +13,21 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 
-public class MochaIT extends DummyModelBaseItTest {
+public class MochaIT extends AbstractSeleniumBase {
 
     protected WebDriver driver;
 
     @Before
     public void init() {
         driver = seleniumContainer.getDriver();
-        seleniumContainer.getDriver().manage().deleteAllCookies();
+
+        driver.manage().deleteAllCookies();
+
+        driver.get((getBaseUrl() + "lomakkeenhallinta/ALL"));
+        waitForElement(60, By.id("published"));
+
         driver.get(getBaseUrl() + "test/index.html");
+        waitForElement(10, By.tagName("title"));
     }
 
     @Test
