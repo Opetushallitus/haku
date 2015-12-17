@@ -2,18 +2,21 @@ package fi.vm.sade.haku.virkailija.lomakkeenhallinta.util;
 
 import com.google.api.client.util.Key;
 import com.google.api.client.util.Throwables;
-import com.google.api.client.util.Value;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
-import com.google.common.collect.*;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
 import com.google.common.util.concurrent.AsyncFunction;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import fi.vm.sade.haku.http.HttpRestClient.Response;
 import fi.vm.sade.haku.http.RestClient;
+import fi.vm.sade.haku.oppija.common.oppijantunnistus.OppijanTunnistusDTO;
 import fi.vm.sade.haku.oppija.hakemus.service.EducationRequirementsUtil;
 import fi.vm.sade.haku.oppija.hakemus.service.HakumaksuService.PaymentEmail;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.ApplicationOptionOid;
@@ -50,12 +53,6 @@ public class HakumaksuUtil {
         populateEaaCountriesCache();
     }
 
-    public enum LanguageCodeISO6391 {
-        @Value fi,
-        @Value sv,
-        @Value en
-    }
-
     public enum CacheKeys {
         EAA_COUNTRIES
     }
@@ -64,35 +61,6 @@ public class HakumaksuUtil {
     public static final String ISO_COUNTRY_KOODISTO = "maatjavaltiot1";
     public static final String EEA_KOODI = "valtioryhmat_2";
     public static final IsoCountryCode SVEITSI = IsoCountryCode.of("CHE");
-
-    public static class OppijanTunnistus {
-        public static class Metadata {
-            @Key
-            public String hakemusOid;
-            @Key
-            public String personOid;
-        }
-        @Key
-        public String subject; // Email subject
-
-        @Key
-        public String template; // Email body template
-
-        @Key
-        public String url;
-
-        @Key
-        public long expires; // Url expiration time in Unix milliseconds
-
-        @Key
-        public String email;
-
-        @Key
-        public LanguageCodeISO6391 lang;
-
-        @Key
-        public Metadata metadata;
-    }
 
     /**
      * @return true if send was successful
@@ -103,7 +71,7 @@ public class HakumaksuUtil {
                                                         final ApplicationOid _hakemusOid,
                                                         final PersonOid _personOid,
                                                         final SafeString emailAddress) {
-        OppijanTunnistus body = new OppijanTunnistus() {{
+        OppijanTunnistusDTO body = new OppijanTunnistusDTO() {{
             this.url = redirectUrl.getValue();
             this.expires = paymentEmail.expirationDate.getTime();
             this.email = emailAddress.getValue();

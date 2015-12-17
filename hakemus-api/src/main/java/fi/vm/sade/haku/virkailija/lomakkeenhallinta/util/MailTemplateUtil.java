@@ -8,10 +8,10 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Ordering;
+import fi.vm.sade.haku.oppija.common.oppijantunnistus.OppijanTunnistusDTO.LanguageCodeISO6391;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.service.HakumaksuService.PaymentEmail;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationPeriod;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.HakumaksuUtil.LanguageCodeISO6391;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.SafeString;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
@@ -27,7 +27,7 @@ import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import static com.google.common.base.Optional.fromNullable;
-import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.HakumaksuUtil.LanguageCodeISO6391.*;
+import static fi.vm.sade.haku.oppija.common.oppijantunnistus.OppijanTunnistusDTO.LanguageCodeISO6391.*;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.ELEMENT_ID_CONTACT_LANGUAGE;
 
 public final class MailTemplateUtil {
