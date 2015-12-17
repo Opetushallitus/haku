@@ -1,6 +1,6 @@
 package fi.vm.sade.haku.oppija.ui.selenium;
 
-import fi.vm.sade.haku.oppija.common.selenium.AbstractSeleniumBase;
+import fi.vm.sade.haku.oppija.common.selenium.DummyModelBaseItTest;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.JavascriptExecutor;
@@ -12,13 +12,14 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 
-public class MochaIT extends AbstractSeleniumBase {
+public class MochaIT extends DummyModelBaseItTest {
 
     protected WebDriver driver;
 
     @Before
     public void init() {
         driver = seleniumContainer.getDriver();
+        seleniumContainer.getDriver().manage().deleteAllCookies();
         driver.get(getBaseUrl() + "test/index.html");
     }
 

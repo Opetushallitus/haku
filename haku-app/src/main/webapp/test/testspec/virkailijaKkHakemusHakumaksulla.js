@@ -4,11 +4,6 @@ describe("KK-hakemus hakumaksulla", function() {
 
     describe("virkailijan näkymä", function() {
         before(seqDone(
-            function() {
-                return openPage("/haku-app/lomakkeenhallinta/" + hakuOid, function() {
-                    return S("form#form-henkilotiedot").first().is(':visible')
-                })()
-            },
             login('officer', 'officer'),
             click(virkailija.createApplicationButton),
             input(virkailija.selectHaku, hakuOid),

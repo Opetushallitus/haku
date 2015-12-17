@@ -23,12 +23,7 @@ describe('KK-hakemus', function () {
                 useFirstAoAddress: "true",
                 deadline: "1525912995920"
             }]
-        ),
-        function() {
-            return openPage("/haku-app/lomakkeenhallinta/" + hakuOid, function() {
-                return S("form#form-henkilotiedot").first().is(':visible')
-            })()
-        }
+        )
     ));
 
     describe("virkailijan näkymä", function() {
@@ -258,7 +253,7 @@ describe('KK-hakemus', function () {
     describe('täyttö', function() {
         beforeEach(seqDone(
             logout,
-            openPage("/haku-app/lomakkeenhallinta/1.2.246.562.29.95390561488", function() {
+            openPage("/haku-app/lomake/1.2.246.562.29.95390561488", function() {
                 return S("form#form-henkilotiedot").first().is(':visible')
             })));
 

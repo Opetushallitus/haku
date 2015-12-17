@@ -1,7 +1,7 @@
 describe('2. asteen lomake', function () {
     var start = seq(
         logout,
-        openPage("/haku-app/lomakkeenhallinta/1.2.246.562.5.50476818906", function() {
+        openPage("/haku-app/lomake/1.2.246.562.5.50476818906", function() {
             return S("form#form-henkilotiedot").first().is(':visible')
         })
     )

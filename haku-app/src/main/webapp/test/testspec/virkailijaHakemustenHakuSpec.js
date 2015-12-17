@@ -1,10 +1,5 @@
 describe("Virkailija, hakemusten haku", function() {
     before(seqDone(
-        function() {
-            return openPage("/haku-app/lomakkeenhallinta/1.2.246.562.29.95390561488", function() {
-                return S("form#form-henkilotiedot").first().is(':visible')
-            })()
-        },
         login('officer', 'officer')
     ));
     describe("Harkinnanvaraiset", function() {

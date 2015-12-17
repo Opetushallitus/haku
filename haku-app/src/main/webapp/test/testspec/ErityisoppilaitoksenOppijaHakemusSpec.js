@@ -1,35 +1,28 @@
 describe('Erityisoppilaitosten lomake', function () {
     var hakuOid = "1.2.246.562.20.807716131410"
     before(seqDone(
-        logout,
-        function() {
-            return openPage("/haku-app/lomakkeenhallinta/" + hakuOid, function() {
-                return S("form#form-henkilotiedot").first().is(':visible')
-            })()
-        }
+        logout
     ));
 
     var valitseFaktiaJaKiipula = seq(
         partials.valitseKoulutusVetovalikosta(1, faktia, faktiaPkKoulutus),
+        visible(lomake.soraTerveys(1, false)),
+        visible(lomake.soraOikeudenMenetys(1, false)),
         click(
             lomake.soraTerveys(1, false),
             lomake.soraOikeudenMenetys(1, false)
         ),
         partials.valitseKoulutusVetovalikosta(2, kiipula, kiipulaErKoulutus),
+        visible(lomake.soraTerveys(2, false)),
+        visible(lomake.soraOikeudenMenetys(2, false)),
         click(
             lomake.soraTerveys(2, false),
             lomake.soraOikeudenMenetys(2, false)
         )
-    )
+    );
 
     describe("virkailijan näkymä", function() {
-        var hakemusId
-        function hakemusPath() {
-            return "/haku-app/virkailija/hakemus/" + hakemusId
-        }
-        function previewPagePath() {
-            return hakemusPath() + "/print/view"
-        }
+        var hakemusId;
         before(seqDone(
             login('officer', 'officer'),
             click(virkailija.createApplicationButton),
@@ -45,7 +38,6 @@ describe('Erityisoppilaitosten lomake', function () {
             it('avautuu', function () {
             });
         });
-
 
         describe("yksilöllistetyn pohjakoulutuksen lisäys", function() {
             before(seqDone(
