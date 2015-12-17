@@ -7,12 +7,14 @@ import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.JsonObjectParser;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.common.util.concurrent.*;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.concurrent.*;
 
 @Component("restClient")
+@Profile("default")
 public class HttpRestClient implements RestClient {
 
     static final HttpTransport HTTP_TRANSPORT = new NetHttpTransport();

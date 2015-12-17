@@ -5,13 +5,16 @@ import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
-import fi.vm.sade.haku.oppija.hakemus.MockedRestClient.Captured;
+import fi.vm.sade.haku.http.MockedRestClient;
+import fi.vm.sade.haku.http.MockedRestClient.Captured;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application.PaymentState;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationNote;
 import fi.vm.sade.haku.oppija.hakemus.service.HakumaksuService;
 import fi.vm.sade.haku.oppija.hakemus.service.EducationRequirementsUtil.Eligibility;
 import fi.vm.sade.haku.oppija.hakemus.service.HakumaksuService.PaymentEmail;
+import fi.vm.sade.haku.testfixtures.Hakukelpoisuusvaatimus;
+import fi.vm.sade.haku.testfixtures.Pohjakoulutus;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.HakumaksuUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.HakumaksuUtil.OppijanTunnistus;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types;
@@ -28,8 +31,8 @@ import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 import static com.google.common.collect.Iterables.find;
-import static fi.vm.sade.haku.oppija.hakemus.Pohjakoulutus.MUUALLA_KUIN_SUOMESSA_SUORITETTU_KORKEAKOULUTUTKINTO_YLEMPI_YLIOPISTOTUTKINTO_MAISTERI_ARUBA;
-import static fi.vm.sade.haku.oppija.hakemus.TestApplicationData.*;
+import static fi.vm.sade.haku.testfixtures.Pohjakoulutus.MUUALLA_KUIN_SUOMESSA_SUORITETTU_KORKEAKOULUTUTKINTO_YLEMPI_YLIOPISTOTUTKINTO_MAISTERI_ARUBA;
+import static fi.vm.sade.haku.testfixtures.HakumaksuMockData.*;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.*;
 import static org.junit.Assert.*;
 
@@ -42,8 +45,8 @@ public class HakumaksuTest {
     static final String hakuperusteetUrlEn = "http://localhost/hakuperusteet-en";
 
     final protected HakumaksuService service = new HakumaksuService(
-            "http://localhost/koodisto-service",
-            "http://localhost/ao",
+            "http://localhost:9090/haku-app/koodisto",
+            "http://localhost:9090/haku-app/education",
             oppijanTunnistusUrl,
             hakuperusteetUrlFi,
             hakuperusteetUrlSv,

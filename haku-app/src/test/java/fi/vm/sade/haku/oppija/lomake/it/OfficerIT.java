@@ -37,10 +37,6 @@ public class OfficerIT extends DummyModelBaseItTest {
     @Before
     public void beforeOfficerIt() throws Exception {
         mongoTemplate.getCollection("application").insert((List<DBObject>) JsonTestData.readTestData("kk-yhteishaku-hakemuksia.json"));
-        final LoginPage loginPage = new LoginPage(seleniumContainer.getDriver());
-        navigateToPath("user", "login");
-        loginPage.login("officer");
-        navigateToPath("lomakkeenhallinta", "1.2.246.562.29.95390561488");
     }
 
     @Test

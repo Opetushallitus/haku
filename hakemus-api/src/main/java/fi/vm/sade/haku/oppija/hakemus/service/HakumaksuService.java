@@ -34,7 +34,6 @@ import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.*;
 import static org.apache.commons.lang.StringUtils.isNotEmpty;
 
-@Service
 public class HakumaksuService {
     public static final Logger LOGGER = LoggerFactory.getLogger(HakumaksuService.class);
     public static final String SYSTEM_USER = "järjestelmä";
@@ -44,15 +43,14 @@ public class HakumaksuService {
 
     private final ImmutableMap<LanguageCodeISO6391, SafeString> languageCodeToServiceUrlMap;
 
-    @Autowired
     public HakumaksuService(
-            @Value("${cas.service.koodisto-service}") final String koodistoServiceUrl,
-            @Value("${koulutusinformaatio.ao.resource.url}") final String koulutusinformaatioUrl,
-            @Value("${oppijantunnistus.create.url}") final String oppijanTunnistusUrl,
-            @Value("${hakuperusteet.url.fi}") final String hakuperusteetUrlFi,
-            @Value("${hakuperusteet.url.sv}") final String hakuperusteetUrlSv,
-            @Value("${hakuperusteet.url.en}") final String hakuperusteetUrlEn,
-            RestClient restClient
+            final String koodistoServiceUrl,
+            final String koulutusinformaatioUrl,
+            final String oppijanTunnistusUrl,
+            final String hakuperusteetUrlFi,
+            final String hakuperusteetUrlSv,
+            final String hakuperusteetUrlEn,
+            final RestClient restClient
     ) {
         this.oppijanTunnistusUrl = SafeString.of(oppijanTunnistusUrl);
 

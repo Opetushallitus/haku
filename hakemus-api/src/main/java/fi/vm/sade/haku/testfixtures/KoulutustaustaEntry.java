@@ -1,4 +1,4 @@
-package fi.vm.sade.haku.oppija.hakemus;
+package fi.vm.sade.haku.testfixtures;
 
 import java.util.Map;
 

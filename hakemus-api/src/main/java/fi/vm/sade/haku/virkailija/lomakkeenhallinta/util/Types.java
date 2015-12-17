@@ -99,6 +99,12 @@ public final class Types {
         public String get(String field) {
             return getValue().get(field);
         }
+
+        public String getOrElse(String field, String def) {
+            if (getValue().containsKey(field))
+                return getValue().get(field);
+            else return def;
+        }
     }
 
     public static class SafeString extends Base<String> {

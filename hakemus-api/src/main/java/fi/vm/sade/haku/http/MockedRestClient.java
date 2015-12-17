@@ -1,4 +1,4 @@
-package fi.vm.sade.haku.oppija.hakemus;
+package fi.vm.sade.haku.http;
 
 import com.google.api.client.util.Lists;
 import com.google.common.util.concurrent.Futures;
@@ -18,9 +18,9 @@ public class MockedRestClient implements RestClient {
     private final Map<String, Object> mappings;
 
     public static class Captured {
-        final String method;
-        final String url;
-        final Object body;
+        public final String method;
+        public final String url;
+        public final Object body;
 
         public Captured(String method, String url, Object body) {
             this.method = method;

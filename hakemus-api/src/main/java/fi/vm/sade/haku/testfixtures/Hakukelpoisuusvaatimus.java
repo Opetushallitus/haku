@@ -1,4 +1,4 @@
-package fi.vm.sade.haku.oppija.hakemus;
+package fi.vm.sade.haku.testfixtures;
 
 public enum Hakukelpoisuusvaatimus {
     YLEINEN_AMMATTIKORKEAKOULUKELPOISUUS("Yleinen ammattikorkeakoulukelpoisuus", "100"),

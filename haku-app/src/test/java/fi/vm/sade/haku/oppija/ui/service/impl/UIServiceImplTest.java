@@ -3,15 +3,15 @@ package fi.vm.sade.haku.oppija.ui.service.impl;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import fi.vm.sade.haku.oppija.hakemus.HakumaksuTest;
-import fi.vm.sade.haku.oppija.hakemus.TestApplicationData;
+import fi.vm.sade.haku.testfixtures.HakumaksuMockData;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.junit.Test;
 
 import java.util.Map;
 
-import static fi.vm.sade.haku.oppija.hakemus.Pohjakoulutus.MUUALLA_KUIN_SUOMESSA_SUORITETTU_KORKEAKOULUTUTKINTO_YLEMPI_YLIOPISTOTUTKINTO_MAISTERI_ARUBA;
-import static fi.vm.sade.haku.oppija.hakemus.Pohjakoulutus.SUOMESSA_SUORITETTU_YLIOPPILASTUTKINTO_JA_TAI_LUKION_OPPIMAARA_OLEN_SUORITTANUT_YLIOPPILASTUTKINNON_OHELLA_AMMATILLISEN_TUTKINNON_KAKSOISTUTKINTO;
-import static fi.vm.sade.haku.oppija.hakemus.TestApplicationData.*;
+import static fi.vm.sade.haku.testfixtures.Pohjakoulutus.MUUALLA_KUIN_SUOMESSA_SUORITETTU_KORKEAKOULUTUTKINTO_YLEMPI_YLIOPISTOTUTKINTO_MAISTERI_ARUBA;
+import static fi.vm.sade.haku.testfixtures.Pohjakoulutus.SUOMESSA_SUORITETTU_YLIOPPILASTUTKINTO_JA_TAI_LUKION_OPPIMAARA_OLEN_SUORITTANUT_YLIOPPILASTUTKINNON_OHELLA_AMMATILLISEN_TUTKINNON_KAKSOISTUTKINTO;
+import static fi.vm.sade.haku.testfixtures.HakumaksuMockData.*;
 import static org.junit.Assert.assertEquals;
 
 public class UIServiceImplTest extends HakumaksuTest {
@@ -20,7 +20,7 @@ public class UIServiceImplTest extends HakumaksuTest {
 
     @Test
     public void testThatPaymentNotificationIsVisibleWhenPaymentIsRequired() {
-        Map<String, String> result = uiService.paymentNotificationAnswers(TestApplicationData.getAnswers(
+        Map<String, String> result = uiService.paymentNotificationAnswers(HakumaksuMockData.getAnswers(
                 ImmutableSet.of(
                         APPLICATION_OPTION_WITHOUT_PAYMENT_EDUCATION_REQUIREMENTS,
                         APPLICATION_OPTION_WITH_IGNORE_AND_PAYMENT_EDUCATION_REQUIREMENTS,
@@ -38,7 +38,7 @@ public class UIServiceImplTest extends HakumaksuTest {
 
     @Test
     public void testThatPaymentNotificationIsNotShownWhenPaymentIsNotRequired() {
-        Map<String, String> result = uiService.paymentNotificationAnswers(TestApplicationData.getAnswers(
+        Map<String, String> result = uiService.paymentNotificationAnswers(HakumaksuMockData.getAnswers(
                 ImmutableSet.of(
                         APPLICATION_OPTION_WITHOUT_PAYMENT_EDUCATION_REQUIREMENTS,
                         APPLICATION_OPTION_WITH_MULTIPLE_BASE_EDUCATION_REQUIREMENTS,
