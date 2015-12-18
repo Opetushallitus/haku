@@ -119,7 +119,7 @@ var preferenceRow = {
                         for (var property in map) {
                             if (map.hasOwnProperty(property)) {
                                 var value = map[property];
-                                if(value) {
+                                if(value != null && value != undefined) {
                                     elem.attr(property, value)
                                 }
                             }
