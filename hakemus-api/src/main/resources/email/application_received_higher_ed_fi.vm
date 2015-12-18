@@ -11,7 +11,7 @@
         Haku: $applicationSystemId <br />
         Hakija: $applicant <br />
         Hakemusnumero: $applicationId <br />
-        Hakemuksen päivämäärä ja tallennusaika: $applicationDate <br />
+        Hakemuksen päivämäärä ja tallennusaika: $applicationDate
     </p>
 
     <p>
@@ -23,7 +23,9 @@
         #end
     </p>
 
-    <p>Voit muuttaa hakutoiveitasi täällä: <a href="{{verification-link}}">{{verification-link}}</a></p>
+    <p>
+        TODO: Voit muuttaa hakutoiveitasi täällä: <a href="{{verification-link}}">{{verification-link}}</a>
+    </p>
 
     <p>
         Jos haluat muuttaa hakukohteitasi, kirjaudu Oma Opintopolku -palveluun Opintopolun etusivulla, ja tee muutokset hakuajan kuluessa. <br />
