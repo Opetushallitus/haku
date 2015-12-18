@@ -1,36 +1,62 @@
-Haku: $applicationSystemId
-Hakija: $applicant
-Hakemusnumero: $applicationId
-Hakemuksen päivämäärä ja tallennusaika: $applicationDate
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="Content-Style-Type" content="text/css"/>
+</head>
+<body>
+<div>
+    <p>
+        Haku: $applicationSystemId <br />
+        Hakija: $applicant <br />
+        Hakemusnumero: $applicationId <br />
+        Hakemuksen päivämäärä ja tallennusaika: $applicationDate
+    </p>
 
-Hakutoiveesi:
+    <p>
+        Hakutoiveesi: <br /><br />
 
-#foreach ($preference in $preferences)
-$preference
+        #foreach ($preference in $preferences)
+        $preference <br />
 
-#end
-#if ($discretionary)
+        #end
+    </p>
 
-Hait harkintaan perustuvassa valinnassa. Sinun tulee toimittaa hakuajan päättymiseen mennessä
-oppilaitokseen seuraavat tiedot: tulostettu hakemus sekä perustelut ja todistukset, joihin vetoat.
+    #if ($discretionary)
+        <p>
+            Hait harkintaan perustuvassa valinnassa. Sinun tulee toimittaa hakuajan päättymiseen mennessä
+            oppilaitokseen seuraavat tiedot: tulostettu hakemus sekä perustelut ja todistukset, joihin vetoat.
+        </p>
+    #end
 
-#end
-#if ($athlete)
+    #if ($athlete)
+        <p>
+            Haet urheilijana ammatilliseen koulutukseen. Lisätietoja löydät osoitteesta<br /><br />
 
-Haet urheilijana ammatilliseen koulutukseen. Lisätietoja löydät osoitteesta
+            <a href="https://opintopolku.fi/liitteet/Urheiluoppilaitosten_hakulomake_2015.pdf">
+                https://opintopolku.fi/liitteet/Urheiluoppilaitosten_hakulomake_2015.pdf
+            </a>
+        </p>
+    #end
 
-https://opintopolku.fi/liitteet/Urheiluoppilaitosten_hakulomake_2015.pdf
+    #if ($musiikkiTanssiLiikuntaEducationCode)
+        <p>
+            Hait musiikki-, tanssi- tai liikunta-alan koulutukseen. Muista tarkistaa oppilaitoksen
+            nettisivuilta, pitääkö sinun täyttää myös oppilaitoksen oma lisätietolomake. Lomakkeen
+            voit tulostaa oppilaitoksen nettisivuilta, ja se on lähetettävä hakuaikana oppilaitokseen.
+        </p>
+    #end
 
-#end
-#if ($musiikkiTanssiLiikuntaEducationCode)
+    <p>
+        TODO: Voit muuttaa hakutoiveitasi täällä: <a href="{{verification-link}}">{{verification-link}}</a>
+    </p>
 
-Hait musiikki-, tanssi- tai liikunta-alan koulutukseen. Muista tarkistaa oppilaitoksen
-nettisivuilta, pitääkö sinun täyttää myös oppilaitoksen oma lisätietolomake. Lomakkeen
-voit tulostaa oppilaitoksen nettisivuilta, ja se on lähetettävä hakuaikana oppilaitokseen.
-
-#end
-
-
-Tämä on automaattinen sähköpostiviesti. Älä vastaa tähän. Jos haluat muuttaa
-hakutoiveitasi, ole yhteydessä Opintopolun hakuneuvontaan hakuaikana
-(neuvonta@opintopolku.fi).
+    <p>
+        Tämä on automaattinen sähköpostiviesti. Älä vastaa tähän. Jos haluat muuttaa
+        hakutoiveitasi, ole yhteydessä Opintopolun hakuneuvontaan hakuaikana
+        (neuvonta@opintopolku.fi).
+    </p>
+</div>
+</body>
+</html>

@@ -1,18 +1,39 @@
-Ansökan: $applicationSystemId
-Sökande: $applicant
-Ansökningsnummer: $applicationId
-Datum och lagringstidpunkt för ansökan: $applicationDate
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="Content-Style-Type" content="text/css"/>
+</head>
+<body>
+<div>
+    <p>
+        Ansökan: $applicationSystemId <br />
+        Sökande: $applicant <br />
+        Ansökningsnummer: $applicationId <br />
+        Datum och lagringstidpunkt för ansökan: $applicationDate
+    </p>
 
+    <p>
+        Dina ansökningsmål: <br /><br />
 
-Dina ansökningsmål:
+        #foreach ($preference in $preferences)
+        $preference <br />
 
-#foreach ($preference in $preferences)
-$preference
+        #end
+    </p>
 
-#end
+    <p>
+        TODO: hakemuksen muokkauslinkki heikosti tunnistautuneena {{verification-link}}
+    </p>
 
-Logga in på tjänsten Min Studieinfo på Studieinfos framsida ifall du vill ändra dina ansökningsmål. Ändringarna bör göras under ansökningstiden.
-Vid behov kan du skriva ut din ansökan i Min Studieinfo -tjänsten.
-Kontakta ansökningsservicen vid något av de universitet eller yrkeshögskolor du sökt till, ifall du inte kan använda tjänsten.
+    <p>
+        Logga in på tjänsten Min Studieinfo på Studieinfos framsida ifall du vill ändra dina ansökningsmål. Ändringarna bör göras under ansökningstiden. <br />
+        Vid behov kan du skriva ut din ansökan i Min Studieinfo -tjänsten.<br />
+        Kontakta ansökningsservicen vid något av de universitet eller yrkeshögskolor du sökt till, ifall du inte kan använda tjänsten.
+    </p>
 
-Det här är ett automatiskt e-postmeddelande. Svara inte på detta. 
+    <p>Det här är ett automatiskt e-postmeddelande. Svara inte på detta.</p>
+</div>
+</body>
+</html>

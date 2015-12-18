@@ -1,36 +1,63 @@
-Ansökan: $applicationSystemId
-Sökande: $applicant
-Ansökans nummer: $applicationId
-Ansökans datum och lagringstid: $applicationDate
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="Content-Style-Type" content="text/css"/>
+</head>
+<body>
+<div>
+    <p>
+        Ansökan: $applicationSystemId <br />
+        Sökande: $applicant <br />
+        Ansökans nummer: $applicationId <br />
+        Ansökans datum och lagringstid: $applicationDate
+    </p>
 
-Dina ansökningsönskemål:
+    <p>
+        Dina ansökningsönskemål: <br /><br />
 
-#foreach ($preference in $preferences)
-$preference
+        #foreach ($preference in $preferences)
+        $preference <br />
 
-#end
-#if ($discretionary)
+        #end
+    </p>
 
-Du sökte till utbildningen genom antagning på basis av utbildningsanordnarens prövning.
-Du bör skicka följande bilagor till läroanstalten under ansökningstiden: en utskrift av
-din ansökan och de bilagor samt motiveringar som du hänvisar till.
+    #if ($discretionary)
+        <p>
+            Du sökte till utbildningen genom antagning på basis av utbildningsanordnarens prövning.
+            Du bör skicka följande bilagor till läroanstalten under ansökningstiden: en utskrift av
+            din ansökan och de bilagor samt motiveringar som du hänvisar till.
+        </p>
+    #end
 
-#end
-#if ($athlete)
+    #if ($athlete)
+        <p>
+            Du söker till yrkesutbildning som idrottare. Tilläggsuppgifter hittar du på adressen<br /><br />
 
-Du söker till yrkesutbildning som idrottare. Tilläggsuppgifter hittar du på adressen
+            <a href="https://opintopolku.fi/liitteet/Ansokningsblankett_idrottare_2015.xlsx">
+                https://opintopolku.fi/liitteet/Ansokningsblankett_idrottare_2015.xlsx
+            </a>
+        </p>
+    #end
 
-https://opintopolku.fi/liitteet/Ansokningsblankett_idrottare_2015.xlsx
+    #if ($musiikkiTanssiLiikuntaEducationCode)
+        <p>
+            Du har sökt till utbildning inom musik-, dans-, eller idrottsbranschen. Kom ihåg att
+            på läroanstaltens hemsida kontrollera om det förutom den egentliga gemensamma ansökan
+            även krävs att du fyller i läroanstaltens egen tilläggsblankett.
+        </p>
+    #end
 
-#end
-#if ($musiikkiTanssiLiikuntaEducationCode)
+    <p>
+        TODO: Voit muuttaa hakutoiveitasi täällä: <a href="{{verification-link}}">{{verification-link}}</a>
+    </p>
 
-Du har sökt till utbildning inom musik-, dans-, eller idrottsbranschen. Kom ihåg att
-på läroanstaltens hemsida kontrollera om det förutom den egentliga gemensamma ansökan
-även krävs att du fyller i läroanstaltens egen tilläggsblankett.
-
-#end
-
-Detta är ett automatiskt meddelande. Svara inte på detta meddelande. Om du vill
-ändra på dina ansökningsönskemål, kontakta Studieinfos ansökningsrådgivning
-under ansökningstiden (info@studieinfo.fi).
+    <p>
+        Detta är ett automatiskt meddelande. Svara inte på detta meddelande. Om du vill
+        ändra på dina ansökningsönskemål, kontakta Studieinfos ansökningsrådgivning
+        under ansökningstiden (info@studieinfo.fi).
+    </p>
+</div>
+</body>
+</html>
