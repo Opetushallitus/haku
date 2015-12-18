@@ -1,18 +1,38 @@
-Application: $applicationSystemId
-Applicant: $applicant
-Application number: $applicationId
-Submitted: $applicationDate
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="Content-Style-Type" content="text/css"/>
+</head>
+<body>
+<div>
+    <p>
+        Application: $applicationSystemId <br />
+        Applicant: $applicant <br />
+        Application number: $applicationId <br />
+        Submitted: $applicationDate
+    </p>
 
+    <p>
+        Application options: <br /><br />
 
+        #foreach ($preference in $preferences)
+            $preference <br />
 
-Application options:
+        #end
+    </p>
 
-#foreach ($preference in $preferences)
-$preference
+    <p>
+        TODO: hakemuksen muokkauslinkki heikosti tunnistautuneena {{verification-link}}
+    </p>
 
-#end
+    <p>
+        If you want to change your study programme choices, log in to the My Studyinfo -service and do the changes within the application period. <br />
+        If you cannot use the service, contact the admission service of one of the universities or polytechnics/universities of applied sciences you have applied to.
+    </p>
 
-If you want to change your study programme choices, log in to the My Studyinfo -service and do the changes within the application period. 
-If you cannot use the service, contact the admission service of one of the universities or polytechnics/universities of applied sciences you have applied to.
-
-This is an automatic e-mail response. Do not reply to this. 
+    <p>This is an automatic e-mail response. Do not reply to this.</p>
+</div>
+</body>
+</html>
