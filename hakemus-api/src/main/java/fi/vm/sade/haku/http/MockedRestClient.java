@@ -4,9 +4,9 @@ import com.google.api.client.util.Lists;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import fi.vm.sade.haku.http.HttpRestClient.Response;
-import fi.vm.sade.haku.http.RestClient;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -37,6 +37,10 @@ public class MockedRestClient implements RestClient {
 
     public List<Captured> getCaptured() {
         return capturedEvents;
+    }
+
+    public MockedRestClient() {
+        this.mappings = new HashMap<>();
     }
 
     public MockedRestClient(final Map<String, Object> mappings) {

@@ -1,5 +1,10 @@
 package fi.vm.sade.haku.oppija.postprocess.impl;
 
+import com.google.common.base.Function;
+import com.google.common.util.concurrent.Futures;
+import fi.vm.sade.haku.http.HttpRestClient;
+import fi.vm.sade.haku.http.RestClient;
+import fi.vm.sade.haku.oppija.common.oppijantunnistus.OppijanTunnistusDTO;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.util.ApplicationUtil;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
@@ -7,9 +12,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.haku.oppija.lomake.service.FormService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
-import org.apache.commons.mail.Email;
 import org.apache.commons.mail.EmailException;
-import org.apache.commons.mail.SimpleEmail;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
@@ -17,10 +20,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.io.StringWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.ExecutionException;
 
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.valmis.ValmisPhase.MUSIIKKI_TANSSI_LIIKUNTA_EDUCATION_CODES;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.EDUCATION_CODE_KEY;
@@ -37,24 +42,23 @@ public class SendMailService {
 
     public static final String TRUE = "true";
 
-    @Value("${email.smtp.debug:false}")
-    private boolean smtpDebug;
-
-    @Value("${email.smtp.host}")
-    private String smtpHost;
-    @Value("${email.smtp.port}")
-    private Integer smtpPort;
-    @Value("${email.replyTo}")
-    private String replyTo;
-
     @Value("${mode.demo:false}")
     public boolean demoMode;
 
+    @Value("${email.application.modify.link:http://todo.hakemuksen.muokkaus.fi/#/token/}")
+    String emailApplicationModifyLink;
+
+    @Value("${oppijantunnistus.create.url}")
+    String oppijanTunnistusUrl;
+
+    final RestClient restClient;
+
     @Autowired
     public SendMailService(final ApplicationSystemService applicationSystemService,
-                           final FormService formService){
+                           final FormService formService, final RestClient restClient){
         this.applicationSystemService = applicationSystemService;
         this.formService = formService;
+        this.restClient = restClient;
         initTemplateMaps();
     }
 
@@ -87,9 +91,9 @@ public class SendMailService {
         }
     }
 
-    private void sendConfirmationMail(Application application) throws EmailException {
+    private void sendConfirmationMail(final Application application) throws EmailException {
         Map<String, String> answers = application.getVastauksetMerged();
-        String emailAddress = answers.get(OppijaConstants.ELEMENT_ID_EMAIL);
+        final String emailAddress = answers.get(OppijaConstants.ELEMENT_ID_EMAIL);
         String lang = answers.get(OppijaConstants.ELEMENT_ID_CONTACT_LANGUAGE);
 
         Template tmpl = templateMap.get(lang);
@@ -107,27 +111,37 @@ public class SendMailService {
         }
         ResourceBundle messages = ResourceBundle.getBundle("messages", locale);
 
-        String subject = messages.getString("email.application.received.title");
-        Email email = basicEmail(emailAddress, subject);
-        email.setDebug(smtpDebug);
+        final String emailSubject = messages.getString("email.application.received.title");
         StringWriter sw = new StringWriter();
         VelocityContext ctx = buildContext(application, as);
         tmpl.merge(ctx, sw);
-        email.setMsg(sw.toString());
-        email.send();
-    }
+        final String emailTemplate = sw.toString();
 
-    private Email basicEmail(String toAddress, String subject) throws EmailException {
-        Email email = new SimpleEmail();
-        email.setHostName(smtpHost);
-        email.setSmtpPort(smtpPort);
-        //email.setAuthenticator(new DefaultAuthenticator("username", "password"));
-        //email.setSSLOnConnect(true);
-        email.setFrom(replyTo);
-        email.setSubject(subject);
-        email.addTo(toAddress);
-        email.setCharset("utf-8");
-        return email;
+        final OppijanTunnistusDTO.LanguageCodeISO6391 emailLang = OppijanTunnistusDTO.LanguageCodeISO6391.valueOf(locale.toString());
+        OppijanTunnistusDTO body = new OppijanTunnistusDTO(){{
+            this.url = emailApplicationModifyLink;
+            this.email = emailAddress;
+            this.subject = emailSubject;
+            this.template = emailTemplate;
+            this.lang = emailLang;
+            this.metadata = new Metadata() {{
+                this.hakemusOid = application.getOid();
+            }};
+        }};
+
+        try {
+            boolean successStatusCode = Futures.transform(restClient.post(oppijanTunnistusUrl, body, Object.class), new Function<HttpRestClient.Response<Object>, Boolean>() {
+                @Override
+                public Boolean apply(HttpRestClient.Response<Object> input) {
+                    return input.isSuccessStatusCode();
+                }
+            }).get();
+            if (!successStatusCode) {
+                throw new EmailException("OppijanTunnistus status code did not indicate success");
+            }
+        } catch (IOException | InterruptedException | ExecutionException e) {
+            throw new EmailException("OppijanTunnistus request failed: " + e);
+        }
     }
 
     private VelocityContext buildContext(Application application, ApplicationSystem applicationSystem) {
