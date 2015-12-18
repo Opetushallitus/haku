@@ -23,7 +23,7 @@
                         <haku:i18nText value="${attachment.header}"/><br/>
                     </c:if>
                     <c:if test="${not empty attachment.description}">
-                        <haku:i18nText value="${attachment.description}" />
+                        <haku:i18nText value="${attachment.description}" escape="false" />
                     </c:if>
                 </td>
                 <td>
@@ -51,7 +51,7 @@
                         <fmt:formatDate pattern="dd.MM.yyyy HH:mm. " value="${attachment.deadline}" />
                     </c:if>
                     <c:if test="${not empty attachment.deliveryNote}">
-                        <haku:i18nText value="${attachment.deliveryNote}" />
+                        <haku:i18nText value="${attachment.deliveryNote}" escape="false"/>
                     </c:if>
                 </td>
             </tr>
