@@ -1,10 +1,12 @@
 package fi.vm.sade.haku.oppija.postprocess.impl;
 
 import com.google.common.base.Function;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.util.concurrent.Futures;
 import fi.vm.sade.haku.http.HttpRestClient;
 import fi.vm.sade.haku.http.RestClient;
 import fi.vm.sade.haku.oppija.common.oppijantunnistus.OppijanTunnistusDTO;
+import fi.vm.sade.haku.oppija.common.oppijantunnistus.OppijanTunnistusDTO.LanguageCodeISO6391;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.util.ApplicationUtil;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
@@ -45,8 +47,12 @@ public class SendMailService {
     @Value("${mode.demo:false}")
     public boolean demoMode;
 
-    @Value("${email.application.modify.link:http://todo.hakemuksen.muokkaus.fi/#/token/}")
-    String emailApplicationModifyLink;
+    @Value("${email.application.modify.link.fi}")
+    String emailApplicationModifyLinkFi;
+    @Value("${email.application.modify.link.sv}")
+    String emailApplicationModifyLinkSv;
+    @Value("${email.application.modify.link.en}")
+    String emailApplicationModifyLinkEn;
 
     @Value("${oppijantunnistus.create.url}")
     String oppijanTunnistusUrl;
@@ -117,9 +123,15 @@ public class SendMailService {
         tmpl.merge(ctx, sw);
         final String emailTemplate = sw.toString();
 
-        final OppijanTunnistusDTO.LanguageCodeISO6391 emailLang = OppijanTunnistusDTO.LanguageCodeISO6391.valueOf(locale.toString());
+        final Map<LanguageCodeISO6391, String> langToLink = ImmutableMap.of(
+                LanguageCodeISO6391.fi, emailApplicationModifyLinkFi,
+                LanguageCodeISO6391.sv, emailApplicationModifyLinkSv,
+                LanguageCodeISO6391.en, emailApplicationModifyLinkEn
+        );
+
+        final LanguageCodeISO6391 emailLang = LanguageCodeISO6391.valueOf(locale.toString());
         OppijanTunnistusDTO body = new OppijanTunnistusDTO(){{
-            this.url = emailApplicationModifyLink;
+            this.url = langToLink.get(emailLang);
             this.email = emailAddress;
             this.subject = emailSubject;
             this.template = emailTemplate;
