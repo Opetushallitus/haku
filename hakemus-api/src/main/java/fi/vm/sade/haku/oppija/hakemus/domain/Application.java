@@ -18,6 +18,7 @@ package fi.vm.sade.haku.oppija.hakemus.domain;
 
 import com.google.common.base.*;
 import com.google.common.collect.Maps;
+import fi.vm.sade.haku.oppija.lomake.domain.ApplicationPeriod;
 import fi.vm.sade.haku.oppija.lomake.domain.ObjectIdDeserializer;
 import fi.vm.sade.haku.oppija.lomake.domain.ObjectIdSerializer;
 import fi.vm.sade.haku.oppija.lomake.domain.User;
@@ -693,6 +694,15 @@ public class Application implements Serializable {
             list.add(req.clone());
         }
         return list;
+    }
+
+    public ApplicationPeriod getApplicationPeriodWhenSubmitted(List<ApplicationPeriod> applicationPeriods) {
+        for (ApplicationPeriod ap : applicationPeriods) {
+            if (ap.getStart().before(this.received) && this.received.before(ap.getEnd())) {
+                return ap;
+            }
+        }
+        throw new RuntimeException(String.format("no application period found for application %s received %s", this.oid, this.received));
     }
 
     @Override
