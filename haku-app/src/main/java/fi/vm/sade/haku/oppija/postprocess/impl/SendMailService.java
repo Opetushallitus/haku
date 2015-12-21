@@ -104,7 +104,7 @@ public class SendMailService {
 
         Template tmpl = templateMap.get(lang);
         String asOid = application.getApplicationSystemId();
-        ApplicationSystem as = applicationSystemService.getApplicationSystem(asOid);
+        final ApplicationSystem as = applicationSystemService.getApplicationSystem(asOid);
         if (as.getKohdejoukkoUri().equals(OppijaConstants.KOHDEJOUKKO_KORKEAKOULU)) {
             tmpl = templateMapHigherEducation.get(lang);
         }
@@ -132,6 +132,7 @@ public class SendMailService {
         final LanguageCodeISO6391 emailLang = LanguageCodeISO6391.valueOf(locale.toString());
         OppijanTunnistusDTO body = new OppijanTunnistusDTO(){{
             this.url = langToLink.get(emailLang);
+            this.expires = getModificationLinkExpiration(application, as);
             this.email = emailAddress;
             this.subject = emailSubject;
             this.template = emailTemplate;
@@ -154,6 +155,10 @@ public class SendMailService {
         } catch (IOException | InterruptedException | ExecutionException e) {
             throw new EmailException("OppijanTunnistus request failed: " + e);
         }
+    }
+
+    private long getModificationLinkExpiration(Application application, ApplicationSystem as) {
+        return application.getApplicationPeriodWhenSubmitted(as.getApplicationPeriods()).getEnd().getTime();
     }
 
     private VelocityContext buildContext(Application application, ApplicationSystem applicationSystem) {
