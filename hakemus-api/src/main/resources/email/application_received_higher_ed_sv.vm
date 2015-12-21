@@ -24,15 +24,22 @@
     </p>
 
     <p>
-        TODO: hakemuksen muokkauslinkki heikosti tunnistautuneena {{verification-link}}
+        Din ansökan har mottagits. Om du vill ändra dina ansökningsönskemål eller
+        uppdatera dina kontaktuppgifter, kan du under ansökningstiden göra ändringar
+        via följande länk <a href="{{verification-link}}">{{verification-link}}</a>.
+        Länken är i kraft ända till {{expires}}.
     </p>
 
     <p>
-        Logga in på tjänsten Min Studieinfo på Studieinfos framsida ifall du vill ändra dina ansökningsmål. Ändringarna bör göras under ansökningstiden. <br />
-        Kontakta ansökningsservicen vid något av de universitet eller yrkeshögskolor du sökt till, ifall du inte kan använda tjänsten.
+        Om du har nätbankskoder, mobilcertifikat eller ett elektroniskt ID-kort,
+        kan du alternativt logga in i Studieinfo.fi och under ansökningstiden
+        göra ändringarna i tjänsten Min Studieinfo. I tjänsten kan du förutom
+        att ändra ansökningsönskemål också bearbeta svaren på tilläggsfrågor i
+        anknytning till ansökningsönskemålen, uppdatera dina kontaktuppgifter,
+        se antagningsresultaten och ta emot studieplatsen.
     </p>
 
-    <p>Det här är ett automatiskt e-postmeddelande. Svara inte på detta.</p>
+    <p>Svara inte på detta meddelande, det har skickats automatiskt.</p>
 </div>
 </body>
 </html>

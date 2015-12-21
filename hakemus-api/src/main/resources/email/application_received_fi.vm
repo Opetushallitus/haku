@@ -23,6 +23,21 @@
         #end
     </p>
 
+    <p>
+        Hakemuksesi on vastaanotettu. Jos haluat muuttaa hakutoiveitasi tai päivittää yhteystietojasi,
+        voit hakuaikana tehdä muutoksia seuraavan linkin kautta: <a href="{{verification-link}}">{{verification-link}}</a>.
+        Linkki on voimassa {{expires}} asti. Säilytä tämä viesti. Muokkauslinkkiä ei voi tilata
+        uudelleen.
+    </p>
+
+    <p>
+        Jos sinulla on verkkopankkitunnukset, mobiilivarmenne tai sähköinen henkilökortti,
+        voit vaihtoehtoisesti kirjautua sisään Opintopolku.fi:ssä, ja tehdä muutoksia hakutoiveisiisi
+        Oma Opintopolku –palvelussa hakuaikana. Oma Opintopolku –palvelussa voit hakutoivemuutosten
+        lisäksi muokata hakutoiveisiin liittyviin kysymyksiin antamiasi vastauksia, päivittää
+        yhteystietojasi; nähdä valintojen tulokset ja ottaa opiskelupaikan vastaan.
+    </p>
+
     #if ($discretionary)
         <p>
             Hait harkintaan perustuvassa valinnassa. Sinun tulee toimittaa hakuajan päättymiseen mennessä
@@ -48,15 +63,7 @@
         </p>
     #end
 
-    <p>
-        TODO: Voit muuttaa hakutoiveitasi täällä: <a href="{{verification-link}}">{{verification-link}}</a>
-    </p>
-
-    <p>
-        Tämä on automaattinen sähköpostiviesti. Älä vastaa tähän. Jos haluat muuttaa
-        hakutoiveitasi, ole yhteydessä Opintopolun hakuneuvontaan hakuaikana
-        (neuvonta@opintopolku.fi).
-    </p>
+    <p>Älä vastaa tähän viestiin - viesti on lähetetty automaattisesti.</p>
 </div>
 </body>
 </html>
