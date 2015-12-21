@@ -24,16 +24,24 @@
     </p>
 
     <p>
-        TODO: hakemuksen muokkauslinkki heikosti tunnistautuneena {{verification-link}}
+        Your application has been received. If you wish to change the study
+        programmes you're applying to or update your contact information, you
+        can use the following link and make the changes within the application
+        period: <a href="{{verification-link}}">{{verification-link}}</a>. The
+        link is valid until {{expires}}.
     </p>
 
     <p>
-        If you want to change your study programme choices, log in to the My Studyinfo -service and do the changes within the application period. <br />
-        You can also print your application in the My Studyinfo -service.<br />
-        If you cannot use the service, contact the admission service of one of the universities or polytechnics/universities of applied sciences you have applied to.
+        If you have Finnish online banking credentials, an electronic ID-card
+        or mobile certificate, you can also log in at Studyinfo.fi and make
+        the changes in the My Studyinfo –service within the application
+        period. In addition to making changes to your study programmes, if you
+        have access to the My Studyinfo -service you can also edit your
+        answers, update your contact information, view the admission results
+        and confirm the study place.
     </p>
 
-    <p>This is an automatic e-mail response. Do not reply to this.</p>
+    <p>This is an automatically generated email, please do not reply.</p>
 </div>
 </body>
 </html>
