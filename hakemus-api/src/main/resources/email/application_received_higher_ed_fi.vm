@@ -24,16 +24,24 @@
     </p>
 
     <p>
-        TODO: Voit muuttaa hakutoiveitasi täällä: <a href="{{verification-link}}">{{verification-link}}</a>
+        Hakemuksesi on vastaanotettu. Jos haluat muuttaa hakutoiveitasi tai
+        päivittää yhteystietojasi, voit hakuaikana tehdä muutoksia seuraavan
+        linkin kautta:
+        <a href="{{verification-link}}">{{verification-link}}</a>. Linkki on
+        voimassa {{expires}} asti.
     </p>
 
     <p>
-        Jos haluat muuttaa hakukohteitasi, kirjaudu Oma Opintopolku -palveluun Opintopolun etusivulla, ja tee muutokset hakuajan kuluessa. <br />
-        Voit tulostaa hakemuksesi tarvittaessa Oma Opintopolku -palvelussa.<br />
-        Jos et voi käyttää palvelua, ota yhteyttä jonkin hakukohteenasi olevan yliopiston tai ammattikorkeakoulun hakijapalveluihin.
+        Jos sinulla on verkkopankkitunnukset, mobiilivarmenne tai sähköinen
+        henkilökortti, voit vaihtoehtoisesti kirjautua sisään
+        Opintopolku.fi:ssä, ja tehdä muutoksia hakutoiveisiisi Oma Opintopolku
+        –palvelussa hakuaikana. Oma Opintopolku –palvelussa voit
+        hakutoivemuutosten lisäksi muokata hakutoiveisiin liittyviin
+        kysymyksiin antamiasi vastauksia, päivittää yhteystietojasi; nähdä
+        valintojen tulokset ja ottaa opiskelupaikan vastaan.
     </p>
 
-    <p>Tämä on automaattinen sähköpostiviesti. Älä vastaa tähän.</p>
+    <p>Älä vastaa tähän viestiin - viesti on lähetetty automaattisesti.</p>
 </div>
 </body>
 </html>
