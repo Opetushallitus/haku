@@ -26,7 +26,7 @@
             <input type="checkbox"
                    name="${element.id}" ${(element.value eq answers[element.id]) ? "checked=\"checked\"" : ""} id="${element.id}" ${element.attributeString}
                    value="${element.value}"/>
-            <label for="${element.id}"><haku:i18nText value="${element.i18nText}"/></label>
+            <label for="${element.id}"><haku:i18nText value="${element.i18nText}" escape="false"/></label>
             <haku:errorMessage id="${element.id}" additionalClass="margin-top-1"/>
         </div>
         <haku:help element="${element}"/>

@@ -17,7 +17,7 @@
   ~ European Union Public Licence for more details.
   --%>
 <div class="form-item richText" id="${element.id}">
-    <haku:i18nText value="${element.i18nText}"/>
+    <haku:i18nText value="${element.i18nText}" escape="false"/>
     <div role="presentation" class="clear"></div>
     <haku:viewChilds element="${element}"/>
 </div>

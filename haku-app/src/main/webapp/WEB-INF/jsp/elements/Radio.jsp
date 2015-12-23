@@ -19,7 +19,7 @@
 <c:set var="styleBaseClass" value="${element.inline ? 'form-row' : 'form-item'}"/>
 <fieldset class="${styleBaseClass}">
     <legend id="${element.id}_legend" class="${styleBaseClass}-label ${element.attributes['required']}">
-        <haku:i18nText value="${element.i18nText}"/><haku:popup element="${element}"/>
+        <haku:i18nText value="${element.i18nText}" escape="false"/><haku:popup element="${element}"/>
     </legend>
     <div class="${styleBaseClass}-content">
         <haku:help element="${element}"/>
@@ -37,7 +37,7 @@
             <div role="presentation" class="field-container-radio">
                 <input aria-labelledby="${element.id}_legend ${element.id}_${option.value}_label" type="radio" name="${element.id}"
                        value="${option.value}" ${(!empty disabled) ? "disabled=\"true\" " : " "} ${checked ? "checked=\"checked\"" : ""} id="${element.id}_${option.value}"  ${option.attributeString}/>
-                <label id="${element.id}_${option.value}_label" for="${element.id}_${option.value}"><haku:i18nText value="${option.i18nText}"/></label>
+                <label id="${element.id}_${option.value}_label" for="${element.id}_${option.value}"><haku:i18nText value="${option.i18nText}" escape="false"/></label>
                 <haku:help element="${option}"/>
                 <haku:viewChilds element="${option}"/>
             </div>
