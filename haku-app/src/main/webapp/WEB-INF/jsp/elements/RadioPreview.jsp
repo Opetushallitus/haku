@@ -25,16 +25,16 @@
 <tr>
     <c:choose>
         <c:when test="${element.inline or print}">
-            <td class="label"><a name="${element.id}"></a><haku:i18nText value="${element.i18nText}"/></td>
+            <td class="label"><a name="${element.id}"></a><haku:i18nText value="${element.i18nText}" escape="false"/></td>
             <td>
                 <c:if test="${not empty value}">
-                    <haku:i18nText value="${value.i18nText}"/>
+                    <haku:i18nText value="${value.i18nText}" escape="false"/>
                 </c:if>
             </td>
         </c:when>
         <c:otherwise>
-            <td class="label"><a name="${element.id}"></a><span><haku:i18nText value="${element.i18nText}"/>:</span></td>
-            <td><haku:i18nText value="${value.i18nText}"/></td>
+            <td class="label"><a name="${element.id}"></a><span><haku:i18nText value="${element.i18nText}" escape="false"/>:</span></td>
+            <td><haku:i18nText value="${value.i18nText}" escape="false"/></td>
         </c:otherwise>
     </c:choose>
 </tr>

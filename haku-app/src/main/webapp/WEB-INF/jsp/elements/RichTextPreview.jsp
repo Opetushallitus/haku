@@ -19,7 +19,7 @@
 <tr>
     <td colspan="2">
         <div class="form-item richText" id="${element.id}">
-            <haku:i18nText value="${element.i18nText}"/>
+            <haku:i18nText value="${element.i18nText}" escape="false"/>
         </div>
     </td>
     <haku:viewChilds element="${element}"/>

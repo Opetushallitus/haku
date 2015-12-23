@@ -20,7 +20,7 @@
 <c:choose>
     <c:when test="${print}">
         <tr>
-            <td><haku:i18nText value="${element.i18nText}"/></td>
+            <td><haku:i18nText value="${element.i18nText}" escape="false"/></td>
             <td>
                 <c:choose>
                     <c:when test="${(answers[element.id] eq element.value)}">
@@ -39,7 +39,7 @@
             <td colspan="2">
                 <input type="checkbox" name="${element.id}"
                        disabled="disabled" ${(answers[element.id] eq element.value) ? "checked=\"checked\"" : ""} value="${element.value}"/>
-                <label><a name="${element.id}"></a><haku:i18nText value="${element.i18nText}"/></label>
+                <label><a name="${element.id}"></a><haku:i18nText value="${element.i18nText}" escape="false"/></label>
             </td>
         </tr>
     </c:otherwise>
