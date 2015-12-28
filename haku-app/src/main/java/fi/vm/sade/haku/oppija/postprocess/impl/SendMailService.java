@@ -26,7 +26,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Nullable;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.text.DateFormat;
@@ -196,9 +195,9 @@ public class SendMailService {
                 ApplicationAttachment applicationAttachment = input.getApplicationAttachment();
                 DateFormat f = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM, locale);
                 return ImmutableMap.<String, String>builder()
-                        .put("name", getTextOrNull(applicationAttachment.getName(), locale))
-                        .put("header", getTextOrNull(applicationAttachment.getHeader(), locale))
-                        .put("description", getTextOrNull(applicationAttachment.getDescription(), locale))
+                        .put("name", getTextOrEmpty(applicationAttachment.getName(), locale))
+                        .put("header", getTextOrEmpty(applicationAttachment.getHeader(), locale))
+                        .put("description", getTextOrEmpty(applicationAttachment.getDescription(), locale))
                         .put("recipient", applicationAttachment.getAddress().getRecipient())
                         .put("streetAddress", applicationAttachment.getAddress().getStreetAddress())
                         .put("streetAddress2", applicationAttachment.getAddress().getStreetAddress2())
@@ -206,15 +205,15 @@ public class SendMailService {
                         .put("postOffice", applicationAttachment.getAddress().getPostOffice())
                         .put("emailAddress", applicationAttachment.getEmailAddress())
                         .put("deadline", f.format(applicationAttachment.getDeadline()))
-                        .put("deliveryNote", getTextOrNull(applicationAttachment.getDeliveryNote(), locale))
+                        .put("deliveryNote", getTextOrEmpty(applicationAttachment.getDeliveryNote(), locale))
                         .build();
             }
         });
     }
 
-    private static String getTextOrNull(I18nText text, Locale locale) {
+    private static String getTextOrEmpty(I18nText text, Locale locale) {
         if (text == null) {
-            return null;
+            return "";
         }
         return text.getText(locale.getLanguage());
     }
