@@ -40,6 +40,41 @@
         uppdatera dina kontaktuppgifter, se antagningsresultaten och ta emot studieplatsen.
     </p>
 
+    #if ($attachmentRequests)
+        <p>
+            Bilagor: <br /><br />
+
+        <table>
+            <tr>
+                <th>$lomakeTulostusLiite</th>
+                <th>$lomakeTulostusLiiteToimitusosoite</th>
+                <th>$lomakeTulostusLiiteDeadline</th>
+            </tr>
+            #foreach ($attachment in $attachmentRequests)
+                <tr>
+                    <td>
+                        ${attachment.name}<br />
+                        ${attachment.header}<br/>
+                        ${attachment.description}
+                    </td>
+                    <td>
+                        ${attachment.recipient}<br/>
+                        ${attachment.streetAddress}<br/>
+                        ${attachment.streetAddress2}<br/>
+                        ${attachment.postalCode}<br/>
+                        ${attachment.postOffice}<br/>
+                        ${attachment.emailAddress}
+                    </td>
+                    <td>
+                        ${attachment.deadline}
+                        ${attachment.deliveryNote}
+                    </td>
+                </tr>
+            #end
+        </table>
+        </p>
+    #end
+
     #if ($discretionary)
         <p>
             Du sökte till utbildningen genom antagning på basis av utbildningsanordnarens prövning.

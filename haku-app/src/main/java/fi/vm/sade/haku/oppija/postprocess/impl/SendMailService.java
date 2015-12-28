@@ -2,12 +2,15 @@ package fi.vm.sade.haku.oppija.postprocess.impl;
 
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Lists;
 import com.google.common.util.concurrent.Futures;
 import fi.vm.sade.haku.http.HttpRestClient;
 import fi.vm.sade.haku.http.RestClient;
 import fi.vm.sade.haku.oppija.common.oppijantunnistus.OppijanTunnistusDTO;
 import fi.vm.sade.haku.oppija.common.oppijantunnistus.OppijanTunnistusDTO.LanguageCodeISO6391;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
+import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationAttachment;
+import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationAttachmentRequest;
 import fi.vm.sade.haku.oppija.hakemus.domain.util.ApplicationUtil;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
@@ -22,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Nullable;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.text.DateFormat;
@@ -119,7 +123,7 @@ public class SendMailService {
 
         final String emailSubject = messages.getString("email.application.received.title");
         StringWriter sw = new StringWriter();
-        VelocityContext ctx = buildContext(application, as);
+        VelocityContext ctx = buildContext(application, as, locale, messages);
         tmpl.merge(ctx, sw);
         final String emailTemplate = sw.toString();
 
@@ -161,7 +165,7 @@ public class SendMailService {
         return application.getApplicationPeriodWhenSubmitted(as.getApplicationPeriods()).getEnd().getTime();
     }
 
-    private VelocityContext buildContext(Application application, ApplicationSystem applicationSystem) {
+    private VelocityContext buildContext(Application application, ApplicationSystem applicationSystem, Locale locale, ResourceBundle resourceBundle) {
         VelocityContext ctx = new VelocityContext();
         DateFormat dateFmt = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
         String applicationDate = dateFmt.format(application.getReceived());
@@ -176,8 +180,35 @@ public class SendMailService {
         ctx.put("athlete", isAthlete(application));
         ctx.put("discretionary", isDiscretionary(application));
         ctx.put("musiikkiTanssiLiikuntaEducationCode", isMusiikkiTanssiLiikuntaEducationCode(application));
+        ctx.put("attachmentRequests", attachmentRequests(application, locale));
+        ctx.put("lomakeTulostusLiite", resourceBundle.getString("lomake.tulostus.liite"));
+        ctx.put("lomakeTulostusLiiteToimitusosoite", resourceBundle.getString("lomake.tulostus.liite.toimitusosoite"));
+        ctx.put("lomakeTulostusLiiteDeadline", resourceBundle.getString("lomake.tulostus.liite.deadline"));
 
         return ctx;
+    }
+
+    private List<Map<String, String>> attachmentRequests(Application application, final Locale locale) {
+        return Lists.transform(application.getAttachmentRequests(), new Function<ApplicationAttachmentRequest, Map<String, String>>() {
+            @Override
+            public Map<String, String> apply(ApplicationAttachmentRequest input) {
+                ApplicationAttachment applicationAttachment = input.getApplicationAttachment();
+                DateFormat f = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM, locale);
+                return ImmutableMap.<String, String>builder()
+                        .put("name", applicationAttachment.getName().getText(locale.getLanguage().toLowerCase()))
+                        .put("header", applicationAttachment.getHeader().getText(locale.getLanguage().toLowerCase()))
+                        .put("description", applicationAttachment.getDescription().getText(locale.getLanguage().toLowerCase()))
+                        .put("recipient", applicationAttachment.getAddress().getRecipient())
+                        .put("streetAddress", applicationAttachment.getAddress().getStreetAddress())
+                        .put("streetAddress2", applicationAttachment.getAddress().getStreetAddress2())
+                        .put("postalCode", applicationAttachment.getAddress().getPostalCode())
+                        .put("postOffice", applicationAttachment.getAddress().getPostOffice())
+                        .put("emailAddress", applicationAttachment.getEmailAddress())
+                        .put("deadline", f.format(applicationAttachment.getDeadline()))
+                        .put("deliveryNote", applicationAttachment.getDeliveryNote().getText(locale.getLanguage().toLowerCase()))
+                        .build();
+            }
+        });
     }
 
     private String getApplicantName(Application application) {

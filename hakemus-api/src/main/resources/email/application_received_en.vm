@@ -12,6 +12,10 @@ Hakutoiveesi:
 $preference
 
 #end
+
+#if ($attachmentRequests)
+Liitepyynnöt: ...
+#end
 #if ($discretionary)
 
 Hait harkintaan perustuvassa valinnassa. Sinun tulee toimittaa hakuajan päättymiseen mennessä

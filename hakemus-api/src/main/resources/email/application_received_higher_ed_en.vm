@@ -23,6 +23,41 @@
         #end
     </p>
 
+    #if ($attachmentRequests)
+        <p>
+            Attachments: <br /><br />
+
+            <table>
+                <tr>
+                    <th>$lomakeTulostusLiite</th>
+                    <th>$lomakeTulostusLiiteToimitusosoite</th>
+                    <th>$lomakeTulostusLiiteDeadline</th>
+                </tr>
+                #foreach ($attachment in $attachmentRequests)
+                    <tr>
+                        <td>
+                            ${attachment.name}<br />
+                            ${attachment.header}<br/>
+                            ${attachment.description}
+                        </td>
+                        <td>
+                            ${attachment.recipient}<br/>
+                            ${attachment.streetAddress}<br/>
+                            ${attachment.streetAddress2}<br/>
+                            ${attachment.postalCode}<br/>
+                            ${attachment.postOffice}<br/>
+                            ${attachment.emailAddress}
+                        </td>
+                        <td>
+                            ${attachment.deadline}
+                            ${attachment.deliveryNote}
+                        </td>
+                    </tr>
+                #end
+            </table>
+        </p>
+    #end
+
     <p>
         Your application has been received. If you wish to change the study
         programmes you're applying to or update your contact information, you

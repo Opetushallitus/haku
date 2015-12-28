@@ -23,6 +23,41 @@
         #end
     </p>
 
+    #if ($attachmentRequests)
+        <p>
+            Liitepyynnöt: <br /><br />
+
+            <table>
+                <tr>
+                    <th>$lomakeTulostusLiite</th>
+                    <th>$lomakeTulostusLiiteToimitusosoite</th>
+                    <th>$lomakeTulostusLiiteDeadline</th>
+                </tr>
+                #foreach ($attachment in $attachmentRequests)
+                    <tr>
+                        <td>
+                            ${attachment.name}<br />
+                            ${attachment.header}<br/>
+                            ${attachment.description}
+                        </td>
+                        <td>
+                            ${attachment.recipient}<br/>
+                            ${attachment.streetAddress}<br/>
+                            ${attachment.streetAddress2}<br/>
+                            ${attachment.postalCode}<br/>
+                            ${attachment.postOffice}<br/>
+                            ${attachment.emailAddress}
+                        </td>
+                        <td>
+                            ${attachment.deadline}
+                            ${attachment.deliveryNote}
+                        </td>
+                    </tr>
+                #end
+            </table>
+        </p>
+    #end
+
     <p>
         Hakemuksesi on vastaanotettu. Jos haluat muuttaa hakutoiveitasi tai
         päivittää yhteystietojasi, voit hakuaikana tehdä muutoksia seuraavan
