@@ -93,17 +93,15 @@ public class SendMailService {
 
     public void sendMail(Application application) throws EmailException {
         if(!demoMode) {
-            Map<String, String> answers = application.getVastauksetMerged();
-            String email = answers.get(OppijaConstants.ELEMENT_ID_EMAIL);
+            String email = application.getVastauksetMerged().get(OppijaConstants.ELEMENT_ID_EMAIL);
             if (!isEmpty(email)) {
-                sendConfirmationMail(application);
+                sendConfirmationMail(application, email);
             }
         }
     }
 
-    private void sendConfirmationMail(final Application application) throws EmailException {
+    private void sendConfirmationMail(final Application application, final String emailAddress) throws EmailException {
         Map<String, String> answers = application.getVastauksetMerged();
-        final String emailAddress = answers.get(OppijaConstants.ELEMENT_ID_EMAIL);
         String lang = answers.get(OppijaConstants.ELEMENT_ID_CONTACT_LANGUAGE);
 
         Template tmpl = templateMap.get(lang);
