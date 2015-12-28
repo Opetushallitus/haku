@@ -105,12 +105,7 @@ public class SendMailService {
 
         final ApplicationSystem as = applicationSystemService.getApplicationSystem(application.getApplicationSystemId());
 
-        Locale locale = new Locale("fi");
-        if ("ruotsi".equals(lang)) {
-            locale = new Locale("sv");
-        } else if ("englanti".equals(lang)) {
-            locale = new Locale("en");
-        }
+        Locale locale = getLocale(application);
         ResourceBundle messages = ResourceBundle.getBundle("messages", locale);
 
         Template tmpl = templateMap.get(lang);
@@ -155,6 +150,17 @@ public class SendMailService {
         } catch (IOException | InterruptedException | ExecutionException e) {
             throw new EmailException("OppijanTunnistus request failed: " + e);
         }
+    }
+
+    private static Locale getLocale(Application application) {
+        String lang = application.getVastauksetMerged().get(OppijaConstants.ELEMENT_ID_CONTACT_LANGUAGE);
+        Locale locale = new Locale("fi");
+        if ("ruotsi".equals(lang)) {
+            locale = new Locale("sv");
+        } else if ("englanti".equals(lang)) {
+            locale = new Locale("en");
+        }
+        return locale;
     }
 
     private long getModificationLinkExpiration(Application application, ApplicationSystem as) {
