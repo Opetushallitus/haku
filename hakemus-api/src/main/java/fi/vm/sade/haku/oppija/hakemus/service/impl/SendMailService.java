@@ -14,9 +14,7 @@ import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationAttachmentRequest;
 import fi.vm.sade.haku.oppija.hakemus.domain.util.ApplicationUtil;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
-import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
-import fi.vm.sade.haku.oppija.lomake.service.FormService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.apache.commons.mail.EmailException;
 import org.apache.velocity.Template;
@@ -24,6 +22,7 @@ import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -39,11 +38,11 @@ import static org.apache.commons.lang.StringUtils.defaultString;
 import static org.apache.commons.lang.Validate.notNull;
 import static org.apache.commons.lang3.StringUtils.isEmpty;
 
-@Service
+@Service(value = "sendMailService")
+@Profile("default")
 public class SendMailService {
 
     private final ApplicationSystemService applicationSystemService;
-    private final FormService formService;
 
     final private Map<String, Template> templateMap = new HashMap<String, Template>();
     final private Map<String, Template> templateMapHigherEducation =new HashMap<String, Template>();
@@ -67,9 +66,8 @@ public class SendMailService {
 
     @Autowired
     public SendMailService(final ApplicationSystemService applicationSystemService,
-                           final FormService formService, final RestClient restClient){
+                           final RestClient restClient){
         this.applicationSystemService = applicationSystemService;
-        this.formService = formService;
         this.restClient = restClient;
         initTemplateMaps();
     }
@@ -174,7 +172,7 @@ public class SendMailService {
         String applicationId = application.getOid();
         applicationId = applicationId.substring(applicationId.lastIndexOf('.') + 1);
 
-        ctx.put("applicationSystemId", getFormName(application));
+        ctx.put("applicationSystemId", getFormName(application, applicationSystem));
         ctx.put("applicant", getApplicantName(application));
         ctx.put("applicationId", applicationId);
         ctx.put("applicationDate", applicationDate);
@@ -231,9 +229,7 @@ public class SendMailService {
         return firstName + " " + lastName;
     }
 
-    private String getFormName(Application application) {
-        Form form = formService.getForm(application.getApplicationSystemId());
-        Map<String, String> translations = form.getI18nText().getTranslations();
+    private String getFormName(Application application, ApplicationSystem applicationSystem) {
         String lang = application.getVastauksetMerged().get(OppijaConstants.ELEMENT_ID_CONTACT_LANGUAGE);
         String realLang = "fi";
         if (lang.equals("ruotsi")) {
@@ -241,9 +237,9 @@ public class SendMailService {
         } else if (lang.equals("englanti")) {
             realLang = "en";
         }
-        String formName = translations.get(realLang);
+        String formName = applicationSystem.getName().getText(realLang);
         if (isEmpty(formName)) {
-            formName = translations.get("fi");
+            formName = applicationSystem.getName().getText("fi");
         }
         return formName;
     }
