@@ -13,7 +13,7 @@ $preference
 
 #end
 
-#if ($attachmentRequests)
+#if (!$attachmentRequests.isEmpty())
 Liitepyynnöt: ...
 #end
 #if ($discretionary)

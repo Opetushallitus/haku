@@ -40,7 +40,7 @@
         uppdatera dina kontaktuppgifter, se antagningsresultaten och ta emot studieplatsen.
     </p>
 
-    #if ($attachmentRequests)
+    #if (!$attachmentRequests.isEmpty())
         <p>
             Bilagor: <br /><br />
 

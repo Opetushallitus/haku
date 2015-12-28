@@ -23,7 +23,7 @@
         #end
     </p>
 
-    #if ($attachmentRequests)
+    #if (!$attachmentRequests.isEmpty())
         <p>
             Liitepyynnöt: <br /><br />
 

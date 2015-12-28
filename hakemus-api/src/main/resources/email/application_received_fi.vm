@@ -38,7 +38,7 @@
         yhteystietojasi; nähdä valintojen tulokset ja ottaa opiskelupaikan vastaan.
     </p>
 
-    #if ($attachmentRequests)
+    #if (!$attachmentRequests.isEmpty())
         <p>
             Liitepyynnöt: <br /><br />
 
