@@ -13,6 +13,7 @@ import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationAttachment;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationAttachmentRequest;
 import fi.vm.sade.haku.oppija.hakemus.domain.util.ApplicationUtil;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
+import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.haku.oppija.lomake.service.FormService;
@@ -195,9 +196,9 @@ public class SendMailService {
                 ApplicationAttachment applicationAttachment = input.getApplicationAttachment();
                 DateFormat f = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM, locale);
                 return ImmutableMap.<String, String>builder()
-                        .put("name", applicationAttachment.getName().getText(locale.getLanguage().toLowerCase()))
-                        .put("header", applicationAttachment.getHeader().getText(locale.getLanguage().toLowerCase()))
-                        .put("description", applicationAttachment.getDescription().getText(locale.getLanguage().toLowerCase()))
+                        .put("name", getTextOrNull(applicationAttachment.getName(), locale))
+                        .put("header", getTextOrNull(applicationAttachment.getHeader(), locale))
+                        .put("description", getTextOrNull(applicationAttachment.getDescription(), locale))
                         .put("recipient", applicationAttachment.getAddress().getRecipient())
                         .put("streetAddress", applicationAttachment.getAddress().getStreetAddress())
                         .put("streetAddress2", applicationAttachment.getAddress().getStreetAddress2())
@@ -205,10 +206,17 @@ public class SendMailService {
                         .put("postOffice", applicationAttachment.getAddress().getPostOffice())
                         .put("emailAddress", applicationAttachment.getEmailAddress())
                         .put("deadline", f.format(applicationAttachment.getDeadline()))
-                        .put("deliveryNote", applicationAttachment.getDeliveryNote().getText(locale.getLanguage().toLowerCase()))
+                        .put("deliveryNote", getTextOrNull(applicationAttachment.getDeliveryNote(), locale))
                         .build();
             }
         });
+    }
+
+    private static String getTextOrNull(I18nText text, Locale locale) {
+        if (text == null) {
+            return null;
+        }
+        return text.getText(locale.getLanguage());
     }
 
     private String getApplicantName(Application application) {
