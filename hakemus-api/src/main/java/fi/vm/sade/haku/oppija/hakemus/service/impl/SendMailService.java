@@ -101,15 +101,9 @@ public class SendMailService {
     }
 
     private void sendConfirmationMail(final Application application, final String emailAddress) throws EmailException {
-        Map<String, String> answers = application.getVastauksetMerged();
-        String lang = answers.get(OppijaConstants.ELEMENT_ID_CONTACT_LANGUAGE);
+        String lang = application.getVastauksetMerged().get(OppijaConstants.ELEMENT_ID_CONTACT_LANGUAGE);
 
-        Template tmpl = templateMap.get(lang);
-        String asOid = application.getApplicationSystemId();
-        final ApplicationSystem as = applicationSystemService.getApplicationSystem(asOid);
-        if (as.getKohdejoukkoUri().equals(OppijaConstants.KOHDEJOUKKO_KORKEAKOULU)) {
-            tmpl = templateMapHigherEducation.get(lang);
-        }
+        final ApplicationSystem as = applicationSystemService.getApplicationSystem(application.getApplicationSystemId());
 
         Locale locale = new Locale("fi");
         if ("ruotsi".equals(lang)) {
@@ -119,6 +113,10 @@ public class SendMailService {
         }
         ResourceBundle messages = ResourceBundle.getBundle("messages", locale);
 
+        Template tmpl = templateMap.get(lang);
+        if (OppijaConstants.KOHDEJOUKKO_KORKEAKOULU.equals(as.getKohdejoukkoUri())) {
+            tmpl = templateMapHigherEducation.get(lang);
+        }
         final String emailSubject = messages.getString("email.application.received.title");
         StringWriter sw = new StringWriter();
         VelocityContext ctx = buildContext(application, as, locale, messages);
