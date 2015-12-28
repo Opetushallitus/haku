@@ -1,4 +1,4 @@
-package fi.vm.sade.haku.oppija.postprocess.impl;
+package fi.vm.sade.haku.oppija.hakemus.service.impl;
 
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableMap;
@@ -18,7 +18,6 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.haku.oppija.lomake.service.FormService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
-import org.apache.commons.lang.Validate;
 import org.apache.commons.mail.EmailException;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
