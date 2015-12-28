@@ -18,6 +18,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.haku.oppija.lomake.service.FormService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
+import org.apache.commons.lang.Validate;
 import org.apache.commons.mail.EmailException;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
@@ -35,6 +36,8 @@ import java.util.concurrent.ExecutionException;
 
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.valmis.ValmisPhase.MUSIIKKI_TANSSI_LIIKUNTA_EDUCATION_CODES;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.EDUCATION_CODE_KEY;
+import static org.apache.commons.lang.StringUtils.defaultString;
+import static org.apache.commons.lang.Validate.notNull;
 import static org.apache.commons.lang3.StringUtils.isEmpty;
 
 @Service
@@ -188,23 +191,28 @@ public class SendMailService {
         return ctx;
     }
 
-    private List<Map<String, String>> attachmentRequests(Application application, final Locale locale) {
+    private List<Map<String, String>> attachmentRequests(final Application application, final Locale locale) {
         return Lists.transform(application.getAttachmentRequests(), new Function<ApplicationAttachmentRequest, Map<String, String>>() {
             @Override
             public Map<String, String> apply(ApplicationAttachmentRequest input) {
                 ApplicationAttachment applicationAttachment = input.getApplicationAttachment();
-                DateFormat f = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM, locale);
+
+                notNull(applicationAttachment.getAddress());
+
                 return ImmutableMap.<String, String>builder()
                         .put("name", getTextOrEmpty(applicationAttachment.getName(), locale))
                         .put("header", getTextOrEmpty(applicationAttachment.getHeader(), locale))
                         .put("description", getTextOrEmpty(applicationAttachment.getDescription(), locale))
-                        .put("recipient", applicationAttachment.getAddress().getRecipient())
-                        .put("streetAddress", applicationAttachment.getAddress().getStreetAddress())
-                        .put("streetAddress2", applicationAttachment.getAddress().getStreetAddress2())
-                        .put("postalCode", applicationAttachment.getAddress().getPostalCode())
-                        .put("postOffice", applicationAttachment.getAddress().getPostOffice())
-                        .put("emailAddress", applicationAttachment.getEmailAddress())
-                        .put("deadline", f.format(applicationAttachment.getDeadline()))
+                        .put("recipient", defaultString(applicationAttachment.getAddress().getRecipient()))
+                        .put("streetAddress", defaultString(applicationAttachment.getAddress().getStreetAddress()))
+                        .put("streetAddress2", defaultString(applicationAttachment.getAddress().getStreetAddress2()))
+                        .put("postalCode", defaultString(applicationAttachment.getAddress().getPostalCode()))
+                        .put("postOffice", defaultString(applicationAttachment.getAddress().getPostOffice()))
+                        .put("emailAddress", defaultString(applicationAttachment.getEmailAddress()))
+                        .put("deadline", applicationAttachment.getDeadline() != null ?
+                                DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM, locale)
+                                        .format(applicationAttachment.getDeadline()) :
+                                "")
                         .put("deliveryNote", getTextOrEmpty(applicationAttachment.getDeliveryNote(), locale))
                         .build();
             }
