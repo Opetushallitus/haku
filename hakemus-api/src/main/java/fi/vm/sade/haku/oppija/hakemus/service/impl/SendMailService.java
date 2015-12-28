@@ -42,10 +42,13 @@ import static org.apache.commons.lang3.StringUtils.isEmpty;
 @Profile("default")
 public class SendMailService {
 
+    public static final Locale FI = new Locale("fi");
+    public static final Locale SV = new Locale("sv");
+    public static final Locale EN = new Locale("en");
     private final ApplicationSystemService applicationSystemService;
 
-    final private Map<String, Template> templateMap = new HashMap<String, Template>();
-    final private Map<String, Template> templateMapHigherEducation =new HashMap<String, Template>();
+    final private Map<Locale, Template> templateMap = new HashMap<>();
+    final private Map<Locale, Template> templateMapHigherEducation =new HashMap<>();
 
     public static final String TRUE = "true";
 
@@ -82,12 +85,12 @@ public class SendMailService {
         velocityEngine.setProperty("class.resource.loader.cache", "true");
         velocityEngine.setProperty("runtime.log.logsystem.log4j.logger", "velocity");
         velocityEngine.init();
-        templateMap.put("suomi", velocityEngine.getTemplate("email/application_received_fi.vm", "UTF-8"));
-        templateMap.put("ruotsi", velocityEngine.getTemplate("email/application_received_sv.vm", "UTF-8"));
-        templateMap.put("englanti", velocityEngine.getTemplate("email/application_received_en.vm", "UTF-8"));
-        templateMapHigherEducation.put("suomi", velocityEngine.getTemplate("email/application_received_higher_ed_fi.vm", "UTF-8"));
-        templateMapHigherEducation.put("ruotsi", velocityEngine.getTemplate("email/application_received_higher_ed_sv.vm", "UTF-8"));
-        templateMapHigherEducation.put("englanti", velocityEngine.getTemplate("email/application_received_higher_ed_en.vm", "UTF-8"));
+        templateMap.put(FI, velocityEngine.getTemplate("email/application_received_fi.vm", "UTF-8"));
+        templateMap.put(SV, velocityEngine.getTemplate("email/application_received_sv.vm", "UTF-8"));
+        templateMap.put(EN, velocityEngine.getTemplate("email/application_received_en.vm", "UTF-8"));
+        templateMapHigherEducation.put(FI, velocityEngine.getTemplate("email/application_received_higher_ed_fi.vm", "UTF-8"));
+        templateMapHigherEducation.put(SV, velocityEngine.getTemplate("email/application_received_higher_ed_sv.vm", "UTF-8"));
+        templateMapHigherEducation.put(EN, velocityEngine.getTemplate("email/application_received_higher_ed_en.vm", "UTF-8"));
     }
 
 
@@ -101,14 +104,10 @@ public class SendMailService {
     }
 
     private void sendConfirmationMail(final Application application, final String emailAddress) throws EmailException {
-        String lang = application.getVastauksetMerged().get(OppijaConstants.ELEMENT_ID_CONTACT_LANGUAGE);
-
         final ApplicationSystem as = applicationSystemService.getApplicationSystem(application.getApplicationSystemId());
-
         Locale locale = getLocale(application);
         ResourceBundle messages = ResourceBundle.getBundle("messages", locale);
-
-        Template tmpl = selectTemplate(lang, as);
+        Template tmpl = selectTemplate(locale, as);
         final String emailSubject = messages.getString("email.application.received.title");
         StringWriter sw = new StringWriter();
         VelocityContext ctx = buildContext(application, as, locale, messages);
@@ -149,21 +148,21 @@ public class SendMailService {
         }
     }
 
-    private Template selectTemplate(String lang, ApplicationSystem applicationSystem) {
-        Template tmpl = templateMap.get(lang);
+    private Template selectTemplate(Locale locale, ApplicationSystem applicationSystem) {
+        Template tmpl = templateMap.get(locale);
         if (OppijaConstants.KOHDEJOUKKO_KORKEAKOULU.equals(applicationSystem.getKohdejoukkoUri())) {
-            tmpl = templateMapHigherEducation.get(lang);
+            tmpl = templateMapHigherEducation.get(locale);
         }
         return tmpl;
     }
 
     private static Locale getLocale(Application application) {
         String lang = application.getVastauksetMerged().get(OppijaConstants.ELEMENT_ID_CONTACT_LANGUAGE);
-        Locale locale = new Locale("fi");
+        Locale locale = FI;
         if ("ruotsi".equals(lang)) {
-            locale = new Locale("sv");
+            locale = SV;
         } else if ("englanti".equals(lang)) {
-            locale = new Locale("en");
+            locale = EN;
         }
         return locale;
     }
