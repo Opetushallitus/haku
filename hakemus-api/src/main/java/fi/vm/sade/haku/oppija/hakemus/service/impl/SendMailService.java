@@ -108,10 +108,7 @@ public class SendMailService {
         Locale locale = getLocale(application);
         ResourceBundle messages = ResourceBundle.getBundle("messages", locale);
 
-        Template tmpl = templateMap.get(lang);
-        if (OppijaConstants.KOHDEJOUKKO_KORKEAKOULU.equals(as.getKohdejoukkoUri())) {
-            tmpl = templateMapHigherEducation.get(lang);
-        }
+        Template tmpl = selectTemplate(lang, as);
         final String emailSubject = messages.getString("email.application.received.title");
         StringWriter sw = new StringWriter();
         VelocityContext ctx = buildContext(application, as, locale, messages);
@@ -150,6 +147,14 @@ public class SendMailService {
         } catch (IOException | InterruptedException | ExecutionException e) {
             throw new EmailException("OppijanTunnistus request failed: " + e);
         }
+    }
+
+    private Template selectTemplate(String lang, ApplicationSystem applicationSystem) {
+        Template tmpl = templateMap.get(lang);
+        if (OppijaConstants.KOHDEJOUKKO_KORKEAKOULU.equals(applicationSystem.getKohdejoukkoUri())) {
+            tmpl = templateMapHigherEducation.get(lang);
+        }
+        return tmpl;
     }
 
     private static Locale getLocale(Application application) {
