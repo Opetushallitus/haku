@@ -254,6 +254,16 @@ public class Application implements Serializable {
     }
 
     @JsonIgnore
+    public String getEmail() {
+        Map<String, String> vastauksetMerged = getVastauksetMerged();
+        if (vastauksetMerged.containsKey(OppijaConstants.ELEMENT_ID_EMAIL)) {
+            return vastauksetMerged.get(OppijaConstants.ELEMENT_ID_EMAIL);
+        } else {
+            return null;
+        }
+    }
+
+    @JsonIgnore
     public Map<String, String> getVastauksetMergedIgnoringPhase(final String phaseId) {
         Map<String, String> answers = new HashMap<>(200);
         for (String phaseKey : this.answers.keySet()) {

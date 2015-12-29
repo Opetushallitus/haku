@@ -108,7 +108,7 @@ public class PostProcessWorkerImpl implements PostProcessWorker {
             loggerAspect.logUpdateApplicationInPostProcessing(application, changes, "Hakemuksen jälkikäsittely");
             if (sendMail) {
                 try {
-                    sendMailService.sendMail(application);
+                    sendMailService.sendReceivedEmail(application);
                 } catch (EmailException e) {
                     LOGGER.error("Send mail failed for application:" + application.getOid(), e);
                 }

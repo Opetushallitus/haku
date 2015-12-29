@@ -109,21 +109,30 @@ public class SendMailService {
         templateMap.put(new TemplateKey(EN, HIGHER, MODIFIED), velocityEngine.getTemplate("email/application_modified_higher_ed_en.vm", "UTF-8"));
     }
 
-    public void sendMail(Application application) throws EmailException {
-        if(!demoMode) {
-            String email = application.getVastauksetMerged().get(OppijaConstants.ELEMENT_ID_EMAIL);
+    public void sendReceivedEmail(Application application) throws EmailException {
+        if (!demoMode) {
+            String email = application.getEmail();
             if (!isEmpty(email)) {
-                sendConfirmationMail(application, email);
+                sendEmail(application, email, RECEIVED);
             }
         }
     }
 
-    private void sendConfirmationMail(final Application application, final String emailAddress) throws EmailException {
+    public void sendModifiedEmail(Application application) throws EmailException {
+        if (!demoMode) {
+            String email = application.getEmail();
+            if (!isEmpty(email)) {
+                sendEmail(application, email, MODIFIED);
+            }
+        }
+    }
+
+    private void sendEmail(final Application application, final String emailAddress, final TemplateType type) throws EmailException {
         final ApplicationSystem as = applicationSystemService.getApplicationSystem(application.getApplicationSystemId());
         Locale locale = getLocale(application);
         ResourceBundle messages = ResourceBundle.getBundle("messages", locale);
-        Template tmpl = selectTemplate(locale, as);
-        final String emailSubject = messages.getString("email.application.received.title");
+        Template tmpl = selectTemplate(locale, as, type);
+        final String emailSubject = getSubject(messages, type);
         StringWriter sw = new StringWriter();
         VelocityContext ctx = buildContext(application, as, locale, messages);
         tmpl.merge(ctx, sw);
@@ -157,10 +166,14 @@ public class SendMailService {
         }
     }
 
-    private Template selectTemplate(Locale locale, ApplicationSystem applicationSystem) {
-        Template tmpl = templateMap.get(new TemplateKey(locale, SECONDARY, RECEIVED));
+    private String getSubject(ResourceBundle messages, TemplateType type) {
+        return messages.getString(type.subjectKey);
+    }
+
+    private Template selectTemplate(Locale locale, ApplicationSystem applicationSystem, TemplateType type) {
+        Template tmpl = templateMap.get(new TemplateKey(locale, SECONDARY, type));
         if (OppijaConstants.KOHDEJOUKKO_KORKEAKOULU.equals(applicationSystem.getKohdejoukkoUri())) {
-            tmpl = templateMap.get(new TemplateKey(locale, HIGHER, RECEIVED));
+            tmpl = templateMap.get(new TemplateKey(locale, HIGHER, type));
         }
         return tmpl;
     }
@@ -308,7 +321,14 @@ public class SendMailService {
     }
 
     protected enum TemplateType {
-        RECEIVED, MODIFIED
+        RECEIVED("email.application.received.title"),
+        MODIFIED("email.application.modified.title");
+
+        public String subjectKey;
+
+        TemplateType(String subjectKey) {
+            this.subjectKey = subjectKey;
+        }
     }
 
     private static class TemplateKey {
