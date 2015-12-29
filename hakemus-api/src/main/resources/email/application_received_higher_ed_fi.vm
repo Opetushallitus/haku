@@ -15,7 +15,7 @@
     </p>
 
     <p>
-        Hakukohteesi: <br /><br />
+        Hakutoiveesi: <br /><br />
 
         #foreach ($preference in $preferences)
         $preference <br />

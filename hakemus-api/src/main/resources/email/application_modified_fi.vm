@@ -8,14 +8,14 @@
 <body>
 <div>
     <p>
-        Application: $applicationSystemId <br />
-        Applicant: $applicant <br />
-        Application number: $applicationId <br />
-        Submitted: $applicationDate
+        Haku: $applicationSystemId <br />
+        Hakija: $applicant <br />
+        Hakemusnumero: $applicationId <br />
+        Hakemuksen päivämäärä ja tallennusaika: $applicationDate
     </p>
 
     <p>
-        Application options: <br /><br />
+        Hakutoiveesi: <br /><br />
 
         #foreach ($preference in $preferences)
             $preference <br />
@@ -24,22 +24,13 @@
     </p>
 
     <p>
-        Your application has been received. If you wish to change the study programmes you're applying to or update your
-        contact information, you can use the following link and make the changes within the application period:
-        <a href="{{verification-link}}">{{verification-link}}</a>. The link is valid until {{expires}}. Save this
-        message. The editing link will only be sent once and you cannot order a new one.
-    </p>
-
-    <p>
-        If you have Finnish online banking credentials, an electronic ID-card or mobile certificate, you can also log in
-        at Studyinfo.fi and make the changes in the My Studyinfo –service within the application period. In addition to
-        making changes to your study programmes, if you have access to the My Studyinfo -service you can also edit your
-        answers, update your contact information, view the admission results and confirm the study place.
+        Muutokset hakemukseesi on tallennettu. Voit hakuaikana katsoa hakemustasi tai tehdä muutoksia seuraavan linkin
+        kautta: <a href="{{verification-link}}">{{verification-link}}</a>. Linkki on voimassa {{expires}} asti.
     </p>
 
     #if (!$attachmentRequests.isEmpty())
         <p>
-            Attachment requests: <br /><br />
+            Liitepyynnöt: <br /><br />
 
         <table>
             <tr>
@@ -72,16 +63,7 @@
         </p>
     #end
 
-    #if ($discretionary)
-    #end
-
-    #if ($athlete)
-    #end
-
-    #if ($musiikkiTanssiLiikuntaEducationCode)
-    #end
-
-    <p>This is an automatically generated email, please do not reply.</p>
+    <p>Älä vastaa tähän viestiin - viesti on lähetetty automaattisesti.</p>
 </div>
 </body>
 </html>
