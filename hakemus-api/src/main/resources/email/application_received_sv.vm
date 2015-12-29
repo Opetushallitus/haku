@@ -1,36 +1,107 @@
-Ansökan: $applicationSystemId
-Sökande: $applicant
-Ansökans nummer: $applicationId
-Ansökans datum och lagringstid: $applicationDate
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="Content-Style-Type" content="text/css"/>
+</head>
+<body>
+<div>
+    <p>
+        Ansökan: $applicationSystemId <br />
+        Sökande: $applicant <br />
+        Ansökans nummer: $applicationId <br />
+        Ansökans datum och lagringstid: $applicationDate
+    </p>
 
-Dina ansökningsönskemål:
+    <p>
+        Dina ansökningsönskemål: <br /><br />
 
-#foreach ($preference in $preferences)
-$preference
+        #foreach ($preference in $preferences)
+        $preference <br />
 
-#end
-#if ($discretionary)
+        #end
+    </p>
 
-Du sökte till utbildningen genom antagning på basis av utbildningsanordnarens prövning.
-Du bör skicka följande bilagor till läroanstalten under ansökningstiden: en utskrift av
-din ansökan och de bilagor samt motiveringar som du hänvisar till.
+    <p>
+        Din ansökan har mottagits. Om du vill ändra dina ansökningsönskemål eller uppdatera
+        dina kontaktuppgifter, kan du under ansökningstiden göra ändringar via följande länk:
+        <a href="{{verification-link}}">{{verification-link}}</a>.
+        Länken är i kraft ända till {{expires}}.
+        Spara detta meddelande. Länken för bearbetning av ansökan skickas endast en gång,
+        och du kan inte beställa en ny.
+    </p>
 
-#end
-#if ($athlete)
+    <p>
+        Om du har nätbankskoder, mobilcertifikat eller ett elektroniskt ID-kort, kan du
+        alternativt logga in i Studieinfo.fi och under ansökningstiden göra ändringarna
+        i tjänsten Min Studieinfo. I tjänsten kan du förutom att ändra ansökningsönskemål
+        också bearbeta svaren på tilläggsfrågor i anknytning till ansökningsönskemålen,
+        uppdatera dina kontaktuppgifter, se antagningsresultaten och ta emot studieplatsen.
+    </p>
 
-Du söker till yrkesutbildning som idrottare. Tilläggsuppgifter hittar du på adressen
+    #if (!$attachmentRequests.isEmpty())
+        <p>
+            Bilagor: <br /><br />
 
-https://opintopolku.fi/liitteet/Ansokningsblankett_idrottare_2015.xlsx
+        <table>
+            <tr>
+                <th>$lomakeTulostusLiite</th>
+                <th>$lomakeTulostusLiiteToimitusosoite</th>
+                <th>$lomakeTulostusLiiteDeadline</th>
+            </tr>
+            #foreach ($attachment in $attachmentRequests)
+                <tr>
+                    <td>
+                        ${attachment.name}<br />
+                        ${attachment.header}<br/>
+                        ${attachment.description}
+                    </td>
+                    <td>
+                        ${attachment.recipient}<br/>
+                        ${attachment.streetAddress}<br/>
+                        ${attachment.streetAddress2}<br/>
+                        ${attachment.postalCode}<br/>
+                        ${attachment.postOffice}<br/>
+                        ${attachment.emailAddress}
+                    </td>
+                    <td>
+                        ${attachment.deadline}
+                        ${attachment.deliveryNote}
+                    </td>
+                </tr>
+            #end
+        </table>
+        </p>
+    #end
 
-#end
-#if ($musiikkiTanssiLiikuntaEducationCode)
+    #if ($discretionary)
+        <p>
+            Du sökte till utbildningen genom antagning på basis av utbildningsanordnarens prövning.
+            Du bör skicka följande bilagor till läroanstalten under ansökningstiden: en utskrift av
+            din ansökan och de bilagor samt motiveringar som du hänvisar till.
+        </p>
+    #end
 
-Du har sökt till utbildning inom musik-, dans-, eller idrottsbranschen. Kom ihåg att
-på läroanstaltens hemsida kontrollera om det förutom den egentliga gemensamma ansökan
-även krävs att du fyller i läroanstaltens egen tilläggsblankett.
+    #if ($athlete)
+        <p>
+            Du söker till yrkesutbildning som idrottare. Tilläggsuppgifter hittar du på adressen<br /><br />
 
-#end
+            <a href="https://opintopolku.fi/liitteet/Ansokningsblankett_idrottare_2015.xlsx">
+                https://opintopolku.fi/liitteet/Ansokningsblankett_idrottare_2015.xlsx
+            </a>
+        </p>
+    #end
 
-Detta är ett automatiskt meddelande. Svara inte på detta meddelande. Om du vill
-ändra på dina ansökningsönskemål, kontakta Studieinfos ansökningsrådgivning
-under ansökningstiden (info@studieinfo.fi).
+    #if ($musiikkiTanssiLiikuntaEducationCode)
+        <p>
+            Du har sökt till utbildning inom musik-, dans-, eller idrottsbranschen. Kom ihåg att
+            på läroanstaltens hemsida kontrollera om det förutom den egentliga gemensamma ansökan
+            även krävs att du fyller i läroanstaltens egen tilläggsblankett.
+        </p>
+    #end
+
+    <p>Svara inte på detta meddelande, det har skickats automatiskt.</p>
+</div>
+</body>
+</html>

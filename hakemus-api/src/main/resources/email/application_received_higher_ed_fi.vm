@@ -1,19 +1,86 @@
-Haku: $applicationSystemId
-Hakija: $applicant
-Hakemusnumero: $applicationId
-Hakemuksen päivämäärä ja tallennusaika: $applicationDate
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="Content-Style-Type" content="text/css"/>
+</head>
+<body>
+<div>
+    <p>
+        Haku: $applicationSystemId <br />
+        Hakija: $applicant <br />
+        Hakemusnumero: $applicationId <br />
+        Hakemuksen päivämäärä ja tallennusaika: $applicationDate
+    </p>
 
+    <p>
+        Hakutoiveesi: <br /><br />
 
-Hakukohteesi:
+        #foreach ($preference in $preferences)
+        $preference <br />
 
-#foreach ($preference in $preferences)
-$preference
+        #end
+    </p>
 
-#end
+    #if (!$attachmentRequests.isEmpty())
+        <p>
+            Liitepyynnöt: <br /><br />
 
-Jos haluat muuttaa hakukohteitasi, kirjaudu Oma Opintopolku -palveluun Opintopolun etusivulla, ja tee muutokset ennen hakuajan päättymistä. 
-Voit tulostaa hakemuksesi tarvittaessa Oma Opintopolku -palvelussa.  
-Jos et voi käyttää palvelua, ota yhteyttä jonkin hakukohteenasi olevan yliopiston tai ammattikorkeakoulun hakijapalveluihin.
+            <table>
+                <tr>
+                    <th>$lomakeTulostusLiite</th>
+                    <th>$lomakeTulostusLiiteToimitusosoite</th>
+                    <th>$lomakeTulostusLiiteDeadline</th>
+                </tr>
+                #foreach ($attachment in $attachmentRequests)
+                    <tr>
+                        <td>
+                            ${attachment.name}<br />
+                            ${attachment.header}<br/>
+                            ${attachment.description}
+                        </td>
+                        <td>
+                            ${attachment.recipient}<br/>
+                            ${attachment.streetAddress}<br/>
+                            ${attachment.streetAddress2}<br/>
+                            ${attachment.postalCode}<br/>
+                            ${attachment.postOffice}<br/>
+                            ${attachment.emailAddress}
+                        </td>
+                        <td>
+                            ${attachment.deadline}
+                            ${attachment.deliveryNote}
+                        </td>
+                    </tr>
+                #end
+            </table>
+        </p>
+    #end
 
+    <p>
+        Hakemuksesi on vastaanotettu. Jos haluat muuttaa hakutoiveitasi tai
+        päivittää yhteystietojasi, voit hakuaikana tehdä muutoksia seuraavan
+        linkin kautta:
+        <a href="{{verification-link}}">{{verification-link}}</a>. Linkki on
+        voimassa {{expires}} asti.
+    </p>
 
-Tämä on automaattinen sähköpostiviesti. Älä vastaa tähän.
+    <p>
+        Jos sinulla on verkkopankkitunnukset, mobiilivarmenne tai sähköinen
+        henkilökortti, voit vaihtoehtoisesti kirjautua sisään
+        Opintopolku.fi:ssä, ja tehdä muutoksia hakutoiveisiisi Oma Opintopolku
+        -palvelussa hakuaikana. Oma Opintopolku -palvelussa voit
+        hakutoivemuutosten lisäksi muokata hakutoiveisiin liittyviin
+        kysymyksiin antamiasi vastauksia, päivittää yhteystietojasi; nähdä
+        valintojen tulokset ja ottaa opiskelupaikan vastaan.
+    </p>
+    
+    <p>
+        Voit tulostaa hakemuksesi tarvittaessa Oma Opintopolku -palvelussa.
+    </p>
+    
+    <p>Älä vastaa tähän viestiin - viesti on lähetetty automaattisesti.</p>
+</div>
+</body>
+</html>

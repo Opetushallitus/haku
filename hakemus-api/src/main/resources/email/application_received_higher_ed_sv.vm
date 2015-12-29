@@ -1,18 +1,83 @@
-Ansökan: $applicationSystemId
-Sökande: $applicant
-Ansökningsnummer: $applicationId
-Datum och lagringstidpunkt för ansökan: $applicationDate
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="Content-Style-Type" content="text/css"/>
+</head>
+<body>
+<div>
+    <p>
+        Ansökan: $applicationSystemId <br />
+        Sökande: $applicant <br />
+        Ansökningsnummer: $applicationId <br />
+        Datum och lagringstidpunkt för ansökan: $applicationDate
+    </p>
 
+    <p>
+        Dina ansökningsmål: <br /><br />
 
-Dina ansökningsmål:
+        #foreach ($preference in $preferences)
+        $preference <br />
 
-#foreach ($preference in $preferences)
-$preference
+        #end
+    </p>
 
-#end
+    #if (!$attachmentRequests.isEmpty())
+        <p>
+            Bilagor: <br /><br />
 
-Logga in på tjänsten Min Studieinfo på Studieinfos framsida ifall du vill ändra dina ansökningsmål. Ändringarna bör göras under ansökningstiden.
-Vid behov kan du skriva ut din ansökan i Min Studieinfo -tjänsten.
-Kontakta ansökningsservicen vid något av de universitet eller yrkeshögskolor du sökt till, ifall du inte kan använda tjänsten.
+            <table>
+                <tr>
+                    <th>$lomakeTulostusLiite</th>
+                    <th>$lomakeTulostusLiiteToimitusosoite</th>
+                    <th>$lomakeTulostusLiiteDeadline</th>
+                </tr>
+                #foreach ($attachment in $attachmentRequests)
+                    <tr>
+                        <td>
+                            ${attachment.name}<br />
+                            ${attachment.header}<br/>
+                            ${attachment.description}
+                        </td>
+                        <td>
+                            ${attachment.recipient}<br/>
+                            ${attachment.streetAddress}<br/>
+                            ${attachment.streetAddress2}<br/>
+                            ${attachment.postalCode}<br/>
+                            ${attachment.postOffice}<br/>
+                            ${attachment.emailAddress}
+                        </td>
+                        <td>
+                            ${attachment.deadline}
+                            ${attachment.deliveryNote}
+                        </td>
+                    </tr>
+                #end
+            </table>
+        </p>
+    #end
 
-Det här är ett automatiskt e-postmeddelande. Svara inte på detta. 
+    <p>
+        Din ansökan har mottagits. Om du vill ändra dina ansökningsönskemål
+        eller uppdatera dina kontaktuppgifter, kan du under ansökningstiden
+        göra ändringar via följande länk
+        <a href="{{verification-link}}">{{verification-link}}</a>. Länken är i
+        kraft ända till {{expires}}.
+    </p>
+
+    <p>
+        Om du har nätbankskoder, mobilcertifikat eller ett elektroniskt
+        ID-kort, kan du alternativt logga in i Studieinfo.fi och under
+        ansökningstiden göra ändringarna i tjänsten Min Studieinfo. I tjänsten
+        kan du förutom att ändra ansökningsönskemål också bearbeta svaren på
+        tilläggsfrågor i anknytning till ansökningsönskemålen, uppdatera dina
+        kontaktuppgifter, se antagningsresultaten och ta emot studieplatsen.
+    </p>
+    
+    <p>Vid behov kan du också skriva ut din ansökan i Min Studieinfo -tjänsten.</p>
+
+    <p>Svara inte på detta meddelande, det har skickats automatiskt.</p>
+</div>
+</body>
+</html>

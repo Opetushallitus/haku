@@ -8,14 +8,14 @@
 <body>
 <div>
     <p>
-        Application: $applicationSystemId <br />
-        Applicant: $applicant <br />
-        Application number: $applicationId <br />
-        Submitted: $applicationDate
+        Ansökan: $applicationSystemId <br />
+        Sökande: $applicant <br />
+        Ansökningsnummer: $applicationId <br />
+        Datum och lagringstidpunkt för ansökan: $applicationDate
     </p>
 
     <p>
-        Application options: <br /><br />
+        Dina ansökningsmål: <br /><br />
 
         #foreach ($preference in $preferences)
             $preference <br />
@@ -23,23 +23,9 @@
         #end
     </p>
 
-    <p>
-        Your application has been received. If you wish to change the study programmes you're applying to or update your
-        contact information, you can use the following link and make the changes within the application period:
-        <a href="{{verification-link}}">{{verification-link}}</a>. The link is valid until {{expires}}. Save this
-        message. The editing link will only be sent once and you cannot order a new one.
-    </p>
-
-    <p>
-        If you have Finnish online banking credentials, an electronic ID-card or mobile certificate, you can also log in
-        at Studyinfo.fi and make the changes in the My Studyinfo –service within the application period. In addition to
-        making changes to your study programmes, if you have access to the My Studyinfo -service you can also edit your
-        answers, update your contact information, view the admission results and confirm the study place.
-    </p>
-
     #if (!$attachmentRequests.isEmpty())
         <p>
-            Attachment requests: <br /><br />
+            Bilagor: <br /><br />
 
         <table>
             <tr>
@@ -64,7 +50,7 @@
                     </td>
                     <td>
                         ${attachment.deadline}
-                        ${attachment.deliveryNote}
+                            ${attachment.deliveryNote}
                     </td>
                 </tr>
             #end
@@ -72,16 +58,12 @@
         </p>
     #end
 
-    #if ($discretionary)
-    #end
+    <p>
+        Ändingarna i din ansökan har mottagits. Under ansökningstiden kan du granska din ansökan och göra ändringar via
+        följande länk: <a href="{{verification-link}}">{{verification-link}}</a>. Länken är i kraft ända till {{expires}}.
+    </p>
 
-    #if ($athlete)
-    #end
-
-    #if ($musiikkiTanssiLiikuntaEducationCode)
-    #end
-
-    <p>This is an automatically generated email, please do not reply.</p>
+    <p>Svara inte på detta meddelande, det har skickats automatiskt.</p>
 </div>
 </body>
 </html>
