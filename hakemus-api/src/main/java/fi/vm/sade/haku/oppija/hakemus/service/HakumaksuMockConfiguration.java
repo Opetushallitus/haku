@@ -34,6 +34,15 @@ public class HakumaksuMockConfiguration {
     @Value("${hakuperusteet.url.en}")
     String hakuperusteetUrlEn;
 
+    @Value("${email.application.modify.link.fi}")
+    String emailApplicationModifyLinkFi;
+
+    @Value("${email.application.modify.link.sv}")
+    String emailApplicationModifyLinkSv;
+
+    @Value("${email.application.modify.link.en}")
+    String emailApplicationModifyLinkEn;
+
     @Autowired
     ApplicationSystemService applicationSystemService;
 
@@ -54,7 +63,7 @@ public class HakumaksuMockConfiguration {
 
     @Bean(name = "sendMailService")
     public SendMailService sendMailService() {
-        return new SendMailService(applicationSystemService, restClient);
+        return new SendMailService(applicationSystemService, restClient, emailApplicationModifyLinkFi, emailApplicationModifyLinkSv, emailApplicationModifyLinkEn);
     }
 
 }

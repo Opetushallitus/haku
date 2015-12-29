@@ -32,6 +32,13 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
 
+import static fi.vm.sade.haku.oppija.common.oppijantunnistus.OppijanTunnistusDTO.LanguageCodeISO6391.en;
+import static fi.vm.sade.haku.oppija.common.oppijantunnistus.OppijanTunnistusDTO.LanguageCodeISO6391.fi;
+import static fi.vm.sade.haku.oppija.common.oppijantunnistus.OppijanTunnistusDTO.LanguageCodeISO6391.sv;
+import static fi.vm.sade.haku.oppija.hakemus.service.impl.SendMailService.EducationDegree.HIGHER;
+import static fi.vm.sade.haku.oppija.hakemus.service.impl.SendMailService.EducationDegree.SECONDARY;
+import static fi.vm.sade.haku.oppija.hakemus.service.impl.SendMailService.TemplateType.MODIFIED;
+import static fi.vm.sade.haku.oppija.hakemus.service.impl.SendMailService.TemplateType.RECEIVED;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.valmis.ValmisPhase.MUSIIKKI_TANSSI_LIIKUNTA_EDUCATION_CODES;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.EDUCATION_CODE_KEY;
 import static org.apache.commons.lang.StringUtils.defaultString;
@@ -47,31 +54,33 @@ public class SendMailService {
     public static final Locale EN = new Locale("en");
     private final ApplicationSystemService applicationSystemService;
 
-    final private Map<Locale, Template> templateMap = new HashMap<>();
-    final private Map<Locale, Template> templateMapHigherEducation =new HashMap<>();
+    final private Map<TemplateKey, Template> templateMap = new HashMap<>();
 
     public static final String TRUE = "true";
 
     @Value("${mode.demo:false}")
     public boolean demoMode;
 
-    @Value("${email.application.modify.link.fi}")
-    String emailApplicationModifyLinkFi;
-    @Value("${email.application.modify.link.sv}")
-    String emailApplicationModifyLinkSv;
-    @Value("${email.application.modify.link.en}")
-    String emailApplicationModifyLinkEn;
-
     @Value("${oppijantunnistus.create.url}")
     String oppijanTunnistusUrl;
 
     final RestClient restClient;
 
+    final Map<LanguageCodeISO6391, String> langToLink;
+
     @Autowired
     public SendMailService(final ApplicationSystemService applicationSystemService,
-                           final RestClient restClient){
+                           final RestClient restClient,
+                           @Value("${email.application.modify.link.fi}") String emailApplicationModifyLinkFi,
+                           @Value("${email.application.modify.link.sv}") String emailApplicationModifyLinkSv,
+                           @Value("${email.application.modify.link.en}") String emailApplicationModifyLinkEn) {
         this.applicationSystemService = applicationSystemService;
         this.restClient = restClient;
+        this.langToLink = ImmutableMap.of(
+                fi, emailApplicationModifyLinkFi,
+                sv, emailApplicationModifyLinkSv,
+                en, emailApplicationModifyLinkEn
+        );
         initTemplateMaps();
     }
 
@@ -85,14 +94,20 @@ public class SendMailService {
         velocityEngine.setProperty("class.resource.loader.cache", "true");
         velocityEngine.setProperty("runtime.log.logsystem.log4j.logger", "velocity");
         velocityEngine.init();
-        templateMap.put(FI, velocityEngine.getTemplate("email/application_received_fi.vm", "UTF-8"));
-        templateMap.put(SV, velocityEngine.getTemplate("email/application_received_sv.vm", "UTF-8"));
-        templateMap.put(EN, velocityEngine.getTemplate("email/application_received_en.vm", "UTF-8"));
-        templateMapHigherEducation.put(FI, velocityEngine.getTemplate("email/application_received_higher_ed_fi.vm", "UTF-8"));
-        templateMapHigherEducation.put(SV, velocityEngine.getTemplate("email/application_received_higher_ed_sv.vm", "UTF-8"));
-        templateMapHigherEducation.put(EN, velocityEngine.getTemplate("email/application_received_higher_ed_en.vm", "UTF-8"));
-    }
 
+        templateMap.put(new TemplateKey(FI, SECONDARY, RECEIVED), velocityEngine.getTemplate("email/application_received_fi.vm", "UTF-8"));
+        templateMap.put(new TemplateKey(SV, SECONDARY, RECEIVED), velocityEngine.getTemplate("email/application_received_sv.vm", "UTF-8"));
+        templateMap.put(new TemplateKey(EN, SECONDARY, RECEIVED), velocityEngine.getTemplate("email/application_received_en.vm", "UTF-8"));
+        templateMap.put(new TemplateKey(FI, HIGHER, RECEIVED), velocityEngine.getTemplate("email/application_received_higher_ed_fi.vm", "UTF-8"));
+        templateMap.put(new TemplateKey(SV, HIGHER, RECEIVED), velocityEngine.getTemplate("email/application_received_higher_ed_sv.vm", "UTF-8"));
+        templateMap.put(new TemplateKey(EN, HIGHER, RECEIVED), velocityEngine.getTemplate("email/application_received_higher_ed_en.vm", "UTF-8"));
+        templateMap.put(new TemplateKey(FI, SECONDARY, MODIFIED), velocityEngine.getTemplate("email/application_modified_fi.vm", "UTF-8"));
+        templateMap.put(new TemplateKey(SV, SECONDARY, MODIFIED), velocityEngine.getTemplate("email/application_modified_sv.vm", "UTF-8"));
+        templateMap.put(new TemplateKey(EN, SECONDARY, MODIFIED), velocityEngine.getTemplate("email/application_modified_en.vm", "UTF-8"));
+        templateMap.put(new TemplateKey(FI, HIGHER, MODIFIED), velocityEngine.getTemplate("email/application_modified_higher_ed_fi.vm", "UTF-8"));
+        templateMap.put(new TemplateKey(SV, HIGHER, MODIFIED), velocityEngine.getTemplate("email/application_modified_higher_ed_sv.vm", "UTF-8"));
+        templateMap.put(new TemplateKey(EN, HIGHER, MODIFIED), velocityEngine.getTemplate("email/application_modified_higher_ed_en.vm", "UTF-8"));
+    }
 
     public void sendMail(Application application) throws EmailException {
         if(!demoMode) {
@@ -114,14 +129,8 @@ public class SendMailService {
         tmpl.merge(ctx, sw);
         final String emailTemplate = sw.toString();
 
-        final Map<LanguageCodeISO6391, String> langToLink = ImmutableMap.of(
-                LanguageCodeISO6391.fi, emailApplicationModifyLinkFi,
-                LanguageCodeISO6391.sv, emailApplicationModifyLinkSv,
-                LanguageCodeISO6391.en, emailApplicationModifyLinkEn
-        );
-
-        final LanguageCodeISO6391 emailLang = LanguageCodeISO6391.valueOf(locale.toString());
-        OppijanTunnistusDTO body = new OppijanTunnistusDTO(){{
+        final LanguageCodeISO6391 emailLang = LanguageCodeISO6391.valueOf(locale.getLanguage());
+        OppijanTunnistusDTO body = new OppijanTunnistusDTO() {{
             this.url = langToLink.get(emailLang);
             this.expires = getModificationLinkExpiration(application, as);
             this.email = emailAddress;
@@ -149,9 +158,9 @@ public class SendMailService {
     }
 
     private Template selectTemplate(Locale locale, ApplicationSystem applicationSystem) {
-        Template tmpl = templateMap.get(locale);
+        Template tmpl = templateMap.get(new TemplateKey(locale, SECONDARY, RECEIVED));
         if (OppijaConstants.KOHDEJOUKKO_KORKEAKOULU.equals(applicationSystem.getKohdejoukkoUri())) {
-            tmpl = templateMapHigherEducation.get(locale);
+            tmpl = templateMap.get(new TemplateKey(locale, HIGHER, RECEIVED));
         }
         return tmpl;
     }
@@ -292,6 +301,51 @@ public class SendMailService {
 
     private boolean isDiscretionary(final Application application) {
         return !ApplicationUtil.getDiscretionaryAttachmentAOIds(application).isEmpty();
+    }
+
+    protected enum EducationDegree {
+        SECONDARY, HIGHER
+    }
+
+    protected enum TemplateType {
+        RECEIVED, MODIFIED
+    }
+
+    private static class TemplateKey {
+        final Locale locale;
+        final EducationDegree educationDegree;
+        final TemplateType templateType;
+
+        public TemplateKey(Locale locale, EducationDegree educationDegree, TemplateType templateType) {
+            notNull(locale);
+            notNull(educationDegree);
+            notNull(templateType);
+
+            this.locale = locale;
+            this.educationDegree = educationDegree;
+            this.templateType = templateType;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            TemplateKey that = (TemplateKey) o;
+
+            if (locale != null ? !locale.equals(that.locale) : that.locale != null) return false;
+            if (educationDegree != that.educationDegree) return false;
+            return templateType == that.templateType;
+
+        }
+
+        @Override
+        public int hashCode() {
+            int result = locale != null ? locale.hashCode() : 0;
+            result = 31 * result + (educationDegree != null ? educationDegree.hashCode() : 0);
+            result = 31 * result + (templateType != null ? templateType.hashCode() : 0);
+            return result;
+        }
     }
 
 }
