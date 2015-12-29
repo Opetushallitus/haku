@@ -62,11 +62,12 @@ public class PreferenceConcreteValidatorImpl extends PreferenceConcreteValidator
     @Override
     public ValidationResult validate(ValidationInput validationInput) {
 
-         ValidationResult validationResult = new ValidationResult();
+        ValidationResult validationResult = new ValidationResult();
         final String key = validationInput.getElement().getId() + "-Koulutus-id";
         final String aoId = validationInput.getValues().get(key);
         if (!Strings.isNullOrEmpty(aoId)) {
             try {
+
                 ApplicationOption ao = applicationOptionService.get(aoId);
                 if (!checkAthlete(validationInput, ao) ||
                         !checkSora(validationInput, ao) ||
@@ -82,7 +83,9 @@ public class PreferenceConcreteValidatorImpl extends PreferenceConcreteValidator
                     return createError(validationInput.getElement().getId(), LOP_ERROR, validationInput.getApplicationSystemId());
                 }
                 if (!checkApplicationDates(validationInput, ao)) {
-                    return createError(validationInput.getElement().getId(), CAN_BE_APPLIED_ERROR, validationInput.getApplicationSystemId());
+                    ValidationResult result = createError(validationInput.getElement().getId(), CAN_BE_APPLIED_ERROR, validationInput.getApplicationSystemId());
+                    result.setExpired(true);
+                    return result;
                 }
                 if (!checkEducationDegree(validationInput, ao)) {
                     return createError(validationInput.getElement().getId(), BASE_EDUCATION_ERROR, validationInput.getApplicationSystemId());
