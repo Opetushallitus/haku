@@ -14,7 +14,7 @@ import static fi.vm.sade.haku.testfixtures.HakumaksuMockData.testMappings;
 
 @Configuration
 @Profile({"it", "dev"})
-public class HakumaksuMockConfiguration {
+public class TestMockConfiguration {
 
     @Value("${cas.service.koodisto-service}")
     String koodistoServiceUrl;
