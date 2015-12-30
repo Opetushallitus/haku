@@ -67,7 +67,6 @@ public class PreferenceConcreteValidatorImpl extends PreferenceConcreteValidator
         final String aoId = validationInput.getValues().get(key);
         if (!Strings.isNullOrEmpty(aoId)) {
             try {
-
                 ApplicationOption ao = applicationOptionService.get(aoId);
                 if (!checkAthlete(validationInput, ao) ||
                         !checkSora(validationInput, ao) ||
