@@ -230,6 +230,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         } else {
             LOGGER.error("Could not send the application | " + getApplicationLogMessage(application, validationResult));
             if (validationResult.isExpired()) {
+                LOGGER.error("Application deadline has expired");
                 throw new ApplicationDeadlineExpiredException();
             }
             throw new IllegalStateException("Could not send the application ");

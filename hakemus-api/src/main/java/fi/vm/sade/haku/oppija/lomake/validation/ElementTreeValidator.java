@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public final class ElementTreeValidator {
+public class ElementTreeValidator {
 
     private final ValidatorFactory validatorFactory;
 

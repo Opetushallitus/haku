@@ -25,12 +25,16 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.Phase;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.Equals;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.Value;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.Variable;
+import fi.vm.sade.haku.oppija.lomake.exception.ApplicationDeadlineExpiredException;
 import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.haku.oppija.lomake.service.FormService;
 import fi.vm.sade.haku.oppija.lomake.service.Session;
 import fi.vm.sade.haku.oppija.lomake.service.impl.SystemSession;
+import fi.vm.sade.haku.oppija.lomake.service.impl.UserSession;
 import fi.vm.sade.haku.oppija.lomake.validation.ElementTreeValidator;
+import fi.vm.sade.haku.oppija.lomake.validation.ValidationInput;
+import fi.vm.sade.haku.oppija.lomake.validation.ValidationResult;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidatorFactory;
 import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
 import fi.vm.sade.haku.virkailija.authentication.impl.AuthenticationServiceMockImpl;
@@ -678,5 +682,29 @@ public class ApplicationServiceImplTest {
         return hakuService;
     }
 
+    @Test(expected = ApplicationDeadlineExpiredException.class)
+    public void testSubmitExpiredApplication() {
+        final ApplicationSystemService applicationSystemService = mock(ApplicationSystemService.class);
+        final ApplicationSystem applicationSystem = mock(ApplicationSystem.class);
+        final ElementTreeValidator elementTreeValidator = mock(ElementTreeValidator.class);
+        final ValidationInput validationInput = mock(ValidationInput.class);
+        final UserSession userSession = mock(UserSession.class);
+
+        final ValidationResult validationResult = new ValidationResult("expired", createI18NAsIs("title"));
+
+
+        when(userSession.getUser()).thenReturn(null);
+        when(applicationSystem.getForm()).thenReturn(new Form("MockedForm", createI18NAsIs("title")));
+        when(applicationSystemService.getApplicationSystem(AS_ID)).thenReturn(applicationSystem);
+        when(userSession.hasApplication(AS_ID)).thenReturn(true);
+        when(userSession.getApplication(AS_ID)).thenReturn(new Application());
+        when(elementTreeValidator.validate(any(ValidationInput.class))).thenReturn(validationResult);
+
+        ApplicationServiceImpl applicationServiceImpl = new ApplicationServiceImpl(
+                null, userSession, null, null, null, null, null,
+                applicationSystemService, null, null, null, null, elementTreeValidator, null, null, null, null);
+        validationResult.setExpired(true);
+        applicationServiceImpl.submitApplication(AS_ID, "fi");
+    }
 
 }
