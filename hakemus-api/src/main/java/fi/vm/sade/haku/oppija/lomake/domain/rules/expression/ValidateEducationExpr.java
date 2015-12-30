@@ -1,17 +1,14 @@
 package fi.vm.sade.haku.oppija.lomake.domain.rules.expression;
 
-import com.google.common.base.Preconditions;
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
-import fi.vm.sade.haku.oppija.hakemus.service.EducationRequirementsUtil;
-import fi.vm.sade.haku.oppija.hakemus.service.HakumaksuService;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.MergedAnswers;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import static fi.vm.sade.haku.oppija.hakemus.service.EducationRequirementsUtil.kkBaseEducationRequirements;
+import static fi.vm.sade.haku.oppija.hakemus.service.EducationRequirementsUtil.answersFulfillBaseEducationRequirements;
+import static org.apache.commons.lang.StringUtils.isEmpty;
 
 public class ValidateEducationExpr extends Expr {
     private final String rowId;
@@ -27,15 +24,14 @@ public class ValidateEducationExpr extends Expr {
 
     @Override
     public boolean evaluate(Map<String, String> context) {
-        if(context.get(rowId + "-Koulutus-requiredBaseEducations") == null) {
+        String applicationOptionBaseEdRequirements = context.get(rowId + "-Koulutus-requiredBaseEducations");
+
+        if (isEmpty(applicationOptionBaseEdRequirements)) {
             return false;
+        } else {
+            return !answersFulfillBaseEducationRequirements(MergedAnswers.of(context),
+                    ImmutableSet.copyOf(applicationOptionBaseEdRequirements.split(",")));
         }
-
-        ImmutableSet<String> baseEducationRequirements =  new ImmutableSet.Builder<String>()
-                .add(context.get(rowId + "-Koulutus-requiredBaseEducations").split(","))
-                .build();
-
-        return !EducationRequirementsUtil.validateBaseEdsAgainstAoRequirement(Types.MergedAnswers.of(context), baseEducationRequirements);
     }
 
 

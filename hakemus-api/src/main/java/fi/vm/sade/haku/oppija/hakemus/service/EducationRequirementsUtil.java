@@ -301,13 +301,11 @@ public class EducationRequirementsUtil {
             .put("pohjakoulutusvaatimuskorkeakoulut_107", suomalainenYoAmmatillinen)
             .build();
 
-    public static boolean validateBaseEdsAgainstAoRequirement(Types.MergedAnswers answers, ImmutableSet<String> baseEducationRequirements) {
-        ImmutableMap.Builder<Types.ApplicationOptionOid, ImmutableSet<EducationRequirementsUtil.Eligibility>> applicationPaymentEligibilities = ImmutableMap.builder();
-
+    public static boolean answersFulfillBaseEducationRequirements(Types.MergedAnswers answers, ImmutableSet<String> baseEducationRequirements) {
         for (String baseEducationRequirement : baseEducationRequirements) {
-            if(kkBaseEducationRequirements.get(baseEducationRequirement) != null) {
+            if (kkBaseEducationRequirements.containsKey(baseEducationRequirement)) {
                 ImmutableSet<EducationRequirementsUtil.Eligibility> allEligibilities = kkBaseEducationRequirements.get(baseEducationRequirement).apply(answers);
-                if (allEligibilities.size() > 0) {
+                if (!allEligibilities.isEmpty()) {
                     return true;
                 }
             }
