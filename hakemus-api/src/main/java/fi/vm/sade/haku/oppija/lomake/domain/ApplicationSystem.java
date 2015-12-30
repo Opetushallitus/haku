@@ -21,7 +21,7 @@ import com.google.common.collect.ImmutableList;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
-import org.apache.commons.lang.BooleanUtils;
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -223,5 +223,10 @@ public class ApplicationSystem implements Serializable {
 
     public String getKohdejoukonTarkenne() {
         return kohdejoukonTarkenne;
+    }
+
+    @JsonIgnore
+    public boolean isHigherEducation() {
+        return OppijaConstants.KOHDEJOUKKO_KORKEAKOULU.equals(kohdejoukkoUri);
     }
 }

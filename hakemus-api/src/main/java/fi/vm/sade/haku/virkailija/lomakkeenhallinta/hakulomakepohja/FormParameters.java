@@ -102,13 +102,14 @@ public class FormParameters {
     }
 
     public boolean isHuoltajanTiedotKysyttava() {
-        if (KOHDEJOUKKO_PERUSOPETUKSEN_JALKEINEN_VALMENTAVA.equals(applicationSystem.getKohdejoukkoUri())
-            || KOHDEJOUKKO_AMMATILLINEN_JA_LUKIO.equals(applicationSystem.getKohdejoukkoUri())
-            || KOHDEJOUKKO_AMMATILLINEN_ERITYISOPETYKSENA.equals(applicationSystem.getKohdejoukkoUri())
-            || KOHDEJOUKKO_ERITYISOPETUKSENA_JARJESTETTAVA_AMMATILLINEN.equals(applicationSystem.getKohdejoukkoUri())) {
-            return true;
-        }
-        return false;
+        return isHuoltajanTiedotKysyttava(applicationSystem);
+    }
+
+    public static boolean isHuoltajanTiedotKysyttava(ApplicationSystem applicationSystem) {
+        return KOHDEJOUKKO_PERUSOPETUKSEN_JALKEINEN_VALMENTAVA.equals(applicationSystem.getKohdejoukkoUri())
+                || KOHDEJOUKKO_AMMATILLINEN_JA_LUKIO.equals(applicationSystem.getKohdejoukkoUri())
+                || KOHDEJOUKKO_AMMATILLINEN_ERITYISOPETYKSENA.equals(applicationSystem.getKohdejoukkoUri())
+                || KOHDEJOUKKO_ERITYISOPETUKSENA_JARJESTETTAVA_AMMATILLINEN.equals(applicationSystem.getKohdejoukkoUri());
     }
 
     public static boolean isHigherEd(ApplicationSystem applicationSystem) {

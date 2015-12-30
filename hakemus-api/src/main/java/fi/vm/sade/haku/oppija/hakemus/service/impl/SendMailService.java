@@ -13,8 +13,8 @@ import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationAttachment;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationAttachmentRequest;
 import fi.vm.sade.haku.oppija.hakemus.domain.util.ApplicationUtil;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
-import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.MailTemplateUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.apache.commons.mail.EmailException;
 import org.apache.velocity.Template;
@@ -28,18 +28,16 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
 
-import static fi.vm.sade.haku.oppija.common.oppijantunnistus.OppijanTunnistusDTO.LanguageCodeISO6391.en;
-import static fi.vm.sade.haku.oppija.common.oppijantunnistus.OppijanTunnistusDTO.LanguageCodeISO6391.fi;
-import static fi.vm.sade.haku.oppija.common.oppijantunnistus.OppijanTunnistusDTO.LanguageCodeISO6391.sv;
-import static fi.vm.sade.haku.oppija.hakemus.service.impl.SendMailService.EducationDegree.HIGHER;
-import static fi.vm.sade.haku.oppija.hakemus.service.impl.SendMailService.EducationDegree.SECONDARY;
-import static fi.vm.sade.haku.oppija.hakemus.service.impl.SendMailService.TemplateType.MODIFIED;
-import static fi.vm.sade.haku.oppija.hakemus.service.impl.SendMailService.TemplateType.RECEIVED;
+import static fi.vm.sade.haku.oppija.common.oppijantunnistus.OppijanTunnistusDTO.LanguageCodeISO6391.*;
+import static fi.vm.sade.haku.oppija.hakemus.service.impl.SendMailService.EducationDegree.*;
+import static fi.vm.sade.haku.oppija.hakemus.service.impl.SendMailService.TemplateType.*;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters.isHuoltajanTiedotKysyttava;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.valmis.ValmisPhase.MUSIIKKI_TANSSI_LIIKUNTA_EDUCATION_CODES;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.MailTemplateUtil.dateTimeFormatter;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.MailTemplateUtil.getTextOrEmpty;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.EDUCATION_CODE_KEY;
 import static org.apache.commons.lang.StringUtils.defaultString;
 import static org.apache.commons.lang.Validate.notNull;
@@ -104,6 +102,9 @@ public class SendMailService {
         templateMap.put(new TemplateKey(FI, SECONDARY, MODIFIED), velocityEngine.getTemplate("email/application_modified_fi.vm", "UTF-8"));
         templateMap.put(new TemplateKey(SV, SECONDARY, MODIFIED), velocityEngine.getTemplate("email/application_modified_sv.vm", "UTF-8"));
         templateMap.put(new TemplateKey(EN, SECONDARY, MODIFIED), velocityEngine.getTemplate("email/application_modified_en.vm", "UTF-8"));
+        templateMap.put(new TemplateKey(FI, SECONDARY, MODIFIED_HUOLTAJA), velocityEngine.getTemplate("email/application_modified_huoltaja_fi.vm", "UTF-8"));
+        templateMap.put(new TemplateKey(SV, SECONDARY, MODIFIED_HUOLTAJA), velocityEngine.getTemplate("email/application_modified_huoltaja_sv.vm", "UTF-8"));
+        templateMap.put(new TemplateKey(EN, SECONDARY, MODIFIED_HUOLTAJA), velocityEngine.getTemplate("email/application_modified_huoltaja_en.vm", "UTF-8"));
         templateMap.put(new TemplateKey(FI, HIGHER, MODIFIED), velocityEngine.getTemplate("email/application_modified_higher_ed_fi.vm", "UTF-8"));
         templateMap.put(new TemplateKey(SV, HIGHER, MODIFIED), velocityEngine.getTemplate("email/application_modified_higher_ed_sv.vm", "UTF-8"));
         templateMap.put(new TemplateKey(EN, HIGHER, MODIFIED), velocityEngine.getTemplate("email/application_modified_higher_ed_en.vm", "UTF-8"));
@@ -123,6 +124,11 @@ public class SendMailService {
             String email = application.getEmail();
             if (!isEmpty(email)) {
                 sendEmail(application, email, MODIFIED);
+            }
+
+            String huoltajaEmail = application.getHuoltajaEmail();
+            if (!isEmpty(huoltajaEmail) && isHuoltajanTiedotKysyttava(applicationSystemService.getApplicationSystem(application.getApplicationSystemId()))) {
+                sendEmail(application, huoltajaEmail, MODIFIED_HUOLTAJA);
             }
         }
     }
@@ -171,11 +177,7 @@ public class SendMailService {
     }
 
     private Template selectTemplate(Locale locale, ApplicationSystem applicationSystem, TemplateType type) {
-        Template tmpl = templateMap.get(new TemplateKey(locale, SECONDARY, type));
-        if (OppijaConstants.KOHDEJOUKKO_KORKEAKOULU.equals(applicationSystem.getKohdejoukkoUri())) {
-            tmpl = templateMap.get(new TemplateKey(locale, HIGHER, type));
-        }
-        return tmpl;
+        return templateMap.get(new TemplateKey(locale, applicationSystem.isHigherEducation() ? HIGHER : SECONDARY, type));
     }
 
     private static Locale getLocale(Application application) {
@@ -195,15 +197,17 @@ public class SendMailService {
 
     private VelocityContext buildContext(Application application, ApplicationSystem applicationSystem, Locale locale, ResourceBundle resourceBundle) {
         VelocityContext ctx = new VelocityContext();
-        DateFormat dateFmt = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
-        String applicationDate = dateFmt.format(application.getReceived());
+        DateFormat dateFmt = dateTimeFormatter(locale);
+        String receivedDate = dateFmt.format(application.getReceived());
+        String modifiedDate = dateFmt.format(application.getUpdated() != null ? application.getUpdated() : application.getReceived());
         String applicationId = application.getOid();
         applicationId = applicationId.substring(applicationId.lastIndexOf('.') + 1);
 
         ctx.put("applicationSystemId", getFormName(application, applicationSystem));
         ctx.put("applicant", getApplicantName(application));
         ctx.put("applicationId", applicationId);
-        ctx.put("applicationDate", applicationDate);
+        ctx.put("applicationDate", receivedDate);
+        ctx.put("modifiedDate", modifiedDate);
         ctx.put("preferences", getPreferences(application, applicationSystem));
         ctx.put("athlete", isAthlete(application));
         ctx.put("discretionary", isDiscretionary(application));
@@ -235,20 +239,11 @@ public class SendMailService {
                         .put("postOffice", defaultString(applicationAttachment.getAddress().getPostOffice()))
                         .put("emailAddress", defaultString(applicationAttachment.getEmailAddress()))
                         .put("deadline", applicationAttachment.getDeadline() != null ?
-                                DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM, locale)
-                                        .format(applicationAttachment.getDeadline()) :
-                                "")
+                                dateTimeFormatter(locale).format(applicationAttachment.getDeadline()) : "")
                         .put("deliveryNote", getTextOrEmpty(applicationAttachment.getDeliveryNote(), locale))
                         .build();
             }
         });
-    }
-
-    private static String getTextOrEmpty(I18nText text, Locale locale) {
-        if (text == null) {
-            return "";
-        }
-        return text.getText(locale.getLanguage());
     }
 
     private String getApplicantName(Application application) {
@@ -322,7 +317,8 @@ public class SendMailService {
 
     protected enum TemplateType {
         RECEIVED("email.application.received.title"),
-        MODIFIED("email.application.modified.title");
+        MODIFIED("email.application.modified.title"),
+        MODIFIED_HUOLTAJA("email.application.modifiedhuoltaja.title");
 
         public String subjectKey;
 

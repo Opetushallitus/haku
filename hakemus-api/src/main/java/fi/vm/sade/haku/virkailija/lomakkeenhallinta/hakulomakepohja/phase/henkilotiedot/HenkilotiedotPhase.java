@@ -306,7 +306,7 @@ public final class HenkilotiedotPhase {
                                     .size(30)
                                     .pattern(PHONE_PATTERN)
                                     .inline(),
-                            TextQuestion("huoltajansahkoposti")
+                            TextQuestion(OppijaConstants.ELEMENT_ID_HUOLTAJANSAHKOPOSTI)
                                     .inline()
                                     .size(50)
                                     .pattern(EMAIL_REGEX)));

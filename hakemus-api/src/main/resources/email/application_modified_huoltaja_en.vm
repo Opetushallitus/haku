@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="Content-Style-Type" content="text/css"/>
+</head>
+<body>
+<div>
+    <p>
+        Application: $applicationSystemId <br />
+        Applicant: $applicant <br />
+        Application number: $applicationId <br />
+        Date and time of submission: $applicationDate
+    </p>
+
+    <p>
+        You have applied to the following programmes: <br /><br />
+
+        #foreach ($preference in $preferences)
+            $preference <br />
+
+        #end
+    </p>
+
+    <p>
+        Changes to the application made by the applicant have been saved $modifiedDate.
+    </p>
+
+    <p>This is an automatically generated email, please do not reply.</p>
+</div>
+</body>
+</html>

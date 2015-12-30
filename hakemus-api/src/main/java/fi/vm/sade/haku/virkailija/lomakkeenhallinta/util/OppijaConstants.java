@@ -21,6 +21,7 @@ package fi.vm.sade.haku.virkailija.lomakkeenhallinta.util;
  * @author Hannu Lyytikainen
  */
 public final class OppijaConstants {
+
     private OppijaConstants() {
         // Utility class, no need for instances
     }
@@ -49,6 +50,7 @@ public final class OppijaConstants {
     public static final String ELEMENT_ID_SECURITY_ORDER = "turvakielto";
     public static final String ELEMENT_ID_DATE_OF_BIRTH = "syntymaaika";
     public static final String ELEMENT_ID_EMAIL = "Sähköposti";
+    public static final String ELEMENT_ID_HUOLTAJANSAHKOPOSTI = "huoltajansahkoposti";
     public static final String ELEMENT_ID_COUNTRY_OF_RESIDENCY = "asuinmaa";
     public static final String ELEMENT_VALUE_COUNTRY_OF_RESIDENCY_FIN = "FIN";
     public static final String ELEMENT_ID_FIN_ADDRESS = "lahiosoite";

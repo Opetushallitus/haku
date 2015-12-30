@@ -17,8 +17,10 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Date;
+import java.util.Iterator;
 
 import static fi.vm.sade.haku.oppija.common.oppijantunnistus.OppijanTunnistusDTO.LanguageCodeISO6391.fi;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.MailTemplateUtil.dateTimeFormatter;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
@@ -27,19 +29,64 @@ import static org.springframework.test.util.ReflectionTestUtils.setField;
 
 public class SendMailServiceTest {
 
-    static final MockedRestClient REST_CLIENT = new MockedRestClient();
+    String oppijantunnistusUrl = "http://localhost/oppijan-tunnistus";
+    String linkFi = "http://localhost/fi/omatsivut";
+    String linkSv = "http://localhost/sv/omatsivut";
+    String linkEn = "http://localhost/en/omatsivut";
+    String applicationSystemId = "1.2.246.562.29.75203638285";
+    String applicationSystemIdSecondary = "1.2.246.562.29.75203638285";
+    String applicationOid = "1.2.246.562.11.1";
+    String emailAddress = "testi@example.com";
+    String emailAddressGuardian = "guardian@example.com";
+    String hakuNimiFi = "haku 1";
+    Date receivedDate = new Date(new Date().getTime() - 10000);
+    Date modifiedDate = new Date();
 
-    static final String OPPIJANTUNNISTUS_URL = "http://localhost/oppijan-tunnistus";
-    static final String LINK_FI = "http://localhost/fi/omatsivut";
-    static final String LINK_SV = "http://localhost/sv/omatsivut";
-    static final String LINK_EN = "http://localhost/en/omatsivut";
-    static final String APPLICATION_SYSTEM_ID = "1.2.246.562.29.75203638285";
-    static final String APPLICATION_OID = "1.2.246.562.11.1";
-    static final String EMAIL_ADDRESS = "testi@example.com";
-    static final String HAKU_NIMI_FI = "haku 1";
+    @Test
+    public void testSendReceivedEmail() throws EmailException {
+        service.sendReceivedEmail(testApplication());
 
+        Captured firstCaptured = restClient.getCaptured().iterator().next();
+        OppijanTunnistusDTO capturedBody = (OppijanTunnistusDTO) firstCaptured.body;
+
+        assertEquals(firstCaptured.url, oppijantunnistusUrl);
+        assertEquals(firstCaptured.method, "POST");
+        assertEquals(capturedBody.url, linkFi);
+        assertEquals(capturedBody.lang, fi);
+        assertEquals(capturedBody.email, emailAddress);
+        assertEquals(capturedBody.metadata.hakemusOid, applicationOid);
+        assertTrue(capturedBody.template.contains(hakuNimiFi));
+    }
+
+    @Test
+    public void testSendModifiedEmailSecondary() throws EmailException {
+        service.sendModifiedEmail(testApplicationSecondary());
+
+        Iterator<Captured> iterator = restClient.getCaptured().iterator();
+        OppijanTunnistusDTO oppijaEmailBody = (OppijanTunnistusDTO) iterator.next().body;
+        OppijanTunnistusDTO guardianEmailBody = (OppijanTunnistusDTO) iterator.next().body;
+
+        assertEquals(oppijaEmailBody.email, emailAddress);
+        assertEquals(guardianEmailBody.email, emailAddressGuardian);
+        assertEquals(oppijaEmailBody.metadata.hakemusOid, applicationOid);
+        assertEquals(guardianEmailBody.metadata.hakemusOid, applicationOid);
+        assertEquals(guardianEmailBody.metadata.hakemusOid, applicationOid);
+        assertTrue(guardianEmailBody.subject.contains("huoltaja"));
+        assertTrue(guardianEmailBody.template.contains(dateTimeFormatter(SendMailService.FI).format(receivedDate)));
+    }
+
+    @Test
+    public void testInDemoModeItShouldNotSendEmailRequest() throws EmailException {
+        setField(service, "demoMode", true);
+
+        service.sendReceivedEmail(testApplication());
+
+        assertTrue(restClient.getCaptured().isEmpty());
+    }
+
+
+    MockedRestClient restClient = new MockedRestClient();
     ApplicationSystemService applicationSystemService;
-
     SendMailService service;
 
     @Before
@@ -47,7 +94,7 @@ public class SendMailServiceTest {
         final ApplicationSystem applicationSystem = mock(ApplicationSystem.class);
         when(applicationSystem.getKohdejoukkoUri()).thenReturn(OppijaConstants.KOHDEJOUKKO_KORKEAKOULU);
         when(applicationSystem.getName()).thenReturn(new I18nText(ImmutableMap.of(
-                "fi", HAKU_NIMI_FI,
+                "fi", hakuNimiFi,
                 "sv", "ansökan 1",
                 "en", "application 1"
         )));
@@ -55,42 +102,53 @@ public class SendMailServiceTest {
                 new ApplicationPeriod(new Date(0), new Date(Long.MAX_VALUE))
         ));
 
+        final ApplicationSystem applicationSystemSecondary = mock(ApplicationSystem.class);
+        when(applicationSystemSecondary.getKohdejoukkoUri()).thenReturn(OppijaConstants.KOHDEJOUKKO_AMMATILLINEN_JA_LUKIO);
+        when(applicationSystemSecondary.getName()).thenReturn(new I18nText(ImmutableMap.of(
+                "fi", hakuNimiFi,
+                "sv", "ansökan 1",
+                "en", "application 1"
+        )));
+        when(applicationSystemSecondary.getApplicationPeriods()).thenReturn(ImmutableList.of(
+                new ApplicationPeriod(new Date(0), new Date(Long.MAX_VALUE))
+        ));
+
         applicationSystemService = mock(ApplicationSystemService.class);
-        when(applicationSystemService.getApplicationSystem(APPLICATION_SYSTEM_ID)).thenReturn(applicationSystem);
+        when(applicationSystemService.getApplicationSystem(applicationSystemId)).thenReturn(applicationSystem);
+        when(applicationSystemService.getApplicationSystem(applicationSystemIdSecondary)).thenReturn(applicationSystemSecondary);
 
-        service = new SendMailService(applicationSystemService, REST_CLIENT, LINK_FI, LINK_SV, LINK_EN);
-        setField(service, "oppijanTunnistusUrl", OPPIJANTUNNISTUS_URL);
+        service = new SendMailService(applicationSystemService, restClient, linkFi, linkSv, linkEn);
+        setField(service, "oppijanTunnistusUrl", oppijantunnistusUrl);
     }
 
-    @Test
-    public void testSendReceivedEmail() throws EmailException {
-        Application application = testApplication();
-
-        service.sendReceivedEmail(application);
-
-        Captured firstCaptured = REST_CLIENT.getCaptured().iterator().next();
-        OppijanTunnistusDTO capturedBody = (OppijanTunnistusDTO) firstCaptured.body;
-
-        assertEquals(firstCaptured.url, OPPIJANTUNNISTUS_URL);
-        assertEquals(firstCaptured.method, "POST");
-        assertEquals(capturedBody.url, LINK_FI);
-        assertEquals(capturedBody.lang, fi);
-        assertEquals(capturedBody.email, EMAIL_ADDRESS);
-        assertEquals(capturedBody.metadata.hakemusOid, APPLICATION_OID);
-        assertTrue(capturedBody.template.contains(HAKU_NIMI_FI));
-    }
-
-    private static Application testApplication() {
+    private Application testApplication() {
         return new Application() {{
-            setOid(APPLICATION_OID);
-            setApplicationSystemId(APPLICATION_SYSTEM_ID);
+            setOid(applicationOid);
+            setApplicationSystemId(applicationSystemId);
             getAnswers().put("henkilotiedot", ImmutableMap.of(
-                    OppijaConstants.ELEMENT_ID_EMAIL, EMAIL_ADDRESS
+                    OppijaConstants.ELEMENT_ID_EMAIL, emailAddress
             ));
             getAnswers().put("lisatiedot", ImmutableMap.of(
                     OppijaConstants.ELEMENT_ID_CONTACT_LANGUAGE, "suomi"
             ));
-            setReceived(new Date());
+            setReceived(receivedDate);
+            setUpdated(modifiedDate);
+        }};
+    }
+
+    private Application testApplicationSecondary() {
+        return new Application() {{
+            setOid(applicationOid);
+            setApplicationSystemId(applicationSystemIdSecondary);
+            getAnswers().put("henkilotiedot", ImmutableMap.of(
+                    OppijaConstants.ELEMENT_ID_EMAIL, emailAddress,
+                    OppijaConstants.ELEMENT_ID_HUOLTAJANSAHKOPOSTI, emailAddressGuardian
+            ));
+            getAnswers().put("lisatiedot", ImmutableMap.of(
+                    OppijaConstants.ELEMENT_ID_CONTACT_LANGUAGE, "suomi"
+            ));
+            setReceived(receivedDate);
+            setUpdated(modifiedDate);
         }};
     }
 

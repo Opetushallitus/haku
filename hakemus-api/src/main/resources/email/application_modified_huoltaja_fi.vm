@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="Content-Style-Type" content="text/css"/>
+</head>
+<body>
+<div>
+    <p>
+        Haku: $applicationSystemId <br />
+        Hakija: $applicant <br />
+        Hakemusnumero: $applicationId <br />
+        Hakemuksen päivämäärä ja tallennusaika: $applicationDate
+    </p>
+
+    <p>
+        Hakutoiveesi: <br /><br />
+
+        #foreach ($preference in $preferences)
+            $preference <br />
+
+        #end
+    </p>
+
+    <p>
+        Hakijan tekemät muutokset hakemukseen on tallennettu $modifiedDate.
+    </p>
+
+    <p>Älä vastaa tähän viestiin - viesti on lähetetty automaattisesti.</p>
+</div>
+</body>
+</html>
