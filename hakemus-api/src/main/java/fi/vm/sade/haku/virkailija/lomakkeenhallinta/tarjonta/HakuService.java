@@ -17,6 +17,7 @@
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta;
 
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuV1RDTO;
 
 import java.util.List;
 
@@ -30,6 +31,8 @@ public interface HakuService {
     List<ApplicationSystem> getApplicationSystems(boolean addHakuKohdes);
 
     ApplicationSystem getApplicationSystem(String oid);
+
+    HakuV1RDTO getRawApplicationSystem(String oid);
 
     List<String> getRelatedApplicationOptionIds(String oid);
 

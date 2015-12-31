@@ -84,25 +84,25 @@ public class HakuServiceImpl implements HakuService {
 
     @Override
     public ApplicationSystem getApplicationSystem(String oid) {
-        HakuV1RDTO hakuDTO = fetchApplicationSystem(oid);
+        HakuV1RDTO hakuDTO = getRawApplicationSystem(oid);
         return new HakuV1RDTOToApplicationSystemFunction().apply(hakuDTO);
     }
 
     @Override
     public List<String> getRelatedApplicationOptionIds(String oid){
-        final HakuV1RDTO hakuV1RDTO = fetchApplicationSystem(oid);
+        final HakuV1RDTO hakuV1RDTO = getRawApplicationSystem(oid);
         List <String> applicationOptionOids = hakuV1RDTO.getHakukohdeOids();
         return null != applicationOptionOids ? applicationOptionOids : new ArrayList<String>(0);
     }
 
     @Override
     public boolean kayttaaJarjestelmanLomaketta(String oid) {
-        HakuV1RDTO haku = fetchApplicationSystem(oid);
+        HakuV1RDTO haku = getRawApplicationSystem(oid);
         return haku.isJarjestelmanHakulomake();
     }
 
-
-    private HakuV1RDTO fetchApplicationSystem(String oid) {
+    @Override
+    public HakuV1RDTO getRawApplicationSystem(String oid) {
         WebResource asWebResource = webResource.path(oid);
         ResultV1RDTO<HakuV1RDTO> result = asWebResource.accept(MEDIA_TYPE).get(new GenericType<ResultV1RDTO<HakuV1RDTO>>() {
         });
