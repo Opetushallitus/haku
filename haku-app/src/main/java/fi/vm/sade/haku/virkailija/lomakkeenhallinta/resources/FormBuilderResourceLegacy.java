@@ -39,16 +39,16 @@ import java.util.List;
 @Controller
 @Path("/lomakkeenhallinta")
 // @Secured("ROLE_APP_HAKEMUS_CRUD")
-public class FormBuilderResource {
+public class FormBuilderResourceLegacy {
 
-    private static final Logger log = LoggerFactory.getLogger(FormBuilderResource.class);
+    private static final Logger log = LoggerFactory.getLogger(FormBuilderResourceLegacy.class);
 
     private final FormGenerator formGenerator;
     private final ApplicationSystemService applicationSystemService;
     private final HakuService hakuService;
 
     @Autowired
-    public FormBuilderResource(final FormGenerator formGenerator, final ApplicationSystemService applicationSystemService, final HakuService hakuService) {
+    public FormBuilderResourceLegacy(final FormGenerator formGenerator, final ApplicationSystemService applicationSystemService, final HakuService hakuService) {
         this.formGenerator = formGenerator;
         this.applicationSystemService = applicationSystemService;
         this.hakuService = hakuService;
