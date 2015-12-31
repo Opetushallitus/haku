@@ -1,0 +1,379 @@
+{
+  "_id": {
+    "$oid": "566a9951e4b0feb75d0dea0d"
+  },
+  "answers": {
+    "henkilotiedot": {
+      "onkosinullakaksoiskansallisuus": "false",
+      "koulusivistyskieli": "EN",
+      "kansalaisuus": "CUW",
+      "asuinmaa": "FIN",
+      "syntymapaikka": "jadiaji",
+      "matkapuhelinnumero1": "",
+      "Sukunimi": "Kayttaja",
+      "passinnumero": "",
+      "Postinumero": "00100",
+      "lahiosoite": "jskj",
+      "sukupuoli": "1",
+      "turvakielto": "false",
+      "Kutsumanimi": "Testi",
+      "Sähköposti": "testikayttaja@maili.com",
+      "Etunimet": "Testi",
+      "kansallinenIdTunnus": "",
+      "kotikunta": "010",
+      "onkoSinullaSuomalainenHetu": "false",
+      "aidinkieli": "AZ",
+      "syntymaaika": "19.12.1988",
+      "Henkilotunnus_digest": "ee53e182a07a4db4ceda5865059c6200357cc17cbd10d8b59c0567042f086ec9"
+    },
+    "lisatiedot": {
+      "asiointikieli": "englanti",
+      "lupatiedot-sahkoinen-viestinta": "true"
+    },
+    "hakutoiveet": {
+      "preference4-Koulutus-id-aoIdentifier": "",
+      "preference3-Koulutus-id-ao-groups": "",
+      "preference1-Koulutus-id-ao-groups": "1.2.246.562.28.74698945408,1.2.246.562.28.24712637358",
+      "preference4-Koulutus-id-educationcode": "",
+      "preference1-Opetuspiste": "Jyväskylän ammattikorkeakoulu, JAMK, Liiketalouden ala",
+      "preference4-Opetuspiste-id": "",
+      "preference3-Koulutus-id-athlete": "",
+      "preference4-Koulutus-requiredBaseEducations": "",
+      "preference5-Opetuspiste-id": "",
+      "preference2-Koulutus-id-attachmentgroups": "",
+      "preference4-Koulutus-id-athlete": "",
+      "preference2-Koulutus-id-aoIdentifier": "",
+      "preference2-Koulutus-id-attachments": "false",
+      "preference3-Opetuspiste-id": "",
+      "preference4-Koulutus-id-attachmentgroups": "",
+      "preference6-Koulutus-id-lang": "",
+      "preference6-Koulutus-id-vocational": "",
+      "preference2-Koulutus-id-ao-groups": "1.2.246.562.28.92529355477,1.2.246.562.28.48749718944,1.2.246.562.28.23836924893",
+      "preference1-Koulutus-educationDegree": "koulutusasteoph2002_62",
+      "preference6-Koulutus-id-educationcode": "",
+      "preference5-Koulutus-educationDegree": "",
+      "preference6-Koulutus-id-ao-groups": "",
+      "preference2-Koulutus-id-sora": "false",
+      "preference4-Koulutus-id-vocational": "",
+      "preference3-Koulutus-id": "",
+      "preference1-Opetuspiste-id": "1.2.246.562.10.12565036949",
+      "preference5-Koulutus-id-lang": "",
+      "preference1-Koulutus-id-sora": "false",
+      "preference2-Koulutus-educationDegree": "koulutusasteoph2002_71",
+      "preference6-Koulutus-requiredBaseEducations": "",
+      "preference5-Koulutus-id-sora": "",
+      "preference1-Koulutus-id-aoIdentifier": "",
+      "preference1-Koulutus-id-educationcode": "koulutus_631101",
+      "preference6-Koulutus-id-kaksoistutkinto": "",
+      "preference5-Koulutus-id-ao-groups": "",
+      "preference3-Koulutus-id-attachmentgroups": "",
+      "preference6-Koulutus-id-sora": "",
+      "preference5-Koulutus-id-athlete": "",
+      "preference2-Koulutus-id": "1.2.246.562.20.80094370907",
+      "preference5-Koulutus-id-attachments": "",
+      "preference3-Koulutus-id-vocational": "",
+      "preference1-Koulutus-id-vocational": "false",
+      "preference2-Koulutus-requiredBaseEducations": "pohjakoulutusvaatimuskorkeakoulut_106,pohjakoulutusvaatimuskorkeakoulut_100",
+      "preference6-Koulutus-id-athlete": "",
+      "preference4-Koulutus-educationDegree": "",
+      "preference1-Koulutus-id-athlete": "false",
+      "preference4-Koulutus-id-kaksoistutkinto": "",
+      "preference6-Koulutus-educationDegree": "",
+      "preference6-Koulutus-id-attachments": "",
+      "preference5-Koulutus-id-kaksoistutkinto": "",
+      "preference6-Koulutus-id-aoIdentifier": "",
+      "preference6-Koulutus-id-attachmentgroups": "",
+      "preference5-Koulutus-id": "",
+      "preference2-Opetuspiste": "Jyväskylän ammattikorkeakoulu, JAMK, Liiketalouden ala",
+      "preference2-Koulutus-id-athlete": "false",
+      "preference1-Koulutus-id-attachments": "true",
+      "preference3-Koulutus-educationDegree": "",
+      "preference2-Koulutus-id-kaksoistutkinto": "false",
+      "preference5-Opetuspiste": "",
+      "preference3-Koulutus-id-kaksoistutkinto": "",
+      "preference5-Koulutus-id-educationcode": "",
+      "preference1-Koulutus-id-attachmentgroups": "1.2.246.562.28.24712637358",
+      "preference4-Koulutus-id-sora": "",
+      "preference5-Koulutus-id-vocational": "",
+      "preference5-Koulutus-requiredBaseEducations": "",
+      "preference3-Koulutus-id-lang": "",
+      "preference1-Koulutus-requiredBaseEducations": "pohjakoulutusvaatimuskorkeakoulut_106,pohjakoulutusvaatimuskorkeakoulut_100",
+      "preference2-Opetuspiste-id": "1.2.246.562.10.12565036949",
+      "preference3-Opetuspiste": "",
+      "preference4-Koulutus-id-lang": "",
+      "preference6-Koulutus-id": "",
+      "preference5-Koulutus-id-attachmentgroups": "",
+      "preference2-Koulutus-id-vocational": "false",
+      "preferencesVisible": "6",
+      "preference1-Koulutus-id": "1.2.246.562.20.99933864235",
+      "preference3-Koulutus-id-attachments": "",
+      "preference3-Koulutus-id-sora": "",
+      "preference3-Koulutus-requiredBaseEducations": "",
+      "preference4-Koulutus-id": "",
+      "preference2-Koulutus-id-lang": "EN",
+      "preference4-Koulutus-id-attachments": "",
+      "preference4-Opetuspiste": "",
+      "preference3-Koulutus-id-educationcode": "",
+      "preference1-Koulutus": "Bachelor of Business Administration, Degree Programme in International Business",
+      "preference2-Koulutus": "Master of Business Administration, DP in International Business Management",
+      "preference1-Koulutus-id-kaksoistutkinto": "false",
+      "preference3-Koulutus-id-aoIdentifier": "",
+      "preference5-Koulutus-id-aoIdentifier": "",
+      "preference1-Koulutus-id-lang": "EN",
+      "preference4-Koulutus-id-ao-groups": "",
+      "preference6-Opetuspiste": "",
+      "preference2-Koulutus-id-educationcode": "koulutus_731201",
+      "preference6-Opetuspiste-id": ""
+    },
+    "koulutustausta": {
+      "pohjakoulutus_ulk": "true",
+      "pohjakoulutus_ulk_vuosi": "2008",
+      "pohjakoulutus_ulk_nimike": "tt",
+      "pohjakoulutus_ulk_suoritusmaa": "BHS",
+      "suoritusoikeus_tai_aiempi_tutkinto": "false",
+      "pohjakoulutus_ulk_oppilaitos": "sij"
+    },
+    "osaaminen": {
+      "56405ffae4b0055cd4ba7f2e": "option_4"
+    }
+  },
+  "applicationSystemId": "1.2.246.562.29.75203638285",
+  "attachmentRequests": [
+    {
+      "id": "form.valmis.todistus.ulk_group_1.2.246.562.28.24712637358",
+      "preferenceAoGroupId": "1.2.246.562.28.24712637358",
+      "processingStatus": "NOT_CHECKED",
+      "applicationAttachment": {
+        "name": {
+          "translations": {
+            "fi": "Todistuskopio ulkomailla suoritetusta tutkinnosta",
+            "sv": "Betygskopia av din examen avlagd utomlands",
+            "en": "Copy of your foreign qualification certificate"
+          }
+        },
+        "description": {
+          "translations": {
+            "fi": "Jyväskylän ammattikorkeakoulu, JAMK, Liiketalouden ala",
+            "sv": "Jyväskylän ammattikorkeakoulu, JAMK, Liiketalouden ala",
+            "en": "Jyväskylän ammattikorkeakoulu, JAMK, Liiketalouden ala"
+          }
+        },
+        "deadline": {
+          "$numberLong": "1455109200000"
+        },
+        "address": {
+          "recipient": "JAMK, Hakijapalvelut",
+          "streetAddress": "Rajakatu 35",
+          "postalCode": "40200",
+          "postOffice": "JYVÄSKYLÄ"
+        }
+      },
+      "receptionStatus": "NOT_RECEIVED"
+    },
+    {
+      "id": "71e852d1-c007-4ac3-ae90-668a8e66c96c",
+      "preferenceAoGroupId": "1.2.246.562.28.74698945408",
+      "processingStatus": "NOT_CHECKED",
+      "applicationAttachment": {
+        "header": {
+          "translations": {
+            "fi": "Kielitodistus englannin kielen taidosta",
+            "sv": "Bevis på kunskaper i engelska",
+            "en": "Certificate of proficiency in English language"
+          }
+        },
+        "description": {
+          "translations": {}
+        },
+        "deadline": {
+          "$numberLong": "1455109200000"
+        },
+        "address": {
+          "recipient": "JAMK, Hakijapalvelut",
+          "streetAddress": "Rajakatu 35",
+          "postalCode": "40200",
+          "postOffice": "JYVÄSKYLÄ"
+        }
+      },
+      "receptionStatus": "NOT_RECEIVED"
+    }
+  ],
+  "authorizationMeta": {
+    "opoAllowed": false,
+    "aoOrganizations": {
+      "1": [
+        "1.2.246.562.10.57572539237",
+        "1.2.246.562.10.12565036949",
+        "1.2.246.562.10.00000000001",
+        "1.2.246.562.10.38382525541"
+      ]
+    },
+    "allAoOrganizations": [
+      "1.2.246.562.10.57572539237",
+      "1.2.246.562.10.12565036949",
+      "1.2.246.562.10.00000000001",
+      "1.2.246.562.10.38382525541"
+    ],
+    "applicationPreferences": [
+      {
+        "ordinal": 1,
+        "preferenceData": {
+          "Koulutus-id-vocational": "false",
+          "Koulutus-id-attachmentgroups": "1.2.246.562.28.24712637358",
+          "Koulutus-id-ao-groups": "1.2.246.562.28.74698945408,1.2.246.562.28.24712637358",
+          "Opetuspiste": "Jyväskylän ammattikorkeakoulu, JAMK, Liiketalouden ala",
+          "Koulutus-id-athlete": "false",
+          "Koulutus-id": "1.2.246.562.20.29983577775",
+          "Koulutus-id-sora": "false",
+          "Koulutus-id-attachments": "true",
+          "Koulutus-requiredBaseEducations": "pohjakoulutusvaatimuskorkeakoulut_106,pohjakoulutusvaatimuskorkeakoulut_100",
+          "Koulutus-id-kaksoistutkinto": "false",
+          "Koulutus-educationDegree": "koulutusasteoph2002_62",
+          "Opetuspiste-id": "1.2.246.562.10.12565036949",
+          "Koulutus-id-educationcode": "koulutus_631101",
+          "Koulutus": "Bachelor of Business Administration, Degree Programme in International Business",
+          "Koulutus-id-lang": "EN"
+        }
+      }
+    ]
+  },
+  "automatedProcessingFailCount": 95,
+  "automatedProcessingFailRetryTime": {
+    "$numberLong": "1451467846668"
+  },
+  "fullName": "kayttaja testi",
+  "history": [
+    {
+      "type": "Change",
+      "modified": {
+        "$numberLong": "1449826698306"
+      },
+      "modifier": "1.2.246.562.24.43896298148",
+      "reason": "update",
+      "changes": [
+        {
+          "field": "requiredPaymentState",
+          "old value": "NOTIFIED",
+          "new value": "OK"
+        }
+      ]
+    },
+    {
+      "type": "Change",
+      "modified": {
+        "$numberLong": "1449826647549"
+      },
+      "modifier": "järjestelmä",
+      "reason": "Post Processing",
+      "changes": [
+        {
+          "field": "Kutsumanimi",
+          "old value": "jojso",
+          "new value": "Testi"
+        },
+        {
+          "field": "Etunimet",
+          "old value": "jojso",
+          "new value": "Testi"
+        },
+        {
+          "field": "Sukunimi",
+          "old value": "josjoj",
+          "new value": "Kayttaja"
+        },
+        {
+          "field": "aidinkieli",
+          "old value": "EN",
+          "new value": "AZ"
+        },
+        {
+          "field": "requiredPaymentState",
+          "old value": "",
+          "new value": "NOTIFIED"
+        },
+        {
+          "field": "syntymaaika",
+          "old value": "01.12.2015",
+          "new value": "19.12.1988"
+        },
+        {
+          "field": "turvakielto",
+          "new value": "false"
+        },
+        {
+          "field": "Henkilotunnus",
+          "new value": "191288-937V"
+        }
+      ]
+    }
+  ],
+  "lastAutomatedProcessingTime": {
+    "$numberLong": "1451473640652"
+  },
+  "meta": {
+    "filingLanguage": "fi",
+    "sessionId": "anonymousUser"
+  },
+  "modelVersion": 7,
+  "notes": [
+    {
+      "type": "ApplicationNote",
+      "noteText": "Hakija maksuvelvollinen: hakukohde 1.2.246.562.20.29983577775 vaatii hakumaksun pohjakoulutusten 'tt' johdosta",
+      "added": {
+        "$numberLong": "1449826647440"
+      },
+      "user": "järjestelmä"
+    },
+    {
+      "type": "ApplicationNote",
+      "noteText": "Hakemus vastaanotettu",
+      "added": {
+        "$numberLong": "1449826641769"
+      },
+      "user": "anonymousUser"
+    }
+  ],
+  "oid": "1.2.246.562.11.00004587493",
+  "overriddenAnswers": {
+    "sukupuoli": "1",
+    "turvakielto": "(null)",
+    "Kutsumanimi": "jojso",
+    "Etunimet": "jojso",
+    "Sukunimi": "josjoj",
+    "onkoSinullaSuomalainenHetu": "false",
+    "Henkilotunnus": "(null)",
+    "aidinkieli": "EN",
+    "syntymaaika": "01.12.2015"
+  },
+  "personOid": "1.2.246.562.24.14229104472",
+  "preferenceEligibilities": [
+    {
+      "aoId": "1.2.246.562.20.29983577775",
+      "status": "NOT_CHECKED",
+      "source": "REGISTER"
+    }
+  ],
+  "preferencesChecked": [
+    {
+      "preferenceAoOid": "1.2.246.562.20.29983577775",
+      "checked": false
+    }
+  ],
+  "received": {
+    "$numberLong": "1449826641769"
+  },
+  "redoPostProcess": "DONE",
+  "requiredPaymentState": "NOTIFIED",
+  "searchNames": [
+    "testi",
+    "jojso",
+    "josjoj",
+    "kayttaja"
+  ],
+  "state": "ACTIVE",
+  "studentIdentificationDone": false,
+  "updated": {
+    "$numberLong": "1451467846669"
+  },
+  "version": 2
+}
