@@ -174,7 +174,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         answers.putAll(currentAnswers);
 
         if ((PHASE_APPLICATION_OPTIONS.equals(phaseId) || PHASE_EDUCATION.equals(phaseId))
-                && applicationSystemService.getActiveApplicationSystem(application.getApplicationSystemId()).isMaksumuuriKaytossa()) {
+                && applicationSystemService.getApplicationSystem(application.getApplicationSystemId()).isMaksumuuriKaytossa()) {
             try {
                 answers.putAll(paymentNotificationAnswers(answers, hakumaksuService.paymentRequirements(Types.MergedAnswers.of(answers))));
             } catch (NullPointerException | IllegalArgumentException e) {
