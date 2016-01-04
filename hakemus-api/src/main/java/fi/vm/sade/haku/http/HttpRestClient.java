@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.util.concurrent.*;
 
 @Component("restClient")
-@Profile("default")
+@Profile({"default", "devluokka"})
 public class HttpRestClient implements RestClient {
 
     static final HttpTransport HTTP_TRANSPORT = new NetHttpTransport();

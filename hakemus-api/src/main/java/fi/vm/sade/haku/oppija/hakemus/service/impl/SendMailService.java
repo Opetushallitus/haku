@@ -44,7 +44,7 @@ import static org.apache.commons.lang.Validate.notNull;
 import static org.apache.commons.lang3.StringUtils.isEmpty;
 
 @Service(value = "sendMailService")
-@Profile("default")
+@Profile({"default", "devluokka"})
 public class SendMailService {
 
     public static final Locale FI = new Locale("fi");
