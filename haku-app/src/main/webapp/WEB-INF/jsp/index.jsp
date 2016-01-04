@@ -47,7 +47,7 @@
                     <li><a href="${contextPath}/virkailija/hakemus">Hakemusten käsittely</a></li>
                 </sec:authorize>
                 <sec:authorize access="hasRole('ROLE_APP_HAKEMUS_CRUD')">
-                    <li><a href="${contextPath}/lomakkeenhallinta">Admin - Generoi lomakkeet</a></li>
+                    <li><a href="${contextPath}/lomakkeenhallinta/ALL">Admin - Generoi lomakkeet</a></li>
                     <li><a href="${contextPath}/virkailija/hakemus">Hakemusten käsittely</a></li>
                     <li><a href="/">Oppijan verkkopalvelu</a></li>
                 </sec:authorize>
