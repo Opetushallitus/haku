@@ -107,6 +107,11 @@
     </jsp-config>
 
     <error-page>
+        <exception-type>fi.vm.sade.haku.oppija.lomake.exception.ApplicationSystemNotFound</exception-type>
+        <location>/WEB-INF/jsp/error/errorApplicationDeadlineExpired.jsp</location>
+    </error-page>
+
+    <error-page>
         <exception-type>fi.vm.sade.haku.oppija.lomake.exception.ApplicationDeadlineExpiredException</exception-type>
         <location>/WEB-INF/jsp/error/errorApplicationDeadlineExpired.jsp</location>
     </error-page>

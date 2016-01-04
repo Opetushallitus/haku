@@ -621,7 +621,7 @@ public class ApplicationServiceImpl implements ApplicationService {
                 opoAllowed = false;
             }
             return opoAllowed;
-        }catch (ApplicationSystemNotFound e) {
+        } catch (ApplicationSystemNotFound e) {
             // Probably doesn't use system form. Defaulting to opo not allowed
             return false;
         }

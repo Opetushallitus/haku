@@ -8,6 +8,7 @@ import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.ListenableFutureTask;
 import com.google.common.util.concurrent.UncheckedExecutionException;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
+import fi.vm.sade.haku.oppija.lomake.exception.ApplicationDeadlineExpiredException;
 import fi.vm.sade.haku.oppija.lomake.exception.ApplicationSystemNotFound;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.haku.oppija.repository.ApplicationSystemRepository;
@@ -84,11 +85,13 @@ public class ApplicationSystemServiceImpl implements ApplicationSystemService {
 
     @Override
     public ApplicationSystem getActiveApplicationSystem(String id) {
+        // Throws an exception is an applicatoinSystem is not found with the given id
         ApplicationSystem applicationSystem = getApplicationSystem(id);
         if (applicationSystem.isActive()) {
             return applicationSystem;
+        } else {
+            throw new ApplicationDeadlineExpiredException();
         }
-        throw new ApplicationSystemNotFound("Active application system %s not found", id);
     }
 
     @Override
