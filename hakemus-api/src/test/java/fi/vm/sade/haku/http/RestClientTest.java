@@ -29,7 +29,7 @@ public class RestClientTest {
         });
         System.out.println(f.get());
     }
-    @Ignore
+    @Test
     public void getTest() throws ExecutionException, InterruptedException, IOException {
         String url = "https://virkailija.opintopolku.fi/koodisto-service/rest/codeelement/valtioryhmat_2/1";
         ListenableFuture<Response<Output>> response = new HttpRestClient().get(url, Output.class);
