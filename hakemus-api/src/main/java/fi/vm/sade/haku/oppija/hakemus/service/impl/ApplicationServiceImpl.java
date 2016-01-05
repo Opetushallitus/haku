@@ -42,6 +42,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.User;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Form;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Phase;
+import fi.vm.sade.haku.oppija.lomake.exception.ApplicationDeadlineExpiredException;
 import fi.vm.sade.haku.oppija.lomake.exception.ApplicationSystemNotFound;
 import fi.vm.sade.haku.oppija.lomake.exception.ResourceNotFoundException;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
@@ -228,6 +229,10 @@ public class ApplicationServiceImpl implements ApplicationService {
             return application;
         } else {
             LOGGER.error("Could not send the application | " + getApplicationLogMessage(application, validationResult));
+            if (validationResult.isExpired()) {
+                LOGGER.error("Application deadline has expired");
+                throw new ApplicationDeadlineExpiredException();
+            }
             throw new IllegalStateException("Could not send the application ");
         }
     }
@@ -616,7 +621,7 @@ public class ApplicationServiceImpl implements ApplicationService {
                 opoAllowed = false;
             }
             return opoAllowed;
-        }catch (ApplicationSystemNotFound e) {
+        } catch (ApplicationSystemNotFound e) {
             // Probably doesn't use system form. Defaulting to opo not allowed
             return false;
         }

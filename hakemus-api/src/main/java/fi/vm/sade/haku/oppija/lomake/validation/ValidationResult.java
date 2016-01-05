@@ -26,6 +26,10 @@ import java.util.Map;
 
 public class ValidationResult {
     private final Map<String, I18nText> errors;
+    // expired is set by the validation when the application deadline has passed for an application
+    // If true upon application submission this will throw an exception that renders static error page
+    // from haku-app/src/main/webapp/WEB-INF/jsp/error/errorApplicationDeadlineExpired.jsp
+    private boolean expired;
 
     public ValidationResult(final Map<String, I18nText> errors) {
         this.errors = new HashMap<String, I18nText>();
@@ -47,12 +51,21 @@ public class ValidationResult {
             if (validationResult.hasErrors()) {
                 errors.putAll(validationResult.getErrorMessages());
             }
+            if (validationResult.isExpired()) {
+                this.expired = true;
+            }
         }
+    }
+
+    public void setExpired(boolean value) {
+        this.expired = value;
     }
 
     public boolean hasErrors() {
         return !errors.isEmpty();
     }
+
+    public boolean isExpired() { return this.expired; }
 
     public void addValidationResult(ValidationResult validationResult) {
         this.errors.putAll(validationResult.getErrorMessages());
