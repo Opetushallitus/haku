@@ -29,6 +29,7 @@ import fi.vm.sade.haku.oppija.ui.common.UriUtil;
 import fi.vm.sade.haku.oppija.ui.controller.dto.AttachmentsAndEligibilityDTO;
 import fi.vm.sade.haku.oppija.ui.service.OfficerUIService;
 import fi.vm.sade.haku.oppija.ui.service.UIService;
+import fi.vm.sade.haku.virkailija.authentication.Person;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.EmailService;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.PDFService;
@@ -460,7 +461,14 @@ public class OfficerController {
         }
         return new ArrayList<Map<String, Object>>(0);
     }
-
+    
+    @GET
+    @Path("/hakemus/note/user/{user}/name")
+    @Produces(MediaType.TEXT_PLAIN)
+    public String getNameForNoteUser(@PathParam("user") String user) {
+        return officerUIService.getNameForNoteUser(user);
+    }
+    
     private String concatMultivaluedQueryParam(final String paramName, final MultivaluedMap<String, String> multiValues) {
         for (Map.Entry<String, List<String>> entry : multiValues.entrySet()) {
             LOGGER.debug(paramName + " " + entry.getKey() + " -> " + entry.getValue());
