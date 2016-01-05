@@ -5,6 +5,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import fi.vm.sade.auditlog.haku.HakuOperation;
 import fi.vm.sade.auditlog.haku.LogMessage;
+import fi.vm.sade.haku.RemoteServiceException;
 import fi.vm.sade.haku.oppija.common.organisaatio.Organization;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationGroupRestDTO;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
@@ -882,7 +883,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
                                                                   PreferenceEligibility.Source source,
                                                                   String officerOid) {
         
-        int preferenceEligibilityIndex = application.getPreferenceEligibilities().indexOf(preferenceEligibility);
+        int preferenceEligibilityIndex = application.getPreferenceEligibilities().indexOf(preferenceEligibility) + 1;
 
         String eligibilityNote = preferenceEligibilityIndex + ". hakukelpoisuutta muutettu: " + PreferenceEligibility.getStatusMessage(status);
         if (PreferenceEligibility.Source.UNKNOWN != source) {
