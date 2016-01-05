@@ -40,15 +40,10 @@
     </header>
 
     <!-- suomeksi -->
-    <h1>Hakuaika on umpeutunut</h1>
+    <h1>Hakuaika tähän hakuun on päättynyt. Tarkista hakuajat opintopolku.fi-palvelusta.</h1>
     <p>
         Palaa takaisin <a href="/wp/fi/">opintopolku.fi-palveluun</a>.
     </p>
-
-    <p>Ohjaus- ja neuvontapalvelut<br/>
-        Opetushallitus<br/>
-        PL 380<br/>
-        00531 Helsinki<br/>
     </p>
 
     <!-- på svenska -->
@@ -59,17 +54,13 @@
         </div>
     </div>
 
-    <h1>Ansökningstiden har gått ut</h1>
+    <h1>Ansökningstiden i denna ansökan har gått ut. Kontrollera ansökningstiderna i Studieinfo.fi-tjänsten.</h1>
     <p>
         Gå tillbaka till <a href="/wp/sv/">studienfo.fi-tjänsten</a>.
     </p>
 
 
     <p>
-        Studieinfos ansökningstjänst<br />
-        Utbildningsstyrelsen<br />
-        PB 380<br />
-        00531 Helsingfors<br />
     </p>
 
     <!-- in english -->
@@ -80,7 +71,7 @@
         </div>
     </div>
 
-    <h1>Application period has ended</h1>
+    <h1>The application period has ended. Check the exact application dates from studyinfo.fi.</h1>
     <p>
         Return to the <a href="/wp2/en/">studyinfo.fi –service</a>.
     </p>
