@@ -410,9 +410,9 @@ public class ApplicationServiceImpl implements ApplicationService {
     private void updateEligibilityStatusToApplicationNotes(Application application,
                                                            PreferenceEligibility preferenceEligibility) {
 
-        int preferenceEligibilityIndex = application.getPreferenceEligibilities().indexOf(preferenceEligibility);
+        int preferenceEligibilityIndex = application.getPreferenceEligibilities().indexOf(preferenceEligibility) + 1;
 
-        String eligibilityNote = preferenceEligibilityIndex + ". hakukelpoisuutta muutettu automaattisesti: " + 
+        String eligibilityNote = preferenceEligibilityIndex + ". hakukelpoisuutta muutettu: " +
           PreferenceEligibility.getStatusMessage(preferenceEligibility.getStatus()) + 
           ", " + PreferenceEligibility.getSourceMessage(preferenceEligibility.getSource());
         application.addNote(new ApplicationNote(eligibilityNote, new Date(), "järjestelmä"));
