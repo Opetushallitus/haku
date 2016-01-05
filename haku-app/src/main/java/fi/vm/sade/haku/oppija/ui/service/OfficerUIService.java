@@ -63,4 +63,6 @@ public interface OfficerUIService {
     List<Map<String,String>> getHigherEdBaseEdOptions();
 
     void processAttachmentsAndEligibility(String oid, List<AttachmentsAndEligibilityDTO> attachementsAndEligibilities);
+    
+    String getNameForNoteUser(String user);
 }
