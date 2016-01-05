@@ -17,6 +17,8 @@
   ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   ~ European Union Public Licence for more details.
   --%>
+<script>var contextPath = "${contextPath}"</script>
+<script src="${contextPath}/resources/javascript/virkailija/notes.js" type="text/javascript"></script>
 
 <fieldset id="notes">
     <legend class="h3"><fmt:message key="virkailija.hakemus.kommentit"/></legend>
@@ -32,7 +34,8 @@
         <div class="note-content">
             <span class="note-date"><fmt:formatDate value="${note.added}" pattern="dd.MM.yyyy HH:mm:ss"/></span>
             <span class="note-text"><c:out value="${note.noteText}"/></span>
-            <span class="note-user"><c:out value="${note.user}"/></span>
+            <!-- /hakemus/note/user/{user}/name -->
+            <span class="note-user" id="note-user-${note.user}" user="${note.user}"></span>
         </div>
     </c:forEach>
 </fieldset>
