@@ -17,10 +17,10 @@
             <tr>
                 <td>
                     <c:if test="${not empty attachment.name}">
-                        <haku:i18nText value="${attachment.name}"/><br/>
+                        <haku:i18nText value="${attachment.name}" escape="false"/><br/>
                     </c:if>
                     <c:if test="${not empty attachment.header}">
-                        <haku:i18nText value="${attachment.header}"/><br/>
+                        <haku:i18nText value="${attachment.header}" escape="false"/><br/>
                     </c:if>
                     <c:if test="${not empty attachment.description}">
                         <haku:i18nText value="${attachment.description}" escape="false" />
