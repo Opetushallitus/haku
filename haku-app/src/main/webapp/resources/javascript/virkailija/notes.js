@@ -9,17 +9,17 @@ function setNamesForNoteUsers() {
 }
 
 function getNameForNoteUser(user) {
+    var name = user;
     $.ajax({
         type: 'GET',
         url: contextPath + '/virkailija/hakemus/note/user/' + user + "/name",
         async: false,
         data: '',
         success: function (data, textStatus, jqXHR) {
-            return data;
+            name = data;
         },
         error: function (e, ts, et) {
-            return e;
         }
     });
-    
+    return name;
 }
