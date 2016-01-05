@@ -213,6 +213,7 @@ public class SendMailService {
         ctx.put("discretionary", isDiscretionary(application));
         ctx.put("musiikkiTanssiLiikuntaEducationCode", isMusiikkiTanssiLiikuntaEducationCode(application));
         ctx.put("attachmentRequests", attachmentRequests(application, locale));
+        ctx.put("expires", dateFmt.format(new Date(getModificationLinkExpiration(application, applicationSystem))));
         ctx.put("lomakeTulostusLiite", resourceBundle.getString("lomake.tulostus.liite"));
         ctx.put("lomakeTulostusLiiteToimitusosoite", resourceBundle.getString("lomake.tulostus.liite.toimitusosoite"));
         ctx.put("lomakeTulostusLiiteDeadline", resourceBundle.getString("lomake.tulostus.liite.deadline"));

@@ -25,7 +25,7 @@
 
     <p>
         Muutokset hakemukseesi on tallennettu. Voit hakuaikana katsoa hakemustasi tai tehdä muutoksia seuraavan linkin
-        kautta: <a href="{{verification-link}}">{{verification-link}}</a>. Linkki on voimassa {{expires}} asti.
+        kautta: <a href="{{verification-link}}">{{verification-link}}</a>. Linkki on voimassa $expires asti.
     </p>
 
     #if (!$attachmentRequests.isEmpty())

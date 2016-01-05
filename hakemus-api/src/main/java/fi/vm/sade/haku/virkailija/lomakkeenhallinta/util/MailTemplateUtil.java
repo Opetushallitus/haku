@@ -31,6 +31,7 @@ import static com.google.common.base.Optional.fromNullable;
 import static fi.vm.sade.haku.oppija.common.oppijantunnistus.OppijanTunnistusDTO.LanguageCodeISO6391.*;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.ELEMENT_ID_CONTACT_LANGUAGE;
 import static java.text.DateFormat.MEDIUM;
+import static java.text.DateFormat.SHORT;
 
 public final class MailTemplateUtil {
     public static final Logger LOGGER = LoggerFactory.getLogger(MailTemplateUtil.class);
@@ -149,7 +150,7 @@ public final class MailTemplateUtil {
     }
 
     public static DateFormat dateTimeFormatter(Locale locale) {
-        return DateFormat.getDateTimeInstance(MEDIUM, MEDIUM, locale);
+        return DateFormat.getDateTimeInstance(MEDIUM, SHORT, locale);
     }
 
     public static String getTextOrEmpty(I18nText text, Locale locale) {

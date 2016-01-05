@@ -15,6 +15,17 @@
     </p>
 
     <p>
+        Hakemuksesi on vastaanotettu. Jos haluat muuttaa hakutoiveitasi tai päivittää yhteystietojasi, voit tehdä
+        muutoksia seuraavan linkin kautta: <a href="{{verification-link}}">{{verification-link}}</a>.
+        Yhteystietojasi voit päivittää vielä tämän jälkeen. Voit muokata hakutoiveita $expires asti. Jos sinulla on
+        verkkopankkitunnukset, mobiilivarmenne tai sähköinen henkilökortti, voit vaihtoehtoisesti kirjautua sisään
+        Opintopolku.fi:ssä, ja tehdä muutoksia hakutoiveisiisi Oma Opintopolku -palvelussa hakuaikana. Oma Opintopolku
+        -palvelussa voit hakutoivemuutosten lisäksi muokata hakutoiveisiin liittyviin kysymyksiin antamiasi vastauksia,
+        päivittää yhteystietojasi; nähdä valintojen tulokset ja ottaa opiskelupaikan vastaan. Voit tulostaa hakemuksesi
+        tarvittaessa Oma Opintopolku -palvelussa.
+    </p>
+
+    <p>
         Hakutoiveesi: <br /><br />
 
         #foreach ($preference in $preferences)
@@ -58,28 +69,6 @@
         </p>
     #end
 
-    <p>
-        Hakemuksesi on vastaanotettu. Jos haluat muuttaa hakutoiveitasi tai
-        päivittää yhteystietojasi, voit hakuaikana tehdä muutoksia seuraavan
-        linkin kautta:
-        <a href="{{verification-link}}">{{verification-link}}</a>. Linkki on
-        voimassa {{expires}} asti.
-    </p>
-
-    <p>
-        Jos sinulla on verkkopankkitunnukset, mobiilivarmenne tai sähköinen
-        henkilökortti, voit vaihtoehtoisesti kirjautua sisään
-        Opintopolku.fi:ssä, ja tehdä muutoksia hakutoiveisiisi Oma Opintopolku
-        -palvelussa hakuaikana. Oma Opintopolku -palvelussa voit
-        hakutoivemuutosten lisäksi muokata hakutoiveisiin liittyviin
-        kysymyksiin antamiasi vastauksia, päivittää yhteystietojasi; nähdä
-        valintojen tulokset ja ottaa opiskelupaikan vastaan.
-    </p>
-    
-    <p>
-        Voit tulostaa hakemuksesi tarvittaessa Oma Opintopolku -palvelussa.
-    </p>
-    
     <p>Älä vastaa tähän viestiin - viesti on lähetetty automaattisesti.</p>
 </div>
 </body>

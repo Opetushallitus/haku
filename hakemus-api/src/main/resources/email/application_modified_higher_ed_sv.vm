@@ -60,7 +60,7 @@
 
     <p>
         Ändingarna i din ansökan har mottagits. Under ansökningstiden kan du granska din ansökan och göra ändringar via
-        följande länk: <a href="{{verification-link}}">{{verification-link}}</a>. Länken är i kraft ända till {{expires}}.
+        följande länk: <a href="{{verification-link}}">{{verification-link}}</a>. Länken är i kraft ända till ${expires}.
     </p>
 
     <p>Svara inte på detta meddelande, det har skickats automatiskt.</p>
