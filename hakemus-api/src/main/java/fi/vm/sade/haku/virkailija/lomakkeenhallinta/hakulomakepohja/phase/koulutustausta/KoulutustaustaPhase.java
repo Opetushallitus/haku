@@ -30,6 +30,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
@@ -1062,6 +1063,19 @@ public final class KoulutustaustaPhase {
                 .required()
                 .formParams(formParameters).build();
 
+        // Check if the applicant has received the elementary school diploma during the last year
+        Expr kysytaankoPaattotodistusAjanjakso = new Equals(
+                new Variable(paattotodistusvuosiPeruskoulu.getId()),
+                new Value(String.valueOf(Calendar.getInstance().get(Calendar.YEAR) - 1))
+        );
+        Element valitseTodistuksenSaantiAjankohta = Radio("form.koulutustausta.paattotodistusvuosi.edellinenvuosi")
+                .addOptions(ImmutableList.of(
+                        new Option(createI18NAsIs("1.1. - 15.9."), "1.1. - 15.9."),
+                        new Option(createI18NAsIs("16.9. - 31.12."), "16.9. - 31.12.")))
+                .required()
+                .formParams(formParameters).build();
+        Element todistusSaatuViimeVuonna = Rule(kysytaankoPaattotodistusAjanjakso).build();
+        todistusSaatuViimeVuonna.addChild(valitseTodistuksenSaantiAjankohta);
 
         Expr kysytaankoKoulutuspaikka;
         String hakukausi = formParameters.getApplicationSystem().getHakukausiUri();
@@ -1079,7 +1093,7 @@ public final class KoulutustaustaPhase {
         Element onkoTodistusSaatuKuluneenaVuonna = Rule(kysytaankoKoulutuspaikka).build();
         onkoTodistusSaatuKuluneenaVuonna.addChild(koulutuspaikkaAmmatillisenTutkintoon);
 
-        pkKysymyksetRule.addChild(paattotodistusvuosiPeruskoulu, suorittanutGroup,
+        pkKysymyksetRule.addChild(paattotodistusvuosiPeruskoulu, todistusSaatuViimeVuonna, suorittanutGroup,
                 onkoTodistusSaatuKuluneenaVuonna, paattotodistusvuosiPeruskouluRule);
 
 
