@@ -42,6 +42,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -50,10 +51,7 @@ import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static fi.vm.sade.haku.AuditHelper.AUDIT;
 import static fi.vm.sade.haku.AuditHelper.builder;
@@ -462,11 +460,12 @@ public class OfficerController {
         return new ArrayList<Map<String, Object>>(0);
     }
     
-    @GET
-    @Path("/hakemus/note/user/{user}/name")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String getNameForNoteUser(@PathParam("user") String user) {
-        return officerUIService.getNameForNoteUser(user);
+    @POST
+    @Path("/hakemus/note/users")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Map<String, String> getNamesForNoteUsers(List<String> oids) {
+        return officerUIService.getNamesForNoteUsers(oids);
     }
     
     private String concatMultivaluedQueryParam(final String paramName, final MultivaluedMap<String, String> multiValues) {
