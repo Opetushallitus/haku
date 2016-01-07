@@ -265,8 +265,9 @@ public class HakutoiveetPhase {
 
         Element sora1 = RadioBuilder.Radio(index + "_sora_terveys")
                 .addOptions(ImmutableList.of(
-                        new Option(formParameters.getI18nText("form.yleinen.ei"), EI),
-                        new Option(formParameters.getI18nText("form.sora.kylla"), KYLLA)))
+                        new Option(formParameters.getI18nText("form.sora.kylla"), KYLLA),
+                        new Option(formParameters.getI18nText("form.yleinen.ei"), EI)
+                ))
                 .labelKey("form.sora.terveys")
                 .required()
                 .formParams(formParameters).build();
@@ -275,8 +276,9 @@ public class HakutoiveetPhase {
 
         Element sora2 = RadioBuilder.Radio(index + "_sora_oikeudenMenetys")
                 .addOptions(ImmutableList.of(
-                        new Option(formParameters.getI18nText("form.yleinen.ei"), EI),
-                        new Option(formParameters.getI18nText("form.sora.kylla"), KYLLA)))
+                        new Option(formParameters.getI18nText("form.sora.kylla"), KYLLA),
+                        new Option(formParameters.getI18nText("form.yleinen.ei"), EI)
+                ))
                 .labelKey("form.sora.oikeudenmenetys")
                 .required()
                 .formParams(formParameters).build();
