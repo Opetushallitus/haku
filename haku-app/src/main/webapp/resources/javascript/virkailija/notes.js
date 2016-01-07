@@ -3,23 +3,44 @@ $(document).ready(function () {
 });
 
 function setNamesForNoteUsers() {
-    $("[id^=note-user]").each(function() {
-        $(this).text(getNameForNoteUser($(this).attr("user")));
-    });
+    var personOids = getListOfPersonOids();
+    var personNames = getPersonNames(personOids);
+    setPersonNames(personNames);
 }
 
-function getNameForNoteUser(user) {
-    var name = user;
+function getListOfPersonOids() {
+    var personOids = [];
+    $(".note-user").each(function() {
+        var oid = $(this).text();
+        if(personOids.indexOf(oid) === -1) {
+            personOids.push(oid);
+        }
+    });
+    return personOids;
+}
+
+function getPersonNames(personOids) {
+    var personNames = [];
     $.ajax({
-        type: 'GET',
-        url: contextPath + '/virkailija/hakemus/note/user/' + user + "/name",
+        type: 'POST',
+        url: contextPath + '/virkailija/hakemus/note/users/',
         async: false,
-        data: '',
+        data: JSON.stringify(personOids),
+        contentType: "application/json",
         success: function (data, textStatus, jqXHR) {
-            name = data;
+            personNames = data;
         },
         error: function (e, ts, et) {
         }
     });
-    return name;
+    return personNames;
+}
+
+function setPersonNames(personNames) {
+    $(".note-user").each(function() {
+        var oid = $(this).text();
+        if(personNames[oid]) {
+            $(this).text(personNames[oid])
+        }
+    });
 }

@@ -760,9 +760,13 @@ public class OfficerUIServiceImpl implements OfficerUIService {
     }
     
     @Override
-    public String getNameForNoteUser(String user) {
-        Person person = authenticationService.getHenkilo(user);
-        return null == person ? user : person.getNickName() + " " + person.getLastName();
+    public Map<String, String> getNamesForNoteUsers(List<String> oids) {
+        List<Person> persons = authenticationService.getHenkiloList(oids);
+        Map<String, String> result = new HashMap<String, String>();
+        for(Person person: persons) {
+            result.put(person.getPersonOid(), person.getNickName() + " " + person.getLastName());
+        }
+        return result;
     }
 
     private ApplicationNote createNote(String note) {
