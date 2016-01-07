@@ -1021,12 +1021,14 @@ public final class KoulutustaustaPhase {
                 TitledGroup("suorittanut.ryhma").formParams(formParameters).build()
                         .addChild(
                                 Checkbox(OppijaConstants.ELEMENT_ID_LISAKOULUTUS_KYMPPI).formParams(formParameters).build(),
-                                Checkbox("LISAKOULUTUS_VAMMAISTEN").formParams(formParameters).build(),
-                                Checkbox("LISAKOULUTUS_TALOUS").formParams(formParameters).build(),
-                                Checkbox("LISAKOULUTUS_AMMATTISTARTTI").formParams(formParameters).build(),
-                                Checkbox("LISAKOULUTUS_KANSANOPISTO").formParams(formParameters).build(),
-                                Checkbox("LISAKOULUTUS_MAAHANMUUTTO").formParams(formParameters).build(),
-                                Checkbox("LISAKOULUTUS_MAAHANMUUTTO_LUKIO").formParams(formParameters).build()
+                                Checkbox(OppijaConstants.ELEMENT_ID_LISAKOULUTUS_VAMMAISTEN).formParams(formParameters).build(),
+                                Checkbox(OppijaConstants.ELEMENT_ID_LISAKOULUTUS_TALOUS).formParams(formParameters).build(),
+                                Checkbox(OppijaConstants.ELEMENT_ID_LISAKOULUTUS_AMMATTISTARTTI).formParams(formParameters).build(),
+                                Checkbox(OppijaConstants.ELEMENT_ID_LISAKOULUTUS_KANSANOPISTO).formParams(formParameters).build(),
+                                Checkbox(OppijaConstants.ELEMENT_ID_LISAKOULUTUS_MAAHANMUUTTO).formParams(formParameters).build(),
+                                Checkbox(OppijaConstants.ELEMENT_ID_LISAKOULUTUS_MAAHANMUUTTO_LUKIO).formParams(formParameters).build(),
+                                Checkbox(OppijaConstants.ELEMENT_ID_LISAKOULUTUS_VALMA).formParams(formParameters).build(),
+                                Checkbox(OppijaConstants.ELEMENT_ID_LISAKOULUTUS_TELMA).formParams(formParameters).build()
                         );
 
         Element pkKysymyksetRule = createVarEqualsToValueRule(baseEducation.getId(),
