@@ -18,56 +18,59 @@ package fi.vm.sade.haku.virkailija.lomakkeenhallinta.resources;
 
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormGenerator;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakuService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 
-import javax.ws.rs.POST;
+import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 
 
 @Controller
-@Path("/generatelomake")
-public class FormBuilderResource {
+@Path("/lomakkeenhallinta")
+// @Secured("ROLE_APP_HAKEMUS_CRUD")
+public class FormBuilderResourceLegacy {
 
-    private static final Logger log = LoggerFactory.getLogger(FormBuilderResource.class);
+    private static final Logger log = LoggerFactory.getLogger(FormBuilderResourceLegacy.class);
+
+    private final FormGenerator formGenerator;
+    private final ApplicationSystemService applicationSystemService;
+    private final HakuService hakuService;
 
     @Autowired
-    private FormGenerator formGenerator;
-
-    @Autowired
-    private ApplicationSystemService applicationSystemService;
-
-    @Autowired
-    private HakuService hakuService;
-
-    @POST
-    @Path("one/{oid}")
-    @Produces(MediaType.TEXT_PLAIN + ";charset=UTF-8")
-    @PreAuthorize("hasRole('" + FormBuilderPermissionChecker.ROLE_GENERATE_ALL_HAKUS + "') or @formBuilderPermissionChecker.isAllowedToGenerateHaku(#oid)")
-    public Response generateOne(@Param("oid") @PathParam("oid") final String oid) throws URISyntaxException {
-        log.info("Starting to generate application system " + oid);
-        doGenerate(oid);
-        log.info("Generated application system " +oid);
-        return Response.ok().build();
+    public FormBuilderResourceLegacy(final FormGenerator formGenerator, final ApplicationSystemService applicationSystemService, final HakuService hakuService) {
+        this.formGenerator = formGenerator;
+        this.applicationSystemService = applicationSystemService;
+        this.hakuService = hakuService;
     }
 
-    @POST
-    @Path("all")
+    @GET
+    @Path("{oid}")
     @Produces(MediaType.TEXT_PLAIN + ";charset=UTF-8")
-    @PreAuthorize("hasRole('" + FormBuilderPermissionChecker.ROLE_GENERATE_ALL_HAKUS + "')")
-    public Response doGenerateAll() throws URISyntaxException {
+    public Response generateOne(@PathParam("oid") final String oid) throws URISyntaxException {
+        log.info("Starting to generate application system " + oid);
+        if("ALL".equals(oid)) {
+            doGgenerate();
+            log.info("Generated all application systems");
+            return Response.seeOther(new URI("/lomake")).build();
+        } else {
+            doGenerate(oid);
+            log.info("Generated application system " +oid);
+            return Response.seeOther(new URI("/lomake/" + oid)).build();
+        }
+    }
+
+    private void doGgenerate() throws URISyntaxException {
         log.info("Loading application systems for generation");
         List<ApplicationSystem> applicationSystems = hakuService.getApplicationSystems();
         int asCount = applicationSystems.size();
@@ -78,7 +81,6 @@ public class FormBuilderResource {
             doGenerate(applicationSystem.getId());
             log.info("Generated application system " +applicationSystem.getId());
         }
-        return Response.ok().build();
     }
 
     private void doGenerate(final String oid) {

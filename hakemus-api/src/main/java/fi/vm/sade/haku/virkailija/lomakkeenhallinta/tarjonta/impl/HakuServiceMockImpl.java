@@ -23,6 +23,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystemBuilder;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.tarjonta.HakuService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuV1RDTO;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
@@ -187,6 +188,11 @@ public class HakuServiceMockImpl implements HakuService {
                 return as;
             }
         }
+        return null;
+    }
+
+    @Override
+    public HakuV1RDTO getRawApplicationSystem(String oid) {
         return null;
     }
 
