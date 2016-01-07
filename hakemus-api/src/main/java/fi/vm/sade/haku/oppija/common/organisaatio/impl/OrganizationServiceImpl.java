@@ -129,6 +129,11 @@ public class OrganizationServiceImpl implements OrganizationService {
                     .append(URLEncoder.encode(criteria.getOrganisaatioTyyppi(), "UTF-8"))
                     .append("&");
         }
+        for (String orgOid : criteria.getOidRestrictionList()) {
+            builder.append("oidRestrictionList=")
+                    .append(URLEncoder.encode(orgOid, "UTF-8"))
+                    .append("&");
+        }
         if (isNotBlank(criteria.getSearchStr())) {
             builder.append("searchStr=")
                     .append(URLEncoder.encode(criteria.getSearchStr(), "UTF-8"))
