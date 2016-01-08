@@ -8,6 +8,7 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import fi.vm.sade.haku.oppija.common.organisaatio.Organization;
+import fi.vm.sade.haku.oppija.lomake.domain.ApplicationPeriod;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.builder.*;
@@ -29,10 +30,8 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ExprUtil;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 import static fi.vm.sade.haku.oppija.hakemus.service.Role.*;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.CheckBoxBuilder.Checkbox;
@@ -1063,15 +1062,35 @@ public final class KoulutustaustaPhase {
                 .required()
                 .formParams(formParameters).build();
 
-        // Check if the applicant has received the elementary school diploma during the last year
-        Expr kysytaankoPaattotodistusAjanjakso = new Equals(
-                new Variable(paattotodistusvuosiPeruskoulu.getId()),
-                new Value(String.valueOf(Calendar.getInstance().get(Calendar.YEAR) - 1))
+        // Check if the applicant has received the elementary school diploma during the previous year.
+        // If so, generate an extra question. If the applicant has received diploma within a period of six months
+        // from the end of application period they are eligible to receive an extra point. Generate the date ranges
+        // according to these.
+        // This one only applies when applicationSystemType := HAKUTYYPPI_VARSINAINEN_HAKU
+
+        Expr kysytaankoPaattotodistusAjanjakso = new And(
+                new Equals(
+                        new Variable(paattotodistusvuosiPeruskoulu.getId()),
+                        new Value(String.valueOf(Calendar.getInstance().get(Calendar.YEAR) - 1))
+                ),
+                new Equals(
+                        new Value(formParameters.getApplicationSystem().getApplicationSystemType()),
+                        new Value(HAKUTYYPPI_VARSINAINEN_HAKU)
+                )
         );
-        Element valitseTodistuksenSaantiAjankohta = Radio("form.koulutustausta.paattotodistusvuosi.edellinenvuosi")
+
+        Date applicationPeriodEnds = formParameters.getApplicationSystem().getApplicationPeriods().get(0).getEnd();
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(applicationPeriodEnds);
+        cal.add(Calendar.MONTH, -6);
+        SimpleDateFormat fmt = new SimpleDateFormat("d.M.");
+        String excludedPeriod = "1.1. - " + fmt.format(cal.getTime());
+        cal.add(Calendar.DATE, 1);
+        String includedPeriod = fmt.format(cal.getTime()) + " - 31.12.";
+        Element valitseTodistuksenSaantiAjankohta = Radio("peruskoulutodistus_saatu_puolivuotta_haun_lopusta")
                 .addOptions(ImmutableList.of(
-                        new Option(createI18NAsIs("1.1. - 15.9."), "1.1. - 15.9."),
-                        new Option(createI18NAsIs("16.9. - 31.12."), "16.9. - 31.12.")))
+                        new Option(createI18NAsIs(excludedPeriod), "no"),
+                        new Option(createI18NAsIs(includedPeriod), "yes")))
                 .required()
                 .formParams(formParameters).build();
         Element todistusSaatuViimeVuonna = Rule(kysytaankoPaattotodistusAjanjakso).build();
