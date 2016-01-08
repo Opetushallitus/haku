@@ -1,20 +1,18 @@
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.lisatiedot;
 
 import com.google.common.collect.ImmutableList;
-import fi.vm.sade.haku.oppija.lomake.domain.builder.*;
+import fi.vm.sade.haku.oppija.lomake.domain.builder.OptionQuestionBuilder;
+import fi.vm.sade.haku.oppija.lomake.domain.builder.RadioBuilder;
+import fi.vm.sade.haku.oppija.lomake.domain.builder.TextQuestionBuilder;
+import fi.vm.sade.haku.oppija.lomake.domain.builder.ThemeBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.*;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain.FormConfiguration;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain.ThemeQuestionOption;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.service.ThemeQuestionConfigurator;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ExprUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static fi.vm.sade.haku.oppija.hakemus.service.Role.*;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.CheckBoxBuilder.Checkbox;
@@ -78,6 +76,8 @@ public class LisatiedotPhase {
         if (formParameters.kysytaankoUrheilijanLisakysymykset()) {
             lisatiedot.addChild(createUrheilijanLisakysymykset(formParameters));
         }
+        lisatiedot.addChild(createOppisopimusLisakysymys(formParameters));
+
         return element;
     }
 
@@ -149,6 +149,22 @@ public class LisatiedotPhase {
         ThemeQuestionConfigurator configurator = formParameters.getThemeQuestionConfigurator();
         lupatiedotTheme.addChild(configurator.findAndConfigure(lupatiedotTheme.getId()));
         return lupatiedotTheme;
+    }
+
+    static Element createOppisopimusLisakysymys(final FormParameters formParameters) {
+        Expr hakeeAmmatilliseen = ExprUtil.atLeastOneVariableEqualsToValue(ElementUtil.KYLLA,
+                "preference1-Koulutus-id-vocational",
+                "preference2-Koulutus-id-vocational",
+                "preference3-Koulutus-id-vocational",
+                "preference4-Koulutus-id-vocational",
+                "preference5-Koulutus-id-vocational");
+
+        Element hakeeAmmatilliseenSaanto = Rule(hakeeAmmatilliseen).build();
+        Element hakeeAmmatilliseenTeema = Theme("oppisopimus").previewable().formParams(formParameters).build();
+        hakeeAmmatilliseenSaanto.addChild(hakeeAmmatilliseenTeema);
+
+        hakeeAmmatilliseenTeema.addChild(Checkbox("kiinnostunutoppisopimuksesta").formParams(formParameters).build());
+        return hakeeAmmatilliseenSaanto;
     }
 
     static Element createUrheilijanLisakysymykset(final FormParameters formParameters) {
