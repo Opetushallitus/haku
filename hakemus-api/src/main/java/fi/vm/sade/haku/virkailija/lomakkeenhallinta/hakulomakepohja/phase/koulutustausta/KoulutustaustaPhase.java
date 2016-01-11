@@ -1116,9 +1116,14 @@ public final class KoulutustaustaPhase {
         Element onkoTodistusSaatuKuluneenaVuonna = Rule(kysytaankoKoulutuspaikka).build();
         onkoTodistusSaatuKuluneenaVuonna.addChild(koulutuspaikkaAmmatillisenTutkintoon);
 
-        pkKysymyksetRule.addChild(paattotodistusvuosiPeruskoulu, buildPKTodistusSaatuViimeVuonna(formParameters,
-                paattotodistusvuosiPeruskoulu), suorittanutGroup,
-                onkoTodistusSaatuKuluneenaVuonna, paattotodistusvuosiPeruskouluRule);
+        pkKysymyksetRule.addChild(
+                paattotodistusvuosiPeruskoulu,
+                buildPKTodistusSaatuViimeVuonna(
+                        formParameters,
+                        paattotodistusvuosiPeruskoulu),
+                suorittanutGroup,
+                onkoTodistusSaatuKuluneenaVuonna,
+                paattotodistusvuosiPeruskouluRule);
 
 
         if (formParameters.kysytaankoYlioppilastutkinto()) {
