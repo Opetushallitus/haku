@@ -6,6 +6,13 @@ describe('2. asteen lomake', function () {
         })
     )
 
+    var start2 = seq(
+        logout,
+        openPage("/haku-app/lomake/haku6", function() {
+            return S("form#form-henkilotiedot").first().is(':visible')
+        })
+    )
+
     describe("Täytä lomake", function() {
         before(seqDone(
             start,
@@ -92,6 +99,51 @@ describe('2. asteen lomake', function () {
 
         it('Aikaisempien koulutusten keskiarvot tallentuvat erikseen', seqDone(
             function() { S('#nav-koulutustausta')[0].click() }
+        ));
+    });
+
+    describe("Täytä toinen lomake", function() {
+        before(seqDone(
+            start2,
+            partials.henkilotiedotTestikaes,
+            pageChange(lomake.fromHenkilotiedot),
+            headingVisible("Koulutustausta"),
+            click(lomake.pohjakoulutus("1"))
+        ));
+
+        it('Edellisvuona suoritettu peruskoulu kysyy todistuksen saanti ajankohtaa, vaaditaan valinta', seqDone(
+            function() { S('#nav-koulutustausta')[0].click() },
+            click(lomake.pohjakoulutus("1")),
+            input(lomake.pkPaattotodistusVuosi, "" + ((new Date()).getUTCFullYear() - 1)),
+            input(lomake.pkKieli, "FI"),
+            pageChange(lomake.fromKoulutustausta),
+            headingVisible("Koulutustausta")
+        ));
+
+        it('Edellisvuona suoritettu peruskoulu kysyy todistuksen saanti ajankohtaa', seqDone(
+            function() { S('#nav-koulutustausta')[0].click() },
+            click(lomake.pohjakoulutus("1")),
+            input(lomake.pkPaattotodistusVuosi, "" + ((new Date()).getUTCFullYear() - 1)),
+            input(lomake.pkKieli, "FI"),
+            click(lomake.pkPaattotodistusSaatuPuolenVuodenSisaan(true)),
+            click(lomake.ammatillinenKoulutuspaikka(true))
+        ));
+
+        it('Muutoin kuin edellisvuonna suoritettu peruskoulu ei kysy todistuksen saanti ajankohtaa', seqDone(
+            function() { S('#nav-koulutustausta')[0].click() },
+            click(lomake.pohjakoulutus("1")),
+            input(lomake.pkPaattotodistusVuosi, "" + ((new Date()).getUTCFullYear())),
+            input(lomake.pkKieli, "FI"),
+            click(lomake.ammatillinenKoulutuspaikka(true)),
+            pageChange(lomake.fromKoulutustausta),
+            headingVisible("Hakutoiveet"),
+            function() { S('#nav-koulutustausta')[0].click() },
+            headingVisible("Koulutustausta"),
+            click(lomake.pohjakoulutus("1")),
+            input(lomake.pkPaattotodistusVuosi, "" + ((new Date()).getUTCFullYear() - 2)),
+            click(lomake.ammatillinenKoulutuspaikka(true)),
+            pageChange(lomake.fromKoulutustausta),
+            headingVisible("Hakutoiveet")
         ));
     });
 
@@ -235,102 +287,103 @@ describe('2. asteen lomake', function () {
     });
 
     describe("VALMA, TELMA ja oppisopimus", function() {
-            before(seqDone(
-                start,
-                visible(lomake.sukunimi),
-                postAsForm("/haku-app/lomake/1.2.246.562.5.50476818906", {
-                    "Sukunimi": "Testikäs",
-                    "Etunimet": "Asia Kas",
-                    "Kutsumanimi": "Asia",
-                    "kansalaisuus": "FIN",
-                    "onkosinullakaksoiskansallisuus": "false",
-                    "Henkilotunnus": "171175-830Y",
-                    "Sähköposti": "foo@example.com",
-                    "sukupuoli": "2",
-                    "asuinmaa": "FIN",
-                    "lahiosoite": "Testikatu 4",
-                    "Postinumero": "00100",
-                    "kotikunta": "janakkala",
-                    "aidinkieli": "FI",
-                    "POHJAKOULUTUS": "1",
-                    "PK_PAATTOTODISTUSVUOSI": "2014",
-                    "perusopetuksen_kieli": "FI",
-                    "preferencesVisible": "5"
-                })
-            ));
+        before(seqDone(
+            start,
+            visible(lomake.sukunimi),
+            postAsForm("/haku-app/lomake/1.2.246.562.5.50476818906", {
+                "Sukunimi": "Testikäs",
+                "Etunimet": "Asia Kas",
+                "Kutsumanimi": "Asia",
+                "kansalaisuus": "FIN",
+                "onkosinullakaksoiskansallisuus": "false",
+                "Henkilotunnus": "171175-830Y",
+                "Sähköposti": "foo@example.com",
+                "sukupuoli": "2",
+                "asuinmaa": "FIN",
+                "lahiosoite": "Testikatu 4",
+                "Postinumero": "00100",
+                "kotikunta": "janakkala",
+                "aidinkieli": "FI",
+                "POHJAKOULUTUS": "1",
+                "PK_PAATTOTODISTUSVUOSI": "2014",
+                "perusopetuksen_kieli": "FI",
+                "preferencesVisible": "5"
+            })
+        ));
 
-            it("Checkboxit löytyvät", seqDone(
-                visible(lomake.sukunimi),
-                pageChange(lomake.fromHenkilotiedot),
-                headingVisible("Koulutustausta"),
-                visible(lomake.lisakoulutusValma),
-                visible(lomake.lisakoulutusTelma),
-                pageChange(lomake.fromKoulutustausta),
-                headingVisible("Hakutoiveet"),
-                partials.valitseKoulutus(1, "FAKTIA, Espoo op", "Kaivosalan perustutkinto, pk"),
-                click(
-                    lomake.harkinnanvaraisuus(1, false),
-                    lomake.soraTerveys(1, false),
-                    lomake.soraOikeudenMenetys(1, false)
-                ),
-                pageChange(lomake.fromHakutoiveet),
-                headingVisible("Arvosanat"),
-                pageChange(lomake.fromOsaaminen),
-                headingVisible("Lupatiedot"),
-                visible(lomake.kiinnostunutOppisopimuksesta)
-            ));
-        });
+        it("Checkboxit löytyvät", seqDone(
+            visible(lomake.sukunimi),
+            pageChange(lomake.fromHenkilotiedot),
+            headingVisible("Koulutustausta"),
+            visible(lomake.lisakoulutusValma),
+            visible(lomake.lisakoulutusTelma),
+            pageChange(lomake.fromKoulutustausta),
+            headingVisible("Hakutoiveet"),
+            partials.valitseKoulutus(1, "FAKTIA, Espoo op", "Kaivosalan perustutkinto, pk"),
+            click(
+                lomake.harkinnanvaraisuus(1, false),
+                lomake.soraTerveys(1, false),
+                lomake.soraOikeudenMenetys(1, false)
+            ),
+            pageChange(lomake.fromHakutoiveet),
+            headingVisible("Arvosanat"),
+            pageChange(lomake.fromOsaaminen),
+            headingVisible("Lupatiedot"),
+            visible(lomake.kiinnostunutOppisopimuksesta)
+        ));
+    });
 
-        describe("Kymppiluokan käynyt", function() {
-                before(seqDone(
-                    start,
-                    visible(lomake.sukunimi),
-                    postAsForm("/haku-app/lomake/1.2.246.562.5.50476818906", {
-                        "Sukunimi": "Testikäs",
-                        "Etunimet": "Asia Kas",
-                        "Kutsumanimi": "Asia",
-                        "kansalaisuus": "FIN",
-                        "onkosinullakaksoiskansallisuus": "false",
-                        "Henkilotunnus": "171175-830Y",
-                        "Sähköposti": "foo@example.com",
-                        "sukupuoli": "2",
-                        "asuinmaa": "FIN",
-                        "lahiosoite": "Testikatu 4",
-                        "Postinumero": "00100",
-                        "kotikunta": "janakkala",
-                        "aidinkieli": "FI",
-                        "POHJAKOULUTUS": "1",
-                        "PK_PAATTOTODISTUSVUOSI": "2011",
-                        "perusopetuksen_kieli": "FI",
-                        "preferencesVisible": "5"
-                    })
-                ));
+    describe("Kymppiluokan käynyt", function() {
+        before(seqDone(
+            start,
+            visible(lomake.sukunimi),
+            postAsForm("/haku-app/lomake/1.2.246.562.5.50476818906", {
+                "Sukunimi": "Testikäs",
+                "Etunimet": "Asia Kas",
+                "Kutsumanimi": "Asia",
+                "kansalaisuus": "FIN",
+                "onkosinullakaksoiskansallisuus": "false",
+                "Henkilotunnus": "171175-830Y",
+                "Sähköposti": "foo@example.com",
+                "sukupuoli": "2",
+                "asuinmaa": "FIN",
+                "lahiosoite": "Testikatu 4",
+                "Postinumero": "00100",
+                "kotikunta": "janakkala",
+                "aidinkieli": "FI",
+                "POHJAKOULUTUS": "1",
+                "PK_PAATTOTODISTUSVUOSI": "2011",
+                "perusopetuksen_kieli": "FI",
+                "preferencesVisible": "5"
+            })
+        ));
 
-                it("päättövuotta kysytään taustatiedoissa", seqDone(
-                    pageChange(lomake.fromHenkilotiedot),
-                    headingVisible("Koulutustausta"),
-                    visible(lomake.lisakoulutusKymppi),
-                    click(lomake.lisakoulutusKymppi),
-                    visible(lomake.lisakoulutusKymppiYear)
-                ));
+        it("päättövuotta kysytään taustatiedoissa", seqDone(
+            pageChange(lomake.fromHenkilotiedot),
+            headingVisible("Koulutustausta"),
+            visible(lomake.lisakoulutusKymppi),
+            click(lomake.lisakoulutusKymppi),
+            visible(lomake.lisakoulutusKymppiYear)
+        ));
 
-                it("päättövuonna hakevalta ei kysytä arvosanoja", seqDone(
-                    input(lomake.lisakoulutusKymppiYear, "2014"),
-                    click(
-                        lomake.ammatillinenKoulutuspaikka(false),
-                        lomake.ammatillinenSuoritettu(true)),
+        it("päättövuonna hakevalta ei kysytä arvosanoja", seqDone(
+            input(lomake.lisakoulutusKymppiYear, "2014"),
+            click(
+                lomake.ammatillinenKoulutuspaikka(false),
+                lomake.ammatillinenSuoritettu(true)),
 
-                    pageChange(lomake.fromKoulutustausta),
-                    headingVisible("Hakutoiveet"),
-                    partials.valitseKoulutus(1, "FAKTIA, Espoo op", "Talonrakennus ja ymäristösuunnittelu, pk"),
-                    click(
-                        lomake.harkinnanvaraisuus(1, false),
-                        lomake.soraTerveys(1, false),
-                        lomake.soraOikeudenMenetys(1, false)
-                    ),
-                    pageChange(lomake.fromHakutoiveet),
-                    headingVisible("Arvosanat"),
-                    visible(lomake.noPreferencesText)
-                ));
-            });
+            pageChange(lomake.fromKoulutustausta),
+            headingVisible("Hakutoiveet"),
+            partials.valitseKoulutus(1, "FAKTIA, Espoo op", "Talonrakennus ja ymäristösuunnittelu, pk"),
+            click(
+                lomake.harkinnanvaraisuus(1, false),
+                lomake.soraTerveys(1, false),
+                lomake.soraOikeudenMenetys(1, false)
+            ),
+            pageChange(lomake.fromHakutoiveet),
+            headingVisible("Arvosanat"),
+            visible(lomake.noPreferencesText)
+        ));
+    });
 });
+

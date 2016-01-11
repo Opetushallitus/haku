@@ -23,6 +23,9 @@ lomake = initSelectors({
 
     // Koulutustausta
     pkPaattotodistusVuosi : "input#PK_PAATTOTODISTUSVUOSI",
+    pkPaattotodistusSaatuPuolenVuodenSisaan : function(bool) {
+        return "input#peruskoulutodistus_saatu_puolivuotta_haun_lopusta_" + bool;
+    },
     pkKieli : "select#perusopetuksen_kieli",
     fromHenkilotiedot: "button[class=right][value=koulutustausta][name=phaseId]:first",
     suorittanutTutkinnonRule: '#suorittanutTutkinnonRule',
