@@ -1,15 +1,15 @@
 package fi.vm.sade.haku.oppija.hakemus.domain.util;
 
+import com.google.common.base.Predicate;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import fi.vm.sade.haku.oppija.hakemus.domain.*;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.MergedAnswers;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import javax.annotation.Nullable;
+import java.util.*;
 
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.OPTION_ID_POSTFIX;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.PREFERENCE_PREFIX;
@@ -26,12 +26,24 @@ public final class ApplicationUtil {
         return getPreferenceAoIds(MergedAnswers.of(application.getVastauksetMerged()));
     }
 
-    public static List<String> getPreferenceAoIds(MergedAnswers answers) {
-        List<String> preferenceAoIds = new ArrayList<>();
-        for (String key: answers.getValue().keySet()){
-            if (null != key && key.startsWith(PREFERENCE_PREFIX) && key.endsWith(OPTION_ID_POSTFIX) && isNotEmpty(answers.get(key))){
-               preferenceAoIds.add(answers.get(key));
+    private static int preferenceOrdinal(String preferenceId) {
+        return Integer.valueOf(preferenceId.replace(PREFERENCE_PREFIX, "").replace(OPTION_ID_POSTFIX, ""));
+    }
+
+    public static List<String> getPreferenceAoIds(final MergedAnswers answers) {
+        SortedSet<String> preferenceKeys = new TreeSet<>(new Comparator<String>() {
+            public int compare(String k, String k1) {
+                return Integer.compare(preferenceOrdinal(k), preferenceOrdinal(k1));
             }
+        });
+        for (String key : answers.getValue().keySet()) {
+            if (null != key && key.startsWith(PREFERENCE_PREFIX) && key.endsWith(OPTION_ID_POSTFIX) && isNotEmpty(answers.get(key))) {
+               preferenceKeys.add(key);
+            }
+        }
+        final List<String> preferenceAoIds = new ArrayList<>();
+        for (String key : preferenceKeys) {
+            preferenceAoIds.add(answers.get(key));
         }
         return preferenceAoIds;
     }
