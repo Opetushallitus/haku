@@ -4,6 +4,9 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta http-equiv="Content-Style-Type" content="text/css"/>
+    <style type="text/css">
+        #parse("email/email_common_css.vm")
+    </style>
 </head>
 <body>
 <div>
@@ -38,40 +41,7 @@
         yhteystietojasi; nähdä valintojen tulokset ja ottaa opiskelupaikan vastaan.
     </p>
 
-    #if (!$attachmentRequests.isEmpty())
-        <p>
-            Liitepyynnöt: <br /><br />
-
-            <table>
-                <tr>
-                    <th>$lomakeTulostusLiite</th>
-                    <th>$lomakeTulostusLiiteToimitusosoite</th>
-                    <th>$lomakeTulostusLiiteDeadline</th>
-                </tr>
-                #foreach ($attachment in $attachmentRequests)
-                <tr>
-                    <td>
-                        ${attachment.name}<br />
-                        ${attachment.header}<br/>
-                        ${attachment.description}
-                    </td>
-                    <td>
-                        ${attachment.recipient}<br/>
-                        ${attachment.streetAddress}<br/>
-                        ${attachment.streetAddress2}<br/>
-                        ${attachment.postalCode}<br/>
-                        ${attachment.postOffice}<br/>
-                        ${attachment.emailAddress}
-                    </td>
-                    <td>
-                        ${attachment.deadline}
-                        ${attachment.deliveryNote}
-                    </td>
-                </tr>
-                #end
-            </table>
-        </p>
-    #end
+    #parse("email/email_attachment_requests.vm")
 
     #if ($discretionary)
         <p>

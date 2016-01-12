@@ -4,6 +4,9 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta http-equiv="Content-Style-Type" content="text/css"/>
+    <style type="text/css">
+        #parse("email/email_common_css.vm")
+    </style>
 </head>
 <body>
 <div>
