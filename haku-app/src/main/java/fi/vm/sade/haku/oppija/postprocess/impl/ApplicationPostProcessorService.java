@@ -1,6 +1,7 @@
 package fi.vm.sade.haku.oppija.postprocess.impl;
 
 import fi.vm.sade.auditlog.haku.HakuOperation;
+import fi.vm.sade.haku.RemoteServiceException;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application.PaymentState;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
@@ -149,13 +150,11 @@ public class ApplicationPostProcessorService {
                 .setSecurityOrder(false);
 
         Person personBefore = personBuilder.get();
-        LOGGER.debug("Calling addPerson");
         try {
             Person personAfter = authenticationService.addPerson(personBefore);
-            LOGGER.debug("Called addPerson");
-            LOGGER.debug("Calling modifyPersonalData");
             application = application.modifyPersonalData(personAfter);
-            LOGGER.debug("Called modifyPersonalData");
+        } catch (RemoteServiceException rse) {
+            LOGGER.error("Application post processing failed: ", rse.getMessage());
         } catch (Throwable t) {
             LOGGER.error("Unexpected happened: ", t);
         }

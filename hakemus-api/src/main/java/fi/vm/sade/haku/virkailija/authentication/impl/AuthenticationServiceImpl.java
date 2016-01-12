@@ -41,7 +41,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
@@ -83,6 +82,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         this.langCookieName = langCookieName;
     }
 
+    /**
+     * Returns a Person object which might be a new one corresponding to user inputs or existing user
+     * with patched values from user input. Existings Person objects are queried first by personOid,
+     * hetu, and email. If no existing users are found, a new Person object is created.
+     *
+     * @param person Person object built from the user input
+     * @return New or existing and patched Person object
+     */
     public Person addPerson(Person person) {
         String hetu = person.getSocialSecurityNumber();
         String personOid = person.getPersonOid();
@@ -117,7 +124,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         String personOid = SecurityContextHolder.getContext().getAuthentication().getName();
         String url = "/resources/henkilo/" + personOid + "/organisaatiohenkilo";
         try {
-            List<String> orgs = new ArrayList<String>();
+            List<String> orgs = new ArrayList<>();
             if (log.isDebugEnabled()) {
                 log.debug("Getting organisaatiohenkilos for {}", personOid);
                 log.debug("Using cachingRestClient webCasUrl: {}, casService: {} ", cachingRestClient.getWebCasUrl(), cachingRestClient.getCasService());
@@ -232,36 +239,38 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
     }
 
-    private Person fetchPerson(String hetu) {
-        String responseString = null;
-        String url = "/resources/s2s/byHetu/" + hetu;
+    private String fetchResourceByUrl(String url) {
+        String response;
         try {
-            responseString = cachingRestClient.getAsString(url);
+            response = cachingRestClient.getAsString(url);
         } catch (CachingRestClient.HttpException hte) {
             if (hte.getStatusCode() == 404) {
                 return null;
+            } else {
+                throw new RemoteServiceException(targetService + url, hte);
             }
         } catch (IOException e) {
             throw new RemoteServiceException(targetService + url, e);
         }
+        return response;
+    }
 
-        return gson.fromJson(responseString, Person.class);
+    private Person fetchPerson(String hetu) {
+        String url = "/resources/s2s/byHetu/" + hetu;
+        String resource = fetchResourceByUrl(url);
+        if (resource == null) {
+            return null;
+        }
+        return gson.fromJson(resource, Person.class);
     }
 
     private Person fetchPersonByStudentToken(String token) {
-        String responseString = null;
         String url = "/resources/henkilo/identification?idp=oppijaToken&id=" + token;
-        try {
-            responseString = cachingRestClient.getAsString(url);
-        } catch (CachingRestClient.HttpException hte) {
-            if (hte.getStatusCode() == 404) {
-                return null;
-            }
-        } catch (IOException e) {
-            throw new RemoteServiceException(targetService + url, e);
+        String resource = fetchResourceByUrl(url);
+        if (resource == null) {
+            return null;
         }
-
-        return gson.fromJson(responseString, Person.class);
+        return gson.fromJson(resource, Person.class);
     }
 
     public String getLangCookieName() {
