@@ -27,7 +27,7 @@
         Din ansökan har mottagits. Om du vill ändra dina ansökningsönskemål eller uppdatera
         dina kontaktuppgifter, kan du under ansökningstiden göra ändringar via följande länk:
         <a href="{{verification-link}}">{{verification-link}}</a>.
-        Länken är i kraft ända till ${expires}.
+        Länken är i kraft ända till ${expires}. Du kan ändra dina kontaktuppgifter också efter änsökningstiden.
         Spara detta meddelande. Länken för bearbetning av ansökan skickas endast en gång,
         och du kan inte beställa en ny.
     </p>
