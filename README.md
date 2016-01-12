@@ -28,6 +28,8 @@ Here's a list of profiles we use:
 
 When running with Maven, you can use Maven profiles to select the Spring profile.
 
+For example, `mvn -Pdevluokka tomcat7:run`
+
 #### Running from the IDE
 
 You can start a local Tomcat with `it` (integration test) profile so that it uses an embedded Mongo server
