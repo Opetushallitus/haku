@@ -59,9 +59,9 @@
     #end
 
     <p>
-        Muutokset hakemukseesi on tallennettu. Voit katsoa hakemustasi tai tehdä muutoksia seuraavan linkin kautta
+        Muutokset hakemukseesi on tallennettu. Voit tehdä muutoksia hakutoiveisiisi tai yhteystietoihisi seuraavan linkin kautta
         hakuaikana: <a href="{{verification-link}}">{{verification-link}}</a>. Linkki on voimassa
-        $expires asti.
+        $expires asti. Yhteystietojasi voit muuttaa myös hakuajan jälkeen.
     </p>
 
     <p>Älä vastaa tähän viestiin - viesti on lähetetty automaattisesti.</p>
