@@ -17,7 +17,7 @@
     <p>
         Hakemuksesi on vastaanotettu. Jos haluat muuttaa hakutoiveitasi tai päivittää yhteystietojasi, voit tehdä
         muutoksia seuraavan linkin kautta: <a href="{{verification-link}}">{{verification-link}}</a>.
-        Yhteystietojasi voit päivittää vielä tämän jälkeen. Voit muokata hakutoiveita $expires asti. Jos sinulla on
+        Voit muokata hakutoiveita $expires asti. Yhteystietojasi voit päivittää vielä tämän jälkeen. Jos sinulla on
         verkkopankkitunnukset, mobiilivarmenne tai sähköinen henkilökortti, voit vaihtoehtoisesti kirjautua sisään
         Opintopolku.fi:ssä, ja tehdä muutoksia hakutoiveisiisi Oma Opintopolku -palvelussa hakuaikana. Oma Opintopolku
         -palvelussa voit hakutoivemuutosten lisäksi muokata hakutoiveisiin liittyviin kysymyksiin antamiasi vastauksia,
