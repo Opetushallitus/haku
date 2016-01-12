@@ -24,9 +24,8 @@
     </p>
 
     <p>
-        Ändingarna i din ansökan har mottagits. Under ansökningstiden kan du granska din ansökan och göra ändringar via
-        följande länk: <a href="{{verification-link}}">{{verification-link}}</a>. Länken är i kraft till
-        ${expires}.
+        Ändingarna i din ansökan har mottagits. Under ansökningstiden kan du ändra dina ansökningsönskemål och kontaktuppgifter via följande länk: <a href="{{verification-link}}">{{verification-link}}</a>. Länken är i kraft till
+        ${expires}. Du kan ändra dina kontaktuppgifter också efter änsökningstiden.
     </p>
 
     #if (!$attachmentRequests.isEmpty())
