@@ -24,9 +24,9 @@
     </p>
 
     <p>
-        The changes to your application have been saved. You can view you application or make changes during the
+        The changes to your application have been saved. You can change your study programme choices during the
         application period with the following link: <a href="{{verification-link}}">{{verification-link}}</a>. The link
-        is valid until ${expires}.
+        is valid until ${expires}. You can change your contact information also after the application period.
     </p>
 
     #if (!$attachmentRequests.isEmpty())
