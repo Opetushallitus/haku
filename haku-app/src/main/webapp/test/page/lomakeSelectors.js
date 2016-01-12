@@ -110,6 +110,10 @@ lomake = initSelectors({
         return 'input#pohjakoulutus_ulk_suoritusmaa_muu' + (n === 1 ? '' : n);
     },
 
+    lisakoulutusValma: 'input#LISAKOULUTUS_VALMA',
+    lisakoulutusTelma: 'input#LISAKOULUTUS_TELMA',
+    kiinnostunutOppisopimuksesta: 'input#kiinnostunutoppisopimuksesta',
+
     pohjakoulutusMuu: 'input#pohjakoulutus_muu',
     pohjakoulutusMuuVuosi: 'input#pohjakoulutus_muu_vuosi',
     pohjakoulutusMuuKuvaus: 'textarea#pohjakoulutus_muu_kuvaus',
