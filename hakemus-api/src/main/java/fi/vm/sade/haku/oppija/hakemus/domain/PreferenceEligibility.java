@@ -39,7 +39,7 @@ public class PreferenceEligibility implements Serializable {
             case INADEQUATE:
                 return "Puutteelinen";
             default:
-                return "";
+                return null == status ? "" : "Tuntematon tila: " + status.toString();
         }
     }
 
@@ -58,7 +58,7 @@ public class PreferenceEligibility implements Serializable {
             case REGISTER:
                 return "Rekisteri";
             default:
-                return "";
+                return null == source ? "" : "Tuntematon tietolähde: " + source.toString();
         }
     }
 
