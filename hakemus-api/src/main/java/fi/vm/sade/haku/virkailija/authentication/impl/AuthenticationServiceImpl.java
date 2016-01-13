@@ -36,6 +36,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+
 import javax.ws.rs.core.MediaType;
 import java.io.IOException;
 import java.io.InputStream;
@@ -239,7 +240,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
     }
 
-    private String fetchResourceByUrl(String url) {
+    private Person fetchPersonByResourceUrl(String url) {
         String response;
         try {
             response = cachingRestClient.getAsString(url);
@@ -252,25 +253,17 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         } catch (IOException e) {
             throw new RemoteServiceException(targetService + url, e);
         }
-        return response;
+        return gson.fromJson(response, Person.class);
     }
 
     private Person fetchPerson(String hetu) {
         String url = "/resources/s2s/byHetu/" + hetu;
-        String resource = fetchResourceByUrl(url);
-        if (resource == null) {
-            return null;
-        }
-        return gson.fromJson(resource, Person.class);
+        return fetchPersonByResourceUrl(url);
     }
 
     private Person fetchPersonByStudentToken(String token) {
         String url = "/resources/henkilo/identification?idp=oppijaToken&id=" + token;
-        String resource = fetchResourceByUrl(url);
-        if (resource == null) {
-            return null;
-        }
-        return gson.fromJson(resource, Person.class);
+        return fetchPersonByResourceUrl(url);
     }
 
     public String getLangCookieName() {
