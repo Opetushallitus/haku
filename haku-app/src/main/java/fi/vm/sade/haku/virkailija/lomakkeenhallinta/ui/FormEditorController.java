@@ -6,7 +6,6 @@ import fi.vm.sade.haku.oppija.common.organisaatio.Organization;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationHierarchy;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
 import fi.vm.sade.haku.oppija.hakemus.resource.JSONException;
-import fi.vm.sade.haku.oppija.lomake.domain.ApplicationPeriod;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
@@ -40,18 +39,13 @@ public class FormEditorController {
 
     public static final String CHARSET_UTF_8 = ";charset=UTF-8";
 
-
-    public enum State {
-        ACTIVE, LOCKED, PUBLISHED, CLOSED, ERROR
-    }
-
-    private static final Map<State, I18nText> stateTranslations =
-            new ImmutableMap.Builder<State,I18nText>()
-                    .put(State.ACTIVE, new I18nText(ImmutableMap.of("fi", "Aktiivinen")))
-                    .put(State.LOCKED, new I18nText(ImmutableMap.of("fi", "Lukittu")))
-                    .put(State.PUBLISHED, new I18nText(ImmutableMap.of("fi", "Julkaistu")))
-                    .put(State.CLOSED, new I18nText(ImmutableMap.of("fi", "Suljettu")))
-                    .put(State.ERROR, new I18nText(ImmutableMap.of("fi", "Virheellinen")))
+    private static final Map<ApplicationSystem.State, I18nText> stateTranslations =
+            new ImmutableMap.Builder<ApplicationSystem.State,I18nText>()
+                    .put(ApplicationSystem.State.ACTIVE, new I18nText(ImmutableMap.of("fi", "Aktiivinen")))
+                    .put(ApplicationSystem.State.LOCKED, new I18nText(ImmutableMap.of("fi", "Lukittu")))
+                    .put(ApplicationSystem.State.PUBLISHED, new I18nText(ImmutableMap.of("fi", "Julkaistu")))
+                    .put(ApplicationSystem.State.CLOSED, new I18nText(ImmutableMap.of("fi", "Suljettu")))
+                    .put(ApplicationSystem.State.ERROR, new I18nText(ImmutableMap.of("fi", "Virheellinen")))
                     .build();
 
     private static final Map<String, Object> hakutoiveTheme =
@@ -140,45 +134,10 @@ public class FormEditorController {
             applicationSystemForm.put("year", applicationSystem.getHakukausiVuosi());
             applicationSystemForm.put("type", applicationSystem.getApplicationSystemType());
             applicationSystemForm.put("template", applicationSystem.getApplicationSystemType());
-            applicationSystemForm.put("status", stateTranslations.get(deduceApplicationSystemState(applicationSystem)));
+            applicationSystemForm.put("status", stateTranslations.get(applicationSystem.getApplicationSystemState()));
             applicationSystemForms.add(applicationSystemForm);
         }
         return applicationSystemForms;
-    }
-
-    private State deduceApplicationSystemState(ApplicationSystem applicationSystem){
-        List<ApplicationPeriod> applicationPeriods = applicationSystem.getApplicationPeriods();
-        if (applicationPeriods.size() < 1 ){
-            LOGGER.error("Unexpected number of periods. Got {} for application system {}", applicationPeriods.size(), applicationSystem.getId());
-            return State.ERROR;
-        }
-        for(ApplicationPeriod applicationPeriod: applicationPeriods) {
-            if(applicationPeriod.isActive()) {
-                return State.ACTIVE;
-            }
-        }
-        final Date lastApplicationPeriodEnd = getLastApplicationPeriodEnd(applicationPeriods);
-        final Date now = new Date();
-        if (now.after(lastApplicationPeriodEnd)){
-            return State.CLOSED;
-        }
-        for(ApplicationPeriod applicationPeriod: applicationPeriods) {
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(applicationPeriod.getStart());
-            calendar.roll(Calendar.DATE, -2);
-            if (now.after(calendar.getTime()) && now.before(applicationPeriod.getStart())) {
-                return State.LOCKED;
-            }
-        }
-        return State.PUBLISHED;
-    }
-
-    private Date getLastApplicationPeriodEnd(List<ApplicationPeriod> applicationPeriods) {
-        SortedSet<Date> sort = new TreeSet<Date>();
-        for(ApplicationPeriod applicationPeriod: applicationPeriods) {
-            sort.add(applicationPeriod.getEnd());
-        }
-        return sort.last();
     }
 
     @GET
@@ -215,7 +174,7 @@ public class FormEditorController {
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKULOMAKKEENHALLINTA_READ_UPDATE', 'ROLE_APP_HAKULOMAKKEENHALLINTA_CRUD', " +
             "'ROLE_APP_HAKULOMAKKEENHALLINTA_READ')")
     public Map getAppicationSystemState(@PathParam("applicationSystemId") String applicationSystemId){
-        return ImmutableMap.of("State", deduceApplicationSystemState(hakuService.getApplicationSystem(applicationSystemId)));
+        return ImmutableMap.of("State", hakuService.getApplicationSystem(applicationSystemId).getApplicationSystemState());
     }
 
     @GET
