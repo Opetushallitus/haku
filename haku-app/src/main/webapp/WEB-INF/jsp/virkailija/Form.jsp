@@ -192,7 +192,7 @@
                 <tr>
                     <c:choose>
                         <c:when test="${paymentState ne ''}">
-                            <haku:infoCell key="virkailija.hakemus.maksun.tila" value='${paymentState}'/>
+                            <haku:infoCell key="virkailija.hakemus.maksun.tila" value='${paymentState}' cellId="infocell_paymentstate"/>
                         </c:when>
                         <c:otherwise>
                             <td>&nbsp;</td>
