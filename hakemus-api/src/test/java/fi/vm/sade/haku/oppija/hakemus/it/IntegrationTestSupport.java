@@ -40,6 +40,11 @@ public class IntegrationTestSupport {
         return getTestApplication("1.2.246.562.11.00000877107");
     }
 
+    public static Application save(Application application) {
+        appContext.getBean(ApplicationDAOMongoImpl.class).save(application);
+        return getTestApplication(application.getOid());
+    }
+
     public static Application getTestApplication(String oid) {
         List<Application> applications = appContext.getBean(ApplicationDAOMongoImpl.class).find(new Application().setOid(oid));
         if (applications.isEmpty())

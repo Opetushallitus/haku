@@ -318,6 +318,21 @@ public class Application implements Serializable {
     }
 
     @JsonIgnore
+    public void enforceLowercaseEmail() {
+        Map<String, String> henkilotiedot = this.answers.get("henkilotiedot");
+        if (henkilotiedot != null) {
+            String maybeEmptyEmail = henkilotiedot.get(OppijaConstants.ELEMENT_ID_EMAIL);
+            if(maybeEmptyEmail != null) {
+                henkilotiedot.put(OppijaConstants.ELEMENT_ID_EMAIL, maybeEmptyEmail.toLowerCase());
+            }
+            String maybeEmptyHuoltajanEmail = henkilotiedot.get(OppijaConstants.ELEMENT_ID_HUOLTAJANSAHKOPOSTI);
+            if(maybeEmptyHuoltajanEmail != null) {
+                henkilotiedot.put(OppijaConstants.ELEMENT_ID_HUOLTAJANSAHKOPOSTI, maybeEmptyHuoltajanEmail.toLowerCase());
+            }
+        }
+    }
+
+    @JsonIgnore
     public void updateNameMetadata() {
         Map<String, String> henkilotiedot = getPhaseAnswers("henkilotiedot");
         if (henkilotiedot != null) {

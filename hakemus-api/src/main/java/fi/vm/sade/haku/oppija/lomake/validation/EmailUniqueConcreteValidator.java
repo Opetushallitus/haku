@@ -16,6 +16,7 @@
 
 package fi.vm.sade.haku.oppija.lomake.validation;
 
+import com.google.common.base.Strings;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationDAO;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.i18n.I18nBundleService;
@@ -41,11 +42,17 @@ public class EmailUniqueConcreteValidator implements Validator {
     public ValidationResult validate(ValidationInput validationInput) {
         if (validationInput.getApplicationOid() == null // validate only when submitting a new application
             && applicationDAO.checkIfExistsByEmail(validationInput.getApplicationSystemId(),
-                validationInput.getValueByKey(OppijaConstants.ELEMENT_ID_EMAIL))) {
+                lower(validationInput.getValueByKey(OppijaConstants.ELEMENT_ID_EMAIL)))) {
             I18nText texts = i18nBundleService.getBundle(validationInput.getApplicationSystemId()).get("form.email.duplicate");
             return new ValidationResult(OppijaConstants.ELEMENT_ID_EMAIL, texts);
         }
         return new ValidationResult();
     }
 
+    private String lower(String email) {
+        if (!Strings.isNullOrEmpty(email)) {
+            return email.toLowerCase();
+        }
+        return null;
+    }
 }
