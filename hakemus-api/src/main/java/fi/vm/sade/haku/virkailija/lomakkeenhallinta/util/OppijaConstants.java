@@ -140,6 +140,7 @@ public final class OppijaConstants {
 
     public static final String PERUSOPETUS_KIELI = "perusopetuksen_kieli";
     public static final String PERUSOPETUS_PAATTOTODISTUSVUOSI = "PK_PAATTOTODISTUSVUOSI";
+    public static final String KYMPPI_PAATTOTODISTUSVUOSI = "KYMPPI_PAATTOTODISTUSVUOSI";
 
     public static final String EDUCATION_CODE_MUSIIKKI = "koulutus_321204";
     public static final String EDUCATION_CODE_TANSSI = "koulutus_321501";
