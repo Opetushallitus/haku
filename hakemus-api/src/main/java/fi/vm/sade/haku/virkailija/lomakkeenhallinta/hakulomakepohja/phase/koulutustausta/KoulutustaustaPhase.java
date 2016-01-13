@@ -5,7 +5,6 @@ import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
-import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import fi.vm.sade.haku.oppija.common.organisaatio.Organization;
@@ -1016,10 +1015,22 @@ public final class KoulutustaustaPhase {
                 .validator(ElementUtil.createYearValidator(formParameters.getApplicationSystem().getHakukausiVuosi(), 1900))
                 .formParams(formParameters).build();
 
+        Element kymppiPaatosRule = createRuleIfVariableIsTrue(ELEMENT_ID_LISAKOULUTUS_KYMPPI);
+        Element kymppiPaatosQuestion = new TextQuestionBuilder(KYMPPI_PAATTOTODISTUSVUOSI)
+                .labelKey("form.koulutustausta.kymppipaattotodistusvuosi")
+                .required()
+                .inline()
+                .size(4)
+                .maxLength(4)
+                .validator(ElementUtil.createYearValidator(formParameters.getApplicationSystem().getHakukausiVuosi(), 1900))
+                .formParams(formParameters).build();
+        kymppiPaatosRule.addChild(kymppiPaatosQuestion);
+
         Element suorittanutGroup =
                 TitledGroup("suorittanut.ryhma").formParams(formParameters).build()
                         .addChild(
                                 Checkbox(ELEMENT_ID_LISAKOULUTUS_KYMPPI).formParams(formParameters).build(),
+                                kymppiPaatosRule,
                                 Checkbox(ELEMENT_ID_LISAKOULUTUS_VAMMAISTEN).formParams(formParameters).build(),
                                 Checkbox(ELEMENT_ID_LISAKOULUTUS_TALOUS).formParams(formParameters).build(),
                                 Checkbox(ELEMENT_ID_LISAKOULUTUS_AMMATTISTARTTI).formParams(formParameters).build(),
@@ -1034,9 +1045,15 @@ public final class KoulutustaustaPhase {
                 PERUSKOULU, OSITTAIN_YKSILOLLISTETTY, ALUEITTAIN_YKSILOLLISTETTY, YKSILOLLISTETTY);
 
         Expr vuosiSyotetty = new Regexp(paattotodistusvuosiPeruskoulu.getId(), PAATTOTODISTUSVUOSI_PATTERN);
-        Element paattotodistusvuosiPeruskouluRule = Rule("paattotodistuvuosiPkRule", new And(
+        Expr kymppiVuosiSyotetty = new Regexp(kymppiPaatosQuestion.getId(), PAATTOTODISTUSVUOSI_PATTERN);
+
+        Expr recentVuosi = new And(
                 ExprUtil.lessThanRule(paattotodistusvuosiPeruskoulu.getId(), String.valueOf(hakukausiVuosi - 2)),
-                vuosiSyotetty)).build();
+                vuosiSyotetty);
+        Expr recentKymppiVuosi = new And(
+                ExprUtil.lessThanRule(kymppiPaatosQuestion.getId(), String.valueOf(hakukausiVuosi - 2)),
+                kymppiVuosiSyotetty);
+        Element paattotodistusvuosiPeruskouluRule = Rule("paattotodistuvuosiPkRule", new Or(recentVuosi, recentKymppiVuosi)).build();
 
         Element koulutuspaikkaAmmatillisenTutkintoon = Radio("KOULUTUSPAIKKA_AMMATILLISEEN_TUTKINTOON")
                 .addOptions(ImmutableList.of(

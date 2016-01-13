@@ -110,6 +110,8 @@ lomake = initSelectors({
         return 'input#pohjakoulutus_ulk_suoritusmaa_muu' + (n === 1 ? '' : n);
     },
 
+    lisakoulutusKymppi: 'input#LISAKOULUTUS_KYMPPI',
+    lisakoulutusKymppiYear: 'input#KYMPPI_PAATTOTODISTUSVUOSI',
     lisakoulutusValma: 'input#LISAKOULUTUS_VALMA',
     lisakoulutusTelma: 'input#LISAKOULUTUS_TELMA',
     kiinnostunutOppisopimuksesta: 'input#kiinnostunutoppisopimuksesta',
@@ -126,6 +128,7 @@ lomake = initSelectors({
     },
 
     // Hakutoiveet
+    noPreferencesText: "div#nogradegrid",
     preferencesVisibleInput: "input#preferencesVisible",
     sortDown: function(n) {
         return "button.down.sort[data-id=preference" + n + "]";
