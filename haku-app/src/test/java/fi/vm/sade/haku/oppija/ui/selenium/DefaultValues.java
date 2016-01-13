@@ -53,6 +53,7 @@ public final class DefaultValues {
         koulutustausta_pk.put(OppijaConstants.PERUSOPETUS_PAATTOTODISTUSVUOSI, "2012");
         koulutustausta_pk.put("KOULUTUSPAIKKA_AMMATILLISEEN_TUTKINTOON", "false");
         koulutustausta_pk.put(OppijaConstants.ELEMENT_ID_LISAKOULUTUS_KYMPPI, "true");
+        koulutustausta_pk.put(OppijaConstants.KYMPPI_PAATTOTODISTUSVUOSI, "2012");
         koulutustausta_pk.put(OppijaConstants.PERUSOPETUS_KIELI, "FI");
 
         lisatiedot.put("TYOKOKEMUSKUUKAUDET", "10");
