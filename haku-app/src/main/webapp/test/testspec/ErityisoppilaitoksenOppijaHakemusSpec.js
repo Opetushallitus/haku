@@ -45,7 +45,7 @@ describe('Erityisoppilaitosten lomake', function () {
                     virkailija.editKoulutusTaustaButton(hakuOid),
                     virkailija.addYksilollistettyCheckbox),
                 input(
-                    lomake.pkPaattotodistusVuosi, "2015",
+                    lomake.pkPaattotodistusVuosi, ""+new Date().getFullYear(),
                     lomake.pkKieli, "FI"
                 ),
                 click(virkailija.saveKoulutusTaustaButton),
@@ -54,7 +54,7 @@ describe('Erityisoppilaitosten lomake', function () {
 
             describe("lisäämisen jälkeen", function() {
                 it("vastaukset näkyvät", function () {
-                    expect(answerForQuestion('PK_PAATTOTODISTUSVUOSI')).to.equal('2015');
+                    expect(answerForQuestion('PK_PAATTOTODISTUSVUOSI')).to.equal(""+new Date().getFullYear());
                     expect(answerForQuestion('perusopetuksen_kieli')).to.equal('Suomi');
                 });
             });
@@ -150,7 +150,7 @@ describe('Erityisoppilaitosten lomake', function () {
                     before(seqDone(
                         click(lomake.pohjakoulutus("1")),
                         input(
-                            lomake.pkPaattotodistusVuosi, "2015",
+                            lomake.pkPaattotodistusVuosi, ""+new Date().getFullYear(),
                             lomake.pkKieli, "FI"
                         )
                     ));
@@ -245,7 +245,7 @@ describe('Erityisoppilaitosten lomake', function () {
 
                                         var expectedKoulutustausta = [
                                             ["Valitse tutkinto, jolla haet koulutukseen:", "Perusopetuksen oppimäärä"],
-                                            ["Minä vuonna sait tai saat peruskoulun päättötodistuksen?:", "2015"],
+                                            ["Minä vuonna sait tai saat peruskoulun päättötodistuksen?:", ""+new Date().getFullYear()],
                                             ["Millä opetuskielellä olet suorittanut perusopetuksen?:", "Suomi"],
                                             ["Minkä muun koulutuksen/opintoja olet suorittanut?", ""]
                                         ];

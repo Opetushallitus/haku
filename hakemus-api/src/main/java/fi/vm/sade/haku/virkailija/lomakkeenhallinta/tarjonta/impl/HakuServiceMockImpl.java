@@ -151,7 +151,7 @@ public class HakuServiceMockImpl implements HakuService {
                 .setApplicationSystemType(HAKUTYYPPI_VARSINAINEN_HAKU)
                 .setHakutapa(HAKUTAPA_YHTEISHAKU)
                 .setMaxApplicationOptions(5)
-                .setHakukausiVuosi(2015)
+                .setHakukausiVuosi(Calendar.getInstance().get(Calendar.YEAR))
                 .setUsePriorities(true)
                 .setKohdejoukkoUri(KOHDEJOUKKO_ERITYISOPETUKSENA_JARJESTETTAVA_AMMATILLINEN)
                 .setState("JULKAISTU")
