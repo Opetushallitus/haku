@@ -14,12 +14,10 @@
         Datum och lagringstidpunkt för ansökan: $applicationDate
     </p>
 
+    <h4>Ansökningsönskemål</h4>
     <p>
-        Ansökningsönskemål: <br /><br />
-
         #foreach ($preference in $preferences)
             $preference <br />
-
         #end
     </p>
 

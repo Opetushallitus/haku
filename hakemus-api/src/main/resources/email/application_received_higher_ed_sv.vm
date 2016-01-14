@@ -14,15 +14,14 @@
         Datum och lagringstidpunkt för ansökan: $applicationDate
     </p>
 
+    <h4>Dina ansökningsmål</h4>
     <p>
-        Dina ansökningsmål: <br /><br />
-
         #foreach ($preference in $preferences)
         $preference <br />
-
         #end
     </p>
 
+    <h4>Bilagor</h4>
     #parse("email/email_attachment_requests.vm")
 
     <p>

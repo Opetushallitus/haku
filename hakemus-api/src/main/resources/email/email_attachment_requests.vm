@@ -1,32 +1,31 @@
 #if (!$attachmentRequests.isEmpty())
-<p>
-    Liitepyynnöt: <br /><br />
-
-<table>
+<table style="border-spacing: 0; border-collapse: collapse; text-align: left;">
     <thead>
-    <tr>
-        <th>$lomakeTulostusLiite</th>
-        <th>$lomakeTulostusLiiteToimitusosoite</th>
-        <th>$lomakeTulostusLiiteDeadline</th>
+    <tr style="border-bottom: 1px solid #ccc;">
+        <th style="padding-bottom: 4px;">$lomakeTulostusLiite</th>
+        <th style="width: 200px;">$lomakeTulostusLiiteToimitusosoite</th>
+        <th style="width: 200px;">$lomakeTulostusLiiteDeadline</th>
     </tr>
     </thead>
-    <tbody style="vertical-align: top; text-align: left">
+    <tbody style="vertical-align: top;">
     #foreach ($attachment in $attachmentRequests)
-        <tr>
-            <td>
+        <tr style="border-bottom: 1px solid #ccc;">
+            <td style="padding: 4px 10px 4px 0;">
                 ${attachment.name}<br />
                 ${attachment.header}<br/>
                 ${attachment.description}
             </td>
-            <td>
+            <td style="padding: 4px 10px 4px 0;">
                 ${attachment.recipient}<br/>
                 ${attachment.streetAddress}<br/>
-                ${attachment.streetAddress2}<br/>
+                #if ( "$!attachment.streetAddress2" != "" )
+                    ${attachment.streetAddress2}<br/>
+                #end
                 ${attachment.postalCode}<br/>
                 ${attachment.postOffice}<br/>
                 ${attachment.emailAddress}
             </td>
-            <td>
+            <td style="padding: 4px 0;">
                 ${attachment.deadline}
                 ${attachment.deliveryNote}
             </td>
@@ -34,5 +33,4 @@
     #end
     </tbody>
 </table>
-</p>
 #end

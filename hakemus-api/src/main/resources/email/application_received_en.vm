@@ -14,12 +14,10 @@
         Submitted: $applicationDate
     </p>
 
+    <h4>Application options</h4>
     <p>
-        Application options: <br /><br />
-
         #foreach ($preference in $preferences)
             $preference <br />
-
         #end
     </p>
 
@@ -37,6 +35,7 @@
         answers, update your contact information, view the admission results and confirm the study place.
     </p>
 
+    <h4>Attachment requests</h4>
     #parse("email/email_attachment_requests.vm")
 
     #if ($discretionary)

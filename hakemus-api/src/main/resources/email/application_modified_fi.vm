@@ -14,12 +14,10 @@
         Hakemuksen päivämäärä ja tallennusaika: $applicationDate
     </p>
 
+    <h4>Hakutoiveesi</h4>
     <p>
-        Hakutoiveesi: <br /><br />
-
         #foreach ($preference in $preferences)
             $preference <br />
-
         #end
     </p>
 
@@ -28,6 +26,7 @@
         kautta: <a href="{{verification-link}}">{{verification-link}}</a>. Linkki on voimassa $expires asti. Yhteystietojasi voi muuttaa hakuajan jälkeenkin.
     </p>
 
+    <h4>Liitepyynnöt</h4>
     #parse("email/email_attachment_requests.vm")
 
     <p>Älä vastaa tähän viestiin - viesti on lähetetty automaattisesti.</p>
