@@ -3,11 +3,14 @@
     Liitepyynnöt: <br /><br />
 
 <table>
+    <thead>
     <tr>
         <th>$lomakeTulostusLiite</th>
         <th>$lomakeTulostusLiiteToimitusosoite</th>
         <th>$lomakeTulostusLiiteDeadline</th>
     </tr>
+    </thead>
+    <tbody style="vertical-align: top; text-align: left">
     #foreach ($attachment in $attachmentRequests)
         <tr>
             <td>
@@ -25,10 +28,11 @@
             </td>
             <td>
                 ${attachment.deadline}
-                        ${attachment.deliveryNote}
+                ${attachment.deliveryNote}
             </td>
         </tr>
     #end
+    </tbody>
 </table>
 </p>
 #end
