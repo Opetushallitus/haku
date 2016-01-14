@@ -52,8 +52,4 @@ public class AuthenticationServiceDevLuokkaImpl extends AuthenticationServiceImp
         return new AuthenticationServiceMockImpl().getCurrentHenkilo();
     }
 
-    @Override
-    public Person getHenkilo(String personOid) {
-        return new AuthenticationServiceMockImpl().getHenkilo(personOid);
-    }
 }

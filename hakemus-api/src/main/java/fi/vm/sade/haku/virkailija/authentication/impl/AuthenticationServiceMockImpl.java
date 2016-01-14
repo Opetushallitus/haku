@@ -24,7 +24,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -100,10 +99,5 @@ public class AuthenticationServiceMockImpl implements AuthenticationService {
     @Override
     public String getLangCookieName() {
         return "testi18next";
-    }
-
-    @Override
-    public List<Person> getHenkiloList(List<String> personOids) {
-        return Arrays.asList(getCurrentHenkilo());
     }
 }

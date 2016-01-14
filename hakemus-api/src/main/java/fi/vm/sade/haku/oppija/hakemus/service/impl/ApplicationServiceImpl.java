@@ -399,23 +399,9 @@ public class ApplicationServiceImpl implements ApplicationService {
                         ? PreferenceEligibility.Status.AUTOMATICALLY_CHECKED_ELIGIBLE
                         : PreferenceEligibility.Status.NOT_CHECKED);
                 eligibility.setSource(PreferenceEligibility.Source.REGISTER);
-
-                updateEligibilityStatusToApplicationNotes(application, eligibility);
-                
             }
         }
         return application;
-    }
-
-    private void updateEligibilityStatusToApplicationNotes(Application application,
-                                                           PreferenceEligibility preferenceEligibility) {
-
-        int preferenceEligibilityIndex = application.getPreferenceEligibilities().indexOf(preferenceEligibility) + 1;
-
-        String eligibilityNote = preferenceEligibilityIndex + ". hakukelpoisuutta muutettu: " +
-          PreferenceEligibility.getStatusMessage(preferenceEligibility.getStatus()) + 
-          ", " + PreferenceEligibility.getSourceMessage(preferenceEligibility.getSource());
-        application.addNote(new ApplicationNote(eligibilityNote, new Date(), "järjestelmä"));
     }
 
     private boolean hasValidOhjausparametriWithAutomaticHakukelpoisuus(ApplicationSystem as) {
