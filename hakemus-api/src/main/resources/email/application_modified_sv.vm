@@ -5,7 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta http-equiv="Content-Style-Type" content="text/css"/>
 </head>
-<body>
+<body style="#include("email/email_body_css.vm")">
 <div>
     <p>
         Ansökan: $applicationSystemId <br />
@@ -14,12 +14,10 @@
         Ansökans datum och lagringstid: $applicationDate
     </p>
 
+    <h4>Dina ansökningsönskemål</h4>
     <p>
-        Dina ansökningsönskemål: <br /><br />
-
         #foreach ($preference in $preferences)
             $preference <br />
-
         #end
     </p>
 
@@ -28,40 +26,8 @@
         ${expires}. Du kan ändra dina kontaktuppgifter också efter änsökningstiden.
     </p>
 
-    #if (!$attachmentRequests.isEmpty())
-        <p>
-            Bilagor: <br /><br />
-
-        <table>
-            <tr>
-                <th>$lomakeTulostusLiite</th>
-                <th>$lomakeTulostusLiiteToimitusosoite</th>
-                <th>$lomakeTulostusLiiteDeadline</th>
-            </tr>
-            #foreach ($attachment in $attachmentRequests)
-                <tr>
-                    <td>
-                        ${attachment.name}<br />
-                        ${attachment.header}<br/>
-                        ${attachment.description}
-                    </td>
-                    <td>
-                        ${attachment.recipient}<br/>
-                        ${attachment.streetAddress}<br/>
-                        ${attachment.streetAddress2}<br/>
-                        ${attachment.postalCode}<br/>
-                        ${attachment.postOffice}<br/>
-                        ${attachment.emailAddress}
-                    </td>
-                    <td>
-                        ${attachment.deadline}
-                        ${attachment.deliveryNote}
-                    </td>
-                </tr>
-            #end
-        </table>
-        </p>
-    #end
+    <h4>Bilagor</h4>
+    #parse("email/email_attachment_requests.vm")
 
     <p>Svara inte på detta meddelande, det har skickats automatiskt.</p>
 </div>

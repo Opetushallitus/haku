@@ -5,7 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta http-equiv="Content-Style-Type" content="text/css"/>
 </head>
-<body>
+<body style="#include("email/email_body_css.vm")">
 <div>
     <p>
         Application: $applicationSystemId <br />
@@ -14,12 +14,10 @@
         Date and time of submission: $applicationDate
     </p>
 
+    <h4>Study programme choices</h4>
     <p>
-       Study programme choices: <br /><br />
-
         #foreach ($preference in $preferences)
             $preference <br />
-
         #end
     </p>
 
