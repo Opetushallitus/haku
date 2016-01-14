@@ -26,7 +26,7 @@
     <p>
         Hakemuksesi on vastaanotettu. Jos haluat muuttaa hakutoiveitasi tai päivittää yhteystietojasi,
         voit hakuaikana tehdä muutoksia seuraavan linkin kautta: <a href="{{verification-link}}">{{verification-link}}</a>.
-        Linkki on voimassa $expires asti. YHteystietojasi voit muuttaa myös hakuajan jälkeen. Säilytä tämä viesti. Muokkauslinkkiä ei voi tilata
+        Linkki on voimassa $expires asti. Yhteystietojasi voit muuttaa myös hakuajan jälkeen. Säilytä tämä viesti. Muokkauslinkkiä ei voi tilata
         uudelleen.
     </p>
 
