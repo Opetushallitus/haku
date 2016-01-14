@@ -53,6 +53,6 @@ public class EmailUniqueConcreteValidator implements Validator {
         if (!Strings.isNullOrEmpty(email)) {
             return email.toLowerCase();
         }
-        return null;
+        return email;
     }
 }
