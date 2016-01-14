@@ -14,12 +14,10 @@
         Hakemuksen päivämäärä ja tallennusaika: $applicationDate
     </p>
 
+    <h4>Hakutoiveesi</h4>
     <p>
-        Hakutoiveesi: <br /><br />
-
         #foreach ($preference in $preferences)
             $preference <br />
-
         #end
     </p>
 

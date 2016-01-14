@@ -14,12 +14,10 @@
         Date and time of submission: $applicationDate
     </p>
 
+    <h4>You have applied to the following programmes</h4>
     <p>
-        You have applied to the following programmes: <br /><br />
-
         #foreach ($preference in $preferences)
             $preference <br />
-
         #end
     </p>
 
@@ -29,6 +27,7 @@
         is valid until ${expires}. You can change your contact information also after the application period.
     </p>
 
+    <h4>Attachment requests</h4>
     #parse("email/email_attachment_requests.vm")
 
     <p>This is an automatically generated email, please do not reply.</p>
