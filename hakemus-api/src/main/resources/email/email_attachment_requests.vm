@@ -1,21 +1,21 @@
 #if (!$attachmentRequests.isEmpty())
 <table style="border-spacing: 0; border-collapse: collapse; text-align: left;">
     <thead>
-    <tr style="border-bottom: 1px solid #ccc;">
-        <th style="padding-bottom: 4px;">$lomakeTulostusLiite</th>
-        <th style="width: 200px;">$lomakeTulostusLiiteToimitusosoite</th>
-        <th style="width: 200px;">$lomakeTulostusLiiteDeadline</th>
+    <tr style="border-bottom: 1px solid #e6e6e6;">
+        <th style="padding-bottom: 6px;">$lomakeTulostusLiite</th>
+        <th style="padding-bottom: 6px; width: 250px;">$lomakeTulostusLiiteToimitusosoite</th>
+        <th style="padding-bottom: 6px; width: 250px;">$lomakeTulostusLiiteDeadline</th>
     </tr>
     </thead>
     <tbody style="vertical-align: top;">
     #foreach ($attachment in $attachmentRequests)
-        <tr style="border-bottom: 1px solid #ccc;">
-            <td style="padding: 4px 10px 4px 0;">
+        <tr style="border-bottom: 1px solid #e6e6e6;">
+            <td style="padding: 6px 10px 6px 0;">
                 ${attachment.name}<br />
                 ${attachment.header}<br/>
                 ${attachment.description}
             </td>
-            <td style="padding: 4px 10px 4px 0;">
+            <td style="padding: 6px 10px 6px 0;">
                 ${attachment.recipient}<br/>
                 ${attachment.streetAddress}<br/>
                 #if ( "$!attachment.streetAddress2" != "" )
@@ -25,7 +25,7 @@
                 ${attachment.postOffice}<br/>
                 ${attachment.emailAddress}
             </td>
-            <td style="padding: 4px 0;">
+            <td style="padding: 6px 0;">
                 ${attachment.deadline}
                 ${attachment.deliveryNote}
             </td>
