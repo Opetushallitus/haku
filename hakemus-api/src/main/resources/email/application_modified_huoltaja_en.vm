@@ -15,7 +15,7 @@
     </p>
 
     <p>
-        You have applied to the following programmes: <br /><br />
+       Study programme choices: <br /><br />
 
         #foreach ($preference in $preferences)
             $preference <br />
