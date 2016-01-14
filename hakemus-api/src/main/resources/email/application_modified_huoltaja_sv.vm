@@ -15,7 +15,7 @@
     </p>
 
     <p>
-        Dina ansökningsmål: <br /><br />
+        Ansökningsönskemål: <br /><br />
 
         #foreach ($preference in $preferences)
             $preference <br />
