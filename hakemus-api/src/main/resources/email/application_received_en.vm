@@ -24,7 +24,10 @@
     <p>
         Your application has been received. If you wish to change the study programmes you're applying to or update your
         contact information, you can use the following link and make the changes within the application period:
-        <a href="{{verification-link}}">{{verification-link}}</a>. The link is valid until ${expires}. You can change your contact information also after the application period. Save this
+        <a href="{{verification-link}}">{{verification-link}}</a>
+    </p>
+    <p>
+        The link is valid until ${expires}. You can change your contact information also after the application period. Save this
         message. The editing link will only be sent once and you cannot order a new one.
     </p>
 
