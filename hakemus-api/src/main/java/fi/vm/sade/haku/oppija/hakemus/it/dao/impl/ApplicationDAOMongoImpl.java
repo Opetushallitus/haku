@@ -467,6 +467,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         if (null == application.getModelVersion())
             application.setModelVersion(application.getModelVersion());
         application.setUpdated(new Date());
+        application.enforceLowercaseEmail();
         super.save(application);
     }
 
