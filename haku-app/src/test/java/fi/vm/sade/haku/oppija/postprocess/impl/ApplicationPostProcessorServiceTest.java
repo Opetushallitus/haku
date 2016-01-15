@@ -1,6 +1,5 @@
 package fi.vm.sade.haku.oppija.postprocess.impl;
 
-import fi.vm.sade.haku.RemoteServiceException;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.haku.oppija.hakemus.service.BaseEducationService;

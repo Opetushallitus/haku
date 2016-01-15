@@ -15,9 +15,6 @@
  */
 package fi.vm.sade.haku.virkailija.authentication;
 
-import com.sun.javaws.exceptions.InvalidArgumentException;
-import fi.vm.sade.haku.RemoteServiceException;
-
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 /**
