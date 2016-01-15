@@ -16,10 +16,7 @@
 
 package fi.vm.sade.haku.oppija.lomake.validation;
 
-import fi.vm.sade.haku.oppija.lomake.validation.validators.EmailUniqueValidator;
-import fi.vm.sade.haku.oppija.lomake.validation.validators.PreferenceValidator;
-import fi.vm.sade.haku.oppija.lomake.validation.validators.SsnAndPreferenceUniqueValidator;
-import fi.vm.sade.haku.oppija.lomake.validation.validators.SsnUniqueValidator;
+import fi.vm.sade.haku.oppija.lomake.validation.validators.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -33,16 +30,19 @@ public class ValidatorFactory {
     private final SsnAndPreferenceUniqueConcreteValidator ssnAndPreferenceUniqueConcreteValidator;
     private final PreferenceConcreteValidator preferenceConcreteValidator;
     private final EmailUniqueConcreteValidator emailUniqueConcreteValidator;
+    private final EmailInLowercaseConcreteValidator emailInLowercaseConcreteValidator;
 
     @Autowired
     public ValidatorFactory(SsnUniqueConcreteValidator ssnUniqueConcreteValidator,
                             SsnAndPreferenceUniqueConcreteValidator ssnAndPreferenceUniqueConcreteValidator,
                             PreferenceConcreteValidator preferenceConcreteValidator,
-                            EmailUniqueConcreteValidator emailUniqueConcreteValidator) {
+                            EmailUniqueConcreteValidator emailUniqueConcreteValidator,
+                            EmailInLowercaseConcreteValidator emailInLowercaseConcreteValidator) {
         this.ssnUniqueConcreteValidator = ssnUniqueConcreteValidator;
         this.ssnAndPreferenceUniqueConcreteValidator = ssnAndPreferenceUniqueConcreteValidator;
         this.preferenceConcreteValidator = preferenceConcreteValidator;
         this.emailUniqueConcreteValidator = emailUniqueConcreteValidator;
+        this.emailInLowercaseConcreteValidator = emailInLowercaseConcreteValidator;
     }
 
     public Validator buildValidator(final Validator validator) {
@@ -55,6 +55,8 @@ public class ValidatorFactory {
             return preferenceConcreteValidator;
         } else if (EmailUniqueValidator.class.isAssignableFrom(validatorClass)) {
             return emailUniqueConcreteValidator;
+        } else if (EmailInLowercaseValidator.class.isAssignableFrom(validatorClass)) {
+            return emailInLowercaseConcreteValidator;
         }
         return validator;
     }

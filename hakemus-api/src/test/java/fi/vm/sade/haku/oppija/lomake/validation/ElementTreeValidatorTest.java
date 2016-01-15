@@ -18,12 +18,14 @@ package fi.vm.sade.haku.oppija.lomake.validation;
 
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
+import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.builder.TextQuestionBuilder;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.TextQuestion;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.haku.oppija.lomake.util.ElementTree;
 import fi.vm.sade.haku.oppija.lomake.util.SpringInjector;
+import fi.vm.sade.haku.oppija.lomake.validation.validators.RegexFieldValidator;
 import fi.vm.sade.haku.oppija.lomake.validation.validators.RequiredFieldValidator;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.dao.FormConfigurationDAO;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.dao.ThemeQuestionDAO;
@@ -42,6 +44,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil.createI18NAsIs;
 import static org.junit.Assert.assertEquals;
@@ -87,11 +90,22 @@ public class ElementTreeValidatorTest {
         PreferenceConcreteValidator preferenceConcreteValidator = mock(PreferenceConcreteValidator.class);
         when(ssnUniqueConcreteValidator.validate(any(ValidationInput.class))).thenReturn(new ValidationResult());
         EmailUniqueConcreteValidator emailUniqueConcreteValidator = mock(EmailUniqueConcreteValidator.class);
+        EmailInLowercaseConcreteValidator emailInLowercaseConcreteValidator = mock(EmailInLowercaseConcreteValidator.class);
         when(emailUniqueConcreteValidator.validate(any(ValidationInput.class))).thenReturn(new ValidationResult());
         ValidatorFactory validatorFactory = new ValidatorFactory(ssnUniqueConcreteValidator, ssnAndPreferenceUniqueConcreteValidator,
-                preferenceConcreteValidator, emailUniqueConcreteValidator);
+                preferenceConcreteValidator, emailUniqueConcreteValidator,emailInLowercaseConcreteValidator);
 
         elementTreeValidator = new ElementTreeValidator(validatorFactory);
+    }
+
+    @Test
+    public void testValidateEmail() {
+        Map<String, String> m = new HashMap<String, String>();
+        m.put("fi","jEe");
+        TextQuestion emailQuestion = new TextQuestion("id", new I18nText(m));
+
+        ValidationResult r = new RegexFieldValidator("form.email.lowercase","\\p{javaLowerCase}*").validate(new ValidationInput(emailQuestion, m, null, null, ValidationInput.ValidationContext.officer_modify));
+        System.err.println(r.getErrorMessages());
     }
 
     @Test(expected = NullPointerException.class)
@@ -114,7 +128,7 @@ public class ElementTreeValidatorTest {
         textQuestion.setValidator
                 (new RequiredFieldValidator("id", "error.message.key"));
         ValidationResult validationResult = elementTreeValidator.validate(new ValidationInput(textQuestion, new HashMap<String, String>(),
-                null, "", ValidationInput.ValidationContext.officer_modify));
+                null, ASID, ValidationInput.ValidationContext.officer_modify));
         assertTrue(validationResult.hasErrors());
     }
 
@@ -133,7 +147,7 @@ public class ElementTreeValidatorTest {
         Element phase = ElementTree.getFirstChild(applicationSystem.getForm());
         HashMap<String, String> values = fillFormWithoutAsuinmaa();
         values.put("asuinmaa", asuinmaa);
-        ValidationResult validationResult = elementTreeValidator.validate(new ValidationInput(phase, values, null, "", ValidationInput.ValidationContext.officer_modify));
+        ValidationResult validationResult = elementTreeValidator.validate(new ValidationInput(phase, values, null, ASID, ValidationInput.ValidationContext.officer_modify));
         assertEquals(errorCount, validationResult.getErrorMessages().size());
     }
 
