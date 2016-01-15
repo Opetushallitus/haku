@@ -165,10 +165,10 @@ public class SendMailService {
                 }
             }).get();
             if (!successStatusCode) {
-                throw new EmailException("OppijanTunnistus status code did not indicate success");
+                throw new EmailException("Sähköpostin lähettäminen epäonnistui");
             }
         } catch (IOException | InterruptedException | ExecutionException e) {
-            throw new EmailException("OppijanTunnistus request failed: " + e);
+            throw new EmailException("Sähköpostin lähettäminen epäonnistui", e);
         }
     }
 
