@@ -115,8 +115,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         try {
             return person.mergeWith(newPerson.get());
-        } catch (IllegalStateException e) {
-            throw new RemoteServiceException("Could not create new person from " + person, e);
+        } catch (IllegalArgumentException e) {
+            throw new RemoteServiceException("Could not create new person from  " + person + " due to conflicting data", e);
         }
     }
 

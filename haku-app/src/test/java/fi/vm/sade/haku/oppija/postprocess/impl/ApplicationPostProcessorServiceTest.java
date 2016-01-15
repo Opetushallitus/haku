@@ -62,7 +62,7 @@ public class ApplicationPostProcessorServiceTest {
         answerMap.put(OppijaConstants.ELEMENT_ID_FIRST_LANGUAGE, "fi");
     }
 
-    @Test(expected = RemoteServiceException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testWillNotMergePersonsWithDifferentSSNs() {
         Person p1 = new Person("Etunimi", "Etunimi", "Sukunimi", "070187-951E",
                 "070187", false, "etu.nimi@example.org", "Mies", "Kaupunki",

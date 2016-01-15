@@ -150,15 +150,9 @@ public class ApplicationPostProcessorService {
                 .setSecurityOrder(false);
 
         Person personBefore = personBuilder.get();
-        try {
-            Person personAfter = authenticationService.addPerson(personBefore);
-            application = application.modifyPersonalData(personAfter);
-        } catch (RemoteServiceException rse) {
-            LOGGER.error("Application post processing failed: ", rse.getMessage());
-        } catch (Throwable t) {
-            LOGGER.error("Unexpected happened: ", t);
-        }
-        return application;
+
+        Person personAfter = authenticationService.addPerson(personBefore);
+        return application.modifyPersonalData(personAfter);
     }
 
 

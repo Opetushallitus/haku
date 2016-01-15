@@ -15,6 +15,7 @@
  */
 package fi.vm.sade.haku.virkailija.authentication;
 
+import com.sun.javaws.exceptions.InvalidArgumentException;
 import fi.vm.sade.haku.RemoteServiceException;
 
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
@@ -146,9 +147,7 @@ public class Person {
         if (isNotBlank(this.socialSecurityNumber) &&
                 isNotBlank(other.socialSecurityNumber) &&
                 !this.socialSecurityNumber.equals(other.socialSecurityNumber)) {
-            throw new RemoteServiceException(
-                    "Unable to merge person objects with different social security numbers",
-                    new RuntimeException("trying to merge person objects with different social security numbers"));
+            throw new IllegalArgumentException("Unable to merge person objects with different social security numbers");
         }
         this.noSocialSecurityNumber = other.noSocialSecurityNumber != null ? other.noSocialSecurityNumber : this.noSocialSecurityNumber;
         this.socialSecurityNumber = isNotBlank(other.socialSecurityNumber) ? other.socialSecurityNumber : this.socialSecurityNumber;
