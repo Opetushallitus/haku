@@ -18,6 +18,7 @@ package fi.vm.sade.haku.virkailija.authentication.impl;
 
 import com.google.common.base.Optional;
 import com.google.gson.*;
+import com.google.gson.reflect.TypeToken;
 import fi.vm.sade.generic.rest.CachingRestClient;
 import fi.vm.sade.haku.RemoteServiceException;
 import fi.vm.sade.haku.virkailija.authentication.AuthenticationService;
@@ -38,6 +39,7 @@ import org.springframework.stereotype.Service;
 import javax.ws.rs.core.MediaType;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -162,6 +164,21 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             Person person = gson.fromJson(personJson, Person.class);
             log.debug("Deserialized person: {}", person);
             return person;
+        } catch (IOException e) {
+            throw new RemoteServiceException(targetService + url, e);
+        }
+    }
+    
+    @Override
+    public List<Person> getHenkiloList(List<String> personOids) {
+        String oidsJson = gson.toJson(personOids);
+        String url = "/resources/henkilo/henkilotByHenkiloOidList";
+        try {
+            HttpResponse response = cachingRestClient.post(url, MediaType.APPLICATION_JSON, oidsJson);
+            Type listType = new TypeToken<List<Person>>(){}.getType();
+            BasicResponseHandler handler = new BasicResponseHandler();
+            String responseJson = handler.handleResponse(response);
+            return gson.fromJson(responseJson, listType);
         } catch (IOException e) {
             throw new RemoteServiceException(targetService + url, e);
         }
