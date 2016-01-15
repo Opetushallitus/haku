@@ -14,6 +14,7 @@ import fi.vm.sade.haku.oppija.hakemus.domain.*;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationOptionDTO;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.Pistetieto;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.UpdatePreferenceResult;
+import fi.vm.sade.haku.oppija.hakemus.domain.util.ApplicationUtil;
 import fi.vm.sade.haku.oppija.hakemus.domain.util.AttachmentUtil;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.haku.oppija.hakemus.service.HakuPermissionService;
@@ -859,7 +860,7 @@ public class OfficerUIServiceImpl implements OfficerUIService {
                     .build());
             preferenceEligibility.setSource(newSource);
         }
-        
+
         if (updateStatus || updateSource) {
             updateEligibilityStatusToApplicationNotes(application, preferenceEligibility, newStatus, newSource, officerOid);
         }
@@ -886,10 +887,8 @@ public class OfficerUIServiceImpl implements OfficerUIService {
                                                                   PreferenceEligibility.Status status,
                                                                   PreferenceEligibility.Source source,
                                                                   String officerOid) {
-        
-        int preferenceEligibilityIndex = application.getPreferenceEligibilities().indexOf(preferenceEligibility) + 1;
-
-        String eligibilityNote = preferenceEligibilityIndex + ". hakukelpoisuutta muutettu: " + PreferenceEligibility.getStatusMessage(status);
+        String eligibilityNote = ApplicationUtil.getApplicationOptionName(application, preferenceEligibility)
+          + ". Hakukelpoisuutta muutettu: " + PreferenceEligibility.getStatusMessage(status);
         if (PreferenceEligibility.Source.UNKNOWN != source) {
             eligibilityNote += ", " + PreferenceEligibility.getSourceMessage(source);
         }
