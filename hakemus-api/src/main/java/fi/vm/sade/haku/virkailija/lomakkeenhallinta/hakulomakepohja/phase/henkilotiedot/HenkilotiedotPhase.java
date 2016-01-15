@@ -188,7 +188,7 @@ public final class HenkilotiedotPhase {
 
         ElementBuilder emailBuilder = TextQuestion(OppijaConstants.ELEMENT_ID_EMAIL).inline().size(50).pattern(EMAIL_REGEX)
                             .formParams(formParameters);
-        emailBuilder.validator(new EmailInLowercaseValidator());
+        emailBuilder.validator(lowercaseEmailValidator());
         if (formParameters.isUniqueApplicantRequired()) {
             emailBuilder.validator(new EmailUniqueValidator());
         }
@@ -309,9 +309,12 @@ public final class HenkilotiedotPhase {
                                     .inline()
                                     .size(50)
                                     .pattern(EMAIL_REGEX)
-                                    .validator(new EmailInLowercaseValidator())));
+                                    .validator(lowercaseEmailValidator())));
         }
         return henkilotiedot;
+    }
+    private static Validator lowercaseEmailValidator() {
+        return new RegexFieldValidator("form.email.lowercase","[\\p{javaLowerCase}\\W]*");
     }
 
     private static ElementBuilder createNameQuestionBuilder(final String id, final int size) {
