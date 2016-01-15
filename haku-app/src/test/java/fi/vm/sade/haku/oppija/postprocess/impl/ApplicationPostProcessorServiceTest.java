@@ -60,7 +60,34 @@ public class ApplicationPostProcessorServiceTest {
         answerMap.put(OppijaConstants.ELEMENT_ID_NATIONALITY, OppijaConstants.NATIONALITY_CODE_FI);
         answerMap.put(OppijaConstants.ELEMENT_ID_FIRST_LANGUAGE, "fi");
     }
-    
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testWillNotMergePersonsWithDifferentSSNs() {
+        Person p1 = new Person("Etunimi", "Etunimi", "Sukunimi", "070187-951E",
+                "070187", false, "etu.nimi@example.org", "Mies", "Kaupunki",
+                false, "fi", OppijaConstants.NATIONALITY_CODE_FI, "fi",
+                "", "");
+        Person p2 = new Person("Etunimi", "Etunimi", "Sukunimi", "070187-949C",
+                "070187", false, "etu.nimi@example.org", "Mies", "Kaupunki",
+                false, "fi", OppijaConstants.NATIONALITY_CODE_FI, "fi",
+                "", "");
+        p1.mergeWith(p2);
+    }
+
+    @Test
+    public void testWillMergePersonsWithEqualSSNs() {
+        Person p1 = new Person("Etunimi", "Etunimi", "Sukunimi", "070187-949C",
+                "070187", false, "etu.nimi@example.org", "Mies", "Kaupunki",
+                false, "fi", OppijaConstants.NATIONALITY_CODE_FI, "fi",
+                "", "");
+        Person p2 = new Person("Etunimi", "Etunimi", "Sukunimi", "070187-949C",
+                "070187", false, "testi@example.org", "Mies", "Kaupunki",
+                false, "fi", OppijaConstants.NATIONALITY_CODE_FI, "fi",
+                "", "");
+        p1.mergeWith(p2);
+        assertEquals(p1.getEmail(), "testi@example.org");
+    }
+
     @Test
     public void testSetPersonFi() {
         Application application = new Application();

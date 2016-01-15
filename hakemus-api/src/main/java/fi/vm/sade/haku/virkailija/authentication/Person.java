@@ -141,12 +141,18 @@ public class Person {
     }
 
     public Person mergeWith(Person other) {
+        if (isNotBlank(this.socialSecurityNumber) &&
+                isNotBlank(other.socialSecurityNumber) &&
+                !this.socialSecurityNumber.equals(other.socialSecurityNumber)) {
+            throw new IllegalArgumentException("Unable to merge person objects with different social security numbers");
+        }
+        this.noSocialSecurityNumber = other.noSocialSecurityNumber != null ? other.noSocialSecurityNumber : this.noSocialSecurityNumber;
+        this.socialSecurityNumber = isNotBlank(other.socialSecurityNumber) ? other.socialSecurityNumber : this.socialSecurityNumber;
+
         this.firstNames =  isNotBlank(other.firstNames) ? other.firstNames : this.firstNames;
         this.nickName = isNotBlank(other.nickName) ? other.nickName : this.nickName;
         this.lastName = isNotBlank(other.lastName) ? other.lastName : this.lastName;
-        this.socialSecurityNumber = isNotBlank(other.socialSecurityNumber) ? other.socialSecurityNumber : this.socialSecurityNumber;
         this.dateOfBirth = isNotBlank(other.dateOfBirth) ? other.dateOfBirth : this.dateOfBirth;
-        this.noSocialSecurityNumber = other.noSocialSecurityNumber != null ? other.noSocialSecurityNumber : this.noSocialSecurityNumber;
         this.email = isNotBlank(other.email) ? other.email : this.email;
         this.sex = isNotBlank(other.sex) ? other.sex : this.sex;
         this.securityOrder = other.securityOrder != null ? other.securityOrder : this.securityOrder;
