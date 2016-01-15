@@ -78,6 +78,7 @@ import static fi.vm.sade.haku.oppija.hakemus.service.ApplicationModelUtil.restor
 import static fi.vm.sade.haku.oppija.lomake.util.StringUtil.safeToString;
 import static org.apache.commons.lang.StringUtils.isEmpty;
 import static org.apache.commons.lang.StringUtils.isNotEmpty;
+import static org.apache.commons.lang3.StringUtils.isBlank;
 
 @Service
 public class ApplicationServiceImpl implements ApplicationService {
@@ -410,10 +411,8 @@ public class ApplicationServiceImpl implements ApplicationService {
     private void updateEligibilityStatusToApplicationNotes(Application application,
                                                            PreferenceEligibility preferenceEligibility) {
 
-        int preferenceEligibilityIndex = application.getPreferenceEligibilities().indexOf(preferenceEligibility) + 1;
-
-        String eligibilityNote = preferenceEligibilityIndex + ". hakukelpoisuutta muutettu: " +
-          PreferenceEligibility.getStatusMessage(preferenceEligibility.getStatus()) + 
+        String eligibilityNote = ApplicationUtil.getApplicationOptionName(application, preferenceEligibility) +
+          ". Hakukelpoisuutta muutettu: " + PreferenceEligibility.getStatusMessage(preferenceEligibility.getStatus()) +
           ", " + PreferenceEligibility.getSourceMessage(preferenceEligibility.getSource());
         application.addNote(new ApplicationNote(eligibilityNote, new Date(), "järjestelmä"));
     }
