@@ -247,6 +247,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         } catch (CachingRestClient.HttpException hte) {
             if (hte.getStatusCode() == 404) {
                 return null;
+            } else if (200 <= hte.getStatusCode() && hte.getStatusCode() < 400) {
+                return null;
             } else {
                 throw new RemoteServiceException(targetService + url, hte);
             }

@@ -141,7 +141,8 @@ public class PostProcessWorkerImpl implements PostProcessWorker {
                 loggerAspect.logUpdateApplicationInPostProcessing(application, changes, "Hakemuksen yksilöinti");
             }
         } catch (Exception e) {
-            LOGGER.error("post process failed for application: " + updateQuery.getOid(), e);
+            LOGGER.error("post process (identification) failed for application: " + updateQuery.getOid(), e);
+            setProcessingStateToFailed(application, e.getMessage());
         }
     }
 
