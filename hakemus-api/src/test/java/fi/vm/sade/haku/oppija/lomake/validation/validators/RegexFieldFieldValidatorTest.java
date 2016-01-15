@@ -61,7 +61,7 @@ public class RegexFieldFieldValidatorTest {
     public void validateValid() throws Exception {
         Map<String, String> values = ImmutableMap.of(FIELD_NAME, "test");
         RegexFieldValidator test = new RegexFieldValidator("yleinen.virheellinenArvo", "test");
-        ValidationResult validationResult = test.validate(new ValidationInput(element, values, null, null, ValidationInput.ValidationContext.officer_modify));
+        ValidationResult validationResult = test.validate(new ValidationInput(element, values, null, "", ValidationInput.ValidationContext.officer_modify));
         assertFalse(validationResult.hasErrors());
     }
 
@@ -69,7 +69,7 @@ public class RegexFieldFieldValidatorTest {
     public void validateInvalid() throws Exception {
         Map<String, String> values = ImmutableMap.of(FIELD_NAME, "test2");
         RegexFieldValidator test = new RegexFieldValidator("yleinen.virheellinenArvo", "test");
-        ValidationResult validationResult = test.validate(new ValidationInput(element, values, null, null, ValidationInput.ValidationContext.officer_modify));
+        ValidationResult validationResult = test.validate(new ValidationInput(element, values, null, "", ValidationInput.ValidationContext.officer_modify));
         assertTrue(validationResult.hasErrors());
     }
 
@@ -97,6 +97,6 @@ public class RegexFieldFieldValidatorTest {
 
     private ValidationResult validate(String name) {
         Map<String, String> values = ImmutableMap.of(FIELD_NAME, name);
-        return regexFieldFieldValidator.validate(new ValidationInput(element, values, null, null, ValidationInput.ValidationContext.officer_modify));
+        return regexFieldFieldValidator.validate(new ValidationInput(element, values, null, "", ValidationInput.ValidationContext.officer_modify));
     }
 }

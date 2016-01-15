@@ -114,7 +114,7 @@ public class ElementTreeValidatorTest {
         textQuestion.setValidator
                 (new RequiredFieldValidator("id", "error.message.key"));
         ValidationResult validationResult = elementTreeValidator.validate(new ValidationInput(textQuestion, new HashMap<String, String>(),
-                null, null, ValidationInput.ValidationContext.officer_modify));
+                null, "", ValidationInput.ValidationContext.officer_modify));
         assertTrue(validationResult.hasErrors());
     }
 
@@ -133,7 +133,7 @@ public class ElementTreeValidatorTest {
         Element phase = ElementTree.getFirstChild(applicationSystem.getForm());
         HashMap<String, String> values = fillFormWithoutAsuinmaa();
         values.put("asuinmaa", asuinmaa);
-        ValidationResult validationResult = elementTreeValidator.validate(new ValidationInput(phase, values, null, null, ValidationInput.ValidationContext.officer_modify));
+        ValidationResult validationResult = elementTreeValidator.validate(new ValidationInput(phase, values, null, "", ValidationInput.ValidationContext.officer_modify));
         assertEquals(errorCount, validationResult.getErrorMessages().size());
     }
 

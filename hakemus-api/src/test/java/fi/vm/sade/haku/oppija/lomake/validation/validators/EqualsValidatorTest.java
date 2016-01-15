@@ -30,7 +30,7 @@ public class EqualsValidatorTest {
     public void testValidateNotFound() throws Exception {
         EqualsValidator equalsValidator = new EqualsValidator(TEXT_KEY, VALID_VALUE);
         ValidationResult validate = equalsValidator.validate(new ValidationInput(question, new HashMap<String, String>(),
-                null, null, ValidationInput.ValidationContext.officer_modify));
+                null, "", ValidationInput.ValidationContext.officer_modify));
         assertTrue(validate.hasErrors());
     }
 
@@ -38,7 +38,7 @@ public class EqualsValidatorTest {
     public void testValidateNotEqual() throws Exception {
         EqualsValidator equalsValidator = new EqualsValidator(TEXT_KEY, VALID_VALUE);
         ValidationResult validate = equalsValidator.validate(new ValidationInput(question, ImmutableMap.of(FIELD_NAME, VALID_VALUE + "1"),
-                null, null, ValidationInput.ValidationContext.officer_modify));
+                null, "", ValidationInput.ValidationContext.officer_modify));
         assertTrue(validate.hasErrors());
     }
 
@@ -46,7 +46,7 @@ public class EqualsValidatorTest {
     public void testValidatePass() throws Exception {
         EqualsValidator equalsValidator = new EqualsValidator(TEXT_KEY, VALID_VALUE);
         ValidationResult validate = equalsValidator.validate(new ValidationInput(question, ImmutableMap.of(FIELD_NAME, VALID_VALUE),
-                null, null, ValidationInput.ValidationContext.officer_modify));
+                null, "", ValidationInput.ValidationContext.officer_modify));
         assertFalse(validate.hasErrors());
     }
 }

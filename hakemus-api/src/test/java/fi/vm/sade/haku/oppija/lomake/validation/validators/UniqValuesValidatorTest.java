@@ -34,14 +34,14 @@ public class UniqValuesValidatorTest {
     @Test
     public void testValidateFalse() throws Exception {
         ValidationResult validate = uniqValuesValidator.validate(new ValidationInput(element, ImmutableMap.of("AI", "1", "BI", "1"),
-                null, null, ValidationInput.ValidationContext.officer_modify));
+                null, "", ValidationInput.ValidationContext.officer_modify));
         assertTrue(validate.hasErrors());
     }
 
     @Test
     public void testValidateTrue() throws Exception {
         ValidationResult validate = uniqValuesValidator.validate(new ValidationInput(element, ImmutableMap.of("AI", "1", "BI", "2"),
-                null, null, ValidationInput.ValidationContext.officer_modify));
+                null, "", ValidationInput.ValidationContext.officer_modify));
         assertFalse(validate.hasErrors());
     }
 
@@ -50,7 +50,7 @@ public class UniqValuesValidatorTest {
         Map<String, String> values = new HashMap<String, String>(1);
         values.put("AI", "a");
         values.put("BI", "b");
-        ValidationResult validate = uniqValuesValidator.validate(new ValidationInput(element, values, null, null, ValidationInput.ValidationContext.officer_modify));
+        ValidationResult validate = uniqValuesValidator.validate(new ValidationInput(element, values, null, "", ValidationInput.ValidationContext.officer_modify));
         assertFalse(validate.hasErrors());
     }
 }

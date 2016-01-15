@@ -55,7 +55,7 @@ public class RegexFieldValidatorTest {
     public void testValidateValid() throws Exception {
         values.put(FIELD_NAME, TEST_VALUE);
         RegexFieldValidator validator = createValidator(TEST_VALUE);
-        ValidationResult validationResult = validator.validate(new ValidationInput(element, values, null, null, ValidationInput.ValidationContext.officer_modify));
+        ValidationResult validationResult = validator.validate(new ValidationInput(element, values, null, "", ValidationInput.ValidationContext.officer_modify));
         assertFalse(validationResult.hasErrors());
     }
 
@@ -63,7 +63,7 @@ public class RegexFieldValidatorTest {
     public void testValidateInvalid() throws Exception {
         values.put(FIELD_NAME, TEST_VALUE + "Ä");
         RegexFieldValidator validator = createValidator(TEST_VALUE);
-        ValidationResult validationResult = validator.validate(new ValidationInput(element, values, null, null, ValidationInput.ValidationContext.officer_modify));
+        ValidationResult validationResult = validator.validate(new ValidationInput(element, values, null, "", ValidationInput.ValidationContext.officer_modify));
         assertTrue(validationResult.hasErrors());
     }
 
@@ -71,7 +71,7 @@ public class RegexFieldValidatorTest {
     public void testValidatePattern() throws Exception {
         values.put(FIELD_NAME, TEST_VALUE);
         RegexFieldValidator validator = createValidator(PATTERN);
-        ValidationResult validationResult = validator.validate(new ValidationInput(element, values, null, null, ValidationInput.ValidationContext.officer_modify));
+        ValidationResult validationResult = validator.validate(new ValidationInput(element, values, null, "", ValidationInput.ValidationContext.officer_modify));
         assertFalse(validationResult.hasErrors());
     }
 
@@ -219,14 +219,14 @@ public class RegexFieldValidatorTest {
     @Test
     public void testValidateWorkExperienceWithoutValue() throws Exception {
         RegexFieldValidator validator = createValidator(PATTERN_WORK_EXPERIENCE);
-        ValidationResult validationResult = validator.validate(new ValidationInput(element, values, null, null, ValidationInput.ValidationContext.officer_modify));
+        ValidationResult validationResult = validator.validate(new ValidationInput(element, values, null, "", ValidationInput.ValidationContext.officer_modify));
         assertFalse(validationResult.hasErrors());
     }
 
     private ValidationResult validateWorkExperience(final String value) {
         values.put(FIELD_NAME, value);
         RegexFieldValidator validator = createValidator(PATTERN_WORK_EXPERIENCE);
-        return validator.validate(new ValidationInput(element, values, null, null, ValidationInput.ValidationContext.officer_modify));
+        return validator.validate(new ValidationInput(element, values, null, "", ValidationInput.ValidationContext.officer_modify));
     }
 
     private RegexFieldValidator createValidator(final String pattern) {
