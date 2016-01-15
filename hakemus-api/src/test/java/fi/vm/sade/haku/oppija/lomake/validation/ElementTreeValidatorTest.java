@@ -92,6 +92,7 @@ public class ElementTreeValidatorTest {
         EmailUniqueConcreteValidator emailUniqueConcreteValidator = mock(EmailUniqueConcreteValidator.class);
         EmailInLowercaseConcreteValidator emailInLowercaseConcreteValidator = mock(EmailInLowercaseConcreteValidator.class);
         when(emailUniqueConcreteValidator.validate(any(ValidationInput.class))).thenReturn(new ValidationResult());
+        when(emailInLowercaseConcreteValidator.validate(any(ValidationInput.class))).thenReturn(new ValidationResult());
         ValidatorFactory validatorFactory = new ValidatorFactory(ssnUniqueConcreteValidator, ssnAndPreferenceUniqueConcreteValidator,
                 preferenceConcreteValidator, emailUniqueConcreteValidator,emailInLowercaseConcreteValidator);
 
@@ -147,7 +148,7 @@ public class ElementTreeValidatorTest {
         Element phase = ElementTree.getFirstChild(applicationSystem.getForm());
         HashMap<String, String> values = fillFormWithoutAsuinmaa();
         values.put("asuinmaa", asuinmaa);
-        ValidationResult validationResult = elementTreeValidator.validate(new ValidationInput(phase, values, null, ASID, ValidationInput.ValidationContext.officer_modify));
+        ValidationResult validationResult = elementTreeValidator.validate(new ValidationInput(phase, values, null, null, ValidationInput.ValidationContext.officer_modify));
         assertEquals(errorCount, validationResult.getErrorMessages().size());
     }
 
