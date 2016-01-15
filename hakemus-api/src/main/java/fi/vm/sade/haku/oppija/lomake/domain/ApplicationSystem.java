@@ -34,6 +34,10 @@ import static org.apache.commons.lang.BooleanUtils.toBoolean;
 @Document
 public class ApplicationSystem implements Serializable {
 
+    public enum State {
+        ACTIVE, LOCKED, PUBLISHED, CLOSED, ERROR
+    }
+
     private static final long serialVersionUID = 709005625385191180L;
     @Id
     private String id;
@@ -123,6 +127,40 @@ public class ApplicationSystem implements Serializable {
             }
         }
         return false;
+    }
+
+    @Transient
+    public State getApplicationSystemState() {
+        if (applicationPeriods.size() < 1 ){
+            return State.ERROR;
+        }
+        for(ApplicationPeriod applicationPeriod: applicationPeriods) {
+            if(applicationPeriod.isActive()) {
+                return State.ACTIVE;
+            }
+        }
+        final Date lastApplicationPeriodEnd = getLastApplicationPeriodEnd(applicationPeriods);
+        final Date now = new Date();
+        if (now.after(lastApplicationPeriodEnd)){
+            return State.CLOSED;
+        }
+        for(ApplicationPeriod applicationPeriod: applicationPeriods) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(applicationPeriod.getStart());
+            calendar.roll(Calendar.DATE, -2);
+            if (now.after(calendar.getTime()) && now.before(applicationPeriod.getStart())) {
+                return State.LOCKED;
+            }
+        }
+        return State.PUBLISHED;
+    }
+
+    private Date getLastApplicationPeriodEnd(List<ApplicationPeriod> applicationPeriods) {
+        SortedSet<Date> sort = new TreeSet<Date>();
+        for(ApplicationPeriod applicationPeriod: applicationPeriods) {
+            sort.add(applicationPeriod.getEnd());
+        }
+        return sort.last();
     }
 
     @Transient

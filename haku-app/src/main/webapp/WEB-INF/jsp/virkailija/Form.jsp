@@ -144,7 +144,14 @@
                     <fmt:message key="virkailija.hakemus.maksun.tila.maksettu" var="paymentState"/>
                 </c:if>
                 <c:if test="${application.requiredPaymentState eq 'NOT_OK'}">
-                    <fmt:message key="virkailija.hakemus.maksun.tila.eitehda" var="paymentState"/>
+                    <c:choose>
+                        <c:when test="${applicationSystem.applicationSystemState eq 'ACTIVE'}">
+                            <fmt:message key="virkailija.hakemus.maksun.tila.odottaa" var="paymentState"/>
+                        </c:when>
+                        <c:otherwise>
+                            <fmt:message key="virkailija.hakemus.maksun.tila.eitehda" var="paymentState"/>
+                        </c:otherwise>
+                    </c:choose>
                 </c:if>
 
                 <tr>
@@ -185,7 +192,7 @@
                 <tr>
                     <c:choose>
                         <c:when test="${paymentState ne ''}">
-                            <haku:infoCell key="virkailija.hakemus.maksun.tila" value='${paymentState}'/>
+                            <haku:infoCell key="virkailija.hakemus.maksun.tila" value='${paymentState}' cellId="infocell_paymentstate"/>
                         </c:when>
                         <c:otherwise>
                             <td>&nbsp;</td>

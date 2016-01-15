@@ -4,6 +4,7 @@ import static fi.vm.sade.haku.oppija.ui.selenium.DefaultValues.KYSYMYS_POHJAKOUL
 import static fi.vm.sade.haku.oppija.ui.selenium.DefaultValues.TUTKINTO_YLIOPPILAS;
 import static org.junit.Assert.assertEquals;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.junit.Before;
@@ -67,12 +68,7 @@ public class OfficerIT extends DummyModelBaseItTest {
 
     @Test
     public void testSearchAndModify() throws Exception {
-        String baseUrl = getBaseUrl();
-        HakuClient hakuClient = new HakuClient(baseUrl + "lomake/", "application.json");
-        hakuClient.apply();
-        final LoginPage loginPage = new LoginPage(seleniumContainer.getDriver());
-        navigateToPath("user", "login");
-        loginPage.login("officer");
+        openApplication();
         activate(applicationOidPrefix + ".00000000013", "OfficerIt");
         navigateToPath("virkailija", "hakemus");
         clearSearch();
@@ -89,6 +85,26 @@ public class OfficerIT extends DummyModelBaseItTest {
         setValue(OppijaConstants.LUKIO_KIELI, "FI", true);
         seleniumContainer.getDriver().findElement(new By.ByClassName("save")).click();
         checkApplicationState("Puutteellinen");
+    }
+
+    @Test
+    public void testPaymentStateNotOkShowAsWaitingForPayment() throws Exception {
+        openApplication();
+        clearSearch();
+        setValue("entry", applicationOidPrefix + ".00002513058");
+        clickSearch();
+        WebElement applicationLink = findByClassName("application-link").get(0);
+        applicationLink.click();
+        waitForElement(120, By.id("application"));
+        assertEquals("Odottaa", findElementById("_infocell_paymentstate").getText());
+    }
+
+    private void openApplication() throws IOException {
+        String baseUrl = getBaseUrl();
+        HakuClient hakuClient = new HakuClient(baseUrl + "lomake/", "application.json");
+        hakuClient.apply();
+        navigateToPath("user", "login");
+        new LoginPage(seleniumContainer.getDriver()).login("officer");
     }
 
     private List<WebElement> SearchByTerm(final String term) {
