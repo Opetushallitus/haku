@@ -111,6 +111,7 @@ public class PostProcessWorkerImpl implements PostProcessWorker {
                     sendMailService.sendReceivedEmail(application);
                 } catch (EmailException e) {
                     LOGGER.error("Send mail failed for application:" + application.getOid(), e);
+                    throw e;
                 }
             }
         } catch (Exception e) {
