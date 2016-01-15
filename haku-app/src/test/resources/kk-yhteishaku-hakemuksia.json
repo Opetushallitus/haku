@@ -1158,6 +1158,7 @@
       "filingLanguage": "en",
       "sessionId": "anonymousUser"
     },
+    "requiredPaymentState": "NOT_OK",
     "authorizationMeta": {
       "opoAllowed": false,
       "aoOrganizations": {
