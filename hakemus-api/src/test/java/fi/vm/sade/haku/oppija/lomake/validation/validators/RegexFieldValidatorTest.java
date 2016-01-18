@@ -54,14 +54,14 @@ public class RegexFieldValidatorTest {
     @Test
     public void testValidEmailInLowercaseValidator() throws Exception {
         final EmailInLowercaseConcreteValidator validator = new EmailInLowercaseConcreteValidator(null);
-        values.put(FIELD_NAME, "ääkkösellinen_mutta_validi@email.com");
+        values.put(FIELD_NAME, "ääkkösellinen_mutta_validi1@email.com");
         ValidationResult validationResult = validator.validate(new ValidationInput(element, values, null, "", ValidationInput.ValidationContext.officer_modify));
         assertFalse(validationResult.hasErrors());
     }
     @Test(expected = NullPointerException.class)
     public void testInvalidEmailInLowercaseValidator() throws Exception {
         final EmailInLowercaseConcreteValidator validator = new EmailInLowercaseConcreteValidator(null);
-        values.put(FIELD_NAME, "äÄkkösellinen_mutta_validi@email.com");
+        values.put(FIELD_NAME, "äÄkkösellinen_mutta_invalidi@email.com");
         ValidationResult validationResult = validator.validate(new ValidationInput(element, values, null, "", ValidationInput.ValidationContext.officer_modify));
         assertFalse(validationResult.hasErrors());
     }

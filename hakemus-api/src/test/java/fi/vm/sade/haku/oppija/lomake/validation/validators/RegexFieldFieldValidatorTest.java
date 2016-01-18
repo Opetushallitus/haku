@@ -59,7 +59,7 @@ public class RegexFieldFieldValidatorTest {
 
     @Test
     public void testAllLowercaseRegex() {
-        Map<String, String> values = ImmutableMap.of(FIELD_NAME, "testi@gmail.com");
+        Map<String, String> values = ImmutableMap.of(FIELD_NAME, "testi1@gmail.com");
         RegexFieldValidator test = new RegexFieldValidator("yleinen.virheellinenArvo", "[\\p{javaLowerCase}\\W]*");
         ValidationResult validationResult = test.validate(new ValidationInput(element, values, null, "", ValidationInput.ValidationContext.officer_modify));
         assertFalse(validationResult.hasErrors());
