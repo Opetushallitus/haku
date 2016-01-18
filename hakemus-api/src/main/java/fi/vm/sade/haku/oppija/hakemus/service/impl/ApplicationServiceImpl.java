@@ -394,14 +394,18 @@ public class ApplicationServiceImpl implements ApplicationService {
         for (PreferenceEligibility eligibility : application.getPreferenceEligibilities()) {
             PreferenceEligibility.Status status = eligibility.getStatus();
             if ((PreferenceEligibility.Status.NOT_CHECKED.equals(status)
-                            || PreferenceEligibility.Status.AUTOMATICALLY_CHECKED_ELIGIBLE.equals(status))
+                    || PreferenceEligibility.Status.AUTOMATICALLY_CHECKED_ELIGIBLE.equals(status))
                     && aosForAutomaticEligibility.contains(eligibility.getAoId())) {
+
                 eligibility.setStatus(acceptedYo
                         ? PreferenceEligibility.Status.AUTOMATICALLY_CHECKED_ELIGIBLE
                         : PreferenceEligibility.Status.NOT_CHECKED);
                 eligibility.setSource(PreferenceEligibility.Source.REGISTER);
 
-                updateEligibilityStatusToApplicationNotes(application, eligibility);
+                if(!eligibility.getStatus().equals(status) &&
+                   !PreferenceEligibility.Status.NOT_CHECKED.equals(eligibility.getStatus())) {
+                    updateEligibilityStatusToApplicationNotes(application, eligibility);
+                }
                 
             }
         }
