@@ -16,6 +16,7 @@
 
 package fi.vm.sade.haku.virkailija.lomakkeenhallinta.resources;
 
+import com.google.api.client.repackaged.com.google.common.base.Throwables;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormGenerator;
@@ -60,7 +61,7 @@ public class FormBuilderResource {
         log.info("Starting to generate application system " + oid);
         doGenerate(oid);
         log.info("Generated application system " +oid);
-        return Response.ok().build();
+        return Response.ok("ok").build();
     }
 
     @POST
@@ -78,7 +79,7 @@ public class FormBuilderResource {
             doGenerate(applicationSystem.getId());
             log.info("Generated application system " +applicationSystem.getId());
         }
-        return Response.ok().build();
+        return Response.ok("ok").build();
     }
 
     private void doGenerate(final String oid) {
@@ -88,6 +89,7 @@ public class FormBuilderResource {
             applicationSystemService.save(as);
         } catch (RuntimeException exception) {
             log.error("Application system generation failed for " + oid, exception);
+            throw Throwables.propagate(exception);
         }
         log.debug("Generated application system " + oid);
     }
