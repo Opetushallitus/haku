@@ -402,8 +402,7 @@ public class ApplicationServiceImpl implements ApplicationService {
                         : PreferenceEligibility.Status.NOT_CHECKED);
                 eligibility.setSource(PreferenceEligibility.Source.REGISTER);
 
-                if(!eligibility.getStatus().equals(status) &&
-                   !PreferenceEligibility.Status.NOT_CHECKED.equals(eligibility.getStatus())) {
+                if(!eligibility.getStatus().equals(status)) {
                     updateEligibilityStatusToApplicationNotes(application, eligibility);
                 }
                 
