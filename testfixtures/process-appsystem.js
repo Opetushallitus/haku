@@ -2,6 +2,10 @@ var processJson = require("./process-stdin");
 
 function stripLists(obj) {
   (function stripListsFrom(children) {
+    if (typeof children === "undefined") {
+      console.log('Warning: binary form? It probably needs to be base64 decoded and gunzipped.');
+      return;
+    }
     children.forEach(function(child) {
       if (child.options != null) {
           var finnishValue = child.options.filter(function(item) { return ["FI", "FIN", "00100", "SV", "EN"].indexOf(item.value) >= 0 });
