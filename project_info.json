@@ -1,0 +1,7 @@
+{
+  "name": "haku",
+
+  "Makefile": "no",
+
+  "uses": "hakuperusteet cas koodisto koulutusinformaatio oppijantunnistus suoritusrekisteri organisaatio tarjonta ohjausparametrit authentication-service"
+}
