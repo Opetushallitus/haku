@@ -30,19 +30,16 @@ public class ValidatorFactory {
     private final SsnAndPreferenceUniqueConcreteValidator ssnAndPreferenceUniqueConcreteValidator;
     private final PreferenceConcreteValidator preferenceConcreteValidator;
     private final EmailUniqueConcreteValidator emailUniqueConcreteValidator;
-    private final EmailInLowercaseConcreteValidator emailInLowercaseConcreteValidator;
 
     @Autowired
     public ValidatorFactory(SsnUniqueConcreteValidator ssnUniqueConcreteValidator,
                             SsnAndPreferenceUniqueConcreteValidator ssnAndPreferenceUniqueConcreteValidator,
                             PreferenceConcreteValidator preferenceConcreteValidator,
-                            EmailUniqueConcreteValidator emailUniqueConcreteValidator,
-                            EmailInLowercaseConcreteValidator emailInLowercaseConcreteValidator) {
+                            EmailUniqueConcreteValidator emailUniqueConcreteValidator) {
         this.ssnUniqueConcreteValidator = ssnUniqueConcreteValidator;
         this.ssnAndPreferenceUniqueConcreteValidator = ssnAndPreferenceUniqueConcreteValidator;
         this.preferenceConcreteValidator = preferenceConcreteValidator;
         this.emailUniqueConcreteValidator = emailUniqueConcreteValidator;
-        this.emailInLowercaseConcreteValidator = emailInLowercaseConcreteValidator;
     }
 
     public Validator buildValidator(final Validator validator) {
@@ -55,8 +52,6 @@ public class ValidatorFactory {
             return preferenceConcreteValidator;
         } else if (EmailUniqueValidator.class.isAssignableFrom(validatorClass)) {
             return emailUniqueConcreteValidator;
-        } else if (EmailInLowercaseValidator.class.isAssignableFrom(validatorClass)) {
-            return emailInLowercaseConcreteValidator;
         }
         return validator;
     }
