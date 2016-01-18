@@ -86,7 +86,8 @@ public class HakumaksuService {
      *       - Jos mikään koulutus ei ETA/Sveitsi -> MAKSU (ei-ETA/Sveitsi-alueen pohjakoulutusten seurauksena)
      */
     public ImmutableMap<ApplicationOptionOid, ImmutableSet<Eligibility>> paymentRequirements(MergedAnswers answers) {
-        ImmutableMap.Builder<ApplicationOptionOid, ImmutableSet<Eligibility>> applicationPaymentEligibilities = ImmutableMap.builder();
+        ImmutableMap.Builder<ApplicationOptionOid, ImmutableSet<Eligibility>> builder = ImmutableMap.builder();
+        ImmutableMap<ApplicationOptionOid, ImmutableSet<Eligibility>> applicationPaymentEligibilities = builder.build();
 
         List<ApplicationOptionOid> preferenceAoIds = asApplicationOptionOids(getPreferenceAoIds(answers));
         for (EducationRequirements applicationOptionRequirement : util.getEducationRequirements(preferenceAoIds)) {
@@ -110,10 +111,16 @@ public class HakumaksuService {
             }
 
             ImmutableSet<Eligibility> aoPaymentEligibilities = exemptingAoFound ? ImmutableSet.<Eligibility>of() : aoPaymentEligibilityBuilder.build();
-            applicationPaymentEligibilities.put(applicationOptionRequirement.applicationOptionId, aoPaymentEligibilities);
+            // We need to check whether the applicationPaymentEligibilities already contains this application option.
+            // This is because the applicationPaymentEligibilities is built prior to form validation, so there might
+            // exist duplicate application options in the application, which violates the uniqueness constraint of the
+            // immutable maps.
+            if (! applicationPaymentEligibilities.containsKey(applicationOptionRequirement.applicationOptionId)) {
+                builder.put(applicationOptionRequirement.applicationOptionId, aoPaymentEligibilities);
+                applicationPaymentEligibilities = builder.build();
+            }
         }
-
-        return applicationPaymentEligibilities.build();
+        return applicationPaymentEligibilities;
     }
 
     private List<ApplicationOptionOid> asApplicationOptionOids(List<String> preferenceAoIds) {
