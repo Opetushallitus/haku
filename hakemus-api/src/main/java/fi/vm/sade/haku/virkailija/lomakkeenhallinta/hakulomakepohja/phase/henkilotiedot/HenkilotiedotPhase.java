@@ -314,7 +314,7 @@ public final class HenkilotiedotPhase {
         return henkilotiedot;
     }
     private static Validator lowercaseEmailValidator() {
-        return new RegexFieldValidator("form.email.lowercase","[\\p{javaLowerCase}\\W]*");
+        return new EmailInLowercaseValidator();
     }
 
     private static ElementBuilder createNameQuestionBuilder(final String id, final int size) {
