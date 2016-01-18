@@ -16,10 +16,7 @@
 
 package fi.vm.sade.haku.oppija.lomake.validation;
 
-import fi.vm.sade.haku.oppija.lomake.validation.validators.EmailUniqueValidator;
-import fi.vm.sade.haku.oppija.lomake.validation.validators.PreferenceValidator;
-import fi.vm.sade.haku.oppija.lomake.validation.validators.SsnAndPreferenceUniqueValidator;
-import fi.vm.sade.haku.oppija.lomake.validation.validators.SsnUniqueValidator;
+import fi.vm.sade.haku.oppija.lomake.validation.validators.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

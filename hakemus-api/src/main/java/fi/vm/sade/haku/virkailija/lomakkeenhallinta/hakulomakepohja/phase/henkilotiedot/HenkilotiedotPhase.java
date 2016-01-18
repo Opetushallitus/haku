@@ -27,10 +27,8 @@ import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Option;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.Radio;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.AddElementRule;
 import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.*;
-import fi.vm.sade.haku.oppija.lomake.validation.validators.EmailUniqueValidator;
-import fi.vm.sade.haku.oppija.lomake.validation.validators.PastDateValidator;
-import fi.vm.sade.haku.oppija.lomake.validation.validators.RegexFieldValidator;
-import fi.vm.sade.haku.oppija.lomake.validation.validators.SocialSecurityNumberFieldValidator;
+import fi.vm.sade.haku.oppija.lomake.validation.Validator;
+import fi.vm.sade.haku.oppija.lomake.validation.validators.*;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
@@ -190,6 +188,7 @@ public final class HenkilotiedotPhase {
 
         ElementBuilder emailBuilder = TextQuestion(OppijaConstants.ELEMENT_ID_EMAIL).inline().size(50).pattern(EMAIL_REGEX)
                             .formParams(formParameters);
+        emailBuilder.validator(lowercaseEmailValidator());
         if (formParameters.isUniqueApplicantRequired()) {
             emailBuilder.validator(new EmailUniqueValidator());
         }
@@ -309,9 +308,13 @@ public final class HenkilotiedotPhase {
                             TextQuestion(OppijaConstants.ELEMENT_ID_HUOLTAJANSAHKOPOSTI)
                                     .inline()
                                     .size(50)
-                                    .pattern(EMAIL_REGEX)));
+                                    .pattern(EMAIL_REGEX)
+                                    .validator(lowercaseEmailValidator())));
         }
         return henkilotiedot;
+    }
+    private static Validator lowercaseEmailValidator() {
+        return new RegexFieldValidator("form.email.lowercase","[\\p{javaLowerCase}\\W]*");
     }
 
     private static ElementBuilder createNameQuestionBuilder(final String id, final int size) {
