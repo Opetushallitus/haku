@@ -19,6 +19,7 @@ package fi.vm.sade.haku.oppija.lomake.validation.validators;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.questions.TextQuestion;
 import fi.vm.sade.haku.oppija.lomake.util.SpringInjector;
+import fi.vm.sade.haku.oppija.lomake.validation.EmailInLowercaseConcreteValidator;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationInput;
 import fi.vm.sade.haku.oppija.lomake.validation.ValidationResult;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
@@ -49,6 +50,20 @@ public class RegexFieldValidatorTest {
     public void setUp() throws Exception {
         SpringInjector.setTestMode(true);
         values = new HashMap<String, String>();
+    }
+    @Test
+    public void testValidEmailInLowercaseValidator() throws Exception {
+        final EmailInLowercaseConcreteValidator validator = new EmailInLowercaseConcreteValidator(null);
+        values.put(FIELD_NAME, "ääkkösellinen_mutta_validi@email.com");
+        ValidationResult validationResult = validator.validate(new ValidationInput(element, values, null, "", ValidationInput.ValidationContext.officer_modify));
+        assertFalse(validationResult.hasErrors());
+    }
+    @Test(expected = NullPointerException.class)
+    public void testInvalidEmailInLowercaseValidator() throws Exception {
+        final EmailInLowercaseConcreteValidator validator = new EmailInLowercaseConcreteValidator(null);
+        values.put(FIELD_NAME, "äÄkkösellinen_mutta_validi@email.com");
+        ValidationResult validationResult = validator.validate(new ValidationInput(element, values, null, "", ValidationInput.ValidationContext.officer_modify));
+        assertFalse(validationResult.hasErrors());
     }
     @Test
     public void testValidateValid() throws Exception {

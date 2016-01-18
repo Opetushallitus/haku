@@ -90,9 +90,11 @@ public class ElementTreeValidatorTest {
         PreferenceConcreteValidator preferenceConcreteValidator = mock(PreferenceConcreteValidator.class);
         when(ssnUniqueConcreteValidator.validate(any(ValidationInput.class))).thenReturn(new ValidationResult());
         EmailUniqueConcreteValidator emailUniqueConcreteValidator = mock(EmailUniqueConcreteValidator.class);
+        EmailInLowercaseConcreteValidator emailInLowercaseConcreteValidator = mock(EmailInLowercaseConcreteValidator.class);
         when(emailUniqueConcreteValidator.validate(any(ValidationInput.class))).thenReturn(new ValidationResult());
+        when(emailInLowercaseConcreteValidator.validate(any(ValidationInput.class))).thenReturn(new ValidationResult());
         ValidatorFactory validatorFactory = new ValidatorFactory(ssnUniqueConcreteValidator, ssnAndPreferenceUniqueConcreteValidator,
-                preferenceConcreteValidator, emailUniqueConcreteValidator);
+                preferenceConcreteValidator, emailUniqueConcreteValidator,emailInLowercaseConcreteValidator);
 
         elementTreeValidator = new ElementTreeValidator(validatorFactory);
     }
