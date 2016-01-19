@@ -25,7 +25,7 @@
     #parse("email/email_attachment_requests.vm")
 
     <p>
-        Under ansökningstiden kan du ändra dina ansökningsönskemål via följande länk: <a href="{{verification-link}}">{{verification-link}}</a>. Länken är i kraft ända till ${expires}. Du kan ändra dina kontaktuppgifter också efter änsökningstiden.
+        Under ansökningstiden kan du ändra dina ansökningsönskemål via följande länk: <a href="{{verification-link}}">{{verification-link}}</a>.Länken är personlig. Länken är i kraft ända till ${expires}. 
     </p>
 
     <p>Svara inte på detta meddelande, det har skickats automatiskt.</p>
