@@ -27,7 +27,7 @@
     <p>
         The changes to your application have been saved. You can change your study programme choices during the
         application period with the following link: <a href="{{verification-link}}">{{verification-link}}</a>. The link
-        is valid until ${expires}. You can change your contact information also after the application period.
+        is valid until ${expires}.
     </p>
 
     <p>This is an automatically generated email, please do not reply.</p>
