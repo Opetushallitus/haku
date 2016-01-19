@@ -26,7 +26,7 @@
 
     <p>
         Muutokset hakemukseesi on tallennettu. Voit tehdä muutoksia hakutoiveisiisi seuraavan linkin kautta
-        hakuaikana: <a href="{{verification-link}}">{{verification-link}}</a>. Linkki on henkilökohtainen. Linkki on voimassa
+        hakuaikana: <a href="{{verification-link}}">{{verification-link}}</a> Linkki on henkilökohtainen. Linkki on voimassa
         $expires asti. 
     </p>
 
