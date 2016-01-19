@@ -27,11 +27,10 @@
     <p>
         Din ansökan har mottagits. Om du vill ändra dina ansökningsönskemål, kan du under ansökningstiden
         göra ändringar via följande länk
-        <a href="{{verification-link}}">{{verification-link}}</a>
+        <a href="{{verification-link}}">{{verification-link}}</a> Länken är personlig.
     </p>
     <p>
-        Länken är i
-        kraft ända till ${expires}. 
+        Länken är i kraft ända till ${expires}. 
     </p>
 
     <p>
