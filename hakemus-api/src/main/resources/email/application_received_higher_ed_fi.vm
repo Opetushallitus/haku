@@ -27,6 +27,12 @@
         tarvittaessa Oma Opintopolku -palvelussa.
     </p>
 
+    #if ($nonSecurelinkEmail)
+        <p>
+            Teksti, joka näkyy jos ei securelink. TODO!
+        </p>
+    #end
+
     <h4>Hakutoiveesi</h4>
     <p>
         #foreach ($preference in $preferences)

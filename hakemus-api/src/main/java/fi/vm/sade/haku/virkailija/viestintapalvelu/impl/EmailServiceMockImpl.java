@@ -1,6 +1,9 @@
 package fi.vm.sade.haku.virkailija.viestintapalvelu.impl;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Stack;
 
 import fi.vm.sade.ryhmasahkoposti.api.dto.EmailData;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,16 +19,24 @@ import fi.vm.sade.haku.virkailija.viestintapalvelu.dto.ApplicationByEmailDTO;
 @Profile(value = {"dev", "it"})
 public class EmailServiceMockImpl implements EmailService {
 
+    Stack<EmailData> sentMails = new Stack<>();
+
     public EmailServiceMockImpl() {
     }
 
-	@Override
-	public String sendApplicationByEmail(ApplicationByEmailDTO applicationByEmail) throws IOException {
-		return "1";
-	}
+    @Override
+    public String sendApplicationByEmail(ApplicationByEmailDTO applicationByEmail) throws IOException {
+        return "1";
+    }
 
-	@Override
-	public String sendEmail(EmailData emailData) {
-		return "1";
-	}
+    @Override
+    public String sendEmail(EmailData emailData) {
+        sentMails.add(emailData);
+        return "1";
+    }
+
+    public EmailData getLastSentMail() {
+        return sentMails.pop();
+    }
+
 }

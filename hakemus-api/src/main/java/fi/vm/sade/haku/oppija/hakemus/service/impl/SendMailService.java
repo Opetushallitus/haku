@@ -259,6 +259,7 @@ public class SendMailService {
         ctx.put("lomakeTulostusLiite", resourceBundle.getString("lomake.tulostus.liite"));
         ctx.put("lomakeTulostusLiiteToimitusosoite", resourceBundle.getString("lomake.tulostus.liite.toimitusosoite"));
         ctx.put("lomakeTulostusLiiteDeadline", resourceBundle.getString("lomake.tulostus.liite.deadline"));
+        ctx.put("nonSecurelinkEmail", doesNotUseSecurelink(applicationSystem));
 
         return ctx;
     }
