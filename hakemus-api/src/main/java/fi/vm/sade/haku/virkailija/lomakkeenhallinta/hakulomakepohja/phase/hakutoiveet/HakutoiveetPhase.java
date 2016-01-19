@@ -128,7 +128,7 @@ public class HakutoiveetPhase {
         }
 
         if (formParameters.kysytaankoHarkinnanvaraisuus()) {
-            pr.addChild(createDiscretionaryQuestionsAndRules(id, DISCRETIONARY_EDUCATION_DEGREE, formParameters));
+            pr.addChild(createDiscretionaryQuestionsAndRules(id, formParameters));
         }
 
         if (formParameters.kysytaankoSora()) {
@@ -197,7 +197,6 @@ public class HakutoiveetPhase {
     }
 
     private static Element[] createDiscretionaryQuestionsAndRules(final String index,
-                                                                  final String discretionary_education_degree,
                                                                   final FormParameters formParameters) {
         Element discretionary = RadioBuilder.Radio(index + "-discretionary")
                 .addOptions(ImmutableList.of(
@@ -223,7 +222,7 @@ public class HakutoiveetPhase {
         discretionary.addChild(discretionaryFollowUpRule);
 
         Element discretionaryRule =
-                createVarEqualsToValueRule(index + "-Koulutus-educationDegree", discretionary_education_degree);
+                createVarEqualsToValueRule(index + "-Koulutus-discretionary", KYLLA);
 
         Element discretionaryRule2 = createVarEqualsToValueRule("POHJAKOULUTUS",
                 PERUSKOULU, YLIOPPILAS, OSITTAIN_YKSILOLLISTETTY, ALUEITTAIN_YKSILOLLISTETTY, YKSILOLLISTETTY);
