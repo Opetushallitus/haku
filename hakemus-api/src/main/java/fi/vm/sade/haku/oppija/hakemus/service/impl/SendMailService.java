@@ -169,6 +169,7 @@ public class SendMailService {
             setEmail(emailAddress);
         }};
         EmailMessage message = new EmailMessage() {{
+            setCallingProcess("HAKUAPP");
             setSubject(emailSubject);
             setFrom(emailFrom);
             setHtml(true);

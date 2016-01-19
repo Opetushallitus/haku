@@ -1,10 +1,16 @@
 package fi.vm.sade.haku.virkailija.viestintapalvelu.impl;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-
-import javax.ws.rs.core.MediaType;
-
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
+import fi.vm.sade.generic.rest.CachingRestClient;
+import fi.vm.sade.haku.RemoteServiceException;
+import fi.vm.sade.haku.virkailija.viestintapalvelu.EmailDataBuilder;
+import fi.vm.sade.haku.virkailija.viestintapalvelu.EmailService;
+import fi.vm.sade.haku.virkailija.viestintapalvelu.PDFService;
+import fi.vm.sade.haku.virkailija.viestintapalvelu.dto.ApplicationByEmailDTO;
+import fi.vm.sade.ryhmasahkoposti.api.dto.EmailData;
+import fi.vm.sade.ryhmasahkoposti.api.dto.EmailSendId;
 import org.apache.http.HttpResponse;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
@@ -14,16 +20,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
-import com.google.gson.Gson;
-
-import fi.vm.sade.generic.rest.CachingRestClient;
-import fi.vm.sade.haku.RemoteServiceException;
-import fi.vm.sade.haku.virkailija.viestintapalvelu.EmailDataBuilder;
-import fi.vm.sade.haku.virkailija.viestintapalvelu.EmailService;
-import fi.vm.sade.haku.virkailija.viestintapalvelu.PDFService;
-import fi.vm.sade.haku.virkailija.viestintapalvelu.dto.ApplicationByEmailDTO;
-import fi.vm.sade.ryhmasahkoposti.api.dto.EmailData;
-import fi.vm.sade.ryhmasahkoposti.api.dto.EmailSendId;
+import javax.ws.rs.core.MediaType;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 
 @Service
 @Profile(value = {"default", "devluokka", "vagrant"})
@@ -40,6 +39,9 @@ public class EmailServiceImpl implements EmailService {
     private PDFService pdfService;
     private EmailDataBuilder emailDataBuilder;
     private CachingRestClient cachingRestClient;
+	ObjectMapper objectMapper = new ObjectMapper(){{
+		this.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
+	}};
 
     @Autowired
     public EmailServiceImpl(PDFService pdfService, EmailDataBuilder emailDataBuilder) {
@@ -77,8 +79,13 @@ public class EmailServiceImpl implements EmailService {
 	}
 	
 	public String sendEmail(EmailData emailData) {
-		Gson gson = new Gson();
-		String emailDataJson = gson.toJson(emailData);
+		String emailDataJson;
+
+		try {
+			emailDataJson = objectMapper.writeValueAsString(emailData);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 		
 		String url = "/email";
 		CachingRestClient cachingRestClient = getCachingRestClient();
@@ -86,7 +93,7 @@ public class EmailServiceImpl implements EmailService {
 		try {
 			HttpResponse response = cachingRestClient.post(url, MediaType.APPLICATION_JSON, emailDataJson);
 			String responseJson = EntityUtils.toString(response.getEntity());
-			EmailSendId emailSendId = gson.fromJson(responseJson, EmailSendId.class);
+			EmailSendId emailSendId = new Gson().fromJson(responseJson, EmailSendId.class);
 			return emailSendId.getId();
 		} catch (IOException e) {
             throw new RemoteServiceException(targetService + url, e);
