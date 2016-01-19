@@ -14,8 +14,6 @@ import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationAttachmentRequest;
 import fi.vm.sade.haku.oppija.hakemus.domain.util.ApplicationUtil;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.MailTemplateUtil;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.apache.commons.mail.EmailException;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
@@ -32,13 +30,14 @@ import java.util.*;
 import java.util.concurrent.ExecutionException;
 
 import static fi.vm.sade.haku.oppija.common.oppijantunnistus.OppijanTunnistusDTO.LanguageCodeISO6391.*;
-import static fi.vm.sade.haku.oppija.hakemus.service.impl.SendMailService.EducationDegree.*;
+import static fi.vm.sade.haku.oppija.hakemus.service.impl.SendMailService.EducationDegree.HIGHER;
+import static fi.vm.sade.haku.oppija.hakemus.service.impl.SendMailService.EducationDegree.SECONDARY;
 import static fi.vm.sade.haku.oppija.hakemus.service.impl.SendMailService.TemplateType.*;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters.isHuoltajanTiedotKysyttava;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.valmis.ValmisPhase.MUSIIKKI_TANSSI_LIIKUNTA_EDUCATION_CODES;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.MailTemplateUtil.dateTimeFormatter;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.MailTemplateUtil.getTextOrEmpty;
-import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.EDUCATION_CODE_KEY;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.*;
 import static org.apache.commons.lang.StringUtils.defaultString;
 import static org.apache.commons.lang.Validate.notNull;
 import static org.apache.commons.lang3.StringUtils.isEmpty;
@@ -181,7 +180,7 @@ public class SendMailService {
     }
 
     private static Locale getLocale(Application application) {
-        String lang = application.getVastauksetMerged().get(OppijaConstants.ELEMENT_ID_CONTACT_LANGUAGE);
+        String lang = application.getVastauksetMerged().get(ELEMENT_ID_CONTACT_LANGUAGE);
         Locale locale = FI;
         if ("ruotsi".equals(lang)) {
             locale = SV;
@@ -248,13 +247,13 @@ public class SendMailService {
     }
 
     private String getApplicantName(Application application) {
-        String firstName = application.getVastauksetMerged().get(OppijaConstants.ELEMENT_ID_FIRST_NAMES);
-        String lastName = application.getVastauksetMerged().get(OppijaConstants.ELEMENT_ID_LAST_NAME);
+        String firstName = application.getVastauksetMerged().get(ELEMENT_ID_FIRST_NAMES);
+        String lastName = application.getVastauksetMerged().get(ELEMENT_ID_LAST_NAME);
         return firstName + " " + lastName;
     }
 
     private String getFormName(Application application, ApplicationSystem applicationSystem) {
-        String lang = application.getVastauksetMerged().get(OppijaConstants.ELEMENT_ID_CONTACT_LANGUAGE);
+        String lang = application.getVastauksetMerged().get(ELEMENT_ID_CONTACT_LANGUAGE);
         String realLang = "fi";
         if (lang.equals("ruotsi")) {
             realLang = "sv";
@@ -273,8 +272,8 @@ public class SendMailService {
         int maxPrefs = applicationSystem.getMaxApplicationOptions();
         List<String> preferences = new ArrayList<String>(maxPrefs);
         for (int i = 1; i <= maxPrefs; i++) {
-            String koulutus = answers.get(String.format(OppijaConstants.PREFERENCE_NAME, i));
-            String koulu = answers.get(String.format(OppijaConstants.PREFERENCE_ORGANIZATION, i));
+            String koulutus = answers.get(String.format(PREFERENCE_NAME, i));
+            String koulu = answers.get(String.format(PREFERENCE_ORGANIZATION, i));
             if (isEmpty(koulutus) && isEmpty(koulu)) {
                 break;
             }
