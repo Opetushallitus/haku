@@ -25,9 +25,9 @@
     #parse("email/email_attachment_requests.vm")
 
     <p>
-        Muutokset hakemukseesi on tallennettu. Voit tehdä muutoksia hakutoiveisiisi tai yhteystietoihisi seuraavan linkin kautta
+        Muutokset hakemukseesi on tallennettu. Voit tehdä muutoksia hakutoiveisiisi seuraavan linkin kautta
         hakuaikana: <a href="{{verification-link}}">{{verification-link}}</a>. Linkki on voimassa
-        $expires asti. Yhteystietojasi voit muuttaa myös hakuajan jälkeen.
+        $expires asti. 
     </p>
 
     <p>Älä vastaa tähän viestiin - viesti on lähetetty automaattisesti.</p>
