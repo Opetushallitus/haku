@@ -90,17 +90,6 @@
             </exclusions>
         </dependency>
         <dependency>
-            <groupId>fi.vm.sade.ryhmasahkoposti</groupId>
-            <artifactId>ryhmasahkoposti-api</artifactId>
-            <version>${viestintapalvelu.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>commons-codec</groupId>
-                    <artifactId>commons-codec</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
             <version>${selenium.version}</version>

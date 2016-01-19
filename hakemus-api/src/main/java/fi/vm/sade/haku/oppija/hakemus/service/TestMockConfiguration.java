@@ -4,6 +4,8 @@ import fi.vm.sade.haku.http.MockedRestClient;
 import fi.vm.sade.haku.http.RestClient;
 import fi.vm.sade.haku.oppija.hakemus.service.impl.SendMailService;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
+import fi.vm.sade.haku.virkailija.viestintapalvelu.EmailService;
+import fi.vm.sade.haku.virkailija.viestintapalvelu.impl.EmailServiceMockImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -48,6 +50,8 @@ public class TestMockConfiguration {
 
     MockedRestClient restClient = new MockedRestClient(testMappings());
 
+    EmailService emailService = new EmailServiceMockImpl();
+
     @Bean(name = "hakumaksuService")
     public HakumaksuService hakumaksuService() {
         return new HakumaksuService(
@@ -63,7 +67,7 @@ public class TestMockConfiguration {
 
     @Bean(name = "sendMailService")
     public SendMailService sendMailService() {
-        return new SendMailService(applicationSystemService, restClient, emailApplicationModifyLinkFi, emailApplicationModifyLinkSv, emailApplicationModifyLinkEn);
+        return new SendMailService(applicationSystemService, restClient, emailService, emailApplicationModifyLinkFi, emailApplicationModifyLinkSv, emailApplicationModifyLinkEn);
     }
 
 }

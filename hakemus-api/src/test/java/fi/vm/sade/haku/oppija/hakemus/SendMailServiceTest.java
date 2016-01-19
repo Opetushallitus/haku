@@ -12,6 +12,8 @@ import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
+import fi.vm.sade.haku.virkailija.viestintapalvelu.EmailService;
+import fi.vm.sade.haku.virkailija.viestintapalvelu.impl.EmailServiceMockImpl;
 import org.apache.commons.mail.EmailException;
 import org.junit.Before;
 import org.junit.Test;
@@ -86,6 +88,7 @@ public class SendMailServiceTest {
 
 
     MockedRestClient restClient = new MockedRestClient();
+    EmailService emailService = new EmailServiceMockImpl();
     ApplicationSystemService applicationSystemService;
     SendMailService service;
 
@@ -117,7 +120,7 @@ public class SendMailServiceTest {
         when(applicationSystemService.getApplicationSystem(applicationSystemId)).thenReturn(applicationSystem);
         when(applicationSystemService.getApplicationSystem(applicationSystemIdSecondary)).thenReturn(applicationSystemSecondary);
 
-        service = new SendMailService(applicationSystemService, restClient, linkFi, linkSv, linkEn);
+        service = new SendMailService(applicationSystemService, restClient, emailService, linkFi, linkSv, linkEn);
         setField(service, "oppijanTunnistusUrl", oppijantunnistusUrl);
     }
 
