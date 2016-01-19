@@ -14,6 +14,7 @@ import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationAttachmentRequest;
 import fi.vm.sade.haku.oppija.hakemus.domain.util.ApplicationUtil;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
+import fi.vm.sade.haku.virkailija.viestintapalvelu.EmailService;
 import org.apache.commons.mail.EmailException;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
@@ -63,16 +64,20 @@ public class SendMailService {
 
     final RestClient restClient;
 
+    final EmailService emailService;
+
     final Map<LanguageCodeISO6391, String> langToLink;
 
     @Autowired
     public SendMailService(final ApplicationSystemService applicationSystemService,
                            final RestClient restClient,
+                           final EmailService emailService,
                            @Value("${email.application.modify.link.fi}") String emailApplicationModifyLinkFi,
                            @Value("${email.application.modify.link.sv}") String emailApplicationModifyLinkSv,
                            @Value("${email.application.modify.link.en}") String emailApplicationModifyLinkEn) {
         this.applicationSystemService = applicationSystemService;
         this.restClient = restClient;
+        this.emailService = emailService;
         this.langToLink = ImmutableMap.of(
                 fi, emailApplicationModifyLinkFi,
                 sv, emailApplicationModifyLinkSv,

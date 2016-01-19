@@ -76,7 +76,7 @@ public class EmailServiceImpl implements EmailService {
 		return pdf;
 	}
 	
-	private String sendEmail(EmailData emailData) {
+	public String sendEmail(EmailData emailData) {
 		Gson gson = new Gson();
 		String emailDataJson = gson.toJson(emailData);
 		
