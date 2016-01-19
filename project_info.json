@@ -3,5 +3,5 @@
 
   "Makefile": "no",
 
-  "uses": "activemq hakuperusteet cas koodisto koulutusinformaatio oppijantunnistus suoritusrekisteri-rest organisaatio tarjonta ohjausparametrit authentication-service"
+  "uses": "activemq hakuperusteet-rest cas koodisto-rest koulutusinformaatio-rest oppijan-tunnistus suoritusrekisteri-rest organisaatio-rest tarjonta-rest ohjausparametrit authentication-service"
 }
