@@ -15,6 +15,9 @@ import fi.vm.sade.haku.oppija.hakemus.domain.util.ApplicationUtil;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.EmailService;
+import fi.vm.sade.ryhmasahkoposti.api.dto.EmailData;
+import fi.vm.sade.ryhmasahkoposti.api.dto.EmailMessage;
+import fi.vm.sade.ryhmasahkoposti.api.dto.EmailRecipient;
 import org.apache.commons.mail.EmailException;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
@@ -61,6 +64,9 @@ public class SendMailService {
 
     @Value("${oppijantunnistus.create.url}")
     String oppijanTunnistusUrl;
+
+    @Value("${email.replyTo:noreply@opintopolku.fi}")
+    String emailFrom;
 
     final RestClient restClient;
 
@@ -139,6 +145,7 @@ public class SendMailService {
 
     private void sendEmail(final Application application, final String emailAddress, final TemplateType type) throws EmailException {
         final ApplicationSystem as = applicationSystemService.getApplicationSystem(application.getApplicationSystemId());
+
         Locale locale = getLocale(application);
         ResourceBundle messages = ResourceBundle.getBundle("messages", locale);
         Template tmpl = selectTemplate(locale, as, type);
@@ -148,7 +155,37 @@ public class SendMailService {
         tmpl.merge(ctx, sw);
         final String emailTemplate = sw.toString();
 
-        final LanguageCodeISO6391 emailLang = LanguageCodeISO6391.valueOf(locale.getLanguage());
+        if (doesNotUseSecurelink(as)) {
+            sendNonSecurelinkEmail(emailAddress, emailSubject, emailTemplate);
+        } else {
+            sendSecurelinkEmail(application, as, emailAddress, emailSubject, emailTemplate, LanguageCodeISO6391.valueOf(locale.getLanguage()));
+        }
+    }
+
+    // Send e-mail that doesn't contain e-mail link for modifying application option preferences
+    private void sendNonSecurelinkEmail(final String emailAddress, final String emailSubject,
+                                        final String emailTemplate) throws EmailException {
+        EmailRecipient recipient = new EmailRecipient(){{
+            setEmail(emailAddress);
+        }};
+        EmailMessage message = new EmailMessage() {{
+            setSubject(emailSubject);
+            setFrom(emailFrom);
+            setHtml(true);
+            setCharset("utf-8");
+            setBody(emailTemplate);
+        }};
+        try {
+            emailService.sendEmail(new EmailData(Lists.newArrayList(recipient), message));
+        } catch (Exception e) {
+            throw new EmailException("Sähköpostin lähettäminen epäonnistui", e);
+        }
+    }
+
+    // Send e-mail that contains a "secure" link for modifying application option preferences
+    private void sendSecurelinkEmail(final Application application, final ApplicationSystem as, final String emailAddress,
+                                     final String emailSubject, final String emailTemplate,
+                                     final LanguageCodeISO6391 emailLang) throws EmailException {
         OppijanTunnistusDTO body = new OppijanTunnistusDTO() {{
             this.url = langToLink.get(emailLang);
             this.expires = getModificationLinkExpiration(application, as);
@@ -310,6 +347,12 @@ public class SendMailService {
                 TRUE.equals(answers.get("preference4_urheilijalinjan_lisakysymys")) ||
                 TRUE.equals(answers.get("preference5_urheilijan_ammatillisen_koulutuksen_lisakysymys")) ||
                 TRUE.equals(answers.get("preference5_urheilijalinjan_lisakysymys")));
+    }
+
+    private static boolean doesNotUseSecurelink(ApplicationSystem as) {
+        return HAKUTAPA_JATKUVA_HAKU.equals(as.getHakutapa())
+                || KOHDEJOUKKO_ERITYISOPETUKSENA_JARJESTETTAVA_AMMATILLINEN.equals(as.getKohdejoukkoUri())
+                || KOHDEJOUKON_TARKENNE_SIIRTOHAKU.equals(as.getKohdejoukonTarkenne());
     }
 
     private boolean isDiscretionary(final Application application) {
