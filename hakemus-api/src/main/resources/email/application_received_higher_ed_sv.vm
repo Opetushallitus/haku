@@ -25,14 +25,13 @@
     #parse("email/email_attachment_requests.vm")
 
     <p>
-        Din ansökan har mottagits. Om du vill ändra dina ansökningsönskemål
-        eller uppdatera dina kontaktuppgifter, kan du under ansökningstiden
+        Din ansökan har mottagits. Om du vill ändra dina ansökningsönskemål, kan du under ansökningstiden
         göra ändringar via följande länk
         <a href="{{verification-link}}">{{verification-link}}</a>
     </p>
     <p>
         Länken är i
-        kraft ända till ${expires}. Du kan ändra dina kontaktuppgifter också efter änsökningstiden.
+        kraft ända till ${expires}. 
     </p>
 
     <p>
