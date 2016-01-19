@@ -28,7 +28,7 @@
         Your application has been received. If you wish to change the study
         programmes you're applying to, you
         can use the following link and make the changes within the application
-        period: <a href="{{verification-link}}">{{verification-link}}</a>
+        period: <a href="{{verification-link}}">{{verification-link}}</a> The link is personal.
     </p>
     <p> 
         The link is valid until ${expires}.
