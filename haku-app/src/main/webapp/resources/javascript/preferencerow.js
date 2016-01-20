@@ -143,7 +143,7 @@ var preferenceRow = {
                         "data-attachments": hasAttachments,
                         "data-attachmentgroups": attachmentGroups.join(","),
                         "data-athlete": item.athleteEducation,
-                        "data-discretionary": item.discretionary
+                        "data-discretionary": item.kysytaanHarkinnanvaraiset
                     });
                     option.text(item.name);
                     $selectInput.append(option);
@@ -190,7 +190,7 @@ var preferenceRow = {
         $("#" + selectInputId + "-id-athlete").val(false).change();
         $("#" + selectInputId + "-id-attachments").val("").change();
         $("#" + selectInputId + "-id-attachmentgroups").val("").change();
-        $("#" + selectInputId + "-id-discretionary").val("").change();
+        $("#" + selectInputId + "-id-discretionary").val(false).change();
         $("#" + selectInputId).html("<option>&nbsp;</option>");
         preferenceRow.clearChildLONames($("#" + selectInputId).data("childlonames"));
         "${sortableItem.id}-reset"

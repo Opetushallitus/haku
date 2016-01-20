@@ -126,6 +126,7 @@ describe('2. asteen lomake', function () {
                 "preference1-Koulutus-id-athlete": "false",
                 "preference1-Koulutus-id-kaksoistutkinto": "false",
                 "preference1-Koulutus-id-vocational": "true",
+                "preference1-Koulutus-id-discretionary": "true",
                 "preference1-Koulutus-id-attachments": "false",
                 "preference1-discretionary": "false",
                 "asiointikieli": "suomi"

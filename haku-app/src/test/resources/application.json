@@ -46,6 +46,7 @@
             "preference1-Koulutus": "Kaivosalan perustutkinto, pk",
             "preference1-Koulutus-id-aoIdentifier": "333",
             "preference1-Koulutus-id-educationcode": "koulutus_381203",
+            "preference1-Koulutus-id-discretionary": "false",
             "preference1_sora_terveys": "false",
             "preference1_sora_oikeudenMenetys": "false",
             

@@ -758,7 +758,7 @@ public class ApplicationServiceImpl implements ApplicationService {
                 ensuredAnswers.put(basekey + "-Koulutus-id-kaksoistutkinto", String.valueOf(applicationOption.isKaksoistutkinto()));
                 ensuredAnswers.put(basekey + "-Koulutus-id-vocational", String.valueOf(applicationOption.isVocational()));
                 ensuredAnswers.put(basekey + "-Koulutus-id-educationcode", safeToString(applicationOption.getEducationCodeUri()));
-                ensuredAnswers.put(basekey + "-Koulutus-id-discretionary", safeToString(applicationOption.isKysytaanHarkinnanvaraiset()));
+                ensuredAnswers.put(basekey + "-Koulutus-id-discretionary", String.valueOf(applicationOption.isKysytaanHarkinnanvaraiset()));
 
                 final ArrayList<String> aoGroupList = new ArrayList<String>();
                 final List<OrganizationGroupDTO> organizationGroups = applicationOption.getOrganizationGroups();
