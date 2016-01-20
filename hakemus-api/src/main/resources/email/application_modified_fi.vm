@@ -25,9 +25,7 @@
         <p>
            Muutokset hakemukseesi on tallennettu. 
         <p/>
-        <p>
-            Älä vastaa tähän viestiin - viesti on lähetetty automaattisesti.
-        </p>
+
     #else
         <p>
             Muutokset hakemukseesi on tallennettu. Voit hakuaikana tehdä muutoksia hakutoiveisiisi seuraavan linkin
