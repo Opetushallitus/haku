@@ -40,7 +40,7 @@ public class EmailServiceImpl implements EmailService {
     private PDFService pdfService;
     private EmailDataBuilder emailDataBuilder;
     private CachingRestClient cachingRestClient;
-	ObjectMapper objectMapper = new ObjectMapper();
+	private ObjectMapper objectMapper = new ObjectMapper();
 
     @Autowired
     public EmailServiceImpl(PDFService pdfService, EmailDataBuilder emailDataBuilder) {
