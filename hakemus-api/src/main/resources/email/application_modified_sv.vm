@@ -23,7 +23,7 @@
 
     #if ($nonSecurelinkEmail)
         <p>
-            TODO: teksti, joka näytetään kun securelinkkiä ei lähetetä.
+            Ändingarna i din ansökan har mottagits.
         </p>
     #else
         <p>
