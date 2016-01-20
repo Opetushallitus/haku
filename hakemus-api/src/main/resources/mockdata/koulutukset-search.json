@@ -175,6 +175,7 @@
       "teachingLanguages": ["FI"],
       "organizationGroups": [],
       "athleteEducation": true,
+      "kysytaanHarkinnanvaraiset": true,
       "kaksoistutkinto": false,
       "vocational": true,
       "educationCodeUri": "koulutus_222222"
