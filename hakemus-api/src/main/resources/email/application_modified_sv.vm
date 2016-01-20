@@ -21,10 +21,16 @@
         #end
     </p>
 
-    <p>
-        Ändingarna i din ansökan har mottagits. Under ansökningstiden kan du ändra dina ansökningsönskemål via följande länk: <a href="{{verification-link}}">{{verification-link}}</a>. Länken är i kraft till
-        ${expires}. Länken är personlig.
-    </p>
+    #if ($nonSecurelinkEmail)
+        <p>
+            TODO: teksti, joka näytetään kun securelinkkiä ei lähetetä.
+        </p>
+    #else
+        <p>
+            Ändingarna i din ansökan har mottagits. Under ansökningstiden kan du ändra dina ansökningsönskemål via följande länk: <a href="{{verification-link}}">{{verification-link}}</a>. Länken är i kraft till
+            ${expires}. Länken är personlig.
+        </p>
+    #end
 
     <h4>Bilagor</h4>
     #parse("email/email_attachment_requests.vm")

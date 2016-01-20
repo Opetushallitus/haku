@@ -24,11 +24,17 @@
     <h4>Attachment requests</h4>
     #parse("email/email_attachment_requests.vm")
 
-    <p>
-        The changes to your application have been saved. You can change your study programme choices during the
-        application period with the following link: <a href="{{verification-link}}">{{verification-link}}</a> The link is personal. The link
-        is valid until ${expires}.
-    </p>
+    #if ($nonSecurelinkEmail)
+        <p>
+            TODO: teksti, joka näytetään kun securelinkkiä ei lähetetä.
+        </p>
+    #else
+        <p>
+            The changes to your application have been saved. You can change your study programme choices during the
+            application period with the following link: <a href="{{verification-link}}">{{verification-link}}</a> The link is personal. The link
+            is valid until ${expires}.
+        </p>
+    #end
 
     <p>This is an automatically generated email, please do not reply.</p>
 </div>
