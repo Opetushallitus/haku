@@ -23,8 +23,9 @@
 
     #if ($nonSecurelinkEmail)
         <p>
-            TODO: teksti, joka näytetään kun securelinkkiä ei lähetetä.
+            The changes to your application have been saved.
         </p>
+
     #else
         <p>
             The changes to your application have been saved. You can change your study programme choices during the
