@@ -5,7 +5,6 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import fi.vm.sade.auditlog.haku.HakuOperation;
 import fi.vm.sade.auditlog.haku.LogMessage;
-import fi.vm.sade.haku.RemoteServiceException;
 import fi.vm.sade.haku.oppija.common.organisaatio.Organization;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationGroupRestDTO;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
@@ -758,16 +757,6 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         modelResponse.addAnswers(new HashMap<String, String>(){{put("_meta_officerUi", "true");}});
         return modelResponse;
     }
-    
-    @Override
-    public Map<String, String> getNamesForNoteUsers(List<String> oids) {
-        List<Person> persons = authenticationService.getHenkiloList(oids);
-        Map<String, String> result = new HashMap<String, String>();
-        for(Person person: persons) {
-            result.put(person.getPersonOid(), person.getNickName() + " " + person.getLastName());
-        }
-        return result;
-    }
 
     private ApplicationNote createNote(String note) {
         return new ApplicationNote(note, new Date(), userSession.getUser().getUserName());
@@ -843,27 +832,18 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         PreferenceEligibility.Source newSource = PreferenceEligibility.Source.valueOf(dto.getSource());
         String newRejectionBasis = dto.getRejectionBasis();
         Boolean newChecked = dto.getPreferencesChecked();
-        
-        boolean updateStatus = newStatus != preferenceEligibility.getStatus();
-        if (updateStatus) {
+        if (newStatus != preferenceEligibility.getStatus()) {
             AUDIT.log(eligibilityAuditLogBuilder(application, dto)
                     .add("status", newStatus, preferenceEligibility.getStatus())
                     .build());
             preferenceEligibility.setStatus(newStatus);
         }
-        
-        boolean updateSource = newSource != preferenceEligibility.getSource();
-        if (updateSource) {
+        if (newSource != preferenceEligibility.getSource()) {
             AUDIT.log(eligibilityAuditLogBuilder(application, dto)
                     .add("source", newSource, preferenceEligibility.getSource())
                     .build());
             preferenceEligibility.setSource(newSource);
         }
-        
-        if (updateStatus || updateSource) {
-            updateEligibilityStatusToApplicationNotes(application, preferenceEligibility, newStatus, newSource, officerOid);
-        }
-        
         if (!newRejectionBasis.equals(preferenceEligibility.getRejectionBasis())) {
             AUDIT.log(eligibilityAuditLogBuilder(application, dto)
                     .add("rejectionBasis", newRejectionBasis, preferenceEligibility.getRejectionBasis())
@@ -879,21 +859,6 @@ public class OfficerUIServiceImpl implements OfficerUIService {
                 preferenceChecked.setCheckedByOfficerOid(officerOid);
             }
         }
-    }
-
-    private static void updateEligibilityStatusToApplicationNotes(Application application,
-                                                                  PreferenceEligibility preferenceEligibility,
-                                                                  PreferenceEligibility.Status status,
-                                                                  PreferenceEligibility.Source source,
-                                                                  String officerOid) {
-        
-        int preferenceEligibilityIndex = application.getPreferenceEligibilities().indexOf(preferenceEligibility) + 1;
-
-        String eligibilityNote = preferenceEligibilityIndex + ". hakukelpoisuutta muutettu: " + PreferenceEligibility.getStatusMessage(status);
-        if (PreferenceEligibility.Source.UNKNOWN != source) {
-            eligibilityNote += ", " + PreferenceEligibility.getSourceMessage(source);
-        }
-        application.addNote(new ApplicationNote(eligibilityNote, new Date(), officerOid));
     }
 
     private static void updateAttachmentRequestStatus(Application application, AttachmentDTO attachmentDTO, ApplicationAttachmentRequest attachment) {

@@ -29,7 +29,6 @@ import fi.vm.sade.haku.oppija.ui.common.UriUtil;
 import fi.vm.sade.haku.oppija.ui.controller.dto.AttachmentsAndEligibilityDTO;
 import fi.vm.sade.haku.oppija.ui.service.OfficerUIService;
 import fi.vm.sade.haku.oppija.ui.service.UIService;
-import fi.vm.sade.haku.virkailija.authentication.Person;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.EmailService;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.PDFService;
@@ -42,7 +41,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -51,7 +49,10 @@ import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static fi.vm.sade.haku.AuditHelper.AUDIT;
 import static fi.vm.sade.haku.AuditHelper.builder;
@@ -459,15 +460,7 @@ public class OfficerController {
         }
         return new ArrayList<Map<String, Object>>(0);
     }
-    
-    @POST
-    @Path("/hakemus/note/users")
-    @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Map<String, String> getNamesForNoteUsers(List<String> oids) {
-        return officerUIService.getNamesForNoteUsers(oids);
-    }
-    
+
     private String concatMultivaluedQueryParam(final String paramName, final MultivaluedMap<String, String> multiValues) {
         for (Map.Entry<String, List<String>> entry : multiValues.entrySet()) {
             LOGGER.debug(paramName + " " + entry.getKey() + " -> " + entry.getValue());
