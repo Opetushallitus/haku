@@ -198,6 +198,42 @@ describe('2. asteen lomake', function () {
         ));
     });
 
+    describe("Harkinnanvaraisuus lisäkysymykset", function() {
+        before(seqDone(
+            start,
+            visible(lomake.sukunimi),
+            postAsForm("/haku-app/lomake/1.2.246.562.5.50476818906", {
+                "Sukunimi": "Testikäs",
+                "Etunimet": "Asia Kas",
+                "Kutsumanimi": "Asia",
+                "kansalaisuus": "FIN",
+                "onkosinullakaksoiskansallisuus": "false",
+                "Henkilotunnus": "171175-830Y",
+                "Sähköposti": "foo@example.com",
+                "sukupuoli": "2",
+                "asuinmaa": "FIN",
+                "lahiosoite": "Testikatu 4",
+                "Postinumero": "00100",
+                "kotikunta": "janakkala",
+                "aidinkieli": "FI",
+                "POHJAKOULUTUS": "1",
+                "PK_PAATTOTODISTUSVUOSI": "2014",
+                "perusopetuksen_kieli": "FI"
+            })
+        ));
+
+        it("ei kysytä musiikkialalta", seqDone(
+            visible(lomake.sukunimi),
+            pageChange(lomake.fromHenkilotiedot),
+            headingVisible("Koulutustausta"),
+            pageChange(lomake.fromKoulutustausta),
+            headingVisible("Hakutoiveet"),
+            partials.valitseKoulutus(1, "Musiikkialan koulu", "Musiikkialan perustutkinto"),
+
+            notExists(lomake.harkinnanvaraisuus(1, false))
+        ));
+    });
+
     describe("VALMA, TELMA ja oppisopimus", function() {
             before(seqDone(
                 start,
