@@ -118,7 +118,7 @@ public class SendMailServiceTest {
         }));
 
         String body = sentMail.getEmail().getBody();
-        assertTrue(body.contains("Oma Opintopolku –palvelussa"));
+        assertTrue(body.contains("Oma Opintopolku -palvelussa"));
         assertFalse(body.contains("seuraavan linkin kautta"));
     }
 
