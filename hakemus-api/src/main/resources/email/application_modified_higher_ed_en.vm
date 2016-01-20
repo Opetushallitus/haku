@@ -26,7 +26,7 @@
 
     #if ($nonSecurelinkEmail)
         <p>
-            TODO: teksti, joka näytetään kun securelinkkiä ei lähetetä.
+            The changes to your application have been saved.
         </p>
     #else
         <p>
