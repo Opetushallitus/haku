@@ -23,7 +23,7 @@
 
     <p>
         Muutokset hakemukseesi on tallennettu. Voit hakuaikana tehdä muutoksia hakutoiveisiisi seuraavan linkin
-        kautta: <a href="{{verification-link}}">{{verification-link}}</a>. Linkki on voimassa $expires asti. Yhteystietojasi voi muuttaa hakuajan jälkeenkin.
+        kautta: <a href="{{verification-link}}">{{verification-link}}</a>. Linkki on voimassa $expires asti. 
     </p>
 
     <h4>Liitepyynnöt</h4>
