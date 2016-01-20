@@ -22,8 +22,8 @@
     </p>
 
     <p>
-        Ändingarna i din ansökan har mottagits. Under ansökningstiden kan du ändra dina ansökningsönskemål och kontaktuppgifter via följande länk: <a href="{{verification-link}}">{{verification-link}}</a>. Länken är i kraft till
-        ${expires}. Du kan ändra dina kontaktuppgifter också efter änsökningstiden.
+        Ändingarna i din ansökan har mottagits. Under ansökningstiden kan du ändra dina ansökningsönskemål via följande länk: <a href="{{verification-link}}">{{verification-link}}</a>. Länken är i kraft till
+        ${expires}. Länken är personlig.
     </p>
 
     <h4>Bilagor</h4>
