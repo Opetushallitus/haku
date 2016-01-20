@@ -181,6 +181,23 @@
       "educationCodeUri": "koulutus_222222"
     }
   ],
+  "1.2.246.562.10.35241670049": [
+    {
+      "id": "1.2.246.562.20.17550428336",
+      "name": "Musiikkialan perustutkinto",
+      "aoIdentifier": "892",
+      "educationDegree": "koulutusasteoph2002_32",
+      "childLONames": [],
+      "sora": false,
+      "teachingLanguages": ["FI"],
+      "organizationGroups": [],
+      "athleteEducation": false,
+      "kysytaanHarkinnanvaraiset": false,
+      "kaksoistutkinto": false,
+      "vocational": true,
+      "educationCodeUri": "koulutus_222222"
+    }
+  ],
   "1.2.246.562.10.55918814447": [
     {
       "id": "1.2.246.562.20.74195328591",
