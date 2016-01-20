@@ -17,7 +17,13 @@
 
     #if ($nonSecurelinkEmail)
         <p>
-            TODO: teksti, joka näytetään kun securelinkkiä ei lähetetä.
+            Hakemuksesi on vastaanotettu. 
+        <p/>
+        <p>
+            Jos sinulla on verkkopankkitunnukset, mobiilivarmenne tai sähköinen henkilökortti ja haluat tehdä muutoksia hakemukseesi, voit tehdä muutoksia hakuaikana Oma Opintopolku –palvelussa.
+        <p/>
+        <p>
+            Oma Opintopolku –palvelussa voit myös päivittää yhteystietojasi; nähdä valintojen tulokset ja ottaa opiskelupaikan vastaan.
         </p>
     #else
         <p>
