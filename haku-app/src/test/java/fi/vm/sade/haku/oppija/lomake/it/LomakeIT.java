@@ -109,6 +109,7 @@ public class LomakeIT extends DummyModelBaseItTest {
                 OppijaConstants.ELEMENT_ID_LISAKOULUTUS_AMMATTISTARTTI,
                 OppijaConstants.ELEMENT_ID_LISAKOULUTUS_MAAHANMUUTTO_LUKIO
                 );
+        setValue(OppijaConstants.KYMPPI_PAATTOTODISTUSVUOSI, "2012");
         setValue(OppijaConstants.PERUSOPETUS_KIELI, "FI");
         setValue("KOULUTUSPAIKKA_AMMATILLISEEN_TUTKINTOON", "false", true);
         nextPhase(OppijaConstants.PHASE_APPLICATION_OPTIONS);
