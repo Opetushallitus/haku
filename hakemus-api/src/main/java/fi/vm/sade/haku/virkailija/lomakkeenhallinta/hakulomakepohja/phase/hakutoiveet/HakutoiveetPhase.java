@@ -222,7 +222,7 @@ public class HakutoiveetPhase {
         discretionary.addChild(discretionaryFollowUpRule);
 
         Element discretionaryRule =
-                createVarEqualsToValueRule(index + "-Koulutus-discretionary", KYLLA);
+                createVarEqualsToValueRule(index + "-Koulutus-id-discretionary", KYLLA);
 
         Element discretionaryRule2 = createVarEqualsToValueRule("POHJAKOULUTUS",
                 PERUSKOULU, YLIOPPILAS, OSITTAIN_YKSILOLLISTETTY, ALUEITTAIN_YKSILOLLISTETTY, YKSILOLLISTETTY);
