@@ -118,7 +118,8 @@ public class SendMailServiceTest {
         }));
 
         String body = sentMail.getEmail().getBody();
-        assertTrue(body.contains("jos ei securelink"));
+        assertTrue(body.contains("Oma Opintopolku –palvelussa"));
+        assertFalse(body.contains("seuraavan linkin kautta"));
     }
 
     MockedRestClient restClient = new MockedRestClient();
