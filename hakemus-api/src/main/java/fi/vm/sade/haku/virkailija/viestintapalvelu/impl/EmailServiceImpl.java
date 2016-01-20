@@ -1,7 +1,5 @@
 package fi.vm.sade.haku.virkailija.viestintapalvelu.impl;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import fi.vm.sade.generic.rest.CachingRestClient;
 import fi.vm.sade.haku.RemoteServiceException;
@@ -13,6 +11,7 @@ import fi.vm.sade.ryhmasahkoposti.api.dto.EmailData;
 import fi.vm.sade.ryhmasahkoposti.api.dto.EmailSendId;
 import org.apache.http.HttpResponse;
 import org.apache.http.util.EntityUtils;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,9 +40,7 @@ public class EmailServiceImpl implements EmailService {
     private PDFService pdfService;
     private EmailDataBuilder emailDataBuilder;
     private CachingRestClient cachingRestClient;
-	ObjectMapper objectMapper = new ObjectMapper(){{
-		this.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
-	}};
+	ObjectMapper objectMapper = new ObjectMapper();
 
     @Autowired
     public EmailServiceImpl(PDFService pdfService, EmailDataBuilder emailDataBuilder) {
