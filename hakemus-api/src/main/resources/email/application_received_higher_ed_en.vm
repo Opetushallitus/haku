@@ -27,7 +27,13 @@
 
     #if ($nonSecurelinkEmail)
         <p>
-            TODO: teksti, joka näytetään kun securelinkkiä ei lähetetä.
+            Your application has been received. 
+        </p>
+        <p>
+            If you have Finnish online banking credentials, an electronic ID-card or mobile certificate and you wish to make changes in your application, you can make the changes in the My Studyinfo –service within the application period.
+        </p>
+        <p>
+           In the My Studyinfo -service you can also edit your answers, update your contact information, view the admission results and confirm the study place.
         </p>
     #else
         <p>
