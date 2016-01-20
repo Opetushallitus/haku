@@ -78,7 +78,6 @@ import static fi.vm.sade.haku.oppija.hakemus.service.ApplicationModelUtil.restor
 import static fi.vm.sade.haku.oppija.lomake.util.StringUtil.safeToString;
 import static org.apache.commons.lang.StringUtils.isEmpty;
 import static org.apache.commons.lang.StringUtils.isNotEmpty;
-import static org.apache.commons.lang3.StringUtils.isBlank;
 
 @Service
 public class ApplicationServiceImpl implements ApplicationService {
@@ -394,17 +393,14 @@ public class ApplicationServiceImpl implements ApplicationService {
         for (PreferenceEligibility eligibility : application.getPreferenceEligibilities()) {
             PreferenceEligibility.Status status = eligibility.getStatus();
             if ((PreferenceEligibility.Status.NOT_CHECKED.equals(status)
-                    || PreferenceEligibility.Status.AUTOMATICALLY_CHECKED_ELIGIBLE.equals(status))
+                            || PreferenceEligibility.Status.AUTOMATICALLY_CHECKED_ELIGIBLE.equals(status))
                     && aosForAutomaticEligibility.contains(eligibility.getAoId())) {
-
                 eligibility.setStatus(acceptedYo
                         ? PreferenceEligibility.Status.AUTOMATICALLY_CHECKED_ELIGIBLE
                         : PreferenceEligibility.Status.NOT_CHECKED);
                 eligibility.setSource(PreferenceEligibility.Source.REGISTER);
 
-                if(!eligibility.getStatus().equals(status)) {
-                    updateEligibilityStatusToApplicationNotes(application, eligibility);
-                }
+                updateEligibilityStatusToApplicationNotes(application, eligibility);
                 
             }
         }
@@ -414,8 +410,10 @@ public class ApplicationServiceImpl implements ApplicationService {
     private void updateEligibilityStatusToApplicationNotes(Application application,
                                                            PreferenceEligibility preferenceEligibility) {
 
-        String eligibilityNote = ApplicationUtil.getApplicationOptionName(application, preferenceEligibility) +
-          ". Hakukelpoisuutta muutettu: " + PreferenceEligibility.getStatusMessage(preferenceEligibility.getStatus()) +
+        int preferenceEligibilityIndex = application.getPreferenceEligibilities().indexOf(preferenceEligibility) + 1;
+
+        String eligibilityNote = preferenceEligibilityIndex + ". hakukelpoisuutta muutettu: " +
+          PreferenceEligibility.getStatusMessage(preferenceEligibility.getStatus()) + 
           ", " + PreferenceEligibility.getSourceMessage(preferenceEligibility.getSource());
         application.addNote(new ApplicationNote(eligibilityNote, new Date(), "järjestelmä"));
     }
