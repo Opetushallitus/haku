@@ -21,24 +21,25 @@
         #end
     </p>
 
-    <p>
-        Hakemuksesi on vastaanotettu. Jos haluat muuttaa hakutoiveitasi,
-        voit hakuaikana tehdä muutoksia seuraavan linkin kautta: <a href="{{verification-link}}">{{verification-link}}</a> </p>
-        <p>Linkki on voimassa $expires asti. Säilytä tämä viesti. Muokkauslinkkiä ei voi tilata
-        uudelleen. Linkki on henkilökohtainen.
-    </p>
-
-    <p>
-        Jos sinulla on verkkopankkitunnukset, mobiilivarmenne tai sähköinen henkilökortti,
-        voit vaihtoehtoisesti kirjautua sisään Opintopolku.fi:ssä, ja tehdä muutoksia hakutoiveisiisi
-        Oma Opintopolku -palvelussa hakuaikana. Oma Opintopolku -palvelussa voit hakutoivemuutosten
-        lisäksi muokata hakutoiveisiin liittyviin kysymyksiin antamiasi vastauksia, päivittää
-        yhteystietojasi; nähdä valintojen tulokset ja ottaa opiskelupaikan vastaan.
-    </p>
-
     #if ($nonSecurelinkEmail)
         <p>
             Teksti, joka näkyy jos ei securelink. TODO!
+        </p>
+    #else
+        <p>
+            Hakemuksesi on vastaanotettu. Jos haluat muuttaa hakutoiveitasi,
+            voit hakuaikana tehdä muutoksia seuraavan linkin kautta: <a href="{{verification-link}}">{{verification-link}}</a>
+        </p>
+        <p>
+            Linkki on voimassa $expires asti. Säilytä tämä viesti. Muokkauslinkkiä ei voi tilata
+            uudelleen. Linkki on henkilökohtainen.
+        </p>
+        <p>
+            Jos sinulla on verkkopankkitunnukset, mobiilivarmenne tai sähköinen henkilökortti,
+            voit vaihtoehtoisesti kirjautua sisään Opintopolku.fi:ssä, ja tehdä muutoksia hakutoiveisiisi
+            Oma Opintopolku -palvelussa hakuaikana. Oma Opintopolku -palvelussa voit hakutoivemuutosten
+            lisäksi muokata hakutoiveisiin liittyviin kysymyksiin antamiasi vastauksia, päivittää
+            yhteystietojasi; nähdä valintojen tulokset ja ottaa opiskelupaikan vastaan.
         </p>
     #end
 

@@ -24,10 +24,16 @@
     <h4>Bilagor</h4>
     #parse("email/email_attachment_requests.vm")
 
-    <p>
-        Under ansökningstiden kan du ändra dina ansökningsönskemål via följande länk: 
-        <a href="{{verification-link}}">{{verification-link}}</a> Länken är personlig. Länken är i kraft ända till ${expires}. 
-    </p>
+    #if ($nonSecurelinkEmail)
+        <p>
+            TODO: teksti, joka näytetään kun securelinkkiä ei lähetetä.
+        </p>
+    #else
+        <p>
+            Under ansökningstiden kan du ändra dina ansökningsönskemål via följande länk:
+            <a href="{{verification-link}}">{{verification-link}}</a> Länken är personlig. Länken är i kraft ända till ${expires}.
+        </p>
+    #end
 
     <p>Svara inte på detta meddelande, det har skickats automatiskt.</p>
 </div>
