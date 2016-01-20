@@ -26,7 +26,13 @@
 
     #if ($nonSecurelinkEmail)
         <p>
-            TODO: teksti, joka näytetään kun securelinkkiä ei lähetetä.
+            Din ansökan har mottagits.
+        <p/>
+        <p>
+            Om du har nätbankskoder, mobilcertifikat eller ett elektroniskt ID-kort och du vill göra ändringar i din ansökan, kan du göra ändringarna under ansökningstiden i Min Studieinfo-tjänsten.
+        <p/>
+        <p>
+            I Min Studieinfo-tjänsten kan du också uppdatera dina kontaktuppgifter, se ditt antagningsresultat och ta emot studieplats.
         </p>
     #else
         <p>
