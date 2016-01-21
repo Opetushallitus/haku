@@ -55,6 +55,7 @@ scheduler.sendMail={{haku_scheduler_sendMail}}
 scheduler.demoCleanup={{haku_scheduler_demoCleanup | default('false')}}
 haku.langCookie={{ haku_lang_cookie | default('i18next') }}
 demo.hakuoids={{demo_hakuoids}}
+ryhmasahkoposti.rest.url=https://${host.virkailija}/ryhmasahkoposti-service/email
 
 # Oletusarvoja
 accessRight.webservice.url.backend=https\://${host.virkailija}/authentication-service/services/accessRightService

@@ -14,15 +14,15 @@
         Datum och lagringstidpunkt för ansökan: $applicationDate
     </p>
 
+    <p>
+        De ändringar som sökanden har gjorts har sparats $modifiedDate.
+    </p>
+
     <h4>Ansökningsönskemål</h4>
     <p>
         #foreach ($preference in $preferences)
             $preference <br />
         #end
-    </p>
-
-    <p>
-        De ändringar som sökanden har gjorts har sparats $modifiedDate.
     </p>
 
     <p>Svara inte på detta meddelande, det har skickats automatiskt.</p>

@@ -14,36 +14,45 @@
         Datum och lagringstidpunkt för ansökan: $applicationDate
     </p>
 
+    #if ($nonSecurelinkEmail)
+        <p>
+            Din ansökan har mottagits.
+        <p/>
+        <p>
+            Om du har nätbankskoder, mobilcertifikat eller ett elektroniskt ID-kort och du vill göra ändringar i din ansökan, kan du göra ändringarna under ansökningstiden i Min Studieinfo-tjänsten.
+        <p/>
+        <p>
+            I Min Studieinfo-tjänsten kan du också uppdatera dina kontaktuppgifter, se ditt antagningsresultat och ta emot studieplats.
+        </p>
+    #else
+        <p>
+            Din ansökan har mottagits. Om du vill ändra dina ansökningsönskemål, kan du under ansökningstiden
+            göra ändringar via följande länk
+            <a href="{{verification-link}}">{{verification-link}}</a> Länken är personlig.
+        </p>
+        <p>
+            Länken är i kraft ända till ${expires}.
+        </p>
+        <p>
+            Om du har nätbankskoder, mobilcertifikat eller ett elektroniskt
+            ID-kort, kan du alternativt logga in i Studieinfo.fi och under
+            ansökningstiden göra ändringarna i tjänsten Min Studieinfo. I tjänsten
+            kan du förutom att ändra ansökningsönskemål också bearbeta svaren på
+            tilläggsfrågor i anknytning till ansökningsönskemålen, uppdatera dina
+            kontaktuppgifter, se antagningsresultaten och ta emot studieplatsen.
+        </p>
+    #end
+
     <h4>Dina ansökningsmål</h4>
     <p>
         #foreach ($preference in $preferences)
-        $preference <br />
+            $preference <br />
         #end
     </p>
 
     <h4>Bilagor</h4>
     #parse("email/email_attachment_requests.vm")
-
-    <p>
-        Din ansökan har mottagits. Om du vill ändra dina ansökningsönskemål, kan du under ansökningstiden
-        göra ändringar via följande länk
-        <a href="{{verification-link}}">{{verification-link}}</a> Länken är personlig.
-    </p>
-    <p>
-        Länken är i kraft ända till ${expires}. 
-    </p>
-
-    <p>
-        Om du har nätbankskoder, mobilcertifikat eller ett elektroniskt
-        ID-kort, kan du alternativt logga in i Studieinfo.fi och under
-        ansökningstiden göra ändringarna i tjänsten Min Studieinfo. I tjänsten
-        kan du förutom att ändra ansökningsönskemål också bearbeta svaren på
-        tilläggsfrågor i anknytning till ansökningsönskemålen, uppdatera dina
-        kontaktuppgifter, se antagningsresultaten och ta emot studieplatsen.
-    </p>
-    
-    <p>Vid behov kan du också skriva ut din ansökan i Min Studieinfo -tjänsten.</p>
-
+   
     <p>Svara inte på detta meddelande, det har skickats automatiskt.</p>
 </div>
 </body>

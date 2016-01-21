@@ -14,15 +14,15 @@
         Hakemuksen päivämäärä ja tallennusaika: $applicationDate
     </p>
 
+    <p>
+        Hakijan tekemät muutokset hakemukseen on tallennettu $modifiedDate.
+    </p>
+
     <h4>Hakutoiveet</h4>
     <p>
         #foreach ($preference in $preferences)
             $preference <br />
         #end
-    </p>
-
-    <p>
-        Hakijan tekemät muutokset hakemukseen on tallennettu $modifiedDate.
     </p>
 
     <p>Älä vastaa tähän viestiin - viesti on lähetetty automaattisesti.</p>

@@ -1,7 +1,9 @@
 package fi.vm.sade.haku.oppija.hakemus;
 
+import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Iterables;
 import fi.vm.sade.haku.http.MockedRestClient;
 import fi.vm.sade.haku.http.MockedRestClient.Captured;
 import fi.vm.sade.haku.oppija.common.oppijantunnistus.OppijanTunnistusDTO;
@@ -12,6 +14,9 @@ import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
+import fi.vm.sade.haku.virkailija.viestintapalvelu.impl.EmailServiceMockImpl;
+import fi.vm.sade.ryhmasahkoposti.api.dto.EmailData;
+import fi.vm.sade.ryhmasahkoposti.api.dto.EmailRecipient;
 import org.apache.commons.mail.EmailException;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,8 +26,7 @@ import java.util.Iterator;
 
 import static fi.vm.sade.haku.oppija.common.oppijantunnistus.OppijanTunnistusDTO.LanguageCodeISO6391.fi;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.MailTemplateUtil.dateTimeFormatter;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.util.ReflectionTestUtils.setField;
@@ -35,6 +39,9 @@ public class SendMailServiceTest {
     String linkEn = "http://localhost/en/omatsivut";
     String applicationSystemId = "1.2.246.562.29.75203638285";
     String applicationSystemIdSecondary = "1.2.246.562.29.75203638285";
+    String applicationSystemIdErkka = "oid.erkka";
+    String applicationSystemIdJatkuva = "oid.jatkuva";
+    String applicationSystemIdSiirtohaku = "oid.siirtohaku";
     String applicationOid = "1.2.246.562.11.1";
     String emailAddress = "testi@example.com";
     String emailAddressGuardian = "guardian@example.com";
@@ -84,72 +91,110 @@ public class SendMailServiceTest {
         assertTrue(restClient.getCaptured().isEmpty());
     }
 
+    @Test
+    public void testThatErkkaHakuSendsNonSecurelinkVersionOfEmail() throws EmailException {
+        service.sendReceivedEmail(testApplicationErkka());
+        assertNonSecurelinkMail();
+    }
+
+    @Test
+    public void testThatJatkuvaHakuSendsNonSecurelinkVersionOfEmail() throws EmailException {
+        service.sendReceivedEmail(testApplicationJatkuva());
+        assertNonSecurelinkMail();
+    }
+
+    @Test
+    public void testThatSiirtohakuSendsNonSecurelinkVersionOfEmail() throws EmailException {
+        service.sendReceivedEmail(testApplicationSiirtohaku());
+        assertNonSecurelinkMail();
+    }
+
+    private void assertNonSecurelinkMail() {
+        EmailData sentMail = emailServiceMockImpl.getLastSentMail();
+        assertNotNull(Iterables.find(sentMail.getRecipient(), new Predicate<EmailRecipient>() {
+            public boolean apply(EmailRecipient recipient) {
+                return recipient.getEmail().equals(emailAddress);
+            }
+        }));
+
+        String body = sentMail.getEmail().getBody();
+        assertTrue(body.contains("Oma Opintopolku -palvelussa"));
+        assertFalse(body.contains("seuraavan linkin kautta"));
+    }
 
     MockedRestClient restClient = new MockedRestClient();
+    EmailServiceMockImpl emailServiceMockImpl = new EmailServiceMockImpl();
     ApplicationSystemService applicationSystemService;
     SendMailService service;
 
     @Before
     public void setupServices() {
-        final ApplicationSystem applicationSystem = mock(ApplicationSystem.class);
-        when(applicationSystem.getKohdejoukkoUri()).thenReturn(OppijaConstants.KOHDEJOUKKO_KORKEAKOULU);
-        when(applicationSystem.getName()).thenReturn(new I18nText(ImmutableMap.of(
-                "fi", hakuNimiFi,
-                "sv", "ansökan 1",
-                "en", "application 1"
-        )));
-        when(applicationSystem.getApplicationPeriods()).thenReturn(ImmutableList.of(
-                new ApplicationPeriod(new Date(0), new Date(Long.MAX_VALUE))
-        ));
-
-        final ApplicationSystem applicationSystemSecondary = mock(ApplicationSystem.class);
-        when(applicationSystemSecondary.getKohdejoukkoUri()).thenReturn(OppijaConstants.KOHDEJOUKKO_AMMATILLINEN_JA_LUKIO);
-        when(applicationSystemSecondary.getName()).thenReturn(new I18nText(ImmutableMap.of(
-                "fi", hakuNimiFi,
-                "sv", "ansökan 1",
-                "en", "application 1"
-        )));
-        when(applicationSystemSecondary.getApplicationPeriods()).thenReturn(ImmutableList.of(
-                new ApplicationPeriod(new Date(0), new Date(Long.MAX_VALUE))
-        ));
-
         applicationSystemService = mock(ApplicationSystemService.class);
-        when(applicationSystemService.getApplicationSystem(applicationSystemId)).thenReturn(applicationSystem);
-        when(applicationSystemService.getApplicationSystem(applicationSystemIdSecondary)).thenReturn(applicationSystemSecondary);
 
-        service = new SendMailService(applicationSystemService, restClient, linkFi, linkSv, linkEn);
+        mockApplicationSystem(applicationSystemId, OppijaConstants.KOHDEJOUKKO_KORKEAKOULU);
+        mockApplicationSystem(applicationSystemIdSecondary, OppijaConstants.KOHDEJOUKKO_AMMATILLINEN_JA_LUKIO);
+        mockApplicationSystem(applicationSystemIdErkka, OppijaConstants.KOHDEJOUKKO_ERITYISOPETUKSENA_JARJESTETTAVA_AMMATILLINEN);
+
+        ApplicationSystem jatkuvaHaku = mockApplicationSystem(applicationSystemIdJatkuva, OppijaConstants.KOHDEJOUKKO_KORKEAKOULU);
+        when(jatkuvaHaku.getHakutapa()).thenReturn(OppijaConstants.HAKUTAPA_JATKUVA_HAKU);
+
+        ApplicationSystem siirtohaku = mockApplicationSystem(applicationSystemIdSiirtohaku, OppijaConstants.KOHDEJOUKKO_KORKEAKOULU);
+        when(siirtohaku.getKohdejoukonTarkenne()).thenReturn(OppijaConstants.KOHDEJOUKON_TARKENNE_SIIRTOHAKU);
+
+        service = new SendMailService(applicationSystemService, restClient, emailServiceMockImpl, linkFi, linkSv, linkEn);
         setField(service, "oppijanTunnistusUrl", oppijantunnistusUrl);
     }
 
-    private Application testApplication() {
+    private ApplicationSystem mockApplicationSystem(String oid, String kohdejoukkoUri) {
+        final ApplicationSystem mockedAs = mock(ApplicationSystem.class);
+        when(mockedAs.getKohdejoukkoUri()).thenReturn(kohdejoukkoUri);
+        when(mockedAs.getName()).thenReturn(new I18nText(ImmutableMap.of(
+                "fi", hakuNimiFi,
+                "sv", "ansökan 1",
+                "en", "application 1"
+        )));
+        when(mockedAs.getApplicationPeriods()).thenReturn(ImmutableList.of(
+                new ApplicationPeriod(new Date(0), new Date(Long.MAX_VALUE))
+        ));
+        when(mockedAs.isHigherEducation()).thenReturn(OppijaConstants.KOHDEJOUKKO_KORKEAKOULU.equals(kohdejoukkoUri));
+        when(applicationSystemService.getApplicationSystem(oid)).thenReturn(mockedAs);
+        return mockedAs;
+    }
+
+    private Application baseApplication(final String applicationSystemId) {
         return new Application() {{
             setOid(applicationOid);
             setApplicationSystemId(applicationSystemId);
+            setReceived(receivedDate);
+            setUpdated(modifiedDate);
             getAnswers().put("henkilotiedot", ImmutableMap.of(
-                    OppijaConstants.ELEMENT_ID_EMAIL, emailAddress
+                OppijaConstants.ELEMENT_ID_EMAIL, emailAddress,
+                OppijaConstants.ELEMENT_ID_HUOLTAJANSAHKOPOSTI, emailAddressGuardian
             ));
             getAnswers().put("lisatiedot", ImmutableMap.of(
                     OppijaConstants.ELEMENT_ID_CONTACT_LANGUAGE, "suomi"
             ));
-            setReceived(receivedDate);
-            setUpdated(modifiedDate);
         }};
     }
 
+    private Application testApplication() {
+        return baseApplication(applicationSystemId);
+    }
+
     private Application testApplicationSecondary() {
-        return new Application() {{
-            setOid(applicationOid);
-            setApplicationSystemId(applicationSystemIdSecondary);
-            getAnswers().put("henkilotiedot", ImmutableMap.of(
-                    OppijaConstants.ELEMENT_ID_EMAIL, emailAddress,
-                    OppijaConstants.ELEMENT_ID_HUOLTAJANSAHKOPOSTI, emailAddressGuardian
-            ));
-            getAnswers().put("lisatiedot", ImmutableMap.of(
-                    OppijaConstants.ELEMENT_ID_CONTACT_LANGUAGE, "suomi"
-            ));
-            setReceived(receivedDate);
-            setUpdated(modifiedDate);
-        }};
+        return baseApplication(applicationSystemIdSecondary);
+    }
+
+    private Application testApplicationErkka() {
+        return baseApplication(applicationSystemIdErkka);
+    }
+
+    private Application testApplicationJatkuva() {
+        return baseApplication(applicationSystemIdJatkuva);
+    }
+
+    private Application testApplicationSiirtohaku() {
+        return baseApplication(applicationSystemIdSiirtohaku);
     }
 
 }

@@ -14,6 +14,38 @@
         Submitted: $applicationDate
     </p>
 
+    #if ($nonSecurelinkEmail)
+        <p>
+            Your application has been received. 
+        </p>
+        <p>
+            If you have Finnish online banking credentials, an electronic ID-card or mobile certificate and you wish to make changes in your application, you can make the changes in the My Studyinfo -service within the application period.
+        </p>
+        <p>
+           In the My Studyinfo -service you can also edit your answers, update your contact information, view the admission results and confirm the study place.
+        </p>
+    #else
+        <p>
+            Your application has been received. If you wish to change the study
+            programmes you're applying to, you
+            can use the following link and make the changes within the application
+            period: <a href="{{verification-link}}">{{verification-link}}</a> The link is personal.
+        </p>
+        <p>
+            The link is valid until ${expires}.
+        </p>
+        <p>
+            If you have Finnish online banking credentials, an electronic ID-card
+            or mobile certificate, you can also log in at Studyinfo.fi and make
+            the changes in the My Studyinfo -service within the application
+            period. In addition to making changes to your study programmes, if you
+            have access to the My Studyinfo -service you can also edit your
+            answers, update your contact information, view the admission results
+            and confirm the study place. You can also print your application in
+            the My Studyinfo -service.
+        </p>
+    #end
+
     <h4>Application options</h4>
     <p>
         #foreach ($preference in $preferences)
@@ -23,27 +55,6 @@
 
     <h4>Attachment requests</h4>
     #parse("email/email_attachment_requests.vm")
-
-    <p>
-        Your application has been received. If you wish to change the study
-        programmes you're applying to, you
-        can use the following link and make the changes within the application
-        period: <a href="{{verification-link}}">{{verification-link}}</a> The link is personal.
-    </p>
-    <p> 
-        The link is valid until ${expires}.
-    </p>
-
-    <p>
-        If you have Finnish online banking credentials, an electronic ID-card
-        or mobile certificate, you can also log in at Studyinfo.fi and make
-        the changes in the My Studyinfo -service within the application
-        period. In addition to making changes to your study programmes, if you
-        have access to the My Studyinfo -service you can also edit your
-        answers, update your contact information, view the admission results
-        and confirm the study place. You can also print your application in 
-        the My Studyinfo -service.
-    </p>
 
     <p>This is an automatically generated email, please do not reply.</p>
 </div>

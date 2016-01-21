@@ -14,6 +14,17 @@
         Datum och lagringstidpunkt för ansökan: $applicationDate
     </p>
 
+    #if ($nonSecurelinkEmail)
+        <p>
+            Ändringarna i din ansökan har mottagits.
+        </p>
+    #else
+        <p>
+            Ändringarna i din ansökan har mottagits. Under ansökningstiden kan du ändra dina ansökningsönskemål via följande länk:
+            <a href="{{verification-link}}">{{verification-link}}</a> Länken är personlig. Länken är i kraft ända till ${expires}.
+        </p>
+    #end
+
     <h4>Dina ansökningsmål</h4>
     <p>
         #foreach ($preference in $preferences)
@@ -23,11 +34,6 @@
 
     <h4>Bilagor</h4>
     #parse("email/email_attachment_requests.vm")
-
-    <p>
-        Under ansökningstiden kan du ändra dina ansökningsönskemål via följande länk: 
-        <a href="{{verification-link}}">{{verification-link}}</a> Länken är personlig. Länken är i kraft ända till ${expires}. 
-    </p>
 
     <p>Svara inte på detta meddelande, det har skickats automatiskt.</p>
 </div>

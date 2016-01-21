@@ -14,18 +14,30 @@
         Hakemuksen päivämäärä ja tallennusaika: $applicationDate
     </p>
 
-    <p>
-        Hakemuksesi on vastaanotettu. Voit muuttaa hakutoiveitasi seuraavan linkin kautta: <a href="{{verification-link}}">{{verification-link}}</a>
-        Linkki on henkilökohtainen.
-    </p>
-    <p>
-        Voit muokata hakutoiveita $expires asti. </p><p>Jos sinulla on
-        verkkopankkitunnukset, mobiilivarmenne tai sähköinen henkilökortti, voit vaihtoehtoisesti kirjautua sisään
-        Opintopolku.fi:ssä, ja tehdä muutoksia hakutoiveisiisi Oma Opintopolku -palvelussa hakuaikana. Oma Opintopolku
-        -palvelussa voit hakutoivemuutosten lisäksi muokata hakutoiveisiin liittyviin kysymyksiin antamiasi vastauksia,
-        päivittää yhteystietojasi; nähdä valintojen tulokset ja ottaa opiskelupaikan vastaan. Voit tulostaa hakemuksesi
-        tarvittaessa Oma Opintopolku -palvelussa.
-    </p>
+    #if ($nonSecurelinkEmail)
+        <p>
+            Hakemuksesi on vastaanotettu. 
+        <p/>
+        <p>
+            Jos sinulla on verkkopankkitunnukset, mobiilivarmenne tai sähköinen henkilökortti ja haluat tehdä muutoksia hakemukseesi, voit tehdä muutoksia hakuaikana Oma Opintopolku -palvelussa.
+        <p/>
+        <p>
+            Oma Opintopolku -palvelussa voit myös päivittää yhteystietojasi; nähdä valintojen tulokset ja ottaa opiskelupaikan vastaan.
+        </p>
+    #else
+        <p>
+            Hakemuksesi on vastaanotettu. Voit muuttaa hakutoiveitasi seuraavan linkin kautta: <a href="{{verification-link}}">{{verification-link}}</a>
+            Linkki on henkilökohtainen.
+        </p>
+        <p>
+            Voit muokata hakutoiveita $expires asti. </p><p>Jos sinulla on
+            verkkopankkitunnukset, mobiilivarmenne tai sähköinen henkilökortti, voit vaihtoehtoisesti kirjautua sisään
+            Opintopolku.fi:ssä, ja tehdä muutoksia hakutoiveisiisi Oma Opintopolku -palvelussa hakuaikana. Oma Opintopolku
+            -palvelussa voit hakutoivemuutosten lisäksi muokata hakutoiveisiin liittyviin kysymyksiin antamiasi vastauksia,
+            päivittää yhteystietojasi; nähdä valintojen tulokset ja ottaa opiskelupaikan vastaan. Voit tulostaa hakemuksesi
+            tarvittaessa Oma Opintopolku -palvelussa.
+        </p>
+    #end
 
     <h4>Hakutoiveesi</h4>
     <p>

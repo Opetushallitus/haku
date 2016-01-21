@@ -14,6 +14,18 @@
         Hakemuksen päivämäärä ja tallennusaika: $applicationDate
     </p>
 
+    #if ($nonSecurelinkEmail)
+        <p>
+            Muutokset hakemukseesi on tallennettu.
+        </p>
+    #else
+        <p>
+            Muutokset hakemukseesi on tallennettu. Voit tehdä muutoksia hakutoiveisiisi seuraavan linkin kautta
+            hakuaikana: <a href="{{verification-link}}">{{verification-link}}</a> Linkki on henkilökohtainen. Linkki on voimassa
+            $expires asti.
+        </p>
+    #end
+
     <h4>Hakutoiveesi</h4>
     <p>
         #foreach ($preference in $preferences)
@@ -23,12 +35,6 @@
 
     <h4>Liitepyynnöt</h4>
     #parse("email/email_attachment_requests.vm")
-
-    <p>
-        Muutokset hakemukseesi on tallennettu. Voit tehdä muutoksia hakutoiveisiisi seuraavan linkin kautta
-        hakuaikana: <a href="{{verification-link}}">{{verification-link}}</a> Linkki on henkilökohtainen. Linkki on voimassa
-        $expires asti. 
-    </p>
 
     <p>Älä vastaa tähän viestiin - viesti on lähetetty automaattisesti.</p>
 </div>

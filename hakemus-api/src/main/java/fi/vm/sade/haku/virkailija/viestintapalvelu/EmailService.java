@@ -1,8 +1,9 @@
 package fi.vm.sade.haku.virkailija.viestintapalvelu;
 
-import java.io.IOException;
-
 import fi.vm.sade.haku.virkailija.viestintapalvelu.dto.ApplicationByEmailDTO;
+import fi.vm.sade.ryhmasahkoposti.api.dto.EmailData;
+
+import java.io.IOException;
 
 /**
  * The interface of e-mail service which one sends application by e-mail
@@ -19,4 +20,6 @@ public interface EmailService {
 	 * @throws IOException
 	 */
 	public String sendApplicationByEmail(ApplicationByEmailDTO applicationByEmail) throws IOException;
+
+	public String sendEmail(EmailData emailData);
 }

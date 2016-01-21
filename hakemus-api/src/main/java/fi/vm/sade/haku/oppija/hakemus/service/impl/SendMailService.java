@@ -14,8 +14,10 @@ import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationAttachmentRequest;
 import fi.vm.sade.haku.oppija.hakemus.domain.util.ApplicationUtil;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.MailTemplateUtil;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
+import fi.vm.sade.haku.virkailija.viestintapalvelu.EmailService;
+import fi.vm.sade.ryhmasahkoposti.api.dto.EmailData;
+import fi.vm.sade.ryhmasahkoposti.api.dto.EmailMessage;
+import fi.vm.sade.ryhmasahkoposti.api.dto.EmailRecipient;
 import org.apache.commons.mail.EmailException;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
@@ -32,13 +34,14 @@ import java.util.*;
 import java.util.concurrent.ExecutionException;
 
 import static fi.vm.sade.haku.oppija.common.oppijantunnistus.OppijanTunnistusDTO.LanguageCodeISO6391.*;
-import static fi.vm.sade.haku.oppija.hakemus.service.impl.SendMailService.EducationDegree.*;
+import static fi.vm.sade.haku.oppija.hakemus.service.impl.SendMailService.EducationDegree.HIGHER;
+import static fi.vm.sade.haku.oppija.hakemus.service.impl.SendMailService.EducationDegree.SECONDARY;
 import static fi.vm.sade.haku.oppija.hakemus.service.impl.SendMailService.TemplateType.*;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters.isHuoltajanTiedotKysyttava;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.phase.valmis.ValmisPhase.MUSIIKKI_TANSSI_LIIKUNTA_EDUCATION_CODES;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.MailTemplateUtil.dateTimeFormatter;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.MailTemplateUtil.getTextOrEmpty;
-import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.EDUCATION_CODE_KEY;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.*;
 import static org.apache.commons.lang.StringUtils.defaultString;
 import static org.apache.commons.lang.Validate.notNull;
 import static org.apache.commons.lang3.StringUtils.isEmpty;
@@ -62,18 +65,25 @@ public class SendMailService {
     @Value("${oppijantunnistus.create.url}")
     String oppijanTunnistusUrl;
 
+    @Value("${email.replyTo:noreply@opintopolku.fi}")
+    String emailFrom;
+
     final RestClient restClient;
+
+    final EmailService emailService;
 
     final Map<LanguageCodeISO6391, String> langToLink;
 
     @Autowired
     public SendMailService(final ApplicationSystemService applicationSystemService,
                            final RestClient restClient,
+                           final EmailService emailService,
                            @Value("${email.application.modify.link.fi}") String emailApplicationModifyLinkFi,
                            @Value("${email.application.modify.link.sv}") String emailApplicationModifyLinkSv,
                            @Value("${email.application.modify.link.en}") String emailApplicationModifyLinkEn) {
         this.applicationSystemService = applicationSystemService;
         this.restClient = restClient;
+        this.emailService = emailService;
         this.langToLink = ImmutableMap.of(
                 fi, emailApplicationModifyLinkFi,
                 sv, emailApplicationModifyLinkSv,
@@ -135,6 +145,7 @@ public class SendMailService {
 
     private void sendEmail(final Application application, final String emailAddress, final TemplateType type) throws EmailException {
         final ApplicationSystem as = applicationSystemService.getApplicationSystem(application.getApplicationSystemId());
+
         Locale locale = getLocale(application);
         ResourceBundle messages = ResourceBundle.getBundle("messages", locale);
         Template tmpl = selectTemplate(locale, as, type);
@@ -144,7 +155,38 @@ public class SendMailService {
         tmpl.merge(ctx, sw);
         final String emailTemplate = sw.toString();
 
-        final LanguageCodeISO6391 emailLang = LanguageCodeISO6391.valueOf(locale.getLanguage());
+        if (doesNotUseSecurelink(as)) {
+            sendNonSecurelinkEmail(emailAddress, emailSubject, emailTemplate);
+        } else {
+            sendSecurelinkEmail(application, as, emailAddress, emailSubject, emailTemplate, LanguageCodeISO6391.valueOf(locale.getLanguage()));
+        }
+    }
+
+    // Send e-mail that doesn't contain e-mail link for modifying application option preferences
+    private void sendNonSecurelinkEmail(final String emailAddress, final String emailSubject,
+                                        final String emailTemplate) throws EmailException {
+        EmailRecipient recipient = new EmailRecipient(){{
+            setEmail(emailAddress);
+        }};
+        EmailMessage message = new EmailMessage() {{
+            setCallingProcess("HAKUAPP");
+            setSubject(emailSubject);
+            setFrom(emailFrom);
+            setHtml(true);
+            setCharset("utf-8");
+            setBody(emailTemplate);
+        }};
+        try {
+            emailService.sendEmail(new EmailData(Lists.newArrayList(recipient), message));
+        } catch (Exception e) {
+            throw new EmailException("Sähköpostin lähettäminen epäonnistui", e);
+        }
+    }
+
+    // Send e-mail that contains a "secure" link for modifying application option preferences
+    private void sendSecurelinkEmail(final Application application, final ApplicationSystem as, final String emailAddress,
+                                     final String emailSubject, final String emailTemplate,
+                                     final LanguageCodeISO6391 emailLang) throws EmailException {
         OppijanTunnistusDTO body = new OppijanTunnistusDTO() {{
             this.url = langToLink.get(emailLang);
             this.expires = getModificationLinkExpiration(application, as);
@@ -181,7 +223,7 @@ public class SendMailService {
     }
 
     private static Locale getLocale(Application application) {
-        String lang = application.getVastauksetMerged().get(OppijaConstants.ELEMENT_ID_CONTACT_LANGUAGE);
+        String lang = application.getVastauksetMerged().get(ELEMENT_ID_CONTACT_LANGUAGE);
         Locale locale = FI;
         if ("ruotsi".equals(lang)) {
             locale = SV;
@@ -217,6 +259,7 @@ public class SendMailService {
         ctx.put("lomakeTulostusLiite", resourceBundle.getString("lomake.tulostus.liite"));
         ctx.put("lomakeTulostusLiiteToimitusosoite", resourceBundle.getString("lomake.tulostus.liite.toimitusosoite"));
         ctx.put("lomakeTulostusLiiteDeadline", resourceBundle.getString("lomake.tulostus.liite.deadline"));
+        ctx.put("nonSecurelinkEmail", doesNotUseSecurelink(applicationSystem));
 
         return ctx;
     }
@@ -248,13 +291,13 @@ public class SendMailService {
     }
 
     private String getApplicantName(Application application) {
-        String firstName = application.getVastauksetMerged().get(OppijaConstants.ELEMENT_ID_FIRST_NAMES);
-        String lastName = application.getVastauksetMerged().get(OppijaConstants.ELEMENT_ID_LAST_NAME);
+        String firstName = application.getVastauksetMerged().get(ELEMENT_ID_FIRST_NAMES);
+        String lastName = application.getVastauksetMerged().get(ELEMENT_ID_LAST_NAME);
         return firstName + " " + lastName;
     }
 
     private String getFormName(Application application, ApplicationSystem applicationSystem) {
-        String lang = application.getVastauksetMerged().get(OppijaConstants.ELEMENT_ID_CONTACT_LANGUAGE);
+        String lang = application.getVastauksetMerged().get(ELEMENT_ID_CONTACT_LANGUAGE);
         String realLang = "fi";
         if (lang.equals("ruotsi")) {
             realLang = "sv";
@@ -273,8 +316,8 @@ public class SendMailService {
         int maxPrefs = applicationSystem.getMaxApplicationOptions();
         List<String> preferences = new ArrayList<String>(maxPrefs);
         for (int i = 1; i <= maxPrefs; i++) {
-            String koulutus = answers.get(String.format(OppijaConstants.PREFERENCE_NAME, i));
-            String koulu = answers.get(String.format(OppijaConstants.PREFERENCE_ORGANIZATION, i));
+            String koulutus = answers.get(String.format(PREFERENCE_NAME, i));
+            String koulu = answers.get(String.format(PREFERENCE_ORGANIZATION, i));
             if (isEmpty(koulutus) && isEmpty(koulu)) {
                 break;
             }
@@ -306,6 +349,12 @@ public class SendMailService {
                 TRUE.equals(answers.get("preference4_urheilijalinjan_lisakysymys")) ||
                 TRUE.equals(answers.get("preference5_urheilijan_ammatillisen_koulutuksen_lisakysymys")) ||
                 TRUE.equals(answers.get("preference5_urheilijalinjan_lisakysymys")));
+    }
+
+    private static boolean doesNotUseSecurelink(ApplicationSystem as) {
+        return HAKUTAPA_JATKUVA_HAKU.equals(as.getHakutapa())
+                || KOHDEJOUKKO_ERITYISOPETUKSENA_JARJESTETTAVA_AMMATILLINEN.equals(as.getKohdejoukkoUri())
+                || KOHDEJOUKON_TARKENNE_SIIRTOHAKU.equals(as.getKohdejoukonTarkenne());
     }
 
     private boolean isDiscretionary(final Application application) {
