@@ -113,7 +113,6 @@ describe('2. asteen lomake', function () {
 
         it('Edellisvuona suoritettu peruskoulu kysyy todistuksen saanti ajankohtaa, vaaditaan valinta', seqDone(
             function() { S('#nav-koulutustausta')[0].click() },
-            click(lomake.pohjakoulutus("1")),
             input(lomake.pkPaattotodistusVuosi, "" + ((new Date()).getUTCFullYear() - 1)),
             input(lomake.pkKieli, "FI"),
             pageChange(lomake.fromKoulutustausta),
@@ -122,26 +121,21 @@ describe('2. asteen lomake', function () {
 
         it('Edellisvuona suoritettu peruskoulu kysyy todistuksen saanti ajankohtaa', seqDone(
             function() { S('#nav-koulutustausta')[0].click() },
-            click(lomake.pohjakoulutus("1")),
+            headingVisible("Koulutustausta"),
             input(lomake.pkPaattotodistusVuosi, "" + ((new Date()).getUTCFullYear() - 1)),
             input(lomake.pkKieli, "FI"),
             click(lomake.pkPaattotodistusSaatuPuolenVuodenSisaan(true)),
-            click(lomake.ammatillinenKoulutuspaikka(true))
+            click(lomake.ammatillinenKoulutuspaikka(false)),
+            pageChange(lomake.fromKoulutustausta),
+            headingVisible("Hakutoiveet")
         ));
 
         it('Muutoin kuin edellisvuonna suoritettu peruskoulu ei kysy todistuksen saanti ajankohtaa', seqDone(
             function() { S('#nav-koulutustausta')[0].click() },
-            click(lomake.pohjakoulutus("1")),
-            input(lomake.pkPaattotodistusVuosi, "" + ((new Date()).getUTCFullYear())),
+            input(lomake.pkPaattotodistusVuosi, "" + ((new Date()).getUTCFullYear() - 3)),
             input(lomake.pkKieli, "FI"),
-            click(lomake.ammatillinenKoulutuspaikka(true)),
-            pageChange(lomake.fromKoulutustausta),
-            headingVisible("Hakutoiveet"),
-            function() { S('#nav-koulutustausta')[0].click() },
-            headingVisible("Koulutustausta"),
-            click(lomake.pohjakoulutus("1")),
-            input(lomake.pkPaattotodistusVuosi, "" + ((new Date()).getUTCFullYear() - 2)),
-            click(lomake.ammatillinenKoulutuspaikka(true)),
+            click(lomake.ammatillinenKoulutuspaikka(false)),
+            click(lomake.ammatillinenSuoritettu(false)),
             pageChange(lomake.fromKoulutustausta),
             headingVisible("Hakutoiveet")
         ));

@@ -8,6 +8,7 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import fi.vm.sade.haku.oppija.common.organisaatio.Organization;
+import fi.vm.sade.haku.oppija.lomake.domain.ApplicationPeriod;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.builder.*;
@@ -935,6 +936,14 @@ public final class KoulutustaustaPhase {
         return ammatillinen;
     }
 
+    private static Date getFirstApplicationPeriodEndDate(ApplicationSystem applicationSystem) {
+        List<ApplicationPeriod> applicationPeriods = applicationSystem.getApplicationPeriods();
+        if (applicationPeriods.isEmpty()) {
+            return null;
+        }
+        return applicationPeriods.get(0).getEnd();
+    }
+
     private static Element buildPKTodistusSaatuViimeVuonna(final FormParameters formParameters,
                                                            final Element paattotodistusvuosiPeruskoulu) {
         // Check if the applicant has received the elementary school diploma during the previous year and
@@ -943,13 +952,15 @@ public final class KoulutustaustaPhase {
         // from the end of application period they are eligible to receive an extra point. Generate the date ranges
         // according to these.
         Calendar cal = Calendar.getInstance();
-        Date applicationPeriodEnds = formParameters.getApplicationSystem().getApplicationPeriods().get(0).getEnd();
-        Variable pkPaattotodistusVuosi = new Variable(paattotodistusvuosiPeruskoulu.getId());
+        Date applicationPeriodEnds = getFirstApplicationPeriodEndDate(formParameters.getApplicationSystem());
+        if (applicationPeriodEnds == null) {
+            return Rule(Value.FALSE).build();
+        }
 
         cal.setTime(applicationPeriodEnds);
         cal.add(Calendar.MONTH, -6);
-
-        Expr kysytaankoPaattotodistusAjanjakso = new And(
+        Variable pkPaattotodistusVuosi = new Variable(paattotodistusvuosiPeruskoulu.getId());
+        Expr kysytaankoPaattotodistusAjanjakso = new All(
                 new Equals(
                         pkPaattotodistusVuosi,
                         new Value(String.valueOf(Calendar.getInstance().get(Calendar.YEAR) - 1))
@@ -957,7 +968,8 @@ public final class KoulutustaustaPhase {
                 new Equals(
                         new Value(formParameters.getApplicationSystem().getApplicationSystemType()),
                         new Value(HAKUTYYPPI_VARSINAINEN_HAKU)
-                )
+                ),
+                new NotNull(applicationPeriodEnds)
         );
         SimpleDateFormat fmt = new SimpleDateFormat("d.M.");
         String excludedPeriod = "1.1. - " + fmt.format(cal.getTime());
@@ -1191,7 +1203,6 @@ public final class KoulutustaustaPhase {
 
         pkKysymyksetRule.addChild(Dropdown(PERUSOPETUS_KIELI)
                 .emptyOptionDefault()
-                .addOption(ElementUtil.createI18NAsIs(""), "")
                 .addOptions(koodistoService.getTeachingLanguages())
                 .required()
                 .formParams(formParameters).build());
