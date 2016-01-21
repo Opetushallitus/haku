@@ -130,9 +130,19 @@ describe('2. asteen lomake', function () {
             headingVisible("Hakutoiveet")
         ));
 
-        it('Muutoin kuin edellisvuonna suoritettu peruskoulu ei kysy todistuksen saanti ajankohtaa', seqDone(
+        it('Aiemmin kuin edellisvuonna suoritettu peruskoulu ei kysy todistuksen saanti ajankohtaa', seqDone(
             function() { S('#nav-koulutustausta')[0].click() },
             input(lomake.pkPaattotodistusVuosi, "" + ((new Date()).getUTCFullYear() - 3)),
+            input(lomake.pkKieli, "FI"),
+            click(lomake.ammatillinenKoulutuspaikka(false)),
+            click(lomake.ammatillinenSuoritettu(false)),
+            pageChange(lomake.fromKoulutustausta),
+            headingVisible("Hakutoiveet")
+        ));
+
+        it('Kuluvana vuonna suoritettu peruskoulu ei kysy todistuksen saanti ajankohtaa', seqDone(
+            function() { S('#nav-koulutustausta')[0].click() },
+            input(lomake.pkPaattotodistusVuosi, "" + ((new Date()).getUTCFullYear())),
             input(lomake.pkKieli, "FI"),
             click(lomake.ammatillinenKoulutuspaikka(false)),
             click(lomake.ammatillinenSuoritettu(false)),

@@ -968,8 +968,7 @@ public final class KoulutustaustaPhase {
                 new Equals(
                         new Value(formParameters.getApplicationSystem().getApplicationSystemType()),
                         new Value(HAKUTYYPPI_VARSINAINEN_HAKU)
-                ),
-                new NotNull(applicationPeriodEnds)
+                )
         );
         SimpleDateFormat fmt = new SimpleDateFormat("d.M.");
         String excludedPeriod = "1.1. - " + fmt.format(cal.getTime());
