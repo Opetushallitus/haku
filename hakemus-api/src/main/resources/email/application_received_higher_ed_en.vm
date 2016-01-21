@@ -14,17 +14,6 @@
         Submitted: $applicationDate
     </p>
 
-    <h4>Application options</h4>
-    <p>
-        #foreach ($preference in $preferences)
-            $preference <br />
-        #end
-    </p>
-
-    <h4>Attachment requests</h4>
-    #parse("email/email_attachment_requests.vm")
-
-
     #if ($nonSecurelinkEmail)
         <p>
             Your application has been received. 
@@ -56,6 +45,16 @@
             the My Studyinfo -service.
         </p>
     #end
+
+    <h4>Application options</h4>
+    <p>
+        #foreach ($preference in $preferences)
+            $preference <br />
+        #end
+    </p>
+
+    <h4>Attachment requests</h4>
+    #parse("email/email_attachment_requests.vm")
 
     <p>This is an automatically generated email, please do not reply.</p>
 </div>

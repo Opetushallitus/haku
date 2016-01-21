@@ -14,7 +14,6 @@
         Hakemuksen päivämäärä ja tallennusaika: $applicationDate
     </p>
 
-
     #if ($nonSecurelinkEmail)
         <p>
             Hakemuksesi on vastaanotettu. 
