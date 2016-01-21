@@ -14,13 +14,6 @@
         Hakemuksen päivämäärä ja tallennusaika: $applicationDate
     </p>
 
-    <h4>Hakutoiveesi</h4>
-    <p>
-        #foreach ($preference in $preferences)
-        $preference <br />
-        #end
-    </p>
-
     #if ($nonSecurelinkEmail)
         <p>
             Hakemuksesi on vastaanotettu. 
@@ -49,6 +42,13 @@ muutoksia hakuaikana Oma Opintopolku -palvelussa.
             yhteystietojasi; nähdä valintojen tulokset ja ottaa opiskelupaikan vastaan.
         </p>
     #end
+
+    <h4>Hakutoiveesi</h4>
+    <p>
+        #foreach ($preference in $preferences)
+            $preference <br />
+        #end
+    </p>
 
     <h4>Liitepyynnöt</h4>
     #parse("email/email_attachment_requests.vm")

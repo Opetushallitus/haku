@@ -14,13 +14,6 @@
         Ansökans datum och lagringstid: $applicationDate
     </p>
 
-    <h4>Dina ansökningsönskemål</h4>
-    <p>
-        #foreach ($preference in $preferences)
-        $preference <br />
-        #end
-    </p>
-
     #if ($nonSecurelinkEmail)
         <p>
             Din ansökan har mottagits.
@@ -49,6 +42,13 @@
             uppdatera dina kontaktuppgifter, se antagningsresultaten och ta emot studieplatsen.
         </p>
     #end
+
+    <h4>Dina ansökningsönskemål</h4>
+    <p>
+        #foreach ($preference in $preferences)
+            $preference <br />
+        #end
+    </p>
 
     <h4>Bilagor</h4>
     #parse("email/email_attachment_requests.vm")
