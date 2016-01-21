@@ -14,15 +14,15 @@
         Date and time of submission: $applicationDate
     </p>
 
+    <p>
+        Changes to the application made by the applicant have been saved $modifiedDate.
+    </p>
+
     <h4>Study programme choices</h4>
     <p>
         #foreach ($preference in $preferences)
             $preference <br />
         #end
-    </p>
-
-    <p>
-        Changes to the application made by the applicant have been saved $modifiedDate.
     </p>
 
     <p>This is an automatically generated email, please do not reply.</p>
