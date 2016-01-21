@@ -81,7 +81,7 @@ public class ValintaServiceTest {
                 put("preference1-Koulutus-id-lang", "SV");
         }};
         Map<String, String> eduMap = new HashMap<String, String>() {{
-            put("LISAKOULUTUS_KANSANOPISTO", "true");
+            put(OppijaConstants.ELEMENT_ID_LISAKOULUTUS_KANSANOPISTO, "true");
             put("PK_PAATTOTODISTUSVUOSI", "2012");
             put("ammatillinenTutkintoSuoritettu", "false");
             put("KOULUTUSPAIKKA_AMMATILLISEEN_TUTKINTOON", "false");
