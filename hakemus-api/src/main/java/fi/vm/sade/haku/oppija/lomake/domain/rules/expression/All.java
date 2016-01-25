@@ -2,7 +2,7 @@ package fi.vm.sade.haku.oppija.lomake.domain.rules.expression;
 
 import com.google.common.base.Preconditions;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -11,14 +11,18 @@ import java.util.Map;
  * No parameters evaluates to true.
  */
 public class All extends Expr {
-    private final List<Expr> expressions;
+    private final List<? extends Expr> expressions;
 
-    public All(final Expr... expressions) {
+    public All() {
+        expressions = new ArrayList();
+    }
+
+    public All(final List<? extends Expr> expressions) {
         Preconditions.checkNotNull(expressions);
         for (Expr item : expressions) {
             Preconditions.checkNotNull(item);
         }
-        this.expressions = Arrays.asList(expressions);
+        this.expressions = expressions;
     }
 
 
@@ -32,7 +36,7 @@ public class All extends Expr {
 
     @Override
     public List<Expr> children() {
-        return expressions;
+        return (List)expressions;
     }
 
 }

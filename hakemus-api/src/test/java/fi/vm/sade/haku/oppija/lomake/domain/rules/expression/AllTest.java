@@ -2,6 +2,9 @@ package fi.vm.sade.haku.oppija.lomake.domain.rules.expression;
 
 import org.junit.Test;
 
+import java.util.Arrays;
+import java.util.Collections;
+
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -9,23 +12,18 @@ public class AllTest {
 
     @Test(expected = NullPointerException.class)
     public void testEvaluateSomeNull() {
-        new All(Value.TRUE, null, Value.FALSE);
-    }
-
-    @Test(expected = NullPointerException.class)
-    public void testEvaluateAllNull() {
-        new All(null, null, null, null, null);
+        new All(Arrays.asList(Value.TRUE, null, Value.FALSE));
     }
 
     @Test
     public void testEvaluateToFalse() {
-        All all = new All(Value.TRUE, Value.FALSE);
+        All all = new All(Arrays.asList(Value.TRUE, Value.FALSE));
         assertFalse(all.evaluate(null));
     }
 
     @Test
     public void testEvaluateTrueTrue() {
-        All all = new All(Value.TRUE, Value.TRUE, Value.TRUE);
+        All all = new All(Arrays.asList(Value.TRUE, Value.TRUE, Value.TRUE));
         assertTrue(all.evaluate(null));
     }
 
@@ -37,13 +35,22 @@ public class AllTest {
 
     @Test
     public void testEvaluateFalseTrue() {
-        All all = new All(Value.FALSE, Value.TRUE, Value.FALSE);
+        All all = new All(Arrays.asList(Value.FALSE, Value.TRUE, Value.FALSE));
         assertFalse(all.evaluate(null));
     }
 
     @Test
     public void testEvaluateFalseFalse() {
-        And and = new And(Value.FALSE, Value.FALSE);
-        assertFalse(and.evaluate(null));
+        All all = new All(Arrays.asList(Value.FALSE, Value.FALSE));
+        assertFalse(all.evaluate(null));
+    }
+
+    @Test
+    public void testNestedAllExpression() {
+        All all = new All(Arrays.asList(
+                new All(Arrays.asList(Value.TRUE, Value.TRUE)),
+                new All(),
+                new All(Collections.singletonList(Value.TRUE))));
+        assertTrue(all.evaluate(null));
     }
 }
