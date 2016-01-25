@@ -94,6 +94,9 @@ public final class ArvosanatTheme {
 
         // Peruskoulu
         Integer hakukausiVuosi = formParameters.getApplicationSystem().getHakukausiVuosi();
+        Expr pkTaiKymppiPaattynytHakuvuonna = new ExprUtil().atLeastOneVariableEqualsToValue(String.valueOf(hakukausiVuosi),
+                PERUSOPETUS_PAATTOTODISTUSVUOSI,
+                KYMPPI_PAATTOTODISTUSVUOSI);
         Expr kysyArvosanatPk = new And(
                 ExprUtil.atLeastOneValueEqualsToVariable(POHJAKOULUTUS_ID,
                         PERUSKOULU,
@@ -102,14 +105,7 @@ public final class ArvosanatTheme {
                         YKSILOLLISTETTY),
                 new Or(
                         new Not(
-                            new Or(
-                                new Equals(
-                                        new Variable(PERUSOPETUS_PAATTOTODISTUSVUOSI),
-                                        new Value(String.valueOf(hakukausiVuosi))),
-                                new Equals(
-                                        new Variable(KYMPPI_PAATTOTODISTUSVUOSI),
-                                        new Value(String.valueOf(hakukausiVuosi)))
-                            )
+                                pkTaiKymppiPaattynytHakuvuonna
                         ),
                         new Equals(new Variable("_meta_officerUi"), new Value("true"))
                 ));
@@ -136,11 +132,7 @@ public final class ArvosanatTheme {
         arvosanatTheme.addChild(relatedQuestionPk);
 
         // Ei arvosanoja
-        Element eiNaytetaPk = Rule(new Or(
-                new Equals(new Variable(KYMPPI_PAATTOTODISTUSVUOSI), new Value(String.valueOf(hakukausiVuosi))),
-                new Equals(new Variable(PERUSOPETUS_PAATTOTODISTUSVUOSI), new Value(String.valueOf(hakukausiVuosi)))
-                )
-        ).build();
+        Element eiNaytetaPk = Rule(pkTaiKymppiPaattynytHakuvuonna).build();
 
         eiNaytetaPk.addChild(Text("nogradegrid").labelKey("form.arvosanat.eiKysyta.pk").formParams(formParameters).build());
         arvosanatTheme.addChild(eiNaytetaPk);
