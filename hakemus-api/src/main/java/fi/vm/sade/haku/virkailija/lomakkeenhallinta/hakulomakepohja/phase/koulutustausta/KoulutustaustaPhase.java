@@ -960,7 +960,7 @@ public final class KoulutustaustaPhase {
         cal.setTime(applicationPeriodEnds);
         cal.add(Calendar.MONTH, -6);
         Variable pkPaattotodistusVuosi = new Variable(paattotodistusvuosiPeruskoulu.getId());
-        Expr kysytaankoPaattotodistusAjanjakso = new All(
+        Expr kysytaankoPaattotodistusAjanjakso = new All(Arrays.asList(
                 new Equals(
                         pkPaattotodistusVuosi,
                         new Value(String.valueOf(Calendar.getInstance().get(Calendar.YEAR) - 1))
@@ -969,7 +969,7 @@ public final class KoulutustaustaPhase {
                         new Value(formParameters.getApplicationSystem().getApplicationSystemType()),
                         new Value(HAKUTYYPPI_VARSINAINEN_HAKU)
                 )
-        );
+        ));
         SimpleDateFormat fmt = new SimpleDateFormat("d.M.");
         String excludedPeriod = "1.1. - " + fmt.format(cal.getTime());
         cal.add(Calendar.DATE, 1);
