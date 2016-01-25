@@ -14,6 +14,9 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ExprUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static fi.vm.sade.haku.oppija.hakemus.service.Role.*;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.CheckBoxBuilder.Checkbox;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.PhaseBuilder.Phase;
@@ -152,12 +155,12 @@ public class LisatiedotPhase {
     }
 
     static Element createOppisopimusLisakysymys(final FormParameters formParameters) {
+        final List<String> vocationalKeys = new ArrayList<String>();
+        for (int i = 1; i <= formParameters.getApplicationSystem().getMaxApplicationOptions(); i++) {
+            vocationalKeys.add(OppijaConstants.PREFERENCE_PREFIX + i + OppijaConstants.OPTION_ID_POSTFIX + "-vocational");
+        }
         Expr hakeeAmmatilliseen = ExprUtil.atLeastOneVariableEqualsToValue(ElementUtil.KYLLA,
-                "preference1-Koulutus-id-vocational",
-                "preference2-Koulutus-id-vocational",
-                "preference3-Koulutus-id-vocational",
-                "preference4-Koulutus-id-vocational",
-                "preference5-Koulutus-id-vocational");
+                vocationalKeys.toArray(new String[vocationalKeys.size()]));
 
         Element hakeeAmmatilliseenSaanto = Rule(hakeeAmmatilliseen).build();
         Element hakeeAmmatilliseenTeema = Theme("oppisopimus").previewable().formParams(formParameters).build();
