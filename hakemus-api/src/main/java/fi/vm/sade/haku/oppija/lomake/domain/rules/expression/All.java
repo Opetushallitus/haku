@@ -11,7 +11,7 @@ import java.util.Map;
  * No parameters evaluates to true.
  */
 public class All extends Expr {
-    List<Expr> expressions;
+    private final List<Expr> expressions;
 
     public All(final Expr... expressions) {
         Preconditions.checkNotNull(expressions);
