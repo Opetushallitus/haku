@@ -142,7 +142,8 @@ var preferenceRow = {
                         "data-educationcode": item.educationCodeUri,
                         "data-attachments": hasAttachments,
                         "data-attachmentgroups": attachmentGroups.join(","),
-                        "data-athlete": item.athleteEducation
+                        "data-athlete": item.athleteEducation,
+                        "data-discretionary": item.kysytaanHarkinnanvaraiset
                     });
                     option.text(item.name);
                     $selectInput.append(option);
@@ -189,6 +190,7 @@ var preferenceRow = {
         $("#" + selectInputId + "-id-athlete").val(false).change();
         $("#" + selectInputId + "-id-attachments").val("").change();
         $("#" + selectInputId + "-id-attachmentgroups").val("").change();
+        $("#" + selectInputId + "-id-discretionary").val(false).change();
         $("#" + selectInputId).html("<option>&nbsp;</option>");
         preferenceRow.clearChildLONames($("#" + selectInputId).data("childlonames"));
         "${sortableItem.id}-reset"
@@ -305,6 +307,7 @@ var preferenceRow = {
                                            $educationDegreeAthlete = $("#" + this.id + "-id-athlete"),
                                            $educationAttachments = $("#" + this.id + "-id-attachments"),
                                            $educationAttachmentGroups = $("#" + this.id + "-id-attachmentgroups"),
+                                           $educationDiscretionary = $("#" + this.id + "-id-discretionary"),
                                            $educationDegreeEducationCode = $("#" + this.id + "-id-educationcode"),
                                            selectedId, educationDegree, value = $(this).val(),
                                            preferenceRowId = this.id.split("-")[0];
@@ -326,6 +329,7 @@ var preferenceRow = {
                                        $educationDegreeAthlete.val(selectedOption.data("athlete")).change();
                                        $educationAttachments.val(selectedOption.data("attachments")).change();
                                        $educationAttachmentGroups.val(selectedOption.data("attachmentgroups")).change();
+                                       $educationDiscretionary.val(selectedOption.data("discretionary")).change();
                                        $educationDegreeEducationCode.val(selectedOption.data("educationcode")).change();
                                        preferenceRow.displayChildLONames(selectedId, $(this).data("childlonames"));
                                        var idx = this.id.indexOf('-');
