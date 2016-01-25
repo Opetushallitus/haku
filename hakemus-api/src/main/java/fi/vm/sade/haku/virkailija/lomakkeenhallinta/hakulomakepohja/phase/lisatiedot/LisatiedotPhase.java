@@ -79,7 +79,9 @@ public class LisatiedotPhase {
         if (formParameters.kysytaankoUrheilijanLisakysymykset()) {
             lisatiedot.addChild(createUrheilijanLisakysymykset(formParameters));
         }
-        lisatiedot.addChild(createOppisopimusLisakysymys(formParameters));
+        if(formParameters.kysytaankoOppisopimuskysymys()){
+            lisatiedot.addChild(createOppisopimusLisakysymys(formParameters));
+        }
 
         return element;
     }
