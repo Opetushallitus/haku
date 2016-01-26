@@ -2,11 +2,14 @@ var config = {
     hakukelpoinen: "ELIGIBLE",
     eiHakukelpoinen: "INELIGIBLE",
     puutteellinen: "INADEQUATE",
+    kelpoisuusTarkistamatta: "NOT_CHECKED",
+    automaattisestiHyvaksytty: "AUTOMATICALLY_CHECKED_ELIGIBLE",
     liiteSaapunut: "ARRIVED",
     liiteEiSaapunut: "NOT_RECEIVED",
     liiteEiTarkistettu: "NOT_CHECKED",
     liiteTarkistettu: "CHECKED",
     tietolahdeUnknown: "UNKNOWN",
+    tietolahdeRekisteri: "REGISTER",
     showlogs: false
 };
 var kjal = {
@@ -118,7 +121,7 @@ var kjal = {
             } else {
                 $('#kaikki-tiedot-tarkistettu-' + ind).attr('checked', true);
             }
-            this.hakuKelpoisuus(ind, true);
+            this.asetaHakuKelpoisuus(ind, true);
             for(var trs in hakutoiveet[ht].attachments){
                 this.LOGS('Liitteen saapumistila: ', hakutoiveet[ht].attachments[trs].receptionStatus);
                 $('#select-saapunut-' +ind + '-' + trs).val(hakutoiveet[ht].attachments[trs].receptionStatus)
@@ -135,6 +138,46 @@ var kjal = {
         }
     },
     /**
+     * Asetetaan hakukelpoisuus sivun latauksen yhteydessä
+     * @param indx hakutoiveen index numero
+     */
+    asetaHakuKelpoisuus: function (indx, onload) {
+        this.LOGS('hakuKelpoisuus()', ' -> in tila: ',hakutoiveet[indx-1].status);
+        if(!onload){
+            hakutoiveet[indx-1].status = $('#liitteet-table-' + indx + ' #hakukelpoisuus-select').val();
+        }
+        if (hakutoiveet[indx-1].status === config.hakukelpoinen) {
+            $('#liitteet-table-' + indx + ' #hakukelpoisuus-tietolahde').removeAttr('disabled');
+            $('#liitteet-table-' + indx + ' #hylkaamisenperuste').attr('disabled', 'true');
+            hakutoiveet[indx-1].rejectionBasis = '';
+            $('#liitteet-table-' + indx + ' #hylkaamisenperuste').val('');
+        } else if (hakutoiveet[indx-1].status === config.eiHakukelpoinen) {
+            $('#liitteet-table-' + indx + ' #hylkaamisenperuste').removeAttr('disabled');
+            $('#liitteet-table-' + indx + ' #hakukelpoisuus-tietolahde').attr('disabled', 'true');
+            hakutoiveet[indx-1].source = config.tietolahdeUnknown;
+            $('#liitteet-table-' + indx + ' #hakukelpoisuus-tietolahde').val('');
+        } else if (hakutoiveet[indx-1].status === config.automaattisestiHyvaksytty && hakutoiveet[indx-1].source === config.tietolahdeRekisteri) {
+            $('#liitteet-table-' + indx + ' #hakukelpoisuus-tietolahde').attr('disabled', 'true');
+            $('#liitteet-table-' + indx + ' #hylkaamisenperuste').attr('disabled', 'true');
+            hakutoiveet[indx - 1].rejectionBasis = '';
+            $('#liitteet-table-' + indx + ' #hylkaamisenperuste').val('');
+        } else if (hakutoiveet[indx-1].status === config.kelpoisuusTarkistamatta && hakutoiveet[indx-1].source === config.tietolahdeRekisteri) {
+            $('#liitteet-table-' + indx + ' #hakukelpoisuus-tietolahde').attr('disabled', 'true');
+            $('#liitteet-table-' + indx + ' #hylkaamisenperuste').attr('disabled', 'true');
+            hakutoiveet[indx - 1].rejectionBasis = '';
+            $('#liitteet-table-' + indx + ' #hylkaamisenperuste').val('');
+        } else {
+            $('#liitteet-table-' + indx + ' #hakukelpoisuus-tietolahde').attr('disabled', 'true');
+            $('#liitteet-table-' + indx + ' #hylkaamisenperuste').attr('disabled', 'true');
+            hakutoiveet[indx-1].source = config.tietolahdeUnknown;
+            hakutoiveet[indx-1].rejectionBasis = '';
+            $('#liitteet-table-' + indx + ' #hylkaamisenperuste').val('');
+            $('#liitteet-table-' + indx + ' #hakukelpoisuus-tietolahde').val('');
+        }
+        this.LOGS('hakuKelpoisuus()', ' out -> tila: ', hakutoiveet[indx-1].status);
+        this.tarkistaHakutoiveValmis(indx);
+    },
+    /**
      * Asetetaan hakukelpoisuus käyttöliittymästä
      * @param indx hakutoiveen index numero
      */
@@ -146,6 +189,8 @@ var kjal = {
         if (hakutoiveet[indx-1].status === config.hakukelpoinen) {
             $('#liitteet-table-' + indx + ' #hakukelpoisuus-tietolahde').removeAttr('disabled');
             $('#liitteet-table-' + indx + ' #hylkaamisenperuste').attr('disabled', 'true');
+            hakutoiveet[indx-1].source = config.tietolahdeUnknown;
+            $('#liitteet-table-' + indx + ' #hakukelpoisuus-tietolahde').val('');
             hakutoiveet[indx-1].rejectionBasis = '';
             $('#liitteet-table-' + indx + ' #hylkaamisenperuste').val('');
         } else if (hakutoiveet[indx-1].status === config.eiHakukelpoinen) {
@@ -477,14 +522,13 @@ var kjal = {
      * @param indx hakutoiveen index numero
      */
     tallennaKelpoisuusJaLiitteet: function (applicationOid, indx) {
-        var submitData = _.clone(hakutoiveet);
-        for (var s in submitData) {
-            delete submitData[s].indx;
-            for(var r in submitData[s].attachments){
-                delete submitData[s].attachments[r].name;
-                delete submitData[s].attachments[r].header;
-                delete submitData[s].attachments[r].description;
-            }
+        var i = indx - 1;
+        var submitData = [_.clone(hakutoiveet[i])];
+        delete submitData[0].indx;
+        for(var r in submitData[0].attachments){
+            delete submitData[0].attachments[r].name;
+            delete submitData[0].attachments[r].header;
+            delete submitData[0].attachments[r].description;
         }
         this.LOGS('Lähettävä data:', submitData);
         $.ajax({

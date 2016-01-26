@@ -14,6 +14,7 @@ import java.util.*;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.OPTION_ID_POSTFIX;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.PREFERENCE_PREFIX;
 import static org.apache.commons.lang.StringUtils.isNotEmpty;
+import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 
@@ -195,5 +196,38 @@ public final class ApplicationUtil {
             matchingPreferenceChecked = null;
         }
         return currentPreferencesChecked;
+    }
+
+    public static String getApplicationOptionName(Application application, PreferenceEligibility preferenceEligibility) {
+        Map<String, String> aoAnswers = application.getPhaseAnswers(OppijaConstants.PHASE_APPLICATION_OPTIONS);
+        for (int i = 1; i < 100; i++) {
+            String aoPrefix = String.format("preference%d-", i);
+            String aoKey = String.format("%sKoulutus-id", aoPrefix);
+            String aoOid = aoAnswers.get(aoKey);
+            if (isBlank(aoOid)) {
+                break;
+            }
+            if(preferenceEligibility.getAoId().equalsIgnoreCase(aoOid)) {
+                String koulutusKey = String.format("%sKoulutus", aoPrefix);
+                String opetuspisteKey = String.format("%sOpetuspiste", aoPrefix);
+
+                String koulutus = aoAnswers.get(koulutusKey);
+                String opetuspiste = aoAnswers.get(opetuspisteKey);
+
+                String applicationOptionName = "";
+                if(!isBlank(koulutus)) {
+                    applicationOptionName += koulutus;
+                }
+                if(!isBlank(applicationOptionName)) {
+                    applicationOptionName += ", ";
+                }
+                if(!isBlank(opetuspiste)) {
+                    applicationOptionName += opetuspiste;
+                }
+
+                return applicationOptionName;
+            }
+        }
+        return preferenceEligibility.getAoId();
     }
 }

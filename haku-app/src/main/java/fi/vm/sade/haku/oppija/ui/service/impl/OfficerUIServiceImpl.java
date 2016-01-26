@@ -5,6 +5,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import fi.vm.sade.auditlog.haku.HakuOperation;
 import fi.vm.sade.auditlog.haku.LogMessage;
+import fi.vm.sade.haku.RemoteServiceException;
 import fi.vm.sade.haku.oppija.common.organisaatio.Organization;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationGroupRestDTO;
 import fi.vm.sade.haku.oppija.common.organisaatio.OrganizationService;
@@ -13,6 +14,7 @@ import fi.vm.sade.haku.oppija.hakemus.domain.*;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationOptionDTO;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.Pistetieto;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.UpdatePreferenceResult;
+import fi.vm.sade.haku.oppija.hakemus.domain.util.ApplicationUtil;
 import fi.vm.sade.haku.oppija.hakemus.domain.util.AttachmentUtil;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
 import fi.vm.sade.haku.oppija.hakemus.service.HakuPermissionService;
@@ -757,6 +759,16 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         modelResponse.addAnswers(new HashMap<String, String>(){{put("_meta_officerUi", "true");}});
         return modelResponse;
     }
+    
+    @Override
+    public Map<String, String> getNamesForNoteUsers(List<String> oids) {
+        List<Person> persons = authenticationService.getHenkiloList(oids);
+        Map<String, String> result = new HashMap<String, String>();
+        for(Person person: persons) {
+            result.put(person.getPersonOid(), person.getNickName() + " " + person.getLastName());
+        }
+        return result;
+    }
 
     private ApplicationNote createNote(String note) {
         return new ApplicationNote(note, new Date(), userSession.getUser().getUserName());
@@ -832,18 +844,27 @@ public class OfficerUIServiceImpl implements OfficerUIService {
         PreferenceEligibility.Source newSource = PreferenceEligibility.Source.valueOf(dto.getSource());
         String newRejectionBasis = dto.getRejectionBasis();
         Boolean newChecked = dto.getPreferencesChecked();
-        if (newStatus != preferenceEligibility.getStatus()) {
+        
+        boolean updateStatus = newStatus != preferenceEligibility.getStatus();
+        if (updateStatus) {
             AUDIT.log(eligibilityAuditLogBuilder(application, dto)
                     .add("status", newStatus, preferenceEligibility.getStatus())
                     .build());
             preferenceEligibility.setStatus(newStatus);
         }
-        if (newSource != preferenceEligibility.getSource()) {
+        
+        boolean updateSource = newSource != preferenceEligibility.getSource();
+        if (updateSource) {
             AUDIT.log(eligibilityAuditLogBuilder(application, dto)
                     .add("source", newSource, preferenceEligibility.getSource())
                     .build());
             preferenceEligibility.setSource(newSource);
         }
+
+        if (updateStatus || updateSource) {
+            updateEligibilityStatusToApplicationNotes(application, preferenceEligibility, newStatus, newSource, officerOid);
+        }
+        
         if (!newRejectionBasis.equals(preferenceEligibility.getRejectionBasis())) {
             AUDIT.log(eligibilityAuditLogBuilder(application, dto)
                     .add("rejectionBasis", newRejectionBasis, preferenceEligibility.getRejectionBasis())
@@ -859,6 +880,19 @@ public class OfficerUIServiceImpl implements OfficerUIService {
                 preferenceChecked.setCheckedByOfficerOid(officerOid);
             }
         }
+    }
+
+    private static void updateEligibilityStatusToApplicationNotes(Application application,
+                                                                  PreferenceEligibility preferenceEligibility,
+                                                                  PreferenceEligibility.Status status,
+                                                                  PreferenceEligibility.Source source,
+                                                                  String officerOid) {
+        String eligibilityNote = ApplicationUtil.getApplicationOptionName(application, preferenceEligibility)
+          + ". Hakukelpoisuutta muutettu: " + PreferenceEligibility.getStatusMessage(status);
+        if (PreferenceEligibility.Source.UNKNOWN != source) {
+            eligibilityNote += ", " + PreferenceEligibility.getSourceMessage(source);
+        }
+        application.addNote(new ApplicationNote(eligibilityNote, new Date(), officerOid));
     }
 
     private static void updateAttachmentRequestStatus(Application application, AttachmentDTO attachmentDTO, ApplicationAttachmentRequest attachment) {
