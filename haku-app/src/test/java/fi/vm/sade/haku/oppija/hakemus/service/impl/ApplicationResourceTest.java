@@ -35,7 +35,7 @@ public class ApplicationResourceTest extends AuthedIntegrationTest {
     private ApplicationResource applicationResource;
 
     @Before
-    public void setup() {
+    public void setUp() {
         ApplicationService as = new ApplicationServiceImpl(
                 applicationDAO,
                 new UserSessionMock("foo"),
