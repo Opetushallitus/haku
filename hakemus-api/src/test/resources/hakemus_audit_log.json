@@ -43,6 +43,7 @@
             "preference2-Koulutus-id" : "1.2.246.562.5.41197971199",
             "preference2-discretionary" : "true",
             "preference1-Koulutus-id-vocational" : "true",
+            "preference1-Koulutus-id-discretionary" : "true",
             "preference3-Koulutus-id-vocational" : "",
             "preference4-Koulutus-educationDegree" : "",
             "preference4-Koulutus-id-kaksoistutkinto" : "",
@@ -67,6 +68,7 @@
             "preference4-Koulutus-id-lang" : "",
             "preference1-Opetuspiste-id-parents" : "1.2.246.562.10.19460928302,1.2.246.562.10.81934895871,1.2.246.562.10.594252633210,1.2.246.562.10.00000000001,1.2.246.562.10.19460928302",
             "preference2-Koulutus-id-vocational" : "true",
+            "preference2-Koulutus-id-discretionary" : "true",
             "preference1-Koulutus-id" : "1.2.246.562.5.14273398983",
             "preference3-Koulutus-id-sora" : "",
             "preference2-Opetuspiste-id-parents" : "1.2.246.562.10.43328767116,1.2.246.562.10.81934895871,1.2.246.562.10.594252633210,1.2.246.562.10.00000000001,1.2.246.562.10.43328767116",
@@ -209,6 +211,7 @@
                 "ordinal" : 1,
                 "preferenceData" : {
                     "Koulutus-id-vocational" : "true",
+                    "Koulutus-id-discretionary" : "true",
                     "Koulutus-id-aoIdentifier" : "864",
                     "discretionary-follow-up" : "oppimisvaikudet",
                     "Koulutus-id" : "1.2.246.562.5.14273398983",
@@ -231,6 +234,7 @@
                 "ordinal" : 2,
                 "preferenceData" : {
                     "Koulutus-id-vocational" : "true",
+                    "Koulutus-id-discretionary" : "true",
                     "Koulutus-id-aoIdentifier" : "284",
                     "discretionary-follow-up" : "oppimisvaikudet",
                     "Koulutus-id" : "1.2.246.562.5.41197971199",

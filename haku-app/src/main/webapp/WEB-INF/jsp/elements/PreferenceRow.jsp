@@ -38,6 +38,7 @@
     <c:set value="${hiddenKoulutusId}-vocational" var="hiddenKoulutusIdVocational" scope="page"/>
     <c:set value="${hiddenKoulutusId}-attachmentgroups" var="hiddenAttachmentgroups" scope="page"/>
     <c:set value="${hiddenKoulutusId}-attachments" var="hiddenAttachments" scope="page"/>
+    <c:set value="${hiddenKoulutusId}-discretionary" var="hiddenDiscretionary" scope="page"/>
 
     <haku:errorMessage id="${sortableItem.id}" additionalClass="margin-top-1"/>
     <div class="form-row">
@@ -108,6 +109,7 @@
                 <haku:input-hidden id="${hiddenKoulutusIdVocational}" data="${answers}"/>
                 <haku:input-hidden id="${hiddenAttachmentgroups}" data="${answers}"/>
                 <haku:input-hidden id="${hiddenAttachments}" data="${answers}"/>
+                <haku:input-hidden id="${hiddenDiscretionary}" data="${answers}"/>
             </div>
         </div>
         <div role="presentation" class="clear"></div>

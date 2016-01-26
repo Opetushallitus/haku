@@ -38,6 +38,7 @@ public class KoulutusinformaatioServiceMockImpl extends KoulutusinformaatioServi
             mesta("1.2.246.562.10.51872958189", "Stadin ammattiopisto, Sturenkadun toimipaikka"),
             mesta("1.2.246.562.10.35241670047", "Anna Tapion koulu"),
             mesta("1.2.246.562.10.35241670048", "Urheilijoiden koulu"),
+            mesta("1.2.246.562.10.35241670049", "Musiikkialan koulu"),
             mesta("1.2.246.562.10.55918814447", "Oulun yliopisto, Humanistinen tiedekunta"),
             mesta("1.2.246.562.10.62355244518", "Yrkeshögskolan Novia, Raasepori"),
             mesta("1.2.246.562.10.99415780891", "Yrkeshögskolan Novia, Pietarsaari"),

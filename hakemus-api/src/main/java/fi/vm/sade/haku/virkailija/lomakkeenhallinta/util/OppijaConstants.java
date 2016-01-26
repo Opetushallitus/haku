@@ -67,9 +67,14 @@ public final class OppijaConstants {
     public static final String ELEMENT_ID_CONTACT_LANGUAGE = "asiointikieli";
     public static final String ELEMENT_ID_BASE_EDUCATION = "POHJAKOULUTUS";
     public static final String ELEMENT_ID_LISAKOULUTUS_KYMPPI = "LISAKOULUTUS_KYMPPI";
-    public static final String ELEMENT_ID_LISAKOULUTUS_AMMATTISTARTTI = "LISAKOULUTUS_AMMATTISTARTTI";
-    public static final String ELEMENT_ID_LISAKOULUTUS_MAAHANMUUTTO = "LISAKOULUTUS_MAAHANMUUTTO";
     public static final String ELEMENT_ID_LISAKOULUTUS_VAMMAISTEN = "LISAKOULUTUS_VAMMAISTEN";
+    public static final String ELEMENT_ID_LISAKOULUTUS_TALOUS = "LISAKOULUTUS_TALOUS";
+    public static final String ELEMENT_ID_LISAKOULUTUS_AMMATTISTARTTI = "LISAKOULUTUS_AMMATTISTARTTI";
+    public static final String ELEMENT_ID_LISAKOULUTUS_KANSANOPISTO = "LISAKOULUTUS_KANSANOPISTO";
+    public static final String ELEMENT_ID_LISAKOULUTUS_MAAHANMUUTTO = "LISAKOULUTUS_MAAHANMUUTTO";
+    public static final String ELEMENT_ID_LISAKOULUTUS_MAAHANMUUTTO_LUKIO = "LISAKOULUTUS_MAAHANMUUTTO_LUKIO";
+    public static final String ELEMENT_ID_LISAKOULUTUS_VALMA = "LISAKOULUTUS_VALMA";
+    public static final String ELEMENT_ID_LISAKOULUTUS_TELMA = "LISAKOULUTUS_TELMA";
 
     public static final String ELEMENT_ID_OSAAMINEN_YOARVOSANAT_PARAS_KIELI_PITKA = "yo-arvosana-paraskieli-pitka";
     public static final String ELEMENT_ID_OSAAMINEN_YOARVOSANAT_PARAS_KIELI_LYHYT = "yo-arvosana-paraskieli-lyhyt";
@@ -135,6 +140,7 @@ public final class OppijaConstants {
 
     public static final String PERUSOPETUS_KIELI = "perusopetuksen_kieli";
     public static final String PERUSOPETUS_PAATTOTODISTUSVUOSI = "PK_PAATTOTODISTUSVUOSI";
+    public static final String KYMPPI_PAATTOTODISTUSVUOSI = "KYMPPI_PAATTOTODISTUSVUOSI";
 
     public static final String EDUCATION_CODE_MUSIIKKI = "koulutus_321204";
     public static final String EDUCATION_CODE_TANSSI = "koulutus_321501";

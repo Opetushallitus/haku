@@ -8,7 +8,6 @@ import fi.vm.sade.haku.oppija.lomake.domain.rules.expression.*;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.FormParameters;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.service.ThemeQuestionConfigurator;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ExprUtil;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.RelatedQuestionRuleBuilder.Rule;
 import static fi.vm.sade.haku.oppija.lomake.domain.builder.TextBuilder.Text;
@@ -37,7 +36,7 @@ public final class ArvosanatTheme {
 
         Element arvosanataulukkoPkSv = Rule(
                 new Equals(
-                        new Variable(OppijaConstants.PERUSOPETUS_KIELI),
+                        new Variable(PERUSOPETUS_KIELI),
                         new Value("SV")))
                 .build();
         arvosanataulukkoPkSv.addChild(arvosanataulukkoPK(formParameters, true));
@@ -45,7 +44,7 @@ public final class ArvosanatTheme {
         Element arvosanataulukkoPkMuut = Rule(
                 new Not(
                         new Equals(
-                                new Variable(OppijaConstants.PERUSOPETUS_KIELI),
+                                new Variable(PERUSOPETUS_KIELI),
                                 new Value("SV"))))
                 .build();
         arvosanataulukkoPkMuut.addChild(arvosanataulukkoPK(formParameters, false));
@@ -60,7 +59,7 @@ public final class ArvosanatTheme {
 
             Element arvosanataulukkoYoSv = Rule(
                     new Equals(
-                            new Variable(OppijaConstants.LUKIO_KIELI),
+                            new Variable(LUKIO_KIELI),
                             new Value("SV")))
                     .build();
             arvosanataulukkoYoSv.addChild(arvosanataulukkoYO(formParameters, true));
@@ -68,7 +67,7 @@ public final class ArvosanatTheme {
             Element arvosanataulukkoYoMuut = Rule(
                     new Not(
                             new Equals(
-                                    new Variable(OppijaConstants.LUKIO_KIELI),
+                                    new Variable(LUKIO_KIELI),
                                     new Value("SV"))))
                     .build();
             arvosanataulukkoYoMuut.addChild(arvosanataulukkoYO(formParameters, false));
@@ -95,6 +94,9 @@ public final class ArvosanatTheme {
 
         // Peruskoulu
         Integer hakukausiVuosi = formParameters.getApplicationSystem().getHakukausiVuosi();
+        Expr pkTaiKymppiPaattynytHakuvuonna = new ExprUtil().atLeastOneVariableEqualsToValue(String.valueOf(hakukausiVuosi),
+                PERUSOPETUS_PAATTOTODISTUSVUOSI,
+                KYMPPI_PAATTOTODISTUSVUOSI);
         Expr kysyArvosanatPk = new And(
                 ExprUtil.atLeastOneValueEqualsToVariable(POHJAKOULUTUS_ID,
                         PERUSKOULU,
@@ -103,9 +105,7 @@ public final class ArvosanatTheme {
                         YKSILOLLISTETTY),
                 new Or(
                         new Not(
-                                new Equals(
-                                        new Variable(OppijaConstants.PERUSOPETUS_PAATTOTODISTUSVUOSI),
-                                        new Value(String.valueOf(hakukausiVuosi)))
+                                pkTaiKymppiPaattynytHakuvuonna
                         ),
                         new Equals(new Variable("_meta_officerUi"), new Value("true"))
                 ));
@@ -113,7 +113,7 @@ public final class ArvosanatTheme {
 
         Element arvosanataulukkoPkSv = Rule(
                 new Equals(
-                        new Variable(OppijaConstants.PERUSOPETUS_KIELI),
+                        new Variable(PERUSOPETUS_KIELI),
                         new Value("SV")))
                 .build();
         arvosanataulukkoPkSv.addChild(arvosanataulukkoPK(formParameters, true));
@@ -121,7 +121,7 @@ public final class ArvosanatTheme {
         Element arvosanataulukkoPkMuut = Rule(
                 new Not(
                         new Equals(
-                                new Variable(OppijaConstants.PERUSOPETUS_KIELI),
+                                new Variable(PERUSOPETUS_KIELI),
                                 new Value("SV"))))
                 .build();
         arvosanataulukkoPkMuut.addChild(arvosanataulukkoPK(formParameters, false));
@@ -132,9 +132,7 @@ public final class ArvosanatTheme {
         arvosanatTheme.addChild(relatedQuestionPk);
 
         // Ei arvosanoja
-        Element eiNaytetaPk = Rule(
-                new Equals(new Variable(OppijaConstants.PERUSOPETUS_PAATTOTODISTUSVUOSI), new Value(String.valueOf(hakukausiVuosi)))
-        ).build();
+        Element eiNaytetaPk = Rule(pkTaiKymppiPaattynytHakuvuonna).build();
 
         eiNaytetaPk.addChild(Text("nogradegrid").labelKey("form.arvosanat.eiKysyta.pk").formParams(formParameters).build());
         arvosanatTheme.addChild(eiNaytetaPk);
@@ -143,20 +141,20 @@ public final class ArvosanatTheme {
             // Ylioppilaat
             RelatedQuestionRuleBuilder naytetaankoLukionArvosanataulukko;
             if (formParameters.isLisahaku()) {
-                naytetaankoLukionArvosanataulukko = Rule(new Equals(new Variable(POHJAKOULUTUS_ID), new Value(OppijaConstants.YLIOPPILAS)));
+                naytetaankoLukionArvosanataulukko = Rule(new Equals(new Variable(POHJAKOULUTUS_ID), new Value(YLIOPPILAS)));
             } else {
                 naytetaankoLukionArvosanataulukko = Rule(new And(
-                        new Equals(new Variable(POHJAKOULUTUS_ID), new Value(OppijaConstants.YLIOPPILAS)),
+                        new Equals(new Variable(POHJAKOULUTUS_ID), new Value(YLIOPPILAS)),
                         new Or(
                                 new Not(
                                         new Equals(
-                                                new Variable(OppijaConstants.LUKIO_PAATTOTODISTUS_VUOSI),
+                                                new Variable(LUKIO_PAATTOTODISTUS_VUOSI),
                                                 new Value(String.valueOf(hakukausiVuosi)))),
                                 new Equals(new Variable("_meta_officerUi"), new Value("true")))));
             }
             Element arvosanataulukkoYoSv = Rule(
                     new Equals(
-                            new Variable(OppijaConstants.LUKIO_KIELI),
+                            new Variable(LUKIO_KIELI),
                             new Value("SV")))
                     .build();
             arvosanataulukkoYoSv.addChild(arvosanataulukkoYO(formParameters, true));
@@ -164,7 +162,7 @@ public final class ArvosanatTheme {
             Element arvosanataulukkoYoMuut = Rule(
                     new Not(
                             new Equals(
-                                    new Variable(OppijaConstants.LUKIO_KIELI),
+                                    new Variable(LUKIO_KIELI),
                                     new Value("SV"))))
                     .build();
             arvosanataulukkoYoMuut.addChild(arvosanataulukkoYO(formParameters, false));
@@ -198,7 +196,7 @@ public final class ArvosanatTheme {
     }
 
     private static Element pohjakoulutusOnKeskeytynytTaiUlkomainenRule() {
-        return Rule(ExprUtil.atLeastOneValueEqualsToVariable(POHJAKOULUTUS_ID, OppijaConstants.KESKEYTYNYT, OppijaConstants.ULKOMAINEN_TUTKINTO)).build();
+        return Rule(ExprUtil.atLeastOneValueEqualsToVariable(POHJAKOULUTUS_ID, KESKEYTYNYT, ULKOMAINEN_TUTKINTO)).build();
     }
 
     private static Element textEiArvosanataulukkoa(FormParameters formParameters) {

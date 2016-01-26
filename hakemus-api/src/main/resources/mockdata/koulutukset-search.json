@@ -17,6 +17,7 @@
       "name": "Talonrakennus ja ymäristösuunnittelu, pk",
       "educationDegree": "koulutusasteoph2002_32",
       "sora": true,
+      "kysytaanHarkinnanvaraiset": true,
       "educationCodeUri": "koulutus_381202",
       "teachingLanguages": ["FI"],
       "organizationGroups": [],
@@ -36,6 +37,7 @@
       "organizationGroups": [],
       "athleteEducation": true,
       "kaksoistutkinto": false,
+      "kysytaanHarkinnanvaraiset": true,
       "vocational": true,
       "childLONames": ["Kaivosalan perustutkinto, Kaivosalan koulutusohjelma"]
     },
@@ -45,6 +47,7 @@
       "educationDegree": "32",
       "teachingLanguages": ["FI"],
       "educationCodeUri": "koulutus_381209",
+      "kysytaanHarkinnanvaraiset": true,
       "organizationGroups": [],
       "childLONames": [
         "Musiikkialan perustutkinto, Musiikkiteknologian koulutusohjelma",
@@ -172,6 +175,24 @@
       "teachingLanguages": ["FI"],
       "organizationGroups": [],
       "athleteEducation": true,
+      "kysytaanHarkinnanvaraiset": true,
+      "kaksoistutkinto": false,
+      "vocational": true,
+      "educationCodeUri": "koulutus_222222"
+    }
+  ],
+  "1.2.246.562.10.35241670049": [
+    {
+      "id": "1.2.246.562.20.17550428336",
+      "name": "Musiikkialan perustutkinto",
+      "aoIdentifier": "892",
+      "educationDegree": "koulutusasteoph2002_32",
+      "childLONames": [],
+      "sora": false,
+      "teachingLanguages": ["FI"],
+      "organizationGroups": [],
+      "athleteEducation": false,
+      "kysytaanHarkinnanvaraiset": false,
       "kaksoistutkinto": false,
       "vocational": true,
       "educationCodeUri": "koulutus_222222"

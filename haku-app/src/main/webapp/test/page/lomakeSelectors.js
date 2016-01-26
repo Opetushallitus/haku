@@ -23,6 +23,9 @@ lomake = initSelectors({
 
     // Koulutustausta
     pkPaattotodistusVuosi : "input#PK_PAATTOTODISTUSVUOSI",
+    pkPaattotodistusSaatuPuolenVuodenSisaan : function(bool) {
+        return "input#peruskoulutodistus_saatu_puolivuotta_haun_lopusta_" + bool;
+    },
     pkKieli : "select#perusopetuksen_kieli",
     fromHenkilotiedot: "button[class=right][value=koulutustausta][name=phaseId]:first",
     suorittanutTutkinnonRule: '#suorittanutTutkinnonRule',
@@ -110,6 +113,12 @@ lomake = initSelectors({
         return 'input#pohjakoulutus_ulk_suoritusmaa_muu' + (n === 1 ? '' : n);
     },
 
+    lisakoulutusKymppi: 'input#LISAKOULUTUS_KYMPPI',
+    lisakoulutusKymppiYear: 'input#KYMPPI_PAATTOTODISTUSVUOSI',
+    lisakoulutusValma: 'input#LISAKOULUTUS_VALMA',
+    lisakoulutusTelma: 'input#LISAKOULUTUS_TELMA',
+    kiinnostunutOppisopimuksesta: 'input#kiinnostunutoppisopimuksesta',
+
     pohjakoulutusMuu: 'input#pohjakoulutus_muu',
     pohjakoulutusMuuVuosi: 'input#pohjakoulutus_muu_vuosi',
     pohjakoulutusMuuKuvaus: 'textarea#pohjakoulutus_muu_kuvaus',
@@ -122,6 +131,7 @@ lomake = initSelectors({
     },
 
     // Hakutoiveet
+    noPreferencesText: "div#nogradegrid",
     preferencesVisibleInput: "input#preferencesVisible",
     sortDown: function(n) {
         return "button.down.sort[data-id=preference" + n + "]";

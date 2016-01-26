@@ -233,6 +233,11 @@ public class FormParameters {
                 applicationSystem.getKohdejoukkoUri().equals(KOHDEJOUKKO_ERITYISOPETUKSENA_JARJESTETTAVA_AMMATILLINEN));
     }
 
+    public boolean kysytaankoOppisopimuskysymys() {
+        return KOHDEJOUKKO_AMMATILLINEN_JA_LUKIO.equals(applicationSystem.getKohdejoukkoUri()) &&
+                OppijaConstants.HAKUTAPA_YHTEISHAKU.equals(applicationSystem.getHakutapa());
+    }
+
     public boolean kysytaankoYlioppilastutkinto() {
         return !isPerusopetuksenJalkeinenValmentava();
     }
