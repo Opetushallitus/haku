@@ -835,4 +835,9 @@ public class ApplicationServiceImpl implements ApplicationService {
         }
         return application;
     }
+
+    public Date getApplicationPeriodEndWhenSubmitted(final Application application) {
+        ApplicationSystem applicationSystem = applicationSystemService.getApplicationSystem(application.getApplicationSystemId());
+        return application.getApplicationPeriodWhenSubmitted(applicationSystem.getApplicationPeriods()).getEnd();
+    }
 }

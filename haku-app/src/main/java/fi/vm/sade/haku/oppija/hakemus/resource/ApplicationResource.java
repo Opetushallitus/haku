@@ -124,6 +124,38 @@ public class ApplicationResource {
         }
     }
 
+    private boolean isApplicationPaymentPeriodActive(Application application, ApplicationSystem applicationSystem) {
+        Calendar applicationPeriodEnds = Calendar.getInstance();
+        applicationPeriodEnds.setTimeInMillis(
+                applicationService.getApplicationPeriodEndWhenSubmitted(application).getTime()
+        );
+
+        Calendar applicationPaymentDeadline = Calendar.getInstance();
+        applicationPaymentDeadline.setTimeInMillis(application.getReceived().getTime());
+        applicationPaymentDeadline.add(Calendar.DATE, 10);
+
+        Calendar lastDateForPayment = applicationPeriodEnds;
+        if (lastDateForPayment.getTimeInMillis() < applicationPaymentDeadline.getTimeInMillis()) {
+            lastDateForPayment = applicationPaymentDeadline;
+        }
+
+        long currentTimestamp = Calendar.getInstance().getTimeInMillis();
+        return currentTimestamp < lastDateForPayment.getTimeInMillis();
+    }
+
+    private void updateApplicationPaymentState(Application application, PaymentState state, PaymentState oldState) {
+        application.setRequiredPaymentState(state);
+
+        applicationService.update(new Application(application.getOid()), application, false);
+
+        AUDIT.log(builder()
+                .hakemusOid(application.getOid())
+                .setOperaatio(HakuOperation.PAYMENT_STATE_CHANGE)
+                .add("oldValue", nameOrEmpty(oldState))
+                .add("newValue", nameOrEmpty(state))
+                .build());
+    }
+
     @POST
     @Path("/{oid}/updatePaymentStatus")
     @Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
@@ -135,25 +167,26 @@ public class ApplicationResource {
                                 @RequestBody Map<String, String> body) {
         try {
             Application application = applicationService.getApplicationByOid(ApplicationOid.of(applicationOid).getValue());
-
+            ApplicationSystem applicationSystem = applicationSystemService.getApplicationSystem(
+                    application.getApplicationSystemId()
+            );
             PaymentState state = PaymentState.valueOf(body.get("paymentState"));
             PaymentState oldState = application.getRequiredPaymentState();
 
             if (oldState == null) {
                 throw new IllegalStateException("Application " + applicationOid + " is exempt from payment");
-            }
-
-            if (state != oldState) {
-                application.setRequiredPaymentState(state);
-
-                applicationService.update(new Application(application.getOid()), application, false);
-
-                AUDIT.log(builder()
-                        .hakemusOid(application.getOid())
-                        .setOperaatio(HakuOperation.PAYMENT_STATE_CHANGE)
-                        .add("oldValue", nameOrEmpty(oldState))
-                        .add("newValue", nameOrEmpty(state))
-                        .build());
+            } else if (oldState == state) {
+                LOGGER.info(
+                        "Application with OID {}: Ignoring request to set payment state = {}, as this is already the application state",
+                        application.getOid(), state
+                );
+            } else if (state == PaymentState.NOT_OK && isApplicationPaymentPeriodActive(application, applicationSystem)) {
+                LOGGER.info(
+                        "Application with OID {}: Ignoring request to set payment state = NOT_OK, as the application can still be modified",
+                        application.getOid()
+                );
+            } else {
+                updateApplicationPaymentState(application, state, oldState);
             }
         } catch (NullPointerException|IllegalArgumentException e) {
             throw new JSONException(Status.BAD_REQUEST, e.getMessage(), e);
