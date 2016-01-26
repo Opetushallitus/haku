@@ -45,7 +45,7 @@ public class ResourceNotFoundExceptionMapper implements ExceptionMapper<Resource
     public Response toResponse(ResourceNotFoundException exception) {
         String timestamp = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(new Date());
         String uuid = UUID.randomUUID().toString();
-        LOGGER.error("Error: " + uuid, exception);
+        LOGGER.warn("Error (" + uuid + "): " + exception.getMessage());
         Map<String, String> model = ImmutableMap.of(
                 MODEL_STACK_TRACE, exception.toString(),
                 MODEL_MESSAGE, exception.getMessage(),
