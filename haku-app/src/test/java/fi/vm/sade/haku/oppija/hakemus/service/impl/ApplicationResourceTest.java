@@ -56,6 +56,11 @@ public class ApplicationResourceTest extends AuthedIntegrationTest {
                 "false"
         );
         applicationResource = new ApplicationResource(as, applicationSystemService, applicationOptionService, syntheticApplicationService, i18nBundleService);
+
+    }
+
+    @Test
+    public void testSetPaymentState() {
         Calendar asPeriodStart = Calendar.getInstance();
         asPeriodStart.set(2015, Calendar.JANUARY, 1);
         Calendar asPeriodEnd = Calendar.getInstance();
@@ -63,7 +68,7 @@ public class ApplicationResourceTest extends AuthedIntegrationTest {
         applicationSubmitted.set(2015, Calendar.MARCH, 15);
         asPeriodEnd.set(2015, Calendar.DECEMBER, 3);
         ApplicationSystem applicationSystem = new ApplicationSystem(
-            "haku1", new Form("haku1", ElementUtil.createI18NAsIs("haku1")), ElementUtil.createI18NAsIs("haku1"),
+                "haku1", new Form("haku1", ElementUtil.createI18NAsIs("haku1")), ElementUtil.createI18NAsIs("haku1"),
                 "ACTIVE",
                 Arrays.asList(
                         new ApplicationPeriod(asPeriodStart.getTime(), asPeriodEnd.getTime()),
@@ -90,9 +95,26 @@ public class ApplicationResourceTest extends AuthedIntegrationTest {
         t.setReceived(applicationSubmitted.getTime());
         t.setRequiredPaymentState(PaymentState.NOTIFIED);
         applicationDAO.save(t);
+        applicationResource.setPaymentState(OID, ImmutableMap.of("paymentState", "OK"));
 
-        // Another application system & application, application system open to foreseen future
+        Application application = applicationResource.getApplicationByOid(OID);
 
+        assertEquals(PaymentState.OK, application.getRequiredPaymentState());
+
+        Map<String, String> changes = application.getHistory().get(0).getChanges().get(0);
+        assertEquals("requiredPaymentState", changes.get("field"));
+        assertEquals("NOTIFIED", changes.get("old value"));
+        assertEquals("OK", changes.get("new value"));
+
+        applicationResource.setPaymentState(OID, ImmutableMap.of("paymentState", "NOT_OK"));
+
+        Application application2 = applicationResource.getApplicationByOid(OID);
+
+        assertEquals(PaymentState.NOT_OK, application2.getRequiredPaymentState());
+    }
+
+    @Test
+    public void testCannotSetPaymentStateToNotOKForActiveApplication() {
         Calendar asPeriodStart2 = Calendar.getInstance();
         asPeriodStart2.set(2015, Calendar.JANUARY, 1);
         Calendar asPeriodEnd2 = Calendar.getInstance();
@@ -127,9 +149,15 @@ public class ApplicationResourceTest extends AuthedIntegrationTest {
         t2.setReceived(applicationSubmitted2.getTime());
         t2.setRequiredPaymentState(PaymentState.NOTIFIED);
         applicationDAO.save(t2);
+        applicationResource.setPaymentState(OID2, ImmutableMap.of("paymentState", "NOT_OK"));
 
-        // Another application system & application system closed, application sent within the payment grace period
+        Application application = applicationResource.getApplicationByOid(OID2);
 
+        assertEquals(PaymentState.NOTIFIED, application.getRequiredPaymentState());
+    }
+
+    @Test
+    public void testCannotSetPaymentStateToNotOKForApplicationWithinPaymentGracePeriod() {
         Calendar asPeriodStart3 = Calendar.getInstance();
         asPeriodStart3.set(2015, Calendar.JANUARY, 1);
         Calendar applicationSubmitted3 = Calendar.getInstance();
@@ -164,39 +192,7 @@ public class ApplicationResourceTest extends AuthedIntegrationTest {
         t3.setReceived(applicationSubmitted3.getTime());
         t3.setRequiredPaymentState(PaymentState.NOTIFIED);
         applicationDAO.save(t3);
-    }
 
-    @Test
-    public void testSetPaymentState() {
-        applicationResource.setPaymentState(OID, ImmutableMap.of("paymentState", "OK"));
-
-        Application application = applicationResource.getApplicationByOid(OID);
-
-        assertEquals(PaymentState.OK, application.getRequiredPaymentState());
-
-        Map<String, String> changes = application.getHistory().get(0).getChanges().get(0);
-        assertEquals("requiredPaymentState", changes.get("field"));
-        assertEquals("NOTIFIED", changes.get("old value"));
-        assertEquals("OK", changes.get("new value"));
-
-        applicationResource.setPaymentState(OID, ImmutableMap.of("paymentState", "NOT_OK"));
-
-        Application application2 = applicationResource.getApplicationByOid(OID);
-
-        assertEquals(PaymentState.NOT_OK, application2.getRequiredPaymentState());
-    }
-
-    @Test
-    public void testCannotSetPaymentStateToNotOKForActiveApplication() {
-        applicationResource.setPaymentState(OID2, ImmutableMap.of("paymentState", "NOT_OK"));
-
-        Application application = applicationResource.getApplicationByOid(OID2);
-
-        assertEquals(PaymentState.NOTIFIED, application.getRequiredPaymentState());
-    }
-
-    @Test
-    public void testCannotSetPaymentStateToNotOKForApplicationWithinPaymentGracePeriod() {
         applicationResource.setPaymentState(OID3, ImmutableMap.of("paymentState", "NOT_OK"));
 
         Application application = applicationResource.getApplicationByOid(OID3);
