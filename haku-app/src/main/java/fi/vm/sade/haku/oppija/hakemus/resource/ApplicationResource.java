@@ -36,6 +36,7 @@ import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.haku.oppija.ui.service.OfficerUIService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.I18nBundle;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.i18n.I18nBundleService;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.HakumaksuUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.ApplicationOid;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -124,7 +125,7 @@ public class ApplicationResource {
         }
     }
 
-    private boolean isApplicationPaymentPeriodActive(Application application, ApplicationSystem applicationSystem) {
+    private boolean isApplicationPaymentPeriodActive(Application application) {
         Calendar applicationPeriodEnds = Calendar.getInstance();
         applicationPeriodEnds.setTimeInMillis(
                 applicationService.getApplicationPeriodEndWhenSubmitted(application).getTime()
@@ -132,7 +133,7 @@ public class ApplicationResource {
 
         Calendar applicationPaymentDeadline = Calendar.getInstance();
         applicationPaymentDeadline.setTimeInMillis(application.getReceived().getTime());
-        applicationPaymentDeadline.add(Calendar.DATE, 10);
+        applicationPaymentDeadline.add(Calendar.DATE, HakumaksuUtil.APPLICATION_PAYMENT_GRACE_PERIOD);
 
         Calendar lastDateForPayment = applicationPeriodEnds;
         if (lastDateForPayment.getTimeInMillis() < applicationPaymentDeadline.getTimeInMillis()) {
@@ -167,9 +168,7 @@ public class ApplicationResource {
                                 @RequestBody Map<String, String> body) {
         try {
             Application application = applicationService.getApplicationByOid(ApplicationOid.of(applicationOid).getValue());
-            ApplicationSystem applicationSystem = applicationSystemService.getApplicationSystem(
-                    application.getApplicationSystemId()
-            );
+
             PaymentState state = PaymentState.valueOf(body.get("paymentState"));
             PaymentState oldState = application.getRequiredPaymentState();
 
@@ -180,7 +179,7 @@ public class ApplicationResource {
                         "Application with OID {}: Ignoring request to set payment state = {}, as this is already the application state",
                         application.getOid(), state
                 );
-            } else if (state == PaymentState.NOT_OK && isApplicationPaymentPeriodActive(application, applicationSystem)) {
+            } else if (state == PaymentState.NOT_OK && isApplicationPaymentPeriodActive(application)) {
                 LOGGER.info(
                         "Application with OID {}: Ignoring request to set payment state = NOT_OK, as the application can still be modified",
                         application.getOid()
