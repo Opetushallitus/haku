@@ -190,15 +190,7 @@
                     <haku:infoCell key="virkailija.hakemus.puhelin" value="${answers['matkapuhelinnumero1']}"/>
                 </tr>
                 <tr>
-                    <c:choose>
-                        <c:when test="${paymentState ne ''}">
-                            <haku:infoCell key="virkailija.hakemus.maksun.tila" value='${paymentState}' cellId="infocell_paymentstate"/>
-                        </c:when>
-                        <c:otherwise>
-                            <td>&nbsp;</td>
-                        </c:otherwise>
-                    </c:choose>
-
+                    <haku:infoCell key="virkailija.hakemus.maksun.tila" value='${paymentState}' cellId="infocell_paymentstate"/>
 
                     <td>
                         Hakijan tiedot <a href="/suoritusrekisteri/#/muokkaa/${application.personOid}" target="_blank">suoritusrekisteriss&auml;</a></br>
@@ -206,6 +198,12 @@
                     </td>
 
                     <haku:infoCell key="virkailija.hakemus.sahkoposti" value="${answers['Sähköposti']}"/>
+                </tr>
+                <tr>
+                    <fmt:formatDate value="${application.paymentDueDate}" pattern="dd.MM.yyyy HH:mm:ss" var="dueDate"/>
+                    <haku:infoCell key="virkailija.hakemus.maksun.erapaiva" value='${dueDate}' cellId="infocell_paymentduedate"/>
+
+                    <td colspan="2">&nbsp;</td>
                 </tr>
             </table>
         </div>
