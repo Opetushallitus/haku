@@ -124,6 +124,19 @@ public class ApplicationResource {
         }
     }
 
+    private void updateApplicationPaymentState(Application application, PaymentState state, PaymentState oldState) {
+        application.setRequiredPaymentState(state);
+
+        applicationService.update(new Application(application.getOid()), application, false);
+
+        AUDIT.log(builder()
+                .hakemusOid(application.getOid())
+                .setOperaatio(HakuOperation.PAYMENT_STATE_CHANGE)
+                .add("oldValue", nameOrEmpty(oldState))
+                .add("newValue", nameOrEmpty(state))
+                .build());
+    }
+
     @POST
     @Path("/{oid}/updatePaymentStatus")
     @Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
@@ -138,22 +151,22 @@ public class ApplicationResource {
 
             PaymentState state = PaymentState.valueOf(body.get("paymentState"));
             PaymentState oldState = application.getRequiredPaymentState();
+            Date paymentDueDate = application.getPaymentDueDate();
 
-            if (oldState == null) {
+            if (oldState == null || paymentDueDate == null) {
                 throw new IllegalStateException("Application " + applicationOid + " is exempt from payment");
-            }
-
-            if (state != oldState) {
-                application.setRequiredPaymentState(state);
-
-                applicationService.update(new Application(application.getOid()), application, false);
-
-                AUDIT.log(builder()
-                        .hakemusOid(application.getOid())
-                        .setOperaatio(HakuOperation.PAYMENT_STATE_CHANGE)
-                        .add("oldValue", nameOrEmpty(oldState))
-                        .add("newValue", nameOrEmpty(state))
-                        .build());
+            } else if (oldState == state) {
+                LOGGER.info(
+                        "Application with OID {}: Ignoring request to set payment state = {}, as this is already the application state",
+                        application.getOid(), state
+                );
+            } else if (state == PaymentState.NOT_OK && paymentDueDate.after(new Date())) {
+                LOGGER.info(
+                        "Application with OID {}: Ignoring request to set payment state = NOT_OK, as the application can still be modified",
+                        application.getOid()
+                );
+            } else {
+                updateApplicationPaymentState(application, state, oldState);
             }
         } catch (NullPointerException|IllegalArgumentException e) {
             throw new JSONException(Status.BAD_REQUEST, e.getMessage(), e);
