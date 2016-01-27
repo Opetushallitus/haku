@@ -63,6 +63,7 @@ public class HakumaksuUtil {
     public static final IsoCountryCode SVEITSI = IsoCountryCode.of("CHE");
 
     public static final int APPLICATION_PAYMENT_GRACE_PERIOD = 10;
+    public static final long APPLICATION_PAYMENT_GRACE_PERIOD_MILLIS = TimeUnit.DAYS.toMillis(APPLICATION_PAYMENT_GRACE_PERIOD);
 
     /**
      * @return true if send was successful

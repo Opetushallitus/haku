@@ -1,7 +1,6 @@
 package fi.vm.sade.haku.oppija.postprocess.impl;
 
 import fi.vm.sade.auditlog.haku.HakuOperation;
-import fi.vm.sade.haku.RemoteServiceException;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application.PaymentState;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
@@ -32,7 +31,6 @@ import java.util.concurrent.ExecutionException;
 import static fi.vm.sade.haku.AuditHelper.AUDIT;
 import static fi.vm.sade.haku.AuditHelper.builder;
 import static fi.vm.sade.haku.oppija.lomake.util.StringUtil.nameOrEmpty;
-import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.MailTemplateUtil.paymentEmailFromApplication;
 import static org.apache.commons.lang.StringUtils.isEmpty;
 import static org.apache.commons.lang.StringUtils.isNotEmpty;
 
@@ -87,7 +85,7 @@ public class ApplicationPostProcessorService {
         if (applicationSystem.isMaksumuuriKaytossa()) {
             PaymentState oldPaymentState = application.getRequiredPaymentState();
 
-            application = hakumaksuService.processPayment(application, paymentEmailFromApplication(applicationSystem.getApplicationPeriods()));
+            application = hakumaksuService.processPayment(application, applicationSystem.getApplicationPeriods());
 
             if (application.getRequiredPaymentState() != oldPaymentState) {
                 AUDIT.log(builder()
