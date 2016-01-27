@@ -47,7 +47,7 @@ public class HakumaksuTest {
     static final String hakuperusteetUrlFi = "http://localhost/hakuperusteet-fi";
     static final String hakuperusteetUrlSv = "http://localhost/hakuperusteet-sv";
     static final String hakuperusteetUrlEn = "http://localhost/hakuperusteet-en";
-    private static final long PAYMENT_DUE_DATE = 1453893850027L;
+    private static final long PAYMENT_DUE_DATE_MILLIS = 1453893850027L;
     ImmutableList<ApplicationPeriod> applicationPeriods = ImmutableList.of(
             new ApplicationPeriod(new Date(0), new Date(new Date().getTime() + 20000))
     );
@@ -237,9 +237,9 @@ public class HakumaksuTest {
     public void dueDateDoesNotChangeIfAlreadyPresent() throws ExecutionException, InterruptedException {
         Application application = new Application() {{
             setRequiredPaymentState(PaymentState.NOTIFIED);
-            setPaymentDueDate(new Date(PAYMENT_DUE_DATE));
+            setPaymentDueDate(new Date(PAYMENT_DUE_DATE_MILLIS));
         }};
 
-        assertEquals(PAYMENT_DUE_DATE, service.processPayment(application, applicationPeriods).getPaymentDueDate().getTime());
+        assertEquals(PAYMENT_DUE_DATE_MILLIS, service.processPayment(application, applicationPeriods).getPaymentDueDate().getTime());
     }
 }
