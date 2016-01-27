@@ -25,7 +25,6 @@ import java.text.DateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.concurrent.TimeUnit;
 
 import static com.google.common.base.Optional.fromNullable;
 import static fi.vm.sade.haku.oppija.common.oppijantunnistus.OppijanTunnistusDTO.LanguageCodeISO6391.*;
@@ -38,7 +37,6 @@ public final class MailTemplateUtil {
 
     private static final String PLACEHOLDER_LINK = "verification-link";
     private static final String PLACEHOLDER_LINK_EXPIRATION_TIME = "expires";
-    public static final long GRACE_PERIOD = TimeUnit.DAYS.toMillis(10);
 
     private static final ImmutableMap<LanguageCodeISO6391, SafeString> emailSubjectTranslations = ImmutableMap.of(
             en, SafeString.of("Studyinfo - payment link"),
@@ -139,11 +137,14 @@ public final class MailTemplateUtil {
                 LanguageCodeISO6391 language = languageCodeFromApplication(application);
                 SafeString subject = fromNullable(emailSubjectTranslations.get(language)).or(emailSubjectTranslations.get(en));
                 try {
-                    Date dueDate = calculateDueDate(applicationPeriods, new Date(), GRACE_PERIOD);
+                    Date dueDate = application.getPaymentDueDate();
+                    if (dueDate == null) {
+                        throw new RuntimeException("paymentDueDate is missing");
+                    }
                     return new PaymentEmail(subject, createEmailTemplate(language, subject, dueDate), language, dueDate);
                 } catch (IOException e) {
                     LOGGER.error("Failed to create payment email from application " + application.getOid(), e);
-                    return null;
+                    throw new RuntimeException(e);
                 }
             }
         };

@@ -3,6 +3,7 @@ package fi.vm.sade.haku.oppija.hakemus;
 
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import fi.vm.sade.haku.http.MockedRestClient;
@@ -14,11 +15,14 @@ import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationNote;
 import fi.vm.sade.haku.oppija.hakemus.service.EducationRequirementsUtil.Eligibility;
 import fi.vm.sade.haku.oppija.hakemus.service.HakumaksuService;
 import fi.vm.sade.haku.oppija.hakemus.service.HakumaksuService.PaymentEmail;
+import fi.vm.sade.haku.oppija.lomake.domain.ApplicationPeriod;
 import fi.vm.sade.haku.testfixtures.Hakukelpoisuusvaatimus;
 import fi.vm.sade.haku.testfixtures.Pohjakoulutus;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.ApplicationOptionOid;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.SafeString;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -32,6 +36,7 @@ import java.util.concurrent.ExecutionException;
 import static com.google.common.collect.Iterables.find;
 import static fi.vm.sade.haku.testfixtures.Pohjakoulutus.MUUALLA_KUIN_SUOMESSA_SUORITETTU_KORKEAKOULUTUTKINTO_YLEMPI_YLIOPISTOTUTKINTO_MAISTERI_ARUBA;
 import static fi.vm.sade.haku.testfixtures.HakumaksuMockData.*;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.HakumaksuUtil.APPLICATION_PAYMENT_GRACE_PERIOD_MILLIS;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.*;
 import static org.junit.Assert.*;
 
@@ -42,6 +47,10 @@ public class HakumaksuTest {
     static final String hakuperusteetUrlFi = "http://localhost/hakuperusteet-fi";
     static final String hakuperusteetUrlSv = "http://localhost/hakuperusteet-sv";
     static final String hakuperusteetUrlEn = "http://localhost/hakuperusteet-en";
+    private static final long PAYMENT_DUE_DATE = 1453893850027L;
+    ImmutableList<ApplicationPeriod> applicationPeriods = ImmutableList.of(
+            new ApplicationPeriod(new Date(0), new Date(new Date().getTime() + 20000))
+    );
 
     final protected HakumaksuService service = new HakumaksuService(
             "http://localhost:9090/haku-app/koodisto",
@@ -163,7 +172,7 @@ public class HakumaksuTest {
         assertNull(application.getRequiredPaymentState());
 
         // Payment requirement must also be visible in logs
-        Application processedApplication = service.processPayment(application, returnTestEmail);
+        Application processedApplication = service.processPayment(application, applicationPeriods);
         List<Captured> captured = mockRestClient.getCaptured();
         Captured match = find(captured, new Predicate<Captured>() {
             @Override
@@ -175,15 +184,17 @@ public class HakumaksuTest {
         assertEquals("POST", match.method);
         assertEquals(oppijanTunnistusUrl, match.url);
 
+        Date expectedDueDate = new DateTime(new Date().getTime() + APPLICATION_PAYMENT_GRACE_PERIOD_MILLIS, DateTimeZone.UTC).toDateMidnight().toDate();
+
         OppijanTunnistusDTO body = (OppijanTunnistusDTO) match.body;
         assertEquals(expectedEmail, body.email);
         assertEquals(hakuperusteetUrlSv + "/app/" + expectedHakemusOid + "#/token/", body.url);
         assertEquals(OppijanTunnistusDTO.LanguageCodeISO6391.sv, body.lang);
         assertEquals(expectedHakemusOid, body.metadata.hakemusOid);
         assertEquals(expectedPersonOid, body.metadata.personOid);
-        assertEquals(testEmail.subject.getValue(), body.subject);
-        assertEquals(testEmail.template.getValue(), body.template);
-        assertEquals(testEmail.expirationDate.getTime(), body.expires);
+        assertEquals("Studieinfo - betalningslänk", body.subject);
+        assertEquals(expectedDueDate.getTime(), body.expires);
+        assertEquals(expectedDueDate, application.getPaymentDueDate());
 
         assertTrue(processedApplication == application);
         assertEquals(PaymentState.NOTIFIED, processedApplication.getRequiredPaymentState());
@@ -203,7 +214,7 @@ public class HakumaksuTest {
         Application application = new Application() {{
             setRequiredPaymentState(PaymentState.OK);
         }};
-        assertEquals(PaymentState.OK, service.processPayment(application, returnTestEmail).getRequiredPaymentState());
+        assertEquals(PaymentState.OK, service.processPayment(application, applicationPeriods).getRequiredPaymentState());
     }
 
     @Test
@@ -211,7 +222,7 @@ public class HakumaksuTest {
         Application application = new Application() {{
             setRequiredPaymentState(PaymentState.NOT_OK);
         }};
-        assertNull(service.processPayment(application, returnTestEmail).getRequiredPaymentState());
+        assertNull(service.processPayment(application, applicationPeriods).getRequiredPaymentState());
     }
 
     @Test
@@ -219,6 +230,16 @@ public class HakumaksuTest {
         Application application = new Application() {{
             setRequiredPaymentState(PaymentState.NOTIFIED);
         }};
-        assertNull(service.processPayment(application, returnTestEmail).getRequiredPaymentState());
+        assertNull(service.processPayment(application, applicationPeriods).getRequiredPaymentState());
+    }
+
+    @Test
+    public void dueDateDoesNotChangeIfAlreadyPresent() throws ExecutionException, InterruptedException {
+        Application application = new Application() {{
+            setRequiredPaymentState(PaymentState.NOTIFIED);
+            setPaymentDueDate(new Date(PAYMENT_DUE_DATE));
+        }};
+
+        assertEquals(PAYMENT_DUE_DATE, service.processPayment(application, applicationPeriods).getPaymentDueDate().getTime());
     }
 }

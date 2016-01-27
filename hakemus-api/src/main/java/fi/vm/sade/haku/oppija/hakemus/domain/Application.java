@@ -53,6 +53,7 @@ public class Application implements Serializable {
     public static final Integer CURRENT_MODEL_VERSION = 7;
     public static final String META_FILING_LANGUAGE = "filingLanguage";
     public static final String REQUIRED_PAYMENT_STATE = "requiredPaymentState";
+    private Date paymentDueDate;
 
     public Integer getModelVersion() {
         return modelVersion;
@@ -60,6 +61,14 @@ public class Application implements Serializable {
 
     public void setModelVersion(Integer modelVersion) {
         this.modelVersion = modelVersion;
+    }
+
+    public void setPaymentDueDate(Date paymentDueDate) {
+        this.paymentDueDate = paymentDueDate;
+    }
+
+    public Date getPaymentDueDate() {
+        return paymentDueDate;
     }
 
     public enum State {

@@ -43,6 +43,7 @@ public class PaymentEmailTest {
         final String expectedHakemusOid = "1.2.3.4.5.6.7.8.9";
         final String expectedPersonOid = "9.8.7.6.6.5.4.3.2.1";
 
+        final Date expectedExpirationDate = new Date();
         Application application = new Application() {{
             setOid(expectedHakemusOid);
             setPersonOid(expectedPersonOid);
@@ -50,9 +51,9 @@ public class PaymentEmailTest {
                     ELEMENT_ID_EMAIL, expectedEmail));
             setVaiheenVastauksetAndSetPhaseId(PHASE_MISC, ImmutableMap.of(
                     ELEMENT_ID_CONTACT_LANGUAGE, "englanti"));
+            setPaymentDueDate(expectedExpirationDate);
         }};
 
-        Date expectedExpirationDate = new Date(today().getTime() + GRACE_PERIOD);
         ApplicationSystemBuilder builder = new ApplicationSystemBuilder()
                 .setApplicationPeriods(ImmutableList.of(
                         new ApplicationPeriod(fromString("2000-01-01"), fromString("2000-06-01")),
