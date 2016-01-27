@@ -25,6 +25,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
@@ -84,6 +85,7 @@ public class ApplicationPostProcessorService {
         ApplicationSystem applicationSystem = applicationSystemService.getApplicationSystem(application.getApplicationSystemId());
         if (applicationSystem.isMaksumuuriKaytossa()) {
             PaymentState oldPaymentState = application.getRequiredPaymentState();
+            Date oldDueDate = application.getPaymentDueDate();
 
             application = hakumaksuService.processPayment(application, applicationSystem.getApplicationPeriods());
 
@@ -93,6 +95,15 @@ public class ApplicationPostProcessorService {
                         .setOperaatio(HakuOperation.PAYMENT_STATE_CHANGE)
                         .add("oldValue", nameOrEmpty(oldPaymentState))
                         .add("newValue", application.getRequiredPaymentState())
+                        .build());
+            }
+
+            if (application.getPaymentDueDate() != oldDueDate) {
+                AUDIT.log(builder()
+                        .hakemusOid(application.getOid())
+                        .setOperaatio(HakuOperation.PAYMENT_DUE_DATE_CHANGE)
+                        .add("oldValue", oldDueDate != null ? String.format("%d", oldDueDate.getTime()) : "")
+                        .add("newValue", application.getPaymentDueDate() != null ? String.format("%d", application.getPaymentDueDate().getTime()) : "")
                         .build());
             }
         }

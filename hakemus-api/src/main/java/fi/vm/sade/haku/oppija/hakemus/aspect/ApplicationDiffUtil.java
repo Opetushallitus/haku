@@ -29,12 +29,16 @@ public final class ApplicationDiffUtil {
         return ImmutableMap.<String, String>builder().putAll(map).put(Application.REQUIRED_PAYMENT_STATE, paymentStateAsString(paymentState)).build();
     }
 
+    private static Map<String, String> addPaymentDueDate(Map<String, String> map, Date date) {
+        return ImmutableMap.<String, String>builder().putAll(map).put(Application.PAYMENT_DUE_DATE, date != null ? String.format("%d", date.getTime()) : "").build();
+    }
+
     public static List<Map<String, String>> addHistoryBasedOnChangedAnswers(final Application newApplication, final Application oldApplication, String userName, String reason) {
         Map<String, String> oldAnswers = oldApplication.getVastauksetMerged();
         Map<String, String> newAnswers = newApplication.getVastauksetMerged();
         List<Map<String, String>> answerChanges = mapsToChanges(
-                addPaymentState(oldAnswers, oldApplication.getRequiredPaymentState()),
-                addPaymentState(newAnswers, newApplication.getRequiredPaymentState())
+                addPaymentState(addPaymentDueDate(oldAnswers, oldApplication.getPaymentDueDate()), oldApplication.getRequiredPaymentState()),
+                addPaymentState(addPaymentDueDate(newAnswers, newApplication.getPaymentDueDate()), newApplication.getRequiredPaymentState())
         );
         List<Map<String, String>> eligibilityChanges = ApplicationDiffUtil.oldAndNewEligibilitiesToListOfChanges(oldApplication.getPreferenceEligibilities(), newApplication.getPreferenceEligibilities());
         List<Map<String, String>> additionalInfoChanges = mapsToChanges(oldApplication.getAdditionalInfo(), newApplication.getAdditionalInfo());
