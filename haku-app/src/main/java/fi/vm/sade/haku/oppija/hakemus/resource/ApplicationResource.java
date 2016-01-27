@@ -36,7 +36,6 @@ import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
 import fi.vm.sade.haku.oppija.ui.service.OfficerUIService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.I18nBundle;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.i18n.I18nBundleService;
-import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.HakumaksuUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.ApplicationOid;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -125,38 +124,6 @@ public class ApplicationResource {
         }
     }
 
-    private boolean isApplicationPaymentPeriodActive(Application application) {
-        Calendar applicationPeriodEnds = Calendar.getInstance();
-        applicationPeriodEnds.setTimeInMillis(
-                applicationService.getApplicationPeriodEndWhenSubmitted(application).getTime()
-        );
-
-        Calendar applicationPaymentDeadline = Calendar.getInstance();
-        applicationPaymentDeadline.setTimeInMillis(application.getReceived().getTime());
-        applicationPaymentDeadline.add(Calendar.DATE, HakumaksuUtil.APPLICATION_PAYMENT_GRACE_PERIOD);
-
-        Calendar lastDateForPayment = applicationPeriodEnds;
-        if (lastDateForPayment.getTimeInMillis() < applicationPaymentDeadline.getTimeInMillis()) {
-            lastDateForPayment = applicationPaymentDeadline;
-        }
-
-        long currentTimestamp = Calendar.getInstance().getTimeInMillis();
-        return currentTimestamp < lastDateForPayment.getTimeInMillis();
-    }
-
-    private void updateApplicationPaymentState(Application application, PaymentState state, PaymentState oldState) {
-        application.setRequiredPaymentState(state);
-
-        applicationService.update(new Application(application.getOid()), application, false);
-
-        AUDIT.log(builder()
-                .hakemusOid(application.getOid())
-                .setOperaatio(HakuOperation.PAYMENT_STATE_CHANGE)
-                .add("oldValue", nameOrEmpty(oldState))
-                .add("newValue", nameOrEmpty(state))
-                .build());
-    }
-
     @POST
     @Path("/{oid}/updatePaymentStatus")
     @Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
@@ -174,18 +141,19 @@ public class ApplicationResource {
 
             if (oldState == null) {
                 throw new IllegalStateException("Application " + applicationOid + " is exempt from payment");
-            } else if (oldState == state) {
-                LOGGER.info(
-                        "Application with OID {}: Ignoring request to set payment state = {}, as this is already the application state",
-                        application.getOid(), state
-                );
-            } else if (state == PaymentState.NOT_OK && isApplicationPaymentPeriodActive(application)) {
-                LOGGER.info(
-                        "Application with OID {}: Ignoring request to set payment state = NOT_OK, as the application can still be modified",
-                        application.getOid()
-                );
-            } else {
-                updateApplicationPaymentState(application, state, oldState);
+            }
+
+            if (state != oldState) {
+                application.setRequiredPaymentState(state);
+
+                applicationService.update(new Application(application.getOid()), application, false);
+
+                AUDIT.log(builder()
+                        .hakemusOid(application.getOid())
+                        .setOperaatio(HakuOperation.PAYMENT_STATE_CHANGE)
+                        .add("oldValue", nameOrEmpty(oldState))
+                        .add("newValue", nameOrEmpty(state))
+                        .build());
             }
         } catch (NullPointerException|IllegalArgumentException e) {
             throw new JSONException(Status.BAD_REQUEST, e.getMessage(), e);

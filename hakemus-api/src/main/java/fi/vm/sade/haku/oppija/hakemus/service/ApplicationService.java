@@ -25,7 +25,6 @@ import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationQueryParameters;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationState;
 
 import java.io.IOException;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -118,12 +117,4 @@ public interface ApplicationService {
     Application removeOrphanedAnswers(Application application);
 
     Application getApplicationWithValintadata(String oid);
-
-    /**
-     * Returns application period end date. In case there's multiple application periods for a application system the
-     * end date will be the end date of the period in which the application was submitted.
-     * @param application
-     * @return
-     */
-    Date getApplicationPeriodEndWhenSubmitted(final Application application);
 }

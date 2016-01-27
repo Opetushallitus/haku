@@ -62,8 +62,6 @@ public class HakumaksuUtil {
     public static final String EEA_KOODI = "valtioryhmat_2";
     public static final IsoCountryCode SVEITSI = IsoCountryCode.of("CHE");
 
-    public static final int APPLICATION_PAYMENT_GRACE_PERIOD = 10;
-
     /**
      * @return true if send was successful
      */
