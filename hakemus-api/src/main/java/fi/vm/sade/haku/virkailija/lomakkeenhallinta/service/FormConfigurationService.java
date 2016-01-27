@@ -107,7 +107,7 @@ public final class FormConfigurationService {
         Map<FormConfiguration.FeatureFlag, Boolean> defaultFeatureFlags = new HashMap<>();
         defaultFeatureFlags.put(FormConfiguration.FeatureFlag.erotteleAmmatillinenJaYoAmmatillinenKeskiarvo, true);
         defaultFeatureFlags.put(FormConfiguration.FeatureFlag.koulutusasteURI, true);
-        defaultFeatureFlags.put(FormConfiguration.FeatureFlag.requireEmail, true);
+        defaultFeatureFlags.put(FormConfiguration.FeatureFlag.requireEmail, OppijaConstants.KOHDEJOUKKO_KORKEAKOULU.equals(applicationSystem.getKohdejoukkoUri()));
         defaultFeatureFlags.put(FormConfiguration.FeatureFlag.kansainvalinenYoAmkKysymys, true);
         defaultFeatureFlags.put(FormConfiguration.FeatureFlag.sahkoinenViestintaLupa, OppijaConstants.KOHDEJOUKKO_KORKEAKOULU.equals(applicationSystem.getKohdejoukkoUri()));
         defaultFeatureFlags.put(FormConfiguration.FeatureFlag.additionalInfoForPreviousDegree, true);
