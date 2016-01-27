@@ -35,6 +35,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -79,6 +80,7 @@ public class ApplicationResourceTest {
 
         applicationWithPaymentState = new Application(OID_WITH_PAYMENT_STATE);
         applicationWithPaymentState.setRequiredPaymentState(PaymentState.NOTIFIED);
+        applicationWithPaymentState.setPaymentDueDate(new Date());
 
         try {
             when(applicationService.getApplicationByOid(OID)).thenReturn(this.application);

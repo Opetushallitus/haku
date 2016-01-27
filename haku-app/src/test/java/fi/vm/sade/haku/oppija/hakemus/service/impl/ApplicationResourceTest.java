@@ -92,6 +92,7 @@ public class ApplicationResourceTest extends AuthedIntegrationTest {
         applicationSystemService.save(applicationSystem);
 
         Application t = new Application("haku1", new User("foo"), ApplicationOid.of(OID).getValue());
+        t.setPaymentDueDate(new Date(0));
         t.setReceived(applicationSubmitted.getTime());
         t.setRequiredPaymentState(PaymentState.NOTIFIED);
         applicationDAO.save(t);
@@ -146,6 +147,7 @@ public class ApplicationResourceTest extends AuthedIntegrationTest {
         applicationSystemService.save(applicationSystem2);
 
         Application t2 = new Application("haku2", new User("foo"), ApplicationOid.of(OID2).getValue());
+        t2.setPaymentDueDate(asPeriodEnd2.getTime());
         t2.setReceived(applicationSubmitted2.getTime());
         t2.setRequiredPaymentState(PaymentState.NOTIFIED);
         applicationDAO.save(t2);
@@ -189,6 +191,7 @@ public class ApplicationResourceTest extends AuthedIntegrationTest {
         applicationSystemService.save(applicationSystem3);
 
         Application t3 = new Application("haku3", new User("foo"), ApplicationOid.of(OID3).getValue());
+        t3.setPaymentDueDate(new Date(new Date().getTime() + 20000));
         t3.setReceived(applicationSubmitted3.getTime());
         t3.setRequiredPaymentState(PaymentState.NOTIFIED);
         applicationDAO.save(t3);

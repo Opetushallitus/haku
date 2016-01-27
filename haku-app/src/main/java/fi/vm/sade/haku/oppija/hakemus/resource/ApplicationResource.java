@@ -125,25 +125,6 @@ public class ApplicationResource {
         }
     }
 
-    private boolean isApplicationPaymentPeriodActive(Application application) {
-        Calendar applicationPeriodEnds = Calendar.getInstance();
-        applicationPeriodEnds.setTimeInMillis(
-                applicationService.getApplicationPeriodEndWhenSubmitted(application).getTime()
-        );
-
-        Calendar applicationPaymentDeadline = Calendar.getInstance();
-        applicationPaymentDeadline.setTimeInMillis(application.getReceived().getTime());
-        applicationPaymentDeadline.add(Calendar.DATE, HakumaksuUtil.APPLICATION_PAYMENT_GRACE_PERIOD);
-
-        Calendar lastDateForPayment = applicationPeriodEnds;
-        if (lastDateForPayment.getTimeInMillis() < applicationPaymentDeadline.getTimeInMillis()) {
-            lastDateForPayment = applicationPaymentDeadline;
-        }
-
-        long currentTimestamp = Calendar.getInstance().getTimeInMillis();
-        return currentTimestamp < lastDateForPayment.getTimeInMillis();
-    }
-
     private void updateApplicationPaymentState(Application application, PaymentState state, PaymentState oldState) {
         application.setRequiredPaymentState(state);
 
@@ -171,15 +152,16 @@ public class ApplicationResource {
 
             PaymentState state = PaymentState.valueOf(body.get("paymentState"));
             PaymentState oldState = application.getRequiredPaymentState();
+            Date paymentDueDate = application.getPaymentDueDate();
 
-            if (oldState == null) {
+            if (oldState == null || paymentDueDate == null) {
                 throw new IllegalStateException("Application " + applicationOid + " is exempt from payment");
             } else if (oldState == state) {
                 LOGGER.info(
                         "Application with OID {}: Ignoring request to set payment state = {}, as this is already the application state",
                         application.getOid(), state
                 );
-            } else if (state == PaymentState.NOT_OK && isApplicationPaymentPeriodActive(application)) {
+            } else if (state == PaymentState.NOT_OK && paymentDueDate.after(new Date())) {
                 LOGGER.info(
                         "Application with OID {}: Ignoring request to set payment state = NOT_OK, as the application can still be modified",
                         application.getOid()
