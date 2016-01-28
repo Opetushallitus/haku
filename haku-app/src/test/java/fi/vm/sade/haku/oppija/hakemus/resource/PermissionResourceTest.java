@@ -4,6 +4,8 @@ import com.google.common.collect.Lists;
 import fi.vm.sade.authentication.permissionchecker.PermissionCheckRequestDTO;
 import fi.vm.sade.authentication.permissionchecker.PermissionCheckResponseDTO;
 import fi.vm.sade.haku.oppija.hakemus.it.IntegrationTestSupport;
+import fi.vm.sade.haku.oppija.hakemus.service.impl.HakuPermissionServiceMockImpl;
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.test.context.ActiveProfiles;
 
@@ -23,8 +25,13 @@ public class PermissionResourceTest extends IntegrationTestSupport {
     public static final String BLANK_ORGANISATION_OID = "Blank organisation oid in organisation oid list.";
     public static final String NO_ORGANISATION_FOUND = "No organisation found.";
 
-    PermissionResource permissionResource = appContext.getBean(PermissionResource.class);;
+    PermissionResource permissionResource = appContext.getBean(PermissionResource.class);
+    HakuPermissionServiceMockImpl hakuPermissionServiceMock = appContext.getBean(HakuPermissionServiceMockImpl.class);
 
+    @Before
+    public void init(){
+        hakuPermissionServiceMock.setUserCanDeleteApplication(false);
+    }
 
     /*
      * Testataan että virkailija, joka kuuluu organisaatioon, voi nähdä vain niiden henkilöiden tietoja, jotka ovat

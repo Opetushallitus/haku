@@ -66,9 +66,13 @@ public class HakuPermissionServiceMockImpl implements HakuPermissionService {
         return phaseEditAllowed;
     }
 
+    private boolean userCanDeleteApplication = false;
     @Override
     public boolean userCanDeleteApplication(Application application) {
-        return true;
+        return userCanDeleteApplication;
+    }
+    public void setUserCanDeleteApplication(boolean b) {
+        this.userCanDeleteApplication = b;
     }
 
     @Override

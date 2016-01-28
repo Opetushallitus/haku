@@ -8,6 +8,7 @@ import fi.vm.sade.authentication.permissionchecker.PermissionCheckRequestDTO;
 import fi.vm.sade.authentication.permissionchecker.PermissionCheckResponseDTO;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationDAO;
+import fi.vm.sade.haku.oppija.hakemus.service.HakuPermissionService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -38,6 +39,9 @@ public class PermissionResource implements PermissionCheckInterface {
     @Autowired
     private ApplicationDAO applicationDao;
 
+    @Autowired
+    private HakuPermissionService hakuPermissionService;
+
     @POST
     @Path("/checkpermission")
     @Produces(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
@@ -66,6 +70,8 @@ public class PermissionResource implements PermissionCheckInterface {
 
             List<Application> result = applicationDao.getApplicationsByPersonOid(request.getPersonOidsForSamePerson());
             for (Application hakemus : result) {
+                if(hakuPermissionService.userCanDeleteApplication(hakemus))
+                    return permissionAllowed();
                 Map<String, String> answers = hakemus.getAnswers().get("hakutoiveet");
                 for (String hakutoive : answers.keySet()) {
                     if (hakutoive.contains("-Opetuspiste-id")
