@@ -54,7 +54,7 @@ public class PostProcessWorkerImpl implements PostProcessWorker {
     @Value("${scheduler.maxBatchSize:10}")
     private int maxBatchSize;
 
-    final String SYSTEM_USER = "järjestelmä";
+    final public String SYSTEM_USER = "järjestelmä";
 
     @Autowired
     public PostProcessWorkerImpl(final ApplicationDAO applicationDAO,

@@ -7,7 +7,7 @@ import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application.PaymentState;
 import fi.vm.sade.haku.oppija.hakemus.domain.Change;
 import fi.vm.sade.haku.oppija.hakemus.domain.PreferenceEligibility;
-import org.apache.commons.lang.StringUtils;
+import fi.vm.sade.haku.oppija.lomake.util.StringUtil;
 
 import java.util.*;
 
@@ -17,28 +17,32 @@ public final class ApplicationDiffUtil {
     public static final String OLD_VALUE = "old value";
     public static final String NEW_VALUE = "new value";
 
-    private static String paymentStateAsString(PaymentState state) {
-        if (state == null) {
-            return StringUtils.EMPTY;
-        } else {
-            return state.name();
-        }
-    }
-
     private static Map<String, String> addPaymentState(Map<String, String> map, PaymentState paymentState) {
-        return ImmutableMap.<String, String>builder().putAll(map).put(Application.REQUIRED_PAYMENT_STATE, paymentStateAsString(paymentState)).build();
+        return ImmutableMap.<String, String>builder().putAll(map).put(Application.REQUIRED_PAYMENT_STATE, StringUtil.nameOrEmpty(paymentState)).build();
     }
 
     private static Map<String, String> addPaymentDueDate(Map<String, String> map, Date date) {
         return ImmutableMap.<String, String>builder().putAll(map).put(Application.PAYMENT_DUE_DATE, date != null ? String.format("%d", date.getTime()) : "").build();
     }
 
+    private static Map<String, String> addApplicationState(Map<String, String> map, Application.State applicationState) {
+        return ImmutableMap.<String, String>builder().putAll(map).put(Application.APPLICATION_STATE, StringUtil.nameOrEmpty(applicationState)).build();
+    }
+
     public static List<Map<String, String>> addHistoryBasedOnChangedAnswers(final Application newApplication, final Application oldApplication, String userName, String reason) {
         Map<String, String> oldAnswers = oldApplication.getVastauksetMerged();
         Map<String, String> newAnswers = newApplication.getVastauksetMerged();
         List<Map<String, String>> answerChanges = mapsToChanges(
-                addPaymentState(addPaymentDueDate(oldAnswers, oldApplication.getPaymentDueDate()), oldApplication.getRequiredPaymentState()),
-                addPaymentState(addPaymentDueDate(newAnswers, newApplication.getPaymentDueDate()), newApplication.getRequiredPaymentState())
+                addPaymentState(
+                        addPaymentDueDate(
+                                addApplicationState(oldAnswers, oldApplication.getState()),
+                                oldApplication.getPaymentDueDate()),
+                        oldApplication.getRequiredPaymentState()),
+                addPaymentState(
+                        addPaymentDueDate(
+                                addApplicationState(newAnswers, newApplication.getState()),
+                                newApplication.getPaymentDueDate()),
+                        newApplication.getRequiredPaymentState())
         );
         List<Map<String, String>> eligibilityChanges = ApplicationDiffUtil.oldAndNewEligibilitiesToListOfChanges(oldApplication.getPreferenceEligibilities(), newApplication.getPreferenceEligibilities());
         List<Map<String, String>> additionalInfoChanges = mapsToChanges(oldApplication.getAdditionalInfo(), newApplication.getAdditionalInfo());

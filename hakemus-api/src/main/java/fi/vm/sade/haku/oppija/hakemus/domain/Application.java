@@ -54,6 +54,7 @@ public class Application implements Serializable {
     public static final String META_FILING_LANGUAGE = "filingLanguage";
     public static final String REQUIRED_PAYMENT_STATE = "requiredPaymentState";
     public static final String PAYMENT_DUE_DATE = "paymentDueDate";
+    public static final String APPLICATION_STATE = "state";
     private Date paymentDueDate;
 
     public Integer getModelVersion() {

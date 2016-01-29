@@ -168,6 +168,16 @@ public class HakumaksuService {
         }));
     }
 
+    public boolean allApplicationOptionsRequirePayment(Application application) {
+        ImmutableMap<ApplicationOptionOid, ImmutableSet<Eligibility>> paymentRequirements = paymentRequirements(MergedAnswers.of(application));
+        return all(paymentRequirements.values(), new Predicate<Set<Eligibility>>() {
+            @Override
+            public boolean apply(Set<Eligibility> input) {
+                return ! input.isEmpty();
+            }
+        });
+    }
+
     private static boolean isExemptFromPayment(Map<ApplicationOptionOid, ImmutableSet<Eligibility>> paymentRequirements) {
         return all(paymentRequirements.values(), new Predicate<Set<Eligibility>>() {
             @Override

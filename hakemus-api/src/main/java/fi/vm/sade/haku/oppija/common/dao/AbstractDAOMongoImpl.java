@@ -19,10 +19,7 @@ package fi.vm.sade.haku.oppija.common.dao;
 import com.google.common.base.Function;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
-import com.mongodb.BasicDBObject;
-import com.mongodb.DBCollection;
-import com.mongodb.DBCursor;
-import com.mongodb.DBObject;
+import com.mongodb.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -115,7 +112,8 @@ public abstract class AbstractDAOMongoImpl<T> implements BaseDAO<T> {
     }
 
     @Override
-    public void update(T o, T n) {
-        getCollection().update(toDBObject.apply(o), toDBObject.apply(n));
+    public int update(T o, T n) {
+        WriteResult result = getCollection().update(toDBObject.apply(o), toDBObject.apply(n));
+        return result.getN();
     }
 }
