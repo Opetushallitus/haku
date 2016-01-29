@@ -65,6 +65,9 @@ public class HakumaksuUtil {
     public static final int APPLICATION_PAYMENT_GRACE_PERIOD = 10;
     public static final long APPLICATION_PAYMENT_GRACE_PERIOD_MILLIS = TimeUnit.DAYS.toMillis(APPLICATION_PAYMENT_GRACE_PERIOD);
 
+    public static final int APPLICATION_PAYMENT_WAITING_TIME = 2;
+    public static final long APPLICATION_PAYMENT_WAITING_TIME_MILLIS = TimeUnit.DAYS.toMillis(APPLICATION_PAYMENT_WAITING_TIME);
+
     /**
      * @return true if send was successful
      */

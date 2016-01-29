@@ -18,6 +18,9 @@ package fi.vm.sade.haku.oppija.hakemus.it.dao.impl;
 
 import com.google.common.base.Function;
 import com.google.common.base.Strings;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.mongodb.*;
 import fi.vm.sade.haku.oppija.common.dao.AbstractDAOMongoImpl;
@@ -31,18 +34,21 @@ import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationFilterParameters;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationQueryParameters;
 import fi.vm.sade.haku.oppija.lomake.exception.IncoherentDataException;
 import fi.vm.sade.haku.oppija.lomake.service.EncrypterService;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.HakumaksuUtil;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.joda.time.LocalDateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 import static com.mongodb.QueryOperators.IN;
 import static fi.vm.sade.haku.oppija.hakemus.it.dao.impl.ApplicationDAOMongoConstants.*;
@@ -88,7 +94,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         this.dbObjectToMapFunction = dbObjectToMapFunction;
         this.applicationQueryBuilder = new ApplicationDAOMongoQueryBuilder(shaEncrypter, rootOrganizationOid, applicationOidPrefix, userOidPrefix);
     }
-;
+
     @Override
     protected String getCollectionName() {
         return "application";
@@ -162,6 +168,8 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         return searchResults.searchResultsList;
     }
 
+
+
     private <T> SearchResults<T> searchListing(final DBObject query, final DBObject keys, final DBObject sortBy, final int start, final int rows,
                                                final Function<DBObject, T> transformationFunction, final boolean doCount) {
         LOG.debug("searchListing starts Query: {} Keys: {} Skipping: {} Rows: {}", query, keys, start, rows);
@@ -176,7 +184,6 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         if (enableSearchOnSecondary)
             dbCursor.setReadPreference(ReadPreference.secondaryPreferred());
         int searchHits = -1;
-        // TODO: Add hint
 
         if (ensureIndex) {
             final String hint = addIndexHint(query);
@@ -295,6 +302,27 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
             applications.add(fromDBObject.apply(cursor.next()));
         }
         return applications;
+    }
+
+    @Override
+    public List<Application> getNextForPaymentDueDateProcessing(int batchSize) {
+
+        LocalDateTime queryTime = new LocalDateTime().minusDays(HakumaksuUtil.APPLICATION_PAYMENT_WAITING_TIME);
+
+        final DBObject query = new BasicDBObject(
+                ImmutableMap.of(
+                        "paymentDueDate", new BasicDBObject("$lt", queryTime.toDate().getTime()),
+                        "state", new BasicDBObject("$ne", Application.State.PASSIVE.name()),
+                        "requiredPaymentState", new BasicDBObject("$in", ImmutableList.of(Application.PaymentState.NOT_OK.name(), Application.PaymentState.NOTIFIED.name()))
+                )
+        );
+        DBCursor dbCursor = getCollection().find(query).limit(batchSize);
+        return ImmutableList.copyOf(Iterables.transform(dbCursor, new Function<DBObject, Application>() {
+            @Override
+            public Application apply(DBObject dbObject) {
+                return objectMapper.convertValue(dbObject, Application.class);
+            }
+        }));
     }
 
     @Override
@@ -442,13 +470,13 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     }
 
     @Override
-    public void update(Application o, Application n) {
+    public int update(Application o, Application n) {
         if (null == o.getOid()) {
             LOG.error("Not enough parameters for update. Oid: " + o.getOid() + ". Throwing exception");
             throw new MongoException("Not enough parameters for update. Oid: " + o.getOid() + " version: " + o.getVersion());
         }
         n.setUpdated(new Date());
-        super.update(o, n);
+        return super.update(o, n);
     }
 
     @Override

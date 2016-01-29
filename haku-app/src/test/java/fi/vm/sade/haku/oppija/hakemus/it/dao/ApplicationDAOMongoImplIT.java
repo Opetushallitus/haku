@@ -21,10 +21,12 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
+import com.google.common.collect.ImmutableMap;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBCollection;
+import org.joda.time.LocalDateTime;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -45,6 +47,7 @@ import fi.vm.sade.haku.util.JsonTestData;
 import fi.vm.sade.haku.virkailija.authentication.impl.AuthenticationServiceMockImpl;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.ElementUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
+import org.springframework.test.util.ReflectionTestUtils;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:spring/tomcat-container-context.xml")
@@ -246,6 +249,105 @@ public class ApplicationDAOMongoImplIT extends AbstractDAOTest {
         assertEquals(1, countQueried(query().setGroupOid("1.2.246.562.28.92529355477").setAoOids(asList("1.2.246.562.20.18097797874")).setPrimaryPreferenceOnly(true)));
     }
 
+    @Test
+    public void testGetNextForPaymentDueDateProcessing() {
+        final List <String> aoids = new ArrayList<>();
+        for (int i=0; i < 14; ++i) {
+            aoids.add(String.format("1.2.246.562.11.1337133713371337.%d", i));
+        }
+
+        final ListIterator<String> i = aoids.listIterator();
+
+        applicationDAO.save(new Application(TEST_USER, new ApplicationPhase(applicationSystemId, "vaihe1", ImmutableMap.<String, String>of())) {{
+            setOid(i.next());
+            setState(State.PASSIVE);
+        }});
+        applicationDAO.save(new Application(TEST_USER, new ApplicationPhase(applicationSystemId, "vaihe1", ImmutableMap.<String, String>of())) {{
+            setOid(i.next());
+            setPaymentDueDate(new Date());
+        }});
+        applicationDAO.save(new Application(TEST_USER, new ApplicationPhase(applicationSystemId, "vaihe1", ImmutableMap.<String, String>of())) {{
+            setOid(i.next());
+            setRequiredPaymentState(PaymentState.OK);
+        }});
+        applicationDAO.save(new Application(TEST_USER, new ApplicationPhase(applicationSystemId, "vaihe1", ImmutableMap.<String, String>of())) {{
+            setOid(i.next());
+            setState(State.PASSIVE);
+            setPaymentDueDate(new Date());
+        }});
+        applicationDAO.save(new Application(TEST_USER, new ApplicationPhase(applicationSystemId, "vaihe1", ImmutableMap.<String, String>of())) {{
+            setOid(i.next());
+            setState(State.PASSIVE);
+            setRequiredPaymentState(PaymentState.OK);
+        }});
+        applicationDAO.save(new Application(TEST_USER, new ApplicationPhase(applicationSystemId, "vaihe1", ImmutableMap.<String, String>of())) {{
+            setOid(i.next());
+            setPaymentDueDate(new Date());
+            setRequiredPaymentState(PaymentState.OK);
+        }});
+        applicationDAO.save(new Application(TEST_USER, new ApplicationPhase(applicationSystemId, "vaihe1", ImmutableMap.<String, String>of())) {{
+            setOid(i.next());
+            setState(State.PASSIVE);
+            setPaymentDueDate(new Date());
+            setRequiredPaymentState(PaymentState.OK);
+        }});
+
+        int matchingApplications = 0;
+        assertEquals(matchingApplications, applicationDAO.getNextForPaymentDueDateProcessing(10000).size());
+
+        applicationDAO.save(new Application(TEST_USER, new ApplicationPhase(applicationSystemId, "vaihe1", ImmutableMap.<String, String>of())) {{
+            setOid(i.next());
+            setState(State.ACTIVE);
+        }});
+        applicationDAO.save(new Application(TEST_USER, new ApplicationPhase(applicationSystemId, "vaihe1", ImmutableMap.<String, String>of())) {{
+            setOid(i.next());
+            setPaymentDueDate(new Date(0));
+        }});
+        applicationDAO.save(new Application(TEST_USER, new ApplicationPhase(applicationSystemId, "vaihe1", ImmutableMap.<String, String>of())) {{
+            setOid(i.next());
+            setRequiredPaymentState(PaymentState.NOT_OK);
+        }});
+
+        matchingApplications = 0;
+        assertEquals(matchingApplications, applicationDAO.getNextForPaymentDueDateProcessing(10000).size());
+
+        applicationDAO.save(new Application(TEST_USER, new ApplicationPhase(applicationSystemId, "vaihe1", ImmutableMap.<String, String>of())) {{
+            setOid(i.next());
+            setState(State.ACTIVE);
+            setPaymentDueDate(new Date(0));
+        }});
+        applicationDAO.save(new Application(TEST_USER, new ApplicationPhase(applicationSystemId, "vaihe1", ImmutableMap.<String, String>of())) {{
+            setOid(i.next());
+            setState(State.INCOMPLETE);
+            setRequiredPaymentState(PaymentState.NOTIFIED);
+        }});
+
+        matchingApplications = 0;
+        assertEquals(matchingApplications, applicationDAO.getNextForPaymentDueDateProcessing(10000).size());
+
+        applicationDAO.save(new Application(TEST_USER, new ApplicationPhase(applicationSystemId, "vaihe1", ImmutableMap.<String, String>of())) {{
+            setOid(i.next());
+            setState(State.ACTIVE);
+            setPaymentDueDate(new Date(0));
+            setRequiredPaymentState(PaymentState.NOTIFIED);
+        }});
+        applicationDAO.save(new Application(TEST_USER, new ApplicationPhase(applicationSystemId, "vaihe1", ImmutableMap.<String, String>of())) {{
+            setOid(i.next());
+            setState(State.INCOMPLETE);
+            setPaymentDueDate(LocalDateTime.now().minusDays(3).toDate());
+            setRequiredPaymentState(PaymentState.NOT_OK);
+        }});
+
+        matchingApplications = 2;
+        assertEquals(matchingApplications, applicationDAO.getNextForPaymentDueDateProcessing(10000).size());
+
+        for (String aoid : aoids) {
+            DBCollection collection = (DBCollection) ReflectionTestUtils.invokeGetterMethod(applicationDAO, "getCollection");
+            collection.remove(new BasicDBObject("oid", aoid));
+        }
+        matchingApplications = 0;
+        assertEquals(matchingApplications, applicationDAO.getNextForPaymentDueDateProcessing(10000).size());
+    }
 
     private ApplicationQueryParametersBuilder query() {
         return new ApplicationQueryParametersBuilder();

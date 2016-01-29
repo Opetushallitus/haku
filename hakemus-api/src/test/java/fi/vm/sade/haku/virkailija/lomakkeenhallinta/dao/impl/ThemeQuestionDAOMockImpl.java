@@ -61,8 +61,8 @@ public class ThemeQuestionDAOMockImpl implements ThemeQuestionDAO {
     }
 
     @Override
-    public void update(ThemeQuestion o, ThemeQuestion n) {
-
+    public int update(ThemeQuestion o, ThemeQuestion n) {
+        return 0;
     }
 
     @Override
