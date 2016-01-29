@@ -310,7 +310,7 @@ public class ApplicationServiceImplTest {
         ApplicationSystem as = new ApplicationSystem("myAsId", null, new I18nText(new HashMap<String, String>()),
                 "JULKAISTU", null, null, true, null, null, null,
                 OppijaConstants.KOHDEJOUKKO_PERUSOPETUKSEN_JALKEINEN_VALMENTAVA, null, null, null, null, null, null,
-                new ArrayList<String>(), new ArrayList<String>(), null, false);
+                new ArrayList<String>(), false, new ArrayList<String>(), null, false);
         when(applicationSystemService.getApplicationSystem(eq("myAsId"))).thenReturn(as);
 
         try {
@@ -323,7 +323,7 @@ public class ApplicationServiceImplTest {
 
         as = new ApplicationSystem("myAsId", null, new I18nText(new HashMap<String, String>()), "JULKAISTU", null,
                 null, true, null, null, null, OppijaConstants.KOHDEJOUKKO_KORKEAKOULU, null, null, null, null, null, null,
-                new ArrayList<String>(), new ArrayList<String>(), null, false);
+                new ArrayList<String>(), false, new ArrayList<String>(), null, false);
         when(applicationSystemService.getApplicationSystem(eq("myAsId"))).thenReturn(as);
 
         try {
@@ -342,7 +342,7 @@ public class ApplicationServiceImplTest {
         ApplicationSystem as = new ApplicationSystem("myAsId", null, new I18nText(new HashMap<String, String>()),
                 "JULKAISTU", null, null, true, null, null, null,
                 OppijaConstants.KOHDEJOUKKO_PERUSOPETUKSEN_JALKEINEN_VALMENTAVA, null, null, null, null, null, null,
-                new ArrayList<String>(), new ArrayList<String>(), null, false);
+                new ArrayList<String>(), false, new ArrayList<String>(), null, false);
         Map<String, String> educationAnswers = new HashMap<String, String>();
         educationAnswers.put(OppijaConstants.ELEMENT_ID_SENDING_SCHOOL, "1.2.3.4");
 
@@ -376,7 +376,7 @@ public class ApplicationServiceImplTest {
         ApplicationSystem as = new ApplicationSystem("myAsId", null, new I18nText(new HashMap<String, String>()),
                 "JULKAISTU", null, null, true, null, null, null,
                 OppijaConstants.KOHDEJOUKKO_PERUSOPETUKSEN_JALKEINEN_VALMENTAVA, null, null, null, null, null, null,
-                new ArrayList<String>(), new ArrayList<String>(), null, false);
+                new ArrayList<String>(), false, new ArrayList<String>(), null, false);
 
         Map<String, String> aoAnswers = new HashMap<String, String>();
         aoAnswers.put(String.format(OppijaConstants.PREFERENCE_ID, 1), "1.2.3");
@@ -422,7 +422,7 @@ public class ApplicationServiceImplTest {
         ApplicationSystem as = new ApplicationSystem("myAsId", null, new I18nText(new HashMap<String, String>()),
                 "JULKAISTU", null, null, true, null, null, null,
                 OppijaConstants.KOHDEJOUKKO_PERUSOPETUKSEN_JALKEINEN_VALMENTAVA, null, null, null, null, null, null,
-                new ArrayList<String>(), new ArrayList<String>(), null, false);
+                new ArrayList<String>(), false, new ArrayList<String>(), null, false);
 
         Map<String, String> aoAnswers = new HashMap<>();
 
@@ -671,6 +671,7 @@ public class ApplicationServiceImplTest {
         ApplicationSystem as = new ApplicationSystemBuilder()
                 .setId("asId")
                 .setName(ElementUtil.createI18NAsIs("asName"))
+                .setAutomaticEligibilityInUse(true)
                 .setAosForAutomaticEligibility(new ArrayList<String>() {{
                     add("automaticallyEligibile1");
                     add("automaticallyEligibile2");

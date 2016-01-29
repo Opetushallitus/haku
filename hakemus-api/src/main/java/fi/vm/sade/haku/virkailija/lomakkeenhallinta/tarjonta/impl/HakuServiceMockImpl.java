@@ -188,11 +188,6 @@ public class HakuServiceMockImpl implements HakuService {
     }
 
     @Override
-    public List<ApplicationSystem> getApplicationSystems(boolean addHakuKohdes) {
-        return asList;
-    }
-
-    @Override
     public ApplicationSystem getApplicationSystem(String oid) {
         for (ApplicationSystem as : asList) {
             if (as.getId().equals(oid)) {

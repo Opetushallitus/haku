@@ -79,6 +79,7 @@ public class FormGeneratorImpl implements FormGenerator {
                 .addApplicationOptionAttachmentRequests(formParameters.getThemeQuestionConfigurator().findAndConfigureAttachmentRequests())
                 .addAttachmentGroupAddresses(formParameters.getAttachmentGroupConfigurator().configureAttachmentGroupAddresses())
                 .setLastGenerated(new Date())
+                .setAutomaticEligibilityInUse(as.isAutomaticEligibilityInUse())
                 .setAosForAutomaticEligibility(as.getAosForAutomaticEligibility())
                 .setAllowedLanguages(formParameters.getAllowedLanguages())
                 .setMaksumuuriKaytossa(as.isMaksumuuriKaytossa());
