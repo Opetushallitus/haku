@@ -49,22 +49,25 @@ public class EligibilityCheckWorkerImpl implements EligibilityCheckWorker {
         this.ohjausparametritService = ohjausparametritService;
     }
 
-
     @Override
     public void checkEligibilities(Date since) {
         since = since != null
                 ? since
                 : new Date(1L);
         List<String> personOids = suoritusrekisteriService.getChanges(YO_TUTKINTO_KOMO, since);
-        List<ApplicationSystem> ass = hakuService.getApplicationSystems(true);
-        // TODO ohjausparameista haun päättymispäivä, käsittele vain relevantit haut
-        for (ApplicationSystem as : ass) {
-            log.debug("Processing applicatinSystem {}", as.getId());
-            List<String> aos = as.getAosForAutomaticEligibility();
-            if (!hasHakukohteitaWithAutomaticHakukelpoisuus(as) || !hasValidOhjausparametriWithAutomaticHakukelpoisuus(as)) {
-                continue;
+        List<ApplicationSystem> ass = hakuService.getApplicationSystems(false);
+        for (ApplicationSystem asWithOutHakuKohteet : ass) {
+            if(hasValidOhjausparametriWithAutomaticHakukelpoisuus(asWithOutHakuKohteet)) {
+                checkEligibilities(asWithOutHakuKohteet.getId(), personOids);
             }
+        }
+    }
 
+    private void checkEligibilities(String asOid, List<String> personOids) {
+        log.debug("Processing applicationSystem {}", asOid);
+        ApplicationSystem as = hakuService.getApplicationSystem(asOid);
+        if (hasHakukohteitaWithAutomaticHakukelpoisuus(as)) {
+            List<String> aos = as.getAosForAutomaticEligibility();
             statusRepository.startOperation(SCHEDULER_ELIGIBILITY_CHECK, as.getId());
             int idx = 0;
             List<String> personBatch = personOids.subList(idx, Math.min(idx + PERSON_BATCH, personOids.size()));
@@ -93,9 +96,9 @@ public class EligibilityCheckWorkerImpl implements EligibilityCheckWorker {
                 idx = Math.min(idx + PERSON_BATCH, personOids.size());
                 personBatch = personOids.subList(idx, Math.min(idx + PERSON_BATCH, personOids.size()));
             }
-            log.debug("Done processing applicationSystem {}", as.getId());
             statusRepository.endOperation(SCHEDULER_ELIGIBILITY_CHECK, as.getId());
         }
+        log.debug("Done processing applicationSystem {}", asOid);
     }
 
     private boolean hasHakukohteitaWithAutomaticHakukelpoisuus(ApplicationSystem as) {
