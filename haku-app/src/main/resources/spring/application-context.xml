@@ -129,6 +129,7 @@
             <property name="run" value="${scheduler.run}"/>
             <property name="runModelUpgrade" value="${scheduler.runModelUpgrade}"/>
             <property name="runEligibilityCheck" value="${scheduler.runEligibilityCheck}"/>
+            <property name="runPaymentDueDateProcessing" value="${scheduler.runPaymentDueDateProcessing}"/>
             <property name="sendMail" value="${scheduler.sendMail}"/>
             <property name="demoCleanup" value="${scheduler.demoCleanup}"/>
         </bean>
@@ -153,6 +154,12 @@
         <task:scheduled-tasks scheduler="eligibilityCheckScheduler">
             <task:scheduled ref="yksilointiScheduler" method="runEligibilityCheck" cron="${scheduler.eligibilityCheckCron}"/>
         </task:scheduled-tasks>
+
+        <task:scheduler id="paymentDueDateScheduler" pool-size="1"/>
+        <task:scheduled-tasks scheduler="paymentDueDateScheduler">
+            <task:scheduled ref="yksilointiScheduler" method="paymentDueDatePostprocess" cron="${scheduler.paymentDueDateProcessingCron}"/>
+        </task:scheduled-tasks>
+
 
         <task:scheduler id="demoCleanupScheduler" pool-size="1"/>
         <task:scheduled-tasks scheduler="demoCleanupScheduler">
