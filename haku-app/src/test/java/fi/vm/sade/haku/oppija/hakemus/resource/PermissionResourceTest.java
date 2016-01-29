@@ -4,12 +4,20 @@ import com.google.common.collect.Lists;
 import fi.vm.sade.authentication.permissionchecker.PermissionCheckRequestDTO;
 import fi.vm.sade.authentication.permissionchecker.PermissionCheckResponseDTO;
 import fi.vm.sade.haku.oppija.hakemus.it.IntegrationTestSupport;
+import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
+import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
+import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Matchers;
+import org.mockito.internal.util.reflection.Whitebox;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 @ActiveProfiles("it")
 public class PermissionResourceTest extends IntegrationTestSupport {
@@ -25,6 +33,13 @@ public class PermissionResourceTest extends IntegrationTestSupport {
 
     PermissionResource permissionResource = appContext.getBean(PermissionResource.class);;
 
+    @Before
+    public void init() {
+        ApplicationSystemService applicationSystemService = mock(ApplicationSystemService.class);
+        ApplicationSystem mockedAs = mock(ApplicationSystem.class);
+        when(applicationSystemService.getApplicationSystem(Matchers.anyString())).thenReturn(mockedAs);
+        Whitebox.setInternalState(permissionResource, "applicationSystemService", applicationSystemService);
+    }
 
     /*
      * Testataan että virkailija, joka kuuluu organisaatioon, voi nähdä vain niiden henkilöiden tietoja, jotka ovat
@@ -109,6 +124,7 @@ public class PermissionResourceTest extends IntegrationTestSupport {
         PermissionCheckRequestDTO d = new PermissionCheckRequestDTO();
         d.setPersonOidsForSamePerson(Lists.newArrayList(personoid));
         d.setOrganisationOids(Lists.newArrayList(oids));
+        d.setLoggedInUserRoles(new HashSet<String>());
         return d;
     }
 }
