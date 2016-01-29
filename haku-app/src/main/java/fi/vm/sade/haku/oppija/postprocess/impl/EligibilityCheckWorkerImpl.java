@@ -51,6 +51,7 @@ public class EligibilityCheckWorkerImpl implements EligibilityCheckWorker {
 
     @Override
     public void checkEligibilities(Date since) {
+        log.info("Checking automatic eligibilities STARTED");
         since = since != null
                 ? since
                 : new Date(1L);
@@ -61,10 +62,11 @@ public class EligibilityCheckWorkerImpl implements EligibilityCheckWorker {
                 checkEligibilities(asWithOutHakuKohteet.getId(), personOids);
             }
         }
+        log.info("Checking automatic eligibilities ENDED");
     }
 
     private void checkEligibilities(String asOid, List<String> personOids) {
-        log.debug("Processing applicationSystem {}", asOid);
+        log.info("Processing applicationSystem {}", asOid);
         ApplicationSystem as = hakuService.getApplicationSystem(asOid);
         if (hasHakukohteitaWithAutomaticHakukelpoisuus(as)) {
             List<String> aos = as.getAosForAutomaticEligibility();
@@ -72,7 +74,7 @@ public class EligibilityCheckWorkerImpl implements EligibilityCheckWorker {
             int idx = 0;
             List<String> personBatch = personOids.subList(idx, Math.min(idx + PERSON_BATCH, personOids.size()));
             while (!personBatch.isEmpty()) {
-                log.debug("Processing changes for applicationSystem {}, batch idx {}", as.getId(), idx);
+                log.info("Processing changes for applicationSystem {}, batch idx {}", as.getId(), idx);
                 ApplicationQueryParameters queryParams = new ApplicationQueryParametersBuilder()
                         .setAsId(as.getId())
                         .setAoOids(aos)
@@ -89,7 +91,7 @@ public class EligibilityCheckWorkerImpl implements EligibilityCheckWorker {
                 for (ApplicationSearchResultItemDTO resultItem : result.getResults()) {
                     toRedo.add(resultItem.getOid());
                 }
-                log.debug("Processing changes for applicationSystem {}, batch idx {}, to redo {}", as.getId(), idx, toRedo.size());
+                log.info("Processing changes for applicationSystem {}, batch idx {}, to redo {}", as.getId(), idx, toRedo.size());
                 if (!toRedo.isEmpty()) {
                     applicationDAO.massRedoPostProcess(toRedo, Application.PostProcessingState.NOMAIL);
                 }
@@ -98,7 +100,7 @@ public class EligibilityCheckWorkerImpl implements EligibilityCheckWorker {
             }
             statusRepository.endOperation(SCHEDULER_ELIGIBILITY_CHECK, as.getId());
         }
-        log.debug("Done processing applicationSystem {}", asOid);
+        log.info("Done processing applicationSystem {}", asOid);
     }
 
     private boolean hasHakukohteitaWithAutomaticHakukelpoisuus(ApplicationSystem as) {
@@ -108,7 +110,7 @@ public class EligibilityCheckWorkerImpl implements EligibilityCheckWorker {
 
     private boolean hasValidAutomaticHakukelpoisuusParams(ApplicationSystem as) {
         if(!as.isAutomaticEligibilityInUse()) {
-            log.warn("Automatic eligibility is not in use so skipping 'haku' {}", as.getId());
+            log.info("Automatic eligibility is not in use so skipping 'haku' {}", as.getId());
             return false;
         }
         Ohjausparametrit ohjausparametrit;
@@ -123,7 +125,7 @@ public class EligibilityCheckWorkerImpl implements EligibilityCheckWorker {
             final Date NOW = new Date();
             final Date automaattinenHakukelpoisuusPaattyy = ohjausparametrit.getPH_AHP().getDate();
             if(NOW.after(automaattinenHakukelpoisuusPaattyy)) {
-                log.warn("Now is after 'automaattinenHakukelpoisuusPaattyy' so skipping 'haku' {}", as.getId());
+                log.info("Now is after 'automaattinenHakukelpoisuusPaattyy' so skipping 'haku' {}", as.getId());
                 return false;
             }
         }
