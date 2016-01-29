@@ -113,7 +113,7 @@ public class EligibilityCheckWorkerImplTest {
         final ApplicationDAO applicationDAO = Mockito.mock(ApplicationDAO.class);
         EligibilityCheckWorkerImpl eligibilityCheckWorker = new EligibilityCheckWorkerImpl(suoritusrekisteriService, hakuService, applicationDAO, statusRepository, ohjausparametritService);
         Mockito.when(ohjausparametritService.fetchOhjausparametritForHaku(Mockito.anyString())).thenReturn(ohjausparametrit);
-        Mockito.when(hakuService.getApplicationSystems(Mockito.anyBoolean())).thenReturn(Collections.newArrayList(as));
+        Mockito.when(hakuService.getApplicationSystems()).thenReturn(Collections.newArrayList(as));
         Mockito.when(hakuService.getApplicationSystem(as.getId())).thenReturn(as);
         eligibilityCheckWorker.checkEligibilities(null);
     }

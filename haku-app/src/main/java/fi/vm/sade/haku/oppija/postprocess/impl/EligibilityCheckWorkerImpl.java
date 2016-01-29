@@ -55,7 +55,7 @@ public class EligibilityCheckWorkerImpl implements EligibilityCheckWorker {
                 ? since
                 : new Date(1L);
         List<String> personOids = suoritusrekisteriService.getChanges(YO_TUTKINTO_KOMO, since);
-        List<ApplicationSystem> ass = hakuService.getApplicationSystems(false);
+        List<ApplicationSystem> ass = hakuService.getApplicationSystems();
         for (ApplicationSystem asWithOutHakuKohteet : ass) {
             if(hasValidAutomaticHakukelpoisuusParams(asWithOutHakuKohteet)) {
                 checkEligibilities(asWithOutHakuKohteet.getId(), personOids);

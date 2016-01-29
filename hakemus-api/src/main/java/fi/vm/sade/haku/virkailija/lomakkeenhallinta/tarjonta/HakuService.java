@@ -26,9 +26,11 @@ import java.util.List;
  */
 public interface HakuService {
 
+    /**
+     * NOTE Does not return hakukohteet, because that tarjonta API is too slow.
+     * Use getApplicationSystem for getting invidual application systems with all info.
+     */
     List<ApplicationSystem> getApplicationSystems();
-
-    List<ApplicationSystem> getApplicationSystems(boolean addHakuKohdes);
 
     ApplicationSystem getApplicationSystem(String oid);
 
