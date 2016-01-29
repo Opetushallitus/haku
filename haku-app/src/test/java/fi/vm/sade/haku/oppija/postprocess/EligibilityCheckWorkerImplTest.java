@@ -20,6 +20,25 @@ import java.util.concurrent.TimeUnit;
 public class EligibilityCheckWorkerImplTest {
 
     @Test
+    public void testThatCheckingStopsWhenAutomaticEligibilityIsNotEnabledForHaku() {
+        final SuoritusrekisteriService suoritusrekisteriService = Mockito.mock(SuoritusrekisteriService.class);
+        final HakuService hakuService = Mockito.mock(HakuService.class);
+        final ApplicationDAO applicationDAO = Mockito.mock(ApplicationDAO.class);
+        final StatusRepository statusRepository = Mockito.mock(StatusRepository.class);
+        final OhjausparametritService ohjausparametritService = Mockito.mock(OhjausparametritService.class);
+        EligibilityCheckWorkerImpl eligibilityCheckWorker = new EligibilityCheckWorkerImpl(suoritusrekisteriService, hakuService, applicationDAO, statusRepository, ohjausparametritService);
+        Mockito.when(ohjausparametritService.fetchOhjausparametritForHaku(Mockito.anyString())).thenReturn(createOhjausparametritWithNoEligibilityTimestamp());
+        ApplicationSystem as = createApplicationSystemWithEligibilities(false);
+        Mockito.when(hakuService.getApplicationSystems(Mockito.anyBoolean())).thenReturn(Collections.newArrayList(as));
+        Mockito.when(hakuService.getApplicationSystem(as.getId())).thenReturn(as);
+        eligibilityCheckWorker.checkEligibilities(null);
+
+        Mockito.verify(ohjausparametritService, Mockito.times(0)).fetchOhjausparametritForHaku(Mockito.anyString());
+        Mockito.verify(hakuService, Mockito.times(0)).getApplicationSystem(as.getId());
+        Mockito.verify(statusRepository, Mockito.times(0)).startOperation(Mockito.anyString(),Mockito.anyString());
+    }
+
+    @Test
     public void testThatCheckingGoesThroughWhenEligibilityFromOhjausparametritIsNull() {
         final SuoritusrekisteriService suoritusrekisteriService = Mockito.mock(SuoritusrekisteriService.class);
         final HakuService hakuService = Mockito.mock(HakuService.class);
@@ -28,10 +47,13 @@ public class EligibilityCheckWorkerImplTest {
         final OhjausparametritService ohjausparametritService = Mockito.mock(OhjausparametritService.class);
         EligibilityCheckWorkerImpl eligibilityCheckWorker = new EligibilityCheckWorkerImpl(suoritusrekisteriService, hakuService, applicationDAO, statusRepository, ohjausparametritService);
         Mockito.when(ohjausparametritService.fetchOhjausparametritForHaku(Mockito.anyString())).thenReturn(createOhjausparametritWithNoEligibilityTimestamp());
-        Mockito.when(hakuService.getApplicationSystems(Mockito.anyBoolean())).thenReturn(Collections.newArrayList(createApplicationSystemWithEligibilities()));
+        ApplicationSystem as = createApplicationSystemWithEligibilities(true);
+        Mockito.when(hakuService.getApplicationSystems(Mockito.anyBoolean())).thenReturn(Collections.newArrayList(as));
+        Mockito.when(hakuService.getApplicationSystem(as.getId())).thenReturn(as);
         eligibilityCheckWorker.checkEligibilities(null);
 
         Mockito.verify(ohjausparametritService, Mockito.times(1)).fetchOhjausparametritForHaku(Mockito.anyString());
+        Mockito.verify(hakuService, Mockito.times(1)).getApplicationSystem(as.getId());
         Mockito.verify(statusRepository, Mockito.times(1)).startOperation(Mockito.anyString(),Mockito.anyString());
     }
 
@@ -44,10 +66,13 @@ public class EligibilityCheckWorkerImplTest {
         final OhjausparametritService ohjausparametritService = Mockito.mock(OhjausparametritService.class);
         EligibilityCheckWorkerImpl eligibilityCheckWorker = new EligibilityCheckWorkerImpl(suoritusrekisteriService, hakuService, applicationDAO, statusRepository, ohjausparametritService);
         Mockito.when(ohjausparametritService.fetchOhjausparametritForHaku(Mockito.anyString())).thenReturn(createOhjausparametritWithOldEligibilityCheckTimestamp());
-        Mockito.when(hakuService.getApplicationSystems(Mockito.anyBoolean())).thenReturn(Collections.newArrayList(createApplicationSystemWithEligibilities()));
+        ApplicationSystem as = createApplicationSystemWithEligibilities(true);
+        Mockito.when(hakuService.getApplicationSystems(Mockito.anyBoolean())).thenReturn(Collections.newArrayList(as));
+        Mockito.when(hakuService.getApplicationSystem(as.getId())).thenReturn(as);
         eligibilityCheckWorker.checkEligibilities(null);
 
         Mockito.verify(ohjausparametritService, Mockito.times(1)).fetchOhjausparametritForHaku(Mockito.anyString());
+        Mockito.verify(hakuService, Mockito.times(0)).getApplicationSystem(as.getId());
         Mockito.verify(statusRepository, Mockito.times(0)).startOperation(Mockito.anyString(),Mockito.anyString());
     }
     @Test
@@ -59,10 +84,13 @@ public class EligibilityCheckWorkerImplTest {
         final OhjausparametritService ohjausparametritService = Mockito.mock(OhjausparametritService.class);
         EligibilityCheckWorkerImpl eligibilityCheckWorker = new EligibilityCheckWorkerImpl(suoritusrekisteriService, hakuService, applicationDAO, statusRepository, ohjausparametritService);
         Mockito.when(ohjausparametritService.fetchOhjausparametritForHaku(Mockito.anyString())).thenReturn(createOhjausparametritWithValidEligibilityCheckTimestamp());
-        Mockito.when(hakuService.getApplicationSystems(Mockito.anyBoolean())).thenReturn(Collections.newArrayList(createApplicationSystemWithEligibilities()));
+        ApplicationSystem as = createApplicationSystemWithEligibilities(true);
+        Mockito.when(hakuService.getApplicationSystems(Mockito.anyBoolean())).thenReturn(Collections.newArrayList(as));
+        Mockito.when(hakuService.getApplicationSystem(as.getId())).thenReturn(as);
         eligibilityCheckWorker.checkEligibilities(null);
 
         Mockito.verify(ohjausparametritService, Mockito.times(1)).fetchOhjausparametritForHaku(Mockito.anyString());
+        Mockito.verify(hakuService, Mockito.times(1)).getApplicationSystem(as.getId());
         Mockito.verify(statusRepository, Mockito.times(1)).startOperation(Mockito.anyString(),Mockito.anyString());
     }
     private static Ohjausparametrit createOhjausparametritWithNoEligibilityTimestamp() {
@@ -82,9 +110,9 @@ public class EligibilityCheckWorkerImplTest {
         o.setPH_AHP(op);
         return o;
     }
-    private static ApplicationSystem createApplicationSystemWithEligibilities() {
+    private static ApplicationSystem createApplicationSystemWithEligibilities(boolean automaticEligibilityInUse) {
         ApplicationSystem as = new ApplicationSystem("hakuOid", null, new I18nText(ImmutableMap.of("fi","hakuWithEligibilities")), "JULKAISTU",
-                null, null, null, null, null, null, null, null, null, null, null, null, null, null, Collections.newArrayList("aosWithEligibility"), null, false);
+                null, null, null, null, null, null, null, null, null, null, null, null, null, null, automaticEligibilityInUse, Collections.newArrayList("aosWithEligibility"), null, false);
         return as;
     }
 }

@@ -60,6 +60,7 @@ public class ApplicationSystem implements Serializable {
     private Date lastGenerated;
     private Boolean usePriorities;
     private Boolean maksumuuriKaytossa;
+    private Boolean automaticEligibilityInUse;
 
     private List<Element> applicationCompleteElements;
     private List<Element> additionalInformationElements;
@@ -84,6 +85,7 @@ public class ApplicationSystem implements Serializable {
                              final List<AttachmentGroupAddress> attachmentGroupAddresses,
                              final Integer maxApplicationOptions,
                              final List<String> allowedLanguages,
+                             final Boolean automaticEligibilityInUse,
                              final List<String> aosForAutomaticEligibility,
                              final Date lastGenerated,
                              final Boolean maksumuuriKaytossa) {
@@ -111,6 +113,7 @@ public class ApplicationSystem implements Serializable {
         this.maxApplicationOptions = maxApplicationOptions != null ?
                 maxApplicationOptions.intValue() : 1;
         this.allowedLanguages = allowedLanguages;
+        this.automaticEligibilityInUse = automaticEligibilityInUse;
         this.aosForAutomaticEligibility = aosForAutomaticEligibility;
         this.lastGenerated = lastGenerated;
         this.maksumuuriKaytossa = maksumuuriKaytossa;
@@ -248,6 +251,10 @@ public class ApplicationSystem implements Serializable {
 
     public List<String> getAllowedLanguages() {
         return allowedLanguages;
+    }
+
+    public boolean isAutomaticEligibilityInUse() {
+        return automaticEligibilityInUse != null && automaticEligibilityInUse;
     }
 
     public List<String> getAosForAutomaticEligibility() {

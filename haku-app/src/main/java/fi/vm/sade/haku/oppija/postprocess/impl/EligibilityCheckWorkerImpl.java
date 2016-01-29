@@ -57,7 +57,7 @@ public class EligibilityCheckWorkerImpl implements EligibilityCheckWorker {
         List<String> personOids = suoritusrekisteriService.getChanges(YO_TUTKINTO_KOMO, since);
         List<ApplicationSystem> ass = hakuService.getApplicationSystems(false);
         for (ApplicationSystem asWithOutHakuKohteet : ass) {
-            if(hasValidOhjausparametriWithAutomaticHakukelpoisuus(asWithOutHakuKohteet)) {
+            if(hasValidAutomaticHakukelpoisuusParams(asWithOutHakuKohteet)) {
                 checkEligibilities(asWithOutHakuKohteet.getId(), personOids);
             }
         }
@@ -106,7 +106,11 @@ public class EligibilityCheckWorkerImpl implements EligibilityCheckWorker {
         return !(aos == null || aos.isEmpty());
     }
 
-    private boolean hasValidOhjausparametriWithAutomaticHakukelpoisuus(ApplicationSystem as) {
+    private boolean hasValidAutomaticHakukelpoisuusParams(ApplicationSystem as) {
+        if(!as.isAutomaticEligibilityInUse()) {
+            log.warn("Automatic eligibility is not in use so skipping 'haku' {}", as.getId());
+            return false;
+        }
         Ohjausparametrit ohjausparametrit;
         try {
             ohjausparametrit = ohjausparametritService.fetchOhjausparametritForHaku(as.getId());

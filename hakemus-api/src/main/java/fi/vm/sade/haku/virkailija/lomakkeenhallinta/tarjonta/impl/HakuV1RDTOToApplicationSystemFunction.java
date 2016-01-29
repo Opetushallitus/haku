@@ -73,6 +73,7 @@ public class HakuV1RDTOToApplicationSystemFunction implements Function<HakuV1RDT
                 .setMaxApplicationOptions(hakuDTO.getMaxHakukohdes())
                 .setKohdejoukkoUri(hakuDTO.getKohdejoukkoUri().split("#")[0])
                 .setKohdejoukonTarkenne(hakuDTO.getKohdejoukonTarkenne() != null ? hakuDTO.getKohdejoukonTarkenne().split("#")[0] : null)
+                .setAutomaticEligibilityInUse(hakuDTO.getYlioppilastutkintoAntaaHakukelpoisuuden())
                 .setAosForAutomaticEligibility(hakuDTO.getHakukohdeOidsYlioppilastutkintoAntaaHakukelpoisuuden())
                 .setMaksumuuriKaytossa(hakuDTO.isMaksumuuriKaytossa())
                 .get();
