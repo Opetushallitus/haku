@@ -33,7 +33,7 @@ public class PreferenceEligibility implements Serializable {
             case AUTOMATICALLY_CHECKED_ELIGIBLE:
                 return "Kelpoisuus hyväksytty automaattisesti";
             case ELIGIBLE:
-                return "Kelpoisuus hyväksytty automaattisesti";
+                return "Hakukelpoinen";
             case INELIGIBLE:
                 return "Ei hakukelpoinen";
             case INADEQUATE:
