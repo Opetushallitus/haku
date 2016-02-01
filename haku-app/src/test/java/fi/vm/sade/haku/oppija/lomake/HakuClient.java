@@ -77,7 +77,7 @@ public class HakuClient {
                 response.close();
                 return response;
             } else {
-                throw new RuntimeException(IOUtils.toString(response.getEntityInputStream(), "UTF-8"));
+                throw new RuntimeException("Phase " + phaseId + " not completed (status=" + response.getStatus() + "). Response:\n"+ IOUtils.toString(response.getEntityInputStream(), "UTF-8"));
             }
         } else {
             return null;
