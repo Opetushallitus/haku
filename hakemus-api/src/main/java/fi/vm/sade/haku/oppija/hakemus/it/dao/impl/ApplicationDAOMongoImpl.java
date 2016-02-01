@@ -346,7 +346,10 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     public List<Application> getNextForPaymentDueDateProcessing(int batchSize) {
         final DBObject query = PaymentDueDateRules.mongoQuery();
 
-        DBCursor dbCursor = getCollection().find(query).limit(batchSize).hint(INDEX_PAYMENT_DUE_DATE);
+        DBCursor dbCursor = getCollection().find(query).limit(batchSize);
+        if (ensureIndex) {
+            dbCursor = dbCursor.hint(INDEX_PAYMENT_DUE_DATE);
+        }
 
         return ImmutableList.copyOf(Iterables.transform(dbCursor, new Function<DBObject, Application>() {
             @Override
