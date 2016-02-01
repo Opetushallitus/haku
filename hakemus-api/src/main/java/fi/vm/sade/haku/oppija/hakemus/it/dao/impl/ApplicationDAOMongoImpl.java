@@ -36,6 +36,8 @@ import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationQueryParameters;
 import fi.vm.sade.haku.oppija.lomake.exception.IncoherentDataException;
 import fi.vm.sade.haku.oppija.lomake.service.EncrypterService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.HakumaksuUtil;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.joda.time.LocalDateTime;
 import org.slf4j.Logger;
@@ -347,6 +349,9 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         final DBObject query = PaymentDueDateRules.mongoQuery();
 
         DBCursor dbCursor = getCollection().find(query).limit(batchSize);
+        
+        LOG.info("Found {} applications with query {}", dbCursor.size(), ToStringBuilder.reflectionToString(query, ToStringStyle.SHORT_PREFIX_STYLE));
+
         return ImmutableList.copyOf(Iterables.transform(dbCursor, new Function<DBObject, Application>() {
             @Override
             public Application apply(DBObject dbObject) {
