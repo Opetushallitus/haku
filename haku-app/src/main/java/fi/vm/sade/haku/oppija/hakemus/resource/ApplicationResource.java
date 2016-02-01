@@ -38,6 +38,7 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.hakulomakepohja.I18nBundle;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.i18n.I18nBundleService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.ApplicationOid;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.http.client.cache.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -168,6 +169,8 @@ public class ApplicationResource {
             } else {
                 updateApplicationPaymentState(application, state, oldState);
             }
+        } catch (ResourceNotFoundException e) {
+            throw new JSONException(Status.NOT_FOUND, e.getMessage(), e);
         } catch (NullPointerException|IllegalArgumentException e) {
             throw new JSONException(Status.BAD_REQUEST, e.getMessage(), e);
         } catch (IllegalStateException e) {
