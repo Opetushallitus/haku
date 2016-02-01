@@ -49,6 +49,7 @@ public class ApplicationPostProcessorService {
     private final AuthenticationService authenticationService;
     private final HakuService hakuService;
     private final HakumaksuService hakumaksuService;
+    private final PaymentDueDateProcessingWorker paymentDueDateProcessingWorker;
 
     @Value("${scheduler.retryFailQuickCount:20}")
     private int retryFailQuickCount;
@@ -64,7 +65,8 @@ public class ApplicationPostProcessorService {
                                            final ElementTreeValidator elementTreeValidator,
                                            final AuthenticationService authenticationService,
                                            final HakuService hakuService,
-                                           final HakumaksuService hakumaksuService){
+                                           final HakumaksuService hakumaksuService,
+                                           final PaymentDueDateProcessingWorker paymentDueDateProcessingWorker){
         this.applicationService = applicationService;
         this.applicationSystemService = applicationSystemService;
         this.baseEducationService = baseEducationService;
@@ -73,6 +75,7 @@ public class ApplicationPostProcessorService {
         this.authenticationService = authenticationService;
         this.hakuService = hakuService;
         this.hakumaksuService = hakumaksuService;
+        this.paymentDueDateProcessingWorker = paymentDueDateProcessingWorker;
     }
 
     public Application process(Application application) throws IOException, ExecutionException, InterruptedException {
@@ -81,6 +84,7 @@ public class ApplicationPostProcessorService {
         application = applicationService.updateAuthorizationMeta(application);
         application = applicationService.ensureApplicationOptionGroupData(application);
         application = applicationService.updateAutomaticEligibilities(application);
+        application = paymentDueDateProcessingWorker.processPaymentDueDate(application);
 
         ApplicationSystem applicationSystem = applicationSystemService.getApplicationSystem(application.getApplicationSystemId());
         if (applicationSystem.isMaksumuuriKaytossa()) {
