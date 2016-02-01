@@ -52,6 +52,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.mongodb.QueryOperators.IN;
+import static fi.vm.sade.haku.oppija.hakemus.domain.Application.PAYMENT_DUE_DATE;
 import static fi.vm.sade.haku.oppija.hakemus.it.dao.impl.ApplicationDAOMongoConstants.*;
 import static fi.vm.sade.haku.oppija.hakemus.it.dao.impl.ApplicationDAOMongoIndexHelper.addIndexHint;
 import static fi.vm.sade.haku.oppija.hakemus.it.dao.impl.ApplicationDAOMongoPostProcessingQueries.*;
@@ -345,7 +346,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     public List<Application> getNextForPaymentDueDateProcessing(int batchSize) {
         final DBObject query = PaymentDueDateRules.mongoQuery();
 
-        DBCursor dbCursor = getCollection().find(query).limit(batchSize);
+        DBCursor dbCursor = getCollection().find(query).limit(batchSize).hint(INDEX_PAYMENT_DUE_DATE);
 
         return ImmutableList.copyOf(Iterables.transform(dbCursor, new Function<DBObject, Application>() {
             @Override
@@ -472,6 +473,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         ensureIndex(INDEX_STATE_ORG_OID, FIELD_APPLICATION_STATE, META_ALL_ORGANIZATIONS, FIELD_APPLICATION_OID);
         ensureIndex(INDEX_ASID_ORG_OID, FIELD_APPLICATION_SYSTEM_ID, META_ALL_ORGANIZATIONS, FIELD_APPLICATION_OID);
         ensureIndex(INDEX_ORG_OID, META_ALL_ORGANIZATIONS, FIELD_APPLICATION_OID);
+        ensureSparseIndex(INDEX_PAYMENT_DUE_DATE, PAYMENT_DUE_DATE);
 
         // System queries
         ensureSparseIndex(INDEX_STUDENT_IDENTIFICATION_DONE, INDEX_STUDENT_IDENTIFICATION_DONE_FIELDS);
