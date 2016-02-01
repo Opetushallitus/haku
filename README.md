@@ -118,7 +118,7 @@ Or build, start tomcat and run Mochas from the command line:
 
 Run all tests (including Mocha and Selenium tests):
 
-    MAVEN_OPTS="-Xmx2048m -XX:PermSize=512M" mvn clean verify -Pit
+    mvn clean verify -Pit
 
 Run single test class:
 

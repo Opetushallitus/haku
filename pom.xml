@@ -133,7 +133,7 @@
                             <excludes>
                                 <exclude>**/it/*.java</exclude>
                             </excludes>
-                            <argLine>-Xms512M -Xmx1G -XX:MaxPermSize=512M</argLine>
+                            <argLine>-Xms512M -Xmx2048M -XX:PermSize=512M</argLine>
                             <systemProperties>
                                 <spring.profiles.active>it</spring.profiles.active>
                                 <mongodb.port>27018</mongodb.port>
