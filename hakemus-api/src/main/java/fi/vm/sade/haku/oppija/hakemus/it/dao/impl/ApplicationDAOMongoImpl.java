@@ -36,8 +36,6 @@ import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationQueryParameters;
 import fi.vm.sade.haku.oppija.lomake.exception.IncoherentDataException;
 import fi.vm.sade.haku.oppija.lomake.service.EncrypterService;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.HakumaksuUtil;
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.apache.commons.lang.builder.ToStringStyle;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.joda.time.LocalDateTime;
 import org.slf4j.Logger;
@@ -47,7 +45,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Nullable;
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.Date;
@@ -316,7 +313,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         public static BasicDBObject mongoQuery() {
             return new BasicDBObject(
                     ImmutableMap.of(
-                            "paymentDueDate", queryTime().toDate().getTime(),
+                            "paymentDueDate", new BasicDBObject("$lt", queryTime().toDate().getTime()),
                             "state", new BasicDBObject("$ne", Application.State.PASSIVE.name()),
                             "requiredPaymentState", new BasicDBObject("$in", ImmutableList.of(PaymentState.NOT_OK.name(), PaymentState.NOTIFIED.name()))
                     )
@@ -349,8 +346,6 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         final DBObject query = PaymentDueDateRules.mongoQuery();
 
         DBCursor dbCursor = getCollection().find(query).limit(batchSize);
-        
-        LOG.info("Found {} applications with query {}", dbCursor.size(), ToStringBuilder.reflectionToString(query, ToStringStyle.SHORT_PREFIX_STYLE));
 
         return ImmutableList.copyOf(Iterables.transform(dbCursor, new Function<DBObject, Application>() {
             @Override
