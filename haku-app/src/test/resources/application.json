@@ -27,6 +27,7 @@
             "LISAKOULUTUS_MAAHANMUUTTO": "true",
             "LISAKOULUTUS_KANSANOPISTO": "true",
             "PK_PAATTOTODISTUSVUOSI": "2012",
+            "KYMPPI_PAATTOTODISTUSVUOSI" : "2013",
             "LISAKOULUTUS_AMMATTISTARTTI": "true",
             "LISAKOULUTUS_TALOUS": "true",
             "osallistunut": "false",
