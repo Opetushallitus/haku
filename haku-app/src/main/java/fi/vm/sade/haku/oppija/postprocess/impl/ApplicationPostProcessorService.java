@@ -84,7 +84,6 @@ public class ApplicationPostProcessorService {
         application = applicationService.updateAuthorizationMeta(application);
         application = applicationService.ensureApplicationOptionGroupData(application);
         application = applicationService.updateAutomaticEligibilities(application);
-        application = paymentDueDateProcessingWorker.processPaymentDueDate(application);
 
         ApplicationSystem applicationSystem = applicationSystemService.getApplicationSystem(application.getApplicationSystemId());
         if (applicationSystem.isMaksumuuriKaytossa()) {
@@ -115,6 +114,11 @@ public class ApplicationPostProcessorService {
         if (hakuService.kayttaaJarjestelmanLomaketta(application.getApplicationSystemId())) {
             application = validateApplication(application);
         }
+
+        if (applicationSystem.isMaksumuuriKaytossa()) {
+            application = paymentDueDateProcessingWorker.processPaymentDueDate(application);
+        }
+
         application.setRedoPostProcess(Application.PostProcessingState.DONE);
         if (null == application.getModelVersion())
             application.setModelVersion(Application.CURRENT_MODEL_VERSION);
