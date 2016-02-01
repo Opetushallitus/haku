@@ -26,6 +26,7 @@ import com.mongodb.*;
 import fi.vm.sade.haku.oppija.common.dao.AbstractDAOMongoImpl;
 import fi.vm.sade.haku.oppija.hakemus.converter.*;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
+import fi.vm.sade.haku.oppija.hakemus.domain.Application.PaymentState;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationAdditionalDataDTO;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultItemDTO;
@@ -44,6 +45,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Nullable;
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.Date;
@@ -304,18 +306,46 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         return applications;
     }
 
+    public static class PaymentDueDateRules {
+        private static LocalDateTime queryTime() {
+            return new LocalDateTime().minusDays(HakumaksuUtil.APPLICATION_PAYMENT_WAITING_TIME);
+        }
+
+        public static BasicDBObject mongoQuery() {
+            return new BasicDBObject(
+                    ImmutableMap.of(
+                            "paymentDueDate", queryTime().toDate().getTime(),
+                            "state", new BasicDBObject("$ne", Application.State.PASSIVE.name()),
+                            "requiredPaymentState", new BasicDBObject("$in", ImmutableList.of(PaymentState.NOT_OK.name(), PaymentState.NOTIFIED.name()))
+                    )
+            );
+        }
+
+        public static Boolean evaluatePaymentDueDateRules(Application application) {
+            return paymentDueDate(application) && state(application) && requiredPaymentState(application);
+        }
+
+        private static Boolean paymentDueDate(Application application) {
+            Date paymentDueDate = application.getPaymentDueDate();
+            return paymentDueDate != null && paymentDueDate.before(queryTime().toDate());
+        }
+
+        private static Boolean state(Application application) {
+            Application.State state = application.getState();
+            return state != null && state != Application.State.PASSIVE;
+        }
+
+        private static Boolean requiredPaymentState(Application application) {
+            PaymentState paymentState = application.getRequiredPaymentState();
+            return paymentState != null
+                    && ImmutableList.of(PaymentState.NOT_OK, PaymentState.NOTIFIED).contains(paymentState);
+        }
+    }
+
     @Override
     public List<Application> getNextForPaymentDueDateProcessing(int batchSize) {
+        final DBObject query = PaymentDueDateRules.mongoQuery();
 
-        LocalDateTime queryTime = new LocalDateTime().minusDays(HakumaksuUtil.APPLICATION_PAYMENT_WAITING_TIME);
-
-        final DBObject query = new BasicDBObject(
-                ImmutableMap.of(
-                        "paymentDueDate", new BasicDBObject("$lt", queryTime.toDate().getTime()),
-                        "state", new BasicDBObject("$ne", Application.State.PASSIVE.name()),
-                        "requiredPaymentState", new BasicDBObject("$in", ImmutableList.of(Application.PaymentState.NOT_OK.name(), Application.PaymentState.NOTIFIED.name()))
-                )
-        );
         DBCursor dbCursor = getCollection().find(query).limit(batchSize);
         return ImmutableList.copyOf(Iterables.transform(dbCursor, new Function<DBObject, Application>() {
             @Override

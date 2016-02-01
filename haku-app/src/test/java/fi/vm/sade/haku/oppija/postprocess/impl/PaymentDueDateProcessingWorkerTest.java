@@ -89,4 +89,37 @@ public class PaymentDueDateProcessingWorkerTest {
         verify(applicationDAO, times(PaymentDueDateProcessingWorker.MAX_RETRIES)).update(Mockito.<Application>any(), Mockito.<Application>any());
 
     }
+
+    @Test
+    public void testProcessPaymentDueDate() throws Exception {
+        assertEquals(Application.State.PASSIVE, paymentDueDateProcessingWorker.processPaymentDueDate(new Application() {{
+            setOid("1.2.246.562.11.1");
+            setPaymentDueDate(new Date(0));
+            setState(State.ACTIVE);
+            setRequiredPaymentState(PaymentState.NOTIFIED);
+        }}).getState());
+    }
+
+    @Test
+    public void testProcessPaymentDueDateDoesNotMutate() throws Exception {
+        assertEquals(Application.State.ACTIVE, paymentDueDateProcessingWorker.processPaymentDueDate(new Application() {{
+            setOid("1.2.246.562.11.2");
+            setPaymentDueDate(new Date(0));
+            setState(State.ACTIVE);
+            setRequiredPaymentState(PaymentState.OK);
+        }}).getState());
+    }
+
+    @Test
+    public void testProcessPaymentDueDateDoesNotMutateWhenNotAllApplicationOptionsRequirePayment() throws Exception {
+        Application application = new Application() {{
+            setOid("1.2.246.562.11.1111");
+            setPaymentDueDate(new Date(0));
+            setState(State.ACTIVE);
+            setRequiredPaymentState(PaymentState.NOT_OK);
+        }};
+        when(hakumaksuService.allApplicationOptionsRequirePayment(application)).thenReturn(false);
+        assertEquals(Application.State.ACTIVE, paymentDueDateProcessingWorker.processPaymentDueDate(application).getState());
+    }
+
 }

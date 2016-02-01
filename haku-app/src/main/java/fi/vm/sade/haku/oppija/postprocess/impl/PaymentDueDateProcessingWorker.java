@@ -2,7 +2,9 @@ package fi.vm.sade.haku.oppija.postprocess.impl;
 
 import fi.vm.sade.auditlog.haku.HakuOperation;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
+import fi.vm.sade.haku.oppija.hakemus.domain.Application.State;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationDAO;
+import fi.vm.sade.haku.oppija.hakemus.it.dao.impl.ApplicationDAOMongoImpl.PaymentDueDateRules;
 import fi.vm.sade.haku.oppija.hakemus.service.HakumaksuService;
 
 import org.slf4j.Logger;
@@ -35,7 +37,7 @@ public class PaymentDueDateProcessingWorker {
     }
 
     private int passivate(Application application, final Application original) {
-        application.setState(Application.State.PASSIVE);
+        application.setState(State.PASSIVE);
         addHistoryBasedOnChangedAnswers(application, original, SYSTEM_USER, "Payment Due Date Post Processing");
         return applicationDAO.update(new Application() {{
             setOid(original.getOid());
@@ -43,6 +45,9 @@ public class PaymentDueDateProcessingWorker {
         }}, application);
     }
 
+    /**
+     * Logic for payment due date processing. Should only be called from scheduler.
+     */
     public void processPaymentDueDates() {
         List<Application> applications = this.applicationDAO.getNextForPaymentDueDateProcessing(BATCH_SIZE);
         for(Application application : applications) {
@@ -77,4 +82,22 @@ public class PaymentDueDateProcessingWorker {
             }
         }
     }
+
+    /**
+     * For post processing, returns mutated application.
+     * @param application
+     * @return
+     */
+    public Application processPaymentDueDate(Application application) {
+        if (PaymentDueDateRules.evaluatePaymentDueDateRules(application)) {
+            if (hakumaksuService.allApplicationOptionsRequirePayment(application)) {
+                application.setState(State.PASSIVE);
+                log.info("Application {} state set to PASSIVE", application.getOid());
+            } else {
+                log.info("Not all application options require payment in application {}", application.getOid());
+            }
+        }
+        return application;
+    }
+
 }

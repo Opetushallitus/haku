@@ -44,8 +44,9 @@ public class ApplicationPostProcessorServiceTest {
         final HakuService hakuService = null;
         final ApplicationSystemService applicationSystemService = null;
         final HakumaksuService hakumaksuService = null;
+        final PaymentDueDateProcessingWorker paymentDueDateProcessingWorker = null;
 
-        applicationPostProcessorService = new ApplicationPostProcessorService(applicationService, applicationSystemService, baseEducationService, formService, elementTreeValidator, authenticationService, hakuService, hakumaksuService);
+        applicationPostProcessorService = new ApplicationPostProcessorService(applicationService, applicationSystemService, baseEducationService, formService, elementTreeValidator, authenticationService, hakuService, hakumaksuService, paymentDueDateProcessingWorker);
         applicationPostProcessorService.setRetryFailQuickCount(5);
         applicationPostProcessorService.setRetryFailedAgainTime(10000);
 
