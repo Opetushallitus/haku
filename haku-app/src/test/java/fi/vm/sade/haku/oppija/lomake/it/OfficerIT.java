@@ -9,10 +9,7 @@ import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -138,7 +135,19 @@ public class OfficerIT extends DummyModelBaseItTest {
     }
 
     private void clickSearch() {
-        findByIdAndClick("search-applications");
+        try {
+            findByIdAndClick("search-applications");
+        }
+        catch (WebDriverException webEx) {
+            if(webEx.getMessage().contains("search-spinner")) {
+                log.warn("Sleeping 100ms, because: " + webEx);
+            }
+            try {
+                Thread.sleep(100L);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
     private void activate(String oid) {
