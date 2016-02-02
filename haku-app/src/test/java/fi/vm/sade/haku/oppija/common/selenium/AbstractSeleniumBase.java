@@ -97,11 +97,14 @@ public abstract class AbstractSeleniumBase extends TomcatContainerBase {
         findByIdAndClick(0, ids);
     }
 
+    protected void click(By by) {
+        new WebDriverWait(seleniumContainer.getDriver(), 1, 100).until(ExpectedConditions.elementToBeClickable(by));
+        seleniumContainer.getDriver().findElement(by).click();
+    }
+
     protected void findByIdAndClick(long sleepMillis, final String... ids ) {
         for (String id : ids) {
-            By by = By.id(id);
-            new WebDriverWait(seleniumContainer.getDriver(), 0, 100).until(ExpectedConditions.elementToBeClickable(by));
-            seleniumContainer.getDriver().findElement(by).click();
+            click(By.id(id));
             if (sleepMillis > 0 ) {
                 try {
                     TimeUnit.MILLISECONDS.sleep(sleepMillis);
@@ -113,7 +116,7 @@ public abstract class AbstractSeleniumBase extends TomcatContainerBase {
     }
 
     protected void findByAndAjaxClick(By by){
-        seleniumContainer.getDriver().findElement(by).click();
+        click(by);
         seleniumContainer.waitForAjax();
     }
 
