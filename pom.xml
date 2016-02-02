@@ -156,7 +156,7 @@
                                 <include>**/selenium/*</include>
                                 <include>**/selenium/**/*</include>
                             </includes>
-                            <testFailureIgnore>true</testFailureIgnore>
+                            <testFailureIgnore>false</testFailureIgnore>
                             <forkedProcessTimeoutInSeconds>1200</forkedProcessTimeoutInSeconds>
                             <additionalClasspathElements>
                                 <additionalClasspathElement>/config/it/log4.properties</additionalClasspathElement>
