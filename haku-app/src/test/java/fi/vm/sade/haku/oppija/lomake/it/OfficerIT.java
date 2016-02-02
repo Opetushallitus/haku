@@ -141,11 +141,11 @@ public class OfficerIT extends DummyModelBaseItTest {
         catch (WebDriverException webEx) {
             if(webEx.getMessage().contains("search-spinner")) {
                 log.warn("Sleeping 100ms, because: " + webEx);
-            }
-            try {
-                Thread.sleep(100L);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
+                try {
+                    Thread.sleep(100L);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
             }
         }
     }
