@@ -156,7 +156,7 @@
                                 <include>**/selenium/*</include>
                                 <include>**/selenium/**/*</include>
                             </includes>
-                            <testFailureIgnore>false</testFailureIgnore>
+                            <testFailureIgnore>true</testFailureIgnore>
                             <additionalClasspathElements>
                                 <additionalClasspathElement>/config/it/log4.properties</additionalClasspathElement>
                             </additionalClasspathElements>
