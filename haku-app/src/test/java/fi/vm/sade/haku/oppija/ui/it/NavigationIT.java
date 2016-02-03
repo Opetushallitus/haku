@@ -40,6 +40,7 @@ public class NavigationIT extends DummyModelBaseItTest {
         elementsPresent("//li/span/span[contains(text(),'7')]");
 
         elementsPresent("//button[@class='right']");
+        elementsNotPresentByXPath("//button[@class='left']");
         fillOut(defaultValues.henkilotiedot);
         nextPhase(OppijaConstants.PHASE_EDUCATION);
 

@@ -35,6 +35,7 @@ public class SeleniumContainer {
 
     private FirefoxDriver webDriver;
     private final String webDriverBaseUrl;
+    public static final long IMPLICIT_WAIT_TIME_IN_SECONDS = 10;
 
     @Autowired
     public SeleniumContainer(@Value("${webdriver.base.url:http://localhost:9090/haku-app/}") final String webDriverBaseUrl) {
@@ -52,7 +53,7 @@ public class SeleniumContainer {
             FirefoxProfile profile = new FirefoxProfile();
             profile.setPreference("focusmanager.testmode",true);
             this.webDriver = new FirefoxDriver(profile);
-            this.webDriver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+            this.webDriver.manage().timeouts().implicitlyWait(IMPLICIT_WAIT_TIME_IN_SECONDS, TimeUnit.SECONDS);
         }
         return webDriver;
     }

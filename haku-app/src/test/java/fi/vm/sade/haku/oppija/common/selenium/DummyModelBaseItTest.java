@@ -4,6 +4,7 @@ import com.google.common.base.Joiner;
 import com.google.common.base.Predicate;
 import fi.vm.sade.haku.oppija.lomake.ApplicationSystemHelper;
 import fi.vm.sade.haku.oppija.ui.selenium.DefaultValues;
+import fi.vm.sade.hakutest.SeleniumContainer;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
@@ -17,6 +18,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.util.List;
 import java.util.Map;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.*;
 
@@ -123,6 +125,36 @@ public abstract class DummyModelBaseItTest extends AbstractSeleniumBase {
     protected void elementsPresentByName(final String... names) {
         for (String name : names) {
             seleniumContainer.getDriver().findElement(By.name(name));
+        }
+    }
+
+    protected void elementsNotPresentByName(final String... names) {
+        for (String name : names) {
+            elementsNotPresentBy(By.name(name));
+        }
+    }
+
+    protected void elementsNotPresentBy(final By by) {
+        seleniumContainer.getDriver().manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
+        try {
+            if (!seleniumContainer.getDriver().findElements(by).isEmpty()) {
+                fail("name " + by.toString() + " not found");
+            }
+        }
+        finally {
+            seleniumContainer.getDriver().manage().timeouts().implicitlyWait(SeleniumContainer.IMPLICIT_WAIT_TIME_IN_SECONDS, TimeUnit.SECONDS);
+        }
+    }
+
+    protected void elementsNotPresentById(String... locations) {
+        for (String location : locations) {
+            elementsNotPresentBy(By.id(location));
+        }
+    }
+
+    protected void elementsNotPresentByXPath(String... locations) {
+        for (String location : locations) {
+            elementsNotPresentBy(By.xpath(location));
         }
     }
 

@@ -34,6 +34,7 @@ public class GradeGridIT extends DummyModelBaseItTest {
 
         nextPhase(OppijaConstants.PHASE_EDUCATION);
         fillOut(defaultValues.koulutustausta_lk);
+        elementsNotPresentByName("slkdjfslkdjf");
         nextPhase(OppijaConstants.PHASE_APPLICATION_OPTIONS);
         typeWithoutTab("preference1-Opetuspiste", "Esp");
 

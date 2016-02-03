@@ -59,6 +59,8 @@ public class WorkExperienceThemeIT extends DummyModelBaseItTest {
         selectByValue("PK_A1_OPPIAINE", "EN");
         selectByValue("PK_B1_OPPIAINE", "SE");
         nextPhase(OppijaConstants.PHASE_MISC);
+
+        elementsNotPresentById("TYOKOKEMUSKUUKAUDET");
     }
 
     private void gotoHakutoiveet(final String hetu) {

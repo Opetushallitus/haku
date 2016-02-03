@@ -56,6 +56,8 @@ public class LomakeIT extends DummyModelBaseItTest {
 
         findById("help-Kutsumanimi");
 
+        elementsNotPresentByName("puhelinnumero2");
+
         findByIdAndClick("addPuhelinnumero2Rule-link");
         findById("matkapuhelinnumero2");
         setValue("matkapuhelinnumero2", "09-123 456");
