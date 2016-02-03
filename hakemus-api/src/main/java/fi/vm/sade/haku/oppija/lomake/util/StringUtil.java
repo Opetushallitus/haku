@@ -20,8 +20,8 @@ public final class StringUtil {
         return o == null ? EMPTY : o.toString();
     }
 
-    public static String nameOrEmpty(Enum paymentState) {
-        return paymentState == null ? EMPTY : paymentState.name();
+    public static String nameOrEmpty(Enum e) {
+        return e == null ? EMPTY : e.name();
     }
 
 }

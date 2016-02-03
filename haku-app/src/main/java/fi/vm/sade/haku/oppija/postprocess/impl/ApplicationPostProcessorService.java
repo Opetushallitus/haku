@@ -1,7 +1,6 @@
 package fi.vm.sade.haku.oppija.postprocess.impl;
 
 import fi.vm.sade.auditlog.haku.HakuOperation;
-import fi.vm.sade.haku.RemoteServiceException;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application.PaymentState;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
@@ -26,13 +25,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 import static fi.vm.sade.haku.AuditHelper.AUDIT;
 import static fi.vm.sade.haku.AuditHelper.builder;
 import static fi.vm.sade.haku.oppija.lomake.util.StringUtil.nameOrEmpty;
-import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.MailTemplateUtil.paymentEmailFromApplication;
 import static org.apache.commons.lang.StringUtils.isEmpty;
 import static org.apache.commons.lang.StringUtils.isNotEmpty;
 
@@ -50,6 +49,7 @@ public class ApplicationPostProcessorService {
     private final AuthenticationService authenticationService;
     private final HakuService hakuService;
     private final HakumaksuService hakumaksuService;
+    private final PaymentDueDateProcessingWorker paymentDueDateProcessingWorker;
 
     @Value("${scheduler.retryFailQuickCount:20}")
     private int retryFailQuickCount;
@@ -65,7 +65,8 @@ public class ApplicationPostProcessorService {
                                            final ElementTreeValidator elementTreeValidator,
                                            final AuthenticationService authenticationService,
                                            final HakuService hakuService,
-                                           final HakumaksuService hakumaksuService){
+                                           final HakumaksuService hakumaksuService,
+                                           final PaymentDueDateProcessingWorker paymentDueDateProcessingWorker){
         this.applicationService = applicationService;
         this.applicationSystemService = applicationSystemService;
         this.baseEducationService = baseEducationService;
@@ -74,6 +75,7 @@ public class ApplicationPostProcessorService {
         this.authenticationService = authenticationService;
         this.hakuService = hakuService;
         this.hakumaksuService = hakumaksuService;
+        this.paymentDueDateProcessingWorker = paymentDueDateProcessingWorker;
     }
 
     public Application process(Application application) throws IOException, ExecutionException, InterruptedException {
@@ -86,8 +88,9 @@ public class ApplicationPostProcessorService {
         ApplicationSystem applicationSystem = applicationSystemService.getApplicationSystem(application.getApplicationSystemId());
         if (applicationSystem.isMaksumuuriKaytossa()) {
             PaymentState oldPaymentState = application.getRequiredPaymentState();
+            Date oldDueDate = application.getPaymentDueDate();
 
-            application = hakumaksuService.processPayment(application, paymentEmailFromApplication(applicationSystem.getApplicationPeriods()));
+            application = hakumaksuService.processPayment(application, applicationSystem.getApplicationPeriods());
 
             if (application.getRequiredPaymentState() != oldPaymentState) {
                 AUDIT.log(builder()
@@ -97,11 +100,25 @@ public class ApplicationPostProcessorService {
                         .add("newValue", application.getRequiredPaymentState())
                         .build());
             }
+
+            if (application.getPaymentDueDate() != oldDueDate) {
+                AUDIT.log(builder()
+                        .hakemusOid(application.getOid())
+                        .setOperaatio(HakuOperation.PAYMENT_DUE_DATE_CHANGE)
+                        .add("oldValue", oldDueDate != null ? String.format("%d", oldDueDate.getTime()) : "")
+                        .add("newValue", application.getPaymentDueDate() != null ? String.format("%d", application.getPaymentDueDate().getTime()) : "")
+                        .build());
+            }
         }
 
         if (hakuService.kayttaaJarjestelmanLomaketta(application.getApplicationSystemId())) {
             application = validateApplication(application);
         }
+
+        if (applicationSystem.isMaksumuuriKaytossa()) {
+            application = paymentDueDateProcessingWorker.processPaymentDueDate(application);
+        }
+
         application.setRedoPostProcess(Application.PostProcessingState.DONE);
         if (null == application.getModelVersion())
             application.setModelVersion(Application.CURRENT_MODEL_VERSION);

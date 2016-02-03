@@ -18,11 +18,15 @@ package fi.vm.sade.haku.oppija.hakemus.it.dao.impl;
 
 import com.google.common.base.Function;
 import com.google.common.base.Strings;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.mongodb.*;
 import fi.vm.sade.haku.oppija.common.dao.AbstractDAOMongoImpl;
 import fi.vm.sade.haku.oppija.hakemus.converter.*;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
+import fi.vm.sade.haku.oppija.hakemus.domain.Application.PaymentState;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationAdditionalDataDTO;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultItemDTO;
@@ -31,20 +35,24 @@ import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationFilterParameters;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationQueryParameters;
 import fi.vm.sade.haku.oppija.lomake.exception.IncoherentDataException;
 import fi.vm.sade.haku.oppija.lomake.service.EncrypterService;
+import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.HakumaksuUtil;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.joda.time.LocalDateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 import static com.mongodb.QueryOperators.IN;
+import static fi.vm.sade.haku.oppija.hakemus.domain.Application.PAYMENT_DUE_DATE;
 import static fi.vm.sade.haku.oppija.hakemus.it.dao.impl.ApplicationDAOMongoConstants.*;
 import static fi.vm.sade.haku.oppija.hakemus.it.dao.impl.ApplicationDAOMongoIndexHelper.addIndexHint;
 import static fi.vm.sade.haku.oppija.hakemus.it.dao.impl.ApplicationDAOMongoPostProcessingQueries.*;
@@ -88,7 +96,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         this.dbObjectToMapFunction = dbObjectToMapFunction;
         this.applicationQueryBuilder = new ApplicationDAOMongoQueryBuilder(shaEncrypter, rootOrganizationOid, applicationOidPrefix, userOidPrefix);
     }
-;
+
     @Override
     protected String getCollectionName() {
         return "application";
@@ -162,6 +170,8 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         return searchResults.searchResultsList;
     }
 
+
+
     private <T> SearchResults<T> searchListing(final DBObject query, final DBObject keys, final DBObject sortBy, final int start, final int rows,
                                                final Function<DBObject, T> transformationFunction, final boolean doCount) {
         LOG.debug("searchListing starts Query: {} Keys: {} Skipping: {} Rows: {}", query, keys, start, rows);
@@ -176,7 +186,6 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         if (enableSearchOnSecondary)
             dbCursor.setReadPreference(ReadPreference.secondaryPreferred());
         int searchHits = -1;
-        // TODO: Add hint
 
         if (ensureIndex) {
             final String hint = addIndexHint(query);
@@ -297,6 +306,59 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         return applications;
     }
 
+    public static class PaymentDueDateRules {
+        private static LocalDateTime queryTime() {
+            return new LocalDateTime().minusDays(HakumaksuUtil.APPLICATION_PAYMENT_WAITING_TIME);
+        }
+
+        public static BasicDBObject mongoQuery() {
+            return new BasicDBObject(
+                    ImmutableMap.of(
+                            "paymentDueDate", new BasicDBObject("$lt", queryTime().toDate().getTime()),
+                            "state", new BasicDBObject("$ne", Application.State.PASSIVE.name()),
+                            "requiredPaymentState", new BasicDBObject("$in", ImmutableList.of(PaymentState.NOT_OK.name(), PaymentState.NOTIFIED.name()))
+                    )
+            );
+        }
+
+        public static Boolean evaluatePaymentDueDateRules(Application application) {
+            return paymentDueDate(application) && state(application) && requiredPaymentState(application);
+        }
+
+        private static Boolean paymentDueDate(Application application) {
+            Date paymentDueDate = application.getPaymentDueDate();
+            return paymentDueDate != null && paymentDueDate.before(queryTime().toDate());
+        }
+
+        private static Boolean state(Application application) {
+            Application.State state = application.getState();
+            return state != null && state != Application.State.PASSIVE;
+        }
+
+        private static Boolean requiredPaymentState(Application application) {
+            PaymentState paymentState = application.getRequiredPaymentState();
+            return paymentState != null
+                    && ImmutableList.of(PaymentState.NOT_OK, PaymentState.NOTIFIED).contains(paymentState);
+        }
+    }
+
+    @Override
+    public List<Application> getNextForPaymentDueDateProcessing(int batchSize) {
+        final DBObject query = PaymentDueDateRules.mongoQuery();
+
+        DBCursor dbCursor = getCollection().find(query).limit(batchSize);
+        if (ensureIndex) {
+            dbCursor = dbCursor.hint(INDEX_PAYMENT_DUE_DATE);
+        }
+
+        return ImmutableList.copyOf(Iterables.transform(dbCursor, new Function<DBObject, Application>() {
+            @Override
+            public Application apply(DBObject dbObject) {
+                return objectMapper.convertValue(dbObject, Application.class);
+            }
+        }));
+    }
+
     @Override
     public boolean hasApplicationsWithModelVersion(int versionLevel) {
         return 0 < buildUpgradableCursor(versionLevel).count();
@@ -414,6 +476,7 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
         ensureIndex(INDEX_STATE_ORG_OID, FIELD_APPLICATION_STATE, META_ALL_ORGANIZATIONS, FIELD_APPLICATION_OID);
         ensureIndex(INDEX_ASID_ORG_OID, FIELD_APPLICATION_SYSTEM_ID, META_ALL_ORGANIZATIONS, FIELD_APPLICATION_OID);
         ensureIndex(INDEX_ORG_OID, META_ALL_ORGANIZATIONS, FIELD_APPLICATION_OID);
+        ensureSparseIndex(INDEX_PAYMENT_DUE_DATE, PAYMENT_DUE_DATE);
 
         // System queries
         ensureSparseIndex(INDEX_STUDENT_IDENTIFICATION_DONE, INDEX_STUDENT_IDENTIFICATION_DONE_FIELDS);
@@ -442,13 +505,13 @@ public class ApplicationDAOMongoImpl extends AbstractDAOMongoImpl<Application> i
     }
 
     @Override
-    public void update(Application o, Application n) {
+    public int update(Application o, Application n) {
         if (null == o.getOid()) {
             LOG.error("Not enough parameters for update. Oid: " + o.getOid() + ". Throwing exception");
             throw new MongoException("Not enough parameters for update. Oid: " + o.getOid() + " version: " + o.getVersion());
         }
         n.setUpdated(new Date());
-        super.update(o, n);
+        return super.update(o, n);
     }
 
     @Override

@@ -16,6 +16,7 @@
 package fi.vm.sade.haku.oppija.postprocess;
 
 import fi.vm.sade.haku.healthcheck.StatusRepository;
+import fi.vm.sade.haku.oppija.postprocess.impl.PaymentDueDateProcessingWorker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,14 +27,18 @@ import java.util.Date;
 
 import static fi.vm.sade.haku.oppija.postprocess.EligibilityCheckWorker.SCHEDULER_ELIGIBILITY_CHECK;
 import static fi.vm.sade.haku.oppija.postprocess.UpgradeWorker.SCHEDULER_MODEL_UPGRADE;
+import static fi.vm.sade.haku.oppija.postprocess.impl.PaymentDueDateProcessingWorker.PAYMENT_DUE_DATE_PROCESSING;
 
 @Service
 public class Scheduler {
 
     public static final Logger LOGGER = LoggerFactory.getLogger(Scheduler.class);
+
+    private final PaymentDueDateProcessingWorker paymentDueDateProcessingWorker;
     private boolean run;
     private boolean runModelUpgrade;
     private boolean runEligibilityCheck;
+    private boolean runPaymentDueDateProcessing;
     private boolean sendMail;
     private boolean demoCleanup;
 
@@ -47,12 +52,13 @@ public class Scheduler {
 
     @Autowired
     public Scheduler(PostProcessWorker processWorker, UpgradeWorker upgradeWorker, StatusRepository statusRepository,
-                     EligibilityCheckWorker eligibilityCheckWorker, @Value("${mode.demo:false}") boolean demoMode,
+                     EligibilityCheckWorker eligibilityCheckWorker, PaymentDueDateProcessingWorker paymentDueDateProcessingWorker, @Value("${mode.demo:false}") boolean demoMode,
                      DemoCleanupWorker demoCleanupWorker) {
         this.processWorker = processWorker;
         this.upgradeWorker = upgradeWorker;
         this.statusRepository = statusRepository;
         this.eligibilityCheckWorker = eligibilityCheckWorker;
+        this.paymentDueDateProcessingWorker = paymentDueDateProcessingWorker;
         this.demoMode = demoMode;
         this.demoCleanupWorker = demoCleanupWorker;
     }
@@ -85,6 +91,26 @@ public class Scheduler {
 
         } else {
             statusRepository.haltSchedulerRun(statusOperation);
+        }
+    }
+
+    public void paymentDueDatePostprocess() {
+        if (run && runPaymentDueDateProcessing) {
+            statusRepository.startSchedulerRun(PAYMENT_DUE_DATE_PROCESSING);
+            Date processingStart = new Date();
+            try {
+                LOGGER.info("Start payment due dates processing");
+                paymentDueDateProcessingWorker.processPaymentDueDates();
+                statusRepository.endSchedulerRun(PAYMENT_DUE_DATE_PROCESSING);
+            } catch (final Exception e) {
+                LOGGER.error("Payment due dates processing failed due to exception", e);
+                statusRepository.schedulerError(PAYMENT_DUE_DATE_PROCESSING, e.getMessage());
+            } finally {
+                Date processingEnd = new Date();
+                LOGGER.info("End payment due dates processing (took {} ms)", (processingEnd.getTime() - processingStart.getTime()));
+            }
+        } else {
+            statusRepository.haltSchedulerRun(PAYMENT_DUE_DATE_PROCESSING);
         }
     }
 
@@ -125,6 +151,8 @@ public class Scheduler {
     public void setRunEligibilityCheck(boolean runEligibilityCheck) {
         this.runEligibilityCheck = runEligibilityCheck;
     }
+
+    public void setRunPaymentDueDateProcessing(boolean runPaymentDueDateProcessing) { this.runPaymentDueDateProcessing = runPaymentDueDateProcessing; }
 
     public void setDemoCleanup(boolean demoCleanup) {
         this.demoCleanup = demoCleanup;

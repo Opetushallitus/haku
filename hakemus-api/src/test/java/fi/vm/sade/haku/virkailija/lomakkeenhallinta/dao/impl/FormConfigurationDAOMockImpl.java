@@ -18,8 +18,8 @@ public class FormConfigurationDAOMockImpl implements FormConfigurationDAO{
     }
 
     @Override
-    public void update(FormConfiguration o, FormConfiguration n) {
-
+    public int update(FormConfiguration o, FormConfiguration n) {
+        return 0;
     }
 
     @Override

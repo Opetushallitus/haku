@@ -10,6 +10,7 @@ import fi.vm.sade.haku.oppija.common.oppijantunnistus.OppijanTunnistusDTO.Langua
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application.PaymentState;
 import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationNote;
+import fi.vm.sade.haku.oppija.lomake.domain.ApplicationPeriod;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.HakumaksuUtil;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.HakumaksuUtil.EducationRequirements;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
@@ -27,6 +28,9 @@ import static fi.vm.sade.haku.oppija.common.oppijantunnistus.OppijanTunnistusDTO
 import static fi.vm.sade.haku.oppija.hakemus.domain.util.ApplicationUtil.getPreferenceAoIds;
 import static fi.vm.sade.haku.oppija.hakemus.service.EducationRequirementsUtil.Eligibility;
 import static fi.vm.sade.haku.oppija.hakemus.service.EducationRequirementsUtil.kkBaseEducationRequirements;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.HakumaksuUtil.APPLICATION_PAYMENT_GRACE_PERIOD_MILLIS;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.MailTemplateUtil.calculateDueDate;
+import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.MailTemplateUtil.paymentEmailFromApplication;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.OPTION_ID_POSTFIX;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants.PREFERENCE_PREFIX;
 import static fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.Types.*;
@@ -164,6 +168,16 @@ public class HakumaksuService {
         }));
     }
 
+    public boolean allApplicationOptionsRequirePayment(Application application) {
+        ImmutableMap<ApplicationOptionOid, ImmutableSet<Eligibility>> paymentRequirements = paymentRequirements(MergedAnswers.of(application));
+        return all(paymentRequirements.values(), new Predicate<Set<Eligibility>>() {
+            @Override
+            public boolean apply(Set<Eligibility> input) {
+                return ! input.isEmpty();
+            }
+        });
+    }
+
     private static boolean isExemptFromPayment(Map<ApplicationOptionOid, ImmutableSet<Eligibility>> paymentRequirements) {
         return all(paymentRequirements.values(), new Predicate<Set<Eligibility>>() {
             @Override
@@ -187,7 +201,20 @@ public class HakumaksuService {
         }
     }
 
-    public Application processPayment(Application application, Function<Application, PaymentEmail> buildEmail) throws ExecutionException, InterruptedException {
+    private void setPaymentDueDateIfNotSet(Application application, List<ApplicationPeriod> applicationPeriods) {
+        Optional<Date> fromApplication = Optional.fromNullable(application.getPaymentDueDate());
+
+        Date dueDate = fromApplication
+                .or(calculateDueDate(applicationPeriods, new Date(), APPLICATION_PAYMENT_GRACE_PERIOD_MILLIS));
+
+        if (!fromApplication.isPresent()) {
+            application.setPaymentDueDate(dueDate);
+        }
+    }
+
+    public Application processPayment(Application application, List<ApplicationPeriod> applicationPeriods) throws ExecutionException, InterruptedException {
+        Function<Application, PaymentEmail> buildEmail = paymentEmailFromApplication(applicationPeriods);
+
         Optional<PaymentState> requiredPaymentState = Optional.fromNullable(application.getRequiredPaymentState());
 
         // Jos hakumaksu on suoritettu, edes maksuvelvollisuuden katoaminen ei poista onnistunutta maksumerkintää
@@ -202,12 +229,22 @@ public class HakumaksuService {
             if (!exemptFromPayment
                     && (!requiredPaymentState.isPresent() || requireResend(application, requiredPaymentState))) {
 
-                ApplicationOid applicationOid = ApplicationOid.of(application.getOid());
-                paymentRequestOrThrow(
-                        buildEmail.apply(application),
-                        SafeString.of(application.getPhaseAnswers(OppijaConstants.PHASE_PERSONAL).get("Sähköposti")),
-                        applicationOid,
-                        PersonOid.of(application.getPersonOid()));
+                Date fromApplication = application.getPaymentDueDate();
+                setPaymentDueDateIfNotSet(application, applicationPeriods);
+
+                ApplicationOid applicationOid;
+                try {
+                    applicationOid = ApplicationOid.of(application.getOid());
+                    paymentRequestOrThrow(
+                            buildEmail.apply(application),
+                            SafeString.of(application.getPhaseAnswers(OppijaConstants.PHASE_PERSONAL).get("Sähköposti")),
+                            applicationOid,
+                            PersonOid.of(application.getPersonOid()));
+                } catch (Exception e) {
+                    // Rollback jos Oppijantunnistus-pyyntö epäonnistuu
+                    application.setPaymentDueDate(fromApplication);
+                    throw e;
+                }
 
                 application.setRequiredPaymentState(PaymentState.NOTIFIED);
 
