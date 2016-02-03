@@ -51,6 +51,7 @@ public class PaymentDueDateProcessingWorkerTest {
         paymentDueDateProcessingWorker.processPaymentDueDates();
         verify(applicationDAO).update(Mockito.<Application>any(), captor.capture());
         assertEquals(Application.State.PASSIVE, captor.getValue().getState());
+        assertEquals(Application.PaymentState.NOT_OK, captor.getValue().getRequiredPaymentState());
     }
 
     @Test
@@ -92,12 +93,14 @@ public class PaymentDueDateProcessingWorkerTest {
 
     @Test
     public void testProcessPaymentDueDate() throws Exception {
-        assertEquals(Application.State.PASSIVE, paymentDueDateProcessingWorker.processPaymentDueDate(new Application() {{
+        Application application = paymentDueDateProcessingWorker.processPaymentDueDate(new Application() {{
             setOid("1.2.246.562.11.1");
             setPaymentDueDate(new Date(0));
             setState(State.ACTIVE);
             setRequiredPaymentState(PaymentState.NOTIFIED);
-        }}).getState());
+        }});
+        assertEquals(Application.State.PASSIVE, application.getState());
+        assertEquals(Application.PaymentState.NOT_OK, application.getRequiredPaymentState());
     }
 
     @Test

@@ -38,6 +38,7 @@ public class PaymentDueDateProcessingWorker {
 
     private int passivate(Application application, final Application original) {
         application.setState(State.PASSIVE);
+        application.setRequiredPaymentState(Application.PaymentState.NOT_OK);
         addHistoryBasedOnChangedAnswers(application, original, SYSTEM_USER, "Payment Due Date Post Processing");
         return applicationDAO.update(new Application() {{
             setOid(original.getOid());
@@ -92,7 +93,8 @@ public class PaymentDueDateProcessingWorker {
         if (PaymentDueDateRules.evaluatePaymentDueDateRules(application)) {
             if (hakumaksuService.allApplicationOptionsRequirePayment(application)) {
                 application.setState(State.PASSIVE);
-                log.info("Application {} state set to PASSIVE", application.getOid());
+                application.setRequiredPaymentState(Application.PaymentState.NOT_OK);
+                log.info("Application {} state set to PASSIVE and requiredPaymentState set to NOT_OK", application.getOid());
             } else {
                 log.info("Not all application options require payment in application {}", application.getOid());
             }
