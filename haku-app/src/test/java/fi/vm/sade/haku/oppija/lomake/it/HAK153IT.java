@@ -21,9 +21,6 @@ import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.junit.Test;
 import org.openqa.selenium.By;
 
-import static org.junit.Assert.assertTrue;
-
-
 public class HAK153IT extends DummyModelBaseItTest {
 
     @Test
@@ -38,11 +35,10 @@ public class HAK153IT extends DummyModelBaseItTest {
         findByAndAjaxClick(By.cssSelector("#preference1-Koulutus option[value='Kaivosalan perustutkinto, pk']"));
         findBy(By.cssSelector("a.popup-link[href='#'][data-po-show='sora-popup']"));
         findByAndAjaxClick(By.cssSelector("#preference1-Koulutus option[value='Musiikkiteknologian koulutusohjelma, pk (Musiikkialan perustutkinto)']"));
-        boolean soraNotFound = seleniumContainer.getDriver().findElements(By.cssSelector("a.popup-link[href='#'][data-po-show='sora-popup']")).isEmpty();
+        elementsNotPresentBy(By.cssSelector("a.popup-link[href='#'][data-po-show='sora-popup']"));
         findByAndAjaxClick(By.cssSelector("#preference1-Koulutus option[value='Kaivosalan perustutkinto, pk']"));
         clickByNameAndValue("preference1_urheilijan_ammatillisen_koulutuksen_lisakysymys", "false");
         clickByNameAndValue("preference1_urheilijan_ammatillisen_koulutuksen_lisakysymys", "true");
-        assertTrue(soraNotFound);
     }
 
 
