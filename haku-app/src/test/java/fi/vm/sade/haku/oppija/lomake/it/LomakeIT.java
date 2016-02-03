@@ -91,6 +91,7 @@ public class LomakeIT extends DummyModelBaseItTest {
 
         typeWithoutTab("preference1-Opetuspiste", "sturen");
         clickLinkByText("Stadin ammattiopisto, Sturenkadun toimipaikka");
+        waitForMillis(100);
 
         driver.findElement(By.xpath("//option[@data-id='1.2.246.562.5.20176855623']")).click();
         waitForMillis(500);
