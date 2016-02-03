@@ -32,8 +32,8 @@ public class KSHJHakulomakeV1IT extends DummyModelBaseItTest {
         nextPhase(OppijaConstants.PHASE_EDUCATION);
 
         findByIdAndClick("suoritusoikeus_tai_aiempi_tutkinto_false");
-        findByIdAndClick(500, "pohjakoulutus_am");
-        setValue("pohjakoulutus_am_vuosi", "2012");
+        findByIdAndClick("pohjakoulutus_am");
+        setValue("pohjakoulutus_am_vuosi", "2012", true);
         setValue("pohjakoulutus_am_nimike", "400000");
         setValue("pohjakoulutus_am_laajuus", "laajuus");
         setValue("pohjakoulutus_am_oppilaitos", "1.2.246.562.10.57118763500");
