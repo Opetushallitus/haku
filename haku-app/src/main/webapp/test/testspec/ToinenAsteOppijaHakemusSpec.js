@@ -102,7 +102,7 @@ describe('2. asteen lomake', function () {
         ));
     });
 
-    describe("Täytä toinen lomake", function() {
+    describe("Koulutustausta eri PK päättötodistusvuosilla", function() {
         before(seqDone(
             start2,
             partials.henkilotiedotTestikaes,
@@ -111,44 +111,60 @@ describe('2. asteen lomake', function () {
             click(lomake.pohjakoulutus("1"))
         ));
 
-        it('Edellisvuona suoritettu peruskoulu kysyy todistuksen saanti ajankohtaa, vaaditaan valinta', seqDone(
-            function() { S('#nav-koulutustausta')[0].click() },
-            input(lomake.pkPaattotodistusVuosi, "" + ((new Date()).getUTCFullYear() - 1)),
-            input(lomake.pkKieli, "FI"),
-            pageChange(lomake.fromKoulutustausta),
-            headingVisible("Koulutustausta")
-        ));
+        describe("Edellisvuona suoritettu peruskoulu", function() {
+            before(seqDone(
+                function () {
+                  S('#nav-koulutustausta')[0].click()
+                },
+                input(lomake.pkPaattotodistusVuosi, "" + ((new Date()).getUTCFullYear() - 1)),
+                input(lomake.pkKieli, "FI"),
+                pageChange(lomake.fromKoulutustausta)
+            ));
+            describe("Jos ei ole syötetty saantiajankohtaa", function() {
+              before(seqDone(
+                  pageChange(lomake.fromKoulutustausta)
+              ));
+              it('Ei pääse eteenpäin', seqDone(
+                  headingVisible("Koulutustausta")
+              ));
+            });
+            describe("Todistuksen saantiajankohdan syötön jälkeen", function() {
+                before(seqDone(
+                    click(lomake.pkPaattotodistusSaatuPuolenVuodenSisaan(true)),
+                    click(lomake.ammatillinenKoulutuspaikka(false)),
+                    pageChange(lomake.fromKoulutustausta)
+                ));
+                it('Pääsee hakutoiveisinn', seqDone(
+                    headingVisible("Hakutoiveet")
+                ));
+            });
+        });
 
-        it('Edellisvuona suoritettu peruskoulu kysyy todistuksen saanti ajankohtaa', seqDone(
-            function() { S('#nav-koulutustausta')[0].click() },
-            headingVisible("Koulutustausta"),
-            input(lomake.pkPaattotodistusVuosi, "" + ((new Date()).getUTCFullYear() - 1)),
-            input(lomake.pkKieli, "FI"),
-            click(lomake.pkPaattotodistusSaatuPuolenVuodenSisaan(true)),
-            click(lomake.ammatillinenKoulutuspaikka(false)),
-            pageChange(lomake.fromKoulutustausta),
-            headingVisible("Hakutoiveet")
-        ));
+        describe("Aiemmin kuin edellisvuonna suoritettu peruskoulu", function() {
+            before(seqDone(
+                function() { S('#nav-koulutustausta')[0].click() },
+                input(lomake.pkPaattotodistusVuosi, "" + ((new Date()).getUTCFullYear() - 3)),
+                input(lomake.pkKieli, "FI"),
+                click(lomake.ammatillinenKoulutuspaikka(false)),
+                click(lomake.ammatillinenSuoritettu(false)),
+                pageChange(lomake.fromKoulutustausta)
+            ));
+            it(' ei kysy todistuksen saanti ajankohtaa', seqDone(
+                headingVisible("Hakutoiveet")
+            ));
+        });
 
-        it('Aiemmin kuin edellisvuonna suoritettu peruskoulu ei kysy todistuksen saanti ajankohtaa', seqDone(
-            function() { S('#nav-koulutustausta')[0].click() },
-            input(lomake.pkPaattotodistusVuosi, "" + ((new Date()).getUTCFullYear() - 3)),
-            input(lomake.pkKieli, "FI"),
-            click(lomake.ammatillinenKoulutuspaikka(false)),
-            click(lomake.ammatillinenSuoritettu(false)),
-            pageChange(lomake.fromKoulutustausta),
-            headingVisible("Hakutoiveet")
-        ));
-
-        it('Kuluvana vuonna suoritettu peruskoulu ei kysy todistuksen saanti ajankohtaa', seqDone(
-            function() { S('#nav-koulutustausta')[0].click() },
-            input(lomake.pkPaattotodistusVuosi, "" + ((new Date()).getUTCFullYear())),
-            input(lomake.pkKieli, "FI"),
-            click(lomake.ammatillinenKoulutuspaikka(false)),
-            click(lomake.ammatillinenSuoritettu(false)),
-            pageChange(lomake.fromKoulutustausta),
-            headingVisible("Hakutoiveet")
-        ));
+        describe("Kuluvana vuonna suoritettu peruskoulu", function() {
+            before(seqDone(
+                function() { S('#nav-koulutustausta')[0].click() },
+                input(lomake.pkPaattotodistusVuosi, "" + ((new Date()).getUTCFullYear())),
+                input(lomake.pkKieli, "FI"),
+                pageChange(lomake.fromKoulutustausta)
+            ));
+            it(' ei kysy todistuksen saanti ajankohtaa', seqDone(
+                headingVisible("Hakutoiveet")
+            ));
+        });
     });
 
     describe("Sääntötestit", function() {
