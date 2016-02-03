@@ -27,7 +27,7 @@ import java.io.IOException;
 
 public class NavigationIT extends DummyModelBaseItTest {
 
-    @Ignore // FIXME: too fragile for bamboo
+    @Test
     public void testNavigationExists() throws IOException {
 
         navigateToFirstPhase();
