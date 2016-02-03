@@ -49,7 +49,7 @@ describe('Erityisoppilaitosten lomake', function () {
                     lomake.pkKieli, "FI"
                 ),
                 click(virkailija.saveKoulutusTaustaButton),
-                visible(virkailija.editKoulutusTaustaButton(hakuOid))
+                visible(virkailija.notes)
             ));
 
             describe("lisäämisen jälkeen", function() {
