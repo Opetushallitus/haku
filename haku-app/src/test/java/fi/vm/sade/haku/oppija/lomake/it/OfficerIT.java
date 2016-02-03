@@ -84,7 +84,7 @@ public class OfficerIT extends DummyModelBaseItTest {
     }
 
     @Test
-    public void testPaymentStateNotOkShowAsWaitingForPayment() throws Exception {
+    public void testPaymentStateNotOkIsShown() throws Exception {
         openApplication();
         clearSearch();
         setValue("entry", applicationOidPrefix + ".00002513058");
@@ -92,7 +92,7 @@ public class OfficerIT extends DummyModelBaseItTest {
         WebElement applicationLink = findByClassName("application-link").get(0);
         applicationLink.click();
         waitForElement(20, By.id("notes"));
-        assertEquals("Odottaa", findElementById("_infocell_paymentstate").getText());
+        assertEquals("Ei maksettu", findElementById("_infocell_paymentstate").getText());
     }
 
     private void openApplication() throws IOException {
