@@ -146,6 +146,7 @@ public class OfficerIT extends DummyModelBaseItTest {
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
+                findByIdAndClick("search-applications");
             }
         }
     }
