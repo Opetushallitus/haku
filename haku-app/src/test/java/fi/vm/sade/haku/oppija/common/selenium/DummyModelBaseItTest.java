@@ -158,7 +158,7 @@ public abstract class DummyModelBaseItTest extends AbstractSeleniumBase {
 
     protected void waitForMillis(final long millis) {
         final long t1 = new Date().getTime();
-        new WebDriverWait(seleniumContainer.getDriver(), (millis * 1000) + 10, 5).until(new Predicate<WebDriver>() {
+        new WebDriverWait(seleniumContainer.getDriver(), (millis / 1000) + 1, 10).until(new Predicate<WebDriver>() {
             @Override
             public boolean apply(WebDriver input) {
                 return (new Date().getTime() - t1) > millis;
