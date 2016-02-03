@@ -29,8 +29,6 @@ public class KSHJHakulomakeV1IT extends DummyModelBaseItTest {
         fillOut(defaultValues.kkHenkilotiedot);
         waitForMillis(500);
 
-        elementsNotPresentById("huoltajannimi", "huoltajanpuhelinnumero", "huoltajansahkoposti");
-
         nextPhase(OppijaConstants.PHASE_EDUCATION);
 
         findByIdAndClick("suoritusoikeus_tai_aiempi_tutkinto_false");
@@ -51,7 +49,5 @@ public class KSHJHakulomakeV1IT extends DummyModelBaseItTest {
         waitForMillis(500);
 
         nextPhase(OppijaConstants.PHASE_GRADES);
-
-        elementsNotPresentById("keskiarvo", "arvosanaasteikko");
     }
 }

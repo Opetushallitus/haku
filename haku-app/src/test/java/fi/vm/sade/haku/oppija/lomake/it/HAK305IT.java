@@ -50,10 +50,6 @@ public class HAK305IT extends DummyModelBaseItTest {
 
         fillInArvosanatTheme();
 
-        // Native lang == FI, no lang test
-        elementsNotPresentByName("yleinen_kielitutkinto_sv", "valtionhallinnon_kielitutkinto_sv",
-                "yleinen_kielitutkinto_fi", "valtionhallinnon_kielitutkinto_sv");
-
         findByIdAndClick("nav-henkilotiedot");
         setNativeLanguage(NATIVE_LANGUAGE_SV);
         nextPhase(OppijaConstants.PHASE_EDUCATION); // Koulutustausta

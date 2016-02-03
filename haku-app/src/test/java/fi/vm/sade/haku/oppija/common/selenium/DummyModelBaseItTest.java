@@ -126,30 +126,6 @@ public abstract class DummyModelBaseItTest extends AbstractSeleniumBase {
         }
     }
 
-    protected void elementsNotPresentByName(final String... names) {
-        for (String name : names) {
-            elementsNotPresentBy(By.name(name));
-        }
-    }
-
-    protected void elementsNotPresentBy(final By by) {
-        if (!seleniumContainer.getDriver().findElements(by).isEmpty()) {
-            fail("name " + by.toString() + " not found");
-        }
-    }
-
-    protected void elementsNotPresentById(String... locations) {
-        for (String location : locations) {
-            elementsNotPresentBy(By.id(location));
-        }
-    }
-
-    protected void elementsNotPresentByXPath(String... locations) {
-        for (String location : locations) {
-            elementsNotPresentBy(By.xpath(location));
-        }
-    }
-
     protected void findById(final String... ids) {
         for (String id : ids) {
             seleniumContainer.getDriver().findElement(new By.ById(id));
