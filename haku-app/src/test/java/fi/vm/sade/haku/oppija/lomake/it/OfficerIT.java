@@ -73,9 +73,9 @@ public class OfficerIT extends DummyModelBaseItTest {
         clickSearch();
         WebElement applicationLink = findByClassName("application-link").get(0);
         applicationLink.click();
-        waitForElement(120, By.id("application"));
+        waitForElement(20, By.id("application"));
         click(By.cssSelector("a[href*=koulutustausta] button.edit-link"));
-        waitForElement(120, By.id(KYSYMYS_POHJAKOULUTUS + "_" + TUTKINTO_YLIOPPILAS));
+        waitForElement(20, By.id(KYSYMYS_POHJAKOULUTUS + "_" + TUTKINTO_YLIOPPILAS));
         findByAndAjaxClick(By.id(KYSYMYS_POHJAKOULUTUS + "_" + TUTKINTO_YLIOPPILAS));
         setValue(OppijaConstants.LUKIO_PAATTOTODISTUS_VUOSI, "3012", true);
         setValue(OppijaConstants.LUKIO_KIELI, "FI", true);
@@ -91,7 +91,7 @@ public class OfficerIT extends DummyModelBaseItTest {
         clickSearch();
         WebElement applicationLink = findByClassName("application-link").get(0);
         applicationLink.click();
-        waitForElement(120, By.id("application"));
+        waitForElement(20, By.id("application"));
         assertEquals("Odottaa", findElementById("_infocell_paymentstate").getText());
     }
 

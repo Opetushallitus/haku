@@ -63,7 +63,7 @@ public abstract class DummyModelBaseItTest extends AbstractSeleniumBase {
 
     protected void setValue(final String id, final String value, final boolean wait) {
         if (wait) {
-            waitForElement(30, By.name(id));
+            waitForElement(20, By.name(id));
         }
         setValue(id, value);
     }
