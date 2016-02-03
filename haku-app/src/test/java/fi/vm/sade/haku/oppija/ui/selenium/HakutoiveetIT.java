@@ -20,7 +20,6 @@ import fi.vm.sade.haku.oppija.common.selenium.DummyModelBaseItTest;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.junit.Test;
 import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
 /**
@@ -30,11 +29,9 @@ import org.openqa.selenium.firefox.FirefoxDriver;
  */
 public class HakutoiveetIT extends DummyModelBaseItTest {
 
-
     @Test
     public void testEducationPreferenceAdditionalQuestion() throws InterruptedException {
         toApplicationOptionPhase();
-        FirefoxDriver driver = seleniumContainer.getDriver();
         findById("preference1-Opetuspiste");
         typeWithoutTab("preference1-Opetuspiste", "Esp");
         findByAndAjaxClick(By.linkText("FAKTIA, Espoo op"));
@@ -46,13 +43,12 @@ public class HakutoiveetIT extends DummyModelBaseItTest {
         findByAndAjaxClick(By.xpath("//button[@class='right']"));
     }
 
-    @Test(expected = NoSuchElementException.class)
+    @Test
     public void testNonExistingEducationPreferenceNotAutocompleted() throws InterruptedException {
         toApplicationOptionPhase();
-        FirefoxDriver driver = seleniumContainer.getDriver();
         typeWithoutTab("preference1-Opetuspiste", "Eso");
         Thread.sleep(500);
-        driver.findElement(By.linkText("FAKTIA, Espoo op")).click();
+        elementsNotPresentBy(By.linkText("FAKTIA, Espoo op"));
     }
 
     private void toApplicationOptionPhase() {
