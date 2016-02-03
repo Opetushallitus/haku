@@ -39,12 +39,12 @@ public abstract class DummyModelBaseItTest extends AbstractSeleniumBase {
     }
 
     protected void nextPhase(String expectedPhase) {
-        seleniumContainer.getDriver().findElement(new By.ByClassName("right")).click();
+        click(new By.ByClassName("right"));
         expectPhase(expectedPhase);
     }
 
     protected void prevPhase(String expectedPhase) {
-        seleniumContainer.getDriver().findElement(new By.ByClassName("left")).click();
+        click(new By.ByClassName("left"));
         expectPhase(expectedPhase);
     }
 
