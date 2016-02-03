@@ -96,10 +96,6 @@ describe('2. asteen lomake', function () {
             pageChange(lomake.fromKoulutustausta),
             headingVisible("Koulutustausta")
         ));
-
-        it('Aikaisempien koulutusten keskiarvot tallentuvat erikseen', seqDone(
-            function() { S('#nav-koulutustausta')[0].click() }
-        ));
     });
 
     describe("Koulutustausta eri PK päättötodistusvuosilla", function() {
