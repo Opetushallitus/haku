@@ -73,7 +73,7 @@ public class OfficerIT extends DummyModelBaseItTest {
         clickSearch();
         WebElement applicationLink = findByClassName("application-link").get(0);
         applicationLink.click();
-        waitForElement(20, By.id("application"));
+        waitForElement(20, By.id("notes"));
         click(By.cssSelector("a[href*=koulutustausta] button.edit-link"));
         waitForElement(20, By.id(KYSYMYS_POHJAKOULUTUS + "_" + TUTKINTO_YLIOPPILAS));
         findByAndAjaxClick(By.id(KYSYMYS_POHJAKOULUTUS + "_" + TUTKINTO_YLIOPPILAS));
@@ -91,7 +91,7 @@ public class OfficerIT extends DummyModelBaseItTest {
         clickSearch();
         WebElement applicationLink = findByClassName("application-link").get(0);
         applicationLink.click();
-        waitForElement(20, By.id("application"));
+        waitForElement(20, By.id("notes"));
         assertEquals("Odottaa", findElementById("_infocell_paymentstate").getText());
     }
 
