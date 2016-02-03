@@ -60,10 +60,12 @@ describe('Erityisoppilaitosten lomake', function () {
             });
 
             describe("hakutoiveiden lisäys", function() {
+                before(seqDone(
+                    click(virkailija.editHakutoiveetButton(hakuOid))
+                ));
 
                 describe("lisättäessä kaksi hakutoivetta, joilla eri pohjatietovaatimukset", function() {
                     before(seqDone(
-                        click(virkailija.editHakutoiveetButton(hakuOid)),
                         valitseFaktiaJaKiipula,
                         click(virkailija.saveHakutoiveetButton),
                         visible(virkailija.notes)
