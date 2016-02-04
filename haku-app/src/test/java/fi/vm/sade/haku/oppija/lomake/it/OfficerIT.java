@@ -76,6 +76,7 @@ public class OfficerIT extends DummyModelBaseItTest {
         waitForElement(20, By.id("notes"));
         click(By.cssSelector("a[href*=koulutustausta] button.edit-link"));
         waitForMillis(1000L);
+        waitForElement(20, By.id(KYSYMYS_POHJAKOULUTUS + "_" + TUTKINTO_YLIOPPILAS));
         findByAndAjaxClick(By.id(KYSYMYS_POHJAKOULUTUS + "_" + TUTKINTO_YLIOPPILAS));
         setValue(OppijaConstants.LUKIO_PAATTOTODISTUS_VUOSI, "3012", true);
         setValue(OppijaConstants.LUKIO_KIELI, "FI", true);
