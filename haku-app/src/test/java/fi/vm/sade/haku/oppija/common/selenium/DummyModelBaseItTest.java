@@ -88,7 +88,7 @@ public abstract class DummyModelBaseItTest extends AbstractSeleniumBase {
         } else {
             type(id, value, true);
         }
-        seleniumContainer.waitForAjax();
+        waitForAjax();
     }
 
     protected void navigateToFirstPhase() {

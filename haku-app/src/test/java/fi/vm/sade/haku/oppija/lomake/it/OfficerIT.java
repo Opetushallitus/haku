@@ -73,7 +73,7 @@ public class OfficerIT extends DummyModelBaseItTest {
         clickSearch();
         WebElement applicationLink = findByClassName("application-link").get(0);
         applicationLink.click();
-        seleniumContainer.waitForAjax();
+        waitForAjax();
         waitForElement(20, By.id("notes"));
         click(By.cssSelector("a[href*=koulutustausta] button.edit-link"));
         waitForMillis(1000L);

@@ -25,6 +25,7 @@ import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import org.apache.commons.io.FileUtils;
 import org.junit.Before;
 import org.openqa.selenium.*;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -141,7 +142,7 @@ public abstract class AbstractSeleniumBase extends TomcatContainerBase {
 
     protected void findByAndAjaxClick(By by){
         click(by);
-        seleniumContainer.waitForAjax();
+        waitForAjax();
     }
 
     protected void clickByHref(final String... locations) {
@@ -214,8 +215,9 @@ public abstract class AbstractSeleniumBase extends TomcatContainerBase {
     protected void elementsNotPresentBy(final By by) {
         seleniumContainer.getDriver().manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
         try {
-            if (!seleniumContainer.getDriver().findElements(by).isEmpty()) {
-                fail("name " + by.toString() + " not found");
+            List<WebElement> elements = seleniumContainer.getDriver().findElements(by);
+            if (!elements.isEmpty()) {
+                fail("elements " + by.toString() + " found:" + elements.size());
             }
         }
         finally {
@@ -247,6 +249,18 @@ public abstract class AbstractSeleniumBase extends TomcatContainerBase {
             @Override
             public boolean apply(WebDriver input) {
                 return (new Date().getTime() - t1) > millis;
+            }
+        });
+    }
+
+    public void waitForAjax() {
+        // explicit sleep is needed because bacon is grouping the request in 100ms intervals!
+        waitForMillis(200);
+
+        (new WebDriverWait(seleniumContainer.getDriver(), 5)).until(new ExpectedCondition<Boolean>() {
+            public Boolean apply(WebDriver d) {
+                JavascriptExecutor js = (JavascriptExecutor) d;
+                return (Boolean) js.executeScript("return jQuery.active == 0");
             }
         });
     }

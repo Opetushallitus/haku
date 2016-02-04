@@ -29,12 +29,12 @@ public class WorkExperienceThemeIT extends DummyModelBaseItTest {
     @Test
     public void testWorkExperienceShown() {
         gotoHakutoiveet("010113-668B");
+
         findByXPathAndClick("//option[@data-id='1.2.246.562.14.79893512065']");
-        seleniumContainer.waitForAjax();
+        waitForAjax();
         fillOut(defaultValues.preference1);
 
         nextPhase(OppijaConstants.PHASE_GRADES);
-
         select();
         selectByValue("PK_AI_OPPIAINE", "FI");
         selectByValue("PK_A1_OPPIAINE", "EN");
@@ -47,9 +47,9 @@ public class WorkExperienceThemeIT extends DummyModelBaseItTest {
     @Test
     public void testWorkExperienceNotShown() {
         gotoHakutoiveet("010113A668B");
-        findByXPathAndClick("//option[@data-id='1.2.246.562.14.79893512065']");
-        seleniumContainer.waitForAjax();
 
+        findByXPathAndClick("//option[@data-id='1.2.246.562.14.79893512065']");
+        waitForAjax();
         clickByNameAndValue("preference1-discretionary", "false");
         clickByNameAndValue("preference1_sora_terveys", "false");
         clickByNameAndValue("preference1_sora_oikeudenMenetys", "false");
@@ -60,8 +60,9 @@ public class WorkExperienceThemeIT extends DummyModelBaseItTest {
         selectByValue("PK_AI_OPPIAINE", "FI");
         selectByValue("PK_A1_OPPIAINE", "EN");
         selectByValue("PK_B1_OPPIAINE", "SE");
-        nextPhase(OppijaConstants.PHASE_MISC);
 
+        nextPhase(OppijaConstants.PHASE_MISC);
+        waitForMillis(1000L);
         elementsNotPresentById("TYOKOKEMUSKUUKAUDET");
     }
 
@@ -70,6 +71,7 @@ public class WorkExperienceThemeIT extends DummyModelBaseItTest {
         fillOut(defaultValues.getHenkilotiedot(ImmutableMap.of("Henkilotunnus", hetu)));
 
         nextPhase(OppijaConstants.PHASE_EDUCATION);
+        waitForAjax();
         fillOut(defaultValues.koulutustausta_pk);
 
         nextPhase(OppijaConstants.PHASE_APPLICATION_OPTIONS);

@@ -65,18 +65,4 @@ public class SeleniumContainer {
     public String getBaseUrl() {
         return webDriverBaseUrl;
     }
-
-    public void waitForAjax() {
-        // explicit sleep is needed because bacon is grouping the request in 100ms intervals!
-        try {
-            Thread.sleep(101);
-        } catch (InterruptedException e) { }
-
-        (new WebDriverWait(getDriver(), 5)).until(new ExpectedCondition<Boolean>() {
-            public Boolean apply(WebDriver d) {
-                JavascriptExecutor js = (JavascriptExecutor) d;
-                return (Boolean) js.executeScript("return jQuery.active == 0");
-            }
-        });
-    }
 }

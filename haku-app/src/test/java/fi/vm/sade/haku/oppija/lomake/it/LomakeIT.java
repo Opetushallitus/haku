@@ -119,7 +119,7 @@ public class LomakeIT extends DummyModelBaseItTest {
 
         //Skip toimipiste
         findByIdAndClick("preference1-reset");
-        seleniumContainer.waitForAjax();
+        waitForAjax();
 
         typeWithoutTab("preference1-Opetuspiste", "Esp");
 
@@ -205,7 +205,7 @@ public class LomakeIT extends DummyModelBaseItTest {
         clickByNameAndValue(KYSYMYS_POHJAKOULUTUS, TUTKINTO_KESKEYTYNYT);
         findById(KoulutustaustaPhase.TUTKINTO_KESKEYTNYT_NOTIFICATION_ID);
         clickByNameAndValue(KYSYMYS_POHJAKOULUTUS, TUTKINTO_ULKOMAINEN_TUTKINTO);
-        seleniumContainer.waitForAjax();
+        waitForAjax();
         findById(KoulutustaustaPhase.TUTKINTO_ULKOMAILLA_NOTIFICATION_ID);
     }
 }
