@@ -129,6 +129,18 @@
                     </webResources>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.13</version>
+                <configuration>
+                    <excludes>
+                        <exclude>**/it/*</exclude>
+                        <exclude>**/it/**/*</exclude>
+                    </excludes>
+                    <argLine>-Xms256M -Xmx1024M -XX:PermSize=256M</argLine>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
@@ -137,25 +149,6 @@
             <id>it</id>
             <build>
                 <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-surefire-plugin</artifactId>
-                        <version>2.13</version>
-                        <configuration>
-                            <excludes>
-                                <exclude>**/it/*.java</exclude>
-                            </excludes>
-                            <argLine>-Xms512M -Xmx2048M -XX:PermSize=512M</argLine>
-                            <systemProperties>
-                                <spring.profiles.active>it</spring.profiles.active>
-                                <mongodb.port>27018</mongodb.port>
-                            </systemProperties>
-                            <additionalClasspathElements>
-                                <additionalClasspathElement>src/main/resources</additionalClasspathElement>
-                            </additionalClasspathElements>
-                        </configuration>
-                    </plugin>
-
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-failsafe-plugin</artifactId>
