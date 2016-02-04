@@ -5,7 +5,7 @@
 
   "velka": "js-riipuvuudet git-repossa (packages.json käyttöön)",
 
-  "csrf": "haku.haku-app.frontend ok, backend ?",
+  "csrf": "haku.haku-app.frontend ok (jquery-ajax + form posts), backend ?",
 
   "uses": "activemq hakuperusteet-rest cas koodisto-rest koulutusinformaatio-rest oppijan-tunnistus suoritusrekisteri-rest organisaatio-rest tarjonta-rest ohjausparametrit authentication-service"
 }
