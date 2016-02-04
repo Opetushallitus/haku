@@ -19,6 +19,7 @@ package fi.vm.sade.haku.oppija.lomake.it;
 import fi.vm.sade.haku.oppija.common.selenium.DummyModelBaseItTest;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;
 import org.junit.Test;
+import org.openqa.selenium.By;
 
 public class KSHJHakulomakeV1IT extends DummyModelBaseItTest {
 
@@ -32,6 +33,7 @@ public class KSHJHakulomakeV1IT extends DummyModelBaseItTest {
         elementsNotPresentById("huoltajannimi", "huoltajanpuhelinnumero", "huoltajansahkoposti");
 
         nextPhase(OppijaConstants.PHASE_EDUCATION);
+        waitForMillis(500);
 
         findByIdAndClick("suoritusoikeus_tai_aiempi_tutkinto_false");
         findByIdAndClick("pohjakoulutus_am");
