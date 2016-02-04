@@ -148,6 +148,9 @@ public class OfficerIT extends DummyModelBaseItTest {
                 }
                 findByIdAndClick("search-applications");
             }
+            else {
+                throw webEx;
+            }
         }
     }
 
