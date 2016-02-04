@@ -60,18 +60,16 @@ describe('Erityisoppilaitosten lomake', function () {
             });
 
             describe("hakutoiveiden lisäys", function() {
-                before(seqDone(
-                    click(virkailija.editHakutoiveetButton(hakuOid))
-                ));
-
                 describe("lisättäessä kaksi hakutoivetta, joilla eri pohjatietovaatimukset", function() {
                     before(seqDone(
+                        click(virkailija.editHakutoiveetButton(hakuOid)),
                         valitseFaktiaJaKiipula,
-                        click(virkailija.saveHakutoiveetButton),
-                        visible(virkailija.notes)
+                        click(virkailija.saveHakutoiveetButton)
                     ));
-
                     describe("lisäämisen jälkeen", function() {
+                        before(seqDone(
+                            visible(virkailija.notes)
+                        ));
                         it("toiveet näkyvät", function () {
                             expect(answerForQuestion('preference1')).to.equal(faktia);
                             expect(answerForQuestion('preference2')).to.equal(kiipula);
