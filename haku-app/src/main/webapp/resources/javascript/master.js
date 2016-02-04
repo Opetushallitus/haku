@@ -191,7 +191,7 @@ function initCSRF() {
     var csrf = getCookie("CSRF");
 
     if(csrf) {
-        ajaxHeaders['CSRF'] = csrf;
+        ajaxHeaders.headers['CSRF'] = csrf;
     }
 
     $.ajaxSetup(ajaxHeaders);
