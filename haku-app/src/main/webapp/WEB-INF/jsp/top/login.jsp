@@ -16,7 +16,7 @@
   ~ European Union Public Licence for more details.
   --%>
 <div>
-    <form id="loginForm" action="${pageContext.request.contextPath}/j_spring_security_check" method="POST">
+    <form id="loginForm" action="${pageContext.request.contextPath}/j_spring_security_check" method="post">
         <h1>Kirjautuminen</h1>
         <fieldset>
             <input name="j_username" type="text" placeholder="Username" autofocus required></br>

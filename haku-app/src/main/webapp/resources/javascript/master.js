@@ -176,9 +176,36 @@ $(document).ready(function () {
 
 });
 
-$(document).ajaxSend(function(event, jqxhr, settings) {
-	jqxhr.setRequestHeader('Caller-Id', 'haku.haku-app.frontend');
-});
+// Sets CSRF header for ajax and hidden field for FORMs
+function initCSRF() {
+    function getCookie(name) {
+        var value = "; " + document.cookie;
+        var parts = value.split("; " + name + "=");
+        if (parts.length == 2) return parts.pop().split(";").shift();
+    }
+
+    var ajaxHeaders = {
+        headers: { 'clientSubSystemCode': 'haku.haku-app.frontend'}
+    };
+
+    var csrf = getCookie("CSRF");
+
+    if(csrf) {
+        ajaxHeaders['CSRF'] = csrf;
+    }
+
+    $.ajaxSetup(ajaxHeaders);
+
+    $(document).ready(function () {
+        var forms = $("form[method='post']")
+        if(csrf) {
+            forms.append($("<input name='CSRF' type='hidden'>").attr("value", csrf))
+        }
+        forms.append($("<input name='clientSubSystemCode' type='hidden' value='haku.haku-app.frontend'>"))
+    })
+}
+
+initCSRF();
 
 var complexRule = {
     url: function() {
