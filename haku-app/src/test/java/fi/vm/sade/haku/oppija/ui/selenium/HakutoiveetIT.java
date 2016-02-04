@@ -47,7 +47,6 @@ public class HakutoiveetIT extends DummyModelBaseItTest {
     public void testNonExistingEducationPreferenceNotAutocompleted() throws InterruptedException {
         toApplicationOptionPhase();
         typeWithoutTab("preference1-Opetuspiste", "Eso");
-        Thread.sleep(500);
         elementsNotPresentBy(By.linkText("FAKTIA, Espoo op"));
     }
 

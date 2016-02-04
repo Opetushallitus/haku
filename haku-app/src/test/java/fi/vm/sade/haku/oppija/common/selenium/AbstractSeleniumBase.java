@@ -162,6 +162,7 @@ public abstract class AbstractSeleniumBase extends TomcatContainerBase {
 
     protected void typeWithoutTab(final String id, final String text) {
         type(id, text, false);
+        waitForMillis(500L);
     }
 
     protected void selectByValue(final String id, final String value) {
