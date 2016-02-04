@@ -3,6 +3,7 @@ package fi.vm.sade.haku.oppija.postprocess.impl;
 import fi.vm.sade.auditlog.haku.HakuOperation;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application;
 import fi.vm.sade.haku.oppija.hakemus.domain.Application.State;
+import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationNote;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationDAO;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.impl.ApplicationDAOMongoImpl.PaymentDueDateRules;
 import fi.vm.sade.haku.oppija.hakemus.service.HakumaksuService;
@@ -12,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 import static fi.vm.sade.haku.AuditHelper.AUDIT;
@@ -36,10 +38,18 @@ public class PaymentDueDateProcessingWorker {
         this.hakumaksuService = hakumaksuService;
     }
 
+    private void addPassivationNoteToApplication(Application application) {
+        application.addNote(new ApplicationNote(
+                "Hakemus passivoitu, koska käsittelymaksua ei maksettu eräpäivään mennessä",
+                new Date(),
+                SYSTEM_USER));
+    }
+
     private int passivate(Application application, final Application original) {
         application.setState(State.PASSIVE);
         application.setRequiredPaymentState(Application.PaymentState.NOT_OK);
         addHistoryBasedOnChangedAnswers(application, original, SYSTEM_USER, "Payment Due Date Post Processing");
+        addPassivationNoteToApplication(application);
         return applicationDAO.update(new Application() {{
             setOid(original.getOid());
             setUpdated(original.getUpdated());
@@ -93,6 +103,7 @@ public class PaymentDueDateProcessingWorker {
         if (PaymentDueDateRules.evaluatePaymentDueDateRules(application)) {
             if (hakumaksuService.allApplicationOptionsRequirePayment(application)) {
                 application.setState(State.PASSIVE);
+                addPassivationNoteToApplication(application);
                 application.setRequiredPaymentState(Application.PaymentState.NOT_OK);
                 log.info("Application {} state set to PASSIVE and requiredPaymentState set to NOT_OK", application.getOid());
             } else {
