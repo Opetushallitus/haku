@@ -27,6 +27,8 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 
@@ -47,8 +49,11 @@ public abstract class AbstractSeleniumBase extends TomcatContainerBase {
     @Autowired
     protected MongoTemplate mongoTemplate;
 
+    protected Logger logger;
+
     @Before
     public void before() {
+        logger = LoggerFactory.getLogger(this.getClass());
         mongoTemplate.getDb().dropDatabase();
         mongoTemplate.getCollection(SEQUENCE_NAME)
                 .insert(new BasicDBObject(SEQUENCE_FIELD, Long.valueOf(0)));
@@ -99,7 +104,19 @@ public abstract class AbstractSeleniumBase extends TomcatContainerBase {
 
     protected void click(By by) {
         new WebDriverWait(seleniumContainer.getDriver(), 1, 100).until(ExpectedConditions.elementToBeClickable(by));
-        seleniumContainer.getDriver().findElement(by).click();
+        int attempt = 1;
+        StaleElementReferenceException lastException = null;
+        while(attempt <= 3) {
+            try {
+                seleniumContainer.getDriver().findElement(by).click();
+                return;
+            } catch(StaleElementReferenceException e) {
+                lastException = e;
+                logger.warn("Could not click " + by + ". Attempt:" + attempt, e);
+            }
+            attempt++;
+        }
+        throw lastException;
     }
 
     protected void findByIdAndClick(long sleepMillis, final String... ids ) {
