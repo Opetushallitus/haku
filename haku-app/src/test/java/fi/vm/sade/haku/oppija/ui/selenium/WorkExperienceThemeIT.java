@@ -48,6 +48,8 @@ public class WorkExperienceThemeIT extends DummyModelBaseItTest {
     public void testWorkExperienceNotShown() {
         gotoHakutoiveet("010113A668B");
         findByXPathAndClick("//option[@data-id='1.2.246.562.14.79893512065']");
+        seleniumContainer.waitForAjax();
+
         clickByNameAndValue("preference1-discretionary", "false");
         clickByNameAndValue("preference1_sora_terveys", "false");
         clickByNameAndValue("preference1_sora_oikeudenMenetys", "false");
