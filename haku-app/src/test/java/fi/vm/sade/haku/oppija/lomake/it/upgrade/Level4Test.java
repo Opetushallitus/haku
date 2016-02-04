@@ -1,4 +1,4 @@
-package fi.vm.sade.haku.oppija.postprocess.upgrade;
+package fi.vm.sade.haku.oppija.lomake.it.upgrade;
 
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
@@ -10,6 +10,7 @@ import fi.vm.sade.haku.oppija.hakemus.domain.Change;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.User;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;
+import fi.vm.sade.haku.oppija.postprocess.upgrade.Level4;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain.FormConfiguration;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.domain.FormConfiguration.FeatureFlag;
 import fi.vm.sade.haku.virkailija.lomakkeenhallinta.util.OppijaConstants;

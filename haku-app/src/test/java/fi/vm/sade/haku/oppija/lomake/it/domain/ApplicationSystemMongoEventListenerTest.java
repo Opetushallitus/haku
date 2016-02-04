@@ -1,9 +1,10 @@
-package fi.vm.sade.haku.oppija.lomake.domain;
+package fi.vm.sade.haku.oppija.lomake.it.domain;
 
 import com.google.common.cache.LoadingCache;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import fi.vm.sade.haku.oppija.common.mongo.DBObjectUtils;
+import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.hakutest.IntegrationTest;
 import org.junit.Before;
 import org.junit.Test;
@@ -27,7 +28,6 @@ public class ApplicationSystemMongoEventListenerTest extends IntegrationTest {
         // Save compressed application and clear cache
         applicationSystemService.save(formGenerator.generate(AFFECTED_APPLICATION_SYSTEM_ID));
         LoadingCache<String, ApplicationSystem> cache = applicationSystemService.getCache();
-        assertEquals(1, cache.size());
         cache.invalidateAll();
         assertEquals(0, cache.size());
     }
@@ -60,7 +60,6 @@ public class ApplicationSystemMongoEventListenerTest extends IntegrationTest {
     }
 
     private void assertApplicationSystem(ApplicationSystem readFromDatabase) {
-        assertEquals(1, applicationSystemService.getCache().size());
         assertEquals(5, readFromDatabase.getForm().getChildren().size());
         assertEquals(AFFECTED_APPLICATION_SYSTEM_ID, readFromDatabase.getForm().getId());
         assertEquals("osaaminen-kansainvalinenyo-arvosanat", readFromDatabase.getForm()

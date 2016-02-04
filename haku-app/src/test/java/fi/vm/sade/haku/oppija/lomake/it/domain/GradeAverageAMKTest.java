@@ -1,4 +1,4 @@
-package fi.vm.sade.haku.oppija.lomake;
+package fi.vm.sade.haku.oppija.lomake.it.domain;
 
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.elements.Element;

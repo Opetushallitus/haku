@@ -1,4 +1,4 @@
-package fi.vm.sade.haku.oppija.hakemus.service.impl;
+package fi.vm.sade.haku.oppija.hakemus.it.resource;
 
 import com.google.common.collect.ImmutableMap;
 import fi.vm.sade.haku.oppija.common.koulutusinformaatio.impl.KoulutusinformaatioServiceMockImpl;
@@ -9,6 +9,8 @@ import fi.vm.sade.haku.oppija.hakemus.domain.Application.PaymentState;
 import fi.vm.sade.haku.oppija.hakemus.resource.ApplicationResource;
 import fi.vm.sade.haku.oppija.hakemus.resource.JSONException;
 import fi.vm.sade.haku.oppija.hakemus.service.ApplicationService;
+import fi.vm.sade.haku.oppija.hakemus.service.impl.ApplicationServiceImpl;
+import fi.vm.sade.haku.oppija.hakemus.service.impl.HakuPermissionServiceMockImpl;
 import fi.vm.sade.haku.oppija.lomake.domain.User;
 import fi.vm.sade.haku.oppija.lomake.exception.IllegalStateException;
 import fi.vm.sade.haku.oppija.lomake.service.impl.FormServiceImpl;
