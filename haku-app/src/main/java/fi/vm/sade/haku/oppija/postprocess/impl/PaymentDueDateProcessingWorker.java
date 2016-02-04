@@ -8,10 +8,12 @@ import fi.vm.sade.haku.oppija.hakemus.it.dao.ApplicationDAO;
 import fi.vm.sade.haku.oppija.hakemus.it.dao.impl.ApplicationDAOMongoImpl.PaymentDueDateRules;
 import fi.vm.sade.haku.oppija.hakemus.service.HakumaksuService;
 
+import fi.vm.sade.haku.oppija.lomake.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.Date;
 import java.util.List;
@@ -45,11 +47,24 @@ public class PaymentDueDateProcessingWorker {
                 SYSTEM_USER));
     }
 
-    private int passivate(Application application, final Application original) {
-        application.setState(State.PASSIVE);
+    private void addPaymentStateNoteToApplication(Application application, Application.PaymentState paymentState) {
+        application.addNote(new ApplicationNote(
+                String.format("Hakemuksen maksun tila muutettu arvoon %s", paymentState.name()),
+                new Date(),
+                SYSTEM_USER));
+    }
+
+    private int updateApplicationStates(Application application, final Application original) {
+        if (hakumaksuService.allApplicationOptionsRequirePayment(application)) {
+            application.setState(State.PASSIVE);
+            addPassivationNoteToApplication(application);
+        }
+
         application.setRequiredPaymentState(Application.PaymentState.NOT_OK);
+        addPaymentStateNoteToApplication(application, Application.PaymentState.NOT_OK);
+
         addHistoryBasedOnChangedAnswers(application, original, SYSTEM_USER, "Payment Due Date Post Processing");
-        addPassivationNoteToApplication(application);
+
         return applicationDAO.update(new Application() {{
             setOid(original.getOid());
             setUpdated(original.getUpdated());
@@ -62,34 +77,32 @@ public class PaymentDueDateProcessingWorker {
     public void processPaymentDueDates() {
         List<Application> applications = this.applicationDAO.getNextForPaymentDueDateProcessing(BATCH_SIZE);
         for(Application application : applications) {
-            if (hakumaksuService.allApplicationOptionsRequirePayment(application)) {
-                int retries = 0;
-                Application original = application.clone();
-                while (retries < MAX_RETRIES) {
-                    int status = passivate(application, original);
-                    if (status == 0) {
-                        application = applicationDAO.getApplication(application.getOid());
-                        if (application == null) {
-                            log.warn("Application with oid {} went missing during payment due date processing", original.getOid());
-                            break;
-                        }
-                        original = application.clone();
-                        retries++;
-                    } else if (status == 1) {
-                        AUDIT.log(builder()
-                                .hakemusOid(application.getOid())
-                                .setOperaatio(HakuOperation.CHANGE_APPLICATION_STATE)
-                                .add("oldValue", nameOrEmpty(original.getState()))
-                                .add("newValue", nameOrEmpty(application.getState()))
-                                .build());
+            int retries = 0;
+            Application original = application.clone();
+            while (retries < MAX_RETRIES) {
+                int status = updateApplicationStates(application, original);
+                if (status == 0) {
+                    application = applicationDAO.getApplication(application.getOid());
+                    if (application == null) {
+                        log.warn("Application with oid {} went missing during payment due date processing", original.getOid());
                         break;
-                    } else {
-                        throw new RuntimeException(String.format("update of single application (oid: %s) modified more than one applications", application.getOid()));
                     }
+                    original = application.clone();
+                    retries++;
+                } else if (status == 1) {
+                    AUDIT.log(builder()
+                            .hakemusOid(application.getOid())
+                            .setOperaatio(HakuOperation.CHANGE_APPLICATION_STATE)
+                            .add("oldValue", nameOrEmpty(original.getState()))
+                            .add("newValue", nameOrEmpty(application.getState()))
+                            .build());
+                    break;
+                } else {
+                    throw new RuntimeException(String.format("update of single application (oid: %s) modified more than one applications", application.getOid()));
                 }
-                if (retries == MAX_RETRIES) {
-                    log.warn("Cannot update application {}: max update retries exceeded", application.getOid());
-                }
+            }
+            if (retries == MAX_RETRIES) {
+                log.warn("Cannot update application {}: max update retries exceeded", application.getOid());
             }
         }
     }
@@ -101,13 +114,14 @@ public class PaymentDueDateProcessingWorker {
      */
     public Application processPaymentDueDate(Application application) {
         if (PaymentDueDateRules.evaluatePaymentDueDateRules(application)) {
+            application.setRequiredPaymentState(Application.PaymentState.NOT_OK);
+            addPaymentStateNoteToApplication(application, Application.PaymentState.NOT_OK);
+            log.info("Application {} requiredPaymentState set to NOT_OK", application.getOid());
+
             if (hakumaksuService.allApplicationOptionsRequirePayment(application)) {
                 application.setState(State.PASSIVE);
                 addPassivationNoteToApplication(application);
-                application.setRequiredPaymentState(Application.PaymentState.NOT_OK);
-                log.info("Application {} state set to PASSIVE and requiredPaymentState set to NOT_OK", application.getOid());
-            } else {
-                log.info("Not all application options require payment in application {}", application.getOid());
+                log.info("Application {} state set to PASSIVE", application.getOid());
             }
         }
         return application;

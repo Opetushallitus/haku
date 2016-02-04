@@ -55,12 +55,14 @@ public class PaymentDueDateProcessingWorkerTest {
     }
 
     @Test
-    public void applicationWithoutExpiredDueDateIsNotSetToPassive() {
+    public void applicationWithOptionsNotRequiringPaymentIsNotSetToPassive() {
         when(hakumaksuService.allApplicationOptionsRequirePayment(Matchers.<Application>any())).thenReturn(false);
         when(applicationDAO.update(Mockito.<Application>any(), Mockito.<Application>any())).thenReturn(1);
         paymentDueDateProcessingWorker.processPaymentDueDates();
-        verify(applicationDAO, times(0)).update(Mockito.<Application>any(), Mockito.<Application>any());
+        verify(applicationDAO, times(1)).update(Mockito.<Application>any(), captor.capture());
         verify(hakumaksuService, times(1)).allApplicationOptionsRequirePayment(Matchers.<Application>any());
+        assertEquals(Application.State.ACTIVE, captor.getValue().getState());
+        assertEquals(Application.PaymentState.NOT_OK, captor.getValue().getRequiredPaymentState());
     }
 
     @Test
