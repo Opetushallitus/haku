@@ -71,7 +71,7 @@ public class WorkExperienceThemeIT extends DummyModelBaseItTest {
         fillOut(defaultValues.getHenkilotiedot(ImmutableMap.of("Henkilotunnus", hetu)));
 
         nextPhase(OppijaConstants.PHASE_EDUCATION);
-        waitForAjax();
+        waitForMillis(500);
         fillOut(defaultValues.koulutustausta_pk);
 
         nextPhase(OppijaConstants.PHASE_APPLICATION_OPTIONS);
