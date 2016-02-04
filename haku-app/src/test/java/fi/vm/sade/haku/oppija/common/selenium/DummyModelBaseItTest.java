@@ -122,62 +122,6 @@ public abstract class DummyModelBaseItTest extends AbstractSeleniumBase {
         clickAllElements(elements);
     }
 
-    protected void elementsPresentByName(final String... names) {
-        for (String name : names) {
-            seleniumContainer.getDriver().findElement(By.name(name));
-        }
-    }
-
-    protected void elementsNotPresentByName(final String... names) {
-        for (String name : names) {
-            elementsNotPresentBy(By.name(name));
-        }
-    }
-
-    protected void elementsNotPresentBy(final By by) {
-        seleniumContainer.getDriver().manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
-        try {
-            if (!seleniumContainer.getDriver().findElements(by).isEmpty()) {
-                fail("name " + by.toString() + " not found");
-            }
-        }
-        finally {
-            seleniumContainer.getDriver().manage().timeouts().implicitlyWait(SeleniumContainer.IMPLICIT_WAIT_TIME_IN_SECONDS, TimeUnit.SECONDS);
-        }
-    }
-
-    protected void elementsNotPresentById(String... locations) {
-        for (String location : locations) {
-            elementsNotPresentBy(By.id(location));
-        }
-    }
-
-    protected void elementsNotPresentByXPath(String... locations) {
-        for (String location : locations) {
-            elementsNotPresentBy(By.xpath(location));
-        }
-    }
-
-    protected void findById(final String... ids) {
-        for (String id : ids) {
-            seleniumContainer.getDriver().findElement(new By.ById(id));
-        }
-    }
-
-    protected void waitForMillis(final long millis) {
-        final long t1 = new Date().getTime();
-        new WebDriverWait(seleniumContainer.getDriver(), (millis / 1000) + 1, 10).until(new Predicate<WebDriver>() {
-            @Override
-            public boolean apply(WebDriver input) {
-                return (new Date().getTime() - t1) > millis;
-            }
-        });
-    }
-
-    protected List<WebElement> getById(final String id) {
-        return seleniumContainer.getDriver().findElements(new By.ById(id));
-    }
-
     protected final void fillOut(final Map<String, String> values) {
         for (Map.Entry<String, String> questionAndAnswer : values.entrySet()) {
             setValue(questionAndAnswer.getKey(), questionAndAnswer.getValue(), true);
