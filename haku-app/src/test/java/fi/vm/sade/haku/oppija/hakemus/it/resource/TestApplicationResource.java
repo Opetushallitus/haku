@@ -1,4 +1,4 @@
-package fi.vm.sade.haku.virkailija;
+package fi.vm.sade.haku.oppija.hakemus.it.resource;
 
 import com.google.common.collect.Sets;
 import fi.vm.sade.haku.oppija.hakemus.domain.dto.ApplicationSearchResultDTO;

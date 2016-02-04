@@ -1,9 +1,10 @@
-package fi.vm.sade.haku.oppija.hakemus.resource;
+package fi.vm.sade.haku.oppija.hakemus.it.resource;
 
 import com.google.common.collect.Lists;
 import fi.vm.sade.authentication.permissionchecker.PermissionCheckRequestDTO;
 import fi.vm.sade.authentication.permissionchecker.PermissionCheckResponseDTO;
 import fi.vm.sade.haku.oppija.hakemus.it.IntegrationTestSupport;
+import fi.vm.sade.haku.oppija.hakemus.resource.PermissionResource;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.service.ApplicationSystemService;
 import org.junit.Before;
