@@ -23,10 +23,12 @@ import fi.vm.sade.haku.oppija.hakemus.domain.ApplicationPhase;
 import fi.vm.sade.haku.oppija.lomake.domain.ApplicationSystem;
 import fi.vm.sade.haku.oppija.lomake.domain.I18nText;
 import fi.vm.sade.haku.oppija.lomake.domain.ModelResponse;
+import fi.vm.sade.haku.oppija.lomake.exception.IllegalStateException;
 import fi.vm.sade.haku.oppija.lomake.service.FormService;
 import fi.vm.sade.haku.oppija.lomake.service.Session;
 import fi.vm.sade.haku.oppija.ui.common.UriUtil;
 import fi.vm.sade.haku.oppija.ui.controller.dto.AttachmentsAndEligibilityDTO;
+import fi.vm.sade.haku.oppija.ui.controller.dto.EligibilitiesDTO;
 import fi.vm.sade.haku.oppija.ui.service.OfficerUIService;
 import fi.vm.sade.haku.oppija.ui.service.UIService;
 import fi.vm.sade.haku.virkailija.authentication.Person;
@@ -36,6 +38,7 @@ import fi.vm.sade.haku.virkailija.viestintapalvelu.PDFService;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.dto.ApplicationByEmailDTO;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.dto.ApplicationReplacementDTO;
 import fi.vm.sade.haku.virkailija.viestintapalvelu.dto.ApplicationTemplateDTO;
+import fi.vm.sade.haku.oppija.hakemus.resource.JSONException;
 import org.apache.http.HttpResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -346,8 +349,13 @@ public class OfficerController {
     @Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF_8)
     @PreAuthorize("hasAnyRole('ROLE_APP_HAKEMUS_READ_UPDATE', 'ROLE_APP_HAKEMUS_CRUD')")
     public void processAttachmentAndEligibility(@PathParam(OID_PATH_PARAM) final String oid,
-                                  List<AttachmentsAndEligibilityDTO> attachmentsAndEligibility) throws URISyntaxException {
-        officerUIService.processAttachmentsAndEligibility(oid, attachmentsAndEligibility);
+                                                EligibilitiesDTO eligibilities) throws URISyntaxException {
+        try {
+            officerUIService.processAttachmentsAndEligibilities(oid, eligibilities);
+        } catch (IllegalStateException ise) {
+            throw new JSONException(Response.Status.CONFLICT, "FOOBAR", ise);
+        }
+
     }
 
     @GET
