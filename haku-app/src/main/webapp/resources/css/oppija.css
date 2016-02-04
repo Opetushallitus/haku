@@ -2566,7 +2566,7 @@ button {
     background-image: url(../img/button-left-sprite_idle-hover-selected-disabled.png);
     background-position: right -112px; }
     button.left span span {
-      margin: 0px -18px 0px 0px;
+      margin: 0px -20px 0px 0px;
       border: none;
       padding: 0px 0px 0px 30px;
       left: -30px;
