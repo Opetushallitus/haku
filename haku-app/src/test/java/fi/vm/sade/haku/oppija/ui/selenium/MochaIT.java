@@ -33,7 +33,7 @@ public class MochaIT extends AbstractSeleniumBase {
     @Test
     public void testRunMocha() throws InterruptedException {
         JavascriptExecutor js = (JavascriptExecutor) driver;
-        new WebDriverWait(seleniumContainer.getDriver(), 15*60, 1000)
+        new WebDriverWait(seleniumContainer.getDriver(), 20*60, 1000)
                 .until(new ExpectedCondition<Object>() {
                     @Override
                     public Object apply(WebDriver webDriver) {
