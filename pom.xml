@@ -139,6 +139,10 @@
                         <exclude>**/it/**/*</exclude>
                     </excludes>
                     <argLine>-Xms256M -Xmx1024M -XX:PermSize=256M</argLine>
+                    <systemProperties>
+                        <spring.profiles.active>dev</spring.profiles.active>
+                        <application.system.cache>false</application.system.cache>
+                    </systemProperties>
                 </configuration>
             </plugin>
         </plugins>
