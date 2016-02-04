@@ -103,7 +103,7 @@ public abstract class AbstractSeleniumBase extends TomcatContainerBase {
     }
 
     protected void click(By by) {
-        new WebDriverWait(seleniumContainer.getDriver(), 1, 100).until(ExpectedConditions.elementToBeClickable(by));
+        new WebDriverWait(seleniumContainer.getDriver(), 10, 100).until(ExpectedConditions.elementToBeClickable(by));
         int attempt = 1;
         StaleElementReferenceException lastException = null;
         while(attempt <= 3) {
