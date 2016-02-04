@@ -90,7 +90,7 @@ public abstract class AbstractSeleniumBase extends TomcatContainerBase {
     }
 
     protected void clickByNameAndValue(final String name, final String value) {
-        seleniumContainer.getDriver().findElementByXPath("//*[@name='" + name + "' and @value='" + value + "']").click();
+        findByXPathAndClick("//*[@name='" + name + "' and @value='" + value + "']");
     }
 
     protected WebElement findBy(final By by) {
@@ -117,6 +117,10 @@ public abstract class AbstractSeleniumBase extends TomcatContainerBase {
             attempt++;
         }
         throw lastException;
+    }
+
+    protected void findByXPathAndClick(final String xpath) {
+        click(By.xpath(xpath));
     }
 
     protected void findByIdAndClick(long sleepMillis, final String... ids ) {
@@ -169,7 +173,6 @@ public abstract class AbstractSeleniumBase extends TomcatContainerBase {
     protected WebElement findByXPath(final String xpath) {
         return findBy(By.xpath(xpath));
     }
-
 
     protected List<WebElement> findByClassName(final String... classNames) {
         List<WebElement> elements = new ArrayList<WebElement>();
