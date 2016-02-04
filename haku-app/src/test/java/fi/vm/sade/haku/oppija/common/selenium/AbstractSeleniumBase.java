@@ -255,7 +255,7 @@ public abstract class AbstractSeleniumBase extends TomcatContainerBase {
 
     public void waitForAjax() {
         // explicit sleep is needed because bacon is grouping the request in 100ms intervals!
-        waitForMillis(200);
+        waitForMillis(110);
 
         (new WebDriverWait(seleniumContainer.getDriver(), 5)).until(new ExpectedCondition<Boolean>() {
             public Boolean apply(WebDriver d) {
