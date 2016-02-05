@@ -73,12 +73,13 @@ public class OfficerIT extends DummyModelBaseItTest {
         clickSearch();
         WebElement applicationLink = findByClassName("application-link").get(0);
         applicationLink.click();
-        waitForAjax();
+        waitForMillis(500);
         waitForElement(20, By.id("notes"));
         click(By.cssSelector("a[href*=koulutustausta] button.edit-link"));
-        waitForMillis(1000L);
+        waitForMillis(500);
         waitForElement(20, By.id(KYSYMYS_POHJAKOULUTUS + "_" + TUTKINTO_YLIOPPILAS));
         findByAndAjaxClick(By.id(KYSYMYS_POHJAKOULUTUS + "_" + TUTKINTO_YLIOPPILAS));
+        waitForMillis(500);
         setValue(OppijaConstants.LUKIO_PAATTOTODISTUS_VUOSI, "3012", true);
         setValue(OppijaConstants.LUKIO_KIELI, "FI", true);
         seleniumContainer.getDriver().findElement(new By.ByClassName("save")).click();
