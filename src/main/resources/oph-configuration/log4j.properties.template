@@ -29,6 +29,7 @@ log4j.appender.AUDIT.encoding=UTF-8
 log4j.logger.fi.vm.sade.haku=INFO
 log4j.logger.fi.vm.sade.haku.oppija.postprocess.impl.PostProcessWorkerImpl=ERROR
 log4j.logger.fi.vm.sade.haku.oppija.postprocess.impl.UpgradeWorkerImpl=ERROR
+log4j.logger.fi.vm.sade.haku.oppija.postprocess.impl.PaymentDueDateProcessingWorker=INFO
 log4j.logger.fi.vm.sade.haku.oppija.hakemus.it.dao.impl=INFO
 # By default hide these spammers by default
 log4j.logger.org.apache.cxf=ERROR
