@@ -267,6 +267,7 @@ describe('Erityisoppilaitosten lomake', function () {
                             describe('hakutoiveiden järjestyksen muuttaminen', function () {
                                 before(seqDone(
                                     openPage("/haku-app/lomake/" + hakuOid + "/hakutoiveet"),
+                                    visible(lomake.tyhjenna(3)),
                                     click(lomake.sortDown(1))
                                 ));
 
