@@ -68,9 +68,8 @@ public class LomakeIT extends DummyModelBaseItTest {
         setValue("huoltajanpuhelinnumero", "0500111011");
         setValue("huoltajansahkoposti", "aiti.ankka@ankkalinna.al");
 
-        nextPhase("henkilotiedot");
-
-        findByClassName("notification");
+        findByAndAjaxClick(new By.ByClassName("right"));
+        findById("phase-contains-errors");
 
         setValue("asuinmaa", "FIN");
         setValue("kotikunta", "jalasjarvi");
@@ -144,21 +143,23 @@ public class LomakeIT extends DummyModelBaseItTest {
 
         // Lisätiedot
 
-        nextPhase(OppijaConstants.PHASE_MISC);
-
         // Ei mene läpi, työkokemus syöttämättä
+        findByAndAjaxClick(new By.ByClassName("right"));
+        findById("phase-contains-errors");
+
         clickAllElementsByXPath("//input[@type='checkbox']");
-
         setValue("TYOKOKEMUSKUUKAUDET", "1001");
-        nextPhase(OppijaConstants.PHASE_MISC);
-        // Ei mene läpi, työkokemus > 1000 kuukautta
-        nextPhase(OppijaConstants.PHASE_MISC);
-        findById("TYOKOKEMUSKUUKAUDET");
 
+        // Ei mene läpi, työkokemus > 1000 kuukautta
+        findByAndAjaxClick(new By.ByClassName("right"));
+        findById("phase-contains-errors");
+
+        findById("TYOKOKEMUSKUUKAUDET");
         setValue("TYOKOKEMUSKUUKAUDET", StringUtils.repeat("\b", "1001".length()) + "2"); //\b is backspace
 
         // Ei mene läpi, asiointikieli valitsematta
-        nextPhase(OppijaConstants.PHASE_MISC);
+        findByAndAjaxClick(new By.ByClassName("right"));
+        findById("phase-contains-errors");
         clickByNameAndValue("asiointikieli", "suomi");
 
         // Menee läpi
@@ -198,7 +199,9 @@ public class LomakeIT extends DummyModelBaseItTest {
 
         String value = driver.findElement(new By.ById("Sukunimi")).getAttribute("value");
         assertTrue(StringUtils.isEmpty(value));
-        nextPhase(OppijaConstants.PHASE_PERSONAL);
+        // Ei mene läpi, tyhjä lomake
+        findByAndAjaxClick(new By.ByClassName("right"));
+        findById("phase-contains-errors");
     }
 
     private void testHAK123AandHAK124() {
